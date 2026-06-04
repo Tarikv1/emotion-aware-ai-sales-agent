@@ -5523,3 +5523,33 @@ Interpretation:
   - it records an evidence-driven provider-dashboard prompt iteration loop
   - it separates test pass/fail correctness from human naturalness critique
   - it preserves the repo as source of truth while using ElevenLabs as the hosted voice-agent runtime
+
+### 2026-06-04 - ELEVENLABS-007 naturalness stress testing and temperature tuning
+
+- Objective: address the fact that passing scenario tests did not prove the Atlas Web Studio agent was dynamic or natural enough.
+- Action taken:
+  - added eight stricter Mike's Kitchen naturalness stress tests in an ElevenLabs folder named `Atlas Web Studio - Naturalness Stress`
+  - added `--agent-temperature` support to the ElevenLabs automation runner
+  - patched the live `web design` agent with a shorter first message, higher-priority last-turn rules, and temperature `0.25`
+  - reran both the new naturalness pack and the original scenario pack against the live agent
+- Method:
+  - treated passing tests as insufficient evidence and created tests that punish checklist stuffing, repeated scheduling questions, dropped callback windows, brochure language, and fake pricing certainty
+  - changed one major editable surface at a time: prompt examples, callback priority rules, and temperature
+  - kept the test cases fixed after creation and reran the same test IDs after each patch
+  - recorded intermediate failures instead of hiding them
+- Result:
+  - live agent temperature: `0.25`
+  - naturalness test folder: `tfld_5201kt9ygzm2ftrtxq679h0qyw6z`
+  - final naturalness suite: `suite_3001kt9zb024empvd0bjqvbchv5e`, `8/8` passed
+  - final original scenario suite: `suite_3901kt9zb05hee395szz5jrb7g65`, `6/6` passed
+  - temperature `0.35` was rejected as too unstable for callback/pass-along constraints
+- Boundary:
+  - no new KB upload
+  - no private customer data
+  - no API key value logged
+  - no real customer call
+  - no claim that dashboard tests alone prove real call naturalness
+- Why it matters for the thesis:
+  - it creates a more honest evaluation layer between hard rubric passing and human-perceived naturalness
+  - it records the tradeoff between dynamism and constraint reliability
+  - it preserves empirical prompt iteration evidence for the ElevenLabs-hosted voice-agent architecture

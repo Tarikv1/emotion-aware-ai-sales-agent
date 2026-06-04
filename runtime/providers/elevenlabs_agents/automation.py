@@ -335,6 +335,7 @@ def build_agent_patch_payload(
     prompt_override: str | None = None,
     first_message_override: str | None = None,
     dynamic_variable_placeholders: dict[str, Any] | None = None,
+    agent_temperature: float | None = None,
 ) -> dict[str, Any]:
     if not kb_documents:
         raise ValueError("At least one KB document ID is required for an agent patch payload.")
@@ -349,6 +350,10 @@ def build_agent_patch_payload(
         raise ValueError("Copied agent config prompt must be an object.")
     if prompt_override:
         prompt["prompt"] = prompt_override
+    if agent_temperature is not None:
+        if agent_temperature < 0 or agent_temperature > 2:
+            raise ValueError("--agent-temperature must be between 0 and 2.")
+        prompt["temperature"] = agent_temperature
     if first_message_override:
         agent_section = conversation_config.setdefault("agent", {})
         if not isinstance(agent_section, dict):
@@ -374,7 +379,9 @@ def build_agent_patch_payload(
         raise ValueError("Copied agent config prompt.rag must be an object.")
     rag["enabled"] = True
     version_scope = (
-        "ELEVENLABS-006 web design prompt naturalness patch"
+        "ELEVENLABS-007 web design dynamism patch"
+        if agent_temperature is not None
+        else "ELEVENLABS-006 web design prompt naturalness patch"
         if prompt_override or first_message_override or dynamic_variable_placeholders is not None
         else "ELEVENLABS-003 knowledge base attachment"
     )
@@ -396,6 +403,7 @@ def build_agent_patch_draft(
     prompt_override: str | None = None,
     first_message_override: str | None = None,
     dynamic_variable_placeholders: dict[str, Any] | None = None,
+    agent_temperature: float | None = None,
 ) -> dict[str, Any]:
     endpoint_agent = agent_id or "{agent_id}"
     if agent_config_path and kb_documents:
@@ -411,6 +419,7 @@ def build_agent_patch_draft(
             prompt_override=prompt_override,
             first_message_override=first_message_override,
             dynamic_variable_placeholders=dynamic_variable_placeholders,
+            agent_temperature=agent_temperature,
         )
         patch_out = patch_payload_out or DEFAULT_AGENT_PATCH
         write_json(patch_out, patch_payload)
@@ -426,6 +435,7 @@ def build_agent_patch_draft(
             "prompt_override_applied": prompt_override is not None,
             "first_message_override_applied": first_message_override is not None,
             "dynamic_variable_placeholders_applied": dynamic_variable_placeholders is not None,
+            "agent_temperature_override_applied": agent_temperature is not None,
             "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/agents/update",
         }
     return {
@@ -453,6 +463,7 @@ def build_plan(
     prompt_override: str | None = None,
     first_message_override: str | None = None,
     dynamic_variable_placeholders: dict[str, Any] | None = None,
+    agent_temperature: float | None = None,
 ) -> dict[str, Any]:
     manifest = load_package(package_manifest_path)
     package_id = str(manifest["package_id"])
@@ -489,6 +500,7 @@ def build_plan(
             prompt_override=prompt_override,
             first_message_override=first_message_override,
             dynamic_variable_placeholders=dynamic_variable_placeholders,
+            agent_temperature=agent_temperature,
         ),
         "test_folder": {
             "folder_name": None,
@@ -894,6 +906,7 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--agent-prompt-file", default=None)
     parser.add_argument("--first-message-file", default=None)
     parser.add_argument("--dynamic-variable-defaults", default=None)
+    parser.add_argument("--agent-temperature", type=float, default=None)
     parser.add_argument("--kb-document-id", action="append", default=[])
     parser.add_argument("--kb-document-name", action="append", default=[])
     parser.add_argument(
@@ -936,6 +949,7 @@ def main(argv: list[str] | None = None) -> None:
         prompt_override=prompt_override,
         first_message_override=first_message_override,
         dynamic_variable_placeholders=dynamic_variable_placeholders,
+        agent_temperature=args.agent_temperature,
     )
     requests_bundle = build_api_requests_bundle(plan)
     plan["test_folder"] = {

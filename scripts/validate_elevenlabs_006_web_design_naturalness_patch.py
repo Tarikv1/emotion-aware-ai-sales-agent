@@ -127,8 +127,9 @@ def main() -> None:
         "You are Emma from Atlas Web Studio.",
         "visual representation",
         "Do not say `customer action path` to the buyer.",
-        "Would looking at that be useful?",
-        "Is there a time before lunch that works?",
+        "Do not say `reservation-call path`",
+        "Normal-words ask: ask the buyer to take a quick look",
+        "Usable callback window: confirm the callback and the narrow purpose.",
         "Do not promise more calls, bookings, ranking, revenue, or customer behavior.",
     ):
         assert_condition(required in prompt, f"prompt missing required marker: {required}")

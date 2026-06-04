@@ -2924,6 +2924,12 @@ Validate the web design naturalness patch without provider calls:
 python scripts\validate_elevenlabs_006_web_design_naturalness_patch.py
 ```
 
+Validate the web design dynamism/naturalness stress pack without provider calls:
+
+```powershell
+python scripts\validate_elevenlabs_007_web_design_dynamism.py
+```
+
 Build the Mike's Kitchen dynamic test API request bundle without provider calls:
 
 ```powershell
@@ -3013,6 +3019,50 @@ python scripts\run_elevenlabs_agent_automation.py `
   --api-requests-out research\experiments\generated\ELEVENLABS-006-web-design-naturalness-patch\api_requests.json `
   --live `
   --confirm-provider-write
+```
+
+Build the ELEVENLABS-007 Mike's Kitchen naturalness test API request bundle and folder plan without provider calls:
+
+```powershell
+python scripts\run_elevenlabs_agent_automation.py `
+  --package-manifest runtime\providers\elevenlabs_agents\manifests\web_design_mikes_kitchen_naturalness_tests.package.json `
+  --agent-id agent_7801kt0g32zxf4f8x5zkykj7syty `
+  --test-folder-name "Atlas Web Studio - Naturalness Stress" `
+  --out research\experiments\generated\ELEVENLABS-007-web-design-dynamism-naturalness\naturalness_tests_plan.json `
+  --api-requests-out research\experiments\generated\ELEVENLABS-007-web-design-dynamism-naturalness\naturalness_tests_requests.json
+```
+
+Patch the live `web design` dashboard agent for ELEVENLABS-007 after loading `ELEVENLABS_API_KEY` into the current process:
+
+```powershell
+python scripts\run_elevenlabs_agent_automation.py `
+  --operation patch-agent `
+  --agent-config runtime\providers\elevenlabs_agents\fixtures\web_design_agent_config.sanitized.json `
+  --kb-document-id OyjSKNJnQTc84pyk1Yu0 `
+  --kb-document-name universal_sales_core.md `
+  --agent-prompt-file runtime\providers\elevenlabs_agents\prompts\web_design_atlas_sales_prompt.md `
+  --first-message-file runtime\providers\elevenlabs_agents\prompts\web_design_first_message.txt `
+  --dynamic-variable-defaults runtime\providers\elevenlabs_agents\variables\mikes_kitchen_dynamic_variable_defaults.json `
+  --agent-temperature 0.25 `
+  --agent-patch-out research\experiments\generated\ELEVENLABS-007-web-design-dynamism-naturalness\agent_patch_payload.json `
+  --out research\experiments\generated\ELEVENLABS-007-web-design-dynamism-naturalness\agent_patch_plan.json `
+  --api-requests-out research\experiments\generated\ELEVENLABS-007-web-design-dynamism-naturalness\agent_patch_requests.json `
+  --live `
+  --confirm-provider-write
+```
+
+Create the ELEVENLABS-007 Mike's Kitchen naturalness tests in ElevenLabs and move them into the naturalness stress folder:
+
+```powershell
+python scripts\run_elevenlabs_agent_automation.py `
+  --package-manifest runtime\providers\elevenlabs_agents\manifests\web_design_mikes_kitchen_naturalness_tests.package.json `
+  --agent-id agent_7801kt0g32zxf4f8x5zkykj7syty `
+  --test-folder-name "Atlas Web Studio - Naturalness Stress" `
+  --operation create-tests `
+  --live `
+  --confirm-provider-write `
+  --out research\experiments\generated\ELEVENLABS-007-web-design-dynamism-naturalness\naturalness_tests_plan.json `
+  --api-requests-out research\experiments\generated\ELEVENLABS-007-web-design-dynamism-naturalness\naturalness_tests_requests.json
 ```
 
 Live provider writes require `ELEVENLABS_API_KEY`, `--live`, and `--confirm-provider-write`.

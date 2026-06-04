@@ -38,3 +38,6 @@ Current packages:
 - `ELEVENLABS-006-web-design-naturalness-patch`: prompt, first-message, and
   dynamic-variable placeholder patch for the live `web design` dashboard agent
   after scenario tests exposed generic and unnatural wording.
+- `ELEVENLABS-007-web-design-dynamism-naturalness`: stricter Mike's Kitchen
+  naturalness stress tests plus a controlled prompt/temperature patch so the
+  agent is less checklist-driven and less deterministic.

@@ -1,0 +1,43 @@
+{
+  "checkpoint_id": "ELEVENLABS-007-web-design-dynamism-naturalness",
+  "provider": "elevenlabs",
+  "run_date": "2026-06-04",
+  "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+  "temperature": 0.25,
+  "test_folder": {
+    "folder_id": "tfld_5201kt9ygzm2ftrtxq679h0qyw6z",
+    "folder_name": "Atlas Web Studio - Naturalness Stress"
+  },
+  "naturalness_suite": {
+    "suite_id": "suite_3001kt9zb024empvd0bjqvbchv5e",
+    "test_run_count": 8,
+    "passed_count": 8,
+    "failed_count": 0
+  },
+  "original_scenario_suite": {
+    "suite_id": "suite_3901kt9zb05hee395szz5jrb7g65",
+    "test_run_count": 6,
+    "passed_count": 6,
+    "failed_count": 0
+  },
+  "intermediate_findings": [
+    {
+      "suite_id": "suite_3601kt9yhnsfex9tf82zdt6jkxkg",
+      "result": "6/8 naturalness tests passed",
+      "lesson": "temperature 0.35 improved variation but callback and plain-ask constraints were unstable"
+    },
+    {
+      "suite_id": "suite_8801kt9ynmnyex4r672bdvc5k52t",
+      "result": "7/8 naturalness tests passed",
+      "lesson": "removing quotable examples fixed plain-ask overexplaining but callback confirmation still asked for time"
+    },
+    {
+      "suite_id": "suite_2501kt9z7ymrec9sgx1rj0brghg0",
+      "result": "5/6 original scenario tests passed",
+      "lesson": "strict no-time-question callback rule became too short and dropped the mockup purpose"
+    }
+  ],
+  "secret_values_logged": false,
+  "private_customer_data_used": false,
+  "production_customer_calls_made": false
+}

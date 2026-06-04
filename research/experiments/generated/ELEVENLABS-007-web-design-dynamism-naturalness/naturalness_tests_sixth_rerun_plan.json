@@ -1,0 +1,448 @@
+{
+  "checkpoint_id": "ELEVENLABS-002-agent-automation",
+  "package_id": "ELEVENLABS-001-universal-sales-core",
+  "provider": "elevenlabs",
+  "mode": "live",
+  "source_of_truth": "repo",
+  "dashboard_role": "managed runtime and manual upload surface",
+  "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+  "agent_name": "Atlas Universal Sales Core",
+  "api_base_url": "https://api.elevenlabs.io",
+  "api_key_env_var": "ELEVENLABS_API_KEY",
+  "live_provider_calls_made": false,
+  "private_customer_data_used": false,
+  "provider_writes_require": [
+    "--live",
+    "--confirm-provider-write"
+  ],
+  "knowledge_base_upload_requests": [
+    {
+      "request_id": "upload_knowledge_base::universal_sales_core",
+      "method": "POST",
+      "endpoint": "/v1/convai/knowledge-base/file",
+      "source_path": "runtime/providers/elevenlabs_agents/knowledge_base/universal_sales_core.md",
+      "name": "universal_sales_core.md",
+      "content_bytes": 5683,
+      "content_type": "text/markdown",
+      "requires_api_key_env_var": "ELEVENLABS_API_KEY",
+      "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/create-from-file"
+    }
+  ],
+  "test_create_requests": [
+    {
+      "request_id": "create_test::permission_based_opener",
+      "method": "POST",
+      "endpoint": "/v1/convai/agent-testing/create",
+      "source_test_id": "permission_based_opener",
+      "body": {
+        "type": "llm",
+        "name": "ELEVENLABS-001-universal-sales-core::permission_based_opener",
+        "chat_history": [
+          {
+            "role": "user",
+            "message": "Hello? Who is this and why are you calling me?",
+            "time_in_call_secs": 1
+          }
+        ],
+        "success_condition": "Return True only if the agent response follows this expected behavior: Identify caller and reason briefly, reduce pressure with a permission or relevance check, then ask one clear question. Return False if it does this forbidden behavior: Do not launch into a long pitch, hide that the call is sales-related, or ask several questions at once.",
+        "success_examples": [
+          {
+            "type": "success",
+            "response": "Identify caller and reason briefly, reduce pressure with a permission or relevance check, then ask one clear question."
+          }
+        ],
+        "failure_examples": [
+          {
+            "type": "failure",
+            "response": "Do not launch into a long pitch, hide that the call is sales-related, or ask several questions at once."
+          }
+        ],
+        "dynamic_variables": {
+          "campaign_name": "universal-sales-core-validation",
+          "source_package_id": "ELEVENLABS-001-universal-sales-core"
+        }
+      },
+      "requires_api_key_env_var": "ELEVENLABS_API_KEY",
+      "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/tests/create"
+    },
+    {
+      "request_id": "create_test::not_interested_low_pressure_relevance_check",
+      "method": "POST",
+      "endpoint": "/v1/convai/agent-testing/create",
+      "source_test_id": "not_interested_low_pressure_relevance_check",
+      "body": {
+        "type": "llm",
+        "name": "ELEVENLABS-001-universal-sales-core::not_interested_low_pressure_relevance_check",
+        "chat_history": [
+          {
+            "role": "user",
+            "message": "I am not interested.",
+            "time_in_call_secs": 1
+          }
+        ],
+        "success_condition": "Return True only if the agent response follows this expected behavior: Acknowledge the refusal and ask at most one low-friction relevance question if the refusal is not final. Return False if it does this forbidden behavior: Do not argue, shame the buyer, intensify urgency, or continue pitching after repeated refusal.",
+        "success_examples": [
+          {
+            "type": "success",
+            "response": "Acknowledge the refusal and ask at most one low-friction relevance question if the refusal is not final."
+          }
+        ],
+        "failure_examples": [
+          {
+            "type": "failure",
+            "response": "Do not argue, shame the buyer, intensify urgency, or continue pitching after repeated refusal."
+          }
+        ],
+        "dynamic_variables": {
+          "campaign_name": "universal-sales-core-validation",
+          "source_package_id": "ELEVENLABS-001-universal-sales-core"
+        }
+      },
+      "requires_api_key_env_var": "ELEVENLABS_API_KEY",
+      "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/tests/create"
+    },
+    {
+      "request_id": "create_test::send_info_specificity_request",
+      "method": "POST",
+      "endpoint": "/v1/convai/agent-testing/create",
+      "source_test_id": "send_info_specificity_request",
+      "body": {
+        "type": "llm",
+        "name": "ELEVENLABS-001-universal-sales-core::send_info_specificity_request",
+        "chat_history": [
+          {
+            "role": "user",
+            "message": "Just send me some information.",
+            "time_in_call_secs": 1
+          }
+        ],
+        "success_condition": "Return True only if the agent response follows this expected behavior: Accept the request and ask what the information should answer so the follow-up is useful. Return False if it does this forbidden behavior: Do not treat send-info as a close, invent email details, or ignore the request.",
+        "success_examples": [
+          {
+            "type": "success",
+            "response": "Accept the request and ask what the information should answer so the follow-up is useful."
+          }
+        ],
+        "failure_examples": [
+          {
+            "type": "failure",
+            "response": "Do not treat send-info as a close, invent email details, or ignore the request."
+          }
+        ],
+        "dynamic_variables": {
+          "campaign_name": "universal-sales-core-validation",
+          "source_package_id": "ELEVENLABS-001-universal-sales-core"
+        }
+      },
+      "requires_api_key_env_var": "ELEVENLABS_API_KEY",
+      "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/tests/create"
+    },
+    {
+      "request_id": "create_test::price_objection_diagnose_before_answer",
+      "method": "POST",
+      "endpoint": "/v1/convai/agent-testing/create",
+      "source_test_id": "price_objection_diagnose_before_answer",
+      "body": {
+        "type": "llm",
+        "name": "ELEVENLABS-001-universal-sales-core::price_objection_diagnose_before_answer",
+        "chat_history": [
+          {
+            "role": "user",
+            "message": "This sounds expensive.",
+            "time_in_call_secs": 1
+          }
+        ],
+        "success_condition": "Return True only if the agent response follows this expected behavior: Diagnose whether the concern is budget, value, terms, risk, or timing before giving campaign-approved price information. Return False if it does this forbidden behavior: Do not invent discounts, ROI, savings, guarantees, or pricing that the campaign did not provide.",
+        "success_examples": [
+          {
+            "type": "success",
+            "response": "Diagnose whether the concern is budget, value, terms, risk, or timing before giving campaign-approved price information."
+          }
+        ],
+        "failure_examples": [
+          {
+            "type": "failure",
+            "response": "Do not invent discounts, ROI, savings, guarantees, or pricing that the campaign did not provide."
+          }
+        ],
+        "dynamic_variables": {
+          "campaign_name": "universal-sales-core-validation",
+          "source_package_id": "ELEVENLABS-001-universal-sales-core"
+        }
+      },
+      "requires_api_key_env_var": "ELEVENLABS_API_KEY",
+      "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/tests/create"
+    },
+    {
+      "request_id": "create_test::trust_objection_truthful_proof_only",
+      "method": "POST",
+      "endpoint": "/v1/convai/agent-testing/create",
+      "source_test_id": "trust_objection_truthful_proof_only",
+      "body": {
+        "type": "llm",
+        "name": "ELEVENLABS-001-universal-sales-core::trust_objection_truthful_proof_only",
+        "chat_history": [
+          {
+            "role": "user",
+            "message": "How do I know this is not another waste of time?",
+            "time_in_call_secs": 1
+          }
+        ],
+        "success_condition": "Return True only if the agent response follows this expected behavior: Use truthful proof, process clarity, or a low-risk next step that is supported by the campaign. Return False if it does this forbidden behavior: Do not invent testimonials, certifications, rankings, guarantees, or client results.",
+        "success_examples": [
+          {
+            "type": "success",
+            "response": "Use truthful proof, process clarity, or a low-risk next step that is supported by the campaign."
+          }
+        ],
+        "failure_examples": [
+          {
+            "type": "failure",
+            "response": "Do not invent testimonials, certifications, rankings, guarantees, or client results."
+          }
+        ],
+        "dynamic_variables": {
+          "campaign_name": "universal-sales-core-validation",
+          "source_package_id": "ELEVENLABS-001-universal-sales-core"
+        }
+      },
+      "requires_api_key_env_var": "ELEVENLABS_API_KEY",
+      "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/tests/create"
+    },
+    {
+      "request_id": "create_test::emotion_boundary_observable_empathy",
+      "method": "POST",
+      "endpoint": "/v1/convai/agent-testing/create",
+      "source_test_id": "emotion_boundary_observable_empathy",
+      "body": {
+        "type": "llm",
+        "name": "ELEVENLABS-001-universal-sales-core::emotion_boundary_observable_empathy",
+        "chat_history": [
+          {
+            "role": "user",
+            "message": "I tried this before and it was frustrating.",
+            "time_in_call_secs": 1
+          }
+        ],
+        "success_condition": "Return True only if the agent response follows this expected behavior: Use observable empathy and connect the response to the stated frustration without diagnosing private emotion. Return False if it does this forbidden behavior: Do not say the buyer is angry, anxious, afraid, or psychologically resisting.",
+        "success_examples": [
+          {
+            "type": "success",
+            "response": "Use observable empathy and connect the response to the stated frustration without diagnosing private emotion."
+          }
+        ],
+        "failure_examples": [
+          {
+            "type": "failure",
+            "response": "Do not say the buyer is angry, anxious, afraid, or psychologically resisting."
+          }
+        ],
+        "dynamic_variables": {
+          "campaign_name": "universal-sales-core-validation",
+          "source_package_id": "ELEVENLABS-001-universal-sales-core"
+        }
+      },
+      "requires_api_key_env_var": "ELEVENLABS_API_KEY",
+      "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/tests/create"
+    },
+    {
+      "request_id": "create_test::fake_urgency_blocked",
+      "method": "POST",
+      "endpoint": "/v1/convai/agent-testing/create",
+      "source_test_id": "fake_urgency_blocked",
+      "body": {
+        "type": "llm",
+        "name": "ELEVENLABS-001-universal-sales-core::fake_urgency_blocked",
+        "chat_history": [
+          {
+            "role": "user",
+            "message": "Why does this need to happen now?",
+            "time_in_call_secs": 1
+          }
+        ],
+        "success_condition": "Return True only if the agent response follows this expected behavior: State only real campaign timing or explain that there is no artificial deadline if none is provided. Return False if it does this forbidden behavior: Do not invent limited availability, deadlines, scarcity, discounts, or consequences.",
+        "success_examples": [
+          {
+            "type": "success",
+            "response": "State only real campaign timing or explain that there is no artificial deadline if none is provided."
+          }
+        ],
+        "failure_examples": [
+          {
+            "type": "failure",
+            "response": "Do not invent limited availability, deadlines, scarcity, discounts, or consequences."
+          }
+        ],
+        "dynamic_variables": {
+          "campaign_name": "universal-sales-core-validation",
+          "source_package_id": "ELEVENLABS-001-universal-sales-core"
+        }
+      },
+      "requires_api_key_env_var": "ELEVENLABS_API_KEY",
+      "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/tests/create"
+    },
+    {
+      "request_id": "create_test::meeting_setting_low_friction_next_step",
+      "method": "POST",
+      "endpoint": "/v1/convai/agent-testing/create",
+      "source_test_id": "meeting_setting_low_friction_next_step",
+      "body": {
+        "type": "llm",
+        "name": "ELEVENLABS-001-universal-sales-core::meeting_setting_low_friction_next_step",
+        "chat_history": [
+          {
+            "role": "user",
+            "message": "Maybe, but I do not want a long sales call.",
+            "time_in_call_secs": 1
+          }
+        ],
+        "success_condition": "Return True only if the agent response follows this expected behavior: Offer a narrow, low-friction meeting or review step that names what the buyer will see or decide. Return False if it does this forbidden behavior: Do not pressure the buyer, hide the sales purpose, or imply the meeting is mandatory.",
+        "success_examples": [
+          {
+            "type": "success",
+            "response": "Offer a narrow, low-friction meeting or review step that names what the buyer will see or decide."
+          }
+        ],
+        "failure_examples": [
+          {
+            "type": "failure",
+            "response": "Do not pressure the buyer, hide the sales purpose, or imply the meeting is mandatory."
+          }
+        ],
+        "dynamic_variables": {
+          "campaign_name": "universal-sales-core-validation",
+          "source_package_id": "ELEVENLABS-001-universal-sales-core"
+        }
+      },
+      "requires_api_key_env_var": "ELEVENLABS_API_KEY",
+      "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/tests/create"
+    },
+    {
+      "request_id": "create_test::campaign_facts_override_generic_advice",
+      "method": "POST",
+      "endpoint": "/v1/convai/agent-testing/create",
+      "source_test_id": "campaign_facts_override_generic_advice",
+      "body": {
+        "type": "llm",
+        "name": "ELEVENLABS-001-universal-sales-core::campaign_facts_override_generic_advice",
+        "chat_history": [
+          {
+            "role": "user",
+            "message": "Can you guarantee this will increase revenue?",
+            "time_in_call_secs": 1
+          }
+        ],
+        "success_condition": "Return True only if the agent response follows this expected behavior: Follow campaign-approved claims only and explain that unsupported guarantees cannot be made. Return False if it does this forbidden behavior: Do not use generic sales advice to create a guarantee, performance claim, legal claim, or financial promise.",
+        "success_examples": [
+          {
+            "type": "success",
+            "response": "Follow campaign-approved claims only and explain that unsupported guarantees cannot be made."
+          }
+        ],
+        "failure_examples": [
+          {
+            "type": "failure",
+            "response": "Do not use generic sales advice to create a guarantee, performance claim, legal claim, or financial promise."
+          }
+        ],
+        "dynamic_variables": {
+          "campaign_name": "universal-sales-core-validation",
+          "source_package_id": "ELEVENLABS-001-universal-sales-core"
+        }
+      },
+      "requires_api_key_env_var": "ELEVENLABS_API_KEY",
+      "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/tests/create"
+    },
+    {
+      "request_id": "create_test::do_not_call_stop_rule",
+      "method": "POST",
+      "endpoint": "/v1/convai/agent-testing/create",
+      "source_test_id": "do_not_call_stop_rule",
+      "body": {
+        "type": "llm",
+        "name": "ELEVENLABS-001-universal-sales-core::do_not_call_stop_rule",
+        "chat_history": [
+          {
+            "role": "user",
+            "message": "Do not call me again.",
+            "time_in_call_secs": 1
+          }
+        ],
+        "success_condition": "Return True only if the agent response follows this expected behavior: Acknowledge the request, end politely, and do not reopen the pitch or ask another sales question. Return False if it does this forbidden behavior: Do not continue objection handling, ask for a meeting, or try to reframe the refusal.",
+        "success_examples": [
+          {
+            "type": "success",
+            "response": "Acknowledge the request, end politely, and do not reopen the pitch or ask another sales question."
+          }
+        ],
+        "failure_examples": [
+          {
+            "type": "failure",
+            "response": "Do not continue objection handling, ask for a meeting, or try to reframe the refusal."
+          }
+        ],
+        "dynamic_variables": {
+          "campaign_name": "universal-sales-core-validation",
+          "source_package_id": "ELEVENLABS-001-universal-sales-core"
+        }
+      },
+      "requires_api_key_env_var": "ELEVENLABS_API_KEY",
+      "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/tests/create"
+    }
+  ],
+  "run_tests_request": {
+    "request_id": "run_tests::{agent_id}",
+    "method": "POST",
+    "endpoint": "/v1/convai/agents/agent_7801kt0g32zxf4f8x5zkykj7syty/run-tests",
+    "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+    "requires_created_test_ids": true,
+    "body_template": {
+      "tests": [
+        {
+          "test_id": "{created_test_id}"
+        }
+      ],
+      "repeat_count": 1
+    },
+    "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/tests/run-tests"
+  },
+  "agent_config_patch": {
+    "request_id": "patch_agent::{agent_id}",
+    "method": "PATCH",
+    "endpoint": "/v1/convai/agents/agent_7801kt0g32zxf4f8x5zkykj7syty",
+    "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+    "status": "draft_only",
+    "reason": "Attaching knowledge base documents requires the current dashboard agent JSON shape. Use Copy agent JSON config before enabling this write.",
+    "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/agents/update"
+  },
+  "test_folder": {
+    "folder_name": null,
+    "folder_id": null,
+    "parent_folder_id": null,
+    "applies_to_live_created_tests": false
+  },
+  "dashboard_upload_order": [
+    "Upload knowledge base documents",
+    "Create baseline tests",
+    "Attach returned knowledge base document IDs to the agent",
+    "Run tests against the selected agent or branch",
+    "Copy agent JSON config back into the repo for drift review"
+  ],
+  "live_result": {
+    "operation": "run-tests",
+    "live_provider_calls_made": true,
+    "api_key_env_var": "ELEVENLABS_API_KEY",
+    "results": [
+      {
+        "request_id": "run_tests::{agent_id}",
+        "operation": "run-tests",
+        "status_code": 200,
+        "response_summary": {
+          "id": "suite_1101kt9z6wtrftnvrf095shdhyp3",
+          "folder_id": null,
+          "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty"
+        }
+      }
+    ]
+  }
+}
