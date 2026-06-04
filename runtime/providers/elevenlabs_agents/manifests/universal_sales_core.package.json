@@ -1,0 +1,33 @@
+{
+  "package_id": "ELEVENLABS-001-universal-sales-core",
+  "provider": "elevenlabs",
+  "source_of_truth": "repo",
+  "dashboard_role": "managed runtime and manual upload surface",
+  "status": "initial-curated-universal-sales-core",
+  "live_provider_calls_made": false,
+  "private_customer_data_used": false,
+  "api_key_required_for_generation": false,
+  "dashboard_manual_changes_source_of_truth": false,
+  "knowledge_base_docs": [
+    "runtime/providers/elevenlabs_agents/knowledge_base/universal_sales_core.md"
+  ],
+  "baseline_tests": [
+    "runtime/providers/elevenlabs_agents/tests/universal_sales_core_baseline_tests.json"
+  ],
+  "upload_intent": {
+    "current_mode": "manual dashboard upload",
+    "future_mode": "repo-driven ElevenLabs API automation after drift checks and provider boundary review",
+    "knowledge_base_role": "global advisory sales core",
+    "campaign_specific_docs_required": true,
+    "campaign_facts_override_universal_core": true
+  },
+  "blocked_until_review": [
+    "uploading private customer emails",
+    "uploading private transcripts",
+    "using customer audio",
+    "live API create/update calls",
+    "webhook writes to scheduling or CRM systems",
+    "production customer calls"
+  ]
+}
+

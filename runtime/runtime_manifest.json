@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "manifest_id": "runtime-boundary-001",
-  "updated_on": "2026-05-28",
+  "updated_on": "2026-06-04",
   "purpose": "Make runtime-affecting project files visible separately from research, generated evidence, checkpoint runners, and temporary files.",
   "status": "runtime-sources-and-docs-moved-with-legacy-wrappers",
   "runtime_home_policy": {
@@ -563,6 +563,17 @@
         "strict JSON reasoner provider boundary",
         "API key redaction",
         "provider latency measurement"
+      ]
+    },
+    {
+      "path": "runtime/providers/elevenlabs_agents",
+      "path_type": "directory",
+      "tier": "provider-managed-runtime-package",
+      "runtime_role": "Repo-owned ElevenLabs Agents source package directory for uploadable universal sales knowledge, baseline tests, and manifests while live provider API calls remain blocked by default.",
+      "behavior_surface": [
+        "ElevenLabs agent upload package",
+        "universal sales knowledge boundary",
+        "baseline test source"
       ]
     },
     {
