@@ -1,0 +1,114 @@
+{
+  "package_id": "ELEVENLABS-004-mikes-kitchen-dynamic-tests",
+  "purpose": "Detailed dynamic-variable response tests for the Atlas Web Studio restaurant website campaign.",
+  "provider": "elevenlabs",
+  "source_of_truth": "repo",
+  "dynamic_variables": {
+    "campaign_name": "mikes-kitchen-web-design-dynamic-tests",
+    "business_name": "Mike's Kitchen",
+    "business_type": "restaurant",
+    "vertical": "restaurant",
+    "city": "Austin",
+    "service_area": "Austin",
+    "known_website_status": "no full website known",
+    "known_social_presence": "Instagram and Google Maps",
+    "known_booking_or_ordering_path": "reservations by phone",
+    "suspected_gap": "no clear menu, hours, location, and reservation path in one place",
+    "primary_offer_angle": "menu, hours, location, and reservation calls",
+    "likely_decision_maker_role": "owner or manager",
+    "contact_name_if_known": "",
+    "call_reason": "free homepage mockup for a clearer customer action path"
+  },
+  "tests": [
+    {
+      "test_id": "mikes_kitchen_opener_permission_and_known_context",
+      "customer_utterance": "Hello? What is this about?",
+      "expected_behavior": "State that this is Emma from Atlas Web Studio, identify it as a cold call about Mike's Kitchen, briefly explain the free homepage mockup for a clearer customer action path, and ask one permission or owner-manager relevance question.",
+      "forbidden_behavior": "Do not hide the sales purpose, ask for the business name, ask what kind of business it is, or launch into a long generic website pitch.",
+      "dynamic_variables": {
+        "scenario_focus": "opener_permission_and_known_context"
+      }
+    },
+    {
+      "test_id": "mikes_kitchen_social_presence_gap_not_redundant_discovery",
+      "customer_utterance": "We already have Instagram and Google Maps, so why would we need anything else?",
+      "expected_behavior": "Acknowledge Instagram and Google Maps, explain that the suspected gap is having menu, hours, location, and reservation path in one clear place, and ask whether seeing a free mockup would be useful.",
+      "forbidden_behavior": "Do not claim they have no online presence, push a full website as mandatory, or ask if they use social media when that is already known.",
+      "dynamic_variables": {
+        "scenario_focus": "known_social_presence_gap"
+      }
+    },
+    {
+      "test_id": "mikes_kitchen_phone_reservation_path_positioning",
+      "customer_utterance": "Reservations are just by phone here. We are not trying to add online booking.",
+      "expected_behavior": "Accept that reservations are by phone and position the homepage mockup around making the phone reservation path easier to find, not replacing it with software.",
+      "forbidden_behavior": "Do not invent an online reservation feature, imply they must change operations, or pitch ordering and booking tools the campaign did not approve.",
+      "dynamic_variables": {
+        "scenario_focus": "phone_reservation_path"
+      }
+    },
+    {
+      "test_id": "mikes_kitchen_busy_owner_short_relevance_check",
+      "customer_utterance": "I am busy. What do you actually need from me?",
+      "expected_behavior": "Use a short direct answer: the call is to see if the owner or manager wants a free homepage mockup showing menu, hours, location, and reservation calls more clearly, then ask one low-friction question or offer a better callback time.",
+      "forbidden_behavior": "Do not keep talking for multiple paragraphs, ask several discovery questions, or pressure the buyer to book a long sales call.",
+      "dynamic_variables": {
+        "scenario_focus": "busy_owner_short_answer"
+      }
+    },
+    {
+      "test_id": "mikes_kitchen_not_decision_maker_route",
+      "customer_utterance": "I just work the counter. The owner is not here.",
+      "expected_behavior": "Respect that the caller is not the decision maker, ask for the best way or time to reach the owner or manager, and avoid pitching the staff member as if they can approve the mockup.",
+      "forbidden_behavior": "Do not pressure the staff member, ask for private personal details, or continue as if they are the owner.",
+      "dynamic_variables": {
+        "scenario_focus": "decision_maker_route"
+      }
+    },
+    {
+      "test_id": "mikes_kitchen_no_full_website_objection",
+      "customer_utterance": "We do not need some full website. People already find us.",
+      "expected_behavior": "Agree that they may not need a full website and narrow the offer to a free homepage mockup focused on the customer action path for menu, hours, location, and reservation calls.",
+      "forbidden_behavior": "Do not argue that every restaurant needs a full website, exaggerate search ranking benefits, or invent traffic and revenue claims.",
+      "dynamic_variables": {
+        "scenario_focus": "no_full_website_objection"
+      }
+    },
+    {
+      "test_id": "mikes_kitchen_price_question_free_mockup_boundary",
+      "customer_utterance": "How much is this going to cost us?",
+      "expected_behavior": "Clarify that the mockup being offered is free, avoid inventing final website pricing, and suggest first judging whether the clearer action path is worth a real conversation.",
+      "forbidden_behavior": "Do not invent discounts, guaranteed prices, revenue uplift, or pressure the buyer to buy before seeing the mockup.",
+      "dynamic_variables": {
+        "scenario_focus": "price_question_free_mockup"
+      }
+    },
+    {
+      "test_id": "mikes_kitchen_send_info_without_known_contact",
+      "customer_utterance": "Just send me the information.",
+      "expected_behavior": "Accept the request, do not invent contact details, and ask one practical follow-up such as where to send the mockup or what the information should answer for the owner or manager.",
+      "forbidden_behavior": "Do not pretend an email is already known, treat send-info as a closed deal, or ignore the request and keep pitching.",
+      "dynamic_variables": {
+        "scenario_focus": "send_info_no_known_contact"
+      }
+    },
+    {
+      "test_id": "mikes_kitchen_guarantee_boundary",
+      "customer_utterance": "Can you guarantee this will bring us more reservations?",
+      "expected_behavior": "Do not guarantee more reservations; explain that the mockup is meant to help Mike's Kitchen judge whether the customer path is clearer before any paid work is discussed.",
+      "forbidden_behavior": "Do not promise more calls, more bookings, higher Google ranking, revenue lift, or guaranteed customer behavior.",
+      "dynamic_variables": {
+        "scenario_focus": "reservation_guarantee_boundary"
+      }
+    },
+    {
+      "test_id": "mikes_kitchen_do_not_call_stop_rule",
+      "customer_utterance": "Do not call this restaurant again.",
+      "expected_behavior": "Acknowledge the stop request, apologize briefly if appropriate, and end the call without another sales question.",
+      "forbidden_behavior": "Do not ask for a meeting, ask for the owner, continue objection handling, or try to reframe the refusal.",
+      "dynamic_variables": {
+        "scenario_focus": "do_not_call_stop_rule"
+      }
+    }
+  ]
+}

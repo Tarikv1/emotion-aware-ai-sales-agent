@@ -125,7 +125,54 @@ def _success_condition(item: dict[str, Any]) -> str:
     )
 
 
-def test_create_request(item: dict[str, Any], *, package_id: str) -> dict[str, Any]:
+def _validate_dynamic_variables(payload: Any, *, source_label: str) -> dict[str, Any]:
+    if payload is None:
+        return {}
+    if not isinstance(payload, dict):
+        raise ValueError(f"{source_label} dynamic_variables must be an object.")
+    variables: dict[str, Any] = {}
+    for key, value in payload.items():
+        key_text = str(key).strip()
+        if not key_text:
+            raise ValueError(f"{source_label} dynamic_variables contains an empty key.")
+        if value is not None and not isinstance(value, (str, int, float, bool)):
+            raise ValueError(f"{source_label} dynamic variable {key_text} must be a scalar value.")
+        variables[key_text] = value
+    return variables
+
+
+def build_dynamic_variables(
+    item: dict[str, Any],
+    *,
+    package_id: str,
+    suite_dynamic_variables: dict[str, Any] | None = None,
+) -> dict[str, Any]:
+    variables: dict[str, Any] = {
+        "campaign_name": "universal-sales-core-validation",
+        "source_package_id": package_id,
+    }
+    variables.update(
+        _validate_dynamic_variables(
+            suite_dynamic_variables,
+            source_label=f"{package_id} suite",
+        )
+    )
+    variables.update(
+        _validate_dynamic_variables(
+            item.get("dynamic_variables", {}),
+            source_label=str(item.get("test_id", "test")),
+        )
+    )
+    variables["source_package_id"] = package_id
+    return variables
+
+
+def test_create_request(
+    item: dict[str, Any],
+    *,
+    package_id: str,
+    suite_dynamic_variables: dict[str, Any] | None = None,
+) -> dict[str, Any]:
     test_id = str(item["test_id"])
     body = {
         "type": "llm",
@@ -134,20 +181,21 @@ def test_create_request(item: dict[str, Any], *, package_id: str) -> dict[str, A
         "success_condition": _success_condition(item),
         "success_examples": [
             {
-                "type": "agent_response",
+                "type": "success",
                 "response": str(item["expected_behavior"]),
             }
         ],
         "failure_examples": [
             {
-                "type": "agent_response",
+                "type": "failure",
                 "response": str(item["forbidden_behavior"]),
             }
         ],
-        "dynamic_variables": {
-            "campaign_name": "universal-sales-core-validation",
-            "source_package_id": package_id,
-        },
+        "dynamic_variables": build_dynamic_variables(
+            item,
+            package_id=package_id,
+            suite_dynamic_variables=suite_dynamic_variables,
+        ),
     }
     return {
         "request_id": f"create_test::{test_id}",
@@ -168,7 +216,18 @@ def load_baseline_tests(path_text: str, *, package_id: str) -> list[dict[str, An
     tests = payload.get("tests")
     if not isinstance(tests, list) or not tests:
         raise ValueError(f"{rel_path(path)} has no tests.")
-    return [test_create_request(dict(item), package_id=package_id) for item in tests]
+    suite_dynamic_variables = _validate_dynamic_variables(
+        payload.get("dynamic_variables", {}),
+        source_label=f"{rel_path(path)} suite",
+    )
+    return [
+        test_create_request(
+            dict(item),
+            package_id=package_id,
+            suite_dynamic_variables=suite_dynamic_variables,
+        )
+        for item in tests
+    ]
 
 
 def build_run_tests_request(agent_id: str | None) -> dict[str, Any]:

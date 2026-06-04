@@ -29,3 +29,6 @@ Current packages:
 - `ELEVENLABS-003-agent-config-patcher`: copied-config PATCH payload drafting
   for attaching returned KB document IDs to an existing ElevenLabs dashboard
   agent while preserving prompt, first message, model, voice, and turn settings.
+- `ELEVENLABS-004-mikes-kitchen-dynamic-tests`: campaign-specific response
+  tests for the Atlas Web Studio restaurant outreach demo with explicit
+  ElevenLabs dynamic variables.

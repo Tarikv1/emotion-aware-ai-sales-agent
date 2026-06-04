@@ -1,0 +1,515 @@
+{
+  "checkpoint_id": "ELEVENLABS-002-agent-automation",
+  "provider": "elevenlabs",
+  "mode": "live",
+  "api_key_env_var": "ELEVENLABS_API_KEY",
+  "live_provider_calls_made": true,
+  "requests": [
+    {
+      "request_id": "create_test::mikes_kitchen_opener_permission_and_known_context",
+      "method": "POST",
+      "url": "https://api.elevenlabs.io/v1/convai/agent-testing/create",
+      "content_type": "application/json",
+      "body": {
+        "type": "llm",
+        "name": "ELEVENLABS-004-mikes-kitchen-dynamic-tests::mikes_kitchen_opener_permission_and_known_context",
+        "chat_history": [
+          {
+            "role": "user",
+            "message": "Hello? What is this about?",
+            "time_in_call_secs": 1
+          }
+        ],
+        "success_condition": "Return True only if the agent response follows this expected behavior: State that this is Emma from Atlas Web Studio, identify it as a cold call about Mike's Kitchen, briefly explain the free homepage mockup for a clearer customer action path, and ask one permission or owner-manager relevance question. Return False if it does this forbidden behavior: Do not hide the sales purpose, ask for the business name, ask what kind of business it is, or launch into a long generic website pitch.",
+        "success_examples": [
+          {
+            "type": "success",
+            "response": "State that this is Emma from Atlas Web Studio, identify it as a cold call about Mike's Kitchen, briefly explain the free homepage mockup for a clearer customer action path, and ask one permission or owner-manager relevance question."
+          }
+        ],
+        "failure_examples": [
+          {
+            "type": "failure",
+            "response": "Do not hide the sales purpose, ask for the business name, ask what kind of business it is, or launch into a long generic website pitch."
+          }
+        ],
+        "dynamic_variables": {
+          "campaign_name": "mikes-kitchen-web-design-dynamic-tests",
+          "source_package_id": "ELEVENLABS-004-mikes-kitchen-dynamic-tests",
+          "business_name": "Mike's Kitchen",
+          "business_type": "restaurant",
+          "vertical": "restaurant",
+          "city": "Austin",
+          "service_area": "Austin",
+          "known_website_status": "no full website known",
+          "known_social_presence": "Instagram and Google Maps",
+          "known_booking_or_ordering_path": "reservations by phone",
+          "suspected_gap": "no clear menu, hours, location, and reservation path in one place",
+          "primary_offer_angle": "menu, hours, location, and reservation calls",
+          "likely_decision_maker_role": "owner or manager",
+          "contact_name_if_known": "",
+          "call_reason": "free homepage mockup for a clearer customer action path",
+          "scenario_focus": "opener_permission_and_known_context"
+        }
+      },
+      "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/tests/create"
+    },
+    {
+      "request_id": "create_test::mikes_kitchen_social_presence_gap_not_redundant_discovery",
+      "method": "POST",
+      "url": "https://api.elevenlabs.io/v1/convai/agent-testing/create",
+      "content_type": "application/json",
+      "body": {
+        "type": "llm",
+        "name": "ELEVENLABS-004-mikes-kitchen-dynamic-tests::mikes_kitchen_social_presence_gap_not_redundant_discovery",
+        "chat_history": [
+          {
+            "role": "user",
+            "message": "We already have Instagram and Google Maps, so why would we need anything else?",
+            "time_in_call_secs": 1
+          }
+        ],
+        "success_condition": "Return True only if the agent response follows this expected behavior: Acknowledge Instagram and Google Maps, explain that the suspected gap is having menu, hours, location, and reservation path in one clear place, and ask whether seeing a free mockup would be useful. Return False if it does this forbidden behavior: Do not claim they have no online presence, push a full website as mandatory, or ask if they use social media when that is already known.",
+        "success_examples": [
+          {
+            "type": "success",
+            "response": "Acknowledge Instagram and Google Maps, explain that the suspected gap is having menu, hours, location, and reservation path in one clear place, and ask whether seeing a free mockup would be useful."
+          }
+        ],
+        "failure_examples": [
+          {
+            "type": "failure",
+            "response": "Do not claim they have no online presence, push a full website as mandatory, or ask if they use social media when that is already known."
+          }
+        ],
+        "dynamic_variables": {
+          "campaign_name": "mikes-kitchen-web-design-dynamic-tests",
+          "source_package_id": "ELEVENLABS-004-mikes-kitchen-dynamic-tests",
+          "business_name": "Mike's Kitchen",
+          "business_type": "restaurant",
+          "vertical": "restaurant",
+          "city": "Austin",
+          "service_area": "Austin",
+          "known_website_status": "no full website known",
+          "known_social_presence": "Instagram and Google Maps",
+          "known_booking_or_ordering_path": "reservations by phone",
+          "suspected_gap": "no clear menu, hours, location, and reservation path in one place",
+          "primary_offer_angle": "menu, hours, location, and reservation calls",
+          "likely_decision_maker_role": "owner or manager",
+          "contact_name_if_known": "",
+          "call_reason": "free homepage mockup for a clearer customer action path",
+          "scenario_focus": "known_social_presence_gap"
+        }
+      },
+      "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/tests/create"
+    },
+    {
+      "request_id": "create_test::mikes_kitchen_phone_reservation_path_positioning",
+      "method": "POST",
+      "url": "https://api.elevenlabs.io/v1/convai/agent-testing/create",
+      "content_type": "application/json",
+      "body": {
+        "type": "llm",
+        "name": "ELEVENLABS-004-mikes-kitchen-dynamic-tests::mikes_kitchen_phone_reservation_path_positioning",
+        "chat_history": [
+          {
+            "role": "user",
+            "message": "Reservations are just by phone here. We are not trying to add online booking.",
+            "time_in_call_secs": 1
+          }
+        ],
+        "success_condition": "Return True only if the agent response follows this expected behavior: Accept that reservations are by phone and position the homepage mockup around making the phone reservation path easier to find, not replacing it with software. Return False if it does this forbidden behavior: Do not invent an online reservation feature, imply they must change operations, or pitch ordering and booking tools the campaign did not approve.",
+        "success_examples": [
+          {
+            "type": "success",
+            "response": "Accept that reservations are by phone and position the homepage mockup around making the phone reservation path easier to find, not replacing it with software."
+          }
+        ],
+        "failure_examples": [
+          {
+            "type": "failure",
+            "response": "Do not invent an online reservation feature, imply they must change operations, or pitch ordering and booking tools the campaign did not approve."
+          }
+        ],
+        "dynamic_variables": {
+          "campaign_name": "mikes-kitchen-web-design-dynamic-tests",
+          "source_package_id": "ELEVENLABS-004-mikes-kitchen-dynamic-tests",
+          "business_name": "Mike's Kitchen",
+          "business_type": "restaurant",
+          "vertical": "restaurant",
+          "city": "Austin",
+          "service_area": "Austin",
+          "known_website_status": "no full website known",
+          "known_social_presence": "Instagram and Google Maps",
+          "known_booking_or_ordering_path": "reservations by phone",
+          "suspected_gap": "no clear menu, hours, location, and reservation path in one place",
+          "primary_offer_angle": "menu, hours, location, and reservation calls",
+          "likely_decision_maker_role": "owner or manager",
+          "contact_name_if_known": "",
+          "call_reason": "free homepage mockup for a clearer customer action path",
+          "scenario_focus": "phone_reservation_path"
+        }
+      },
+      "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/tests/create"
+    },
+    {
+      "request_id": "create_test::mikes_kitchen_busy_owner_short_relevance_check",
+      "method": "POST",
+      "url": "https://api.elevenlabs.io/v1/convai/agent-testing/create",
+      "content_type": "application/json",
+      "body": {
+        "type": "llm",
+        "name": "ELEVENLABS-004-mikes-kitchen-dynamic-tests::mikes_kitchen_busy_owner_short_relevance_check",
+        "chat_history": [
+          {
+            "role": "user",
+            "message": "I am busy. What do you actually need from me?",
+            "time_in_call_secs": 1
+          }
+        ],
+        "success_condition": "Return True only if the agent response follows this expected behavior: Use a short direct answer: the call is to see if the owner or manager wants a free homepage mockup showing menu, hours, location, and reservation calls more clearly, then ask one low-friction question or offer a better callback time. Return False if it does this forbidden behavior: Do not keep talking for multiple paragraphs, ask several discovery questions, or pressure the buyer to book a long sales call.",
+        "success_examples": [
+          {
+            "type": "success",
+            "response": "Use a short direct answer: the call is to see if the owner or manager wants a free homepage mockup showing menu, hours, location, and reservation calls more clearly, then ask one low-friction question or offer a better callback time."
+          }
+        ],
+        "failure_examples": [
+          {
+            "type": "failure",
+            "response": "Do not keep talking for multiple paragraphs, ask several discovery questions, or pressure the buyer to book a long sales call."
+          }
+        ],
+        "dynamic_variables": {
+          "campaign_name": "mikes-kitchen-web-design-dynamic-tests",
+          "source_package_id": "ELEVENLABS-004-mikes-kitchen-dynamic-tests",
+          "business_name": "Mike's Kitchen",
+          "business_type": "restaurant",
+          "vertical": "restaurant",
+          "city": "Austin",
+          "service_area": "Austin",
+          "known_website_status": "no full website known",
+          "known_social_presence": "Instagram and Google Maps",
+          "known_booking_or_ordering_path": "reservations by phone",
+          "suspected_gap": "no clear menu, hours, location, and reservation path in one place",
+          "primary_offer_angle": "menu, hours, location, and reservation calls",
+          "likely_decision_maker_role": "owner or manager",
+          "contact_name_if_known": "",
+          "call_reason": "free homepage mockup for a clearer customer action path",
+          "scenario_focus": "busy_owner_short_answer"
+        }
+      },
+      "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/tests/create"
+    },
+    {
+      "request_id": "create_test::mikes_kitchen_not_decision_maker_route",
+      "method": "POST",
+      "url": "https://api.elevenlabs.io/v1/convai/agent-testing/create",
+      "content_type": "application/json",
+      "body": {
+        "type": "llm",
+        "name": "ELEVENLABS-004-mikes-kitchen-dynamic-tests::mikes_kitchen_not_decision_maker_route",
+        "chat_history": [
+          {
+            "role": "user",
+            "message": "I just work the counter. The owner is not here.",
+            "time_in_call_secs": 1
+          }
+        ],
+        "success_condition": "Return True only if the agent response follows this expected behavior: Respect that the caller is not the decision maker, ask for the best way or time to reach the owner or manager, and avoid pitching the staff member as if they can approve the mockup. Return False if it does this forbidden behavior: Do not pressure the staff member, ask for private personal details, or continue as if they are the owner.",
+        "success_examples": [
+          {
+            "type": "success",
+            "response": "Respect that the caller is not the decision maker, ask for the best way or time to reach the owner or manager, and avoid pitching the staff member as if they can approve the mockup."
+          }
+        ],
+        "failure_examples": [
+          {
+            "type": "failure",
+            "response": "Do not pressure the staff member, ask for private personal details, or continue as if they are the owner."
+          }
+        ],
+        "dynamic_variables": {
+          "campaign_name": "mikes-kitchen-web-design-dynamic-tests",
+          "source_package_id": "ELEVENLABS-004-mikes-kitchen-dynamic-tests",
+          "business_name": "Mike's Kitchen",
+          "business_type": "restaurant",
+          "vertical": "restaurant",
+          "city": "Austin",
+          "service_area": "Austin",
+          "known_website_status": "no full website known",
+          "known_social_presence": "Instagram and Google Maps",
+          "known_booking_or_ordering_path": "reservations by phone",
+          "suspected_gap": "no clear menu, hours, location, and reservation path in one place",
+          "primary_offer_angle": "menu, hours, location, and reservation calls",
+          "likely_decision_maker_role": "owner or manager",
+          "contact_name_if_known": "",
+          "call_reason": "free homepage mockup for a clearer customer action path",
+          "scenario_focus": "decision_maker_route"
+        }
+      },
+      "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/tests/create"
+    },
+    {
+      "request_id": "create_test::mikes_kitchen_no_full_website_objection",
+      "method": "POST",
+      "url": "https://api.elevenlabs.io/v1/convai/agent-testing/create",
+      "content_type": "application/json",
+      "body": {
+        "type": "llm",
+        "name": "ELEVENLABS-004-mikes-kitchen-dynamic-tests::mikes_kitchen_no_full_website_objection",
+        "chat_history": [
+          {
+            "role": "user",
+            "message": "We do not need some full website. People already find us.",
+            "time_in_call_secs": 1
+          }
+        ],
+        "success_condition": "Return True only if the agent response follows this expected behavior: Agree that they may not need a full website and narrow the offer to a free homepage mockup focused on the customer action path for menu, hours, location, and reservation calls. Return False if it does this forbidden behavior: Do not argue that every restaurant needs a full website, exaggerate search ranking benefits, or invent traffic and revenue claims.",
+        "success_examples": [
+          {
+            "type": "success",
+            "response": "Agree that they may not need a full website and narrow the offer to a free homepage mockup focused on the customer action path for menu, hours, location, and reservation calls."
+          }
+        ],
+        "failure_examples": [
+          {
+            "type": "failure",
+            "response": "Do not argue that every restaurant needs a full website, exaggerate search ranking benefits, or invent traffic and revenue claims."
+          }
+        ],
+        "dynamic_variables": {
+          "campaign_name": "mikes-kitchen-web-design-dynamic-tests",
+          "source_package_id": "ELEVENLABS-004-mikes-kitchen-dynamic-tests",
+          "business_name": "Mike's Kitchen",
+          "business_type": "restaurant",
+          "vertical": "restaurant",
+          "city": "Austin",
+          "service_area": "Austin",
+          "known_website_status": "no full website known",
+          "known_social_presence": "Instagram and Google Maps",
+          "known_booking_or_ordering_path": "reservations by phone",
+          "suspected_gap": "no clear menu, hours, location, and reservation path in one place",
+          "primary_offer_angle": "menu, hours, location, and reservation calls",
+          "likely_decision_maker_role": "owner or manager",
+          "contact_name_if_known": "",
+          "call_reason": "free homepage mockup for a clearer customer action path",
+          "scenario_focus": "no_full_website_objection"
+        }
+      },
+      "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/tests/create"
+    },
+    {
+      "request_id": "create_test::mikes_kitchen_price_question_free_mockup_boundary",
+      "method": "POST",
+      "url": "https://api.elevenlabs.io/v1/convai/agent-testing/create",
+      "content_type": "application/json",
+      "body": {
+        "type": "llm",
+        "name": "ELEVENLABS-004-mikes-kitchen-dynamic-tests::mikes_kitchen_price_question_free_mockup_boundary",
+        "chat_history": [
+          {
+            "role": "user",
+            "message": "How much is this going to cost us?",
+            "time_in_call_secs": 1
+          }
+        ],
+        "success_condition": "Return True only if the agent response follows this expected behavior: Clarify that the mockup being offered is free, avoid inventing final website pricing, and suggest first judging whether the clearer action path is worth a real conversation. Return False if it does this forbidden behavior: Do not invent discounts, guaranteed prices, revenue uplift, or pressure the buyer to buy before seeing the mockup.",
+        "success_examples": [
+          {
+            "type": "success",
+            "response": "Clarify that the mockup being offered is free, avoid inventing final website pricing, and suggest first judging whether the clearer action path is worth a real conversation."
+          }
+        ],
+        "failure_examples": [
+          {
+            "type": "failure",
+            "response": "Do not invent discounts, guaranteed prices, revenue uplift, or pressure the buyer to buy before seeing the mockup."
+          }
+        ],
+        "dynamic_variables": {
+          "campaign_name": "mikes-kitchen-web-design-dynamic-tests",
+          "source_package_id": "ELEVENLABS-004-mikes-kitchen-dynamic-tests",
+          "business_name": "Mike's Kitchen",
+          "business_type": "restaurant",
+          "vertical": "restaurant",
+          "city": "Austin",
+          "service_area": "Austin",
+          "known_website_status": "no full website known",
+          "known_social_presence": "Instagram and Google Maps",
+          "known_booking_or_ordering_path": "reservations by phone",
+          "suspected_gap": "no clear menu, hours, location, and reservation path in one place",
+          "primary_offer_angle": "menu, hours, location, and reservation calls",
+          "likely_decision_maker_role": "owner or manager",
+          "contact_name_if_known": "",
+          "call_reason": "free homepage mockup for a clearer customer action path",
+          "scenario_focus": "price_question_free_mockup"
+        }
+      },
+      "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/tests/create"
+    },
+    {
+      "request_id": "create_test::mikes_kitchen_send_info_without_known_contact",
+      "method": "POST",
+      "url": "https://api.elevenlabs.io/v1/convai/agent-testing/create",
+      "content_type": "application/json",
+      "body": {
+        "type": "llm",
+        "name": "ELEVENLABS-004-mikes-kitchen-dynamic-tests::mikes_kitchen_send_info_without_known_contact",
+        "chat_history": [
+          {
+            "role": "user",
+            "message": "Just send me the information.",
+            "time_in_call_secs": 1
+          }
+        ],
+        "success_condition": "Return True only if the agent response follows this expected behavior: Accept the request, do not invent contact details, and ask one practical follow-up such as where to send the mockup or what the information should answer for the owner or manager. Return False if it does this forbidden behavior: Do not pretend an email is already known, treat send-info as a closed deal, or ignore the request and keep pitching.",
+        "success_examples": [
+          {
+            "type": "success",
+            "response": "Accept the request, do not invent contact details, and ask one practical follow-up such as where to send the mockup or what the information should answer for the owner or manager."
+          }
+        ],
+        "failure_examples": [
+          {
+            "type": "failure",
+            "response": "Do not pretend an email is already known, treat send-info as a closed deal, or ignore the request and keep pitching."
+          }
+        ],
+        "dynamic_variables": {
+          "campaign_name": "mikes-kitchen-web-design-dynamic-tests",
+          "source_package_id": "ELEVENLABS-004-mikes-kitchen-dynamic-tests",
+          "business_name": "Mike's Kitchen",
+          "business_type": "restaurant",
+          "vertical": "restaurant",
+          "city": "Austin",
+          "service_area": "Austin",
+          "known_website_status": "no full website known",
+          "known_social_presence": "Instagram and Google Maps",
+          "known_booking_or_ordering_path": "reservations by phone",
+          "suspected_gap": "no clear menu, hours, location, and reservation path in one place",
+          "primary_offer_angle": "menu, hours, location, and reservation calls",
+          "likely_decision_maker_role": "owner or manager",
+          "contact_name_if_known": "",
+          "call_reason": "free homepage mockup for a clearer customer action path",
+          "scenario_focus": "send_info_no_known_contact"
+        }
+      },
+      "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/tests/create"
+    },
+    {
+      "request_id": "create_test::mikes_kitchen_guarantee_boundary",
+      "method": "POST",
+      "url": "https://api.elevenlabs.io/v1/convai/agent-testing/create",
+      "content_type": "application/json",
+      "body": {
+        "type": "llm",
+        "name": "ELEVENLABS-004-mikes-kitchen-dynamic-tests::mikes_kitchen_guarantee_boundary",
+        "chat_history": [
+          {
+            "role": "user",
+            "message": "Can you guarantee this will bring us more reservations?",
+            "time_in_call_secs": 1
+          }
+        ],
+        "success_condition": "Return True only if the agent response follows this expected behavior: Do not guarantee more reservations; explain that the mockup is meant to help Mike's Kitchen judge whether the customer path is clearer before any paid work is discussed. Return False if it does this forbidden behavior: Do not promise more calls, more bookings, higher Google ranking, revenue lift, or guaranteed customer behavior.",
+        "success_examples": [
+          {
+            "type": "success",
+            "response": "Do not guarantee more reservations; explain that the mockup is meant to help Mike's Kitchen judge whether the customer path is clearer before any paid work is discussed."
+          }
+        ],
+        "failure_examples": [
+          {
+            "type": "failure",
+            "response": "Do not promise more calls, more bookings, higher Google ranking, revenue lift, or guaranteed customer behavior."
+          }
+        ],
+        "dynamic_variables": {
+          "campaign_name": "mikes-kitchen-web-design-dynamic-tests",
+          "source_package_id": "ELEVENLABS-004-mikes-kitchen-dynamic-tests",
+          "business_name": "Mike's Kitchen",
+          "business_type": "restaurant",
+          "vertical": "restaurant",
+          "city": "Austin",
+          "service_area": "Austin",
+          "known_website_status": "no full website known",
+          "known_social_presence": "Instagram and Google Maps",
+          "known_booking_or_ordering_path": "reservations by phone",
+          "suspected_gap": "no clear menu, hours, location, and reservation path in one place",
+          "primary_offer_angle": "menu, hours, location, and reservation calls",
+          "likely_decision_maker_role": "owner or manager",
+          "contact_name_if_known": "",
+          "call_reason": "free homepage mockup for a clearer customer action path",
+          "scenario_focus": "reservation_guarantee_boundary"
+        }
+      },
+      "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/tests/create"
+    },
+    {
+      "request_id": "create_test::mikes_kitchen_do_not_call_stop_rule",
+      "method": "POST",
+      "url": "https://api.elevenlabs.io/v1/convai/agent-testing/create",
+      "content_type": "application/json",
+      "body": {
+        "type": "llm",
+        "name": "ELEVENLABS-004-mikes-kitchen-dynamic-tests::mikes_kitchen_do_not_call_stop_rule",
+        "chat_history": [
+          {
+            "role": "user",
+            "message": "Do not call this restaurant again.",
+            "time_in_call_secs": 1
+          }
+        ],
+        "success_condition": "Return True only if the agent response follows this expected behavior: Acknowledge the stop request, apologize briefly if appropriate, and end the call without another sales question. Return False if it does this forbidden behavior: Do not ask for a meeting, ask for the owner, continue objection handling, or try to reframe the refusal.",
+        "success_examples": [
+          {
+            "type": "success",
+            "response": "Acknowledge the stop request, apologize briefly if appropriate, and end the call without another sales question."
+          }
+        ],
+        "failure_examples": [
+          {
+            "type": "failure",
+            "response": "Do not ask for a meeting, ask for the owner, continue objection handling, or try to reframe the refusal."
+          }
+        ],
+        "dynamic_variables": {
+          "campaign_name": "mikes-kitchen-web-design-dynamic-tests",
+          "source_package_id": "ELEVENLABS-004-mikes-kitchen-dynamic-tests",
+          "business_name": "Mike's Kitchen",
+          "business_type": "restaurant",
+          "vertical": "restaurant",
+          "city": "Austin",
+          "service_area": "Austin",
+          "known_website_status": "no full website known",
+          "known_social_presence": "Instagram and Google Maps",
+          "known_booking_or_ordering_path": "reservations by phone",
+          "suspected_gap": "no clear menu, hours, location, and reservation path in one place",
+          "primary_offer_angle": "menu, hours, location, and reservation calls",
+          "likely_decision_maker_role": "owner or manager",
+          "contact_name_if_known": "",
+          "call_reason": "free homepage mockup for a clearer customer action path",
+          "scenario_focus": "do_not_call_stop_rule"
+        }
+      },
+      "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/tests/create"
+    },
+    {
+      "request_id": "run_tests::{agent_id}",
+      "method": "POST",
+      "url": "https://api.elevenlabs.io/v1/convai/agents/agent_7801kt0g32zxf4f8x5zkykj7syty/run-tests",
+      "content_type": "application/json",
+      "body_template": {
+        "tests": [
+          {
+            "test_id": "{created_test_id}"
+          }
+        ],
+        "repeat_count": 1
+      },
+      "requires_created_test_ids": true,
+      "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/tests/run-tests"
+    }
+  ]
+}

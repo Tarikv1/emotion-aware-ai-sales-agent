@@ -120,6 +120,8 @@ def main() -> None:
     assert_condition("success_condition" in body, "success condition missing")
     assert_condition(body.get("success_examples"), "success examples missing")
     assert_condition(body.get("failure_examples"), "failure examples missing")
+    assert_condition(body["success_examples"][0].get("type") == "success", "success example type mismatch")
+    assert_condition(body["failure_examples"][0].get("type") == "failure", "failure example type mismatch")
 
     run_tests = plan.get("run_tests_request", {})
     assert_condition(

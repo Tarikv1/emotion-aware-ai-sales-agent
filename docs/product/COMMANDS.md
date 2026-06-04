@@ -2906,6 +2906,35 @@ Validate the copied-config PATCH payload generator without provider calls:
 python scripts\validate_elevenlabs_003_agent_config_patcher.py
 ```
 
+Validate the Mike's Kitchen dynamic-variable test pack without provider calls:
+
+```powershell
+python scripts\validate_elevenlabs_004_mikes_kitchen_dynamic_tests.py
+```
+
+Build the Mike's Kitchen dynamic test API request bundle without provider calls:
+
+```powershell
+python scripts\run_elevenlabs_agent_automation.py `
+  --package-manifest runtime\providers\elevenlabs_agents\manifests\web_design_mikes_kitchen_tests.package.json `
+  --agent-id agent_7801kt0g32zxf4f8x5zkykj7syty `
+  --out research\experiments\generated\ELEVENLABS-004-mikes-kitchen-dynamic-tests\automation_plan.json `
+  --api-requests-out research\experiments\generated\ELEVENLABS-004-mikes-kitchen-dynamic-tests\api_requests.json
+```
+
+Create the Mike's Kitchen tests in ElevenLabs after loading `ELEVENLABS_API_KEY` into the current process:
+
+```powershell
+python scripts\run_elevenlabs_agent_automation.py `
+  --package-manifest runtime\providers\elevenlabs_agents\manifests\web_design_mikes_kitchen_tests.package.json `
+  --agent-id agent_7801kt0g32zxf4f8x5zkykj7syty `
+  --operation create-tests `
+  --live `
+  --confirm-provider-write `
+  --out research\experiments\generated\ELEVENLABS-004-mikes-kitchen-dynamic-tests\automation_plan.json `
+  --api-requests-out research\experiments\generated\ELEVENLABS-004-mikes-kitchen-dynamic-tests\api_requests.json
+```
+
 Draft an agent PATCH payload after the KB upload returns a document ID:
 
 ```powershell
