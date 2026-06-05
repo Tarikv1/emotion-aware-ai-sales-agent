@@ -5587,3 +5587,26 @@ Interpretation:
   - it documents a stricter distinction between test pass/fail and human sales quality
   - it shows how qualitative human critique can become a concrete regression suite
   - it keeps value selling grounded in approved campaign facts instead of generic persuasion
+
+### 2026-06-05 - ELEVENLABS-007 sales-intent naturalness repair
+
+- Objective: repair dashboard-visible 007 naturalness tests after human review found stale evaluator criteria and weak sales behavior.
+- Action taken:
+  - changed the first message from `I know this is a cold call` to an `out of the blue` opener that states the website-gap reason early
+  - added a prompt-level sales-intent rule: sell the next valid step, not the whole product, and do not sell past refusal
+  - repaired 007 naturalness source tests so they no longer preserve stale cold-call opener turns, `Fair question` prior turns, or internal pricing-policy leaks
+  - changed the repaired test folder to `Atlas Web Studio - Naturalness Sales Intent Repair`
+  - patched the live ElevenLabs agent and reran both repaired 007 and 008 value/pricing suites
+- Result:
+  - live KB document: `IkaG5meLwWNWA53Z5jIM`
+  - repaired 007 folder: `tfld_1701ktc4prt0eq5szy820dh713cc`
+  - repaired 007 suite: `suite_3401ktc4ycc1eh0takb8tzr4ecm9`, `8/8` passed
+  - 008 regression suite: `suite_8301ktc5025rfd2v42k5frtdp269`, `6/6` passed
+- Boundary:
+  - no private customer data
+  - no API key value logged
+  - no real customer call
+  - the old `Naturalness Stress` folder remains historical evidence, not the current review target
+- Why it matters for the thesis:
+  - it records a human-in-the-loop correction where green tests were not accepted until the evaluator matched human sales-quality critique
+  - it distinguishes sales intent from unsafe pressure by defining the valid next step and the stop boundary

@@ -18,7 +18,7 @@
     "campaign_role": "Atlas Web Studio restaurant website outreach",
     "dynamic_variables_required": true,
     "chat_history_turns_per_test": "8-10",
-    "target_test_folder_name": "Atlas Web Studio - Naturalness Stress",
+    "target_test_folder_name": "Atlas Web Studio - Naturalness Sales Intent Repair",
     "knowledge_base_upload_required": false
   },
   "blocked_until_review": [

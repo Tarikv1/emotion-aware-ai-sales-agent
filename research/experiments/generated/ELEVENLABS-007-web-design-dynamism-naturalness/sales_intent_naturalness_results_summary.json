@@ -1,0 +1,92 @@
+{
+  "checkpoint_id": "ELEVENLABS-007-web-design-dynamism-naturalness",
+  "provider": "elevenlabs",
+  "run_date": "2026-06-05",
+  "operation": "poll_sales_intent_repair_test_invocation",
+  "suite_id": "suite_3401ktc4ycc1eh0takb8tzr4ecm9",
+  "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+  "branch_id": null,
+  "knowledge_base_document_id": "IkaG5meLwWNWA53Z5jIM",
+  "test_folder_id": "tfld_1701ktc4prt0eq5szy820dh713cc",
+  "test_run_count": 8,
+  "passed_count": 8,
+  "failed_count": 0,
+  "pending_count": 0,
+  "runs": [
+    {
+      "test_id": "test_9401ktc4ppt8fz499axwywn4b47j",
+      "test_run_id": "trun_9101ktc4ycccf2dsybq45ahhg4c7",
+      "test_name": "ELEVENLABS-007-mikes-kitchen-naturalness-tests::natural_busy_callback_no_overexplaining",
+      "status": "passed",
+      "condition_result": "success",
+      "rationale_summary": "The agent's response confirms the callback for tomorrow morning and promises to keep it brief by focusing only on the mockup, which directly aligns with the user's instructions.",
+      "final_agent_message": "I will call tomorrow morning and keep it brief,  just the free mockup."
+    },
+    {
+      "test_id": "test_5501ktc4pq2tf2ptj5fq263fjr70",
+      "test_run_id": "trun_5001ktc4yccdfdjrjv0jne9vf228",
+      "test_name": "ELEVENLABS-007-mikes-kitchen-naturalness-tests::natural_free_catch_skepticism",
+      "status": "passed",
+      "condition_result": "success",
+      "rationale_summary": "The agent's response is a transparent and candid answer to the user's question, stating that the 'catch' is the hope of earning a conversation about a website, which directly aligns with the specified goal.",
+      "final_agent_message": "The only catch is that if you like the direction of the free mockup,  we would hope to earn a conversation about building a full website for you.  Would you be open to a quick look at the mockup?"
+    },
+    {
+      "test_id": "test_4101ktc4pqk0e7h8bxns2014ttzj",
+      "test_run_id": "trun_9701ktc4yccffmwvyfachr23gqy7",
+      "test_name": "ELEVENLABS-007-mikes-kitchen-naturalness-tests::natural_maps_defensive_concede",
+      "status": "passed",
+      "condition_result": "success",
+      "rationale_summary": "The agent successfully avoids arguing about Google's capabilities and instead provides a specific, low-pressure reason to view the mockup by framing it as a way for the user to judge a potential benefit themselves.",
+      "final_agent_message": "You can quickly judge whether customers would have less confusion before calling.  Would you be open to a quick look?"
+    },
+    {
+      "test_id": "test_9501ktc4pqtbfkw958ft54jas6dn",
+      "test_run_id": "trun_9101ktc4yccge45bv57js53ynes3",
+      "test_name": "ELEVENLABS-007-mikes-kitchen-naturalness-tests::natural_phone_reservations_no_booking",
+      "status": "passed",
+      "condition_result": "success",
+      "rationale_summary": "The agent's response directly confirms the user's understanding (\"That is correct\") and explains in one natural sentence that the mockup's sole purpose is to make the existing phone number easier to find, perfectly matching the success criteria.",
+      "final_agent_message": "That is correct.  The mockup would simply make your existing reservation phone number easier for customers to find."
+    },
+    {
+      "test_id": "test_7101ktc4pr2mf6jbdz6vvqgpwxq9",
+      "test_run_id": "trun_0201ktc4ycche01r93m6sywx98bf",
+      "test_name": "ELEVENLABS-007-mikes-kitchen-naturalness-tests::natural_price_question_no_invention",
+      "status": "passed",
+      "condition_result": "success",
+      "rationale_summary": "The agent's response successfully meets the goal by transparently stating the campaign-approved price anchors of $1,000 and $5,000, and reiterating that the mockup has no obligation.",
+      "final_agent_message": "Simple sites generally start around one thousand dollars.  Premium or immersive work can go up to around five thousand dollars depending on the scope.  The free mockup has no obligation."
+    },
+    {
+      "test_id": "test_6001ktc4pqaye9xswza1kwy1y3s4",
+      "test_run_id": "trun_5801ktc4yccefjprn0r0mscy08w4",
+      "test_name": "ELEVENLABS-007-mikes-kitchen-naturalness-tests::natural_staff_passalong_short_note",
+      "status": "passed",
+      "condition_result": "success",
+      "rationale_summary": "The agent provided a very short, natural note as requested, including the caller's name, company, the purpose of the call (free mockup), and the agreed-upon callback time.",
+      "final_agent_message": "Emma, Atlas Web Studio, free mockup,  call after 3."
+    },
+    {
+      "test_id": "test_2501ktc4pra9fzwasfxn0g3nvrye",
+      "test_run_id": "trun_8701ktc4yccje8q9r7emqznyb8g0",
+      "test_name": "ELEVENLABS-007-mikes-kitchen-naturalness-tests::natural_stop_take_off_list",
+      "status": "passed",
+      "condition_result": "success",
+      "rationale_summary": "The agent's response successfully acknowledges the request to be removed from the list and confirms the action will be taken, which aligns with the goal of ending the call naturally.",
+      "final_agent_message": "I understand.  I will remove Mike's Kitchen from our calling list."
+    },
+    {
+      "test_id": "test_3501ktc4ppjzevv87fggam00h5ha",
+      "test_run_id": "trun_1901ktc4yccbejtv554t89469w60",
+      "test_name": "ELEVENLABS-007-mikes-kitchen-naturalness-tests::natural_website_pitch_plain_ask",
+      "status": "passed",
+      "condition_result": "success",
+      "rationale_summary": "The agent's response is a single, plain-language sentence that directly asks the user to look at the mockup and decide if it is useful, which perfectly matches the specified success criteria.",
+      "final_agent_message": "I am asking if you would take a quick look at the free mockup and decide if it is useful for Mike's Kitchen."
+    }
+  ],
+  "secret_values_logged": false,
+  "private_customer_data_used": false,
+  "raw_provider_response_committed": false
+}

@@ -3033,7 +3033,7 @@ Build the ELEVENLABS-007 Mike's Kitchen naturalness test API request bundle and 
 python scripts\run_elevenlabs_agent_automation.py `
   --package-manifest runtime\providers\elevenlabs_agents\manifests\web_design_mikes_kitchen_naturalness_tests.package.json `
   --agent-id agent_7801kt0g32zxf4f8x5zkykj7syty `
-  --test-folder-name "Atlas Web Studio - Naturalness Stress" `
+  --test-folder-name "Atlas Web Studio - Naturalness Sales Intent Repair" `
   --out research\experiments\generated\ELEVENLABS-007-web-design-dynamism-naturalness\naturalness_tests_plan.json `
   --api-requests-out research\experiments\generated\ELEVENLABS-007-web-design-dynamism-naturalness\naturalness_tests_requests.json
 ```
@@ -3063,7 +3063,7 @@ Create the ELEVENLABS-007 Mike's Kitchen naturalness tests in ElevenLabs and mov
 python scripts\run_elevenlabs_agent_automation.py `
   --package-manifest runtime\providers\elevenlabs_agents\manifests\web_design_mikes_kitchen_naturalness_tests.package.json `
   --agent-id agent_7801kt0g32zxf4f8x5zkykj7syty `
-  --test-folder-name "Atlas Web Studio - Naturalness Stress" `
+  --test-folder-name "Atlas Web Studio - Naturalness Sales Intent Repair" `
   --operation create-tests `
   --live `
   --confirm-provider-write `

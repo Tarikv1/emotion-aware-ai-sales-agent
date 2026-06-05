@@ -41,7 +41,7 @@ overfitted to exact rubric language.
 The new naturalness tests target folder:
 
 ```text
-Atlas Web Studio - Naturalness Stress
+Atlas Web Studio - Naturalness Sales Intent Repair
 ```
 
 They check eight 8-10 turn situations:
@@ -96,3 +96,40 @@ Intermediate failure signal was useful:
 - Removing quotable examples fixed checklist-style overexplaining.
 - Callback handling needed a hard rule that includes the mockup purpose but
   does not ask another time question after a usable window.
+
+## Post-Feedback Repair
+
+Run date: 2026-06-05
+
+Tarik's dashboard review found that the old `Naturalness Stress` folder still
+contained stale criteria and stale prior turns:
+
+- `$1,000` was wrongly treated as invented even though it is now an approved
+  campaign price anchor.
+- `I should not make it sound hidden` leaked internal policy language and was
+  not natural spoken sales language.
+- `Fair question` was still visible for `Free usually means there is a catch`,
+  even though that customer line is a statement.
+- The opener was too weak because it admitted the cold call before giving the
+  reason for calling.
+- The agent needed stronger sales intent: move toward the next valid sales step
+  instead of only deflecting objections.
+
+Repair applied:
+
+- first message now uses `I know this is out of the blue`
+- opener states the website gap before asking for the owner or manager
+- prompt now defines sales intent as selling the next valid step, not pushing
+  past refusal
+- 007 source tests now forbid stale cold-call opener, `Fair question` prior
+  turns, and internal pricing-policy leaks
+- repeated price questions now require the approved higher-scope anchor
+
+Live result:
+
+- KB document: `IkaG5meLwWNWA53Z5jIM`
+- repaired folder: `Atlas Web Studio - Naturalness Sales Intent Repair`
+  (`tfld_1701ktc4prt0eq5szy820dh713cc`)
+- repaired suite: `suite_3401ktc4ycc1eh0takb8tzr4ecm9`, `8/8` passed
+- sanitized result summary:
+  `research/experiments/generated/ELEVENLABS-007-web-design-dynamism-naturalness/sales_intent_naturalness_results_summary.json`

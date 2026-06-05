@@ -1,12 +1,12 @@
 {
   "checkpoint_id": "ELEVENLABS-008-web-design-value-pricing-repair",
   "provider": "elevenlabs",
-  "run_date": "2026-06-04",
+  "run_date": "2026-06-05",
   "operation": "poll_value_pricing_test_invocation",
-  "suite_id": "suite_0401kta2yzeceppb9nebv28ejst3",
+  "suite_id": "suite_8301ktc5025rfd2v42k5frtdp269",
   "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
   "branch_id": null,
-  "knowledge_base_document_id": "42SRCbmq10xDhqIIve73",
+  "knowledge_base_document_id": "IkaG5meLwWNWA53Z5jIM",
   "test_folder_id": "tfld_2301kta29zg4edxb33ja2bbqq1p6",
   "test_run_count": 6,
   "passed_count": 6,
@@ -15,25 +15,25 @@
   "runs": [
     {
       "test_id": "test_4501kta2y7rgfzxtqb1nyyen8fc1",
-      "test_run_id": "trun_0701kta2yzepfnfv9xfkdg87vwpz",
+      "test_run_id": "trun_0501ktc5025zekybrbqf9da5a9jj",
       "test_name": "ELEVENLABS-008-mikes-kitchen-value-pricing-tests::value_phone_reservation_single_value_point",
       "status": "passed",
       "condition_result": "success",
-      "rationale_summary": "The agent's response successfully confirms it is not pushing online booking and uses the single, approved value point of making the existing reservation phone number easier to find.",
-      "final_agent_message": "No, not at all.  The mockup would simply make your existing reservation phone number easier for customers to find."
+      "rationale_summary": "The agent's response directly confirms it is not pushing online booking and correctly restates the single value point of making the existing phone number easier to find.",
+      "final_agent_message": "That is correct.  The mockup would simply make your existing reservation phone number easier for customers to find."
     },
     {
       "test_id": "test_0601kta2y6j3f9qtax6aqj1msf24",
-      "test_run_id": "trun_5401kta2yzejfaws66v1s8ge3cy8",
+      "test_run_id": "trun_1601ktc50260efg8hz3smb4mv6vk",
       "test_name": "ELEVENLABS-008-mikes-kitchen-value-pricing-tests::value_pricing_direct_starting_price",
       "status": "passed",
       "condition_result": "success",
-      "rationale_summary": "The agent correctly stated that simple sites start around one thousand dollars and added a short scope caveat that the final price depends on the build requirements.",
+      "rationale_summary": "The agent successfully provided the approved starting price of 'one thousand dollars' and included a concise scope caveat, meeting all acceptance criteria.",
       "final_agent_message": "Simple sites usually start around one thousand dollars.  The final price depends on what you want built."
     },
     {
       "test_id": "test_2201kta2y6v8e30a8vag4a0m4j6n",
-      "test_run_id": "trun_6601kta2yzekesh8bgvcfbb0jv9f",
+      "test_run_id": "trun_2801ktc50261f32bp9r7na3wng5n",
       "test_name": "ELEVENLABS-008-mikes-kitchen-value-pricing-tests::value_pricing_higher_scope_range",
       "status": "passed",
       "condition_result": "success",
@@ -42,30 +42,30 @@
     },
     {
       "test_id": "test_3801kta2y7e2f2qab6a67884pjh1",
-      "test_run_id": "trun_3701kta2yzenfn7betv2h6jx1hck",
+      "test_run_id": "trun_7001ktc50262freshxfkj1bwj8z1",
       "test_name": "ELEVENLABS-008-mikes-kitchen-value-pricing-tests::value_staff_after_three_callback_only",
       "status": "passed",
       "condition_result": "success",
-      "rationale_summary": "The agent's response is a single, short statement that confirms the callback time and stops the interaction, which perfectly aligns with the acceptance criteria.",
-      "final_agent_message": "Understood.  I will call back after three."
+      "rationale_summary": "The agent's response is a single, short statement that confirms the callback time and then stops, which is the exact behavior required by the success criteria.",
+      "final_agent_message": "Okay, I will call back after three."
     },
     {
       "test_id": "test_2701kta2y75ae4799g7asqap94h3",
-      "test_run_id": "trun_8801kta2yzemf9patr2myp8m0zb5",
+      "test_run_id": "trun_5301ktc50263fhsv410cgj1tjkf1",
       "test_name": "ELEVENLABS-008-mikes-kitchen-value-pricing-tests::value_statement_not_fair_question",
       "status": "passed",
       "condition_result": "success",
-      "rationale_summary": "The agent's response begins with 'That's fair' and explains the hope to earn a future conversation if the user likes the free mockup, directly aligning with the success criteria.",
-      "final_agent_message": "That's fair.  The mockup is free to review, and the only catch is that if you like the direction,  I would hope to earn a real website conversation later.  Would you be open to a quick look?"
+      "rationale_summary": "The agent acknowledged the user's statement with \"That's fair\" and then explained the hope to earn a future conversation, which directly aligns with the required behavior.",
+      "final_agent_message": "That's fair.  The mockup is free to review, and the only catch is that if you like the direction,  I would hope to earn a real website conversation later."
     },
     {
       "test_id": "test_9901kta2y84jfzhvn2ekp782gb2g",
-      "test_run_id": "trun_2401kta2yzeqechrkczp2ez9zy03",
+      "test_run_id": "trun_9801ktc50264e7maad2d08xvb8er",
       "test_name": "ELEVENLABS-008-mikes-kitchen-value-pricing-tests::value_why_look_customer_confusion",
       "status": "passed",
       "condition_result": "success",
-      "rationale_summary": "The response provides the specific value point of letting the user judge if customers would have less confusion, which directly matches the acceptance criteria without overclaiming.",
-      "final_agent_message": "It lets you quickly judge whether customers would have less confusion before calling."
+      "rationale_summary": "The response successfully offers the single, concrete value point of judging whether customers would have less confusion, and then asks for a quick look, which directly aligns with the stated goal.",
+      "final_agent_message": "It would let you quickly judge whether customers would have less confusion before calling.  Would it be useful to take a quick look?"
     }
   ],
   "secret_values_logged": false,

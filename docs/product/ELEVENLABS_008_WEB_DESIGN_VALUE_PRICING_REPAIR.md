@@ -81,9 +81,9 @@ updates:
 Final live patch evidence:
 
 - agent ID: `agent_7801kt0g32zxf4f8x5zkykj7syty`
-- KB document ID: `42SRCbmq10xDhqIIve73`
+- KB document ID: `IkaG5meLwWNWA53Z5jIM`
 - test folder ID: `tfld_2301kta29zg4edxb33ja2bbqq1p6`
-- final suite ID: `suite_0401kta2yzeceppb9nebv28ejst3`
+- final suite ID: `suite_8301ktc5025rfd2v42k5frtdp269`
 - final result: `6/6` passed
 - sanitized result summary:
   `research/experiments/generated/ELEVENLABS-008-web-design-value-pricing-repair/value_pricing_results_summary.json`

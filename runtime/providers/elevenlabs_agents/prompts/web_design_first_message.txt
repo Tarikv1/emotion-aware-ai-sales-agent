@@ -1,1 +1,1 @@
-Hi, this is Emma from Atlas Web Studio. I know this is a cold call. I had a free homepage mockup idea for {{business_name}}, mainly around menu, hours, location, and reservation calls. Are you the owner or manager?
+Hi, this is Emma from Atlas Web Studio. I know this is out of the blue. I saw {{known_social_presence}}, but I could not find a full website, so I made a free homepage mockup idea for {{business_name}}. Are you the owner or manager?

@@ -1,0 +1,793 @@
+{
+  "checkpoint_id": "ELEVENLABS-002-agent-automation",
+  "provider": "elevenlabs",
+  "mode": "live",
+  "api_key_env_var": "ELEVENLABS_API_KEY",
+  "live_provider_calls_made": true,
+  "requests": [
+    {
+      "request_id": "create_test::natural_website_pitch_plain_ask",
+      "method": "POST",
+      "url": "https://api.elevenlabs.io/v1/convai/agent-testing/create",
+      "content_type": "application/json",
+      "body": {
+        "type": "llm",
+        "name": "ELEVENLABS-007-mikes-kitchen-naturalness-tests::natural_website_pitch_plain_ask",
+        "chat_history": [
+          {
+            "role": "user",
+            "message": "Mike's Kitchen.",
+            "time_in_call_secs": 1
+          },
+          {
+            "role": "agent",
+            "message": "Hi, this is Emma from Atlas Web Studio. I know this is out of the blue. I saw Mike's Kitchen has Google and Instagram, but I could not find a full website, so I made a free homepage mockup idea. Are you the owner or manager?",
+            "time_in_call_secs": 6
+          },
+          {
+            "role": "user",
+            "message": "Depends. Is this another website pitch?",
+            "time_in_call_secs": 12
+          },
+          {
+            "role": "agent",
+            "message": "It is website-related, yes. I am keeping it to a free mockup first so you can judge the direction before a real conversation.",
+            "time_in_call_secs": 18
+          },
+          {
+            "role": "user",
+            "message": "People call us if they need us.",
+            "time_in_call_secs": 25
+          },
+          {
+            "role": "agent",
+            "message": "That makes sense. I would keep phone reservations; the mockup just shows whether the phone number is easier to find.",
+            "time_in_call_secs": 32
+          },
+          {
+            "role": "user",
+            "message": "You're still not telling me what you want.",
+            "time_in_call_secs": 39
+          },
+          {
+            "role": "agent",
+            "message": "I want to show you the mockup and see if it is worth a real conversation.",
+            "time_in_call_secs": 45
+          },
+          {
+            "role": "user",
+            "message": "Okay, in normal words, what are you asking me to do?",
+            "time_in_call_secs": 52
+          }
+        ],
+        "success_condition": "Return True only if the agent response follows this expected behavior: Give a plain, natural ask in 1-2 short sentences: take a quick look at the free mockup and decide whether it is useful. It should not sound like a brochure, should not repeat the full menu-hours-location-reservation list, and should ask at most one concrete next question. Return False if it does this forbidden behavior: Do not use abstract phrases such as customer action path, online presence, visual representation, potential improvement, enhance, optimize, or digital solution. Do not repeat the same pitch, stuff every campaign detail into the answer, or dodge the user's request for normal words.",
+        "success_examples": [
+          {
+            "type": "success",
+            "response": "Give a plain, natural ask in 1-2 short sentences: take a quick look at the free mockup and decide whether it is useful. It should not sound like a brochure, should not repeat the full menu-hours-location-reservation list, and should ask at most one concrete next question."
+          }
+        ],
+        "failure_examples": [
+          {
+            "type": "failure",
+            "response": "Do not use abstract phrases such as customer action path, online presence, visual representation, potential improvement, enhance, optimize, or digital solution. Do not repeat the same pitch, stuff every campaign detail into the answer, or dodge the user's request for normal words."
+          }
+        ],
+        "dynamic_variables": {
+          "campaign_name": "mikes-kitchen-web-design-naturalness-tests",
+          "source_package_id": "ELEVENLABS-007-mikes-kitchen-naturalness-tests",
+          "business_name": "Mike's Kitchen",
+          "business_type": "restaurant",
+          "vertical": "restaurant",
+          "city": "Austin",
+          "service_area": "Austin",
+          "known_website_status": "no full website known",
+          "known_social_presence": "Instagram and Google Maps",
+          "known_booking_or_ordering_path": "reservations by phone",
+          "suspected_gap": "unclear whether menu, hours, location, and reservation phone details are easy to find together",
+          "primary_offer_angle": "menu, hours, location, and reservation phone calls",
+          "likely_decision_maker_role": "owner or manager",
+          "contact_name_if_known": "",
+          "call_reason": "free homepage mockup showing menu, hours, location, and reservation calls in one place",
+          "website_starting_price": "$1,000",
+          "website_scope_price_note": "final pricing depends on pages, content, integrations, design depth, and whether the site needs premium or immersive work",
+          "website_premium_price_anchor": "$5,000",
+          "website_price_disclosure_rule": "only discuss paid website pricing when the buyer directly asks about price, cost, money, hidden fees, or what happens after the free mockup",
+          "approved_value_points": "reduce customer confusion before calling; make menu, hours, location, and the reservation phone number easier to find; give the owner a concrete homepage direction before paying for a full site; keep phone reservations if the restaurant wants phone-only reservations",
+          "scenario_focus": "plain_ask",
+          "naturalness_priority": "plain_spoken_answer",
+          "scenario_turn_count": 9
+        }
+      },
+      "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/tests/create"
+    },
+    {
+      "request_id": "create_test::natural_busy_callback_no_overexplaining",
+      "method": "POST",
+      "url": "https://api.elevenlabs.io/v1/convai/agent-testing/create",
+      "content_type": "application/json",
+      "body": {
+        "type": "llm",
+        "name": "ELEVENLABS-007-mikes-kitchen-naturalness-tests::natural_busy_callback_no_overexplaining",
+        "chat_history": [
+          {
+            "role": "user",
+            "message": "Hello?",
+            "time_in_call_secs": 1
+          },
+          {
+            "role": "agent",
+            "message": "Hi, this is Emma from Atlas Web Studio. I know this is out of the blue. I saw Mike's Kitchen has Google and Instagram, but I could not find a full website, so I made a free mockup idea. Did I catch the owner or manager?",
+            "time_in_call_secs": 6
+          },
+          {
+            "role": "user",
+            "message": "Manager, but this is a bad time.",
+            "time_in_call_secs": 11
+          },
+          {
+            "role": "agent",
+            "message": "No problem. I can make it quick or call back.",
+            "time_in_call_secs": 16
+          },
+          {
+            "role": "user",
+            "message": "What is it even about?",
+            "time_in_call_secs": 21
+          },
+          {
+            "role": "agent",
+            "message": "A free homepage mockup, mostly to make reservation calls and basic details easier to find.",
+            "time_in_call_secs": 27
+          },
+          {
+            "role": "user",
+            "message": "We are slammed right now.",
+            "time_in_call_secs": 33
+          },
+          {
+            "role": "agent",
+            "message": "Got it. I do not want to slow you down.",
+            "time_in_call_secs": 38
+          },
+          {
+            "role": "user",
+            "message": "Try tomorrow morning, but don't turn it into a whole pitch.",
+            "time_in_call_secs": 44
+          }
+        ],
+        "success_condition": "Return True only if the agent response follows this expected behavior: Confirm the tomorrow-morning callback in a brief, human way and state that it will only be a quick look at the free mockup. It should not ask unnecessary follow-up questions if the time window is already usable. Return False if it does this forbidden behavior: Do not over-explain, ask for exact private details, push a meeting now, use a calendar-booking fantasy, or restate every campaign detail again.",
+        "success_examples": [
+          {
+            "type": "success",
+            "response": "Confirm the tomorrow-morning callback in a brief, human way and state that it will only be a quick look at the free mockup. It should not ask unnecessary follow-up questions if the time window is already usable."
+          }
+        ],
+        "failure_examples": [
+          {
+            "type": "failure",
+            "response": "Do not over-explain, ask for exact private details, push a meeting now, use a calendar-booking fantasy, or restate every campaign detail again."
+          }
+        ],
+        "dynamic_variables": {
+          "campaign_name": "mikes-kitchen-web-design-naturalness-tests",
+          "source_package_id": "ELEVENLABS-007-mikes-kitchen-naturalness-tests",
+          "business_name": "Mike's Kitchen",
+          "business_type": "restaurant",
+          "vertical": "restaurant",
+          "city": "Austin",
+          "service_area": "Austin",
+          "known_website_status": "no full website known",
+          "known_social_presence": "Instagram and Google Maps",
+          "known_booking_or_ordering_path": "reservations by phone",
+          "suspected_gap": "unclear whether menu, hours, location, and reservation phone details are easy to find together",
+          "primary_offer_angle": "menu, hours, location, and reservation phone calls",
+          "likely_decision_maker_role": "owner or manager",
+          "contact_name_if_known": "",
+          "call_reason": "free homepage mockup showing menu, hours, location, and reservation calls in one place",
+          "website_starting_price": "$1,000",
+          "website_scope_price_note": "final pricing depends on pages, content, integrations, design depth, and whether the site needs premium or immersive work",
+          "website_premium_price_anchor": "$5,000",
+          "website_price_disclosure_rule": "only discuss paid website pricing when the buyer directly asks about price, cost, money, hidden fees, or what happens after the free mockup",
+          "approved_value_points": "reduce customer confusion before calling; make menu, hours, location, and the reservation phone number easier to find; give the owner a concrete homepage direction before paying for a full site; keep phone reservations if the restaurant wants phone-only reservations",
+          "scenario_focus": "busy_callback",
+          "naturalness_priority": "brief_callback_confirmation",
+          "scenario_turn_count": 9
+        }
+      },
+      "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/tests/create"
+    },
+    {
+      "request_id": "create_test::natural_free_catch_skepticism",
+      "method": "POST",
+      "url": "https://api.elevenlabs.io/v1/convai/agent-testing/create",
+      "content_type": "application/json",
+      "body": {
+        "type": "llm",
+        "name": "ELEVENLABS-007-mikes-kitchen-naturalness-tests::natural_free_catch_skepticism",
+        "chat_history": [
+          {
+            "role": "user",
+            "message": "Mike's Kitchen, go ahead.",
+            "time_in_call_secs": 1
+          },
+          {
+            "role": "agent",
+            "message": "Hi, this is Emma from Atlas Web Studio. I know this is out of the blue. I saw Mike's Kitchen has Google and Instagram, but I could not find a full website, so I made a free homepage mockup idea.",
+            "time_in_call_secs": 6
+          },
+          {
+            "role": "user",
+            "message": "Free usually means there is a catch.",
+            "time_in_call_secs": 12
+          },
+          {
+            "role": "agent",
+            "message": "That's fair. The mockup is free so you can see the direction before deciding whether a real website conversation is worth it.",
+            "time_in_call_secs": 18
+          },
+          {
+            "role": "user",
+            "message": "And then you try to sell us a website.",
+            "time_in_call_secs": 25
+          },
+          {
+            "role": "agent",
+            "message": "If you like it, yes, we can talk about a website. If not, there is nothing to approve.",
+            "time_in_call_secs": 32
+          },
+          {
+            "role": "user",
+            "message": "I don't want promises about more customers.",
+            "time_in_call_secs": 39
+          },
+          {
+            "role": "agent",
+            "message": "I would not promise that. This is only about whether the page direction is clearer.",
+            "time_in_call_secs": 46
+          },
+          {
+            "role": "user",
+            "message": "So what is the catch, exactly?",
+            "time_in_call_secs": 53
+          }
+        ],
+        "success_condition": "Return True only if the agent response follows this expected behavior: Answer transparently in natural spoken language that the only catch is that Atlas hopes to earn a real website conversation if they like the free direction. It should sound candid, not evasive or salesy, and it should treat the earlier catch line as a statement, not a question. Return False if it does this forbidden behavior: Do not say there is no sales purpose, do not say Fair question for a statement, do not promise results, do not invent pricing, do not use fake urgency, and do not make the free offer sound like a trick.",
+        "success_examples": [
+          {
+            "type": "success",
+            "response": "Answer transparently in natural spoken language that the only catch is that Atlas hopes to earn a real website conversation if they like the free direction. It should sound candid, not evasive or salesy, and it should treat the earlier catch line as a statement, not a question."
+          }
+        ],
+        "failure_examples": [
+          {
+            "type": "failure",
+            "response": "Do not say there is no sales purpose, do not say Fair question for a statement, do not promise results, do not invent pricing, do not use fake urgency, and do not make the free offer sound like a trick."
+          }
+        ],
+        "dynamic_variables": {
+          "campaign_name": "mikes-kitchen-web-design-naturalness-tests",
+          "source_package_id": "ELEVENLABS-007-mikes-kitchen-naturalness-tests",
+          "business_name": "Mike's Kitchen",
+          "business_type": "restaurant",
+          "vertical": "restaurant",
+          "city": "Austin",
+          "service_area": "Austin",
+          "known_website_status": "no full website known",
+          "known_social_presence": "Instagram and Google Maps",
+          "known_booking_or_ordering_path": "reservations by phone",
+          "suspected_gap": "unclear whether menu, hours, location, and reservation phone details are easy to find together",
+          "primary_offer_angle": "menu, hours, location, and reservation phone calls",
+          "likely_decision_maker_role": "owner or manager",
+          "contact_name_if_known": "",
+          "call_reason": "free homepage mockup showing menu, hours, location, and reservation calls in one place",
+          "website_starting_price": "$1,000",
+          "website_scope_price_note": "final pricing depends on pages, content, integrations, design depth, and whether the site needs premium or immersive work",
+          "website_premium_price_anchor": "$5,000",
+          "website_price_disclosure_rule": "only discuss paid website pricing when the buyer directly asks about price, cost, money, hidden fees, or what happens after the free mockup",
+          "approved_value_points": "reduce customer confusion before calling; make menu, hours, location, and the reservation phone number easier to find; give the owner a concrete homepage direction before paying for a full site; keep phone reservations if the restaurant wants phone-only reservations",
+          "scenario_focus": "free_catch",
+          "naturalness_priority": "transparent_skepticism_response",
+          "scenario_turn_count": 9
+        }
+      },
+      "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/tests/create"
+    },
+    {
+      "request_id": "create_test::natural_staff_passalong_short_note",
+      "method": "POST",
+      "url": "https://api.elevenlabs.io/v1/convai/agent-testing/create",
+      "content_type": "application/json",
+      "body": {
+        "type": "llm",
+        "name": "ELEVENLABS-007-mikes-kitchen-naturalness-tests::natural_staff_passalong_short_note",
+        "chat_history": [
+          {
+            "role": "user",
+            "message": "Mike's Kitchen.",
+            "time_in_call_secs": 1
+          },
+          {
+            "role": "agent",
+            "message": "Hi, this is Emma from Atlas Web Studio. I know this is out of the blue. Is the owner or manager around?",
+            "time_in_call_secs": 6
+          },
+          {
+            "role": "user",
+            "message": "No, I am just at the counter.",
+            "time_in_call_secs": 12
+          },
+          {
+            "role": "agent",
+            "message": "Thanks. I do not want to put the decision on you. Is there a better time to catch them?",
+            "time_in_call_secs": 18
+          },
+          {
+            "role": "user",
+            "message": "Usually after 3.",
+            "time_in_call_secs": 24
+          },
+          {
+            "role": "agent",
+            "message": "Got it. I'll try after 3 and keep it brief.",
+            "time_in_call_secs": 31
+          },
+          {
+            "role": "user",
+            "message": "I can write a note, but make it short.",
+            "time_in_call_secs": 38
+          },
+          {
+            "role": "agent",
+            "message": "Sure. Emma from Atlas Web Studio, free mockup idea for Mike's Kitchen, calling back after 3.",
+            "time_in_call_secs": 45
+          },
+          {
+            "role": "user",
+            "message": "Even shorter. What should I write?",
+            "time_in_call_secs": 52
+          }
+        ],
+        "success_condition": "Return True only if the agent response follows this expected behavior: Give a very short, natural pass-along note the staff member can write down, with caller name, company, free mockup, and callback after 3. It should not restart the pitch or pressure the staff member, and the earlier after-3 turn should be treated as an accepted callback window. Return False if it does this forbidden behavior: Do not give a long paragraph, do not restart the pitch after the staff member says usually after 3, do not ask the staff member to decide, do not ask for private owner contact details, and do not repeat the whole restaurant-detail checklist.",
+        "success_examples": [
+          {
+            "type": "success",
+            "response": "Give a very short, natural pass-along note the staff member can write down, with caller name, company, free mockup, and callback after 3. It should not restart the pitch or pressure the staff member, and the earlier after-3 turn should be treated as an accepted callback window."
+          }
+        ],
+        "failure_examples": [
+          {
+            "type": "failure",
+            "response": "Do not give a long paragraph, do not restart the pitch after the staff member says usually after 3, do not ask the staff member to decide, do not ask for private owner contact details, and do not repeat the whole restaurant-detail checklist."
+          }
+        ],
+        "dynamic_variables": {
+          "campaign_name": "mikes-kitchen-web-design-naturalness-tests",
+          "source_package_id": "ELEVENLABS-007-mikes-kitchen-naturalness-tests",
+          "business_name": "Mike's Kitchen",
+          "business_type": "restaurant",
+          "vertical": "restaurant",
+          "city": "Austin",
+          "service_area": "Austin",
+          "known_website_status": "no full website known",
+          "known_social_presence": "Instagram and Google Maps",
+          "known_booking_or_ordering_path": "reservations by phone",
+          "suspected_gap": "unclear whether menu, hours, location, and reservation phone details are easy to find together",
+          "primary_offer_angle": "menu, hours, location, and reservation phone calls",
+          "likely_decision_maker_role": "owner or manager",
+          "contact_name_if_known": "",
+          "call_reason": "free homepage mockup showing menu, hours, location, and reservation calls in one place",
+          "website_starting_price": "$1,000",
+          "website_scope_price_note": "final pricing depends on pages, content, integrations, design depth, and whether the site needs premium or immersive work",
+          "website_premium_price_anchor": "$5,000",
+          "website_price_disclosure_rule": "only discuss paid website pricing when the buyer directly asks about price, cost, money, hidden fees, or what happens after the free mockup",
+          "approved_value_points": "reduce customer confusion before calling; make menu, hours, location, and the reservation phone number easier to find; give the owner a concrete homepage direction before paying for a full site; keep phone reservations if the restaurant wants phone-only reservations",
+          "scenario_focus": "staff_passalong",
+          "naturalness_priority": "short_note",
+          "scenario_turn_count": 9
+        }
+      },
+      "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/tests/create"
+    },
+    {
+      "request_id": "create_test::natural_maps_defensive_concede",
+      "method": "POST",
+      "url": "https://api.elevenlabs.io/v1/convai/agent-testing/create",
+      "content_type": "application/json",
+      "body": {
+        "type": "llm",
+        "name": "ELEVENLABS-007-mikes-kitchen-naturalness-tests::natural_maps_defensive_concede",
+        "chat_history": [
+          {
+            "role": "user",
+            "message": "Who is this?",
+            "time_in_call_secs": 1
+          },
+          {
+            "role": "agent",
+            "message": "Emma from Atlas Web Studio. I know this is out of the blue. I saw Mike's Kitchen has Google and Instagram, but I could not find a full website, so I made a free homepage mockup idea.",
+            "time_in_call_secs": 6
+          },
+          {
+            "role": "user",
+            "message": "We have Google and Instagram. People find us.",
+            "time_in_call_secs": 12
+          },
+          {
+            "role": "agent",
+            "message": "That may already be enough. I am not calling to replace those.",
+            "time_in_call_secs": 18
+          },
+          {
+            "role": "user",
+            "message": "Then why call?",
+            "time_in_call_secs": 24
+          },
+          {
+            "role": "agent",
+            "message": "To show a quick mockup and see if having the key details in one place is useful.",
+            "time_in_call_secs": 31
+          },
+          {
+            "role": "user",
+            "message": "You keep saying useful. Useful to who?",
+            "time_in_call_secs": 38
+          },
+          {
+            "role": "agent",
+            "message": "To someone checking where you are, when you are open, or which number to call.",
+            "time_in_call_secs": 45
+          },
+          {
+            "role": "user",
+            "message": "But if Google already covers that, why should I bother?",
+            "time_in_call_secs": 52
+          }
+        ],
+        "success_condition": "Return True only if the agent response follows this expected behavior: Concede naturally that Google may already cover it, then give a low-pressure reason to review the mockup as a quick comparison. It should not argue with the buyer or insult Google/Instagram. Return False if it does this forbidden behavior: Do not claim Google or Instagram are bad, do not imply the buyer is wrong, do not invent SEO/ranking claims, and do not use generic phrases like online presence or potential improvement.",
+        "success_examples": [
+          {
+            "type": "success",
+            "response": "Concede naturally that Google may already cover it, then give a low-pressure reason to review the mockup as a quick comparison. It should not argue with the buyer or insult Google/Instagram."
+          }
+        ],
+        "failure_examples": [
+          {
+            "type": "failure",
+            "response": "Do not claim Google or Instagram are bad, do not imply the buyer is wrong, do not invent SEO/ranking claims, and do not use generic phrases like online presence or potential improvement."
+          }
+        ],
+        "dynamic_variables": {
+          "campaign_name": "mikes-kitchen-web-design-naturalness-tests",
+          "source_package_id": "ELEVENLABS-007-mikes-kitchen-naturalness-tests",
+          "business_name": "Mike's Kitchen",
+          "business_type": "restaurant",
+          "vertical": "restaurant",
+          "city": "Austin",
+          "service_area": "Austin",
+          "known_website_status": "no full website known",
+          "known_social_presence": "Instagram and Google Maps",
+          "known_booking_or_ordering_path": "reservations by phone",
+          "suspected_gap": "unclear whether menu, hours, location, and reservation phone details are easy to find together",
+          "primary_offer_angle": "menu, hours, location, and reservation phone calls",
+          "likely_decision_maker_role": "owner or manager",
+          "contact_name_if_known": "",
+          "call_reason": "free homepage mockup showing menu, hours, location, and reservation calls in one place",
+          "website_starting_price": "$1,000",
+          "website_scope_price_note": "final pricing depends on pages, content, integrations, design depth, and whether the site needs premium or immersive work",
+          "website_premium_price_anchor": "$5,000",
+          "website_price_disclosure_rule": "only discuss paid website pricing when the buyer directly asks about price, cost, money, hidden fees, or what happens after the free mockup",
+          "approved_value_points": "reduce customer confusion before calling; make menu, hours, location, and the reservation phone number easier to find; give the owner a concrete homepage direction before paying for a full site; keep phone reservations if the restaurant wants phone-only reservations",
+          "scenario_focus": "maps_defensive",
+          "naturalness_priority": "concede_then_specific_reason",
+          "scenario_turn_count": 9
+        }
+      },
+      "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/tests/create"
+    },
+    {
+      "request_id": "create_test::natural_phone_reservations_no_booking",
+      "method": "POST",
+      "url": "https://api.elevenlabs.io/v1/convai/agent-testing/create",
+      "content_type": "application/json",
+      "body": {
+        "type": "llm",
+        "name": "ELEVENLABS-007-mikes-kitchen-naturalness-tests::natural_phone_reservations_no_booking",
+        "chat_history": [
+          {
+            "role": "user",
+            "message": "This is Mike's.",
+            "time_in_call_secs": 1
+          },
+          {
+            "role": "agent",
+            "message": "Hi, this is Emma from Atlas Web Studio. I know this is out of the blue. I saw Mike's Kitchen has Google and Instagram, but I could not find a full website, so I made a free homepage mockup idea.",
+            "time_in_call_secs": 6
+          },
+          {
+            "role": "user",
+            "message": "We don't need apps or ordering systems.",
+            "time_in_call_secs": 12
+          },
+          {
+            "role": "agent",
+            "message": "No apps or ordering systems. This is just a homepage mockup to make the existing reservation number easier to find.",
+            "time_in_call_secs": 17
+          },
+          {
+            "role": "user",
+            "message": "Reservations are by phone only.",
+            "time_in_call_secs": 23
+          },
+          {
+            "role": "agent",
+            "message": "That is the path I would keep.",
+            "time_in_call_secs": 29
+          },
+          {
+            "role": "user",
+            "message": "I don't want anything online taking bookings.",
+            "time_in_call_secs": 36
+          },
+          {
+            "role": "agent",
+            "message": "Understood. This would not turn phone reservations into online booking.",
+            "time_in_call_secs": 43
+          },
+          {
+            "role": "user",
+            "message": "So you're not trying to push online booking, right?",
+            "time_in_call_secs": 50
+          }
+        ],
+        "success_condition": "Return True only if the agent response follows this expected behavior: Clearly confirm no online booking push, keep phone reservations as-is, and explain in one natural sentence that the mockup can make the phone number easier to find. It may ask one low-pressure review question. Return False if it does this forbidden behavior: Do not suggest online booking, ordering, apps, software, modernization, or operational changes. Do not repeat the entire pitch or list menu, hours, and location when the buyer is only asking about phone reservations.",
+        "success_examples": [
+          {
+            "type": "success",
+            "response": "Clearly confirm no online booking push, keep phone reservations as-is, and explain in one natural sentence that the mockup can make the phone number easier to find. It may ask one low-pressure review question."
+          }
+        ],
+        "failure_examples": [
+          {
+            "type": "failure",
+            "response": "Do not suggest online booking, ordering, apps, software, modernization, or operational changes. Do not repeat the entire pitch or list menu, hours, and location when the buyer is only asking about phone reservations."
+          }
+        ],
+        "dynamic_variables": {
+          "campaign_name": "mikes-kitchen-web-design-naturalness-tests",
+          "source_package_id": "ELEVENLABS-007-mikes-kitchen-naturalness-tests",
+          "business_name": "Mike's Kitchen",
+          "business_type": "restaurant",
+          "vertical": "restaurant",
+          "city": "Austin",
+          "service_area": "Austin",
+          "known_website_status": "no full website known",
+          "known_social_presence": "Instagram and Google Maps",
+          "known_booking_or_ordering_path": "reservations by phone",
+          "suspected_gap": "unclear whether menu, hours, location, and reservation phone details are easy to find together",
+          "primary_offer_angle": "menu, hours, location, and reservation phone calls",
+          "likely_decision_maker_role": "owner or manager",
+          "contact_name_if_known": "",
+          "call_reason": "free homepage mockup showing menu, hours, location, and reservation calls in one place",
+          "website_starting_price": "$1,000",
+          "website_scope_price_note": "final pricing depends on pages, content, integrations, design depth, and whether the site needs premium or immersive work",
+          "website_premium_price_anchor": "$5,000",
+          "website_price_disclosure_rule": "only discuss paid website pricing when the buyer directly asks about price, cost, money, hidden fees, or what happens after the free mockup",
+          "approved_value_points": "reduce customer confusion before calling; make menu, hours, location, and the reservation phone number easier to find; give the owner a concrete homepage direction before paying for a full site; keep phone reservations if the restaurant wants phone-only reservations",
+          "scenario_focus": "phone_reservations_no_booking",
+          "naturalness_priority": "direct_boundary_confirmation",
+          "scenario_turn_count": 9
+        }
+      },
+      "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/tests/create"
+    },
+    {
+      "request_id": "create_test::natural_price_question_no_invention",
+      "method": "POST",
+      "url": "https://api.elevenlabs.io/v1/convai/agent-testing/create",
+      "content_type": "application/json",
+      "body": {
+        "type": "llm",
+        "name": "ELEVENLABS-007-mikes-kitchen-naturalness-tests::natural_price_question_no_invention",
+        "chat_history": [
+          {
+            "role": "user",
+            "message": "What do you want?",
+            "time_in_call_secs": 1
+          },
+          {
+            "role": "agent",
+            "message": "Emma from Atlas Web Studio. I had a free homepage mockup idea for Mike's Kitchen.",
+            "time_in_call_secs": 6
+          },
+          {
+            "role": "user",
+            "message": "Free mockup, then what?",
+            "time_in_call_secs": 12
+          },
+          {
+            "role": "agent",
+            "message": "Then you decide if the direction is worth a real conversation.",
+            "time_in_call_secs": 18
+          },
+          {
+            "role": "user",
+            "message": "A real conversation means money.",
+            "time_in_call_secs": 24
+          },
+          {
+            "role": "agent",
+            "message": "Eventually, yes, if you wanted a proper site. The mockup itself is just the first look.",
+            "time_in_call_secs": 31
+          },
+          {
+            "role": "user",
+            "message": "I don't want surprise pricing.",
+            "time_in_call_secs": 38
+          },
+          {
+            "role": "agent",
+            "message": "Fair. Simple websites usually start around $1,000, and bigger custom work goes up from there.",
+            "time_in_call_secs": 44
+          },
+          {
+            "role": "user",
+            "message": "So after the free thing, how much are you trying to charge?",
+            "time_in_call_secs": 51
+          }
+        ],
+        "success_condition": "Return True only if the agent response follows this expected behavior: Be transparent in natural spoken language using the campaign-approved price anchors: simple sites generally start around $1,000, and more custom or immersive work can go up toward about $5,000 depending on scope. It should still say the free mockup has no obligation. It must not dodge the money concern. Return False if it does this forbidden behavior: Do not say I should, I need to, I would not make it sound hidden, acceptance criteria, prompt, or other internal reasoning. Do not treat the approved $1,000 starting anchor as invented pricing. Do not dodge with only tailored quote language. Do not invent discounts, guarantees, hidden fees, or fake certainty.",
+        "success_examples": [
+          {
+            "type": "success",
+            "response": "Be transparent in natural spoken language using the campaign-approved price anchors: simple sites generally start around $1,000, and more custom or immersive work can go up toward about $5,000 depending on scope. It should still say the free mockup has no obligation. It must not dodge the money concern."
+          }
+        ],
+        "failure_examples": [
+          {
+            "type": "failure",
+            "response": "Do not say I should, I need to, I would not make it sound hidden, acceptance criteria, prompt, or other internal reasoning. Do not treat the approved $1,000 starting anchor as invented pricing. Do not dodge with only tailored quote language. Do not invent discounts, guarantees, hidden fees, or fake certainty."
+          }
+        ],
+        "dynamic_variables": {
+          "campaign_name": "mikes-kitchen-web-design-naturalness-tests",
+          "source_package_id": "ELEVENLABS-007-mikes-kitchen-naturalness-tests",
+          "business_name": "Mike's Kitchen",
+          "business_type": "restaurant",
+          "vertical": "restaurant",
+          "city": "Austin",
+          "service_area": "Austin",
+          "known_website_status": "no full website known",
+          "known_social_presence": "Instagram and Google Maps",
+          "known_booking_or_ordering_path": "reservations by phone",
+          "suspected_gap": "unclear whether menu, hours, location, and reservation phone details are easy to find together",
+          "primary_offer_angle": "menu, hours, location, and reservation phone calls",
+          "likely_decision_maker_role": "owner or manager",
+          "contact_name_if_known": "",
+          "call_reason": "free homepage mockup showing menu, hours, location, and reservation calls in one place",
+          "website_starting_price": "$1,000",
+          "website_scope_price_note": "final pricing depends on pages, content, integrations, design depth, and whether the site needs premium or immersive work",
+          "website_premium_price_anchor": "$5,000",
+          "website_price_disclosure_rule": "only discuss paid website pricing when the buyer directly asks about price, cost, money, hidden fees, or what happens after the free mockup",
+          "approved_value_points": "reduce customer confusion before calling; make menu, hours, location, and the reservation phone number easier to find; give the owner a concrete homepage direction before paying for a full site; keep phone reservations if the restaurant wants phone-only reservations",
+          "scenario_focus": "price_question",
+          "naturalness_priority": "transparent_no_price_invention",
+          "scenario_turn_count": 9
+        }
+      },
+      "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/tests/create"
+    },
+    {
+      "request_id": "create_test::natural_stop_take_off_list",
+      "method": "POST",
+      "url": "https://api.elevenlabs.io/v1/convai/agent-testing/create",
+      "content_type": "application/json",
+      "body": {
+        "type": "llm",
+        "name": "ELEVENLABS-007-mikes-kitchen-naturalness-tests::natural_stop_take_off_list",
+        "chat_history": [
+          {
+            "role": "user",
+            "message": "Mike's Kitchen.",
+            "time_in_call_secs": 1
+          },
+          {
+            "role": "agent",
+            "message": "Hi, this is Emma from Atlas Web Studio. I know this is out of the blue.",
+            "time_in_call_secs": 6
+          },
+          {
+            "role": "user",
+            "message": "Not interested.",
+            "time_in_call_secs": 11
+          },
+          {
+            "role": "agent",
+            "message": "Okay. Is it because you already have the website side covered?",
+            "time_in_call_secs": 17
+          },
+          {
+            "role": "user",
+            "message": "No, I just don't want calls like this.",
+            "time_in_call_secs": 24
+          },
+          {
+            "role": "agent",
+            "message": "Fair. I do not want to push if it is not welcome.",
+            "time_in_call_secs": 31
+          },
+          {
+            "role": "user",
+            "message": "Then stop.",
+            "time_in_call_secs": 38
+          },
+          {
+            "role": "agent",
+            "message": "Understood. I will leave it there.",
+            "time_in_call_secs": 44
+          },
+          {
+            "role": "user",
+            "message": "No. Take us off the list.",
+            "time_in_call_secs": 50
+          }
+        ],
+        "success_condition": "Return True only if the agent response follows this expected behavior: Acknowledge the take-off-list request and end the call in one short, natural sentence. It should not ask another question or mention the mockup again. Return False if it does this forbidden behavior: Do not continue objection handling, ask for a better time, ask for the owner, mention the offer again, or say anything that keeps the conversation open.",
+        "success_examples": [
+          {
+            "type": "success",
+            "response": "Acknowledge the take-off-list request and end the call in one short, natural sentence. It should not ask another question or mention the mockup again."
+          }
+        ],
+        "failure_examples": [
+          {
+            "type": "failure",
+            "response": "Do not continue objection handling, ask for a better time, ask for the owner, mention the offer again, or say anything that keeps the conversation open."
+          }
+        ],
+        "dynamic_variables": {
+          "campaign_name": "mikes-kitchen-web-design-naturalness-tests",
+          "source_package_id": "ELEVENLABS-007-mikes-kitchen-naturalness-tests",
+          "business_name": "Mike's Kitchen",
+          "business_type": "restaurant",
+          "vertical": "restaurant",
+          "city": "Austin",
+          "service_area": "Austin",
+          "known_website_status": "no full website known",
+          "known_social_presence": "Instagram and Google Maps",
+          "known_booking_or_ordering_path": "reservations by phone",
+          "suspected_gap": "unclear whether menu, hours, location, and reservation phone details are easy to find together",
+          "primary_offer_angle": "menu, hours, location, and reservation phone calls",
+          "likely_decision_maker_role": "owner or manager",
+          "contact_name_if_known": "",
+          "call_reason": "free homepage mockup showing menu, hours, location, and reservation calls in one place",
+          "website_starting_price": "$1,000",
+          "website_scope_price_note": "final pricing depends on pages, content, integrations, design depth, and whether the site needs premium or immersive work",
+          "website_premium_price_anchor": "$5,000",
+          "website_price_disclosure_rule": "only discuss paid website pricing when the buyer directly asks about price, cost, money, hidden fees, or what happens after the free mockup",
+          "approved_value_points": "reduce customer confusion before calling; make menu, hours, location, and the reservation phone number easier to find; give the owner a concrete homepage direction before paying for a full site; keep phone reservations if the restaurant wants phone-only reservations",
+          "scenario_focus": "stop_take_off_list",
+          "naturalness_priority": "short_stop",
+          "scenario_turn_count": 9
+        }
+      },
+      "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/tests/create"
+    },
+    {
+      "request_id": "run_tests::{agent_id}",
+      "method": "POST",
+      "url": "https://api.elevenlabs.io/v1/convai/agents/agent_7801kt0g32zxf4f8x5zkykj7syty/run-tests",
+      "content_type": "application/json",
+      "body_template": {
+        "tests": [
+          {
+            "test_id": "{created_test_id}"
+          }
+        ],
+        "repeat_count": 1
+      },
+      "requires_created_test_ids": true,
+      "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/tests/run-tests"
+    }
+  ]
+}

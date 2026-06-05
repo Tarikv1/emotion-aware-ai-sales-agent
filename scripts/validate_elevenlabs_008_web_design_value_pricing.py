@@ -181,8 +181,8 @@ def main() -> None:
 
     live_result = read_json(LIVE_RESULT_SUMMARY)
     assert_no_private_or_response_only_leak(live_result)
-    assert_condition(live_result.get("suite_id") == "suite_0401kta2yzeceppb9nebv28ejst3", "live suite id mismatch")
-    assert_condition(live_result.get("knowledge_base_document_id") == "42SRCbmq10xDhqIIve73", "live KB document id mismatch")
+    assert_condition(live_result.get("suite_id") == "suite_8301ktc5025rfd2v42k5frtdp269", "live suite id mismatch")
+    assert_condition(live_result.get("knowledge_base_document_id") == "IkaG5meLwWNWA53Z5jIM", "live KB document id mismatch")
     assert_condition(live_result.get("test_folder_id") == "tfld_2301kta29zg4edxb33ja2bbqq1p6", "live test folder id mismatch")
     assert_condition(live_result.get("passed_count") == 6, "live passed count mismatch")
     assert_condition(live_result.get("failed_count") == 0, "live failed count mismatch")

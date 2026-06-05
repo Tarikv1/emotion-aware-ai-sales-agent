@@ -35,7 +35,7 @@
         },
         {
           "role": "agent",
-          "message": "Hi, this is Emma from Atlas Web Studio. I know this is a cold call. I had a free homepage mockup idea for Mike's Kitchen. Are you the owner or manager?",
+          "message": "Hi, this is Emma from Atlas Web Studio. I know this is out of the blue. I saw Mike's Kitchen has Google and Instagram, but I could not find a full website, so I made a free homepage mockup idea. Are you the owner or manager?",
           "time_in_call_secs": 6
         },
         {
@@ -92,7 +92,7 @@
         },
         {
           "role": "agent",
-          "message": "Hi, this is Emma from Atlas Web Studio. I know this is a cold call. I had a free mockup idea for Mike's Kitchen. Did I catch the owner or manager?",
+          "message": "Hi, this is Emma from Atlas Web Studio. I know this is out of the blue. I saw Mike's Kitchen has Google and Instagram, but I could not find a full website, so I made a free mockup idea. Did I catch the owner or manager?",
           "time_in_call_secs": 6
         },
         {
@@ -149,7 +149,7 @@
         },
         {
           "role": "agent",
-          "message": "Hi, this is Emma from Atlas Web Studio. This is a cold call about a free homepage mockup for Mike's Kitchen.",
+          "message": "Hi, this is Emma from Atlas Web Studio. I know this is out of the blue. I saw Mike's Kitchen has Google and Instagram, but I could not find a full website, so I made a free homepage mockup idea.",
           "time_in_call_secs": 6
         },
         {
@@ -206,7 +206,7 @@
         },
         {
           "role": "agent",
-          "message": "Hi, this is Emma from Atlas Web Studio. I know this is a cold call. Is the owner or manager around?",
+          "message": "Hi, this is Emma from Atlas Web Studio. I know this is out of the blue. Is the owner or manager around?",
           "time_in_call_secs": 6
         },
         {
@@ -263,7 +263,7 @@
         },
         {
           "role": "agent",
-          "message": "Emma from Atlas Web Studio. I know this is a cold call. I had a free homepage mockup idea for Mike's Kitchen.",
+          "message": "Emma from Atlas Web Studio. I know this is out of the blue. I saw Mike's Kitchen has Google and Instagram, but I could not find a full website, so I made a free homepage mockup idea.",
           "time_in_call_secs": 6
         },
         {
@@ -320,7 +320,7 @@
         },
         {
           "role": "agent",
-          "message": "Hi, this is Emma from Atlas Web Studio. I know this is a cold call. I had a free homepage mockup idea for Mike's Kitchen.",
+          "message": "Hi, this is Emma from Atlas Web Studio. I know this is out of the blue. I saw Mike's Kitchen has Google and Instagram, but I could not find a full website, so I made a free homepage mockup idea.",
           "time_in_call_secs": 6
         },
         {
@@ -416,8 +416,8 @@
           "time_in_call_secs": 51
         }
       ],
-      "expected_behavior": "Be transparent in natural spoken language: simple sites generally start around $1,000, and more custom or immersive work can go up toward about $5,000 depending on scope. It should still say the free mockup has no obligation. It must not dodge the money concern.",
-      "forbidden_behavior": "Do not say I should, I need to, I would not make it sound hidden, acceptance criteria, prompt, or other internal reasoning. Do not dodge with only tailored quote language. Do not invent discounts, guarantees, hidden fees, or fake certainty.",
+      "expected_behavior": "Be transparent in natural spoken language using the campaign-approved price anchors: simple sites generally start around $1,000, and more custom or immersive work can go up toward about $5,000 depending on scope. It should still say the free mockup has no obligation. It must not dodge the money concern.",
+      "forbidden_behavior": "Do not say I should, I need to, I would not make it sound hidden, acceptance criteria, prompt, or other internal reasoning. Do not treat the approved $1,000 starting anchor as invented pricing. Do not dodge with only tailored quote language. Do not invent discounts, guarantees, hidden fees, or fake certainty.",
       "dynamic_variables": {
         "scenario_focus": "price_question",
         "naturalness_priority": "transparent_no_price_invention",
@@ -434,7 +434,7 @@
         },
         {
           "role": "agent",
-          "message": "Hi, this is Emma from Atlas Web Studio. I know this is a cold call.",
+          "message": "Hi, this is Emma from Atlas Web Studio. I know this is out of the blue.",
           "time_in_call_secs": 6
         },
         {

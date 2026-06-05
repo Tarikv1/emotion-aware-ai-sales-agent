@@ -47,11 +47,20 @@ TESTS = (
     / "web_design_mikes_kitchen_naturalness_tests.json"
 )
 DOC = ROOT / "docs" / "product" / "ELEVENLABS_007_WEB_DESIGN_DYNAMISM_NATURALNESS.md"
+LIVE_RESULT_SUMMARY = (
+    ROOT
+    / "research"
+    / "experiments"
+    / "generated"
+    / CHECKPOINT_ID
+    / "sales_intent_naturalness_results_summary.json"
+)
 OUT_DIR = ROOT / ".tmp" / CHECKPOINT_ID / "validation"
 PLAN = OUT_DIR / "automation_plan.json"
 REQUESTS = OUT_DIR / "api_requests.json"
 PATCH = OUT_DIR / "agent_patch_payload.json"
 TARGET_TEMPERATURE = 0.25
+TARGET_TEST_FOLDER = "Atlas Web Studio - Naturalness Sales Intent Repair"
 
 
 def fail(message: str) -> None:
@@ -92,12 +101,15 @@ def assert_no_private_or_response_only_leak(payload: dict[str, Any]) -> None:
 
 
 def main() -> None:
-    for path in (RUNNER, FIXTURE, PROMPT, FIRST_MESSAGE, DEFAULTS, MANIFEST, TESTS, DOC):
+    for path in (RUNNER, FIXTURE, PROMPT, FIRST_MESSAGE, DEFAULTS, MANIFEST, TESTS, DOC, LIVE_RESULT_SUMMARY):
         assert_condition(path.is_file(), f"Missing file: {path.relative_to(ROOT)}")
 
     prompt_text = PROMPT.read_text(encoding="utf-8")
     for marker in (
         "## Highest Priority Last-Turn Rules",
+        "## Opening And Sales Intent",
+        "The goal is to sell the next valid step",
+        "I know this is out of the blue",
         "If the buyer already gave a callback window, confirm and stop.",
         "If the buyer says `tomorrow morning`, say you will call tomorrow morning.",
         "Preserve the time before preserving extra offer details.",
@@ -118,6 +130,9 @@ def main() -> None:
 
     first_message = FIRST_MESSAGE.read_text(encoding="utf-8").strip()
     assert_condition(first_message.startswith("Hi, this is Emma from Atlas Web Studio."), "first message mismatch")
+    assert_condition("I know this is out of the blue" in first_message, "first message should use the out-of-the-blue opener")
+    assert_condition("I know this is a cold call" not in first_message, "first message should avoid the old cold-call opener")
+    assert_condition("I could not find a full website" in first_message, "first message should state the reason early")
     assert_condition("customer action path" not in first_message, "first message should avoid abstract jargon")
 
     tests_payload = read_json(TESTS)
@@ -144,6 +159,13 @@ def main() -> None:
         assert_condition(isinstance(history, list), f"{test_id} chat_history missing")
         assert_condition(8 <= len(history) <= 10, f"{test_id} should have 8-10 chat turns")
         assert_condition(history[-1].get("role") == "user", f"{test_id} must end with a user turn")
+        history_text = json.dumps(history, ensure_ascii=False)
+        assert_condition("I know this is a cold call" not in history_text, f"{test_id} uses stale cold-call opener")
+        assert_condition("Fair question" not in history_text, f"{test_id} prior chat uses stale Fair question wording")
+        assert_condition(
+            "I should not make it sound hidden" not in history_text,
+            f"{test_id} prior chat leaks internal pricing policy wording",
+        )
         expected = str(item.get("expected_behavior", "")).lower()
         forbidden = str(item.get("forbidden_behavior", "")).lower()
         assert_condition("natural" in expected or "human" in expected, f"{test_id} expected behavior must score naturalness")
@@ -155,9 +177,18 @@ def main() -> None:
     assert_condition(manifest.get("package_id") == PACKAGE_ID, "manifest package_id mismatch")
     assert_condition(manifest.get("baseline_tests") == [str(TESTS.relative_to(ROOT)).replace("\\", "/")], "manifest tests mismatch")
     assert_condition(
-        manifest.get("upload_intent", {}).get("target_test_folder_name") == "Atlas Web Studio - Naturalness Stress",
+        manifest.get("upload_intent", {}).get("target_test_folder_name") == TARGET_TEST_FOLDER,
         "target folder mismatch",
     )
+
+    live_result = read_json(LIVE_RESULT_SUMMARY)
+    assert_no_private_or_response_only_leak(live_result)
+    assert_condition(live_result.get("suite_id") == "suite_3401ktc4ycc1eh0takb8tzr4ecm9", "live suite id mismatch")
+    assert_condition(live_result.get("knowledge_base_document_id") == "IkaG5meLwWNWA53Z5jIM", "live KB document id mismatch")
+    assert_condition(live_result.get("test_folder_id") == "tfld_1701ktc4prt0eq5szy820dh713cc", "live test folder id mismatch")
+    assert_condition(live_result.get("passed_count") == 8, "live passed count mismatch")
+    assert_condition(live_result.get("failed_count") == 0, "live failed count mismatch")
+    assert_condition(live_result.get("pending_count") == 0, "live pending count mismatch")
 
     completed = subprocess.run(
         [
@@ -168,7 +199,7 @@ def main() -> None:
             "--agent-id",
             "agent_7801kt0g32zxf4f8x5zkykj7syty",
             "--test-folder-name",
-            "Atlas Web Studio - Naturalness Stress",
+            TARGET_TEST_FOLDER,
             "--out",
             str(PLAN),
             "--api-requests-out",
@@ -185,7 +216,7 @@ def main() -> None:
     assert_no_private_or_response_only_leak(plan)
     assert_no_private_or_response_only_leak(requests)
     assert_condition(len(plan.get("test_create_requests", [])) == 8, "plan test count mismatch")
-    assert_condition(plan.get("test_folder", {}).get("folder_name") == "Atlas Web Studio - Naturalness Stress", "plan folder mismatch")
+    assert_condition(plan.get("test_folder", {}).get("folder_name") == TARGET_TEST_FOLDER, "plan folder mismatch")
 
     completed_patch = subprocess.run(
         [
