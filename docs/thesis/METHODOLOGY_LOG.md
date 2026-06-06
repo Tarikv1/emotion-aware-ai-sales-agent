@@ -5672,3 +5672,26 @@ Interpretation:
     `research/experiments/generated/ELEVENLABS-009-mikes-kitchen-simulation-tests/simulation_results_summary.json`
     and
     `research/experiments/generated/ELEVENLABS-010-web-design-sales-control-repair/sales_control_repair_results_summary.json`
+
+### 2026-06-06 - ELEVENLABS-011 remaining simulation repair package
+
+- Objective: continue from the non-green V22c simulation result without treating a random rerun or narrow V22d gatekeeper patch as proof of readiness.
+- Action taken:
+  - added an offline `ELEVENLABS-011-web-design-remaining-simulation-repair` package
+  - tightened the web design prompt around plain-language abstract wording, terminal send-path acknowledgments, and Instagram/Google Maps value rotation
+  - updated the Atlas campaign KB with concrete normal-word examples and a social-channel value rotation ladder
+  - removed direction-heavy language from Mike's Kitchen dynamic defaults so interpolated campaign values do not reintroduce the failed wording
+  - added a validator that builds the dry-run ElevenLabs patch bundle without provider calls
+- Method:
+  - used the recorded V22c failure modes as the repair basis
+  - kept the existing V22 simulation pack as the evaluation target instead of creating easier tests
+  - separated offline source repair from live provider evidence
+- Boundary:
+  - no private customer data
+  - no customer audio
+  - no API key value logged
+  - no live provider write in this checkpoint
+  - no production-green claim until a fresh V22-or-later simulation rerun passes and survives human review
+- Why it matters for the thesis:
+  - it preserves the distinction between test construction, prompt repair, provider patching, and live rerun evidence
+  - it records that human review can keep a partially passing dashboard agent blocked when residual conversation-quality defects remain

@@ -1,6 +1,6 @@
 # Atlas Web Studio Web Design Campaign Knowledge Base
 
-Package: `ELEVENLABS-010-web-design-sales-control-repair`
+Package: `ELEVENLABS-011-web-design-remaining-simulation-repair`
 
 This campaign knowledge base gives Atlas Web Studio website-specific facts and
 selling points for local restaurant outreach. It is campaign material, not
@@ -13,13 +13,13 @@ Atlas Web Studio is offering a free homepage mockup idea for the business.
 
 The mockup is a first look, not a finished website, contract, redesign, booking
 system, or guarantee. The buyer should use it to judge whether the homepage
-direction is clearer before deciding whether a paid website conversation is
-worth it.
+layout is clearer before deciding whether a paid website conversation is worth
+it.
 
 The core ask is:
 
 - take a quick look at the free homepage mockup
-- decide whether the direction is useful
+- decide whether the mockup is useful
 - if useful, continue to a scoped website conversation
 
 ## Local Restaurant Website Value
@@ -33,7 +33,7 @@ For a restaurant, the useful value points are:
   third-party listings when they need the practical next step.
 - First-time visitors who are not already following the restaurant can still get
   a clear answer from a page the owner controls.
-- The owner controls the page direction instead of depending only on profile
+- The owner controls the homepage layout instead of depending only on profile
   layouts, social feeds, or scattered third-party listings.
 - Google Maps and Instagram can stay useful; the website can give the owner a
   controlled page and shareable link instead of another feed or profile.
@@ -111,7 +111,7 @@ visitor can understand the basics faster and know what to do next.`
 
 If the buyer asks why this is worth their time:
 
-`Because the mockup lets you judge the direction before paying. If it looks like
+`Because the mockup lets you judge the layout before paying. If it looks like
 the same thing you already have, you can ignore it.`
 
 If the buyer cares about the menu specifically:
@@ -122,7 +122,7 @@ scan than a photo or old post, with the reservation number close by.`
 If the buyer asks what is actually on the mockup after comparing it to Instagram
 or Google Maps:
 
-`It should show the homepage direction around the thing you care about most. If
+`It should show the homepage layout around the thing you care about most. If
 the menu is the concern, the menu should be the easiest part to judge. It should
 not just copy your posts or Maps profile.`
 
@@ -143,7 +143,7 @@ that before you pay for anything.`
 If the buyer asks about a useful future add-on:
 
 `That could be future scope if you wanted it. The first mockup should stay
-simple so you can judge the page direction before expanding the project.`
+simple so you can judge the layout before expanding the project.`
 
 If the buyer keeps challenging why a website matters, rotate these distinct
 angles without asking to review the mockup after every answer:
@@ -162,8 +162,33 @@ angles without asking to review the mockup after every answer:
 
 If the buyer asks why they should spend time on a mockup:
 
-`So you can judge the direction before paying for anything. If it does not make
-the basics clearer, there is nothing to move forward with.`
+`So you can judge the mockup before paying for anything. If it does not make the
+basics clearer, there is nothing to move forward with.`
+
+## Remaining V22 Simulation Repair
+
+Plain-language repair examples:
+
+- If the buyer says `say that normally`, answer with the ask, not a definition:
+  `I made a free homepage mockup for Mike's Kitchen. I want you to take a quick
+  look and tell me if it is useful.`
+- If the buyer asks what the mockup is, keep it concrete: `It is a rough example
+  of a homepage for Mike's Kitchen, not a finished site or contract.`
+- If the buyer asks why they should spend time, use the proof test: `You can
+  judge it before paying. If it feels like the same thing, ignore the mockup.`
+
+Social-channel value rotation ladder:
+
+1. Acknowledge that Instagram or Google Maps may already work.
+2. Use owner control or one shareable link.
+3. Use proof-before-purchase before asking again.
+4. Use first-time visitor clarity or fewer basic staff calls if the buyer keeps
+   challenging.
+5. Use menu scanability only when the buyer makes the menu the issue.
+
+Do not rotate back into practical details after using them once. Menu, hours,
+location, reservation, key details, organization, and one-place framing collapse
+into the same answer when the buyer is objecting from Instagram or Google Maps.
 
 ## Google Maps And Instagram Boundary
 
@@ -187,7 +212,7 @@ Bad framing:
 
 Better framing:
 
-- `Those can stay. This is just a cleaner page direction to compare.`
+- `Those can stay. This is just a cleaner page layout to compare.`
 - `I would not replace that. I would make the practical details easier to land on.`
 - `The question is not whether Google is bad. It is whether a page you control
   is easier to scan, share, and judge than the current profile path.`
@@ -254,6 +279,6 @@ Use safer language:
 - clearer
 - easier to find
 - less confusing
-- a concrete direction to judge
+- a concrete mockup to judge
 - a cleaner next step
 - a page the owner controls
