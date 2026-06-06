@@ -3722,6 +3722,12 @@ Live RESP-007 German pacing-stability listening check requires the local provide
 python scripts\run_resp_007_german_pacing_stability_follow_up.py --provider elevenlabs --live --timeout-seconds 8
 ```
 
+Validate the RAG-022 universal sales layer contract without provider calls:
+
+```powershell
+python scripts\validate_rag_022_universal_sales_layer_contract.py
+```
+
 ## Safety Rules
 
 - Do not commit API keys, private transcripts, raw private audio, customer exports, or client-specific sensitive details.

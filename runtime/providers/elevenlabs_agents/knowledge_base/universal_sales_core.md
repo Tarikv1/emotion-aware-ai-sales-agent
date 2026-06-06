@@ -17,6 +17,62 @@ Use the campaign's approved offer, claims, pricing rules, qualification fields,
 handoff rules, compliance limits, language, and close. If campaign information
 conflicts with this universal guidance, follow the campaign.
 
+## Three-Layer Sales Knowledge Contract
+
+Layer 1: Universal Sales RAG
+
+This layer teaches reusable sales method: buyer moves, buyer journey jobs,
+buyer_enablement_and_sensemaking, stakeholder mapping, discovery question design,
+qualification evidence, value and ROI framing, objection and status quo,
+trust repair, proof handling, conversation repair, next-step policy, decision
+and paper process, negotiation and concessions, disqualification, ethical
+persuasion, motion playbooks, vertical playbooks, post-sale handoff,
+success/failure patterns, and call_quality_rubrics.
+
+Layer 2: Campaign Sales Overlay
+
+This layer adapts the universal method to one campaign. It says which discovery
+questions, value frames, objection patterns, proof types, next steps, and call
+quality rules fit the campaign. Campaign overlay overrides universal sales
+guidance for that campaign.
+
+Campaign overlay overrides universal sales guidance.
+
+Layer 3: Campaign Profile And Facts
+
+This layer owns the exact offer, approved product facts, prices, proof,
+exclusions, forbidden claims, target buyer, handoff path, and compliance
+boundaries. Campaign Profile facts override campaign overlay.
+
+Universal sales guidance never creates campaign facts. If a fact is not in the
+campaign profile or approved campaign material, do not invent it. If the layers
+conflict, follow campaign profile facts first, campaign overlay second, and
+universal sales guidance last.
+
+Universal sales category map:
+
+- buyer_moves
+- buyer_journey_jobs
+- buyer_enablement_and_sensemaking
+- stakeholder_mapping
+- discovery_question_design
+- qualification_evidence
+- value_and_roi_framing
+- objection_status_quo_and_competition
+- trust_and_risk_repair
+- proof_and_evidence_handling
+- conversation_repair
+- next_step_policy
+- decision_and_paper_process
+- negotiation_and_concession_policy
+- disqualification_policy
+- ethical_persuasion_boundaries
+- motion_specific_playbooks
+- vertical_general_playbooks
+- post_sale_handoff
+- success_failure_patterns
+- call_quality_rubrics
+
 The universal core should not contain product-specific selling points for every
 possible campaign. It should contain reusable sales method: how to frame value,
 read buyer state, handle objections, choose a next step, and stop when required.

@@ -15,6 +15,26 @@ Record important thesis and implementation decisions here with enough context to
 
 ## Decisions
 
+### DEC-141 - Use a three-layer sales knowledge architecture for universal RAG and campaigns
+
+- Date: 2026-06-06
+- Status: accepted
+- Decision: separate sales knowledge into Universal Sales RAG, Campaign Sales Overlay, and Campaign Profile And Facts. Universal Sales RAG owns reusable sales method. Campaign Sales Overlay adapts that method to one campaign. Campaign Profile And Facts owns approved truth and has highest authority.
+- Why:
+  - Universal sales behavior should be reusable across campaigns without copying product facts, prices, proof, or guarantees into a global corpus.
+  - Campaigns need a middle layer for adapting discovery, value framing, objections, proof use, next steps, and call-quality expectations without mutating the universal core.
+  - ElevenLabs RAG retrieves relevant chunks from attached documents; it should not be treated as a deterministic cross-document import or routing system.
+  - Prompt-level precedence is required so facts beat overlay guidance and overlay guidance beats universal advice when the provider retrieves mixed context.
+- Alternatives considered:
+  - one merged campaign/universal RAG, rejected because it would blur reusable method with factual truth
+  - only two layers, universal RAG plus campaign profile, rejected because it lacks a safe place for campaign-specific sales adaptation
+  - textual cross-references between uploaded knowledge-base files, rejected as too weak for provider-hosted RAG behavior
+- Consequences:
+  - provider packages should attach or compile separate universal, overlay, and profile documents
+  - critical precedence rules must be in the agent prompt, not only in retrieved documents
+  - Universal Sales RAG must not contain campaign prices, client names, guarantees, testimonials, or factual claims
+  - future campaign onboarding should generate a Campaign Sales Overlay and Campaign Profile And Facts before live upload
+
 ### DEC-140 - Keep Ultravox as a promising but latency-limited hosted speech interface candidate
 
 - Date: 2026-05-29

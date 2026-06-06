@@ -33,10 +33,11 @@ Active phase: thesis evidence consolidation after source-grounded OpenAI sales-r
 
 Current checkpoint:
 
-- [ ] Current: consolidate thesis documentation and evidence from post-`10117b6d` prosody and Ultravox commits. Keep runtime behavior, campaign behavior, response text, provider calls, audio generation, local model generation, and live wiring unchanged.
+- [ ] Current: design the first full Universal Sales RAG source skeleton from the accepted layer contract. Keep campaign facts in Campaign Profile And Facts, campaign adaptation in Campaign Sales Overlay, and universal method in Universal Sales RAG.
 
 Next checkpoints:
 
+- [ ] Next: generate a reusable campaign-intake template that produces Campaign Sales Overlay and Campaign Profile And Facts files before any ElevenLabs upload.
 - [ ] Next: continue sales-dialogue quality work or test a non-LLM classifier/action-selector baseline against the OpenAI semantic/live-action cases. This remains serious because Qwen 7B and tested small local models did not meet both quality and live-turn latency expectations.
 - [ ] Next: decide whether the strongest action-id-only selector path deserves distillation, fine-tuning, or a simpler non-LLM baseline. Do not return to full local LLM response generation unless the model can meet quality and roughly 2-3 second live-turn latency gates.
 - [ ] Next: consolidate thesis writing evidence around the OpenAI fixture, semantic sales-dialogue evolution, local LLM feasibility rejection, audio-model research branch, prosody control layer, Ultravox hosted-interface evidence, validator optimism, and manual review methodology.
@@ -73,6 +74,10 @@ Next checkpoints:
 - [ ] Next: expand dataset-grounded fixed banks only after `PROD-021` confirms whether the naturalized hook gain survives live-shaped stateful dialogue.
 
 Recently completed checkpoints:
+
+- [x] `RAG-022-universal-sales-layer-contract`, which formalizes the three-layer sales knowledge architecture: Universal Sales RAG for reusable sales method, Campaign Sales Overlay for campaign-specific selling adaptation, and Campaign Profile And Facts for approved truth. It adds the repo-owned layer contract, split Atlas Web Studio overlay/profile KB files, a layered ElevenLabs package manifest, prompt-level precedence rules, and an offline validator. No live provider call, production promotion, or green simulation claim is made.
+
+- [x] RAG-022 live ElevenLabs application, which uploaded the three layered KB files to the existing ElevenLabs workspace and patched the `web design` hosted agent with RAG enabled after explicit user request. This is provider-write evidence only; a fresh V22-or-later simulation rerun and human review are still required before any production-green claim.
 
 - [x] Ultravox hosted speech-interface research chain, including mock tool-boundary pass, local HTTP sales-brain endpoint pass, ngrok fallback after cloudflared DNS failure, WebSocket text sandbox, WebSocket manual-audio sandbox, transcript/tool-boundary audits, manual listening review, warm-session latency benchmark, latency optimization probe, and final stop-provider-testing decision. Current conclusion: Ultravox is promising as a hosted speech-native interface candidate with a working sandbox tool boundary and promising audio quality, but warm-turn latency is not live-ready; no live wiring, production call, real customer use, outbound phone call, CRM/email/calendar side effect, or final ElevenLabs replacement claim is allowed.
 

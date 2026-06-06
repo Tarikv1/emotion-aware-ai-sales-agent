@@ -1,0 +1,160 @@
+# Atlas Web Studio Web Design Campaign Sales Overlay
+
+Package: `RAG-022-universal-sales-layer-contract`
+
+Layer: Campaign Sales Overlay
+
+This file adapts universal sales behavior to the Atlas Web Studio web-design motion.
+It does not own final factual truth. Campaign profile and facts override this overlay.
+
+Use this file to decide how to apply the universal sales method for this campaign.
+Use the campaign profile for the approved offer, prices, proof, exclusions, and
+forbidden claims.
+
+## Layer Boundary
+
+- Universal Sales RAG says how to sell in general.
+- Campaign Sales Overlay says how this campaign should sell.
+- Campaign Profile And Facts says what is actually true.
+
+If this overlay conflicts with the campaign profile, follow the profile.
+If this overlay conflicts with universal sales guidance, follow this overlay for
+the Atlas Web Studio campaign only.
+
+Do not use this overlay to invent new facts, proof, prices, guarantees, SEO
+claims, traffic claims, customer results, or testimonials.
+
+## Discovery Question Design Overlay
+
+For this campaign, discovery should stay light. The first useful discovery goal
+is not a full website audit. It is whether the buyer is the right person and
+whether the free mockup is worth a quick look.
+
+Good discovery moves:
+
+- confirm owner, manager, or decision-maker path
+- ask whether the current web/social path is working well enough
+- ask which detail matters most if the buyer raises menu, reservations, calls,
+  ordering, hours, or first-time visitors
+- use one question at a time
+
+Avoid:
+
+- asking why they do not have a website before explaining the reason for the call
+- making the buyer diagnose every marketing problem from zero
+- turning a skeptical buyer into a long interview
+
+## Value And ROI Framing Overlay
+
+Frame value as practical clarity and control, not guaranteed growth.
+
+Prefer these campaign-safe value frames:
+
+- owner control over one homepage layout
+- one shareable link for customer-facing channels
+- faster first impression for first-time visitors
+- easier menu or reservation-path judgment when the buyer raises those topics
+- fewer basic staff calls only as a practical possibility, not a promise
+- proof before purchase through a free mockup review
+
+Do not state prices, rankings, revenue lift, traffic lift, bookings lift, SEO
+outcomes, or guaranteed staff-time savings from this overlay. Pull all factual
+price and claim boundaries from the campaign profile.
+
+## Objection, Status Quo, And Competition Overlay
+
+The main status-quo competitors are not only other web agencies. They are the
+buyer's existing channels: Instagram, Google Maps, Facebook, delivery apps,
+word-of-mouth, and phone calls.
+
+Use this sequence:
+
+1. Acknowledge the current channel may already be useful.
+2. Name one non-attacking website angle.
+3. If challenged again, rotate to a different angle instead of repeating the
+   same "organized details" answer.
+4. If the buyer still sees no difference, make the mockup a proof test or stop.
+
+Do not say the current channel is bad. Do not attack social platforms or listings.
+
+## Proof And Evidence Handling Overlay
+
+The free mockup is the primary proof object for this campaign.
+
+Use proof like this:
+
+- "Look at the mockup and judge whether it is clearer."
+- "If it looks like the same thing you already have, ignore it."
+- "No obligation" only when the campaign profile supports that boundary.
+
+Do not invent portfolio examples, restaurant results, testimonials, rankings,
+before-after metrics, or client names.
+
+## Next Step Policy Overlay
+
+The valid next steps are:
+
+- identify the owner or manager
+- ask for a quick look at the free mockup
+- get an email or link-send path after interest
+- schedule a callback window
+- provide a short pass-along note
+- answer price or scope directly when asked
+- stop after clear refusal or do-not-call
+
+Do not push toward payment, contract signing, web build commitment, online
+booking setup, SEO package, or paid redesign inside the first outreach call.
+
+## Decision And Paper Process Overlay
+
+For small local-business outreach, the likely decision path is informal.
+The agent should not assume a procurement process.
+
+Ask for the owner/manager path when needed. If the buyer is staff, give a short
+note instead of trying to sell the full value case through the gatekeeper.
+
+## Negotiation And Concession Policy Overlay
+
+This campaign sells a low-risk review first, not a negotiated paid website.
+
+If the buyer negotiates price before seeing the mockup:
+
+- answer only with profile-approved price boundaries
+- do not discount
+- do not promise custom terms
+- bring the conversation back to judging the free mockup first
+
+If the buyer asks whether the free mockup is a bait-and-switch, answer plainly:
+it is free to review, and a paid conversation happens only if they like it.
+
+## Disqualification Policy Overlay
+
+Stop or downgrade the call when:
+
+- the buyer clearly refuses after the reason is known
+- the buyer asks not to be called
+- the buyer has no path to owner/manager and will not take a note
+- the buyer wants guaranteed customers, rankings, or bookings
+- the buyer wants a service outside profile-approved scope
+- the buyer treats the call as abusive or hostile
+
+## Call Quality Rubric Overlay
+
+A good Atlas Web Studio call should:
+
+- state the reason early
+- use short concrete language
+- avoid repeated mockup-review asks during active value objections
+- rotate value angles when Instagram or Google Maps is defended
+- answer price, hosting, domain, or scope questions directly from the profile
+- protect refusal and do-not-call boundaries
+- end naturally after a terminal send path, callback, pass-along note, or refusal
+
+A weak call:
+
+- sounds like a generic marketing pitch
+- repeats "clearer details" in multiple turns
+- asks for a quick look after every objection
+- invents proof or growth claims
+- hides approved price anchors when asked
+- treats campaign examples as universal sales law

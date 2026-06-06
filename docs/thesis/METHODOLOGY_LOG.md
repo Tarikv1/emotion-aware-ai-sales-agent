@@ -16,6 +16,26 @@ Use this file as a chronological research journal for the thesis implementation.
 
 ## Entries
 
+### 2026-06-07 - RAG-022 live ElevenLabs layer upload and agent patch
+
+- Objective: apply the validated RAG-022 three-layer sales knowledge package to the existing ElevenLabs `web design` hosted agent before committing and pushing the repo checkpoint.
+- Action taken: loaded `ELEVENLABS_API_KEY` from ignored local config into the process environment, uploaded `universal_sales_core.md`, `atlas_web_studio_web_design_campaign_overlay.md`, and `atlas_web_studio_web_design_campaign_profile.md`, then patched the existing `web design` agent to attach those documents with RAG enabled and the current prompt/first-message/dynamic-variable package.
+- Data used: tracked repo-owned Markdown knowledge files, sanitized dashboard config fixture, prompt, first message, dynamic variable defaults, and local environment-only API key. No private customer data, customer audio, raw private transcripts, voice cloning, generated audio, or API key value was committed.
+- Output created: live upload and patch evidence under `research/experiments/generated/RAG-022-universal-sales-layer-contract/`; uploaded KB document IDs `p1CtFfTBnhfuewhLn0jP`, `npbVIw1kdC32W0UmceM8`, and `SDnLQPveXasZJEqOQA4o`; patched agent version `agtvrsn_6601ktfhhm1ge029y9gmv1d2mwp1` on branch `agtbrch_6501kt0g34dvffgr95mvrh70cr2d`.
+- What was learned: the repo-owned layered package can be applied to ElevenLabs as separate KB documents plus prompt-level precedence, but provider patch success is not a substitute for simulation or human review.
+- Why it matters for the thesis: this records the transition from architecture package to hosted-agent application while preserving the distinction between provider-write evidence and sales-quality evidence.
+- Open questions: whether the next live gate should rerun the V22-or-later simulation suite immediately or first add a layer-contamination test pack for universal, overlay, and profile conflicts.
+
+### 2026-06-06 - RAG-022 universal sales layer contract
+
+- Objective: preserve the separation between universal sales method, campaign-specific sales adaptation, and approved campaign truth before building the universal sales RAG into ElevenLabs-hosted agents.
+- Action taken: added a repo-owned three-layer contract, split the Atlas Web Studio web-design campaign into Campaign Sales Overlay and Campaign Profile And Facts documents, added a layered ElevenLabs package manifest, inserted prompt-level precedence rules, and created an offline validator.
+- Data used: project-owned sales/RAG architecture decisions, existing ElevenLabs package structure, existing Atlas campaign files, and public ElevenLabs RAG behavior previously reviewed in this thread. No provider calls, private customer data, customer audio, raw private transcripts, live uploads, or production calls were used.
+- Output created: `RAG-022-universal-sales-layer-contract`, `runtime/sales_knowledge/universal_sales_rag/layer_contract.json`, split campaign overlay/profile KB files, a layered package manifest, and `scripts/validate_rag_022_universal_sales_layer_contract.py`.
+- What was learned: the right boundary is not one merged RAG and not loose cross-document references. Universal Sales RAG should say how to sell, Campaign Sales Overlay should say how this campaign should sell, and Campaign Profile And Facts should say what is actually true.
+- Why it matters for the thesis: the sales-agent architecture can now explain how reusable sales intelligence stays portable across campaigns without letting provider retrieval blur factual authority.
+- Open questions: whether future provider packaging should compile category-specific overlays automatically from campaign profiles, and whether the next checkpoint should generate the first full universal sales RAG source skeleton.
+
 ### 2026-05-29 - Ultravox hosted speech-interface sandbox and latency stop decision
 
 - Objective: evaluate Ultravox as a hosted speech-native interface candidate while keeping campaign truth, sales-brain decisions, canonical memory, verifier logic, and side-effect safety inside the project runtime.

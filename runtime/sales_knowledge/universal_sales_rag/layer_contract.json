@@ -1,0 +1,82 @@
+{
+  "contract_id": "RAG-022-universal-sales-layer-contract",
+  "source_of_truth": "repo",
+  "status": "offline-layer-contract-ready",
+  "knowledge_layers": [
+    {
+      "layer_id": "universal_sales_rag",
+      "authority_rank": 3,
+      "owns": "Reusable sales method: how to sell, diagnose, adapt, repair, negotiate, disqualify, and evaluate calls.",
+      "must_not_own": "Campaign facts, prices, guarantees, client names, proof claims, testimonials, legal claims, or offer-specific promises."
+    },
+    {
+      "layer_id": "campaign_sales_overlay",
+      "authority_rank": 2,
+      "owns": "Campaign-specific adaptation of universal sales method: which discovery angles, value frames, objections, next steps, and call rubrics fit this campaign.",
+      "must_not_own": "Final factual truth when the campaign profile gives a conflicting approved fact, price, claim, or forbidden claim."
+    },
+    {
+      "layer_id": "campaign_profile_facts",
+      "authority_rank": 1,
+      "owns": "The exact approved offer, product facts, prices, proof, exclusions, forbidden claims, target buyer, handoff path, and compliance boundaries.",
+      "must_not_own": "Reusable sales theory that should remain campaign-independent."
+    }
+  ],
+  "precedence_order": [
+    "campaign_profile_facts",
+    "campaign_sales_overlay",
+    "universal_sales_rag"
+  ],
+  "elevenlabs_document_reference_imports_supported": false,
+  "universal_sales_rag_may_create_campaign_facts": false,
+  "campaign_overlay_may_override_campaign_profile": false,
+  "private_customer_data_allowed": false,
+  "conflict_policy": {
+    "campaign_profile_facts_override_campaign_overlay": true,
+    "campaign_profile_facts_override_universal_sales_rag": true,
+    "campaign_sales_overlay_overrides_universal_sales_rag": true,
+    "universal_sales_rag_may_create_campaign_facts": false,
+    "campaign_overlay_may_override_campaign_profile": false,
+    "document_reference_imports_required": false,
+    "elevenlabs_document_reference_imports_supported": false
+  },
+  "universal_sales_categories": [
+    "buyer_moves",
+    "buyer_journey_jobs",
+    "buyer_enablement_and_sensemaking",
+    "stakeholder_mapping",
+    "discovery_question_design",
+    "qualification_evidence",
+    "value_and_roi_framing",
+    "objection_status_quo_and_competition",
+    "trust_and_risk_repair",
+    "proof_and_evidence_handling",
+    "conversation_repair",
+    "next_step_policy",
+    "decision_and_paper_process",
+    "negotiation_and_concession_policy",
+    "disqualification_policy",
+    "ethical_persuasion_boundaries",
+    "motion_specific_playbooks",
+    "vertical_general_playbooks",
+    "post_sale_handoff",
+    "success_failure_patterns",
+    "call_quality_rubrics"
+  ],
+  "elevenlabs_packaging_policy": {
+    "compile_layers_before_upload": true,
+    "attach_universal_sales_rag_as_reusable_knowledge": true,
+    "attach_campaign_sales_overlay_as_campaign_adaptation": true,
+    "attach_campaign_profile_facts_as_highest_authority": true,
+    "do_not_rely_on_textual_cross_document_imports": true,
+    "critical_precedence_rules_must_be_in_prompt": true
+  },
+  "safety_boundaries": {
+    "private_customer_data_allowed": false,
+    "raw_private_transcripts_allowed": false,
+    "customer_audio_allowed": false,
+    "live_provider_calls_made": false,
+    "api_key_required_for_generation": false,
+    "production_promotion_allowed": false
+  }
+}
