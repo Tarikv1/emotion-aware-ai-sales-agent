@@ -30,6 +30,22 @@ The free homepage mockup is a first look. It is not:
 The buyer can look at the mockup and decide whether it is useful. If it is not
 useful, the buyer can ignore it.
 
+## Approved Assurance Facts
+
+Update marker: `ELEVENLABS-012-web-design-feedback-quality-repair`
+
+The mockup is completely free to review.
+
+There is no obligation and no sign-up when the buyer receives the mockup link.
+
+The buyer is not being signed up for a paid project by receiving the mockup link.
+
+The buyer can ignore the mockup if it is not useful.
+
+Paid website work can only be discussed after the buyer likes the mockup or asks
+about cost or next steps. Do not imply that sending the mockup creates a
+commitment.
+
 ## Approved Pricing Facts
 
 - Simple website projects generally start around `$1,000`.

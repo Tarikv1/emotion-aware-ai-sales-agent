@@ -3530,6 +3530,12 @@ Validate the ElevenLabs 011 remaining simulation repair without provider calls:
 python scripts\validate_elevenlabs_011_web_design_remaining_simulation_repair.py
 ```
 
+Validate the ElevenLabs 012 feedback-quality repair without provider calls:
+
+```powershell
+python scripts\validate_elevenlabs_012_web_design_feedback_quality_repair.py
+```
+
 Live ELEVENLABS-010 KB upload and agent patch requires `ELEVENLABS_API_KEY` in
 the current shell and explicit `--live --confirm-provider-write`:
 

@@ -16,6 +16,16 @@ Use this file as a chronological research journal for the thesis implementation.
 
 ## Entries
 
+### 2026-06-07 - ELEVENLABS-012 feedback-quality repair package
+
+- Objective: convert human-reviewed ElevenLabs simulation screenshot feedback into a narrow offline repair package before any next live provider patch or simulation rerun.
+- Action taken: added first-sentence pressure matching, busy-pressure brevity, value-angle exclusivity, and no literal fake laughter rules to the Atlas Web Studio web-design prompt; added campaign-specific assurance-first wording to the overlay; recorded approved free/no-obligation/no-sign-up facts in the campaign profile; added an offline package manifest and validator.
+- Data used: human feedback from the latest simulation screenshots, existing RAG-022 three-layer package files, existing ElevenLabs prompt, first message, dynamic variable defaults, and sanitized dashboard fixture. No provider call, private customer data, customer audio, raw private transcript, or API key value was used.
+- Output created: `ELEVENLABS-012-web-design-feedback-quality-repair`, `runtime/providers/elevenlabs_agents/manifests/web_design_feedback_quality_repair.package.json`, `scripts/validate_elevenlabs_012_web_design_feedback_quality_repair.py`, and `docs/product/ELEVENLABS_012_WEB_DESIGN_FEEDBACK_QUALITY_REPAIR.md`.
+- What was learned: the visible failure is not merely casualness. The agent needs pressure-matched first sentences, shorter callback handling under time pressure, and genuinely distinct value angles; otherwise it can pass tests while still sounding repetitive or evasive.
+- Why it matters for the thesis: this records a human-in-the-loop quality gate where screenshot critique becomes a concrete repair package without treating an offline prompt update as proof of live sales quality.
+- Open questions: whether the patched hosted agent passes a fresh V22-or-later simulation rerun and whether human review still finds repetition in longer social-channel objections.
+
 ### 2026-06-07 - RAG-022 live ElevenLabs layer upload and agent patch
 
 - Objective: apply the validated RAG-022 three-layer sales knowledge package to the existing ElevenLabs `web design` hosted agent before committing and pushing the repo checkpoint.
