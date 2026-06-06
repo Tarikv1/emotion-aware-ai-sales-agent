@@ -16,6 +16,16 @@ Use this file as a chronological research journal for the thesis implementation.
 
 ## Entries
 
+### 2026-06-07 - ELEVENLABS-012 live upload and agent patch
+
+- Objective: apply the validated ELEVENLABS-012 feedback-quality repair package to the existing ElevenLabs `web design` hosted agent after explicit user approval.
+- Action taken: loaded `ELEVENLABS_API_KEY` from ignored local config into the process environment, uploaded `universal_sales_core.md`, `atlas_web_studio_web_design_campaign_overlay.md`, and `atlas_web_studio_web_design_campaign_profile.md`, then patched the existing `web design` agent with those documents, the current prompt, first message, dynamic variables, RAG enabled, and temperature `0.25`.
+- Data used: tracked repo-owned Markdown knowledge files, sanitized dashboard config fixture, prompt, first message, dynamic variable defaults, and local environment-only API key. No private customer data, customer audio, raw private transcripts, voice cloning, generated audio, or API key value was committed.
+- Output created: live upload and patch evidence under `research/experiments/generated/ELEVENLABS-012-web-design-feedback-quality-repair/`; uploaded KB document IDs `n5EYbM399Wu3lRdCNfjV`, `0VU3KlSbvC0K3LjBQnk8`, and `6nG4gYzwn7YNdTtuwzKQ`; patched agent version `agtvrsn_7001ktfmp3cxf8m8sc0ny918w770` on branch `agtbrch_6501kt0g34dvffgr95mvrh70cr2d`.
+- What was learned: the feedback-quality repair package can be applied to the hosted ElevenLabs agent as separate layered KB documents plus prompt-level behavior repair, but provider patch success is not sales-quality proof.
+- Why it matters for the thesis: this records the difference between repo-side human-feedback repair, live hosted-agent application, and the still-required simulation/human review gate.
+- Open questions: whether a fresh V22-or-later simulation rerun shows less repeated value framing and stronger direct assurance under buyer trust pressure.
+
 ### 2026-06-07 - ELEVENLABS-012 feedback-quality repair package
 
 - Objective: convert human-reviewed ElevenLabs simulation screenshot feedback into a narrow offline repair package before any next live provider patch or simulation rerun.

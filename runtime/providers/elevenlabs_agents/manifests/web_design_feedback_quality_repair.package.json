@@ -42,8 +42,37 @@
     "knowledge_base_upload_required": true,
     "replace_same_name_attached_kb_docs": true
   },
+  "latest_live_application": {
+    "applied_at_local_date": "2026-06-07",
+    "requested_by_user": true,
+    "live_provider_calls_made": true,
+    "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+    "agent_name": "web design",
+    "version_id": "agtvrsn_7001ktfmp3cxf8m8sc0ny918w770",
+    "branch_id": "agtbrch_6501kt0g34dvffgr95mvrh70cr2d",
+    "rag_enabled": true,
+    "knowledge_base_documents": [
+      {
+        "name": "universal_sales_core.md",
+        "id": "n5EYbM399Wu3lRdCNfjV"
+      },
+      {
+        "name": "atlas_web_studio_web_design_campaign_overlay.md",
+        "id": "0VU3KlSbvC0K3LjBQnk8"
+      },
+      {
+        "name": "atlas_web_studio_web_design_campaign_profile.md",
+        "id": "6nG4gYzwn7YNdTtuwzKQ"
+      }
+    ],
+    "evidence_paths": [
+      "research/experiments/generated/ELEVENLABS-012-web-design-feedback-quality-repair/live_upload_plan.json",
+      "research/experiments/generated/ELEVENLABS-012-web-design-feedback-quality-repair/live_patch_plan.json"
+    ],
+    "production_green_claimed": false,
+    "fresh_simulation_rerun_required_for_green": true
+  },
   "blocked_until_review": [
-    "live provider upload or patch",
     "deleting stale knowledge-base documents from the ElevenLabs workspace",
     "uploading private customer emails",
     "uploading private transcripts",

@@ -5,9 +5,13 @@ Package ID: `ELEVENLABS-012-web-design-feedback-quality-repair`
 ## Decision
 
 This checkpoint converts human feedback from the latest simulation screenshots
-into a repo-owned offline repair package. It does not make a live provider call,
-does not create new simulation tests, and does not claim production-green
-status.
+into a repo-owned repair package. The initial package build did not make a live provider call,
+did not create new simulation tests, and did not claim production-green status.
+
+After the offline package was validated, Tarik explicitly requested live upload
+on 2026-06-07. That live application uploaded the three layered KB documents and
+patched the existing ElevenLabs `web design` agent. It still does not claim
+simulation-green status.
 
 The strongest failure was not that the agent was too formal. The real failure
 was that it repeated the same value idea across several turns, gave indirect
@@ -83,20 +87,40 @@ python scripts\run_elevenlabs_agent_automation.py `
   --api-requests-out research\experiments\generated\ELEVENLABS-012-web-design-feedback-quality-repair\agent_patch_requests.json
 ```
 
+## Live Application
+
+Applied on 2026-06-07 after explicit user request.
+
+Uploaded KB documents:
+
+- `universal_sales_core.md`: `n5EYbM399Wu3lRdCNfjV`
+- `atlas_web_studio_web_design_campaign_overlay.md`: `0VU3KlSbvC0K3LjBQnk8`
+- `atlas_web_studio_web_design_campaign_profile.md`: `6nG4gYzwn7YNdTtuwzKQ`
+
+Patched agent:
+
+- agent: `web design`
+- agent ID: `agent_7801kt0g32zxf4f8x5zkykj7syty`
+- version ID: `agtvrsn_7001ktfmp3cxf8m8sc0ny918w770`
+- branch ID: `agtbrch_6501kt0g34dvffgr95mvrh70cr2d`
+- RAG enabled: `true`
+
+Live evidence:
+
+- `research/experiments/generated/ELEVENLABS-012-web-design-feedback-quality-repair/live_upload_plan.json`
+- `research/experiments/generated/ELEVENLABS-012-web-design-feedback-quality-repair/live_patch_plan.json`
+
+This live application is provider-write evidence only. It is not proof that the
+agent is production-green. A fresh V22-or-later simulation rerun and human review
+are still required.
+
 ## Boundary
 
 - No private customer data is included.
 - No API key value is stored in tracked files.
-- No live ElevenLabs upload or patch happened in this checkpoint.
+- The 2026-06-07 live application did upload three KB files and patch the
+  existing `web design` agent after explicit user request.
 - No old ElevenLabs KB document is deleted by this checkpoint.
 - The existing V22-or-later simulation surface remains the live evaluation
   target.
 - Passing this offline validator is not proof that the hosted agent is fixed.
-
-## Live Result
-
-No live result yet.
-
-The next live gate is explicit upload and patch approval, then a fresh
-V22-or-later simulation rerun and human review. Until then this is only an
-offline repair package.

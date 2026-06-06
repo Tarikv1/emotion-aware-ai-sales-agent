@@ -203,7 +203,7 @@ def main() -> None:
     assert_text_markers(
         DOC,
         (
-            "does not make a live provider call",
+            "The initial package build did not make a live provider call",
             "human feedback from the latest simulation screenshots",
             "first-sentence pressure matching",
             "value-angle exclusivity",
