@@ -39,7 +39,7 @@ LIVE_RESULT_SUMMARY = (
 OUT_DIR = ROOT / ".tmp" / CHECKPOINT_ID / "validation"
 PLAN = OUT_DIR / "simulation_tests_plan.json"
 REQUESTS = OUT_DIR / "simulation_tests_requests.json"
-FOLDER_NAME = "Atlas Web Studio - Mike's Kitchen Simulation Repair V17"
+FOLDER_NAME = "Atlas Web Studio - Mike's Kitchen Simulation Repair V22"
 
 
 REQUIRED_DYNAMIC_VALUES = {
@@ -225,17 +225,34 @@ def main() -> None:
     assert_condition(str(live_result.get("test_folder_id", "")).startswith("tfld_"), "live folder id mismatch")
     assert_condition(str(live_result.get("suite_id", "")).startswith("suite_"), "live suite id mismatch")
     assert_condition(live_result.get("test_count") == 9, "live test count mismatch")
-    assert_condition(live_result.get("passed_count") == 9, "live passed count mismatch")
-    assert_condition(live_result.get("failed_count") == 0, "live failed count mismatch")
-    assert_condition(live_result.get("pending_count") == 0, "live pending count mismatch")
+    passed_count = int(live_result.get("passed_count", -1))
+    failed_count = int(live_result.get("failed_count", -1))
+    pending_count = int(live_result.get("pending_count", -1))
+    assert_condition(passed_count + failed_count + pending_count == 9, "live result counts do not add up")
+    assert_condition(pending_count == 0, "live pending count mismatch")
+    if failed_count:
+        assert_condition(live_result.get("production_green") is False, "failed run must not be marked production-green")
+        remaining = live_result.get("remaining_failure_modes")
+        assert_condition(
+            isinstance(remaining, list) and len(remaining) == failed_count,
+            "remaining failure modes must match failed count",
+        )
+    else:
+        assert_condition(passed_count == 9, "green run must pass all tests")
+        assert_condition(live_result.get("production_green") is True, "green run must be marked production-green")
     created_tests = live_result.get("created_tests")
     assert_condition(isinstance(created_tests, list) and len(created_tests) == 9, "live created test count mismatch")
+    seen_statuses = {"passed": 0, "failed": 0, "pending": 0}
     for item in created_tests:
         assert_condition(isinstance(item, dict), "live created test item must be an object")
         assert_condition(str(item.get("source_test_id", "")).startswith("sim_"), "live source_test_id mismatch")
         assert_condition(str(item.get("provider_test_id", "")).startswith("test_"), "live provider_test_id mismatch")
         assert_condition(str(item.get("test_run_id", "")).startswith("trun_"), "live test_run_id mismatch")
-        assert_condition(item.get("status") == "passed", "live test status mismatch")
+        assert_condition(item.get("status") in seen_statuses, "live test status mismatch")
+        seen_statuses[item["status"]] += 1
+    assert_condition(seen_statuses["passed"] == passed_count, "created test passed count mismatch")
+    assert_condition(seen_statuses["failed"] == failed_count, "created test failed count mismatch")
+    assert_condition(seen_statuses["pending"] == pending_count, "created test pending count mismatch")
 
     doc_text = DOC.read_text(encoding="utf-8")
     for marker in (
@@ -244,7 +261,7 @@ def main() -> None:
         "dashboard Simulation Tests",
         "not next-reply tests",
         "human-reviewed repair",
-        "Simulation Repair V17",
+        "Simulation Repair V22",
     ):
         assert_condition(marker in doc_text, f"Doc missing marker: {marker}")
 

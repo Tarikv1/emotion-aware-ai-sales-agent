@@ -55,6 +55,14 @@ SIMULATION_TESTS = (
     / "web_design_mikes_kitchen_simulation_tests.json"
 )
 DOC = ROOT / "docs" / "product" / "ELEVENLABS_010_WEB_DESIGN_SALES_CONTROL_REPAIR.md"
+RESULT_SUMMARY = (
+    ROOT
+    / "research"
+    / "experiments"
+    / "generated"
+    / CHECKPOINT_ID
+    / "sales_control_repair_results_summary.json"
+)
 OUT_DIR = ROOT / ".tmp" / CHECKPOINT_ID / "validation"
 PLAN = OUT_DIR / "agent_patch_plan.json"
 REQUESTS = OUT_DIR / "agent_patch_requests.json"
@@ -136,6 +144,7 @@ def main() -> None:
         "unapproved or nonsensical bracketed delivery tags",
         "repeats the same review/send/quick-look ask",
         "reachable turn to respond",
+        "asks the gatekeeper what the call is regarding",
         "$10-$30/month",
     ):
         assert_condition(marker in serialized_tests, f"simulation pack missing marker: {marker}")
@@ -169,6 +178,9 @@ def main() -> None:
         "website_hosting_monthly_ballpark",
         "Website-need question",
         "Optional booking upsell",
+        "Gatekeeper role boundary",
+        "Google or Instagram defense forbidden wording",
+        "Plain-language ban",
     ):
         assert_condition(marker in prompt_text, f"prompt missing marker: {marker}")
     for key in ("website_campaign_value_points", "optional_upsell_boundary", "website_hosting_monthly_ballpark"):
@@ -246,6 +258,23 @@ def main() -> None:
     assert_condition(prompt["temperature"] == 0.25, "temperature mismatch")
     assert_condition("Do not keep asking the same close." in prompt["prompt"], "patched prompt missing sales rhythm")
     assert_condition("Basic hosting is usually around" in prompt["prompt"], "patched prompt missing hosting disclosure")
+
+    result_summary = read_json(RESULT_SUMMARY)
+    assert_no_secret_leak(result_summary)
+    assert_condition(result_summary.get("checkpoint_id") == CHECKPOINT_ID, "result summary checkpoint mismatch")
+    assert_condition(str(result_summary.get("repaired_simulation_folder_id", "")).startswith("tfld_"), "folder id mismatch")
+    assert_condition(str(result_summary.get("repaired_simulation_suite", "")).startswith("suite_"), "suite id mismatch")
+    passed_count = int(result_summary.get("passed_count", -1))
+    failed_count = int(result_summary.get("failed_count", -1))
+    pending_count = int(result_summary.get("pending_count", -1))
+    assert_condition(passed_count + failed_count + pending_count == 9, "result counts do not add up")
+    if failed_count:
+        assert_condition(result_summary.get("production_green") is False, "failed result must not be production-green")
+        remaining = result_summary.get("remaining_failure_modes")
+        assert_condition(
+            isinstance(remaining, list) and len(remaining) == failed_count,
+            "remaining failure modes mismatch",
+        )
 
     doc_text = DOC.read_text(encoding="utf-8")
     for marker in (

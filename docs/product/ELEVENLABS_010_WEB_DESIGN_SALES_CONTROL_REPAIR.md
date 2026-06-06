@@ -12,6 +12,8 @@ The first simulation-test pass was not enough. Human review found four defects:
 - direct cost questions, especially hosting, were sometimes dodged until the buyer asked repeatedly
 - terminal turns often lacked a natural closing line
 - unapproved bracketed delivery tags and content-like tags can clutter text transcripts
+- gatekeeper simulations could pass even when the agent asked the staff member
+  what the caller should tell the owner, which is a role-flipped conversation
 
 This checkpoint is a human-reviewed simulation repair. It keeps ElevenLabs as
 the voice host and dashboard runtime, while keeping the repo as the source of
@@ -29,7 +31,7 @@ truth.
 - `runtime/providers/elevenlabs_agents/prompts/web_design_atlas_sales_prompt.md`
   now blocks repeated closes, immediate-refusal pitching, internal self-talk,
   hosting-cost dodging, evasive future-pitch answers, missing terminal closings,
-  and unapproved bracketed delivery tags.
+  unapproved bracketed delivery tags, and gatekeeper role-flip questions.
 - `runtime/providers/elevenlabs_agents/automation.py` now uses same-name KB replacement
   when attaching newly uploaded docs, so stale same-name attached docs are not
   kept beside the current version.
@@ -91,19 +93,25 @@ python scripts\run_elevenlabs_agent_automation.py `
 
 ## Live Result
 
-Patched and verified on 2026-06-05:
+Patched and rerun on 2026-06-06:
 
 - live universal KB: `BcBNsi1ixg9pOsY4pRPE`
 - live Atlas campaign KB: `sIrXtflwhwf3WdOg7Blg`
-- repaired simulation folder: `Atlas Web Studio - Mike's Kitchen Simulation Repair V17`
-- repaired simulation folder ID: `tfld_6201ktd2m9ywexx8tbbpktt8z23r`
-- repaired simulation suite: `suite_6201ktd2ndhpf6psdpyej9x4ae2w`
-- result: `9/9` simulation tests passed
+- repaired simulation folder: `Atlas Web Studio - Mike's Kitchen Simulation Repair V22`
+- previous clean simulation folder: `Atlas Web Studio - Mike's Kitchen Simulation Repair V17`
+- repaired simulation folder ID: `tfld_2101ktd8d310f1basthjk2tqjcm7`
+- repaired simulation suite: `suite_9101ktd8q9r1fc1rc7tecszbyj0h`
+- result: `7/9` simulation tests passed; not production-green
+- latest live prompt patch: `agent_patch_v22d_plan.json`, a narrow gatekeeper wording patch that changes the remaining `try after three` language to direct call-back wording
+- remaining failures: plain-language abstract wording and social-objection value-rotation/send-closing instability
 - sanitized summary: `research/experiments/generated/ELEVENLABS-010-web-design-sales-control-repair/sales_control_repair_results_summary.json`
 
 Intermediate repair runs were not hidden. They exposed repeated-close failures
 on skeptical-owner and social-presence objections, a gatekeeper note that was
 too detailed, one unreachable late do-not-call simulation artifact, and a
 persistent social-channel objection loop where the agent kept repeating the
-same product checklist. V17 is the clean run after adding the
-social-objection value-rotation micro-playbook.
+same product checklist. V17 was a clean run under an older evaluator. V22 is
+stricter and better aligned with human review, but the current V22c run still
+has two failures and must not be treated as production-ready. V22d was a
+patch-only live agent update after that run; it did not rerun the simulation
+suite and does not change the 7/9 evidence.

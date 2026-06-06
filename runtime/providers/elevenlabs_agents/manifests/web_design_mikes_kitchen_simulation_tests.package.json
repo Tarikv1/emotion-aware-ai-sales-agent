@@ -19,7 +19,7 @@
     "dynamic_variables_required": true,
     "test_type": "simulation",
     "simulation_max_turns": "12-22",
-    "target_test_folder_name": "Atlas Web Studio - Mike's Kitchen Simulation Repair V17",
+    "target_test_folder_name": "Atlas Web Studio - Mike's Kitchen Simulation Repair V22",
     "knowledge_base_upload_required": false
   },
   "blocked_until_review": [

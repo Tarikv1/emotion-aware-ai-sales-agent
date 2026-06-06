@@ -5661,9 +5661,13 @@ Interpretation:
 - Final live evidence:
   - live universal KB document: `BcBNsi1ixg9pOsY4pRPE`
   - live Atlas campaign KB document: `sIrXtflwhwf3WdOg7Blg`
-  - repaired simulation folder: `tfld_6201ktd2m9ywexx8tbbpktt8z23r`
-  - repaired simulation suite: `suite_6201ktd2ndhpf6psdpyej9x4ae2w`, `9/9` passed
-  - V8-V16 were retained as failed intermediate evidence; the final unresolved defect was social-channel objection handling where the agent repeated the same website-value checklist instead of rotating campaign value angles
+  - previous repaired simulation folder: `tfld_6201ktd2m9ywexx8tbbpktt8z23r`
+  - previous repaired simulation suite: `suite_6201ktd2ndhpf6psdpyej9x4ae2w`, `9/9` passed under the older V17 evaluator
+  - stricter V22 repair folder: `tfld_2101ktd8d310f1basthjk2tqjcm7`
+  - stricter V22c simulation suite: `suite_9101ktd8q9r1fc1rc7tecszbyj0h`, `7/9` passed and `production_green: false`
+  - V22d live prompt patch: `agent_patch_v22d_plan.json`, gatekeeper callback wording only; no new suite was run after this patch
+  - V22 added evaluator repairs for late send-path turns and gatekeeper role-flip questions, plus prompt repairs for gatekeeper callback wording, plain-language banned phrases, and social-channel value rotation
+  - remaining unresolved defects: plain-language abstract wording (`potential direction`) and social-channel objection handling where the agent still repeats practical-detail framing and has send-closing instability
   - sanitized result summaries:
     `research/experiments/generated/ELEVENLABS-009-mikes-kitchen-simulation-tests/simulation_results_summary.json`
     and

@@ -1,0 +1,121 @@
+{
+  "checkpoint_id": "ELEVENLABS-002-agent-automation",
+  "package_id": "ELEVENLABS-010-web-design-sales-control-repair",
+  "provider": "elevenlabs",
+  "mode": "live",
+  "source_of_truth": "repo",
+  "dashboard_role": "managed runtime and manual upload surface",
+  "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+  "agent_name": "Atlas Universal Sales Core",
+  "api_base_url": "https://api.elevenlabs.io",
+  "api_key_env_var": "ELEVENLABS_API_KEY",
+  "live_provider_calls_made": false,
+  "private_customer_data_used": false,
+  "provider_writes_require": [
+    "--live",
+    "--confirm-provider-write"
+  ],
+  "knowledge_base_upload_requests": [
+    {
+      "request_id": "upload_knowledge_base::universal_sales_core",
+      "method": "POST",
+      "endpoint": "/v1/convai/knowledge-base/file",
+      "source_path": "runtime/providers/elevenlabs_agents/knowledge_base/universal_sales_core.md",
+      "name": "universal_sales_core.md",
+      "content_bytes": 13222,
+      "content_type": "text/markdown",
+      "requires_api_key_env_var": "ELEVENLABS_API_KEY",
+      "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/create-from-file"
+    },
+    {
+      "request_id": "upload_knowledge_base::atlas_web_studio_web_design_campaign",
+      "method": "POST",
+      "endpoint": "/v1/convai/knowledge-base/file",
+      "source_path": "runtime/providers/elevenlabs_agents/knowledge_base/atlas_web_studio_web_design_campaign.md",
+      "name": "atlas_web_studio_web_design_campaign.md",
+      "content_bytes": 10206,
+      "content_type": "text/markdown",
+      "requires_api_key_env_var": "ELEVENLABS_API_KEY",
+      "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/create-from-file"
+    }
+  ],
+  "test_create_requests": [],
+  "run_tests_request": {
+    "request_id": "run_tests::{agent_id}",
+    "method": "POST",
+    "endpoint": "/v1/convai/agents/agent_7801kt0g32zxf4f8x5zkykj7syty/run-tests",
+    "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+    "requires_created_test_ids": true,
+    "body_template": {
+      "tests": [
+        {
+          "test_id": "{created_test_id}"
+        }
+      ],
+      "repeat_count": 1
+    },
+    "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/tests/run-tests"
+  },
+  "agent_config_patch": {
+    "request_id": "patch_agent::{agent_id}",
+    "method": "PATCH",
+    "endpoint": "/v1/convai/agents/agent_7801kt0g32zxf4f8x5zkykj7syty",
+    "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+    "status": "ready_for_review",
+    "source_config_path": "runtime/providers/elevenlabs_agents/fixtures/web_design_agent_config.sanitized.json",
+    "patch_payload_path": "research/experiments/generated/ELEVENLABS-010-web-design-sales-control-repair/agent_patch_v21c_payload.json",
+    "knowledge_base_documents": [
+      {
+        "type": "file",
+        "name": "universal_sales_core.md",
+        "id": "BcBNsi1ixg9pOsY4pRPE"
+      },
+      {
+        "type": "file",
+        "name": "atlas_web_studio_web_design_campaign.md",
+        "id": "sIrXtflwhwf3WdOg7Blg"
+      }
+    ],
+    "prompt_override_applied": true,
+    "first_message_override_applied": true,
+    "dynamic_variable_placeholders_applied": true,
+    "agent_temperature_override_applied": true,
+    "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/agents/update"
+  },
+  "test_folder": {
+    "folder_name": null,
+    "folder_id": null,
+    "parent_folder_id": null,
+    "applies_to_live_created_tests": false
+  },
+  "dashboard_upload_order": [
+    "Upload knowledge base documents",
+    "Create baseline tests",
+    "Attach returned knowledge base document IDs to the agent",
+    "Run tests against the selected agent or branch",
+    "Copy agent JSON config back into the repo for drift review"
+  ],
+  "live_result": {
+    "operation": "patch-agent",
+    "live_provider_calls_made": true,
+    "api_key_env_var": "ELEVENLABS_API_KEY",
+    "results": [
+      {
+        "request_id": "patch_agent::{agent_id}",
+        "operation": "patch-agent",
+        "status_code": 200,
+        "response_summary": {
+          "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+          "name": "web design",
+          "version_id": "agtvrsn_4701ktd7zme1eq0ay6swc150c867",
+          "branch_id": "agtbrch_6501kt0g34dvffgr95mvrh70cr2d",
+          "knowledge_base_document_ids": [
+            "BcBNsi1ixg9pOsY4pRPE",
+            "sIrXtflwhwf3WdOg7Blg"
+          ],
+          "rag_enabled": true
+        }
+      }
+    ]
+  }
+}

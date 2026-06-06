@@ -3143,7 +3143,7 @@ Build the ELEVENLABS-009 simulation test API request bundle and folder plan with
 python scripts\run_elevenlabs_agent_automation.py `
   --package-manifest runtime\providers\elevenlabs_agents\manifests\web_design_mikes_kitchen_simulation_tests.package.json `
   --agent-id agent_7801kt0g32zxf4f8x5zkykj7syty `
-  --test-folder-name "Atlas Web Studio - Mike's Kitchen Simulation Repair V17" `
+  --test-folder-name "Atlas Web Studio - Mike's Kitchen Simulation Repair V22" `
   --out research\experiments\generated\ELEVENLABS-009-mikes-kitchen-simulation-tests\simulation_tests_plan.json `
   --api-requests-out research\experiments\generated\ELEVENLABS-009-mikes-kitchen-simulation-tests\simulation_tests_requests.json
 ```
@@ -3154,7 +3154,7 @@ Create the ELEVENLABS-009 Simulation Tests in ElevenLabs and move them into the 
 python scripts\run_elevenlabs_agent_automation.py `
   --package-manifest runtime\providers\elevenlabs_agents\manifests\web_design_mikes_kitchen_simulation_tests.package.json `
   --agent-id agent_7801kt0g32zxf4f8x5zkykj7syty `
-  --test-folder-name "Atlas Web Studio - Mike's Kitchen Simulation Repair V17" `
+  --test-folder-name "Atlas Web Studio - Mike's Kitchen Simulation Repair V22" `
   --operation create-tests `
   --live `
   --confirm-provider-write `

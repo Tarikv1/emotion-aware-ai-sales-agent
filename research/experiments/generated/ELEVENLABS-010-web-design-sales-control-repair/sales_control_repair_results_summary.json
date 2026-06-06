@@ -3,20 +3,45 @@
   "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
   "live_universal_kb": "BcBNsi1ixg9pOsY4pRPE",
   "live_atlas_campaign_kb": "sIrXtflwhwf3WdOg7Blg",
-  "repaired_simulation_folder": "Atlas Web Studio - Mike's Kitchen Simulation Repair V17",
-  "repaired_simulation_folder_id": "tfld_6201ktd2m9ywexx8tbbpktt8z23r",
-  "repaired_simulation_suite": "suite_6201ktd2ndhpf6psdpyej9x4ae2w",
-  "result": "9/9 simulation tests passed",
-  "passed_count": 9,
-  "failed_count": 0,
+  "repaired_simulation_folder": "Atlas Web Studio - Mike's Kitchen Simulation Repair V22",
+  "repaired_simulation_folder_id": "tfld_2101ktd8d310f1basthjk2tqjcm7",
+  "repaired_simulation_suite": "suite_9101ktd8q9r1fc1rc7tecszbyj0h",
+  "result": "7/9 simulation tests passed; not production-green",
+  "passed_count": 7,
+  "failed_count": 2,
   "pending_count": 0,
+  "production_green": false,
+  "prompt_patch_plan": "research/experiments/generated/ELEVENLABS-010-web-design-sales-control-repair/agent_patch_v22d_plan.json",
+  "latest_live_agent_patch": {
+    "label": "V22d gatekeeper wording patch",
+    "plan": "research/experiments/generated/ELEVENLABS-010-web-design-sales-control-repair/agent_patch_v22d_plan.json",
+    "scope": "Replaced remaining gatekeeper 'try after three' wording with a direct call-back confirmation. No new simulation suite was run after this patch."
+  },
   "live_provider_calls_made": true,
   "private_customer_data_used": false,
   "raw_transcripts_stored": false,
+  "remaining_failure_modes": [
+    {
+      "source_test_id": "sim_plain_language_confused_buyer",
+      "test_run_id": "trun_8601ktd8q9rkfj3rnm7v518rjvgz",
+      "failure_messages": [
+        "Agent used 'potential direction' as a page-direction variant in a plain-language scenario.",
+        "Agent received a late send-path acknowledgment and did not add a final closing before the simulator ended."
+      ]
+    },
+    {
+      "source_test_id": "sim_social_presence_objection",
+      "test_run_id": "trun_0201ktd8q9rmf55r76wdc5jczqfc",
+      "failure_messages": [
+        "Agent did not include a natural closing in the final send/reply confirmation path.",
+        "Agent repeated practical-details/menu/reservation framing instead of rotating to distinct social-objection value angles."
+      ]
+    }
+  ],
   "notes": [
     "Universal KB owns sales method; campaign KB owns web-design value points.",
-    "Same-name attached KB replacement is used in the agent patch payload.",
-    "Old ElevenLabs KB documents were not deleted.",
-    "V17 verifies the current patched agent after social-comparison repair."
+    "V22c verifies the patched agent was improved but still unstable in two hard simulation paths.",
+    "V22d applied a narrow live agent prompt patch for the gatekeeper wording issue; it does not change the recorded 7/9 suite result.",
+    "Old ElevenLabs KB documents were not deleted."
   ]
 }

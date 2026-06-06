@@ -21,7 +21,7 @@ maximum conversation turns. They do not preload exact 8-10 turn transcripts.
 
 The current repaired ElevenLabs test folder is:
 
-`Atlas Web Studio - Mike's Kitchen Simulation Repair V17`
+`Atlas Web Studio - Mike's Kitchen Simulation Repair V22`
 
 ## Scenario Coverage
 
@@ -49,7 +49,7 @@ Build the dry-run API request bundle:
 python scripts\run_elevenlabs_agent_automation.py `
   --package-manifest runtime\providers\elevenlabs_agents\manifests\web_design_mikes_kitchen_simulation_tests.package.json `
   --agent-id agent_7801kt0g32zxf4f8x5zkykj7syty `
-  --test-folder-name "Atlas Web Studio - Mike's Kitchen Simulation Repair V17" `
+  --test-folder-name "Atlas Web Studio - Mike's Kitchen Simulation Repair V22" `
   --out research\experiments\generated\ELEVENLABS-009-mikes-kitchen-simulation-tests\simulation_tests_plan.json `
   --api-requests-out research\experiments\generated\ELEVENLABS-009-mikes-kitchen-simulation-tests\simulation_tests_requests.json
 ```
@@ -61,7 +61,7 @@ loading `ELEVENLABS_API_KEY` into the process environment:
 python scripts\run_elevenlabs_agent_automation.py `
   --package-manifest runtime\providers\elevenlabs_agents\manifests\web_design_mikes_kitchen_simulation_tests.package.json `
   --agent-id agent_7801kt0g32zxf4f8x5zkykj7syty `
-  --test-folder-name "Atlas Web Studio - Mike's Kitchen Simulation Repair V17" `
+  --test-folder-name "Atlas Web Studio - Mike's Kitchen Simulation Repair V22" `
   --operation create-tests `
   --live `
   --confirm-provider-write `
@@ -95,14 +95,32 @@ python scripts\run_elevenlabs_agent_automation.py `
 
 ## Live Result
 
-Repaired V17 suite is the current human-reviewed repair clean target. V17 keeps
+Repaired V22 suite is the current human-reviewed repair target. V22 keeps
 the real failures in scope: repeated closes before softening, weak campaign-value
 rotation, direct price/hosting answers, terminal closings, and unapproved
-bracketed delivery tags. It does not treat normal bare words like `Great` or
-`Perfect` as an automatic failure unless they are used as bracketed content-like
-tags or scripted openers.
+bracketed delivery tags. It also repairs the evaluator/simulator edge cases
+from human review: already-closed send/reply paths should not fail just because
+the simulated user says thanks afterward, and gatekeepers must not be asked what
+the caller should tell the owner.
 
-Current V17 suite created and ran on 2026-06-05:
+Current V22 suite was created and run from this source package:
+
+- folder: `Atlas Web Studio - Mike's Kitchen Simulation Repair V22`
+- folder ID: `tfld_2101ktd8d310f1basthjk2tqjcm7`
+- final suite ID: `suite_9101ktd8q9r1fc1rc7tecszbyj0h`
+- final result: `7/9` simulation tests passed; `production_green: false`
+- latest live prompt patch after this suite: `agent_patch_v22d_plan.json`, gatekeeper callback wording only; no new suite was run after it
+- remaining failures:
+  - `sim_plain_language_confused_buyer`: abstract `potential direction` wording and a late send-path closing issue
+  - `sim_social_presence_objection`: practical-detail repetition and final send/reply closing instability
+- sanitized summary: `research/experiments/generated/ELEVENLABS-009-mikes-kitchen-simulation-tests/simulation_results_summary.json`
+
+This V22 result is better evidence than the old next-reply tests, but it is not
+a production-green result. Do not rerun until green without changing the prompt,
+campaign KB, or success criteria; a random green run would hide the remaining
+control problems.
+
+Previous repaired V17 suite created and ran on 2026-06-05:
 
 - folder: `Atlas Web Studio - Mike's Kitchen Simulation Repair V17`
 - folder ID: `tfld_6201ktd2m9ywexx8tbbpktt8z23r`
