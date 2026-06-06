@@ -1,0 +1,377 @@
+{
+  "cleanup_id": "RAG-022-elevenlabs-kb-source-cleanup",
+  "live_provider_calls_made": true,
+  "delete_force_used": false,
+  "required_current_ids": [
+    "SDnLQPveXasZJEqOQA4o",
+    "npbVIw1kdC32W0UmceM8",
+    "p1CtFfTBnhfuewhLn0jP"
+  ],
+  "relevant_before_count": 55,
+  "cleanup_candidate_count": 51,
+  "deleted_count": 51,
+  "skipped_count": 4,
+  "error_count": 0,
+  "deleted": [
+    {
+      "id": "sIrXtflwhwf3WdOg7Blg",
+      "name": "atlas_web_studio_web_design_campaign.md",
+      "status_code": 204,
+      "force": false
+    },
+    {
+      "id": "BcBNsi1ixg9pOsY4pRPE",
+      "name": "universal_sales_core.md",
+      "status_code": 204,
+      "force": false
+    },
+    {
+      "id": "J1oUPFKt3q9qQ4B3fxCH",
+      "name": "atlas_web_studio_web_design_campaign.md",
+      "status_code": 204,
+      "force": false
+    },
+    {
+      "id": "LVYNp0JNtEG5nkzsSTnJ",
+      "name": "universal_sales_core.md",
+      "status_code": 204,
+      "force": false
+    },
+    {
+      "id": "xmd4DVgMYpQVIu0TQYEK",
+      "name": "atlas_web_studio_web_design_campaign.md",
+      "status_code": 204,
+      "force": false
+    },
+    {
+      "id": "Jo89jBHDbT3vr4X5TRNa",
+      "name": "universal_sales_core.md",
+      "status_code": 204,
+      "force": false
+    },
+    {
+      "id": "3lWlHzgBPCO9T9nw5298",
+      "name": "atlas_web_studio_web_design_campaign.md",
+      "status_code": 204,
+      "force": false
+    },
+    {
+      "id": "Zi3dWi8bsd4dCaQF6Ld1",
+      "name": "universal_sales_core.md",
+      "status_code": 204,
+      "force": false
+    },
+    {
+      "id": "6cZRR31pMpUNpcZJt8R5",
+      "name": "atlas_web_studio_web_design_campaign.md",
+      "status_code": 204,
+      "force": false
+    },
+    {
+      "id": "sWNF1XuRW6IueBq2qfqT",
+      "name": "universal_sales_core.md",
+      "status_code": 204,
+      "force": false
+    },
+    {
+      "id": "Z4LSyCWTE79Bw0R615R6",
+      "name": "atlas_web_studio_web_design_campaign.md",
+      "status_code": 204,
+      "force": false
+    },
+    {
+      "id": "ISwfGAt5W03qeozALy7l",
+      "name": "universal_sales_core.md",
+      "status_code": 204,
+      "force": false
+    },
+    {
+      "id": "5jks8eyNmbnmHsihdmFq",
+      "name": "atlas_web_studio_web_design_campaign.md",
+      "status_code": 204,
+      "force": false
+    },
+    {
+      "id": "7YJcnpGAInjnplggxYqG",
+      "name": "universal_sales_core.md",
+      "status_code": 204,
+      "force": false
+    },
+    {
+      "id": "6oRS6ridDuR6ydYzQIYg",
+      "name": "atlas_web_studio_web_design_campaign.md",
+      "status_code": 204,
+      "force": false
+    },
+    {
+      "id": "5RFX0j0NfRs8edVNfjWA",
+      "name": "universal_sales_core.md",
+      "status_code": 204,
+      "force": false
+    },
+    {
+      "id": "wd3sn9Ncp42NjL5LVxOz",
+      "name": "atlas_web_studio_web_design_campaign.md",
+      "status_code": 204,
+      "force": false
+    },
+    {
+      "id": "kKlphp2DlQEjakc9HK5i",
+      "name": "universal_sales_core.md",
+      "status_code": 204,
+      "force": false
+    },
+    {
+      "id": "3DZaUgUaK7fuuhSaFNTM",
+      "name": "atlas_web_studio_web_design_campaign.md",
+      "status_code": 204,
+      "force": false
+    },
+    {
+      "id": "kScaB23eWVanLoAhgl3j",
+      "name": "universal_sales_core.md",
+      "status_code": 204,
+      "force": false
+    },
+    {
+      "id": "5aMzRuwmFw8ZNdGAxCzR",
+      "name": "atlas_web_studio_web_design_campaign.md",
+      "status_code": 204,
+      "force": false
+    },
+    {
+      "id": "ld56ge90T7Lh3EbfVmUk",
+      "name": "universal_sales_core.md",
+      "status_code": 204,
+      "force": false
+    },
+    {
+      "id": "fGRi4Zz6UOimabHvHEHH",
+      "name": "atlas_web_studio_web_design_campaign.md",
+      "status_code": 204,
+      "force": false
+    },
+    {
+      "id": "4iAl9VDj3rYkHMtzDkN4",
+      "name": "universal_sales_core.md",
+      "status_code": 204,
+      "force": false
+    },
+    {
+      "id": "nRXWwK0141qU87R2EZ6y",
+      "name": "atlas_web_studio_web_design_campaign.md",
+      "status_code": 204,
+      "force": false
+    },
+    {
+      "id": "NYbcVhUem63YQEtwyHeL",
+      "name": "universal_sales_core.md",
+      "status_code": 204,
+      "force": false
+    },
+    {
+      "id": "0KcYz21LBeo0q0FDuNxD",
+      "name": "atlas_web_studio_web_design_campaign.md",
+      "status_code": 204,
+      "force": false
+    },
+    {
+      "id": "I60SunEzZJFcFjxb6nrY",
+      "name": "universal_sales_core.md",
+      "status_code": 204,
+      "force": false
+    },
+    {
+      "id": "EAL7PctLL9ZT7Cl70QsG",
+      "name": "atlas_web_studio_web_design_campaign.md",
+      "status_code": 204,
+      "force": false
+    },
+    {
+      "id": "uYIjd32uZWna2fYjK6mw",
+      "name": "universal_sales_core.md",
+      "status_code": 204,
+      "force": false
+    },
+    {
+      "id": "BhMmXxSt6nErolindzPr",
+      "name": "atlas_web_studio_web_design_campaign.md",
+      "status_code": 204,
+      "force": false
+    },
+    {
+      "id": "SvPlxDbLra42pp36njfT",
+      "name": "universal_sales_core.md",
+      "status_code": 204,
+      "force": false
+    },
+    {
+      "id": "YZrC0Lww6PYnI6QWNzBq",
+      "name": "atlas_web_studio_web_design_campaign.md",
+      "status_code": 204,
+      "force": false
+    },
+    {
+      "id": "F0FJqBHPHQxQEnF42hf5",
+      "name": "universal_sales_core.md",
+      "status_code": 204,
+      "force": false
+    },
+    {
+      "id": "IkaG5meLwWNWA53Z5jIM",
+      "name": "universal_sales_core.md",
+      "status_code": 204,
+      "force": false
+    },
+    {
+      "id": "ocKyjvaEe2F3T4nCx0Dk",
+      "name": "universal_sales_core.md",
+      "status_code": 204,
+      "force": false
+    },
+    {
+      "id": "42SRCbmq10xDhqIIve73",
+      "name": "universal_sales_core.md",
+      "status_code": 204,
+      "force": false
+    },
+    {
+      "id": "Uz0OSWBcvxNR7nLIRPvo",
+      "name": "universal_sales_core.md",
+      "status_code": 204,
+      "force": false
+    },
+    {
+      "id": "LNnbPtUV876Rw2N2Pp64",
+      "name": "universal_sales_core.md",
+      "status_code": 204,
+      "force": false
+    },
+    {
+      "id": "OyjSKNJnQTc84pyk1Yu0",
+      "name": "universal_sales_core.md",
+      "status_code": 204,
+      "force": false
+    },
+    {
+      "id": "6T2iUJUoCGcVJwmpxYiY",
+      "name": "Atlas Trust Repair And Risk...",
+      "status_code": 204,
+      "force": false
+    },
+    {
+      "id": "8ojsvvrXo6mqvvqNgl9z",
+      "name": "Atlas Prospect Context Rules KB...",
+      "status_code": 204,
+      "force": false
+    },
+    {
+      "id": "PHs5f7iFEuDLLiJu8aiD",
+      "name": "Atlas Trust Repair And Risk...",
+      "status_code": 204,
+      "force": false
+    },
+    {
+      "id": "eeQUrNPgbqmFRkp1g7Nz",
+      "name": "Atlas Vertical Micro-Playbooks V3",
+      "status_code": 204,
+      "force": false
+    },
+    {
+      "id": "8VSjm4ycExns4kP5ICXm",
+      "name": "Atlas Sales Facts KB V3",
+      "status_code": 204,
+      "force": false
+    },
+    {
+      "id": "c3VktnONX0iXhnMtPunL",
+      "name": "Atlas Capability Boundaries KB V3",
+      "status_code": 204,
+      "force": false
+    },
+    {
+      "id": "mtVgG06DHYkw8XxAdXAG",
+      "name": "Atlas Sales Facts KB",
+      "status_code": 204,
+      "force": false
+    },
+    {
+      "id": "4y8ca0TurNkMlyfvqpSE",
+      "name": "Atlas Objection Handling KB",
+      "status_code": 204,
+      "force": false
+    },
+    {
+      "id": "WoRz3alHMXruH1YTCoxk",
+      "name": "Atlas Capability Boundaries KB",
+      "status_code": 204,
+      "force": false
+    },
+    {
+      "id": "xch2QKJnIypRrA8hgdpj",
+      "name": "Atlas Vertical Playbooks KB",
+      "status_code": 204,
+      "force": false
+    },
+    {
+      "id": "5UjmExCjb8RDCTmMtMsE",
+      "name": "KB: OpenAI Plan Sales Playbook",
+      "status_code": 204,
+      "force": false
+    }
+  ],
+  "skipped": [
+    {
+      "id": "SDnLQPveXasZJEqOQA4o",
+      "name": "atlas_web_studio_web_design_campaign_profile.md",
+      "reason": "current_required_document"
+    },
+    {
+      "id": "npbVIw1kdC32W0UmceM8",
+      "name": "atlas_web_studio_web_design_campaign_overlay.md",
+      "reason": "current_required_document"
+    },
+    {
+      "id": "p1CtFfTBnhfuewhLn0jP",
+      "name": "universal_sales_core.md",
+      "reason": "current_required_document"
+    },
+    {
+      "id": "tDH6n3V6cAZ6bFxCPx1G",
+      "name": "Website Offer And Service Levels",
+      "reason": "has_dependents",
+      "agent_count": 0,
+      "branch_count": 1
+    }
+  ],
+  "errors": [],
+  "remaining_relevant_count": 4,
+  "remaining_relevant": [
+    {
+      "id": "SDnLQPveXasZJEqOQA4o",
+      "name": "atlas_web_studio_web_design_campaign_profile.md",
+      "dependent_agents": [
+        "web design"
+      ]
+    },
+    {
+      "id": "npbVIw1kdC32W0UmceM8",
+      "name": "atlas_web_studio_web_design_campaign_overlay.md",
+      "dependent_agents": [
+        "web design"
+      ]
+    },
+    {
+      "id": "p1CtFfTBnhfuewhLn0jP",
+      "name": "universal_sales_core.md",
+      "dependent_agents": [
+        "web design"
+      ]
+    },
+    {
+      "id": "tDH6n3V6cAZ6bFxCPx1G",
+      "name": "Website Offer And Service Levels",
+      "dependent_agents": []
+    }
+  ]
+}
