@@ -1,0 +1,22 @@
+{
+  "checkpoint_id": "ELEVENLABS-010-web-design-sales-control-repair",
+  "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+  "live_universal_kb": "BcBNsi1ixg9pOsY4pRPE",
+  "live_atlas_campaign_kb": "sIrXtflwhwf3WdOg7Blg",
+  "repaired_simulation_folder": "Atlas Web Studio - Mike's Kitchen Simulation Repair V17",
+  "repaired_simulation_folder_id": "tfld_6201ktd2m9ywexx8tbbpktt8z23r",
+  "repaired_simulation_suite": "suite_6201ktd2ndhpf6psdpyej9x4ae2w",
+  "result": "9/9 simulation tests passed",
+  "passed_count": 9,
+  "failed_count": 0,
+  "pending_count": 0,
+  "live_provider_calls_made": true,
+  "private_customer_data_used": false,
+  "raw_transcripts_stored": false,
+  "notes": [
+    "Universal KB owns sales method; campaign KB owns web-design value points.",
+    "Same-name attached KB replacement is used in the agent patch payload.",
+    "Old ElevenLabs KB documents were not deleted.",
+    "V17 verifies the current patched agent after social-comparison repair."
+  ]
+}

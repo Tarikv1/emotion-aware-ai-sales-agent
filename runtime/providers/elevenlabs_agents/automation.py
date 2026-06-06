@@ -76,6 +76,34 @@ def validate_chat_history_entries(payload: Any, *, source_label: str) -> list[di
     return entries
 
 
+def validate_optional_chat_history_entries(payload: Any, *, source_label: str) -> list[dict[str, Any]]:
+    if payload is None:
+        return []
+    if not isinstance(payload, list):
+        raise ValueError(f"{source_label} chat_history must be a list when provided.")
+    entries: list[dict[str, Any]] = []
+    for index, item in enumerate(payload):
+        if not isinstance(item, dict):
+            raise ValueError(f"{source_label} chat_history item {index} must be an object.")
+        role = str(item.get("role", "")).strip()
+        if role not in {"user", "agent"}:
+            raise ValueError(f"{source_label} chat_history item {index} role must be user or agent.")
+        message = str(item.get("message", "")).strip()
+        if not message:
+            raise ValueError(f"{source_label} chat_history item {index} message is required.")
+        time_in_call_secs = item.get("time_in_call_secs", index + 1)
+        if not isinstance(time_in_call_secs, (int, float)) or time_in_call_secs < 0:
+            raise ValueError(f"{source_label} chat_history item {index} time_in_call_secs must be non-negative.")
+        entries.append(
+            {
+                "role": role,
+                "message": message,
+                "time_in_call_secs": time_in_call_secs,
+            }
+        )
+    return entries
+
+
 def rel_path(path: Path) -> str:
     return str(path.relative_to(ROOT)).replace("\\", "/")
 
@@ -216,29 +244,57 @@ def test_create_request(
     suite_dynamic_variables: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     test_id = str(item["test_id"])
-    body = {
-        "type": "llm",
-        "name": f"{package_id}::{test_id}",
-        "chat_history": build_chat_history(item, test_id=test_id),
-        "success_condition": _success_condition(item),
-        "success_examples": [
-            {
-                "type": "success",
-                "response": str(item["expected_behavior"]),
-            }
-        ],
-        "failure_examples": [
-            {
-                "type": "failure",
-                "response": str(item["forbidden_behavior"]),
-            }
-        ],
-        "dynamic_variables": build_dynamic_variables(
-            item,
-            package_id=package_id,
-            suite_dynamic_variables=suite_dynamic_variables,
-        ),
-    }
+    test_type = str(item.get("type") or item.get("test_type") or "llm").strip()
+    dynamic_variables = build_dynamic_variables(
+        item,
+        package_id=package_id,
+        suite_dynamic_variables=suite_dynamic_variables,
+    )
+    if test_type == "simulation":
+        simulation_scenario = str(item.get("simulation_scenario", "")).strip()
+        success_condition = str(item.get("success_condition", "")).strip()
+        simulation_max_turns = item.get("simulation_max_turns")
+        if not simulation_scenario:
+            raise ValueError(f"{test_id} simulation_scenario is required for simulation tests.")
+        if not success_condition:
+            raise ValueError(f"{test_id} success_condition is required for simulation tests.")
+        if not isinstance(simulation_max_turns, int) or not 1 <= simulation_max_turns <= 50:
+            raise ValueError(f"{test_id} simulation_max_turns must be an integer from 1 to 50.")
+        body = {
+            "type": "simulation",
+            "name": f"{package_id}::{test_id}",
+            "simulation_scenario": simulation_scenario,
+            "simulation_max_turns": simulation_max_turns,
+            "success_condition": success_condition,
+            "dynamic_variables": dynamic_variables,
+        }
+        chat_history = validate_optional_chat_history_entries(item.get("chat_history"), source_label=test_id)
+        if chat_history:
+            body["chat_history"] = chat_history
+        if "tool_mock_config" in item:
+            body["tool_mock_config"] = item["tool_mock_config"]
+    elif test_type == "llm":
+        body = {
+            "type": "llm",
+            "name": f"{package_id}::{test_id}",
+            "chat_history": build_chat_history(item, test_id=test_id),
+            "success_condition": _success_condition(item),
+            "success_examples": [
+                {
+                    "type": "success",
+                    "response": str(item["expected_behavior"]),
+                }
+            ],
+            "failure_examples": [
+                {
+                    "type": "failure",
+                    "response": str(item["forbidden_behavior"]),
+                }
+            ],
+            "dynamic_variables": dynamic_variables,
+        }
+    else:
+        raise ValueError(f"{test_id} unsupported test type: {test_type}")
     return {
         "request_id": f"create_test::{test_id}",
         "method": "POST",
@@ -317,7 +373,20 @@ def merge_knowledge_base_entries(
 ) -> list[dict[str, Any]]:
     merged: list[dict[str, Any]] = []
     seen_ids: set[str] = set()
-    for item in [*existing_entries, *new_entries]:
+    replacement_names = {
+        str(item.get("name", "")).strip().casefold()
+        for item in new_entries
+        if isinstance(item, dict) and str(item.get("name", "")).strip()
+    }
+    filtered_existing: list[dict[str, Any]] = []
+    for item in existing_entries:
+        if not isinstance(item, dict):
+            continue
+        item_name = str(item.get("name", "")).strip().casefold()
+        if item_name and item_name in replacement_names:
+            continue
+        filtered_existing.append(item)
+    for item in [*filtered_existing, *new_entries]:
         if not isinstance(item, dict):
             continue
         item_id = str(item.get("id", "")).strip()

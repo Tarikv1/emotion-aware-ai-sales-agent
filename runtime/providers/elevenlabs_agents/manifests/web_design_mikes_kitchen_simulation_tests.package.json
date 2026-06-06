@@ -1,0 +1,33 @@
+{
+  "package_id": "ELEVENLABS-009-mikes-kitchen-simulation-tests",
+  "provider": "elevenlabs",
+  "source_of_truth": "repo",
+  "dashboard_role": "managed runtime and dashboard simulation test surface",
+  "status": "campaign-simulation-test-pack-ready",
+  "live_provider_calls_made": false,
+  "private_customer_data_used": false,
+  "api_key_required_for_generation": false,
+  "dashboard_manual_changes_source_of_truth": false,
+  "knowledge_base_docs": [],
+  "baseline_tests": [
+    "runtime/providers/elevenlabs_agents/tests/web_design_mikes_kitchen_simulation_tests.json"
+  ],
+  "upload_intent": {
+    "current_mode": "repo-driven ElevenLabs API simulation test creation",
+    "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+    "campaign_role": "Atlas Web Studio restaurant website outreach",
+    "dynamic_variables_required": true,
+    "test_type": "simulation",
+    "simulation_max_turns": "12-22",
+    "target_test_folder_name": "Atlas Web Studio - Mike's Kitchen Simulation Repair V17",
+    "knowledge_base_upload_required": false
+  },
+  "blocked_until_review": [
+    "treating passing simulation tests as proof of real phone-call performance",
+    "uploading private customer emails",
+    "uploading private transcripts",
+    "using customer audio",
+    "production customer calls",
+    "deleting stale next-reply tests without explicit approval"
+  ]
+}

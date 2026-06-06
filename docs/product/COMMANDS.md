@@ -3131,6 +3131,53 @@ python scripts\run_elevenlabs_agent_automation.py `
 
 Live provider writes require `ELEVENLABS_API_KEY`, `--live`, and `--confirm-provider-write`.
 
+Validate the ELEVENLABS-009 Mike's Kitchen simulation test package without provider calls:
+
+```powershell
+python scripts\validate_elevenlabs_009_mikes_kitchen_simulation_tests.py
+```
+
+Build the ELEVENLABS-009 simulation test API request bundle and folder plan without provider calls:
+
+```powershell
+python scripts\run_elevenlabs_agent_automation.py `
+  --package-manifest runtime\providers\elevenlabs_agents\manifests\web_design_mikes_kitchen_simulation_tests.package.json `
+  --agent-id agent_7801kt0g32zxf4f8x5zkykj7syty `
+  --test-folder-name "Atlas Web Studio - Mike's Kitchen Simulation Repair V17" `
+  --out research\experiments\generated\ELEVENLABS-009-mikes-kitchen-simulation-tests\simulation_tests_plan.json `
+  --api-requests-out research\experiments\generated\ELEVENLABS-009-mikes-kitchen-simulation-tests\simulation_tests_requests.json
+```
+
+Create the ELEVENLABS-009 Simulation Tests in ElevenLabs and move them into the simulation folder:
+
+```powershell
+python scripts\run_elevenlabs_agent_automation.py `
+  --package-manifest runtime\providers\elevenlabs_agents\manifests\web_design_mikes_kitchen_simulation_tests.package.json `
+  --agent-id agent_7801kt0g32zxf4f8x5zkykj7syty `
+  --test-folder-name "Atlas Web Studio - Mike's Kitchen Simulation Repair V17" `
+  --operation create-tests `
+  --live `
+  --confirm-provider-write `
+  --out research\experiments\generated\ELEVENLABS-009-mikes-kitchen-simulation-tests\simulation_tests_plan.json `
+  --api-requests-out research\experiments\generated\ELEVENLABS-009-mikes-kitchen-simulation-tests\simulation_tests_requests.json
+```
+
+Run the created ELEVENLABS-009 Simulation Tests against the live `web design` agent:
+
+```powershell
+python scripts\run_elevenlabs_agent_automation.py `
+  --package-manifest runtime\providers\elevenlabs_agents\manifests\web_design_mikes_kitchen_simulation_tests.package.json `
+  --agent-id agent_7801kt0g32zxf4f8x5zkykj7syty `
+  --operation run-tests `
+  --created-test-ids <test_id_1> <test_id_2> `
+  --live `
+  --confirm-provider-write `
+  --out research\experiments\generated\ELEVENLABS-009-mikes-kitchen-simulation-tests\simulation_run_plan.json `
+  --api-requests-out research\experiments\generated\ELEVENLABS-009-mikes-kitchen-simulation-tests\simulation_run_requests.json
+```
+
+Live provider writes require `ELEVENLABS_API_KEY`, `--live`, and `--confirm-provider-write`.
+
 ## Guarded Local Demo Server
 
 Use the guarded launcher for browser demos so long-lived servers do not hang the terminal:
@@ -3470,6 +3517,48 @@ ULTRAVOX-003 generates synthetic customer audio locally when possible, or reuses
 ## Explicit Opt-In Provider Commands
 
 These commands can contact external providers. Do not run them as default setup checks.
+
+Validate the ElevenLabs 010 sales-control repair without provider calls:
+
+```powershell
+python scripts\validate_elevenlabs_010_web_design_sales_control_repair.py
+```
+
+Live ELEVENLABS-010 KB upload and agent patch requires `ELEVENLABS_API_KEY` in
+the current shell and explicit `--live --confirm-provider-write`:
+
+```powershell
+python scripts\run_elevenlabs_agent_automation.py `
+  --package-manifest runtime\providers\elevenlabs_agents\manifests\web_design_sales_control_repair.package.json `
+  --operation upload-kb `
+  --live `
+  --confirm-provider-write `
+  --out research\experiments\generated\ELEVENLABS-010-web-design-sales-control-repair\kb_upload_plan.json `
+  --api-requests-out research\experiments\generated\ELEVENLABS-010-web-design-sales-control-repair\kb_upload_requests.json
+```
+
+After the two returned KB document IDs are known:
+
+```powershell
+python scripts\run_elevenlabs_agent_automation.py `
+  --package-manifest runtime\providers\elevenlabs_agents\manifests\web_design_sales_control_repair.package.json `
+  --operation patch-agent `
+  --agent-config runtime\providers\elevenlabs_agents\fixtures\web_design_agent_config.sanitized.json `
+  --kb-document-id <universal_sales_core_document_id> `
+  --kb-document-name universal_sales_core.md `
+  --kb-document-id <atlas_web_studio_campaign_document_id> `
+  --kb-document-name atlas_web_studio_web_design_campaign.md `
+  --agent-prompt-file runtime\providers\elevenlabs_agents\prompts\web_design_atlas_sales_prompt.md `
+  --first-message-file runtime\providers\elevenlabs_agents\prompts\web_design_first_message.txt `
+  --dynamic-variable-defaults runtime\providers\elevenlabs_agents\variables\mikes_kitchen_dynamic_variable_defaults.json `
+  --agent-temperature 0.25 `
+  --agent-patch-version-scope "ELEVENLABS-010 web design sales control repair" `
+  --agent-patch-out research\experiments\generated\ELEVENLABS-010-web-design-sales-control-repair\agent_patch_payload.json `
+  --out research\experiments\generated\ELEVENLABS-010-web-design-sales-control-repair\agent_patch_plan.json `
+  --api-requests-out research\experiments\generated\ELEVENLABS-010-web-design-sales-control-repair\agent_patch_requests.json `
+  --live `
+  --confirm-provider-write
+```
 
 Live VOICE-024 audio generation requires `ELEVENLABS_API_KEY` in the current shell and local voice IDs in ignored config:
 

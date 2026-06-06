@@ -1,0 +1,35 @@
+{
+  "package_id": "ELEVENLABS-010-web-design-sales-control-repair",
+  "provider": "elevenlabs",
+  "source_of_truth": "repo",
+  "dashboard_role": "managed runtime and dashboard agent patch surface",
+  "status": "human-reviewed-simulation-repair-ready",
+  "live_provider_calls_made": false,
+  "private_customer_data_used": false,
+  "api_key_required_for_generation": false,
+  "dashboard_manual_changes_source_of_truth": false,
+  "knowledge_base_docs": [
+    "runtime/providers/elevenlabs_agents/knowledge_base/universal_sales_core.md",
+    "runtime/providers/elevenlabs_agents/knowledge_base/atlas_web_studio_web_design_campaign.md"
+  ],
+  "baseline_tests": [],
+  "upload_intent": {
+    "current_mode": "repo-driven ElevenLabs API knowledge-base upload and agent patch",
+    "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+    "campaign_role": "Atlas Web Studio restaurant website outreach",
+    "dynamic_variables_required": true,
+    "agent_prompt_required": true,
+    "first_message_required": true,
+    "agent_temperature": 0.25,
+    "knowledge_base_upload_required": true,
+    "replace_same_name_attached_kb_docs": true
+  },
+  "blocked_until_review": [
+    "deleting stale knowledge-base documents from the ElevenLabs workspace",
+    "uploading private customer emails",
+    "uploading private transcripts",
+    "using customer audio",
+    "production customer calls",
+    "changing production voice-delivery tags without a separate voice-delivery test"
+  ]
+}

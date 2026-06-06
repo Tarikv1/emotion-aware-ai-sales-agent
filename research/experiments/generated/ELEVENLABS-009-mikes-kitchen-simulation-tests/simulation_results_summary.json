@@ -1,0 +1,84 @@
+{
+  "checkpoint_id": "ELEVENLABS-009-mikes-kitchen-simulation-tests",
+  "test_type": "simulation",
+  "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+  "test_folder_name": "Atlas Web Studio - Mike's Kitchen Simulation Repair V17",
+  "test_folder_id": "tfld_6201ktd2m9ywexx8tbbpktt8z23r",
+  "suite_id": "suite_6201ktd2ndhpf6psdpyej9x4ae2w",
+  "test_count": 9,
+  "passed_count": 9,
+  "failed_count": 0,
+  "pending_count": 0,
+  "created_tests": [
+    {
+      "source_test_id": "sim_booking_boundary_phone_only",
+      "simulation_focus": "phone_only_booking_boundary",
+      "provider_test_id": "test_3301ktd2m8jkf6d9867vm7h0etxj",
+      "test_run_id": "trun_0301ktd2ndj3epq8bp7p9t6n8rn6",
+      "status": "passed"
+    },
+    {
+      "source_test_id": "sim_busy_manager_callback",
+      "simulation_focus": "busy_callback",
+      "provider_test_id": "test_5101ktd2m843endr28h37ecpdcth",
+      "test_run_id": "trun_6201ktd2ndj1f0x9zdr0gmb1w1be",
+      "status": "passed"
+    },
+    {
+      "source_test_id": "sim_clear_no_do_not_call",
+      "simulation_focus": "clear_refusal_do_not_call",
+      "provider_test_id": "test_5701ktd2m9anfaz9kkvs5r8z6ryp",
+      "test_run_id": "trun_0801ktd2ndj6fjqv78hzkdd2mf26",
+      "status": "passed"
+    },
+    {
+      "source_test_id": "sim_gatekeeper_owner_after_three",
+      "simulation_focus": "gatekeeper_callback_note",
+      "provider_test_id": "test_5401ktd2m8b3f31vcymgbeasa1qz",
+      "test_run_id": "trun_0501ktd2ndj2f1xsn7pv49d1hk82",
+      "status": "passed"
+    },
+    {
+      "source_test_id": "sim_optional_booking_future_scope",
+      "simulation_focus": "optional_booking_future_scope",
+      "provider_test_id": "test_2501ktd2m9hdej68yf3yv7j4h0tf",
+      "test_run_id": "trun_6401ktd2ndj7fnybqbqc7qrp0zwm",
+      "status": "passed"
+    },
+    {
+      "source_test_id": "sim_owner_skeptical_value_path",
+      "simulation_focus": "skeptical_owner_value_path",
+      "provider_test_id": "test_0701ktd2m7mzf0xt8q7q3c9e0cms",
+      "test_run_id": "trun_5601ktd2ndhzfqqr1zs5f68khsa6",
+      "status": "passed"
+    },
+    {
+      "source_test_id": "sim_plain_language_confused_buyer",
+      "simulation_focus": "plain_language",
+      "provider_test_id": "test_3001ktd2m8svepw8bwxfjpe5ytzn",
+      "test_run_id": "trun_5401ktd2ndj4f73rd0vaxxmvxtz1",
+      "status": "passed"
+    },
+    {
+      "source_test_id": "sim_price_catch_no_surprise",
+      "simulation_focus": "price_and_catch",
+      "provider_test_id": "test_6801ktd2m7xse49a8wxb39qgyszc",
+      "test_run_id": "trun_6101ktd2ndj0e5ztkcjejthh8njn",
+      "status": "passed"
+    },
+    {
+      "source_test_id": "sim_social_presence_objection",
+      "simulation_focus": "instagram_google_maps_objection",
+      "provider_test_id": "test_1201ktd2m918feesckgv5yaxnnk3",
+      "test_run_id": "trun_6201ktd2ndj5f43asncprfwk3rea",
+      "status": "passed"
+    }
+  ],
+  "live_provider_calls_made": true,
+  "private_customer_data_used": false,
+  "raw_transcripts_stored": false,
+  "notes": [
+    "V17 is the first clean run after social-comparison proof-before-purchase repair.",
+    "Result summary stores IDs/counts only, not transcripts."
+  ]
+}

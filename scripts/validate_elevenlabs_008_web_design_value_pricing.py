@@ -21,6 +21,14 @@ FIXTURE = (
     / "web_design_agent_config.sanitized.json"
 )
 KB = ROOT / "runtime" / "providers" / "elevenlabs_agents" / "knowledge_base" / "universal_sales_core.md"
+CAMPAIGN_KB = (
+    ROOT
+    / "runtime"
+    / "providers"
+    / "elevenlabs_agents"
+    / "knowledge_base"
+    / "atlas_web_studio_web_design_campaign.md"
+)
 PROMPT = ROOT / "runtime" / "providers" / "elevenlabs_agents" / "prompts" / "web_design_atlas_sales_prompt.md"
 FIRST_MESSAGE = ROOT / "runtime" / "providers" / "elevenlabs_agents" / "prompts" / "web_design_first_message.txt"
 DEFAULTS = (
@@ -102,17 +110,26 @@ def assert_no_private_or_response_only_leak(payload: dict[str, Any]) -> None:
 
 
 def main() -> None:
-    for path in (RUNNER, FIXTURE, KB, PROMPT, FIRST_MESSAGE, DEFAULTS, MANIFEST, TESTS, DOC, LIVE_RESULT_SUMMARY):
+    for path in (RUNNER, FIXTURE, KB, CAMPAIGN_KB, PROMPT, FIRST_MESSAGE, DEFAULTS, MANIFEST, TESTS, DOC, LIVE_RESULT_SUMMARY):
         assert_condition(path.is_file(), f"Missing file: {path.relative_to(ROOT)}")
 
     kb_text = KB.read_text(encoding="utf-8")
     for marker in (
         "disclose the approved anchor instead of dodging",
         "translate features into the buyer's practical outcome",
-        "local-business website outreach",
-        "easier customer decisions",
+        "use the campaign knowledge base for the actual selling points",
+        "Universal sales advice must stay subordinate to campaign facts.",
     ):
         assert_condition(marker in kb_text, f"Universal sales core missing marker: {marker}")
+
+    campaign_kb_text = CAMPAIGN_KB.read_text(encoding="utf-8")
+    for marker in (
+        "website-specific facts and",
+        "selling points for local restaurant outreach",
+        "for practical customer decisions",
+        "Simple website projects generally start around `$1,000`.",
+    ):
+        assert_condition(marker in campaign_kb_text, f"Campaign KB missing marker: {marker}")
 
     prompt_text = PROMPT.read_text(encoding="utf-8")
     for marker in (

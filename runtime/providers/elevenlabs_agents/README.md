@@ -45,3 +45,13 @@ Current packages:
   KB repair plus stress tests for price disclosure, internal-reasoning leaks,
   statement-vs-question handling, callback brevity, and restaurant-specific
   value framing.
+- `ELEVENLABS-009-mikes-kitchen-simulation-tests`: full-conversation
+  ElevenLabs Simulation Tests for Mike's Kitchen with dynamic variables,
+  max-turn limits, and buyer-behavior scenarios instead of fixed next-reply
+  histories.
+- `ELEVENLABS-010-web-design-sales-control-repair`: human-reviewed simulation
+  repair that separates Atlas website campaign value from universal sales
+  method, blocks repeated closes, strengthens direct pricing/hosting answers,
+  requires natural terminal closings, controls unapproved bracketed delivery
+  tags, and patches the live web design agent with current repo-owned KB
+  documents.

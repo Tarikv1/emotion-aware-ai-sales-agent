@@ -7,14 +7,18 @@
   "known_website_status": "no full website known",
   "known_social_presence": "Instagram and Google Maps",
   "known_booking_or_ordering_path": "reservations by phone",
-  "suspected_gap": "unclear whether menu, hours, location, and reservation phone details are easy to find together",
-  "primary_offer_angle": "menu, hours, location, and reservation phone calls",
+  "suspected_gap": "unclear whether first-time visitors get a clean first impression from the current profile path",
+  "primary_offer_angle": "controlled homepage direction",
   "likely_decision_maker_role": "owner or manager",
   "contact_name_if_known": "",
-  "call_reason": "free homepage mockup showing menu, hours, location, and reservation calls in one place",
+  "call_reason": "free homepage mockup for a clearer homepage direction",
   "website_starting_price": "$1,000",
   "website_scope_price_note": "final pricing depends on pages, content, integrations, design depth, and whether the site needs premium or immersive work",
   "website_premium_price_anchor": "$5,000",
   "website_price_disclosure_rule": "only discuss paid website pricing when the buyer directly asks about price, cost, money, hidden fees, or what happens after the free mockup",
-  "approved_value_points": "reduce customer confusion before calling; make menu, hours, location, and the reservation phone number easier to find; give the owner a concrete homepage direction before paying for a full site; keep phone reservations if the restaurant wants phone-only reservations"
+  "website_hosting_monthly_ballpark": "$10-$30/month",
+  "website_domain_cost_note": "domain costs are separate and should be confirmed before anything paid",
+  "approved_value_points": "owner-controlled homepage direction; one shareable link for social profiles, texts, QR codes, and staff replies; easier menu scan when the buyer cares about menu presentation; fewer routine staff questions before calls; first-time visitor clarity; keep phone reservations if the restaurant wants phone-only reservations",
+  "website_campaign_value_points": "owner-controlled homepage layout; one shareable link for Instagram, Google, texts, emails, QR codes, and print; first-time visitor clarity before customers call; easier-to-scan menu than posts or profile photos when menu is the concern; fewer basic staff calls; Google Maps and Instagram can stay useful; reservation phone number can be easier to notice when phone path is the concern; optional future scope only when the buyer opens the door; mockup gives a concrete direction before paid work",
+  "optional_upsell_boundary": "online booking is optional future scope only when the buyer is neutral, curious, or complains about phone/admin workload; never push it after the buyer rejects online booking"
 }

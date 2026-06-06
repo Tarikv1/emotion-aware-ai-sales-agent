@@ -5610,3 +5610,61 @@ Interpretation:
 - Why it matters for the thesis:
   - it records a human-in-the-loop correction where green tests were not accepted until the evaluator matched human sales-quality critique
   - it distinguishes sales intent from unsafe pressure by defining the valid next step and the stop boundary
+
+### 2026-06-05 - ELEVENLABS-009 simulation-test baseline
+
+- Objective: replace false confidence from next-reply tests with full-conversation simulation tests.
+- Action taken:
+  - added a repo-owned Mike's Kitchen Simulation Test package using ElevenLabs `type: simulation`
+  - created buyer-behavior scenarios with maximum turns instead of fixed 8-10 turn chat histories
+  - covered skeptical owner, price/catch concern, busy callback, gatekeeper, phone-only reservation boundary, plain-language confusion, Instagram/Google Maps objection, and clear do-not-call refusal
+  - extended the automation builder so it can emit simulation-test create payloads separately from `llm` next-reply tests
+- Method:
+  - kept dynamic variables and campaign facts constant
+  - changed the evaluation surface before changing the prompt again
+  - treated audio tags as a separate voice-delivery experiment because simulation tests evaluate text-side behavior, not spoken delivery
+- Boundary:
+  - no private customer data
+  - no customer audio
+  - no API key value logged
+  - no production customer call
+  - passing simulation tests is not treated as proof of live outbound performance
+- Why it matters for the thesis:
+  - it makes the evaluation closer to the real sales-agent goal: dynamic multi-turn selling with a stop boundary
+  - it separates conversation-strategy evidence from one-answer rubric compliance
+
+### 2026-06-05 - ELEVENLABS-010 sales-control and campaign-value repair
+
+- Objective: repair human-reviewed simulation failures after the initial simulation baseline passed too easily.
+- Action taken:
+  - diagnosed the ElevenLabs RAG source panel against the live agent config
+  - confirmed the live agent was attached to one `universal_sales_core.md` document while the workspace inventory contained multiple historical same-name uploads
+  - added same-name attached-KB replacement to the agent patch automation
+  - added an Atlas Web Studio campaign KB for local restaurant website value points
+  - updated the universal sales core with stricter immediate-refusal, sales-rhythm, value-use, and upsell-discipline rules
+  - patched the web design prompt to block repeated closes, internal self-talk, and bracketed audio tags
+  - strengthened the simulation suite with stricter success criteria and an optional-booking future-scope scenario
+- Method:
+  - treated dashboard pass/fail as weaker than human transcript review
+  - separated universal selling method from campaign-specific website value
+  - encoded ethical persuasion, not manipulation: truthful relevance, one value point, one next step, and a clear stop boundary
+- Boundary:
+  - no private customer data
+  - no customer audio
+  - no API key value logged
+  - no destructive deletion of old ElevenLabs KB documents
+  - audio-tag configuration remains a separate voice-delivery experiment
+- Why it matters for the thesis:
+  - it documents the difference between full-conversation simulation coverage and actual sales-quality approval
+  - it shows how qualitative critique becomes a stricter regression surface
+  - it keeps campaign value grounding explicit instead of relying on generic sales knowledge
+- Final live evidence:
+  - live universal KB document: `BcBNsi1ixg9pOsY4pRPE`
+  - live Atlas campaign KB document: `sIrXtflwhwf3WdOg7Blg`
+  - repaired simulation folder: `tfld_6201ktd2m9ywexx8tbbpktt8z23r`
+  - repaired simulation suite: `suite_6201ktd2ndhpf6psdpyej9x4ae2w`, `9/9` passed
+  - V8-V16 were retained as failed intermediate evidence; the final unresolved defect was social-channel objection handling where the agent repeated the same website-value checklist instead of rotating campaign value angles
+  - sanitized result summaries:
+    `research/experiments/generated/ELEVENLABS-009-mikes-kitchen-simulation-tests/simulation_results_summary.json`
+    and
+    `research/experiments/generated/ELEVENLABS-010-web-design-sales-control-repair/sales_control_repair_results_summary.json`
