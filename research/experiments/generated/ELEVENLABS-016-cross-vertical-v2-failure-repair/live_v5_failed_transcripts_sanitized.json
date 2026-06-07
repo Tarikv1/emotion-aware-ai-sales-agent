@@ -1,0 +1,223 @@
+{
+  "suite_id": "suite_8201kthawsd6eb88dfwrnbyqv3rt",
+  "failed": [
+    {
+      "test_run_id": "trun_4701kthawsdffhrazeaj51vsbk7y",
+      "test_id": "test_9101kthaw49nexksyy68pyxrkgjm",
+      "test_name": "ELEVENLABS-014-cross-vertical-local-business-simulation-tests::sim_cross_vertical_hvac_busy_dispatch_callback",
+      "status": "failed",
+      "result": "failure",
+      "rationale_summary": "Evaluation failed",
+      "rationale_messages": [],
+      "agent_responses": [
+        {
+          "role": "agent",
+          "message": "Hi, this is Emma from Atlas Web Studio. I know this is out of the blue. I saw Google Maps and a small Facebook page, but I could not find a full website, so I made a free homepage mockup idea for Summit HVAC. Are you the owner or manager?",
+          "original_message": null,
+          "time_in_call_secs": 12,
+          "source_medium": null
+        },
+        {
+          "role": "user",
+          "message": "Uh, I'm the office manager. Look, we're slammed right now — can you make it quick?",
+          "original_message": null,
+          "time_in_call_secs": 12,
+          "source_medium": "text"
+        },
+        {
+          "role": "agent",
+          "message": "I can certainly make it quick. I just wanted to see if you would be open to a quick look at the free mockup I made for Summit HVAC. It is designed to make your HVAC service areas and call path clearer for customers.",
+          "original_message": null,
+          "time_in_call_secs": 12,
+          "source_medium": null
+        },
+        {
+          "role": "user",
+          "message": "Yeah ok, but I really can't deal with this today. Can you just send it to an email or something and we'll look later?",
+          "original_message": null,
+          "time_in_call_secs": 12,
+          "source_medium": "text"
+        },
+        {
+          "role": "agent",
+          "message": "Yes, I can definitely send it to an email for you to look at later. What email address should I use?",
+          "original_message": null,
+          "time_in_call_secs": 12,
+          "source_medium": null
+        },
+        {
+          "role": "user",
+          "message": "It's info@summithvacphoenix.com — but honestly, don't expect a fast reply, we're buried.",
+          "original_message": null,
+          "time_in_call_secs": 12,
+          "source_medium": "text"
+        },
+        {
+          "role": "agent",
+          "message": "I understand. I'll send it now to info@summithvacphoenix.com, and you can reply there with questions whenever you have a moment. Have a good one.",
+          "original_message": null,
+          "time_in_call_secs": 12,
+          "source_medium": null
+        },
+        {
+          "role": "user",
+          "message": "Alright, sounds good. Thanks.",
+          "original_message": null,
+          "time_in_call_secs": 12,
+          "source_medium": null
+        }
+      ]
+    },
+    {
+      "test_run_id": "trun_9201kthawsdget8rbj0epap9p346",
+      "test_id": "test_7701kthaw4hvfmaawd1wcbsmwnd2",
+      "test_name": "ELEVENLABS-014-cross-vertical-local-business-simulation-tests::sim_cross_vertical_hair_salon_social_media_objection",
+      "status": "failed",
+      "result": "failure",
+      "rationale_summary": "Evaluation failed",
+      "rationale_messages": [],
+      "agent_responses": [
+        {
+          "role": "agent",
+          "message": "Hi, this is Emma from Atlas Web Studio. I know this is out of the blue. I saw Instagram and Google Maps, but I could not find a full website, so I made a free homepage mockup idea for Luna Hair Studio. Are you the owner or manager?",
+          "original_message": null,
+          "time_in_call_secs": 29,
+          "source_medium": null
+        },
+        {
+          "role": "user",
+          "message": "Yeah I'm the owner. But honestly, why would I need a website? Instagram does everything for me.",
+          "original_message": null,
+          "time_in_call_secs": 29,
+          "source_medium": "text"
+        },
+        {
+          "role": "agent",
+          "message": "That's fair. Instagram is great for connecting with clients. The main difference with a website is that it gives you a page you fully control, rather than relying on a platform that can change its rules or layout. It also provides one clean link you can share everywhere.",
+          "original_message": null,
+          "time_in_call_secs": 29,
+          "source_medium": null
+        },
+        {
+          "role": "user",
+          "message": "Uh, but my clients already DM me on Instagram to book. How is a website gonna change that?",
+          "original_message": null,
+          "time_in_call_secs": 29,
+          "source_medium": "text"
+        },
+        {
+          "role": "agent",
+          "message": "I can't promise it will change how your clients book, but a website can make your services, visual proof, hours, and policies easier for first-time visitors to scan. This can help them quickly understand what you offer and how to contact you, without having to scroll through many Instagram posts or stories.",
+          "original_message": null,
+          "time_in_call_secs": 29,
+          "source_medium": null
+        },
+        {
+          "role": "user",
+          "message": "Hmm, but new clients find me on Instagram anyway. Why would they go to a separate website?",
+          "original_message": null,
+          "time_in_call_secs": 29,
+          "source_medium": "text"
+        },
+        {
+          "role": "agent",
+          "message": "Some clients may prefer Instagram, and that's perfectly fine. The mockup is a test to see if a controlled page gives a faster first impression or a clearer shareable link for those who might prefer a direct overview. If it doesn't feel more useful, you can simply ignore it.",
+          "original_message": null,
+          "time_in_call_secs": 29,
+          "source_medium": null
+        },
+        {
+          "role": "user",
+          "message": "Ok but you keep saying \"clearer\" and \"faster first impression\" - that's pretty vague. What does a website actually do that my Instagram profile can't?",
+          "original_message": null,
+          "time_in_call_secs": 29,
+          "source_medium": "text"
+        },
+        {
+          "role": "agent",
+          "message": "It means a visitor can quickly tell what your business offers, whether it fits what they want, and what to do next without bouncing between profiles. The mockup would show a specific homepage layout for Luna Hair Studio. Would reviewing it be useful?",
+          "original_message": null,
+          "time_in_call_secs": 29,
+          "source_medium": null
+        },
+        {
+          "role": "user",
+          "message": "Ok but Instagram already shows my services, my photos, my location - what's actually different on this mockup?",
+          "original_message": null,
+          "time_in_call_secs": 29,
+          "source_medium": "text"
+        },
+        {
+          "role": "agent",
+          "message": "The mockup would focus on presenting your salon services, a gallery of your work, and a clear appointment contact path in a layout you control. It's about testing whether a dedicated page makes that information easier to find and scan for new clients compared to navigating through Instagram posts or highlights.",
+          "original_message": null,
+          "time_in_call_secs": 29,
+          "source_medium": null
+        },
+        {
+          "role": "user",
+          "message": "So what's this \"clear appointment contact path\" mean exactly - they just DM me anyway.",
+          "original_message": null,
+          "time_in_call_secs": 29,
+          "source_medium": "text"
+        },
+        {
+          "role": "agent",
+          "message": "It means making your preferred contact method, whether it's a phone number or a link to your Instagram DMs, very prominent and easy to find for someone visiting your page for the first time. The mockup would highlight that specific next step.",
+          "original_message": null,
+          "time_in_call_secs": 29,
+          "source_medium": null
+        },
+        {
+          "role": "user",
+          "message": "So it would just link back to my Instagram DMs anyway? That still sounds like a circle.",
+          "original_message": null,
+          "time_in_call_secs": 29,
+          "source_medium": "text"
+        },
+        {
+          "role": "agent",
+          "message": "It could link back to your Instagram DMs, or it could highlight a phone number or any other contact method you prefer. The goal is to make that primary contact point unmistakable for a first-time visitor. The mockup is a proof test to see if a dedicated page makes that clearer.",
+          "original_message": null,
+          "time_in_call_secs": 29,
+          "source_medium": null
+        },
+        {
+          "role": "user",
+          "message": "Hmm, ok. Can I actually see this mockup you made?",
+          "original_message": null,
+          "time_in_call_secs": 29,
+          "source_medium": "text"
+        },
+        {
+          "role": "agent",
+          "message": "Yes, I can send you a link to it. What email should I use?",
+          "original_message": null,
+          "time_in_call_secs": 29,
+          "source_medium": null
+        },
+        {
+          "role": "user",
+          "message": "It's luna at lunahairstudio dot com. You sending it now?",
+          "original_message": null,
+          "time_in_call_secs": 29,
+          "source_medium": "text"
+        },
+        {
+          "role": "agent",
+          "message": "Yes, I'm sending it now to luna@lunahairstudio.com, and you can reply there with questions. Have a good one.",
+          "original_message": null,
+          "time_in_call_secs": 29,
+          "source_medium": null
+        },
+        {
+          "role": "user",
+          "message": "Wait, so you're saying it's already sent to that email?",
+          "original_message": null,
+          "time_in_call_secs": 29,
+          "source_medium": null
+        }
+      ]
+    }
+  ]
+}

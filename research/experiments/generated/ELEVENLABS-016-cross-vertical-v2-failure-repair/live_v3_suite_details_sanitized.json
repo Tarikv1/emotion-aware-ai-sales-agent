@@ -1,0 +1,68 @@
+{
+  "suite_id": "suite_9101kthaeaf4f9frvv258tehpz0c",
+  "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+  "branch_id": null,
+  "folder_id": null,
+  "repeat_count": 1,
+  "created_at": 1780845324,
+  "test_run_count": 6,
+  "passed_count": 4,
+  "failed_count": 2,
+  "pending_count": 0,
+  "test_runs": [
+    {
+      "test_run_id": "trun_6001kthaeafbfj09yghjcbf34d3j",
+      "test_id": "test_5801ktha7saxffht9h22z4abnhky",
+      "test_name": "ELEVENLABS-014-cross-vertical-local-business-simulation-tests::sim_cross_vertical_plumbing_emergency_google_status_quo",
+      "status": "passed",
+      "result": "success",
+      "rationale_summary": "Evaluation succeeded",
+      "rationale_messages": []
+    },
+    {
+      "test_run_id": "trun_0901kthaeafcfz6sfpq5atfh52dv",
+      "test_id": "test_0101ktha7sngfs69ndvchmytbrs0",
+      "test_name": "ELEVENLABS-014-cross-vertical-local-business-simulation-tests::sim_cross_vertical_dental_compliance_new_patient_claims",
+      "status": "passed",
+      "result": "success",
+      "rationale_summary": "Evaluation succeeded",
+      "rationale_messages": []
+    },
+    {
+      "test_run_id": "trun_9501kthaeafdew8vrqc0yjacz72s",
+      "test_id": "test_3401ktha7szhf54tytx61tfagven",
+      "test_name": "ELEVENLABS-014-cross-vertical-local-business-simulation-tests::sim_cross_vertical_auto_repair_trust_price_skeptic",
+      "status": "failed",
+      "result": "failure",
+      "rationale_summary": "Evaluation failed",
+      "rationale_messages": []
+    },
+    {
+      "test_run_id": "trun_9901kthaeafee7asqeb4zc0ws3fa",
+      "test_id": "test_0601ktha7ta7ftkr03fzap2jmfae",
+      "test_name": "ELEVENLABS-014-cross-vertical-local-business-simulation-tests::sim_cross_vertical_hvac_busy_dispatch_callback",
+      "status": "passed",
+      "result": "success",
+      "rationale_summary": "Evaluation succeeded",
+      "rationale_messages": []
+    },
+    {
+      "test_run_id": "trun_8701kthaeafge72b54zdbfn0q4yf",
+      "test_id": "test_9001ktha7tw9er2b4qherh3yr0ar",
+      "test_name": "ELEVENLABS-014-cross-vertical-local-business-simulation-tests::sim_cross_vertical_home_cleaning_gatekeeper_stop_boundary",
+      "status": "passed",
+      "result": "success",
+      "rationale_summary": "Evaluation succeeded",
+      "rationale_messages": []
+    },
+    {
+      "test_run_id": "trun_1401kthaeafffb1b7mn2x80stbfh",
+      "test_id": "test_2701ktha7tjmek8s9z7fry9p15wx",
+      "test_name": "ELEVENLABS-014-cross-vertical-local-business-simulation-tests::sim_cross_vertical_hair_salon_social_media_objection",
+      "status": "failed",
+      "result": "failure",
+      "rationale_summary": "Evaluation failed",
+      "rationale_messages": []
+    }
+  ]
+}

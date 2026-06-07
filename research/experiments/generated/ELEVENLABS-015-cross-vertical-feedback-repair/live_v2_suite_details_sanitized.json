@@ -1,0 +1,110 @@
+{
+  "suite_id": "suite_5001kth9p7j8fjmr4eyg6ay8wyce",
+  "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+  "branch_id": null,
+  "created_at": 1780844535,
+  "folder_id": null,
+  "repeat_count": 1,
+  "test_run_count": 6,
+  "passed_count": 4,
+  "failed_count": 2,
+  "pending_count": 0,
+  "test_runs": [
+    {
+      "test_run_id": "trun_0601kth9p7jffqxv3bccyh3md6ra",
+      "test_invocation_id": "suite_5001kth9p7j8fjmr4eyg6ay8wyce",
+      "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+      "status": "passed",
+      "test_id": "test_3001kth9ngf6e3g9xvcx4g0rbn4m",
+      "test_name": "ELEVENLABS-014-cross-vertical-local-business-simulation-tests::sim_cross_vertical_plumbing_emergency_google_status_quo",
+      "test_type": "simulation",
+      "condition_result": {
+        "result": "success",
+        "rationale": {
+          "summary": "Evaluation succeeded"
+        }
+      },
+      "last_updated_at_unix": 1780844561
+    },
+    {
+      "test_run_id": "trun_1201kth9p7jgfsx8y7vvq1vz59v9",
+      "test_invocation_id": "suite_5001kth9p7j8fjmr4eyg6ay8wyce",
+      "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+      "status": "passed",
+      "test_id": "test_6801kth9ngs2ekqvfkeqmkgfw3bn",
+      "test_name": "ELEVENLABS-014-cross-vertical-local-business-simulation-tests::sim_cross_vertical_dental_compliance_new_patient_claims",
+      "test_type": "simulation",
+      "condition_result": {
+        "result": "success",
+        "rationale": {
+          "summary": "Evaluation succeeded"
+        }
+      },
+      "last_updated_at_unix": 1780844559
+    },
+    {
+      "test_run_id": "trun_2001kth9p7jjevpa8aj80vrr28w2",
+      "test_invocation_id": "suite_5001kth9p7j8fjmr4eyg6ay8wyce",
+      "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+      "status": "passed",
+      "test_id": "test_2201kth9nhc9frasfpdd8fj5kk90",
+      "test_name": "ELEVENLABS-014-cross-vertical-local-business-simulation-tests::sim_cross_vertical_hvac_busy_dispatch_callback",
+      "test_type": "simulation",
+      "condition_result": {
+        "result": "success",
+        "rationale": {
+          "summary": "Evaluation succeeded"
+        }
+      },
+      "last_updated_at_unix": 1780844546
+    },
+    {
+      "test_run_id": "trun_4601kth9p7jhe7fvfvra7re3pyy8",
+      "test_invocation_id": "suite_5001kth9p7j8fjmr4eyg6ay8wyce",
+      "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+      "status": "failed",
+      "test_id": "test_0201kth9nh4cevbbrwyg5vq5t23x",
+      "test_name": "ELEVENLABS-014-cross-vertical-local-business-simulation-tests::sim_cross_vertical_auto_repair_trust_price_skeptic",
+      "test_type": "simulation",
+      "condition_result": {
+        "result": "failure",
+        "rationale": {
+          "summary": "Evaluation failed"
+        }
+      },
+      "last_updated_at_unix": 1780844557
+    },
+    {
+      "test_run_id": "trun_4601kth9p7jmf65byygs3m0xj4w2",
+      "test_invocation_id": "suite_5001kth9p7j8fjmr4eyg6ay8wyce",
+      "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+      "status": "failed",
+      "test_id": "test_6401kth9nhyrftxb66x1e8j0xz3a",
+      "test_name": "ELEVENLABS-014-cross-vertical-local-business-simulation-tests::sim_cross_vertical_home_cleaning_gatekeeper_stop_boundary",
+      "test_type": "simulation",
+      "condition_result": {
+        "result": "failure",
+        "rationale": {
+          "summary": "Evaluation failed"
+        }
+      },
+      "last_updated_at_unix": 1780844558
+    },
+    {
+      "test_run_id": "trun_6001kth9p7jkfsy8p8npkexxcxjq",
+      "test_invocation_id": "suite_5001kth9p7j8fjmr4eyg6ay8wyce",
+      "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+      "status": "passed",
+      "test_id": "test_8301kth9nhpcehat4qhe4gdf0gf7",
+      "test_name": "ELEVENLABS-014-cross-vertical-local-business-simulation-tests::sim_cross_vertical_hair_salon_social_media_objection",
+      "test_type": "simulation",
+      "condition_result": {
+        "result": "success",
+        "rationale": {
+          "summary": "Evaluation succeeded"
+        }
+      },
+      "last_updated_at_unix": 1780844561
+    }
+  ]
+}

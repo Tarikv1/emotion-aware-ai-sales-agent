@@ -1,0 +1,223 @@
+{
+  "suite_id": "suite_8101kthaqdxneagv4tqs8mtwm2gx",
+  "failed": [
+    {
+      "test_run_id": "trun_6001kthaqdxyen58z17tncexzdqt",
+      "test_id": "test_5601kthapq5cepc9hfeypr1bewr3",
+      "test_name": "ELEVENLABS-014-cross-vertical-local-business-simulation-tests::sim_cross_vertical_auto_repair_trust_price_skeptic",
+      "status": "failed",
+      "result": "failure",
+      "rationale_summary": "Evaluation failed",
+      "rationale_messages": [],
+      "agent_responses": [
+        {
+          "role": "agent",
+          "message": "Hi, this is Emma from Atlas Web Studio. I know this is out of the blue. I saw Google Maps and review listings, but I could not find a full website, so I made a free homepage mockup idea for Northside Auto Repair. Are you the owner or manager?",
+          "original_message": null,
+          "time_in_call_secs": 17,
+          "source_medium": null
+        },
+        {
+          "role": "user",
+          "message": "Yeah, I'm the owner. Uh, what's the catch?",
+          "original_message": null,
+          "time_in_call_secs": 17,
+          "source_medium": "text"
+        },
+        {
+          "role": "agent",
+          "message": "There isn't a catch, really. It is completely free to review, and if it is not useful, you can ignore it. I just wanted to show you a homepage mockup that makes your services, directions, and trust basics easier to judge before a call.",
+          "original_message": null,
+          "time_in_call_secs": 17,
+          "source_medium": null
+        },
+        {
+          "role": "user",
+          "message": "So it's actually free, like no credit card, no obligation, nothing like that?",
+          "original_message": null,
+          "time_in_call_secs": 17,
+          "source_medium": "text"
+        },
+        {
+          "role": "agent",
+          "message": "That's right, it is completely free to review. There is no obligation and no sign-up required.",
+          "original_message": null,
+          "time_in_call_secs": 17,
+          "source_medium": null
+        },
+        {
+          "role": "user",
+          "message": "Ok, so what would it actually cost if I wanted a real site built?",
+          "original_message": null,
+          "time_in_call_secs": 17,
+          "source_medium": "text"
+        },
+        {
+          "role": "agent",
+          "message": "Simple sites usually start around one thousand dollars. The final price depends on what you want built, including the number of pages, content, and design depth.",
+          "original_message": null,
+          "time_in_call_secs": 17,
+          "source_medium": null
+        },
+        {
+          "role": "user",
+          "message": "Hmm, ok. And would having a real site actually make people trust the shop more, you think?",
+          "original_message": null,
+          "time_in_call_secs": 17,
+          "source_medium": "text"
+        },
+        {
+          "role": "agent",
+          "message": "I can't promise that it will automatically make people trust the shop more. However, a well-designed website can provide a clear and professional online presence where customers can easily find information about your services, read testimonials, and see your credentials, which can help build confidence.",
+          "original_message": null,
+          "time_in_call_secs": 17,
+          "source_medium": null
+        },
+        {
+          "role": "user",
+          "message": "Alright, fair enough. Go ahead and send me the mockup link.",
+          "original_message": null,
+          "time_in_call_secs": 17,
+          "source_medium": "text"
+        },
+        {
+          "role": "agent",
+          "message": "Great. What email should I use to send you the mockup link?",
+          "original_message": null,
+          "time_in_call_secs": 17,
+          "source_medium": null
+        },
+        {
+          "role": "user",
+          "message": "It's mike at northsideauto dot com.",
+          "original_message": null,
+          "time_in_call_secs": 17,
+          "source_medium": null
+        }
+      ]
+    },
+    {
+      "test_run_id": "trun_4201kthaqdy0fyqtgnhcm07f5jfg",
+      "test_id": "test_1901kthapqpceensk8r6ynwwkgyw",
+      "test_name": "ELEVENLABS-014-cross-vertical-local-business-simulation-tests::sim_cross_vertical_hair_salon_social_media_objection",
+      "status": "failed",
+      "result": "failure",
+      "rationale_summary": "Evaluation failed",
+      "rationale_messages": [],
+      "agent_responses": [
+        {
+          "role": "agent",
+          "message": "Hi, this is Emma from Atlas Web Studio. I know this is out of the blue. I saw Instagram and Google Maps, but I could not find a full website, so I made a free homepage mockup idea for Luna Hair Studio. Are you the owner or manager?",
+          "original_message": null,
+          "time_in_call_secs": 24,
+          "source_medium": null
+        },
+        {
+          "role": "user",
+          "message": "Yeah I'm the owner. But honestly, why would I need a website? Instagram does everything for me.",
+          "original_message": null,
+          "time_in_call_secs": 24,
+          "source_medium": "text"
+        },
+        {
+          "role": "agent",
+          "message": "That's fair. Instagram is great for connecting with clients. The main difference a website offers is a page and layout you fully control, which can make it easier for new clients to quickly see your services, visual proof, and how to book without bouncing between different parts of your Instagram profile.",
+          "original_message": null,
+          "time_in_call_secs": 24,
+          "source_medium": null
+        },
+        {
+          "role": "user",
+          "message": "Uh, but my clients already DM me through Instagram to book. How is a website any different?",
+          "original_message": null,
+          "time_in_call_secs": 24,
+          "source_medium": "text"
+        },
+        {
+          "role": "agent",
+          "message": "I can't promise that a website will bring more customers. However, a website can provide a clearer first impression for potential clients, making it easier for them to understand your services and how to book, whether that's still through Instagram DMs or by calling. It also gives you one shareable link for your Instagram bio, Google profile, and other communications.",
+          "original_message": null,
+          "time_in_call_secs": 24,
+          "source_medium": null
+        },
+        {
+          "role": "user",
+          "message": "Hmm, ok but Instagram already has a link in bio. What does a website actually do that my Instagram page doesn't?",
+          "original_message": null,
+          "time_in_call_secs": 24,
+          "source_medium": "text"
+        },
+        {
+          "role": "agent",
+          "message": "The facts may be similar, but the test is whether a controlled page is easier to scan, share, and control than your current profile path. If that difference does not matter for Luna Hair Studio, then the mockup will not be worth your time.",
+          "original_message": null,
+          "time_in_call_secs": 24,
+          "source_medium": null
+        },
+        {
+          "role": "user",
+          "message": "Ok but you still haven't told me anything specific. Like what does it actually do for a hair salon that Instagram doesn't?",
+          "original_message": null,
+          "time_in_call_secs": 24,
+          "source_medium": "text"
+        },
+        {
+          "role": "agent",
+          "message": "A website can make your service categories and pricing much clearer and easier to scan than sifting through Instagram posts or highlights. It also provides a dedicated space for a gallery of your work or stylist portfolios, which can be more organized than a social feed.",
+          "original_message": null,
+          "time_in_call_secs": 24,
+          "source_medium": null
+        },
+        {
+          "role": "user",
+          "message": "Hmm, ok the pricing thing actually makes sense. But I still feel like this is just duplicating what I already have.",
+          "original_message": null,
+          "time_in_call_secs": 24,
+          "source_medium": "text"
+        },
+        {
+          "role": "agent",
+          "message": "I understand that concern. The mockup is designed to show a different homepage layout that you can compare against your current Instagram profile. If it feels like a duplicate or does not offer a clearer path for your clients, you can simply ignore it. Would you be open to a quick look at the mockup to see if it is useful?",
+          "original_message": null,
+          "time_in_call_secs": 24,
+          "source_medium": null
+        },
+        {
+          "role": "user",
+          "message": "Sure, how do I see it?",
+          "original_message": null,
+          "time_in_call_secs": 24,
+          "source_medium": "text"
+        },
+        {
+          "role": "agent",
+          "message": "I can send you a link. What email should I use?",
+          "original_message": null,
+          "time_in_call_secs": 24,
+          "source_medium": null
+        },
+        {
+          "role": "user",
+          "message": "It's luna at lunahairstudiotampa dot com. You'll send it there?",
+          "original_message": null,
+          "time_in_call_secs": 24,
+          "source_medium": "text"
+        },
+        {
+          "role": "agent",
+          "message": "Yes, I'll send it to luna@lunahairstudiotampa.com and include my contact info, so you can reply there with questions. Have a good one.",
+          "original_message": null,
+          "time_in_call_secs": 24,
+          "source_medium": null
+        },
+        {
+          "role": "user",
+          "message": "Ok yeah, so you're sending it to that email and I'll just reply there if I have questions?",
+          "original_message": null,
+          "time_in_call_secs": 24,
+          "source_medium": null
+        }
+      ]
+    }
+  ]
+}

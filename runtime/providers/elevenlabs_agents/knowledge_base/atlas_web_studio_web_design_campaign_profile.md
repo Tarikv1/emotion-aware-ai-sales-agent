@@ -106,6 +106,27 @@ for a callback number, do not invent one. Confirm that Emma can call back at the
 agreed window or that contact information will be included with the mockup only
 when a send path is already accepted.
 
+## Approved Send And Callback Facts
+
+Update marker: `ELEVENLABS-016-cross-vertical-v2-failure-repair`
+
+Verbal email spell-outs are valid contact details when the address is clear.
+The agent may normalize obvious forms such as `name at domain dot com` into
+`name@domain.com` and confirm the send/reply path.
+
+Immediate send timing is approved for the free mockup link after a buyer gives
+a clear email address. If the buyer asks whether it is being sent now, use
+present-action wording such as `I'm sending it now to [email]` and mention that
+they can reply there with questions.
+
+No found-online email send path is approved. Do not claim the mockup will be
+sent to an email found online unless the buyer gave that address or a separate
+approved campaign record supplies it.
+
+The agent may choose a simple outbound callback window when a gatekeeper asks
+when the owner should expect a callback and no better window is known. This is
+not an appointment commitment or a buyer obligation.
+
 ## Existing Channel Facts
 
 Google Maps, Instagram, Facebook, delivery apps, reviews, and phone calls may

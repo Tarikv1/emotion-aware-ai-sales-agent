@@ -1,0 +1,66 @@
+{
+  "package_id": "ELEVENLABS-016-cross-vertical-v2-failure-repair",
+  "provider": "elevenlabs",
+  "source_of_truth": "repo",
+  "dashboard_role": "managed runtime and dashboard agent patch surface",
+  "status": "offline-repair-ready",
+  "live_provider_calls_made": false,
+  "private_customer_data_used": false,
+  "api_key_required_for_generation": false,
+  "dashboard_manual_changes_source_of_truth": false,
+  "knowledge_base_docs": [
+    "runtime/providers/elevenlabs_agents/knowledge_base/universal_sales_core.md",
+    "runtime/providers/elevenlabs_agents/knowledge_base/atlas_web_studio_web_design_campaign_overlay.md",
+    "runtime/providers/elevenlabs_agents/knowledge_base/atlas_web_studio_web_design_campaign_profile.md"
+  ],
+  "baseline_tests": [],
+  "repair_basis": {
+    "previous_checkpoint": "ELEVENLABS-015-cross-vertical-feedback-repair",
+    "v2_failed_suite_id": "suite_5001kth9p7j8fjmr4eyg6ay8wyce",
+    "v2_result": "4/6 passed, 2/6 failed",
+    "failure_modes": [
+      "verbal_email_send_path_confirmation_after_contact_capture",
+      "gatekeeper_callback_window_not_email_deflection"
+    ],
+    "live_rerun_required_for_green": true
+  },
+  "live_application": {
+    "applied_on": "2026-06-07",
+    "current_live_agent_version_id": "agtvrsn_4201kthavgsgfv681k424dkjsy1t",
+    "current_attached_knowledge_base_document_ids": [
+      "N2QmA4GDlyn2gpxOgX0n",
+      "BKHuY0kInQyzT7II0K18",
+      "p9YzzB2mFdaqqnYyHIOW"
+    ],
+    "v3_suite_id": "suite_9101kthaeaf4f9frvv258tehpz0c",
+    "v3_result": "4/6 passed, 2/6 failed",
+    "v4_suite_id": "suite_8101kthaqdxneagv4tqs8mtwm2gx",
+    "v4_result": "4/6 passed, 2/6 failed",
+    "v5_suite_id": "suite_8201kthawsd6eb88dfwrnbyqv3rt",
+    "v5_result": "4/6 passed, 2/6 failed",
+    "v6_suite_id": "suite_4001kthb1m7qfjbsb6k1zytzy65r",
+    "v6_result": "5/6 passed, 1/6 failed",
+    "production_green_claimed": false,
+    "remaining_failure_mode": "auto_repair_spoken_email_final_confirmation_not_observed_after_simulated_user_terminal_turn"
+  },
+  "upload_intent": {
+    "current_mode": "repo-driven ElevenLabs API agent patch",
+    "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+    "campaign_role": "Atlas Web Studio local-business website outreach",
+    "layered_upload_package": true,
+    "campaign_facts_override_all": true,
+    "document_reference_imports_required": false,
+    "dynamic_variables_required": true,
+    "agent_prompt_required": true,
+    "first_message_required": true,
+    "agent_temperature": 0.25,
+    "knowledge_base_upload_required": true
+  },
+  "blocked_until_review": [
+    "uploading private customer emails",
+    "uploading private transcripts",
+    "using customer audio",
+    "production customer calls",
+    "claiming production-green before the spoken-email terminal confirmation is proven in a fresh suite and human review"
+  ]
+}

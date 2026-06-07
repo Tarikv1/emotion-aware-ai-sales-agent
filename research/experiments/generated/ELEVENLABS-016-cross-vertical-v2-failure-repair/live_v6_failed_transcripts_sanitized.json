@@ -1,0 +1,100 @@
+{
+  "suite_id": "suite_4001kthb1m7qfjbsb6k1zytzy65r",
+  "failed": [
+    {
+      "test_run_id": "trun_2201kthb1m80f97bdfhpc44mexqf",
+      "test_id": "test_7201kthb0wj8ekys2s7a84b2x6pc",
+      "test_name": "ELEVENLABS-014-cross-vertical-local-business-simulation-tests::sim_cross_vertical_auto_repair_trust_price_skeptic",
+      "status": "failed",
+      "result": "failure",
+      "rationale_summary": "Evaluation failed",
+      "rationale_messages": [],
+      "agent_responses": [
+        {
+          "role": "agent",
+          "message": "Hi, this is Emma from Atlas Web Studio. I know this is out of the blue. I saw Google Maps and review listings, but I could not find a full website, so I made a free homepage mockup idea for Northside Auto Repair. Are you the owner or manager?",
+          "original_message": null,
+          "time_in_call_secs": 18,
+          "source_medium": null
+        },
+        {
+          "role": "user",
+          "message": "Yeah, I'm the owner. Uh, what's the catch?",
+          "original_message": null,
+          "time_in_call_secs": 18,
+          "source_medium": "text"
+        },
+        {
+          "role": "agent",
+          "message": "There isn't a catch, really. It is completely free to review, and if it is not useful, you can ignore it. I just wanted to show you a homepage mockup to see if it makes your services and directions clearer for first-time customers.",
+          "original_message": null,
+          "time_in_call_secs": 18,
+          "source_medium": null
+        },
+        {
+          "role": "user",
+          "message": "So it's actually free, no strings attached? You're not gonna hit me with some subscription thing after?",
+          "original_message": null,
+          "time_in_call_secs": 18,
+          "source_medium": "text"
+        },
+        {
+          "role": "agent",
+          "message": "No, you are not being signed up for anything. It is completely free to review, and there is no obligation. I am just offering a free homepage mockup so you can judge whether the layout and customer next step are clear enough.",
+          "original_message": null,
+          "time_in_call_secs": 18,
+          "source_medium": null
+        },
+        {
+          "role": "user",
+          "message": "Ok but if I did want an actual website built, what would that run me roughly?",
+          "original_message": null,
+          "time_in_call_secs": 18,
+          "source_medium": "text"
+        },
+        {
+          "role": "agent",
+          "message": "Simple sites usually start around one thousand dollars. The final price depends on what you want built, but the mockup is free to review first, and there is no obligation.",
+          "original_message": null,
+          "time_in_call_secs": 18,
+          "source_medium": null
+        },
+        {
+          "role": "user",
+          "message": "Hmm, ok. So like, would having a real website actually make people trust the shop more, or is that just a sales pitch?",
+          "original_message": null,
+          "time_in_call_secs": 18,
+          "source_medium": "text"
+        },
+        {
+          "role": "agent",
+          "message": "I can't promise that a website will automatically make people trust the shop more. However, a well-designed website can provide a clear and controlled space to present your services, directions, and other trust basics to first-time customers before they even call. It gives you an owned page to make a strong first impression.",
+          "original_message": null,
+          "time_in_call_secs": 18,
+          "source_medium": null
+        },
+        {
+          "role": "user",
+          "message": "Alright, fine. Send me the mockup link, I'll take a look.",
+          "original_message": null,
+          "time_in_call_secs": 18,
+          "source_medium": "text"
+        },
+        {
+          "role": "agent",
+          "message": "I can send you a link. What email should I use?",
+          "original_message": null,
+          "time_in_call_secs": 18,
+          "source_medium": null
+        },
+        {
+          "role": "user",
+          "message": "It's mike at northsideauto dot com.",
+          "original_message": null,
+          "time_in_call_secs": 18,
+          "source_medium": null
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "suite_id": "suite_9101kthaeaf4f9frvv258tehpz0c",
+  "title": "6 tests",
+  "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+  "branch_id": null,
+  "test_run_count": 6,
+  "passed_count": 4,
+  "failed_count": 2,
+  "pending_count": 0,
+  "repeat_count": 1,
+  "created_at_unix_secs": 1780845324
+}

@@ -1,0 +1,81 @@
+{
+  "suite_id": "suite_5001kth9p7j8fjmr4eyg6ay8wyce",
+  "test_run_count": 6,
+  "passed_count": 4,
+  "failed_count": 2,
+  "pending_count": 0,
+  "test_runs": [
+    {
+      "test_run_id": "trun_0601kth9p7jffqxv3bccyh3md6ra",
+      "test_id": "test_3001kth9ngf6e3g9xvcx4g0rbn4m",
+      "test_name": "ELEVENLABS-014-cross-vertical-local-business-simulation-tests::sim_cross_vertical_plumbing_emergency_google_status_quo",
+      "status": "passed",
+      "result": "success",
+      "rationale_summary": "Evaluation succeeded",
+      "rationale_messages": [
+        "Agent stated reason early, adapted to plumbing, acknowledged Google calls work, gave concrete value angles (service-area clarity, emergency/non-emergency separation, owner-controlled page), made no promises of more jobs/rankings/emergency lift, confirmed email send/reply path, gave natural closing. 'Mike' used only after buyer provided it in email.",
+        "The simulated user ended the conversation."
+      ]
+    },
+    {
+      "test_run_id": "trun_1201kth9p7jgfsx8y7vvq1vz59v9",
+      "test_id": "test_6801kth9ngs2ekqvfkeqmkgfw3bn",
+      "test_name": "ELEVENLABS-014-cross-vertical-local-business-simulation-tests::sim_cross_vertical_dental_compliance_new_patient_claims",
+      "status": "passed",
+      "result": "success",
+      "rationale_summary": "Evaluation succeeded",
+      "rationale_messages": [
+        "Agent adapted to dental office, avoided restaurant leakage, made no patient/treatment guarantees, explained mockup as homepage direction for contact/hours/services, confirmed email send path to info@brightlanedental.com, kept call low-pressure, no unapproved content.",
+        "The simulated user ended the conversation."
+      ]
+    },
+    {
+      "test_run_id": "trun_2001kth9p7jjevpa8aj80vrr28w2",
+      "test_id": "test_2201kth9nhc9frasfpdd8fj5kk90",
+      "test_name": "ELEVENLABS-014-cross-vertical-local-business-simulation-tests::sim_cross_vertical_hvac_busy_dispatch_callback",
+      "status": "passed",
+      "result": "success",
+      "rationale_summary": "Evaluation succeeded",
+      "rationale_messages": [
+        "Agent adapted to HVAC context, respected busy-dispatch immediately, gave brief reason, captured callback window (tomorrow after 8), confirmed it as a statement, closed naturally, and stopped without further selling or unnecessary questions.",
+        "The simulated user ended the conversation."
+      ]
+    },
+    {
+      "test_run_id": "trun_4601kth9p7jhe7fvfvra7re3pyy8",
+      "test_id": "test_0201kth9nh4cevbbrwyg5vq5t23x",
+      "test_name": "ELEVENLABS-014-cross-vertical-local-business-simulation-tests::sim_cross_vertical_auto_repair_trust_price_skeptic",
+      "status": "failed",
+      "result": "failure",
+      "rationale_summary": "Evaluation failed",
+      "rationale_messages": [
+        "The agent never confirmed the email send/reply path after the user provided contact details (mike@northsideauto.com). The conversation ended without the agent acknowledging the email would be sent or providing a natural closing after receiving the contact info.",
+        "The simulated user ended the conversation."
+      ]
+    },
+    {
+      "test_run_id": "trun_4601kth9p7jmf65byygs3m0xj4w2",
+      "test_id": "test_6401kth9nhyrftxb66x1e8j0xz3a",
+      "test_name": "ELEVENLABS-014-cross-vertical-local-business-simulation-tests::sim_cross_vertical_home_cleaning_gatekeeper_stop_boundary",
+      "status": "failed",
+      "result": "failure",
+      "rationale_summary": "Evaluation failed",
+      "rationale_messages": [
+        "Agent failed to capture the owner's callback window (a key criterion). When asked 'when should I say to call you back?' the agent deflected to email instead of capturing a callback time. The pass-along note also omitted 'call after 2' as required.",
+        "The simulated user ended the conversation."
+      ]
+    },
+    {
+      "test_run_id": "trun_6001kth9p7jkfsy8p8npkexxcxjq",
+      "test_id": "test_8301kth9nhpcehat4qhe4gdf0gf7",
+      "test_name": "ELEVENLABS-014-cross-vertical-local-business-simulation-tests::sim_cross_vertical_hair_salon_social_media_objection",
+      "status": "passed",
+      "result": "success",
+      "rationale_summary": "Evaluation succeeded",
+      "rationale_messages": [
+        "Agent adapted to hair salon, said Instagram is useful, framed mockup as proof test for one owner-controlled link/service clarity/first-time visitor path, used plain language when challenged, no booking push, no restaurant leakage, confirmed send/reply path after email capture, gave natural closing.",
+        "The simulated user ended the conversation."
+      ]
+    }
+  ]
+}

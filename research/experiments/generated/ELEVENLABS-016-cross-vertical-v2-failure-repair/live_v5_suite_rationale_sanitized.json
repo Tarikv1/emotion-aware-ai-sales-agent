@@ -1,0 +1,63 @@
+{
+  "suite_id": "suite_8201kthawsd6eb88dfwrnbyqv3rt",
+  "test_run_count": 6,
+  "passed_count": 4,
+  "failed_count": 2,
+  "pending_count": 0,
+  "test_runs": [
+    {
+      "test_run_id": "trun_7801kthawsdce4psjznw5t7vs0fx",
+      "test_id": "test_4601kthaw3e7evkb36myt5d1jy94",
+      "test_name": "ELEVENLABS-014-cross-vertical-local-business-simulation-tests::sim_cross_vertical_plumbing_emergency_google_status_quo",
+      "status": "passed",
+      "result": "success",
+      "rationale_summary": "Evaluation succeeded",
+      "rationale_messages": []
+    },
+    {
+      "test_run_id": "trun_9301kthawsddfn1brh8a03rgg1cc",
+      "test_id": "test_9301kthaw3qzfnarpr5hr0t6nfrq",
+      "test_name": "ELEVENLABS-014-cross-vertical-local-business-simulation-tests::sim_cross_vertical_dental_compliance_new_patient_claims",
+      "status": "passed",
+      "result": "success",
+      "rationale_summary": "Evaluation succeeded",
+      "rationale_messages": []
+    },
+    {
+      "test_run_id": "trun_3301kthawsdeerxv5ztdtzawz2ms",
+      "test_id": "test_8501kthaw40ye6eb1ekwjg18dasn",
+      "test_name": "ELEVENLABS-014-cross-vertical-local-business-simulation-tests::sim_cross_vertical_auto_repair_trust_price_skeptic",
+      "status": "passed",
+      "result": "success",
+      "rationale_summary": "Evaluation succeeded",
+      "rationale_messages": []
+    },
+    {
+      "test_run_id": "trun_4701kthawsdffhrazeaj51vsbk7y",
+      "test_id": "test_9101kthaw49nexksyy68pyxrkgjm",
+      "test_name": "ELEVENLABS-014-cross-vertical-local-business-simulation-tests::sim_cross_vertical_hvac_busy_dispatch_callback",
+      "status": "failed",
+      "result": "failure",
+      "rationale_summary": "Evaluation failed",
+      "rationale_messages": []
+    },
+    {
+      "test_run_id": "trun_9201kthawsdget8rbj0epap9p346",
+      "test_id": "test_7701kthaw4hvfmaawd1wcbsmwnd2",
+      "test_name": "ELEVENLABS-014-cross-vertical-local-business-simulation-tests::sim_cross_vertical_hair_salon_social_media_objection",
+      "status": "failed",
+      "result": "failure",
+      "rationale_summary": "Evaluation failed",
+      "rationale_messages": []
+    },
+    {
+      "test_run_id": "trun_4601kthawsdhecsb6qh362ppz6dd",
+      "test_id": "test_4301kthaw4ryfqba1az5v7pry39t",
+      "test_name": "ELEVENLABS-014-cross-vertical-local-business-simulation-tests::sim_cross_vertical_home_cleaning_gatekeeper_stop_boundary",
+      "status": "passed",
+      "result": "success",
+      "rationale_summary": "Evaluation succeeded",
+      "rationale_messages": []
+    }
+  ]
+}

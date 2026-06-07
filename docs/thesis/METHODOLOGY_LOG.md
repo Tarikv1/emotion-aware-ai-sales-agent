@@ -16,6 +16,17 @@ Use this file as a chronological research journal for the thesis implementation.
 
 ## Entries
 
+### 2026-06-07 - ELEVENLABS-016 cross-vertical V2 failure repair
+
+- Objective: repair the two remaining live V2 cross-vertical failures after `ELEVENLABS-015` was applied and suite `suite_5001kth9p7j8fjmr4eyg6ay8wyce` finished `4/6` passed and `2/6` failed.
+- Action taken: added `ELEVENLABS-016-cross-vertical-v2-failure-repair`, a prompt repair for verbal email send-path confirmation after contact capture, a gatekeeper callback-window repair that blocks email deflection, and an approved-facts boundary against invented found-online email sending.
+- Data used: sanitized live V2 suite rationale and synthetic failed transcripts under `research/experiments/generated/ELEVENLABS-015-cross-vertical-feedback-repair/`. No private customer data, customer audio, raw private transcript, or API key value was committed.
+- Output created: `runtime/providers/elevenlabs_agents/manifests/web_design_cross_vertical_v2_failure_repair.package.json`, `docs/product/ELEVENLABS_016_CROSS_VERTICAL_V2_FAILURE_REPAIR.md`, and `scripts/validate_elevenlabs_016_cross_vertical_v2_failure_repair.py`.
+- Live evidence: the repair was applied to ElevenLabs on 2026-06-07. V3, V4, and V5 remained `4/6`; V6 improved to `5/6` in suite `suite_4001kthb1m7qfjbsb6k1zytzy65r`. The current live agent version is `agtvrsn_4201kthavgsgfv681k424dkjsy1t`.
+- What was learned: the 015 repair improved the cross-vertical surface but did not fully stabilize terminal send-path and gatekeeper callback behavior. The gatekeeper case is repaired in live evidence, and evaluator calibration fixed valid email-send branches. The remaining unproven behavior is auto-repair spoken-email terminal confirmation when the simulator ends immediately after the buyer gives the email.
+- Why it matters for the thesis: this preserves negative live evidence and shows the difference between provider-patch success, partial simulation improvement, and actual green evidence.
+- Open questions: whether the remaining auto-repair spoken-email terminal confirmation can be proven with a harness that gives the agent a final turn, and whether human review finds the gatekeeper callback rule too synthetic for real calls.
+
 ### 2026-06-07 - ELEVENLABS-015 cross-vertical feedback repair
 
 - Objective: convert human review of the first cross-vertical ElevenLabs screenshots into a repo-owned repair package without mistaking evaluator cleanup for actual sales-quality improvement.

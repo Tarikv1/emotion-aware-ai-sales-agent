@@ -1,0 +1,197 @@
+{
+  "suite_id": "suite_5001kth9p7j8fjmr4eyg6ay8wyce",
+  "failed": [
+    {
+      "test_run_id": "trun_4601kth9p7jhe7fvfvra7re3pyy8",
+      "test_id": "test_0201kth9nh4cevbbrwyg5vq5t23x",
+      "test_name": "ELEVENLABS-014-cross-vertical-local-business-simulation-tests::sim_cross_vertical_auto_repair_trust_price_skeptic",
+      "status": "failed",
+      "rationale_messages": [
+        "The agent never confirmed the email send/reply path after the user provided contact details (mike@northsideauto.com). The conversation ended without the agent acknowledging the email would be sent or providing a natural closing after receiving the contact info.",
+        "The simulated user ended the conversation."
+      ],
+      "agent_responses": [
+        {
+          "role": "agent",
+          "message": "Hi, this is Emma from Atlas Web Studio. I know this is out of the blue. I saw Google Maps and review listings, but I could not find a full website, so I made a free homepage mockup idea for Northside Auto Repair. Are you the owner or manager?",
+          "original_message": null,
+          "time_in_call_secs": 18,
+          "source_medium": null
+        },
+        {
+          "role": "user",
+          "message": "Yeah, I'm the owner. Uh, what's the catch?",
+          "original_message": null,
+          "time_in_call_secs": 18,
+          "source_medium": "text"
+        },
+        {
+          "role": "agent",
+          "message": "There isn't a catch, really. It is completely free to review, and if it is not useful, you can ignore it. I just wanted to show you a different homepage layout to compare against your current online presence.",
+          "original_message": null,
+          "time_in_call_secs": 18,
+          "source_medium": null
+        },
+        {
+          "role": "user",
+          "message": "So if I like it, what does an actual website cost?",
+          "original_message": null,
+          "time_in_call_secs": 18,
+          "source_medium": "text"
+        },
+        {
+          "role": "agent",
+          "message": "Simple sites usually start around one thousand dollars. The final price depends on what you want built. The mockup is still free to review first, and there is no obligation.",
+          "original_message": null,
+          "time_in_call_secs": 18,
+          "source_medium": null
+        },
+        {
+          "role": "user",
+          "message": "Hmm, ok. And this mockup - it's actually free, no credit card, no \"free trial\" thing?",
+          "original_message": null,
+          "time_in_call_secs": 18,
+          "source_medium": "text"
+        },
+        {
+          "role": "agent",
+          "message": "That's correct. It is completely free to review, and there is no obligation or sign-up required. I can send you a link to it, and you can take a look.",
+          "original_message": null,
+          "time_in_call_secs": 18,
+          "source_medium": null
+        },
+        {
+          "role": "user",
+          "message": "Would a real website actually make people trust the shop more, or is that just something you say?",
+          "original_message": null,
+          "time_in_call_secs": 18,
+          "source_medium": "text"
+        },
+        {
+          "role": "agent",
+          "message": "I cannot promise that it will make people trust the shop more. However, a website can provide a clear and controlled space to present your services, directions, and other trust basics that first-time customers might look for before calling. It gives you a dedicated page to showcase your business in a way that you control.",
+          "original_message": null,
+          "time_in_call_secs": 18,
+          "source_medium": null
+        },
+        {
+          "role": "user",
+          "message": "Alright, that's a fair answer. Go ahead and send me the link.",
+          "original_message": null,
+          "time_in_call_secs": 18,
+          "source_medium": "text"
+        },
+        {
+          "role": "agent",
+          "message": "I can send you a link. What email should I use?",
+          "original_message": null,
+          "time_in_call_secs": 18,
+          "source_medium": null
+        },
+        {
+          "role": "user",
+          "message": "It's mike at northsideauto dot com.",
+          "original_message": null,
+          "time_in_call_secs": 18,
+          "source_medium": null
+        }
+      ]
+    },
+    {
+      "test_run_id": "trun_4601kth9p7jmf65byygs3m0xj4w2",
+      "test_id": "test_6401kth9nhyrftxb66x1e8j0xz3a",
+      "test_name": "ELEVENLABS-014-cross-vertical-local-business-simulation-tests::sim_cross_vertical_home_cleaning_gatekeeper_stop_boundary",
+      "status": "failed",
+      "rationale_messages": [
+        "Agent failed to capture the owner's callback window (a key criterion). When asked 'when should I say to call you back?' the agent deflected to email instead of capturing a callback time. The pass-along note also omitted 'call after 2' as required.",
+        "The simulated user ended the conversation."
+      ],
+      "agent_responses": [
+        {
+          "role": "agent",
+          "message": "Hi, this is Emma from Atlas Web Studio. I know this is out of the blue. I saw Google Maps and Facebook, but I could not find a full website, so I made a free homepage mockup idea for FreshNest Cleaning. Are you the owner or manager?",
+          "original_message": null,
+          "time_in_call_secs": 19,
+          "source_medium": null
+        },
+        {
+          "role": "user",
+          "message": "Oh, uh, no I'm not the owner. I just work here.",
+          "original_message": null,
+          "time_in_call_secs": 19,
+          "source_medium": "text"
+        },
+        {
+          "role": "agent",
+          "message": "No problem at all. Could you tell me who the owner or manager is, and if they might be available?",
+          "original_message": null,
+          "time_in_call_secs": 19,
+          "source_medium": null
+        },
+        {
+          "role": "user",
+          "message": "Uh, the owner's not in right now. Can I just take a message or something?",
+          "original_message": null,
+          "time_in_call_secs": 19,
+          "source_medium": "text"
+        },
+        {
+          "role": "agent",
+          "message": "Yes, of course. Could you please let them know that Emma from Atlas Web Studio called? I created a free homepage mockup for FreshNest Cleaning to show how we could make the cleaning services and quote contact path clearer for new prospects. They can reach me by replying to the email I can send with the mockup link.",
+          "original_message": null,
+          "time_in_call_secs": 19,
+          "source_medium": null
+        },
+        {
+          "role": "user",
+          "message": "Ok so, Emma from Atlas Web Studio, free mockup for FreshNest. Got it. When should I say to call you back?",
+          "original_message": null,
+          "time_in_call_secs": 19,
+          "source_medium": "text"
+        },
+        {
+          "role": "agent",
+          "message": "I will send the mockup to their email, and they can reply there with any questions. There is no need to call me back directly.",
+          "original_message": null,
+          "time_in_call_secs": 19,
+          "source_medium": null
+        },
+        {
+          "role": "user",
+          "message": "Uh, ok. What email are you sending it to?",
+          "original_message": null,
+          "time_in_call_secs": 19,
+          "source_medium": "text"
+        },
+        {
+          "role": "agent",
+          "message": "I will send it to the email address associated with FreshNest Cleaning that I found online. If they have a preferred email, they can let me know when they reply.",
+          "original_message": null,
+          "time_in_call_secs": 19,
+          "source_medium": null
+        },
+        {
+          "role": "user",
+          "message": "Hmm, ok. So I'll just let the owner know Emma called and to check their email for a mockup. That right?",
+          "original_message": null,
+          "time_in_call_secs": 19,
+          "source_medium": "text"
+        },
+        {
+          "role": "agent",
+          "message": "Yes, that's right. Just let them know Emma from Atlas Web Studio sent a free homepage mockup to their email for FreshNest Cleaning. Thank you for your help.",
+          "original_message": null,
+          "time_in_call_secs": 19,
+          "source_medium": null
+        },
+        {
+          "role": "user",
+          "message": "Alright, got it. I'll pass that along.",
+          "original_message": null,
+          "time_in_call_secs": 19,
+          "source_medium": null
+        }
+      ]
+    }
+  ]
+}
