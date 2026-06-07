@@ -1,0 +1,115 @@
+{
+  "package_id": "RAG-023-universal-sales-category-files",
+  "source_of_truth": "category_files",
+  "status": "category-source-ready",
+  "categories": [
+    {
+      "id": "buyer_moves",
+      "title": "Buyer Moves",
+      "path": "runtime/sales_knowledge/universal_sales_rag/categories/01_buyer_moves.md"
+    },
+    {
+      "id": "buyer_journey_jobs",
+      "title": "Buyer Journey Jobs",
+      "path": "runtime/sales_knowledge/universal_sales_rag/categories/02_buyer_journey_jobs.md"
+    },
+    {
+      "id": "buyer_enablement_and_sensemaking",
+      "title": "Buyer Enablement And Sensemaking",
+      "path": "runtime/sales_knowledge/universal_sales_rag/categories/03_buyer_enablement_and_sensemaking.md"
+    },
+    {
+      "id": "stakeholder_mapping",
+      "title": "Stakeholder Mapping",
+      "path": "runtime/sales_knowledge/universal_sales_rag/categories/04_stakeholder_mapping.md"
+    },
+    {
+      "id": "discovery_question_design",
+      "title": "Discovery Question Design",
+      "path": "runtime/sales_knowledge/universal_sales_rag/categories/05_discovery_question_design.md"
+    },
+    {
+      "id": "qualification_evidence",
+      "title": "Qualification Evidence",
+      "path": "runtime/sales_knowledge/universal_sales_rag/categories/06_qualification_evidence.md"
+    },
+    {
+      "id": "value_and_roi_framing",
+      "title": "Value And ROI Framing",
+      "path": "runtime/sales_knowledge/universal_sales_rag/categories/07_value_and_roi_framing.md"
+    },
+    {
+      "id": "objection_status_quo_and_competition",
+      "title": "Objection, Status Quo, And Competition",
+      "path": "runtime/sales_knowledge/universal_sales_rag/categories/08_objection_status_quo_and_competition.md"
+    },
+    {
+      "id": "trust_and_risk_repair",
+      "title": "Trust And Risk Repair",
+      "path": "runtime/sales_knowledge/universal_sales_rag/categories/09_trust_and_risk_repair.md"
+    },
+    {
+      "id": "proof_and_evidence_handling",
+      "title": "Proof And Evidence Handling",
+      "path": "runtime/sales_knowledge/universal_sales_rag/categories/10_proof_and_evidence_handling.md"
+    },
+    {
+      "id": "conversation_repair",
+      "title": "Conversation Repair",
+      "path": "runtime/sales_knowledge/universal_sales_rag/categories/11_conversation_repair.md"
+    },
+    {
+      "id": "next_step_policy",
+      "title": "Next Step Policy",
+      "path": "runtime/sales_knowledge/universal_sales_rag/categories/12_next_step_policy.md"
+    },
+    {
+      "id": "decision_and_paper_process",
+      "title": "Decision And Paper Process",
+      "path": "runtime/sales_knowledge/universal_sales_rag/categories/13_decision_and_paper_process.md"
+    },
+    {
+      "id": "negotiation_and_concession_policy",
+      "title": "Negotiation And Concession Policy",
+      "path": "runtime/sales_knowledge/universal_sales_rag/categories/14_negotiation_and_concession_policy.md"
+    },
+    {
+      "id": "disqualification_policy",
+      "title": "Disqualification Policy",
+      "path": "runtime/sales_knowledge/universal_sales_rag/categories/15_disqualification_policy.md"
+    },
+    {
+      "id": "ethical_persuasion_boundaries",
+      "title": "Ethical Persuasion Boundaries",
+      "path": "runtime/sales_knowledge/universal_sales_rag/categories/16_ethical_persuasion_boundaries.md"
+    },
+    {
+      "id": "motion_specific_playbooks",
+      "title": "Motion Specific Playbooks",
+      "path": "runtime/sales_knowledge/universal_sales_rag/categories/17_motion_specific_playbooks.md"
+    },
+    {
+      "id": "vertical_general_playbooks",
+      "title": "Vertical General Playbooks",
+      "path": "runtime/sales_knowledge/universal_sales_rag/categories/18_vertical_general_playbooks.md"
+    },
+    {
+      "id": "post_sale_handoff",
+      "title": "Post Sale Handoff",
+      "path": "runtime/sales_knowledge/universal_sales_rag/categories/19_post_sale_handoff.md"
+    },
+    {
+      "id": "success_failure_patterns",
+      "title": "Success Failure Patterns",
+      "path": "runtime/sales_knowledge/universal_sales_rag/categories/20_success_failure_patterns.md"
+    },
+    {
+      "id": "call_quality_rubrics",
+      "title": "Call Quality Rubrics",
+      "path": "runtime/sales_knowledge/universal_sales_rag/categories/21_call_quality_rubrics.md"
+    }
+  ],
+  "compiled_output": "runtime/sales_knowledge/universal_sales_rag/compiled/universal_sales_core.md",
+  "provider_output": "runtime/providers/elevenlabs_agents/knowledge_base/universal_sales_core.md",
+  "compiled_sha256": "ae30c5195b82512cab860ff0749f10f8e9637cc5e19d5435e5d7ef1772471f29"
+}

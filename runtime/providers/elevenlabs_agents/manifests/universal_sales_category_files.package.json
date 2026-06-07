@@ -1,0 +1,62 @@
+{
+  "package_id": "RAG-023-universal-sales-category-files",
+  "provider": "elevenlabs",
+  "source_of_truth": "repo",
+  "dashboard_role": "managed runtime and dashboard agent patch surface",
+  "status": "offline-universal-core-upload-ready",
+  "live_provider_calls_made": false,
+  "private_customer_data_used": false,
+  "api_key_required_for_generation": false,
+  "dashboard_manual_changes_source_of_truth": false,
+  "knowledge_base_docs": [
+    "runtime/providers/elevenlabs_agents/knowledge_base/universal_sales_core.md"
+  ],
+  "baseline_tests": [],
+  "upload_intent": {
+    "current_mode": "repo-driven ElevenLabs API universal KB upload",
+    "compiled_from_category_files": true,
+    "knowledge_base_upload_required": true,
+    "agent_patch_should_reuse_existing_campaign_overlay_and_profile_ids": true,
+    "existing_campaign_overlay_document_id": "0VU3KlSbvC0K3LjBQnk8",
+    "existing_campaign_profile_document_id": "6nG4gYzwn7YNdTtuwzKQ",
+    "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty"
+  },
+  "latest_live_application": {
+    "applied_at_local_date": "2026-06-07",
+    "requested_by_user": true,
+    "live_provider_calls_made": true,
+    "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+    "agent_name": "web design",
+    "version_id": "agtvrsn_3501ktfp1ne3f85va4z1y4fbzkhb",
+    "branch_id": "agtbrch_6501kt0g34dvffgr95mvrh70cr2d",
+    "rag_enabled": true,
+    "knowledge_base_documents": [
+      {
+        "name": "universal_sales_core.md",
+        "id": "4lXSg5OAicFL8XKtxvh9"
+      },
+      {
+        "name": "atlas_web_studio_web_design_campaign_overlay.md",
+        "id": "0VU3KlSbvC0K3LjBQnk8"
+      },
+      {
+        "name": "atlas_web_studio_web_design_campaign_profile.md",
+        "id": "6nG4gYzwn7YNdTtuwzKQ"
+      }
+    ],
+    "evidence_paths": [
+      "research/experiments/generated/RAG-023-universal-sales-category-files/live_upload_plan.json",
+      "research/experiments/generated/RAG-023-universal-sales-category-files/live_patch_plan.json"
+    ],
+    "included_prompt_repair": "ELEVENLABS-013-send-path-final-confirmation",
+    "production_green_claimed": false,
+    "fresh_simulation_rerun_required_for_green": true
+  },
+  "blocked_until_review": [
+    "uploading private customer emails",
+    "uploading private transcripts",
+    "using customer audio",
+    "production customer calls",
+    "claiming production-green before a fresh V22-or-later simulation rerun and human review"
+  ]
+}

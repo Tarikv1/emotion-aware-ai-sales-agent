@@ -16,6 +16,36 @@ Use this file as a chronological research journal for the thesis implementation.
 
 ## Entries
 
+### 2026-06-07 - RAG-023 live universal core upload and ELEVENLABS-013 patch
+
+- Objective: apply the compiled universal sales category layer and the narrow final send-path confirmation repair to the existing ElevenLabs `web design` hosted agent after explicit user approval.
+- Action taken: loaded `ELEVENLABS_API_KEY` from ignored local config into the process environment, uploaded the compiled `universal_sales_core.md`, reused the existing live campaign overlay/profile KB document IDs, and patched the existing `web design` agent with the current prompt, first message, dynamic variables, RAG enabled, and temperature `0.25`.
+- Data used: tracked repo-owned compiled universal KB, prompt, first message, dynamic variable defaults, sanitized dashboard fixture, existing live campaign KB document IDs, and local environment-only API key. No private customer data, customer audio, raw private transcripts, voice cloning, generated audio, or API key value was committed.
+- Output created: live upload and patch evidence under `research/experiments/generated/RAG-023-universal-sales-category-files/`; uploaded universal KB document ID `4lXSg5OAicFL8XKtxvh9`; reused overlay/profile IDs `0VU3KlSbvC0K3LjBQnk8` and `6nG4gYzwn7YNdTtuwzKQ`; patched agent version `agtvrsn_3501ktfp1ne3f85va4z1y4fbzkhb` on branch `agtbrch_6501kt0g34dvffgr95mvrh70cr2d`.
+- What was learned: the compiled universal layer can be updated independently from campaign overlay/profile documents, reducing unnecessary KB duplication while still preserving the three-layer live agent package.
+- Why it matters for the thesis: this records the transition from category-source universal RAG to hosted-agent application while keeping provider-write evidence separate from simulation-quality evidence.
+- Open questions: whether the next V22-or-later simulation rerun confirms the final send-path clarification fix and whether the compiled universal category layer changes retrieval behavior in longer objections.
+
+### 2026-06-07 - RAG-023 universal sales category files
+
+- Objective: build the real universal sales RAG category files in the repo and compile them clearly into the universal layer without mixing campaign-specific facts into reusable sales method.
+- Action taken: added a category index, 21 universal category source files, a compiler, compiled universal output, and a validator. The provider-facing `universal_sales_core.md` is now generated from category files instead of hand-edited as a monolith.
+- Data used: project-owned universal sales architecture, the RAG-022 layer contract, and existing universal sales core content. No private customer data, raw private transcript, customer audio, provider call, or API key value was used.
+- Output created: `RAG-023-universal-sales-category-files`, `runtime/sales_knowledge/universal_sales_rag/category_index.json`, category files under `runtime/sales_knowledge/universal_sales_rag/categories/`, `scripts/compile_universal_sales_rag.py`, compiled universal layer output, and `scripts/validate_rag_023_universal_sales_category_files.py`.
+- What was learned: category files are now the editable source, while the compiled universal layer is the upload artifact. This makes the universal sales knowledge easier to inspect, extend, validate, and keep separate from campaign overlay/profile facts.
+- Why it matters for the thesis: this turns the universal sales RAG from an architecture label into a maintainable knowledge system with explicit category ownership and compile-time leakage checks.
+- Open questions: which category should be expanded first with deeper examples after live simulation shows the next failure class.
+
+### 2026-06-07 - ELEVENLABS-013 send-path final-confirmation repair
+
+- Objective: fix the latest failed ElevenLabs simulation where the buyer asked a final send-path clarification after the agent had already confirmed and closed the email link path.
+- Action taken: added a narrow prompt rule for final send-path clarification, created an offline package manifest, documented the repair, and added a validator that builds the dry-run patch bundle without provider calls.
+- Data used: human feedback from the failed simulation screenshot and existing repo-owned ElevenLabs prompt/package files. No private customer data, customer audio, raw private transcript, API key value, or production customer call was used.
+- Output created: `ELEVENLABS-013-send-path-final-confirmation`, `runtime/providers/elevenlabs_agents/manifests/web_design_send_path_final_confirmation.package.json`, `docs/product/ELEVENLABS_013_SEND_PATH_FINAL_CONFIRMATION.md`, and `scripts/validate_elevenlabs_013_send_path_final_confirmation.py`.
+- What was learned: terminal-close policy still needs a narrow exception for buyer yes/no clarification after a close. The correct answer is a one-line terminal answer, not silence and not a reopened pitch.
+- Why it matters for the thesis: it records a small human-review correction that improves conversation completeness without broadening the agent's authority or encouraging extra selling after a close.
+- Open questions: whether a fresh V22-or-later simulation rerun confirms that final send-path clarification is now answered consistently.
+
 ### 2026-06-07 - ELEVENLABS-012 live upload and agent patch
 
 - Objective: apply the validated ELEVENLABS-012 feedback-quality repair package to the existing ElevenLabs `web design` hosted agent after explicit user approval.

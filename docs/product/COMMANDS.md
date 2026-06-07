@@ -3536,6 +3536,12 @@ Validate the ElevenLabs 012 feedback-quality repair without provider calls:
 python scripts\validate_elevenlabs_012_web_design_feedback_quality_repair.py
 ```
 
+Validate the ElevenLabs 013 send-path final-confirmation repair without provider calls:
+
+```powershell
+python scripts\validate_elevenlabs_013_send_path_final_confirmation.py
+```
+
 Live ELEVENLABS-010 KB upload and agent patch requires `ELEVENLABS_API_KEY` in
 the current shell and explicit `--live --confirm-provider-write`:
 
@@ -3732,6 +3738,18 @@ Validate the RAG-022 universal sales layer contract without provider calls:
 
 ```powershell
 python scripts\validate_rag_022_universal_sales_layer_contract.py
+```
+
+Compile the universal sales RAG category files into the provider KB artifact:
+
+```powershell
+python scripts\compile_universal_sales_rag.py
+```
+
+Validate the RAG-023 universal sales category files without provider calls:
+
+```powershell
+python scripts\validate_rag_023_universal_sales_category_files.py
 ```
 
 ## Safety Rules

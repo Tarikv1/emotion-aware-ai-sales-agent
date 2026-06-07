@@ -1,0 +1,75 @@
+{
+  "package_id": "ELEVENLABS-013-send-path-final-confirmation",
+  "provider": "elevenlabs",
+  "source_of_truth": "repo",
+  "dashboard_role": "managed runtime and dashboard agent patch surface",
+  "status": "offline-repair-ready",
+  "live_provider_calls_made": false,
+  "private_customer_data_used": false,
+  "api_key_required_for_generation": false,
+  "dashboard_manual_changes_source_of_truth": false,
+  "knowledge_base_docs": [
+    "runtime/providers/elevenlabs_agents/knowledge_base/universal_sales_core.md",
+    "runtime/providers/elevenlabs_agents/knowledge_base/atlas_web_studio_web_design_campaign_overlay.md",
+    "runtime/providers/elevenlabs_agents/knowledge_base/atlas_web_studio_web_design_campaign_profile.md"
+  ],
+  "baseline_tests": [],
+  "repair_basis": {
+    "previous_checkpoint": "ELEVENLABS-012-web-design-feedback-quality-repair",
+    "previous_live_agent": "web design",
+    "human_feedback_source": "latest failed simulation screenshot after ELEVENLABS-012 upload",
+    "failure_mode": "after acknowledged send path, buyer asked final link-by-email confirmation and agent did not answer",
+    "live_rerun_required_for_green": true
+  },
+  "upload_intent": {
+    "current_mode": "repo-driven ElevenLabs API agent patch",
+    "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+    "campaign_role": "Atlas Web Studio restaurant website outreach",
+    "layered_upload_package": true,
+    "campaign_facts_override_all": true,
+    "document_reference_imports_required": false,
+    "dynamic_variables_required": true,
+    "agent_prompt_required": true,
+    "first_message_required": true,
+    "agent_temperature": 0.25,
+    "knowledge_base_upload_required": false,
+    "reuse_latest_attached_kb_docs_allowed": true
+  },
+  "latest_live_application": {
+    "applied_at_local_date": "2026-06-07",
+    "requested_by_user": true,
+    "live_provider_calls_made": true,
+    "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+    "agent_name": "web design",
+    "version_id": "agtvrsn_3501ktfp1ne3f85va4z1y4fbzkhb",
+    "branch_id": "agtbrch_6501kt0g34dvffgr95mvrh70cr2d",
+    "rag_enabled": true,
+    "applied_with_package": "RAG-023-universal-sales-category-files",
+    "knowledge_base_documents": [
+      {
+        "name": "universal_sales_core.md",
+        "id": "4lXSg5OAicFL8XKtxvh9"
+      },
+      {
+        "name": "atlas_web_studio_web_design_campaign_overlay.md",
+        "id": "0VU3KlSbvC0K3LjBQnk8"
+      },
+      {
+        "name": "atlas_web_studio_web_design_campaign_profile.md",
+        "id": "6nG4gYzwn7YNdTtuwzKQ"
+      }
+    ],
+    "evidence_paths": [
+      "research/experiments/generated/RAG-023-universal-sales-category-files/live_patch_plan.json"
+    ],
+    "production_green_claimed": false,
+    "fresh_simulation_rerun_required_for_green": true
+  },
+  "blocked_until_review": [
+    "uploading private customer emails",
+    "uploading private transcripts",
+    "using customer audio",
+    "production customer calls",
+    "claiming production-green before a fresh V22-or-later simulation rerun and human review"
+  ]
+}

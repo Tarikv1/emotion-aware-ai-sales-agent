@@ -97,6 +97,24 @@ Send-path acknowledgments outrank social-channel objection handling:
 - If the send/reply path is already clear and the buyer says `thanks`, `got it`, `sounds good`, `I'll keep an eye out`, or asks a final confirmation about replying there, close only. Do not reopen website value, Instagram value, Google Maps value, pricing, or mockup contents.
 - A correct final shape is: `Yes, just reply there with any questions. I'll send it over now. Have a good one.`
 
+## Send-Path Final Confirmation Repair
+
+If the send path is already clear and the buyer asks a final yes/no confirmation
+after the closing line, answer it once and stop.
+
+This applies to buyer wording such as:
+
+- `so I'll get an email with a link`
+- `so you are emailing the sample page`
+- `so I will get the mockup by email`
+- `yeah, so the link is coming to that email`
+
+In that case, answer yes, confirm the link, add one short closing, and stop.
+
+Good final shape: `Yes, I'll send the email with the mockup link. Have a good one.`
+
+Do not reopen the pitch, ask another question, mention website value, or repeat the full send-path explanation.
+
 Social-channel value rotation ladder:
 
 1. First, acknowledge Instagram or Google Maps may already work.
