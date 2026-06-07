@@ -1,0 +1,72 @@
+{
+  "checkpoint_id": "ELEVENLABS-020-layered-kb-packaging-natural-speech",
+  "operation": "delete-stale-knowledge-base-documents",
+  "provider": "elevenlabs",
+  "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+  "live_provider_calls_made": true,
+  "force_delete_used": false,
+  "deleted_documents": [
+    {
+      "id": "nDldYVCnhKzj4mKW4X4O",
+      "name": "atlas_web_studio_web_design_campaign_overlay.md",
+      "reason": "stale previous implementation document, not attached to the active web design agent"
+    },
+    {
+      "id": "sxG793M1gBKfJxzgUWIO",
+      "name": "atlas_web_studio_web_design_campaign_profile.md",
+      "reason": "stale previous implementation document, not attached to the active web design agent"
+    },
+    {
+      "id": "JF3WSPRZOcPS1rki03ot",
+      "name": "universal_sales_core.md",
+      "reason": "stale previous full-core document, superseded by the active universal summary"
+    }
+  ],
+  "remaining_atlas_knowledge_base_documents": [
+    {
+      "id": "CnbYTsnjQK8x5eThDd3u",
+      "name": "universal_sales_core_summary.md",
+      "dependent_agent_count": 1,
+      "dependent_agent": "web design:agent_7801kt0g32zxf4f8x5zkykj7syty"
+    },
+    {
+      "id": "GuziB9nZwzAUW5DTVOOm",
+      "name": "atlas_web_studio_web_design_campaign_overlay.md",
+      "dependent_agent_count": 1,
+      "dependent_agent": "web design:agent_7801kt0g32zxf4f8x5zkykj7syty"
+    },
+    {
+      "id": "tJVSI69rn4ED2Uis2sc0",
+      "name": "atlas_web_studio_web_design_campaign_profile.md",
+      "dependent_agent_count": 1,
+      "dependent_agent": "web design:agent_7801kt0g32zxf4f8x5zkykj7syty"
+    }
+  ],
+  "post_cleanup_agent_verification": {
+    "version_id": "agtvrsn_8301ktj1z1y8fq99hsrjezrcqpcj",
+    "knowledge_base_count": 3,
+    "knowledge_base_document_ids": [
+      "CnbYTsnjQK8x5eThDd3u",
+      "GuziB9nZwzAUW5DTVOOm",
+      "tJVSI69rn4ED2Uis2sc0"
+    ],
+    "rag_enabled": true,
+    "tool_id_count": 0,
+    "mcp_server_count": 0,
+    "native_mcp_server_count": 0
+  },
+  "side_effects_not_enabled": [
+    "OpenAI API calls",
+    "live outbound calls",
+    "lead scraping",
+    "CRM tools",
+    "email tools",
+    "calendar tools",
+    "payment tools",
+    "account tools"
+  ],
+  "source_api_docs": [
+    "https://elevenlabs.io/docs/api-reference/knowledge-base/",
+    "https://elevenlabs.io/docs/api-reference/knowledge-base/delete/"
+  ]
+}
