@@ -16,6 +16,16 @@ Use this file as a chronological research journal for the thesis implementation.
 
 ## Entries
 
+### 2026-06-07 - ELEVENLABS-014 cross-vertical local-business simulation tests
+
+- Objective: add a new simulation gate that tests whether the Atlas Web Studio web-design agent generalizes beyond the Mike's Kitchen restaurant fixture without creating real campaign profiles for other businesses.
+- Action taken: added a deterministic ElevenLabs Simulation Test pack for synthetic local-business verticals: plumbing, dental, auto repair, HVAC, hair salon, and home cleaning. Each scenario carries its own dynamic variables and checks for restaurant leakage, claim boundaries, callback handling, gatekeeper handling, no-obligation assurance, and send-path confirmation.
+- Data used: synthetic local-business verticals only. No private customer data, raw private transcript, customer audio, provider call, or API key value was used.
+- Output created: `ELEVENLABS-014-cross-vertical-local-business-simulation-tests`, a repo-owned simulation test JSON pack, a package manifest, documentation, a validator, and dry-run request generation through the existing ElevenLabs automation runner.
+- What was learned: the right next test surface is a cross-vertical generalization gate, not another restaurant-only variant. Randomized dynamic tests can wait until deterministic failures are understood.
+- Why it matters for the thesis: this separates universal sales behavior from one campaign fixture and creates evidence for whether the agent can adapt safely before real campaign overlays/profiles are created for new verticals.
+- Open questions: whether the current hosted agent will leak restaurant-specific wording into non-restaurant verticals when this pack is uploaded and run; provider writes remain blocked until explicitly requested.
+
 ### 2026-06-07 - RAG-023 live universal core upload and ELEVENLABS-013 patch
 
 - Objective: apply the compiled universal sales category layer and the narrow final send-path confirmation repair to the existing ElevenLabs `web design` hosted agent after explicit user approval.

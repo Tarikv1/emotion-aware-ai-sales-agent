@@ -3542,6 +3542,12 @@ Validate the ElevenLabs 013 send-path final-confirmation repair without provider
 python scripts\validate_elevenlabs_013_send_path_final_confirmation.py
 ```
 
+Validate the ElevenLabs 014 cross-vertical local-business simulation tests without provider calls:
+
+```powershell
+python scripts\validate_elevenlabs_014_cross_vertical_local_business_simulation_tests.py
+```
+
 Live ELEVENLABS-010 KB upload and agent patch requires `ELEVENLABS_API_KEY` in
 the current shell and explicit `--live --confirm-provider-write`:
 
