@@ -1,0 +1,70 @@
+{
+  "package_id": "ELEVENLABS-019-demand-capture-conversion-leakage-repair",
+  "provider": "elevenlabs",
+  "source_of_truth": "repo",
+  "dashboard_role": "managed runtime and dashboard agent patch plus V4 simulation criteria",
+  "status": "offline-repair-ready",
+  "live_provider_calls_made": false,
+  "private_customer_data_used": false,
+  "api_key_required_for_generation": false,
+  "dashboard_manual_changes_source_of_truth": false,
+  "knowledge_base_docs": [
+    "runtime/providers/elevenlabs_agents/knowledge_base/universal_sales_core.md",
+    "runtime/providers/elevenlabs_agents/knowledge_base/atlas_web_studio_web_design_campaign_overlay.md",
+    "runtime/providers/elevenlabs_agents/knowledge_base/atlas_web_studio_web_design_campaign_profile.md"
+  ],
+  "baseline_tests": [
+    "runtime/providers/elevenlabs_agents/tests/web_design_demand_capture_conversion_leakage_v4_simulation_tests.json"
+  ],
+  "repair_basis": {
+    "previous_checkpoint": "ELEVENLABS-018-sales-value-and-contact-control-repair",
+    "human_feedback_source": "demand-capture and conversion-leakage sales review on 2026-06-07",
+    "human_feedback_categories": [
+      "abstract_value_language_after_no_guarantee_boundary",
+      "weak_business_impact_answer_for_more_customers_calls_bookings_jobs_patients",
+      "google_instagram_status_quo_objection_needs_existing_attention_reframe",
+      "vertical_specific_conversion_leakage_mechanisms_required",
+      "v4_simulation_criteria_for_vague_value_answer_failures"
+    ],
+    "live_rerun_required_for_green": true
+  },
+  "upload_intent": {
+    "current_mode": "repo-driven ElevenLabs API agent patch dry-run only",
+    "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+    "campaign_role": "Atlas Web Studio local-business website outreach",
+    "layered_upload_package": true,
+    "campaign_facts_override_all": true,
+    "document_reference_imports_required": false,
+    "dynamic_variables_required": true,
+    "agent_prompt_required": true,
+    "first_message_required": true,
+    "agent_temperature": 0.25,
+    "knowledge_base_upload_required": true,
+    "test_recreation_required": true,
+    "revised_test_manifest": "runtime/providers/elevenlabs_agents/manifests/web_design_demand_capture_conversion_leakage_repair.package.json",
+    "target_test_folder_name": "Atlas Web Studio - Cross-Vertical Local Business Simulation V4"
+  },
+  "planned_live_application": {
+    "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+    "previous_live_agent_version_id": "agtvrsn_8901kthty7p4e69v6pk3ybnve233",
+    "previous_checkpoint": "ELEVENLABS-018-sales-value-and-contact-control-repair",
+    "simulation_run_made": false,
+    "production_green_claimed": false
+  },
+  "blocked_until_review": [
+    "ElevenLabs API calls",
+    "OpenAI API calls",
+    "live outbound calls",
+    "scrape leads",
+    "CRM tools",
+    "email tools",
+    "calendar tools",
+    "payment tools",
+    "account tools",
+    "uploading private customer emails",
+    "uploading private transcripts",
+    "using customer audio",
+    "production customer calls",
+    "claiming production readiness before a fresh V4 simulation run and human review"
+  ]
+}

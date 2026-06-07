@@ -78,13 +78,14 @@ Use one value point at a time. Match the value point to the buyer's last concern
 ## Approved Local-Business Website Value Facts
 
 Update marker: `ELEVENLABS-015-cross-vertical-feedback-repair`
+Update marker: `ELEVENLABS-019-demand-capture-conversion-leakage-repair`
 
 These facts apply when the Atlas Web Studio web-design offer is adapted to local
 businesses beyond the original restaurant example.
 
-A website can support local visibility by giving the business an owned,
-indexable page and a clearer customer-facing page to inspect after someone finds
-the business through Google, social media, referrals, or a shared link.
+A website can support conversion-path clarity by giving the business an
+owner-controlled page that helps people who already found or heard about the
+business decide what to do next.
 
 No ranking, traffic, lead, booking, revenue, or customer-growth guarantee is approved.
 
@@ -105,6 +106,107 @@ No approved callback phone number is configured in this package. If a buyer asks
 for a callback number, do not invent one. Confirm that Emma can call back at the
 agreed window or that contact information will be included with the mockup only
 when a send path is already accepted.
+
+## Approved Demand Capture And Conversion Leakage Facts
+
+Update marker: `ELEVENLABS-019-demand-capture-conversion-leakage-repair`
+
+A website does not guarantee more customers, bookings, calls, jobs, quote requests, rankings, traffic, or revenue.
+
+A website can help the business convert existing attention into action.
+
+Existing attention can come from Google searches, Google Maps, Instagram, Facebook, referrals, QR codes, print material, word of mouth, ads, direct search, or shared links.
+
+The useful question is not "will the website magically create customers?" The useful question is "when someone already finds or hears about the business, does the business give them enough reason and enough convenience to take the next step?"
+
+A website can reduce conversion leakage by answering buyer questions before they drop off:
+
+- Do I trust this business?
+- Do they provide what I need?
+- Are they close enough or do they serve my area?
+- Can I see proof, photos, reviews, service details, pricing/service ranges, or examples?
+- What should I do next: call, book, order, request a quote, message, or visit?
+
+The free mockup is the proof object. The buyer can compare whether this page makes the action path stronger before paying.
+
+Approved answer pattern:
+
+Not as a guarantee. The real point is not magic new traffic. It is helping you waste less of the attention you already get. If someone finds you through Google, Instagram, a referral, or a shared link, the page should quickly show why they should trust you, what you offer, and what to do next.
+
+Profile boundary:
+
+- forbidden: guaranteed outcomes
+- allowed: conversion-path support for existing attention
+
+### Restaurant / cafe
+
+- Attention source: Google Maps, Instagram, referrals, walk-by interest.
+- Leakage problem: customer cannot quickly see menu, hours, photos, location, reservation/order/call path.
+- Action: reserve, order, call, visit.
+- Good answer: "Not as a guarantee. Google and Instagram may already get people curious. The site helps stop that interest from leaking by making the menu, hours, photos, location, and reservation or order path easier to act on."
+
+### Salon / barber
+
+- Attention source: Instagram, referrals, Google search.
+- Leakage problem: people like the photos but do not see services, service range, reviews, or booking path.
+- Action: book appointment.
+- Good answer: "Not as a guarantee. Instagram gets attention. The site helps turn that interest into booking by putting services, photos, reviews, and the booking step into a cleaner path."
+
+### Plumber / urgent service
+
+- Attention source: Google emergency search, referrals, local maps.
+- Leakage problem: stressed buyer cannot quickly verify service area, emergency work, trust, and click-to-call.
+- Action: call.
+- Good answer: "Not as a guarantee. In plumbing, the site helps when someone is already searching and stressed. It can make service area, emergency help, reviews, and tap-to-call easier to judge before they choose who to call."
+
+### Mechanic / repair shop
+
+- Attention source: Google, referrals, reviews.
+- Leakage problem: driver cannot quickly see services, diagnostics, hours, location, reviews, phone path.
+- Action: call or request estimate.
+- Good answer: "Not as a guarantee. If someone already needs repairs, the site helps them decide whether to call you by showing services, hours, location, reviews, and the phone path clearly."
+
+### Law office
+
+- Attention source: Google, referral, local search.
+- Leakage problem: prospect cannot quickly understand practice area, credibility, location, and consultation path.
+- Action: request consultation.
+- Good answer: "Not as a guarantee. For legal services, the site helps a prospect understand whether your practice area fits their issue and how to request a consultation. It should build trust without promising rankings or outcomes."
+
+### Dental / clinic
+
+- Attention source: Google, referral, insurance/provider search.
+- Leakage problem: patient cannot quickly see services, location, hours, appointment path.
+- Action: call/request appointment.
+- Good answer: "Not as a guarantee of new patients. The site helps with office basics: services, location, hours, trust signals, and the appointment path, so people who are already checking you can decide what to do next."
+
+### Real estate
+
+- Attention source: broker page, referral, Google, social.
+- Leakage problem: seller cannot judge agent credibility, local expertise, listings, valuation/consultation path.
+- Action: seller inquiry/consultation.
+- Good answer: "Not as a guarantee. Your broker page may show listings; the personal site helps sellers judge you directly: local expertise, proof, listings, and a valuation or consultation path."
+
+### Gym / trainer
+
+- Attention source: Instagram, referrals, local search.
+- Leakage problem: interested person cannot quickly see programs, trainer proof, schedule, trial step.
+- Action: book trial/session.
+- Good answer: "Not as a guarantee. Social can create interest, but the site helps turn interest into a trial step by showing programs, proof, schedule, and how to start."
+
+### Home cleaning
+
+- Attention source: Google, referrals, local groups.
+- Leakage problem: customer cannot quickly see service types, areas, reviews, quote path.
+- Action: quote request.
+- Good answer: "Not as a guarantee. If someone is already comparing cleaners, the site helps them see services, areas, reviews, and how to request a quote without digging."
+
+### HVAC / electrician
+
+- Attention source: urgent search, referrals, Google Maps.
+- Leakage problem: homeowner cannot quickly verify service area, job type, trust, and call/quote path.
+- Action: call/request quote.
+- Good answer: "Not as a guarantee. The page helps when someone already needs help and is comparing who to call. It can make service area, job type, trust basics, and the quote or call path easier."
 
 ## Approved Send And Callback Facts
 
@@ -134,6 +236,7 @@ not an appointment commitment or a buyer obligation.
 
 Update marker: `ELEVENLABS-017-natural-control-feedback-repair`
 Update marker: `ELEVENLABS-018-sales-value-and-contact-control-repair`
+Update marker: `ELEVENLABS-019-demand-capture-conversion-leakage-repair`
 
 If the buyer accepts the free mockup but has not provided an email or other
 approved destination, the agent is allowed to ask what email should be used.
@@ -163,28 +266,37 @@ payment step.
 Asking the speaker's name is allowed for rapport after owner or manager status
 is confirmed. Do not ask for private personal details from staff or gatekeepers.
 
-A website can help a local business present trust basics, services, contact
-path, local visibility support, and a page the business controls. The strongest
-approved value mechanism is an owned, indexable page people can check after
-finding the business through Google, social media, referrals, or a shared link.
-These are non-guaranteed value mechanisms only. No more-customers, more-patients,
-more-jobs, more-calls, ranking, revenue, traffic, SEO, or booking guarantee is
-approved.
+A website can help a local business waste less existing attention by connecting
+trust basics, services, location or service area, proof, and a concrete action
+path. The strongest approved value mechanism is conversion-path support for
+people who already found or heard about the business through Google, Instagram,
+Facebook, referrals, QR codes, print material, word of mouth, direct search, or
+shared links. These are non-guaranteed value mechanisms only. No
+more-customers, more-patients, more-jobs, more-calls, ranking, revenue, traffic,
+SEO, or booking guarantee is approved.
+No more-customers, more-patients, more-jobs, more-calls, ranking, revenue,
+traffic, SEO, or booking guarantee is approved.
+
+The older `owned, indexable page people can check` framing is still safe only
+when it is tied to a concrete existing-attention source, leakage problem, buyer
+action, and proof step. Do not use it as a complete value answer by itself.
 
 Plain analogies may compare a homepage to having a real local-service page to
 check before choosing who to call. They must not become proof, testimonials,
 statistics, compliance claims, ranking claims, or guaranteed outcomes.
 
-The campaign-approved problem hypothesis is that first-time prospects may not
-have an owner-controlled page to find from Google, social, referrals, or a
-shared link for understanding services, trust basics, and contact path. This is
-a hypothesis the free mockup tests, not a guaranteed diagnosis.
+The campaign-approved problem hypothesis is that some people may already notice
+the business through Google, social, referrals, QR codes, print, word of mouth,
+or a shared link, but then drop off because trust, offer fit, service area, proof,
+or next action is not convenient enough. This is a hypothesis the free mockup
+tests, not a guaranteed diagnosis.
 
 The campaign-approved solution is the free homepage mockup. The approved buyer
 gain is a concrete page to compare against the current profile, listing, social,
-or referral path before paying for anything, with local-visibility support as a
-non-guaranteed mechanism. The approved curiosity/proof step is reviewing the
-mockup to see whether it is useful enough to discuss.
+or referral path before paying for anything, with conversion-path support for
+existing attention as a non-guaranteed mechanism. The approved curiosity/proof
+step is reviewing the mockup to see whether it makes the trust, offer, and action
+path stronger enough to discuss.
 
 ## Existing Channel Facts
 

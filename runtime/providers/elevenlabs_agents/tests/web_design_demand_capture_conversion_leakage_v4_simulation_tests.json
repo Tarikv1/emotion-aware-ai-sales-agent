@@ -1,0 +1,153 @@
+{
+  "package_id": "ELEVENLABS-019-demand-capture-conversion-leakage-repair",
+  "purpose": "V4 cross-vertical simulation criteria for demand-capture and conversion-leakage business-impact answers.",
+  "provider": "elevenlabs",
+  "source_of_truth": "repo",
+  "test_type": "simulation",
+  "dynamic_variables": {
+    "campaign_name": "atlas-web-studio-demand-capture-v4-simulation",
+    "caller_identity": "Emma from Atlas Web Studio",
+    "offer_type": "free homepage mockup",
+    "website_starting_price": "$1,000",
+    "website_premium_price_anchor": "$5,000",
+    "website_hosting_monthly_ballpark": "$10-$30/month",
+    "website_domain_cost_note": "domain costs are separate and should be confirmed before anything paid",
+    "website_price_disclosure_rule": "only discuss paid website pricing when the buyer directly asks about price, cost, money, hidden fees, or what happens after the free mockup"
+  },
+  "evaluation_repair_notes": {
+    "checkpoint": "ELEVENLABS-019-demand-capture-conversion-leakage-repair",
+    "no_guarantee_boundary": "Business-impact answers must use a short no-guarantee boundary when the buyer asks about more customers, calls, bookings, jobs, quote requests, patients, consultations, rankings, traffic, or revenue.",
+    "existing_attention_source": "A passing answer must name where existing attention already comes from, such as Google, Instagram, referrals, Google Maps, QR codes, print, word of mouth, or shared links.",
+    "conversion_leakage_action_mechanism": "A passing answer must connect one leakage problem to one buyer action, such as call, book, request quote, order, visit, message, or request consultation.",
+    "proof_before_purchase_step": "A passing answer must use the free mockup as the proof step before paying.",
+    "vague_value_failure": "Answers that only say clearer page, online presence, local visibility support, owned indexable page, customer decision path, or something to judge must fail unless they name who is already looking, what they need to decide, and what action they should take."
+  },
+  "tests": [
+    {
+      "test_id": "sim_v4_plumber_emergency_calls_demand_capture",
+      "type": "simulation",
+      "simulation_max_turns": 18,
+      "simulation_scenario": "The simulated user owns Apex Plumbing in Denver. They are busy and direct because urgent work often starts with Google emergency searches and Google Maps calls. They should ask whether the page is supposed to increase emergency calls and should reject generic online-presence talk. They may accept the free mockup only if Emma explains how the page helps people who are already searching decide whether to tap-to-call.",
+      "success_condition": "The full conversation passes only if the agent adapts to plumbing and any business-impact answer includes a no-guarantee boundary, one existing attention source, one leakage problem, one buyer action, and one proof step. A good answer names Google emergency search or local maps as the existing attention source, says the leakage problem is a stressed buyer needing service area, emergency help, reviews, and tap-to-call quickly, names call as the buyer action, and says the mockup shows whether that call path is stronger before paying. It must not promise emergency-call volume, jobs, rankings, faster dispatch, or revenue. It fails if the value answer is only clearer page, online presence, owned indexable page, local visibility support, customer decision path, or something to judge without naming who is already looking, what they need to decide, and the call action. It also fails if the agent attacks Google, uses restaurant details, uses unapproved bracketed delivery tags, asks to review the mockup repeatedly while the buyer is still challenging value, or leaves an accepted send path without contact capture and reply-path confirmation.",
+      "dynamic_variables": {
+        "business_name": "Apex Plumbing",
+        "business_type": "plumbing company",
+        "vertical": "plumber",
+        "existing_attention_source": "Google emergency search and Google Maps",
+        "conversion_leakage_problem": "stressed buyer cannot quickly verify service area, emergency help, reviews, and tap-to-call",
+        "target_buyer_action": "call",
+        "proof_step": "free mockup shows whether the call path is stronger before paying",
+        "status_quo_channel": "Google calls",
+        "simulation_focus": "plumber_more_emergency_calls"
+      }
+    },
+    {
+      "test_id": "sim_v4_salon_more_bookings_instagram_attention",
+      "type": "simulation",
+      "simulation_max_turns": 18,
+      "simulation_scenario": "The simulated user owns Luna Hair Studio in Tampa and thinks Instagram already creates interest. They should ask whether a website is supposed to increase bookings and should push back if Emma only talks about having a nicer page. They may soften if Emma concedes Instagram is useful and explains the leakage between photo interest and a booking step.",
+      "success_condition": "The full conversation passes only if the agent gives a salon-specific demand-capture answer with a no-guarantee boundary, one existing attention source, one leakage problem, one buyer action, and one proof step. A passing answer names Instagram, referrals, or Google search as the existing attention source, says the leakage problem is that people like photos but may not see services, service range, reviews, or booking path, names book appointment as the buyer action, and says the mockup shows whether that booking path is stronger before paying. It must not promise booking volume, social-media replacement, rankings, or revenue. It fails if the agent attacks Instagram, uses only clearer page, local visibility support, online presence, customer decision path, owned indexable page, or something to judge, or repeats a generic services-hours-location list without tying it to booking. It also fails if the agent pushes online booking after rejection, uses restaurant details, uses unapproved bracketed delivery tags, or does not confirm send/reply path after contact capture.",
+      "dynamic_variables": {
+        "business_name": "Luna Hair Studio",
+        "business_type": "hair salon",
+        "vertical": "salon",
+        "existing_attention_source": "Instagram, referrals, and Google search",
+        "conversion_leakage_problem": "people like photos but do not see services, service range, reviews, or booking path",
+        "target_buyer_action": "book appointment",
+        "proof_step": "free mockup shows whether the booking path is stronger before paying",
+        "status_quo_channel": "Instagram",
+        "simulation_focus": "salon_more_bookings_instagram"
+      }
+    },
+    {
+      "test_id": "sim_v4_restaurant_more_customers_google_instagram",
+      "type": "simulation",
+      "simulation_max_turns": 18,
+      "simulation_scenario": "The simulated user owns Harbor Cafe in Portland. They already get curiosity from Google Maps, Instagram photos, walk-by interest, and referrals. They should ask whether a website is supposed to increase customers and should dislike abstract trust basics. They may accept a mockup if Emma explains how existing curiosity leaks when people cannot quickly act on menu, hours, photos, location, reservation, order, or call details.",
+      "success_condition": "The full conversation passes only if the agent answers the more-customers question with a no-guarantee boundary, one existing attention source, one leakage problem, one buyer action, and one proof step. A passing restaurant answer names Google Maps, Instagram, referrals, or walk-by interest as the existing attention source, names menu, hours, photos, location, reservation/order/call path as the leakage problem, names reserve, order, call, or visit as the buyer action, and says the mockup shows whether that action path is stronger before paying. It must not promise customer count, traffic, rankings, reviews, reservations, orders, or revenue. It fails if the answer is only clearer page, online presence, local visibility support, owned indexable page, customer decision path, or something to judge, or if it lists homepage contents without explaining the action path. It also fails if the agent attacks Google or Instagram, invents menu facts, uses unapproved bracketed delivery tags, or ends after interest without a valid send/contact path.",
+      "dynamic_variables": {
+        "business_name": "Harbor Cafe",
+        "business_type": "restaurant and cafe",
+        "vertical": "restaurant_cafe",
+        "existing_attention_source": "Google Maps, Instagram, referrals, and walk-by interest",
+        "conversion_leakage_problem": "customer cannot quickly see menu, hours, photos, location, reservation/order/call path",
+        "target_buyer_action": "reserve, order, call, or visit",
+        "proof_step": "free mockup shows whether the action path is stronger before paying",
+        "status_quo_channel": "Google Maps and Instagram",
+        "simulation_focus": "restaurant_more_customers"
+      }
+    },
+    {
+      "test_id": "sim_v4_mechanic_trust_and_estimate_path",
+      "type": "simulation",
+      "simulation_max_turns": 18,
+      "simulation_scenario": "The simulated user owns Northside Auto Repair in Columbus and is skeptical of trust promises. They should ask whether a website really makes drivers trust the shop and whether it leads to more estimate calls. They may accept the free mockup if Emma avoids trust guarantees and explains how someone who already needs repairs can judge services, diagnostics, hours, location, reviews, and phone path.",
+      "success_condition": "The full conversation passes only if the agent answers trust or estimate-call impact with a no-guarantee boundary, one existing attention source, one leakage problem, one buyer action, and one proof step. A passing mechanic answer names Google, referrals, or reviews as the existing attention source, says the leakage problem is that a driver cannot quickly see services, diagnostics, hours, location, reviews, or phone path, names call or request estimate as the buyer action, and says the mockup shows whether that path is stronger before paying. It must not promise trust, estimate volume, jobs, rankings, review improvement, or revenue. It fails if the answer is only a clearer page, online presence, local visibility support, owned indexable page, customer decision path, or something to judge, or if it invents certifications, prices, reviews, or repair outcomes. It also fails if the agent dodges a price question after being asked, uses restaurant language, uses unapproved bracketed delivery tags, or fails to normalize and confirm a spoken email send path.",
+      "dynamic_variables": {
+        "business_name": "Northside Auto Repair",
+        "business_type": "auto repair shop",
+        "vertical": "mechanic",
+        "existing_attention_source": "Google, referrals, and reviews",
+        "conversion_leakage_problem": "driver cannot quickly see services, diagnostics, hours, location, reviews, and phone path",
+        "target_buyer_action": "call or request estimate",
+        "proof_step": "free mockup shows whether the estimate or call path is stronger before paying",
+        "status_quo_channel": "Google reviews and referrals",
+        "simulation_focus": "mechanic_trust_estimate_path"
+      }
+    },
+    {
+      "test_id": "sim_v4_dental_new_patients_office_basics",
+      "type": "simulation",
+      "simulation_max_turns": 18,
+      "simulation_scenario": "The simulated user manages Bright Lane Dental in Raleigh and is careful about medical-adjacent claims. They should ask whether the page is meant to increase new patients and should object to anything that sounds like treatment, marketing, or patient-growth claims. They may accept a mockup only if Emma keeps the answer to office basics and appointment path.",
+      "success_condition": "The full conversation passes only if the agent answers the new-patients question with a strict no-guarantee boundary, one existing attention source, one leakage problem, one buyer action, and one proof step. A passing dental answer names Google, referrals, or insurance/provider search as the existing attention source, says the leakage problem is that a patient cannot quickly see services, location, hours, trust signals, or appointment path, names call or request appointment as the buyer action, and says the mockup shows whether that appointment path is stronger before paying. It must not promise patient count, treatment outcomes, rankings, traffic, compliance results, or revenue. It fails if the answer is only clearer page, online presence, local visibility support, owned indexable page, customer decision path, or something to judge, or if it implies medical expertise. It also fails if the agent uses restaurant language, overexplains paid scope without being asked, uses unapproved bracketed delivery tags, or fails to capture and confirm an approved send path.",
+      "dynamic_variables": {
+        "business_name": "Bright Lane Dental",
+        "business_type": "dental office",
+        "vertical": "dental",
+        "existing_attention_source": "Google, referrals, and insurance/provider search",
+        "conversion_leakage_problem": "patient cannot quickly see services, location, hours, trust signals, or appointment path",
+        "target_buyer_action": "call or request appointment",
+        "proof_step": "free mockup shows whether the appointment path is stronger before paying",
+        "status_quo_channel": "Google and provider search",
+        "simulation_focus": "dental_new_patients_boundary"
+      }
+    },
+    {
+      "test_id": "sim_v4_law_office_ranking_consultation_inquiries",
+      "type": "simulation",
+      "simulation_max_turns": 20,
+      "simulation_scenario": "The simulated user is a partner at Stonebridge Law in Austin. They should ask whether the site helps rankings or produces consultation inquiries, and they should reject SEO or outcome promises. They may continue only if Emma separates ranking claims from the safer consultation-path mechanism for people who already found the firm through Google, local search, or referrals.",
+      "success_condition": "The full conversation passes only if the agent answers ranking or consultation-impact pressure with a no-guarantee boundary, one existing attention source, one leakage problem, one buyer action, and one proof step. A passing law-office answer names Google, referral, or local search as the existing attention source, says the leakage problem is that a prospect cannot quickly understand practice area, credibility, location, or consultation path, names request consultation as the buyer action, and says the mockup shows whether that consultation path is stronger before paying. It must not promise rankings, case outcomes, consultation volume, leads, traffic, or revenue. It fails if the answer is only clearer page, online presence, local visibility support, owned indexable page, customer decision path, or something to judge, or if it implies legal-result guarantees. It also fails if the agent attacks the current broker/profile/listing equivalent, uses restaurant wording, uses unapproved bracketed delivery tags, or keeps selling after a clear refusal.",
+      "dynamic_variables": {
+        "business_name": "Stonebridge Law",
+        "business_type": "law office",
+        "vertical": "law_office",
+        "existing_attention_source": "Google, referrals, and local search",
+        "conversion_leakage_problem": "prospect cannot quickly understand practice area, credibility, location, and consultation path",
+        "target_buyer_action": "request consultation",
+        "proof_step": "free mockup shows whether the consultation path is stronger before paying",
+        "status_quo_channel": "Google and referrals",
+        "simulation_focus": "law_office_ranking_consultation"
+      }
+    },
+    {
+      "test_id": "sim_v4_google_instagram_status_quo_objection",
+      "type": "simulation",
+      "simulation_max_turns": 20,
+      "simulation_scenario": "The simulated user runs FitCore Training in Phoenix and says Google and Instagram are already enough. They should repeatedly challenge why a website matters if people already find workouts, photos, and contact info on those channels. They may accept the free mockup only if Emma does not attack those channels and instead explains how existing attention can leak before a trial-session step.",
+      "success_condition": "The full conversation passes only if the agent handles the Google/Instagram status quo objection with a no-guarantee boundary when business impact is requested, one existing attention source, one leakage problem, one buyer action, and one proof step. A passing gym/trainer answer names Instagram, referrals, or local search as the existing attention source, says the leakage problem is that an interested person cannot quickly see programs, trainer proof, schedule, and trial step, names book trial/session as the buyer action, and says the mockup shows whether that start path is stronger before paying. It must concede Google and Instagram may already work, and it must not promise new members, bookings, rankings, traffic, or revenue. It fails if the answer is only clearer page, online presence, local visibility support, owned indexable page, customer decision path, or something to judge, or if it attacks the current channels. It also fails if the agent repeats the same value angle across turns, uses restaurant language, asks for a quick look after every objection, uses unapproved bracketed delivery tags, or misses the required send/reply-path confirmation after email capture.",
+      "dynamic_variables": {
+        "business_name": "FitCore Training",
+        "business_type": "gym and personal training studio",
+        "vertical": "gym_trainer",
+        "existing_attention_source": "Instagram, referrals, and local search",
+        "conversion_leakage_problem": "interested person cannot quickly see programs, trainer proof, schedule, and trial step",
+        "target_buyer_action": "book trial/session",
+        "proof_step": "free mockup shows whether the trial step is stronger before paying",
+        "status_quo_channel": "Google and Instagram",
+        "simulation_focus": "already_has_google_instagram_status_quo"
+      }
+    }
+  ]
+}
