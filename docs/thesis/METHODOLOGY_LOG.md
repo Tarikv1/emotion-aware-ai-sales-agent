@@ -16,6 +16,16 @@ Use this file as a chronological research journal for the thesis implementation.
 
 ## Entries
 
+### 2026-06-07 - ELEVENLABS-015 cross-vertical feedback repair
+
+- Objective: convert human review of the first cross-vertical ElevenLabs screenshots into a repo-owned repair package without mistaking evaluator cleanup for actual sales-quality improvement.
+- Action taken: added `ELEVENLABS-015-cross-vertical-feedback-repair`, patched the web-design prompt with safe local visibility, service menu evaluator repair, name capture, contractions, callback-number boundary, and ethical persuasion, not manipulation; expanded the Atlas campaign overlay/profile value library; updated universal category files for value steering, calibrated next-step control, and ethics; and narrowed the cross-vertical evaluator language so food menu is restaurant leakage but service menu or pricing menu can be valid in a service business.
+- Data used: synthetic cross-vertical screenshot feedback and repo-owned campaign files only. No private customer data, raw private transcript, customer audio, provider call, or API key value was used.
+- Output created: `runtime/providers/elevenlabs_agents/manifests/web_design_cross_vertical_feedback_repair.package.json`, `docs/product/ELEVENLABS_015_CROSS_VERTICAL_FEEDBACK_REPAIR.md`, updated prompt/KB/test criteria, and `scripts/validate_elevenlabs_015_cross_vertical_feedback_repair.py`.
+- What was learned: the first failure was partly an evaluator wording problem, but the more important defect was a thin website value library that made the agent repeat one-page/control framing instead of rotating concrete local-business value angles.
+- Why it matters for the thesis: it shows human review separating false-negative evaluation criteria from real conversation-control weakness, while preserving the universal, overlay, and profile layer boundaries.
+- Open questions: whether a live patch and fresh cross-vertical simulation rerun prove that the hosted agent now uses the richer value library without overpromising local visibility or leaking restaurant examples.
+
 ### 2026-06-07 - ELEVENLABS-014 cross-vertical local-business simulation tests
 
 - Objective: add a new simulation gate that tests whether the Atlas Web Studio web-design agent generalizes beyond the Mike's Kitchen restaurant fixture without creating real campaign profiles for other businesses.

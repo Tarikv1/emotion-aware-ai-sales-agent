@@ -1,0 +1,53 @@
+{
+  "package_id": "ELEVENLABS-015-cross-vertical-feedback-repair",
+  "provider": "elevenlabs",
+  "source_of_truth": "repo",
+  "dashboard_role": "managed runtime and dashboard agent patch surface",
+  "status": "offline-repair-ready",
+  "live_provider_calls_made": false,
+  "private_customer_data_used": false,
+  "api_key_required_for_generation": false,
+  "dashboard_manual_changes_source_of_truth": false,
+  "knowledge_base_docs": [
+    "runtime/providers/elevenlabs_agents/knowledge_base/universal_sales_core.md",
+    "runtime/providers/elevenlabs_agents/knowledge_base/atlas_web_studio_web_design_campaign_overlay.md",
+    "runtime/providers/elevenlabs_agents/knowledge_base/atlas_web_studio_web_design_campaign_profile.md"
+  ],
+  "baseline_tests": [],
+  "repair_basis": {
+    "previous_checkpoint": "ELEVENLABS-014-cross-vertical-local-business-simulation-tests",
+    "previous_live_agent": "web design",
+    "human_feedback_source": "cross-vertical simulation screenshots reviewed on 2026-06-07",
+    "human_feedback_categories": [
+      "cross_vertical_service_menu_evaluator_repair",
+      "local_business_website_value_library",
+      "safe_local_visibility_language",
+      "name_capture_when_natural",
+      "contractions_and_short_guarantee_language",
+      "callback_number_gap_boundary",
+      "ethical_persuasion_conversation_control"
+    ],
+    "live_rerun_required_for_green": true
+  },
+  "upload_intent": {
+    "current_mode": "repo-driven ElevenLabs API agent patch",
+    "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+    "campaign_role": "Atlas Web Studio local-business website outreach",
+    "layered_upload_package": true,
+    "campaign_facts_override_all": true,
+    "document_reference_imports_required": false,
+    "dynamic_variables_required": true,
+    "agent_prompt_required": true,
+    "first_message_required": true,
+    "agent_temperature": 0.25,
+    "knowledge_base_upload_required": true,
+    "reuse_latest_attached_kb_docs_allowed": false
+  },
+  "blocked_until_review": [
+    "uploading private customer emails",
+    "uploading private transcripts",
+    "using customer audio",
+    "production customer calls",
+    "claiming production-green before a fresh cross-vertical simulation rerun and human review"
+  ]
+}

@@ -75,6 +75,37 @@ For local restaurant outreach, the approved value points are:
 
 Use one value point at a time. Match the value point to the buyer's last concern.
 
+## Approved Local-Business Website Value Facts
+
+Update marker: `ELEVENLABS-015-cross-vertical-feedback-repair`
+
+These facts apply when the Atlas Web Studio web-design offer is adapted to local
+businesses beyond the original restaurant example.
+
+A website can support local visibility by giving the business an owned,
+indexable page and a clearer customer-facing page to inspect after someone finds
+the business through Google, social media, referrals, or a shared link.
+
+No ranking, traffic, lead, booking, revenue, or customer-growth guarantee is approved.
+
+Approved non-guaranteed value points:
+
+- owned page the business controls
+- one shareable link for Google profile, social bios, texts, emails, QR codes,
+  printed material, and staff replies
+- service, package, or pricing clarity when those topics are relevant
+- trust basics before a call, message, or visit
+- contact-path clarity without changing the current phone, DM, quote, booking,
+  or appointment process
+- proof-before-purchase through the free homepage mockup
+
+Service menus and pricing menus are allowed for non-restaurant verticals when the business context supports them.
+
+No approved callback phone number is configured in this package. If a buyer asks
+for a callback number, do not invent one. Confirm that Emma can call back at the
+agreed window or that contact information will be included with the mockup only
+when a send path is already accepted.
+
 ## Existing Channel Facts
 
 Google Maps, Instagram, Facebook, delivery apps, reviews, and phone calls may

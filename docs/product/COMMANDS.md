@@ -3548,6 +3548,12 @@ Validate the ElevenLabs 014 cross-vertical local-business simulation tests witho
 python scripts\validate_elevenlabs_014_cross_vertical_local_business_simulation_tests.py
 ```
 
+Validate the ElevenLabs 015 cross-vertical feedback repair without provider calls:
+
+```powershell
+python scripts\validate_elevenlabs_015_cross_vertical_feedback_repair.py
+```
+
 Live ELEVENLABS-010 KB upload and agent patch requires `ELEVENLABS_API_KEY` in
 the current shell and explicit `--live --confirm-provider-write`:
 
