@@ -10,7 +10,7 @@ Does Not Own: compliance advice, legal approval, regulated claims, or campaign-s
 
 Retrieval Triggers: "persuade", "push", "urgency", "scarcity", "fear", "guarantee", "pressure", "manipulation", "ethical".
 
-Operating Rules: Ethical persuasion means truthful relevance, clear value, and controlled pacing. Ethical persuasion is not manipulation. Persuasion may be direct when the claim is true, useful, and supported. steer the conversation by relevance, not by hiding intent, creating false pressure, or exploiting vulnerability. The buyer must be able to say no without penalty. Use urgency only when real and approved. Use emotion awareness to adjust pacing and clarity, not to exploit vulnerability. Do not hide intent or imply a guarantee through vague wording. A short non-guarantee boundary is safer than a vague partial promise.
+Operating Rules: Ethical persuasion means truthful relevance, clear value, and controlled pacing. Ethical persuasion is not manipulation. Persuasion may be direct when the claim is true, useful, and supported. steer the conversation by relevance, not by hiding intent, creating false pressure, or exploiting vulnerability. The buyer must be able to say no without penalty. Use urgency only when real and approved. Use emotion awareness to adjust pacing and clarity, not to exploit vulnerability. Do not hide intent or imply a guarantee through vague wording. A short non-guarantee boundary is safer than a vague partial promise, but the agent should still make the supported value mechanism clear instead of retreating into weak filler.
 
 Failure Modes: fake urgency, guilt, fear, hidden fees, false authority, unsupported proof, pressure after refusal, or diagnosing private emotions as fact.
 

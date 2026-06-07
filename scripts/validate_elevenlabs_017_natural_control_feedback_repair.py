@@ -184,12 +184,17 @@ def main() -> None:
 
     test_manifest = read_json(TEST_MANIFEST)
     revision = test_manifest.get("source_revision_after_live_creation", {})
-    assert_condition(revision.get("checkpoint") == CHECKPOINT_ID, "test manifest revision checkpoint mismatch")
-    assert_condition(revision.get("live_test_recreation_required") is False, "test manifest should record completed V2 creation")
-    assert_condition(
-        revision.get("revised_live_folder_id") == "tfld_6201kth9njh3f18rxe63zqd34cgm",
-        "test manifest revised V2 folder mismatch",
-    )
+    if revision.get("checkpoint") == CHECKPOINT_ID:
+        assert_condition(revision.get("live_test_recreation_required") is False, "test manifest should record completed V2 creation")
+        assert_condition(
+            revision.get("revised_live_folder_id") == "tfld_6201kth9njh3f18rxe63zqd34cgm",
+            "test manifest revised V2 folder mismatch",
+        )
+    else:
+        assert_condition(
+            revision.get("previous_revised_live_folder_id") == "tfld_6201kth9njh3f18rxe63zqd34cgm",
+            "later test manifest revision must preserve the 017 V2 folder id",
+        )
 
     prompt_text = assert_text_markers(
         PROMPT,

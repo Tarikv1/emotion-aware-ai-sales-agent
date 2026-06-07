@@ -3798,6 +3798,34 @@ python scripts\run_elevenlabs_agent_automation.py `
   --api-requests-out research\experiments\generated\ELEVENLABS-017-natural-control-feedback-repair\agent_patch_requests.json
 ```
 
+Validate the ElevenLabs 018 sales-value and contact-control repair without provider calls:
+
+```powershell
+python scripts\validate_elevenlabs_018_sales_value_and_contact_control_repair.py
+```
+
+Build the ElevenLabs 018 dry-run patch and revised V3 cross-vertical simulation test requests:
+
+```powershell
+python scripts\run_elevenlabs_agent_automation.py `
+  --package-manifest runtime\providers\elevenlabs_agents\manifests\web_design_sales_value_and_contact_control_repair.package.json `
+  --agent-config runtime\providers\elevenlabs_agents\fixtures\web_design_agent_config.sanitized.json `
+  --kb-document-id <universal_sales_core_document_id> `
+  --kb-document-name universal_sales_core.md `
+  --kb-document-id <campaign_overlay_document_id> `
+  --kb-document-name atlas_web_studio_web_design_campaign_overlay.md `
+  --kb-document-id <campaign_profile_document_id> `
+  --kb-document-name atlas_web_studio_web_design_campaign_profile.md `
+  --agent-prompt-file runtime\providers\elevenlabs_agents\prompts\web_design_atlas_sales_prompt.md `
+  --first-message-file runtime\providers\elevenlabs_agents\prompts\web_design_first_message.txt `
+  --dynamic-variable-defaults runtime\providers\elevenlabs_agents\variables\mikes_kitchen_dynamic_variable_defaults.json `
+  --agent-temperature 0.25 `
+  --agent-patch-version-scope "ELEVENLABS-018 sales value and contact control repair" `
+  --agent-patch-out research\experiments\generated\ELEVENLABS-018-sales-value-and-contact-control-repair\agent_patch_payload.json `
+  --out research\experiments\generated\ELEVENLABS-018-sales-value-and-contact-control-repair\agent_patch_plan.json `
+  --api-requests-out research\experiments\generated\ELEVENLABS-018-sales-value-and-contact-control-repair\agent_patch_requests.json
+```
+
 ## Safety Rules
 
 - Do not commit API keys, private transcripts, raw private audio, customer exports, or client-specific sensitive details.

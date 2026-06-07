@@ -1,0 +1,123 @@
+{
+  "package_id": "ELEVENLABS-018-sales-value-and-contact-control-repair",
+  "provider": "elevenlabs",
+  "source_of_truth": "repo",
+  "dashboard_role": "managed runtime and dashboard agent patch plus stricter simulation criteria",
+  "status": "offline-repair-ready",
+  "live_provider_calls_made": false,
+  "private_customer_data_used": false,
+  "api_key_required_for_generation": false,
+  "dashboard_manual_changes_source_of_truth": false,
+  "knowledge_base_docs": [
+    "runtime/providers/elevenlabs_agents/knowledge_base/universal_sales_core.md",
+    "runtime/providers/elevenlabs_agents/knowledge_base/atlas_web_studio_web_design_campaign_overlay.md",
+    "runtime/providers/elevenlabs_agents/knowledge_base/atlas_web_studio_web_design_campaign_profile.md"
+  ],
+  "baseline_tests": [],
+  "repair_basis": {
+    "previous_checkpoint": "ELEVENLABS-017-natural-control-feedback-repair",
+    "human_feedback_source": "cross-vertical simulation screenshots reviewed on 2026-06-07",
+    "human_feedback_categories": [
+      "weak_website_value_mechanism_after_non_guarantee",
+      "missing_owner_manager_name_capture",
+      "premature_send_path_ending_without_contact_capture",
+      "unanswered_terminal_buyer_clarification",
+      "public_profile_contact_lookup_handoff",
+      "stricter_simulation_criteria_for_contact_completion"
+    ],
+    "live_rerun_required_for_green": true
+  },
+  "upload_intent": {
+    "current_mode": "repo-driven ElevenLabs API agent patch",
+    "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+    "campaign_role": "Atlas Web Studio local-business website outreach",
+    "layered_upload_package": true,
+    "campaign_facts_override_all": true,
+    "document_reference_imports_required": false,
+    "dynamic_variables_required": true,
+    "agent_prompt_required": true,
+    "first_message_required": true,
+    "agent_temperature": 0.25,
+    "knowledge_base_upload_required": true,
+    "test_recreation_required": true,
+    "revised_test_manifest": "runtime/providers/elevenlabs_agents/manifests/web_design_cross_vertical_local_business_simulation_tests.package.json",
+    "target_test_folder_name": "Atlas Web Studio - Cross-Vertical Local Business Simulation V3"
+  },
+  "planned_live_application": {
+    "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+    "previous_live_agent_version_id": "agtvrsn_6701kthngpabe6etedq4rr4a3dpa",
+    "previous_attached_knowledge_base_document_ids": [
+      "7pyke4f9n9casIzeA25x",
+      "K6xBUXcBoo8cPDvrmCzL",
+      "9pv9mi6v2EdWIOUsAzoH"
+    ],
+    "simulation_run_made": false,
+    "production_green_claimed": false
+  },
+  "live_application": {
+    "applied_on": "2026-06-07",
+    "requested_by_user": true,
+    "live_provider_calls_made": true,
+    "operation_sequence": [
+      "upload-kb",
+      "patch-agent",
+      "create-tests"
+    ],
+    "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+    "previous_live_agent_version_id": "agtvrsn_6701kthngpabe6etedq4rr4a3dpa",
+    "current_live_agent_version_id": "agtvrsn_8901kthty7p4e69v6pk3ybnve233",
+    "current_attached_knowledge_base_document_ids": [
+      "JF3WSPRZOcPS1rki03ot",
+      "nDldYVCnhKzj4mKW4X4O",
+      "sxG793M1gBKfJxzgUWIO"
+    ],
+    "revised_test_folder_name": "Atlas Web Studio - Cross-Vertical Local Business Simulation V3",
+    "revised_test_folder_id": "tfld_3501ktha7vdsekeshx4m9wajkhhv",
+    "revised_tests_created": [
+      {
+        "source_test_id": "sim_cross_vertical_plumbing_emergency_google_status_quo",
+        "provider_test_id": "test_8901kthtyx08fa1txyf1td9bx3gj"
+      },
+      {
+        "source_test_id": "sim_cross_vertical_dental_compliance_new_patient_claims",
+        "provider_test_id": "test_1001kthtyx9te7er3kyfjrmnc3n8"
+      },
+      {
+        "source_test_id": "sim_cross_vertical_auto_repair_trust_price_skeptic",
+        "provider_test_id": "test_2001kthtyxm9ecpr3darwzfmtpm9"
+      },
+      {
+        "source_test_id": "sim_cross_vertical_hvac_busy_dispatch_callback",
+        "provider_test_id": "test_2001kthtyxwyeyerqz9x4r0d474m"
+      },
+      {
+        "source_test_id": "sim_cross_vertical_hair_salon_social_media_objection",
+        "provider_test_id": "test_5101kthtyy6rfdqtcg66bpe6cqqf"
+      },
+      {
+        "source_test_id": "sim_cross_vertical_home_cleaning_gatekeeper_stop_boundary",
+        "provider_test_id": "test_5001kthtyymyemqsw4dd12vy4y77"
+      }
+    ],
+    "moved_to_folder_count": 6,
+    "evidence_paths": [
+      "research/experiments/generated/ELEVENLABS-018-sales-value-and-contact-control-repair/kb_upload_plan.json",
+      "research/experiments/generated/ELEVENLABS-018-sales-value-and-contact-control-repair/kb_upload_requests.json",
+      "research/experiments/generated/ELEVENLABS-018-sales-value-and-contact-control-repair/agent_patch_plan_live.json",
+      "research/experiments/generated/ELEVENLABS-018-sales-value-and-contact-control-repair/agent_patch_requests_live.json",
+      "research/experiments/generated/ELEVENLABS-018-sales-value-and-contact-control-repair/revised_tests_create_plan_live.json",
+      "research/experiments/generated/ELEVENLABS-018-sales-value-and-contact-control-repair/revised_tests_create_requests_live.json",
+      "research/experiments/generated/ELEVENLABS-018-sales-value-and-contact-control-repair/kb_cleanup_live.json",
+      "research/experiments/generated/ELEVENLABS-018-sales-value-and-contact-control-repair/agent_readback_live.json"
+    ],
+    "simulation_run_made": false,
+    "production_green_claimed": false
+  },
+  "blocked_until_review": [
+    "uploading private customer emails",
+    "uploading private transcripts",
+    "using customer audio",
+    "production customer calls",
+    "claiming production-green before a fresh cross-vertical simulation rerun and human review"
+  ]
+}

@@ -1,0 +1,94 @@
+{
+  "operation": "delete_unprotected_atlas_kb_docs_force_false",
+  "live_provider_calls_made": true,
+  "protected_ids": [
+    "JF3WSPRZOcPS1rki03ot",
+    "nDldYVCnhKzj4mKW4X4O",
+    "sxG793M1gBKfJxzgUWIO"
+  ],
+  "target_names": [
+    "atlas_web_studio_web_design_campaign.md",
+    "atlas_web_studio_web_design_campaign_overlay.md",
+    "atlas_web_studio_web_design_campaign_profile.md",
+    "universal_sales_core.md"
+  ],
+  "candidates_before": [
+    {
+      "id": "9pv9mi6v2EdWIOUsAzoH",
+      "name": "atlas_web_studio_web_design_campaign_profile.md",
+      "created_at_unix_secs": 1780856909,
+      "last_updated_at_unix_secs": 1780856909,
+      "size_bytes": 9066,
+      "dependent_agent_ids": []
+    },
+    {
+      "id": "K6xBUXcBoo8cPDvrmCzL",
+      "name": "atlas_web_studio_web_design_campaign_overlay.md",
+      "created_at_unix_secs": 1780856906,
+      "last_updated_at_unix_secs": 1780856906,
+      "size_bytes": 13153,
+      "dependent_agent_ids": []
+    },
+    {
+      "id": "7pyke4f9n9casIzeA25x",
+      "name": "universal_sales_core.md",
+      "created_at_unix_secs": 1780856905,
+      "last_updated_at_unix_secs": 1780856905,
+      "size_bytes": 34152,
+      "dependent_agent_ids": []
+    }
+  ],
+  "delete_results": [
+    {
+      "id": "9pv9mi6v2EdWIOUsAzoH",
+      "name": "atlas_web_studio_web_design_campaign_profile.md",
+      "status_code": 204,
+      "response": ""
+    },
+    {
+      "id": "K6xBUXcBoo8cPDvrmCzL",
+      "name": "atlas_web_studio_web_design_campaign_overlay.md",
+      "status_code": 204,
+      "response": ""
+    },
+    {
+      "id": "7pyke4f9n9casIzeA25x",
+      "name": "universal_sales_core.md",
+      "status_code": 204,
+      "response": ""
+    }
+  ],
+  "remaining_target_docs": [
+    {
+      "id": "sxG793M1gBKfJxzgUWIO",
+      "name": "atlas_web_studio_web_design_campaign_profile.md",
+      "created_at_unix_secs": 1780862586,
+      "last_updated_at_unix_secs": 1780862586,
+      "size_bytes": 10320,
+      "dependent_agent_ids": [
+        "agent_7801kt0g32zxf4f8x5zkykj7syty"
+      ]
+    },
+    {
+      "id": "nDldYVCnhKzj4mKW4X4O",
+      "name": "atlas_web_studio_web_design_campaign_overlay.md",
+      "created_at_unix_secs": 1780862584,
+      "last_updated_at_unix_secs": 1780862584,
+      "size_bytes": 14293,
+      "dependent_agent_ids": [
+        "agent_7801kt0g32zxf4f8x5zkykj7syty"
+      ]
+    },
+    {
+      "id": "JF3WSPRZOcPS1rki03ot",
+      "name": "universal_sales_core.md",
+      "created_at_unix_secs": 1780862583,
+      "last_updated_at_unix_secs": 1780862583,
+      "size_bytes": 36224,
+      "dependent_agent_ids": [
+        "agent_7801kt0g32zxf4f8x5zkykj7syty"
+      ]
+    }
+  ],
+  "deleted_count": 3
+}

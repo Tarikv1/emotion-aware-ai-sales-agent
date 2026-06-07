@@ -78,14 +78,16 @@
     "production_green_claimed": false
   },
   "source_revision_after_live_creation": {
-    "checkpoint": "ELEVENLABS-017-natural-control-feedback-repair",
+    "checkpoint": "ELEVENLABS-018-sales-value-and-contact-control-repair",
     "revised_on_local_date": "2026-06-07",
-    "reason": "human review found premature endings, unanswered final clarifications, repeated delivery-timing answers, weak name capture, and busy callback/email overexplaining in the live cross-vertical runs",
+    "reason": "human review found weak website-value mechanisms after non-guarantee answers, missing name capture, premature send-path endings, unanswered final clarifications, and public-profile contact lookup refusal in the live cross-vertical runs",
     "live_test_recreation_required": false,
     "previous_live_folder_contains_stale_criteria": true,
-    "revised_live_folder_name": "Atlas Web Studio - Cross-Vertical Local Business Simulation V2",
-    "revised_live_folder_id": "tfld_6201kth9njh3f18rxe63zqd34cgm",
-    "revised_live_creation_evidence": "research/experiments/generated/ELEVENLABS-017-natural-control-feedback-repair/revised_tests_create_plan_live.json"
+    "previous_revised_live_folder_name": "Atlas Web Studio - Cross-Vertical Local Business Simulation V2",
+    "previous_revised_live_folder_id": "tfld_6201kth9njh3f18rxe63zqd34cgm",
+    "revised_live_folder_name": "Atlas Web Studio - Cross-Vertical Local Business Simulation V3",
+    "revised_live_folder_id": "tfld_3501ktha7vdsekeshx4m9wajkhhv",
+    "revised_live_creation_evidence": "research/experiments/generated/ELEVENLABS-018-sales-value-and-contact-control-repair/revised_tests_create_plan_live.json"
   },
   "blocked_until_review": [
     "treating cross-vertical simulation tests as proof of real phone-call performance",

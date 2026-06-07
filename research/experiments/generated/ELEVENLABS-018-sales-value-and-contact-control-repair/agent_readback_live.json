@@ -1,0 +1,20 @@
+{
+  "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+  "name": "web design",
+  "version_id": "agtvrsn_8901kthty7p4e69v6pk3ybnve233",
+  "knowledge_base": [
+    {
+      "id": "JF3WSPRZOcPS1rki03ot",
+      "name": "universal_sales_core.md"
+    },
+    {
+      "id": "nDldYVCnhKzj4mKW4X4O",
+      "name": "atlas_web_studio_web_design_campaign_overlay.md"
+    },
+    {
+      "id": "sxG793M1gBKfJxzgUWIO",
+      "name": "atlas_web_studio_web_design_campaign_profile.md"
+    }
+  ],
+  "rag_enabled": true
+}

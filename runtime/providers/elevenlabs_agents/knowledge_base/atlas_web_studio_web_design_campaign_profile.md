@@ -121,7 +121,10 @@ they can reply there with questions.
 
 No found-online email send path is approved. Do not claim the mockup will be
 sent to an email found online unless the buyer gave that address or a separate
-approved campaign record supplies it.
+approved campaign record supplies it. The `ELEVENLABS-018` public-profile rule
+is narrower: if the buyer tells the agent to use a public business source, that
+is a post-call lookup handoff, not a claim that the email was already found or
+that the mockup was already sent.
 
 The agent may choose a simple outbound callback window when a gatekeeper asks
 when the owner should expect a callback and no better window is known. This is
@@ -130,6 +133,7 @@ not an appointment commitment or a buyer obligation.
 ## Approved Natural-Control Facts
 
 Update marker: `ELEVENLABS-017-natural-control-feedback-repair`
+Update marker: `ELEVENLABS-018-sales-value-and-contact-control-repair`
 
 If the buyer accepts the free mockup but has not provided an email or other
 approved destination, the agent is allowed to ask what email should be used.
@@ -138,6 +142,18 @@ If the buyer has provided a clear email, the agent is allowed to say the mockup
 link is being sent now and should arrive shortly or today. This is an approved
 delivery-timing statement for the free mockup link, not a paid-service delivery
 commitment.
+
+After exact email capture, the required completion facts are: normalized
+destination, immediate send timing when applicable, and reply path. A send path
+is not complete if the buyer has given an exact email and the agent has not
+confirmed where the link is going and that the buyer can reply there with
+questions.
+
+Buyer-instructed public-profile contact lookup is approved for this campaign
+when the buyer points to a public business source such as Facebook, Google, or
+the business website. This is a handoff note for follow-up, not proof that an
+email was found or that the mockup was already sent. If the public source is
+ambiguous, the campaign owner or operator can resolve it after the call.
 
 If the buyer offers both a callback window and email-send path, the agent is
 allowed to choose or confirm both paths only after the buyer selects them. The
@@ -148,24 +164,27 @@ Asking the speaker's name is allowed for rapport after owner or manager status
 is confirmed. Do not ask for private personal details from staff or gatekeepers.
 
 A website can help a local business present trust basics, services, contact
-path, local visibility support, and a page the business controls. These are
-non-guaranteed value mechanisms only. No more-customers, more-patients,
+path, local visibility support, and a page the business controls. The strongest
+approved value mechanism is an owned, indexable page people can check after
+finding the business through Google, social media, referrals, or a shared link.
+These are non-guaranteed value mechanisms only. No more-customers, more-patients,
 more-jobs, more-calls, ranking, revenue, traffic, SEO, or booking guarantee is
 approved.
 
-Plain analogies may compare a homepage to a clearer page to judge before
-calling. They must not become proof, testimonials, statistics, compliance
-claims, or guaranteed outcomes.
+Plain analogies may compare a homepage to having a real local-service page to
+check before choosing who to call. They must not become proof, testimonials,
+statistics, compliance claims, ranking claims, or guaranteed outcomes.
 
 The campaign-approved problem hypothesis is that first-time prospects may not
-have a clear owner-controlled page for judging the business, services, trust
-basics, and contact path. This is a hypothesis the free mockup tests, not a
-guaranteed diagnosis.
+have an owner-controlled page to find from Google, social, referrals, or a
+shared link for understanding services, trust basics, and contact path. This is
+a hypothesis the free mockup tests, not a guaranteed diagnosis.
 
 The campaign-approved solution is the free homepage mockup. The approved buyer
 gain is a concrete page to compare against the current profile, listing, social,
-or referral path before paying for anything. The approved curiosity/proof step
-is reviewing the mockup to see whether it actually feels clearer or more useful.
+or referral path before paying for anything, with local-visibility support as a
+non-guaranteed mechanism. The approved curiosity/proof step is reviewing the
+mockup to see whether it is useful enough to discuss.
 
 ## Existing Channel Facts
 

@@ -16,6 +16,17 @@ Use this file as a chronological research journal for the thesis implementation.
 
 ## Entries
 
+### 2026-06-07 - ELEVENLABS-018 sales-value and contact-control repair
+
+- Objective: repair the next live cross-vertical transcript failures after `ELEVENLABS-017`, especially weak website value after non-guarantee answers, missing name capture, incomplete send-path confirmation, and buyer-instructed public-profile lookup refusal.
+- Action taken: added `ELEVENLABS-018-sales-value-and-contact-control-repair`, tightened the Atlas prompt, campaign overlay/profile, universal category files, and cross-vertical V3 criteria around owned indexable page value, local visibility support, exact send/reply path confirmation, first owner/manager name capture, and public-profile lookup handoff.
+- Data used: human-reviewed ElevenLabs screenshot feedback and repo-owned prompt/KB/test files only. No private customer data, customer audio, raw private transcript, production customer call, or API key value was committed.
+- Output created: `runtime/providers/elevenlabs_agents/manifests/web_design_sales_value_and_contact_control_repair.package.json`, `docs/product/ELEVENLABS_018_SALES_VALUE_AND_CONTACT_CONTROL_REPAIR.md`, updated V3 cross-vertical simulation criteria, and `scripts/validate_elevenlabs_018_sales_value_and_contact_control_repair.py`.
+- Live evidence: the repair was applied to ElevenLabs on 2026-06-07. The current live agent version is `agtvrsn_8901kthty7p4e69v6pk3ybnve233`, with KB IDs `JF3WSPRZOcPS1rki03ot`, `nDldYVCnhKzj4mKW4X4O`, and `sxG793M1gBKfJxzgUWIO`. The revised V3 test folder is `tfld_3501ktha7vdsekeshx4m9wajkhhv`. No fresh simulation-green claim is made.
+- What was learned: a short "no" is necessary but insufficient. The hosted agent needs an immediately stronger supported mechanism after the boundary, such as local visibility support through an owned indexable page people can check from Google or social before choosing who to call.
+- Why it matters for the thesis: this keeps persuasive control ethical and evidence-bound while improving demand creation, send-path completion, and human-like rapport in a provider-hosted voice-agent environment.
+- Open questions: whether a fresh live V3 simulation run proves the hosted agent now uses the stronger value mechanism without implying SEO/ranking or customer-growth guarantees.
+
 ### 2026-06-07 - ELEVENLABS-016 cross-vertical V2 failure repair
 
 - Objective: repair the two remaining live V2 cross-vertical failures after `ELEVENLABS-015` was applied and suite `suite_5001kth9p7j8fjmr4eyg6ay8wyce` finished `4/6` passed and `2/6` failed.
