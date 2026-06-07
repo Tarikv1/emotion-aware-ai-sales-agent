@@ -1,0 +1,218 @@
+{
+  "checkpoint_id": "ELEVENLABS-002-agent-automation",
+  "package_id": "ELEVENLABS-020-active-17-missing-category-upload",
+  "provider": "elevenlabs",
+  "mode": "dry_run",
+  "source_of_truth": "repo",
+  "dashboard_role": "managed runtime and manual upload surface",
+  "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+  "agent_name": "Atlas Universal Sales Core",
+  "api_base_url": "https://api.elevenlabs.io",
+  "api_key_env_var": "ELEVENLABS_API_KEY",
+  "live_provider_calls_made": false,
+  "private_customer_data_used": false,
+  "provider_writes_require": [
+    "--live",
+    "--confirm-provider-write"
+  ],
+  "knowledge_base_upload_requests": [
+    {
+      "request_id": "upload_knowledge_base::buyer_moves",
+      "method": "POST",
+      "endpoint": "/v1/convai/knowledge-base/file",
+      "source_path": "runtime/providers/elevenlabs_agents/knowledge_base/universal_sales_categories/buyer_moves.md",
+      "name": "buyer_moves.md",
+      "content_bytes": 1350,
+      "content_type": "text/markdown",
+      "requires_api_key_env_var": "ELEVENLABS_API_KEY",
+      "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/create-from-file"
+    },
+    {
+      "request_id": "upload_knowledge_base::buyer_journey_jobs",
+      "method": "POST",
+      "endpoint": "/v1/convai/knowledge-base/file",
+      "source_path": "runtime/providers/elevenlabs_agents/knowledge_base/universal_sales_categories/buyer_journey_jobs.md",
+      "name": "buyer_journey_jobs.md",
+      "content_bytes": 1274,
+      "content_type": "text/markdown",
+      "requires_api_key_env_var": "ELEVENLABS_API_KEY",
+      "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/create-from-file"
+    },
+    {
+      "request_id": "upload_knowledge_base::buyer_enablement_and_sensemaking",
+      "method": "POST",
+      "endpoint": "/v1/convai/knowledge-base/file",
+      "source_path": "runtime/providers/elevenlabs_agents/knowledge_base/universal_sales_categories/buyer_enablement_and_sensemaking.md",
+      "name": "buyer_enablement_and_sensemaking.md",
+      "content_bytes": 1267,
+      "content_type": "text/markdown",
+      "requires_api_key_env_var": "ELEVENLABS_API_KEY",
+      "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/create-from-file"
+    },
+    {
+      "request_id": "upload_knowledge_base::discovery_question_design",
+      "method": "POST",
+      "endpoint": "/v1/convai/knowledge-base/file",
+      "source_path": "runtime/providers/elevenlabs_agents/knowledge_base/universal_sales_categories/discovery_question_design.md",
+      "name": "discovery_question_design.md",
+      "content_bytes": 1255,
+      "content_type": "text/markdown",
+      "requires_api_key_env_var": "ELEVENLABS_API_KEY",
+      "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/create-from-file"
+    },
+    {
+      "request_id": "upload_knowledge_base::value_and_roi_framing",
+      "method": "POST",
+      "endpoint": "/v1/convai/knowledge-base/file",
+      "source_path": "runtime/providers/elevenlabs_agents/knowledge_base/universal_sales_categories/value_and_roi_framing.md",
+      "name": "value_and_roi_framing.md",
+      "content_bytes": 1234,
+      "content_type": "text/markdown",
+      "requires_api_key_env_var": "ELEVENLABS_API_KEY",
+      "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/create-from-file"
+    },
+    {
+      "request_id": "upload_knowledge_base::objection_status_quo_and_competition",
+      "method": "POST",
+      "endpoint": "/v1/convai/knowledge-base/file",
+      "source_path": "runtime/providers/elevenlabs_agents/knowledge_base/universal_sales_categories/objection_status_quo_and_competition.md",
+      "name": "objection_status_quo_and_competition.md",
+      "content_bytes": 1148,
+      "content_type": "text/markdown",
+      "requires_api_key_env_var": "ELEVENLABS_API_KEY",
+      "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/create-from-file"
+    },
+    {
+      "request_id": "upload_knowledge_base::trust_and_risk_repair",
+      "method": "POST",
+      "endpoint": "/v1/convai/knowledge-base/file",
+      "source_path": "runtime/providers/elevenlabs_agents/knowledge_base/universal_sales_categories/trust_and_risk_repair.md",
+      "name": "trust_and_risk_repair.md",
+      "content_bytes": 1175,
+      "content_type": "text/markdown",
+      "requires_api_key_env_var": "ELEVENLABS_API_KEY",
+      "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/create-from-file"
+    },
+    {
+      "request_id": "upload_knowledge_base::proof_and_evidence_handling",
+      "method": "POST",
+      "endpoint": "/v1/convai/knowledge-base/file",
+      "source_path": "runtime/providers/elevenlabs_agents/knowledge_base/universal_sales_categories/proof_and_evidence_handling.md",
+      "name": "proof_and_evidence_handling.md",
+      "content_bytes": 1113,
+      "content_type": "text/markdown",
+      "requires_api_key_env_var": "ELEVENLABS_API_KEY",
+      "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/create-from-file"
+    },
+    {
+      "request_id": "upload_knowledge_base::conversation_repair",
+      "method": "POST",
+      "endpoint": "/v1/convai/knowledge-base/file",
+      "source_path": "runtime/providers/elevenlabs_agents/knowledge_base/universal_sales_categories/conversation_repair.md",
+      "name": "conversation_repair.md",
+      "content_bytes": 1093,
+      "content_type": "text/markdown",
+      "requires_api_key_env_var": "ELEVENLABS_API_KEY",
+      "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/create-from-file"
+    },
+    {
+      "request_id": "upload_knowledge_base::next_step_policy",
+      "method": "POST",
+      "endpoint": "/v1/convai/knowledge-base/file",
+      "source_path": "runtime/providers/elevenlabs_agents/knowledge_base/universal_sales_categories/next_step_policy.md",
+      "name": "next_step_policy.md",
+      "content_bytes": 1256,
+      "content_type": "text/markdown",
+      "requires_api_key_env_var": "ELEVENLABS_API_KEY",
+      "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/create-from-file"
+    },
+    {
+      "request_id": "upload_knowledge_base::disqualification_policy",
+      "method": "POST",
+      "endpoint": "/v1/convai/knowledge-base/file",
+      "source_path": "runtime/providers/elevenlabs_agents/knowledge_base/universal_sales_categories/disqualification_policy.md",
+      "name": "disqualification_policy.md",
+      "content_bytes": 1165,
+      "content_type": "text/markdown",
+      "requires_api_key_env_var": "ELEVENLABS_API_KEY",
+      "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/create-from-file"
+    },
+    {
+      "request_id": "upload_knowledge_base::ethical_persuasion_boundaries",
+      "method": "POST",
+      "endpoint": "/v1/convai/knowledge-base/file",
+      "source_path": "runtime/providers/elevenlabs_agents/knowledge_base/universal_sales_categories/ethical_persuasion_boundaries.md",
+      "name": "ethical_persuasion_boundaries.md",
+      "content_bytes": 1158,
+      "content_type": "text/markdown",
+      "requires_api_key_env_var": "ELEVENLABS_API_KEY",
+      "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/create-from-file"
+    },
+    {
+      "request_id": "upload_knowledge_base::motion_specific_playbooks",
+      "method": "POST",
+      "endpoint": "/v1/convai/knowledge-base/file",
+      "source_path": "runtime/providers/elevenlabs_agents/knowledge_base/universal_sales_categories/motion_specific_playbooks.md",
+      "name": "motion_specific_playbooks.md",
+      "content_bytes": 1247,
+      "content_type": "text/markdown",
+      "requires_api_key_env_var": "ELEVENLABS_API_KEY",
+      "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/create-from-file"
+    },
+    {
+      "request_id": "upload_knowledge_base::call_quality_rubrics",
+      "method": "POST",
+      "endpoint": "/v1/convai/knowledge-base/file",
+      "source_path": "runtime/providers/elevenlabs_agents/knowledge_base/universal_sales_categories/call_quality_rubrics.md",
+      "name": "call_quality_rubrics.md",
+      "content_bytes": 1086,
+      "content_type": "text/markdown",
+      "requires_api_key_env_var": "ELEVENLABS_API_KEY",
+      "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/create-from-file"
+    }
+  ],
+  "test_create_requests": [],
+  "run_tests_request": {
+    "request_id": "run_tests::{agent_id}",
+    "method": "POST",
+    "endpoint": "/v1/convai/agents/agent_7801kt0g32zxf4f8x5zkykj7syty/run-tests",
+    "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+    "requires_created_test_ids": true,
+    "body_template": {
+      "tests": [
+        {
+          "test_id": "{created_test_id}"
+        }
+      ],
+      "repeat_count": 1
+    },
+    "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/tests/run-tests"
+  },
+  "agent_config_patch": {
+    "request_id": "patch_agent::{agent_id}",
+    "method": "PATCH",
+    "endpoint": "/v1/convai/agents/agent_7801kt0g32zxf4f8x5zkykj7syty",
+    "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+    "status": "draft_only",
+    "reason": "Attaching knowledge base documents requires the current dashboard agent JSON shape. Use Copy agent JSON config before enabling this write.",
+    "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/agents/update"
+  },
+  "test_folder": {
+    "folder_name": null,
+    "folder_id": null,
+    "parent_folder_id": null,
+    "applies_to_live_created_tests": false
+  },
+  "dashboard_upload_order": [
+    "Upload knowledge base documents",
+    "Create baseline tests",
+    "Attach returned knowledge base document IDs to the agent",
+    "Run tests against the selected agent or branch",
+    "Copy agent JSON config back into the repo for drift review"
+  ],
+  "live_result": {
+    "operation": "plan",
+    "live_provider_calls_made": false,
+    "results": []
+  }
+}

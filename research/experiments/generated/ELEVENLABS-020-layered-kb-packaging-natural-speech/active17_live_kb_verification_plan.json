@@ -1,0 +1,129 @@
+{
+  "checkpoint_id": "ELEVENLABS-020-layered-kb-packaging-natural-speech",
+  "operation": "active-17-knowledge-base-upload-and-patch",
+  "provider": "elevenlabs",
+  "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+  "live_provider_calls_made": true,
+  "uploaded_missing_category_document_count": 14,
+  "patched_agent_version_id": "agtvrsn_4201ktj535b6ecytpb21j9a0rast",
+  "active_knowledge_base_documents": [
+    {
+      "order": 1,
+      "name": "universal_sales_core_summary.md",
+      "id": "CnbYTsnjQK8x5eThDd3u"
+    },
+    {
+      "order": 2,
+      "name": "buyer_moves.md",
+      "id": "JaGehjlxNT2ZRCiycqti"
+    },
+    {
+      "order": 3,
+      "name": "buyer_journey_jobs.md",
+      "id": "RqB2bGwOqG2HzpV5Ds5Y"
+    },
+    {
+      "order": 4,
+      "name": "buyer_enablement_and_sensemaking.md",
+      "id": "ootBZqG0IpuxJ3nz7s0i"
+    },
+    {
+      "order": 5,
+      "name": "discovery_question_design.md",
+      "id": "H2FHwOn6XngNiuovFgU9"
+    },
+    {
+      "order": 6,
+      "name": "value_and_roi_framing.md",
+      "id": "4Cn4jm4R8ZYhTGWnwA9s"
+    },
+    {
+      "order": 7,
+      "name": "objection_status_quo_and_competition.md",
+      "id": "2GkqPLdmE710AfehW8PU"
+    },
+    {
+      "order": 8,
+      "name": "trust_and_risk_repair.md",
+      "id": "PST9eJGMM0aWgxh2wUgY"
+    },
+    {
+      "order": 9,
+      "name": "proof_and_evidence_handling.md",
+      "id": "XcQStOXNXtgxAIpssCRa"
+    },
+    {
+      "order": 10,
+      "name": "conversation_repair.md",
+      "id": "6LAmCiH2xpiV60p6k3BF"
+    },
+    {
+      "order": 11,
+      "name": "next_step_policy.md",
+      "id": "o13JLdJRe3fEGdGX1HRn"
+    },
+    {
+      "order": 12,
+      "name": "disqualification_policy.md",
+      "id": "DezGhKsksFmellERI9xI"
+    },
+    {
+      "order": 13,
+      "name": "ethical_persuasion_boundaries.md",
+      "id": "5rNtW03uA8iUP30thudm"
+    },
+    {
+      "order": 14,
+      "name": "motion_specific_playbooks.md",
+      "id": "HXuuQViiRr1uIADxMGcs"
+    },
+    {
+      "order": 15,
+      "name": "call_quality_rubrics.md",
+      "id": "Xu5TPA2Mg2waySilKueK"
+    },
+    {
+      "order": 16,
+      "name": "atlas_web_studio_web_design_campaign_overlay.md",
+      "id": "GuziB9nZwzAUW5DTVOOm"
+    },
+    {
+      "order": 17,
+      "name": "atlas_web_studio_web_design_campaign_profile.md",
+      "id": "tJVSI69rn4ED2Uis2sc0"
+    }
+  ],
+  "post_patch_agent_verification": {
+    "knowledge_base_count": 17,
+    "knowledge_base_order_matches_requested_order": true,
+    "rag_enabled": true,
+    "tool_id_count": 0,
+    "mcp_server_count": 0,
+    "native_mcp_server_count": 0
+  },
+  "stale_relevant_document_cleanup": {
+    "stale_document_count": 0,
+    "deleted_document_count": 0,
+    "force_delete_used": false,
+    "note": "Post-patch provider inventory showed only active documents for the relevant Atlas, active category, and source/reference category names."
+  },
+  "reference_only_files_not_uploaded": [
+    "stakeholder_mapping.md",
+    "qualification_evidence.md",
+    "decision_and_paper_process.md",
+    "negotiation_and_concession_policy.md",
+    "vertical_general_playbooks.md",
+    "post_sale_handoff.md",
+    "success_failure_patterns.md"
+  ],
+  "side_effects_not_enabled": [
+    "OpenAI API calls",
+    "live outbound calls",
+    "lead scraping",
+    "CRM tools",
+    "email tools",
+    "calendar tools",
+    "payment tools",
+    "account tools"
+  ]
+}

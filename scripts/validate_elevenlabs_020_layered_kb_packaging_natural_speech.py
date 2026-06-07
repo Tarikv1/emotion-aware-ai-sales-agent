@@ -52,6 +52,26 @@ CATEGORY_FILES = [
     "call_quality_rubrics.md",
 ]
 
+ACTIVE_KB_DOCS = [
+    "runtime/providers/elevenlabs_agents/knowledge_base/universal_sales_core_summary.md",
+    "runtime/providers/elevenlabs_agents/knowledge_base/universal_sales_categories/buyer_moves.md",
+    "runtime/providers/elevenlabs_agents/knowledge_base/universal_sales_categories/buyer_journey_jobs.md",
+    "runtime/providers/elevenlabs_agents/knowledge_base/universal_sales_categories/buyer_enablement_and_sensemaking.md",
+    "runtime/providers/elevenlabs_agents/knowledge_base/universal_sales_categories/discovery_question_design.md",
+    "runtime/providers/elevenlabs_agents/knowledge_base/universal_sales_categories/value_and_roi_framing.md",
+    "runtime/providers/elevenlabs_agents/knowledge_base/universal_sales_categories/objection_status_quo_and_competition.md",
+    "runtime/providers/elevenlabs_agents/knowledge_base/universal_sales_categories/trust_and_risk_repair.md",
+    "runtime/providers/elevenlabs_agents/knowledge_base/universal_sales_categories/proof_and_evidence_handling.md",
+    "runtime/providers/elevenlabs_agents/knowledge_base/universal_sales_categories/conversation_repair.md",
+    "runtime/providers/elevenlabs_agents/knowledge_base/universal_sales_categories/next_step_policy.md",
+    "runtime/providers/elevenlabs_agents/knowledge_base/universal_sales_categories/disqualification_policy.md",
+    "runtime/providers/elevenlabs_agents/knowledge_base/universal_sales_categories/ethical_persuasion_boundaries.md",
+    "runtime/providers/elevenlabs_agents/knowledge_base/universal_sales_categories/motion_specific_playbooks.md",
+    "runtime/providers/elevenlabs_agents/knowledge_base/universal_sales_categories/call_quality_rubrics.md",
+    "runtime/providers/elevenlabs_agents/knowledge_base/atlas_web_studio_web_design_campaign_overlay.md",
+    "runtime/providers/elevenlabs_agents/knowledge_base/atlas_web_studio_web_design_campaign_profile.md",
+]
+
 CATEGORY_REQUIRED_SECTIONS = (
     "## Purpose",
     "## Owns",
@@ -340,8 +360,10 @@ def assert_manifest(manifest: dict[str, Any]) -> None:
     assert_condition(manifest.get("live_provider_calls_made") is False, "manifest must not claim provider calls")
     active_docs = manifest.get("active_kb_recommendation", {}).get("recommended_upload_docs")
     assert_condition(isinstance(active_docs, list), "manifest missing active recommended upload docs")
-    assert_condition(str(SUMMARY.relative_to(ROOT)).replace("\\", "/") in active_docs, "manifest must recommend universal summary")
+    assert_condition(active_docs == ACTIVE_KB_DOCS, f"manifest active KB docs must match the 17-file active set: {active_docs}")
     assert_condition(str(FULL_CORE.relative_to(ROOT)).replace("\\", "/") not in active_docs, "manifest must not recommend full universal core for active Atlas upload")
+    for doc_path in ACTIVE_KB_DOCS:
+        assert_condition((ROOT / doc_path).is_file(), f"active KB doc missing: {doc_path}")
     refs = manifest.get("source_reference_category_files")
     assert_condition(isinstance(refs, list) and len(refs) == 21, "manifest must list 21 source/reference category files")
     for file_name in CATEGORY_FILES:
@@ -418,6 +440,7 @@ def main() -> None:
                 "status": "pass",
                 "checkpoint_id": "ELEVENLABS-020-layered-kb-packaging-natural-speech",
                 "universal_category_file_count": len(CATEGORY_FILES),
+                "active_kb_file_count": len(ACTIVE_KB_DOCS),
                 "universal_summary_kb": str(SUMMARY.relative_to(ROOT)).replace("\\", "/"),
                 "active_kb_docs": manifest["active_kb_recommendation"]["recommended_upload_docs"],
                 "prompt_compressed": True,
