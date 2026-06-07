@@ -103,3 +103,28 @@ python scripts\run_elevenlabs_agent_automation.py `
   agent is still too restaurant-specific.
 
 provider writes remain blocked unless explicitly requested.
+
+## Live Creation
+
+After the user noted that the ElevenLabs dashboard still only showed the V22
+tests, this pack was created in ElevenLabs on 2026-06-07.
+
+- folder: `Atlas Web Studio - Cross-Vertical Local Business Simulation V1`
+- folder ID: `tfld_3401ktftfc17evra47vy8qn1ygsp`
+- created test count: `6`
+- simulation run made: `false`
+- production-green claimed: `false`
+
+Created tests:
+
+- `sim_cross_vertical_plumbing_emergency_google_status_quo` -> `test_0901ktftfa8ze1nse6kzdxz4by6c`
+- `sim_cross_vertical_dental_compliance_new_patient_claims` -> `test_4801ktftfajbef1tzz0s4jdwz8dv`
+- `sim_cross_vertical_auto_repair_trust_price_skeptic` -> `test_6301ktftfaxffkcbj3c9arntsxcz`
+- `sim_cross_vertical_hvac_busy_dispatch_callback` -> `test_3901ktftfb4pev386c36qmpnvwyd`
+- `sim_cross_vertical_hair_salon_social_media_objection` -> `test_1201ktftfbbnf2avwbqhm5e2z3sh`
+- `sim_cross_vertical_home_cleaning_gatekeeper_stop_boundary` -> `test_6101ktftfbj9e2karn9thayb9wpc`
+
+Evidence:
+
+- `research/experiments/generated/ELEVENLABS-014-cross-vertical-local-business-simulation-tests/live_create_tests_plan.json`
+- `research/experiments/generated/ELEVENLABS-014-cross-vertical-local-business-simulation-tests/live_create_tests_requests.json`

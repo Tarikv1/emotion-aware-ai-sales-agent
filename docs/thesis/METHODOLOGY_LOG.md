@@ -25,6 +25,7 @@ Use this file as a chronological research journal for the thesis implementation.
 - What was learned: the right next test surface is a cross-vertical generalization gate, not another restaurant-only variant. Randomized dynamic tests can wait until deterministic failures are understood.
 - Why it matters for the thesis: this separates universal sales behavior from one campaign fixture and creates evidence for whether the agent can adapt safely before real campaign overlays/profiles are created for new verticals.
 - Open questions: whether the current hosted agent will leak restaurant-specific wording into non-restaurant verticals when this pack is uploaded and run; provider writes remain blocked until explicitly requested.
+- Live creation update: after the user reported that only V22 was visible in the ElevenLabs dashboard, the six `ELEVENLABS-014` tests were created live and moved into folder `tfld_3401ktftfc17evra47vy8qn1ygsp` on 2026-06-07. The tests were not run yet, so no production-green claim is made.
 
 ### 2026-06-07 - RAG-023 live universal core upload and ELEVENLABS-013 patch
 

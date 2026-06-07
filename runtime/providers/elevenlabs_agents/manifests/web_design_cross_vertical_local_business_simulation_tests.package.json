@@ -35,6 +35,48 @@
     "primary_risk": "current hosted agent may leak Mike's Kitchen or restaurant-specific language into non-restaurant local-business calls",
     "production_green_claimed": false
   },
+  "latest_live_creation": {
+    "created_at_local_date": "2026-06-07",
+    "requested_by_user": true,
+    "live_provider_calls_made": true,
+    "operation": "create-tests",
+    "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+    "folder_name": "Atlas Web Studio - Cross-Vertical Local Business Simulation V1",
+    "folder_id": "tfld_3401ktftfc17evra47vy8qn1ygsp",
+    "tests_created": [
+      {
+        "source_test_id": "sim_cross_vertical_plumbing_emergency_google_status_quo",
+        "provider_test_id": "test_0901ktftfa8ze1nse6kzdxz4by6c"
+      },
+      {
+        "source_test_id": "sim_cross_vertical_dental_compliance_new_patient_claims",
+        "provider_test_id": "test_4801ktftfajbef1tzz0s4jdwz8dv"
+      },
+      {
+        "source_test_id": "sim_cross_vertical_auto_repair_trust_price_skeptic",
+        "provider_test_id": "test_6301ktftfaxffkcbj3c9arntsxcz"
+      },
+      {
+        "source_test_id": "sim_cross_vertical_hvac_busy_dispatch_callback",
+        "provider_test_id": "test_3901ktftfb4pev386c36qmpnvwyd"
+      },
+      {
+        "source_test_id": "sim_cross_vertical_hair_salon_social_media_objection",
+        "provider_test_id": "test_1201ktftfbbnf2avwbqhm5e2z3sh"
+      },
+      {
+        "source_test_id": "sim_cross_vertical_home_cleaning_gatekeeper_stop_boundary",
+        "provider_test_id": "test_6101ktftfbj9e2karn9thayb9wpc"
+      }
+    ],
+    "moved_to_folder_count": 6,
+    "evidence_paths": [
+      "research/experiments/generated/ELEVENLABS-014-cross-vertical-local-business-simulation-tests/live_create_tests_plan.json",
+      "research/experiments/generated/ELEVENLABS-014-cross-vertical-local-business-simulation-tests/live_create_tests_requests.json"
+    ],
+    "simulation_run_made": false,
+    "production_green_claimed": false
+  },
   "blocked_until_review": [
     "treating cross-vertical simulation tests as proof of real phone-call performance",
     "treating synthetic businesses as approved campaign profiles",
