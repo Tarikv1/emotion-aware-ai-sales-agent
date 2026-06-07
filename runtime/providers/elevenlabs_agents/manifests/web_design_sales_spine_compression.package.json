@@ -1,0 +1,71 @@
+{
+  "package_id": "ELEVENLABS-020-layered-kb-packaging-natural-speech",
+  "provider": "elevenlabs",
+  "source_of_truth": "repo",
+  "dashboard_role": "managed runtime and dashboard agent patch surface",
+  "status": "offline-packaging-ready",
+  "live_provider_calls_made": false,
+  "openai_api_calls_made": false,
+  "private_customer_data_used": false,
+  "api_key_required_for_generation": false,
+  "dashboard_manual_changes_source_of_truth": false,
+  "active_kb_recommendation": {
+    "recommendation": "Use summary plus campaign overlay plus campaign profile for the active Atlas Web Studio upload.",
+    "recommended_upload_docs": [
+      "runtime/providers/elevenlabs_agents/knowledge_base/universal_sales_core_summary.md",
+      "runtime/providers/elevenlabs_agents/knowledge_base/atlas_web_studio_web_design_campaign_overlay.md",
+      "runtime/providers/elevenlabs_agents/knowledge_base/atlas_web_studio_web_design_campaign_profile.md"
+    ],
+    "not_recommended_for_active_upload_unless_explicitly_needed": [
+      "runtime/providers/elevenlabs_agents/knowledge_base/universal_sales_core.md"
+    ],
+    "reason": "The full universal core is broad source material. The active voice agent should retrieve the compact universal summary and campaign-specific layers first."
+  },
+  "source_reference_category_files": [
+    "runtime/providers/elevenlabs_agents/knowledge_base/universal_sales_categories/buyer_moves.md",
+    "runtime/providers/elevenlabs_agents/knowledge_base/universal_sales_categories/buyer_journey_jobs.md",
+    "runtime/providers/elevenlabs_agents/knowledge_base/universal_sales_categories/buyer_enablement_and_sensemaking.md",
+    "runtime/providers/elevenlabs_agents/knowledge_base/universal_sales_categories/stakeholder_mapping.md",
+    "runtime/providers/elevenlabs_agents/knowledge_base/universal_sales_categories/discovery_question_design.md",
+    "runtime/providers/elevenlabs_agents/knowledge_base/universal_sales_categories/qualification_evidence.md",
+    "runtime/providers/elevenlabs_agents/knowledge_base/universal_sales_categories/value_and_roi_framing.md",
+    "runtime/providers/elevenlabs_agents/knowledge_base/universal_sales_categories/objection_status_quo_and_competition.md",
+    "runtime/providers/elevenlabs_agents/knowledge_base/universal_sales_categories/trust_and_risk_repair.md",
+    "runtime/providers/elevenlabs_agents/knowledge_base/universal_sales_categories/proof_and_evidence_handling.md",
+    "runtime/providers/elevenlabs_agents/knowledge_base/universal_sales_categories/conversation_repair.md",
+    "runtime/providers/elevenlabs_agents/knowledge_base/universal_sales_categories/next_step_policy.md",
+    "runtime/providers/elevenlabs_agents/knowledge_base/universal_sales_categories/decision_and_paper_process.md",
+    "runtime/providers/elevenlabs_agents/knowledge_base/universal_sales_categories/negotiation_and_concession_policy.md",
+    "runtime/providers/elevenlabs_agents/knowledge_base/universal_sales_categories/disqualification_policy.md",
+    "runtime/providers/elevenlabs_agents/knowledge_base/universal_sales_categories/ethical_persuasion_boundaries.md",
+    "runtime/providers/elevenlabs_agents/knowledge_base/universal_sales_categories/motion_specific_playbooks.md",
+    "runtime/providers/elevenlabs_agents/knowledge_base/universal_sales_categories/vertical_general_playbooks.md",
+    "runtime/providers/elevenlabs_agents/knowledge_base/universal_sales_categories/post_sale_handoff.md",
+    "runtime/providers/elevenlabs_agents/knowledge_base/universal_sales_categories/success_failure_patterns.md",
+    "runtime/providers/elevenlabs_agents/knowledge_base/universal_sales_categories/call_quality_rubrics.md"
+  ],
+  "prompt_files": [
+    "runtime/providers/elevenlabs_agents/prompts/web_design_atlas_sales_prompt.md",
+    "runtime/providers/elevenlabs_agents/prompts/web_design_first_message.txt"
+  ],
+  "blocked_side_effects": [
+    "ElevenLabs API calls",
+    "OpenAI API calls",
+    "live outbound calls",
+    "scrape leads",
+    "CRM tools",
+    "email tools",
+    "calendar tools",
+    "payment tools",
+    "account tools",
+    "private customer data",
+    "private transcripts",
+    "customer audio",
+    "uploads"
+  ],
+  "operator_notes": [
+    "This package is offline and repo-only.",
+    "Do not upload the full universal_sales_core.md for the active Atlas agent unless the operator explicitly asks for the broader source file.",
+    "Do not claim live readiness from this package."
+  ]
+}

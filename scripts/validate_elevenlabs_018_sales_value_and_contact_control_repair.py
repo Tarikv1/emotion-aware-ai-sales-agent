@@ -52,6 +52,15 @@ DOC = ROOT / "docs" / "product" / "ELEVENLABS_018_SALES_VALUE_AND_CONTACT_CONTRO
 INDEX = ROOT / "docs" / "product" / "CHECKPOINT_INDEX.md"
 COMMANDS = ROOT / "docs" / "product" / "COMMANDS.md"
 METHODOLOGY_LOG = ROOT / "docs" / "thesis" / "METHODOLOGY_LOG.md"
+SUPERSEDING_020_VALIDATOR = ROOT / "scripts" / "validate_elevenlabs_020_layered_kb_packaging_natural_speech.py"
+SUPERSEDING_020_MANIFEST = (
+    ROOT
+    / "runtime"
+    / "providers"
+    / "elevenlabs_agents"
+    / "manifests"
+    / "web_design_sales_spine_compression.package.json"
+)
 
 OUT_DIR = ROOT / ".tmp" / CHECKPOINT_ID / "validation"
 PLAN = OUT_DIR / "agent_patch_plan.json"
@@ -105,7 +114,45 @@ def assert_no_secret_leak(payload: dict[str, Any]) -> None:
     assert_condition(not found, f"Output contains blocked marker(s): {found}")
 
 
+def maybe_validate_superseding_020_package() -> bool:
+    if not PROMPT.is_file() or not SUPERSEDING_020_VALIDATOR.is_file() or not SUPERSEDING_020_MANIFEST.is_file():
+        return False
+    prompt_text = PROMPT.read_text(encoding="utf-8")
+    if "Update marker: `ELEVENLABS-018-sales-value-and-contact-control-repair`" in prompt_text:
+        return False
+
+    completed = subprocess.run(
+        [sys.executable, str(SUPERSEDING_020_VALIDATOR)],
+        cwd=ROOT,
+        text=True,
+        capture_output=True,
+        check=False,
+    )
+    assert_condition(
+        completed.returncode == 0,
+        "ELEVENLABS-018 legacy marker contract is superseded by ELEVENLABS-020, "
+        f"but the ELEVENLABS-020 validator did not pass:\n{completed.stdout}\n{completed.stderr}",
+    )
+    print(
+        json.dumps(
+            {
+                "status": "pass",
+                "checkpoint_id": CHECKPOINT_ID,
+                "superseded_by": "ELEVENLABS-020-layered-kb-packaging-natural-speech",
+                "legacy_prompt_marker_contract": "superseded",
+                "live_provider_calls_made": False,
+                "production_green_claimed": False,
+            },
+            indent=2,
+        )
+    )
+    return True
+
+
 def main() -> None:
+    if maybe_validate_superseding_020_package():
+        return
+
     for path in (
         RUNNER,
         MANIFEST,

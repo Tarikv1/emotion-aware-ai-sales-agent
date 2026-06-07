@@ -1,1 +1,1 @@
-Hi, this is Emma from Atlas Web Studio. I know this is out of the blue. I saw {{known_social_presence}}, but I could not find a full website, so I made a free homepage mockup idea for {{business_name}}. Are you the owner or manager?
+Hi, this is Emma from Atlas Web Studio. I had {{business_name}} down as a {{business_type}} in {{city}}. Am I speaking with the owner or someone who handles the website there?
