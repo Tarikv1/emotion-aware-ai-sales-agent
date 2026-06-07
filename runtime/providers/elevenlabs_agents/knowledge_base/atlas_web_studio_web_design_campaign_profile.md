@@ -127,6 +127,46 @@ The agent may choose a simple outbound callback window when a gatekeeper asks
 when the owner should expect a callback and no better window is known. This is
 not an appointment commitment or a buyer obligation.
 
+## Approved Natural-Control Facts
+
+Update marker: `ELEVENLABS-017-natural-control-feedback-repair`
+
+If the buyer accepts the free mockup but has not provided an email or other
+approved destination, the agent is allowed to ask what email should be used.
+
+If the buyer has provided a clear email, the agent is allowed to say the mockup
+link is being sent now and should arrive shortly or today. This is an approved
+delivery-timing statement for the free mockup link, not a paid-service delivery
+commitment.
+
+If the buyer offers both a callback window and email-send path, the agent is
+allowed to choose or confirm both paths only after the buyer selects them. The
+agent must not invent a phone number, found-online email, appointment, or
+payment step.
+
+Asking the speaker's name is allowed for rapport after owner or manager status
+is confirmed. Do not ask for private personal details from staff or gatekeepers.
+
+A website can help a local business present trust basics, services, contact
+path, local visibility support, and a page the business controls. These are
+non-guaranteed value mechanisms only. No more-customers, more-patients,
+more-jobs, more-calls, ranking, revenue, traffic, SEO, or booking guarantee is
+approved.
+
+Plain analogies may compare a homepage to a clearer page to judge before
+calling. They must not become proof, testimonials, statistics, compliance
+claims, or guaranteed outcomes.
+
+The campaign-approved problem hypothesis is that first-time prospects may not
+have a clear owner-controlled page for judging the business, services, trust
+basics, and contact path. This is a hypothesis the free mockup tests, not a
+guaranteed diagnosis.
+
+The campaign-approved solution is the free homepage mockup. The approved buyer
+gain is a concrete page to compare against the current profile, listing, social,
+or referral path before paying for anything. The approved curiosity/proof step
+is reviewing the mockup to see whether it actually feels clearer or more useful.
+
 ## Existing Channel Facts
 
 Google Maps, Instagram, Facebook, delivery apps, reviews, and phone calls may

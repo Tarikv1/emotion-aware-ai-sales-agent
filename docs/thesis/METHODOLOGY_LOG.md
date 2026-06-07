@@ -5797,3 +5797,42 @@ Interpretation:
 - Why it matters for the thesis:
   - it preserves the distinction between test construction, prompt repair, provider patching, and live rerun evidence
   - it records that human review can keep a partially passing dashboard agent blocked when residual conversation-quality defects remain
+
+### 2026-06-07 - ELEVENLABS-017 natural-control feedback repair
+
+- Objective: convert the next human review of cross-vertical ElevenLabs
+  screenshots into a bounded repair package without claiming production
+  readiness.
+- Action taken:
+  - added `ELEVENLABS-017-natural-control-feedback-repair`
+  - tightened prompt priority rules for accepted-send-without-contact,
+    unanswered final clarifications, delivery-timing repeat repair, busy
+    callback/email option compression, and name capture
+  - updated universal sales category files for plain analogies, perspective
+    checks, short non-guarantee framing, name capture, and next-step state
+    control
+  - added problem-solution-gain-curiosity framing as a universal value sequence
+    while treating the problem as a hypothesis, not a diagnosis
+  - updated Atlas campaign overlay/profile facts without moving campaign facts
+    into the universal RAG
+  - revised cross-vertical simulation criteria so stale tests cannot count a
+    send path complete before destination and reply path are known
+- Method:
+  - treated green-looking dashboard transcripts as insufficient when human
+    review showed unanswered buyer questions and unnatural repetition
+  - rejected `ethical manipulation` as an agent operating phrase; encoded
+    truthful relevance, concise perspective-taking, and reversible next steps
+    instead
+  - preserved 016 live evidence and opened 017 as a new offline repair
+    checkpoint
+- Boundary:
+  - no private customer data
+  - no API key value logged
+  - live provider writes were made only after explicit user request on 2026-06-07
+  - live agent version after patch: `agtvrsn_6701kthngpabe6etedq4rr4a3dpa`
+  - revised V2 simulation folder: `tfld_6201kth9njh3f18rxe63zqd34cgm`
+  - revised tests created: 6
+  - no production-green claim until a fresh ElevenLabs suite and human review
+    pass
+  - old cross-vertical live test folder criteria remain historical evidence;
+    revised V2 tests are the next review target

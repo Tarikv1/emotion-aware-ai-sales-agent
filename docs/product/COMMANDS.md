@@ -3770,6 +3770,34 @@ Validate the RAG-023 universal sales category files without provider calls:
 python scripts\validate_rag_023_universal_sales_category_files.py
 ```
 
+Validate the ElevenLabs 017 natural-control feedback repair without provider calls:
+
+```powershell
+python scripts\validate_elevenlabs_017_natural_control_feedback_repair.py
+```
+
+Build the ElevenLabs 017 dry-run patch and revised cross-vertical simulation test requests:
+
+```powershell
+python scripts\run_elevenlabs_agent_automation.py `
+  --package-manifest runtime\providers\elevenlabs_agents\manifests\web_design_natural_control_feedback_repair.package.json `
+  --agent-config runtime\providers\elevenlabs_agents\fixtures\web_design_agent_config.sanitized.json `
+  --kb-document-id <universal_sales_core_document_id> `
+  --kb-document-name universal_sales_core.md `
+  --kb-document-id <campaign_overlay_document_id> `
+  --kb-document-name atlas_web_studio_web_design_campaign_overlay.md `
+  --kb-document-id <campaign_profile_document_id> `
+  --kb-document-name atlas_web_studio_web_design_campaign_profile.md `
+  --agent-prompt-file runtime\providers\elevenlabs_agents\prompts\web_design_atlas_sales_prompt.md `
+  --first-message-file runtime\providers\elevenlabs_agents\prompts\web_design_first_message.txt `
+  --dynamic-variable-defaults runtime\providers\elevenlabs_agents\variables\mikes_kitchen_dynamic_variable_defaults.json `
+  --agent-temperature 0.25 `
+  --agent-patch-version-scope "ELEVENLABS-017 natural control feedback repair" `
+  --agent-patch-out research\experiments\generated\ELEVENLABS-017-natural-control-feedback-repair\agent_patch_payload.json `
+  --out research\experiments\generated\ELEVENLABS-017-natural-control-feedback-repair\agent_patch_plan.json `
+  --api-requests-out research\experiments\generated\ELEVENLABS-017-natural-control-feedback-repair\agent_patch_requests.json
+```
+
 ## Safety Rules
 
 - Do not commit API keys, private transcripts, raw private audio, customer exports, or client-specific sensitive details.

@@ -111,5 +111,5 @@
   ],
   "compiled_output": "runtime/sales_knowledge/universal_sales_rag/compiled/universal_sales_core.md",
   "provider_output": "runtime/providers/elevenlabs_agents/knowledge_base/universal_sales_core.md",
-  "compiled_sha256": "d3b9e00b2f5114897e9f96787cc2f0649f25b76114788f8bd386f16610cccd79"
+  "compiled_sha256": "f10f60444d4fcd3e2a60eb3ba0c0dd7aad41942be8a17fd49817bfc9d708f019"
 }

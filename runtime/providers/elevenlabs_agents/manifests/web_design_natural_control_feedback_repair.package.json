@@ -1,0 +1,111 @@
+{
+  "package_id": "ELEVENLABS-017-natural-control-feedback-repair",
+  "provider": "elevenlabs",
+  "source_of_truth": "repo",
+  "dashboard_role": "managed runtime and dashboard agent patch plus revised simulation criteria",
+  "status": "offline-repair-ready",
+  "live_provider_calls_made": false,
+  "private_customer_data_used": false,
+  "api_key_required_for_generation": false,
+  "dashboard_manual_changes_source_of_truth": false,
+  "knowledge_base_docs": [
+    "runtime/providers/elevenlabs_agents/knowledge_base/universal_sales_core.md",
+    "runtime/providers/elevenlabs_agents/knowledge_base/atlas_web_studio_web_design_campaign_overlay.md",
+    "runtime/providers/elevenlabs_agents/knowledge_base/atlas_web_studio_web_design_campaign_profile.md"
+  ],
+  "baseline_tests": [],
+  "repair_basis": {
+    "previous_checkpoint": "ELEVENLABS-016-cross-vertical-v2-failure-repair",
+    "human_feedback_source": "cross-vertical simulation screenshots reviewed on 2026-06-07",
+    "human_feedback_categories": [
+      "premature_send_path_ending_without_contact_capture",
+      "unanswered_terminal_buyer_clarification",
+      "delivery_timing_repeat_loop_repair",
+      "busy_callback_email_option_compression",
+      "stronger_name_capture_when_natural",
+      "plain_analogy_and_perspective_sensemaking",
+      "short_non_guarantee_claim_boundary",
+      "problem_solution_gain_curiosity_sequence"
+    ],
+    "live_rerun_required_for_green": true
+  },
+  "upload_intent": {
+    "current_mode": "repo-driven ElevenLabs API agent patch",
+    "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+    "campaign_role": "Atlas Web Studio local-business website outreach",
+    "layered_upload_package": true,
+    "campaign_facts_override_all": true,
+    "document_reference_imports_required": false,
+    "dynamic_variables_required": true,
+    "agent_prompt_required": true,
+    "first_message_required": true,
+    "agent_temperature": 0.25,
+    "knowledge_base_upload_required": true,
+    "test_recreation_required": true,
+    "revised_test_manifest": "runtime/providers/elevenlabs_agents/manifests/web_design_cross_vertical_local_business_simulation_tests.package.json",
+    "target_test_folder_name": "Atlas Web Studio - Cross-Vertical Local Business Simulation V2"
+  },
+  "live_application": {
+    "applied_on": "2026-06-07",
+    "requested_by_user": true,
+    "live_provider_calls_made": true,
+    "operation_sequence": [
+      "upload-kb",
+      "patch-agent",
+      "create-tests"
+    ],
+    "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+    "current_live_agent_version_id": "agtvrsn_6701kthngpabe6etedq4rr4a3dpa",
+    "current_attached_knowledge_base_document_ids": [
+      "7pyke4f9n9casIzeA25x",
+      "K6xBUXcBoo8cPDvrmCzL",
+      "9pv9mi6v2EdWIOUsAzoH"
+    ],
+    "revised_test_folder_name": "Atlas Web Studio - Cross-Vertical Local Business Simulation V2",
+    "revised_test_folder_id": "tfld_6201kth9njh3f18rxe63zqd34cgm",
+    "revised_tests_created": [
+      {
+        "source_test_id": "sim_cross_vertical_plumbing_emergency_google_status_quo",
+        "provider_test_id": "test_9101kthnhgmaecdahbrdb1kthxf2"
+      },
+      {
+        "source_test_id": "sim_cross_vertical_dental_compliance_new_patient_claims",
+        "provider_test_id": "test_1501kthnhh0te11s5zt1wr9ee3pw"
+      },
+      {
+        "source_test_id": "sim_cross_vertical_auto_repair_trust_price_skeptic",
+        "provider_test_id": "test_3501kthnhha8fjnrpdx4gbgdy76e"
+      },
+      {
+        "source_test_id": "sim_cross_vertical_hvac_busy_dispatch_callback",
+        "provider_test_id": "test_1401kthnhhkmf23tppy6zwtat0wf"
+      },
+      {
+        "source_test_id": "sim_cross_vertical_hair_salon_social_media_objection",
+        "provider_test_id": "test_6201kthnhhvpeajs0d6yq2h3q87k"
+      },
+      {
+        "source_test_id": "sim_cross_vertical_home_cleaning_gatekeeper_stop_boundary",
+        "provider_test_id": "test_7101kthnhj4xea7svn08zd0na3nx"
+      }
+    ],
+    "moved_to_folder_count": 6,
+    "evidence_paths": [
+      "research/experiments/generated/ELEVENLABS-017-natural-control-feedback-repair/kb_upload_plan.json",
+      "research/experiments/generated/ELEVENLABS-017-natural-control-feedback-repair/kb_upload_requests.json",
+      "research/experiments/generated/ELEVENLABS-017-natural-control-feedback-repair/agent_patch_plan_live.json",
+      "research/experiments/generated/ELEVENLABS-017-natural-control-feedback-repair/agent_patch_requests_live.json",
+      "research/experiments/generated/ELEVENLABS-017-natural-control-feedback-repair/revised_tests_create_plan_live.json",
+      "research/experiments/generated/ELEVENLABS-017-natural-control-feedback-repair/revised_tests_create_requests_live.json"
+    ],
+    "simulation_run_made": false,
+    "production_green_claimed": false
+  },
+  "blocked_until_review": [
+    "uploading private customer emails",
+    "uploading private transcripts",
+    "using customer audio",
+    "production customer calls",
+    "claiming production-green before a fresh cross-vertical simulation rerun and human review"
+  ]
+}

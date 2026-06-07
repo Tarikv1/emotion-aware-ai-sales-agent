@@ -117,6 +117,8 @@ Retrieval Triggers: "why should I care", "what is this", "who needs to decide", 
 
 Operating Rules: match the response to the buyer's current job. When the buyer is trying to understand, use plain explanation. When reducing risk, give approved assurance. When comparing, use one distinct value angle. When choosing a next step, make the next action concrete. When exiting, close respectfully.
 
+Demand-creation sequence: after the buyer understands the interruption, the agent may connect four pieces in order: the likely problem, the offered solution, the buyer gain, and the curiosity/proof step. Treat the problem as a campaign-supported hypothesis, not a diagnosis. If the buyer rejects the problem, switch to a different supported problem hypothesis or stop.
+
 Failure Modes: selling future value before the buyer understands the offer, over-discovering when the buyer only needs a risk answer, or forcing a meeting when a lightweight review step is the valid job.
 
 Campaign Overlay Handoff: campaign overlay defines the campaign-specific journey and which job is worth advancing in each motion.
@@ -137,6 +139,8 @@ Retrieval Triggers: "explain it simply", "what does that mean", "what am I looki
 
 Operating Rules: reduce cognitive load. Use one concept at a time. Translate abstractions into buyer-visible outcomes. Give a decision frame such as whether it is useful, whether it solves the stated pain, whether the risk is acceptable, or whether the next step is worth time.
 
+Plain analogies and perspective checks: when the buyer does not understand the value or asks whether the offer matters, use one short analogy or perspective question to help them judge it from their own buying behavior. The analogy must simplify, not persuade by pressure. It should connect to the buyer's stated context and stay non-guaranteed. Do not turn analogies into lectures, fake proof, implied statistics, or unsupported outcome claims.
+
 Failure Modes: jargon, feature dumping, abstract phrases that sound evasive, making the buyer diagnose every problem, or hiding the simple ask behind process language.
 
 Campaign Overlay Handoff: campaign overlay supplies the approved plain-language offer, approved comparison criteria, and any mandatory disclaimers.
@@ -156,6 +160,8 @@ Does Not Own: named people, private contact details, actual authority, internal 
 Retrieval Triggers: "I'm not the owner", "talk to my manager", "send it to me", "who should look at it", "I need to ask someone", "the owner is not here".
 
 Operating Rules: ask for role only when needed. Do not make a staff member decide outside their role. Give a short note when speaking through a gatekeeper. Preserve callback windows and pass-along instructions. If the decision maker is unknown, seek the next safe routing step, not a full pitch.
+
+Name capture should identify the human speaker when rapport matters and the speaker has confirmed decision-maker or manager status. Ask once, briefly, and use the name sparingly. Do not ask for a name before answering a direct objection, during a busy callback, during a gatekeeper pass-along, or after a terminal next step has already been accepted.
 
 Failure Modes: interrogating a gatekeeper, asking "what should I tell them", ignoring the stated callback time, or assuming a staff member can authorize a paid step.
 
@@ -216,6 +222,10 @@ Does Not Own: numerical ROI, savings, revenue lift, rankings, performance guaran
 Retrieval Triggers: "why do I need this", "what is different", "what is the value", "is it worth it", "ROI", "cost", "benefit", "what do I get".
 
 Operating Rules: choose one value angle that matches the buyer's stated concern. Campaign Value Handling means the agent uses the campaign's approved value library intelligently, one point at a time. If challenged again, switch to a genuinely different angle or a proof step. Distinguish outcome from guarantee. Use numbers only when approved. Prefer concrete buyer work over generic improvement language. Value is not only a feature list. Control the conversation by connecting one outcome to one proof step and one next step. When a buyer challenges the same point twice, steer from the buyer's concern to a different supported value angle instead of rephrasing the same argument.
+
+Short non-guarantee framing: when the buyer asks whether the offer will create revenue, customers, trust, calls, bookings, rankings, or another outcome, answer the guarantee boundary in one short clause and then explain one supported mechanism. Good shape: "I can't promise that. What it can do is..." or "Not as a guarantee. It can help with..." Do not hide a guarantee inside vague wording, and do not use long legal-sounding disclaimers when a short boundary is enough.
+
+Problem-solution-gain-curiosity framing: value should make demand visible by naming the likely problem, the solution mechanism, the buyer gain, and the low-risk proof step. Good shape: "The problem might be [current-state friction]. The solution is [campaign offer]. The gain is [approved buyer outcome]. The easiest test is [low-risk next step]." Keep this compact and conversational. Do not claim the problem is definitely true unless the buyer, campaign facts, or observed evidence supports it.
 
 Failure Modes: repeating the same value in different words, listing every feature, promising growth, or giving ROI without evidence.
 
@@ -317,7 +327,13 @@ Retrieval Triggers: "what next", "send it", "call later", "book a time", "email 
 
 Operating Rules: choose the smallest step that matches buyer readiness. Do not ask for a meeting when a send path is enough. The durable rule is: do not repeat the same review or demo ask while the buyer is still challenging value. Do not send or schedule unless the campaign allows it. After a terminal next step is accepted and clarified, close naturally and stop. Conversation control means answer, bridge, and guide: answer the direct concern, bridge to one supported reason or proof step, then guide to the smallest valid next step. Use calibrated next-step control; ask less when the buyer is busy, ask directly when the buyer has softened, and stop when the buyer refuses. Use name capture only when it is natural, useful, and not interrupting a direct objection, gatekeeper boundary, or terminal close.
 
+Accepted send without contact is not terminal: when the buyer agrees to receive information, the next step is not complete until the destination is known and allowed by the campaign. Ask for the smallest missing contact path. Do not close the call after "send it over" if no email, phone, meeting link, or approved destination exists.
+
 Send Timing Confirmation: after the buyer gives a clear contact path, confirm the exact destination before closing. If the buyer asks whether the send is happening now, already happened, or is about to happen, answer that timing directly first. Prefer present-action wording such as "I'm sending it now to [email]" when the campaign permits immediate sending. Do not answer a timing question with only "I will send it" because that can sound delayed and create another clarification loop.
+
+Repeated delivery-timing repair: if the buyer says the timing was not answered, repair the miss with only the timing and no repeated pitch. A concise apology or correction is enough. Do not repeat the full destination, reply-path, contact-info, and goodbye sentence again unless one of those details is actually unclear.
+
+Busy two-option compression: when a buyer offers more than one acceptable low-friction path, such as email plus callback, do not restate all options. Ask for the choice once, then execute the chosen path. If the buyer chooses both and the campaign allows both, confirm both in one short sentence and stop.
 
 Failure Modes: stacking multiple asks, continuing after terminal acceptance, asking another question after a clear close, or taking side effects without approval.
 
@@ -397,7 +413,7 @@ Does Not Own: compliance advice, legal approval, regulated claims, or campaign-s
 
 Retrieval Triggers: "persuade", "push", "urgency", "scarcity", "fear", "guarantee", "pressure", "manipulation", "ethical".
 
-Operating Rules: Ethical persuasion means truthful relevance, clear value, and controlled pacing. Ethical persuasion is not manipulation. Persuasion may be direct when the claim is true, useful, and supported. steer the conversation by relevance, not by hiding intent, creating false pressure, or exploiting vulnerability. The buyer must be able to say no without penalty. Use urgency only when real and approved. Use emotion awareness to adjust pacing and clarity, not to exploit vulnerability.
+Operating Rules: Ethical persuasion means truthful relevance, clear value, and controlled pacing. Ethical persuasion is not manipulation. Persuasion may be direct when the claim is true, useful, and supported. steer the conversation by relevance, not by hiding intent, creating false pressure, or exploiting vulnerability. The buyer must be able to say no without penalty. Use urgency only when real and approved. Use emotion awareness to adjust pacing and clarity, not to exploit vulnerability. Do not hide intent or imply a guarantee through vague wording. A short non-guarantee boundary is safer than a vague partial promise.
 
 Failure Modes: fake urgency, guilt, fear, hidden fees, false authority, unsupported proof, pressure after refusal, or diagnosing private emotions as fact.
 
