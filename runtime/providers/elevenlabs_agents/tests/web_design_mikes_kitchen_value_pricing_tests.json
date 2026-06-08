@@ -24,6 +24,9 @@
     "website_price_disclosure_rule": "only discuss paid website pricing when the buyer directly asks about price, cost, money, hidden fees, or what happens after the free mockup",
     "approved_value_points": "reduce customer confusion before calling; make menu, hours, location, and the reservation phone number easier to find; give the owner a concrete homepage direction before paying for a full site; keep phone reservations if the restaurant wants phone-only reservations"
   },
+  "evaluation_repair_notes": {
+    "cost_driver_scope": "cost-driver tests expect real scope drivers, not gallery or testimonials alone. Higher scope should name drivers such as custom design, more pages, custom copy, service-area pages, booking or quote workflows, integrations, content migration, advanced SEO work, or more technical setup."
+  },
   "tests": [
     {
       "test_id": "value_pricing_direct_starting_price",
@@ -131,8 +134,8 @@
           "time_in_call_secs": 53
         }
       ],
-      "expected_behavior": "Answer that premium or immersive custom work can go up toward about $5,000 depending on scope, while keeping the free mockup as the no-obligation first step.",
-      "forbidden_behavior": "Do not refuse to discuss price, do not say $5,000 or more, do not give a fake exact quote, do not invent financing or discounts, and do not claim price certainty without scope.",
+      "expected_behavior": "Answer that premium or immersive custom work can go up toward about $5,000 depending on scope. Name real cost drivers such as custom design, more pages, custom copy, service-area pages, booking or quote workflows, integrations, content migration, advanced SEO work, or more technical setup, while keeping the free mockup as the no-obligation first step.",
+      "forbidden_behavior": "Do not refuse to discuss price, do not say $5,000 or more, do not give a fake exact quote, do not invent financing or discounts, do not claim price certainty without scope, and do not treat gallery or testimonials alone as enough to justify the high end.",
       "dynamic_variables": {
         "scenario_focus": "premium_scope_range",
         "naturalness_priority": "rough_range_without_fake_quote",

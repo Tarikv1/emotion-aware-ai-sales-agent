@@ -61,8 +61,8 @@ VALUE_ROTATION_MARKERS = (
 )
 
 SEO_MARKERS = (
-    "We can structure the site so Google has a clearer page to understand your services, location, and service area.",
-    "That is not a ranking guarantee, but it is a basic foundation.",
+    "That's the goal, yes - not as a page-one guarantee, but a real website gives Google a proper page to read: your services, location, service area, photos, reviews, and booking info.",
+    "Basic local SEO setup can be part of the website build. Ongoing SEO is separate.",
 )
 
 FORBIDDEN_SEO_PATTERNS = (
@@ -119,7 +119,14 @@ def main() -> None:
     assert_contains("terminal email close", combined, EMAIL_CLOSE_MARKERS)
     assert_contains("value angle rotation", combined, VALUE_ROTATION_MARKERS)
     assert_contains("SEO local search repair", combined, SEO_MARKERS)
-    assert_absent("buyer-facing package", combined, ("Thanks for confirming", "clearer online presence", "organized information"))
+    assert_absent("buyer-facing package", combined, ("Thanks for confirming", "organized information"))
+    for line_number, raw_line in enumerate(combined.splitlines(), start=1):
+        line = raw_line.lower()
+        if "clearer online presence" in line:
+            assert_condition(
+                "do not use" in line or "forbidden" in line,
+                f"buyer-facing package line {line_number} contains positive clearer-online-presence wording: {raw_line}",
+            )
     assert_no_unbounded_seo_claims("ELEVENLABS-022 package", combined)
 
     diff_check = subprocess.run(["git", "diff", "--check"], cwd=ROOT, text=True, capture_output=True, check=False)

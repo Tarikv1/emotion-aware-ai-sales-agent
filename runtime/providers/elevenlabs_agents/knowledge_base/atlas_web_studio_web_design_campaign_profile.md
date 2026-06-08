@@ -40,7 +40,7 @@ The useful question is not whether a website magically creates demand. The usefu
 
 The free homepage mockup is the proof step. The buyer can compare whether the page makes the trust, offer, and action path stronger before paying.
 
-Weak phrases are supporting language only, never standalone main value answers. Older generic phrases such as clearer page, one place, contact path, and local visibility support may remain only as supporting concepts when connected to an existing attention source and a concrete buyer action.
+Weak phrases are supporting language only, never standalone main value answers. Do not use "clearer homepage," "clearer page," "clearer path," or "clearer online presence" as the main sales argument. Older generic phrases such as clear path, one place, contact path, and local visibility support may remain only as supporting concepts when connected to an existing attention source and a concrete buyer action. Allowed only once per conversation and only as supporting wording.
 
 ## Campaign-Safe Selling Point Bank
 
@@ -53,7 +53,19 @@ Use these as approved business-safe mechanisms for local website value. They do 
 - Trust stack: reviews, photos, service details, location, policies, team info, certifications only if provided, and a clear next action.
 - After-hours action: visitors can understand services, hours, location, policies, booking, ordering, quote, message, or call options when the business is closed.
 - Owned channel: one business-controlled page to link from Google, Instagram, texts, QR codes, referrals, and ads.
-- Local search foundations: basic local search foundations, service pages and location information, and search-friendly structure can help search engines understand services, service area, location, and business details without promising rankings.
+- Local search foundations: basic local search foundations, service pages and location information, and search-friendly structure can help search engines understand services, service area, location, and business details without promising rankings, traffic, customers, calls, page-one placement, or numerical SEO lift.
+
+Approved local SEO mechanisms:
+
+- search-friendly headings
+- service sections
+- service-area wording
+- location information
+- local business schema if appropriate
+- mobile-friendly structure
+- fast page basics
+- links from Google Business Profile and social profiles
+- clear call, book, or quote actions
 
 Approved local search wording:
 
@@ -62,6 +74,8 @@ Approved local search wording:
 - "service pages and location information"
 - "search-friendly structure"
 - "helps people who are already searching understand what you offer"
+- "That's the goal, yes - not as a page-one guarantee, but a real website gives Google a proper page to read: your services, location, service area, photos, reviews, and booking info. Instagram can show up too, but it's not as strong as having a dedicated local page built around what people are searching for."
+- "Basic local SEO setup can be part of the website build. Ongoing SEO is separate."
 
 Forbidden SEO claims:
 
@@ -70,24 +84,40 @@ Forbidden SEO claims:
 - Do not say: "this will bring more traffic."
 - Do not say: "this guarantees SEO results".
 - Do not say: "we will optimize it to attract more customers" unless explicitly softened and non-guaranteed.
+- Do not claim guaranteed ranking.
+- Do not claim guaranteed traffic.
+- Do not claim guaranteed customers.
+- Do not claim guaranteed calls.
+- Do not claim guaranteed page-one placement.
+- Do not claim numerical SEO lift claims.
 
-If asked about SEO pricing, say: "Basic local search setup can be part of how the site is structured. Ongoing SEO work would be a separate conversation if you wanted that later."
+If asked about SEO pricing, say: "Basic local SEO setup can be part of the website build. Ongoing SEO is separate." Longer acceptable version: "Basic local search setup can be part of how the site is structured. Ongoing SEO work would be a separate conversation if you wanted that later."
 
 ## Approved Buyer-Facing Selling Examples
 
-Salon or Instagram objection: "Instagram is your gallery. The website is your booking filter. It can show services, starting prices if you want them shown, policies, FAQs, reviews, and booking rules before they DM you - so the people who message are closer to ready."
+Salon or Instagram objection: "Instagram is the gallery. The website is the booking filter. It can show services, starting prices if you want them shown, policies, FAQs, reviews, and booking rules before they DM you - so the people who message are closer to ready."
+
+Salon or Instagram alternate wording: "Instagram is your gallery. The website is your booking filter. It can show services, starting prices if you want them shown, policies, FAQs, reviews, and booking rules before they DM you - so the people who message are closer to ready."
 
 Salon or Instagram second challenge: "It can also cut down repetitive DMs: how much, where are you, do you do color, what are your policies, how do I book?"
 
 Auto repair trust or search objection: "Not as a guarantee. If someone is already comparing auto shops, the site can show services, diagnostics, hours, location, reviews, and the phone path before they call. It gives them a reason to trust the shop faster instead of guessing from a map listing alone."
 
+Auto repair practical trust objection: "The site lets people check services, hours, reviews, and call before they gamble on a shop."
+
 Google Maps objection: "Google Maps helps people find you. The website helps them decide: services, proof, hours, location, FAQs, and what to do next."
+
+Google Maps direct objection: "Google Maps helps them find you. The website helps them choose."
 
 Plumber or emergency search objection: "Maps might get the click. The site can make emergency services, service area, reviews, and tap-to-call obvious before they choose who to call."
 
+Maps trust objection: "Maps may get the click. The site helps them trust and call faster."
+
 Cleaning quote request objection: "The site can pre-qualify quote requests: service areas, one-time vs recurring, move-in/move-out, what is included, and how to request a quote."
 
-Local search objection: "We can structure the site so Google has a clearer page to understand your services, location, and service area. That is not a ranking guarantee, but it is a basic foundation."
+Cleaning practical quote filter objection: "The site pre-qualifies quote requests before the owner spends time replying."
+
+Local search objection: "That's the goal, yes - not as a page-one guarantee, but a real website gives Google a proper page to read: your services, location, service area, photos, reviews, and booking info. Instagram can show up too, but it's not as strong as having a dedicated local page built around what people are searching for."
 
 Value angle rotation rule:
 
@@ -144,6 +174,44 @@ Do not leak one vertical's workflow into another.
 
 Use price facts only when the buyer asks about cost, hidden fees, hosting, domains, ongoing fees, or what happens after the free mockup.
 
+## Approved Website Cost Drivers
+
+Low-end or simpler website:
+
+- homepage or small brochure site
+- few pages
+- standard layout
+- existing logo, photos, and copy
+- simple contact form
+- click-to-call
+- hours, location, and reviews
+- basic local search setup
+- no custom integrations
+
+High-end or more expensive website:
+
+- custom design system
+- more pages
+- service-area pages
+- custom copywriting
+- SEO landing pages
+- booking or quote workflows
+- CRM, calendar, email, payment, ordering, or reservation integrations
+- ecommerce
+- memberships or client portals
+- multi-location structure
+- content migration
+- custom photography or video
+- accessibility, performance, security, or privacy-sensitive setup
+- analytics or tracking setup
+- ongoing SEO or content strategy
+
+Buyer-facing cost answer:
+"Closer to the low end is usually a simple site: homepage, a few service sections, reviews, contact form, click-to-call, hours, location, and basic local search setup. Closer to the high end is when it needs custom design, more pages, custom copy, service-area pages, booking or quote workflows, integrations, content migration, advanced SEO work, or more technical setup. If you just need basic info and a way for people to call, that sounds closer to the low end."
+
+Dental-specific cost answer:
+"For a dental office, low end is services, location, hours, appointment request, and basic trust elements. Higher end is multiple service pages, provider bios, patient forms, booking or patient-system integrations, accessibility/privacy-sensitive setup, and more custom design."
+
 ## Approved Send And Callback Facts
 
 - If the buyer accepts the mockup but has not provided an email or approved destination, ask what email or approved send path to use.
@@ -153,8 +221,14 @@ Use price facts only when the buyer asks about cost, hidden fees, hosting, domai
 - If the buyer asks whether it is being sent now, present-action wording such as "I'm sending it now to [email]" is approved.
 - If immediate send is not supported in a future campaign process, use future wording instead.
 - Terminal email close rule: when the buyer provides an email, normalize obvious email spell-outs, confirm the exact destination, confirm delivery timing, confirm they can reply there with questions, and then close naturally.
+- Hard terminal email close: If the buyer provides a usable email, the next agent response must normalize obvious spell-outs, confirm the exact destination, confirm send timing, confirm the reply path, and close naturally.
+- No more discovery after email.
+- No more value pitch after email.
+- No more "what else should we focus on?" after email.
 - If the buyer says "mike at northsideauto dot com", confirm `mike@northsideauto.com`.
+- Immediate send example: "Perfect, I'm sending it to mike@northsideauto.com now, and you can reply there with questions. Thanks, Mike."
 - Immediate send example: "Perfect, I'm sending it to mike@northsideauto.com, and you can reply there with questions."
+- Non-immediate send example: "Perfect, I'll send it to mike@northsideauto.com after this call, and you can reply there with questions. Thanks, Mike."
 - Non-immediate send example: "Perfect, I'll send it to mike@northsideauto.com after this call, and you can reply there with questions."
 - Do not ask another discovery question after email is provided unless the email is unclear or the buyer asks a new question.
 - Buyer-instructed public business-source lookup is a follow-up handoff, not a claim that an email was already found or that the mockup was already sent.
