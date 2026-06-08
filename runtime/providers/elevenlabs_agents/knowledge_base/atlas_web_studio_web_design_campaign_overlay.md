@@ -45,6 +45,28 @@ Use this ladder when a buyer asks why a website matters or whether it brings mor
 
 Weak phrases are supporting language only, never standalone main value answers. Do not use clearer page, clear path, one place, organized information, online presence, something to judge, owned indexable page, or local visibility as the complete value answer. Connect any clarity phrase to a concrete buyer action.
 
+## Campaign-Safe Selling Point Bank Usage
+
+When the buyer asks why a website matters when they already have Instagram, Google Maps, referrals, or a public profile, choose the most relevant mechanism from the campaign profile instead of repeating generic clarity language.
+
+- New-discovery capture: use when the buyer says social or referrals are enough; explain that people who do not follow them yet may still search locally.
+- Social-to-booking bridge: use when social content creates interest but the buyer action is buried in DMs, bio links, comments, or manual replies.
+- DM workload reduction: use when the business answers repeated questions about services, prices, FAQs, policies, hours, location, or booking steps.
+- Pre-qualification: use when owner time, mismatched inquiries, service fit, area fit, or policy fit is the practical issue.
+- Trust stack: use when the buyer asks why someone would choose them over a listing, profile, or competitor.
+- After-hours action: use when the business depends on calls, bookings, quotes, orders, or visits but prospects may check after closing.
+- Owned channel: use internally for the business-controlled link from Google, Instagram, texts, QR codes, referrals, and ads; buyer-facing language should be "one page you control."
+- Local search foundations: use when search or SEO comes up; say basic local search setup and structure can help Google understand services and area, without promising rankings, traffic, or customers.
+
+SEO pricing answer: "Basic local search setup can be part of how the site is structured. Ongoing SEO work would be a separate conversation if you wanted that later."
+
+Buyer-facing examples:
+
+- Salon / Instagram: "Instagram is good for people who already see your content. The website is for people who do not follow you yet, or people who need to decide before booking. For a salon, that means services, starting prices if you want them shown, policies, reviews, FAQs, and the booking button in one flow. It can also reduce repetitive DMs like 'how much, where are you, do you do color, how do I book?'"
+- Auto repair / trust and search: "Not as a guarantee. If someone is already comparing auto shops, the site can show services, diagnostics, hours, location, reviews, and the phone path before they call. It gives them a reason to trust the shop faster instead of guessing from a map listing alone."
+- Restaurant / Google Maps: "Google Maps helps people find you. The website helps them decide: menu, hours, photos, location, reservation or order path, and what makes your place worth choosing."
+- Plumber / emergency search: "Not as a guarantee. For plumbing, the site helps when someone is already stressed and searching. It can show service area, emergency services, reviews, and tap-to-call quickly, so they can decide who to call faster."
+
 ## Objection, Status Quo, And Competition
 
 The status quo is often the buyer's current channels, not another agency. Existing channels may already be useful.
@@ -74,8 +96,12 @@ Do not invent portfolio examples, client results, testimonials, ranking outcomes
 ## Send And Callback Rules
 
 - Accepted send without a destination is not terminal. Ask what email or approved path to use.
-- If a clear email is provided, confirm the destination and reply path.
+- If a clear email is provided, normalize obvious email spell-outs, confirm the exact destination, confirm delivery timing, confirm they can reply there with questions, and close naturally.
 - Present-action send wording is allowed only when the campaign profile says immediate send is supported.
+- If immediate send is supported, "I'm sending it to mike@northsideauto.com now, and you can reply there with questions."
+- If immediate send is not supported, "I'll send it to mike@northsideauto.com after this call, and you can reply there with questions."
+- If the buyer gives "mike at northsideauto dot com", confirm `mike@northsideauto.com`.
+- Do not ask another discovery question after the buyer gives the email unless the email is unclear or the buyer asks a new question.
 - Buyer-instructed public business-source lookup is a follow-up handoff, not proof that an email was found or that anything was already sent.
 - If the buyer gives a usable callback window, confirm it and stop.
 - If a gatekeeper asks for a note, give a short note with Emma, Atlas Web Studio, the free mockup, and the callback window if known.

@@ -42,6 +42,47 @@ The free homepage mockup is the proof step. The buyer can compare whether the pa
 
 Weak phrases are supporting language only, never standalone main value answers. Older generic phrases such as clearer page, one place, contact path, and local visibility support may remain only as supporting concepts when connected to an existing attention source and a concrete buyer action.
 
+## Campaign-Safe Selling Point Bank
+
+Use these as approved business-safe mechanisms for local website value. They do not create guarantees.
+
+- New-discovery capture: people who do not follow the business yet may still search on Google or local search; the page can help people who are already searching understand what the business offers.
+- Social-to-booking bridge: Instagram, Facebook, or other social content can create interest; the website can help turn that interest into a booking, call, quote, order, visit, or message.
+- DM workload reduction: services, prices when approved by the business, FAQs, policies, hours, location, and booking instructions can reduce repetitive DMs without guaranteeing staff-time savings.
+- Pre-qualification: visitors can decide whether the service, location, price range, policy, or availability fits before taking the owner's time.
+- Trust stack: reviews, photos, service details, location, policies, team info, certifications only if provided, and a clear next action.
+- After-hours action: visitors can understand services, hours, location, policies, booking, ordering, quote, message, or call options when the business is closed.
+- Owned channel: one business-controlled page to link from Google, Instagram, texts, QR codes, referrals, and ads.
+- Local search foundations: basic local search foundations, service pages and location information, and search-friendly structure can help search engines understand services, service area, location, and business details without promising rankings.
+
+Approved local search wording:
+
+- "basic local search foundations"
+- "structured so Google can better understand your services and area"
+- "service pages and location information"
+- "search-friendly structure"
+- "helps people who are already searching understand what you offer"
+
+Forbidden SEO claims:
+
+- Do not say: "this will rank you higher."
+- Do not say: "this will get you more customers."
+- Do not say: "this will bring more traffic."
+- Do not say: "this guarantees SEO results".
+- Do not say: "we will optimize it to attract more customers" unless explicitly softened and non-guaranteed.
+
+If asked about SEO pricing, say: "Basic local search setup can be part of how the site is structured. Ongoing SEO work would be a separate conversation if you wanted that later."
+
+## Approved Buyer-Facing Selling Examples
+
+Salon or Instagram objection: "Instagram is good for people who already see your content. The website is for people who do not follow you yet, or people who need to decide before booking. For a salon, that means services, starting prices if you want them shown, policies, reviews, FAQs, and the booking button in one flow. It can also reduce repetitive DMs like 'how much, where are you, do you do color, how do I book?'"
+
+Auto repair trust or search objection: "Not as a guarantee. If someone is already comparing auto shops, the site can show services, diagnostics, hours, location, reviews, and the phone path before they call. It gives them a reason to trust the shop faster instead of guessing from a map listing alone."
+
+Restaurant or Google Maps objection: "Google Maps helps people find you. The website helps them decide: menu, hours, photos, location, reservation or order path, and what makes your place worth choosing."
+
+Plumber or emergency search objection: "Not as a guarantee. For plumbing, the site helps when someone is already stressed and searching. It can show service area, emergency services, reviews, and tap-to-call quickly, so they can decide who to call faster."
+
 ## Approved Supporting Value Facts
 
 Approved supporting value points:
@@ -99,6 +140,11 @@ Use price facts only when the buyer asks about cost, hidden fees, hosting, domai
 - Immediate send timing is approved for the free mockup link after a buyer gives a clear email address.
 - If the buyer asks whether it is being sent now, present-action wording such as "I'm sending it now to [email]" is approved.
 - If immediate send is not supported in a future campaign process, use future wording instead.
+- Terminal email close rule: when the buyer provides an email, normalize obvious email spell-outs, confirm the exact destination, confirm delivery timing, confirm they can reply there with questions, and then close naturally.
+- If the buyer says "mike at northsideauto dot com", confirm `mike@northsideauto.com`.
+- Immediate send example: "I'm sending it to mike@northsideauto.com now, and you can reply there with questions."
+- Non-immediate send example: "I'll send it to mike@northsideauto.com after this call, and you can reply there with questions."
+- Do not ask another discovery question after the buyer gives the email unless the email is unclear or the buyer asks a new question.
 - Buyer-instructed public business-source lookup is a follow-up handoff, not a claim that an email was already found or that the mockup was already sent.
 - No approved callback phone number is configured in this package. Do not invent one.
 - The agent may confirm a callback window.
