@@ -1,0 +1,57 @@
+{
+  "operation": "force_delete_stale_non_live_atlas_branch_kbs",
+  "live_provider_calls_made": true,
+  "force_delete_used": true,
+  "force_delete_basis": "The documents were absent from the active Main branch KB list and only blocked by the non-live atlas branch at current_live_percentage 0.0.",
+  "deleted": [
+    {
+      "id": "7nQDeJ6GcpJmLK74NaHy",
+      "name": "Close Paths",
+      "force": true,
+      "reason": "stale atlas branch at 0 percent live",
+      "status_code": 204,
+      "response": {}
+    },
+    {
+      "id": "VA396cDdOr8b2ktuDJX3",
+      "name": "Compliance And Calling Boundaries",
+      "force": true,
+      "reason": "stale atlas branch at 0 percent live",
+      "status_code": 204,
+      "response": {}
+    },
+    {
+      "id": "f3Nlq2ob01A6dLBmopJg",
+      "name": "Objection Handling Playbook",
+      "force": true,
+      "reason": "stale atlas branch at 0 percent live",
+      "status_code": 204,
+      "response": {}
+    },
+    {
+      "id": "hbVwmNFkVRNU7hpe7ufO",
+      "name": "Discovery And Qualification",
+      "force": true,
+      "reason": "stale atlas branch at 0 percent live",
+      "status_code": 204,
+      "response": {}
+    },
+    {
+      "id": "tDH6n3V6cAZ6bFxCPx1G",
+      "name": "Website Offer And Service Levels",
+      "force": true,
+      "reason": "stale atlas branch at 0 percent live",
+      "status_code": 204,
+      "response": {}
+    },
+    {
+      "id": "tOvphY2jqYO6rAu1NoXq",
+      "name": "Vertical Playbooks",
+      "force": true,
+      "reason": "stale atlas branch at 0 percent live",
+      "status_code": 204,
+      "response": {}
+    }
+  ],
+  "failed": []
+}

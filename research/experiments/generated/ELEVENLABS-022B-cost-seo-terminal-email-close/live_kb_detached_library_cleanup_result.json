@@ -1,0 +1,223 @@
+{
+  "operation": "delete_detached_non_active_kbs_no_force",
+  "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+  "live_provider_calls_made": true,
+  "candidate_count": 14,
+  "candidates": [
+    {
+      "id": "7nQDeJ6GcpJmLK74NaHy",
+      "name": "Close Paths",
+      "type": "file",
+      "size_bytes": 1977,
+      "created_at": 1780280932,
+      "dependent_agent_ids": []
+    },
+    {
+      "id": "VA396cDdOr8b2ktuDJX3",
+      "name": "Compliance And Calling Boundaries",
+      "type": "file",
+      "size_bytes": 1165,
+      "created_at": 1780280932,
+      "dependent_agent_ids": []
+    },
+    {
+      "id": "f3Nlq2ob01A6dLBmopJg",
+      "name": "Objection Handling Playbook",
+      "type": "file",
+      "size_bytes": 5564,
+      "created_at": 1780280932,
+      "dependent_agent_ids": []
+    },
+    {
+      "id": "hbVwmNFkVRNU7hpe7ufO",
+      "name": "Discovery And Qualification",
+      "type": "file",
+      "size_bytes": 2468,
+      "created_at": 1780280932,
+      "dependent_agent_ids": []
+    },
+    {
+      "id": "tDH6n3V6cAZ6bFxCPx1G",
+      "name": "Website Offer And Service Levels",
+      "type": "file",
+      "size_bytes": 2666,
+      "created_at": 1780280932,
+      "dependent_agent_ids": []
+    },
+    {
+      "id": "tOvphY2jqYO6rAu1NoXq",
+      "name": "Vertical Playbooks",
+      "type": "file",
+      "size_bytes": 9650,
+      "created_at": 1780280932,
+      "dependent_agent_ids": []
+    },
+    {
+      "id": "1zbazq735GCYqzcblhym",
+      "name": "KB: OpenAI ChatGPT Plan Taxonomy",
+      "type": "file",
+      "size_bytes": 3739,
+      "created_at": 1780198367,
+      "dependent_agent_ids": []
+    },
+    {
+      "id": "6vWTVUws3OJfg1cfL2kB",
+      "name": "KB: Objection Handling Playbook",
+      "type": "file",
+      "size_bytes": 4168,
+      "created_at": 1780198367,
+      "dependent_agent_ids": []
+    },
+    {
+      "id": "DWXMMGfiIDliwNEDnmCH",
+      "name": "KB: Conversation Repair Loop Handling",
+      "type": "file",
+      "size_bytes": 2654,
+      "created_at": 1780198367,
+      "dependent_agent_ids": []
+    },
+    {
+      "id": "E2Ui33HUzDNLeuV5ExhH",
+      "name": "KB: Side-Effect And Tool Safety",
+      "type": "file",
+      "size_bytes": 2049,
+      "created_at": 1780198367,
+      "dependent_agent_ids": []
+    },
+    {
+      "id": "IQGtJaF7E3O8RpCi9taQ",
+      "name": "KB: OpenAI Allowed Claims",
+      "type": "file",
+      "size_bytes": 12661,
+      "created_at": 1780198367,
+      "dependent_agent_ids": []
+    },
+    {
+      "id": "LoxF8NHntHHj5Q6EFuKa",
+      "name": "KB: Claim Boundaries And Do...",
+      "type": "file",
+      "size_bytes": 3604,
+      "created_at": 1780198367,
+      "dependent_agent_ids": []
+    },
+    {
+      "id": "dP2pXcXceEF1ljBaALTS",
+      "name": "KB: Persuasion Strategy Playbook",
+      "type": "file",
+      "size_bytes": 5134,
+      "created_at": 1780198367,
+      "dependent_agent_ids": []
+    },
+    {
+      "id": "rijY3LwY5AFILvjf0kJp",
+      "name": "KB: Emotion And Buyer State...",
+      "type": "file",
+      "size_bytes": 6078,
+      "created_at": 1780198367,
+      "dependent_agent_ids": []
+    }
+  ],
+  "deleted": [
+    {
+      "id": "1zbazq735GCYqzcblhym",
+      "name": "KB: OpenAI ChatGPT Plan Taxonomy",
+      "force": false,
+      "status_code": 204,
+      "response": {}
+    },
+    {
+      "id": "6vWTVUws3OJfg1cfL2kB",
+      "name": "KB: Objection Handling Playbook",
+      "force": false,
+      "status_code": 204,
+      "response": {}
+    },
+    {
+      "id": "DWXMMGfiIDliwNEDnmCH",
+      "name": "KB: Conversation Repair Loop Handling",
+      "force": false,
+      "status_code": 204,
+      "response": {}
+    },
+    {
+      "id": "E2Ui33HUzDNLeuV5ExhH",
+      "name": "KB: Side-Effect And Tool Safety",
+      "force": false,
+      "status_code": 204,
+      "response": {}
+    },
+    {
+      "id": "IQGtJaF7E3O8RpCi9taQ",
+      "name": "KB: OpenAI Allowed Claims",
+      "force": false,
+      "status_code": 204,
+      "response": {}
+    },
+    {
+      "id": "LoxF8NHntHHj5Q6EFuKa",
+      "name": "KB: Claim Boundaries And Do...",
+      "force": false,
+      "status_code": 204,
+      "response": {}
+    },
+    {
+      "id": "dP2pXcXceEF1ljBaALTS",
+      "name": "KB: Persuasion Strategy Playbook",
+      "force": false,
+      "status_code": 204,
+      "response": {}
+    },
+    {
+      "id": "rijY3LwY5AFILvjf0kJp",
+      "name": "KB: Emotion And Buyer State...",
+      "force": false,
+      "status_code": 204,
+      "response": {}
+    }
+  ],
+  "skipped": [
+    {
+      "id": "7nQDeJ6GcpJmLK74NaHy",
+      "name": "Close Paths",
+      "force": false,
+      "reason": "provider_conflict_or_error",
+      "error": "ElevenLabs API error 409: {\"detail\":{\"type\":\"conflict\",\"code\":\"conflict\",\"message\":\"Document is still in use by: web design / atlas. Please remove the dependency or use Force Delete.\",\"status\":\"conflict\",\"request_id\":\"a82073ffb38398dc934ca3bb7fde39d3\"}}"
+    },
+    {
+      "id": "VA396cDdOr8b2ktuDJX3",
+      "name": "Compliance And Calling Boundaries",
+      "force": false,
+      "reason": "provider_conflict_or_error",
+      "error": "ElevenLabs API error 409: {\"detail\":{\"type\":\"conflict\",\"code\":\"conflict\",\"message\":\"Document is still in use by: web design / atlas. Please remove the dependency or use Force Delete.\",\"status\":\"conflict\",\"request_id\":\"31e9d5705ad81cbcb5ec3d178f53bfe2\"}}"
+    },
+    {
+      "id": "f3Nlq2ob01A6dLBmopJg",
+      "name": "Objection Handling Playbook",
+      "force": false,
+      "reason": "provider_conflict_or_error",
+      "error": "ElevenLabs API error 409: {\"detail\":{\"type\":\"conflict\",\"code\":\"conflict\",\"message\":\"Document is still in use by: web design / atlas. Please remove the dependency or use Force Delete.\",\"status\":\"conflict\",\"request_id\":\"147f4c9bd2d99af51bbc0c8a0b3003e5\"}}"
+    },
+    {
+      "id": "hbVwmNFkVRNU7hpe7ufO",
+      "name": "Discovery And Qualification",
+      "force": false,
+      "reason": "provider_conflict_or_error",
+      "error": "ElevenLabs API error 409: {\"detail\":{\"type\":\"conflict\",\"code\":\"conflict\",\"message\":\"Document is still in use by: web design / atlas. Please remove the dependency or use Force Delete.\",\"status\":\"conflict\",\"request_id\":\"8f12cba745997aa12df4e2dff3ab9911\"}}"
+    },
+    {
+      "id": "tDH6n3V6cAZ6bFxCPx1G",
+      "name": "Website Offer And Service Levels",
+      "force": false,
+      "reason": "provider_conflict_or_error",
+      "error": "ElevenLabs API error 409: {\"detail\":{\"type\":\"conflict\",\"code\":\"conflict\",\"message\":\"Document is still in use by: web design / atlas. Please remove the dependency or use Force Delete.\",\"status\":\"conflict\",\"request_id\":\"c15a8e5c44c9c577ddee74fba80ad27d\"}}"
+    },
+    {
+      "id": "tOvphY2jqYO6rAu1NoXq",
+      "name": "Vertical Playbooks",
+      "force": false,
+      "reason": "provider_conflict_or_error",
+      "error": "ElevenLabs API error 409: {\"detail\":{\"type\":\"conflict\",\"code\":\"conflict\",\"message\":\"Document is still in use by: web design / atlas. Please remove the dependency or use Force Delete.\",\"status\":\"conflict\",\"request_id\":\"982e95ac0045878ceee578e684c432fa\"}}"
+    }
+  ],
+  "force_delete_used": false
+}

@@ -1,0 +1,20 @@
+{
+  "operation": "delete_old_unnecessary_kbs",
+  "live_provider_calls_made": true,
+  "deleted": [
+    {
+      "id": "Z5Nj7ed0oPDbZD2Sv81Y",
+      "name": "atlas_web_studio_web_design_campaign_profile.md",
+      "force": false,
+      "status_code": 204,
+      "response": {}
+    },
+    {
+      "id": "gDOheXiXRfr8QyobO07v",
+      "name": "atlas_web_studio_web_design_campaign_overlay.md",
+      "force": false,
+      "status_code": 204,
+      "response": {}
+    }
+  ]
+}

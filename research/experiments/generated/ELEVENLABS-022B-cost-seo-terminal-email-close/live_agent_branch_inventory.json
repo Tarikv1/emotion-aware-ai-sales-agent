@@ -1,0 +1,114 @@
+[
+  {
+    "agent_id": "agent_6901ktdb4agpeap95t72tmj9tj00",
+    "name": "Sales Template",
+    "version_id": "agtvrsn_6201ktdb4akgfpwszgc1z6pc12xr",
+    "branch_id": "agtbrch_9701ktdb4agqf4xss49xarqvtyph",
+    "main_branch_id": "agtbrch_9701ktdb4agqf4xss49xarqvtyph",
+    "kb_count": 0,
+    "kb_names": [],
+    "kb_ids": [],
+    "branches": [
+      {
+        "id": "agtbrch_9701ktdb4agqf4xss49xarqvtyph",
+        "name": "Main",
+        "is_archived": false,
+        "current_live_percentage": 100.0,
+        "draft_exists": true,
+        "last_committed_at": 1780711828,
+        "parent_branch_id": null,
+        "error": null
+      }
+    ]
+  },
+  {
+    "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+    "name": "web design",
+    "version_id": "agtvrsn_8801ktm60jmwefjr0vpc8bd77eyw",
+    "branch_id": "agtbrch_6501kt0g34dvffgr95mvrh70cr2d",
+    "main_branch_id": "agtbrch_6501kt0g34dvffgr95mvrh70cr2d",
+    "kb_count": 17,
+    "kb_names": [
+      "universal_sales_core_summary.md",
+      "buyer_moves.md",
+      "buyer_journey_jobs.md",
+      "buyer_enablement_and_sensemaking.md",
+      "discovery_question_design.md",
+      "value_and_roi_framing.md",
+      "objection_status_quo_and_competition.md",
+      "trust_and_risk_repair.md",
+      "proof_and_evidence_handling.md",
+      "conversation_repair.md",
+      "next_step_policy.md",
+      "disqualification_policy.md",
+      "ethical_persuasion_boundaries.md",
+      "motion_specific_playbooks.md",
+      "call_quality_rubrics.md",
+      "atlas_web_studio_web_design_campaign_overlay.md",
+      "atlas_web_studio_web_design_campaign_profile.md"
+    ],
+    "kb_ids": [
+      "CnbYTsnjQK8x5eThDd3u",
+      "JaGehjlxNT2ZRCiycqti",
+      "RqB2bGwOqG2HzpV5Ds5Y",
+      "ootBZqG0IpuxJ3nz7s0i",
+      "H2FHwOn6XngNiuovFgU9",
+      "4Cn4jm4R8ZYhTGWnwA9s",
+      "2GkqPLdmE710AfehW8PU",
+      "PST9eJGMM0aWgxh2wUgY",
+      "XcQStOXNXtgxAIpssCRa",
+      "6LAmCiH2xpiV60p6k3BF",
+      "o13JLdJRe3fEGdGX1HRn",
+      "DezGhKsksFmellERI9xI",
+      "5rNtW03uA8iUP30thudm",
+      "HXuuQViiRr1uIADxMGcs",
+      "Xu5TPA2Mg2waySilKueK",
+      "6SEL9K98RGtn94DIFsWN",
+      "Fcn1aXEOXVe3Nu7aiJnV"
+    ],
+    "branches": [
+      {
+        "id": "agtbrch_6501kt0g34dvffgr95mvrh70cr2d",
+        "name": "Main",
+        "is_archived": false,
+        "current_live_percentage": 100.0,
+        "draft_exists": false,
+        "last_committed_at": 1780941343,
+        "parent_branch_id": null,
+        "error": null
+      },
+      {
+        "id": "agtbrch_3501kt1qr8n8ew5shz3veven4ew8",
+        "name": "atlas",
+        "is_archived": false,
+        "current_live_percentage": 0.0,
+        "draft_exists": false,
+        "last_committed_at": 1780322418,
+        "parent_branch_id": "agtbrch_6501kt0g34dvffgr95mvrh70cr2d",
+        "error": null
+      }
+    ]
+  },
+  {
+    "agent_id": "agent_4001ksxxhss0f4ps2h2gfy1rr298",
+    "name": "Sales Agent",
+    "version_id": "agtvrsn_1801ksxxhvcff3taqkx4cp2h43x3",
+    "branch_id": "agtbrch_8001ksxxhv8mf40963qqs5ch251v",
+    "main_branch_id": "agtbrch_8001ksxxhv8mf40963qqs5ch251v",
+    "kb_count": 0,
+    "kb_names": [],
+    "kb_ids": [],
+    "branches": [
+      {
+        "id": "agtbrch_8001ksxxhv8mf40963qqs5ch251v",
+        "name": "Main",
+        "is_archived": false,
+        "current_live_percentage": 100.0,
+        "draft_exists": true,
+        "last_committed_at": 1780194274,
+        "parent_branch_id": null,
+        "error": null
+      }
+    ]
+  }
+]
