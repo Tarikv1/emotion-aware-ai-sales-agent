@@ -1,0 +1,228 @@
+{
+  "operation": "pre_cleanup_inventory",
+  "active_kb_ids": [
+    "CnbYTsnjQK8x5eThDd3u",
+    "JaGehjlxNT2ZRCiycqti",
+    "RqB2bGwOqG2HzpV5Ds5Y",
+    "ootBZqG0IpuxJ3nz7s0i",
+    "H2FHwOn6XngNiuovFgU9",
+    "4Cn4jm4R8ZYhTGWnwA9s",
+    "2GkqPLdmE710AfehW8PU",
+    "PST9eJGMM0aWgxh2wUgY",
+    "XcQStOXNXtgxAIpssCRa",
+    "6LAmCiH2xpiV60p6k3BF",
+    "o13JLdJRe3fEGdGX1HRn",
+    "DezGhKsksFmellERI9xI",
+    "5rNtW03uA8iUP30thudm",
+    "HXuuQViiRr1uIADxMGcs",
+    "Xu5TPA2Mg2waySilKueK",
+    "gDOheXiXRfr8QyobO07v",
+    "Z5Nj7ed0oPDbZD2Sv81Y"
+  ],
+  "active_kb_names": [
+    "universal_sales_core_summary.md",
+    "buyer_moves.md",
+    "buyer_journey_jobs.md",
+    "buyer_enablement_and_sensemaking.md",
+    "discovery_question_design.md",
+    "value_and_roi_framing.md",
+    "objection_status_quo_and_competition.md",
+    "trust_and_risk_repair.md",
+    "proof_and_evidence_handling.md",
+    "conversation_repair.md",
+    "next_step_policy.md",
+    "disqualification_policy.md",
+    "ethical_persuasion_boundaries.md",
+    "motion_specific_playbooks.md",
+    "call_quality_rubrics.md",
+    "atlas_web_studio_web_design_campaign_overlay.md",
+    "atlas_web_studio_web_design_campaign_profile.md"
+  ],
+  "total_file_docs": 33,
+  "related_count": 19,
+  "related_docs": [
+    {
+      "id": "Z5Nj7ed0oPDbZD2Sv81Y",
+      "name": "atlas_web_studio_web_design_campaign_profile.md",
+      "active": true,
+      "dependent_agent_ids": [
+        "agent_7801kt0g32zxf4f8x5zkykj7syty"
+      ],
+      "created_at": 1780929899
+    },
+    {
+      "id": "gDOheXiXRfr8QyobO07v",
+      "name": "atlas_web_studio_web_design_campaign_overlay.md",
+      "active": true,
+      "dependent_agent_ids": [
+        "agent_7801kt0g32zxf4f8x5zkykj7syty"
+      ],
+      "created_at": 1780929897
+    },
+    {
+      "id": "DfcFTPU430OTy188Znjd",
+      "name": "atlas_web_studio_web_design_campaign_profile.md",
+      "active": false,
+      "dependent_agent_ids": [],
+      "created_at": 1780880980
+    },
+    {
+      "id": "BhUWZGjjCaHNCslDyQtn",
+      "name": "atlas_web_studio_web_design_campaign_overlay.md",
+      "active": false,
+      "dependent_agent_ids": [],
+      "created_at": 1780880979
+    },
+    {
+      "id": "Xu5TPA2Mg2waySilKueK",
+      "name": "call_quality_rubrics.md",
+      "active": true,
+      "dependent_agent_ids": [
+        "agent_7801kt0g32zxf4f8x5zkykj7syty"
+      ],
+      "created_at": 1780873214
+    },
+    {
+      "id": "HXuuQViiRr1uIADxMGcs",
+      "name": "motion_specific_playbooks.md",
+      "active": true,
+      "dependent_agent_ids": [
+        "agent_7801kt0g32zxf4f8x5zkykj7syty"
+      ],
+      "created_at": 1780873213
+    },
+    {
+      "id": "5rNtW03uA8iUP30thudm",
+      "name": "ethical_persuasion_boundaries.md",
+      "active": true,
+      "dependent_agent_ids": [
+        "agent_7801kt0g32zxf4f8x5zkykj7syty"
+      ],
+      "created_at": 1780873212
+    },
+    {
+      "id": "DezGhKsksFmellERI9xI",
+      "name": "disqualification_policy.md",
+      "active": true,
+      "dependent_agent_ids": [
+        "agent_7801kt0g32zxf4f8x5zkykj7syty"
+      ],
+      "created_at": 1780873210
+    },
+    {
+      "id": "o13JLdJRe3fEGdGX1HRn",
+      "name": "next_step_policy.md",
+      "active": true,
+      "dependent_agent_ids": [
+        "agent_7801kt0g32zxf4f8x5zkykj7syty"
+      ],
+      "created_at": 1780873209
+    },
+    {
+      "id": "6LAmCiH2xpiV60p6k3BF",
+      "name": "conversation_repair.md",
+      "active": true,
+      "dependent_agent_ids": [
+        "agent_7801kt0g32zxf4f8x5zkykj7syty"
+      ],
+      "created_at": 1780873207
+    },
+    {
+      "id": "XcQStOXNXtgxAIpssCRa",
+      "name": "proof_and_evidence_handling.md",
+      "active": true,
+      "dependent_agent_ids": [
+        "agent_7801kt0g32zxf4f8x5zkykj7syty"
+      ],
+      "created_at": 1780873205
+    },
+    {
+      "id": "PST9eJGMM0aWgxh2wUgY",
+      "name": "trust_and_risk_repair.md",
+      "active": true,
+      "dependent_agent_ids": [
+        "agent_7801kt0g32zxf4f8x5zkykj7syty"
+      ],
+      "created_at": 1780873204
+    },
+    {
+      "id": "2GkqPLdmE710AfehW8PU",
+      "name": "objection_status_quo_and_competition.md",
+      "active": true,
+      "dependent_agent_ids": [
+        "agent_7801kt0g32zxf4f8x5zkykj7syty"
+      ],
+      "created_at": 1780873202
+    },
+    {
+      "id": "4Cn4jm4R8ZYhTGWnwA9s",
+      "name": "value_and_roi_framing.md",
+      "active": true,
+      "dependent_agent_ids": [
+        "agent_7801kt0g32zxf4f8x5zkykj7syty"
+      ],
+      "created_at": 1780873200
+    },
+    {
+      "id": "H2FHwOn6XngNiuovFgU9",
+      "name": "discovery_question_design.md",
+      "active": true,
+      "dependent_agent_ids": [
+        "agent_7801kt0g32zxf4f8x5zkykj7syty"
+      ],
+      "created_at": 1780873199
+    },
+    {
+      "id": "ootBZqG0IpuxJ3nz7s0i",
+      "name": "buyer_enablement_and_sensemaking.md",
+      "active": true,
+      "dependent_agent_ids": [
+        "agent_7801kt0g32zxf4f8x5zkykj7syty"
+      ],
+      "created_at": 1780873195
+    },
+    {
+      "id": "RqB2bGwOqG2HzpV5Ds5Y",
+      "name": "buyer_journey_jobs.md",
+      "active": true,
+      "dependent_agent_ids": [
+        "agent_7801kt0g32zxf4f8x5zkykj7syty"
+      ],
+      "created_at": 1780873194
+    },
+    {
+      "id": "JaGehjlxNT2ZRCiycqti",
+      "name": "buyer_moves.md",
+      "active": true,
+      "dependent_agent_ids": [
+        "agent_7801kt0g32zxf4f8x5zkykj7syty"
+      ],
+      "created_at": 1780873192
+    },
+    {
+      "id": "CnbYTsnjQK8x5eThDd3u",
+      "name": "universal_sales_core_summary.md",
+      "active": true,
+      "dependent_agent_ids": [
+        "agent_7801kt0g32zxf4f8x5zkykj7syty"
+      ],
+      "created_at": 1780869923
+    }
+  ],
+  "delete_candidates": [
+    {
+      "id": "DfcFTPU430OTy188Znjd",
+      "name": "atlas_web_studio_web_design_campaign_profile.md",
+      "active": false,
+      "dependent_agent_ids": [],
+      "created_at": 1780880980
+    },
+    {
+      "id": "BhUWZGjjCaHNCslDyQtn",
+      "name": "atlas_web_studio_web_design_campaign_overlay.md",
+      "active": false,
+      "dependent_agent_ids": [],
+      "created_at": 1780880979
+    }
+  ]
+}

@@ -1,0 +1,188 @@
+{
+  "checkpoint_id": "ELEVENLABS-002-agent-automation",
+  "package_id": "ELEVENLABS-020-layered-kb-packaging-natural-speech",
+  "provider": "elevenlabs",
+  "mode": "live",
+  "source_of_truth": "repo",
+  "dashboard_role": "managed runtime and manual upload surface",
+  "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+  "agent_name": "Atlas Universal Sales Core",
+  "api_base_url": "https://api.elevenlabs.io",
+  "api_key_env_var": "ELEVENLABS_API_KEY",
+  "live_provider_calls_made": false,
+  "private_customer_data_used": false,
+  "provider_writes_require": [
+    "--live",
+    "--confirm-provider-write"
+  ],
+  "knowledge_base_upload_requests": [],
+  "test_create_requests": [],
+  "run_tests_request": {
+    "request_id": "run_tests::{agent_id}",
+    "method": "POST",
+    "endpoint": "/v1/convai/agents/agent_7801kt0g32zxf4f8x5zkykj7syty/run-tests",
+    "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+    "requires_created_test_ids": true,
+    "body_template": {
+      "tests": [
+        {
+          "test_id": "{created_test_id}"
+        }
+      ],
+      "repeat_count": 1
+    },
+    "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/tests/run-tests"
+  },
+  "agent_config_patch": {
+    "request_id": "patch_agent::{agent_id}",
+    "method": "PATCH",
+    "endpoint": "/v1/convai/agents/agent_7801kt0g32zxf4f8x5zkykj7syty",
+    "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+    "status": "ready_for_review",
+    "source_config_path": ".tmp/ELEVENLABS-022-current-agent-config.json",
+    "patch_payload_path": "research/experiments/generated/ELEVENLABS-022-call-state-gatekeeper-name-value-rotation/live_agent_patch_payload.json",
+    "knowledge_base_documents": [
+      {
+        "type": "file",
+        "name": "universal_sales_core_summary.md",
+        "id": "CnbYTsnjQK8x5eThDd3u"
+      },
+      {
+        "type": "file",
+        "name": "buyer_moves.md",
+        "id": "JaGehjlxNT2ZRCiycqti"
+      },
+      {
+        "type": "file",
+        "name": "buyer_journey_jobs.md",
+        "id": "RqB2bGwOqG2HzpV5Ds5Y"
+      },
+      {
+        "type": "file",
+        "name": "buyer_enablement_and_sensemaking.md",
+        "id": "ootBZqG0IpuxJ3nz7s0i"
+      },
+      {
+        "type": "file",
+        "name": "discovery_question_design.md",
+        "id": "H2FHwOn6XngNiuovFgU9"
+      },
+      {
+        "type": "file",
+        "name": "value_and_roi_framing.md",
+        "id": "4Cn4jm4R8ZYhTGWnwA9s"
+      },
+      {
+        "type": "file",
+        "name": "objection_status_quo_and_competition.md",
+        "id": "2GkqPLdmE710AfehW8PU"
+      },
+      {
+        "type": "file",
+        "name": "trust_and_risk_repair.md",
+        "id": "PST9eJGMM0aWgxh2wUgY"
+      },
+      {
+        "type": "file",
+        "name": "proof_and_evidence_handling.md",
+        "id": "XcQStOXNXtgxAIpssCRa"
+      },
+      {
+        "type": "file",
+        "name": "conversation_repair.md",
+        "id": "6LAmCiH2xpiV60p6k3BF"
+      },
+      {
+        "type": "file",
+        "name": "next_step_policy.md",
+        "id": "o13JLdJRe3fEGdGX1HRn"
+      },
+      {
+        "type": "file",
+        "name": "disqualification_policy.md",
+        "id": "DezGhKsksFmellERI9xI"
+      },
+      {
+        "type": "file",
+        "name": "ethical_persuasion_boundaries.md",
+        "id": "5rNtW03uA8iUP30thudm"
+      },
+      {
+        "type": "file",
+        "name": "motion_specific_playbooks.md",
+        "id": "HXuuQViiRr1uIADxMGcs"
+      },
+      {
+        "type": "file",
+        "name": "call_quality_rubrics.md",
+        "id": "Xu5TPA2Mg2waySilKueK"
+      },
+      {
+        "type": "file",
+        "name": "atlas_web_studio_web_design_campaign_overlay.md",
+        "id": "gDOheXiXRfr8QyobO07v"
+      },
+      {
+        "type": "file",
+        "name": "atlas_web_studio_web_design_campaign_profile.md",
+        "id": "Z5Nj7ed0oPDbZD2Sv81Y"
+      }
+    ],
+    "prompt_override_applied": true,
+    "first_message_override_applied": true,
+    "dynamic_variable_placeholders_applied": true,
+    "agent_temperature_override_applied": true,
+    "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/agents/update"
+  },
+  "test_folder": {
+    "folder_name": null,
+    "folder_id": null,
+    "parent_folder_id": null,
+    "applies_to_live_created_tests": false
+  },
+  "dashboard_upload_order": [
+    "Upload knowledge base documents",
+    "Create baseline tests",
+    "Attach returned knowledge base document IDs to the agent",
+    "Run tests against the selected agent or branch",
+    "Copy agent JSON config back into the repo for drift review"
+  ],
+  "live_result": {
+    "operation": "patch-agent",
+    "live_provider_calls_made": true,
+    "api_key_env_var": "ELEVENLABS_API_KEY",
+    "results": [
+      {
+        "request_id": "patch_agent::{agent_id}",
+        "operation": "patch-agent",
+        "status_code": 200,
+        "response_summary": {
+          "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+          "name": "web design",
+          "version_id": "agtvrsn_0501ktkv5jz3efcsqbcqgzg3rtgg",
+          "branch_id": "agtbrch_6501kt0g34dvffgr95mvrh70cr2d",
+          "knowledge_base_document_ids": [
+            "CnbYTsnjQK8x5eThDd3u",
+            "JaGehjlxNT2ZRCiycqti",
+            "RqB2bGwOqG2HzpV5Ds5Y",
+            "ootBZqG0IpuxJ3nz7s0i",
+            "H2FHwOn6XngNiuovFgU9",
+            "4Cn4jm4R8ZYhTGWnwA9s",
+            "2GkqPLdmE710AfehW8PU",
+            "PST9eJGMM0aWgxh2wUgY",
+            "XcQStOXNXtgxAIpssCRa",
+            "6LAmCiH2xpiV60p6k3BF",
+            "o13JLdJRe3fEGdGX1HRn",
+            "DezGhKsksFmellERI9xI",
+            "5rNtW03uA8iUP30thudm",
+            "HXuuQViiRr1uIADxMGcs",
+            "Xu5TPA2Mg2waySilKueK",
+            "gDOheXiXRfr8QyobO07v",
+            "Z5Nj7ed0oPDbZD2Sv81Y"
+          ],
+          "rag_enabled": true
+        }
+      }
+    ]
+  }
+}

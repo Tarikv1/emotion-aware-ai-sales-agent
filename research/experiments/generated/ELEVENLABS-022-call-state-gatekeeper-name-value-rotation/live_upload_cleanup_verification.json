@@ -1,0 +1,255 @@
+{
+  "checkpoint_id": "ELEVENLABS-022-call-state-gatekeeper-name-value-rotation",
+  "provider": "elevenlabs",
+  "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+  "version_id": "agtvrsn_0501ktkv5jz3efcsqbcqgzg3rtgg",
+  "live_provider_calls_made": true,
+  "active_kb_count": 17,
+  "active_kb_order_matches": true,
+  "active_kb_ids_match": true,
+  "active_kb_documents": [
+    {
+      "order": 1,
+      "name": "universal_sales_core_summary.md",
+      "id": "CnbYTsnjQK8x5eThDd3u"
+    },
+    {
+      "order": 2,
+      "name": "buyer_moves.md",
+      "id": "JaGehjlxNT2ZRCiycqti"
+    },
+    {
+      "order": 3,
+      "name": "buyer_journey_jobs.md",
+      "id": "RqB2bGwOqG2HzpV5Ds5Y"
+    },
+    {
+      "order": 4,
+      "name": "buyer_enablement_and_sensemaking.md",
+      "id": "ootBZqG0IpuxJ3nz7s0i"
+    },
+    {
+      "order": 5,
+      "name": "discovery_question_design.md",
+      "id": "H2FHwOn6XngNiuovFgU9"
+    },
+    {
+      "order": 6,
+      "name": "value_and_roi_framing.md",
+      "id": "4Cn4jm4R8ZYhTGWnwA9s"
+    },
+    {
+      "order": 7,
+      "name": "objection_status_quo_and_competition.md",
+      "id": "2GkqPLdmE710AfehW8PU"
+    },
+    {
+      "order": 8,
+      "name": "trust_and_risk_repair.md",
+      "id": "PST9eJGMM0aWgxh2wUgY"
+    },
+    {
+      "order": 9,
+      "name": "proof_and_evidence_handling.md",
+      "id": "XcQStOXNXtgxAIpssCRa"
+    },
+    {
+      "order": 10,
+      "name": "conversation_repair.md",
+      "id": "6LAmCiH2xpiV60p6k3BF"
+    },
+    {
+      "order": 11,
+      "name": "next_step_policy.md",
+      "id": "o13JLdJRe3fEGdGX1HRn"
+    },
+    {
+      "order": 12,
+      "name": "disqualification_policy.md",
+      "id": "DezGhKsksFmellERI9xI"
+    },
+    {
+      "order": 13,
+      "name": "ethical_persuasion_boundaries.md",
+      "id": "5rNtW03uA8iUP30thudm"
+    },
+    {
+      "order": 14,
+      "name": "motion_specific_playbooks.md",
+      "id": "HXuuQViiRr1uIADxMGcs"
+    },
+    {
+      "order": 15,
+      "name": "call_quality_rubrics.md",
+      "id": "Xu5TPA2Mg2waySilKueK"
+    },
+    {
+      "order": 16,
+      "name": "atlas_web_studio_web_design_campaign_overlay.md",
+      "id": "gDOheXiXRfr8QyobO07v"
+    },
+    {
+      "order": 17,
+      "name": "atlas_web_studio_web_design_campaign_profile.md",
+      "id": "Z5Nj7ed0oPDbZD2Sv81Y"
+    }
+  ],
+  "latest_prompt_uploaded": true,
+  "first_message": "Hi, this is Emma from Atlas Web Studio. I had {{business_name}} down as a {{business_type}} in {{city}}. Am I speaking with the owner or someone who handles the website there?",
+  "rag_enabled": true,
+  "tool_id_count": 0,
+  "mcp_server_properties_present": false,
+  "native_mcp_server_properties_present": false,
+  "old_replaced_kb_ids_present_after_cleanup": [],
+  "related_remote_kb_count_after_cleanup": 17,
+  "related_remote_kbs_after_cleanup": [
+    {
+      "id": "Z5Nj7ed0oPDbZD2Sv81Y",
+      "name": "atlas_web_studio_web_design_campaign_profile.md",
+      "active": true,
+      "dependent_agent_ids": [
+        "agent_7801kt0g32zxf4f8x5zkykj7syty"
+      ]
+    },
+    {
+      "id": "gDOheXiXRfr8QyobO07v",
+      "name": "atlas_web_studio_web_design_campaign_overlay.md",
+      "active": true,
+      "dependent_agent_ids": [
+        "agent_7801kt0g32zxf4f8x5zkykj7syty"
+      ]
+    },
+    {
+      "id": "Xu5TPA2Mg2waySilKueK",
+      "name": "call_quality_rubrics.md",
+      "active": true,
+      "dependent_agent_ids": [
+        "agent_7801kt0g32zxf4f8x5zkykj7syty"
+      ]
+    },
+    {
+      "id": "HXuuQViiRr1uIADxMGcs",
+      "name": "motion_specific_playbooks.md",
+      "active": true,
+      "dependent_agent_ids": [
+        "agent_7801kt0g32zxf4f8x5zkykj7syty"
+      ]
+    },
+    {
+      "id": "5rNtW03uA8iUP30thudm",
+      "name": "ethical_persuasion_boundaries.md",
+      "active": true,
+      "dependent_agent_ids": [
+        "agent_7801kt0g32zxf4f8x5zkykj7syty"
+      ]
+    },
+    {
+      "id": "DezGhKsksFmellERI9xI",
+      "name": "disqualification_policy.md",
+      "active": true,
+      "dependent_agent_ids": [
+        "agent_7801kt0g32zxf4f8x5zkykj7syty"
+      ]
+    },
+    {
+      "id": "o13JLdJRe3fEGdGX1HRn",
+      "name": "next_step_policy.md",
+      "active": true,
+      "dependent_agent_ids": [
+        "agent_7801kt0g32zxf4f8x5zkykj7syty"
+      ]
+    },
+    {
+      "id": "6LAmCiH2xpiV60p6k3BF",
+      "name": "conversation_repair.md",
+      "active": true,
+      "dependent_agent_ids": [
+        "agent_7801kt0g32zxf4f8x5zkykj7syty"
+      ]
+    },
+    {
+      "id": "XcQStOXNXtgxAIpssCRa",
+      "name": "proof_and_evidence_handling.md",
+      "active": true,
+      "dependent_agent_ids": [
+        "agent_7801kt0g32zxf4f8x5zkykj7syty"
+      ]
+    },
+    {
+      "id": "PST9eJGMM0aWgxh2wUgY",
+      "name": "trust_and_risk_repair.md",
+      "active": true,
+      "dependent_agent_ids": [
+        "agent_7801kt0g32zxf4f8x5zkykj7syty"
+      ]
+    },
+    {
+      "id": "2GkqPLdmE710AfehW8PU",
+      "name": "objection_status_quo_and_competition.md",
+      "active": true,
+      "dependent_agent_ids": [
+        "agent_7801kt0g32zxf4f8x5zkykj7syty"
+      ]
+    },
+    {
+      "id": "4Cn4jm4R8ZYhTGWnwA9s",
+      "name": "value_and_roi_framing.md",
+      "active": true,
+      "dependent_agent_ids": [
+        "agent_7801kt0g32zxf4f8x5zkykj7syty"
+      ]
+    },
+    {
+      "id": "H2FHwOn6XngNiuovFgU9",
+      "name": "discovery_question_design.md",
+      "active": true,
+      "dependent_agent_ids": [
+        "agent_7801kt0g32zxf4f8x5zkykj7syty"
+      ]
+    },
+    {
+      "id": "ootBZqG0IpuxJ3nz7s0i",
+      "name": "buyer_enablement_and_sensemaking.md",
+      "active": true,
+      "dependent_agent_ids": [
+        "agent_7801kt0g32zxf4f8x5zkykj7syty"
+      ]
+    },
+    {
+      "id": "RqB2bGwOqG2HzpV5Ds5Y",
+      "name": "buyer_journey_jobs.md",
+      "active": true,
+      "dependent_agent_ids": [
+        "agent_7801kt0g32zxf4f8x5zkykj7syty"
+      ]
+    },
+    {
+      "id": "JaGehjlxNT2ZRCiycqti",
+      "name": "buyer_moves.md",
+      "active": true,
+      "dependent_agent_ids": [
+        "agent_7801kt0g32zxf4f8x5zkykj7syty"
+      ]
+    },
+    {
+      "id": "CnbYTsnjQK8x5eThDd3u",
+      "name": "universal_sales_core_summary.md",
+      "active": true,
+      "dependent_agent_ids": [
+        "agent_7801kt0g32zxf4f8x5zkykj7syty"
+      ]
+    }
+  ],
+  "unnecessary_related_kb_count_after_cleanup": 0,
+  "side_effects_not_enabled": [
+    "OpenAI API calls",
+    "live outbound calls",
+    "lead scraping",
+    "CRM tools",
+    "email tools",
+    "calendar tools",
+    "payment tools",
+    "account tools",
+    "customer audio upload"
+  ]
+}
