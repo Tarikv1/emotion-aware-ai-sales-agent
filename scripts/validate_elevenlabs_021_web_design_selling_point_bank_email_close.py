@@ -36,11 +36,11 @@ REQUIRED_SELLING_MECHANISMS = (
 )
 
 BUYER_EXAMPLES = (
-    "Instagram is good for people who already see your content.",
-    "For a salon, that means services, starting prices if you want them shown, policies, reviews, FAQs, and the booking button in one flow.",
+    "Instagram is your gallery. The website is your booking filter.",
+    "It can show services, starting prices if you want them shown, policies, FAQs, reviews, and booking rules before they DM you - so the people who message are closer to ready.",
     "If someone is already comparing auto shops, the site can show services, diagnostics, hours, location, reviews, and the phone path before they call.",
-    "Google Maps helps people find you. The website helps them decide: menu, hours, photos, location, reservation or order path, and what makes your place worth choosing.",
-    "For plumbing, the site helps when someone is already stressed and searching.",
+    "Google Maps helps people find you. The website helps them decide: services, proof, hours, location, FAQs, and what to do next.",
+    "Maps might get the click. The site can make emergency services, service area, reviews, and tap-to-call obvious before they choose who to call.",
 )
 
 LOCAL_SEARCH_ALLOWED = (
@@ -63,9 +63,9 @@ EMAIL_CLOSE_MARKERS = (
     "confirm the exact destination",
     "confirm delivery timing",
     "confirm they can reply there with questions",
-    "Do not ask another discovery question after the buyer gives the email",
-    "I'll send it to mike@northsideauto.com after this call, and you can reply there with questions.",
-    "I'm sending it to mike@northsideauto.com now, and you can reply there with questions.",
+    "Do not ask another discovery question after email is provided",
+    "Perfect, I'll send it to mike@northsideauto.com after this call, and you can reply there with questions.",
+    "Perfect, I'm sending it to mike@northsideauto.com, and you can reply there with questions.",
 )
 
 
@@ -148,7 +148,7 @@ def assert_email_close(prompt_text: str, overlay_text: str, profile_text: str) -
     assert_condition("mike@northsideauto.com" in combined, "Email close examples must confirm normalized destination")
     assert_condition("reply there with questions" in combined, "Email close examples must confirm reply path")
     assert_condition("after this call" in combined, "Email close examples must cover non-immediate delivery timing")
-    assert_condition("now, and you can reply there" in combined, "Email close examples must cover immediate delivery timing")
+    assert_condition("Perfect, I'm sending it to mike@northsideauto.com" in combined, "Email close examples must cover immediate delivery timing")
 
 
 def assert_manifest(manifest: dict[str, Any]) -> None:
