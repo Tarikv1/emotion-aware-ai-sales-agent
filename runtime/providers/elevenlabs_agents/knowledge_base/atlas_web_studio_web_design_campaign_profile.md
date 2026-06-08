@@ -42,6 +42,15 @@ The free homepage mockup is the proof step. The buyer can compare whether the pa
 
 Weak phrases are supporting language only, never standalone main value answers. Do not use "clearer homepage," "clearer page," "clearer path," or "clearer online presence" as the main sales argument. Older generic phrases such as clear path, one place, contact path, and local visibility support may remain only as supporting concepts when connected to an existing attention source and a concrete buyer action. Allowed only once per conversation and only as supporting wording.
 
+Approved commercial consequence framing:
+
+- "Right now, some people may be checking you out but not getting enough information to act."
+- "If they have to DM for every basic question, some will just move on."
+- "If they're comparing three options, the business that answers trust, price, location, and booking questions fastest often feels safer to choose."
+- "The site is not magic demand. It's reducing friction for people already considering you."
+
+These are status quo friction examples, not guaranteed lost-customer or revenue claims.
+
 ## Campaign-Safe Selling Point Bank
 
 Use these as approved business-safe mechanisms for local website value. They do not create guarantees.
@@ -95,13 +104,21 @@ If asked about SEO pricing, say: "Basic local SEO setup can be part of the websi
 
 ## Approved Buyer-Facing Selling Examples
 
+Business-impact search answer: "Yes, that's one of the main reasons to have a site. If someone searches 'hair salon Tampa,' Instagram might show up, but a dedicated website gives Google a proper page for your services, location, reviews, policies, and booking. I'm not promising page one, but relying only on Instagram makes new clients find you the hard way. The mockup would show how that could look for your salon."
+
+Business-impact calls answer: "It can help with the people who are already looking. If they find you on Google, Maps, Instagram, or through a referral, the site can make it easier to trust you and call instead of bouncing to another business. I won't promise a number, but the mockup shows whether that call path is stronger."
+
+Salon or Instagram commercial objection: "Instagram is where people notice you. The website is where strangers decide whether to book. If they don't follow you yet, they're probably searching Google, checking reviews, comparing prices, or trying to find your policy before they DM. A site gives them that in one flow and can reduce the back-and-forth."
+
 Salon or Instagram objection: "Instagram is the gallery. The website is the booking filter. It can show services, starting prices if you want them shown, policies, FAQs, reviews, and booking rules before they DM you - so the people who message are closer to ready."
 
 Salon or Instagram alternate wording: "Instagram is your gallery. The website is your booking filter. It can show services, starting prices if you want them shown, policies, FAQs, reviews, and booking rules before they DM you - so the people who message are closer to ready."
 
 Salon or Instagram second challenge: "It can also cut down repetitive DMs: how much, where are you, do you do color, what are your policies, how do I book?"
 
-Auto repair trust or search objection: "Not as a guarantee. If someone is already comparing auto shops, the site can show services, diagnostics, hours, location, reviews, and the phone path before they call. It gives them a reason to trust the shop faster instead of guessing from a map listing alone."
+Auto repair trust or search objection: "If someone is already comparing auto shops, the site can show services, diagnostics, hours, location, reviews, and the phone path before they call. It gives them a reason to trust the shop faster instead of guessing from a map listing alone."
+
+Mechanic objection: "Maps gets you discovered. The site helps someone decide you're the shop to call. If they're comparing three mechanics, the site can show diagnostics, repairs, reviews, hours, location, and tap-to-call before they gamble on a random listing."
 
 Auto repair practical trust objection: "The site lets people check services, hours, reviews, and call before they gamble on a shop."
 
@@ -109,9 +126,15 @@ Google Maps objection: "Google Maps helps people find you. The website helps the
 
 Google Maps direct objection: "Google Maps helps them find you. The website helps them choose."
 
+Restaurant or Google Maps objection: "Google Maps helps them find you. The site helps them choose. Menu, hours, photos, location, reviews, and reservation or order options are what turn curiosity into action."
+
+Plumber objection: "Maps might get the click. The site helps someone in a stressful moment trust you fast: emergency services, service area, reviews, and tap-to-call."
+
 Plumber or emergency search objection: "Maps might get the click. The site can make emergency services, service area, reviews, and tap-to-call obvious before they choose who to call."
 
 Maps trust objection: "Maps may get the click. The site helps them trust and call faster."
+
+Cleaning quote filter objection: "The site can filter quote requests before you spend time replying: service areas, recurring vs one-time, move-in/move-out, what's included, and how to request a quote."
 
 Cleaning quote request objection: "The site can pre-qualify quote requests: service areas, one-time vs recurring, move-in/move-out, what is included, and how to request a quote."
 
@@ -209,8 +232,14 @@ High-end or more expensive website:
 Buyer-facing cost answer:
 "Closer to the low end is usually a simple site: homepage, a few service sections, reviews, contact form, click-to-call, hours, location, and basic local search setup. Closer to the high end is when it needs custom design, more pages, custom copy, service-area pages, booking or quote workflows, integrations, content migration, advanced SEO work, or more technical setup. If you just need basic info and a way for people to call, that sounds closer to the low end."
 
+Buyer-facing sales judgment cost answer:
+"If you just need basic info and click-to-call, that's low-end. The $5k side is when you want a more complete lead system: custom copy, multiple service pages, service-area pages, booking or quote workflows, integrations, tracking, SEO pages, or custom design. From what you described, you're closer to the low end."
+
 Dental-specific cost answer:
 "For a dental office, low end is services, location, hours, appointment request, and basic trust elements. Higher end is multiple service pages, provider bios, patient forms, booking or patient-system integrations, accessibility/privacy-sensitive setup, and more custom design."
+
+Dental-specific sales judgment cost answer:
+"For a dental office, basic services, location, hours, appointment request, and trust elements are closer to the low end. Multiple treatment pages, provider bios, forms, booking or patient-system integrations, accessibility/privacy-sensitive setup, and custom copy/design push it higher."
 
 ## Approved Send And Callback Facts
 
@@ -227,6 +256,7 @@ Dental-specific cost answer:
 - No more "what else should we focus on?" after email.
 - If the buyer says "mike at northsideauto dot com", confirm `mike@northsideauto.com`.
 - Immediate send example: "Perfect, I'm sending it to mike@northsideauto.com now, and you can reply there with questions. Thanks, Mike."
+- Immediate send example: "Perfect, I'm sending it to mike@northsideauto.com, and you can reply there with questions. Thanks, Mike."
 - Immediate send example: "Perfect, I'm sending it to mike@northsideauto.com, and you can reply there with questions."
 - Non-immediate send example: "Perfect, I'll send it to mike@northsideauto.com after this call, and you can reply there with questions. Thanks, Mike."
 - Non-immediate send example: "Perfect, I'll send it to mike@northsideauto.com after this call, and you can reply there with questions."
@@ -242,7 +272,7 @@ Dental-specific cost answer:
 - Name capture question: "Got it - what's your name?"
 - After name is provided: "Nice to meet you, {{contact_name}}. I'll keep it quick..."
 - If the buyer asks what this is about or challenges the call before giving a name, answer the question first.
-- Accepted mockup signals include: "How do I see the mockup?", "Can I see it?", "Send it over.", "How do I get it?", "I'll take a look.", "Show me the mockup.", and "Where do I see it?"
+- Accepted mockup signals include: "That makes sense", "How do I see the mockup?", "Can I see it?", "Send it over.", "How do I get it?", "I'll take a look.", "Show me the mockup.", "Where do I see it?", and "Go ahead".
 - Accepted mockup contact capture: "Sure - what email should I send it to?"
 - Alternate accepted mockup contact capture: "Absolutely. What's the best email for the mockup?"
 - Do not re-explain the mockup value after this signal unless the buyer asks another objection.
@@ -276,6 +306,12 @@ Do not say: "Google Maps is the problem."
 Do not say: "Instagram is not enough."
 Do not say: "We already know what your customers need."
 Do not say: "Other businesses got specific results" unless a separate approved proof record supplies that exact claim.
+
+Approved disqualification and pushback:
+
+- "If Instagram already keeps your calendar full and you don't want more bookings, I wouldn't push a website."
+- "If your current site already gets the right quote requests and you're happy with it, there may not be a problem to solve."
+- "If you only want guaranteed SEO rankings, we're not the right fit."
 
 ## Compliance And Trust Boundaries
 
