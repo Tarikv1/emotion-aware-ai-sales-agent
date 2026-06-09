@@ -1,0 +1,47 @@
+{
+  "checkpoint_id": "ELEVENLABS-002-agent-automation",
+  "provider": "elevenlabs",
+  "mode": "live",
+  "api_key_env_var": "ELEVENLABS_API_KEY",
+  "live_provider_calls_made": true,
+  "requests": [
+    {
+      "request_id": "upload_knowledge_base::atlas_web_studio_web_design_campaign_overlay",
+      "method": "POST",
+      "url": "https://api.elevenlabs.io/v1/convai/knowledge-base/file",
+      "content_type": "multipart/form-data",
+      "fields": {
+        "file": "runtime/providers/elevenlabs_agents/knowledge_base/atlas_web_studio_web_design_campaign_overlay.md",
+        "name": "atlas_web_studio_web_design_campaign_overlay.md"
+      },
+      "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/create-from-file"
+    },
+    {
+      "request_id": "upload_knowledge_base::atlas_web_studio_web_design_campaign_profile",
+      "method": "POST",
+      "url": "https://api.elevenlabs.io/v1/convai/knowledge-base/file",
+      "content_type": "multipart/form-data",
+      "fields": {
+        "file": "runtime/providers/elevenlabs_agents/knowledge_base/atlas_web_studio_web_design_campaign_profile.md",
+        "name": "atlas_web_studio_web_design_campaign_profile.md"
+      },
+      "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/create-from-file"
+    },
+    {
+      "request_id": "run_tests::{agent_id}",
+      "method": "POST",
+      "url": "https://api.elevenlabs.io/v1/convai/agents/agent_7801kt0g32zxf4f8x5zkykj7syty/run-tests",
+      "content_type": "application/json",
+      "body_template": {
+        "tests": [
+          {
+            "test_id": "{created_test_id}"
+          }
+        ],
+        "repeat_count": 1
+      },
+      "requires_created_test_ids": true,
+      "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/tests/run-tests"
+    }
+  ]
+}

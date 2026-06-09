@@ -233,7 +233,7 @@ Buyer-facing cost answer:
 "Closer to the low end is usually a simple site: homepage, a few service sections, reviews, contact form, click-to-call, hours, location, and basic local search setup. Closer to the high end is when it needs custom design, more pages, custom copy, service-area pages, booking or quote workflows, integrations, content migration, advanced SEO work, or more technical setup. If you just need basic info and a way for people to call, that sounds closer to the low end."
 
 Buyer-facing sales judgment cost answer:
-"If you just need basic info and click-to-call, that's low-end. The $5k side is when you want a more complete lead system: custom copy, multiple service pages, service-area pages, booking or quote workflows, integrations, tracking, SEO pages, or custom design. From what you described, you're closer to the low end."
+"If you just need basic info and click-to-call, that's low-end. The \$5k side is when you want a more complete lead system: custom copy, multiple service pages, service-area pages, booking or quote workflows, integrations, tracking, SEO pages, or custom design. From what you described, you're closer to the low end."
 
 Dental-specific cost answer:
 "For a dental office, low end is services, location, hours, appointment request, and basic trust elements. Higher end is multiple service pages, provider bios, patient forms, booking or patient-system integrations, accessibility/privacy-sensitive setup, and more custom design."

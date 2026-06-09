@@ -1,0 +1,28 @@
+{
+  "operation": "delete_old_unnecessary_kbs",
+  "live_provider_calls_made": true,
+  "deleted": [
+    {
+      "id": "zGoQXt0ACWJk3EAyV9I2",
+      "name": "atlas_web_studio_web_design_campaign_overlay.md",
+      "force": false,
+      "status_code": 204,
+      "response": {}
+    },
+    {
+      "id": "Fcn1aXEOXVe3Nu7aiJnV",
+      "name": "atlas_web_studio_web_design_campaign_profile.md",
+      "force": false,
+      "status_code": 204,
+      "response": {}
+    },
+    {
+      "id": "6SEL9K98RGtn94DIFsWN",
+      "name": "atlas_web_studio_web_design_campaign_overlay.md",
+      "force": false,
+      "status_code": 204,
+      "response": {}
+    }
+  ],
+  "failed": []
+}
