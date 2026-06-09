@@ -71,13 +71,14 @@ NATURAL_SPEECH_MARKERS = (
 )
 
 TERMINAL_EMAIL_MARKERS = (
-    "Hard terminal email close",
+    "Natural two-step email close",
     "normalize obvious email spell-outs",
-    "confirm the exact destination",
-    "confirm send timing",
-    "confirm the reply path",
-    "No more value pitch after email.",
-    "Perfect, I'm sending it to mike@northsideauto.com, and you can reply there with questions. Thanks, Mike.",
+    "confirm the email only",
+    "Terminal close after email confirmation",
+    "Do not re-pitch after email is provided.",
+    "Do not over-explain the reply path unless the buyer asks.",
+    "Got it - northsideautorepair@gmail.com. Is that right?",
+    "Perfect. I'll send it over. Talk soon.",
 )
 
 WEAK_PHRASES = (
@@ -142,7 +143,10 @@ def assert_weak_phrases_guarded(text: str) -> None:
             or "do not say" in line
             or "avoid" in line
             or "weak phrases" in line
+            or "supporting" in line
             or "not as the main" in line
+            or "never as the main" in line
+            or "once per conversation" in line
             or "guarantee" in line
             or "guaranteed" in line
             or "forbidden" in line
@@ -218,7 +222,7 @@ def main() -> None:
                 "commercial_consequence_framing": True,
                 "no_guarantee_boundaries_preserved": True,
                 "accepted_interest_send_path": True,
-                "terminal_email_close": True,
+                "natural_two_step_email_close": True,
                 "live_provider_calls_made": False,
             },
             indent=2,

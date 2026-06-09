@@ -59,13 +59,15 @@ SEO_FORBIDDEN = (
 )
 
 EMAIL_CLOSE_MARKERS = (
+    "Natural two-step email close",
     "normalize obvious email spell-outs",
-    "confirm the exact destination",
-    "confirm delivery timing",
-    "confirm they can reply there with questions",
+    "confirm the email only",
+    "close naturally",
     "Do not ask another discovery question after email is provided",
-    "Perfect, I'll send it to mike@northsideauto.com after this call, and you can reply there with questions.",
-    "Perfect, I'm sending it to mike@northsideauto.com, and you can reply there with questions.",
+    "Do not re-pitch after email is provided",
+    "Do not over-explain the reply path unless the buyer asks.",
+    "Got it - northsideautorepair@gmail.com. Is that right?",
+    "Perfect. I'll send it over. Talk soon.",
 )
 
 
@@ -143,12 +145,11 @@ def assert_selling_point_bank(profile_text: str, overlay_text: str, prompt_text:
 
 def assert_email_close(prompt_text: str, overlay_text: str, profile_text: str) -> None:
     combined = "\n".join((prompt_text, overlay_text, profile_text))
-    assert_contains("terminal email close rule", combined, EMAIL_CLOSE_MARKERS)
-    assert_condition("mike at northsideauto dot com" in combined, "Email close examples must include spell-out normalization input")
-    assert_condition("mike@northsideauto.com" in combined, "Email close examples must confirm normalized destination")
-    assert_condition("reply there with questions" in combined, "Email close examples must confirm reply path")
-    assert_condition("after this call" in combined, "Email close examples must cover non-immediate delivery timing")
-    assert_condition("Perfect, I'm sending it to mike@northsideauto.com" in combined, "Email close examples must cover immediate delivery timing")
+    assert_contains("natural two-step email close rule", combined, EMAIL_CLOSE_MARKERS)
+    assert_condition("north side auto repair at gmail dot com" in combined, "Email close examples must include spell-out normalization input")
+    assert_condition("northsideautorepair@gmail.com" in combined, "Email close examples must confirm normalized email")
+    assert_condition("If the buyer asks whether they can reply to the email, answer yes briefly." in combined, "Reply path should be brief and buyer-triggered")
+    assert_condition("If the buyer gives email and says \"send it there\" or \"that's correct\" in the same turn, Emma may close in one turn." in combined, "Same-turn email confirmation exception missing")
 
 
 def assert_manifest(manifest: dict[str, Any]) -> None:

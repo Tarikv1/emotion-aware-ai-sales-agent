@@ -1,0 +1,40 @@
+{
+  "checkpoint_id": "ELEVENLABS-024",
+  "provider": "elevenlabs",
+  "mode": "offline-package",
+  "api_key_env_var": "ELEVENLABS_API_KEY",
+  "live_provider_calls_made": false,
+  "requests": [
+    {
+      "request_id": "upload_knowledge_base::atlas_web_studio_web_design_campaign_overlay",
+      "method": "POST",
+      "url": "https://api.elevenlabs.io/v1/convai/knowledge-base/file",
+      "content_type": "multipart/form-data",
+      "fields": {
+        "file": "runtime/providers/elevenlabs_agents/knowledge_base/atlas_web_studio_web_design_campaign_overlay.md",
+        "name": "atlas_web_studio_web_design_campaign_overlay.md"
+      },
+      "requires_api_key_env_var": "ELEVENLABS_API_KEY"
+    },
+    {
+      "request_id": "upload_knowledge_base::atlas_web_studio_web_design_campaign_profile",
+      "method": "POST",
+      "url": "https://api.elevenlabs.io/v1/convai/knowledge-base/file",
+      "content_type": "multipart/form-data",
+      "fields": {
+        "file": "runtime/providers/elevenlabs_agents/knowledge_base/atlas_web_studio_web_design_campaign_profile.md",
+        "name": "atlas_web_studio_web_design_campaign_profile.md"
+      },
+      "requires_api_key_env_var": "ELEVENLABS_API_KEY"
+    },
+    {
+      "request_id": "patch_agent::{agent_id}",
+      "method": "PATCH",
+      "url": "https://api.elevenlabs.io/v1/convai/agents/agent_7801kt0g32zxf4f8x5zkykj7syty",
+      "content_type": "application/json",
+      "body_source": "research/experiments/generated/ELEVENLABS-024-natural-two-step-email-close-value-language-polish/live_agent_patch_payload.json",
+      "requires_api_key_env_var": "ELEVENLABS_API_KEY",
+      "requires_explicit_live_confirmation": true
+    }
+  ]
+}

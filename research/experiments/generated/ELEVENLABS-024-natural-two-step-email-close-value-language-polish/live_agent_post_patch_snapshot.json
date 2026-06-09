@@ -1,0 +1,20 @@
+{
+  "package_id": "ELEVENLABS-024-natural-two-step-email-close-value-language-polish",
+  "snapshot_type": "repo_post_patch",
+  "live_provider_calls_made": false,
+  "active_files_verified": [
+    "runtime/providers/elevenlabs_agents/prompts/web_design_atlas_sales_prompt.md",
+    "runtime/providers/elevenlabs_agents/knowledge_base/atlas_web_studio_web_design_campaign_overlay.md",
+    "runtime/providers/elevenlabs_agents/knowledge_base/atlas_web_studio_web_design_campaign_profile.md",
+    "runtime/providers/elevenlabs_agents/tests/web_design_mikes_kitchen_simulation_tests.json",
+    "runtime/providers/elevenlabs_agents/tests/web_design_cross_vertical_local_business_simulation_tests.json"
+  ],
+  "expected_validator": "python scripts/validate_elevenlabs_024_natural_two_step_email_close_value_language.py",
+  "post_patch_assertions": {
+    "natural_two_step_email_close": true,
+    "terminal_close_after_email_confirmation": true,
+    "gatekeeper_callback_close": true,
+    "clearer_page_supporting_language_only": true,
+    "simulation_test_criteria_updated": true
+  }
+}

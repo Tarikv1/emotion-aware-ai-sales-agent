@@ -100,8 +100,8 @@ SEO_FORBIDDEN_MARKERS = (
 )
 
 WEAK_PHRASE_RULE_MARKERS = (
-    "Do not use \"clearer homepage,\" \"clearer page,\" \"clearer path,\" or \"clearer online presence\" as the main sales argument.",
-    "Allowed only once per conversation and only as supporting wording.",
+    "\"clearer homepage,\" \"clearer page,\" and \"clearer path\" may be used once per conversation as supporting language, but never as the main value argument.",
+    "The main value must be one of these concrete mechanisms",
     "Instagram is the gallery. The website is the booking filter.",
     "Google Maps helps them find you. The website helps them choose.",
     "Maps may get the click. The site helps them trust and call faster.",
@@ -110,19 +110,25 @@ WEAK_PHRASE_RULE_MARKERS = (
 )
 
 TERMINAL_EMAIL_MARKERS = (
-    "Hard terminal email close",
-    "If the buyer provides a usable email, the next agent response must",
-    "No more discovery after email.",
-    "No more value pitch after email.",
+    "Natural two-step email close",
+    "Step 1 - after a clear email: confirm the email only.",
+    "Step 2 - after the buyer confirms the email: close naturally.",
+    "Do not ask another discovery question after email is provided.",
+    "Do not re-pitch after email is provided.",
     "No more \"what else should we focus on?\" after email.",
-    "Perfect, I'll send it to mike@northsideauto.com after this call, and you can reply there with questions. Thanks, Mike.",
-    "Perfect, I'm sending it to mike@northsideauto.com now, and you can reply there with questions. Thanks, Mike.",
+    "Got it - northsideautorepair@gmail.com. Is that right?",
+    "Perfect. I'll send it over. Talk soon.",
 )
 
 TEST_CRITERIA_MARKERS = (
-    "max turns allow one final agent response after the buyer gives email",
+    "buyer provides email; agent confirms normalized email; buyer confirms; agent closes",
+    "do not fail if the simulated conversation ends immediately after the buyer provides the email and the agent never receives another turn",
     "do not fail if the buyer gave their name earlier in the call",
-    "failure occurs only if the agent gets a turn after email and still does not confirm destination, timing, and reply path",
+    "fail if the agent receives a turn after email and does not confirm the normalized email",
+    "fail if the agent continues discovery after email",
+    "fail if the agent re-pitches after email",
+    "fail if the agent ignores buyer confirmation and keeps talking",
+    "fail if the agent never closes after email confirmation",
     "cost-driver tests expect real scope drivers, not gallery or testimonials alone",
     "SEO answers should be sales-forward but non-guaranteed",
 )
@@ -254,7 +260,7 @@ def main() -> None:
                 "website_cost_drivers": True,
                 "local_seo_sales_forward_no_guarantees": True,
                 "weak_phrase_reduction": True,
-                "terminal_email_close_hard_state": True,
+                "natural_two_step_email_close": True,
                 "test_criteria_repair": True,
                 "full_universal_core_recommended_for_active_upload": False,
                 "live_provider_calls_made": False,

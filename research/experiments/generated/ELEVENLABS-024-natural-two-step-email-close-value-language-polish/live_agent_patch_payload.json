@@ -1,0 +1,41 @@
+{
+  "package_id": "ELEVENLABS-024-natural-two-step-email-close-value-language-polish",
+  "provider": "elevenlabs",
+  "mode": "offline-package",
+  "live_provider_calls_made": false,
+  "patch_summary": {
+    "prompt_source": "runtime/providers/elevenlabs_agents/prompts/web_design_atlas_sales_prompt.md",
+    "knowledge_base_sources": [
+      "runtime/providers/elevenlabs_agents/knowledge_base/atlas_web_studio_web_design_campaign_overlay.md",
+      "runtime/providers/elevenlabs_agents/knowledge_base/atlas_web_studio_web_design_campaign_profile.md"
+    ],
+    "test_sources": [
+      "runtime/providers/elevenlabs_agents/tests/web_design_mikes_kitchen_simulation_tests.json",
+      "runtime/providers/elevenlabs_agents/tests/web_design_cross_vertical_local_business_simulation_tests.json"
+    ]
+  },
+  "behavior_changes": {
+    "email_close": [
+      "Buyer provides email.",
+      "Emma normalizes obvious spell-outs and confirms the email only.",
+      "Buyer confirms.",
+      "Emma closes with one short natural line.",
+      "Emma may close in one turn only when the buyer gives the email and confirms it in the same turn."
+    ],
+    "email_boundaries": [
+      "No discovery after email.",
+      "No re-pitch after email.",
+      "Reply path is answered only if the buyer asks.",
+      "A simulated run does not fail for no goodbye when it ends immediately after the buyer provides email before another agent turn."
+    ],
+    "gatekeeper_close": [
+      "With callback window: Perfect, I'll call back after 2 and ask for the owner. Thanks for passing that along.",
+      "After gatekeeper ok or got it: Thanks. Have a good one.",
+      "No extra pitch details in the gatekeeper note unless asked."
+    ],
+    "value_language": [
+      "clearer homepage, clearer page, and clearer path remain allowed once as supporting wording.",
+      "Main value must be a concrete mechanism such as booking filter, quote filter, trust-before-call page, local search foundation, after-hours answer page, tap-to-call page, FAQ / price / policy filter, page people can check before calling or booking, service-area page, or comparison page for people already checking the business."
+    ]
+  }
+}
