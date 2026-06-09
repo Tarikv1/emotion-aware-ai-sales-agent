@@ -1,0 +1,50 @@
+{
+  "package_id": "ELEVENLABS-028-emotional-resistance-dynamic-simulation-tests",
+  "provider": "elevenlabs",
+  "source_of_truth": "repo",
+  "dashboard_role": "managed runtime and dashboard simulation test surface",
+  "status": "emotional-resistance-dynamic-simulation-test-pack-ready",
+  "live_provider_calls_made": false,
+  "private_customer_data_used": false,
+  "api_key_required_for_generation": false,
+  "dashboard_manual_changes_source_of_truth": false,
+  "knowledge_base_docs": [],
+  "baseline_tests": [
+    "runtime/providers/elevenlabs_agents/tests/web_design_emotional_resistance_dynamic_simulation_tests.json"
+  ],
+  "upload_intent": {
+    "current_mode": "repo-driven ElevenLabs API simulation test creation",
+    "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+    "campaign_role": "Atlas Web Studio emotional-resistance and persuasion stress check",
+    "dynamic_variables_required": true,
+    "test_type": "simulation",
+    "simulated_user_model": "gemini-2.5-flash",
+    "evaluation_model": "gemini-2.5-flash",
+    "simulation_max_turns": "16-20",
+    "target_test_folder_name": "Atlas Web Studio - Emotional Resistance Dynamic Simulation V1",
+    "knowledge_base_upload_required": false
+  },
+  "test_design": {
+    "scenario_generation": "deterministic synthetic fixtures, not randomized generation",
+    "primary_risk": "a realistic frustrated buyer may cause the agent to over-pitch, fold too early, skip email state, or make unsafe guarantees",
+    "covered_buyer_modes": [
+      "angry interruption",
+      "avoidant refusal without do-not-call",
+      "scam suspicion",
+      "terse minimal answers",
+      "rapid-fire status quo objections",
+      "hostile price and hidden-cost concern",
+      "angry spell-out email close",
+      "guarantee-only bad fit"
+    ],
+    "production_green_claimed": false
+  },
+  "blocked_until_review": [
+    "treating passing simulation tests as proof of real phone-call performance",
+    "uploading private customer emails",
+    "uploading private transcripts",
+    "using customer audio",
+    "production customer calls",
+    "claiming emotional-resistance readiness before live simulation run and human transcript review"
+  ]
+}

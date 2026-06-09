@@ -3832,6 +3832,12 @@ Validate the ElevenLabs 019 demand-capture and conversion-leakage repair without
 python scripts\validate_elevenlabs_019_demand_capture_conversion_leakage_repair.py
 ```
 
+Validate the ElevenLabs 028 emotional-resistance dynamic simulation tests without provider calls:
+
+```powershell
+python scripts\validate_elevenlabs_028_emotional_resistance_dynamic_simulation_tests.py
+```
+
 Build the ElevenLabs 019 dry-run patch and V4 cross-vertical simulation test requests:
 
 ```powershell

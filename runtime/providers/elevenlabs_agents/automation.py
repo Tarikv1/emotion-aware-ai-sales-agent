@@ -268,6 +268,18 @@ def test_create_request(
             "success_condition": success_condition,
             "dynamic_variables": dynamic_variables,
         }
+        for optional_key in ("simulation_environment", "simulated_user_model", "evaluation_model"):
+            if optional_key not in item:
+                continue
+            optional_value = item[optional_key]
+            if optional_value is None:
+                body[optional_key] = None
+            elif isinstance(optional_value, str) and optional_value.strip():
+                body[optional_key] = optional_value.strip()
+            elif optional_key == "simulation_environment" and isinstance(optional_value, dict):
+                body[optional_key] = optional_value
+            else:
+                raise ValueError(f"{test_id} {optional_key} must be a non-empty string, supported object, or null.")
         chat_history = validate_optional_chat_history_entries(item.get("chat_history"), source_label=test_id)
         if chat_history:
             body["chat_history"] = chat_history
