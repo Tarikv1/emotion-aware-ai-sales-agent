@@ -97,8 +97,13 @@ COMMITMENT_MARKERS = (
     "I'll take a look.",
     "Go ahead.",
     "Where do I see it?",
-    "buyer gives email",
     "Sure - what's the best email for it?",
+)
+
+EMAIL_STATE_MARKERS = (
+    "Send request without email -> ask for email.",
+    "Buyer gives email -> confirm normalized email.",
+    "Buyer confirms email -> close naturally.",
 )
 
 KEEP_EXAMPLE_MARKERS = (
@@ -158,7 +163,7 @@ DATA_COLLECTION_FIELDS = (
 TEST_MARKERS = (
     "That makes sense alone does not trigger email capture.",
     "Okay, I see what you mean is soft agreement, not a send commitment.",
-    "Accepted mockup signal triggers email capture.",
+    "Accepted mockup without email triggers email capture.",
     "Email provided triggers normalized email confirmation.",
     "Email confirmation triggers short close.",
     "Business-impact answers do not start with caveat unless buyer asked for guarantee.",
@@ -224,6 +229,18 @@ def section_after(text: str, header: str, stop_header: str = "\n## ") -> str:
     return remainder if stop < 0 else remainder[:stop]
 
 
+def commitment_section(text: str) -> str:
+    start = text.find("Commitment / send signal")
+    assert_condition(start >= 0, "Missing section header: Commitment / send signal")
+    remainder = text[start:]
+    stop_candidates = [
+        index
+        for marker in ("\n## ", "\n- Accepted send", "\n## Send-State Rule")
+        if (index := remainder.find(marker, len("Commitment / send signal"))) >= 0
+    ]
+    return remainder if not stop_candidates else remainder[: min(stop_candidates)]
+
+
 def assert_package_artifacts() -> None:
     required = (
         PACKAGE_ROOT / "live_agent_patch_plan.json",
@@ -242,10 +259,12 @@ def assert_soft_commitment_split(prompt_text: str, overlay_text: str) -> None:
     combined = "\n".join((prompt_text, overlay_text))
     assert_contains("soft agreement signals", combined, SOFT_AGREEMENT_MARKERS)
     assert_contains("commitment/send signals", combined, COMMITMENT_MARKERS)
+    assert_contains("email state split", combined, EMAIL_STATE_MARKERS)
     for text, label in ((prompt_text, "prompt"), (overlay_text, "overlay")):
-        accepted = section_after(text, "Commitment / send signal") if "Commitment / send signal" in text else section_after(text, "Accepted mockup")
+        accepted = commitment_section(text) if "Commitment / send signal" in text else section_after(text, "Accepted mockup")
         assert_condition("That makes sense" not in accepted, f"{label} accepted mockup section still treats That makes sense as a send signal")
         assert_condition("Okay, I see what you mean" not in accepted, f"{label} accepted mockup section treats Okay, I see what you mean as a send signal")
+        assert_condition("buyer gives email" not in accepted, f"{label} commitment/send signal section still treats buyer gives email as email-capture signal")
 
 
 def assert_profile_ownership(profile_text: str) -> None:

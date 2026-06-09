@@ -40,16 +40,16 @@
     },
     {
       "id": "accepted_mockup_email_capture",
-      "description": "Clear send signals should trigger concise email capture.",
-      "pass": "A send signal such as 'send it over', 'I'll take a look', 'go ahead', 'can I see it', 'how do I see it', or 'where do I see it' triggers one concise email question.",
-      "failure": "The agent continues discovery, re-pitches value, or fails to ask for an approved send path after a clear send signal.",
-      "unknown": "No accepted-mockup send signal appears."
+      "description": "Clear send signals without an email should trigger concise email capture.",
+      "pass": "A send signal such as 'send it over', 'I'll take a look', 'go ahead', 'can I see it', 'how do I see it', or 'where do I see it' appears before any email and triggers one concise email question.",
+      "failure": "The agent continues discovery, re-pitches value, fails to ask for an approved send path after a clear send signal, or asks for the best email after the buyer already provided one.",
+      "unknown": "No accepted-mockup send signal without an email appears."
     },
     {
       "id": "email_two_step_close",
       "description": "Email delivery should use the natural two-step confirmation and close.",
       "pass": "After a clear email, the agent confirms the normalized email only; after buyer confirmation, the agent closes naturally in one short line.",
-      "failure": "The agent skips email confirmation after receiving a reachable next turn, continues discovery, re-pitches, over-explains reply path, or fails to close after confirmation.",
+      "failure": "The agent asks for the best email after an email was already provided, skips email confirmation after receiving a reachable next turn, continues discovery, re-pitches, over-explains reply path, or fails to close after confirmation.",
       "unknown": "The buyer never gives an email, or the transcript ends immediately after email before the agent has a chance to respond.",
       "edge_cases": [
         "If the buyer gives an email and confirms it in the same turn, a one-turn close is acceptable.",
@@ -189,7 +189,7 @@
     {
       "name": "send_signal",
       "type": "boolean",
-      "description": "True when the buyer asks to see, receive, or be sent the mockup, or gives an email."
+      "description": "True when the buyer asks to see, receive, or be sent the mockup. A provided email belongs to email/gave_email state, not the accepted-mockup email-capture trigger."
     },
     {
       "name": "terminal_outcome",

@@ -87,12 +87,14 @@ SOFT_AND_COMMITMENT_MARKERS = (
     "Go ahead.",
     "Can I see the mockup?",
     "Where do I see it?",
-    "buyer gives email",
     "Sure - what's the best email for it?",
 )
 
 EMAIL_CLOSE_MARKERS = (
     "Natural two-step email close",
+    "Send request without email -> ask for email.",
+    "Buyer gives email -> confirm normalized email.",
+    "Buyer confirms email -> close naturally.",
     "Step 1 - after a clear email: confirm the exact normalized email only.",
     "Step 2 - after the buyer confirms the email: close naturally.",
     "Do not pitch again after email.",
@@ -200,7 +202,7 @@ TEST_IDS = (
 
 TEST_CRITERIA_MARKERS = (
     "soft agreement does not immediately trigger email capture",
-    "accepted mockup triggers email capture",
+    "accepted mockup without email triggers email capture",
     "buyer gives email -> agent confirms normalized email -> buyer confirms -> agent closes",
     "gatekeeper pass-along plus callback closes cleanly",
     "SEO answer is confident but non-guaranteed",
@@ -338,6 +340,34 @@ def assert_clearer_page_guarded(text: str) -> None:
             )
 
 
+def section_after(text: str, header: str, stop_header: str = "\n## ") -> str:
+    start = text.find(header)
+    assert_condition(start >= 0, f"Missing section header: {header}")
+    remainder = text[start:]
+    stop = remainder.find(stop_header, len(header))
+    return remainder if stop < 0 else remainder[:stop]
+
+
+def commitment_section(text: str) -> str:
+    start = text.find("Commitment / send signal")
+    assert_condition(start >= 0, "Missing section header: Commitment / send signal")
+    remainder = text[start:]
+    stop_candidates = [
+        index
+        for marker in ("\n## ", "\n- Accepted send", "\n## Send-State Rule")
+        if (index := remainder.find(marker, len("Commitment / send signal"))) >= 0
+    ]
+    return remainder if not stop_candidates else remainder[: min(stop_candidates)]
+
+
+def assert_email_state_split(prompt_text: str, overlay_text: str) -> None:
+    for text, label in ((prompt_text, "prompt"), (overlay_text, "overlay")):
+        accepted = commitment_section(text)
+        assert_condition("buyer gives email" not in accepted, f"{label} commitment/send signal section still treats buyer gives email as email-capture signal")
+        assert_condition("That makes sense" not in accepted, f"{label} commitment/send signal section treats soft agreement as send signal")
+        assert_condition("Okay, I see what you mean" not in accepted, f"{label} commitment/send signal section treats soft agreement as send signal")
+
+
 def assert_forbidden_buyer_phrases(text: str) -> None:
     for line_number, raw_line in enumerate(text.splitlines(), start=1):
         line = raw_line.lower()
@@ -397,6 +427,7 @@ def main() -> None:
     assert_contains("architecture boundaries", combined, ARCHITECTURE_MARKERS)
     assert_contains("soft agreement and commitment split", combined, SOFT_AND_COMMITMENT_MARKERS)
     assert_contains("email close state machine", combined, EMAIL_CLOSE_MARKERS)
+    assert_email_state_split(prompt_text, overlay_text)
     assert_contains("gatekeeper state machine", combined, GATEKEEPER_MARKERS)
     assert_contains("owner name capture", combined, OWNER_NAME_MARKERS)
     assert_contains("value answer order", combined, VALUE_ORDER_MARKERS)

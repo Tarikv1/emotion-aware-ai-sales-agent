@@ -9,8 +9,8 @@ Success Evaluation returns success, failure, or unknown with rationale. Data Col
 - `elite_sales_value_answer`: pass when a business-impact answer uses the commercial mechanism before any caveat and names a concrete buyer action.
 - `no_caveat_first_unless_guarantee`: fail when Emma opens with "not as a guarantee" after a general business-impact question instead of a guarantee question.
 - `soft_agreement_not_overclosed`: pass when "that makes sense", "I get it", "that's interesting", "fair enough", or "okay, I see what you mean" triggers a soft send question, not email capture.
-- `accepted_mockup_email_capture`: pass when "send it over", "I'll take a look", "go ahead", "can I see it", "how do I see it", "where do I see it", or an email triggers concise email capture.
-- `email_two_step_close`: pass when email is normalized and confirmed first, then Emma closes after buyer confirmation.
+- `accepted_mockup_email_capture`: pass when "send it over", "I'll take a look", "go ahead", "can I see it", "how do I see it", or "where do I see it" appears without an email and triggers concise email capture.
+- `email_two_step_close`: pass when email provided leads to normalized email confirmation, then email confirmed leads to a short close.
 - `gatekeeper_clean_close`: pass when a gatekeeper receives a short note or callback confirmation with no extra pitch.
 - `no_weak_clearer_main_value`: fail when clearer page/homepage/path is the main value instead of supporting language tied to a concrete action.
 - `seo_confident_but_safe`: pass when the local SEO answer is confident, mechanism-based, and avoids ranking, traffic, customer, call, booking, or numerical lift guarantees.
@@ -44,7 +44,12 @@ Normalize obvious email spell-outs in `email`. Use `null` for missing strings an
 ## Review Edge Cases
 
 - Soft agreement alone is not accepted mockup.
-- A send signal without an email should lead to email capture.
+- Accepted mockup without email should lead to email capture.
+- Accepted mockup without email triggers email capture.
+- Email provided should lead to normalized email confirmation, not another request for the best email.
+- Email provided triggers normalized email confirmation.
+- Email confirmed should lead to a short close without more selling.
+- Email confirmation triggers short close.
 - Email plus same-turn confirmation may close in one turn.
 - Gatekeeper callback windows should close cleanly after confirmation.
 - SEO confidence is allowed, but rankings, traffic, customers, calls, bookings, patients, jobs, revenue, and page-one results are not guaranteed.
