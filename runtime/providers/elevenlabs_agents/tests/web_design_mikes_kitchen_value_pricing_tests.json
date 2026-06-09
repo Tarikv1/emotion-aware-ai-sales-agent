@@ -25,7 +25,8 @@
     "approved_value_points": "reduce customer confusion before calling; make menu, hours, location, and the reservation phone number easier to find; give the owner a concrete homepage direction before paying for a full site; keep phone reservations if the restaurant wants phone-only reservations"
   },
   "evaluation_repair_notes": {
-    "cost_driver_scope": "cost-driver tests expect real scope drivers, not gallery or testimonials alone. Higher scope should name drivers such as custom design, more pages, custom copy, service-area pages, booking or quote workflows, integrations, content migration, advanced SEO work, or more technical setup."
+    "cost_driver_scope": "cost-driver tests expect real scope drivers, not gallery or testimonials alone. Higher scope should name drivers such as custom design, more pages, custom copy, service-area pages, booking or quote workflows, integrations, content migration, advanced SEO work, or more technical setup.",
+    "compact_prompt_hygiene_029": "Active compact-package hygiene: no buyer-facing output contains bracketed emotion, tone, stage, source, policy, or internal labels; repeated same-issue challenges require a different mechanism or disqualification; scripted example echo fails; clearer page, clearer homepage, or clearer path cannot be the headline value; soft agreement alone is not email capture; email provided triggers normalized email confirmation; email confirmation closes; stop requests stop; gatekeepers with callback windows do not get a full pitch."
   },
   "tests": [
     {

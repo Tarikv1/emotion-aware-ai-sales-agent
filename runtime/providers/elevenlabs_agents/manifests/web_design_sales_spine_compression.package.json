@@ -3,45 +3,51 @@
   "provider": "elevenlabs",
   "source_of_truth": "repo",
   "dashboard_role": "managed runtime and dashboard agent patch surface",
-  "status": "offline-packaging-ready",
+  "status": "offline-packaging-ready-focused-atlas-kb",
   "live_provider_calls_made": false,
   "openai_api_calls_made": false,
   "private_customer_data_used": false,
   "api_key_required_for_generation": false,
   "dashboard_manual_changes_source_of_truth": false,
   "active_kb_recommendation": {
-    "recommendation": "Use the compact universal summary, the selected active universal category files, the campaign overlay, and the campaign profile for the active Atlas Web Studio upload.",
+    "recommendation": "Use the compact universal summary, selected active universal category files, and focused Atlas Web Studio KB chunks for the active Atlas upload.",
     "recommended_upload_docs": [
       "runtime/providers/elevenlabs_agents/knowledge_base/universal_sales_core_summary.md",
       "runtime/providers/elevenlabs_agents/knowledge_base/universal_sales_categories/buyer_moves.md",
-      "runtime/providers/elevenlabs_agents/knowledge_base/universal_sales_categories/buyer_journey_jobs.md",
-      "runtime/providers/elevenlabs_agents/knowledge_base/universal_sales_categories/buyer_enablement_and_sensemaking.md",
-      "runtime/providers/elevenlabs_agents/knowledge_base/universal_sales_categories/discovery_question_design.md",
       "runtime/providers/elevenlabs_agents/knowledge_base/universal_sales_categories/value_and_roi_framing.md",
       "runtime/providers/elevenlabs_agents/knowledge_base/universal_sales_categories/objection_status_quo_and_competition.md",
       "runtime/providers/elevenlabs_agents/knowledge_base/universal_sales_categories/trust_and_risk_repair.md",
-      "runtime/providers/elevenlabs_agents/knowledge_base/universal_sales_categories/proof_and_evidence_handling.md",
       "runtime/providers/elevenlabs_agents/knowledge_base/universal_sales_categories/conversation_repair.md",
       "runtime/providers/elevenlabs_agents/knowledge_base/universal_sales_categories/next_step_policy.md",
       "runtime/providers/elevenlabs_agents/knowledge_base/universal_sales_categories/disqualification_policy.md",
       "runtime/providers/elevenlabs_agents/knowledge_base/universal_sales_categories/ethical_persuasion_boundaries.md",
-      "runtime/providers/elevenlabs_agents/knowledge_base/universal_sales_categories/motion_specific_playbooks.md",
       "runtime/providers/elevenlabs_agents/knowledge_base/universal_sales_categories/call_quality_rubrics.md",
-      "runtime/providers/elevenlabs_agents/knowledge_base/atlas_web_studio_web_design_campaign_overlay.md",
-      "runtime/providers/elevenlabs_agents/knowledge_base/atlas_web_studio_web_design_campaign_profile.md"
+      "runtime/providers/elevenlabs_agents/knowledge_base/atlas_web_studio/atlas_offer_facts.md",
+      "runtime/providers/elevenlabs_agents/knowledge_base/atlas_web_studio/atlas_value_mechanisms.md",
+      "runtime/providers/elevenlabs_agents/knowledge_base/atlas_web_studio/atlas_vertical_playbooks.md",
+      "runtime/providers/elevenlabs_agents/knowledge_base/atlas_web_studio/atlas_objection_playbook.md",
+      "runtime/providers/elevenlabs_agents/knowledge_base/atlas_web_studio/atlas_price_scope_cost_drivers.md",
+      "runtime/providers/elevenlabs_agents/knowledge_base/atlas_web_studio/atlas_close_and_followup_playbook.md",
+      "runtime/providers/elevenlabs_agents/knowledge_base/atlas_web_studio/atlas_output_quality_rules.md"
     ],
     "active_upload_count": 17,
     "not_recommended_for_active_upload_unless_explicitly_needed": [
       "runtime/providers/elevenlabs_agents/knowledge_base/universal_sales_core.md",
+      "runtime/providers/elevenlabs_agents/knowledge_base/atlas_web_studio_web_design_campaign.md",
+      "runtime/providers/elevenlabs_agents/knowledge_base/atlas_web_studio_web_design_campaign_overlay.md",
+      "runtime/providers/elevenlabs_agents/knowledge_base/atlas_web_studio_web_design_campaign_profile.md",
       "runtime/providers/elevenlabs_agents/knowledge_base/universal_sales_categories/stakeholder_mapping.md",
       "runtime/providers/elevenlabs_agents/knowledge_base/universal_sales_categories/qualification_evidence.md",
       "runtime/providers/elevenlabs_agents/knowledge_base/universal_sales_categories/decision_and_paper_process.md",
       "runtime/providers/elevenlabs_agents/knowledge_base/universal_sales_categories/negotiation_and_concession_policy.md",
       "runtime/providers/elevenlabs_agents/knowledge_base/universal_sales_categories/vertical_general_playbooks.md",
       "runtime/providers/elevenlabs_agents/knowledge_base/universal_sales_categories/post_sale_handoff.md",
-      "runtime/providers/elevenlabs_agents/knowledge_base/universal_sales_categories/success_failure_patterns.md"
+      "runtime/providers/elevenlabs_agents/knowledge_base/universal_sales_categories/success_failure_patterns.md",
+      "runtime/providers/elevenlabs_agents/tests",
+      "runtime/providers/elevenlabs_agents/analysis",
+      "research/experiments/generated"
     ],
-    "reason": "The active voice agent should retrieve a compact universal summary, selected tactical sales categories, and campaign-specific layers. The full universal core and omitted categories remain source/reference material."
+    "reason": "The active voice agent should retrieve compact universal guidance plus focused Atlas KB chunks. The full universal core, old monolithic Atlas campaign file, profile, overlay, generated experiment docs, tests, and analysis setup remain reference material unless the operator explicitly asks otherwise."
   },
   "source_reference_category_files": [
     "runtime/providers/elevenlabs_agents/knowledge_base/universal_sales_categories/buyer_moves.md",
@@ -88,6 +94,8 @@
   "operator_notes": [
     "This package is offline and repo-only.",
     "Do not upload the full universal_sales_core.md for the active Atlas agent unless the operator explicitly asks for the broader source file.",
+    "Do not upload old monolithic Atlas KB files when the focused chunks supersede them.",
+    "Do not upload tests, analysis setup docs, or generated experiment docs as KB.",
     "Do not claim live readiness from this package."
   ]
 }

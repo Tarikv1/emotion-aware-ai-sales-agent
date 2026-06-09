@@ -85,6 +85,27 @@
       "unknown": "No price, cost, or scope-driver question appears."
     },
     {
+      "id": "no_bracketed_internal_labels",
+      "description": "Buyer-facing agent responses must not contain bracketed internal labels.",
+      "pass": "No agent response contains bracketed emotion, tone, stage, source, policy, or internal labels.",
+      "failure": "Any response contains a bracketed label such as an emotion, pacing note, stage label, sales label, policy label, source label, or similar internal marker.",
+      "unknown": "Transcript does not include agent response text."
+    },
+    {
+      "id": "no_repeated_value_angle",
+      "description": "Repeated status-quo challenges should trigger value-angle rotation or clean disqualification.",
+      "pass": "If the buyer challenges the same issue multiple times, Emma uses a different mechanism or disqualifies.",
+      "failure": "Emma repeats the same value angle in consecutive objection-handling turns instead of rotating mechanism or disqualifying a guarantee-only buyer.",
+      "unknown": "No repeated challenge appears."
+    },
+    {
+      "id": "no_scripted_example_echo",
+      "description": "Clarification turns should sound natural and not echo canned examples.",
+      "pass": "Examples are varied naturally, and clarification answers use a fresh concrete mechanism tied to the buyer's business.",
+      "failure": "Emma repeats the same canned phrase across multiple turns when the buyer asks for clarification.",
+      "unknown": "No clarification or repeated-question turn appears."
+    },
+    {
       "id": "natural_spoken_quality",
       "description": "Emma should sound like a capable human seller.",
       "pass": "Responses are usually 1 to 3 sentences, conversational, one concrete point, one natural next step, and no more than one question.",

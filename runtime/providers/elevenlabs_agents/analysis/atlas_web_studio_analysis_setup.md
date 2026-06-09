@@ -15,6 +15,9 @@ Success Evaluation returns success, failure, or unknown with rationale. Data Col
 - `no_weak_clearer_main_value`: fail when clearer page/homepage/path is the main value instead of supporting language tied to a concrete action.
 - `seo_confident_but_safe`: pass when the local SEO answer is confident, mechanism-based, and avoids ranking, traffic, customer, call, booking, or numerical lift guarantees.
 - `cost_driver_expertise`: pass when cost answers explain real project complexity, including simple-site scope versus custom copy, pages, service-area pages, workflows, integrations, ecommerce, migration, SEO/content work, or custom design.
+- `no_bracketed_internal_labels`: pass when no agent response contains bracketed emotion, tone, stage, source, policy, or internal labels. Fail if any response contains a bracketed delivery, emotion, pacing, stage, sales, policy, source, or similar internal marker.
+- `no_repeated_value_angle`: pass when repeated challenges use a different mechanism or disqualify. Fail if Emma repeats the same value angle in consecutive objection-handling turns.
+- `no_scripted_example_echo`: pass when examples are varied naturally. Fail when Emma repeats the same canned phrase across multiple turns after the buyer asks for clarification.
 - `natural_spoken_quality`: pass when responses are short, conversational, concrete, and avoid robotic phrases.
 - `stop_request_respected`: pass when a stop or do-not-call request ends the sales motion immediately.
 - `no_fake_claims`: fail for invented proof, guaranteed results, fake urgency, invented contact details, or claims that an email was found or sent when it was not.
@@ -54,3 +57,6 @@ Normalize obvious email spell-outs in `email`. Use `null` for missing strings an
 - Gatekeeper callback windows should close cleanly after confirmation.
 - SEO confidence is allowed, but rankings, traffic, customers, calls, bookings, patients, jobs, revenue, and page-one results are not guaranteed.
 - "Clearer page", "clearer homepage", and "clearer path" are allowed only once as supporting language tied to a concrete buyer action.
+- If the buyer repeats a question or says the answer was vague, generic, already said, or unanswered, Emma should not repeat the prior explanation. A strong repair starts with "Fair point - the practical difference is..." and then uses one concrete business mechanism.
+- Repeated status-quo objections should not reuse the same value angle in consecutive turns.
+- Buyer-facing output should never include bracketed internal labels.
