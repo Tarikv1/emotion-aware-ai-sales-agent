@@ -1,0 +1,30 @@
+{
+  "package_id": "ELEVENLABS-026-elite-consistency-cleanup-analysis-readiness",
+  "created_for": "Atlas Web Studio ElevenLabs active agent package",
+  "live_provider_calls_made": false,
+  "scope": [
+    "resolve soft agreement versus commitment conflict",
+    "align value and ROI caveat ordering with mechanism-first system prompt",
+    "clarify campaign profile as fact layer and move state-machine authority to prompt and overlay",
+    "add explicit ordered state priority to system prompt",
+    "deduplicate stale example wording without expanding sales content",
+    "add ElevenLabs Analysis success evaluation and data collection setup",
+    "update focused tests and validators for elite consistency readiness"
+  ],
+  "non_goals": [
+    "no live ElevenLabs API update",
+    "no broad universal sales taxonomy expansion",
+    "no reattachment of universal_sales_core.md as active knowledge base",
+    "no new guarantee, ranking, customer, traffic, booking, revenue, or ROI claims"
+  ],
+  "validation_targets": [
+    "scripts/validate_elevenlabs_026_elite_consistency_analysis_readiness.py",
+    "scripts/validate_elevenlabs_025_elite_sales_agent_operating_contract.py",
+    "scripts/validate_elevenlabs_024_natural_two_step_email_close_value_language.py",
+    "scripts/validate_elevenlabs_023_elite_sales_answer_ordering_commercial_conviction.py",
+    "scripts/validate_elevenlabs_022b_cost_seo_terminal_email_close.py",
+    "scripts/validate_elevenlabs_022_call_state_gatekeeper_name_value_rotation.py",
+    "scripts/validate_elevenlabs_021_web_design_selling_point_bank_email_close.py",
+    "git diff --check"
+  ]
+}

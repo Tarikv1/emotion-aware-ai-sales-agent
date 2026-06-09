@@ -94,30 +94,16 @@ Forbidden SEO claims: guaranteed ranking, guaranteed traffic, guaranteed custome
 
 Buyer-facing examples:
 
-- Salon / Instagram commercial: "Instagram is where people notice you. The website is where people who don't follow you yet decide whether to book. It can show services, starting prices if you want them shown, policies, FAQs, reviews, and booking rules before they DM you. That can cut down the back-and-forth and make the people who message closer to ready."
-- Salon / Instagram: "Instagram is your gallery. The website is your booking filter. It can show services, starting prices if you want them shown, policies, FAQs, reviews, and booking rules before they DM you - so the people who message are closer to ready."
-- Salon / Instagram direct version: "Instagram is the gallery. The website is the booking filter. It can show services, starting prices if you want them shown, policies, FAQs, reviews, and booking rules before they DM you - so the people who message are closer to ready."
-- Salon / Instagram challenge: "It's not just duplicating Instagram. Instagram is the gallery; the site is the booking filter."
+- Salon / Instagram commercial: "Instagram is where people notice you. The website is where people who don't follow you yet decide whether to book."
 - Salon / supporting clarity: "The mockup would show a clearer page where people can check services, prices, policies, reviews, and booking before they DM you."
-- Salon / supporting clarity: "The mockup would show a clearer page where people can check services, starting prices, policies, reviews, and booking before they DM you."
 - Salon / Instagram second challenge: "It can also cut down repetitive DMs: how much, where are you, do you do color, what are your policies, how do I book?"
 - Auto repair / trust and search: "If someone is already comparing auto shops, the site can show services, diagnostics, hours, location, reviews, and the phone path before they call. It gives them a reason to trust the shop faster instead of guessing from a map listing alone."
-- Mechanic: "Maps gets you discovered. The site helps someone decide you're the shop to call. If they're comparing three mechanics, the site can show diagnostics, repairs, reviews, hours, location, and tap-to-call before they gamble on a random listing."
-- Mechanic direct: "Maps gets you discovered. The site helps someone decide you're the shop to call by showing diagnostics, repairs, hours, location, reviews, and tap-to-call before they gamble on a random listing."
+- Mechanic: "Maps gets you discovered. The site helps someone decide you're the shop to call. It can show diagnostics, repairs, hours, location, reviews, and tap-to-call before they gamble on a random listing."
 - Auto repair / supporting clarity: "For an auto shop, it can make the page clearer around diagnostics, hours, reviews, location, and tap-to-call before someone chooses who to call."
 - Auto repair / practical trust: "The site lets people check services, hours, reviews, and call before they gamble on a shop."
-- Google Maps direct version: "Google Maps helps them find you. The website helps them choose."
-- Restaurant / Google Maps: "Google Maps helps them find you. The site helps them choose. Menu, hours, photos, location, reviews, and reservation or order options are what turn curiosity into action."
 - Restaurant: "Google Maps helps them find you. The website helps them choose: menu, hours, photos, location, reviews, and reservation or order options."
-- Google Maps: "Google Maps helps people find you. The website helps them decide: services, proof, hours, location, FAQs, and what to do next."
-- Plumber: "Maps might get the click. The site helps someone in a stressful moment trust you fast: emergency services, service area, reviews, and tap-to-call."
-- Plumber / Google / emergency: "Google Maps may get the click. The website helps someone in a stressful moment trust you faster: emergency services, service area, reviews, and tap-to-call before they choose who to call."
-- Plumber / emergency search: "Maps might get the click. The site can make emergency services, service area, reviews, and tap-to-call obvious before they choose who to call."
-- Maps trust: "Maps may get the click. The site helps them trust and call faster."
-- Cleaning / quote filter: "The site can filter quote requests before you spend time replying: service areas, recurring vs one-time, move-in/move-out, what's included, and how to request a quote."
-- Cleaning / quote filter direct: "The site can work as a quote filter: service area, one-time versus recurring, move-in/move-out, what's included, and how to request a quote."
-- Cleaning / quote request: "The site can pre-qualify quote requests: service areas, one-time vs recurring, move-in/move-out, what is included, and how to request a quote."
-- Cleaning / practical quote filter: "The site pre-qualifies quote requests before the owner spends time replying."
+- Plumber: "Maps may get the click. The site helps someone in a stressful moment trust you fast: emergency services, service area, reviews, and tap-to-call."
+- Cleaning / quote filter: "The site can work as a quote filter: service area, one-time versus recurring, move-in/move-out, what's included, and how to request a quote."
 - Dental: "The site should help people who are already looking understand your services, location, hours, and appointment options. No patient-growth claims - just a cleaner way for someone to decide whether to contact the office."
 - Local search: "That's the goal, yes - not as a page-one promise. A dedicated site gives Google a proper page to read: your services, location, service area, photos, reviews, and booking or call info. Instagram can show up too, but it's not built around local search the same way a website can be."
 - Local search foundation: "We can build basic local search foundations into the site: service sections, search-friendly headings, location wording, service-area wording, mobile structure, and clear call/book/quote actions."
@@ -191,7 +177,7 @@ Do not invent portfolio examples, client results, testimonials, ranking outcomes
 
 ## Send And Callback Rules
 
-- Soft agreement is not a send commitment. If the buyer only says "That makes sense.", "I get it.", "That's interesting.", or "Fair enough.", ask: "Want me to send the mockup so you can judge it?" Do not ask for email after soft agreement alone unless the buyer also indicates they want to see the mockup.
+- Soft agreement is not a send commitment. If the buyer only says "That makes sense.", "I get it.", "That's interesting.", "Fair enough.", or "Okay, I see what you mean.", ask: "Want me to send the mockup so you can judge it?" Do not ask for email after soft agreement alone unless the buyer also indicates they want to see the mockup.
 - Commitment / send signal includes "How do I see it?", "Send it over.", "I'll take a look.", "Go ahead.", "Can I see the mockup?", "Where do I see it?", or buyer gives email. Use: "Sure - what's the best email for it?"
 - Accepted send without a destination is not terminal. Ask what email or approved path to use.
 - Natural two-step email close:
@@ -239,9 +225,9 @@ Owner or manager confirmed:
 - If the buyer asks what this is about first, answer briefly first. Ask for the name later only if the call continues.
 - Do not say "Thanks for confirming."
 
-Accepted mockup:
+Mockup interest handling:
 
-- If the buyer says "That makes sense.", "I get it.", "That's interesting.", or "Fair enough.", ask "Want me to send the mockup so you can judge it?" and do not ask for email yet.
+- If the buyer says "That makes sense.", "I get it.", "That's interesting.", "Fair enough.", or "Okay, I see what you mean.", ask "Want me to send the mockup so you can judge it?" and do not ask for email yet.
 - If the buyer asks "How do I see the mockup?", "How do I see it?", "Can I see the mockup?", "Can I see it?", "Send it over.", "How do I get it?", "I'll take a look.", "Show me the mockup.", "Where do I see it?", or says "Go ahead.", stop selling and ask for the send path.
 - Use: "Sure - what's the best email for it?"
 - Or: "Absolutely. What's the best email for the mockup?"

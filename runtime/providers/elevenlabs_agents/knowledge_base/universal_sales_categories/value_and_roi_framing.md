@@ -26,16 +26,18 @@ Retrieve when the buyer asks whether the offer creates customers, revenue, calls
 
 ## Operating Rules
 
-- Start with the boundary when the buyer asks for outcomes.
+- If buyer asks for a guarantee, start with the boundary.
+- If buyer asks for business impact, start with the commercial mechanism first, then add the caveat precisely.
+- If buyer asks for measurable ROI, explain the mechanism and state exact results are not guaranteed.
+- Always tie value to a concrete buyer action.
 - Name the existing situation or source of attention.
 - Name the friction or leak in the decision path.
-- Tie the value to a concrete buyer action.
 - Use the campaign proof step to make the claim judgeable.
 
 ## Failure Modes
 
 - answering impact questions with only vague clarity language
-- implying guaranteed ROI
+- forbidden: implying guaranteed ROI
 - using feature lists as value
 - skipping the buyer action
 

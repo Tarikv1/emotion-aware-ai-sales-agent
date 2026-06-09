@@ -36,11 +36,11 @@ REQUIRED_SELLING_MECHANISMS = (
 )
 
 BUYER_EXAMPLES = (
-    "Instagram is your gallery. The website is your booking filter.",
-    "It can show services, starting prices if you want them shown, policies, FAQs, reviews, and booking rules before they DM you - so the people who message are closer to ready.",
+    "Instagram is where people notice you. The website is where people who don't follow you yet decide whether to book.",
+    "It can show services, starting prices if you want them shown, policies, FAQs, reviews, and booking rules before they DM you.",
     "If someone is already comparing auto shops, the site can show services, diagnostics, hours, location, reviews, and the phone path before they call.",
     "Google Maps helps people find you. The website helps them decide: services, proof, hours, location, FAQs, and what to do next.",
-    "Maps might get the click. The site can make emergency services, service area, reviews, and tap-to-call obvious before they choose who to call.",
+    "Maps may get the click. The site helps someone in a stressful moment trust you fast: emergency services, service area, reviews, and tap-to-call.",
 )
 
 LOCAL_SEARCH_ALLOWED = (

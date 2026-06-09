@@ -27,7 +27,8 @@
     "public_profile_lookup_handoff": "If the campaign permits it and the buyer explicitly says the contact email is on a public business source such as Facebook, Google, or the business website, the agent may accept that as a post-call lookup handoff. It must not claim it has already found or sent to that email.",
     "natural_two_step_email_close": "buyer provides email; agent confirms normalized email; buyer confirms; agent closes. do not fail if the simulated conversation ends immediately after the buyer provides the email and the agent never receives another turn. fail if the agent receives a turn after email and does not confirm the normalized email. fail if the agent continues discovery after email. fail if the agent re-pitches after email. fail if the agent ignores buyer confirmation and keeps talking. fail if the agent never closes after email confirmation.",
     "seo_value": "SEO answers should be sales-forward but non-guaranteed.",
-    "elite_operating_contract": "soft agreement does not immediately trigger email capture; accepted mockup triggers email capture; buyer gives email -> agent confirms normalized email -> buyer confirms -> agent closes; gatekeeper pass-along plus callback closes cleanly; SEO answer is confident but non-guaranteed; cost drivers explain real project complexity; salon Instagram objection gets a real difference, not generic one-place language; repeated clearer homepage as main value fails; disqualification when buyer only wants guaranteed SEO or pay-per-lead."
+    "elite_operating_contract": "soft agreement does not immediately trigger email capture; accepted mockup triggers email capture; buyer gives email -> agent confirms normalized email -> buyer confirms -> agent closes; gatekeeper pass-along plus callback closes cleanly; SEO answer is confident but non-guaranteed; cost drivers explain real project complexity; salon Instagram objection gets a real difference, not generic one-place language; repeated clearer homepage as main value fails; disqualification when buyer only wants guaranteed SEO or pay-per-lead.",
+    "elite_consistency_cleanup": "That makes sense alone does not trigger email capture. Okay, I see what you mean is soft agreement, not a send commitment. Accepted mockup signal triggers email capture. Email provided triggers normalized email confirmation. Email confirmation triggers short close. Business-impact answers do not start with caveat unless buyer asked for guarantee. Universal value guidance does not conflict with prompt. Campaign profile does not contain major state-machine behavior blocks. SEO answer is confident but non-guaranteed. Cost answer explains real cost drivers. No guaranteed customer/ranking/revenue claims. No clearer page/homepage/path as main value argument."
   },
   "tests": [
     {
@@ -245,7 +246,7 @@
       "type": "simulation",
       "simulation_max_turns": 14,
       "simulation_scenario": "The simulated user owns Luna Hair Studio and says Instagram already has photos and DMs, so a website sounds like duplication. They dislike generic one-place or online-presence language.",
-      "success_condition": "The full conversation passes if salon Instagram objection gets a real difference, not generic one-place language. A good answer says Instagram is where people notice you, while the website is where people who do not follow yet decide whether to book. It should explain services, starting prices if shown, policies, FAQs, reviews, and booking rules before DMs, or say Instagram is the gallery and the site is the booking filter. It fails if the main value is only clearer homepage, online presence, one place, or organization.",
+      "success_condition": "The full conversation passes if salon Instagram objection gets a real difference, not generic one-place language. A good answer says Instagram is where people notice you, while the website is where people who do not follow yet decide whether to book. It should explain services, starting prices if shown, policies, FAQs, reviews, booking rules before DMs, or repetitive DMs that the website can answer. It fails if the main value is only clearer homepage, online presence, one place, or organization.",
       "dynamic_variables": {
         "business_name": "Luna Hair Studio",
         "business_type": "hair salon",
@@ -290,6 +291,37 @@
         "buyer_temperature": "bad_fit_outcome_guarantee",
         "target_outcome": "disqualification",
         "scenario_expected_turns": "4-7"
+      }
+    },
+    {
+      "test_id": "sim_026_profile_overlay_state_authority",
+      "type": "simulation",
+      "simulation_max_turns": 14,
+      "simulation_scenario": "The simulated user is first a receptionist at Bright Lane Dental, then provides a callback window and says 'got it' after the callback is confirmed. The scenario should exercise gatekeeper and terminal close behavior without relying on campaign-profile state-machine wording.",
+      "success_condition": "The full conversation passes if Campaign profile does not contain major state-machine behavior blocks and the active runtime behavior still works through the prompt and Atlas overlay. The agent should give only a short gatekeeper note if needed, confirm the callback window, and close after 'got it' with `Thanks. Have a good one.` It fails if the agent gives a full value pitch to the gatekeeper, asks discovery questions after the callback is known, or restarts selling after the terminal acknowledgment.",
+      "dynamic_variables": {
+        "business_name": "Bright Lane Dental",
+        "business_type": "dental office",
+        "vertical": "dental",
+        "city": "Raleigh",
+        "callback_window": "2",
+        "simulation_focus": "026_profile_overlay_state_authority",
+        "buyer_temperature": "helpful_gatekeeper",
+        "target_outcome": "short_callback_close",
+        "scenario_expected_turns": "5-8"
+      }
+    },
+    {
+      "test_id": "sim_026_analysis_success_data_collection_ready",
+      "type": "analysis_config_review",
+      "simulation_max_turns": 10,
+      "simulation_scenario": "Review a completed Atlas call transcript where the buyer role, business name, vertical, objection type, value angle, email, accepted mockup signal, terminal outcome, and next step are present. The analysis setup should judge success/failure/unknown and extract structured fields.",
+      "success_condition": "The full review passes if Universal value guidance does not conflict with prompt, SEO answer is confident but non-guaranteed, Cost answer explains real cost drivers, No guaranteed customer/ranking/revenue claims, and No clearer page/homepage/path as main value argument. The Analysis config should include success/failure/unknown criteria with rationale and data collection fields for buyer_role, contact_name, email, callback_window, business_name, vertical, buyer_state, objection_type, value_angle_used, accepted_mockup, soft_agreement_only, send_signal, terminal_outcome, failure_reason, and next_step.",
+      "dynamic_variables": {
+        "simulation_focus": "026_analysis_readiness",
+        "buyer_temperature": "post_call_review",
+        "target_outcome": "analysis_success_and_data_collection_ready",
+        "scenario_expected_turns": "review_only"
       }
     }
   ]

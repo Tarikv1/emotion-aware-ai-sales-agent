@@ -1,0 +1,25 @@
+{
+  "package_id": "ELEVENLABS-026-elite-consistency-cleanup-analysis-readiness",
+  "live_provider_calls_made": false,
+  "payload_type": "repo_side_patch_payload",
+  "active_agent_files": {
+    "first_message": "runtime/providers/elevenlabs_agents/prompts/web_design_first_message.txt",
+    "system_prompt": "runtime/providers/elevenlabs_agents/prompts/web_design_atlas_sales_prompt.md",
+    "campaign_overlay": "runtime/providers/elevenlabs_agents/knowledge_base/atlas_web_studio_web_design_campaign_overlay.md",
+    "campaign_profile": "runtime/providers/elevenlabs_agents/knowledge_base/atlas_web_studio_web_design_campaign_profile.md",
+    "universal_value_guidance": "runtime/providers/elevenlabs_agents/knowledge_base/universal_sales_categories/value_and_roi_framing.md",
+    "analysis_config": "runtime/providers/elevenlabs_agents/analysis/atlas_web_studio_analysis_config.json",
+    "analysis_setup_doc": "runtime/providers/elevenlabs_agents/analysis/atlas_web_studio_analysis_setup.md"
+  },
+  "behavior_changes": {
+    "soft_agreement": "Soft agreement asks whether to send the mockup; it does not capture email by itself.",
+    "commitment": "Accepted mockup or send signal asks for the best email.",
+    "email_close": "Email provided triggers normalized email confirmation only; buyer confirmation triggers one short close.",
+    "gatekeeper": "Gatekeeper note and callback close stay short with no extra value pitch.",
+    "profile_ownership": "Campaign profile keeps facts and capability statements, while prompt and overlay own runtime state behavior."
+  },
+  "analysis_ready": {
+    "success_evaluation_criteria_count": 12,
+    "data_collection_field_count": 15
+  }
+}

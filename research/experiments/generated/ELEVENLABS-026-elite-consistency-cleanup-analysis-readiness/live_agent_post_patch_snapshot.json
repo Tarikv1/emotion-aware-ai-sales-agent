@@ -1,0 +1,15 @@
+{
+  "package_id": "ELEVENLABS-026-elite-consistency-cleanup-analysis-readiness",
+  "live_provider_calls_made": false,
+  "snapshot_type": "repo_post_patch_snapshot",
+  "state": {
+    "system_prompt_has_ordered_state_priority": true,
+    "soft_agreement_commitment_split_aligned": true,
+    "campaign_profile_facts_only_for_send_callback": true,
+    "campaign_overlay_owns_atlas_behavior_application": true,
+    "universal_value_guidance_mechanism_first": true,
+    "analysis_success_evaluation_config_added": true,
+    "analysis_data_collection_config_added": true,
+    "simulation_tests_include_026_criteria": true
+  }
+}

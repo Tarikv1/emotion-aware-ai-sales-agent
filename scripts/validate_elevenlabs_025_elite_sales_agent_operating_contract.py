@@ -139,9 +139,9 @@ VALUE_ORDER_MARKERS = (
 VALUE_EXAMPLES = (
     "Instagram is where people notice you. The website is where people who don't follow you yet decide whether to book.",
     "It can show services, starting prices if you want them shown, policies, FAQs, reviews, and booking rules before they DM you.",
-    "It's not just duplicating Instagram. Instagram is the gallery; the site is the booking filter.",
-    "Google Maps may get the click. The website helps someone in a stressful moment trust you faster: emergency services, service area, reviews, and tap-to-call before they choose who to call.",
-    "Maps gets you discovered. The site helps someone decide you're the shop to call by showing diagnostics, repairs, hours, location, reviews, and tap-to-call before they gamble on a random listing.",
+    "It can also cut down repetitive DMs: how much, where are you, do you do color, what are your policies, how do I book?",
+    "Maps may get the click. The site helps someone in a stressful moment trust you fast: emergency services, service area, reviews, and tap-to-call.",
+    "Maps gets you discovered. The site helps someone decide you're the shop to call. It can show diagnostics, repairs, hours, location, reviews, and tap-to-call before they gamble on a random listing.",
     "Google Maps helps them find you. The website helps them choose: menu, hours, photos, location, reviews, and reservation or order options.",
     "The site should help people who are already looking understand your services, location, hours, and appointment options. No patient-growth claims - just a cleaner way for someone to decide whether to contact the office.",
     "The site can work as a quote filter: service area, one-time versus recurring, move-in/move-out, what's included, and how to request a quote.",

@@ -37,11 +37,12 @@ CONSEQUENCE_MARKERS = (
 )
 
 CHANNEL_EXAMPLES = (
-    "Instagram is where people notice you. The website is where strangers decide whether to book. If they don't follow you yet, they're probably searching Google, checking reviews, comparing prices, or trying to find your policy before they DM. A site gives them that in one flow and can reduce the back-and-forth.",
+    "Instagram is where people notice you. The website is where people who don't follow you yet decide whether to book.",
+    "It can also cut down repetitive DMs: how much, where are you, do you do color, what are your policies, how do I book?",
     "Google Maps helps them find you. The site helps them choose. Menu, hours, photos, location, reviews, and reservation or order options are what turn curiosity into action.",
-    "Maps gets you discovered. The site helps someone decide you're the shop to call. If they're comparing three mechanics, the site can show diagnostics, repairs, reviews, hours, location, and tap-to-call before they gamble on a random listing.",
-    "Maps might get the click. The site helps someone in a stressful moment trust you fast: emergency services, service area, reviews, and tap-to-call.",
-    "The site can filter quote requests before you spend time replying: service areas, recurring vs one-time, move-in/move-out, what's included, and how to request a quote.",
+    "Maps gets you discovered. The site helps someone decide you're the shop to call. It can show diagnostics, repairs, hours, location, reviews, and tap-to-call before they gamble on a random listing.",
+    "Maps may get the click. The site helps someone in a stressful moment trust you fast: emergency services, service area, reviews, and tap-to-call.",
+    "The site can work as a quote filter: service area, one-time versus recurring, move-in/move-out, what's included, and how to request a quote.",
 )
 
 COST_JUDGMENT_MARKERS = (

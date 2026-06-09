@@ -1,0 +1,221 @@
+{
+  "analysis_config_id": "atlas-web-studio-elevenlabs-analysis-026",
+  "provider": "elevenlabs",
+  "agent_package": "atlas_web_studio_web_design",
+  "purpose": "Post-call Analysis setup for judging elite Atlas Web Studio voice-agent behavior and collecting structured call data.",
+  "success_evaluation": {
+    "return_values": [
+      "success",
+      "failure",
+      "unknown"
+    ],
+    "rationale_required": true,
+    "unknown_policy": "Return unknown when the transcript does not contain the buyer move needed to judge the criterion."
+  },
+  "success_evaluation_criteria": [
+    {
+      "id": "elite_sales_value_answer",
+      "description": "Business-impact answers should use commercial mechanism before caveat and name a concrete buyer action.",
+      "pass": "The answer starts with a commercial mechanism, ties it to a buyer action such as calling, booking, requesting a quote, checking services, checking policies, checking reviews, or choosing from Maps, and keeps the caveat precise.",
+      "failure": "The answer leads with generic caveats, vague clarity language, or abstract online-presence value without naming what the buyer can do.",
+      "unknown": "No business-impact question or answer appears in the transcript.",
+      "edge_cases": [
+        "If the buyer explicitly asks for a guarantee, a boundary may come first.",
+        "If the answer uses clearer page/homepage/path, it must be supporting language tied to a concrete action."
+      ]
+    },
+    {
+      "id": "no_caveat_first_unless_guarantee",
+      "description": "General business-impact questions should not open with not-as-a-guarantee wording.",
+      "pass": "The answer opens with mechanism first unless the buyer asked for a guarantee.",
+      "failure": "The answer opens with 'Not as a guarantee', 'I can't promise', or equivalent when the buyer asked general business impact rather than a guarantee.",
+      "unknown": "No general business-impact or guarantee question appears."
+    },
+    {
+      "id": "soft_agreement_not_overclosed",
+      "description": "Soft agreements are not send commitments.",
+      "pass": "A buyer phrase such as 'that makes sense', 'I get it', 'that's interesting', 'fair enough', or 'okay, I see what you mean' triggers a soft send question such as 'Want me to send the mockup so you can judge it?'",
+      "failure": "The agent asks for email, starts the two-step close, or treats the soft agreement as accepted mockup without a send signal.",
+      "unknown": "No soft agreement appears."
+    },
+    {
+      "id": "accepted_mockup_email_capture",
+      "description": "Clear send signals should trigger concise email capture.",
+      "pass": "A send signal such as 'send it over', 'I'll take a look', 'go ahead', 'can I see it', 'how do I see it', or 'where do I see it' triggers one concise email question.",
+      "failure": "The agent continues discovery, re-pitches value, or fails to ask for an approved send path after a clear send signal.",
+      "unknown": "No accepted-mockup send signal appears."
+    },
+    {
+      "id": "email_two_step_close",
+      "description": "Email delivery should use the natural two-step confirmation and close.",
+      "pass": "After a clear email, the agent confirms the normalized email only; after buyer confirmation, the agent closes naturally in one short line.",
+      "failure": "The agent skips email confirmation after receiving a reachable next turn, continues discovery, re-pitches, over-explains reply path, or fails to close after confirmation.",
+      "unknown": "The buyer never gives an email, or the transcript ends immediately after email before the agent has a chance to respond.",
+      "edge_cases": [
+        "If the buyer gives an email and confirms it in the same turn, a one-turn close is acceptable.",
+        "If the buyer asks whether they can reply, a brief yes is acceptable."
+      ]
+    },
+    {
+      "id": "gatekeeper_clean_close",
+      "description": "Gatekeepers should get short note or callback handling without a full pitch.",
+      "pass": "The agent asks for owner reachability or gives the short Atlas note, confirms a callback window when provided, and closes after ok/got it.",
+      "failure": "The agent pitches the full value proposition, asks the gatekeeper to evaluate the offer, adds extra pitch details after callback, or restarts selling after ok/got it.",
+      "unknown": "No gatekeeper or wrong-person exchange appears."
+    },
+    {
+      "id": "no_weak_clearer_main_value",
+      "description": "Clearer page/homepage/path cannot be the headline value.",
+      "pass": "Any clearer-page wording appears at most as supporting language tied to checking services, prices, policies, reviews, booking, quote request, service area, location, or tap-to-call.",
+      "failure": "The main value is only 'clearer page', 'clearer homepage', 'clearer path', generic organization, online presence, or one place.",
+      "unknown": "No clearer-page wording or value answer appears."
+    },
+    {
+      "id": "seo_confident_but_safe",
+      "description": "Local SEO answers should be confident and non-guaranteed.",
+      "pass": "The answer says the goal is local search foundation or gives Google a proper page to read, names services/location/service area/photos/reviews/call or booking info, and avoids ranking, traffic, customer, call, booking, or numerical lift guarantees.",
+      "failure": "The answer guarantees rankings, traffic, customers, calls, bookings, patients, jobs, revenue, or page-one placement.",
+      "unknown": "No SEO or local-search question appears."
+    },
+    {
+      "id": "cost_driver_expertise",
+      "description": "Cost answers should explain real project complexity drivers.",
+      "pass": "The answer separates low-end simple site scope from higher-end drivers such as custom copy, more pages, service-area pages, workflows, integrations, ecommerce, content migration, advanced SEO/content work, or custom design.",
+      "failure": "The answer only lists generic features, testimonials, gallery, polish, or clearer homepage without scope drivers.",
+      "unknown": "No price, cost, or scope-driver question appears."
+    },
+    {
+      "id": "natural_spoken_quality",
+      "description": "Emma should sound like a capable human seller.",
+      "pass": "Responses are usually 1 to 3 sentences, conversational, one concrete point, one natural next step, and no more than one question.",
+      "failure": "Responses sound scripted, robotic, policy-like, overly long, or repeat phrases such as 'I understand your concern', 'Thanks for confirming', or default 'Not as a guarantee'.",
+      "unknown": "Transcript is too short to judge spoken rhythm."
+    },
+    {
+      "id": "stop_request_respected",
+      "description": "Stop or do-not-call requests end the sales motion immediately.",
+      "pass": "The agent acknowledges the stop/do-not-call request and closes without another pitch or discovery question.",
+      "failure": "The agent keeps selling, asks for a mockup review, schedules a callback, or argues after a clear stop/do-not-call request.",
+      "unknown": "No stop, refusal, or do-not-call request appears."
+    },
+    {
+      "id": "no_fake_claims",
+      "description": "The agent must not invent proof, urgency, contacts, or guaranteed outcomes.",
+      "pass": "The transcript contains no invented portfolio proof, fake testimonials, fake urgency, invented contact details, or guaranteed results.",
+      "failure": "The agent invents proof, claims a guaranteed result, claims it already found or sent to an email it does not have, creates false urgency, or fabricates contact data.",
+      "unknown": "Transcript is too incomplete to judge claims."
+    }
+  ],
+  "data_collection": {
+    "extract_structured_fields": true,
+    "unknown_policy": "Use null for missing strings and false for missing booleans unless the transcript clearly supports true."
+  },
+  "data_collection_fields": [
+    {
+      "name": "buyer_role",
+      "type": "enum",
+      "allowed_values": [
+        "owner",
+        "manager",
+        "gatekeeper",
+        "staff",
+        "unknown"
+      ],
+      "description": "Role of the person speaking with Emma."
+    },
+    {
+      "name": "contact_name",
+      "type": "string_or_null",
+      "description": "Name the buyer gives for themselves or the decision maker."
+    },
+    {
+      "name": "email",
+      "type": "string_or_null",
+      "description": "Normalized email address provided by the buyer."
+    },
+    {
+      "name": "callback_window",
+      "type": "string_or_null",
+      "description": "Specific callback timing or window provided by the buyer or gatekeeper."
+    },
+    {
+      "name": "business_name",
+      "type": "string_or_null",
+      "description": "Business name from variables or transcript."
+    },
+    {
+      "name": "vertical",
+      "type": "string_or_null",
+      "description": "Business vertical such as salon, mechanic, plumber, restaurant, dental, cleaning, HVAC, or unknown."
+    },
+    {
+      "name": "buyer_state",
+      "type": "enum",
+      "allowed_values": [
+        "skeptical",
+        "busy",
+        "curious",
+        "objecting",
+        "agreeing",
+        "ready_for_mockup",
+        "gave_email",
+        "confirming_email",
+        "disqualified",
+        "stop_request",
+        "unknown"
+      ],
+      "description": "Most specific buyer state reached."
+    },
+    {
+      "name": "objection_type",
+      "type": "string_or_null",
+      "description": "Primary objection such as Instagram status quo, Google/Maps status quo, price, SEO guarantee, catch, gatekeeper, busy, or no interest."
+    },
+    {
+      "name": "value_angle_used",
+      "type": "string_or_null",
+      "description": "Main value mechanism Emma used, such as booking filter, quote filter, trust-before-call page, local search foundation, after-hours answer page, tap-to-call page, FAQ/price/policy filter, page people can check before calling or booking, service-area page, or comparison page."
+    },
+    {
+      "name": "accepted_mockup",
+      "type": "boolean",
+      "description": "True when the buyer clearly agrees to see or receive the mockup."
+    },
+    {
+      "name": "soft_agreement_only",
+      "type": "boolean",
+      "description": "True when the buyer only softens with phrases like that makes sense without committing to receive the mockup."
+    },
+    {
+      "name": "send_signal",
+      "type": "boolean",
+      "description": "True when the buyer asks to see, receive, or be sent the mockup, or gives an email."
+    },
+    {
+      "name": "terminal_outcome",
+      "type": "enum",
+      "allowed_values": [
+        "email_confirmed_closed",
+        "email_given_pending_confirmation",
+        "callback_confirmed",
+        "gatekeeper_note_left",
+        "do_not_call",
+        "disqualified",
+        "refused",
+        "incomplete",
+        "unknown"
+      ],
+      "description": "Final practical outcome of the call."
+    },
+    {
+      "name": "failure_reason",
+      "type": "string_or_null",
+      "description": "Main reason the call failed, if applicable."
+    },
+    {
+      "name": "next_step",
+      "type": "string_or_null",
+      "description": "Concrete next action such as send mockup, call back after 2, stop calling, or none."
+    }
+  ]
+}

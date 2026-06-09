@@ -16,17 +16,17 @@ PROFILE = KB_ROOT / "atlas_web_studio_web_design_campaign_profile.md"
 
 GATEKEEPER_MARKERS = (
     "Just let them know Emma from Atlas Web Studio called about a free homepage mockup for {{business_name}}.",
-    "I'll try back {{callback_window}}.",
+    "Perfect, I'll call back after {{callback_window}} and ask for the owner. Thanks for passing that along.",
     "When is usually a better time to reach the owner?",
-    "Perfect, I'll call back after 2 and ask for the owner. Thanks for the help.",
+    "Perfect, I'll call back after 2 and ask for the owner. Thanks for passing that along.",
     "Do not add extra sales pitch details to the gatekeeper note unless asked.",
 )
 
 OWNER_NAME_MARKERS = (
     "If {{contact_name_if_known}} is empty and the person confirms they are the owner, manager, or decision-maker, ask their name before pitching.",
     "Got it - what's your name?",
-    "Nice to meet you, {{contact_name}}. I'll keep it quick...",
-    "If the buyer asks what this is about or challenges the call before giving a name, answer the question first.",
+    "Nice to meet you, {{contact_name}}. I'll keep it quick.",
+    "If the buyer asks what this is about first, answer briefly first. Ask for the name later only if the call continues.",
 )
 
 ACCEPTED_MOCKUP_MARKERS = (
@@ -37,14 +37,14 @@ ACCEPTED_MOCKUP_MARKERS = (
     "I'll take a look.",
     "Show me the mockup.",
     "Where do I see it?",
-    "Sure - what email should I send it to?",
+    "Sure - what's the best email for it?",
     "Absolutely. What's the best email for the mockup?",
     "Do not re-explain the mockup value after this signal unless the buyer asks another objection.",
 )
 
 EMAIL_CLOSE_MARKERS = (
-    "Perfect, I'm sending it to mike@northsideauto.com, and you can reply there with questions.",
-    "Perfect, I'll send it to mike@northsideauto.com after this call, and you can reply there with questions.",
+    "Perfect, I'll send it to mike@example.com after this call. Talk soon.",
+    "Yeah, you can reply to that email.",
     "Do not ask another discovery question after email is provided unless the email is unclear or the buyer asks a new question.",
 )
 
@@ -52,12 +52,12 @@ VALUE_ROTATION_MARKERS = (
     "First answer: acknowledge the current channel is useful, then add one concrete missing function.",
     "Second challenge: use a different mechanism.",
     "Third challenge: answer with the most practical operational benefit or disqualify.",
-    "Instagram is your gallery. The website is your booking filter.",
-    "so the people who message are closer to ready.",
+    "Instagram is where people notice you. The website is where people who don't follow you yet decide whether to book.",
+    "It can show services, starting prices if you want them shown, policies, FAQs, reviews, and booking rules before they DM you.",
     "It can also cut down repetitive DMs: how much, where are you, do you do color, what are your policies, how do I book?",
     "Google Maps helps people find you. The website helps them decide: services, proof, hours, location, FAQs, and what to do next.",
-    "Maps might get the click. The site can make emergency services, service area, reviews, and tap-to-call obvious before they choose who to call.",
-    "The site can pre-qualify quote requests: service areas, one-time vs recurring, move-in/move-out, what is included, and how to request a quote.",
+    "Maps may get the click. The site helps someone in a stressful moment trust you fast: emergency services, service area, reviews, and tap-to-call.",
+    "The site can work as a quote filter: service area, one-time versus recurring, move-in/move-out, what's included, and how to request a quote.",
 )
 
 SEO_MARKERS = (
@@ -107,6 +107,19 @@ def assert_no_unbounded_seo_claims(label: str, text: str) -> None:
             )
 
 
+def assert_no_forbidden_positive_phrases(label: str, text: str) -> None:
+    forbidden = ("thanks for confirming", "organized information")
+    safe_context = ("do not", "avoid", "forbidden", "buyer-facing words to avoid")
+    for line_number, raw_line in enumerate(text.splitlines(), start=1):
+        line = raw_line.lower()
+        if not any(phrase in line for phrase in forbidden):
+            continue
+        assert_condition(
+            any(marker in line for marker in safe_context),
+            f"{label} line {line_number} contains disallowed buyer-facing phrase: {raw_line}",
+        )
+
+
 def main() -> None:
     prompt_text = read_text(PROMPT)
     overlay_text = read_text(OVERLAY)
@@ -119,7 +132,7 @@ def main() -> None:
     assert_contains("terminal email close", combined, EMAIL_CLOSE_MARKERS)
     assert_contains("value angle rotation", combined, VALUE_ROTATION_MARKERS)
     assert_contains("SEO local search repair", combined, SEO_MARKERS)
-    assert_absent("buyer-facing package", combined, ("Thanks for confirming", "organized information"))
+    assert_no_forbidden_positive_phrases("buyer-facing package", combined)
     for line_number, raw_line in enumerate(combined.splitlines(), start=1):
         line = raw_line.lower()
         if "clearer online presence" in line:

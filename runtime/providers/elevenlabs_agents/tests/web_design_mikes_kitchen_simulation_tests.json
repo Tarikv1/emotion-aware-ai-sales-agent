@@ -33,7 +33,8 @@
     "natural_two_step_email_close": "buyer provides email; agent confirms normalized email; buyer confirms; agent closes. do not fail if the simulated conversation ends immediately after the buyer provides the email and the agent never receives another turn. fail if the agent receives a turn after email and does not confirm the normalized email. fail if the agent continues discovery after email. fail if the agent re-pitches after email. fail if the agent ignores buyer confirmation and keeps talking. fail if the agent never closes after email confirmation.",
     "name_capture": "do not fail if the buyer gave their name earlier in the call.",
     "seo_value": "SEO answers should be sales-forward but non-guaranteed.",
-    "elite_operating_contract": "soft agreement does not immediately trigger email capture; accepted mockup triggers email capture; buyer gives email -> agent confirms normalized email -> buyer confirms -> agent closes; gatekeeper pass-along plus callback closes cleanly; SEO answer is confident but non-guaranteed; cost drivers explain real project complexity; salon Instagram objection gets a real difference, not generic one-place language; repeated clearer homepage as main value fails; disqualification when buyer only wants guaranteed SEO or pay-per-lead."
+    "elite_operating_contract": "soft agreement does not immediately trigger email capture; accepted mockup triggers email capture; buyer gives email -> agent confirms normalized email -> buyer confirms -> agent closes; gatekeeper pass-along plus callback closes cleanly; SEO answer is confident but non-guaranteed; cost drivers explain real project complexity; salon Instagram objection gets a real difference, not generic one-place language; repeated clearer homepage as main value fails; disqualification when buyer only wants guaranteed SEO or pay-per-lead.",
+    "elite_consistency_cleanup": "That makes sense alone does not trigger email capture. Okay, I see what you mean is soft agreement, not a send commitment. Accepted mockup signal triggers email capture. Email provided triggers normalized email confirmation. Email confirmation triggers short close. Business-impact answers do not start with caveat unless buyer asked for guarantee. Universal value guidance does not conflict with prompt. Campaign profile does not contain major state-machine behavior blocks. SEO answer is confident but non-guaranteed. Cost answer explains real cost drivers. No guaranteed customer/ranking/revenue claims. No clearer page/homepage/path as main value argument."
   },
   "tests": [
     {
@@ -203,6 +204,32 @@
         "buyer_temperature": "cost_skeptical",
         "target_outcome": "transparent_cost_scope",
         "scenario_expected_turns": "5-9"
+      }
+    },
+    {
+      "test_id": "sim_026_soft_agreement_okay_i_see_not_email_capture",
+      "type": "simulation",
+      "simulation_max_turns": 12,
+      "simulation_scenario": "The simulated user is the owner of Mike's Kitchen. After a concise value answer, they only say 'Okay, I see what you mean' or 'That makes sense.' They have not asked to see the mockup and have not given an email.",
+      "success_condition": "The full conversation passes if That makes sense alone does not trigger email capture. Okay, I see what you mean is soft agreement, not a send commitment. The agent should ask `Want me to send the mockup so you can judge it?` or equivalent and should not ask for email until the buyer gives a send signal. It fails if the agent treats the soft agreement as accepted mockup, asks for email immediately, starts new discovery, or re-pitches.",
+      "dynamic_variables": {
+        "simulation_focus": "026_soft_agreement_not_email_capture",
+        "buyer_temperature": "soft_agreement_only",
+        "target_outcome": "soft_commitment_question",
+        "scenario_expected_turns": "4-8"
+      }
+    },
+    {
+      "test_id": "sim_026_business_impact_no_caveat_first",
+      "type": "simulation",
+      "simulation_max_turns": 12,
+      "simulation_scenario": "The simulated user is the owner of Mike's Kitchen and asks, 'How would a website actually help my restaurant?' They are asking about business impact, not asking for a guarantee.",
+      "success_condition": "The full conversation passes if Business-impact answers do not start with caveat unless buyer asked for guarantee. The agent should start with a commercial mechanism, name a concrete buyer action such as checking menu, hours, location, reviews, reservation, order, or call options, and only add a precise caveat if needed. It fails if the answer opens with `Not as a guarantee`, leads with compliance-style caveats, uses clearer homepage as the main value, or makes guaranteed customer/ranking/revenue claims.",
+      "dynamic_variables": {
+        "simulation_focus": "026_business_impact_mechanism_first",
+        "buyer_temperature": "curious_skeptical",
+        "target_outcome": "value_answer_without_caveat_first",
+        "scenario_expected_turns": "4-8"
       }
     }
   ]

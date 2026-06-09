@@ -73,9 +73,9 @@ DENTAL_COST_ANSWER = (
 )
 
 LOCAL_SEO_ANSWER = (
-    "That's the goal, yes - not as a page-one guarantee, but a real website gives Google a proper page to read: "
-    "your services, location, service area, photos, reviews, and booking info. Instagram can show up too, but "
-    "it's not as strong as having a dedicated local page built around what people are searching for."
+    "That's the goal, yes - not as a page-one promise. A dedicated site gives Google a proper page to read: "
+    "your services, location, service area, photos, reviews, and booking or call info. Instagram can show up too, "
+    "but it's not built around local search the same way a website can be."
 )
 
 LOCAL_SEO_MECHANISMS = (
@@ -102,11 +102,11 @@ SEO_FORBIDDEN_MARKERS = (
 WEAK_PHRASE_RULE_MARKERS = (
     "\"clearer homepage,\" \"clearer page,\" and \"clearer path\" may be used once per conversation as supporting language, but never as the main value argument.",
     "The main value must be one of these concrete mechanisms",
-    "Instagram is the gallery. The website is the booking filter.",
+    "Instagram is where people notice you. The website is where people who don't follow you yet decide whether to book.",
     "Google Maps helps them find you. The website helps them choose.",
     "Maps may get the click. The site helps them trust and call faster.",
     "The site lets people check services, hours, reviews, and call before they gamble on a shop.",
-    "The site pre-qualifies quote requests before the owner spends time replying.",
+    "The site can work as a quote filter",
 )
 
 TERMINAL_EMAIL_MARKERS = (

@@ -2,9 +2,22 @@
 
 Layer: Campaign Profile And Facts
 
-This file owns facts, not generic prompt rules. Campaign overlay and universal sales guidance must not override these facts.
+This file owns facts, not generic prompt rules or state-machine behavior. Campaign overlay and universal sales guidance must not override these facts.
 
-Campaign Profile owns exact facts and forbidden claims. Campaign Overlay owns Atlas-specific sales tactics. Universal category files stay generic. No campaign facts should live in universal category files. Do not reattach the giant universal_sales_core.md as active KB. Do not rely on hidden assumptions that belong in dynamic variables or campaign facts.
+Campaign Profile owns:
+
+- exact offer
+- prices
+- assurance facts
+- approved demand-capture facts
+- approved selling mechanisms
+- vertical mechanisms
+- cost drivers
+- SEO/local search allowed and forbidden claims
+- send/callback capabilities as facts
+- forbidden claims
+
+Campaign Overlay owns Atlas-specific sales tactics. The system prompt owns runtime state priority. Universal category files stay generic. No campaign facts should live in universal category files. Do not reattach the giant universal_sales_core.md as active KB. Do not rely on hidden assumptions that belong in dynamic variables or campaign facts.
 
 ## Campaign Identity
 
@@ -114,25 +127,17 @@ Business-impact search answer: "Yes, that's one of the main reasons to have a si
 
 Business-impact calls answer: "It can help with the people who are already looking. If they find you on Google, Maps, Instagram, or through a referral, the site can make it easier to trust you and call instead of bouncing to another business. I won't promise a number, but the mockup shows whether that call path is stronger."
 
-Salon or Instagram commercial objection: "Instagram is where people notice you. The website is where people who don't follow you yet decide whether to book. It can show services, starting prices if you want them shown, policies, FAQs, reviews, and booking rules before they DM you. That can cut down the back-and-forth and make the people who message closer to ready."
+Salon or Instagram commercial objection: "Instagram is where people notice you. The website is where people who don't follow you yet decide whether to book."
 
-Salon or Instagram objection: "Instagram is the gallery. The website is the booking filter. It can show services, starting prices if you want them shown, policies, FAQs, reviews, and booking rules before they DM you - so the people who message are closer to ready."
-
-Salon or Instagram alternate wording: "Instagram is your gallery. The website is your booking filter. It can show services, starting prices if you want them shown, policies, FAQs, reviews, and booking rules before they DM you - so the people who message are closer to ready."
-
-Salon or Instagram challenge: "It's not just duplicating Instagram. Instagram is the gallery; the site is the booking filter."
+Salon or Instagram booking filter detail: "It can show services, starting prices if you want them shown, policies, FAQs, reviews, and booking rules before they DM you."
 
 Salon or Instagram supporting clarity: "The mockup would show a clearer page where people can check services, prices, policies, reviews, and booking before they DM you."
-
-Salon or Instagram supporting clarity: "The mockup would show a clearer page where people can check services, starting prices, policies, reviews, and booking before they DM you."
 
 Salon or Instagram second challenge: "It can also cut down repetitive DMs: how much, where are you, do you do color, what are your policies, how do I book?"
 
 Auto repair trust or search objection: "If someone is already comparing auto shops, the site can show services, diagnostics, hours, location, reviews, and the phone path before they call. It gives them a reason to trust the shop faster instead of guessing from a map listing alone."
 
-Mechanic objection: "Maps gets you discovered. The site helps someone decide you're the shop to call. If they're comparing three mechanics, the site can show diagnostics, repairs, reviews, hours, location, and tap-to-call before they gamble on a random listing."
-
-Mechanic direct objection: "Maps gets you discovered. The site helps someone decide you're the shop to call by showing diagnostics, repairs, hours, location, reviews, and tap-to-call before they gamble on a random listing."
+Mechanic objection: "Maps gets you discovered. The site helps someone decide you're the shop to call. It can show diagnostics, repairs, hours, location, reviews, and tap-to-call before they gamble on a random listing."
 
 Auto repair supporting clarity: "For an auto shop, it can make the page clearer around diagnostics, hours, reviews, location, and tap-to-call before someone chooses who to call."
 
@@ -140,27 +145,11 @@ Auto repair practical trust objection: "The site lets people check services, hou
 
 Google Maps objection: "Google Maps helps people find you. The website helps them decide: services, proof, hours, location, FAQs, and what to do next."
 
-Google Maps direct objection: "Google Maps helps them find you. The website helps them choose."
-
 Restaurant or Google Maps objection: "Google Maps helps them find you. The site helps them choose. Menu, hours, photos, location, reviews, and reservation or order options are what turn curiosity into action."
 
-Restaurant direct objection: "Google Maps helps them find you. The website helps them choose: menu, hours, photos, location, reviews, and reservation or order options."
+Plumber objection: "Maps may get the click. The site helps someone in a stressful moment trust you fast: emergency services, service area, reviews, and tap-to-call."
 
-Plumber objection: "Maps might get the click. The site helps someone in a stressful moment trust you fast: emergency services, service area, reviews, and tap-to-call."
-
-Plumber or emergency direct objection: "Google Maps may get the click. The website helps someone in a stressful moment trust you faster: emergency services, service area, reviews, and tap-to-call before they choose who to call."
-
-Plumber or emergency search objection: "Maps might get the click. The site can make emergency services, service area, reviews, and tap-to-call obvious before they choose who to call."
-
-Maps trust objection: "Maps may get the click. The site helps them trust and call faster."
-
-Cleaning quote filter objection: "The site can filter quote requests before you spend time replying: service areas, recurring vs one-time, move-in/move-out, what's included, and how to request a quote."
-
-Cleaning direct quote filter objection: "The site can work as a quote filter: service area, one-time versus recurring, move-in/move-out, what's included, and how to request a quote."
-
-Cleaning quote request objection: "The site can pre-qualify quote requests: service areas, one-time vs recurring, move-in/move-out, what is included, and how to request a quote."
-
-Cleaning practical quote filter objection: "The site pre-qualifies quote requests before the owner spends time replying."
+Cleaning quote filter objection: "The site can work as a quote filter: service area, one-time versus recurring, move-in/move-out, what's included, and how to request a quote."
 
 Local search objection: "That's the goal, yes - not as a page-one guarantee, but a real website gives Google a proper page to read: your services, location, service area, photos, reviews, and booking info. Instagram can show up too, but it's not as strong as having a dedicated local page built around what people are searching for."
 
@@ -280,58 +269,16 @@ Vertical cost drivers:
 - restaurant: menu/reservation/order flow, photos, hours, location, online ordering integration if needed
 - mechanic: service pages, diagnostics/repair categories, reviews, hours, click-to-call, quote request
 
-## Approved Send And Callback Facts
+## Send And Callback Capability Facts
 
-- Soft agreement is not a send commitment. If the buyer only says "That makes sense.", "I get it.", "That's interesting.", or "Fair enough.", ask: "Want me to send the mockup so you can judge it?" Do not ask for email after soft agreement alone unless the buyer also indicates they want to see the mockup.
-- Commitment / send signal includes "How do I see it?", "Send it over.", "I'll take a look.", "Go ahead.", "Can I see the mockup?", "Where do I see it?", or buyer gives email. Use: "Sure - what's the best email for it?"
-- If the buyer accepts the mockup but has not provided an email or approved destination, ask what email or approved send path to use.
 - Verbal email spell-outs are valid contact details when the address is clear.
 - The agent may normalize obvious forms such as `name at domain dot com` into `name@domain.com` and confirm the destination.
 - Immediate send timing is approved for the free mockup link after a buyer gives a clear email address.
 - If the buyer asks whether it is being sent now, present-action wording such as "I'm sending it now to [email]" is approved.
 - If immediate send is not supported in a future campaign process, use future wording instead.
-- Natural two-step email close:
-  - Step 1 - after a clear email: confirm the exact normalized email only.
-  - Step 2 - after the buyer confirms the email: close naturally.
-- If the email is clear, normalize obvious email spell-outs before confirming.
-- Do not ask another discovery question after email is provided.
-- Do not ask a new discovery question after email.
-- Do not re-pitch after email is provided.
-- Do not pitch again after email.
-- No more "what else should we focus on?" after email.
-- Do not over-explain the reply path unless the buyer asks.
-- If the buyer asks whether they can reply to the email, answer yes briefly: "Yeah, you can reply to that email."
-- If the buyer gives email and says "send it there" or "that's correct" in the same turn, Emma may close in one turn.
-- If the buyer says "north side auto repair at gmail dot com", confirm `northsideautorepair@gmail.com`.
-- Email confirmation example: "Got it - northsideautorepair@gmail.com. Is that right?"
-- Email confirmation example: "Perfect, I've got maya@lunahair.com. Is that the right email for the mockup?"
-- Email confirmation example: "Perfect, I've got maya@lunahair.com. Is that the best email for the mockup?"
-- Email confirmation example: "Got it, info@brightlanddental.com - that's the best place to send it?"
-- Email confirmation example: "Got it, info@brightlanddental.com - that's the right place to send it?"
-- Same-turn email confirmation example: "Perfect, I'll send it to mike@example.com after this call. Talk soon."
-- Terminal close after email confirmation: if the buyer says yes, correct, that's right, sounds good, got it, thanks, talk soon, or okay bye, close with "Perfect. I'll send it there after this call. Talk soon.", "Great, I'll send it over. Have a good one.", "Perfect, I'll send it there. Speak soon.", "Perfect. I'll send it over. Talk soon.", "Thanks, have a good one.", or "Great, I'll send it there. Speak soon."
-- Do not ask another discovery question after email is provided unless the email is unclear or the buyer asks a new question.
 - Buyer-instructed public business-source lookup is a follow-up handoff, not a claim that an email was already found or that the mockup was already sent.
 - No approved callback phone number is configured in this package. Do not invent one.
 - The agent may confirm a callback window.
-- Gatekeeper pass-along note: "Sure. Just let them know Emma from Atlas Web Studio called about a free homepage mockup for {{business_name}}."
-- Gatekeeper pass-along note with callback window: "Perfect, I'll call back after {{callback_window}} and ask for the owner. Thanks for passing that along."
-- Gatekeeper pass-along note without callback window: "Sure. Just let them know Emma from Atlas Web Studio called about a free homepage mockup for {{business_name}}. When is usually a better time to reach the owner?"
-- Gatekeeper callback close: "Perfect, I'll call back after 2 and ask for the owner. Thanks for passing that along."
-- For an after 2 window, this becomes: "Perfect, I'll call back after 2 and ask for the owner. Thanks for passing that along."
-- If the gatekeeper then says "ok" or "got it," close with: "Thanks. Have a good one."
-- Do not add extra sales pitch details to the gatekeeper note unless asked.
-- No extra pitch after callback window is confirmed.
-- If {{contact_name_if_known}} is empty and the person confirms they are the owner, manager, or decision-maker, ask their name before pitching.
-- Name capture question: "Got it - what's your name?"
-- After name is provided: "Nice to meet you, {{contact_name}}. I'll keep it quick."
-- If the buyer asks what this is about first, answer briefly first.
-- Do not say "Thanks for confirming."
-- Soft agreement signals include: "That makes sense.", "I get it.", "That's interesting.", and "Fair enough." Ask: "Want me to send the mockup so you can judge it?"
-- Accepted mockup signals include: "How do I see it?", "How do I see the mockup?", "Can I see the mockup?", "Can I see it?", "Send it over.", "How do I get it?", "I'll take a look.", "Show me the mockup.", "Where do I see it?", and "Go ahead."
-- Accepted mockup contact capture: "Sure - what's the best email for it?"
-- Alternate accepted mockup contact capture: "Absolutely. What's the best email for the mockup?"
-- Do not re-explain the mockup value after this signal unless the buyer asks another objection.
 
 ## Approved Next Steps
 

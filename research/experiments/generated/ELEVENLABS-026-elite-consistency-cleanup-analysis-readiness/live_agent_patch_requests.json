@@ -1,0 +1,6 @@
+{
+  "package_id": "ELEVENLABS-026-elite-consistency-cleanup-analysis-readiness",
+  "live_provider_calls_made": false,
+  "requests": [],
+  "manual_apply_note": "No ElevenLabs API call was made. Use the active prompt, knowledge base, tests, and analysis files in the repo when applying this package manually."
+}
