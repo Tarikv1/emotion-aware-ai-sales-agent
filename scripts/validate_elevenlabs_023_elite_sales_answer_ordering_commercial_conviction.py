@@ -16,11 +16,12 @@ PROFILE = KB_ROOT / "atlas_web_studio_web_design_campaign_profile.md"
 
 
 ORDER_MARKERS = (
-    "Direct commercial answer first",
-    "Specific buyer mechanism second",
-    "No-guarantee caveat third, only if needed",
-    "Mockup proof step fourth",
-    "Small next step fifth",
+    "confident commercial answer",
+    "buyer-specific mechanism",
+    "status quo consequence without fear tactics",
+    "caveat only if needed",
+    "mockup as proof step",
+    "small next step",
 )
 
 BUSINESS_IMPACT_EXAMPLES = (
@@ -49,10 +50,12 @@ COST_JUDGMENT_MARKERS = (
 )
 
 ACCEPTED_INTEREST_MARKERS = (
-    "That makes sense",
+    "Soft agreement",
+    "Want me to send the mockup so you can judge it?",
+    "Commitment / send signal",
     "Go ahead",
     "stop selling and ask for the send path",
-    "Sure - what email should I send it to?",
+    "Sure - what's the best email for it?",
 )
 
 DISQUALIFICATION_MARKERS = (
@@ -73,7 +76,7 @@ NATURAL_SPEECH_MARKERS = (
 TERMINAL_EMAIL_MARKERS = (
     "Natural two-step email close",
     "normalize obvious email spell-outs",
-    "confirm the email only",
+    "confirm the exact normalized email only",
     "Terminal close after email confirmation",
     "Do not re-pitch after email is provided.",
     "Do not over-explain the reply path unless the buyer asks.",

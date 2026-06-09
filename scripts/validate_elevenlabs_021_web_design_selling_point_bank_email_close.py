@@ -61,7 +61,7 @@ SEO_FORBIDDEN = (
 EMAIL_CLOSE_MARKERS = (
     "Natural two-step email close",
     "normalize obvious email spell-outs",
-    "confirm the email only",
+    "confirm the exact normalized email only",
     "close naturally",
     "Do not ask another discovery question after email is provided",
     "Do not re-pitch after email is provided",
@@ -148,7 +148,7 @@ def assert_email_close(prompt_text: str, overlay_text: str, profile_text: str) -
     assert_contains("natural two-step email close rule", combined, EMAIL_CLOSE_MARKERS)
     assert_condition("north side auto repair at gmail dot com" in combined, "Email close examples must include spell-out normalization input")
     assert_condition("northsideautorepair@gmail.com" in combined, "Email close examples must confirm normalized email")
-    assert_condition("If the buyer asks whether they can reply to the email, answer yes briefly." in combined, "Reply path should be brief and buyer-triggered")
+    assert_condition("If the buyer asks whether they can reply to the email, answer yes briefly:" in combined, "Reply path should be brief and buyer-triggered")
     assert_condition("If the buyer gives email and says \"send it there\" or \"that's correct\" in the same turn, Emma may close in one turn." in combined, "Same-turn email confirmation exception missing")
 
 

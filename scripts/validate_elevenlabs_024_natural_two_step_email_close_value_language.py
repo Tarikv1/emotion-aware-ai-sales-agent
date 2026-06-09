@@ -28,17 +28,17 @@ PACKAGE_ROOT = (
 
 TWO_STEP_EMAIL_MARKERS = (
     "Natural two-step email close",
-    "Step 1 - after a clear email: confirm the email only.",
+    "Step 1 - after a clear email: confirm the exact normalized email only.",
     "Step 2 - after the buyer confirms the email: close naturally.",
     "normalize obvious email spell-outs before confirming",
     "Do not ask another discovery question after email is provided.",
     "Do not re-pitch after email is provided.",
     "Do not over-explain the reply path unless the buyer asks.",
-    "If the buyer asks whether they can reply to the email, answer yes briefly.",
+    "If the buyer asks whether they can reply to the email, answer yes briefly:",
     'If the buyer gives email and says "send it there" or "that\'s correct" in the same turn, Emma may close in one turn.',
     "Got it - northsideautorepair@gmail.com. Is that right?",
-    "Perfect, I've got maya@lunahair.com. Is that the best email for the mockup?",
-    "Got it, info@brightlanddental.com - that's the right place to send it?",
+    "Perfect, I've got maya@lunahair.com. Is that the right email for the mockup?",
+    "Got it, info@brightlanddental.com - that's the best place to send it?",
 )
 
 TERMINAL_CONFIRMATION_MARKERS = (
@@ -105,7 +105,6 @@ OLD_ONE_TURN_MARKERS = (
     "Perfect, I'm sending it to mike@northsideauto.com, and you can reply there with questions. Thanks, Mike.",
     "Perfect, I'll send it to mike@northsideauto.com after this call, and you can reply there with questions. Thanks, Mike.",
     "I understand your point",
-    "Thanks for confirming",
 )
 
 TEST_CRITERIA_MARKERS = (

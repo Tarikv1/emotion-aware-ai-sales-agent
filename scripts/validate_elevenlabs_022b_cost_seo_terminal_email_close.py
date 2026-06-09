@@ -111,7 +111,7 @@ WEAK_PHRASE_RULE_MARKERS = (
 
 TERMINAL_EMAIL_MARKERS = (
     "Natural two-step email close",
-    "Step 1 - after a clear email: confirm the email only.",
+    "Step 1 - after a clear email: confirm the exact normalized email only.",
     "Step 2 - after the buyer confirms the email: close naturally.",
     "Do not ask another discovery question after email is provided.",
     "Do not re-pitch after email is provided.",

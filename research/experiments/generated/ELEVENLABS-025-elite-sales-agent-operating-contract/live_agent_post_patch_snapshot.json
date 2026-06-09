@@ -1,0 +1,37 @@
+{
+  "package_id": "ELEVENLABS-025-elite-sales-agent-operating-contract",
+  "provider": "elevenlabs",
+  "mode": "offline-package",
+  "live_provider_calls_made": false,
+  "snapshot_status": "repo-source-updated-provider-not-called",
+  "active_structure": {
+    "first_message": "runtime/providers/elevenlabs_agents/prompts/web_design_first_message.txt",
+    "system_prompt": "runtime/providers/elevenlabs_agents/prompts/web_design_atlas_sales_prompt.md",
+    "knowledge_base": [
+      "runtime/providers/elevenlabs_agents/knowledge_base/universal_sales_core_summary.md",
+      "runtime/providers/elevenlabs_agents/knowledge_base/universal_sales_categories/buyer_moves.md",
+      "runtime/providers/elevenlabs_agents/knowledge_base/universal_sales_categories/buyer_journey_jobs.md",
+      "runtime/providers/elevenlabs_agents/knowledge_base/universal_sales_categories/buyer_enablement_and_sensemaking.md",
+      "runtime/providers/elevenlabs_agents/knowledge_base/universal_sales_categories/discovery_question_design.md",
+      "runtime/providers/elevenlabs_agents/knowledge_base/universal_sales_categories/value_and_roi_framing.md",
+      "runtime/providers/elevenlabs_agents/knowledge_base/universal_sales_categories/objection_status_quo_and_competition.md",
+      "runtime/providers/elevenlabs_agents/knowledge_base/universal_sales_categories/trust_and_risk_repair.md",
+      "runtime/providers/elevenlabs_agents/knowledge_base/universal_sales_categories/proof_and_evidence_handling.md",
+      "runtime/providers/elevenlabs_agents/knowledge_base/universal_sales_categories/conversation_repair.md",
+      "runtime/providers/elevenlabs_agents/knowledge_base/universal_sales_categories/next_step_policy.md",
+      "runtime/providers/elevenlabs_agents/knowledge_base/universal_sales_categories/disqualification_policy.md",
+      "runtime/providers/elevenlabs_agents/knowledge_base/universal_sales_categories/ethical_persuasion_boundaries.md",
+      "runtime/providers/elevenlabs_agents/knowledge_base/universal_sales_categories/motion_specific_playbooks.md",
+      "runtime/providers/elevenlabs_agents/knowledge_base/universal_sales_categories/call_quality_rubrics.md",
+      "runtime/providers/elevenlabs_agents/knowledge_base/atlas_web_studio_web_design_campaign_overlay.md",
+      "runtime/providers/elevenlabs_agents/knowledge_base/atlas_web_studio_web_design_campaign_profile.md"
+    ],
+    "dynamic_variables_source": "runtime/providers/elevenlabs_agents/variables/mikes_kitchen_dynamic_variable_defaults.json",
+    "simulation_tests": [
+      "runtime/providers/elevenlabs_agents/tests/web_design_mikes_kitchen_simulation_tests.json",
+      "runtime/providers/elevenlabs_agents/tests/web_design_cross_vertical_local_business_simulation_tests.json"
+    ]
+  },
+  "manual_dashboard_sync_required": true,
+  "production_green_claimed": false
+}

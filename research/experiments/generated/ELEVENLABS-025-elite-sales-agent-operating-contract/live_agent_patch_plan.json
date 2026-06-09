@@ -1,0 +1,85 @@
+{
+  "checkpoint_id": "ELEVENLABS-025",
+  "package_id": "ELEVENLABS-025-elite-sales-agent-operating-contract",
+  "provider": "elevenlabs",
+  "mode": "offline-package",
+  "source_of_truth": "repo",
+  "dashboard_role": "managed runtime and manual upload surface",
+  "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+  "agent_name": "Atlas Universal Sales Core",
+  "api_base_url": "https://api.elevenlabs.io",
+  "api_key_env_var": "ELEVENLABS_API_KEY",
+  "live_provider_calls_made": false,
+  "private_customer_data_used": false,
+  "provider_writes_require": [
+    "--live",
+    "--confirm-provider-write"
+  ],
+  "scope": [
+    "turn-level decision policy",
+    "soft agreement versus accepted mockup state split",
+    "natural two-step email close state machine",
+    "gatekeeper callback close state machine",
+    "owner name capture polish",
+    "elite value, local SEO, and cost-driver answer logic",
+    "clearer-page supporting-language guard",
+    "simulation test criteria update"
+  ],
+  "updated_repo_files": [
+    {
+      "path": "runtime/providers/elevenlabs_agents/prompts/web_design_atlas_sales_prompt.md"
+    },
+    {
+      "path": "runtime/providers/elevenlabs_agents/knowledge_base/atlas_web_studio_web_design_campaign_overlay.md"
+    },
+    {
+      "path": "runtime/providers/elevenlabs_agents/knowledge_base/atlas_web_studio_web_design_campaign_profile.md"
+    },
+    {
+      "path": "runtime/providers/elevenlabs_agents/tests/web_design_mikes_kitchen_simulation_tests.json"
+    },
+    {
+      "path": "runtime/providers/elevenlabs_agents/tests/web_design_cross_vertical_local_business_simulation_tests.json"
+    },
+    {
+      "path": "scripts/validate_elevenlabs_025_elite_sales_agent_operating_contract.py"
+    }
+  ],
+  "knowledge_base_upload_requests": [
+    {
+      "request_id": "upload_knowledge_base::atlas_web_studio_web_design_campaign_overlay",
+      "method": "POST",
+      "endpoint": "/v1/convai/knowledge-base/file",
+      "source_path": "runtime/providers/elevenlabs_agents/knowledge_base/atlas_web_studio_web_design_campaign_overlay.md",
+      "name": "atlas_web_studio_web_design_campaign_overlay.md",
+      "content_type": "text/markdown",
+      "requires_api_key_env_var": "ELEVENLABS_API_KEY"
+    },
+    {
+      "request_id": "upload_knowledge_base::atlas_web_studio_web_design_campaign_profile",
+      "method": "POST",
+      "endpoint": "/v1/convai/knowledge-base/file",
+      "source_path": "runtime/providers/elevenlabs_agents/knowledge_base/atlas_web_studio_web_design_campaign_profile.md",
+      "name": "atlas_web_studio_web_design_campaign_profile.md",
+      "content_type": "text/markdown",
+      "requires_api_key_env_var": "ELEVENLABS_API_KEY"
+    }
+  ],
+  "agent_config_patch": {
+    "request_id": "patch_agent::{agent_id}",
+    "method": "PATCH",
+    "endpoint": "/v1/convai/agents/agent_7801kt0g32zxf4f8x5zkykj7syty",
+    "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+    "status": "draft_only",
+    "patch_payload_path": "research/experiments/generated/ELEVENLABS-025-elite-sales-agent-operating-contract/live_agent_patch_payload.json",
+    "requires_current_dashboard_agent_json": true
+  },
+  "manual_upload_order": [
+    "Review prompt and KB files in repo",
+    "Upload updated campaign overlay and campaign profile if using dashboard KB documents",
+    "Patch the live prompt only with explicit provider-write confirmation",
+    "Create or update simulation tests with the 025 operating-contract criteria",
+    "Run ElevenLabs tests against the selected agent or branch",
+    "Copy agent JSON config back into the repo for drift review"
+  ]
+}

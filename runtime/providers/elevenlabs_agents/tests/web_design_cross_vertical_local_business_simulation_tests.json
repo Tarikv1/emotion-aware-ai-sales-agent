@@ -26,7 +26,8 @@
     "stronger_value_mechanism": "After a short no or non-guarantee boundary, the agent should use a stronger campaign-safe mechanism such as a search-friendly page people can check before calling, service-area/service-match clarity, trust before a call, one shareable link, proof-before-purchase, or a local SEO foundation that helps Google understand services and area without promising rankings. Weak filler such as clearer page, something to judge, potential customers something to judge, or initial judgments should fail when used as the main value answer.",
     "public_profile_lookup_handoff": "If the campaign permits it and the buyer explicitly says the contact email is on a public business source such as Facebook, Google, or the business website, the agent may accept that as a post-call lookup handoff. It must not claim it has already found or sent to that email.",
     "natural_two_step_email_close": "buyer provides email; agent confirms normalized email; buyer confirms; agent closes. do not fail if the simulated conversation ends immediately after the buyer provides the email and the agent never receives another turn. fail if the agent receives a turn after email and does not confirm the normalized email. fail if the agent continues discovery after email. fail if the agent re-pitches after email. fail if the agent ignores buyer confirmation and keeps talking. fail if the agent never closes after email confirmation.",
-    "seo_value": "SEO answers should be sales-forward but non-guaranteed."
+    "seo_value": "SEO answers should be sales-forward but non-guaranteed.",
+    "elite_operating_contract": "soft agreement does not immediately trigger email capture; accepted mockup triggers email capture; buyer gives email -> agent confirms normalized email -> buyer confirms -> agent closes; gatekeeper pass-along plus callback closes cleanly; SEO answer is confident but non-guaranteed; cost drivers explain real project complexity; salon Instagram objection gets a real difference, not generic one-place language; repeated clearer homepage as main value fails; disqualification when buyer only wants guaranteed SEO or pay-per-lead."
   },
   "tests": [
     {
@@ -201,6 +202,94 @@
         "buyer_temperature": "helpful_non_decision_maker",
         "target_outcome": "owner_callback_or_short_note",
         "scenario_expected_turns": "5-10"
+      }
+    },
+    {
+      "test_id": "sim_025_gatekeeper_callback_clean_close",
+      "type": "simulation",
+      "simulation_max_turns": 12,
+      "simulation_scenario": "The simulated user is a receptionist at FreshNest Cleaning, not the owner. They can pass along a note and say the owner is available after 2. After the agent confirms the callback, the user says 'ok' or 'got it.'",
+      "success_condition": "The full conversation passes if gatekeeper pass-along plus callback closes cleanly. The agent should not pitch the full value proposition to the gatekeeper, should use a short note only if needed, should say `Perfect, I'll call back after 2 and ask for the owner. Thanks for passing that along.`, and after ok/got it should close with `Thanks. Have a good one.` It fails if the agent adds extra pitch details, asks the staff member to evaluate the offer, restarts selling, or omits the close.",
+      "dynamic_variables": {
+        "business_name": "FreshNest Cleaning",
+        "business_type": "home cleaning service",
+        "vertical": "home_cleaning",
+        "city": "Charlotte",
+        "callback_window": "2",
+        "simulation_focus": "025_gatekeeper_callback_close",
+        "buyer_temperature": "helpful_gatekeeper",
+        "target_outcome": "callback_close",
+        "scenario_expected_turns": "5-8"
+      }
+    },
+    {
+      "test_id": "sim_025_seo_confident_non_guaranteed",
+      "type": "simulation",
+      "simulation_max_turns": 14,
+      "simulation_scenario": "The simulated user owns Apex Plumbing and asks whether a website helps them show up on Google. They do not want vague caveats first, but they also reject ranking guarantees.",
+      "success_condition": "The full conversation passes if SEO answer is confident but non-guaranteed. A good answer says the goal is local search visibility, not a page-one promise, and explains that a dedicated site gives Google a proper page to read: services, location, service area, photos, reviews, and booking or call info. It may add basic local search foundations such as service sections, search-friendly headings, location wording, service-area wording, mobile structure, and clear call/book/quote actions. It fails if the agent guarantees rankings, traffic, customers, calls, or numerical SEO lift.",
+      "dynamic_variables": {
+        "business_name": "Apex Plumbing",
+        "business_type": "plumbing company",
+        "vertical": "plumbing",
+        "city": "Denver",
+        "service_area": "Denver metro",
+        "simulation_focus": "025_seo_confident_non_guaranteed",
+        "buyer_temperature": "seo_curious_skeptical",
+        "target_outcome": "safe_local_search_answer",
+        "scenario_expected_turns": "5-9"
+      }
+    },
+    {
+      "test_id": "sim_025_salon_instagram_booking_filter_difference",
+      "type": "simulation",
+      "simulation_max_turns": 14,
+      "simulation_scenario": "The simulated user owns Luna Hair Studio and says Instagram already has photos and DMs, so a website sounds like duplication. They dislike generic one-place or online-presence language.",
+      "success_condition": "The full conversation passes if salon Instagram objection gets a real difference, not generic one-place language. A good answer says Instagram is where people notice you, while the website is where people who do not follow yet decide whether to book. It should explain services, starting prices if shown, policies, FAQs, reviews, and booking rules before DMs, or say Instagram is the gallery and the site is the booking filter. It fails if the main value is only clearer homepage, online presence, one place, or organization.",
+      "dynamic_variables": {
+        "business_name": "Luna Hair Studio",
+        "business_type": "hair salon",
+        "vertical": "hair_salon",
+        "city": "Tampa",
+        "known_social_presence": "Instagram",
+        "simulation_focus": "025_salon_instagram_booking_filter",
+        "buyer_temperature": "defensive_but_rational",
+        "target_outcome": "booking_filter_difference",
+        "scenario_expected_turns": "5-9"
+      }
+    },
+    {
+      "test_id": "sim_025_clearer_homepage_main_value_fails",
+      "type": "simulation",
+      "simulation_max_turns": 10,
+      "simulation_scenario": "The simulated user asks a broad value question such as 'what does a website actually do for me?' They should reject generic clearer homepage wording unless it is tied to a concrete business action.",
+      "success_condition": "The full conversation passes if repeated clearer homepage as main value fails. The agent may use clearer homepage, clearer page, or clearer path once as supporting language only, tied to a concrete action such as checking services, prices, policies, reviews, booking, quote request, service area, or tap-to-call. It fails if the headline answer is only `It gives you a clearer homepage` or repeats clearer-page language without a concrete business action.",
+      "dynamic_variables": {
+        "business_name": "Northside Auto Repair",
+        "business_type": "auto repair shop",
+        "vertical": "auto_repair",
+        "city": "Columbus",
+        "simulation_focus": "025_clearer_homepage_supporting_only",
+        "buyer_temperature": "skeptical_plain_language",
+        "target_outcome": "concrete_value_mechanism",
+        "scenario_expected_turns": "4-7"
+      }
+    },
+    {
+      "test_id": "sim_025_disqualify_guaranteed_seo_or_pay_per_lead",
+      "type": "simulation",
+      "simulation_max_turns": 10,
+      "simulation_scenario": "The simulated user says they only care about guaranteed page-one SEO or pay-per-lead performance and does not want a mockup unless Atlas guarantees leads.",
+      "success_condition": "The full conversation passes if disqualification when buyer only wants guaranteed SEO or pay-per-lead happens cleanly. The agent should say something like `If you only want guaranteed SEO rankings or pay-per-lead performance, we're probably not the right fit.` It should not keep chasing the mockup after that boundary. It fails if the agent promises rankings, traffic, customers, calls, bookings, leads, or keeps pitching after the disqualification.",
+      "dynamic_variables": {
+        "business_name": "Summit HVAC",
+        "business_type": "HVAC service company",
+        "vertical": "hvac",
+        "city": "Phoenix",
+        "simulation_focus": "025_disqualify_guaranteed_seo_pay_per_lead",
+        "buyer_temperature": "bad_fit_outcome_guarantee",
+        "target_outcome": "disqualification",
+        "scenario_expected_turns": "4-7"
       }
     }
   ]

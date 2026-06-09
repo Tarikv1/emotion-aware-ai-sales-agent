@@ -1,0 +1,33 @@
+{
+  "package_id": "ELEVENLABS-025-elite-sales-agent-operating-contract",
+  "provider": "elevenlabs",
+  "mode": "offline-package",
+  "live_provider_calls_made": false,
+  "patch_summary": {
+    "prompt_source": "runtime/providers/elevenlabs_agents/prompts/web_design_atlas_sales_prompt.md",
+    "knowledge_base_sources": [
+      "runtime/providers/elevenlabs_agents/knowledge_base/atlas_web_studio_web_design_campaign_overlay.md",
+      "runtime/providers/elevenlabs_agents/knowledge_base/atlas_web_studio_web_design_campaign_profile.md"
+    ],
+    "test_sources": [
+      "runtime/providers/elevenlabs_agents/tests/web_design_mikes_kitchen_simulation_tests.json",
+      "runtime/providers/elevenlabs_agents/tests/web_design_cross_vertical_local_business_simulation_tests.json"
+    ]
+  },
+  "behavior_changes": {
+    "call_state_logic": [
+      "Every buyer turn maps to role_state, buyer_state, turn_type, and next_action before Emma speaks.",
+      "Soft agreement asks for permission to send; it does not trigger email capture by itself.",
+      "Accepted mockup signals trigger one email question, then stop selling.",
+      "Clear email triggers normalized email confirmation only.",
+      "Email confirmation triggers one short close and no further selling.",
+      "Gatekeepers receive a short note or callback close, not a full value pitch."
+    ],
+    "value_logic": [
+      "Business-impact answers lead with the concrete commercial mechanism instead of default caveats.",
+      "Local SEO answers are confident but forbid rankings, traffic, customers, calls, and numerical lift guarantees.",
+      "Cost answers explain project complexity: pages, copy, workflows, integrations, ecommerce, migration, SEO/content work, and custom design.",
+      "Clearer-page language remains supporting only and must be tied to a concrete business action."
+    ]
+  }
+}

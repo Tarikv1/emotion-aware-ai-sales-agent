@@ -1,0 +1,43 @@
+{
+  "package_id": "ELEVENLABS-025-elite-sales-agent-operating-contract",
+  "provider": "elevenlabs",
+  "mode": "offline-package",
+  "live_provider_calls_made": false,
+  "requests": [
+    {
+      "request_id": "upload_knowledge_base::atlas_web_studio_web_design_campaign_overlay",
+      "method": "POST",
+      "endpoint": "/v1/convai/knowledge-base/file",
+      "source_path": "runtime/providers/elevenlabs_agents/knowledge_base/atlas_web_studio_web_design_campaign_overlay.md",
+      "requires_api_key_env_var": "ELEVENLABS_API_KEY",
+      "status": "draft_only"
+    },
+    {
+      "request_id": "upload_knowledge_base::atlas_web_studio_web_design_campaign_profile",
+      "method": "POST",
+      "endpoint": "/v1/convai/knowledge-base/file",
+      "source_path": "runtime/providers/elevenlabs_agents/knowledge_base/atlas_web_studio_web_design_campaign_profile.md",
+      "requires_api_key_env_var": "ELEVENLABS_API_KEY",
+      "status": "draft_only"
+    },
+    {
+      "request_id": "patch_agent::agent_7801kt0g32zxf4f8x5zkykj7syty",
+      "method": "PATCH",
+      "endpoint": "/v1/convai/agents/agent_7801kt0g32zxf4f8x5zkykj7syty",
+      "source_path": "runtime/providers/elevenlabs_agents/prompts/web_design_atlas_sales_prompt.md",
+      "requires_api_key_env_var": "ELEVENLABS_API_KEY",
+      "status": "draft_only"
+    },
+    {
+      "request_id": "create_or_update_tests::atlas_web_studio_025_operating_contract",
+      "method": "POST",
+      "endpoint": "/v1/convai/agents/agent_7801kt0g32zxf4f8x5zkykj7syty/tests",
+      "source_paths": [
+        "runtime/providers/elevenlabs_agents/tests/web_design_mikes_kitchen_simulation_tests.json",
+        "runtime/providers/elevenlabs_agents/tests/web_design_cross_vertical_local_business_simulation_tests.json"
+      ],
+      "requires_api_key_env_var": "ELEVENLABS_API_KEY",
+      "status": "draft_only"
+    }
+  ]
+}

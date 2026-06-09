@@ -32,7 +32,8 @@
   "evaluation_repair_notes": {
     "natural_two_step_email_close": "buyer provides email; agent confirms normalized email; buyer confirms; agent closes. do not fail if the simulated conversation ends immediately after the buyer provides the email and the agent never receives another turn. fail if the agent receives a turn after email and does not confirm the normalized email. fail if the agent continues discovery after email. fail if the agent re-pitches after email. fail if the agent ignores buyer confirmation and keeps talking. fail if the agent never closes after email confirmation.",
     "name_capture": "do not fail if the buyer gave their name earlier in the call.",
-    "seo_value": "SEO answers should be sales-forward but non-guaranteed."
+    "seo_value": "SEO answers should be sales-forward but non-guaranteed.",
+    "elite_operating_contract": "soft agreement does not immediately trigger email capture; accepted mockup triggers email capture; buyer gives email -> agent confirms normalized email -> buyer confirms -> agent closes; gatekeeper pass-along plus callback closes cleanly; SEO answer is confident but non-guaranteed; cost drivers explain real project complexity; salon Instagram objection gets a real difference, not generic one-place language; repeated clearer homepage as main value fails; disqualification when buyer only wants guaranteed SEO or pay-per-lead."
   },
   "tests": [
     {
@@ -150,6 +151,58 @@
         "buyer_temperature": "curious_but_scope_sensitive",
         "target_outcome": "optional_upsell_boundary_and_mockup_review",
         "scenario_expected_turns": "7-12"
+      }
+    },
+    {
+      "test_id": "sim_025_soft_agreement_does_not_trigger_email_capture",
+      "type": "simulation",
+      "simulation_max_turns": 12,
+      "simulation_scenario": "The simulated user is the owner of Mike's Kitchen. They hear a short value answer and respond only with a soft agreement such as 'That makes sense' or 'fair enough,' without asking to see the mockup. If the agent asks for email immediately, the user should push back that they did not agree to receive anything yet.",
+      "success_condition": "The full conversation passes if soft agreement does not immediately trigger email capture. The agent should ask a light commitment question such as `Want me to send the mockup so you can judge it?` and should not ask for email until the buyer says they want to see or receive the mockup. It fails if the agent treats 'That makes sense' as accepted mockup, asks for email after soft agreement alone, continues discovery after the buyer gives email, or uses robotic confirmation language.",
+      "dynamic_variables": {
+        "simulation_focus": "025_soft_agreement_not_email_capture",
+        "buyer_temperature": "softening_not_committed",
+        "target_outcome": "permission_before_email_capture",
+        "scenario_expected_turns": "5-9"
+      }
+    },
+    {
+      "test_id": "sim_025_accepted_mockup_triggers_email_capture",
+      "type": "simulation",
+      "simulation_max_turns": 12,
+      "simulation_scenario": "The simulated user explicitly commits to seeing the mockup with wording such as 'Send it over,' 'I'll take a look,' or 'How do I see it?' They have not provided an email yet.",
+      "success_condition": "The full conversation passes if accepted mockup triggers email capture. The agent should stop selling and ask one concise email question such as `Sure - what's the best email for it?` It fails if the agent asks another discovery question, re-pitches the website, or treats an accepted mockup request as a chance for a longer value explanation.",
+      "dynamic_variables": {
+        "simulation_focus": "025_accepted_mockup_email_capture",
+        "buyer_temperature": "ready_for_mockup",
+        "target_outcome": "email_capture",
+        "scenario_expected_turns": "4-8"
+      }
+    },
+    {
+      "test_id": "sim_025_email_two_step_confirmation_close",
+      "type": "simulation",
+      "simulation_max_turns": 14,
+      "simulation_scenario": "The simulated user accepts the mockup, provides a verbal email such as 'mike at mikes kitchen dot com,' waits for the agent to confirm the normalized address, then says 'yes, that's right.'",
+      "success_condition": "The full conversation passes if buyer gives email -> agent confirms normalized email -> buyer confirms -> agent closes. The agent should confirm only the normalized email after the email is provided, then use one short natural close after confirmation. It fails if the agent continues discovery after email, re-pitches after email, ignores buyer confirmation and keeps talking, or never closes after email confirmation.",
+      "dynamic_variables": {
+        "simulation_focus": "025_email_confirmation_close",
+        "buyer_temperature": "accepted_mockup",
+        "target_outcome": "two_step_email_close",
+        "scenario_expected_turns": "6-10"
+      }
+    },
+    {
+      "test_id": "sim_025_cost_drivers_real_project_complexity",
+      "type": "simulation",
+      "simulation_max_turns": 14,
+      "simulation_scenario": "The simulated user asks why a site could be closer to $5,000 than $1,000 and challenges vague feature lists. They want to know what actually drives cost for a restaurant site.",
+      "success_condition": "The full conversation passes if cost drivers explain real project complexity: core pages, standard layout, existing photos/copy, click-to-call, hours, location, reviews, and basic local search setup at the low end; custom copy, more pages, service-area pages, booking or quote workflows, integrations, ecommerce, content migration, advanced SEO/content work, or custom design at the higher end. It fails if the answer is only gallery, testimonials, clearer homepage, or generic polish.",
+      "dynamic_variables": {
+        "simulation_focus": "025_cost_driver_complexity",
+        "buyer_temperature": "cost_skeptical",
+        "target_outcome": "transparent_cost_scope",
+        "scenario_expected_turns": "5-9"
       }
     }
   ]
