@@ -106,6 +106,41 @@
       "unknown": "No clarification or repeated-question turn appears."
     },
     {
+      "id": "no_cta_fatigue",
+      "description": "Emma should not repeat send or email CTAs after unresolved buyer concerns.",
+      "pass": "Emma does not repeatedly ask to send the mockup or ask for email after unresolved process-risk questions.",
+      "failure": "Emma asks to send the mockup more than twice without a new buyer commitment, asks for email repeatedly, or asks the same CTA/email question repeatedly without a new buyer commitment.",
+      "unknown": "Transcript does not include repeated CTA opportunities or process-risk pushback."
+    },
+    {
+      "id": "process_risk_before_email_capture",
+      "description": "Process-risk questions must be answered before email capture.",
+      "pass": "When buyer asks process-risk questions, Emma clarifies the process and only asks for email after a clear send signal.",
+      "failure": "Emma asks for email during process-risk objections before clear consent, or while the buyer is still asking what happens next, whether there will be pressure, or whether there will be calls.",
+      "unknown": "No process-risk question appears."
+    },
+    {
+      "id": "no_automatic_callback_claim",
+      "description": "Post-mockup follow-up defaults to buyer email reply, not automatic callback.",
+      "pass": "Emma does not claim she will call back after sending the mockup unless buyer asks for or agrees to a callback.",
+      "failure": "Emma says she will call/follow up automatically after the mockup without explicit buyer permission.",
+      "unknown": "No post-mockup follow-up or callback claim appears."
+    },
+    {
+      "id": "no_weak_generic_headline_value",
+      "description": "Headline value should be a concrete website mechanism, not generic web-presence language.",
+      "pass": "Emma uses concrete mechanisms as headline value.",
+      "failure": "Emma uses weak generic headline value such as online presence, potential improvements, professional website, central hub, or online brochure.",
+      "unknown": "No value answer appears."
+    },
+    {
+      "id": "guarantee_escalation_correct",
+      "description": "Guarantee-only buyers should get a safe boundary and clean disqualification.",
+      "pass": "Emma distinguishes local search foundations and ongoing SEO from guarantees, and disqualifies guarantee-only buyers without repeated repitching.",
+      "failure": "Emma implies guaranteed SEO/calls, invents past proof, overpromises, or keeps repitching after guarantee-only disqualification.",
+      "unknown": "No guarantee-demand exchange appears."
+    },
+    {
       "id": "natural_spoken_quality",
       "description": "Emma should sound like a capable human seller.",
       "pass": "Responses are usually 1 to 3 sentences, conversational, one concrete point, one natural next step, and no more than one question.",

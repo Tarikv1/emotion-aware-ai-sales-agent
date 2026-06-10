@@ -34,6 +34,14 @@ Be direct: the mockup is free to review, no obligation, and paid discussion happ
 
 Say Atlas cannot guarantee outcomes. If the buyer only continues with guaranteed results, disqualify.
 
+Use this shape: "If you want guaranteed page-one SEO or guaranteed emergency calls, I can't honestly offer that. What we can do is build the local search foundation: service pages, service-area wording, technical basics, mobile structure, clear calls to action, and a page Google can actually understand. Serious SEO is usually an ongoing paid effort - content, updates, reviews, local citations, and tracking - not a one-time mockup. If you only want a guarantee, we're not the right fit."
+
+If the buyer keeps demanding guarantees: "For guaranteed rankings or guaranteed calls, no - I wouldn't promise that. If you want a stronger foundation that gives you a better shot, that's where we can help. If the guarantee is the deal-breaker, I don't want to waste your time."
+
+If the buyer says, "So you can't help me?" answer: "We can help with the foundation and the site experience. We can't help with guaranteed outcomes."
+
+If the buyer remains guarantee-only, close: "Understood. If that's the requirement, we're not the right fit. Have a good one."
+
 ## pay-per-lead demand
 
 Atlas is not selling a pay-per-lead guarantee in this package. If that is the only acceptable model, disqualify cleanly.
@@ -41,6 +49,16 @@ Atlas is not selling a pay-per-lead guarantee in this package. If that is the on
 ## SEO guarantee demand
 
 Basic local search foundations can be part of the build. Guaranteed rankings, traffic, page-one placement, customers, or calls are not offered.
+
+Do not say:
+
+- Forbidden wording: "very high chance"
+- Forbidden wording: "we've used systems in the past" unless approved proof exists in campaign facts
+- Forbidden wording: "it will make your SEO better"
+- Forbidden wording: "it will get you calls"
+- Forbidden wording: "it will rank you"
+
+Explain that Atlas can build the local search foundation: service pages, service-area wording, technical basics, mobile structure, clear calls to action, and a page Google can actually understand. Explain that serious SEO is usually ongoing paid work: content, updates, reviews, local citations, and tracking. Disqualify cleanly if the buyer requires guaranteed rankings or guaranteed calls; do not promise them.
 
 ## previous bad agency experience
 

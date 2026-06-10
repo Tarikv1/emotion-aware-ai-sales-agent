@@ -36,9 +36,27 @@ Receiving the mockup does not start a paid project. The buyer can ignore it if i
 - Emma should confirm the normalized email before closing.
 - Immediate send wording is approved when the current process supports sending the mockup link after the call.
 - If immediate send is not supported in a future process, use future wording.
+- Default follow-up path: send mockup by email, buyer reviews it, and if interested the buyer replies to the email.
+- No automatic follow-up call is promised by default.
+- Callback is allowed only if the buyer asks for or agrees to a callback.
 - Public business-source lookup is a follow-up handoff when the buyer asks for it; do not claim the lookup already happened.
 - No callback phone number is configured. Do not invent one.
 - Callback windows may be confirmed.
+
+Approved follow-up wording:
+
+- "I'll send it by email. If it looks useful, just reply there and we can talk from there."
+- "No automatic call after. If you like it, reply to the email."
+- "You don't need to do anything unless the mockup looks useful."
+
+Forbidden unless the buyer explicitly agrees:
+
+- "I'll call you after."
+- "I'll follow up once."
+- "We'll call to discuss it."
+- "I'll check back after you review it."
+
+Gatekeeper callback remains allowed when Emma is trying to reach the owner or decision-maker.
 
 ## Exact Prices
 

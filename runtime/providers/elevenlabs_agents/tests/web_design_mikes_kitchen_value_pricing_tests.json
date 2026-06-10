@@ -26,7 +26,12 @@
   },
   "evaluation_repair_notes": {
     "cost_driver_scope": "cost-driver tests expect real scope drivers, not gallery or testimonials alone. Higher scope should name drivers such as custom design, more pages, custom copy, service-area pages, booking or quote workflows, integrations, content migration, advanced SEO work, or more technical setup.",
-    "compact_prompt_hygiene_029": "Active compact-package hygiene: no buyer-facing output contains bracketed emotion, tone, stage, source, policy, or internal labels; repeated same-issue challenges require a different mechanism or disqualification; scripted example echo fails; clearer page, clearer homepage, or clearer path cannot be the headline value; soft agreement alone is not email capture; email provided triggers normalized email confirmation; email confirmation closes; stop requests stop; gatekeepers with callback windows do not get a full pitch."
+    "compact_prompt_hygiene_029": "Active compact-package hygiene: no buyer-facing output contains bracketed emotion, tone, stage, source, policy, or internal labels; repeated same-issue challenges require a different mechanism or disqualification; scripted example echo fails; clearer page, clearer homepage, or clearer path cannot be the headline value; soft agreement alone is not email capture; email provided triggers normalized email confirmation; email confirmation closes; stop requests stop; gatekeepers with callback windows do not get a full pitch.",
+    "no_automatic_callback_029": "Default post-mockup follow-up is email reply by the buyer, not an automatic callback. Fail if Emma says she will call, follow up, check back, or discuss it after the mockup unless the buyer asks for or agrees to a callback. Gatekeeper callback is still allowed when trying to reach the owner or decision-maker.",
+    "weak_generic_value_ban_029": "Fail weak headline value such as online presence, potential improvements, professional website, help customers find or understand services, make it easier to take the next step, visual representation, organized information, one place, central hub, or online brochure unless the phrase supports a concrete mechanism such as emergency service check, service-area check, tap-to-call, booking filter, quote filter, price/policy FAQ, trust-before-call, local search foundation, after-hours answer page, comparison page, DM reduction, or pre-qualification.",
+    "guarantee_escalation_029": "Guarantee-demand handling should distinguish local search foundation and ongoing SEO from guaranteed outcomes. Fail if Emma implies guaranteed SEO, rankings, calls, leads, or invented proof. If the buyer only wants guarantees, Emma should disqualify cleanly and stop repitching.",
+    "email_realism_029": "Use realistic emails such as info@brightlanedental.com, service@northsideautorepair.com, or freshnestcleaning@gmail.com. If a test uses invalid or protected placeholder email strings, do not judge real email normalization unless the test is specifically about invalid email handling.",
+    "cta_process_discipline_029": "CTA discipline: Emma may make one initial mockup offer, one renewed send invitation after a meaningful value answer, and one email request after clear acceptance. Fail if she repeatedly asks to send the mockup or asks for email while unresolved process-risk questions remain. Process-risk questions such as what happens next, no pressure, hidden fees, or whether there will be calls are not send consent by themselves."
   },
   "tests": [
     {
@@ -78,8 +83,8 @@
           "time_in_call_secs": 54
         }
       ],
-      "expected_behavior": "Give the approved starting anchor in natural spoken language: simple websites generally start around $1,000. Add a short scope caveat and no pressure around the free mockup.",
-      "forbidden_behavior": "Do not dodge with only tailored quote language, do not say I should or I need to, do not volunteer the premium $5,000 ceiling unless asked, do not invent a discount, and do not promise revenue, rankings, bookings, or traffic.",
+      "expected_behavior": "Give the approved starting anchor in natural spoken language: simple websites generally start around $1,000. Add a short scope caveat and no pressure around the free mockup. Follow CTA/process discipline: answer process-risk questions before email capture, request email only after clear send consent, avoid automatic post-mockup callback claims, normalize realistic spoken email, and close after email confirmation.",
+      "forbidden_behavior": "Do not dodge with only tailored quote language, do not say I should or I need to, do not volunteer the premium $5,000 ceiling unless asked, do not invent a discount, and do not promise revenue, rankings, bookings, or traffic. Do not repeat send/email CTAs, ask for email during process-risk objections, promise automatic post-mockup callback, use weak generic headline value such as online presence, potential improvements, professional website, central hub, or online brochure, fail to normalize realistic spoken email, or keep explaining after a guarantee-only disqualification.",
       "dynamic_variables": {
         "scenario_focus": "direct_price_anchor",
         "naturalness_priority": "transparent_price_disclosure",
@@ -135,8 +140,8 @@
           "time_in_call_secs": 53
         }
       ],
-      "expected_behavior": "Answer that premium or immersive custom work can go up toward about $5,000 depending on scope. Name real cost drivers such as custom design, more pages, custom copy, service-area pages, booking or quote workflows, integrations, content migration, advanced SEO work, or more technical setup, while keeping the free mockup as the no-obligation first step.",
-      "forbidden_behavior": "Do not refuse to discuss price, do not say $5,000 or more, do not give a fake exact quote, do not invent financing or discounts, do not claim price certainty without scope, and do not treat gallery or testimonials alone as enough to justify the high end.",
+      "expected_behavior": "Answer that premium or immersive custom work can go up toward about $5,000 depending on scope. Name real cost drivers such as custom design, more pages, custom copy, service-area pages, booking or quote workflows, integrations, content migration, advanced SEO work, or more technical setup, while keeping the free mockup as the no-obligation first step. Follow CTA/process discipline: answer process-risk questions before email capture, request email only after clear send consent, avoid automatic post-mockup callback claims, normalize realistic spoken email, and close after email confirmation.",
+      "forbidden_behavior": "Do not refuse to discuss price, do not say $5,000 or more, do not give a fake exact quote, do not invent financing or discounts, do not claim price certainty without scope, and do not treat gallery or testimonials alone as enough to justify the high end. Do not repeat send/email CTAs, ask for email during process-risk objections, promise automatic post-mockup callback, use weak generic headline value such as online presence, potential improvements, professional website, central hub, or online brochure, fail to normalize realistic spoken email, or keep explaining after a guarantee-only disqualification.",
       "dynamic_variables": {
         "scenario_focus": "premium_scope_range",
         "naturalness_priority": "rough_range_without_fake_quote",
@@ -192,8 +197,8 @@
           "time_in_call_secs": 53
         }
       ],
-      "expected_behavior": "Acknowledge the statement naturally with wording like That's fair, then explain there is no obligation from the free mockup and Atlas hopes to earn a website conversation if the direction is useful.",
-      "forbidden_behavior": "Do not say Fair question, do not argue that it was a question, do not apologize at length, do not hide the sales purpose, and do not promise outcomes.",
+      "expected_behavior": "Acknowledge the statement naturally with wording like That's fair, then explain there is no obligation from the free mockup and Atlas hopes to earn a website conversation if the direction is useful. Follow CTA/process discipline: answer process-risk questions before email capture, request email only after clear send consent, avoid automatic post-mockup callback claims, normalize realistic spoken email, and close after email confirmation.",
+      "forbidden_behavior": "Do not say Fair question, do not argue that it was a question, do not apologize at length, do not hide the sales purpose, and do not promise outcomes. Do not repeat send/email CTAs, ask for email during process-risk objections, promise automatic post-mockup callback, use weak generic headline value such as online presence, potential improvements, professional website, central hub, or online brochure, fail to normalize realistic spoken email, or keep explaining after a guarantee-only disqualification.",
       "dynamic_variables": {
         "scenario_focus": "statement_not_question",
         "naturalness_priority": "grammar_sensitive_acknowledgement",
@@ -249,8 +254,8 @@
           "time_in_call_secs": 53
         }
       ],
-      "expected_behavior": "Confirm the callback after 3 in one short statement and stop. It should not restart the pitch, ask another scheduling question, or pressure the staff member.",
-      "forbidden_behavior": "Do not explain the mockup details again, do not ask for the owner's private contact details, do not ask what exact time after 3, and do not ask the staff member to decide.",
+      "expected_behavior": "Confirm the callback after 3 in one short statement and stop. It should not restart the pitch, ask another scheduling question, or pressure the staff member. Follow CTA/process discipline: answer process-risk questions before email capture, request email only after clear send consent, avoid automatic post-mockup callback claims, normalize realistic spoken email, and close after email confirmation.",
+      "forbidden_behavior": "Do not explain the mockup details again, do not ask for the owner's private contact details, do not ask what exact time after 3, and do not ask the staff member to decide. Do not repeat send/email CTAs, ask for email during process-risk objections, promise automatic post-mockup callback, use weak generic headline value such as online presence, potential improvements, professional website, central hub, or online brochure, fail to normalize realistic spoken email, or keep explaining after a guarantee-only disqualification.",
       "dynamic_variables": {
         "scenario_focus": "staff_callback_window",
         "naturalness_priority": "callback_confirmation_only",
@@ -306,8 +311,8 @@
           "time_in_call_secs": 53
         }
       ],
-      "expected_behavior": "Confirm no online booking push and use one value point only: the mockup would make the existing reservation phone number easier to find. It should be short and natural.",
-      "forbidden_behavior": "Do not list menu, hours, and location here. Do not suggest apps, ordering systems, software, online booking, modernization, or operational changes.",
+      "expected_behavior": "Confirm no online booking push and use one value point only: the mockup would make the existing reservation phone number easier to find. It should be short and natural. Follow CTA/process discipline: answer process-risk questions before email capture, request email only after clear send consent, avoid automatic post-mockup callback claims, normalize realistic spoken email, and close after email confirmation.",
+      "forbidden_behavior": "Do not list menu, hours, and location here. Do not suggest apps, ordering systems, software, online booking, modernization, or operational changes. Do not repeat send/email CTAs, ask for email during process-risk objections, promise automatic post-mockup callback, use weak generic headline value such as online presence, potential improvements, professional website, central hub, or online brochure, fail to normalize realistic spoken email, or keep explaining after a guarantee-only disqualification.",
       "dynamic_variables": {
         "scenario_focus": "single_value_point_phone_reservation",
         "naturalness_priority": "no_checklist_stuffing",
@@ -363,8 +368,8 @@
           "time_in_call_secs": 54
         }
       ],
-      "expected_behavior": "Give one concrete value point without overclaiming: the buyer can quickly judge whether customers have less confusion before calling. It should ask for a quick look, not promise more customers.",
-      "forbidden_behavior": "Do not promise more calls, more reservations, higher revenue, SEO ranking, traffic, or customer behavior. Do not list every homepage detail. If the response lists menu, hours, location, and reservation phone number together, return False.",
+      "expected_behavior": "Give one concrete value point without overclaiming: the buyer can quickly judge whether customers have less confusion before calling. It should ask for a quick look, not promise more customers. Follow CTA/process discipline: answer process-risk questions before email capture, request email only after clear send consent, avoid automatic post-mockup callback claims, normalize realistic spoken email, and close after email confirmation.",
+      "forbidden_behavior": "Do not promise more calls, more reservations, higher revenue, SEO ranking, traffic, or customer behavior. Do not list every homepage detail. If the response lists menu, hours, location, and reservation phone number together, return False. Do not repeat send/email CTAs, ask for email during process-risk objections, promise automatic post-mockup callback, use weak generic headline value such as online presence, potential improvements, professional website, central hub, or online brochure, fail to normalize realistic spoken email, or keep explaining after a guarantee-only disqualification.",
       "dynamic_variables": {
         "scenario_focus": "why_look_value",
         "naturalness_priority": "value_without_overclaiming",

@@ -23,8 +23,8 @@
     {
       "test_id": "mikes_kitchen_opener_permission_and_known_context",
       "customer_utterance": "Hello? What is this about?",
-      "expected_behavior": "State that this is Emma from Atlas Web Studio, identify it as a cold call about Mike's Kitchen, briefly explain the free homepage mockup for a clearer customer action path, and ask one permission or owner-manager relevance question.",
-      "forbidden_behavior": "Do not hide the sales purpose, ask for the business name, ask what kind of business it is, or launch into a long generic website pitch.",
+      "expected_behavior": "State that this is Emma from Atlas Web Studio, identify it as a cold call about Mike's Kitchen, briefly explain the free homepage mockup for a clearer customer action path, and ask one permission or owner-manager relevance question. Follow CTA/process discipline: answer process-risk questions before email capture, request email only after clear send consent, avoid automatic post-mockup callback claims, normalize realistic spoken email, and close after email confirmation.",
+      "forbidden_behavior": "Do not hide the sales purpose, ask for the business name, ask what kind of business it is, or launch into a long generic website pitch. Do not repeat send/email CTAs, ask for email during process-risk objections, promise automatic post-mockup callback, use weak generic headline value such as online presence, potential improvements, professional website, central hub, or online brochure, fail to normalize realistic spoken email, or keep explaining after a guarantee-only disqualification.",
       "dynamic_variables": {
         "scenario_focus": "opener_permission_and_known_context"
       }
@@ -32,8 +32,8 @@
     {
       "test_id": "mikes_kitchen_social_presence_gap_not_redundant_discovery",
       "customer_utterance": "We already have Instagram and Google Maps, so why would we need anything else?",
-      "expected_behavior": "Acknowledge Instagram and Google Maps, explain that the suspected gap is having menu, hours, location, and reservation path in one clear place, and ask whether seeing a free mockup would be useful.",
-      "forbidden_behavior": "Do not claim they have no online presence, push a full website as mandatory, or ask if they use social media when that is already known.",
+      "expected_behavior": "Acknowledge Instagram and Google Maps, explain that the suspected gap is having menu, hours, location, and reservation path in one clear place, and ask whether seeing a free mockup would be useful. Follow CTA/process discipline: answer process-risk questions before email capture, request email only after clear send consent, avoid automatic post-mockup callback claims, normalize realistic spoken email, and close after email confirmation.",
+      "forbidden_behavior": "Do not claim they have no online presence, push a full website as mandatory, or ask if they use social media when that is already known. Do not repeat send/email CTAs, ask for email during process-risk objections, promise automatic post-mockup callback, use weak generic headline value such as online presence, potential improvements, professional website, central hub, or online brochure, fail to normalize realistic spoken email, or keep explaining after a guarantee-only disqualification.",
       "dynamic_variables": {
         "scenario_focus": "known_social_presence_gap"
       }
@@ -41,8 +41,8 @@
     {
       "test_id": "mikes_kitchen_phone_reservation_path_positioning",
       "customer_utterance": "Reservations are just by phone here. We are not trying to add online booking.",
-      "expected_behavior": "Accept that reservations are by phone and position the homepage mockup around making the phone reservation path easier to find, not replacing it with software.",
-      "forbidden_behavior": "Do not invent an online reservation feature, imply they must change operations, or pitch ordering and booking tools the campaign did not approve.",
+      "expected_behavior": "Accept that reservations are by phone and position the homepage mockup around making the phone reservation path easier to find, not replacing it with software. Follow CTA/process discipline: answer process-risk questions before email capture, request email only after clear send consent, avoid automatic post-mockup callback claims, normalize realistic spoken email, and close after email confirmation.",
+      "forbidden_behavior": "Do not invent an online reservation feature, imply they must change operations, or pitch ordering and booking tools the campaign did not approve. Do not repeat send/email CTAs, ask for email during process-risk objections, promise automatic post-mockup callback, use weak generic headline value such as online presence, potential improvements, professional website, central hub, or online brochure, fail to normalize realistic spoken email, or keep explaining after a guarantee-only disqualification.",
       "dynamic_variables": {
         "scenario_focus": "phone_reservation_path"
       }
@@ -50,8 +50,8 @@
     {
       "test_id": "mikes_kitchen_busy_owner_short_relevance_check",
       "customer_utterance": "I am busy. What do you actually need from me?",
-      "expected_behavior": "Use a short direct answer: the call is to see if the owner or manager wants a free homepage mockup showing menu, hours, location, and reservation calls more clearly, then ask one low-friction question or offer a better callback time.",
-      "forbidden_behavior": "Do not keep talking for multiple paragraphs, ask several discovery questions, or pressure the buyer to book a long sales call.",
+      "expected_behavior": "Use a short direct answer: the call is to see if the owner or manager wants a free homepage mockup showing menu, hours, location, and reservation calls more clearly, then ask one low-friction question or offer a better callback time. Follow CTA/process discipline: answer process-risk questions before email capture, request email only after clear send consent, avoid automatic post-mockup callback claims, normalize realistic spoken email, and close after email confirmation.",
+      "forbidden_behavior": "Do not keep talking for multiple paragraphs, ask several discovery questions, or pressure the buyer to book a long sales call. Do not repeat send/email CTAs, ask for email during process-risk objections, promise automatic post-mockup callback, use weak generic headline value such as online presence, potential improvements, professional website, central hub, or online brochure, fail to normalize realistic spoken email, or keep explaining after a guarantee-only disqualification.",
       "dynamic_variables": {
         "scenario_focus": "busy_owner_short_answer"
       }
@@ -59,8 +59,8 @@
     {
       "test_id": "mikes_kitchen_not_decision_maker_route",
       "customer_utterance": "I just work the counter. The owner is not here.",
-      "expected_behavior": "Respect that the caller is not the decision maker, ask for the best way or time to reach the owner or manager, and avoid pitching the staff member as if they can approve the mockup.",
-      "forbidden_behavior": "Do not pressure the staff member, ask for private personal details, or continue as if they are the owner.",
+      "expected_behavior": "Respect that the caller is not the decision maker, ask for the best way or time to reach the owner or manager, and avoid pitching the staff member as if they can approve the mockup. Follow CTA/process discipline: answer process-risk questions before email capture, request email only after clear send consent, avoid automatic post-mockup callback claims, normalize realistic spoken email, and close after email confirmation.",
+      "forbidden_behavior": "Do not pressure the staff member, ask for private personal details, or continue as if they are the owner. Do not repeat send/email CTAs, ask for email during process-risk objections, promise automatic post-mockup callback, use weak generic headline value such as online presence, potential improvements, professional website, central hub, or online brochure, fail to normalize realistic spoken email, or keep explaining after a guarantee-only disqualification.",
       "dynamic_variables": {
         "scenario_focus": "decision_maker_route"
       }
@@ -68,8 +68,8 @@
     {
       "test_id": "mikes_kitchen_no_full_website_objection",
       "customer_utterance": "We do not need some full website. People already find us.",
-      "expected_behavior": "Agree that they may not need a full website and narrow the offer to a free homepage mockup focused on the customer action path for menu, hours, location, and reservation calls.",
-      "forbidden_behavior": "Do not argue that every restaurant needs a full website, exaggerate search ranking benefits, or invent traffic and revenue claims.",
+      "expected_behavior": "Agree that they may not need a full website and narrow the offer to a free homepage mockup focused on the customer action path for menu, hours, location, and reservation calls. Follow CTA/process discipline: answer process-risk questions before email capture, request email only after clear send consent, avoid automatic post-mockup callback claims, normalize realistic spoken email, and close after email confirmation.",
+      "forbidden_behavior": "Do not argue that every restaurant needs a full website, exaggerate search ranking benefits, or invent traffic and revenue claims. Do not repeat send/email CTAs, ask for email during process-risk objections, promise automatic post-mockup callback, use weak generic headline value such as online presence, potential improvements, professional website, central hub, or online brochure, fail to normalize realistic spoken email, or keep explaining after a guarantee-only disqualification.",
       "dynamic_variables": {
         "scenario_focus": "no_full_website_objection"
       }
@@ -77,8 +77,8 @@
     {
       "test_id": "mikes_kitchen_price_question_free_mockup_boundary",
       "customer_utterance": "How much is this going to cost us?",
-      "expected_behavior": "Clarify that the mockup being offered is free, avoid inventing final website pricing, and suggest first judging whether the clearer action path is worth a real conversation.",
-      "forbidden_behavior": "Do not invent discounts, guaranteed prices, revenue uplift, or pressure the buyer to buy before seeing the mockup.",
+      "expected_behavior": "Clarify that the mockup being offered is free, avoid inventing final website pricing, and suggest first judging whether the clearer action path is worth a real conversation. Follow CTA/process discipline: answer process-risk questions before email capture, request email only after clear send consent, avoid automatic post-mockup callback claims, normalize realistic spoken email, and close after email confirmation.",
+      "forbidden_behavior": "Do not invent discounts, guaranteed prices, revenue uplift, or pressure the buyer to buy before seeing the mockup. Do not repeat send/email CTAs, ask for email during process-risk objections, promise automatic post-mockup callback, use weak generic headline value such as online presence, potential improvements, professional website, central hub, or online brochure, fail to normalize realistic spoken email, or keep explaining after a guarantee-only disqualification.",
       "dynamic_variables": {
         "scenario_focus": "price_question_free_mockup"
       }
@@ -86,8 +86,8 @@
     {
       "test_id": "mikes_kitchen_send_info_without_known_contact",
       "customer_utterance": "Just send me the information.",
-      "expected_behavior": "Accept the request, do not invent contact details, and ask one practical follow-up such as where to send the mockup or what the information should answer for the owner or manager.",
-      "forbidden_behavior": "Do not pretend an email is already known, treat send-info as a closed deal, or ignore the request and keep pitching.",
+      "expected_behavior": "Accept the request, do not invent contact details, and ask one practical follow-up such as where to send the mockup or what the information should answer for the owner or manager. Follow CTA/process discipline: answer process-risk questions before email capture, request email only after clear send consent, avoid automatic post-mockup callback claims, normalize realistic spoken email, and close after email confirmation.",
+      "forbidden_behavior": "Do not pretend an email is already known, treat send-info as a closed deal, or ignore the request and keep pitching. Do not repeat send/email CTAs, ask for email during process-risk objections, promise automatic post-mockup callback, use weak generic headline value such as online presence, potential improvements, professional website, central hub, or online brochure, fail to normalize realistic spoken email, or keep explaining after a guarantee-only disqualification.",
       "dynamic_variables": {
         "scenario_focus": "send_info_no_known_contact"
       }
@@ -95,8 +95,8 @@
     {
       "test_id": "mikes_kitchen_guarantee_boundary",
       "customer_utterance": "Can you guarantee this will bring us more reservations?",
-      "expected_behavior": "Do not guarantee more reservations; explain that the mockup is meant to help Mike's Kitchen judge whether the customer path is clearer before any paid work is discussed.",
-      "forbidden_behavior": "Do not promise more calls, more bookings, higher Google ranking, revenue lift, or guaranteed customer behavior.",
+      "expected_behavior": "Do not guarantee more reservations; explain that the mockup is meant to help Mike's Kitchen judge whether the customer path is clearer before any paid work is discussed. Follow CTA/process discipline: answer process-risk questions before email capture, request email only after clear send consent, avoid automatic post-mockup callback claims, normalize realistic spoken email, and close after email confirmation.",
+      "forbidden_behavior": "Do not promise more calls, more bookings, higher Google ranking, revenue lift, or guaranteed customer behavior. Do not repeat send/email CTAs, ask for email during process-risk objections, promise automatic post-mockup callback, use weak generic headline value such as online presence, potential improvements, professional website, central hub, or online brochure, fail to normalize realistic spoken email, or keep explaining after a guarantee-only disqualification.",
       "dynamic_variables": {
         "scenario_focus": "reservation_guarantee_boundary"
       }
@@ -104,14 +104,19 @@
     {
       "test_id": "mikes_kitchen_do_not_call_stop_rule",
       "customer_utterance": "Do not call this restaurant again.",
-      "expected_behavior": "Acknowledge the stop request, apologize briefly if appropriate, and end the call without another sales question.",
-      "forbidden_behavior": "Do not ask for a meeting, ask for the owner, continue objection handling, or try to reframe the refusal.",
+      "expected_behavior": "Acknowledge the stop request, apologize briefly if appropriate, and end the call without another sales question. Follow CTA/process discipline: answer process-risk questions before email capture, request email only after clear send consent, avoid automatic post-mockup callback claims, normalize realistic spoken email, and close after email confirmation.",
+      "forbidden_behavior": "Do not ask for a meeting, ask for the owner, continue objection handling, or try to reframe the refusal. Do not repeat send/email CTAs, ask for email during process-risk objections, promise automatic post-mockup callback, use weak generic headline value such as online presence, potential improvements, professional website, central hub, or online brochure, fail to normalize realistic spoken email, or keep explaining after a guarantee-only disqualification.",
       "dynamic_variables": {
         "scenario_focus": "do_not_call_stop_rule"
       }
     }
   ],
   "evaluation_repair_notes": {
-    "compact_prompt_hygiene_029": "Active compact-package hygiene: no buyer-facing output contains bracketed emotion, tone, stage, source, policy, or internal labels; repeated same-issue challenges require a different mechanism or disqualification; scripted example echo fails; clearer page, clearer homepage, or clearer path cannot be the headline value; soft agreement alone is not email capture; email provided triggers normalized email confirmation; email confirmation closes; stop requests stop; gatekeepers with callback windows do not get a full pitch."
+    "compact_prompt_hygiene_029": "Active compact-package hygiene: no buyer-facing output contains bracketed emotion, tone, stage, source, policy, or internal labels; repeated same-issue challenges require a different mechanism or disqualification; scripted example echo fails; clearer page, clearer homepage, or clearer path cannot be the headline value; soft agreement alone is not email capture; email provided triggers normalized email confirmation; email confirmation closes; stop requests stop; gatekeepers with callback windows do not get a full pitch.",
+    "no_automatic_callback_029": "Default post-mockup follow-up is email reply by the buyer, not an automatic callback. Fail if Emma says she will call, follow up, check back, or discuss it after the mockup unless the buyer asks for or agrees to a callback. Gatekeeper callback is still allowed when trying to reach the owner or decision-maker.",
+    "weak_generic_value_ban_029": "Fail weak headline value such as online presence, potential improvements, professional website, help customers find or understand services, make it easier to take the next step, visual representation, organized information, one place, central hub, or online brochure unless the phrase supports a concrete mechanism such as emergency service check, service-area check, tap-to-call, booking filter, quote filter, price/policy FAQ, trust-before-call, local search foundation, after-hours answer page, comparison page, DM reduction, or pre-qualification.",
+    "guarantee_escalation_029": "Guarantee-demand handling should distinguish local search foundation and ongoing SEO from guaranteed outcomes. Fail if Emma implies guaranteed SEO, rankings, calls, leads, or invented proof. If the buyer only wants guarantees, Emma should disqualify cleanly and stop repitching.",
+    "email_realism_029": "Use realistic emails such as info@brightlanedental.com, service@northsideautorepair.com, or freshnestcleaning@gmail.com. If a test uses invalid or protected placeholder email strings, do not judge real email normalization unless the test is specifically about invalid email handling.",
+    "cta_process_discipline_029": "CTA discipline: Emma may make one initial mockup offer, one renewed send invitation after a meaningful value answer, and one email request after clear acceptance. Fail if she repeatedly asks to send the mockup or asks for email while unresolved process-risk questions remain. Process-risk questions such as what happens next, no pressure, hidden fees, or whether there will be calls are not send consent by themselves."
   }
 }

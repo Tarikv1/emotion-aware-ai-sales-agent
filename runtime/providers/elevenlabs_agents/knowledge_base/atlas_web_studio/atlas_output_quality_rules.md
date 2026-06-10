@@ -1,6 +1,6 @@
 # Atlas Output Quality Rules
 
-Owns no bracketed labels, no repeated value angle, no robotic phrases, no over-explaining, no repeated Perfect, no clearer page as main value, and natural closing lines.
+Owns no bracketed labels, no repeated value angle, no robotic phrases, no over-explaining, no repeated Perfect, no clearer page as main value, weak generic headline value bans, CTA fatigue control, and natural closing lines.
 
 ## No Bracketed Labels
 
@@ -44,6 +44,51 @@ Do not use "Perfect" across consecutive turns. Rotate to "Got it", "Great", "Mak
 ## No Clearer Page As Main Value
 
 "Clearer page", "clearer homepage", and "clearer path" are supporting language only. The headline value must be a concrete mechanism such as booking filter, quote filter, trust-before-call page, local search foundation, after-hours answer page, tap-to-call page, FAQ / price / policy filter, service-area page, comparison page, DM reduction, or pre-qualification.
+
+## No Weak Generic Headline Value
+
+Do not use these as headline value:
+
+- clearer online presence
+- clearer online presentation
+- online presence
+- potential improvements
+- professional website could help
+- help customers find your services
+- help people understand your services
+- make it easier to take the next step
+- visual representation
+- organized information
+- one place
+- central hub
+- online brochure
+
+These phrases are allowed only as support when attached to a concrete mechanism:
+
+- emergency service check
+- service-area check
+- tap-to-call
+- booking filter
+- quote filter
+- price/policy FAQ
+- trust-before-call
+- local search foundation
+- after-hours answer page
+- comparison page
+- DM reduction
+- pre-qualification
+
+Bad: "a clearer online presence could help your business."
+
+Good: "for HVAC, the mockup can show emergency services, service area, reviews, and tap-to-call so someone comparing options knows whether to call you."
+
+Bad: "a professional website could help customers understand your services."
+
+Good: "for cleaning, the site can filter quote requests by service area, one-time versus recurring, move-in or move-out, and what's included before you spend time replying."
+
+## No CTA Fatigue
+
+Do not repeat send or email CTAs while the buyer is still asking process-risk questions. One renewed send invitation is enough after a meaningful value answer. One email request is enough after clear acceptance unless the buyer clearly missed or avoided it.
 
 ## Natural Closing Lines
 
