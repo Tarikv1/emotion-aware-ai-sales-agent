@@ -1,0 +1,124 @@
+{
+  "package_id": "ELEVENLABS-030-live-transcript-failure-hardening",
+  "provider": "elevenlabs",
+  "agent_package": "atlas_web_studio_web_design",
+  "source_of_truth": "repo",
+  "test_type": "simulation",
+  "purpose": "Focused active simulation tests based on live Atlas transcript failures: guarantee-only disqualification lock, CTA fatigue, process-risk handling, known-context use, bracket-label hard failure, vertical action fidelity, value-angle rotation, and realistic spoken email normalization.",
+  "dynamic_variables": {
+    "agent_name": "Emma",
+    "company_name": "Atlas Web Studio",
+    "offer": "free homepage mockup",
+    "source_package_id": "ELEVENLABS-030-live-transcript-failure-hardening"
+  },
+  "tests": [
+    {
+      "test_id": "sim_030_apex_plumbing_guarantee_lock",
+      "type": "simulation",
+      "simulated_user_model": "gemini-2.5-flash",
+      "evaluation_model": "gemini-2.5-flash",
+      "simulation_max_turns": 12,
+      "simulation_scenario": "The simulated user owns Apex Plumbing in Denver. They repeatedly say they only care about a calls or jobs guarantee, ask for a page-one SEO guarantee, and say no guarantee means no mockup. They ask once, 'So you can't help me?' and then repeat the guarantee demand to see whether Emma reopens the pitch.",
+      "success_condition": "Pass only if Emma triggers the disqualification lock, gives one safe clarification that Atlas can help with local search foundation and site experience but not guaranteed outcomes, says Atlas is not the right fit if guarantees are required, and stops chasing the mockup. If the buyer asks 'So you can't help me?', Emma should answer that Atlas can help with foundation and site experience but cannot help with guaranteed outcomes. If the buyer repeats the guarantee demand again, Emma should close without another value angle. Hard fail if max turns are reached because Emma keeps pitching; if she asks to send the mockup after the lock; if she keeps explaining website benefits after disqualification; if she talks about better engagement, online presence, or inquiries after the lock; if she implies guaranteed SEO, rankings, calls, jobs, leads, revenue, page-one placement, or pay-per-lead performance; or if any buyer-facing output contains bracketed internal labels. Discipline pass: guarantee-only buyer gets clean disqualification and no renewed CTA.",
+      "dynamic_variables": {
+        "business_name": "Apex Plumbing",
+        "business_type": "plumbing company",
+        "vertical": "plumbing",
+        "city": "Denver",
+        "service_area": "Denver metro",
+        "known_booking_or_ordering_path": "customers call for urgent plumbing service",
+        "primary_value_mechanism": "local search foundation without outcome guarantees",
+        "buyer_temperature": "guarantee_only_bad_fit",
+        "target_outcome": "disqualified_clean_close"
+      }
+    },
+    {
+      "test_id": "sim_030_summit_hvac_process_risk_known_context",
+      "type": "simulation",
+      "simulated_user_model": "gemini-2.5-flash",
+      "evaluation_model": "gemini-2.5-flash",
+      "simulation_max_turns": 16,
+      "simulation_scenario": "The simulated user owns Summit HVAC in Phoenix. They ask many process-risk questions: what happens after, whether Emma will call again, whether there is pressure, whether it is just an email, whether there are hidden fees, and what they need to provide. They do not clearly accept until later, then say 'Okay, send it' and provide 'info at summit HVAC dot com.'",
+      "success_condition": "Pass only if Emma answers process-risk questions directly, explains that the default follow-up is email review and buyer reply with no automatic callback, does not ask for email before a clear send signal, and does not repeat send or email CTAs after every process question. Emma does not ask for the business name because Summit HVAC is already known. If asked what is needed, she should say she already has Summit HVAC and the business type, and only ask for an optional highlight or, after clear acceptance, the email. After 'Okay, send it,' one email request is allowed if no email was provided; after 'info at summit HVAC dot com,' Emma should confirm info@summithvac.com. Hard fail if CTA is repeated more than twice without a new buyer commitment; if email is requested during process-risk objections; if Emma asks for the business name; if she says she will call or follow up automatically after the mockup; if she uses booking or appointment booking after the buyer says HVAC customers call; or if any buyer-facing output contains bracketed internal labels.",
+      "dynamic_variables": {
+        "business_name": "Summit HVAC",
+        "business_type": "HVAC company",
+        "vertical": "HVAC",
+        "city": "Phoenix",
+        "service_area": "Phoenix metro",
+        "known_booking_or_ordering_path": "customers call for estimates and emergency service",
+        "primary_value_mechanism": "emergency service check and tap-to-call",
+        "buyer_temperature": "process_risk_skeptical",
+        "target_outcome": "normalized_email_pending_or_confirmed"
+      }
+    },
+    {
+      "test_id": "sim_030_northside_auto_angry_busy_hygiene",
+      "type": "simulation",
+      "simulated_user_model": "gemini-2.5-flash",
+      "evaluation_model": "gemini-2.5-flash",
+      "simulation_max_turns": 12,
+      "simulation_scenario": "The simulated user owns Northside Auto Repair in Columbus. They are angry and busy, say they do not do online booking, and eventually say 'Fine, send it to service at northside auto repair dot com.' They dislike excited tone and may challenge vague value language.",
+      "success_condition": "Pass only if Emma stays concise and calm, avoids excited openers such as 'Great to connect,' avoids any bracketed internal labels, respects that auto repair customers call for estimates or diagnostics, and confirms service@northsideautorepair.com after the spoken email. Hard fail if Emma uses booking, appointment booking, or online booking after the buyer rejects it; asks for email again after the buyer already provided it; fails to confirm the destination; changes the email incorrectly; uses weak generic headline value; or keeps selling after email confirmation. If the buyer says the answer was vague or asks for the actual difference, Emma should use 'Fair point - the practical difference is...' and give one auto-repair mechanism such as diagnostics, repair category, hours, location, reviews, or tap-to-call.",
+      "dynamic_variables": {
+        "business_name": "Northside Auto Repair",
+        "business_type": "auto repair shop",
+        "vertical": "auto_repair",
+        "city": "Columbus",
+        "service_area": "north Columbus",
+        "known_booking_or_ordering_path": "customers call for estimates and diagnostics",
+        "primary_value_mechanism": "trust-before-call page",
+        "buyer_temperature": "angry_busy",
+        "target_outcome": "two_step_email_close"
+      }
+    },
+    {
+      "test_id": "sim_030_luna_instagram_repeated_objection_rotation",
+      "type": "simulation",
+      "simulated_user_model": "gemini-2.5-flash",
+      "evaluation_model": "gemini-2.5-flash",
+      "simulation_max_turns": 16,
+      "simulation_scenario": "The simulated user owns Luna Hair Studio in Austin. They say Instagram already works, challenge the same issue multiple times, and ask what the actual difference is. They may accept only after Emma gives a non-repeated practical answer, or they may say Instagram already fills the calendar and they do not want more bookings.",
+      "success_condition": "Pass only if value angle rotates across repeated Instagram objections: first booking filter for services, pricing, policies, reviews, and booking rules; then DM reduction for repetitive questions; then local search foundation or clean disqualification if Instagram already fills the calendar and no more bookings are wanted. Hard fail if Emma repeats the same more-bookings or easier-to-book logic three times; repeats a canned phrase when the buyer asks for a clearer answer; uses weak generic headline value; asks for email after soft agreement only; repeats the CTA after every objection; or includes any bracketed internal labels. If the buyer gives a realistic spoken email such as luna hair studio at email dot com, Emma should confirm lunahairstudio@email.com.",
+      "dynamic_variables": {
+        "business_name": "Luna Hair Studio",
+        "business_type": "hair salon",
+        "vertical": "salon",
+        "city": "Austin",
+        "service_area": "central Austin",
+        "known_social_presence": "Instagram is the main channel",
+        "known_booking_or_ordering_path": "clients book only after checking services and policies",
+        "primary_value_mechanism": "booking filter then DM reduction",
+        "buyer_temperature": "status_quo_repeated_objection",
+        "target_outcome": "rotated_value_or_disqualified"
+      }
+    },
+    {
+      "test_id": "sim_030_bright_lane_dental_safe_email",
+      "type": "simulation",
+      "simulated_user_model": "gemini-2.5-flash",
+      "evaluation_model": "gemini-2.5-flash",
+      "simulation_max_turns": 14,
+      "simulation_scenario": "The simulated user manages Bright Lane Dental in Tampa. They are cautious about healthcare marketing claims, ask whether the mockup is supposed to produce patients, then say 'I can take a look, email it to info at bright lane dental dot com.' They confirm if Emma repeats the address correctly.",
+      "success_condition": "Pass only if Emma keeps dental-safe language, does not describe the mockup as patient growth, medical marketing certainty, or a treatment outcome claim, and uses concrete mechanisms such as services, location, hours, reviews, appointment request or call path, and local search foundation without ranking or patient guarantees. When the buyer gives info at bright lane dental dot com, Emma should confirm info@brightlanedental.com and then close after confirmation. Hard fail if Emma uses a placeholder-looking email in the test judgment, asks for email again after it was already provided, fails to normalize the spoken email, says the site will bring patients, promises rankings or calls, continues selling after confirmation, or includes any bracketed internal labels.",
+      "dynamic_variables": {
+        "business_name": "Bright Lane Dental",
+        "business_type": "dental clinic",
+        "vertical": "dental",
+        "city": "Tampa",
+        "service_area": "Tampa",
+        "known_booking_or_ordering_path": "patients request appointments or call",
+        "primary_value_mechanism": "office basics and appointment request path",
+        "buyer_temperature": "cautious_healthcare_claims",
+        "target_outcome": "dental_safe_two_step_email_close"
+      }
+    }
+  ],
+  "evaluation_repair_notes": {
+    "bracket_label_hard_fail": "Any bracketed internal label in buyer-facing agent output is automatic failure.",
+    "cta_process_discipline": "Fail if Emma asks to send the mockup more than twice without a new buyer commitment, asks for email during process-risk questions, or asks for email repeatedly.",
+    "known_context_rule": "Fail if Emma asks for business_name when it is already supplied in dynamic variables or the transcript.",
+    "vertical_action_rule": "Fail if Emma uses booking or appointment language for call-driven HVAC, plumbing, electrical, or auto repair flows after the buyer rejects online booking.",
+    "email_realism_rule": "Use realistic emails in tests and normalize spoken addresses; do not judge real normalization from protected placeholder strings except in placeholder-specific tests."
+  }
+}

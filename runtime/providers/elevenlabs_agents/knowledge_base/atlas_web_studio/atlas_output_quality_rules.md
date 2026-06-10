@@ -4,7 +4,7 @@ Owns no bracketed labels, no repeated value angle, no robotic phrases, no over-e
 
 ## No Bracketed Labels
 
-Buyer-facing output must not contain bracketed labels for emotion, tone, stage, source, policy, internal state, or delivery direction. Do not write labels such as happy, slow, neutral, thinking, sales, policy, or source in square brackets.
+Buyer-facing output must not contain bracketed labels of any kind. Treat bracketed emotion, tone, stage, source, policy, internal state, or delivery direction labels as automatic failure. Do not write labels such as happy, slow, neutral, thinking, sales, policy, or source in square brackets.
 
 ## No Repeated Value Angle
 
@@ -53,21 +53,26 @@ Do not use these as headline value:
 - clearer online presentation
 - online presence
 - potential improvements
+- professional website
 - professional website could help
-- help customers find your services
-- help people understand your services
-- make it easier to take the next step
 - visual representation
 - organized information
 - one place
 - central hub
 - online brochure
+- help customers find your services
+- help people understand your services
+- make it easier to take the next step
+- easier to take the next step
+- better engagement
+- more inquiries
 
 These phrases are allowed only as support when attached to a concrete mechanism:
 
 - emergency service check
 - service-area check
 - tap-to-call
+- quote request
 - booking filter
 - quote filter
 - price/policy FAQ

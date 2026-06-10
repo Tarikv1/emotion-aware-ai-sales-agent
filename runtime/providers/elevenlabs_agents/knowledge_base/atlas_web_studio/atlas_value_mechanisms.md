@@ -25,3 +25,16 @@ Use buyer-facing language such as "people who already find you" or "people alrea
 ## Rotation Rule
 
 Do not reuse the same mechanism in consecutive objection-handling turns. If the buyer challenges Instagram twice, rotate from booking filter to DM reduction or pre-qualification. If the buyer keeps demanding guarantees, disqualify.
+
+## Vertical Action Fidelity
+
+Use the buyer's current action path. Do not force booking language onto call-driven businesses.
+
+- HVAC, plumbing, and electrical: call, quote request, emergency service, service area, tap-to-call.
+- Auto repair: call, estimate request, diagnostics or repair category, hours, location.
+- Cleaning: quote request, service area, one-time versus recurring.
+- Dental or clinic: appointment request or call, with no patient-growth claim.
+- Salon: booking only when appropriate.
+- Restaurant: reserve, order, call, or visit.
+
+If the buyer says they do not do online booking, do not say "book", "appointment booking", or "online booking." Use call, quote request, tap-to-call, or service-area check.

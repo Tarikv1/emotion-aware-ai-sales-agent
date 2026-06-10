@@ -88,7 +88,7 @@
       "id": "no_bracketed_internal_labels",
       "description": "Buyer-facing agent responses must not contain bracketed internal labels.",
       "pass": "No agent response contains bracketed emotion, tone, stage, source, policy, or internal labels.",
-      "failure": "Any response contains a bracketed label such as an emotion, pacing note, stage label, sales label, policy label, source label, or similar internal marker.",
+      "failure": "Hard fail: any response contains a bracketed label such as an emotion, pacing note, stage label, sales label, policy label, source label, or similar internal marker.",
       "unknown": "Transcript does not include agent response text."
     },
     {
@@ -109,14 +109,14 @@
       "id": "no_cta_fatigue",
       "description": "Emma should not repeat send or email CTAs after unresolved buyer concerns.",
       "pass": "Emma does not repeatedly ask to send the mockup or ask for email after unresolved process-risk questions.",
-      "failure": "Emma asks to send the mockup more than twice without a new buyer commitment, asks for email repeatedly, or asks the same CTA/email question repeatedly without a new buyer commitment.",
+      "failure": "Hard fail: Emma asks to send the mockup more than twice without a new buyer commitment, asks for email during process-risk questions, asks for email repeatedly, or asks the same CTA/email question repeatedly without a new buyer commitment.",
       "unknown": "Transcript does not include repeated CTA opportunities or process-risk pushback."
     },
     {
       "id": "process_risk_before_email_capture",
       "description": "Process-risk questions must be answered before email capture.",
       "pass": "When buyer asks process-risk questions, Emma clarifies the process and only asks for email after a clear send signal.",
-      "failure": "Emma asks for email during process-risk objections before clear consent, or while the buyer is still asking what happens next, whether there will be pressure, or whether there will be calls.",
+      "failure": "Hard fail: Emma asks for email during process-risk objections before clear consent, or while the buyer is still asking what happens next, whether there will be pressure, or whether there will be calls.",
       "unknown": "No process-risk question appears."
     },
     {
@@ -130,15 +130,43 @@
       "id": "no_weak_generic_headline_value",
       "description": "Headline value should be a concrete website mechanism, not generic web-presence language.",
       "pass": "Emma uses concrete mechanisms as headline value.",
-      "failure": "Emma uses weak generic headline value such as online presence, potential improvements, professional website, central hub, or online brochure.",
+      "failure": "Emma uses weak generic headline value such as online presence, potential improvements, professional website, central hub, or online brochure, or expanded weak wording such as clearer online presence, clearer online presentation, professional website could help, visual representation, organized information, one place, help people understand your services, help customers find your services, easier to take the next step, better engagement, or more inquiries unless it is immediately tied to a concrete mechanism.",
       "unknown": "No value answer appears."
     },
     {
       "id": "guarantee_escalation_correct",
       "description": "Guarantee-only buyers should get a safe boundary and clean disqualification.",
       "pass": "Emma distinguishes local search foundations and ongoing SEO from guarantees, and disqualifies guarantee-only buyers without repeated repitching.",
-      "failure": "Emma implies guaranteed SEO/calls, invents past proof, overpromises, or keeps repitching after guarantee-only disqualification.",
+      "failure": "Emma implies guaranteed SEO/calls, invents past proof, overpromises, keeps selling after the guarantee-only disqualification lock, or keeps repitching after guarantee-only disqualification.",
       "unknown": "No guarantee-demand exchange appears."
+    },
+    {
+      "id": "disqualification_lock_respected",
+      "description": "Guarantee-only bad-fit buyers should not get a reopened pitch after the lock is triggered.",
+      "pass": "When the buyer makes guaranteed calls, jobs, rankings, page-one SEO, or outcomes a condition, Emma gives one safe boundary or clarification, says Atlas is not the right fit if guarantees are required, and closes without another mockup CTA.",
+      "failure": "Emma asks to send the mockup, explains new value angles, talks about better engagement, online presence, or inquiries, or otherwise re-opens the pitch after guarantee-only disqualification.",
+      "unknown": "No guarantee-only disqualification condition appears."
+    },
+    {
+      "id": "vertical_action_fidelity",
+      "description": "Emma should use the buyer's real action path instead of forcing booking or appointment language.",
+      "pass": "For HVAC, plumbing, electrical, or auto repair, Emma uses call, quote request, estimate request, service area, emergency service, diagnostics, hours, location, or tap-to-call language. Dental is appointment request or call without patient-growth claims; salon booking appears only when appropriate.",
+      "failure": "Emma says booking, appointments, appointment booking, or online booking for a call-driven vertical after the buyer says they do not use online booking, or uses patient-growth language for dental.",
+      "unknown": "No vertical-specific action path appears."
+    },
+    {
+      "id": "known_context_not_rediscovered",
+      "description": "Emma should not ask for known business context.",
+      "pass": "If business_name is already known from variables or transcript, Emma does not ask for the business name and uses known context when the buyer asks what is needed.",
+      "failure": "Emma asks for the business name when business_name is already known, or asks for basic known business context instead of the next useful missing field after acceptance.",
+      "unknown": "No known business context or what-is-needed question appears."
+    },
+    {
+      "id": "normalized_email_extracted",
+      "description": "Spoken email addresses should be normalized in confirmation and data extraction.",
+      "pass": "For realistic spoken emails, the extracted email field and agent confirmation normalize at and dot phrasing into an address such as service@northsideautorepair.com, info@summithvac.com, or lunahairstudio@email.com.",
+      "failure": "Emma asks for email again after the buyer already gave it, fails to confirm the destination, changes the email incorrectly, or Analysis leaves a realistic spoken email unnormalized.",
+      "unknown": "No realistic spoken email appears, or the transcript ends immediately after email before Emma can respond."
     },
     {
       "id": "natural_spoken_quality",
