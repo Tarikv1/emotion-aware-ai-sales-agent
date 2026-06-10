@@ -190,10 +190,10 @@
       "unknown": "No email-confirmed close appears."
     },
     {
-      "id": "no_send_before_email_confirmation",
-      "description": "Emma must not say the mockup will be sent before confirming a realistic email address.",
-      "pass": "When the buyer gives a realistic email, Emma confirms the normalized address before any send language; if the buyer explicitly confirms the email in the same turn, a one-turn close is acceptable.",
-      "failure": "Hard fail: Emma says she will send the mockup before confirming the normalized address, skips confirmation, asks for the email again, or changes the address incorrectly.",
+      "id": "email_confirmation_requires_explicit_yes",
+      "description": "Realistic email addresses require explicit buyer confirmation before Emma uses send language.",
+      "pass": "When the buyer gives a realistic email, Emma confirms the normalized address and waits for explicit confirmation such as yes, correct, that is right, that is correct, yes that is the right email, that is the right place, or that email is right before any send language. If the buyer explicitly confirms the email in the same turn, a one-turn close is acceptable.",
+      "failure": "Hard fail: Emma treats a non-confirmation comment as email confirmation or says she will send before explicit confirmation. Non-confirmation comments include I will take a look when I can, I will keep an eye out, no hidden fees right, this is really free right, I am not committing to anything, just send it there, that is where you can send it, I will check it later, or send it there.",
       "unknown": "No realistic email appears, or the transcript ends before Emma has a response turn."
     },
     {

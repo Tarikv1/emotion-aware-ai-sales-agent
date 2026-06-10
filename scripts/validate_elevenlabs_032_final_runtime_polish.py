@@ -51,7 +51,7 @@ RECOMMENDED_UPLOAD_DOCS = [
 ]
 
 PROMPT_MARKERS = (
-    "Buyer gives email -> confirm normalized email; no send language until confirmed.",
+    "Buyer gives email -> confirm normalized email; no send language until explicit confirmation.",
     "process or delivery question",
     "After email confirmation only",
     "Do not claim Emma will call, follow up later, check back, or reach out",
@@ -64,7 +64,8 @@ PROMPT_MARKERS = (
 KB_MARKERS = (
     "confirm the normalized email before saying the mockup will be sent",
     "Hard rule: confirm it before saying the mockup will be sent.",
-    "Incorrect before buyer confirmation",
+    "No send language is allowed before explicit email confirmation.",
+    "It'll be in your inbox",
     "Only after the buyer confirms the email should Emma say it will be sent.",
     "No automatic call, check-back, follow-up, or later reach-out is promised",
     "I can follow up later",
@@ -83,7 +84,7 @@ KB_MARKERS = (
 )
 
 ANALYSIS_IDS = (
-    "no_send_before_email_confirmation",
+    "email_confirmation_requires_explicit_yes",
     "no_follow_up_leakage",
     "concrete_mechanism_headline_value",
     "terminal_close_no_loop",
@@ -101,7 +102,7 @@ TEST_IDS = (
 )
 
 TEST_MARKERS = (
-    "no_send_before_email_confirmation",
+    "email_confirmation_requires_explicit_yes",
     "no_follow_up_leakage",
     "concrete_mechanism_headline_value",
     "terminal_close_no_loop",

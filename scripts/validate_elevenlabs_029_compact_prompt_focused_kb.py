@@ -97,7 +97,7 @@ VALUE_ANGLES = (
 EMAIL_STATE_MARKERS = (
     "Soft agreement is not email capture.",
     "Send request without email -> ask for email.",
-    "Buyer gives email -> confirm normalized email; no send language until confirmed.",
+    "Buyer gives email -> confirm normalized email; no send language until explicit confirmation.",
     "Buyer confirms email -> close naturally.",
     "If the buyer already gave an email, do not ask for the email again.",
     "Gatekeeper callback closes cleanly.",

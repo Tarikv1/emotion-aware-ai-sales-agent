@@ -111,7 +111,7 @@
     "no_runtime_tone_tags": "Hard fail if buyer-facing output contains bracketed tone, emotion, pacing, stage, source, policy, sales, or internal labels.",
     "delivery_timing_end_of_day": "Campaign delivery timing is by the end of the day. Treat in a few days, shortly, soon, and within a few business days as failures unless a different campaign mode explicitly overrides timing.",
     "email_reply_path": "After confirmed email, buyer reply to the same email is the default follow-up path; no automatic callback is promised.",
-    "no_send_before_email_confirmation": "Realistic spoken emails must be confirmed in normalized form before Emma says the mockup will be sent.",
+    "email_confirmation_requires_explicit_yes": "Realistic spoken emails must be confirmed in normalized form before Emma says the mockup will be sent.",
     "realistic_test_contact_values": "Use realistic emails such as brightlanedental@gmail.com, info@summithvac.com, and luna.hair.studio.tampa@email.com; placeholder-looking contact values are not valid for real normalization tests.",
     "terminal_close_no_loop": "Do not use unnatural terminal language such as 'I'm not hanging up' or 'I'll stop here' after an irritated buyer asks why Emma is still talking, and do not repeat goodbye more than once."
   }

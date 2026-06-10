@@ -1,0 +1,112 @@
+{
+  "package_id": "ELEVENLABS-033-email-confirmation-precision",
+  "provider": "elevenlabs",
+  "agent_package": "atlas_web_studio_web_design",
+  "source_of_truth": "repo",
+  "test_type": "simulation",
+  "purpose": "Focused tests for explicit email confirmation before send language and mechanism-led value answers.",
+  "dynamic_variables": {
+    "agent_name": "Emma",
+    "company_name": "Atlas Web Studio",
+    "offer": "free homepage mockup",
+    "source_package_id": "ELEVENLABS-033-email-confirmation-precision"
+  },
+  "tests": [
+    {
+      "test_id": "sim_033_summit_email_take_a_look_not_confirmation",
+      "type": "simulation",
+      "simulated_user_model": "gemini-2.5-flash",
+      "evaluation_model": "gemini-2.5-flash",
+      "simulation_max_turns": 10,
+      "simulation_scenario": "The simulated user owns Summit HVAC in Phoenix. They accept and say: 'Send it to summithvac@gmail.com. I'll take a look when I can.' They confirm only if Emma asks whether the email is right.",
+      "success_condition": "Pass only if email_confirmation_requires_explicit_yes is respected. Emma must not treat 'I'll take a look when I can' as confirmation and must not say she will send the mockup yet. Correct response confirms the normalized email, such as 'Got it - summithvac@gmail.com. Is that right?' After explicit confirmation, Emma may say she will send it by the end of the day and mention replying to that email. Hard fail if Emma says 'I'll send it', 'I'll send the mockup', 'I'll send it there', 'You'll receive it', 'I'll get that sent', 'I'll send that over', or 'It'll be in your inbox' before explicit confirmation, asks for email again, uses wrong timing, offers follow-up, or outputs bracketed internal labels.",
+      "dynamic_variables": {
+        "business_name": "Summit HVAC",
+        "business_type": "HVAC company",
+        "vertical": "HVAC",
+        "city": "Phoenix",
+        "known_booking_or_ordering_path": "customers call for emergency service and quotes",
+        "buyer_temperature": "accepts_non_confirmation_comment",
+        "target_outcome": "email_given_pending_confirmation"
+      }
+    },
+    {
+      "test_id": "sim_033_freshnest_keep_eye_out_not_confirmation",
+      "type": "simulation",
+      "simulated_user_model": "gemini-2.5-flash",
+      "evaluation_model": "gemini-2.5-flash",
+      "simulation_max_turns": 10,
+      "simulation_scenario": "The simulated user owns FreshNest Cleaning in Orlando. They accept and say: 'Freshnestowner@gmail.com. I'll keep an eye out.' They confirm only if Emma asks whether the email is right.",
+      "success_condition": "Pass only if Emma does not treat 'I'll keep an eye out' as email confirmation. Emma must confirm freshnestowner@gmail.com before any send language. Hard fail if Emma says she will send before explicit yes/correct/that's right confirmation, asks for email again, says soon/shortly/in a few days, offers automatic follow-up, uses weak generic headline value, or outputs bracketed internal labels.",
+      "dynamic_variables": {
+        "business_name": "FreshNest Cleaning",
+        "business_type": "cleaning company",
+        "vertical": "cleaning",
+        "city": "Orlando",
+        "known_booking_or_ordering_path": "customers request quotes",
+        "buyer_temperature": "accepts_non_confirmation_comment",
+        "target_outcome": "email_given_pending_confirmation"
+      }
+    },
+    {
+      "test_id": "sim_033_apex_free_question_not_confirmation",
+      "type": "simulation",
+      "simulated_user_model": "gemini-2.5-flash",
+      "evaluation_model": "gemini-2.5-flash",
+      "simulation_max_turns": 10,
+      "simulation_scenario": "The simulated user owns Apex Plumbing in Denver. They accept and say: 'It's apexplumbingdenver@gmail.com. And this is really free, right?' They confirm only if Emma asks whether the email is right.",
+      "success_condition": "Pass only if Emma answers that the mockup is free and still confirms apexplumbingdenver@gmail.com before send language. Correct shape: 'That's right, it's free. I've got apexplumbingdenver@gmail.com - is that right?' Hard fail if Emma treats the free question as email confirmation, says she will send before explicit confirmation, asks for email again, promises guaranteed calls/jobs, offers follow-up, or outputs bracketed internal labels.",
+      "dynamic_variables": {
+        "business_name": "Apex Plumbing",
+        "business_type": "plumbing company",
+        "vertical": "plumbing",
+        "city": "Denver",
+        "known_booking_or_ordering_path": "customers call for emergency service and quotes",
+        "buyer_temperature": "free_question_with_email",
+        "target_outcome": "email_given_pending_confirmation"
+      }
+    },
+    {
+      "test_id": "sim_033_bright_lane_hidden_fees_not_confirmation",
+      "type": "simulation",
+      "simulated_user_model": "gemini-2.5-flash",
+      "evaluation_model": "gemini-2.5-flash",
+      "simulation_max_turns": 10,
+      "simulation_scenario": "The simulated user manages Bright Lane Dental in Tampa. They accept and say: 'brightlanedental@gmail.com. No hidden fees, right?' They confirm only if Emma asks whether the email is right.",
+      "success_condition": "Pass only if Emma says there are no hidden fees or no obligation and still confirms brightlanedental@gmail.com before any send language. Hard fail if Emma treats 'No hidden fees, right?' as confirmation, says she will send before explicit confirmation, claims patient growth, offers callback/follow-up without permission, or outputs bracketed internal labels.",
+      "dynamic_variables": {
+        "business_name": "Bright Lane Dental",
+        "business_type": "dental clinic",
+        "vertical": "dental",
+        "city": "Tampa",
+        "known_booking_or_ordering_path": "patients call or request appointments",
+        "buyer_temperature": "hidden_fee_question_with_email",
+        "target_outcome": "email_given_pending_confirmation"
+      }
+    },
+    {
+      "test_id": "sim_033_salon_mechanism_led_value",
+      "type": "simulation",
+      "simulated_user_model": "gemini-2.5-flash",
+      "evaluation_model": "gemini-2.5-flash",
+      "simulation_max_turns": 8,
+      "simulation_scenario": "The simulated user owns Luna Hair Studio in Tampa. They say: 'That still sounds like a central hub or online presence thing. What's the practical difference?' They do not provide an email.",
+      "success_condition": "Pass only if Emma leads with concrete mechanism first, such as DM reduction, services, pricing, policies, booking rules, or appointment request, before any generic website language. Hard fail if the headline value is clearer online presence, clearer online experience, professional homepage, professional website, central hub, convert visitors into customers, more engagement, online presence, or refreshed online presence. Hard fail for repeated canned wording, guarantee claims, email capture without send consent, or bracketed internal labels.",
+      "dynamic_variables": {
+        "business_name": "Luna Hair Studio",
+        "business_type": "hair salon",
+        "vertical": "salon",
+        "city": "Tampa",
+        "known_social_presence": "Instagram is the main channel",
+        "known_booking_or_ordering_path": "clients use Instagram DMs and booking link",
+        "buyer_temperature": "generic_value_challenge",
+        "target_outcome": "mechanism_value_answer"
+      }
+    }
+  ],
+  "evaluation_repair_notes": {
+    "email_confirmation_requires_explicit_yes": "Non-confirmation comments such as I'll take a look, I'll keep an eye out, this is really free, no hidden fees, not committing, send it there, and I'll check it later do not permit send language.",
+    "forbidden_pre_confirmation_send_language": "Hard fail before explicit confirmation for I'll send it, I'll send the mockup, I'll send it there, You'll receive it, I'll get that sent, I'll send that over, or It'll be in your inbox.",
+    "mechanism_led_value": "Lead with concrete mechanism first; generic website language can only follow."
+  }
+}

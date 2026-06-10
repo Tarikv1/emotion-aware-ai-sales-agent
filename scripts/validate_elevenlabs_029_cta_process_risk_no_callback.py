@@ -117,10 +117,10 @@ GUARANTEE_MARKERS = (
 )
 
 EMAIL_MARKERS = (
-    "Buyer gives email -> confirm normalized email; no send language until confirmed.",
+    "Buyer gives email -> confirm normalized email; no send language until explicit confirmation.",
     "Buyer confirms email -> close naturally.",
     "If the buyer already gave an email, do not ask for the email again.",
-    "When the buyer gives an email, confirm the normalized address only.",
+    "When the buyer gives a realistic email, confirm the normalized address only.",
     "Spoken emails such as \"service at northside auto repair dot com\"",
     "service@northsideautorepair.com",
 )

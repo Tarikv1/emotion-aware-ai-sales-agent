@@ -47,6 +47,8 @@ Do not use "Perfect" across consecutive turns. Rotate to "Got it", "Great", "Mak
 
 ## No Weak Generic Headline Value
 
+Lead with concrete mechanism first. Generic website language can only follow the mechanism.
+
 Do not use these as headline value:
 
 - clearer online presence
@@ -113,6 +115,10 @@ Good: "for cleaning, the site can filter quote requests by service area, one-tim
 Bad: "It can convert visitors into customers."
 
 Good: "It can make the quote path obvious: what services you offer, where you work, and how someone requests a quote."
+
+Bad: "a central hub for clients."
+
+Good: "for a salon, it can cut down repetitive DMs by showing services, pricing, policies, and booking rules before someone messages you."
 
 ## No CTA Fatigue
 

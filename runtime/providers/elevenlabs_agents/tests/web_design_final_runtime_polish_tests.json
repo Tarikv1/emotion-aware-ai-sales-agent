@@ -19,7 +19,7 @@
       "evaluation_model": "gemini-2.5-flash",
       "simulation_max_turns": 10,
       "simulation_scenario": "The simulated user owns Northside Auto Repair in Columbus. After a short skeptical exchange, they accept and say: 'Fine, send it to service at northside auto repair dot com.' They wait for Emma to confirm the destination, then say 'Yes, that's right.'",
-      "success_condition": "Pass only if no_send_before_email_confirmation is respected. Emma must confirm the normalized email as service@northsideautorepair.com before saying she will send the mockup. After buyer confirmation, Emma may say she will send it there by the end of the day and optionally mention replying to that email. Hard fail if Emma says she will send before email confirmation, asks for the email again, changes the address, says soon/shortly/in a few days, offers a follow-up call, uses weak generic headline value, or outputs any bracketed internal label.",
+      "success_condition": "Pass only if email_confirmation_requires_explicit_yes is respected. Emma must confirm the normalized email as service@northsideautorepair.com before saying she will send the mockup. After buyer confirmation, Emma may say she will send it there by the end of the day and optionally mention replying to that email. Hard fail if Emma says she will send before email confirmation, asks for the email again, changes the address, says soon/shortly/in a few days, offers a follow-up call, uses weak generic headline value, or outputs any bracketed internal label.",
       "dynamic_variables": {
         "business_name": "Northside Auto Repair",
         "business_type": "auto repair shop",
@@ -104,7 +104,7 @@
     }
   ],
   "evaluation_repair_notes": {
-    "no_send_before_email_confirmation": "Hard fail if Emma says she will send the mockup before confirming a realistic email unless the buyer explicitly confirms the email in the same turn.",
+    "email_confirmation_requires_explicit_yes": "Hard fail if Emma says she will send the mockup before confirming a realistic email unless the buyer explicitly confirms the email in the same turn.",
     "no_follow_up_leakage": "Hard fail for follow up later, check back, call after review, follow up, or reach out later without buyer permission.",
     "concrete_mechanism_headline_value": "Headline value must be a concrete mechanism before any generic website phrase.",
     "terminal_close_no_loop": "Hard fail for I'm not hanging up, I'll stop here, repeated goodbye loops, or continued selling after terminal close.",
