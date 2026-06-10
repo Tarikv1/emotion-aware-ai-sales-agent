@@ -64,13 +64,6 @@
       "unknown": "No gatekeeper or wrong-person exchange appears."
     },
     {
-      "id": "no_weak_clearer_main_value",
-      "description": "Clearer page/homepage/path cannot be the headline value.",
-      "pass": "Any clearer-page wording appears at most as supporting language tied to checking services, prices, policies, reviews, booking, quote request, service area, location, or tap-to-call.",
-      "failure": "The main value is only 'clearer page', 'clearer homepage', 'clearer path', generic organization, online presence, or one place.",
-      "unknown": "No clearer-page wording or value answer appears."
-    },
-    {
       "id": "seo_confident_but_safe",
       "description": "Local SEO answers should be confident and non-guaranteed.",
       "pass": "The answer says the goal is local search foundation or gives Google a proper page to read, names services/location/service area/photos/reviews/call or booking info, and avoids ranking, traffic, customer, call, booking, or numerical lift guarantees.",

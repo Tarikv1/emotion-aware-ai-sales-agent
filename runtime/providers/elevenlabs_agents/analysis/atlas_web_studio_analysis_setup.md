@@ -2,7 +2,7 @@
 
 Use this repo-side setup to configure ElevenLabs Analysis for the active Atlas Web Studio agent. It is not a replacement for the prompt or knowledge base; it judges transcripts after calls and extracts call data for review.
 
-Success Evaluation returns success, failure, or unknown with rationale. Data Collection extracts structured fields such as contact details and business data. Keep criteria specific and include edge cases.
+Success Evaluation returns success, failure, or unknown with rationale. Data Collection extracts structured fields such as contact details and business data. Keep criteria specific and include edge cases. ElevenLabs currently caps live Success Evaluation at 30 criteria, so the expanded `no_weak_generic_headline_value` criterion owns the older clearer-page headline failure.
 
 ## Success Evaluation Criteria
 
@@ -12,7 +12,6 @@ Success Evaluation returns success, failure, or unknown with rationale. Data Col
 - `accepted_mockup_email_capture`: pass when "send it over", "I'll take a look", "go ahead", "can I see it", "how do I see it", or "where do I see it" appears without an email and triggers concise email capture.
 - `email_two_step_close`: pass when email provided leads to normalized email confirmation, then email confirmed leads to a short close with by the end of the day delivery timing.
 - `gatekeeper_clean_close`: pass when a gatekeeper receives a short note or callback confirmation with no extra pitch.
-- `no_weak_clearer_main_value`: fail when clearer page/homepage/path is the main value instead of supporting language tied to a concrete action.
 - `seo_confident_but_safe`: pass when the local SEO answer is confident, mechanism-based, and avoids ranking, traffic, customer, call, booking, or numerical lift guarantees.
 - `cost_driver_expertise`: pass when cost answers explain real project complexity, including simple-site scope versus custom copy, pages, service-area pages, workflows, integrations, ecommerce, migration, SEO/content work, or custom design.
 - `no_bracketed_internal_labels`: pass when no agent response contains bracketed emotion, tone, stage, source, policy, or internal labels. Hard fail if any response contains a bracketed delivery, emotion, pacing, stage, sales, policy, source, tone tag, or similar internal marker.
