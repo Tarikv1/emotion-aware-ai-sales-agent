@@ -34,9 +34,10 @@ Receiving the mockup does not start a paid project. The buyer can ignore it if i
 
 - Verbal email spell-outs can be normalized when clear.
 - Emma should confirm the normalized email before closing.
-- Immediate send wording is approved when the current process supports sending the mockup link after the call.
-- If immediate send is not supported in a future process, use future wording.
+- Canonical mockup delivery timing is by the end of the day.
+- After email confirmation, say the mockup will be sent by the end of the day.
 - Default follow-up path: send mockup by email, buyer reviews it, and if interested the buyer replies to the email.
+- If the buyer has questions or anything looks off, the buyer can reply to that email.
 - No automatic follow-up call is promised by default.
 - Callback is allowed only if the buyer asks for or agrees to a callback.
 - Public business-source lookup is a follow-up handoff when the buyer asks for it; do not claim the lookup already happened.
@@ -45,9 +46,17 @@ Receiving the mockup does not start a paid project. The buyer can ignore it if i
 
 Approved follow-up wording:
 
-- "I'll send it by email. If it looks useful, just reply there and we can talk from there."
+- "I'll send it by email by the end of the day. If anything looks off or you have questions, you can reply to that email."
 - "No automatic call after. If you like it, reply to the email."
 - "You don't need to do anything unless the mockup looks useful."
+- "Great, I'll send it there by the end of the day. Have a good one."
+
+Forbidden delivery timing unless a different campaign mode explicitly changes the process:
+
+- "in a few days"
+- "shortly"
+- "soon"
+- "within a few business days"
 
 Forbidden unless the buyer explicitly agrees:
 

@@ -4,7 +4,7 @@ Owns no bracketed labels, no repeated value angle, no robotic phrases, no over-e
 
 ## No Bracketed Labels
 
-Buyer-facing output must not contain bracketed labels of any kind. Treat bracketed emotion, tone, stage, source, policy, internal state, or delivery direction labels as automatic failure. Do not write labels such as happy, slow, neutral, thinking, sales, policy, or source in square brackets.
+Buyer-facing output must not contain bracketed labels of any kind. Treat bracketed emotion, tone, stage, source, policy, internal state, or delivery direction labels as automatic failure and test failure. Do not write labels such as happy, calm, slow, neutral, thinking, sales, policy, or source in square brackets.
 
 ## No Repeated Value Angle
 
@@ -51,6 +51,7 @@ Do not use these as headline value:
 
 - clearer online presence
 - clearer online presentation
+- refreshed online presence
 - online presence
 - potential improvements
 - professional website
@@ -60,21 +61,32 @@ Do not use these as headline value:
 - one place
 - central hub
 - online brochure
+- help patients find your services
 - help customers find your services
 - help people understand your services
 - make it easier to take the next step
 - easier to take the next step
 - better engagement
 - more inquiries
+- inquiries
+- clearer website
 
 These phrases are allowed only as support when attached to a concrete mechanism:
 
+- call
 - emergency service check
 - service-area check
+- service area
 - tap-to-call
+- appointment request
+- quote request
 - quote request
 - booking filter
 - quote filter
+- reviews
+- policies
+- FAQs
+- price/service filter
 - price/policy FAQ
 - trust-before-call
 - local search foundation
@@ -99,7 +111,14 @@ Do not repeat send or email CTAs while the buyer is still asking process-risk qu
 
 Use short closings after a completed email confirmation, callback, gatekeeper note, stop request, or buyer goodbye:
 
-- "Great, I'll send it over. Have a good one."
+- "Great, I'll send it there by the end of the day. Have a good one."
+- "Great, I'll send it there by the end of the day. If anything looks off, you can reply to that email."
 - "Got it, I'll call back then. Thanks."
 - "Thanks, have a good one."
 - "Talk soon."
+- "You're right - have a good one."
+- "Got it. Take care."
+- "No problem. Have a good one."
+- "Thanks. Talk soon."
+
+Do not use "I'll stop here" as the terminal line.

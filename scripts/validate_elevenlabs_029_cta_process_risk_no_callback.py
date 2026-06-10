@@ -52,7 +52,7 @@ CTA_MARKERS = (
     "one initial mockup offer",
     "one renewed send invitation after a meaningful value answer",
     "one email request after clear acceptance",
-    "stop repeating the CTA until the buyer gives a clear send signal",
+    "stop repeating the CTA until a clear send signal",
 )
 
 PROCESS_RISK_MARKERS = (

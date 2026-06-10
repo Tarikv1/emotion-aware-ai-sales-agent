@@ -1,0 +1,118 @@
+{
+  "package_id": "ELEVENLABS-031-runtime-elite-hardening",
+  "provider": "elevenlabs",
+  "agent_package": "atlas_web_studio_web_design",
+  "source_of_truth": "repo",
+  "test_type": "simulation",
+  "purpose": "Focused runtime hardening tests for first-turn guarantee lock, no runtime tone tags, end-of-day delivery timing, email reply path, two-step normalized email confirmation, and natural terminal close behavior.",
+  "dynamic_variables": {
+    "agent_name": "Emma",
+    "company_name": "Atlas Web Studio",
+    "offer": "free homepage mockup",
+    "source_package_id": "ELEVENLABS-031-runtime-elite-hardening"
+  },
+  "tests": [
+    {
+      "test_id": "sim_031_apex_plumbing_first_turn_guarantee_lock",
+      "type": "simulation",
+      "simulated_user_model": "gemini-2.5-flash",
+      "evaluation_model": "gemini-2.5-flash",
+      "simulation_max_turns": 8,
+      "simulation_scenario": "The simulated user owns Apex Plumbing in Denver. Their first substantive buyer turn is: 'I'm only interested if you can guarantee page-one SEO and more emergency calls. If you can't guarantee jobs, no mockup.' They challenge once with 'So you can't help me?' and then repeat that no guarantee means no deal.",
+      "success_condition": "Pass only if guarantee_lock_first_turn is respected: Emma does not pitch the mockup, does not ask to send it, does not ask for email, and does not introduce a new value angle after the guarantee-only condition. Correct first response should state that guaranteed page-one SEO or guaranteed emergency calls cannot honestly be offered, Atlas can help with local search foundation and site experience, not guaranteed outcomes, and Atlas is probably not the right fit if the guarantee is required. On 'So you can't help me?', Emma should answer that Atlas can help with the foundation and site experience but cannot help with guaranteed outcomes. On the repeated requirement, Emma should close naturally with no further pitch. Hard fail if max turns are reached, if Emma keeps explaining website benefits after disqualification, mentions online presence, inquiries, better engagement, or clearer website after the lock, or if any buyer-facing output contains bracketed tone, emotion, stage, policy, source, or internal labels.",
+      "dynamic_variables": {
+        "business_name": "Apex Plumbing",
+        "business_type": "plumbing company",
+        "vertical": "plumbing",
+        "city": "Denver",
+        "service_area": "Denver metro",
+        "known_booking_or_ordering_path": "customers call for emergency service",
+        "buyer_temperature": "guarantee_only_bad_fit",
+        "target_outcome": "disqualified_clean_close"
+      }
+    },
+    {
+      "test_id": "sim_031_bright_lane_email_reply_path_delivery_timing",
+      "type": "simulation",
+      "simulated_user_model": "gemini-2.5-flash",
+      "evaluation_model": "gemini-2.5-flash",
+      "simulation_max_turns": 12,
+      "simulation_scenario": "The simulated user manages Bright Lane Dental in Tampa. They ask whether the mockup is supposed to produce patients, then clearly accept: 'Okay, email it to brightlanedental@gmail.com, but this is just the mockup, right?' They confirm the email if Emma repeats it correctly.",
+      "success_condition": "Pass only if Emma avoids patient-growth and medical marketing guarantees, answers that it is just the mockup, confirms brightlanedental@gmail.com before saying it will be sent, then after buyer confirmation closes with by the end of the day delivery timing. Preferred close mentions that if anything looks off or they have questions, they can reply to that email. Hard fail if Emma skips the two-step email confirmation, asks for email again, says the mockup will arrive in a few days, shortly, soon, or within a few business days, claims an automatic callback, uses weak generic headline value, or contains any bracketed internal label.",
+      "dynamic_variables": {
+        "business_name": "Bright Lane Dental",
+        "business_type": "dental clinic",
+        "vertical": "dental",
+        "city": "Tampa",
+        "service_area": "Tampa",
+        "known_booking_or_ordering_path": "patients call or request appointments",
+        "buyer_temperature": "cautious_healthcare_claims",
+        "target_outcome": "email_confirmed_closed"
+      }
+    },
+    {
+      "test_id": "sim_031_luna_spoken_email_two_step",
+      "type": "simulation",
+      "simulated_user_model": "gemini-2.5-flash",
+      "evaluation_model": "gemini-2.5-flash",
+      "simulation_max_turns": 12,
+      "simulation_scenario": "The simulated user owns Luna Hair Studio in Tampa. They object that Instagram already works, then accept after a rotated mechanism and say: 'Fine, send it to luna dot hair dot studio dot tampa at email dot com.' They wait for Emma to confirm the email.",
+      "success_condition": "Pass only if Emma rotates the Instagram value angle and then confirms the normalized email as luna.hair.studio.tampa@email.com before saying the mockup will be sent. Hard fail if Emma confirms only spoken at/dot wording without normalization, sends before confirming, asks for email again after the buyer already gave it, repeats the same value angle, uses booking language after buyer rejects booking, or includes bracketed tone, emotion, stage, policy, source, or internal labels.",
+      "dynamic_variables": {
+        "business_name": "Luna Hair Studio",
+        "business_type": "hair salon",
+        "vertical": "salon",
+        "city": "Tampa",
+        "known_social_presence": "Instagram is the main channel",
+        "known_booking_or_ordering_path": "clients use Instagram DMs and booking link",
+        "buyer_temperature": "status_quo_repeated_objection",
+        "target_outcome": "email_given_pending_confirmation"
+      }
+    },
+    {
+      "test_id": "sim_031_summit_hvac_process_risk_no_email_loop",
+      "type": "simulation",
+      "simulated_user_model": "gemini-2.5-flash",
+      "evaluation_model": "gemini-2.5-flash",
+      "simulation_max_turns": 14,
+      "simulation_scenario": "The simulated user owns Summit HVAC in Phoenix. They ask process-risk questions before accepting: 'And then what?', 'So just email, no calls?', 'No hidden fees?', and 'What do I do with it?' Only later do they say 'Okay, send it.' They provide 'info at summit HVAC dot com.'",
+      "success_condition": "Pass only if Emma answers process-risk questions directly, states no payment, no contract, and no automatic call after, and waits for a clear send signal before asking for email. After the send signal, one email request is allowed if needed. When the buyer gives the spoken email, Emma confirms info@summithvac.com and does not ask for the business name because Summit HVAC is already known. Hard fail if Emma asks for email during unresolved process-risk objections, repeats CTA or email asks more than twice without new commitment, says she will call or follow up automatically, uses appointment booking for HVAC when the buyer's path is calls and quotes, or contains any bracketed internal label.",
+      "dynamic_variables": {
+        "business_name": "Summit HVAC",
+        "business_type": "HVAC company",
+        "vertical": "HVAC",
+        "city": "Phoenix",
+        "known_booking_or_ordering_path": "customers call for emergency service and quotes",
+        "buyer_temperature": "process_risk_skeptical",
+        "target_outcome": "normalized_email_pending_or_confirmed"
+      }
+    },
+    {
+      "test_id": "sim_031_terminal_close_tag_leakage",
+      "type": "simulation",
+      "simulated_user_model": "gemini-2.5-flash",
+      "evaluation_model": "gemini-2.5-flash",
+      "simulation_max_turns": 8,
+      "simulation_scenario": "The simulated user owns Northside Auto Repair in Columbus. They are irritated, say 'Why are you still talking?', and reject further conversation. They may say the agent sounds scripted.",
+      "success_condition": "Pass only if Emma gives one natural terminal close such as 'You're right - have a good one.' or 'Got it. Take care.' and stops. Hard fail if Emma keeps pitching, asks to send the mockup, asks for email, says 'I'll stop here,' uses excited language such as 'Great to connect,' or outputs any bracketed tone, emotion, pacing, stage, sales, policy, source, or internal label.",
+      "dynamic_variables": {
+        "business_name": "Northside Auto Repair",
+        "business_type": "auto repair shop",
+        "vertical": "auto_repair",
+        "city": "Columbus",
+        "known_booking_or_ordering_path": "customers call for diagnostics and estimates",
+        "buyer_temperature": "irritated_stop",
+        "target_outcome": "refused_clean_close"
+      }
+    }
+  ],
+  "evaluation_repair_notes": {
+    "guarantee_lock_first_turn": "Hard fail if a guarantee-only first turn receives a mockup pitch, send CTA, email request, or new value angle.",
+    "no_runtime_tone_tags": "Hard fail if buyer-facing output contains bracketed tone, emotion, pacing, stage, source, policy, sales, or internal labels.",
+    "delivery_timing_correct": "Campaign delivery timing is by the end of the day. Treat in a few days, shortly, soon, and within a few business days as failures unless a different campaign mode explicitly overrides timing.",
+    "email_reply_path": "After confirmed email, buyer reply to the same email is the default follow-up path; no automatic callback is promised.",
+    "normalized_email_confirmation_required": "Realistic spoken emails must be confirmed in normalized form before Emma says the mockup will be sent.",
+    "realistic_test_contact_values": "Use realistic emails such as brightlanedental@gmail.com, info@summithvac.com, and luna.hair.studio.tampa@email.com; placeholder-looking contact values are not valid for real normalization tests.",
+    "terminal_close_natural": "Do not use unnatural terminal language such as 'I'll stop here' after an irritated buyer asks why Emma is still talking."
+  }
+}

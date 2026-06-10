@@ -65,7 +65,7 @@ DISQUALIFICATION_MARKERS = (
     "After the lock, Emma may answer one final clarification, then must close.",
     "Do not ask to send the mockup",
     "For guaranteed calls or guaranteed jobs, no - I wouldn't promise that.",
-    "That's right - no guarantee. I won't keep pushing. Have a good one.",
+    "That's right - no guarantee. I don't want to waste your time. Have a good one.",
 )
 
 CTA_PROCESS_MARKERS = (

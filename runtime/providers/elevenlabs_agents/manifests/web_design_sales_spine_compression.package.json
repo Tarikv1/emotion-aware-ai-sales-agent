@@ -96,6 +96,7 @@
     "Do not upload the full universal_sales_core.md for the active Atlas agent unless the operator explicitly asks for the broader source file.",
     "Do not upload old monolithic Atlas KB files when the focused chunks supersede them.",
     "Do not upload tests, analysis setup docs, or generated experiment docs as KB.",
+    "Check ElevenLabs LLM Override / voice prompt / style fields. They must not include bracketed tags such as [happy], [calm], or [slow].",
     "Do not claim live readiness from this package."
   ]
 }

@@ -48,8 +48,8 @@
     {
       "id": "email_two_step_close",
       "description": "Email delivery should use the natural two-step confirmation and close.",
-      "pass": "After a clear email, the agent confirms the normalized email only; after buyer confirmation, the agent closes naturally in one short line.",
-      "failure": "The agent asks for the best email after an email was already provided, skips email confirmation after receiving a reachable next turn, continues discovery, re-pitches, over-explains reply path, or fails to close after confirmation.",
+      "pass": "After a clear email, the agent confirms the normalized email only; after buyer confirmation, the agent closes naturally in one short line with by the end of the day delivery timing.",
+      "failure": "The agent asks for the best email after an email was already provided, skips email confirmation after receiving a reachable next turn, says it will send before confirmation, continues discovery, re-pitches, over-explains reply path, uses the wrong delivery timing, or fails to close after confirmation.",
       "unknown": "The buyer never gives an email, or the transcript ends immediately after email before the agent has a chance to respond.",
       "edge_cases": [
         "If the buyer gives an email and confirms it in the same turn, a one-turn close is acceptable.",
@@ -88,7 +88,7 @@
       "id": "no_bracketed_internal_labels",
       "description": "Buyer-facing agent responses must not contain bracketed internal labels.",
       "pass": "No agent response contains bracketed emotion, tone, stage, source, policy, or internal labels.",
-      "failure": "Hard fail: any response contains a bracketed label such as an emotion, pacing note, stage label, sales label, policy label, source label, or similar internal marker.",
+      "failure": "Hard fail: any response contains a bracketed label such as an emotion, pacing note, stage label, sales label, policy label, source label, tone tag, or similar internal marker.",
       "unknown": "Transcript does not include agent response text."
     },
     {
@@ -130,21 +130,21 @@
       "id": "no_weak_generic_headline_value",
       "description": "Headline value should be a concrete website mechanism, not generic web-presence language.",
       "pass": "Emma uses concrete mechanisms as headline value.",
-      "failure": "Emma uses weak generic headline value such as online presence, potential improvements, professional website, central hub, or online brochure, or expanded weak wording such as clearer online presence, clearer online presentation, professional website could help, visual representation, organized information, one place, help people understand your services, help customers find your services, easier to take the next step, better engagement, or more inquiries unless it is immediately tied to a concrete mechanism.",
+      "failure": "Emma uses weak generic headline value such as online presence, potential improvements, professional website, central hub, or online brochure, plus refreshed online presence, help patients find your services, help customers find your services, better engagement, inquiries, or expanded weak wording such as clearer online presence, clearer online presentation, professional website could help, visual representation, organized information, one place, help people understand your services, easier to take the next step, or more inquiries unless it is immediately tied to a concrete mechanism.",
       "unknown": "No value answer appears."
     },
     {
       "id": "guarantee_escalation_correct",
       "description": "Guarantee-only buyers should get a safe boundary and clean disqualification.",
-      "pass": "Emma distinguishes local search foundations and ongoing SEO from guarantees, and disqualifies guarantee-only buyers without repeated repitching.",
-      "failure": "Emma implies guaranteed SEO/calls, invents past proof, overpromises, keeps selling after the guarantee-only disqualification lock, or keeps repitching after guarantee-only disqualification.",
+      "pass": "Emma distinguishes local search foundations and ongoing SEO from guarantees, triggers the guarantee-only lock when guarantees are required, and disqualifies guarantee-only buyers without repeated repitching.",
+      "failure": "Emma implies guaranteed SEO/calls, invents past proof, overpromises, keeps selling after the guarantee-only disqualification lock, asks to send the mockup after guarantee-only disqualification, or keeps repitching after guarantee-only disqualification.",
       "unknown": "No guarantee-demand exchange appears."
     },
     {
       "id": "disqualification_lock_respected",
       "description": "Guarantee-only bad-fit buyers should not get a reopened pitch after the lock is triggered.",
       "pass": "When the buyer makes guaranteed calls, jobs, rankings, page-one SEO, or outcomes a condition, Emma gives one safe boundary or clarification, says Atlas is not the right fit if guarantees are required, and closes without another mockup CTA.",
-      "failure": "Emma asks to send the mockup, explains new value angles, talks about better engagement, online presence, or inquiries, or otherwise re-opens the pitch after guarantee-only disqualification.",
+      "failure": "Emma asks to send the mockup, asks for email, explains new value angles, talks about better engagement, online presence, inquiries, or clearer website, or otherwise re-opens the pitch after guarantee-only disqualification.",
       "unknown": "No guarantee-only disqualification condition appears."
     },
     {
@@ -164,9 +164,58 @@
     {
       "id": "normalized_email_extracted",
       "description": "Spoken email addresses should be normalized in confirmation and data extraction.",
-      "pass": "For realistic spoken emails, the extracted email field and agent confirmation normalize at and dot phrasing into an address such as service@northsideautorepair.com, info@summithvac.com, or lunahairstudio@email.com.",
-      "failure": "Emma asks for email again after the buyer already gave it, fails to confirm the destination, changes the email incorrectly, or Analysis leaves a realistic spoken email unnormalized.",
+      "pass": "For realistic spoken emails, the extracted email field and agent confirmation normalize at and dot phrasing into an address such as service@northsideautorepair.com, info@summithvac.com, lunahairstudio@email.com, or luna.hair.studio.tampa@email.com.",
+      "failure": "Emma asks for email again after the buyer already gave it, fails to confirm the destination, changes the email incorrectly, confirms only an unnormalized spoken at/dot form when a normalized form is clear, or Analysis leaves a realistic spoken email unnormalized.",
       "unknown": "No realistic spoken email appears, or the transcript ends immediately after email before Emma can respond."
+    },
+    {
+      "id": "guarantee_lock_first_turn",
+      "description": "A guarantee-only first buyer turn should lock immediately instead of receiving a mockup pitch.",
+      "pass": "If the first buyer turn requires guaranteed page-one SEO, emergency calls, more calls, jobs, patients, rankings, traffic, revenue, or outcomes, Emma says Atlas cannot honestly offer guaranteed outcomes, names local search foundation and site experience as the helpable scope, says Atlas is probably not the right fit if the guarantee is required, and does not pitch the mockup.",
+      "failure": "Hard fail: a guarantee-only first turn gets a mockup pitch, send CTA, email request, new value angle, online presence language, inquiries language, better engagement language, or continued selling instead of the guarantee lock.",
+      "unknown": "The transcript does not start with a guarantee-only buyer condition."
+    },
+    {
+      "id": "no_runtime_tone_tags",
+      "description": "Runtime output must not leak bracketed tone, style, or internal control tags.",
+      "pass": "No agent response contains bracketed tone, emotion, pacing, stage, sales, policy, source, or internal tags.",
+      "failure": "Hard fail: any buyer-facing agent response contains a bracketed runtime tone tag or internal label.",
+      "unknown": "Transcript does not include agent response text."
+    },
+    {
+      "id": "delivery_timing_correct",
+      "description": "Mockup delivery timing should use the campaign's same-day timing.",
+      "pass": "After confirmed email, Emma says the mockup will be sent by the end of the day.",
+      "failure": "Emma says the mockup will arrive in a few days, shortly, soon, within a few business days, or gives a timing that conflicts with by the end of the day.",
+      "unknown": "No email-confirmed close or delivery-timing question appears."
+    },
+    {
+      "id": "email_reply_path_mentioned_when_closing",
+      "description": "The default post-mockup follow-up path is buyer reply to the email.",
+      "pass": "When closing after email confirmation, Emma either naturally mentions that the buyer can reply to that email if anything looks off or keeps the close short without implying an automatic callback.",
+      "failure": "Emma claims she will call, follow up, check back, or schedule a post-mockup discussion automatically instead of using the buyer-reply email path.",
+      "unknown": "No email-confirmed close appears."
+    },
+    {
+      "id": "normalized_email_confirmation_required",
+      "description": "Realistic emails should be normalized and confirmed before send language.",
+      "pass": "When the buyer gives a realistic email, Emma confirms the normalized address before saying the mockup will be sent.",
+      "failure": "Emma skips the confirmation, says the mockup will be sent before confirming, asks for the email again, or changes the address incorrectly.",
+      "unknown": "No realistic email appears, or the transcript ends before Emma has a response turn."
+    },
+    {
+      "id": "terminal_close_natural",
+      "description": "A terminal goodbye should be short and natural after refusal or irritation.",
+      "pass": "After a clear terminal cue such as 'why are you still talking', Emma gives one natural close such as 'You're right - have a good one' or 'Got it. Take care' and stops.",
+      "failure": "Emma keeps pitching, asks for the mockup or email, uses unnatural language such as 'I'll stop here', or continues after the terminal close.",
+      "unknown": "No terminal refusal, stop cue, or irritated goodbye appears."
+    },
+    {
+      "id": "realistic_test_contact_values",
+      "description": "Evaluation should not treat placeholder-looking contact values as real email-normalization evidence.",
+      "pass": "Email-normalization judgments use realistic emails such as info@brightlanedental.com, brightlanedental@gmail.com, service@northsideautorepair.com, info@summithvac.com, freshnestcleaning@gmail.com, or luna.hair.studio.tampa@email.com.",
+      "failure": "A test or analysis rationale treats placeholder-looking contact values as a real successful normalization case outside a placeholder-specific test.",
+      "unknown": "No email-normalization judgment appears."
     },
     {
       "id": "natural_spoken_quality",
