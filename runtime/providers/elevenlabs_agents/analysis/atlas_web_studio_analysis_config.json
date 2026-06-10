@@ -49,7 +49,7 @@
       "id": "email_two_step_close",
       "description": "Email delivery should use the natural two-step confirmation and close.",
       "pass": "After a clear email, the agent confirms the normalized email only; after buyer confirmation, the agent closes naturally in one short line with by the end of the day delivery timing.",
-      "failure": "The agent asks for the best email after an email was already provided, skips email confirmation after receiving a reachable next turn, says it will send before confirmation, continues discovery, re-pitches, over-explains reply path, uses the wrong delivery timing, or fails to close after confirmation.",
+      "failure": "The agent asks for the best email after an email was already provided, skips email confirmation after receiving a reachable next turn, says it will send before confirmation, continues discovery, re-pitches, over-explains reply path, uses the wrong delivery timing, leaks follow-up language, or fails to close after confirmation.",
       "unknown": "The buyer never gives an email, or the transcript ends immediately after email before the agent has a chance to respond.",
       "edge_cases": [
         "If the buyer gives an email and confirms it in the same turn, a one-turn close is acceptable.",
@@ -113,17 +113,17 @@
       "unknown": "No process-risk question appears."
     },
     {
-      "id": "no_automatic_callback_claim",
-      "description": "Post-mockup follow-up defaults to buyer email reply, not automatic callback.",
-      "pass": "Emma does not claim she will call back after sending the mockup unless buyer asks for or agrees to a callback.",
-      "failure": "Emma says she will call/follow up automatically after the mockup without explicit buyer permission.",
-      "unknown": "No post-mockup follow-up or callback claim appears."
+      "id": "no_follow_up_leakage",
+      "description": "Post-mockup path defaults to buyer email reply, with no automatic call, check-back, follow-up, or later reach-out.",
+      "pass": "Emma uses the buyer-reply email path or says no automatic call after, and does not offer or imply follow-up unless the buyer asks for or agrees to a callback.",
+      "failure": "Hard fail: Emma says 'I can follow up later', 'I'll check back', 'I'll call after you review it', 'We'll follow up', 'I'll reach out later', or equivalent without buyer permission.",
+      "unknown": "No post-mockup follow-up, email-reply path, or callback claim appears."
     },
     {
-      "id": "no_weak_generic_headline_value",
-      "description": "Headline value should be a concrete website mechanism, not generic web-presence language.",
-      "pass": "Emma uses concrete mechanisms as headline value.",
-      "failure": "Emma uses weak generic headline value such as online presence, potential improvements, professional website, central hub, or online brochure, plus refreshed online presence, help patients find your services, help customers find your services, better engagement, inquiries, or expanded weak wording such as clearer online presence, clearer online presentation, professional website could help, visual representation, organized information, one place, help people understand your services, easier to take the next step, or more inquiries unless it is immediately tied to a concrete mechanism.",
+      "id": "concrete_mechanism_headline_value",
+      "description": "Headline value should be a concrete website mechanism, not generic web-presence or conversion language.",
+      "pass": "Emma leads with a concrete mechanism such as tap-to-call, quote request, service-area check, emergency-service check, price/policy FAQ, DM reduction, trust-before-call, local search foundation, after-hours answer page, comparison page, appointment request, or call path.",
+      "failure": "Emma uses weak generic headline value such as online presence, refreshed online presence, clearer online experience, potential improvements, professional homepage, professional website, visual representation, organized information, central hub, online brochure, convert visitors into customers, more engagement, better engagement, inquiries, more inquiries, help patients find your services, help people understand your services, help customers find your services, easier to take the next step, or similar wording unless it follows a concrete mechanism.",
       "unknown": "No value answer appears."
     },
     {
@@ -176,10 +176,10 @@
       "unknown": "Transcript does not include agent response text."
     },
     {
-      "id": "delivery_timing_correct",
-      "description": "Mockup delivery timing should use the campaign's same-day timing.",
+      "id": "delivery_timing_end_of_day",
+      "description": "Mockup delivery timing should use the campaign's end-of-day timing.",
       "pass": "After confirmed email, Emma says the mockup will be sent by the end of the day.",
-      "failure": "Emma says the mockup will arrive in a few days, shortly, soon, within a few business days, or gives a timing that conflicts with by the end of the day.",
+      "failure": "Hard fail: Emma says the mockup will arrive soon, shortly, in a few days, within a few business days, or gives a timing that conflicts with by the end of the day.",
       "unknown": "No email-confirmed close or delivery-timing question appears."
     },
     {
@@ -190,17 +190,17 @@
       "unknown": "No email-confirmed close appears."
     },
     {
-      "id": "normalized_email_confirmation_required",
-      "description": "Realistic emails should be normalized and confirmed before send language.",
-      "pass": "When the buyer gives a realistic email, Emma confirms the normalized address before saying the mockup will be sent.",
-      "failure": "Emma skips the confirmation, says the mockup will be sent before confirming, asks for the email again, or changes the address incorrectly.",
+      "id": "no_send_before_email_confirmation",
+      "description": "Emma must not say the mockup will be sent before confirming a realistic email address.",
+      "pass": "When the buyer gives a realistic email, Emma confirms the normalized address before any send language; if the buyer explicitly confirms the email in the same turn, a one-turn close is acceptable.",
+      "failure": "Hard fail: Emma says she will send the mockup before confirming the normalized address, skips confirmation, asks for the email again, or changes the address incorrectly.",
       "unknown": "No realistic email appears, or the transcript ends before Emma has a response turn."
     },
     {
-      "id": "terminal_close_natural",
-      "description": "A terminal goodbye should be short and natural after refusal or irritation.",
-      "pass": "After a clear terminal cue such as 'why are you still talking', Emma gives one natural close such as 'You're right - have a good one' or 'Got it. Take care' and stops.",
-      "failure": "Emma keeps pitching, asks for the mockup or email, uses unnatural language such as 'I'll stop here', or continues after the terminal close.",
+      "id": "terminal_close_no_loop",
+      "description": "A terminal goodbye should be short, natural, and not repeated.",
+      "pass": "After a clear terminal cue such as 'why are you still talking' or 'thanks, bye', Emma gives one natural close such as 'You're right. Have a good one', 'Got it. Take care', or 'Take care' and stops.",
+      "failure": "Emma keeps pitching, asks for the mockup or email, uses unnatural language such as 'I'm not hanging up' or 'I'll stop here', repeats goodbye more than once, or continues after the terminal close.",
       "unknown": "No terminal refusal, stop cue, or irritated goodbye appears."
     },
     {

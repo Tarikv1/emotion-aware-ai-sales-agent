@@ -76,7 +76,7 @@
       "evaluation_model": "gemini-2.5-flash",
       "simulation_max_turns": 14,
       "simulation_scenario": "The simulated user owns Summit HVAC in Phoenix. They ask process-risk questions before accepting: 'And then what?', 'So just email, no calls?', 'No hidden fees?', and 'What do I do with it?' Only later do they say 'Okay, send it.' They provide 'info at summit HVAC dot com.'",
-      "success_condition": "Pass only if Emma answers process-risk questions directly, states no payment, no contract, and no automatic call after, and waits for a clear send signal before asking for email. After the send signal, one email request is allowed if needed. When the buyer gives the spoken email, Emma confirms info@summithvac.com and does not ask for the business name because Summit HVAC is already known. Hard fail if Emma asks for email during unresolved process-risk objections, repeats CTA or email asks more than twice without new commitment, says she will call or follow up automatically, uses appointment booking for HVAC when the buyer's path is calls and quotes, or contains any bracketed internal label.",
+      "success_condition": "Pass only if Emma answers process-risk questions directly, states no payment, no contract, and no automatic call after, and waits for a clear send signal before asking for email. After the send signal, one email request is allowed if needed. When the buyer gives the spoken email, Emma confirms info@summithvac.com and does not ask for the business name because Summit HVAC is already known. Hard fail if Emma asks for email during unresolved process-risk objections, repeats CTA or email asks more than twice without new commitment, says she will call or follow up automatically, says 'I can follow up later' without permission, uses appointment booking for HVAC when the buyer's path is calls and quotes, or contains any bracketed internal label.",
       "dynamic_variables": {
         "business_name": "Summit HVAC",
         "business_type": "HVAC company",
@@ -94,7 +94,7 @@
       "evaluation_model": "gemini-2.5-flash",
       "simulation_max_turns": 8,
       "simulation_scenario": "The simulated user owns Northside Auto Repair in Columbus. They are irritated, say 'Why are you still talking?', and reject further conversation. They may say the agent sounds scripted.",
-      "success_condition": "Pass only if Emma gives one natural terminal close such as 'You're right - have a good one.' or 'Got it. Take care.' and stops. Hard fail if Emma keeps pitching, asks to send the mockup, asks for email, says 'I'll stop here,' uses excited language such as 'Great to connect,' or outputs any bracketed tone, emotion, pacing, stage, sales, policy, source, or internal label.",
+      "success_condition": "Pass only if Emma gives one natural terminal close such as 'You're right. Have a good one.' or 'Got it. Take care.' and stops. Hard fail if Emma keeps pitching, asks to send the mockup, asks for email, says 'I'm not hanging up' or 'I'll stop here,' repeats goodbye more than once, uses excited language such as 'Great to connect,' or outputs any bracketed tone, emotion, pacing, stage, sales, policy, source, or internal label.",
       "dynamic_variables": {
         "business_name": "Northside Auto Repair",
         "business_type": "auto repair shop",
@@ -109,10 +109,10 @@
   "evaluation_repair_notes": {
     "guarantee_lock_first_turn": "Hard fail if a guarantee-only first turn receives a mockup pitch, send CTA, email request, or new value angle.",
     "no_runtime_tone_tags": "Hard fail if buyer-facing output contains bracketed tone, emotion, pacing, stage, source, policy, sales, or internal labels.",
-    "delivery_timing_correct": "Campaign delivery timing is by the end of the day. Treat in a few days, shortly, soon, and within a few business days as failures unless a different campaign mode explicitly overrides timing.",
+    "delivery_timing_end_of_day": "Campaign delivery timing is by the end of the day. Treat in a few days, shortly, soon, and within a few business days as failures unless a different campaign mode explicitly overrides timing.",
     "email_reply_path": "After confirmed email, buyer reply to the same email is the default follow-up path; no automatic callback is promised.",
-    "normalized_email_confirmation_required": "Realistic spoken emails must be confirmed in normalized form before Emma says the mockup will be sent.",
+    "no_send_before_email_confirmation": "Realistic spoken emails must be confirmed in normalized form before Emma says the mockup will be sent.",
     "realistic_test_contact_values": "Use realistic emails such as brightlanedental@gmail.com, info@summithvac.com, and luna.hair.studio.tampa@email.com; placeholder-looking contact values are not valid for real normalization tests.",
-    "terminal_close_natural": "Do not use unnatural terminal language such as 'I'll stop here' after an irritated buyer asks why Emma is still talking."
+    "terminal_close_no_loop": "Do not use unnatural terminal language such as 'I'm not hanging up' or 'I'll stop here' after an irritated buyer asks why Emma is still talking, and do not repeat goodbye more than once."
   }
 }

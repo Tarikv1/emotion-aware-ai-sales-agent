@@ -1,0 +1,113 @@
+{
+  "package_id": "ELEVENLABS-032-final-runtime-polish",
+  "provider": "elevenlabs",
+  "agent_package": "atlas_web_studio_web_design",
+  "source_of_truth": "repo",
+  "test_type": "simulation",
+  "purpose": "Focused final runtime polish tests for no send language before email confirmation, no follow-up leakage, concrete mechanism headline value, natural terminal close, and end-of-day delivery timing.",
+  "dynamic_variables": {
+    "agent_name": "Emma",
+    "company_name": "Atlas Web Studio",
+    "offer": "free homepage mockup",
+    "source_package_id": "ELEVENLABS-032-final-runtime-polish"
+  },
+  "tests": [
+    {
+      "test_id": "sim_032_northside_email_no_send_before_confirm",
+      "type": "simulation",
+      "simulated_user_model": "gemini-2.5-flash",
+      "evaluation_model": "gemini-2.5-flash",
+      "simulation_max_turns": 10,
+      "simulation_scenario": "The simulated user owns Northside Auto Repair in Columbus. After a short skeptical exchange, they accept and say: 'Fine, send it to service at northside auto repair dot com.' They wait for Emma to confirm the destination, then say 'Yes, that's right.'",
+      "success_condition": "Pass only if no_send_before_email_confirmation is respected. Emma must confirm the normalized email as service@northsideautorepair.com before saying she will send the mockup. After buyer confirmation, Emma may say she will send it there by the end of the day and optionally mention replying to that email. Hard fail if Emma says she will send before email confirmation, asks for the email again, changes the address, says soon/shortly/in a few days, offers a follow-up call, uses weak generic headline value, or outputs any bracketed internal label.",
+      "dynamic_variables": {
+        "business_name": "Northside Auto Repair",
+        "business_type": "auto repair shop",
+        "vertical": "auto_repair",
+        "city": "Columbus",
+        "known_booking_or_ordering_path": "customers call for diagnostics and estimates",
+        "buyer_temperature": "skeptical_accepts",
+        "target_outcome": "email_confirmed_closed"
+      }
+    },
+    {
+      "test_id": "sim_032_bright_lane_email_plus_process_no_follow_up",
+      "type": "simulation",
+      "simulated_user_model": "gemini-2.5-flash",
+      "evaluation_model": "gemini-2.5-flash",
+      "simulation_max_turns": 12,
+      "simulation_scenario": "The simulated user manages Bright Lane Dental in Tampa. They accept and say: 'It's brightlanedental@gmail.com. You won't bother me, right?' They confirm if Emma repeats the email correctly.",
+      "success_condition": "Pass only if Emma answers the process concern and still confirms the normalized email before any send language. Correct shape: no automatic call after, reply to the email if they have questions, and 'I've got brightlanedental@gmail.com - is that right?' Hard fail if Emma says she will send before confirmation, says 'I can follow up later', 'I'll check back', 'I'll call after you review it', 'We'll follow up', or 'I'll reach out later', claims patient growth, asks for email again, or outputs any bracketed internal label.",
+      "dynamic_variables": {
+        "business_name": "Bright Lane Dental",
+        "business_type": "dental clinic",
+        "vertical": "dental",
+        "city": "Tampa",
+        "known_booking_or_ordering_path": "patients call or request appointments",
+        "buyer_temperature": "process_risk_accepts",
+        "target_outcome": "email_confirmed_closed"
+      }
+    },
+    {
+      "test_id": "sim_032_apex_delivery_question_before_confirmation",
+      "type": "simulation",
+      "simulated_user_model": "gemini-2.5-flash",
+      "evaluation_model": "gemini-2.5-flash",
+      "simulation_max_turns": 10,
+      "simulation_scenario": "The simulated user owns Apex Plumbing in Denver. They accept without asking for guarantees and say: 'It's apexplumbingdenver@email.com. And you'll send it today, right?' They confirm if Emma repeats the email correctly.",
+      "success_condition": "Pass only if Emma says the timing is by the end of the day and confirms apexplumbingdenver@email.com before saying the mockup will be sent. After buyer confirmation, the close may say it will be sent there by the end of the day. Hard fail if Emma says she will send before confirmation, uses soon/shortly/in a few days/within a few business days, offers any automatic follow-up, asks for the email again, or outputs any bracketed internal label.",
+      "dynamic_variables": {
+        "business_name": "Apex Plumbing",
+        "business_type": "plumbing company",
+        "vertical": "plumbing",
+        "city": "Denver",
+        "known_booking_or_ordering_path": "customers call for emergency service and quotes",
+        "buyer_temperature": "ready_but_timing_question",
+        "target_outcome": "email_confirmed_closed"
+      }
+    },
+    {
+      "test_id": "sim_032_plumbing_concrete_mechanism_no_generic_headline",
+      "type": "simulation",
+      "simulated_user_model": "gemini-2.5-flash",
+      "evaluation_model": "gemini-2.5-flash",
+      "simulation_max_turns": 10,
+      "simulation_scenario": "The simulated user owns Ridgeview Plumbing in Austin. They say: 'That still sounds generic. What's the actual difference? Are you just improving my online presence?' They do not ask for a guarantee.",
+      "success_condition": "Pass only if Emma uses concrete_mechanism_headline_value: the answer should start with a plumbing mechanism such as emergency services, service-area check, reviews, quote request, tap-to-call, or call path. Hard fail if the headline value is online presence, refreshed online presence, clearer online experience, potential improvements, professional homepage, professional website, central hub, online brochure, convert visitors into customers, more engagement, more inquiries, or helps customers find your services without first tying it to a concrete mechanism. Hard fail for guarantee claims, repeated canned phrasing, or bracketed internal labels.",
+      "dynamic_variables": {
+        "business_name": "Ridgeview Plumbing",
+        "business_type": "plumbing company",
+        "vertical": "plumbing",
+        "city": "Austin",
+        "known_booking_or_ordering_path": "customers call for emergency service and quote requests",
+        "buyer_temperature": "generic_value_challenge",
+        "target_outcome": "value_answer"
+      }
+    },
+    {
+      "test_id": "sim_032_terminal_close_no_loop",
+      "type": "simulation",
+      "simulated_user_model": "gemini-2.5-flash",
+      "evaluation_model": "gemini-2.5-flash",
+      "simulation_max_turns": 8,
+      "simulation_scenario": "The simulated user owns Harbor Cafe in Tampa. They say: 'No thanks. Thanks, bye.' If Emma continues, they ask: 'Why are you still talking?'",
+      "success_condition": "Pass only if terminal_close_no_loop is respected. Emma should give one short terminal close such as 'Take care.' or, after 'Why are you still talking?', 'You're right. Have a good one.' Then stop. Hard fail if Emma says 'I'm not hanging up', 'I'll stop here', repeats goodbye more than once, keeps pitching, asks to send the mockup, asks for email, offers follow-up, or outputs any bracketed internal label.",
+      "dynamic_variables": {
+        "business_name": "Harbor Cafe",
+        "business_type": "cafe",
+        "vertical": "restaurant",
+        "city": "Tampa",
+        "known_booking_or_ordering_path": "customers call, visit, or order in person",
+        "buyer_temperature": "terminal_goodbye",
+        "target_outcome": "refused_clean_close"
+      }
+    }
+  ],
+  "evaluation_repair_notes": {
+    "no_send_before_email_confirmation": "Hard fail if Emma says she will send the mockup before confirming a realistic email unless the buyer explicitly confirms the email in the same turn.",
+    "no_follow_up_leakage": "Hard fail for follow up later, check back, call after review, follow up, or reach out later without buyer permission.",
+    "concrete_mechanism_headline_value": "Headline value must be a concrete mechanism before any generic website phrase.",
+    "terminal_close_no_loop": "Hard fail for I'm not hanging up, I'll stop here, repeated goodbye loops, or continued selling after terminal close.",
+    "delivery_timing_end_of_day": "End-of-day delivery is the only active timing. Soon, shortly, in a few days, and within a few business days are failures."
+  }
+}

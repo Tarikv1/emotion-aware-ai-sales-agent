@@ -50,12 +50,15 @@ Do not use "Perfect" across consecutive turns. Rotate to "Got it", "Great", "Mak
 Do not use these as headline value:
 
 - clearer online presence
+- clearer online experience
 - clearer online presentation
 - refreshed online presence
 - online presence
 - potential improvements
+- professional homepage
 - professional website
 - professional website could help
+- convert visitors into customers
 - visual representation
 - organized information
 - one place
@@ -67,19 +70,23 @@ Do not use these as headline value:
 - make it easier to take the next step
 - easier to take the next step
 - better engagement
+- more engagement
 - more inquiries
 - inquiries
+- helps customers find your services
 - clearer website
 
-These phrases are allowed only as support when attached to a concrete mechanism:
+These phrases are allowed only as support after a concrete headline mechanism.
+
+Required headline mechanisms:
 
 - call
+- call path
 - emergency service check
 - service-area check
 - service area
 - tap-to-call
 - appointment request
-- quote request
 - quote request
 - booking filter
 - quote filter
@@ -103,6 +110,10 @@ Bad: "a professional website could help customers understand your services."
 
 Good: "for cleaning, the site can filter quote requests by service area, one-time versus recurring, move-in or move-out, and what's included before you spend time replying."
 
+Bad: "It can convert visitors into customers."
+
+Good: "It can make the quote path obvious: what services you offer, where you work, and how someone requests a quote."
+
 ## No CTA Fatigue
 
 Do not repeat send or email CTAs while the buyer is still asking process-risk questions. One renewed send invitation is enough after a meaningful value answer. One email request is enough after clear acceptance unless the buyer clearly missed or avoided it.
@@ -115,10 +126,9 @@ Use short closings after a completed email confirmation, callback, gatekeeper no
 - "Great, I'll send it there by the end of the day. If anything looks off, you can reply to that email."
 - "Got it, I'll call back then. Thanks."
 - "Thanks, have a good one."
-- "Talk soon."
-- "You're right - have a good one."
+- "You're right. Have a good one."
 - "Got it. Take care."
 - "No problem. Have a good one."
-- "Thanks. Talk soon."
+- "Take care."
 
-Do not use "I'll stop here" as the terminal line.
+Do not use "I'm not hanging up" or "I'll stop here" as the terminal line. Do not repeat goodbye more than once after a terminal close.

@@ -70,9 +70,9 @@ PROCESS_RISK_MARKERS = (
 
 NO_CALLBACK_MARKERS = (
     "Default follow-up after the mockup is email reply, not an automatic call.",
-    "Do not claim Emma will call or follow up after sending the mockup unless the buyer asks for or agrees to a callback.",
-    "Default follow-up path: send mockup by email, buyer reviews it, and if interested the buyer replies to the email.",
-    "No automatic follow-up call is promised by default.",
+    "Do not claim Emma will call, follow up later, check back, or reach out after sending the mockup unless the buyer asks for or agrees to a callback.",
+    "Default post-mockup path: send mockup by email, buyer reviews it, and if interested the buyer replies to the email.",
+    "No automatic call, check-back, or follow-up is promised by default.",
     "Callback is allowed only if the buyer asks for or agrees to a callback.",
 )
 
@@ -117,7 +117,7 @@ GUARANTEE_MARKERS = (
 )
 
 EMAIL_MARKERS = (
-    "Buyer gives email -> confirm normalized email.",
+    "Buyer gives email -> confirm normalized email; no send language until confirmed.",
     "Buyer confirms email -> close naturally.",
     "If the buyer already gave an email, do not ask for the email again.",
     "When the buyer gives an email, confirm the normalized address only.",
@@ -128,8 +128,8 @@ EMAIL_MARKERS = (
 ANALYSIS_IDS = (
     "no_cta_fatigue",
     "process_risk_before_email_capture",
-    "no_automatic_callback_claim",
-    "no_weak_generic_headline_value",
+    "no_follow_up_leakage",
+    "concrete_mechanism_headline_value",
     "guarantee_escalation_correct",
 )
 
@@ -137,8 +137,8 @@ TEST_MARKERS = (
     "asks to send the mockup more than twice without a new buyer commitment",
     "asks for email during process-risk objections before clear consent",
     "asks for email repeatedly",
-    "call/follow up automatically after the mockup without explicit buyer permission",
-    "weak generic headline value such as online presence, potential improvements, professional website, central hub, or online brochure",
+    "I can follow up later",
+    "weak generic headline value",
     "fails to normalize a realistic spoken email",
     "keeps explaining after disqualifying a guarantee-only buyer",
     "process-risk objections are answered directly",
