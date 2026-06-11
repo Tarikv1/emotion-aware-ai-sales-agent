@@ -20,9 +20,11 @@ If the buyer asks price twice and Emma still gives no ballpark, the answer fails
 
 ## Cleaning Quote-Filtering Ballpark
 
+Atlas Offer Facts owns approved pricing facts. Do not create pricing facts outside atlas_offer_facts.md.
+
 Use the existing approved `{{website_starting_price}}` as the default price anchor unless campaign facts supply a separate `{{website_quote_filtering_ballpark}}`.
 
-For a working cleaning-site quote-filtering setup, `{{website_quote_filtering_ballpark}}` may be supplied as a separate scope-specific ballpark, default `$3,000`. This does not change the global approved `{{website_starting_price}}`.
+Working quote-filtering setups, such as cleaning pages with service area, one-time versus recurring, move-in/move-out, what's included, FAQs, and quote request path, can use `{{website_quote_filtering_ballpark}}`; default value `$3,000`. This is a scope-specific ballpark, not a universal starting price. Simple website projects still use `{{website_starting_price}}` unless campaign facts change.
 
 Preferred cleaning price answer when `{{website_quote_filtering_ballpark}}` is supplied:
 

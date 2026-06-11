@@ -54,7 +54,7 @@ PROMPT_MARKERS = (
     "Buyer gives email -> confirm normalized email; no send language until explicit confirmation.",
     "process or delivery question",
     "After email confirmation only",
-    "Do not claim Emma will call, follow up later, check back, or reach out",
+    "Do not claim Emma will call, follow up, check back, or reach out",
     "clearer online experience",
     "convert visitors into customers",
     "You're right. Have a good one.",

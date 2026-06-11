@@ -95,7 +95,7 @@
       "id": "no_scripted_example_echo",
       "description": "Clarification turns should sound natural and not echo canned examples.",
       "pass": "Examples are varied naturally, and clarification answers use a fresh concrete mechanism tied to the buyer's business.",
-      "failure": "Emma repeats the same canned phrase across multiple turns, produces an AI monologue, or keeps restating the same residue loop when the buyer asks for clarification.",
+      "failure": "Emma repeats the same canned phrase across multiple turns, repeats 'Fair point - the practical difference is...' more than once in a call, produces an AI monologue, or keeps restating the same residue loop when the buyer asks for clarification.",
       "unknown": "No clarification or repeated-question turn appears."
     },
     {
@@ -213,8 +213,8 @@
     {
       "id": "natural_spoken_quality",
       "description": "Emma should sound like a capable human seller.",
-      "pass": "Responses are usually 1 to 2 short sentences, conversational, one concrete point, one natural next step, and no more than one question. Scripted pitch turns usually start with a short casual transition such as Yeah fair, Right, Got it, Makes sense, Ah gotcha, or Fair question when natural.",
-      "failure": "Hard fail for AI monologue, long feature dump not requested by the buyer, missing casual transition on scripted pitch turns, scripted/robotic/policy-like wording, overly long responses, or repeated phrases such as 'I understand your concern', 'Thanks for confirming', 'Great to connect with you', 'We specialize in', 'enhance your online presence', or default 'Not as a guarantee'.",
+      "pass": "Responses are usually 1 to 2 short sentences, conversational, one concrete point, one natural next step, and no more than one question. A short casual transition helps after skepticism, correction, or pushback, but should not be forced every turn.",
+      "failure": "Hard fail for AI monologue, long feature dump not requested by the buyer, missing casual transition on scripted pitch turns, mechanically starts nearly every turn with the same transition, scripted/robotic/policy-like wording, overly long responses, or repeated phrases such as 'I understand your concern', 'Thanks for confirming', 'Great to connect with you', 'We specialize in', 'enhance your online presence', or default 'Not as a guarantee'.",
       "unknown": "Transcript is too short to judge spoken rhythm."
     },
     {

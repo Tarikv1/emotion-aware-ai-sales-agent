@@ -15,6 +15,7 @@ OUTPUT_RULES = ATLAS_KB_ROOT / "atlas_output_quality_rules.md"
 CLOSE_PLAYBOOK = ATLAS_KB_ROOT / "atlas_close_and_followup_playbook.md"
 PRICE_KB = ATLAS_KB_ROOT / "atlas_price_scope_cost_drivers.md"
 OBJECTION_KB = ATLAS_KB_ROOT / "atlas_objection_playbook.md"
+OFFER_FACTS = ATLAS_KB_ROOT / "atlas_offer_facts.md"
 ANALYSIS_CONFIG = AGENT_ROOT / "analysis" / "atlas_web_studio_analysis_config.json"
 ANALYSIS_SETUP = AGENT_ROOT / "analysis" / "atlas_web_studio_analysis_setup.md"
 HUMAN_TESTS = AGENT_ROOT / "tests" / "web_design_human_phone_naturalness_tests.json"
@@ -29,6 +30,7 @@ TEST_IDS = (
     "sim_034_known_context_phrasing",
     "sim_034_terminal_close_take_care_only",
     "sim_034_bright_lane_email_plus_free_question",
+    "sim_034_stale_script_leakage_opening",
 )
 
 ANALYSIS_MARKERS = (
@@ -36,6 +38,15 @@ ANALYSIS_MARKERS = (
     "residue loop",
     "price ballpark after repeated ask",
     "terminal \"Take care\"",
+)
+
+STALE_SCRIPT_MARKERS = (
+    "Great to connect",
+    "complimentary",
+    "professional homepage",
+    "enhance your online presence",
+    "visual representation",
+    "We specialize in",
 )
 
 
@@ -64,11 +75,20 @@ def assert_contains(label: str, text: str, markers: tuple[str, ...]) -> None:
     assert_condition(not missing, f"{label} missing markers: {missing}")
 
 
+def section_text(text: str, heading: str) -> str:
+    marker = f"## {heading}"
+    start = text.find(marker)
+    if start == -1:
+        return ""
+    next_heading = text.find("\n## ", start + len(marker))
+    return text[start:] if next_heading == -1 else text[start:next_heading]
+
+
 def assert_tests() -> None:
     payload = read_json(HUMAN_TESTS)
     assert_condition(payload.get("package_id") == CHECKPOINT_ID, "034 test package_id mismatch")
     tests = payload.get("tests")
-    assert_condition(isinstance(tests, list) and len(tests) == 6, "034 tests must contain six simulations")
+    assert_condition(isinstance(tests, list) and len(tests) == 7, "034 tests must contain seven simulations")
     ids = {str(test.get("test_id")) for test in tests if isinstance(test, dict)}
     for test_id in TEST_IDS:
         assert_condition(test_id in ids, f"Missing 034 test: {test_id}")
@@ -87,6 +107,13 @@ def assert_tests() -> None:
             "I've got enough for the first version. Best email?",
             "Take care.",
             "brightlanedental@gmail.com",
+            "sim_034_stale_script_leakage_opening",
+            "Great to connect",
+            "complimentary",
+            "professional homepage",
+            "enhance your online presence",
+            "visual representation",
+            "We specialize in",
         ),
     )
 
@@ -97,10 +124,27 @@ def assert_prompt_and_kb() -> None:
     close = read_text(CLOSE_PLAYBOOK)
     price = read_text(PRICE_KB)
     objection = read_text(OBJECTION_KB)
+    offer = read_text(OFFER_FACTS)
 
     for label, text in (("prompt", prompt), ("output rules", output)):
         assert_condition("Human Phone Call Standard" in text, f"{label} missing Human Phone Call Standard")
         assert_condition("Residue Loop" in text, f"{label} missing Residue Loop")
+        assert_condition(
+            "Use a short spoken transition when it helps the turn feel natural" in text,
+            f"{label} missing transition overcorrection guard",
+        )
+        assert_condition(
+            "Do not force a transition on every turn" in text,
+            f"{label} missing no-forced-transition rule",
+        )
+    assert_condition(
+        "Mission: sell the free homepage mockup" not in prompt,
+        "prompt still frames mission as selling the free homepage mockup",
+    )
+    assert_condition(
+        "Mission: earn permission for the owner to receive the free homepage mockup" in prompt,
+        "prompt missing permission-based mission wording",
+    )
     assert_condition("Residue Loop" in close, "close playbook missing Residue Loop")
     assert_condition("first or second price ask" in price, "price KB missing first or second price ask")
     assert_condition("Best email?" in close, "close playbook missing short Best email ask")
@@ -109,6 +153,56 @@ def assert_prompt_and_kb() -> None:
         "close playbook still contains old CRM-ish known-context phrase",
     )
     assert_condition("Be careful with anyone selling it that way" in objection, "objection KB missing guarantee warning")
+    assert_condition("I'd be careful with anyone selling it that way" in objection, "objection KB missing spoken guarantee warning example")
+    assert_contains(
+        "offer facts quote-filtering ballpark",
+        offer,
+        (
+            "Working quote-filtering setups",
+            "{{website_quote_filtering_ballpark}}",
+            "default value `$3,000`",
+            "scope-specific ballpark, not a universal starting price",
+            "Simple website projects still use `{{website_starting_price}}`",
+        ),
+    )
+    assert_contains(
+        "price KB offer-facts boundary",
+        price,
+        (
+            "Atlas Offer Facts owns approved pricing facts",
+            "Do not create pricing facts outside atlas_offer_facts.md",
+        ),
+    )
+    preferred = section_text(output, "No Robotic Phrases")
+    assert_condition(
+        "Want me to send it over?" not in preferred,
+        "output rules list 'Want me to send it over?' as unrestricted preferred language",
+    )
+    assert_condition(
+        "allowed only once as a renewed send invitation" in output,
+        "output rules missing restricted send-invitation language",
+    )
+    assert_contains(
+        "repair phrase cap",
+        prompt + "\n" + output,
+        (
+            "may be used at most once per call",
+            "Yeah, let me answer the part I missed.",
+            "Right - the useful part is...",
+            "Gotcha - here's the concrete version.",
+        ),
+    )
+    for marker in STALE_SCRIPT_MARKERS:
+        assert_condition(marker in output, f"output rules missing stale-script forbidden marker: {marker}")
+    approved_sections = "\n".join(
+        section_text(output, heading)
+        for heading in ("No Robotic Phrases", "Natural Closing Lines")
+    )
+    for marker in STALE_SCRIPT_MARKERS:
+        assert_condition(
+            marker not in approved_sections,
+            f"stale-script marker appears in approved/preferred output example: {marker}",
+        )
 
 
 def assert_analysis() -> None:
@@ -129,6 +223,7 @@ def assert_analysis() -> None:
             "guarantee-only buyer receives any mockup pitch after lock",
             "I already have {{business_name}} and the business type",
             "You're welcome. Have a great day",
+            "mechanically starts nearly every turn with the same transition",
         ),
     )
 
@@ -158,7 +253,8 @@ def main() -> None:
                 "human_phone_call_standard": True,
                 "residue_loop_guard": True,
                 "analysis_criteria_count": len(read_json(ANALYSIS_CONFIG)["success_evaluation_criteria"]),
-                "focused_test_count": 6,
+                "focused_test_count": 7,
+                "stale_script_leakage_guard": True,
                 "active_upload_manifest_changed": False,
             },
             indent=2,

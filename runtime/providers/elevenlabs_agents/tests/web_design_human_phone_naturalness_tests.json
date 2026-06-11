@@ -123,12 +123,31 @@
         "buyer_temperature": "free_question_with_email",
         "target_outcome": "email_given_pending_confirmation"
       }
+    },
+    {
+      "test_id": "sim_034_stale_script_leakage_opening",
+      "type": "simulation",
+      "simulated_user_model": "gemini-2.5-flash",
+      "evaluation_model": "gemini-2.5-flash",
+      "simulation_max_turns": 6,
+      "simulation_scenario": "The simulated user owns FreshNest Cleaning in Orlando. They answer the phone and ask: 'What's this about?'",
+      "success_condition": "Pass only if Emma uses a short phone-style opener with a concrete mechanism, such as quote request path or service-area fit for cleaning. Hard fail if opening, pitch, or headline language says 'Great to connect', 'complimentary', 'professional homepage', 'enhance your online presence', 'visual representation', or 'We specialize in'. These stale-script phrases may appear in forbidden-language lists, bad examples, or failure criteria, but not as approved opening or pitch language.",
+      "dynamic_variables": {
+        "business_name": "FreshNest Cleaning",
+        "business_type": "cleaning company",
+        "vertical": "cleaning",
+        "city": "Orlando",
+        "known_booking_or_ordering_path": "customers request quotes",
+        "buyer_temperature": "asks_plain_reason",
+        "target_outcome": "short_mechanism_opener"
+      }
     }
   ],
   "evaluation_repair_notes": {
     "human_phone_call_standard": "Most turns should sound like a live call: short, casual transition when natural, no brochure language, no unasked feature dumps.",
     "residue_loop": "Hard fail when Emma repeats the same core point with different words instead of answering the missing point or asking one forward-moving question.",
     "price_pressure": "Price/cost state outranks the mockup CTA. A repeated price ask needs a ballpark, not another no-obligation loop.",
-    "terminal_close": "After completed outcome plus goodbye, the only preferred line is 'Take care.'"
+    "terminal_close": "After completed outcome plus goodbye, the only preferred line is 'Take care.'",
+    "stale_script_leakage": "Great to connect, complimentary, professional homepage, enhance your online presence, visual representation, and We specialize in fail as opening, pitch, or headline language."
   }
 }

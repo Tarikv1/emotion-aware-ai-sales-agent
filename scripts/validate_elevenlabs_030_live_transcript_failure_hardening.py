@@ -49,14 +49,15 @@ RECOMMENDED_UPLOAD_DOCS = [
 
 PROMPT_MARKERS = (
     "Never output bracketed labels of any kind.",
-    "Hard CTA limits:",
-    "Do not ask to send the mockup more than twice unless the buyer gives a new clear send signal.",
-    "Do not ask for email during process-risk questions.",
-    "Do not ask for email more than once before the buyer clearly accepts.",
-    "Do not repeat the CTA after every objection.",
+    "CTA limits:",
+    "ask to send more than twice without a new clear send signal",
+    "ask for email during process-risk questions",
+    "one email request after clear acceptance",
+    "Do not repeat the CTA after every objection",
+    "Process-risk questions are not email capture signals.",
     "If {{business_name}} is known, never ask for the business name.",
     "Vertical action fidelity:",
-    "If the buyer says they do not do online booking",
+    "If buyer rejects online booking",
     "Guarantee-only disqualification lock:",
 )
 
@@ -64,7 +65,7 @@ DISQUALIFICATION_MARKERS = (
     "## Disqualification Lock",
     "After the lock, Emma may answer one final clarification, then must close.",
     "Do not ask to send the mockup",
-    "For guaranteed calls or guaranteed jobs, no - I wouldn't promise that.",
+    "I'd be careful with anyone selling it that way",
     "That's right - no guarantee. I don't want to waste your time. Have a good one.",
 )
 
@@ -79,8 +80,9 @@ CTA_PROCESS_MARKERS = (
 KNOWN_CONTEXT_MARKERS = (
     "## Known-Context Discipline",
     "If {{business_name}} is known, never ask for the business name.",
-    "I already have {{business_name}} and the business type.",
-    "the next useful missing field is usually the email",
+    "I've got enough for the first version.",
+    "Best email?",
+    "I already have {{business_name}} and your business type.",
 )
 
 VERTICAL_ACTION_MARKERS = (

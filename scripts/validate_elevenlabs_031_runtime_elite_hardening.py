@@ -53,11 +53,11 @@ RECOMMENDED_UPLOAD_DOCS = [
 
 PROMPT_MARKERS = (
     "Guarantee-only lock triggers on the first turn",
-    "If you need guaranteed page-one SEO or guaranteed emergency calls, I can't honestly offer that.",
+    "Yeah, nobody can honestly guarantee page-one SEO or a fixed number of calls.",
     "After the guarantee-only lock, do not ask to send the mockup, ask for email",
-    "Canonical mockup delivery timing is \"by the end of the day\"",
-    "After email confirmation only, close with the end-of-day timing",
-    "If email comes with a process or delivery question",
+    "Delivery timing is \"by the end of the day\"",
+    "After email confirmation only, close with end-of-day timing",
+    "If email comes with process or delivery question",
     "If the buyer asks why Emma is still talking",
     "Never output bracketed labels of any kind.",
 )

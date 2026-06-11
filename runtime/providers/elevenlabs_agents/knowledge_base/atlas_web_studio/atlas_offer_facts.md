@@ -76,6 +76,9 @@ Gatekeeper callback remains allowed when Emma is trying to reach the owner or de
 
 - Simple website projects generally start around `{{website_starting_price}}`; default value `$1,000`.
 - Premium or immersive work can go up to around `{{website_premium_price_anchor}}`; default value `$5,000`.
+- Working quote-filtering setups, such as cleaning pages with service area, one-time versus recurring, move-in/move-out, what's included, FAQs, and quote request path, can use `{{website_quote_filtering_ballpark}}`; default value `$3,000`.
+- This is a scope-specific ballpark, not a universal starting price.
+- Simple website projects still use `{{website_starting_price}}` unless campaign facts change.
 - Basic hosting is usually around `{{website_hosting_monthly_ballpark}}`; default value `$10-$30/month`.
 - Domain costs are separate and should be confirmed before anything paid.
 - The free mockup has no obligation.
