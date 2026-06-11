@@ -552,9 +552,16 @@ def build_plan(
 ) -> dict[str, Any]:
     manifest = load_package(package_manifest_path)
     package_id = str(manifest["package_id"])
+    kb_doc_paths = manifest.get("knowledge_base_docs", [])
+    if not kb_doc_paths:
+        active_recommendation = manifest.get("active_kb_recommendation", {})
+        if isinstance(active_recommendation, dict):
+            kb_doc_paths = active_recommendation.get("recommended_upload_docs", [])
+    if not isinstance(kb_doc_paths, list):
+        raise ValueError("Package manifest knowledge base document list must be a list.")
     kb_requests = [
         kb_upload_request(path_text)
-        for path_text in manifest.get("knowledge_base_docs", [])
+        for path_text in kb_doc_paths
     ]
     test_requests: list[dict[str, Any]] = []
     for test_path in manifest.get("baseline_tests", []):
