@@ -1,0 +1,376 @@
+{
+  "checkpoint_id": "ELEVENLABS-002-agent-automation",
+  "package_id": "ELEVENLABS-020-layered-kb-packaging-natural-speech",
+  "provider": "elevenlabs",
+  "mode": "live",
+  "source_of_truth": "repo",
+  "dashboard_role": "managed runtime and manual upload surface",
+  "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+  "agent_name": "Atlas Universal Sales Core",
+  "api_base_url": "https://api.elevenlabs.io",
+  "api_key_env_var": "ELEVENLABS_API_KEY",
+  "live_provider_calls_made": false,
+  "private_customer_data_used": false,
+  "provider_writes_require": [
+    "--live",
+    "--confirm-provider-write"
+  ],
+  "knowledge_base_upload_requests": [
+    {
+      "request_id": "upload_knowledge_base::universal_sales_core_summary",
+      "method": "POST",
+      "endpoint": "/v1/convai/knowledge-base/file",
+      "source_path": "runtime/providers/elevenlabs_agents/knowledge_base/universal_sales_core_summary.md",
+      "name": "universal_sales_core_summary.md",
+      "content_bytes": 3096,
+      "content_type": "text/markdown",
+      "requires_api_key_env_var": "ELEVENLABS_API_KEY",
+      "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/create-from-file"
+    },
+    {
+      "request_id": "upload_knowledge_base::buyer_moves",
+      "method": "POST",
+      "endpoint": "/v1/convai/knowledge-base/file",
+      "source_path": "runtime/providers/elevenlabs_agents/knowledge_base/universal_sales_categories/buyer_moves.md",
+      "name": "buyer_moves.md",
+      "content_bytes": 1350,
+      "content_type": "text/markdown",
+      "requires_api_key_env_var": "ELEVENLABS_API_KEY",
+      "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/create-from-file"
+    },
+    {
+      "request_id": "upload_knowledge_base::value_and_roi_framing",
+      "method": "POST",
+      "endpoint": "/v1/convai/knowledge-base/file",
+      "source_path": "runtime/providers/elevenlabs_agents/knowledge_base/universal_sales_categories/value_and_roi_framing.md",
+      "name": "value_and_roi_framing.md",
+      "content_bytes": 1459,
+      "content_type": "text/markdown",
+      "requires_api_key_env_var": "ELEVENLABS_API_KEY",
+      "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/create-from-file"
+    },
+    {
+      "request_id": "upload_knowledge_base::objection_status_quo_and_competition",
+      "method": "POST",
+      "endpoint": "/v1/convai/knowledge-base/file",
+      "source_path": "runtime/providers/elevenlabs_agents/knowledge_base/universal_sales_categories/objection_status_quo_and_competition.md",
+      "name": "objection_status_quo_and_competition.md",
+      "content_bytes": 1148,
+      "content_type": "text/markdown",
+      "requires_api_key_env_var": "ELEVENLABS_API_KEY",
+      "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/create-from-file"
+    },
+    {
+      "request_id": "upload_knowledge_base::trust_and_risk_repair",
+      "method": "POST",
+      "endpoint": "/v1/convai/knowledge-base/file",
+      "source_path": "runtime/providers/elevenlabs_agents/knowledge_base/universal_sales_categories/trust_and_risk_repair.md",
+      "name": "trust_and_risk_repair.md",
+      "content_bytes": 1175,
+      "content_type": "text/markdown",
+      "requires_api_key_env_var": "ELEVENLABS_API_KEY",
+      "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/create-from-file"
+    },
+    {
+      "request_id": "upload_knowledge_base::conversation_repair",
+      "method": "POST",
+      "endpoint": "/v1/convai/knowledge-base/file",
+      "source_path": "runtime/providers/elevenlabs_agents/knowledge_base/universal_sales_categories/conversation_repair.md",
+      "name": "conversation_repair.md",
+      "content_bytes": 1093,
+      "content_type": "text/markdown",
+      "requires_api_key_env_var": "ELEVENLABS_API_KEY",
+      "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/create-from-file"
+    },
+    {
+      "request_id": "upload_knowledge_base::next_step_policy",
+      "method": "POST",
+      "endpoint": "/v1/convai/knowledge-base/file",
+      "source_path": "runtime/providers/elevenlabs_agents/knowledge_base/universal_sales_categories/next_step_policy.md",
+      "name": "next_step_policy.md",
+      "content_bytes": 1256,
+      "content_type": "text/markdown",
+      "requires_api_key_env_var": "ELEVENLABS_API_KEY",
+      "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/create-from-file"
+    },
+    {
+      "request_id": "upload_knowledge_base::disqualification_policy",
+      "method": "POST",
+      "endpoint": "/v1/convai/knowledge-base/file",
+      "source_path": "runtime/providers/elevenlabs_agents/knowledge_base/universal_sales_categories/disqualification_policy.md",
+      "name": "disqualification_policy.md",
+      "content_bytes": 1165,
+      "content_type": "text/markdown",
+      "requires_api_key_env_var": "ELEVENLABS_API_KEY",
+      "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/create-from-file"
+    },
+    {
+      "request_id": "upload_knowledge_base::ethical_persuasion_boundaries",
+      "method": "POST",
+      "endpoint": "/v1/convai/knowledge-base/file",
+      "source_path": "runtime/providers/elevenlabs_agents/knowledge_base/universal_sales_categories/ethical_persuasion_boundaries.md",
+      "name": "ethical_persuasion_boundaries.md",
+      "content_bytes": 1158,
+      "content_type": "text/markdown",
+      "requires_api_key_env_var": "ELEVENLABS_API_KEY",
+      "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/create-from-file"
+    },
+    {
+      "request_id": "upload_knowledge_base::call_quality_rubrics",
+      "method": "POST",
+      "endpoint": "/v1/convai/knowledge-base/file",
+      "source_path": "runtime/providers/elevenlabs_agents/knowledge_base/universal_sales_categories/call_quality_rubrics.md",
+      "name": "call_quality_rubrics.md",
+      "content_bytes": 1086,
+      "content_type": "text/markdown",
+      "requires_api_key_env_var": "ELEVENLABS_API_KEY",
+      "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/create-from-file"
+    },
+    {
+      "request_id": "upload_knowledge_base::atlas_offer_facts",
+      "method": "POST",
+      "endpoint": "/v1/convai/knowledge-base/file",
+      "source_path": "runtime/providers/elevenlabs_agents/knowledge_base/atlas_web_studio/atlas_offer_facts.md",
+      "name": "atlas_offer_facts.md",
+      "content_bytes": 5336,
+      "content_type": "text/markdown",
+      "requires_api_key_env_var": "ELEVENLABS_API_KEY",
+      "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/create-from-file"
+    },
+    {
+      "request_id": "upload_knowledge_base::atlas_value_mechanisms",
+      "method": "POST",
+      "endpoint": "/v1/convai/knowledge-base/file",
+      "source_path": "runtime/providers/elevenlabs_agents/knowledge_base/atlas_web_studio/atlas_value_mechanisms.md",
+      "name": "atlas_value_mechanisms.md",
+      "content_bytes": 3093,
+      "content_type": "text/markdown",
+      "requires_api_key_env_var": "ELEVENLABS_API_KEY",
+      "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/create-from-file"
+    },
+    {
+      "request_id": "upload_knowledge_base::atlas_vertical_playbooks",
+      "method": "POST",
+      "endpoint": "/v1/convai/knowledge-base/file",
+      "source_path": "runtime/providers/elevenlabs_agents/knowledge_base/atlas_web_studio/atlas_vertical_playbooks.md",
+      "name": "atlas_vertical_playbooks.md",
+      "content_bytes": 4994,
+      "content_type": "text/markdown",
+      "requires_api_key_env_var": "ELEVENLABS_API_KEY",
+      "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/create-from-file"
+    },
+    {
+      "request_id": "upload_knowledge_base::atlas_objection_playbook",
+      "method": "POST",
+      "endpoint": "/v1/convai/knowledge-base/file",
+      "source_path": "runtime/providers/elevenlabs_agents/knowledge_base/atlas_web_studio/atlas_objection_playbook.md",
+      "name": "atlas_objection_playbook.md",
+      "content_bytes": 6144,
+      "content_type": "text/markdown",
+      "requires_api_key_env_var": "ELEVENLABS_API_KEY",
+      "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/create-from-file"
+    },
+    {
+      "request_id": "upload_knowledge_base::atlas_price_scope_cost_drivers",
+      "method": "POST",
+      "endpoint": "/v1/convai/knowledge-base/file",
+      "source_path": "runtime/providers/elevenlabs_agents/knowledge_base/atlas_web_studio/atlas_price_scope_cost_drivers.md",
+      "name": "atlas_price_scope_cost_drivers.md",
+      "content_bytes": 5751,
+      "content_type": "text/markdown",
+      "requires_api_key_env_var": "ELEVENLABS_API_KEY",
+      "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/create-from-file"
+    },
+    {
+      "request_id": "upload_knowledge_base::atlas_close_and_followup_playbook",
+      "method": "POST",
+      "endpoint": "/v1/convai/knowledge-base/file",
+      "source_path": "runtime/providers/elevenlabs_agents/knowledge_base/atlas_web_studio/atlas_close_and_followup_playbook.md",
+      "name": "atlas_close_and_followup_playbook.md",
+      "content_bytes": 11719,
+      "content_type": "text/markdown",
+      "requires_api_key_env_var": "ELEVENLABS_API_KEY",
+      "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/create-from-file"
+    },
+    {
+      "request_id": "upload_knowledge_base::atlas_output_quality_rules",
+      "method": "POST",
+      "endpoint": "/v1/convai/knowledge-base/file",
+      "source_path": "runtime/providers/elevenlabs_agents/knowledge_base/atlas_web_studio/atlas_output_quality_rules.md",
+      "name": "atlas_output_quality_rules.md",
+      "content_bytes": 9032,
+      "content_type": "text/markdown",
+      "requires_api_key_env_var": "ELEVENLABS_API_KEY",
+      "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/create-from-file"
+    }
+  ],
+  "test_create_requests": [],
+  "run_tests_request": {
+    "request_id": "run_tests::{agent_id}",
+    "method": "POST",
+    "endpoint": "/v1/convai/agents/agent_7801kt0g32zxf4f8x5zkykj7syty/run-tests",
+    "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+    "requires_created_test_ids": true,
+    "body_template": {
+      "tests": [
+        {
+          "test_id": "{created_test_id}"
+        }
+      ],
+      "repeat_count": 1
+    },
+    "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/tests/run-tests"
+  },
+  "agent_config_patch": {
+    "request_id": "patch_agent::{agent_id}",
+    "method": "PATCH",
+    "endpoint": "/v1/convai/agents/agent_7801kt0g32zxf4f8x5zkykj7syty",
+    "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+    "status": "ready_for_review",
+    "source_config_path": "research/experiments/generated/ELEVENLABS-034-human-phone-naturalness/live_agent_pre_patch_snapshot.json",
+    "patch_payload_path": "research/experiments/generated/ELEVENLABS-034-human-phone-naturalness/live_agent_patch_payload.json",
+    "knowledge_base_documents": [
+      {
+        "type": "file",
+        "name": "universal_sales_core_summary.md",
+        "id": "EyLTY67vclP2xdHp29xh"
+      },
+      {
+        "type": "file",
+        "name": "buyer_moves.md",
+        "id": "HPJ8XDtc6UgT7Hlrv26O"
+      },
+      {
+        "type": "file",
+        "name": "value_and_roi_framing.md",
+        "id": "mMYBzxe3kFBlxLQCOkbp"
+      },
+      {
+        "type": "file",
+        "name": "objection_status_quo_and_competition.md",
+        "id": "THeUO9VGZWB23zIzGrhl"
+      },
+      {
+        "type": "file",
+        "name": "trust_and_risk_repair.md",
+        "id": "jzP9rM3pJrMeTIWWB7KS"
+      },
+      {
+        "type": "file",
+        "name": "conversation_repair.md",
+        "id": "cJDRl95szY41TlIe5BRh"
+      },
+      {
+        "type": "file",
+        "name": "next_step_policy.md",
+        "id": "xhtxN8UWXGpUQFiNJLrg"
+      },
+      {
+        "type": "file",
+        "name": "disqualification_policy.md",
+        "id": "bDITUVJ54CDCWC6RVtLp"
+      },
+      {
+        "type": "file",
+        "name": "ethical_persuasion_boundaries.md",
+        "id": "IPjIN9cfTP1t7Y7PHsWI"
+      },
+      {
+        "type": "file",
+        "name": "call_quality_rubrics.md",
+        "id": "NHyMWQWrtYagJZ7FnoKj"
+      },
+      {
+        "type": "file",
+        "name": "atlas_offer_facts.md",
+        "id": "nSVLo2OX3uDcSWKCkX6d"
+      },
+      {
+        "type": "file",
+        "name": "atlas_value_mechanisms.md",
+        "id": "bTp2jEJY38HtjctWap99"
+      },
+      {
+        "type": "file",
+        "name": "atlas_vertical_playbooks.md",
+        "id": "d1bkGsxDSvHrSs92qSJm"
+      },
+      {
+        "type": "file",
+        "name": "atlas_objection_playbook.md",
+        "id": "PpN0vMHhqVmTNANXi96L"
+      },
+      {
+        "type": "file",
+        "name": "atlas_price_scope_cost_drivers.md",
+        "id": "GBj6ltqfmrnbdb6zFjqz"
+      },
+      {
+        "type": "file",
+        "name": "atlas_close_and_followup_playbook.md",
+        "id": "btD2hT6j6Jefdp0rnhWv"
+      },
+      {
+        "type": "file",
+        "name": "atlas_output_quality_rules.md",
+        "id": "ltJiPSzU3GGJX3DCsGLq"
+      }
+    ],
+    "prompt_override_applied": true,
+    "first_message_override_applied": false,
+    "dynamic_variable_placeholders_applied": false,
+    "agent_temperature_override_applied": false,
+    "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/agents/update"
+  },
+  "test_folder": {
+    "folder_name": null,
+    "folder_id": null,
+    "parent_folder_id": null,
+    "applies_to_live_created_tests": false
+  },
+  "dashboard_upload_order": [
+    "Upload knowledge base documents",
+    "Create baseline tests",
+    "Attach returned knowledge base document IDs to the agent",
+    "Run tests against the selected agent or branch",
+    "Copy agent JSON config back into the repo for drift review"
+  ],
+  "live_result": {
+    "operation": "patch-agent",
+    "live_provider_calls_made": true,
+    "api_key_env_var": "ELEVENLABS_API_KEY",
+    "results": [
+      {
+        "request_id": "patch_agent::{agent_id}",
+        "operation": "patch-agent",
+        "status_code": 200,
+        "response_summary": {
+          "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+          "name": "web design",
+          "version_id": "agtvrsn_8301ktw78y9mfkn9mdggxq4mj92v",
+          "branch_id": "agtbrch_6501kt0g34dvffgr95mvrh70cr2d",
+          "knowledge_base_document_ids": [
+            "EyLTY67vclP2xdHp29xh",
+            "HPJ8XDtc6UgT7Hlrv26O",
+            "mMYBzxe3kFBlxLQCOkbp",
+            "THeUO9VGZWB23zIzGrhl",
+            "jzP9rM3pJrMeTIWWB7KS",
+            "cJDRl95szY41TlIe5BRh",
+            "xhtxN8UWXGpUQFiNJLrg",
+            "bDITUVJ54CDCWC6RVtLp",
+            "IPjIN9cfTP1t7Y7PHsWI",
+            "NHyMWQWrtYagJZ7FnoKj",
+            "nSVLo2OX3uDcSWKCkX6d",
+            "bTp2jEJY38HtjctWap99",
+            "d1bkGsxDSvHrSs92qSJm",
+            "PpN0vMHhqVmTNANXi96L",
+            "GBj6ltqfmrnbdb6zFjqz",
+            "btD2hT6j6Jefdp0rnhWv",
+            "ltJiPSzU3GGJX3DCsGLq"
+          ],
+          "rag_enabled": true
+        }
+      }
+    ]
+  }
+}

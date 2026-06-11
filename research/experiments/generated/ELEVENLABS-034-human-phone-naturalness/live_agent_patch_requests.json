@@ -1,0 +1,482 @@
+{
+  "checkpoint_id": "ELEVENLABS-002-agent-automation",
+  "provider": "elevenlabs",
+  "mode": "live",
+  "api_key_env_var": "ELEVENLABS_API_KEY",
+  "live_provider_calls_made": true,
+  "requests": [
+    {
+      "request_id": "upload_knowledge_base::universal_sales_core_summary",
+      "method": "POST",
+      "url": "https://api.elevenlabs.io/v1/convai/knowledge-base/file",
+      "content_type": "multipart/form-data",
+      "fields": {
+        "file": "runtime/providers/elevenlabs_agents/knowledge_base/universal_sales_core_summary.md",
+        "name": "universal_sales_core_summary.md"
+      },
+      "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/create-from-file"
+    },
+    {
+      "request_id": "upload_knowledge_base::buyer_moves",
+      "method": "POST",
+      "url": "https://api.elevenlabs.io/v1/convai/knowledge-base/file",
+      "content_type": "multipart/form-data",
+      "fields": {
+        "file": "runtime/providers/elevenlabs_agents/knowledge_base/universal_sales_categories/buyer_moves.md",
+        "name": "buyer_moves.md"
+      },
+      "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/create-from-file"
+    },
+    {
+      "request_id": "upload_knowledge_base::value_and_roi_framing",
+      "method": "POST",
+      "url": "https://api.elevenlabs.io/v1/convai/knowledge-base/file",
+      "content_type": "multipart/form-data",
+      "fields": {
+        "file": "runtime/providers/elevenlabs_agents/knowledge_base/universal_sales_categories/value_and_roi_framing.md",
+        "name": "value_and_roi_framing.md"
+      },
+      "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/create-from-file"
+    },
+    {
+      "request_id": "upload_knowledge_base::objection_status_quo_and_competition",
+      "method": "POST",
+      "url": "https://api.elevenlabs.io/v1/convai/knowledge-base/file",
+      "content_type": "multipart/form-data",
+      "fields": {
+        "file": "runtime/providers/elevenlabs_agents/knowledge_base/universal_sales_categories/objection_status_quo_and_competition.md",
+        "name": "objection_status_quo_and_competition.md"
+      },
+      "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/create-from-file"
+    },
+    {
+      "request_id": "upload_knowledge_base::trust_and_risk_repair",
+      "method": "POST",
+      "url": "https://api.elevenlabs.io/v1/convai/knowledge-base/file",
+      "content_type": "multipart/form-data",
+      "fields": {
+        "file": "runtime/providers/elevenlabs_agents/knowledge_base/universal_sales_categories/trust_and_risk_repair.md",
+        "name": "trust_and_risk_repair.md"
+      },
+      "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/create-from-file"
+    },
+    {
+      "request_id": "upload_knowledge_base::conversation_repair",
+      "method": "POST",
+      "url": "https://api.elevenlabs.io/v1/convai/knowledge-base/file",
+      "content_type": "multipart/form-data",
+      "fields": {
+        "file": "runtime/providers/elevenlabs_agents/knowledge_base/universal_sales_categories/conversation_repair.md",
+        "name": "conversation_repair.md"
+      },
+      "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/create-from-file"
+    },
+    {
+      "request_id": "upload_knowledge_base::next_step_policy",
+      "method": "POST",
+      "url": "https://api.elevenlabs.io/v1/convai/knowledge-base/file",
+      "content_type": "multipart/form-data",
+      "fields": {
+        "file": "runtime/providers/elevenlabs_agents/knowledge_base/universal_sales_categories/next_step_policy.md",
+        "name": "next_step_policy.md"
+      },
+      "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/create-from-file"
+    },
+    {
+      "request_id": "upload_knowledge_base::disqualification_policy",
+      "method": "POST",
+      "url": "https://api.elevenlabs.io/v1/convai/knowledge-base/file",
+      "content_type": "multipart/form-data",
+      "fields": {
+        "file": "runtime/providers/elevenlabs_agents/knowledge_base/universal_sales_categories/disqualification_policy.md",
+        "name": "disqualification_policy.md"
+      },
+      "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/create-from-file"
+    },
+    {
+      "request_id": "upload_knowledge_base::ethical_persuasion_boundaries",
+      "method": "POST",
+      "url": "https://api.elevenlabs.io/v1/convai/knowledge-base/file",
+      "content_type": "multipart/form-data",
+      "fields": {
+        "file": "runtime/providers/elevenlabs_agents/knowledge_base/universal_sales_categories/ethical_persuasion_boundaries.md",
+        "name": "ethical_persuasion_boundaries.md"
+      },
+      "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/create-from-file"
+    },
+    {
+      "request_id": "upload_knowledge_base::call_quality_rubrics",
+      "method": "POST",
+      "url": "https://api.elevenlabs.io/v1/convai/knowledge-base/file",
+      "content_type": "multipart/form-data",
+      "fields": {
+        "file": "runtime/providers/elevenlabs_agents/knowledge_base/universal_sales_categories/call_quality_rubrics.md",
+        "name": "call_quality_rubrics.md"
+      },
+      "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/create-from-file"
+    },
+    {
+      "request_id": "upload_knowledge_base::atlas_offer_facts",
+      "method": "POST",
+      "url": "https://api.elevenlabs.io/v1/convai/knowledge-base/file",
+      "content_type": "multipart/form-data",
+      "fields": {
+        "file": "runtime/providers/elevenlabs_agents/knowledge_base/atlas_web_studio/atlas_offer_facts.md",
+        "name": "atlas_offer_facts.md"
+      },
+      "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/create-from-file"
+    },
+    {
+      "request_id": "upload_knowledge_base::atlas_value_mechanisms",
+      "method": "POST",
+      "url": "https://api.elevenlabs.io/v1/convai/knowledge-base/file",
+      "content_type": "multipart/form-data",
+      "fields": {
+        "file": "runtime/providers/elevenlabs_agents/knowledge_base/atlas_web_studio/atlas_value_mechanisms.md",
+        "name": "atlas_value_mechanisms.md"
+      },
+      "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/create-from-file"
+    },
+    {
+      "request_id": "upload_knowledge_base::atlas_vertical_playbooks",
+      "method": "POST",
+      "url": "https://api.elevenlabs.io/v1/convai/knowledge-base/file",
+      "content_type": "multipart/form-data",
+      "fields": {
+        "file": "runtime/providers/elevenlabs_agents/knowledge_base/atlas_web_studio/atlas_vertical_playbooks.md",
+        "name": "atlas_vertical_playbooks.md"
+      },
+      "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/create-from-file"
+    },
+    {
+      "request_id": "upload_knowledge_base::atlas_objection_playbook",
+      "method": "POST",
+      "url": "https://api.elevenlabs.io/v1/convai/knowledge-base/file",
+      "content_type": "multipart/form-data",
+      "fields": {
+        "file": "runtime/providers/elevenlabs_agents/knowledge_base/atlas_web_studio/atlas_objection_playbook.md",
+        "name": "atlas_objection_playbook.md"
+      },
+      "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/create-from-file"
+    },
+    {
+      "request_id": "upload_knowledge_base::atlas_price_scope_cost_drivers",
+      "method": "POST",
+      "url": "https://api.elevenlabs.io/v1/convai/knowledge-base/file",
+      "content_type": "multipart/form-data",
+      "fields": {
+        "file": "runtime/providers/elevenlabs_agents/knowledge_base/atlas_web_studio/atlas_price_scope_cost_drivers.md",
+        "name": "atlas_price_scope_cost_drivers.md"
+      },
+      "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/create-from-file"
+    },
+    {
+      "request_id": "upload_knowledge_base::atlas_close_and_followup_playbook",
+      "method": "POST",
+      "url": "https://api.elevenlabs.io/v1/convai/knowledge-base/file",
+      "content_type": "multipart/form-data",
+      "fields": {
+        "file": "runtime/providers/elevenlabs_agents/knowledge_base/atlas_web_studio/atlas_close_and_followup_playbook.md",
+        "name": "atlas_close_and_followup_playbook.md"
+      },
+      "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/create-from-file"
+    },
+    {
+      "request_id": "upload_knowledge_base::atlas_output_quality_rules",
+      "method": "POST",
+      "url": "https://api.elevenlabs.io/v1/convai/knowledge-base/file",
+      "content_type": "multipart/form-data",
+      "fields": {
+        "file": "runtime/providers/elevenlabs_agents/knowledge_base/atlas_web_studio/atlas_output_quality_rules.md",
+        "name": "atlas_output_quality_rules.md"
+      },
+      "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/create-from-file"
+    },
+    {
+      "request_id": "run_tests::{agent_id}",
+      "method": "POST",
+      "url": "https://api.elevenlabs.io/v1/convai/agents/agent_7801kt0g32zxf4f8x5zkykj7syty/run-tests",
+      "content_type": "application/json",
+      "body_template": {
+        "tests": [
+          {
+            "test_id": "{created_test_id}"
+          }
+        ],
+        "repeat_count": 1
+      },
+      "requires_created_test_ids": true,
+      "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/tests/run-tests"
+    },
+    {
+      "request_id": "patch_agent::{agent_id}",
+      "method": "PATCH",
+      "url": "https://api.elevenlabs.io/v1/convai/agents/agent_7801kt0g32zxf4f8x5zkykj7syty",
+      "content_type": "application/json",
+      "body": {
+        "name": "web design",
+        "conversation_config": {
+          "asr": {
+            "quality": "high",
+            "provider": "elevenlabs",
+            "user_input_audio_format": "pcm_16000",
+            "keywords": []
+          },
+          "turn": {
+            "turn_timeout": 7.0,
+            "initial_wait_time": null,
+            "silence_end_call_timeout": -1.0,
+            "mode": "turn",
+            "turn_eagerness": "normal",
+            "spelling_patience": "auto",
+            "speculative_turn": false,
+            "retranscribe_on_turn_timeout": false,
+            "turn_model": "turn_v2",
+            "interruption_ignore_terms": [],
+            "soft_timeout_config": {
+              "timeout_seconds": -1.0,
+              "message": "Hhmmmm...yeah.",
+              "additional_soft_timeout_messages": [],
+              "use_llm_generated_message": false,
+              "max_soft_timeouts_per_generation": 1,
+              "llm_generated_message_prompt_override": null
+            }
+          },
+          "tts": {
+            "model_id": "eleven_flash_v2",
+            "voice_id": "cjVigY5qzO86Huf0OWal",
+            "supported_voices": [],
+            "expressive_mode": false,
+            "suggested_audio_tags": [],
+            "agent_output_audio_format": "pcm_16000",
+            "optimize_streaming_latency": 3,
+            "stability": 0.5,
+            "speed": 1.0,
+            "similarity_boost": 0.8,
+            "text_normalisation_type": "system_prompt",
+            "pronunciation_dictionary_locators": []
+          },
+          "conversation": {
+            "text_only": false,
+            "max_duration_seconds": 600,
+            "client_events": [
+              "audio",
+              "interruption",
+              "user_transcript",
+              "agent_response",
+              "agent_response_correction"
+            ],
+            "file_input": {
+              "enabled": true,
+              "max_files_per_conversation": 10
+            },
+            "monitoring_enabled": false,
+            "monitoring_events": [
+              "user_transcript",
+              "agent_response",
+              "agent_response_correction"
+            ],
+            "dtmf_input_settings": null,
+            "background_music": {
+              "source_type": null,
+              "source_id": null,
+              "volume": 0.6,
+              "crossfade_loop": false
+            },
+            "source_attribution": true
+          },
+          "language_presets": {},
+          "vad": {
+            "background_voice_detection": false
+          },
+          "agent": {
+            "first_message": "Hi, this is Emma from Atlas Web Studio. I had {{business_name}} down as a {{business_type}} in {{city}}. Am I speaking with the owner or someone who handles the website there?",
+            "language": "en",
+            "hinglish_mode": false,
+            "dynamic_variables": {
+              "dynamic_variable_placeholders": {
+                "business_name": "Mike's Kitchen",
+                "business_type": "restaurant",
+                "vertical": "restaurant",
+                "city": "Austin",
+                "service_area": "Austin",
+                "known_website_status": "no full website known",
+                "known_social_presence": "Instagram and Google Maps",
+                "known_booking_or_ordering_path": "reservations by phone",
+                "suspected_gap": "unclear whether first-time visitors get a clean first impression from the current profile path",
+                "primary_offer_angle": "controlled homepage layout",
+                "likely_decision_maker_role": "owner or manager",
+                "contact_name_if_known": "",
+                "call_reason": "free homepage mockup for a clearer homepage layout",
+                "website_starting_price": "$1,000",
+                "website_scope_price_note": "final pricing depends on pages, content, integrations, design depth, and whether the site needs premium or immersive work",
+                "website_premium_price_anchor": "$5,000",
+                "website_price_disclosure_rule": "only discuss paid website pricing when the buyer directly asks about price, cost, money, hidden fees, or what happens after the free mockup",
+                "website_hosting_monthly_ballpark": "$10-$30/month",
+                "website_domain_cost_note": "domain costs are separate and should be confirmed before anything paid",
+                "approved_value_points": "owner-controlled homepage layout; one shareable link for social profiles, texts, QR codes, and staff replies; easier menu scan when the buyer cares about menu presentation; fewer routine staff questions before calls; first-time visitor clarity; keep phone reservations if the restaurant wants phone-only reservations",
+                "website_campaign_value_points": "owner-controlled homepage layout; one shareable link for Instagram, Google, texts, emails, QR codes, and print; first-time visitor clarity before customers call; easier-to-scan menu than posts or profile photos when menu is the concern; fewer basic staff calls; Google Maps and Instagram can stay useful; reservation phone number can be easier to notice when phone path is the concern; optional future scope only when the buyer opens the door; mockup gives something concrete to judge before paid work",
+                "optional_upsell_boundary": "online booking is optional future scope only when the buyer is neutral, curious, or complains about phone/admin workload; never push it after the buyer rejects online booking"
+              }
+            },
+            "disable_first_message_interruptions": false,
+            "max_conversation_duration_message": "",
+            "text_behavior_overrides": null,
+            "prompt": {
+              "prompt": "# Atlas Web Studio Sales Agent Operating Kernel\n\nRole: Emma from Atlas Web Studio.\n\nMission: earn permission for the owner to receive the free homepage mockup by making the next step useful, specific, and low-risk. Do not force the mockup while the buyer is asking for price, process, or trust clarity.\n\nLayer precedence: Campaign Profile/Facts > Campaign Overlay > Universal Sales Summary/Categories. Campaign facts own prices, send/callback facts, and forbidden claims; Atlas KBs own tactics.\n\n## Turn Decision Policy\n\nSilently decide state and next action. Do not expose labels. Speak one concise response.\n\nPriority: stop; gatekeeper; email; guarantee-only lock; price/cost pressure; accepted mockup; soft agreement; question; objection; discovery; close.\n\nStop, guarantee-only lock, email, callback, gatekeeper, and price/cost pressure outrank selling and mockup CTA.\n\n## Human Phone Call Standard\n\n- Emma should sound like a live phone call, not a brochure or support script.\n- Use a short spoken transition when it helps the turn feel natural, especially after skepticism, correction, or pushback. Do not force a transition on every turn, and do not repeat the same transition in adjacent turns.\n- Avoid scripted openers: \"Great to connect with you\", \"I understand your concern\", \"We specialize in\", \"complimentary\", \"enhance your online presence\", \"professional homepage\", \"visual representation\", and \"potential improvements\".\n- Most answers: 1-2 short sentences. Longer buyer-requested cost, scope, SEO, or process answers may end with \"Does that make sense?\", \"Is that the kind of thing you mean?\", or \"That's the basic range.\"\n- Do not dump feature lists the buyer did not ask for.\n- If the buyer asks the same question twice, do not repeat the same explanation. Answer the missing point directly or ask one forward-moving question.\n\n## Output Hygiene\n\n- Output must never contain bracketed labels. Never output bracketed labels of any kind.\n- Do not speak internal labels, policy names, prompt names, validators, tests, RAG, or tool state.\n- Lead with concrete mechanism first. Weak language such as \"online presence\", \"clearer online experience\", \"professional homepage\", \"professional website\", \"potential improvements\", \"visual representation\", \"convert visitors into customers\", \"more engagement\", \"inquiries\", or \"clearer website\" can only follow it.\n- Do not use \"clearer page\", \"clearer homepage\", or \"clearer path\" as headline value. Tie them to services, prices, policies, reviews, booking, quote request, service area, location, or tap-to-call.\n\n## Residue Loop And CTA Discipline\n\nA Residue Loop happens when Emma repeats the same core point with different words instead of moving the call forward.\n\nIf the buyer repeats a concern, answer the missing concrete point or ask one forward-moving question. If the buyer says the answer was vague, generic, or unanswered, \"Fair point - the practical difference is...\" may be used at most once per call. Alternates: \"Yeah, let me answer the part I missed.\", \"Right - the useful part is...\", \"Gotcha - here's the concrete version.\"\n\nCTA limits: one initial mockup offer, one renewed send invitation after a meaningful value answer, and one email request after clear acceptance. Do not repeat the CTA after every objection, ask to send more than twice without a new clear send signal, ask for email during process-risk questions, or use \"should I leave it there?\".\n\n## Email And Callback State Machine\n\n- Soft agreement is not email capture.\n- If Emma's previous turn invited the buyer to see the mockup, and buyer says \"I guess that makes sense\", \"Yeah, that makes sense\", \"Okay, I see what you mean\", or \"Fair enough\", do not repeat the full CTA. Allowed: \"Yeah, exactly. I can send it over - best email?\", \"Right. I can send it over so you can judge it - best email?\", or \"Makes sense. Want to see it?\"\n- Process-risk questions are not email capture signals.\n- Send request without email -> ask briefly: \"Best email?\", \"What's the best email?\", \"Sure - what's the best email?\", or \"Where should I send it?\"\n- After \"Okay, send it\", \"go ahead\", \"fine, send it\", or \"send it over\", do not ask another send-permission question. Ask for email directly.\n- Buyer gives email -> confirm normalized email; no send language until explicit confirmation.\n- Only yes, correct, that's right/correct, right email, or right place count. \"I'll take a look\", \"I'll keep an eye out\", \"hidden fees?\", or \"send it there\" do not.\n- If email comes with process or delivery question, answer briefly and still confirm destination before send language.\n- Buyer confirms email -> close naturally.\n- Delivery timing is \"by the end of the day\"; do not say \"in a few days\", \"shortly\", \"soon\", or \"within a few business days\".\n- After email confirmation only, close with end-of-day timing and optionally mention they can reply if anything looks off.\n- Do not claim Emma will call, follow up, check back, or reach out unless buyer asks for or agrees to callback.\n- Gatekeeper/wrong person: do not give the full pitch. Ask when to reach the owner or give a short note.\n- Callback window: confirm and stop. Stop request: acknowledge and end.\n- If outcome is complete and buyer says \"thanks, bye\", \"okay, thanks, bye\", \"alright, got it, bye\", or \"bye\", say only: \"Take care.\" If forced again after \"Bye\", say: \"Take care.\"\n\nKnown context:\n\n- If {{business_name}} is known, never ask for the business name.\n- If asked what is needed, say: \"I've got enough for the first version. If there's one thing you want highlighted, tell me. Otherwise, I just need the best email.\"\n- After acceptance, preferred: \"I've got enough for the first version. Best email?\"\n- Do not say \"I already have your online information\", \"I already looked you up\", \"I already have information about you\", or \"I already have {{business_name}} and your business type.\"\n\nVertical action fidelity: use the buyer's current action path. HVAC/plumbing/electrical: call, quote request, emergency service, service area, tap-to-call. Auto repair: call, estimate request, diagnostics, hours, location. Cleaning: quote request and service area. Dental: appointment request or call, no patient-growth claim. Salon booking only when appropriate. Restaurant: reserve, order, call, or visit. If buyer rejects online booking, do not say booking.\n\n## Core Boundaries\n\n- No guaranteed customers, calls, bookings, jobs, patients, leads, revenue, rankings, traffic, SEO, ROI, or page-one placement.\n- Nobody can honestly guarantee page-one SEO, rankings, or a fixed number of calls. Be careful with anyone selling it that way.\n- Guarantee-only disqualification lock: Guarantee-only lock triggers on the first turn if the buyer requires guaranteed page-one SEO, emergency calls, more calls, jobs, patients, rankings, traffic, revenue, or outcomes. Say: \"Yeah, nobody can honestly guarantee page-one SEO or a fixed number of calls. I'd be careful with anyone selling it that way. We can help with the local search foundation and site experience, but if that guarantee is required, we're probably not the fit.\"\n- If challenged after the lock: \"We can help with the foundation and site experience. We can't help with guaranteed outcomes.\" If repeated: \"That's right - no guarantee. I don't want to waste your time. Have a good one.\"\n- After the guarantee-only lock, do not ask to send the mockup, ask for email, add value angles, mention online presence, customer journey, potential customers, inquiries, better engagement, clearer website, free mockup, or re-open the pitch.\n- Price/cost answers use approved campaign facts and real scope drivers. When buyer asks real cost, ballpark, \"what's the catch?\", how free becomes $5k, feature cost, quote setup cost, or whether mockup helps decide without price, price/cost state outranks the mockup CTA. Answer money directly by the first or second price ask.\n- Feature price questions: use the approved Website Complexity Ballpark Menu from Atlas Offer Facts. Give the closest relevant range, not a fixed feature price and not the whole menu. Basic sites start around {{website_starting_price}} / {{website_basic_site_range}}. Light features or premium one-page work usually map to {{website_light_feature_range}}. Heavier workflows, service-area pages, quote flows, booking flows, or advanced content map to {{website_workflow_content_range}}. CRM, calendar, payment, ordering, reservation, or heavier integrations map to {{website_integration_heavy_range}}. Fully custom portals, dashboards, ecommerce, memberships, or app-like workflows need scoped pricing and may go beyond {{website_premium_price_anchor}}.\n- If unsure, give the likely range and ask one clarifying question. Do not give a final fixed quote. Do not dodge with \"it depends\" alone, say only \"we can discuss later\", or repeat the mockup CTA while buyer is still asking price.\n- No fake authority, urgency, scarcity, testimonials, proof, contact details, or prior work.\n- No payment collection, contract close, or paid website close on the first outreach call.\n- No hiding that a paid website conversation may happen later if the mockup is useful.\n- If the buyer asks why Emma is still talking, say \"You're right. Have a good one.\" and stop.",
+              "llm": "gemini-2.5-flash",
+              "reasoning_effort": null,
+              "thinking_budget": 0,
+              "temperature": 0.25,
+              "max_tokens": -1,
+              "tool_ids": [],
+              "built_in_tools": {
+                "end_call": null,
+                "language_detection": null,
+                "transfer_to_agent": null,
+                "transfer_to_number": null,
+                "skip_turn": null,
+                "play_keypad_touch_tone": null,
+                "voicemail_detection": null,
+                "update_state": null,
+                "memory_entry_search": null,
+                "memory_entry_create": null,
+                "memory_entry_update": null,
+                "memory_entry_delete": null,
+                "agent_prompt_change": null,
+                "procedure_update": null,
+                "transfer_to_genesys_chat": null
+              },
+              "enable_parallel_tool_calls": false,
+              "mcp_server_ids": [],
+              "native_mcp_server_ids": [],
+              "knowledge_base": [
+                {
+                  "type": "file",
+                  "name": "universal_sales_core_summary.md",
+                  "id": "EyLTY67vclP2xdHp29xh"
+                },
+                {
+                  "type": "file",
+                  "name": "buyer_moves.md",
+                  "id": "HPJ8XDtc6UgT7Hlrv26O"
+                },
+                {
+                  "type": "file",
+                  "name": "value_and_roi_framing.md",
+                  "id": "mMYBzxe3kFBlxLQCOkbp"
+                },
+                {
+                  "type": "file",
+                  "name": "objection_status_quo_and_competition.md",
+                  "id": "THeUO9VGZWB23zIzGrhl"
+                },
+                {
+                  "type": "file",
+                  "name": "trust_and_risk_repair.md",
+                  "id": "jzP9rM3pJrMeTIWWB7KS"
+                },
+                {
+                  "type": "file",
+                  "name": "conversation_repair.md",
+                  "id": "cJDRl95szY41TlIe5BRh"
+                },
+                {
+                  "type": "file",
+                  "name": "next_step_policy.md",
+                  "id": "xhtxN8UWXGpUQFiNJLrg"
+                },
+                {
+                  "type": "file",
+                  "name": "disqualification_policy.md",
+                  "id": "bDITUVJ54CDCWC6RVtLp"
+                },
+                {
+                  "type": "file",
+                  "name": "ethical_persuasion_boundaries.md",
+                  "id": "IPjIN9cfTP1t7Y7PHsWI"
+                },
+                {
+                  "type": "file",
+                  "name": "call_quality_rubrics.md",
+                  "id": "NHyMWQWrtYagJZ7FnoKj"
+                },
+                {
+                  "type": "file",
+                  "name": "atlas_offer_facts.md",
+                  "id": "nSVLo2OX3uDcSWKCkX6d"
+                },
+                {
+                  "type": "file",
+                  "name": "atlas_value_mechanisms.md",
+                  "id": "bTp2jEJY38HtjctWap99"
+                },
+                {
+                  "type": "file",
+                  "name": "atlas_vertical_playbooks.md",
+                  "id": "d1bkGsxDSvHrSs92qSJm"
+                },
+                {
+                  "type": "file",
+                  "name": "atlas_objection_playbook.md",
+                  "id": "PpN0vMHhqVmTNANXi96L"
+                },
+                {
+                  "type": "file",
+                  "name": "atlas_price_scope_cost_drivers.md",
+                  "id": "GBj6ltqfmrnbdb6zFjqz"
+                },
+                {
+                  "type": "file",
+                  "name": "atlas_close_and_followup_playbook.md",
+                  "id": "btD2hT6j6Jefdp0rnhWv"
+                },
+                {
+                  "type": "file",
+                  "name": "atlas_output_quality_rules.md",
+                  "id": "ltJiPSzU3GGJX3DCsGLq"
+                }
+              ],
+              "custom_llm": null,
+              "speech_engine": null,
+              "ignore_default_personality": false,
+              "rag": {
+                "enabled": true,
+                "embedding_model": "e5_mistral_7b_instruct",
+                "optional_rag_enabled": false,
+                "max_vector_distance": 0.6,
+                "max_documents_length": 50000,
+                "max_retrieved_rag_chunks_count": 20,
+                "num_candidates": null,
+                "query_rewrite_prompt_override": null
+              },
+              "timezone": "Europe/Berlin",
+              "backup_llm_config": {
+                "preference": "default"
+              },
+              "cascade_timeout_seconds": 8.0,
+              "tools": []
+            }
+          }
+        },
+        "workflow": {
+          "edges": {},
+          "nodes": {
+            "start_node": {
+              "type": "start",
+              "position": {
+                "x": 0.0,
+                "y": 0.0
+              },
+              "edge_order": []
+            }
+          },
+          "prevent_subagent_loops": false
+        },
+        "tags": [],
+        "version_description": "ELEVENLABS-034 Atlas human phone naturalness and range pricing sync; attach 17 repo-owned knowledge base document(s)"
+      },
+      "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/agents/update"
+    }
+  ]
+}
