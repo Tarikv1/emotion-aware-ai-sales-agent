@@ -20,7 +20,7 @@
     "test_type": "simulation",
     "simulated_user_model": "gemini-2.5-flash",
     "evaluation_model": "gemini-2.5-flash",
-    "simulation_max_turns": "6-12",
+    "simulation_max_turns": 20,
     "target_test_folder_name": "ELEVENLABS-034-human-phone-naturalness",
     "knowledge_base_upload_required": false
   },

@@ -36,7 +36,22 @@ Created the `ELEVENLABS-034-human-phone-naturalness` simulation test folder in E
 - `live_create_tests_plan.json`: live creation response, including create-test calls and folder move result.
 - `live_create_tests_requests.json`: exact request payloads generated from the repo test JSON.
 - `live_create_tests_result.json`: compact provider result summary.
+- `live_update_tests_turns_requests.json`: exact PUT request payloads used to update the existing tests to `simulation_max_turns: 20`.
+- `live_update_tests_turns_result.json`: live update response and readback confirmation that all 13 tests are set to `20` max turns.
 - `report.md`: this report.
+
+## 2026-06-11 Max-Turn Update
+
+Updated the existing ELEVENLABS-034 tests in place with `PUT /v1/convai/agent-testing/:test_id`.
+
+- Updated tests: `13`
+- New `simulation_max_turns`: `20`
+- Live provider calls made: `true`
+- Readback all 20: `true`
+- Simulations run: `false`
+- Atlas prompt changed: `false`
+- Atlas KB changed: `false`
+- Active upload manifest changed: `false`
 
 Earlier uncommitted evidence in this same directory records the ELEVENLABS-034 active Atlas prompt/KB sync. That evidence is included in the commit because it was requested explicitly, but the test creation step did not change the prompt, KB, agent prompt package, or active upload manifest.
 
