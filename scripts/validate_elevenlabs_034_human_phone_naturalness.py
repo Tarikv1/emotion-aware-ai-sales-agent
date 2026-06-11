@@ -19,6 +19,7 @@ OFFER_FACTS = ATLAS_KB_ROOT / "atlas_offer_facts.md"
 ANALYSIS_CONFIG = AGENT_ROOT / "analysis" / "atlas_web_studio_analysis_config.json"
 ANALYSIS_SETUP = AGENT_ROOT / "analysis" / "atlas_web_studio_analysis_setup.md"
 HUMAN_TESTS = AGENT_ROOT / "tests" / "web_design_human_phone_naturalness_tests.json"
+DYNAMIC_DEFAULTS = AGENT_ROOT / "variables" / "mikes_kitchen_dynamic_variable_defaults.json"
 ACTIVE_MANIFEST = AGENT_ROOT / "manifests" / "web_design_sales_spine_compression.package.json"
 
 CHECKPOINT_ID = "ELEVENLABS-034-human-phone-naturalness"
@@ -272,6 +273,22 @@ def assert_analysis() -> None:
     )
 
 
+def assert_dynamic_defaults() -> None:
+    defaults = read_json(DYNAMIC_DEFAULTS)
+    expected = {
+        "website_basic_site_range": "$1,000-$2,000",
+        "website_light_feature_range": "$2,000-$3,000",
+        "website_workflow_content_range": "$3,000-$4,000",
+        "website_integration_heavy_range": "$4,000-$5,000",
+    }
+    for key, value in expected.items():
+        assert_condition(defaults.get(key) == value, f"dynamic defaults missing {key}: {value}")
+    assert_condition(
+        "custom portals, dashboards" in str(defaults.get("website_custom_scope_note", "")),
+        "dynamic defaults missing website_custom_scope_note",
+    )
+
+
 def assert_manifest_unchanged() -> None:
     diff = subprocess.run(
         ["git", "diff", "--name-only", "--", str(ACTIVE_MANIFEST.relative_to(ROOT))],
@@ -288,6 +305,7 @@ def main() -> None:
     assert_tests()
     assert_prompt_and_kb()
     assert_analysis()
+    assert_dynamic_defaults()
     assert_manifest_unchanged()
     print(
         json.dumps(
