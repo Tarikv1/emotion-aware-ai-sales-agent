@@ -69,7 +69,7 @@ Buyer keeps asking price:
 
 Bad: "The mockup is no obligation, and then we can discuss."
 
-Good: "Fair question. For that cleaning quote-filter setup, you're probably around $3k to start. The exact number moves with pages, copy, quote workflow, and integrations."
+Good: "Fair question. I wouldn't lock a price without scope, but simple quote filtering is usually around the light-feature range. If it needs a deeper workflow or more pages, it moves higher."
 
 Buyer says Instagram already works, then says "that makes sense":
 

@@ -11,6 +11,11 @@
     "offer": "free homepage mockup",
     "website_starting_price": "$1,000",
     "website_premium_price_anchor": "$5,000",
+    "website_basic_site_range": "$1,000-$2,000",
+    "website_light_feature_range": "$2,000-$3,000",
+    "website_workflow_content_range": "$3,000-$4,000",
+    "website_integration_heavy_range": "$4,000-$5,000",
+    "website_custom_scope_note": "custom portals, dashboards, ecommerce, memberships, app-like workflows, privacy-sensitive setup, or complex multi-system builds need a scoped quote and may go beyond the normal first-call range",
     "source_package_id": "ELEVENLABS-034-human-phone-naturalness"
   },
   "tests": [
@@ -21,14 +26,13 @@
       "evaluation_model": "gemini-2.5-flash",
       "simulation_max_turns": 12,
       "simulation_scenario": "The simulated user owns FreshNest Cleaning in Orlando. They ask: 'Complimentary usually means there's a catch. What's the real cost?' Then: 'How does no obligation turn into a $5,000 website?' Then: 'What kind of filtering would be on there and how much does that cost?' Then: 'So no ballpark at all?'",
-      "success_condition": "Pass only if price/cost state outranks the mockup CTA. Emma gives a ballpark by the first or second direct price ask, uses the approved cleaning quote-filtering ballpark if supplied or the approved starting-price fallback, and mentions cleaning-specific quote filter pieces: service area, one-time versus recurring, move-in/move-out, what's included, FAQs/pricing, and a quote request path. Emma explains commercial cost drivers such as custom copy, more pages, service-area pages, quote workflow, integrations, advanced SEO/content, and technical setup. Hard fail if Emma keeps repeating free mockup/no obligation, repeats 'want me to send it?' while price is unresolved, dodges with only 'it depends', or reaches max turns because price was avoided.",
+      "success_condition": "Pass only if price/cost state outranks the mockup CTA. Emma gives a relevant range by the first or second direct price ask, maps simple filtering to {{website_light_feature_range}} or a deeper quote workflow to {{website_workflow_content_range}}, and mentions cleaning-specific quote filter pieces: service area, one-time versus recurring, move-in/move-out, what's included, FAQs/pricing, and a quote request path. Emma explains commercial cost drivers such as custom copy, more pages, service-area pages, quote workflow, integrations, advanced SEO/content, and technical setup. Hard fail if Emma says quote filtering is exactly $3,000, keeps repeating free mockup/no obligation, repeats 'want me to send it?' while price is unresolved, dodges with only 'it depends', or reaches max turns because price was avoided.",
       "dynamic_variables": {
         "business_name": "FreshNest Cleaning",
         "business_type": "cleaning company",
         "vertical": "cleaning",
         "city": "Orlando",
         "known_booking_or_ordering_path": "customers request quotes",
-        "website_quote_filtering_ballpark": "$3,000",
         "buyer_temperature": "price_pressure",
         "target_outcome": "direct_price_answer"
       }
@@ -141,12 +145,120 @@
         "buyer_temperature": "asks_plain_reason",
         "target_outcome": "short_mechanism_opener"
       }
+    },
+    {
+      "test_id": "sim_034_quote_filtering_range_not_fixed_price",
+      "type": "simulation",
+      "simulated_user_model": "gemini-2.5-flash",
+      "evaluation_model": "gemini-2.5-flash",
+      "simulation_max_turns": 8,
+      "simulation_scenario": "The simulated user owns FreshNest Cleaning in Orlando. They ask: 'What does the filtering stuff cost?' Then: 'So is that exactly three grand?'",
+      "success_condition": "Pass only if Emma says it is not an exact fixed price. A simple quote-filter setup is usually around {{website_light_feature_range}}; if it needs a deeper workflow or more pages it can move toward {{website_workflow_content_range}}. Hard fail if Emma says quote filtering is exactly $3,000.",
+      "dynamic_variables": {
+        "business_name": "FreshNest Cleaning",
+        "business_type": "cleaning company",
+        "vertical": "cleaning",
+        "city": "Orlando",
+        "known_booking_or_ordering_path": "customers request quotes",
+        "buyer_temperature": "feature_price_question",
+        "target_outcome": "range_not_fixed_price"
+      }
+    },
+    {
+      "test_id": "sim_034_premium_one_page_range",
+      "type": "simulation",
+      "simulated_user_model": "gemini-2.5-flash",
+      "evaluation_model": "gemini-2.5-flash",
+      "simulation_max_turns": 8,
+      "simulation_scenario": "The simulated user owns Luna Hair Studio in Tampa. They ask: 'What if I just want one premium-looking page, no crazy integrations?'",
+      "success_condition": "Pass only if Emma says a premium one-page site usually maps to {{website_light_feature_range}}, and can move higher with custom copy, more sections, or heavier SEO structure. Hard fail if Emma says it is automatically $5,000 or gives no range.",
+      "dynamic_variables": {
+        "business_name": "Luna Hair Studio",
+        "business_type": "hair salon",
+        "vertical": "salon",
+        "city": "Tampa",
+        "known_booking_or_ordering_path": "clients use Instagram DMs and booking link",
+        "buyer_temperature": "premium_one_page_price",
+        "target_outcome": "light_feature_range"
+      }
+    },
+    {
+      "test_id": "sim_034_booking_integration_range",
+      "type": "simulation",
+      "simulated_user_model": "gemini-2.5-flash",
+      "evaluation_model": "gemini-2.5-flash",
+      "simulation_max_turns": 8,
+      "simulation_scenario": "The simulated user owns Luna Hair Studio in Tampa. They ask: 'What if I want appointment scheduling built into it?' Then: 'So is that still the basic price or more?'",
+      "success_condition": "Pass only if Emma says simple appointment request can stay around {{website_light_feature_range}}, while live calendar booking or booking-system integration usually moves toward {{website_workflow_content_range}} or {{website_integration_heavy_range}}. Hard fail if Emma gives no range, says only 'it depends,' or dumps the whole menu.",
+      "dynamic_variables": {
+        "business_name": "Luna Hair Studio",
+        "business_type": "hair salon",
+        "vertical": "salon",
+        "city": "Tampa",
+        "known_booking_or_ordering_path": "clients use Instagram DMs and booking link",
+        "buyer_temperature": "booking_price_question",
+        "target_outcome": "booking_range"
+      }
+    },
+    {
+      "test_id": "sim_034_crm_payment_integration_range",
+      "type": "simulation",
+      "simulated_user_model": "gemini-2.5-flash",
+      "evaluation_model": "gemini-2.5-flash",
+      "simulation_max_turns": 8,
+      "simulation_scenario": "The simulated user owns Northside Auto Repair in Dallas. They ask: 'Can it connect to my CRM or take payments?' Then: 'What kind of price does that add?'",
+      "success_condition": "Pass only if Emma says CRM/payment integrations usually move toward {{website_integration_heavy_range}}, depending on simple handoff versus real integration. Hard fail for exact final quote, no range, or long feature dump.",
+      "dynamic_variables": {
+        "business_name": "Northside Auto Repair",
+        "business_type": "auto repair shop",
+        "vertical": "auto repair",
+        "city": "Dallas",
+        "known_booking_or_ordering_path": "customers call for estimates",
+        "buyer_temperature": "integration_price_question",
+        "target_outcome": "integration_range"
+      }
+    },
+    {
+      "test_id": "sim_034_advanced_seo_pages_range",
+      "type": "simulation",
+      "simulated_user_model": "gemini-2.5-flash",
+      "evaluation_model": "gemini-2.5-flash",
+      "simulation_max_turns": 8,
+      "simulation_scenario": "The simulated user owns Apex Plumbing in Denver. They ask: 'What if I want pages for every service area and SEO stuff?' Then: 'Does that mean five grand?'",
+      "success_condition": "Pass only if Emma says service-area pages and custom SEO content usually move toward {{website_workflow_content_range}} or {{website_integration_heavy_range}}, depending on page count and copy. No ranking guarantee. Hard fail for ranking guarantee, no range, or 'we can discuss later' only.",
+      "dynamic_variables": {
+        "business_name": "Apex Plumbing",
+        "business_type": "plumbing company",
+        "vertical": "plumbing",
+        "city": "Denver",
+        "known_booking_or_ordering_path": "customers call for emergency service and quotes",
+        "buyer_temperature": "advanced_seo_price_question",
+        "target_outcome": "seo_content_range"
+      }
+    },
+    {
+      "test_id": "sim_034_custom_portal_scoped_quote",
+      "type": "simulation",
+      "simulated_user_model": "gemini-2.5-flash",
+      "evaluation_model": "gemini-2.5-flash",
+      "simulation_max_turns": 8,
+      "simulation_scenario": "The simulated user owns FreshNest Cleaning in Orlando. They ask: 'What if I want a customer login portal and custom dashboard?'",
+      "success_condition": "Pass only if Emma says custom portal/dashboard work needs scoped pricing, may go beyond the normal {{website_premium_price_anchor}} range, and should not be quoted cleanly on the first call. Hard fail if Emma gives a fake exact price or pretends it is included in the basic site.",
+      "dynamic_variables": {
+        "business_name": "FreshNest Cleaning",
+        "business_type": "cleaning company",
+        "vertical": "cleaning",
+        "city": "Orlando",
+        "known_booking_or_ordering_path": "customers request quotes",
+        "buyer_temperature": "custom_scope_price_question",
+        "target_outcome": "scoped_quote_required"
+      }
     }
   ],
   "evaluation_repair_notes": {
     "human_phone_call_standard": "Most turns should sound like a live call: short, casual transition when natural, no brochure language, no unasked feature dumps.",
     "residue_loop": "Hard fail when Emma repeats the same core point with different words instead of answering the missing point or asking one forward-moving question.",
-    "price_pressure": "Price/cost state outranks the mockup CTA. A repeated price ask needs a ballpark, not another no-obligation loop.",
+    "price_pressure": "Price/cost state outranks the mockup CTA. A repeated price ask needs the closest relevant complexity range, not a fixed feature price or another no-obligation loop.",
     "terminal_close": "After completed outcome plus goodbye, the only preferred line is 'Take care.'",
     "stale_script_leakage": "Great to connect, complimentary, professional homepage, enhance your online presence, visual representation, and We specialize in fail as opening, pitch, or headline language."
   }

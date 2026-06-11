@@ -31,12 +31,18 @@ TEST_IDS = (
     "sim_034_terminal_close_take_care_only",
     "sim_034_bright_lane_email_plus_free_question",
     "sim_034_stale_script_leakage_opening",
+    "sim_034_quote_filtering_range_not_fixed_price",
+    "sim_034_premium_one_page_range",
+    "sim_034_booking_integration_range",
+    "sim_034_crm_payment_integration_range",
+    "sim_034_advanced_seo_pages_range",
+    "sim_034_custom_portal_scoped_quote",
 )
 
 ANALYSIS_MARKERS = (
     "AI monologue",
     "residue loop",
-    "price ballpark after repeated ask",
+    "Price ballpark after repeated ask",
     "terminal \"Take care\"",
 )
 
@@ -88,7 +94,7 @@ def assert_tests() -> None:
     payload = read_json(HUMAN_TESTS)
     assert_condition(payload.get("package_id") == CHECKPOINT_ID, "034 test package_id mismatch")
     tests = payload.get("tests")
-    assert_condition(isinstance(tests, list) and len(tests) == 7, "034 tests must contain seven simulations")
+    assert_condition(isinstance(tests, list) and len(tests) == 13, "034 tests must contain thirteen simulations")
     ids = {str(test.get("test_id")) for test in tests if isinstance(test, dict)}
     for test_id in TEST_IDS:
         assert_condition(test_id in ids, f"Missing 034 test: {test_id}")
@@ -114,6 +120,18 @@ def assert_tests() -> None:
             "enhance your online presence",
             "visual representation",
             "We specialize in",
+            "sim_034_quote_filtering_range_not_fixed_price",
+            "sim_034_premium_one_page_range",
+            "sim_034_booking_integration_range",
+            "sim_034_crm_payment_integration_range",
+            "sim_034_advanced_seo_pages_range",
+            "sim_034_custom_portal_scoped_quote",
+            "{{website_light_feature_range}}",
+            "{{website_workflow_content_range}}",
+            "{{website_integration_heavy_range}}",
+            "exactly $3,000",
+            "dumps the whole menu",
+            "scoped pricing",
         ),
     )
 
@@ -155,22 +173,44 @@ def assert_prompt_and_kb() -> None:
     assert_condition("Be careful with anyone selling it that way" in objection, "objection KB missing guarantee warning")
     assert_condition("I'd be careful with anyone selling it that way" in objection, "objection KB missing spoken guarantee warning example")
     assert_contains(
-        "offer facts quote-filtering ballpark",
+        "offer facts complexity menu",
         offer,
         (
-            "Working quote-filtering setups",
-            "{{website_quote_filtering_ballpark}}",
-            "default value `$3,000`",
-            "scope-specific ballpark, not a universal starting price",
-            "Simple website projects still use `{{website_starting_price}}`",
+            "Website Complexity Ballpark Menu",
+            "{{website_basic_site_range}}",
+            "default `$1,000-$2,000`",
+            "{{website_light_feature_range}}",
+            "default `$2,000-$3,000`",
+            "{{website_workflow_content_range}}",
+            "default `$3,000-$4,000`",
+            "{{website_integration_heavy_range}}",
+            "default `$4,000-$5,000`",
+            "{{website_custom_scope_note}}",
+            "ballpark ranges, not final quotes",
+            "One feature does not automatically determine the price",
+            "{{website_starting_price}}` is the starting point",
         ),
     )
+    fixed_quote_filtering_sources = "\n".join((offer, price, prompt, read_text(HUMAN_TESTS)))
+    assert_condition(
+        "{{website_quote_filtering_ballpark}}" not in fixed_quote_filtering_sources,
+        "old website_quote_filtering_ballpark still appears in active pricing prompt/KB/tests",
+    )
+    assert_condition(
+        "default value `$3,000`" not in fixed_quote_filtering_sources,
+        "old fixed $3,000 quote-filtering default still appears in active pricing prompt/KB/tests",
+    )
+    assert_condition("Website Complexity Ballpark Menu" in prompt, "prompt missing Website Complexity Ballpark Menu rule")
+    assert_condition("Feature-Complexity Ballpark Policy" in price, "price KB missing Feature-Complexity Ballpark Policy")
     assert_contains(
         "price KB offer-facts boundary",
         price,
         (
             "Atlas Offer Facts owns approved pricing facts",
             "Do not create pricing facts outside atlas_offer_facts.md",
+            "Give one relevant range only",
+            "Do not read the whole pricing menu unless the buyer asks for a breakdown",
+            "Do not give a final fixed quote for custom work",
         ),
     )
     preferred = section_text(output, "No Robotic Phrases")
@@ -219,6 +259,10 @@ def assert_analysis() -> None:
         (
             "buyer asks price twice",
             "max turns because Emma avoided price",
+            "fixed feature price",
+            "quote filtering is always exactly $3,000",
+            "dumps the whole pricing menu",
+            "final fixed price for custom work without scope",
             "spoken at/dot form",
             "guarantee-only buyer receives any mockup pitch after lock",
             "I already have {{business_name}} and the business type",
@@ -253,8 +297,9 @@ def main() -> None:
                 "human_phone_call_standard": True,
                 "residue_loop_guard": True,
                 "analysis_criteria_count": len(read_json(ANALYSIS_CONFIG)["success_evaluation_criteria"]),
-                "focused_test_count": 7,
+                "focused_test_count": 13,
                 "stale_script_leakage_guard": True,
+                "complexity_band_pricing_guard": True,
                 "active_upload_manifest_changed": False,
             },
             indent=2,

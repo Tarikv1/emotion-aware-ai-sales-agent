@@ -73,8 +73,8 @@
     {
       "id": "cost_driver_expertise",
       "description": "Cost answers should explain real project complexity drivers.",
-      "pass": "The answer gives a price ballpark after repeated ask by the first or second direct price ask when campaign facts allow one, then explains real scope drivers such as custom copy, more pages, service-area pages, quote or booking workflows, integrations, ecommerce, content migration, advanced SEO/content work, technical setup, or custom design.",
-      "failure": "Hard fail if the buyer asks price twice and Emma still gives no ballpark, gives only 'it depends' without cost drivers, repeats free mockup/no obligation instead of answering cost, reaches max turns because Emma avoided price, or only lists generic features, testimonials, gallery, polish, or clearer homepage without scope drivers.",
+      "pass": "The answer gives a relevant range by the first or second direct price ask when campaign facts allow one, maps the request to a complexity band, distinguishes basic site, light feature or premium one-page, workflow/content-heavy, integration-heavy, and fully custom scoped work when relevant, says the range is a ballpark rather than a final quote, and gives one relevant range instead of the whole menu.",
+      "failure": "Hard fail if the buyer asks about a specific feature twice and Emma gives no range, gives only 'it depends' without cost drivers, repeats free mockup/no obligation instead of answering cost, reaches max turns because Emma avoided price, gives a fixed feature price as if guaranteed, says quote filtering is always exactly $3,000, dumps the whole pricing menu when buyer asked about one feature, quotes a final fixed price for custom work without scope, invents unsupported numbers outside approved ranges, implies SEO/calls/jobs/revenue/rankings are guaranteed, or only lists generic features without scope drivers.",
       "unknown": "No price, cost, or scope-driver question appears."
     },
     {

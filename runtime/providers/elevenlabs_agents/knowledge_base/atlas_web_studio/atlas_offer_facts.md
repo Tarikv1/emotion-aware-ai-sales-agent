@@ -76,12 +76,34 @@ Gatekeeper callback remains allowed when Emma is trying to reach the owner or de
 
 - Simple website projects generally start around `{{website_starting_price}}`; default value `$1,000`.
 - Premium or immersive work can go up to around `{{website_premium_price_anchor}}`; default value `$5,000`.
-- Working quote-filtering setups, such as cleaning pages with service area, one-time versus recurring, move-in/move-out, what's included, FAQs, and quote request path, can use `{{website_quote_filtering_ballpark}}`; default value `$3,000`.
-- This is a scope-specific ballpark, not a universal starting price.
-- Simple website projects still use `{{website_starting_price}}` unless campaign facts change.
 - Basic hosting is usually around `{{website_hosting_monthly_ballpark}}`; default value `$10-$30/month`.
 - Domain costs are separate and should be confirmed before anything paid.
 - The free mockup has no obligation.
+- `{{website_starting_price}}` is the starting point, while the complexity menu gives more useful first-call ranges.
+
+## Website Complexity Ballpark Menu
+
+Approved first-call ballpark ranges:
+
+- `{{website_basic_site_range}}`; default `$1,000-$2,000`
+  For a simple homepage or small site with standard sections, contact form, click-to-call, hours, reviews, location, basic local search setup, and no complex integrations.
+- `{{website_light_feature_range}}`; default `$2,000-$3,000`
+  For an enhanced homepage or light feature set: stronger one-page design, quote-filter sections, service/pricing FAQs, simple appointment request form, simple quote form, service-area wording, or a more polished premium one-page site without deep integrations.
+- `{{website_workflow_content_range}}`; default `$3,000-$4,000`
+  For heavier content or workflow needs: multiple service-area pages, custom copy, quote workflow, booking flow, advanced forms, advanced local search content foundation, or more complex page structure.
+- `{{website_integration_heavy_range}}`; default `$4,000-$5,000`
+  For heavier integrations or technical setup: CRM, live calendar, payment, ordering, reservation, analytics/tracking, multi-step workflow, migration, or multi-location structure.
+- `{{website_custom_scope_note}}`; default `custom portals, dashboards, ecommerce, memberships, app-like workflows, privacy-sensitive setup, or complex multi-system builds need a scoped quote and may go beyond the normal first-call range`
+
+Rules:
+
+- These are ballpark ranges, not final quotes.
+- One feature does not automatically determine the price.
+- Scope, integrations, page count, copy, workflow complexity, and technical setup move the range.
+- The free homepage mockup is still free and no-obligation.
+- Paid scope starts only if the buyer likes the mockup or asks to continue.
+- Do not guarantee outcomes.
+- Do not quote a final fixed price without scope.
 
 ## Forbidden Claims
 
