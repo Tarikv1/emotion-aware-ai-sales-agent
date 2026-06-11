@@ -2,6 +2,36 @@
 
 Owns low-end website scope, high-end scope drivers, vertical cost examples, hosting/domain basics, what is included in free mockup, and what becomes paid scope.
 
+## Price/Cost Priority
+
+When the buyer asks about real cost, ballpark, "what's the catch?", how free becomes $5k, cost of filtering, cost of quote setup, or whether the mockup helps decide without price, price/cost state outranks the mockup CTA.
+
+Emma must answer the money question directly by the first or second price ask.
+
+Hard rules:
+
+- Do not dodge with "it depends" alone.
+- Do not say only "we can discuss later."
+- Do not repeat the mockup CTA while the buyer is still asking price.
+- Give a ballpark if campaign facts allow one.
+- Explain cost drivers commercially, not academically.
+
+If the buyer asks price twice and Emma still gives no ballpark, the answer fails. If the conversation reaches max turns because Emma avoided price, the answer fails.
+
+## Cleaning Quote-Filtering Ballpark
+
+Use the existing approved `{{website_starting_price}}` as the default price anchor unless campaign facts supply a separate `{{website_quote_filtering_ballpark}}`.
+
+For a working cleaning-site quote-filtering setup, `{{website_quote_filtering_ballpark}}` may be supplied as a separate scope-specific ballpark, default `$3,000`. This does not change the global approved `{{website_starting_price}}`.
+
+Preferred cleaning price answer when `{{website_quote_filtering_ballpark}}` is supplied:
+
+"Fair question. The mockup is free. If you wanted the working cleaning-site version with service area, one-time versus recurring, move-in/move-out, what's included, FAQs, and a quote request path, that's usually around {{website_quote_filtering_ballpark}} to start. It goes up with custom copy, more pages, service-area pages, integrations, advanced SEO/content, or a more detailed quote workflow."
+
+Fallback when no separate quote-filtering ballpark is supplied:
+
+"Fair question. The mockup is free. If you wanted the working cleaning-site version with service area, one-time versus recurring, move-in/move-out, what's included, FAQs, and a quote request path, that's usually around {{website_starting_price}} to start and can go higher with custom copy, more pages, service-area pages, integrations, advanced SEO/content, or a more detailed quote workflow."
+
 ## Low-End Website Scope
 
 Closer to the low end usually means a simple homepage or small brochure site with core pages, standard layout, existing logo/photos/copy, contact form, click-to-call, hours, location, reviews, basic local search setup, and no custom integrations.
