@@ -1,0 +1,52 @@
+{
+  "package_id": "ELEVENLABS-036-natural-sales-scenarios",
+  "provider": "elevenlabs",
+  "source_of_truth": "repo",
+  "dashboard_role": "managed runtime and dashboard simulation test surface",
+  "status": "natural-sales-scenarios-test-pack-ready",
+  "live_provider_calls_made": false,
+  "private_customer_data_used": false,
+  "api_key_required_for_generation": false,
+  "dashboard_manual_changes_source_of_truth": false,
+  "knowledge_base_docs": [],
+  "baseline_tests": [
+    "runtime/providers/elevenlabs_agents/tests/web_design_natural_sales_scenarios_tests.json"
+  ],
+  "upload_intent": {
+    "current_mode": "repo-driven ElevenLabs API simulation test creation",
+    "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+    "campaign_role": "Atlas Web Studio natural sales behavior, pricing, feature-scope, email, disqualification, and goodbye stress check",
+    "dynamic_variables_required": true,
+    "test_type": "simulation",
+    "simulated_user_model": "gemini-2.5-flash",
+    "evaluation_model": "gemini-2.5-flash",
+    "target_test_folder_name": "ELEVENLABS-036-natural-sales-scenarios",
+    "knowledge_base_upload_required": false
+  },
+  "test_design": {
+    "scenario_generation": "deterministic synthetic fixtures, not randomized generation",
+    "primary_risk": "the agent may sound scripted, miss the sales outcome, overprice simple requests, mishandle confirmation, or reopen locked and terminal calls",
+    "covered_call_moments": [
+      "spoken email confirmation",
+      "email plus free and no-callback concern",
+      "future pricing without overpricing",
+      "simple scheduling request versus live integration",
+      "CRM/payment capability before cost",
+      "custom dashboard scoped separately",
+      "free mockup visual boundary",
+      "next-step questions without CTA fatigue",
+      "guarantee requirement disqualification",
+      "goodbye after completed outcome"
+    ],
+    "production_green_claimed": false
+  },
+  "blocked_until_review": [
+    "running simulations without explicit operator request",
+    "treating created tests as proof of real phone-call performance",
+    "uploading private customer emails",
+    "uploading private transcripts",
+    "using customer audio",
+    "production customer calls",
+    "claiming natural-sales readiness before live simulation run and human transcript review"
+  ]
+}
