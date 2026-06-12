@@ -21,6 +21,7 @@ ANALYSIS_SETUP = AGENT_ROOT / "analysis" / "atlas_web_studio_analysis_setup.md"
 HUMAN_TESTS = AGENT_ROOT / "tests" / "web_design_human_phone_naturalness_tests.json"
 DYNAMIC_DEFAULTS = AGENT_ROOT / "variables" / "mikes_kitchen_dynamic_variable_defaults.json"
 ACTIVE_MANIFEST = AGENT_ROOT / "manifests" / "web_design_sales_spine_compression.package.json"
+README = AGENT_ROOT / "README.md"
 
 CHECKPOINT_ID = "ELEVENLABS-034-human-phone-naturalness"
 
@@ -38,6 +39,8 @@ TEST_IDS = (
     "sim_034_crm_payment_integration_range",
     "sim_034_advanced_seo_pages_range",
     "sim_034_custom_portal_scoped_quote",
+    "sim_034_mockup_advanced_feature_placeholder",
+    "sim_034_specialize_phrase_allowed_when_mechanism_led",
 )
 
 ANALYSIS_MARKERS = (
@@ -47,13 +50,15 @@ ANALYSIS_MARKERS = (
     "terminal \"Take care\"",
 )
 
-STALE_SCRIPT_MARKERS = (
+WEAK_HEADLINE_PHRASES = (
     "Great to connect",
     "complimentary",
     "professional homepage",
     "enhance your online presence",
     "visual representation",
-    "We specialize in",
+    "We specialize",
+    "fresh perspective",
+    "potential design/layout",
 )
 
 
@@ -95,7 +100,7 @@ def assert_tests() -> None:
     payload = read_json(HUMAN_TESTS)
     assert_condition(payload.get("package_id") == CHECKPOINT_ID, "034 test package_id mismatch")
     tests = payload.get("tests")
-    assert_condition(isinstance(tests, list) and len(tests) == 13, "034 tests must contain thirteen simulations")
+    assert_condition(isinstance(tests, list) and len(tests) == 15, "034 tests must contain fifteen simulations")
     ids = {str(test.get("test_id")) for test in tests if isinstance(test, dict)}
     for test_id in TEST_IDS:
         assert_condition(test_id in ids, f"Missing 034 test: {test_id}")
@@ -105,10 +110,8 @@ def assert_tests() -> None:
         text,
         (
             "FreshNest Cleaning",
-            "service area",
-            "one-time versus recurring",
-            "move-in/move-out",
-            "custom copy",
+            "closest relevant complexity range",
+            "one or two relevant drivers",
             "Yeah, exactly. I can send it over - best email?",
             "be careful with anyone selling",
             "I've got enough for the first version. Best email?",
@@ -120,19 +123,30 @@ def assert_tests() -> None:
             "professional homepage",
             "enhance your online presence",
             "visual representation",
-            "We specialize in",
+            "We specialize",
+            "fresh perspective",
+            "potential design/layout",
+            "generic opening/pitch/headline",
             "sim_034_quote_filtering_range_not_fixed_price",
             "sim_034_premium_one_page_range",
             "sim_034_booking_integration_range",
             "sim_034_crm_payment_integration_range",
             "sim_034_advanced_seo_pages_range",
             "sim_034_custom_portal_scoped_quote",
+            "sim_034_mockup_advanced_feature_placeholder",
+            "sim_034_specialize_phrase_allowed_when_mechanism_led",
             "{{website_light_feature_range}}",
             "{{website_workflow_content_range}}",
             "{{website_integration_heavy_range}}",
             "exactly $3,000",
             "dumps the whole menu",
             "scoped pricing",
+            "we don't do filtering",
+            "capability first",
+            "Are you still there?",
+            "Is there anything else I can help you with today?",
+            "I'm not saying your current site is broken",
+            "not working functionality",
         ),
     )
 
@@ -203,6 +217,22 @@ def assert_prompt_and_kb() -> None:
     )
     assert_condition("Website Complexity Ballpark Menu" in prompt, "prompt missing Website Complexity Ballpark Menu rule")
     assert_condition("Feature-Complexity Ballpark Policy" in price, "price KB missing Feature-Complexity Ballpark Policy")
+    combined_policy = "\n".join((prompt, output, price, offer, close, objection))
+    assert_contains(
+        "contextual weak-phrase policy",
+        combined_policy,
+        (
+            "weak headline phrases, not forbidden words",
+            "support after a concrete mechanism",
+            "precise mockup-scope explanation",
+            "We specialize in creating professional homepages to improve your online presence.",
+            "We work with local service businesses on pages that make quote requests, service areas, reviews, and call paths easier to judge.",
+            "The mockup is a visual representation, not a working site.",
+            "That can improve the online presence, but the mechanism is the booking/filter path.",
+        ),
+    )
+    for marker in WEAK_HEADLINE_PHRASES:
+        assert_condition(marker in combined_policy, f"contextual weak-phrase policy missing marker: {marker}")
     assert_contains(
         "price KB offer-facts boundary",
         price,
@@ -212,6 +242,56 @@ def assert_prompt_and_kb() -> None:
             "Give one relevant range only",
             "Do not read the whole pricing menu unless the buyer asks for a breakdown",
             "Do not give a final fixed quote for custom work",
+        ),
+    )
+    assert_contains(
+        "custom portal scoped pricing",
+        combined_policy,
+        (
+            "That's more of a custom build, so I wouldn't price it cleanly on a quick call.",
+            "secure login",
+            "user accounts",
+            "database",
+            "permissions",
+            "cloud setup",
+            "show where the login or portal entry would sit",
+            "not working functionality",
+            "Mention outside the normal {{website_premium_price_anchor}} range only if buyer asks",
+            "Do not force \"beyond {{website_premium_price_anchor}}\" in every portal/dashboard answer",
+        ),
+    )
+    assert_contains(
+        "advanced feature mockup scope",
+        combined_policy,
+        (
+            "The free mockup is visual, not a live website",
+            "It can show where that would sit on the homepage, but it would not be working functionality in the free mockup.",
+            "It can show where the login or portal entry would sit, but the working portal would be scoped separately.",
+            "working login, database, CRM/payment integration, live calendar, portal, dashboard, booking engine, ecommerce",
+        ),
+    )
+    assert_contains(
+        "simple vs integrated feature split",
+        combined_policy,
+        (
+            "Do not say \"we don't do filtering.\"",
+            "Simple quote filtering is usually around {{website_light_feature_range}}",
+            "Live calendar booking or a booking-system integration can move closer to {{website_workflow_content_range}} or {{website_integration_heavy_range}}",
+            "It can, depending on whether it's a simple form handoff or a real integration.",
+            "Fail if Emma jumps into a price range before answering the capability question clearly.",
+        ),
+    )
+    assert_contains(
+        "first-call outcome and existing-website guards",
+        combined_policy,
+        (
+            "one low-friction move toward the free mockup",
+            "Do not force a booking",
+            "I can at least send the homepage mockup so you can see the direction.",
+            "I'm not saying your current site is broken. The mockup is just a comparison point.",
+            "Do not imply the current site is bad without approved evidence.",
+            "Are you still there?",
+            "Is there anything else I can help you with today?",
         ),
     )
     preferred = section_text(output, "No Robotic Phrases")
@@ -233,16 +313,14 @@ def assert_prompt_and_kb() -> None:
             "Gotcha - here's the concrete version.",
         ),
     )
-    for marker in STALE_SCRIPT_MARKERS:
-        assert_condition(marker in output, f"output rules missing stale-script forbidden marker: {marker}")
     approved_sections = "\n".join(
         section_text(output, heading)
         for heading in ("No Robotic Phrases", "Natural Closing Lines")
     )
-    for marker in STALE_SCRIPT_MARKERS:
+    for marker in WEAK_HEADLINE_PHRASES:
         assert_condition(
             marker not in approved_sections,
-            f"stale-script marker appears in approved/preferred output example: {marker}",
+            f"weak headline marker appears in unrestricted approved/preferred output example: {marker}",
         )
 
 
@@ -269,6 +347,32 @@ def assert_analysis() -> None:
             "I already have {{business_name}} and the business type",
             "You're welcome. Have a great day",
             "mechanically starts nearly every turn with the same transition",
+            "capability-first answer before price",
+            "we don't do filtering",
+            "forces beyond $5k when buyer did not ask about normal/high-end range",
+            "Are you still there?",
+            "Is there anything else I can help you with today?",
+            "non-terminal information answer",
+            "current site is broken",
+            "not working functionality",
+        ),
+    )
+
+
+def assert_operator_notes() -> None:
+    readme = read_text(README)
+    assert_contains(
+        "dashboard drift operator note",
+        readme,
+        (
+            "Dashboard Drift Check",
+            "ElevenLabs system prompt",
+            "LLM Override",
+            "voice/style fields",
+            "stale old KB attachments",
+            "old generated upload package",
+            "old test folder using stale agent version",
+            "Do not upload this note as active KB",
         ),
     )
 
@@ -305,6 +409,7 @@ def main() -> None:
     assert_tests()
     assert_prompt_and_kb()
     assert_analysis()
+    assert_operator_notes()
     assert_dynamic_defaults()
     assert_manifest_unchanged()
     print(
@@ -315,7 +420,7 @@ def main() -> None:
                 "human_phone_call_standard": True,
                 "residue_loop_guard": True,
                 "analysis_criteria_count": len(read_json(ANALYSIS_CONFIG)["success_evaluation_criteria"]),
-                "focused_test_count": 13,
+                "focused_test_count": 15,
                 "stale_script_leakage_guard": True,
                 "complexity_band_pricing_guard": True,
                 "active_upload_manifest_changed": False,

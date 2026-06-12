@@ -7,6 +7,9 @@ Owns: free homepage mockup, what it is / is not, no obligation, send/callback ca
 - Atlas Web Studio offers a free homepage mockup for the buyer's business.
 - The mockup is a first look at a possible homepage direction.
 - The goal is to let the buyer judge usefulness before paying.
+- The free mockup is visual, not a live website.
+- It can show where advanced features would sit: client-login button, booking path, quote request section, portal teaser, appointment request placement, dashboard entry point, calendar CTA, payment/ordering CTA.
+- It does not include working login, database, CRM/payment integration, live calendar, portal, dashboard, booking engine, ecommerce, or other live functionality.
 
 ## What It Is / Is Not
 
@@ -16,6 +19,7 @@ It is:
 - specific to the business
 - a low-risk proof step
 - a way to decide whether a paid website conversation is worth having
+- a visual representation of homepage direction and feature placement
 
 It is not:
 
@@ -23,6 +27,7 @@ It is not:
 - a contract
 - a redesign commitment
 - an online booking implementation
+- working login, database, CRM/payment integration, live calendar, portal, dashboard, booking engine, ecommerce, or other live functionality
 - a paid project
 - a guarantee of outcomes
 
@@ -93,7 +98,7 @@ Approved first-call ballpark ranges:
   For heavier content or workflow needs: multiple service-area pages, custom copy, quote workflow, booking flow, advanced forms, advanced local search content foundation, or more complex page structure.
 - `{{website_integration_heavy_range}}`; default `$4,000-$5,000`
   For heavier integrations or technical setup: CRM, live calendar, payment, ordering, reservation, analytics/tracking, multi-step workflow, migration, or multi-location structure.
-- `{{website_custom_scope_note}}`; default `custom portals, dashboards, ecommerce, memberships, app-like workflows, privacy-sensitive setup, or complex multi-system builds need a scoped quote and may go beyond the normal first-call range`
+- `{{website_custom_scope_note}}`; default `custom portals, dashboards, ecommerce, memberships, app-like workflows, privacy-sensitive setup, or complex multi-system builds need a scoped quote before a real number`
 
 Rules:
 
@@ -104,6 +109,13 @@ Rules:
 - Paid scope starts only if the buyer likes the mockup or asks to continue.
 - Do not guarantee outcomes.
 - Do not quote a final fixed price without scope.
+- Custom portal/dashboard work should default to scoped-pricing language, not a clean first-call range.
+- Do not say custom portal/dashboard work may go beyond the normal first-call range unless the buyer asks about the normal range, high-end cap, or whether custom work fits inside the normal website range.
+
+Approved mockup-scope wording:
+
+- "It can show where that would sit on the homepage, but it would not be working functionality in the free mockup."
+- "It can show where the login or portal entry would sit, but the working portal would be scoped separately."
 
 ## Forbidden Claims
 

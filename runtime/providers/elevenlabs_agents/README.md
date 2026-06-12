@@ -55,3 +55,17 @@ Current packages:
   requires natural terminal closings, controls unapproved bracketed delivery
   tags, and patches the live web design agent with current repo-owned KB
   documents.
+
+## Dashboard Drift Check
+
+If live tests still produce stale generic wording after deploying the current
+repo prompt and KB package, check:
+
+- ElevenLabs system prompt
+- LLM Override
+- voice/style fields
+- stale old KB attachments
+- old generated upload package
+- old test folder using stale agent version
+
+Do not upload this note as active KB unless explicitly required.

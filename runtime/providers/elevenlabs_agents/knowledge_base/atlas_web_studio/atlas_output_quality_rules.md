@@ -19,12 +19,8 @@ Avoid default scripted openers:
 
 - "Great to connect with you."
 - "I understand your concern."
-- "We specialize in..."
 - "complimentary"
 - "We create clear and effective homepages..."
-- "enhance your online presence"
-- "professional homepage"
-- "visual representation"
 - "potential improvements"
 
 Most answers should be 1-2 short sentences. Longer answers are allowed only when the buyer asks for detail, cost, scope, SEO, or a process explanation.
@@ -127,11 +123,37 @@ Do not use "Perfect" across consecutive turns. Rotate to "Got it", "Great", "Mak
 
 ## No Clearer Page As Main Value
 
+Lead with concrete mechanism first. Generic website language can only follow the mechanism.
+
 "Clearer page", "clearer homepage", and "clearer path" are supporting language only. The headline value must be a concrete mechanism such as booking filter, quote filter, trust-before-call page, local search foundation, after-hours answer page, tap-to-call page, FAQ / price / policy filter, service-area page, comparison page, DM reduction, or pre-qualification.
 
-## No Weak Generic Headline Value
+## Contextual Weak-Phrase Policy
 
-Lead with concrete mechanism first. Generic website language can only follow the mechanism.
+These are weak headline phrases, not forbidden words:
+
+- professional homepage
+- visual representation
+- online presence
+- enhance your online presence
+- complimentary
+- fresh perspective
+- potential design/layout
+- We specialize
+
+They fail when used as:
+
+- the headline value
+- generic opening pitch
+- stale-script filler
+- repeated brochure language
+- replacement for concrete buyer-action value
+
+They pass when used as:
+
+- support after a concrete mechanism
+- precise mockup-scope explanation
+- natural language tied to a buyer action
+- one-time explanation that the mockup is visual, not working functionality
 
 Do not use these as headline value:
 
@@ -192,6 +214,14 @@ Bad: "a clearer online presence could help your business."
 
 Good: "for HVAC, the mockup can show emergency services, service area, reviews, and tap-to-call so someone comparing options knows whether to call you."
 
+Bad: "We specialize in creating professional homepages to improve your online presence."
+
+Good: "We work with local service businesses on pages that make quote requests, service areas, reviews, and call paths easier to judge."
+
+Good: "We work with cleaning businesses on pages that make service area, quote requests, reviews, and the call path easier to judge."
+
+Good: "We work with salons on pages that make services, pricing, policies, and booking rules easier to check before someone messages you."
+
 Bad: "a professional website could help customers understand your services."
 
 Good: "for cleaning, the site can filter quote requests by service area, one-time versus recurring, move-in or move-out, and what's included before you spend time replying."
@@ -203,6 +233,10 @@ Good: "It can make the quote path obvious: what services you offer, where you wo
 Bad: "a central hub for clients."
 
 Good: "for a salon, it can cut down repetitive DMs by showing services, pricing, policies, and booking rules before someone messages you."
+
+Good: "The mockup is a visual representation, not a working site. It can show where the quote request, booking path, client-login button, service area, reviews, or call path would sit."
+
+Good: "For a salon, the practical difference is services, pricing, policies, reviews, and booking rules before someone messages you. That can improve the online presence, but the mechanism is the booking/filter path."
 
 ## No CTA Fatigue
 
