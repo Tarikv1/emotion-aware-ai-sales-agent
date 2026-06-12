@@ -1,0 +1,56 @@
+{
+  "operation": "create-tests",
+  "provider": "elevenlabs",
+  "package_id": "ELEVENLABS-035-procedure-natural-sales-simulation-tests",
+  "target_folder_name": "ELEVENLABS-035-procedure-natural-sales",
+  "folder_id": "tfld_3001ktwv88kdfgha6ss77hm7vnpm",
+  "folder_created": true,
+  "moved_count": 10,
+  "live_provider_calls_made": true,
+  "simulations_run": false,
+  "agent_prompt_or_kb_changed": false,
+  "active_upload_manifest_changed": false,
+  "created_tests": [
+    {
+      "test_id": "sim_035_email_confirmation_spoken_email_two_step",
+      "elevenlabs_test_id": "test_0201ktwv85vqfbdaqw609rwy9d7s"
+    },
+    {
+      "test_id": "sim_035_email_process_risk_overlap",
+      "elevenlabs_test_id": "test_2801ktwv863qfrhat33shec6vfp6"
+    },
+    {
+      "test_id": "sim_035_future_pricing_no_overpricing",
+      "elevenlabs_test_id": "test_1701ktwv86bhfbp8x7qsj6r677t3"
+    },
+    {
+      "test_id": "sim_035_appointment_scheduling_simple_vs_integrated",
+      "elevenlabs_test_id": "test_6801ktwv86kae3hvw22c5nfgc1sd"
+    },
+    {
+      "test_id": "sim_035_crm_payment_capability_first",
+      "elevenlabs_test_id": "test_3201ktwv872kfwn9xjy1bxmphd39"
+    },
+    {
+      "test_id": "sim_035_custom_portal_dashboard_scoped_work",
+      "elevenlabs_test_id": "test_1201ktwv879sf15rhfjpe5tm8qzw"
+    },
+    {
+      "test_id": "sim_035_mockup_scope_visual_placeholder",
+      "elevenlabs_test_id": "test_5601ktwv87gcfwgrpmbkh9sg9dr2"
+    },
+    {
+      "test_id": "sim_035_process_risk_chain_no_cta_fatigue",
+      "elevenlabs_test_id": "test_6301ktwv87q1fz2vq22ax04t11nj"
+    },
+    {
+      "test_id": "sim_035_guarantee_only_disqualification_lock",
+      "elevenlabs_test_id": "test_0901ktwv87ybfd1rpjf9tdyk75yx"
+    },
+    {
+      "test_id": "sim_035_terminal_close_no_loop",
+      "elevenlabs_test_id": "test_9701ktwv885rf5wr546ytf5czqb7"
+    }
+  ],
+  "skipped_tests": []
+}
