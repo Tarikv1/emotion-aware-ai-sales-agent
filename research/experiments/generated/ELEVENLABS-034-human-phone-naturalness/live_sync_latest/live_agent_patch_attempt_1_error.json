@@ -1,0 +1,8 @@
+{
+  "operation": "patch-agent",
+  "live_provider_calls_made": true,
+  "status": "rejected_before_apply",
+  "status_code": 400,
+  "reason": "ElevenLabs rejected verbose evaluator prompt over 2000 characters; retry used compact live evaluator rendering.",
+  "provider_error_summary": "Invalid platform settings: String should have at most 2000 characters at evaluation.criteria.7.conversation_goal_prompt"
+}

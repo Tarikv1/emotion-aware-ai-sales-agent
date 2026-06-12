@@ -1,0 +1,26 @@
+{
+  "provider": "elevenlabs",
+  "mode": "live",
+  "api_key_env_var": "ELEVENLABS_API_KEY",
+  "live_provider_calls_made": true,
+  "requests": [
+    {
+      "request_id": "patch_agent::latest_repo_sync",
+      "method": "PATCH",
+      "url": "https://api.elevenlabs.io/v1/convai/agents/agent_7801kt0g32zxf4f8x5zkykj7syty",
+      "content_type": "application/json",
+      "patch_payload_path": "research/experiments/generated/ELEVENLABS-034-human-phone-naturalness/live_sync_latest/live_agent_patch_payload.json",
+      "syncs": [
+        "system_prompt",
+        "first_message",
+        "dynamic_variable_placeholders",
+        "knowledge_base",
+        "analysis_evaluation",
+        "analysis_data_collection"
+      ],
+      "knowledge_base_document_count": 17,
+      "analysis_criteria_count": 30,
+      "data_collection_field_count": 15
+    }
+  ]
+}

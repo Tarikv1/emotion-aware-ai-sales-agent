@@ -1,0 +1,212 @@
+{
+  "checkpoint_id": "ELEVENLABS-002-agent-automation",
+  "provider": "elevenlabs",
+  "mode": "live",
+  "api_key_env_var": "ELEVENLABS_API_KEY",
+  "live_provider_calls_made": true,
+  "requests": [
+    {
+      "request_id": "upload_knowledge_base::universal_sales_core_summary",
+      "method": "POST",
+      "url": "https://api.elevenlabs.io/v1/convai/knowledge-base/file",
+      "content_type": "multipart/form-data",
+      "fields": {
+        "file": "runtime/providers/elevenlabs_agents/knowledge_base/universal_sales_core_summary.md",
+        "name": "universal_sales_core_summary.md"
+      },
+      "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/create-from-file"
+    },
+    {
+      "request_id": "upload_knowledge_base::buyer_moves",
+      "method": "POST",
+      "url": "https://api.elevenlabs.io/v1/convai/knowledge-base/file",
+      "content_type": "multipart/form-data",
+      "fields": {
+        "file": "runtime/providers/elevenlabs_agents/knowledge_base/universal_sales_categories/buyer_moves.md",
+        "name": "buyer_moves.md"
+      },
+      "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/create-from-file"
+    },
+    {
+      "request_id": "upload_knowledge_base::value_and_roi_framing",
+      "method": "POST",
+      "url": "https://api.elevenlabs.io/v1/convai/knowledge-base/file",
+      "content_type": "multipart/form-data",
+      "fields": {
+        "file": "runtime/providers/elevenlabs_agents/knowledge_base/universal_sales_categories/value_and_roi_framing.md",
+        "name": "value_and_roi_framing.md"
+      },
+      "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/create-from-file"
+    },
+    {
+      "request_id": "upload_knowledge_base::objection_status_quo_and_competition",
+      "method": "POST",
+      "url": "https://api.elevenlabs.io/v1/convai/knowledge-base/file",
+      "content_type": "multipart/form-data",
+      "fields": {
+        "file": "runtime/providers/elevenlabs_agents/knowledge_base/universal_sales_categories/objection_status_quo_and_competition.md",
+        "name": "objection_status_quo_and_competition.md"
+      },
+      "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/create-from-file"
+    },
+    {
+      "request_id": "upload_knowledge_base::trust_and_risk_repair",
+      "method": "POST",
+      "url": "https://api.elevenlabs.io/v1/convai/knowledge-base/file",
+      "content_type": "multipart/form-data",
+      "fields": {
+        "file": "runtime/providers/elevenlabs_agents/knowledge_base/universal_sales_categories/trust_and_risk_repair.md",
+        "name": "trust_and_risk_repair.md"
+      },
+      "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/create-from-file"
+    },
+    {
+      "request_id": "upload_knowledge_base::conversation_repair",
+      "method": "POST",
+      "url": "https://api.elevenlabs.io/v1/convai/knowledge-base/file",
+      "content_type": "multipart/form-data",
+      "fields": {
+        "file": "runtime/providers/elevenlabs_agents/knowledge_base/universal_sales_categories/conversation_repair.md",
+        "name": "conversation_repair.md"
+      },
+      "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/create-from-file"
+    },
+    {
+      "request_id": "upload_knowledge_base::next_step_policy",
+      "method": "POST",
+      "url": "https://api.elevenlabs.io/v1/convai/knowledge-base/file",
+      "content_type": "multipart/form-data",
+      "fields": {
+        "file": "runtime/providers/elevenlabs_agents/knowledge_base/universal_sales_categories/next_step_policy.md",
+        "name": "next_step_policy.md"
+      },
+      "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/create-from-file"
+    },
+    {
+      "request_id": "upload_knowledge_base::disqualification_policy",
+      "method": "POST",
+      "url": "https://api.elevenlabs.io/v1/convai/knowledge-base/file",
+      "content_type": "multipart/form-data",
+      "fields": {
+        "file": "runtime/providers/elevenlabs_agents/knowledge_base/universal_sales_categories/disqualification_policy.md",
+        "name": "disqualification_policy.md"
+      },
+      "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/create-from-file"
+    },
+    {
+      "request_id": "upload_knowledge_base::ethical_persuasion_boundaries",
+      "method": "POST",
+      "url": "https://api.elevenlabs.io/v1/convai/knowledge-base/file",
+      "content_type": "multipart/form-data",
+      "fields": {
+        "file": "runtime/providers/elevenlabs_agents/knowledge_base/universal_sales_categories/ethical_persuasion_boundaries.md",
+        "name": "ethical_persuasion_boundaries.md"
+      },
+      "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/create-from-file"
+    },
+    {
+      "request_id": "upload_knowledge_base::call_quality_rubrics",
+      "method": "POST",
+      "url": "https://api.elevenlabs.io/v1/convai/knowledge-base/file",
+      "content_type": "multipart/form-data",
+      "fields": {
+        "file": "runtime/providers/elevenlabs_agents/knowledge_base/universal_sales_categories/call_quality_rubrics.md",
+        "name": "call_quality_rubrics.md"
+      },
+      "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/create-from-file"
+    },
+    {
+      "request_id": "upload_knowledge_base::atlas_offer_facts",
+      "method": "POST",
+      "url": "https://api.elevenlabs.io/v1/convai/knowledge-base/file",
+      "content_type": "multipart/form-data",
+      "fields": {
+        "file": "runtime/providers/elevenlabs_agents/knowledge_base/atlas_web_studio/atlas_offer_facts.md",
+        "name": "atlas_offer_facts.md"
+      },
+      "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/create-from-file"
+    },
+    {
+      "request_id": "upload_knowledge_base::atlas_value_mechanisms",
+      "method": "POST",
+      "url": "https://api.elevenlabs.io/v1/convai/knowledge-base/file",
+      "content_type": "multipart/form-data",
+      "fields": {
+        "file": "runtime/providers/elevenlabs_agents/knowledge_base/atlas_web_studio/atlas_value_mechanisms.md",
+        "name": "atlas_value_mechanisms.md"
+      },
+      "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/create-from-file"
+    },
+    {
+      "request_id": "upload_knowledge_base::atlas_vertical_playbooks",
+      "method": "POST",
+      "url": "https://api.elevenlabs.io/v1/convai/knowledge-base/file",
+      "content_type": "multipart/form-data",
+      "fields": {
+        "file": "runtime/providers/elevenlabs_agents/knowledge_base/atlas_web_studio/atlas_vertical_playbooks.md",
+        "name": "atlas_vertical_playbooks.md"
+      },
+      "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/create-from-file"
+    },
+    {
+      "request_id": "upload_knowledge_base::atlas_objection_playbook",
+      "method": "POST",
+      "url": "https://api.elevenlabs.io/v1/convai/knowledge-base/file",
+      "content_type": "multipart/form-data",
+      "fields": {
+        "file": "runtime/providers/elevenlabs_agents/knowledge_base/atlas_web_studio/atlas_objection_playbook.md",
+        "name": "atlas_objection_playbook.md"
+      },
+      "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/create-from-file"
+    },
+    {
+      "request_id": "upload_knowledge_base::atlas_price_scope_cost_drivers",
+      "method": "POST",
+      "url": "https://api.elevenlabs.io/v1/convai/knowledge-base/file",
+      "content_type": "multipart/form-data",
+      "fields": {
+        "file": "runtime/providers/elevenlabs_agents/knowledge_base/atlas_web_studio/atlas_price_scope_cost_drivers.md",
+        "name": "atlas_price_scope_cost_drivers.md"
+      },
+      "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/create-from-file"
+    },
+    {
+      "request_id": "upload_knowledge_base::atlas_close_and_followup_playbook",
+      "method": "POST",
+      "url": "https://api.elevenlabs.io/v1/convai/knowledge-base/file",
+      "content_type": "multipart/form-data",
+      "fields": {
+        "file": "runtime/providers/elevenlabs_agents/knowledge_base/atlas_web_studio/atlas_close_and_followup_playbook.md",
+        "name": "atlas_close_and_followup_playbook.md"
+      },
+      "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/create-from-file"
+    },
+    {
+      "request_id": "upload_knowledge_base::atlas_output_quality_rules",
+      "method": "POST",
+      "url": "https://api.elevenlabs.io/v1/convai/knowledge-base/file",
+      "content_type": "multipart/form-data",
+      "fields": {
+        "file": "runtime/providers/elevenlabs_agents/knowledge_base/atlas_web_studio/atlas_output_quality_rules.md",
+        "name": "atlas_output_quality_rules.md"
+      },
+      "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/create-from-file"
+    },
+    {
+      "request_id": "run_tests::{agent_id}",
+      "method": "POST",
+      "url": "https://api.elevenlabs.io/v1/convai/agents/{agent_id}/run-tests",
+      "content_type": "application/json",
+      "body_template": {
+        "tests": [
+          {
+            "test_id": "{created_test_id}"
+          }
+        ],
+        "repeat_count": 1
+      },
+      "requires_created_test_ids": true,
+      "docs_url": "https://elevenlabs.io/docs/eleven-agents/api-reference/tests/run-tests"
+    }
+  ]
+}
