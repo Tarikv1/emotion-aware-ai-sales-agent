@@ -249,7 +249,7 @@ def assert_prompt_and_kb() -> None:
         combined_policy,
         (
             "Yes, we can build that.",
-            "I wouldn't price it cleanly on a quick call",
+            "That needs a proper scope before I give you a real number.",
             "secure login",
             "user accounts",
             "database",
@@ -257,7 +257,7 @@ def assert_prompt_and_kb() -> None:
             "cloud setup",
             "show where the login or portal entry would sit",
             "not working functionality",
-            "Mention outside the normal {{website_premium_price_anchor}} range only if buyer asks",
+            "Do not volunteer the {{website_starting_price}}-{{website_premium_price_anchor}} range",
             "Do not force \"beyond {{website_premium_price_anchor}}\" in every portal/dashboard answer",
         ),
     )
@@ -278,7 +278,7 @@ def assert_prompt_and_kb() -> None:
             "Do not say \"we don't do filtering.\"",
             "Simple quote filtering is usually around {{website_light_feature_range}}",
             "Live calendar booking or a booking-system integration can move closer to {{website_workflow_content_range}} or {{website_integration_heavy_range}}",
-            "It can, depending on whether it's a simple form handoff or a real integration.",
+            "Yes, we can build that. The exact setup depends on whether it's a simple form handoff or a real integration.",
             "Fail if Emma jumps into a price range before answering the capability question clearly.",
         ),
     )
@@ -287,7 +287,7 @@ def assert_prompt_and_kb() -> None:
         combined_policy,
         (
             "one low-friction move toward the free mockup",
-            "Do not force a booking",
+            "Do not force booking",
             "I can at least send the homepage mockup so you can see the direction.",
             "I'm not saying your current site is broken. The mockup is just a comparison point.",
             "Do not imply the current site is bad without approved evidence.",
@@ -348,9 +348,9 @@ def assert_analysis() -> None:
             "I already have {{business_name}} and the business type",
             "You're welcome. Have a great day",
             "mechanically starts nearly every turn with the same transition",
-            "capability-first answer before price",
+            "jumps into price before answering a capability question clearly",
             "we don't do filtering",
-            "forces beyond $5k when buyer did not ask about normal/high-end range",
+            "forces beyond $5k language when the buyer did not ask about the normal/high-end range",
             "Are you still there?",
             "Is there anything else I can help you with today?",
             "non-terminal information answer",

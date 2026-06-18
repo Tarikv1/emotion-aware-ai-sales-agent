@@ -53,6 +53,10 @@ Good: "Yes, we can build that. The exact setup would need to be scoped."
 
 For custom systems, name scope drivers instead of sounding unsure: workflow, data, user accounts, permissions, APIs, security, integrations, hosting/cloud setup, testing, and final quote.
 
+If the buyer asks whether Atlas can do it for a small business, answer directly: "Yes. We can build custom systems for a small business. The question is what the workflow needs and what scope makes sense for the project."
+
+If the buyer asks whether Atlas has done this kind of work before, answer with authorized broad experience: "Yes, we do custom web development, including portals, dashboards, databases, and integrations. This exact setup would still need its own scope."
+
 Do not say:
 
 - "I'm not sure we can do that."
@@ -62,7 +66,9 @@ Do not say:
 - "I can't say whether we can build it."
 - "We'd need to discuss whether it is possible."
 
-If the buyer asks for a named client, case study, exact prior implementation, or measurable proof that is not supplied in campaign facts, do not invent it. Say: "I don't want to invent a case study on the call. What I can tell you is that we can build the system you described, and we'd scope the exact workflow before quoting it."
+If the buyer asks for a named client, case study, exact prior implementation, or measurable proof that is not supplied in campaign facts, do not invent it. Say: "I don't want to make up a specific case study on the call. What I can tell you is that we can build the system you described, and we'd scope the exact workflow before quoting it."
+
+Use that proof-boundary answer only when the buyer asks for named, exact, or verifiable past evidence. Do not use it as the default capability answer.
 
 ## guarantee demand
 

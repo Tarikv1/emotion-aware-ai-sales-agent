@@ -1,0 +1,210 @@
+{
+  "package_id": "ELEVENLABS-037-confident-capability-control",
+  "provider": "elevenlabs",
+  "agent_package": "atlas_web_studio_web_design",
+  "source_of_truth": "repo",
+  "test_type": "simulation",
+  "purpose": "Focused repo-side simulations for confident Atlas custom capability, proof boundaries, price timing, natural speech, terminal control, and exact email normalization.",
+  "dynamic_variables": {
+    "agent_name": "Emma",
+    "company_name": "Atlas Web Studio",
+    "campaign_name": "atlas-web-studio-confident-capability-control",
+    "caller_identity": "Emma from Atlas Web Studio",
+    "offer": "free homepage mockup",
+    "offer_type": "free homepage mockup",
+    "website_starting_price": "$1,000",
+    "website_premium_price_anchor": "$5,000",
+    "website_basic_site_range": "$1,000-$2,000",
+    "website_light_feature_range": "$2,000-$3,000",
+    "website_workflow_content_range": "$3,000-$4,000",
+    "website_integration_heavy_range": "$4,000-$5,000",
+    "website_custom_scope_note": "customer login areas, dashboards, ecommerce, memberships, app-like workflows, privacy-sensitive setup, or complex multi-system builds need a scoped quote before a real number",
+    "atlas_custom_web_capability": "Atlas Web Studio builds standard websites and advanced custom web systems, including portals, dashboards, authentication, databases, booking, CRM, payments, ecommerce, API integrations, and automation.",
+    "atlas_broad_experience_claim": "Atlas has hands-on experience across website design, custom web development, integrations, and advanced web functionality for businesses.",
+    "atlas_specific_proof_boundary": "Emma may state broad capability and experience confidently, but must not invent named clients, exact historical projects, testimonials, or measurable outcomes.",
+    "source_package_id": "ELEVENLABS-037-confident-capability-control"
+  },
+  "tests": [
+    {
+      "test_id": "sim_037_custom_portal_capability_confident_no_price",
+      "type": "simulation",
+      "simulated_user_model": "gemini-2.5-flash",
+      "evaluation_model": "gemini-2.5-flash",
+      "simulation_max_turns": 8,
+      "simulation_scenario": "The simulated user owns BrightPath Learning Center in Tampa. They ask early: 'Can you build a parent login with invoices and a progress dashboard?' They are not asking price yet. They want to hear whether Atlas can actually build it, not a hesitant caveat or a brochure-site answer.",
+      "success_condition": "The full conversation passes only if Emma starts with a confident yes, such as 'Yes, we can build that,' then briefly names relevant scope components such as user accounts, database, permissions, security, invoice data, cloud setup, or integrations. Emma must not volunteer a price, the $1,000-$5,000 range, beyond-five-thousand language, or a paid scoping-call pitch because the buyer did not ask price. It fails if Emma implies this is only for large companies, says Atlas cannot do it, says she is not sure, gives a clean first-call price, or avoids the capability question.",
+      "dynamic_variables": {
+        "business_name": "BrightPath Learning Center",
+        "business_type": "childcare and tutoring center",
+        "vertical": "education_services",
+        "city": "Tampa",
+        "service_area": "Tampa",
+        "known_website_status": "basic Facebook page only",
+        "known_booking_or_ordering_path": "families call or message about enrollment",
+        "primary_offer_angle": "a homepage showing programs, enrollment path, parent-login placement, and call path",
+        "buyer_temperature": "direct_capability_question",
+        "test_focus": "custom_portal_capability_no_price",
+        "target_outcome": "confident_capability_answer_without_price"
+      }
+    },
+    {
+      "test_id": "sim_037_custom_work_small_business_direct_answer",
+      "type": "simulation",
+      "simulated_user_model": "gemini-2.5-flash",
+      "evaluation_model": "gemini-2.5-flash",
+      "simulation_max_turns": 8,
+      "simulation_scenario": "The simulated user owns Cedar Ridge Glass in Boise and asks: 'Can you actually do that for a small business, or is that only for big companies?' They are testing confidence after hearing about portals and custom workflows.",
+      "success_condition": "The full conversation passes only if Emma directly answers yes and says Atlas can build custom systems for a small business. A strong answer is: 'Yes. We can build custom systems for a small business. The question is what the workflow needs and what scope makes sense.' It fails for an evasive website-foundation answer, repeated custom-scope disclaimers without answering yes/no, unsupported claims that Atlas does not do advanced work for small businesses, or vague defensive language.",
+      "dynamic_variables": {
+        "business_name": "Cedar Ridge Glass",
+        "business_type": "auto glass repair shop",
+        "vertical": "auto_glass",
+        "city": "Boise",
+        "service_area": "Boise",
+        "known_website_status": "no full website known",
+        "known_booking_or_ordering_path": "customers call for windshield repair and mobile service",
+        "primary_offer_angle": "a homepage showing mobile service area, insurance questions, reviews, and tap-to-call",
+        "buyer_temperature": "small_business_capability_check",
+        "test_focus": "small_business_direct_capability_answer",
+        "target_outcome": "direct_yes_without_evasion"
+      }
+    },
+    {
+      "test_id": "sim_037_prior_experience_confident_without_fake_case_study",
+      "type": "simulation",
+      "simulated_user_model": "gemini-2.5-flash",
+      "evaluation_model": "gemini-2.5-flash",
+      "simulation_max_turns": 10,
+      "simulation_scenario": "The simulated user owns Harbor Table Bistro in Portland and asks: 'Have you done this kind of work before?' They are asking about broad custom-development experience, not demanding a named client. If Emma invents a named restaurant or exact result, the test should fail.",
+      "success_condition": "The full conversation passes only if Emma gives a direct, confident broad experience answer, such as saying Atlas does custom web development including portals, dashboards, databases, and integrations, and that this exact setup would still need its own scope. It fails if Emma invents a named client, portfolio link, testimonial, exact historical implementation, numerical result, or claims Atlas built the identical system for a named vertical without campaign facts. It also fails if Emma dodges with only 'we would need to scope it' and never answers the experience question.",
+      "dynamic_variables": {
+        "business_name": "Harbor Table Bistro",
+        "business_type": "restaurant",
+        "vertical": "restaurant",
+        "city": "Portland",
+        "service_area": "Portland",
+        "known_website_status": "Instagram and Google Maps only",
+        "known_booking_or_ordering_path": "customers call for reservations and catering",
+        "primary_offer_angle": "a homepage showing menu highlights, hours, reservation path, catering, and possible ordering placement",
+        "buyer_temperature": "proof_curious",
+        "test_focus": "broad_experience_without_fake_specifics",
+        "target_outcome": "confident_broad_experience_no_fake_case_study"
+      }
+    },
+    {
+      "test_id": "sim_037_jobber_payment_capability_then_price",
+      "type": "simulation",
+      "simulated_user_model": "gemini-2.5-flash",
+      "evaluation_model": "gemini-2.5-flash",
+      "simulation_max_turns": 12,
+      "simulation_scenario": "The simulated user owns Northline HVAC in Omaha. First they ask: 'Can it connect to Jobber and take deposits?' They do not ask price yet. After Emma answers capability, they ask: 'What would the whole project cost if we did that?'",
+      "success_condition": "The full conversation passes only if Emma first gives a confident capability answer and no price: yes, Atlas can build that, with exact setup depending on simple form handoff versus real Jobber and payment integration. Only after the buyer asks cost should Emma say a real Jobber/payment integration likely moves the whole project toward {{website_integration_heavy_range}}, not that the integration is an automatic add-on. Emma should not add {{website_basic_site_range}} and {{website_integration_heavy_range}} together, promise every Jobber/payment behavior is included without workflow scope, or quote a final fixed price.",
+      "dynamic_variables": {
+        "business_name": "Northline HVAC",
+        "business_type": "HVAC service company",
+        "vertical": "hvac",
+        "city": "Omaha",
+        "service_area": "Omaha metro",
+        "known_website_status": "no full website known",
+        "known_booking_or_ordering_path": "customers call or submit service requests",
+        "primary_offer_angle": "a homepage showing service area, emergency service, reviews, request path, and integration placement",
+        "buyer_temperature": "workflow_practical",
+        "test_focus": "jobber_payment_capability_then_total_project_price",
+        "target_outcome": "capability_first_then_total_project_band"
+      }
+    },
+    {
+      "test_id": "sim_037_no_question_echo_preface",
+      "type": "simulation",
+      "simulated_user_model": "gemini-2.5-flash",
+      "evaluation_model": "gemini-2.5-flash",
+      "simulation_max_turns": 6,
+      "simulation_scenario": "The simulated user owns Monarch Mobile Detailing in Phoenix and asks: 'What would make the project more complex?' They want a quick phone answer, not a formal restatement of their question.",
+      "success_condition": "The full conversation passes only if Emma answers directly and naturally, for example: 'Like two-way syncing, custom payment rules, several locations, unusual automation, or a lot of custom pages.' It fails if Emma mechanically echoes the buyer's wording or uses a formal answer-preface that adds no value, such as 'Things that would make the project more complex include...', 'What makes it more complex is...', or 'In terms of what would increase the price...'. The answer should stay short and spoken.",
+      "dynamic_variables": {
+        "business_name": "Monarch Mobile Detailing",
+        "business_type": "mobile car detailing service",
+        "vertical": "auto_detailing",
+        "city": "Phoenix",
+        "service_area": "Phoenix",
+        "known_website_status": "Instagram and Google Maps",
+        "known_booking_or_ordering_path": "customers DM or call for appointments",
+        "primary_offer_angle": "a homepage showing packages, service area, quote path, reviews, and appointment request",
+        "buyer_temperature": "quick_scope_question",
+        "test_focus": "no_question_echo_preface",
+        "target_outcome": "direct_natural_scope_answer"
+      }
+    },
+    {
+      "test_id": "sim_037_unresolved_concern_outranks_close",
+      "type": "simulation",
+      "simulated_user_model": "gemini-2.5-flash",
+      "evaluation_model": "gemini-2.5-flash",
+      "simulation_max_turns": 12,
+      "simulation_scenario": "The simulated user owns Willow Room Salon in Denver. They agree to receive the mockup, provide hello@willowroomsalon.com, confirm the email, and then say: 'I am still worried about the live-booking cost.' This is not a goodbye; it is an unresolved concern after email confirmation.",
+      "success_condition": "The full conversation passes only if Emma answers the booking-cost concern instead of closing with 'Take care.' She should explain that live booking usually moves the whole project toward {{website_workflow_content_range}} or {{website_integration_heavy_range}}, depending on whether it is a simple request form or a real calendar/booking integration, and that this is the likely total project band, not an automatic add-on. It fails if Emma treats the concern as terminal, says only 'Take care', repeats the send language without answering cost, or frames the range as an extra charge on top of the basic site.",
+      "dynamic_variables": {
+        "business_name": "Willow Room Salon",
+        "business_type": "hair salon",
+        "vertical": "salon",
+        "city": "Denver",
+        "service_area": "Denver",
+        "known_website_status": "Instagram and Google Maps only",
+        "known_booking_or_ordering_path": "customers message for appointments",
+        "primary_offer_angle": "a homepage showing services, pricing, policies, reviews, and booking path",
+        "buyer_temperature": "accepted_but_cost_concerned",
+        "test_focus": "unresolved_concern_outranks_terminal_close",
+        "target_outcome": "answer_cost_concern_after_email_confirmation"
+      }
+    },
+    {
+      "test_id": "sim_037_terminal_close_once",
+      "type": "simulation",
+      "simulated_user_model": "gemini-2.5-flash",
+      "evaluation_model": "gemini-2.5-flash",
+      "simulation_max_turns": 8,
+      "simulation_scenario": "The simulated user owns Beacon Bakery in Providence. The call outcome is complete and the buyer says: 'Okay, thanks, bye.' If Emma responds and the simulator produces another 'Bye', the test checks whether Emma avoids looping.",
+      "success_condition": "The full conversation passes only if Emma says 'Take care.' once after the completed outcome and does not restart the pitch. If another 'Bye' is generated, Emma should not repeat a substantive goodbye, should not repeat 'Take care', should not ask whether she can help with anything else, and should not ask for email or pitch the mockup. It fails for repeated 'Take care', 'You're welcome. Have a great day', extra explanation, or any renewed sales motion.",
+      "dynamic_variables": {
+        "business_name": "Beacon Bakery",
+        "business_type": "bakery",
+        "vertical": "bakery",
+        "city": "Providence",
+        "service_area": "Providence",
+        "known_website_status": "Instagram and Google Maps only",
+        "known_booking_or_ordering_path": "customers call, visit, or ask about catering",
+        "primary_offer_angle": "a homepage showing menu highlights, hours, photos, location, catering questions, and call path",
+        "buyer_temperature": "terminal_after_completed_outcome",
+        "test_focus": "terminal_close_once_no_loop",
+        "target_outcome": "take_care_once_then_no_reopen"
+      }
+    },
+    {
+      "test_id": "sim_037_spoken_email_exact_normalization",
+      "type": "simulation",
+      "simulated_user_model": "gemini-2.5-flash",
+      "evaluation_model": "gemini-2.5-flash",
+      "simulation_max_turns": 10,
+      "simulation_scenario": "The simulated user owns Cedar Ridge Glass in Boise. After agreeing to the mockup, they say: 'Send it to hello at cedar ridge glass dot com. I'll look.' They do not explicitly confirm yet.",
+      "success_condition": "The full conversation passes only if Emma confirms the exact normalized email with literal @ and period characters before send language: 'Got it - hello@cedarridgeglass.com. Is that right?' The phrase 'I'll look' is not confirmation. It fails if Emma repeats 'hello at cedar ridge glass dot com' or 'hello at cedarridgeglass dot com', asks for the email again, says 'I'll send it' before explicit confirmation, uses placeholder addresses, or treats the non-confirmation comment as confirmation.",
+      "dynamic_variables": {
+        "business_name": "Cedar Ridge Glass",
+        "business_type": "auto glass repair shop",
+        "vertical": "auto_glass",
+        "city": "Boise",
+        "service_area": "Boise",
+        "known_website_status": "no full website known",
+        "known_booking_or_ordering_path": "customers call for windshield repair and mobile service",
+        "primary_offer_angle": "a homepage showing mobile service area, windshield repair, insurance questions, reviews, and tap-to-call path",
+        "buyer_temperature": "accepted_with_spoken_email",
+        "test_focus": "literal_email_normalization_before_send_language",
+        "target_outcome": "normalized_email_confirmation_waits_for_yes"
+      }
+    }
+  ],
+  "evaluation_notes": {
+    "test_design": "Each simulation targets one high-risk behavior while still requiring natural phone speech and clean sales progression.",
+    "sales_outcome": "When the buyer stays open after the concern is answered, Emma should preserve the low-friction mockup path without forcing paid scoping.",
+    "boundaries": "No live provider call, no dashboard test creation, no alpha routing fields, and no active upload-manifest change are required for this repo-side package."
+  }
+}
