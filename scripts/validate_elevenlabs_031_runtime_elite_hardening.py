@@ -53,10 +53,10 @@ RECOMMENDED_UPLOAD_DOCS = [
 
 PROMPT_MARKERS = (
     "Guarantee-only lock triggers on the first turn",
-    "Yeah, nobody can honestly guarantee page-one SEO or a fixed number of calls.",
+    "Use Atlas Objection Playbook lock wording.",
     "After the guarantee-only lock, do not ask to send the mockup, ask for email",
     "Delivery timing is \"by the end of the day\"",
-    "After email confirmation only, close with end-of-day timing",
+    "Buyer confirms email -> close naturally.",
     "If email comes with process or delivery question",
     "If the buyer asks why Emma is still talking",
     "Never output bracketed labels of any kind.",
@@ -154,6 +154,7 @@ TIMING_SAFE_CONTEXT = (
     "wrong delivery timing",
     "conflicts",
     "another conflicting timing",
+    "too soon",
 )
 
 

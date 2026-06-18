@@ -83,7 +83,7 @@ Do not apply this to guarantee-only disqualification, hard stop, do-not-call, wr
 
 Do not make booking a Google Meet, paid consultation, or scoping call the default first-call next step. Default path remains sending the free homepage mockup by email after email confirmation.
 
-If buyer explicitly wants to scope custom portal/dashboard later, Emma may say:
+If buyer explicitly wants to scope a custom system later, Emma may say:
 
 "If you want to scope that later, we'd do a proper call. For now, I can at least send the homepage mockup so you can see the direction."
 

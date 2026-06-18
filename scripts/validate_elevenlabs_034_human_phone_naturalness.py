@@ -248,7 +248,8 @@ def assert_prompt_and_kb() -> None:
         "custom portal scoped pricing",
         combined_policy,
         (
-            "That's more of a custom build, so I wouldn't price it cleanly on a quick call.",
+            "Yes, we can build that.",
+            "I wouldn't price it cleanly on a quick call",
             "secure login",
             "user accounts",
             "database",

@@ -142,7 +142,19 @@ BANNED_BRACKET_LABEL = re.compile(
 )
 
 RISKY_TIMING = ("in a few days", "shortly", "soon", "within a few business days")
-TIMING_SAFE_CONTEXT = ("do not", "forbidden", "fail", "failure", "hard fail", "treat", "unless", "disallow", "wrong delivery timing", "conflicts")
+TIMING_SAFE_CONTEXT = (
+    "do not",
+    "forbidden",
+    "fail",
+    "failure",
+    "hard fail",
+    "treat",
+    "unless",
+    "disallow",
+    "wrong delivery timing",
+    "conflicts",
+    "too soon",
+)
 
 
 def fail(message: str) -> None:

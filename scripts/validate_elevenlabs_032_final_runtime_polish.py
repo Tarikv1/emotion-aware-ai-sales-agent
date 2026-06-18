@@ -53,10 +53,10 @@ RECOMMENDED_UPLOAD_DOCS = [
 PROMPT_MARKERS = (
     "Buyer gives email -> confirm normalized email; no send language until explicit confirmation.",
     "process or delivery question",
-    "After email confirmation only",
+    "Buyer confirms email -> close naturally.",
     "Do not claim Emma will call, follow up, check back, or reach out",
-    "clearer online experience",
-    "convert visitors into customers",
+    "Lead with concrete mechanism first.",
+    "Weak-phrase examples and mockup-scope examples live in Atlas Output Quality Rules.",
     "You're right. Have a good one.",
     "Guarantee-only lock triggers on the first turn",
 )
