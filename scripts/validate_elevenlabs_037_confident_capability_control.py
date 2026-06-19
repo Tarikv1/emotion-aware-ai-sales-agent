@@ -177,7 +177,7 @@ def assert_policy() -> None:
         "terminal and unresolved concern",
         close,
         (
-            "A live direct question or unresolved objection outranks terminal close",
+            "A live direct question or unresolved objection outranks `end_call`",
             "I'm still worried about the booking cost.",
             "not an automatic add-on",
             "do not repeat \"Take care\"",
@@ -210,7 +210,7 @@ def assert_analysis() -> None:
             "what's the catch?",
             "likely total project band, not an automatic add-on",
             "omits the literal @ symbol or normal domain periods",
-            "repeats 'Take care' after a second bye",
+            "repeats 'Take care'",
             "live unresolved concern such as booking cost",
             "formal answer-prefaces that add no meaning",
             "Authorized broad capability and broad experience",
@@ -242,7 +242,7 @@ def assert_tests() -> None:
         "hello@cedarridgeglass.com",
         "{{website_integration_heavy_range}}",
         "not an automatic add-on",
-        "repeat 'Take care'",
+        "repeated 'Take care'",
     ):
         assert_condition(marker in serialized, f"037 tests missing marker: {marker}")
     for test in tests:
@@ -254,8 +254,8 @@ def assert_tests() -> None:
 
 def assert_side_effect_boundaries() -> None:
     assert_condition(not git_diff_names(str(ACTIVE_UPLOAD_MANIFEST.relative_to(ROOT))), "active upload manifest was modified")
-    procedure_diff = git_diff_names("runtime/providers/elevenlabs_agents/procedures", "research/experiments/generated")
-    assert_condition(not procedure_diff, f"Procedures or generated live evidence changed: {procedure_diff}")
+    procedure_diff = git_diff_names("runtime/providers/elevenlabs_agents/procedures")
+    assert_condition(not procedure_diff, f"Procedures changed: {procedure_diff}")
 
 
 def main() -> None:

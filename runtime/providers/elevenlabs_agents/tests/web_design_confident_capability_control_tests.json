@@ -142,7 +142,7 @@
       "evaluation_model": "gemini-2.5-flash",
       "simulation_max_turns": 12,
       "simulation_scenario": "The simulated user owns Willow Room Salon in Denver. They agree to receive the mockup, provide hello@willowroomsalon.com, confirm the email, and then say: 'I am still worried about the live-booking cost.' This is not a goodbye; it is an unresolved concern after email confirmation.",
-      "success_condition": "The full conversation passes only if Emma answers the booking-cost concern instead of closing with 'Take care.' She should explain that live booking usually moves the whole project toward {{website_workflow_content_range}} or {{website_integration_heavy_range}}, depending on whether it is a simple request form or a real calendar/booking integration, and that this is the likely total project band, not an automatic add-on. It fails if Emma treats the concern as terminal, says only 'Take care', repeats the send language without answering cost, or frames the range as an extra charge on top of the basic site.",
+      "success_condition": "The full conversation passes only if Emma answers the booking-cost concern and does not invoke end_call. She should explain that live booking usually moves the whole project toward {{website_workflow_content_range}} or {{website_integration_heavy_range}}, depending on whether it is a simple request form or a real calendar/booking integration, and that this is the likely total project band, not an automatic add-on. It fails if Emma treats the concern as terminal, invokes end_call, says only 'Take care', repeats the send language without answering cost, or frames the range as an extra charge on top of the basic site.",
       "dynamic_variables": {
         "business_name": "Willow Room Salon",
         "business_type": "hair salon",
@@ -163,8 +163,8 @@
       "simulated_user_model": "gemini-2.5-flash",
       "evaluation_model": "gemini-2.5-flash",
       "simulation_max_turns": 8,
-      "simulation_scenario": "The simulated user owns Beacon Bakery in Providence. The call outcome is complete and the buyer says: 'Okay, thanks, bye.' If Emma responds and the simulator produces another 'Bye', the test checks whether Emma avoids looping.",
-      "success_condition": "The full conversation passes only if Emma says 'Take care.' once after the completed outcome and does not restart the pitch. If another 'Bye' is generated, Emma should not repeat a substantive goodbye, should not repeat 'Take care', should not ask whether she can help with anything else, and should not ask for email or pitch the mockup. It fails for repeated 'Take care', 'You're welcome. Have a great day', extra explanation, or any renewed sales motion.",
+      "simulation_scenario": "The simulated user owns Beacon Bakery in Providence. The call outcome is complete and the buyer says: 'Okay, thanks, bye.' The test checks whether Emma terminates cleanly without forcing a second artificial bye.",
+      "success_condition": "The full conversation passes only if Emma invokes end_call exactly once with message 'Take care.' and does not speak a separate farewell before the tool call. The simulation should terminate after the tool call. It fails for no tool call, multiple end_call calls, a separate farewell before the tool call, repeated 'Take care', 'You're welcome. Have a great day', extra explanation, renewed pitch, email ask, or any renewed sales motion.",
       "dynamic_variables": {
         "business_name": "Beacon Bakery",
         "business_type": "bakery",
@@ -186,7 +186,7 @@
       "evaluation_model": "gemini-2.5-flash",
       "simulation_max_turns": 10,
       "simulation_scenario": "The simulated user owns Cedar Ridge Glass in Boise. After agreeing to the mockup, they say: 'Send it to hello at cedar ridge glass dot com. I'll look.' They do not explicitly confirm yet.",
-      "success_condition": "The full conversation passes only if Emma confirms the exact normalized email with literal @ and period characters before send language: 'Got it - hello@cedarridgeglass.com. Is that right?' The phrase 'I'll look' is not confirmation. It fails if Emma repeats 'hello at cedar ridge glass dot com' or 'hello at cedarridgeglass dot com', asks for the email again, says 'I'll send it' before explicit confirmation, uses placeholder addresses, or treats the non-confirmation comment as confirmation.",
+      "success_condition": "The full conversation passes only if Emma confirms the exact normalized email with literal @ and period characters before send language: 'Got it - hello@cedarridgeglass.com. Is that right?' The phrase 'I'll look' is not confirmation, so pending unconfirmed email must block end_call. It fails if Emma repeats 'hello at cedar ridge glass dot com' or 'hello at cedarridgeglass dot com', asks for the email again, says 'I'll send it' before explicit confirmation, invokes end_call before confirmation, uses placeholder addresses, or treats the non-confirmation comment as confirmation.",
       "dynamic_variables": {
         "business_name": "Cedar Ridge Glass",
         "business_type": "auto glass repair shop",

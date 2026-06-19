@@ -1,0 +1,11 @@
+{
+  "checkpoint_id": "ELEVENLABS-038-end-call-terminal-control",
+  "status": "failed",
+  "request_id": "patch_agent::analysis_evaluation",
+  "method": "PATCH",
+  "endpoint": "/v1/convai/agents/agent_7801kt0g32zxf4f8x5zkykj7syty",
+  "error": "PATCH /v1/convai/agents/agent_7801kt0g32zxf4f8x5zkykj7syty failed with 400: {\"detail\":{\"type\":\"validation_error\",\"code\":\"invalid_parameters\",\"message\":\"Invalid platform settings: String should have at most 2000 characters\",\"status\":\"input_invalid\",\"request_id\":\"1947e895631c49ed83c12a648e803551\",\"param\":\"evaluation.criteria.7.conversation_goal_prompt\"}}",
+  "live_provider_calls_made": true,
+  "simulations_run": false,
+  "outbound_calls_made": false
+}

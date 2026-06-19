@@ -47,7 +47,7 @@ ANALYSIS_MARKERS = (
     "AI monologue",
     "residue loop",
     "Price ballpark after repeated ask",
-    "terminal \"Take care\"",
+    "end_call",
 )
 
 WEAK_HEADLINE_PHRASES = (
@@ -277,7 +277,7 @@ def assert_prompt_and_kb() -> None:
         (
             "Do not say \"we don't do filtering.\"",
             "Simple quote filtering is usually around {{website_light_feature_range}}",
-            "Live calendar booking or a booking-system integration can move closer to {{website_workflow_content_range}} or {{website_integration_heavy_range}}",
+            "Live calendar booking can move toward {{website_workflow_content_range}} or {{website_integration_heavy_range}}",
             "Yes, we can build that. The exact setup depends on whether it's a simple form handoff or a real integration.",
             "Fail if Emma jumps into a price range before answering the capability question clearly.",
         ),
@@ -337,7 +337,7 @@ def assert_analysis() -> None:
         "analysis tightened failures",
         combined,
         (
-            "buyer asks price twice",
+            "buyer asks price, cost, range, budget, fee, add-on cost, or total twice",
             "max turns because Emma avoided price",
             "fixed feature price",
             "quote filtering is always exactly $3,000",

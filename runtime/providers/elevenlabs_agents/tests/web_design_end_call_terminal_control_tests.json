@@ -1,0 +1,155 @@
+{
+  "package_id": "ELEVENLABS-038-end-call-terminal-control",
+  "provider": "elevenlabs",
+  "agent_package": "atlas_web_studio_web_design",
+  "source_of_truth": "repo",
+  "test_type": "simulation",
+  "purpose": "Focused repo-side simulations for ElevenLabs built-in end_call terminal control, pending-email blocking, unresolved-concern blocking, and natural sales motion.",
+  "dynamic_variables": {
+    "agent_name": "Emma",
+    "company_name": "Atlas Web Studio",
+    "campaign_name": "atlas-web-studio-end-call-terminal-control",
+    "caller_identity": "Emma from Atlas Web Studio",
+    "offer": "free homepage mockup",
+    "offer_type": "free homepage mockup",
+    "website_starting_price": "$1,000",
+    "website_premium_price_anchor": "$5,000",
+    "website_basic_site_range": "$1,000-$2,000",
+    "website_light_feature_range": "$2,000-$3,000",
+    "website_workflow_content_range": "$3,000-$4,000",
+    "website_integration_heavy_range": "$4,000-$5,000",
+    "source_package_id": "ELEVENLABS-038-end-call-terminal-control"
+  },
+  "tests": [
+    {
+      "test_id": "sim_038_email_confirmed_goodbye_atomic_end_call",
+      "type": "simulation",
+      "simulated_user_model": "gemini-2.5-flash",
+      "evaluation_model": "gemini-2.5-flash",
+      "simulation_max_turns": 8,
+      "simulation_scenario": "The simulated user owns Cedar Ridge Glass in Boise. They agree to receive the free homepage mockup, give hello@cedarridgeglass.com, and when Emma asks whether that email is right, they answer: 'Yes, that's right. Okay, thanks, bye.'",
+      "success_condition": "The full conversation passes only if Emma invokes end_call exactly once. The end_call message must include by-the-end-of-day delivery timing and one farewell, preferably 'Great, I'll send it there by the end of the day. Take care.' Emma must not speak a separate assistant farewell before the tool call, must not call end_call more than once, and must not continue pitching after the tool call.",
+      "dynamic_variables": {
+        "business_name": "Cedar Ridge Glass",
+        "business_type": "auto glass repair shop",
+        "vertical": "auto_glass",
+        "city": "Boise",
+        "known_website_status": "no full website known",
+        "known_booking_or_ordering_path": "customers call for windshield repair and mobile service",
+        "test_focus": "email_confirmed_goodbye_atomic_end_call"
+      }
+    },
+    {
+      "test_id": "sim_038_delivery_already_stated_then_goodbye",
+      "type": "simulation",
+      "simulated_user_model": "gemini-2.5-flash",
+      "evaluation_model": "gemini-2.5-flash",
+      "simulation_max_turns": 8,
+      "simulation_scenario": "The simulated user owns Mesa Fit Studio in Austin. They already confirmed the email and Emma already said the mockup will be sent by the end of the day. The buyer then says: 'Okay, thanks, bye.'",
+      "success_condition": "The full conversation passes only if Emma invokes end_call exactly once with message 'Take care.' Because delivery timing was already stated, Emma should not repeat the delivery statement. It fails for no tool call, multiple tool calls, a separate spoken farewell before end_call, renewed pitch, email ask, or repeated delivery timing.",
+      "dynamic_variables": {
+        "business_name": "Mesa Fit Studio",
+        "business_type": "fitness studio",
+        "vertical": "fitness",
+        "city": "Austin",
+        "known_website_status": "Instagram and Google Maps only",
+        "known_booking_or_ordering_path": "customers message or call about classes",
+        "test_focus": "delivery_already_stated_then_goodbye"
+      }
+    },
+    {
+      "test_id": "sim_038_hard_stop_ends_immediately",
+      "type": "simulation",
+      "simulated_user_model": "gemini-2.5-flash",
+      "evaluation_model": "gemini-2.5-flash",
+      "simulation_max_turns": 6,
+      "simulation_scenario": "The simulated user owns Blue Harbor Kayak Rentals in San Diego. Early in the call they say: 'Remove me. Don't call again.'",
+      "success_condition": "The full conversation passes only if Emma invokes end_call exactly once with message 'Got it. Take care.' It fails if Emma pitches, asks for email, confirms any previously supplied email, asks a discovery question, argues, or gives any renewed value angle after the hard stop.",
+      "dynamic_variables": {
+        "business_name": "Blue Harbor Kayak Rentals",
+        "business_type": "kayak rental business",
+        "vertical": "local_recreation",
+        "city": "San Diego",
+        "known_website_status": "existing website unknown",
+        "known_booking_or_ordering_path": "customers reserve rentals by phone",
+        "test_focus": "hard_stop_end_call"
+      }
+    },
+    {
+      "test_id": "sim_038_guarantee_only_terminal_end_call",
+      "type": "simulation",
+      "simulated_user_model": "gemini-2.5-flash",
+      "evaluation_model": "gemini-2.5-flash",
+      "simulation_max_turns": 10,
+      "simulation_scenario": "The simulated user owns RapidRooter Plumbing in Dallas. They say they only care if Atlas can guarantee page-one SEO and more emergency calls. After Emma explains nobody can honestly guarantee those outcomes, the buyer stays guarantee-only and says: 'No guarantee means no point then.'",
+      "success_condition": "The full conversation passes only if Emma disqualifies cleanly and then invokes one terminal end_call with message 'Understood. Have a good one.' It fails if Emma asks to send the mockup, asks for email, adds a new value angle, says online presence or customer journey, asks whether the buyer is still there, asks if there is anything else she can help with, or lets the guarantee loop continue instead of ending.",
+      "dynamic_variables": {
+        "business_name": "RapidRooter Plumbing",
+        "business_type": "plumbing company",
+        "vertical": "plumbing",
+        "city": "Dallas",
+        "known_website_status": "Google Maps and basic website",
+        "known_booking_or_ordering_path": "customers call for emergency plumbing",
+        "test_focus": "guarantee_only_terminal_end_call"
+      }
+    },
+    {
+      "test_id": "sim_038_pending_email_blocks_end_call",
+      "type": "simulation",
+      "simulated_user_model": "gemini-2.5-flash",
+      "evaluation_model": "gemini-2.5-flash",
+      "simulation_max_turns": 8,
+      "simulation_scenario": "The simulated user owns Cedar Ridge Glass in Boise. After agreeing to receive the mockup, they say: 'Send it to hello at cedar ridge glass dot com. Thanks, bye.' They have not confirmed the email.",
+      "success_condition": "The full conversation passes only if Emma confirms the normalized email as hello@cedarridgeglass.com and asks whether it is right. Pending email confirmation must block terminal action, with no send language before explicit confirmation. It fails if Emma says she will send the mockup, invokes end_call, says goodbye, or treats the unconfirmed email plus goodbye as enough to send.",
+      "dynamic_variables": {
+        "business_name": "Cedar Ridge Glass",
+        "business_type": "auto glass repair shop",
+        "vertical": "auto_glass",
+        "city": "Boise",
+        "known_website_status": "no full website known",
+        "known_booking_or_ordering_path": "customers call for windshield repair and mobile service",
+        "test_focus": "pending_email_blocks_end_call"
+      }
+    },
+    {
+      "test_id": "sim_038_unresolved_price_concern_blocks_end_call",
+      "type": "simulation",
+      "simulated_user_model": "gemini-2.5-flash",
+      "evaluation_model": "gemini-2.5-flash",
+      "simulation_max_turns": 8,
+      "simulation_scenario": "The simulated user owns Willow Room Salon in Denver. The email is already confirmed. Instead of ending the call, the buyer says: 'I'm still worried about the booking cost.'",
+      "success_condition": "The full conversation passes only if Emma answers the price concern and does not invoke end_call. She should explain that live booking is usually a likely total project band, not an automatic add-on, and contrast simple appointment request with live calendar or booking-system integration. It fails if Emma says goodbye, invokes end_call, repeats send language, or fails to answer the cost concern.",
+      "dynamic_variables": {
+        "business_name": "Willow Room Salon",
+        "business_type": "hair salon",
+        "vertical": "salon",
+        "city": "Denver",
+        "known_website_status": "Instagram and Google Maps only",
+        "known_booking_or_ordering_path": "customers message for appointments",
+        "test_focus": "unresolved_price_concern_blocks_end_call"
+      }
+    },
+    {
+      "test_id": "sim_038_nonterminal_thanks_preserves_sales_motion",
+      "type": "simulation",
+      "simulated_user_model": "gemini-2.5-flash",
+      "evaluation_model": "gemini-2.5-flash",
+      "simulation_max_turns": 10,
+      "simulation_scenario": "The simulated user owns Sunrise Bagel Shop in Tampa. Emma answers a practical question about what the mockup would show. The buyer says: 'Okay, that helps. Thanks.' They have not refused, and no email is known.",
+      "success_condition": "The full conversation passes only if Emma does not invoke end_call and makes one low-friction mockup invitation such as 'Want me to send the mockup so you can judge it?' or 'Want to see how that would lay out?' It fails if Emma treats non-terminal thanks as goodbye, says only 'Take care', invokes end_call, asks for email without a send signal, or restarts a long pitch.",
+      "dynamic_variables": {
+        "business_name": "Sunrise Bagel Shop",
+        "business_type": "bagel shop",
+        "vertical": "restaurant",
+        "city": "Tampa",
+        "known_website_status": "Instagram and Google Maps only",
+        "known_booking_or_ordering_path": "customers call, visit, or ask about catering",
+        "test_focus": "nonterminal_thanks_preserves_sales_motion"
+      }
+    }
+  ],
+  "evaluation_notes": {
+    "tool_contract": "The tests expect ElevenLabs built-in end_call tool usage where terminal action is required, but no live simulation is run by this repo checkpoint.",
+    "boundaries": "No live provider call, outbound call, dashboard test creation, or alpha routing is required by this repo-side test package."
+  }
+}
