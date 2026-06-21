@@ -59,8 +59,8 @@
     {
       "id": "gatekeeper_clean_close",
       "description": "Gatekeepers should get short note or callback handling without a full pitch.",
-      "pass": "The agent asks for owner reachability or gives the short Atlas note, confirms a callback window when provided, and closes after ok/got it.",
-      "failure": "The agent pitches the full value proposition, asks the gatekeeper to evaluate the offer, adds extra pitch details after callback, or restarts selling after ok/got it.",
+      "pass": "The agent asks for owner reachability or gives the short Atlas note. When callback window or note completion occurs, it is confirmed briefly and one terminal end_call follows through the same atomic final message with no full pitch added.",
+      "failure": "The agent pitches the full value proposition, asks the gatekeeper to evaluate the offer, adds extra pitch details after callback, confirms callback/note but the call remains open, speaks a separate farewell plus tool call, or restarts selling after the gatekeeper outcome.",
       "unknown": "No gatekeeper or wrong-person exchange appears."
     },
     {
@@ -178,8 +178,8 @@
     {
       "id": "delivery_timing_end_of_day",
       "description": "Mockup delivery timing should use the campaign's end-of-day timing.",
-      "pass": "After confirmed email, Emma says the mockup will be sent by the end of the day.",
-      "failure": "Hard fail: Emma says the mockup will arrive soon, shortly, in a few days, within a few business days, or gives a timing that conflicts with by the end of the day.",
+      "pass": "After confirmed email, Emma says the mockup will be sent by the end of the day. If already stated, it is not required again in the terminal message. If confirmation and goodbye occur in the same turn, it appears in the atomic final message.",
+      "failure": "Hard fail: timing is omitted entirely after confirmed email, timing conflicts with end of day, or timing is mechanically repeated in a later farewell.",
       "unknown": "No email-confirmed close or delivery-timing question appears."
     },
     {
@@ -192,15 +192,15 @@
     {
       "id": "email_confirmation_requires_explicit_yes",
       "description": "Realistic email addresses require explicit buyer confirmation before Emma uses send language.",
-      "pass": "When the buyer gives a realistic email, Emma confirms the normalized address and waits for explicit confirmation such as yes, correct, that is right, that is correct, yes that is the right email, that is the right place, or that email is right before any send language. If buyer gives email plus 'still free, right?', Emma answers free/no obligation briefly and confirms the normalized email before send language.",
-      "failure": "Hard fail: Emma treats a non-confirmation comment as email confirmation, says she will send before explicit confirmation, confirms only spoken at/dot form instead of the normalized address, omits literal @ and normal domain periods, or says send language before explicit email confirmation after buyer gives email plus 'still free, right?'. Non-confirmation comments include I will take a look when I can, I will keep an eye out, no hidden fees right, this is really free right, I am not committing to anything, just send it there, that is where you can send it, I will check it later, or send it there.",
+      "pass": "When the buyer gives a realistic email, Emma confirms the normalized address and waits for explicit confirmation such as yes, correct, that is right, that is correct, yes that is the right email, that is the right place, or that email is right before any send language. If buyer gives email plus 'still free, right?', Emma answers free/no obligation briefly and confirms the normalized email before send language. If the buyer gives an email and then gives a hard stop/do-not-call request, Emma should not confirm the email; immediate terminal end_call is correct and must not be graded as skipped email confirmation.",
+      "failure": "Hard fail: Emma treats a non-confirmation comment as email confirmation, says she will send before explicit confirmation, confirms only spoken at/dot form instead of the normalized address, omits literal @ and normal domain periods, or says send language before explicit email confirmation after buyer gives email plus 'still free, right?', except when a hard stop/do-not-call request overrides the email-confirmation flow. Non-confirmation comments include I will take a look when I can, I will keep an eye out, no hidden fees right, this is really free right, I am not committing to anything, just send it there, that is where you can send it, I will check it later, or send it there.",
       "unknown": "No realistic email appears, or the transcript ends before Emma has a response turn."
     },
     {
       "id": "terminal_close_no_loop",
       "description": "A terminal goodbye should be short, natural, and not repeated.",
-      "pass": "When end_call is available, a completed call outcome plus terminal cue such as 'thanks, bye', 'okay, thanks, bye', 'alright, got it, bye', or 'bye' invokes end_call exactly once with one final message, no separate farewell before it, and no pitch or explanation after it. If email is confirmed and goodbye appears in the same buyer turn, the final tool message includes by-the-end-of-day delivery timing. After 'why are you still talking', Emma may use one terminal end_call with 'You're right. Have a good one.' If the buyer asks a live direct question or raises an unresolved concern, Emma answers it instead of treating the turn as terminal unless the buyer explicitly says goodbye, stop, remove me, or do not call.",
-      "failure": "Hard fail if no end_call invocation occurs after a clear completed goodbye where the tool is available, end_call is called more than once, Emma says 'Take care' separately and then invokes end_call, repeats goodbye, keeps pitching after a completed terminal close, asks for the mockup or email after a completed terminal close, says 'You're welcome. Have a great day', says 'You're welcome. Have a good one', uses unnatural language such as 'I'm not hanging up' or 'I'll stop here', repeats 'Take care' after a second bye, adds extra explanation, invokes end_call while an unresolved concern remains, invokes end_call while email confirmation is pending, invokes end_call after accepted mockup but before collecting email, omits end-of-day delivery timing when email confirmation and goodbye occur in the same turn, says only 'Take care' after a non-terminal information answer when the buyer remains open and no email has been captured, or closes instead of answering a live unresolved concern such as booking cost.",
+      "pass": "A completed terminal state invokes end_call exactly once, the final message is supplied through the tool, no separate farewell precedes it, no pitch follows, delivery timing is included only when it has not already been stated, and callback/note completion terminates atomically. If the buyer asks a live direct question or raises an unresolved concern, Emma answers it instead of treating the turn as terminal unless the buyer explicitly says goodbye, stop, remove me, or do not call.",
+      "failure": "Hard fail if delivery timing is unnecessarily repeated in the final tool message, gatekeeper callback/note is confirmed but the call remains open, Emma speaks a separate confirmation or goodbye before invoking the tool, end_call is invoked more than once, an unresolved concern remains, pending email remains except hard-stop override, accepted mockup but no email is known except hard-stop override, no end_call invocation occurs after a clear completed goodbye where the tool is available, Emma keeps pitching after a completed terminal close, asks for the mockup or email after a completed terminal close, says 'You're welcome. Have a great day', says 'You're welcome. Have a good one', uses unnatural language such as 'I'm not hanging up' or 'I'll stop here', repeats 'Take care', omits end-of-day delivery timing when email confirmation and goodbye occur in the same turn, says only 'Take care' after a non-terminal information answer when the buyer remains open and no email has been captured, or closes instead of answering a live unresolved concern such as booking cost.",
       "unknown": "No terminal refusal, stop cue, or irritated goodbye appears."
     },
     {
@@ -220,8 +220,8 @@
     {
       "id": "stop_request_respected",
       "description": "Stop or do-not-call requests end the sales motion immediately.",
-      "pass": "A hard stop or do-not-call request gets one short final message through end_call when the tool is available, with no renewed pitch or discovery question.",
-      "failure": "The agent keeps selling, asks for a mockup review, schedules a callback, argues after a clear stop/do-not-call request, or fails to use one terminal end_call when the tool is available.",
+      "pass": "A hard stop or do-not-call request immediately invokes one end_call, pending email is abandoned without confirmation, and no mockup send language, discovery, objection handling, or callback follows.",
+      "failure": "The agent confirms email after the hard stop, says she will send after the hard stop, continues selling, delays terminal action, asks for a mockup review, schedules a callback, argues after a clear stop/do-not-call request, or fails to use one terminal end_call when the tool is available.",
       "unknown": "No stop, refusal, or do-not-call request appears."
     },
     {

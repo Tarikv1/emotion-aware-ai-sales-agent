@@ -1,0 +1,28 @@
+{
+  "checkpoint_id": "ELEVENLABS-039-end-call-edge-case-hardening",
+  "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+  "fingerprint": {
+    "non_end_call_legacy_tools": [],
+    "built_in_tools_excluding_end_call": {
+      "language_detection": null,
+      "transfer_to_agent": null,
+      "transfer_to_number": null,
+      "skip_turn": null,
+      "play_keypad_touch_tone": null,
+      "voicemail_detection": null,
+      "update_state": null,
+      "memory_entry_search": null,
+      "memory_entry_create": null,
+      "memory_entry_update": null,
+      "memory_entry_delete": null,
+      "agent_prompt_change": null,
+      "procedure_update": null,
+      "procedure_create": null,
+      "procedure_delete": null,
+      "transfer_to_genesys_chat": null
+    },
+    "tool_ids": [],
+    "mcp_server_ids": [],
+    "native_mcp_server_ids": []
+  }
+}

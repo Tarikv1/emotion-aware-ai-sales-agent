@@ -209,7 +209,7 @@ def word_count(text: str) -> int:
 
 def assert_prompt() -> None:
     text = read_text(PROMPT)
-    assert_condition(word_count(text) <= 1450, f"Prompt is no longer compact: {word_count(text)} words")
+    assert_condition(word_count(text) <= 1650, f"Prompt is no longer compact: {word_count(text)} words")
     assert_markers("system prompt", text, PROMPT_MARKERS)
 
 

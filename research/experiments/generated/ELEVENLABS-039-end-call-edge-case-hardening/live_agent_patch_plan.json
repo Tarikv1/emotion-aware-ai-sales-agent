@@ -1,0 +1,272 @@
+{
+  "checkpoint_id": "ELEVENLABS-039-end-call-edge-case-hardening",
+  "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+  "agent_name": "web design",
+  "target_identified_by": [
+    "agent_id",
+    "agent_name",
+    "compact Atlas prompt marker",
+    "focused 17-file Atlas KB set"
+  ],
+  "live_provider_calls_made": true,
+  "simulations_run": false,
+  "outbound_calls_made": false,
+  "active_manifest": "runtime/providers/elevenlabs_agents/manifests/web_design_sales_spine_compression.package.json",
+  "active_manifest_changed": false,
+  "pre_patch_kb_count": 17,
+  "canonical_kb_count": 17,
+  "canonical_kb_selection": {
+    "universal_sales_core_summary.md": {
+      "chosen_id": "S1MM5iaQDE7xHXTIw1V4",
+      "chosen_type": "file",
+      "candidate_count": 1,
+      "candidate_ids": [
+        "S1MM5iaQDE7xHXTIw1V4"
+      ],
+      "metadata": {
+        "created_at_unix_secs": 1781229374,
+        "last_updated_at_unix_secs": 1781229374,
+        "size_bytes": 3308
+      }
+    },
+    "buyer_moves.md": {
+      "chosen_id": "xdRGCUKCrMu6BV3BeBmR",
+      "chosen_type": "file",
+      "candidate_count": 1,
+      "candidate_ids": [
+        "xdRGCUKCrMu6BV3BeBmR"
+      ],
+      "metadata": {
+        "created_at_unix_secs": 1781229376,
+        "last_updated_at_unix_secs": 1781229376,
+        "size_bytes": 1513
+      }
+    },
+    "value_and_roi_framing.md": {
+      "chosen_id": "WqWCqrY8Dqw0Cjt2ueX4",
+      "chosen_type": "file",
+      "candidate_count": 1,
+      "candidate_ids": [
+        "WqWCqrY8Dqw0Cjt2ueX4"
+      ],
+      "metadata": {
+        "created_at_unix_secs": 1781229377,
+        "last_updated_at_unix_secs": 1781229377,
+        "size_bytes": 1656
+      }
+    },
+    "objection_status_quo_and_competition.md": {
+      "chosen_id": "WDRDzZAMOGwsM7RA8OvN",
+      "chosen_type": "file",
+      "candidate_count": 1,
+      "candidate_ids": [
+        "WDRDzZAMOGwsM7RA8OvN"
+      ],
+      "metadata": {
+        "created_at_unix_secs": 1781229379,
+        "last_updated_at_unix_secs": 1781229379,
+        "size_bytes": 1350
+      }
+    },
+    "trust_and_risk_repair.md": {
+      "chosen_id": "DXPTUuYp2o8A4kOglSSt",
+      "chosen_type": "file",
+      "candidate_count": 1,
+      "candidate_ids": [
+        "DXPTUuYp2o8A4kOglSSt"
+      ],
+      "metadata": {
+        "created_at_unix_secs": 1781229381,
+        "last_updated_at_unix_secs": 1781229381,
+        "size_bytes": 1364
+      }
+    },
+    "conversation_repair.md": {
+      "chosen_id": "yctClZpoz1i6goYAjwZt",
+      "chosen_type": "file",
+      "candidate_count": 1,
+      "candidate_ids": [
+        "yctClZpoz1i6goYAjwZt"
+      ],
+      "metadata": {
+        "created_at_unix_secs": 1781229382,
+        "last_updated_at_unix_secs": 1781229382,
+        "size_bytes": 1280
+      }
+    },
+    "next_step_policy.md": {
+      "chosen_id": "OcvFykT5Tqp7NGueekiI",
+      "chosen_type": "file",
+      "candidate_count": 1,
+      "candidate_ids": [
+        "OcvFykT5Tqp7NGueekiI"
+      ],
+      "metadata": {
+        "created_at_unix_secs": 1781229383,
+        "last_updated_at_unix_secs": 1781229383,
+        "size_bytes": 1444
+      }
+    },
+    "disqualification_policy.md": {
+      "chosen_id": "LQEos3HJ5ZzBSpF3dXR1",
+      "chosen_type": "file",
+      "candidate_count": 1,
+      "candidate_ids": [
+        "LQEos3HJ5ZzBSpF3dXR1"
+      ],
+      "metadata": {
+        "created_at_unix_secs": 1781229385,
+        "last_updated_at_unix_secs": 1781229385,
+        "size_bytes": 1356
+      }
+    },
+    "ethical_persuasion_boundaries.md": {
+      "chosen_id": "KsC9mjcefO9A3FM0YzQB",
+      "chosen_type": "file",
+      "candidate_count": 1,
+      "candidate_ids": [
+        "KsC9mjcefO9A3FM0YzQB"
+      ],
+      "metadata": {
+        "created_at_unix_secs": 1781229386,
+        "last_updated_at_unix_secs": 1781229386,
+        "size_bytes": 1359
+      }
+    },
+    "call_quality_rubrics.md": {
+      "chosen_id": "TQiRIK8kDTzlZLnvt2Xe",
+      "chosen_type": "file",
+      "candidate_count": 1,
+      "candidate_ids": [
+        "TQiRIK8kDTzlZLnvt2Xe"
+      ],
+      "metadata": {
+        "created_at_unix_secs": 1781229388,
+        "last_updated_at_unix_secs": 1781229388,
+        "size_bytes": 1278
+      }
+    },
+    "atlas_offer_facts.md": {
+      "chosen_id": "HYTfB5s1Z8LzOw8oBADt",
+      "chosen_type": "file",
+      "candidate_count": 1,
+      "candidate_ids": [
+        "HYTfB5s1Z8LzOw8oBADt"
+      ],
+      "metadata": {
+        "created_at_unix_secs": 1781229390,
+        "last_updated_at_unix_secs": 1781229390,
+        "size_bytes": 6372
+      }
+    },
+    "atlas_value_mechanisms.md": {
+      "chosen_id": "YABkv2da2gNmPq0jcEST",
+      "chosen_type": "file",
+      "candidate_count": 1,
+      "candidate_ids": [
+        "YABkv2da2gNmPq0jcEST"
+      ],
+      "metadata": {
+        "created_at_unix_secs": 1781229391,
+        "last_updated_at_unix_secs": 1781229391,
+        "size_bytes": 3283
+      }
+    },
+    "atlas_vertical_playbooks.md": {
+      "chosen_id": "bbK56uvCaErJuMTFUy22",
+      "chosen_type": "file",
+      "candidate_count": 1,
+      "candidate_ids": [
+        "bbK56uvCaErJuMTFUy22"
+      ],
+      "metadata": {
+        "created_at_unix_secs": 1781229393,
+        "last_updated_at_unix_secs": 1781229393,
+        "size_bytes": 5286
+      }
+    },
+    "atlas_objection_playbook.md": {
+      "chosen_id": "o1RI99TXNInjNGIwTGtz",
+      "chosen_type": "file",
+      "candidate_count": 1,
+      "candidate_ids": [
+        "o1RI99TXNInjNGIwTGtz"
+      ],
+      "metadata": {
+        "created_at_unix_secs": 1781229394,
+        "last_updated_at_unix_secs": 1781229394,
+        "size_bytes": 7461
+      }
+    },
+    "atlas_price_scope_cost_drivers.md": {
+      "chosen_id": "vGKk14CCzKqGW3GxgUqA",
+      "chosen_type": "file",
+      "candidate_count": 1,
+      "candidate_ids": [
+        "vGKk14CCzKqGW3GxgUqA"
+      ],
+      "metadata": {
+        "created_at_unix_secs": 1781229396,
+        "last_updated_at_unix_secs": 1781863836,
+        "size_bytes": 16423
+      }
+    },
+    "atlas_close_and_followup_playbook.md": {
+      "chosen_id": "X5TwiHiuJzdRPpSzhBGn",
+      "chosen_type": "file",
+      "candidate_count": 1,
+      "candidate_ids": [
+        "X5TwiHiuJzdRPpSzhBGn"
+      ],
+      "metadata": {
+        "created_at_unix_secs": 1781229397,
+        "last_updated_at_unix_secs": 1781863830,
+        "size_bytes": 19147
+      }
+    },
+    "atlas_output_quality_rules.md": {
+      "chosen_id": "GS5wqgcUomoJmqWCEpP7",
+      "chosen_type": "file",
+      "candidate_count": 1,
+      "candidate_ids": [
+        "GS5wqgcUomoJmqWCEpP7"
+      ],
+      "metadata": {
+        "created_at_unix_secs": 1781229399,
+        "last_updated_at_unix_secs": 1781863832,
+        "size_bytes": 15867
+      }
+    }
+  },
+  "kb_documents_planned_for_in_place_update": [
+    "atlas_close_and_followup_playbook.md",
+    "atlas_output_quality_rules.md"
+  ],
+  "end_call_description": "End the call only when the conversation is genuinely complete. Call this tool once when the buyer explicitly ends a completed conversation, gives a hard stop or do-not-call request, a completed gatekeeper callback or note outcome is reached, or a guarantee-only disqualification reaches its terminal conclusion. Before ending, answer any live direct question or unresolved concern, confirm any pending email destination, and confirm any agreed callback window. Exception: a hard stop or do-not-call request overrides pending email confirmation, callback, and every unfinished sales action; end immediately without confirming email or continuing the pitch. Include by-the-end-of-day delivery timing only when it has not already been stated, or when email confirmation and goodbye occur in the same buyer turn. Use the tool's message field as the single final spoken line. Do not speak a separate farewell before invoking the tool. Do not end while email confirmation is pending, the buyer accepted the mockup but no email is known, or the buyer is still asking about price, process, capability, scope, or another unresolved concern, except for the hard-stop/do-not-call override. Do not call this tool more than once.",
+  "unrelated_tool_fingerprint_before": {
+    "non_end_call_legacy_tools": [],
+    "built_in_tools_excluding_end_call": {
+      "language_detection": null,
+      "transfer_to_agent": null,
+      "transfer_to_number": null,
+      "skip_turn": null,
+      "play_keypad_touch_tone": null,
+      "voicemail_detection": null,
+      "update_state": null,
+      "memory_entry_search": null,
+      "memory_entry_create": null,
+      "memory_entry_update": null,
+      "memory_entry_delete": null,
+      "agent_prompt_change": null,
+      "procedure_update": null,
+      "procedure_create": null,
+      "procedure_delete": null,
+      "transfer_to_genesys_chat": null
+    },
+    "tool_ids": [],
+    "mcp_server_ids": [],
+    "native_mcp_server_ids": []
+  },
+  "analysis_live_update_supported": true,
+  "procedures_expected_inactive": true
+}

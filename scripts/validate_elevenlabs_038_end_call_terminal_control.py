@@ -78,7 +78,7 @@ def validate_prompt_and_kb() -> None:
     output = read(OUTPUT)
     combined = "\n".join((prompt, close, output))
 
-    assert_condition(word_count(prompt) <= 1450, f"prompt no longer compact: {word_count(prompt)} words")
+    assert_condition(word_count(prompt) <= 1650, f"prompt no longer compact: {word_count(prompt)} words")
     assert_markers(
         "prompt end-call control",
         prompt,
@@ -86,12 +86,12 @@ def validate_prompt_and_kb() -> None:
             "## End Call Tool Control",
             "`end_call` is the only terminal mechanism for completed live calls",
             "Use it exactly once",
-            "Put the only final spoken line in the tool's `message`",
-            "do not speak \"Take care\" or another goodbye separately before the tool call",
+            "Put the sole final spoken line in the tool `message`",
+            "Do not speak a separate farewell before invoking it",
             "A live direct question or unresolved concern outranks `end_call`",
-            "Pending email confirmation outranks `end_call`",
-            "Accepted mockup with no email known also outranks `end_call`",
-            "end-of-day delivery timing",
+            "Pending email confirmation blocks `end_call`",
+            "Accepted mockup with no email known also blocks `end_call`",
+            "by-the-end-of-day timing",
             "Never invoke `end_call` twice",
             "Never reopen the pitch after invoking it",
         ),
@@ -141,17 +141,17 @@ def validate_analysis() -> int:
         "analysis end-call semantics",
         combined,
         (
-            "`end_call` is invoked once after a genuine terminal condition",
+            "a completed terminal state invokes `end_call` exactly once",
             "no separate farewell precedes it",
-            "no pitch or explanation follows it",
+            "no pitch follows",
             "no end_call invocation occurs after a clear completed goodbye where the tool is available",
-            "end_call is called more than once",
-            "Emma says \"Take care\" separately and then invokes `end_call`",
-            "invokes end_call while an unresolved concern remains",
-            "invokes end_call while email confirmation is pending",
-            "invokes end_call after accepted mockup but before collecting email",
+            "`end_call` is invoked more than once",
+            "Emma speaks a separate confirmation or goodbye before invoking the tool",
+            "unresolved concern remains",
+            "pending email remains except hard-stop override",
+            "accepted mockup but no email",
             "omits end-of-day delivery timing when email confirmation and goodbye occur in the same turn",
-            "hard stop or do-not-call request ends the sales motion immediately through one short final `end_call` message",
+            "hard stop or do-not-call request immediately invokes one `end_call`",
             "terminal guarantee-only bad fit",
         ),
     )

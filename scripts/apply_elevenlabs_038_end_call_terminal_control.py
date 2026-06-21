@@ -20,7 +20,7 @@ from typing import Any
 ROOT = Path(__file__).resolve().parents[1]
 API_BASE_URL = "https://api.elevenlabs.io"
 API_KEY_ENV_VAR = "ELEVENLABS_API_KEY"
-CHECKPOINT_ID = "ELEVENLABS-038-end-call-terminal-control"
+CHECKPOINT_ID = "ELEVENLABS-039-end-call-edge-case-hardening"
 OUT_DIR = ROOT / "research" / "experiments" / "generated" / CHECKPOINT_ID
 DEFAULT_AGENT_ID = "agent_7801kt0g32zxf4f8x5zkykj7syty"
 EXPECTED_AGENT_NAME = "web design"
@@ -36,20 +36,22 @@ MANIFEST_PATH = (
 )
 
 KB_DOCS_TO_UPDATE = {
-    "atlas_price_scope_cost_drivers.md",
     "atlas_close_and_followup_playbook.md",
     "atlas_output_quality_rules.md",
 }
 
 END_CALL_DESCRIPTION = (
     "End the call only when the conversation is genuinely complete. Call this tool once when the buyer explicitly "
-    "ends a completed conversation, gives a hard stop or do-not-call request, or a guarantee-only disqualification "
-    "has reached its terminal conclusion. Before ending, answer any live direct question or unresolved concern, "
-    "confirm any pending email destination, include by-the-end-of-day delivery timing after email confirmation, and "
-    "confirm any agreed callback window. Use the tool's message field as the single final spoken line. Do not speak "
-    "a separate farewell before invoking the tool. Do not end while email confirmation is pending, the buyer accepted "
-    "the mockup but no email is known, or the buyer is still asking about price, process, capability, scope, or "
-    "another unresolved concern. Do not call this tool more than once."
+    "ends a completed conversation, gives a hard stop or do-not-call request, a completed gatekeeper callback or "
+    "note outcome is reached, or a guarantee-only disqualification reaches its terminal conclusion. Before ending, "
+    "answer any live direct question or unresolved concern, confirm any pending email destination, and confirm any "
+    "agreed callback window. Exception: a hard stop or do-not-call request overrides pending email confirmation, "
+    "callback, and every unfinished sales action; end immediately without confirming email or continuing the pitch. "
+    "Include by-the-end-of-day delivery timing only when it has not already been stated, or when email confirmation "
+    "and goodbye occur in the same buyer turn. Use the tool's message field as the single final spoken line. Do not "
+    "speak a separate farewell before invoking the tool. Do not end while email confirmation is pending, the buyer "
+    "accepted the mockup but no email is known, or the buyer is still asking about price, process, capability, scope, "
+    "or another unresolved concern, except for the hard-stop/do-not-call override. Do not call this tool more than once."
 )
 
 OLD_MONOLITHIC_KB_NAMES = {
@@ -323,16 +325,73 @@ def build_end_call_tool() -> dict[str, Any]:
     }
 
 
-def build_agent_patch(agent: dict[str, Any], canonical_kb: list[dict[str, Any]], prompt_text: str) -> dict[str, Any]:
-    conversation_config = copy.deepcopy(agent["conversation_config"])
-    prompt = conversation_config["agent"]["prompt"]
-    prompt["prompt"] = prompt_text
-    prompt["knowledge_base"] = canonical_kb
-    prompt.pop("tools", None)
+def is_end_call_tool_entry(item: Any) -> bool:
+    return isinstance(item, dict) and item.get("name") == "end_call"
+
+
+def unrelated_tool_fingerprint(agent_or_prompt: dict[str, Any]) -> dict[str, Any]:
+    prompt = agent_or_prompt if "conversation_config" not in agent_or_prompt else get_prompt(agent_or_prompt)
+    legacy_tools = prompt.get("tools", [])
+    if legacy_tools is not None and not isinstance(legacy_tools, list):
+        raise ValueError("prompt.tools is not a list")
+    built_in_tools = prompt.get("built_in_tools", {})
+    if built_in_tools is not None and not isinstance(built_in_tools, dict):
+        raise ValueError("prompt.built_in_tools is not an object")
+    return {
+        "non_end_call_legacy_tools": [
+            copy.deepcopy(item) for item in (legacy_tools or []) if not is_end_call_tool_entry(item)
+        ],
+        "built_in_tools_excluding_end_call": {
+            str(key): copy.deepcopy(value)
+            for key, value in (built_in_tools or {}).items()
+            if str(key) != "end_call"
+        },
+        "tool_ids": copy.deepcopy(prompt.get("tool_ids", [])),
+        "mcp_server_ids": copy.deepcopy(prompt.get("mcp_server_ids", [])),
+        "native_mcp_server_ids": copy.deepcopy(prompt.get("native_mcp_server_ids", [])),
+    }
+
+
+def assert_unrelated_tool_fingerprint_unchanged(
+    before: dict[str, Any],
+    after: dict[str, Any],
+    *,
+    context: str,
+) -> None:
+    if before != after:
+        raise ValueError(
+            f"unrelated tool fingerprint changed during {context}: "
+            f"before={sanitize(before)!r}, after={sanitize(after)!r}"
+        )
+
+
+def normalize_end_call_tools(prompt: dict[str, Any]) -> None:
+    legacy_tools = prompt.get("tools", [])
+    if legacy_tools is not None and not isinstance(legacy_tools, list):
+        raise ValueError("prompt.tools is not a list")
+    prompt["tools"] = [
+        copy.deepcopy(item)
+        for item in (legacy_tools or [])
+        if not is_end_call_tool_entry(item)
+    ]
     built_in_tools = prompt.setdefault("built_in_tools", {})
     if not isinstance(built_in_tools, dict):
         raise ValueError("prompt.built_in_tools is not an object")
     built_in_tools["end_call"] = build_end_call_tool()
+
+
+def build_agent_patch(agent: dict[str, Any], canonical_kb: list[dict[str, Any]], prompt_text: str) -> dict[str, Any]:
+    conversation_config = copy.deepcopy(agent["conversation_config"])
+    prompt = conversation_config["agent"]["prompt"]
+    fingerprint_before = unrelated_tool_fingerprint(get_prompt(agent))
+    prompt["prompt"] = prompt_text
+    prompt["knowledge_base"] = canonical_kb
+    normalize_end_call_tools(prompt)
+    assert_unrelated_tool_fingerprint_unchanged(
+        fingerprint_before,
+        unrelated_tool_fingerprint(prompt),
+        context="patch-body-build",
+    )
     rag = prompt.setdefault("rag", {})
     if isinstance(rag, dict):
         rag["enabled"] = True
@@ -341,7 +400,7 @@ def build_agent_patch(agent: dict[str, Any], canonical_kb: list[dict[str, Any]],
         "conversation_config": conversation_config,
         "workflow": copy.deepcopy(agent.get("workflow", {})),
         "tags": copy.deepcopy(agent.get("tags", [])),
-        "version_description": "ELEVENLABS-038 end-call terminal control; prompt, canonical focused KB attachments, and built-in end_call tool",
+        "version_description": "ELEVENLABS-039 end-call edge-case hardening; prompt, focused KB attachments, Analysis, and built-in end_call tool",
     }
 
 
@@ -448,14 +507,17 @@ def criterion_prompt(item: dict[str, Any]) -> str:
         ),
         "terminal_close_no_loop": (
             "Evaluate the completed transcript for `terminal_close_no_loop`.\n"
-            "Criterion: Completed terminal states should use exactly one `end_call` with one final message.\n"
-            "Return success when: `end_call` is invoked once after a genuine terminal condition, with no separate farewell "
-            "before it and no pitch, explanation, or goodbye loop after it.\n"
+            "Criterion: Completed terminal states should use exactly one `end_call` with the final message supplied "
+            "through the tool.\n"
+            "Return success when: `end_call` is invoked once after a genuine terminal condition; no separate farewell "
+            "precedes it; no pitch follows; delivery timing is included only when not already stated or when email "
+            "confirmation and goodbye occur in the same turn; and callback/note completion terminates atomically.\n"
             "Return failure when: no `end_call` occurs after a completed goodbye while the tool is available; `end_call` "
-            "is called more than once; Emma says Take care or another farewell before the tool; goodbye is repeated; pitch "
-            "or explanation follows terminal action; `end_call` occurs with unresolved concern, pending email confirmation, "
-            "or accepted mockup but no email; email-confirmed goodbye omits by-the-end-of-day delivery timing; or Take care "
-            "is repeated.\n"
+            "is called more than once; Emma says Take care or another farewell before the tool; delivery timing is repeated "
+            "after it was already stated; a callback/note is confirmed but the call remains open; pitch or explanation follows "
+            "terminal action; `end_call` occurs with unresolved concern, pending email confirmation except hard-stop override, "
+            "or accepted mockup but no email; email-confirmed same-turn goodbye omits by-the-end-of-day delivery timing; or "
+            "Take care is repeated.\n"
             "Return unknown when: No completed terminal condition, hard stop, do-not-call, or terminal guarantee-only close appears.\n"
             "Use only the transcript. Return success, failure, or unknown with a brief rationale."
         ),
@@ -481,9 +543,10 @@ def criterion_prompt(item: dict[str, Any]) -> str:
         "terminal_close_no_loop": (
             "Hard fail if no end_call occurs after a genuine completed goodbye when the tool is available; end_call is "
             "called more than once; Emma says a farewell before invoking the tool; goodbye or Take care is repeated; "
-            "pitch or explanation follows terminal action; end_call is invoked while an unresolved concern remains, "
-            "email confirmation is pending, or mockup was accepted but no email is known; or email-confirmed goodbye "
-            "omits by-the-end-of-day delivery timing."
+            "delivery timing is unnecessarily repeated in the final tool message; gatekeeper callback/note is confirmed "
+            "but the call remains open; pitch or explanation follows terminal action; end_call is invoked while an "
+            "unresolved concern remains, email confirmation is pending except hard-stop override, or mockup was accepted "
+            "but no email is known; or email-confirmed same-turn goodbye omits by-the-end-of-day delivery timing."
         ),
     }
     lines = [
@@ -544,6 +607,7 @@ def report_markdown(result: dict[str, Any]) -> str:
             f"- Analysis updated through live agent config: `{str(result['analysis_updated']).lower()}`",
             f"- Analysis update limitation: {result['analysis_update_note']}",
             f"- Unrelated settings preserved: `{str(result['unrelated_settings_preserved']).lower()}`",
+            f"- Unrelated tool fingerprint preserved: `{str(result.get('unrelated_tool_fingerprint_preserved', False)).lower()}`",
             f"- Simulations run: `{str(result['verification']['simulations_run']).lower()}`",
             f"- Outbound calls made: `{str(result['verification']['outbound_calls_made']).lower()}`",
             "",
@@ -567,6 +631,7 @@ def finalize_existing_patch(args: argparse.Namespace, api_key: str) -> int:
     else:
         end_call_before_exists = False
     canonical_kb, kb_selection = select_canonical_kb_docs(current, api_key)
+    unrelated_fingerprint_before = unrelated_tool_fingerprint(current)
     post_before_analysis = verification(current, prompt_text, canonical_kb)
     assert_verification(post_before_analysis)
 
@@ -595,7 +660,7 @@ def finalize_existing_patch(args: argparse.Namespace, api_key: str) -> int:
             "body": sanitize(
                 {
                     "platform_settings": platform_settings,
-                    "version_description": "ELEVENLABS-038 end-call terminal control; update live Analysis criteria",
+                    "version_description": "ELEVENLABS-039 end-call edge-case hardening; update live Analysis criteria",
                 }
             ),
             "live_provider_call": True,
@@ -607,13 +672,19 @@ def finalize_existing_patch(args: argparse.Namespace, api_key: str) -> int:
         api_key=api_key,
         body={
             "platform_settings": platform_settings,
-            "version_description": "ELEVENLABS-038 end-call terminal control; update live Analysis criteria",
+            "version_description": "ELEVENLABS-039 end-call edge-case hardening; update live Analysis criteria",
         },
         timeout_seconds=60,
     )
     post = json_request("GET", f"/v1/convai/agents/{urllib.parse.quote(args.agent_id)}", api_key=api_key)["response"]
     post_verification = verification(post, prompt_text, canonical_kb)
     assert_verification(post_verification)
+    unrelated_fingerprint_after = unrelated_tool_fingerprint(post)
+    assert_unrelated_tool_fingerprint_unchanged(
+        unrelated_fingerprint_before,
+        unrelated_fingerprint_after,
+        context="analysis-live-readback",
+    )
     live_criteria = ((post.get("platform_settings") or {}).get("evaluation") or {}).get("criteria", [])
     live_criteria_ids = [item.get("id") for item in live_criteria if isinstance(item, dict)]
     repo_criteria_ids = [item["id"] for item in criteria]
@@ -641,6 +712,7 @@ def finalize_existing_patch(args: argparse.Namespace, api_key: str) -> int:
         "analysis_update_note": "Live platform_settings.evaluation.criteria was patched from the repo analysis config.",
         "verification": post_verification,
         "unrelated_settings_preserved": True,
+        "unrelated_tool_fingerprint_preserved": True,
         "canonical_kb_selection_after_update": sanitize(kb_selection["selection"]),
         "intermediate_verifier_error": previous_result.get("error"),
         "live_provider_calls_made": True,
@@ -679,6 +751,23 @@ def finalize_existing_patch(args: argparse.Namespace, api_key: str) -> int:
             "outbound_calls_made": False,
         },
     )
+    write_json(
+        OUT_DIR / "unrelated_tool_fingerprint_before.json",
+        {
+            "checkpoint_id": CHECKPOINT_ID,
+            "agent_id": args.agent_id,
+            "fingerprint": sanitize(unrelated_fingerprint_before),
+        },
+    )
+    write_json(
+        OUT_DIR / "unrelated_tool_fingerprint_after.json",
+        {
+            "checkpoint_id": CHECKPOINT_ID,
+            "agent_id": args.agent_id,
+            "fingerprint": sanitize(unrelated_fingerprint_after),
+            "matches_before": True,
+        },
+    )
     write_json(OUT_DIR / "live_agent_patch_result.json", result_payload)
     write_text(OUT_DIR / "report.md", report_markdown(result_payload))
     print(json.dumps({
@@ -698,7 +787,7 @@ def finalize_existing_patch(args: argparse.Namespace, api_key: str) -> int:
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Apply ELEVENLABS-038 terminal end-call control to the live Atlas agent.")
+    parser = argparse.ArgumentParser(description="Apply ELEVENLABS-039 end-call edge-case hardening to the live Atlas agent.")
     parser.add_argument("--agent-id", default=DEFAULT_AGENT_ID)
     parser.add_argument("--live", action="store_true")
     parser.add_argument("--confirm-provider-write", action="store_true")
@@ -734,6 +823,7 @@ def main() -> int:
     )
 
     canonical_kb, kb_selection = select_canonical_kb_docs(pre, api_key)
+    unrelated_fingerprint_before = unrelated_tool_fingerprint(pre)
     end_call_before = summarize_tools(pre)
     duplicate_before_count = end_call_before["duplicate_custom_or_server_end_call_count"]
     kb_by_name = {item["name"]: item for item in canonical_kb}
@@ -761,6 +851,7 @@ def main() -> int:
         "canonical_kb_selection": sanitize(kb_selection["selection"]),
         "kb_documents_planned_for_in_place_update": sorted(KB_DOCS_TO_UPDATE),
         "end_call_description": END_CALL_DESCRIPTION,
+        "unrelated_tool_fingerprint_before": sanitize(unrelated_fingerprint_before),
         "analysis_live_update_supported": bool(pre.get("platform_settings")),
         "procedures_expected_inactive": True,
     }
@@ -806,6 +897,11 @@ def main() -> int:
 
         refreshed = json_request("GET", f"/v1/convai/agents/{urllib.parse.quote(args.agent_id)}", api_key=api_key)["response"]
         validate_target_agent(refreshed, args.agent_id, {EXPECTED_AGENT_NAME})
+        assert_unrelated_tool_fingerprint_unchanged(
+            unrelated_fingerprint_before,
+            unrelated_tool_fingerprint(refreshed),
+            context="kb-update-readback",
+        )
         canonical_kb, kb_selection_after_update = select_canonical_kb_docs(refreshed, api_key)
         patch_body = build_agent_patch(refreshed, canonical_kb, prompt_text)
         request_log.append(
@@ -828,6 +924,12 @@ def main() -> int:
         post = json_request("GET", f"/v1/convai/agents/{urllib.parse.quote(args.agent_id)}", api_key=api_key)["response"]
         post_verification = verification(post, prompt_text, canonical_kb)
         assert_verification(post_verification)
+        unrelated_fingerprint_after = unrelated_tool_fingerprint(post)
+        assert_unrelated_tool_fingerprint_unchanged(
+            unrelated_fingerprint_before,
+            unrelated_fingerprint_after,
+            context="post-patch-readback",
+        )
     except Exception as exc:
         write_json(
             OUT_DIR / "live_agent_patch_requests.json",
@@ -871,6 +973,23 @@ def main() -> int:
         },
     )
     write_json(
+        OUT_DIR / "unrelated_tool_fingerprint_before.json",
+        {
+            "checkpoint_id": CHECKPOINT_ID,
+            "agent_id": args.agent_id,
+            "fingerprint": sanitize(unrelated_fingerprint_before),
+        },
+    )
+    write_json(
+        OUT_DIR / "unrelated_tool_fingerprint_after.json",
+        {
+            "checkpoint_id": CHECKPOINT_ID,
+            "agent_id": args.agent_id,
+            "fingerprint": sanitize(unrelated_fingerprint_after),
+            "matches_before": True,
+        },
+    )
+    write_json(
         OUT_DIR / "live_tool_readback.json",
         {
             "checkpoint_id": CHECKPOINT_ID,
@@ -898,6 +1017,7 @@ def main() -> int:
         "analysis_updated": False,
         "analysis_update_note": "No live Analysis/evaluation field is present in the active agent readback; repo analysis config was updated only.",
         "unrelated_settings_preserved": True,
+        "unrelated_tool_fingerprint_preserved": True,
         "canonical_kb_selection_after_update": sanitize(kb_selection_after_update["selection"]),
         "live_provider_calls_made": True,
         "simulations_run": False,

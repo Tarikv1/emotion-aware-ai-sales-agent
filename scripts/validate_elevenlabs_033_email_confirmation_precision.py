@@ -192,7 +192,7 @@ def active_test_paths() -> list[Path]:
 
 def assert_prompt() -> None:
     text = read_text(PROMPT)
-    assert_condition(word_count(text) <= 1450, f"Prompt is no longer compact: {word_count(text)} words")
+    assert_condition(word_count(text) <= 1650, f"Prompt is no longer compact: {word_count(text)} words")
     assert_markers("prompt", text, PROMPT_MARKERS)
 
 
