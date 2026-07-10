@@ -49,7 +49,10 @@ END_CALL_DESCRIPTION = (
     "the guarantee requirement or clearly ends; 'no guarantee, do not send a mockup' is not by itself a hard stop or "
     "do-not-call request. Email confirmation without goodbye is not a completed conversation; do not invoke this "
     "tool or add a farewell after confirmation alone. Same-turn timing is determined only by the latest buyer "
-    "utterance, never earlier confirmation. If delivery timing was already spoken, the message must be "
+    "utterance, never earlier confirmation. The email-confirmation terminal branch requires explicit confirmation "
+    "and explicit bye or goodbye in that latest utterance; thanks, got it, or a repeated email without bye or "
+    "goodbye never qualifies. If confirmation includes a live question without bye or goodbye, answer it and state "
+    "delivery timing without end_call or Take care. If delivery timing was already spoken, the message must be "
     "exactly 'Take care.' Before ending, answer any live direct question or unresolved concern, confirm any pending "
     "email destination, and confirm any "
     "agreed callback window. Exception: a hard stop or do-not-call request overrides pending email confirmation, "
@@ -71,6 +74,11 @@ OLD_MONOLITHIC_KB_NAMES = {
 PRIVATE_KEY_RE = re.compile(r"(api[_-]?key|authorization|secret|token|phone|email)", re.IGNORECASE)
 EMAIL_RE = re.compile(r"[\w.+-]+@[\w.-]+\.[A-Za-z]{2,}")
 PHONE_RE = re.compile(r"(?<!\w)(?:\+?\d[\d\s().-]{7,}\d)(?!\w)")
+SECRET_ASSIGNMENT_RE = re.compile(
+    r'(?i)("?(?:xi-api-key|api[_-]?key|authorization|token|secret)"?\s*[:=]\s*)(?:"[^"]*"|\'[^\']*\'|[^\s,}]+)'
+)
+BEARER_TOKEN_RE = re.compile(r"(?i)\bBearer\s+[A-Za-z0-9._=-]+")
+OPENAI_SECRET_RE = re.compile(r"\bsk-[A-Za-z0-9_-]+\b")
 
 
 def rel(path: Path) -> str:
@@ -101,6 +109,14 @@ def write_text(path: Path, text: str) -> None:
     path.write_text(text, encoding="utf-8")
 
 
+def redact_text(value: str) -> str:
+    value = SECRET_ASSIGNMENT_RE.sub(r"\1[REDACTED]", value)
+    value = BEARER_TOKEN_RE.sub("Bearer [REDACTED]", value)
+    value = OPENAI_SECRET_RE.sub("[REDACTED_SECRET]", value)
+    value = EMAIL_RE.sub("[REDACTED_EMAIL]", value)
+    return PHONE_RE.sub("[REDACTED_PHONE]", value)
+
+
 def sanitize(value: Any, *, key_hint: str = "") -> Any:
     if isinstance(value, dict):
         clean: dict[str, Any] = {}
@@ -128,10 +144,12 @@ def sanitize(value: Any, *, key_hint: str = "") -> Any:
     if isinstance(value, list):
         return [sanitize(item, key_hint=key_hint) for item in value]
     if isinstance(value, str):
-        if key_hint in {"conversation_goal_prompt", "prompt", "description", "first_message", "message"}:
-            return value
-        return PHONE_RE.sub("[REDACTED_PHONE]", EMAIL_RE.sub("[REDACTED_EMAIL]", value))
+        return redact_text(value)
     return value
+
+
+def safe_error_message(exc: BaseException) -> str:
+    return redact_text(str(exc))[:1600]
 
 
 def json_request(
@@ -161,7 +179,11 @@ def json_request(
             }
     except urllib.error.HTTPError as exc:
         body_text = exc.read().decode("utf-8", errors="replace")
-        raise RuntimeError(f"{method} {endpoint} failed with {exc.code}: {body_text[:1200]}") from exc
+        try:
+            body_summary = json.dumps(sanitize(json.loads(body_text)), ensure_ascii=True)
+        except json.JSONDecodeError:
+            body_summary = redact_text(body_text)
+        raise RuntimeError(f"{method} {endpoint} failed with {exc.code}: {body_summary[:1200]}") from exc
 
 
 def multipart_update_file(
@@ -199,7 +221,11 @@ def multipart_update_file(
             }
     except urllib.error.HTTPError as exc:
         body_text = exc.read().decode("utf-8", errors="replace")
-        raise RuntimeError(f"PATCH update-file {documentation_id} failed with {exc.code}: {body_text[:1200]}") from exc
+        try:
+            body_summary = json.dumps(sanitize(json.loads(body_text)), ensure_ascii=True)
+        except json.JSONDecodeError:
+            body_summary = redact_text(body_text)
+        raise RuntimeError(f"PATCH update-file {documentation_id} failed with {exc.code}: {body_summary[:1200]}") from exc
 
 
 def active_kb_paths() -> list[Path]:
@@ -313,25 +339,6 @@ def select_canonical_kb_docs(agent: dict[str, Any], api_key: str) -> tuple[list[
     return canonical, {"selection": selection, "metadata_by_id": metadata_by_id}
 
 
-def build_end_call_tool() -> dict[str, Any]:
-    return {
-        "type": "system",
-        "name": "end_call",
-        "description": END_CALL_DESCRIPTION,
-        "response_timeout_secs": 20,
-        "disable_interruptions": False,
-        "force_pre_tool_speech": False,
-        "pre_tool_speech": "auto",
-        "assignments": [],
-        "tool_call_sound": None,
-        "tool_call_sound_behavior": "auto",
-        "tool_error_handling_mode": "auto",
-        "params": {
-            "system_tool_type": "end_call",
-        },
-    }
-
-
 def is_end_call_tool_entry(item: Any) -> bool:
     return isinstance(item, dict) and item.get("name") == "end_call"
 
@@ -372,6 +379,84 @@ def assert_unrelated_tool_fingerprint_unchanged(
         )
 
 
+def protected_unrelated_agent_state(
+    agent: dict[str, Any],
+    *,
+    allow_analysis_criteria_change: bool = False,
+) -> dict[str, Any]:
+    state = {
+        key: copy.deepcopy(agent.get(key))
+        for key in (
+            "agent_id",
+            "name",
+            "conversation_config",
+            "platform_settings",
+            "workflow",
+            "tags",
+            "phone_numbers",
+            "whatsapp_accounts",
+            "procedures",
+        )
+        if key in agent
+    }
+    prompt = state.get("conversation_config", {}).get("agent", {}).get("prompt")
+    if not isinstance(prompt, dict):
+        raise ValueError("protected-state snapshot cannot locate prompt")
+    prompt.pop("prompt", None)
+    prompt.pop("knowledge_base", None)
+    tools = prompt.get("tools", [])
+    if tools is not None:
+        if not isinstance(tools, list):
+            raise ValueError("prompt.tools is not a list")
+        prompt["tools"] = [copy.deepcopy(item) for item in tools if not is_end_call_tool_entry(item)]
+    built_in_tools = prompt.get("built_in_tools", {})
+    if built_in_tools is not None:
+        if not isinstance(built_in_tools, dict):
+            raise ValueError("prompt.built_in_tools is not an object")
+        filtered_built_ins = copy.deepcopy(built_in_tools)
+        filtered_built_ins.pop("end_call", None)
+        prompt["built_in_tools"] = filtered_built_ins
+    if allow_analysis_criteria_change:
+        platform_settings = state.get("platform_settings")
+        if isinstance(platform_settings, dict):
+            evaluation = platform_settings.get("evaluation")
+            if isinstance(evaluation, dict):
+                evaluation.pop("criteria", None)
+    return state
+
+
+def assert_protected_unrelated_state_unchanged(
+    before: dict[str, Any],
+    after: dict[str, Any],
+    *,
+    context: str,
+    allow_analysis_criteria_change: bool = False,
+) -> None:
+    before_state = protected_unrelated_agent_state(
+        before,
+        allow_analysis_criteria_change=allow_analysis_criteria_change,
+    )
+    after_state = protected_unrelated_agent_state(
+        after,
+        allow_analysis_criteria_change=allow_analysis_criteria_change,
+    )
+    if before_state != after_state:
+        raise ValueError(
+            f"unrelated protected agent state changed during {context}: "
+            f"before={sanitize(before_state)!r}, after={sanitize(after_state)!r}"
+        )
+
+
+def live_built_in_end_call(prompt: dict[str, Any]) -> dict[str, Any]:
+    built_in_tools = prompt.get("built_in_tools", {})
+    if not isinstance(built_in_tools, dict):
+        raise ValueError("prompt.built_in_tools is not an object")
+    end_call = built_in_tools.get("end_call")
+    if not isinstance(end_call, dict):
+        raise ValueError("live built-in end_call is missing")
+    return end_call
+
+
 def normalize_end_call_tools(prompt: dict[str, Any]) -> None:
     legacy_tools = prompt.get("tools", [])
     if legacy_tools is not None and not isinstance(legacy_tools, list):
@@ -381,10 +466,24 @@ def normalize_end_call_tools(prompt: dict[str, Any]) -> None:
         for item in (legacy_tools or [])
         if not is_end_call_tool_entry(item)
     ]
-    built_in_tools = prompt.setdefault("built_in_tools", {})
-    if not isinstance(built_in_tools, dict):
-        raise ValueError("prompt.built_in_tools is not an object")
-    built_in_tools["end_call"] = build_end_call_tool()
+    end_call = live_built_in_end_call(prompt)
+    end_call["description"] = END_CALL_DESCRIPTION
+
+
+def normalize_kb_entry(item: dict[str, Any]) -> dict[str, Any]:
+    normalized = {
+        "type": str(item.get("type") or "file"),
+        "name": str(item.get("name") or ""),
+        "id": str(item.get("id") or ""),
+    }
+    usage_mode = item.get("usage_mode")
+    if usage_mode:
+        normalized["usage_mode"] = usage_mode
+    return normalized
+
+
+def kb_signature(entries: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    return [normalize_kb_entry(item) for item in entries if isinstance(item, dict)]
 
 
 def build_agent_patch(agent: dict[str, Any], canonical_kb: list[dict[str, Any]], prompt_text: str) -> dict[str, Any]:
@@ -445,13 +544,19 @@ def summarize_tools(agent: dict[str, Any]) -> dict[str, Any]:
 def verification(agent: dict[str, Any], prompt_text: str, canonical_kb: list[dict[str, Any]]) -> dict[str, Any]:
     prompt = get_prompt(agent)
     kb = prompt.get("knowledge_base", [])
-    kb_names = [item.get("name") for item in kb if isinstance(item, dict)]
+    actual_kb = kb_signature(kb if isinstance(kb, list) else [])
+    expected_kb = kb_signature(canonical_kb)
+    kb_names = [item.get("name") for item in actual_kb]
+    kb_ids = [item.get("id") for item in actual_kb]
     tool_summary = summarize_tools(agent)
     return {
         "prompt_updated": prompt.get("prompt") == prompt_text,
         "kb_count": len(kb) if isinstance(kb, list) else None,
-        "kb_unique_count": len(set(kb_names)),
+        "kb_unique_count": len(set(kb_ids)),
         "kb_matches_manifest_order": kb_names == [item["name"] for item in canonical_kb],
+        "kb_matches_canonical_ids_in_order": actual_kb == expected_kb,
+        "kb_ids_in_order": kb_ids,
+        "canonical_kb_ids_in_order": [item.get("id") for item in expected_kb],
         "old_monolithic_kb_attached": bool(set(kb_names) & OLD_MONOLITHIC_KB_NAMES),
         "tests_or_analysis_attached_as_kb": any(
             "tests" in str(name) or "analysis" in str(name) or "research/experiments/generated" in str(name)
@@ -473,6 +578,7 @@ def assert_verification(payload: dict[str, Any]) -> None:
     required_true = [
         "prompt_updated",
         "kb_matches_manifest_order",
+        "kb_matches_canonical_ids_in_order",
         "procedures_inactive",
         "end_call_description_matches",
     ]
@@ -694,6 +800,12 @@ def finalize_existing_patch(args: argparse.Namespace, api_key: str) -> int:
         unrelated_fingerprint_after,
         context="analysis-live-readback",
     )
+    assert_protected_unrelated_state_unchanged(
+        current,
+        post,
+        context="analysis-live-readback",
+        allow_analysis_criteria_change=True,
+    )
     live_criteria = ((post.get("platform_settings") or {}).get("evaluation") or {}).get("criteria", [])
     live_criteria_ids = [item.get("id") for item in live_criteria if isinstance(item, dict)]
     repo_criteria_ids = [item["id"] for item in criteria]
@@ -911,6 +1023,11 @@ def main() -> int:
             unrelated_tool_fingerprint(refreshed),
             context="kb-update-readback",
         )
+        assert_protected_unrelated_state_unchanged(
+            pre,
+            refreshed,
+            context="kb-update-readback",
+        )
         canonical_kb, kb_selection_after_update = select_canonical_kb_docs(refreshed, api_key)
         patch_body = build_agent_patch(refreshed, canonical_kb, prompt_text)
         request_log.append(
@@ -939,7 +1056,13 @@ def main() -> int:
             unrelated_fingerprint_after,
             context="post-patch-readback",
         )
+        assert_protected_unrelated_state_unchanged(
+            pre,
+            post,
+            context="post-patch-readback",
+        )
     except Exception as exc:
+        safe_error = safe_error_message(exc)
         write_json(
             OUT_DIR / "live_agent_patch_requests.json",
             {
@@ -953,14 +1076,14 @@ def main() -> int:
             {
                 "checkpoint_id": CHECKPOINT_ID,
                 "status": "failed",
-                "error": str(exc),
+                "error": safe_error,
                 "kb_update_results": update_results,
                 "live_provider_calls_made": True,
                 "simulations_run": False,
                 "outbound_calls_made": False,
             },
         )
-        raise
+        raise RuntimeError(safe_error) from None
 
     write_json(
         OUT_DIR / "live_agent_patch_requests.json",

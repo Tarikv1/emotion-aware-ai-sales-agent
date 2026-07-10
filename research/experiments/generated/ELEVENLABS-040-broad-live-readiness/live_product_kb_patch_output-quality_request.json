@@ -1,0 +1,10 @@
+{
+  "checkpoint_id": "ELEVENLABS-040-broad-live-readiness",
+  "request_id": "update_kb_file::atlas_output_quality_rules.md",
+  "method": "PATCH",
+  "document_id": "GS5wqgcUomoJmqWCEpP7",
+  "document_name": "atlas_output_quality_rules.md",
+  "source_path": "runtime/providers/elevenlabs_agents/knowledge_base/atlas_web_studio/atlas_output_quality_rules.md",
+  "source_sha256": "853051602d15cfd712333c5555b39fc78931216635a40ab20068ef819f6454fc",
+  "outbound_calls_made": false
+}

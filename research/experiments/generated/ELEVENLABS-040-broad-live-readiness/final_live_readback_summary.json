@@ -1,0 +1,20 @@
+{
+  "checkpoint_id": "ELEVENLABS-040-broad-live-readiness",
+  "status": "readiness_blocked",
+  "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+  "agent_name": "web design",
+  "prompt_sha256": "a40cb8c8e85bdd6f2be5d109a10093d2617bc9ad17ae11fcfb24ccb44496a1a9",
+  "knowledge_base_count": 17,
+  "knowledge_base_order_matches_manifest": true,
+  "built_in_end_call_count": 1,
+  "legacy_system_end_call_mirror_count": 1,
+  "duplicate_custom_or_server_end_call_count": 0,
+  "analysis_criteria_count": 30,
+  "procedures_inactive": true,
+  "unrelated_tool_fingerprint_preserved": true,
+  "protected_state_sha256": "66ef87f5731235a6eab429e84c2d2e94925b9b503c435f1a21ee4e433060f3c9",
+  "dashboard_test_semantics_match_repo": true,
+  "simulations_run": true,
+  "outbound_calls_made": false,
+  "broad_live_readiness_claimed": false
+}

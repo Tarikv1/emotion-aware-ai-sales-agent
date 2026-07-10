@@ -1,0 +1,17 @@
+{
+  "checkpoint_id": "ELEVENLABS-040-broad-live-readiness",
+  "status": "passed",
+  "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+  "agent_name": "web design",
+  "document_id": "vGKk14CCzKqGW3GxgUqA",
+  "document_name": "atlas_price_scope_cost_drivers.md",
+  "source_sha256": "2887fe1b5ec227e78895765b6b51a86c2aeed75928b0412230b6598847d3f175",
+  "status_code": 200,
+  "kb_count": 17,
+  "kb_ids_order_preserved": true,
+  "unrelated_tool_fingerprint_preserved": true,
+  "protected_state_preserved": true,
+  "procedures_inactive": true,
+  "simulations_run": false,
+  "outbound_calls_made": false
+}

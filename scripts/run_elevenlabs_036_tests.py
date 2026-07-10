@@ -5,6 +5,7 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import re
 import sys
 import time
 from datetime import datetime, timezone
@@ -45,6 +46,17 @@ TARGETED_IDS = (
     "sim_036_future_price_ballpark_no_overpricing",
     "sim_036_guarantee_required_clean_disqualify",
 )
+DEFAULT_REPEAT_COUNT = 1
+MAX_REPEAT_COUNT = 5
+PENDING_RUN_STATUSES = {"", "pending", "running", "queued", "in_progress"}
+PASS_RUN_STATUSES = {"passed"}
+EMAIL_RE = re.compile(r"[\w.+-]+@[\w.-]+\.[A-Za-z]{2,}")
+PHONE_RE = re.compile(r"(?<!\w)(?:\+?\d[\d\s().-]{7,}\d)(?!\w)")
+SECRET_ASSIGNMENT_RE = re.compile(
+    r'(?i)("?(?:xi-api-key|api[_-]?key|authorization|token|secret)"?\s*[:=]\s*)(?:"[^"]*"|\'[^\']*\'|[^\s,}]+)'
+)
+BEARER_TOKEN_RE = re.compile(r"(?i)\bBearer\s+[A-Za-z0-9._=-]+")
+OPENAI_SECRET_RE = re.compile(r"\bsk-[A-Za-z0-9_-]+\b")
 
 
 def utc_now() -> str:
@@ -57,6 +69,18 @@ def write_json(name: str, payload: dict[str, Any]) -> None:
         json.dumps(guards.sanitize(payload), indent=2, ensure_ascii=True) + "\n",
         encoding="ascii",
     )
+
+
+def redact_text(value: str) -> str:
+    value = SECRET_ASSIGNMENT_RE.sub(r"\1[REDACTED]", value)
+    value = BEARER_TOKEN_RE.sub("Bearer [REDACTED]", value)
+    value = OPENAI_SECRET_RE.sub("[REDACTED_SECRET]", value)
+    value = EMAIL_RE.sub("[REDACTED_EMAIL]", value)
+    return PHONE_RE.sub("[REDACTED_PHONE]", value)
+
+
+def safe_error_message(exc: BaseException) -> str:
+    return redact_text(str(exc))[:1600]
 
 
 def expected_bodies() -> tuple[list[str], dict[str, dict[str, Any]]]:
@@ -99,11 +123,91 @@ def get_live_test(api_key: str, source_id: str) -> dict[str, Any]:
     return response
 
 
+def parse_repeat_count(value: str) -> int:
+    try:
+        parsed = int(value)
+    except ValueError as exc:
+        raise argparse.ArgumentTypeError("repeat count must be an integer") from exc
+    if parsed < 1 or parsed > MAX_REPEAT_COUNT:
+        raise argparse.ArgumentTypeError(f"repeat count must be between 1 and {MAX_REPEAT_COUNT}")
+    return parsed
+
+
+def selected_ids_for_scope(scope: str, ordered_ids: list[str]) -> list[str]:
+    scope_map = {
+        "guarantee": ["sim_036_guarantee_required_clean_disqualify"],
+        "scheduling": ["sim_036_scheduling_simple_request_vs_live_integration"],
+        "crm": ["sim_036_crm_payment_capability_before_price"],
+        "cta": ["sim_036_next_step_questions_no_cta_fatigue"],
+        "crm-dashboard": [
+            "sim_036_crm_payment_capability_before_price",
+            "sim_036_custom_dashboard_scoped_separately",
+        ],
+        "email-plus": ["sim_036_email_plus_free_question_confirmation"],
+        "visual": ["sim_036_free_mockup_visual_not_working_site"],
+        "goodbye": ["sim_036_goodbye_take_care_no_loop"],
+        "targeted": list(TARGETED_IDS),
+        "full": list(ordered_ids),
+    }
+    selected_ids = scope_map.get(scope)
+    if selected_ids is None:
+        raise ValueError(f"unsupported scope {scope!r}")
+    return list(selected_ids)
+
+
+def terminal_run_summaries(invocation: dict[str, Any]) -> list[dict[str, Any]]:
+    runs = invocation.get("test_runs", [])
+    if not isinstance(runs, list):
+        return []
+    return [
+        {
+            "test_id": item.get("test_id"),
+            "test_name": item.get("test_name"),
+            "test_run_id": item.get("test_run_id") or item.get("id"),
+            "status": item.get("status"),
+        }
+        for item in runs
+        if isinstance(item, dict)
+    ]
+
+
+def completed_terminal_statuses(invocation: dict[str, Any], *, expected_run_count: int) -> list[str] | None:
+    statuses = [
+        str(item.get("status", "")).strip().lower()
+        for item in terminal_run_summaries(invocation)
+    ]
+    if len(statuses) != expected_run_count:
+        return None
+    if any(status in PENDING_RUN_STATUSES for status in statuses):
+        return None
+    return statuses
+
+
+def is_successful_terminal_status(value: Any) -> bool:
+    return str(value or "").strip().lower() in PASS_RUN_STATUSES
+
+
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Guard and run existing ELEVENLABS-036 tests.")
-    parser.add_argument("--scope", choices=("guarantee", "scheduling", "crm", "cta", "crm-dashboard", "targeted", "full"), required=True)
+    parser.add_argument(
+        "--scope",
+        choices=(
+            "guarantee",
+            "scheduling",
+            "crm",
+            "cta",
+            "crm-dashboard",
+            "email-plus",
+            "visual",
+            "goodbye",
+            "targeted",
+            "full",
+        ),
+        required=True,
+    )
     parser.add_argument("--label", required=True, help="Evidence filename prefix")
     parser.add_argument("--confirm-simulations", choices=(CONFIRMATION,), default=None)
+    parser.add_argument("--repeat-count", type=parse_repeat_count, default=DEFAULT_REPEAT_COUNT)
     parser.add_argument("--wait-timeout-seconds", type=int, default=420)
     return parser.parse_args()
 
@@ -121,23 +225,7 @@ def main() -> int:
 
     try:
         ordered_ids, bodies = expected_bodies()
-        if args.scope == "guarantee":
-            selected_ids = ["sim_036_guarantee_required_clean_disqualify"]
-        elif args.scope == "scheduling":
-            selected_ids = ["sim_036_scheduling_simple_request_vs_live_integration"]
-        elif args.scope == "crm":
-            selected_ids = ["sim_036_crm_payment_capability_before_price"]
-        elif args.scope == "cta":
-            selected_ids = ["sim_036_next_step_questions_no_cta_fatigue"]
-        elif args.scope == "crm-dashboard":
-            selected_ids = [
-                "sim_036_crm_payment_capability_before_price",
-                "sim_036_custom_dashboard_scoped_separately",
-            ]
-        elif args.scope == "targeted":
-            selected_ids = list(TARGETED_IDS)
-        else:
-            selected_ids = ordered_ids
+        selected_ids = selected_ids_for_scope(args.scope, ordered_ids)
         live_tests = {source_id: get_live_test(api_key, source_id) for source_id in selected_ids}
         for source_id in selected_ids:
             if guards.test_semantics(live_tests[source_id]) != guards.test_semantics(bodies[source_id]):
@@ -152,14 +240,18 @@ def main() -> int:
         agent_summary = agent_guard.preflight(agent)
         run_body = {
             "tests": [{"test_id": PROVIDER_TEST_IDS[source_id]} for source_id in selected_ids],
-            "repeat_count": 1,
+            "repeat_count": args.repeat_count,
         }
+        expected_terminal_run_count = len(selected_ids) * args.repeat_count
         request_evidence = {
             "checkpoint_id": CHECKPOINT_ID,
             "captured_at_utc": utc_now(),
             "scope": args.scope,
+            "repeat_count": args.repeat_count,
             "agent": agent_summary,
             "test_ids": {source_id: PROVIDER_TEST_IDS[source_id] for source_id in selected_ids},
+            "selected_test_count": len(selected_ids),
+            "expected_terminal_run_count": expected_terminal_run_count,
             "live_test_semantics_match_repo": True,
             "request": {
                 "method": "POST",
@@ -175,6 +267,8 @@ def main() -> int:
                 "post_performed": False,
                 "scope": args.scope,
                 "test_count": len(selected_ids),
+                "repeat_count": args.repeat_count,
+                "expected_terminal_run_count": expected_terminal_run_count,
                 "outbound_calls_made": False,
             }
             print(json.dumps(result, indent=2))
@@ -206,48 +300,44 @@ def main() -> int:
             invocation = invocation_result.get("response")
             if not isinstance(invocation, dict):
                 raise ValueError("test invocation response is invalid")
-            runs = invocation.get("test_runs")
-            statuses = [
-                str(item.get("status", ""))
-                for item in runs
-                if isinstance(item, dict)
-            ] if isinstance(runs, list) else []
-            if len(statuses) == len(selected_ids) and all(
-                status not in {"", "pending", "running", "queued", "in_progress"}
-                for status in statuses
-            ):
+            statuses = completed_terminal_statuses(
+                invocation,
+                expected_run_count=expected_terminal_run_count,
+            )
+            if statuses is not None:
                 completed = invocation
                 break
             time.sleep(2)
         if completed is None:
             raise TimeoutError(f"test invocation {invocation_id} did not finish before timeout")
 
-        runs = completed.get("test_runs", [])
-        run_summaries = [
-            {
-                "test_id": item.get("test_id"),
-                "test_name": item.get("test_name"),
-                "test_run_id": item.get("test_run_id") or item.get("id"),
-                "status": item.get("status"),
-            }
-            for item in runs
-            if isinstance(item, dict)
+        run_summaries = terminal_run_summaries(completed)
+        final_run_statuses = [str(item.get("status", "")).strip().lower() for item in run_summaries]
+        failed_runs = [
+            item for item in run_summaries
+            if not is_successful_terminal_status(item.get("status"))
         ]
         result = {
             "checkpoint_id": CHECKPOINT_ID,
             "captured_at_utc": utc_now(),
-            "status": "completed",
+            "status": "failed" if failed_runs else "completed",
             "scope": args.scope,
+            "repeat_count": args.repeat_count,
             "invocation_id": invocation_id,
             "run_statuses": run_summaries,
+            "final_run_statuses": final_run_statuses,
+            "selected_test_count": len(selected_ids),
+            "expected_terminal_run_count": expected_terminal_run_count,
+            "observed_terminal_run_count": len(run_summaries),
+            "failed_terminal_run_count": len(failed_runs),
             "provider_status_code": run_result.get("status_code"),
             "outbound_calls_made": False,
         }
         write_json(f"{label}_run_result.json", result)
         print(json.dumps(result, indent=2))
-        return 0
+        return 1 if failed_runs else 0
     except Exception as exc:
-        error = guards.safe_error(exc)
+        error = safe_error_message(exc)
         write_json(
             f"{label}_run_result.json",
             {

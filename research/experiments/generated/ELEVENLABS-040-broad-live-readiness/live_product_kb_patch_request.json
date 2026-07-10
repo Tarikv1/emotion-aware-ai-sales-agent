@@ -1,0 +1,10 @@
+{
+  "checkpoint_id": "ELEVENLABS-040-broad-live-readiness",
+  "request_id": "update_kb_file::atlas_price_scope_cost_drivers.md",
+  "method": "PATCH",
+  "document_id": "vGKk14CCzKqGW3GxgUqA",
+  "document_name": "atlas_price_scope_cost_drivers.md",
+  "source_path": "runtime/providers/elevenlabs_agents/knowledge_base/atlas_web_studio/atlas_price_scope_cost_drivers.md",
+  "source_sha256": "2887fe1b5ec227e78895765b6b51a86c2aeed75928b0412230b6598847d3f175",
+  "outbound_calls_made": false
+}

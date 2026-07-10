@@ -1,0 +1,17 @@
+{
+  "checkpoint_id": "ELEVENLABS-040-broad-live-readiness",
+  "status": "passed",
+  "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+  "agent_name": "web design",
+  "document_id": "GS5wqgcUomoJmqWCEpP7",
+  "document_name": "atlas_output_quality_rules.md",
+  "source_sha256": "853051602d15cfd712333c5555b39fc78931216635a40ab20068ef819f6454fc",
+  "status_code": 200,
+  "kb_count": 17,
+  "kb_ids_order_preserved": true,
+  "unrelated_tool_fingerprint_preserved": true,
+  "protected_state_preserved": true,
+  "procedures_inactive": true,
+  "simulations_run": false,
+  "outbound_calls_made": false
+}

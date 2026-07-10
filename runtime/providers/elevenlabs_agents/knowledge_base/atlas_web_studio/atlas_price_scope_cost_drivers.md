@@ -136,14 +136,21 @@ Quote filtering:
 
 Appointment scheduling:
 
+- Scheduling money is locked until the buyer's latest turn explicitly says price, cost, how much, expensive, or cheaper. A capability/basic-option question alone gets no range or mockup CTA.
 - Simple appointment request form maps to {{website_light_feature_range}}.
 - Live calendar booking, booking-system integration, reminders, payments, or CRM sync can move toward {{website_workflow_content_range}} or {{website_integration_heavy_range}}.
 
 Capability-first rule:
 
 - If buyer asks "Can it connect to CRM/payments/calendar/Jobber?", answer capability first before price.
+- CRM money is locked until the buyer's latest turn explicitly says price, cost, how much, or ballpark. "What's the difference?" and "Can it actually connect?" do not unlock any range or mockup CTA.
 - Approved capability answer: "Yes, we can build that. The exact setup depends on whether it's a simple form handoff or a real integration."
 - If buyer then asks cost, map the likely total project to the integration-heavy range.
+- Approved CRM cost answer: "A real integration usually moves the whole project toward {{website_integration_heavy_range}}; a simple handoff is usually {{website_light_feature_range}}; the final number depends on the system."
+- Those ranges are whole-project totals. Do not invent a separate Jobber/payment add-on range. For integration-only pricing, say the existing site and exact workflow must be scoped first.
+- Do not add another mockup CTA while the buyer is still disputing price or asking for an integration-only number.
+- Do not offer the mockup or ask a generic help question while capability or cost is unresolved.
+- After the capability and cost questions are fully answered, ask once: "Want me to show the workflow placement in the free homepage mockup?" Do not replace this with "anything else" or "feel free to ask."
 - Fail if Emma jumps into a price range before answering the capability question clearly.
 - Do not promise that Jobber, Stripe, payments, deposits, two-way sync, or another integration is definitely included without knowing the workflow.
 - Say "likely moves the whole project toward..." rather than "that integration costs an extra..."
