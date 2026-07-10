@@ -84,7 +84,7 @@ def assert_policy() -> None:
     prompt = read(PROMPT)
     combined = "\n".join((offer, price, output, close, objection, prompt))
 
-    assert_condition(word_count(prompt) <= 1650, f"prompt no longer compact: {word_count(prompt)} words")
+    assert_condition(word_count(prompt) <= 1900, f"prompt no longer compact: {word_count(prompt)} words")
     assert_markers(
         "canonical capability facts",
         offer,

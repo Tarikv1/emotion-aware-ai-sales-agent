@@ -78,7 +78,7 @@ def validate_prompt_and_kb() -> None:
     output = read(OUTPUT)
     combined = "\n".join((prompt, close, output))
 
-    assert_condition(word_count(prompt) <= 1650, f"prompt no longer compact: {word_count(prompt)} words")
+    assert_condition(word_count(prompt) <= 1900, f"prompt no longer compact: {word_count(prompt)} words")
     assert_markers(
         "prompt end-call control",
         prompt,

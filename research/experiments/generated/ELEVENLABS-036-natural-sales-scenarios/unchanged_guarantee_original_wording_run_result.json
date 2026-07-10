@@ -1,0 +1,17 @@
+{
+  "checkpoint_id": "ELEVENLABS-036-natural-sales-scenarios",
+  "captured_at_utc": "2026-07-10T20:49:12Z",
+  "status": "completed",
+  "scope": "guarantee",
+  "invocation_id": "suite_8501kx6wmpejex28c6kcx33jnp93",
+  "run_statuses": [
+    {
+      "test_id": "test_7401ktwzq9txfkhs6ytstggj8k9y",
+      "test_name": "ELEVENLABS-036-natural-sales-scenarios::sim_036_guarantee_required_clean_disqualify",
+      "test_run_id": "trun_2901kx6wmpemfwebfnnzqy346h7e",
+      "status": "passed"
+    }
+  ],
+  "provider_status_code": 200,
+  "outbound_calls_made": false
+}

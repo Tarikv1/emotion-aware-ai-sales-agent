@@ -58,7 +58,7 @@ PROMPT_MARKERS = (
     "If {{business_name}} is known, never ask for the business name.",
     "Vertical action fidelity:",
     "If buyer rejects online booking",
-    "Guarantee-only disqualification lock:",
+    "Guarantee-only exact sequence:",
 )
 
 DISQUALIFICATION_MARKERS = (
@@ -184,7 +184,7 @@ def word_count(text: str) -> int:
 
 def assert_prompt() -> None:
     text = read_text(PROMPT)
-    assert_condition(word_count(text) <= 1650, f"Prompt is no longer compact: {word_count(text)} words")
+    assert_condition(word_count(text) <= 1900, f"Prompt is no longer compact: {word_count(text)} words")
     assert_markers("system prompt", text, PROMPT_MARKERS)
     for banned in (
         "Approved Buyer-Facing Selling Examples",

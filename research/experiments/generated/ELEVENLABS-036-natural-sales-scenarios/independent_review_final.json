@@ -1,0 +1,36 @@
+{
+  "checkpoint_id": "ELEVENLABS-036-natural-sales-scenarios",
+  "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+  "agent_name": "web design",
+  "final_full_invocation_id": "suite_9901kx6ybykhf7kab8qezc6z2s24",
+  "provider_result": {
+    "passed": 9,
+    "failed": 1,
+    "total": 10
+  },
+  "tests_unchanged": true,
+  "live_test_semantics_match_repo": true,
+  "independent_results": [
+    {"test_id": "sim_036_email_confirmation_spoken_email_two_step", "result": "pass"},
+    {"test_id": "sim_036_email_plus_free_question_confirmation", "result": "pass"},
+    {"test_id": "sim_036_future_price_ballpark_no_overpricing", "result": "pass"},
+    {"test_id": "sim_036_scheduling_simple_request_vs_live_integration", "result": "pass"},
+    {"test_id": "sim_036_crm_payment_capability_before_price", "result": "pass"},
+    {"test_id": "sim_036_custom_dashboard_scoped_separately", "result": "pass"},
+    {"test_id": "sim_036_free_mockup_visual_not_working_site", "result": "pass"},
+    {"test_id": "sim_036_next_step_questions_no_cta_fatigue", "result": "pass"},
+    {"test_id": "sim_036_guarantee_required_clean_disqualify", "result": "pass"},
+    {
+      "test_id": "sim_036_goodbye_take_care_no_loop",
+      "result": "contract_conflict",
+      "provider_result": "failed",
+      "trace": "Buyer confirmed the email and said goodbye in the same buyer turn; Emma used one end_call with 'Great, I'll send it there by the end of the day. Take care.'",
+      "036_requirement": "After the completed outcome and goodbye, only 'Take care.' is accepted.",
+      "039_requirement": "If email confirmation and goodbye occur in the same buyer turn, include by-the-end-of-day timing in the final tool message.",
+      "decision": "Preserve the newer active 039 product policy. Do not edit the 036 test or regress the product to manufacture a green label."
+    }
+  ],
+  "outbound_calls_made": false,
+  "procedures_inactive": true,
+  "production_readiness_claimed": false
+}

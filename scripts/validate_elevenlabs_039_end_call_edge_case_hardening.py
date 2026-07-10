@@ -37,8 +37,13 @@ EXPECTED_TEST_IDS = {
 REVISED_END_CALL_DESCRIPTION = (
     "End the call only when the conversation is genuinely complete. Call this tool once when the buyer explicitly "
     "ends a completed conversation, gives a hard stop or do-not-call request, a completed gatekeeper callback or "
-    "note outcome is reached, or a guarantee-only disqualification reaches its terminal conclusion. Before ending, "
-    "answer any live direct question or unresolved concern, confirm any pending email destination, and confirm any "
+    "note outcome is reached, or a guarantee-only disqualification reaches its terminal conclusion. "
+    "A guarantee-only conclusion is terminal only after Emma gives the guarantee-lock response and the buyer repeats "
+    "the guarantee requirement or clearly ends; 'no guarantee, do not send a mockup' is not by itself a hard stop or "
+    "do-not-call request. Email confirmation without goodbye is not a completed conversation; do not invoke this "
+    "tool or add a farewell after confirmation alone. If delivery timing was already spoken, the message must be "
+    "exactly 'Take care.' Before ending, answer any live direct question or unresolved concern, confirm any pending "
+    "email destination, and confirm any "
     "agreed callback window. Exception: a hard stop or do-not-call request overrides pending email confirmation, "
     "callback, and every unfinished sales action; end immediately without confirming email or continuing the pitch. "
     "Include by-the-end-of-day delivery timing only when it has not already been stated, or when email confirmation "
@@ -117,7 +122,8 @@ def validate_repo_policy_text() -> None:
         prompt,
         (
             "`end_call` is the only terminal mechanism for completed live calls",
-            "Email confirmation alone is not terminal: \"Yes, that's right\" after an email repeat means state timing only and wait; never call `end_call`",
+            "Exact output lock: email confirmation without goodbye must output only \"Great, I'll send it there by the end of the day.\" No other words, question, farewell, or tool call.",
+            "After timing, any later `end_call` message is exactly \"Take care.\"",
             "Use it exactly once",
             "sole final spoken line in the tool",
             "Do not speak a separate farewell before invoking it",

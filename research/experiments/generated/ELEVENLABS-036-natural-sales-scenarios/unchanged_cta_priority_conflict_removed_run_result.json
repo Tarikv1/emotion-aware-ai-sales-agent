@@ -1,0 +1,17 @@
+{
+  "checkpoint_id": "ELEVENLABS-036-natural-sales-scenarios",
+  "captured_at_utc": "2026-07-10T21:18:41Z",
+  "status": "completed",
+  "scope": "cta",
+  "invocation_id": "suite_5701kx6ya69ze6r97maaayq5xg4k",
+  "run_statuses": [
+    {
+      "test_id": "test_2001ktwzq9kbf92vdfttrgkvnr1x",
+      "test_name": "ELEVENLABS-036-natural-sales-scenarios::sim_036_next_step_questions_no_cta_fatigue",
+      "test_run_id": "trun_9801kx6ya6a3f4xtm4japegd6dck",
+      "status": "passed"
+    }
+  ],
+  "provider_status_code": 200,
+  "outbound_calls_made": false
+}

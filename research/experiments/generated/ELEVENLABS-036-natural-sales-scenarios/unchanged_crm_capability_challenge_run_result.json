@@ -1,0 +1,17 @@
+{
+  "checkpoint_id": "ELEVENLABS-036-natural-sales-scenarios",
+  "captured_at_utc": "2026-07-10T21:00:28Z",
+  "status": "completed",
+  "scope": "crm",
+  "invocation_id": "suite_1701kx6x89kzf80sc572m1x6t94m",
+  "run_statuses": [
+    {
+      "test_id": "test_4601ktwzq8xnfpbtry5qsepeprh3",
+      "test_name": "ELEVENLABS-036-natural-sales-scenarios::sim_036_crm_payment_capability_before_price",
+      "test_run_id": "trun_8601kx6x89m1fcjr6rtdzkxfk2te",
+      "status": "passed"
+    }
+  ],
+  "provider_status_code": 200,
+  "outbound_calls_made": false
+}

@@ -41,3 +41,35 @@ Created the `ELEVENLABS-036-natural-sales-scenarios` simulation test folder in E
 ## Boundaries
 
 This was a test-definition creation run only. No simulations were started, no prompt or KB files were uploaded, no active Atlas upload manifest was changed, and no production-readiness claim is made.
+
+## 2026-07-10 Product Hardening Run
+
+The existing 10 tests were run inside ElevenLabs against the live Atlas agent. No outbound calls were placed. The test JSON, success criteria, models, turn limits, provider IDs, and folder placement were restored to and verified against their original repo definitions before the final runs.
+
+Product-side changes only:
+
+- compact prompt hardening for email confirmation, scheduling range framing, CRM capability-before-price, custom dashboard scoping, guarantee-only disqualification, CTA fatigue, and delivery-timing deduplication;
+- built-in `end_call` policy hardening for guarantee-only conditions, confirmation-only turns, and timing deduplication;
+- no KB attachment, Analysis, voice, LLM, first-message, dynamic-variable, phone, Procedure, or unrelated-tool changes.
+
+Final unchanged full invocation: `suite_9901kx6ybykhf7kab8qezc6z2s24`.
+
+- ElevenLabs result: 9 passed, 1 failed.
+- Independently clean: email two-step, email plus process concern, future price, scheduling, CRM/payment, custom dashboard, visual-only mockup, CTA fatigue, and guarantee-only disqualification.
+- Remaining label: `sim_036_goodbye_take_care_no_loop`.
+- Conflict: its 036 criterion accepts only `Take care.` after the goodbye, while active ELEVENLABS-039 requires by-end-of-day timing when email confirmation and goodbye occur in the same buyer turn. The final trace followed 039 exactly. The 036 test was not edited and the product was not regressed to force a green label.
+
+Key evidence:
+
+- `live_test_invocation_unchanged_final_full_4_sanitized.json`
+- `unchanged_final_full_4_run_plan.json`
+- `unchanged_final_full_4_run_result.json`
+- `live_test_invocation_unchanged_crm_capability_challenge_sanitized.json`
+- `live_test_invocation_unchanged_scheduling_whole_site_range_sanitized.json`
+- `live_test_invocation_unchanged_cta_priority_conflict_removed_sanitized.json`
+- `live_test_invocation_unchanged_guarantee_original_wording_sanitized.json`
+- `live_prompt_hardening_post_patch.json`
+- `live_guarantee_tool_post_patch.json`
+- `independent_review_final.json`
+
+No production-readiness claim is made.

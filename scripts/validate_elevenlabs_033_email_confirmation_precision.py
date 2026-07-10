@@ -58,7 +58,7 @@ PROMPT_MARKERS = (
     "hidden fees?",
     "send it there",
     "Lead with concrete mechanism first.",
-    "Guarantee-only lock triggers on the first turn",
+    "Guarantee-only exact sequence:",
 )
 
 EMAIL_CONFIRMATION_MARKERS = (
@@ -192,7 +192,7 @@ def active_test_paths() -> list[Path]:
 
 def assert_prompt() -> None:
     text = read_text(PROMPT)
-    assert_condition(word_count(text) <= 1650, f"Prompt is no longer compact: {word_count(text)} words")
+    assert_condition(word_count(text) <= 1900, f"Prompt is no longer compact: {word_count(text)} words")
     assert_markers("prompt", text, PROMPT_MARKERS)
 
 

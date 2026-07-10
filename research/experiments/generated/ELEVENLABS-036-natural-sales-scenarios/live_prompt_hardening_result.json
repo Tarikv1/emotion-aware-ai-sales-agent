@@ -1,0 +1,16 @@
+{
+  "checkpoint_id": "ELEVENLABS-036-natural-sales-scenarios",
+  "status": "passed",
+  "provider_writes_made": true,
+  "write": {
+    "request_id": "patch_agent_prompt_only",
+    "status_code": 200
+  },
+  "prompt_exact": true,
+  "protected_state_preserved": true,
+  "unrelated_tool_fingerprint_preserved": true,
+  "knowledge_base_order_preserved": true,
+  "procedures_inactive": true,
+  "simulations_run": false,
+  "outbound_calls_made": false
+}

@@ -1,0 +1,17 @@
+{
+  "checkpoint_id": "ELEVENLABS-036-natural-sales-scenarios",
+  "captured_at_utc": "2026-07-10T21:11:14Z",
+  "status": "completed",
+  "scope": "scheduling",
+  "invocation_id": "suite_9401kx6xwp0teehab4bdvq169xg8",
+  "run_statuses": [
+    {
+      "test_id": "test_4601ktwzq8nyfcatm8a6mn58y7x6",
+      "test_name": "ELEVENLABS-036-natural-sales-scenarios::sim_036_scheduling_simple_request_vs_live_integration",
+      "test_run_id": "trun_7401kx6xwp0we3b9etbvcjhgajcv",
+      "status": "passed"
+    }
+  ],
+  "provider_status_code": 200,
+  "outbound_calls_made": false
+}

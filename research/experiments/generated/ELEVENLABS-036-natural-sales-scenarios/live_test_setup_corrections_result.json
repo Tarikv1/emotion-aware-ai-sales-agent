@@ -1,0 +1,24 @@
+{
+  "checkpoint_id": "ELEVENLABS-036-natural-sales-scenarios",
+  "status": "passed",
+  "provider_writes_made": true,
+  "writes": [
+    {
+      "source_id": "sim_036_future_price_ballpark_no_overpricing",
+      "provider_id": "test_7101ktwzq8e5edm9bkmwe83tvcsw",
+      "status_code": 200
+    },
+    {
+      "source_id": "sim_036_guarantee_required_clean_disqualify",
+      "provider_id": "test_7401ktwzq9txfkhs6ytstggj8k9y",
+      "status_code": 200
+    }
+  ],
+  "test_ids_preserved": true,
+  "test_semantics_match_repo": true,
+  "folder_metadata_preserved": true,
+  "other_tests_untouched": true,
+  "agent_state_preserved": true,
+  "simulations_run": false,
+  "outbound_calls_made": false
+}

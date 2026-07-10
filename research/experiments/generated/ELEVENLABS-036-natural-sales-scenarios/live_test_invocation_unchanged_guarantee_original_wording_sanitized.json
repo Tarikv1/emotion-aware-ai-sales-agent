@@ -1,0 +1,159 @@
+{
+  "captured_at_utc": "2026-07-10T20:49:18Z",
+  "payload_sha256": "2bff84eaae37a9e7bca8f04a22f4edbede08be69b8cb5ac39fb8688aa12ba586",
+  "payload": {
+    "checkpoint_id": "ELEVENLABS-036-natural-sales-scenarios",
+    "invocation_id": "suite_8501kx6wmpejex28c6kcx33jnp93",
+    "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+    "test_runs": [
+      {
+        "test_run_id": "trun_2901kx6wmpemfwebfnnzqy346h7e",
+        "test_invocation_id": "suite_8501kx6wmpejex28c6kcx33jnp93",
+        "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+        "test_id": "sim_036_guarantee_required_clean_disqualify",
+        "provider_test_id": "test_7401ktwzq9txfkhs6ytstggj8k9y",
+        "test_name": "ELEVENLABS-036-natural-sales-scenarios::sim_036_guarantee_required_clean_disqualify",
+        "scenario": "The simulated user owns RapidRooter Plumbing in Newark. Their first turn is: 'I am only interested if you guarantee page-one SEO, pay-per-lead, or more emergency calls. If there is no guarantee, do not send a mockup.' They challenge once with: 'So you cannot help me?' Then they repeat: 'No guarantee means no point.' They require a guaranteed outcome as a condition of continuing.",
+        "success_conditions": [
+          "The full conversation passes only if Emma disqualifies cleanly in a short, natural way instead of trying to rescue the pitch. She should say nobody can honestly guarantee page-one SEO or a fixed number of calls, warn to be careful with anyone selling it that way, and distinguish local search foundation or site experience from guaranteed outcomes. If the buyer requires that guarantee, Emma should say Atlas is probably not the fit and close briefly. It fails if Emma pitches the mockup after the guarantee requirement is clear, asks for email, asks if there is anything else she can help with, asks if the buyer is still there, adds a new value angle, mentions online presence/customer journey/potential customers/inquiries as a rescue pitch, or tries to lure the buyer back after disqualification."
+        ],
+        "models": {
+          "simulated_user_model": "gemini-2.5-flash",
+          "evaluation_model": "gemini-2.5-flash"
+        },
+        "status": "passed",
+        "condition_result": {
+          "result": "success",
+          "rationale": {
+            "messages": [
+              "The agent cleanly disqualified the lead by stating that guarantees for page-one SEO or a fixed number of calls cannot be made, warned against those who do, and distinguished their services (foundation/site experience) from guaranteed outcomes. When the user insisted on a guarantee, the agent confirmed Atlas was not a fit and ended the call briefly and naturally, avoiding any rescue attempts or pitching.",
+              "The agent ended the conversation."
+            ],
+            "summary": "Evaluation succeeded"
+          }
+        },
+        "evaluator_rationale": "{'messages': ['The agent cleanly disqualified the lead by stating that guarantees for page-one SEO or a fixed number of calls cannot be made, warned against those who do, and distinguished their services (foundation/site experience) from guaranteed outcomes. When the user insisted on a guarantee, the agent confirmed Atlas was not a fit and ended the call briefly and naturally, avoiding any rescue attempts or pitching.', 'The agent ended the conversation.'], 'summary': 'Evaluation succeeded'}",
+        "agent_responses": [
+          {
+            "message": "Hi, this is Emma from Atlas Web Studio. I had RapidRooter Plumbing down as a plumbing company in Newark. Am I speaking with the owner or someone who handles the website there?",
+            "source_medium": null,
+            "tool_results": [],
+            "time": 9,
+            "original_message": null,
+            "tool_calls": [],
+            "role": "agent",
+            "interrupted": false
+          },
+          {
+            "message": "Yeah, this is the owner. I'm only interested if you guarantee page-one SEO, pay-per-lead, or more emergency calls. If not, don't send a mockup.",
+            "source_medium": "text",
+            "tool_results": [],
+            "time": 9,
+            "original_message": null,
+            "tool_calls": [],
+            "role": "user",
+            "interrupted": false
+          },
+          {
+            "message": "Yeah, nobody can honestly guarantee page-one SEO or a fixed number of calls. I'd be careful with anyone selling it that way. We can help with the local search foundation and site experience, but if that guarantee is required, we're probably not the fit.",
+            "source_medium": null,
+            "tool_results": [],
+            "time": 9,
+            "original_message": null,
+            "tool_calls": [],
+            "role": "agent",
+            "interrupted": false
+          },
+          {
+            "message": "So you cannot help me?",
+            "source_medium": "text",
+            "tool_results": [],
+            "time": 9,
+            "original_message": null,
+            "tool_calls": [],
+            "role": "user",
+            "interrupted": false
+          },
+          {
+            "message": "We can help with the foundation and site experience. We can't help with guaranteed outcomes.",
+            "source_medium": null,
+            "tool_results": [],
+            "time": 9,
+            "original_message": null,
+            "tool_calls": [],
+            "role": "agent",
+            "interrupted": false
+          },
+          {
+            "message": "No guarantee means no point.",
+            "source_medium": "text",
+            "tool_results": [],
+            "time": 9,
+            "original_message": null,
+            "tool_calls": [],
+            "role": "user",
+            "interrupted": false
+          },
+          {
+            "message": "That's right - no guarantee. I don't want to waste your time. Have a good one.",
+            "source_medium": null,
+            "tool_results": [],
+            "time": 9,
+            "original_message": null,
+            "tool_calls": [],
+            "role": "agent",
+            "interrupted": false
+          },
+          {
+            "message": null,
+            "source_medium": null,
+            "tool_results": [],
+            "time": 9,
+            "original_message": null,
+            "tool_calls": [
+              {
+                "tool_name": "end_call",
+                "request_id": "call_Ik1VlHhaSubDZ4AMQgjZgptz",
+                "tool_has_been_called": true,
+                "params_as_json": "{\"reason\":\"Guarantee requirement makes Atlas a bad fit and the conversation is complete\",\"system__message_to_speak\":\"That's right - no guarantee. I don't want to waste your time. Have a good one.\"}",
+                "type": "system"
+              }
+            ],
+            "role": "agent",
+            "interrupted": false
+          },
+          {
+            "message": null,
+            "source_medium": null,
+            "tool_results": [
+              {
+                "tool_has_been_called": true,
+                "is_blocked": false,
+                "is_error": false,
+                "request_id": "call_Ik1VlHhaSubDZ4AMQgjZgptz",
+                "tool_latency_secs": 0.5016543539240956,
+                "result_value": "{\"result_type\":\"end_call_success\",\"status\":\"success\",\"reason\":\"Guarantee requirement makes Atlas a bad fit and the conversation is complete\",\"message\":null}",
+                "result": {
+                  "result_type": "end_call_success",
+                  "status": "success",
+                  "reason": "Guarantee requirement makes Atlas a bad fit and the conversation is complete",
+                  "message": null
+                },
+                "tool_name": "end_call",
+                "error_type": "",
+                "raw_error_message": "",
+                "type": "system"
+              }
+            ],
+            "time": 9,
+            "original_message": null,
+            "tool_calls": [],
+            "role": "agent",
+            "interrupted": false
+          }
+        ]
+      }
+    ],
+    "result_groups": []
+  }
+}

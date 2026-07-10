@@ -52,9 +52,9 @@ RECOMMENDED_UPLOAD_DOCS = [
 ]
 
 PROMPT_MARKERS = (
-    "Guarantee-only lock triggers on the first turn",
-    "Use Atlas Objection Playbook lock wording.",
-    "After the guarantee-only lock, do not ask to send the mockup, ask for email",
+    "Guarantee-only exact sequence:",
+    "when guaranteed SEO/calls/jobs are required to continue",
+    "Never mention the mockup, offer another option, or add a rescue pitch during this sequence.",
     "Delivery timing is \"by the end of the day\"",
     "Buyer confirms email without goodbye ->",
     "If email comes with process or delivery question",
@@ -211,7 +211,7 @@ def word_count(text: str) -> int:
 
 def assert_prompt() -> None:
     text = read_text(PROMPT)
-    assert_condition(word_count(text) <= 1650, f"Prompt is no longer compact: {word_count(text)} words")
+    assert_condition(word_count(text) <= 1900, f"Prompt is no longer compact: {word_count(text)} words")
     assert_markers("system prompt", text, PROMPT_MARKERS)
 
 

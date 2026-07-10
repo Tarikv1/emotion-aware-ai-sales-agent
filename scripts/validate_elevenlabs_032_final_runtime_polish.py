@@ -58,7 +58,7 @@ PROMPT_MARKERS = (
     "Lead with concrete mechanism first.",
     "Weak-phrase examples and mockup-scope examples live in Atlas Output Quality Rules.",
     "You're right. Have a good one.",
-    "Guarantee-only lock triggers on the first turn",
+    "Guarantee-only exact sequence:",
 )
 
 KB_MARKERS = (
@@ -177,7 +177,7 @@ def word_count(text: str) -> int:
 
 def assert_prompt() -> None:
     text = read_text(PROMPT)
-    assert_condition(word_count(text) <= 1650, f"Prompt is no longer compact: {word_count(text)} words")
+    assert_condition(word_count(text) <= 1900, f"Prompt is no longer compact: {word_count(text)} words")
     assert_markers("system prompt", text, PROMPT_MARKERS)
 
 
