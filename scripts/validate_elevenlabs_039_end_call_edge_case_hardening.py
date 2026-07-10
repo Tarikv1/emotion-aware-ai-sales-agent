@@ -20,6 +20,10 @@ ANALYSIS_CONFIG = ROOT / "runtime/providers/elevenlabs_agents/analysis/atlas_web
 ANALYSIS_SETUP = ROOT / "runtime/providers/elevenlabs_agents/analysis/atlas_web_studio_analysis_setup.md"
 TESTS = ROOT / "runtime/providers/elevenlabs_agents/tests/web_design_end_call_edge_case_tests.json"
 APPLY_038 = ROOT / "scripts/apply_elevenlabs_038_end_call_terminal_control.py"
+TRACE_CAPTURE = ROOT / "scripts/capture_elevenlabs_039_test_invocation.py"
+TRACE_VALIDATOR = ROOT / "scripts/validate_elevenlabs_039_live_test_traces.py"
+INDEPENDENT_HARDENING_APPLY = ROOT / "scripts/apply_elevenlabs_039_independent_test_hardening.py"
+INDEPENDENT_TEST_RUNNER = ROOT / "scripts/run_elevenlabs_039_tests.py"
 ACTIVE_UPLOAD_MANIFEST = ROOT / "runtime/providers/elevenlabs_agents/manifests/web_design_sales_spine_compression.package.json"
 PROCEDURES_DIR = ROOT / "runtime/providers/elevenlabs_agents/procedures"
 
@@ -121,7 +125,7 @@ def validate_repo_policy_text() -> None:
             "hard stop or do-not-call request overrides email confirmation, accepted mockup, callback, process, and every unfinished sales action",
             "If the buyer confirms email and says goodbye in the same turn",
             "Buyer confirms email without goodbye -> Delivery timing is \"by the end of the day\". Output exactly: \"Great, I'll send it there by the end of the day.\"",
-            "No question, farewell, or `end_call`; wait for the buyer",
+            "Stop after the period; no question, check-in, farewell, or `end_call`",
             "If by-the-end-of-day timing was already stated earlier, do not repeat it",
             "Same turn means the buyer's latest single utterance contains both confirmation and goodbye",
             "Completed gatekeeper callback and completed gatekeeper-note outcomes use one terminal `end_call`",
@@ -189,6 +193,8 @@ def validate_repo_policy_text() -> None:
     stale_confirmation_farewell = "Great, I'll send it there by the end of the day. Have a good one."
     assert_condition(stale_confirmation_farewell not in close, "close playbook still approves a confirmation-only farewell")
     assert_condition(stale_confirmation_farewell not in offer, "offer facts still approve a confirmation-only farewell")
+    stale_callback_close = "Got it, I'll call back then. Thanks."
+    assert_condition(stale_callback_close not in output, "output rules still approve a standalone callback close")
     assert_markers(
         "analysis 039 edge cases",
         analysis,
@@ -230,6 +236,77 @@ def validate_apply_utility() -> None:
     )
 
 
+def validate_trace_utilities() -> None:
+    capture = read(TRACE_CAPTURE)
+    validator = read(TRACE_VALIDATOR)
+    assert_markers(
+        "039 trace capture",
+        capture,
+        (
+            "/v1/convai/test-invocations/",
+            "EXPECTED_AGENT_ID",
+            "provider_test_id",
+            "payload_sha256",
+            "SENSITIVE_KEY_RE",
+            "sanitize_agent_response",
+            "ELEVENLABS_API_KEY",
+        ),
+    )
+    assert_markers(
+        "039 independent trace validator",
+        validator,
+        (
+            "independent_status",
+            "provider_labels",
+            'params.get("reason")',
+            "exact_system_message_to_speak",
+            "successful_end_call_result_payload",
+            "no_additional_tool_result",
+            "direct_preceding_rendered_tool_message",
+            "exact_post_confirmation_timing_without_tool",
+            "timing_appears_once_post_confirmation",
+            "no_text_or_tool_after_result",
+        ),
+    )
+
+
+def validate_independent_live_utilities() -> None:
+    apply_script = read(INDEPENDENT_HARDENING_APPLY)
+    runner = read(INDEPENDENT_TEST_RUNNER)
+    assert_markers(
+        "039 independent live hardening apply utility",
+        apply_script,
+        (
+            "confirm-provider-write",
+            "confirm-dashboard-test-update",
+            "--test-only",
+            "source_ids = (test_only,)",
+            "protected_agent_state",
+            "unrelated_tool_fingerprint",
+            "test_semantics",
+            "folder_parent_id",
+            "multipart_update_file",
+            '"PUT"',
+            "plan_only_missing_exact_confirmations",
+            "simulations_run",
+            "outbound_calls_made",
+        ),
+    )
+    assert_markers(
+        "039 independent test runner",
+        runner,
+        (
+            "confirm-simulations",
+            "live test semantic mismatch",
+            "/run-tests",
+            '"repeat_count": 1',
+            "wait_timeout_seconds",
+            "final_run_statuses",
+            "completed",
+        ),
+    )
+
+
 def validate_tests() -> int:
     payload = read_json(TESTS)
     assert_condition(payload.get("package_id") == CHECKPOINT_ID, "039 package_id mismatch")
@@ -243,16 +320,22 @@ def validate_tests() -> int:
         "039 test semantics",
         serialized,
         (
-            "no send language",
-            "message 'Got it. Take care.'",
-            "final message only 'Take care.'",
-            "by-the-end-of-day delivery timing is repeated",
-            "one final message confirming the window",
+            "use send or mockup-delivery language",
+            "reason 'Buyer requested no further contact'",
+            "system__message_to_speak exactly 'Got it. Take care.'",
+            "reason 'Buyer explicitly ended the completed conversation'",
+            "system__message_to_speak exactly 'Take care.'",
+            "The seeded history must contain end-of-day delivery timing exactly once before the goodbye",
+            "Great, I'll send it there by the end of the day.",
+            "Delivery timing must not be repeated in the terminal message or any later turn",
             "Got it, I'll try then. Take care.",
+            "reason 'Gatekeeper callback window confirmed'",
             "Got it, thank you. Take care.",
-            "no renewed pitch",
-            "no email ask",
-            "asks for a callback window after the note is accepted",
+            "reason 'Gatekeeper note completed'",
+            "must not renew the pitch",
+            "ask for email",
+            "ask for a callback window after the note is accepted",
+            "No agent-authored text or tool event after the successful end_call result",
         ),
     )
     for test in tests:
@@ -263,7 +346,7 @@ def validate_tests() -> int:
 
     required_history_tails = {
         "sim_039_hard_stop_overrides_pending_email": "remove me and don't call again",
-        "sim_039_delivery_timing_not_repeated": "that's right",
+        "sim_039_delivery_timing_not_repeated": "okay, thanks, bye",
         "sim_039_gatekeeper_callback_atomic_end_call": "owner is usually available tomorrow morning",
         "sim_039_gatekeeper_note_atomic_end_call": "i'll let the owner know emma from atlas called about the mockup",
     }
@@ -276,18 +359,52 @@ def validate_tests() -> int:
 
     delivery_test = next(test for test in tests if test.get("test_id") == "sim_039_delivery_timing_not_repeated")
     chat_history = delivery_test.get("chat_history")
-    assert_condition(isinstance(chat_history, list) and len(chat_history) >= 2, "delivery timing test must establish confirmed-email history")
+    assert_condition(isinstance(chat_history, list) and len(chat_history) >= 4, "delivery timing test must seed confirmation, timing, and goodbye history")
     history_messages = [str(item.get("message", "")) for item in chat_history if isinstance(item, dict)]
-    assert_condition(str(chat_history[-1].get("role")) == "user", "delivery timing history must end with explicit email confirmation")
-    assert_condition("that's right" in history_messages[-1].lower(), "delivery timing history must establish explicit email confirmation")
-    assert_condition(not any("by the end of the day" in message.lower() for message in history_messages), "delivery timing must be spoken during the simulation")
+    history_roles = [str(item.get("role", "")) for item in chat_history if isinstance(item, dict)]
+    assert_condition(
+        any(role == "user" and "that's right" in message.lower() for role, message in zip(history_roles, history_messages)),
+        "delivery timing history must establish explicit email confirmation",
+    )
+    timing_messages = [message for role, message in zip(history_roles, history_messages) if role == "agent" and "by the end of the day" in message.lower()]
+    assert_condition(timing_messages == ["Great, I'll send it there by the end of the day."], "delivery timing history must seed the exact timing statement once")
+    assert_condition(str(chat_history[-1].get("role")) == "user", "delivery timing history must end with the buyer goodbye")
+    assert_condition(history_messages[-1] == "Okay, thanks, bye.", "delivery timing history must end with the exact buyer goodbye")
     delivery_scenario = str(delivery_test.get("simulation_scenario", "")).lower()
-    assert_condition("by the end of the day" in delivery_scenario, "delivery timing scenario must wait for the runtime timing statement")
-    assert_condition("okay, thanks, bye" in delivery_scenario, "delivery timing scenario must use the exact buyer goodbye")
+    assert_condition("already contains" in delivery_scenario and "delivery" in delivery_scenario, "delivery timing scenario must declare the already-stated timing state")
+    assert_condition("do not add another buyer" in delivery_scenario, "delivery timing scenario must not add a post-goodbye buyer turn")
     assert_condition("allow emma one final turn" in delivery_scenario, "delivery timing scenario must allow terminal tool execution")
     delivery_success = str(delivery_test.get("success_condition", ""))
+    assert_condition(
+        "seeded history must contain end-of-day delivery timing exactly once before the goodbye"
+        in delivery_success,
+        "delivery timing evaluator must verify the seeded timing state",
+    )
+    assert_condition(
+        "reason 'Buyer explicitly ended the completed conversation'" in delivery_success,
+        "delivery timing evaluator must require the exact terminal reason",
+    )
     assert_condition("system__message_to_speak exactly 'Take care.'" in delivery_success, "delivery timing evaluator must inspect the tool-bound message")
     assert_condition("do not count that same line as a separate farewell" in delivery_success, "delivery timing evaluator must understand ElevenLabs tool-message rendering")
+
+    hard_stop_success = str(tests_by_id["sim_039_hard_stop_overrides_pending_email"].get("success_condition", ""))
+    assert_condition("reason 'Buyer requested no further contact'" in hard_stop_success, "hard-stop evaluator must require the exact reason")
+    assert_condition("system__message_to_speak exactly 'Got it. Take care.'" in hard_stop_success, "hard-stop evaluator must inspect tool speech")
+
+    callback_success = str(tests_by_id["sim_039_gatekeeper_callback_atomic_end_call"].get("success_condition", ""))
+    assert_condition("reason 'Gatekeeper callback window confirmed'" in callback_success, "callback evaluator must require the exact reason")
+    assert_condition("system__message_to_speak exactly 'Got it, I'll try then. Take care.'" in callback_success, "callback evaluator must inspect tool speech")
+
+    note_success = str(tests_by_id["sim_039_gatekeeper_note_atomic_end_call"].get("success_condition", ""))
+    assert_condition("reason 'Gatekeeper note completed'" in note_success, "gatekeeper-note evaluator must require the exact reason")
+    assert_condition("system__message_to_speak exactly 'Got it, thank you. Take care.'" in note_success, "gatekeeper-note evaluator must inspect tool speech")
+
+    for test_id, test in tests_by_id.items():
+        success = str(test.get("success_condition", ""))
+        assert_condition(
+            "No agent-authored text or tool event after the successful end_call result" in success,
+            f"{test_id} must reject post-terminal events",
+        )
 
     boundaries = str(payload.get("evaluation_notes", {}).get("boundaries", ""))
     assert_condition("explicit user opt-in" in boundaries, "039 dashboard execution must remain explicit opt-in")
@@ -327,6 +444,8 @@ def validate_manifest_boundaries() -> None:
 def main() -> None:
     validate_repo_policy_text()
     validate_apply_utility()
+    validate_trace_utilities()
+    validate_independent_live_utilities()
     test_count = validate_tests()
     criteria_count = validate_analysis_count()
     validate_manifest_boundaries()

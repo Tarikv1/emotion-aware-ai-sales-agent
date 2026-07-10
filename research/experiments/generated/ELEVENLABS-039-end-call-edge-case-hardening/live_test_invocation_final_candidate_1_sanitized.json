@@ -1,0 +1,460 @@
+{
+  "captured_at_utc": "2026-07-10T13:33:51Z",
+  "payload_sha256": "c088c98e4db18c32fe633c4f3dadefe78fde0f6d4f5ef2998a65cb670728137f",
+  "payload": {
+    "checkpoint_id": "ELEVENLABS-039-end-call-edge-case-hardening",
+    "invocation_id": "suite_6401kx63q41aejxtgh49tszxst79",
+    "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+    "test_runs": [
+      {
+        "test_run_id": "trun_6501kx63q41gej9bxf1jhf14zgyh",
+        "test_invocation_id": "suite_6401kx63q41aejxtgh49tszxst79",
+        "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+        "test_id": "sim_039_hard_stop_overrides_pending_email",
+        "provider_test_id": "test_1701kx5nkqyxfkp8b37ksfnyers3",
+        "test_name": "ELEVENLABS-039-end-call-edge-case-hardening::sim_039_hard_stop_overrides_pending_email",
+        "scenario": "The simulated user owns Clear Path Tutoring in Portland. They agree to receive the free homepage mockup and say: 'Send it to owner at clear path tutoring dot com - actually, remove me and don't call again.'",
+        "success_conditions": [
+          "The full conversation passes only if, after the buyer's hard stop, Emma invokes end_call exactly once with reason 'Buyer requested no further contact' and system__message_to_speak exactly 'Got it. Take care.' The agent text immediately before the tool call is tool-bound only when it exactly matches system__message_to_speak; do not count that rendered line as a separate farewell. Any other agent-authored turn before end_call fails. Emma must not confirm the pending email, use send or mockup-delivery language, continue discovery, sell, or schedule a callback. No agent-authored text or tool event after the successful end_call result is allowed."
+        ],
+        "models": {
+          "simulated_user_model": "gemini-2.5-flash",
+          "evaluation_model": "gemini-2.5-flash"
+        },
+        "status": "passed",
+        "condition_result": {
+          "result": "success",
+          "rationale": {
+            "messages": [
+              "The agent correctly identified the buyer's request to end contact. It invoked `end_call` exactly once with the correct reason 'Buyer requested no further contact' and `system__message_to_speak` 'Got it. Take care.'. The agent's last spoken line matched the `system__message_to_speak`, and no other actions or text followed the successful call termination.",
+              "The agent ended the conversation."
+            ],
+            "summary": "Evaluation succeeded"
+          }
+        },
+        "evaluator_rationale": "{'messages': [\"The agent correctly identified the buyer's request to end contact. It invoked `end_call` exactly once with the correct reason 'Buyer requested no further contact' and `system__message_to_speak` 'Got it. Take care.'. The agent's last spoken line matched the `system__message_to_speak`, and no other actions or text followed the successful call termination.\", 'The agent ended the conversation.'], 'summary': 'Evaluation succeeded'}",
+        "agent_responses": [
+          {
+            "original_message": null,
+            "tool_calls": [],
+            "time": 2,
+            "tool_results": [],
+            "interrupted": false,
+            "role": "agent",
+            "message": "What's the best email for the mockup?",
+            "source_medium": null
+          },
+          {
+            "original_message": null,
+            "tool_calls": [],
+            "time": 2,
+            "tool_results": [],
+            "interrupted": false,
+            "role": "user",
+            "message": "Send it to owner at clear path tutoring dot com - actually, remove me and don't call again.",
+            "source_medium": "text"
+          },
+          {
+            "original_message": null,
+            "tool_calls": [],
+            "time": 2,
+            "tool_results": [],
+            "interrupted": false,
+            "role": "agent",
+            "message": "Got it. Take care.",
+            "source_medium": null
+          },
+          {
+            "original_message": null,
+            "tool_calls": [
+              {
+                "params_as_json": "{\"reason\":\"Buyer requested no further contact\",\"system__message_to_speak\":\"Got it. Take care.\"}",
+                "tool_name": "end_call",
+                "type": "system",
+                "tool_has_been_called": true,
+                "request_id": "call_EU7Fvreu2l1YazaJ941Qq0iS"
+              }
+            ],
+            "time": 2,
+            "tool_results": [],
+            "interrupted": false,
+            "role": "agent",
+            "message": null,
+            "source_medium": null
+          },
+          {
+            "original_message": null,
+            "tool_calls": [],
+            "time": 2,
+            "tool_results": [
+              {
+                "tool_latency_secs": 0.5009523411281407,
+                "error_type": "",
+                "result": {
+                  "result_type": "end_call_success",
+                  "status": "success",
+                  "reason": "Buyer requested no further contact",
+                  "message": null
+                },
+                "raw_error_message": "",
+                "tool_has_been_called": true,
+                "is_blocked": false,
+                "is_error": false,
+                "type": "system",
+                "request_id": "call_EU7Fvreu2l1YazaJ941Qq0iS",
+                "tool_name": "end_call",
+                "result_value": "{\"result_type\":\"end_call_success\",\"status\":\"success\",\"reason\":\"Buyer requested no further contact\",\"message\":null}"
+              }
+            ],
+            "interrupted": false,
+            "role": "agent",
+            "message": null,
+            "source_medium": null
+          }
+        ]
+      },
+      {
+        "test_run_id": "trun_3701kx63q41he4qscxy9698qvzvx",
+        "test_invocation_id": "suite_6401kx63q41aejxtgh49tszxst79",
+        "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+        "test_id": "sim_039_delivery_timing_not_repeated",
+        "provider_test_id": "test_6301kx5np7p6fc3tq84bkt6ry35z",
+        "test_name": "ELEVENLABS-039-end-call-edge-case-hardening::sim_039_delivery_timing_not_repeated",
+        "scenario": "The simulated user owns Harbor Pet Grooming in Tampa. The email has just been explicitly confirmed. Wait for Emma to say she will send it by the end of the day. Then say exactly: 'Okay, thanks, bye.' Allow Emma one final turn so she can invoke the terminal tool, and do not add another buyer message.",
+        "success_conditions": [
+          "The full conversation passes only if the first agent turn after confirmation must be exactly 'Great, I'll send it there by the end of the day.' with no question or farewell and no end_call. After the buyer says 'Okay, thanks, bye.', Emma must invoke end_call exactly once with reason 'Buyer explicitly ended the completed conversation' and system__message_to_speak exactly 'Take care.' Delivery timing must appear exactly once after confirmation and must not be repeated in the terminal message. The rendered agent line immediately before the end_call tool-invocation event is the tool's message when it exactly matches system__message_to_speak; do not count that same line as a separate farewell. Any other agent-authored turn between the goodbye and end_call fails. No agent-authored text or tool event after the successful end_call result is allowed."
+        ],
+        "models": {
+          "simulated_user_model": "gemini-2.5-flash",
+          "evaluation_model": "gemini-2.5-flash"
+        },
+        "status": "failed",
+        "condition_result": {
+          "result": "failure",
+          "rationale": {
+            "messages": [
+              "The agent added an extra question after the confirmation instead of ending with 'Great, I'll send it there by the end of the day.' This violates the criteria of no additional agent-authored turns before the goodbye.",
+              "The agent ended the conversation."
+            ],
+            "summary": "Evaluation failed"
+          }
+        },
+        "evaluator_rationale": "{'messages': [\"The agent added an extra question after the confirmation instead of ending with 'Great, I'll send it there by the end of the day.' This violates the criteria of no additional agent-authored turns before the goodbye.\", 'The agent ended the conversation.'], 'summary': 'Evaluation failed'}",
+        "agent_responses": [
+          {
+            "original_message": null,
+            "tool_calls": [],
+            "time": 5,
+            "tool_results": [],
+            "interrupted": false,
+            "role": "agent",
+            "message": "Just to confirm, owner@harborpetgrooming.com - is that right?",
+            "source_medium": null
+          },
+          {
+            "original_message": null,
+            "tool_calls": [],
+            "time": 5,
+            "tool_results": [],
+            "interrupted": false,
+            "role": "user",
+            "message": "Yes, that's right.",
+            "source_medium": "text"
+          },
+          {
+            "original_message": null,
+            "tool_calls": [],
+            "time": 5,
+            "tool_results": [],
+            "interrupted": false,
+            "role": "agent",
+            "message": "Great, I'll send it there by the end of the day. Is there anything else I can assist you with?",
+            "source_medium": null
+          },
+          {
+            "original_message": null,
+            "tool_calls": [],
+            "time": 5,
+            "tool_results": [],
+            "interrupted": false,
+            "role": "user",
+            "message": "Okay, thanks, bye.",
+            "source_medium": "text"
+          },
+          {
+            "original_message": null,
+            "tool_calls": [],
+            "time": 5,
+            "tool_results": [],
+            "interrupted": false,
+            "role": "agent",
+            "message": "Take care.",
+            "source_medium": null
+          },
+          {
+            "original_message": null,
+            "tool_calls": [
+              {
+                "params_as_json": "{\"reason\":\"Buyer explicitly ended the completed conversation\",\"system__message_to_speak\":\"Take care.\"}",
+                "tool_name": "end_call",
+                "type": "system",
+                "tool_has_been_called": true,
+                "request_id": "call_eHDr8P7inL9dz8dWy4YtMGNh"
+              }
+            ],
+            "time": 5,
+            "tool_results": [],
+            "interrupted": false,
+            "role": "agent",
+            "message": null,
+            "source_medium": null
+          },
+          {
+            "original_message": null,
+            "tool_calls": [],
+            "time": 5,
+            "tool_results": [
+              {
+                "tool_latency_secs": 0.5011539710685611,
+                "error_type": "",
+                "result": {
+                  "result_type": "end_call_success",
+                  "status": "success",
+                  "reason": "Buyer explicitly ended the completed conversation",
+                  "message": null
+                },
+                "raw_error_message": "",
+                "tool_has_been_called": true,
+                "is_blocked": false,
+                "is_error": false,
+                "type": "system",
+                "request_id": "call_eHDr8P7inL9dz8dWy4YtMGNh",
+                "tool_name": "end_call",
+                "result_value": "{\"result_type\":\"end_call_success\",\"status\":\"success\",\"reason\":\"Buyer explicitly ended the completed conversation\",\"message\":null}"
+              }
+            ],
+            "interrupted": false,
+            "role": "agent",
+            "message": null,
+            "source_medium": null
+          }
+        ]
+      },
+      {
+        "test_run_id": "trun_1901kx63q41je34rw7gpssq6rhrz",
+        "test_invocation_id": "suite_6401kx63q41aejxtgh49tszxst79",
+        "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+        "test_id": "sim_039_gatekeeper_callback_atomic_end_call",
+        "provider_test_id": "test_6601kx5nqzpzet7s93xkjwqmw208",
+        "test_name": "ELEVENLABS-039-end-call-edge-case-hardening::sim_039_gatekeeper_callback_atomic_end_call",
+        "scenario": "The simulated user is a gatekeeper at North Ridge HVAC. They say: 'The owner is usually available tomorrow morning.'",
+        "success_conditions": [
+          "The full conversation passes only if Emma invokes end_call exactly once with reason 'Gatekeeper callback window confirmed' and system__message_to_speak exactly 'Got it, I'll try then. Take care.' The agent text immediately before the tool call is tool-bound only when it exactly matches system__message_to_speak; do not count that rendered line as a separate confirmation or farewell. Any other agent-authored turn before end_call fails. Emma must not give a full pitch, ask for email, ask for another callback window, or leave the call open. No agent-authored text or tool event after the successful end_call result is allowed."
+        ],
+        "models": {
+          "simulated_user_model": "gemini-2.5-flash",
+          "evaluation_model": "gemini-2.5-flash"
+        },
+        "status": "passed",
+        "condition_result": {
+          "result": "success",
+          "rationale": {
+            "messages": [
+              "The agent ended the call with the exact required message and reason. No additional agent-authored text or tool event occurred after the successful end_call. The criteria were met precisely as specified.",
+              "The agent ended the conversation."
+            ],
+            "summary": "Evaluation succeeded"
+          }
+        },
+        "evaluator_rationale": "{'messages': ['The agent ended the call with the exact required message and reason. No additional agent-authored text or tool event occurred after the successful end_call. The criteria were met precisely as specified.', 'The agent ended the conversation.'], 'summary': 'Evaluation succeeded'}",
+        "agent_responses": [
+          {
+            "original_message": null,
+            "tool_calls": [],
+            "time": 2,
+            "tool_results": [],
+            "interrupted": false,
+            "role": "agent",
+            "message": "Hi, this is Emma from Atlas Web Studio. Is the owner available?",
+            "source_medium": null
+          },
+          {
+            "original_message": null,
+            "tool_calls": [],
+            "time": 2,
+            "tool_results": [],
+            "interrupted": false,
+            "role": "user",
+            "message": "The owner is usually available tomorrow morning.",
+            "source_medium": "text"
+          },
+          {
+            "original_message": null,
+            "tool_calls": [],
+            "time": 2,
+            "tool_results": [],
+            "interrupted": false,
+            "role": "agent",
+            "message": "Got it, I'll try then. Take care.",
+            "source_medium": null
+          },
+          {
+            "original_message": null,
+            "tool_calls": [
+              {
+                "params_as_json": "{\"reason\":\"Gatekeeper callback window confirmed\",\"system__message_to_speak\":\"Got it, I'll try then. Take care.\"}",
+                "tool_name": "end_call",
+                "type": "system",
+                "tool_has_been_called": true,
+                "request_id": "call_EBOdprVJkHhWUSDed0wpG9MD"
+              }
+            ],
+            "time": 2,
+            "tool_results": [],
+            "interrupted": false,
+            "role": "agent",
+            "message": null,
+            "source_medium": null
+          },
+          {
+            "original_message": null,
+            "tool_calls": [],
+            "time": 2,
+            "tool_results": [
+              {
+                "tool_latency_secs": 0.5015960198361427,
+                "error_type": "",
+                "result": {
+                  "result_type": "end_call_success",
+                  "status": "success",
+                  "reason": "Gatekeeper callback window confirmed",
+                  "message": null
+                },
+                "raw_error_message": "",
+                "tool_has_been_called": true,
+                "is_blocked": false,
+                "is_error": false,
+                "type": "system",
+                "request_id": "call_EBOdprVJkHhWUSDed0wpG9MD",
+                "tool_name": "end_call",
+                "result_value": "{\"result_type\":\"end_call_success\",\"status\":\"success\",\"reason\":\"Gatekeeper callback window confirmed\",\"message\":null}"
+              }
+            ],
+            "interrupted": false,
+            "role": "agent",
+            "message": null,
+            "source_medium": null
+          }
+        ]
+      },
+      {
+        "test_run_id": "trun_1901kx63q41kevmr1zw2vqbt1rmx",
+        "test_invocation_id": "suite_6401kx63q41aejxtgh49tszxst79",
+        "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+        "test_id": "sim_039_gatekeeper_note_atomic_end_call",
+        "provider_test_id": "test_4201kx5nss1bfbtagq63q1np6za7",
+        "test_name": "ELEVENLABS-039-end-call-edge-case-hardening::sim_039_gatekeeper_note_atomic_end_call",
+        "scenario": "The simulated user is a gatekeeper at Maple Street Dental. They say: 'I'll let the owner know Emma from Atlas called about the mockup.'",
+        "success_conditions": [
+          "The full conversation passes only if Emma invokes end_call exactly once with reason 'Gatekeeper note completed' and system__message_to_speak exactly 'Got it, thank you. Take care.' The agent text immediately before the tool call is tool-bound only when it exactly matches system__message_to_speak; do not count that rendered line as a separate confirmation or farewell. Any other agent-authored turn before end_call fails. Emma must not renew the pitch, ask for email, ask for a callback window after the note is accepted, or leave the call open. No agent-authored text or tool event after the successful end_call result is allowed."
+        ],
+        "models": {
+          "simulated_user_model": "gemini-2.5-flash",
+          "evaluation_model": "gemini-2.5-flash"
+        },
+        "status": "passed",
+        "condition_result": {
+          "result": "success",
+          "rationale": {
+            "messages": [
+              "The agent invoked end_call exactly once with reason 'Gatekeeper note completed' and system__message_to_speak 'Got it, thank you. Take care.'. The agent's last spoken line matched the system__message_to_speak. No other agent-authored text or tool events occurred after the successful end_call.",
+              "The agent ended the conversation."
+            ],
+            "summary": "Evaluation succeeded"
+          }
+        },
+        "evaluator_rationale": "{'messages': [\"The agent invoked end_call exactly once with reason 'Gatekeeper note completed' and system__message_to_speak 'Got it, thank you. Take care.'. The agent's last spoken line matched the system__message_to_speak. No other agent-authored text or tool events occurred after the successful end_call.\", 'The agent ended the conversation.'], 'summary': 'Evaluation succeeded'}",
+        "agent_responses": [
+          {
+            "original_message": null,
+            "tool_calls": [],
+            "time": 2,
+            "tool_results": [],
+            "interrupted": false,
+            "role": "agent",
+            "message": "Hi, this is Emma from Atlas Web Studio. Is the owner available?",
+            "source_medium": null
+          },
+          {
+            "original_message": null,
+            "tool_calls": [],
+            "time": 2,
+            "tool_results": [],
+            "interrupted": false,
+            "role": "user",
+            "message": "I'll let the owner know Emma from Atlas called about the mockup.",
+            "source_medium": "text"
+          },
+          {
+            "original_message": null,
+            "tool_calls": [],
+            "time": 2,
+            "tool_results": [],
+            "interrupted": false,
+            "role": "agent",
+            "message": "Got it, thank you. Take care.",
+            "source_medium": null
+          },
+          {
+            "original_message": null,
+            "tool_calls": [
+              {
+                "params_as_json": "{\"reason\":\"Gatekeeper note completed\",\"system__message_to_speak\":\"Got it, thank you. Take care.\"}",
+                "tool_name": "end_call",
+                "type": "system",
+                "tool_has_been_called": true,
+                "request_id": "call_BylqzlY7pbaN1z8EexNr6oVC"
+              }
+            ],
+            "time": 2,
+            "tool_results": [],
+            "interrupted": false,
+            "role": "agent",
+            "message": null,
+            "source_medium": null
+          },
+          {
+            "original_message": null,
+            "tool_calls": [],
+            "time": 2,
+            "tool_results": [
+              {
+                "tool_latency_secs": 0.5015208600088954,
+                "error_type": "",
+                "result": {
+                  "result_type": "end_call_success",
+                  "status": "success",
+                  "reason": "Gatekeeper note completed",
+                  "message": null
+                },
+                "raw_error_message": "",
+                "tool_has_been_called": true,
+                "is_blocked": false,
+                "is_error": false,
+                "type": "system",
+                "request_id": "call_BylqzlY7pbaN1z8EexNr6oVC",
+                "tool_name": "end_call",
+                "result_value": "{\"result_type\":\"end_call_success\",\"status\":\"success\",\"reason\":\"Gatekeeper note completed\",\"message\":null}"
+              }
+            ],
+            "interrupted": false,
+            "role": "agent",
+            "message": null,
+            "source_medium": null
+          }
+        ]
+      }
+    ],
+    "result_groups": []
+  }
+}

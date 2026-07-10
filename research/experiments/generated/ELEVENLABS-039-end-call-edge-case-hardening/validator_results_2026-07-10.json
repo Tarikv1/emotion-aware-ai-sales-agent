@@ -7,7 +7,7 @@
       "command": "python scripts/validate_elevenlabs_039_end_call_edge_case_hardening.py",
       "exit_code": 0,
       "status": "pass",
-      "prompt_word_count": 1641,
+      "prompt_word_count": 1643,
       "analysis_criteria_count": 30,
       "test_count": 4
     },
@@ -15,7 +15,7 @@
       "command": "python scripts/validate_elevenlabs_038_end_call_terminal_control.py",
       "exit_code": 0,
       "status": "pass",
-      "prompt_word_count": 1641,
+      "prompt_word_count": 1643,
       "analysis_criteria_count": 30,
       "test_count": 7
     },
@@ -23,7 +23,7 @@
       "command": "python scripts/validate_elevenlabs_037_confident_capability_control.py",
       "exit_code": 0,
       "status": "pass",
-      "prompt_word_count": 1641,
+      "prompt_word_count": 1643,
       "analysis_criteria_count": 30,
       "test_count": 8
     },

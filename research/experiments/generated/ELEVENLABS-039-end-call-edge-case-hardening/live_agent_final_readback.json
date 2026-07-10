@@ -1,7 +1,7 @@
 {
   "checkpoint_id": "ELEVENLABS-039-end-call-edge-case-hardening",
-  "recorded_at_utc": "2026-07-10T11:01:46.6463398Z",
-  "source": "fresh ElevenLabs API readback after the final dashboard batch",
+  "recorded_at_utc": "2026-07-10T13:42:11Z",
+  "source": "fresh ElevenLabs API readback after the final independently validated batch",
   "agent": {
     "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
     "name": "web design"
@@ -9,7 +9,7 @@
   "prompt": {
     "compact_atlas_marker_present": true,
     "marker": "Atlas Web Studio Sales Agent Operating Kernel",
-    "prompt_text_sha256_stripped": "da98253a6a76362187162d3ca7a2cecaa9d9040cbbdabb468a39ae69936daef3",
+    "prompt_text_sha256_stripped": "fdcf7bfa6cffed7f6914dc64ffa459aeb5e064f7cf6bd1907ae76c877f3807b1",
     "matches_repo": true
   },
   "knowledge_base": {
@@ -65,9 +65,14 @@
     "knowledge_base_id_order_unchanged": true
   },
   "execution": {
-    "authorized_dashboard_simulations_run": 4,
-    "final_dashboard_simulations_passed": 4,
+    "final_invocation_id": "suite_2401kx63zvk1fzs8qpepx18a4434",
+    "authorized_simulations_in_final_batch": 4,
+    "final_provider_evaluations_passed": 4,
+    "final_independent_raw_trace_validations_passed": 4,
     "outbound_calls_made": false,
-    "failed_provider_api_actions": []
+    "failed_provider_write_actions": [],
+    "failed_read_only_api_actions": [
+      "An earlier GET using a test-run ID as a conversation ID returned HTTP 404; trace capture used the test-invocation endpoint instead."
+    ]
   }
 }

@@ -1,0 +1,472 @@
+{
+  "checkpoint_id": "ELEVENLABS-039-end-call-edge-case-hardening",
+  "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+  "invocation_id": "suite_1401kx5tnqccebntxd2dc26qthas",
+  "independent_status": "fail",
+  "provider_labels": {
+    "statuses": {
+      "sim_039_hard_stop_overrides_pending_email": "passed",
+      "sim_039_gatekeeper_callback_atomic_end_call": "passed",
+      "sim_039_gatekeeper_note_atomic_end_call": "passed",
+      "sim_039_delivery_timing_not_repeated": "passed"
+    },
+    "condition_results": {
+      "sim_039_hard_stop_overrides_pending_email": {
+        "result": "success",
+        "rationale": {
+          "messages": [
+            "The agent did not confirm the pending email, used no send language, and invoked `end_call` exactly once with the message 'Got it. Take care.' The hard stop from the user ('remove me and don't call again') correctly led to the abandonment of email confirmation and the termination of the call.",
+            "The agent ended the conversation."
+          ],
+          "summary": "Evaluation succeeded"
+        }
+      },
+      "sim_039_gatekeeper_callback_atomic_end_call": {
+        "result": "success",
+        "rationale": {
+          "messages": [
+            "The agent invoked `end_call` exactly once with the final message \"Got it, I'll try then. Take care.\", confirming the callback window. It did not speak a separate confirmation, give a pitch, ask for email, or leave the call open.",
+            "The agent ended the conversation."
+          ],
+          "summary": "Evaluation succeeded"
+        }
+      },
+      "sim_039_gatekeeper_note_atomic_end_call": {
+        "result": "success",
+        "rationale": {
+          "messages": [
+            "The agent invoked `end_call` exactly once with the final message \"Got it, thank you. Take care.\" and did not renew the pitch, ask for email, or leave the call open. All conditions for success are met.",
+            "The agent ended the conversation."
+          ],
+          "summary": "Evaluation succeeded"
+        }
+      },
+      "sim_039_delivery_timing_not_repeated": {
+        "result": "success",
+        "rationale": {
+          "messages": [
+            "The agent invoked end_call exactly once with the final message 'Take care.' and system__message_to_speak 'Take care.'. No failure conditions were met; the 'by-the-end-of-day' timing was not repeated, no additional standalone farewell was spoken, and the pitch did not reopen.",
+            "The agent ended the conversation."
+          ],
+          "summary": "Evaluation succeeded"
+        }
+      }
+    }
+  },
+  "global_failures": [],
+  "tests": [
+    {
+      "test_id": "sim_039_hard_stop_overrides_pending_email",
+      "test_name": "ELEVENLABS-039-end-call-edge-case-hardening::sim_039_hard_stop_overrides_pending_email",
+      "test_run_id": "trun_6701kx5tnqcjeyhtg6nkcke6f9ha",
+      "independent_status": "pass",
+      "provider_status": "passed",
+      "provider_condition_result": {
+        "result": "success",
+        "rationale": {
+          "messages": [
+            "The agent did not confirm the pending email, used no send language, and invoked `end_call` exactly once with the message 'Got it. Take care.' The hard stop from the user ('remove me and don't call again') correctly led to the abandonment of email confirmation and the termination of the call.",
+            "The agent ended the conversation."
+          ],
+          "summary": "Evaluation succeeded"
+        }
+      },
+      "provider_evaluator_rationale": "{'messages': [\"The agent did not confirm the pending email, used no send language, and invoked `end_call` exactly once with the message 'Got it. Take care.' The hard stop from the user ('remove me and don't call again') correctly led to the abandonment of email confirmation and the termination of the call.\", 'The agent ended the conversation.'], 'summary': 'Evaluation succeeded'}",
+      "assertions": [
+        {
+          "name": "expected_test_name",
+          "passed": true
+        },
+        {
+          "name": "ordered_agent_responses_present",
+          "passed": true
+        },
+        {
+          "name": "critical_buyer_turn_found",
+          "passed": true
+        },
+        {
+          "name": "exactly_one_end_call",
+          "passed": true
+        },
+        {
+          "name": "no_additional_tool_call",
+          "passed": true
+        },
+        {
+          "name": "built_in_system_end_call",
+          "passed": true
+        },
+        {
+          "name": "tool_was_called",
+          "passed": true
+        },
+        {
+          "name": "parse_params_as_json",
+          "passed": true
+        },
+        {
+          "name": "exact_reason",
+          "passed": true
+        },
+        {
+          "name": "exact_system_message_to_speak",
+          "passed": true
+        },
+        {
+          "name": "no_additional_tool_result",
+          "passed": true
+        },
+        {
+          "name": "matching_successful_tool_result",
+          "passed": true
+        },
+        {
+          "name": "no_error_or_block",
+          "passed": true
+        },
+        {
+          "name": "successful_end_call_result_payload",
+          "passed": true
+        },
+        {
+          "name": "no_text_or_tool_after_result",
+          "passed": true
+        },
+        {
+          "name": "direct_preceding_rendered_tool_message",
+          "passed": true
+        },
+        {
+          "name": "critical_buyer_turn_is_terminal_trigger",
+          "passed": true
+        },
+        {
+          "name": "no_standalone_assistant_or_tool_between_trigger_and_end_call",
+          "passed": true
+        },
+        {
+          "name": "hard_stop_has_no_email_or_send_language_after_stop",
+          "passed": true
+        }
+      ],
+      "failures": []
+    },
+    {
+      "test_id": "sim_039_gatekeeper_callback_atomic_end_call",
+      "test_name": "ELEVENLABS-039-end-call-edge-case-hardening::sim_039_gatekeeper_callback_atomic_end_call",
+      "test_run_id": "trun_6601kx5tnqckf918cgtr8nr4zyeg",
+      "independent_status": "pass",
+      "provider_status": "passed",
+      "provider_condition_result": {
+        "result": "success",
+        "rationale": {
+          "messages": [
+            "The agent invoked `end_call` exactly once with the final message \"Got it, I'll try then. Take care.\", confirming the callback window. It did not speak a separate confirmation, give a pitch, ask for email, or leave the call open.",
+            "The agent ended the conversation."
+          ],
+          "summary": "Evaluation succeeded"
+        }
+      },
+      "provider_evaluator_rationale": "{'messages': ['The agent invoked `end_call` exactly once with the final message \"Got it, I\\'ll try then. Take care.\", confirming the callback window. It did not speak a separate confirmation, give a pitch, ask for email, or leave the call open.', 'The agent ended the conversation.'], 'summary': 'Evaluation succeeded'}",
+      "assertions": [
+        {
+          "name": "expected_test_name",
+          "passed": true
+        },
+        {
+          "name": "ordered_agent_responses_present",
+          "passed": true
+        },
+        {
+          "name": "critical_buyer_turn_found",
+          "passed": true
+        },
+        {
+          "name": "exactly_one_end_call",
+          "passed": true
+        },
+        {
+          "name": "no_additional_tool_call",
+          "passed": true
+        },
+        {
+          "name": "built_in_system_end_call",
+          "passed": true
+        },
+        {
+          "name": "tool_was_called",
+          "passed": true
+        },
+        {
+          "name": "parse_params_as_json",
+          "passed": true
+        },
+        {
+          "name": "exact_reason",
+          "passed": true
+        },
+        {
+          "name": "exact_system_message_to_speak",
+          "passed": true
+        },
+        {
+          "name": "no_additional_tool_result",
+          "passed": true
+        },
+        {
+          "name": "matching_successful_tool_result",
+          "passed": true
+        },
+        {
+          "name": "no_error_or_block",
+          "passed": true
+        },
+        {
+          "name": "successful_end_call_result_payload",
+          "passed": true
+        },
+        {
+          "name": "no_text_or_tool_after_result",
+          "passed": true
+        },
+        {
+          "name": "direct_preceding_rendered_tool_message",
+          "passed": true
+        },
+        {
+          "name": "critical_buyer_turn_is_terminal_trigger",
+          "passed": true
+        },
+        {
+          "name": "no_standalone_assistant_or_tool_between_trigger_and_end_call",
+          "passed": true
+        },
+        {
+          "name": "callback_has_no_pre_terminal_pitch_email_or_callback_ask",
+          "passed": true
+        }
+      ],
+      "failures": []
+    },
+    {
+      "test_id": "sim_039_gatekeeper_note_atomic_end_call",
+      "test_name": "ELEVENLABS-039-end-call-edge-case-hardening::sim_039_gatekeeper_note_atomic_end_call",
+      "test_run_id": "trun_4701kx5tnqcmer4rf9kn2whsm08p",
+      "independent_status": "pass",
+      "provider_status": "passed",
+      "provider_condition_result": {
+        "result": "success",
+        "rationale": {
+          "messages": [
+            "The agent invoked `end_call` exactly once with the final message \"Got it, thank you. Take care.\" and did not renew the pitch, ask for email, or leave the call open. All conditions for success are met.",
+            "The agent ended the conversation."
+          ],
+          "summary": "Evaluation succeeded"
+        }
+      },
+      "provider_evaluator_rationale": "{'messages': ['The agent invoked `end_call` exactly once with the final message \"Got it, thank you. Take care.\" and did not renew the pitch, ask for email, or leave the call open. All conditions for success are met.', 'The agent ended the conversation.'], 'summary': 'Evaluation succeeded'}",
+      "assertions": [
+        {
+          "name": "expected_test_name",
+          "passed": true
+        },
+        {
+          "name": "ordered_agent_responses_present",
+          "passed": true
+        },
+        {
+          "name": "critical_buyer_turn_found",
+          "passed": true
+        },
+        {
+          "name": "exactly_one_end_call",
+          "passed": true
+        },
+        {
+          "name": "no_additional_tool_call",
+          "passed": true
+        },
+        {
+          "name": "built_in_system_end_call",
+          "passed": true
+        },
+        {
+          "name": "tool_was_called",
+          "passed": true
+        },
+        {
+          "name": "parse_params_as_json",
+          "passed": true
+        },
+        {
+          "name": "exact_reason",
+          "passed": true
+        },
+        {
+          "name": "exact_system_message_to_speak",
+          "passed": true
+        },
+        {
+          "name": "no_additional_tool_result",
+          "passed": true
+        },
+        {
+          "name": "matching_successful_tool_result",
+          "passed": true
+        },
+        {
+          "name": "no_error_or_block",
+          "passed": true
+        },
+        {
+          "name": "successful_end_call_result_payload",
+          "passed": true
+        },
+        {
+          "name": "no_text_or_tool_after_result",
+          "passed": true
+        },
+        {
+          "name": "direct_preceding_rendered_tool_message",
+          "passed": true
+        },
+        {
+          "name": "critical_buyer_turn_is_terminal_trigger",
+          "passed": true
+        },
+        {
+          "name": "no_standalone_assistant_or_tool_between_trigger_and_end_call",
+          "passed": true
+        },
+        {
+          "name": "note_has_no_pre_terminal_pitch_email_or_callback_ask",
+          "passed": true
+        }
+      ],
+      "failures": []
+    },
+    {
+      "test_id": "sim_039_delivery_timing_not_repeated",
+      "test_name": "ELEVENLABS-039-end-call-edge-case-hardening::sim_039_delivery_timing_not_repeated",
+      "test_run_id": "trun_4801kx5tnqchfv7amx388r1bresw",
+      "independent_status": "fail",
+      "provider_status": "passed",
+      "provider_condition_result": {
+        "result": "success",
+        "rationale": {
+          "messages": [
+            "The agent invoked end_call exactly once with the final message 'Take care.' and system__message_to_speak 'Take care.'. No failure conditions were met; the 'by-the-end-of-day' timing was not repeated, no additional standalone farewell was spoken, and the pitch did not reopen.",
+            "The agent ended the conversation."
+          ],
+          "summary": "Evaluation succeeded"
+        }
+      },
+      "provider_evaluator_rationale": "{'messages': [\"The agent invoked end_call exactly once with the final message 'Take care.' and system__message_to_speak 'Take care.'. No failure conditions were met; the 'by-the-end-of-day' timing was not repeated, no additional standalone farewell was spoken, and the pitch did not reopen.\", 'The agent ended the conversation.'], 'summary': 'Evaluation succeeded'}",
+      "assertions": [
+        {
+          "name": "expected_test_name",
+          "passed": true
+        },
+        {
+          "name": "ordered_agent_responses_present",
+          "passed": true
+        },
+        {
+          "name": "critical_buyer_turn_found",
+          "passed": true
+        },
+        {
+          "name": "exactly_one_end_call",
+          "passed": true
+        },
+        {
+          "name": "no_additional_tool_call",
+          "passed": true
+        },
+        {
+          "name": "built_in_system_end_call",
+          "passed": true
+        },
+        {
+          "name": "tool_was_called",
+          "passed": true
+        },
+        {
+          "name": "parse_params_as_json",
+          "passed": true
+        },
+        {
+          "name": "exact_reason",
+          "passed": true
+        },
+        {
+          "name": "exact_system_message_to_speak",
+          "passed": true
+        },
+        {
+          "name": "no_additional_tool_result",
+          "passed": true
+        },
+        {
+          "name": "matching_successful_tool_result",
+          "passed": true
+        },
+        {
+          "name": "no_error_or_block",
+          "passed": true
+        },
+        {
+          "name": "successful_end_call_result_payload",
+          "passed": true
+        },
+        {
+          "name": "no_text_or_tool_after_result",
+          "passed": true
+        },
+        {
+          "name": "direct_preceding_rendered_tool_message",
+          "passed": true
+        },
+        {
+          "name": "critical_buyer_turn_is_terminal_trigger",
+          "passed": true
+        },
+        {
+          "name": "no_standalone_assistant_or_tool_between_trigger_and_end_call",
+          "passed": true
+        },
+        {
+          "name": "exact_email_confirmation_found",
+          "passed": true
+        },
+        {
+          "name": "exact_post_confirmation_timing_without_tool",
+          "passed": false,
+          "detail": "exact delivery timing-only agent event is missing after confirmation"
+        },
+        {
+          "name": "exact_buyer_goodbye_after_timing",
+          "passed": true
+        },
+        {
+          "name": "timing_appears_once_post_confirmation",
+          "passed": false,
+          "detail": "expected one post-confirmation timing line, found 1"
+        },
+        {
+          "name": "timing_not_in_final_tool_params",
+          "passed": true
+        },
+        {
+          "name": "delivery_tool_has_no_extra_text_turn",
+          "passed": true
+        }
+      ],
+      "failures": [
+        "exact_post_confirmation_timing_without_tool: exact delivery timing-only agent event is missing after confirmation",
+        "timing_appears_once_post_confirmation: expected one post-confirmation timing line, found 1"
+      ]
+    }
+  ]
+}
