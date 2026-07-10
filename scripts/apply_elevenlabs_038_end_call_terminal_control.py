@@ -37,6 +37,7 @@ MANIFEST_PATH = (
 
 KB_DOCS_TO_UPDATE = {
     "atlas_close_and_followup_playbook.md",
+    "atlas_offer_facts.md",
     "atlas_output_quality_rules.md",
 }
 
@@ -516,8 +517,9 @@ def criterion_prompt(item: dict[str, Any]) -> str:
             "is called more than once; Emma says Take care or another farewell before the tool; delivery timing is repeated "
             "after it was already stated; a callback/note is confirmed but the call remains open; pitch or explanation follows "
             "terminal action; `end_call` occurs with unresolved concern, pending email confirmation except hard-stop override, "
-            "or accepted mockup but no email; email-confirmed same-turn goodbye omits by-the-end-of-day delivery timing; or "
-            "Take care is repeated.\n"
+            "accepted mockup but no email, or email confirmation without goodbye; confirmation without goodbye adds a farewell "
+            "instead of a timing-only turn; email-confirmed same-turn goodbye omits by-the-end-of-day delivery timing; or Take "
+            "care is repeated.\n"
             "Return unknown when: No completed terminal condition, hard stop, do-not-call, or terminal guarantee-only close appears.\n"
             "Use only the transcript. Return success, failure, or unknown with a brief rationale."
         ),
@@ -546,7 +548,8 @@ def criterion_prompt(item: dict[str, Any]) -> str:
             "delivery timing is unnecessarily repeated in the final tool message; gatekeeper callback/note is confirmed "
             "but the call remains open; pitch or explanation follows terminal action; end_call is invoked while an "
             "unresolved concern remains, email confirmation is pending except hard-stop override, or mockup was accepted "
-            "but no email is known; or email-confirmed same-turn goodbye omits by-the-end-of-day delivery timing."
+            "but no email is known; confirmation without goodbye triggers end_call or a farewell instead of a timing-only "
+            "turn; or email-confirmed same-turn goodbye omits by-the-end-of-day delivery timing."
         ),
     }
     lines = [

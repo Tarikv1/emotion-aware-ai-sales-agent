@@ -1,0 +1,32 @@
+{
+  "checkpoint_id": "ELEVENLABS-039-end-call-edge-case-hardening",
+  "snapshot_type": "browser_validation_prompt_repair_pre_patch",
+  "captured_at_utc": "2026-07-10T09:46:05.5619048Z",
+  "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+  "agent_name": "web design",
+  "prompt_sha256": "f68ed47ddc64d998d9a060cf215c39e7abb7ae74af8846b261f76ca8d6de7aac",
+  "new_gatekeeper_marker_present": false,
+  "preserved_config_sha256": "601f8e8e9c89efc3e3cfbb36aa79b3555ac4cc149e00d1e62de94046bc091958",
+  "kb_count": 17,
+  "kb_unique_count": 17,
+  "kb_order_matches_manifest": true,
+  "built_in_end_call_count": 1,
+  "legacy_system_end_call_mirror_count": 1,
+  "duplicate_custom_or_server_end_call_count": 0,
+  "unrelated_tool_fingerprint": {
+    "non_end_call_legacy_tools": [],
+    "built_in_tools_excluding_end_call_count": 17,
+    "tool_ids": [],
+    "mcp_server_ids": [],
+    "native_mcp_server_ids": []
+  },
+  "analysis_criteria_count": 30,
+  "procedures_inactive": true,
+  "voice_id": "cjVigY5qzO86Huf0OWal",
+  "llm": "gemini-2.5-flash",
+  "first_message_sha256": "2e44d61adfbabc298496f0c6357220f6d9c7898e6b5beadba7cecd2c240d750c",
+  "published_referenced_tests_ids": null,
+  "unrelated_dashboard_draft_detected": true,
+  "unrelated_dashboard_draft_published": false,
+  "outbound_calls_made": false
+}

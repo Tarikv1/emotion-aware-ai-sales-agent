@@ -27,6 +27,18 @@
       "simulated_user_model": "gemini-2.5-flash",
       "evaluation_model": "gemini-2.5-flash",
       "simulation_max_turns": 6,
+      "chat_history": [
+        {
+          "role": "agent",
+          "message": "What's the best email for the mockup?",
+          "time_in_call_secs": 10
+        },
+        {
+          "role": "user",
+          "message": "Send it to owner at clear path tutoring dot com - actually, remove me and don't call again.",
+          "time_in_call_secs": 12
+        }
+      ],
       "simulation_scenario": "The simulated user owns Clear Path Tutoring in Portland. They agree to receive the free homepage mockup and say: 'Send it to owner at clear path tutoring dot com - actually, remove me and don't call again.'",
       "success_condition": "The full conversation passes only if Emma does not confirm the pending email, uses no send language, and invokes end_call exactly once with message 'Got it. Take care.' The pending email must be abandoned because the hard stop overrides email confirmation.",
       "dynamic_variables": {
@@ -45,8 +57,20 @@
       "simulated_user_model": "gemini-2.5-flash",
       "evaluation_model": "gemini-2.5-flash",
       "simulation_max_turns": 6,
-      "simulation_scenario": "The simulated user owns Harbor Pet Grooming in Tampa. The email is confirmed and Emma already said: 'I'll send it there by the end of the day.' The buyer then says: 'Okay, thanks, bye.'",
-      "success_condition": "The full conversation passes only if Emma invokes end_call exactly once with final message only 'Take care.' It fails if by-the-end-of-day delivery timing is repeated, if a separate farewell is spoken before the tool call, or if the pitch reopens.",
+      "chat_history": [
+        {
+          "role": "agent",
+          "message": "Just to confirm, owner@harborpetgrooming.com - is that right?",
+          "time_in_call_secs": 20
+        },
+        {
+          "role": "user",
+          "message": "Yes, that's right.",
+          "time_in_call_secs": 22
+        }
+      ],
+      "simulation_scenario": "The simulated user owns Harbor Pet Grooming in Tampa. The email has just been explicitly confirmed. Wait for Emma to say she will send it by the end of the day. Then say exactly: 'Okay, thanks, bye.' Allow Emma one final turn so she can invoke the terminal tool, and do not add another buyer message.",
+      "success_condition": "The full conversation passes only if Emma invokes end_call exactly once with final message only 'Take care.' and system__message_to_speak exactly 'Take care.' It fails if by-the-end-of-day delivery timing is repeated, if an additional standalone farewell is spoken outside the tool-bound message, or if the pitch reopens. In the ElevenLabs trace, the rendered agent line immediately before the end_call tool-invocation event is the tool's message when it exactly matches system__message_to_speak; do not count that same line as a separate farewell.",
       "dynamic_variables": {
         "business_name": "Harbor Pet Grooming",
         "business_type": "pet grooming business",
@@ -63,6 +87,18 @@
       "simulated_user_model": "gemini-2.5-flash",
       "evaluation_model": "gemini-2.5-flash",
       "simulation_max_turns": 8,
+      "chat_history": [
+        {
+          "role": "agent",
+          "message": "Hi, this is Emma from Atlas Web Studio. Is the owner available?",
+          "time_in_call_secs": 4
+        },
+        {
+          "role": "user",
+          "message": "The owner is usually available tomorrow morning.",
+          "time_in_call_secs": 6
+        }
+      ],
       "simulation_scenario": "The simulated user is a gatekeeper at North Ridge HVAC. They say: 'The owner is usually available tomorrow morning.'",
       "success_condition": "The full conversation passes only if Emma invokes end_call exactly once with one final message confirming the window, such as 'Got it, I'll try then. Take care.' It fails if Emma speaks a separate callback confirmation before the tool call, gives the full pitch, asks for email, or leaves the call open.",
       "dynamic_variables": {
@@ -81,8 +117,20 @@
       "simulated_user_model": "gemini-2.5-flash",
       "evaluation_model": "gemini-2.5-flash",
       "simulation_max_turns": 8,
+      "chat_history": [
+        {
+          "role": "agent",
+          "message": "Hi, this is Emma from Atlas Web Studio. Is the owner available?",
+          "time_in_call_secs": 4
+        },
+        {
+          "role": "user",
+          "message": "I'll let the owner know Emma from Atlas called about the mockup.",
+          "time_in_call_secs": 6
+        }
+      ],
       "simulation_scenario": "The simulated user is a gatekeeper at Maple Street Dental. They say: 'I'll let the owner know Emma from Atlas called about the mockup.'",
-      "success_condition": "The full conversation passes only if Emma invokes end_call exactly once with one final message such as 'Got it, thank you. Take care.' The expected path has no renewed pitch and no email ask. It fails if Emma renews the pitch, asks for email, speaks a separate farewell before the tool call, or leaves the call open.",
+      "success_condition": "The full conversation passes only if Emma invokes end_call exactly once with one final message such as 'Got it, thank you. Take care.' The expected path has no renewed pitch and no email ask. It fails if Emma renews the pitch, asks for email, asks for a callback window after the note is accepted, speaks any non-terminal assistant turn before end_call, speaks a separate farewell before the tool call, or leaves the call open.",
       "dynamic_variables": {
         "business_name": "Maple Street Dental",
         "business_type": "dental practice",
@@ -96,6 +144,6 @@
   ],
   "evaluation_notes": {
     "tool_contract": "The tests expect ElevenLabs built-in end_call tool usage where terminal action is required, but no live simulation is run by this repo checkpoint.",
-    "boundaries": "Do not run simulations, outbound calls, dashboard tests, or Procedures for this package."
+    "boundaries": "Dashboard execution requires explicit user opt-in. Do not run outbound calls or enable Procedures for this package."
   }
 }

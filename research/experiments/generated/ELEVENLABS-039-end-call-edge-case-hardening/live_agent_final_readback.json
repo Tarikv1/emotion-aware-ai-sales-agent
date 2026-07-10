@@ -1,0 +1,73 @@
+{
+  "checkpoint_id": "ELEVENLABS-039-end-call-edge-case-hardening",
+  "recorded_at_utc": "2026-07-10T11:01:46.6463398Z",
+  "source": "fresh ElevenLabs API readback after the final dashboard batch",
+  "agent": {
+    "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+    "name": "web design"
+  },
+  "prompt": {
+    "compact_atlas_marker_present": true,
+    "marker": "Atlas Web Studio Sales Agent Operating Kernel",
+    "prompt_text_sha256_stripped": "da98253a6a76362187162d3ca7a2cecaa9d9040cbbdabb468a39ae69936daef3",
+    "matches_repo": true
+  },
+  "knowledge_base": {
+    "attachment_count": 17,
+    "unique_attachment_count": 17,
+    "order_matches_manifest": true,
+    "old_monolithic_kb_attached": false,
+    "tests_or_analysis_docs_attached": false,
+    "ordered_names": [
+      "universal_sales_core_summary.md",
+      "buyer_moves.md",
+      "value_and_roi_framing.md",
+      "objection_status_quo_and_competition.md",
+      "trust_and_risk_repair.md",
+      "conversation_repair.md",
+      "next_step_policy.md",
+      "disqualification_policy.md",
+      "ethical_persuasion_boundaries.md",
+      "call_quality_rubrics.md",
+      "atlas_offer_facts.md",
+      "atlas_value_mechanisms.md",
+      "atlas_vertical_playbooks.md",
+      "atlas_objection_playbook.md",
+      "atlas_price_scope_cost_drivers.md",
+      "atlas_close_and_followup_playbook.md",
+      "atlas_output_quality_rules.md"
+    ]
+  },
+  "tools": {
+    "built_in_end_call_count": 1,
+    "legacy_system_end_call_mirror_count": 1,
+    "duplicate_custom_or_server_end_call_count": 0,
+    "end_call_description_matches_required_policy": true,
+    "tool_ids": [],
+    "mcp_server_ids": [],
+    "native_mcp_server_ids": [],
+    "unrelated_tool_fingerprint_sha256": "a2ef551c88189b06cf1650838648d31c66628508802081cc1090deffbee79a41",
+    "unrelated_tool_fingerprint_matches_pre_patch": true
+  },
+  "analysis": {
+    "criteria_count": 30,
+    "criterion_ids_and_order_match_repo": true,
+    "maximum_conversation_goal_prompt_characters": 1790,
+    "all_conversation_goal_prompts_below_2000_characters": true
+  },
+  "procedures_inactive": true,
+  "preserved_settings": {
+    "voice_id": "cjVigY5qzO86Huf0OWal",
+    "llm": "gemini-2.5-flash",
+    "first_message_unchanged": true,
+    "dynamic_variables_unchanged": true,
+    "phone_settings_unchanged": true,
+    "knowledge_base_id_order_unchanged": true
+  },
+  "execution": {
+    "authorized_dashboard_simulations_run": 4,
+    "final_dashboard_simulations_passed": 4,
+    "outbound_calls_made": false,
+    "failed_provider_api_actions": []
+  }
+}

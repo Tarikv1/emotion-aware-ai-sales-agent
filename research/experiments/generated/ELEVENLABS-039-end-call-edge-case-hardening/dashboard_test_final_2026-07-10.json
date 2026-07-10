@@ -1,0 +1,63 @@
+{
+  "checkpoint_id": "ELEVENLABS-039-end-call-edge-case-hardening",
+  "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+  "agent_name": "web design",
+  "execution_surface": "ElevenLabs dashboard through an authenticated browser session",
+  "simulated_user_model": "gemini-2.5-flash",
+  "evaluation_model": "gemini-2.5-flash",
+  "status": "passed",
+  "summary": {
+    "total": 4,
+    "passed": 4,
+    "failed": 0
+  },
+  "runs": [
+    {
+      "test_id": "sim_039_hard_stop_overrides_pending_email",
+      "run_id": "trun_6701kx5tnqcjeyhtg6nkcke6f9ha",
+      "status": "passed",
+      "end_call_count": 1,
+      "reason": "Buyer requested no further contact",
+      "system__message_to_speak": "Got it. Take care.",
+      "email_confirmed_after_stop": false,
+      "send_language_after_stop": false
+    },
+    {
+      "test_id": "sim_039_delivery_timing_not_repeated",
+      "run_id": "trun_4801kx5tnqchfv7amx388r1bresw",
+      "status": "passed",
+      "end_call_count": 1,
+      "reason": "Buyer explicitly ended the completed conversation",
+      "system__message_to_speak": "Take care.",
+      "delivery_timing_repeated_in_terminal_message": false
+    },
+    {
+      "test_id": "sim_039_gatekeeper_callback_atomic_end_call",
+      "run_id": "trun_6601kx5tnqckf918cgtr8nr4zyeg",
+      "status": "passed",
+      "end_call_count": 1,
+      "reason": "Gatekeeper callback window confirmed",
+      "system__message_to_speak": "Got it, I'll try then. Take care.",
+      "separate_callback_confirmation": false,
+      "full_pitch_added": false
+    },
+    {
+      "test_id": "sim_039_gatekeeper_note_atomic_end_call",
+      "run_id": "trun_4701kx5tnqcmer4rf9kn2whsm08p",
+      "status": "passed",
+      "end_call_count": 1,
+      "reason": "Gatekeeper note completed",
+      "system__message_to_speak": "Got it, thank you. Take care.",
+      "renewed_pitch": false,
+      "email_ask": false
+    }
+  ],
+  "delivery_dedup_stability_runs": [
+    "trun_3601kx5tfwnreet8f6eaqkh4t47r",
+    "trun_2501kx5thy6yee6sbjfrn6zj11jm",
+    "trun_8801kx5tm4v7em0aycvbyajd3m63"
+  ],
+  "outbound_calls_made": false,
+  "procedures_enabled": false,
+  "unrelated_dashboard_draft_published": false
+}

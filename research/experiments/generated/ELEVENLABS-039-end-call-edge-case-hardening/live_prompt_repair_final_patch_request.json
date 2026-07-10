@@ -1,0 +1,12 @@
+{
+  "checkpoint_id": "ELEVENLABS-039-end-call-edge-case-hardening",
+  "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+  "method": "PATCH",
+  "endpoint": "/v1/convai/agents/agent_7801kt0g32zxf4f8x5zkykj7syty",
+  "changed_field": "conversation_config.agent.prompt.prompt",
+  "prompt_sha256_before": "8aa142b86f8e6382070117c9e2e2cbe5d7746e0a0a8b06641cc73bc3c34e1dde",
+  "prompt_sha256_requested": "5b16304624301e612539a3ea1d5433bb3920f7d1d68a87057f99d6374a268eee",
+  "request_body_sha256": "fd101a09f8410e0e9755cd99a2e68d7eb8ce9287ff21f475d8cd5b040390016e",
+  "authorization_header": "[REDACTED]",
+  "outbound_calls_made": false
+}

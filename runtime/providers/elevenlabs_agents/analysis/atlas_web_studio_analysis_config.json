@@ -48,11 +48,11 @@
     {
       "id": "email_two_step_close",
       "description": "Email delivery should use the natural two-step confirmation and close.",
-      "pass": "After a clear email, the agent confirms the normalized email only; after buyer confirmation, the agent closes naturally in one short line with by the end of the day delivery timing.",
-      "failure": "The agent asks for the best email after an email was already provided, skips email confirmation after receiving a reachable next turn, says it will send before confirmation, continues discovery, re-pitches, over-explains reply path, uses the wrong delivery timing, leaks follow-up language, or fails to close after confirmation.",
+      "pass": "After a clear email, the agent confirms the normalized email only. Confirmation without goodbye gets delivery timing without `end_call` or a farewell; a later explicit goodbye gets one atomic terminal tool message.",
+      "failure": "The agent asks for the best email after an email was already provided, skips email confirmation after receiving a reachable next turn, says it will send before confirmation, ends the call or adds a farewell after confirmation without goodbye, continues discovery, re-pitches, uses the wrong delivery timing, or repeats delivery timing in the later terminal message.",
       "unknown": "The buyer never gives an email, or the transcript ends immediately after email before the agent has a chance to respond.",
       "edge_cases": [
-        "If the buyer gives an email and confirms it in the same turn, a one-turn close is acceptable.",
+        "If the buyer confirms email and says goodbye in the same turn, one atomic terminal close with delivery timing is correct.",
         "If the buyer asks whether they can reply, a brief yes is acceptable."
       ]
     },
@@ -178,8 +178,8 @@
     {
       "id": "delivery_timing_end_of_day",
       "description": "Mockup delivery timing should use the campaign's end-of-day timing.",
-      "pass": "After confirmed email, Emma says the mockup will be sent by the end of the day. If already stated, it is not required again in the terminal message. If confirmation and goodbye occur in the same turn, it appears in the atomic final message.",
-      "failure": "Hard fail: timing is omitted entirely after confirmed email, timing conflicts with end of day, or timing is mechanically repeated in a later farewell.",
+      "pass": "After confirmed email, Emma says the mockup will be sent by the end of the day. Confirmation without goodbye gets delivery timing without `end_call` or a farewell. If already stated, it is not required again in the terminal message. If confirmation and goodbye occur in the same turn, it appears in the atomic final message.",
+      "failure": "Hard fail: timing is omitted entirely after confirmed email, timing conflicts with end of day, confirmation alone triggers a farewell or `end_call`, or timing is mechanically repeated in a later farewell.",
       "unknown": "No email-confirmed close or delivery-timing question appears."
     },
     {

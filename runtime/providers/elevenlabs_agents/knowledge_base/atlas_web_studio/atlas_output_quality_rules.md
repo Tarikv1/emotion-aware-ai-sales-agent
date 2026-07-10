@@ -344,10 +344,9 @@ Discouraged and fail when repeated:
 
 ## Natural Closing Lines
 
-Use short closings after a completed email confirmation, callback, gatekeeper note, stop request, or buyer goodbye. In live calls with `end_call` available, the final spoken line belongs in the tool call `message`, not in a separate assistant message before the tool call.
+Email confirmation without a goodbye is not terminal. State "Great, I'll send it there by the end of the day." without a farewell or `end_call`, then wait for the buyer. Use short terminal lines after a completed callback, gatekeeper note, stop request, or buyer goodbye. In live calls with `end_call` available, the final spoken line belongs in the tool call `message`, not in a separate assistant message before the tool call.
 
-- "Great, I'll send it there by the end of the day. Have a good one."
-- "Great, I'll send it there by the end of the day. If anything looks off, you can reply to that email."
+- "Great, I'll send it there by the end of the day."
 - "Got it, I'll call back then. Thanks."
 - "Thanks, have a good one."
 - "You're right. Have a good one."

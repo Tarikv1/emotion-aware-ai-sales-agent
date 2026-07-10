@@ -19,7 +19,8 @@
       "procedure_update": null,
       "procedure_create": null,
       "procedure_delete": null,
-      "transfer_to_genesys_chat": null
+      "transfer_to_genesys_chat": null,
+      "run_subagent": null
     },
     "tool_ids": [],
     "mcp_server_ids": [],

@@ -9,6 +9,7 @@
   "legacy_system_end_call_mirror_count": 1,
   "kb_documents_updated_in_place": [
     "atlas_close_and_followup_playbook.md",
+    "atlas_offer_facts.md",
     "atlas_output_quality_rules.md"
   ],
   "kb_update_results": [
@@ -22,8 +23,23 @@
         "type": "file",
         "metadata": {
           "created_at_unix_secs": 1781229397,
-          "last_updated_at_unix_secs": 1782081495,
-          "size_bytes": 20895
+          "last_updated_at_unix_secs": 1783680580,
+          "size_bytes": 20844
+        }
+      }
+    },
+    {
+      "name": "atlas_offer_facts.md",
+      "document_id": "HYTfB5s1Z8LzOw8oBADt",
+      "status_code": 200,
+      "response": {
+        "id": "HYTfB5s1Z8LzOw8oBADt",
+        "name": "atlas_offer_facts.md",
+        "type": "file",
+        "metadata": {
+          "created_at_unix_secs": 1781229390,
+          "last_updated_at_unix_secs": 1783680583,
+          "size_bytes": 11915
         }
       }
     },
@@ -37,8 +53,8 @@
         "type": "file",
         "metadata": {
           "created_at_unix_secs": 1781229399,
-          "last_updated_at_unix_secs": 1782081498,
-          "size_bytes": 16411
+          "last_updated_at_unix_secs": 1783680586,
+          "size_bytes": 16488
         }
       }
     }
@@ -65,6 +81,7 @@
         "description": "End the call only when the conversation is genuinely complete. Call this tool once when the buyer explicitly ends a completed conversation, gives a hard stop or do-not-call request, a completed gatekeeper callback or note outcome is reached, or a guarantee-only disqualification reaches its terminal conclusion. Before ending, answer any live direct question or unresolved concern, confirm any pending email destination, and confirm any agreed callback window. Exception: a hard stop or do-not-call request overrides pending email confirmation, callback, and every unfinished sales action; end immediately without confirming email or continuing the pitch. Include by-the-end-of-day delivery timing only when it has not already been stated, or when email confirmation and goodbye occur in the same buyer turn. Use the tool's message field as the single final spoken line. Do not speak a separate farewell before invoking the tool. Do not end while email confirmation is pending, the buyer accepted the mockup but no email is known, or the buyer is still asking about price, process, capability, scope, or another unresolved concern, except for the hard-stop/do-not-call override. Do not call this tool more than once.",
         "response_timeout_secs": 20,
         "disable_interruptions": false,
+        "interruption_mode": "allow",
         "force_pre_tool_speech": false,
         "pre_tool_speech": "auto",
         "assignments": [],
@@ -85,6 +102,10 @@
     },
     "end_call_description_matches": true,
     "simulations_run": false,
+    "simulations_run_scope": "provider patch utility only",
+    "authorized_dashboard_simulations_run_after_patch": true,
+    "authorized_dashboard_simulation_count": 4,
+    "authorized_dashboard_final_pass_count": 4,
     "outbound_calls_made": false
   },
   "unrelated_settings_preserved": true,
@@ -229,8 +250,8 @@
       ],
       "metadata": {
         "created_at_unix_secs": 1781229390,
-        "last_updated_at_unix_secs": 1781229390,
-        "size_bytes": 6372
+        "last_updated_at_unix_secs": 1783680583,
+        "size_bytes": 11915
       }
     },
     "atlas_value_mechanisms.md": {
@@ -294,8 +315,8 @@
       ],
       "metadata": {
         "created_at_unix_secs": 1781229397,
-        "last_updated_at_unix_secs": 1782081495,
-        "size_bytes": 20895
+        "last_updated_at_unix_secs": 1783680580,
+        "size_bytes": 20844
       }
     },
     "atlas_output_quality_rules.md": {
@@ -307,13 +328,17 @@
       ],
       "metadata": {
         "created_at_unix_secs": 1781229399,
-        "last_updated_at_unix_secs": 1782081498,
-        "size_bytes": 16411
+        "last_updated_at_unix_secs": 1783680586,
+        "size_bytes": 16488
       }
     }
   },
   "intermediate_verifier_error": null,
   "live_provider_calls_made": true,
   "simulations_run": false,
+  "simulations_run_scope": "provider patch utility only",
+  "authorized_dashboard_simulations_run_after_patch": true,
+  "authorized_dashboard_simulation_count": 4,
+  "authorized_dashboard_final_pass_count": 4,
   "outbound_calls_made": false
 }

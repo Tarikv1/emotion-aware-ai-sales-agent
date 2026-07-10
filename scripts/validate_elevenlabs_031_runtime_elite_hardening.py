@@ -56,7 +56,7 @@ PROMPT_MARKERS = (
     "Use Atlas Objection Playbook lock wording.",
     "After the guarantee-only lock, do not ask to send the mockup, ask for email",
     "Delivery timing is \"by the end of the day\"",
-    "Buyer confirms email -> close naturally.",
+    "Buyer confirms email without goodbye ->",
     "If email comes with process or delivery question",
     "If the buyer asks why Emma is still talking",
     "Never output bracketed labels of any kind.",
@@ -72,14 +72,16 @@ GUARANTEE_LOCK_MARKERS = (
 
 DELIVERY_MARKERS = (
     "Canonical mockup delivery timing is by the end of the day.",
-    "Great, I'll send it there by the end of the day. Have a good one.",
-    "If anything looks off",
+    "After email confirmation without goodbye, say only",
+    "Great, I'll send it there by the end of the day.",
+    "Do not add a farewell or invoke `end_call` until the buyer explicitly ends the conversation.",
+    "anything looks off",
     "reply to that email",
 )
 
 EMAIL_MARKERS = (
     "Buyer gives email -> confirm normalized email; no send language until explicit confirmation.",
-    "Buyer confirms email -> close naturally.",
+    "Buyer confirms email without goodbye ->",
     "Hard rule: confirm it before saying the mockup will be sent.",
     "I've got brightlanedental@gmail.com - is that right?",
     "email_confirmation_requires_explicit_yes",

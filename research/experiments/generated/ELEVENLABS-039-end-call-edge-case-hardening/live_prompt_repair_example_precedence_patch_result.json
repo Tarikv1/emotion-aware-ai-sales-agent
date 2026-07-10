@@ -1,0 +1,24 @@
+{
+  "checkpoint_id": "ELEVENLABS-039-end-call-edge-case-hardening",
+  "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+  "agent_name": "web design",
+  "patch_status_code": 200,
+  "conversation_config_diff_paths": [
+    "agent.prompt.prompt"
+  ],
+  "unexpected_conversation_config_diff_paths": [],
+  "prompt_sha256_before": "fed6f69dcae9927855995beb75363496c26c9114ddec91c0b1b4b929201b8498",
+  "prompt_sha256_after": "f188572f309ca836f7527ff05335f8d3b82aa8dcc929c4049516ab9bd31061ac",
+  "prompt_matches_repo": true,
+  "preserved_config_sha256_before": "bb1651a1f015cf928ae0e86bfbf3eeb04f29faf58a2ad87dc2c435fb47dfecf6",
+  "preserved_config_sha256_after": "bb1651a1f015cf928ae0e86bfbf3eeb04f29faf58a2ad87dc2c435fb47dfecf6",
+  "unrelated_tool_fingerprint_preserved": true,
+  "kb_order_preserved": true,
+  "analysis_ids_and_order_preserved": true,
+  "built_in_end_call_count": 1,
+  "duplicate_custom_or_server_end_call_count": 0,
+  "analysis_criteria_count": 30,
+  "procedures_inactive": true,
+  "simulations_run_during_patch": false,
+  "outbound_calls_made": false
+}

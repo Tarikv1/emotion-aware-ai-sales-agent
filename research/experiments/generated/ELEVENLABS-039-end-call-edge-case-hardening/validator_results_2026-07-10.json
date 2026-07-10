@@ -1,0 +1,68 @@
+{
+  "checkpoint_id": "ELEVENLABS-039-end-call-edge-case-hardening",
+  "status": "passed",
+  "executed_on": "2026-07-10",
+  "commands": [
+    {
+      "command": "python scripts/validate_elevenlabs_039_end_call_edge_case_hardening.py",
+      "exit_code": 0,
+      "status": "pass",
+      "prompt_word_count": 1641,
+      "analysis_criteria_count": 30,
+      "test_count": 4
+    },
+    {
+      "command": "python scripts/validate_elevenlabs_038_end_call_terminal_control.py",
+      "exit_code": 0,
+      "status": "pass",
+      "prompt_word_count": 1641,
+      "analysis_criteria_count": 30,
+      "test_count": 7
+    },
+    {
+      "command": "python scripts/validate_elevenlabs_037_confident_capability_control.py",
+      "exit_code": 0,
+      "status": "pass",
+      "prompt_word_count": 1641,
+      "analysis_criteria_count": 30,
+      "test_count": 8
+    },
+    {
+      "command": "python scripts/validate_elevenlabs_036_natural_sales_scenarios_tests.py",
+      "exit_code": 0,
+      "status": "pass",
+      "test_count": 10
+    },
+    {
+      "command": "python scripts/validate_elevenlabs_034_human_phone_naturalness.py",
+      "exit_code": 0,
+      "status": "pass"
+    },
+    {
+      "command": "python scripts/validate_elevenlabs_033_email_confirmation_precision.py",
+      "exit_code": 0,
+      "status": "pass"
+    },
+    {
+      "command": "python scripts/validate_elevenlabs_032_final_runtime_polish.py",
+      "exit_code": 0,
+      "status": "pass"
+    },
+    {
+      "command": "python scripts/validate_elevenlabs_031_runtime_elite_hardening.py",
+      "exit_code": 0,
+      "status": "pass"
+    },
+    {
+      "command": "python scripts/validate_elevenlabs_030_live_transcript_failure_hardening.py",
+      "exit_code": 0,
+      "status": "pass"
+    },
+    {
+      "command": "git diff --check",
+      "exit_code": 0,
+      "status": "pass",
+      "notes": "Line-ending notices only; no whitespace errors."
+    }
+  ]
+}
