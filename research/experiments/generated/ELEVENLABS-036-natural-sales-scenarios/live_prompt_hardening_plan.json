@@ -5,11 +5,11 @@
   "writes": [
     "patch_agent_prompt_only"
   ],
-  "repo_prompt_sha256": "4181eafea245bcdf144efb158420bf8cfec72f27b141b6dca8e9dd8f3d30ade3",
+  "repo_prompt_sha256": "030e0171a70d4cb9feb4b4eb31bc19c8a9035daeab1a20299d3190f1464c1474",
   "preflight": {
     "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
     "agent_name": "web design",
-    "prompt_sha256": "f8c05087b3b8f88325c84878408f055c576f7ba49e42fb7752186279e5cc482c",
+    "prompt_sha256": "4181eafea245bcdf144efb158420bf8cfec72f27b141b6dca8e9dd8f3d30ade3",
     "knowledge_base_count": 17,
     "knowledge_base_ids_in_order": [
       "S1MM5iaQDE7xHXTIw1V4",

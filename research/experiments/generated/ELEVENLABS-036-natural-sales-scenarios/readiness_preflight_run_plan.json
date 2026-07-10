@@ -1,10 +1,11 @@
 {
   "checkpoint_id": "ELEVENLABS-036-natural-sales-scenarios",
-  "captured_at_utc": "2026-07-10T22:08:06Z",
-  "summary": {
+  "captured_at_utc": "2026-07-10T22:01:56Z",
+  "scope": "full",
+  "agent": {
     "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
     "agent_name": "web design",
-    "prompt_sha256": "030e0171a70d4cb9feb4b4eb31bc19c8a9035daeab1a20299d3190f1464c1474",
+    "prompt_sha256": "4181eafea245bcdf144efb158420bf8cfec72f27b141b6dca8e9dd8f3d30ade3",
     "knowledge_base_count": 17,
     "knowledge_base_ids_in_order": [
       "S1MM5iaQDE7xHXTIw1V4",
@@ -132,23 +133,57 @@
     },
     "protected_state_sha256": "c971bd86210e9c05d2cc954579a776764dd5c0bd59de15d1ee79b60e207da723"
   },
-  "built_in_end_call": {
-    "type": "system",
-    "name": "end_call",
-    "description": "End the call only when the conversation is genuinely complete. Call this tool once when the buyer explicitly ends a completed conversation, gives a hard stop or do-not-call request, a completed gatekeeper callback or note outcome is reached, or a guarantee-only disqualification reaches its terminal conclusion. A guarantee-only conclusion is terminal only after Emma gives the guarantee-lock response and the buyer repeats the guarantee requirement or clearly ends; 'no guarantee, do not send a mockup' is not by itself a hard stop or do-not-call request. Email confirmation without goodbye is not a completed conversation; do not invoke this tool or add a farewell after confirmation alone. If delivery timing was already spoken, the message must be exactly 'Take care.' Before ending, answer any live direct question or unresolved concern, confirm any pending email destination, and confirm any agreed callback window. Exception: a hard stop or do-not-call request overrides pending email confirmation, callback, and every unfinished sales action; end immediately without confirming email or continuing the pitch. Include by-the-end-of-day delivery timing only when it has not already been stated, or when email confirmation and goodbye occur in the same buyer turn. Use the tool's message field as the single final spoken line. Do not speak a separate farewell before invoking the tool. Do not end while email confirmation is pending, the buyer accepted the mockup but no email is known, or the buyer is still asking about price, process, capability, scope, or another unresolved concern, except for the hard-stop/do-not-call override. Do not call this tool more than once.",
-    "response_timeout_secs": 20,
-    "disable_interruptions": false,
-    "interruption_mode": "allow",
-    "force_pre_tool_speech": false,
-    "pre_tool_speech": "auto",
-    "assignments": [],
-    "tool_call_sound": null,
-    "tool_call_sound_behavior": "auto",
-    "tool_error_handling_mode": "auto",
-    "params": {
-      "system_tool_type": "end_call"
+  "test_ids": {
+    "sim_036_email_confirmation_spoken_email_two_step": "[REDACTED]",
+    "sim_036_email_plus_free_question_confirmation": "[REDACTED]",
+    "sim_036_future_price_ballpark_no_overpricing": "test_7101ktwzq8e5edm9bkmwe83tvcsw",
+    "sim_036_scheduling_simple_request_vs_live_integration": "test_4601ktwzq8nyfcatm8a6mn58y7x6",
+    "sim_036_crm_payment_capability_before_price": "test_4601ktwzq8xnfpbtry5qsepeprh3",
+    "sim_036_custom_dashboard_scoped_separately": "test_9401ktwzq968e3bvmytqxg4exxc0",
+    "sim_036_free_mockup_visual_not_working_site": "test_3301ktwzq9cnfzsa5dfjd9q61gq5",
+    "sim_036_next_step_questions_no_cta_fatigue": "test_2001ktwzq9kbf92vdfttrgkvnr1x",
+    "sim_036_guarantee_required_clean_disqualify": "test_7401ktwzq9txfkhs6ytstggj8k9y",
+    "sim_036_goodbye_take_care_no_loop": "test_1901ktwzqa28f0mbk4rrt106d74d"
+  },
+  "live_test_semantics_match_repo": true,
+  "request": {
+    "method": "POST",
+    "endpoint": "/v1/convai/agents/agent_7801kt0g32zxf4f8x5zkykj7syty/run-tests",
+    "body": {
+      "tests": [
+        {
+          "test_id": "test_4201ktwzq7wpf589w4ypqbwwv6xk"
+        },
+        {
+          "test_id": "test_1301ktwzq879ex099m903r4f0gvt"
+        },
+        {
+          "test_id": "test_7101ktwzq8e5edm9bkmwe83tvcsw"
+        },
+        {
+          "test_id": "test_4601ktwzq8nyfcatm8a6mn58y7x6"
+        },
+        {
+          "test_id": "test_4601ktwzq8xnfpbtry5qsepeprh3"
+        },
+        {
+          "test_id": "test_9401ktwzq968e3bvmytqxg4exxc0"
+        },
+        {
+          "test_id": "test_3301ktwzq9cnfzsa5dfjd9q61gq5"
+        },
+        {
+          "test_id": "test_2001ktwzq9kbf92vdfttrgkvnr1x"
+        },
+        {
+          "test_id": "test_7401ktwzq9txfkhs6ytstggj8k9y"
+        },
+        {
+          "test_id": "test_1901ktwzqa28f0mbk4rrt106d74d"
+        }
+      ],
+      "repeat_count": 1
     }
   },
-  "simulations_run": false,
   "outbound_calls_made": false
 }

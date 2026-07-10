@@ -1,11 +1,11 @@
 {
   "checkpoint_id": "ELEVENLABS-036-natural-sales-scenarios",
-  "captured_at_utc": "2026-07-10T21:17:57Z",
+  "captured_at_utc": "2026-07-10T22:07:56Z",
   "phase": "pre_patch",
   "summary": {
     "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
     "agent_name": "web design",
-    "prompt_sha256": "f8c05087b3b8f88325c84878408f055c576f7ba49e42fb7752186279e5cc482c",
+    "prompt_sha256": "4181eafea245bcdf144efb158420bf8cfec72f27b141b6dca8e9dd8f3d30ade3",
     "knowledge_base_count": 17,
     "knowledge_base_ids_in_order": [
       "S1MM5iaQDE7xHXTIw1V4",

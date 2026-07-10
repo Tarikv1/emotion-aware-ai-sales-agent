@@ -41,7 +41,8 @@ REVISED_END_CALL_DESCRIPTION = (
     "A guarantee-only conclusion is terminal only after Emma gives the guarantee-lock response and the buyer repeats "
     "the guarantee requirement or clearly ends; 'no guarantee, do not send a mockup' is not by itself a hard stop or "
     "do-not-call request. Email confirmation without goodbye is not a completed conversation; do not invoke this "
-    "tool or add a farewell after confirmation alone. If delivery timing was already spoken, the message must be "
+    "tool or add a farewell after confirmation alone. Same-turn timing is determined only by the latest buyer "
+    "utterance, never earlier confirmation. If delivery timing was already spoken, the message must be "
     "exactly 'Take care.' Before ending, answer any live direct question or unresolved concern, confirm any pending "
     "email destination, and confirm any "
     "agreed callback window. Exception: a hard stop or do-not-call request overrides pending email confirmation, "
@@ -124,6 +125,7 @@ def validate_repo_policy_text() -> None:
             "`end_call` is the only terminal mechanism for completed live calls",
             "Exact output lock: email confirmation without goodbye must output only \"Great, I'll send it there by the end of the day.\" No other words, question, farewell, or tool call.",
             "After timing, any later `end_call` message is exactly \"Take care.\"",
+            "After timing, \"Alright, got it. Thanks.\" permits only `end_call` message \"Take care.\" It never permits timing again.",
             "Use it exactly once",
             "sole final spoken line in the tool",
             "Do not speak a separate farewell before invoking it",

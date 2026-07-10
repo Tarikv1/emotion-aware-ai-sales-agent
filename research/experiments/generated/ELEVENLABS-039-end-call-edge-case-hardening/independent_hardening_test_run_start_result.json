@@ -1,13 +1,13 @@
 {
   "checkpoint_id": "ELEVENLABS-039-end-call-edge-case-hardening",
   "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
-  "reference_invocation_id": "suite_6401kx63q41aejxtgh49tszxst79",
-  "run_invocation_id": "suite_2401kx63zvk1fzs8qpepx18a4434",
+  "reference_invocation_id": "suite_2401kx63zvk1fzs8qpepx18a4434",
+  "run_invocation_id": "suite_3501kx70z717e8ktjmpb92cdbgej",
   "test_run_ids": [
-    "trun_6101kx63zvk7fcmvgnrzxpendwt1",
-    "trun_0601kx63zvk8f7z8xjkcam3pbgbx",
-    "trun_0201kx63zvk9edmsdqfxdgfv973e",
-    "trun_3901kx63zvkafa0v37hcc01brnra"
+    "trun_4901kx70z71df9gt0hvhqzeae9ta",
+    "trun_8301kx70z71ef9br9vp2h7jz93ha",
+    "trun_3201kx70z71fehxtwyskqhcnd4x6",
+    "trun_2401kx70z71ge0a9agp0hrzana4x"
   ],
   "provider_test_ids": [
     "test_1701kx5nkqyxfkp8b37ksfnyers3",
