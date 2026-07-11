@@ -1,0 +1,25 @@
+{
+  "checkpoint_id": "ELEVENLABS-036-natural-sales-scenarios",
+  "status": "passed",
+  "provider_writes_made": true,
+  "status_code": 200,
+  "before_llm_config": {
+    "llm": "gpt-5.4",
+    "temperature": 0.1,
+    "thinking_budget": null,
+    "reasoning_effort": "none"
+  },
+  "after_llm_config": {
+    "llm": "gpt-5.5",
+    "temperature": 0.1,
+    "thinking_budget": null,
+    "reasoning_effort": "none"
+  },
+  "target_exact": true,
+  "protected_state_preserved": true,
+  "unrelated_tool_fingerprint_preserved": true,
+  "knowledge_base_order_preserved": true,
+  "analysis_criteria_preserved": true,
+  "procedures_inactive": true,
+  "outbound_calls_made": false
+}

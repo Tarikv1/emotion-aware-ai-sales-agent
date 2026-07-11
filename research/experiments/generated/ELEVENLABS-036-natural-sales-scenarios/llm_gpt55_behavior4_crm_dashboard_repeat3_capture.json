@@ -1,0 +1,1937 @@
+{
+  "captured_at_utc": "2026-07-11T00:45:13Z",
+  "payload_sha256": "b952bba694472ff25072fd2934d006c5d015b29e67d58d486bd9d720f01b67c7",
+  "payload": {
+    "checkpoint_id": "ELEVENLABS-036-natural-sales-scenarios",
+    "invocation_id": "suite_3001kx7a2q71e31vyew99gpgb8cd",
+    "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+    "test_runs": [
+      {
+        "test_run_id": "trun_3101kx7a2q75f4nvdgv746epx9ra",
+        "test_invocation_id": "suite_3001kx7a2q71e31vyew99gpgb8cd",
+        "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+        "test_id": "sim_036_crm_payment_capability_before_price",
+        "provider_test_id": "test_4601ktwzq8xnfpbtry5qsepeprh3",
+        "test_name": "ELEVENLABS-036-natural-sales-scenarios::sim_036_crm_payment_capability_before_price",
+        "scenario": "The simulated user owns Iron Gate Garage Doors in Kansas City. They care about lead handling more than design. Their first technical question is: 'Can it connect to Jobber or take deposit payments?' They do not ask cost until later. If Emma jumps into price first, the buyer says: 'That is not what I asked. Can it actually connect or not?' Then they ask: 'Okay, what kind of price does that add?'",
+        "success_conditions": [
+          "The full conversation passes only if Emma answers capability before price. She should first say it can connect depending on whether it is a simple form handoff or a real integration. Only after the buyer asks cost should she map a real CRM or payment integration toward {{website_integration_heavy_range}}, while noting that a simple handoff is lighter and the real number depends on the system. It fails if Emma gives a price before answering capability, says CRM or payments are automatically included in a basic site, invents an exact final quote, gives a long technical dump, or misses a natural mockup next step after the capability and cost questions are answered."
+        ],
+        "models": {
+          "simulated_user_model": "gemini-2.5-flash",
+          "evaluation_model": "gemini-2.5-flash"
+        },
+        "status": "passed",
+        "condition_result": {
+          "result": "success",
+          "rationale": {
+            "messages": [
+              "Emma answered capability before price, introducing the simple handoff vs. real integration distinction. After the user asked for cost, she provided the correct price ranges for both, noting the dependency on the system. She did not invent an exact final quote, give a technical dump, or miss the natural mockup next step. All criteria for success were met.",
+              "The simulated user ended the conversation."
+            ],
+            "summary": "Evaluation succeeded"
+          }
+        },
+        "evaluator_rationale": "{'messages': ['Emma answered capability before price, introducing the simple handoff vs. real integration distinction. After the user asked for cost, she provided the correct price ranges for both, noting the dependency on the system. She did not invent an exact final quote, give a technical dump, or miss the natural mockup next step. All criteria for success were met.', 'The simulated user ended the conversation.'], 'summary': 'Evaluation succeeded'}",
+        "agent_responses": [
+          {
+            "role": "agent",
+            "tool_results": [],
+            "message": "Hi, this is Emma from Atlas Web Studio. I had Iron Gate Garage Doors down as a garage door repair company in Kansas City. Am I speaking with the owner or someone who handles the website there?",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": null,
+            "tool_calls": [],
+            "time": 46
+          },
+          {
+            "role": "user",
+            "tool_results": [],
+            "message": "Yeah, this is the owner. I was wondering if your websites can connect to Jobber or take deposit payments?",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": "text",
+            "tool_calls": [],
+            "time": 46
+          },
+          {
+            "role": "agent",
+            "tool_results": [],
+            "message": "Yes, we can build that. It depends whether you need a simple form handoff or a real integration.",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": null,
+            "tool_calls": [],
+            "time": 46
+          },
+          {
+            "role": "user",
+            "tool_results": [],
+            "message": "Uh, what's a \"simple form handoff\" versus a \"real integration\"? Can it actually connect to Jobber or not?",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": "text",
+            "tool_calls": [],
+            "time": 46
+          },
+          {
+            "role": "agent",
+            "tool_results": [],
+            "message": "Yes, we can connect to Jobber and support deposit payments.",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": null,
+            "tool_calls": [],
+            "time": 46
+          },
+          {
+            "role": "user",
+            "tool_results": [],
+            "message": "Okay, what kind of price does that add?",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": "text",
+            "tool_calls": [],
+            "time": 46
+          },
+          {
+            "role": "agent",
+            "tool_results": [],
+            "message": "A real integration usually moves the whole project toward four thousand to five thousand dollars; a simple handoff is usually two thousand to three thousand dollars; the final number depends on the system.",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": null,
+            "tool_calls": [],
+            "time": 46
+          },
+          {
+            "role": "user",
+            "tool_results": [],
+            "message": "So what's the difference between the two? Like, what do I actually get for the extra money?",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": "text",
+            "tool_calls": [],
+            "time": 46
+          },
+          {
+            "role": "agent",
+            "tool_results": [],
+            "message": "A simple handoff usually means the website captures the lead or deposit request and sends it to you cleanly, so your team still handles the Jobber side. A real integration means the site is built to pass information into Jobber or support a connected payment flow, which takes more setup, testing, and scope.",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": null,
+            "tool_calls": [],
+            "time": 46
+          },
+          {
+            "role": "user",
+            "tool_results": [],
+            "message": "So with a real integration, does that mean I wouldn't have to manually enter stuff into Jobber anymore?",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": "text",
+            "tool_calls": [],
+            "time": 46
+          },
+          {
+            "role": "agent",
+            "tool_results": [],
+            "message": "In many cases, yes, the goal of a real integration is to reduce or remove manual re entry into Jobber for the fields we scope. The exact behavior depends on what information you want passed over, how Jobber is configured, and whether deposits need to tie into that same flow.",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": null,
+            "tool_calls": [],
+            "time": 46
+          },
+          {
+            "role": "user",
+            "tool_results": [],
+            "message": "Okay, so my guys wouldn't have to type stuff into Jobber anymore, then?",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": "text",
+            "tool_calls": [],
+            "time": 46
+          },
+          {
+            "role": "agent",
+            "tool_results": [],
+            "message": "Yes, for the fields included in the integration, the goal would be that your team does not have to retype that information into Jobber. We would still need to scope exactly which fields, deposit steps, and workflow rules should connect.",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": null,
+            "tool_calls": [],
+            "time": 46
+          },
+          {
+            "role": "user",
+            "tool_results": [],
+            "message": "Okay, so that sounds good. How do we figure out what fields get connected?",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": "text",
+            "tool_calls": [],
+            "time": 46
+          },
+          {
+            "role": "agent",
+            "tool_results": [],
+            "message": "We would map the form fields and workflow first, like customer name, phone, address, service type, preferred time, notes, and deposit status if needed. The free mockup can show the homepage layout and where that request or deposit entry point would sit, then paid scoping would define the actual Jobber connection.",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": null,
+            "tool_calls": [],
+            "time": 46
+          },
+          {
+            "role": "user",
+            "tool_results": [],
+            "message": "So, how much does that paid scoping cost?",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": "text",
+            "tool_calls": [],
+            "time": 46
+          },
+          {
+            "role": "agent",
+            "tool_results": [],
+            "message": "Paid scoping depends on how complex the Jobber workflow and deposit flow are, so I would not want to invent a fixed number on this call. The practical first step is the free homepage mockup, because it lets you see whether the direction is useful before any paid work is discussed.",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": null,
+            "tool_calls": [],
+            "time": 46
+          },
+          {
+            "role": "user",
+            "tool_results": [],
+            "message": "Okay, so what's this free mockup thing?",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": "text",
+            "tool_calls": [],
+            "time": 46
+          },
+          {
+            "role": "agent",
+            "tool_results": [],
+            "message": "It is a static homepage concept for Iron Gate Garage Doors, showing the layout, messaging, and where the request or deposit entry point would sit. It is not a working Jobber connection or payment flow, but it gives you something concrete to review before deciding whether a full build is worth discussing.",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": null,
+            "tool_calls": [],
+            "time": 46
+          },
+          {
+            "role": "user",
+            "tool_results": [],
+            "message": "Okay, so it's like a picture of the website. How do we get that started?",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": "text",
+            "tool_calls": [],
+            "time": 46
+          },
+          {
+            "role": "agent",
+            "tool_results": [],
+            "message": "Exactly, it is a visual homepage concept, not a live build. I can have that put together for Iron Gate Garage Doors and send it over for you to review. What is the best email?",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": null,
+            "tool_calls": [],
+            "time": 46
+          },
+          {
+            "role": "user",
+            "tool_results": [],
+            "message": "Okay, you can send it to [REDACTED_EMAIL].",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": "text",
+            "tool_calls": [],
+            "time": 46
+          },
+          {
+            "role": "agent",
+            "tool_results": [],
+            "message": "Just to confirm, [REDACTED_EMAIL] - is that right?",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": null,
+            "tool_calls": [],
+            "time": 46
+          },
+          {
+            "role": "user",
+            "tool_results": [],
+            "message": "Yeah, that's right.",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": "text",
+            "tool_calls": [],
+            "time": 46
+          },
+          {
+            "role": "agent",
+            "tool_results": [],
+            "message": "Great, I'll send it there by the end of the day.",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": null,
+            "tool_calls": [],
+            "time": 46
+          },
+          {
+            "role": "user",
+            "tool_results": [],
+            "message": "Okay, thanks.",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": "text",
+            "tool_calls": [],
+            "time": 46
+          },
+          {
+            "role": "agent",
+            "tool_results": [],
+            "message": "You\u2019re welcome.",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": null,
+            "tool_calls": [],
+            "time": 46
+          },
+          {
+            "role": "user",
+            "tool_results": [],
+            "message": "Alright, thanks. Bye.",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": null,
+            "tool_calls": [],
+            "time": 46
+          }
+        ]
+      },
+      {
+        "test_run_id": "trun_6401kx7a2q76fsebnz16e0ksn5ts",
+        "test_invocation_id": "suite_3001kx7a2q71e31vyew99gpgb8cd",
+        "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+        "test_id": "sim_036_crm_payment_capability_before_price",
+        "provider_test_id": "test_4601ktwzq8xnfpbtry5qsepeprh3",
+        "test_name": "ELEVENLABS-036-natural-sales-scenarios::sim_036_crm_payment_capability_before_price",
+        "scenario": "The simulated user owns Iron Gate Garage Doors in Kansas City. They care about lead handling more than design. Their first technical question is: 'Can it connect to Jobber or take deposit payments?' They do not ask cost until later. If Emma jumps into price first, the buyer says: 'That is not what I asked. Can it actually connect or not?' Then they ask: 'Okay, what kind of price does that add?'",
+        "success_conditions": [
+          "The full conversation passes only if Emma answers capability before price. She should first say it can connect depending on whether it is a simple form handoff or a real integration. Only after the buyer asks cost should she map a real CRM or payment integration toward {{website_integration_heavy_range}}, while noting that a simple handoff is lighter and the real number depends on the system. It fails if Emma gives a price before answering capability, says CRM or payments are automatically included in a basic site, invents an exact final quote, gives a long technical dump, or misses a natural mockup next step after the capability and cost questions are answered."
+        ],
+        "models": {
+          "simulated_user_model": "gemini-2.5-flash",
+          "evaluation_model": "gemini-2.5-flash"
+        },
+        "status": "passed",
+        "condition_result": {
+          "result": "success",
+          "rationale": {
+            "messages": [
+              "Emma correctly answered capability questions before providing price ranges. She distinguished between simple handoff and real integration, gave appropriate price ranges after the user asked, and introduced the mockup as a natural next step without giving an exact quote or a technical dump.",
+              "The conversation reached the maximum number of turns."
+            ],
+            "summary": "Evaluation succeeded"
+          }
+        },
+        "evaluator_rationale": "{'messages': ['Emma correctly answered capability questions before providing price ranges. She distinguished between simple handoff and real integration, gave appropriate price ranges after the user asked, and introduced the mockup as a natural next step without giving an exact quote or a technical dump.', 'The conversation reached the maximum number of turns.'], 'summary': 'Evaluation succeeded'}",
+        "agent_responses": [
+          {
+            "role": "agent",
+            "tool_results": [],
+            "message": "Hi, this is Emma from Atlas Web Studio. I had Iron Gate Garage Doors down as a garage door repair company in Kansas City. Am I speaking with the owner or someone who handles the website there?",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": null,
+            "tool_calls": [],
+            "time": 56
+          },
+          {
+            "role": "user",
+            "tool_results": [],
+            "message": "Yeah, this is the owner. I handle the website stuff. Can your web design connect to Jobber or take deposit payments?",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": "text",
+            "tool_calls": [],
+            "time": 56
+          },
+          {
+            "role": "agent",
+            "tool_results": [],
+            "message": "Yes, we can build that. It depends whether you need a simple form handoff or a real integration.",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": null,
+            "tool_calls": [],
+            "time": 56
+          },
+          {
+            "role": "user",
+            "tool_results": [],
+            "message": "Uh, what's the difference between those two?",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": "text",
+            "tool_calls": [],
+            "time": 56
+          },
+          {
+            "role": "agent",
+            "tool_results": [],
+            "message": "A simple handoff sends the lead details to you so your team can handle it in Jobber, while a real integration connects the website more directly to Jobber or payments so the process is smoother. The integration takes more setup because it has to match your workflow, fields, and payment rules.",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": null,
+            "tool_calls": [],
+            "time": 56
+          },
+          {
+            "role": "user",
+            "tool_results": [],
+            "message": "So, the real integration is what I'd need for deposits and Jobber, right?",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": "text",
+            "tool_calls": [],
+            "time": 56
+          },
+          {
+            "role": "agent",
+            "tool_results": [],
+            "message": "Yes, we can connect to Jobber and support deposit payments.",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": null,
+            "tool_calls": [],
+            "time": 56
+          },
+          {
+            "role": "user",
+            "tool_results": [],
+            "message": "Okay, what kind of price does that add?",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": "text",
+            "tool_calls": [],
+            "time": 56
+          },
+          {
+            "role": "agent",
+            "tool_results": [],
+            "message": "A real integration usually moves the whole project toward four thousand to five thousand dollars; a simple handoff is usually two thousand to three thousand dollars; the final number depends on the system.",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": null,
+            "tool_calls": [],
+            "time": 56
+          },
+          {
+            "role": "user",
+            "tool_results": [],
+            "message": "So, four to five thousand for the Jobber and deposit stuff?",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": "text",
+            "tool_calls": [],
+            "time": 56
+          },
+          {
+            "role": "agent",
+            "tool_results": [],
+            "message": "That is the likely total for the whole website with the integration, not a price for the connection by itself.",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": null,
+            "tool_calls": [],
+            "time": 56
+          },
+          {
+            "role": "user",
+            "tool_results": [],
+            "message": "Okay, so what's the website cost without that integration, then?",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": "text",
+            "tool_calls": [],
+            "time": 56
+          },
+          {
+            "role": "agent",
+            "tool_results": [],
+            "message": "Without the real integration, a simpler website with a form handoff is usually in the two thousand to three thousand dollar range. That would still let customers request service or send details, but your team would handle the Jobber side manually.",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": null,
+            "tool_calls": [],
+            "time": 56
+          },
+          {
+            "role": "user",
+            "tool_results": [],
+            "message": "So, it's roughly double the price to get the Jobber and deposit stuff working right?",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": "text",
+            "tool_calls": [],
+            "time": 56
+          },
+          {
+            "role": "agent",
+            "tool_results": [],
+            "message": "Roughly, yes, because the integrated version adds setup, testing, and workflow matching beyond the website itself. The exact difference depends on how Jobber needs to receive the information and how deposits should be handled.",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": null,
+            "tool_calls": [],
+            "time": 56
+          },
+          {
+            "role": "user",
+            "tool_results": [],
+            "message": "Okay, so it's a pretty big jump for that functionality.",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": "text",
+            "tool_calls": [],
+            "time": 56
+          },
+          {
+            "role": "agent",
+            "tool_results": [],
+            "message": "It can be, yes, because that part is more like connecting business systems than just designing pages. If you want, the free mockup can still show the homepage layout and where the service request or deposit entry point would sit before you decide whether the integration is worth it.",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": null,
+            "tool_calls": [],
+            "time": 56
+          },
+          {
+            "role": "user",
+            "tool_results": [],
+            "message": "Hmm, a mockup, huh? So I can see how it'd look before committing to the extra cost?",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": "text",
+            "tool_calls": [],
+            "time": 56
+          },
+          {
+            "role": "agent",
+            "tool_results": [],
+            "message": "Exactly. The free mockup shows the homepage direction and where the request or deposit entry point would sit, so you can judge the look and structure before deciding on any paid build.",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": null,
+            "tool_calls": [],
+            "time": 56
+          },
+          {
+            "role": "user",
+            "tool_results": [],
+            "message": "Okay, so I can see how that would work before I decide on the integration cost.",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": "text",
+            "tool_calls": [],
+            "time": 56
+          },
+          {
+            "role": "agent",
+            "tool_results": [],
+            "message": "The free mockup can show where that path starts on the homepage, but it will not prove the working Jobber or deposit flow. A working integration would need to be scoped and built after that.",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": null,
+            "tool_calls": [],
+            "time": 56
+          },
+          {
+            "role": "user",
+            "tool_results": [],
+            "message": "So it won't actually show the Jobber part working, just where the button would be?",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": "text",
+            "tool_calls": [],
+            "time": 56
+          },
+          {
+            "role": "agent",
+            "tool_results": [],
+            "message": "The free mockup shows the homepage layout and where those features would sit; it does not include working booking, payments, login, or calendar.",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": null,
+            "tool_calls": [],
+            "time": 56
+          },
+          {
+            "role": "user",
+            "tool_results": [],
+            "message": "So it's just a picture of where it would go, not how it works?",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": "text",
+            "tool_calls": [],
+            "time": 56
+          },
+          {
+            "role": "agent",
+            "tool_results": [],
+            "message": "No. It's one static homepage concept showing where those entry points would sit, not the screens or steps behind them.",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": null,
+            "tool_calls": [],
+            "time": 56
+          },
+          {
+            "role": "user",
+            "tool_results": [],
+            "message": "So it doesn't really show me if the integration is worth it?",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": "text",
+            "tool_calls": [],
+            "time": 56
+          },
+          {
+            "role": "agent",
+            "tool_results": [],
+            "message": "The free mockup cannot prove functionality; it only shows layout and placement. A working system requires scoped development.",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": null,
+            "tool_calls": [],
+            "time": 56
+          },
+          {
+            "role": "user",
+            "tool_results": [],
+            "message": "So how do I figure out if the integration is worth it then?",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": "text",
+            "tool_calls": [],
+            "time": 56
+          },
+          {
+            "role": "agent",
+            "tool_results": [],
+            "message": "The practical way is to compare the time your team spends manually moving requests into Jobber and collecting deposits against the added build cost. If the manual process is already slowing scheduling, causing missed details, or creating payment friction, the integration may be worth scoping; if not, the simpler handoff may be enough.",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": null,
+            "tool_calls": [],
+            "time": 56
+          },
+          {
+            "role": "user",
+            "tool_results": [],
+            "message": "So you're saying I have to figure that out on my own?",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": "text",
+            "tool_calls": [],
+            "time": 56
+          },
+          {
+            "role": "agent",
+            "tool_results": [],
+            "message": "Not entirely. We can help think through the workflow, but we cannot prove the integration from a free static mockup. The first useful question is whether your team currently loses time or jobs because requests, scheduling details, or deposits are handled manually.",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": null,
+            "tool_calls": [],
+            "time": 56
+          }
+        ]
+      },
+      {
+        "test_run_id": "trun_5101kx7a2q77en7stap6tj6p7kcp",
+        "test_invocation_id": "suite_3001kx7a2q71e31vyew99gpgb8cd",
+        "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+        "test_id": "sim_036_crm_payment_capability_before_price",
+        "provider_test_id": "test_4601ktwzq8xnfpbtry5qsepeprh3",
+        "test_name": "ELEVENLABS-036-natural-sales-scenarios::sim_036_crm_payment_capability_before_price",
+        "scenario": "The simulated user owns Iron Gate Garage Doors in Kansas City. They care about lead handling more than design. Their first technical question is: 'Can it connect to Jobber or take deposit payments?' They do not ask cost until later. If Emma jumps into price first, the buyer says: 'That is not what I asked. Can it actually connect or not?' Then they ask: 'Okay, what kind of price does that add?'",
+        "success_conditions": [
+          "The full conversation passes only if Emma answers capability before price. She should first say it can connect depending on whether it is a simple form handoff or a real integration. Only after the buyer asks cost should she map a real CRM or payment integration toward {{website_integration_heavy_range}}, while noting that a simple handoff is lighter and the real number depends on the system. It fails if Emma gives a price before answering capability, says CRM or payments are automatically included in a basic site, invents an exact final quote, gives a long technical dump, or misses a natural mockup next step after the capability and cost questions are answered."
+        ],
+        "models": {
+          "simulated_user_model": "gemini-2.5-flash",
+          "evaluation_model": "gemini-2.5-flash"
+        },
+        "status": "passed",
+        "condition_result": {
+          "result": "success",
+          "rationale": {
+            "messages": [
+              "Emma answered capability before price, distinguishing between simple handoff and real integration. When asked for price, she provided ranges for both, noting the final number depends on the system. She did not give an exact quote or a technical dump. She also naturally introduced the free mockup as a next step after the capability and cost discussions.",
+              "The simulated user ended the conversation."
+            ],
+            "summary": "Evaluation succeeded"
+          }
+        },
+        "evaluator_rationale": "{'messages': ['Emma answered capability before price, distinguishing between simple handoff and real integration. When asked for price, she provided ranges for both, noting the final number depends on the system. She did not give an exact quote or a technical dump. She also naturally introduced the free mockup as a next step after the capability and cost discussions.', 'The simulated user ended the conversation.'], 'summary': 'Evaluation succeeded'}",
+        "agent_responses": [
+          {
+            "role": "agent",
+            "tool_results": [],
+            "message": "Hi, this is Emma from Atlas Web Studio. I had Iron Gate Garage Doors down as a garage door repair company in Kansas City. Am I speaking with the owner or someone who handles the website there?",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": null,
+            "tool_calls": [],
+            "time": 41
+          },
+          {
+            "role": "user",
+            "tool_results": [],
+            "message": "Yeah, this is the owner. I was wondering if your websites can connect to Jobber or take deposit payments?",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": "text",
+            "tool_calls": [],
+            "time": 41
+          },
+          {
+            "role": "agent",
+            "tool_results": [],
+            "message": "Yes, we can build that. It depends whether you need a simple form handoff or a real integration.",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": null,
+            "tool_calls": [],
+            "time": 41
+          },
+          {
+            "role": "user",
+            "tool_results": [],
+            "message": "Okay, but can it actually connect to Jobber, like, a real integration?",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": "text",
+            "tool_calls": [],
+            "time": 41
+          },
+          {
+            "role": "agent",
+            "tool_results": [],
+            "message": "Yes, we can connect to Jobber and support deposit payments.",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": null,
+            "tool_calls": [],
+            "time": 41
+          },
+          {
+            "role": "user",
+            "tool_results": [],
+            "message": "Okay, what kind of price does that add?",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": "text",
+            "tool_calls": [],
+            "time": 41
+          },
+          {
+            "role": "agent",
+            "tool_results": [],
+            "message": "A real integration usually moves the whole project toward four thousand to five thousand dollars; a simple handoff is usually two thousand to three thousand dollars; the final number depends on the system.",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": null,
+            "tool_calls": [],
+            "time": 41
+          },
+          {
+            "role": "user",
+            "tool_results": [],
+            "message": "Four to five thousand, huh? Just for the Jobber part?",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": "text",
+            "tool_calls": [],
+            "time": 41
+          },
+          {
+            "role": "agent",
+            "tool_results": [],
+            "message": "That is the likely total for the whole website with the integration, not a price for the connection by itself.",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": null,
+            "tool_calls": [],
+            "time": 41
+          },
+          {
+            "role": "user",
+            "tool_results": [],
+            "message": "Okay, so that's the total for the whole website with the Jobber integration?",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": "text",
+            "tool_calls": [],
+            "time": 41
+          },
+          {
+            "role": "agent",
+            "tool_results": [],
+            "message": "Yes, that is the likely total for the whole website with the integration, not just the Jobber connection.",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": null,
+            "tool_calls": [],
+            "time": 41
+          },
+          {
+            "role": "user",
+            "tool_results": [],
+            "message": "Hmm, okay. So that's the total for everything, not just the Jobber part.",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": "text",
+            "tool_calls": [],
+            "time": 41
+          },
+          {
+            "role": "agent",
+            "tool_results": [],
+            "message": "Right, that is the likely total for the whole website with the integration. The free mockup would just show the homepage direction first, so you can see if the layout and message make sense before talking about any paid build.",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": null,
+            "tool_calls": [],
+            "time": 41
+          },
+          {
+            "role": "user",
+            "tool_results": [],
+            "message": "Okay, so you do a free mockup first, before I pay anything?",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": "text",
+            "tool_calls": [],
+            "time": 41
+          },
+          {
+            "role": "agent",
+            "tool_results": [],
+            "message": "Yes. The free mockup is just a homepage concept, so you can review the direction before paying anything or signing anything.",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": null,
+            "tool_calls": [],
+            "time": 41
+          },
+          {
+            "role": "user",
+            "tool_results": [],
+            "message": "Alright, so I don't pay anything until I see the homepage concept.",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": "text",
+            "tool_calls": [],
+            "time": 41
+          },
+          {
+            "role": "agent",
+            "tool_results": [],
+            "message": "Correct, no payment or contract before you see the homepage concept. If it looks useful, you can reply and talk through the full build from there.",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": null,
+            "tool_calls": [],
+            "time": 41
+          },
+          {
+            "role": "user",
+            "tool_results": [],
+            "message": "Okay, that's clear.",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": "text",
+            "tool_calls": [],
+            "time": 41
+          },
+          {
+            "role": "agent",
+            "tool_results": [],
+            "message": "Would you like me to send over the free homepage mockup for Iron Gate Garage Doors?",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": null,
+            "tool_calls": [],
+            "time": 41
+          },
+          {
+            "role": "user",
+            "tool_results": [],
+            "message": "Yeah, go ahead and send that over.",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": "text",
+            "tool_calls": [],
+            "time": 41
+          },
+          {
+            "role": "agent",
+            "tool_results": [],
+            "message": "Best email?",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": null,
+            "tool_calls": [],
+            "time": 41
+          },
+          {
+            "role": "user",
+            "tool_results": [],
+            "message": "It's [REDACTED_EMAIL].",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": "text",
+            "tool_calls": [],
+            "time": 41
+          },
+          {
+            "role": "agent",
+            "tool_results": [],
+            "message": "Just to confirm, [REDACTED_EMAIL] - is that right?",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": null,
+            "tool_calls": [],
+            "time": 41
+          },
+          {
+            "role": "user",
+            "tool_results": [],
+            "message": "Yep, that's right.",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": "text",
+            "tool_calls": [],
+            "time": 41
+          },
+          {
+            "role": "agent",
+            "tool_results": [],
+            "message": "Great, I'll send it there by the end of the day.",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": null,
+            "tool_calls": [],
+            "time": 41
+          },
+          {
+            "role": "user",
+            "tool_results": [],
+            "message": "Okay, great. Thanks.",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": null,
+            "tool_calls": [],
+            "time": 41
+          }
+        ]
+      },
+      {
+        "test_run_id": "trun_4101kx7a2q78ffca0nqxmmafv5w1",
+        "test_invocation_id": "suite_3001kx7a2q71e31vyew99gpgb8cd",
+        "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+        "test_id": "sim_036_custom_dashboard_scoped_separately",
+        "provider_test_id": "test_9401ktwzq968e3bvmytqxg4exxc0",
+        "test_name": "ELEVENLABS-036-natural-sales-scenarios::sim_036_custom_dashboard_scoped_separately",
+        "scenario": "The simulated user owns ClearPath Tutoring in Nashville. They ask: 'Could the site have a parent login where families see homework notes, invoices, and a little progress dashboard?' They are open to a homepage mockup, but only if Emma separates what can be shown visually from what would need real software work. If Emma gives a clean range immediately, they ask whether it fits inside the normal small-business website range.",
+        "success_conditions": [
+          "The full conversation passes only if Emma treats the login and dashboard as scoped custom work in a short, natural answer, not a clean first-call website price. The answer should name concrete drivers such as secure login, user accounts, database, permissions, security, cloud setup, integrations, privacy, testing, or maintenance. Emma should say the free mockup can show where the login or dashboard entry would sit, but the working dashboard would be scoped separately. If the buyer asks whether it fits the normal range, Emma can say it might, but custom login work can move outside a normal small-business site range and needs scope before a real number. If the buyer is still open, Emma should make the next step the homepage mockup, not a paid consultation. It fails if she quotes a final fixed price, says it is definitely included in a normal package, gives only vague 'development time' language, forces a paid consultation as the first-call goal, or forgets the low-friction mockup path."
+        ],
+        "models": {
+          "simulated_user_model": "gemini-2.5-flash",
+          "evaluation_model": "gemini-2.5-flash"
+        },
+        "status": "passed",
+        "condition_result": {
+          "result": "success",
+          "rationale": {
+            "messages": [
+              "The agent correctly identified the login/dashboard as custom work, named concrete drivers (accounts, database, permissions, security, integrations), and stated the mockup would only show entry points. It clarified that custom work might exceed the normal range and did not quote a fixed price or force a paid consultation, instead offering the free mockup as the next step.",
+              "The simulated user ended the conversation."
+            ],
+            "summary": "Evaluation succeeded"
+          }
+        },
+        "evaluator_rationale": "{'messages': ['The agent correctly identified the login/dashboard as custom work, named concrete drivers (accounts, database, permissions, security, integrations), and stated the mockup would only show entry points. It clarified that custom work might exceed the normal range and did not quote a fixed price or force a paid consultation, instead offering the free mockup as the next step.', 'The simulated user ended the conversation.'], 'summary': 'Evaluation succeeded'}",
+        "agent_responses": [
+          {
+            "role": "agent",
+            "tool_results": [],
+            "message": "Hi, this is Emma from Atlas Web Studio. I had ClearPath Tutoring down as a tutoring center in Nashville. Am I speaking with the owner or someone who handles the website there?",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": null,
+            "tool_calls": [],
+            "time": 42
+          },
+          {
+            "role": "user",
+            "tool_results": [],
+            "message": "Yeah, that's me. I'm the owner, and I handle the website stuff.",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": "text",
+            "tool_calls": [],
+            "time": 42
+          },
+          {
+            "role": "agent",
+            "tool_results": [],
+            "message": "Great. The reason I\u2019m calling is we\u2019re putting together a free homepage mockup for a few local businesses, just to show what a cleaner, more conversion-focused first page could look like for ClearPath Tutoring. There\u2019s no payment or contract for the mockup; if it looks useful, you can reply to the email, and if not, you can ignore it. Would you be open to taking a look?",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": null,
+            "tool_calls": [],
+            "time": 42
+          },
+          {
+            "role": "user",
+            "tool_results": [],
+            "message": "Yeah, I'm open to a mockup. But can you tell me what would be visual versus what needs actual software work?",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": "text",
+            "tool_calls": [],
+            "time": 42
+          },
+          {
+            "role": "agent",
+            "tool_results": [],
+            "message": "The free mockup shows the homepage layout and where those features would sit; it does not include working booking, payments, login, or calendar.",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": null,
+            "tool_calls": [],
+            "time": 42
+          },
+          {
+            "role": "user",
+            "tool_results": [],
+            "message": "Okay, so those features would be extra. What's the normal small-business website range for that kind of stuff?",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": "text",
+            "tool_calls": [],
+            "time": 42
+          },
+          {
+            "role": "agent",
+            "tool_results": [],
+            "message": "A light small-business website is usually two thousand to three thousand dollars. If you need live scheduling, payments, CRM sync, or custom login features, it usually moves toward three thousand to five thousand dollars, and a real portal can go beyond that depending on scope. For the free mockup, we would only show the homepage concept and where those entry points would sit.",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": null,
+            "tool_calls": [],
+            "time": 42
+          },
+          {
+            "role": "user",
+            "tool_results": [],
+            "message": "Hmm, so my idea for a parent login with notes and invoices, would that be in the three to five thousand range, or is that \"beyond that\"?",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": "text",
+            "tool_calls": [],
+            "time": 42
+          },
+          {
+            "role": "agent",
+            "tool_results": [],
+            "message": "A working parent login is custom and may exceed our normal website range. I can't give a real number until we scope accounts, database, permissions, security, and integrations.",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": null,
+            "tool_calls": [],
+            "time": 42
+          },
+          {
+            "role": "user",
+            "tool_results": [],
+            "message": "So you're saying it's definitely \"beyond that\" then?",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": "text",
+            "tool_calls": [],
+            "time": 42
+          },
+          {
+            "role": "agent",
+            "tool_results": [],
+            "message": "Not definitely. I\u2019m saying it could exceed the normal range because a parent login with notes and invoices depends on how accounts, data, permissions, security, and integrations are handled. If it is mostly a simple handoff to existing tools, it may stay lighter; if it is a true custom portal, it needs proper scoping first.",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": null,
+            "tool_calls": [],
+            "time": 42
+          },
+          {
+            "role": "user",
+            "tool_results": [],
+            "message": "Okay, but what does \"beyond that\" even mean? Like, how much more?",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": "text",
+            "tool_calls": [],
+            "time": 42
+          },
+          {
+            "role": "agent",
+            "tool_results": [],
+            "message": "I can't give a responsible portal number without scoping the accounts, data, permissions, security, and integrations.",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": null,
+            "tool_calls": [],
+            "time": 42
+          },
+          {
+            "role": "user",
+            "tool_results": [],
+            "message": "So you can't even give me a ballpark? Like, is it ten thousand? Twenty?",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": "text",
+            "tool_calls": [],
+            "time": 42
+          },
+          {
+            "role": "agent",
+            "tool_results": [],
+            "message": "I can't give a responsible portal number without scoping the accounts, data, permissions, security, and integrations.",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": null,
+            "tool_calls": [],
+            "time": 42
+          },
+          {
+            "role": "user",
+            "tool_results": [],
+            "message": "So you're just not going to give me any kind of idea at all?",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": "text",
+            "tool_calls": [],
+            "time": 42
+          },
+          {
+            "role": "agent",
+            "tool_results": [],
+            "message": "For a true parent portal, not responsibly without scope. The practical split is that a normal website with simple forms or links can stay in the usual small-business range, but accounts, private notes, invoices, permissions, and security turn it into custom software. If you want, I can still send the free homepage mockup so you can at least see the visual direction before any scoping.",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": null,
+            "tool_calls": [],
+            "time": 42
+          },
+          {
+            "role": "user",
+            "tool_results": [],
+            "message": "Okay, fine, send the mockup. But it's still pretty unclear what that portal would actually cost.",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": "text",
+            "tool_calls": [],
+            "time": 42
+          },
+          {
+            "role": "agent",
+            "tool_results": [],
+            "message": "That\u2019s fair. The mockup would not price or prove the portal; it would only show the homepage direction and where a parent login entry point could sit. What\u2019s the best email to send it to?",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": null,
+            "tool_calls": [],
+            "time": 42
+          },
+          {
+            "role": "user",
+            "tool_results": [],
+            "message": "It's [REDACTED_EMAIL].",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": "text",
+            "tool_calls": [],
+            "time": 42
+          },
+          {
+            "role": "agent",
+            "tool_results": [],
+            "message": "Just to confirm, [REDACTED_EMAIL] - is that right?",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": null,
+            "tool_calls": [],
+            "time": 42
+          },
+          {
+            "role": "user",
+            "tool_results": [],
+            "message": "Yeah, that's right.",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": "text",
+            "tool_calls": [],
+            "time": 42
+          },
+          {
+            "role": "agent",
+            "tool_results": [],
+            "message": "Great, I'll send it there by the end of the day.",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": null,
+            "tool_calls": [],
+            "time": 42
+          },
+          {
+            "role": "user",
+            "tool_results": [],
+            "message": "Okay, I'll keep an eye out for it. Thanks.",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": null,
+            "tool_calls": [],
+            "time": 42
+          }
+        ]
+      },
+      {
+        "test_run_id": "trun_5101kx7a2q79fmy95nd3z0bf4pjj",
+        "test_invocation_id": "suite_3001kx7a2q71e31vyew99gpgb8cd",
+        "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+        "test_id": "sim_036_custom_dashboard_scoped_separately",
+        "provider_test_id": "test_9401ktwzq968e3bvmytqxg4exxc0",
+        "test_name": "ELEVENLABS-036-natural-sales-scenarios::sim_036_custom_dashboard_scoped_separately",
+        "scenario": "The simulated user owns ClearPath Tutoring in Nashville. They ask: 'Could the site have a parent login where families see homework notes, invoices, and a little progress dashboard?' They are open to a homepage mockup, but only if Emma separates what can be shown visually from what would need real software work. If Emma gives a clean range immediately, they ask whether it fits inside the normal small-business website range.",
+        "success_conditions": [
+          "The full conversation passes only if Emma treats the login and dashboard as scoped custom work in a short, natural answer, not a clean first-call website price. The answer should name concrete drivers such as secure login, user accounts, database, permissions, security, cloud setup, integrations, privacy, testing, or maintenance. Emma should say the free mockup can show where the login or dashboard entry would sit, but the working dashboard would be scoped separately. If the buyer asks whether it fits the normal range, Emma can say it might, but custom login work can move outside a normal small-business site range and needs scope before a real number. If the buyer is still open, Emma should make the next step the homepage mockup, not a paid consultation. It fails if she quotes a final fixed price, says it is definitely included in a normal package, gives only vague 'development time' language, forces a paid consultation as the first-call goal, or forgets the low-friction mockup path."
+        ],
+        "models": {
+          "simulated_user_model": "gemini-2.5-flash",
+          "evaluation_model": "gemini-2.5-flash"
+        },
+        "status": "passed",
+        "condition_result": {
+          "result": "success",
+          "rationale": {
+            "messages": [
+              "The agent consistently treated the login and dashboard as custom work, naming concrete drivers like accounts, database, permissions, security, and integrations. It clearly stated the free mockup could show the entry point, but the working dashboard needed separate scoping. The agent avoided quoting a fixed price, did not include it in a normal package, and did not force a paid consultation, instead offering the free mockup and asking for details to define the scope.",
+              "The conversation reached the maximum number of turns."
+            ],
+            "summary": "Evaluation succeeded"
+          }
+        },
+        "evaluator_rationale": "{'messages': ['The agent consistently treated the login and dashboard as custom work, naming concrete drivers like accounts, database, permissions, security, and integrations. It clearly stated the free mockup could show the entry point, but the working dashboard needed separate scoping. The agent avoided quoting a fixed price, did not include it in a normal package, and did not force a paid consultation, instead offering the free mockup and asking for details to define the scope.', 'The conversation reached the maximum number of turns.'], 'summary': 'Evaluation succeeded'}",
+        "agent_responses": [
+          {
+            "role": "agent",
+            "tool_results": [],
+            "message": "Hi, this is Emma from Atlas Web Studio. I had ClearPath Tutoring down as a tutoring center in Nashville. Am I speaking with the owner or someone who handles the website there?",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": null,
+            "tool_calls": [],
+            "time": 71
+          },
+          {
+            "role": "user",
+            "tool_results": [],
+            "message": "Yeah, this is me, the owner. I was wondering if the site could have a parent login.",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": "text",
+            "tool_calls": [],
+            "time": 71
+          },
+          {
+            "role": "agent",
+            "tool_results": [],
+            "message": "A working parent login is custom and may exceed our normal website range. I can't give a real number until we scope accounts, database, permissions, security, and integrations. For the free mockup, we can show where a parent login entry point would sit on the homepage.",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": null,
+            "tool_calls": [],
+            "time": 71
+          },
+          {
+            "role": "user",
+            "tool_results": [],
+            "message": "So, is that parent login feature usually outside the normal small-business website range, or what?",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": "text",
+            "tool_calls": [],
+            "time": 71
+          },
+          {
+            "role": "agent",
+            "tool_results": [],
+            "message": "Yes, a real parent login is usually custom because it involves accounts, stored data, permissions, and security, not just page design. It may exceed the normal small-business website range depending on what parents need to see or do inside it.",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": null,
+            "tool_calls": [],
+            "time": 71
+          },
+          {
+            "role": "user",
+            "tool_results": [],
+            "message": "Okay, so if it's just for homework notes, invoices, and a progress dashboard, is that still outside the normal range?",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": "text",
+            "tool_calls": [],
+            "time": 71
+          },
+          {
+            "role": "agent",
+            "tool_results": [],
+            "message": "Yes, that is still custom because homework notes, invoices, and a progress dashboard require accounts, data storage, permissions, and likely integrations. I can't give a responsible portal number without scoping the accounts, data, permissions, security, and integrations.",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": null,
+            "tool_calls": [],
+            "time": 71
+          },
+          {
+            "role": "user",
+            "tool_results": [],
+            "message": "Okay, so what is the normal small-business website range then, if all that's custom?",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": "text",
+            "tool_calls": [],
+            "time": 71
+          },
+          {
+            "role": "agent",
+            "tool_results": [],
+            "message": "For a normal small-business website without a custom portal, most projects are usually in the two thousand to five thousand dollar range depending on page count, content, design depth, and basic forms. A parent login with homework notes, invoices, and a dashboard would need separate scoping because it is more like a web application than a standard website.",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": null,
+            "tool_calls": [],
+            "time": 71
+          },
+          {
+            "role": "user",
+            "tool_results": [],
+            "message": "So, if it's a web application, what's the range for that then?",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": "text",
+            "tool_calls": [],
+            "time": 71
+          },
+          {
+            "role": "agent",
+            "tool_results": [],
+            "message": "I can't give a responsible portal number without scoping the accounts, data, permissions, security, and integrations. The big drivers are whether invoices connect to another system, who can edit homework notes, what progress data is shown, and how secure the parent accounts need to be.",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": null,
+            "tool_calls": [],
+            "time": 71
+          },
+          {
+            "role": "user",
+            "tool_results": [],
+            "message": "So you can't even give me a ballpark, then?",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": "text",
+            "tool_calls": [],
+            "time": 71
+          },
+          {
+            "role": "agent",
+            "tool_results": [],
+            "message": "I can't give a responsible portal number without scoping the accounts, data, permissions, security, and integrations. If you want, the free homepage mockup can still show the public-facing site and where the parent login would sit, without pretending the portal is already scoped.",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": null,
+            "tool_calls": [],
+            "time": 71
+          },
+          {
+            "role": "user",
+            "tool_results": [],
+            "message": "But I need some idea of the cost, even a rough one, before I can decide if it's worth scoping.",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": "text",
+            "tool_calls": [],
+            "time": 71
+          },
+          {
+            "role": "agent",
+            "tool_results": [],
+            "message": "For the standard public website, the rough range is usually two thousand to five thousand dollars. For the parent portal, I can't give a responsible number without scoping the accounts, data, permissions, security, and integrations, because invoices and dashboards can change the build a lot.",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": null,
+            "tool_calls": [],
+            "time": 71
+          },
+          {
+            "role": "user",
+            "tool_results": [],
+            "message": "So you're saying you can't even give me a rough idea for the portal part, at all?",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": "text",
+            "tool_calls": [],
+            "time": 71
+          },
+          {
+            "role": "agent",
+            "tool_results": [],
+            "message": "I can't give a responsible portal number without scoping the accounts, data, permissions, security, and integrations. The safest next step is to separate the public website from the portal, then decide whether the portal is worth scoping after the homepage direction is clear.",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": null,
+            "tool_calls": [],
+            "time": 71
+          },
+          {
+            "role": "user",
+            "tool_results": [],
+            "message": "So, you're saying it could be, like, anything? A thousand or a hundred thousand?",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": "text",
+            "tool_calls": [],
+            "time": 71
+          },
+          {
+            "role": "agent",
+            "tool_results": [],
+            "message": "Not anything, but I do not want to make up a portal number without knowing the account structure, invoice source, dashboard data, permissions, and security requirements. The public website is the part I can ballpark responsibly at two thousand to five thousand dollars; the portal needs scoping before a real range.",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": null,
+            "tool_calls": [],
+            "time": 71
+          },
+          {
+            "role": "user",
+            "tool_results": [],
+            "message": "So, I just need to decide if I want to spend money on scoping without knowing if it's even in my budget?",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": "text",
+            "tool_calls": [],
+            "time": 71
+          },
+          {
+            "role": "agent",
+            "tool_results": [],
+            "message": "No, you should not spend money on scoping blind. The practical first step is to define the portal in plain terms, like what parents see, who updates it, whether invoices come from another system, and what data is private, then decide if it is worth a formal scope. For now, the free mockup can cover the public homepage and show the parent login entry point only.",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": null,
+            "tool_calls": [],
+            "time": 71
+          },
+          {
+            "role": "user",
+            "tool_results": [],
+            "message": "So, you want me to tell you exactly what I want, but you still can't tell me if it's going to cost a thousand or a hundred thousand?",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": "text",
+            "tool_calls": [],
+            "time": 71
+          },
+          {
+            "role": "agent",
+            "tool_results": [],
+            "message": "I can tell you it is not a standard one thousand dollar add-on, because accounts, invoices, private data, and dashboards make it custom software. I also would not responsibly throw out a high number without knowing whether invoices are just linked, manually uploaded, or integrated with another billing system. If you want a useful first filter, tell me whether invoices need to sync with your billing software or just be visible to parents.",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": null,
+            "tool_calls": [],
+            "time": 71
+          },
+          {
+            "role": "user",
+            "tool_results": [],
+            "message": "Okay, so if I tell you about the invoices, will that finally get me a rough estimate for the portal?",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": "text",
+            "tool_calls": [],
+            "time": 71
+          },
+          {
+            "role": "agent",
+            "tool_results": [],
+            "message": "It would help narrow the scope, but I still would not give a responsible portal estimate from one detail alone. Invoices are one major driver, and the other big ones are parent accounts, who updates homework notes, what the progress dashboard pulls from, and security requirements.",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": null,
+            "tool_calls": [],
+            "time": 71
+          },
+          {
+            "role": "user",
+            "tool_results": [],
+            "message": "So, I have to tell you everything before you can even give me a rough range?",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": "text",
+            "tool_calls": [],
+            "time": 71
+          },
+          {
+            "role": "agent",
+            "tool_results": [],
+            "message": "Not everything, but enough to avoid giving you a fake number. For a parent portal, the minimum useful details are what parents can see, who updates the homework notes, whether invoices are manual or integrated, what progress data is shown, and whether each parent only sees their own child.",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": null,
+            "tool_calls": [],
+            "time": 71
+          },
+          {
+            "role": "user",
+            "tool_results": [],
+            "message": "So, if I tell you all that, then you'll finally give me a rough idea of the cost for the portal?",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": "text",
+            "tool_calls": [],
+            "time": 71
+          },
+          {
+            "role": "agent",
+            "tool_results": [],
+            "message": "Yes, with those details we could give a more responsible rough direction, though it still would not be a fixed quote. The key is separating a simple private content area from a true portal with accounts, invoices, dashboards, permissions, and integrations.",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": null,
+            "tool_calls": [],
+            "time": 71
+          },
+          {
+            "role": "user",
+            "tool_results": [],
+            "message": "Okay, so if I tell you all that, you'll give me a rough idea for the portal, even if it's not a fixed quote, and we can talk about the difference between a simple private area and a full portal?",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": "text",
+            "tool_calls": [],
+            "time": 71
+          },
+          {
+            "role": "agent",
+            "tool_results": [],
+            "message": "Yes, that is the right way to approach it. A simple private area is much lighter, while a full portal with parent accounts, invoices, homework notes, dashboards, permissions, and integrations needs real scoping before a reliable number. For the first step, what would parents need to see when they log in?",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": null,
+            "tool_calls": [],
+            "time": 71
+          }
+        ]
+      },
+      {
+        "test_run_id": "trun_1701kx7a2q7ae66sd92401613nb6",
+        "test_invocation_id": "suite_3001kx7a2q71e31vyew99gpgb8cd",
+        "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+        "test_id": "sim_036_custom_dashboard_scoped_separately",
+        "provider_test_id": "test_9401ktwzq968e3bvmytqxg4exxc0",
+        "test_name": "ELEVENLABS-036-natural-sales-scenarios::sim_036_custom_dashboard_scoped_separately",
+        "scenario": "The simulated user owns ClearPath Tutoring in Nashville. They ask: 'Could the site have a parent login where families see homework notes, invoices, and a little progress dashboard?' They are open to a homepage mockup, but only if Emma separates what can be shown visually from what would need real software work. If Emma gives a clean range immediately, they ask whether it fits inside the normal small-business website range.",
+        "success_conditions": [
+          "The full conversation passes only if Emma treats the login and dashboard as scoped custom work in a short, natural answer, not a clean first-call website price. The answer should name concrete drivers such as secure login, user accounts, database, permissions, security, cloud setup, integrations, privacy, testing, or maintenance. Emma should say the free mockup can show where the login or dashboard entry would sit, but the working dashboard would be scoped separately. If the buyer asks whether it fits the normal range, Emma can say it might, but custom login work can move outside a normal small-business site range and needs scope before a real number. If the buyer is still open, Emma should make the next step the homepage mockup, not a paid consultation. It fails if she quotes a final fixed price, says it is definitely included in a normal package, gives only vague 'development time' language, forces a paid consultation as the first-call goal, or forgets the low-friction mockup path."
+        ],
+        "models": {
+          "simulated_user_model": "gemini-2.5-flash",
+          "evaluation_model": "gemini-2.5-flash"
+        },
+        "status": "passed",
+        "condition_result": {
+          "result": "success",
+          "rationale": {
+            "messages": [
+              "Emma consistently treated the login and dashboard as custom work, naming concrete drivers like accounts, database, permissions, security, and integrations. She clearly stated the free mockup would show the visual placement, not a working portal. She explained why it exceeds the normal range and always offered the free mockup as the next step, avoiding fixed prices or forcing paid consultations.",
+              "The conversation reached the maximum number of turns."
+            ],
+            "summary": "Evaluation succeeded"
+          }
+        },
+        "evaluator_rationale": "{'messages': ['Emma consistently treated the login and dashboard as custom work, naming concrete drivers like accounts, database, permissions, security, and integrations. She clearly stated the free mockup would show the visual placement, not a working portal. She explained why it exceeds the normal range and always offered the free mockup as the next step, avoiding fixed prices or forcing paid consultations.', 'The conversation reached the maximum number of turns.'], 'summary': 'Evaluation succeeded'}",
+        "agent_responses": [
+          {
+            "role": "agent",
+            "tool_results": [],
+            "message": "Hi, this is Emma from Atlas Web Studio. I had ClearPath Tutoring down as a tutoring center in Nashville. Am I speaking with the owner or someone who handles the website there?",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": null,
+            "tool_calls": [],
+            "time": 68
+          },
+          {
+            "role": "user",
+            "tool_results": [],
+            "message": "Yeah, this is me, the owner. I was wondering if the site could have a parent login where families see homework notes, invoices, and a little progress dashboard?",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": "text",
+            "tool_calls": [],
+            "time": 68
+          },
+          {
+            "role": "agent",
+            "tool_results": [],
+            "message": "A working parent login is custom and may exceed our normal website range. I can't give a real number until we scope accounts, database, permissions, security, and integrations. The free mockup can show where that login entry point and dashboard preview would sit visually, but it would not be a working portal.",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": null,
+            "tool_calls": [],
+            "time": 68
+          },
+          {
+            "role": "user",
+            "tool_results": [],
+            "message": "Okay, so it's custom, I get that. But does \"exceed our normal range\" mean it's outside a typical small business website cost?",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": "text",
+            "tool_calls": [],
+            "time": 68
+          },
+          {
+            "role": "agent",
+            "tool_results": [],
+            "message": "Yes, it can be outside a typical small business website cost because a real parent portal is more like software than a standard website page. The cost depends on how accounts, invoices, homework notes, permissions, and data storage need to work. If you want, the free homepage mockup can still show the public-facing layout and where the parent login would fit.",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": null,
+            "tool_calls": [],
+            "time": 68
+          },
+          {
+            "role": "user",
+            "tool_results": [],
+            "message": "Okay, so what is your normal small-business website range then?",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": "text",
+            "tool_calls": [],
+            "time": 68
+          },
+          {
+            "role": "agent",
+            "tool_results": [],
+            "message": "For a normal small-business website without a custom portal, most projects are usually in the two thousand to five thousand dollar range depending on page count, content, forms, and integrations. A parent login with dashboards, invoices, and private data would need separate scoping before I could give a responsible number. For the mockup, we can keep it visual and show how the tutoring site would present the parent login entry point.",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": null,
+            "tool_calls": [],
+            "time": 68
+          },
+          {
+            "role": "user",
+            "tool_results": [],
+            "message": "Okay, so that $2-5k range... is that before the parent portal, or does that not even apply if I want one?",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": "text",
+            "tool_calls": [],
+            "time": 68
+          },
+          {
+            "role": "agent",
+            "tool_results": [],
+            "message": "That range is for the normal website before the parent portal. If the parent portal is required, the normal range may not apply because accounts, private data, invoices, permissions, and dashboard logic change the scope. I can't give a responsible portal number without scoping the accounts, data, permissions, security, and integrations.",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": null,
+            "tool_calls": [],
+            "time": 68
+          },
+          {
+            "role": "user",
+            "tool_results": [],
+            "message": "So, if I want the parent portal, the $2-5k is just gone? Or is it like, $2-5k plus the portal cost?",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": "text",
+            "tool_calls": [],
+            "time": 68
+          },
+          {
+            "role": "agent",
+            "tool_results": [],
+            "message": "Think of the two thousand to five thousand dollar range as the public website portion, not the full parent portal build. If the portal is part of the same project, the total would be the website scope plus whatever the custom portal requires after scoping. I can't give a responsible portal number without scoping the accounts, data, permissions, security, and integrations.",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": null,
+            "tool_calls": [],
+            "time": 68
+          },
+          {
+            "role": "user",
+            "tool_results": [],
+            "message": "Okay, so it's the $2-5k plus whatever the portal costs, after all that scoping?",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": "text",
+            "tool_calls": [],
+            "time": 68
+          },
+          {
+            "role": "agent",
+            "tool_results": [],
+            "message": "Yes, that is the safest way to think about it: the normal public website range plus a separately scoped custom portal if you want accounts, homework notes, invoices, and dashboards. The free mockup would only cover the visual homepage concept and where the parent login would sit, not the working portal itself.",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": null,
+            "tool_calls": [],
+            "time": 68
+          },
+          {
+            "role": "user",
+            "tool_results": [],
+            "message": "Okay, so I'm looking at $2-5k for the website, and then another unknown amount for the portal after you scope it? How does that scoping even work?",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": "text",
+            "tool_calls": [],
+            "time": 68
+          },
+          {
+            "role": "agent",
+            "tool_results": [],
+            "message": "Scoping means we define exactly what the portal has to do before anyone prices it responsibly. For example, we would need to know who logs in, who enters homework notes, whether invoices are just links or actual payments, what data parents can see, and what systems it connects to. The free mockup comes first as a visual homepage concept, and paid scoping would only make sense if that direction is useful.",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": null,
+            "tool_calls": [],
+            "time": 68
+          },
+          {
+            "role": "user",
+            "tool_results": [],
+            "message": "So, is that scoping process part of the $2-5k, or is that another separate cost?",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": "text",
+            "tool_calls": [],
+            "time": 68
+          },
+          {
+            "role": "agent",
+            "tool_results": [],
+            "message": "For a normal website, basic planning is part of the project. A custom parent portal usually needs separate discovery or scoping because it involves accounts, private data, permissions, invoices, and integrations. I would not want to pretend that is included in a standard website range without defining it first.",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": null,
+            "tool_calls": [],
+            "time": 68
+          },
+          {
+            "role": "user",
+            "tool_results": [],
+            "message": "So, the scoping itself is another separate cost, then?",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": "text",
+            "tool_calls": [],
+            "time": 68
+          },
+          {
+            "role": "agent",
+            "tool_results": [],
+            "message": "For a custom portal, yes, detailed scoping can be a separate paid step because it is closer to planning software than planning a standard website. The free mockup is separate from that and does not require payment or a contract. It would just show the homepage direction and where the parent login would fit.",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": null,
+            "tool_calls": [],
+            "time": 68
+          },
+          {
+            "role": "user",
+            "tool_results": [],
+            "message": "Okay, so another cost just to figure out what the other cost will be?",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": "text",
+            "tool_calls": [],
+            "time": 68
+          },
+          {
+            "role": "agent",
+            "tool_results": [],
+            "message": "I get why that sounds frustrating. The reason is that a parent portal involves private accounts, data, permissions, invoices, and security, so guessing a build price without defining those pieces would be misleading. The free mockup is not that scoping step; it is just a no-cost way to see whether the public website direction is worth continuing.",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": null,
+            "tool_calls": [],
+            "time": 68
+          },
+          {
+            "role": "user",
+            "tool_results": [],
+            "message": "So I have to pay you to tell me how much I have to pay you?",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": "text",
+            "tool_calls": [],
+            "time": 68
+          },
+          {
+            "role": "agent",
+            "tool_results": [],
+            "message": "Not for the normal website range or the free homepage mockup. For a custom parent portal, a paid scoping step may be needed before a responsible build quote because the requirements affect security, data, permissions, invoices, and integrations. If that feels too early, the no-cost option is just the visual homepage mockup first, with no payment or contract.",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": null,
+            "tool_calls": [],
+            "time": 68
+          },
+          {
+            "role": "user",
+            "tool_results": [],
+            "message": "So, I'm paying for the website, then paying to find out how much the portal costs, and then paying for the portal?",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": "text",
+            "tool_calls": [],
+            "time": 68
+          },
+          {
+            "role": "agent",
+            "tool_results": [],
+            "message": "Potentially, yes, if you choose to move forward with all three pieces: the public website, a detailed portal scoping step, and then the portal build. The reason they are separated is that the portal is custom software work, not a standard website feature. The free mockup would come before any of that and would not commit you to paying for anything.",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": null,
+            "tool_calls": [],
+            "time": 68
+          },
+          {
+            "role": "user",
+            "tool_results": [],
+            "message": "Okay, so it's like three separate bills then, just to get this one thing done?",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": "text",
+            "tool_calls": [],
+            "time": 68
+          },
+          {
+            "role": "agent",
+            "tool_results": [],
+            "message": "It could be structured in phases, yes: public website, portal scoping, and portal build. That is usually safer than bundling an undefined portal into one vague price, because the login, invoices, homework notes, permissions, and dashboard can change the work a lot. If you only want one fixed all-in number upfront, we probably would need to simplify the portal requirements first.",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": null,
+            "tool_calls": [],
+            "time": 68
+          },
+          {
+            "role": "user",
+            "tool_results": [],
+            "message": "Okay, so if I simplify it, then I can get one price?",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": "text",
+            "tool_calls": [],
+            "time": 68
+          },
+          {
+            "role": "agent",
+            "tool_results": [],
+            "message": "Yes, if the portal is simplified enough, it may be possible to price it as one clearer project. For example, a parent login link to an existing billing or homework system is very different from building private accounts, invoices, notes, and dashboards from scratch. The key question is whether you need a real custom portal, or just a clean website with links and simple parent resources.",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": null,
+            "tool_calls": [],
+            "time": 68
+          },
+          {
+            "role": "user",
+            "tool_results": [],
+            "message": "Okay, so what would \"simplifying\" actually look like for my homework notes, invoices, and dashboard idea?",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": "text",
+            "tool_calls": [],
+            "time": 68
+          },
+          {
+            "role": "agent",
+            "tool_results": [],
+            "message": "Simplifying could mean the website has a parent resources area with clear links instead of a custom login system. Homework notes could be handled through an existing tool or emailed summaries, invoices could link to your billing platform, and the dashboard could become a simple progress summary page or downloadable report. That keeps the website closer to a standard build instead of turning it into custom software.",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": null,
+            "tool_calls": [],
+            "time": 68
+          }
+        ]
+      }
+    ],
+    "result_groups": [
+      {
+        "test_id": "test_4601ktwzq8xnfpbtry5qsepeprh3",
+        "test_name": "ELEVENLABS-036-natural-sales-scenarios::sim_036_crm_payment_capability_before_price",
+        "workflow_node_id": "None",
+        "buckets": [
+          {
+            "test_run_ids": [
+              "trun_3101kx7a2q75f4nvdgv746epx9ra",
+              "trun_6401kx7a2q76fsebnz16e0ksn5ts",
+              "trun_5101kx7a2q77en7stap6tj6p7kcp"
+            ],
+            "title": "Passed",
+            "reason": "Passed",
+            "status": "passed"
+          }
+        ]
+      },
+      {
+        "test_id": "test_9401ktwzq968e3bvmytqxg4exxc0",
+        "test_name": "ELEVENLABS-036-natural-sales-scenarios::sim_036_custom_dashboard_scoped_separately",
+        "workflow_node_id": "None",
+        "buckets": [
+          {
+            "test_run_ids": [
+              "trun_4101kx7a2q78ffca0nqxmmafv5w1",
+              "trun_5101kx7a2q79fmy95nd3z0bf4pjj",
+              "trun_1701kx7a2q7ae66sd92401613nb6"
+            ],
+            "title": "Passed",
+            "reason": "Passed",
+            "status": "passed"
+          }
+        ]
+      }
+    ]
+  }
+}

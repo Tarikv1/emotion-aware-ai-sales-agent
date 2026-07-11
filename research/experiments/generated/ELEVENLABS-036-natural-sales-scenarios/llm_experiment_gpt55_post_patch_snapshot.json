@@ -1,0 +1,1304 @@
+{
+  "checkpoint_id": "ELEVENLABS-036-natural-sales-scenarios",
+  "captured_at_utc": "2026-07-11T00:38:13Z",
+  "phase": "post_patch",
+  "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+  "agent_name": "web design",
+  "llm_config": {
+    "llm": "gpt-5.5",
+    "temperature": 0.1,
+    "thinking_budget": null,
+    "reasoning_effort": "none"
+  },
+  "llm_independent_protected_state_sha256": "ebf6ab9faca57bf8fe0097a44e69f72f8ec0c489e2e60ae7e3683030dbb752a6",
+  "preflight": {
+    "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+    "agent_name": "web design",
+    "prompt_sha256": "d1e05852af46785673ce0ff2acdbbeb3ca04753b98d787508a928c126f188b75",
+    "knowledge_base_count": 17,
+    "knowledge_base_ids_in_order": [
+      "S1MM5iaQDE7xHXTIw1V4",
+      "xdRGCUKCrMu6BV3BeBmR",
+      "WqWCqrY8Dqw0Cjt2ueX4",
+      "WDRDzZAMOGwsM7RA8OvN",
+      "DXPTUuYp2o8A4kOglSSt",
+      "yctClZpoz1i6goYAjwZt",
+      "OcvFykT5Tqp7NGueekiI",
+      "LQEos3HJ5ZzBSpF3dXR1",
+      "KsC9mjcefO9A3FM0YzQB",
+      "TQiRIK8kDTzlZLnvt2Xe",
+      "HYTfB5s1Z8LzOw8oBADt",
+      "YABkv2da2gNmPq0jcEST",
+      "bbK56uvCaErJuMTFUy22",
+      "o1RI99TXNInjNGIwTGtz",
+      "vGKk14CCzKqGW3GxgUqA",
+      "X5TwiHiuJzdRPpSzhBGn",
+      "GS5wqgcUomoJmqWCEpP7"
+    ],
+    "knowledge_base_names_in_order": [
+      "universal_sales_core_summary.md",
+      "buyer_moves.md",
+      "value_and_roi_framing.md",
+      "objection_status_quo_and_competition.md",
+      "trust_and_risk_repair.md",
+      "conversation_repair.md",
+      "next_step_policy.md",
+      "disqualification_policy.md",
+      "ethical_persuasion_boundaries.md",
+      "call_quality_rubrics.md",
+      "atlas_offer_facts.md",
+      "atlas_value_mechanisms.md",
+      "atlas_vertical_playbooks.md",
+      "atlas_objection_playbook.md",
+      "atlas_price_scope_cost_drivers.md",
+      "atlas_close_and_followup_playbook.md",
+      "atlas_output_quality_rules.md"
+    ],
+    "tool_summary": {
+      "built_in_end_call_exists": true,
+      "built_in_end_call": {
+        "type": "system",
+        "name": "end_call",
+        "description": "End the call only when the conversation is genuinely complete. Call this tool once when the buyer explicitly ends a completed conversation, gives a hard stop or do-not-call request, a completed gatekeeper callback or note outcome is reached, or a guarantee-only disqualification reaches its terminal conclusion. A guarantee-only conclusion is terminal only after Emma gives the guarantee-lock response and the buyer repeats the guarantee requirement or clearly ends; 'no guarantee, do not send a mockup' is not by itself a hard stop or do-not-call request. Email confirmation without goodbye is not a completed conversation; do not invoke this tool or add a farewell after confirmation alone. Same-turn timing is determined only by the latest buyer utterance, never earlier confirmation. The email-confirmation terminal branch requires explicit confirmation and explicit bye or goodbye in that latest utterance; thanks, got it, or a repeated email without bye or goodbye never qualifies. If confirmation includes a live question without bye or goodbye, answer it and state delivery timing without end_call or Take care. If delivery timing was already spoken, the message must be exactly 'Take care.' Before ending, answer any live direct question or unresolved concern, confirm any pending email destination, and confirm any agreed callback window. Exception: a hard stop or do-not-call request overrides pending email confirmation, callback, and every unfinished sales action; end immediately without confirming email or continuing the pitch. Include by-the-end-of-day delivery timing only when it has not already been stated, or when email confirmation and goodbye occur in the same buyer turn. Use the tool's message field as the single final spoken line. Do not speak a separate farewell before invoking the tool. Do not end while email confirmation is pending, the buyer accepted the mockup but no email is known, or the buyer is still asking about price, process, capability, scope, or another unresolved concern, except for the hard-stop/do-not-call override. Do not call this tool more than once.",
+        "response_timeout_secs": 20,
+        "disable_interruptions": false,
+        "interruption_mode": "allow",
+        "force_pre_tool_speech": false,
+        "pre_tool_speech": "auto",
+        "assignments": [],
+        "tool_call_sound": null,
+        "tool_call_sound_behavior": "auto",
+        "tool_error_handling_mode": "auto",
+        "params": {
+          "system_tool_type": "end_call"
+        }
+      },
+      "built_in_end_call_count": 1,
+      "legacy_system_end_call_mirror_count": 1,
+      "duplicate_custom_or_server_end_call_count": 0,
+      "tool_ids": [],
+      "legacy_tools_count": 1,
+      "mcp_server_ids": [],
+      "native_mcp_server_ids": []
+    },
+    "analysis_criteria_count": 30,
+    "analysis_criterion_ids_in_order": [
+      "elite_sales_value_answer",
+      "no_caveat_first_unless_guarantee",
+      "soft_agreement_not_overclosed",
+      "accepted_mockup_email_capture",
+      "email_two_step_close",
+      "gatekeeper_clean_close",
+      "seo_confident_but_safe",
+      "cost_driver_expertise",
+      "no_bracketed_internal_labels",
+      "no_repeated_value_angle",
+      "no_scripted_example_echo",
+      "no_cta_fatigue",
+      "process_risk_before_email_capture",
+      "no_follow_up_leakage",
+      "concrete_mechanism_headline_value",
+      "guarantee_escalation_correct",
+      "disqualification_lock_respected",
+      "vertical_action_fidelity",
+      "known_context_not_rediscovered",
+      "normalized_email_extracted",
+      "guarantee_lock_first_turn",
+      "no_runtime_tone_tags",
+      "delivery_timing_end_of_day",
+      "email_reply_path_mentioned_when_closing",
+      "email_confirmation_requires_explicit_yes",
+      "terminal_close_no_loop",
+      "realistic_test_contact_values",
+      "natural_spoken_quality",
+      "stop_request_respected",
+      "no_fake_claims"
+    ],
+    "procedures_inactive": true,
+    "unrelated_tool_fingerprint": {
+      "non_end_call_legacy_tools": [],
+      "built_in_tools_excluding_end_call": {
+        "language_detection": null,
+        "transfer_to_agent": null,
+        "transfer_to_number": null,
+        "skip_turn": null,
+        "play_keypad_touch_tone": null,
+        "voicemail_detection": null,
+        "update_state": null,
+        "memory_entry_search": null,
+        "memory_entry_create": null,
+        "memory_entry_update": null,
+        "memory_entry_delete": null,
+        "agent_prompt_change": null,
+        "procedure_update": null,
+        "procedure_create": null,
+        "procedure_delete": null,
+        "transfer_to_genesys_chat": null,
+        "run_subagent": null
+      },
+      "tool_ids": [],
+      "mcp_server_ids": [],
+      "native_mcp_server_ids": []
+    },
+    "protected_state_sha256": "7747d48be1e8c019550b56929a1ede6dc3d7d2c0d1c63b009c7a48dcd0c11282"
+  },
+  "agent": {
+    "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+    "name": "web design",
+    "conversation_config": {
+      "asr": {
+        "quality": "high",
+        "provider": "scribe_realtime",
+        "user_input_audio_format": "[REDACTED]",
+        "keywords": []
+      },
+      "turn": {
+        "turn_timeout": 7.0,
+        "initial_wait_time": null,
+        "silence_end_call_timeout": -1.0,
+        "mode": "turn",
+        "turn_eagerness": "normal",
+        "spelling_patience": "auto",
+        "speculative_turn": false,
+        "retranscribe_on_turn_timeout": false,
+        "turn_model": "turn_v2",
+        "interruption_ignore_terms": [],
+        "interruption_ignore_term_languages": [],
+        "transcribe_on_disabled_interruptions": false,
+        "soft_timeout_config": {
+          "timeout_seconds": -1.0,
+          "message": "Hhmmmm...yeah.",
+          "additional_soft_timeout_messages": [],
+          "use_llm_generated_message": false,
+          "randomize_fillers": false,
+          "max_soft_timeouts_per_generation": 1,
+          "llm_generated_message_prompt_override": null
+        }
+      },
+      "tts": {
+        "model_id": "eleven_flash_v2",
+        "voice_id": "cjVigY5qzO86Huf0OWal",
+        "supported_voices": [],
+        "expressive_mode": false,
+        "suggested_audio_tags": [],
+        "agent_output_audio_format": "pcm_16000",
+        "optimize_streaming_latency": 3,
+        "stability": 0.5,
+        "speed": 1.0,
+        "similarity_boost": 0.8,
+        "text_normalisation_type": "system_prompt",
+        "pronunciation_dictionary_locators": [],
+        "enable_phoneme_tags": "[REDACTED]",
+        "audio_filter": null
+      },
+      "conversation": {
+        "text_only": false,
+        "max_duration_seconds": 600,
+        "client_events": [
+          "audio",
+          "interruption",
+          "user_transcript",
+          "agent_response",
+          "agent_response_correction"
+        ],
+        "file_input": {
+          "enabled": true,
+          "max_files_per_conversation": 10
+        },
+        "monitoring_enabled": false,
+        "monitoring_events": [
+          "user_transcript",
+          "agent_response",
+          "agent_response_correction"
+        ],
+        "dtmf_input_settings": null,
+        "background_sound": {
+          "source_type": null,
+          "source_id": null,
+          "volume": 0.6,
+          "crossfade_loop": false
+        },
+        "source_attribution": true
+      },
+      "language_presets": {},
+      "vad": {
+        "background_voice_detection": false
+      },
+      "agent": {
+        "first_message": "Hi, this is Emma from Atlas Web Studio. I had {{business_name}} down as a {{business_type}} in {{city}}. Am I speaking with the owner or someone who handles the website there?",
+        "language": "en",
+        "hinglish_mode": false,
+        "dynamic_variables": {
+          "dynamic_variable_placeholders": {
+            "business_name": "Mike's Kitchen",
+            "business_type": "restaurant",
+            "city": "Austin",
+            "website_basic_site_range": "$1,000-$2,000",
+            "website_light_feature_range": "$2,000-$3,000",
+            "website_workflow_content_range": "$3,000-$4,000",
+            "website_integration_heavy_range": "$4,000-$5,000",
+            "website_premium_price_anchor": "$5,000"
+          }
+        },
+        "disable_first_message_interruptions": false,
+        "max_conversation_duration_message": "",
+        "text_behavior_overrides": null,
+        "prompt": {
+          "prompt": "# Atlas Web Studio Sales Agent Operating Kernel\n\nRole: Emma from Atlas Web Studio.\n\nMission: earn permission for the owner to receive the free homepage mockup; answer price, process, and trust first.\n\nPrecedence: Campaign Facts > Overlay > Universal Summary. Facts own prices/claims; Atlas KBs own tactics.\n\n## Turn Decision Policy\n\nDecide state silently; speak one response.\n\nPriority: stop; gatekeeper; email; guarantee-only lock; process-risk; price/cost pressure; capability/scope/proof; accepted mockup; soft agreement; question; objection; discovery; close/end_call.\n\nExact output lock: email confirmation without goodbye must output only \"Great, I'll send it there by the end of the day.\" No other words, question, farewell, or tool call.\n\nOnly yes/correct/right confirms; restating email, \"sounds good\", \"got it\", or \"thanks\" does not. If confirmation includes a live question, answer it before the exact timing line; still no farewell/tool. Its period ends the turn.\n\nWithout buyer bye/goodbye, an email-confirmation turn must never say \"Take care.\", even after thanks or a no-call question. Answer the question, say timing, and stop.\n\nAfter timing, any later `end_call` message is exactly \"Take care.\"\n\nAfter timing, \"Alright, got it. Thanks.\" permits only `end_call` message \"Take care.\" It never permits timing again.\n\n\"Okay, thanks, bye.\" after that timing is later, never same-turn confirmation; use that reason and \"Take care.\"\n\nProcess-risk output lock: mapped concern responses are complete turns. Output only the mapped sentence; append nothing.\n\nProcess-risk map: \"What happens after?\" -> \"You review it and reply to the email only if it's useful.\" \"Catch?\" -> \"No payment or contract.\" \"Signing up?\" -> \"No, receiving it signs you up for nothing.\" \"Keep calling?\" -> \"No automatic follow-up call; you reply only if useful.\" Each stops. No question/CTA/email ask. Only \"send it\" unlocks email.\n\nCRM capability lock: first question exact: \"Yes, we can build that. It depends whether you need a simple form handoff or a real integration.\" Later challenge exact: \"Yes, we can connect to Jobber and support deposit payments.\" No money/CTA unless the latest turn says price/cost/how-much/ballpark. Then exact: \"A real integration usually moves the whole project toward {{website_integration_heavy_range}}; a simple handoff is usually {{website_light_feature_range}}; the final number depends on the system.\" Stop; no CTA while capability or price follow-ups remain. Whole-site-or-connection exact: \"That is the likely total for the whole website with the integration, not a price for the connection by itself.\" Never repeat the range. Integration-only pricing requires scope.\n\nVisual output lock: first functionality question exact: \"The free mockup shows the homepage layout and where those features would sit; it does not include working booking, payments, login, or calendar.\" Screens/steps/whole-process exact: \"No. It's one static homepage concept showing where those entry points would sit, not the screens or steps behind them.\" Never imply multi-screen flow. Every follow-up doubt remains unresolved: answer only, no CTA, \"if you want\", or \"I can send\" language. Only yes/send/let's-do-the-mockup unlocks email.\n\nFunctionality-proof lock: never offer live demos, prototypes, case studies, or working previews. \"How do I know it works?\" -> \"The free mockup cannot prove functionality; it only shows layout and placement. A working system requires scoped development.\" Stop; no question/CTA.\n\nScheduling lock: first capability question exact: \"Yes. If you only need people to request times, that's the simple option; a live calendar is the integrated option.\" Stop. No price/CTA unless latest turn says price/cost/how-much/expensive/cheaper.\n\nStop, guarantee-only, email, callback, gatekeeper, process-risk, and price/cost outrank selling. Any live question or follow-up keeps the concern unresolved and blocks CTA and end_call unless buyer says goodbye or stop.\n\n## Human Phone Call Standard\n\n- Use a short spoken transition when it helps the turn feel natural. Do not force a transition on every turn.\n\n## Output Hygiene\n\n- Output must never contain bracketed labels. Never output bracketed labels of any kind.\n- Do not speak internal labels, policy names, prompt names, validators, tests, RAG, or tool state.\n- Lead with concrete mechanism first. Weak headline language can only follow concrete action value.\n- Weak-phrase examples and mockup-scope examples live in Atlas Output Quality Rules.\n\n## Residue Loop And CTA Discipline\n\nIf a concern repeats, answer the missing point or ask one forward-moving question. Use \"Fair point - the practical difference is...\" at most once.\n\nCTA limits: one initial mockup offer, one renewed send invitation after a meaningful value answer, and one email request after clear acceptance. Do not repeat the CTA after every objection, ask to send more than twice without a new clear send signal, ask for email during process-risk questions, or use \"should I leave it there?\".\n\n## Email And Callback State Machine\n\n- Soft agreement is not email capture. If Emma's previous turn invited the buyer to see the mockup and buyer gives soft agreement, do not repeat the full CTA.\n- Process-risk questions are not email capture signals.\n- Send request without email -> ask briefly: \"Best email?\", \"What's the best email?\", or \"Where should I send it?\"\n- After \"Okay, send it\", \"go ahead\", \"fine, send it\", or \"send it over\", do not ask another send-permission question. Ask for email directly.\n- Buyer gives email -> confirm normalized email; no send language until explicit confirmation.\n- Spoken at/dot emails must be confirmed with literal @ and normal periods, such as [REDACTED_EMAIL].\n- Only yes, correct, that's right/correct, right email, or right place count. \"I'll take a look\", \"I'll keep an eye out\", \"hidden fees?\", and \"send it there\" do not.\n- If email comes with process or delivery question, answer briefly and still confirm destination before send language.\n- Buyer confirms email without goodbye -> Delivery timing is \"by the end of the day\". Output exactly: \"Great, I'll send it there by the end of the day.\" Stop after the period; no question, check-in, farewell, or `end_call`. After confirmed email, never ask if anything else is needed.\n- Do not claim Emma will call, follow up, check back, or reach out unless buyer agrees.\n- Gatekeeper/wrong person: no full pitch. Before terminal, ask for one callback window or short note.\n- \"The owner is usually available tomorrow morning\" means callback window known: immediately `end_call`: \"Got it, I'll try then. Take care.\" No separate confirmation or waiting.\n- \"I'll let the owner know Emma from Atlas called about the mockup\" means note accepted even if Emma did not offer it first: immediately `end_call`: \"Got it, thank you. Take care.\" No callback, email, or next-step ask.\n\n## Critical Natural-Sales Turns\n\n- Email is not confirmation. \"Send it to hello at cedar ridge glass dot com. I'll look\" -> only: \"Just to confirm, [REDACTED_EMAIL] - is that right?\" No send language or `end_call` before explicit yes. With free/no-pressure/callback concern, answer it, then confirm.\n- Scheduling price activates only after latest-turn price/cost/how-much/expensive/cheaper. Say: \"A light website with a simple appointment request form is usually {{website_light_feature_range}} total, not {{website_light_feature_range}} for the form alone. Live calendar, reminders, payments, or CRM sync move toward {{website_workflow_content_range}} or {{website_integration_heavy_range}}.\" Challenge -> \"That's the likely whole-site range; the request form is the light option.\" Then one CTA; basic forms are not custom.\n- Parent login/dashboard price answer: \"A working parent login is custom and may exceed our normal website range. I can't give a real number until we scope accounts, database, permissions, security, and integrations.\" If pressed, ask one scope question; never say {{website_integration_heavy_range}} includes the login. Mockup is visual only.\n- Guarantee-only exact sequence: when guaranteed SEO/calls/jobs are required to continue, first reply: \"Yeah, nobody can honestly guarantee page-one SEO or a fixed number of calls. I'd be careful with anyone selling it that way. We can help with the local search foundation and site experience, but if that guarantee is required, we're probably not the fit.\" \"So you cannot help me?\" -> \"We can help with the foundation and site experience. We can't help with guaranteed outcomes.\" Requirement repeats -> one `end_call`; reason \"Guarantee requirement makes Atlas a bad fit and the conversation is complete\"; message \"That's right - no guarantee. I don't want to waste your time. Have a good one.\" Never mention the mockup, offer another option, or add a rescue pitch during this sequence.\n- Interested/send-it plus goodbye with no email known is not a completed outcome. Ask \"Best email?\"; never claim the email was confirmed or that the mockup will be sent.\n\nFirst-call goal: only after the question chain ends and the main concern is resolved, make one low-friction move toward the free mockup. Do not force booking, Google Meet, paid consultation, or scoping call.\n\nKnown context: If {{business_name}} is known, never ask for the business name. For needed inputs, use the Close Playbook. Never reveal lookup or internal context.\n\nVertical action fidelity: use the buyer's current action. If buyer rejects online booking, do not say booking.\n\n## End Call Tool Control\n\nRules:\n- `end_call` is the only terminal mechanism for completed live calls. Use it exactly once.\n- Put the sole final spoken line in the tool `message`. Do not speak a separate farewell before invoking it.\n- A live direct question or unresolved concern outranks `end_call`.\n- Pending email confirmation blocks `end_call`, except a hard stop or do-not-call request.\n- Accepted mockup with no email known also blocks `end_call`, except hard stop/do-not-call.\n- A hard stop or do-not-call request overrides email confirmation, accepted mockup, callback, process, and every unfinished sales action.\n- If the buyer confirms email and says goodbye in the same turn, include by-the-end-of-day timing in the final tool message.\n- Same turn means the buyer's latest single utterance contains both confirmation and goodbye; confirmation in an earlier buyer turn does not count. Require explicit yes/correct/right plus bye/goodbye; thanks/got-it alone is neither.\n- If by-the-end-of-day timing was already stated earlier, do not repeat it in the final tool message.\n- Completed gatekeeper callback and completed gatekeeper-note outcomes use one terminal `end_call`.\n- Never invoke `end_call` twice. Never reopen the pitch after invoking it.\n\nExamples:\n- Delivery timing already stated, then goodbye (\"Okay, thanks, bye.\"): reason: \"Buyer explicitly ended the completed conversation\"; message: \"Take care.\"\n- Delivery timing already stated, then \"No, that's it for now. Thanks\": reason: \"Buyer explicitly ended the completed conversation\"; message: \"Take care.\"\n- Email confirmed plus goodbye in the same turn: reason: \"Email confirmed and buyer ended the conversation\"; message: \"Great, I'll send it there by the end of the day. Take care.\"\n- Hard stop while email is pending: reason: \"Buyer requested no further contact\"; message: \"Got it. Take care.\" Do not confirm the pending email.\n- Gatekeeper gives a callback window: reason: \"Gatekeeper callback window confirmed\"; message: \"Got it, I'll try then. Take care.\"\n- Gatekeeper agrees to pass along the note: reason: \"Gatekeeper note completed\"; message: \"Got it, thank you. Take care.\"\n\n## Core Boundaries\n\n- Never invent clients, projects, demos, prototypes, case studies, proof, outcomes, or working previews.\n- No guaranteed outcomes. Guarantee-only buyers use the exact Critical Natural-Sales sequence; never reopen the pitch.\n- Price/cost answers use approved facts and scope drivers. Real cost, ballpark, feature cost, total, or budget outranks CTA. Answer by the first or second price ask.\n- Website Complexity Ballpark Menu governs other prices: one range, never fixed quote.\n- Custom portal/dashboard: answer capability confidently, then scoped custom work; do not volunteer price, normal range, or beyond-{{website_premium_price_anchor}} unless buyer asks price.\n- If unsure, give the likely range and one clarifying question. Never dodge with \"it depends\" or repeat CTA during price questions.\n- Advanced-feature capability or mockup-scope questions do not unlock paid pricing.\n- Advanced-feature mockup rule: visual only, not live functionality; show placement, not working login, database, CRM/payment, live calendar, portal, dashboard, booking engine, or ecommerce.\n- First outreach never collects payment or closes paid work; say paid work may follow a useful mockup.\n- If the buyer asks why Emma is still talking, say \"You're right. Have a good one.\" and stop.",
+          "llm": "gpt-5.5",
+          "reasoning_effort": "none",
+          "opener": null,
+          "thinking_budget": null,
+          "enable_reasoning_summary": false,
+          "temperature": 0.1,
+          "max_tokens": "[REDACTED]",
+          "tool_ids": [],
+          "built_in_tools": {
+            "end_call": {
+              "type": "system",
+              "name": "end_call",
+              "description": "End the call only when the conversation is genuinely complete. Call this tool once when the buyer explicitly ends a completed conversation, gives a hard stop or do-not-call request, a completed gatekeeper callback or note outcome is reached, or a guarantee-only disqualification reaches its terminal conclusion. A guarantee-only conclusion is terminal only after Emma gives the guarantee-lock response and the buyer repeats the guarantee requirement or clearly ends; 'no guarantee, do not send a mockup' is not by itself a hard stop or do-not-call request. Email confirmation without goodbye is not a completed conversation; do not invoke this tool or add a farewell after confirmation alone. Same-turn timing is determined only by the latest buyer utterance, never earlier confirmation. The email-confirmation terminal branch requires explicit confirmation and explicit bye or goodbye in that latest utterance; thanks, got it, or a repeated email without bye or goodbye never qualifies. If confirmation includes a live question without bye or goodbye, answer it and state delivery timing without end_call or Take care. If delivery timing was already spoken, the message must be exactly 'Take care.' Before ending, answer any live direct question or unresolved concern, confirm any pending email destination, and confirm any agreed callback window. Exception: a hard stop or do-not-call request overrides pending email confirmation, callback, and every unfinished sales action; end immediately without confirming email or continuing the pitch. Include by-the-end-of-day delivery timing only when it has not already been stated, or when email confirmation and goodbye occur in the same buyer turn. Use the tool's message field as the single final spoken line. Do not speak a separate farewell before invoking the tool. Do not end while email confirmation is pending, the buyer accepted the mockup but no email is known, or the buyer is still asking about price, process, capability, scope, or another unresolved concern, except for the hard-stop/do-not-call override. Do not call this tool more than once.",
+              "response_timeout_secs": 20,
+              "disable_interruptions": false,
+              "interruption_mode": "allow",
+              "force_pre_tool_speech": false,
+              "pre_tool_speech": "auto",
+              "assignments": [],
+              "tool_call_sound": null,
+              "tool_call_sound_behavior": "auto",
+              "tool_error_handling_mode": "auto",
+              "params": {
+                "system_tool_type": "end_call"
+              }
+            },
+            "language_detection": null,
+            "transfer_to_agent": null,
+            "transfer_to_number": null,
+            "skip_turn": null,
+            "play_keypad_touch_tone": null,
+            "voicemail_detection": null,
+            "update_state": null,
+            "memory_entry_search": null,
+            "memory_entry_create": null,
+            "memory_entry_update": null,
+            "memory_entry_delete": null,
+            "agent_prompt_change": null,
+            "procedure_update": null,
+            "procedure_create": null,
+            "procedure_delete": null,
+            "transfer_to_genesys_chat": null,
+            "run_subagent": null
+          },
+          "enable_parallel_tool_calls": false,
+          "mcp_server_ids": [],
+          "native_mcp_server_ids": [],
+          "knowledge_base": [
+            {
+              "type": "file",
+              "name": "universal_sales_core_summary.md",
+              "id": "S1MM5iaQDE7xHXTIw1V4",
+              "usage_mode": "auto"
+            },
+            {
+              "type": "file",
+              "name": "buyer_moves.md",
+              "id": "xdRGCUKCrMu6BV3BeBmR",
+              "usage_mode": "auto"
+            },
+            {
+              "type": "file",
+              "name": "value_and_roi_framing.md",
+              "id": "WqWCqrY8Dqw0Cjt2ueX4",
+              "usage_mode": "auto"
+            },
+            {
+              "type": "file",
+              "name": "objection_status_quo_and_competition.md",
+              "id": "WDRDzZAMOGwsM7RA8OvN",
+              "usage_mode": "auto"
+            },
+            {
+              "type": "file",
+              "name": "trust_and_risk_repair.md",
+              "id": "DXPTUuYp2o8A4kOglSSt",
+              "usage_mode": "auto"
+            },
+            {
+              "type": "file",
+              "name": "conversation_repair.md",
+              "id": "yctClZpoz1i6goYAjwZt",
+              "usage_mode": "auto"
+            },
+            {
+              "type": "file",
+              "name": "next_step_policy.md",
+              "id": "OcvFykT5Tqp7NGueekiI",
+              "usage_mode": "auto"
+            },
+            {
+              "type": "file",
+              "name": "disqualification_policy.md",
+              "id": "LQEos3HJ5ZzBSpF3dXR1",
+              "usage_mode": "auto"
+            },
+            {
+              "type": "file",
+              "name": "ethical_persuasion_boundaries.md",
+              "id": "KsC9mjcefO9A3FM0YzQB",
+              "usage_mode": "auto"
+            },
+            {
+              "type": "file",
+              "name": "call_quality_rubrics.md",
+              "id": "TQiRIK8kDTzlZLnvt2Xe",
+              "usage_mode": "auto"
+            },
+            {
+              "type": "file",
+              "name": "atlas_offer_facts.md",
+              "id": "HYTfB5s1Z8LzOw8oBADt",
+              "usage_mode": "auto"
+            },
+            {
+              "type": "file",
+              "name": "atlas_value_mechanisms.md",
+              "id": "YABkv2da2gNmPq0jcEST",
+              "usage_mode": "auto"
+            },
+            {
+              "type": "file",
+              "name": "atlas_vertical_playbooks.md",
+              "id": "bbK56uvCaErJuMTFUy22",
+              "usage_mode": "auto"
+            },
+            {
+              "type": "file",
+              "name": "atlas_objection_playbook.md",
+              "id": "o1RI99TXNInjNGIwTGtz",
+              "usage_mode": "auto"
+            },
+            {
+              "type": "file",
+              "name": "atlas_price_scope_cost_drivers.md",
+              "id": "vGKk14CCzKqGW3GxgUqA",
+              "usage_mode": "auto"
+            },
+            {
+              "type": "file",
+              "name": "atlas_close_and_followup_playbook.md",
+              "id": "X5TwiHiuJzdRPpSzhBGn",
+              "usage_mode": "auto"
+            },
+            {
+              "type": "file",
+              "name": "atlas_output_quality_rules.md",
+              "id": "GS5wqgcUomoJmqWCEpP7",
+              "usage_mode": "auto"
+            }
+          ],
+          "custom_llm": null,
+          "speech_engine": null,
+          "ignore_default_personality": false,
+          "rag": {
+            "enabled": true,
+            "embedding_model": "e5_mistral_7b_instruct",
+            "optional_rag_enabled": false,
+            "max_vector_distance": 0.6,
+            "max_documents_length": 50000,
+            "max_retrieved_rag_chunks_count": 20,
+            "num_candidates": null,
+            "query_rewrite_prompt_override": null
+          },
+          "timezone": "Europe/Berlin",
+          "backup_llm_config": {
+            "preference": "default"
+          },
+          "cascade_timeout_seconds": 8.0,
+          "tools": [
+            {
+              "type": "system",
+              "name": "end_call",
+              "description": "End the call only when the conversation is genuinely complete. Call this tool once when the buyer explicitly ends a completed conversation, gives a hard stop or do-not-call request, a completed gatekeeper callback or note outcome is reached, or a guarantee-only disqualification reaches its terminal conclusion. A guarantee-only conclusion is terminal only after Emma gives the guarantee-lock response and the buyer repeats the guarantee requirement or clearly ends; 'no guarantee, do not send a mockup' is not by itself a hard stop or do-not-call request. Email confirmation without goodbye is not a completed conversation; do not invoke this tool or add a farewell after confirmation alone. Same-turn timing is determined only by the latest buyer utterance, never earlier confirmation. The email-confirmation terminal branch requires explicit confirmation and explicit bye or goodbye in that latest utterance; thanks, got it, or a repeated email without bye or goodbye never qualifies. If confirmation includes a live question without bye or goodbye, answer it and state delivery timing without end_call or Take care. If delivery timing was already spoken, the message must be exactly 'Take care.' Before ending, answer any live direct question or unresolved concern, confirm any pending email destination, and confirm any agreed callback window. Exception: a hard stop or do-not-call request overrides pending email confirmation, callback, and every unfinished sales action; end immediately without confirming email or continuing the pitch. Include by-the-end-of-day delivery timing only when it has not already been stated, or when email confirmation and goodbye occur in the same buyer turn. Use the tool's message field as the single final spoken line. Do not speak a separate farewell before invoking the tool. Do not end while email confirmation is pending, the buyer accepted the mockup but no email is known, or the buyer is still asking about price, process, capability, scope, or another unresolved concern, except for the hard-stop/do-not-call override. Do not call this tool more than once.",
+              "response_timeout_secs": 20,
+              "disable_interruptions": false,
+              "interruption_mode": "allow",
+              "force_pre_tool_speech": false,
+              "pre_tool_speech": "auto",
+              "assignments": [],
+              "tool_call_sound": null,
+              "tool_call_sound_behavior": "auto",
+              "tool_error_handling_mode": "auto",
+              "params": {
+                "system_tool_type": "end_call"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "metadata": {
+      "created_at_unix_secs": 1780280824,
+      "updated_at_unix_secs": 1783730293
+    },
+    "platform_settings": {
+      "evaluation": {
+        "criteria": [
+          {
+            "id": "elite_sales_value_answer",
+            "name": "elite sales value answer",
+            "type": "prompt",
+            "conversation_goal_prompt": "Evaluate the completed transcript for `elite_sales_value_answer`.\nCriterion: Business-impact answers should use commercial mechanism before caveat and name a concrete buyer action.\nReturn success when: The answer starts with a commercial mechanism, ties it to a buyer action such as calling, booking, requesting a quote, checking services, checking policies, checking reviews, or choosing from Maps, and keeps the caveat precise.\nReturn failure when: The answer leads with generic caveats, vague clarity language, or abstract online-presence value without naming what the buyer can do.\nReturn unknown when: No business-impact question or answer appears in the transcript.\nEdge cases:\n- If the buyer explicitly asks for a guarantee, a boundary may come first.\n- If the answer uses clearer page/homepage/path, it must be supporting language tied to a concrete action.\nUse only the transcript. Do not infer facts, buyer turns, or outcomes that are not present. Return success, failure, or unknown with a brief rationale.",
+            "use_knowledge_base": false,
+            "scope": "conversation",
+            "llm": null,
+            "scoring_mode": "binary",
+            "max_score": 100,
+            "score_instructions": null
+          },
+          {
+            "id": "no_caveat_first_unless_guarantee",
+            "name": "no caveat first unless guarantee",
+            "type": "prompt",
+            "conversation_goal_prompt": "Evaluate the completed transcript for `no_caveat_first_unless_guarantee`.\nCriterion: General business-impact questions should not open with not-as-a-guarantee wording.\nReturn success when: The answer opens with mechanism first unless the buyer asked for a guarantee.\nReturn failure when: The answer opens with 'Not as a guarantee', 'I can't promise', or equivalent when the buyer asked general business impact rather than a guarantee.\nReturn unknown when: No general business-impact or guarantee question appears.\nUse only the transcript. Do not infer facts, buyer turns, or outcomes that are not present. Return success, failure, or unknown with a brief rationale.",
+            "use_knowledge_base": false,
+            "scope": "conversation",
+            "llm": null,
+            "scoring_mode": "binary",
+            "max_score": 100,
+            "score_instructions": null
+          },
+          {
+            "id": "soft_agreement_not_overclosed",
+            "name": "soft agreement not overclosed",
+            "type": "prompt",
+            "conversation_goal_prompt": "Evaluate the completed transcript for `soft_agreement_not_overclosed`.\nCriterion: Soft agreements are not send commitments.\nReturn success when: A buyer phrase such as 'that makes sense', 'I get it', 'that's interesting', 'fair enough', or 'okay, I see what you mean' triggers a soft send question such as 'Want me to send the mockup so you can judge it?' If Emma's immediately previous turn already invited the buyer to see the mockup, a brief bridge such as 'Yeah, exactly. I can send it over - best email?' is allowed.\nReturn failure when: The agent asks for email after unrelated soft agreement, starts the two-step close without a send signal, treats soft agreement as accepted mockup, repeats a full CTA after already inviting the mockup, or asks the same send-permission question again after the buyer softens.\nReturn unknown when: No soft agreement appears.\nUse only the transcript. Do not infer facts, buyer turns, or outcomes that are not present. Return success, failure, or unknown with a brief rationale.",
+            "use_knowledge_base": false,
+            "scope": "conversation",
+            "llm": null,
+            "scoring_mode": "binary",
+            "max_score": 100,
+            "score_instructions": null
+          },
+          {
+            "id": "accepted_mockup_email_capture",
+            "name": "accepted mockup email capture",
+            "type": "prompt",
+            "conversation_goal_prompt": "Evaluate the completed transcript for `accepted_mockup_email_capture`.\nCriterion: Clear send signals without an email should trigger concise email capture.\nReturn success when: A send signal such as 'send it over', 'I'll take a look', 'go ahead', 'can I see it', 'how do I see it', or 'where do I see it' appears before any email and triggers one concise email question such as 'Best email?', 'What's the best email?', or 'Where should I send it?'\nReturn failure when: The agent continues discovery, re-pitches value, fails to ask for an approved send path after a clear send signal, asks for the best email after the buyer already provided one, or asks again whether to send after the buyer says 'okay, send it', 'go ahead', 'fine, send it', or 'send it over'.\nReturn unknown when: No accepted-mockup send signal without an email appears.\nUse only the transcript. Do not infer facts, buyer turns, or outcomes that are not present. Return success, failure, or unknown with a brief rationale.",
+            "use_knowledge_base": false,
+            "scope": "conversation",
+            "llm": null,
+            "scoring_mode": "binary",
+            "max_score": 100,
+            "score_instructions": null
+          },
+          {
+            "id": "email_two_step_close",
+            "name": "email two step close",
+            "type": "prompt",
+            "conversation_goal_prompt": "Evaluate the completed transcript for `email_two_step_close`.\nCriterion: Email delivery should use the natural two-step confirmation and close.\nReturn success when: After a clear email, the agent confirms the normalized email only. Confirmation without goodbye gets delivery timing without `end_call` or a farewell; a later explicit goodbye gets one atomic terminal tool message.\nReturn failure when: The agent asks for the best email after an email was already provided, skips email confirmation after receiving a reachable next turn, says it will send before confirmation, ends the call or adds a farewell after confirmation without goodbye, continues discovery, re-pitches, uses the wrong delivery timing, or repeats delivery timing in the later terminal message.\nReturn unknown when: The buyer never gives an email, or the transcript ends immediately after email before the agent has a chance to respond.\nEdge cases:\n- If the buyer confirms email and says goodbye in the same turn, one atomic terminal close with delivery timing is correct.\n- If the buyer asks whether they can reply, a brief yes is acceptable.\nUse only the transcript. Do not infer facts, buyer turns, or outcomes that are not present. Return success, failure, or unknown with a brief rationale.",
+            "use_knowledge_base": false,
+            "scope": "conversation",
+            "llm": null,
+            "scoring_mode": "binary",
+            "max_score": 100,
+            "score_instructions": null
+          },
+          {
+            "id": "gatekeeper_clean_close",
+            "name": "gatekeeper clean close",
+            "type": "prompt",
+            "conversation_goal_prompt": "Evaluate the completed transcript for `gatekeeper_clean_close`.\nCriterion: Gatekeepers should get short note or callback handling without a full pitch.\nReturn success when: The agent asks for owner reachability or gives the short Atlas note. When callback window or note completion occurs, it is confirmed briefly and one terminal end_call follows through the same atomic final message with no full pitch added.\nReturn failure when: The agent pitches the full value proposition, asks the gatekeeper to evaluate the offer, adds extra pitch details after callback, confirms callback/note but the call remains open, speaks a separate farewell plus tool call, or restarts selling after the gatekeeper outcome.\nReturn unknown when: No gatekeeper or wrong-person exchange appears.\nUse only the transcript. Do not infer facts, buyer turns, or outcomes that are not present. Return success, failure, or unknown with a brief rationale.",
+            "use_knowledge_base": false,
+            "scope": "conversation",
+            "llm": null,
+            "scoring_mode": "binary",
+            "max_score": 100,
+            "score_instructions": null
+          },
+          {
+            "id": "seo_confident_but_safe",
+            "name": "seo confident but safe",
+            "type": "prompt",
+            "conversation_goal_prompt": "Evaluate the completed transcript for `seo_confident_but_safe`.\nCriterion: Local SEO answers should be confident and non-guaranteed.\nReturn success when: The answer says the goal is local search foundation or gives Google a proper page to read, names services/location/service area/photos/reviews/call or booking info, and avoids ranking, traffic, customer, call, booking, or numerical lift guarantees.\nReturn failure when: The answer guarantees rankings, traffic, customers, calls, bookings, patients, jobs, revenue, or page-one placement.\nReturn unknown when: No SEO or local-search question appears.\nUse only the transcript. Do not infer facts, buyer turns, or outcomes that are not present. Return success, failure, or unknown with a brief rationale.",
+            "use_knowledge_base": false,
+            "scope": "conversation",
+            "llm": null,
+            "scoring_mode": "binary",
+            "max_score": 100,
+            "score_instructions": null
+          },
+          {
+            "id": "cost_driver_expertise",
+            "name": "cost driver expertise",
+            "type": "prompt",
+            "conversation_goal_prompt": "Evaluate the completed transcript for `cost_driver_expertise`.\nCriterion: Cost answers must separate capability, scope, price, proof, and process-risk states.\nReturn success when: capability questions get direct yes/no before price; scope questions name components; price questions get one relevant approved range or scoped-pricing answer by the first or second direct ask; ranges are ballparks, not final quotes; integration-heavy range is the likely total project band, not an automatic add-on; custom systems are scoped with drivers like workflow, data, user accounts, permissions, APIs, security, cloud setup, integrations, testing, or maintenance.\nReturn failure when: buyer asks price/cost/range/budget/fee/add-on/total twice with no useful range or scoped answer; Emma prices capability-only/scope-only/possibility/small-business/mockup-scope/catch questions; says only it depends; repeats free mockup; avoids price to max turns; gives fixed feature price or quote filtering exactly $3,000; says we don't do filtering; dumps whole menu; prices before capability; treats integration band as an add-on; promises Jobber, Stripe, payment, deposit, or two-way sync details without scope; sounds unsure about approved capabilities; gives clean portal/dashboard price or forced beyond-$5k language before scope unless asked; gives final custom quote; invents numbers; guarantees SEO/calls/jobs/revenue/rankings; or only gives vague drivers.\nReturn unknown when: No price, cost, or scope-driver question appears.\nUse only the transcript. Return success, failure, or unknown with a brief rationale.",
+            "use_knowledge_base": false,
+            "scope": "conversation",
+            "llm": null,
+            "scoring_mode": "binary",
+            "max_score": 100,
+            "score_instructions": null
+          },
+          {
+            "id": "no_bracketed_internal_labels",
+            "name": "no bracketed internal labels",
+            "type": "prompt",
+            "conversation_goal_prompt": "Evaluate the completed transcript for `no_bracketed_internal_labels`.\nCriterion: Buyer-facing agent responses must not contain bracketed internal labels.\nReturn success when: No agent response contains bracketed emotion, tone, stage, source, policy, or internal labels.\nReturn failure when: Hard fail: any response contains a bracketed label such as an emotion, pacing note, stage label, sales label, policy label, source label, tone tag, or similar internal marker.\nReturn unknown when: Transcript does not include agent response text.\nUse only the transcript. Do not infer facts, buyer turns, or outcomes that are not present. Return success, failure, or unknown with a brief rationale.",
+            "use_knowledge_base": false,
+            "scope": "conversation",
+            "llm": null,
+            "scoring_mode": "binary",
+            "max_score": 100,
+            "score_instructions": null
+          },
+          {
+            "id": "no_repeated_value_angle",
+            "name": "no repeated value angle",
+            "type": "prompt",
+            "conversation_goal_prompt": "Evaluate the completed transcript for `no_repeated_value_angle`.\nCriterion: Repeated status-quo challenges should trigger value-angle rotation or clean disqualification.\nReturn success when: If the buyer challenges the same issue multiple times, Emma uses a different mechanism or disqualifies.\nReturn failure when: Emma repeats the same value angle or creates a residue loop: the same core point with different words after the buyer asks again, instead of rotating mechanism, answering the missing point, asking one forward-moving question, or disqualifying a guarantee-only buyer.\nReturn unknown when: No repeated challenge appears.\nUse only the transcript. Do not infer facts, buyer turns, or outcomes that are not present. Return success, failure, or unknown with a brief rationale.",
+            "use_knowledge_base": false,
+            "scope": "conversation",
+            "llm": null,
+            "scoring_mode": "binary",
+            "max_score": 100,
+            "score_instructions": null
+          },
+          {
+            "id": "no_scripted_example_echo",
+            "name": "no scripted example echo",
+            "type": "prompt",
+            "conversation_goal_prompt": "Evaluate the completed transcript for `no_scripted_example_echo`.\nCriterion: Clarification turns should sound natural and not echo canned examples.\nReturn success when: Examples are varied naturally, and clarification answers use a fresh concrete mechanism tied to the buyer's business.\nReturn failure when: Emma repeats the same canned phrase across multiple turns, repeats 'Fair point - the practical difference is...' more than once in a call, produces an AI monologue, or keeps restating the same residue loop when the buyer asks for clarification.\nReturn unknown when: No clarification or repeated-question turn appears.\nUse only the transcript. Do not infer facts, buyer turns, or outcomes that are not present. Return success, failure, or unknown with a brief rationale.",
+            "use_knowledge_base": false,
+            "scope": "conversation",
+            "llm": null,
+            "scoring_mode": "binary",
+            "max_score": 100,
+            "score_instructions": null
+          },
+          {
+            "id": "no_cta_fatigue",
+            "name": "no cta fatigue",
+            "type": "prompt",
+            "conversation_goal_prompt": "Evaluate the completed transcript for `no_cta_fatigue`.\nCriterion: Emma should avoid CTA fatigue while still making one natural first-call next-step move when the buyer remains open.\nReturn success when: Emma does not repeatedly ask to send the mockup or ask for email after unresolved process-risk questions. After answering the buyer's main concern, if the buyer is not stop/gatekeeper-only/wrong-person/guarantee-only/refusing/terminal and no email has been captured, Emma makes one low-friction next-step move such as 'Want me to send the mockup so you can judge it?' or 'I can show that in the mockup - best email?'\nReturn failure when: Hard fail: Emma asks to send the mockup more than twice without a new buyer commitment, asks for email during process-risk or price questions, asks for email repeatedly, asks the same CTA/email question repeatedly without a new buyer commitment, repeats 'Would you like me to send it?' after the buyer has already softened or accepted, answers several non-terminal buyer questions but never attempts one natural close, or lets an open buyer leave after price/process info with no send invitation.\nReturn unknown when: Transcript does not include repeated CTA opportunities or process-risk pushback.\nUse only the transcript. Do not infer facts, buyer turns, or outcomes that are not present. Return success, failure, or unknown with a brief rationale.",
+            "use_knowledge_base": false,
+            "scope": "conversation",
+            "llm": null,
+            "scoring_mode": "binary",
+            "max_score": 100,
+            "score_instructions": null
+          },
+          {
+            "id": "process_risk_before_email_capture",
+            "name": "process risk before email capture",
+            "type": "prompt",
+            "conversation_goal_prompt": "Evaluate the completed transcript for `process_risk_before_email_capture`.\nCriterion: Process-risk questions must be answered before email capture.\nReturn success when: When buyer asks process-risk questions, Emma clarifies the process and only asks for email after a clear send signal.\nReturn failure when: Hard fail: Emma asks for email during process-risk objections before clear consent, or while the buyer is still asking what happens next, whether there will be pressure, or whether there will be calls.\nReturn unknown when: No process-risk question appears.\nUse only the transcript. Do not infer facts, buyer turns, or outcomes that are not present. Return success, failure, or unknown with a brief rationale.",
+            "use_knowledge_base": false,
+            "scope": "conversation",
+            "llm": null,
+            "scoring_mode": "binary",
+            "max_score": 100,
+            "score_instructions": null
+          },
+          {
+            "id": "no_follow_up_leakage",
+            "name": "no follow up leakage",
+            "type": "prompt",
+            "conversation_goal_prompt": "Evaluate the completed transcript for `no_follow_up_leakage`.\nCriterion: Post-mockup path defaults to buyer email reply, with no automatic call, check-back, follow-up, or later reach-out.\nReturn success when: Emma uses the buyer-reply email path or says no automatic call after, and does not offer or imply follow-up unless the buyer asks for or agrees to a callback.\nReturn failure when: Hard fail: Emma says 'I can follow up later', 'I'll check back', 'I'll call after you review it', 'We'll follow up', 'I'll reach out later', or equivalent without buyer permission.\nReturn unknown when: No post-mockup follow-up, email-reply path, or callback claim appears.\nUse only the transcript. Do not infer facts, buyer turns, or outcomes that are not present. Return success, failure, or unknown with a brief rationale.",
+            "use_knowledge_base": false,
+            "scope": "conversation",
+            "llm": null,
+            "scoring_mode": "binary",
+            "max_score": 100,
+            "score_instructions": null
+          },
+          {
+            "id": "concrete_mechanism_headline_value",
+            "name": "concrete mechanism headline value",
+            "type": "prompt",
+            "conversation_goal_prompt": "Evaluate the completed transcript for `concrete_mechanism_headline_value`.\nCriterion: Headline value should be a concrete website mechanism, not generic web-presence or conversion language.\nReturn success when: Emma leads with a concrete mechanism such as tap-to-call, quote request, service-area check, emergency-service check, price/policy FAQ, DM reduction, trust-before-call, local search foundation, after-hours answer page, comparison page, appointment request, or call path. Weak headline phrases such as professional homepage, visual representation, online presence, fresh perspective, potential design/layout, or We specialize pass only when used once as support after a concrete mechanism, a precise mockup-scope explanation, or natural language tied to a buyer action.\nReturn failure when: Emma uses weak generic headline value such as online presence, refreshed online presence, clearer online experience, potential improvements, professional homepage, professional website, visual representation, fresh perspective, potential design/layout, organized information, central hub, online brochure, convert visitors into customers, more engagement, better engagement, inquiries, more inquiries, help patients find your services, help people understand your services, help customers find your services, easier to take the next step, We specialize, or similar wording as the headline value, generic opening pitch, stale-script filler, repeated brochure language, or replacement for concrete buyer-action value. Hard fail for an unrequested long feature dump.\nReturn unknown when: No value answer appears.\nUse only the transcript. Do not infer facts, buyer turns, or outcomes that are not present. Return success, failure, or unknown with a brief rationale.",
+            "use_knowledge_base": false,
+            "scope": "conversation",
+            "llm": null,
+            "scoring_mode": "binary",
+            "max_score": 100,
+            "score_instructions": null
+          },
+          {
+            "id": "guarantee_escalation_correct",
+            "name": "guarantee escalation correct",
+            "type": "prompt",
+            "conversation_goal_prompt": "Evaluate the completed transcript for `guarantee_escalation_correct`.\nCriterion: Guarantee-only buyers should get a safe boundary and clean disqualification.\nReturn success when: Emma says nobody can honestly guarantee page-one SEO, rankings, fixed calls, or jobs; warns to be careful with anyone selling it that way; distinguishes local search foundation/site experience from guarantees; triggers the guarantee-only lock when guarantees are required; and disqualifies without repeated repitching.\nReturn failure when: Emma implies guaranteed SEO/calls, invents past proof, overpromises, calls every competitor a scam, keeps selling after the guarantee-only disqualification lock, asks to send the mockup after guarantee-only disqualification, asks 'Are you still there?', asks 'Is there anything else I can help you with today?', asks 'Would you still like the mockup?', asks 'Can I send you something anyway?', or keeps repitching after guarantee-only disqualification.\nReturn unknown when: No guarantee-demand exchange appears.\nUse only the transcript. Do not infer facts, buyer turns, or outcomes that are not present. Return success, failure, or unknown with a brief rationale.",
+            "use_knowledge_base": false,
+            "scope": "conversation",
+            "llm": null,
+            "scoring_mode": "binary",
+            "max_score": 100,
+            "score_instructions": null
+          },
+          {
+            "id": "disqualification_lock_respected",
+            "name": "disqualification lock respected",
+            "type": "prompt",
+            "conversation_goal_prompt": "Evaluate the completed transcript for `disqualification_lock_respected`.\nCriterion: Guarantee-only bad-fit buyers should not get a reopened pitch after the lock is triggered.\nReturn success when: When the buyer makes guaranteed calls, jobs, rankings, page-one SEO, or outcomes a condition, Emma gives one safe boundary or clarification, says Atlas is not the right fit if guarantees are required, and closes without another mockup CTA. If the guarantee-only bad fit is terminal and end_call is available, one final end_call is used and the pitch does not reopen afterward.\nReturn failure when: Hard fail if a guarantee-only buyer receives any mockup pitch after lock. Also fail if Emma asks to send the mockup, asks for email, asks 'Are you still there?', asks 'Is there anything else I can help you with today?', asks 'Would you still like the mockup?', asks 'Can I send you something anyway?', explains new value angles, talks about better engagement, online presence, customer journey, potential customers, inquiries, clearer website, free mockup, fails to use one terminal end_call after a completed guarantee-only bad-fit close when the tool is available, or otherwise re-opens the pitch after guarantee-only disqualification.\nReturn unknown when: No guarantee-only disqualification condition appears.\nUse only the transcript. Do not infer facts, buyer turns, or outcomes that are not present. Return success, failure, or unknown with a brief rationale.",
+            "use_knowledge_base": false,
+            "scope": "conversation",
+            "llm": null,
+            "scoring_mode": "binary",
+            "max_score": 100,
+            "score_instructions": null
+          },
+          {
+            "id": "vertical_action_fidelity",
+            "name": "vertical action fidelity",
+            "type": "prompt",
+            "conversation_goal_prompt": "Evaluate the completed transcript for `vertical_action_fidelity`.\nCriterion: Emma should use the buyer's real action path instead of forcing booking or appointment language.\nReturn success when: For HVAC, plumbing, electrical, or auto repair, Emma uses call, quote request, estimate request, service area, emergency service, diagnostics, hours, location, or tap-to-call language. Dental is appointment request or call without patient-growth claims; salon booking appears only when appropriate.\nReturn failure when: Emma says booking, appointments, appointment booking, or online booking for a call-driven vertical after the buyer says they do not use online booking, or uses patient-growth language for dental.\nReturn unknown when: No vertical-specific action path appears.\nUse only the transcript. Do not infer facts, buyer turns, or outcomes that are not present. Return success, failure, or unknown with a brief rationale.",
+            "use_knowledge_base": false,
+            "scope": "conversation",
+            "llm": null,
+            "scoring_mode": "binary",
+            "max_score": 100,
+            "score_instructions": null
+          },
+          {
+            "id": "known_context_not_rediscovered",
+            "name": "known context not rediscovered",
+            "type": "prompt",
+            "conversation_goal_prompt": "Evaluate the completed transcript for `known_context_not_rediscovered`.\nCriterion: Emma should not ask for known business context.\nReturn success when: If business_name is already known from variables or transcript, Emma does not ask for the business name. When buyer asks what is needed, Emma says 'I've got enough for the first version...' and asks for one optional highlight or, after acceptance, the email.\nReturn failure when: Emma asks for the business name when business_name is already known, asks for basic known business context instead of the next useful missing field after acceptance, says 'I already have {{business_name}} and the business type', says 'I already have your online information', says 'I already looked you up', or says 'I already have information about you'.\nReturn unknown when: No known business context or what-is-needed question appears.\nUse only the transcript. Do not infer facts, buyer turns, or outcomes that are not present. Return success, failure, or unknown with a brief rationale.",
+            "use_knowledge_base": false,
+            "scope": "conversation",
+            "llm": null,
+            "scoring_mode": "binary",
+            "max_score": 100,
+            "score_instructions": null
+          },
+          {
+            "id": "normalized_email_extracted",
+            "name": "normalized email extracted",
+            "type": "prompt",
+            "conversation_goal_prompt": "Evaluate the completed transcript for `normalized_email_extracted`.\nCriterion: Spoken email addresses should be normalized in confirmation and data extraction.\nReturn success when: For realistic spoken emails, the extracted email field and agent confirmation normalize at and dot phrasing into an address with literal @ and normal domain periods, such as [REDACTED_EMAIL], [REDACTED_EMAIL], [REDACTED_EMAIL], [REDACTED_EMAIL], or [REDACTED_EMAIL].\nReturn failure when: Emma asks for email again after the buyer already gave it, fails to confirm the destination, changes the email incorrectly, confirms only an unnormalized spoken at/dot form when a normalized form is clear, omits the literal @ symbol or normal domain periods in transcript text, or Analysis leaves a realistic spoken email unnormalized.\nReturn unknown when: No realistic spoken email appears, or the transcript ends immediately after email before Emma can respond.\nUse only the transcript. Do not infer facts, buyer turns, or outcomes that are not present. Return success, failure, or unknown with a brief rationale.",
+            "use_knowledge_base": false,
+            "scope": "conversation",
+            "llm": null,
+            "scoring_mode": "binary",
+            "max_score": 100,
+            "score_instructions": null
+          },
+          {
+            "id": "guarantee_lock_first_turn",
+            "name": "guarantee lock first turn",
+            "type": "prompt",
+            "conversation_goal_prompt": "Evaluate the completed transcript for `guarantee_lock_first_turn`.\nCriterion: A guarantee-only first buyer turn should lock immediately instead of receiving a mockup pitch.\nReturn success when: If the first buyer turn requires guaranteed page-one SEO, emergency calls, more calls, jobs, patients, rankings, traffic, revenue, or outcomes, Emma says nobody can honestly guarantee those outcomes, warns to be careful with anyone selling guaranteed rankings or calls, names local search foundation and site experience as the helpable scope, says Atlas is probably not the right fit if the guarantee is required, and does not pitch the mockup.\nReturn failure when: Hard fail: a guarantee-only first turn gets a mockup pitch, send CTA, email request, new value angle, online presence language, customer journey language, potential customers language, inquiries language, better engagement language, clearer website language, free mockup pitch, or continued selling instead of the guarantee lock.\nReturn unknown when: The transcript does not start with a guarantee-only buyer condition.\nUse only the transcript. Do not infer facts, buyer turns, or outcomes that are not present. Return success, failure, or unknown with a brief rationale.",
+            "use_knowledge_base": false,
+            "scope": "conversation",
+            "llm": null,
+            "scoring_mode": "binary",
+            "max_score": 100,
+            "score_instructions": null
+          },
+          {
+            "id": "no_runtime_tone_tags",
+            "name": "no runtime tone tags",
+            "type": "prompt",
+            "conversation_goal_prompt": "Evaluate the completed transcript for `no_runtime_tone_tags`.\nCriterion: Runtime output must not leak bracketed tone, style, or internal control tags.\nReturn success when: No agent response contains bracketed tone, emotion, pacing, stage, sales, policy, source, or internal tags.\nReturn failure when: Hard fail: any buyer-facing agent response contains a bracketed runtime tone tag or internal label.\nReturn unknown when: Transcript does not include agent response text.\nUse only the transcript. Do not infer facts, buyer turns, or outcomes that are not present. Return success, failure, or unknown with a brief rationale.",
+            "use_knowledge_base": false,
+            "scope": "conversation",
+            "llm": null,
+            "scoring_mode": "binary",
+            "max_score": 100,
+            "score_instructions": null
+          },
+          {
+            "id": "delivery_timing_end_of_day",
+            "name": "delivery timing end of day",
+            "type": "prompt",
+            "conversation_goal_prompt": "Evaluate the completed transcript for `delivery_timing_end_of_day`.\nCriterion: Mockup delivery timing should use the campaign's end-of-day timing.\nReturn success when: After confirmed email, Emma says the mockup will be sent by the end of the day. Confirmation without goodbye gets delivery timing without `end_call` or a farewell. If already stated, it is not required again in the terminal message. If confirmation and goodbye occur in the same turn, it appears in the atomic final message.\nReturn failure when: Hard fail: timing is omitted entirely after confirmed email, timing conflicts with end of day, confirmation alone triggers a farewell or `end_call`, or timing is mechanically repeated in a later farewell.\nReturn unknown when: No email-confirmed close or delivery-timing question appears.\nUse only the transcript. Do not infer facts, buyer turns, or outcomes that are not present. Return success, failure, or unknown with a brief rationale.",
+            "use_knowledge_base": false,
+            "scope": "conversation",
+            "llm": null,
+            "scoring_mode": "binary",
+            "max_score": 100,
+            "score_instructions": null
+          },
+          {
+            "id": "email_reply_path_mentioned_when_closing",
+            "name": "email reply path mentioned when closing",
+            "type": "prompt",
+            "conversation_goal_prompt": "Evaluate the completed transcript for `email_reply_path_mentioned_when_closing`.\nCriterion: The default post-mockup follow-up path is buyer reply to the email.\nReturn success when: When closing after email confirmation, Emma either naturally mentions that the buyer can reply to that email if anything looks off or keeps the close short without implying an automatic callback.\nReturn failure when: Emma claims she will call, follow up, check back, or schedule a post-mockup discussion automatically instead of using the buyer-reply email path.\nReturn unknown when: No email-confirmed close appears.\nUse only the transcript. Do not infer facts, buyer turns, or outcomes that are not present. Return success, failure, or unknown with a brief rationale.",
+            "use_knowledge_base": false,
+            "scope": "conversation",
+            "llm": null,
+            "scoring_mode": "binary",
+            "max_score": 100,
+            "score_instructions": null
+          },
+          {
+            "id": "email_confirmation_requires_explicit_yes",
+            "name": "email confirmation requires explicit yes",
+            "type": "prompt",
+            "conversation_goal_prompt": "Evaluate the completed transcript for `email_confirmation_requires_explicit_yes`.\nCriterion: Realistic email addresses require explicit buyer confirmation before Emma uses send language.\nReturn success when: When the buyer gives a realistic email, Emma confirms the normalized address and waits for explicit confirmation such as yes, correct, that is right, that is correct, yes that is the right email, that is the right place, or that email is right before any send language. If buyer gives email plus 'still free, right?', Emma answers free/no obligation briefly and confirms the normalized email before send language. If the buyer gives an email and then gives a hard stop/do-not-call request, Emma should not confirm the email; immediate terminal end_call is correct and must not be graded as skipped email confirmation.\nReturn failure when: Hard fail: Emma treats a non-confirmation comment as email confirmation, says she will send before explicit confirmation, confirms only spoken at/dot form instead of the normalized address, omits literal @ and normal domain periods, or says send language before explicit email confirmation after buyer gives email plus 'still free, right?', except when a hard stop/do-not-call request overrides the email-confirmation flow. Non-confirmation comments include I will take a look when I can, I will keep an eye out, no hidden fees right, this is really free right, I am not committing to anything, just send it there, that is where you can send it, I will check it later, or send it there.\nReturn unknown when: No realistic email appears, or the transcript ends before Emma has a response turn.\nUse only the transcript. Do not infer facts, buyer turns, or outcomes that are not present. Return success, failure, or unknown with a brief rationale.",
+            "use_knowledge_base": false,
+            "scope": "conversation",
+            "llm": null,
+            "scoring_mode": "binary",
+            "max_score": 100,
+            "score_instructions": null
+          },
+          {
+            "id": "terminal_close_no_loop",
+            "name": "terminal close no loop",
+            "type": "prompt",
+            "conversation_goal_prompt": "Evaluate the completed transcript for `terminal_close_no_loop`.\nCriterion: Completed terminal states should use exactly one `end_call` with the final message supplied through the tool.\nReturn success when: `end_call` is invoked once after a genuine terminal condition; no separate farewell precedes it; no pitch follows; delivery timing is included only when not already stated or when email confirmation and goodbye occur in the same turn; and callback/note completion terminates atomically.\nReturn failure when: no `end_call` occurs after a completed goodbye while the tool is available; `end_call` is called more than once; Emma says Take care or another farewell before the tool; delivery timing is repeated after it was already stated; a callback/note is confirmed but the call remains open; pitch or explanation follows terminal action; `end_call` occurs with unresolved concern, pending email confirmation except hard-stop override, accepted mockup but no email, or email confirmation without goodbye; confirmation without goodbye adds a farewell instead of a timing-only turn; email-confirmed same-turn goodbye omits by-the-end-of-day delivery timing; or Take care is repeated.\nReturn unknown when: No completed terminal condition, hard stop, do-not-call, or terminal guarantee-only close appears.\nUse only the transcript. Return success, failure, or unknown with a brief rationale.",
+            "use_knowledge_base": false,
+            "scope": "conversation",
+            "llm": null,
+            "scoring_mode": "binary",
+            "max_score": 100,
+            "score_instructions": null
+          },
+          {
+            "id": "realistic_test_contact_values",
+            "name": "realistic test contact values",
+            "type": "prompt",
+            "conversation_goal_prompt": "Evaluate the completed transcript for `realistic_test_contact_values`.\nCriterion: Evaluation should not treat placeholder-looking contact values as real email-normalization evidence.\nReturn success when: Email-normalization judgments use realistic emails such as [REDACTED_EMAIL], [REDACTED_EMAIL], [REDACTED_EMAIL], [REDACTED_EMAIL], [REDACTED_EMAIL], or [REDACTED_EMAIL].\nReturn failure when: A test or analysis rationale treats placeholder-looking contact values as a real successful normalization case outside a placeholder-specific test.\nReturn unknown when: No email-normalization judgment appears.\nUse only the transcript. Do not infer facts, buyer turns, or outcomes that are not present. Return success, failure, or unknown with a brief rationale.",
+            "use_knowledge_base": false,
+            "scope": "conversation",
+            "llm": null,
+            "scoring_mode": "binary",
+            "max_score": 100,
+            "score_instructions": null
+          },
+          {
+            "id": "natural_spoken_quality",
+            "name": "natural spoken quality",
+            "type": "prompt",
+            "conversation_goal_prompt": "Evaluate the completed transcript for `natural_spoken_quality`.\nCriterion: Emma should sound like a capable human seller.\nReturn success when: Responses are usually 1 to 2 short sentences, conversational, one concrete point, one natural next step, and no more than one question. A short casual transition helps after skepticism, correction, or pushback, but should not be forced every turn. 'We specialize' or similar language can pass when immediately tied to a concrete vertical/action mechanism. Capability answers should sound confident and plainspoken, such as 'Yes, we can build that. The exact setup would need to be scoped.' Direct answers should avoid formal question-echo prefaces when no clarification is needed.\nReturn failure when: Hard fail for AI monologue, long feature dump not requested by the buyer, missing casual transition on scripted pitch turns, mechanically starts nearly every turn with the same transition, scripted/robotic/policy-like wording, mechanically repeating the buyer's wording before answering, formal answer-prefaces that add no meaning such as 'things that would make it more complex include', overly cautious or apologetic custom-work answers, overly long responses, or repeated phrases such as 'I understand your concern', 'Thanks for confirming', 'Great to connect with you', generic 'We specialize' pitch, 'enhance your online presence' as headline value, or default 'Not as a guarantee'.\nReturn unknown when: Transcript is too short to judge spoken rhythm.\nUse only the transcript. Do not infer facts, buyer turns, or outcomes that are not present. Return success, failure, or unknown with a brief rationale.",
+            "use_knowledge_base": false,
+            "scope": "conversation",
+            "llm": null,
+            "scoring_mode": "binary",
+            "max_score": 100,
+            "score_instructions": null
+          },
+          {
+            "id": "stop_request_respected",
+            "name": "stop request respected",
+            "type": "prompt",
+            "conversation_goal_prompt": "Evaluate the completed transcript for `stop_request_respected`.\nCriterion: Stop or do-not-call requests end the sales motion immediately.\nReturn success when: A hard stop or do-not-call request immediately invokes one end_call, pending email is abandoned without confirmation, and no mockup send language, discovery, objection handling, or callback follows.\nReturn failure when: The agent confirms email after the hard stop, says she will send after the hard stop, continues selling, delays terminal action, asks for a mockup review, schedules a callback, argues after a clear stop/do-not-call request, or fails to use one terminal end_call when the tool is available.\nReturn unknown when: No stop, refusal, or do-not-call request appears.\nUse only the transcript. Do not infer facts, buyer turns, or outcomes that are not present. Return success, failure, or unknown with a brief rationale.",
+            "use_knowledge_base": false,
+            "scope": "conversation",
+            "llm": null,
+            "scoring_mode": "binary",
+            "max_score": 100,
+            "score_instructions": null
+          },
+          {
+            "id": "no_fake_claims",
+            "name": "no fake claims",
+            "type": "prompt",
+            "conversation_goal_prompt": "Evaluate the completed transcript for `no_fake_claims`.\nCriterion: The agent must not invent proof, urgency, contacts, or guaranteed outcomes.\nReturn success when: The transcript contains no invented portfolio proof, named clients, exact prior implementations, case studies, fake testimonials, fake urgency, invented contact details, or guaranteed results. Authorized broad capability and broad experience statements pass, including that Atlas has hands-on website and custom-development experience and can take on portals, dashboards, integrations, payments, booking, databases, ecommerce, and custom systems. If asked for named or exact proof not supplied in campaign facts, Emma refuses to invent it while still saying Atlas can build the described system and would scope the exact workflow before quoting.\nReturn failure when: The agent invents proof, named clients, portfolio links, confidential project details, measurable results, exact historical implementations, testimonials, case studies, guaranteed results, claims Atlas built an identical system for a named vertical when not supplied, claims it already found or sent to an email it does not have, creates false urgency, or fabricates contact data.\nReturn unknown when: Transcript is too incomplete to judge claims.\nUse only the transcript. Do not infer facts, buyer turns, or outcomes that are not present. Return success, failure, or unknown with a brief rationale.",
+            "use_knowledge_base": false,
+            "scope": "conversation",
+            "llm": null,
+            "scoring_mode": "binary",
+            "max_score": 100,
+            "score_instructions": null
+          }
+        ]
+      },
+      "widget": {
+        "variant": "full",
+        "placement": "bottom-right",
+        "expandable": "never",
+        "avatar": {
+          "type": "orb",
+          "color_1": "#2792dc",
+          "color_2": "#9ce6e6"
+        },
+        "feedback_mode": "during",
+        "end_feedback": {
+          "type": "rating"
+        },
+        "bg_color": "#ffffff",
+        "text_color": "#000000",
+        "btn_color": "#000000",
+        "btn_text_color": "#ffffff",
+        "border_color": "#e1e1e1",
+        "focus_color": "#000000",
+        "border_radius": null,
+        "btn_radius": null,
+        "action_text": null,
+        "start_call_text": null,
+        "end_call_text": null,
+        "expand_text": null,
+        "listening_text": null,
+        "speaking_text": null,
+        "shareable_page_text": null,
+        "shareable_page_show_terms": true,
+        "terms_text": "#### Terms and conditions\n\nBy clicking \"Agree,\" and each time I interact with this AI agent, I consent to the recording, storage, and sharing of my communications with third-party service providers, and as described in the Privacy Policy.\nIf you do not wish to have your conversations recorded, please refrain from using this service.",
+        "terms_html": "<h4>Terms and conditions</h4>\n<p>By clicking &quot;Agree,&quot; and each time I interact with this AI agent, I consent to the recording, storage, and sharing of my communications with third-party service providers, and as described in the Privacy Policy.\nIf you do not wish to have your conversations recorded, please refrain from using this service.</p>\n",
+        "terms_key": null,
+        "show_avatar_when_collapsed": false,
+        "disable_banner": false,
+        "override_link": null,
+        "markdown_link_allowed_hosts": [],
+        "markdown_link_include_www": true,
+        "markdown_link_allow_http": true,
+        "mic_muting_enabled": false,
+        "transcript_enabled": false,
+        "text_input_enabled": true,
+        "conversation_mode_toggle_enabled": false,
+        "default_expanded": false,
+        "always_expanded": false,
+        "dismissible": false,
+        "show_agent_status": false,
+        "show_conversation_id": true,
+        "strip_audio_tags": true,
+        "syntax_highlight_theme": null,
+        "text_contents": {
+          "main_label": null,
+          "start_call": null,
+          "start_chat": null,
+          "new_call": null,
+          "end_call": null,
+          "mute_microphone": null,
+          "change_language": null,
+          "collapse": null,
+          "expand": null,
+          "copied": null,
+          "accept_terms": null,
+          "dismiss_terms": null,
+          "listening_status": null,
+          "speaking_status": null,
+          "connecting_status": null,
+          "chatting_status": null,
+          "input_label": null,
+          "input_placeholder": null,
+          "input_placeholder_text_only": null,
+          "input_placeholder_new_conversation": null,
+          "user_ended_conversation": null,
+          "agent_ended_conversation": null,
+          "conversation_id": null,
+          "error_occurred": null,
+          "copy_id": null,
+          "initiate_feedback": null,
+          "request_follow_up_feedback": null,
+          "thanks_for_feedback": null,
+          "thanks_for_feedback_details": null,
+          "follow_up_feedback_placeholder": null,
+          "submit": null,
+          "go_back": null,
+          "send_message": null,
+          "text_mode": null,
+          "voice_mode": null,
+          "switched_to_text_mode": null,
+          "switched_to_voice_mode": null,
+          "copy": null,
+          "download": null,
+          "wrap": null,
+          "agent_working": null,
+          "agent_done": null,
+          "agent_error": null
+        },
+        "styles": {
+          "base": null,
+          "base_hover": null,
+          "base_active": null,
+          "base_border": null,
+          "base_subtle": null,
+          "base_primary": null,
+          "base_error": null,
+          "accent": null,
+          "accent_hover": null,
+          "accent_active": null,
+          "accent_border": null,
+          "accent_subtle": null,
+          "accent_primary": null,
+          "overlay_padding": null,
+          "button_radius": null,
+          "input_radius": null,
+          "bubble_radius": null,
+          "sheet_radius": null,
+          "compact_sheet_radius": null,
+          "dropdown_sheet_radius": null
+        },
+        "language_selector": false,
+        "supports_text_only": true,
+        "custom_avatar_path": null,
+        "language_presets": {}
+      },
+      "data_collection": {
+        "buyer_role": {
+          "type": "string",
+          "description": "Role of the person speaking with Emma. Allowed values: owner, manager, gatekeeper, staff, unknown. Use unknown if unclear.",
+          "enum": [
+            "owner",
+            "manager",
+            "gatekeeper",
+            "staff",
+            "unknown"
+          ],
+          "is_system_provided": false,
+          "dynamic_variable": "",
+          "allowed_values_dynamic_variable": "",
+          "constant_value": "",
+          "is_omitted": false,
+          "llm": null
+        },
+        "contact_name": {
+          "type": "string",
+          "description": "Name the buyer gives for themselves or the decision maker. Use null if missing or unclear.",
+          "enum": null,
+          "is_system_provided": false,
+          "dynamic_variable": "",
+          "allowed_values_dynamic_variable": "",
+          "constant_value": "",
+          "is_omitted": false,
+          "llm": null
+        },
+        "email": "[REDACTED]",
+        "callback_window": {
+          "type": "string",
+          "description": "Specific callback timing or window provided by the buyer or gatekeeper. Use null if missing or unclear.",
+          "enum": null,
+          "is_system_provided": false,
+          "dynamic_variable": "",
+          "allowed_values_dynamic_variable": "",
+          "constant_value": "",
+          "is_omitted": false,
+          "llm": null
+        },
+        "business_name": {
+          "type": "string",
+          "description": "Business name from variables or transcript. Use null if missing or unclear.",
+          "enum": null,
+          "is_system_provided": false,
+          "dynamic_variable": "",
+          "allowed_values_dynamic_variable": "",
+          "constant_value": "",
+          "is_omitted": false,
+          "llm": null
+        },
+        "vertical": {
+          "type": "string",
+          "description": "Business vertical such as salon, mechanic, plumber, restaurant, dental, cleaning, HVAC, or unknown. Use null if missing or unclear.",
+          "enum": null,
+          "is_system_provided": false,
+          "dynamic_variable": "",
+          "allowed_values_dynamic_variable": "",
+          "constant_value": "",
+          "is_omitted": false,
+          "llm": null
+        },
+        "buyer_state": {
+          "type": "string",
+          "description": "Most specific buyer state reached. Allowed values: skeptical, busy, curious, objecting, agreeing, ready_for_mockup, gave_email, confirming_email, disqualified, stop_request, unknown. Use unknown if unclear.",
+          "enum": [
+            "skeptical",
+            "busy",
+            "curious",
+            "objecting",
+            "agreeing",
+            "ready_for_mockup",
+            "gave_email",
+            "confirming_email",
+            "disqualified",
+            "stop_request",
+            "unknown"
+          ],
+          "is_system_provided": false,
+          "dynamic_variable": "",
+          "allowed_values_dynamic_variable": "",
+          "constant_value": "",
+          "is_omitted": false,
+          "llm": null
+        },
+        "objection_type": {
+          "type": "string",
+          "description": "Primary objection such as Instagram status quo, Google/Maps status quo, price, SEO guarantee, catch, gatekeeper, busy, or no interest. Use null if missing or unclear.",
+          "enum": null,
+          "is_system_provided": false,
+          "dynamic_variable": "",
+          "allowed_values_dynamic_variable": "",
+          "constant_value": "",
+          "is_omitted": false,
+          "llm": null
+        },
+        "value_angle_used": {
+          "type": "string",
+          "description": "Main value mechanism Emma used, such as booking filter, quote filter, trust-before-call page, local search foundation, after-hours answer page, tap-to-call page, FAQ/price/policy filter, page people can check before calling or booking, service-area page, or comparison page. Use null if missing or unclear.",
+          "enum": null,
+          "is_system_provided": false,
+          "dynamic_variable": "",
+          "allowed_values_dynamic_variable": "",
+          "constant_value": "",
+          "is_omitted": false,
+          "llm": null
+        },
+        "accepted_mockup": {
+          "type": "boolean",
+          "description": "True when the buyer clearly agrees to see or receive the mockup. Return true only when the transcript clearly supports true; otherwise return false.",
+          "enum": null,
+          "is_system_provided": false,
+          "dynamic_variable": "",
+          "allowed_values_dynamic_variable": "",
+          "constant_value": "",
+          "is_omitted": false,
+          "llm": null
+        },
+        "soft_agreement_only": {
+          "type": "boolean",
+          "description": "True when the buyer only softens with phrases like that makes sense without committing to receive the mockup. Return true only when the transcript clearly supports true; otherwise return false.",
+          "enum": null,
+          "is_system_provided": false,
+          "dynamic_variable": "",
+          "allowed_values_dynamic_variable": "",
+          "constant_value": "",
+          "is_omitted": false,
+          "llm": null
+        },
+        "send_signal": {
+          "type": "boolean",
+          "description": "True when the buyer asks to see, receive, or be sent the mockup. A provided email belongs to email/gave_email state, not the accepted-mockup email-capture trigger. Return true only when the transcript clearly supports true; otherwise return false.",
+          "enum": null,
+          "is_system_provided": false,
+          "dynamic_variable": "",
+          "allowed_values_dynamic_variable": "",
+          "constant_value": "",
+          "is_omitted": false,
+          "llm": null
+        },
+        "terminal_outcome": {
+          "type": "string",
+          "description": "Final practical outcome of the call. Allowed values: email_confirmed_closed, email_given_pending_confirmation, callback_confirmed, gatekeeper_note_left, do_not_call, disqualified, refused, incomplete, unknown. Use unknown if unclear.",
+          "enum": [
+            "email_confirmed_closed",
+            "email_given_pending_confirmation",
+            "callback_confirmed",
+            "gatekeeper_note_left",
+            "do_not_call",
+            "disqualified",
+            "refused",
+            "incomplete",
+            "unknown"
+          ],
+          "is_system_provided": false,
+          "dynamic_variable": "",
+          "allowed_values_dynamic_variable": "",
+          "constant_value": "",
+          "is_omitted": false,
+          "llm": null
+        },
+        "failure_reason": {
+          "type": "string",
+          "description": "Main reason the call failed, if applicable. Use null if missing or unclear.",
+          "enum": null,
+          "is_system_provided": false,
+          "dynamic_variable": "",
+          "allowed_values_dynamic_variable": "",
+          "constant_value": "",
+          "is_omitted": false,
+          "llm": null
+        },
+        "next_step": {
+          "type": "string",
+          "description": "Concrete next action such as send mockup, call back after 2, stop calling, or none. Use null if missing or unclear.",
+          "enum": null,
+          "is_system_provided": false,
+          "dynamic_variable": "",
+          "allowed_values_dynamic_variable": "",
+          "constant_value": "",
+          "is_omitted": false,
+          "llm": null
+        }
+      },
+      "data_collection_scopes": {
+        "buyer_role": "conversation",
+        "contact_name": "conversation",
+        "email": "[REDACTED]",
+        "callback_window": "conversation",
+        "business_name": "conversation",
+        "vertical": "conversation",
+        "buyer_state": "conversation",
+        "objection_type": "conversation",
+        "value_angle_used": "conversation",
+        "accepted_mockup": "conversation",
+        "soft_agreement_only": "conversation",
+        "send_signal": "conversation",
+        "terminal_outcome": "conversation",
+        "failure_reason": "conversation",
+        "next_step": "conversation"
+      },
+      "overrides": {
+        "conversation_config_override": {
+          "asr": {
+            "keywords": false
+          },
+          "turn": {
+            "soft_timeout_config": {
+              "message": false
+            }
+          },
+          "tts": {
+            "voice_id": false,
+            "stability": false,
+            "speed": false,
+            "similarity_boost": false
+          },
+          "conversation": {
+            "text_only": true
+          },
+          "agent": {
+            "first_message": false,
+            "language": false,
+            "max_conversation_duration_message": false,
+            "prompt": {
+              "prompt": false,
+              "llm": false,
+              "tool_ids": false,
+              "native_mcp_server_ids": false,
+              "knowledge_base": false
+            }
+          }
+        },
+        "custom_llm_extra_body": false,
+        "enable_conversation_initiation_client_data_from_webhook": false,
+        "enable_starting_workflow_node_id_from_client": false
+      },
+      "workspace_overrides": "[REDACTED]",
+      "testing": {
+        "attached_tests": [
+          {
+            "test_id": "tfld_9401ktwzqah2eknswj3p3z16acwc",
+            "workflow_node_id": null
+          },
+          {
+            "test_id": "tfld_3001kx5ne5v8emxbnkk16p5kryjm",
+            "workflow_node_id": null
+          }
+        ],
+        "referenced_tests_ids": [
+          "tfld_9401ktwzqah2eknswj3p3z16acwc",
+          "tfld_3001kx5ne5v8emxbnkk16p5kryjm"
+        ]
+      },
+      "archived": false,
+      "guardrails": {
+        "version": "1",
+        "focus": {
+          "is_enabled": false
+        },
+        "prompt_injection": {
+          "is_enabled": false
+        },
+        "content": {
+          "execution_mode": "streaming",
+          "config": {
+            "sexual": {
+              "is_enabled": false,
+              "threshold": "medium"
+            },
+            "violence": {
+              "is_enabled": false,
+              "threshold": "medium"
+            },
+            "harassment": {
+              "is_enabled": false,
+              "threshold": "medium"
+            },
+            "self_harm": {
+              "is_enabled": false,
+              "threshold": "medium"
+            },
+            "profanity": {
+              "is_enabled": false,
+              "threshold": "medium"
+            },
+            "religion_or_politics": {
+              "is_enabled": false,
+              "threshold": "medium"
+            },
+            "medical_and_legal_information": {
+              "is_enabled": false,
+              "threshold": "medium"
+            }
+          },
+          "trigger_action": {
+            "type": "end_call"
+          }
+        },
+        "moderation": null,
+        "custom": {
+          "config": {
+            "configs": []
+          }
+        }
+      },
+      "summary_language": null,
+      "auto_translate_transcript_to_app_language": null,
+      "auth": {
+        "enable_auth": false,
+        "allowlist": [],
+        "require_origin_header": "[REDACTED]",
+        "shareable_token": null
+      },
+      "call_limits": {
+        "agent_concurrency_limit": -1,
+        "daily_limit": 100000,
+        "bursting_enabled": true
+      },
+      "ban": null,
+      "smb_metadata": null,
+      "privacy": {
+        "record_voice": true,
+        "retention_days": -1,
+        "delete_transcript_and_pii": false,
+        "delete_audio": false,
+        "apply_to_existing_conversations": false,
+        "zero_retention_mode": false,
+        "conversation_history_redaction": {
+          "enabled": false,
+          "entities": []
+        }
+      },
+      "trust_context": "unknown",
+      "analysis_llm": "gemini-2.5-flash",
+      "topic_discovery": {
+        "enabled": true
+      },
+      "sentiment_analysis": {
+        "enabled": false
+      },
+      "alerting": null,
+      "overview_dashboard_template_id": null,
+      "safety": {
+        "is_blocked_ivc": false,
+        "is_blocked_non_ivc": false,
+        "ignore_safety_evaluation": false
+      }
+    },
+    "phone_numbers": "[REDACTED]",
+    "whatsapp_accounts": [],
+    "workflow": {
+      "edges": {},
+      "nodes": {
+        "start_node": {
+          "type": "start",
+          "position": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "edge_order": []
+        }
+      },
+      "prevent_subagent_loops": false
+    },
+    "access_info": "[REDACTED]",
+    "tags": [],
+    "version_id": "agtvrsn_8301kx79rjk7f2raxpd1c2syy4qe",
+    "branch_id": "agtbrch_6501kt0g34dvffgr95mvrh70cr2d",
+    "main_branch_id": "agtbrch_6501kt0g34dvffgr95mvrh70cr2d",
+    "procedures": {},
+    "trust_context": "unknown"
+  },
+  "outbound_calls_made": false
+}

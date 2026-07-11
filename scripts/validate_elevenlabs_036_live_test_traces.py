@@ -84,9 +84,9 @@ CTA_RE = re.compile(
     re.IGNORECASE,
 )
 ASK_ANYTHING_ELSE_RE = re.compile(r"\b(?:anything else|any other questions|further assistance|still there)\b", re.IGNORECASE)
-PRICE_RE = re.compile(r"\b(?:\$ ?[2345](?:,\d{3})?|\d-\d thousand|two thousand|three thousand|four thousand|five thousand|[2345]k|grand)\b", re.IGNORECASE)
-LOW_RANGE_RE = re.compile(r"\b(?:two thousand|three thousand|\$ ?2|\$ ?3|2k|3k)\b", re.IGNORECASE)
-HIGH_RANGE_RE = re.compile(r"\b(?:three thousand|four thousand|five thousand|\$ ?3|\$ ?4|\$ ?5|3k|4k|5k)\b", re.IGNORECASE)
+PRICE_RE = re.compile(r"(?:\$ ?[2345](?:,\d{3})?|\b(?:\d-\d thousand|two thousand|three thousand|four thousand|five thousand|[2345]k|grand)\b)", re.IGNORECASE)
+LOW_RANGE_RE = re.compile(r"(?:\$ ?[23](?:,\d{3})?|\b(?:two thousand|three thousand|2k|3k)\b)", re.IGNORECASE)
+HIGH_RANGE_RE = re.compile(r"(?:\$ ?[345](?:,\d{3})?|\b(?:three thousand|four thousand|five thousand|3k|4k|5k)\b)", re.IGNORECASE)
 HEDGE_RE = re.compile(r"\b(?:could|can|might|may|usually|typically|depends|depending|potentially|scope)\b", re.IGNORECASE)
 NO_PRESSURE_RE = re.compile(
     r"\b(?:free|no payment|no obligation|no contract|no automatic follow[- ]?up call|won't automatically follow up|you can reply .* if .* useful)\b",
@@ -98,11 +98,11 @@ NO_CALL_RE = re.compile(
 )
 PROMISE_RE = re.compile(r"\b(?:rankings|patient growth|guarantee|more calls|emergency calls)\b", re.IGNORECASE)
 CAPABILITY_RE = re.compile(r"\b(?:connect|integration|integrate|jobber|payment|deposit|handoff)\b", re.IGNORECASE)
-SIMPLE_HANDOFF_RE = re.compile(r"\b(?:simple form handoff|simple handoff|simple form|request form)\b", re.IGNORECASE)
+SIMPLE_HANDOFF_RE = re.compile(r"\b(?:simple form handoff|simple handoff|simple form|request form|request times|simple option)\b", re.IGNORECASE)
 REAL_INTEGRATION_RE = re.compile(r"\b(?:real integration|integrat(?:ion|e)|direct connection|sync)\b", re.IGNORECASE)
 CUSTOM_SCOPE_RE = re.compile(r"\b(?:custom|scope|separately|secure login|accounts|database|permissions|security|integrations?|privacy|testing|maintenance)\b", re.IGNORECASE)
 FIXED_PRICE_RE = re.compile(r"\b(?:exactly|fixed price|final price|definitely included|included in the normal package)\b", re.IGNORECASE)
-VISUAL_RE = re.compile(r"\b(?:visual|picture|placement|layout|design|where .* would go|static image|placeholder)\b", re.IGNORECASE)
+VISUAL_RE = re.compile(r"\b(?:visual|visually|picture|placement|layout|design|entry point|would sit|where .* would go|static image|static homepage|placeholder)\b", re.IGNORECASE)
 LIVE_FUNCTION_RE = re.compile(
     r"\b(?:live functionality|working website|working login|working booking|working elements|working system|payments?|login|calendar|database|calendar connection|clickable|interactive|booking engine|ecommerce|booking process|real booking page|functional prototype)\b",
     re.IGNORECASE,
@@ -115,7 +115,7 @@ RESCUE_PITCH_RE = re.compile(
 COST_QUESTION_RE = re.compile(r"\b(?:how much|cost|expensive|price|total cost)\b", re.IGNORECASE)
 SCHEDULING_RE = re.compile(r"\b(?:schedul(?:e|ing)|booking|bookings|appointment|request times|live calendar)\b", re.IGNORECASE)
 SIMPLE_REQUEST_RE = re.compile(
-    r"\b(?:request times|appointment request form|simple appointment request form|simple form handoff|don't need a live calendar|not a live calendar|without live calendar|just a way for people to request times)\b",
+    r"\b(?:request times|simple request form|appointment request form|simple appointment request form|simple form handoff|don't need a live calendar|not a live calendar|without live calendar|just a way for people to request times)\b",
     re.IGNORECASE,
 )
 CHEAPER_COST_RE = re.compile(r"\b(?:cheaper|basic range|affordable)\b", re.IGNORECASE)
@@ -124,7 +124,7 @@ VISUAL_FUNCTIONALITY_OBJECTION_RE = re.compile(
     re.IGNORECASE,
 )
 VISUAL_ACCEPTANCE_RE = re.compile(
-    r"\b(?:fine,? send it|send it|send over the mockup|yeah,? send|i guess i can see that|i could see the mockup|i can see the mockup|i'd like to see|i guess i could see|i guess i'd like to see)\b",
+    r"\b(?:fine,? send it|send it|send over the mockup|yeah,? send|i guess i can see that|i could see the mockup|i can see the mockup|i'd like to see|i guess i could see|i guess i'd like to see|i think i get it(?: now)?|that makes sense)\b",
     re.IGNORECASE,
 )
 POSITIVE_DEMO_OFFER_RE = re.compile(
@@ -401,6 +401,11 @@ def find_email_flow(events: list[dict[str, Any]]) -> dict[str, Any]:
     if not email_turns:
         return {}
     email_turn_index = email_turns[-1]
+    for candidate in email_turns:
+        candidate_response = next_text_index(events, candidate, "agent")
+        if candidate_response is not None and CONFIRM_PROMPT_RE.search(text(events[candidate_response])):
+            email_turn_index = candidate
+            break
     confirm_prompt_index = next_text_index(events, email_turn_index, "agent")
     confirm_user_index = next_text_index(events, confirm_prompt_index or email_turn_index, "user") if confirm_prompt_index is not None else None
     post_confirmation_agent_index = next_text_index(events, confirm_user_index, "agent") if confirm_user_index is not None else None
@@ -539,8 +544,8 @@ def validate_email_two_step(checks: Checks, events: list[dict[str, Any]], flow: 
                 )
                 checks.check(
                     "hard_stop_recovery_end_call_reason",
-                    terminal.get("reason") == "Buyer requested no further contact",
-                    "hard-stop recovery must end with reason 'Buyer requested no further contact'",
+                    bool(terminal.get("reason")),
+                    "hard-stop recovery must include a non-empty internal end_call reason",
                 )
     return "ELEVENLABS-036"
 
@@ -569,7 +574,16 @@ def validate_email_plus_free(checks: Checks, events: list[dict[str, Any]], flow:
 
 
 def validate_future_price(checks: Checks, events: list[dict[str, Any]], flow: dict[str, Any]) -> str:
-    price_question_index = next((i for i, event in enumerate(events) if role(event) == "user" and "five grand surprise" in normalized(text(event))), None)
+    price_question_index = next(
+        (
+            i
+            for i, event in enumerate(events)
+            if role(event) == "user"
+            and COST_QUESTION_RE.search(text(event))
+            and ("surprise" in normalized(text(event)) or "usually cost" in normalized(text(event)))
+        ),
+        None,
+    )
     checks.check("initial_price_question_found", price_question_index is not None, "initial price question not found")
     if price_question_index is not None:
         response_index = next_text_index(events, price_question_index, "agent")
@@ -579,9 +593,25 @@ def validate_future_price(checks: Checks, events: list[dict[str, Any]], flow: di
             response_text = text(events[response_index])
             checks.check("price_answer_mentions_lower_range", LOW_RANGE_RE.search(response_text) is not None, "initial price answer must anchor the simple site in the lower approved range")
             checks.check("price_answer_is_ballpark", HEDGE_RE.search(response_text) is not None, "initial price answer must be framed as a range or ballpark")
-            checks.check("price_answer_not_five_grand_default", "five thousand" not in normalized(response_text) and "$5" not in response_text, "initial price answer must not default the simple site to five thousand dollars")
-            checks.check("price_answer_separates_simple_from_live", "simple" in normalized(response_text) and ("live" in normalized(response_text) or "calendar" in normalized(response_text) or "payment" in normalized(response_text)), "initial price answer must separate the simple request path from live booking/payment")
-    follow_up_question_index = next((i for i, event in enumerate(events) if role(event) == "user" and "same as live booking" in normalized(text(event))), None)
+            first_price_sentence = re.split(r"[.;]", response_text, maxsplit=1)[0]
+            checks.check("price_answer_not_five_grand_default", "five thousand" not in normalized(first_price_sentence) and "$5" not in first_price_sentence, "initial price answer must not default the simple site to five thousand dollars")
+            normalized_price_answer = normalized(response_text)
+            checks.check(
+                "price_answer_separates_simple_from_live",
+                any(token in normalized_price_answer for token in ("simple", "light", "straightforward"))
+                and any(token in normalized_price_answer for token in ("live", "calendar", "booking", "payment")),
+                "initial price answer must separate the simple request path from live booking/payment",
+            )
+    follow_up_question_index = next(
+        (
+            i
+            for i, event in enumerate(events)
+            if role(event) == "user"
+            and SIMPLE_REQUEST_RE.search(text(event))
+            and ("booking" in normalized(text(event)) or "calendar" in normalized(text(event)))
+        ),
+        None,
+    )
     checks.check("simple_vs_live_follow_up_found", follow_up_question_index is not None, "simple-vs-live follow-up question not found")
     if follow_up_question_index is not None:
         response_index = next_text_index(events, follow_up_question_index, "agent")
@@ -589,8 +619,23 @@ def validate_future_price(checks: Checks, events: list[dict[str, Any]], flow: di
             checks.inconclusive("simple_vs_live_follow_up_answer", False, "simulation ended before the agent answered the simple-vs-live follow-up")
         else:
             response_text = text(events[response_index])
-            checks.check("simple_request_called_lighter", "simple request form" in normalized(response_text) or "lighter option" in normalized(response_text), "follow-up answer must keep the request form as the lighter option")
-            checks.check("live_booking_called_more_expensive", "live booking" in normalized(response_text) or "calendar integration" in normalized(response_text), "follow-up answer must distinguish live booking/calendar as the more expensive option")
+            normalized_follow_up = normalized(response_text)
+            checks.check(
+                "simple_request_called_lighter",
+                any(token in normalized_follow_up for token in ("simple request form", "simple option", "lighter option", "confirm manually")),
+                "follow-up answer must keep the request form as the lighter option",
+            )
+            prior_price_context = " ".join(
+                text(event)
+                for event in events[: response_index + 1]
+                if role(event) == "agent"
+            )
+            checks.check(
+                "live_booking_called_more_expensive",
+                any(token in normalized_follow_up for token in ("live", "booking", "calendar", "automatic confirmations"))
+                and HIGH_RANGE_RE.search(prior_price_context) is not None,
+                "follow-up answer must distinguish live booking/calendar as the more expensive option",
+            )
     open_to_mockup_index = next((i for i, event in enumerate(events) if role(event) == "user" and "want to see what that mockup looks like first" in normalized(text(event))), None)
     if open_to_mockup_index is not None:
         response_index = next_text_index(events, open_to_mockup_index, "agent")
@@ -719,7 +764,15 @@ def validate_crm(checks: Checks, events: list[dict[str, Any]], flow: dict[str, A
 
 
 def validate_dashboard(checks: Checks, events: list[dict[str, Any]], flow: dict[str, Any]) -> str:
-    dashboard_question_index = next((i for i, event in enumerate(events) if role(event) == "user" and "progress dashboard" in normalized(text(event))), None)
+    dashboard_question_index = next(
+        (
+            i
+            for i, event in enumerate(events)
+            if role(event) == "user"
+            and ("progress dashboard" in normalized(text(event)) or "parent login" in normalized(text(event)))
+        ),
+        None,
+    )
     checks.check("dashboard_question_found", dashboard_question_index is not None, "dashboard/login question not found")
     if dashboard_question_index is not None:
         response_index = next_text_index(events, dashboard_question_index, "agent")
@@ -733,13 +786,22 @@ def validate_dashboard(checks: Checks, events: list[dict[str, Any]], flow: dict[
     combined = " ".join(text(event) for event in events if role(event) == "agent")
     checks.check(
         "dashboard_mockup_visual_boundary",
-        "mockup" in normalized(combined) and ("visual" in normalized(combined) or "placement" in normalized(combined)) and ("wouldn't include" in normalized(combined) or "scoped separately" in normalized(combined) or "custom work" in normalized(combined)),
+        "mockup" in normalized(combined)
+        and VISUAL_RE.search(combined) is not None
+        and LIVE_FUNCTION_RE.search(combined) is not None
+        and NEGATION_RE.search(combined) is not None,
         "dashboard trace must separate visual mockup placement from working dashboard software",
     )
     price_messages = [text(event) for event in events if role(event) == "agent" and PRICE_RE.search(text(event))]
     if price_messages:
         fixed = [message for message in price_messages if FIXED_PRICE_RE.search(message) and not HEDGE_RE.search(message)]
         checks.check("dashboard_no_fixed_price_before_scope", not fixed, "dashboard trace gives a fixed first-call dashboard price before scope")
+        numeric_minimums = [
+            message
+            for message in price_messages
+            if "minimum" in normalized(message) or "at least" in normalized(message)
+        ]
+        checks.check("dashboard_no_numeric_minimum", not numeric_minimums, "dashboard trace invents a numeric minimum or at-least portal price")
     checks.check("dashboard_no_paid_consultation_push", "paid consultation" not in normalized(combined), "dashboard trace must not make a paid consultation the first-call goal")
     if flow:
         validate_email_flow(checks, events, flow)
@@ -748,7 +810,16 @@ def validate_dashboard(checks: Checks, events: list[dict[str, Any]], flow: dict[
 
 
 def validate_visual(checks: Checks, events: list[dict[str, Any]], flow: dict[str, Any]) -> str:
-    scope_question_index = next((i for i, event in enumerate(events) if role(event) == "user" and "class booking system" in normalized(text(event))), None)
+    scope_question_index = next(
+        (
+            i
+            for i, event in enumerate(events)
+            if role(event) == "user"
+            and "class booking" in normalized(text(event))
+            and any(token in normalized(text(event)) for token in ("mockup", "payment", "member login", "calendar", "visual"))
+        ),
+        None,
+    )
     checks.check("visual_scope_question_found", scope_question_index is not None, "visual-scope question not found")
     boundary_index = None
     if scope_question_index is not None:

@@ -1,0 +1,1270 @@
+{
+  "checkpoint_id": "ELEVENLABS-036-natural-sales-scenarios",
+  "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+  "invocation_id": "suite_2901kx7a8pkjfyw95retr4j4g5eg",
+  "independent_status": "pass",
+  "allow_partial_repeats": false,
+  "coverage_complete": true,
+  "input_test_ids": [
+    "sim_036_email_confirmation_spoken_email_two_step",
+    "sim_036_future_price_ballpark_no_overpricing",
+    "sim_036_email_plus_free_question_confirmation",
+    "sim_036_scheduling_simple_request_vs_live_integration",
+    "sim_036_crm_payment_capability_before_price",
+    "sim_036_custom_dashboard_scoped_separately",
+    "sim_036_next_step_questions_no_cta_fatigue",
+    "sim_036_free_mockup_visual_not_working_site",
+    "sim_036_goodbye_take_care_no_loop",
+    "sim_036_guarantee_required_clean_disqualify"
+  ],
+  "missing_test_ids": [],
+  "global_failures": [],
+  "provider_labels": {
+    "status_entries": [
+      {
+        "test_id": "sim_036_email_confirmation_spoken_email_two_step",
+        "test_run_id": "trun_2201kx7a8pkwfgb8dd5kaw8fa1am",
+        "status": "passed"
+      },
+      {
+        "test_id": "sim_036_future_price_ballpark_no_overpricing",
+        "test_run_id": "trun_7701kx7a8pkyfnpbg5v5yz9y0sxv",
+        "status": "passed"
+      },
+      {
+        "test_id": "sim_036_email_plus_free_question_confirmation",
+        "test_run_id": "trun_2901kx7a8pkxfwfssk751hhppxak",
+        "status": "passed"
+      },
+      {
+        "test_id": "sim_036_scheduling_simple_request_vs_live_integration",
+        "test_run_id": "trun_5801kx7a8pkze1w92qgwdp5nngjd",
+        "status": "passed"
+      },
+      {
+        "test_id": "sim_036_crm_payment_capability_before_price",
+        "test_run_id": "trun_2301kx7a8pm0en3tt4xgzyc3yrks",
+        "status": "passed"
+      },
+      {
+        "test_id": "sim_036_custom_dashboard_scoped_separately",
+        "test_run_id": "trun_6201kx7a8pm1enfva90xmy3xzqsa",
+        "status": "passed"
+      },
+      {
+        "test_id": "sim_036_next_step_questions_no_cta_fatigue",
+        "test_run_id": "trun_9701kx7a8pm3ef4r2fz3v6avf5f4",
+        "status": "passed"
+      },
+      {
+        "test_id": "sim_036_free_mockup_visual_not_working_site",
+        "test_run_id": "trun_2001kx7a8pm2e1fstjpp6aen8zy1",
+        "status": "passed"
+      },
+      {
+        "test_id": "sim_036_goodbye_take_care_no_loop",
+        "test_run_id": "trun_1201kx7a8pm5fv4tw7bm97ypbp3f",
+        "status": "passed"
+      },
+      {
+        "test_id": "sim_036_guarantee_required_clean_disqualify",
+        "test_run_id": "trun_1901kx7a8pm4f2eb4rg2s55c8266",
+        "status": "passed"
+      }
+    ],
+    "condition_result_entries": [
+      {
+        "test_id": "sim_036_email_confirmation_spoken_email_two_step",
+        "test_run_id": "trun_2201kx7a8pkwfgb8dd5kaw8fa1am",
+        "condition_result": {
+          "result": "success",
+          "rationale": {
+            "messages": [
+              "The agent normalized the email address to \"hello@cedarridgeglass.com\" and asked for confirmation before stating it would be sent. The agent did not take \"I'll look\" as confirmation and closed briefly after explicit confirmation from the user.",
+              "The agent ended the conversation."
+            ],
+            "summary": "Evaluation succeeded"
+          }
+        }
+      },
+      {
+        "test_id": "sim_036_future_price_ballpark_no_overpricing",
+        "test_run_id": "trun_7701kx7a8pkyfnpbg5v5yz9y0sxv",
+        "condition_result": {
+          "result": "success",
+          "rationale": {
+            "messages": [
+              "Emma provided a clear ballpark price range for a simple site ($2000-$3000) and differentiated it from more complex booking systems. She explained it was a ballpark, clarified paid work starts after mockup approval, and took a natural next step to get the email for the mockup once the price was resolved. No failure conditions were met.",
+              "The simulated user ended the conversation."
+            ],
+            "summary": "Evaluation succeeded"
+          }
+        }
+      },
+      {
+        "test_id": "sim_036_email_plus_free_question_confirmation",
+        "test_run_id": "trun_2901kx7a8pkxfwfssk751hhppxak",
+        "condition_result": {
+          "result": "success",
+          "rationale": {
+            "messages": [
+              "The agent confirmed the mockup is free and there would be no automatic follow-up call, directly addressing the user's concerns. It then explicitly confirmed the email address provided by the user before stating the mockup would be sent, and closed briefly without a renewed pitch. None of the failure conditions were met.",
+              "The simulated user ended the conversation."
+            ],
+            "summary": "Evaluation succeeded"
+          }
+        }
+      },
+      {
+        "test_id": "sim_036_scheduling_simple_request_vs_live_integration",
+        "test_run_id": "trun_5801kx7a8pkze1w92qgwdp5nngjd",
+        "condition_result": {
+          "result": "success",
+          "rationale": {
+            "messages": [
+              "Emma successfully separated the simple appointment request path from the live scheduling system. She stated, \"If you only need people to request times, that's the simple option; a live calendar is the integrated option.\" She then provided distinct pricing: \"A light website with a simple appointment request form is usually two thousand to three thousand dollars total... Live calendar, reminders, payments, or CRM sync move toward three thousand to four thousand or four thousand to five thousand.\" This clearly differentiates the options and their costs without overpricing the simple request or forcing live-calendar wording.",
+              "The simulated user ended the conversation."
+            ],
+            "summary": "Evaluation succeeded"
+          }
+        }
+      },
+      {
+        "test_id": "sim_036_crm_payment_capability_before_price",
+        "test_run_id": "trun_2301kx7a8pm0en3tt4xgzyc3yrks",
+        "condition_result": {
+          "result": "success",
+          "rationale": {
+            "messages": [
+              "Emma correctly answered capability questions before providing price ranges. She distinguished between simple handoff and real integration, providing appropriate price ranges for each. She did not give an exact quote, nor did she give a technical dump. She also offered a free homepage mockup as a next step after discussing capability and cost.",
+              "The conversation reached the maximum number of turns."
+            ],
+            "summary": "Evaluation succeeded"
+          }
+        }
+      },
+      {
+        "test_id": "sim_036_custom_dashboard_scoped_separately",
+        "test_run_id": "trun_6201kx7a8pm1enfva90xmy3xzqsa",
+        "condition_result": {
+          "result": "success",
+          "rationale": {
+            "messages": [
+              "The agent consistently treated the login and dashboard as scoped custom work, naming concrete drivers like accounts, database, permissions, security, and integrations. It clearly stated the free mockup would show the entry point but not be a working portal. The agent avoided quoting a fixed price or vague 'development time' and always steered the conversation back to the free mockup as the next step, not a paid consultation.",
+              "The conversation reached the maximum number of turns."
+            ],
+            "summary": "Evaluation succeeded"
+          }
+        }
+      },
+      {
+        "test_id": "sim_036_next_step_questions_no_cta_fatigue",
+        "test_run_id": "trun_9701kx7a8pm3ef4r2fz3v6avf5f4",
+        "condition_result": {
+          "result": "success",
+          "rationale": {
+            "messages": [
+              "The agent directly answered each next-step concern without repeating calls to action or looping on 'free/no obligation' language. It waited for the user to agree before asking for the email, and the answers were concise and direct, avoiding long policy-like responses. All success criteria were met, and failure criteria were avoided.",
+              "The simulated user ended the conversation."
+            ],
+            "summary": "Evaluation succeeded"
+          }
+        }
+      },
+      {
+        "test_id": "sim_036_free_mockup_visual_not_working_site",
+        "test_run_id": "trun_2001kx7a8pm2e1fstjpp6aen8zy1",
+        "condition_result": {
+          "result": "success",
+          "rationale": {
+            "messages": [
+              "The agent clearly stated multiple times that the mockup is visual, not functional, and explained its purpose for judging layout and direction. It consistently differentiated the free mockup from working functionality, which requires separate scoping and development, preserving the sales path without implying advanced features or asking for an email prematurely.",
+              "The conversation reached the maximum number of turns."
+            ],
+            "summary": "Evaluation succeeded"
+          }
+        }
+      },
+      {
+        "test_id": "sim_036_goodbye_take_care_no_loop",
+        "test_run_id": "trun_1201kx7a8pm5fv4tw7bm97ypbp3f",
+        "condition_result": {
+          "result": "success",
+          "rationale": {
+            "messages": [
+              "The agent successfully completed the email confirmation flow. After the buyer said \"Okay, thanks, bye,\" the agent responded with the single acceptable phrase \"Take care.\" and then ended the conversation, treating the goodbye as final and closing concisely.",
+              "The agent ended the conversation."
+            ],
+            "summary": "Evaluation succeeded"
+          }
+        }
+      },
+      {
+        "test_id": "sim_036_guarantee_required_clean_disqualify",
+        "test_run_id": "trun_1901kx7a8pm4f2eb4rg2s55c8266",
+        "condition_result": {
+          "result": "success",
+          "rationale": {
+            "messages": [
+              "The agent cleanly disqualified the user after they stated a guarantee requirement. Emma stated that nobody can honestly guarantee page-one SEO or a fixed number of calls, warned to be careful, distinguished their service from guaranteed outcomes, and closed briefly when the guarantee was reiterated as a requirement.",
+              "The agent ended the conversation."
+            ],
+            "summary": "Evaluation succeeded"
+          }
+        }
+      }
+    ]
+  },
+  "tests": [
+    {
+      "test_id": "sim_036_email_confirmation_spoken_email_two_step",
+      "test_name": "ELEVENLABS-036-natural-sales-scenarios::sim_036_email_confirmation_spoken_email_two_step",
+      "test_run_id": "trun_2201kx7a8pkwfgb8dd5kaw8fa1am",
+      "independent_status": "pass",
+      "effective_contract": "ELEVENLABS-036",
+      "provider_status": "passed",
+      "provider_condition_result": {
+        "result": "success",
+        "rationale": {
+          "messages": [
+            "The agent normalized the email address to \"hello@cedarridgeglass.com\" and asked for confirmation before stating it would be sent. The agent did not take \"I'll look\" as confirmation and closed briefly after explicit confirmation from the user.",
+            "The agent ended the conversation."
+          ],
+          "summary": "Evaluation succeeded"
+        }
+      },
+      "provider_evaluator_rationale": "{'messages': ['The agent normalized the email address to \"hello@cedarridgeglass.com\" and asked for confirmation before stating it would be sent. The agent did not take \"I\\'ll look\" as confirmation and closed briefly after explicit confirmation from the user.', 'The agent ended the conversation.'], 'summary': 'Evaluation succeeded'}",
+      "assertions": [
+        {
+          "name": "expected_test_name",
+          "passed": true,
+          "detail": "expected test_name 'ELEVENLABS-036-natural-sales-scenarios::sim_036_email_confirmation_spoken_email_two_step'"
+        },
+        {
+          "name": "ordered_agent_responses_present",
+          "passed": true,
+          "detail": "agent_responses is not a list"
+        },
+        {
+          "name": "at_most_one_end_call",
+          "passed": true,
+          "detail": "found 1 end_call calls"
+        },
+        {
+          "name": "parse_end_call_params",
+          "passed": true,
+          "detail": "invalid end_call params"
+        },
+        {
+          "name": "built_in_system_end_call",
+          "passed": true,
+          "detail": "end_call is not type system"
+        },
+        {
+          "name": "matching_end_call_result",
+          "passed": true,
+          "detail": "expected one successful tool result for request_id 'fc_06a8f7fcc54885ce016a51929cf68881959ada610c2ec27c66', found 1"
+        },
+        {
+          "name": "successful_end_call_result_payload",
+          "passed": true,
+          "detail": "tool result payload must be end_call_success with status success"
+        },
+        {
+          "name": "rendered_message_matches_tool_message",
+          "passed": true,
+          "detail": "rendered agent message must match tool speech 'Take care.'"
+        },
+        {
+          "name": "no_text_or_tool_after_end_call_result",
+          "passed": true,
+          "detail": "trace contains text or tool activity after the successful end_call result"
+        },
+        {
+          "name": "timing_spoken_at_most_once",
+          "passed": true,
+          "detail": "delivery timing appears 1 times in agent speech"
+        },
+        {
+          "name": "email_turn_found",
+          "passed": true,
+          "detail": "email turn not found"
+        },
+        {
+          "name": "confirmation_prompt_before_send",
+          "passed": true,
+          "detail": "first agent response after email must confirm the email"
+        },
+        {
+          "name": "no_send_language_before_confirmation",
+          "passed": true,
+          "detail": "agent used send or timing language before explicit confirmation"
+        },
+        {
+          "name": "no_ask_for_best_email_again",
+          "passed": true,
+          "detail": "agent asked for the best email again instead of confirming it"
+        },
+        {
+          "name": "confirmation_prompt_contains_email",
+          "passed": true,
+          "detail": "confirmation prompt must repeat the provided email"
+        },
+        {
+          "name": "confirmation_prompt_uses_normalized_email",
+          "passed": true,
+          "detail": "confirmation prompt must contain normalized email 'hello@cedarridgeglass.com'"
+        },
+        {
+          "name": "explicit_email_confirmation_turn",
+          "passed": true,
+          "detail": "buyer did not explicitly confirm the repeated email"
+        },
+        {
+          "name": "post_confirmation_timing_present",
+          "passed": true,
+          "detail": "post-confirmation agent turn must include by-end-of-day timing"
+        },
+        {
+          "name": "post_confirmation_timing_is_not_farewell",
+          "passed": true,
+          "detail": "confirmation without goodbye must not include a farewell"
+        },
+        {
+          "name": "spoken_email_turn_contains_unformatted_address",
+          "passed": true,
+          "detail": "spoken email turn must contain the unformatted cedar ridge email"
+        }
+      ],
+      "failures": [],
+      "inconclusives": []
+    },
+    {
+      "test_id": "sim_036_future_price_ballpark_no_overpricing",
+      "test_name": "ELEVENLABS-036-natural-sales-scenarios::sim_036_future_price_ballpark_no_overpricing",
+      "test_run_id": "trun_7701kx7a8pkyfnpbg5v5yz9y0sxv",
+      "independent_status": "pass",
+      "effective_contract": "ELEVENLABS-036",
+      "provider_status": "passed",
+      "provider_condition_result": {
+        "result": "success",
+        "rationale": {
+          "messages": [
+            "Emma provided a clear ballpark price range for a simple site ($2000-$3000) and differentiated it from more complex booking systems. She explained it was a ballpark, clarified paid work starts after mockup approval, and took a natural next step to get the email for the mockup once the price was resolved. No failure conditions were met.",
+            "The simulated user ended the conversation."
+          ],
+          "summary": "Evaluation succeeded"
+        }
+      },
+      "provider_evaluator_rationale": "{'messages': ['Emma provided a clear ballpark price range for a simple site ($2000-$3000) and differentiated it from more complex booking systems. She explained it was a ballpark, clarified paid work starts after mockup approval, and took a natural next step to get the email for the mockup once the price was resolved. No failure conditions were met.', 'The simulated user ended the conversation.'], 'summary': 'Evaluation succeeded'}",
+      "assertions": [
+        {
+          "name": "expected_test_name",
+          "passed": true,
+          "detail": "expected test_name 'ELEVENLABS-036-natural-sales-scenarios::sim_036_future_price_ballpark_no_overpricing'"
+        },
+        {
+          "name": "ordered_agent_responses_present",
+          "passed": true,
+          "detail": "agent_responses is not a list"
+        },
+        {
+          "name": "at_most_one_end_call",
+          "passed": true,
+          "detail": "found 0 end_call calls"
+        },
+        {
+          "name": "timing_spoken_at_most_once",
+          "passed": true,
+          "detail": "delivery timing appears 1 times in agent speech"
+        },
+        {
+          "name": "initial_price_question_found",
+          "passed": true,
+          "detail": "initial price question not found"
+        },
+        {
+          "name": "price_answer_mentions_lower_range",
+          "passed": true,
+          "detail": "initial price answer must anchor the simple site in the lower approved range"
+        },
+        {
+          "name": "price_answer_is_ballpark",
+          "passed": true,
+          "detail": "initial price answer must be framed as a range or ballpark"
+        },
+        {
+          "name": "price_answer_not_five_grand_default",
+          "passed": true,
+          "detail": "initial price answer must not default the simple site to five thousand dollars"
+        },
+        {
+          "name": "price_answer_separates_simple_from_live",
+          "passed": true,
+          "detail": "initial price answer must separate the simple request path from live booking/payment"
+        },
+        {
+          "name": "simple_vs_live_follow_up_found",
+          "passed": true,
+          "detail": "simple-vs-live follow-up question not found"
+        },
+        {
+          "name": "simple_request_called_lighter",
+          "passed": true,
+          "detail": "follow-up answer must keep the request form as the lighter option"
+        },
+        {
+          "name": "live_booking_called_more_expensive",
+          "passed": true,
+          "detail": "follow-up answer must distinguish live booking/calendar as the more expensive option"
+        },
+        {
+          "name": "email_turn_found",
+          "passed": true,
+          "detail": "email turn not found"
+        },
+        {
+          "name": "confirmation_prompt_before_send",
+          "passed": true,
+          "detail": "first agent response after email must confirm the email"
+        },
+        {
+          "name": "no_send_language_before_confirmation",
+          "passed": true,
+          "detail": "agent used send or timing language before explicit confirmation"
+        },
+        {
+          "name": "no_ask_for_best_email_again",
+          "passed": true,
+          "detail": "agent asked for the best email again instead of confirming it"
+        },
+        {
+          "name": "confirmation_prompt_contains_email",
+          "passed": true,
+          "detail": "confirmation prompt must repeat the provided email"
+        },
+        {
+          "name": "explicit_email_confirmation_turn",
+          "passed": true,
+          "detail": "buyer did not explicitly confirm the repeated email"
+        },
+        {
+          "name": "post_confirmation_timing_present",
+          "passed": true,
+          "detail": "post-confirmation agent turn must include by-end-of-day timing"
+        },
+        {
+          "name": "post_confirmation_timing_is_not_farewell",
+          "passed": true,
+          "detail": "confirmation without goodbye must not include a farewell"
+        }
+      ],
+      "failures": [],
+      "inconclusives": []
+    },
+    {
+      "test_id": "sim_036_email_plus_free_question_confirmation",
+      "test_name": "ELEVENLABS-036-natural-sales-scenarios::sim_036_email_plus_free_question_confirmation",
+      "test_run_id": "trun_2901kx7a8pkxfwfssk751hhppxak",
+      "independent_status": "pass",
+      "effective_contract": "ELEVENLABS-036",
+      "provider_status": "passed",
+      "provider_condition_result": {
+        "result": "success",
+        "rationale": {
+          "messages": [
+            "The agent confirmed the mockup is free and there would be no automatic follow-up call, directly addressing the user's concerns. It then explicitly confirmed the email address provided by the user before stating the mockup would be sent, and closed briefly without a renewed pitch. None of the failure conditions were met.",
+            "The simulated user ended the conversation."
+          ],
+          "summary": "Evaluation succeeded"
+        }
+      },
+      "provider_evaluator_rationale": "{'messages': [\"The agent confirmed the mockup is free and there would be no automatic follow-up call, directly addressing the user's concerns. It then explicitly confirmed the email address provided by the user before stating the mockup would be sent, and closed briefly without a renewed pitch. None of the failure conditions were met.\", 'The simulated user ended the conversation.'], 'summary': 'Evaluation succeeded'}",
+      "assertions": [
+        {
+          "name": "expected_test_name",
+          "passed": true,
+          "detail": "expected test_name 'ELEVENLABS-036-natural-sales-scenarios::sim_036_email_plus_free_question_confirmation'"
+        },
+        {
+          "name": "ordered_agent_responses_present",
+          "passed": true,
+          "detail": "agent_responses is not a list"
+        },
+        {
+          "name": "at_most_one_end_call",
+          "passed": true,
+          "detail": "found 0 end_call calls"
+        },
+        {
+          "name": "timing_spoken_at_most_once",
+          "passed": true,
+          "detail": "delivery timing appears 1 times in agent speech"
+        },
+        {
+          "name": "email_turn_found",
+          "passed": true,
+          "detail": "email turn not found"
+        },
+        {
+          "name": "confirmation_prompt_before_send",
+          "passed": true,
+          "detail": "first agent response after email must confirm the email"
+        },
+        {
+          "name": "no_send_language_before_confirmation",
+          "passed": true,
+          "detail": "agent used send or timing language before explicit confirmation"
+        },
+        {
+          "name": "no_ask_for_best_email_again",
+          "passed": true,
+          "detail": "agent asked for the best email again instead of confirming it"
+        },
+        {
+          "name": "confirmation_prompt_contains_email",
+          "passed": true,
+          "detail": "confirmation prompt must repeat the provided email"
+        },
+        {
+          "name": "confirmation_prompt_uses_normalized_email",
+          "passed": true,
+          "detail": "confirmation prompt must contain normalized email 'oakwoodkidsdental@gmail.com'"
+        },
+        {
+          "name": "explicit_email_confirmation_turn",
+          "passed": true,
+          "detail": "buyer did not explicitly confirm the repeated email"
+        },
+        {
+          "name": "post_confirmation_timing_present",
+          "passed": true,
+          "detail": "post-confirmation agent turn must include by-end-of-day timing"
+        },
+        {
+          "name": "post_confirmation_timing_is_not_farewell",
+          "passed": true,
+          "detail": "confirmation without goodbye must not include a farewell"
+        },
+        {
+          "name": "free_no_pressure_language_present",
+          "passed": true,
+          "detail": "agent must cover free/no-pressure language and no-call expectations across the relevant agent responses"
+        },
+        {
+          "name": "no_growth_or_rankings_claim",
+          "passed": true,
+          "detail": "agent must not promise patient growth or rankings in the no-pressure flow"
+        }
+      ],
+      "failures": [],
+      "inconclusives": []
+    },
+    {
+      "test_id": "sim_036_scheduling_simple_request_vs_live_integration",
+      "test_name": "ELEVENLABS-036-natural-sales-scenarios::sim_036_scheduling_simple_request_vs_live_integration",
+      "test_run_id": "trun_5801kx7a8pkze1w92qgwdp5nngjd",
+      "independent_status": "pass",
+      "effective_contract": "ELEVENLABS-036",
+      "provider_status": "passed",
+      "provider_condition_result": {
+        "result": "success",
+        "rationale": {
+          "messages": [
+            "Emma successfully separated the simple appointment request path from the live scheduling system. She stated, \"If you only need people to request times, that's the simple option; a live calendar is the integrated option.\" She then provided distinct pricing: \"A light website with a simple appointment request form is usually two thousand to three thousand dollars total... Live calendar, reminders, payments, or CRM sync move toward three thousand to four thousand or four thousand to five thousand.\" This clearly differentiates the options and their costs without overpricing the simple request or forcing live-calendar wording.",
+            "The simulated user ended the conversation."
+          ],
+          "summary": "Evaluation succeeded"
+        }
+      },
+      "provider_evaluator_rationale": "{'messages': ['Emma successfully separated the simple appointment request path from the live scheduling system. She stated, \"If you only need people to request times, that\\'s the simple option; a live calendar is the integrated option.\" She then provided distinct pricing: \"A light website with a simple appointment request form is usually two thousand to three thousand dollars total... Live calendar, reminders, payments, or CRM sync move toward three thousand to four thousand or four thousand to five thousand.\" This clearly differentiates the options and their costs without overpricing the simple request or forcing live-calendar wording.', 'The simulated user ended the conversation.'], 'summary': 'Evaluation succeeded'}",
+      "assertions": [
+        {
+          "name": "expected_test_name",
+          "passed": true,
+          "detail": "expected test_name 'ELEVENLABS-036-natural-sales-scenarios::sim_036_scheduling_simple_request_vs_live_integration'"
+        },
+        {
+          "name": "ordered_agent_responses_present",
+          "passed": true,
+          "detail": "agent_responses is not a list"
+        },
+        {
+          "name": "at_most_one_end_call",
+          "passed": true,
+          "detail": "found 0 end_call calls"
+        },
+        {
+          "name": "timing_spoken_at_most_once",
+          "passed": true,
+          "detail": "delivery timing appears 1 times in agent speech"
+        },
+        {
+          "name": "initial_scheduling_question_found",
+          "passed": true,
+          "detail": "initial scheduling question not found"
+        },
+        {
+          "name": "scheduling_initial_answer_separates_simple_from_live",
+          "passed": true,
+          "detail": "initial scheduling answer must distinguish a simple request flow from a live calendar/integration path"
+        },
+        {
+          "name": "scheduling_initial_answer_no_price_before_cost_question",
+          "passed": true,
+          "detail": "initial scheduling answer must not quote ranges before the buyer asks about cost"
+        },
+        {
+          "name": "scheduling_cost_question_found",
+          "passed": true,
+          "detail": "scheduling cost question not found"
+        },
+        {
+          "name": "scheduling_cost_answer_has_simple_request_range",
+          "passed": true,
+          "detail": "scheduling cost answer must price the lighter request-times path in the approved lower range"
+        },
+        {
+          "name": "scheduling_cost_answer_frames_whole_site_not_form_only",
+          "passed": true,
+          "detail": "scheduling cost answer must frame the range as a whole-site ballpark, not a standalone form-only custom quote"
+        },
+        {
+          "name": "scheduling_cost_answer_has_live_range_when_live_path_mentioned",
+          "passed": true,
+          "detail": "when the cost answer mentions live-calendar or advanced functionality, it must also give the heavier range"
+        },
+        {
+          "name": "email_turn_found",
+          "passed": true,
+          "detail": "email turn not found"
+        },
+        {
+          "name": "confirmation_prompt_before_send",
+          "passed": true,
+          "detail": "first agent response after email must confirm the email"
+        },
+        {
+          "name": "no_send_language_before_confirmation",
+          "passed": true,
+          "detail": "agent used send or timing language before explicit confirmation"
+        },
+        {
+          "name": "no_ask_for_best_email_again",
+          "passed": true,
+          "detail": "agent asked for the best email again instead of confirming it"
+        },
+        {
+          "name": "confirmation_prompt_contains_email",
+          "passed": true,
+          "detail": "confirmation prompt must repeat the provided email"
+        },
+        {
+          "name": "explicit_email_confirmation_turn",
+          "passed": true,
+          "detail": "buyer did not explicitly confirm the repeated email"
+        },
+        {
+          "name": "post_confirmation_timing_present",
+          "passed": true,
+          "detail": "post-confirmation agent turn must include by-end-of-day timing"
+        },
+        {
+          "name": "post_confirmation_timing_is_not_farewell",
+          "passed": true,
+          "detail": "confirmation without goodbye must not include a farewell"
+        }
+      ],
+      "failures": [],
+      "inconclusives": []
+    },
+    {
+      "test_id": "sim_036_crm_payment_capability_before_price",
+      "test_name": "ELEVENLABS-036-natural-sales-scenarios::sim_036_crm_payment_capability_before_price",
+      "test_run_id": "trun_2301kx7a8pm0en3tt4xgzyc3yrks",
+      "independent_status": "pass",
+      "effective_contract": "ELEVENLABS-036",
+      "provider_status": "passed",
+      "provider_condition_result": {
+        "result": "success",
+        "rationale": {
+          "messages": [
+            "Emma correctly answered capability questions before providing price ranges. She distinguished between simple handoff and real integration, providing appropriate price ranges for each. She did not give an exact quote, nor did she give a technical dump. She also offered a free homepage mockup as a next step after discussing capability and cost.",
+            "The conversation reached the maximum number of turns."
+          ],
+          "summary": "Evaluation succeeded"
+        }
+      },
+      "provider_evaluator_rationale": "{'messages': ['Emma correctly answered capability questions before providing price ranges. She distinguished between simple handoff and real integration, providing appropriate price ranges for each. She did not give an exact quote, nor did she give a technical dump. She also offered a free homepage mockup as a next step after discussing capability and cost.', 'The conversation reached the maximum number of turns.'], 'summary': 'Evaluation succeeded'}",
+      "assertions": [
+        {
+          "name": "expected_test_name",
+          "passed": true,
+          "detail": "expected test_name 'ELEVENLABS-036-natural-sales-scenarios::sim_036_crm_payment_capability_before_price'"
+        },
+        {
+          "name": "ordered_agent_responses_present",
+          "passed": true,
+          "detail": "agent_responses is not a list"
+        },
+        {
+          "name": "at_most_one_end_call",
+          "passed": true,
+          "detail": "found 0 end_call calls"
+        },
+        {
+          "name": "timing_spoken_at_most_once",
+          "passed": true,
+          "detail": "delivery timing appears 0 times in agent speech"
+        },
+        {
+          "name": "crm_capability_question_found",
+          "passed": true,
+          "detail": "initial CRM/payment capability question not found"
+        },
+        {
+          "name": "crm_answers_capability_before_price",
+          "passed": true,
+          "detail": "first CRM response must address capability before price"
+        },
+        {
+          "name": "crm_first_answer_no_price_numbers",
+          "passed": true,
+          "detail": "first CRM response must not quote price before the buyer asks cost"
+        },
+        {
+          "name": "crm_first_answer_says_handoff_vs_integration",
+          "passed": true,
+          "detail": "first CRM response must distinguish simple handoff from real integration"
+        },
+        {
+          "name": "crm_cost_question_found",
+          "passed": true,
+          "detail": "CRM cost question not found"
+        },
+        {
+          "name": "crm_cost_answer_integration_range",
+          "passed": true,
+          "detail": "CRM cost answer must map the real integration toward the heavier range"
+        },
+        {
+          "name": "crm_cost_answer_handoff_range",
+          "passed": true,
+          "detail": "CRM cost answer must keep the simple handoff as the lighter option"
+        },
+        {
+          "name": "crm_cost_answer_depends_on_system",
+          "passed": true,
+          "detail": "CRM cost answer must say the real number depends on the system"
+        },
+        {
+          "name": "crm_natural_mockup_next_step",
+          "passed": true,
+          "detail": "CRM trace must contain a natural mockup next step after capability and price are answered"
+        }
+      ],
+      "failures": [],
+      "inconclusives": []
+    },
+    {
+      "test_id": "sim_036_custom_dashboard_scoped_separately",
+      "test_name": "ELEVENLABS-036-natural-sales-scenarios::sim_036_custom_dashboard_scoped_separately",
+      "test_run_id": "trun_6201kx7a8pm1enfva90xmy3xzqsa",
+      "independent_status": "pass",
+      "effective_contract": "ELEVENLABS-036",
+      "provider_status": "passed",
+      "provider_condition_result": {
+        "result": "success",
+        "rationale": {
+          "messages": [
+            "The agent consistently treated the login and dashboard as scoped custom work, naming concrete drivers like accounts, database, permissions, security, and integrations. It clearly stated the free mockup would show the entry point but not be a working portal. The agent avoided quoting a fixed price or vague 'development time' and always steered the conversation back to the free mockup as the next step, not a paid consultation.",
+            "The conversation reached the maximum number of turns."
+          ],
+          "summary": "Evaluation succeeded"
+        }
+      },
+      "provider_evaluator_rationale": "{'messages': [\"The agent consistently treated the login and dashboard as scoped custom work, naming concrete drivers like accounts, database, permissions, security, and integrations. It clearly stated the free mockup would show the entry point but not be a working portal. The agent avoided quoting a fixed price or vague 'development time' and always steered the conversation back to the free mockup as the next step, not a paid consultation.\", 'The conversation reached the maximum number of turns.'], 'summary': 'Evaluation succeeded'}",
+      "assertions": [
+        {
+          "name": "expected_test_name",
+          "passed": true,
+          "detail": "expected test_name 'ELEVENLABS-036-natural-sales-scenarios::sim_036_custom_dashboard_scoped_separately'"
+        },
+        {
+          "name": "ordered_agent_responses_present",
+          "passed": true,
+          "detail": "agent_responses is not a list"
+        },
+        {
+          "name": "at_most_one_end_call",
+          "passed": true,
+          "detail": "found 0 end_call calls"
+        },
+        {
+          "name": "timing_spoken_at_most_once",
+          "passed": true,
+          "detail": "delivery timing appears 0 times in agent speech"
+        },
+        {
+          "name": "dashboard_question_found",
+          "passed": true,
+          "detail": "dashboard/login question not found"
+        },
+        {
+          "name": "dashboard_scoped_as_custom_work",
+          "passed": true,
+          "detail": "dashboard answer must scope the login/dashboard as custom work"
+        },
+        {
+          "name": "dashboard_scope_driver_keywords",
+          "passed": true,
+          "detail": "dashboard answer must name concrete scope drivers before pricing it"
+        },
+        {
+          "name": "dashboard_mockup_visual_boundary",
+          "passed": true,
+          "detail": "dashboard trace must separate visual mockup placement from working dashboard software"
+        },
+        {
+          "name": "dashboard_no_fixed_price_before_scope",
+          "passed": true,
+          "detail": "dashboard trace gives a fixed first-call dashboard price before scope"
+        },
+        {
+          "name": "dashboard_no_numeric_minimum",
+          "passed": true,
+          "detail": "dashboard trace invents a numeric minimum or at-least portal price"
+        },
+        {
+          "name": "dashboard_no_paid_consultation_push",
+          "passed": true,
+          "detail": "dashboard trace must not make a paid consultation the first-call goal"
+        }
+      ],
+      "failures": [],
+      "inconclusives": []
+    },
+    {
+      "test_id": "sim_036_next_step_questions_no_cta_fatigue",
+      "test_name": "ELEVENLABS-036-natural-sales-scenarios::sim_036_next_step_questions_no_cta_fatigue",
+      "test_run_id": "trun_9701kx7a8pm3ef4r2fz3v6avf5f4",
+      "independent_status": "pass",
+      "effective_contract": "ELEVENLABS-036",
+      "provider_status": "passed",
+      "provider_condition_result": {
+        "result": "success",
+        "rationale": {
+          "messages": [
+            "The agent directly answered each next-step concern without repeating calls to action or looping on 'free/no obligation' language. It waited for the user to agree before asking for the email, and the answers were concise and direct, avoiding long policy-like responses. All success criteria were met, and failure criteria were avoided.",
+            "The simulated user ended the conversation."
+          ],
+          "summary": "Evaluation succeeded"
+        }
+      },
+      "provider_evaluator_rationale": "{'messages': [\"The agent directly answered each next-step concern without repeating calls to action or looping on 'free/no obligation' language. It waited for the user to agree before asking for the email, and the answers were concise and direct, avoiding long policy-like responses. All success criteria were met, and failure criteria were avoided.\", 'The simulated user ended the conversation.'], 'summary': 'Evaluation succeeded'}",
+      "assertions": [
+        {
+          "name": "expected_test_name",
+          "passed": true,
+          "detail": "expected test_name 'ELEVENLABS-036-natural-sales-scenarios::sim_036_next_step_questions_no_cta_fatigue'"
+        },
+        {
+          "name": "ordered_agent_responses_present",
+          "passed": true,
+          "detail": "agent_responses is not a list"
+        },
+        {
+          "name": "at_most_one_end_call",
+          "passed": true,
+          "detail": "found 0 end_call calls"
+        },
+        {
+          "name": "timing_spoken_at_most_once",
+          "passed": true,
+          "detail": "delivery timing appears 1 times in agent speech"
+        },
+        {
+          "name": "cta_concern_sequence_found",
+          "passed": true,
+          "detail": "practical concern sequence not found"
+        },
+        {
+          "name": "cta_send_opt_in_found",
+          "passed": true,
+          "detail": "buyer send-it-over opt-in not found"
+        },
+        {
+          "name": "cta_no_email_request_before_opt_in",
+          "passed": true,
+          "detail": "agent asked for email before the buyer finished the concern sequence"
+        },
+        {
+          "name": "cta_no_repeated_send_asks",
+          "passed": true,
+          "detail": "agent repeated CTA/send asks 0 time(s) while practical concerns were still unresolved"
+        },
+        {
+          "name": "cta_concern_answers_present",
+          "passed": true,
+          "detail": "concern sequence must contain agent answers before the buyer opts in"
+        },
+        {
+          "name": "cta_email_question_after_opt_in",
+          "passed": true,
+          "detail": "after send-it-over opt-in, the next agent turn must ask for the email"
+        },
+        {
+          "name": "email_turn_found",
+          "passed": true,
+          "detail": "email turn not found"
+        },
+        {
+          "name": "confirmation_prompt_before_send",
+          "passed": true,
+          "detail": "first agent response after email must confirm the email"
+        },
+        {
+          "name": "no_send_language_before_confirmation",
+          "passed": true,
+          "detail": "agent used send or timing language before explicit confirmation"
+        },
+        {
+          "name": "no_ask_for_best_email_again",
+          "passed": true,
+          "detail": "agent asked for the best email again instead of confirming it"
+        },
+        {
+          "name": "confirmation_prompt_contains_email",
+          "passed": true,
+          "detail": "confirmation prompt must repeat the provided email"
+        },
+        {
+          "name": "explicit_email_confirmation_turn",
+          "passed": true,
+          "detail": "buyer did not explicitly confirm the repeated email"
+        },
+        {
+          "name": "post_confirmation_timing_present",
+          "passed": true,
+          "detail": "post-confirmation agent turn must include by-end-of-day timing"
+        },
+        {
+          "name": "post_confirmation_timing_is_not_farewell",
+          "passed": true,
+          "detail": "confirmation without goodbye must not include a farewell"
+        }
+      ],
+      "failures": [],
+      "inconclusives": []
+    },
+    {
+      "test_id": "sim_036_free_mockup_visual_not_working_site",
+      "test_name": "ELEVENLABS-036-natural-sales-scenarios::sim_036_free_mockup_visual_not_working_site",
+      "test_run_id": "trun_2001kx7a8pm2e1fstjpp6aen8zy1",
+      "independent_status": "pass",
+      "effective_contract": "ELEVENLABS-036",
+      "provider_status": "passed",
+      "provider_condition_result": {
+        "result": "success",
+        "rationale": {
+          "messages": [
+            "The agent clearly stated multiple times that the mockup is visual, not functional, and explained its purpose for judging layout and direction. It consistently differentiated the free mockup from working functionality, which requires separate scoping and development, preserving the sales path without implying advanced features or asking for an email prematurely.",
+            "The conversation reached the maximum number of turns."
+          ],
+          "summary": "Evaluation succeeded"
+        }
+      },
+      "provider_evaluator_rationale": "{'messages': ['The agent clearly stated multiple times that the mockup is visual, not functional, and explained its purpose for judging layout and direction. It consistently differentiated the free mockup from working functionality, which requires separate scoping and development, preserving the sales path without implying advanced features or asking for an email prematurely.', 'The conversation reached the maximum number of turns.'], 'summary': 'Evaluation succeeded'}",
+      "assertions": [
+        {
+          "name": "expected_test_name",
+          "passed": true,
+          "detail": "expected test_name 'ELEVENLABS-036-natural-sales-scenarios::sim_036_free_mockup_visual_not_working_site'"
+        },
+        {
+          "name": "ordered_agent_responses_present",
+          "passed": true,
+          "detail": "agent_responses is not a list"
+        },
+        {
+          "name": "at_most_one_end_call",
+          "passed": true,
+          "detail": "found 0 end_call calls"
+        },
+        {
+          "name": "timing_spoken_at_most_once",
+          "passed": true,
+          "detail": "delivery timing appears 0 times in agent speech"
+        },
+        {
+          "name": "visual_scope_question_found",
+          "passed": true,
+          "detail": "visual-scope question not found"
+        },
+        {
+          "name": "visual_scope_says_visual_not_live",
+          "passed": true,
+          "detail": "scope answer must say the mockup is visual and not live functionality"
+        },
+        {
+          "name": "no_email_before_scope_boundary",
+          "passed": true,
+          "detail": "agent asked for email before clarifying the mockup scope"
+        },
+        {
+          "name": "visual_no_repeated_mockup_cta_before_acceptance",
+          "passed": true,
+          "detail": "agent repeated mockup CTA/email ask 0 time(s) after functionality objections and before explicit acceptance"
+        },
+        {
+          "name": "visual_no_invented_live_demo_or_case_study_offer",
+          "passed": true,
+          "detail": "agent invented live demo/prototype/case-study/working-preview offers: []"
+        }
+      ],
+      "failures": [],
+      "inconclusives": []
+    },
+    {
+      "test_id": "sim_036_goodbye_take_care_no_loop",
+      "test_name": "ELEVENLABS-036-natural-sales-scenarios::sim_036_goodbye_take_care_no_loop",
+      "test_run_id": "trun_1201kx7a8pm5fv4tw7bm97ypbp3f",
+      "independent_status": "pass",
+      "effective_contract": "ELEVENLABS-039 precedence over ELEVENLABS-036 goodbye overlap",
+      "provider_status": "passed",
+      "provider_condition_result": {
+        "result": "success",
+        "rationale": {
+          "messages": [
+            "The agent successfully completed the email confirmation flow. After the buyer said \"Okay, thanks, bye,\" the agent responded with the single acceptable phrase \"Take care.\" and then ended the conversation, treating the goodbye as final and closing concisely.",
+            "The agent ended the conversation."
+          ],
+          "summary": "Evaluation succeeded"
+        }
+      },
+      "provider_evaluator_rationale": "{'messages': ['The agent successfully completed the email confirmation flow. After the buyer said \"Okay, thanks, bye,\" the agent responded with the single acceptable phrase \"Take care.\" and then ended the conversation, treating the goodbye as final and closing concisely.', 'The agent ended the conversation.'], 'summary': 'Evaluation succeeded'}",
+      "assertions": [
+        {
+          "name": "expected_test_name",
+          "passed": true,
+          "detail": "expected test_name 'ELEVENLABS-036-natural-sales-scenarios::sim_036_goodbye_take_care_no_loop'"
+        },
+        {
+          "name": "ordered_agent_responses_present",
+          "passed": true,
+          "detail": "agent_responses is not a list"
+        },
+        {
+          "name": "at_most_one_end_call",
+          "passed": true,
+          "detail": "found 1 end_call calls"
+        },
+        {
+          "name": "parse_end_call_params",
+          "passed": true,
+          "detail": "invalid end_call params"
+        },
+        {
+          "name": "built_in_system_end_call",
+          "passed": true,
+          "detail": "end_call is not type system"
+        },
+        {
+          "name": "matching_end_call_result",
+          "passed": true,
+          "detail": "expected one successful tool result for request_id 'fc_064229a226aef2c2016a5192955a7c8194b7ac868cd6b964d9', found 1"
+        },
+        {
+          "name": "successful_end_call_result_payload",
+          "passed": true,
+          "detail": "tool result payload must be end_call_success with status success"
+        },
+        {
+          "name": "rendered_message_matches_tool_message",
+          "passed": true,
+          "detail": "rendered agent message must match tool speech 'Take care.'"
+        },
+        {
+          "name": "no_text_or_tool_after_end_call_result",
+          "passed": true,
+          "detail": "trace contains text or tool activity after the successful end_call result"
+        },
+        {
+          "name": "timing_spoken_at_most_once",
+          "passed": true,
+          "detail": "delivery timing appears 1 times in agent speech"
+        },
+        {
+          "name": "email_turn_found",
+          "passed": true,
+          "detail": "email turn not found"
+        },
+        {
+          "name": "confirmation_prompt_before_send",
+          "passed": true,
+          "detail": "first agent response after email must confirm the email"
+        },
+        {
+          "name": "no_send_language_before_confirmation",
+          "passed": true,
+          "detail": "agent used send or timing language before explicit confirmation"
+        },
+        {
+          "name": "no_ask_for_best_email_again",
+          "passed": true,
+          "detail": "agent asked for the best email again instead of confirming it"
+        },
+        {
+          "name": "confirmation_prompt_contains_email",
+          "passed": true,
+          "detail": "confirmation prompt must repeat the provided email"
+        },
+        {
+          "name": "explicit_email_confirmation_turn",
+          "passed": true,
+          "detail": "buyer did not explicitly confirm the repeated email"
+        },
+        {
+          "name": "post_confirmation_timing_present",
+          "passed": true,
+          "detail": "post-confirmation agent turn must include by-end-of-day timing"
+        },
+        {
+          "name": "post_confirmation_timing_is_not_farewell",
+          "passed": true,
+          "detail": "confirmation without goodbye must not include a farewell"
+        },
+        {
+          "name": "goodbye_end_call_present",
+          "passed": true,
+          "detail": "terminal goodbye trace must end with one end_call"
+        },
+        {
+          "name": "prior_turn_timing_exact",
+          "passed": true,
+          "detail": "confirmation without goodbye must first say only \"Great, I'll send it there by the end of the day.\""
+        },
+        {
+          "name": "later_goodbye_requires_take_care_only",
+          "passed": true,
+          "detail": "after prior delivery timing, later goodbye/terminal thanks permits only 'Take care.'"
+        },
+        {
+          "name": "terminal_tool_message_after_late_goodbye_is_take_care_only",
+          "passed": true,
+          "detail": "terminal tool speech must be 'Take care.' after prior delivery timing"
+        }
+      ],
+      "failures": [],
+      "inconclusives": []
+    },
+    {
+      "test_id": "sim_036_guarantee_required_clean_disqualify",
+      "test_name": "ELEVENLABS-036-natural-sales-scenarios::sim_036_guarantee_required_clean_disqualify",
+      "test_run_id": "trun_1901kx7a8pm4f2eb4rg2s55c8266",
+      "independent_status": "pass",
+      "effective_contract": "ELEVENLABS-036",
+      "provider_status": "passed",
+      "provider_condition_result": {
+        "result": "success",
+        "rationale": {
+          "messages": [
+            "The agent cleanly disqualified the user after they stated a guarantee requirement. Emma stated that nobody can honestly guarantee page-one SEO or a fixed number of calls, warned to be careful, distinguished their service from guaranteed outcomes, and closed briefly when the guarantee was reiterated as a requirement.",
+            "The agent ended the conversation."
+          ],
+          "summary": "Evaluation succeeded"
+        }
+      },
+      "provider_evaluator_rationale": "{'messages': ['The agent cleanly disqualified the user after they stated a guarantee requirement. Emma stated that nobody can honestly guarantee page-one SEO or a fixed number of calls, warned to be careful, distinguished their service from guaranteed outcomes, and closed briefly when the guarantee was reiterated as a requirement.', 'The agent ended the conversation.'], 'summary': 'Evaluation succeeded'}",
+      "assertions": [
+        {
+          "name": "expected_test_name",
+          "passed": true,
+          "detail": "expected test_name 'ELEVENLABS-036-natural-sales-scenarios::sim_036_guarantee_required_clean_disqualify'"
+        },
+        {
+          "name": "ordered_agent_responses_present",
+          "passed": true,
+          "detail": "agent_responses is not a list"
+        },
+        {
+          "name": "at_most_one_end_call",
+          "passed": true,
+          "detail": "found 1 end_call calls"
+        },
+        {
+          "name": "parse_end_call_params",
+          "passed": true,
+          "detail": "invalid end_call params"
+        },
+        {
+          "name": "built_in_system_end_call",
+          "passed": true,
+          "detail": "end_call is not type system"
+        },
+        {
+          "name": "matching_end_call_result",
+          "passed": true,
+          "detail": "expected one successful tool result for request_id 'fc_02bf296f70292cf8016a51928ec4588193be9ef4da88203264', found 1"
+        },
+        {
+          "name": "successful_end_call_result_payload",
+          "passed": true,
+          "detail": "tool result payload must be end_call_success with status success"
+        },
+        {
+          "name": "rendered_message_matches_tool_message",
+          "passed": true,
+          "detail": "rendered agent message must match tool speech \"That's right - no guarantee. I don't want to waste your time. Have a good one.\""
+        },
+        {
+          "name": "no_text_or_tool_after_end_call_result",
+          "passed": true,
+          "detail": "trace contains text or tool activity after the successful end_call result"
+        },
+        {
+          "name": "timing_spoken_at_most_once",
+          "passed": true,
+          "detail": "delivery timing appears 0 times in agent speech"
+        },
+        {
+          "name": "guarantee_requirement_found",
+          "passed": true,
+          "detail": "guarantee-only requirement not found"
+        },
+        {
+          "name": "guarantee_honesty_warning_present",
+          "passed": true,
+          "detail": "guarantee disqualification must warn that nobody can honestly guarantee those outcomes"
+        },
+        {
+          "name": "guarantee_distinguishes_foundation_from_outcomes",
+          "passed": true,
+          "detail": "guarantee disqualification must distinguish foundation/site experience from guaranteed outcomes"
+        },
+        {
+          "name": "guarantee_no_rescue_pitch_or_email_ask",
+          "passed": true,
+          "detail": "guarantee disqualification must not rescue-pitch the mockup, ask for email, or reopen the sale"
+        },
+        {
+          "name": "guarantee_clean_close_after_final_rejection",
+          "passed": true,
+          "detail": "final guarantee close must be \"That's right - no guarantee. I don't want to waste your time. Have a good one.\""
+        },
+        {
+          "name": "guarantee_end_call_present",
+          "passed": true,
+          "detail": "guarantee disqualification must end with one end_call"
+        },
+        {
+          "name": "guarantee_end_call_reason",
+          "passed": true,
+          "detail": "guarantee end_call must use the exact bad-fit completion reason"
+        }
+      ],
+      "failures": [],
+      "inconclusives": []
+    }
+  ]
+}

@@ -1,0 +1,60 @@
+{
+  "checkpoint_id": "ELEVENLABS-036-natural-sales-scenarios",
+  "captured_at_utc": "2026-07-11T00:45:06Z",
+  "status": "completed",
+  "scope": "crm-dashboard",
+  "repeat_count": 3,
+  "invocation_id": "suite_3001kx7a2q71e31vyew99gpgb8cd",
+  "run_statuses": [
+    {
+      "test_id": "test_4601ktwzq8xnfpbtry5qsepeprh3",
+      "test_name": "ELEVENLABS-036-natural-sales-scenarios::sim_036_crm_payment_capability_before_price",
+      "test_run_id": "trun_3101kx7a2q75f4nvdgv746epx9ra",
+      "status": "passed"
+    },
+    {
+      "test_id": "test_4601ktwzq8xnfpbtry5qsepeprh3",
+      "test_name": "ELEVENLABS-036-natural-sales-scenarios::sim_036_crm_payment_capability_before_price",
+      "test_run_id": "trun_6401kx7a2q76fsebnz16e0ksn5ts",
+      "status": "passed"
+    },
+    {
+      "test_id": "test_4601ktwzq8xnfpbtry5qsepeprh3",
+      "test_name": "ELEVENLABS-036-natural-sales-scenarios::sim_036_crm_payment_capability_before_price",
+      "test_run_id": "trun_5101kx7a2q77en7stap6tj6p7kcp",
+      "status": "passed"
+    },
+    {
+      "test_id": "test_9401ktwzq968e3bvmytqxg4exxc0",
+      "test_name": "ELEVENLABS-036-natural-sales-scenarios::sim_036_custom_dashboard_scoped_separately",
+      "test_run_id": "trun_4101kx7a2q78ffca0nqxmmafv5w1",
+      "status": "passed"
+    },
+    {
+      "test_id": "test_9401ktwzq968e3bvmytqxg4exxc0",
+      "test_name": "ELEVENLABS-036-natural-sales-scenarios::sim_036_custom_dashboard_scoped_separately",
+      "test_run_id": "trun_5101kx7a2q79fmy95nd3z0bf4pjj",
+      "status": "passed"
+    },
+    {
+      "test_id": "test_9401ktwzq968e3bvmytqxg4exxc0",
+      "test_name": "ELEVENLABS-036-natural-sales-scenarios::sim_036_custom_dashboard_scoped_separately",
+      "test_run_id": "trun_1701kx7a2q7ae66sd92401613nb6",
+      "status": "passed"
+    }
+  ],
+  "final_run_statuses": [
+    "passed",
+    "passed",
+    "passed",
+    "passed",
+    "passed",
+    "passed"
+  ],
+  "selected_test_count": 2,
+  "expected_terminal_run_count": 6,
+  "observed_terminal_run_count": 6,
+  "failed_terminal_run_count": 0,
+  "provider_status_code": 200,
+  "outbound_calls_made": false
+}

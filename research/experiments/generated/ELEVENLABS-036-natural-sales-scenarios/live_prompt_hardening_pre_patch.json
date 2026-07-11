@@ -1,11 +1,11 @@
 {
   "checkpoint_id": "ELEVENLABS-036-natural-sales-scenarios",
-  "captured_at_utc": "2026-07-10T23:05:56Z",
+  "captured_at_utc": "2026-07-11T00:43:34Z",
   "phase": "pre_patch",
   "summary": {
     "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
     "agent_name": "web design",
-    "prompt_sha256": "ebf01f70dbfb7a564ae2e863914574d29ed61ceb792c3474e9f58413956090e7",
+    "prompt_sha256": "d1e05852af46785673ce0ff2acdbbeb3ca04753b98d787508a928c126f188b75",
     "knowledge_base_count": 17,
     "knowledge_base_ids_in_order": [
       "S1MM5iaQDE7xHXTIw1V4",
@@ -131,10 +131,10 @@
       "mcp_server_ids": [],
       "native_mcp_server_ids": []
     },
-    "protected_state_sha256": "66ef87f5731235a6eab429e84c2d2e94925b9b503c435f1a21ee4e433060f3c9"
+    "protected_state_sha256": "7747d48be1e8c019550b56929a1ede6dc3d7d2c0d1c63b009c7a48dcd0c11282"
   },
   "protected_state": {
-    "protected_state_sha256": "66ef87f5731235a6eab429e84c2d2e94925b9b503c435f1a21ee4e433060f3c9",
+    "protected_state_sha256": "7747d48be1e8c019550b56929a1ede6dc3d7d2c0d1c63b009c7a48dcd0c11282",
     "protected_state": {
       "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
       "name": "web design",
@@ -237,12 +237,12 @@
           "max_conversation_duration_message": "",
           "text_behavior_overrides": null,
           "prompt": {
-            "llm": "gemini-2.5-flash",
-            "reasoning_effort": null,
+            "llm": "gpt-5.5",
+            "reasoning_effort": "none",
             "opener": null,
-            "thinking_budget": 0,
+            "thinking_budget": null,
             "enable_reasoning_summary": false,
-            "temperature": 0.25,
+            "temperature": 0.1,
             "max_tokens": "[REDACTED]",
             "tool_ids": [],
             "built_in_tools": {
@@ -1349,7 +1349,7 @@
       "enable_phoneme_tags": "[REDACTED]",
       "audio_filter": null
     },
-    "llm": "gemini-2.5-flash",
+    "llm": "gpt-5.5",
     "first_message": "Hi, this is Emma from Atlas Web Studio. I had {{business_name}} down as a {{business_type}} in {{city}}. Am I speaking with the owner or someone who handles the website there?",
     "dynamic_variables": {
       "dynamic_variable_placeholders": {

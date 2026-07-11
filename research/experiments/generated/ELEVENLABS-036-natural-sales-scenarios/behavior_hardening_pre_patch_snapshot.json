@@ -1,0 +1,338 @@
+{
+  "checkpoint_id": "ELEVENLABS-036-natural-sales-scenarios",
+  "captured_at_utc": "2026-07-11T00:20:46Z",
+  "phase": "pre_patch",
+  "summary": {
+    "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+    "agent_name": "web design",
+    "llm_config": {
+      "llm": "gpt-5.4-mini",
+      "temperature": 0.1,
+      "thinking_budget": null,
+      "reasoning_effort": "none"
+    },
+    "prompt_sha256": "a40cb8c8e85bdd6f2be5d109a10093d2617bc9ad17ae11fcfb24ccb44496a1a9",
+    "knowledge_base_count": 17,
+    "knowledge_base_ids_in_order": [
+      "S1MM5iaQDE7xHXTIw1V4",
+      "xdRGCUKCrMu6BV3BeBmR",
+      "WqWCqrY8Dqw0Cjt2ueX4",
+      "WDRDzZAMOGwsM7RA8OvN",
+      "DXPTUuYp2o8A4kOglSSt",
+      "yctClZpoz1i6goYAjwZt",
+      "OcvFykT5Tqp7NGueekiI",
+      "LQEos3HJ5ZzBSpF3dXR1",
+      "KsC9mjcefO9A3FM0YzQB",
+      "TQiRIK8kDTzlZLnvt2Xe",
+      "HYTfB5s1Z8LzOw8oBADt",
+      "YABkv2da2gNmPq0jcEST",
+      "bbK56uvCaErJuMTFUy22",
+      "o1RI99TXNInjNGIwTGtz",
+      "vGKk14CCzKqGW3GxgUqA",
+      "X5TwiHiuJzdRPpSzhBGn",
+      "GS5wqgcUomoJmqWCEpP7"
+    ],
+    "knowledge_base_names_in_order": [
+      "universal_sales_core_summary.md",
+      "buyer_moves.md",
+      "value_and_roi_framing.md",
+      "objection_status_quo_and_competition.md",
+      "trust_and_risk_repair.md",
+      "conversation_repair.md",
+      "next_step_policy.md",
+      "disqualification_policy.md",
+      "ethical_persuasion_boundaries.md",
+      "call_quality_rubrics.md",
+      "atlas_offer_facts.md",
+      "atlas_value_mechanisms.md",
+      "atlas_vertical_playbooks.md",
+      "atlas_objection_playbook.md",
+      "atlas_price_scope_cost_drivers.md",
+      "atlas_close_and_followup_playbook.md",
+      "atlas_output_quality_rules.md"
+    ],
+    "unrelated_tool_fingerprint": {
+      "non_end_call_legacy_tools": [],
+      "built_in_tools_excluding_end_call": {
+        "language_detection": null,
+        "transfer_to_agent": null,
+        "transfer_to_number": null,
+        "skip_turn": null,
+        "play_keypad_touch_tone": null,
+        "voicemail_detection": null,
+        "update_state": null,
+        "memory_entry_search": null,
+        "memory_entry_create": null,
+        "memory_entry_update": null,
+        "memory_entry_delete": null,
+        "agent_prompt_change": null,
+        "procedure_update": null,
+        "procedure_create": null,
+        "procedure_delete": null,
+        "transfer_to_genesys_chat": null,
+        "run_subagent": null
+      },
+      "tool_ids": [],
+      "mcp_server_ids": [],
+      "native_mcp_server_ids": []
+    },
+    "analysis_criteria_count": 30,
+    "analysis_criterion_ids_in_order": [
+      "elite_sales_value_answer",
+      "no_caveat_first_unless_guarantee",
+      "soft_agreement_not_overclosed",
+      "accepted_mockup_email_capture",
+      "email_two_step_close",
+      "gatekeeper_clean_close",
+      "seo_confident_but_safe",
+      "cost_driver_expertise",
+      "no_bracketed_internal_labels",
+      "no_repeated_value_angle",
+      "no_scripted_example_echo",
+      "no_cta_fatigue",
+      "process_risk_before_email_capture",
+      "no_follow_up_leakage",
+      "concrete_mechanism_headline_value",
+      "guarantee_escalation_correct",
+      "disqualification_lock_respected",
+      "vertical_action_fidelity",
+      "known_context_not_rediscovered",
+      "normalized_email_extracted",
+      "guarantee_lock_first_turn",
+      "no_runtime_tone_tags",
+      "delivery_timing_end_of_day",
+      "email_reply_path_mentioned_when_closing",
+      "email_confirmation_requires_explicit_yes",
+      "terminal_close_no_loop",
+      "realistic_test_contact_values",
+      "natural_spoken_quality",
+      "stop_request_respected",
+      "no_fake_claims"
+    ],
+    "procedures_inactive": true
+  },
+  "kb_selection": {
+    "universal_sales_core_summary.md": {
+      "chosen_id": "S1MM5iaQDE7xHXTIw1V4",
+      "chosen_type": "file",
+      "candidate_count": 1,
+      "candidate_ids": [
+        "S1MM5iaQDE7xHXTIw1V4"
+      ],
+      "metadata": {
+        "created_at_unix_secs": 1781229374,
+        "last_updated_at_unix_secs": 1781229374,
+        "size_bytes": 3308
+      }
+    },
+    "buyer_moves.md": {
+      "chosen_id": "xdRGCUKCrMu6BV3BeBmR",
+      "chosen_type": "file",
+      "candidate_count": 1,
+      "candidate_ids": [
+        "xdRGCUKCrMu6BV3BeBmR"
+      ],
+      "metadata": {
+        "created_at_unix_secs": 1781229376,
+        "last_updated_at_unix_secs": 1781229376,
+        "size_bytes": 1513
+      }
+    },
+    "value_and_roi_framing.md": {
+      "chosen_id": "WqWCqrY8Dqw0Cjt2ueX4",
+      "chosen_type": "file",
+      "candidate_count": 1,
+      "candidate_ids": [
+        "WqWCqrY8Dqw0Cjt2ueX4"
+      ],
+      "metadata": {
+        "created_at_unix_secs": 1781229377,
+        "last_updated_at_unix_secs": 1781229377,
+        "size_bytes": 1656
+      }
+    },
+    "objection_status_quo_and_competition.md": {
+      "chosen_id": "WDRDzZAMOGwsM7RA8OvN",
+      "chosen_type": "file",
+      "candidate_count": 1,
+      "candidate_ids": [
+        "WDRDzZAMOGwsM7RA8OvN"
+      ],
+      "metadata": {
+        "created_at_unix_secs": 1781229379,
+        "last_updated_at_unix_secs": 1781229379,
+        "size_bytes": 1350
+      }
+    },
+    "trust_and_risk_repair.md": {
+      "chosen_id": "DXPTUuYp2o8A4kOglSSt",
+      "chosen_type": "file",
+      "candidate_count": 1,
+      "candidate_ids": [
+        "DXPTUuYp2o8A4kOglSSt"
+      ],
+      "metadata": {
+        "created_at_unix_secs": 1781229381,
+        "last_updated_at_unix_secs": 1781229381,
+        "size_bytes": 1364
+      }
+    },
+    "conversation_repair.md": {
+      "chosen_id": "yctClZpoz1i6goYAjwZt",
+      "chosen_type": "file",
+      "candidate_count": 1,
+      "candidate_ids": [
+        "yctClZpoz1i6goYAjwZt"
+      ],
+      "metadata": {
+        "created_at_unix_secs": 1781229382,
+        "last_updated_at_unix_secs": 1781229382,
+        "size_bytes": 1280
+      }
+    },
+    "next_step_policy.md": {
+      "chosen_id": "OcvFykT5Tqp7NGueekiI",
+      "chosen_type": "file",
+      "candidate_count": 1,
+      "candidate_ids": [
+        "OcvFykT5Tqp7NGueekiI"
+      ],
+      "metadata": {
+        "created_at_unix_secs": 1781229383,
+        "last_updated_at_unix_secs": 1781229383,
+        "size_bytes": 1444
+      }
+    },
+    "disqualification_policy.md": {
+      "chosen_id": "LQEos3HJ5ZzBSpF3dXR1",
+      "chosen_type": "file",
+      "candidate_count": 1,
+      "candidate_ids": [
+        "LQEos3HJ5ZzBSpF3dXR1"
+      ],
+      "metadata": {
+        "created_at_unix_secs": 1781229385,
+        "last_updated_at_unix_secs": 1781229385,
+        "size_bytes": 1356
+      }
+    },
+    "ethical_persuasion_boundaries.md": {
+      "chosen_id": "KsC9mjcefO9A3FM0YzQB",
+      "chosen_type": "file",
+      "candidate_count": 1,
+      "candidate_ids": [
+        "KsC9mjcefO9A3FM0YzQB"
+      ],
+      "metadata": {
+        "created_at_unix_secs": 1781229386,
+        "last_updated_at_unix_secs": 1781229386,
+        "size_bytes": 1359
+      }
+    },
+    "call_quality_rubrics.md": {
+      "chosen_id": "TQiRIK8kDTzlZLnvt2Xe",
+      "chosen_type": "file",
+      "candidate_count": 1,
+      "candidate_ids": [
+        "TQiRIK8kDTzlZLnvt2Xe"
+      ],
+      "metadata": {
+        "created_at_unix_secs": 1781229388,
+        "last_updated_at_unix_secs": 1781229388,
+        "size_bytes": 1278
+      }
+    },
+    "atlas_offer_facts.md": {
+      "chosen_id": "HYTfB5s1Z8LzOw8oBADt",
+      "chosen_type": "file",
+      "candidate_count": 1,
+      "candidate_ids": [
+        "HYTfB5s1Z8LzOw8oBADt"
+      ],
+      "metadata": {
+        "created_at_unix_secs": 1781229390,
+        "last_updated_at_unix_secs": 1783680583,
+        "size_bytes": 11915
+      }
+    },
+    "atlas_value_mechanisms.md": {
+      "chosen_id": "YABkv2da2gNmPq0jcEST",
+      "chosen_type": "file",
+      "candidate_count": 1,
+      "candidate_ids": [
+        "YABkv2da2gNmPq0jcEST"
+      ],
+      "metadata": {
+        "created_at_unix_secs": 1781229391,
+        "last_updated_at_unix_secs": 1781229391,
+        "size_bytes": 3283
+      }
+    },
+    "atlas_vertical_playbooks.md": {
+      "chosen_id": "bbK56uvCaErJuMTFUy22",
+      "chosen_type": "file",
+      "candidate_count": 1,
+      "candidate_ids": [
+        "bbK56uvCaErJuMTFUy22"
+      ],
+      "metadata": {
+        "created_at_unix_secs": 1781229393,
+        "last_updated_at_unix_secs": 1781229393,
+        "size_bytes": 5286
+      }
+    },
+    "atlas_objection_playbook.md": {
+      "chosen_id": "o1RI99TXNInjNGIwTGtz",
+      "chosen_type": "file",
+      "candidate_count": 1,
+      "candidate_ids": [
+        "o1RI99TXNInjNGIwTGtz"
+      ],
+      "metadata": {
+        "created_at_unix_secs": 1781229394,
+        "last_updated_at_unix_secs": 1781229394,
+        "size_bytes": 7461
+      }
+    },
+    "atlas_price_scope_cost_drivers.md": {
+      "chosen_id": "vGKk14CCzKqGW3GxgUqA",
+      "chosen_type": "file",
+      "candidate_count": 1,
+      "candidate_ids": [
+        "vGKk14CCzKqGW3GxgUqA"
+      ],
+      "metadata": {
+        "created_at_unix_secs": 1781229396,
+        "last_updated_at_unix_secs": 1783724067,
+        "size_bytes": 17687
+      }
+    },
+    "atlas_close_and_followup_playbook.md": {
+      "chosen_id": "X5TwiHiuJzdRPpSzhBGn",
+      "chosen_type": "file",
+      "candidate_count": 1,
+      "candidate_ids": [
+        "X5TwiHiuJzdRPpSzhBGn"
+      ],
+      "metadata": {
+        "created_at_unix_secs": 1781229397,
+        "last_updated_at_unix_secs": 1783680580,
+        "size_bytes": 20844
+      }
+    },
+    "atlas_output_quality_rules.md": {
+      "chosen_id": "GS5wqgcUomoJmqWCEpP7",
+      "chosen_type": "file",
+      "candidate_count": 1,
+      "candidate_ids": [
+        "GS5wqgcUomoJmqWCEpP7"
+      ],
+      "metadata": {
+        "created_at_unix_secs": 1781229399,
+        "last_updated_at_unix_secs": 1783723155,
+        "size_bytes": 17846
+      }
+    }
+  },
+  "outbound_calls_made": false
+}

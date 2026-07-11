@@ -73,3 +73,66 @@ Key evidence:
 - `independent_review_final.json`
 
 No production-readiness claim is made.
+
+## 2026-07-11 Final GPT-5.5 Product Hardening Result
+
+This section supersedes the earlier 9/10 blocked result above. The live Atlas product was changed; the ElevenLabs test definitions and Analysis criteria were not changed.
+
+Final live configuration:
+
+- Agent: `agent_7801kt0g32zxf4f8x5zkykj7syty` (`web design`)
+- LLM: `gpt-5.5`
+- Temperature: `0.1`
+- Reasoning effort: `none`
+- Provider-normalized thinking budget: `null`
+- Prompt: exact repo match, 1,900 words
+- Active KB: 17 unique documents in manifest order
+- Analysis: 30 criteria in the original ID order
+- Tools: one built-in `end_call`, zero custom/server duplicates, unrelated fingerprint preserved
+- Procedures: inactive
+
+Product changes:
+
+- clarified CRM whole-project versus connection-only pricing;
+- constrained the free visual to one static homepage concept, never a multi-screen flow;
+- blocked calls to action while capability, scope, proof, or price follow-ups remain unresolved;
+- separated simple appointment requests from live scheduling before discussing price;
+- prohibited invented numeric portal minimums before scope;
+- retained the 039 atomic terminal behavior for hard stops, timing deduplication, and gatekeeper outcomes.
+
+Final unchanged 036 invocation: `suite_2901kx7a8pkjfyw95retr4j4g5eg`.
+
+- ElevenLabs evaluator: 10/10 passed.
+- Independent deterministic trace evaluation: 10/10 passed, complete coverage, no inconclusives.
+- Final 039 regression invocation: `suite_1701kx7aeyhce7rsnpeajrnh8h2d`.
+- 039 ElevenLabs evaluator: 4/4 passed.
+- 039 independent deterministic trace evaluation: 4/4 passed.
+
+Additional repeated stability evidence:
+
+- Scheduling comparison on GPT-5.4: `suite_5001kx79b4hpe24rvmca9vh7zsh3`, 3/3 provider and independent pass.
+- Visual-only scope on retained GPT-5.5: `suite_8001kx79rrmrexstrs3fvqn0qs7k`, 3/3 provider and independent pass.
+- CRM plus dashboard on retained GPT-5.5: `suite_3001kx7a2q71e31vyew99gpgb8cd`, 6/6 provider and independent pass.
+
+Final verification:
+
+- Both independent trace validators exited 0.
+- Repo validators 039, 038, 037, 036, 034, 033, 032, 031, and 030 exited 0.
+- `git diff --check` exited 0.
+- No outbound calls were placed.
+- Simulations were run only inside ElevenLabs after explicit user authorization.
+
+This supports broad simulation-backed live configuration readiness for the covered 036 and 039 behaviors. It does not prove PSTN audio, latency, interruption, ASR, or real-buyer performance because no outbound call was placed.
+
+Final evidence:
+
+- `llm_gpt55_behavior4_full1_capture.json`
+- `llm_gpt55_behavior4_full1_independent.json`
+- `gpt55_final_readback_run_plan.json`
+- `gpt55_final_live_readback.json`
+- `../ELEVENLABS-039-end-call-edge-case-hardening/gpt55_regression_capture.json`
+- `../ELEVENLABS-039-end-call-edge-case-hardening/gpt55_regression_independent.json`
+
+Failed non-provider action:
+
+- The delegated GPT-5.4 Mini reviewer could not initialize because the local WASM agent package `@ruvector/rvagent-wasm` was missing. The orchestration path was abandoned and all conclusions were independently verified in the main task.

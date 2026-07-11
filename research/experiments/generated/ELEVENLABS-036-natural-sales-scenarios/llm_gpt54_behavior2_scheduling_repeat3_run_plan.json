@@ -1,15 +1,12 @@
 {
   "checkpoint_id": "ELEVENLABS-036-natural-sales-scenarios",
-  "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
-  "authorized": true,
-  "writes": [
-    "patch_agent_prompt_only"
-  ],
-  "repo_prompt_sha256": "02531e537cf51e970caf3e168fe87395a246e8945e7470fd70c913a6fd7134af",
-  "preflight": {
+  "captured_at_utc": "2026-07-11T00:30:52Z",
+  "scope": "scheduling",
+  "repeat_count": 3,
+  "agent": {
     "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
     "agent_name": "web design",
-    "prompt_sha256": "d1e05852af46785673ce0ff2acdbbeb3ca04753b98d787508a928c126f188b75",
+    "prompt_sha256": "289327ede7f5c3472a06f0ef2ff72ba0b1f0be0c9ec02eda7c57fe5f7a2b77ee",
     "knowledge_base_count": 17,
     "knowledge_base_ids_in_order": [
       "S1MM5iaQDE7xHXTIw1V4",
@@ -135,19 +132,25 @@
       "mcp_server_ids": [],
       "native_mcp_server_ids": []
     },
-    "protected_state_sha256": "7747d48be1e8c019550b56929a1ede6dc3d7d2c0d1c63b009c7a48dcd0c11282"
+    "protected_state_sha256": "674716ed14d2fd025689c79b044c7fa83cb19dd4db6675ae7712bc34c01b6de0"
   },
-  "forbidden_operations": [
-    "knowledge_base_updates",
-    "test_updates",
-    "Analysis_updates",
-    "tool_updates",
-    "voice_updates",
-    "LLM_updates",
-    "first_message_updates",
-    "dynamic_variable_updates",
-    "phone_updates",
-    "Procedures_updates",
-    "outbound_calls"
-  ]
+  "test_ids": {
+    "sim_036_scheduling_simple_request_vs_live_integration": "test_4601ktwzq8nyfcatm8a6mn58y7x6"
+  },
+  "selected_test_count": 1,
+  "expected_terminal_run_count": 3,
+  "live_test_semantics_match_repo": true,
+  "request": {
+    "method": "POST",
+    "endpoint": "/v1/convai/agents/agent_7801kt0g32zxf4f8x5zkykj7syty/run-tests",
+    "body": {
+      "tests": [
+        {
+          "test_id": "test_4601ktwzq8nyfcatm8a6mn58y7x6"
+        }
+      ],
+      "repeat_count": 3
+    }
+  },
+  "outbound_calls_made": false
 }

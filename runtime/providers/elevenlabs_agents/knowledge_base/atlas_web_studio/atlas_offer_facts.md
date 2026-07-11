@@ -8,6 +8,7 @@ Owns: free homepage mockup, what it is / is not, no obligation, send/callback ca
 - The mockup is a first look at a possible homepage direction.
 - The goal is to let the buyer judge usefulness before paying.
 - The free mockup is visual, not a live website.
+- It is one static homepage concept, not a multi-screen flow, step-by-step booking journey, or set of feature screens.
 - It can show where advanced features would sit: client-login button, booking path, quote request section, portal teaser, appointment request placement, dashboard entry point, calendar CTA, payment/ordering CTA.
 - It does not include working login, database, CRM/payment integration, live calendar, portal, dashboard, booking engine, ecommerce, or other live functionality.
 
@@ -20,6 +21,7 @@ It is:
 - a low-risk proof step
 - a way to decide whether a paid website conversation is worth having
 - a visual representation of homepage direction and feature placement
+- one static homepage concept rather than screens or steps behind each feature
 
 It is not:
 

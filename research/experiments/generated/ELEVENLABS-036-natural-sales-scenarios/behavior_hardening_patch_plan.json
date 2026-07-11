@@ -1,0 +1,20 @@
+{
+  "checkpoint_id": "ELEVENLABS-036-natural-sales-scenarios",
+  "authorized": true,
+  "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+  "writes": [
+    "update_kb::atlas_offer_facts.md",
+    "update_kb::atlas_output_quality_rules.md",
+    "update_kb::atlas_price_scope_cost_drivers.md",
+    "patch_agent_prompt_only"
+  ],
+  "modified_behavior": [
+    "CRM whole-project versus connection-only clarification",
+    "single-homepage visual mockup boundary"
+  ],
+  "tests_or_criteria_changed": false,
+  "analysis_changed": false,
+  "procedures_changed": false,
+  "knowledge_base_attachments_changed": false,
+  "outbound_calls_made": false
+}

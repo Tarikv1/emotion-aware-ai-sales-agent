@@ -1,0 +1,32 @@
+{
+  "checkpoint_id": "ELEVENLABS-036-natural-sales-scenarios",
+  "status": "passed",
+  "provider_writes_made": true,
+  "kb_updates": [
+    {
+      "name": "atlas_offer_facts.md",
+      "document_id": "HYTfB5s1Z8LzOw8oBADt",
+      "status_code": 200
+    },
+    {
+      "name": "atlas_output_quality_rules.md",
+      "document_id": "GS5wqgcUomoJmqWCEpP7",
+      "status_code": 200
+    },
+    {
+      "name": "atlas_price_scope_cost_drivers.md",
+      "document_id": "vGKk14CCzKqGW3GxgUqA",
+      "status_code": 200
+    }
+  ],
+  "prompt_status_code": 200,
+  "prompt_exact": true,
+  "protected_state_preserved": true,
+  "unrelated_tool_fingerprint_preserved": true,
+  "llm_config_preserved": true,
+  "knowledge_base_order_preserved": true,
+  "analysis_criteria_preserved": true,
+  "procedures_inactive": true,
+  "tests_or_criteria_changed": false,
+  "outbound_calls_made": false
+}

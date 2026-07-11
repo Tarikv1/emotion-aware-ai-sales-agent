@@ -1,0 +1,50 @@
+{
+  "checkpoint_id": "ELEVENLABS-036-natural-sales-scenarios",
+  "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+  "agent_name": "web design",
+  "authorized": true,
+  "hypothesis": "GPT-5.4 at low temperature improves instruction routing and conversation-state tracking where GPT-5.4 Mini repeated exact output locks.",
+  "fixed_cases": "existing live ELEVENLABS-036 tests and criteria",
+  "baseline_llm_config": {
+    "llm": "gpt-5.4-mini",
+    "temperature": 0.1,
+    "thinking_budget": null,
+    "reasoning_effort": "none"
+  },
+  "target_llm_config": {
+    "llm": "gpt-5.4",
+    "temperature": 0.1,
+    "thinking_budget": 0,
+    "reasoning_effort": "none"
+  },
+  "target_model_capabilities": {
+    "llm": "gpt-5.4",
+    "is_checkpoint": false,
+    "max_tokens_limit": "[REDACTED]",
+    "max_context_limit": 272000,
+    "supports_image_input": true,
+    "supports_document_input": true,
+    "supports_parallel_tool_calls": true,
+    "available_reasoning_efforts": [
+      "none",
+      "low",
+      "medium",
+      "high",
+      "xhigh"
+    ],
+    "deprecation_info": null,
+    "regional_processing_surcharge": null
+  },
+  "editable_surface": "conversation_config.agent.prompt LLM fields only",
+  "forbidden_changes": [
+    "test definitions or criteria",
+    "prompt text",
+    "knowledge base attachments or order",
+    "tools or tool ids",
+    "voice or first message",
+    "dynamic variables or phone configuration",
+    "Analysis criteria",
+    "Procedures",
+    "outbound calls"
+  ]
+}

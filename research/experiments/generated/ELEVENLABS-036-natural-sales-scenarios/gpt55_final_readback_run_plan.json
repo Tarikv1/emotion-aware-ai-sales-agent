@@ -1,15 +1,12 @@
 {
   "checkpoint_id": "ELEVENLABS-036-natural-sales-scenarios",
-  "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
-  "authorized": true,
-  "writes": [
-    "patch_agent_prompt_only"
-  ],
-  "repo_prompt_sha256": "02531e537cf51e970caf3e168fe87395a246e8945e7470fd70c913a6fd7134af",
-  "preflight": {
+  "captured_at_utc": "2026-07-11T00:53:19Z",
+  "scope": "full",
+  "repeat_count": 1,
+  "agent": {
     "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
     "agent_name": "web design",
-    "prompt_sha256": "d1e05852af46785673ce0ff2acdbbeb3ca04753b98d787508a928c126f188b75",
+    "prompt_sha256": "02531e537cf51e970caf3e168fe87395a246e8945e7470fd70c913a6fd7134af",
     "knowledge_base_count": 17,
     "knowledge_base_ids_in_order": [
       "S1MM5iaQDE7xHXTIw1V4",
@@ -137,17 +134,59 @@
     },
     "protected_state_sha256": "7747d48be1e8c019550b56929a1ede6dc3d7d2c0d1c63b009c7a48dcd0c11282"
   },
-  "forbidden_operations": [
-    "knowledge_base_updates",
-    "test_updates",
-    "Analysis_updates",
-    "tool_updates",
-    "voice_updates",
-    "LLM_updates",
-    "first_message_updates",
-    "dynamic_variable_updates",
-    "phone_updates",
-    "Procedures_updates",
-    "outbound_calls"
-  ]
+  "test_ids": {
+    "sim_036_email_confirmation_spoken_email_two_step": "[REDACTED]",
+    "sim_036_email_plus_free_question_confirmation": "[REDACTED]",
+    "sim_036_future_price_ballpark_no_overpricing": "test_7101ktwzq8e5edm9bkmwe83tvcsw",
+    "sim_036_scheduling_simple_request_vs_live_integration": "test_4601ktwzq8nyfcatm8a6mn58y7x6",
+    "sim_036_crm_payment_capability_before_price": "test_4601ktwzq8xnfpbtry5qsepeprh3",
+    "sim_036_custom_dashboard_scoped_separately": "test_9401ktwzq968e3bvmytqxg4exxc0",
+    "sim_036_free_mockup_visual_not_working_site": "test_3301ktwzq9cnfzsa5dfjd9q61gq5",
+    "sim_036_next_step_questions_no_cta_fatigue": "test_2001ktwzq9kbf92vdfttrgkvnr1x",
+    "sim_036_guarantee_required_clean_disqualify": "test_7401ktwzq9txfkhs6ytstggj8k9y",
+    "sim_036_goodbye_take_care_no_loop": "test_1901ktwzqa28f0mbk4rrt106d74d"
+  },
+  "selected_test_count": 10,
+  "expected_terminal_run_count": 10,
+  "live_test_semantics_match_repo": true,
+  "request": {
+    "method": "POST",
+    "endpoint": "/v1/convai/agents/agent_7801kt0g32zxf4f8x5zkykj7syty/run-tests",
+    "body": {
+      "tests": [
+        {
+          "test_id": "test_4201ktwzq7wpf589w4ypqbwwv6xk"
+        },
+        {
+          "test_id": "test_1301ktwzq879ex099m903r4f0gvt"
+        },
+        {
+          "test_id": "test_7101ktwzq8e5edm9bkmwe83tvcsw"
+        },
+        {
+          "test_id": "test_4601ktwzq8nyfcatm8a6mn58y7x6"
+        },
+        {
+          "test_id": "test_4601ktwzq8xnfpbtry5qsepeprh3"
+        },
+        {
+          "test_id": "test_9401ktwzq968e3bvmytqxg4exxc0"
+        },
+        {
+          "test_id": "test_3301ktwzq9cnfzsa5dfjd9q61gq5"
+        },
+        {
+          "test_id": "test_2001ktwzq9kbf92vdfttrgkvnr1x"
+        },
+        {
+          "test_id": "test_7401ktwzq9txfkhs6ytstggj8k9y"
+        },
+        {
+          "test_id": "test_1901ktwzqa28f0mbk4rrt106d74d"
+        }
+      ],
+      "repeat_count": 1
+    }
+  },
+  "outbound_calls_made": false
 }
