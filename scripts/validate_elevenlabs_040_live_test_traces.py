@@ -194,6 +194,7 @@ class Checks:
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Validate sanitized ELEVENLABS-040 live test traces without trusting provider labels.")
     parser.add_argument("--input", type=Path, help="Sanitized capture JSON path")
+    parser.add_argument("--mapping", type=Path, help="Optional live_test_mapping.json path. Defaults to input sibling when present.")
     parser.add_argument("--output", type=Path, help="Optional JSON path for the independent validation summary")
     parser.add_argument("--self-test", action="store_true", help="Run built-in validator self-tests")
     args = parser.parse_args()
@@ -223,6 +224,27 @@ def capture_payload(document: dict[str, Any]) -> dict[str, Any]:
         if stored_hash != actual_hash:
             raise ValueError("payload_sha256 does not match the sanitized payload")
     return payload
+
+
+def provider_test_id_mapping(document: dict[str, Any] | None) -> dict[str, str]:
+    if not isinstance(document, dict):
+        return {}
+    tests = document.get("tests")
+    mapping: dict[str, str] = {}
+    if isinstance(tests, list):
+        for raw in tests:
+            if not isinstance(raw, dict):
+                continue
+            source_id = raw.get("source_test_id") or raw.get("repo_test_id") or raw.get("test_id")
+            provider_id = raw.get("provider_test_id")
+            if isinstance(source_id, str) and isinstance(provider_id, str) and source_id and provider_id:
+                mapping[source_id] = provider_id
+    raw_provider_ids = document.get("provider_test_ids")
+    if isinstance(raw_provider_ids, dict):
+        for source_id, provider_id in raw_provider_ids.items():
+            if isinstance(source_id, str) and isinstance(provider_id, str) and source_id and provider_id:
+                mapping[source_id] = provider_id
+    return mapping
 
 
 def canonical_text(value: Any) -> str:
@@ -495,7 +517,7 @@ def scenario_care_plan(checks: Checks, events: list[dict[str, Any]], messages: l
     checks.check("care_plan_scope_present", any(CARE_SCOPE_RE.search(message) for message in after_messages), "care-plan response must mention the ongoing scope")
 
 
-def validate_run(run: dict[str, Any]) -> dict[str, Any]:
+def validate_run(run: dict[str, Any], *, expected_provider_test_id: str | None = None) -> dict[str, Any]:
     test_id = str(run.get("test_id", "")).strip()
     expected = EXPECTED_TESTS.get(test_id)
     checks = Checks()
@@ -515,7 +537,11 @@ def validate_run(run: dict[str, Any]) -> dict[str, Any]:
     checks.check("expected_test_name", run.get("test_name") == expected["name"], f"expected test_name {expected['name']!r}")
     provider_test_id = run.get("provider_test_id")
     if provider_test_id is not None:
-        checks.check("provider_test_id_matches", str(provider_test_id) == test_id, f"provider_test_id must match {test_id!r}")
+        checks.check(
+            "provider_test_id_reconciled",
+            expected_provider_test_id is not None and str(provider_test_id) == expected_provider_test_id,
+            f"provider_test_id must reconcile through live_test_mapping for {test_id!r}",
+        )
 
     events = extract_dialogue(run, checks)
     record_common_message_rules(checks, events)
@@ -559,9 +585,11 @@ def validate_run(run: dict[str, Any]) -> dict[str, Any]:
     }
 
 
-def validate_payload(payload: dict[str, Any]) -> dict[str, Any]:
+def validate_payload(payload: dict[str, Any], mapping: dict[str, str] | None = None) -> dict[str, Any]:
     global_failures: list[str] = []
     tests: list[dict[str, Any]] = []
+    provider_mapping = dict(mapping or {})
+    provider_mapping.update(provider_test_id_mapping(payload.get("live_test_mapping") if isinstance(payload.get("live_test_mapping"), dict) else None))
 
     if payload.get("agent_id") != EXPECTED_AGENT_ID:
         global_failures.append(f"agent_id must be {EXPECTED_AGENT_ID}")
@@ -583,7 +611,10 @@ def validate_payload(payload: dict[str, Any]) -> dict[str, Any]:
     if len(runs) != len(EXPECTED_TEST_ORDER):
         global_failures.append(f"expected exactly {len(EXPECTED_TEST_ORDER)} test runs, found {len(runs)}")
 
-    tests = [validate_run(run) for run in runs]
+    tests = [
+        validate_run(run, expected_provider_test_id=provider_mapping.get(str(run.get("test_id", "")).strip()))
+        for run in runs
+    ]
     independent_status = "pass" if not global_failures and all(test["independent_status"] == "pass" for test in tests) else "fail"
     return {
         "checkpoint_id": CHECKPOINT_ID,
@@ -745,6 +776,24 @@ def run_self_test() -> int:
     ):
         assert_true(test_status(valid_result, focused_valid) == "pass", f"{focused_valid} valid fixture should pass")
 
+    raw_provider_id_runs = valid_runs()
+    provider_mapping = []
+    for index, run in enumerate(raw_provider_id_runs, start=1):
+        source_id = str(run["test_id"])
+        provider_id = f"test_provider_040_{index:02d}"
+        run["provider_test_id"] = provider_id
+        provider_mapping.append(
+            {
+                "source_test_id": source_id,
+                "provider_test_id": provider_id,
+                "provider_test_name": f"{CHECKPOINT_ID}::{source_id}",
+            }
+        )
+    raw_provider_id_payload = make_payload(raw_provider_id_runs)
+    raw_provider_id_payload["live_test_mapping"] = {"tests": provider_mapping}
+    raw_provider_id_result = validate_payload(raw_provider_id_payload)
+    assert_true(raw_provider_id_result["independent_status"] == "pass", "raw provider test_* IDs should reconcile through live_test_mapping")
+
     normalized_range_valid = valid_runs()
     normalized_range_valid[2]["agent_responses"] = [
         make_event("user", "What does a basic three-to-five-page local-business site cost?"),
@@ -897,7 +946,15 @@ def main() -> int:
 
     try:
         payload = capture_payload(read_json(args.input))
-        summary = validate_payload(payload)
+        mapping_document: dict[str, Any] | None = None
+        mapping_path = args.mapping
+        if mapping_path is None and args.input is not None:
+            sibling = args.input.parent / "live_test_mapping.json"
+            if sibling.is_file():
+                mapping_path = sibling
+        if mapping_path is not None:
+            mapping_document = read_json(mapping_path)
+        summary = validate_payload(payload, provider_test_id_mapping(mapping_document))
     except ValueError as exc:
         summary = {
             "checkpoint_id": CHECKPOINT_ID,
