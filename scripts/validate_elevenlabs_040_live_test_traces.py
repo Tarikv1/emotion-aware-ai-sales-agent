@@ -67,8 +67,18 @@ UNSUPPORTED_INCLUDED_RE = re.compile(
 EXISTING_SITE_RE = re.compile(r"\b(?:existing site|existing website|compatible site|compatible website|on an existing site|current site)\b", re.IGNORECASE)
 ADD_ON_RE = re.compile(r"\b(?:add(?:ing|ition)?|add-on|on an existing site)\b", re.IGNORECASE)
 WHOLE_SITE_RE = re.compile(r"\b(?:new site|new website|whole site|whole project|full site|package)\b", re.IGNORECASE)
-BUDGET_FIT_POSITIVE_RE = re.compile(r"\b(?:yes|yeah|it can fit|can fit|does fit|fits|should fit)\b", re.IGNORECASE)
-BUDGET_FIT_NEGATIVE_RE = re.compile(r"\b(?:no|does not fit|doesn't fit|won't fit|cannot fit|can't fit|is unrelated)\b", re.IGNORECASE)
+BUDGET_FIT_POSITIVE_RE = re.compile(
+    r"(?:\byes\b.*\bfit\b|\b(?:can|does|should)\s+fit\b|\bfit(?:s)?\s+within\s+budget\b|\bwithin\s+(?:the\s+)?(?:budget|range)\b|\bstays\s+in\s+the\s+.*range\b)",
+    re.IGNORECASE,
+)
+BUDGET_FIT_NEGATIVE_RE = re.compile(
+    r"(?:\bno\b|\bdo(?:es)?\s+not\s+fit\b|\bdoesn't\s+fit\b|\bwon't\s+fit\b|\bwill\s+not\s+fit\b|\bcannot\s+fit\b|\bcan't\s+fit\b|\bdon't\s+think\b|\bdo\s+not\s+think\b|\bnot\s+sure\b|\bunsure\b|\bprobably\s+not\b|\bmaybe\s+not\b|\bnot\s+within\s+budget\b|\bover\s+budget\b|\bout(?:side)?\s+of?\s*budget\b|\boutside\s+budget\b|\bis\s+unrelated\b)",
+    re.IGNORECASE,
+)
+NEGATED_WHOLE_SITE_RE = re.compile(
+    r"\b(?:not|is not|isn't|isnt|no)\s+(?:a\s+)?(?:new site(?:\s+package)?|new website(?:\s+package)?|whole[- ]site(?:\s+quote)?|whole[- ]project(?:\s+quote)?|full site(?:\s+quote)?|package(?:\s+quote)?)\b",
+    re.IGNORECASE,
+)
 
 def money_range_pattern(start: str, end: str, *, plus_suffix: bool = False) -> re.Pattern[str]:
     suffix = r"\+(?=\D|$)" if plus_suffix else r"\b"
@@ -245,6 +255,15 @@ def money_match_labels(message: str) -> list[tuple[str, set[str]]]:
     return [(match.group(0), monetary_labels_for_match(match.group(0))) for match in PAID_PRICE_RE.finditer(message)]
 
 
+def contains_affirmative_budget_fit(text: str) -> bool:
+    return BUDGET_FIT_POSITIVE_RE.search(text) is not None and BUDGET_FIT_NEGATIVE_RE.search(text) is None
+
+
+def contains_positive_whole_site_framing(text: str) -> bool:
+    stripped = NEGATED_WHOLE_SITE_RE.sub("", text)
+    return WHOLE_SITE_RE.search(stripped) is not None
+
+
 def unique_labels_seen(messages: list[str]) -> set[str]:
     labels: set[str] = set()
     for message in messages:
@@ -368,7 +387,7 @@ def scenario_existing_request_form(checks: Checks, messages: list[str]) -> None:
     combined = " ".join(messages)
     checks.check(
         "existing_site_add_on_classification",
-        EXISTING_SITE_RE.search(combined) is not None and ADD_ON_RE.search(combined) is not None and WHOLE_SITE_RE.search(combined) is None,
+        EXISTING_SITE_RE.search(combined) is not None and ADD_ON_RE.search(combined) is not None and not contains_positive_whole_site_framing(combined),
         "existing-site request-form answer must frame the work as a compatible existing-site add-on, not a new-site/package quote",
     )
 
@@ -434,15 +453,15 @@ def scenario_budget_fit(checks: Checks, messages: list[str]) -> None:
     combined = " ".join(messages)
     checks.check(
         "budget_fit_affirmative_answer_required",
-        BUDGET_FIT_POSITIVE_RE.search(combined) is not None and BUDGET_FIT_NEGATIVE_RE.search(combined) is None,
+        contains_affirmative_budget_fit(combined),
         "budget-fit scenario must give an affirmative fit answer for a $1,200 budget",
     )
     checks.check(
         "budget_fit_semantics",
         re.search(r"\$\s?1,200\b", combined) is not None
         and re.search(r"\$\s?900\s?(?:-|to)\s?\$?\s?1,500\b", combined, re.IGNORECASE) is not None
-        and re.search(r"\b(?:fit|fits|within|in the .* range|in that range|stays in)\b", combined, re.IGNORECASE) is not None
-        and "unrelated" not in combined.lower(),
+        and contains_affirmative_budget_fit(combined)
+        and re.search(r"\b(?:within|in the .* range|in that range|stays in|fit|fits)\b", combined, re.IGNORECASE) is not None,
         "budget-fit scenario must relate the buyer's $1,200 budget positively to the $900-$1,500 range",
     )
 
@@ -786,6 +805,16 @@ def run_self_test() -> int:
     assert_true("budget_fit_affirmative_answer_required" in budget_negative_failures, "must reject negative budget-fit polarity")
     assert_true("budget_fit_semantics" in budget_negative_failures, "must reject broken budget-fit semantics")
 
+    budget_negated_bypass_invalid = valid_runs()
+    budget_negated_bypass_invalid[8]["agent_responses"] = [
+        make_event("user", "Our budget is $1,200. Does that fit a basic site?"),
+        make_event("agent", "I don't think $1,200 fits a basic site; the $900-$1,500 band only works if scope changes."),
+    ]
+    budget_negated_bypass_result = validate_payload(make_payload(budget_negated_bypass_invalid))
+    budget_negated_bypass_failures = failure_names(budget_negated_bypass_result, EXPECTED_TEST_ORDER[8])
+    assert_true("budget_fit_affirmative_answer_required" in budget_negated_bypass_failures, "must reject negated budget-fit phrasing like don't think it fits")
+    assert_true("budget_fit_semantics" in budget_negated_bypass_failures, "must reject negated budget-fit semantics like don't think it fits")
+
     existing_frame_invalid = valid_runs()
     existing_frame_invalid[3]["agent_responses"] = [
         make_event("user", "We already have a compatible site. What does it cost to add a simple appointment-request form?"),
@@ -793,6 +822,22 @@ def run_self_test() -> int:
     ]
     existing_frame_result = validate_payload(make_payload(existing_frame_invalid))
     assert_true("existing_site_add_on_classification" in failure_names(existing_frame_result, EXPECTED_TEST_ORDER[3]), "must reject wrong existing-site/add-on framing")
+
+    existing_negated_clarification_valid = valid_runs()
+    existing_negated_clarification_valid[3]["agent_responses"] = [
+        make_event("user", "We already have a compatible site. What does it cost to add a simple appointment-request form?"),
+        make_event("agent", "On your existing site, adding the form is usually $100-$250. This is not a new site package."),
+    ]
+    existing_negated_clarification_result = validate_payload(make_payload(existing_negated_clarification_valid))
+    assert_true(test_status(existing_negated_clarification_result, EXPECTED_TEST_ORDER[3]) == "pass", "negated whole-site clarification should pass for existing-site add-on")
+
+    existing_affirmative_whole_site_invalid = valid_runs()
+    existing_affirmative_whole_site_invalid[3]["agent_responses"] = [
+        make_event("user", "We already have a compatible site. What does it cost to add a simple appointment-request form?"),
+        make_event("agent", "On your existing site, adding the form is usually $100-$250, but this is a whole-site package quote."),
+    ]
+    existing_affirmative_whole_site_result = validate_payload(make_payload(existing_affirmative_whole_site_invalid))
+    assert_true("existing_site_add_on_classification" in failure_names(existing_affirmative_whole_site_result, EXPECTED_TEST_ORDER[3]), "must still reject affirmative whole-site/package framing")
 
     print("self-test: pass")
     return 0
