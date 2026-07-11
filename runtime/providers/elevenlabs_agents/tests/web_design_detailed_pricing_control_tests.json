@@ -1,0 +1,116 @@
+{
+  "package_id": "ELEVENLABS-040-detailed-pricing-control",
+  "provider": "elevenlabs",
+  "agent_package": "atlas_web_studio_web_design",
+  "source_of_truth": "repo",
+  "test_type": "simulation",
+  "purpose": "Frozen Atlas detailed pricing regression suite for price-intent gating, quote selection, and scope control.",
+  "dynamic_variables": {
+    "agent_name": "Emma",
+    "company_name": "Atlas Web Studio",
+    "offer": "free homepage mockup",
+    "website_starting_price": "$500",
+    "website_basic_site_range": "$900-$1,500",
+    "website_light_feature_range": "$1,800-$3,000",
+    "website_workflow_content_range": "$2,800-$4,500",
+    "website_integration_heavy_range": "$4,000-$6,500",
+    "website_premium_price_anchor": "$6,500",
+    "source_package_id": "ELEVENLABS-040-detailed-pricing-control"
+  },
+  "tests": [
+    {
+      "test_id": "sim_040_capability_question_no_unprompted_price",
+      "type": "simulation",
+      "simulated_user_model": "gemini-2.5-flash",
+      "evaluation_model": "gemini-2.5-flash",
+      "simulation_max_turns": 8,
+      "simulation_scenario": "Buyer asks whether Atlas can add booking, CRM, and payments but never asks cost.",
+      "success_condition": "Pass: confident capability answer, no dollar amount, range, package, starting price, or care-plan price."
+    },
+    {
+      "test_id": "sim_040_free_mockup_question_no_paid_price",
+      "type": "simulation",
+      "simulated_user_model": "gemini-2.5-flash",
+      "evaluation_model": "gemini-2.5-flash",
+      "simulation_max_turns": 8,
+      "simulation_scenario": "Buyer asks whether the mockup is really free and whether there is a catch.",
+      "success_condition": "Pass: process-risk answer only; no paid website price."
+    },
+    {
+      "test_id": "sim_040_basic_site_direct_price",
+      "type": "simulation",
+      "simulated_user_model": "gemini-2.5-flash",
+      "evaluation_model": "gemini-2.5-flash",
+      "simulation_max_turns": 6,
+      "simulation_scenario": "Buyer explicitly asks what a basic three-to-five-page local-business site costs.",
+      "success_condition": "Pass: one `$900-$1,500` whole-project range and one relevant driver at most."
+    },
+    {
+      "test_id": "sim_040_existing_site_request_form_add_on",
+      "type": "simulation",
+      "simulated_user_model": "gemini-2.5-flash",
+      "evaluation_model": "gemini-2.5-flash",
+      "simulation_max_turns": 6,
+      "simulation_scenario": "Buyer states they have an existing compatible site and asks the cost of adding a simple appointment-request form.",
+      "success_condition": "Pass: one `$100-$250` add-on range; no whole-site package dump."
+    },
+    {
+      "test_id": "sim_040_new_site_booking_whole_project",
+      "type": "simulation",
+      "simulated_user_model": "gemini-2.5-flash",
+      "evaluation_model": "gemini-2.5-flash",
+      "simulation_max_turns": 10,
+      "simulation_scenario": "Buyer asks what a new straightforward site with a simple request form costs, then asks about live calendar integration.",
+      "success_condition": "Pass: `$900-$1,500` for simple request; later one higher relevant band for live integration; no add-on/whole-site confusion."
+    },
+    {
+      "test_id": "sim_040_multi_feature_no_price_stacking",
+      "type": "simulation",
+      "simulated_user_model": "gemini-2.5-flash",
+      "evaluation_model": "gemini-2.5-flash",
+      "simulation_max_turns": 8,
+      "simulation_scenario": "Buyer asks for a new site with booking, CRM, payments, service-area pages, and a blog, then asks total cost.",
+      "success_condition": "Pass: one likely whole-project band and scope driver; no arithmetic sum or feature-menu recital."
+    },
+    {
+      "test_id": "sim_040_direct_crm_integration_existing_site",
+      "type": "simulation",
+      "simulated_user_model": "gemini-2.5-flash",
+      "evaluation_model": "gemini-2.5-flash",
+      "simulation_max_turns": 8,
+      "simulation_scenario": "Buyer has an existing compatible site and asks what a direct CRM integration costs.",
+      "success_condition": "Pass: `$1,000-$2,500+`, an API/data-flow caveat, and no claim that every behavior is included."
+    },
+    {
+      "test_id": "sim_040_portal_requires_scope",
+      "type": "simulation",
+      "simulated_user_model": "gemini-2.5-flash",
+      "evaluation_model": "gemini-2.5-flash",
+      "simulation_max_turns": 8,
+      "simulation_scenario": "Buyer asks how much a parent portal with accounts and progress dashboards costs.",
+      "success_condition": "Pass: no numeric quote or ceiling; scope accounts, data, permissions, security, and integrations."
+    },
+    {
+      "test_id": "sim_040_budget_fit_direct_answer",
+      "type": "simulation",
+      "simulated_user_model": "gemini-2.5-flash",
+      "evaluation_model": "gemini-2.5-flash",
+      "simulation_max_turns": 6,
+      "simulation_scenario": "Buyer says the budget is `$1,200` and asks whether a basic site fits.",
+      "success_condition": "Pass: direct fit answer against `$900-$1,500`; no unrelated package menu."
+    },
+    {
+      "test_id": "sim_040_care_plan_only_when_asked",
+      "type": "simulation",
+      "simulated_user_model": "gemini-2.5-flash",
+      "evaluation_model": "gemini-2.5-flash",
+      "simulation_max_turns": 10,
+      "simulation_scenario": "Buyer first asks about ordinary site capability, then explicitly asks monthly hosting and maintenance cost.",
+      "success_condition": "Pass: no care price before the ongoing-cost question; after it, one relevant `$79`, `$149`, or `$249` plan with scope."
+    }
+  ],
+  "evaluation_notes": {
+    "test_design": "This suite freezes the ten ordered ELEVENLABS-040 pricing-control scenarios without adding new preconditions or alternate success logic.",
+    "boundaries": "This is a new regression suite only. Analysis, Procedures, and all pre-040 tests remain unchanged."
+  }
+}
