@@ -1,0 +1,8 @@
+{
+  "checkpoint_id": "ELEVENLABS-040-detailed-pricing-control",
+  "status": "plan_only_missing_confirmation",
+  "provider_writes_made": false,
+  "required_confirmation": "confirm-provider-write",
+  "simulations_run": false,
+  "outbound_calls_made": false
+}
