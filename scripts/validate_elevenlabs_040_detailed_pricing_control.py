@@ -208,7 +208,7 @@ def ensure_base_ref(base_ref: str, *, repo_root: Path = ROOT) -> None:
 
 def git_changed_paths_since(base_ref: str, *paths: str, repo_root: Path = ROOT) -> list[str]:
     completed = git(
-        ["diff", "--name-only", "--diff-filter=ACMRTUXB", base_ref, "--", *paths],
+        ["diff", "--name-only", "--diff-filter=ACDMRTUXB", base_ref, "--", *paths],
         repo_root=repo_root,
     )
     return [line.strip().replace("\\", "/") for line in completed.stdout.splitlines() if line.strip()]
