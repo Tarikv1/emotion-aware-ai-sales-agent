@@ -1,26 +1,27 @@
 {
   "checkpoint_id": "ELEVENLABS-040-detailed-pricing-control",
-  "captured_at_utc": "2026-07-11T12:26:37Z",
+  "captured_at_utc": "2026-07-11T19:16:54Z",
   "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
   "dynamic_variables": {
     "dynamic_variable_placeholders": {
       "business_name": "[REDACTED_DYNAMIC_PLACEHOLDER]",
       "business_type": "[REDACTED_DYNAMIC_PLACEHOLDER]",
       "city": "[REDACTED_DYNAMIC_PLACEHOLDER]",
-      "website_basic_site_range": "$1,000-$2,000",
-      "website_light_feature_range": "$2,000-$3,000",
-      "website_workflow_content_range": "$3,000-$4,000",
-      "website_integration_heavy_range": "$4,000-$5,000",
-      "website_premium_price_anchor": "$5,000"
+      "website_basic_site_range": "$900-$1,500",
+      "website_light_feature_range": "$1,800-$3,000",
+      "website_workflow_content_range": "$2,800-$4,500",
+      "website_integration_heavy_range": "$4,000-$6,500",
+      "website_premium_price_anchor": "$6,500",
+      "website_starting_price": "$500"
     }
   },
   "target_price_values_current": {
-    "website_starting_price": null,
-    "website_basic_site_range": "$1,000-$2,000",
-    "website_light_feature_range": "$2,000-$3,000",
-    "website_workflow_content_range": "$3,000-$4,000",
-    "website_integration_heavy_range": "$4,000-$5,000",
-    "website_premium_price_anchor": "$5,000"
+    "website_starting_price": "$500",
+    "website_basic_site_range": "$900-$1,500",
+    "website_light_feature_range": "$1,800-$3,000",
+    "website_workflow_content_range": "$2,800-$4,500",
+    "website_integration_heavy_range": "$4,000-$6,500",
+    "website_premium_price_anchor": "$6,500"
   },
   "target_price_values_planned": {
     "website_starting_price": "$500",
