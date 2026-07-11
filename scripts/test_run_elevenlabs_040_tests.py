@@ -24,9 +24,11 @@ class FakeProvider:
         page_size: int | None = None,
         cycle_cursor: bool = False,
         readback_mutation: dict[str, Any] | None = None,
+        list_items: list[dict[str, Any]] | None = None,
     ) -> None:
         self.folders = list(folders or [])
         self.tests = list(tests or [])
+        self.list_items = list(list_items) if list_items is not None else None
         self.fail_on = fail_on
         self.failure_message = failure_message
         self.page_size = page_size
@@ -156,7 +158,7 @@ class FakeProvider:
         entity_type = params.get("types")
         parent = params.get("parent_folder_id")
         search = params.get("search", "")
-        source = self.folders if entity_type == "folder" else self.tests
+        source = self.folders if entity_type == "folder" else (self.list_items if self.list_items is not None else self.tests)
         items = []
         for item in source:
             if search and search not in str(item.get("name", "")):
@@ -546,6 +548,98 @@ class RunnerTests(unittest.TestCase):
                 runner.execute_repair_owned_context(provider, mapping_path=reused_mapping, output_dir=output_dir, live=True)
 
         self.assertFalse(any(call["method"] == "PUT" for call in provider.calls))
+
+    def test_repair_refuses_missing_folder_membership_before_put(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            output_dir = Path(tmp)
+            mapping_path = output_dir / "live_test_mapping.json"
+            tests = expected_pre_repair_tests()
+            for test in tests:
+                test.pop("folder_parent_id", None)
+            write_mapping(mapping_path, mapping_for_tests(tests))
+            provider = FakeProvider(
+                folders=[{"id": "tfld_existing", "name": runner.CHECKPOINT_ID, "entity_type": "folder", "folder_parent_id": "root"}],
+                tests=tests,
+            )
+            with self.assertRaises(runner.GuardError):
+                runner.execute_repair_owned_context(provider, mapping_path=mapping_path, output_dir=output_dir, live=True)
+
+        self.assertFalse(any(call["method"] == "PUT" for call in provider.calls))
+
+    def test_repair_refuses_list_get_folder_conflict_before_put(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            output_dir = Path(tmp)
+            mapping_path = output_dir / "live_test_mapping.json"
+            tests = expected_pre_repair_tests()
+            list_items = [dict(test) for test in tests]
+            tests[0]["folder_parent_id"] = "tfld_wrong"
+            write_mapping(mapping_path, mapping_for_tests(list_items))
+            provider = FakeProvider(
+                folders=[{"id": "tfld_existing", "name": runner.CHECKPOINT_ID, "entity_type": "folder", "folder_parent_id": "root"}],
+                tests=tests,
+                list_items=list_items,
+            )
+            with self.assertRaises(runner.GuardError):
+                runner.execute_repair_owned_context(provider, mapping_path=mapping_path, output_dir=output_dir, live=True)
+
+        self.assertFalse(any(call["method"] == "PUT" for call in provider.calls))
+
+    def test_repair_refuses_wrong_folder_membership_before_put(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            output_dir = Path(tmp)
+            mapping_path = output_dir / "live_test_mapping.json"
+            tests = expected_pre_repair_tests()
+            list_items = [dict(test) for test in tests]
+            list_items[0]["folder_parent_id"] = "tfld_wrong"
+            write_mapping(mapping_path, mapping_for_tests(tests))
+            provider = FakeProvider(
+                folders=[{"id": "tfld_existing", "name": runner.CHECKPOINT_ID, "entity_type": "folder", "folder_parent_id": "root"}],
+                tests=tests,
+                list_items=list_items,
+            )
+            with self.assertRaises(runner.GuardError):
+                runner.execute_repair_owned_context(provider, mapping_path=mapping_path, output_dir=output_dir, live=True)
+
+        self.assertFalse(any(call["method"] == "PUT" for call in provider.calls))
+
+    def test_repair_accepts_exact_folder_membership(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            output_dir = Path(tmp)
+            mapping_path = output_dir / "live_test_mapping.json"
+            tests = expected_pre_repair_tests()
+            write_mapping(mapping_path, mapping_for_tests(tests))
+            provider = FakeProvider(
+                folders=[{"id": "tfld_existing", "name": runner.CHECKPOINT_ID, "entity_type": "folder", "folder_parent_id": "root"}],
+                tests=tests,
+            )
+            result = runner.execute_repair_owned_context(provider, mapping_path=mapping_path, output_dir=output_dir, live=True)
+
+        self.assertEqual(result["status"], "completed")
+        self.assertEqual(len([call for call in provider.calls if call["method"] == "PUT"]), 10)
+
+    def test_repair_finds_page_two_folder_membership_before_put(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            output_dir = Path(tmp)
+            mapping_path = output_dir / "live_test_mapping.json"
+            tests = expected_pre_repair_tests()
+            filler = {
+                "id": "test_filler",
+                "test_id": "test_filler",
+                "name": f"{runner.CHECKPOINT_ID}::unrelated",
+                "entity_type": "simulation",
+                "folder_parent_id": "tfld_existing",
+            }
+            write_mapping(mapping_path, mapping_for_tests(tests))
+            provider = FakeProvider(
+                page_size=1,
+                folders=[{"id": "tfld_existing", "name": runner.CHECKPOINT_ID, "entity_type": "folder", "folder_parent_id": "root"}],
+                tests=tests,
+                list_items=[filler, *tests],
+            )
+            result = runner.execute_repair_owned_context(provider, mapping_path=mapping_path, output_dir=output_dir, live=True)
+
+        self.assertEqual(result["status"], "completed")
+        self.assertEqual(len([call for call in provider.calls if call["method"] == "PUT"]), 10)
 
     def test_repair_partial_put_failure_records_accurate_ledger(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:

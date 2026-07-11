@@ -350,6 +350,31 @@ def parent_folder_id(item: dict[str, Any]) -> str | None:
     return None
 
 
+def folder_membership_values(item: dict[str, Any]) -> dict[str, str]:
+    values: dict[str, str] = {}
+    for key in ("folder_parent_id", "folder_id", "parent_folder_id"):
+        value = item.get(key)
+        if isinstance(value, str) and value.strip():
+            values[key] = value
+    return values
+
+
+def require_explicit_folder_membership(item: dict[str, Any], *, folder_id: str, label: str) -> None:
+    memberships = folder_membership_values(item)
+    if not memberships:
+        raise GuardError(f"{label} missing explicit folder membership")
+    conflicts = {key: value for key, value in memberships.items() if value != folder_id}
+    if conflicts:
+        raise GuardError(f"{label} folder membership mismatch: {conflicts!r}")
+
+
+def assert_get_folder_metadata_consistent(item: dict[str, Any], *, folder_id: str, label: str) -> None:
+    memberships = folder_membership_values(item)
+    conflicts = {key: value for key, value in memberships.items() if value != folder_id}
+    if conflicts:
+        raise GuardError(f"{label} GET folder metadata mismatch: {conflicts!r}")
+
+
 def list_folders(provider: Provider) -> tuple[dict[str, Any] | None, int]:
     items = list_entities(
         provider,
@@ -620,6 +645,49 @@ def validate_owned_mapping(mapping: dict[str, Any]) -> tuple[str, dict[str, str]
     return folder_id, provider_ids
 
 
+def verify_mapped_tests_in_folder(
+    provider: Provider,
+    *,
+    folder_id: str,
+    provider_ids: dict[str, str],
+) -> dict[str, dict[str, Any]]:
+    folder_items = list_tests(provider, folder_id=folder_id)
+    mapped_provider_ids = set(provider_ids.values())
+    relevant_items: list[dict[str, Any]] = []
+    for item in folder_items:
+        item_id = provider_id(item)
+        item_name = item.get("name")
+        if item_id in mapped_provider_ids or item_name in EXPECTED_NAMES:
+            require_explicit_folder_membership(
+                item,
+                folder_id=folder_id,
+                label=f"folder list item {item_id}",
+            )
+            relevant_items.append(item)
+
+    by_source: dict[str, dict[str, Any]] = {}
+    for source_id in EXPECTED_TEST_IDS:
+        expected_id = provider_ids[source_id]
+        expected_name = f"{CHECKPOINT_ID}::{source_id}"
+        id_matches = [item for item in relevant_items if provider_id(item) == expected_id]
+        if not id_matches:
+            raise GuardError(f"mapped provider test missing from exact 040 folder list: {source_id}")
+        if len(id_matches) > 1:
+            raise GuardError(f"duplicate mapped provider test ID in exact 040 folder list: {expected_id}")
+        item = id_matches[0]
+        if item.get("name") != expected_name:
+            raise GuardError(f"folder list provider test name mismatch for {source_id}")
+        by_source[source_id] = item
+
+        name_matches = [item for item in relevant_items if item.get("name") == expected_name]
+        if len(name_matches) > 1:
+            raise GuardError(f"duplicate exact 040 test name in exact folder list: {expected_name}")
+        if provider_id(name_matches[0]) != expected_id:
+            raise GuardError(f"folder list provider test ID mismatch for {source_id}")
+
+    return by_source
+
+
 def expected_without_repair_context(expected_body: dict[str, Any]) -> dict[str, Any]:
     body = json.loads(json.dumps(expected_body))
     dynamic_variables = body.get("dynamic_variables")
@@ -648,8 +716,11 @@ def assert_only_repair_context_absent(
     expected_name = f"{CHECKPOINT_ID}::{source_id}"
     if live_test.get("name") != expected_name:
         raise GuardError(f"provider test name mismatch for {source_id}")
-    if parent_folder_id(live_test) not in (None, folder_id):
-        raise GuardError(f"provider test folder mismatch for {source_id}")
+    assert_get_folder_metadata_consistent(
+        live_test,
+        folder_id=folder_id,
+        label=f"provider test {source_id}",
+    )
     dynamic_variables = live_test.get("dynamic_variables")
     if not isinstance(dynamic_variables, dict):
         raise GuardError(f"provider test dynamic_variables must be an object for {source_id}")
@@ -688,6 +759,11 @@ def execute_repair_owned_context(
     try:
         mapping = read_json(mapping_path)
         folder_id, provider_ids = validate_owned_mapping(mapping)
+        folder_membership = verify_mapped_tests_in_folder(
+            provider,
+            folder_id=folder_id,
+            provider_ids=provider_ids,
+        )
         live_tests: dict[str, dict[str, Any]] = {}
         for source_id in EXPECTED_TEST_IDS:
             live_test = get_test(provider, provider_ids[source_id])
@@ -731,6 +807,7 @@ def execute_repair_owned_context(
             "status": "completed",
             "mode": "repair_owned_context",
             "folder_id": folder_id,
+            "folder_membership_verified_count": len(folder_membership),
             "repaired_test_count": len(repaired),
             "repaired_tests": repaired,
             "repair_context_values": REPAIR_CONTEXT_VALUES,
