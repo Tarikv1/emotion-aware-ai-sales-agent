@@ -11,20 +11,47 @@ from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
 CHECKPOINT_ID = "ELEVENLABS-040-detailed-pricing-control"
+CHECKPOINT_BASE_REF = "f90e0bb"
 
-DEFAULTS = ROOT / "runtime/providers/elevenlabs_agents/variables/mikes_kitchen_dynamic_variable_defaults.json"
-PROMPT = ROOT / "runtime/providers/elevenlabs_agents/prompts/web_design_atlas_sales_prompt.md"
-OFFER = ROOT / "runtime/providers/elevenlabs_agents/knowledge_base/atlas_web_studio/atlas_offer_facts.md"
-PRICE = ROOT / "runtime/providers/elevenlabs_agents/knowledge_base/atlas_web_studio/atlas_price_scope_cost_drivers.md"
-OUTPUT = ROOT / "runtime/providers/elevenlabs_agents/knowledge_base/atlas_web_studio/atlas_output_quality_rules.md"
-TESTS = ROOT / "runtime/providers/elevenlabs_agents/tests/web_design_detailed_pricing_control_tests.json"
-PATCHER = ROOT / "scripts/apply_elevenlabs_040_detailed_pricing_control.py"
-ACTIVE_MANIFEST = ROOT / "runtime/providers/elevenlabs_agents/manifests/web_design_sales_spine_compression.package.json"
-ANALYSIS_CONFIG = ROOT / "runtime/providers/elevenlabs_agents/analysis/atlas_web_studio_analysis_config.json"
-ANALYSIS_SETUP = ROOT / "runtime/providers/elevenlabs_agents/analysis/atlas_web_studio_analysis_setup.md"
-PROCEDURES_DIR = ROOT / "runtime/providers/elevenlabs_agents/procedures"
-TESTS_DIR = ROOT / "runtime/providers/elevenlabs_agents/tests"
-ALLOWED_NEW_TEST = TESTS.relative_to(ROOT).as_posix()
+DEFAULTS_PATH = "runtime/providers/elevenlabs_agents/variables/mikes_kitchen_dynamic_variable_defaults.json"
+PROMPT_PATH = "runtime/providers/elevenlabs_agents/prompts/web_design_atlas_sales_prompt.md"
+OFFER_PATH = "runtime/providers/elevenlabs_agents/knowledge_base/atlas_web_studio/atlas_offer_facts.md"
+PRICE_PATH = "runtime/providers/elevenlabs_agents/knowledge_base/atlas_web_studio/atlas_price_scope_cost_drivers.md"
+OUTPUT_PATH = "runtime/providers/elevenlabs_agents/knowledge_base/atlas_web_studio/atlas_output_quality_rules.md"
+TESTS_PATH = "runtime/providers/elevenlabs_agents/tests/web_design_detailed_pricing_control_tests.json"
+PATCHER_PATH = "scripts/apply_elevenlabs_040_detailed_pricing_control.py"
+VALIDATOR_PATH = "scripts/validate_elevenlabs_040_detailed_pricing_control.py"
+PACKAGE_MANIFEST_PATH = "runtime/providers/elevenlabs_agents/manifests/web_design_detailed_pricing_control.package.json"
+CAPTURE_PATH = "scripts/capture_elevenlabs_040_test_invocation.py"
+TRACE_VALIDATOR_PATH = "scripts/validate_elevenlabs_040_live_test_traces.py"
+ACTIVE_MANIFEST_PATH = "runtime/providers/elevenlabs_agents/manifests/web_design_sales_spine_compression.package.json"
+ANALYSIS_CONFIG_PATH = "runtime/providers/elevenlabs_agents/analysis/atlas_web_studio_analysis_config.json"
+ANALYSIS_SETUP_PATH = "runtime/providers/elevenlabs_agents/analysis/atlas_web_studio_analysis_setup.md"
+PROCEDURES_DIR_PATH = "runtime/providers/elevenlabs_agents/procedures"
+TESTS_DIR_PATH = "runtime/providers/elevenlabs_agents/tests"
+ALLOWED_NEW_TEST = TESTS_PATH
+
+DEFAULTS = ROOT / DEFAULTS_PATH
+PROMPT = ROOT / PROMPT_PATH
+OFFER = ROOT / OFFER_PATH
+PRICE = ROOT / PRICE_PATH
+OUTPUT = ROOT / OUTPUT_PATH
+TESTS = ROOT / TESTS_PATH
+PATCHER = ROOT / PATCHER_PATH
+
+CHECKPOINT_DIFF_PATHS = (
+    VALIDATOR_PATH,
+    DEFAULTS_PATH,
+    PROMPT_PATH,
+    OFFER_PATH,
+    PRICE_PATH,
+    OUTPUT_PATH,
+    TESTS_PATH,
+    PACKAGE_MANIFEST_PATH,
+    PATCHER_PATH,
+    CAPTURE_PATH,
+    TRACE_VALIDATOR_PATH,
+)
 
 EXPECTED_PRICE_DEFAULTS = {
     "website_starting_price": "$500",
@@ -163,32 +190,53 @@ def word_count(text: str) -> int:
     return len(re.findall(r"\b\S+\b", text))
 
 
-def git_diff_names(*paths: str) -> list[str]:
+def git(args: list[str], *, repo_root: Path = ROOT) -> subprocess.CompletedProcess[str]:
     completed = subprocess.run(
-        ["git", "diff", "--name-only", "--", *paths],
-        cwd=ROOT,
+        ["git", *args],
+        cwd=repo_root,
         text=True,
         capture_output=True,
         check=False,
     )
-    assert_condition(completed.returncode == 0, completed.stderr or completed.stdout)
+    assert_condition(completed.returncode == 0, completed.stderr.strip() or completed.stdout.strip() or f"git {' '.join(args)} failed")
+    return completed
+
+
+def ensure_base_ref(base_ref: str, *, repo_root: Path = ROOT) -> None:
+    git(["rev-parse", "--verify", f"{base_ref}^{{commit}}"], repo_root=repo_root)
+
+
+def git_changed_paths_since(base_ref: str, *paths: str, repo_root: Path = ROOT) -> list[str]:
+    completed = git(
+        ["diff", "--name-only", "--diff-filter=ACMRTUXB", base_ref, "--", *paths],
+        repo_root=repo_root,
+    )
     return [line.strip().replace("\\", "/") for line in completed.stdout.splitlines() if line.strip()]
 
 
-def validate_change_boundaries() -> None:
-    analysis_diff = git_diff_names(
-        str(ANALYSIS_CONFIG.relative_to(ROOT)),
-        str(ANALYSIS_SETUP.relative_to(ROOT)),
+def git_diff_check(base_ref: str, *paths: str, repo_root: Path = ROOT) -> None:
+    completed = git(["diff", "--check", base_ref, "--", *paths], repo_root=repo_root)
+    assert_condition(completed.returncode == 0, completed.stderr or completed.stdout)
+
+
+def validate_change_boundaries(*, repo_root: Path = ROOT, base_ref: str = CHECKPOINT_BASE_REF) -> None:
+    ensure_base_ref(base_ref, repo_root=repo_root)
+
+    analysis_diff = git_changed_paths_since(
+        base_ref,
+        ANALYSIS_CONFIG_PATH,
+        ANALYSIS_SETUP_PATH,
+        repo_root=repo_root,
     )
     assert_condition(not analysis_diff, f"Analysis files changed: {analysis_diff}")
 
-    manifest_diff = git_diff_names(str(ACTIVE_MANIFEST.relative_to(ROOT)))
+    manifest_diff = git_changed_paths_since(base_ref, ACTIVE_MANIFEST_PATH, repo_root=repo_root)
     assert_condition(not manifest_diff, f"Active manifest changed: {manifest_diff}")
 
-    procedure_diff = git_diff_names(str(PROCEDURES_DIR.relative_to(ROOT)))
+    procedure_diff = git_changed_paths_since(base_ref, PROCEDURES_DIR_PATH, repo_root=repo_root)
     assert_condition(not procedure_diff, f"Procedures changed: {procedure_diff}")
 
-    test_diff = git_diff_names(str(TESTS_DIR.relative_to(ROOT)))
+    test_diff = git_changed_paths_since(base_ref, TESTS_DIR_PATH, repo_root=repo_root)
     unexpected = [path for path in test_diff if path != ALLOWED_NEW_TEST]
     assert_condition(not unexpected, f"Existing tests changed: {unexpected}")
 
@@ -255,8 +303,7 @@ def main() -> int:
         validate_live_patcher()
         validate_dynamic_defaults()
         validate_change_boundaries()
-        diff_check = subprocess.run(["git", "diff", "--check"], cwd=ROOT, text=True, capture_output=True, check=False)
-        assert_condition(diff_check.returncode == 0, diff_check.stderr or diff_check.stdout)
+        git_diff_check(CHECKPOINT_BASE_REF, *CHECKPOINT_DIFF_PATHS)
     except AssertionError as exc:
         print(f"error: {exc}", file=sys.stderr)
         return 1
