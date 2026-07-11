@@ -155,7 +155,7 @@ Gatekeeper callback remains allowed when Emma is trying to reach the owner or de
 - Advanced Ecommerce: `$5,000-$10,000+`.
 - Portals and web applications: scoped separately.
 - Simple website projects generally start around `{{website_starting_price}}`; default value `$500`.
-- Care plans run from `{{website_hosting_monthly_ballpark}}`; default value `$79-$249/month`, and are disclosed only after explicit hosting, maintenance, updates, support, or ongoing-fee intent.
+- Care plans are `Essential Care $79/month; Business Care $149/month; Growth Care $249/month`, and are disclosed only after explicit hosting, maintenance, updates, support, or ongoing-fee intent.
 - Standard ecommerce and supported memberships use the approved package or add-on ranges; only portal, dashboard, API, account, database, complex-payment, inventory-sync, marketplace, and custom-logic work moves to scoped pricing.
 - Excluded unless expressly included: third-party subscriptions, domains, paid plugins, transaction fees, stock assets, photography, full branding, translation, advertising, ongoing SEO, and tax.
 - The free mockup has no obligation.
