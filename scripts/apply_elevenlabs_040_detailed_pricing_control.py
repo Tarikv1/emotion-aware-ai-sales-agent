@@ -32,7 +32,6 @@ try:
         get_prompt,
         json_request,
         multipart_update_file,
-        safe_error_message,
         summarize_tools,
         unrelated_tool_fingerprint,
     )
@@ -96,6 +95,16 @@ SENSITIVE_DYNAMIC_CONTEXT_RE = re.compile(
     r"|(?:city|address|email|phone|website|domain)$",
     re.IGNORECASE,
 )
+SECRET_LIKE_KEY_RE = re.compile(r"(?:authorization|api[_-]?key|token|secret|cookie)", re.IGNORECASE)
+JSON_STRING_PAIR_RE = re.compile(r'("(?P<key>[^"]+)"\s*:\s*)"(?P<value>(?:\\.|[^"\\])*)"')
+SINGLE_QUOTED_PAIR_RE = re.compile(r"('(?P<key>[^']+)'\s*:\s*)'(?P<value>[^']*)'")
+PLAIN_PAIR_RE = re.compile(
+    r"\b(?P<key>[A-Za-z_][A-Za-z0-9_.-]*(?:name|type|city|address|email|phone|website|domain|authorization|token|secret|api_key|api-key))"
+    r"(?P<sep>\s*[:=]\s*)"
+    r"(?P<value>\"[^\"]*\"|'[^']*'|[^,}\]\s]+)",
+    re.IGNORECASE,
+)
+BEARER_RE = re.compile(r"(?i)\bBearer\s+[A-Za-z0-9._~+/=-]+")
 KB_DOCS = (
     "atlas_offer_facts.md",
     "atlas_price_scope_cost_drivers.md",
@@ -159,6 +168,52 @@ def sanitize(value: Any, *, key_hint: str = "", in_dynamic_placeholders: bool = 
     if isinstance(value, list):
         return [sanitize(item, key_hint=key_hint, in_dynamic_placeholders=in_dynamic_placeholders) for item in value]
     return guards.sanitize(value)
+
+
+def redact_error_key_value(key: str, value: str) -> str | None:
+    if SECRET_LIKE_KEY_RE.search(key):
+        return "[REDACTED]"
+    if should_redact_context_key(key):
+        return "[REDACTED_DYNAMIC_PLACEHOLDER]"
+    return None
+
+
+def redact_json_string_pair(match: re.Match[str]) -> str:
+    replacement = redact_error_key_value(match.group("key"), match.group("value"))
+    if replacement is None:
+        return match.group(0)
+    return f'{match.group(1)}"{replacement}"'
+
+
+def redact_single_quoted_pair(match: re.Match[str]) -> str:
+    replacement = redact_error_key_value(match.group("key"), match.group("value"))
+    if replacement is None:
+        return match.group(0)
+    return f"{match.group(1)}'{replacement}'"
+
+
+def redact_plain_pair(match: re.Match[str]) -> str:
+    replacement = redact_error_key_value(match.group("key"), match.group("value"))
+    if replacement is None:
+        return match.group(0)
+    value = match.group("value")
+    if value.startswith('"') and value.endswith('"'):
+        replacement_value = f'"{replacement}"'
+    elif value.startswith("'") and value.endswith("'"):
+        replacement_value = f"'{replacement}'"
+    else:
+        replacement_value = replacement
+    return f"{match.group('key')}{match.group('sep')}{replacement_value}"
+
+
+def safe_evidence_error_message(exc: BaseException) -> str:
+    text = str(exc)
+    text = JSON_STRING_PAIR_RE.sub(redact_json_string_pair, text)
+    text = SINGLE_QUOTED_PAIR_RE.sub(redact_single_quoted_pair, text)
+    text = PLAIN_PAIR_RE.sub(redact_plain_pair, text)
+    text = BEARER_RE.sub("Bearer [REDACTED]", text)
+    text = guards.sanitize(text)
+    return str(text)[:1600]
 
 
 def canonical_sha256(value: Any) -> str:
@@ -660,7 +715,7 @@ def main(argv: list[str] | None = None) -> int:
         print(json.dumps({"status": "passed", "provider_writes_made": True}, indent=2))
         return 0
     except Exception as exc:
-        error = safe_error_message(exc)
+        error = safe_evidence_error_message(exc)
         write_json(OUT_DIR / "live_agent_patch_result.json", ledger.failure_payload(checkpoint_id=CHECKPOINT_ID, error=error))
         write_json(
             OUT_DIR / "live_agent_post_patch_snapshot.json",

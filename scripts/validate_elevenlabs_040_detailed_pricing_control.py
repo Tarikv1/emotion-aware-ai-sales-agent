@@ -426,6 +426,35 @@ def validate_live_patcher_semantics() -> None:
     assert_condition(failure_payload["provider_write_success_count"] == 0, "success count mismatch after injected failure")
     assert_condition(failure_payload["provider_write_attempts"][0]["request_id"] == request["request_id"], "attempt request_id missing")
 
+    provider_echo = RuntimeError(
+        "PATCH /v1/convai/agents/agent_7801kt0g32zxf4f8x5zkykj7syty failed with 400: "
+        "{\"type\":\"invalid_request\",\"message\":\"bad dynamic variables\","
+        "\"dynamic_variable_placeholders\":{\"business_name\":\"Acme Dental\",\"city\":\"Phoenix\","
+        "\"contact_email\":\"owner@example.com\",\"contact_phone\":\"+1 212 555 0188\","
+        "\"website_basic_site_range\":\"$900-$1,500\"},"
+        "\"authorization\":\"Bearer live-secret-token\"}"
+    )
+    sanitized_error = patcher.safe_evidence_error_message(provider_echo)
+    error_failure_payload = ledger.failure_payload(
+        checkpoint_id=CHECKPOINT_ID,
+        error=sanitized_error,
+    )
+    rendered_error_payload = json.dumps(error_failure_payload, sort_keys=True)
+    for forbidden in (
+        "Acme Dental",
+        "Phoenix",
+        "owner@example.com",
+        "212 555 0188",
+        "live-secret-token",
+        "Bearer live-secret-token",
+    ):
+        assert_condition(forbidden not in rendered_error_payload, f"failure evidence leaked provider echo {forbidden!r}")
+    for diagnostic in ("400", "invalid_request", "bad dynamic variables"):
+        assert_condition(diagnostic in rendered_error_payload, f"failure evidence lost diagnostic value {diagnostic!r}")
+    assert_condition(error_failure_payload["provider_writes_made"] is True, "error payload must retain attempted write state")
+    assert_condition(error_failure_payload["provider_write_attempt_count"] == 1, "error payload attempt count mismatch")
+    assert_condition(error_failure_payload["provider_write_success_count"] == 0, "error payload success count mismatch")
+
 
 def validate_live_patcher() -> None:
     patcher = read(PATCHER)
