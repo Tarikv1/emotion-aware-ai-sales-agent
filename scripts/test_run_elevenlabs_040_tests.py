@@ -1,11 +1,14 @@
 #!/usr/bin/env python3
 from __future__ import annotations
 
+import contextlib
+import io
 import json
 import tempfile
 import unittest
 from pathlib import Path
 from typing import Any
+from unittest import mock
 
 import run_elevenlabs_040_tests as runner
 
@@ -18,11 +21,15 @@ class FakeProvider:
         tests: list[dict[str, Any]] | None = None,
         fail_on: tuple[str, str] | None = None,
         failure_message: str = "provider failed with xi-api-key=secret owner@example.com +1 212 555 0188",
+        page_size: int | None = None,
+        cycle_cursor: bool = False,
     ) -> None:
         self.folders = list(folders or [])
         self.tests = list(tests or [])
         self.fail_on = fail_on
         self.failure_message = failure_message
+        self.page_size = page_size
+        self.cycle_cursor = cycle_cursor
         self.calls: list[dict[str, Any]] = []
         self.created_counter = 0
         self.invocation_polls = 0
@@ -47,7 +54,7 @@ class FakeProvider:
             raise RuntimeError(self.failure_message)
 
         if method == "GET" and endpoint.startswith("/v1/convai/agent-testing?"):
-            return {"status_code": 200, "response": {"tests": self._list_entities(endpoint)}}
+            return {"status_code": 200, "response": self._list_entities(endpoint)}
         if method == "POST" and endpoint == "/v1/convai/agent-testing/folders":
             folder = {
                 "id": "tfld_created",
@@ -136,7 +143,18 @@ class FakeProvider:
             if parent and item.get("folder_parent_id") != parent:
                 continue
             items.append(dict(item))
-        return items
+        if not self.page_size:
+            return {"tests": items}
+        cursor = params.get("cursor")
+        start = int(cursor or "0")
+        page = items[start : start + self.page_size]
+        next_cursor = str(start) if self.cycle_cursor else str(start + self.page_size)
+        has_more = start + self.page_size < len(items)
+        return {
+            "tests": page,
+            "has_more": has_more,
+            "next_cursor": next_cursor if has_more else None,
+        }
 
     def _name_for_test_id(self, test_id: str) -> str:
         for test in self.tests:
@@ -193,6 +211,19 @@ class RunnerTests(unittest.TestCase):
         self.assertFalse(any(call["endpoint"] == "/v1/convai/agent-testing/bulk-move" for call in provider.calls))
         self.assertEqual(result["mapping"]["folder"]["reused_existing"], True)
 
+    def test_page_two_exact_folder_is_reused_before_create(self) -> None:
+        provider = FakeProvider(
+            page_size=1,
+            folders=[
+                {"id": "tfld_other", "name": f"{runner.CHECKPOINT_ID}-other", "entity_type": "folder", "folder_parent_id": "root"},
+                {"id": "tfld_existing", "name": runner.CHECKPOINT_ID, "entity_type": "folder", "folder_parent_id": "root"},
+            ],
+            tests=expected_provider_tests(),
+        )
+        result = self.run_with(provider)
+        self.assertEqual(result["mapping"]["folder"]["folder_id"], "tfld_existing")
+        self.assertFalse(any(call["endpoint"] == "/v1/convai/agent-testing/folders" for call in provider.calls))
+
     def test_partial_state_creates_only_missing_tests_and_moves_only_new_ids(self) -> None:
         partial = expected_provider_tests()[:4]
         provider = FakeProvider(
@@ -216,6 +247,34 @@ class RunnerTests(unittest.TestCase):
             self.run_with(provider)
         self.assertEqual(provider.created_counter, 0)
 
+    def test_page_two_test_reuse_and_drift_are_seen_before_create(self) -> None:
+        filler = {
+            "id": "test_filler",
+            "test_id": "test_filler",
+            "name": f"{runner.CHECKPOINT_ID}::unrelated",
+            "entity_type": "simulation",
+            "folder_parent_id": "tfld_existing",
+        }
+        provider = FakeProvider(
+            page_size=1,
+            folders=[{"id": "tfld_existing", "name": runner.CHECKPOINT_ID, "entity_type": "folder", "folder_parent_id": "root"}],
+            tests=[filler, *expected_provider_tests()],
+        )
+        result = self.run_with(provider)
+        self.assertEqual(result["status"], "completed")
+        self.assertEqual(provider.created_counter, 0)
+
+        drifted = expected_provider_tests()
+        drifted[0] = {**drifted[0], "success_condition": "weakened"}
+        drift_provider = FakeProvider(
+            page_size=1,
+            folders=[{"id": "tfld_existing", "name": runner.CHECKPOINT_ID, "entity_type": "folder", "folder_parent_id": "root"}],
+            tests=[filler, *drifted],
+        )
+        with self.assertRaises(runner.GuardError):
+            self.run_with(drift_provider)
+        self.assertEqual(drift_provider.created_counter, 0)
+
     def test_duplicate_exact_folder_or_test_name_stops(self) -> None:
         duplicate_folders = FakeProvider(
             folders=[
@@ -234,6 +293,51 @@ class RunnerTests(unittest.TestCase):
         )
         with self.assertRaises(runner.GuardError):
             self.run_with(provider)
+
+    def test_page_two_duplicate_folder_and_test_stop_before_mutation(self) -> None:
+        duplicate_folders = FakeProvider(
+            page_size=1,
+            folders=[
+                {"id": "tfld_1", "name": runner.CHECKPOINT_ID, "entity_type": "folder", "folder_parent_id": "root"},
+                {"id": "tfld_2", "name": runner.CHECKPOINT_ID, "entity_type": "folder", "folder_parent_id": "root"},
+            ],
+        )
+        with self.assertRaises(runner.GuardError):
+            self.run_with(duplicate_folders)
+
+        duplicate_tests = expected_provider_tests()
+        duplicate_tests.append({**duplicate_tests[0], "id": "test_duplicate", "test_id": "test_duplicate"})
+        provider = FakeProvider(
+            page_size=10,
+            folders=[{"id": "tfld_existing", "name": runner.CHECKPOINT_ID, "entity_type": "folder", "folder_parent_id": "root"}],
+            tests=duplicate_tests,
+        )
+        with self.assertRaises(runner.GuardError):
+            self.run_with(provider)
+        self.assertEqual(provider.created_counter, 0)
+
+    def test_cursor_cycle_and_page_cap_stop_before_mutation(self) -> None:
+        cycle_provider = FakeProvider(
+            page_size=1,
+            cycle_cursor=True,
+            folders=[
+                {"id": "tfld_other", "name": f"{runner.CHECKPOINT_ID}-other", "entity_type": "folder", "folder_parent_id": "root"},
+                {"id": "tfld_existing", "name": runner.CHECKPOINT_ID, "entity_type": "folder", "folder_parent_id": "root"},
+            ],
+        )
+        with self.assertRaises(runner.GuardError):
+            self.run_with(cycle_provider)
+
+        with mock.patch.object(runner, "MAX_LIST_PAGES", 1):
+            cap_provider = FakeProvider(
+                page_size=1,
+                folders=[
+                    {"id": "tfld_other", "name": f"{runner.CHECKPOINT_ID}-other", "entity_type": "folder", "folder_parent_id": "root"},
+                    {"id": "tfld_existing", "name": runner.CHECKPOINT_ID, "entity_type": "folder", "folder_parent_id": "root"},
+                ],
+            )
+            with self.assertRaises(runner.GuardError):
+                self.run_with(cap_provider)
 
     def test_exact_test_outside_missing_folder_stops_before_folder_create(self) -> None:
         provider = FakeProvider(tests=expected_provider_tests(folder_id="root")[:1])
@@ -270,10 +374,47 @@ class RunnerTests(unittest.TestCase):
             result = json.loads((output_dir / "live_test_run_result.json").read_text(encoding="ascii"))
         rendered = json.dumps(result, sort_keys=True)
         self.assertEqual(result["status"], "failed")
-        self.assertGreaterEqual(result["api_failure_count"], 1)
+        self.assertNotIn("api_failure_count", result)
+        self.assertEqual(result["operation_ledger"]["attempt_count"], 2)
+        self.assertEqual(result["operation_ledger"]["success_count"], 1)
+        self.assertEqual(result["operation_ledger"]["failure_count"], 1)
+        self.assertEqual(result["operation_ledger"]["failed_request_id"], "create_test::sim_040_capability_question_no_unprompted_price")
         self.assertNotIn("secret", rendered)
         self.assertNotIn("owner@example.com", rendered)
         self.assertNotIn("212 555 0188", rendered)
+
+    def test_later_mutating_failure_preserves_attempt_success_failure_counts(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            output_dir = Path(tmp)
+            provider = FakeProvider(fail_on=("POST", "/v1/convai/agent-testing/bulk-move"))
+            with self.assertRaises(RuntimeError):
+                runner.execute_with_provider(
+                    provider,
+                    output_dir=output_dir,
+                    live=True,
+                    wait_timeout_seconds=1,
+                    poll_interval_seconds=0,
+                )
+            result = json.loads((output_dir / "live_test_run_result.json").read_text(encoding="ascii"))
+        ledger = result["operation_ledger"]
+        self.assertEqual(ledger["attempt_count"], 12)
+        self.assertEqual(ledger["success_count"], 11)
+        self.assertEqual(ledger["failure_count"], 1)
+        self.assertEqual(ledger["failed_request_id"], "move_created_tests::tfld_created")
+
+    def test_dry_run_flag_forces_zero_provider_calls_even_with_confirmation(self) -> None:
+        with mock.patch.dict("os.environ", {}, clear=True):
+            with mock.patch.object(runner, "ElevenLabsProvider") as provider_class:
+                with contextlib.redirect_stdout(io.StringIO()):
+                    exit_code = runner.main(
+                        [
+                            "--dry-run",
+                            "--confirm-test-creation-and-run",
+                            runner.CONFIRMATION,
+                        ]
+                    )
+        self.assertEqual(exit_code, 0)
+        provider_class.assert_not_called()
 
 
 if __name__ == "__main__":

@@ -29,6 +29,7 @@ CHECKPOINT_ID = "ELEVENLABS-040-detailed-pricing-control"
 AGENT_ID = "agent_7801kt0g32zxf4f8x5zkykj7syty"
 AGENT_NAME = "web design"
 CONFIRMATION = "confirm-test-creation-and-run"
+MAX_LIST_PAGES = 20
 API_KEY_ENV_VAR = "ELEVENLABS_API_KEY"
 TESTS_PATH = ROOT / "runtime" / "providers" / "elevenlabs_agents" / "tests" / "web_design_detailed_pricing_control_tests.json"
 OUT_DIR = ROOT / "research" / "experiments" / "generated" / CHECKPOINT_ID
@@ -89,6 +90,55 @@ class ElevenLabsProvider:
         return json_request(method, endpoint, api_key=self.api_key, body=body, timeout_seconds=timeout_seconds)
 
 
+class OperationLedger:
+    def __init__(self) -> None:
+        self.attempts: list[dict[str, Any]] = []
+
+    def start(
+        self,
+        *,
+        request_id: str,
+        operation: str,
+        method: str,
+        endpoint: str,
+        body: dict[str, Any] | None,
+    ) -> dict[str, Any]:
+        attempt = {
+            "request_id": request_id,
+            "operation": operation,
+            "method": method,
+            "endpoint": endpoint,
+            "body": body,
+            "attempted_at_utc": utc_now(),
+            "status": "attempted",
+        }
+        self.attempts.append(attempt)
+        return attempt
+
+    def success(self, attempt: dict[str, Any], result: dict[str, Any]) -> None:
+        attempt["status"] = "succeeded"
+        attempt["status_code"] = int(result.get("status_code", 0))
+        attempt["completed_at_utc"] = utc_now()
+
+    def failure(self, attempt: dict[str, Any], exc: BaseException) -> None:
+        attempt["status"] = "failed"
+        attempt["error"] = safe_error(exc)
+        attempt["completed_at_utc"] = utc_now()
+
+    def payload(self) -> dict[str, Any]:
+        successes = [attempt for attempt in self.attempts if attempt.get("status") == "succeeded"]
+        failures = [attempt for attempt in self.attempts if attempt.get("status") == "failed"]
+        failed = failures[-1] if failures else None
+        return {
+            "attempt_count": len(self.attempts),
+            "success_count": len(successes),
+            "failure_count": len(failures),
+            "failed_request_id": failed.get("request_id") if failed else None,
+            "failed_error": failed.get("error") if failed else None,
+            "attempts": self.attempts,
+        }
+
+
 def utc_now() -> str:
     return datetime.now(timezone.utc).isoformat(timespec="seconds").replace("+00:00", "Z")
 
@@ -146,6 +196,85 @@ def response_items(result: dict[str, Any], label: str) -> list[dict[str, Any]]:
     return []
 
 
+def response_has_more(response: dict[str, Any]) -> bool:
+    for key in ("has_more", "has_more_results", "has_next_page"):
+        if key in response:
+            return bool(response[key])
+    return False
+
+
+def response_next_cursor(response: dict[str, Any]) -> str | None:
+    for key in ("next_cursor", "cursor", "next_page_cursor", "next_page_token"):
+        value = response.get(key)
+        if isinstance(value, str) and value.strip():
+            return value
+    return None
+
+
+def list_entities(
+    provider: Provider,
+    *,
+    entity_type: str,
+    search: str,
+    label: str,
+    parent_folder_id: str | None = None,
+) -> list[dict[str, Any]]:
+    items: list[dict[str, Any]] = []
+    cursor: str | None = None
+    seen_cursors: set[str] = set()
+    for page_index in range(MAX_LIST_PAGES):
+        params: dict[str, Any] = {
+            "types": entity_type,
+            "page_size": 100,
+            "search": search,
+        }
+        if parent_folder_id is not None:
+            params["parent_folder_id"] = parent_folder_id
+        if cursor is not None:
+            params["cursor"] = cursor
+        endpoint = "/v1/convai/agent-testing?" + query_string(params)
+        result = provider.request("GET", endpoint)
+        response = response_object(result, f"{label} page {page_index + 1}")
+        items.extend(response_items(result, f"{label} page {page_index + 1}"))
+        if not response_has_more(response):
+            return items
+        next_cursor = response_next_cursor(response)
+        if next_cursor is None:
+            raise GuardError(f"{label} pagination has_more without a next cursor")
+        if next_cursor in seen_cursors:
+            raise GuardError(f"{label} pagination cursor cycle detected at {next_cursor!r}")
+        seen_cursors.add(next_cursor)
+        cursor = next_cursor
+    raise GuardError(f"{label} pagination exceeded page cap {MAX_LIST_PAGES}")
+
+
+def mutating_request(
+    provider: Provider,
+    ledger: OperationLedger,
+    *,
+    request_id: str,
+    operation: str,
+    method: str,
+    endpoint: str,
+    body: dict[str, Any] | None,
+    timeout_seconds: int = 20,
+) -> dict[str, Any]:
+    attempt = ledger.start(
+        request_id=request_id,
+        operation=operation,
+        method=method,
+        endpoint=endpoint,
+        body=body,
+    )
+    try:
+        result = provider.request(method, endpoint, body=body, timeout_seconds=timeout_seconds)
+    except Exception as exc:
+        ledger.failure(attempt, exc)
+        raise
+    ledger.success(attempt, result)
+    return result
+
+
 def load_expected_bodies() -> dict[str, dict[str, Any]]:
     requests = load_baseline_tests(str(TESTS_PATH), package_id=CHECKPOINT_ID)
     bodies: dict[str, dict[str, Any]] = {}
@@ -201,18 +330,16 @@ def parent_folder_id(item: dict[str, Any]) -> str | None:
 
 
 def list_folders(provider: Provider) -> tuple[dict[str, Any] | None, int]:
-    endpoint = "/v1/convai/agent-testing?" + query_string(
-        {
-            "types": "folder",
-            "page_size": 100,
-            "parent_folder_id": "root",
-            "search": CHECKPOINT_ID,
-        }
+    items = list_entities(
+        provider,
+        entity_type="folder",
+        parent_folder_id="root",
+        search=CHECKPOINT_ID,
+        label="folder list",
     )
-    result = provider.request("GET", endpoint)
     exact = [
         item
-        for item in response_items(result, "folder list")
+        for item in items
         if item.get("name") == CHECKPOINT_ID and parent_folder_id(item) in (None, "root")
     ]
     if len(exact) > 1:
@@ -220,8 +347,16 @@ def list_folders(provider: Provider) -> tuple[dict[str, Any] | None, int]:
     return (exact[0] if exact else None), len(exact)
 
 
-def create_folder(provider: Provider) -> dict[str, Any]:
-    result = provider.request("POST", "/v1/convai/agent-testing/folders", body={"name": CHECKPOINT_ID})
+def create_folder(provider: Provider, ledger: OperationLedger) -> dict[str, Any]:
+    result = mutating_request(
+        provider,
+        ledger,
+        request_id=f"create_folder::{CHECKPOINT_ID}",
+        operation="create-folder",
+        method="POST",
+        endpoint="/v1/convai/agent-testing/folders",
+        body={"name": CHECKPOINT_ID},
+    )
     folder = response_object(result, "create folder")
     folder_id = folder.get("id")
     if not isinstance(folder_id, str) or not folder_id:
@@ -230,16 +365,13 @@ def create_folder(provider: Provider) -> dict[str, Any]:
 
 
 def list_tests(provider: Provider, *, folder_id: str | None) -> list[dict[str, Any]]:
-    params: dict[str, Any] = {
-        "types": "simulation",
-        "page_size": 100,
-        "search": f"{CHECKPOINT_ID}::",
-    }
-    if folder_id is not None:
-        params["parent_folder_id"] = folder_id
-    endpoint = "/v1/convai/agent-testing?" + query_string(params)
-    result = provider.request("GET", endpoint)
-    return response_items(result, "test list")
+    return list_entities(
+        provider,
+        entity_type="simulation",
+        parent_folder_id=folder_id,
+        search=f"{CHECKPOINT_ID}::",
+        label="test list",
+    )
 
 
 def get_test(provider: Provider, test_id: str) -> dict[str, Any]:
@@ -247,7 +379,7 @@ def get_test(provider: Provider, test_id: str) -> dict[str, Any]:
     return response_object(result, f"test {test_id}")
 
 
-def ensure_folder(provider: Provider) -> dict[str, Any]:
+def ensure_folder(provider: Provider, ledger: OperationLedger) -> dict[str, Any]:
     folder, exact_count = list_folders(provider)
     if folder is not None:
         folder_id = provider_id(folder)
@@ -266,7 +398,7 @@ def ensure_folder(provider: Provider) -> dict[str, Any]:
     ]
     if orphaned_exact_tests:
         raise GuardError(f"exact 040 tests exist without the exact 040 folder: {orphaned_exact_tests!r}")
-    created = create_folder(provider)
+    created = create_folder(provider, ledger)
     return {
         "name": CHECKPOINT_ID,
         "folder_id": provider_id(created),
@@ -334,6 +466,7 @@ def discover_tests(
 def create_missing_tests(
     provider: Provider,
     *,
+    ledger: OperationLedger,
     existing: dict[str, dict[str, Any]],
     expected_bodies: dict[str, dict[str, Any]],
 ) -> dict[str, dict[str, Any]]:
@@ -342,7 +475,15 @@ def create_missing_tests(
         if source_id in existing:
             continue
         body = expected_bodies[source_id]
-        result = provider.request("POST", "/v1/convai/agent-testing/create", body=body)
+        result = mutating_request(
+            provider,
+            ledger,
+            request_id=f"create_test::{source_id}",
+            operation="create-test",
+            method="POST",
+            endpoint="/v1/convai/agent-testing/create",
+            body=body,
+        )
         response = response_object(result, f"create {source_id}")
         test_id = provider_id(response)
         created[source_id] = {
@@ -354,13 +495,23 @@ def create_missing_tests(
     return created
 
 
-def move_created_tests(provider: Provider, *, created: dict[str, dict[str, Any]], folder_id: str) -> None:
+def move_created_tests(
+    provider: Provider,
+    *,
+    ledger: OperationLedger,
+    created: dict[str, dict[str, Any]],
+    folder_id: str,
+) -> None:
     ids = [created[source_id]["provider_test_id"] for source_id in EXPECTED_TEST_IDS if source_id in created]
     if not ids:
         return
-    provider.request(
-        "POST",
-        "/v1/convai/agent-testing/bulk-move",
+    mutating_request(
+        provider,
+        ledger,
+        request_id=f"move_created_tests::{folder_id}",
+        operation="move-created-tests",
+        method="POST",
+        endpoint="/v1/convai/agent-testing/bulk-move",
         body={"entity_ids": ids, "move_to": folder_id},
     )
 
@@ -434,6 +585,7 @@ def completed_terminal_statuses(invocation: dict[str, Any], *, expected_run_coun
 def run_tests_once(
     provider: Provider,
     *,
+    ledger: OperationLedger,
     provider_test_ids_by_source: dict[str, str],
     wait_timeout_seconds: int,
     poll_interval_seconds: float,
@@ -442,9 +594,13 @@ def run_tests_once(
         "tests": [{"test_id": provider_test_ids_by_source[source_id]} for source_id in EXPECTED_TEST_IDS],
         "repeat_count": 1,
     }
-    run_result = provider.request(
-        "POST",
-        f"/v1/convai/agents/{quote(AGENT_ID, safe='')}/run-tests",
+    run_result = mutating_request(
+        provider,
+        ledger,
+        request_id=f"run_tests::{AGENT_ID}",
+        operation="run-tests",
+        method="POST",
+        endpoint=f"/v1/convai/agents/{quote(AGENT_ID, safe='')}/run-tests",
         body=run_body,
         timeout_seconds=60,
     )
@@ -491,7 +647,7 @@ def run_tests_once(
 
 
 def execute_with_provider(
-    provider: Provider,
+    provider: Provider | None,
     *,
     output_dir: Path = OUT_DIR,
     live: bool,
@@ -520,16 +676,24 @@ def execute_with_provider(
         }
         return plan
 
+    if provider is None:
+        raise GuardError("live execution requires a provider")
+    ledger = OperationLedger()
     try:
         expected_bodies = load_expected_bodies()
-        folder = ensure_folder(provider)
+        folder = ensure_folder(provider, ledger)
         existing, duplicate_prevention = discover_tests(
             provider,
             folder_id=folder["folder_id"],
             expected_bodies=expected_bodies,
         )
-        created = create_missing_tests(provider, existing=existing, expected_bodies=expected_bodies)
-        move_created_tests(provider, created=created, folder_id=folder["folder_id"])
+        created = create_missing_tests(
+            provider,
+            ledger=ledger,
+            existing=existing,
+            expected_bodies=expected_bodies,
+        )
+        move_created_tests(provider, ledger=ledger, created=created, folder_id=folder["folder_id"])
         all_records = {**existing, **created}
         if set(all_records) != set(EXPECTED_TEST_IDS):
             missing = [source_id for source_id in EXPECTED_TEST_IDS if source_id not in all_records]
@@ -548,11 +712,13 @@ def execute_with_provider(
         }
         result = run_tests_once(
             provider,
+            ledger=ledger,
             provider_test_ids_by_source=provider_ids,
             wait_timeout_seconds=wait_timeout_seconds,
             poll_interval_seconds=poll_interval_seconds,
         )
         result["folder_id"] = folder["folder_id"]
+        result["operation_ledger"] = ledger.payload()
         write_json(output_dir / "live_test_run_result.json", result)
         return {"status": result["status"], "mapping": mapping, "run_result": result}
     except Exception as exc:
@@ -561,14 +727,14 @@ def execute_with_provider(
             "captured_at_utc": utc_now(),
             "status": "failed",
             "error": safe_error(exc),
-            "api_failure_count": 1,
+            "operation_ledger": ledger.payload(),
             "outbound_calls_made": False,
         }
         write_json(output_dir / "live_test_run_result.json", failure)
         raise
 
 
-def parse_args() -> argparse.Namespace:
+def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Guard and run the ELEVENLABS-040 dashboard tests.")
     parser.add_argument("--dry-run", action="store_true", help="Plan only. This is the default and makes no provider calls.")
     parser.add_argument(
@@ -579,15 +745,15 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument("--wait-timeout-seconds", type=int, default=420)
     parser.add_argument("--poll-interval-seconds", type=float, default=2.0)
-    return parser.parse_args()
+    return parser.parse_args(argv)
 
 
-def main() -> int:
-    args = parse_args()
-    live = args.confirm_test_creation_and_run == CONFIRMATION
+def main(argv: list[str] | None = None) -> int:
+    args = parse_args(argv)
+    live = args.confirm_test_creation_and_run == CONFIRMATION and not args.dry_run
     if not live:
         plan = execute_with_provider(
-            provider=ElevenLabsProvider(api_key=""),
+            provider=None,
             live=False,
             wait_timeout_seconds=args.wait_timeout_seconds,
             poll_interval_seconds=args.poll_interval_seconds,
