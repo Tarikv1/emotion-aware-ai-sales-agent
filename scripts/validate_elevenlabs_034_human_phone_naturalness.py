@@ -193,13 +193,13 @@ def assert_prompt_and_kb() -> None:
         (
             "Website Complexity Ballpark Menu",
             "{{website_basic_site_range}}",
-            "default `$1,000-$2,000`",
+            "default `$900-$1,500`",
             "{{website_light_feature_range}}",
-            "default `$2,000-$3,000`",
+            "default `$1,800-$3,000`",
             "{{website_workflow_content_range}}",
-            "default `$3,000-$4,000`",
+            "default `$2,800-$4,500`",
             "{{website_integration_heavy_range}}",
-            "default `$4,000-$5,000`",
+            "default `$4,000-$6,500`",
             "{{website_custom_scope_note}}",
             "ballpark ranges, not final quotes",
             "One feature does not automatically determine the price",
@@ -381,10 +381,10 @@ def assert_operator_notes() -> None:
 def assert_dynamic_defaults() -> None:
     defaults = read_json(DYNAMIC_DEFAULTS)
     expected = {
-        "website_basic_site_range": "$1,000-$2,000",
-        "website_light_feature_range": "$2,000-$3,000",
-        "website_workflow_content_range": "$3,000-$4,000",
-        "website_integration_heavy_range": "$4,000-$5,000",
+        "website_basic_site_range": "$900-$1,500",
+        "website_light_feature_range": "$1,800-$3,000",
+        "website_workflow_content_range": "$2,800-$4,500",
+        "website_integration_heavy_range": "$4,000-$6,500",
     }
     for key, value in expected.items():
         assert_condition(defaults.get(key) == value, f"dynamic defaults missing {key}: {value}")
