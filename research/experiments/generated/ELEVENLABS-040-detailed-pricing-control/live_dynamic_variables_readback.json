@@ -1,12 +1,12 @@
 {
   "checkpoint_id": "ELEVENLABS-040-detailed-pricing-control",
-  "captured_at_utc": "2026-07-11T11:56:59Z",
+  "captured_at_utc": "2026-07-11T12:09:43Z",
   "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
   "dynamic_variables": {
     "dynamic_variable_placeholders": {
-      "business_name": "Mike's Kitchen",
-      "business_type": "restaurant",
-      "city": "Austin",
+      "business_name": "[REDACTED_DYNAMIC_PLACEHOLDER]",
+      "business_type": "[REDACTED_DYNAMIC_PLACEHOLDER]",
+      "city": "[REDACTED_DYNAMIC_PLACEHOLDER]",
       "website_basic_site_range": "$1,000-$2,000",
       "website_light_feature_range": "$2,000-$3,000",
       "website_workflow_content_range": "$3,000-$4,000",

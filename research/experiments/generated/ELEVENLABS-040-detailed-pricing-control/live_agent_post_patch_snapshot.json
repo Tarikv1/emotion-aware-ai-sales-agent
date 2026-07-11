@@ -1,7 +1,7 @@
 {
   "checkpoint_id": "ELEVENLABS-040-detailed-pricing-control",
   "phase": "not_written",
-  "captured_at_utc": "2026-07-11T11:56:59Z",
+  "captured_at_utc": "2026-07-11T12:09:42Z",
   "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
   "agent_name": "web design",
   "simulations_run": false,
@@ -94,9 +94,9 @@
         "hinglish_mode": false,
         "dynamic_variables": {
           "dynamic_variable_placeholders": {
-            "business_name": "Mike's Kitchen",
-            "business_type": "restaurant",
-            "city": "Austin",
+            "business_name": "[REDACTED_DYNAMIC_PLACEHOLDER]",
+            "business_type": "[REDACTED_DYNAMIC_PLACEHOLDER]",
+            "city": "[REDACTED_DYNAMIC_PLACEHOLDER]",
             "website_basic_site_range": "$1,000-$2,000",
             "website_light_feature_range": "$2,000-$3,000",
             "website_workflow_content_range": "$3,000-$4,000",
@@ -808,17 +808,7 @@
           "is_omitted": false,
           "llm": null
         },
-        "contact_name": {
-          "type": "string",
-          "description": "Name the buyer gives for themselves or the decision maker. Use null if missing or unclear.",
-          "enum": null,
-          "is_system_provided": false,
-          "dynamic_variable": "",
-          "allowed_values_dynamic_variable": "",
-          "constant_value": "",
-          "is_omitted": false,
-          "llm": null
-        },
+        "contact_name": "[REDACTED_DYNAMIC_PLACEHOLDER]",
         "email": "[REDACTED]",
         "callback_window": {
           "type": "string",
@@ -831,17 +821,7 @@
           "is_omitted": false,
           "llm": null
         },
-        "business_name": {
-          "type": "string",
-          "description": "Business name from variables or transcript. Use null if missing or unclear.",
-          "enum": null,
-          "is_system_provided": false,
-          "dynamic_variable": "",
-          "allowed_values_dynamic_variable": "",
-          "constant_value": "",
-          "is_omitted": false,
-          "llm": null
-        },
+        "business_name": "[REDACTED_DYNAMIC_PLACEHOLDER]",
         "vertical": {
           "type": "string",
           "description": "Business vertical such as salon, mechanic, plumber, restaurant, dental, cleaning, HVAC, or unknown. Use null if missing or unclear.",
@@ -977,10 +957,10 @@
       },
       "data_collection_scopes": {
         "buyer_role": "conversation",
-        "contact_name": "conversation",
+        "contact_name": "[REDACTED_DYNAMIC_PLACEHOLDER]",
         "email": "[REDACTED]",
         "callback_window": "conversation",
-        "business_name": "conversation",
+        "business_name": "[REDACTED_DYNAMIC_PLACEHOLDER]",
         "vertical": "conversation",
         "buyer_state": "conversation",
         "objection_type": "conversation",
@@ -1393,9 +1373,9 @@
       "reasoning_effort": "none"
     },
     "dynamic_variable_placeholders_after_patch": {
-      "business_name": "Mike's Kitchen",
-      "business_type": "restaurant",
-      "city": "Austin",
+      "business_name": "[REDACTED_DYNAMIC_PLACEHOLDER]",
+      "business_type": "[REDACTED_DYNAMIC_PLACEHOLDER]",
+      "city": "[REDACTED_DYNAMIC_PLACEHOLDER]",
       "website_basic_site_range": "$900-$1,500",
       "website_light_feature_range": "$1,800-$3,000",
       "website_workflow_content_range": "$2,800-$4,500",

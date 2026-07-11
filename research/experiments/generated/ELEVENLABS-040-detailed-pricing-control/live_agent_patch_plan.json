@@ -6,6 +6,8 @@
   "authorization_confirmed": false,
   "provider_writes_allowed": false,
   "provider_writes_made": false,
+  "provider_write_attempt_count": 0,
+  "provider_write_success_count": 0,
   "target_llm_preserved": {
     "llm": "gpt-5.5",
     "temperature": 0.1,
@@ -195,9 +197,9 @@
       "reasoning_effort": "none"
     },
     "dynamic_variable_placeholders_after_patch": {
-      "business_name": "Mike's Kitchen",
-      "business_type": "restaurant",
-      "city": "Austin",
+      "business_name": "[REDACTED_DYNAMIC_PLACEHOLDER]",
+      "business_type": "[REDACTED_DYNAMIC_PLACEHOLDER]",
+      "city": "[REDACTED_DYNAMIC_PLACEHOLDER]",
       "website_basic_site_range": "$900-$1,500",
       "website_light_feature_range": "$1,800-$3,000",
       "website_workflow_content_range": "$2,800-$4,500",

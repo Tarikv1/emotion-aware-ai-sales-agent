@@ -12,6 +12,7 @@ import copy
 import hashlib
 import json
 import os
+import re
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
@@ -58,6 +59,43 @@ TARGET_PRICE_VARIABLES = {
     "website_integration_heavy_range": "$4,000-$6,500",
     "website_premium_price_anchor": "$6,500",
 }
+APPROVED_DYNAMIC_PLACEHOLDER_VALUE_KEYS = set(TARGET_PRICE_VARIABLES) | {
+    "website_price_disclosure_rule",
+}
+SENSITIVE_DYNAMIC_CONTEXT_KEYS = {
+    "address",
+    "business_address",
+    "business_city",
+    "business_email",
+    "business_name",
+    "business_phone",
+    "business_type",
+    "city",
+    "company_name",
+    "contact_email",
+    "contact_name",
+    "contact_phone",
+    "customer_email",
+    "customer_name",
+    "customer_phone",
+    "domain",
+    "email",
+    "owner_email",
+    "owner_name",
+    "owner_phone",
+    "phone",
+    "prospect_email",
+    "prospect_name",
+    "prospect_phone",
+    "state",
+    "website",
+    "website_url",
+}
+SENSITIVE_DYNAMIC_CONTEXT_RE = re.compile(
+    r"(?:business|company|contact|customer|prospect|owner).*(?:name|type|city|address|email|phone|website|domain)"
+    r"|(?:city|address|email|phone|website|domain)$",
+    re.IGNORECASE,
+)
 KB_DOCS = (
     "atlas_offer_facts.md",
     "atlas_price_scope_cost_drivers.md",
@@ -82,7 +120,44 @@ def write_json(path: Path, payload: dict[str, Any]) -> None:
     path.write_text(json.dumps(payload, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
 
 
-def sanitize(value: Any) -> Any:
+def should_redact_dynamic_placeholder(key: str) -> bool:
+    return key not in APPROVED_DYNAMIC_PLACEHOLDER_VALUE_KEYS
+
+
+def should_redact_context_key(key: str) -> bool:
+    normalized = key.strip().lower()
+    return normalized in SENSITIVE_DYNAMIC_CONTEXT_KEYS or bool(SENSITIVE_DYNAMIC_CONTEXT_RE.fullmatch(normalized))
+
+
+def redacted_dynamic_value(value: Any) -> Any:
+    if value in (None, "", [], {}):
+        return value
+    return "[REDACTED_DYNAMIC_PLACEHOLDER]"
+
+
+def sanitize(value: Any, *, key_hint: str = "", in_dynamic_placeholders: bool = False) -> Any:
+    if in_dynamic_placeholders and should_redact_dynamic_placeholder(key_hint):
+        return redacted_dynamic_value(value)
+    if should_redact_context_key(key_hint):
+        return redacted_dynamic_value(value)
+    if isinstance(value, dict):
+        clean: dict[str, Any] = {}
+        for raw_key, raw_value in value.items():
+            key = str(raw_key)
+            if key == "dynamic_variable_placeholders" and isinstance(raw_value, dict):
+                clean[key] = {
+                    str(placeholder_key): sanitize(
+                        placeholder_value,
+                        key_hint=str(placeholder_key),
+                        in_dynamic_placeholders=True,
+                    )
+                    for placeholder_key, placeholder_value in raw_value.items()
+                }
+            else:
+                clean[key] = sanitize(raw_value, key_hint=key)
+        return guards.sanitize(clean)
+    if isinstance(value, list):
+        return [sanitize(item, key_hint=key_hint, in_dynamic_placeholders=in_dynamic_placeholders) for item in value]
     return guards.sanitize(value)
 
 
@@ -243,6 +318,58 @@ def assert_fingerprint_matches(label: str, expected: dict[str, Any], actual: dic
         raise ValueError(f"{label} protected fingerprint mismatch: expected={sanitize(expected)!r}, actual={sanitize(actual)!r}")
 
 
+class ProviderWriteLedger:
+    def __init__(self) -> None:
+        self.attempts: list[dict[str, Any]] = []
+        self.successes: list[dict[str, Any]] = []
+
+    def record_attempt(self, request: dict[str, Any]) -> None:
+        self.attempts.append(
+            {
+                "request_id": request.get("request_id"),
+                "method": request.get("method"),
+                "endpoint": request.get("endpoint"),
+                "attempted_at_utc": utc_now(),
+            }
+        )
+
+    def record_success(self, request: dict[str, Any], response: dict[str, Any]) -> None:
+        self.successes.append(
+            {
+                "request_id": request.get("request_id"),
+                "status_code": response.get("status_code"),
+                "response": sanitize(response.get("response")),
+                "confirmed_at_utc": utc_now(),
+            }
+        )
+
+    def summary(self) -> dict[str, Any]:
+        return {
+            "provider_writes_made": bool(self.attempts),
+            "provider_write_attempt_count": len(self.attempts),
+            "provider_write_success_count": len(self.successes),
+            "provider_write_attempts": sanitize(self.attempts),
+            "provider_write_successes": sanitize(self.successes),
+        }
+
+    def failure_payload(self, *, checkpoint_id: str, error: str) -> dict[str, Any]:
+        return {
+            "checkpoint_id": checkpoint_id,
+            "status": "failed",
+            **self.summary(),
+            "error": error,
+            "simulations_run": False,
+            "outbound_calls_made": False,
+        }
+
+
+def attempt_provider_write(ledger: ProviderWriteLedger, request: dict[str, Any], operation: Any) -> dict[str, Any]:
+    ledger.record_attempt(request)
+    response = operation()
+    ledger.record_success(request, response)
+    return response
+
+
 def patch_requests(agent: dict[str, Any], preflight: dict[str, Any]) -> list[dict[str, Any]]:
     requests: list[dict[str, Any]] = []
     for name in KB_DOCS:
@@ -341,6 +468,8 @@ def write_plan_only_outputs(agent: dict[str, Any], preflight: dict[str, Any], re
             "authorization_confirmed": False,
             "provider_writes_allowed": False,
             "provider_writes_made": False,
+            "provider_write_attempt_count": 0,
+            "provider_write_success_count": 0,
             "target_llm_preserved": TARGET_LLM,
             "target_price_variables": TARGET_PRICE_VARIABLES,
             "kb_documents_planned_for_in_place_update": list(KB_DOCS),
@@ -370,6 +499,8 @@ def write_plan_only_outputs(agent: dict[str, Any], preflight: dict[str, Any], re
             "checkpoint_id": CHECKPOINT_ID,
             "provider_writes_allowed": False,
             "provider_writes_made": False,
+            "provider_write_attempt_count": 0,
+            "provider_write_success_count": 0,
             "requests": requests,
         },
     )
@@ -379,6 +510,10 @@ def write_plan_only_outputs(agent: dict[str, Any], preflight: dict[str, Any], re
             "checkpoint_id": CHECKPOINT_ID,
             "status": status,
             "provider_writes_made": False,
+            "provider_write_attempt_count": 0,
+            "provider_write_success_count": 0,
+            "provider_write_attempts": [],
+            "provider_write_successes": [],
             "required_confirmation": CONFIRM_TOKEN,
             "simulations_run": False,
             "outbound_calls_made": False,
@@ -390,35 +525,42 @@ def write_plan_only_outputs(agent: dict[str, Any], preflight: dict[str, Any], re
     write_json(OUT_DIR / "unrelated_tool_fingerprint_after.json", {"checkpoint_id": CHECKPOINT_ID, "fingerprint": fingerprint})
 
 
-def write_provider_changes(*, api_key: str, agent: dict[str, Any], preflight: dict[str, Any], requests: list[dict[str, Any]]) -> tuple[dict[str, Any], list[dict[str, Any]]]:
+def write_provider_changes(
+    *,
+    api_key: str,
+    agent: dict[str, Any],
+    preflight: dict[str, Any],
+    requests: list[dict[str, Any]],
+    ledger: ProviderWriteLedger,
+) -> dict[str, Any]:
     expected_before = protected_fingerprint(agent, preflight)
-    results: list[dict[str, Any]] = []
     for request in requests:
         request_id = request["request_id"]
         if request_id.startswith("update_kb_file::"):
             name = request_id.split("::", 1)[1]
             source_path = KB_ROOT / name
-            response = multipart_update_file(
-                api_key=api_key,
-                documentation_id=KNOWN_KB_DOC_IDS[name],
-                source_path=source_path,
+            attempt_provider_write(
+                ledger,
+                request,
+                lambda name=name, source_path=source_path: multipart_update_file(
+                    api_key=api_key,
+                    documentation_id=KNOWN_KB_DOC_IDS[name],
+                    source_path=source_path,
+                ),
             )
         elif request_id == "patch_agent::prompt_dynamic_variables":
-            response = json_request(
-                "PATCH",
-                f"/v1/convai/agents/{quote(AGENT_ID, safe='')}",
-                api_key=api_key,
-                body=patch_body(agent),
+            attempt_provider_write(
+                ledger,
+                request,
+                lambda: json_request(
+                    "PATCH",
+                    f"/v1/convai/agents/{quote(AGENT_ID, safe='')}",
+                    api_key=api_key,
+                    body=patch_body(agent),
+                ),
             )
         else:
             raise ValueError(f"unknown write request {request_id}")
-        results.append(
-            {
-                "request_id": request_id,
-                "status_code": response.get("status_code"),
-                "response": sanitize(response.get("response")),
-            }
-        )
 
     post = json_request("GET", f"/v1/convai/agents/{quote(AGENT_ID, safe='')}", api_key=api_key)["response"]
     if not isinstance(post, dict):
@@ -431,7 +573,7 @@ def write_provider_changes(*, api_key: str, agent: dict[str, Any], preflight: di
     for key, expected in TARGET_PRICE_VARIABLES.items():
         if placeholders.get(key) != expected:
             raise ValueError(f"post-patch dynamic variable {key} mismatch")
-    return post, results
+    return post
 
 
 def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
@@ -448,7 +590,7 @@ def main(argv: list[str] | None = None) -> int:
         return 2
 
     OUT_DIR.mkdir(parents=True, exist_ok=True)
-    results: list[dict[str, Any]] = []
+    ledger = ProviderWriteLedger()
     before_agent: dict[str, Any] | None = None
     before_preflight: dict[str, Any] | None = None
     try:
@@ -474,16 +616,33 @@ def main(argv: list[str] | None = None) -> int:
             )
             return 0
 
-        post_agent, results = write_provider_changes(
+        post_agent = write_provider_changes(
             api_key=api_key,
             agent=before_agent,
             preflight=before_preflight,
             requests=requests,
+            ledger=ledger,
         )
         post_preflight = validate_preflight(post_agent)
         write_json(OUT_DIR / "live_agent_pre_patch_snapshot.json", snapshot_payload(phase="pre_patch", agent=before_agent, preflight=before_preflight))
-        write_json(OUT_DIR / "live_agent_patch_plan.json", {"checkpoint_id": CHECKPOINT_ID, "provider_writes_allowed": True, "preflight": sanitize(before_preflight)})
-        write_json(OUT_DIR / "live_agent_patch_requests.json", {"checkpoint_id": CHECKPOINT_ID, "provider_writes_allowed": True, "requests": requests})
+        write_json(
+            OUT_DIR / "live_agent_patch_plan.json",
+            {
+                "checkpoint_id": CHECKPOINT_ID,
+                "provider_writes_allowed": True,
+                **ledger.summary(),
+                "preflight": sanitize(before_preflight),
+            },
+        )
+        write_json(
+            OUT_DIR / "live_agent_patch_requests.json",
+            {
+                "checkpoint_id": CHECKPOINT_ID,
+                "provider_writes_allowed": True,
+                **ledger.summary(),
+                "requests": requests,
+            },
+        )
         write_json(OUT_DIR / "live_agent_post_patch_snapshot.json", snapshot_payload(phase="post_patch", agent=post_agent, preflight=post_preflight))
         write_json(OUT_DIR / "live_dynamic_variables_readback.json", dynamic_variables_readback(post_agent))
         write_json(OUT_DIR / "unrelated_tool_fingerprint_before.json", {"checkpoint_id": CHECKPOINT_ID, "fingerprint": protected_fingerprint(before_agent, before_preflight)})
@@ -493,8 +652,7 @@ def main(argv: list[str] | None = None) -> int:
             {
                 "checkpoint_id": CHECKPOINT_ID,
                 "status": "passed",
-                "provider_writes_made": True,
-                "writes": results,
+                **ledger.summary(),
                 "simulations_run": False,
                 "outbound_calls_made": False,
             },
@@ -503,18 +661,7 @@ def main(argv: list[str] | None = None) -> int:
         return 0
     except Exception as exc:
         error = safe_error_message(exc)
-        write_json(
-            OUT_DIR / "live_agent_patch_result.json",
-            {
-                "checkpoint_id": CHECKPOINT_ID,
-                "status": "failed",
-                "provider_writes_made": bool(results),
-                "writes": results,
-                "error": error,
-                "simulations_run": False,
-                "outbound_calls_made": False,
-            },
-        )
+        write_json(OUT_DIR / "live_agent_patch_result.json", ledger.failure_payload(checkpoint_id=CHECKPOINT_ID, error=error))
         write_json(
             OUT_DIR / "live_agent_post_patch_snapshot.json",
             snapshot_payload(phase="failed", agent=before_agent, preflight=before_preflight, error=error),

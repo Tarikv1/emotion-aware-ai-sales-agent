@@ -313,9 +313,124 @@ def validate_tests() -> None:
     )
 
 
+def import_live_patcher() -> Any:
+    scripts_path = str(ROOT / "scripts")
+    if scripts_path not in sys.path:
+        sys.path.insert(0, scripts_path)
+    import apply_elevenlabs_040_detailed_pricing_control as patcher
+
+    return patcher
+
+
+def sample_agent_for_patcher() -> dict[str, Any]:
+    return {
+        "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+        "name": "web design",
+        "conversation_config": {
+            "agent": {
+                "first_message": "Hello.",
+                "dynamic_variables": {
+                    "dynamic_variable_placeholders": {
+                        "business_name": "Acme Dental",
+                        "business_type": "dental clinic",
+                        "city": "Phoenix",
+                        "website_basic_site_range": "$100-$200",
+                        "unrelated_operational_flag": "keep-me-structurally",
+                    }
+                },
+                "prompt": {
+                    "prompt": "Atlas Web Studio\nMission: earn permission",
+                    "llm": "gpt-5.5",
+                    "temperature": 0.1,
+                    "thinking_budget": None,
+                    "reasoning_effort": "none",
+                    "tools": [],
+                    "built_in_tools": {"end_call": {"name": "end_call"}},
+                    "tool_ids": [],
+                    "mcp_server_ids": [],
+                    "native_mcp_server_ids": [],
+                },
+            },
+            "tts": {"voice_id": "voice_123"},
+        },
+        "platform_settings": {
+            "evaluation": {
+                "criteria": [{"id": f"criterion_{index:02d}"} for index in range(30)]
+            }
+        },
+        "phone_numbers": [],
+        "whatsapp_accounts": [],
+        "procedures": [],
+    }
+
+
+def validate_live_patcher_semantics() -> None:
+    patcher = import_live_patcher()
+    agent = sample_agent_for_patcher()
+
+    parsed = patcher.parse_args([])
+    assert_condition(getattr(parsed, "confirm_provider_write") is None, "040 patcher must dry-run by default")
+
+    body = patcher.patch_body(agent)
+    assert_condition(set(body) == {"conversation_config"}, "patch_body top-level keys must stay minimal")
+    agent_body = body.get("conversation_config", {}).get("agent", {})
+    assert_condition(set(agent_body) == {"prompt", "dynamic_variables"}, "patch_body agent keys must stay prompt/dynamic-only")
+    assert_condition(set(agent_body.get("prompt", {})) == {"prompt"}, "patch_body prompt keys must stay prompt-text-only")
+    placeholders = agent_body["dynamic_variables"]["dynamic_variable_placeholders"]
+    assert_condition(placeholders["business_name"] == "Acme Dental", "merge must preserve unrelated placeholder values in live PATCH body")
+    for key, expected in EXPECTED_PRICE_DEFAULTS.items():
+        assert_condition(placeholders.get(key) == expected, f"patch_body must merge exact {key}")
+    assert_condition(len(set(EXPECTED_PRICE_DEFAULTS) & set(placeholders)) == 6, "patch_body must expose exactly six approved price defaults")
+
+    redacted = patcher.sanitize(
+        {
+            "dynamic_variable_placeholders": {
+                "business_name": "Acme Dental",
+                "business_type": "dental clinic",
+                "city": "Phoenix",
+                "owner_email": "owner@example.com",
+                "owner_phone": "+1 212 555 0188",
+                "website_basic_site_range": "$900-$1,500",
+                "website_price_disclosure_rule": "only after price intent",
+            }
+        }
+    )
+    rendered = json.dumps(redacted, sort_keys=True)
+    for forbidden in ("Acme Dental", "dental clinic", "Phoenix", "owner@example.com", "212 555 0188"):
+        assert_condition(forbidden not in rendered, f"sanitized evidence leaked synthetic customer value {forbidden!r}")
+    redacted_placeholders = redacted["dynamic_variable_placeholders"]
+    for key in ("business_name", "business_type", "city", "owner_email", "owner_phone"):
+        assert_condition(key in redacted_placeholders, f"sanitized evidence must preserve placeholder key {key}")
+        assert_condition(str(redacted_placeholders[key]).startswith("[REDACTED"), f"sanitized placeholder {key} must redact value")
+    assert_condition(redacted_placeholders["website_basic_site_range"] == "$900-$1,500", "approved pricing placeholder must remain visible")
+    assert_condition(redacted_placeholders["website_price_disclosure_rule"] == "only after price intent", "approved control placeholder must remain visible")
+
+    ledger = patcher.ProviderWriteLedger()
+    request = {"request_id": "update_kb_file::atlas_offer_facts.md", "method": "PATCH", "endpoint": "/example"}
+
+    def failing_write() -> dict[str, Any]:
+        raise RuntimeError("PATCH failed with 503: provider unavailable")
+
+    try:
+        patcher.attempt_provider_write(ledger, request, failing_write)
+    except RuntimeError as exc:
+        assert_condition("503" in str(exc), "injected provider failure should preserve exact status text")
+    else:
+        fail("injected provider failure did not raise")
+    failure_payload = ledger.failure_payload(
+        checkpoint_id=CHECKPOINT_ID,
+        error="PATCH failed with 503: provider unavailable",
+    )
+    assert_condition(failure_payload["provider_writes_made"] is True, "attempted write must count as provider_writes_made")
+    assert_condition(failure_payload["provider_write_attempt_count"] == 1, "attempt count mismatch after injected failure")
+    assert_condition(failure_payload["provider_write_success_count"] == 0, "success count mismatch after injected failure")
+    assert_condition(failure_payload["provider_write_attempts"][0]["request_id"] == request["request_id"], "attempt request_id missing")
+
+
 def validate_live_patcher() -> None:
     patcher = read(PATCHER)
     assert_markers("040 live patcher", patcher, PATCHER_MARKERS)
+    validate_live_patcher_semantics()
 
 
 def main() -> int:
