@@ -64,6 +64,12 @@ EXPECTED_PRICE_DEFAULTS = {
     "website_premium_price_anchor": "$6,500",
 }
 
+EXPECTED_SHARED_CONTEXT_DEFAULTS = {
+    "business_name": "Acme Dental",
+    "business_type": "dental clinic",
+    "city": "Phoenix",
+}
+
 EXPECTED_TEST_IDS = [
     "sim_040_capability_question_no_unprompted_price",
     "sim_040_free_mockup_question_no_paid_price",
@@ -75,6 +81,59 @@ EXPECTED_TEST_IDS = [
     "sim_040_portal_requires_scope",
     "sim_040_budget_fit_direct_answer",
     "sim_040_care_plan_only_when_asked",
+]
+
+EXPECTED_TEST_CRITERIA = [
+    (
+        "Buyer asks whether Atlas can add booking, CRM, and payments but never asks cost.",
+        "Pass: confident capability answer, no dollar amount, range, package, starting price, or care-plan price.",
+        8,
+    ),
+    (
+        "Buyer asks whether the mockup is really free and whether there is a catch.",
+        "Pass: process-risk answer only; no paid website price.",
+        8,
+    ),
+    (
+        "Buyer explicitly asks what a basic three-to-five-page local-business site costs.",
+        "Pass: one `$900-$1,500` whole-project range and one relevant driver at most.",
+        6,
+    ),
+    (
+        "Buyer states they have an existing compatible site and asks the cost of adding a simple appointment-request form.",
+        "Pass: one `$100-$250` add-on range; no whole-site package dump.",
+        6,
+    ),
+    (
+        "Buyer asks what a new straightforward site with a simple request form costs, then asks about live calendar integration.",
+        "Pass: `$900-$1,500` for simple request; later one higher relevant band for live integration; no add-on/whole-site confusion.",
+        10,
+    ),
+    (
+        "Buyer asks for a new site with booking, CRM, payments, service-area pages, and a blog, then asks total cost.",
+        "Pass: one likely whole-project band and scope driver; no arithmetic sum or feature-menu recital.",
+        8,
+    ),
+    (
+        "Buyer has an existing compatible site and asks what a direct CRM integration costs.",
+        "Pass: `$1,000-$2,500+`, an API/data-flow caveat, and no claim that every behavior is included.",
+        8,
+    ),
+    (
+        "Buyer asks how much a parent portal with accounts and progress dashboards costs.",
+        "Pass: no numeric quote or ceiling; scope accounts, data, permissions, security, and integrations.",
+        8,
+    ),
+    (
+        "Buyer says the budget is `$1,200` and asks whether a basic site fits.",
+        "Pass: direct fit answer against `$900-$1,500`; no unrelated package menu.",
+        6,
+    ),
+    (
+        "Buyer first asks about ordinary site capability, then explicitly asks monthly hosting and maintenance cost.",
+        "Pass: no care price before the ongoing-cost question; after it, one relevant `$79`, `$149`, or `$249` plan with scope.",
+        10,
+    ),
 ]
 
 EXPECTED_MODIFIED_PRODUCT_FILES = [
@@ -324,10 +383,24 @@ def validate_tests() -> None:
     assert_condition(upload_intent.get("knowledge_base_upload_required") is False, "040 manifest must not require KB upload")
 
     assert_condition(payload.get("package_id") == CHECKPOINT_ID, "040 package_id mismatch")
+    dynamic_variables = payload.get("dynamic_variables")
+    assert_condition(isinstance(dynamic_variables, dict), "040 dynamic_variables must be an object")
+    for key, expected in EXPECTED_SHARED_CONTEXT_DEFAULTS.items():
+        assert_condition(dynamic_variables.get(key) == expected, f"040 shared context {key} mismatch")
+    for key, expected in EXPECTED_PRICE_DEFAULTS.items():
+        assert_condition(dynamic_variables.get(key) == expected, f"040 shared dynamic variable {key} mismatch")
     tests = payload.get("tests")
     assert_condition(isinstance(tests, list), "040 tests must be a list")
     assert_condition(len(tests) == 10, "040 tests must contain exactly ten simulations")
     assert_condition([item.get("test_id") for item in tests] == EXPECTED_TEST_IDS, "040 test IDs/order mismatch")
+    assert_condition(
+        [
+            (item.get("simulation_scenario"), item.get("success_condition"), item.get("simulation_max_turns"))
+            for item in tests
+        ]
+        == EXPECTED_TEST_CRITERIA,
+        "040 scenarios/success conditions/turn limits changed",
+    )
     assert_condition(
         all(item.get("simulated_user_model") == "gemini-2.5-flash" for item in tests),
         "simulated-user model mismatch",

@@ -23,6 +23,7 @@ class FakeProvider:
         failure_message: str = "provider failed with xi-api-key=secret owner@example.com +1 212 555 0188",
         page_size: int | None = None,
         cycle_cursor: bool = False,
+        readback_mutation: dict[str, Any] | None = None,
     ) -> None:
         self.folders = list(folders or [])
         self.tests = list(tests or [])
@@ -30,9 +31,11 @@ class FakeProvider:
         self.failure_message = failure_message
         self.page_size = page_size
         self.cycle_cursor = cycle_cursor
+        self.readback_mutation = readback_mutation
         self.calls: list[dict[str, Any]] = []
         self.created_counter = 0
         self.invocation_polls = 0
+        self.last_run_test_ids: list[str] = []
 
     def request(
         self,
@@ -82,6 +85,22 @@ class FakeProvider:
                     if test.get("id") == entity_id or test.get("test_id") == entity_id:
                         test["folder_parent_id"] = body["move_to"]
             return {"status_code": 200, "response": {"moved": len(body["entity_ids"])}}
+        if method == "PUT" and endpoint.startswith("/v1/convai/agent-testing/"):
+            provider_id = endpoint.rsplit("/", 1)[-1]
+            for index, test in enumerate(self.tests):
+                if test.get("id") == provider_id or test.get("test_id") == provider_id:
+                    updated = {
+                        **body,
+                        "id": provider_id,
+                        "test_id": provider_id,
+                        "entity_type": test.get("entity_type", "simulation"),
+                        "folder_parent_id": test.get("folder_parent_id"),
+                    }
+                    if self.readback_mutation:
+                        updated.update(self.readback_mutation)
+                    self.tests[index] = updated
+                    return {"status_code": 200, "response": {"id": provider_id, "name": body["name"]}}
+            raise RuntimeError(f"test not found for PUT: {provider_id}")
         if method == "GET" and endpoint.startswith("/v1/convai/agent-testing/"):
             provider_id = endpoint.rsplit("/", 1)[-1]
             for test in self.tests:
@@ -89,6 +108,7 @@ class FakeProvider:
                     return {"status_code": 200, "response": dict(test)}
             raise RuntimeError(f"test not found: {provider_id}")
         if method == "POST" and endpoint.endswith("/run-tests"):
+            self.last_run_test_ids = [item["test_id"] for item in body["tests"]]
             return {
                 "status_code": 200,
                 "response": {
@@ -121,6 +141,7 @@ class FakeProvider:
                         }
                         for index, item in enumerate(self.tests, start=1)
                         if item.get("name") in runner.EXPECTED_NAMES
+                        and (not self.last_run_test_ids or (item.get("id") or item.get("test_id")) in self.last_run_test_ids)
                     ],
                 },
             }
@@ -177,6 +198,52 @@ def expected_provider_tests(folder_id: str = "tfld_existing") -> list[dict[str, 
             }
         )
     return tests
+
+
+def without_repair_context(test: dict[str, Any]) -> dict[str, Any]:
+    copy = json.loads(json.dumps(test))
+    for key in runner.REPAIR_CONTEXT_KEYS:
+        copy["dynamic_variables"].pop(key, None)
+    return copy
+
+
+def expected_pre_repair_tests(folder_id: str = "tfld_existing") -> list[dict[str, Any]]:
+    return [without_repair_context(test) for test in expected_provider_tests(folder_id=folder_id)]
+
+
+def mapping_for_tests(
+    tests: list[dict[str, Any]],
+    *,
+    folder_id: str = "tfld_existing",
+    folder_name: str | None = None,
+    created_in_this_run: bool = True,
+) -> dict[str, Any]:
+    by_source = {test["source_id"]: test for test in tests}
+    return {
+        "checkpoint_id": runner.CHECKPOINT_ID,
+        "folder": {
+            "name": folder_name or runner.CHECKPOINT_ID,
+            "folder_id": folder_id,
+            "created_in_this_run": True,
+            "reused_existing": False,
+            "parent_folder_id": "root",
+        },
+        "tests": [
+            {
+                "source_test_id": source_id,
+                "provider_test_name": by_source[source_id]["name"],
+                "provider_test_id": by_source[source_id]["id"],
+                "created_in_this_run": created_in_this_run,
+                "reused_existing": not created_in_this_run,
+                "body_canonical_sha256": runner.canonical_sha256(runner.load_expected_bodies()[source_id]),
+            }
+            for source_id in runner.EXPECTED_TEST_IDS
+        ],
+    }
+
+
+def write_mapping(path: Path, payload: dict[str, Any]) -> None:
+    path.write_text(json.dumps(payload, indent=2, ensure_ascii=True) + "\n", encoding="ascii")
 
 
 class RunnerTests(unittest.TestCase):
@@ -415,6 +482,190 @@ class RunnerTests(unittest.TestCase):
                     )
         self.assertEqual(exit_code, 0)
         provider_class.assert_not_called()
+
+    def test_repair_owned_context_puts_only_exact_missing_context_and_verifies(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            output_dir = Path(tmp)
+            mapping_path = output_dir / "live_test_mapping.json"
+            tests = expected_pre_repair_tests()
+            write_mapping(mapping_path, mapping_for_tests(tests))
+            provider = FakeProvider(
+                folders=[{"id": "tfld_existing", "name": runner.CHECKPOINT_ID, "entity_type": "folder", "folder_parent_id": "root"}],
+                tests=tests,
+            )
+            result = runner.execute_repair_owned_context(
+                provider,
+                mapping_path=mapping_path,
+                output_dir=output_dir,
+                live=True,
+            )
+
+        self.assertEqual(result["status"], "completed")
+        put_calls = [call for call in provider.calls if call["method"] == "PUT"]
+        self.assertEqual(len(put_calls), 10)
+        self.assertEqual(
+            [call["endpoint"] for call in put_calls],
+            [f"/v1/convai/agent-testing/test_existing_{index:02d}" for index in range(1, 11)],
+        )
+        self.assertEqual(put_calls[0]["body"]["dynamic_variables"]["business_name"], "Acme Dental")
+        self.assertEqual(result["operation_ledger"]["attempt_count"], 10)
+        self.assertEqual(result["operation_ledger"]["failure_count"], 0)
+
+    def test_repair_refuses_any_extra_payload_drift_before_put(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            output_dir = Path(tmp)
+            mapping_path = output_dir / "live_test_mapping.json"
+            tests = expected_pre_repair_tests()
+            tests[0]["success_condition"] = "weakened"
+            write_mapping(mapping_path, mapping_for_tests(tests))
+            provider = FakeProvider(
+                folders=[{"id": "tfld_existing", "name": runner.CHECKPOINT_ID, "entity_type": "folder", "folder_parent_id": "root"}],
+                tests=tests,
+            )
+            with self.assertRaises(runner.GuardError):
+                runner.execute_repair_owned_context(provider, mapping_path=mapping_path, output_dir=output_dir, live=True)
+
+        self.assertFalse(any(call["method"] == "PUT" for call in provider.calls))
+
+    def test_repair_refuses_wrong_mapping_folder_or_not_owned_tests(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            output_dir = Path(tmp)
+            tests = expected_pre_repair_tests()
+            wrong_folder = output_dir / "wrong_folder_mapping.json"
+            write_mapping(wrong_folder, mapping_for_tests(tests, folder_name="not-the-040-folder"))
+            provider = FakeProvider(
+                folders=[{"id": "tfld_existing", "name": runner.CHECKPOINT_ID, "entity_type": "folder", "folder_parent_id": "root"}],
+                tests=tests,
+            )
+            with self.assertRaises(runner.GuardError):
+                runner.execute_repair_owned_context(provider, mapping_path=wrong_folder, output_dir=output_dir, live=True)
+
+            reused_mapping = output_dir / "reused_mapping.json"
+            write_mapping(reused_mapping, mapping_for_tests(tests, created_in_this_run=False))
+            with self.assertRaises(runner.GuardError):
+                runner.execute_repair_owned_context(provider, mapping_path=reused_mapping, output_dir=output_dir, live=True)
+
+        self.assertFalse(any(call["method"] == "PUT" for call in provider.calls))
+
+    def test_repair_partial_put_failure_records_accurate_ledger(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            output_dir = Path(tmp)
+            mapping_path = output_dir / "live_test_mapping.json"
+            tests = expected_pre_repair_tests()
+            write_mapping(mapping_path, mapping_for_tests(tests))
+            provider = FakeProvider(
+                folders=[{"id": "tfld_existing", "name": runner.CHECKPOINT_ID, "entity_type": "folder", "folder_parent_id": "root"}],
+                tests=tests,
+                fail_on=("PUT", "/v1/convai/agent-testing/test_existing_03"),
+            )
+            with self.assertRaises(RuntimeError):
+                runner.execute_repair_owned_context(provider, mapping_path=mapping_path, output_dir=output_dir, live=True)
+            result = json.loads((output_dir / "live_test_context_repair_result.json").read_text(encoding="ascii"))
+
+        ledger = result["operation_ledger"]
+        self.assertEqual(ledger["attempt_count"], 3)
+        self.assertEqual(ledger["success_count"], 2)
+        self.assertEqual(ledger["failure_count"], 1)
+        self.assertEqual(ledger["failed_request_id"], "repair_test::sim_040_basic_site_direct_price")
+
+    def test_repair_readback_mismatch_fails_closed_after_put(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            output_dir = Path(tmp)
+            mapping_path = output_dir / "live_test_mapping.json"
+            tests = expected_pre_repair_tests()
+            write_mapping(mapping_path, mapping_for_tests(tests))
+            provider = FakeProvider(
+                folders=[{"id": "tfld_existing", "name": runner.CHECKPOINT_ID, "entity_type": "folder", "folder_parent_id": "root"}],
+                tests=tests,
+                readback_mutation={"success_condition": "provider changed it"},
+            )
+            with self.assertRaises(runner.GuardError):
+                runner.execute_repair_owned_context(provider, mapping_path=mapping_path, output_dir=output_dir, live=True)
+            result = json.loads((output_dir / "live_test_context_repair_result.json").read_text(encoding="ascii"))
+
+        self.assertEqual(result["status"], "failed")
+        self.assertIn("readback", result["error"])
+        self.assertEqual(result["operation_ledger"]["attempt_count"], 1)
+        self.assertEqual(result["operation_ledger"]["failure_count"], 0)
+
+    def test_canary_runs_one_mapped_provider_id_without_overwriting_suite_result(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            output_dir = Path(tmp)
+            mapping_path = output_dir / "live_test_mapping.json"
+            tests = expected_provider_tests()
+            write_mapping(mapping_path, mapping_for_tests(tests))
+            (output_dir / "live_test_run_result.json").write_text('{"status":"suite_evidence"}\n', encoding="ascii")
+            provider = FakeProvider(
+                folders=[{"id": "tfld_existing", "name": runner.CHECKPOINT_ID, "entity_type": "folder", "folder_parent_id": "root"}],
+                tests=tests,
+            )
+            result = runner.execute_canary_run(
+                provider,
+                source_test_id="sim_040_basic_site_direct_price",
+                mapping_path=mapping_path,
+                output_dir=output_dir,
+                live=True,
+                wait_timeout_seconds=1,
+                poll_interval_seconds=0,
+            )
+            suite_result = json.loads((output_dir / "live_test_run_result.json").read_text(encoding="ascii"))
+            canary_result = json.loads((output_dir / "live_test_canary_result.json").read_text(encoding="ascii"))
+
+        run_call = [call for call in provider.calls if call["endpoint"].endswith("/run-tests")][0]
+        self.assertEqual(run_call["body"], {"tests": [{"test_id": "test_existing_03"}], "repeat_count": 1})
+        self.assertEqual(result["status"], "completed")
+        self.assertEqual(canary_result["selected_test_ids"], ["sim_040_basic_site_direct_price"])
+        self.assertEqual(suite_result["status"], "suite_evidence")
+
+    def test_mode_token_conflicts_fail_closed_and_dry_run_makes_no_provider(self) -> None:
+        with contextlib.redirect_stderr(io.StringIO()):
+            with self.assertRaises(SystemExit):
+                runner.parse_args(
+                    [
+                        "--repair-owned-context",
+                        "--canary-test-id",
+                        "sim_040_basic_site_direct_price",
+                    ]
+                )
+        with mock.patch.dict("os.environ", {runner.API_KEY_ENV_VAR: "secret"}, clear=True):
+            with mock.patch.object(runner, "ElevenLabsProvider") as provider_class:
+                with contextlib.redirect_stdout(io.StringIO()):
+                    exit_code = runner.main(
+                        [
+                            "--dry-run",
+                            "--repair-owned-context",
+                            "--confirm-owned-context-repair",
+                            runner.REPAIR_CONFIRMATION,
+                        ]
+                    )
+        self.assertEqual(exit_code, 0)
+        provider_class.assert_not_called()
+
+    def test_040_criteria_and_order_are_immutable_except_shared_context_variables(self) -> None:
+        payload = json.loads(runner.TESTS_PATH.read_text(encoding="utf-8"))
+        self.assertEqual([item["test_id"] for item in payload["tests"]], runner.EXPECTED_TEST_IDS)
+        self.assertEqual(
+            [
+                (item["simulation_scenario"], item["success_condition"], item["simulated_user_model"], item["evaluation_model"], item["simulation_max_turns"])
+                for item in payload["tests"]
+            ],
+            [
+                ("Buyer asks whether Atlas can add booking, CRM, and payments but never asks cost.", "Pass: confident capability answer, no dollar amount, range, package, starting price, or care-plan price.", "gemini-2.5-flash", "gemini-2.5-flash", 8),
+                ("Buyer asks whether the mockup is really free and whether there is a catch.", "Pass: process-risk answer only; no paid website price.", "gemini-2.5-flash", "gemini-2.5-flash", 8),
+                ("Buyer explicitly asks what a basic three-to-five-page local-business site costs.", "Pass: one `$900-$1,500` whole-project range and one relevant driver at most.", "gemini-2.5-flash", "gemini-2.5-flash", 6),
+                ("Buyer states they have an existing compatible site and asks the cost of adding a simple appointment-request form.", "Pass: one `$100-$250` add-on range; no whole-site package dump.", "gemini-2.5-flash", "gemini-2.5-flash", 6),
+                ("Buyer asks what a new straightforward site with a simple request form costs, then asks about live calendar integration.", "Pass: `$900-$1,500` for simple request; later one higher relevant band for live integration; no add-on/whole-site confusion.", "gemini-2.5-flash", "gemini-2.5-flash", 10),
+                ("Buyer asks for a new site with booking, CRM, payments, service-area pages, and a blog, then asks total cost.", "Pass: one likely whole-project band and scope driver; no arithmetic sum or feature-menu recital.", "gemini-2.5-flash", "gemini-2.5-flash", 8),
+                ("Buyer has an existing compatible site and asks what a direct CRM integration costs.", "Pass: `$1,000-$2,500+`, an API/data-flow caveat, and no claim that every behavior is included.", "gemini-2.5-flash", "gemini-2.5-flash", 8),
+                ("Buyer asks how much a parent portal with accounts and progress dashboards costs.", "Pass: no numeric quote or ceiling; scope accounts, data, permissions, security, and integrations.", "gemini-2.5-flash", "gemini-2.5-flash", 8),
+                ("Buyer says the budget is `$1,200` and asks whether a basic site fits.", "Pass: direct fit answer against `$900-$1,500`; no unrelated package menu.", "gemini-2.5-flash", "gemini-2.5-flash", 6),
+                ("Buyer first asks about ordinary site capability, then explicitly asks monthly hosting and maintenance cost.", "Pass: no care price before the ongoing-cost question; after it, one relevant `$79`, `$149`, or `$249` plan with scope.", "gemini-2.5-flash", "gemini-2.5-flash", 10),
+            ],
+        )
+        self.assertEqual(
+            {key: payload["dynamic_variables"].get(key) for key in runner.REPAIR_CONTEXT_KEYS},
+            {"business_name": "Acme Dental", "business_type": "dental clinic", "city": "Phoenix"},
+        )
 
 
 if __name__ == "__main__":
