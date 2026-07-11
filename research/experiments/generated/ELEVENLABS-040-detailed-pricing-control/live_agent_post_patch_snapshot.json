@@ -1,7 +1,6 @@
 {
   "checkpoint_id": "ELEVENLABS-040-detailed-pricing-control",
   "phase": "post_patch",
-  "captured_at_utc": "2026-07-11T19:16:54Z",
   "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
   "agent_name": "web design",
   "simulations_run": false,
@@ -1384,5 +1383,9 @@
       "website_premium_price_anchor": "$6,500",
       "website_starting_price": "$500"
     }
-  }
+  },
+  "live_readback_at_utc": null,
+  "live_readback_time_recorded": false,
+  "snapshot_serialized_at_utc": "2026-07-11T19:16:54Z",
+  "capture_time_note": "Post-write fetch time was not separately recorded by the original Task 8 patcher. snapshot_serialized_at_utc preserves the original file serialization timestamp; no fetch timestamp was invented."
 }

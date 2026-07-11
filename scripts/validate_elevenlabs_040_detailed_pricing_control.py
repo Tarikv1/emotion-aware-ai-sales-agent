@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import json
+import hashlib
 import re
 import subprocess
 import sys
@@ -38,6 +39,7 @@ PRICE = ROOT / PRICE_PATH
 OUTPUT = ROOT / OUTPUT_PATH
 TESTS = ROOT / TESTS_PATH
 PATCHER = ROOT / PATCHER_PATH
+LIVE_EVIDENCE_DIR = ROOT / "research" / "experiments" / "generated" / CHECKPOINT_ID
 
 CHECKPOINT_DIFF_PATHS = (
     VALIDATOR_PATH,
@@ -141,6 +143,24 @@ OUTPUT_MARKERS = (
     "Do not quote a fixed price or ceiling for portals, dashboards, APIs, accounts, databases, or custom business logic.",
 )
 
+KB_REQUEST_SOURCE_MARKERS = {
+    "atlas_offer_facts.md": (
+        "Quick Launch: `$500-$800`",
+        "Essential Local: `{{website_basic_site_range}}`",
+        "Integration Website: `{{website_integration_heavy_range}}`",
+    ),
+    "atlas_price_scope_cost_drivers.md": (
+        "After explicit price intent, Emma must answer by the first or second price ask.",
+        "Base Package Ladder",
+        "{{website_integration_heavy_range}}",
+    ),
+    "atlas_output_quality_rules.md": (
+        "Pricing Quote Discipline",
+        "Never disclose a paid price before explicit buyer price intent.",
+        "Do not read the package or feature menu aloud.",
+    ),
+}
+
 PATCHER_MARKERS = (
     'AGENT_ID = "agent_7801kt0g32zxf4f8x5zkykj7syty"',
     'AGENT_NAME = "web design"',
@@ -186,6 +206,15 @@ def read_json(path: Path) -> dict[str, Any]:
     payload = json.loads(read(path))
     assert_condition(isinstance(payload, dict), f"{path.relative_to(ROOT).as_posix()} must contain a JSON object")
     return payload
+
+
+def sha256_bytes(data: bytes) -> str:
+    return hashlib.sha256(data).hexdigest()
+
+
+def canonical_sha256(value: Any) -> str:
+    encoded = json.dumps(value, sort_keys=True, separators=(",", ":"), ensure_ascii=True)
+    return hashlib.sha256(encoded.encode("ascii")).hexdigest()
 
 
 def assert_markers(label: str, text: str, markers: tuple[str, ...]) -> None:
@@ -371,6 +400,18 @@ def validate_live_patcher_semantics() -> None:
     parsed = patcher.parse_args([])
     assert_condition(getattr(parsed, "confirm_provider_write") is None, "040 patcher must dry-run by default")
 
+    snapshot = patcher.snapshot_payload(
+        phase="pre_patch",
+        agent=agent,
+        preflight={"knowledge_base_ids_in_order": [], "unrelated_tool_fingerprint": {}, "analysis_criterion_ids_in_order": [], "procedures_inactive": True, "collateral_state_sha256": "sample"},
+        live_readback_at_utc="2026-07-11T19:10:00Z",
+        serialized_at_utc="2026-07-11T19:10:05Z",
+    )
+    assert_condition(snapshot.get("captured_at_utc") == "2026-07-11T19:10:00Z", "snapshot captured_at_utc must be live readback time")
+    assert_condition(snapshot.get("live_readback_at_utc") == "2026-07-11T19:10:00Z", "snapshot live_readback_at_utc missing")
+    assert_condition(snapshot.get("snapshot_serialized_at_utc") == "2026-07-11T19:10:05Z", "snapshot serialization timestamp missing")
+    assert_condition(snapshot.get("live_readback_time_recorded") is True, "snapshot must state live readback time was recorded")
+
     body = patcher.patch_body(agent)
     assert_condition(set(body) == {"conversation_config"}, "patch_body top-level keys must stay minimal")
     agent_body = body.get("conversation_config", {}).get("agent", {})
@@ -381,6 +422,21 @@ def validate_live_patcher_semantics() -> None:
     for key, expected in EXPECTED_PRICE_DEFAULTS.items():
         assert_condition(placeholders.get(key) == expected, f"patch_body must merge exact {key}")
     assert_condition(len(set(EXPECTED_PRICE_DEFAULTS) & set(placeholders)) == 6, "patch_body must expose exactly six approved price defaults")
+
+    requests = patcher.patch_requests(agent, {"target_kb_docs": {name: {"id": doc_id, "source_path": f"runtime/providers/elevenlabs_agents/knowledge_base/atlas_web_studio/{name}"} for name, doc_id in patcher.KNOWN_KB_DOC_IDS.items()}})
+    for request in requests:
+        if request["request_id"].startswith("update_kb_file::"):
+            source_evidence = request.get("source_evidence")
+            assert_condition(isinstance(source_evidence, dict), f"{request['request_id']} missing source_evidence")
+            source_path = ROOT / source_evidence["source_path"]
+            source_bytes = source_path.read_bytes()
+            assert_condition(source_evidence.get("source_sha256") == sha256_bytes(source_bytes), f"{request['request_id']} source sha mismatch")
+            assert_condition(source_evidence.get("source_byte_length") == len(source_bytes), f"{request['request_id']} source byte length mismatch")
+            markers = source_evidence.get("markers")
+            assert_condition(isinstance(markers, list) and markers, f"{request['request_id']} missing source markers")
+            assert_condition(all(isinstance(marker, str) and marker in source_path.read_text(encoding="utf-8") for marker in markers), f"{request['request_id']} source marker mismatch")
+        elif request["request_id"] == "patch_agent::prompt_dynamic_variables":
+            assert_condition(request.get("body_canonical_json_sha256") == canonical_sha256(request["body"]), "agent patch request canonical digest mismatch")
 
     redacted = patcher.sanitize(
         {
@@ -509,6 +565,63 @@ def validate_live_patcher() -> None:
     validate_live_patcher_semantics()
 
 
+def validate_live_evidence_artifacts() -> None:
+    if not LIVE_EVIDENCE_DIR.is_dir():
+        return
+
+    pre_snapshot = read_json(LIVE_EVIDENCE_DIR / "live_agent_pre_patch_snapshot.json")
+    post_snapshot = read_json(LIVE_EVIDENCE_DIR / "live_agent_post_patch_snapshot.json")
+    patch_plan = read_json(LIVE_EVIDENCE_DIR / "live_agent_patch_plan.json")
+    patch_requests = read_json(LIVE_EVIDENCE_DIR / "live_agent_patch_requests.json")
+    patch_result = read_json(LIVE_EVIDENCE_DIR / "live_agent_patch_result.json")
+
+    attempts = patch_result.get("provider_write_attempts")
+    assert_condition(isinstance(attempts, list) and len(attempts) == 4, "live evidence must retain four provider write attempts")
+    first_attempt_at = attempts[0].get("attempted_at_utc")
+    assert_condition(isinstance(first_attempt_at, str) and first_attempt_at, "first provider attempt timestamp missing")
+
+    assert_condition("snapshot_serialized_at_utc" in pre_snapshot, "pre snapshot must separate serialization timestamp")
+    assert_condition(pre_snapshot.get("snapshot_serialized_at_utc") == "2026-07-11T19:16:54Z", "pre snapshot must preserve original serialized timestamp")
+    assert_condition(pre_snapshot.get("live_readback_time_recorded") is False, "completed-run pre fetch time must be explicitly marked unrecorded")
+    assert_condition(pre_snapshot.get("live_readback_at_utc") is None, "completed-run pre fetch time must not be invented")
+    ordering = pre_snapshot.get("verified_ordering", {})
+    assert_condition(ordering.get("pre_state_fetched_before_provider_write_attempts") is True, "pre snapshot ordering metadata missing")
+    assert_condition(ordering.get("first_provider_write_attempt_at_utc") == first_attempt_at, "pre snapshot first-attempt timestamp mismatch")
+    assert_condition("control flow" in str(ordering.get("basis", "")).lower(), "pre snapshot ordering basis must cite control flow")
+
+    assert_condition("snapshot_serialized_at_utc" in post_snapshot, "post snapshot must separate serialization timestamp")
+    assert_condition("live_readback_time_recorded" in post_snapshot, "post snapshot must state readback timestamp recording status")
+
+    source_commit = patch_requests.get("source_evidence_commit")
+    assert_condition(source_commit == "336ff778b4beaa05a73996eef93318a7e5163eb1", "current evidence must label unchanged source commit")
+    assert_condition(patch_plan.get("source_evidence_commit") == source_commit, "plan/source request source commit mismatch")
+    assert_condition(patch_requests.get("source_evidence_origin") == "post_hoc_from_unchanged_repo_commit_not_network_capture", "requests must label post-hoc source evidence")
+    assert_condition(patch_plan.get("source_evidence_origin") == "post_hoc_from_unchanged_repo_commit_not_network_capture", "plan must label post-hoc source evidence")
+
+    requests = patch_requests.get("requests")
+    assert_condition(isinstance(requests, list) and len(requests) == 4, "live patch request artifact must contain four requests")
+    evidence_by_id = patch_plan.get("request_source_evidence_by_id")
+    assert_condition(isinstance(evidence_by_id, dict), "patch plan missing request_source_evidence_by_id")
+    for request in requests:
+        request_id = request.get("request_id")
+        assert_condition(request_id in evidence_by_id, f"patch plan missing source evidence for {request_id}")
+        if str(request_id).startswith("update_kb_file::"):
+            source_evidence = request.get("source_evidence")
+            assert_condition(isinstance(source_evidence, dict), f"{request_id} missing source_evidence")
+            assert_condition(source_evidence == evidence_by_id[request_id], f"{request_id} plan/request source evidence mismatch")
+            source_path = ROOT / source_evidence["source_path"]
+            source_bytes = source_path.read_bytes()
+            markers = KB_REQUEST_SOURCE_MARKERS[source_path.name]
+            assert_condition(source_evidence.get("source_sha256") == sha256_bytes(source_bytes), f"{request_id} source sha mismatch")
+            assert_condition(source_evidence.get("source_byte_length") == len(source_bytes), f"{request_id} source length mismatch")
+            assert_condition(tuple(source_evidence.get("markers", ())) == markers, f"{request_id} marker list mismatch")
+            assert_condition(source_evidence.get("evidence_origin") == "post_hoc_from_unchanged_repo_commit_not_network_capture", f"{request_id} evidence origin mismatch")
+        elif request_id == "patch_agent::prompt_dynamic_variables":
+            assert_condition(request.get("body_canonical_json_sha256") == canonical_sha256(request.get("body")), "agent request canonical digest mismatch")
+            assert_condition(evidence_by_id[request_id].get("body_canonical_json_sha256") == request.get("body_canonical_json_sha256"), "agent plan/request digest mismatch")
+            assert_condition(evidence_by_id[request_id].get("evidence_origin") == "post_hoc_from_sanitized_request_body_not_network_capture", "agent digest origin mismatch")
+
+
 def main() -> int:
     try:
         validate_prompt_policy()
@@ -516,6 +629,7 @@ def main() -> int:
         validate_output_rules()
         validate_tests()
         validate_live_patcher()
+        validate_live_evidence_artifacts()
         validate_dynamic_defaults()
         validate_change_boundaries()
         git_diff_check(CHECKPOINT_BASE_REF, *CHECKPOINT_DIFF_PATHS)

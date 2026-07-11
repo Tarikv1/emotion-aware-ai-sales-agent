@@ -132,6 +132,23 @@ KNOWN_KB_DOC_IDS = {
     "atlas_price_scope_cost_drivers.md": "vGKk14CCzKqGW3GxgUqA",
     "atlas_output_quality_rules.md": "GS5wqgcUomoJmqWCEpP7",
 }
+KB_REQUEST_SOURCE_MARKERS = {
+    "atlas_offer_facts.md": (
+        "Quick Launch: `$500-$800`",
+        "Essential Local: `{{website_basic_site_range}}`",
+        "Integration Website: `{{website_integration_heavy_range}}`",
+    ),
+    "atlas_price_scope_cost_drivers.md": (
+        "After explicit price intent, Emma must answer by the first or second price ask.",
+        "Base Package Ladder",
+        "{{website_integration_heavy_range}}",
+    ),
+    "atlas_output_quality_rules.md": (
+        "Pricing Quote Discipline",
+        "Never disclose a paid price before explicit buyer price intent.",
+        "Do not read the package or feature menu aloud.",
+    ),
+}
 PROMPT_PATH = ROOT / "runtime" / "providers" / "elevenlabs_agents" / "prompts" / "web_design_atlas_sales_prompt.md"
 KB_ROOT = ROOT / "runtime" / "providers" / "elevenlabs_agents" / "knowledge_base" / "atlas_web_studio"
 OUT_DIR = ROOT / "research" / "experiments" / "generated" / CHECKPOINT_ID
@@ -262,6 +279,36 @@ def safe_evidence_error_message(exc: BaseException) -> str:
 def canonical_sha256(value: Any) -> str:
     encoded = json.dumps(value, sort_keys=True, separators=(",", ":"), ensure_ascii=True)
     return hashlib.sha256(encoded.encode("ascii")).hexdigest()
+
+
+def source_file_evidence(source_path: Path, *, evidence_origin: str = "local_source_before_provider_write_not_network_capture") -> dict[str, Any]:
+    source_text = source_path.read_text(encoding="utf-8")
+    markers = KB_REQUEST_SOURCE_MARKERS[source_path.name]
+    missing = [marker for marker in markers if marker not in source_text]
+    if missing:
+        raise ValueError(f"source evidence markers missing from {source_path.name}: {missing}")
+    source_bytes = source_path.read_bytes()
+    return {
+        "evidence_origin": evidence_origin,
+        "source_path": str(source_path.relative_to(ROOT)).replace("\\", "/"),
+        "source_sha256": hashlib.sha256(source_bytes).hexdigest(),
+        "source_byte_length": len(source_bytes),
+        "markers": list(markers),
+    }
+
+
+def request_source_evidence_by_id(requests: list[dict[str, Any]]) -> dict[str, Any]:
+    evidence: dict[str, Any] = {}
+    for request in requests:
+        request_id = str(request.get("request_id", ""))
+        if "source_evidence" in request:
+            evidence[request_id] = request["source_evidence"]
+        elif "body_canonical_json_sha256" in request:
+            evidence[request_id] = {
+                "evidence_origin": "sanitized_request_body_before_provider_write_not_network_capture",
+                "body_canonical_json_sha256": request["body_canonical_json_sha256"],
+            }
+    return evidence
 
 
 def merged_dynamic_variables(agent: dict[str, Any]) -> dict[str, Any]:
@@ -472,6 +519,7 @@ def patch_requests(agent: dict[str, Any], preflight: dict[str, Any]) -> list[dic
     requests: list[dict[str, Any]] = []
     for name in KB_DOCS:
         doc = preflight["target_kb_docs"][name]
+        source_path = KB_ROOT / name
         requests.append(
             {
                 "request_id": f"update_kb_file::{name}",
@@ -480,25 +528,40 @@ def patch_requests(agent: dict[str, Any], preflight: dict[str, Any]) -> list[dic
                 "known_document_id": doc["id"],
                 "content_type": "multipart/form-data",
                 "source_path": doc["source_path"],
+                "source_evidence": source_file_evidence(source_path),
             }
         )
+    sanitized_body = sanitize(patch_body(agent))
     requests.append(
         {
             "request_id": "patch_agent::prompt_dynamic_variables",
             "method": "PATCH",
             "endpoint": f"/v1/convai/agents/{AGENT_ID}",
             "content_type": "application/json",
-            "body": sanitize(patch_body(agent)),
+            "body": sanitized_body,
+            "body_canonical_json_sha256": canonical_sha256(sanitized_body),
         }
     )
     return requests
 
 
-def snapshot_payload(*, phase: str, agent: dict[str, Any] | None, preflight: dict[str, Any] | None, error: str | None = None) -> dict[str, Any]:
+def snapshot_payload(
+    *,
+    phase: str,
+    agent: dict[str, Any] | None,
+    preflight: dict[str, Any] | None,
+    live_readback_at_utc: str | None = None,
+    serialized_at_utc: str | None = None,
+    error: str | None = None,
+) -> dict[str, Any]:
+    serialized_at = serialized_at_utc or utc_now()
     payload: dict[str, Any] = {
         "checkpoint_id": CHECKPOINT_ID,
         "phase": phase,
-        "captured_at_utc": utc_now(),
+        "captured_at_utc": live_readback_at_utc,
+        "live_readback_at_utc": live_readback_at_utc,
+        "live_readback_time_recorded": live_readback_at_utc is not None,
+        "snapshot_serialized_at_utc": serialized_at,
         "agent_id": AGENT_ID,
         "agent_name": AGENT_NAME,
         "simulations_run": False,
@@ -553,9 +616,19 @@ def actual_dynamic_variable_placeholders(agent: dict[str, Any]) -> dict[str, Any
     return placeholders
 
 
-def write_plan_only_outputs(agent: dict[str, Any], preflight: dict[str, Any], requests: list[dict[str, Any]], status: str) -> None:
+def write_plan_only_outputs(
+    agent: dict[str, Any],
+    preflight: dict[str, Any],
+    requests: list[dict[str, Any]],
+    status: str,
+    *,
+    live_readback_at_utc: str,
+) -> None:
     fingerprint = protected_fingerprint(agent, preflight)
-    write_json(OUT_DIR / "live_agent_pre_patch_snapshot.json", snapshot_payload(phase="pre_patch", agent=agent, preflight=preflight))
+    write_json(
+        OUT_DIR / "live_agent_pre_patch_snapshot.json",
+        snapshot_payload(phase="pre_patch", agent=agent, preflight=preflight, live_readback_at_utc=live_readback_at_utc),
+    )
     write_json(
         OUT_DIR / "live_agent_patch_plan.json",
         {
@@ -573,6 +646,7 @@ def write_plan_only_outputs(agent: dict[str, Any], preflight: dict[str, Any], re
             "kb_documents_planned_for_in_place_update": list(KB_DOCS),
             "known_kb_document_ids": KNOWN_KB_DOC_IDS,
             "minimal_agent_patch_fields": ["conversation_config.agent.prompt.prompt", "conversation_config.agent.dynamic_variables"],
+            "request_source_evidence_by_id": request_source_evidence_by_id(requests),
             "forbidden_operations": [
                 "simulations",
                 "outbound_calls",
@@ -617,7 +691,10 @@ def write_plan_only_outputs(agent: dict[str, Any], preflight: dict[str, Any], re
             "outbound_calls_made": False,
         },
     )
-    write_json(OUT_DIR / "live_agent_post_patch_snapshot.json", snapshot_payload(phase="not_written", agent=agent, preflight=preflight))
+    write_json(
+        OUT_DIR / "live_agent_post_patch_snapshot.json",
+        snapshot_payload(phase="not_written", agent=agent, preflight=preflight, live_readback_at_utc=live_readback_at_utc),
+    )
     write_json(OUT_DIR / "live_dynamic_variables_readback.json", dynamic_variables_readback(agent))
     write_json(OUT_DIR / "unrelated_tool_fingerprint_before.json", {"checkpoint_id": CHECKPOINT_ID, "fingerprint": fingerprint})
     write_json(OUT_DIR / "unrelated_tool_fingerprint_after.json", {"checkpoint_id": CHECKPOINT_ID, "fingerprint": fingerprint})
@@ -630,7 +707,7 @@ def write_provider_changes(
     preflight: dict[str, Any],
     requests: list[dict[str, Any]],
     ledger: ProviderWriteLedger,
-) -> dict[str, Any]:
+) -> tuple[dict[str, Any], str]:
     expected_before = protected_fingerprint(agent, preflight)
     for request in requests:
         request_id = request["request_id"]
@@ -661,6 +738,7 @@ def write_provider_changes(
             raise ValueError(f"unknown write request {request_id}")
 
     post = json_request("GET", f"/v1/convai/agents/{quote(AGENT_ID, safe='')}", api_key=api_key)["response"]
+    post_live_readback_at_utc = utc_now()
     if not isinstance(post, dict):
         raise ValueError("post-patch agent GET response must be an object")
     post_preflight = validate_preflight(post)
@@ -671,7 +749,7 @@ def write_provider_changes(
     for key, expected in TARGET_PRICE_VARIABLES.items():
         if placeholders.get(key) != expected:
             raise ValueError(f"post-patch dynamic variable {key} mismatch")
-    return post
+    return post, post_live_readback_at_utc
 
 
 def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
@@ -691,17 +769,25 @@ def main(argv: list[str] | None = None) -> int:
     ledger = ProviderWriteLedger()
     before_agent: dict[str, Any] | None = None
     before_preflight: dict[str, Any] | None = None
+    before_live_readback_at_utc: str | None = None
     try:
         if not PROMPT_PATH.read_text(encoding="utf-8").strip():
             raise ValueError("repo prompt is empty")
         before_agent = json_request("GET", f"/v1/convai/agents/{quote(AGENT_ID, safe='')}", api_key=api_key)["response"]
+        before_live_readback_at_utc = utc_now()
         if not isinstance(before_agent, dict):
             raise ValueError("agent GET response must be an object")
         before_preflight = validate_preflight(before_agent)
         requests = patch_requests(before_agent, before_preflight)
         authorization_confirmed = args.confirm_provider_write == CONFIRM_TOKEN
         if not authorization_confirmed:
-            write_plan_only_outputs(before_agent, before_preflight, requests, "plan_only_missing_confirmation")
+            write_plan_only_outputs(
+                before_agent,
+                before_preflight,
+                requests,
+                "plan_only_missing_confirmation",
+                live_readback_at_utc=before_live_readback_at_utc,
+            )
             print(
                 json.dumps(
                     {
@@ -714,7 +800,7 @@ def main(argv: list[str] | None = None) -> int:
             )
             return 0
 
-        post_agent = write_provider_changes(
+        post_agent, post_live_readback_at_utc = write_provider_changes(
             api_key=api_key,
             agent=before_agent,
             preflight=before_preflight,
@@ -722,13 +808,17 @@ def main(argv: list[str] | None = None) -> int:
             ledger=ledger,
         )
         post_preflight = validate_preflight(post_agent)
-        write_json(OUT_DIR / "live_agent_pre_patch_snapshot.json", snapshot_payload(phase="pre_patch", agent=before_agent, preflight=before_preflight))
+        write_json(
+            OUT_DIR / "live_agent_pre_patch_snapshot.json",
+            snapshot_payload(phase="pre_patch", agent=before_agent, preflight=before_preflight, live_readback_at_utc=before_live_readback_at_utc),
+        )
         write_json(
             OUT_DIR / "live_agent_patch_plan.json",
             {
                 "checkpoint_id": CHECKPOINT_ID,
                 "provider_writes_allowed": True,
                 **ledger.summary(),
+                "request_source_evidence_by_id": request_source_evidence_by_id(requests),
                 "preflight": sanitize(before_preflight),
             },
         )
@@ -741,7 +831,10 @@ def main(argv: list[str] | None = None) -> int:
                 "requests": requests,
             },
         )
-        write_json(OUT_DIR / "live_agent_post_patch_snapshot.json", snapshot_payload(phase="post_patch", agent=post_agent, preflight=post_preflight))
+        write_json(
+            OUT_DIR / "live_agent_post_patch_snapshot.json",
+            snapshot_payload(phase="post_patch", agent=post_agent, preflight=post_preflight, live_readback_at_utc=post_live_readback_at_utc),
+        )
         write_json(OUT_DIR / "live_dynamic_variables_readback.json", dynamic_variables_readback(post_agent))
         write_json(OUT_DIR / "unrelated_tool_fingerprint_before.json", {"checkpoint_id": CHECKPOINT_ID, "fingerprint": protected_fingerprint(before_agent, before_preflight)})
         write_json(OUT_DIR / "unrelated_tool_fingerprint_after.json", {"checkpoint_id": CHECKPOINT_ID, "fingerprint": protected_fingerprint(post_agent, post_preflight)})
@@ -762,7 +855,7 @@ def main(argv: list[str] | None = None) -> int:
         write_json(OUT_DIR / "live_agent_patch_result.json", ledger.failure_payload(checkpoint_id=CHECKPOINT_ID, error=error))
         write_json(
             OUT_DIR / "live_agent_post_patch_snapshot.json",
-            snapshot_payload(phase="failed", agent=before_agent, preflight=before_preflight, error=error),
+            snapshot_payload(phase="failed", agent=before_agent, preflight=before_preflight, live_readback_at_utc=before_live_readback_at_utc, error=error),
         )
         print(f"error: {error}", file=sys.stderr)
         return 1

@@ -1261,7 +1261,19 @@
       "endpoint": "/v1/convai/knowledge-base/HYTfB5s1Z8LzOw8oBADt/update-file",
       "known_document_id": "HYTfB5s1Z8LzOw8oBADt",
       "content_type": "multipart/form-data",
-      "source_path": "runtime/providers/elevenlabs_agents/knowledge_base/atlas_web_studio/atlas_offer_facts.md"
+      "source_path": "runtime/providers/elevenlabs_agents/knowledge_base/atlas_web_studio/atlas_offer_facts.md",
+      "source_evidence": {
+        "evidence_origin": "post_hoc_from_unchanged_repo_commit_not_network_capture",
+        "source_commit": "336ff778b4beaa05a73996eef93318a7e5163eb1",
+        "source_path": "runtime/providers/elevenlabs_agents/knowledge_base/atlas_web_studio/atlas_offer_facts.md",
+        "source_sha256": "809b159a8e153271e3b8dd841199a780ef7a5ae346dff285bc8362a9ce5d05fc",
+        "source_byte_length": 10809,
+        "markers": [
+          "Quick Launch: `$500-$800`",
+          "Essential Local: `{{website_basic_site_range}}`",
+          "Integration Website: `{{website_integration_heavy_range}}`"
+        ]
+      }
     },
     {
       "request_id": "update_kb_file::atlas_price_scope_cost_drivers.md",
@@ -1269,7 +1281,19 @@
       "endpoint": "/v1/convai/knowledge-base/vGKk14CCzKqGW3GxgUqA/update-file",
       "known_document_id": "vGKk14CCzKqGW3GxgUqA",
       "content_type": "multipart/form-data",
-      "source_path": "runtime/providers/elevenlabs_agents/knowledge_base/atlas_web_studio/atlas_price_scope_cost_drivers.md"
+      "source_path": "runtime/providers/elevenlabs_agents/knowledge_base/atlas_web_studio/atlas_price_scope_cost_drivers.md",
+      "source_evidence": {
+        "evidence_origin": "post_hoc_from_unchanged_repo_commit_not_network_capture",
+        "source_commit": "336ff778b4beaa05a73996eef93318a7e5163eb1",
+        "source_path": "runtime/providers/elevenlabs_agents/knowledge_base/atlas_web_studio/atlas_price_scope_cost_drivers.md",
+        "source_sha256": "6a61d9717102b297cfee3fe5cd2f4d88887dc79f4ccb4a35aa1d5277ce2fd1c1",
+        "source_byte_length": 13931,
+        "markers": [
+          "After explicit price intent, Emma must answer by the first or second price ask.",
+          "Base Package Ladder",
+          "{{website_integration_heavy_range}}"
+        ]
+      }
     },
     {
       "request_id": "update_kb_file::atlas_output_quality_rules.md",
@@ -1277,7 +1301,19 @@
       "endpoint": "/v1/convai/knowledge-base/GS5wqgcUomoJmqWCEpP7/update-file",
       "known_document_id": "GS5wqgcUomoJmqWCEpP7",
       "content_type": "multipart/form-data",
-      "source_path": "runtime/providers/elevenlabs_agents/knowledge_base/atlas_web_studio/atlas_output_quality_rules.md"
+      "source_path": "runtime/providers/elevenlabs_agents/knowledge_base/atlas_web_studio/atlas_output_quality_rules.md",
+      "source_evidence": {
+        "evidence_origin": "post_hoc_from_unchanged_repo_commit_not_network_capture",
+        "source_commit": "336ff778b4beaa05a73996eef93318a7e5163eb1",
+        "source_path": "runtime/providers/elevenlabs_agents/knowledge_base/atlas_web_studio/atlas_output_quality_rules.md",
+        "source_sha256": "675f634d9657245190217be13e025f1fbcd368c6ae4ec65d04bb0d221f2d9a99",
+        "source_byte_length": 18084,
+        "markers": [
+          "Pricing Quote Discipline",
+          "Never disclose a paid price before explicit buyer price intent.",
+          "Do not read the package or feature menu aloud."
+        ]
+      }
     },
     {
       "request_id": "patch_agent::prompt_dynamic_variables",
@@ -1305,7 +1341,56 @@
             }
           }
         }
-      }
+      },
+      "body_canonical_json_sha256": "77fc820fca9420e215d502896b1dcf9d604aa40f462e67192ef302472369b961",
+      "body_digest_note": "Digest is over the sanitized JSON request body committed in this artifact, not a network capture."
     }
-  ]
+  ],
+  "source_evidence_origin": "post_hoc_from_unchanged_repo_commit_not_network_capture",
+  "source_evidence_commit": "336ff778b4beaa05a73996eef93318a7e5163eb1",
+  "source_evidence_note": "Post-hoc evidence derived from unchanged local repo source files at the source commit after provider write completion; not captured from the network request body.",
+  "request_source_evidence_by_id": {
+    "update_kb_file::atlas_offer_facts.md": {
+      "evidence_origin": "post_hoc_from_unchanged_repo_commit_not_network_capture",
+      "source_commit": "336ff778b4beaa05a73996eef93318a7e5163eb1",
+      "source_path": "runtime/providers/elevenlabs_agents/knowledge_base/atlas_web_studio/atlas_offer_facts.md",
+      "source_sha256": "809b159a8e153271e3b8dd841199a780ef7a5ae346dff285bc8362a9ce5d05fc",
+      "source_byte_length": 10809,
+      "markers": [
+        "Quick Launch: `$500-$800`",
+        "Essential Local: `{{website_basic_site_range}}`",
+        "Integration Website: `{{website_integration_heavy_range}}`"
+      ]
+    },
+    "update_kb_file::atlas_price_scope_cost_drivers.md": {
+      "evidence_origin": "post_hoc_from_unchanged_repo_commit_not_network_capture",
+      "source_commit": "336ff778b4beaa05a73996eef93318a7e5163eb1",
+      "source_path": "runtime/providers/elevenlabs_agents/knowledge_base/atlas_web_studio/atlas_price_scope_cost_drivers.md",
+      "source_sha256": "6a61d9717102b297cfee3fe5cd2f4d88887dc79f4ccb4a35aa1d5277ce2fd1c1",
+      "source_byte_length": 13931,
+      "markers": [
+        "After explicit price intent, Emma must answer by the first or second price ask.",
+        "Base Package Ladder",
+        "{{website_integration_heavy_range}}"
+      ]
+    },
+    "update_kb_file::atlas_output_quality_rules.md": {
+      "evidence_origin": "post_hoc_from_unchanged_repo_commit_not_network_capture",
+      "source_commit": "336ff778b4beaa05a73996eef93318a7e5163eb1",
+      "source_path": "runtime/providers/elevenlabs_agents/knowledge_base/atlas_web_studio/atlas_output_quality_rules.md",
+      "source_sha256": "675f634d9657245190217be13e025f1fbcd368c6ae4ec65d04bb0d221f2d9a99",
+      "source_byte_length": 18084,
+      "markers": [
+        "Pricing Quote Discipline",
+        "Never disclose a paid price before explicit buyer price intent.",
+        "Do not read the package or feature menu aloud."
+      ]
+    },
+    "patch_agent::prompt_dynamic_variables": {
+      "evidence_origin": "post_hoc_from_sanitized_request_body_not_network_capture",
+      "source_commit": "336ff778b4beaa05a73996eef93318a7e5163eb1",
+      "body_canonical_json_sha256": "77fc820fca9420e215d502896b1dcf9d604aa40f462e67192ef302472369b961",
+      "digest_scope": "sanitized_json_request_body_artifact"
+    }
+  }
 }
