@@ -158,6 +158,8 @@ def assert_prompt_and_kb() -> None:
     price = read_text(PRICE_KB)
     objection = read_text(OBJECTION_KB)
     offer = read_text(OFFER_FACTS)
+    analysis_setup = read_text(ANALYSIS_SETUP)
+    human_tests = read_text(HUMAN_TESTS)
 
     for label, text in (("prompt", prompt), ("output rules", output)):
         assert_condition("Human Phone Call Standard" in text, f"{label} missing Human Phone Call Standard")
@@ -188,22 +190,19 @@ def assert_prompt_and_kb() -> None:
     assert_condition("Be careful with anyone selling it that way" in objection, "objection KB missing guarantee warning")
     assert_condition("I'd be careful with anyone selling it that way" in objection, "objection KB missing spoken guarantee warning example")
     assert_contains(
-        "offer facts complexity menu",
+        "offer facts exact prices",
         offer,
         (
-            "Website Complexity Ballpark Menu",
-            "{{website_basic_site_range}}",
-            "default `$900-$1,500`",
-            "{{website_light_feature_range}}",
-            "default `$1,800-$3,000`",
-            "{{website_workflow_content_range}}",
-            "default `$2,800-$4,500`",
-            "{{website_integration_heavy_range}}",
-            "default `$4,000-$6,500`",
-            "{{website_custom_scope_note}}",
-            "ballpark ranges, not final quotes",
-            "One feature does not automatically determine the price",
-            "{{website_starting_price}}` is the starting point",
+            "## Exact Prices",
+            "Quick Launch: `$500-$800` for one adapted-template page.",
+            "Essential Local: `{{website_basic_site_range}}` for three to five tailored-template pages.",
+            "Custom Business: `{{website_light_feature_range}}` for five to eight pages with an original homepage direction.",
+            "Growth Website: `{{website_workflow_content_range}}` for deeper content, CMS, filtering, or request workflows.",
+            "Integration Website: `{{website_integration_heavy_range}}` for a new website with a standard CRM, calendar, payment, or automation integration.",
+            "Portals and web applications: scoped separately.",
+            "Simple website projects generally start around `{{website_starting_price}}`; default value `$500`.",
+            "Use one relevant package or add-on range after explicit buyer price intent; do not read a menu aloud or stack a final quote on the call.",
+            "`{{website_custom_scope_note}}`; default `custom portals, dashboards, APIs, accounts, databases, complex payments, inventory sync, marketplaces, or custom business logic need a scoped quote before a real number`",
         ),
     )
     fixed_quote_filtering_sources = "\n".join((offer, price, prompt, read_text(HUMAN_TESTS)))
@@ -215,8 +214,16 @@ def assert_prompt_and_kb() -> None:
         "default value `$3,000`" not in fixed_quote_filtering_sources,
         "old fixed $3,000 quote-filtering default still appears in active pricing prompt/KB/tests",
     )
-    assert_condition("Website Complexity Ballpark Menu" in prompt, "prompt missing Website Complexity Ballpark Menu rule")
-    assert_condition("Feature-Complexity Ballpark Policy" in price, "price KB missing Feature-Complexity Ballpark Policy")
+    active_product_pricing = "\n".join((prompt, price, offer))
+    assert_condition("Website Complexity Ballpark Menu" not in active_product_pricing, "old Website Complexity Ballpark Menu still appears in active prompt/KB")
+    for old_default in (
+        "default `$1,000-$2,000`",
+        "default `$2,000-$3,000`",
+        "default `$3,000-$4,000`",
+        "default `$4,000-$5,000`",
+    ):
+        assert_condition(old_default not in active_product_pricing, f"old coarse default still appears in active prompt/KB: {old_default}")
+
     combined_policy = "\n".join((prompt, output, price, offer, close, objection))
     assert_contains(
         "contextual weak-phrase policy",
@@ -234,63 +241,82 @@ def assert_prompt_and_kb() -> None:
     for marker in WEAK_HEADLINE_PHRASES:
         assert_condition(marker in combined_policy, f"contextual weak-phrase policy missing marker: {marker}")
     assert_contains(
-        "price KB offer-facts boundary",
+        "canonical hard price gate",
         price,
         (
-            "Atlas Offer Facts owns approved pricing facts",
-            "Do not create pricing facts outside atlas_offer_facts.md",
-            "Give one relevant range only",
-            "Do not read the whole pricing menu unless the buyer asks for a breakdown",
-            "Do not give a final fixed quote for custom work",
+            "Price disclosure is opt-in and buyer-triggered.",
+            "The following do not permit paid-price disclosure:",
+            "This question type unlocks the hard price gate; give only the single closest canonical package or add-on range.",
+            "After a price trigger, Emma must:",
+            "avoid reciting other packages;",
+            "avoid calculating a final quote on the call.",
+        ),
+    )
+    assert_contains(
+        "new-site vs existing-site selection",
+        price,
+        (
+            "## New Website Versus Existing-Site Add-On",
+            "New website: choose a whole-project package.",
+            "Compatible existing website: an add-on range may be appropriate.",
+            "Context unclear: ask whether this is a new website or an addition to an existing site.",
+            "Do not confuse a new-build feature question with an existing-site add-on quote.",
+        ),
+    )
+    assert_contains(
+        "canonical range and classification policy",
+        prompt,
+        (
+            "Classify as simple (native/embed/plugin), integrated (data moves or automation runs), or custom (API/accounts/database/permissions/business logic).",
+            "Quote one relevant range, name one scope driver, and ask at most one necessary question.",
+            "Never read the menu.",
+            "Never add ranges into a final quote or charge overlapping work twice.",
+        ),
+    )
+    assert_contains(
+        "capability before price",
+        "\n".join((prompt, analysis_setup, human_tests)),
+        (
+            "simple form handoff or a real integration",
+            "Capability stays confident first; any price answer follows Core Boundaries.",
+            "Price mapping comes after a cost question and usually says the whole project moves toward {{website_integration_heavy_range}}, not that the integration is an automatic add-on.",
+            "jumps into a price range before answering the capability question clearly",
         ),
     )
     assert_contains(
         "custom portal scoped pricing",
-        combined_policy,
+        "\n".join((price, offer, analysis_setup)),
         (
-            "Yes, we can build that.",
             "That needs a proper scope before I give you a real number.",
+            "Portals and web applications receive no numeric range or ceiling.",
+            "Portal, dashboard, custom API, user-account, database, complex-payment, inventory-sync, marketplace, and custom business-logic work require scope.",
+            "A custom portal, dashboard, database, integration, or application needs technical scoping before final pricing.",
+            "Technical scoping determines the exact workflow, data, permissions, APIs, security, integrations, and implementation; it does not determine whether Atlas is willing or able to take on the work.",
             "secure login",
             "user accounts",
             "database",
             "permissions",
             "cloud setup",
-            "show where the login or portal entry would sit",
-            "not working functionality",
-            "Do not volunteer the {{website_starting_price}}-{{website_premium_price_anchor}} range",
-            "Do not force \"beyond {{website_premium_price_anchor}}\" in every portal/dashboard answer",
+            "Do not volunteer price, normal range, or \"beyond $5k\" unless the buyer asks price or whether it fits inside the normal/high-end range.",
         ),
     )
     assert_contains(
         "advanced feature mockup scope",
-        combined_policy,
+        "\n".join((offer, analysis_setup)),
         (
             "The free mockup is visual, not a live website",
-            "It can show where that would sit on the homepage, but it would not be working functionality in the free mockup.",
-            "It can show where the login or portal entry would sit, but the working portal would be scoped separately.",
+            "It can show where advanced features would sit: client-login button, booking path, quote request section, portal teaser, appointment request placement, dashboard entry point, calendar CTA, payment/ordering CTA.",
             "working login, database, CRM/payment integration, live calendar, portal, dashboard, booking engine, ecommerce",
         ),
     )
     assert_contains(
-        "simple vs integrated feature split",
-        combined_policy,
-        (
-            "Do not say \"we don't do filtering.\"",
-            "Simple quote filtering is usually around {{website_light_feature_range}}",
-            "Live calendar booking can move toward {{website_workflow_content_range}} or {{website_integration_heavy_range}}",
-            "Yes, we can build that. The exact setup depends on whether it's a simple form handoff or a real integration.",
-            "Fail if Emma jumps into a price range before answering the capability question clearly.",
-        ),
-    )
-    assert_contains(
         "first-call outcome and existing-website guards",
-        combined_policy,
+        "\n".join((prompt, analysis_setup, human_tests)),
         (
             "one low-friction move toward the free mockup",
             "Do not force booking",
-            "I can at least send the homepage mockup so you can see the direction.",
             "I'm not saying your current site is broken. The mockup is just a comparison point.",
-            "Do not imply the current site is bad without approved evidence.",
+            "Emma must not imply the current site is bad without approved evidence.",
             "Are you still there?",
             "Is there anything else I can help you with today?",
         ),

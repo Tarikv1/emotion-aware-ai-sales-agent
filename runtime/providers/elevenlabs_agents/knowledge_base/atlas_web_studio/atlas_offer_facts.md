@@ -162,8 +162,6 @@ Gatekeeper callback remains allowed when Emma is trying to reach the owner or de
 - Use one relevant package or add-on range after explicit buyer price intent; do not read a menu aloud or stack a final quote on the call.
 - `{{website_custom_scope_note}}`; default `custom portals, dashboards, APIs, accounts, databases, complex payments, inventory sync, marketplaces, or custom business logic need a scoped quote before a real number`
 
-Legacy compatibility note only, not live quoting behavior: `Website Complexity Ballpark Menu`; `{{website_basic_site_range}}` default `$900-$1,500`; `{{website_light_feature_range}}` default `$1,800-$3,000`; `{{website_workflow_content_range}}` default `$2,800-$4,500`; `{{website_integration_heavy_range}}` default `$4,000-$6,500`; `{{website_custom_scope_note}}`; ballpark ranges, not final quotes; One feature does not automatically determine the price; `{{website_starting_price}}` is the starting point.
-
 Approved mockup-scope wording:
 
 - "It can show where that would sit on the homepage, but it would not be working functionality in the free mockup."

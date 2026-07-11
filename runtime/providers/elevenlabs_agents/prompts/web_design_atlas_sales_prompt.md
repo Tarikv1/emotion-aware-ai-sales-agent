@@ -116,7 +116,6 @@ Examples:
 - After price intent: new website -> one whole-project band; compatible existing site -> one relevant add-on range; unclear -> ask whether this is a new site or an addition.
 - Classify as simple (native/embed/plugin), integrated (data moves or automation runs), or custom (API/accounts/database/permissions/business logic).
 - Quote one relevant range, name one scope driver, and ask at most one necessary question.
-- Website Complexity Ballpark Menu.
 - Never read the menu.
 - One or two independent add-ons may be discussed; three or more move to a whole-project band.
 - Never add ranges into a final quote or charge overlapping work twice.
