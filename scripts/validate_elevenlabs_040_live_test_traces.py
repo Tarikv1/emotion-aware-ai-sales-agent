@@ -17,9 +17,10 @@ PRICE_TRIGGER_RE = re.compile(
     re.IGNORECASE,
 )
 PAID_PRICE_RE = re.compile(
-    r"(?:\$\s?\d[\d,]*(?:\s?(?:-|to)\s?\$?\d[\d,]*)?|\b\d+\s?(?:dollars?|per month|monthly)\b)",
+    r"(?:\$\s?\d[\d,]*(?:\s?(?:-|to)\s?\$?\d[\d,]*\+?)?|\b\d+\s?(?:dollars?|per month|monthly)\b)",
     re.IGNORECASE,
 )
+RANGE_SEPARATOR_RE = r"(?:-|to)"
 ONGOING_COST_TRIGGER_RE = re.compile(
     r"\b(?:hosting|maintenance|updates|support|ongoing fees?|monthly|per month)\b",
     re.IGNORECASE,
@@ -63,14 +64,24 @@ UNSUPPORTED_INCLUDED_RE = re.compile(
     r"\b(?:everything|every behavior|all behavior|all workflows?)\b.*\bincluded\b",
     re.IGNORECASE,
 )
+EXISTING_SITE_RE = re.compile(r"\b(?:existing site|existing website|compatible site|compatible website|on an existing site|current site)\b", re.IGNORECASE)
+ADD_ON_RE = re.compile(r"\b(?:add(?:ing|ition)?|add-on|on an existing site)\b", re.IGNORECASE)
+WHOLE_SITE_RE = re.compile(r"\b(?:new site|new website|whole site|whole project|full site|package)\b", re.IGNORECASE)
+BUDGET_FIT_POSITIVE_RE = re.compile(r"\b(?:yes|yeah|it can fit|can fit|does fit|fits|should fit)\b", re.IGNORECASE)
+BUDGET_FIT_NEGATIVE_RE = re.compile(r"\b(?:no|does not fit|doesn't fit|won't fit|cannot fit|can't fit|is unrelated)\b", re.IGNORECASE)
+
+def money_range_pattern(start: str, end: str, *, plus_suffix: bool = False) -> re.Pattern[str]:
+    suffix = r"\+(?=\D|$)" if plus_suffix else r"\b"
+    return re.compile(rf"\$\s?{start}\s?{RANGE_SEPARATOR_RE}\s?\$?\s?{end}{suffix}", re.IGNORECASE)
+
 
 APPROVED_VALUE_PATTERNS = {
-    "basic_site": re.compile(r"\$\s?900\s?-\s?\$?\s?1,500\b", re.IGNORECASE),
-    "light_feature": re.compile(r"\$\s?1,800\s?-\s?\$?\s?3,000\b", re.IGNORECASE),
-    "workflow_content": re.compile(r"\$\s?2,800\s?-\s?\$?\s?4,500\b", re.IGNORECASE),
-    "integration_heavy": re.compile(r"\$\s?4,000\s?-\s?\$?\s?6,500\b", re.IGNORECASE),
-    "request_form": re.compile(r"\$\s?100\s?-\s?\$?\s?250\b", re.IGNORECASE),
-    "crm_api": re.compile(r"\$\s?1,000\s?-\s?\$?\s?2,500\+", re.IGNORECASE),
+    "basic_site": money_range_pattern("900", "1,500"),
+    "light_feature": money_range_pattern("1,800", "3,000"),
+    "workflow_content": money_range_pattern("2,800", "4,500"),
+    "integration_heavy": money_range_pattern("4,000", "6,500"),
+    "request_form": money_range_pattern("100", "250"),
+    "crm_api": money_range_pattern("1,000", "2,500", plus_suffix=True),
     "care_79": re.compile(r"\$\s?79(?:\s+(?:per month|monthly)|/month)?\b", re.IGNORECASE),
     "care_149": re.compile(r"\$\s?149(?:\s+(?:per month|monthly)|/month)?\b", re.IGNORECASE),
     "care_249": re.compile(r"\$\s?249(?:\s+(?:per month|monthly)|/month)?\b", re.IGNORECASE),
@@ -223,6 +234,17 @@ def money_matches(message: str) -> list[str]:
     return [match.group(0) for match in PAID_PRICE_RE.finditer(message)]
 
 
+def monetary_labels_for_match(match_text: str) -> set[str]:
+    labels = {label for label, pattern in APPROVED_VALUE_PATTERNS.items() if pattern.search(match_text)}
+    if re.fullmatch(r"\$\s?1,200\b", match_text, re.IGNORECASE):
+        labels.add("buyer_budget_reference")
+    return labels
+
+
+def money_match_labels(message: str) -> list[tuple[str, set[str]]]:
+    return [(match.group(0), monetary_labels_for_match(match.group(0))) for match in PAID_PRICE_RE.finditer(message)]
+
+
 def unique_labels_seen(messages: list[str]) -> set[str]:
     labels: set[str] = set()
     for message in messages:
@@ -297,6 +319,22 @@ def validate_allowed_labels(checks: Checks, messages: list[str], allowed: set[st
         not unexpected,
         f"unexpected approved ranges/plans: {unexpected}",
     )
+    disallowed_matches: list[str] = []
+    for message in messages:
+        for match_text, labels in money_match_labels(message):
+            if labels and labels <= (allowed | {"buyer_budget_reference"}):
+                continue
+            if not labels:
+                disallowed_matches.append(match_text)
+                continue
+            unexpected_labels = labels - allowed - {"buyer_budget_reference"}
+            if unexpected_labels:
+                disallowed_matches.append(match_text)
+    checks.check(
+        "no_unapproved_paid_price_ranges",
+        not disallowed_matches,
+        f"unsupported paid-price values detected: {disallowed_matches}",
+    )
     return seen
 
 
@@ -327,6 +365,12 @@ def scenario_basic_site(checks: Checks, messages: list[str]) -> None:
 def scenario_existing_request_form(checks: Checks, messages: list[str]) -> None:
     seen = validate_allowed_labels(checks, messages, {"request_form"})
     checks.check("existing_site_expected_add_on_range", "request_form" in seen, "existing-site request-form scenario requires only the $100-$250 add-on range")
+    combined = " ".join(messages)
+    checks.check(
+        "existing_site_add_on_classification",
+        EXISTING_SITE_RE.search(combined) is not None and ADD_ON_RE.search(combined) is not None and WHOLE_SITE_RE.search(combined) is None,
+        "existing-site request-form answer must frame the work as a compatible existing-site add-on, not a new-site/package quote",
+    )
 
 
 def scenario_new_site_booking(checks: Checks, messages: list[str]) -> None:
@@ -385,9 +429,22 @@ def scenario_portal_scope(checks: Checks, messages: list[str], first_paid: int |
 
 
 def scenario_budget_fit(checks: Checks, messages: list[str]) -> None:
-    seen = validate_allowed_labels(checks, messages, {"basic_site"})
+    seen = validate_allowed_labels(checks, messages, {"basic_site", "buyer_budget_reference"})
     checks.check("budget_fit_expected_range", "basic_site" in seen, "budget-fit scenario must answer against the $900-$1,500 basic-site range")
-    checks.check("budget_fit_direct_answer", any("fit" in message.lower() for message in messages), "budget-fit scenario must answer directly whether the budget fits")
+    combined = " ".join(messages)
+    checks.check(
+        "budget_fit_affirmative_answer_required",
+        BUDGET_FIT_POSITIVE_RE.search(combined) is not None and BUDGET_FIT_NEGATIVE_RE.search(combined) is None,
+        "budget-fit scenario must give an affirmative fit answer for a $1,200 budget",
+    )
+    checks.check(
+        "budget_fit_semantics",
+        re.search(r"\$\s?1,200\b", combined) is not None
+        and re.search(r"\$\s?900\s?(?:-|to)\s?\$?\s?1,500\b", combined, re.IGNORECASE) is not None
+        and re.search(r"\b(?:fit|fits|within|in the .* range|in that range|stays in)\b", combined, re.IGNORECASE) is not None
+        and "unrelated" not in combined.lower(),
+        "budget-fit scenario must relate the buyer's $1,200 budget positively to the $900-$1,500 range",
+    )
 
 
 def scenario_care_plan(checks: Checks, events: list[dict[str, Any]], messages: list[str]) -> None:
@@ -661,6 +718,14 @@ def run_self_test() -> int:
     ):
         assert_true(test_status(valid_result, focused_valid) == "pass", f"{focused_valid} valid fixture should pass")
 
+    normalized_range_valid = valid_runs()
+    normalized_range_valid[2]["agent_responses"] = [
+        make_event("user", "What does a basic three-to-five-page local-business site cost?"),
+        make_event("agent", "A straightforward site is usually in the $900 to $1,500 range, depending on the page count and content work."),
+    ]
+    normalized_range_result = validate_payload(make_payload(normalized_range_valid))
+    assert_true(test_status(normalized_range_result, EXPECTED_TEST_ORDER[2]) == "pass", "equivalent to-separator approved range should pass")
+
     unprompted = valid_runs()
     unprompted[0]["agent_responses"] = [
         make_event("user", "Can you add booking, CRM, and payments?"),
@@ -702,6 +767,32 @@ def run_self_test() -> int:
     ]
     multi_invalid_result = validate_payload(make_payload(multi_invalid))
     assert_true("no_arithmetic_total" in failure_names(multi_invalid_result, EXPECTED_TEST_ORDER[5]), "must reject arithmetic totals")
+
+    extra_range_invalid = valid_runs()
+    extra_range_invalid[2]["agent_responses"] = [
+        make_event("user", "What does a basic three-to-five-page local-business site cost?"),
+        make_event("agent", "A straightforward site is usually in the $900-$1,500 range, but some of these land around $2,000-$3,000 depending on extras."),
+    ]
+    extra_range_result = validate_payload(make_payload(extra_range_invalid))
+    assert_true("no_unapproved_paid_price_ranges" in failure_names(extra_range_result, EXPECTED_TEST_ORDER[2]), "must reject unsupported extra dollar ranges")
+
+    budget_negative_invalid = valid_runs()
+    budget_negative_invalid[8]["agent_responses"] = [
+        make_event("user", "Our budget is $1,200. Does that fit a basic site?"),
+        make_event("agent", "No, $1,200 does not fit a basic site; the $900-$1,500 band is unrelated."),
+    ]
+    budget_negative_result = validate_payload(make_payload(budget_negative_invalid))
+    budget_negative_failures = failure_names(budget_negative_result, EXPECTED_TEST_ORDER[8])
+    assert_true("budget_fit_affirmative_answer_required" in budget_negative_failures, "must reject negative budget-fit polarity")
+    assert_true("budget_fit_semantics" in budget_negative_failures, "must reject broken budget-fit semantics")
+
+    existing_frame_invalid = valid_runs()
+    existing_frame_invalid[3]["agent_responses"] = [
+        make_event("user", "We already have a compatible site. What does it cost to add a simple appointment-request form?"),
+        make_event("agent", "For a new site, a simple appointment-request form is usually $100-$250 depending on the fields."),
+    ]
+    existing_frame_result = validate_payload(make_payload(existing_frame_invalid))
+    assert_true("existing_site_add_on_classification" in failure_names(existing_frame_result, EXPECTED_TEST_ORDER[3]), "must reject wrong existing-site/add-on framing")
 
     print("self-test: pass")
     return 0
