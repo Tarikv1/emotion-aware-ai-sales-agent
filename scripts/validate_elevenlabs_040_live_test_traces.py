@@ -30,7 +30,7 @@ MENU_RE = re.compile(
     re.IGNORECASE,
 )
 FIXED_QUOTE_RE = re.compile(
-    r"\b(?:exact(?:ly)?|fixed price|flat(?: fee)?|final price|locked(?: in)?|all[- ]in|comes to|call it)\b",
+    r"\b(?:exactly|exact price|exact quote|exact amount|fixed price|flat(?: fee)?|final price|locked(?: in)?|all[- ]in|comes to|call it)\b",
     re.IGNORECASE,
 )
 CEILING_RE = re.compile(
@@ -68,11 +68,15 @@ EXISTING_SITE_RE = re.compile(r"\b(?:existing site|existing website|compatible s
 ADD_ON_RE = re.compile(r"\b(?:add(?:ing|ition)?|add-on|on an existing site)\b", re.IGNORECASE)
 WHOLE_SITE_RE = re.compile(r"\b(?:new site|new website|whole site|whole project|full site|package)\b", re.IGNORECASE)
 BUDGET_FIT_POSITIVE_RE = re.compile(
-    r"(?:\byes\b.*\bfit\b|\b(?:can|does|should)\s+fit\b|\bfit(?:s)?\s+within\s+budget\b|\bwithin\s+(?:the\s+)?(?:budget|range)\b|\bstays\s+in\s+the\s+.*range\b)",
+    r"(?:\byes\b[^.?!]*\b(?:fit|fits|can fit|does fit|should fit)\b|\b(?:\$1,200|1,200|that budget|the budget|it)\s+(?:fit|fits|can fit|does fit|should fit)\b|\bfit(?:s)?\s+within\s+(?:the\s+)?(?:budget|range|\$?\s?900\s?(?:-|to)\s?\$?\s?1,500)\b|\bstays\s+in\s+the\s+.*range\b)",
     re.IGNORECASE,
 )
 BUDGET_FIT_NEGATIVE_RE = re.compile(
     r"(?:\bno\b|\bdo(?:es)?\s+not\s+fit\b|\bdoesn't\s+fit\b|\bwon't\s+fit\b|\bwill\s+not\s+fit\b|\bcannot\s+fit\b|\bcan't\s+fit\b|\bdon't\s+think\b|\bdo\s+not\s+think\b|\bnot\s+sure\b|\bunsure\b|\bprobably\s+not\b|\bmaybe\s+not\b|\bnot\s+within\s+budget\b|\bover\s+budget\b|\bout(?:side)?\s+of?\s*budget\b|\boutside\s+budget\b|\bis\s+unrelated\b)",
+    re.IGNORECASE,
+)
+BUDGET_FIT_HEDGE_RE = re.compile(
+    r"(?:\bmaybe\b|\bmight\b|\bcould\b|\bpossibly\b|\bprobably\b|\bperhaps\b|\bi think\b|\bI think\b|\bmay\s+fit\b|\bmight\s+fit\b|\bcould\s+fit\b|\bpossibly\s+fit\b|\bprobably\s+fit\b)",
     re.IGNORECASE,
 )
 NEGATED_WHOLE_SITE_RE = re.compile(
@@ -256,7 +260,11 @@ def money_match_labels(message: str) -> list[tuple[str, set[str]]]:
 
 
 def contains_affirmative_budget_fit(text: str) -> bool:
-    return BUDGET_FIT_POSITIVE_RE.search(text) is not None and BUDGET_FIT_NEGATIVE_RE.search(text) is None
+    return (
+        BUDGET_FIT_POSITIVE_RE.search(text) is not None
+        and BUDGET_FIT_NEGATIVE_RE.search(text) is None
+        and BUDGET_FIT_HEDGE_RE.search(text) is None
+    )
 
 
 def contains_positive_whole_site_framing(text: str) -> bool:
@@ -745,6 +753,14 @@ def run_self_test() -> int:
     normalized_range_result = validate_payload(make_payload(normalized_range_valid))
     assert_true(test_status(normalized_range_result, EXPECTED_TEST_ORDER[2]) == "pass", "equivalent to-separator approved range should pass")
 
+    budget_affirmative_caveat_valid = valid_runs()
+    budget_affirmative_caveat_valid[8]["agent_responses"] = [
+        make_event("user", "Our budget is $1,200. Does that fit a basic site?"),
+        make_event("agent", "Yes, $1,200 fits within $900-$1,500; the exact number depends on scope."),
+    ]
+    budget_affirmative_caveat_result = validate_payload(make_payload(budget_affirmative_caveat_valid))
+    assert_true(test_status(budget_affirmative_caveat_result, EXPECTED_TEST_ORDER[8]) == "pass", "explicit affirmative fit with later scope caveat should pass")
+
     unprompted = valid_runs()
     unprompted[0]["agent_responses"] = [
         make_event("user", "Can you add booking, CRM, and payments?"),
@@ -815,6 +831,29 @@ def run_self_test() -> int:
     assert_true("budget_fit_affirmative_answer_required" in budget_negated_bypass_failures, "must reject negated budget-fit phrasing like don't think it fits")
     assert_true("budget_fit_semantics" in budget_negated_bypass_failures, "must reject negated budget-fit semantics like don't think it fits")
 
+    for label, message in (
+        ("maybe_can_fit", "Maybe $1,200 can fit a basic site; the $900-$1,500 range depends on scope."),
+        ("might_fit", "$1,200 might fit a basic site within the $900-$1,500 range depending on scope."),
+        ("possibly_fit", "It could possibly fit a basic site in the $900-$1,500 range depending on scope."),
+        ("i_think_fit", "I think $1,200 fits within $900-$1,500, depending on scope."),
+        ("not_sure_fit", "I'm not sure $1,200 fits a basic site even though the $900-$1,500 range exists."),
+    ):
+        hedged_budget_invalid = valid_runs()
+        hedged_budget_invalid[8]["agent_responses"] = [
+            make_event("user", "Our budget is $1,200. Does that fit a basic site?"),
+            make_event("agent", message),
+        ]
+        hedged_budget_result = validate_payload(make_payload(hedged_budget_invalid))
+        hedged_budget_failures = failure_names(hedged_budget_result, EXPECTED_TEST_ORDER[8])
+        assert_true(
+            "budget_fit_affirmative_answer_required" in hedged_budget_failures,
+            f"{label} must fail budget_fit_affirmative_answer_required",
+        )
+        assert_true(
+            "budget_fit_semantics" in hedged_budget_failures,
+            f"{label} must fail budget_fit_semantics",
+        )
+
     existing_frame_invalid = valid_runs()
     existing_frame_invalid[3]["agent_responses"] = [
         make_event("user", "We already have a compatible site. What does it cost to add a simple appointment-request form?"),
@@ -830,6 +869,14 @@ def run_self_test() -> int:
     ]
     existing_negated_clarification_result = validate_payload(make_payload(existing_negated_clarification_valid))
     assert_true(test_status(existing_negated_clarification_result, EXPECTED_TEST_ORDER[3]) == "pass", "negated whole-site clarification should pass for existing-site add-on")
+
+    existing_negated_whole_site_quote_valid = valid_runs()
+    existing_negated_whole_site_quote_valid[3]["agent_responses"] = [
+        make_event("user", "We already have a compatible site. What does it cost to add a simple appointment-request form?"),
+        make_event("agent", "On your existing site, adding the form is usually $100-$250. This is not a whole-site quote."),
+    ]
+    existing_negated_whole_site_quote_result = validate_payload(make_payload(existing_negated_whole_site_quote_valid))
+    assert_true(test_status(existing_negated_whole_site_quote_result, EXPECTED_TEST_ORDER[3]) == "pass", "negated whole-site quote clarification should pass for existing-site add-on")
 
     existing_affirmative_whole_site_invalid = valid_runs()
     existing_affirmative_whole_site_invalid[3]["agent_responses"] = [
