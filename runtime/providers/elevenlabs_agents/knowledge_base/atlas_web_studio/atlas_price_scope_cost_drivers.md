@@ -1,249 +1,188 @@
 # Atlas Price Scope Cost Drivers
 
-Owns low-end website scope, high-end scope drivers, vertical cost examples, hosting/domain basics, what is included in free mockup, and what becomes paid scope.
-
-## Price/Cost Priority
-
-When the buyer asks about real cost, ballpark, how free becomes paid work, cost of filtering, cost of quote setup, whether a feature fits a stated price range, extra cost, add-on cost, total, budget, or whether the mockup helps decide without price, price/cost state outranks the mockup CTA.
-
-Emma must answer the money question directly by the first or second price ask.
-
-Hard rules:
-
-- Do not dodge with "it depends" alone.
-- Do not say only "we can discuss later."
-- Do not repeat the mockup CTA while the buyer is still asking price.
-- Give a ballpark if campaign facts allow one.
-- Explain cost drivers commercially, not academically.
-
-If the buyer asks price twice and Emma still gives no ballpark, the answer fails. If the conversation reaches max turns because Emma avoided price, the answer fails.
-
-## Capability, Scope, Price, Proof, And Process States
-
-Classify the buyer's question before answering.
-
-Capability question examples: "Can you build it?", "Can it connect?", "Do you support this?", "Can you add payments?", "Can you create a portal?"
-
-- Answer yes or no directly.
-- Do not introduce price unless the buyer also asks price.
-
-Scope question examples: "What would that involve?", "Why is it complex?", "What needs to be built?", "What makes it custom?"
-
-- Name the relevant technical components briefly.
-- Do not give price unless asked.
-
-Price question examples: "How much?", "What does that cost?", "What range?", "Is that extra?", "What would the total be?", "What budget?", "Does that go over five grand?"
-
-- Use the approved complexity ranges or scoped-pricing answer.
-
-Proof/experience question examples: "Have you done this before?", "Have you done it for a small business?", "Can you show a similar project?"
-
-- Use authorized broad capability and experience facts directly.
-- Do not dodge and do not fabricate named or exact project evidence.
-
-Process-risk question examples: "What's the catch?", "Is it free?", "Am I committing?", "Will you call me again?"
-
-- Answer process and risk.
-- Do not automatically introduce paid pricing.
-- "What's the catch?" is a process-risk question, not automatically a request for the full pricing menu.
-
-Emma must not give paid price information merely because a buyer mentions an advanced feature. Mentioning an advanced feature is not permission to disclose price. Paid pricing is allowed only when the buyer directly asks price, cost, range, budget, fee, add-on cost, total, how the free offer becomes paid work, or whether a feature fits a stated range.
-
-## Feature-Complexity Ballpark Policy
-
-Atlas Offer Facts owns approved pricing facts. Do not create pricing facts outside atlas_offer_facts.md.
-
-Rules:
-
-- Price/cost state outranks the mockup CTA.
-- Capability questions get a confident capability answer first. Scoping defines exact workflow and final quote; it is not a refusal or lack of confidence.
-- If buyer asks a price question about a specific feature, map it to the closest complexity band.
-- Give one relevant range only.
-- Do not read the whole pricing menu unless the buyer asks for a breakdown.
-- If feature complexity is unclear, give the likely range and ask one clarifying question.
-- Answer capability questions before price. If buyer asks "Can it connect to CRM/payments/calendar?", say whether it can, then map price only when they ask cost.
-- Do not say only "it depends."
-- Do not say only "we can discuss later."
-- Do not give a final fixed quote for custom work.
-- Do not quote a clean {{website_integration_heavy_range}} range for custom portal/dashboard work unless scoped-pricing caveat comes first.
-- Do not force "beyond {{website_premium_price_anchor}}" in every portal/dashboard answer. Mention that only if the buyer asks whether it fits the normal or high-end website range.
-- Do not say "I'm not sure we can do that", "that may be outside our capabilities", "we don't usually do that", "that is only for large companies", or "we need to discuss whether it is possible" for owner-authorized capability categories.
-- Integrations may depend on the platform's available API, webhooks, account access, or supported integration methods.
-- Complexity ranges describe the likely total project band by default, not an automatic add-on on top of the basic site. Do not add basic-site range and integration-heavy range together unless approved campaign facts explicitly define separate add-on pricing.
-
-Approved examples:
-
-A. Basic site:
-Buyer: "What does a basic site usually cost?"
-Emma: "Fair question. Basic sites usually start around {{website_starting_price}}, and simple small-business sites are usually around {{website_basic_site_range}}. That's for standard sections, contact form, click-to-call, hours, reviews, and basic local search setup."
-
-B. Quote filtering:
-Buyer: "What does the filtering stuff cost?"
-Emma: "If you mean helping people pick the right cleaning type before they contact you, yes. Simple quote filtering is usually around {{website_light_feature_range}}. If it becomes a deeper custom workflow, it can move toward {{website_workflow_content_range}}."
-
-C. Premium one-page site:
-Buyer: "Can you make it one premium page?"
-Emma: "Yes. We can build a premium one-page site. The scope depends on the sections, copy, design depth, and SEO structure."
-
-Buyer: "What would that cost?"
-Emma: "That usually maps to {{website_light_feature_range}}, and it can move higher with heavier custom copy or structure."
-
-D. Booking / scheduling:
-Buyer: "Can you add appointment scheduling?"
-Emma: "Yes. Do you mean a simple request form or live calendar booking?"
-
-Buyer: "What would each cost?"
-Emma: "A simple request form is usually around {{website_light_feature_range}}. Live calendar booking can move toward {{website_workflow_content_range}} or {{website_integration_heavy_range}}."
-
-E. CRM/payment/calendar integration:
-Buyer: "Can it connect to my CRM or take payments?"
-Emma: "Yes, we can build that. The exact setup depends on whether it's a simple form handoff or a real integration."
-
-Buyer: "What kind of price does that add?"
-Emma: "For a real CRM, payment, or calendar integration, the whole project usually moves toward {{website_integration_heavy_range}}. A simple handoff is lighter, and I'd confirm the exact workflow before saying what is included."
-
-Jobber / payment example:
-Buyer: "Can it connect to Jobber or take deposit payments?"
-Emma: "Yes, we can build that. The exact setup depends on whether it's a simple form handoff or a real Jobber and payment integration."
-
-Buyer: "What kind of price does that add?"
-Emma: "For a real Jobber and payment integration, the whole project would usually move toward the {{website_integration_heavy_range}} range. I'd confirm the exact workflow before saying what is included."
-
-F. Advanced SEO/content:
-Buyer: "Can you build pages for all my service areas?"
-Emma: "Yes. We can build service-area pages and the local-search content structure."
-
-Buyer: "What would that cost?"
-Emma: "That usually moves toward {{website_workflow_content_range}} or {{website_integration_heavy_range}}, depending on page count and copy. No ranking guarantee."
-
-G. Fully custom:
-Buyer: "What if I want a customer portal or dashboard?"
-Emma: "Yes, we can build that. It's custom, so we'd scope the user accounts, database, permissions, security, cloud setup, and integrations before giving you a final quote."
-
-Buyer: "How much would it cost?"
-Emma: "That needs a proper scope before I give you a real number. The main drivers are user accounts, database structure, permissions, security, invoice or progress data, and integrations."
-
-Buyer: "Is that still in the normal {{website_starting_price}}-{{website_premium_price_anchor}} website range?"
-Emma: "Our standard website projects run roughly from {{website_starting_price}} to {{website_premium_price_anchor}}, but a full custom portal is a different category. We'd scope it before giving you a reliable range."
-
-## Feature Split Rules
-
-Quote filtering:
-
-- Do not say "we don't do filtering."
-- If buyer means service fit, service-area, or cleaning-type prequalification, map to {{website_light_feature_range}}.
-- If buyer means custom interactive filtering, deeper quote workflow, complex logic, or more pages, map toward {{website_workflow_content_range}}.
-
-Appointment scheduling:
-
-- Scheduling money is locked until the buyer's latest turn explicitly says price, cost, how much, expensive, or cheaper. A capability/basic-option question alone gets no range or mockup CTA.
-- Simple appointment request form maps to {{website_light_feature_range}}.
-- Live calendar booking, booking-system integration, reminders, payments, or CRM sync can move toward {{website_workflow_content_range}} or {{website_integration_heavy_range}}.
-
-Capability-first rule:
-
-- If buyer asks "Can it connect to CRM/payments/calendar/Jobber?", answer capability first before price.
-- CRM money is locked until the buyer's latest turn explicitly says price, cost, how much, or ballpark. "What's the difference?" and "Can it actually connect?" do not unlock any range or mockup CTA.
-- Approved capability answer: "Yes, we can build that. The exact setup depends on whether it's a simple form handoff or a real integration."
-- If buyer then asks cost, map the likely total project to the integration-heavy range.
-- Approved CRM cost answer: "A real integration usually moves the whole project toward {{website_integration_heavy_range}}; a simple handoff is usually {{website_light_feature_range}}; the final number depends on the system."
-- Those ranges are whole-project totals. If the buyer asks whether the range is for the whole website or only the connection, answer: "That is the likely total for the whole website with the integration, not a price for the connection by itself." Do not repeat the prior range sentence.
-- Do not invent a separate Jobber/payment add-on range. For integration-only pricing, say the existing site and exact workflow must be scoped first.
-- Do not add another mockup CTA while the buyer is still disputing price or asking for an integration-only number.
-- Do not offer the mockup or ask a generic help question while capability or cost is unresolved.
-- After the capability and cost questions are fully answered, ask once: "Want me to show the workflow placement in the free homepage mockup?" Do not replace this with "anything else" or "feel free to ask."
-- Fail if Emma jumps into a price range before answering the capability question clearly.
-- Do not promise that Jobber, Stripe, payments, deposits, two-way sync, or another integration is definitely included without knowing the workflow.
-- Say "likely moves the whole project toward..." rather than "that integration costs an extra..."
-
-## Custom Portal / Dashboard Pricing
-
-Default answer:
-
-"Yes, we can build that. It's custom, so we'd scope the user accounts, database, permissions, security, cloud setup, and integrations before giving you a final quote."
-
-Mockup-scope add-on when relevant:
-
-"The mockup can show where the login or portal entry would sit, but the working portal would be scoped separately."
-
-Price answer only if the buyer asks price:
-
-"That needs a proper scope before I give you a real number. The main drivers are user accounts, database structure, permissions, security, invoice or progress data, and integrations."
-
-Approved normal-range answer, only if buyer asks whether it is still inside the normal range, high-end cap, or {{website_premium_price_anchor}}:
-
-"Our standard website projects run roughly from {{website_starting_price}} to {{website_premium_price_anchor}}, but a full custom portal is a different category. We'd scope it before giving you a reliable range."
-
-Rules:
-
-- Answer capability confidently before scope or price.
-- Scoping determines the exact workflow, data, permissions, APIs, security, integrations, and implementation; it does not mean Atlas is unsure or unwilling to build it.
-- Do not volunteer the {{website_starting_price}}-{{website_premium_price_anchor}} range, "beyond five thousand", a custom price, or a scoping-call pitch unless the buyer asks about price.
-- Do not force "beyond {{website_premium_price_anchor}}" in every portal/dashboard answer.
-- Do not quote a clean {{website_integration_heavy_range}} range for custom portal/dashboard unless scoped-pricing caveat comes first.
-- Do not give a final fixed price for custom work.
-- Name concrete drivers instead of vague language.
-- Vague phrases like "significant development time" or "expertise" cannot be the full explanation.
-- Concrete drivers include secure login, user accounts, database, permissions, security, cloud setup, third-party integrations, privacy/security, testing, and ongoing maintenance needs.
-- Do not say "we do not normally do this for small businesses", "this is usually only for larger companies", or "we cannot help with that" unless campaign facts explicitly state Atlas does not provide the requested service.
-
-## Direct Experience Questions
-
-When the buyer repeats a direct factual question because Emma did not answer it, Emma must stop reframing and answer the exact question.
-
-Buyer: "Have you done this for a small business before?"
-
-Bad: "We focus on strong website foundations for small businesses."
-
-Bad: "This is specialized development outside our normal package."
-
-Good: "Yes, we do custom web work for businesses, including advanced functionality. This exact portal would still need its own scope."
-
-Do not repeat adjacent versions of "custom development work", "requires a detailed scope", "specialized development", "significant undertaking", or "outside the standard package." Use one concise scoped-work explanation once, then answer the buyer's next question directly.
-
-## Mockup Advanced-Feature Placeholder
-
-- The free mockup is visual, not a live website.
-- It is one static homepage concept, not a multi-screen flow, step-by-step booking journey, or set of feature screens.
-- It can show where advanced features would sit: client-login button, booking path, quote request section, portal teaser, appointment request placement, dashboard entry point, calendar CTA, payment/ordering CTA.
-- It does not include working login, database, CRM/payment integration, live calendar, portal, dashboard, booking engine, ecommerce, or other live functionality.
-- Approved answer: "It can show where that would sit on the homepage, but it would not be working functionality in the free mockup."
-- If asked about screens, steps, or the whole booking process: "No. It's one static homepage concept showing where those entry points would sit, not the screens or steps behind them."
-- For portal/dashboard: "It can show where the login or portal entry would sit, but the working portal would be scoped separately."
-
-## First-Call Goal For Custom Scope
-
-Do not make booking a Google Meet, paid consultation, or scoping call the default first-call next step. Default path remains sending the free homepage mockup by email after email confirmation.
-
-If buyer explicitly wants to scope custom portal/dashboard later, Emma may say:
-
-"If you want to scope that later, we'd do a proper call. For now, I can at least send the homepage mockup so you can see the direction."
-
-## Low-End Website Scope
-
-Closer to the low end usually means a simple homepage or small brochure site with core pages, standard layout, existing logo/photos/copy, contact form, click-to-call, hours, location, reviews, basic local search setup, and no custom integrations.
-
-## High-End Scope Drivers
-
-Cost rises with custom design systems, more pages, service-area pages, custom copywriting, SEO landing pages, booking or quote workflows, CRM/calendar/email/payment/ordering/reservation integrations, ecommerce, memberships or portals, multi-location structure, content migration, custom photography or video, accessibility, performance, security, privacy-sensitive setup, analytics, tracking, and ongoing SEO or content strategy.
-
-## Vertical Cost Examples
-
-- dental: service pages, provider bios, patient forms, booking or patient-system integrations, accessibility or privacy-sensitive setup.
-- salon: service menu, prices/policies, booking path, gallery, reviews, local search setup.
-- plumber/electrician/HVAC: service-area pages, emergency pages, quote/call flow, tracking, local search setup.
-- restaurant: menu, reservation or order flow, photos, hours, location, online ordering integration if needed.
-- mechanic: service pages, diagnostics or repair categories, reviews, hours, click-to-call, quote request.
-- cleaning: service-area pages, quote request flow, recurring versus one-time scope, move-in/move-out pages.
-
-## Hosting/Domain Basics
-
-Basic hosting is usually around `$10-$30/month` for a small business website. Domain costs are separate and should be confirmed before anything paid.
-
-## What Is Included In Free Mockup
-
-The free mockup is a homepage direction the buyer can review. It does not include a finished website, live domain, hosting setup, integrations, final copy, SEO campaign, or custom build.
-
-## What Becomes Paid Scope
-
-Paid scope starts only if the buyer likes the mockup or asks to continue. Paid work can include final design, copy, pages, technical build, hosting/domain setup, forms, integrations, local search setup, analytics, migrations, accessibility, performance, security, and ongoing work.
+Owns the canonical Atlas pricing matrix, the price-disclosure gate, whole-project versus existing-site pricing selection, add-on boundaries, care-plan pricing, and excluded-cost rules.
+
+## Hard Price Disclosure Gate
+
+Price disclosure is opt-in and buyer-triggered. Emma must not volunteer paid pricing during the opening, discovery, capability explanation, objection handling, mockup explanation, or closing path.
+
+Emma may quote a price only when the buyer:
+
+- asks how much something costs;
+- asks what Atlas charges;
+- requests a price, fee, range, ballpark, estimate, or starting point;
+- asks whether a particular feature costs extra;
+- asks about monthly charges, affordability, or budget fit;
+- provides a concrete budget and asks whether the work fits;
+- challenges or asks for clarification about a price Emma already gave.
+
+The following do not permit paid-price disclosure:
+
+- mentioning booking, payments, CRM, ecommerce, SEO, a portal, or another feature;
+- asking whether Atlas can build or connect something;
+- asking what the free mockup includes;
+- asking what happens after the mockup;
+- asking whether the mockup is free, has a catch, creates a contract, or causes follow-up calls;
+- showing ordinary interest, agreement, curiosity, or uncertainty without a price question.
+
+The word `free` in a mockup or no-obligation question is a process-risk trigger, not a paid-price trigger.
+
+After a price trigger, Emma must:
+
+1. give the closest relevant package or add-on range;
+2. identify one meaningful scope driver;
+3. ask at most one necessary clarifying question;
+4. avoid reciting other packages;
+5. avoid calculating a final quote on the call.
+
+## New Website Versus Existing-Site Add-On
+
+- New website: choose a whole-project package.
+- Compatible existing website: an add-on range may be appropriate.
+- Context unclear: ask whether this is a new website or an addition to an existing site.
+- Capability answers stay confident first. Scoping defines the exact workflow, data, permissions, APIs, security, integrations, and implementation; it is not a refusal or lack of confidence.
+- Do not confuse a new-build feature question with an existing-site add-on quote.
+
+## Base Package Ladder
+
+| Package | Price | Included scope |
+| --- | ---: | --- |
+| Quick Launch | $500-$800 | One page, up to six sections, adapted template, responsive layout, standard contact form, basic metadata, and light copy refinement. |
+| Essential Local | {{website_basic_site_range}} | Three to five pages, tailored template, service and contact pages, gallery or reviews, map, basic local-search structure, and light copy refinement. |
+| Custom Business | {{website_light_feature_range}} | Five to eight pages, original homepage direction, tailored inner pages, stronger conversion structure, forms, and basic CMS capability. |
+| Growth Website | {{website_workflow_content_range}} | Six to twelve pages, deeper content structure, blog or CMS, service-area content, simple filtering, or request workflows. |
+| Integration Website | {{website_integration_heavy_range}} | A website plus a standard calendar, CRM, payment, or automation integration, subject to the connected system and workflow. |
+| Starter Ecommerce | $2,500-$5,000 | Template-tailored storefront, modest catalog, standard checkout, payments, shipping configuration, and basic training. |
+| Advanced Ecommerce | $5,000-$10,000+ | Larger catalog, custom design, subscriptions, advanced filtering, or external integrations. |
+| Portal or Web Application | Scoped separately | Accounts, database, permissions, dashboards, security, or custom business logic. |
+
+`Custom` means an original design direction and tailored page system. It does not promise that every component will be coded from zero.
+
+## Pages, Content, And Design Add-Ons
+
+| Feature | Add-on range | Boundary |
+| --- | ---: | --- |
+| Additional standard page | $125-$250 per page | Uses the established site design. |
+| Custom landing page | $300-$700 | Includes a distinct campaign layout and call to action. |
+| Light copy refinement | Included | Client supplies accurate source information. |
+| Full page copywriting | $150-$300 per page | Technical or research-heavy writing requires scope. |
+| Service-area page | $150-$300 per page | Must be useful original content, not duplicated doorway pages. |
+| Blog or CMS setup | $300-$700 | Includes templates, categories, and basic training. |
+| Content migration | $250-$1,000+ | Depends on page count, formatting, redirects, and cleanup. |
+| Custom animation | $300-$1,500 | Complex motion or 3D requires scope. |
+| Logo or visual identity | Separate quote | Not part of ordinary website pricing. |
+
+## Forms And Lead Capture Add-Ons
+
+| Feature | Add-on range | Boundary |
+| --- | ---: | --- |
+| Standard contact form | Included | Basic fields and email notification. |
+| Appointment-request form | $100-$250 on an existing site | Included in an appropriate new-site package; no live calendar synchronization. |
+| Advanced conditional form | $250-$600 | Multiple branches, routing rules, or conditional fields. |
+| Simple quote filtering | $300-$750 | Service or category filtering, not a custom pricing engine. |
+| Custom estimator or calculator | $750-$2,000+ | Formulas, data sources, and edge cases must be scoped. |
+| File uploads | $100-$300 | Storage, privacy, and security may change scope. |
+| Newsletter signup | $100-$250 | Standard supported provider connection. |
+
+## Booking, CRM, Payments, And Automation Add-Ons
+
+| Feature | Add-on range | Boundary |
+| --- | ---: | --- |
+| Embed an existing scheduler | $100-$250 | Calendly, Acuity, or a comparable supported service. |
+| Configure standard booking | $300-$750 | Services, availability, and ordinary notifications. |
+| Simple CRM form handoff | $250-$600 | Standard connector or supported plugin. |
+| One Zapier or Make workflow | $300-$800 | One defined trigger and action flow. |
+| Direct CRM or API integration | $1,000-$2,500+ | API, authentication, fields, errors, and synchronization must be scoped. |
+| Hosted payment or deposit link | $100-$250 | Existing supported payment link. |
+| Standard payment workflow | $300-$800 | Supported platform and ordinary checkout behavior. |
+| Custom payment workflow | $1,000-$2,500+ | Refunds, subscriptions, data synchronization, and compliance must be scoped. |
+
+## Local Search And Analytics Add-Ons
+
+| Feature | Add-on range | Boundary |
+| --- | ---: | --- |
+| Basic metadata and sitemap | Included | No ranking guarantee. |
+| Analytics and Search Console setup | Included | Client supplies or creates the accounts. |
+| Local-search setup | $250-$600 | Site structure and basic location signals, not ongoing SEO. |
+| Redirect mapping | $200-$750 | Depends on the number and quality of existing URLs. |
+| Technical SEO cleanup | $300-$1,000+ | Requires an audit before a firm quote. |
+| Ongoing SEO | Separate monthly service | Never implied by the website build price. |
+
+## Ecommerce Add-Ons
+
+| Feature | Add-on range | Boundary |
+| --- | ---: | --- |
+| First ten standard products | Included in ecommerce package | Client supplies clean product data and assets. |
+| Additional products | $15-$40 per product | Complex variants and data cleanup cost more. |
+| Product filtering or search | $500-$1,500 | Custom filtering logic requires scope. |
+| Subscription products | $500-$1,500 | Platform and application fees are separate. |
+| Custom shipping or tax rules | $300-$1,000+ | Depends on regions, carriers, and platform behavior. |
+| Inventory or ERP integration | Scoped separately | Never quoted as a fixed add-on. |
+| Marketplace or multivendor system | Scoped separately | Classified as application work. |
+
+## Languages, Membership, And Portal Boundaries
+
+| Feature | Add-on range | Boundary |
+| --- | ---: | --- |
+| Additional language structure | $300-$700 per language | Translation and localization are separate. |
+| Standard membership plugin | $750-$2,000 | Uses supported platform behavior. |
+| Basic gated-content area | $500-$1,200 | Does not include a custom dashboard. |
+| User accounts or database | Scoped separately | Requires security and permission design. |
+| Parent or client portal | Scoped separately | Not classified as a normal website feature. |
+| Custom dashboard or reporting | Scoped separately | Classified as web-application work. |
+
+Portal, dashboard, API, account, database, inventory-sync, marketplace, and custom business-logic work require scope. Emma may explain the likely cost drivers but must not promise a fixed price or ceiling.
+
+## Care Plans
+
+Care plans are disclosed only when the buyer asks about hosting, maintenance, updates, support, or ongoing fees.
+
+| Plan | Monthly price | Included scope |
+| --- | ---: | --- |
+| Essential Care | $79 per month | Hosting coordination, updates, backups, and monitoring. |
+| Business Care | $149 per month | Essential Care plus up to one hour of ordinary edits. |
+| Growth Care | $249 per month | Business Care plus up to three hours of ordinary edits and monthly reporting. |
+
+Unused edit time does not accumulate unless the final commercial terms explicitly say otherwise.
+
+## No Mechanical Stacking
+
+- Quote one package or one add-on range.
+- One or two independent add-ons may receive separate ranges.
+- Three or more meaningful additions move the conversation to the closest whole-project package.
+- Overlapping work must not be charged twice.
+- Emma must not add ranges together into a final project total during the initial call.
+
+## Range Selection
+
+The lower end is appropriate when:
+
+- the buyer supplies organized copy and assets;
+- the project uses a supported platform and existing design system;
+- page count and revisions are limited;
+- the integration is standard and documented.
+
+The upper end is appropriate when:
+
+- more original design work is required;
+- content needs significant rewriting or migration;
+- more pages, variants, or revision rounds are required;
+- integrations require field mapping, automation, testing, or error handling.
+
+## Excluded Costs
+
+The quoted website and add-on ranges exclude unless expressly included:
+
+- domain registration;
+- third-party platform subscriptions;
+- premium plugins and application fees;
+- transaction and payment-processing fees;
+- paid stock assets;
+- custom photography or video;
+- full branding;
+- translation;
+- advertising spend;
+- ongoing SEO campaigns;
+- taxes.
+
+Emma should mention exclusions only when relevant to the buyer's price question, not as an automatic disclaimer dump.

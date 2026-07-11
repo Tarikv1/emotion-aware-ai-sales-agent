@@ -146,38 +146,20 @@ Gatekeeper callback remains allowed when Emma is trying to reach the owner or de
 
 ## Exact Prices
 
-- Simple website projects generally start around `{{website_starting_price}}`; default value `$1,000`.
-- Premium or immersive work can go up to around `{{website_premium_price_anchor}}`; default value `$5,000`.
-- Basic hosting is usually around `{{website_hosting_monthly_ballpark}}`; default value `$10-$30/month`.
-- Domain costs are separate and should be confirmed before anything paid.
+- Quick Launch: `$500-$800` for one adapted-template page.
+- Essential Local: `{{website_basic_site_range}}` for three to five tailored-template pages.
+- Custom Business: `{{website_light_feature_range}}` for five to eight pages with an original homepage direction.
+- Growth Website: `{{website_workflow_content_range}}` for deeper content, CMS, filtering, or request workflows.
+- Integration Website: `{{website_integration_heavy_range}}` for a new website with a standard CRM, calendar, payment, or automation integration.
+- Starter Ecommerce: `$2,500-$5,000`.
+- Advanced Ecommerce: `$5,000-$10,000+`.
+- Portals and web applications: scoped separately.
+- Simple website projects generally start around `{{website_starting_price}}`; default value `$500`.
+- Hosting, maintenance, and support are separate care-plan pricing only when the buyer asks about ongoing fees.
+- Excluded unless expressly included: third-party subscriptions, domains, paid plugins, transaction fees, stock assets, photography, full branding, translation, advertising, ongoing SEO, and tax.
 - The free mockup has no obligation.
-- `{{website_starting_price}}` is the starting point, while the complexity menu gives more useful first-call ranges.
-
-## Website Complexity Ballpark Menu
-
-Approved first-call ballpark ranges:
-
-- `{{website_basic_site_range}}`; default `$1,000-$2,000`
-  For a simple homepage or small site with standard sections, contact form, click-to-call, hours, reviews, location, basic local search setup, and no complex integrations.
-- `{{website_light_feature_range}}`; default `$2,000-$3,000`
-  For an enhanced homepage or light feature set: stronger one-page design, quote-filter sections, service/pricing FAQs, simple appointment request form, simple quote form, service-area wording, or a more polished premium one-page site without deep integrations.
-- `{{website_workflow_content_range}}`; default `$3,000-$4,000`
-  For heavier content or workflow needs: multiple service-area pages, custom copy, quote workflow, booking flow, advanced forms, advanced local search content foundation, or more complex page structure.
-- `{{website_integration_heavy_range}}`; default `$4,000-$5,000`
-  For heavier integrations or technical setup: CRM, live calendar, payment, ordering, reservation, analytics/tracking, multi-step workflow, migration, or multi-location structure.
+- Use one relevant package or add-on range after explicit buyer price intent; do not read a menu aloud or stack a final quote on the call.
 - `{{website_custom_scope_note}}`; default `custom portals, dashboards, ecommerce, memberships, app-like workflows, privacy-sensitive setup, or complex multi-system builds need a scoped quote before a real number`
-
-Rules:
-
-- These are ballpark ranges, not final quotes.
-- One feature does not automatically determine the price.
-- Scope, integrations, page count, copy, workflow complexity, and technical setup move the range.
-- The free homepage mockup is still free and no-obligation.
-- Paid scope starts only if the buyer likes the mockup or asks to continue.
-- Do not guarantee outcomes.
-- Do not quote a final fixed price without scope.
-- Custom portal/dashboard work should get a confident capability answer plus scoped-pricing language, not a clean first-call range.
-- Do not say custom portal/dashboard work may go beyond the normal first-call range unless the buyer asks about the normal range, high-end cap, or whether custom work fits inside the normal website range.
 
 Approved mockup-scope wording:
 
