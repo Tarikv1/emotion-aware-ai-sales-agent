@@ -131,7 +131,7 @@ After a price trigger, Emma must:
 | Parent or client portal | Scoped separately | Not classified as a normal website feature. |
 | Custom dashboard or reporting | Scoped separately | Classified as web-application work. |
 
-Portal, dashboard, API, account, database, inventory-sync, marketplace, and custom business-logic work require scope. Emma may explain the likely cost drivers but must not promise a fixed price or ceiling.
+Portal, dashboard, custom API, user-account, database, complex-payment, inventory-sync, marketplace, and custom business-logic work require scope. Emma may explain the likely cost drivers but must not promise a fixed price or ceiling.
 
 ## Care Plans
 
@@ -147,9 +147,9 @@ Unused edit time does not accumulate unless the final commercial terms explicitl
 
 ## No Mechanical Stacking
 
-- Quote one package or one add-on range.
-- One or two independent add-ons may receive separate ranges.
-- Three or more meaningful additions move the conversation to the closest whole-project package.
+- Quote one package or one add-on range per response.
+- Across separate buyer turns, at most two independent add-ons may be discussed before resetting to the closest whole-project package.
+- Three or more meaningful additions move the conversation to the closest whole-project package instead of separate add-on pricing.
 - Overlapping work must not be charged twice.
 - Emma must not add ranges together into a final project total during the initial call.
 

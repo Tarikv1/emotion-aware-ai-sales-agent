@@ -45,6 +45,7 @@ If the buyer asks the same question twice, do not repeat the same explanation. A
 - Do not add three or more features into a final quote.
 - Do not charge twice for overlapping work.
 - Use one relevant range and at most one material scope question.
+- Keep that to one range per response; if the buyer returns later with a second independent add-on, discuss only that add-on and do not stack it into the prior answer.
 - Do not quote a fixed price or ceiling for portals, dashboards, APIs, accounts, databases, or custom business logic.
 
 ## No Bracketed Labels
@@ -81,7 +82,7 @@ Buyer keeps asking price:
 
 Bad: "The mockup is no obligation, and then we can discuss."
 
-Good: "Fair question. I wouldn't lock a price without scope, but simple quote filtering is usually around the light-feature range. If it needs a deeper workflow or more pages, it moves higher."
+Good: "Fair question. If that's for your current site, simple quote filtering is usually around $300-$750, depending on how many service choices and routing rules it needs."
 
 Buyer says Instagram already works, then says "that makes sense":
 

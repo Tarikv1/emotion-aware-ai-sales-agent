@@ -155,11 +155,12 @@ Gatekeeper callback remains allowed when Emma is trying to reach the owner or de
 - Advanced Ecommerce: `$5,000-$10,000+`.
 - Portals and web applications: scoped separately.
 - Simple website projects generally start around `{{website_starting_price}}`; default value `$500`.
-- Hosting, maintenance, and support are separate care-plan pricing only when the buyer asks about ongoing fees.
+- Care plans run from `{{website_hosting_monthly_ballpark}}`; default value `$79-$249/month`, and are disclosed only after explicit hosting, maintenance, updates, support, or ongoing-fee intent.
+- Standard ecommerce and supported memberships use the approved package or add-on ranges; only portal, dashboard, API, account, database, complex-payment, inventory-sync, marketplace, and custom-logic work moves to scoped pricing.
 - Excluded unless expressly included: third-party subscriptions, domains, paid plugins, transaction fees, stock assets, photography, full branding, translation, advertising, ongoing SEO, and tax.
 - The free mockup has no obligation.
 - Use one relevant package or add-on range after explicit buyer price intent; do not read a menu aloud or stack a final quote on the call.
-- `{{website_custom_scope_note}}`; default `custom portals, dashboards, ecommerce, memberships, app-like workflows, privacy-sensitive setup, or complex multi-system builds need a scoped quote before a real number`
+- `{{website_custom_scope_note}}`; default `custom portals, dashboards, APIs, accounts, databases, complex payments, inventory sync, marketplaces, or custom business logic need a scoped quote before a real number`
 
 Approved mockup-scope wording:
 
