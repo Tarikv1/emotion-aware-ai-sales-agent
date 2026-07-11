@@ -315,6 +315,11 @@ def extract_dialogue(run: dict[str, Any], checks: Checks) -> list[dict[str, Any]
         isinstance(raw_events, list) and len(raw_events) > 0,
         "agent_responses must be a non-empty ordered list",
     )
+    checks.check(
+        "incomplete_simulation",
+        not (isinstance(raw_events, list) and len(raw_events) == 0),
+        "provider returned an explicit empty agent_responses list; classify as incomplete simulation",
+    )
     if not isinstance(raw_events, list):
         return []
     events: list[dict[str, Any]] = []
@@ -793,6 +798,13 @@ def run_self_test() -> int:
     raw_provider_id_payload["live_test_mapping"] = {"tests": provider_mapping}
     raw_provider_id_result = validate_payload(raw_provider_id_payload)
     assert_true(raw_provider_id_result["independent_status"] == "pass", "raw provider test_* IDs should reconcile through live_test_mapping")
+
+    empty_response_runs = valid_runs()
+    empty_response_runs[0]["agent_responses"] = []
+    empty_response_result = validate_payload(make_payload(empty_response_runs))
+    empty_response_failures = failure_names(empty_response_result, EXPECTED_TEST_ORDER[0])
+    assert_true("incomplete_simulation" in empty_response_failures, "empty agent_responses must be classified as incomplete_simulation")
+    assert_true("ordered_agent_responses_present" in empty_response_failures, "empty agent_responses must fail ordered response extraction")
 
     normalized_range_valid = valid_runs()
     normalized_range_valid[2]["agent_responses"] = [
