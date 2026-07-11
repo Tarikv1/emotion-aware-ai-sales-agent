@@ -69,16 +69,21 @@ SENSITIVE_DYNAMIC_CONTEXT_KEYS = {
     "business_name",
     "business_phone",
     "business_type",
+    "business",
     "city",
+    "company",
     "company_name",
+    "contact",
     "contact_email",
     "contact_name",
     "contact_phone",
     "customer_email",
     "customer_name",
     "customer_phone",
+    "customer",
     "domain",
     "email",
+    "owner",
     "owner_email",
     "owner_name",
     "owner_phone",
@@ -86,6 +91,10 @@ SENSITIVE_DYNAMIC_CONTEXT_KEYS = {
     "prospect_email",
     "prospect_name",
     "prospect_phone",
+    "prospect",
+    "service",
+    "service_name",
+    "service_type",
     "state",
     "website",
     "website_url",
@@ -95,16 +104,24 @@ SENSITIVE_DYNAMIC_CONTEXT_RE = re.compile(
     r"|(?:city|address|email|phone|website|domain)$",
     re.IGNORECASE,
 )
-SECRET_LIKE_KEY_RE = re.compile(r"(?:authorization|api[_-]?key|token|secret|cookie)", re.IGNORECASE)
+SECRET_LIKE_KEY_RE = re.compile(r"(?:authorization|auth|api[_-]?key|token|secret|cookie)", re.IGNORECASE)
 JSON_STRING_PAIR_RE = re.compile(r'("(?P<key>[^"]+)"\s*:\s*)"(?P<value>(?:\\.|[^"\\])*)"')
-SINGLE_QUOTED_PAIR_RE = re.compile(r"('(?P<key>[^']+)'\s*:\s*)'(?P<value>[^']*)'")
-PLAIN_PAIR_RE = re.compile(
-    r"\b(?P<key>[A-Za-z_][A-Za-z0-9_.-]*(?:name|type|city|address|email|phone|website|domain|authorization|token|secret|api_key|api-key))"
-    r"(?P<sep>\s*[:=]\s*)"
-    r"(?P<value>\"[^\"]*\"|'[^']*'|[^,}\]\s]+)",
+BEARER_RE = re.compile(r"(?i)\bBearer\s+[A-Za-z0-9._~+/=-]+")
+ERROR_FIELD_BOUNDARY_RE = re.compile(
+    r"\b(?P<key>"
+    r"business(?:_name|_type|_city|_address|_email|_phone)?|"
+    r"company(?:_name|_type|_city|_address|_email|_phone)?|"
+    r"customer(?:_name|_type|_city|_address|_email|_phone)?|"
+    r"prospect(?:_name|_type|_city|_address|_email|_phone)?|"
+    r"contact(?:_name|_type|_city|_address|_email|_phone)?|"
+    r"owner(?:_name|_type|_city|_address|_email|_phone)?|"
+    r"service(?:_name|_type)?|"
+    r"city|address|email|phone|website|website_url|domain|"
+    r"authorization|auth|api[_-]?key|token|secret|cookie|"
+    r"type|message|error|detail|status|code|request_id"
+    r")\b(?P<sep>\s*[:=]\s*)",
     re.IGNORECASE,
 )
-BEARER_RE = re.compile(r"(?i)\bBearer\s+[A-Za-z0-9._~+/=-]+")
 KB_DOCS = (
     "atlas_offer_facts.md",
     "atlas_price_scope_cost_drivers.md",
@@ -185,32 +202,58 @@ def redact_json_string_pair(match: re.Match[str]) -> str:
     return f'{match.group(1)}"{replacement}"'
 
 
-def redact_single_quoted_pair(match: re.Match[str]) -> str:
-    replacement = redact_error_key_value(match.group("key"), match.group("value"))
-    if replacement is None:
-        return match.group(0)
-    return f"{match.group(1)}'{replacement}'"
+def is_sensitive_error_key(key: str) -> bool:
+    return SECRET_LIKE_KEY_RE.search(key) is not None or should_redact_context_key(key)
 
 
-def redact_plain_pair(match: re.Match[str]) -> str:
-    replacement = redact_error_key_value(match.group("key"), match.group("value"))
-    if replacement is None:
-        return match.group(0)
-    value = match.group("value")
-    if value.startswith('"') and value.endswith('"'):
-        replacement_value = f'"{replacement}"'
-    elif value.startswith("'") and value.endswith("'"):
-        replacement_value = f"'{replacement}'"
-    else:
-        replacement_value = replacement
-    return f"{match.group('key')}{match.group('sep')}{replacement_value}"
+def redacted_error_value_for_key(key: str) -> str:
+    if SECRET_LIKE_KEY_RE.search(key):
+        return "[REDACTED]"
+    return "[REDACTED_DYNAMIC_PLACEHOLDER]"
+
+
+def find_error_value_end(text: str, start: int, next_boundary: int | None) -> int:
+    limit = next_boundary if next_boundary is not None else len(text)
+    delimiter_positions = [
+        position
+        for position in (text.find(delimiter, start, limit) for delimiter in (",", ";", "}", "]", "\n", "\r"))
+        if position != -1
+    ]
+    if delimiter_positions:
+        return min(delimiter_positions)
+    return limit
+
+
+def redact_bounded_error_fields(text: str) -> str:
+    matches = list(ERROR_FIELD_BOUNDARY_RE.finditer(text))
+    if not matches:
+        return text
+    chunks: list[str] = []
+    cursor = 0
+    for index, match in enumerate(matches):
+        key = match.group("key")
+        next_boundary = matches[index + 1].start() if index + 1 < len(matches) else None
+        value_start = match.end()
+        value_end = find_error_value_end(text, value_start, next_boundary)
+        if not is_sensitive_error_key(key):
+            continue
+        value_segment = text[value_start:value_end]
+        trailing_match = re.search(r"\s*$", value_segment)
+        trailing = trailing_match.group(0) if trailing_match else ""
+        chunks.append(text[cursor:value_start])
+        chunks.append(redacted_error_value_for_key(key))
+        chunks.append(trailing)
+        cursor = value_end
+    if cursor == 0:
+        return text
+    chunks.append(text[cursor:])
+    return "".join(chunks)
 
 
 def safe_evidence_error_message(exc: BaseException) -> str:
     text = str(exc)
     text = JSON_STRING_PAIR_RE.sub(redact_json_string_pair, text)
-    text = SINGLE_QUOTED_PAIR_RE.sub(redact_single_quoted_pair, text)
-    text = PLAIN_PAIR_RE.sub(redact_plain_pair, text)
+    text = redact_bounded_error_fields(text)
     text = BEARER_RE.sub("Bearer [REDACTED]", text)
     text = guards.sanitize(text)
     return str(text)[:1600]

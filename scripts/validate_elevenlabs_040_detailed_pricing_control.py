@@ -455,6 +455,53 @@ def validate_live_patcher_semantics() -> None:
     assert_condition(error_failure_payload["provider_write_attempt_count"] == 1, "error payload attempt count mismatch")
     assert_condition(error_failure_payload["provider_write_success_count"] == 0, "error payload success count mismatch")
 
+    plain_error_fixtures = (
+        RuntimeError(
+            "PATCH failed with 400 invalid_request: business_name=Acme Dental city=Austin "
+            "message=bad dynamic variables"
+        ),
+        RuntimeError(
+            "PATCH failed with 400 invalid_request: business_name: Mike's Kitchen city: Austin "
+            "business_type: restaurant message: bad dynamic variables"
+        ),
+        RuntimeError(
+            "PATCH failed with 400 invalid_request: business_name='Mike's Kitchen' city='Austin' "
+            "message='bad dynamic variables'"
+        ),
+        RuntimeError(
+            "PATCH failed with 400 invalid_request: customer_name=Jane Owner contact_email=owner@example.com "
+            "contact_phone=+1 212 555 0188 address=123 Main Street service_type=roof repair "
+            "authorization=Bearer plain-secret-token message=bad dynamic variables"
+        ),
+    )
+    for fixture in plain_error_fixtures:
+        sanitized_plain = patcher.safe_evidence_error_message(fixture)
+        plain_payload = ledger.failure_payload(
+            checkpoint_id=CHECKPOINT_ID,
+            error=sanitized_plain,
+        )
+        rendered_plain = json.dumps(plain_payload, sort_keys=True)
+        for forbidden in (
+            "Acme",
+            "Dental",
+            "Mike",
+            "Kitchen",
+            "Austin",
+            "restaurant",
+            "Jane",
+            "Owner",
+            "owner@example.com",
+            "212 555 0188",
+            "123 Main Street",
+            "roof repair",
+            "plain-secret-token",
+        ):
+            assert_condition(forbidden not in rendered_plain, f"plain failure evidence leaked provider echo {forbidden!r}")
+        for diagnostic in ("400", "invalid_request", "bad dynamic variables"):
+            assert_condition(diagnostic in rendered_plain, f"plain failure evidence lost diagnostic value {diagnostic!r}")
+        assert_condition(plain_payload["provider_write_attempt_count"] == 1, "plain error payload attempt count mismatch")
+        assert_condition(plain_payload["provider_write_success_count"] == 0, "plain error payload success count mismatch")
+
 
 def validate_live_patcher() -> None:
     patcher = read(PATCHER)
