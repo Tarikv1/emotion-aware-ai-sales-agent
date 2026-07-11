@@ -11,10 +11,10 @@
   "active_upload": false,
   "active_kb_upload_manifest": false,
   "package_role": "frozen regression suite metadata, not an active KB upload manifest",
-  "prompt_files": [
-    "runtime/providers/elevenlabs_agents/prompts/web_design_atlas_sales_prompt.md"
-  ],
-  "knowledge_base_docs": [
+  "prompt_files": [],
+  "knowledge_base_docs": [],
+  "modified_product_files": [
+    "runtime/providers/elevenlabs_agents/prompts/web_design_atlas_sales_prompt.md",
     "runtime/providers/elevenlabs_agents/knowledge_base/atlas_web_studio/atlas_offer_facts.md",
     "runtime/providers/elevenlabs_agents/knowledge_base/atlas_web_studio/atlas_price_scope_cost_drivers.md",
     "runtime/providers/elevenlabs_agents/knowledge_base/atlas_web_studio/atlas_output_quality_rules.md"
@@ -42,6 +42,8 @@
   "operator_notes": [
     "This package defines a new regression suite only.",
     "This package is not an active KB upload manifest.",
+    "Operational prompt_files and knowledge_base_docs stay empty so automation cannot build prompt or KB upload requests from this manifest.",
+    "The existing prompt and active KB files are documented under modified_product_files for traceability only.",
     "Analysis remains unchanged.",
     "Procedures remain unchanged.",
     "Existing pre-040 tests remain byte-for-byte unchanged."

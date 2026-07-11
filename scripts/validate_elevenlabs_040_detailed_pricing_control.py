@@ -75,6 +75,13 @@ EXPECTED_TEST_IDS = [
     "sim_040_care_plan_only_when_asked",
 ]
 
+EXPECTED_MODIFIED_PRODUCT_FILES = [
+    PROMPT_PATH,
+    OFFER_PATH,
+    PRICE_PATH,
+    OUTPUT_PATH,
+]
+
 PROMPT_MARKERS = (
     "Paid-price gate: disclose paid pricing only after the buyer explicitly asks price, cost, fee, range, ballpark, budget, affordability, monthly charge, or add-on cost.",
     "Capability, scope, mockup, free, catch, contract, and ordinary-interest questions never unlock paid pricing.",
@@ -270,6 +277,23 @@ def validate_output_rules() -> None:
 
 def validate_tests() -> None:
     payload = read_json(TESTS)
+    manifest = read_json(ROOT / PACKAGE_MANIFEST_PATH)
+    assert_condition(manifest.get("package_id") == CHECKPOINT_ID, "040 manifest package_id mismatch")
+    assert_condition(manifest.get("prompt_files") == [], "040 test-only manifest must not expose prompt_files for operational upload")
+    assert_condition(manifest.get("knowledge_base_docs") == [], "040 test-only manifest must not expose KB docs for operational upload")
+    assert_condition(
+        manifest.get("modified_product_files") == EXPECTED_MODIFIED_PRODUCT_FILES,
+        "040 modified_product_files mismatch",
+    )
+    assert_condition(
+        manifest.get("baseline_tests") == [TESTS_PATH],
+        "040 manifest baseline_tests mismatch",
+    )
+    assert_condition(manifest.get("active_upload") is False, "040 active_upload must stay false")
+    assert_condition(manifest.get("active_kb_upload_manifest") is False, "040 active_kb_upload_manifest must stay false")
+    upload_intent = manifest.get("upload_intent", {})
+    assert_condition(upload_intent.get("knowledge_base_upload_required") is False, "040 manifest must not require KB upload")
+
     assert_condition(payload.get("package_id") == CHECKPOINT_ID, "040 package_id mismatch")
     tests = payload.get("tests")
     assert_condition(isinstance(tests, list), "040 tests must be a list")
