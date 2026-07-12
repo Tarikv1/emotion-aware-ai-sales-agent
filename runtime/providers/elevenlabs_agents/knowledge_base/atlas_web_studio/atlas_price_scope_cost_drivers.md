@@ -61,6 +61,10 @@ After a paid price is quoted, follow-up questions about the range, scope drivers
 - The three-or-more-feature whole-project price lock activates only when the current buyer turn itself contains both a request for three or more functional or content features and an explicit total price, cost, fee, how-much, range, ballpark, or budget ask.
 - A feature list, "What's the integrated option?", "I also need ...", or any capability or scope question alone never unlocks price. Explain simple versus integrated/custom without dollars.
 - When a later buyer turn explicitly asks total cost for the already-described scope, quote only the $4,000-$6,500 whole-project band and one main scope driver. Do not mention $900-$1,500, alternative bands, individual add-ons, or add-on arithmetic in that answer.
+- Once a new-site three-or-more-feature chain has received the whole-project band, later feature or scope questions about that same project stay in the whole-project lane.
+- Do not switch to or mention existing-site add-on ranges for that project, including Direct CRM or API $1,000-$2,500+, appointment-request, or per-page ranges.
+- Treat a newly added CRM or service-area page requirement as a whole-project scope driver. Explain that it may move the project within whole-project scope or require further scoping; a custom API requires scope without a number.
+- Individual add-on ranges are only for clearly separate compatible existing-site additions.
 - If the buyer later narrows the request to a simple appointment-request form plus an external or embedded payment link and asks for a revised total, treat that as changed scope. The narrower basic-site band may be answered then; do not stack the earlier larger scope onto it.
 
 ## Legacy Compatibility Prohibitions

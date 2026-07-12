@@ -157,3 +157,30 @@ Fresh requested validator results:
 - Pre-report `git diff --check` exit: `0`; only LF-to-CRLF working-copy warnings were printed.
 
 The validators rewrote six tracked `PROD-*` artifacts. Those runner side effects were restored to `HEAD`; no prompt, test, validator, runner, evidence, provider, manifest, or tool file is included in this follow-up.
+
+## Multi-Feature Whole-Project Lane Persistence Follow-Up
+
+Live evidence `suite_1301kxbp8cmxe9dsdsejk45pp2kn` showed that, after correctly quoting the `$4,000-$6,500` new-site whole-project band, a later CRM and service-area-page question caused an incorrect switch to the `$1,000-$2,500+` direct CRM add-on range.
+
+The pricing and output-quality KBs now keep later feature or scope questions about that same new-site project in the whole-project lane after the whole-project band has been quoted. They explicitly prohibit switching to or mentioning existing-site CRM/API, appointment-request, request-form, or per-page add-on ranges for that project.
+
+A newly added CRM or service-area-page requirement is treated as a whole-project scope driver. Emma may explain that it moves or requires scope; a custom API receives no number. Individual add-on ranges remain available only for clearly separate compatible existing-site additions. The explicit changed-scope exception for a buyer who narrows the project to a simple appointment-request form plus an external or embedded payment link remains unchanged.
+
+The compact prompt was not edited; the source-contract check and `git diff --exit-code HEAD -- runtime/providers/elevenlabs_agents/prompts/web_design_atlas_sales_prompt.md` both exited `0` before validation.
+
+Fresh requested validator results:
+
+- `python scripts\validate_prod_040_callcenteren_conditional_customer_simulation.py` - exit `0`; `PROD-040 CallCenterEN conditional customer simulation validation passed.`
+- `python scripts\validate_prod_039_customer_realism_simulator_hardening.py` - exit `0`; `PROD-039 customer realism simulator hardening validation passed.`
+- `python scripts\validate_prod_038_local_demo_surface_review.py` - exit `0`; `PROD-038 local demo surface review validation passed.`
+- `python scripts\validate_prod_037_local_interactive_trace_demo_surface.py` - exit `0`; `PROD-037 local interactive trace demo surface validation passed.`
+- `python scripts\validate_prod_036_interactive_demo_readiness_review.py` - exit `0`; `PROD-036 interactive demo readiness review validation passed.`
+- `python scripts\validate_prod_034_interactive_post_fix_review.py` - exit `0`; `PROD-034 interactive post-fix review validation passed.`
+- `python scripts\validate_prod_033_interactive_simulator_termination_fix.py` - exit `0`; `PROD-033 interactive simulator termination fix validation passed.`
+- `python scripts\validate_prod_032_interactive_simulation_review.py` - exit `0`; `PROD-032 interactive simulation review validation passed.`
+- `python scripts\validate_prod_031_interactive_grounded_call_simulation.py` - exit `0`; `PROD-031 interactive grounded call simulation validation passed.`
+- `python scripts\validate_prod_030_grounded_demo_review.py` - exit `0`; `PROD-030 grounded demo review validation passed.`
+- Full requested chain exit: `0`.
+- Pre-report `git diff --check` exit: `0`; only LF-to-CRLF working-copy warnings were printed.
+
+The validators rewrote five tracked `PROD-*` artifacts. Those runner side effects were restored to `HEAD`; no prompt, test, validator, runner, evidence, provider, manifest, or tool file is included in this follow-up.
