@@ -71,6 +71,17 @@ class DetailedPricingTraceCanaryTests(unittest.TestCase):
         self.assertEqual(result["independent_status"], "fail")
         self.assertIn("post_quote_price_followup_no_cta", canary_failure_names(result))
 
+    def test_partial_canary_fails_mockup_cta_in_initial_price_answer(self) -> None:
+        result = traces.validate_partial_canary_payload(
+            canary_payload(
+                ["A basic site is usually $900-$1,500 depending on content. I can send a free mockup first."],
+                ["What does a basic website cost?"],
+            )
+        )
+
+        self.assertEqual(result["independent_status"], "fail")
+        self.assertIn("post_quote_price_followup_no_cta", canary_failure_names(result))
+
     def test_partial_canary_allows_direct_price_driver_answer_without_cta(self) -> None:
         result = traces.validate_partial_canary_payload(
             canary_payload(
@@ -86,6 +97,28 @@ class DetailedPricingTraceCanaryTests(unittest.TestCase):
         )
 
         self.assertEqual(result["independent_status"], "pass")
+
+    def test_firm_quote_real_number_and_scoping_followups_keep_cta_locked(self) -> None:
+        followups = [
+            "Can you give me a firm quote?",
+            "How do I get a real number?",
+            "What does the scoping process involve?",
+        ]
+
+        for followup in followups:
+            with self.subTest(followup=followup):
+                result = traces.validate_partial_canary_payload(
+                    canary_payload(
+                        [
+                            "A basic site is usually $900-$1,500 depending on content.",
+                            "I can send a free mockup first and you can reply with the details.",
+                        ],
+                        ["What does a basic website cost?", followup],
+                    )
+                )
+
+                self.assertEqual(result["independent_status"], "fail")
+                self.assertIn("post_quote_price_followup_no_cta", canary_failure_names(result))
 
     def test_partial_canary_allows_neutral_mockup_reference_when_buyer_mentioned_mockup(self) -> None:
         result = traces.validate_partial_canary_payload(
@@ -201,6 +234,18 @@ class DetailedPricingTraceCanaryTests(unittest.TestCase):
 
         self.assertEqual(status_by_id(result)[traces.EXPECTED_TEST_ORDER[2]], "pass")
 
+    def test_portal_scope_chain_fails_mockup_cta_without_numeric_price(self) -> None:
+        payload = full_payload()
+        payload["test_runs"][7]["agent_responses"] = [
+            traces.make_event("user", "How much does a parent portal with accounts and a dashboard cost?"),
+            traces.make_event("agent", "That needs scope around accounts, database, permissions, security, and integrations. I can send a free homepage mockup first."),
+        ]
+
+        result = traces.validate_payload(payload)
+
+        self.assertEqual(status_by_id(result)[traces.EXPECTED_TEST_ORDER[7]], "fail")
+        self.assertIn("portal_no_mockup_cta", traces.failure_names(result, traces.EXPECTED_TEST_ORDER[7]))
+
     def test_actionable_mockup_offers_are_detected_without_broad_language_false_positives(self) -> None:
         offers = [
             "I can show you a mockup first.",
@@ -265,6 +310,28 @@ class DetailedPricingTraceCanaryTests(unittest.TestCase):
 
         self.assertEqual(status_by_id(result)[traces.EXPECTED_TEST_ORDER[8]], "pass")
         self.assertEqual(result["independent_status"], "pass")
+
+    def test_between_and_spoken_basic_range_is_normalized(self) -> None:
+        payload = full_payload()
+        payload["test_runs"][2]["agent_responses"] = [
+            traces.make_event("user", "What does a basic three-to-five-page site cost?"),
+            traces.make_event("agent", "A basic site usually falls between nine hundred dollars and fifteen hundred dollars, depending on content."),
+        ]
+
+        result = traces.validate_payload(payload)
+
+        self.assertEqual(status_by_id(result)[traces.EXPECTED_TEST_ORDER[2]], "pass")
+
+    def test_that_can_fit_is_an_affirmative_budget_answer(self) -> None:
+        payload = full_payload()
+        payload["test_runs"][8]["agent_responses"] = [
+            traces.make_event("user", "I need a basic website, and my budget is about $1,200."),
+            traces.make_event("agent", "That can fit a basic three to five page new site. The usual range is nine hundred to fifteen hundred dollars."),
+        ]
+
+        result = traces.validate_payload(payload)
+
+        self.assertEqual(status_by_id(result)[traces.EXPECTED_TEST_ORDER[8]], "pass")
 
     def test_budget_within_range_and_fit_within_that_budget_are_affirmative(self) -> None:
         payload = full_payload()

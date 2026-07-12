@@ -73,7 +73,7 @@ EXISTING_SITE_RE = re.compile(r"\b(?:existing site|existing website|compatible s
 ADD_ON_RE = re.compile(r"\b(?:add(?:ing|ition)?|add-on|on an existing site|appointment[- ]request form)\b", re.IGNORECASE)
 WHOLE_SITE_RE = re.compile(r"\b(?:new site|new website|whole site|whole project|full site|package)\b", re.IGNORECASE)
 BUDGET_FIT_POSITIVE_RE = re.compile(
-    r"(?:\byes\b[^.?!]*\b(?:fit|fits|can fit|does fit|should fit|work|works|can work)\b|\b(?:\$1,200|1,200|that budget|the budget|it)\s+(?:fit|fits|can fit|does fit|should fit|work|works|can work)\b|\bfit(?:s)?\s+within\s+(?:the\s+)?(?:budget|range|\$?\s?900\s?(?:-|to)\s?\$?\s?1,500)\b|\bstays\s+in\s+the\s+.*range\b)",
+    r"(?:\byes\b[^.?!]*\b(?:fit|fits|can fit|does fit|should fit|work|works|can work)\b|\bthat\s+can\s+fit\b|\b(?:\$1,200|1,200|that budget|the budget|it)\s+(?:fit|fits|can fit|does fit|should fit|work|works|can work)\b|\bfit(?:s)?\s+within\s+(?:the\s+)?(?:budget|range|\$?\s?900\s?(?:-|to)\s?\$?\s?1,500)\b|\bstays\s+in\s+the\s+.*range\b)",
     re.IGNORECASE,
 )
 BUDGET_FIT_NEGATIVE_RE = re.compile(
@@ -93,7 +93,7 @@ PRICE_QUOTE_RE = re.compile(
     re.IGNORECASE,
 )
 POST_QUOTE_PRICE_FOLLOWUP_RE = re.compile(
-    r"\b(?:range|budget|driver|drives|cost(?:s)? more|cost(?:s)? less|more or less|higher|lower|scope|scoped|ready|not all|figure that out|new\s+site|add[- ]on|addition|services page|reviews?)\b",
+    r"\b(?:range|budget|driver|drives|cost(?:s)? more|cost(?:s)? less|more or less|higher|lower|scope|scoped|scoping|firm quote|real (?:number|price|quote)|ready|not all|figure that out|new\s+site|add[- ]on|addition|services page|reviews?)\b",
     re.IGNORECASE,
 )
 MOCKUP_REFERENCE_RE = re.compile(r"\bmock[- ]?up\b", re.IGNORECASE)
@@ -149,6 +149,7 @@ APPROVED_VALUE_PATTERNS = {
 CARE_PLAN_LABELS = {"care_79", "care_149", "care_249"}
 KNOWN_MONEY_NORMALIZATIONS: tuple[tuple[re.Pattern[str], str], ...] = (
     (re.compile(r"\$\s?900\s*(?:-|to)\s*\$?\s?1500\b", re.IGNORECASE), "$900-$1,500"),
+    (re.compile(r"\bbetween\s+nine hundred(?:\s+dollars?)?\s+and\s+fifteen hundred(?:\s+dollars?)?\b", re.IGNORECASE), "$900-$1,500"),
     (re.compile(r"\bnine hundred\s+(?:dollars?\s+)?to\s+fifteen hundred(?:\s+dollars?)?\b", re.IGNORECASE), "$900-$1,500"),
     (re.compile(r"\$\s?100\s*(?:-|to)\s*\$?\s?250\b", re.IGNORECASE), "$100-$250"),
     (re.compile(r"\bone hundred\s+(?:dollars?\s+)?to\s+two hundred fifty(?:\s+dollars?)?\b", re.IGNORECASE), "$100-$250"),
@@ -452,9 +453,13 @@ def validate_post_quote_followup_cta_lock(checks: Checks, events: list[dict[str,
         checks.check("post_quote_price_followup_no_cta", True, "no quoted price chain found")
         return
 
+    violations: list[str] = []
+    first_quote_message = events[first_quote]["message"]
+    if has_actionable_post_quote_cta(first_quote_message) or MOCKUP_REFERENCE_RE.search(first_quote_message):
+        violations.append(f"agent response {first_quote} appended mockup/email/send CTA to the price answer")
+
     active_price_chain = False
     buyer_mentioned_mockup = False
-    violations: list[str] = []
     for index, event in enumerate(events[first_quote + 1 :], start=first_quote + 1):
         message = event["message"]
         if event["role"] == "user":
@@ -590,7 +595,7 @@ def scenario_crm_existing_site(checks: Checks, messages: list[str]) -> None:
     )
 
 
-def scenario_portal_scope(checks: Checks, messages: list[str], first_paid: int | None) -> None:
+def scenario_portal_scope(checks: Checks, events: list[dict[str, Any]], messages: list[str], first_paid: int | None) -> None:
     validate_allowed_labels(checks, messages, set())
     numeric_messages = [message for message in messages if money_matches(message)]
     checks.check("portal_no_numeric_price", not numeric_messages and first_paid is None, f"portal scenario must not contain numeric pricing: {numeric_messages}")
@@ -601,12 +606,23 @@ def scenario_portal_scope(checks: Checks, messages: list[str], first_paid: int |
         ("custom" in combined.lower() or "scope" in combined.lower()) and len(scope_hits) >= 3,
         f"portal scenario must classify as scoped custom work with accounts/data/permissions/security/integrations; found {scope_hits}",
     )
+    buyer_mentioned_mockup = any(
+        event["role"] == "user" and MOCKUP_REFERENCE_RE.search(event["message"])
+        for event in events
+    )
+    portal_cta_messages = [
+        message
+        for message in messages
+        if has_actionable_post_quote_cta(message) or (MOCKUP_REFERENCE_RE.search(message) and not buyer_mentioned_mockup)
+    ]
+    checks.check("portal_no_mockup_cta", not portal_cta_messages, f"portal scope chain reopened mockup CTA: {portal_cta_messages}")
 
 
-def scenario_budget_fit(checks: Checks, messages: list[str]) -> None:
+def scenario_budget_fit(checks: Checks, events: list[dict[str, Any]], messages: list[str]) -> None:
     seen = validate_allowed_labels(checks, messages, {"basic_site", "buyer_budget_reference"})
     checks.check("budget_fit_expected_range", "basic_site" in seen, "budget-fit scenario must answer against the $900-$1,500 basic-site range")
     combined = " ".join(messages)
+    dialogue = " ".join(event["message"] for event in events)
     checks.check(
         "budget_fit_affirmative_answer_required",
         contains_affirmative_budget_fit(combined),
@@ -614,7 +630,7 @@ def scenario_budget_fit(checks: Checks, messages: list[str]) -> None:
     )
     checks.check(
         "budget_fit_semantics",
-        re.search(r"\$\s?1,200\b", combined) is not None
+        re.search(r"\$\s?1,200\b", dialogue) is not None
         and re.search(r"\$\s?900\s?(?:-|to)\s?\$?\s?1,500\b", combined, re.IGNORECASE) is not None
         and contains_affirmative_budget_fit(combined)
         and re.search(r"\b(?:within|in the .* range|in that range|stays in|fit|fits|work|works|can work)\b", combined, re.IGNORECASE) is not None,
@@ -695,9 +711,9 @@ def validate_run(run: dict[str, Any], *, expected_provider_test_id: str | None =
     elif kind == "crm_existing_site":
         scenario_crm_existing_site(checks, messages)
     elif kind == "portal_scope":
-        scenario_portal_scope(checks, messages, first_paid)
+        scenario_portal_scope(checks, events, messages, first_paid)
     elif kind == "budget_fit":
-        scenario_budget_fit(checks, messages)
+        scenario_budget_fit(checks, events, messages)
     elif kind == "care_plan":
         scenario_care_plan(checks, events, messages)
     else:
