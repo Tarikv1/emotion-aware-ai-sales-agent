@@ -314,6 +314,15 @@ def load_expected_bodies() -> dict[str, dict[str, Any]]:
     return bodies
 
 
+def canonical_chat_history(payload: dict[str, Any]) -> Any:
+    if "chat_history" not in payload:
+        return []
+    history = payload.get("chat_history")
+    if isinstance(history, list) and not history:
+        return []
+    return history
+
+
 def semantic_fields(payload: dict[str, Any]) -> dict[str, Any]:
     success_condition = payload.get("success_condition")
     if success_condition in (None, ""):
@@ -329,9 +338,8 @@ def semantic_fields(payload: dict[str, Any]) -> dict[str, Any]:
         "dynamic_variables": payload.get("dynamic_variables"),
         "simulated_user_model": payload.get("simulated_user_model"),
         "evaluation_model": payload.get("evaluation_model"),
+        "chat_history": canonical_chat_history(payload),
     }
-    if "chat_history" in payload:
-        fields["chat_history"] = payload.get("chat_history")
     return fields
 
 

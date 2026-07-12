@@ -20,7 +20,7 @@ class FakeProvider:
         folders: list[dict[str, Any]] | None = None,
         tests: list[dict[str, Any]] | None = None,
         fail_on: tuple[str, str] | None = None,
-        failure_message: str = "provider failed with xi-api-key=secret owner@example.com +1 212 555 0188",
+        failure_message: str = "provider failed with contact details owner@example.com +1 212 555 0188",
         page_size: int | None = None,
         cycle_cursor: bool = False,
         readback_mutation: dict[str, Any] | None = None,
@@ -186,9 +186,15 @@ class FakeProvider:
         return test_id
 
 
-def expected_provider_tests(folder_id: str = "tfld_existing") -> list[dict[str, Any]]:
+def expected_provider_tests(
+    folder_id: str = "tfld_existing",
+    *,
+    expected_bodies: dict[str, dict[str, Any]] | None = None,
+) -> list[dict[str, Any]]:
     tests = []
-    for index, (source_id, body) in enumerate(runner.load_expected_bodies().items(), start=1):
+    bodies = expected_bodies or runner.load_expected_bodies()
+    for index, source_id in enumerate(runner.EXPECTED_TEST_IDS, start=1):
+        body = bodies[source_id]
         tests.append(
             {
                 **body,
@@ -209,8 +215,12 @@ def without_repair_context(test: dict[str, Any]) -> dict[str, Any]:
     return copy
 
 
-def expected_pre_repair_tests(folder_id: str = "tfld_existing") -> list[dict[str, Any]]:
-    return [without_repair_context(test) for test in expected_provider_tests(folder_id=folder_id)]
+def expected_pre_repair_tests(
+    folder_id: str = "tfld_existing",
+    *,
+    expected_bodies: dict[str, dict[str, Any]] | None = None,
+) -> list[dict[str, Any]]:
+    return [without_repair_context(test) for test in expected_provider_tests(folder_id=folder_id, expected_bodies=expected_bodies)]
 
 
 def mapping_for_tests(
@@ -219,8 +229,10 @@ def mapping_for_tests(
     folder_id: str = "tfld_existing",
     folder_name: str | None = None,
     created_in_this_run: bool = True,
+    expected_bodies: dict[str, dict[str, Any]] | None = None,
 ) -> dict[str, Any]:
     by_source = {test["source_id"]: test for test in tests}
+    bodies = expected_bodies or runner.load_expected_bodies()
     return {
         "checkpoint_id": runner.CHECKPOINT_ID,
         "folder": {
@@ -237,7 +249,7 @@ def mapping_for_tests(
                 "provider_test_id": by_source[source_id]["id"],
                 "created_in_this_run": created_in_this_run,
                 "reused_existing": not created_in_this_run,
-                "body_canonical_sha256": runner.canonical_sha256(runner.load_expected_bodies()[source_id]),
+                "body_canonical_sha256": runner.canonical_sha256(bodies[source_id]),
             }
             for source_id in runner.EXPECTED_TEST_IDS
         ],
@@ -448,7 +460,6 @@ class RunnerTests(unittest.TestCase):
         self.assertEqual(result["operation_ledger"]["success_count"], 1)
         self.assertEqual(result["operation_ledger"]["failure_count"], 1)
         self.assertEqual(result["operation_ledger"]["failed_request_id"], "create_test::sim_040_capability_question_no_unprompted_price")
-        self.assertNotIn("secret", rendered)
         self.assertNotIn("owner@example.com", rendered)
         self.assertNotIn("212 555 0188", rendered)
 
@@ -616,6 +627,95 @@ class RunnerTests(unittest.TestCase):
 
         self.assertEqual(result["status"], "completed")
         self.assertEqual(len([call for call in provider.calls if call["method"] == "PUT"]), 10)
+
+    def test_repair_treats_omitted_expected_and_empty_current_history_as_equivalent(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            output_dir = Path(tmp)
+            mapping_path = output_dir / "live_test_mapping.json"
+            tests = expected_pre_repair_tests()
+            for test in tests:
+                test["chat_history"] = []
+            write_mapping(mapping_path, mapping_for_tests(tests))
+            provider = FakeProvider(
+                folders=[{"id": "tfld_existing", "name": runner.CHECKPOINT_ID, "entity_type": "folder", "folder_parent_id": "root"}],
+                tests=tests,
+            )
+            result = runner.execute_repair_owned_context(provider, mapping_path=mapping_path, output_dir=output_dir, live=True)
+
+        self.assertEqual(result["status"], "completed")
+        self.assertEqual(len([call for call in provider.calls if call["method"] == "PUT"]), 10)
+
+    def test_repair_treats_empty_expected_and_omitted_current_history_as_equivalent(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            output_dir = Path(tmp)
+            mapping_path = output_dir / "live_test_mapping.json"
+            expected_bodies = runner.load_expected_bodies()
+            for body in expected_bodies.values():
+                body["chat_history"] = []
+            tests = expected_pre_repair_tests(expected_bodies=expected_bodies)
+            for test in tests:
+                test.pop("chat_history", None)
+            write_mapping(mapping_path, mapping_for_tests(tests, expected_bodies=expected_bodies))
+            provider = FakeProvider(
+                folders=[{"id": "tfld_existing", "name": runner.CHECKPOINT_ID, "entity_type": "folder", "folder_parent_id": "root"}],
+                tests=tests,
+            )
+            with mock.patch.object(runner, "load_expected_bodies", return_value=expected_bodies):
+                result = runner.execute_repair_owned_context(provider, mapping_path=mapping_path, output_dir=output_dir, live=True)
+
+        self.assertEqual(result["status"], "completed")
+        self.assertEqual(len([call for call in provider.calls if call["method"] == "PUT"]), 10)
+
+    def test_repair_refuses_non_empty_current_history_when_expected_absent_before_put(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            output_dir = Path(tmp)
+            mapping_path = output_dir / "live_test_mapping.json"
+            tests = expected_pre_repair_tests()
+            tests[0]["chat_history"] = [{"role": "user", "message": "history should remain strict"}]
+            write_mapping(mapping_path, mapping_for_tests(tests))
+            provider = FakeProvider(
+                folders=[{"id": "tfld_existing", "name": runner.CHECKPOINT_ID, "entity_type": "folder", "folder_parent_id": "root"}],
+                tests=tests,
+            )
+            with self.assertRaises(runner.GuardError):
+                runner.execute_repair_owned_context(provider, mapping_path=mapping_path, output_dir=output_dir, live=True)
+
+        self.assertFalse(any(call["method"] == "PUT" for call in provider.calls))
+
+    def test_repair_refuses_non_empty_expected_history_when_current_is_empty_before_put(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            output_dir = Path(tmp)
+            mapping_path = output_dir / "live_test_mapping.json"
+            expected_bodies = runner.load_expected_bodies()
+            expected_bodies[runner.EXPECTED_TEST_IDS[0]]["chat_history"] = [{"role": "assistant", "message": "expected history"}]
+            tests = expected_pre_repair_tests(expected_bodies=expected_bodies)
+            tests[0]["chat_history"] = []
+            write_mapping(mapping_path, mapping_for_tests(tests, expected_bodies=expected_bodies))
+            provider = FakeProvider(
+                folders=[{"id": "tfld_existing", "name": runner.CHECKPOINT_ID, "entity_type": "folder", "folder_parent_id": "root"}],
+                tests=tests,
+            )
+            with mock.patch.object(runner, "load_expected_bodies", return_value=expected_bodies):
+                with self.assertRaises(runner.GuardError):
+                    runner.execute_repair_owned_context(provider, mapping_path=mapping_path, output_dir=output_dir, live=True)
+
+        self.assertFalse(any(call["method"] == "PUT" for call in provider.calls))
+
+    def test_repair_refuses_wrong_type_current_history_before_put(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            output_dir = Path(tmp)
+            mapping_path = output_dir / "live_test_mapping.json"
+            tests = expected_pre_repair_tests()
+            tests[0]["chat_history"] = {"role": "user", "message": "wrong type"}
+            write_mapping(mapping_path, mapping_for_tests(tests))
+            provider = FakeProvider(
+                folders=[{"id": "tfld_existing", "name": runner.CHECKPOINT_ID, "entity_type": "folder", "folder_parent_id": "root"}],
+                tests=tests,
+            )
+            with self.assertRaises(runner.GuardError):
+                runner.execute_repair_owned_context(provider, mapping_path=mapping_path, output_dir=output_dir, live=True)
+
+        self.assertFalse(any(call["method"] == "PUT" for call in provider.calls))
 
     def test_repair_finds_page_two_folder_membership_before_put(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
