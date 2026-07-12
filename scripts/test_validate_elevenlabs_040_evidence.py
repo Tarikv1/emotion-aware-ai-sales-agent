@@ -29,6 +29,13 @@ CARE_FOLLOWUP_KB_DOCS = (
     "atlas_price_scope_cost_drivers.md",
     "atlas_output_quality_rules.md",
 )
+REQUIRED_NEW_SOURCE_FIELDS = (
+    "source_git_blob_sha256",
+    "source_git_blob_length",
+    "upload_sha256",
+    "upload_length",
+    "newline_mode",
+)
 
 
 def sample_preflight() -> dict[str, object]:
@@ -48,8 +55,7 @@ def write_json(path: Path, payload: dict[str, object]) -> None:
 
 
 def git_show_bytes(commit: str, source_path: str) -> bytes:
-    completed = validator.git(["show", f"{commit}:{source_path}"])
-    return completed.stdout.encode("utf-8")
+    return validator.git_show_file_bytes(commit, source_path)
 
 
 def source_evidence_for_commit(commit: str, source_path: str) -> dict[str, object]:
@@ -63,8 +69,9 @@ def source_evidence_for_commit(commit: str, source_path: str) -> dict[str, objec
         "source_byte_length": len(source_bytes),
         "source_git_blob_sha256": source_sha,
         "source_git_blob_byte_length": len(source_bytes),
-        "upload_byte_sha256": source_sha,
-        "upload_byte_length": len(source_bytes),
+        "source_git_blob_length": len(source_bytes),
+        "upload_sha256": source_sha,
+        "upload_length": len(source_bytes),
         "newline_mode": "git_blob_lf",
         "markers": list(markers),
     }
@@ -105,6 +112,7 @@ def evidence_fixture(
         validator.sample_agent_for_patcher(),
         sample_preflight(),
         target_kb_doc_names=target_kb_doc_names,
+        source_commit=patcher.current_source_evidence_commit(),
     )
     if source_commit is not None and source_commit != patcher.current_source_evidence_commit():
         for request in requests:
@@ -120,12 +128,14 @@ def evidence_fixture(
         target_kb_doc_names=target_kb_doc_names,
         provider_writes_allowed=(mode == "live_passed"),
         ledger_summary=None,
+        source_commit=source_commit,
     )
     plan.update(provenance)
     request_payload = patcher.patch_requests_payload(
         requests=requests,
         provider_writes_allowed=(mode == "live_passed"),
         ledger_summary=None,
+        source_commit=source_commit,
     )
     request_payload.update(provenance)
     result = patcher.patch_result_payload(
@@ -133,6 +143,7 @@ def evidence_fixture(
         provider_writes_allowed=(mode == "live_passed"),
         requests=requests,
         ledger_summary=None,
+        source_commit=source_commit,
     )
     result.update(provenance)
     if mode == "live_passed":
@@ -250,10 +261,37 @@ class DetailedPricingEvidenceValidationTests(unittest.TestCase):
             root = Path(raw_tmp)
             evidence_fixture(root, mode="live_passed", source_commit=patcher.current_source_evidence_commit())
             request_id = "update_kb_file::atlas_price_scope_cost_drivers.md"
-            update_kb_evidence(root, request_id, lambda evidence: evidence.update({"upload_byte_sha256": "0" * 64}))
+            update_kb_evidence(root, request_id, lambda evidence: evidence.update({"upload_sha256": "0" * 64}))
 
             with self.assertRaisesRegex(AssertionError, "upload byte sha mismatch"):
                 validator.validate_live_evidence_artifacts(evidence_dir=root, require_existing_evidence=True)
+
+    def test_old_field_only_non_allowlisted_evidence_fails_even_when_hash_matches_blob(self) -> None:
+        with tempfile.TemporaryDirectory() as raw_tmp:
+            root = Path(raw_tmp)
+            evidence_fixture(root, mode="live_passed", source_commit=patcher.current_source_evidence_commit())
+            request_id = "update_kb_file::atlas_price_scope_cost_drivers.md"
+
+            def remove_new_fields(evidence: dict[str, object]) -> None:
+                for field in REQUIRED_NEW_SOURCE_FIELDS + ("source_git_blob_byte_length", "upload_byte_sha256", "upload_byte_length"):
+                    evidence.pop(field, None)
+
+            update_kb_evidence(root, request_id, remove_new_fields)
+
+            with self.assertRaisesRegex(AssertionError, "missing required source evidence field"):
+                validator.validate_live_evidence_artifacts(evidence_dir=root, require_existing_evidence=True)
+
+    def test_missing_each_required_new_source_field_fails_closed(self) -> None:
+        for missing_field in REQUIRED_NEW_SOURCE_FIELDS:
+            with self.subTest(missing_field=missing_field):
+                with tempfile.TemporaryDirectory() as raw_tmp:
+                    root = Path(raw_tmp)
+                    evidence_fixture(root, mode="live_passed", source_commit=patcher.current_source_evidence_commit())
+                    request_id = "update_kb_file::atlas_price_scope_cost_drivers.md"
+                    update_kb_evidence(root, request_id, lambda evidence, field=missing_field: evidence.pop(field, None))
+
+                    with self.assertRaisesRegex(AssertionError, f"missing required source evidence field {missing_field}"):
+                        validator.validate_live_evidence_artifacts(evidence_dir=root, require_existing_evidence=True)
 
     def test_live_passed_head_default_validates_declared_four_write_set(self) -> None:
         with tempfile.TemporaryDirectory() as raw_tmp:
@@ -266,6 +304,13 @@ class DetailedPricingEvidenceValidationTests(unittest.TestCase):
         summary = validator.validate_live_evidence_artifacts(require_existing_evidence=True)
 
         self.assertEqual(summary["source_evidence_mode"], "legacy_worktree_line_endings")
+        self.assertEqual(
+            summary["legacy_allowlisted_request_ids"],
+            [
+                "update_kb_file::atlas_price_scope_cost_drivers.md",
+                "update_kb_file::atlas_output_quality_rules.md",
+            ],
+        )
         self.assertIn(
             "update_kb_file::atlas_output_quality_rules.md",
             summary["legacy_worktree_line_endings_request_ids"],
@@ -278,7 +323,33 @@ class DetailedPricingEvidenceValidationTests(unittest.TestCase):
             request_id = "update_kb_file::atlas_output_quality_rules.md"
             update_kb_evidence(root, request_id, lambda evidence: evidence.update({"source_byte_length": evidence["source_byte_length"] + 1}))
 
-            with self.assertRaisesRegex(AssertionError, "legacy upload length mismatch"):
+            with self.assertRaisesRegex(AssertionError, "legacy allowlist mismatch"):
+                validator.validate_live_evidence_artifacts(evidence_dir=root, require_existing_evidence=True)
+
+    def test_legacy_line_ending_mode_is_restricted_to_exact_completed_artifact_tuple(self) -> None:
+        with tempfile.TemporaryDirectory() as raw_tmp:
+            root = Path(raw_tmp)
+            copy_current_live_evidence(root)
+            request_id = "update_kb_file::atlas_output_quality_rules.md"
+            update_kb_evidence(root, request_id, lambda evidence: evidence.update({"source_sha256": "0" * 64}))
+
+            with self.assertRaisesRegex(AssertionError, "legacy allowlist mismatch"):
+                validator.validate_live_evidence_artifacts(evidence_dir=root, require_existing_evidence=True)
+
+    def test_request_source_path_must_match_request_id_doc_name(self) -> None:
+        with tempfile.TemporaryDirectory() as raw_tmp:
+            root = Path(raw_tmp)
+            evidence_fixture(root, mode="live_passed", source_commit=patcher.current_source_evidence_commit())
+            request_id = "update_kb_file::atlas_price_scope_cost_drivers.md"
+            update_kb_evidence(
+                root,
+                request_id,
+                lambda evidence: evidence.update(
+                    {"source_path": "runtime/providers/elevenlabs_agents/knowledge_base/atlas_web_studio/atlas_output_quality_rules.md"}
+                ),
+            )
+
+            with self.assertRaisesRegex(AssertionError, "source path mismatch"):
                 validator.validate_live_evidence_artifacts(evidence_dir=root, require_existing_evidence=True)
 
     def test_current_legacy_live_evidence_rejects_changed_current_head_blob(self) -> None:

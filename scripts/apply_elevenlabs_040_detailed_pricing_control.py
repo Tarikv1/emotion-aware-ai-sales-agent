@@ -352,9 +352,21 @@ def git_blob_upload_bytes(source_path: Path, *, source_commit: str | None = None
     return blob_bytes, newline_mode
 
 
-def source_provenance_fields() -> dict[str, str]:
+def assert_source_commit_shape(commit: str) -> str:
+    if not re.fullmatch(r"[0-9a-f]{40}", commit):
+        raise RuntimeError(f"source evidence commit is not a full 40-character sha: {commit!r}")
+    return commit
+
+
+def assert_current_head_matches_source_commit(source_commit: str) -> None:
+    current_head = current_source_evidence_commit()
+    if current_head != source_commit:
+        raise RuntimeError(f"source evidence commit drift: pinned {source_commit}, current HEAD {current_head}")
+
+
+def source_provenance_fields(source_commit: str) -> dict[str, str]:
     return {
-        "source_evidence_commit": current_source_evidence_commit(),
+        "source_evidence_commit": assert_source_commit_shape(source_commit),
         "source_evidence_origin": SOURCE_EVIDENCE_ORIGIN,
     }
 
@@ -369,15 +381,19 @@ def repo_source_paths(target_kb_doc_names: tuple[str, ...]) -> list[str]:
     ]
 
 
-def assert_repo_sources_match_head(target_kb_doc_names: tuple[str, ...]) -> None:
+def assert_repo_sources_match_head(target_kb_doc_names: tuple[str, ...], *, source_commit: str) -> None:
+    assert_current_head_matches_source_commit(source_commit)
     paths = repo_source_paths(target_kb_doc_names)
-    completed = git(["diff", "--quiet", "HEAD", "--", *paths])
+    completed = git(["diff", "--quiet", source_commit, "--", *paths])
     if completed.returncode != 0:
-        raise RuntimeError(f"repo source files differ from HEAD; refusing provider evidence for {paths}")
+        raise RuntimeError(f"repo source files differ from source evidence commit; refusing provider evidence for {paths}")
+    for source_path_text in paths:
+        source_path = ROOT / source_path_text
+        git_blob_upload_bytes(source_path, source_commit=source_commit)
 
 
-def source_file_evidence(source_path: Path, *, evidence_origin: str = SOURCE_EVIDENCE_ORIGIN) -> dict[str, Any]:
-    source_bytes, newline_mode = git_blob_upload_bytes(source_path)
+def source_file_evidence(source_path: Path, *, source_commit: str, evidence_origin: str = SOURCE_EVIDENCE_ORIGIN) -> dict[str, Any]:
+    source_bytes, newline_mode = git_blob_upload_bytes(source_path, source_commit=source_commit)
     source_text = source_bytes.decode("utf-8")
     markers = KB_REQUEST_SOURCE_MARKERS[source_path.name]
     missing = [marker for marker in markers if marker not in source_text]
@@ -391,8 +407,9 @@ def source_file_evidence(source_path: Path, *, evidence_origin: str = SOURCE_EVI
         "source_byte_length": len(source_bytes),
         "source_git_blob_sha256": source_sha,
         "source_git_blob_byte_length": len(source_bytes),
-        "upload_byte_sha256": source_sha,
-        "upload_byte_length": len(source_bytes),
+        "source_git_blob_length": len(source_bytes),
+        "upload_sha256": source_sha,
+        "upload_length": len(source_bytes),
         "newline_mode": newline_mode,
         "markers": list(markers),
     }
@@ -451,6 +468,7 @@ def plan_payload(
     target_kb_doc_names: tuple[str, ...],
     provider_writes_allowed: bool,
     ledger_summary: dict[str, Any] | None,
+    source_commit: str,
 ) -> dict[str, Any]:
     ledger = ledger_summary or {
         "provider_writes_made": False,
@@ -464,7 +482,7 @@ def plan_payload(
         "agent_id": AGENT_ID,
         "agent_name": AGENT_NAME,
         "status": "planned",
-        **source_provenance_fields(),
+        **source_provenance_fields(source_commit),
         "authorization_confirmed": provider_writes_allowed,
         "provider_writes_allowed": provider_writes_allowed,
         **ledger,
@@ -509,11 +527,12 @@ def patch_requests_payload(
     requests: list[dict[str, Any]],
     provider_writes_allowed: bool,
     ledger_summary: dict[str, Any] | None,
+    source_commit: str,
 ) -> dict[str, Any]:
     ledger = ledger_summary or empty_ledger_summary()
     return {
         "checkpoint_id": CHECKPOINT_ID,
-        **source_provenance_fields(),
+        **source_provenance_fields(source_commit),
         "provider_writes_allowed": provider_writes_allowed,
         **ledger,
         **planned_write_counts(requests),
@@ -527,11 +546,12 @@ def patch_result_payload(
     provider_writes_allowed: bool,
     requests: list[dict[str, Any]],
     ledger_summary: dict[str, Any] | None,
+    source_commit: str,
     error: str | None = None,
 ) -> dict[str, Any]:
     payload: dict[str, Any] = {
         "checkpoint_id": CHECKPOINT_ID,
-        **source_provenance_fields(),
+        **source_provenance_fields(source_commit),
         "status": status,
         "provider_writes_allowed": provider_writes_allowed,
         **(ledger_summary or empty_ledger_summary()),
@@ -793,19 +813,20 @@ def multipart_update_file_from_bytes(
         raise RuntimeError(f"PATCH update-file {documentation_id} failed with {exc.code}: {body_summary[:1200]}") from exc
 
 
-def upload_bytes_for_request(request: dict[str, Any], source_path: Path) -> bytes:
+def upload_bytes_for_request(request: dict[str, Any], source_path: Path, *, source_commit: str) -> bytes:
     evidence = request.get("source_evidence")
     if not isinstance(evidence, dict):
         raise ValueError(f"{request.get('request_id')} missing source_evidence")
-    upload_bytes, newline_mode = git_blob_upload_bytes(source_path)
+    upload_bytes, newline_mode = git_blob_upload_bytes(source_path, source_commit=source_commit)
     upload_sha = sha256_bytes(upload_bytes)
     expected_pairs = (
         ("source_sha256", upload_sha),
         ("source_byte_length", len(upload_bytes)),
         ("source_git_blob_sha256", upload_sha),
         ("source_git_blob_byte_length", len(upload_bytes)),
-        ("upload_byte_sha256", upload_sha),
-        ("upload_byte_length", len(upload_bytes)),
+        ("source_git_blob_length", len(upload_bytes)),
+        ("upload_sha256", upload_sha),
+        ("upload_length", len(upload_bytes)),
         ("newline_mode", newline_mode),
     )
     for field, expected in expected_pairs:
@@ -814,7 +835,13 @@ def upload_bytes_for_request(request: dict[str, Any], source_path: Path) -> byte
     return upload_bytes
 
 
-def patch_requests(agent: dict[str, Any], preflight: dict[str, Any], target_kb_doc_names: tuple[str, ...] | None = None) -> list[dict[str, Any]]:
+def patch_requests(
+    agent: dict[str, Any],
+    preflight: dict[str, Any],
+    target_kb_doc_names: tuple[str, ...] | None = None,
+    *,
+    source_commit: str,
+) -> list[dict[str, Any]]:
     target_names = parse_target_kb_docs(list(target_kb_doc_names) if target_kb_doc_names is not None else None)
     requests: list[dict[str, Any]] = []
     for name in target_names:
@@ -828,7 +855,7 @@ def patch_requests(agent: dict[str, Any], preflight: dict[str, Any], target_kb_d
                 "known_document_id": doc["id"],
                 "content_type": "multipart/form-data",
                 "source_path": doc["source_path"],
-                "source_evidence": source_file_evidence(source_path),
+                "source_evidence": source_file_evidence(source_path, source_commit=source_commit),
             }
         )
     sanitized_body = sanitize(patch_body(agent))
@@ -924,6 +951,7 @@ def write_plan_only_outputs(
     *,
     live_readback_at_utc: str,
     target_kb_doc_names: tuple[str, ...],
+    source_commit: str,
 ) -> None:
     fingerprint = protected_fingerprint(agent, preflight)
     write_json(
@@ -938,6 +966,7 @@ def write_plan_only_outputs(
             target_kb_doc_names=target_kb_doc_names,
             provider_writes_allowed=False,
             ledger_summary=None,
+            source_commit=source_commit,
         ),
     )
     write_json(
@@ -946,6 +975,7 @@ def write_plan_only_outputs(
             requests=requests,
             provider_writes_allowed=False,
             ledger_summary=None,
+            source_commit=source_commit,
         ),
     )
     write_json(
@@ -955,6 +985,7 @@ def write_plan_only_outputs(
             provider_writes_allowed=False,
             requests=requests,
             ledger_summary=None,
+            source_commit=source_commit,
         ),
     )
     write_json(
@@ -974,14 +1005,17 @@ def write_provider_changes(
     requests: list[dict[str, Any]],
     ledger: ProviderWriteLedger,
     target_kb_doc_names: tuple[str, ...],
+    source_commit: str,
 ) -> tuple[dict[str, Any], str]:
+    assert_current_head_matches_source_commit(source_commit)
     expected_before = protected_fingerprint(agent, preflight)
     for request in requests:
         request_id = request["request_id"]
+        assert_current_head_matches_source_commit(source_commit)
         if request_id.startswith("update_kb_file::"):
             name = request_id.split("::", 1)[1]
             source_path = KB_ROOT / name
-            upload_bytes = upload_bytes_for_request(request, source_path)
+            upload_bytes = upload_bytes_for_request(request, source_path, source_commit=source_commit)
             attempt_provider_write(
                 ledger,
                 request,
@@ -1042,8 +1076,9 @@ def main(argv: list[str] | None = None) -> int:
     except ValueError as exc:
         print(f"error: {exc}", file=sys.stderr)
         return 2
+    source_commit = current_source_evidence_commit()
     try:
-        assert_repo_sources_match_head(target_kb_doc_names)
+        assert_repo_sources_match_head(target_kb_doc_names, source_commit=source_commit)
     except RuntimeError as exc:
         print(f"error: {safe_evidence_error_message(exc)}", file=sys.stderr)
         return 2
@@ -1065,7 +1100,7 @@ def main(argv: list[str] | None = None) -> int:
         if not isinstance(before_agent, dict):
             raise ValueError("agent GET response must be an object")
         before_preflight = validate_preflight(before_agent, target_kb_doc_names)
-        requests = patch_requests(before_agent, before_preflight, target_kb_doc_names=target_kb_doc_names)
+        requests = patch_requests(before_agent, before_preflight, target_kb_doc_names=target_kb_doc_names, source_commit=source_commit)
         authorization_confirmed = args.confirm_provider_write == CONFIRM_TOKEN
         if not authorization_confirmed:
             write_plan_only_outputs(
@@ -1075,6 +1110,7 @@ def main(argv: list[str] | None = None) -> int:
                 "plan_only_missing_confirmation",
                 live_readback_at_utc=before_live_readback_at_utc,
                 target_kb_doc_names=target_kb_doc_names,
+                source_commit=source_commit,
             )
             print(
                 json.dumps(
@@ -1096,6 +1132,7 @@ def main(argv: list[str] | None = None) -> int:
             requests=requests,
             ledger=ledger,
             target_kb_doc_names=target_kb_doc_names,
+            source_commit=source_commit,
         )
         post_preflight = validate_preflight(post_agent, target_kb_doc_names)
         write_json(
@@ -1110,6 +1147,7 @@ def main(argv: list[str] | None = None) -> int:
                 target_kb_doc_names=target_kb_doc_names,
                 provider_writes_allowed=True,
                 ledger_summary=ledger.summary(),
+                source_commit=source_commit,
             ),
         )
         write_json(
@@ -1118,6 +1156,7 @@ def main(argv: list[str] | None = None) -> int:
                 requests=requests,
                 provider_writes_allowed=True,
                 ledger_summary=ledger.summary(),
+                source_commit=source_commit,
             ),
         )
         write_json(
@@ -1134,6 +1173,7 @@ def main(argv: list[str] | None = None) -> int:
                 provider_writes_allowed=True,
                 requests=requests,
                 ledger_summary=ledger.summary(),
+                source_commit=source_commit,
             ),
         )
         print(json.dumps({"status": "passed", "provider_writes_made": True}, indent=2))
@@ -1148,6 +1188,7 @@ def main(argv: list[str] | None = None) -> int:
                 requests=requests if "requests" in locals() else [],
                 ledger_summary=ledger.summary(),
                 error=error,
+                source_commit=source_commit,
             ),
         )
         write_json(

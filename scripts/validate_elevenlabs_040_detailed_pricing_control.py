@@ -277,6 +277,29 @@ PATCHER_MARKERS = (
     '"provider_writes_made": False',
 )
 SOURCE_EVIDENCE_ORIGIN = "repo_head_source_before_provider_write_not_network_capture"
+REQUIRED_NEW_SOURCE_EVIDENCE_FIELDS = (
+    "source_git_blob_sha256",
+    "source_git_blob_length",
+    "upload_sha256",
+    "upload_length",
+    "newline_mode",
+)
+LEGACY_SOURCE_EVIDENCE_ALLOWLIST = {
+    (
+        "1e8af8510b072d5fe08501af7229abac5208bdf8",
+        "update_kb_file::atlas_price_scope_cost_drivers.md",
+        "runtime/providers/elevenlabs_agents/knowledge_base/atlas_web_studio/atlas_price_scope_cost_drivers.md",
+        "df6f06af92ad57ca5679b848c909f56cc34905fc78fa3a3fd888861913cbfd54",
+        14394,
+    ): "legacy_git_blob_old_fields",
+    (
+        "1e8af8510b072d5fe08501af7229abac5208bdf8",
+        "update_kb_file::atlas_output_quality_rules.md",
+        "runtime/providers/elevenlabs_agents/knowledge_base/atlas_web_studio/atlas_output_quality_rules.md",
+        "5f6f68f5ec26640a55658d374c5729bfdc23d10745a4c194ed245d4aa486425e",
+        19064,
+    ): "legacy_worktree_line_endings",
+}
 
 
 def fail(message: str) -> None:
@@ -573,8 +596,12 @@ def validate_live_patcher_semantics() -> None:
         assert_condition(placeholders.get(key) == expected, f"patch_body must merge exact {key}")
     assert_condition(len(set(EXPECTED_PRICE_DEFAULTS) & set(placeholders)) == 6, "patch_body must expose exactly six approved price defaults")
 
-    requests = patcher.patch_requests(agent, {"target_kb_docs": {name: {"id": doc_id, "source_path": f"runtime/providers/elevenlabs_agents/knowledge_base/atlas_web_studio/{name}"} for name, doc_id in patcher.KNOWN_KB_DOC_IDS.items()}})
     head_commit = git(["rev-parse", "HEAD"]).stdout.strip()
+    requests = patcher.patch_requests(
+        agent,
+        {"target_kb_docs": {name: {"id": doc_id, "source_path": f"runtime/providers/elevenlabs_agents/knowledge_base/atlas_web_studio/{name}"} for name, doc_id in patcher.KNOWN_KB_DOC_IDS.items()}},
+        source_commit=head_commit,
+    )
     for request in requests:
         if request["request_id"].startswith("update_kb_file::"):
             source_evidence = request.get("source_evidence")
@@ -586,8 +613,9 @@ def validate_live_patcher_semantics() -> None:
             assert_condition(source_evidence.get("source_byte_length") == len(source_bytes), f"{request['request_id']} source byte length mismatch")
             assert_condition(source_evidence.get("source_git_blob_sha256") == source_sha, f"{request['request_id']} git blob sha mismatch")
             assert_condition(source_evidence.get("source_git_blob_byte_length") == len(source_bytes), f"{request['request_id']} git blob length mismatch")
-            assert_condition(source_evidence.get("upload_byte_sha256") == source_sha, f"{request['request_id']} upload byte sha mismatch")
-            assert_condition(source_evidence.get("upload_byte_length") == len(source_bytes), f"{request['request_id']} upload byte length mismatch")
+            assert_condition(source_evidence.get("source_git_blob_length") == len(source_bytes), f"{request['request_id']} git blob length mismatch")
+            assert_condition(source_evidence.get("upload_sha256") == source_sha, f"{request['request_id']} upload byte sha mismatch")
+            assert_condition(source_evidence.get("upload_length") == len(source_bytes), f"{request['request_id']} upload byte length mismatch")
             assert_condition(source_evidence.get("newline_mode") in {"git_blob_lf", "git_blob_crlf", "worktree_crlf_normalized_to_git_lf"}, f"{request['request_id']} newline mode mismatch")
             markers = source_evidence.get("markers")
             assert_condition(isinstance(markers, list) and markers, f"{request['request_id']} missing source markers")
@@ -600,6 +628,7 @@ def validate_live_patcher_semantics() -> None:
         agent,
         {"target_kb_docs": {name: {"id": doc_id, "source_path": f"runtime/providers/elevenlabs_agents/knowledge_base/atlas_web_studio/{name}"} for name, doc_id in patcher.KNOWN_KB_DOC_IDS.items()}},
         target_kb_doc_names=("atlas_output_quality_rules.md",),
+        source_commit=head_commit,
     )
     assert_condition(
         [request["request_id"] for request in subset_requests]
@@ -612,6 +641,7 @@ def validate_live_patcher_semantics() -> None:
         target_kb_doc_names=("atlas_output_quality_rules.md",),
         provider_writes_allowed=False,
         ledger_summary=None,
+        source_commit=head_commit,
     )
     assert_condition(subset_plan["planned_provider_write_count"] == 2, "subset plan must report exactly two planned writes")
     assert_condition(subset_plan["planned_kb_write_count"] == 1, "subset plan must report one planned KB write")
@@ -779,6 +809,13 @@ def expected_request_ids_for_targets(target_names: list[str]) -> list[str]:
     return [f"update_kb_file::{name}" for name in target_names] + ["patch_agent::prompt_dynamic_variables"]
 
 
+def expected_source_path_for_request_id(request_id: str) -> str:
+    assert_condition(request_id.startswith("update_kb_file::"), f"{request_id} source path request id mismatch")
+    doc_name = request_id.split("::", 1)[1]
+    assert_condition(doc_name in {Path(OFFER_PATH).name, Path(PRICE_PATH).name, Path(OUTPUT_PATH).name}, f"{request_id} source path doc mismatch")
+    return f"runtime/providers/elevenlabs_agents/knowledge_base/atlas_web_studio/{doc_name}"
+
+
 def source_bytes_for_commit(source_commit: str, source_path: str, current_head: str) -> bytes:
     return git_show_file_bytes(source_commit, source_path)
 
@@ -792,29 +829,50 @@ def assert_text_bytes(label: str, value: bytes) -> str:
 
 
 def validate_git_blob_source_evidence(source_evidence: dict[str, Any], *, request_id: str, blob_bytes: bytes) -> None:
+    for field in REQUIRED_NEW_SOURCE_EVIDENCE_FIELDS:
+        assert_condition(field in source_evidence, f"{request_id} missing required source evidence field {field}")
     blob_sha = sha256_bytes(blob_bytes)
     blob_length = len(blob_bytes)
-    assert_condition(source_evidence.get("source_sha256") == blob_sha, f"{request_id} source sha mismatch")
-    assert_condition(source_evidence.get("source_byte_length") == blob_length, f"{request_id} source length mismatch")
-    has_new_blob_fields = any(
-        field in source_evidence
-        for field in (
-            "source_git_blob_sha256",
-            "source_git_blob_byte_length",
-            "upload_byte_sha256",
-            "upload_byte_length",
-            "newline_mode",
-        )
+    assert_condition(source_evidence.get("upload_sha256") == blob_sha, f"{request_id} upload byte sha mismatch")
+    assert_condition(source_evidence.get("upload_length") == blob_length, f"{request_id} upload byte length mismatch")
+    assert_condition(source_evidence.get("source_sha256") == source_evidence.get("upload_sha256"), f"{request_id} source sha alias mismatch")
+    assert_condition(source_evidence.get("source_byte_length") == source_evidence.get("upload_length"), f"{request_id} source length alias mismatch")
+    assert_condition(source_evidence.get("source_git_blob_sha256") == blob_sha, f"{request_id} git blob sha mismatch")
+    assert_condition(source_evidence.get("source_git_blob_length") == blob_length, f"{request_id} git blob length mismatch")
+    if "source_git_blob_byte_length" in source_evidence:
+        assert_condition(source_evidence.get("source_git_blob_byte_length") == blob_length, f"{request_id} git blob byte length mismatch")
+    assert_condition(
+        source_evidence.get("newline_mode") in {"git_blob_lf", "git_blob_crlf", "worktree_crlf_normalized_to_git_lf"},
+        f"{request_id} newline mode mismatch",
     )
-    if has_new_blob_fields:
-        assert_condition(source_evidence.get("source_git_blob_sha256") == blob_sha, f"{request_id} git blob sha mismatch")
-        assert_condition(source_evidence.get("source_git_blob_byte_length") == blob_length, f"{request_id} git blob length mismatch")
-        assert_condition(source_evidence.get("upload_byte_sha256") == blob_sha, f"{request_id} upload byte sha mismatch")
-        assert_condition(source_evidence.get("upload_byte_length") == blob_length, f"{request_id} upload byte length mismatch")
-        assert_condition(
-            source_evidence.get("newline_mode") in {"git_blob_lf", "git_blob_crlf", "worktree_crlf_normalized_to_git_lf"},
-            f"{request_id} newline mode mismatch",
-        )
+
+
+def legacy_allowlist_mode(source_evidence: dict[str, Any], *, request_id: str, source_path: str, source_commit: str) -> str | None:
+    legacy_key = (
+        source_commit,
+        request_id,
+        source_path,
+        source_evidence.get("source_sha256"),
+        source_evidence.get("source_byte_length"),
+    )
+    return LEGACY_SOURCE_EVIDENCE_ALLOWLIST.get(legacy_key)
+
+
+def validate_legacy_git_blob_old_fields(
+    source_evidence: dict[str, Any],
+    *,
+    request_id: str,
+    source_path: str,
+    source_commit: str,
+    source_blob_bytes: bytes,
+) -> None:
+    assert_condition(legacy_allowlist_mode(source_evidence, request_id=request_id, source_path=source_path, source_commit=source_commit) == "legacy_git_blob_old_fields", f"{request_id} legacy allowlist mismatch")
+    source_text = assert_text_bytes(f"{request_id} legacy", source_blob_bytes)
+    assert_condition(source_evidence.get("source_sha256") == sha256_bytes(source_blob_bytes), f"{request_id} legacy git blob sha mismatch")
+    assert_condition(source_evidence.get("source_byte_length") == len(source_blob_bytes), f"{request_id} legacy git blob length mismatch")
+    markers = KB_REQUEST_SOURCE_MARKERS[Path(source_path).name]
+    missing_markers = [marker for marker in markers if marker not in source_text]
+    assert_condition(not missing_markers, f"{request_id} historical source markers missing: {missing_markers}")
 
 
 def validate_legacy_worktree_line_endings(
@@ -826,6 +884,7 @@ def validate_legacy_worktree_line_endings(
     current_head: str,
     source_blob_bytes: bytes,
 ) -> None:
+    assert_condition(legacy_allowlist_mode(source_evidence, request_id=request_id, source_path=source_path, source_commit=source_commit) == "legacy_worktree_line_endings", f"{request_id} legacy allowlist mismatch")
     source_text = assert_text_bytes(f"{request_id} legacy", source_blob_bytes)
     current_head_blob = git_show_file_bytes(current_head, source_path)
     assert_condition(current_head_blob == source_blob_bytes, f"{request_id} legacy current HEAD blob mismatch")
@@ -843,6 +902,7 @@ def validate_legacy_worktree_line_endings(
 
 def validate_source_evidence_for_commit(requests: list[dict[str, Any]], evidence_by_id: dict[str, Any], *, source_commit: str, current_head: str) -> dict[str, Any]:
     legacy_ids: list[str] = []
+    legacy_line_ending_ids: list[str] = []
     for request in requests:
         request_id = request.get("request_id")
         assert_condition(isinstance(request_id, str) and request_id, "request missing request_id")
@@ -853,25 +913,30 @@ def validate_source_evidence_for_commit(requests: list[dict[str, Any]], evidence
             assert_condition(source_evidence == evidence_by_id[request_id], f"{request_id} plan/request source evidence mismatch")
             source_path = source_evidence.get("source_path")
             assert_condition(isinstance(source_path, str) and source_path, f"{request_id} source path missing")
+            expected_source_path = expected_source_path_for_request_id(request_id)
+            assert_condition(source_path == expected_source_path, f"{request_id} source path mismatch")
             markers = KB_REQUEST_SOURCE_MARKERS[Path(source_path).name]
             source_bytes = source_bytes_for_commit(source_commit, source_path, current_head)
             source_sha_matches = source_evidence.get("source_sha256") == sha256_bytes(source_bytes)
             source_length_matches = source_evidence.get("source_byte_length") == len(source_bytes)
-            has_new_blob_fields = any(
-                field in source_evidence
-                for field in (
-                    "source_git_blob_sha256",
-                    "source_git_blob_byte_length",
-                    "upload_byte_sha256",
-                    "upload_byte_length",
-                    "newline_mode",
-                )
-            )
             if source_sha_matches and source_length_matches:
-                source_text = assert_text_bytes(request_id, source_bytes)
-                validate_git_blob_source_evidence(source_evidence, request_id=request_id, blob_bytes=source_bytes)
+                legacy_mode = legacy_allowlist_mode(source_evidence, request_id=request_id, source_path=source_path, source_commit=source_commit)
+                if legacy_mode == "legacy_git_blob_old_fields" and any(field not in source_evidence for field in REQUIRED_NEW_SOURCE_EVIDENCE_FIELDS):
+                    validate_legacy_git_blob_old_fields(
+                        source_evidence,
+                        request_id=request_id,
+                        source_path=source_path,
+                        source_commit=source_commit,
+                        source_blob_bytes=source_bytes,
+                    )
+                    source_text = source_bytes.decode("utf-8")
+                    legacy_ids.append(request_id)
+                else:
+                    source_text = assert_text_bytes(request_id, source_bytes)
+                    validate_git_blob_source_evidence(source_evidence, request_id=request_id, blob_bytes=source_bytes)
             else:
-                assert_condition(not has_new_blob_fields, f"{request_id} source sha mismatch")
+                if all(field in source_evidence for field in REQUIRED_NEW_SOURCE_EVIDENCE_FIELDS):
+                    fail(f"{request_id} source sha mismatch")
                 validate_legacy_worktree_line_endings(
                     source_evidence,
                     request_id=request_id,
@@ -882,6 +947,7 @@ def validate_source_evidence_for_commit(requests: list[dict[str, Any]], evidence
                 )
                 source_text = source_bytes.decode("utf-8")
                 legacy_ids.append(request_id)
+                legacy_line_ending_ids.append(request_id)
             assert_condition(tuple(source_evidence.get("markers", ())) == markers, f"{request_id} marker list mismatch")
             missing_markers = [marker for marker in markers if marker not in source_text]
             assert_condition(not missing_markers, f"{request_id} historical source markers missing: {missing_markers}")
@@ -895,8 +961,9 @@ def validate_source_evidence_for_commit(requests: list[dict[str, Any]], evidence
         else:
             fail(f"unknown live evidence request id {request_id}")
     return {
-        "source_evidence_mode": "legacy_worktree_line_endings" if legacy_ids else "git_blob",
-        "legacy_worktree_line_endings_request_ids": legacy_ids,
+        "source_evidence_mode": "legacy_worktree_line_endings" if legacy_line_ending_ids else ("legacy_allowlisted" if legacy_ids else "git_blob"),
+        "legacy_allowlisted_request_ids": legacy_ids,
+        "legacy_worktree_line_endings_request_ids": legacy_line_ending_ids,
     }
 
 
