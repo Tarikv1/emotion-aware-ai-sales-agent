@@ -49,6 +49,8 @@ TEST_UPDATE_SEMANTICS = {
     "endpoint_template": "/v1/convai/agent-testing/:test_id",
     "body": "full exact simulation test definition",
 }
+REPAIR_LINEAGE_FILENAME = "live_test_context_repair_result.json"
+OWNERSHIP_PROOF_TYPE = "repair_owned_context_lineage_v1"
 
 EXPECTED_TEST_IDS = [
     "sim_040_capability_question_no_unprompted_price",
@@ -570,6 +572,302 @@ def move_created_tests(
     )
 
 
+def parse_mapping_identity(
+    mapping: dict[str, Any],
+) -> tuple[str, dict[str, str], dict[str, str], dict[str, bool]]:
+    if mapping.get("checkpoint_id") != CHECKPOINT_ID:
+        raise GuardError("live_test_mapping checkpoint_id mismatch")
+    folder = mapping.get("folder")
+    if not isinstance(folder, dict):
+        raise GuardError("live_test_mapping folder must be an object")
+    if folder.get("name") != CHECKPOINT_ID:
+        raise GuardError("live_test_mapping folder name mismatch")
+    folder_id = folder.get("folder_id")
+    if not isinstance(folder_id, str) or not folder_id.strip():
+        raise GuardError("live_test_mapping folder_id missing")
+    tests = mapping.get("tests")
+    if not isinstance(tests, list) or len(tests) != len(EXPECTED_TEST_IDS):
+        raise GuardError("live_test_mapping tests must contain exactly ten entries")
+
+    provider_ids: dict[str, str] = {}
+    provider_names: dict[str, str] = {}
+    created_flags: dict[str, bool] = {}
+    seen_provider_ids: set[str] = set()
+    seen_names: set[str] = set()
+    for index, (expected_source_id, item) in enumerate(zip(EXPECTED_TEST_IDS, tests, strict=True), start=1):
+        if not isinstance(item, dict):
+            raise GuardError(f"live_test_mapping test entry {index} must be an object")
+        source_id = item.get("source_test_id")
+        expected_name = f"{CHECKPOINT_ID}::{expected_source_id}"
+        if source_id != expected_source_id:
+            raise GuardError(f"live_test_mapping source order mismatch at {index}: {source_id!r}")
+        provider_test_name = item.get("provider_test_name")
+        if provider_test_name != expected_name:
+            raise GuardError(f"live_test_mapping provider test name mismatch for {expected_source_id}")
+        provider_test_id = item.get("provider_test_id")
+        if not isinstance(provider_test_id, str) or not provider_test_id.startswith("test_"):
+            raise GuardError(f"live_test_mapping provider test ID missing or invalid for {expected_source_id}")
+        if provider_test_id in seen_provider_ids:
+            raise GuardError(f"duplicate provider test ID in live_test_mapping: {provider_test_id}")
+        if provider_test_name in seen_names:
+            raise GuardError(f"duplicate provider test names in live_test_mapping: {provider_test_name}")
+        created_in_this_run = item.get("created_in_this_run")
+        reused_existing = item.get("reused_existing")
+        if created_in_this_run not in (True, False):
+            raise GuardError(f"live_test_mapping created_in_this_run must be boolean for {expected_source_id}")
+        if reused_existing not in (True, False):
+            raise GuardError(f"live_test_mapping reused_existing must be boolean for {expected_source_id}")
+        if reused_existing == created_in_this_run:
+            raise GuardError(f"live_test_mapping created/reused flags conflict for {expected_source_id}")
+        seen_provider_ids.add(provider_test_id)
+        seen_names.add(provider_test_name)
+        provider_ids[expected_source_id] = provider_test_id
+        provider_names[expected_source_id] = provider_test_name
+        created_flags[expected_source_id] = bool(created_in_this_run)
+    return folder_id, provider_ids, provider_names, created_flags
+
+
+def validate_repair_lineage_summary(
+    summary: dict[str, Any],
+    *,
+    folder_id: str,
+    provider_ids: dict[str, str],
+    provider_names: dict[str, str],
+    created_flags: dict[str, bool],
+) -> dict[str, Any]:
+    if summary.get("checkpoint_id") != CHECKPOINT_ID:
+        raise GuardError("repair ownership checkpoint_id mismatch")
+    if summary.get("status") != "completed":
+        raise GuardError("repair ownership status must be completed")
+    if summary.get("mode") != "repair_owned_context":
+        raise GuardError("repair ownership mode must be repair_owned_context")
+    if summary.get("folder_id") != folder_id:
+        raise GuardError("repair ownership folder_id mismatch")
+    if summary.get("folder_membership_verified_count") != len(EXPECTED_TEST_IDS):
+        raise GuardError("repair ownership folder membership count mismatch")
+    if summary.get("repaired_test_count") != len(EXPECTED_TEST_IDS):
+        raise GuardError("repair ownership repaired test count mismatch")
+
+    repaired_tests = summary.get("repaired_tests")
+    if not isinstance(repaired_tests, list) or len(repaired_tests) != len(EXPECTED_TEST_IDS):
+        raise GuardError("repair ownership repaired_tests must contain exactly ten entries")
+
+    normalized_repaired_tests: list[dict[str, Any]] = []
+    lineage_provider_ids: dict[str, str] = {}
+    for index, (expected_source_id, item) in enumerate(zip(EXPECTED_TEST_IDS, repaired_tests, strict=True), start=1):
+        if not isinstance(item, dict):
+            raise GuardError(f"repair ownership repaired test entry {index} must be an object")
+        if item.get("source_test_id") != expected_source_id:
+            raise GuardError(f"repair ownership source order mismatch at {index}")
+        expected_name = f"{CHECKPOINT_ID}::{expected_source_id}"
+        provider_test_name = item.get("provider_test_name")
+        if provider_test_name != expected_name:
+            raise GuardError(f"repair ownership provider test name mismatch for {expected_source_id}")
+        provider_test_id = item.get("provider_test_id")
+        if not isinstance(provider_test_id, str) or not provider_test_id.startswith("test_"):
+            raise GuardError(f"repair ownership provider test ID invalid for {expected_source_id}")
+        if int(item.get("provider_status_code", 0)) != 200:
+            raise GuardError(f"repair ownership provider status code mismatch for {expected_source_id}")
+        lineage_provider_ids[expected_source_id] = provider_test_id
+        normalized_repaired_tests.append(
+            {
+                "source_test_id": expected_source_id,
+                "provider_test_id": provider_test_id,
+                "provider_test_name": expected_name,
+                "provider_status_code": 200,
+            }
+        )
+        if not created_flags[expected_source_id]:
+            if provider_test_id != provider_ids[expected_source_id]:
+                raise GuardError(f"repair ownership provider test ID mismatch for {expected_source_id}")
+            if provider_test_name != provider_names[expected_source_id]:
+                raise GuardError(f"repair ownership provider test name mismatch against mapping for {expected_source_id}")
+
+    ledger = summary.get("operation_ledger")
+    if not isinstance(ledger, dict):
+        raise GuardError("repair ownership operation_ledger must be an object")
+    if ledger.get("attempt_count") != len(EXPECTED_TEST_IDS):
+        raise GuardError("repair ownership attempt_count mismatch")
+    if ledger.get("success_count") != len(EXPECTED_TEST_IDS):
+        raise GuardError("repair ownership success_count mismatch")
+    if ledger.get("failure_count") != 0:
+        raise GuardError("repair ownership failure_count mismatch")
+    if ledger.get("failed_request_id") not in (None, ""):
+        raise GuardError("repair ownership failed_request_id must be empty")
+    if ledger.get("failed_error") not in (None, ""):
+        raise GuardError("repair ownership failed_error must be empty")
+    attempts = ledger.get("attempts")
+    if not isinstance(attempts, list) or len(attempts) != len(EXPECTED_TEST_IDS):
+        raise GuardError("repair ownership attempts must contain exactly ten entries")
+
+    normalized_attempts: list[dict[str, Any]] = []
+    for expected_source_id, attempt in zip(EXPECTED_TEST_IDS, attempts, strict=True):
+        if not isinstance(attempt, dict):
+            raise GuardError(f"repair ownership attempt entry must be an object for {expected_source_id}")
+        expected_provider_test_id = lineage_provider_ids[expected_source_id]
+        expected_request_id = f"repair_test::{expected_source_id}"
+        expected_endpoint = f"/v1/convai/agent-testing/{expected_provider_test_id}"
+        if attempt.get("request_id") != expected_request_id:
+            raise GuardError(f"repair ownership request_id mismatch for {expected_source_id}")
+        if attempt.get("operation") != "repair-owned-context":
+            raise GuardError(f"repair ownership operation mismatch for {expected_source_id}")
+        if attempt.get("method") != "PUT":
+            raise GuardError(f"repair ownership method mismatch for {expected_source_id}")
+        if attempt.get("endpoint") != expected_endpoint:
+            raise GuardError(f"repair ownership endpoint mismatch for {expected_source_id}")
+        if attempt.get("status") != "succeeded":
+            raise GuardError(f"repair ownership attempt status mismatch for {expected_source_id}")
+        if int(attempt.get("status_code", 0)) != 200:
+            raise GuardError(f"repair ownership attempt status code mismatch for {expected_source_id}")
+        normalized_attempts.append(
+            {
+                "request_id": expected_request_id,
+                "operation": "repair-owned-context",
+                "method": "PUT",
+                "endpoint": expected_endpoint,
+                "status": "succeeded",
+                "status_code": 200,
+            }
+        )
+
+    return {
+        "checkpoint_id": CHECKPOINT_ID,
+        "status": "completed",
+        "mode": "repair_owned_context",
+        "folder_id": folder_id,
+        "folder_membership_verified_count": len(EXPECTED_TEST_IDS),
+        "repaired_test_count": len(EXPECTED_TEST_IDS),
+        "repaired_tests": normalized_repaired_tests,
+        "operation_ledger": {
+            "attempt_count": len(EXPECTED_TEST_IDS),
+            "success_count": len(EXPECTED_TEST_IDS),
+            "failure_count": 0,
+            "failed_request_id": None,
+            "failed_error": None,
+            "attempts": normalized_attempts,
+        },
+    }
+
+
+def ownership_section_from_summary(summary: dict[str, Any]) -> dict[str, Any]:
+    return {
+        "proof_type": OWNERSHIP_PROOF_TYPE,
+        "lineage_sha256": canonical_sha256(summary),
+        "validated_lineage": summary,
+    }
+
+
+def validate_ownership_section(
+    ownership: dict[str, Any],
+    *,
+    folder_id: str,
+    provider_ids: dict[str, str],
+    provider_names: dict[str, str],
+    created_flags: dict[str, bool],
+) -> dict[str, Any]:
+    if ownership.get("proof_type") != OWNERSHIP_PROOF_TYPE:
+        raise GuardError("live_test_mapping ownership proof_type mismatch")
+    summary = ownership.get("validated_lineage")
+    if not isinstance(summary, dict):
+        raise GuardError("live_test_mapping ownership validated_lineage must be an object")
+    lineage_sha256 = ownership.get("lineage_sha256")
+    if not isinstance(lineage_sha256, str) or lineage_sha256 != canonical_sha256(summary):
+        raise GuardError("live_test_mapping ownership lineage_sha256 mismatch")
+    return validate_repair_lineage_summary(
+        summary,
+        folder_id=folder_id,
+        provider_ids=provider_ids,
+        provider_names=provider_names,
+        created_flags=created_flags,
+    )
+
+
+def maybe_resolve_reused_mapping_ownership(
+    mapping: dict[str, Any],
+    *,
+    folder_id: str,
+    provider_ids: dict[str, str],
+    provider_names: dict[str, str],
+    created_flags: dict[str, bool],
+    mapping_path: Path | None = None,
+    repair_lineage_path: Path | None = None,
+    required: bool = True,
+) -> dict[str, Any] | None:
+    if all(created_flags.values()):
+        return None
+
+    summary_from_ownership: dict[str, Any] | None = None
+    ownership = mapping.get("ownership")
+    if ownership is not None:
+        if not isinstance(ownership, dict):
+            raise GuardError("live_test_mapping ownership must be an object")
+        summary_from_ownership = validate_ownership_section(
+            ownership,
+            folder_id=folder_id,
+            provider_ids=provider_ids,
+            provider_names=provider_names,
+            created_flags=created_flags,
+        )
+
+    resolved_lineage_path = repair_lineage_path
+    if resolved_lineage_path is None and mapping_path is not None:
+        resolved_lineage_path = mapping_path.with_name(REPAIR_LINEAGE_FILENAME)
+
+    summary_from_lineage: dict[str, Any] | None = None
+    if resolved_lineage_path is not None and resolved_lineage_path.exists():
+        summary_from_lineage = validate_repair_lineage_summary(
+            read_json(resolved_lineage_path),
+            folder_id=folder_id,
+            provider_ids=provider_ids,
+            provider_names=provider_names,
+            created_flags=created_flags,
+        )
+
+    if summary_from_ownership is not None and summary_from_lineage is not None and summary_from_ownership != summary_from_lineage:
+        raise GuardError("live_test_mapping ownership proof does not match repair lineage")
+
+    summary = summary_from_ownership or summary_from_lineage
+    if summary is None and required:
+        raise GuardError("live_test_mapping reused tests require strict ownership proof")
+    return summary
+
+
+def durable_ownership_section_for_mapping(
+    mapping: dict[str, Any],
+    *,
+    mapping_path: Path,
+    repair_lineage_path: Path | None = None,
+) -> dict[str, Any] | None:
+    folder_id, provider_ids, provider_names, created_flags = parse_mapping_identity(mapping)
+
+    existing_mapping_ownership: dict[str, Any] | None = None
+    if mapping_path.exists():
+        existing_mapping = read_json(mapping_path)
+        ownership = existing_mapping.get("ownership")
+        if ownership is not None:
+            if not isinstance(ownership, dict):
+                raise GuardError("existing live_test_mapping ownership must be an object")
+            existing_mapping_ownership = ownership
+
+    working_mapping = json.loads(json.dumps(mapping))
+    if existing_mapping_ownership is not None:
+        working_mapping["ownership"] = existing_mapping_ownership
+
+    summary = maybe_resolve_reused_mapping_ownership(
+        working_mapping,
+        folder_id=folder_id,
+        provider_ids=provider_ids,
+        provider_names=provider_names,
+        created_flags=created_flags,
+        mapping_path=mapping_path,
+        repair_lineage_path=repair_lineage_path,
+        required=False,
+    )
+    if summary is None:
+        return None
+    return ownership_section_from_summary(summary)
+
+
 def mapping_payload(
     *,
     folder: dict[str, Any],
@@ -610,46 +908,22 @@ def mapping_payload(
     }
 
 
-def validate_owned_mapping(mapping: dict[str, Any]) -> tuple[str, dict[str, str]]:
-    if mapping.get("checkpoint_id") != CHECKPOINT_ID:
-        raise GuardError("live_test_mapping checkpoint_id mismatch")
-    folder = mapping.get("folder")
-    if not isinstance(folder, dict):
-        raise GuardError("live_test_mapping folder must be an object")
-    if folder.get("name") != CHECKPOINT_ID:
-        raise GuardError("live_test_mapping folder name mismatch")
-    folder_id = folder.get("folder_id")
-    if not isinstance(folder_id, str) or not folder_id.strip():
-        raise GuardError("live_test_mapping folder_id missing")
-    tests = mapping.get("tests")
-    if not isinstance(tests, list) or len(tests) != len(EXPECTED_TEST_IDS):
-        raise GuardError("live_test_mapping tests must contain exactly ten entries")
-
-    provider_ids: dict[str, str] = {}
-    names: list[str] = []
-    seen_provider_ids: set[str] = set()
-    for index, (expected_source_id, item) in enumerate(zip(EXPECTED_TEST_IDS, tests, strict=True), start=1):
-        if not isinstance(item, dict):
-            raise GuardError(f"live_test_mapping test entry {index} must be an object")
-        source_id = item.get("source_test_id")
-        expected_name = f"{CHECKPOINT_ID}::{expected_source_id}"
-        if source_id != expected_source_id:
-            raise GuardError(f"live_test_mapping source order mismatch at {index}: {source_id!r}")
-        if item.get("provider_test_name") != expected_name:
-            raise GuardError(f"live_test_mapping provider test name mismatch for {expected_source_id}")
-        if item.get("created_in_this_run") is not True:
-            raise GuardError(f"live_test_mapping test was not created by this Task 9 runner: {expected_source_id}")
-        provider_test_id = item.get("provider_test_id")
-        if not isinstance(provider_test_id, str) or not provider_test_id.startswith("test_"):
-            raise GuardError(f"live_test_mapping provider test ID missing or invalid for {expected_source_id}")
-        if provider_test_id in seen_provider_ids:
-            raise GuardError(f"duplicate provider test ID in live_test_mapping: {provider_test_id}")
-        names.append(str(item.get("provider_test_name")))
-        seen_provider_ids.add(provider_test_id)
-        provider_ids[expected_source_id] = provider_test_id
-
-    if len(set(names)) != len(names):
-        raise GuardError("duplicate provider test names in live_test_mapping")
+def validate_owned_mapping(
+    mapping: dict[str, Any],
+    *,
+    mapping_path: Path | None = None,
+    repair_lineage_path: Path | None = None,
+) -> tuple[str, dict[str, str]]:
+    folder_id, provider_ids, provider_names, created_flags = parse_mapping_identity(mapping)
+    maybe_resolve_reused_mapping_ownership(
+        mapping,
+        folder_id=folder_id,
+        provider_ids=provider_ids,
+        provider_names=provider_names,
+        created_flags=created_flags,
+        mapping_path=mapping_path,
+        repair_lineage_path=repair_lineage_path,
+    )
     return folder_id, provider_ids
 
 
@@ -766,7 +1040,7 @@ def execute_repair_owned_context(
     ledger = OperationLedger()
     try:
         mapping = read_json(mapping_path)
-        folder_id, provider_ids = validate_owned_mapping(mapping)
+        folder_id, provider_ids = validate_owned_mapping(mapping, mapping_path=mapping_path)
         folder_membership = verify_mapped_tests_in_folder(
             provider,
             folder_id=folder_id,
@@ -869,7 +1143,7 @@ def execute_canary_run(
     ledger = OperationLedger()
     try:
         mapping = read_json(mapping_path)
-        folder_id, provider_ids = validate_owned_mapping(mapping)
+        folder_id, provider_ids = validate_owned_mapping(mapping, mapping_path=mapping_path)
         result = run_tests_once(
             provider,
             ledger=ledger,
@@ -1052,6 +1326,13 @@ def execute_with_provider(
             expected_bodies=expected_bodies,
             duplicate_prevention=duplicate_prevention,
         )
+        ownership = durable_ownership_section_for_mapping(
+            mapping,
+            mapping_path=output_dir / "live_test_mapping.json",
+            repair_lineage_path=output_dir / REPAIR_LINEAGE_FILENAME,
+        )
+        if ownership is not None:
+            mapping["ownership"] = ownership
         write_json(output_dir / "live_test_mapping.json", mapping)
         provider_ids = {
             source_id: all_records[source_id]["provider_test_id"]

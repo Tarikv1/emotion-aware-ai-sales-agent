@@ -256,6 +256,55 @@ def mapping_for_tests(
     }
 
 
+def repair_lineage_for_mapping(
+    mapping: dict[str, Any],
+    *,
+    folder_id: str | None = None,
+) -> dict[str, Any]:
+    resolved_folder_id = folder_id or mapping["folder"]["folder_id"]
+    repaired_tests = []
+    attempts = []
+    for item in mapping["tests"]:
+        source_id = item["source_test_id"]
+        provider_test_id = item["provider_test_id"]
+        provider_test_name = item["provider_test_name"]
+        repaired_tests.append(
+            {
+                "source_test_id": source_id,
+                "provider_test_id": provider_test_id,
+                "provider_test_name": provider_test_name,
+                "provider_status_code": 200,
+            }
+        )
+        attempts.append(
+            {
+                "request_id": f"repair_test::{source_id}",
+                "operation": "repair-owned-context",
+                "method": "PUT",
+                "endpoint": f"/v1/convai/agent-testing/{provider_test_id}",
+                "status": "succeeded",
+                "status_code": 200,
+            }
+        )
+    return {
+        "checkpoint_id": runner.CHECKPOINT_ID,
+        "status": "completed",
+        "mode": "repair_owned_context",
+        "folder_id": resolved_folder_id,
+        "folder_membership_verified_count": len(mapping["tests"]),
+        "repaired_test_count": len(mapping["tests"]),
+        "repaired_tests": repaired_tests,
+        "operation_ledger": {
+            "attempt_count": len(attempts),
+            "success_count": len(attempts),
+            "failure_count": 0,
+            "failed_request_id": None,
+            "failed_error": None,
+            "attempts": attempts,
+        },
+    }
+
+
 def write_mapping(path: Path, payload: dict[str, Any]) -> None:
     path.write_text(json.dumps(payload, indent=2, ensure_ascii=True) + "\n", encoding="ascii")
 
@@ -495,6 +544,148 @@ class RunnerTests(unittest.TestCase):
                     )
         self.assertEqual(exit_code, 0)
         provider_class.assert_not_called()
+
+    def test_validate_owned_mapping_accepts_created_mapping_without_lineage(self) -> None:
+        mapping = mapping_for_tests(expected_provider_tests(), created_in_this_run=True)
+        folder_id, provider_ids = runner.validate_owned_mapping(mapping)
+        self.assertEqual(folder_id, "tfld_existing")
+        self.assertEqual(
+            provider_ids,
+            {
+                source_id: f"test_existing_{index:02d}"
+                for index, source_id in enumerate(runner.EXPECTED_TEST_IDS, start=1)
+            },
+        )
+
+    def test_validate_owned_mapping_accepts_reused_mapping_with_exact_repair_lineage(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            output_dir = Path(tmp)
+            mapping_path = output_dir / "live_test_mapping.json"
+            mapping = mapping_for_tests(expected_provider_tests(), created_in_this_run=False)
+            write_mapping(mapping_path, mapping)
+            (output_dir / "live_test_context_repair_result.json").write_text(
+                json.dumps(repair_lineage_for_mapping(mapping), indent=2, ensure_ascii=True) + "\n",
+                encoding="ascii",
+            )
+
+            folder_id, provider_ids = runner.validate_owned_mapping(mapping, mapping_path=mapping_path)
+
+        self.assertEqual(folder_id, "tfld_existing")
+        self.assertEqual(provider_ids["sim_040_basic_site_direct_price"], "test_existing_03")
+
+    def test_validate_owned_mapping_reused_mapping_without_lineage_fails_closed(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            output_dir = Path(tmp)
+            mapping_path = output_dir / "live_test_mapping.json"
+            mapping = mapping_for_tests(expected_provider_tests(), created_in_this_run=False)
+            write_mapping(mapping_path, mapping)
+
+            with self.assertRaises(runner.GuardError):
+                runner.validate_owned_mapping(mapping, mapping_path=mapping_path)
+
+    def test_validate_owned_mapping_rejects_tampered_repair_lineage(self) -> None:
+        mapping = mapping_for_tests(expected_provider_tests(), created_in_this_run=False)
+        base_lineage = repair_lineage_for_mapping(mapping)
+        tamper_cases = {
+            "folder_id": lambda payload: payload.__setitem__("folder_id", "tfld_wrong"),
+            "provider_id": lambda payload: payload["repaired_tests"][0].__setitem__("provider_test_id", "test_wrong"),
+            "provider_name": lambda payload: payload["repaired_tests"][0].__setitem__("provider_test_name", "wrong-name"),
+            "order": lambda payload: payload["repaired_tests"].insert(0, payload["repaired_tests"].pop()),
+            "status": lambda payload: payload.__setitem__("status", "failed"),
+            "mode": lambda payload: payload.__setitem__("mode", "wrong_mode"),
+            "repaired_count": lambda payload: payload.__setitem__("repaired_test_count", 9),
+            "membership_count": lambda payload: payload.__setitem__("folder_membership_verified_count", 9),
+            "ledger_attempt_count": lambda payload: payload["operation_ledger"].__setitem__("attempt_count", 9),
+            "ledger_request_id": lambda payload: payload["operation_ledger"]["attempts"][0].__setitem__("request_id", "repair_test::wrong"),
+            "ledger_status": lambda payload: payload["operation_ledger"]["attempts"][0].__setitem__("status", "failed"),
+        }
+        for label, mutate in tamper_cases.items():
+            with self.subTest(label=label), tempfile.TemporaryDirectory() as tmp:
+                output_dir = Path(tmp)
+                mapping_path = output_dir / "live_test_mapping.json"
+                write_mapping(mapping_path, mapping)
+                lineage = json.loads(json.dumps(base_lineage))
+                mutate(lineage)
+                (output_dir / "live_test_context_repair_result.json").write_text(
+                    json.dumps(lineage, indent=2, ensure_ascii=True) + "\n",
+                    encoding="ascii",
+                )
+
+                with self.assertRaises(runner.GuardError):
+                    runner.validate_owned_mapping(mapping, mapping_path=mapping_path)
+
+    def test_full_reuse_write_preserves_durable_ownership_proof(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            output_dir = Path(tmp)
+            mapping_path = output_dir / "live_test_mapping.json"
+            seeded_mapping = mapping_for_tests(expected_provider_tests(), created_in_this_run=False)
+            write_mapping(mapping_path, seeded_mapping)
+            (output_dir / "live_test_context_repair_result.json").write_text(
+                json.dumps(repair_lineage_for_mapping(seeded_mapping), indent=2, ensure_ascii=True) + "\n",
+                encoding="ascii",
+            )
+            provider = FakeProvider(
+                folders=[{"id": "tfld_existing", "name": runner.CHECKPOINT_ID, "entity_type": "folder", "folder_parent_id": "root"}],
+                tests=expected_provider_tests(),
+            )
+
+            first = runner.execute_with_provider(
+                provider,
+                output_dir=output_dir,
+                live=True,
+                wait_timeout_seconds=1,
+                poll_interval_seconds=0,
+            )
+            first_mapping = json.loads(mapping_path.read_text(encoding="ascii"))
+            second = runner.execute_with_provider(
+                provider,
+                output_dir=output_dir,
+                live=True,
+                wait_timeout_seconds=1,
+                poll_interval_seconds=0,
+            )
+            second_mapping = json.loads(mapping_path.read_text(encoding="ascii"))
+
+        self.assertEqual(first["status"], "completed")
+        self.assertEqual(second["status"], "completed")
+        self.assertIn("ownership", first_mapping)
+        self.assertEqual(first_mapping["ownership"], second_mapping["ownership"])
+        self.assertTrue(all(item["created_in_this_run"] is False for item in second_mapping["tests"]))
+
+    def test_canary_validation_succeeds_after_reuse_mapping_write(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            output_dir = Path(tmp)
+            mapping_path = output_dir / "live_test_mapping.json"
+            seeded_mapping = mapping_for_tests(expected_provider_tests(), created_in_this_run=False)
+            write_mapping(mapping_path, seeded_mapping)
+            (output_dir / "live_test_context_repair_result.json").write_text(
+                json.dumps(repair_lineage_for_mapping(seeded_mapping), indent=2, ensure_ascii=True) + "\n",
+                encoding="ascii",
+            )
+            provider = FakeProvider(
+                folders=[{"id": "tfld_existing", "name": runner.CHECKPOINT_ID, "entity_type": "folder", "folder_parent_id": "root"}],
+                tests=expected_provider_tests(),
+            )
+            runner.execute_with_provider(
+                provider,
+                output_dir=output_dir,
+                live=True,
+                wait_timeout_seconds=1,
+                poll_interval_seconds=0,
+            )
+
+            result = runner.execute_canary_run(
+                provider,
+                source_test_id="sim_040_capability_question_no_unprompted_price",
+                mapping_path=mapping_path,
+                output_dir=output_dir,
+                live=True,
+                wait_timeout_seconds=1,
+                poll_interval_seconds=0,
+            )
+
+        self.assertEqual(result["status"], "completed")
+        self.assertEqual(result["selected_test_ids"], ["sim_040_capability_question_no_unprompted_price"])
 
     def test_repair_owned_context_puts_only_exact_missing_context_and_verifies(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
