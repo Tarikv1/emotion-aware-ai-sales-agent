@@ -1,0 +1,1732 @@
+{
+  "captured_at_utc": "2026-07-12T20:11:07Z",
+  "payload_sha256": "06eeae49bf9d1dff62ffe7af9c981a76a88b92baf94e6854f945f9206bd2c8a1",
+  "payload": {
+    "checkpoint_id": "ELEVENLABS-040-detailed-pricing-control",
+    "invocation_id": "suite_8701kxbz5tktfh4tb0jfpvsmjdkt",
+    "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+    "test_runs": [
+      {
+        "test_run_id": "trun_8001kxbz5tm4fzqvk6ygzhz4b8kp",
+        "test_invocation_id": "suite_8701kxbz5tktfh4tb0jfpvsmjdkt",
+        "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+        "test_id": "sim_040_capability_question_no_unprompted_price",
+        "provider_test_id": "test_9101kx9ddm04f0e8tjnwzja893a6",
+        "test_name": "ELEVENLABS-040-detailed-pricing-control::sim_040_capability_question_no_unprompted_price",
+        "scenario": "Buyer asks whether Atlas can add booking, CRM, and payments but never asks cost.",
+        "success_conditions": [
+          "Pass: confident capability answer, no dollar amount, range, package, starting price, or care-plan price."
+        ],
+        "models": {
+          "simulated_user_model": "gemini-2.5-flash",
+          "evaluation_model": "gemini-2.5-flash"
+        },
+        "status": "passed",
+        "condition_result": {
+          "result": "success",
+          "rationale": {
+            "messages": [
+              "The agent provided confident capability answers regarding the scoping process, explaining the variables involved without giving a specific timeframe, dollar amount, range, package, starting price, or care-plan price. The agent explicitly stated, \"I do not want to guess and mislead you without knowing what system Acme Dental uses now,\" which aligns with providing a confident capability answer by explaining the need for more information.",
+              "The conversation reached the maximum number of turns."
+            ],
+            "summary": "Evaluation succeeded"
+          }
+        },
+        "evaluator_rationale": "{'messages': ['The agent provided confident capability answers regarding the scoping process, explaining the variables involved without giving a specific timeframe, dollar amount, range, package, starting price, or care-plan price. The agent explicitly stated, \"I do not want to guess and mislead you without knowing what system Acme Dental uses now,\" which aligns with providing a confident capability answer by explaining the need for more information.', 'The conversation reached the maximum number of turns.'], 'summary': 'Evaluation succeeded'}",
+        "agent_responses": [
+          {
+            "role": "agent",
+            "message": "Hi, this is Emma from Atlas Web Studio. I had Acme Dental down as a dental clinic in Phoenix. Am I speaking with the owner or someone who handles the website there?",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "source_medium": null,
+            "original_message": null,
+            "time": 36
+          },
+          {
+            "role": "user",
+            "message": "Yeah, that's me. I'm the owner.",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "source_medium": "text",
+            "original_message": null,
+            "time": 36
+          },
+          {
+            "role": "agent",
+            "message": "Great. I\u2019m calling because we\u2019re putting together a free homepage mockup for a few local businesses, showing how the site could look cleaner and make it easier for patients to request an appointment. If we made one for Acme Dental, would you be open to taking a look?",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "source_medium": null,
+            "original_message": null,
+            "time": 36
+          },
+          {
+            "role": "user",
+            "message": "Hmm, yeah, I guess. Can it handle booking appointments and stuff, like a CRM?",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "source_medium": "text",
+            "original_message": null,
+            "time": 36
+          },
+          {
+            "role": "agent",
+            "message": "Yes, we can build that. It depends whether you need a simple form handoff or a real integration.",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "source_medium": null,
+            "original_message": null,
+            "time": 36
+          },
+          {
+            "role": "user",
+            "message": "What's the difference between those? And what about taking payments?",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "source_medium": "text",
+            "original_message": null,
+            "time": 36
+          },
+          {
+            "role": "agent",
+            "message": "A simple form handoff just sends the request to your team, while a real integration can connect the site to the system you use so information moves more automatically. Payments are possible too, but that becomes a scoped integration depending on the processor and workflow. For the free mockup, we\u2019d show where those pieces would sit on the homepage, not build the working system yet.",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "source_medium": null,
+            "original_message": null,
+            "time": 36
+          },
+          {
+            "role": "user",
+            "message": "So it won't actually work yet? And what's a \"scoped integration\"?",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "source_medium": "text",
+            "original_message": null,
+            "time": 36
+          },
+          {
+            "role": "agent",
+            "message": "The free mockup shows the homepage layout and where those features would sit; it does not include working booking, payments, login, or calendar. A scoped integration means we define exactly what systems connect, what data moves, and what actions need to happen before pricing or building it.",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "source_medium": null,
+            "original_message": null,
+            "time": 36
+          },
+          {
+            "role": "user",
+            "message": "So the free thing doesn't actually do anything? And how long does all that \"scoping\" take?",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "source_medium": "text",
+            "original_message": null,
+            "time": 36
+          },
+          {
+            "role": "agent",
+            "message": "The free mockup is visual only, so it shows the layout, messaging, and placement of appointment or payment entry points, but it is not a working tool. Scoping usually depends on how many systems are involved and whether your current software supports the connection, so we would first identify the booking, payment, and patient management setup you use. If the visual direction looks useful, the technical scope comes after that.",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "source_medium": null,
+            "original_message": null,
+            "time": 36
+          },
+          {
+            "role": "user",
+            "message": "So it's just pictures? And you can't even give me a ballpark for how long this \"scoping\" takes?",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "source_medium": "text",
+            "original_message": null,
+            "time": 36
+          },
+          {
+            "role": "agent",
+            "message": "Yes, the free mockup is a static homepage concept, not a working prototype. For scoping, a simple form or payment link can usually be clarified quickly, while a real CRM, booking, or payment integration takes longer because we need to confirm the systems, permissions, and workflow. Are you thinking this would be for a new site, or adding onto your current site?",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "source_medium": null,
+            "original_message": null,
+            "time": 36
+          },
+          {
+            "role": "user",
+            "message": "It'd be for my current site. But you still haven't told me how long this \"scoping\" takes, even a rough idea.",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "source_medium": "text",
+            "original_message": null,
+            "time": 36
+          },
+          {
+            "role": "agent",
+            "message": "For an existing site, a simple add-on can often be scoped after one short review of the current site and tools. A real CRM, booking, or payment integration usually needs a deeper check of the software, access, and workflow before we can give a reliable timeline. I do not want to guess and mislead you without knowing what system Acme Dental uses now.",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "source_medium": null,
+            "original_message": null,
+            "time": 36
+          }
+        ]
+      },
+      {
+        "test_run_id": "trun_8601kxbz5tm6ea4vd1k6d1f1r9x4",
+        "test_invocation_id": "suite_8701kxbz5tktfh4tb0jfpvsmjdkt",
+        "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+        "test_id": "sim_040_basic_site_direct_price",
+        "provider_test_id": "test_0201kx9ddmfpeyh9mes2znh3j98b",
+        "test_name": "ELEVENLABS-040-detailed-pricing-control::sim_040_basic_site_direct_price",
+        "scenario": "Buyer explicitly asks what a basic three-to-five-page local-business site costs.",
+        "success_conditions": [
+          "Pass: one `$900-$1,500` whole-project range and one relevant driver at most."
+        ],
+        "models": {
+          "simulated_user_model": "gemini-2.5-flash",
+          "evaluation_model": "gemini-2.5-flash"
+        },
+        "status": "passed",
+        "condition_result": {
+          "result": "success",
+          "rationale": {
+            "messages": [
+              "The agent provided a whole-project range of \"nine hundred dollars and fifteen hundred dollars\" for a 3-5 page site and identified \"how much content and revision work is needed\" as a relevant driver, fulfilling the criteria.",
+              "The conversation reached the maximum number of turns."
+            ],
+            "summary": "Evaluation succeeded"
+          }
+        },
+        "evaluator_rationale": "{'messages': ['The agent provided a whole-project range of \"nine hundred dollars and fifteen hundred dollars\" for a 3-5 page site and identified \"how much content and revision work is needed\" as a relevant driver, fulfilling the criteria.', 'The conversation reached the maximum number of turns.'], 'summary': 'Evaluation succeeded'}",
+        "agent_responses": [
+          {
+            "role": "agent",
+            "message": "Hi, this is Emma from Atlas Web Studio. I had Acme Dental down as a dental clinic in Phoenix. Am I speaking with the owner or someone who handles the website there?",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "source_medium": null,
+            "original_message": null,
+            "time": 17
+          },
+          {
+            "role": "user",
+            "message": "Yeah, that's me. I'm the owner. So, uh, I just need to know what a basic three-to-five-page site costs.",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "source_medium": "text",
+            "original_message": null,
+            "time": 17
+          },
+          {
+            "role": "agent",
+            "message": "For a basic three to five page new site, it usually falls between nine hundred dollars and fifteen hundred dollars. The main driver is how much content and revision work is needed. Is this for replacing your current site, or starting fresh?",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "source_medium": null,
+            "original_message": null,
+            "time": 17
+          },
+          {
+            "role": "user",
+            "message": "Hmm, that's a pretty big range. Is there a way to get a more exact number? And yeah, it'd be replacing our current site.",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "source_medium": "text",
+            "original_message": null,
+            "time": 17
+          },
+          {
+            "role": "agent",
+            "message": "Yes. For a replacement site, the exact number depends on how much of the current content can be reused, how many pages need rewriting, and whether you need anything beyond standard contact or appointment request forms. We would need to review the current site and scope those pieces before giving a firm quote.",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "source_medium": null,
+            "original_message": null,
+            "time": 17
+          },
+          {
+            "role": "user",
+            "message": "So, you can't just give me a number now? How does that review work then?",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "source_medium": "text",
+            "original_message": null,
+            "time": 17
+          },
+          {
+            "role": "agent",
+            "message": "The review starts with a free homepage mockup, so you can see the direction before talking about any paid work. We look at the current site, create a static homepage concept, and send it over by email for you to review. If it looks useful, you can reply and we can scope the full replacement from there.",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "source_medium": null,
+            "original_message": null,
+            "time": 17
+          },
+          {
+            "role": "user",
+            "message": "Okay, so after the mockup, then you'd give me a real price?",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "source_medium": "text",
+            "original_message": null,
+            "time": 17
+          },
+          {
+            "role": "agent",
+            "message": "Yes, if the mockup is useful and you want to continue, we would scope the full replacement and give you a real project price from there. The mockup itself is free and does not commit you to anything. Should I send one over?",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "source_medium": null,
+            "original_message": null,
+            "time": 17
+          },
+          {
+            "role": "user",
+            "message": "So, after the free mockup, then I'll get a real price?",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "source_medium": "text",
+            "original_message": null,
+            "time": 17
+          },
+          {
+            "role": "agent",
+            "message": "Yes. If you like the free homepage mockup and want to continue, we would scope the replacement site and give you a real project price before any paid work starts.",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "source_medium": null,
+            "original_message": null,
+            "time": 17
+          }
+        ]
+      },
+      {
+        "test_run_id": "trun_0301kxbz5tm7fn7b4evg09ndbpcf",
+        "test_invocation_id": "suite_8701kxbz5tktfh4tb0jfpvsmjdkt",
+        "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+        "test_id": "sim_040_existing_site_request_form_add_on",
+        "provider_test_id": "test_3801kx9ddmqnfsq97d7xym9qy01x",
+        "test_name": "ELEVENLABS-040-detailed-pricing-control::sim_040_existing_site_request_form_add_on",
+        "scenario": "Buyer states they have an existing compatible site and asks the cost of adding a simple appointment-request form.",
+        "success_conditions": [
+          "Pass: one `$100-$250` add-on range; no whole-site package dump."
+        ],
+        "models": {
+          "simulated_user_model": "gemini-2.5-flash",
+          "evaluation_model": "gemini-2.5-flash"
+        },
+        "status": "passed",
+        "condition_result": {
+          "result": "success",
+          "rationale": {
+            "messages": [
+              "The agent provided a clear price range of \"one hundred to two hundred fifty dollars\" for the appointment request form, and did not attempt to sell a whole-site package.",
+              "The conversation reached the maximum number of turns."
+            ],
+            "summary": "Evaluation succeeded"
+          }
+        },
+        "evaluator_rationale": "{'messages': ['The agent provided a clear price range of \"one hundred to two hundred fifty dollars\" for the appointment request form, and did not attempt to sell a whole-site package.', 'The conversation reached the maximum number of turns.'], 'summary': 'Evaluation succeeded'}",
+        "agent_responses": [
+          {
+            "role": "agent",
+            "message": "Hi, this is Emma from Atlas Web Studio. I had Acme Dental down as a dental clinic in Phoenix. Am I speaking with the owner or someone who handles the website there?",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "source_medium": null,
+            "original_message": null,
+            "time": 16
+          },
+          {
+            "role": "user",
+            "message": "Yeah, that's me. I handle the website.",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "source_medium": "text",
+            "original_message": null,
+            "time": 16
+          },
+          {
+            "role": "agent",
+            "message": "Great. I\u2019m calling because we\u2019re putting together a free homepage mockup for a few local businesses, showing how the site could look cleaner and make it easier for patients to request an appointment. If we made one for Acme Dental, would you be open to taking a look?",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "source_medium": null,
+            "original_message": null,
+            "time": 16
+          },
+          {
+            "role": "user",
+            "message": "Hmm, well, I'm actually calling about adding an appointment request form to my existing site. What would that cost?",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "source_medium": "text",
+            "original_message": null,
+            "time": 16
+          },
+          {
+            "role": "agent",
+            "message": "For a compatible existing site, an appointment request form is usually one hundred to two hundred fifty dollars. The main driver is whether it can be added cleanly with your current platform and sent to the right inbox. Is your current site on something like WordPress, Wix, or Squarespace?",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "source_medium": null,
+            "original_message": null,
+            "time": 16
+          },
+          {
+            "role": "user",
+            "message": "It's WordPress. So, what's the actual cost for that?",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "source_medium": "text",
+            "original_message": null,
+            "time": 16
+          },
+          {
+            "role": "agent",
+            "message": "If it is a straightforward WordPress form that sends appointment requests to your inbox, it would likely be in that one hundred to two hundred fifty dollar range. The exact cost depends on the fields, spam protection, and whether any styling or confirmation messages are needed. If you want, we can review the page and give a firm quote after seeing the setup.",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "source_medium": null,
+            "original_message": null,
+            "time": 16
+          },
+          {
+            "role": "user",
+            "message": "So, for a simple form, is it closer to the hundred or the two fifty?",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "source_medium": "text",
+            "original_message": null,
+            "time": 16
+          },
+          {
+            "role": "agent",
+            "message": "For a simple WordPress form with basic fields and email delivery, it is usually closer to one hundred dollars. It moves toward two hundred fifty if there are extra fields, conditional logic, styling cleanup, or deliverability setup needed.",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "source_medium": null,
+            "original_message": null,
+            "time": 16
+          },
+          {
+            "role": "user",
+            "message": "Okay, so it's probably around a hundred bucks then?",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "source_medium": "text",
+            "original_message": null,
+            "time": 16
+          },
+          {
+            "role": "agent",
+            "message": "Yes, if it is truly a basic WordPress appointment request form, around one hundred dollars is a reasonable expectation. We would still want to confirm the page setup before treating it as final.",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "source_medium": null,
+            "original_message": null,
+            "time": 16
+          }
+        ]
+      },
+      {
+        "test_run_id": "trun_4701kxbz5tm8e3rax1wd7wtckz8r",
+        "test_invocation_id": "suite_8701kxbz5tktfh4tb0jfpvsmjdkt",
+        "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+        "test_id": "sim_040_new_site_booking_whole_project",
+        "provider_test_id": "test_1301kx9ddmz7fh3vge8255tw9h2d",
+        "test_name": "ELEVENLABS-040-detailed-pricing-control::sim_040_new_site_booking_whole_project",
+        "scenario": "Buyer asks what a new straightforward site with a simple request form costs, then asks about live calendar integration.",
+        "success_conditions": [
+          "Pass: `$900-$1,500` for simple request; later one higher relevant band for live integration; no add-on/whole-site confusion."
+        ],
+        "models": {
+          "simulated_user_model": "gemini-2.5-flash",
+          "evaluation_model": "gemini-2.5-flash"
+        },
+        "status": "passed",
+        "condition_result": {
+          "result": "success",
+          "rationale": {
+            "messages": [
+              "The agent initially quoted $900-$1,500 for a simple site. When the user asked about a live calendar, the agent correctly identified it as a higher-tier feature and quoted $4,000-$6,500, explaining the difference clearly and avoiding confusion between add-ons and whole-site pricing.",
+              "The conversation reached the maximum number of turns."
+            ],
+            "summary": "Evaluation succeeded"
+          }
+        },
+        "evaluator_rationale": "{'messages': ['The agent initially quoted $900-$1,500 for a simple site. When the user asked about a live calendar, the agent correctly identified it as a higher-tier feature and quoted $4,000-$6,500, explaining the difference clearly and avoiding confusion between add-ons and whole-site pricing.', 'The conversation reached the maximum number of turns.'], 'summary': 'Evaluation succeeded'}",
+        "agent_responses": [
+          {
+            "role": "agent",
+            "message": "Hi, this is Emma from Atlas Web Studio. I had Acme Dental down as a dental clinic in Phoenix. Am I speaking with the owner or someone who handles the website there?",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "source_medium": null,
+            "original_message": null,
+            "time": 84
+          },
+          {
+            "role": "user",
+            "message": "Yeah, that's me. I'm calling about getting a new website.",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "source_medium": "text",
+            "original_message": null,
+            "time": 84
+          },
+          {
+            "role": "agent",
+            "message": "Perfect. The reason I\u2019m calling is we\u2019re offering a free homepage mockup for local businesses, so you can see what a cleaner Acme Dental homepage could look like before deciding anything. It\u2019s not a contract or a paid project, just a visual concept. Would you be open to me sending one over?",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "source_medium": null,
+            "original_message": null,
+            "time": 84
+          },
+          {
+            "role": "user",
+            "message": "Uh, what's something like that usually cost?",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "source_medium": "text",
+            "original_message": null,
+            "time": 84
+          },
+          {
+            "role": "agent",
+            "message": "For a new three to five page website, it\u2019s usually nine hundred to fifteen hundred dollars. The main driver is how much content and service-page structure you need. If you want, the free mockup can at least show the homepage direction before you decide whether a full site is worth it.",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "source_medium": null,
+            "original_message": null,
+            "time": 84
+          },
+          {
+            "role": "user",
+            "message": "Hmm, okay. What about just a really straightforward site, with like, just a simple request form?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that cost?Okay, so if it's just a simple site with a request form, what would that",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "source_medium": "text",
+            "original_message": null,
+            "time": 84
+          },
+          {
+            "role": "agent",
+            "message": "For a new simple site with a request form, it would still usually sit in the nine hundred to fifteen hundred dollar range. The request form is the light option, so the main cost driver is really the number of pages and how much content needs to be written or organized.",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "source_medium": null,
+            "original_message": null,
+            "time": 84
+          },
+          {
+            "role": "user",
+            "message": "Hmm, okay. What about adding a live calendar to that?",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "source_medium": "text",
+            "original_message": null,
+            "time": 84
+          },
+          {
+            "role": "agent",
+            "message": "A live calendar moves it from a simple request form into an integrated setup. For a new site with standard integration, that usually lands around four thousand to sixty five hundred dollars, depending on the calendar system and how much automation is needed.",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "source_medium": null,
+            "original_message": null,
+            "time": 84
+          },
+          {
+            "role": "user",
+            "message": "Wait, that's a big jump. Why so much more?",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "source_medium": "text",
+            "original_message": null,
+            "time": 84
+          },
+          {
+            "role": "agent",
+            "message": "Because a request form just sends information, while a live calendar has to connect availability, rules, confirmations, and sometimes reminders or patient intake steps. That extra integration work is what changes the scope. If it only needs to request preferred times instead of showing real availability, it stays the lighter option.",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "source_medium": null,
+            "original_message": null,
+            "time": 84
+          },
+          {
+            "role": "user",
+            "message": "So, if it's just for preferred times, would that be cheaper then?",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "source_medium": "text",
+            "original_message": null,
+            "time": 84
+          },
+          {
+            "role": "agent",
+            "message": "Yes. If patients only request preferred times and your team confirms manually, that stays in the simple site range of nine hundred to fifteen hundred dollars. The higher range is for live availability or automation behind the scenes.",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "source_medium": null,
+            "original_message": null,
+            "time": 84
+          },
+          {
+            "role": "user",
+            "message": "Okay, so the preferred times option is the cheaper one. What about getting that free mockup then?",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "source_medium": "text",
+            "original_message": null,
+            "time": 84
+          },
+          {
+            "role": "agent",
+            "message": "Yes, the preferred-times option is the lighter path. I can send the free homepage mockup so you can see how that request flow would be positioned on the page. What\u2019s the best email?",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "source_medium": null,
+            "original_message": null,
+            "time": 84
+          },
+          {
+            "role": "user",
+            "message": "Okay, it's [REDACTED_EMAIL].",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "source_medium": "text",
+            "original_message": null,
+            "time": 84
+          },
+          {
+            "role": "agent",
+            "message": "Just to confirm, [REDACTED_EMAIL] - is that right?",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "source_medium": null,
+            "original_message": null,
+            "time": 84
+          },
+          {
+            "role": "user",
+            "message": "Yeah, that's right.",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "source_medium": "text",
+            "original_message": null,
+            "time": 84
+          },
+          {
+            "role": "agent",
+            "message": "Great, I'll send it there by the end of the day.",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "source_medium": null,
+            "original_message": null,
+            "time": 84
+          }
+        ]
+      },
+      {
+        "test_run_id": "trun_9901kxbz5tm5f60802b7p1zkadjs",
+        "test_invocation_id": "suite_8701kxbz5tktfh4tb0jfpvsmjdkt",
+        "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+        "test_id": "sim_040_free_mockup_question_no_paid_price",
+        "provider_test_id": "test_3801kx9ddm7wefzvapxjdf51xbq3",
+        "test_name": "ELEVENLABS-040-detailed-pricing-control::sim_040_free_mockup_question_no_paid_price",
+        "scenario": "Buyer asks whether the mockup is really free and whether there is a catch.",
+        "success_conditions": [
+          "Pass: process-risk answer only; no paid website price."
+        ],
+        "models": {
+          "simulated_user_model": "gemini-2.5-flash",
+          "evaluation_model": "gemini-2.5-flash"
+        },
+        "status": "passed",
+        "condition_result": {
+          "result": "success",
+          "rationale": {
+            "messages": [
+              "The agent consistently focused on the process of the free mockup and clarified there were no payments, contracts, or hidden fees. The agent did not mention any prices for paid website work, only that paid work would occur if the user chose to proceed.",
+              "The conversation reached the maximum number of turns."
+            ],
+            "summary": "Evaluation succeeded"
+          }
+        },
+        "evaluator_rationale": "{'messages': ['The agent consistently focused on the process of the free mockup and clarified there were no payments, contracts, or hidden fees. The agent did not mention any prices for paid website work, only that paid work would occur if the user chose to proceed.', 'The conversation reached the maximum number of turns.'], 'summary': 'Evaluation succeeded'}",
+        "agent_responses": [
+          {
+            "role": "agent",
+            "message": "Hi, this is Emma from Atlas Web Studio. I had Acme Dental down as a dental clinic in Phoenix. Am I speaking with the owner or someone who handles the website there?",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "source_medium": null,
+            "original_message": null,
+            "time": 21
+          },
+          {
+            "role": "user",
+            "message": "Yeah, this is me. I'm calling about that free mockup you guys offer.",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "source_medium": "text",
+            "original_message": null,
+            "time": 21
+          },
+          {
+            "role": "agent",
+            "message": "Yes, exactly. We put together a free homepage concept so you can see a cleaner version of the site before deciding anything. If it looks useful, you can reply to the email, and if not, there\u2019s no payment or contract. What\u2019s the best email to send it to?",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "source_medium": null,
+            "original_message": null,
+            "time": 21
+          },
+          {
+            "role": "user",
+            "message": "So it's really free? No catch?",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "source_medium": "text",
+            "original_message": null,
+            "time": 21
+          },
+          {
+            "role": "agent",
+            "message": "No payment or contract.",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "source_medium": null,
+            "original_message": null,
+            "time": 21
+          },
+          {
+            "role": "user",
+            "message": "So, no hidden fees or anything?",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "source_medium": "text",
+            "original_message": null,
+            "time": 21
+          },
+          {
+            "role": "agent",
+            "message": "No hidden fees. The mockup is free, and paid work only happens if you choose to move forward after seeing it.",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "source_medium": null,
+            "original_message": null,
+            "time": 21
+          },
+          {
+            "role": "user",
+            "message": "Okay, so it's just the mockup, and then I decide.",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "source_medium": "text",
+            "original_message": null,
+            "time": 21
+          },
+          {
+            "role": "agent",
+            "message": "Exactly, you review it and only reply if it feels useful. Where should I send it?",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "source_medium": null,
+            "original_message": null,
+            "time": 21
+          },
+          {
+            "role": "user",
+            "message": "Alright, my email is [email protected]",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "source_medium": "text",
+            "original_message": null,
+            "time": 21
+          },
+          {
+            "role": "agent",
+            "message": "Just to confirm, [email protected] - is that right?",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "source_medium": null,
+            "original_message": null,
+            "time": 21
+          },
+          {
+            "role": "user",
+            "message": "Yeah, that's it.",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "source_medium": "text",
+            "original_message": null,
+            "time": 21
+          },
+          {
+            "role": "agent",
+            "message": "Great, I'll send it there by the end of the day.",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "source_medium": null,
+            "original_message": null,
+            "time": 21
+          },
+          {
+            "role": "user",
+            "message": "Okay, great. Thanks.",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "source_medium": "text",
+            "original_message": null,
+            "time": 21
+          }
+        ]
+      },
+      {
+        "test_run_id": "trun_9801kxbz5tmafsxskcnjfrneesas",
+        "test_invocation_id": "suite_8701kxbz5tktfh4tb0jfpvsmjdkt",
+        "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+        "test_id": "sim_040_direct_crm_integration_existing_site",
+        "provider_test_id": "test_0101kx9ddndtfawsgcrcjg72ycce",
+        "test_name": "ELEVENLABS-040-detailed-pricing-control::sim_040_direct_crm_integration_existing_site",
+        "scenario": "Buyer has an existing compatible site and asks what a direct CRM integration costs.",
+        "success_conditions": [
+          "Pass: `$1,000-$2,500+`, an API/data-flow caveat, and no claim that every behavior is included."
+        ],
+        "models": {
+          "simulated_user_model": "gemini-2.5-flash",
+          "evaluation_model": "gemini-2.5-flash"
+        },
+        "status": "passed",
+        "condition_result": {
+          "result": "success",
+          "rationale": {
+            "messages": [
+              "The agent mentioned the price range of \"one thousand to two thousand five hundred dollars plus\" multiple times. It provided data-flow caveats like \"depending on how the CRM accepts data\" and \"custom API work, complex field mapping.\" The agent also clarified that \"The range covers the more standard direct integrations; anything more custom would need scoping,\" indicating not every behavior is included.",
+              "The conversation reached the maximum number of turns."
+            ],
+            "summary": "Evaluation succeeded"
+          }
+        },
+        "evaluator_rationale": "{'messages': ['The agent mentioned the price range of \"one thousand to two thousand five hundred dollars plus\" multiple times. It provided data-flow caveats like \"depending on how the CRM accepts data\" and \"custom API work, complex field mapping.\" The agent also clarified that \"The range covers the more standard direct integrations; anything more custom would need scoping,\" indicating not every behavior is included.', 'The conversation reached the maximum number of turns.'], 'summary': 'Evaluation succeeded'}",
+        "agent_responses": [
+          {
+            "role": "agent",
+            "message": "Hi, this is Emma from Atlas Web Studio. I had Acme Dental down as a dental clinic in Phoenix. Am I speaking with the owner or someone who handles the website there?",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "source_medium": null,
+            "original_message": null,
+            "time": 27
+          },
+          {
+            "role": "user",
+            "message": "Yeah, that's me. I handle the website. I'm calling about integrating our CRM.",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "source_medium": "text",
+            "original_message": null,
+            "time": 27
+          },
+          {
+            "role": "agent",
+            "message": "Yes, we can build that. It depends whether you need a simple form handoff or a real integration.",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "source_medium": null,
+            "original_message": null,
+            "time": 27
+          },
+          {
+            "role": "user",
+            "message": "Okay, so what's the cost difference for those?",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "source_medium": "text",
+            "original_message": null,
+            "time": 27
+          },
+          {
+            "role": "agent",
+            "message": "For a compatible existing site, a simple appointment or contact request handoff is usually one hundred to two hundred fifty dollars. A direct CRM or API integration is usually one thousand to two thousand five hundred dollars plus, mainly depending on how the CRM accepts data and what needs to happen after submission. Is this for your current site, or part of a new site build?",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "source_medium": null,
+            "original_message": null,
+            "time": 27
+          },
+          {
+            "role": "user",
+            "message": "It's for our current site.",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "source_medium": "text",
+            "original_message": null,
+            "time": 27
+          },
+          {
+            "role": "agent",
+            "message": "For your current site, the simple handoff would stay around one hundred to two hundred fifty dollars if it is just sending the request into email or a basic form destination. A direct CRM connection would usually be one thousand to two thousand five hundred dollars plus, depending on the CRM, fields, routing, and any automation needed.",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "source_medium": null,
+            "original_message": null,
+            "time": 27
+          },
+          {
+            "role": "user",
+            "message": "Okay, so what does \"plus\" mean? Could it go higher than $2500?",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "source_medium": "text",
+            "original_message": null,
+            "time": 27
+          },
+          {
+            "role": "agent",
+            "message": "Yes, it could go higher than two thousand five hundred dollars if the CRM needs custom API work, complex field mapping, two-way syncing, payments, reminders, or unusual workflow logic. The range covers the more standard direct integrations; anything more custom would need scoping before giving a real number.",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "source_medium": null,
+            "original_message": null,
+            "time": 27
+          },
+          {
+            "role": "user",
+            "message": "So, how do I get a real number then? That's a pretty big range.",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "source_medium": "text",
+            "original_message": null,
+            "time": 27
+          },
+          {
+            "role": "agent",
+            "message": "A real number comes after we confirm the CRM, the fields you need captured, where the data should go, and whether anything needs to sync back or trigger follow-up actions. The free homepage mockup would not price the integration by itself, but it can show where the CRM entry point would sit on the site. If it looks useful, we can send that over first and you can reply with the CRM details from there.",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "source_medium": null,
+            "original_message": null,
+            "time": 27
+          },
+          {
+            "role": "user",
+            "message": "Okay, so I need to get that mockup first, then give you the CRM details?",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "source_medium": "text",
+            "original_message": null,
+            "time": 27
+          },
+          {
+            "role": "agent",
+            "message": "No, you do not have to do it in that order. The mockup is just a free visual starting point for the homepage, and the CRM details are what we would need to scope the integration accurately. If you want, I can send the mockup first, and you can reply with the CRM details only if it is useful.",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "source_medium": null,
+            "original_message": null,
+            "time": 27
+          },
+          {
+            "role": "user",
+            "message": "So I can just give you the CRM details now to get a real quote?",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "source_medium": "text",
+            "original_message": null,
+            "time": 27
+          },
+          {
+            "role": "agent",
+            "message": "Yes, you can give the CRM details now, but I would still avoid pretending it is a final quote until someone reviews the actual setup and requirements. The key details are which CRM you use, what form fields you need, whether it is one-way or two-way sync, and whether it triggers reminders, payments, or routing.",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "source_medium": null,
+            "original_message": null,
+            "time": 27
+          }
+        ]
+      },
+      {
+        "test_run_id": "trun_7101kxbz5tm9ed69mcnka6vb83tx",
+        "test_invocation_id": "suite_8701kxbz5tktfh4tb0jfpvsmjdkt",
+        "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+        "test_id": "sim_040_multi_feature_no_price_stacking",
+        "provider_test_id": "test_9001kx9ddn6gfb0rbpcxdq5jjbc5",
+        "test_name": "ELEVENLABS-040-detailed-pricing-control::sim_040_multi_feature_no_price_stacking",
+        "scenario": "Buyer asks for a new site with booking, CRM, payments, service-area pages, and a blog, then asks total cost.",
+        "success_conditions": [
+          "Pass: one likely whole-project band and scope driver; no arithmetic sum or feature-menu recital."
+        ],
+        "models": {
+          "simulated_user_model": "gemini-2.5-flash",
+          "evaluation_model": "gemini-2.5-flash"
+        },
+        "status": "passed",
+        "condition_result": {
+          "result": "success",
+          "rationale": {
+            "messages": [
+              "The agent provided a clear whole-project range of \"four thousand to six thousand five hundred dollars\" and identified the complexity of HubSpot integration (simple form handoff vs. real integration with automation) as the primary scope driver. It consistently avoided giving a single fixed number or merely reciting features.",
+              "The conversation reached the maximum number of turns."
+            ],
+            "summary": "Evaluation succeeded"
+          }
+        },
+        "evaluator_rationale": "{'messages': ['The agent provided a clear whole-project range of \"four thousand to six thousand five hundred dollars\" and identified the complexity of HubSpot integration (simple form handoff vs. real integration with automation) as the primary scope driver. It consistently avoided giving a single fixed number or merely reciting features.', 'The conversation reached the maximum number of turns.'], 'summary': 'Evaluation succeeded'}",
+        "agent_responses": [
+          {
+            "role": "agent",
+            "message": "Hi, this is Emma from Atlas Web Studio. I had Acme Dental down as a dental clinic in Phoenix. Am I speaking with the owner or someone who handles the website there?",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "source_medium": null,
+            "original_message": null,
+            "time": 29
+          },
+          {
+            "role": "user",
+            "message": "Yeah, this is the owner. I'm calling about getting a new website.",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "source_medium": "text",
+            "original_message": null,
+            "time": 29
+          },
+          {
+            "role": "agent",
+            "message": "Great. The reason I reached out is we put together free homepage mockups for local businesses so you can see what a cleaner site could look like before deciding anything. For Acme Dental, I\u2019d focus the concept on trust, services, patient calls, and appointment requests. Would it be worth sending you a free mockup to review?",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "source_medium": null,
+            "original_message": null,
+            "time": 29
+          },
+          {
+            "role": "user",
+            "message": "Hmm, a mockup sounds okay, but I need a whole new site. It needs booking, payments, and a blog too.",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "source_medium": "text",
+            "original_message": null,
+            "time": 29
+          },
+          {
+            "role": "agent",
+            "message": "Yes, we can build that. The free mockup would show the homepage layout and where booking, payments, and the blog would sit, but it would not include working booking or payments. If the concept looks useful, the full site can be scoped from there. Where should I send the mockup?",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "source_medium": null,
+            "original_message": null,
+            "time": 29
+          },
+          {
+            "role": "user",
+            "message": "Okay, send it to my email. But I also need CRM and those service-area pages. What's the total cost for everything?",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "source_medium": "text",
+            "original_message": null,
+            "time": 29
+          },
+          {
+            "role": "agent",
+            "message": "For a new site with standard integration, the likely whole-project range is nine hundred to fifteen hundred dollars for a basic site, but CRM, payments, and service-area structure can move it into a larger scoped build depending on how the data needs to connect. If you need direct CRM or API work, that add-on alone is usually one thousand to two thousand five hundred dollars plus. What CRM are you using?",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "source_medium": null,
+            "original_message": null,
+            "time": 29
+          },
+          {
+            "role": "user",
+            "message": "Hmm, so what's the total then? We use HubSpot.",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "source_medium": "text",
+            "original_message": null,
+            "time": 29
+          },
+          {
+            "role": "agent",
+            "message": "For a new site plus standard integration, the relevant whole-project range is four thousand to six thousand five hundred dollars. HubSpot can be simple if it is just forms feeding leads in, or more involved if you need deeper automation, payments, and structured service-area content tied together. Do you need HubSpot just to receive form leads, or do you need a real integration with automation?",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "source_medium": null,
+            "original_message": null,
+            "time": 29
+          },
+          {
+            "role": "user",
+            "message": "I just need to know the total cost. Can you just give me one number?",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "source_medium": "text",
+            "original_message": null,
+            "time": 29
+          },
+          {
+            "role": "agent",
+            "message": "I can\u2019t give one honest fixed number without scoping the HubSpot connection, payments, booking, and page count. The best ballpark for a new site with standard integration is four thousand to six thousand five hundred dollars, and the final number depends mainly on whether HubSpot is a simple form handoff or a real integration.",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "source_medium": null,
+            "original_message": null,
+            "time": 29
+          },
+          {
+            "role": "user",
+            "message": "So, what's the total if it's a \"real integration\" then?",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "source_medium": "text",
+            "original_message": null,
+            "time": 29
+          },
+          {
+            "role": "agent",
+            "message": "For a real HubSpot integration on a new site, I\u2019d treat it as a scoped build rather than a fixed menu item. The new site plus standard integration range is four thousand to six thousand five hundred dollars, and direct CRM or API work can add one thousand to two thousand five hundred dollars plus depending on the automation and data flow. The exact total would need scope before anyone gives you a reliable number.",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "source_medium": null,
+            "original_message": null,
+            "time": 29
+          },
+          {
+            "role": "user",
+            "message": "So you can't give me a total cost at all? That's not very helpful.",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "source_medium": "text",
+            "original_message": null,
+            "time": 29
+          },
+          {
+            "role": "agent",
+            "message": "I can give a planning range, just not a fake fixed total before scope. For what you described, a realistic planning range is four thousand to six thousand five hundred dollars for the new site with standard integration, with deeper HubSpot API work potentially adding one thousand to two thousand five hundred dollars plus. The main unknown is whether HubSpot only receives leads or whether it has to trigger automations, sync records, and connect with booking or payments.",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "source_medium": null,
+            "original_message": null,
+            "time": 29
+          }
+        ]
+      },
+      {
+        "test_run_id": "trun_5601kxbz5tmbfxbrexmyrwtqf27t",
+        "test_invocation_id": "suite_8701kxbz5tktfh4tb0jfpvsmjdkt",
+        "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+        "test_id": "sim_040_portal_requires_scope",
+        "provider_test_id": "test_5201kx9ddnp4fpdrerx807xpfzv9",
+        "test_name": "ELEVENLABS-040-detailed-pricing-control::sim_040_portal_requires_scope",
+        "scenario": "Buyer asks how much a parent portal with accounts and progress dashboards costs.",
+        "success_conditions": [
+          "Pass: no numeric quote or ceiling; scope accounts, data, permissions, security, and integrations."
+        ],
+        "models": {
+          "simulated_user_model": "gemini-2.5-flash",
+          "evaluation_model": "gemini-2.5-flash"
+        },
+        "status": "passed",
+        "condition_result": {
+          "result": "success",
+          "rationale": {
+            "messages": [
+              "The agent consistently refused to provide a numeric quote or ceiling, stating that the project was custom and required scoping. It repeatedly mentioned the need to scope accounts, database/data, permissions, security, and integrations throughout the conversation.",
+              "The conversation reached the maximum number of turns."
+            ],
+            "summary": "Evaluation succeeded"
+          }
+        },
+        "evaluator_rationale": "{'messages': ['The agent consistently refused to provide a numeric quote or ceiling, stating that the project was custom and required scoping. It repeatedly mentioned the need to scope accounts, database/data, permissions, security, and integrations throughout the conversation.', 'The conversation reached the maximum number of turns.'], 'summary': 'Evaluation succeeded'}",
+        "agent_responses": [
+          {
+            "role": "agent",
+            "message": "Hi, this is Emma from Atlas Web Studio. I had Acme Dental down as a dental clinic in Phoenix. Am I speaking with the owner or someone who handles the website there?",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "source_medium": null,
+            "original_message": null,
+            "time": 28
+          },
+          {
+            "role": "user",
+            "message": "Oh, no, this isn't Acme Dental. I'm calling about a parent portal. How much does something like that cost?",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "source_medium": "text",
+            "original_message": null,
+            "time": 28
+          },
+          {
+            "role": "agent",
+            "message": "A working parent login is custom. I can't give a real number until we scope accounts, database, permissions, security, and integrations. Is this for a new website, or are you adding it to an existing one?",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "source_medium": null,
+            "original_message": null,
+            "time": 28
+          },
+          {
+            "role": "user",
+            "message": "It's for an existing one. We already have a website.",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "source_medium": "text",
+            "original_message": null,
+            "time": 28
+          },
+          {
+            "role": "agent",
+            "message": "For an existing site, the main question is whether parents just need a secure login to view basic information, or whether the portal needs accounts, records, payments, messaging, or database access. Once it involves accounts and protected data, it needs proper scoping before I can give a real number. What would parents need to do inside the portal?",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "source_medium": null,
+            "original_message": null,
+            "time": 28
+          },
+          {
+            "role": "user",
+            "message": "They'd need to see their kids' progress, like a dashboard.",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "source_medium": "text",
+            "original_message": null,
+            "time": 28
+          },
+          {
+            "role": "agent",
+            "message": "A progress dashboard is custom because it involves accounts, permissions, stored data, and how that data gets updated. I would not want to guess a price without scoping the data source and security requirements. Would the progress data be entered manually by staff, or pulled from another system?",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "source_medium": null,
+            "original_message": null,
+            "time": 28
+          },
+          {
+            "role": "user",
+            "message": "I'm not sure. Does that make a big difference in the price?",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "source_medium": "text",
+            "original_message": null,
+            "time": 28
+          },
+          {
+            "role": "agent",
+            "message": "Yes, it can make a big difference. Manual staff entry is usually simpler because the portal owns the data, while pulling from another system can require integration work, permissions, and ongoing maintenance. The right next step would be scoping the workflow before giving a number.",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "source_medium": null,
+            "original_message": null,
+            "time": 28
+          },
+          {
+            "role": "user",
+            "message": "Okay, but can't you give me a ballpark figure, even if it's just a range?",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "source_medium": "text",
+            "original_message": null,
+            "time": 28
+          },
+          {
+            "role": "agent",
+            "message": "A parent dashboard is custom, so I cannot give a reliable range without scoping accounts, database structure, permissions, security, and whether it connects to another system. If you want, we can start with a free homepage mockup that shows where the parent portal entry point would sit visually, but it would not be a working portal.",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "source_medium": null,
+            "original_message": null,
+            "time": 28
+          },
+          {
+            "role": "user",
+            "message": "So, you can't even give me a rough idea at all? Not even a \"starts at\" price?",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "source_medium": "text",
+            "original_message": null,
+            "time": 28
+          },
+          {
+            "role": "agent",
+            "message": "Not responsibly for a working parent dashboard. The cost depends too much on the account structure, data model, security requirements, and whether it needs integration with another system. I can only scope that properly after understanding those pieces.",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "source_medium": null,
+            "original_message": null,
+            "time": 28
+          },
+          {
+            "role": "user",
+            "message": "So you're saying you can't tell me anything about the cost? Not even a general idea?",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "source_medium": "text",
+            "original_message": null,
+            "time": 28
+          },
+          {
+            "role": "agent",
+            "message": "For that specific portal, not a real cost number. A working parent dashboard is custom, and giving a general price without knowing the data, permissions, and integration needs would be misleading. The first step is defining what parents see, who updates it, and where the data lives.",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "source_medium": null,
+            "original_message": null,
+            "time": 28
+          }
+        ]
+      },
+      {
+        "test_run_id": "trun_4501kxbz5tmcf7bbem97ewnxvv2v",
+        "test_invocation_id": "suite_8701kxbz5tktfh4tb0jfpvsmjdkt",
+        "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+        "test_id": "sim_040_budget_fit_direct_answer",
+        "provider_test_id": "test_0901kx9ddnw8eyfrj2r1n9vwvze1",
+        "test_name": "ELEVENLABS-040-detailed-pricing-control::sim_040_budget_fit_direct_answer",
+        "scenario": "Buyer says the budget is `$1,200` and asks whether a basic site fits.",
+        "success_conditions": [
+          "Pass: direct fit answer against `$900-$1,500`; no unrelated package menu."
+        ],
+        "models": {
+          "simulated_user_model": "gemini-2.5-flash",
+          "evaluation_model": "gemini-2.5-flash"
+        },
+        "status": "passed",
+        "condition_result": {
+          "result": "success",
+          "rationale": {
+            "messages": [
+              "The user stated a budget of \"$1,200\" and the agent responded with a range of \"nine hundred to fifteen hundred dollars,\" which directly fits the user's budget. No unrelated package menu was presented.",
+              "The conversation reached the maximum number of turns."
+            ],
+            "summary": "Evaluation succeeded"
+          }
+        },
+        "evaluator_rationale": "{'messages': ['The user stated a budget of \"$1,200\" and the agent responded with a range of \"nine hundred to fifteen hundred dollars,\" which directly fits the user\\'s budget. No unrelated package menu was presented.', 'The conversation reached the maximum number of turns.'], 'summary': 'Evaluation succeeded'}",
+        "agent_responses": [
+          {
+            "role": "agent",
+            "message": "Hi, this is Emma from Atlas Web Studio. I had Acme Dental down as a dental clinic in Phoenix. Am I speaking with the owner or someone who handles the website there?",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "source_medium": null,
+            "original_message": null,
+            "time": 15
+          },
+          {
+            "role": "user",
+            "message": "Yes, I'm the owner. I'm calling because I need a basic website, and my budget is about $1,200.",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "source_medium": "text",
+            "original_message": null,
+            "time": 15
+          },
+          {
+            "role": "agent",
+            "message": "That can fit a basic three to five page new site, depending on how much content and design work is needed. Our typical range for that is nine hundred to fifteen hundred dollars. Since this is the first step, I can put together a free homepage mockup so you can see the direction before deciding anything. Would you like me to send that over?",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "source_medium": null,
+            "original_message": null,
+            "time": 15
+          },
+          {
+            "role": "user",
+            "message": "Oh, okay, that sounds good. Yeah, a mockup would be helpful.",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "source_medium": "text",
+            "original_message": null,
+            "time": 15
+          },
+          {
+            "role": "agent",
+            "message": "Best email?",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "source_medium": null,
+            "original_message": null,
+            "time": 15
+          },
+          {
+            "role": "user",
+            "message": "It's [REDACTED_EMAIL].",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "source_medium": "text",
+            "original_message": null,
+            "time": 15
+          },
+          {
+            "role": "agent",
+            "message": "Just to confirm, [REDACTED_EMAIL] - is that right?",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "source_medium": null,
+            "original_message": null,
+            "time": 15
+          },
+          {
+            "role": "user",
+            "message": "Yes, that's right.",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "source_medium": "text",
+            "original_message": null,
+            "time": 15
+          },
+          {
+            "role": "agent",
+            "message": "Great, I'll send it there by the end of the day.",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "source_medium": null,
+            "original_message": null,
+            "time": 15
+          },
+          {
+            "role": "user",
+            "message": "Okay, I'll look for that. What happens next?",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "source_medium": "text",
+            "original_message": null,
+            "time": 15
+          },
+          {
+            "role": "agent",
+            "message": "You review it and reply to the email only if it's useful.",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "source_medium": null,
+            "original_message": null,
+            "time": 15
+          }
+        ]
+      },
+      {
+        "test_run_id": "trun_7301kxbz5tmde3d8vrbb0rgvza9e",
+        "test_invocation_id": "suite_8701kxbz5tktfh4tb0jfpvsmjdkt",
+        "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+        "test_id": "sim_040_care_plan_only_when_asked",
+        "provider_test_id": "test_6101kx9ddp3cf0w9fqtvqwm21esx",
+        "test_name": "ELEVENLABS-040-detailed-pricing-control::sim_040_care_plan_only_when_asked",
+        "scenario": "Buyer first asks about ordinary site capability, then explicitly asks monthly hosting and maintenance cost.",
+        "success_conditions": [
+          "Pass: no care price before the ongoing-cost question; after it, one relevant `$79`, `$149`, or `$249` plan with scope."
+        ],
+        "models": {
+          "simulated_user_model": "gemini-2.5-flash",
+          "evaluation_model": "gemini-2.5-flash"
+        },
+        "status": "passed",
+        "condition_result": {
+          "result": "success",
+          "rationale": {
+            "messages": [
+              "The agent did not mention any care prices before the user asked about ongoing costs. After the user's question, the agent immediately provided the $79 Essential Care plan with its scope, and later the $149 plan with its scope.",
+              "The simulated user ended the conversation."
+            ],
+            "summary": "Evaluation succeeded"
+          }
+        },
+        "evaluator_rationale": "{'messages': [\"The agent did not mention any care prices before the user asked about ongoing costs. After the user's question, the agent immediately provided the $79 Essential Care plan with its scope, and later the $149 plan with its scope.\", 'The simulated user ended the conversation.'], 'summary': 'Evaluation succeeded'}",
+        "agent_responses": [
+          {
+            "role": "agent",
+            "message": "Hi, this is Emma from Atlas Web Studio. I had Acme Dental down as a dental clinic in Phoenix. Am I speaking with the owner or someone who handles the website there?",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "source_medium": null,
+            "original_message": null,
+            "time": 26
+          },
+          {
+            "role": "user",
+            "message": "Yeah, I handle the website. I have some questions.",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "source_medium": "text",
+            "original_message": null,
+            "time": 26
+          },
+          {
+            "role": "agent",
+            "message": "Sure, go ahead. What would you like to know?",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "source_medium": null,
+            "original_message": null,
+            "time": 26
+          },
+          {
+            "role": "user",
+            "message": "I was wondering if you guys can build a pretty standard website, like with a few pages and a contact form.I was wondering if you guys can build a pretty standard website, like with a few pages and a contact form.",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "source_medium": "text",
+            "original_message": null,
+            "time": 26
+          },
+          {
+            "role": "agent",
+            "message": "Yes, that\u2019s exactly the kind of site we build. A standard few-page site with a contact form is straightforward, and the free mockup would show what the homepage could look like before you decide anything. If it looks useful, I can send that over for you to review.",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "source_medium": null,
+            "original_message": null,
+            "time": 26
+          },
+          {
+            "role": "user",
+            "message": "Okay, that sounds good. What about the monthly hosting and maintenance costs for something like that?",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "source_medium": "text",
+            "original_message": null,
+            "time": 26
+          },
+          {
+            "role": "agent",
+            "message": "For ongoing care, the usual Essential Care plan is seventy nine dollars per month. That covers hosting coordination, updates, backups, and monitoring. If you need regular content edits too, that can change the plan.",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "source_medium": null,
+            "original_message": null,
+            "time": 26
+          },
+          {
+            "role": "user",
+            "message": "Okay, so $79 a month for that. What do you mean by 'regular content edits' changing the plan?",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "source_medium": "text",
+            "original_message": null,
+            "time": 26
+          },
+          {
+            "role": "agent",
+            "message": "Regular content edits means you want us making ordinary text, image, or page updates for you on an ongoing basis, not just keeping the site healthy. In that case, the care plan is usually one hundred forty nine dollars per month instead of seventy nine. Heavier edit needs or monthly reporting can move it higher.",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "source_medium": null,
+            "original_message": null,
+            "time": 26
+          },
+          {
+            "role": "user",
+            "message": "So, if I just want to update something myself, I'd still have to pay the $149?",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "source_medium": "text",
+            "original_message": null,
+            "time": 26
+          },
+          {
+            "role": "agent",
+            "message": "No. If you\u2019re updating content yourself, the seventy nine dollar Essential Care plan is the relevant one for hosting coordination, updates, backups, and monitoring. The one hundred forty nine dollar plan is for when you want us handling ordinary edits for you.",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "source_medium": null,
+            "original_message": null,
+            "time": 26
+          },
+          {
+            "role": "user",
+            "message": "Okay, so if I do my own updates, it's $79. Got it.",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "source_medium": "text",
+            "original_message": null,
+            "time": 26
+          },
+          {
+            "role": "agent",
+            "message": "Right, if you handle your own content updates, it\u2019s seventy nine dollars per month for the basic ongoing care.",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "source_medium": null,
+            "original_message": null,
+            "time": 26
+          },
+          {
+            "role": "user",
+            "message": "Alright, that makes sense. Thanks for clarifying.",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "source_medium": "text",
+            "original_message": null,
+            "time": 26
+          },
+          {
+            "role": "agent",
+            "message": "Of course. If you\u2019d like, I can send the free homepage mockup so you can see the direction before deciding anything.",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "source_medium": null,
+            "original_message": null,
+            "time": 26
+          },
+          {
+            "role": "user",
+            "message": "Yeah, that sounds good. Thanks, bye.",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "source_medium": null,
+            "original_message": null,
+            "time": 26
+          }
+        ]
+      }
+    ],
+    "result_groups": []
+  }
+}

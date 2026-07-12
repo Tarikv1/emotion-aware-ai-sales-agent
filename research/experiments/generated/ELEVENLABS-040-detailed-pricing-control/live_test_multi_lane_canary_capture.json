@@ -1,0 +1,192 @@
+{
+  "captured_at_utc": "2026-07-12T17:42:24Z",
+  "payload_sha256": "d91eeec2338017c1eb1ae7f8b05167f3b43a6a4275e79b265aab243f047c3f4e",
+  "payload": {
+    "checkpoint_id": "ELEVENLABS-040-detailed-pricing-control",
+    "invocation_id": "suite_2901kxbppxgterc92g5by0f83s8p",
+    "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+    "test_runs": [
+      {
+        "test_run_id": "trun_9801kxbppxgve07a9706c0xcj0dj",
+        "test_invocation_id": "suite_2901kxbppxgterc92g5by0f83s8p",
+        "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+        "test_id": "sim_040_multi_feature_no_price_stacking",
+        "provider_test_id": "test_9001kx9ddn6gfb0rbpcxdq5jjbc5",
+        "test_name": "ELEVENLABS-040-detailed-pricing-control::sim_040_multi_feature_no_price_stacking",
+        "scenario": "Buyer asks for a new site with booking, CRM, payments, service-area pages, and a blog, then asks total cost.",
+        "success_conditions": [
+          "Pass: one likely whole-project band and scope driver; no arithmetic sum or feature-menu recital."
+        ],
+        "models": {
+          "simulated_user_model": "gemini-2.5-flash",
+          "evaluation_model": "gemini-2.5-flash"
+        },
+        "status": "passed",
+        "condition_result": {
+          "result": "success",
+          "rationale": {
+            "messages": [
+              "The agent provided a likely whole-project band (\"four thousand to six thousand five hundred dollars\") and identified a clear scope driver (\"whether booking, payments, and CRM are simple embedded tools or direct integrations\"). It avoided an arithmetic sum or a feature-menu recital, instead focusing on the impact of integration complexity on the overall cost.",
+              "The conversation reached the maximum number of turns."
+            ],
+            "summary": "Evaluation succeeded"
+          }
+        },
+        "evaluator_rationale": "{'messages': ['The agent provided a likely whole-project band (\"four thousand to six thousand five hundred dollars\") and identified a clear scope driver (\"whether booking, payments, and CRM are simple embedded tools or direct integrations\"). It avoided an arithmetic sum or a feature-menu recital, instead focusing on the impact of integration complexity on the overall cost.', 'The conversation reached the maximum number of turns.'], 'summary': 'Evaluation succeeded'}",
+        "agent_responses": [
+          {
+            "source_medium": null,
+            "tool_calls": [],
+            "original_message": null,
+            "role": "agent",
+            "tool_results": [],
+            "time": 36,
+            "interrupted": false,
+            "message": "Hi, this is Emma from Atlas Web Studio. I had Acme Dental down as a dental clinic in Phoenix. Am I speaking with the owner or someone who handles the website there?"
+          },
+          {
+            "source_medium": "text",
+            "tool_calls": [],
+            "original_message": null,
+            "role": "user",
+            "tool_results": [],
+            "time": 36,
+            "interrupted": false,
+            "message": "Yeah, this is [my name]. I'm the owner. I called about getting a new website."
+          },
+          {
+            "source_medium": null,
+            "tool_calls": [],
+            "original_message": null,
+            "role": "agent",
+            "tool_results": [],
+            "time": 36,
+            "interrupted": false,
+            "message": "Great, thanks. We help local businesses get a cleaner homepage direction before asking them to commit to anything. I can put together a free homepage mockup for Acme Dental so you can see what we\u2019d change visually, and if it\u2019s useful, you can reply from there. Would you like me to send that over?"
+          },
+          {
+            "source_medium": "text",
+            "tool_calls": [],
+            "original_message": null,
+            "role": "user",
+            "tool_results": [],
+            "time": 36,
+            "interrupted": false,
+            "message": "I need a whole new site, not just a homepage. I'm looking for booking, CRM, payments, service area pages, and a blog."
+          },
+          {
+            "source_medium": null,
+            "tool_calls": [],
+            "original_message": null,
+            "role": "agent",
+            "tool_results": [],
+            "time": 36,
+            "interrupted": false,
+            "message": "That makes sense. The free mockup is just the homepage concept, so it would show the layout and where booking, payments, service areas, and blog entry points would sit, not the working systems behind them. For a full site like that, we\u2019d usually start by showing the homepage direction first so you can decide if the style and structure feel right before scoping the build."
+          },
+          {
+            "source_medium": "text",
+            "tool_calls": [],
+            "original_message": null,
+            "role": "user",
+            "tool_results": [],
+            "time": 36,
+            "interrupted": false,
+            "message": "Okay, I get that. So what's the total cost for the whole site with all those features?"
+          },
+          {
+            "source_medium": null,
+            "tool_calls": [],
+            "original_message": null,
+            "role": "agent",
+            "tool_results": [],
+            "time": 36,
+            "interrupted": false,
+            "message": "For a new site with standard integration, the likely whole-project range is four thousand to six thousand five hundred dollars. The biggest driver is whether booking, payments, and CRM are simple embedded tools or direct integrations that move data automatically. Are you looking for those tools to connect directly to a CRM, or just link out and collect requests?"
+          },
+          {
+            "source_medium": "text",
+            "tool_calls": [],
+            "original_message": null,
+            "role": "user",
+            "tool_results": [],
+            "time": 36,
+            "interrupted": false,
+            "message": "I just want it to work smoothly for my patients and my staff. What's the best way for a dental office?"
+          },
+          {
+            "source_medium": null,
+            "tool_calls": [],
+            "original_message": null,
+            "role": "agent",
+            "tool_results": [],
+            "time": 36,
+            "interrupted": false,
+            "message": "For a dental office, the smoothest setup is usually a clear appointment request flow that routes to your staff, plus simple payment or deposit handling only if you actually need it online. A direct CRM or practice-management connection can be useful, but it depends on what system you use and whether it supports integration cleanly. The homepage mockup can show the patient path and where those entry points would sit, then the build scope can separate simple handoff from deeper integration."
+          },
+          {
+            "source_medium": "text",
+            "tool_calls": [],
+            "original_message": null,
+            "role": "user",
+            "tool_results": [],
+            "time": 36,
+            "interrupted": false,
+            "message": "Okay, so what's the cost difference between that 'simple handoff' and 'deeper integration' you mentioned?"
+          },
+          {
+            "source_medium": null,
+            "tool_calls": [],
+            "original_message": null,
+            "role": "agent",
+            "tool_results": [],
+            "time": 36,
+            "interrupted": false,
+            "message": "For a new site, the simple handoff version usually stays closer to the whole-site range of four thousand to six thousand five hundred dollars. Direct CRM or API integration can add one thousand to two thousand five hundred dollars or more, depending on the system and what data needs to move. The main difference is whether staff receive requests to handle, or the site actually pushes information into your tools automatically."
+          },
+          {
+            "source_medium": "text",
+            "tool_calls": [],
+            "original_message": null,
+            "role": "user",
+            "tool_results": [],
+            "time": 36,
+            "interrupted": false,
+            "message": "So, it could be up to nine thousand dollars then?"
+          },
+          {
+            "source_medium": null,
+            "tool_calls": [],
+            "original_message": null,
+            "role": "agent",
+            "tool_results": [],
+            "time": 36,
+            "interrupted": false,
+            "message": "It could reach that area if the site needs the full build plus direct CRM or API work, but I would not treat that as a quote without scoping the exact systems. If the booking is just a request flow and the CRM handoff is simple, it may stay within the standard whole-site range. The key driver is whether the site is collecting information for staff or actually syncing data into your practice tools."
+          },
+          {
+            "source_medium": "text",
+            "tool_calls": [],
+            "original_message": null,
+            "role": "user",
+            "tool_results": [],
+            "time": 36,
+            "interrupted": false,
+            "message": "Okay, so how does that mockup help me figure out the actual cost then?"
+          },
+          {
+            "source_medium": null,
+            "tool_calls": [],
+            "original_message": null,
+            "role": "agent",
+            "tool_results": [],
+            "time": 36,
+            "interrupted": false,
+            "message": "The mockup helps separate the visual structure from the technical scope. You\u2019ll see the homepage layout, patient path, calls to action, and where booking, payments, service areas, and blog content would sit, then the remaining cost questions are about which of those pieces need to be simple links, forms, or real integrations. It does not lock you into anything; it just gives us a concrete starting point instead of pricing from a vague idea."
+          }
+        ]
+      }
+    ],
+    "result_groups": []
+  }
+}

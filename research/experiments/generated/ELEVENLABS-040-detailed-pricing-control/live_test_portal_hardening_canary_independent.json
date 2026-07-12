@@ -1,0 +1,182 @@
+{
+  "checkpoint_id": "ELEVENLABS-040-detailed-pricing-control",
+  "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+  "invocation_id": "suite_1201kxbnngyzeff9kseg1rayz9t6",
+  "validation_mode": "partial_test",
+  "partial_test_id": "sim_040_portal_requires_scope",
+  "independent_status": "pass",
+  "input_test_ids": [
+    "sim_040_portal_requires_scope"
+  ],
+  "global_failures": [],
+  "provider_labels": {
+    "status_entries": [
+      {
+        "test_id": "sim_040_portal_requires_scope",
+        "test_run_id": "trun_7901kxbnngz2ephak8d2666sy0x6",
+        "status": "passed"
+      }
+    ],
+    "condition_result_entries": [
+      {
+        "test_id": "sim_040_portal_requires_scope",
+        "test_run_id": "trun_7901kxbnngz2ephak8d2666sy0x6",
+        "condition_result": {
+          "result": "success",
+          "rationale": {
+            "messages": [
+              "The agent consistently refused to provide a numeric quote or ceiling, stating it needed proper scoping. It also repeatedly mentioned scoping accounts, database/data, permissions, security, and integrations as necessary steps before providing a quote.",
+              "The conversation reached the maximum number of turns."
+            ],
+            "summary": "Evaluation succeeded"
+          }
+        }
+      }
+    ]
+  },
+  "tests": [
+    {
+      "test_id": "sim_040_portal_requires_scope",
+      "test_name": "ELEVENLABS-040-detailed-pricing-control::sim_040_portal_requires_scope",
+      "test_run_id": "trun_7901kxbnngz2ephak8d2666sy0x6",
+      "independent_status": "pass",
+      "provider_status": "passed",
+      "provider_condition_result": {
+        "result": "success",
+        "rationale": {
+          "messages": [
+            "The agent consistently refused to provide a numeric quote or ceiling, stating it needed proper scoping. It also repeatedly mentioned scoping accounts, database/data, permissions, security, and integrations as necessary steps before providing a quote.",
+            "The conversation reached the maximum number of turns."
+          ],
+          "summary": "Evaluation succeeded"
+        }
+      },
+      "provider_evaluator_rationale": "{'messages': ['The agent consistently refused to provide a numeric quote or ceiling, stating it needed proper scoping. It also repeatedly mentioned scoping accounts, database/data, permissions, security, and integrations as necessary steps before providing a quote.', 'The conversation reached the maximum number of turns.'], 'summary': 'Evaluation succeeded'}",
+      "first_price_trigger_index": 5,
+      "first_agent_paid_price_index": null,
+      "assertions": [
+        {
+          "name": "expected_test_name",
+          "passed": true
+        },
+        {
+          "name": "provider_test_id_reconciled",
+          "passed": true
+        },
+        {
+          "name": "ordered_agent_responses_present",
+          "passed": true
+        },
+        {
+          "name": "incomplete_simulation",
+          "passed": true
+        },
+        {
+          "name": "ordered_dialogue_extractable",
+          "passed": true
+        },
+        {
+          "name": "buyer_turn_present",
+          "passed": true
+        },
+        {
+          "name": "agent_turn_present",
+          "passed": true
+        },
+        {
+          "name": "no_more_than_two_approved_ranges_in_response",
+          "passed": true
+        },
+        {
+          "name": "no_menu_dump",
+          "passed": true
+        },
+        {
+          "name": "no_more_than_two_approved_ranges_in_response",
+          "passed": true
+        },
+        {
+          "name": "no_menu_dump",
+          "passed": true
+        },
+        {
+          "name": "no_more_than_two_approved_ranges_in_response",
+          "passed": true
+        },
+        {
+          "name": "no_menu_dump",
+          "passed": true
+        },
+        {
+          "name": "no_more_than_two_approved_ranges_in_response",
+          "passed": true
+        },
+        {
+          "name": "no_menu_dump",
+          "passed": true
+        },
+        {
+          "name": "no_more_than_two_approved_ranges_in_response",
+          "passed": true
+        },
+        {
+          "name": "no_menu_dump",
+          "passed": true
+        },
+        {
+          "name": "no_more_than_two_approved_ranges_in_response",
+          "passed": true
+        },
+        {
+          "name": "no_menu_dump",
+          "passed": true
+        },
+        {
+          "name": "no_more_than_two_approved_ranges_in_response",
+          "passed": true
+        },
+        {
+          "name": "no_menu_dump",
+          "passed": true
+        },
+        {
+          "name": "no_more_than_two_approved_ranges_in_response",
+          "passed": true
+        },
+        {
+          "name": "no_menu_dump",
+          "passed": true
+        },
+        {
+          "name": "post_quote_price_followup_no_cta",
+          "passed": true
+        },
+        {
+          "name": "unprompted_paid_price",
+          "passed": true
+        },
+        {
+          "name": "buyer_price_trigger_present",
+          "passed": true
+        },
+        {
+          "name": "approved_ranges_only_in_relevant_scenarios",
+          "passed": true
+        },
+        {
+          "name": "no_unapproved_paid_price_ranges",
+          "passed": true
+        },
+        {
+          "name": "portal_no_numeric_price",
+          "passed": true
+        },
+        {
+          "name": "portal_scope_classification",
+          "passed": true
+        }
+      ],
+      "failures": []
+    }
+  ]
+}

@@ -1,0 +1,1728 @@
+{
+  "checkpoint_id": "ELEVENLABS-040-detailed-pricing-control",
+  "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+  "invocation_id": "suite_8701kxbz5tktfh4tb0jfpvsmjdkt",
+  "independent_status": "fail",
+  "input_test_ids": [
+    "sim_040_capability_question_no_unprompted_price",
+    "sim_040_free_mockup_question_no_paid_price",
+    "sim_040_basic_site_direct_price",
+    "sim_040_existing_site_request_form_add_on",
+    "sim_040_new_site_booking_whole_project",
+    "sim_040_multi_feature_no_price_stacking",
+    "sim_040_direct_crm_integration_existing_site",
+    "sim_040_portal_requires_scope",
+    "sim_040_budget_fit_direct_answer",
+    "sim_040_care_plan_only_when_asked"
+  ],
+  "raw_input_test_ids": [
+    "sim_040_capability_question_no_unprompted_price",
+    "sim_040_basic_site_direct_price",
+    "sim_040_existing_site_request_form_add_on",
+    "sim_040_new_site_booking_whole_project",
+    "sim_040_free_mockup_question_no_paid_price",
+    "sim_040_direct_crm_integration_existing_site",
+    "sim_040_multi_feature_no_price_stacking",
+    "sim_040_portal_requires_scope",
+    "sim_040_budget_fit_direct_answer",
+    "sim_040_care_plan_only_when_asked"
+  ],
+  "global_failures": [],
+  "provider_labels": {
+    "status_entries": [
+      {
+        "test_id": "sim_040_capability_question_no_unprompted_price",
+        "test_run_id": "trun_8001kxbz5tm4fzqvk6ygzhz4b8kp",
+        "status": "passed"
+      },
+      {
+        "test_id": "sim_040_free_mockup_question_no_paid_price",
+        "test_run_id": "trun_9901kxbz5tm5f60802b7p1zkadjs",
+        "status": "passed"
+      },
+      {
+        "test_id": "sim_040_basic_site_direct_price",
+        "test_run_id": "trun_8601kxbz5tm6ea4vd1k6d1f1r9x4",
+        "status": "passed"
+      },
+      {
+        "test_id": "sim_040_existing_site_request_form_add_on",
+        "test_run_id": "trun_0301kxbz5tm7fn7b4evg09ndbpcf",
+        "status": "passed"
+      },
+      {
+        "test_id": "sim_040_new_site_booking_whole_project",
+        "test_run_id": "trun_4701kxbz5tm8e3rax1wd7wtckz8r",
+        "status": "passed"
+      },
+      {
+        "test_id": "sim_040_multi_feature_no_price_stacking",
+        "test_run_id": "trun_7101kxbz5tm9ed69mcnka6vb83tx",
+        "status": "passed"
+      },
+      {
+        "test_id": "sim_040_direct_crm_integration_existing_site",
+        "test_run_id": "trun_9801kxbz5tmafsxskcnjfrneesas",
+        "status": "passed"
+      },
+      {
+        "test_id": "sim_040_portal_requires_scope",
+        "test_run_id": "trun_5601kxbz5tmbfxbrexmyrwtqf27t",
+        "status": "passed"
+      },
+      {
+        "test_id": "sim_040_budget_fit_direct_answer",
+        "test_run_id": "trun_4501kxbz5tmcf7bbem97ewnxvv2v",
+        "status": "passed"
+      },
+      {
+        "test_id": "sim_040_care_plan_only_when_asked",
+        "test_run_id": "trun_7301kxbz5tmde3d8vrbb0rgvza9e",
+        "status": "passed"
+      }
+    ],
+    "condition_result_entries": [
+      {
+        "test_id": "sim_040_capability_question_no_unprompted_price",
+        "test_run_id": "trun_8001kxbz5tm4fzqvk6ygzhz4b8kp",
+        "condition_result": {
+          "result": "success",
+          "rationale": {
+            "messages": [
+              "The agent provided confident capability answers regarding the scoping process, explaining the variables involved without giving a specific timeframe, dollar amount, range, package, starting price, or care-plan price. The agent explicitly stated, \"I do not want to guess and mislead you without knowing what system Acme Dental uses now,\" which aligns with providing a confident capability answer by explaining the need for more information.",
+              "The conversation reached the maximum number of turns."
+            ],
+            "summary": "Evaluation succeeded"
+          }
+        }
+      },
+      {
+        "test_id": "sim_040_free_mockup_question_no_paid_price",
+        "test_run_id": "trun_9901kxbz5tm5f60802b7p1zkadjs",
+        "condition_result": {
+          "result": "success",
+          "rationale": {
+            "messages": [
+              "The agent consistently focused on the process of the free mockup and clarified there were no payments, contracts, or hidden fees. The agent did not mention any prices for paid website work, only that paid work would occur if the user chose to proceed.",
+              "The conversation reached the maximum number of turns."
+            ],
+            "summary": "Evaluation succeeded"
+          }
+        }
+      },
+      {
+        "test_id": "sim_040_basic_site_direct_price",
+        "test_run_id": "trun_8601kxbz5tm6ea4vd1k6d1f1r9x4",
+        "condition_result": {
+          "result": "success",
+          "rationale": {
+            "messages": [
+              "The agent provided a whole-project range of \"nine hundred dollars and fifteen hundred dollars\" for a 3-5 page site and identified \"how much content and revision work is needed\" as a relevant driver, fulfilling the criteria.",
+              "The conversation reached the maximum number of turns."
+            ],
+            "summary": "Evaluation succeeded"
+          }
+        }
+      },
+      {
+        "test_id": "sim_040_existing_site_request_form_add_on",
+        "test_run_id": "trun_0301kxbz5tm7fn7b4evg09ndbpcf",
+        "condition_result": {
+          "result": "success",
+          "rationale": {
+            "messages": [
+              "The agent provided a clear price range of \"one hundred to two hundred fifty dollars\" for the appointment request form, and did not attempt to sell a whole-site package.",
+              "The conversation reached the maximum number of turns."
+            ],
+            "summary": "Evaluation succeeded"
+          }
+        }
+      },
+      {
+        "test_id": "sim_040_new_site_booking_whole_project",
+        "test_run_id": "trun_4701kxbz5tm8e3rax1wd7wtckz8r",
+        "condition_result": {
+          "result": "success",
+          "rationale": {
+            "messages": [
+              "The agent initially quoted $900-$1,500 for a simple site. When the user asked about a live calendar, the agent correctly identified it as a higher-tier feature and quoted $4,000-$6,500, explaining the difference clearly and avoiding confusion between add-ons and whole-site pricing.",
+              "The conversation reached the maximum number of turns."
+            ],
+            "summary": "Evaluation succeeded"
+          }
+        }
+      },
+      {
+        "test_id": "sim_040_multi_feature_no_price_stacking",
+        "test_run_id": "trun_7101kxbz5tm9ed69mcnka6vb83tx",
+        "condition_result": {
+          "result": "success",
+          "rationale": {
+            "messages": [
+              "The agent provided a clear whole-project range of \"four thousand to six thousand five hundred dollars\" and identified the complexity of HubSpot integration (simple form handoff vs. real integration with automation) as the primary scope driver. It consistently avoided giving a single fixed number or merely reciting features.",
+              "The conversation reached the maximum number of turns."
+            ],
+            "summary": "Evaluation succeeded"
+          }
+        }
+      },
+      {
+        "test_id": "sim_040_direct_crm_integration_existing_site",
+        "test_run_id": "trun_9801kxbz5tmafsxskcnjfrneesas",
+        "condition_result": {
+          "result": "success",
+          "rationale": {
+            "messages": [
+              "The agent mentioned the price range of \"one thousand to two thousand five hundred dollars plus\" multiple times. It provided data-flow caveats like \"depending on how the CRM accepts data\" and \"custom API work, complex field mapping.\" The agent also clarified that \"The range covers the more standard direct integrations; anything more custom would need scoping,\" indicating not every behavior is included.",
+              "The conversation reached the maximum number of turns."
+            ],
+            "summary": "Evaluation succeeded"
+          }
+        }
+      },
+      {
+        "test_id": "sim_040_portal_requires_scope",
+        "test_run_id": "trun_5601kxbz5tmbfxbrexmyrwtqf27t",
+        "condition_result": {
+          "result": "success",
+          "rationale": {
+            "messages": [
+              "The agent consistently refused to provide a numeric quote or ceiling, stating that the project was custom and required scoping. It repeatedly mentioned the need to scope accounts, database/data, permissions, security, and integrations throughout the conversation.",
+              "The conversation reached the maximum number of turns."
+            ],
+            "summary": "Evaluation succeeded"
+          }
+        }
+      },
+      {
+        "test_id": "sim_040_budget_fit_direct_answer",
+        "test_run_id": "trun_4501kxbz5tmcf7bbem97ewnxvv2v",
+        "condition_result": {
+          "result": "success",
+          "rationale": {
+            "messages": [
+              "The user stated a budget of \"$1,200\" and the agent responded with a range of \"nine hundred to fifteen hundred dollars,\" which directly fits the user's budget. No unrelated package menu was presented.",
+              "The conversation reached the maximum number of turns."
+            ],
+            "summary": "Evaluation succeeded"
+          }
+        }
+      },
+      {
+        "test_id": "sim_040_care_plan_only_when_asked",
+        "test_run_id": "trun_7301kxbz5tmde3d8vrbb0rgvza9e",
+        "condition_result": {
+          "result": "success",
+          "rationale": {
+            "messages": [
+              "The agent did not mention any care prices before the user asked about ongoing costs. After the user's question, the agent immediately provided the $79 Essential Care plan with its scope, and later the $149 plan with its scope.",
+              "The simulated user ended the conversation."
+            ],
+            "summary": "Evaluation succeeded"
+          }
+        }
+      }
+    ]
+  },
+  "tests": [
+    {
+      "test_id": "sim_040_capability_question_no_unprompted_price",
+      "test_name": "ELEVENLABS-040-detailed-pricing-control::sim_040_capability_question_no_unprompted_price",
+      "test_run_id": "trun_8001kxbz5tm4fzqvk6ygzhz4b8kp",
+      "independent_status": "pass",
+      "provider_status": "passed",
+      "provider_condition_result": {
+        "result": "success",
+        "rationale": {
+          "messages": [
+            "The agent provided confident capability answers regarding the scoping process, explaining the variables involved without giving a specific timeframe, dollar amount, range, package, starting price, or care-plan price. The agent explicitly stated, \"I do not want to guess and mislead you without knowing what system Acme Dental uses now,\" which aligns with providing a confident capability answer by explaining the need for more information.",
+            "The conversation reached the maximum number of turns."
+          ],
+          "summary": "Evaluation succeeded"
+        }
+      },
+      "provider_evaluator_rationale": "{'messages': ['The agent provided confident capability answers regarding the scoping process, explaining the variables involved without giving a specific timeframe, dollar amount, range, package, starting price, or care-plan price. The agent explicitly stated, \"I do not want to guess and mislead you without knowing what system Acme Dental uses now,\" which aligns with providing a confident capability answer by explaining the need for more information.', 'The conversation reached the maximum number of turns.'], 'summary': 'Evaluation succeeded'}",
+      "first_price_trigger_index": 7,
+      "first_agent_paid_price_index": null,
+      "assertions": [
+        {
+          "name": "expected_test_name",
+          "passed": true
+        },
+        {
+          "name": "provider_test_id_reconciled",
+          "passed": true
+        },
+        {
+          "name": "ordered_agent_responses_present",
+          "passed": true
+        },
+        {
+          "name": "incomplete_simulation",
+          "passed": true
+        },
+        {
+          "name": "ordered_dialogue_extractable",
+          "passed": true
+        },
+        {
+          "name": "buyer_turn_present",
+          "passed": true
+        },
+        {
+          "name": "agent_turn_present",
+          "passed": true
+        },
+        {
+          "name": "no_more_than_two_approved_ranges_in_response",
+          "passed": true
+        },
+        {
+          "name": "no_menu_dump",
+          "passed": true
+        },
+        {
+          "name": "no_more_than_two_approved_ranges_in_response",
+          "passed": true
+        },
+        {
+          "name": "no_menu_dump",
+          "passed": true
+        },
+        {
+          "name": "no_more_than_two_approved_ranges_in_response",
+          "passed": true
+        },
+        {
+          "name": "no_menu_dump",
+          "passed": true
+        },
+        {
+          "name": "no_more_than_two_approved_ranges_in_response",
+          "passed": true
+        },
+        {
+          "name": "no_menu_dump",
+          "passed": true
+        },
+        {
+          "name": "no_more_than_two_approved_ranges_in_response",
+          "passed": true
+        },
+        {
+          "name": "no_menu_dump",
+          "passed": true
+        },
+        {
+          "name": "no_more_than_two_approved_ranges_in_response",
+          "passed": true
+        },
+        {
+          "name": "no_menu_dump",
+          "passed": true
+        },
+        {
+          "name": "no_more_than_two_approved_ranges_in_response",
+          "passed": true
+        },
+        {
+          "name": "no_menu_dump",
+          "passed": true
+        },
+        {
+          "name": "no_more_than_two_approved_ranges_in_response",
+          "passed": true
+        },
+        {
+          "name": "no_menu_dump",
+          "passed": true
+        },
+        {
+          "name": "post_quote_price_followup_no_cta",
+          "passed": true
+        },
+        {
+          "name": "unprompted_paid_price",
+          "passed": true
+        },
+        {
+          "name": "approved_ranges_only_in_relevant_scenarios",
+          "passed": true
+        },
+        {
+          "name": "no_unapproved_paid_price_ranges",
+          "passed": true
+        },
+        {
+          "name": "no_paid_price_disclosure",
+          "passed": true
+        }
+      ],
+      "failures": []
+    },
+    {
+      "test_id": "sim_040_free_mockup_question_no_paid_price",
+      "test_name": "ELEVENLABS-040-detailed-pricing-control::sim_040_free_mockup_question_no_paid_price",
+      "test_run_id": "trun_9901kxbz5tm5f60802b7p1zkadjs",
+      "independent_status": "pass",
+      "provider_status": "passed",
+      "provider_condition_result": {
+        "result": "success",
+        "rationale": {
+          "messages": [
+            "The agent consistently focused on the process of the free mockup and clarified there were no payments, contracts, or hidden fees. The agent did not mention any prices for paid website work, only that paid work would occur if the user chose to proceed.",
+            "The conversation reached the maximum number of turns."
+          ],
+          "summary": "Evaluation succeeded"
+        }
+      },
+      "provider_evaluator_rationale": "{'messages': ['The agent consistently focused on the process of the free mockup and clarified there were no payments, contracts, or hidden fees. The agent did not mention any prices for paid website work, only that paid work would occur if the user chose to proceed.', 'The conversation reached the maximum number of turns.'], 'summary': 'Evaluation succeeded'}",
+      "first_price_trigger_index": null,
+      "first_agent_paid_price_index": null,
+      "assertions": [
+        {
+          "name": "expected_test_name",
+          "passed": true
+        },
+        {
+          "name": "provider_test_id_reconciled",
+          "passed": true
+        },
+        {
+          "name": "ordered_agent_responses_present",
+          "passed": true
+        },
+        {
+          "name": "incomplete_simulation",
+          "passed": true
+        },
+        {
+          "name": "ordered_dialogue_extractable",
+          "passed": true
+        },
+        {
+          "name": "buyer_turn_present",
+          "passed": true
+        },
+        {
+          "name": "agent_turn_present",
+          "passed": true
+        },
+        {
+          "name": "no_more_than_two_approved_ranges_in_response",
+          "passed": true
+        },
+        {
+          "name": "no_menu_dump",
+          "passed": true
+        },
+        {
+          "name": "no_more_than_two_approved_ranges_in_response",
+          "passed": true
+        },
+        {
+          "name": "no_menu_dump",
+          "passed": true
+        },
+        {
+          "name": "no_more_than_two_approved_ranges_in_response",
+          "passed": true
+        },
+        {
+          "name": "no_menu_dump",
+          "passed": true
+        },
+        {
+          "name": "no_more_than_two_approved_ranges_in_response",
+          "passed": true
+        },
+        {
+          "name": "no_menu_dump",
+          "passed": true
+        },
+        {
+          "name": "no_more_than_two_approved_ranges_in_response",
+          "passed": true
+        },
+        {
+          "name": "no_menu_dump",
+          "passed": true
+        },
+        {
+          "name": "no_more_than_two_approved_ranges_in_response",
+          "passed": true
+        },
+        {
+          "name": "no_menu_dump",
+          "passed": true
+        },
+        {
+          "name": "no_more_than_two_approved_ranges_in_response",
+          "passed": true
+        },
+        {
+          "name": "no_menu_dump",
+          "passed": true
+        },
+        {
+          "name": "post_quote_price_followup_no_cta",
+          "passed": true
+        },
+        {
+          "name": "unprompted_paid_price",
+          "passed": true
+        },
+        {
+          "name": "approved_ranges_only_in_relevant_scenarios",
+          "passed": true
+        },
+        {
+          "name": "no_unapproved_paid_price_ranges",
+          "passed": true
+        },
+        {
+          "name": "no_paid_price_disclosure",
+          "passed": true
+        }
+      ],
+      "failures": []
+    },
+    {
+      "test_id": "sim_040_basic_site_direct_price",
+      "test_name": "ELEVENLABS-040-detailed-pricing-control::sim_040_basic_site_direct_price",
+      "test_run_id": "trun_8601kxbz5tm6ea4vd1k6d1f1r9x4",
+      "independent_status": "fail",
+      "provider_status": "passed",
+      "provider_condition_result": {
+        "result": "success",
+        "rationale": {
+          "messages": [
+            "The agent provided a whole-project range of \"nine hundred dollars and fifteen hundred dollars\" for a 3-5 page site and identified \"how much content and revision work is needed\" as a relevant driver, fulfilling the criteria.",
+            "The conversation reached the maximum number of turns."
+          ],
+          "summary": "Evaluation succeeded"
+        }
+      },
+      "provider_evaluator_rationale": "{'messages': ['The agent provided a whole-project range of \"nine hundred dollars and fifteen hundred dollars\" for a 3-5 page site and identified \"how much content and revision work is needed\" as a relevant driver, fulfilling the criteria.', 'The conversation reached the maximum number of turns.'], 'summary': 'Evaluation succeeded'}",
+      "first_price_trigger_index": 1,
+      "first_agent_paid_price_index": 2,
+      "assertions": [
+        {
+          "name": "expected_test_name",
+          "passed": true
+        },
+        {
+          "name": "provider_test_id_reconciled",
+          "passed": true
+        },
+        {
+          "name": "ordered_agent_responses_present",
+          "passed": true
+        },
+        {
+          "name": "incomplete_simulation",
+          "passed": true
+        },
+        {
+          "name": "ordered_dialogue_extractable",
+          "passed": true
+        },
+        {
+          "name": "buyer_turn_present",
+          "passed": true
+        },
+        {
+          "name": "agent_turn_present",
+          "passed": true
+        },
+        {
+          "name": "no_more_than_two_approved_ranges_in_response",
+          "passed": true
+        },
+        {
+          "name": "no_menu_dump",
+          "passed": true
+        },
+        {
+          "name": "no_more_than_two_approved_ranges_in_response",
+          "passed": true
+        },
+        {
+          "name": "no_menu_dump",
+          "passed": true
+        },
+        {
+          "name": "no_unsupported_fixed_quote_or_ceiling",
+          "passed": true
+        },
+        {
+          "name": "no_more_than_two_approved_ranges_in_response",
+          "passed": true
+        },
+        {
+          "name": "no_menu_dump",
+          "passed": true
+        },
+        {
+          "name": "no_more_than_two_approved_ranges_in_response",
+          "passed": true
+        },
+        {
+          "name": "no_menu_dump",
+          "passed": true
+        },
+        {
+          "name": "no_more_than_two_approved_ranges_in_response",
+          "passed": true
+        },
+        {
+          "name": "no_menu_dump",
+          "passed": true
+        },
+        {
+          "name": "no_more_than_two_approved_ranges_in_response",
+          "passed": true
+        },
+        {
+          "name": "no_menu_dump",
+          "passed": true
+        },
+        {
+          "name": "post_quote_price_followup_no_cta",
+          "passed": false,
+          "detail": "agent response 6 reopened mockup/email/send CTA during active price follow-up"
+        },
+        {
+          "name": "unprompted_paid_price",
+          "passed": true
+        },
+        {
+          "name": "buyer_price_trigger_present",
+          "passed": true
+        },
+        {
+          "name": "approved_ranges_only_in_relevant_scenarios",
+          "passed": true
+        },
+        {
+          "name": "no_unapproved_paid_price_ranges",
+          "passed": true
+        },
+        {
+          "name": "basic_site_expected_range",
+          "passed": true
+        },
+        {
+          "name": "basic_site_scope_driver_present",
+          "passed": true
+        }
+      ],
+      "failures": [
+        "post_quote_price_followup_no_cta: agent response 6 reopened mockup/email/send CTA during active price follow-up"
+      ]
+    },
+    {
+      "test_id": "sim_040_existing_site_request_form_add_on",
+      "test_name": "ELEVENLABS-040-detailed-pricing-control::sim_040_existing_site_request_form_add_on",
+      "test_run_id": "trun_0301kxbz5tm7fn7b4evg09ndbpcf",
+      "independent_status": "pass",
+      "provider_status": "passed",
+      "provider_condition_result": {
+        "result": "success",
+        "rationale": {
+          "messages": [
+            "The agent provided a clear price range of \"one hundred to two hundred fifty dollars\" for the appointment request form, and did not attempt to sell a whole-site package.",
+            "The conversation reached the maximum number of turns."
+          ],
+          "summary": "Evaluation succeeded"
+        }
+      },
+      "provider_evaluator_rationale": "{'messages': ['The agent provided a clear price range of \"one hundred to two hundred fifty dollars\" for the appointment request form, and did not attempt to sell a whole-site package.', 'The conversation reached the maximum number of turns.'], 'summary': 'Evaluation succeeded'}",
+      "first_price_trigger_index": 3,
+      "first_agent_paid_price_index": 4,
+      "assertions": [
+        {
+          "name": "expected_test_name",
+          "passed": true
+        },
+        {
+          "name": "provider_test_id_reconciled",
+          "passed": true
+        },
+        {
+          "name": "ordered_agent_responses_present",
+          "passed": true
+        },
+        {
+          "name": "incomplete_simulation",
+          "passed": true
+        },
+        {
+          "name": "ordered_dialogue_extractable",
+          "passed": true
+        },
+        {
+          "name": "buyer_turn_present",
+          "passed": true
+        },
+        {
+          "name": "agent_turn_present",
+          "passed": true
+        },
+        {
+          "name": "no_more_than_two_approved_ranges_in_response",
+          "passed": true
+        },
+        {
+          "name": "no_menu_dump",
+          "passed": true
+        },
+        {
+          "name": "no_more_than_two_approved_ranges_in_response",
+          "passed": true
+        },
+        {
+          "name": "no_menu_dump",
+          "passed": true
+        },
+        {
+          "name": "no_more_than_two_approved_ranges_in_response",
+          "passed": true
+        },
+        {
+          "name": "no_menu_dump",
+          "passed": true
+        },
+        {
+          "name": "no_unsupported_fixed_quote_or_ceiling",
+          "passed": true
+        },
+        {
+          "name": "no_more_than_two_approved_ranges_in_response",
+          "passed": true
+        },
+        {
+          "name": "no_menu_dump",
+          "passed": true
+        },
+        {
+          "name": "no_unsupported_fixed_quote_or_ceiling",
+          "passed": true
+        },
+        {
+          "name": "no_more_than_two_approved_ranges_in_response",
+          "passed": true
+        },
+        {
+          "name": "no_menu_dump",
+          "passed": true
+        },
+        {
+          "name": "no_more_than_two_approved_ranges_in_response",
+          "passed": true
+        },
+        {
+          "name": "no_menu_dump",
+          "passed": true
+        },
+        {
+          "name": "post_quote_price_followup_no_cta",
+          "passed": true
+        },
+        {
+          "name": "unprompted_paid_price",
+          "passed": true
+        },
+        {
+          "name": "buyer_price_trigger_present",
+          "passed": true
+        },
+        {
+          "name": "approved_ranges_only_in_relevant_scenarios",
+          "passed": true
+        },
+        {
+          "name": "no_unapproved_paid_price_ranges",
+          "passed": true
+        },
+        {
+          "name": "existing_site_expected_add_on_range",
+          "passed": true
+        },
+        {
+          "name": "existing_site_add_on_classification",
+          "passed": true
+        }
+      ],
+      "failures": []
+    },
+    {
+      "test_id": "sim_040_new_site_booking_whole_project",
+      "test_name": "ELEVENLABS-040-detailed-pricing-control::sim_040_new_site_booking_whole_project",
+      "test_run_id": "trun_4701kxbz5tm8e3rax1wd7wtckz8r",
+      "independent_status": "fail",
+      "provider_status": "passed",
+      "provider_condition_result": {
+        "result": "success",
+        "rationale": {
+          "messages": [
+            "The agent initially quoted $900-$1,500 for a simple site. When the user asked about a live calendar, the agent correctly identified it as a higher-tier feature and quoted $4,000-$6,500, explaining the difference clearly and avoiding confusion between add-ons and whole-site pricing.",
+            "The conversation reached the maximum number of turns."
+          ],
+          "summary": "Evaluation succeeded"
+        }
+      },
+      "provider_evaluator_rationale": "{'messages': ['The agent initially quoted $900-$1,500 for a simple site. When the user asked about a live calendar, the agent correctly identified it as a higher-tier feature and quoted $4,000-$6,500, explaining the difference clearly and avoiding confusion between add-ons and whole-site pricing.', 'The conversation reached the maximum number of turns.'], 'summary': 'Evaluation succeeded'}",
+      "first_price_trigger_index": 3,
+      "first_agent_paid_price_index": 4,
+      "assertions": [
+        {
+          "name": "expected_test_name",
+          "passed": true
+        },
+        {
+          "name": "provider_test_id_reconciled",
+          "passed": true
+        },
+        {
+          "name": "ordered_agent_responses_present",
+          "passed": true
+        },
+        {
+          "name": "incomplete_simulation",
+          "passed": true
+        },
+        {
+          "name": "ordered_dialogue_extractable",
+          "passed": true
+        },
+        {
+          "name": "buyer_turn_present",
+          "passed": true
+        },
+        {
+          "name": "agent_turn_present",
+          "passed": true
+        },
+        {
+          "name": "no_more_than_two_approved_ranges_in_response",
+          "passed": true
+        },
+        {
+          "name": "no_menu_dump",
+          "passed": true
+        },
+        {
+          "name": "no_more_than_two_approved_ranges_in_response",
+          "passed": true
+        },
+        {
+          "name": "no_menu_dump",
+          "passed": true
+        },
+        {
+          "name": "no_more_than_two_approved_ranges_in_response",
+          "passed": true
+        },
+        {
+          "name": "no_menu_dump",
+          "passed": true
+        },
+        {
+          "name": "no_unsupported_fixed_quote_or_ceiling",
+          "passed": true
+        },
+        {
+          "name": "no_more_than_two_approved_ranges_in_response",
+          "passed": true
+        },
+        {
+          "name": "no_menu_dump",
+          "passed": true
+        },
+        {
+          "name": "no_unsupported_fixed_quote_or_ceiling",
+          "passed": true
+        },
+        {
+          "name": "no_more_than_two_approved_ranges_in_response",
+          "passed": true
+        },
+        {
+          "name": "no_menu_dump",
+          "passed": true
+        },
+        {
+          "name": "no_unsupported_fixed_quote_or_ceiling",
+          "passed": true
+        },
+        {
+          "name": "no_more_than_two_approved_ranges_in_response",
+          "passed": true
+        },
+        {
+          "name": "no_menu_dump",
+          "passed": true
+        },
+        {
+          "name": "no_more_than_two_approved_ranges_in_response",
+          "passed": true
+        },
+        {
+          "name": "no_menu_dump",
+          "passed": true
+        },
+        {
+          "name": "no_unsupported_fixed_quote_or_ceiling",
+          "passed": true
+        },
+        {
+          "name": "no_more_than_two_approved_ranges_in_response",
+          "passed": true
+        },
+        {
+          "name": "no_menu_dump",
+          "passed": true
+        },
+        {
+          "name": "no_more_than_two_approved_ranges_in_response",
+          "passed": true
+        },
+        {
+          "name": "no_menu_dump",
+          "passed": true
+        },
+        {
+          "name": "no_more_than_two_approved_ranges_in_response",
+          "passed": true
+        },
+        {
+          "name": "no_menu_dump",
+          "passed": true
+        },
+        {
+          "name": "post_quote_price_followup_no_cta",
+          "passed": false,
+          "detail": "agent response 4 appended mockup/email/send CTA to the price answer"
+        },
+        {
+          "name": "unprompted_paid_price",
+          "passed": true
+        },
+        {
+          "name": "buyer_price_trigger_present",
+          "passed": true
+        },
+        {
+          "name": "approved_ranges_only_in_relevant_scenarios",
+          "passed": true
+        },
+        {
+          "name": "no_unapproved_paid_price_ranges",
+          "passed": true
+        },
+        {
+          "name": "new_site_basic_range_present",
+          "passed": true
+        },
+        {
+          "name": "new_site_integration_range_present",
+          "passed": true
+        },
+        {
+          "name": "new_site_whole_project_progression_order",
+          "passed": true
+        },
+        {
+          "name": "new_site_whole_project_classification",
+          "passed": true
+        }
+      ],
+      "failures": [
+        "post_quote_price_followup_no_cta: agent response 4 appended mockup/email/send CTA to the price answer"
+      ]
+    },
+    {
+      "test_id": "sim_040_multi_feature_no_price_stacking",
+      "test_name": "ELEVENLABS-040-detailed-pricing-control::sim_040_multi_feature_no_price_stacking",
+      "test_run_id": "trun_7101kxbz5tm9ed69mcnka6vb83tx",
+      "independent_status": "fail",
+      "provider_status": "passed",
+      "provider_condition_result": {
+        "result": "success",
+        "rationale": {
+          "messages": [
+            "The agent provided a clear whole-project range of \"four thousand to six thousand five hundred dollars\" and identified the complexity of HubSpot integration (simple form handoff vs. real integration with automation) as the primary scope driver. It consistently avoided giving a single fixed number or merely reciting features.",
+            "The conversation reached the maximum number of turns."
+          ],
+          "summary": "Evaluation succeeded"
+        }
+      },
+      "provider_evaluator_rationale": "{'messages': ['The agent provided a clear whole-project range of \"four thousand to six thousand five hundred dollars\" and identified the complexity of HubSpot integration (simple form handoff vs. real integration with automation) as the primary scope driver. It consistently avoided giving a single fixed number or merely reciting features.', 'The conversation reached the maximum number of turns.'], 'summary': 'Evaluation succeeded'}",
+      "first_price_trigger_index": 5,
+      "first_agent_paid_price_index": 6,
+      "assertions": [
+        {
+          "name": "expected_test_name",
+          "passed": true
+        },
+        {
+          "name": "provider_test_id_reconciled",
+          "passed": true
+        },
+        {
+          "name": "ordered_agent_responses_present",
+          "passed": true
+        },
+        {
+          "name": "incomplete_simulation",
+          "passed": true
+        },
+        {
+          "name": "ordered_dialogue_extractable",
+          "passed": true
+        },
+        {
+          "name": "buyer_turn_present",
+          "passed": true
+        },
+        {
+          "name": "agent_turn_present",
+          "passed": true
+        },
+        {
+          "name": "no_more_than_two_approved_ranges_in_response",
+          "passed": true
+        },
+        {
+          "name": "no_menu_dump",
+          "passed": true
+        },
+        {
+          "name": "no_more_than_two_approved_ranges_in_response",
+          "passed": true
+        },
+        {
+          "name": "no_menu_dump",
+          "passed": true
+        },
+        {
+          "name": "no_more_than_two_approved_ranges_in_response",
+          "passed": true
+        },
+        {
+          "name": "no_menu_dump",
+          "passed": true
+        },
+        {
+          "name": "no_more_than_two_approved_ranges_in_response",
+          "passed": true
+        },
+        {
+          "name": "no_menu_dump",
+          "passed": true
+        },
+        {
+          "name": "no_unsupported_fixed_quote_or_ceiling",
+          "passed": true
+        },
+        {
+          "name": "no_more_than_two_approved_ranges_in_response",
+          "passed": true
+        },
+        {
+          "name": "no_menu_dump",
+          "passed": true
+        },
+        {
+          "name": "no_unsupported_fixed_quote_or_ceiling",
+          "passed": true
+        },
+        {
+          "name": "no_more_than_two_approved_ranges_in_response",
+          "passed": true
+        },
+        {
+          "name": "no_menu_dump",
+          "passed": true
+        },
+        {
+          "name": "no_unsupported_fixed_quote_or_ceiling",
+          "passed": true
+        },
+        {
+          "name": "no_more_than_two_approved_ranges_in_response",
+          "passed": true
+        },
+        {
+          "name": "no_menu_dump",
+          "passed": true
+        },
+        {
+          "name": "no_unsupported_fixed_quote_or_ceiling",
+          "passed": true
+        },
+        {
+          "name": "no_more_than_two_approved_ranges_in_response",
+          "passed": true
+        },
+        {
+          "name": "no_menu_dump",
+          "passed": true
+        },
+        {
+          "name": "no_unsupported_fixed_quote_or_ceiling",
+          "passed": true
+        },
+        {
+          "name": "post_quote_price_followup_no_cta",
+          "passed": true
+        },
+        {
+          "name": "unprompted_paid_price",
+          "passed": true
+        },
+        {
+          "name": "buyer_price_trigger_present",
+          "passed": true
+        },
+        {
+          "name": "approved_ranges_only_in_relevant_scenarios",
+          "passed": false,
+          "detail": "unexpected approved ranges/plans: ['basic_site', 'crm_api']"
+        },
+        {
+          "name": "no_unapproved_paid_price_ranges",
+          "passed": false,
+          "detail": "unsupported paid-price values detected: ['$900-$1,500', '$1,000-$2,500+', '$1,000-$2,500+', '$1,000-$2,500+']"
+        },
+        {
+          "name": "multi_feature_whole_project_range",
+          "passed": true
+        },
+        {
+          "name": "no_arithmetic_total",
+          "passed": false,
+          "detail": "multi-feature pricing must not stack or total ranges: ['For a new site with standard integration, the likely whole-project range is $900-$1,500 for a basic site, but CRM, payments, and service-area structure can move it into a larger scoped build depending on how the data needs to connect. If you need direct CRM or API work, that add-on alone is usually $1,000-$2,500+. What CRM are you using?', 'For a real HubSpot integration on a new site, I\u2019d treat it as a scoped build rather than a fixed menu item. The new site plus standard integration range is $4,000-$6,500, and direct CRM or API work can add $1,000-$2,500+ depending on the automation and data flow. The exact total would need scope before anyone gives you a reliable number.', 'I can give a planning range, just not a fake fixed total before scope. For what you described, a realistic planning range is $4,000-$6,500 for the new site with standard integration, with deeper HubSpot API work potentially adding $1,000-$2,500+. The main unknown is whether HubSpot only receives leads or whether it has to trigger automations, sync records, and connect with booking or payments.']"
+        }
+      ],
+      "failures": [
+        "approved_ranges_only_in_relevant_scenarios: unexpected approved ranges/plans: ['basic_site', 'crm_api']",
+        "no_unapproved_paid_price_ranges: unsupported paid-price values detected: ['$900-$1,500', '$1,000-$2,500+', '$1,000-$2,500+', '$1,000-$2,500+']",
+        "no_arithmetic_total: multi-feature pricing must not stack or total ranges: ['For a new site with standard integration, the likely whole-project range is $900-$1,500 for a basic site, but CRM, payments, and service-area structure can move it into a larger scoped build depending on how the data needs to connect. If you need direct CRM or API work, that add-on alone is usually $1,000-$2,500+. What CRM are you using?', 'For a real HubSpot integration on a new site, I\u2019d treat it as a scoped build rather than a fixed menu item. The new site plus standard integration range is $4,000-$6,500, and direct CRM or API work can add $1,000-$2,500+ depending on the automation and data flow. The exact total would need scope before anyone gives you a reliable number.', 'I can give a planning range, just not a fake fixed total before scope. For what you described, a realistic planning range is $4,000-$6,500 for the new site with standard integration, with deeper HubSpot API work potentially adding $1,000-$2,500+. The main unknown is whether HubSpot only receives leads or whether it has to trigger automations, sync records, and connect with booking or payments.']"
+      ]
+    },
+    {
+      "test_id": "sim_040_direct_crm_integration_existing_site",
+      "test_name": "ELEVENLABS-040-detailed-pricing-control::sim_040_direct_crm_integration_existing_site",
+      "test_run_id": "trun_9801kxbz5tmafsxskcnjfrneesas",
+      "independent_status": "fail",
+      "provider_status": "passed",
+      "provider_condition_result": {
+        "result": "success",
+        "rationale": {
+          "messages": [
+            "The agent mentioned the price range of \"one thousand to two thousand five hundred dollars plus\" multiple times. It provided data-flow caveats like \"depending on how the CRM accepts data\" and \"custom API work, complex field mapping.\" The agent also clarified that \"The range covers the more standard direct integrations; anything more custom would need scoping,\" indicating not every behavior is included.",
+            "The conversation reached the maximum number of turns."
+          ],
+          "summary": "Evaluation succeeded"
+        }
+      },
+      "provider_evaluator_rationale": "{'messages': ['The agent mentioned the price range of \"one thousand to two thousand five hundred dollars plus\" multiple times. It provided data-flow caveats like \"depending on how the CRM accepts data\" and \"custom API work, complex field mapping.\" The agent also clarified that \"The range covers the more standard direct integrations; anything more custom would need scoping,\" indicating not every behavior is included.', 'The conversation reached the maximum number of turns.'], 'summary': 'Evaluation succeeded'}",
+      "first_price_trigger_index": 3,
+      "first_agent_paid_price_index": 4,
+      "assertions": [
+        {
+          "name": "expected_test_name",
+          "passed": true
+        },
+        {
+          "name": "provider_test_id_reconciled",
+          "passed": true
+        },
+        {
+          "name": "ordered_agent_responses_present",
+          "passed": true
+        },
+        {
+          "name": "incomplete_simulation",
+          "passed": true
+        },
+        {
+          "name": "ordered_dialogue_extractable",
+          "passed": true
+        },
+        {
+          "name": "buyer_turn_present",
+          "passed": true
+        },
+        {
+          "name": "agent_turn_present",
+          "passed": true
+        },
+        {
+          "name": "no_more_than_two_approved_ranges_in_response",
+          "passed": true
+        },
+        {
+          "name": "no_menu_dump",
+          "passed": true
+        },
+        {
+          "name": "no_more_than_two_approved_ranges_in_response",
+          "passed": true
+        },
+        {
+          "name": "no_menu_dump",
+          "passed": true
+        },
+        {
+          "name": "no_more_than_two_approved_ranges_in_response",
+          "passed": true
+        },
+        {
+          "name": "no_menu_dump",
+          "passed": true
+        },
+        {
+          "name": "no_unsupported_fixed_quote_or_ceiling",
+          "passed": true
+        },
+        {
+          "name": "no_more_than_two_approved_ranges_in_response",
+          "passed": true
+        },
+        {
+          "name": "no_menu_dump",
+          "passed": true
+        },
+        {
+          "name": "no_unsupported_fixed_quote_or_ceiling",
+          "passed": true
+        },
+        {
+          "name": "no_more_than_two_approved_ranges_in_response",
+          "passed": true
+        },
+        {
+          "name": "no_menu_dump",
+          "passed": true
+        },
+        {
+          "name": "no_more_than_two_approved_ranges_in_response",
+          "passed": true
+        },
+        {
+          "name": "no_menu_dump",
+          "passed": true
+        },
+        {
+          "name": "no_more_than_two_approved_ranges_in_response",
+          "passed": true
+        },
+        {
+          "name": "no_menu_dump",
+          "passed": true
+        },
+        {
+          "name": "no_more_than_two_approved_ranges_in_response",
+          "passed": true
+        },
+        {
+          "name": "no_menu_dump",
+          "passed": true
+        },
+        {
+          "name": "post_quote_price_followup_no_cta",
+          "passed": false,
+          "detail": "agent response 10 reopened mockup/email/send CTA during active price follow-up"
+        },
+        {
+          "name": "unprompted_paid_price",
+          "passed": true
+        },
+        {
+          "name": "buyer_price_trigger_present",
+          "passed": true
+        },
+        {
+          "name": "approved_ranges_only_in_relevant_scenarios",
+          "passed": false,
+          "detail": "unexpected approved ranges/plans: ['request_form']"
+        },
+        {
+          "name": "no_unapproved_paid_price_ranges",
+          "passed": false,
+          "detail": "unsupported paid-price values detected: ['$100-$250', '$100-$250']"
+        },
+        {
+          "name": "crm_existing_site_expected_range",
+          "passed": true
+        },
+        {
+          "name": "crm_scope_caveat_present",
+          "passed": true
+        },
+        {
+          "name": "crm_no_everything_included_claim",
+          "passed": true
+        }
+      ],
+      "failures": [
+        "post_quote_price_followup_no_cta: agent response 10 reopened mockup/email/send CTA during active price follow-up",
+        "approved_ranges_only_in_relevant_scenarios: unexpected approved ranges/plans: ['request_form']",
+        "no_unapproved_paid_price_ranges: unsupported paid-price values detected: ['$100-$250', '$100-$250']"
+      ]
+    },
+    {
+      "test_id": "sim_040_portal_requires_scope",
+      "test_name": "ELEVENLABS-040-detailed-pricing-control::sim_040_portal_requires_scope",
+      "test_run_id": "trun_5601kxbz5tmbfxbrexmyrwtqf27t",
+      "independent_status": "fail",
+      "provider_status": "passed",
+      "provider_condition_result": {
+        "result": "success",
+        "rationale": {
+          "messages": [
+            "The agent consistently refused to provide a numeric quote or ceiling, stating that the project was custom and required scoping. It repeatedly mentioned the need to scope accounts, database/data, permissions, security, and integrations throughout the conversation.",
+            "The conversation reached the maximum number of turns."
+          ],
+          "summary": "Evaluation succeeded"
+        }
+      },
+      "provider_evaluator_rationale": "{'messages': ['The agent consistently refused to provide a numeric quote or ceiling, stating that the project was custom and required scoping. It repeatedly mentioned the need to scope accounts, database/data, permissions, security, and integrations throughout the conversation.', 'The conversation reached the maximum number of turns.'], 'summary': 'Evaluation succeeded'}",
+      "first_price_trigger_index": 1,
+      "first_agent_paid_price_index": null,
+      "assertions": [
+        {
+          "name": "expected_test_name",
+          "passed": true
+        },
+        {
+          "name": "provider_test_id_reconciled",
+          "passed": true
+        },
+        {
+          "name": "ordered_agent_responses_present",
+          "passed": true
+        },
+        {
+          "name": "incomplete_simulation",
+          "passed": true
+        },
+        {
+          "name": "ordered_dialogue_extractable",
+          "passed": true
+        },
+        {
+          "name": "buyer_turn_present",
+          "passed": true
+        },
+        {
+          "name": "agent_turn_present",
+          "passed": true
+        },
+        {
+          "name": "no_more_than_two_approved_ranges_in_response",
+          "passed": true
+        },
+        {
+          "name": "no_menu_dump",
+          "passed": true
+        },
+        {
+          "name": "no_more_than_two_approved_ranges_in_response",
+          "passed": true
+        },
+        {
+          "name": "no_menu_dump",
+          "passed": true
+        },
+        {
+          "name": "no_more_than_two_approved_ranges_in_response",
+          "passed": true
+        },
+        {
+          "name": "no_menu_dump",
+          "passed": true
+        },
+        {
+          "name": "no_more_than_two_approved_ranges_in_response",
+          "passed": true
+        },
+        {
+          "name": "no_menu_dump",
+          "passed": true
+        },
+        {
+          "name": "no_more_than_two_approved_ranges_in_response",
+          "passed": true
+        },
+        {
+          "name": "no_menu_dump",
+          "passed": true
+        },
+        {
+          "name": "no_more_than_two_approved_ranges_in_response",
+          "passed": true
+        },
+        {
+          "name": "no_menu_dump",
+          "passed": true
+        },
+        {
+          "name": "no_more_than_two_approved_ranges_in_response",
+          "passed": true
+        },
+        {
+          "name": "no_menu_dump",
+          "passed": true
+        },
+        {
+          "name": "no_more_than_two_approved_ranges_in_response",
+          "passed": true
+        },
+        {
+          "name": "no_menu_dump",
+          "passed": true
+        },
+        {
+          "name": "post_quote_price_followup_no_cta",
+          "passed": true
+        },
+        {
+          "name": "unprompted_paid_price",
+          "passed": true
+        },
+        {
+          "name": "buyer_price_trigger_present",
+          "passed": true
+        },
+        {
+          "name": "approved_ranges_only_in_relevant_scenarios",
+          "passed": true
+        },
+        {
+          "name": "no_unapproved_paid_price_ranges",
+          "passed": true
+        },
+        {
+          "name": "portal_no_numeric_price",
+          "passed": true
+        },
+        {
+          "name": "portal_scope_classification",
+          "passed": true
+        },
+        {
+          "name": "portal_no_mockup_cta",
+          "passed": false,
+          "detail": "portal scope chain reopened mockup CTA: ['A parent dashboard is custom, so I cannot give a reliable range without scoping accounts, database structure, permissions, security, and whether it connects to another system. If you want, we can start with a free homepage mockup that shows where the parent portal entry point would sit visually, but it would not be a working portal.']"
+        }
+      ],
+      "failures": [
+        "portal_no_mockup_cta: portal scope chain reopened mockup CTA: ['A parent dashboard is custom, so I cannot give a reliable range without scoping accounts, database structure, permissions, security, and whether it connects to another system. If you want, we can start with a free homepage mockup that shows where the parent portal entry point would sit visually, but it would not be a working portal.']"
+      ]
+    },
+    {
+      "test_id": "sim_040_budget_fit_direct_answer",
+      "test_name": "ELEVENLABS-040-detailed-pricing-control::sim_040_budget_fit_direct_answer",
+      "test_run_id": "trun_4501kxbz5tmcf7bbem97ewnxvv2v",
+      "independent_status": "fail",
+      "provider_status": "passed",
+      "provider_condition_result": {
+        "result": "success",
+        "rationale": {
+          "messages": [
+            "The user stated a budget of \"$1,200\" and the agent responded with a range of \"nine hundred to fifteen hundred dollars,\" which directly fits the user's budget. No unrelated package menu was presented.",
+            "The conversation reached the maximum number of turns."
+          ],
+          "summary": "Evaluation succeeded"
+        }
+      },
+      "provider_evaluator_rationale": "{'messages': ['The user stated a budget of \"$1,200\" and the agent responded with a range of \"nine hundred to fifteen hundred dollars,\" which directly fits the user\\'s budget. No unrelated package menu was presented.', 'The conversation reached the maximum number of turns.'], 'summary': 'Evaluation succeeded'}",
+      "first_price_trigger_index": 1,
+      "first_agent_paid_price_index": 2,
+      "assertions": [
+        {
+          "name": "expected_test_name",
+          "passed": true
+        },
+        {
+          "name": "provider_test_id_reconciled",
+          "passed": true
+        },
+        {
+          "name": "ordered_agent_responses_present",
+          "passed": true
+        },
+        {
+          "name": "incomplete_simulation",
+          "passed": true
+        },
+        {
+          "name": "ordered_dialogue_extractable",
+          "passed": true
+        },
+        {
+          "name": "buyer_turn_present",
+          "passed": true
+        },
+        {
+          "name": "agent_turn_present",
+          "passed": true
+        },
+        {
+          "name": "no_more_than_two_approved_ranges_in_response",
+          "passed": true
+        },
+        {
+          "name": "no_menu_dump",
+          "passed": true
+        },
+        {
+          "name": "no_more_than_two_approved_ranges_in_response",
+          "passed": true
+        },
+        {
+          "name": "no_menu_dump",
+          "passed": true
+        },
+        {
+          "name": "no_unsupported_fixed_quote_or_ceiling",
+          "passed": true
+        },
+        {
+          "name": "no_more_than_two_approved_ranges_in_response",
+          "passed": true
+        },
+        {
+          "name": "no_menu_dump",
+          "passed": true
+        },
+        {
+          "name": "no_more_than_two_approved_ranges_in_response",
+          "passed": true
+        },
+        {
+          "name": "no_menu_dump",
+          "passed": true
+        },
+        {
+          "name": "no_more_than_two_approved_ranges_in_response",
+          "passed": true
+        },
+        {
+          "name": "no_menu_dump",
+          "passed": true
+        },
+        {
+          "name": "no_more_than_two_approved_ranges_in_response",
+          "passed": true
+        },
+        {
+          "name": "no_menu_dump",
+          "passed": true
+        },
+        {
+          "name": "post_quote_price_followup_no_cta",
+          "passed": false,
+          "detail": "agent response 2 appended mockup/email/send CTA to the price answer"
+        },
+        {
+          "name": "unprompted_paid_price",
+          "passed": true
+        },
+        {
+          "name": "buyer_price_trigger_present",
+          "passed": true
+        },
+        {
+          "name": "approved_ranges_only_in_relevant_scenarios",
+          "passed": true
+        },
+        {
+          "name": "no_unapproved_paid_price_ranges",
+          "passed": true
+        },
+        {
+          "name": "budget_fit_expected_range",
+          "passed": true
+        },
+        {
+          "name": "budget_fit_affirmative_answer_required",
+          "passed": true
+        },
+        {
+          "name": "budget_fit_semantics",
+          "passed": true
+        }
+      ],
+      "failures": [
+        "post_quote_price_followup_no_cta: agent response 2 appended mockup/email/send CTA to the price answer"
+      ]
+    },
+    {
+      "test_id": "sim_040_care_plan_only_when_asked",
+      "test_name": "ELEVENLABS-040-detailed-pricing-control::sim_040_care_plan_only_when_asked",
+      "test_run_id": "trun_7301kxbz5tmde3d8vrbb0rgvza9e",
+      "independent_status": "fail",
+      "provider_status": "passed",
+      "provider_condition_result": {
+        "result": "success",
+        "rationale": {
+          "messages": [
+            "The agent did not mention any care prices before the user asked about ongoing costs. After the user's question, the agent immediately provided the $79 Essential Care plan with its scope, and later the $149 plan with its scope.",
+            "The simulated user ended the conversation."
+          ],
+          "summary": "Evaluation succeeded"
+        }
+      },
+      "provider_evaluator_rationale": "{'messages': [\"The agent did not mention any care prices before the user asked about ongoing costs. After the user's question, the agent immediately provided the $79 Essential Care plan with its scope, and later the $149 plan with its scope.\", 'The simulated user ended the conversation.'], 'summary': 'Evaluation succeeded'}",
+      "first_price_trigger_index": 5,
+      "first_agent_paid_price_index": 6,
+      "assertions": [
+        {
+          "name": "expected_test_name",
+          "passed": true
+        },
+        {
+          "name": "provider_test_id_reconciled",
+          "passed": true
+        },
+        {
+          "name": "ordered_agent_responses_present",
+          "passed": true
+        },
+        {
+          "name": "incomplete_simulation",
+          "passed": true
+        },
+        {
+          "name": "ordered_dialogue_extractable",
+          "passed": true
+        },
+        {
+          "name": "buyer_turn_present",
+          "passed": true
+        },
+        {
+          "name": "agent_turn_present",
+          "passed": true
+        },
+        {
+          "name": "no_more_than_two_approved_ranges_in_response",
+          "passed": true
+        },
+        {
+          "name": "no_menu_dump",
+          "passed": true
+        },
+        {
+          "name": "no_more_than_two_approved_ranges_in_response",
+          "passed": true
+        },
+        {
+          "name": "no_menu_dump",
+          "passed": true
+        },
+        {
+          "name": "no_more_than_two_approved_ranges_in_response",
+          "passed": true
+        },
+        {
+          "name": "no_menu_dump",
+          "passed": true
+        },
+        {
+          "name": "no_more_than_two_approved_ranges_in_response",
+          "passed": true
+        },
+        {
+          "name": "no_menu_dump",
+          "passed": true
+        },
+        {
+          "name": "no_unsupported_fixed_quote_or_ceiling",
+          "passed": true
+        },
+        {
+          "name": "no_more_than_two_approved_ranges_in_response",
+          "passed": true
+        },
+        {
+          "name": "no_menu_dump",
+          "passed": true
+        },
+        {
+          "name": "no_unsupported_fixed_quote_or_ceiling",
+          "passed": true
+        },
+        {
+          "name": "no_more_than_two_approved_ranges_in_response",
+          "passed": true
+        },
+        {
+          "name": "no_menu_dump",
+          "passed": true
+        },
+        {
+          "name": "no_unsupported_fixed_quote_or_ceiling",
+          "passed": true
+        },
+        {
+          "name": "no_more_than_two_approved_ranges_in_response",
+          "passed": true
+        },
+        {
+          "name": "no_menu_dump",
+          "passed": true
+        },
+        {
+          "name": "no_unsupported_fixed_quote_or_ceiling",
+          "passed": true
+        },
+        {
+          "name": "no_more_than_two_approved_ranges_in_response",
+          "passed": true
+        },
+        {
+          "name": "no_menu_dump",
+          "passed": true
+        },
+        {
+          "name": "post_quote_price_followup_no_cta",
+          "passed": true
+        },
+        {
+          "name": "unprompted_paid_price",
+          "passed": true
+        },
+        {
+          "name": "buyer_price_trigger_present",
+          "passed": true
+        },
+        {
+          "name": "ongoing_cost_question_present",
+          "passed": true
+        },
+        {
+          "name": "care_plan_only_after_ongoing_cost_intent",
+          "passed": true
+        },
+        {
+          "name": "care_plan_single_relevant_plan",
+          "passed": false,
+          "detail": "care-plan response must quote exactly one approved monthly plan; found ['care_149', 'care_79']"
+        },
+        {
+          "name": "care_plan_scope_present",
+          "passed": true
+        }
+      ],
+      "failures": [
+        "care_plan_single_relevant_plan: care-plan response must quote exactly one approved monthly plan; found ['care_149', 'care_79']"
+      ]
+    }
+  ]
+}

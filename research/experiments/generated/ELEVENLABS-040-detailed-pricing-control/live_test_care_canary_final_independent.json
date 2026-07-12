@@ -1,0 +1,209 @@
+{
+  "checkpoint_id": "ELEVENLABS-040-detailed-pricing-control",
+  "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+  "invocation_id": "suite_5701kxbhbgcmfyxakgs2vnr1ppd7",
+  "validation_mode": "partial_test",
+  "partial_test_id": "sim_040_care_plan_only_when_asked",
+  "independent_status": "fail",
+  "input_test_ids": [
+    "sim_040_care_plan_only_when_asked"
+  ],
+  "global_failures": [],
+  "provider_labels": {
+    "status_entries": [
+      {
+        "test_id": "sim_040_care_plan_only_when_asked",
+        "test_run_id": "trun_0201kxbhbgcnfm8sp6b7kyt6hy2c",
+        "status": "passed"
+      }
+    ],
+    "condition_result_entries": [
+      {
+        "test_id": "sim_040_care_plan_only_when_asked",
+        "test_run_id": "trun_0201kxbhbgcnfm8sp6b7kyt6hy2c",
+        "condition_result": {
+          "result": "success",
+          "rationale": {
+            "messages": [
+              "The agent did not mention any care prices before the user asked about monthly hosting and maintenance. After the user's question, the agent immediately provided the $79 plan with its scope (hosting coordination, updates, backups, and monitoring).",
+              "The conversation reached the maximum number of turns."
+            ],
+            "summary": "Evaluation succeeded"
+          }
+        }
+      }
+    ]
+  },
+  "tests": [
+    {
+      "test_id": "sim_040_care_plan_only_when_asked",
+      "test_name": "ELEVENLABS-040-detailed-pricing-control::sim_040_care_plan_only_when_asked",
+      "test_run_id": "trun_0201kxbhbgcnfm8sp6b7kyt6hy2c",
+      "independent_status": "fail",
+      "provider_status": "passed",
+      "provider_condition_result": {
+        "result": "success",
+        "rationale": {
+          "messages": [
+            "The agent did not mention any care prices before the user asked about monthly hosting and maintenance. After the user's question, the agent immediately provided the $79 plan with its scope (hosting coordination, updates, backups, and monitoring).",
+            "The conversation reached the maximum number of turns."
+          ],
+          "summary": "Evaluation succeeded"
+        }
+      },
+      "provider_evaluator_rationale": "{'messages': [\"The agent did not mention any care prices before the user asked about monthly hosting and maintenance. After the user's question, the agent immediately provided the $79 plan with its scope (hosting coordination, updates, backups, and monitoring).\", 'The conversation reached the maximum number of turns.'], 'summary': 'Evaluation succeeded'}",
+      "first_price_trigger_index": 5,
+      "first_agent_paid_price_index": 6,
+      "assertions": [
+        {
+          "name": "expected_test_name",
+          "passed": true
+        },
+        {
+          "name": "provider_test_id_reconciled",
+          "passed": true
+        },
+        {
+          "name": "ordered_agent_responses_present",
+          "passed": true
+        },
+        {
+          "name": "incomplete_simulation",
+          "passed": true
+        },
+        {
+          "name": "ordered_dialogue_extractable",
+          "passed": true
+        },
+        {
+          "name": "buyer_turn_present",
+          "passed": true
+        },
+        {
+          "name": "agent_turn_present",
+          "passed": true
+        },
+        {
+          "name": "no_more_than_two_approved_ranges_in_response",
+          "passed": true
+        },
+        {
+          "name": "no_menu_dump",
+          "passed": true
+        },
+        {
+          "name": "no_more_than_two_approved_ranges_in_response",
+          "passed": true
+        },
+        {
+          "name": "no_menu_dump",
+          "passed": true
+        },
+        {
+          "name": "no_more_than_two_approved_ranges_in_response",
+          "passed": true
+        },
+        {
+          "name": "no_menu_dump",
+          "passed": true
+        },
+        {
+          "name": "no_more_than_two_approved_ranges_in_response",
+          "passed": true
+        },
+        {
+          "name": "no_menu_dump",
+          "passed": true
+        },
+        {
+          "name": "no_unsupported_fixed_quote_or_ceiling",
+          "passed": true
+        },
+        {
+          "name": "no_more_than_two_approved_ranges_in_response",
+          "passed": true
+        },
+        {
+          "name": "no_menu_dump",
+          "passed": true
+        },
+        {
+          "name": "no_unsupported_fixed_quote_or_ceiling",
+          "passed": true
+        },
+        {
+          "name": "no_more_than_two_approved_ranges_in_response",
+          "passed": true
+        },
+        {
+          "name": "no_menu_dump",
+          "passed": true
+        },
+        {
+          "name": "no_more_than_two_approved_ranges_in_response",
+          "passed": true
+        },
+        {
+          "name": "no_menu_dump",
+          "passed": true
+        },
+        {
+          "name": "no_more_than_two_approved_ranges_in_response",
+          "passed": true
+        },
+        {
+          "name": "no_menu_dump",
+          "passed": true
+        },
+        {
+          "name": "no_more_than_two_approved_ranges_in_response",
+          "passed": true
+        },
+        {
+          "name": "no_menu_dump",
+          "passed": true
+        },
+        {
+          "name": "no_more_than_two_approved_ranges_in_response",
+          "passed": true
+        },
+        {
+          "name": "no_menu_dump",
+          "passed": true
+        },
+        {
+          "name": "post_quote_price_followup_no_cta",
+          "passed": true
+        },
+        {
+          "name": "unprompted_paid_price",
+          "passed": true
+        },
+        {
+          "name": "buyer_price_trigger_present",
+          "passed": true
+        },
+        {
+          "name": "ongoing_cost_question_present",
+          "passed": true
+        },
+        {
+          "name": "care_plan_only_after_ongoing_cost_intent",
+          "passed": true
+        },
+        {
+          "name": "care_plan_single_relevant_plan",
+          "passed": false,
+          "detail": "care-plan response must quote exactly one approved monthly plan; found ['care_149', 'care_249', 'care_79']"
+        },
+        {
+          "name": "care_plan_scope_present",
+          "passed": true
+        }
+      ],
+      "failures": [
+        "care_plan_single_relevant_plan: care-plan response must quote exactly one approved monthly plan; found ['care_149', 'care_249', 'care_79']"
+      ]
+    }
+  ]
+}

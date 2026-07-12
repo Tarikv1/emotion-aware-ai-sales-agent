@@ -1,0 +1,152 @@
+{
+  "captured_at_utc": "2026-07-12T01:48:41Z",
+  "payload_sha256": "52bafc9a338a52a8d3cbe13c1a11578ab4e4c83a5feba19183cf0b95bb00b872",
+  "payload": {
+    "checkpoint_id": "ELEVENLABS-040-detailed-pricing-control",
+    "invocation_id": "suite_6801kxa05dpafjx8a911fpgfmkq9",
+    "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+    "test_runs": [
+      {
+        "test_run_id": "trun_9801kxa05dpef9daj9cqwe26x3t3",
+        "test_invocation_id": "suite_6801kxa05dpafjx8a911fpgfmkq9",
+        "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+        "test_id": "sim_040_basic_site_direct_price",
+        "provider_test_id": "test_0201kx9ddmfpeyh9mes2znh3j98b",
+        "test_name": "ELEVENLABS-040-detailed-pricing-control::sim_040_basic_site_direct_price",
+        "scenario": "Buyer explicitly asks what a basic three-to-five-page local-business site costs.",
+        "success_conditions": [
+          "Pass: one `$900-$1,500` whole-project range and one relevant driver at most."
+        ],
+        "models": {
+          "simulated_user_model": "gemini-2.5-flash",
+          "evaluation_model": "gemini-2.5-flash"
+        },
+        "status": "passed",
+        "condition_result": {
+          "result": "success",
+          "rationale": {
+            "messages": [
+              "The agent provided the `$900-$1,500` whole-project range and one relevant driver (\"depending mostly on how much content and cleanup is needed\") in its initial response to the user's question about cost.",
+              "The conversation reached the maximum number of turns."
+            ],
+            "summary": "Evaluation succeeded"
+          }
+        },
+        "evaluator_rationale": "{'messages': ['The agent provided the `$900-$1,500` whole-project range and one relevant driver (\"depending mostly on how much content and cleanup is needed\") in its initial response to the user\\'s question about cost.', 'The conversation reached the maximum number of turns.'], 'summary': 'Evaluation succeeded'}",
+        "agent_responses": [
+          {
+            "source_medium": null,
+            "tool_calls": [],
+            "interrupted": false,
+            "message": "Hi, this is Emma from Atlas Web Studio. I had Acme Dental down as a dental clinic in Phoenix. Am I speaking with the owner or someone who handles the website there?",
+            "tool_results": [],
+            "time": 18,
+            "role": "agent",
+            "original_message": null
+          },
+          {
+            "source_medium": "text",
+            "tool_calls": [],
+            "interrupted": false,
+            "message": "Yeah, that's me. I was just wondering what a basic website costs.",
+            "tool_results": [],
+            "time": 18,
+            "role": "user",
+            "original_message": null
+          },
+          {
+            "source_medium": null,
+            "tool_calls": [],
+            "interrupted": false,
+            "message": "For a basic three to five page new website, it usually falls around nine hundred to fifteen hundred dollars, depending mostly on how much content and cleanup is needed. The reason I called is we can put together a free homepage mockup first, so you can see whether the direction is useful before talking about any paid work. Would you be open to taking a look?",
+            "tool_results": [],
+            "time": 18,
+            "role": "agent",
+            "original_message": null
+          },
+          {
+            "source_medium": "text",
+            "tool_calls": [],
+            "interrupted": false,
+            "message": "Hmm, okay. Nine hundred to fifteen hundred is a pretty big range. What makes it cost more or less?",
+            "tool_results": [],
+            "time": 18,
+            "role": "user",
+            "original_message": null
+          },
+          {
+            "source_medium": null,
+            "tool_calls": [],
+            "interrupted": false,
+            "message": "The lower end is usually when the pages are straightforward, the copy is mostly ready, and the design direction is simple. The higher end is when we need more content help, more layout variation, image cleanup, or extra polish for trust elements like services, reviews, and patient calls to action. For the free mockup, we would just show the homepage direction first so you can judge the look before deciding anything paid.",
+            "tool_results": [],
+            "time": 18,
+            "role": "agent",
+            "original_message": null
+          },
+          {
+            "source_medium": "text",
+            "tool_calls": [],
+            "interrupted": false,
+            "message": "So, like, if I want a services page or reviews, that's automatically the higher price?",
+            "tool_results": [],
+            "time": 18,
+            "role": "user",
+            "original_message": null
+          },
+          {
+            "source_medium": null,
+            "tool_calls": [],
+            "interrupted": false,
+            "message": "Not automatically. A normal services page and reviews section can still fit in the basic range if the content is straightforward and we are not building anything custom. It tends to move higher when we are writing a lot from scratch, reorganizing many services, or adding more design detail across the site.",
+            "tool_results": [],
+            "time": 18,
+            "role": "agent",
+            "original_message": null
+          },
+          {
+            "source_medium": "text",
+            "tool_calls": [],
+            "interrupted": false,
+            "message": "So, how would I know if my site would be on the lower or higher end then?",
+            "tool_results": [],
+            "time": 18,
+            "role": "user",
+            "original_message": null
+          },
+          {
+            "source_medium": null,
+            "tool_calls": [],
+            "interrupted": false,
+            "message": "The main test is how much is already ready versus how much we need to create or clean up. If you have clear service descriptions, photos, reviews, and a simple structure, it is more likely toward the lower end; if we need to write, organize, and polish most of it, it moves higher. The free homepage mockup is a good first step because it shows the direction without asking you to commit to the full project.",
+            "tool_results": [],
+            "time": 18,
+            "role": "agent",
+            "original_message": null
+          },
+          {
+            "source_medium": "text",
+            "tool_calls": [],
+            "interrupted": false,
+            "message": "Okay, but what if I have some of that ready, but not all of it? How do we figure that out?",
+            "tool_results": [],
+            "time": 18,
+            "role": "user",
+            "original_message": null
+          },
+          {
+            "source_medium": null,
+            "tool_calls": [],
+            "interrupted": false,
+            "message": "We would look at what you already have, what needs to be written or cleaned up, and whether the site is just a few standard pages or needs anything more involved. From there, the paid scope can be narrowed down after you see whether the homepage direction even feels right. If you want, I can send the free mockup over first and you can judge it without committing to anything.",
+            "tool_results": [],
+            "time": 18,
+            "role": "agent",
+            "original_message": null
+          }
+        ]
+      }
+    ],
+    "result_groups": []
+  }
+}

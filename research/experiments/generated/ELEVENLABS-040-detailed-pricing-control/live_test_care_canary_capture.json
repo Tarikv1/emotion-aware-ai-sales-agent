@@ -1,0 +1,232 @@
+{
+  "captured_at_utc": "2026-07-12T15:17:01Z",
+  "payload_sha256": "ec75254cfebb2daded900c036e47a4b371f4f1d5fa4490dc411aecd8451a230c",
+  "payload": {
+    "checkpoint_id": "ELEVENLABS-040-detailed-pricing-control",
+    "invocation_id": "suite_7401kxbecx5bfgav1jhca562wm9p",
+    "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+    "test_runs": [
+      {
+        "test_run_id": "trun_3401kxbecx5qe8trnt8xsjn9ctys",
+        "test_invocation_id": "suite_7401kxbecx5bfgav1jhca562wm9p",
+        "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+        "test_id": "sim_040_care_plan_only_when_asked",
+        "provider_test_id": "test_6101kx9ddp3cf0w9fqtvqwm21esx",
+        "test_name": "ELEVENLABS-040-detailed-pricing-control::sim_040_care_plan_only_when_asked",
+        "scenario": "Buyer first asks about ordinary site capability, then explicitly asks monthly hosting and maintenance cost.",
+        "success_conditions": [
+          "Pass: no care price before the ongoing-cost question; after it, one relevant `$79`, `$149`, or `$249` plan with scope."
+        ],
+        "models": {
+          "simulated_user_model": "gemini-2.5-flash",
+          "evaluation_model": "gemini-2.5-flash"
+        },
+        "status": "passed",
+        "condition_result": {
+          "result": "success",
+          "rationale": {
+            "messages": [
+              "The agent did not mention any care prices before the user asked about ongoing costs. After the user's question, the agent immediately provided the $79 plan with its scope, and later clarified the $149 plan with its scope based on user follow-up.",
+              "The conversation reached the maximum number of turns."
+            ],
+            "summary": "Evaluation succeeded"
+          }
+        },
+        "evaluator_rationale": "{'messages': [\"The agent did not mention any care prices before the user asked about ongoing costs. After the user's question, the agent immediately provided the $79 plan with its scope, and later clarified the $149 plan with its scope based on user follow-up.\", 'The conversation reached the maximum number of turns.'], 'summary': 'Evaluation succeeded'}",
+        "agent_responses": [
+          {
+            "interrupted": false,
+            "message": "Hi, this is Emma from Atlas Web Studio. I had Acme Dental down as a dental clinic in Phoenix. Am I speaking with the owner or someone who handles the website there?",
+            "original_message": null,
+            "source_medium": null,
+            "tool_calls": [],
+            "tool_results": [],
+            "time": 35,
+            "role": "agent"
+          },
+          {
+            "interrupted": false,
+            "message": "Yeah, that's me. I handle the website.",
+            "original_message": null,
+            "source_medium": "text",
+            "tool_calls": [],
+            "tool_results": [],
+            "time": 35,
+            "role": "user"
+          },
+          {
+            "interrupted": false,
+            "message": "Great. I\u2019m calling because we\u2019re putting together a free homepage mockup for a few local businesses, just to show what a cleaner, more patient-friendly first impression could look like. There\u2019s no payment or contract for the mockup; if it looks useful, you can reply to the email. Would you be open to seeing one for Acme Dental?",
+            "original_message": null,
+            "source_medium": null,
+            "tool_calls": [],
+            "tool_results": [],
+            "time": 35,
+            "role": "agent"
+          },
+          {
+            "interrupted": false,
+            "message": "Hmm, okay. What kind of stuff can you actually do with a website?",
+            "original_message": null,
+            "source_medium": "text",
+            "tool_calls": [],
+            "tool_results": [],
+            "time": 35,
+            "role": "user"
+          },
+          {
+            "interrupted": false,
+            "message": "We can help with the main things a dental site usually needs: a clearer homepage, service pages, mobile-friendly layout, contact forms, call buttons, and places for appointment requests or patient information. If you use a scheduling tool or patient system, we can usually show where that would fit visually, and then scope the real integration separately if you ever wanted it built. For now, the free mockup would just show the homepage direction so you can judge whether the look and structure are useful.",
+            "original_message": null,
+            "source_medium": null,
+            "tool_calls": [],
+            "tool_results": [],
+            "time": 35,
+            "role": "agent"
+          },
+          {
+            "interrupted": false,
+            "message": "Okay, so what about, like, the monthly cost for all that? For hosting and maintenance?",
+            "original_message": null,
+            "source_medium": "text",
+            "tool_calls": [],
+            "tool_results": [],
+            "time": 35,
+            "role": "user"
+          },
+          {
+            "interrupted": false,
+            "message": "For ongoing care, the usual plan is seventy nine dollars per month for hosting coordination, updates, backups, and monitoring. If you also need regular content edits, that can move to a higher care plan depending on how much editing is needed.",
+            "original_message": null,
+            "source_medium": null,
+            "tool_calls": [],
+            "tool_results": [],
+            "time": 35,
+            "role": "agent"
+          },
+          {
+            "interrupted": false,
+            "message": "So that $79 is just for the technical stuff, not for actually changing anything on the pages?",
+            "original_message": null,
+            "source_medium": "text",
+            "tool_calls": [],
+            "tool_results": [],
+            "time": 35,
+            "role": "user"
+          },
+          {
+            "interrupted": false,
+            "message": "Right, seventy nine dollars per month is mainly the technical care: hosting coordination, updates, backups, and monitoring. Ordinary page edits would usually be on the one hundred forty nine dollar per month plan, depending on how often you need changes.",
+            "original_message": null,
+            "source_medium": null,
+            "tool_calls": [],
+            "tool_results": [],
+            "time": 35,
+            "role": "agent"
+          },
+          {
+            "interrupted": false,
+            "message": "Okay, so it's seventy-nine just for keeping it running, and then more if I want to change anything?",
+            "original_message": null,
+            "source_medium": "text",
+            "tool_calls": [],
+            "tool_results": [],
+            "time": 35,
+            "role": "user"
+          },
+          {
+            "interrupted": false,
+            "message": "Yes, that\u2019s the basic idea. Seventy nine dollars per month covers the technical upkeep, and regular page changes would move into the higher care plan.",
+            "original_message": null,
+            "source_medium": null,
+            "tool_calls": [],
+            "tool_results": [],
+            "time": 35,
+            "role": "agent"
+          },
+          {
+            "interrupted": false,
+            "message": "Okay, so it's not just one monthly price then.",
+            "original_message": null,
+            "source_medium": "text",
+            "tool_calls": [],
+            "tool_results": [],
+            "time": 35,
+            "role": "user"
+          },
+          {
+            "interrupted": false,
+            "message": "Correct, it depends on what you want included each month. If it is just technical upkeep, it is seventy nine dollars per month; if you want ordinary edits included too, it is one hundred forty nine dollars per month.",
+            "original_message": null,
+            "source_medium": null,
+            "tool_calls": [],
+            "tool_results": [],
+            "time": 35,
+            "role": "agent"
+          },
+          {
+            "interrupted": false,
+            "message": "Okay, so it's seventy-nine or one forty-nine, depending on what I need. Got it.",
+            "original_message": null,
+            "source_medium": "text",
+            "tool_calls": [],
+            "tool_results": [],
+            "time": 35,
+            "role": "user"
+          },
+          {
+            "interrupted": false,
+            "message": "Exactly. The main driver is whether you only need the site maintained technically, or whether you also want us handling ordinary content edits each month.",
+            "original_message": null,
+            "source_medium": null,
+            "tool_calls": [],
+            "tool_results": [],
+            "time": 35,
+            "role": "agent"
+          },
+          {
+            "interrupted": false,
+            "message": "Okay, thanks for clarifying that.",
+            "original_message": null,
+            "source_medium": "text",
+            "tool_calls": [],
+            "tool_results": [],
+            "time": 35,
+            "role": "user"
+          },
+          {
+            "interrupted": false,
+            "message": "Of course. If it helps, the free mockup would let you see the homepage direction first without committing to any monthly plan. Would you like me to send it over?",
+            "original_message": null,
+            "source_medium": null,
+            "tool_calls": [],
+            "tool_results": [],
+            "time": 35,
+            "role": "agent"
+          },
+          {
+            "interrupted": false,
+            "message": "Yeah, send it over.",
+            "original_message": null,
+            "source_medium": "text",
+            "tool_calls": [],
+            "tool_results": [],
+            "time": 35,
+            "role": "user"
+          },
+          {
+            "interrupted": false,
+            "message": "Best email?",
+            "original_message": null,
+            "source_medium": null,
+            "tool_calls": [],
+            "tool_results": [],
+            "time": 35,
+            "role": "agent"
+          }
+        ]
+      }
+    ],
+    "result_groups": []
+  }
+}

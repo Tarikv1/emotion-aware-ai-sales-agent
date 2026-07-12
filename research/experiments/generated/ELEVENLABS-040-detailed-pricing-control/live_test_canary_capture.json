@@ -1,0 +1,152 @@
+{
+  "captured_at_utc": "2026-07-12T01:27:02Z",
+  "payload_sha256": "ae140a26e3bb90da2e1d26548dbcf4082d9a1ac85e01d23dfd10843588f3b111",
+  "payload": {
+    "checkpoint_id": "ELEVENLABS-040-detailed-pricing-control",
+    "invocation_id": "suite_8501kx9yxjmwfg4racwzgy19k1zd",
+    "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+    "test_runs": [
+      {
+        "test_run_id": "trun_6701kx9yxjnbet69hk5kavrk5g5j",
+        "test_invocation_id": "suite_8501kx9yxjmwfg4racwzgy19k1zd",
+        "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+        "test_id": "sim_040_basic_site_direct_price",
+        "provider_test_id": "test_0201kx9ddmfpeyh9mes2znh3j98b",
+        "test_name": "ELEVENLABS-040-detailed-pricing-control::sim_040_basic_site_direct_price",
+        "scenario": "Buyer explicitly asks what a basic three-to-five-page local-business site costs.",
+        "success_conditions": [
+          "Pass: one `$900-$1,500` whole-project range and one relevant driver at most."
+        ],
+        "models": {
+          "simulated_user_model": "gemini-2.5-flash",
+          "evaluation_model": "gemini-2.5-flash"
+        },
+        "status": "failed",
+        "condition_result": {
+          "result": "failure",
+          "rationale": {
+            "messages": [
+              "The agent did not provide a `$900-$1,500` whole-project range. The lowest range mentioned was `$3,000-$5,000` and then `around three thousand dollars`, which does not match the specified range in the criteria.",
+              "The conversation reached the maximum number of turns."
+            ],
+            "summary": "Evaluation failed"
+          }
+        },
+        "evaluator_rationale": "{'messages': ['The agent did not provide a `$900-$1,500` whole-project range. The lowest range mentioned was `$3,000-$5,000` and then `around three thousand dollars`, which does not match the specified range in the criteria.', 'The conversation reached the maximum number of turns.'], 'summary': 'Evaluation failed'}",
+        "agent_responses": [
+          {
+            "interrupted": false,
+            "message": "Hi, this is Emma from Atlas Web Studio. I had Acme Dental down as a dental clinic in Phoenix. Am I speaking with the owner or someone who handles the website there?",
+            "time": 22,
+            "role": "agent",
+            "tool_results": [],
+            "source_medium": null,
+            "tool_calls": [],
+            "original_message": null
+          },
+          {
+            "interrupted": false,
+            "message": "Yeah, I'm the owner. I was calling to find out about website costs.",
+            "time": 22,
+            "role": "user",
+            "tool_results": [],
+            "source_medium": "text",
+            "tool_calls": [],
+            "original_message": null
+          },
+          {
+            "interrupted": false,
+            "message": "Sure. For a new small business website, most projects are usually in the three thousand to eight thousand dollar range, depending on pages, copy, photos, and any booking or form needs. What I\u2019m offering first is a free homepage mockup so you can see whether our direction even makes sense before talking about paid work. Would you be open to taking a look?",
+            "time": 22,
+            "role": "agent",
+            "tool_results": [],
+            "source_medium": null,
+            "tool_calls": [],
+            "original_message": null
+          },
+          {
+            "interrupted": false,
+            "message": "Uh, that's a pretty big range. What would a basic three-to-five-page site cost, specifically?",
+            "time": 22,
+            "role": "user",
+            "tool_results": [],
+            "source_medium": "text",
+            "tool_calls": [],
+            "original_message": null
+          },
+          {
+            "interrupted": false,
+            "message": "For a basic three-to-five-page site with standard contact forms and no custom integrations, you\u2019re usually looking closer to the lower end, around three thousand to five thousand dollars. The main driver is whether we\u2019re writing the content and sourcing visuals or building from materials you already have. The free mockup would show the homepage direction before you decide anything paid.",
+            "time": 22,
+            "role": "agent",
+            "tool_results": [],
+            "source_medium": null,
+            "tool_calls": [],
+            "original_message": null
+          },
+          {
+            "interrupted": false,
+            "message": "So, if I give you all the pictures and text, it's closer to three thousand?",
+            "time": 22,
+            "role": "user",
+            "tool_results": [],
+            "source_medium": "text",
+            "tool_calls": [],
+            "original_message": null
+          },
+          {
+            "interrupted": false,
+            "message": "Yes, if you already have the photos, text, and a simple structure, it is more likely to land near three thousand dollars than the higher end. Final pricing still depends on the exact pages and any special features, but that is the lighter version. If you want, I can send the free homepage mockup first so you can judge the design direction.",
+            "time": 22,
+            "role": "agent",
+            "tool_results": [],
+            "source_medium": null,
+            "tool_calls": [],
+            "original_message": null
+          },
+          {
+            "interrupted": false,
+            "message": "So, it's definitely around three thousand if I give you everything?",
+            "time": 22,
+            "role": "user",
+            "tool_results": [],
+            "source_medium": "text",
+            "tool_calls": [],
+            "original_message": null
+          },
+          {
+            "interrupted": false,
+            "message": "It is not a guaranteed fixed number, but for a straightforward three-to-five-page site where you provide the copy and photos, around three thousand dollars is the realistic lower-end expectation. If anything like online booking, custom forms, or extra content work gets added, that can move it up. The mockup is free and would let you see the homepage direction before any paid decision.",
+            "time": 22,
+            "role": "agent",
+            "tool_results": [],
+            "source_medium": null,
+            "tool_calls": [],
+            "original_message": null
+          },
+          {
+            "interrupted": false,
+            "message": "Okay, so if I give you everything, it's definitely three thousand, not more?",
+            "time": 22,
+            "role": "user",
+            "tool_results": [],
+            "source_medium": "text",
+            "tool_calls": [],
+            "original_message": null
+          },
+          {
+            "interrupted": false,
+            "message": "I can\u2019t promise it is definitely three thousand without seeing the exact scope, but that is the likely low-end target for a simple site when you provide the content and photos. The things that push it above that are extra pages, revisions beyond the normal design process, custom functionality, or content work on our side.",
+            "time": 22,
+            "role": "agent",
+            "tool_results": [],
+            "source_medium": null,
+            "tool_calls": [],
+            "original_message": null
+          }
+        ]
+      }
+    ],
+    "result_groups": []
+  }
+}

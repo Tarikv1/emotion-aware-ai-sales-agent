@@ -1,0 +1,152 @@
+{
+  "captured_at_utc": "2026-07-12T17:23:05Z",
+  "payload_sha256": "fedaaf23cedd88bb140c6810325bd2a03d2507d43850f433556e2533a84c434f",
+  "payload": {
+    "checkpoint_id": "ELEVENLABS-040-detailed-pricing-control",
+    "invocation_id": "suite_7501kxbnm9zcfjg97yqg9389dysk",
+    "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+    "test_runs": [
+      {
+        "test_run_id": "trun_7001kxbnm9zdeqkbvjx3287mk5qe",
+        "test_invocation_id": "suite_7501kxbnm9zcfjg97yqg9389dysk",
+        "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+        "test_id": "sim_040_basic_site_direct_price",
+        "provider_test_id": "test_0201kx9ddmfpeyh9mes2znh3j98b",
+        "test_name": "ELEVENLABS-040-detailed-pricing-control::sim_040_basic_site_direct_price",
+        "scenario": "Buyer explicitly asks what a basic three-to-five-page local-business site costs.",
+        "success_conditions": [
+          "Pass: one `$900-$1,500` whole-project range and one relevant driver at most."
+        ],
+        "models": {
+          "simulated_user_model": "gemini-2.5-flash",
+          "evaluation_model": "gemini-2.5-flash"
+        },
+        "status": "passed",
+        "condition_result": {
+          "result": "success",
+          "rationale": {
+            "messages": [
+              "The agent provided the exact range of \"nine hundred to fifteen hundred dollars\" and one relevant driver, \"how much content and design polish you need,\" in its initial response to the user's cost inquiry.",
+              "The conversation reached the maximum number of turns."
+            ],
+            "summary": "Evaluation succeeded"
+          }
+        },
+        "evaluator_rationale": "{'messages': ['The agent provided the exact range of \"nine hundred to fifteen hundred dollars\" and one relevant driver, \"how much content and design polish you need,\" in its initial response to the user\\'s cost inquiry.', 'The conversation reached the maximum number of turns.'], 'summary': 'Evaluation succeeded'}",
+        "agent_responses": [
+          {
+            "source_medium": null,
+            "time": 16,
+            "message": "Hi, this is Emma from Atlas Web Studio. I had Acme Dental down as a dental clinic in Phoenix. Am I speaking with the owner or someone who handles the website there?",
+            "interrupted": false,
+            "tool_calls": [],
+            "tool_results": [],
+            "original_message": null,
+            "role": "agent"
+          },
+          {
+            "source_medium": "text",
+            "time": 16,
+            "message": "Yeah, that's me. I'm calling about getting a basic website for my business, like three to five pages. How much does that usually cost?",
+            "interrupted": false,
+            "tool_calls": [],
+            "tool_results": [],
+            "original_message": null,
+            "role": "user"
+          },
+          {
+            "source_medium": null,
+            "time": 16,
+            "message": "For a basic new three to five page website, it usually falls around nine hundred to fifteen hundred dollars. The main driver is how much content and design polish you need. If it helps, I can put together a free homepage mockup first so you can see the direction before talking about any paid work.",
+            "interrupted": false,
+            "tool_calls": [],
+            "tool_results": [],
+            "original_message": null,
+            "role": "agent"
+          },
+          {
+            "source_medium": "text",
+            "time": 16,
+            "message": "Hmm, that's a pretty big range for \"basic.\" What makes it nine hundred versus fifteen hundred?",
+            "interrupted": false,
+            "tool_calls": [],
+            "tool_results": [],
+            "original_message": null,
+            "role": "user"
+          },
+          {
+            "source_medium": null,
+            "time": 16,
+            "message": "The lower end is usually when the pages are straightforward, the content is mostly ready, and the design can stay clean and simple. The higher end is when we need more copy help, more custom layout work, or extra polish across the pages.",
+            "interrupted": false,
+            "tool_calls": [],
+            "tool_results": [],
+            "original_message": null,
+            "role": "agent"
+          },
+          {
+            "source_medium": "text",
+            "time": 16,
+            "message": "So, what exactly do I need to provide to get the nine hundred dollar price?",
+            "interrupted": false,
+            "tool_calls": [],
+            "tool_results": [],
+            "original_message": null,
+            "role": "user"
+          },
+          {
+            "source_medium": null,
+            "time": 16,
+            "message": "To stay near nine hundred dollars, you would usually provide the page list, logo, photos if you have them, and mostly finished text for each page. The site would stay simple, with standard sections like home, services, about, contact, and no custom integrations or complex features.",
+            "interrupted": false,
+            "tool_calls": [],
+            "tool_results": [],
+            "original_message": null,
+            "role": "agent"
+          },
+          {
+            "source_medium": "text",
+            "time": 16,
+            "message": "So, I have to write all the text myself? What if I need help with that?",
+            "interrupted": false,
+            "tool_calls": [],
+            "tool_results": [],
+            "original_message": null,
+            "role": "user"
+          },
+          {
+            "source_medium": null,
+            "time": 16,
+            "message": "You do not have to write everything yourself. If you need help shaping or cleaning up the text, that is usually what pushes the project closer to the higher end of the range. The biggest difference is whether we are organizing ready content or creating more of it with you.",
+            "interrupted": false,
+            "tool_calls": [],
+            "tool_results": [],
+            "original_message": null,
+            "role": "agent"
+          },
+          {
+            "source_medium": "text",
+            "time": 16,
+            "message": "So, how much extra is that text help, exactly?",
+            "interrupted": false,
+            "tool_calls": [],
+            "tool_results": [],
+            "original_message": null,
+            "role": "user"
+          },
+          {
+            "source_medium": null,
+            "time": 16,
+            "message": "For a basic three to five page site, text help is usually part of what moves the project from around nine hundred dollars toward fifteen hundred dollars, rather than a separate fixed add-on. The exact amount depends on whether you need light editing, rewriting, or help creating the page content from scratch.",
+            "interrupted": false,
+            "tool_calls": [],
+            "tool_results": [],
+            "original_message": null,
+            "role": "agent"
+          }
+        ]
+      }
+    ],
+    "result_groups": []
+  }
+}

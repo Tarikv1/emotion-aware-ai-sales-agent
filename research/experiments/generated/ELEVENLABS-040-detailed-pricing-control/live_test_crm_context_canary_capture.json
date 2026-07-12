@@ -1,0 +1,192 @@
+{
+  "captured_at_utc": "2026-07-12T20:09:08Z",
+  "payload_sha256": "12516f7194289eb52f5612f4e001d5b13b09aee7c4fac8b76065cb9dc9f302c4",
+  "payload": {
+    "checkpoint_id": "ELEVENLABS-040-detailed-pricing-control",
+    "invocation_id": "suite_8101kxbz3xjwfnps0aphjhkg895s",
+    "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+    "test_runs": [
+      {
+        "test_run_id": "trun_7901kxbz3xk0ekpt9act0c4h4qsd",
+        "test_invocation_id": "suite_8101kxbz3xjwfnps0aphjhkg895s",
+        "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+        "test_id": "sim_040_direct_crm_integration_existing_site",
+        "provider_test_id": "test_0101kx9ddndtfawsgcrcjg72ycce",
+        "test_name": "ELEVENLABS-040-detailed-pricing-control::sim_040_direct_crm_integration_existing_site",
+        "scenario": "Buyer has an existing compatible site and asks what a direct CRM integration costs.",
+        "success_conditions": [
+          "Pass: `$1,000-$2,500+`, an API/data-flow caveat, and no claim that every behavior is included."
+        ],
+        "models": {
+          "simulated_user_model": "gemini-2.5-flash",
+          "evaluation_model": "gemini-2.5-flash"
+        },
+        "status": "passed",
+        "condition_result": {
+          "result": "success",
+          "rationale": {
+            "messages": [
+              "The agent consistently provided the price range of \"one thousand to two thousand five hundred dollars plus\". It also mentioned several API/data-flow caveats such as \"CRM access and what data needs to move\", \"fields being synced\", \"API credentials or documentation\", \"API limits\", and \"custom API work\". The agent never claimed every behavior is included, instead emphasizing that the cost \"depends on\" various factors.",
+              "The conversation reached the maximum number of turns."
+            ],
+            "summary": "Evaluation succeeded"
+          }
+        },
+        "evaluator_rationale": "{'messages': ['The agent consistently provided the price range of \"one thousand to two thousand five hundred dollars plus\". It also mentioned several API/data-flow caveats such as \"CRM access and what data needs to move\", \"fields being synced\", \"API credentials or documentation\", \"API limits\", and \"custom API work\". The agent never claimed every behavior is included, instead emphasizing that the cost \"depends on\" various factors.', 'The conversation reached the maximum number of turns.'], 'summary': 'Evaluation succeeded'}",
+        "agent_responses": [
+          {
+            "message": "Hi, this is Emma from Atlas Web Studio. I had Acme Dental down as a dental clinic in Phoenix. Am I speaking with the owner or someone who handles the website there?",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": null,
+            "time": 27,
+            "tool_results": [],
+            "role": "agent",
+            "tool_calls": []
+          },
+          {
+            "message": "Yeah, that's me. I handle the website. I'm calling about a direct CRM integration for our site.",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": "text",
+            "time": 27,
+            "tool_results": [],
+            "role": "user",
+            "tool_calls": []
+          },
+          {
+            "message": "Yes, we can build that. It depends whether you need a simple form handoff or a real integration.",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": null,
+            "time": 27,
+            "tool_results": [],
+            "role": "agent",
+            "tool_calls": []
+          },
+          {
+            "message": "Uh, what's the difference? And what does that cost?",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": "text",
+            "time": 27,
+            "tool_results": [],
+            "role": "user",
+            "tool_calls": []
+          },
+          {
+            "message": "A simple handoff usually sends the form details by email or into a basic tool, while a real integration pushes data directly into the CRM and may trigger automation. For a direct CRM or API add-on, the usual range is one thousand to two thousand five hundred dollars plus, depending on the CRM access and what data needs to move. Is this for your existing site, or part of a new site build?",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": null,
+            "time": 27,
+            "tool_results": [],
+            "role": "agent",
+            "tool_calls": []
+          },
+          {
+            "message": "It's for our existing site, like I said. So, what's the actual cost for a real integration?",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": "text",
+            "time": 27,
+            "tool_results": [],
+            "role": "user",
+            "tool_calls": []
+          },
+          {
+            "message": "For a compatible existing site, a direct CRM integration is usually one thousand to two thousand five hundred dollars plus. The actual cost depends on the CRM, the fields being synced, and whether it needs automation beyond sending the lead into the system.",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": null,
+            "time": 27,
+            "tool_results": [],
+            "role": "agent",
+            "tool_calls": []
+          },
+          {
+            "message": "Okay, so it's still that same range. What do you need from me to narrow that down more?",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": "text",
+            "time": 27,
+            "tool_results": [],
+            "role": "user",
+            "tool_calls": []
+          },
+          {
+            "message": "To narrow it down, we\u2019d need the CRM name, what form or entry point on the site should send data, which fields need to sync, and whether anything should happen after submission, like assigning a lead or sending a notification. If there are API credentials or documentation available, that also helps confirm feasibility and scope.",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": null,
+            "time": 27,
+            "tool_results": [],
+            "role": "agent",
+            "tool_calls": []
+          },
+          {
+            "message": "So, you need all that just to give me a real quote? Can't you give me a better estimate with just the CRM name?",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": "text",
+            "time": 27,
+            "tool_results": [],
+            "role": "user",
+            "tool_calls": []
+          },
+          {
+            "message": "The CRM name helps, but it usually is not enough for a real quote because the work changes based on fields, permissions, API limits, and what should happen after the lead enters the CRM. With just the CRM name, I can usually confirm whether it is likely simple or more involved, but not price it accurately beyond that range.",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": null,
+            "time": 27,
+            "tool_results": [],
+            "role": "agent",
+            "tool_calls": []
+          },
+          {
+            "message": "Okay, so if I give you the CRM name, you can tell me if it's simple or involved, and what that means for the cost?",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": "text",
+            "time": 27,
+            "tool_results": [],
+            "role": "user",
+            "tool_calls": []
+          },
+          {
+            "message": "Yes. The CRM name can tell us whether it is likely a straightforward connection or something that needs custom API work, and that affects where it lands in the one thousand to two thousand five hundred dollars plus range. What CRM are you using?",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": null,
+            "time": 27,
+            "tool_results": [],
+            "role": "agent",
+            "tool_calls": []
+          },
+          {
+            "message": "We use HubSpot.",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": "text",
+            "time": 27,
+            "tool_results": [],
+            "role": "user",
+            "tool_calls": []
+          },
+          {
+            "message": "HubSpot is usually a good candidate for a straightforward integration, especially if it is just sending website leads into contacts or deals. The cost still depends on the fields and any automation, but it may stay toward the lower or middle part of that range if the workflow is simple.",
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": null,
+            "time": 27,
+            "tool_results": [],
+            "role": "agent",
+            "tool_calls": []
+          }
+        ]
+      }
+    ],
+    "result_groups": []
+  }
+}

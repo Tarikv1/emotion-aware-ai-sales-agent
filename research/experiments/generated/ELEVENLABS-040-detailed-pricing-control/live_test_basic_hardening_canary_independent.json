@@ -1,0 +1,170 @@
+{
+  "checkpoint_id": "ELEVENLABS-040-detailed-pricing-control",
+  "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+  "invocation_id": "suite_7501kxbnm9zcfjg97yqg9389dysk",
+  "validation_mode": "partial_test",
+  "partial_test_id": "sim_040_basic_site_direct_price",
+  "independent_status": "pass",
+  "input_test_ids": [
+    "sim_040_basic_site_direct_price"
+  ],
+  "global_failures": [],
+  "provider_labels": {
+    "status_entries": [
+      {
+        "test_id": "sim_040_basic_site_direct_price",
+        "test_run_id": "trun_7001kxbnm9zdeqkbvjx3287mk5qe",
+        "status": "passed"
+      }
+    ],
+    "condition_result_entries": [
+      {
+        "test_id": "sim_040_basic_site_direct_price",
+        "test_run_id": "trun_7001kxbnm9zdeqkbvjx3287mk5qe",
+        "condition_result": {
+          "result": "success",
+          "rationale": {
+            "messages": [
+              "The agent provided the exact range of \"nine hundred to fifteen hundred dollars\" and one relevant driver, \"how much content and design polish you need,\" in its initial response to the user's cost inquiry.",
+              "The conversation reached the maximum number of turns."
+            ],
+            "summary": "Evaluation succeeded"
+          }
+        }
+      }
+    ]
+  },
+  "tests": [
+    {
+      "test_id": "sim_040_basic_site_direct_price",
+      "test_name": "ELEVENLABS-040-detailed-pricing-control::sim_040_basic_site_direct_price",
+      "test_run_id": "trun_7001kxbnm9zdeqkbvjx3287mk5qe",
+      "independent_status": "pass",
+      "provider_status": "passed",
+      "provider_condition_result": {
+        "result": "success",
+        "rationale": {
+          "messages": [
+            "The agent provided the exact range of \"nine hundred to fifteen hundred dollars\" and one relevant driver, \"how much content and design polish you need,\" in its initial response to the user's cost inquiry.",
+            "The conversation reached the maximum number of turns."
+          ],
+          "summary": "Evaluation succeeded"
+        }
+      },
+      "provider_evaluator_rationale": "{'messages': ['The agent provided the exact range of \"nine hundred to fifteen hundred dollars\" and one relevant driver, \"how much content and design polish you need,\" in its initial response to the user\\'s cost inquiry.', 'The conversation reached the maximum number of turns.'], 'summary': 'Evaluation succeeded'}",
+      "first_price_trigger_index": 1,
+      "first_agent_paid_price_index": 2,
+      "assertions": [
+        {
+          "name": "expected_test_name",
+          "passed": true
+        },
+        {
+          "name": "provider_test_id_reconciled",
+          "passed": true
+        },
+        {
+          "name": "ordered_agent_responses_present",
+          "passed": true
+        },
+        {
+          "name": "incomplete_simulation",
+          "passed": true
+        },
+        {
+          "name": "ordered_dialogue_extractable",
+          "passed": true
+        },
+        {
+          "name": "buyer_turn_present",
+          "passed": true
+        },
+        {
+          "name": "agent_turn_present",
+          "passed": true
+        },
+        {
+          "name": "no_more_than_two_approved_ranges_in_response",
+          "passed": true
+        },
+        {
+          "name": "no_menu_dump",
+          "passed": true
+        },
+        {
+          "name": "no_more_than_two_approved_ranges_in_response",
+          "passed": true
+        },
+        {
+          "name": "no_menu_dump",
+          "passed": true
+        },
+        {
+          "name": "no_unsupported_fixed_quote_or_ceiling",
+          "passed": true
+        },
+        {
+          "name": "no_more_than_two_approved_ranges_in_response",
+          "passed": true
+        },
+        {
+          "name": "no_menu_dump",
+          "passed": true
+        },
+        {
+          "name": "no_more_than_two_approved_ranges_in_response",
+          "passed": true
+        },
+        {
+          "name": "no_menu_dump",
+          "passed": true
+        },
+        {
+          "name": "no_more_than_two_approved_ranges_in_response",
+          "passed": true
+        },
+        {
+          "name": "no_menu_dump",
+          "passed": true
+        },
+        {
+          "name": "no_more_than_two_approved_ranges_in_response",
+          "passed": true
+        },
+        {
+          "name": "no_menu_dump",
+          "passed": true
+        },
+        {
+          "name": "post_quote_price_followup_no_cta",
+          "passed": true
+        },
+        {
+          "name": "unprompted_paid_price",
+          "passed": true
+        },
+        {
+          "name": "buyer_price_trigger_present",
+          "passed": true
+        },
+        {
+          "name": "approved_ranges_only_in_relevant_scenarios",
+          "passed": true
+        },
+        {
+          "name": "no_unapproved_paid_price_ranges",
+          "passed": true
+        },
+        {
+          "name": "basic_site_expected_range",
+          "passed": true
+        },
+        {
+          "name": "basic_site_scope_driver_present",
+          "passed": true
+        }
+      ],
+      "failures": []
+    }
+  ]
+}

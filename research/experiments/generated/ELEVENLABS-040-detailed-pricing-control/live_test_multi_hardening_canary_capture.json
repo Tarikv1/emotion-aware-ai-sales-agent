@@ -1,0 +1,192 @@
+{
+  "captured_at_utc": "2026-07-12T17:25:56Z",
+  "payload_sha256": "6e9ab0a271031a19606aa530775e0ccf0673a9dcdf8a2fe5025a1ae0d3a0404c",
+  "payload": {
+    "checkpoint_id": "ELEVENLABS-040-detailed-pricing-control",
+    "invocation_id": "suite_0001kxbns5v1f7yaj5cy1ffr5ttc",
+    "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+    "test_runs": [
+      {
+        "test_run_id": "trun_3301kxbns5v3ftxsssdw7w0kws7v",
+        "test_invocation_id": "suite_0001kxbns5v1f7yaj5cy1ffr5ttc",
+        "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+        "test_id": "sim_040_multi_feature_no_price_stacking",
+        "provider_test_id": "test_9001kx9ddn6gfb0rbpcxdq5jjbc5",
+        "test_name": "ELEVENLABS-040-detailed-pricing-control::sim_040_multi_feature_no_price_stacking",
+        "scenario": "Buyer asks for a new site with booking, CRM, payments, service-area pages, and a blog, then asks total cost.",
+        "success_conditions": [
+          "Pass: one likely whole-project band and scope driver; no arithmetic sum or feature-menu recital."
+        ],
+        "models": {
+          "simulated_user_model": "gemini-2.5-flash",
+          "evaluation_model": "gemini-2.5-flash"
+        },
+        "status": "passed",
+        "condition_result": {
+          "result": "success",
+          "rationale": {
+            "messages": [
+              "The agent provided a clear whole-project price range of \"four thousand to six thousand five hundred dollars\" and identified \"whether booking, payments, and CRM are simple embedded tools or a real data connection\" as the main scope driver. This avoids an arithmetic sum or feature-menu recital.",
+              "The conversation reached the maximum number of turns."
+            ],
+            "summary": "Evaluation succeeded"
+          }
+        },
+        "evaluator_rationale": "{'messages': ['The agent provided a clear whole-project price range of \"four thousand to six thousand five hundred dollars\" and identified \"whether booking, payments, and CRM are simple embedded tools or a real data connection\" as the main scope driver. This avoids an arithmetic sum or feature-menu recital.', 'The conversation reached the maximum number of turns.'], 'summary': 'Evaluation succeeded'}",
+        "agent_responses": [
+          {
+            "interrupted": false,
+            "tool_results": [],
+            "role": "agent",
+            "message": "Hi, this is Emma from Atlas Web Studio. I had Acme Dental down as a dental clinic in Phoenix. Am I speaking with the owner or someone who handles the website there?",
+            "source_medium": null,
+            "original_message": null,
+            "tool_calls": [],
+            "time": 29
+          },
+          {
+            "interrupted": false,
+            "tool_results": [],
+            "role": "user",
+            "message": "Yeah, this is me. I'm calling about a new website.",
+            "source_medium": "text",
+            "original_message": null,
+            "tool_calls": [],
+            "time": 29
+          },
+          {
+            "interrupted": false,
+            "tool_results": [],
+            "role": "agent",
+            "message": "Great. The reason I reached out is we put together free homepage mockups for local businesses, so you can see what a cleaner site could look like before deciding anything. For Acme Dental, I\u2019d focus it around trust, services, and making it easy for patients to request an appointment. Would you be open to me sending over a free homepage concept?",
+            "source_medium": null,
+            "original_message": null,
+            "tool_calls": [],
+            "time": 29
+          },
+          {
+            "interrupted": false,
+            "tool_results": [],
+            "role": "user",
+            "message": "Uh, yeah, sure. But I actually need a whole new site, with booking and all that.",
+            "source_medium": "text",
+            "original_message": null,
+            "tool_calls": [],
+            "time": 29
+          },
+          {
+            "interrupted": false,
+            "tool_results": [],
+            "role": "agent",
+            "message": "Yes. If you only need people to request times, that's the simple option; a live calendar is the integrated option.",
+            "source_medium": null,
+            "original_message": null,
+            "tool_calls": [],
+            "time": 29
+          },
+          {
+            "interrupted": false,
+            "tool_results": [],
+            "role": "user",
+            "message": "Okay, so what's the integrated option? I also need CRM, payments, service-area pages, and a blog.",
+            "source_medium": "text",
+            "original_message": null,
+            "tool_calls": [],
+            "time": 29
+          },
+          {
+            "interrupted": false,
+            "tool_results": [],
+            "role": "agent",
+            "message": "For a new site with standard integration, the likely whole-project range is four thousand to six thousand five hundred dollars. The main scope driver is whether booking, payments, and CRM are simple embedded tools or a real data connection. For the free mockup, it would still just show the homepage layout and where those entry points would sit.",
+            "source_medium": null,
+            "original_message": null,
+            "tool_calls": [],
+            "time": 29
+          },
+          {
+            "interrupted": false,
+            "tool_results": [],
+            "role": "user",
+            "message": "What's the difference between \"simple embedded tools\" and a \"real data connection\" for me? And how much would it cost for all the things I asked for?",
+            "source_medium": "text",
+            "original_message": null,
+            "tool_calls": [],
+            "time": 29
+          },
+          {
+            "interrupted": false,
+            "tool_results": [],
+            "role": "agent",
+            "message": "Simple embedded tools usually mean we place a booking widget, payment link, or form from another platform onto the site, so the outside tool handles the work. A real data connection means the site sends or receives information directly with your CRM, booking system, or payment flow, which takes more setup and testing. For a new site with booking, CRM, payments, service-area pages, and a blog, the likely whole-project range is four thousand to six thousand five hundred dollars, depending on how integrated those systems need to be.",
+            "source_medium": null,
+            "original_message": null,
+            "tool_calls": [],
+            "time": 29
+          },
+          {
+            "interrupted": false,
+            "tool_results": [],
+            "role": "user",
+            "message": "So, that price range is for everything, even with the \"real data connection\"?",
+            "source_medium": "text",
+            "original_message": null,
+            "tool_calls": [],
+            "time": 29
+          },
+          {
+            "interrupted": false,
+            "tool_results": [],
+            "role": "agent",
+            "message": "That range covers a new site with standard integration, but a deeper custom data connection can move beyond it if it needs custom API work, accounts, database logic, or complex payment rules. The main difference is whether we are configuring existing tools or building custom behavior around them.",
+            "source_medium": null,
+            "original_message": null,
+            "tool_calls": [],
+            "time": 29
+          },
+          {
+            "interrupted": false,
+            "tool_results": [],
+            "role": "user",
+            "message": "Okay, but if I want that real data connection, is that still the price?",
+            "source_medium": "text",
+            "original_message": null,
+            "tool_calls": [],
+            "time": 29
+          },
+          {
+            "interrupted": false,
+            "tool_results": [],
+            "role": "agent",
+            "message": "If it is a standard CRM or booking integration, it can still fit in the four thousand to six thousand five hundred dollar range. If it requires custom API work, account logic, database rules, or complex payment behavior, it would need to be scoped before giving a real number.",
+            "source_medium": null,
+            "original_message": null,
+            "tool_calls": [],
+            "time": 29
+          },
+          {
+            "interrupted": false,
+            "tool_results": [],
+            "role": "user",
+            "message": "So, what's considered \"standard\" then? I just want to know if what I asked for is in that price.",
+            "source_medium": "text",
+            "original_message": null,
+            "tool_calls": [],
+            "time": 29
+          },
+          {
+            "interrupted": false,
+            "tool_results": [],
+            "role": "agent",
+            "message": "Standard means we are connecting or embedding established tools in the way they already support, like a booking platform, payment processor, CRM form, or plugin that passes leads without custom business logic. What you asked for can fit that four thousand to six thousand five hundred dollar range if booking, payments, CRM, service-area pages, and the blog use those standard tool connections. If you need custom rules, patient accounts, database workflows, or unusual CRM automation, that would need separate scoping.",
+            "source_medium": null,
+            "original_message": null,
+            "tool_calls": [],
+            "time": 29
+          }
+        ]
+      }
+    ],
+    "result_groups": []
+  }
+}

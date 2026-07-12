@@ -1,0 +1,602 @@
+{
+  "captured_at_utc": "2026-07-12T20:31:04Z",
+  "payload_sha256": "e10e162cd8ea301bc4632154c3336b0afd0612350778d910a8aa53855816452d",
+  "payload": {
+    "checkpoint_id": "ELEVENLABS-040-detailed-pricing-control",
+    "invocation_id": "suite_3101kxc0ccj6e25aajz927g0b5h1",
+    "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+    "test_runs": [
+      {
+        "test_run_id": "trun_4001kxc0ccjfe889z987vaqwc68b",
+        "test_invocation_id": "suite_3101kxc0ccj6e25aajz927g0b5h1",
+        "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+        "test_id": "sim_040_capability_question_no_unprompted_price",
+        "provider_test_id": "test_9101kx9ddm04f0e8tjnwzja893a6",
+        "test_name": "ELEVENLABS-040-detailed-pricing-control::sim_040_capability_question_no_unprompted_price",
+        "scenario": "Buyer asks whether Atlas can add booking, CRM, and payments but never asks cost.",
+        "success_conditions": [
+          "Pass: confident capability answer, no dollar amount, range, package, starting price, or care-plan price."
+        ],
+        "models": {
+          "simulated_user_model": "gemini-2.5-flash",
+          "evaluation_model": "gemini-2.5-flash"
+        },
+        "status": "failed",
+        "condition_result": {
+          "result": "failure",
+          "rationale": {
+            "messages": [
+              "Simulation did not complete successfully"
+            ],
+            "summary": "Unexpected error occurred"
+          }
+        },
+        "evaluator_rationale": "{'messages': ['Simulation did not complete successfully'], 'summary': 'Unexpected error occurred'}",
+        "agent_responses": [
+          {
+            "tool_results": [],
+            "original_message": null,
+            "role": "agent",
+            "message": "Hi, this is Emma from Atlas Web Studio. I had Acme Dental down as a dental clinic in Phoenix. Am I speaking with the owner or someone who handles the website there?",
+            "time": 13,
+            "source_medium": null,
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "original_message": null,
+            "role": "user",
+            "message": "Yeah, that's me. I'm the owner.",
+            "time": 13,
+            "source_medium": "text",
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "original_message": null,
+            "role": "agent",
+            "message": "Great. I\u2019m calling because we\u2019re putting together a free homepage mockup for a few local businesses, just to show what a cleaner, more conversion-focused version of the site could look like. No payment or contract, just a visual concept you can review. Would you be open to me sending one over?",
+            "time": 13,
+            "source_medium": null,
+            "tool_calls": [],
+            "interrupted": false
+          }
+        ]
+      },
+      {
+        "test_run_id": "trun_6301kxc0ccjgfp592259cfj575ss",
+        "test_invocation_id": "suite_3101kxc0ccj6e25aajz927g0b5h1",
+        "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+        "test_id": "sim_040_free_mockup_question_no_paid_price",
+        "provider_test_id": "test_3801kx9ddm7wefzvapxjdf51xbq3",
+        "test_name": "ELEVENLABS-040-detailed-pricing-control::sim_040_free_mockup_question_no_paid_price",
+        "scenario": "Buyer asks whether the mockup is really free and whether there is a catch.",
+        "success_conditions": [
+          "Pass: process-risk answer only; no paid website price."
+        ],
+        "models": {
+          "simulated_user_model": "gemini-2.5-flash",
+          "evaluation_model": "gemini-2.5-flash"
+        },
+        "status": "failed",
+        "condition_result": {
+          "result": "failure",
+          "rationale": {
+            "messages": [
+              "Simulation did not complete successfully"
+            ],
+            "summary": "Unexpected error occurred"
+          }
+        },
+        "evaluator_rationale": "{'messages': ['Simulation did not complete successfully'], 'summary': 'Unexpected error occurred'}",
+        "agent_responses": [
+          {
+            "tool_results": [],
+            "original_message": null,
+            "role": "agent",
+            "message": "Hi, this is Emma from Atlas Web Studio. I had Acme Dental down as a dental clinic in Phoenix. Am I speaking with the owner or someone who handles the website there?",
+            "time": 6,
+            "source_medium": null,
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "original_message": null,
+            "role": "user",
+            "message": "Yeah, this is the owner. I'm calling about that free mockup offer.",
+            "time": 6,
+            "source_medium": "text",
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "original_message": null,
+            "role": "agent",
+            "message": "Great. The idea is simple: we put together a free homepage concept so you can see what a cleaner version of the site could look like before deciding anything. If it looks useful, you can reply to the email; if not, no pressure. Want me to send one over?",
+            "time": 6,
+            "source_medium": null,
+            "tool_calls": [],
+            "interrupted": false
+          }
+        ]
+      },
+      {
+        "test_run_id": "trun_3601kxc0ccjhfs4bwg6cfcw9650y",
+        "test_invocation_id": "suite_3101kxc0ccj6e25aajz927g0b5h1",
+        "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+        "test_id": "sim_040_basic_site_direct_price",
+        "provider_test_id": "test_0201kx9ddmfpeyh9mes2znh3j98b",
+        "test_name": "ELEVENLABS-040-detailed-pricing-control::sim_040_basic_site_direct_price",
+        "scenario": "Buyer explicitly asks what a basic three-to-five-page local-business site costs.",
+        "success_conditions": [
+          "Pass: one `$900-$1,500` whole-project range and one relevant driver at most."
+        ],
+        "models": {
+          "simulated_user_model": "gemini-2.5-flash",
+          "evaluation_model": "gemini-2.5-flash"
+        },
+        "status": "failed",
+        "condition_result": {
+          "result": "failure",
+          "rationale": {
+            "messages": [
+              "Simulation did not complete successfully"
+            ],
+            "summary": "Unexpected error occurred"
+          }
+        },
+        "evaluator_rationale": "{'messages': ['Simulation did not complete successfully'], 'summary': 'Unexpected error occurred'}",
+        "agent_responses": [
+          {
+            "tool_results": [],
+            "original_message": null,
+            "role": "agent",
+            "message": "Hi, this is Emma from Atlas Web Studio. I had Acme Dental down as a dental clinic in Phoenix. Am I speaking with the owner or someone who handles the website there?",
+            "time": 10,
+            "source_medium": null,
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "original_message": null,
+            "role": "user",
+            "message": "Yeah, that's me. I was calling to ask about how much a basic website costs.",
+            "time": 10,
+            "source_medium": "text",
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "original_message": null,
+            "role": "agent",
+            "message": "For a basic new website, a typical three to five page site is usually nine hundred to fifteen hundred dollars, depending mostly on how much content and layout work is needed. If you already have a site and only need a small update, that can be different. Are you thinking about a brand new site or replacing an existing one?",
+            "time": 10,
+            "source_medium": null,
+            "tool_calls": [],
+            "interrupted": false
+          }
+        ]
+      },
+      {
+        "test_run_id": "trun_8901kxc0ccjkf6tt05wj63kjfgfp",
+        "test_invocation_id": "suite_3101kxc0ccj6e25aajz927g0b5h1",
+        "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+        "test_id": "sim_040_new_site_booking_whole_project",
+        "provider_test_id": "test_1301kx9ddmz7fh3vge8255tw9h2d",
+        "test_name": "ELEVENLABS-040-detailed-pricing-control::sim_040_new_site_booking_whole_project",
+        "scenario": "Buyer asks what a new straightforward site with a simple request form costs, then asks about live calendar integration.",
+        "success_conditions": [
+          "Pass: `$900-$1,500` for simple request; later one higher relevant band for live integration; no add-on/whole-site confusion."
+        ],
+        "models": {
+          "simulated_user_model": "gemini-2.5-flash",
+          "evaluation_model": "gemini-2.5-flash"
+        },
+        "status": "failed",
+        "condition_result": {
+          "result": "failure",
+          "rationale": {
+            "messages": [
+              "Simulation did not complete successfully"
+            ],
+            "summary": "Unexpected error occurred"
+          }
+        },
+        "evaluator_rationale": "{'messages': ['Simulation did not complete successfully'], 'summary': 'Unexpected error occurred'}",
+        "agent_responses": [
+          {
+            "tool_results": [],
+            "original_message": null,
+            "role": "agent",
+            "message": "Hi, this is Emma from Atlas Web Studio. I had Acme Dental down as a dental clinic in Phoenix. Am I speaking with the owner or someone who handles the website there?",
+            "time": 7,
+            "source_medium": null,
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "original_message": null,
+            "role": "user",
+            "message": "Yeah, that's me. I'm calling about getting a new website.",
+            "time": 7,
+            "source_medium": "text",
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "original_message": null,
+            "role": "agent",
+            "message": "Perfect. The reason I\u2019m calling is we put together free homepage mockups for local businesses so the owner can see what a cleaner, more modern site could look like before deciding anything. For Acme Dental, I\u2019d focus it around trust, services, patient calls, and appointment requests. Would it be worth me sending you a free homepage mockup to review?",
+            "time": 7,
+            "source_medium": null,
+            "tool_calls": [],
+            "interrupted": false
+          }
+        ]
+      },
+      {
+        "test_run_id": "trun_5101kxc0ccjmeezaj7c3tmsxab1y",
+        "test_invocation_id": "suite_3101kxc0ccj6e25aajz927g0b5h1",
+        "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+        "test_id": "sim_040_multi_feature_no_price_stacking",
+        "provider_test_id": "test_9001kx9ddn6gfb0rbpcxdq5jjbc5",
+        "test_name": "ELEVENLABS-040-detailed-pricing-control::sim_040_multi_feature_no_price_stacking",
+        "scenario": "Buyer asks for a new site with booking, CRM, payments, service-area pages, and a blog, then asks total cost.",
+        "success_conditions": [
+          "Pass: one likely whole-project band and scope driver; no arithmetic sum or feature-menu recital."
+        ],
+        "models": {
+          "simulated_user_model": "gemini-2.5-flash",
+          "evaluation_model": "gemini-2.5-flash"
+        },
+        "status": "failed",
+        "condition_result": {
+          "result": "failure",
+          "rationale": {
+            "messages": [
+              "Simulation did not complete successfully"
+            ],
+            "summary": "Unexpected error occurred"
+          }
+        },
+        "evaluator_rationale": "{'messages': ['Simulation did not complete successfully'], 'summary': 'Unexpected error occurred'}",
+        "agent_responses": [
+          {
+            "tool_results": [],
+            "original_message": null,
+            "role": "agent",
+            "message": "Hi, this is Emma from Atlas Web Studio. I had Acme Dental down as a dental clinic in Phoenix. Am I speaking with the owner or someone who handles the website there?",
+            "time": 7,
+            "source_medium": null,
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "original_message": null,
+            "role": "user",
+            "message": "Yeah, that's me. I'm the owner.",
+            "time": 7,
+            "source_medium": "text",
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "original_message": null,
+            "role": "agent",
+            "message": "Great. I\u2019m calling because we\u2019re putting together a free homepage mockup for a few local businesses, showing how the site could look cleaner and make it easier for patients to request appointments. If it looks useful, you can reply to the email, and if not, there\u2019s no obligation. Would you be open to taking a look?",
+            "time": 7,
+            "source_medium": null,
+            "tool_calls": [],
+            "interrupted": false
+          }
+        ]
+      },
+      {
+        "test_run_id": "trun_8901kxc0ccjjezy8d8tj8cvgnm31",
+        "test_invocation_id": "suite_3101kxc0ccj6e25aajz927g0b5h1",
+        "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+        "test_id": "sim_040_existing_site_request_form_add_on",
+        "provider_test_id": "test_3801kx9ddmqnfsq97d7xym9qy01x",
+        "test_name": "ELEVENLABS-040-detailed-pricing-control::sim_040_existing_site_request_form_add_on",
+        "scenario": "Buyer states they have an existing compatible site and asks the cost of adding a simple appointment-request form.",
+        "success_conditions": [
+          "Pass: one `$100-$250` add-on range; no whole-site package dump."
+        ],
+        "models": {
+          "simulated_user_model": "gemini-2.5-flash",
+          "evaluation_model": "gemini-2.5-flash"
+        },
+        "status": "failed",
+        "condition_result": {
+          "result": "failure",
+          "rationale": {
+            "messages": [
+              "Simulation did not complete successfully"
+            ],
+            "summary": "Unexpected error occurred"
+          }
+        },
+        "evaluator_rationale": "{'messages': ['Simulation did not complete successfully'], 'summary': 'Unexpected error occurred'}",
+        "agent_responses": [
+          {
+            "tool_results": [],
+            "original_message": null,
+            "role": "agent",
+            "message": "Hi, this is Emma from Atlas Web Studio. I had Acme Dental down as a dental clinic in Phoenix. Am I speaking with the owner or someone who handles the website there?",
+            "time": 6,
+            "source_medium": null,
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "original_message": null,
+            "role": "user",
+            "message": "Yeah, that's me. I handle the website. I just wanted to get a quote for adding an appointment request form.",
+            "time": 6,
+            "source_medium": "text",
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "original_message": null,
+            "role": "agent",
+            "message": "If it\u2019s being added to a compatible existing site, a simple appointment request form is usually one hundred to two hundred fifty dollars. The main driver is whether it just emails the request or needs to connect into another system. Would it be a basic request form, or does it need to sync with scheduling software?",
+            "time": 6,
+            "source_medium": null,
+            "tool_calls": [],
+            "interrupted": false
+          }
+        ]
+      },
+      {
+        "test_run_id": "trun_5901kxc0ccjpff78ykz7dfrfhqjr",
+        "test_invocation_id": "suite_3101kxc0ccj6e25aajz927g0b5h1",
+        "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+        "test_id": "sim_040_portal_requires_scope",
+        "provider_test_id": "test_5201kx9ddnp4fpdrerx807xpfzv9",
+        "test_name": "ELEVENLABS-040-detailed-pricing-control::sim_040_portal_requires_scope",
+        "scenario": "Buyer asks how much a parent portal with accounts and progress dashboards costs.",
+        "success_conditions": [
+          "Pass: no numeric quote or ceiling; scope accounts, data, permissions, security, and integrations."
+        ],
+        "models": {
+          "simulated_user_model": "gemini-2.5-flash",
+          "evaluation_model": "gemini-2.5-flash"
+        },
+        "status": "failed",
+        "condition_result": {
+          "result": "failure",
+          "rationale": {
+            "messages": [
+              "Simulation did not complete successfully"
+            ],
+            "summary": "Unexpected error occurred"
+          }
+        },
+        "evaluator_rationale": "{'messages': ['Simulation did not complete successfully'], 'summary': 'Unexpected error occurred'}",
+        "agent_responses": [
+          {
+            "tool_results": [],
+            "original_message": null,
+            "role": "agent",
+            "message": "Hi, this is Emma from Atlas Web Studio. I had Acme Dental down as a dental clinic in Phoenix. Am I speaking with the owner or someone who handles the website there?",
+            "time": 5,
+            "source_medium": null,
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "original_message": null,
+            "role": "user",
+            "message": "Yeah, this is the owner. I was calling to ask about how much a parent portal with accounts and dashboards would cost.",
+            "time": 5,
+            "source_medium": "text",
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "original_message": null,
+            "role": "agent",
+            "message": "A working parent login is custom. I can't give a real number until we scope accounts, database, permissions, security, and integrations. Are you looking for parents to just view information, or also upload documents, make payments, and message staff?",
+            "time": 5,
+            "source_medium": null,
+            "tool_calls": [],
+            "interrupted": false
+          }
+        ]
+      },
+      {
+        "test_run_id": "trun_6301kxc0ccjqfw5sysyb64q85wh4",
+        "test_invocation_id": "suite_3101kxc0ccj6e25aajz927g0b5h1",
+        "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+        "test_id": "sim_040_budget_fit_direct_answer",
+        "provider_test_id": "test_0901kx9ddnw8eyfrj2r1n9vwvze1",
+        "test_name": "ELEVENLABS-040-detailed-pricing-control::sim_040_budget_fit_direct_answer",
+        "scenario": "Buyer says the budget is `$1,200` and asks whether a basic site fits.",
+        "success_conditions": [
+          "Pass: direct fit answer against `$900-$1,500`; no unrelated package menu."
+        ],
+        "models": {
+          "simulated_user_model": "gemini-2.5-flash",
+          "evaluation_model": "gemini-2.5-flash"
+        },
+        "status": "failed",
+        "condition_result": {
+          "result": "failure",
+          "rationale": {
+            "messages": [
+              "Simulation did not complete successfully"
+            ],
+            "summary": "Unexpected error occurred"
+          }
+        },
+        "evaluator_rationale": "{'messages': ['Simulation did not complete successfully'], 'summary': 'Unexpected error occurred'}",
+        "agent_responses": [
+          {
+            "tool_results": [],
+            "original_message": null,
+            "role": "agent",
+            "message": "Hi, this is Emma from Atlas Web Studio. I had Acme Dental down as a dental clinic in Phoenix. Am I speaking with the owner or someone who handles the website there?",
+            "time": 5,
+            "source_medium": null,
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "original_message": null,
+            "role": "user",
+            "message": "Yeah, that's me. I handle the website. I'm calling about getting a basic site done, my budget is $1,200. Does that work?",
+            "time": 5,
+            "source_medium": "text",
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "original_message": null,
+            "role": "agent",
+            "message": "Yes, for a basic three to five page new site, our usual range is nine hundred to fifteen hundred dollars, so twelve hundred dollars can fit if the scope stays straightforward. The main driver is whether it is mostly standard pages and contact forms, or if you need things like booking, payments, or integrations.",
+            "time": 5,
+            "source_medium": null,
+            "tool_calls": [],
+            "interrupted": false
+          }
+        ]
+      },
+      {
+        "test_run_id": "trun_6401kxc0ccjrfx0tgc1t4tge2aty",
+        "test_invocation_id": "suite_3101kxc0ccj6e25aajz927g0b5h1",
+        "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+        "test_id": "sim_040_care_plan_only_when_asked",
+        "provider_test_id": "test_6101kx9ddp3cf0w9fqtvqwm21esx",
+        "test_name": "ELEVENLABS-040-detailed-pricing-control::sim_040_care_plan_only_when_asked",
+        "scenario": "Buyer first asks about ordinary site capability, then explicitly asks monthly hosting and maintenance cost.",
+        "success_conditions": [
+          "Pass: no care price before the ongoing-cost question; after it, one relevant `$79`, `$149`, or `$249` plan with scope."
+        ],
+        "models": {
+          "simulated_user_model": "gemini-2.5-flash",
+          "evaluation_model": "gemini-2.5-flash"
+        },
+        "status": "failed",
+        "condition_result": {
+          "result": "failure",
+          "rationale": {
+            "messages": [
+              "Simulation did not complete successfully"
+            ],
+            "summary": "Unexpected error occurred"
+          }
+        },
+        "evaluator_rationale": "{'messages': ['Simulation did not complete successfully'], 'summary': 'Unexpected error occurred'}",
+        "agent_responses": [
+          {
+            "tool_results": [],
+            "original_message": null,
+            "role": "agent",
+            "message": "Hi, this is Emma from Atlas Web Studio. I had Acme Dental down as a dental clinic in Phoenix. Am I speaking with the owner or someone who handles the website there?",
+            "time": 5,
+            "source_medium": null,
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "original_message": null,
+            "role": "user",
+            "message": "Yeah, that's me. I was calling about getting a new website for the clinic.",
+            "time": 5,
+            "source_medium": "text",
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "original_message": null,
+            "role": "agent",
+            "message": "Great. The reason I reached out is we put together a free homepage mockup for local clinics so you can see what a cleaner site could look like before deciding anything. If it looks useful, you can reply to the email, and if not, there\u2019s no obligation. Would you be open to me sending one over?",
+            "time": 5,
+            "source_medium": null,
+            "tool_calls": [],
+            "interrupted": false
+          }
+        ]
+      },
+      {
+        "test_run_id": "trun_0401kxc0ccjne1n8rkvb1jwtzrn6",
+        "test_invocation_id": "suite_3101kxc0ccj6e25aajz927g0b5h1",
+        "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+        "test_id": "sim_040_direct_crm_integration_existing_site",
+        "provider_test_id": "test_0101kx9ddndtfawsgcrcjg72ycce",
+        "test_name": "ELEVENLABS-040-detailed-pricing-control::sim_040_direct_crm_integration_existing_site",
+        "scenario": "Buyer has an existing compatible site and asks what a direct CRM integration costs.",
+        "success_conditions": [
+          "Pass: `$1,000-$2,500+`, an API/data-flow caveat, and no claim that every behavior is included."
+        ],
+        "models": {
+          "simulated_user_model": "gemini-2.5-flash",
+          "evaluation_model": "gemini-2.5-flash"
+        },
+        "status": "failed",
+        "condition_result": {
+          "result": "failure",
+          "rationale": {
+            "messages": [
+              "Simulation did not complete successfully"
+            ],
+            "summary": "Unexpected error occurred"
+          }
+        },
+        "evaluator_rationale": "{'messages': ['Simulation did not complete successfully'], 'summary': 'Unexpected error occurred'}",
+        "agent_responses": [
+          {
+            "tool_results": [],
+            "original_message": null,
+            "role": "agent",
+            "message": "Hi, this is Emma from Atlas Web Studio. I had Acme Dental down as a dental clinic in Phoenix. Am I speaking with the owner or someone who handles the website there?",
+            "time": 5,
+            "source_medium": null,
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "original_message": null,
+            "role": "user",
+            "message": "Yeah, I handle the website. I was calling about a CRM integration.",
+            "time": 5,
+            "source_medium": "text",
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "original_message": null,
+            "role": "agent",
+            "message": "Yes, we can build that. It depends whether you need a simple form handoff or a real integration.",
+            "time": 5,
+            "source_medium": null,
+            "tool_calls": [],
+            "interrupted": false
+          }
+        ]
+      }
+    ],
+    "result_groups": []
+  }
+}

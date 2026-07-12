@@ -1,0 +1,71 @@
+{
+  "captured_at_utc": "2026-07-12T20:36:08Z",
+  "payload_sha256": "556b6e2f85fea39dda585fab2f11b700d651039481439130a79a558cfaac39b8",
+  "payload": {
+    "checkpoint_id": "ELEVENLABS-040-detailed-pricing-control",
+    "invocation_id": "suite_2601kxc0p7w7fhhvqhma1339ke4e",
+    "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+    "test_runs": [
+      {
+        "test_run_id": "trun_1701kxc0p7wbe7rr94p49a071sk5",
+        "test_invocation_id": "suite_2601kxc0p7w7fhhvqhma1339ke4e",
+        "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+        "test_id": "sim_040_basic_site_direct_price",
+        "provider_test_id": "test_0201kx9ddmfpeyh9mes2znh3j98b",
+        "test_name": "ELEVENLABS-040-detailed-pricing-control::sim_040_basic_site_direct_price",
+        "scenario": "Buyer explicitly asks what a basic three-to-five-page local-business site costs.",
+        "success_conditions": [
+          "Pass: one `$900-$1,500` whole-project range and one relevant driver at most."
+        ],
+        "models": {
+          "simulated_user_model": "gemini-2.5-flash",
+          "evaluation_model": "gemini-2.5-flash"
+        },
+        "status": "failed",
+        "condition_result": {
+          "result": "failure",
+          "rationale": {
+            "messages": [
+              "Simulation did not complete successfully"
+            ],
+            "summary": "Unexpected error occurred"
+          }
+        },
+        "evaluator_rationale": "{'messages': ['Simulation did not complete successfully'], 'summary': 'Unexpected error occurred'}",
+        "agent_responses": [
+          {
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": null,
+            "message": "Hi, this is Emma from Atlas Web Studio. I had Acme Dental down as a dental clinic in Phoenix. Am I speaking with the owner or someone who handles the website there?",
+            "time": 6,
+            "tool_results": [],
+            "role": "agent",
+            "tool_calls": []
+          },
+          {
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": "text",
+            "message": "Oh, no, I'm not Acme Dental. I'm just calling to ask how much a basic three-to-five-page website for a local business usually costs.",
+            "time": 6,
+            "tool_results": [],
+            "role": "user",
+            "tool_calls": []
+          },
+          {
+            "original_message": null,
+            "interrupted": false,
+            "source_medium": null,
+            "message": "For a basic three to five page new website, it usually falls around nine hundred to fifteen hundred dollars. The main driver is how much content and design polish is needed. Is this for a new site, or replacing an existing one?",
+            "time": 6,
+            "tool_results": [],
+            "role": "agent",
+            "tool_calls": []
+          }
+        ]
+      }
+    ],
+    "result_groups": []
+  }
+}
