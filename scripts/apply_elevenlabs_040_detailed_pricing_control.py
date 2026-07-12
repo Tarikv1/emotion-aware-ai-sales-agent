@@ -311,6 +311,87 @@ def request_source_evidence_by_id(requests: list[dict[str, Any]]) -> dict[str, A
     return evidence
 
 
+def target_kb_doc_arg(value: str) -> str:
+    name = value.strip()
+    if not name:
+        raise argparse.ArgumentTypeError("--target-kb-doc cannot be empty")
+    return name
+
+
+def parse_target_kb_docs(values: list[str] | None) -> tuple[str, ...]:
+    if values is None:
+        return tuple(KB_DOCS)
+    cleaned = [value.strip() for value in values]
+    if not cleaned or any(not value for value in cleaned):
+        raise ValueError("target KB doc list cannot be empty")
+    unknown = [value for value in cleaned if value not in KNOWN_KB_DOC_IDS]
+    if unknown:
+        raise ValueError(f"unknown target KB doc names: {unknown}; allowed={list(KB_DOCS)}")
+    duplicates = sorted({value for value in cleaned if cleaned.count(value) > 1})
+    if duplicates:
+        raise ValueError(f"duplicate target KB doc names: {duplicates}")
+    return tuple(cleaned)
+
+
+def planned_write_counts(requests: list[dict[str, Any]]) -> dict[str, int]:
+    kb_count = sum(1 for request in requests if str(request.get("request_id", "")).startswith("update_kb_file::"))
+    agent_count = sum(1 for request in requests if request.get("request_id") == "patch_agent::prompt_dynamic_variables")
+    return {
+        "planned_provider_write_count": len(requests),
+        "planned_kb_write_count": kb_count,
+        "planned_agent_patch_count": agent_count,
+    }
+
+
+def plan_payload(
+    *,
+    preflight: dict[str, Any],
+    requests: list[dict[str, Any]],
+    target_kb_doc_names: tuple[str, ...],
+    provider_writes_allowed: bool,
+    ledger_summary: dict[str, Any] | None,
+) -> dict[str, Any]:
+    ledger = ledger_summary or {
+        "provider_writes_made": False,
+        "provider_write_attempt_count": 0,
+        "provider_write_success_count": 0,
+        "provider_write_attempts": [],
+        "provider_write_successes": [],
+    }
+    return {
+        "checkpoint_id": CHECKPOINT_ID,
+        "agent_id": AGENT_ID,
+        "agent_name": AGENT_NAME,
+        "status": "planned",
+        "authorization_confirmed": provider_writes_allowed,
+        "provider_writes_allowed": provider_writes_allowed,
+        **ledger,
+        **planned_write_counts(requests),
+        "target_llm_preserved": TARGET_LLM,
+        "target_price_variables": TARGET_PRICE_VARIABLES,
+        "kb_documents_planned_for_in_place_update": list(target_kb_doc_names),
+        "known_kb_document_ids": {name: KNOWN_KB_DOC_IDS[name] for name in target_kb_doc_names},
+        "minimal_agent_patch_fields": ["conversation_config.agent.prompt.prompt", "conversation_config.agent.dynamic_variables"],
+        "request_source_evidence_by_id": request_source_evidence_by_id(requests),
+        "forbidden_operations": [
+            "simulations",
+            "outbound_calls",
+            "new_knowledge_base_docs",
+            "knowledge_base_reorder",
+            "Analysis_updates",
+            "Procedures_updates",
+            "voice_updates",
+            "LLM_updates",
+            "first_message_updates",
+            "phone_updates",
+            "tool_updates",
+            "MCP_updates",
+            "unrelated_dynamic_variable_replacement",
+        ],
+        "preflight": sanitize(preflight),
+    }
+
+
 def merged_dynamic_variables(agent: dict[str, Any]) -> dict[str, Any]:
     conversation_config = agent.get("conversation_config")
     if not isinstance(conversation_config, dict):
@@ -380,7 +461,8 @@ def validate_target_llm(agent: dict[str, Any]) -> None:
         raise ValueError(f"target LLM settings mismatch: expected {TARGET_LLM!r}, got {actual!r}")
 
 
-def validate_preflight(agent: dict[str, Any]) -> dict[str, Any]:
+def validate_preflight(agent: dict[str, Any], target_kb_doc_names: tuple[str, ...] | None = None) -> dict[str, Any]:
+    target_names = parse_target_kb_docs(list(target_kb_doc_names) if target_kb_doc_names is not None else None)
     if agent.get("agent_id") != AGENT_ID or agent.get("name") != AGENT_NAME:
         raise ValueError("refusing unexpected ElevenLabs agent")
     prompt = get_prompt(agent)
@@ -400,7 +482,7 @@ def validate_preflight(agent: dict[str, Any]) -> dict[str, Any]:
 
     by_name = kb_entries_by_name(agent)
     target_docs: dict[str, dict[str, str]] = {}
-    for name in KB_DOCS:
+    for name in target_names:
         entry = by_name.get(name)
         if not entry:
             raise ValueError(f"live agent missing target KB doc {name}")
@@ -515,9 +597,10 @@ def attempt_provider_write(ledger: ProviderWriteLedger, request: dict[str, Any],
     return response
 
 
-def patch_requests(agent: dict[str, Any], preflight: dict[str, Any]) -> list[dict[str, Any]]:
+def patch_requests(agent: dict[str, Any], preflight: dict[str, Any], target_kb_doc_names: tuple[str, ...] | None = None) -> list[dict[str, Any]]:
+    target_names = parse_target_kb_docs(list(target_kb_doc_names) if target_kb_doc_names is not None else None)
     requests: list[dict[str, Any]] = []
-    for name in KB_DOCS:
+    for name in target_names:
         doc = preflight["target_kb_docs"][name]
         source_path = KB_ROOT / name
         requests.append(
@@ -623,6 +706,7 @@ def write_plan_only_outputs(
     status: str,
     *,
     live_readback_at_utc: str,
+    target_kb_doc_names: tuple[str, ...],
 ) -> None:
     fingerprint = protected_fingerprint(agent, preflight)
     write_json(
@@ -631,39 +715,13 @@ def write_plan_only_outputs(
     )
     write_json(
         OUT_DIR / "live_agent_patch_plan.json",
-        {
-            "checkpoint_id": CHECKPOINT_ID,
-            "agent_id": AGENT_ID,
-            "agent_name": AGENT_NAME,
-            "status": "planned",
-            "authorization_confirmed": False,
-            "provider_writes_allowed": False,
-            "provider_writes_made": False,
-            "provider_write_attempt_count": 0,
-            "provider_write_success_count": 0,
-            "target_llm_preserved": TARGET_LLM,
-            "target_price_variables": TARGET_PRICE_VARIABLES,
-            "kb_documents_planned_for_in_place_update": list(KB_DOCS),
-            "known_kb_document_ids": KNOWN_KB_DOC_IDS,
-            "minimal_agent_patch_fields": ["conversation_config.agent.prompt.prompt", "conversation_config.agent.dynamic_variables"],
-            "request_source_evidence_by_id": request_source_evidence_by_id(requests),
-            "forbidden_operations": [
-                "simulations",
-                "outbound_calls",
-                "new_knowledge_base_docs",
-                "knowledge_base_reorder",
-                "Analysis_updates",
-                "Procedures_updates",
-                "voice_updates",
-                "LLM_updates",
-                "first_message_updates",
-                "phone_updates",
-                "tool_updates",
-                "MCP_updates",
-                "unrelated_dynamic_variable_replacement",
-            ],
-            "preflight": sanitize(preflight),
-        },
+        plan_payload(
+            preflight=preflight,
+            requests=requests,
+            target_kb_doc_names=target_kb_doc_names,
+            provider_writes_allowed=False,
+            ledger_summary=None,
+        ),
     )
     write_json(
         OUT_DIR / "live_agent_patch_requests.json",
@@ -673,6 +731,7 @@ def write_plan_only_outputs(
             "provider_writes_made": False,
             "provider_write_attempt_count": 0,
             "provider_write_success_count": 0,
+            **planned_write_counts(requests),
             "requests": requests,
         },
     )
@@ -707,6 +766,7 @@ def write_provider_changes(
     preflight: dict[str, Any],
     requests: list[dict[str, Any]],
     ledger: ProviderWriteLedger,
+    target_kb_doc_names: tuple[str, ...],
 ) -> tuple[dict[str, Any], str]:
     expected_before = protected_fingerprint(agent, preflight)
     for request in requests:
@@ -741,7 +801,7 @@ def write_provider_changes(
     post_live_readback_at_utc = utc_now()
     if not isinstance(post, dict):
         raise ValueError("post-patch agent GET response must be an object")
-    post_preflight = validate_preflight(post)
+    post_preflight = validate_preflight(post, target_kb_doc_names)
     assert_fingerprint_matches("post-patch", expected_before, protected_fingerprint(post, post_preflight))
     if get_prompt(post).get("prompt") != PROMPT_PATH.read_text(encoding="utf-8").strip():
         raise ValueError("post-patch prompt does not exactly match repo prompt")
@@ -755,11 +815,24 @@ def write_provider_changes(
 def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Guarded ELEVENLABS-040 Atlas pricing patcher; dry-run by default.")
     parser.add_argument("--confirm-provider-write", default=None, help=f"Exact token required for writes: {CONFIRM_TOKEN}")
+    parser.add_argument(
+        "--target-kb-doc",
+        action="append",
+        type=target_kb_doc_arg,
+        default=None,
+        metavar="NAME",
+        help=f"Optional known KB doc name to patch; repeat to target a guarded subset. Default: all {len(KB_DOCS)} target docs.",
+    )
     return parser.parse_args(argv)
 
 
 def main(argv: list[str] | None = None) -> int:
     args = parse_args(argv)
+    try:
+        target_kb_doc_names = parse_target_kb_docs(args.target_kb_doc)
+    except ValueError as exc:
+        print(f"error: {exc}", file=sys.stderr)
+        return 2
     api_key = os.environ.get(API_KEY_ENV_VAR, "").strip()
     if not api_key:
         print(f"error: {API_KEY_ENV_VAR} is required for fresh live GET preflight", file=sys.stderr)
@@ -777,8 +850,8 @@ def main(argv: list[str] | None = None) -> int:
         before_live_readback_at_utc = utc_now()
         if not isinstance(before_agent, dict):
             raise ValueError("agent GET response must be an object")
-        before_preflight = validate_preflight(before_agent)
-        requests = patch_requests(before_agent, before_preflight)
+        before_preflight = validate_preflight(before_agent, target_kb_doc_names)
+        requests = patch_requests(before_agent, before_preflight, target_kb_doc_names=target_kb_doc_names)
         authorization_confirmed = args.confirm_provider_write == CONFIRM_TOKEN
         if not authorization_confirmed:
             write_plan_only_outputs(
@@ -787,12 +860,14 @@ def main(argv: list[str] | None = None) -> int:
                 requests,
                 "plan_only_missing_confirmation",
                 live_readback_at_utc=before_live_readback_at_utc,
+                target_kb_doc_names=target_kb_doc_names,
             )
             print(
                 json.dumps(
                     {
                         "status": "plan_only_missing_confirmation",
                         "provider_writes_made": False,
+                        **planned_write_counts(requests),
                         "plan": str(OUT_DIR / "live_agent_patch_plan.json"),
                     },
                     indent=2,
@@ -806,21 +881,22 @@ def main(argv: list[str] | None = None) -> int:
             preflight=before_preflight,
             requests=requests,
             ledger=ledger,
+            target_kb_doc_names=target_kb_doc_names,
         )
-        post_preflight = validate_preflight(post_agent)
+        post_preflight = validate_preflight(post_agent, target_kb_doc_names)
         write_json(
             OUT_DIR / "live_agent_pre_patch_snapshot.json",
             snapshot_payload(phase="pre_patch", agent=before_agent, preflight=before_preflight, live_readback_at_utc=before_live_readback_at_utc),
         )
         write_json(
             OUT_DIR / "live_agent_patch_plan.json",
-            {
-                "checkpoint_id": CHECKPOINT_ID,
-                "provider_writes_allowed": True,
-                **ledger.summary(),
-                "request_source_evidence_by_id": request_source_evidence_by_id(requests),
-                "preflight": sanitize(before_preflight),
-            },
+            plan_payload(
+                preflight=before_preflight,
+                requests=requests,
+                target_kb_doc_names=target_kb_doc_names,
+                provider_writes_allowed=True,
+                ledger_summary=ledger.summary(),
+            ),
         )
         write_json(
             OUT_DIR / "live_agent_patch_requests.json",
@@ -828,6 +904,7 @@ def main(argv: list[str] | None = None) -> int:
                 "checkpoint_id": CHECKPOINT_ID,
                 "provider_writes_allowed": True,
                 **ledger.summary(),
+                **planned_write_counts(requests),
                 "requests": requests,
             },
         )

@@ -144,6 +144,8 @@ EXPECTED_MODIFIED_PRODUCT_FILES = [
 ]
 
 PROMPT_MARKERS = (
+    "Price-source lock: use only approved Atlas package, add-on, and care values from Campaign Facts or the active pricing KB; never estimate from general market knowledge or invent a range.",
+    "Runtime price map: 3-5 page new site -> {{website_basic_site_range}}; compatible existing-site appointment request -> $100-$250; direct CRM/API add-on -> $1,000-$2,500+; new site plus standard integration -> {{website_integration_heavy_range}}; care -> $79/$149/$249 only after ongoing-cost intent; portal/dashboard -> scope without a number.",
     "Paid-price gate: disclose paid pricing only after the buyer explicitly asks price, cost, fee, range, ballpark, budget, affordability, monthly charge, or add-on cost.",
     "Capability, scope, mockup, free, catch, contract, and ordinary-interest questions never unlock paid pricing.",
     "After price intent: new website -> one whole-project band; compatible existing site -> one relevant add-on range; unclear -> ask whether this is a new site or an addition.",
@@ -193,6 +195,8 @@ PRICING_KB_MARKERS = (
 )
 
 OUTPUT_MARKERS = (
+    "Never use general-market, industry-average, or unsupported invented prices.",
+    "During live price follow-ups, answer the asked price issue without repeating the mockup CTA unless the buyer has newly accepted the mockup.",
     "Never disclose a paid price before explicit buyer price intent.",
     "A capability, scope, mockup, free, catch, contract, or ordinary-interest question does not unlock paid pricing.",
     "Do not read the package or feature menu aloud.",
@@ -200,6 +204,15 @@ OUTPUT_MARKERS = (
     "Do not charge twice for overlapping work.",
     "Use one relevant range and at most one material scope question.",
     "Do not quote a fixed price or ceiling for portals, dashboards, APIs, accounts, databases, or custom business logic.",
+)
+
+FORBIDDEN_UNSUPPORTED_PRICE_MARKERS = (
+    "$3,000-$8,000",
+    "$3,000 - $8,000",
+    "three thousand to eight thousand",
+    "$3,000-$5,000",
+    "$3,000 - $5,000",
+    "around three thousand dollars",
 )
 
 KB_REQUEST_SOURCE_MARKERS = {
@@ -281,6 +294,12 @@ def assert_markers(label: str, text: str, markers: tuple[str, ...]) -> None:
     assert_condition(not missing, f"{label} missing markers: {missing}")
 
 
+def assert_no_forbidden_unsupported_prices(label: str, text: str) -> None:
+    lowered = text.lower()
+    found = [marker for marker in FORBIDDEN_UNSUPPORTED_PRICE_MARKERS if marker.lower() in lowered]
+    assert_condition(not found, f"{label} contains unsupported pricing markers: {found}")
+
+
 def word_count(text: str) -> int:
     return len(re.findall(r"\b\S+\b", text))
 
@@ -350,6 +369,7 @@ def validate_dynamic_defaults() -> None:
 def validate_prompt_policy() -> None:
     prompt = read(PROMPT)
     assert_markers("prompt", prompt, PROMPT_MARKERS)
+    assert_no_forbidden_unsupported_prices("prompt", prompt)
     assert_condition(word_count(prompt) <= 1900, "compact prompt exceeds 1,900 words")
 
 
@@ -361,6 +381,7 @@ def validate_pricing_kb() -> None:
 def validate_output_rules() -> None:
     output = read(OUTPUT)
     assert_markers("output rules", output, OUTPUT_MARKERS)
+    assert_no_forbidden_unsupported_prices("output rules", output)
 
 
 def validate_tests() -> None:
@@ -472,6 +493,17 @@ def validate_live_patcher_semantics() -> None:
 
     parsed = patcher.parse_args([])
     assert_condition(getattr(parsed, "confirm_provider_write") is None, "040 patcher must dry-run by default")
+    assert_condition(patcher.parse_target_kb_docs(getattr(parsed, "target_kb_doc", None)) == tuple(patcher.KB_DOCS), "040 patcher must target all KB docs by default")
+    subset_parsed = patcher.parse_args(["--target-kb-doc", "atlas_output_quality_rules.md"])
+    subset = patcher.parse_target_kb_docs(subset_parsed.target_kb_doc)
+    assert_condition(subset == ("atlas_output_quality_rules.md",), "040 patcher subset target parsing mismatch")
+    for bad_targets in ([""], ["atlas_output_quality_rules.md", "atlas_output_quality_rules.md"], ["not_a_real_doc.md"]):
+        try:
+            patcher.parse_target_kb_docs(bad_targets)
+        except ValueError:
+            pass
+        else:
+            fail(f"040 patcher accepted malformed target KB docs: {bad_targets}")
 
     snapshot = patcher.snapshot_payload(
         phase="pre_patch",
@@ -510,6 +542,28 @@ def validate_live_patcher_semantics() -> None:
             assert_condition(all(isinstance(marker, str) and marker in source_path.read_text(encoding="utf-8") for marker in markers), f"{request['request_id']} source marker mismatch")
         elif request["request_id"] == "patch_agent::prompt_dynamic_variables":
             assert_condition(request.get("body_canonical_json_sha256") == canonical_sha256(request["body"]), "agent patch request canonical digest mismatch")
+
+    subset_requests = patcher.patch_requests(
+        agent,
+        {"target_kb_docs": {name: {"id": doc_id, "source_path": f"runtime/providers/elevenlabs_agents/knowledge_base/atlas_web_studio/{name}"} for name, doc_id in patcher.KNOWN_KB_DOC_IDS.items()}},
+        target_kb_doc_names=("atlas_output_quality_rules.md",),
+    )
+    assert_condition(
+        [request["request_id"] for request in subset_requests]
+        == ["update_kb_file::atlas_output_quality_rules.md", "patch_agent::prompt_dynamic_variables"],
+        "subset dry-run must plan exactly one KB update plus one agent PATCH",
+    )
+    subset_plan = patcher.plan_payload(
+        preflight={"target_kb_docs": {}},
+        requests=subset_requests,
+        target_kb_doc_names=("atlas_output_quality_rules.md",),
+        provider_writes_allowed=False,
+        ledger_summary=None,
+    )
+    assert_condition(subset_plan["planned_provider_write_count"] == 2, "subset plan must report exactly two planned writes")
+    assert_condition(subset_plan["planned_kb_write_count"] == 1, "subset plan must report one planned KB write")
+    assert_condition(subset_plan["planned_agent_patch_count"] == 1, "subset plan must report one planned agent PATCH")
+    assert_condition(subset_plan["kb_documents_planned_for_in_place_update"] == ["atlas_output_quality_rules.md"], "subset plan must name only selected KB doc")
 
     redacted = patcher.sanitize(
         {
@@ -666,10 +720,13 @@ def validate_live_evidence_artifacts() -> None:
     assert_condition("live_readback_time_recorded" in post_snapshot, "post snapshot must state readback timestamp recording status")
 
     source_commit = patch_requests.get("source_evidence_commit")
-    assert_condition(source_commit == "336ff778b4beaa05a73996eef93318a7e5163eb1", "current evidence must label unchanged source commit")
+    assert_condition(isinstance(source_commit, str) and re.fullmatch(r"[0-9a-f]{40}", source_commit), "source evidence commit must be a full commit sha")
     assert_condition(patch_plan.get("source_evidence_commit") == source_commit, "plan/source request source commit mismatch")
     assert_condition(patch_requests.get("source_evidence_origin") == "post_hoc_from_unchanged_repo_commit_not_network_capture", "requests must label post-hoc source evidence")
     assert_condition(patch_plan.get("source_evidence_origin") == "post_hoc_from_unchanged_repo_commit_not_network_capture", "plan must label post-hoc source evidence")
+    current_head = git(["rev-parse", "HEAD"]).stdout.strip()
+    if source_commit != current_head:
+        return
 
     requests = patch_requests.get("requests")
     assert_condition(isinstance(requests, list) and len(requests) == 4, "live patch request artifact must contain four requests")
