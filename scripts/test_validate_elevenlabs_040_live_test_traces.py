@@ -87,6 +87,20 @@ class DetailedPricingTraceCanaryTests(unittest.TestCase):
 
         self.assertEqual(result["independent_status"], "pass")
 
+    def test_live_care_capture_allows_neutral_mockup_reference_during_price_followup(self) -> None:
+        root = SCRIPT_DIR.parent / "research" / "experiments" / "generated" / traces.CHECKPOINT_ID
+        path = root / "live_test_care_canary_pass_capture.json"
+        payload = traces.capture_payload(traces.read_json(path))
+        mapping = traces.provider_test_id_mapping(traces.read_json(root / "live_test_mapping.json"))
+
+        result = traces.validate_partial_test_payload(
+            payload,
+            partial_test_id="sim_040_care_plan_only_when_asked",
+            mapping=mapping,
+        )
+
+        self.assertEqual(result["independent_status"], "pass")
+
     def test_existing_live_post_fix_canary_remains_failed_for_cta_reason(self) -> None:
         path = SCRIPT_DIR.parent / "research" / "experiments" / "generated" / traces.CHECKPOINT_ID / "live_test_canary_post_fix_capture.json"
         payload = traces.capture_payload(traces.read_json(path))

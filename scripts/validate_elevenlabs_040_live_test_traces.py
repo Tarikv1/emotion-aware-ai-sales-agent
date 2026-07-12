@@ -92,8 +92,8 @@ POST_QUOTE_PRICE_FOLLOWUP_RE = re.compile(
     r"\b(?:range|budget|driver|drives|cost(?:s)? more|cost(?:s)? less|more or less|higher|lower|scope|scoped|ready|not all|figure that out|new\s+site|add[- ]on|addition|services page|reviews?)\b",
     re.IGNORECASE,
 )
-MOCKUP_OR_SEND_CTA_RE = re.compile(
-    r"\b(?:mockup|homepage mockup|free homepage|send (?:it|that|the)|send .* over|email|e-mail|best email|where should i send|open to taking a look|take a look|would you be open|next step|reason i called|judge .*before deciding|before deciding anything paid|without committing|without asking you to commit)\b",
+ACTIONABLE_POST_QUOTE_CTA_RE = re.compile(
+    r"\b(?:send (?:it|that|the)|send .* over|email|e-mail|best email|where should i send|open to taking a look|take a look|would you be open|next step|reason i called|judge .*before deciding|before deciding anything paid|without committing|without asking you to commit)\b",
     re.IGNORECASE,
 )
 PRICE_CHAIN_ACCEPTANCE_RE = re.compile(
@@ -433,7 +433,7 @@ def validate_post_quote_followup_cta_lock(checks: Checks, events: list[dict[str,
             else:
                 active_price_chain = False
             continue
-        if event["role"] == "agent" and active_price_chain and MOCKUP_OR_SEND_CTA_RE.search(message):
+        if event["role"] == "agent" and active_price_chain and ACTIONABLE_POST_QUOTE_CTA_RE.search(message):
             violations.append(f"agent response {index} reopened mockup/email/send CTA during active price follow-up")
     checks.check(
         "post_quote_price_followup_no_cta",
