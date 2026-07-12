@@ -628,6 +628,7 @@ class RunnerTests(unittest.TestCase):
             output_dir = Path(tmp)
             mapping_path = output_dir / "live_test_mapping.json"
             mapping = live_mapping_fixture()
+            mapping.pop("ownership", None)
             write_mapping(mapping_path, mapping)
 
             with self.assertRaises(runner.GuardError):
