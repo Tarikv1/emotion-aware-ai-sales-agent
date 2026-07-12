@@ -78,7 +78,7 @@ python scripts\test_apply_elevenlabs_040_detailed_pricing_control.py
 PASS - Ran 6 tests
 
 python scripts\test_validate_elevenlabs_040_evidence.py
-PASS - Ran 9 tests
+PRIOR POST-COMMIT REVIEW RESULT: FAIL - `test_historical_commit_missing_current_product_markers_fails_closed` relied on `HEAD^`; after `a17998e`, `HEAD^` could already contain the current care markers, so the expected historical marker-missing failure was not guaranteed.
 
 python scripts\test_validate_elevenlabs_040_live_test_traces.py
 PASS - Ran 12 tests
@@ -134,3 +134,76 @@ EXPECTED FAIL - error: update_kb_file::atlas_output_quality_rules.md source sha 
 ```
 
 The dirty generated evidence is still source-bound to older evidence and was not edited. Orchestrator should regenerate commit-bound evidence.
+
+## Review Fix - Stabilize Historical Evidence Test
+
+No provider, production validator, patcher, product prompt/KB behavior, dashboard tests, Analysis, or generated live evidence files were changed.
+
+Change:
+
+- Replaced the branch-relative `HEAD^` assumption in `test_historical_commit_missing_current_product_markers_fails_closed`.
+- Added a deterministic test helper that walks reachable history, finds a commit whose relevant KB source files genuinely lack at least one current required marker, verifies that precondition, then builds historical evidence and asserts fail-closed.
+
+Validation:
+
+```text
+python scripts\test_validate_elevenlabs_040_evidence.py
+PASS - Ran 9 tests
+
+python scripts\test_apply_elevenlabs_040_detailed_pricing_control.py
+PASS - Ran 6 tests
+
+python scripts\test_validate_elevenlabs_040_live_test_traces.py
+PASS - Ran 12 tests
+
+python scripts\validate_elevenlabs_040_live_test_traces.py --self-test
+PASS - self-test: pass
+
+python scripts\validate_elevenlabs_039_end_call_edge_case_hardening.py
+PASS - status=pass; prompt_word_count=1894
+
+python scripts\validate_elevenlabs_038_end_call_terminal_control.py
+PASS - status=pass; prompt_word_count=1894
+
+python scripts\validate_elevenlabs_037_confident_capability_control.py
+PASS - status=pass; prompt_word_count=1894
+
+python scripts\validate_elevenlabs_037_custom_capability_scope_confidence.py
+PASS - current 037 validator passed; wrapper reports deprecated-wrapper
+
+python scripts\validate_elevenlabs_036_natural_sales_scenarios_tests.py
+PASS - status=pass
+
+python scripts\validate_elevenlabs_035_procedure_natural_sales_tests.py
+PASS - status=pass
+
+python scripts\validate_elevenlabs_034_human_phone_naturalness.py
+PASS - status=pass
+
+python scripts\validate_elevenlabs_033_email_confirmation_precision.py
+PASS - status=pass; prompt_word_count=1894
+
+python scripts\validate_elevenlabs_032_final_runtime_polish.py
+PASS - status=pass; prompt_word_count=1894
+
+python scripts\validate_elevenlabs_031_runtime_elite_hardening.py
+PASS - status=pass; prompt_word_count=1894
+
+python scripts\validate_elevenlabs_030_live_transcript_failure_hardening.py
+PASS - status=pass; prompt_word_count=1894
+
+python -m py_compile scripts\validate_elevenlabs_040_detailed_pricing_control.py scripts\validate_elevenlabs_040_live_test_traces.py scripts\run_elevenlabs_040_tests.py scripts\apply_elevenlabs_040_detailed_pricing_control.py scripts\capture_elevenlabs_040_test_invocation.py scripts\test_run_elevenlabs_040_tests.py scripts\test_apply_elevenlabs_040_detailed_pricing_control.py scripts\test_validate_elevenlabs_040_evidence.py scripts\test_validate_elevenlabs_040_live_test_traces.py
+PASS - no output
+
+git diff --check
+PASS - CRLF normalization warning only
+```
+
+Expected current failure:
+
+```text
+python scripts\validate_elevenlabs_040_detailed_pricing_control.py
+EXPECTED FAIL - error: update_kb_file::atlas_output_quality_rules.md source sha mismatch
+```
+
+Main 040 remains stale until orchestrator regenerates commit-bound dry-run evidence.

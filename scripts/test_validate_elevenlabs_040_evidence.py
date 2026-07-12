@@ -63,6 +63,29 @@ def source_evidence_for_commit(commit: str, source_path: str) -> dict[str, objec
     }
 
 
+def missing_current_markers(commit: str, target_kb_doc_names: tuple[str, ...]) -> dict[str, list[str]]:
+    missing_by_doc: dict[str, list[str]] = {}
+    for name in target_kb_doc_names:
+        source_path = f"runtime/providers/elevenlabs_agents/knowledge_base/atlas_web_studio/{name}"
+        source_text = git_show_bytes(commit, source_path).decode("utf-8", errors="replace")
+        missing = [marker for marker in validator.KB_REQUEST_SOURCE_MARKERS[name] if marker not in source_text]
+        if missing:
+            missing_by_doc[name] = missing
+    return missing_by_doc
+
+
+def reachable_commit_missing_current_markers(target_kb_doc_names: tuple[str, ...]) -> tuple[str, dict[str, list[str]]]:
+    current = patcher.current_source_evidence_commit()
+    commits = [line.strip() for line in validator.git(["rev-list", "HEAD"]).stdout.splitlines() if line.strip()]
+    for commit in commits:
+        if commit == current:
+            continue
+        missing_by_doc = missing_current_markers(commit, target_kb_doc_names)
+        if missing_by_doc:
+            return commit, missing_by_doc
+    raise AssertionError("reachable history contains no commit missing current required KB markers")
+
+
 def evidence_fixture(
     root: Path,
     *,
@@ -209,7 +232,8 @@ class DetailedPricingEvidenceValidationTests(unittest.TestCase):
                 validator.validate_live_evidence_artifacts(evidence_dir=root, require_existing_evidence=True)
 
     def test_historical_commit_missing_current_product_markers_fails_closed(self) -> None:
-        historical = validator.git(["rev-parse", "HEAD^"]).stdout.strip()
+        historical, missing_by_doc = reachable_commit_missing_current_markers(REQUIRED_DEFAULT_KB_DOCS)
+        self.assertTrue(missing_by_doc, "historical fixture precondition must prove at least one current marker is absent")
         with tempfile.TemporaryDirectory() as raw_tmp:
             root = Path(raw_tmp)
             evidence_fixture(root, mode="live_passed", source_commit=historical, target_kb_doc_names=REQUIRED_DEFAULT_KB_DOCS)
