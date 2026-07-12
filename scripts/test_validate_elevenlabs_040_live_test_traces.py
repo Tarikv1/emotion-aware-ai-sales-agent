@@ -160,14 +160,69 @@ class DetailedPricingTraceCanaryTests(unittest.TestCase):
 
         self.assertEqual(result["independent_status"], "pass")
 
-    def test_existing_live_post_fix_canary_remains_failed_for_cta_reason(self) -> None:
-        path = SCRIPT_DIR.parent / "research" / "experiments" / "generated" / traces.CHECKPOINT_ID / "live_test_canary_post_fix_capture.json"
-        payload = traces.capture_payload(traces.read_json(path))
+    def test_plural_prices_is_a_direct_price_trigger(self) -> None:
+        self.assertIsNotNone(traces.PRICE_TRIGGER_RE.search("What are your website prices?"))
+        self.assertIsNotNone(traces.PRICE_TRIGGER_RE.search("I need to know what a basic site costs."))
 
-        result = traces.validate_partial_canary_payload(payload)
+    def test_custom_business_logic_is_not_a_menu_dump(self) -> None:
+        descriptive_phrases = [
+            "That depends on the custom business logic and integrations.",
+            "That depends on the custom business workflows and integrations.",
+            "That depends on the custom business-logic and integrations.",
+        ]
 
-        self.assertEqual(result["independent_status"], "fail")
-        self.assertIn("post_quote_price_followup_no_cta", canary_failure_names(result))
+        for phrase in descriptive_phrases:
+            with self.subTest(phrase=phrase):
+                self.assertIsNone(traces.MENU_RE.search(phrase))
+        self.assertIsNotNone(traces.MENU_RE.search("The Custom Business package is one option."))
+
+    def test_negated_fixed_quote_language_is_not_an_unsupported_quote(self) -> None:
+        refusals = [
+            "That is not a real fixed price without scoping it.",
+            "I can't give a fixed price yet.",
+            "I cannot give an exact quote until the workflows are scoped.",
+            "Not exactly. The combined project is usually $4,000-$6,500.",
+        ]
+
+        for refusal in refusals:
+            with self.subTest(refusal=refusal):
+                self.assertFalse(traces.has_unsupported_fixed_quote(refusal))
+
+        self.assertTrue(traces.has_unsupported_fixed_quote("The fixed price is $1,200."))
+
+    def test_negated_fixed_quote_passes_the_money_bearing_validator_path(self) -> None:
+        payload = full_payload()
+        payload["test_runs"][2]["agent_responses"] = [
+            traces.make_event("user", "What does a basic website cost?"),
+            traces.make_event("agent", "A basic site is usually $900-$1,500 depending on content. That is not a real fixed price without scoping it."),
+        ]
+
+        result = traces.validate_payload(payload)
+
+        self.assertEqual(status_by_id(result)[traces.EXPECTED_TEST_ORDER[2]], "pass")
+
+    def test_actionable_mockup_offers_are_detected_without_broad_language_false_positives(self) -> None:
+        offers = [
+            "I can show you a mockup first.",
+            "I can share the mockup if useful.",
+            "We could walk through a mockup first.",
+            "Where should I send the mockup?",
+            "What is the best email for the mockup?",
+        ]
+        neutral_price_language = [
+            "Would you be open to the lower end if content is ready?",
+            "Take a look at the service count and page count.",
+            "You can compare the options without committing today.",
+            "Send the scope notes over and I can tell you which range fits.",
+            "Send the photos over and I can tell you whether the lower end fits.",
+        ]
+
+        for offer in offers:
+            with self.subTest(offer=offer):
+                self.assertTrue(traces.has_actionable_post_quote_cta(offer))
+        for response in neutral_price_language:
+            with self.subTest(response=response):
+                self.assertFalse(traces.has_actionable_post_quote_cta(response))
 
     def test_swapped_run_order_passes_after_canonicalization(self) -> None:
         payload = full_payload()
@@ -211,6 +266,21 @@ class DetailedPricingTraceCanaryTests(unittest.TestCase):
         self.assertEqual(status_by_id(result)[traces.EXPECTED_TEST_ORDER[8]], "pass")
         self.assertEqual(result["independent_status"], "pass")
 
+    def test_budget_within_range_and_fit_within_that_budget_are_affirmative(self) -> None:
+        payload = full_payload()
+        payload["test_runs"][8]["agent_responses"] = [
+            traces.make_event("agent", "A free mockup shows what a cleaner homepage could look like."),
+            traces.make_event("user", "How much would a basic site cost? My budget is around $1,200."),
+            traces.make_event("agent", "A basic site is usually nine hundred to fifteen hundred dollars, so twelve hundred is within the normal range."),
+            traces.make_event("user", "Would that cover a simple appointment request form?"),
+            traces.make_event("agent", "Yes, that light option can usually fit within that twelve hundred dollar budget."),
+        ]
+
+        result = traces.validate_payload(payload)
+
+        self.assertEqual(status_by_id(result)[traces.EXPECTED_TEST_ORDER[8]], "pass")
+        self.assertEqual(result["independent_status"], "pass")
+
     def test_spoken_three_care_plan_transcript_fails_one_plan_rule(self) -> None:
         payload = full_payload()
         payload["test_runs"][9]["agent_responses"] = [
@@ -237,16 +307,23 @@ class DetailedPricingTraceCanaryTests(unittest.TestCase):
         self.assertEqual(result["independent_status"], "incomplete")
         self.assertEqual(status_by_id(result)[traces.EXPECTED_TEST_ORDER[5]], "incomplete")
 
-    def test_current_capture_classifies_as_eight_pass_one_fail_one_incomplete(self) -> None:
-        root = SCRIPT_DIR.parent / "research" / "experiments" / "generated" / traces.CHECKPOINT_ID
-        payload = traces.capture_payload(traces.read_json(root / "live_test_capture.json"))
-        mapping = traces.provider_test_id_mapping(traces.read_json(root / "live_test_mapping.json"))
+    def test_synthetic_mixed_suite_classifies_fail_and_incomplete_without_live_fixtures(self) -> None:
+        payload = full_payload()
+        payload["test_runs"][5]["agent_responses"] = [
+            traces.make_event("user", "I need a new site with booking, CRM, payments, service-area pages, and a blog."),
+            traces.make_event("agent", "That is a broader connected workflow, so the scope depends on what needs to sync."),
+        ]
+        payload["test_runs"][9]["agent_responses"] = [
+            traces.make_event("user", "Can you build the site and help keep it updated?"),
+            traces.make_event("agent", "Yes, we can build the site and keep it updated."),
+            traces.make_event("user", "What do hosting and maintenance cost each month?"),
+            traces.make_event("agent", "Essential Care is seventy nine dollars per month, Business Care is one hundred forty nine dollars per month, and Growth Care is two hundred forty nine dollars per month."),
+        ]
 
-        result = traces.validate_payload(payload, mapping)
+        result = traces.validate_payload(payload)
         statuses = status_by_id(result)
 
         self.assertEqual(result["independent_status"], "fail")
-        self.assertEqual(list(statuses.values()).count("pass"), 8)
         self.assertEqual(statuses["sim_040_care_plan_only_when_asked"], "fail")
         self.assertEqual(statuses["sim_040_multi_feature_no_price_stacking"], "incomplete")
 

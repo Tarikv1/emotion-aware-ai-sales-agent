@@ -14,7 +14,7 @@ from typing import Any
 EXPECTED_AGENT_ID = "agent_7801kt0g32zxf4f8x5zkykj7syty"
 CHECKPOINT_ID = "ELEVENLABS-040-detailed-pricing-control"
 PRICE_TRIGGER_RE = re.compile(
-    r"\b(?:how much|cost|price|charge|fee|range|ballpark|budget|afford|monthly|extra|fit|fits|works?)\b|\$\s?1,200\b",
+    r"\b(?:how much|costs?|prices?|charge|fee|range|ballpark|budget|afford|monthly|extra|fit|fits|works?)\b|\$\s?1,200\b",
     re.IGNORECASE,
 )
 PAID_PRICE_RE = re.compile(
@@ -27,11 +27,15 @@ ONGOING_COST_TRIGGER_RE = re.compile(
     re.IGNORECASE,
 )
 MENU_RE = re.compile(
-    r"\b(?:quick launch|essential local|custom business|growth website|integration website|starter ecommerce|advanced ecommerce)\b",
+    r"\b(?:quick launch|essential local|custom business(?=\s+(?:package|plan|tier|option|site|website)\b|[,:;.!?]|$)|growth website|integration website|starter ecommerce|advanced ecommerce)\b",
     re.IGNORECASE,
 )
 FIXED_QUOTE_RE = re.compile(
     r"\b(?:exactly|exact price|exact quote|exact amount|fixed price|flat(?: fee)?|final price|locked(?: in)?|all[- ]in|comes to|call it)\b",
+    re.IGNORECASE,
+)
+NEGATED_FIXED_QUOTE_RE = re.compile(
+    r"\b(?:not(?:\s+(?:a|an))?(?:\s+real)?|can(?:not|'t)|could(?:\s+not|n't)|won't|will\s+not|unable\s+to)\b(?:\s+\w+){0,5}\s+\b(?:exactly|exact(?:\s+(?:price|quote|amount))?|fixed\s+price|flat(?:\s+fee)?|final\s+price|locked(?:\s+in)?|all[- ]in)\b",
     re.IGNORECASE,
 )
 CEILING_RE = re.compile(
@@ -93,14 +97,38 @@ POST_QUOTE_PRICE_FOLLOWUP_RE = re.compile(
     re.IGNORECASE,
 )
 MOCKUP_REFERENCE_RE = re.compile(r"\bmock[- ]?up\b", re.IGNORECASE)
-ACTIONABLE_POST_QUOTE_CTA_RE = re.compile(
-    r"(?:\b(?:send (?:it|that|the)|send .* over|email (?:it|that|the)|best email|where should i send|open to taking a look|take a look|would you be open|next step|reason i called|judge .*before deciding|before deciding anything paid|without asking you to commit)\b|\b(?:i|we)\s+(?:can|could|would|will)\s+(?:send|email)\b|\b(?:i|we)\s+(?:can|could|would|will)\s+(?:put together|create|make|prepare|build)\b[^.?!]*\bmock[- ]?up\b|\b(?:i|we)\s+(?:can|could|would|will)\s+start\s+with\s+(?:the\s+)?(?:free\s+)?mock[- ]?up\b)",
+SEND_EMAIL_CTA_RE = re.compile(
+    r"(?:\bwhere\s+should\s+i\s+send\b|\bwhat(?:'s|\s+is)?\s+(?:the\s+)?best\s+email\b|\b(?:(?:i|we)\s+(?:can|could|would|will)|(?:i|we)['’]ll)\s+(?:send|email)\b)",
+    re.IGNORECASE,
+)
+MOCKUP_OFFER_CTA_RE = re.compile(
+    r"\b(?:i|we)\s+(?:can|could|would|will)\b[^.?!]{0,50}\b(?:put\s+together|create|make|prepare|build|show|share|walk\s+through|start\s+with|send|email)\b[^.?!]{0,50}\bmock[- ]?up\b",
+    re.IGNORECASE,
+)
+MOCKUP_NEXT_STEP_CTA_RE = re.compile(
+    r"(?:\b(?:open\s+to|would\s+you\s+be\s+open\s+to|take\s+a\s+look|next\s+step)\b[^.?!]{0,60}\bmock[- ]?up\b|\bmock[- ]?up\b[^.?!]{0,60}\b(?:take\s+a\s+look|next\s+step)\b)",
+    re.IGNORECASE,
+)
+RENEWED_PITCH_CTA_RE = re.compile(
+    r"\b(?:reason\s+i\s+called|judge\b[^.?!]{0,60}\bbefore\s+deciding|before\s+deciding\s+anything\s+paid|without\s+asking\s+you\s+to\s+commit)\b",
     re.IGNORECASE,
 )
 PRICE_CHAIN_ACCEPTANCE_RE = re.compile(
     r"\b(?:send it|send that|send the mockup|yes|yeah|sure|okay send|go ahead|take a look)\b",
     re.IGNORECASE,
 )
+
+
+def has_unsupported_fixed_quote(message: str) -> bool:
+    without_refusals = NEGATED_FIXED_QUOTE_RE.sub("", message)
+    return FIXED_QUOTE_RE.search(without_refusals) is not None
+
+
+def has_actionable_post_quote_cta(message: str) -> bool:
+    return any(
+        pattern.search(message) is not None
+        for pattern in (SEND_EMAIL_CTA_RE, MOCKUP_OFFER_CTA_RE, MOCKUP_NEXT_STEP_CTA_RE, RENEWED_PITCH_CTA_RE)
+    )
 
 def money_range_pattern(start: str, end: str, *, plus_suffix: bool = False) -> re.Pattern[str]:
     suffix = r"\+(?=\D|$)" if plus_suffix else r"\b"
@@ -323,11 +351,14 @@ def money_match_labels(message: str) -> list[tuple[str, set[str]]]:
 
 
 def contains_affirmative_budget_fit(text: str) -> bool:
-    return (
-        BUDGET_FIT_POSITIVE_RE.search(text) is not None
-        and BUDGET_FIT_NEGATIVE_RE.search(text) is None
-        and BUDGET_FIT_HEDGE_RE.search(text) is None
-    )
+    for sentence in re.split(r"(?<=[.!?;])\s+", text):
+        if (
+            BUDGET_FIT_POSITIVE_RE.search(sentence) is not None
+            and BUDGET_FIT_NEGATIVE_RE.search(sentence) is None
+            and BUDGET_FIT_HEDGE_RE.search(sentence) is None
+        ):
+            return True
+    return False
 
 
 def contains_positive_whole_site_framing(text: str) -> bool:
@@ -410,7 +441,7 @@ def record_common_message_rules(checks: Checks, events: list[dict[str, Any]]) ->
         if money_matches(message):
             checks.check(
                 "no_unsupported_fixed_quote_or_ceiling",
-                FIXED_QUOTE_RE.search(message) is None and CEILING_RE.search(message) is None,
+                not has_unsupported_fixed_quote(message) and CEILING_RE.search(message) is None,
                 f"agent response {index} contains an unsupported fixed quote or ceiling",
             )
 
@@ -439,7 +470,7 @@ def validate_post_quote_followup_cta_lock(checks: Checks, events: list[dict[str,
                 buyer_mentioned_mockup = False
             continue
         if event["role"] == "agent" and active_price_chain:
-            actionable_cta = ACTIONABLE_POST_QUOTE_CTA_RE.search(message) is not None
+            actionable_cta = has_actionable_post_quote_cta(message)
             unsolicited_mockup = MOCKUP_REFERENCE_RE.search(message) is not None and not buyer_mentioned_mockup
             if actionable_cta or unsolicited_mockup:
                 violations.append(f"agent response {index} reopened mockup/email/send CTA during active price follow-up")

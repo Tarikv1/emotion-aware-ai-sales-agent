@@ -57,6 +57,7 @@ If the buyer asks the same question twice, do not repeat the same explanation. A
 - Do not switch to or mention existing-site CRM/API $1,000-$2,500+, request-form, or per-page add-on ranges for that project.
 - A newly added CRM or service-area page requirement is a whole-project scope driver: explain that it may move or require scope; a custom API requires scope without a number.
 - Individual add-on ranges apply only to clearly separate compatible existing-site additions.
+- Before quoting CRM, API, booking, payment, or integration work, new-site versus existing-site context must be known. If it is unclear, give no number and ask only which context applies; after the answer, quote one lane and never present both ranges together.
 - Use one relevant range and at most one material scope question.
 - For care, quote exactly one relevant plan after ongoing-cost intent; default to Essential Care if support need is unclear.
 - If the buyer only asks what that quoted plan includes or excludes, what counts as ordinary or heavy edits/reporting, whether edits are separate, or what would move the work into another plan, explain the boundary and say the other work is a different scope without naming another care-plan price.
