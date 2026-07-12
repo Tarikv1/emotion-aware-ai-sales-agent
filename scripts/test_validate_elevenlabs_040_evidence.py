@@ -5,7 +5,7 @@ import json
 import contextlib
 import io
 import hashlib
-import shutil
+import subprocess
 import sys
 import tempfile
 import unittest
@@ -36,6 +36,55 @@ REQUIRED_NEW_SOURCE_FIELDS = (
     "upload_length",
     "newline_mode",
 )
+LEGACY_SOURCE_COMMIT = "1e8af8510b072d5fe08501af7229abac5208bdf8"
+LEGACY_SOURCE_EVIDENCE_FIXTURES = {
+    "update_kb_file::atlas_price_scope_cost_drivers.md": {
+        "request_id": "update_kb_file::atlas_price_scope_cost_drivers.md",
+        "source_path": "runtime/providers/elevenlabs_agents/knowledge_base/atlas_web_studio/atlas_price_scope_cost_drivers.md",
+        "source_sha256": "df6f06af92ad57ca5679b848c909f56cc34905fc78fa3a3fd888861913cbfd54",
+        "source_byte_length": 14394,
+        "mode": "legacy_git_blob_old_fields",
+    },
+    "update_kb_file::atlas_output_quality_rules.md": {
+        "request_id": "update_kb_file::atlas_output_quality_rules.md",
+        "source_path": "runtime/providers/elevenlabs_agents/knowledge_base/atlas_web_studio/atlas_output_quality_rules.md",
+        "source_sha256": "5f6f68f5ec26640a55658d374c5729bfdc23d10745a4c194ed245d4aa486425e",
+        "source_byte_length": 19064,
+        "mode": "legacy_worktree_line_endings",
+    },
+}
+# Historical output worktree preserved a mixed-ending file: most lines were CRLF,
+# but these line numbers remained LF-only in the legacy artifact.
+LEGACY_OUTPUT_LF_ONLY_LINE_NUMBERS = (
+    5,
+    36,
+    37,
+    38,
+    39,
+    40,
+    41,
+    42,
+    43,
+    44,
+    45,
+    46,
+    47,
+    48,
+    49,
+    50,
+    51,
+    52,
+    53,
+    54,
+    88,
+    89,
+    90,
+    91,
+    92,
+    93,
+    94,
+)
+REAL_REPO_ROOT = validator.ROOT
 
 
 def sample_preflight() -> dict[str, object]:
@@ -186,15 +235,106 @@ def evidence_fixture(
     write_json(root / "live_agent_patch_result.json", result)
 
 
-def copy_current_live_evidence(root: Path) -> None:
-    for name in (
-        "live_agent_pre_patch_snapshot.json",
-        "live_agent_post_patch_snapshot.json",
-        "live_agent_patch_plan.json",
-        "live_agent_patch_requests.json",
-        "live_agent_patch_result.json",
+def replace_kb_evidence(root: Path, request_id: str, source_evidence: dict[str, object]) -> None:
+    for artifact in ("live_agent_patch_plan.json", "live_agent_patch_requests.json"):
+        payload = json.loads((root / artifact).read_text(encoding="utf-8"))
+        if artifact == "live_agent_patch_plan.json":
+            payload["request_source_evidence_by_id"][request_id] = dict(source_evidence)
+        else:
+            for request in payload["requests"]:
+                if request.get("request_id") == request_id:
+                    request["source_evidence"] = dict(source_evidence)
+                    break
+        write_json(root / artifact, payload)
+
+
+def legacy_git_blob_bytes(source_path: str) -> bytes:
+    return git_show_bytes(LEGACY_SOURCE_COMMIT, source_path)
+
+
+def legacy_worktree_bytes(source_path: str, *, mode: str) -> bytes:
+    source_blob_bytes = legacy_git_blob_bytes(source_path)
+    if mode == "legacy_worktree_line_endings":
+        assert b"\r\n" not in source_blob_bytes, f"{source_path} legacy blob unexpectedly already contains CRLF"
+        source_lines = source_blob_bytes.splitlines(keepends=True)
+        assert source_lines and all(line.endswith(b"\n") for line in source_lines), f"{source_path} legacy blob line structure changed"
+        lf_only = set(LEGACY_OUTPUT_LF_ONLY_LINE_NUMBERS)
+        assert max(lf_only) <= len(source_lines), f"{source_path} legacy LF-only map exceeds line count"
+        return b"".join(
+            line[:-1] + (b"\n" if index in lf_only else b"\r\n")
+            for index, line in enumerate(source_lines, start=1)
+        )
+    return source_blob_bytes
+
+
+def legacy_source_evidence(fixture: dict[str, object]) -> dict[str, object]:
+    source_path = str(fixture["source_path"])
+    source_name = Path(source_path).name
+    return {
+        "evidence_origin": patcher.SOURCE_EVIDENCE_ORIGIN,
+        "source_path": source_path,
+        "source_sha256": fixture["source_sha256"],
+        "source_byte_length": fixture["source_byte_length"],
+        "markers": list(validator.KB_REQUEST_SOURCE_MARKERS[source_name]),
+    }
+
+
+def write_legacy_historical_worktree(root: Path) -> None:
+    for fixture in LEGACY_SOURCE_EVIDENCE_FIXTURES.values():
+        source_path = str(fixture["source_path"])
+        mode = str(fixture["mode"])
+        source_bytes = legacy_worktree_bytes(source_path, mode=mode)
+        assert hashlib.sha256(source_bytes).hexdigest() == fixture["source_sha256"], f"{source_path} legacy sha fixture drifted"
+        assert len(source_bytes) == fixture["source_byte_length"], f"{source_path} legacy length fixture drifted"
+        target = root / source_path
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.write_bytes(source_bytes)
+
+
+def legacy_evidence_fixture(evidence_root: Path, historical_root: Path) -> None:
+    write_legacy_historical_worktree(historical_root)
+    evidence_fixture(
+        evidence_root,
+        mode="live_passed",
+        source_commit=LEGACY_SOURCE_COMMIT,
+        target_kb_doc_names=CARE_FOLLOWUP_KB_DOCS,
+    )
+    for request_id, fixture in LEGACY_SOURCE_EVIDENCE_FIXTURES.items():
+        replace_kb_evidence(evidence_root, request_id, legacy_source_evidence(fixture))
+
+
+def validate_legacy_fixture(
+    evidence_root: Path,
+    historical_root: Path,
+    *,
+    source_bytes_overrides: dict[str, bytes] | None = None,
+    current_head_blob_overrides: dict[str, bytes] | None = None,
+) -> dict[str, object]:
+    original_git = validator.git
+    original_git_show = validator.git_show_file_bytes
+
+    def fake_git(args: list[str], *, repo_root: Path = REAL_REPO_ROOT) -> subprocess.CompletedProcess[str]:
+        if args == ["rev-parse", "HEAD"]:
+            return subprocess.CompletedProcess(args, 0, stdout=f"{LEGACY_SOURCE_COMMIT}\n", stderr="")
+        return original_git(args, repo_root=repo_root)
+
+    def fake_source_bytes_for_commit(source_commit: str, source_path: str, current_head: str) -> bytes:
+        if source_bytes_overrides and source_path in source_bytes_overrides:
+            return source_bytes_overrides[source_path]
+        return original_git_show(source_commit, source_path, repo_root=REAL_REPO_ROOT)
+
+    def fake_git_show(commit: str, source_path: str, *, repo_root: Path = REAL_REPO_ROOT) -> bytes:
+        if current_head_blob_overrides and commit == LEGACY_SOURCE_COMMIT and source_path in current_head_blob_overrides:
+            return current_head_blob_overrides[source_path]
+        return original_git_show(commit, source_path, repo_root=repo_root)
+
+    with (
+        mock.patch.object(validator, "ROOT", historical_root),
+        mock.patch.object(validator, "git", side_effect=fake_git),
+        mock.patch.object(validator, "source_bytes_for_commit", side_effect=fake_source_bytes_for_commit),
+        mock.patch.object(validator, "git_show_file_bytes", side_effect=fake_git_show),
     ):
-        shutil.copy2(validator.LIVE_EVIDENCE_DIR / name, root / name)
+        return validator.validate_live_evidence_artifacts(evidence_dir=evidence_root, require_existing_evidence=True)
 
 
 def update_kb_evidence(root: Path, request_id: str, mutator: object) -> None:
@@ -300,53 +440,75 @@ class DetailedPricingEvidenceValidationTests(unittest.TestCase):
 
             validator.validate_live_evidence_artifacts(evidence_dir=root, require_existing_evidence=True)
 
-    def test_current_legacy_live_evidence_passes_with_visible_line_ending_mode(self) -> None:
-        summary = validator.validate_live_evidence_artifacts(require_existing_evidence=True)
-
-        self.assertEqual(summary["source_evidence_mode"], "legacy_worktree_line_endings")
-        self.assertEqual(
-            summary["legacy_allowlisted_request_ids"],
-            [
-                "update_kb_file::atlas_price_scope_cost_drivers.md",
-                "update_kb_file::atlas_output_quality_rules.md",
-            ],
-        )
-        self.assertIn(
-            "update_kb_file::atlas_output_quality_rules.md",
-            summary["legacy_worktree_line_endings_request_ids"],
-        )
-
-    def test_current_legacy_price_blob_old_fields_passes_when_head_unchanged(self) -> None:
-        summary = validator.validate_live_evidence_artifacts(require_existing_evidence=True)
-
-        self.assertIn(
-            "update_kb_file::atlas_price_scope_cost_drivers.md",
-            summary["legacy_allowlisted_request_ids"],
-        )
-        self.assertNotIn(
-            "update_kb_file::atlas_price_scope_cost_drivers.md",
-            summary["legacy_worktree_line_endings_request_ids"],
-        )
-
-    def test_current_legacy_live_evidence_rejects_tampered_upload_length(self) -> None:
+    def test_legacy_fixture_passes_with_visible_line_ending_mode(self) -> None:
         with tempfile.TemporaryDirectory() as raw_tmp:
-            root = Path(raw_tmp)
-            copy_current_live_evidence(root)
+            temp_root = Path(raw_tmp)
+            evidence_root = temp_root / "evidence"
+            historical_root = temp_root / "historical"
+            evidence_root.mkdir()
+            historical_root.mkdir()
+            legacy_evidence_fixture(evidence_root, historical_root)
+            summary = validate_legacy_fixture(evidence_root, historical_root)
+
+            self.assertEqual(summary["source_evidence_mode"], "legacy_worktree_line_endings")
+            self.assertEqual(
+                summary["legacy_allowlisted_request_ids"],
+                [
+                    "update_kb_file::atlas_price_scope_cost_drivers.md",
+                    "update_kb_file::atlas_output_quality_rules.md",
+                ],
+            )
+            self.assertIn(
+                "update_kb_file::atlas_output_quality_rules.md",
+                summary["legacy_worktree_line_endings_request_ids"],
+            )
+
+    def test_legacy_price_blob_old_fields_passes_when_head_unchanged(self) -> None:
+        with tempfile.TemporaryDirectory() as raw_tmp:
+            temp_root = Path(raw_tmp)
+            evidence_root = temp_root / "evidence"
+            historical_root = temp_root / "historical"
+            evidence_root.mkdir()
+            historical_root.mkdir()
+            legacy_evidence_fixture(evidence_root, historical_root)
+            summary = validate_legacy_fixture(evidence_root, historical_root)
+
+            self.assertIn(
+                "update_kb_file::atlas_price_scope_cost_drivers.md",
+                summary["legacy_allowlisted_request_ids"],
+            )
+            self.assertNotIn(
+                "update_kb_file::atlas_price_scope_cost_drivers.md",
+                summary["legacy_worktree_line_endings_request_ids"],
+            )
+
+    def test_legacy_fixture_rejects_tampered_upload_length(self) -> None:
+        with tempfile.TemporaryDirectory() as raw_tmp:
+            temp_root = Path(raw_tmp)
+            root = temp_root / "evidence"
+            historical_root = temp_root / "historical"
+            root.mkdir()
+            historical_root.mkdir()
+            legacy_evidence_fixture(root, historical_root)
             request_id = "update_kb_file::atlas_output_quality_rules.md"
             update_kb_evidence(root, request_id, lambda evidence: evidence.update({"source_byte_length": evidence["source_byte_length"] + 1}))
 
             with self.assertRaisesRegex(AssertionError, "legacy allowlist mismatch"):
-                validator.validate_live_evidence_artifacts(evidence_dir=root, require_existing_evidence=True)
+                validate_legacy_fixture(root, historical_root)
 
     def test_legacy_line_ending_mode_is_restricted_to_exact_completed_artifact_tuple(self) -> None:
         with tempfile.TemporaryDirectory() as raw_tmp:
-            root = Path(raw_tmp)
-            copy_current_live_evidence(root)
+            temp_root = Path(raw_tmp)
+            root = temp_root / "evidence"
+            historical_root = temp_root / "historical"
+            root.mkdir()
+            historical_root.mkdir()
+            legacy_evidence_fixture(root, historical_root)
             request_id = "update_kb_file::atlas_output_quality_rules.md"
             update_kb_evidence(root, request_id, lambda evidence: evidence.update({"source_sha256": "0" * 64}))
 
             with self.assertRaisesRegex(AssertionError, "legacy allowlist mismatch"):
-                validator.validate_live_evidence_artifacts(evidence_dir=root, require_existing_evidence=True)
+                validate_legacy_fixture(root, historical_root)
 
     def test_request_source_path_must_match_request_id_doc_name(self) -> None:
         with tempfile.TemporaryDirectory() as raw_tmp:
@@ -364,61 +526,47 @@ class DetailedPricingEvidenceValidationTests(unittest.TestCase):
             with self.assertRaisesRegex(AssertionError, "source path mismatch"):
                 validator.validate_live_evidence_artifacts(evidence_dir=root, require_existing_evidence=True)
 
-    def test_current_legacy_live_evidence_rejects_changed_current_head_blob(self) -> None:
-        source_commit = json.loads((validator.LIVE_EVIDENCE_DIR / "live_agent_patch_plan.json").read_text(encoding="utf-8"))["source_evidence_commit"]
-        current_head = validator.git(["rev-parse", "HEAD"]).stdout.strip()
+    def test_legacy_fixture_rejects_changed_current_head_blob(self) -> None:
         target_path = validator.OUTPUT_PATH
-        original_git_show = validator.git_show_file_bytes
-        source_blob = validator.git_show_file_bytes(source_commit, target_path)
-
-        def fake_git_show(commit: str, source_path: str, *, repo_root: Path = validator.ROOT) -> bytes:
-            if commit == current_head and source_path == target_path:
-                return source_blob + b"\nchanged\n"
-            return original_git_show(commit, source_path, repo_root=repo_root)
+        source_blob = legacy_git_blob_bytes(target_path)
 
         with tempfile.TemporaryDirectory() as raw_tmp:
-            root = Path(raw_tmp)
-            copy_current_live_evidence(root)
-            with mock.patch.object(validator, "git_show_file_bytes", side_effect=fake_git_show):
-                with self.assertRaisesRegex(AssertionError, "legacy current HEAD blob mismatch"):
-                    validator.validate_live_evidence_artifacts(evidence_dir=root, require_existing_evidence=True)
+            temp_root = Path(raw_tmp)
+            root = temp_root / "evidence"
+            historical_root = temp_root / "historical"
+            root.mkdir()
+            historical_root.mkdir()
+            legacy_evidence_fixture(root, historical_root)
+            with self.assertRaisesRegex(AssertionError, "legacy current HEAD blob mismatch"):
+                validate_legacy_fixture(root, historical_root, current_head_blob_overrides={target_path: source_blob + b"\nchanged\n"})
 
     def test_legacy_price_blob_old_fields_rejects_changed_current_head_blob(self) -> None:
-        source_commit = json.loads((validator.LIVE_EVIDENCE_DIR / "live_agent_patch_plan.json").read_text(encoding="utf-8"))["source_evidence_commit"]
-        current_head = validator.git(["rev-parse", "HEAD"]).stdout.strip()
         target_path = validator.PRICE_PATH
-        original_git_show = validator.git_show_file_bytes
-        source_blob = validator.git_show_file_bytes(source_commit, target_path)
-
-        def fake_git_show(commit: str, source_path: str, *, repo_root: Path = validator.ROOT) -> bytes:
-            if commit == current_head and source_path == target_path:
-                return source_blob + b"\nchanged\n"
-            return original_git_show(commit, source_path, repo_root=repo_root)
+        source_blob = legacy_git_blob_bytes(target_path)
 
         with tempfile.TemporaryDirectory() as raw_tmp:
-            root = Path(raw_tmp)
-            copy_current_live_evidence(root)
-            with mock.patch.object(validator, "git_show_file_bytes", side_effect=fake_git_show):
-                with self.assertRaisesRegex(AssertionError, "legacy current HEAD blob mismatch"):
-                    validator.validate_live_evidence_artifacts(evidence_dir=root, require_existing_evidence=True)
+            temp_root = Path(raw_tmp)
+            root = temp_root / "evidence"
+            historical_root = temp_root / "historical"
+            root.mkdir()
+            historical_root.mkdir()
+            legacy_evidence_fixture(root, historical_root)
+            with self.assertRaisesRegex(AssertionError, "legacy current HEAD blob mismatch"):
+                validate_legacy_fixture(root, historical_root, current_head_blob_overrides={target_path: source_blob + b"\nchanged\n"})
 
-    def test_current_legacy_live_evidence_rejects_binary_blob(self) -> None:
-        source_commit = json.loads((validator.LIVE_EVIDENCE_DIR / "live_agent_patch_plan.json").read_text(encoding="utf-8"))["source_evidence_commit"]
+    def test_legacy_fixture_rejects_binary_blob(self) -> None:
         target_path = validator.OUTPUT_PATH
-        original_git_show = validator.git_show_file_bytes
-        source_blob = validator.git_show_file_bytes(source_commit, target_path)
-
-        def fake_git_show(commit: str, source_path: str, *, repo_root: Path = validator.ROOT) -> bytes:
-            if commit == source_commit and source_path == target_path:
-                return source_blob + b"\0"
-            return original_git_show(commit, source_path, repo_root=repo_root)
+        source_blob = legacy_git_blob_bytes(target_path) + b"\0"
 
         with tempfile.TemporaryDirectory() as raw_tmp:
-            root = Path(raw_tmp)
-            copy_current_live_evidence(root)
-            with mock.patch.object(validator, "git_show_file_bytes", side_effect=fake_git_show):
-                with self.assertRaisesRegex(AssertionError, "legacy binary source content"):
-                    validator.validate_live_evidence_artifacts(evidence_dir=root, require_existing_evidence=True)
+            temp_root = Path(raw_tmp)
+            root = temp_root / "evidence"
+            historical_root = temp_root / "historical"
+            root.mkdir()
+            historical_root.mkdir()
+            legacy_evidence_fixture(root, historical_root)
+            with self.assertRaisesRegex(AssertionError, "legacy binary source content"):
+                validate_legacy_fixture(root, historical_root, source_bytes_overrides={target_path: source_blob})
 
     def test_care_followup_subset_validates_declared_three_write_set(self) -> None:
         with tempfile.TemporaryDirectory() as raw_tmp:
