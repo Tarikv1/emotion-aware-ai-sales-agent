@@ -574,17 +574,25 @@ def validate_live_patcher_semantics() -> None:
     assert_condition(len(set(EXPECTED_PRICE_DEFAULTS) & set(placeholders)) == 6, "patch_body must expose exactly six approved price defaults")
 
     requests = patcher.patch_requests(agent, {"target_kb_docs": {name: {"id": doc_id, "source_path": f"runtime/providers/elevenlabs_agents/knowledge_base/atlas_web_studio/{name}"} for name, doc_id in patcher.KNOWN_KB_DOC_IDS.items()}})
+    head_commit = git(["rev-parse", "HEAD"]).stdout.strip()
     for request in requests:
         if request["request_id"].startswith("update_kb_file::"):
             source_evidence = request.get("source_evidence")
             assert_condition(isinstance(source_evidence, dict), f"{request['request_id']} missing source_evidence")
             source_path = ROOT / source_evidence["source_path"]
-            source_bytes = source_path.read_bytes()
-            assert_condition(source_evidence.get("source_sha256") == sha256_bytes(source_bytes), f"{request['request_id']} source sha mismatch")
+            source_bytes = git_show_file_bytes(head_commit, str(source_path.relative_to(ROOT)).replace("\\", "/"))
+            source_sha = sha256_bytes(source_bytes)
+            assert_condition(source_evidence.get("source_sha256") == source_sha, f"{request['request_id']} source sha mismatch")
             assert_condition(source_evidence.get("source_byte_length") == len(source_bytes), f"{request['request_id']} source byte length mismatch")
+            assert_condition(source_evidence.get("source_git_blob_sha256") == source_sha, f"{request['request_id']} git blob sha mismatch")
+            assert_condition(source_evidence.get("source_git_blob_byte_length") == len(source_bytes), f"{request['request_id']} git blob length mismatch")
+            assert_condition(source_evidence.get("upload_byte_sha256") == source_sha, f"{request['request_id']} upload byte sha mismatch")
+            assert_condition(source_evidence.get("upload_byte_length") == len(source_bytes), f"{request['request_id']} upload byte length mismatch")
+            assert_condition(source_evidence.get("newline_mode") in {"git_blob_lf", "git_blob_crlf", "worktree_crlf_normalized_to_git_lf"}, f"{request['request_id']} newline mode mismatch")
             markers = source_evidence.get("markers")
             assert_condition(isinstance(markers, list) and markers, f"{request['request_id']} missing source markers")
-            assert_condition(all(isinstance(marker, str) and marker in source_path.read_text(encoding="utf-8") for marker in markers), f"{request['request_id']} source marker mismatch")
+            source_text = source_bytes.decode("utf-8")
+            assert_condition(all(isinstance(marker, str) and marker in source_text for marker in markers), f"{request['request_id']} source marker mismatch")
         elif request["request_id"] == "patch_agent::prompt_dynamic_variables":
             assert_condition(request.get("body_canonical_json_sha256") == canonical_sha256(request["body"]), "agent patch request canonical digest mismatch")
 
@@ -772,12 +780,69 @@ def expected_request_ids_for_targets(target_names: list[str]) -> list[str]:
 
 
 def source_bytes_for_commit(source_commit: str, source_path: str, current_head: str) -> bytes:
-    if source_commit == current_head:
-        return (ROOT / source_path).read_bytes()
     return git_show_file_bytes(source_commit, source_path)
 
 
-def validate_source_evidence_for_commit(requests: list[dict[str, Any]], evidence_by_id: dict[str, Any], *, source_commit: str, current_head: str) -> None:
+def assert_text_bytes(label: str, value: bytes) -> str:
+    assert_condition(b"\0" not in value, f"{label} binary source content")
+    try:
+        return value.decode("utf-8")
+    except UnicodeDecodeError as exc:
+        fail(f"{label} non-UTF-8 source content: {exc}")
+
+
+def validate_git_blob_source_evidence(source_evidence: dict[str, Any], *, request_id: str, blob_bytes: bytes) -> None:
+    blob_sha = sha256_bytes(blob_bytes)
+    blob_length = len(blob_bytes)
+    assert_condition(source_evidence.get("source_sha256") == blob_sha, f"{request_id} source sha mismatch")
+    assert_condition(source_evidence.get("source_byte_length") == blob_length, f"{request_id} source length mismatch")
+    has_new_blob_fields = any(
+        field in source_evidence
+        for field in (
+            "source_git_blob_sha256",
+            "source_git_blob_byte_length",
+            "upload_byte_sha256",
+            "upload_byte_length",
+            "newline_mode",
+        )
+    )
+    if has_new_blob_fields:
+        assert_condition(source_evidence.get("source_git_blob_sha256") == blob_sha, f"{request_id} git blob sha mismatch")
+        assert_condition(source_evidence.get("source_git_blob_byte_length") == blob_length, f"{request_id} git blob length mismatch")
+        assert_condition(source_evidence.get("upload_byte_sha256") == blob_sha, f"{request_id} upload byte sha mismatch")
+        assert_condition(source_evidence.get("upload_byte_length") == blob_length, f"{request_id} upload byte length mismatch")
+        assert_condition(
+            source_evidence.get("newline_mode") in {"git_blob_lf", "git_blob_crlf", "worktree_crlf_normalized_to_git_lf"},
+            f"{request_id} newline mode mismatch",
+        )
+
+
+def validate_legacy_worktree_line_endings(
+    source_evidence: dict[str, Any],
+    *,
+    request_id: str,
+    source_path: str,
+    source_commit: str,
+    current_head: str,
+    source_blob_bytes: bytes,
+) -> None:
+    source_text = assert_text_bytes(f"{request_id} legacy", source_blob_bytes)
+    current_head_blob = git_show_file_bytes(current_head, source_path)
+    assert_condition(current_head_blob == source_blob_bytes, f"{request_id} legacy current HEAD blob mismatch")
+    worktree_bytes = (ROOT / source_path).read_bytes()
+    assert_text_bytes(f"{request_id} legacy worktree", worktree_bytes)
+    legacy_upload_sha = sha256_bytes(worktree_bytes)
+    assert_condition(source_evidence.get("source_sha256") == legacy_upload_sha, f"{request_id} legacy upload sha mismatch")
+    assert_condition(source_evidence.get("source_byte_length") == len(worktree_bytes), f"{request_id} legacy upload length mismatch")
+    assert_condition(b"\r\n" in worktree_bytes, f"{request_id} legacy worktree line endings missing")
+    assert_condition(worktree_bytes.replace(b"\r\n", b"\n") == source_blob_bytes, f"{request_id} legacy CRLF normalization mismatch")
+    markers = KB_REQUEST_SOURCE_MARKERS[Path(source_path).name]
+    missing_markers = [marker for marker in markers if marker not in source_text]
+    assert_condition(not missing_markers, f"{request_id} historical source markers missing: {missing_markers}")
+
+
+def validate_source_evidence_for_commit(requests: list[dict[str, Any]], evidence_by_id: dict[str, Any], *, source_commit: str, current_head: str) -> dict[str, Any]:
+    legacy_ids: list[str] = []
     for request in requests:
         request_id = request.get("request_id")
         assert_condition(isinstance(request_id, str) and request_id, "request missing request_id")
@@ -790,9 +855,33 @@ def validate_source_evidence_for_commit(requests: list[dict[str, Any]], evidence
             assert_condition(isinstance(source_path, str) and source_path, f"{request_id} source path missing")
             markers = KB_REQUEST_SOURCE_MARKERS[Path(source_path).name]
             source_bytes = source_bytes_for_commit(source_commit, source_path, current_head)
-            source_text = source_bytes.decode("utf-8")
-            assert_condition(source_evidence.get("source_sha256") == sha256_bytes(source_bytes), f"{request_id} source sha mismatch")
-            assert_condition(source_evidence.get("source_byte_length") == len(source_bytes), f"{request_id} source length mismatch")
+            source_sha_matches = source_evidence.get("source_sha256") == sha256_bytes(source_bytes)
+            source_length_matches = source_evidence.get("source_byte_length") == len(source_bytes)
+            has_new_blob_fields = any(
+                field in source_evidence
+                for field in (
+                    "source_git_blob_sha256",
+                    "source_git_blob_byte_length",
+                    "upload_byte_sha256",
+                    "upload_byte_length",
+                    "newline_mode",
+                )
+            )
+            if source_sha_matches and source_length_matches:
+                source_text = assert_text_bytes(request_id, source_bytes)
+                validate_git_blob_source_evidence(source_evidence, request_id=request_id, blob_bytes=source_bytes)
+            else:
+                assert_condition(not has_new_blob_fields, f"{request_id} source sha mismatch")
+                validate_legacy_worktree_line_endings(
+                    source_evidence,
+                    request_id=request_id,
+                    source_path=source_path,
+                    source_commit=source_commit,
+                    current_head=current_head,
+                    source_blob_bytes=source_bytes,
+                )
+                source_text = source_bytes.decode("utf-8")
+                legacy_ids.append(request_id)
             assert_condition(tuple(source_evidence.get("markers", ())) == markers, f"{request_id} marker list mismatch")
             missing_markers = [marker for marker in markers if marker not in source_text]
             assert_condition(not missing_markers, f"{request_id} historical source markers missing: {missing_markers}")
@@ -805,6 +894,10 @@ def validate_source_evidence_for_commit(requests: list[dict[str, Any]], evidence
             assert_condition(agent_evidence.get("evidence_origin") in {"sanitized_request_body_before_provider_write_not_network_capture", "post_hoc_from_sanitized_request_body_not_network_capture"}, "agent digest origin mismatch")
         else:
             fail(f"unknown live evidence request id {request_id}")
+    return {
+        "source_evidence_mode": "legacy_worktree_line_endings" if legacy_ids else "git_blob",
+        "legacy_worktree_line_endings_request_ids": legacy_ids,
+    }
 
 
 def validate_live_evidence_artifacts(
@@ -844,7 +937,7 @@ def validate_live_evidence_artifacts(
     assert_condition("live_readback_time_recorded" in post_snapshot, "post snapshot must state readback timestamp recording status")
 
     current_head = git(["rev-parse", "HEAD"]).stdout.strip()
-    validate_source_evidence_for_commit(requests, evidence_by_id, source_commit=source_commit, current_head=current_head)
+    source_summary = validate_source_evidence_for_commit(requests, evidence_by_id, source_commit=source_commit, current_head=current_head)
     provider_writes_allowed = patch_requests.get("provider_writes_allowed")
     status = patch_result.get("status")
     if source_commit != current_head:
@@ -852,7 +945,7 @@ def validate_live_evidence_artifacts(
             assert_provider_counts(patch_result, expected_attempts=expected_count, expected_successes=expected_count, label="historical result")
         else:
             assert_provider_counts(patch_result, expected_attempts=0, expected_successes=0, label="historical result")
-        return {"status": "excluded_valid_historical_source_commit", "source_evidence_commit": source_commit}
+        return {"status": "excluded_valid_historical_source_commit", "source_evidence_commit": source_commit, **source_summary}
 
     if provider_writes_allowed is False and status == "plan_only_missing_confirmation":
         assert_provider_counts(patch_requests, expected_attempts=0, expected_successes=0, label="plan-only requests")
@@ -871,7 +964,7 @@ def validate_live_evidence_artifacts(
         assert_condition(isinstance(post_snapshot.get("live_readback_at_utc"), str) and post_snapshot.get("live_readback_at_utc"), "live-passed post readback timestamp missing")
     else:
         fail(f"unsupported live evidence mode: provider_writes_allowed={provider_writes_allowed!r}, status={status!r}")
-    return {"status": "validated_current_source_commit", "source_evidence_commit": source_commit}
+    return {"status": "validated_current_source_commit", "source_evidence_commit": source_commit, **source_summary}
 
 
 def main() -> int:

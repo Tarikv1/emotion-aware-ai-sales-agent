@@ -11,10 +11,15 @@ import argparse
 import copy
 import hashlib
 import json
+import mimetypes
 import os
 import re
 import subprocess
 import sys
+import time
+import urllib.error
+import urllib.parse
+import urllib.request
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
@@ -29,10 +34,12 @@ for path in (ROOT, SCRIPT_DIR):
 try:
     import apply_elevenlabs_039_independent_test_hardening as guards
     from apply_elevenlabs_038_end_call_terminal_control import (
+        API_BASE_URL,
         active_kb_paths,
         get_prompt,
         json_request,
         multipart_update_file,
+        redact_text,
         summarize_tools,
         unrelated_tool_fingerprint,
     )
@@ -303,6 +310,48 @@ def current_source_evidence_commit() -> str:
     return commit
 
 
+def sha256_bytes(value: bytes) -> str:
+    return hashlib.sha256(value).hexdigest()
+
+
+def git_show_file_bytes(commit: str, source_path: str) -> bytes:
+    completed = subprocess.run(
+        ["git", "show", f"{commit}:{source_path}"],
+        cwd=ROOT,
+        capture_output=True,
+        check=False,
+    )
+    if completed.returncode != 0:
+        message = completed.stderr.decode("utf-8", errors="replace").strip()
+        raise RuntimeError(message or f"git show {commit}:{source_path} failed")
+    return completed.stdout
+
+
+def newline_mode_for_bytes(blob_bytes: bytes, worktree_bytes: bytes) -> str:
+    if b"\0" in blob_bytes or b"\0" in worktree_bytes:
+        raise RuntimeError("refusing binary source content for provider evidence")
+    try:
+        blob_bytes.decode("utf-8")
+        worktree_bytes.decode("utf-8")
+    except UnicodeDecodeError as exc:
+        raise RuntimeError("refusing non-UTF-8 source content for provider evidence") from exc
+    if worktree_bytes == blob_bytes:
+        if b"\r\n" in blob_bytes:
+            return "git_blob_crlf"
+        return "git_blob_lf"
+    if worktree_bytes.replace(b"\r\n", b"\n") == blob_bytes:
+        return "worktree_crlf_normalized_to_git_lf"
+    raise RuntimeError("repo source files differ semantically from HEAD; refusing provider evidence")
+
+
+def git_blob_upload_bytes(source_path: Path, *, source_commit: str | None = None) -> tuple[bytes, str]:
+    commit = source_commit or current_source_evidence_commit()
+    source_rel = str(source_path.relative_to(ROOT)).replace("\\", "/")
+    blob_bytes = git_show_file_bytes(commit, source_rel)
+    newline_mode = newline_mode_for_bytes(blob_bytes, source_path.read_bytes())
+    return blob_bytes, newline_mode
+
+
 def source_provenance_fields() -> dict[str, str]:
     return {
         "source_evidence_commit": current_source_evidence_commit(),
@@ -328,17 +377,23 @@ def assert_repo_sources_match_head(target_kb_doc_names: tuple[str, ...]) -> None
 
 
 def source_file_evidence(source_path: Path, *, evidence_origin: str = SOURCE_EVIDENCE_ORIGIN) -> dict[str, Any]:
-    source_text = source_path.read_text(encoding="utf-8")
+    source_bytes, newline_mode = git_blob_upload_bytes(source_path)
+    source_text = source_bytes.decode("utf-8")
     markers = KB_REQUEST_SOURCE_MARKERS[source_path.name]
     missing = [marker for marker in markers if marker not in source_text]
     if missing:
         raise ValueError(f"source evidence markers missing from {source_path.name}: {missing}")
-    source_bytes = source_path.read_bytes()
+    source_sha = sha256_bytes(source_bytes)
     return {
         "evidence_origin": evidence_origin,
         "source_path": str(source_path.relative_to(ROOT)).replace("\\", "/"),
-        "source_sha256": hashlib.sha256(source_bytes).hexdigest(),
+        "source_sha256": source_sha,
         "source_byte_length": len(source_bytes),
+        "source_git_blob_sha256": source_sha,
+        "source_git_blob_byte_length": len(source_bytes),
+        "upload_byte_sha256": source_sha,
+        "upload_byte_length": len(source_bytes),
+        "newline_mode": newline_mode,
         "markers": list(markers),
     }
 
@@ -696,6 +751,69 @@ def attempt_provider_write(ledger: ProviderWriteLedger, request: dict[str, Any],
     return response
 
 
+def multipart_update_file_from_bytes(
+    *,
+    api_key: str,
+    documentation_id: str,
+    source_path: Path,
+    file_bytes: bytes,
+    timeout_seconds: int = 60,
+) -> dict[str, Any]:
+    boundary = f"----codex-elevenlabs-040-{int(time.time() * 1000)}"
+    content_type = mimetypes.guess_type(source_path.name)[0] or "text/markdown"
+    parts = [
+        f"--{boundary}\r\n"
+        f'Content-Disposition: form-data; name="file"; filename="{source_path.name}"\r\n'
+        f"Content-Type: {content_type}\r\n\r\n".encode("utf-8"),
+        file_bytes,
+        f"\r\n--{boundary}--\r\n".encode("utf-8"),
+    ]
+    request = urllib.request.Request(
+        API_BASE_URL + f"/v1/convai/knowledge-base/{urllib.parse.quote(documentation_id)}/update-file",
+        data=b"".join(parts),
+        method="PATCH",
+        headers={
+            "Content-Type": f"multipart/form-data; boundary={boundary}",
+            "xi-api-key": api_key,
+        },
+    )
+    try:
+        with urllib.request.urlopen(request, timeout=timeout_seconds) as response:
+            response_text = response.read().decode("utf-8")
+            return {
+                "status_code": response.status,
+                "response": json.loads(response_text) if response_text else {},
+            }
+    except urllib.error.HTTPError as exc:
+        body_text = exc.read().decode("utf-8", errors="replace")
+        try:
+            body_summary = json.dumps(sanitize(json.loads(body_text)), ensure_ascii=True)
+        except json.JSONDecodeError:
+            body_summary = redact_text(body_text)
+        raise RuntimeError(f"PATCH update-file {documentation_id} failed with {exc.code}: {body_summary[:1200]}") from exc
+
+
+def upload_bytes_for_request(request: dict[str, Any], source_path: Path) -> bytes:
+    evidence = request.get("source_evidence")
+    if not isinstance(evidence, dict):
+        raise ValueError(f"{request.get('request_id')} missing source_evidence")
+    upload_bytes, newline_mode = git_blob_upload_bytes(source_path)
+    upload_sha = sha256_bytes(upload_bytes)
+    expected_pairs = (
+        ("source_sha256", upload_sha),
+        ("source_byte_length", len(upload_bytes)),
+        ("source_git_blob_sha256", upload_sha),
+        ("source_git_blob_byte_length", len(upload_bytes)),
+        ("upload_byte_sha256", upload_sha),
+        ("upload_byte_length", len(upload_bytes)),
+        ("newline_mode", newline_mode),
+    )
+    for field, expected in expected_pairs:
+        if evidence.get(field) != expected:
+            raise ValueError(f"{request.get('request_id')} {field} mismatch before provider write")
+    return upload_bytes
+
+
 def patch_requests(agent: dict[str, Any], preflight: dict[str, Any], target_kb_doc_names: tuple[str, ...] | None = None) -> list[dict[str, Any]]:
     target_names = parse_target_kb_docs(list(target_kb_doc_names) if target_kb_doc_names is not None else None)
     requests: list[dict[str, Any]] = []
@@ -863,13 +981,15 @@ def write_provider_changes(
         if request_id.startswith("update_kb_file::"):
             name = request_id.split("::", 1)[1]
             source_path = KB_ROOT / name
+            upload_bytes = upload_bytes_for_request(request, source_path)
             attempt_provider_write(
                 ledger,
                 request,
-                lambda name=name, source_path=source_path: multipart_update_file(
+                lambda name=name, source_path=source_path, upload_bytes=upload_bytes: multipart_update_file_from_bytes(
                     api_key=api_key,
                     documentation_id=KNOWN_KB_DOC_IDS[name],
                     source_path=source_path,
+                    file_bytes=upload_bytes,
                 ),
             )
         elif request_id == "patch_agent::prompt_dynamic_variables":

@@ -5,6 +5,7 @@ import json
 import contextlib
 import io
 import hashlib
+import shutil
 import sys
 import tempfile
 import unittest
@@ -54,11 +55,17 @@ def git_show_bytes(commit: str, source_path: str) -> bytes:
 def source_evidence_for_commit(commit: str, source_path: str) -> dict[str, object]:
     source_bytes = git_show_bytes(commit, source_path)
     markers = validator.KB_REQUEST_SOURCE_MARKERS[Path(source_path).name]
+    source_sha = hashlib.sha256(source_bytes).hexdigest()
     return {
         "evidence_origin": patcher.SOURCE_EVIDENCE_ORIGIN,
         "source_path": source_path,
-        "source_sha256": hashlib.sha256(source_bytes).hexdigest(),
+        "source_sha256": source_sha,
         "source_byte_length": len(source_bytes),
+        "source_git_blob_sha256": source_sha,
+        "source_git_blob_byte_length": len(source_bytes),
+        "upload_byte_sha256": source_sha,
+        "upload_byte_length": len(source_bytes),
+        "newline_mode": "git_blob_lf",
         "markers": list(markers),
     }
 
@@ -168,6 +175,29 @@ def evidence_fixture(
     write_json(root / "live_agent_patch_result.json", result)
 
 
+def copy_current_live_evidence(root: Path) -> None:
+    for name in (
+        "live_agent_pre_patch_snapshot.json",
+        "live_agent_post_patch_snapshot.json",
+        "live_agent_patch_plan.json",
+        "live_agent_patch_requests.json",
+        "live_agent_patch_result.json",
+    ):
+        shutil.copy2(validator.LIVE_EVIDENCE_DIR / name, root / name)
+
+
+def update_kb_evidence(root: Path, request_id: str, mutator: object) -> None:
+    for artifact in ("live_agent_patch_plan.json", "live_agent_patch_requests.json"):
+        payload = json.loads((root / artifact).read_text(encoding="utf-8"))
+        if artifact == "live_agent_patch_plan.json":
+            mutator(payload["request_source_evidence_by_id"][request_id])
+        else:
+            for request in payload["requests"]:
+                if request.get("request_id") == request_id:
+                    mutator(request["source_evidence"])
+        write_json(root / artifact, payload)
+
+
 class DetailedPricingEvidenceValidationTests(unittest.TestCase):
     def test_production_default_main_fails_commitless_evidence(self) -> None:
         with tempfile.TemporaryDirectory() as raw_tmp:
@@ -206,12 +236,87 @@ class DetailedPricingEvidenceValidationTests(unittest.TestCase):
 
             validator.validate_live_evidence_artifacts(evidence_dir=root, require_existing_evidence=True)
 
+    def test_new_historical_evidence_verifies_git_blob_and_upload_digest(self) -> None:
+        with tempfile.TemporaryDirectory() as raw_tmp:
+            root = Path(raw_tmp)
+            evidence_fixture(root, mode="live_passed", source_commit=patcher.current_source_evidence_commit())
+
+            summary = validator.validate_live_evidence_artifacts(evidence_dir=root, require_existing_evidence=True)
+
+            self.assertEqual(summary["source_evidence_mode"], "git_blob")
+
+    def test_new_historical_evidence_rejects_tampered_upload_digest(self) -> None:
+        with tempfile.TemporaryDirectory() as raw_tmp:
+            root = Path(raw_tmp)
+            evidence_fixture(root, mode="live_passed", source_commit=patcher.current_source_evidence_commit())
+            request_id = "update_kb_file::atlas_price_scope_cost_drivers.md"
+            update_kb_evidence(root, request_id, lambda evidence: evidence.update({"upload_byte_sha256": "0" * 64}))
+
+            with self.assertRaisesRegex(AssertionError, "upload byte sha mismatch"):
+                validator.validate_live_evidence_artifacts(evidence_dir=root, require_existing_evidence=True)
+
     def test_live_passed_head_default_validates_declared_four_write_set(self) -> None:
         with tempfile.TemporaryDirectory() as raw_tmp:
             root = Path(raw_tmp)
             evidence_fixture(root, mode="live_passed")
 
             validator.validate_live_evidence_artifacts(evidence_dir=root, require_existing_evidence=True)
+
+    def test_current_legacy_live_evidence_passes_with_visible_line_ending_mode(self) -> None:
+        summary = validator.validate_live_evidence_artifacts(require_existing_evidence=True)
+
+        self.assertEqual(summary["source_evidence_mode"], "legacy_worktree_line_endings")
+        self.assertIn(
+            "update_kb_file::atlas_output_quality_rules.md",
+            summary["legacy_worktree_line_endings_request_ids"],
+        )
+
+    def test_current_legacy_live_evidence_rejects_tampered_upload_length(self) -> None:
+        with tempfile.TemporaryDirectory() as raw_tmp:
+            root = Path(raw_tmp)
+            copy_current_live_evidence(root)
+            request_id = "update_kb_file::atlas_output_quality_rules.md"
+            update_kb_evidence(root, request_id, lambda evidence: evidence.update({"source_byte_length": evidence["source_byte_length"] + 1}))
+
+            with self.assertRaisesRegex(AssertionError, "legacy upload length mismatch"):
+                validator.validate_live_evidence_artifacts(evidence_dir=root, require_existing_evidence=True)
+
+    def test_current_legacy_live_evidence_rejects_changed_current_head_blob(self) -> None:
+        source_commit = json.loads((validator.LIVE_EVIDENCE_DIR / "live_agent_patch_plan.json").read_text(encoding="utf-8"))["source_evidence_commit"]
+        current_head = validator.git(["rev-parse", "HEAD"]).stdout.strip()
+        target_path = validator.OUTPUT_PATH
+        original_git_show = validator.git_show_file_bytes
+        source_blob = validator.git_show_file_bytes(source_commit, target_path)
+
+        def fake_git_show(commit: str, source_path: str, *, repo_root: Path = validator.ROOT) -> bytes:
+            if commit == current_head and source_path == target_path:
+                return source_blob + b"\nchanged\n"
+            return original_git_show(commit, source_path, repo_root=repo_root)
+
+        with tempfile.TemporaryDirectory() as raw_tmp:
+            root = Path(raw_tmp)
+            copy_current_live_evidence(root)
+            with mock.patch.object(validator, "git_show_file_bytes", side_effect=fake_git_show):
+                with self.assertRaisesRegex(AssertionError, "legacy current HEAD blob mismatch"):
+                    validator.validate_live_evidence_artifacts(evidence_dir=root, require_existing_evidence=True)
+
+    def test_current_legacy_live_evidence_rejects_binary_blob(self) -> None:
+        source_commit = json.loads((validator.LIVE_EVIDENCE_DIR / "live_agent_patch_plan.json").read_text(encoding="utf-8"))["source_evidence_commit"]
+        target_path = validator.OUTPUT_PATH
+        original_git_show = validator.git_show_file_bytes
+        source_blob = validator.git_show_file_bytes(source_commit, target_path)
+
+        def fake_git_show(commit: str, source_path: str, *, repo_root: Path = validator.ROOT) -> bytes:
+            if commit == source_commit and source_path == target_path:
+                return source_blob + b"\0"
+            return original_git_show(commit, source_path, repo_root=repo_root)
+
+        with tempfile.TemporaryDirectory() as raw_tmp:
+            root = Path(raw_tmp)
+            copy_current_live_evidence(root)
+            with mock.patch.object(validator, "git_show_file_bytes", side_effect=fake_git_show):
+                with self.assertRaisesRegex(AssertionError, "legacy binary source content"):
+                    validator.validate_live_evidence_artifacts(evidence_dir=root, require_existing_evidence=True)
 
     def test_care_followup_subset_validates_declared_three_write_set(self) -> None:
         with tempfile.TemporaryDirectory() as raw_tmp:
