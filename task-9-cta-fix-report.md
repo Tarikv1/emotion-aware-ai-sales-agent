@@ -345,3 +345,72 @@ Concerns:
 
 - The existing `live_test_canary_post_fix_capture.json` remains a failed live-behavior artifact. It now fails specifically for `post_quote_price_followup_no_cta`; the provider label remains `passed` and was not relabeled.
 - The current live patch evidence bundle is malformed legacy output with no source provenance. The strict validator rejects that shape in temp-fixture tests; the main offline validator explicitly reports the legacy exclusion until a fixed plan-only or live artifact is produced by the revised patcher.
+
+## Fix Wave 2 - Fail Closed On Evidence Provenance
+
+No provider, dashboard, prompt, KB, Analysis, live evidence, simulation, or outbound API files/calls were touched.
+
+Changes:
+
+- Removed the production 040 validator main-gate allowance for all-three commitless legacy artifacts.
+- Kept missing or invalid `source_evidence_commit` as a default nonzero validator result.
+- Added production-default `main()` regression coverage for commitless evidence, not only helper-level strict validation.
+- Tightened historical evidence handling before stale exclusion: validates plan/requests/result provenance agreement, request IDs/counts, plan/request source-evidence equality, KB source hashes/byte lengths/markers from `git show <source_commit>:<source_path>`, and agent request body digest/evidence.
+- Preserved current-HEAD plan-only/live validation paths.
+
+Validation:
+
+```text
+python scripts/test_validate_elevenlabs_040_evidence.py
+PASS - Ran 8 tests
+
+python scripts/validate_elevenlabs_040_detailed_pricing_control.py
+EXPECTED FAIL - error: plan source evidence commit must be a full 40-character sha
+
+python scripts/test_apply_elevenlabs_040_detailed_pricing_control.py
+PASS - Ran 4 tests
+
+python scripts/test_validate_elevenlabs_040_live_test_traces.py
+PASS - Ran 4 tests
+
+python scripts/validate_elevenlabs_040_live_test_traces.py --self-test
+PASS - self-test: pass
+
+python scripts/validate_elevenlabs_039_end_call_edge_case_hardening.py
+PASS
+
+python scripts/validate_elevenlabs_038_end_call_terminal_control.py
+PASS
+
+python scripts/validate_elevenlabs_037_confident_capability_control.py
+PASS
+
+python scripts/validate_elevenlabs_036_natural_sales_scenarios_tests.py
+PASS
+
+python scripts/validate_elevenlabs_034_human_phone_naturalness.py
+PASS
+
+python scripts/validate_elevenlabs_033_email_confirmation_precision.py
+PASS
+
+python scripts/validate_elevenlabs_032_final_runtime_polish.py
+PASS
+
+python scripts/validate_elevenlabs_031_runtime_elite_hardening.py
+PASS
+
+python scripts/validate_elevenlabs_030_live_transcript_failure_hardening.py
+PASS
+
+python -m py_compile scripts/validate_elevenlabs_040_detailed_pricing_control.py scripts/validate_elevenlabs_040_live_test_traces.py scripts/run_elevenlabs_040_tests.py scripts/apply_elevenlabs_040_detailed_pricing_control.py scripts/capture_elevenlabs_040_test_invocation.py scripts/test_run_elevenlabs_040_tests.py scripts/test_apply_elevenlabs_040_detailed_pricing_control.py scripts/test_validate_elevenlabs_040_evidence.py scripts/test_validate_elevenlabs_040_live_test_traces.py
+PASS - no output
+
+git diff --check
+PASS - CRLF normalization warnings only
+```
+
+Expected current state:
+
+- The actual 040 validator remains red because the current worktree evidence is commitless. That is intentional until orchestrator generates a commit-bound plan-only artifact using the fixed patcher.
+- Existing generated 040 live evidence remains dirty/untracked and unstaged.

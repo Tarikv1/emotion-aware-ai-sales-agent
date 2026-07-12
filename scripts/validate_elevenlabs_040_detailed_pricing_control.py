@@ -338,6 +338,17 @@ def git(args: list[str], *, repo_root: Path = ROOT) -> subprocess.CompletedProce
     return completed
 
 
+def git_show_file_bytes(commit: str, source_path: str, *, repo_root: Path = ROOT) -> bytes:
+    completed = subprocess.run(
+        ["git", "show", f"{commit}:{source_path}"],
+        cwd=repo_root,
+        capture_output=True,
+        check=False,
+    )
+    assert_condition(completed.returncode == 0, completed.stderr.decode("utf-8", errors="replace").strip() or f"git show {commit}:{source_path} failed")
+    return completed.stdout
+
+
 def ensure_base_ref(base_ref: str, *, repo_root: Path = ROOT) -> None:
     git(["rev-parse", "--verify", f"{base_ref}^{{commit}}"], repo_root=repo_root)
 
@@ -750,7 +761,13 @@ def expected_request_ids_for_targets(target_names: list[str]) -> list[str]:
     return [f"update_kb_file::{name}" for name in target_names] + ["patch_agent::prompt_dynamic_variables"]
 
 
-def validate_current_source_evidence(requests: list[dict[str, Any]], evidence_by_id: dict[str, Any]) -> None:
+def source_bytes_for_commit(source_commit: str, source_path: str, current_head: str) -> bytes:
+    if source_commit == current_head:
+        return (ROOT / source_path).read_bytes()
+    return git_show_file_bytes(source_commit, source_path)
+
+
+def validate_source_evidence_for_commit(requests: list[dict[str, Any]], evidence_by_id: dict[str, Any], *, source_commit: str, current_head: str) -> None:
     for request in requests:
         request_id = request.get("request_id")
         assert_condition(isinstance(request_id, str) and request_id, "request missing request_id")
@@ -759,17 +776,23 @@ def validate_current_source_evidence(requests: list[dict[str, Any]], evidence_by
             source_evidence = request.get("source_evidence")
             assert_condition(isinstance(source_evidence, dict), f"{request_id} missing source_evidence")
             assert_condition(source_evidence == evidence_by_id[request_id], f"{request_id} plan/request source evidence mismatch")
-            source_path = ROOT / source_evidence["source_path"]
-            source_bytes = source_path.read_bytes()
-            markers = KB_REQUEST_SOURCE_MARKERS[source_path.name]
+            source_path = source_evidence.get("source_path")
+            assert_condition(isinstance(source_path, str) and source_path, f"{request_id} source path missing")
+            markers = KB_REQUEST_SOURCE_MARKERS[Path(source_path).name]
+            source_bytes = source_bytes_for_commit(source_commit, source_path, current_head)
+            source_text = source_bytes.decode("utf-8")
             assert_condition(source_evidence.get("source_sha256") == sha256_bytes(source_bytes), f"{request_id} source sha mismatch")
             assert_condition(source_evidence.get("source_byte_length") == len(source_bytes), f"{request_id} source length mismatch")
             assert_condition(tuple(source_evidence.get("markers", ())) == markers, f"{request_id} marker list mismatch")
+            missing_markers = [marker for marker in markers if marker not in source_text]
+            assert_condition(not missing_markers, f"{request_id} historical source markers missing: {missing_markers}")
             assert_condition(source_evidence.get("evidence_origin") == SOURCE_EVIDENCE_ORIGIN, f"{request_id} evidence origin mismatch")
         elif request_id == "patch_agent::prompt_dynamic_variables":
             assert_condition(request.get("body_canonical_json_sha256") == canonical_sha256(request.get("body")), "agent request canonical digest mismatch")
-            assert_condition(evidence_by_id[request_id].get("body_canonical_json_sha256") == request.get("body_canonical_json_sha256"), "agent plan/request digest mismatch")
-            assert_condition(evidence_by_id[request_id].get("evidence_origin") in {"sanitized_request_body_before_provider_write_not_network_capture", "post_hoc_from_sanitized_request_body_not_network_capture"}, "agent digest origin mismatch")
+            agent_evidence = evidence_by_id[request_id]
+            assert_condition(isinstance(agent_evidence, dict), "agent plan source evidence must be an object")
+            assert_condition(agent_evidence.get("body_canonical_json_sha256") == request.get("body_canonical_json_sha256"), "agent plan/request digest mismatch")
+            assert_condition(agent_evidence.get("evidence_origin") in {"sanitized_request_body_before_provider_write_not_network_capture", "post_hoc_from_sanitized_request_body_not_network_capture"}, "agent digest origin mismatch")
         else:
             fail(f"unknown live evidence request id {request_id}")
 
@@ -778,7 +801,6 @@ def validate_live_evidence_artifacts(
     evidence_dir: Path = LIVE_EVIDENCE_DIR,
     *,
     require_existing_evidence: bool = False,
-    allow_legacy_missing_provenance_exclusion: bool = False,
 ) -> dict[str, Any]:
     if not evidence_dir.is_dir():
         assert_condition(not require_existing_evidence, f"Missing live evidence dir: {evidence_dir}")
@@ -789,14 +811,6 @@ def validate_live_evidence_artifacts(
     patch_plan = read_json_anywhere(evidence_dir / "live_agent_patch_plan.json")
     patch_requests = read_json_anywhere(evidence_dir / "live_agent_patch_requests.json")
     patch_result = read_json_anywhere(evidence_dir / "live_agent_patch_result.json")
-
-    if allow_legacy_missing_provenance_exclusion and not any(
-        payload.get("source_evidence_commit") for payload in (patch_plan, patch_requests, patch_result)
-    ):
-        assert_condition(patch_plan.get("checkpoint_id") == CHECKPOINT_ID, "legacy live evidence checkpoint mismatch")
-        assert_condition(patch_requests.get("checkpoint_id") == CHECKPOINT_ID, "legacy live evidence requests checkpoint mismatch")
-        assert_condition(patch_result.get("checkpoint_id") == CHECKPOINT_ID, "legacy live evidence result checkpoint mismatch")
-        return {"status": "excluded_legacy_missing_source_provenance"}
 
     source_commit, _origin = assert_provenance_agrees(patch_plan, patch_requests, patch_result)
     requests = patch_requests.get("requests")
@@ -819,6 +833,7 @@ def validate_live_evidence_artifacts(
     assert_condition("live_readback_time_recorded" in post_snapshot, "post snapshot must state readback timestamp recording status")
 
     current_head = git(["rev-parse", "HEAD"]).stdout.strip()
+    validate_source_evidence_for_commit(requests, evidence_by_id, source_commit=source_commit, current_head=current_head)
     provider_writes_allowed = patch_requests.get("provider_writes_allowed")
     status = patch_result.get("status")
     if source_commit != current_head:
@@ -828,7 +843,6 @@ def validate_live_evidence_artifacts(
             assert_provider_counts(patch_result, expected_attempts=0, expected_successes=0, label="historical result")
         return {"status": "excluded_valid_historical_source_commit", "source_evidence_commit": source_commit}
 
-    validate_current_source_evidence(requests, evidence_by_id)
     if provider_writes_allowed is False and status == "plan_only_missing_confirmation":
         assert_provider_counts(patch_requests, expected_attempts=0, expected_successes=0, label="plan-only requests")
         assert_provider_counts(patch_result, expected_attempts=0, expected_successes=0, label="plan-only result")
@@ -856,7 +870,7 @@ def main() -> int:
         validate_output_rules()
         validate_tests()
         validate_live_patcher()
-        live_evidence_validation = validate_live_evidence_artifacts(allow_legacy_missing_provenance_exclusion=True)
+        live_evidence_validation = validate_live_evidence_artifacts()
         validate_dynamic_defaults()
         validate_change_boundaries()
         git_diff_check(CHECKPOINT_BASE_REF, *CHECKPOINT_DIFF_PATHS)

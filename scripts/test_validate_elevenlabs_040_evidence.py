@@ -2,10 +2,14 @@
 from __future__ import annotations
 
 import json
+import contextlib
+import io
+import hashlib
 import sys
 import tempfile
 import unittest
 from pathlib import Path
+from unittest import mock
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 if str(SCRIPT_DIR) not in sys.path:
@@ -31,6 +35,23 @@ def write_json(path: Path, payload: dict[str, object]) -> None:
     path.write_text(json.dumps(payload, indent=2, ensure_ascii=True) + "\n", encoding="utf-8")
 
 
+def git_show_bytes(commit: str, source_path: str) -> bytes:
+    completed = validator.git(["show", f"{commit}:{source_path}"])
+    return completed.stdout.encode("utf-8")
+
+
+def source_evidence_for_commit(commit: str, source_path: str) -> dict[str, object]:
+    source_bytes = git_show_bytes(commit, source_path)
+    markers = validator.KB_REQUEST_SOURCE_MARKERS[Path(source_path).name]
+    return {
+        "evidence_origin": patcher.SOURCE_EVIDENCE_ORIGIN,
+        "source_path": source_path,
+        "source_sha256": hashlib.sha256(source_bytes).hexdigest(),
+        "source_byte_length": len(source_bytes),
+        "markers": list(markers),
+    }
+
+
 def evidence_fixture(
     root: Path,
     *,
@@ -44,6 +65,10 @@ def evidence_fixture(
         sample_preflight(),
         target_kb_doc_names=target_kb_doc_names,
     )
+    if source_commit is not None and source_commit != patcher.current_source_evidence_commit():
+        for request in requests:
+            if str(request.get("request_id", "")).startswith("update_kb_file::"):
+                request["source_evidence"] = source_evidence_for_commit(source_commit, str(request["source_path"]))
     provenance = {
         "source_evidence_commit": source_commit,
         "source_evidence_origin": patcher.SOURCE_EVIDENCE_ORIGIN,
@@ -110,6 +135,25 @@ def evidence_fixture(
 
 
 class DetailedPricingEvidenceValidationTests(unittest.TestCase):
+    def test_production_default_main_fails_commitless_evidence(self) -> None:
+        with tempfile.TemporaryDirectory() as raw_tmp:
+            root = Path(raw_tmp)
+            evidence_fixture(root)
+            for name in ("live_agent_patch_plan.json", "live_agent_patch_requests.json", "live_agent_patch_result.json"):
+                payload = json.loads((root / name).read_text(encoding="utf-8"))
+                payload.pop("source_evidence_commit")
+                payload.pop("source_evidence_origin")
+                write_json(root / name, payload)
+
+            stderr = io.StringIO()
+            stdout = io.StringIO()
+            with mock.patch.object(validator, "LIVE_EVIDENCE_DIR", root):
+                with contextlib.redirect_stderr(stderr), contextlib.redirect_stdout(stdout):
+                    exit_code = validator.main()
+
+            self.assertEqual(exit_code, 1)
+            self.assertIn("source evidence commit", stderr.getvalue())
+
     def test_missing_source_commit_fails_closed(self) -> None:
         with tempfile.TemporaryDirectory() as raw_tmp:
             root = Path(raw_tmp)
@@ -153,6 +197,35 @@ class DetailedPricingEvidenceValidationTests(unittest.TestCase):
             evidence_fixture(root, mode="live_passed", source_commit=historical, target_kb_doc_names=tuple(patcher.KB_DOCS))
 
             validator.validate_live_evidence_artifacts(evidence_dir=root, require_existing_evidence=True)
+
+    def test_historical_commit_bad_kb_source_hash_fails_closed(self) -> None:
+        historical = validator.git(["rev-parse", "HEAD^"]).stdout.strip()
+        with tempfile.TemporaryDirectory() as raw_tmp:
+            root = Path(raw_tmp)
+            evidence_fixture(root, mode="live_passed", source_commit=historical, target_kb_doc_names=tuple(patcher.KB_DOCS))
+            requests_payload = json.loads((root / "live_agent_patch_requests.json").read_text(encoding="utf-8"))
+            plan_payload = json.loads((root / "live_agent_patch_plan.json").read_text(encoding="utf-8"))
+            request_id = requests_payload["requests"][0]["request_id"]
+            requests_payload["requests"][0]["source_evidence"]["source_sha256"] = "0" * 64
+            plan_payload["request_source_evidence_by_id"][request_id]["source_sha256"] = "0" * 64
+            write_json(root / "live_agent_patch_requests.json", requests_payload)
+            write_json(root / "live_agent_patch_plan.json", plan_payload)
+
+            with self.assertRaisesRegex(AssertionError, "source sha mismatch"):
+                validator.validate_live_evidence_artifacts(evidence_dir=root, require_existing_evidence=True)
+
+    def test_historical_commit_plan_request_source_evidence_mismatch_fails_closed(self) -> None:
+        historical = validator.git(["rev-parse", "HEAD^"]).stdout.strip()
+        with tempfile.TemporaryDirectory() as raw_tmp:
+            root = Path(raw_tmp)
+            evidence_fixture(root, mode="live_passed", source_commit=historical, target_kb_doc_names=tuple(patcher.KB_DOCS))
+            payload = json.loads((root / "live_agent_patch_plan.json").read_text(encoding="utf-8"))
+            request_id = "update_kb_file::atlas_offer_facts.md"
+            payload["request_source_evidence_by_id"][request_id]["source_byte_length"] += 1
+            write_json(root / "live_agent_patch_plan.json", payload)
+
+            with self.assertRaisesRegex(AssertionError, "plan/request source evidence mismatch"):
+                validator.validate_live_evidence_artifacts(evidence_dir=root, require_existing_evidence=True)
 
 
 if __name__ == "__main__":
