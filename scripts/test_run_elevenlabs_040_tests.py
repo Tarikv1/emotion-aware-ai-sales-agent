@@ -13,6 +13,11 @@ from unittest import mock
 import run_elevenlabs_040_tests as runner
 
 
+FIXTURE_ROOT = Path(__file__).resolve().parents[1] / "research" / "experiments" / "generated" / runner.CHECKPOINT_ID
+LIVE_MAPPING_FIXTURE = FIXTURE_ROOT / "live_test_mapping.json"
+LIVE_REPAIR_LINEAGE_FIXTURE = FIXTURE_ROOT / "live_test_context_repair_result.json"
+
+
 class FakeProvider:
     def __init__(
         self,
@@ -256,6 +261,39 @@ def mapping_for_tests(
     }
 
 
+def live_mapping_fixture() -> dict[str, Any]:
+    return json.loads(LIVE_MAPPING_FIXTURE.read_text(encoding="utf-8"))
+
+
+def live_repair_lineage_fixture() -> dict[str, Any]:
+    return json.loads(LIVE_REPAIR_LINEAGE_FIXTURE.read_text(encoding="utf-8"))
+
+
+def provider_tests_for_mapping(
+    mapping: dict[str, Any],
+    *,
+    expected_bodies: dict[str, dict[str, Any]] | None = None,
+) -> list[dict[str, Any]]:
+    bodies = expected_bodies or runner.load_expected_bodies()
+    by_source = {item["source_test_id"]: item for item in mapping["tests"]}
+    folder_id = mapping["folder"]["folder_id"]
+    tests: list[dict[str, Any]] = []
+    for source_id in runner.EXPECTED_TEST_IDS:
+        body = bodies[source_id]
+        mapped = by_source[source_id]
+        tests.append(
+            {
+                **body,
+                "id": mapped["provider_test_id"],
+                "test_id": mapped["provider_test_id"],
+                "entity_type": "simulation",
+                "folder_parent_id": folder_id,
+                "source_id": source_id,
+            }
+        )
+    return tests
+
+
 def repair_lineage_for_mapping(
     mapping: dict[str, Any],
     *,
@@ -303,6 +341,18 @@ def repair_lineage_for_mapping(
             "attempts": attempts,
         },
     }
+
+
+def validated_live_ownership_section(mapping: dict[str, Any]) -> dict[str, Any]:
+    folder_id, provider_ids, provider_names, created_flags = runner.parse_mapping_identity(mapping)
+    summary = runner.validate_repair_lineage_summary(
+        live_repair_lineage_fixture(),
+        folder_id=folder_id,
+        provider_ids=provider_ids,
+        provider_names=provider_names,
+        created_flags=created_flags,
+    )
+    return runner.ownership_section_from_summary(summary)
 
 
 def write_mapping(path: Path, payload: dict[str, Any]) -> None:
@@ -561,31 +611,31 @@ class RunnerTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             output_dir = Path(tmp)
             mapping_path = output_dir / "live_test_mapping.json"
-            mapping = mapping_for_tests(expected_provider_tests(), created_in_this_run=False)
+            mapping = live_mapping_fixture()
             write_mapping(mapping_path, mapping)
             (output_dir / "live_test_context_repair_result.json").write_text(
-                json.dumps(repair_lineage_for_mapping(mapping), indent=2, ensure_ascii=True) + "\n",
+                json.dumps(live_repair_lineage_fixture(), indent=2, ensure_ascii=True) + "\n",
                 encoding="ascii",
             )
 
             folder_id, provider_ids = runner.validate_owned_mapping(mapping, mapping_path=mapping_path)
 
-        self.assertEqual(folder_id, "tfld_existing")
-        self.assertEqual(provider_ids["sim_040_basic_site_direct_price"], "test_existing_03")
+        self.assertEqual(folder_id, mapping["folder"]["folder_id"])
+        self.assertEqual(provider_ids["sim_040_basic_site_direct_price"], "test_0201kx9ddmfpeyh9mes2znh3j98b")
 
     def test_validate_owned_mapping_reused_mapping_without_lineage_fails_closed(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             output_dir = Path(tmp)
             mapping_path = output_dir / "live_test_mapping.json"
-            mapping = mapping_for_tests(expected_provider_tests(), created_in_this_run=False)
+            mapping = live_mapping_fixture()
             write_mapping(mapping_path, mapping)
 
             with self.assertRaises(runner.GuardError):
                 runner.validate_owned_mapping(mapping, mapping_path=mapping_path)
 
     def test_validate_owned_mapping_rejects_tampered_repair_lineage(self) -> None:
-        mapping = mapping_for_tests(expected_provider_tests(), created_in_this_run=False)
-        base_lineage = repair_lineage_for_mapping(mapping)
+        mapping = live_mapping_fixture()
+        base_lineage = live_repair_lineage_fixture()
         tamper_cases = {
             "folder_id": lambda payload: payload.__setitem__("folder_id", "tfld_wrong"),
             "provider_id": lambda payload: payload["repaired_tests"][0].__setitem__("provider_test_id", "test_wrong"),
@@ -618,15 +668,15 @@ class RunnerTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             output_dir = Path(tmp)
             mapping_path = output_dir / "live_test_mapping.json"
-            seeded_mapping = mapping_for_tests(expected_provider_tests(), created_in_this_run=False)
+            seeded_mapping = live_mapping_fixture()
             write_mapping(mapping_path, seeded_mapping)
             (output_dir / "live_test_context_repair_result.json").write_text(
-                json.dumps(repair_lineage_for_mapping(seeded_mapping), indent=2, ensure_ascii=True) + "\n",
+                json.dumps(live_repair_lineage_fixture(), indent=2, ensure_ascii=True) + "\n",
                 encoding="ascii",
             )
             provider = FakeProvider(
-                folders=[{"id": "tfld_existing", "name": runner.CHECKPOINT_ID, "entity_type": "folder", "folder_parent_id": "root"}],
-                tests=expected_provider_tests(),
+                folders=[{"id": seeded_mapping["folder"]["folder_id"], "name": runner.CHECKPOINT_ID, "entity_type": "folder", "folder_parent_id": "root"}],
+                tests=provider_tests_for_mapping(seeded_mapping),
             )
 
             first = runner.execute_with_provider(
@@ -656,15 +706,15 @@ class RunnerTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             output_dir = Path(tmp)
             mapping_path = output_dir / "live_test_mapping.json"
-            seeded_mapping = mapping_for_tests(expected_provider_tests(), created_in_this_run=False)
+            seeded_mapping = live_mapping_fixture()
             write_mapping(mapping_path, seeded_mapping)
             (output_dir / "live_test_context_repair_result.json").write_text(
-                json.dumps(repair_lineage_for_mapping(seeded_mapping), indent=2, ensure_ascii=True) + "\n",
+                json.dumps(live_repair_lineage_fixture(), indent=2, ensure_ascii=True) + "\n",
                 encoding="ascii",
             )
             provider = FakeProvider(
-                folders=[{"id": "tfld_existing", "name": runner.CHECKPOINT_ID, "entity_type": "folder", "folder_parent_id": "root"}],
-                tests=expected_provider_tests(),
+                folders=[{"id": seeded_mapping["folder"]["folder_id"], "name": runner.CHECKPOINT_ID, "entity_type": "folder", "folder_parent_id": "root"}],
+                tests=provider_tests_for_mapping(seeded_mapping),
             )
             runner.execute_with_provider(
                 provider,
@@ -686,6 +736,147 @@ class RunnerTests(unittest.TestCase):
 
         self.assertEqual(result["status"], "completed")
         self.assertEqual(result["selected_test_ids"], ["sim_040_capability_question_no_unprompted_price"])
+
+    def test_validate_ownership_section_rejects_direct_tampering(self) -> None:
+        mapping = live_mapping_fixture()
+        ownership = validated_live_ownership_section(mapping)
+        folder_id, provider_ids, provider_names, created_flags = runner.parse_mapping_identity(mapping)
+        tamper_cases = {
+            "proof_type": lambda payload: payload.__setitem__("proof_type", "wrong"),
+            "lineage_sha256": lambda payload: payload.__setitem__("lineage_sha256", "0" * 64),
+            "validated_lineage": lambda payload: payload.__setitem__("validated_lineage", "bad"),
+        }
+        for label, mutate in tamper_cases.items():
+            with self.subTest(label=label):
+                payload = json.loads(json.dumps(ownership))
+                mutate(payload)
+                with self.assertRaises(runner.GuardError):
+                    runner.validate_ownership_section(
+                        payload,
+                        folder_id=folder_id,
+                        provider_ids=provider_ids,
+                        provider_names=provider_names,
+                        created_flags=created_flags,
+                    )
+
+    def test_validate_ownership_section_rejects_wrong_anchor(self) -> None:
+        mapping = live_mapping_fixture()
+        ownership = validated_live_ownership_section(mapping)
+        folder_id, provider_ids, provider_names, created_flags = runner.parse_mapping_identity(mapping)
+        with mock.patch.object(runner, "CANONICAL_VALIDATED_REPAIR_LINEAGE_SHA256", "0" * 64):
+            with self.assertRaises(runner.GuardError):
+                runner.validate_ownership_section(
+                    ownership,
+                    folder_id=folder_id,
+                    provider_ids=provider_ids,
+                    provider_names=provider_names,
+                    created_flags=created_flags,
+                )
+
+    def test_validate_owned_mapping_rejects_malformed_ownership(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            output_dir = Path(tmp)
+            mapping_path = output_dir / "live_test_mapping.json"
+            mapping = live_mapping_fixture()
+            mapping["ownership"] = "bad"
+            write_mapping(mapping_path, mapping)
+            (output_dir / "live_test_context_repair_result.json").write_text(
+                json.dumps(live_repair_lineage_fixture(), indent=2, ensure_ascii=True) + "\n",
+                encoding="ascii",
+            )
+            with self.assertRaises(runner.GuardError):
+                runner.validate_owned_mapping(mapping, mapping_path=mapping_path)
+
+    def test_validate_owned_mapping_rejects_embedded_vs_sibling_disagreement(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            output_dir = Path(tmp)
+            mapping_path = output_dir / "live_test_mapping.json"
+            mapping = live_mapping_fixture()
+            mapping["ownership"] = validated_live_ownership_section(mapping)
+            write_mapping(mapping_path, mapping)
+            (output_dir / "live_test_context_repair_result.json").write_text(
+                json.dumps(live_repair_lineage_fixture(), indent=2, ensure_ascii=True) + "\n",
+                encoding="ascii",
+            )
+            with mock.patch.object(
+                runner,
+                "validate_repair_lineage_summary",
+                side_effect=[
+                    mapping["ownership"]["validated_lineage"],
+                    {**mapping["ownership"]["validated_lineage"], "folder_id": "tfld_disagree"},
+                ],
+            ):
+                with self.assertRaises(runner.GuardError):
+                    runner.validate_owned_mapping(mapping, mapping_path=mapping_path)
+
+    def test_canary_verifies_all_mapped_tests_and_upgrades_mapping_before_post(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            output_dir = Path(tmp)
+            mapping_path = output_dir / "live_test_mapping.json"
+            mapping = live_mapping_fixture()
+            write_mapping(mapping_path, mapping)
+            (output_dir / "live_test_context_repair_result.json").write_text(
+                json.dumps(live_repair_lineage_fixture(), indent=2, ensure_ascii=True) + "\n",
+                encoding="ascii",
+            )
+            provider = FakeProvider(
+                folders=[{"id": mapping["folder"]["folder_id"], "name": runner.CHECKPOINT_ID, "entity_type": "folder", "folder_parent_id": "root"}],
+                tests=provider_tests_for_mapping(mapping),
+            )
+
+            result = runner.execute_canary_run(
+                provider,
+                source_test_id="sim_040_basic_site_direct_price",
+                mapping_path=mapping_path,
+                output_dir=output_dir,
+                live=True,
+                wait_timeout_seconds=1,
+                poll_interval_seconds=0,
+            )
+            upgraded_mapping = json.loads(mapping_path.read_text(encoding="ascii"))
+
+        run_post_index = next(index for index, call in enumerate(provider.calls) if call["endpoint"].endswith("/run-tests"))
+        list_index = next(index for index, call in enumerate(provider.calls) if call["endpoint"].startswith("/v1/convai/agent-testing?"))
+        get_indexes = [
+            index
+            for index, call in enumerate(provider.calls)
+            if call["method"] == "GET" and call["endpoint"].startswith("/v1/convai/agent-testing/test_")
+        ]
+        self.assertEqual(result["status"], "completed")
+        self.assertLess(list_index, run_post_index)
+        self.assertEqual(len(get_indexes), 10)
+        self.assertLess(max(get_indexes), run_post_index)
+        self.assertIn("ownership", upgraded_mapping)
+
+    def test_canary_drift_failure_prevents_run_post(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            output_dir = Path(tmp)
+            mapping_path = output_dir / "live_test_mapping.json"
+            mapping = live_mapping_fixture()
+            write_mapping(mapping_path, mapping)
+            (output_dir / "live_test_context_repair_result.json").write_text(
+                json.dumps(live_repair_lineage_fixture(), indent=2, ensure_ascii=True) + "\n",
+                encoding="ascii",
+            )
+            tests = provider_tests_for_mapping(mapping)
+            tests[0]["success_condition"] = "drifted"
+            provider = FakeProvider(
+                folders=[{"id": mapping["folder"]["folder_id"], "name": runner.CHECKPOINT_ID, "entity_type": "folder", "folder_parent_id": "root"}],
+                tests=tests,
+            )
+
+            with self.assertRaises(runner.GuardError):
+                runner.execute_canary_run(
+                    provider,
+                    source_test_id="sim_040_basic_site_direct_price",
+                    mapping_path=mapping_path,
+                    output_dir=output_dir,
+                    live=True,
+                    wait_timeout_seconds=1,
+                    poll_interval_seconds=0,
+                )
+
+        self.assertFalse(any(call["endpoint"].endswith("/run-tests") for call in provider.calls))
 
     def test_repair_owned_context_puts_only_exact_missing_context_and_verifies(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:

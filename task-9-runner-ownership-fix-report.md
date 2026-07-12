@@ -22,12 +22,27 @@
   - exact provider names/IDs for reused entries
   - membership/repaired counts fixed at 10
   - operation ledger fixed at 10 attempts / 10 successes / 0 failures with exact request IDs, methods, endpoints, statuses, and `200` status codes
+- Added an immutable repo-side trust anchor for the validated repair lineage:
+  - canonical lineage SHA-256 must equal `893a5b7d7b5565c3b1282b76fcb3a5edf10f360e3e67da1aeb0f9045de30d869`
+  - threat model: integrity against accidental or single-artifact tamper
+  - not a security boundary against an actor who can edit repository code and the constant together
 - Added durable ownership proof emission:
   - new mapping `ownership` section
   - normalized validated lineage payload
   - `lineage_sha256` bound to the normalized lineage
 - Full reuse writes now preserve durable ownership proof when prior proof or strict repair lineage is available.
+- Canary validation now:
+  - validates ownership first
+  - reuses the live folder-membership verification
+  - GET/readback-verifies all ten mapped test definitions before any `run-tests` POST
+  - persists the validated local `ownership` section when missing, before POST, with no provider test writes
 - Repair and canary validation now load sibling mapping lineage via `mapping_path`, so reused mappings validate fail-closed.
+
+## Current Live Mapping State
+
+- The current live `research/experiments/generated/ELEVENLABS-040-detailed-pricing-control/live_test_mapping.json` in this worktree still has no `ownership` section.
+- That file was intentionally left untouched.
+- The next reviewed orchestrator canary run will upgrade it locally after strict lineage validation plus live folder/body verification and before `run-tests` POST.
 
 ## Tests Added
 
@@ -35,15 +50,18 @@
 - reused mapping plus exact repair lineage passes
 - reused mapping without lineage fails
 - tampering fails for folder/provider ID/provider name/order/status/count/ledger cases
+- direct ownership tampering fails for `proof_type`, `lineage_sha256`, malformed `validated_lineage`, malformed `ownership`, embedded-vs-sibling disagreement, and wrong immutable anchor
 - full reuse mapping write preserves durable ownership proof across repeated reuse runs
 - canary validation succeeds after reuse mapping write
+- canary verifies all mapped tests before POST and upgrades the local mapping when ownership is missing
+- canary drift failure blocks `run-tests` POST
 
 ## Verification
 
 ### Runner / trace / patcher / evidence tests
 
 - `python -m unittest test_run_elevenlabs_040_tests test_validate_elevenlabs_040_live_test_traces test_validate_elevenlabs_040_evidence test_apply_elevenlabs_040_detailed_pricing_control -v`
-  - Result: `65 tests`, `OK`
+  - Result: `71 tests`, `OK`
 
 ### Trace validator self-test
 
@@ -53,9 +71,15 @@
 ### 040 validator
 
 - `python scripts/validate_elevenlabs_040_detailed_pricing_control.py`
-  - Result: `pass`
-  - Live evidence validation: `validated_current_source_commit`
-  - Source evidence commit: `1e8af8510b072d5fe08501af7229abac5208bdf8`
+  - Result: `fail`
+  - Failure: `error: update_kb_file::atlas_output_quality_rules.md source sha mismatch`
+- Clean current-HEAD detached worktree validator rerun:
+  - Result: `fail`
+  - Failure: `error: result source evidence commit must be a full 40-character sha`
+- Interpretation:
+  - current dirty live evidence bundle does not validate as current or historical provenance
+  - committed clean live evidence bundle in a detached HEAD still carries a short result provenance sha
+  - this review task did not modify live evidence, so the validator failure was left as-is and reported
 
 ### 039 / 036 live trace validators
 
@@ -89,3 +113,4 @@
 
 - `git diff --check` passed, but Git printed LF/CRLF normalization warnings for the two edited Python files. No whitespace errors were reported.
 - The worktree still contains unrelated generated-evidence modifications and untracked files under `research/experiments/generated/ELEVENLABS-040-detailed-pricing-control/`. They were left untouched.
+- The 040 validator currently does not pass against either the dirty local live bundle or a clean detached HEAD bundle for the evidence-state reasons listed above.

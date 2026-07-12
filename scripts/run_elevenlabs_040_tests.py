@@ -51,6 +51,10 @@ TEST_UPDATE_SEMANTICS = {
 }
 REPAIR_LINEAGE_FILENAME = "live_test_context_repair_result.json"
 OWNERSHIP_PROOF_TYPE = "repair_owned_context_lineage_v1"
+# This immutable anchor defends against accidental or single-artifact tamper of the
+# validated repair-lineage bootstrap. It is not a security boundary against an actor
+# who can edit repository code and change this constant at the same time.
+CANONICAL_VALIDATED_REPAIR_LINEAGE_SHA256 = "893a5b7d7b5565c3b1282b76fcb3a5edf10f360e3e67da1aeb0f9045de30d869"
 
 EXPECTED_TEST_IDS = [
     "sim_040_capability_question_no_unprompted_price",
@@ -730,7 +734,7 @@ def validate_repair_lineage_summary(
             }
         )
 
-    return {
+    validated_summary = {
         "checkpoint_id": CHECKPOINT_ID,
         "status": "completed",
         "mode": "repair_owned_context",
@@ -747,6 +751,9 @@ def validate_repair_lineage_summary(
             "attempts": normalized_attempts,
         },
     }
+    if canonical_sha256(validated_summary) != CANONICAL_VALIDATED_REPAIR_LINEAGE_SHA256:
+        raise GuardError("repair ownership lineage hash mismatch against immutable anchor")
+    return validated_summary
 
 
 def ownership_section_from_summary(summary: dict[str, Any]) -> dict[str, Any]:
@@ -780,6 +787,68 @@ def validate_ownership_section(
         provider_names=provider_names,
         created_flags=created_flags,
     )
+
+
+def exact_test_definition_body(payload: dict[str, Any]) -> dict[str, Any]:
+    return {
+        "type": payload.get("type"),
+        "name": payload.get("name"),
+        "simulation_scenario": payload.get("simulation_scenario"),
+        "simulation_max_turns": payload.get("simulation_max_turns"),
+        "success_condition": semantic_fields(payload).get("success_condition"),
+        "dynamic_variables": payload.get("dynamic_variables"),
+        "simulated_user_model": payload.get("simulated_user_model"),
+        "evaluation_model": payload.get("evaluation_model"),
+        "chat_history": canonical_chat_history(payload),
+    }
+
+
+def assert_exact_test_definition(
+    *,
+    source_id: str,
+    live_test: dict[str, Any],
+    expected_body: dict[str, Any],
+    folder_id: str,
+    provider_test_id: str,
+) -> None:
+    if provider_id(live_test) != provider_test_id:
+        raise GuardError(f"provider ID readback mismatch for {source_id}")
+    expected_name = f"{CHECKPOINT_ID}::{source_id}"
+    if live_test.get("name") != expected_name:
+        raise GuardError(f"provider test name mismatch for {source_id}")
+    assert_get_folder_metadata_consistent(
+        live_test,
+        folder_id=folder_id,
+        label=f"provider test {source_id}",
+    )
+    if exact_test_definition_body(live_test) != exact_test_definition_body(expected_body):
+        raise GuardError(f"provider test definition/body drift for {source_id}")
+
+
+def verify_mapped_tests_exact_definitions(
+    provider: Provider,
+    *,
+    folder_id: str,
+    provider_ids: dict[str, str],
+    expected_bodies: dict[str, dict[str, Any]],
+) -> dict[str, dict[str, Any]]:
+    verify_mapped_tests_in_folder(
+        provider,
+        folder_id=folder_id,
+        provider_ids=provider_ids,
+    )
+    live_tests: dict[str, dict[str, Any]] = {}
+    for source_id in EXPECTED_TEST_IDS:
+        live_test = get_test(provider, provider_ids[source_id])
+        assert_exact_test_definition(
+            source_id=source_id,
+            live_test=live_test,
+            expected_body=expected_bodies[source_id],
+            folder_id=folder_id,
+            provider_test_id=provider_ids[source_id],
+        )
+        live_tests[source_id] = live_test
+    return live_tests
 
 
 def maybe_resolve_reused_mapping_ownership(
@@ -1124,6 +1193,7 @@ def execute_canary_run(
     wait_timeout_seconds: int = 420,
     poll_interval_seconds: float = 2.0,
 ) -> dict[str, Any]:
+    expected_bodies = load_expected_bodies()
     if source_test_id not in EXPECTED_TEST_IDS:
         raise GuardError(f"canary test ID is not part of 040 suite: {source_test_id!r}")
     if not live:
@@ -1143,7 +1213,24 @@ def execute_canary_run(
     ledger = OperationLedger()
     try:
         mapping = read_json(mapping_path)
-        folder_id, provider_ids = validate_owned_mapping(mapping, mapping_path=mapping_path)
+        folder_id, provider_ids, provider_names, created_flags = parse_mapping_identity(mapping)
+        ownership_summary = maybe_resolve_reused_mapping_ownership(
+            mapping,
+            folder_id=folder_id,
+            provider_ids=provider_ids,
+            provider_names=provider_names,
+            created_flags=created_flags,
+            mapping_path=mapping_path,
+        )
+        verify_mapped_tests_exact_definitions(
+            provider,
+            folder_id=folder_id,
+            provider_ids=provider_ids,
+            expected_bodies=expected_bodies,
+        )
+        if ownership_summary is not None and "ownership" not in mapping:
+            mapping["ownership"] = ownership_section_from_summary(ownership_summary)
+            write_json(mapping_path, mapping)
         result = run_tests_once(
             provider,
             ledger=ledger,
