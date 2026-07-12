@@ -19,6 +19,17 @@ import apply_elevenlabs_040_detailed_pricing_control as patcher
 import validate_elevenlabs_040_detailed_pricing_control as validator
 
 
+REQUIRED_DEFAULT_KB_DOCS = (
+    "atlas_offer_facts.md",
+    "atlas_price_scope_cost_drivers.md",
+    "atlas_output_quality_rules.md",
+)
+CARE_FOLLOWUP_KB_DOCS = (
+    "atlas_price_scope_cost_drivers.md",
+    "atlas_output_quality_rules.md",
+)
+
+
 def sample_preflight() -> dict[str, object]:
     return {
         "target_kb_docs": {
@@ -57,7 +68,7 @@ def evidence_fixture(
     *,
     mode: str = "plan_only",
     source_commit: str | None = None,
-    target_kb_doc_names: tuple[str, ...] = ("atlas_output_quality_rules.md",),
+    target_kb_doc_names: tuple[str, ...] = REQUIRED_DEFAULT_KB_DOCS,
 ) -> None:
     source_commit = source_commit or patcher.current_source_evidence_commit()
     requests = patcher.patch_requests(
@@ -165,17 +176,24 @@ class DetailedPricingEvidenceValidationTests(unittest.TestCase):
             with self.assertRaisesRegex(AssertionError, "source evidence commit"):
                 validator.validate_live_evidence_artifacts(evidence_dir=root, require_existing_evidence=True)
 
-    def test_plan_only_head_subset_validates_zero_writes_and_current_hashes(self) -> None:
+    def test_plan_only_head_default_validates_zero_writes_and_current_hashes(self) -> None:
         with tempfile.TemporaryDirectory() as raw_tmp:
             root = Path(raw_tmp)
             evidence_fixture(root)
 
             validator.validate_live_evidence_artifacts(evidence_dir=root, require_existing_evidence=True)
 
-    def test_live_passed_head_subset_validates_declared_two_write_set(self) -> None:
+    def test_live_passed_head_default_validates_declared_four_write_set(self) -> None:
         with tempfile.TemporaryDirectory() as raw_tmp:
             root = Path(raw_tmp)
             evidence_fixture(root, mode="live_passed")
+
+            validator.validate_live_evidence_artifacts(evidence_dir=root, require_existing_evidence=True)
+
+    def test_care_followup_subset_validates_declared_three_write_set(self) -> None:
+        with tempfile.TemporaryDirectory() as raw_tmp:
+            root = Path(raw_tmp)
+            evidence_fixture(root, mode="live_passed", target_kb_doc_names=CARE_FOLLOWUP_KB_DOCS)
 
             validator.validate_live_evidence_artifacts(evidence_dir=root, require_existing_evidence=True)
 
@@ -194,7 +212,7 @@ class DetailedPricingEvidenceValidationTests(unittest.TestCase):
         historical = validator.git(["rev-parse", "HEAD^"]).stdout.strip()
         with tempfile.TemporaryDirectory() as raw_tmp:
             root = Path(raw_tmp)
-            evidence_fixture(root, mode="live_passed", source_commit=historical, target_kb_doc_names=tuple(patcher.KB_DOCS))
+            evidence_fixture(root, mode="live_passed", source_commit=historical, target_kb_doc_names=REQUIRED_DEFAULT_KB_DOCS)
 
             with self.assertRaisesRegex(AssertionError, "historical source markers missing"):
                 validator.validate_live_evidence_artifacts(evidence_dir=root, require_existing_evidence=True)
@@ -203,7 +221,7 @@ class DetailedPricingEvidenceValidationTests(unittest.TestCase):
         historical = patcher.current_source_evidence_commit()
         with tempfile.TemporaryDirectory() as raw_tmp:
             root = Path(raw_tmp)
-            evidence_fixture(root, mode="live_passed", source_commit=historical, target_kb_doc_names=tuple(patcher.KB_DOCS))
+            evidence_fixture(root, mode="live_passed", source_commit=historical, target_kb_doc_names=REQUIRED_DEFAULT_KB_DOCS)
             requests_payload = json.loads((root / "live_agent_patch_requests.json").read_text(encoding="utf-8"))
             plan_payload = json.loads((root / "live_agent_patch_plan.json").read_text(encoding="utf-8"))
             request_id = requests_payload["requests"][0]["request_id"]
@@ -219,7 +237,7 @@ class DetailedPricingEvidenceValidationTests(unittest.TestCase):
         historical = patcher.current_source_evidence_commit()
         with tempfile.TemporaryDirectory() as raw_tmp:
             root = Path(raw_tmp)
-            evidence_fixture(root, mode="live_passed", source_commit=historical, target_kb_doc_names=tuple(patcher.KB_DOCS))
+            evidence_fixture(root, mode="live_passed", source_commit=historical, target_kb_doc_names=REQUIRED_DEFAULT_KB_DOCS)
             payload = json.loads((root / "live_agent_patch_plan.json").read_text(encoding="utf-8"))
             request_id = "update_kb_file::atlas_price_scope_cost_drivers.md"
             payload["request_source_evidence_by_id"][request_id]["source_byte_length"] += 1

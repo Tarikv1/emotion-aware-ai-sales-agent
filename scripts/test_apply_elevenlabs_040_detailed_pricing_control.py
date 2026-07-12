@@ -17,6 +17,17 @@ import apply_elevenlabs_040_detailed_pricing_control as patcher
 import validate_elevenlabs_040_detailed_pricing_control as validator
 
 
+REQUIRED_DEFAULT_KB_DOCS = (
+    "atlas_offer_facts.md",
+    "atlas_price_scope_cost_drivers.md",
+    "atlas_output_quality_rules.md",
+)
+CARE_FOLLOWUP_KB_DOCS = (
+    "atlas_price_scope_cost_drivers.md",
+    "atlas_output_quality_rules.md",
+)
+
+
 def sample_preflight() -> dict[str, object]:
     return {
         "target_kb_docs": {
@@ -30,12 +41,9 @@ def sample_preflight() -> dict[str, object]:
 
 
 class DetailedPricingPatcherSubsetTests(unittest.TestCase):
-    def test_target_kb_doc_subset_is_guarded_and_defaults_to_active_docs(self) -> None:
-        self.assertEqual(patcher.parse_target_kb_docs(None), tuple(patcher.KB_DOCS))
-        self.assertEqual(
-            tuple(patcher.KB_DOCS),
-            ("atlas_price_scope_cost_drivers.md", "atlas_output_quality_rules.md"),
-        )
+    def test_target_kb_doc_subset_is_guarded_and_defaults_to_literal_three_doc_contract(self) -> None:
+        self.assertEqual(tuple(patcher.KB_DOCS), REQUIRED_DEFAULT_KB_DOCS)
+        self.assertEqual(patcher.parse_target_kb_docs(None), REQUIRED_DEFAULT_KB_DOCS)
         self.assertEqual(
             patcher.parse_target_kb_docs(["atlas_output_quality_rules.md"]),
             ("atlas_output_quality_rules.md",),
@@ -50,10 +58,43 @@ class DetailedPricingPatcherSubsetTests(unittest.TestCase):
             with self.assertRaises(SystemExit):
                 patcher.parse_args(["--target-kb-doc", ""])
 
-    def test_default_dry_run_plans_two_kb_writes_and_agent_patch(self) -> None:
+    def test_default_dry_run_plans_three_kb_writes_and_agent_patch(self) -> None:
         requests = patcher.patch_requests(
             validator.sample_agent_for_patcher(),
             sample_preflight(),
+        )
+
+        self.assertEqual(
+            [request["request_id"] for request in requests],
+            [
+                "update_kb_file::atlas_offer_facts.md",
+                "update_kb_file::atlas_price_scope_cost_drivers.md",
+                "update_kb_file::atlas_output_quality_rules.md",
+                "patch_agent::prompt_dynamic_variables",
+            ],
+        )
+
+        plan = patcher.plan_payload(
+            preflight=sample_preflight(),
+            requests=requests,
+            target_kb_doc_names=REQUIRED_DEFAULT_KB_DOCS,
+            provider_writes_allowed=False,
+            ledger_summary=None,
+        )
+
+        self.assertEqual(plan["planned_provider_write_count"], 4)
+        self.assertEqual(plan["planned_kb_write_count"], 3)
+        self.assertEqual(plan["planned_agent_patch_count"], 1)
+        self.assertEqual(
+            plan["kb_documents_planned_for_in_place_update"],
+            list(REQUIRED_DEFAULT_KB_DOCS),
+        )
+
+    def test_care_followup_explicit_subset_plans_two_kb_writes_and_agent_patch(self) -> None:
+        requests = patcher.patch_requests(
+            validator.sample_agent_for_patcher(),
+            sample_preflight(),
+            target_kb_doc_names=CARE_FOLLOWUP_KB_DOCS,
         )
 
         self.assertEqual(
@@ -68,7 +109,7 @@ class DetailedPricingPatcherSubsetTests(unittest.TestCase):
         plan = patcher.plan_payload(
             preflight=sample_preflight(),
             requests=requests,
-            target_kb_doc_names=tuple(patcher.KB_DOCS),
+            target_kb_doc_names=CARE_FOLLOWUP_KB_DOCS,
             provider_writes_allowed=False,
             ledger_summary=None,
         )
@@ -78,7 +119,7 @@ class DetailedPricingPatcherSubsetTests(unittest.TestCase):
         self.assertEqual(plan["planned_agent_patch_count"], 1)
         self.assertEqual(
             plan["kb_documents_planned_for_in_place_update"],
-            ["atlas_price_scope_cost_drivers.md", "atlas_output_quality_rules.md"],
+            list(CARE_FOLLOWUP_KB_DOCS),
         )
 
     def test_subset_dry_run_plans_exactly_one_kb_write_and_agent_patch(self) -> None:

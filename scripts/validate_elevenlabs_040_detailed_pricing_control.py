@@ -143,6 +143,12 @@ EXPECTED_MODIFIED_PRODUCT_FILES = [
     OUTPUT_PATH,
 ]
 
+REQUIRED_DEFAULT_KB_DOCS = (
+    "atlas_offer_facts.md",
+    "atlas_price_scope_cost_drivers.md",
+    "atlas_output_quality_rules.md",
+)
+
 PROMPT_MARKERS = (
     "Price-source lock: use only approved Atlas package, add-on, and care values from Campaign Facts or the active pricing KB; never estimate from general market knowledge or invent a range.",
     "Runtime price map: 3-5 page new site -> {{website_basic_site_range}}; compatible existing-site appointment request -> $100-$250; direct CRM/API add-on -> $1,000-$2,500+; new site plus standard integration -> {{website_integration_heavy_range}}; care after ongoing-cost intent -> one plan only: default Essential Care $79/month for hosting coordination, updates, backups, monitoring; $149 only when ordinary edits are requested; $249 only for heavier edits/monthly reporting; portal/dashboard -> scope without a number.",
@@ -254,6 +260,7 @@ PATCHER_MARKERS = (
     '"thinking_budget": None',
     '"reasoning_effort": "none"',
     'KB_DOCS = (',
+    '"atlas_offer_facts.md"',
     '"atlas_price_scope_cost_drivers.md"',
     '"atlas_output_quality_rules.md"',
     "def merged_dynamic_variables(",
@@ -530,7 +537,8 @@ def validate_live_patcher_semantics() -> None:
 
     parsed = patcher.parse_args([])
     assert_condition(getattr(parsed, "confirm_provider_write") is None, "040 patcher must dry-run by default")
-    assert_condition(patcher.parse_target_kb_docs(getattr(parsed, "target_kb_doc", None)) == tuple(patcher.KB_DOCS), "040 patcher must target active KB docs by default")
+    assert_condition(tuple(patcher.KB_DOCS) == REQUIRED_DEFAULT_KB_DOCS, "040 patcher KB_DOCS literal default mismatch")
+    assert_condition(patcher.parse_target_kb_docs(getattr(parsed, "target_kb_doc", None)) == REQUIRED_DEFAULT_KB_DOCS, "040 patcher must target literal three-doc default")
     subset_parsed = patcher.parse_args(["--target-kb-doc", "atlas_output_quality_rules.md"])
     subset = patcher.parse_target_kb_docs(subset_parsed.target_kb_doc)
     assert_condition(subset == ("atlas_output_quality_rules.md",), "040 patcher subset target parsing mismatch")

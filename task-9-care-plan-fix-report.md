@@ -58,3 +58,79 @@ Expected current failure:
 - The prompt is at `1894` validator words. There is little spare budget.
 - Existing generated 040 evidence is still dirty/untracked in the worktree and was intentionally left uncommitted.
 - Any active live follow-up should target only the two KB docs plus the agent prompt, for three writes total, after commit-bound plan-only evidence is regenerated.
+
+## Review Fix - Restore Patcher Default Targets
+
+No provider, dashboard, generated evidence, prompt/KB care behavior, frozen dashboard tests, or Analysis files were changed.
+
+Changes:
+
+- Restored patcher `KB_DOCS` literal default in original order: `atlas_offer_facts.md`, `atlas_price_scope_cost_drivers.md`, `atlas_output_quality_rules.md`.
+- Restored validator enforcement for the literal three-doc default independently of `patcher.KB_DOCS`.
+- Kept care follow-up as an explicit two-doc subset: `atlas_price_scope_cost_drivers.md`, `atlas_output_quality_rules.md`.
+- Added focused tests for default 4-write dry-run planning and explicit care-subset 3-write dry-run planning.
+- Updated evidence fixtures so full-default tests use a literal tuple and subset tests name their explicit targets.
+
+Validation:
+
+```text
+python scripts\test_apply_elevenlabs_040_detailed_pricing_control.py
+PASS - Ran 6 tests
+
+python scripts\test_validate_elevenlabs_040_evidence.py
+PASS - Ran 9 tests
+
+python scripts\test_validate_elevenlabs_040_live_test_traces.py
+PASS - Ran 12 tests
+
+python scripts\validate_elevenlabs_040_live_test_traces.py --self-test
+PASS - self-test: pass
+
+python scripts\validate_elevenlabs_039_end_call_edge_case_hardening.py
+PASS - status=pass; prompt_word_count=1894
+
+python scripts\validate_elevenlabs_038_end_call_terminal_control.py
+PASS - status=pass; prompt_word_count=1894
+
+python scripts\validate_elevenlabs_037_confident_capability_control.py
+PASS - status=pass; prompt_word_count=1894
+
+python scripts\validate_elevenlabs_037_custom_capability_scope_confidence.py
+PASS - current 037 validator passed; wrapper reports deprecated-wrapper
+
+python scripts\validate_elevenlabs_036_natural_sales_scenarios_tests.py
+PASS - status=pass
+
+python scripts\validate_elevenlabs_035_procedure_natural_sales_tests.py
+PASS - status=pass
+
+python scripts\validate_elevenlabs_034_human_phone_naturalness.py
+PASS - status=pass
+
+python scripts\validate_elevenlabs_033_email_confirmation_precision.py
+PASS - status=pass; prompt_word_count=1894
+
+python scripts\validate_elevenlabs_032_final_runtime_polish.py
+PASS - status=pass; prompt_word_count=1894
+
+python scripts\validate_elevenlabs_031_runtime_elite_hardening.py
+PASS - status=pass; prompt_word_count=1894
+
+python scripts\validate_elevenlabs_030_live_transcript_failure_hardening.py
+PASS - status=pass; prompt_word_count=1894
+
+python -m py_compile scripts\validate_elevenlabs_040_detailed_pricing_control.py scripts\validate_elevenlabs_040_live_test_traces.py scripts\run_elevenlabs_040_tests.py scripts\apply_elevenlabs_040_detailed_pricing_control.py scripts\capture_elevenlabs_040_test_invocation.py scripts\test_run_elevenlabs_040_tests.py scripts\test_apply_elevenlabs_040_detailed_pricing_control.py scripts\test_validate_elevenlabs_040_evidence.py scripts\test_validate_elevenlabs_040_live_test_traces.py
+PASS - no output
+
+git diff --check
+PASS - CRLF normalization warnings only
+```
+
+Expected current failure:
+
+```text
+python scripts\validate_elevenlabs_040_detailed_pricing_control.py
+EXPECTED FAIL - error: update_kb_file::atlas_output_quality_rules.md source sha mismatch
+```
+
+The dirty generated evidence is still source-bound to older evidence and was not edited. Orchestrator should regenerate commit-bound evidence.

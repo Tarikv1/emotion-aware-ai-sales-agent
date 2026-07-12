@@ -125,6 +125,7 @@ ERROR_FIELD_BOUNDARY_RE = re.compile(
     re.IGNORECASE,
 )
 KB_DOCS = (
+    "atlas_offer_facts.md",
     "atlas_price_scope_cost_drivers.md",
     "atlas_output_quality_rules.md",
 )
