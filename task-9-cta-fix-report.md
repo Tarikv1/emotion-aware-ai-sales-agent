@@ -414,3 +414,47 @@ Expected current state:
 
 - The actual 040 validator remains red because the current worktree evidence is commitless. That is intentional until orchestrator generates a commit-bound plan-only artifact using the fixed patcher.
 - Existing generated 040 live evidence remains dirty/untracked and unstaged.
+
+## Fix Wave 3 - Isolated Provenance Regression Fixture
+
+No provider, prompt, KB, dashboard test, Analysis, or live evidence files/calls were touched.
+
+Changes:
+
+- Changed the validator evidence-directory default to resolve `LIVE_EVIDENCE_DIR` at call time instead of import time.
+- Preserved the production-default `main()` regression path while allowing its existing monkeypatch to redirect all evidence reads to commitless fixtures under `TemporaryDirectory`.
+- Preserved strict provenance behavior and the current-HEAD plan-only fixture coverage.
+
+Validation:
+
+```text
+python scripts/test_validate_elevenlabs_040_evidence.py
+PASS - Ran 8 tests
+
+python scripts/validate_elevenlabs_040_detailed_pricing_control.py
+PASS - status=pass; live_evidence_validation.status=validated_current_source_commit; source_evidence_commit=09b34db290dd0dd897dc02d53229d0e05bea1ae1
+
+python scripts/test_apply_elevenlabs_040_detailed_pricing_control.py
+PASS - Ran 4 tests
+
+python scripts/test_validate_elevenlabs_040_live_test_traces.py
+PASS - Ran 4 tests
+
+python scripts/validate_elevenlabs_040_live_test_traces.py --self-test
+PASS - self-test: pass
+
+python -m py_compile scripts/validate_elevenlabs_040_detailed_pricing_control.py scripts/validate_elevenlabs_040_live_test_traces.py scripts/run_elevenlabs_040_tests.py scripts/apply_elevenlabs_040_detailed_pricing_control.py scripts/capture_elevenlabs_040_test_invocation.py scripts/test_run_elevenlabs_040_tests.py scripts/test_apply_elevenlabs_040_detailed_pricing_control.py scripts/test_validate_elevenlabs_040_evidence.py scripts/test_validate_elevenlabs_040_live_test_traces.py
+PASS - no output on the required standalone rerun
+
+git diff --check
+PASS - CRLF normalization warning only
+```
+
+Verification note:
+
+- An initial `py_compile` invocation was incorrectly run concurrently with the Python tests and hit a Windows `__pycache__` atomic-rename `WinError 5`. The same required command was rerun alone and passed with no output.
+
+Concerns:
+
+- The generated 040 evidence remains dirty/untracked and unstaged. This fix reads it only through the standalone production validator command; the regression test uses temporary fixtures and does not mutate it.
+- After this fix commit advanced `HEAD`, the untouched evidence became historical and the 040 validator correctly rejected it with `update_kb_file::atlas_output_quality_rules.md source sha mismatch`: its recorded hash matches the 18,939-byte mixed-line-ending checkout, while strict historical validation reads the 18,547-byte blob from `git show`. The orchestrator must regenerate commit-bound plan-only evidence against the final commit; this fix does not weaken historical validation or rewrite evidence.

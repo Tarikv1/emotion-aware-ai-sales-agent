@@ -798,10 +798,11 @@ def validate_source_evidence_for_commit(requests: list[dict[str, Any]], evidence
 
 
 def validate_live_evidence_artifacts(
-    evidence_dir: Path = LIVE_EVIDENCE_DIR,
+    evidence_dir: Path | None = None,
     *,
     require_existing_evidence: bool = False,
 ) -> dict[str, Any]:
+    evidence_dir = LIVE_EVIDENCE_DIR if evidence_dir is None else evidence_dir
     if not evidence_dir.is_dir():
         assert_condition(not require_existing_evidence, f"Missing live evidence dir: {evidence_dir}")
         return {"status": "absent"}
