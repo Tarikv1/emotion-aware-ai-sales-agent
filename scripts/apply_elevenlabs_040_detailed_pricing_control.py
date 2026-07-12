@@ -125,7 +125,6 @@ ERROR_FIELD_BOUNDARY_RE = re.compile(
     re.IGNORECASE,
 )
 KB_DOCS = (
-    "atlas_offer_facts.md",
     "atlas_price_scope_cost_drivers.md",
     "atlas_output_quality_rules.md",
 )
@@ -141,14 +140,14 @@ KB_REQUEST_SOURCE_MARKERS = {
         "Integration Website: `{{website_integration_heavy_range}}`",
     ),
     "atlas_price_scope_cost_drivers.md": (
-        "After explicit price intent, Emma must answer by the first or second price ask.",
+        "If support need is unclear, default to Essential Care",
         "Base Package Ladder",
         "{{website_integration_heavy_range}}",
     ),
     "atlas_output_quality_rules.md": (
         "Pricing Quote Discipline",
         "Never disclose a paid price before explicit buyer price intent.",
-        "Do not read the package or feature menu aloud.",
+        "For care, quote exactly one relevant plan after ongoing-cost intent; default to Essential Care if support need is unclear.",
     ),
 }
 PROMPT_PATH = ROOT / "runtime" / "providers" / "elevenlabs_agents" / "prompts" / "web_design_atlas_sales_prompt.md"
@@ -910,7 +909,7 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         type=target_kb_doc_arg,
         default=None,
         metavar="NAME",
-        help=f"Optional known KB doc name to patch; repeat to target a guarded subset. Default: all {len(KB_DOCS)} target docs.",
+        help=f"Optional active KB doc name to patch; repeat to target a guarded subset. Default: all {len(KB_DOCS)} active target docs.",
     )
     return parser.parse_args(argv)
 

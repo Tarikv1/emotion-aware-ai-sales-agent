@@ -49,6 +49,7 @@ If the buyer asks the same question twice, do not repeat the same explanation. A
 - Do not add three or more features into a final quote.
 - Do not charge twice for overlapping work.
 - Use one relevant range and at most one material scope question.
+- For care, quote exactly one relevant plan after ongoing-cost intent; default to Essential Care if support need is unclear.
 - Keep that to one range per response; if the buyer returns later with a second independent add-on, discuss only that add-on and do not stack it into the prior answer.
 - Do not quote a fixed price or ceiling for portals, dashboards, APIs, accounts, databases, or custom business logic.
 

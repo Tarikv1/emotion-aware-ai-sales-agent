@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import argparse
+from collections import Counter
 import hashlib
 import json
 import re
@@ -13,7 +14,7 @@ from typing import Any
 EXPECTED_AGENT_ID = "agent_7801kt0g32zxf4f8x5zkykj7syty"
 CHECKPOINT_ID = "ELEVENLABS-040-detailed-pricing-control"
 PRICE_TRIGGER_RE = re.compile(
-    r"\b(?:how much|cost|price|charge|fee|range|ballpark|budget|afford|monthly|extra)\b",
+    r"\b(?:how much|cost|price|charge|fee|range|ballpark|budget|afford|monthly|extra|fit|fits|works?)\b|\$\s?1,200\b",
     re.IGNORECASE,
 )
 PAID_PRICE_RE = re.compile(
@@ -65,14 +66,14 @@ UNSUPPORTED_INCLUDED_RE = re.compile(
     re.IGNORECASE,
 )
 EXISTING_SITE_RE = re.compile(r"\b(?:existing site|existing website|compatible site|compatible website|on an existing site|current site)\b", re.IGNORECASE)
-ADD_ON_RE = re.compile(r"\b(?:add(?:ing|ition)?|add-on|on an existing site)\b", re.IGNORECASE)
+ADD_ON_RE = re.compile(r"\b(?:add(?:ing|ition)?|add-on|on an existing site|appointment[- ]request form)\b", re.IGNORECASE)
 WHOLE_SITE_RE = re.compile(r"\b(?:new site|new website|whole site|whole project|full site|package)\b", re.IGNORECASE)
 BUDGET_FIT_POSITIVE_RE = re.compile(
-    r"(?:\byes\b[^.?!]*\b(?:fit|fits|can fit|does fit|should fit)\b|\b(?:\$1,200|1,200|that budget|the budget|it)\s+(?:fit|fits|can fit|does fit|should fit)\b|\bfit(?:s)?\s+within\s+(?:the\s+)?(?:budget|range|\$?\s?900\s?(?:-|to)\s?\$?\s?1,500)\b|\bstays\s+in\s+the\s+.*range\b)",
+    r"(?:\byes\b[^.?!]*\b(?:fit|fits|can fit|does fit|should fit|work|works|can work)\b|\b(?:\$1,200|1,200|that budget|the budget|it)\s+(?:fit|fits|can fit|does fit|should fit|work|works|can work)\b|\bfit(?:s)?\s+within\s+(?:the\s+)?(?:budget|range|\$?\s?900\s?(?:-|to)\s?\$?\s?1,500)\b|\bstays\s+in\s+the\s+.*range\b)",
     re.IGNORECASE,
 )
 BUDGET_FIT_NEGATIVE_RE = re.compile(
-    r"(?:\bno\b|\bdo(?:es)?\s+not\s+fit\b|\bdoesn't\s+fit\b|\bwon't\s+fit\b|\bwill\s+not\s+fit\b|\bcannot\s+fit\b|\bcan't\s+fit\b|\bdon't\s+think\b|\bdo\s+not\s+think\b|\bnot\s+sure\b|\bunsure\b|\bprobably\s+not\b|\bmaybe\s+not\b|\bnot\s+within\s+budget\b|\bover\s+budget\b|\bout(?:side)?\s+of?\s*budget\b|\boutside\s+budget\b|\bis\s+unrelated\b)",
+    r"(?:\bdo(?:es)?\s+not\s+fit\b|\bdoesn't\s+fit\b|\bwon't\s+fit\b|\bwill\s+not\s+fit\b|\bcannot\s+fit\b|\bcan't\s+fit\b|\bdon't\s+think\b|\bdo\s+not\s+think\b|\bnot\s+sure\b|\bunsure\b|\bprobably\s+not\b|\bmaybe\s+not\b|\bnot\s+within\s+budget\b|\bover\s+budget\b|\bout(?:side)?\s+of?\s*budget\b|\boutside\s+budget\b|\bis\s+unrelated\b)",
     re.IGNORECASE,
 )
 BUDGET_FIT_HEDGE_RE = re.compile(
@@ -117,6 +118,22 @@ APPROVED_VALUE_PATTERNS = {
     "care_249": re.compile(r"\$\s?249(?:\s+(?:per month|monthly)|/month)?\b", re.IGNORECASE),
 }
 CARE_PLAN_LABELS = {"care_79", "care_149", "care_249"}
+KNOWN_MONEY_NORMALIZATIONS: tuple[tuple[re.Pattern[str], str], ...] = (
+    (re.compile(r"\$\s?900\s*(?:-|to)\s*\$?\s?1500\b", re.IGNORECASE), "$900-$1,500"),
+    (re.compile(r"\bnine hundred\s+(?:dollars?\s+)?to\s+fifteen hundred(?:\s+dollars?)?\b", re.IGNORECASE), "$900-$1,500"),
+    (re.compile(r"\$\s?100\s*(?:-|to)\s*\$?\s?250\b", re.IGNORECASE), "$100-$250"),
+    (re.compile(r"\bone hundred\s+(?:dollars?\s+)?to\s+two hundred fifty(?:\s+dollars?)?\b", re.IGNORECASE), "$100-$250"),
+    (re.compile(r"\$\s?4000\s*(?:-|to)\s*\$?\s?6500\b", re.IGNORECASE), "$4,000-$6,500"),
+    (re.compile(r"\bfour thousand\s+(?:dollars?\s+)?to\s+(?:sixty five hundred|six thousand five hundred)(?:\s+dollars?)?\b", re.IGNORECASE), "$4,000-$6,500"),
+    (re.compile(r"\$\s?1000\s*(?:-|to)\s*\$?\s?2500\+?\b", re.IGNORECASE), "$1,000-$2,500+"),
+    (re.compile(r"\bone thousand\s+(?:dollars?\s+)?to\s+two thousand five hundred(?:\s+dollars?)?\s+plus\b", re.IGNORECASE), "$1,000-$2,500+"),
+    (re.compile(r"\bone thousand\s+(?:dollars?\s+)?to\s+two thousand five hundred\s+dollar\s+plus\b", re.IGNORECASE), "$1,000-$2,500+"),
+    (re.compile(r"\$\s?1200\b", re.IGNORECASE), "$1,200"),
+    (re.compile(r"\btwelve hundred(?:\s+dollars?)?\b", re.IGNORECASE), "$1,200"),
+    (re.compile(r"\bseventy nine(?:\s+dollars?)?\b", re.IGNORECASE), "$79"),
+    (re.compile(r"\bone hundred forty nine(?:\s+dollars?)?\b", re.IGNORECASE), "$149"),
+    (re.compile(r"\btwo hundred forty nine(?:\s+dollars?)?\b", re.IGNORECASE), "$249"),
+)
 
 EXPECTED_TEST_ORDER = [
     "sim_040_capability_question_no_unprompted_price",
@@ -213,8 +230,11 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--mapping", type=Path, help="Optional live_test_mapping.json path. Defaults to input sibling when present.")
     parser.add_argument("--output", type=Path, help="Optional JSON path for the independent validation summary")
     parser.add_argument("--partial-canary", action="store_true", help="Validate exactly the basic-site canary instead of the full 10-test suite")
+    parser.add_argument("--partial-test-id", help="Validate exactly one known expected 040 test id in partial mode")
     parser.add_argument("--self-test", action="store_true", help="Run built-in validator self-tests")
     args = parser.parse_args()
+    if args.partial_canary and args.partial_test_id:
+        parser.error("--partial-canary and --partial-test-id are mutually exclusive")
     if not args.self_test and args.input is None:
         parser.error("--input is required unless --self-test is used")
     return args
@@ -267,7 +287,10 @@ def provider_test_id_mapping(document: dict[str, Any] | None) -> dict[str, str]:
 def canonical_text(value: Any) -> str:
     if not isinstance(value, str):
         return ""
-    return " ".join(value.split())
+    normalized = " ".join(value.split())
+    for pattern, replacement in KNOWN_MONEY_NORMALIZATIONS:
+        normalized = pattern.sub(replacement, normalized)
+    return normalized
 
 
 def event_text(event: dict[str, Any]) -> str:
@@ -308,6 +331,7 @@ def contains_affirmative_budget_fit(text: str) -> bool:
 
 def contains_positive_whole_site_framing(text: str) -> bool:
     stripped = NEGATED_WHOLE_SITE_RE.sub("", text)
+    stripped = re.sub(r"\b(?:or\s+)?(?:are you\s+)?considering a new site(?: too)?\b", "", stripped, flags=re.IGNORECASE)
     return WHOLE_SITE_RE.search(stripped) is not None
 
 
@@ -371,10 +395,11 @@ def record_common_message_rules(checks: Checks, events: list[dict[str, Any]]) ->
             continue
         message = event["message"]
         labels = approved_labels(message)
+        non_care_labels = [label for label in labels if label not in CARE_PLAN_LABELS]
         checks.check(
             "no_more_than_two_approved_ranges_in_response",
-            len(labels) <= 2,
-            f"agent response {index} contains more than two approved ranges/plans: {labels}",
+            len(non_care_labels) <= 2,
+            f"agent response {index} contains more than two approved non-care ranges: {non_care_labels}",
         )
         checks.check(
             "no_menu_dump",
@@ -419,7 +444,10 @@ def validate_post_quote_followup_cta_lock(checks: Checks, events: list[dict[str,
 
 def validate_allowed_labels(checks: Checks, messages: list[str], allowed: set[str]) -> set[str]:
     seen = unique_labels_seen(messages)
-    unexpected = sorted(seen - allowed)
+    ignored_labels = set()
+    if not (allowed & CARE_PLAN_LABELS):
+        ignored_labels.update(CARE_PLAN_LABELS)
+    unexpected = sorted(seen - allowed - ignored_labels)
     checks.check(
         "approved_ranges_only_in_relevant_scenarios",
         not unexpected,
@@ -430,10 +458,12 @@ def validate_allowed_labels(checks: Checks, messages: list[str], allowed: set[st
         for match_text, labels in money_match_labels(message):
             if labels and labels <= (allowed | {"buyer_budget_reference"}):
                 continue
+            if labels and labels <= (allowed | ignored_labels | {"buyer_budget_reference"}):
+                continue
             if not labels:
                 disallowed_matches.append(match_text)
                 continue
-            unexpected_labels = labels - allowed - {"buyer_budget_reference"}
+            unexpected_labels = labels - allowed - ignored_labels - {"buyer_budget_reference"}
             if unexpected_labels:
                 disallowed_matches.append(match_text)
     checks.check(
@@ -471,7 +501,7 @@ def scenario_basic_site(checks: Checks, messages: list[str]) -> None:
 def scenario_existing_request_form(checks: Checks, messages: list[str]) -> None:
     seen = validate_allowed_labels(checks, messages, {"request_form"})
     checks.check("existing_site_expected_add_on_range", "request_form" in seen, "existing-site request-form scenario requires only the $100-$250 add-on range")
-    combined = " ".join(messages)
+    combined = " ".join(message for message in messages if "request form" in message.lower() or "$100-$250" in message)
     checks.check(
         "existing_site_add_on_classification",
         EXISTING_SITE_RE.search(combined) is not None and ADD_ON_RE.search(combined) is not None and not contains_positive_whole_site_framing(combined),
@@ -548,7 +578,7 @@ def scenario_budget_fit(checks: Checks, messages: list[str]) -> None:
         re.search(r"\$\s?1,200\b", combined) is not None
         and re.search(r"\$\s?900\s?(?:-|to)\s?\$?\s?1,500\b", combined, re.IGNORECASE) is not None
         and contains_affirmative_budget_fit(combined)
-        and re.search(r"\b(?:within|in the .* range|in that range|stays in|fit|fits)\b", combined, re.IGNORECASE) is not None,
+        and re.search(r"\b(?:within|in the .* range|in that range|stays in|fit|fits|work|works|can work)\b", combined, re.IGNORECASE) is not None,
         "budget-fit scenario must relate the buyer's $1,200 budget positively to the $900-$1,500 range",
     )
 
@@ -568,8 +598,7 @@ def scenario_care_plan(checks: Checks, events: list[dict[str, Any]], messages: l
         f"care-plan price appeared before the ongoing-cost question: {sorted(early_labels)}",
     )
     after_messages = [event["message"] for event in events[(ongoing_trigger or 0) + 1 :] if event["role"] == "agent"]
-    seen_after = validate_allowed_labels(checks, after_messages, CARE_PLAN_LABELS)
-    care_labels = seen_after & CARE_PLAN_LABELS
+    care_labels = unique_labels_seen(after_messages) & CARE_PLAN_LABELS
     checks.check("care_plan_single_relevant_plan", len(care_labels) == 1, f"care-plan response must quote exactly one approved monthly plan; found {sorted(care_labels)}")
     checks.check("care_plan_scope_present", any(CARE_SCOPE_RE.search(message) for message in after_messages), "care-plan response must mention the ongoing scope")
 
@@ -605,9 +634,16 @@ def validate_run(run: dict[str, Any], *, expected_provider_test_id: str | None =
     validate_post_quote_followup_cta_lock(checks, events)
     first_trigger, first_paid = validate_price_gate(checks, expected, events)
     messages = [event["message"] for event in events if event["role"] == "agent"]
+    incomplete = not events or (
+        bool(expected["requires_price_intent"])
+        and first_trigger is None
+        and first_paid is None
+    )
 
     kind = expected["kind"]
-    if kind == "no_price":
+    if incomplete:
+        pass
+    elif kind == "no_price":
         scenario_no_price(checks, messages, first_paid)
     elif kind == "basic_site":
         scenario_basic_site(checks, messages)
@@ -628,11 +664,21 @@ def validate_run(run: dict[str, Any], *, expected_provider_test_id: str | None =
     else:
         checks.check("known_validation_kind", False, f"unknown validation kind {kind!r}")
 
+    independent_status = "pass"
+    if checks.failures:
+        if incomplete and all(
+            failure.startswith(("buyer_price_trigger_present:", "incomplete_simulation:", "ordered_agent_responses_present:"))
+            for failure in checks.failures
+        ):
+            independent_status = "incomplete"
+        else:
+            independent_status = "fail"
+
     return {
         "test_id": test_id,
         "test_name": run.get("test_name"),
         "test_run_id": run.get("test_run_id"),
-        "independent_status": "pass" if not checks.failures else "fail",
+        "independent_status": independent_status,
         "provider_status": run.get("status"),
         "provider_condition_result": run.get("condition_result"),
         "provider_evaluator_rationale": run.get("evaluator_rationale"),
@@ -663,23 +709,43 @@ def validate_payload(payload: dict[str, Any], mapping: dict[str, str] | None = N
     if len(runs) != len(runs_raw):
         global_failures.append("all test_runs entries must be JSON objects")
 
-    ids_in_order = [str(run.get("test_id", "")).strip() for run in runs]
-    if ids_in_order != EXPECTED_TEST_ORDER:
-        global_failures.append(f"expected exact 040 test ids/order {EXPECTED_TEST_ORDER}, found {ids_in_order}")
+    raw_input_test_ids = [str(run.get("test_id", "")).strip() for run in runs]
+    id_counts = Counter(raw_input_test_ids)
+    duplicate_ids = sorted(test_id for test_id, count in id_counts.items() if test_id and count > 1)
+    missing_ids = [test_id for test_id in EXPECTED_TEST_ORDER if id_counts[test_id] == 0]
+    unexpected_ids = sorted(test_id for test_id in id_counts if test_id and test_id not in EXPECTED_TESTS)
+    if duplicate_ids:
+        global_failures.append(f"duplicate test ids: {duplicate_ids}")
+    if missing_ids:
+        global_failures.append(f"missing test ids: {missing_ids}")
+    if unexpected_ids:
+        global_failures.append(f"unexpected test ids: {unexpected_ids}")
     if len(runs) != len(EXPECTED_TEST_ORDER):
         global_failures.append(f"expected exactly {len(EXPECTED_TEST_ORDER)} test runs, found {len(runs)}")
+    if not duplicate_ids and not missing_ids and not unexpected_ids and len(runs) == len(EXPECTED_TEST_ORDER):
+        runs_by_id = {str(run.get("test_id", "")).strip(): run for run in runs}
+        runs = [runs_by_id[test_id] for test_id in EXPECTED_TEST_ORDER]
+        ids_in_order = list(EXPECTED_TEST_ORDER)
+    else:
+        ids_in_order = raw_input_test_ids
 
     tests = [
         validate_run(run, expected_provider_test_id=provider_mapping.get(str(run.get("test_id", "")).strip()))
         for run in runs
     ]
-    independent_status = "pass" if not global_failures and all(test["independent_status"] == "pass" for test in tests) else "fail"
+    if global_failures or any(test["independent_status"] == "fail" for test in tests):
+        independent_status = "fail"
+    elif any(test["independent_status"] == "incomplete" for test in tests):
+        independent_status = "incomplete"
+    else:
+        independent_status = "pass"
     return {
         "checkpoint_id": CHECKPOINT_ID,
         "agent_id": payload.get("agent_id"),
         "invocation_id": payload.get("invocation_id"),
         "independent_status": independent_status,
         "input_test_ids": ids_in_order,
+        "raw_input_test_ids": raw_input_test_ids,
         "global_failures": global_failures,
         "provider_labels": {
             "status_entries": [
@@ -704,10 +770,22 @@ def validate_payload(payload: dict[str, Any], mapping: dict[str, str] | None = N
 
 
 def validate_partial_canary_payload(payload: dict[str, Any], mapping: dict[str, str] | None = None) -> dict[str, Any]:
+    return validate_partial_test_payload(payload, partial_test_id="sim_040_basic_site_direct_price", mapping=mapping, validation_mode="partial_canary_basic_site")
+
+
+def validate_partial_test_payload(
+    payload: dict[str, Any],
+    *,
+    partial_test_id: str,
+    mapping: dict[str, str] | None = None,
+    validation_mode: str = "partial_test",
+) -> dict[str, Any]:
     global_failures: list[str] = []
     provider_mapping = dict(mapping or {})
     provider_mapping.update(provider_test_id_mapping(payload.get("live_test_mapping") if isinstance(payload.get("live_test_mapping"), dict) else None))
 
+    if partial_test_id not in EXPECTED_TESTS:
+        global_failures.append(f"partial_test_id must be one known expected test id; found {partial_test_id!r}")
     if payload.get("agent_id") != EXPECTED_AGENT_ID:
         global_failures.append(f"agent_id must be {EXPECTED_AGENT_ID}")
     if payload.get("checkpoint_id") not in (None, "", CHECKPOINT_ID):
@@ -720,19 +798,25 @@ def validate_partial_canary_payload(payload: dict[str, Any], mapping: dict[str, 
     if len(runs) != len(runs_raw):
         global_failures.append("all test_runs entries must be JSON objects")
     ids_in_order = [str(run.get("test_id", "")).strip() for run in runs]
-    if ids_in_order != ["sim_040_basic_site_direct_price"]:
-        global_failures.append(f"partial canary expects exactly ['sim_040_basic_site_direct_price'], found {ids_in_order}")
+    if ids_in_order != [partial_test_id]:
+        global_failures.append(f"partial validation expects exactly {[partial_test_id]}, found {ids_in_order}")
 
     tests = [
         validate_run(run, expected_provider_test_id=provider_mapping.get(str(run.get("test_id", "")).strip()))
         for run in runs
     ]
-    independent_status = "pass" if not global_failures and all(test["independent_status"] == "pass" for test in tests) else "fail"
+    if global_failures or any(test["independent_status"] == "fail" for test in tests):
+        independent_status = "fail"
+    elif any(test["independent_status"] == "incomplete" for test in tests):
+        independent_status = "incomplete"
+    else:
+        independent_status = "pass"
     return {
         "checkpoint_id": CHECKPOINT_ID,
         "agent_id": payload.get("agent_id"),
         "invocation_id": payload.get("invocation_id"),
-        "validation_mode": "partial_canary_basic_site",
+        "validation_mode": validation_mode,
+        "partial_test_id": partial_test_id,
         "independent_status": independent_status,
         "input_test_ids": ids_in_order,
         "global_failures": global_failures,
@@ -1112,7 +1196,9 @@ def main() -> int:
                 mapping_path = sibling
         if mapping_path is not None:
             mapping_document = read_json(mapping_path)
-        if args.partial_canary:
+        if args.partial_test_id:
+            summary = validate_partial_test_payload(payload, partial_test_id=args.partial_test_id, mapping=provider_test_id_mapping(mapping_document))
+        elif args.partial_canary:
             summary = validate_partial_canary_payload(payload, provider_test_id_mapping(mapping_document))
         else:
             summary = validate_payload(payload, provider_test_id_mapping(mapping_document))

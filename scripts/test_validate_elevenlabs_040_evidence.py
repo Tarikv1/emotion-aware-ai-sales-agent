@@ -190,16 +190,17 @@ class DetailedPricingEvidenceValidationTests(unittest.TestCase):
             with self.assertRaisesRegex(AssertionError, "provider write attempt count"):
                 validator.validate_live_evidence_artifacts(evidence_dir=root, require_existing_evidence=True)
 
-    def test_valid_historical_commit_excludes_stale_hash_checks_only_after_shape_validation(self) -> None:
+    def test_historical_commit_missing_current_product_markers_fails_closed(self) -> None:
         historical = validator.git(["rev-parse", "HEAD^"]).stdout.strip()
         with tempfile.TemporaryDirectory() as raw_tmp:
             root = Path(raw_tmp)
             evidence_fixture(root, mode="live_passed", source_commit=historical, target_kb_doc_names=tuple(patcher.KB_DOCS))
 
-            validator.validate_live_evidence_artifacts(evidence_dir=root, require_existing_evidence=True)
+            with self.assertRaisesRegex(AssertionError, "historical source markers missing"):
+                validator.validate_live_evidence_artifacts(evidence_dir=root, require_existing_evidence=True)
 
     def test_historical_commit_bad_kb_source_hash_fails_closed(self) -> None:
-        historical = validator.git(["rev-parse", "HEAD^"]).stdout.strip()
+        historical = patcher.current_source_evidence_commit()
         with tempfile.TemporaryDirectory() as raw_tmp:
             root = Path(raw_tmp)
             evidence_fixture(root, mode="live_passed", source_commit=historical, target_kb_doc_names=tuple(patcher.KB_DOCS))
@@ -215,12 +216,12 @@ class DetailedPricingEvidenceValidationTests(unittest.TestCase):
                 validator.validate_live_evidence_artifacts(evidence_dir=root, require_existing_evidence=True)
 
     def test_historical_commit_plan_request_source_evidence_mismatch_fails_closed(self) -> None:
-        historical = validator.git(["rev-parse", "HEAD^"]).stdout.strip()
+        historical = patcher.current_source_evidence_commit()
         with tempfile.TemporaryDirectory() as raw_tmp:
             root = Path(raw_tmp)
             evidence_fixture(root, mode="live_passed", source_commit=historical, target_kb_doc_names=tuple(patcher.KB_DOCS))
             payload = json.loads((root / "live_agent_patch_plan.json").read_text(encoding="utf-8"))
-            request_id = "update_kb_file::atlas_offer_facts.md"
+            request_id = "update_kb_file::atlas_price_scope_cost_drivers.md"
             payload["request_source_evidence_by_id"][request_id]["source_byte_length"] += 1
             write_json(root / "live_agent_patch_plan.json", payload)
 

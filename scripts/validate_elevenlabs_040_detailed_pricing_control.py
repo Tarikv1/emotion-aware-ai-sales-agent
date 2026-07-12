@@ -145,7 +145,7 @@ EXPECTED_MODIFIED_PRODUCT_FILES = [
 
 PROMPT_MARKERS = (
     "Price-source lock: use only approved Atlas package, add-on, and care values from Campaign Facts or the active pricing KB; never estimate from general market knowledge or invent a range.",
-    "Runtime price map: 3-5 page new site -> {{website_basic_site_range}}; compatible existing-site appointment request -> $100-$250; direct CRM/API add-on -> $1,000-$2,500+; new site plus standard integration -> {{website_integration_heavy_range}}; care -> $79/$149/$249 only after ongoing-cost intent; portal/dashboard -> scope without a number.",
+    "Runtime price map: 3-5 page new site -> {{website_basic_site_range}}; compatible existing-site appointment request -> $100-$250; direct CRM/API add-on -> $1,000-$2,500+; new site plus standard integration -> {{website_integration_heavy_range}}; care after ongoing-cost intent -> one plan only: default Essential Care $79/month for hosting coordination, updates, backups, monitoring; $149 only when ordinary edits are requested; $249 only for heavier edits/monthly reporting; portal/dashboard -> scope without a number.",
     "Paid-price gate: disclose paid pricing only after the buyer explicitly asks price, cost, fee, range, ballpark, budget, affordability, monthly charge, or add-on cost.",
     "Capability, scope, mockup, free, catch, contract, and ordinary-interest questions never unlock paid pricing.",
     "After price intent: new website -> one whole-project band; compatible existing site -> one relevant add-on range; unclear -> ask whether this is a new site or an addition.",
@@ -189,6 +189,8 @@ PRICING_KB_MARKERS = (
     "$149 per month",
     "Growth Care",
     "$249 per month",
+    "If support need is unclear, default to Essential Care",
+    "Do not recite all three care plans in one answer.",
     "domain registration",
     "third-party platform subscriptions",
     "premium plugins and application fees",
@@ -207,6 +209,7 @@ OUTPUT_MARKERS = (
     "Do not add three or more features into a final quote.",
     "Do not charge twice for overlapping work.",
     "Use one relevant range and at most one material scope question.",
+    "For care, quote exactly one relevant plan after ongoing-cost intent; default to Essential Care if support need is unclear.",
     "Do not quote a fixed price or ceiling for portals, dashboards, APIs, accounts, databases, or custom business logic.",
 )
 
@@ -231,14 +234,14 @@ KB_REQUEST_SOURCE_MARKERS = {
         "Integration Website: `{{website_integration_heavy_range}}`",
     ),
     "atlas_price_scope_cost_drivers.md": (
-        "After explicit price intent, Emma must answer by the first or second price ask.",
+        "If support need is unclear, default to Essential Care",
         "Base Package Ladder",
         "{{website_integration_heavy_range}}",
     ),
     "atlas_output_quality_rules.md": (
         "Pricing Quote Discipline",
         "Never disclose a paid price before explicit buyer price intent.",
-        "Do not read the package or feature menu aloud.",
+        "For care, quote exactly one relevant plan after ongoing-cost intent; default to Essential Care if support need is unclear.",
     ),
 }
 
@@ -251,7 +254,6 @@ PATCHER_MARKERS = (
     '"thinking_budget": None',
     '"reasoning_effort": "none"',
     'KB_DOCS = (',
-    '"atlas_offer_facts.md"',
     '"atlas_price_scope_cost_drivers.md"',
     '"atlas_output_quality_rules.md"',
     "def merged_dynamic_variables(",
@@ -528,7 +530,7 @@ def validate_live_patcher_semantics() -> None:
 
     parsed = patcher.parse_args([])
     assert_condition(getattr(parsed, "confirm_provider_write") is None, "040 patcher must dry-run by default")
-    assert_condition(patcher.parse_target_kb_docs(getattr(parsed, "target_kb_doc", None)) == tuple(patcher.KB_DOCS), "040 patcher must target all KB docs by default")
+    assert_condition(patcher.parse_target_kb_docs(getattr(parsed, "target_kb_doc", None)) == tuple(patcher.KB_DOCS), "040 patcher must target active KB docs by default")
     subset_parsed = patcher.parse_args(["--target-kb-doc", "atlas_output_quality_rules.md"])
     subset = patcher.parse_target_kb_docs(subset_parsed.target_kb_doc)
     assert_condition(subset == ("atlas_output_quality_rules.md",), "040 patcher subset target parsing mismatch")
