@@ -93,3 +93,37 @@ Fresh remediation validator results:
 The validators rewrote five tracked `PROD-*` generated artifacts while running. Those runner side effects were restored to `HEAD`; no validator, test, runner, criterion, or evidence change is included in this remediation.
 
 Post-restoration `git diff --check` exited `0`; only working-copy LF-to-CRLF warnings were printed.
+
+## Legacy Marker And Portal P1 Remediation
+
+Restored these legacy output-quality markers as separate bullets without replacing the stronger adjacent rules:
+
+- `In that lane, answer only the asked price issue: no mockup mention, mockup CTA, email ask, or renewed sales transition unless the buyer newly accepts or requests the mockup.`
+- `Do not quote a fixed price or ceiling for portals, dashboards, APIs, accounts, databases, or custom business logic.`
+
+The output rules now define `newly accepts or requests the mockup` as an explicit topic change to the mockup or an explicit send request. The stronger price-chain, multi-feature, care, and portal-chain rules remain present as additional bullets.
+
+The compact parent-login response now starts exactly `A working parent login is custom. I can't give a real number...` and no longer compares portal work with the normal website range. The same prompt bullet prohibits standard-site ranges, package context, and mockup CTA during the portal price/scope chain.
+
+Prompt count using the task validator's `len(re.findall(r"\b\S+\b", text))` method: `1895`. Earlier report counts based on a whitespace split were not the frozen validator's count and are superseded by this result.
+
+Fresh requested validator results:
+
+- `python scripts\validate_prod_040_callcenteren_conditional_customer_simulation.py` - exit `0`; `PROD-040 CallCenterEN conditional customer simulation validation passed.`
+- `python scripts\validate_prod_039_customer_realism_simulator_hardening.py` - exit `0`; `PROD-039 customer realism simulator hardening validation passed.`
+- `python scripts\validate_prod_038_local_demo_surface_review.py` - exit `0`; `PROD-038 local demo surface review validation passed.`
+- `python scripts\validate_prod_037_local_interactive_trace_demo_surface.py` - exit `0`; `PROD-037 local interactive trace demo surface validation passed.`
+- `python scripts\validate_prod_036_interactive_demo_readiness_review.py` - exit `0`; `PROD-036 interactive demo readiness review validation passed.`
+- `python scripts\validate_prod_034_interactive_post_fix_review.py` - exit `0`; `PROD-034 interactive post-fix review validation passed.`
+- `python scripts\validate_prod_033_interactive_simulator_termination_fix.py` - exit `0`; `PROD-033 interactive simulator termination fix validation passed.`
+- `python scripts\validate_prod_032_interactive_simulation_review.py` - exit `0`; `PROD-032 interactive simulation review validation passed.`
+- `python scripts\validate_prod_031_interactive_grounded_call_simulation.py` - exit `0`; `PROD-031 interactive grounded call simulation validation passed.`
+- `python scripts\validate_prod_030_grounded_demo_review.py` - exit `0`; `PROD-030 grounded demo review validation passed.`
+- Full requested chain exit: `0`.
+- Pre-report `git diff --check` exit: `0`; only LF-to-CRLF working-copy warnings were printed.
+
+An additional pre-commit run of `python scripts\validate_elevenlabs_040_detailed_pricing_control.py` passed its source marker and word-count stage, then exited `1` at its intentional clean-`HEAD` guard with `repo source files differ semantically from HEAD; refusing provider evidence`. It must be rerun after the source commit and is not recorded as passed here.
+
+The requested chain rewrote six tracked `PROD-*` artifacts. Those runner side effects were restored to `HEAD`; no test, validator, runner, evidence, or provider file is included in this remediation.
+
+After committing the source files, `python scripts\validate_elevenlabs_040_detailed_pricing_control.py` exited `0` with status `pass`, prompt word count `1895`, test count `10`, `active_manifest_changed: false`, and `procedures_changed: false`.
