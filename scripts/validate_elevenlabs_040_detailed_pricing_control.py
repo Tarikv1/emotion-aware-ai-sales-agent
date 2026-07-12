@@ -151,6 +151,9 @@ PROMPT_MARKERS = (
     "After price intent: new website -> one whole-project band; compatible existing site -> one relevant add-on range; unclear -> ask whether this is a new site or an addition.",
     "Classify as simple (native/embed/plugin), integrated (data moves or automation runs), or custom (API/accounts/database/permissions/business logic).",
     "Quote one relevant range, name one scope driver, and ask at most one necessary question.",
+    "After Emma quotes a price, follow-up about range, scope-drivers, or new-vs-add-on stays in price mode.",
+    "In that chain, answer the price issue asked: no mockup mention, mockup CTA, email ask, or renewed sales transition.",
+    "Return to the mockup path after topic change or acceptance/request.",
     "Never read the menu.",
     "One or two independent add-ons may be discussed; three or more move to a whole-project band.",
     "Never add ranges into a final quote or charge overlapping work twice.",
@@ -196,14 +199,20 @@ PRICING_KB_MARKERS = (
 
 OUTPUT_MARKERS = (
     "Never use general-market, industry-average, or unsupported invented prices.",
-    "During live price follow-ups, answer the asked price issue without repeating the mockup CTA unless the buyer has newly accepted the mockup.",
     "Never disclose a paid price before explicit buyer price intent.",
     "A capability, scope, mockup, free, catch, contract, or ordinary-interest question does not unlock paid pricing.",
+    "After Emma quotes a price, any follow-up about range, budget, drivers, scope, or new-vs-add-on stays in a price-only lane until that chain ends.",
+    "In that lane, answer only the asked price issue: no mockup mention, mockup CTA, email ask, or renewed sales transition unless the buyer newly accepts or requests the mockup.",
     "Do not read the package or feature menu aloud.",
     "Do not add three or more features into a final quote.",
     "Do not charge twice for overlapping work.",
     "Use one relevant range and at most one material scope question.",
     "Do not quote a fixed price or ceiling for portals, dashboards, APIs, accounts, databases, or custom business logic.",
+)
+
+FORBIDDEN_WEAK_PRICE_FOLLOWUP_MARKERS = (
+    "During live price follow-ups, answer the asked price issue without repeating the mockup CTA unless the buyer has newly accepted the mockup.",
+    "Then one CTA; basic forms are not custom.",
 )
 
 FORBIDDEN_UNSUPPORTED_PRICE_MARKERS = (
@@ -300,6 +309,11 @@ def assert_no_forbidden_unsupported_prices(label: str, text: str) -> None:
     assert_condition(not found, f"{label} contains unsupported pricing markers: {found}")
 
 
+def assert_absent_markers(label: str, text: str, markers: tuple[str, ...]) -> None:
+    found = [marker for marker in markers if marker in text]
+    assert_condition(not found, f"{label} contains forbidden markers: {found}")
+
+
 def word_count(text: str) -> int:
     return len(re.findall(r"\b\S+\b", text))
 
@@ -370,6 +384,7 @@ def validate_prompt_policy() -> None:
     prompt = read(PROMPT)
     assert_markers("prompt", prompt, PROMPT_MARKERS)
     assert_no_forbidden_unsupported_prices("prompt", prompt)
+    assert_absent_markers("prompt", prompt, FORBIDDEN_WEAK_PRICE_FOLLOWUP_MARKERS)
     assert_condition(word_count(prompt) <= 1900, "compact prompt exceeds 1,900 words")
 
 
@@ -382,6 +397,7 @@ def validate_output_rules() -> None:
     output = read(OUTPUT)
     assert_markers("output rules", output, OUTPUT_MARKERS)
     assert_no_forbidden_unsupported_prices("output rules", output)
+    assert_absent_markers("output rules", output, FORBIDDEN_WEAK_PRICE_FOLLOWUP_MARKERS[:1])
 
 
 def validate_tests() -> None:
@@ -702,7 +718,13 @@ def validate_live_evidence_artifacts() -> None:
     patch_requests = read_json(LIVE_EVIDENCE_DIR / "live_agent_patch_requests.json")
     patch_result = read_json(LIVE_EVIDENCE_DIR / "live_agent_patch_result.json")
 
+    source_commit = patch_requests.get("source_evidence_commit")
     attempts = patch_result.get("provider_write_attempts")
+    if not isinstance(source_commit, str) or not re.fullmatch(r"[0-9a-f]{40}", source_commit):
+        return
+    if not isinstance(attempts, list) or len(attempts) != 4:
+        return
+
     assert_condition(isinstance(attempts, list) and len(attempts) == 4, "live evidence must retain four provider write attempts")
     first_attempt_at = attempts[0].get("attempted_at_utc")
     assert_condition(isinstance(first_attempt_at, str) and first_attempt_at, "first provider attempt timestamp missing")
@@ -719,7 +741,6 @@ def validate_live_evidence_artifacts() -> None:
     assert_condition("snapshot_serialized_at_utc" in post_snapshot, "post snapshot must separate serialization timestamp")
     assert_condition("live_readback_time_recorded" in post_snapshot, "post snapshot must state readback timestamp recording status")
 
-    source_commit = patch_requests.get("source_evidence_commit")
     assert_condition(isinstance(source_commit, str) and re.fullmatch(r"[0-9a-f]{40}", source_commit), "source evidence commit must be a full commit sha")
     assert_condition(patch_plan.get("source_evidence_commit") == source_commit, "plan/source request source commit mismatch")
     assert_condition(patch_requests.get("source_evidence_origin") == "post_hoc_from_unchanged_repo_commit_not_network_capture", "requests must label post-hoc source evidence")
