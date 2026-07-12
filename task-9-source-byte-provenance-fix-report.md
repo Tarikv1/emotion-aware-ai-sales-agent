@@ -8,7 +8,7 @@ The patcher now captures `source_commit` once in `main()`, passes it through the
 
 The validator now requires new Git-blob provenance fields for every non-allowlisted source evidence entry: `source_git_blob_sha256`, `source_git_blob_length`, `upload_sha256`, `upload_length`, `newline_mode`, plus `source_sha256` and `source_byte_length` aliases equal to the upload fields. Old-field-only evidence fails unless it matches the explicit completed-artifact allowlist.
 
-The completed live ELEVENLABS-040 evidence is accepted only through the exact allowlist for source commit `1e8af8510b072d5fe08501af7229abac5208bdf8`, the expected KB source paths, and recorded upload digests/lengths. `update_kb_file::atlas_output_quality_rules.md` reports visible `legacy_worktree_line_endings` mode after verifying HEAD blob equality, recorded worktree upload bytes, CRLF-to-LF normalization, no binary/NUL content, and unchanged plan/request evidence.
+The completed live ELEVENLABS-040 evidence is accepted only through the exact allowlist for source commit `1e8af8510b072d5fe08501af7229abac5208bdf8`, the expected KB source paths, and recorded upload digests/lengths. Both legacy allowlist paths require current HEAD Git blob bytes for the exact source path to equal the recorded source-commit blob before old evidence is accepted. `update_kb_file::atlas_output_quality_rules.md` reports visible `legacy_worktree_line_endings` mode after verifying HEAD blob equality, recorded worktree upload bytes, CRLF-to-LF normalization, no binary/NUL content, and unchanged plan/request evidence.
 
 No provider/API calls were made.
 
@@ -19,10 +19,17 @@ No provider/API calls were made.
 - `scripts/test_apply_elevenlabs_040_detailed_pricing_control.py`
 - `scripts/test_validate_elevenlabs_040_evidence.py`
 
+Follow-up reviewer fix changed only:
+
+- `scripts/validate_elevenlabs_040_detailed_pricing_control.py`
+- `scripts/test_validate_elevenlabs_040_evidence.py`
+- `task-9-source-byte-provenance-fix-report.md`
+
 ## Review Findings Closed
 
 - Mandatory new provenance fields now fail closed for non-allowlisted evidence, including old-field-only evidence whose hash matches the Git blob.
 - Legacy line-ending acceptance is restricted to the exact completed artifact tuple for `atlas_output_quality_rules.md`; the companion old-field Git-blob evidence for `atlas_price_scope_cost_drivers.md` is separately allowlisted by exact tuple.
+- `legacy_git_blob_old_fields` now requires current HEAD Git blob bytes for the exact source path to equal the recorded source-commit blob, matching the CRLF legacy path. Focused tests cover unchanged price KB acceptance and simulated current HEAD blob drift rejection.
 - `source_commit` is captured once and retained in all artifacts; provider upload paths never reread HEAD for source bytes.
 - HEAD drift before the first provider write or between writes aborts before any subsequent provider call.
 - Direct multipart-body tests parse the generated boundary and assert the raw file part bytes equal the Git blob, including newline and NUL-sensitive byte sequences.
@@ -32,7 +39,7 @@ No provider/API calls were made.
 
 - `python -m py_compile scripts\apply_elevenlabs_040_detailed_pricing_control.py scripts\validate_elevenlabs_040_detailed_pricing_control.py scripts\test_apply_elevenlabs_040_detailed_pricing_control.py scripts\test_validate_elevenlabs_040_evidence.py` - pass
 - `python scripts\test_apply_elevenlabs_040_detailed_pricing_control.py` - pass, 12 tests
-- `python scripts\test_validate_elevenlabs_040_evidence.py` - pass, 19 tests
+- `python scripts\test_validate_elevenlabs_040_evidence.py` - pass, 21 tests
 - `python scripts\test_run_elevenlabs_040_tests.py` - pass, 44 tests
 - `python scripts\test_validate_elevenlabs_040_live_test_traces.py` - pass, 12 tests
 - `python scripts\validate_elevenlabs_040_live_test_traces.py --self-test` - pass

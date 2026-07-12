@@ -864,10 +864,13 @@ def validate_legacy_git_blob_old_fields(
     request_id: str,
     source_path: str,
     source_commit: str,
+    current_head: str,
     source_blob_bytes: bytes,
 ) -> None:
     assert_condition(legacy_allowlist_mode(source_evidence, request_id=request_id, source_path=source_path, source_commit=source_commit) == "legacy_git_blob_old_fields", f"{request_id} legacy allowlist mismatch")
     source_text = assert_text_bytes(f"{request_id} legacy", source_blob_bytes)
+    current_head_blob = git_show_file_bytes(current_head, source_path)
+    assert_condition(current_head_blob == source_blob_bytes, f"{request_id} legacy current HEAD blob mismatch")
     assert_condition(source_evidence.get("source_sha256") == sha256_bytes(source_blob_bytes), f"{request_id} legacy git blob sha mismatch")
     assert_condition(source_evidence.get("source_byte_length") == len(source_blob_bytes), f"{request_id} legacy git blob length mismatch")
     markers = KB_REQUEST_SOURCE_MARKERS[Path(source_path).name]
@@ -927,6 +930,7 @@ def validate_source_evidence_for_commit(requests: list[dict[str, Any]], evidence
                         request_id=request_id,
                         source_path=source_path,
                         source_commit=source_commit,
+                        current_head=current_head,
                         source_blob_bytes=source_bytes,
                     )
                     source_text = source_bytes.decode("utf-8")

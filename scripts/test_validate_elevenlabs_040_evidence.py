@@ -316,6 +316,18 @@ class DetailedPricingEvidenceValidationTests(unittest.TestCase):
             summary["legacy_worktree_line_endings_request_ids"],
         )
 
+    def test_current_legacy_price_blob_old_fields_passes_when_head_unchanged(self) -> None:
+        summary = validator.validate_live_evidence_artifacts(require_existing_evidence=True)
+
+        self.assertIn(
+            "update_kb_file::atlas_price_scope_cost_drivers.md",
+            summary["legacy_allowlisted_request_ids"],
+        )
+        self.assertNotIn(
+            "update_kb_file::atlas_price_scope_cost_drivers.md",
+            summary["legacy_worktree_line_endings_request_ids"],
+        )
+
     def test_current_legacy_live_evidence_rejects_tampered_upload_length(self) -> None:
         with tempfile.TemporaryDirectory() as raw_tmp:
             root = Path(raw_tmp)
@@ -356,6 +368,25 @@ class DetailedPricingEvidenceValidationTests(unittest.TestCase):
         source_commit = json.loads((validator.LIVE_EVIDENCE_DIR / "live_agent_patch_plan.json").read_text(encoding="utf-8"))["source_evidence_commit"]
         current_head = validator.git(["rev-parse", "HEAD"]).stdout.strip()
         target_path = validator.OUTPUT_PATH
+        original_git_show = validator.git_show_file_bytes
+        source_blob = validator.git_show_file_bytes(source_commit, target_path)
+
+        def fake_git_show(commit: str, source_path: str, *, repo_root: Path = validator.ROOT) -> bytes:
+            if commit == current_head and source_path == target_path:
+                return source_blob + b"\nchanged\n"
+            return original_git_show(commit, source_path, repo_root=repo_root)
+
+        with tempfile.TemporaryDirectory() as raw_tmp:
+            root = Path(raw_tmp)
+            copy_current_live_evidence(root)
+            with mock.patch.object(validator, "git_show_file_bytes", side_effect=fake_git_show):
+                with self.assertRaisesRegex(AssertionError, "legacy current HEAD blob mismatch"):
+                    validator.validate_live_evidence_artifacts(evidence_dir=root, require_existing_evidence=True)
+
+    def test_legacy_price_blob_old_fields_rejects_changed_current_head_blob(self) -> None:
+        source_commit = json.loads((validator.LIVE_EVIDENCE_DIR / "live_agent_patch_plan.json").read_text(encoding="utf-8"))["source_evidence_commit"]
+        current_head = validator.git(["rev-parse", "HEAD"]).stdout.strip()
+        target_path = validator.PRICE_PATH
         original_git_show = validator.git_show_file_bytes
         source_blob = validator.git_show_file_bytes(source_commit, target_path)
 
