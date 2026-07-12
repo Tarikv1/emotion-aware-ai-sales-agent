@@ -61,3 +61,35 @@ No provider, API, browser, Procedure, simulation, dashboard, or outbound-call wo
 ## Commit
 
 Commit message: `Harden Atlas pricing chain product rules`
+
+## Rejected Revision Remediation
+
+The rejected revision compressed prompt text that the controller still treats as marker-bearing contract text. The prompt was restored to parent `a2eb6ab` for every line except the required care line:
+
+- Parent: `Other care prices require cost questions.`
+- Current: `Other care prices require price/cost/fee questions.`
+
+The restored prompt is `1989` words. The earlier `1900` count above describes the rejected revision; retaining that compression would conflict with the remediation requirement to restore every other prompt line exactly to `a2eb6ab`.
+
+Detailed full-suite hardening remains only in:
+
+- `runtime/providers/elevenlabs_agents/knowledge_base/atlas_web_studio/atlas_price_scope_cost_drivers.md`
+- `runtime/providers/elevenlabs_agents/knowledge_base/atlas_web_studio/atlas_output_quality_rules.md`
+
+Fresh remediation validator results:
+
+- `python scripts\validate_prod_040_callcenteren_conditional_customer_simulation.py` - `PROD-040 CallCenterEN conditional customer simulation validation passed.`
+- `python scripts\validate_prod_039_customer_realism_simulator_hardening.py` - `PROD-039 customer realism simulator hardening validation passed.`
+- `python scripts\validate_prod_038_local_demo_surface_review.py` - `PROD-038 local demo surface review validation passed.`
+- `python scripts\validate_prod_037_local_interactive_trace_demo_surface.py` - `PROD-037 local interactive trace demo surface validation passed.`
+- `python scripts\validate_prod_036_interactive_demo_readiness_review.py` - `PROD-036 interactive demo readiness review validation passed.`
+- `python scripts\validate_prod_034_interactive_post_fix_review.py` - `PROD-034 interactive post-fix review validation passed.`
+- `python scripts\validate_prod_033_interactive_simulator_termination_fix.py` - `PROD-033 interactive simulator termination fix validation passed.`
+- `python scripts\validate_prod_032_interactive_simulation_review.py` - `PROD-032 interactive simulation review validation passed.`
+- `python scripts\validate_prod_031_interactive_grounded_call_simulation.py` - `PROD-031 interactive grounded call simulation validation passed.`
+- `python scripts\validate_prod_030_grounded_demo_review.py` - `PROD-030 grounded demo review validation passed.`
+- Full chain exit: `0`.
+
+The validators rewrote five tracked `PROD-*` generated artifacts while running. Those runner side effects were restored to `HEAD`; no validator, test, runner, criterion, or evidence change is included in this remediation.
+
+Post-restoration `git diff --check` exited `0`; only working-copy LF-to-CRLF warnings were printed.
