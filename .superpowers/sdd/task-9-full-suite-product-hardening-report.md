@@ -127,3 +127,33 @@ An additional pre-commit run of `python scripts\validate_elevenlabs_040_detailed
 The requested chain rewrote six tracked `PROD-*` artifacts. Those runner side effects were restored to `HEAD`; no test, validator, runner, evidence, or provider file is included in this remediation.
 
 After committing the source files, `python scripts\validate_elevenlabs_040_detailed_pricing_control.py` exited `0` with status `pass`, prompt word count `1895`, test count `10`, `active_manifest_changed: false`, and `procedures_changed: false`.
+
+## Multi-Feature Same-Turn Price Gate Follow-Up
+
+Live multi canary `suite_0001kxbns5v1f7yaj5cy1ffr5ttc` showed premature price disclosure after the buyer asked `What's the integrated option? I also need CRM, payments, service-area pages, and a blog.` The total-cost question arrived only on the next buyer turn.
+
+The pricing and output-quality KBs now require both conditions in the current buyer turn before the three-or-more-feature whole-project price lock can disclose a price:
+
+- a request for three or more functional or content features; and
+- an explicit total price, cost, fee, how-much, range, ballpark, or budget ask.
+
+A feature list, `What's the integrated option?`, `I also need ...`, capability question, or scope question alone now requires a simple-versus-integrated/custom explanation without dollars. When a later buyer turn explicitly asks total cost for the already-described scope, the answer is limited to the `$4,000-$6,500` whole-project band and one main driver, with no `$900-$1,500`, alternative bands, or add-on arithmetic.
+
+The compact prompt was not edited; `git diff --exit-code HEAD -- runtime/providers/elevenlabs_agents/prompts/web_design_atlas_sales_prompt.md` exited `0` before validation.
+
+Fresh requested validator results:
+
+- `python scripts\validate_prod_040_callcenteren_conditional_customer_simulation.py` - exit `0`; `PROD-040 CallCenterEN conditional customer simulation validation passed.`
+- `python scripts\validate_prod_039_customer_realism_simulator_hardening.py` - exit `0`; `PROD-039 customer realism simulator hardening validation passed.`
+- `python scripts\validate_prod_038_local_demo_surface_review.py` - exit `0`; `PROD-038 local demo surface review validation passed.`
+- `python scripts\validate_prod_037_local_interactive_trace_demo_surface.py` - exit `0`; `PROD-037 local interactive trace demo surface validation passed.`
+- `python scripts\validate_prod_036_interactive_demo_readiness_review.py` - exit `0`; `PROD-036 interactive demo readiness review validation passed.`
+- `python scripts\validate_prod_034_interactive_post_fix_review.py` - exit `0`; `PROD-034 interactive post-fix review validation passed.`
+- `python scripts\validate_prod_033_interactive_simulator_termination_fix.py` - exit `0`; `PROD-033 interactive simulator termination fix validation passed.`
+- `python scripts\validate_prod_032_interactive_simulation_review.py` - exit `0`; `PROD-032 interactive simulation review validation passed.`
+- `python scripts\validate_prod_031_interactive_grounded_call_simulation.py` - exit `0`; `PROD-031 interactive grounded call simulation validation passed.`
+- `python scripts\validate_prod_030_grounded_demo_review.py` - exit `0`; `PROD-030 grounded demo review validation passed.`
+- Full requested chain exit: `0`.
+- Pre-report `git diff --check` exit: `0`; only LF-to-CRLF working-copy warnings were printed.
+
+The validators rewrote six tracked `PROD-*` artifacts. Those runner side effects were restored to `HEAD`; no prompt, test, validator, runner, evidence, provider, manifest, or tool file is included in this follow-up.

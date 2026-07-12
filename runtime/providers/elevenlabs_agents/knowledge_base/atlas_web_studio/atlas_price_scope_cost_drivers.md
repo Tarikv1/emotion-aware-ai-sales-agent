@@ -58,7 +58,9 @@ After a paid price is quoted, follow-up questions about the range, scope drivers
 - Context unclear: ask whether this is a new website or an addition to an existing site.
 - Capability answers stay confident first. Scoping defines the exact workflow, data, permissions, APIs, security, integrations, and implementation; it is not a refusal or lack of confidence.
 - Do not confuse a new-build feature question with an existing-site add-on quote.
-- If the buyer requests a new site with three or more functional or content features and asks total cost, the first price answer must use only the $4,000-$6,500 whole-project band and one main scope driver. Do not mention $900-$1,500, alternative bands, individual add-ons, or add-on arithmetic in that same answer.
+- The three-or-more-feature whole-project price lock activates only when the current buyer turn itself contains both a request for three or more functional or content features and an explicit total price, cost, fee, how-much, range, ballpark, or budget ask.
+- A feature list, "What's the integrated option?", "I also need ...", or any capability or scope question alone never unlocks price. Explain simple versus integrated/custom without dollars.
+- When a later buyer turn explicitly asks total cost for the already-described scope, quote only the $4,000-$6,500 whole-project band and one main scope driver. Do not mention $900-$1,500, alternative bands, individual add-ons, or add-on arithmetic in that answer.
 - If the buyer later narrows the request to a simple appointment-request form plus an external or embedded payment link and asks for a revised total, treat that as changed scope. The narrower basic-site band may be answered then; do not stack the earlier larger scope onto it.
 
 ## Legacy Compatibility Prohibitions
