@@ -83,6 +83,22 @@ NEGATED_WHOLE_SITE_RE = re.compile(
     r"\b(?:not|is not|isn't|isnt|no)\s+(?:a\s+)?(?:new site(?:\s+package)?|new website(?:\s+package)?|whole[- ]site(?:\s+quote)?|whole[- ]project(?:\s+quote)?|full site(?:\s+quote)?|package(?:\s+quote)?)\b",
     re.IGNORECASE,
 )
+PRICE_QUOTE_RE = re.compile(
+    r"(?:\$\s?\d[\d,]*(?:\s?(?:-|to)\s?\$?\d[\d,]*\+?)?|\bnine hundred\b.*\bfifteen hundred\b|\b900\b.*\b1,500\b)",
+    re.IGNORECASE,
+)
+POST_QUOTE_PRICE_FOLLOWUP_RE = re.compile(
+    r"\b(?:range|budget|driver|drives|cost(?:s)? more|cost(?:s)? less|more or less|higher|lower|scope|scoped|ready|not all|figure that out|new\s+site|add[- ]on|addition|services page|reviews?)\b",
+    re.IGNORECASE,
+)
+MOCKUP_OR_SEND_CTA_RE = re.compile(
+    r"\b(?:mockup|homepage mockup|free homepage|send (?:it|that|the)|send .* over|email|e-mail|best email|where should i send|open to taking a look|take a look|would you be open|next step|reason i called|judge .*before deciding|before deciding anything paid|without committing|without asking you to commit)\b",
+    re.IGNORECASE,
+)
+PRICE_CHAIN_ACCEPTANCE_RE = re.compile(
+    r"\b(?:send it|send that|send the mockup|yes|yeah|sure|okay send|go ahead|take a look)\b",
+    re.IGNORECASE,
+)
 
 def money_range_pattern(start: str, end: str, *, plus_suffix: bool = False) -> re.Pattern[str]:
     suffix = r"\+(?=\D|$)" if plus_suffix else r"\b"
@@ -90,7 +106,7 @@ def money_range_pattern(start: str, end: str, *, plus_suffix: bool = False) -> r
 
 
 APPROVED_VALUE_PATTERNS = {
-    "basic_site": money_range_pattern("900", "1,500"),
+    "basic_site": re.compile(r"(?:\$\s?900\s?%s\s?\$?\s?1,500\b|\bnine hundred\s+to\s+fifteen hundred(?: dollars)?\b)" % RANGE_SEPARATOR_RE, re.IGNORECASE),
     "light_feature": money_range_pattern("1,800", "3,000"),
     "workflow_content": money_range_pattern("2,800", "4,500"),
     "integration_heavy": money_range_pattern("4,000", "6,500"),
@@ -196,6 +212,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--input", type=Path, help="Sanitized capture JSON path")
     parser.add_argument("--mapping", type=Path, help="Optional live_test_mapping.json path. Defaults to input sibling when present.")
     parser.add_argument("--output", type=Path, help="Optional JSON path for the independent validation summary")
+    parser.add_argument("--partial-canary", action="store_true", help="Validate exactly the basic-site canary instead of the full 10-test suite")
     parser.add_argument("--self-test", action="store_true", help="Run built-in validator self-tests")
     args = parser.parse_args()
     if not args.self_test and args.input is None:
@@ -308,6 +325,13 @@ def first_index(events: list[dict[str, Any]], *, role: str, pattern: re.Pattern[
     return None
 
 
+def first_agent_price_quote_index(events: list[dict[str, Any]]) -> int | None:
+    for index, event in enumerate(events):
+        if event["role"] == "agent" and PRICE_QUOTE_RE.search(event["message"]):
+            return index
+    return None
+
+
 def extract_dialogue(run: dict[str, Any], checks: Checks) -> list[dict[str, Any]]:
     raw_events = run.get("agent_responses")
     checks.check(
@@ -363,6 +387,34 @@ def record_common_message_rules(checks: Checks, events: list[dict[str, Any]]) ->
                 FIXED_QUOTE_RE.search(message) is None and CEILING_RE.search(message) is None,
                 f"agent response {index} contains an unsupported fixed quote or ceiling",
             )
+
+
+def validate_post_quote_followup_cta_lock(checks: Checks, events: list[dict[str, Any]]) -> None:
+    first_quote = first_agent_price_quote_index(events)
+    if first_quote is None:
+        checks.check("post_quote_price_followup_no_cta", True, "no quoted price chain found")
+        return
+
+    active_price_chain = False
+    violations: list[str] = []
+    for index, event in enumerate(events[first_quote + 1 :], start=first_quote + 1):
+        message = event["message"]
+        if event["role"] == "user":
+            if PRICE_CHAIN_ACCEPTANCE_RE.search(message) and not POST_QUOTE_PRICE_FOLLOWUP_RE.search(message):
+                active_price_chain = False
+                continue
+            if POST_QUOTE_PRICE_FOLLOWUP_RE.search(message):
+                active_price_chain = True
+            else:
+                active_price_chain = False
+            continue
+        if event["role"] == "agent" and active_price_chain and MOCKUP_OR_SEND_CTA_RE.search(message):
+            violations.append(f"agent response {index} reopened mockup/email/send CTA during active price follow-up")
+    checks.check(
+        "post_quote_price_followup_no_cta",
+        not violations,
+        "; ".join(violations) if violations else "active price follow-ups must not reopen mockup/email/send CTA",
+    )
 
 
 def validate_allowed_labels(checks: Checks, messages: list[str], allowed: set[str]) -> set[str]:
@@ -550,6 +602,7 @@ def validate_run(run: dict[str, Any], *, expected_provider_test_id: str | None =
 
     events = extract_dialogue(run, checks)
     record_common_message_rules(checks, events)
+    validate_post_quote_followup_cta_lock(checks, events)
     first_trigger, first_paid = validate_price_gate(checks, expected, events)
     messages = [event["message"] for event in events if event["role"] == "agent"]
 
@@ -625,6 +678,61 @@ def validate_payload(payload: dict[str, Any], mapping: dict[str, str] | None = N
         "checkpoint_id": CHECKPOINT_ID,
         "agent_id": payload.get("agent_id"),
         "invocation_id": payload.get("invocation_id"),
+        "independent_status": independent_status,
+        "input_test_ids": ids_in_order,
+        "global_failures": global_failures,
+        "provider_labels": {
+            "status_entries": [
+                {
+                    "test_id": test.get("test_id"),
+                    "test_run_id": test.get("test_run_id"),
+                    "status": test.get("provider_status"),
+                }
+                for test in tests
+            ],
+            "condition_result_entries": [
+                {
+                    "test_id": test.get("test_id"),
+                    "test_run_id": test.get("test_run_id"),
+                    "condition_result": test.get("provider_condition_result"),
+                }
+                for test in tests
+            ],
+        },
+        "tests": tests,
+    }
+
+
+def validate_partial_canary_payload(payload: dict[str, Any], mapping: dict[str, str] | None = None) -> dict[str, Any]:
+    global_failures: list[str] = []
+    provider_mapping = dict(mapping or {})
+    provider_mapping.update(provider_test_id_mapping(payload.get("live_test_mapping") if isinstance(payload.get("live_test_mapping"), dict) else None))
+
+    if payload.get("agent_id") != EXPECTED_AGENT_ID:
+        global_failures.append(f"agent_id must be {EXPECTED_AGENT_ID}")
+    if payload.get("checkpoint_id") not in (None, "", CHECKPOINT_ID):
+        global_failures.append(f"checkpoint_id must be {CHECKPOINT_ID}")
+    runs_raw = payload.get("test_runs")
+    if not isinstance(runs_raw, list):
+        global_failures.append("payload.test_runs must be a list")
+        runs_raw = []
+    runs = [run for run in runs_raw if isinstance(run, dict)]
+    if len(runs) != len(runs_raw):
+        global_failures.append("all test_runs entries must be JSON objects")
+    ids_in_order = [str(run.get("test_id", "")).strip() for run in runs]
+    if ids_in_order != ["sim_040_basic_site_direct_price"]:
+        global_failures.append(f"partial canary expects exactly ['sim_040_basic_site_direct_price'], found {ids_in_order}")
+
+    tests = [
+        validate_run(run, expected_provider_test_id=provider_mapping.get(str(run.get("test_id", "")).strip()))
+        for run in runs
+    ]
+    independent_status = "pass" if not global_failures and all(test["independent_status"] == "pass" for test in tests) else "fail"
+    return {
+        "checkpoint_id": CHECKPOINT_ID,
+        "agent_id": payload.get("agent_id"),
+        "invocation_id": payload.get("invocation_id"),
+        "validation_mode": "partial_canary_basic_site",
         "independent_status": independent_status,
         "input_test_ids": ids_in_order,
         "global_failures": global_failures,
@@ -780,6 +888,44 @@ def run_self_test() -> int:
         "sim_040_care_plan_only_when_asked",
     ):
         assert_true(test_status(valid_result, focused_valid) == "pass", f"{focused_valid} valid fixture should pass")
+
+    canary_cta_invalid = validate_partial_canary_payload(
+        make_payload(
+            [
+                make_run(
+                    "sim_040_basic_site_direct_price",
+                    [
+                        "A basic site is usually in the $900-$1,500 range, depending on content.",
+                        "The lower end is when content is ready. The free mockup is a good next step, and I can send it over first.",
+                    ],
+                    [
+                        "What does a basic website cost?",
+                        "What makes it cost more or less?",
+                    ],
+                )
+            ]
+        )
+    )
+    assert_true("post_quote_price_followup_no_cta" in failure_names(canary_cta_invalid, EXPECTED_TEST_ORDER[2]), "partial canary must reject renewed mockup CTA during active price follow-up")
+
+    canary_cta_valid = validate_partial_canary_payload(
+        make_payload(
+            [
+                make_run(
+                    "sim_040_basic_site_direct_price",
+                    [
+                        "A basic site is usually in the $900-$1,500 range, depending on content.",
+                        "The lower end is when copy and photos are ready; it moves higher when we need to write, organize, or polish more pages.",
+                    ],
+                    [
+                        "What does a basic website cost?",
+                        "What makes it cost more or less?",
+                    ],
+                )
+            ]
+        )
+    )
+    assert_true(canary_cta_valid["independent_status"] == "pass", "partial canary should pass direct driver answer without CTA")
 
     raw_provider_id_runs = valid_runs()
     provider_mapping = []
@@ -966,7 +1112,10 @@ def main() -> int:
                 mapping_path = sibling
         if mapping_path is not None:
             mapping_document = read_json(mapping_path)
-        summary = validate_payload(payload, provider_test_id_mapping(mapping_document))
+        if args.partial_canary:
+            summary = validate_partial_canary_payload(payload, provider_test_id_mapping(mapping_document))
+        else:
+            summary = validate_payload(payload, provider_test_id_mapping(mapping_document))
     except ValueError as exc:
         summary = {
             "checkpoint_id": CHECKPOINT_ID,

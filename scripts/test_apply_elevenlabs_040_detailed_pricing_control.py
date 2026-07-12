@@ -3,9 +3,11 @@ from __future__ import annotations
 
 import contextlib
 import io
+import re
 import sys
 import unittest
 from pathlib import Path
+from unittest import mock
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 if str(SCRIPT_DIR) not in sys.path:
@@ -70,6 +72,44 @@ class DetailedPricingPatcherSubsetTests(unittest.TestCase):
         self.assertEqual(plan["planned_kb_write_count"], 1)
         self.assertEqual(plan["planned_agent_patch_count"], 1)
         self.assertEqual(plan["kb_documents_planned_for_in_place_update"], ["atlas_output_quality_rules.md"])
+        self.assertRegex(plan["source_evidence_commit"], r"^[0-9a-f]{40}$")
+        self.assertEqual(plan["source_evidence_commit"], patcher.current_source_evidence_commit())
+        self.assertEqual(plan["source_evidence_origin"], patcher.SOURCE_EVIDENCE_ORIGIN)
+
+    def test_plan_only_request_and_result_payloads_bind_source_commit(self) -> None:
+        requests = patcher.patch_requests(
+            validator.sample_agent_for_patcher(),
+            sample_preflight(),
+            target_kb_doc_names=("atlas_output_quality_rules.md",),
+        )
+        provenance = patcher.source_provenance_fields()
+
+        request_payload = patcher.patch_requests_payload(
+            requests=requests,
+            provider_writes_allowed=False,
+            ledger_summary=None,
+        )
+        result_payload = patcher.patch_result_payload(
+            status="plan_only_missing_confirmation",
+            provider_writes_allowed=False,
+            requests=requests,
+            ledger_summary=None,
+        )
+
+        self.assertEqual(request_payload["source_evidence_commit"], provenance["source_evidence_commit"])
+        self.assertEqual(result_payload["source_evidence_commit"], provenance["source_evidence_commit"])
+        self.assertEqual(request_payload["source_evidence_origin"], provenance["source_evidence_origin"])
+        self.assertEqual(result_payload["source_evidence_origin"], provenance["source_evidence_origin"])
+        self.assertRegex(request_payload["source_evidence_commit"], r"^[0-9a-f]{40}$")
+        self.assertEqual(request_payload["provider_write_attempt_count"], 0)
+        self.assertEqual(result_payload["provider_write_attempts"], [])
+        self.assertEqual(result_payload["planned_provider_write_count"], 2)
+
+    def test_source_guard_rejects_repo_sources_that_differ_from_head(self) -> None:
+        completed = type("Completed", (), {"returncode": 1, "stdout": "", "stderr": "dirty"})()
+        with mock.patch.object(patcher, "git", return_value=completed):
+            with self.assertRaisesRegex(RuntimeError, re.escape("repo source files differ from HEAD")):
+                patcher.assert_repo_sources_match_head(("atlas_output_quality_rules.md",))
 
 
 if __name__ == "__main__":

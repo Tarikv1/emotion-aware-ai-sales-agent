@@ -267,6 +267,7 @@ PATCHER_MARKERS = (
     "plan_only_missing_confirmation",
     '"provider_writes_made": False',
 )
+SOURCE_EVIDENCE_ORIGIN = "repo_head_source_before_provider_write_not_network_capture"
 
 
 def fail(message: str) -> None:
@@ -286,6 +287,13 @@ def read(path: Path) -> str:
 def read_json(path: Path) -> dict[str, Any]:
     payload = json.loads(read(path))
     assert_condition(isinstance(payload, dict), f"{path.relative_to(ROOT).as_posix()} must contain a JSON object")
+    return payload
+
+
+def read_json_anywhere(path: Path) -> dict[str, Any]:
+    assert_condition(path.is_file(), f"Missing file: {path}")
+    payload = json.loads(path.read_text(encoding="utf-8"))
+    assert_condition(isinstance(payload, dict), f"{path} must contain a JSON object")
     return payload
 
 
@@ -708,55 +716,46 @@ def validate_live_patcher() -> None:
     validate_live_patcher_semantics()
 
 
-def validate_live_evidence_artifacts() -> None:
-    if not LIVE_EVIDENCE_DIR.is_dir():
-        return
+def assert_source_commit_shape(value: Any, label: str) -> str:
+    assert_condition(isinstance(value, str) and re.fullmatch(r"[0-9a-f]{40}", value) is not None, f"{label} source evidence commit must be a full 40-character sha")
+    return value
 
-    pre_snapshot = read_json(LIVE_EVIDENCE_DIR / "live_agent_pre_patch_snapshot.json")
-    post_snapshot = read_json(LIVE_EVIDENCE_DIR / "live_agent_post_patch_snapshot.json")
-    patch_plan = read_json(LIVE_EVIDENCE_DIR / "live_agent_patch_plan.json")
-    patch_requests = read_json(LIVE_EVIDENCE_DIR / "live_agent_patch_requests.json")
-    patch_result = read_json(LIVE_EVIDENCE_DIR / "live_agent_patch_result.json")
 
-    source_commit = patch_requests.get("source_evidence_commit")
-    attempts = patch_result.get("provider_write_attempts")
-    if not isinstance(source_commit, str) or not re.fullmatch(r"[0-9a-f]{40}", source_commit):
-        return
-    if not isinstance(attempts, list) or len(attempts) != 4:
-        return
+def assert_provenance_agrees(*payloads: dict[str, Any]) -> tuple[str, str]:
+    commits = [assert_source_commit_shape(payload.get("source_evidence_commit"), label) for label, payload in zip(("plan", "requests", "result"), payloads)]
+    origins = [payload.get("source_evidence_origin") for payload in payloads]
+    assert_condition(len(set(commits)) == 1, "plan/requests/result source evidence commit mismatch")
+    assert_condition(all(origin == SOURCE_EVIDENCE_ORIGIN for origin in origins), "plan/requests/result source evidence origin mismatch")
+    git(["rev-parse", "--verify", f"{commits[0]}^{{commit}}"])
+    return commits[0], str(origins[0])
 
-    assert_condition(isinstance(attempts, list) and len(attempts) == 4, "live evidence must retain four provider write attempts")
-    first_attempt_at = attempts[0].get("attempted_at_utc")
-    assert_condition(isinstance(first_attempt_at, str) and first_attempt_at, "first provider attempt timestamp missing")
 
-    assert_condition("snapshot_serialized_at_utc" in pre_snapshot, "pre snapshot must separate serialization timestamp")
-    assert_condition(pre_snapshot.get("snapshot_serialized_at_utc") == "2026-07-11T19:16:54Z", "pre snapshot must preserve original serialized timestamp")
-    assert_condition(pre_snapshot.get("live_readback_time_recorded") is False, "completed-run pre fetch time must be explicitly marked unrecorded")
-    assert_condition(pre_snapshot.get("live_readback_at_utc") is None, "completed-run pre fetch time must not be invented")
-    ordering = pre_snapshot.get("verified_ordering", {})
-    assert_condition(ordering.get("pre_state_fetched_before_provider_write_attempts") is True, "pre snapshot ordering metadata missing")
-    assert_condition(ordering.get("first_provider_write_attempt_at_utc") == first_attempt_at, "pre snapshot first-attempt timestamp mismatch")
-    assert_condition("control flow" in str(ordering.get("basis", "")).lower(), "pre snapshot ordering basis must cite control flow")
+def assert_provider_counts(payload: dict[str, Any], *, expected_attempts: int, expected_successes: int, label: str) -> None:
+    attempts = payload.get("provider_write_attempts")
+    successes = payload.get("provider_write_successes")
+    assert_condition(isinstance(attempts, list), f"{label} provider_write_attempts must be a list")
+    assert_condition(isinstance(successes, list), f"{label} provider_write_successes must be a list")
+    assert_condition(payload.get("provider_write_attempt_count") == expected_attempts, f"{label} provider write attempt count mismatch")
+    assert_condition(payload.get("provider_write_success_count") == expected_successes, f"{label} provider write success count mismatch")
+    assert_condition(len(attempts) == expected_attempts, f"{label} provider write attempt count malformed")
+    assert_condition(len(successes) == expected_successes, f"{label} provider write success count malformed")
+    if expected_attempts:
+        attempt_ids = [item.get("request_id") for item in attempts if isinstance(item, dict)]
+        success_ids = [item.get("request_id") for item in successes if isinstance(item, dict)]
+        assert_condition(len(attempt_ids) == expected_attempts and all(isinstance(item, str) and item for item in attempt_ids), f"{label} provider write attempt request IDs malformed")
+        assert_condition(len(success_ids) == expected_successes and all(isinstance(item, str) and item for item in success_ids), f"{label} provider write success request IDs malformed")
 
-    assert_condition("snapshot_serialized_at_utc" in post_snapshot, "post snapshot must separate serialization timestamp")
-    assert_condition("live_readback_time_recorded" in post_snapshot, "post snapshot must state readback timestamp recording status")
 
-    assert_condition(isinstance(source_commit, str) and re.fullmatch(r"[0-9a-f]{40}", source_commit), "source evidence commit must be a full commit sha")
-    assert_condition(patch_plan.get("source_evidence_commit") == source_commit, "plan/source request source commit mismatch")
-    assert_condition(patch_requests.get("source_evidence_origin") == "post_hoc_from_unchanged_repo_commit_not_network_capture", "requests must label post-hoc source evidence")
-    assert_condition(patch_plan.get("source_evidence_origin") == "post_hoc_from_unchanged_repo_commit_not_network_capture", "plan must label post-hoc source evidence")
-    current_head = git(["rev-parse", "HEAD"]).stdout.strip()
-    if source_commit != current_head:
-        return
+def expected_request_ids_for_targets(target_names: list[str]) -> list[str]:
+    return [f"update_kb_file::{name}" for name in target_names] + ["patch_agent::prompt_dynamic_variables"]
 
-    requests = patch_requests.get("requests")
-    assert_condition(isinstance(requests, list) and len(requests) == 4, "live patch request artifact must contain four requests")
-    evidence_by_id = patch_plan.get("request_source_evidence_by_id")
-    assert_condition(isinstance(evidence_by_id, dict), "patch plan missing request_source_evidence_by_id")
+
+def validate_current_source_evidence(requests: list[dict[str, Any]], evidence_by_id: dict[str, Any]) -> None:
     for request in requests:
         request_id = request.get("request_id")
+        assert_condition(isinstance(request_id, str) and request_id, "request missing request_id")
         assert_condition(request_id in evidence_by_id, f"patch plan missing source evidence for {request_id}")
-        if str(request_id).startswith("update_kb_file::"):
+        if request_id.startswith("update_kb_file::"):
             source_evidence = request.get("source_evidence")
             assert_condition(isinstance(source_evidence, dict), f"{request_id} missing source_evidence")
             assert_condition(source_evidence == evidence_by_id[request_id], f"{request_id} plan/request source evidence mismatch")
@@ -766,11 +765,88 @@ def validate_live_evidence_artifacts() -> None:
             assert_condition(source_evidence.get("source_sha256") == sha256_bytes(source_bytes), f"{request_id} source sha mismatch")
             assert_condition(source_evidence.get("source_byte_length") == len(source_bytes), f"{request_id} source length mismatch")
             assert_condition(tuple(source_evidence.get("markers", ())) == markers, f"{request_id} marker list mismatch")
-            assert_condition(source_evidence.get("evidence_origin") == "post_hoc_from_unchanged_repo_commit_not_network_capture", f"{request_id} evidence origin mismatch")
+            assert_condition(source_evidence.get("evidence_origin") == SOURCE_EVIDENCE_ORIGIN, f"{request_id} evidence origin mismatch")
         elif request_id == "patch_agent::prompt_dynamic_variables":
             assert_condition(request.get("body_canonical_json_sha256") == canonical_sha256(request.get("body")), "agent request canonical digest mismatch")
             assert_condition(evidence_by_id[request_id].get("body_canonical_json_sha256") == request.get("body_canonical_json_sha256"), "agent plan/request digest mismatch")
-            assert_condition(evidence_by_id[request_id].get("evidence_origin") == "post_hoc_from_sanitized_request_body_not_network_capture", "agent digest origin mismatch")
+            assert_condition(evidence_by_id[request_id].get("evidence_origin") in {"sanitized_request_body_before_provider_write_not_network_capture", "post_hoc_from_sanitized_request_body_not_network_capture"}, "agent digest origin mismatch")
+        else:
+            fail(f"unknown live evidence request id {request_id}")
+
+
+def validate_live_evidence_artifacts(
+    evidence_dir: Path = LIVE_EVIDENCE_DIR,
+    *,
+    require_existing_evidence: bool = False,
+    allow_legacy_missing_provenance_exclusion: bool = False,
+) -> dict[str, Any]:
+    if not evidence_dir.is_dir():
+        assert_condition(not require_existing_evidence, f"Missing live evidence dir: {evidence_dir}")
+        return {"status": "absent"}
+
+    pre_snapshot = read_json_anywhere(evidence_dir / "live_agent_pre_patch_snapshot.json")
+    post_snapshot = read_json_anywhere(evidence_dir / "live_agent_post_patch_snapshot.json")
+    patch_plan = read_json_anywhere(evidence_dir / "live_agent_patch_plan.json")
+    patch_requests = read_json_anywhere(evidence_dir / "live_agent_patch_requests.json")
+    patch_result = read_json_anywhere(evidence_dir / "live_agent_patch_result.json")
+
+    if allow_legacy_missing_provenance_exclusion and not any(
+        payload.get("source_evidence_commit") for payload in (patch_plan, patch_requests, patch_result)
+    ):
+        assert_condition(patch_plan.get("checkpoint_id") == CHECKPOINT_ID, "legacy live evidence checkpoint mismatch")
+        assert_condition(patch_requests.get("checkpoint_id") == CHECKPOINT_ID, "legacy live evidence requests checkpoint mismatch")
+        assert_condition(patch_result.get("checkpoint_id") == CHECKPOINT_ID, "legacy live evidence result checkpoint mismatch")
+        return {"status": "excluded_legacy_missing_source_provenance"}
+
+    source_commit, _origin = assert_provenance_agrees(patch_plan, patch_requests, patch_result)
+    requests = patch_requests.get("requests")
+    assert_condition(isinstance(requests, list) and all(isinstance(request, dict) for request in requests), "live patch request artifact must contain request objects")
+    target_names = patch_plan.get("kb_documents_planned_for_in_place_update")
+    assert_condition(isinstance(target_names, list) and all(isinstance(name, str) for name in target_names), "patch plan must declare selected KB targets")
+    expected_ids = expected_request_ids_for_targets(target_names)
+    request_ids = [request.get("request_id") for request in requests]
+    assert_condition(request_ids == expected_ids, f"live patch requests must match selected guarded subset: expected {expected_ids}, got {request_ids}")
+    expected_count = len(expected_ids)
+    for payload_label, payload in (("plan", patch_plan), ("requests", patch_requests), ("result", patch_result)):
+        assert_condition(payload.get("planned_provider_write_count") == expected_count, f"{payload_label} planned provider write count mismatch")
+        assert_condition(payload.get("planned_kb_write_count") == len(target_names), f"{payload_label} planned KB write count mismatch")
+        assert_condition(payload.get("planned_agent_patch_count") == 1, f"{payload_label} planned agent patch count mismatch")
+    evidence_by_id = patch_plan.get("request_source_evidence_by_id")
+    assert_condition(isinstance(evidence_by_id, dict), "patch plan missing request_source_evidence_by_id")
+
+    assert_condition("snapshot_serialized_at_utc" in pre_snapshot, "pre snapshot must separate serialization timestamp")
+    assert_condition("snapshot_serialized_at_utc" in post_snapshot, "post snapshot must separate serialization timestamp")
+    assert_condition("live_readback_time_recorded" in post_snapshot, "post snapshot must state readback timestamp recording status")
+
+    current_head = git(["rev-parse", "HEAD"]).stdout.strip()
+    provider_writes_allowed = patch_requests.get("provider_writes_allowed")
+    status = patch_result.get("status")
+    if source_commit != current_head:
+        if status == "passed":
+            assert_provider_counts(patch_result, expected_attempts=expected_count, expected_successes=expected_count, label="historical result")
+        else:
+            assert_provider_counts(patch_result, expected_attempts=0, expected_successes=0, label="historical result")
+        return {"status": "excluded_valid_historical_source_commit", "source_evidence_commit": source_commit}
+
+    validate_current_source_evidence(requests, evidence_by_id)
+    if provider_writes_allowed is False and status == "plan_only_missing_confirmation":
+        assert_provider_counts(patch_requests, expected_attempts=0, expected_successes=0, label="plan-only requests")
+        assert_provider_counts(patch_result, expected_attempts=0, expected_successes=0, label="plan-only result")
+        assert_condition(patch_result.get("provider_writes_made") is False, "plan-only result must report zero writes made")
+        assert_condition(post_snapshot.get("phase") == "not_written", "plan-only post snapshot must be not_written")
+    elif provider_writes_allowed is True and status == "passed":
+        assert_provider_counts(patch_requests, expected_attempts=expected_count, expected_successes=expected_count, label="live requests")
+        assert_provider_counts(patch_result, expected_attempts=expected_count, expected_successes=expected_count, label="live result")
+        attempt_ids = [item.get("request_id") for item in patch_result["provider_write_attempts"]]
+        success_ids = [item.get("request_id") for item in patch_result["provider_write_successes"]]
+        assert_condition(attempt_ids == expected_ids, f"live result attempt IDs mismatch: {attempt_ids}")
+        assert_condition(success_ids == expected_ids, f"live result success IDs mismatch: {success_ids}")
+        assert_condition(post_snapshot.get("phase") == "post_patch", "live-passed post snapshot must be post_patch")
+        assert_condition(post_snapshot.get("live_readback_time_recorded") is True, "live-passed post readback timestamp must be recorded")
+        assert_condition(isinstance(post_snapshot.get("live_readback_at_utc"), str) and post_snapshot.get("live_readback_at_utc"), "live-passed post readback timestamp missing")
+    else:
+        fail(f"unsupported live evidence mode: provider_writes_allowed={provider_writes_allowed!r}, status={status!r}")
+    return {"status": "validated_current_source_commit", "source_evidence_commit": source_commit}
 
 
 def main() -> int:
@@ -780,7 +856,7 @@ def main() -> int:
         validate_output_rules()
         validate_tests()
         validate_live_patcher()
-        validate_live_evidence_artifacts()
+        live_evidence_validation = validate_live_evidence_artifacts(allow_legacy_missing_provenance_exclusion=True)
         validate_dynamic_defaults()
         validate_change_boundaries()
         git_diff_check(CHECKPOINT_BASE_REF, *CHECKPOINT_DIFF_PATHS)
@@ -797,6 +873,7 @@ def main() -> int:
                 "test_count": len(EXPECTED_TEST_IDS),
                 "active_manifest_changed": False,
                 "procedures_changed": False,
+                "live_evidence_validation": live_evidence_validation,
             },
             indent=2,
         )

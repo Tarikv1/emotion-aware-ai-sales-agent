@@ -13,6 +13,7 @@ import hashlib
 import json
 import os
 import re
+import subprocess
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
@@ -44,6 +45,7 @@ CHECKPOINT_ID = "ELEVENLABS-040-detailed-pricing-control"
 AGENT_ID = "agent_7801kt0g32zxf4f8x5zkykj7syty"
 AGENT_NAME = "web design"
 CONFIRM_TOKEN = "confirm-provider-write"
+SOURCE_EVIDENCE_ORIGIN = "repo_head_source_before_provider_write_not_network_capture"
 TARGET_LLM = {
     "llm": "gpt-5.5",
     "temperature": 0.1,
@@ -281,7 +283,51 @@ def canonical_sha256(value: Any) -> str:
     return hashlib.sha256(encoded.encode("ascii")).hexdigest()
 
 
-def source_file_evidence(source_path: Path, *, evidence_origin: str = "local_source_before_provider_write_not_network_capture") -> dict[str, Any]:
+def git(args: list[str]) -> subprocess.CompletedProcess[str]:
+    return subprocess.run(
+        ["git", *args],
+        cwd=ROOT,
+        text=True,
+        capture_output=True,
+        check=False,
+    )
+
+
+def current_source_evidence_commit() -> str:
+    completed = git(["rev-parse", "HEAD"])
+    if completed.returncode != 0:
+        raise RuntimeError(completed.stderr.strip() or "could not resolve git HEAD")
+    commit = completed.stdout.strip()
+    if not re.fullmatch(r"[0-9a-f]{40}", commit):
+        raise RuntimeError(f"git HEAD is not a full 40-character commit: {commit!r}")
+    return commit
+
+
+def source_provenance_fields() -> dict[str, str]:
+    return {
+        "source_evidence_commit": current_source_evidence_commit(),
+        "source_evidence_origin": SOURCE_EVIDENCE_ORIGIN,
+    }
+
+
+def repo_source_paths(target_kb_doc_names: tuple[str, ...]) -> list[str]:
+    return [
+        str(PROMPT_PATH.relative_to(ROOT)).replace("\\", "/"),
+        *[
+            str((KB_ROOT / name).relative_to(ROOT)).replace("\\", "/")
+            for name in target_kb_doc_names
+        ],
+    ]
+
+
+def assert_repo_sources_match_head(target_kb_doc_names: tuple[str, ...]) -> None:
+    paths = repo_source_paths(target_kb_doc_names)
+    completed = git(["diff", "--quiet", "HEAD", "--", *paths])
+    if completed.returncode != 0:
+        raise RuntimeError(f"repo source files differ from HEAD; refusing provider evidence for {paths}")
+
+
+def source_file_evidence(source_path: Path, *, evidence_origin: str = SOURCE_EVIDENCE_ORIGIN) -> dict[str, Any]:
     source_text = source_path.read_text(encoding="utf-8")
     markers = KB_REQUEST_SOURCE_MARKERS[source_path.name]
     missing = [marker for marker in markers if marker not in source_text]
@@ -363,6 +409,7 @@ def plan_payload(
         "agent_id": AGENT_ID,
         "agent_name": AGENT_NAME,
         "status": "planned",
+        **source_provenance_fields(),
         "authorization_confirmed": provider_writes_allowed,
         "provider_writes_allowed": provider_writes_allowed,
         **ledger,
@@ -390,6 +437,58 @@ def plan_payload(
         ],
         "preflight": sanitize(preflight),
     }
+
+
+def empty_ledger_summary() -> dict[str, Any]:
+    return {
+        "provider_writes_made": False,
+        "provider_write_attempt_count": 0,
+        "provider_write_success_count": 0,
+        "provider_write_attempts": [],
+        "provider_write_successes": [],
+    }
+
+
+def patch_requests_payload(
+    *,
+    requests: list[dict[str, Any]],
+    provider_writes_allowed: bool,
+    ledger_summary: dict[str, Any] | None,
+) -> dict[str, Any]:
+    ledger = ledger_summary or empty_ledger_summary()
+    return {
+        "checkpoint_id": CHECKPOINT_ID,
+        **source_provenance_fields(),
+        "provider_writes_allowed": provider_writes_allowed,
+        **ledger,
+        **planned_write_counts(requests),
+        "requests": requests,
+    }
+
+
+def patch_result_payload(
+    *,
+    status: str,
+    provider_writes_allowed: bool,
+    requests: list[dict[str, Any]],
+    ledger_summary: dict[str, Any] | None,
+    error: str | None = None,
+) -> dict[str, Any]:
+    payload: dict[str, Any] = {
+        "checkpoint_id": CHECKPOINT_ID,
+        **source_provenance_fields(),
+        "status": status,
+        "provider_writes_allowed": provider_writes_allowed,
+        **(ledger_summary or empty_ledger_summary()),
+        **planned_write_counts(requests),
+        "simulations_run": False,
+        "outbound_calls_made": False,
+    }
+    if error is not None:
+        payload["error"] = error
+    if status == "plan_only_missing_confirmation":
+        payload["required_confirmation"] = CONFIRM_TOKEN
+    return payload
 
 
 def merged_dynamic_variables(agent: dict[str, Any]) -> dict[str, Any]:
@@ -725,30 +824,20 @@ def write_plan_only_outputs(
     )
     write_json(
         OUT_DIR / "live_agent_patch_requests.json",
-        {
-            "checkpoint_id": CHECKPOINT_ID,
-            "provider_writes_allowed": False,
-            "provider_writes_made": False,
-            "provider_write_attempt_count": 0,
-            "provider_write_success_count": 0,
-            **planned_write_counts(requests),
-            "requests": requests,
-        },
+        patch_requests_payload(
+            requests=requests,
+            provider_writes_allowed=False,
+            ledger_summary=None,
+        ),
     )
     write_json(
         OUT_DIR / "live_agent_patch_result.json",
-        {
-            "checkpoint_id": CHECKPOINT_ID,
-            "status": status,
-            "provider_writes_made": False,
-            "provider_write_attempt_count": 0,
-            "provider_write_success_count": 0,
-            "provider_write_attempts": [],
-            "provider_write_successes": [],
-            "required_confirmation": CONFIRM_TOKEN,
-            "simulations_run": False,
-            "outbound_calls_made": False,
-        },
+        patch_result_payload(
+            status=status,
+            provider_writes_allowed=False,
+            requests=requests,
+            ledger_summary=None,
+        ),
     )
     write_json(
         OUT_DIR / "live_agent_post_patch_snapshot.json",
@@ -833,6 +922,11 @@ def main(argv: list[str] | None = None) -> int:
     except ValueError as exc:
         print(f"error: {exc}", file=sys.stderr)
         return 2
+    try:
+        assert_repo_sources_match_head(target_kb_doc_names)
+    except RuntimeError as exc:
+        print(f"error: {safe_evidence_error_message(exc)}", file=sys.stderr)
+        return 2
     api_key = os.environ.get(API_KEY_ENV_VAR, "").strip()
     if not api_key:
         print(f"error: {API_KEY_ENV_VAR} is required for fresh live GET preflight", file=sys.stderr)
@@ -900,13 +994,11 @@ def main(argv: list[str] | None = None) -> int:
         )
         write_json(
             OUT_DIR / "live_agent_patch_requests.json",
-            {
-                "checkpoint_id": CHECKPOINT_ID,
-                "provider_writes_allowed": True,
-                **ledger.summary(),
-                **planned_write_counts(requests),
-                "requests": requests,
-            },
+            patch_requests_payload(
+                requests=requests,
+                provider_writes_allowed=True,
+                ledger_summary=ledger.summary(),
+            ),
         )
         write_json(
             OUT_DIR / "live_agent_post_patch_snapshot.json",
@@ -917,19 +1009,27 @@ def main(argv: list[str] | None = None) -> int:
         write_json(OUT_DIR / "unrelated_tool_fingerprint_after.json", {"checkpoint_id": CHECKPOINT_ID, "fingerprint": protected_fingerprint(post_agent, post_preflight)})
         write_json(
             OUT_DIR / "live_agent_patch_result.json",
-            {
-                "checkpoint_id": CHECKPOINT_ID,
-                "status": "passed",
-                **ledger.summary(),
-                "simulations_run": False,
-                "outbound_calls_made": False,
-            },
+            patch_result_payload(
+                status="passed",
+                provider_writes_allowed=True,
+                requests=requests,
+                ledger_summary=ledger.summary(),
+            ),
         )
         print(json.dumps({"status": "passed", "provider_writes_made": True}, indent=2))
         return 0
     except Exception as exc:
         error = safe_evidence_error_message(exc)
-        write_json(OUT_DIR / "live_agent_patch_result.json", ledger.failure_payload(checkpoint_id=CHECKPOINT_ID, error=error))
+        write_json(
+            OUT_DIR / "live_agent_patch_result.json",
+            patch_result_payload(
+                status="failed",
+                provider_writes_allowed=args.confirm_provider_write == CONFIRM_TOKEN,
+                requests=requests if "requests" in locals() else [],
+                ledger_summary=ledger.summary(),
+                error=error,
+            ),
+        )
         write_json(
             OUT_DIR / "live_agent_post_patch_snapshot.json",
             snapshot_payload(phase="failed", agent=before_agent, preflight=before_preflight, live_readback_at_utc=before_live_readback_at_utc, error=error),

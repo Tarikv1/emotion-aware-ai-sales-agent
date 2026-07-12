@@ -269,3 +269,79 @@ warning: in the working copy of 'scripts/validate_elevenlabs_040_detailed_pricin
 - The prompt is exactly at the compactness cap: `1900` words in the older validators and `1900`/`1899` depending on which validator tokenization path is used during intermediate checks. There is effectively no spare word budget.
 - This worktree still contains pre-existing modified and untracked live evidence under `research/experiments/generated/ELEVENLABS-040-detailed-pricing-control/`. Those files were not edited.
 - The 040 validator now intentionally skips strict full-run live-evidence assertions when the local evidence bundle is partial or missing a recorded source commit, so the offline chain is not blocked by unrelated dirty evidence.
+
+## Fix Wave - Source-Bound Evidence And Canary CTA Guard
+
+No provider, dashboard, simulation, or outbound API calls were made. Existing live evidence files were not edited or relabeled.
+
+Changes:
+
+- Bound the 040 patcher plan, request, and result artifacts to a full 40-character `git HEAD` `source_evidence_commit` plus `source_evidence_origin`.
+- Added a patcher source guard that refuses provider evidence if the repo prompt or selected KB source files differ from `HEAD`.
+- Replaced 040 live-evidence fail-open returns with strict provenance/count/source-hash validation for temp fixtures and new fixed patcher output.
+- Kept the default 040 offline validator usable with the current malformed legacy bundle by reporting `excluded_legacy_missing_source_provenance`.
+- Added explicit partial-canary trace validation for exactly `sim_040_basic_site_direct_price` without weakening the default exact-10 suite path.
+- Added `post_quote_price_followup_no_cta` to catch mockup/email/send transitions during active post-quote range, budget, driver, scope, and new-vs-add-on follow-ups.
+
+Validation:
+
+```text
+python scripts/validate_elevenlabs_040_detailed_pricing_control.py
+PASS - status=pass; live_evidence_validation.status=excluded_legacy_missing_source_provenance
+
+python scripts/validate_elevenlabs_039_end_call_edge_case_hardening.py
+PASS
+
+python scripts/validate_elevenlabs_038_end_call_terminal_control.py
+PASS
+
+python scripts/validate_elevenlabs_037_confident_capability_control.py
+PASS
+
+python scripts/validate_elevenlabs_036_natural_sales_scenarios_tests.py
+PASS
+
+python scripts/validate_elevenlabs_034_human_phone_naturalness.py
+PASS
+
+python scripts/validate_elevenlabs_033_email_confirmation_precision.py
+PASS
+
+python scripts/validate_elevenlabs_032_final_runtime_polish.py
+PASS
+
+python scripts/validate_elevenlabs_031_runtime_elite_hardening.py
+PASS
+
+python scripts/validate_elevenlabs_030_live_transcript_failure_hardening.py
+PASS
+
+python scripts/validate_elevenlabs_040_live_test_traces.py --self-test
+PASS - self-test: pass
+
+python scripts/test_run_elevenlabs_040_tests.py
+PASS - Ran 32 tests
+
+python scripts/test_apply_elevenlabs_040_detailed_pricing_control.py
+PASS - Ran 4 tests
+
+python scripts/test_validate_elevenlabs_040_evidence.py
+PASS - Ran 5 tests
+
+python scripts/test_validate_elevenlabs_040_live_test_traces.py
+PASS - Ran 4 tests
+
+python scripts/validate_elevenlabs_040_live_test_traces.py --partial-canary --input research/experiments/generated/ELEVENLABS-040-detailed-pricing-control/live_test_canary_post_fix_capture.json
+EXPECTED FAIL - independent_status=fail; failure=post_quote_price_followup_no_cta
+
+python -m py_compile scripts/validate_elevenlabs_040_detailed_pricing_control.py scripts/validate_elevenlabs_040_live_test_traces.py scripts/run_elevenlabs_040_tests.py scripts/apply_elevenlabs_040_detailed_pricing_control.py scripts/capture_elevenlabs_040_test_invocation.py scripts/test_run_elevenlabs_040_tests.py scripts/test_apply_elevenlabs_040_detailed_pricing_control.py scripts/test_validate_elevenlabs_040_evidence.py scripts/test_validate_elevenlabs_040_live_test_traces.py
+PASS - no output
+
+git diff --check
+PASS - CRLF normalization warnings only
+```
+
+Concerns:
+
+- The existing `live_test_canary_post_fix_capture.json` remains a failed live-behavior artifact. It now fails specifically for `post_quote_price_followup_no_cta`; the provider label remains `passed` and was not relabeled.
+- The current live patch evidence bundle is malformed legacy output with no source provenance. The strict validator rejects that shape in temp-fixture tests; the main offline validator explicitly reports the legacy exclusion until a fixed plan-only or live artifact is produced by the revised patcher.
