@@ -31,33 +31,48 @@ That is a direct mockup/pricing answer, not a renewed CTA.
 
 ## Test-First Change
 
-Added a regression in `scripts/test_validate_elevenlabs_040_live_test_traces.py` that validates the real `live_test_care_canary_pass_capture.json` fixture with `live_test_mapping.json` and requires `sim_040_care_plan_only_when_asked` to pass independently.
+Replaced the live-capture-backed unit regression with deterministic synthetic dialogue tests. Exact coverage:
 
-Preserved the existing renewed-CTA failure test:
-
+- `test_partial_canary_allows_neutral_mockup_reference_when_buyer_mentioned_mockup`
+- `test_partial_canary_fails_actionable_mockup_offer_when_buyer_mentioned_mockup`
+- `test_partial_canary_fails_unsolicited_mockup_reference_during_price_followup`
+- `test_partial_canary_allows_neutral_without_committing_language`
 - `test_partial_canary_fails_renewed_mockup_cta_during_active_price_followup`
+
+The actionable-offer test covers both required examples:
+
+- `I can put together a free mockup for you first.`
+- `We could start with the mockup first and go from there.`
+
+Red run before the context-aware parser change:
+
+- `Ran 16 tests`
+- four failures: both actionable offer examples incorrectly passed, the unsolicited mockup reference incorrectly passed, and neutral `without committing` language incorrectly failed
 
 ## Parser Change
 
-Narrowed the post-quote CTA detector from a broad mockup noun match to actionable follow-up language only.
+Made post-quote CTA detection context-aware while keeping CTA actionability independent of buyer wording.
 
 Changed logic:
 
-- replaced `MOCKUP_OR_SEND_CTA_RE`
-- added `ACTIONABLE_POST_QUOTE_CTA_RE`
-- removed standalone mockup-only triggers such as `mockup`, `homepage mockup`, and `free homepage`
-- kept actionable CTA markers such as `send`, `email`, `best email`, `where should i send`, `take a look`, `would you be open`, `next step`, and the existing renewed-transition phrases
+- added `MOCKUP_REFERENCE_RE` for explicit buyer/agent mockup references
+- retained CTA-shaped send/email/next-step detection without treating domain phrases such as `site to send or sync` as CTA language
+- added mockup-offer detection for `put together`/`create`/`make`/`prepare`/`build` and `start with` forms
+- tracked whether the immediately preceding active buyer price-followup mentioned the mockup
+- removed standalone `without committing` from unconditional CTA detection
 
 Net effect:
 
-- neutral references to the mockup inside a price answer now pass
-- renewed mockup/send/email/next-step CTAs during an active price follow-up still fail
+- actionable CTA language fails during an active price follow-up regardless of buyer wording
+- any agent mockup mention fails when the immediately preceding buyer price-followup did not mention the mockup
+- a neutral mockup reference passes only when that buyer turn explicitly mentioned the mockup and the response contains no actionable CTA language
+- neutral `You can compare the options without committing to anything today` language passes
 
 ## Green Verification
 
 `python scripts/test_validate_elevenlabs_040_live_test_traces.py`
 
-- `Ran 13 tests`
+- `Ran 16 tests`
 - `OK`
 
 `python scripts/validate_elevenlabs_040_live_test_traces.py --input research/experiments/generated/ELEVENLABS-040-detailed-pricing-control/live_test_care_canary_pass_capture.json --output research/experiments/generated/ELEVENLABS-040-detailed-pricing-control/live_test_care_canary_pass_independent.json --partial-test-id sim_040_care_plan_only_when_asked`
@@ -68,7 +83,8 @@ Net effect:
 `python scripts/validate_elevenlabs_040_detailed_pricing_control.py`
 
 - `status: pass`
-- `live_evidence_validation.status: validated_current_source_commit`
+- `live_evidence_validation.status: excluded_valid_historical_source_commit`
+- `source_evidence_commit: 87b90f5cd9f4a8b402940a1ee4615e1d7de22936`
 
 `git diff --check`
 
@@ -76,10 +92,11 @@ Net effect:
 
 ## Self-Review
 
-- The fix is narrow: only the trace validator CTA parser changed, not the broader 040 checkpoint contract.
-- The renewed CTA failure coverage is still present and unchanged at the test level.
-- The new regression uses the real failing live capture plus mapping, which is the closest proof that the false positive is removed without weakening the care-plan rules.
-- Risk remains limited to phrases that rely entirely on standalone mockup nouns without any actionable CTA wording. That tradeoff is intentional because the prior behavior was overbroad and contradicted the observed provider-passed trace.
+- The fix remains confined to the trace validator state machine and its unit tests; the broader 040 contract is unchanged.
+- Deterministic tests now separate buyer context from response actionability and cover both sides of the neutral-reference exception.
+- The real care capture is verified only through the separate CLI command, not loaded as a unit-test fixture.
+- Existing current-capture coverage caught an overbroad intermediate `send` matcher against CRM domain language; the final matcher limits send/email detection to CTA-shaped phrases.
+- The failure detail remains generic (`reopened mockup/email/send CTA`) for both actionable CTAs and unsolicited mockup references. This preserves the existing assertion contract while the boolean result is semantically correct.
 
 ## Commit
 

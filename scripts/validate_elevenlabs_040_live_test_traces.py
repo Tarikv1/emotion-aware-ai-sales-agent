@@ -92,8 +92,9 @@ POST_QUOTE_PRICE_FOLLOWUP_RE = re.compile(
     r"\b(?:range|budget|driver|drives|cost(?:s)? more|cost(?:s)? less|more or less|higher|lower|scope|scoped|ready|not all|figure that out|new\s+site|add[- ]on|addition|services page|reviews?)\b",
     re.IGNORECASE,
 )
+MOCKUP_REFERENCE_RE = re.compile(r"\bmock[- ]?up\b", re.IGNORECASE)
 ACTIONABLE_POST_QUOTE_CTA_RE = re.compile(
-    r"\b(?:send (?:it|that|the)|send .* over|email|e-mail|best email|where should i send|open to taking a look|take a look|would you be open|next step|reason i called|judge .*before deciding|before deciding anything paid|without committing|without asking you to commit)\b",
+    r"(?:\b(?:send (?:it|that|the)|send .* over|email (?:it|that|the)|best email|where should i send|open to taking a look|take a look|would you be open|next step|reason i called|judge .*before deciding|before deciding anything paid|without asking you to commit)\b|\b(?:i|we)\s+(?:can|could|would|will)\s+(?:send|email)\b|\b(?:i|we)\s+(?:can|could|would|will)\s+(?:put together|create|make|prepare|build)\b[^.?!]*\bmock[- ]?up\b|\b(?:i|we)\s+(?:can|could|would|will)\s+start\s+with\s+(?:the\s+)?(?:free\s+)?mock[- ]?up\b)",
     re.IGNORECASE,
 )
 PRICE_CHAIN_ACCEPTANCE_RE = re.compile(
@@ -421,20 +422,27 @@ def validate_post_quote_followup_cta_lock(checks: Checks, events: list[dict[str,
         return
 
     active_price_chain = False
+    buyer_mentioned_mockup = False
     violations: list[str] = []
     for index, event in enumerate(events[first_quote + 1 :], start=first_quote + 1):
         message = event["message"]
         if event["role"] == "user":
             if PRICE_CHAIN_ACCEPTANCE_RE.search(message) and not POST_QUOTE_PRICE_FOLLOWUP_RE.search(message):
                 active_price_chain = False
+                buyer_mentioned_mockup = False
                 continue
             if POST_QUOTE_PRICE_FOLLOWUP_RE.search(message):
                 active_price_chain = True
+                buyer_mentioned_mockup = MOCKUP_REFERENCE_RE.search(message) is not None
             else:
                 active_price_chain = False
+                buyer_mentioned_mockup = False
             continue
-        if event["role"] == "agent" and active_price_chain and ACTIONABLE_POST_QUOTE_CTA_RE.search(message):
-            violations.append(f"agent response {index} reopened mockup/email/send CTA during active price follow-up")
+        if event["role"] == "agent" and active_price_chain:
+            actionable_cta = ACTIONABLE_POST_QUOTE_CTA_RE.search(message) is not None
+            unsolicited_mockup = MOCKUP_REFERENCE_RE.search(message) is not None and not buyer_mentioned_mockup
+            if actionable_cta or unsolicited_mockup:
+                violations.append(f"agent response {index} reopened mockup/email/send CTA during active price follow-up")
     checks.check(
         "post_quote_price_followup_no_cta",
         not violations,

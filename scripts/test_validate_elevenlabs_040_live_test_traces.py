@@ -87,16 +87,75 @@ class DetailedPricingTraceCanaryTests(unittest.TestCase):
 
         self.assertEqual(result["independent_status"], "pass")
 
-    def test_live_care_capture_allows_neutral_mockup_reference_during_price_followup(self) -> None:
-        root = SCRIPT_DIR.parent / "research" / "experiments" / "generated" / traces.CHECKPOINT_ID
-        path = root / "live_test_care_canary_pass_capture.json"
-        payload = traces.capture_payload(traces.read_json(path))
-        mapping = traces.provider_test_id_mapping(traces.read_json(root / "live_test_mapping.json"))
+    def test_partial_canary_allows_neutral_mockup_reference_when_buyer_mentioned_mockup(self) -> None:
+        result = traces.validate_partial_canary_payload(
+            canary_payload(
+                [
+                    "A basic site is usually in the $900-$1,500 range, depending on content.",
+                    "The mockup itself does not commit you to the site or ongoing care.",
+                ],
+                [
+                    "What does a basic website cost?",
+                    "If I like the mockup, what makes the site cost more or less?",
+                ],
+            )
+        )
 
-        result = traces.validate_partial_test_payload(
-            payload,
-            partial_test_id="sim_040_care_plan_only_when_asked",
-            mapping=mapping,
+        self.assertEqual(result["independent_status"], "pass")
+
+    def test_partial_canary_fails_actionable_mockup_offer_when_buyer_mentioned_mockup(self) -> None:
+        offers = [
+            "I can put together a free mockup for you first.",
+            "We could start with the mockup first and go from there.",
+        ]
+
+        for offer in offers:
+            with self.subTest(offer=offer):
+                result = traces.validate_partial_canary_payload(
+                    canary_payload(
+                        [
+                            "A basic site is usually in the $900-$1,500 range, depending on content.",
+                            offer,
+                        ],
+                        [
+                            "What does a basic website cost?",
+                            "If I like the mockup, what makes the site cost more or less?",
+                        ],
+                    )
+                )
+
+                self.assertEqual(result["independent_status"], "fail")
+                self.assertIn("post_quote_price_followup_no_cta", canary_failure_names(result))
+
+    def test_partial_canary_fails_unsolicited_mockup_reference_during_price_followup(self) -> None:
+        result = traces.validate_partial_canary_payload(
+            canary_payload(
+                [
+                    "A basic site is usually in the $900-$1,500 range, depending on content.",
+                    "The mockup itself does not commit you to the site or ongoing care.",
+                ],
+                [
+                    "What does a basic website cost?",
+                    "What makes the site cost more or less?",
+                ],
+            )
+        )
+
+        self.assertEqual(result["independent_status"], "fail")
+        self.assertIn("post_quote_price_followup_no_cta", canary_failure_names(result))
+
+    def test_partial_canary_allows_neutral_without_committing_language(self) -> None:
+        result = traces.validate_partial_canary_payload(
+            canary_payload(
+                [
+                    "A basic site is usually in the $900-$1,500 range, depending on content.",
+                    "You can compare the options without committing to anything today.",
+                ],
+                [
+                    "What does a basic website cost?",
+                    "What makes the site cost more or less?",
+                ],
+            )
         )
 
         self.assertEqual(result["independent_status"], "pass")
