@@ -173,17 +173,18 @@ def has_actionable_post_quote_cta(message: str) -> bool:
 
 
 def unsolicited_cta_messages(events: list[dict[str, Any]], *, start_index: int = 0) -> list[str]:
-    latest_user_message = ""
+    mockup_send_authorized = False
     violations: list[str] = []
     for index, event in enumerate(events):
         if event["role"] == "user":
-            latest_user_message = event["message"]
+            if MOCKUP_SEND_SIGNAL_RE.search(event["message"]):
+                mockup_send_authorized = True
             continue
         if (
             index >= start_index
             and event["role"] == "agent"
             and has_actionable_post_quote_cta(event["message"])
-            and MOCKUP_SEND_SIGNAL_RE.search(latest_user_message) is None
+            and not mockup_send_authorized
         ):
             violations.append(event["message"])
     return violations

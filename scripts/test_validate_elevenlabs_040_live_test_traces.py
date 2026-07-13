@@ -178,6 +178,20 @@ class DetailedPricingTraceCanaryTests(unittest.TestCase):
             with self.subTest(non_request=non_request):
                 self.assertIsNone(traces.MOCKUP_SEND_SIGNAL_RE.search(non_request))
 
+    def test_mockup_send_permission_persists_through_email_confirmation(self) -> None:
+        events = [
+            traces.make_event("user", "Would a basic website fit a $1,200 budget?"),
+            traces.make_event("agent", "A basic site is $900-$1,500 depending on content."),
+            traces.make_event("user", "The mockup sounds good."),
+            traces.make_event("agent", "What's the best email?"),
+            traces.make_event("user", "It is owner at example dot com."),
+            traces.make_event("agent", "Just to confirm, owner at example dot com - is that right?"),
+            traces.make_event("user", "Yes, that's right."),
+            traces.make_event("agent", "Great, I'll send it there by the end of the day."),
+        ]
+
+        self.assertEqual(traces.unsolicited_cta_messages(events), [])
+
     def test_partial_canary_fails_actionable_mockup_offer_when_buyer_mentioned_mockup(self) -> None:
         offers = [
             "I can put together a free mockup for you first.",
