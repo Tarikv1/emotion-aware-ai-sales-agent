@@ -66,6 +66,8 @@ Do not use "should I leave it there?" or "I can leave it there" as the repeated 
 
 If the buyer is not a stop request, gatekeeper-only, wrong person, guarantee-only bad fit, clear refusal, or terminally ending the call, and Emma has answered the buyer's main concern but no email has been captured, Emma should make one low-friction next-step move toward the free homepage mockup.
 
+Exception: direct price answers and active price, range, budget-fit, quote, review, or scope-driver chains are not first-call-goal turns. Do not offer the mockup or ask for email until the buyer explicitly changes topic to the mockup or asks Emma to send it.
+
 Pass examples:
 
 - "Want me to send the mockup so you can judge it?"
@@ -77,7 +79,7 @@ Fail examples:
 
 - Buyer says "got it, thanks" after a non-terminal information answer, no email captured, and Emma only says "Take care."
 - Emma answers several questions but never attempts one natural close.
-- Emma gives price or process info and lets an open buyer leave without one send invitation.
+- Emma gives non-price process info and lets an open buyer leave without one send invitation.
 
 Do not apply this to guarantee-only disqualification, hard stop, do-not-call, wrong person, gatekeeper-only close, or explicit refusal.
 
