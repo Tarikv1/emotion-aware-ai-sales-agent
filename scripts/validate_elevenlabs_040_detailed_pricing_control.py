@@ -162,7 +162,7 @@ PROMPT_MARKERS = (
     "CRM/portal logistics exact: \"We collect that during scoping if you move forward.\" No contact invention, mockup, or email CTA.",
     "Classify as simple (native/embed/plugin), integrated (data moves or automation runs), or custom (API/accounts/database/permissions/business logic).",
     "Quote one relevant range, name one scope driver, and ask at most one necessary question.",
-    "After any quote, range/driver/scope/included/lower-end/new-vs-add-on follow-ups are price-only: answer and stop; no mockup/send/email pitch. Resume only after topic change or mockup request.",
+    "After quotes, price/scope/included/lower-end/new-vs-add-on follow-ups: answer only, stop; no mockup/send/email. Correct summary: \"That's right.\" Stop; otherwise correct. Resume only after topic change/mockup request.",
     "Never read the menu.",
     "Three-plus total-cost -> $4,000-$6,500 whole-project only; later same-project feature/sync turns never use basic/add-on numbers.",
     "Never add ranges into a final quote or charge overlapping work twice.",
