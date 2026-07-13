@@ -247,6 +247,7 @@ class DetailedPricingTraceCanaryTests(unittest.TestCase):
         self.assertTrue(traces.has_unsupported_ceiling("The maximum is $5,000."))
         self.assertFalse(traces.has_unsupported_ceiling("The $79 plan covers hosting; the domain stays under your ownership."))
         self.assertTrue(traces.has_unsupported_ceiling("Keep the project under $5,000."))
+        self.assertTrue(traces.has_unsupported_ceiling("Keep the project under five thousand dollars."))
 
     def test_negated_ceiling_passes_the_money_bearing_validator_path(self) -> None:
         payload = full_payload()
@@ -460,6 +461,18 @@ class DetailedPricingTraceCanaryTests(unittest.TestCase):
 
         self.assertEqual(status_by_id(result)[traces.EXPECTED_TEST_ORDER[8]], "fail")
         self.assertIn("approved_ranges_only_in_relevant_scenarios", traces.failure_names(result, traces.EXPECTED_TEST_ORDER[8]))
+
+    def test_budget_advanced_band_requires_a_later_price_followup(self) -> None:
+        payload = full_payload()
+        payload["test_runs"][8]["agent_responses"] = [
+            traces.make_event("user", "Would a basic site fit a $1,200 budget, and how much more would booking and payments cost?"),
+            traces.make_event("agent", "Yes, $1,200 fits within the $900-$1,500 range. For integrated booking and payments, the whole project is usually $4,000-$6,500."),
+        ]
+
+        result = traces.validate_payload(payload)
+
+        self.assertEqual(status_by_id(result)[traces.EXPECTED_TEST_ORDER[8]], "fail")
+        self.assertIn("budget_advanced_price_followup_is_later", traces.failure_names(result, traces.EXPECTED_TEST_ORDER[8]))
 
     def test_canonical_end_call_mirrors_do_not_make_dialogue_ambiguous(self) -> None:
         payload = full_payload()

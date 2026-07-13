@@ -43,7 +43,7 @@ NEGATED_FIXED_QUOTE_RE = re.compile(
     re.IGNORECASE,
 )
 CEILING_RE = re.compile(
-    r"\b(?:maximum|max(?:imum)?|ceiling|cap(?:ped)?|no more than|at most)\b|\bunder\s+\$?\s?\d[\d,]*(?:\.\d+)?\b",
+    r"\b(?:maximum|max(?:imum)?|ceiling|cap(?:ped)?|no more than|at most)\b|\bunder\s+\$?\s?\d[\d,]*(?:\.\d+)?\b|\bunder\s+(?:one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|twenty|thirty|forty|fifty|sixty|seventy|eighty|ninety)[-\s]+(?:hundred|thousand|million|grand)(?:\s+dollars?)?\b",
     re.IGNORECASE,
 )
 NEGATED_CEILING_RE = re.compile(
@@ -672,6 +672,7 @@ def scenario_portal_scope(checks: Checks, events: list[dict[str, Any]], messages
 
 
 def scenario_budget_fit(checks: Checks, events: list[dict[str, Any]], messages: list[str]) -> None:
+    first_budget_trigger = first_index(events, role="user", pattern=PRICE_TRIGGER_RE)
     advanced_price_trigger = next(
         (
             index
@@ -682,8 +683,17 @@ def scenario_budget_fit(checks: Checks, events: list[dict[str, Any]], messages: 
         ),
         None,
     )
+    advanced_price_is_later = (
+        advanced_price_trigger is None
+        or (first_budget_trigger is not None and advanced_price_trigger > first_budget_trigger)
+    )
+    checks.check(
+        "budget_advanced_price_followup_is_later",
+        advanced_price_is_later,
+        "advanced-feature pricing must be requested in a later buyer turn after the initial budget-fit question",
+    )
     allowed_labels = {"basic_site", "buyer_budget_reference"}
-    if advanced_price_trigger is not None:
+    if advanced_price_trigger is not None and advanced_price_is_later:
         allowed_labels.add("integration_heavy")
     seen = validate_allowed_labels(checks, messages, allowed_labels)
     integration_before_trigger = [
