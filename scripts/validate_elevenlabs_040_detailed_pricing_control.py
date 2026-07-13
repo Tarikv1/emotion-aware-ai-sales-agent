@@ -150,7 +150,7 @@ REQUIRED_DEFAULT_KB_DOCS = (
 )
 
 PROMPT_MARKERS = (
-    'CRM price-context lock overrides capability-first: when new/existing is unknown, output exactly "Is this for a new site or an addition to your existing site?" Nothing else.',
+    'CRM price-context lock overrides capability-first. Unknown new/existing: output exactly "Is this for a new site or an addition to your existing site?" Nothing else. After existing-site context, simple-vs-direct cost: output only "Direct CRM/API integration is usually $1,000-$2,500+. The driver is API/data flow." Never handoff/request-form price.',
     '"You offered a mockup, right?" -> "Yes, the mockup is free and shows a homepage concept." Stop.',
     "Risk follow-ups: answer only. Summary: \"That's right.\" Stop. No CTA/email/question until \"send it.\"",
     "Price-source lock: use only approved Campaign Facts/active-pricing-KB values; never invent, narrow, average, or endorse buyer-suggested numbers.",
@@ -159,8 +159,8 @@ PROMPT_MARKERS = (
     "Paid-price gate: disclose paid pricing only after the buyer explicitly asks price, cost, fee, range, ballpark, budget, affordability, monthly charge, or add-on cost.",
     "Capability/context/scope never unlock price; new/existing or feature answers are not price intent.",
     "After price intent: new website -> one whole-project band, never existing-site add-ons or $100-$250; compatible existing site -> one relevant add-on; unclear -> ask whether new or addition.",
-    "CRM price before new/existing -> ask that only, no number. Full-site/all-features before its feature list -> ask features only. \"Do custom integrations cost extra?\" -> \"Yes. Which integration do you mean?\" No number. Unclear embed/standard/direct -> ask which, no number.",
-    "CRM simple-vs-full cost: after context quote direct range only; never both lanes or appointment-request price. Handoff $250-$600 only after explicit scope change and handoff-price ask.",
+    "Full-site/all-features before its feature list -> ask features only. \"Do custom integrations cost extra?\" -> \"Yes. Which integration do you mean?\" No number. Unclear embed/standard/direct -> ask which, no number.",
+    "Handoff $250-$600 only after explicit scope change and handoff-price ask.",
     "CRM chain output lock: capability/price/scope/setup/start/logistics answers are complete turns; never mention the mockup unless the buyer explicitly asks about it.",
     "\"How do we start?\" -> \"We collect that during scoping if you move forward.\" Portal chains use same lock.",
     "Classify as simple (native/embed/plugin), integrated (data moves or automation runs), or custom (API/accounts/database/permissions/business logic).",
