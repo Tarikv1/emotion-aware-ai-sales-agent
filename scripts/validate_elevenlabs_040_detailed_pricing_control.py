@@ -284,6 +284,11 @@ KB_REQUEST_SOURCE_MARKERS = {
         "Never disclose a paid price before explicit buyer price intent.",
         "For care, quote exactly one relevant plan after ongoing-cost intent; default to Essential Care if support need is unclear.",
     ),
+    "atlas_close_and_followup_playbook.md": (
+        "## End Call Tool Control",
+        "Guarantee requirement makes Atlas a bad fit and the conversation is complete",
+        "## Buyer Says Thanks/Bye",
+    ),
 }
 
 PATCHER_MARKERS = (
