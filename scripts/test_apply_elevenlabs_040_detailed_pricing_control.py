@@ -93,6 +93,7 @@ class DetailedPricingPatcherSubsetTests(unittest.TestCase):
     def test_target_kb_doc_subset_is_guarded_and_defaults_to_literal_three_doc_contract(self) -> None:
         self.assertEqual(tuple(patcher.KB_DOCS), REQUIRED_DEFAULT_KB_DOCS)
         self.assertEqual(patcher.parse_target_kb_docs(None), REQUIRED_DEFAULT_KB_DOCS)
+        self.assertEqual(patcher.parse_target_kb_docs([]), ())
         self.assertEqual(
             patcher.parse_target_kb_docs(["atlas_output_quality_rules.md"]),
             ("atlas_output_quality_rules.md",),
@@ -106,6 +107,24 @@ class DetailedPricingPatcherSubsetTests(unittest.TestCase):
         with contextlib.redirect_stderr(io.StringIO()):
             with self.assertRaises(SystemExit):
                 patcher.parse_args(["--target-kb-doc", ""])
+
+    def test_prompt_only_mode_is_mutually_exclusive_and_plans_no_kb_writes(self) -> None:
+        args = patcher.parse_args(["--prompt-only"])
+        self.assertTrue(args.prompt_only)
+        with contextlib.redirect_stderr(io.StringIO()):
+            with self.assertRaises(SystemExit):
+                patcher.parse_args(["--prompt-only", "--target-kb-doc", "atlas_output_quality_rules.md"])
+
+        source_commit = patcher.current_source_evidence_commit()
+        requests = patcher.patch_requests(
+            validator.sample_agent_for_patcher(),
+            sample_preflight(),
+            target_kb_doc_names=(),
+            source_commit=source_commit,
+        )
+
+        self.assertEqual([request["request_id"] for request in requests], ["patch_agent::prompt_dynamic_variables"])
+        self.assertEqual(patcher.planned_write_counts(requests)["planned_kb_write_count"], 0)
 
     def test_default_dry_run_plans_three_kb_writes_and_agent_patch(self) -> None:
         source_commit = patcher.current_source_evidence_commit()

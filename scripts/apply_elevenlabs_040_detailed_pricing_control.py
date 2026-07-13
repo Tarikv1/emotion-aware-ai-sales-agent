@@ -440,8 +440,8 @@ def parse_target_kb_docs(values: list[str] | None) -> tuple[str, ...]:
     if values is None:
         return tuple(KB_DOCS)
     cleaned = [value.strip() for value in values]
-    if not cleaned or any(not value for value in cleaned):
-        raise ValueError("target KB doc list cannot be empty")
+    if any(not value for value in cleaned):
+        raise ValueError("target KB doc names cannot be empty")
     unknown = [value for value in cleaned if value not in KNOWN_KB_DOC_IDS]
     if unknown:
         raise ValueError(f"unknown target KB doc names: {unknown}; allowed={list(KB_DOCS)}")
@@ -1067,7 +1067,8 @@ def write_provider_changes(
 def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Guarded ELEVENLABS-040 Atlas pricing patcher; dry-run by default.")
     parser.add_argument("--confirm-provider-write", default=None, help=f"Exact token required for writes: {CONFIRM_TOKEN}")
-    parser.add_argument(
+    target_group = parser.add_mutually_exclusive_group()
+    target_group.add_argument(
         "--target-kb-doc",
         action="append",
         type=target_kb_doc_arg,
@@ -1075,13 +1076,18 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         metavar="NAME",
         help=f"Optional active KB doc name to patch; repeat to target a guarded subset. Default: all {len(KB_DOCS)} active target docs.",
     )
+    target_group.add_argument(
+        "--prompt-only",
+        action="store_true",
+        help="Patch the compact agent prompt without rewriting any knowledge-base document.",
+    )
     return parser.parse_args(argv)
 
 
 def main(argv: list[str] | None = None) -> int:
     args = parse_args(argv)
     try:
-        target_kb_doc_names = parse_target_kb_docs(args.target_kb_doc)
+        target_kb_doc_names = () if args.prompt_only else parse_target_kb_docs(args.target_kb_doc)
     except ValueError as exc:
         print(f"error: {exc}", file=sys.stderr)
         return 2
