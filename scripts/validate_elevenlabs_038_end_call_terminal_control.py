@@ -112,7 +112,7 @@ def validate_prompt_and_kb() -> None:
             "Buyer requested no further contact",
             "Got it. Take care.",
             "Guarantee requirement makes Atlas a bad fit and the conversation is complete",
-            "Understood. Have a good one.",
+            "That's right - no guarantee. I don't want to waste your time. Have a good one.",
             "hello@cedarridgeglass.com",
         ),
     )

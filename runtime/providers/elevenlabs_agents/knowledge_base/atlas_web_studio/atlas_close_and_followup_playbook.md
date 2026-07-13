@@ -384,7 +384,7 @@ Exact terminal messages:
 - Gatekeeper note completed: reason "Gatekeeper note completed"; message "Got it, thank you. Take care."
 - Completed non-email outcome and explicit goodbye: reason "Buyer explicitly ended the completed conversation"; message "Take care."
 - Hard stop/do-not-call: reason "Buyer requested no further contact"; message "Got it. Take care."
-- Guarantee-only disqualification complete: reason "Guarantee requirement makes Atlas a bad fit and the conversation is complete"; message "Understood. Have a good one."
+- Guarantee-only disqualification complete: reason "Guarantee requirement makes Atlas a bad fit and the conversation is complete"; message "That's right - no guarantee. I don't want to waste your time. Have a good one."
 
 ## Buyer Says Thanks/Bye
 
