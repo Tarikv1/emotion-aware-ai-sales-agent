@@ -77,7 +77,7 @@ EXISTING_SITE_RE = re.compile(r"\b(?:existing site|existing website|compatible s
 ADD_ON_RE = re.compile(r"\b(?:add(?:ing|ition)?|add-on|on an existing site|appointment[- ]request form)\b", re.IGNORECASE)
 WHOLE_SITE_RE = re.compile(r"\b(?:new site|new website|whole site|whole project|full site|package)\b", re.IGNORECASE)
 BUDGET_FIT_POSITIVE_RE = re.compile(
-    r"(?:\byes\b[^.?!]*\b(?:fit|fits|can fit|does fit|should fit|work|works|can work)\b|\bthat\s+can\s+fit\b|\b(?:\$1,200|1,200|that budget|the budget|it)\s+(?:fit|fits|can fit|does fit|should fit|work|works|can work)\b|\bfit(?:s)?\s+within\s+(?:the\s+)?(?:budget|range|\$?\s?900\s?(?:-|to)\s?\$?\s?1,500)\b|\bstays\s+in\s+the\s+.*range\b)",
+    r"(?:\byes\b[^.?!]*\b(?:fit|fits|can fit|does fit|should fit|work|works|can work)\b|\bthat\s+can\s+fit\b|\b(?:\$1,200|1,200|that budget|the budget|it)\s+(?:fit|fits|can fit|does fit|should fit|work|works|can work)\b|\b(?:that(?:\s+is|[’']s)|(?:\$1,200|1,200|that budget|the budget)\s+is)\s+(?:within\s+(?:the\s+)?(?:usual|normal)\s+range|realistic)\b|\bfit(?:s)?\s+within\s+(?:the\s+)?(?:budget|range|\$?\s?900\s?(?:-|to)\s?\$?\s?1,500)\b|\bstays\s+in\s+the\s+.*range\b)",
     re.IGNORECASE,
 )
 BUDGET_FIT_NEGATIVE_RE = re.compile(
@@ -359,6 +359,23 @@ def event_role(event: dict[str, Any]) -> str:
     return "agent" if value == "assistant" else value
 
 
+def is_canonical_end_call_mirror(event: dict[str, Any]) -> bool:
+    if event_role(event) != "agent" or event_text(event):
+        return False
+    tool_entries = [
+        item
+        for key in ("tool_calls", "tool_results")
+        for item in event.get(key, [])
+        if isinstance(item, dict)
+    ]
+    return bool(tool_entries) and all(
+        item.get("type") == "system"
+        and item.get("tool_name") == "end_call"
+        and item.get("tool_has_been_called") is True
+        for item in tool_entries
+    )
+
+
 def approved_labels(message: str) -> list[str]:
     return [label for label, pattern in APPROVED_VALUE_PATTERNS.items() if pattern.search(message)]
 
@@ -439,6 +456,8 @@ def extract_dialogue(run: dict[str, Any], checks: Checks) -> list[dict[str, Any]
         role = event_role(raw)
         message = event_text(raw)
         if role not in {"user", "agent"} or not message:
+            if is_canonical_end_call_mirror(raw):
+                continue
             if role in {"user", "agent"}:
                 malformed += 1
             continue

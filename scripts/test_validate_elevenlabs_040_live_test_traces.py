@@ -405,6 +405,55 @@ class DetailedPricingTraceCanaryTests(unittest.TestCase):
         self.assertEqual(status_by_id(result)[traces.EXPECTED_TEST_ORDER[8]], "pass")
         self.assertEqual(result["independent_status"], "pass")
 
+    def test_that_is_within_usual_range_is_an_affirmative_budget_answer(self) -> None:
+        payload = full_payload()
+        payload["test_runs"][8]["agent_responses"] = [
+            traces.make_event("user", "I was thinking about a basic site, maybe around $1,200?"),
+            traces.make_event("agent", "For a new three to five page site, that is within the usual range, which is $900-$1,500."),
+        ]
+
+        result = traces.validate_payload(payload)
+
+        self.assertEqual(status_by_id(result)[traces.EXPECTED_TEST_ORDER[8]], "pass")
+        self.assertFalse(traces.contains_affirmative_budget_fit("That is not within the usual range."))
+        self.assertFalse(traces.contains_affirmative_budget_fit("That might be within the usual range."))
+        self.assertTrue(traces.contains_affirmative_budget_fit("That's within the usual range."))
+        self.assertTrue(traces.contains_affirmative_budget_fit("That’s within the normal range."))
+
+    def test_canonical_end_call_mirrors_do_not_make_dialogue_ambiguous(self) -> None:
+        payload = full_payload()
+        payload["test_runs"][6]["agent_responses"].extend(
+            [
+                {
+                    "role": "agent",
+                    "message": None,
+                    "tool_calls": [{"type": "system", "tool_name": "end_call", "tool_has_been_called": True}],
+                    "tool_results": [],
+                },
+                {
+                    "role": "agent",
+                    "message": None,
+                    "tool_calls": [],
+                    "tool_results": [{"type": "system", "tool_name": "end_call", "tool_has_been_called": True}],
+                },
+            ]
+        )
+
+        result = traces.validate_payload(payload)
+
+        self.assertEqual(status_by_id(result)[traces.EXPECTED_TEST_ORDER[6]], "pass")
+
+    def test_generic_empty_agent_event_remains_ambiguous(self) -> None:
+        payload = full_payload()
+        payload["test_runs"][6]["agent_responses"].append(
+            {"role": "agent", "message": None, "tool_calls": [], "tool_results": []}
+        )
+
+        result = traces.validate_payload(payload)
+
+        self.assertEqual(status_by_id(result)[traces.EXPECTED_TEST_ORDER[6]], "fail")
+        self.assertIn("ordered_dialogue_extractable", traces.failure_names(result, traces.EXPECTED_TEST_ORDER[6]))
+
     def test_spoken_three_care_plan_transcript_fails_one_plan_rule(self) -> None:
         payload = full_payload()
         payload["test_runs"][9]["agent_responses"] = [
