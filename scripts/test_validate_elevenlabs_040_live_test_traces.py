@@ -431,6 +431,20 @@ class DetailedPricingTraceCanaryTests(unittest.TestCase):
         self.assertEqual(status_by_id(result)[traces.EXPECTED_TEST_ORDER[9]], "fail")
         self.assertIn("care_chain_no_unasked_project_price", traces.failure_names(result, traces.EXPECTED_TEST_ORDER[9]))
 
+    def test_care_chain_rejects_email_ask_after_mockup_reference_question(self) -> None:
+        payload = full_payload()
+        payload["test_runs"][9]["agent_responses"] = [
+            traces.make_event("user", "What does hosting and maintenance cost per month?"),
+            traces.make_event("agent", "Essential Care is $79 per month for hosting, updates, backups, and monitoring."),
+            traces.make_event("user", "It is for a new site. You offered a mockup, right?"),
+            traces.make_event("agent", "Yes, the mockup is free. What’s the best email to send it to?"),
+        ]
+
+        result = traces.validate_payload(payload)
+
+        self.assertEqual(status_by_id(result)[traces.EXPECTED_TEST_ORDER[9]], "fail")
+        self.assertIn("care_chain_no_unsolicited_cta", traces.failure_names(result, traces.EXPECTED_TEST_ORDER[9]))
+
     def test_care_ongoing_costs_and_same_turn_mockup_question_pass(self) -> None:
         payload = full_payload()
         payload["test_runs"][9]["agent_responses"] = [
@@ -487,6 +501,7 @@ class DetailedPricingTraceCanaryTests(unittest.TestCase):
             "Where can I send it?",
             "Where do I send it?",
             "What's a good email?",
+            "What’s the best email?",
         ]
         neutral_price_language = [
             "Would you be open to the lower end if content is ready?",

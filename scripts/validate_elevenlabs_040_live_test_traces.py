@@ -118,7 +118,7 @@ MOCKUP_VISUAL_CLARIFICATION_RE = re.compile(
     re.IGNORECASE,
 )
 SEND_EMAIL_CTA_RE = re.compile(
-    r"(?:\bwhere\s+(?:can|do|should)\s+i\s+send\b|\b(?:what|which)\s+email\s+should\s+i\s+send\b|\bwhat(?:'s|\s+is)?\s+(?:(?:the|a)\s+)?(?:best|good)\s+email\b|\b(?:(?:i|we)\s+(?:can|could|would|will)|(?:i|we)['’]ll)\s+(?:send|email)\b)",
+    r"(?:\bwhere\s+(?:can|do|should)\s+i\s+send\b|\b(?:what|which)\s+email\s+should\s+i\s+send\b|\bwhat(?:[’']s|\s+is)?\s+(?:(?:the|a)\s+)?(?:best|good)\s+email\b|\b(?:(?:i|we)\s+(?:can|could|would|will)|(?:i|we)['’]ll)\s+(?:send|email)\b)",
     re.IGNORECASE,
 )
 PORTAL_EMAIL_CAPTURE_CTA_RE = re.compile(
@@ -845,6 +845,12 @@ def scenario_care_plan(checks: Checks, events: list[dict[str, Any]], messages: l
         "care_chain_no_unasked_project_price",
         not unasked_project_prices,
         f"care-only chain disclosed project pricing without an explicit project-price question: {unasked_project_prices}",
+    )
+    violations = unsolicited_cta_messages(events, start_index=ongoing_trigger if ongoing_trigger is not None else 0)
+    checks.check(
+        "care_chain_no_unsolicited_cta",
+        not violations,
+        f"care/context chain treated a mockup reference as send permission: {violations}",
     )
     early_messages = [event["message"] for event in events[: ongoing_trigger or 0] if event["role"] == "agent"]
     early_labels = unique_labels_seen(early_messages) & CARE_PLAN_LABELS
