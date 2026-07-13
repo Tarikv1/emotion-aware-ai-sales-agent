@@ -814,6 +814,13 @@ def scenario_budget_fit(checks: Checks, events: list[dict[str, Any]], messages: 
         and re.search(r"\b(?:within|in the .* range|in that range|stays in|fit|fits|work|works|can work)\b", combined, re.IGNORECASE) is not None,
         "budget-fit scenario must relate the buyer's $1,200 budget positively to the $900-$1,500 range",
     )
+    first_quote = first_agent_price_quote_index(events)
+    violations = unsolicited_cta_messages(events, start_index=first_quote if first_quote is not None else 0)
+    checks.check(
+        "budget_price_chain_no_unsolicited_cta",
+        not violations,
+        f"budget price/scope chain reopened a mockup CTA: {violations}",
+    )
 
 
 def scenario_care_plan(checks: Checks, events: list[dict[str, Any]], messages: list[str]) -> None:

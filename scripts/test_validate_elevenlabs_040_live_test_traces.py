@@ -568,6 +568,20 @@ class DetailedPricingTraceCanaryTests(unittest.TestCase):
         self.assertEqual(status_by_id(result)[traces.EXPECTED_TEST_ORDER[8]], "pass")
         self.assertEqual(result["independent_status"], "pass")
 
+    def test_budget_scope_summary_rejects_unsolicited_mockup_cta(self) -> None:
+        payload = full_payload()
+        payload["test_runs"][8]["agent_responses"] = [
+            traces.make_event("user", "Would a basic website fit a $1,200 budget?"),
+            traces.make_event("agent", "Yes. A basic site is $900-$1,500, so $1,200 can fit if scope stays simple."),
+            traces.make_event("user", "So just the basic pages, no booking or integrations."),
+            traces.make_event("agent", "That's the simple version. I can send a free homepage mockup first. Should I send one over?"),
+        ]
+
+        result = traces.validate_payload(payload)
+
+        self.assertEqual(status_by_id(result)[traces.EXPECTED_TEST_ORDER[8]], "fail")
+        self.assertIn("budget_price_chain_no_unsolicited_cta", traces.failure_names(result, traces.EXPECTED_TEST_ORDER[8]))
+
     def test_that_is_within_usual_range_is_an_affirmative_budget_answer(self) -> None:
         payload = full_payload()
         payload["test_runs"][8]["agent_responses"] = [
