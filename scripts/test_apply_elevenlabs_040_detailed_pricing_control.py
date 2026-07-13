@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import contextlib
+import copy
 import hashlib
 import io
 import re
@@ -70,6 +71,25 @@ def make_blob_repo(blob_bytes: bytes, *, filename: str = "atlas_output_quality_r
 
 
 class DetailedPricingPatcherSubsetTests(unittest.TestCase):
+    def test_false_tts_override_model_id_is_equivalent_to_missing_only(self) -> None:
+        missing = validator.sample_agent_for_patcher()
+        tts_override = (
+            missing.setdefault("platform_settings", {})
+            .setdefault("overrides", {})
+            .setdefault("conversation_config_override", {})
+            .setdefault("tts", {})
+        )
+        tts_override["voice_id"] = False
+
+        false_model = copy.deepcopy(missing)
+        false_model["platform_settings"]["overrides"]["conversation_config_override"]["tts"]["model_id"] = False
+        real_model = copy.deepcopy(missing)
+        real_model["platform_settings"]["overrides"]["conversation_config_override"]["tts"]["model_id"] = "eleven_flash_v2"
+
+        missing_hash = patcher.canonical_sha256(patcher.collateral_state(missing))
+        self.assertEqual(missing_hash, patcher.canonical_sha256(patcher.collateral_state(false_model)))
+        self.assertNotEqual(missing_hash, patcher.canonical_sha256(patcher.collateral_state(real_model)))
+
     def test_target_kb_doc_subset_is_guarded_and_defaults_to_literal_three_doc_contract(self) -> None:
         self.assertEqual(tuple(patcher.KB_DOCS), REQUIRED_DEFAULT_KB_DOCS)
         self.assertEqual(patcher.parse_target_kb_docs(None), REQUIRED_DEFAULT_KB_DOCS)

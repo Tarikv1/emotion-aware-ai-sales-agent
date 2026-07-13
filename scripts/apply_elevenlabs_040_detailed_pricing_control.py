@@ -608,6 +608,15 @@ def collateral_state(agent: dict[str, Any]) -> dict[str, Any]:
         raise ValueError("protected dynamic_variable_placeholders must be an object")
     for key in TARGET_PRICE_VARIABLES:
         placeholders.pop(key, None)
+    platform_settings = state.get("platform_settings")
+    if isinstance(platform_settings, dict):
+        overrides = platform_settings.get("overrides")
+        if isinstance(overrides, dict):
+            conversation_override = overrides.get("conversation_config_override")
+            if isinstance(conversation_override, dict):
+                tts_override = conversation_override.get("tts")
+                if isinstance(tts_override, dict) and tts_override.get("model_id") is False:
+                    tts_override.pop("model_id", None)
     return state
 
 
