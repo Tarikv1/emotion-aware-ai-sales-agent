@@ -61,6 +61,10 @@ PORTAL_SCOPE_RE = {
     "security": re.compile(r"\bsecurity\b", re.IGNORECASE),
     "integrations": re.compile(r"\bintegrations?\b", re.IGNORECASE),
 }
+PORTAL_NUMERIC_MAGNITUDE_RE = re.compile(
+    r"\b(?:at\s+least|minimum(?:\s+of)?|starts?\s+at|starting\s+at|from)\b(?:\s+\w+){0,4}\s+\b(?:hundreds?|thousands?|millions?|grand)\b",
+    re.IGNORECASE,
+)
 DRIVER_RE = re.compile(
     r"\b(?:page count|pages?|content|copy|layout|workflow|testing|routing|fields?|structure|scope|api|permissions|security|integrations?|mapping|sync)\b",
     re.IGNORECASE,
@@ -849,7 +853,11 @@ def scenario_crm_existing_site(checks: Checks, events: list[dict[str, Any]], mes
 
 def scenario_portal_scope(checks: Checks, events: list[dict[str, Any]], messages: list[str], first_paid: int | None) -> None:
     validate_allowed_labels(checks, messages, set())
-    numeric_messages = [message for message in messages if money_matches(message)]
+    numeric_messages = [
+        message
+        for message in messages
+        if money_matches(message) or PORTAL_NUMERIC_MAGNITUDE_RE.search(message)
+    ]
     checks.check("portal_no_numeric_price", not numeric_messages and first_paid is None, f"portal scenario must not contain numeric pricing: {numeric_messages}")
     combined = " ".join(messages)
     scope_hits = sorted(label for label, pattern in PORTAL_SCOPE_RE.items() if pattern.search(combined))

@@ -535,6 +535,21 @@ class DetailedPricingTraceCanaryTests(unittest.TestCase):
         self.assertEqual(status_by_id(result)[traces.EXPECTED_TEST_ORDER[7]], "fail")
         self.assertIn("portal_no_mockup_cta", traces.failure_names(result, traces.EXPECTED_TEST_ORDER[7]))
 
+    def test_portal_scope_chain_rejects_vague_numeric_lower_bound(self) -> None:
+        payload = full_payload()
+        payload["test_runs"][7]["agent_responses"] = [
+            traces.make_event("user", "How much does a parent portal cost? Is it thousands or tens of thousands?"),
+            traces.make_event(
+                "agent",
+                "It is usually at least in the thousands, but I would not quote a range before we scope accounts, database, permissions, security, and integrations.",
+            ),
+        ]
+
+        result = traces.validate_payload(payload)
+
+        self.assertEqual(status_by_id(result)[traces.EXPECTED_TEST_ORDER[7]], "fail")
+        self.assertIn("portal_no_numeric_price", traces.failure_names(result, traces.EXPECTED_TEST_ORDER[7]))
+
     def test_care_chain_rejects_unasked_project_price(self) -> None:
         payload = full_payload()
         payload["test_runs"][9]["agent_responses"] = [

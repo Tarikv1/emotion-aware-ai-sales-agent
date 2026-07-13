@@ -170,7 +170,7 @@ PROMPT_MARKERS = (
     "Never read the menu.",
     "Three-plus total-cost -> $4,000-$6,500 whole-project only; later same-project feature/sync turns never use basic/add-on numbers.",
     "Never add ranges into a final quote or charge overlapping work twice.",
-    "Portals/dashboards/APIs/accounts/databases/complex-payments/inventory-sync/marketplaces/custom-logic require scope, no number. Scope-start/timing questions stay portal-only: answer and stop, no mockup/send/email.",
+    "Portals/dashboards/APIs/accounts/databases/complex-payments/inventory-sync/marketplaces/custom-logic require scope; no number/magnitude (\"thousands\"). Scope-start/timing stays portal-only: answer; stop, no mockup/send/email.",
 )
 
 PRICING_KB_MARKERS = (
@@ -224,6 +224,7 @@ OUTPUT_MARKERS = (
     "Price-chain context/ack lock: answer fit/scope only. \"Thanks for clarifying.\" -> \"Of course.\" Stop; no CTA.",
     "Self-update editing access is CMS/editor setup, never the $100-$250 appointment-request lane.",
     "A portal budget objection, scope-start question, or \"how do I get a price?\" remains inside the portal chain.",
+    "Do not quote a fixed price, ceiling, or vague lower bound such as \"in the thousands\" for portals, dashboards, APIs, accounts, databases, or custom business logic.",
     "CRM chain output lock: capability, comparison, scope, setup, start, requested-details, and logistics answers are complete turns.",
     "In a new-site chain, \"Is the live calendar extra?\" is explicit price intent: quote only $4,000-$6,500 for the whole-project integration lane.",
     "After Emma quotes a price, any follow-up about range, budget, drivers, scope, or new-vs-add-on stays in a price-only lane until that chain ends.",
@@ -233,7 +234,6 @@ OUTPUT_MARKERS = (
     "Do not charge twice for overlapping work.",
     "Use one relevant range and at most one material scope question.",
     "For care, quote exactly one relevant plan after ongoing-cost intent; default to Essential Care if support need is unclear.",
-    "Do not quote a fixed price or ceiling for portals, dashboards, APIs, accounts, databases, or custom business logic.",
 )
 
 FORBIDDEN_WEAK_PRICE_FOLLOWUP_MARKERS = (
