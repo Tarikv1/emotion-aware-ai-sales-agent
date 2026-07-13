@@ -270,7 +270,7 @@ def assert_prompt_and_kb() -> None:
             "Classify as simple (native/embed/plugin), integrated (data moves or automation runs), or custom (API/accounts/database/permissions/business logic).",
             "Quote one relevant range, name one scope driver, and ask at most one necessary question.",
             "Never read the menu.",
-            "Never add ranges into a final quote or charge overlapping work twice.",
+            "Never sum ranges or double-charge.",
         ),
     )
     assert_contains(

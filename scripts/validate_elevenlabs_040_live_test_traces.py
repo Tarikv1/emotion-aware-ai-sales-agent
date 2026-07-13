@@ -22,7 +22,7 @@ ADVANCED_PRICE_FOLLOWUP_RE = re.compile(
     re.IGNORECASE,
 )
 PAID_PRICE_RE = re.compile(
-    r"(?:\$\s?\d[\d,]*(?:\s?(?:-|to)\s?\$?\d[\d,]*\+?)?|\b\d+\s?(?:dollars?|per month|monthly)\b)",
+    r"(?:\$\s?\d(?:[\d,]*\d)?(?:\s?(?:-|to)\s?\$?\d(?:[\d,]*\d)?\+?)?|\b\d+\s?(?:dollars?|per month|monthly)\b)",
     re.IGNORECASE,
 )
 RANGE_SEPARATOR_RE = r"(?:-|to)"
@@ -40,6 +40,10 @@ FIXED_QUOTE_RE = re.compile(
 )
 NEGATED_FIXED_QUOTE_RE = re.compile(
     r"\b(?:not(?:\s+(?:a|an))?(?:\s+real)?|can(?:not|'t)|could(?:\s+not|n't)|won't|will\s+not|unable\s+to)\b(?:\s+\w+){0,5}\s+\b(?:exactly|exact(?:\s+(?:price|quote|amount))?|fixed\s+price|flat(?:\s+fee)?|final\s+price|locked(?:\s+in)?|all[- ]in)\b",
+    re.IGNORECASE,
+)
+DEPENDENT_FIXED_QUOTE_RE = re.compile(
+    r"\b(?:exact|firm|final)\s+(?:price|quote|number|amount)\s+(?:depends|would\s+depend|comes\s+after|requires|is\s+possible|can\s+be\s+provided)\b",
     re.IGNORECASE,
 )
 CEILING_RE = re.compile(
@@ -165,7 +169,7 @@ MOCKUP_SEND_SIGNAL_RE = re.compile(
     re.IGNORECASE,
 )
 PROJECT_PRICE_ASK_RE = re.compile(
-    r"\b(?:what does|how much (?:does|is))\s+(?:a\s+)?(?:new\s+)?(?:site|website|build|project)\s+cost\b|\b(?:site|website|build|project)\s+(?:price|cost|quote|range)\b|\b(?:extra\s+cost|what\s+would\s+that\s+cost|how\s+much\s+more\s+(?:is|does))\b",
+    r"\b(?:what does|how much (?:does|is))\s+(?:a\s+)?(?:new\s+)?(?:site|website|build|project)\s+cost\b|\b(?:site|website|build|project)\s+(?:price|cost|quote|range)\b|\b(?:setup|build)\s+cost\s+for\s+(?:a\s+)?(?:new\s+)?(?:site|website)\b|\b(?:extra\s+cost|what\s+would\s+that\s+cost|how\s+much\s+more\s+(?:is|does))\b",
     re.IGNORECASE,
 )
 SELF_UPDATE_EDITOR_RE = re.compile(
@@ -180,7 +184,8 @@ PRICE_CHAIN_ACCEPTANCE_RE = re.compile(
 
 def has_unsupported_fixed_quote(message: str) -> bool:
     without_refusals = NEGATED_FIXED_QUOTE_RE.sub("", message)
-    return FIXED_QUOTE_RE.search(without_refusals) is not None
+    without_dependencies = DEPENDENT_FIXED_QUOTE_RE.sub("", without_refusals)
+    return FIXED_QUOTE_RE.search(without_dependencies) is not None
 
 
 def has_unsupported_ceiling(message: str) -> bool:

@@ -151,6 +151,7 @@ REQUIRED_DEFAULT_KB_DOCS = (
 
 PROMPT_MARKERS = (
     'CRM price lock overrides capability. Unknown new/existing, including "difference in cost": output exactly "Is this for a new site or an addition to your existing site?" After existing context, simple-vs-direct cost: only "Direct CRM/API integration is usually $1,000-$2,500+. The driver is API/data flow." Never handoff/request-form price. Post-quote why/meaning/which-one/site-fit: explain only; no price/range.',
+    "New-site three-plus total/CRM/payment/booking follow-ups: $4,000-$6,500 whole-project only; never $1,000-$2,500+ or other add-ons; scope without a second number.",
     '"You offered a mockup, right?" -> "Yes, the mockup is free and shows a homepage concept." Stop.',
     "Risk follow-ups: answer only. Summary: \"That's right.\" Stop. No CTA/email/question until \"send it.\"",
     "Price-source lock: use only approved Campaign Facts/active-pricing-KB values; never invent, narrow, average, or endorse buyer-suggested numbers.",
@@ -169,8 +170,7 @@ PROMPT_MARKERS = (
     "Price/scope/setup/logistics/included/lower-end/new-vs-add-on follow-ups: answer, stop; no CTA. Correct summary: \"That's right.\" Stop; otherwise correct. Resume after topic change/mockup request.",
     "Price-chain context/ack lock: answer fit/scope only. \"Thanks for clarifying.\" -> \"Of course.\" Stop; no CTA.",
     "Never read the menu.",
-    "Three-plus total-cost -> $4,000-$6,500 whole-project only; later same-project feature/sync turns never use basic/add-on numbers.",
-    "Never add ranges into a final quote or charge overlapping work twice.",
+    "Never sum ranges or double-charge.",
     "Portals/dashboards/APIs/accounts/databases/complex-payments/inventory-sync/marketplaces/custom-logic require scope; no number/magnitude (\"thousands\"). Scope-start/timing stays portal-only: answer; stop, no mockup/send/email.",
 )
 

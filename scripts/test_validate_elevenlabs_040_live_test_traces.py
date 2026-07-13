@@ -306,6 +306,13 @@ class DetailedPricingTraceCanaryTests(unittest.TestCase):
 
         self.assertEqual(status_by_id(result)[traces.EXPECTED_TEST_ORDER[2]], "pass")
 
+    def test_exact_price_depends_is_not_a_fixed_quote(self) -> None:
+        self.assertFalse(
+            traces.has_unsupported_fixed_quote(
+                "The exact price depends on the fields, routing, and spam protection needed."
+            )
+        )
+
     def test_negated_ceiling_language_is_not_an_unsupported_ceiling(self) -> None:
         refusals = [
             "I can't honestly give a maximum without scope; the approved range is $1,000-$2,500+.",
@@ -592,6 +599,19 @@ class DetailedPricingTraceCanaryTests(unittest.TestCase):
         self.assertEqual(status_by_id(result)[traces.EXPECTED_TEST_ORDER[9]], "fail")
         self.assertIn("care_chain_no_unasked_project_price", traces.failure_names(result, traces.EXPECTED_TEST_ORDER[9]))
 
+    def test_care_chain_allows_explicit_new_site_setup_cost_question(self) -> None:
+        payload = full_payload()
+        payload["test_runs"][9]["agent_responses"] = [
+            traces.make_event("user", "What does hosting and maintenance cost per month?"),
+            traces.make_event("agent", "Essential Care is $79 per month for hosting and maintenance."),
+            traces.make_event("user", "So what's the setup cost for a new site, then?"),
+            traces.make_event("agent", "A basic new site is $900-$1,500 depending on page count and content."),
+        ]
+
+        result = traces.validate_payload(payload)
+
+        self.assertEqual(status_by_id(result)[traces.EXPECTED_TEST_ORDER[9]], "pass")
+
     def test_care_chain_rejects_email_ask_after_mockup_reference_question(self) -> None:
         payload = full_payload()
         payload["test_runs"][9]["agent_responses"] = [
@@ -747,6 +767,13 @@ class DetailedPricingTraceCanaryTests(unittest.TestCase):
 
         self.assertEqual(status_by_id(result)[traces.EXPECTED_TEST_ORDER[8]], "pass")
         self.assertEqual(result["independent_status"], "pass")
+
+    def test_budget_reference_with_trailing_comma_keeps_approved_label(self) -> None:
+        self.assertEqual(traces.money_matches("For $1,200, a simple site can fit."), ["$1,200"])
+        self.assertEqual(
+            traces.money_match_labels("For $1,200, a simple site can fit."),
+            [("$1,200", {"buyer_budget_reference"})],
+        )
 
     def test_between_and_spoken_basic_range_is_normalized(self) -> None:
         payload = full_payload()
