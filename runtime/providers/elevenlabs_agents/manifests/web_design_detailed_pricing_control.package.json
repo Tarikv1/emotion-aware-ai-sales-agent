@@ -17,7 +17,8 @@
     "runtime/providers/elevenlabs_agents/prompts/web_design_atlas_sales_prompt.md",
     "runtime/providers/elevenlabs_agents/knowledge_base/atlas_web_studio/atlas_offer_facts.md",
     "runtime/providers/elevenlabs_agents/knowledge_base/atlas_web_studio/atlas_price_scope_cost_drivers.md",
-    "runtime/providers/elevenlabs_agents/knowledge_base/atlas_web_studio/atlas_output_quality_rules.md"
+    "runtime/providers/elevenlabs_agents/knowledge_base/atlas_web_studio/atlas_output_quality_rules.md",
+    "runtime/providers/elevenlabs_agents/knowledge_base/atlas_web_studio/atlas_close_and_followup_playbook.md"
   ],
   "baseline_tests": [
     "runtime/providers/elevenlabs_agents/tests/web_design_detailed_pricing_control_tests.json"
