@@ -150,7 +150,7 @@ REQUIRED_DEFAULT_KB_DOCS = (
 )
 
 PROMPT_MARKERS = (
-    "Process-risk follow-ups/summaries: answer only; no CTA until explicit \"send it.\"",
+    "Risk follow-ups: answer only. Summary: \"That's right.\" Stop. No CTA/email/question until \"send it.\"",
     "Price-source lock: use only approved Campaign Facts/active-pricing-KB values; never invent, narrow, average, or endorse buyer-suggested numbers.",
     "Runtime price map: 3-5 page new site -> {{website_basic_site_range}}; compatible existing-site appointment request -> $100-$250; direct CRM/API add-on -> $1,000-$2,500+; new site plus standard integration -> {{website_integration_heavy_range}}; care -> next rule; portal/dashboard -> scope without a number.",
     "Care after ongoing-cost intent: hosting/maintenance -> $79 only. Context answers never unlock project price. Never volunteer care tiers. Included/extra, \"higher/different plan?\", and plan-count/list questions: no new price or recap. $149/$249 only when current buyer turn directly asks that level's cost.",
