@@ -150,7 +150,7 @@ REQUIRED_DEFAULT_KB_DOCS = (
 )
 
 PROMPT_MARKERS = (
-    'CRM price-context lock overrides capability-first. Unknown new/existing, even "difference in cost": output exactly "Is this for a new site or an addition to your existing site?" Nothing else. After existing-site context, simple-vs-direct cost: output only "Direct CRM/API integration is usually $1,000-$2,500+. The driver is API/data flow." Never handoff/request-form price.',
+    'CRM price lock overrides capability. Unknown new/existing, including "difference in cost": output exactly "Is this for a new site or an addition to your existing site?" After existing context, simple-vs-direct cost: only "Direct CRM/API integration is usually $1,000-$2,500+. The driver is API/data flow." Never handoff/request-form price. Post-quote why/meaning/which-one/site-fit: explain only; no price/range.',
     '"You offered a mockup, right?" -> "Yes, the mockup is free and shows a homepage concept." Stop.',
     "Risk follow-ups: answer only. Summary: \"That's right.\" Stop. No CTA/email/question until \"send it.\"",
     "Price-source lock: use only approved Campaign Facts/active-pricing-KB values; never invent, narrow, average, or endorse buyer-suggested numbers.",
@@ -160,7 +160,7 @@ PROMPT_MARKERS = (
     "Capability/context/scope never unlock price; new/existing or feature answers are not price intent.",
     "After price intent: new website -> one whole-project band, never existing-site add-ons or $100-$250; compatible existing site -> one relevant add-on; unclear -> ask whether new or addition.",
     "Full-site/all-features before its feature list -> ask features only. \"Do custom integrations cost extra?\" -> \"Yes. Which integration do you mean?\" No number. Unclear embed/standard/direct -> ask which, no number.",
-    "Handoff $250-$600 only after explicit scope change and handoff-price ask.",
+    "Handoff $250-$600 only after later explicit handoff-price scope change.",
     "CRM capability/price/scope/setup/start/logistics turns are complete; never mention mockup unless asked.",
     "\"How do we start?\" -> \"We collect that during scoping if you move forward.\" Portal chains use same lock.",
     "Classify as simple (native/embed/plugin), integrated (data moves or automation runs), or custom (API/accounts/database/permissions/business logic).",
@@ -227,6 +227,7 @@ OUTPUT_MARKERS = (
     "A portal budget objection, scope-start question, or \"how do I get a price?\" remains inside the portal chain.",
     "Do not quote a fixed price, ceiling, or vague lower bound such as \"in the thousands\" for portals, dashboards, APIs, accounts, databases, or custom business logic.",
     "CRM chain output lock: capability, comparison, scope, setup, start, requested-details, and logistics answers are complete turns.",
+    "After the direct range is quoted, CRM why, meaning, which-one, and site-fit follow-ups explain classification only and must not repeat any range or introduce a second price.",
     "In a new-site chain, \"Is the live calendar extra?\" is explicit price intent: quote only $4,000-$6,500 for the whole-project integration lane.",
     "After Emma quotes a price, any follow-up about range, budget, drivers, scope, or new-vs-add-on stays in a price-only lane until that chain ends.",
     "In that lane, answer only the asked price issue: no mockup mention, mockup CTA, email ask, or renewed sales transition unless the buyer newly accepts or requests the mockup.",

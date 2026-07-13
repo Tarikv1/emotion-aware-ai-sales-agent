@@ -423,6 +423,17 @@ class DetailedPricingTraceCanaryTests(unittest.TestCase):
 
         self.assertEqual(status_by_id(result)[traces.EXPECTED_TEST_ORDER[6]], "pass")
 
+    def test_crm_scenario_treats_already_have_site_as_known_context(self) -> None:
+        payload = full_payload()
+        payload["test_runs"][6]["agent_responses"] = [
+            traces.make_event("user", "I already have a site. What does direct CRM integration cost?"),
+            traces.make_event("agent", "Direct CRM/API integration is $1,000-$2,500+ depending on API data flow and field mapping."),
+        ]
+
+        result = traces.validate_payload(payload)
+
+        self.assertEqual(status_by_id(result)[traces.EXPECTED_TEST_ORDER[6]], "pass")
+
     def test_crm_scenario_rejects_explanation_before_required_context_question(self) -> None:
         payload = full_payload()
         payload["test_runs"][6]["agent_responses"] = [

@@ -86,7 +86,7 @@ CRM_HANDOFF_SWITCH_RE = re.compile(
     re.IGNORECASE,
 )
 CRM_SITE_CONTEXT_RE = re.compile(
-    r"\b(?:new\s+(?:site|website)|existing(?:\s+compatible)?\s+(?:site|website)|current\s+(?:site|website)|addition\s+to\s+(?:my|our|an|the)\s+existing\s+(?:site|website))\b",
+    r"\b(?:new\s+(?:site|website)|existing(?:\s+compatible)?\s+(?:site|website)|current\s+(?:site|website)|already\s+have\s+(?:a|the|our)\s+(?:site|website)|addition\s+to\s+(?:my|our|an|the)\s+existing\s+(?:site|website))\b",
     re.IGNORECASE,
 )
 CRM_PRICE_TOPIC_RE = re.compile(r"\b(?:crm|api|direct\s+integration)\b", re.IGNORECASE)
