@@ -154,7 +154,7 @@ MOCKUP_SEND_SIGNAL_RE = re.compile(
     re.IGNORECASE,
 )
 PROJECT_PRICE_ASK_RE = re.compile(
-    r"\b(?:what does|how much (?:does|is))\s+(?:a\s+)?(?:new\s+)?(?:site|website|build|project)\s+cost\b|\b(?:site|website|build|project)\s+(?:price|cost|quote|range)\b|\b(?:extra\s+cost|what\s+would\s+that\s+cost)\b",
+    r"\b(?:what does|how much (?:does|is))\s+(?:a\s+)?(?:new\s+)?(?:site|website|build|project)\s+cost\b|\b(?:site|website|build|project)\s+(?:price|cost|quote|range)\b|\b(?:extra\s+cost|what\s+would\s+that\s+cost|how\s+much\s+more\s+(?:is|does))\b",
     re.IGNORECASE,
 )
 SELF_UPDATE_EDITOR_RE = re.compile(

@@ -583,6 +583,7 @@ class DetailedPricingTraceCanaryTests(unittest.TestCase):
         questions = [
             "Is there an extra cost to set up editing access?",
             "It is for my existing site. What would that cost?",
+            "So, how much more is it for the live calendar then?",
         ]
 
         for question in questions:
