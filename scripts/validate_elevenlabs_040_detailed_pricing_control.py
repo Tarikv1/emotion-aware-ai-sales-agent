@@ -150,6 +150,7 @@ REQUIRED_DEFAULT_KB_DOCS = (
 )
 
 PROMPT_MARKERS = (
+    'CRM price-context lock overrides capability-first: when new/existing is unknown, output exactly "Is this for a new site or an addition to your existing site?" Nothing else.',
     '"You offered a mockup, right?" -> "Yes, the mockup is free and shows a homepage concept." Stop.',
     "Risk follow-ups: answer only. Summary: \"That's right.\" Stop. No CTA/email/question until \"send it.\"",
     "Price-source lock: use only approved Campaign Facts/active-pricing-KB values; never invent, narrow, average, or endorse buyer-suggested numbers.",

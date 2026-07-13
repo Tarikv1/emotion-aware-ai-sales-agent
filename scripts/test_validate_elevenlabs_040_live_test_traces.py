@@ -423,6 +423,23 @@ class DetailedPricingTraceCanaryTests(unittest.TestCase):
 
         self.assertEqual(status_by_id(result)[traces.EXPECTED_TEST_ORDER[6]], "pass")
 
+    def test_crm_scenario_rejects_explanation_before_required_context_question(self) -> None:
+        payload = full_payload()
+        payload["test_runs"][6]["agent_responses"] = [
+            traces.make_event("user", "What does direct CRM integration cost?"),
+            traces.make_event(
+                "agent",
+                "A simple handoff sends form submissions into the CRM, while direct integration can sync records and trigger automations. Is this for a new site or an addition to your existing site?",
+            ),
+            traces.make_event("user", "It is for our existing site."),
+            traces.make_event("agent", "A direct CRM/API add-on is $1,000-$2,500+ depending on API data flow and field mapping."),
+        ]
+
+        result = traces.validate_payload(payload)
+
+        self.assertEqual(status_by_id(result)[traces.EXPECTED_TEST_ORDER[6]], "fail")
+        self.assertIn("crm_unknown_context_question_only", traces.failure_names(result, traces.EXPECTED_TEST_ORDER[6]))
+
     def test_crm_scenario_allows_explicit_switch_to_non_crm_request_form(self) -> None:
         payload = full_payload()
         payload["test_runs"][6]["agent_responses"] = [

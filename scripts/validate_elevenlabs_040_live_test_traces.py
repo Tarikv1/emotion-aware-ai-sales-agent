@@ -85,6 +85,13 @@ CRM_HANDOFF_SWITCH_RE = re.compile(
     r"(?=.*\b(?:simple|one[- ]way|supported)\b)(?=.*\b(?:crm\s+)?(?:handoff|connector|plugin)\b)(?=.*\b(?:how much|costs?|prices?|charge|fee)\b)",
     re.IGNORECASE,
 )
+CRM_SITE_CONTEXT_RE = re.compile(
+    r"\b(?:new\s+(?:site|website)|existing(?:\s+compatible)?\s+(?:site|website)|current\s+(?:site|website)|addition\s+to\s+(?:my|our|an|the)\s+existing\s+(?:site|website))\b",
+    re.IGNORECASE,
+)
+CRM_PRICE_TOPIC_RE = re.compile(r"\b(?:crm|api|direct\s+integration)\b", re.IGNORECASE)
+CRM_NON_DIRECT_PRICE_SWITCH_RE = re.compile(r"\b(?:simple\s+(?:form|handoff)|appointment[- ]request)\b", re.IGNORECASE)
+CRM_CONTEXT_QUESTION = "Is this for a new site or an addition to your existing site?"
 CAPABILITY_REQUEST_RE = re.compile(
     r"\b(?:booking|calendar|crm|payments?|integrations?|connect(?:ion|ed|ing)?|api|portal|dashboard)\b",
     re.IGNORECASE,
@@ -764,6 +771,41 @@ def scenario_multi_feature(checks: Checks, messages: list[str]) -> None:
 
 
 def scenario_crm_existing_site(checks: Checks, events: list[dict[str, Any]], messages: list[str]) -> None:
+    first_crm_price_ask = next(
+        (
+            index
+            for index, event in enumerate(events)
+            if event["role"] == "user"
+            and PRICE_TRIGGER_RE.search(event["message"])
+            and any(
+                prior["role"] == "user" and CRM_PRICE_TOPIC_RE.search(prior["message"])
+                for prior in events[: index + 1]
+            )
+            and not (
+                CRM_NON_DIRECT_PRICE_SWITCH_RE.search(event["message"])
+                and not CRM_PRICE_TOPIC_RE.search(event["message"])
+            )
+        ),
+        None,
+    )
+    context_known_at_first_ask = first_crm_price_ask is not None and any(
+        event["role"] == "user" and CRM_SITE_CONTEXT_RE.search(event["message"])
+        for event in events[: first_crm_price_ask + 1]
+    )
+    if first_crm_price_ask is not None and not context_known_at_first_ask:
+        context_response = next(
+            (
+                event["message"].strip()
+                for event in events[first_crm_price_ask + 1 :]
+                if event["role"] == "agent"
+            ),
+            "",
+        )
+        checks.check(
+            "crm_unknown_context_question_only",
+            context_response.casefold() == CRM_CONTEXT_QUESTION.casefold(),
+            f"unknown-context CRM price response must be only {CRM_CONTEXT_QUESTION!r}; found {context_response!r}",
+        )
     request_form_switch_index = next(
         (
             index

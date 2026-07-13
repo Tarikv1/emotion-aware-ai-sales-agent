@@ -278,7 +278,7 @@ def assert_prompt_and_kb() -> None:
         "\n".join((prompt, analysis_setup, human_tests)),
         (
             "simple form handoff or a real integration",
-            "Capability stays confident first; any price answer follows Core Boundaries.",
+            "CRM price-context lock overrides capability-first:",
             "Price mapping comes after a cost question and usually says the whole project moves toward {{website_integration_heavy_range}}, not that the integration is an automatic add-on.",
             "jumps into a price range before answering the capability question clearly",
         ),
