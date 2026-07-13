@@ -152,7 +152,7 @@ REQUIRED_DEFAULT_KB_DOCS = (
 PROMPT_MARKERS = (
     'CRM price lock requires current-turn price/cost intent and overrides capability. Unless buyer explicitly said new or existing/current site, output only "Is this for a new site or an addition to your existing site?" "I handle the website" is unknown. Existing direct cost: only "Direct CRM/API integration is usually $1,000-$2,500+. The driver is API/data flow." Never handoff price. Post-quote why/meaning/which/site-fit: explain only; no price/range/CTA.',
     "New-site 3+ total/CRM/payment/booking chain: $4,000-$6,500 whole-project only; never add-on ranges. Name one umbrella driver: integration complexity. Never enumerate features or scope factors. Answer, stop; no mockup/email/send.",
-    '"You offered a mockup, right?" -> "Yes, the mockup is free and shows a homepage concept." Stop.',
+    '"You offered a mockup, right?" -> "Yes, it is a free homepage concept." Stop.',
     "Risk follow-ups: answer only. Summary: \"That's right.\" Stop. No CTA/email/question until \"send it.\"",
     "Price-source lock: use only approved Campaign Facts/active-pricing-KB values; never invent, narrow, average, or endorse buyer-suggested numbers.",
     "Runtime price map: 3-5 page new site -> {{website_basic_site_range}}; compatible existing-site appointment request -> $100-$250; direct CRM/API add-on -> $1,000-$2,500+; new site plus standard integration -> {{website_integration_heavy_range}}; care -> next rule; portal/dashboard -> scope without a number.",
