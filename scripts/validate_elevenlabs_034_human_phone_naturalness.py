@@ -278,7 +278,7 @@ def assert_prompt_and_kb() -> None:
         "\n".join((prompt, analysis_setup, human_tests)),
         (
             "simple form handoff or a real integration",
-            "CRM price lock applies only after current-turn price/cost intent and overrides capability.",
+            "CRM price lock requires current-turn price/cost intent and overrides capability.",
             "Price mapping comes after a cost question and usually says the whole project moves toward {{website_integration_heavy_range}}, not that the integration is an automatic add-on.",
             "jumps into a price range before answering the capability question clearly",
         ),
@@ -313,7 +313,7 @@ def assert_prompt_and_kb() -> None:
         "first-call outcome and existing-website guards",
         "\n".join((prompt, analysis_setup, human_tests)),
         (
-            "one low-friction move toward the free mockup",
+            "seek free-mockup permission",
             "Do not force booking",
             "I'm not saying your current site is broken. The mockup is just a comparison point.",
             "Emma must not imply the current site is bad without approved evidence.",
