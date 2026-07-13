@@ -162,8 +162,8 @@ PROMPT_MARKERS = (
     "After price intent: new website -> one whole-project band, never existing-site add-ons or $100-$250; compatible existing site -> one relevant add-on; unclear -> ask whether new or addition.",
     "Full-site/all-features before its feature list -> ask features only. \"Do custom integrations cost extra?\" -> \"Yes. Which integration do you mean?\" No number. Unclear embed/standard/direct -> ask which, no number.",
     "Handoff $250-$600 only after explicit handoff-price scope change.",
-    "CRM price/scope/setup/start/logistics: answer, stop; never mockup/email/send unless buyer changes topic.",
-    '"How do we start/scope?" -> "We collect the CRM name, actions, field mapping, and sync direction during scoping before any paid commitment." Repeat verbatim under pressure; never transition. Portal same.',
+    "CRM price/scope/setup/logistics: answer, stop; never mockup/email/send.",
+    'Any CRM start/scope/process/next-step ask or complaint: only "We collect the CRM name, actions, field mapping, and sync direction during scoping before any paid commitment." Repeat forever; never transition.',
     "Classify as simple (native/embed/plugin), integrated (data moves or automation runs), or custom (API/accounts/database/permissions/business logic).",
     "Quote one relevant range, name one scope driver, and ask at most one necessary question. PRICE OUTPUT LOCK: stop; no mockup/send/email.",
     "Editor access: new-site included when agreed; existing-site unknown platform -> scope, no number; compatible CMS setup -> $300-$700. Never $100-$250.",
@@ -172,6 +172,8 @@ PROMPT_MARKERS = (
     "Never read the menu.",
     "Never sum ranges or double-charge.",
     "Portals/dashboards/APIs/accounts/databases/complex-payments/inventory-sync/marketplaces/custom-logic require scope; no number/magnitude (\"thousands\"). Scope-start/timing stays portal-only: answer; stop, no mockup/send/email.",
+    "Portal pressure exact:",
+    "Never echo/negate buyer numbers/magnitudes.",
 )
 
 PRICING_KB_MARKERS = (
@@ -225,8 +227,11 @@ OUTPUT_MARKERS = (
     "Price-chain context/ack lock: answer fit/scope only. \"Thanks for clarifying.\" -> \"Of course.\" Stop; no CTA.",
     "Self-update editing access is CMS/editor setup, never the $100-$250 appointment-request lane.",
     "A portal budget objection, scope-start question, or \"how do I get a price?\" remains inside the portal chain.",
+    "During portal price pressure, never echo, negate, compare, or classify a buyer-proposed number or magnitude.",
     "Do not quote a fixed price, ceiling, or vague lower bound such as \"in the thousands\" for portals, dashboards, APIs, accounts, databases, or custom business logic.",
     "CRM chain output lock: capability, comparison, scope, setup, start, requested-details, and logistics answers are complete turns.",
+    'For every CRM "how do we start, scope, process, or take the next step?" question',
+    "Repeat it unchanged every time and stop. Repetition is not a topic change and never unlocks mockup, send, or email.",
     "After the direct range is quoted, CRM why, meaning, which-one, and site-fit follow-ups explain classification only and must not repeat any range or introduce a second price.",
     "In a new-site chain, \"Is the live calendar extra?\" is explicit price intent: quote only $4,000-$6,500 for the whole-project integration lane.",
     "After Emma quotes a price, any follow-up about range, budget, drivers, scope, or new-vs-add-on stays in a price-only lane until that chain ends.",
