@@ -165,11 +165,12 @@ def assert_prompt_and_kb() -> None:
         assert_condition("Human Phone Call Standard" in text, f"{label} missing Human Phone Call Standard")
         assert_condition("Residue Loop" in text, f"{label} missing Residue Loop")
         assert_condition(
-            "Use a short spoken transition when it helps the turn feel natural" in text,
+            "Use brief spoken transitions when natural" in text
+            or "Use a short spoken transition when it helps the turn feel natural" in text,
             f"{label} missing transition overcorrection guard",
         )
         assert_condition(
-            "Do not force a transition on every turn" in text,
+            "Do not force a transition on every turn" in text or "never force one" in text,
             f"{label} missing no-forced-transition rule",
         )
     assert_condition(
