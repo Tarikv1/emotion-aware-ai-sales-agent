@@ -174,6 +174,7 @@ PROMPT_MARKERS = (
     "Portals/dashboards/APIs/accounts/databases/complex-payments/inventory-sync/marketplaces/custom-logic require scope; no number/magnitude (\"thousands\"). Scope-start/timing stays portal-only: answer; stop, no mockup/send/email.",
     "Portal pressure exact:",
     "Never echo/negate buyer numbers/magnitudes.",
+    'Portal "built one?" -> "We do custom web work including portals and dashboards; this setup still needs scope." Stop; no mockup.',
 )
 
 PRICING_KB_MARKERS = (
@@ -228,6 +229,8 @@ OUTPUT_MARKERS = (
     "Self-update editing access is CMS/editor setup, never the $100-$250 appointment-request lane.",
     "A portal budget objection, scope-start question, or \"how do I get a price?\" remains inside the portal chain.",
     "During portal price pressure, never echo, negate, compare, or classify a buyer-proposed number or magnitude.",
+    "If a portal buyer asks whether Atlas has built one before, say only:",
+    '"We do custom web work including portals and dashboards; this setup still needs scope."',
     "Do not quote a fixed price, ceiling, or vague lower bound such as \"in the thousands\" for portals, dashboards, APIs, accounts, databases, or custom business logic.",
     "CRM chain output lock: capability, comparison, scope, setup, start, requested-details, and logistics answers are complete turns.",
     'For every CRM "how do we start, scope, process, or take the next step?" question',
