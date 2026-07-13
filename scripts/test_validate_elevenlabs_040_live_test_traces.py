@@ -159,6 +159,25 @@ class DetailedPricingTraceCanaryTests(unittest.TestCase):
 
                 self.assertEqual(result["independent_status"], "pass")
 
+    def test_mockup_send_signal_requires_an_unhedged_mockup_request(self) -> None:
+        positive_requests = [
+            "Send over the mockup.",
+            "I'd like the mockup.",
+            "I want the mockup.",
+        ]
+        non_requests = [
+            "Go ahead with the lower end.",
+            "Yeah, not the mockup; I meant the price.",
+            "The mockup sounds good, but not now.",
+        ]
+
+        for request in positive_requests:
+            with self.subTest(request=request):
+                self.assertIsNotNone(traces.MOCKUP_SEND_SIGNAL_RE.search(request))
+        for non_request in non_requests:
+            with self.subTest(non_request=non_request):
+                self.assertIsNone(traces.MOCKUP_SEND_SIGNAL_RE.search(non_request))
+
     def test_partial_canary_fails_actionable_mockup_offer_when_buyer_mentioned_mockup(self) -> None:
         offers = [
             "I can put together a free mockup for you first.",
@@ -450,6 +469,10 @@ class DetailedPricingTraceCanaryTests(unittest.TestCase):
             "Where should I send the mockup?",
             "What is the best email for the mockup?",
             "What email should I send it to?",
+            "Which email should I send it to?",
+            "Where can I send it?",
+            "Where do I send it?",
+            "What's a good email?",
         ]
         neutral_price_language = [
             "Would you be open to the lower end if content is ready?",

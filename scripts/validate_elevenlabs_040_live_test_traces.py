@@ -118,7 +118,7 @@ MOCKUP_VISUAL_CLARIFICATION_RE = re.compile(
     re.IGNORECASE,
 )
 SEND_EMAIL_CTA_RE = re.compile(
-    r"(?:\bwhere\s+should\s+i\s+send\b|\bwhat\s+email\s+should\s+i\s+send\b|\bwhat(?:'s|\s+is)?\s+(?:the\s+)?best\s+email\b|\b(?:(?:i|we)\s+(?:can|could|would|will)|(?:i|we)['’]ll)\s+(?:send|email)\b)",
+    r"(?:\bwhere\s+(?:can|do|should)\s+i\s+send\b|\b(?:what|which)\s+email\s+should\s+i\s+send\b|\bwhat(?:'s|\s+is)?\s+(?:(?:the|a)\s+)?(?:best|good)\s+email\b|\b(?:(?:i|we)\s+(?:can|could|would|will)|(?:i|we)['’]ll)\s+(?:send|email)\b)",
     re.IGNORECASE,
 )
 PORTAL_EMAIL_CAPTURE_CTA_RE = re.compile(
@@ -142,7 +142,7 @@ RENEWED_PITCH_CTA_RE = re.compile(
     re.IGNORECASE,
 )
 MOCKUP_SEND_SIGNAL_RE = re.compile(
-    r"\b(?:send it|send that|send the mockup|go ahead(?:\s+and\s+send)?|mockup sounds good|(?:yes|yeah)[^.?!]{0,30}mock[- ]?up|let[’']?s\s+(?:do|see|start\s+with)\s+(?:the\s+)?mock[- ]?up|i(?:[’']d|\s+would)\s+like\s+to\s+(?:see|do|try|start\s+with)\s+(?:the\s+)?mock[- ]?up)\b",
+    r"\b(?:send\s+(?:over\s+)?(?:it|that|(?:the\s+)?mock[- ]?up)|go\s+ahead\s+(?:and\s+send|with\s+(?:the\s+)?mock[- ]?up)|mock[- ]?up\s+sounds\s+good(?![^.?!]{0,25}\b(?:but\s+not|not\s+now|later)\b)|(?:yes|yeah)(?![^.?!]{0,20}\b(?:not|don[’']t|do\s+not)\b)[^.?!]{0,30}mock[- ]?up|let[’']?s\s+(?:do|see|start\s+with)\s+(?:the\s+)?mock[- ]?up|i(?:[’']d|\s+would)\s+like(?:\s+to\s+(?:see|do|try|start\s+with))?\s+(?:the\s+)?mock[- ]?up|i\s+want(?:\s+to\s+(?:see|do|try|start\s+with))?\s+(?:the\s+)?mock[- ]?up)\b",
     re.IGNORECASE,
 )
 PROJECT_PRICE_ASK_RE = re.compile(
