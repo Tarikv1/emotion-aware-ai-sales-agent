@@ -393,6 +393,36 @@ class DetailedPricingTraceCanaryTests(unittest.TestCase):
 
         self.assertEqual(status_by_id(result)[traces.EXPECTED_TEST_ORDER[6]], "pass")
 
+    def test_crm_request_form_switch_rejects_request_form_and_direct_ranges_together(self) -> None:
+        payload = full_payload()
+        payload["test_runs"][6]["agent_responses"] = [
+            traces.make_event("user", "What does direct CRM integration cost on our existing site?"),
+            traces.make_event("agent", "A direct CRM/API add-on is $1,000-$2,500+ depending on API data flow."),
+            traces.make_event("user", "If I do not have a CRM, how much does the appointment request cost?"),
+            traces.make_event(
+                "agent",
+                "A simple appointment request form is $100-$250, while direct CRM/API integration is $1,000-$2,500+.",
+            ),
+        ]
+
+        result = traces.validate_payload(payload)
+
+        self.assertEqual(status_by_id(result)[traces.EXPECTED_TEST_ORDER[6]], "fail")
+        self.assertIn("crm_one_lane_only", traces.failure_names(result, traces.EXPECTED_TEST_ORDER[6]))
+
+    def test_crm_scenario_allows_pre_price_new_existing_clarifier(self) -> None:
+        payload = full_payload()
+        payload["test_runs"][6]["agent_responses"] = [
+            traces.make_event("user", "What does direct CRM integration cost?"),
+            traces.make_event("agent", "Is this for a new site or an addition to your existing site?"),
+            traces.make_event("user", "It is for our existing site."),
+            traces.make_event("agent", "A direct CRM/API add-on is $1,000-$2,500+ depending on API data flow and field mapping."),
+        ]
+
+        result = traces.validate_payload(payload)
+
+        self.assertEqual(status_by_id(result)[traces.EXPECTED_TEST_ORDER[6]], "pass")
+
     def test_crm_scenario_allows_explicit_switch_to_non_crm_request_form(self) -> None:
         payload = full_payload()
         payload["test_runs"][6]["agent_responses"] = [
@@ -474,6 +504,22 @@ class DetailedPricingTraceCanaryTests(unittest.TestCase):
 
         self.assertEqual(status_by_id(result)[traces.EXPECTED_TEST_ORDER[4]], "fail")
         self.assertIn("new_site_price_chain_no_unsolicited_cta", traces.failure_names(result, traces.EXPECTED_TEST_ORDER[4]))
+
+    def test_new_site_booking_rejects_existing_site_request_form_range(self) -> None:
+        payload = full_payload()
+        payload["test_runs"][4]["agent_responses"] = [
+            traces.make_event("user", "What does a new straightforward site with a simple request form cost?"),
+            traces.make_event("agent", "A basic new site is $900-$1,500 depending on page count and content."),
+            traces.make_event("user", "Is a live calendar extra?"),
+            traces.make_event("agent", "A live calendar is $100-$250 depending on the routing."),
+            traces.make_event("user", "What does the whole new site with that integration cost?"),
+            traces.make_event("agent", "The whole new site is $4,000-$6,500 depending on the calendar workflow."),
+        ]
+
+        result = traces.validate_payload(payload)
+
+        self.assertEqual(status_by_id(result)[traces.EXPECTED_TEST_ORDER[4]], "fail")
+        self.assertIn("approved_ranges_only_in_relevant_scenarios", traces.failure_names(result, traces.EXPECTED_TEST_ORDER[4]))
 
     def test_portal_scope_chain_rejects_email_capture(self) -> None:
         payload = full_payload()

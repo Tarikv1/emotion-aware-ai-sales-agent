@@ -760,10 +760,15 @@ def scenario_multi_feature(checks: Checks, messages: list[str]) -> None:
 
 
 def scenario_crm_existing_site(checks: Checks, events: list[dict[str, Any]], messages: list[str]) -> None:
-    switched_to_request_form = any(
-        event["role"] == "user" and CRM_REQUEST_FORM_SWITCH_RE.search(event["message"])
-        for event in events
+    request_form_switch_index = next(
+        (
+            index
+            for index, event in enumerate(events)
+            if event["role"] == "user" and CRM_REQUEST_FORM_SWITCH_RE.search(event["message"])
+        ),
+        None,
     )
+    switched_to_request_form = request_form_switch_index is not None
     first_direct_quote = next(
         (
             index
@@ -807,12 +812,17 @@ def scenario_crm_existing_site(checks: Checks, events: list[dict[str, Any]], mes
         if event["role"] != "agent":
             continue
         labels = set(approved_labels(event["message"]))
-        if {"crm_api", "crm_handoff"} <= labels:
-            lane_violations.append(f"agent response {index} quoted direct and handoff ranges together")
+        quoted_lanes = labels & {"crm_api", "crm_handoff", "request_form"}
+        if len(quoted_lanes) > 1:
+            lane_violations.append(f"agent response {index} quoted multiple CRM/request-form lanes together: {sorted(quoted_lanes)}")
         if "crm_handoff" in labels and (handoff_switch_index is None or index <= handoff_switch_index):
             lane_violations.append(f"agent response {index} quoted the handoff range before a later explicit scope change")
         if "crm_api" in labels and handoff_switch_index is not None and index > handoff_switch_index:
             lane_violations.append(f"agent response {index} repeated the direct range after the handoff scope change")
+        if "request_form" in labels and (request_form_switch_index is None or index <= request_form_switch_index):
+            lane_violations.append(f"agent response {index} quoted the request-form range before a later explicit scope change")
+        if "crm_api" in labels and request_form_switch_index is not None and index > request_form_switch_index:
+            lane_violations.append(f"agent response {index} repeated the direct range after the request-form scope change")
     checks.check(
         "crm_one_lane_only",
         not lane_violations,
