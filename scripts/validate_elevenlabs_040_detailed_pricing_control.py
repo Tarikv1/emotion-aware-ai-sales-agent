@@ -150,6 +150,7 @@ REQUIRED_DEFAULT_KB_DOCS = (
 )
 
 PROMPT_MARKERS = (
+    '"You offered a mockup, right?" -> "Yes, the mockup is free and shows a homepage concept." Stop.',
     "Risk follow-ups: answer only. Summary: \"That's right.\" Stop. No CTA/email/question until \"send it.\"",
     "Price-source lock: use only approved Campaign Facts/active-pricing-KB values; never invent, narrow, average, or endorse buyer-suggested numbers.",
     "Runtime price map: 3-5 page new site -> {{website_basic_site_range}}; compatible existing-site appointment request -> $100-$250; direct CRM/API add-on -> $1,000-$2,500+; new site plus standard integration -> {{website_integration_heavy_range}}; care -> next rule; portal/dashboard -> scope without a number.",
