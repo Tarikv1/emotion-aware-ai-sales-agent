@@ -136,6 +136,29 @@ class DetailedPricingTraceCanaryTests(unittest.TestCase):
 
         self.assertEqual(result["independent_status"], "pass")
 
+    def test_partial_canary_allows_mockup_cta_after_explicit_buyer_request(self) -> None:
+        buyer_requests = [
+            "Let's do the mockup.",
+            "I'd like to see the mockup.",
+        ]
+
+        for buyer_request in buyer_requests:
+            with self.subTest(buyer_request=buyer_request):
+                result = traces.validate_partial_canary_payload(
+                    canary_payload(
+                        [
+                            "A basic site is usually in the $900-$1,500 range, depending on content.",
+                            "Sure. I can send the mockup now.",
+                        ],
+                        [
+                            "What does a basic website cost?",
+                            buyer_request,
+                        ],
+                    )
+                )
+
+                self.assertEqual(result["independent_status"], "pass")
+
     def test_partial_canary_fails_actionable_mockup_offer_when_buyer_mentioned_mockup(self) -> None:
         offers = [
             "I can put together a free mockup for you first.",
@@ -196,6 +219,7 @@ class DetailedPricingTraceCanaryTests(unittest.TestCase):
     def test_plural_prices_is_a_direct_price_trigger(self) -> None:
         self.assertIsNotNone(traces.PRICE_TRIGGER_RE.search("What are your website prices?"))
         self.assertIsNotNone(traces.PRICE_TRIGGER_RE.search("I need to know what a basic site costs."))
+        self.assertIsNotNone(traces.PRICE_TRIGGER_RE.search("I was calling to get a quote for a new website."))
 
     def test_custom_business_logic_is_not_a_menu_dump(self) -> None:
         descriptive_phrases = [
@@ -291,6 +315,89 @@ class DetailedPricingTraceCanaryTests(unittest.TestCase):
         self.assertEqual(status_by_id(result)[traces.EXPECTED_TEST_ORDER[6]], "fail")
         self.assertIn("crm_no_invented_contact_details", traces.failure_names(result, traces.EXPECTED_TEST_ORDER[6]))
 
+    def test_crm_scenario_allows_explicit_switch_to_non_crm_request_form(self) -> None:
+        payload = full_payload()
+        payload["test_runs"][6]["agent_responses"] = [
+            traces.make_event("user", "I'm calling about a CRM integration."),
+            traces.make_event("agent", "A CRM stores and manages leads. If you are not using one, we can set up a simple request form handoff instead."),
+            traces.make_event("user", "If I don't have one, what does that simple form handoff cost then?"),
+            traces.make_event("agent", "For a compatible existing site, a simple appointment request form is usually $100-$250. The driver is whether the site accepts the form cleanly."),
+        ]
+
+        result = traces.validate_payload(payload)
+
+        self.assertEqual(status_by_id(result)[traces.EXPECTED_TEST_ORDER[6]], "pass")
+
+    def test_free_mockup_process_chain_rejects_unsolicited_cta(self) -> None:
+        payload = full_payload()
+        payload["test_runs"][1]["agent_responses"] = [
+            traces.make_event("user", "So it is really free with no obligation?"),
+            traces.make_event("agent", "Yes, it is free and there is no obligation. If you want, I can send the mockup over."),
+        ]
+
+        result = traces.validate_payload(payload)
+
+        self.assertEqual(status_by_id(result)[traces.EXPECTED_TEST_ORDER[1]], "fail")
+        self.assertIn("free_mockup_process_no_unsolicited_cta", traces.failure_names(result, traces.EXPECTED_TEST_ORDER[1]))
+
+    def test_basic_price_scope_chain_rejects_unsolicited_cta(self) -> None:
+        payload = full_payload()
+        payload["test_runs"][2]["agent_responses"] = [
+            traces.make_event("user", "What does a basic website cost?"),
+            traces.make_event("agent", "A basic site is usually $900-$1,500 depending on content."),
+            traces.make_event("user", "What keeps it near the lower end?"),
+            traces.make_event("agent", "Prepared content keeps it lower. I can put together a free mockup if you want."),
+        ]
+
+        result = traces.validate_payload(payload)
+
+        self.assertEqual(status_by_id(result)[traces.EXPECTED_TEST_ORDER[2]], "fail")
+        self.assertIn("basic_price_chain_no_unsolicited_cta", traces.failure_names(result, traces.EXPECTED_TEST_ORDER[2]))
+
+    def test_new_site_price_scope_chain_rejects_unsolicited_cta(self) -> None:
+        payload = full_payload()
+        payload["test_runs"][4]["agent_responses"] = [
+            traces.make_event("user", "I need a quote for a new website."),
+            traces.make_event("agent", "A basic new site is usually $900-$1,500 depending on content."),
+            traces.make_event("user", "It is straightforward with an appointment request form."),
+            traces.make_event("agent", "That stays in the basic range. I can send a free mockup first."),
+            traces.make_event("user", "What does a live calendar cost?"),
+            traces.make_event("agent", "For the whole new site with a standard integration, it is usually $4,000-$6,500."),
+        ]
+
+        result = traces.validate_payload(payload)
+
+        self.assertEqual(status_by_id(result)[traces.EXPECTED_TEST_ORDER[4]], "fail")
+        self.assertIn("new_site_price_chain_no_unsolicited_cta", traces.failure_names(result, traces.EXPECTED_TEST_ORDER[4]))
+
+    def test_portal_scope_chain_rejects_email_capture(self) -> None:
+        payload = full_payload()
+        payload["test_runs"][7]["agent_responses"] = [
+            traces.make_event("user", "How much does a parent portal cost?"),
+            traces.make_event("agent", "It needs scope around accounts, database, permissions, security, and integrations."),
+            traces.make_event("user", "Do I email you the requirements?"),
+            traces.make_event("agent", "Yes. What email should I have you send it to?"),
+        ]
+
+        result = traces.validate_payload(payload)
+
+        self.assertEqual(status_by_id(result)[traces.EXPECTED_TEST_ORDER[7]], "fail")
+        self.assertIn("portal_no_mockup_cta", traces.failure_names(result, traces.EXPECTED_TEST_ORDER[7]))
+
+    def test_care_chain_rejects_unasked_project_price(self) -> None:
+        payload = full_payload()
+        payload["test_runs"][9]["agent_responses"] = [
+            traces.make_event("user", "What does hosting and maintenance cost per month?"),
+            traces.make_event("agent", "Essential Care is $79 per month for hosting, updates, backups, and monitoring."),
+            traces.make_event("user", "It is for a new site."),
+            traces.make_event("agent", "A new site is $900-$1,500, plus $79 per month for care."),
+        ]
+
+        result = traces.validate_payload(payload)
+
+        self.assertEqual(status_by_id(result)[traces.EXPECTED_TEST_ORDER[9]], "fail")
+        self.assertIn("care_chain_no_unasked_project_price", traces.failure_names(result, traces.EXPECTED_TEST_ORDER[9]))
+
     def test_care_ongoing_costs_and_same_turn_mockup_question_pass(self) -> None:
         payload = full_payload()
         payload["test_runs"][9]["agent_responses"] = [
@@ -339,8 +446,10 @@ class DetailedPricingTraceCanaryTests(unittest.TestCase):
             "I can show you a mockup first.",
             "I can share the mockup if useful.",
             "We could walk through a mockup first.",
+            "I can have a free homepage mockup put together before you decide.",
             "Where should I send the mockup?",
             "What is the best email for the mockup?",
+            "What email should I send it to?",
         ]
         neutral_price_language = [
             "Would you be open to the lower end if content is ready?",

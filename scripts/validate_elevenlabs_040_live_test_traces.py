@@ -14,7 +14,7 @@ from typing import Any
 EXPECTED_AGENT_ID = "agent_7801kt0g32zxf4f8x5zkykj7syty"
 CHECKPOINT_ID = "ELEVENLABS-040-detailed-pricing-control"
 PRICE_TRIGGER_RE = re.compile(
-    r"\b(?:how much|costs?|prices?|charge|fee|range|ballpark|budget|afford|monthly|extra|fit|fits|works?)\b|\$\s?1,200\b",
+    r"\b(?:how much|costs?|prices?|quotes?|charge|fee|range|ballpark|budget|afford|monthly|extra|fit|fits|works?)\b|\$\s?1,200\b",
     re.IGNORECASE,
 )
 ADVANCED_PRICE_FOLLOWUP_RE = re.compile(
@@ -73,6 +73,10 @@ CRM_SCOPE_RE = re.compile(
     r"\b(?:api|authentication|field mapping|fields?|sync|synchronization|data flow|error handling)\b",
     re.IGNORECASE,
 )
+CRM_REQUEST_FORM_SWITCH_RE = re.compile(
+    r"(?=.*\b(?:simple\s+(?:form|handoff)|form\s+handoff|appointment\s+request)\b)(?=.*\b(?:how much|costs?|prices?|charge|fee)\b)(?=.*\b(?:do(?:\s+not|n[’']t)\s+have\s+(?:one|a\s+crm)|without\s+(?:a\s+)?crm|no\s+crm)\b)",
+    re.IGNORECASE,
+)
 ATLAS_CONTACT_DETAIL_RE = re.compile(
     r"\b(?:hello|info|sales|contact)\s*(?:at|@)\s*atlas\s*web\s*studio\s*(?:dot|\.)\s*com\b",
     re.IGNORECASE,
@@ -114,11 +118,19 @@ MOCKUP_VISUAL_CLARIFICATION_RE = re.compile(
     re.IGNORECASE,
 )
 SEND_EMAIL_CTA_RE = re.compile(
-    r"(?:\bwhere\s+should\s+i\s+send\b|\bwhat(?:'s|\s+is)?\s+(?:the\s+)?best\s+email\b|\b(?:(?:i|we)\s+(?:can|could|would|will)|(?:i|we)['’]ll)\s+(?:send|email)\b)",
+    r"(?:\bwhere\s+should\s+i\s+send\b|\bwhat\s+email\s+should\s+i\s+send\b|\bwhat(?:'s|\s+is)?\s+(?:the\s+)?best\s+email\b|\b(?:(?:i|we)\s+(?:can|could|would|will)|(?:i|we)['’]ll)\s+(?:send|email)\b)",
+    re.IGNORECASE,
+)
+PORTAL_EMAIL_CAPTURE_CTA_RE = re.compile(
+    r"\bwhat\s+email\s+should\s+i\s+have\s+you\s+send\s+it\s+to\b",
     re.IGNORECASE,
 )
 MOCKUP_OFFER_CTA_RE = re.compile(
     r"\b(?:i|we)\s+(?:can|could|would|will)\b[^.?!]{0,50}\b(?:put\s+together|create|make|prepare|build|show|share|walk\s+through|start\s+with|send|email)\b[^.?!]{0,50}\bmock[- ]?up\b",
+    re.IGNORECASE,
+)
+MOCKUP_REVERSE_OFFER_CTA_RE = re.compile(
+    r"\b(?:i|we)\s+(?:can|could|would|will)\b[^.?!]{0,60}\bmock[- ]?up\b[^.?!]{0,40}\b(?:put\s+together|prepared?|created?|made|built)\b",
     re.IGNORECASE,
 )
 MOCKUP_NEXT_STEP_CTA_RE = re.compile(
@@ -127,6 +139,14 @@ MOCKUP_NEXT_STEP_CTA_RE = re.compile(
 )
 RENEWED_PITCH_CTA_RE = re.compile(
     r"\b(?:reason\s+i\s+called|judge\b[^.?!]{0,60}\bbefore\s+deciding|before\s+deciding\s+anything\s+paid|without\s+asking\s+you\s+to\s+commit)\b",
+    re.IGNORECASE,
+)
+MOCKUP_SEND_SIGNAL_RE = re.compile(
+    r"\b(?:send it|send that|send the mockup|go ahead(?:\s+and\s+send)?|mockup sounds good|(?:yes|yeah)[^.?!]{0,30}mock[- ]?up|let[’']?s\s+(?:do|see|start\s+with)\s+(?:the\s+)?mock[- ]?up|i(?:[’']d|\s+would)\s+like\s+to\s+(?:see|do|try|start\s+with)\s+(?:the\s+)?mock[- ]?up)\b",
+    re.IGNORECASE,
+)
+PROJECT_PRICE_ASK_RE = re.compile(
+    r"\b(?:what does|how much (?:does|is))\s+(?:a\s+)?(?:new\s+)?(?:site|website|build|project)\s+cost\b|\b(?:site|website|build|project)\s+(?:price|cost|quote|range)\b",
     re.IGNORECASE,
 )
 PRICE_CHAIN_ACCEPTANCE_RE = re.compile(
@@ -148,8 +168,25 @@ def has_unsupported_ceiling(message: str) -> bool:
 def has_actionable_post_quote_cta(message: str) -> bool:
     return any(
         pattern.search(message) is not None
-        for pattern in (SEND_EMAIL_CTA_RE, MOCKUP_OFFER_CTA_RE, MOCKUP_NEXT_STEP_CTA_RE, RENEWED_PITCH_CTA_RE)
+        for pattern in (SEND_EMAIL_CTA_RE, PORTAL_EMAIL_CAPTURE_CTA_RE, MOCKUP_OFFER_CTA_RE, MOCKUP_REVERSE_OFFER_CTA_RE, MOCKUP_NEXT_STEP_CTA_RE, RENEWED_PITCH_CTA_RE)
     )
+
+
+def unsolicited_cta_messages(events: list[dict[str, Any]], *, start_index: int = 0) -> list[str]:
+    latest_user_message = ""
+    violations: list[str] = []
+    for index, event in enumerate(events):
+        if event["role"] == "user":
+            latest_user_message = event["message"]
+            continue
+        if (
+            index >= start_index
+            and event["role"] == "agent"
+            and has_actionable_post_quote_cta(event["message"])
+            and MOCKUP_SEND_SIGNAL_RE.search(latest_user_message) is None
+        ):
+            violations.append(event["message"])
+    return violations
 
 
 def buyer_turn_references_mockup(events: list[dict[str, Any]], buyer_index: int) -> bool:
@@ -221,7 +258,7 @@ EXPECTED_TESTS: dict[str, dict[str, Any]] = {
     },
     "sim_040_free_mockup_question_no_paid_price": {
         "name": f"{CHECKPOINT_ID}::sim_040_free_mockup_question_no_paid_price",
-        "kind": "no_price",
+        "kind": "free_mockup_no_price",
         "allowed_labels": set(),
         "requires_price_intent": False,
     },
@@ -593,10 +630,27 @@ def scenario_no_price(checks: Checks, messages: list[str], first_paid: int | Non
     checks.check("no_paid_price_disclosure", first_paid is None, "scenario must not contain any paid-price disclosure")
 
 
-def scenario_basic_site(checks: Checks, messages: list[str]) -> None:
+def scenario_free_mockup_no_price(checks: Checks, events: list[dict[str, Any]], messages: list[str], first_paid: int | None) -> None:
+    scenario_no_price(checks, messages, first_paid)
+    violations = unsolicited_cta_messages(events)
+    checks.check(
+        "free_mockup_process_no_unsolicited_cta",
+        not violations,
+        f"free/process-risk chain reopened the mockup CTA before a buyer send signal: {violations}",
+    )
+
+
+def scenario_basic_site(checks: Checks, events: list[dict[str, Any]], messages: list[str]) -> None:
     seen = validate_allowed_labels(checks, messages, {"basic_site"})
     checks.check("basic_site_expected_range", "basic_site" in seen, "basic-site range $900-$1,500 is required")
     checks.check("basic_site_scope_driver_present", any(DRIVER_RE.search(message) for message in messages), "basic-site answer must include one relevant scope driver")
+    first_quote = first_agent_price_quote_index(events)
+    violations = unsolicited_cta_messages(events, start_index=first_quote if first_quote is not None else 0)
+    checks.check(
+        "basic_price_chain_no_unsolicited_cta",
+        not violations,
+        f"basic-site price/scope chain reopened a mockup CTA: {violations}",
+    )
 
 
 def scenario_existing_request_form(checks: Checks, messages: list[str]) -> None:
@@ -610,7 +664,7 @@ def scenario_existing_request_form(checks: Checks, messages: list[str]) -> None:
     )
 
 
-def scenario_new_site_booking(checks: Checks, messages: list[str]) -> None:
+def scenario_new_site_booking(checks: Checks, events: list[dict[str, Any]], messages: list[str]) -> None:
     seen = validate_allowed_labels(checks, messages, {"basic_site", "integration_heavy"})
     checks.check("new_site_basic_range_present", "basic_site" in seen, "new-site booking scenario must include the base $900-$1,500 whole-project range")
     checks.check("new_site_integration_range_present", "integration_heavy" in seen, "live-calendar follow-up must move to the $4,000-$6,500 whole-project range")
@@ -628,6 +682,13 @@ def scenario_new_site_booking(checks: Checks, messages: list[str]) -> None:
             any(fragment in integrated_message for fragment in ("whole project", "new build", "new site")),
             "higher integration answer must keep the classification as a whole project, not an add-on",
         )
+    first_quote = first_agent_price_quote_index(events)
+    violations = unsolicited_cta_messages(events, start_index=first_quote if first_quote is not None else 0)
+    checks.check(
+        "new_site_price_chain_no_unsolicited_cta",
+        not violations,
+        f"new-site price/scope chain reopened a mockup CTA: {violations}",
+    )
 
 
 def scenario_multi_feature(checks: Checks, messages: list[str]) -> None:
@@ -641,10 +702,23 @@ def scenario_multi_feature(checks: Checks, messages: list[str]) -> None:
     checks.check("no_arithmetic_total", not arithmetic_violations, f"multi-feature pricing must not stack or total ranges: {arithmetic_violations}")
 
 
-def scenario_crm_existing_site(checks: Checks, messages: list[str]) -> None:
-    seen = validate_allowed_labels(checks, messages, {"crm_api"})
-    checks.check("crm_existing_site_expected_range", "crm_api" in seen, "existing-site CRM scenario requires the $1,000-$2,500+ range")
-    checks.check("crm_scope_caveat_present", any(CRM_SCOPE_RE.search(message) for message in messages), "CRM pricing must mention API/data-flow scope caveats")
+def scenario_crm_existing_site(checks: Checks, events: list[dict[str, Any]], messages: list[str]) -> None:
+    switched_to_request_form = any(
+        event["role"] == "user" and CRM_REQUEST_FORM_SWITCH_RE.search(event["message"])
+        for event in events
+    )
+    allowed_labels = {"crm_api", "request_form"} if switched_to_request_form else {"crm_api"}
+    seen = validate_allowed_labels(checks, messages, allowed_labels)
+    checks.check(
+        "crm_existing_site_expected_range",
+        "request_form" in seen if switched_to_request_form else "crm_api" in seen,
+        "CRM scenario must use the direct range unless the buyer explicitly abandons CRM and asks for a simple request-form price",
+    )
+    checks.check(
+        "crm_scope_caveat_present",
+        switched_to_request_form or any(CRM_SCOPE_RE.search(message) for message in messages),
+        "direct CRM pricing must mention API/data-flow scope caveats",
+    )
     crm_cta_messages = [message for message in messages if has_actionable_post_quote_cta(message)]
     checks.check(
         "crm_chain_no_mockup_or_email_cta",
@@ -749,6 +823,21 @@ def scenario_care_plan(checks: Checks, events: list[dict[str, Any]], messages: l
         ongoing_trigger is not None,
         "care-plan scenario must include an explicit hosting/maintenance/monthly question",
     )
+    project_price_allowed = False
+    unasked_project_prices: list[str] = []
+    if ongoing_trigger is not None:
+        for event in events[ongoing_trigger + 1 :]:
+            if event["role"] == "user" and PROJECT_PRICE_ASK_RE.search(event["message"]):
+                project_price_allowed = True
+            elif event["role"] == "agent":
+                non_care_labels = set(approved_labels(event["message"])) - CARE_PLAN_LABELS
+                if non_care_labels and not project_price_allowed:
+                    unasked_project_prices.append(event["message"])
+    checks.check(
+        "care_chain_no_unasked_project_price",
+        not unasked_project_prices,
+        f"care-only chain disclosed project pricing without an explicit project-price question: {unasked_project_prices}",
+    )
     early_messages = [event["message"] for event in events[: ongoing_trigger or 0] if event["role"] == "agent"]
     early_labels = unique_labels_seen(early_messages) & CARE_PLAN_LABELS
     checks.check(
@@ -804,16 +893,18 @@ def validate_run(run: dict[str, Any], *, expected_provider_test_id: str | None =
         pass
     elif kind == "no_price":
         scenario_no_price(checks, messages, first_paid)
+    elif kind == "free_mockup_no_price":
+        scenario_free_mockup_no_price(checks, events, messages, first_paid)
     elif kind == "basic_site":
-        scenario_basic_site(checks, messages)
+        scenario_basic_site(checks, events, messages)
     elif kind == "existing_request_form":
         scenario_existing_request_form(checks, messages)
     elif kind == "new_site_booking":
-        scenario_new_site_booking(checks, messages)
+        scenario_new_site_booking(checks, events, messages)
     elif kind == "multi_feature":
         scenario_multi_feature(checks, messages)
     elif kind == "crm_existing_site":
-        scenario_crm_existing_site(checks, messages)
+        scenario_crm_existing_site(checks, events, messages)
     elif kind == "portal_scope":
         scenario_portal_scope(checks, events, messages, first_paid)
     elif kind == "budget_fit":
