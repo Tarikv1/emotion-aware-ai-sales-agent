@@ -131,6 +131,8 @@ Portals and web applications receive no numeric range or ceiling. Do not volunte
 | File uploads | $100-$300 | Storage, privacy, and security may change scope. |
 | Newsletter signup | $100-$250 | Standard supported provider connection. |
 
+Self-update editing access is a CMS/editor setup question, not an appointment-request form. On a new site, ordinary editor access can be included when agreed. On an existing site, first identify the platform and whether its editor is compatible. If the platform is unknown, locked, custom, or needs cleanup, scope without a number. When the buyer explicitly asks for a compatible standard CMS setup with templates, categories, or training, use only the approved Blog or CMS setup range of $300-$700. Never use $100-$250 for editor access.
+
 ## Booking, CRM, Payments, And Automation Add-Ons
 
 | Feature | Add-on range | Boundary |
@@ -145,6 +147,10 @@ Portals and web applications receive no numeric range or ceiling. Do not volunte
 | Custom payment workflow | $1,000-$2,500+ | Refunds, subscriptions, data synchronization, and compliance must be scoped. |
 
 If new-site versus existing-site context is unknown, a CRM price turn outputs only: "Is this for a new site or an addition to your existing site?" This is the complete turn. Append nothing and give no number. In a direct CRM/API price chain, quote only $1,000-$2,500+ and its API/data-flow driver. Do not quote the $100-$250 appointment-request range for CRM work. A simple CRM handoff means a one-way standard connector or supported plugin into the CRM; it is not an email-only form or appointment-request add-on. If the buyer asks whether the direct range is for the simple handoff or full integration, output only: "That range is for the direct CRM/API integration, not the simple handoff." Stop and give no second price. If the buyer explicitly changes scope to a simple CRM form handoff on a compatible existing site and asks that handoff's price, treat it as changed scope and quote only $250-$600 with one standard-connector or supported-plugin driver. Do not repeat the direct-integration range in that changed-scope answer. The active CRM chain includes price, scope, setup, requested details, and email logistics. Every such follow-up is complete after the direct answer. Do not append a mockup, send, email-capture, or other sales CTA. The chain ends only when the buyer clearly changes topic or ends the conversation.
+
+When a buyer asks for both simple CRM handoff and direct CRM/API prices, first ask only whether the work is for a new site or an existing site. After existing-site context, quote the direct CRM/API range only; never quote both lanes in one answer. The $250-$600 handoff range becomes available only after a later explicit change to the handoff scope and a direct handoff-price question.
+
+For a new-site booking chain, a simple appointment-request form can remain inside the basic whole-project band. If the buyer then asks whether a live calendar is extra, treat that as price intent and quote only the $4,000-$6,500 whole-project integration range. Never quote the $100-$250 existing-site add-on. Name one calendar-system or workflow driver and stop.
 
 ## Local Search And Analytics Add-Ons
 
