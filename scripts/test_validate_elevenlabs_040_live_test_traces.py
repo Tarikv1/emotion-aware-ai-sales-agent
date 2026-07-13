@@ -234,6 +234,32 @@ class DetailedPricingTraceCanaryTests(unittest.TestCase):
 
         self.assertEqual(status_by_id(result)[traces.EXPECTED_TEST_ORDER[2]], "pass")
 
+    def test_negated_ceiling_language_is_not_an_unsupported_ceiling(self) -> None:
+        refusals = [
+            "I can't honestly give a maximum without scope; the approved range is $1,000-$2,500+.",
+            "I wouldn't want to invent a ceiling before scoping the API and data flow.",
+        ]
+
+        for refusal in refusals:
+            with self.subTest(refusal=refusal):
+                self.assertFalse(traces.has_unsupported_ceiling(refusal))
+
+        self.assertTrue(traces.has_unsupported_ceiling("The maximum is $5,000."))
+
+    def test_negated_ceiling_passes_the_money_bearing_validator_path(self) -> None:
+        payload = full_payload()
+        payload["test_runs"][6]["agent_responses"] = [
+            traces.make_event("user", "What does direct CRM integration cost on our existing site?"),
+            traces.make_event(
+                "agent",
+                "A direct CRM/API add-on is usually $1,000-$2,500+. I can't honestly give a maximum without scope because API data flow and field mapping can vary.",
+            ),
+        ]
+
+        result = traces.validate_payload(payload)
+
+        self.assertEqual(status_by_id(result)[traces.EXPECTED_TEST_ORDER[6]], "pass")
+
     def test_portal_scope_chain_fails_mockup_cta_without_numeric_price(self) -> None:
         payload = full_payload()
         payload["test_runs"][7]["agent_responses"] = [

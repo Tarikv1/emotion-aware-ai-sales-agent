@@ -42,6 +42,10 @@ CEILING_RE = re.compile(
     r"\b(?:maximum|max(?:imum)?|ceiling|cap(?:ped)?|no more than|at most|under)\b",
     re.IGNORECASE,
 )
+NEGATED_CEILING_RE = re.compile(
+    r"\b(?:not(?:\s+(?:a|an))?(?:\s+real)?|can(?:not|[’']t)|could(?:\s+not|n[’']t)|would(?:\s+not|n[’']t)|won[’']t|will\s+not|unable\s+to)\b(?:\s+\w+){0,6}\s+\b(?:maximum|max(?:imum)?|ceiling|cap(?:ped)?|no more than|at most|under)\b",
+    re.IGNORECASE,
+)
 ARITHMETIC_RE = re.compile(
     r"(?:\+|\b(?:plus|add|stack|sum|total|combined|together)\b)",
     re.IGNORECASE,
@@ -122,6 +126,11 @@ PRICE_CHAIN_ACCEPTANCE_RE = re.compile(
 def has_unsupported_fixed_quote(message: str) -> bool:
     without_refusals = NEGATED_FIXED_QUOTE_RE.sub("", message)
     return FIXED_QUOTE_RE.search(without_refusals) is not None
+
+
+def has_unsupported_ceiling(message: str) -> bool:
+    without_refusals = NEGATED_CEILING_RE.sub("", message)
+    return CEILING_RE.search(without_refusals) is not None
 
 
 def has_actionable_post_quote_cta(message: str) -> bool:
@@ -442,7 +451,7 @@ def record_common_message_rules(checks: Checks, events: list[dict[str, Any]]) ->
         if money_matches(message):
             checks.check(
                 "no_unsupported_fixed_quote_or_ceiling",
-                not has_unsupported_fixed_quote(message) and CEILING_RE.search(message) is None,
+                not has_unsupported_fixed_quote(message) and not has_unsupported_ceiling(message),
                 f"agent response {index} contains an unsupported fixed quote or ceiling",
             )
 
