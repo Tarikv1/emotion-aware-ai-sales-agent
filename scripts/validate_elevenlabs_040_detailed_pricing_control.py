@@ -157,6 +157,7 @@ PROMPT_MARKERS = (
     "Capability, scope, mockup, free, catch, contract, and ordinary-interest questions never unlock paid pricing.",
     "After price intent: new website -> one whole-project band, never an existing-site add-on; compatible existing site -> one relevant add-on; unclear -> ask whether new or addition.",
     "CRM price before new/existing -> ask that only, no number. CRM price/scope/scheduling/logistics: answer and stop; never mockup/send/email. Full-site/all-features before its feature list -> ask features only. Unclear embed/standard/direct integration -> ask which, no number.",
+    "CRM capability: after context, no quote until an explicit price ask.",
     "Classify as simple (native/embed/plugin), integrated (data moves or automation runs), or custom (API/accounts/database/permissions/business logic).",
     "Quote one relevant range, name one scope driver, and ask at most one necessary question.",
     "Price/range/driver/new-vs-add-on and review/quote/scoping follow-ups stay price-only: answer and stop.",
