@@ -43,6 +43,21 @@ def full_payload() -> dict[str, object]:
 
 
 class DetailedPricingTraceCanaryTests(unittest.TestCase):
+    def test_capability_chain_rejects_homepage_concept_cta(self) -> None:
+        payload = full_payload()
+        payload["test_runs"][0]["agent_responses"] = [
+            traces.make_event("user", "Can you add booking, CRM, and payments?"),
+            traces.make_event(
+                "agent",
+                "Yes, we can build that. It depends whether you need a simple handoff or a real integration. Would it be worth sending you that homepage concept to review?",
+            ),
+        ]
+
+        result = traces.validate_payload(payload)
+
+        self.assertEqual(status_by_id(result)[traces.EXPECTED_TEST_ORDER[0]], "fail")
+        self.assertIn("capability_chain_no_unsolicited_cta", traces.failure_names(result, traces.EXPECTED_TEST_ORDER[0]))
+
     def test_default_full_suite_validation_still_rejects_one_test_canary(self) -> None:
         result = traces.validate_payload(
             canary_payload(
@@ -348,6 +363,36 @@ class DetailedPricingTraceCanaryTests(unittest.TestCase):
         self.assertEqual(status_by_id(result)[traces.EXPECTED_TEST_ORDER[6]], "fail")
         self.assertIn("crm_no_invented_contact_details", traces.failure_names(result, traces.EXPECTED_TEST_ORDER[6]))
 
+    def test_crm_comparison_rejects_direct_and_handoff_ranges_together(self) -> None:
+        payload = full_payload()
+        payload["test_runs"][6]["agent_responses"] = [
+            traces.make_event("user", "What do a simple CRM handoff and direct integration cost?"),
+            traces.make_event("agent", "Is this for a new site or an addition to your existing site?"),
+            traces.make_event("user", "It is for our existing site."),
+            traces.make_event(
+                "agent",
+                "A simple CRM handoff is $250-$600, while direct CRM/API integration is $1,000-$2,500+ depending on API data flow.",
+            ),
+        ]
+
+        result = traces.validate_payload(payload)
+
+        self.assertEqual(status_by_id(result)[traces.EXPECTED_TEST_ORDER[6]], "fail")
+        self.assertIn("crm_one_lane_only", traces.failure_names(result, traces.EXPECTED_TEST_ORDER[6]))
+
+    def test_crm_scenario_allows_later_explicit_switch_to_handoff_price(self) -> None:
+        payload = full_payload()
+        payload["test_runs"][6]["agent_responses"] = [
+            traces.make_event("user", "What does direct CRM integration cost on our existing site?"),
+            traces.make_event("agent", "A direct CRM/API add-on is $1,000-$2,500+ depending on API data flow."),
+            traces.make_event("user", "Actually, keep it simple. What does the one-way CRM handoff cost?"),
+            traces.make_event("agent", "A supported one-way CRM connector is $250-$600 depending on the plugin and field mapping."),
+        ]
+
+        result = traces.validate_payload(payload)
+
+        self.assertEqual(status_by_id(result)[traces.EXPECTED_TEST_ORDER[6]], "pass")
+
     def test_crm_scenario_allows_explicit_switch_to_non_crm_request_form(self) -> None:
         payload = full_payload()
         payload["test_runs"][6]["agent_responses"] = [
@@ -360,6 +405,33 @@ class DetailedPricingTraceCanaryTests(unittest.TestCase):
         result = traces.validate_payload(payload)
 
         self.assertEqual(status_by_id(result)[traces.EXPECTED_TEST_ORDER[6]], "pass")
+
+    def test_existing_request_form_allows_pre_price_new_site_clarifier(self) -> None:
+        payload = full_payload()
+        payload["test_runs"][3]["agent_responses"] = [
+            traces.make_event("user", "Can you add an appointment request form to our website?"),
+            traces.make_event("agent", "Yes. Is this for your existing site, or are you looking at a new site too?"),
+            traces.make_event("user", "It is for our existing site. How much would that cost?"),
+            traces.make_event("agent", "For a compatible existing site, an appointment request form is $100-$250. The driver is whether it can be added cleanly to the current site."),
+        ]
+
+        result = traces.validate_payload(payload)
+
+        self.assertEqual(status_by_id(result)[traces.EXPECTED_TEST_ORDER[3]], "pass")
+
+    def test_existing_request_form_logistics_rejects_mockup_reference(self) -> None:
+        payload = full_payload()
+        payload["test_runs"][3]["agent_responses"] = [
+            traces.make_event("user", "What does an appointment request form cost on our existing site?"),
+            traces.make_event("agent", "For a compatible existing site, an appointment request form is $100-$250. The driver is whether it can be added cleanly to the current site."),
+            traces.make_event("user", "Can you tell what platform it uses, or do I need to look it up?"),
+            traces.make_event("agent", "We can usually identify it during scoping. You do not need to look it up before seeing the free mockup."),
+        ]
+
+        result = traces.validate_payload(payload)
+
+        self.assertEqual(status_by_id(result)[traces.EXPECTED_TEST_ORDER[3]], "fail")
+        self.assertIn("existing_site_price_chain_no_unsolicited_cta", traces.failure_names(result, traces.EXPECTED_TEST_ORDER[3]))
 
     def test_free_mockup_process_chain_rejects_unsolicited_cta(self) -> None:
         payload = full_payload()
@@ -444,6 +516,32 @@ class DetailedPricingTraceCanaryTests(unittest.TestCase):
 
         self.assertEqual(status_by_id(result)[traces.EXPECTED_TEST_ORDER[9]], "fail")
         self.assertIn("care_chain_no_unsolicited_cta", traces.failure_names(result, traces.EXPECTED_TEST_ORDER[9]))
+
+    def test_care_editor_setup_never_uses_request_form_price(self) -> None:
+        payload = full_payload()
+        payload["test_runs"][9]["agent_responses"] = [
+            traces.make_event("user", "What does hosting and maintenance cost per month?"),
+            traces.make_event("agent", "Essential Care is $79 per month for hosting, updates, backups, and monitoring."),
+            traces.make_event("user", "Is there an extra cost to set up editing access?"),
+            traces.make_event("agent", "Is that for a new site or an addition to your existing site?"),
+            traces.make_event("user", "It is for my existing site. What would that cost?"),
+            traces.make_event("agent", "Adding simple editing access is $100-$250, depending on the current platform."),
+        ]
+
+        result = traces.validate_payload(payload)
+
+        self.assertEqual(status_by_id(result)[traces.EXPECTED_TEST_ORDER[9]], "fail")
+        self.assertIn("editor_setup_no_request_form_price", traces.failure_names(result, traces.EXPECTED_TEST_ORDER[9]))
+
+    def test_project_price_ask_recognizes_setup_cost_phrasing(self) -> None:
+        questions = [
+            "Is there an extra cost to set up editing access?",
+            "It is for my existing site. What would that cost?",
+        ]
+
+        for question in questions:
+            with self.subTest(question=question):
+                self.assertIsNotNone(traces.PROJECT_PRICE_ASK_RE.search(question))
 
     def test_care_ongoing_costs_and_same_turn_mockup_question_pass(self) -> None:
         payload = full_payload()

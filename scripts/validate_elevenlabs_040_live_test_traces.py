@@ -77,6 +77,14 @@ CRM_REQUEST_FORM_SWITCH_RE = re.compile(
     r"(?=.*\b(?:simple\s+(?:form|handoff)|form\s+handoff|appointment\s+request)\b)(?=.*\b(?:how much|costs?|prices?|charge|fee)\b)(?=.*\b(?:do(?:\s+not|n[’']t)\s+have\s+(?:one|a\s+crm)|without\s+(?:a\s+)?crm|no\s+crm)\b)",
     re.IGNORECASE,
 )
+CRM_HANDOFF_SWITCH_RE = re.compile(
+    r"(?=.*\b(?:simple|one[- ]way|supported)\b)(?=.*\b(?:crm\s+)?(?:handoff|connector|plugin)\b)(?=.*\b(?:how much|costs?|prices?|charge|fee)\b)",
+    re.IGNORECASE,
+)
+CAPABILITY_REQUEST_RE = re.compile(
+    r"\b(?:booking|calendar|crm|payments?|integrations?|connect(?:ion|ed|ing)?|api|portal|dashboard)\b",
+    re.IGNORECASE,
+)
 ATLAS_CONTACT_DETAIL_RE = re.compile(
     r"\b(?:hello|info|sales|contact)\s*(?:at|@)\s*atlas\s*web\s*studio\s*(?:dot|\.)\s*com\b",
     re.IGNORECASE,
@@ -112,7 +120,7 @@ POST_QUOTE_PRICE_FOLLOWUP_RE = re.compile(
     r"\b(?:range|budget|driver|drives|cost(?:s)? more|cost(?:s)? less|more or less|higher|lower|scope|scoped|scoping|firm quote|real (?:number|price|quote)|ready|not all|figure that out|new\s+site|add[- ]on|addition|services page|reviews?)\b",
     re.IGNORECASE,
 )
-MOCKUP_REFERENCE_RE = re.compile(r"\bmock[- ]?up\b", re.IGNORECASE)
+MOCKUP_REFERENCE_RE = re.compile(r"\b(?:mock[- ]?up|homepage concept)\b", re.IGNORECASE)
 MOCKUP_VISUAL_CLARIFICATION_RE = re.compile(
     r"\b(?:just|basically)\s+(?:a\s+)?(?:picture|static visual|visual|concept)\b|\b(?:picture|static visual|visual|concept)\s*,?\s+basically\b",
     re.IGNORECASE,
@@ -146,7 +154,11 @@ MOCKUP_SEND_SIGNAL_RE = re.compile(
     re.IGNORECASE,
 )
 PROJECT_PRICE_ASK_RE = re.compile(
-    r"\b(?:what does|how much (?:does|is))\s+(?:a\s+)?(?:new\s+)?(?:site|website|build|project)\s+cost\b|\b(?:site|website|build|project)\s+(?:price|cost|quote|range)\b",
+    r"\b(?:what does|how much (?:does|is))\s+(?:a\s+)?(?:new\s+)?(?:site|website|build|project)\s+cost\b|\b(?:site|website|build|project)\s+(?:price|cost|quote|range)\b|\b(?:extra\s+cost|what\s+would\s+that\s+cost)\b",
+    re.IGNORECASE,
+)
+SELF_UPDATE_EDITOR_RE = re.compile(
+    r"\b(?:self[- ]update|editing\s+access|site\s+editor|content\s+editor|cms\s+setup)\b",
     re.IGNORECASE,
 )
 PRICE_CHAIN_ACCEPTANCE_RE = re.compile(
@@ -190,6 +202,23 @@ def unsolicited_cta_messages(events: list[dict[str, Any]], *, start_index: int =
     return violations
 
 
+def unsolicited_mockup_mentions(events: list[dict[str, Any]], *, start_index: int = 0) -> list[str]:
+    latest_user_message = ""
+    violations: list[str] = []
+    for index, event in enumerate(events):
+        if event["role"] == "user":
+            latest_user_message = event["message"]
+            continue
+        if (
+            index >= start_index
+            and event["role"] == "agent"
+            and MOCKUP_REFERENCE_RE.search(event["message"])
+            and MOCKUP_REFERENCE_RE.search(latest_user_message) is None
+        ):
+            violations.append(event["message"])
+    return violations
+
+
 def buyer_turn_references_mockup(events: list[dict[str, Any]], buyer_index: int) -> bool:
     if buyer_index < 0 or events[buyer_index]["role"] != "user":
         return False
@@ -214,6 +243,7 @@ APPROVED_VALUE_PATTERNS = {
     "workflow_content": money_range_pattern("2,800", "4,500"),
     "integration_heavy": money_range_pattern("4,000", "6,500"),
     "request_form": money_range_pattern("100", "250"),
+    "crm_handoff": money_range_pattern("250", "600"),
     "crm_api": money_range_pattern("1,000", "2,500", plus_suffix=True),
     "care_79": re.compile(r"\$\s?79(?:\s+(?:per month|monthly)|/month)?\b", re.IGNORECASE),
     "care_149": re.compile(r"\$\s?149(?:\s+(?:per month|monthly)|/month)?\b", re.IGNORECASE),
@@ -226,6 +256,8 @@ KNOWN_MONEY_NORMALIZATIONS: tuple[tuple[re.Pattern[str], str], ...] = (
     (re.compile(r"\bnine hundred\s+(?:dollars?\s+)?to\s+fifteen hundred(?:\s+dollars?)?\b", re.IGNORECASE), "$900-$1,500"),
     (re.compile(r"\$\s?100\s*(?:-|to)\s*\$?\s?250\b", re.IGNORECASE), "$100-$250"),
     (re.compile(r"\bone hundred\s+(?:dollars?\s+)?to\s+two hundred fifty(?:\s+dollars?)?\b", re.IGNORECASE), "$100-$250"),
+    (re.compile(r"\$\s?250\s*(?:-|to)\s*\$?\s?600\b", re.IGNORECASE), "$250-$600"),
+    (re.compile(r"\btwo hundred fifty\s+(?:dollars?\s+)?to\s+six hundred(?:\s+dollars?)?\b", re.IGNORECASE), "$250-$600"),
     (re.compile(r"\$\s?4000\s*(?:-|to)\s*\$?\s?6500\b", re.IGNORECASE), "$4,000-$6,500"),
     (re.compile(r"\bfour thousand\s+(?:dollars?\s+)?to\s+(?:sixty five hundred|six thousand five hundred)(?:\s+dollars?)?\b", re.IGNORECASE), "$4,000-$6,500"),
     (re.compile(r"\$\s?1000\s*(?:-|to)\s*\$?\s?2500\+?\b", re.IGNORECASE), "$1,000-$2,500+"),
@@ -253,7 +285,7 @@ EXPECTED_TEST_ORDER = [
 EXPECTED_TESTS: dict[str, dict[str, Any]] = {
     "sim_040_capability_question_no_unprompted_price": {
         "name": f"{CHECKPOINT_ID}::sim_040_capability_question_no_unprompted_price",
-        "kind": "no_price",
+        "kind": "capability_no_price",
         "allowed_labels": set(),
         "requires_price_intent": False,
     },
@@ -631,6 +663,19 @@ def scenario_no_price(checks: Checks, messages: list[str], first_paid: int | Non
     checks.check("no_paid_price_disclosure", first_paid is None, "scenario must not contain any paid-price disclosure")
 
 
+def scenario_capability_no_price(checks: Checks, events: list[dict[str, Any]], messages: list[str], first_paid: int | None) -> None:
+    scenario_no_price(checks, messages, first_paid)
+    capability_index = first_index(events, role="user", pattern=CAPABILITY_REQUEST_RE)
+    start_index = capability_index if capability_index is not None else 0
+    violations = unsolicited_cta_messages(events, start_index=start_index)
+    violations.extend(unsolicited_mockup_mentions(events, start_index=start_index))
+    checks.check(
+        "capability_chain_no_unsolicited_cta",
+        not violations,
+        f"capability/CRM answer reopened a mockup or email CTA: {violations}",
+    )
+
+
 def scenario_free_mockup_no_price(checks: Checks, events: list[dict[str, Any]], messages: list[str], first_paid: int | None) -> None:
     scenario_no_price(checks, messages, first_paid)
     violations = unsolicited_cta_messages(events)
@@ -646,7 +691,9 @@ def scenario_basic_site(checks: Checks, events: list[dict[str, Any]], messages: 
     checks.check("basic_site_expected_range", "basic_site" in seen, "basic-site range $900-$1,500 is required")
     checks.check("basic_site_scope_driver_present", any(DRIVER_RE.search(message) for message in messages), "basic-site answer must include one relevant scope driver")
     first_quote = first_agent_price_quote_index(events)
-    violations = unsolicited_cta_messages(events, start_index=first_quote if first_quote is not None else 0)
+    start_index = first_quote if first_quote is not None else 0
+    violations = unsolicited_cta_messages(events, start_index=start_index)
+    violations.extend(unsolicited_mockup_mentions(events, start_index=start_index))
     checks.check(
         "basic_price_chain_no_unsolicited_cta",
         not violations,
@@ -654,14 +701,23 @@ def scenario_basic_site(checks: Checks, events: list[dict[str, Any]], messages: 
     )
 
 
-def scenario_existing_request_form(checks: Checks, messages: list[str]) -> None:
+def scenario_existing_request_form(checks: Checks, events: list[dict[str, Any]], messages: list[str]) -> None:
     seen = validate_allowed_labels(checks, messages, {"request_form"})
     checks.check("existing_site_expected_add_on_range", "request_form" in seen, "existing-site request-form scenario requires only the $100-$250 add-on range")
-    combined = " ".join(message for message in messages if "request form" in message.lower() or "$100-$250" in message)
+    combined = " ".join(message for message in messages if "request_form" in approved_labels(message))
     checks.check(
         "existing_site_add_on_classification",
         EXISTING_SITE_RE.search(combined) is not None and ADD_ON_RE.search(combined) is not None and not contains_positive_whole_site_framing(combined),
         "existing-site request-form answer must frame the work as a compatible existing-site add-on, not a new-site/package quote",
+    )
+    first_quote = first_agent_price_quote_index(events)
+    start_index = first_quote if first_quote is not None else 0
+    violations = unsolicited_cta_messages(events, start_index=start_index)
+    violations.extend(unsolicited_mockup_mentions(events, start_index=start_index))
+    checks.check(
+        "existing_site_price_chain_no_unsolicited_cta",
+        not violations,
+        f"existing-site price/setup/logistics chain reopened the mockup: {violations}",
     )
 
 
@@ -708,17 +764,59 @@ def scenario_crm_existing_site(checks: Checks, events: list[dict[str, Any]], mes
         event["role"] == "user" and CRM_REQUEST_FORM_SWITCH_RE.search(event["message"])
         for event in events
     )
-    allowed_labels = {"crm_api", "request_form"} if switched_to_request_form else {"crm_api"}
+    first_direct_quote = next(
+        (
+            index
+            for index, event in enumerate(events)
+            if event["role"] == "agent" and "crm_api" in approved_labels(event["message"])
+        ),
+        None,
+    )
+    handoff_switch_index = next(
+        (
+            index
+            for index, event in enumerate(events)
+            if first_direct_quote is not None
+            and index > first_direct_quote
+            and event["role"] == "user"
+            and CRM_HANDOFF_SWITCH_RE.search(event["message"])
+        ),
+        None,
+    )
+    switched_to_handoff = handoff_switch_index is not None
+    if switched_to_request_form:
+        allowed_labels = {"crm_api", "request_form"}
+    elif switched_to_handoff:
+        allowed_labels = {"crm_api", "crm_handoff"}
+    else:
+        allowed_labels = {"crm_api"}
     seen = validate_allowed_labels(checks, messages, allowed_labels)
+    expected_label = "request_form" if switched_to_request_form else "crm_handoff" if switched_to_handoff else "crm_api"
     checks.check(
         "crm_existing_site_expected_range",
-        "request_form" in seen if switched_to_request_form else "crm_api" in seen,
+        expected_label in seen,
         "CRM scenario must use the direct range unless the buyer explicitly abandons CRM and asks for a simple request-form price",
     )
     checks.check(
         "crm_scope_caveat_present",
-        switched_to_request_form or any(CRM_SCOPE_RE.search(message) for message in messages),
+        switched_to_request_form or switched_to_handoff or any(CRM_SCOPE_RE.search(message) for message in messages),
         "direct CRM pricing must mention API/data-flow scope caveats",
+    )
+    lane_violations: list[str] = []
+    for index, event in enumerate(events):
+        if event["role"] != "agent":
+            continue
+        labels = set(approved_labels(event["message"]))
+        if {"crm_api", "crm_handoff"} <= labels:
+            lane_violations.append(f"agent response {index} quoted direct and handoff ranges together")
+        if "crm_handoff" in labels and (handoff_switch_index is None or index <= handoff_switch_index):
+            lane_violations.append(f"agent response {index} quoted the handoff range before a later explicit scope change")
+        if "crm_api" in labels and handoff_switch_index is not None and index > handoff_switch_index:
+            lane_violations.append(f"agent response {index} repeated the direct range after the handoff scope change")
+    checks.check(
+        "crm_one_lane_only",
+        not lane_violations,
+        "; ".join(lane_violations) if lane_violations else "CRM price answers must stay in one lane",
     )
     crm_cta_messages = [message for message in messages if has_actionable_post_quote_cta(message)]
     checks.check(
@@ -846,6 +944,18 @@ def scenario_care_plan(checks: Checks, events: list[dict[str, Any]], messages: l
         not unasked_project_prices,
         f"care-only chain disclosed project pricing without an explicit project-price question: {unasked_project_prices}",
     )
+    editor_context = False
+    editor_request_form_prices: list[str] = []
+    for event in events[(ongoing_trigger or 0) + 1 :]:
+        if event["role"] == "user" and SELF_UPDATE_EDITOR_RE.search(event["message"]):
+            editor_context = True
+        elif event["role"] == "agent" and editor_context and "request_form" in approved_labels(event["message"]):
+            editor_request_form_prices.append(event["message"])
+    checks.check(
+        "editor_setup_no_request_form_price",
+        not editor_request_form_prices,
+        f"editor/CMS setup reused the appointment-request range: {editor_request_form_prices}",
+    )
     violations = unsolicited_cta_messages(events, start_index=ongoing_trigger if ongoing_trigger is not None else 0)
     checks.check(
         "care_chain_no_unsolicited_cta",
@@ -905,6 +1015,8 @@ def validate_run(run: dict[str, Any], *, expected_provider_test_id: str | None =
     kind = expected["kind"]
     if incomplete:
         pass
+    elif kind == "capability_no_price":
+        scenario_capability_no_price(checks, events, messages, first_paid)
     elif kind == "no_price":
         scenario_no_price(checks, messages, first_paid)
     elif kind == "free_mockup_no_price":
@@ -912,7 +1024,7 @@ def validate_run(run: dict[str, Any], *, expected_provider_test_id: str | None =
     elif kind == "basic_site":
         scenario_basic_site(checks, events, messages)
     elif kind == "existing_request_form":
-        scenario_existing_request_form(checks, messages)
+        scenario_existing_request_form(checks, events, messages)
     elif kind == "new_site_booking":
         scenario_new_site_booking(checks, events, messages)
     elif kind == "multi_feature":
