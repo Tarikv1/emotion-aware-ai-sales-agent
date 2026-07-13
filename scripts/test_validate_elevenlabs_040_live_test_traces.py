@@ -97,6 +97,23 @@ class DetailedPricingTraceCanaryTests(unittest.TestCase):
         self.assertEqual(result["independent_status"], "fail")
         self.assertIn("post_quote_price_followup_no_cta", canary_failure_names(result))
 
+    def test_spoken_multi_feature_range_keeps_scope_followup_cta_locked(self) -> None:
+        payload = full_payload()
+        payload["test_runs"][5]["agent_responses"] = [
+            traces.make_event("user", "What does the whole new site with booking, CRM, and payments cost?"),
+            traces.make_event(
+                "agent",
+                "For the whole project, it is usually four thousand to six thousand five hundred dollars, depending on data flow.",
+            ),
+            traces.make_event("user", "How do we figure out what my site needs then?"),
+            traces.make_event("agent", "We collect that during scoping. The free mockup is the first visual step."),
+        ]
+
+        result = traces.validate_payload(payload)
+
+        self.assertEqual(status_by_id(result)[traces.EXPECTED_TEST_ORDER[5]], "fail")
+        self.assertIn("post_quote_price_followup_no_cta", traces.failure_names(result, traces.EXPECTED_TEST_ORDER[5]))
+
     def test_partial_canary_allows_direct_price_driver_answer_without_cta(self) -> None:
         result = traces.validate_partial_canary_payload(
             canary_payload(

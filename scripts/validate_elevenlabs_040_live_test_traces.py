@@ -132,7 +132,7 @@ PRICE_QUOTE_RE = re.compile(
     re.IGNORECASE,
 )
 POST_QUOTE_PRICE_FOLLOWUP_RE = re.compile(
-    r"\b(?:range|budget|driver|drives|cost(?:s)? more|cost(?:s)? less|more or less|higher|lower|scope|scoped|scoping|firm quote|real (?:number|price|quote)|ready|not all|figure that out|new\s+site|add[- ]on|addition|services page|reviews?)\b",
+    r"\b(?:range|budget|driver|drives|cost(?:s)? more|cost(?:s)? less|more or less|higher|lower|scope|scoped|scoping|firm quote|real (?:number|price|quote)|exact (?:price|quote|scope|cost)|ready|not all|figure\s+out|figure that out|new\s+site|add[- ]on|addition|services page|reviews?)\b",
     re.IGNORECASE,
 )
 MOCKUP_REFERENCE_RE = re.compile(r"\b(?:mock[- ]?up|homepage concept)\b", re.IGNORECASE)
