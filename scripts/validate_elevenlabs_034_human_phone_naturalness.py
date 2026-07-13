@@ -288,7 +288,7 @@ def assert_prompt_and_kb() -> None:
         "\n".join((price, offer, analysis_setup)),
         (
             "That needs a proper scope before I give you a real number.",
-            "Portals and web applications receive no numeric range or ceiling.",
+            "Portals and web applications receive no numeric range, lower-bound magnitude such as \"in the thousands,\" or ceiling.",
             "Portal, dashboard, custom API, user-account, database, complex-payment, inventory-sync, marketplace, and custom business-logic work require scope.",
             "A custom portal, dashboard, database, integration, or application needs technical scoping before final pricing.",
             "Technical scoping determines the exact workflow, data, permissions, APIs, security, integrations, and implementation; it does not determine whether Atlas is willing or able to take on the work.",
