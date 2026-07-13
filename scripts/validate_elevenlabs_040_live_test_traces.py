@@ -17,6 +17,10 @@ PRICE_TRIGGER_RE = re.compile(
     r"\b(?:how much|costs?|prices?|charge|fee|range|ballpark|budget|afford|monthly|extra|fit|fits|works?)\b|\$\s?1,200\b",
     re.IGNORECASE,
 )
+ADVANCED_PRICE_FOLLOWUP_RE = re.compile(
+    r"(?=.*\b(?:how much|costs?|prices?|charge|fee|range|ballpark|budget|afford|monthly|more expensive)\b)(?=.*\b(?:extras?|extra things|booking|payments?|integrations?|live scheduling|logins?)\b)",
+    re.IGNORECASE,
+)
 PAID_PRICE_RE = re.compile(
     r"(?:\$\s?\d[\d,]*(?:\s?(?:-|to)\s?\$?\d[\d,]*\+?)?|\b\d+\s?(?:dollars?|per month|monthly)\b)",
     re.IGNORECASE,
@@ -39,7 +43,7 @@ NEGATED_FIXED_QUOTE_RE = re.compile(
     re.IGNORECASE,
 )
 CEILING_RE = re.compile(
-    r"\b(?:maximum|max(?:imum)?|ceiling|cap(?:ped)?|no more than|at most|under)\b",
+    r"\b(?:maximum|max(?:imum)?|ceiling|cap(?:ped)?|no more than|at most)\b|\bunder\s+\$?\s?\d[\d,]*(?:\.\d+)?\b",
     re.IGNORECASE,
 )
 NEGATED_CEILING_RE = re.compile(
@@ -668,7 +672,32 @@ def scenario_portal_scope(checks: Checks, events: list[dict[str, Any]], messages
 
 
 def scenario_budget_fit(checks: Checks, events: list[dict[str, Any]], messages: list[str]) -> None:
-    seen = validate_allowed_labels(checks, messages, {"basic_site", "buyer_budget_reference"})
+    advanced_price_trigger = next(
+        (
+            index
+            for index, event in enumerate(events)
+            if event["role"] == "user"
+            and PRICE_TRIGGER_RE.search(event["message"])
+            and ADVANCED_PRICE_FOLLOWUP_RE.search(event["message"])
+        ),
+        None,
+    )
+    allowed_labels = {"basic_site", "buyer_budget_reference"}
+    if advanced_price_trigger is not None:
+        allowed_labels.add("integration_heavy")
+    seen = validate_allowed_labels(checks, messages, allowed_labels)
+    integration_before_trigger = [
+        event["message"]
+        for index, event in enumerate(events)
+        if event["role"] == "agent"
+        and "integration_heavy" in approved_labels(event["message"])
+        and (advanced_price_trigger is None or index < advanced_price_trigger)
+    ]
+    checks.check(
+        "budget_advanced_price_only_after_ask",
+        not integration_before_trigger,
+        f"advanced whole-project pricing appeared before an explicit advanced-feature price question: {integration_before_trigger}",
+    )
     checks.check("budget_fit_expected_range", "basic_site" in seen, "budget-fit scenario must answer against the $900-$1,500 basic-site range")
     combined = " ".join(messages)
     dialogue = " ".join(event["message"] for event in events)

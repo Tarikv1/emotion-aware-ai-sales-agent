@@ -245,6 +245,8 @@ class DetailedPricingTraceCanaryTests(unittest.TestCase):
                 self.assertFalse(traces.has_unsupported_ceiling(refusal))
 
         self.assertTrue(traces.has_unsupported_ceiling("The maximum is $5,000."))
+        self.assertFalse(traces.has_unsupported_ceiling("The $79 plan covers hosting; the domain stays under your ownership."))
+        self.assertTrue(traces.has_unsupported_ceiling("Keep the project under $5,000."))
 
     def test_negated_ceiling_passes_the_money_bearing_validator_path(self) -> None:
         payload = full_payload()
@@ -419,6 +421,45 @@ class DetailedPricingTraceCanaryTests(unittest.TestCase):
         self.assertFalse(traces.contains_affirmative_budget_fit("That might be within the usual range."))
         self.assertTrue(traces.contains_affirmative_budget_fit("That's within the usual range."))
         self.assertTrue(traces.contains_affirmative_budget_fit("That’s within the normal range."))
+
+    def test_budget_advanced_price_followup_can_move_to_whole_project_band(self) -> None:
+        payload = full_payload()
+        payload["test_runs"][8]["agent_responses"] = [
+            traces.make_event("user", "Would a basic site fit a $1,200 budget?"),
+            traces.make_event("agent", "Yes, $1,200 fits within the $900-$1,500 basic-site range."),
+            traces.make_event("user", "How much more would booking, payments, or those extra things usually cost?"),
+            traces.make_event("agent", "For a new site with standard integration work, the whole project is usually $4,000-$6,500 depending on the workflow."),
+        ]
+
+        result = traces.validate_payload(payload)
+
+        self.assertEqual(status_by_id(result)[traces.EXPECTED_TEST_ORDER[8]], "pass")
+
+    def test_budget_advanced_band_before_extra_price_ask_still_fails(self) -> None:
+        payload = full_payload()
+        payload["test_runs"][8]["agent_responses"] = [
+            traces.make_event("user", "Would a basic site fit a $1,200 budget?"),
+            traces.make_event("agent", "Yes, $1,200 fits within the $900-$1,500 range, and integration work is usually $4,000-$6,500."),
+        ]
+
+        result = traces.validate_payload(payload)
+
+        self.assertEqual(status_by_id(result)[traces.EXPECTED_TEST_ORDER[8]], "fail")
+        self.assertIn("approved_ranges_only_in_relevant_scenarios", traces.failure_names(result, traces.EXPECTED_TEST_ORDER[8]))
+
+    def test_budget_advanced_band_requires_explicit_price_language(self) -> None:
+        payload = full_payload()
+        payload["test_runs"][8]["agent_responses"] = [
+            traces.make_event("user", "Would a basic site fit a $1,200 budget?"),
+            traces.make_event("agent", "Yes, $1,200 fits within the $900-$1,500 basic-site range."),
+            traces.make_event("user", "Those extra things for booking sound useful."),
+            traces.make_event("agent", "For a new site with standard integration work, the whole project is usually $4,000-$6,500."),
+        ]
+
+        result = traces.validate_payload(payload)
+
+        self.assertEqual(status_by_id(result)[traces.EXPECTED_TEST_ORDER[8]], "fail")
+        self.assertIn("approved_ranges_only_in_relevant_scenarios", traces.failure_names(result, traces.EXPECTED_TEST_ORDER[8]))
 
     def test_canonical_end_call_mirrors_do_not_make_dialogue_ambiguous(self) -> None:
         payload = full_payload()
