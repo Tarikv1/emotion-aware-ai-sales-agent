@@ -260,6 +260,37 @@ class DetailedPricingTraceCanaryTests(unittest.TestCase):
 
         self.assertEqual(status_by_id(result)[traces.EXPECTED_TEST_ORDER[6]], "pass")
 
+    def test_care_ongoing_costs_and_same_turn_mockup_question_pass(self) -> None:
+        payload = full_payload()
+        payload["test_runs"][9]["agent_responses"] = [
+            traces.make_event("agent", "The mockup is a static homepage concept, not a working site."),
+            traces.make_event("user", "So it's just a picture, basically? What about ongoing costs if I use it?"),
+            traces.make_event(
+                "agent",
+                "Yes, the mockup is a static visual. For ongoing hosting and maintenance, the care plan is $79 per month for updates, backups, and monitoring.",
+            ),
+        ]
+
+        result = traces.validate_payload(payload)
+
+        self.assertEqual(status_by_id(result)[traces.EXPECTED_TEST_ORDER[9]], "pass")
+
+    def test_care_same_turn_mockup_question_does_not_allow_send_cta(self) -> None:
+        payload = full_payload()
+        payload["test_runs"][9]["agent_responses"] = [
+            traces.make_event("agent", "The mockup is a static homepage concept, not a working site."),
+            traces.make_event("user", "So it's just a picture, basically? What about ongoing costs if I use it?"),
+            traces.make_event(
+                "agent",
+                "Yes, the mockup is a static visual. The care plan is $79 per month for updates, backups, and monitoring. I can send the mockup over first.",
+            ),
+        ]
+
+        result = traces.validate_payload(payload)
+
+        self.assertEqual(status_by_id(result)[traces.EXPECTED_TEST_ORDER[9]], "fail")
+        self.assertIn("post_quote_price_followup_no_cta", traces.failure_names(result, traces.EXPECTED_TEST_ORDER[9]))
+
     def test_portal_scope_chain_fails_mockup_cta_without_numeric_price(self) -> None:
         payload = full_payload()
         payload["test_runs"][7]["agent_responses"] = [

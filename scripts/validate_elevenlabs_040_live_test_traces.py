@@ -23,7 +23,7 @@ PAID_PRICE_RE = re.compile(
 )
 RANGE_SEPARATOR_RE = r"(?:-|to)"
 ONGOING_COST_TRIGGER_RE = re.compile(
-    r"\b(?:hosting|maintenance|updates|support|ongoing fees?|monthly|per month)\b",
+    r"\b(?:hosting|maintenance|updates|support|ongoing (?:fees?|costs?)|monthly|per month)\b",
     re.IGNORECASE,
 )
 MENU_RE = re.compile(
@@ -101,6 +101,10 @@ POST_QUOTE_PRICE_FOLLOWUP_RE = re.compile(
     re.IGNORECASE,
 )
 MOCKUP_REFERENCE_RE = re.compile(r"\bmock[- ]?up\b", re.IGNORECASE)
+MOCKUP_VISUAL_CLARIFICATION_RE = re.compile(
+    r"\b(?:just|basically)\s+(?:a\s+)?(?:picture|static visual|visual|concept)\b|\b(?:picture|static visual|visual|concept)\s*,?\s+basically\b",
+    re.IGNORECASE,
+)
 SEND_EMAIL_CTA_RE = re.compile(
     r"(?:\bwhere\s+should\s+i\s+send\b|\bwhat(?:'s|\s+is)?\s+(?:the\s+)?best\s+email\b|\b(?:(?:i|we)\s+(?:can|could|would|will)|(?:i|we)['’]ll)\s+(?:send|email)\b)",
     re.IGNORECASE,
@@ -137,6 +141,20 @@ def has_actionable_post_quote_cta(message: str) -> bool:
     return any(
         pattern.search(message) is not None
         for pattern in (SEND_EMAIL_CTA_RE, MOCKUP_OFFER_CTA_RE, MOCKUP_NEXT_STEP_CTA_RE, RENEWED_PITCH_CTA_RE)
+    )
+
+
+def buyer_turn_references_mockup(events: list[dict[str, Any]], buyer_index: int) -> bool:
+    if buyer_index < 0 or events[buyer_index]["role"] != "user":
+        return False
+    message = events[buyer_index]["message"]
+    if MOCKUP_REFERENCE_RE.search(message):
+        return True
+    if MOCKUP_VISUAL_CLARIFICATION_RE.search(message) is None:
+        return False
+    return any(
+        event["role"] == "agent" and MOCKUP_REFERENCE_RE.search(event["message"])
+        for event in events[max(0, buyer_index - 3) : buyer_index]
     )
 
 def money_range_pattern(start: str, end: str, *, plus_suffix: bool = False) -> re.Pattern[str]:
@@ -464,7 +482,10 @@ def validate_post_quote_followup_cta_lock(checks: Checks, events: list[dict[str,
 
     violations: list[str] = []
     first_quote_message = events[first_quote]["message"]
-    if has_actionable_post_quote_cta(first_quote_message) or MOCKUP_REFERENCE_RE.search(first_quote_message):
+    buyer_mentioned_mockup = buyer_turn_references_mockup(events, first_quote - 1)
+    if has_actionable_post_quote_cta(first_quote_message) or (
+        MOCKUP_REFERENCE_RE.search(first_quote_message) and not buyer_mentioned_mockup
+    ):
         violations.append(f"agent response {first_quote} appended mockup/email/send CTA to the price answer")
 
     active_price_chain = False
