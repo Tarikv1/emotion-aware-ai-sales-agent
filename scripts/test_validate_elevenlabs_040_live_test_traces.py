@@ -263,6 +263,34 @@ class DetailedPricingTraceCanaryTests(unittest.TestCase):
 
         self.assertEqual(status_by_id(result)[traces.EXPECTED_TEST_ORDER[6]], "pass")
 
+    def test_crm_logistics_chain_rejects_mockup_and_email_cta(self) -> None:
+        payload = full_payload()
+        payload["test_runs"][6]["agent_responses"] = [
+            traces.make_event("user", "What does direct CRM integration cost on our existing site?"),
+            traces.make_event("agent", "A direct CRM/API add-on is usually $1,000-$2,500+ depending on API data flow."),
+            traces.make_event("user", "How do I get you the details you need?"),
+            traces.make_event("agent", "You can email them over, or I can send a free mockup first. What's the best email?"),
+        ]
+
+        result = traces.validate_payload(payload)
+
+        self.assertEqual(status_by_id(result)[traces.EXPECTED_TEST_ORDER[6]], "fail")
+        self.assertIn("crm_chain_no_mockup_or_email_cta", traces.failure_names(result, traces.EXPECTED_TEST_ORDER[6]))
+
+    def test_crm_logistics_chain_rejects_invented_atlas_contact(self) -> None:
+        payload = full_payload()
+        payload["test_runs"][6]["agent_responses"] = [
+            traces.make_event("user", "What does direct CRM integration cost on our existing site?"),
+            traces.make_event("agent", "A direct CRM/API add-on is usually $1,000-$2,500+ depending on API data flow."),
+            traces.make_event("user", "What email should I send the scope to?"),
+            traces.make_event("agent", "Send it to hello at atlas web studio dot com."),
+        ]
+
+        result = traces.validate_payload(payload)
+
+        self.assertEqual(status_by_id(result)[traces.EXPECTED_TEST_ORDER[6]], "fail")
+        self.assertIn("crm_no_invented_contact_details", traces.failure_names(result, traces.EXPECTED_TEST_ORDER[6]))
+
     def test_care_ongoing_costs_and_same_turn_mockup_question_pass(self) -> None:
         payload = full_payload()
         payload["test_runs"][9]["agent_responses"] = [

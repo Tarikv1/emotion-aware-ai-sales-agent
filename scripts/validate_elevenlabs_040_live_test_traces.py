@@ -73,6 +73,10 @@ CRM_SCOPE_RE = re.compile(
     r"\b(?:api|authentication|field mapping|fields?|sync|synchronization|data flow|error handling)\b",
     re.IGNORECASE,
 )
+ATLAS_CONTACT_DETAIL_RE = re.compile(
+    r"\b(?:hello|info|sales|contact)\s*(?:at|@)\s*atlas\s*web\s*studio\s*(?:dot|\.)\s*com\b",
+    re.IGNORECASE,
+)
 UNSUPPORTED_INCLUDED_RE = re.compile(
     r"\b(?:everything|every behavior|all behavior|all workflows?)\b.*\bincluded\b",
     re.IGNORECASE,
@@ -641,6 +645,18 @@ def scenario_crm_existing_site(checks: Checks, messages: list[str]) -> None:
     seen = validate_allowed_labels(checks, messages, {"crm_api"})
     checks.check("crm_existing_site_expected_range", "crm_api" in seen, "existing-site CRM scenario requires the $1,000-$2,500+ range")
     checks.check("crm_scope_caveat_present", any(CRM_SCOPE_RE.search(message) for message in messages), "CRM pricing must mention API/data-flow scope caveats")
+    crm_cta_messages = [message for message in messages if has_actionable_post_quote_cta(message)]
+    checks.check(
+        "crm_chain_no_mockup_or_email_cta",
+        not crm_cta_messages,
+        f"CRM price/scope/logistics chain reopened a mockup or email CTA: {crm_cta_messages}",
+    )
+    invented_contact_messages = [message for message in messages if ATLAS_CONTACT_DETAIL_RE.search(message)]
+    checks.check(
+        "crm_no_invented_contact_details",
+        not invented_contact_messages,
+        f"CRM logistics response invented Atlas contact details: {invented_contact_messages}",
+    )
     checks.check(
         "crm_no_everything_included_claim",
         not any(UNSUPPORTED_INCLUDED_RE.search(message) for message in messages),
