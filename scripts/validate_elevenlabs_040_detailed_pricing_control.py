@@ -19,6 +19,7 @@ PROMPT_PATH = "runtime/providers/elevenlabs_agents/prompts/web_design_atlas_sale
 OFFER_PATH = "runtime/providers/elevenlabs_agents/knowledge_base/atlas_web_studio/atlas_offer_facts.md"
 PRICE_PATH = "runtime/providers/elevenlabs_agents/knowledge_base/atlas_web_studio/atlas_price_scope_cost_drivers.md"
 OUTPUT_PATH = "runtime/providers/elevenlabs_agents/knowledge_base/atlas_web_studio/atlas_output_quality_rules.md"
+CLOSE_PATH = "runtime/providers/elevenlabs_agents/knowledge_base/atlas_web_studio/atlas_close_and_followup_playbook.md"
 TESTS_PATH = "runtime/providers/elevenlabs_agents/tests/web_design_detailed_pricing_control_tests.json"
 PATCHER_PATH = "scripts/apply_elevenlabs_040_detailed_pricing_control.py"
 VALIDATOR_PATH = "scripts/validate_elevenlabs_040_detailed_pricing_control.py"
@@ -37,6 +38,7 @@ PROMPT = ROOT / PROMPT_PATH
 OFFER = ROOT / OFFER_PATH
 PRICE = ROOT / PRICE_PATH
 OUTPUT = ROOT / OUTPUT_PATH
+CLOSE = ROOT / CLOSE_PATH
 TESTS = ROOT / TESTS_PATH
 PATCHER = ROOT / PATCHER_PATH
 LIVE_EVIDENCE_DIR = ROOT / "research" / "experiments" / "generated" / CHECKPOINT_ID
@@ -48,6 +50,7 @@ CHECKPOINT_DIFF_PATHS = (
     OFFER_PATH,
     PRICE_PATH,
     OUTPUT_PATH,
+    CLOSE_PATH,
     TESTS_PATH,
     PACKAGE_MANIFEST_PATH,
     PATCHER_PATH,
@@ -141,6 +144,7 @@ EXPECTED_MODIFIED_PRODUCT_FILES = [
     OFFER_PATH,
     PRICE_PATH,
     OUTPUT_PATH,
+    CLOSE_PATH,
 ]
 
 REQUIRED_DEFAULT_KB_DOCS = (
@@ -294,6 +298,7 @@ PATCHER_MARKERS = (
     '"atlas_offer_facts.md"',
     '"atlas_price_scope_cost_drivers.md"',
     '"atlas_output_quality_rules.md"',
+    '"atlas_close_and_followup_playbook.md": "X5TwiHiuJzdRPpSzhBGn"',
     "def merged_dynamic_variables(",
     "dynamic_variable_placeholders",
     "def patch_body(",
@@ -596,6 +601,9 @@ def validate_live_patcher_semantics() -> None:
     subset_parsed = patcher.parse_args(["--target-kb-doc", "atlas_output_quality_rules.md"])
     subset = patcher.parse_target_kb_docs(subset_parsed.target_kb_doc)
     assert_condition(subset == ("atlas_output_quality_rules.md",), "040 patcher subset target parsing mismatch")
+    close_parsed = patcher.parse_args(["--target-kb-doc", "atlas_close_and_followup_playbook.md"])
+    close_subset = patcher.parse_target_kb_docs(close_parsed.target_kb_doc)
+    assert_condition(close_subset == ("atlas_close_and_followup_playbook.md",), "040 patcher close-playbook target parsing mismatch")
     for bad_targets in ([""], ["atlas_output_quality_rules.md", "atlas_output_quality_rules.md"], ["not_a_real_doc.md"]):
         try:
             patcher.parse_target_kb_docs(bad_targets)
@@ -843,7 +851,7 @@ def expected_request_ids_for_targets(target_names: list[str]) -> list[str]:
 def expected_source_path_for_request_id(request_id: str) -> str:
     assert_condition(request_id.startswith("update_kb_file::"), f"{request_id} source path request id mismatch")
     doc_name = request_id.split("::", 1)[1]
-    assert_condition(doc_name in {Path(OFFER_PATH).name, Path(PRICE_PATH).name, Path(OUTPUT_PATH).name}, f"{request_id} source path doc mismatch")
+    assert_condition(doc_name in {Path(OFFER_PATH).name, Path(PRICE_PATH).name, Path(OUTPUT_PATH).name, Path(CLOSE_PATH).name}, f"{request_id} source path doc mismatch")
     return f"runtime/providers/elevenlabs_agents/knowledge_base/atlas_web_studio/{doc_name}"
 
 

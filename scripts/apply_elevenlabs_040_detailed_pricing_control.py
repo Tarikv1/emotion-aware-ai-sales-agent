@@ -140,6 +140,7 @@ KNOWN_KB_DOC_IDS = {
     "atlas_offer_facts.md": "HYTfB5s1Z8LzOw8oBADt",
     "atlas_price_scope_cost_drivers.md": "vGKk14CCzKqGW3GxgUqA",
     "atlas_output_quality_rules.md": "GS5wqgcUomoJmqWCEpP7",
+    "atlas_close_and_followup_playbook.md": "X5TwiHiuJzdRPpSzhBGn",
 }
 KB_REQUEST_SOURCE_MARKERS = {
     "atlas_offer_facts.md": (
@@ -156,6 +157,11 @@ KB_REQUEST_SOURCE_MARKERS = {
         "Pricing Quote Discipline",
         "Never disclose a paid price before explicit buyer price intent.",
         "For care, quote exactly one relevant plan after ongoing-cost intent; default to Essential Care if support need is unclear.",
+    ),
+    "atlas_close_and_followup_playbook.md": (
+        "## End Call Tool Control",
+        "Guarantee requirement makes Atlas a bad fit and the conversation is complete",
+        "## Buyer Says Thanks/Bye",
     ),
 }
 PROMPT_PATH = ROOT / "runtime" / "providers" / "elevenlabs_agents" / "prompts" / "web_design_atlas_sales_prompt.md"
