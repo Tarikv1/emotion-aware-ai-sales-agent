@@ -162,7 +162,10 @@ def validate_pattern_candidate(payload: dict[str, Any]) -> dict[str, Any]:
     _require_exact(feature, FEATURE_DEFINITION_FIELDS, "PatternCandidateV1.feature_definition")
     for field in ("relationship", "null_comparator", "eligible_turn_definition"):
         _require_nonempty_string(feature[field], f"feature_definition.{field}")
-    if feature["direction"] not in {"increase", "decrease", "nonmonotonic"}:
+    if (
+        not isinstance(feature["direction"], str)
+        or feature["direction"] not in {"increase", "decrease", "nonmonotonic"}
+    ):
         raise PatternContractError("feature_definition.direction is invalid")
     if (
         type(feature["minimum_observed_effect"]) not in {int, float}
@@ -383,6 +386,11 @@ def pattern_contract_self_check() -> str:
         candidate,
         feature_definition=dict(candidate["feature_definition"], minimum_observed_effect=float("inf")),
     )))
+    for malformed_direction in ([], {}):
+        _expect_pattern_error(lambda malformed_direction=malformed_direction: validate_pattern_candidate(dict(
+            candidate,
+            feature_definition=dict(candidate["feature_definition"], direction=malformed_direction),
+        )))
 
     content = {
         "pattern_version": "fixture-pattern-v1",

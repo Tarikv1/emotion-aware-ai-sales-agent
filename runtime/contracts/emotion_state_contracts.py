@@ -192,6 +192,18 @@ def _validate_event_watermark(
         raise EmotionStateContractError("event watermark entries are invalid")
     if any(type(entry) is not tuple or len(entry) != 3 for entry in watermark.event_history_by_id):
         raise EmotionStateContractError("event watermark history entries are invalid")
+    for turn_id, sequence in watermark.turn_sequence_by_id:
+        validate_opaque_reference(turn_id, "watermark.turn_id")
+        if type(sequence) is not int or sequence < 0:
+            raise EmotionStateContractError("event watermark turn sequence is invalid")
+    for sequence, turn_id in watermark.turn_id_by_sequence:
+        if type(sequence) is not int or sequence < 0:
+            raise EmotionStateContractError("event watermark reverse turn sequence is invalid")
+        validate_opaque_reference(turn_id, "watermark.reverse_turn_id")
+    for turn_id, revision in watermark.last_input_revision_by_turn:
+        validate_opaque_reference(turn_id, "watermark.revision_turn_id")
+        if type(revision) is not int or revision < 0:
+            raise EmotionStateContractError("event watermark revision is invalid")
     sequence_by_id = dict(watermark.turn_sequence_by_id)
     id_by_sequence = dict(watermark.turn_id_by_sequence)
     revision_by_turn = dict(watermark.last_input_revision_by_turn)
@@ -201,18 +213,6 @@ def _validate_event_watermark(
         (revision_by_turn, watermark.last_input_revision_by_turn),
     )):
         raise EmotionStateContractError("event watermark contains duplicate map keys")
-    for turn_id, sequence in sequence_by_id.items():
-        validate_opaque_reference(turn_id, "watermark.turn_id")
-        if type(sequence) is not int or sequence < 0:
-            raise EmotionStateContractError("event watermark turn sequence is invalid")
-    for sequence, turn_id in id_by_sequence.items():
-        if type(sequence) is not int or sequence < 0:
-            raise EmotionStateContractError("event watermark reverse turn sequence is invalid")
-        validate_opaque_reference(turn_id, "watermark.reverse_turn_id")
-    for turn_id, revision in revision_by_turn.items():
-        validate_opaque_reference(turn_id, "watermark.revision_turn_id")
-        if type(revision) is not int or revision < 0:
-            raise EmotionStateContractError("event watermark revision is invalid")
     for event_id in watermark.seen_event_ids:
         validate_opaque_reference(event_id, "watermark.seen_event_id")
     event_history_by_id: dict[str, tuple[str, int]] = {}
@@ -336,10 +336,8 @@ def _validate_explicit_statements(value: Any) -> None:
     for statement in value:
         if not isinstance(statement, dict) or set(statement) != EXPLICIT_STATEMENT_FIELDS:
             raise EmotionStateContractError("explicit statement fields mismatch")
-        if statement["evidence_class"] != "direct_explicit":
-            raise EmotionStateContractError("explicit statement evidence class mismatch")
-        if statement["operational_signal"] not in BASE_OPERATIONAL_SIGNALS:
-            raise EmotionStateContractError("explicit statement signal is invalid")
+        _require_enum_value(statement["evidence_class"], {"direct_explicit"}, "explicit statement evidence_class")
+        _require_enum_value(statement["operational_signal"], BASE_OPERATIONAL_SIGNALS, "explicit statement signal")
         _require_reference_list([statement["redacted_reference_id"]], "redacted_reference_id")
 
 
@@ -373,13 +371,14 @@ def validate_customer_turn_evidence(payload: dict[str, Any]) -> dict[str, Any]:
         raise EmotionStateContractError("event_timestamp must be ISO-8601") from exc
     if event_timestamp.tzinfo is None:
         raise EmotionStateContractError("event_timestamp must include a timezone")
-    if payload["audio_quality_status"] not in AUDIO_QUALITY_STATUSES:
-        raise EmotionStateContractError("audio_quality_status is invalid")
+    _require_enum_value(payload["audio_quality_status"], AUDIO_QUALITY_STATUSES, "audio_quality_status")
     _require_enum_list(payload["audio_quality_reasons"], AUDIO_QUALITY_REASON_CODES, "audio_quality_reasons")
-    if payload["speaker_baseline_status"] not in SPEAKER_BASELINE_STATUSES:
-        raise EmotionStateContractError("speaker_baseline_status is invalid")
-    if payload["extraction_status"] not in EXTRACTION_STATUSES:
-        raise EmotionStateContractError("extraction_status is invalid")
+    _require_enum_value(
+        payload["speaker_baseline_status"],
+        SPEAKER_BASELINE_STATUSES,
+        "speaker_baseline_status",
+    )
+    _require_enum_value(payload["extraction_status"], EXTRACTION_STATUSES, "extraction_status")
     _require_numeric_map(payload["acoustic_features"], "acoustic_features")
     _require_numeric_map(payload["acoustic_feature_confidence"], "acoustic_feature_confidence", minimum=0.0, maximum=1.0)
     _require_numeric_map(payload["source_timestamps"], "source_timestamps", minimum=0.0)
@@ -406,8 +405,7 @@ def validate_customer_turn_audit(payload: dict[str, Any]) -> dict[str, Any]:
         {"unavailable", "complete", "partial", "failed", "abstained"},
         "audio_analysis_status",
     )
-    if payload["audio_quality_bucket"] not in AUDIO_QUALITY_STATUSES:
-        raise EmotionStateContractError("audio_quality_bucket is invalid")
+    _require_enum_value(payload["audio_quality_bucket"], AUDIO_QUALITY_STATUSES, "audio_quality_bucket")
     _require_enum_list(payload["enumerated_signal_types"], STATE_OPERATIONAL_SIGNALS, "enumerated_signal_types")
     _require_enum_list(payload["abstention_reason_codes"], ABSTENTION_REASON_CODES, "abstention_reason_codes")
     if type(payload["abstained"]) is not bool:
@@ -476,8 +474,11 @@ def validate_perceived_customer_state(payload: dict[str, Any]) -> dict[str, Any]
             type(payload[field]) is not int or payload[field] not in {1, 2, 3, 4, 5}
         ):
             raise EmotionStateContractError(f"{field} is invalid")
-    if payload["selected_signal_confidence_bucket"] not in {"low", "medium", "high"}:
-        raise EmotionStateContractError("invalid selected_signal_confidence_bucket")
+    _require_enum_value(
+        payload["selected_signal_confidence_bucket"],
+        {"low", "medium", "high"},
+        "selected_signal_confidence_bucket",
+    )
     _require_enum_list(payload["operational_signals"], STATE_OPERATIONAL_SIGNALS, "operational_signals")
     if "none" in payload["operational_signals"] and payload["operational_signals"] != ["none"]:
         raise EmotionStateContractError("none cannot coexist with operational signals")
@@ -485,11 +486,9 @@ def validate_perceived_customer_state(payload: dict[str, Any]) -> dict[str, Any]
     signal_keys = set(payload["operational_signals"]) - {"none"}
     if set(payload["confidence_by_signal"]) != signal_keys:
         raise EmotionStateContractError("confidence_by_signal must match operational_signals")
-    if payload["selected_policy_signal"] not in STATE_OPERATIONAL_SIGNALS:
-        raise EmotionStateContractError("selected_policy_signal is invalid")
+    _require_enum_value(payload["selected_policy_signal"], STATE_OPERATIONAL_SIGNALS, "selected_policy_signal")
     _require_enum_value(payload["overall_evidence_quality"], EVIDENCE_QUALITY_VALUES, "overall_evidence_quality")
-    if payload["trajectory"] not in TRAJECTORY_VALUES:
-        raise EmotionStateContractError("trajectory is invalid")
+    _require_enum_value(payload["trajectory"], TRAJECTORY_VALUES, "trajectory")
     _require_enum_list(payload["allowed_policy_effects"], ALLOWED_POLICY_EFFECTS, "allowed_policy_effects")
     _require_enum_list(payload["blocked_policy_effects"], REQUIRED_BLOCKED_POLICY_EFFECTS, "blocked_policy_effects")
     if set(payload["blocked_policy_effects"]) != REQUIRED_BLOCKED_POLICY_EFFECTS:
@@ -912,7 +911,197 @@ def contract_self_check() -> str:
             "possible_confusion": {"acoustic": [acoustic_only_reference]},
         },
     )
-    _expect_named_contract_errors((
+
+    def malformed_watermark(**overrides: Any) -> EventWatermarkV1:
+        values = {
+            "expected_session_id": "session-fixture-1",
+            "expected_campaign_profile_id": "emotion-state-phase-a-fixture",
+            "expected_campaign_profile_version": "fixture-v1",
+            "last_turn_sequence": 1,
+            "turn_sequence_by_id": (("turn-1", 1),),
+            "turn_id_by_sequence": ((1, "turn-1"),),
+            "last_input_revision_by_turn": (("turn-1", 0),),
+            "seen_event_ids": frozenset({"event-1"}),
+            "event_history_by_id": (("event-1", "turn-1", 0),),
+        }
+        values.update(overrides)
+        return EventWatermarkV1(**values)
+
+    malformed_json_value_cases: list[tuple[str, Any]] = []
+    for label, malformed in (("LIST", []), ("OBJECT", {})):
+        malformed_json_value_cases.extend((
+            (
+                f"EXPLICIT_STATEMENT_OPERATIONAL_SIGNAL_{label}",
+                lambda malformed=malformed: validate_customer_turn_evidence(dict(
+                    evidence,
+                    explicit_customer_statements=[dict(
+                        evidence["explicit_customer_statements"][0],
+                        operational_signal=malformed,
+                    )],
+                )),
+            ),
+            (
+                f"AUDIO_QUALITY_STATUS_{label}",
+                lambda malformed=malformed: validate_customer_turn_evidence(dict(
+                    evidence,
+                    audio_quality_status=malformed,
+                )),
+            ),
+            (
+                f"SPEAKER_BASELINE_STATUS_{label}",
+                lambda malformed=malformed: validate_customer_turn_evidence(dict(
+                    evidence,
+                    speaker_baseline_status=malformed,
+                )),
+            ),
+            (
+                f"EXTRACTION_STATUS_{label}",
+                lambda malformed=malformed: validate_customer_turn_evidence(dict(
+                    evidence,
+                    extraction_status=malformed,
+                )),
+            ),
+            (
+                f"AUDIO_QUALITY_REASONS_NESTED_{label}",
+                lambda malformed=malformed: validate_customer_turn_evidence(dict(
+                    evidence,
+                    audio_quality_reasons=[malformed],
+                )),
+            ),
+            (
+                f"TRANSCRIPT_SIGNALS_NESTED_{label}",
+                lambda malformed=malformed: validate_customer_turn_evidence(dict(
+                    evidence,
+                    transcript_signals=[malformed],
+                )),
+            ),
+            (
+                f"DIALOGUE_CONTEXT_REFS_NESTED_{label}",
+                lambda malformed=malformed: validate_customer_turn_evidence(dict(
+                    evidence,
+                    dialogue_context_refs=[malformed],
+                )),
+            ),
+            (
+                f"AUDIO_ANALYSIS_STATUS_{label}",
+                lambda malformed=malformed: validate_customer_turn_audit(dict(
+                    audit,
+                    audio_analysis_status=malformed,
+                )),
+            ),
+            (
+                f"AUDIO_QUALITY_BUCKET_{label}",
+                lambda malformed=malformed: validate_customer_turn_audit(dict(
+                    audit,
+                    audio_quality_bucket=malformed,
+                )),
+            ),
+            (
+                f"ENUMERATED_SIGNAL_TYPES_NESTED_{label}",
+                lambda malformed=malformed: validate_customer_turn_audit(dict(
+                    audit,
+                    enumerated_signal_types=[malformed],
+                )),
+            ),
+            (
+                f"AUDIT_ABSTENTION_REASONS_NESTED_{label}",
+                lambda malformed=malformed: validate_customer_turn_audit(dict(
+                    audit,
+                    abstention_reason_codes=[malformed],
+                )),
+            ),
+            (
+                f"SELECTED_SIGNAL_CONFIDENCE_BUCKET_{label}",
+                lambda malformed=malformed: validate_perceived_customer_state(dict(
+                    state,
+                    selected_signal_confidence_bucket=malformed,
+                )),
+            ),
+            (
+                f"SELECTED_POLICY_SIGNAL_{label}",
+                lambda malformed=malformed: validate_perceived_customer_state(dict(
+                    state,
+                    selected_policy_signal=malformed,
+                )),
+            ),
+            (
+                f"OVERALL_EVIDENCE_QUALITY_{label}",
+                lambda malformed=malformed: validate_perceived_customer_state(dict(
+                    state,
+                    overall_evidence_quality=malformed,
+                )),
+            ),
+            (
+                f"TRAJECTORY_{label}",
+                lambda malformed=malformed: validate_perceived_customer_state(dict(
+                    state,
+                    trajectory=malformed,
+                )),
+            ),
+            (
+                f"OPERATIONAL_SIGNALS_NESTED_{label}",
+                lambda malformed=malformed: validate_perceived_customer_state(dict(
+                    state,
+                    operational_signals=[malformed],
+                )),
+            ),
+            (
+                f"ALLOWED_POLICY_EFFECTS_NESTED_{label}",
+                lambda malformed=malformed: validate_perceived_customer_state(dict(
+                    state,
+                    allowed_policy_effects=[malformed],
+                )),
+            ),
+            (
+                f"BLOCKED_POLICY_EFFECTS_NESTED_{label}",
+                lambda malformed=malformed: validate_perceived_customer_state(dict(
+                    state,
+                    blocked_policy_effects=[malformed],
+                )),
+            ),
+            (
+                f"STATE_ABSTENTION_REASONS_NESTED_{label}",
+                lambda malformed=malformed: validate_perceived_customer_state(dict(
+                    state,
+                    abstention_reasons=[malformed],
+                )),
+            ),
+            (
+                f"EVIDENCE_REFS_NESTED_{label}",
+                lambda malformed=malformed: validate_perceived_customer_state(dict(
+                    state,
+                    evidence_refs=[malformed],
+                )),
+            ),
+            (
+                f"PROVENANCE_REFS_NESTED_{label}",
+                lambda malformed=malformed: validate_perceived_customer_state(dict(
+                    state,
+                    signal_provenance_by_modality={
+                        "possible_confusion": {"text": [malformed]},
+                    },
+                )),
+            ),
+            (
+                f"WATERMARK_TURN_ID_{label}",
+                lambda malformed=malformed: _validate_event_watermark(malformed_watermark(
+                    turn_sequence_by_id=((malformed, 1),),
+                )),
+            ),
+            (
+                f"WATERMARK_REVERSE_SEQUENCE_{label}",
+                lambda malformed=malformed: _validate_event_watermark(malformed_watermark(
+                    turn_id_by_sequence=((malformed, "turn-1"),),
+                )),
+            ),
+            (
+                f"WATERMARK_REVISION_TURN_ID_{label}",
+                lambda malformed=malformed: _validate_event_watermark(malformed_watermark(
+                    last_input_revision_by_turn=((malformed, 0),),
+                )),
+            ),
+        ))
+    _expect_named_contract_errors(tuple(malformed_json_value_cases) + (
         (
             "WATERMARK_HISTORY_WITHOUT_EVENTS_REPLAY",
             lambda: validate_event_identity(
@@ -971,14 +1160,6 @@ def contract_self_check() -> str:
                 dict(evidence, event_id="event-skipped-correction", input_revision=2),
                 watermark=first_watermark,
             ),
-        ),
-        (
-            "UNHASHABLE_AUDIO_ANALYSIS_STATUS",
-            lambda: validate_customer_turn_audit(dict(audit, audio_analysis_status=[])),
-        ),
-        (
-            "UNHASHABLE_OVERALL_EVIDENCE_QUALITY",
-            lambda: validate_perceived_customer_state(dict(state, overall_evidence_quality=[])),
         ),
     ))
     _expect_named_contract_successes((

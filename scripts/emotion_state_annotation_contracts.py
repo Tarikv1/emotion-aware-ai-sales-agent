@@ -52,6 +52,11 @@ def _require_evidence_reference(value: Any, field: str) -> None:
         )
 
 
+def _require_enum_value(value: Any, allowed: set[str] | frozenset[str], field: str) -> None:
+    if not isinstance(value, str) or value not in allowed:
+        raise AnnotationContractError(f"{field} is invalid")
+
+
 def validate_annotation_record(payload: dict[str, Any]) -> dict[str, Any]:
     if not isinstance(payload, dict):
         raise AnnotationContractError("annotation record must be an object")
@@ -76,8 +81,7 @@ def validate_annotation_record(payload: dict[str, Any]) -> dict[str, Any]:
         raise AnnotationContractError("operational_signals must be a unique list")
     if any(signal not in OPERATIONAL_SIGNALS for signal in signals):
         raise AnnotationContractError("operational_signals contains an unknown label")
-    if payload["reviewer_confidence"] not in {"low", "medium", "high"}:
-        raise AnnotationContractError("reviewer_confidence is invalid")
+    _require_enum_value(payload["reviewer_confidence"], {"low", "medium", "high"}, "reviewer_confidence")
     if type(payload["not_inferable"]) is not bool:
         raise AnnotationContractError("not_inferable must be boolean")
 
@@ -85,8 +89,11 @@ def validate_annotation_record(payload: dict[str, Any]) -> dict[str, Any]:
     if payload["not_inferable"]:
         if dimensions != (None, None, None) or signals:
             raise AnnotationContractError("not_inferable excludes dimensional and operational labels")
-        if payload["not_inferable_reason_code"] not in NOT_INFERABLE_REASONS:
-            raise AnnotationContractError("not_inferable requires an enumerated reason")
+        _require_enum_value(
+            payload["not_inferable_reason_code"],
+            NOT_INFERABLE_REASONS,
+            "not_inferable_reason_code",
+        )
         if payload["evidence_class"] != "not_inferable" or payload["explicit_statement_reference"] is not None:
             raise AnnotationContractError("not_inferable evidence fields are inconsistent")
         return payload
@@ -98,8 +105,11 @@ def validate_annotation_record(payload: dict[str, Any]) -> dict[str, Any]:
             raise AnnotationContractError(f"{field} must use the frozen five-point ordinal scale")
     if payload["not_inferable_reason_code"] is not None:
         raise AnnotationContractError("inferable records cannot carry an abstention reason")
-    if payload["evidence_class"] not in {"direct_explicit", "observer_inference"}:
-        raise AnnotationContractError("inferable evidence_class is invalid")
+    _require_enum_value(
+        payload["evidence_class"],
+        {"direct_explicit", "observer_inference"},
+        "evidence_class",
+    )
     reference = payload["explicit_statement_reference"]
     if payload["evidence_class"] == "direct_explicit":
         _require_evidence_reference(reference, "explicit_statement_reference")
@@ -128,14 +138,19 @@ def validate_split_manifest(
     _require_unique_opaque_list(payload["dataset_manifest_ids"], "dataset_manifest_ids", allow_empty=False)
     if payload["runtime_influence_allowed"] is not False:
         raise AnnotationContractError("split manifests cannot influence runtime")
+    dependency_keys = payload["dependency_keys"]
     if (
-        not isinstance(payload["dependency_keys"], list)
-        or set(payload["dependency_keys"]) != DEPENDENCY_GROUP_FIELDS
-        or len(payload["dependency_keys"]) != len(DEPENDENCY_GROUP_FIELDS)
+        not isinstance(dependency_keys, list)
+        or any(not isinstance(key, str) for key in dependency_keys)
+        or len(dependency_keys) != len(DEPENDENCY_GROUP_FIELDS)
+        or set(dependency_keys) != DEPENDENCY_GROUP_FIELDS
     ):
         raise AnnotationContractError("dependency_keys must contain the frozen dependency dimensions")
-    if payload["highest_dependency_unit"] not in DEPENDENCY_GROUP_FIELDS:
-        raise AnnotationContractError("highest_dependency_unit is invalid")
+    _require_enum_value(
+        payload["highest_dependency_unit"],
+        DEPENDENCY_GROUP_FIELDS,
+        "highest_dependency_unit",
+    )
     digest = payload["frozen_candidate_family_digest"]
     if not isinstance(digest, str) or re.fullmatch(r"[0-9A-F]{64}", digest) is None:
         raise AnnotationContractError("frozen_candidate_family_digest must be an uppercase SHA-256")
@@ -287,6 +302,21 @@ def _expect_annotation_error(callback: Any) -> None:
     raise AssertionError("expected AnnotationContractError")
 
 
+def _expect_named_annotation_errors(cases: tuple[tuple[str, Any], ...]) -> None:
+    failures: list[str] = []
+    for name, callback in cases:
+        try:
+            callback()
+        except AnnotationContractError:
+            continue
+        except Exception as exc:
+            failures.append(f"{name}: raised {type(exc).__name__}, not AnnotationContractError")
+        else:
+            failures.append(f"{name}: accepted")
+    if failures:
+        raise AssertionError("; ".join(failures))
+
+
 def _fixture_record(record_id: str, reviewer_id: str) -> dict[str, Any]:
     return {
         "annotation_record_id": record_id,
@@ -377,6 +407,39 @@ def annotation_contract_self_check() -> str:
         evidence_class="direct_explicit",
         explicit_statement_reference="evidence:uuid:11111111-1111-4111-8111-111111111111",
     ))
+    malformed_annotation_cases: list[tuple[str, Any]] = []
+    for label, malformed in (("LIST", []), ("OBJECT", {})):
+        malformed_annotation_cases.extend((
+            (
+                f"REVIEWER_CONFIDENCE_{label}",
+                lambda malformed=malformed: validate_annotation_record(dict(
+                    first,
+                    reviewer_confidence=malformed,
+                )),
+            ),
+            (
+                f"NOT_INFERABLE_REASON_{label}",
+                lambda malformed=malformed: validate_annotation_record(dict(
+                    _not_inferable(first),
+                    not_inferable_reason_code=malformed,
+                )),
+            ),
+            (
+                f"EVIDENCE_CLASS_{label}",
+                lambda malformed=malformed: validate_annotation_record(dict(
+                    first,
+                    evidence_class=malformed,
+                )),
+            ),
+            (
+                f"OPERATIONAL_SIGNALS_NESTED_{label}",
+                lambda malformed=malformed: validate_annotation_record(dict(
+                    first,
+                    operational_signals=[malformed],
+                )),
+            ),
+        ))
+    _expect_named_annotation_errors(tuple(malformed_annotation_cases))
     _expect_annotation_error(lambda: aggregate_three_reviewer_labels([
         first,
         dict(second, reviewer_id="reviewer-1"),
@@ -443,6 +506,55 @@ def annotation_contract_self_check() -> str:
         "runtime_influence_allowed": False,
     }
     validate_split_manifest(split, split_records)
+    malformed_split_cases: list[tuple[str, Any]] = []
+    for label, malformed in (("LIST", []), ("OBJECT", {})):
+        malformed_split_cases.extend((
+            (
+                f"DEPENDENCY_KEYS_NESTED_{label}",
+                lambda malformed=malformed: validate_split_manifest(dict(
+                    split,
+                    dependency_keys=[malformed],
+                ), split_records),
+            ),
+            (
+                f"HIGHEST_DEPENDENCY_UNIT_{label}",
+                lambda malformed=malformed: validate_split_manifest(dict(
+                    split,
+                    highest_dependency_unit=malformed,
+                ), split_records),
+            ),
+            (
+                f"DATASET_MANIFEST_IDS_NESTED_{label}",
+                lambda malformed=malformed: validate_split_manifest(dict(
+                    split,
+                    dataset_manifest_ids=[malformed],
+                ), split_records),
+            ),
+            (
+                f"PARTITION_CASE_IDS_NESTED_{label}",
+                lambda malformed=malformed: validate_split_manifest(dict(
+                    split,
+                    training_discovery=dict(
+                        split["training_discovery"],
+                        case_ids=[malformed],
+                    ),
+                ), split_records),
+            ),
+            (
+                f"PARTITION_DEPENDENCY_GROUP_NESTED_{label}",
+                lambda malformed=malformed: validate_split_manifest(dict(
+                    split,
+                    training_discovery=dict(
+                        split["training_discovery"],
+                        dependency_groups=dict(
+                            split["training_discovery"]["dependency_groups"],
+                            speaker=[malformed],
+                        ),
+                    ),
+                ), split_records),
+            ),
+        ))
+    _expect_named_annotation_errors(tuple(malformed_split_cases))
     leaky_groups = dict(split["calibration"]["dependency_groups"], speaker=["speaker-training"])
     _expect_annotation_error(lambda: validate_split_manifest(dict(
         split,
