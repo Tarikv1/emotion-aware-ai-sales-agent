@@ -330,6 +330,30 @@ REQUIRED_FIXTURE_FILES = [
     "research/sources/emotion_state/split_manifest_v1.schema.json",
 ]
 
+PHASE_A_REQUIRED_PATHS = frozenset(
+    {
+        "scripts/exp_002_frozen_response_baseline.py",
+        "scripts/run_exp_002_frozen_response_baseline.py",
+        "scripts/validate_exp_002_frozen_response_baseline.py",
+        "runtime/contracts/emotion_state_contracts.py",
+        "runtime/contracts/emotion_pattern_contracts.py",
+        "runtime/contracts/emotion_state_brain_extension.py",
+        "scripts/emotion_state_annotation_contracts.py",
+        "scripts/emotion_state_phase_a_contracts.py",
+        "scripts/run_emotion_state_001_phase_a_contracts.py",
+        "scripts/validate_emotion_state_001_phase_a_contracts.py",
+        "research/experiments/cases/emotion-state-001-phase-a-contracts.json",
+        "research/experiments/EMOTION-STATE-001-phase-a.md",
+        "docs/product/EMOTION_STATE_001_PHASE_A_CONTRACTS.md",
+        "docs/data/EMOTION_STATE_001_ANNOTATION_CODEBOOK.md",
+        "research/sources/creative_analysis_engine/source_manifest.json",
+        "research/sources/creative_analysis_engine/source_notes.md",
+        "research/sources/emotion_state/dataset_manifest_contract.json",
+        "research/sources/emotion_state/annotation_record_v1.schema.json",
+        "research/sources/emotion_state/split_manifest_v1.schema.json",
+    }
+)
+
 
 def assert_condition(condition: bool, message: str) -> None:
     if not condition:
@@ -352,24 +376,57 @@ def load_checker_required_files() -> list[str]:
     raise AssertionError("Project drift checker REQUIRED_FILES inventory is missing.")
 
 
-def validate_required_file_inventory() -> None:
-    checker_files = load_checker_required_files()
+def validate_required_file_inventory(
+    checker_files: list[str] | None = None,
+    fixture_files: list[str] | None = None,
+) -> None:
+    if checker_files is None:
+        checker_files = load_checker_required_files()
+    if fixture_files is None:
+        fixture_files = REQUIRED_FIXTURE_FILES
     assert_condition(
         len(checker_files) == len(set(checker_files)),
         "Project drift checker REQUIRED_FILES contains duplicate paths.",
     )
     assert_condition(
-        len(REQUIRED_FIXTURE_FILES) == len(set(REQUIRED_FIXTURE_FILES)),
+        len(fixture_files) == len(set(fixture_files)),
         "Project drift validator REQUIRED_FIXTURE_FILES contains duplicate paths.",
     )
     checker_paths = set(checker_files)
-    validator_paths = set(REQUIRED_FIXTURE_FILES)
+    validator_paths = set(fixture_files)
+    missing_checker = sorted(PHASE_A_REQUIRED_PATHS - checker_paths)
+    missing_validator = sorted(PHASE_A_REQUIRED_PATHS - validator_paths)
+    assert_condition(
+        not missing_checker and not missing_validator,
+        "Project drift inventories are missing required Phase A paths: "
+        f"checker={missing_checker}, validator={missing_validator}",
+    )
     assert_condition(
         checker_paths == validator_paths,
         "Project drift required-file inventories differ: "
         f"only_checker={sorted(checker_paths - validator_paths)}, "
         f"only_validator={sorted(validator_paths - checker_paths)}",
     )
+
+
+def assert_required_file_inventory_self_check(checker_files: list[str], fixture_files: list[str]) -> None:
+    target = sorted(PHASE_A_REQUIRED_PATHS)[0]
+
+    def without(items: list[str]) -> list[str]:
+        return [item for item in items if item != target]
+
+    def expect_rejected(label: str, checker_mutant: list[str], fixture_mutant: list[str]) -> None:
+        try:
+            validate_required_file_inventory(checker_mutant, fixture_mutant)
+        except AssertionError:
+            return
+        raise AssertionError(f"Project drift inventory self-check accepted prohibited mutation: {label}")
+
+    expect_rejected("symmetric Phase A removal", without(checker_files), without(fixture_files))
+    expect_rejected("checker-only removal", without(checker_files), list(fixture_files))
+    expect_rejected("validator-only removal", list(checker_files), without(fixture_files))
+    expect_rejected("checker duplicate", list(checker_files) + [target], list(fixture_files))
+    expect_rejected("validator duplicate", list(checker_files), list(fixture_files) + [target])
 
 
 def write_text(path: Path, text: str) -> None:
@@ -497,7 +554,10 @@ def validate_current_repo() -> None:
 
 def main() -> None:
     assert_condition(SCRIPT_PATH.exists(), "Project drift guard runner is missing.")
-    validate_required_file_inventory()
+    checker_files = load_checker_required_files()
+    fixture_files = list(REQUIRED_FIXTURE_FILES)
+    validate_required_file_inventory(checker_files, fixture_files)
+    assert_required_file_inventory_self_check(checker_files, fixture_files)
     FIXTURE_ROOT.mkdir(parents=True, exist_ok=True)
 
     try:

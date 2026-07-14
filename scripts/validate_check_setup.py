@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+import ast
+import copy
 import json
 import os
 import re
@@ -20,10 +22,132 @@ SECRET_PATTERN = re.compile(
     "|".join(re.escape(value) for value in SECRET_VALUES.values())
 )
 
+PHASE_A_REQUIRED_FILES = (
+    ("file.scripts_exp_002_frozen_response_baseline", "scripts/exp_002_frozen_response_baseline.py", "Frozen EXP-002 response scorer"),
+    ("file.scripts_run_exp_002_frozen_response_baseline", "scripts/run_exp_002_frozen_response_baseline.py", "Frozen EXP-002 response scorer runner"),
+    ("file.scripts_validate_exp_002_frozen_response_baseline", "scripts/validate_exp_002_frozen_response_baseline.py", "Frozen EXP-002 response scorer validator"),
+    ("file.runtime_contracts_emotion_state_contracts", "runtime/contracts/emotion_state_contracts.py", "EMOTION-STATE evidence and persistence contracts"),
+    ("file.runtime_contracts_emotion_pattern_contracts", "runtime/contracts/emotion_pattern_contracts.py", "EMOTION-STATE pattern integrity contracts"),
+    ("file.runtime_contracts_emotion_state_brain_extension", "runtime/contracts/emotion_state_brain_extension.py", "Detached EMOTION-STATE BRAIN extension"),
+    ("file.scripts_emotion_state_annotation_contracts", "scripts/emotion_state_annotation_contracts.py", "EMOTION-STATE reviewer aggregation contracts"),
+    ("file.scripts_emotion_state_phase_a_contracts", "scripts/emotion_state_phase_a_contracts.py", "EMOTION-STATE Phase A checkpoint builder"),
+    ("file.scripts_run_emotion_state_001_phase_a_contracts", "scripts/run_emotion_state_001_phase_a_contracts.py", "EMOTION-STATE Phase A checkpoint runner"),
+    ("file.scripts_validate_emotion_state_001_phase_a_contracts", "scripts/validate_emotion_state_001_phase_a_contracts.py", "EMOTION-STATE Phase A validator"),
+    ("file.research_case_emotion_state_001_phase_a_contracts", "research/experiments/cases/emotion-state-001-phase-a-contracts.json", "EMOTION-STATE Phase A fixed case"),
+    ("file.research_experiment_emotion_state_001_phase_a", "research/experiments/EMOTION-STATE-001-phase-a.md", "EMOTION-STATE Phase A experiment note"),
+    ("file.docs_product_emotion_state_001_phase_a_contracts", "docs/product/EMOTION_STATE_001_PHASE_A_CONTRACTS.md", "EMOTION-STATE Phase A product contract"),
+    ("file.docs_data_emotion_state_001_annotation_codebook", "docs/data/EMOTION_STATE_001_ANNOTATION_CODEBOOK.md", "EMOTION-STATE annotation codebook"),
+    ("file.research_source_creative_analysis_engine_manifest", "research/sources/creative_analysis_engine/source_manifest.json", "Creative Analysis Engine source manifest"),
+    ("file.research_source_creative_analysis_engine_notes", "research/sources/creative_analysis_engine/source_notes.md", "Creative Analysis Engine source notes"),
+    ("file.research_source_emotion_state_dataset_manifest_contract", "research/sources/emotion_state/dataset_manifest_contract.json", "EMOTION-STATE dataset-manifest contract"),
+    ("file.research_source_emotion_state_annotation_record_schema", "research/sources/emotion_state/annotation_record_v1.schema.json", "EMOTION-STATE annotation-record schema"),
+    ("file.research_source_emotion_state_split_manifest_schema", "research/sources/emotion_state/split_manifest_v1.schema.json", "EMOTION-STATE split-manifest schema"),
+)
+
 
 def assert_condition(condition: bool, message: str) -> None:
     if not condition:
         raise AssertionError(message)
+
+
+def load_required_files(path: Path = SCRIPT_PATH) -> list[tuple[str, str, str]]:
+    tree = ast.parse(path.read_text(encoding="utf-8"), filename=str(path))
+    for node in tree.body:
+        if not isinstance(node, ast.Assign):
+            continue
+        if not any(isinstance(target, ast.Name) and target.id == "REQUIRED_FILES" for target in node.targets):
+            continue
+        value = ast.literal_eval(node.value)
+        assert_condition(
+            isinstance(value, list)
+            and all(
+                isinstance(item, tuple)
+                and len(item) == 3
+                and all(isinstance(part, str) for part in item)
+                for item in value
+            ),
+            "Setup REQUIRED_FILES must be a literal list of three-string tuples.",
+        )
+        return value
+    raise AssertionError("Setup REQUIRED_FILES inventory is missing.")
+
+
+def validate_required_file_contract(required_files: list[tuple[str, str, str]]) -> None:
+    check_ids = [item[0] for item in required_files]
+    paths = [item[1] for item in required_files]
+    assert_condition(len(check_ids) == len(set(check_ids)), "Setup REQUIRED_FILES contains duplicate check IDs.")
+    assert_condition(len(paths) == len(set(paths)), "Setup REQUIRED_FILES contains duplicate paths.")
+    by_id = {item[0]: item for item in required_files}
+    for expected in PHASE_A_REQUIRED_FILES:
+        assert_condition(
+            by_id.get(expected[0]) == expected and required_files.count(expected) == 1,
+            f"Setup REQUIRED_FILES must contain the exact Phase A tuple once: {expected!r}",
+        )
+
+
+def validate_emitted_checks(payload: dict[str, object]) -> None:
+    checks = payload.get("checks")
+    assert_condition(isinstance(checks, list), "Setup payload checks must be a list.")
+    assert_condition(
+        all(isinstance(check, dict) and isinstance(check.get("id"), str) for check in checks),
+        "Every setup payload check must be an object with a string ID.",
+    )
+    check_ids = [check["id"] for check in checks]
+    assert_condition(len(check_ids) == len(set(check_ids)), "Setup payload contains duplicate check IDs.")
+    checks_by_id = {check["id"]: check for check in checks}
+    for check_id, expected_path, expected_label in PHASE_A_REQUIRED_FILES:
+        check = checks_by_id.get(check_id)
+        assert_condition(check is not None, f"Missing emitted Phase A setup check: {check_id}")
+        assert_condition(check.get("status") == "pass", f"Emitted Phase A setup check failed: {check_id}")
+        assert_condition(check.get("path") == expected_path, f"Emitted Phase A setup path mismatch: {check_id}")
+        assert_condition(check.get("message") == f"{expected_label} exists.", f"Emitted Phase A setup label mismatch: {check_id}")
+
+
+def assert_setup_contract_self_check(
+    required_files: list[tuple[str, str, str]], payload: dict[str, object]
+) -> None:
+    target = PHASE_A_REQUIRED_FILES[0]
+
+    def replace_target(items: list[tuple[str, str, str]], replacement: tuple[str, str, str] | None) -> list[tuple[str, str, str]]:
+        return [replacement if item == target and replacement is not None else item for item in items if item != target or replacement is not None]
+
+    def expect_required_rejected(label: str, mutant: list[tuple[str, str, str]]) -> None:
+        try:
+            validate_required_file_contract(mutant)
+        except AssertionError:
+            return
+        raise AssertionError(f"Setup contract self-check accepted prohibited REQUIRED_FILES mutation: {label}")
+
+    duplicate_id = list(required_files) + [(target[0], "README.md", "Duplicate Phase A ID")]
+    expect_required_rejected("duplicate ID", duplicate_id)
+    expect_required_rejected("ID redirected to README.md", replace_target(required_files, (target[0], "README.md", target[2])))
+    expect_required_rejected("wrong label", replace_target(required_files, (target[0], target[1], "Wrong label")))
+    expect_required_rejected("wrong path", replace_target(required_files, (target[0], "scripts/wrong_phase_a_path.py", target[2])))
+    expect_required_rejected("missing tuple", replace_target(required_files, None))
+
+    def expect_payload_rejected(label: str, mutant: dict[str, object]) -> None:
+        try:
+            validate_emitted_checks(mutant)
+        except AssertionError:
+            return
+        raise AssertionError(f"Setup contract self-check accepted prohibited payload mutation: {label}")
+
+    duplicate_payload = copy.deepcopy(payload)
+    target_check = next(check for check in duplicate_payload["checks"] if check["id"] == target[0])
+    duplicate_payload["checks"].append(copy.deepcopy(target_check))
+    expect_payload_rejected("duplicate emitted ID", duplicate_payload)
+
+    redirected_payload = copy.deepcopy(payload)
+    next(check for check in redirected_payload["checks"] if check["id"] == target[0])["path"] = "README.md"
+    expect_payload_rejected("redirected emitted path", redirected_payload)
+
+    wrong_label_payload = copy.deepcopy(payload)
+    next(check for check in wrong_label_payload["checks"] if check["id"] == target[0])["message"] = "Wrong label exists."
+    expect_payload_rejected("wrong emitted label", wrong_label_payload)
+
+    failed_payload = copy.deepcopy(payload)
+    next(check for check in failed_payload["checks"] if check["id"] == target[0])["status"] = "fail"
+    expect_payload_rejected("failed emitted status", failed_payload)
 
 
 def run_setup_check() -> subprocess.CompletedProcess[str]:
@@ -41,6 +165,8 @@ def run_setup_check() -> subprocess.CompletedProcess[str]:
 
 def main() -> None:
     assert_condition(SCRIPT_PATH.exists(), "Product setup verifier is missing.")
+    required_files = load_required_files()
+    validate_required_file_contract(required_files)
 
     completed = run_setup_check()
     combined_output = completed.stdout + completed.stderr
@@ -52,6 +178,8 @@ def main() -> None:
     assert_condition(payload["summary"]["network_calls_made"] is False, "Setup verifier must not make network calls.")
     assert_condition(payload["summary"]["secret_values_logged"] is False, "Setup verifier must not log secret values.")
 
+    validate_emitted_checks(payload)
+    assert_setup_contract_self_check(required_files, payload)
     checks_by_id = {check["id"]: check for check in payload["checks"]}
     for required_check in [
         "python.version",

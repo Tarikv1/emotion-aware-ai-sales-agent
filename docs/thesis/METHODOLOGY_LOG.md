@@ -5876,3 +5876,4 @@ Interpretation:
   - live aggregate release, private-data work, provider work, acoustic implementation, runtime wiring or activation, push, and merge remain blocked
   - Task 7's seven focused validators, five Python governance validators, and `git diff --check` all exited `0`; the thesis-reference guard reported 0 failures and 0 warnings across 1,587 files and 361 registered URLs with no waiver or baseline subtraction
   - direct artifact readback, three expected-no-match forbidden scans, exact 19-entry setup/drift symmetry checks, frozen prompt/fingerprint byte stability, BRAIN-002 v1 invariants, and immutable-base branch-scope checks also passed
+  - independent review found and the focused fix closed three durable-gate gaps: exact runtime metadata/date enforcement, exact unique setup tuple and emitted mapping enforcement, and an immutable 19-path drift subset; targeted in-memory mutation suites passed with no product or runtime behavior change
