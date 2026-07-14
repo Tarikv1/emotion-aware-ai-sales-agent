@@ -409,7 +409,7 @@ def main() -> int:
     try:
         for validator in selected:
             validator()
-    except (AssertionError, KeyError, ValueError) as exc:
+    except (AssertionError, KeyError, subprocess.TimeoutExpired, ValueError) as exc:
         print(f"EMOTION-STATE-001 Phase A validation failed: {exc}")
         return 1
     print(f"EMOTION-STATE-001 Phase A validation passed: {args.section}")

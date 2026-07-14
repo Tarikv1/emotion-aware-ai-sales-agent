@@ -94,7 +94,7 @@ def main() -> int:
             raise AssertionError("rerendered normalized prompt packet drift")
         if frozen_baseline_self_check(ROOT) != "pass":
             raise AssertionError("frozen baseline self-check failed")
-    except (AssertionError, KeyError, OSError, ValueError) as exc:
+    except (AssertionError, KeyError, OSError, subprocess.TimeoutExpired, ValueError) as exc:
         print(f"EXP-002 frozen-response baseline validation failed: {exc}")
         return 1
     print("EXP-002 frozen-response baseline validation passed.")

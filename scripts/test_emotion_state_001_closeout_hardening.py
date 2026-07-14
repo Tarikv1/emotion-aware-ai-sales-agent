@@ -1,17 +1,21 @@
 from __future__ import annotations
 
 import hashlib
+import io
 import json
 import os
 import subprocess
 import sys
 import tempfile
 import unittest
+from contextlib import redirect_stderr, redirect_stdout
 from pathlib import Path
 from unittest.mock import patch
 
 from scripts.emotion_state_phase_a_contracts import render_phase_a_report
 from scripts import run_emotion_state_001_phase_a_contracts as publication_runner
+from scripts import validate_emotion_state_001_phase_a_contracts as phase_a_validator
+from scripts import validate_exp_002_frozen_response_baseline as exp_validator
 from scripts.run_emotion_state_001_phase_a_contracts import (
     EvidencePublicationError,
     JOURNAL_NAME,
@@ -452,6 +456,162 @@ with publication_lock(recovery_dir=DEFAULT_RECOVERY_DIR):
 
         self.assertFalse(self.result_path.exists())
         self.assertFalse(self.report_path.exists())
+
+
+class ValidatorTimeoutTests(unittest.TestCase):
+    def test_exp_runner_timeout_is_controlled(self) -> None:
+        stdout = io.StringIO()
+        stderr = io.StringIO()
+        timeout = subprocess.TimeoutExpired(["stable-test-label"], 60)
+
+        with patch(
+            "scripts.validate_exp_002_frozen_response_baseline.subprocess.run",
+            side_effect=timeout,
+        ), redirect_stdout(stdout), redirect_stderr(stderr):
+            exit_code = exp_validator.main()
+
+        self.assertEqual(exit_code, 1)
+        self.assertIn(
+            "EXP-002 frozen-response baseline validation failed:",
+            stdout.getvalue(),
+        )
+        self.assertIn("timed out after 60 seconds", stdout.getvalue())
+        self.assertEqual(stderr.getvalue(), "")
+        self.assertNotIn("Traceback", stdout.getvalue() + stderr.getvalue())
+
+    def test_exp_prompt_render_timeout_is_controlled(self) -> None:
+        stdout = io.StringIO()
+        stderr = io.StringIO()
+        completed = subprocess.CompletedProcess(
+            ["stable-test-label"],
+            returncode=0,
+            stdout="",
+            stderr="",
+        )
+        timeout = subprocess.TimeoutExpired(["stable-test-label"], 60)
+
+        with patch(
+            "scripts.validate_exp_002_frozen_response_baseline.subprocess.run",
+            side_effect=[completed, timeout],
+        ), redirect_stdout(stdout), redirect_stderr(stderr):
+            exit_code = exp_validator.main()
+
+        self.assertEqual(exit_code, 1)
+        self.assertIn(
+            "EXP-002 frozen-response baseline validation failed:",
+            stdout.getvalue(),
+        )
+        self.assertIn("timed out after 60 seconds", stdout.getvalue())
+        self.assertEqual(stderr.getvalue(), "")
+        self.assertNotIn("Traceback", stdout.getvalue() + stderr.getvalue())
+
+    def test_phase_a_brain_validator_timeout_is_controlled(self) -> None:
+        stdout = io.StringIO()
+        stderr = io.StringIO()
+        timeout = subprocess.TimeoutExpired(["stable-test-label"], 60)
+
+        with patch.object(
+            phase_a_validator.sys,
+            "argv",
+            ["validator", "--section", "brain"],
+        ), patch(
+            "scripts.validate_emotion_state_001_phase_a_contracts.subprocess.run",
+            side_effect=timeout,
+        ), redirect_stdout(stdout), redirect_stderr(stderr):
+            exit_code = phase_a_validator.main()
+
+        self.assertEqual(exit_code, 1)
+        self.assertIn(
+            "EMOTION-STATE-001 Phase A validation failed:",
+            stdout.getvalue(),
+        )
+        self.assertIn("timed out after 60 seconds", stdout.getvalue())
+        self.assertEqual(stderr.getvalue(), "")
+        self.assertNotIn("Traceback", stdout.getvalue() + stderr.getvalue())
+
+    def test_phase_a_checkpoint_baseline_timeout_is_controlled(self) -> None:
+        stdout = io.StringIO()
+        stderr = io.StringIO()
+        timeout = subprocess.TimeoutExpired(["stable-test-label"], 60)
+
+        with patch.object(
+            phase_a_validator.sys,
+            "argv",
+            ["validator", "--section", "checkpoint"],
+        ), patch(
+            "scripts.validate_emotion_state_001_phase_a_contracts.subprocess.run",
+            side_effect=timeout,
+        ), redirect_stdout(stdout), redirect_stderr(stderr):
+            exit_code = phase_a_validator.main()
+
+        self.assertEqual(exit_code, 1)
+        self.assertIn(
+            "EMOTION-STATE-001 Phase A validation failed:",
+            stdout.getvalue(),
+        )
+        self.assertIn("timed out after 60 seconds", stdout.getvalue())
+        self.assertEqual(stderr.getvalue(), "")
+        self.assertNotIn("Traceback", stdout.getvalue() + stderr.getvalue())
+
+    def test_phase_a_checkpoint_runner_timeout_is_controlled(self) -> None:
+        stdout = io.StringIO()
+        stderr = io.StringIO()
+        completed = subprocess.CompletedProcess(
+            ["stable-test-label"],
+            returncode=0,
+            stdout="",
+            stderr="",
+        )
+        timeout = subprocess.TimeoutExpired(["stable-test-label"], 60)
+
+        with patch.object(
+            phase_a_validator.sys,
+            "argv",
+            ["validator", "--section", "checkpoint"],
+        ), patch(
+            "scripts.validate_emotion_state_001_phase_a_contracts.subprocess.run",
+            side_effect=[completed, timeout],
+        ), redirect_stdout(stdout), redirect_stderr(stderr):
+            exit_code = phase_a_validator.main()
+
+        self.assertEqual(exit_code, 1)
+        self.assertIn(
+            "EMOTION-STATE-001 Phase A validation failed:",
+            stdout.getvalue(),
+        )
+        self.assertIn("timed out after 60 seconds", stdout.getvalue())
+        self.assertEqual(stderr.getvalue(), "")
+        self.assertNotIn("Traceback", stdout.getvalue() + stderr.getvalue())
+
+    def test_phase_a_checkpoint_prompt_render_timeout_is_controlled(self) -> None:
+        stdout = io.StringIO()
+        stderr = io.StringIO()
+        completed = subprocess.CompletedProcess(
+            ["stable-test-label"],
+            returncode=0,
+            stdout="",
+            stderr="",
+        )
+        timeout = subprocess.TimeoutExpired(["stable-test-label"], 60)
+
+        with patch.object(
+            phase_a_validator.sys,
+            "argv",
+            ["validator", "--section", "checkpoint"],
+        ), patch(
+            "scripts.validate_emotion_state_001_phase_a_contracts.subprocess.run",
+            side_effect=[completed, completed, timeout],
+        ), redirect_stdout(stdout), redirect_stderr(stderr):
+            exit_code = phase_a_validator.main()
+
+        self.assertEqual(exit_code, 1)
+        self.assertIn(
+            "EMOTION-STATE-001 Phase A validation failed:",
+            stdout.getvalue(),
+        )
+        self.assertIn("timed out after 60 seconds", stdout.getvalue())
+        self.assertEqual(stderr.getvalue(), "")
+        self.assertNotIn("Traceback", stdout.getvalue() + stderr.getvalue())
 
 
 if __name__ == "__main__":
