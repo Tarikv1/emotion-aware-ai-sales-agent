@@ -1,0 +1,69 @@
+{
+  "manifest_id": "creative-analysis-engine-emotion-state-source-v1",
+  "manifest_version": 1,
+  "checked_on": "2026-07-14",
+  "project_name": "Creative Analysis Engine",
+  "author": "Shehzeb Iftakhar",
+  "archive_filename": "creative-analysis-engine-dev.zip",
+  "archive_sha256": "E579B966E226F2AF6E4F8F8203C7189FEC94FB448EFC09B4B6640C10A398ECCC",
+  "source_repository_url": null,
+  "source_repository_url_status": "unverified",
+  "source_revision": null,
+  "source_revision_status": "unverified",
+  "source_archive_date": null,
+  "source_archive_date_status": "unverified",
+  "observed_license": null,
+  "observed_license_status": "unverified_not_relied_on_for_permission",
+  "permission_attestation": {
+    "status": "confirmed_by_project_owner",
+    "date": "2026-07-14",
+    "basis": "project-owner attestation of author and supervisor approval",
+    "credit_required": true
+  },
+  "attribution": {
+    "credit_name": "Shehzeb Iftakhar",
+    "project_name": "Creative Analysis Engine",
+    "phase_a_status": "recorded",
+    "phase_a_wording": "Creative Analysis Engine by Shehzeb Iftakhar, reviewed with author permission for the EMOTION-STATE thesis collaboration.",
+    "phase_b_reuse_scope_status": "not_defined",
+    "phase_b_reuse_scope": [],
+    "phase_b_attribution_wording_status": "pending",
+    "phase_b_wording": null
+  },
+  "phase_b_approval": {
+    "status": "not_requested",
+    "approved": false,
+    "approval_reference": null
+  },
+  "reviewed_files": [
+    {
+      "path": "src/features/temporal/speech_prosody.py",
+      "reuse_status": "inspiration_only",
+      "phase_a_action": "reviewed_no_code_adapted"
+    },
+    {
+      "path": "src/features/temporal/speech_turn_dynamics.py",
+      "reuse_status": "inspiration_only",
+      "phase_a_action": "reviewed_no_code_adapted"
+    },
+    {
+      "path": "src/aggregation/speech_call_readiness.py",
+      "reuse_status": "excluded_from_emotion_labels",
+      "phase_a_action": "reviewed_no_code_adapted"
+    }
+  ],
+  "copied_material": [],
+  "translated_material": [],
+  "adapted_material": [],
+  "independently_reimplemented_material": [],
+  "project_local_only": true,
+  "runtime_dependency_added": false,
+  "adaptation_allowed": false,
+  "adaptation_blockers": [
+    "source_repository_url_unverified",
+    "source_revision_or_authoritative_archive_date_unverified",
+    "phase_b_reuse_scope_not_defined",
+    "phase_b_attribution_wording_pending",
+    "phase_b_approval_not_granted"
+  ]
+}

@@ -33,10 +33,11 @@ Active phase: thesis evidence consolidation after source-grounded OpenAI sales-r
 
 Current checkpoint:
 
-- [ ] Current: design the first full Universal Sales RAG source skeleton from the accepted layer contract. Keep campaign facts in Campaign Profile And Facts, campaign adaptation in Campaign Sales Overlay, and universal method in Universal Sales RAG.
+- [ ] Current: implement the `EMOTION-STATE-001` partial Phase A provenance and offline contract foundation checkpoint. Keep `phase_a_complete=false` until both exact per-public-dataset manifests and the separately approved privacy-preserving unique-speaker cohort-release/dedup gate are designed, approved, satisfied, and validated. No acoustic code adaptation, private-data ingestion, provider work, runtime wiring, or live customer use is authorized.
 
 Next checkpoints:
 
+- [ ] Parked by Tarik's `2026-07-14` reprioritization: design the first full Universal Sales RAG source skeleton from the accepted layer contract. This work is not completed or rejected.
 - [ ] Next: generate a reusable campaign-intake template that produces Campaign Sales Overlay and Campaign Profile And Facts files before any ElevenLabs upload.
 - [ ] Next: continue sales-dialogue quality work or test a non-LLM classifier/action-selector baseline against the OpenAI semantic/live-action cases. This remains serious because Qwen 7B and tested small local models did not meet both quality and live-turn latency expectations.
 - [ ] Next: decide whether the strongest action-id-only selector path deserves distillation, fine-tuning, or a simpler non-LLM baseline. Do not return to full local LLM response generation unless the model can meet quality and roughly 2-3 second live-turn latency gates.

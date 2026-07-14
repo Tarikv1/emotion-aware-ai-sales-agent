@@ -48,11 +48,20 @@ Use the source categories carefully:
 ### IEMOCAP
 
 - Type: dataset source
+- Landing page: https://sail.usc.edu/iemocap/
 - Main source: https://sail.usc.edu/iemocap/iemocap_info.htm
 - USC SAIL database page: https://sail.usc.edu/software/databases/
 - Project use: speech emotion reference and possible audio-emotion baseline.
 - Current project status: local file appears to be a repackaged CSV-style export, not the full official corpus structure.
 - Thesis caution: do not make official-IEMOCAP claims from the local export until provenance and access conditions are verified.
+
+### MSP-Podcast (unselected offline dataset candidate)
+
+- Type: offline dataset candidate
+- Source: https://ecs.utdallas.edu/research/researchlabs/msp-lab/MSP-Podcast.html
+- Project use: candidate for a later offline emotion-state comparison only.
+- Current project status: not selected. Exact version, terms, restrictions, access conditions, and local hashes remain unverified.
+- Thesis caution: registering this source does not select the dataset or satisfy the exact per-dataset manifest gate.
 
 ### MELD
 
@@ -442,6 +451,13 @@ Project use:
 - `VOICE-026` planned interaction-prosody/backchannel design
 - limitations around listener evaluation and language-specific behavior
 
+### EMOTION-STATE reliability-method guidance
+
+- Type: academic methodology guidance
+- Source: https://onlinelibrary.wiley.com/doi/10.1111/j.1468-2958.2004.tb00738.x
+- Project use: reliability-method guidance for the planned three-reviewer annotation and agreement workflow.
+- Thesis caution: this source does not establish that the planned emotion-state labels are valid.
+
 ## Privacy And Data Governance Sources
 
 ### European Commission GDPR Principles
@@ -458,6 +474,13 @@ Project use:
 - Legal bases: https://www.edpb.europa.eu/sme-data-protection-guide/faq-frequently-asked-questions/answer/what-are-legal-basics-processing_en
 - Project use: private-data learning checkpoints, redaction, retention/deletion, and no-provider-upload default.
 - Thesis caution: use these for high-level GDPR framing, not as legal advice.
+
+### NIST AI RMF governance guidance
+
+- Type: AI-risk governance guidance
+- Source: https://airc.nist.gov/airmf-resources/airmf/5-sec-core/
+- Project use: governance framing for the EMOTION-STATE research boundary, risk review, and later decision gates.
+- Thesis caution: this guidance is not proof of legal, ethical, or production readiness.
 
 ## TTS And Voice Provider Sources
 
