@@ -5847,3 +5847,32 @@ Interpretation:
     pass
   - old cross-vertical live test folder criteria remain historical evidence;
     revised V2 tests are the next review target
+
+### 2026-07-14 - EMOTION-STATE-001 offline Phase A contract foundation
+
+- Objective: establish a provenance-first, deterministic, fail-closed foundation for later customer-state research without adapting source code, selecting a public dataset, reading private data, contacting a provider, or connecting the new contracts to live runtime behavior.
+- Files:
+  - provenance and data contracts: `research/sources/creative_analysis_engine/source_manifest.json`, `research/sources/creative_analysis_engine/source_notes.md`, `research/sources/emotion_state/dataset_manifest_contract.json`, `research/sources/emotion_state/annotation_record_v1.schema.json`, `research/sources/emotion_state/split_manifest_v1.schema.json`, `docs/data/EMOTION_STATE_001_ANNOTATION_CODEBOOK.md`, and `scripts/emotion_state_annotation_contracts.py`
+  - offline runtime contracts: `runtime/contracts/emotion_state_contracts.py`, `runtime/contracts/emotion_pattern_contracts.py`, `runtime/contracts/emotion_state_brain_extension.py`, and the detached-extension note in `docs/brain/BRAIN_002_RUNTIME_STATE_SCHEMA.md`
+  - deterministic frozen baseline and Phase A checkpoint: `scripts/exp_002_frozen_response_baseline.py`, `scripts/run_exp_002_frozen_response_baseline.py`, `scripts/validate_exp_002_frozen_response_baseline.py`, `research/experiments/generated/EXP-002-frozen-response-baseline/result.json`, `research/experiments/generated/EXP-002-frozen-response-baseline/report.md`, `scripts/emotion_state_phase_a_contracts.py`, `scripts/run_emotion_state_001_phase_a_contracts.py`, `scripts/validate_emotion_state_001_phase_a_contracts.py`, `research/experiments/cases/emotion-state-001-phase-a-contracts.json`, `research/experiments/generated/EMOTION-STATE-001-phase-a-contracts/result.json`, and `research/experiments/generated/EMOTION-STATE-001-phase-a-contracts/report.md`
+  - product, research, attribution, and roadmap trace: `docs/product/EMOTION_STATE_001_PHASE_A_CONTRACTS.md`, `research/experiments/EMOTION-STATE-001-phase-a.md`, `docs/third-party-inspirations.md`, `docs/thesis/THESIS_REFERENCE_REGISTRY.md`, `docs/thesis/ROADMAP.md`, and `docs/product/COMMANDS.md`
+  - Task 7 registration and governance surfaces: `runtime/runtime_manifest.json`, `scripts/validate_runtime_manifest.py`, `scripts/check_setup.py`, `scripts/validate_check_setup.py`, `scripts/check_project_drift.py`, `scripts/validate_project_drift_guard.py`, `docs/thesis/DECISION_LOG.md`, and this methodology entry
+- Source and permission evidence:
+  - the locally supplied archive SHA-256 was independently verified as `E579B966E226F2AF6E4F8F8203C7189FEC94FB448EFC09B4B6640C10A398ECCC`
+  - source repository URL, source revision, and authoritative archive date remain unverified blockers
+  - author permission is confirmed by project-owner attestation with supervisor approval; unverified license metadata is recorded but is not used as permission authority
+  - no code, text, or configuration from the archive was copied, translated, adapted, or independently reimplemented in Phase A; the reuse label remains `inspiration only`
+  - Phase B reuse scope, Phase B attribution wording, and separate Phase B approval remain open
+- Frozen baseline evidence:
+  - Task 0 matched all six fixed input fingerprints and reran only the frozen score arithmetic for 6 cases and 12 already-recorded responses
+  - response generation was not performed and semantic judgment was not recomputed
+  - `evaluator_provenance_status = not_recorded` because evaluator type, identity or role, count, and procedure are absent from the frozen evidence
+- Contract and checkpoint evidence:
+  - the Phase A result/report directly record 5 passing offline contract checks, 6 matching baseline fingerprints, 0 selected public datasets, `runtime_activation_allowed=false`, and `readiness_boundary.phase_a_complete=false`
+  - the generated result/report are artifact-only evidence and explicitly do not claim the full repository gate, production readiness, true customer emotion, provider feasibility, private-data approval, PSTN/ASR/latency validation, real-customer performance, or runtime activation
+  - Task 7 staged RED proofs failed only on the intended 3 runtime-manifest paths, 19 setup IDs, and 19 drift paths; the corresponding focused runtime-manifest, setup, and drift gates then passed after the minimum symmetric inventory changes
+- Completion boundary:
+  - `phase_a_complete=false` until exact manifests for every selected public dataset and a separately approved privacy-preserving unique-speaker cohort-release/dedup gate are both designed, approved, satisfied, and validated
+  - live aggregate release, private-data work, provider work, acoustic implementation, runtime wiring or activation, push, and merge remain blocked
+  - Task 7's seven focused validators, five Python governance validators, and `git diff --check` all exited `0`; the thesis-reference guard reported 0 failures and 0 warnings across 1,587 files and 361 registered URLs with no waiver or baseline subtraction
+  - direct artifact readback, three expected-no-match forbidden scans, exact 19-entry setup/drift symmetry checks, frozen prompt/fingerprint byte stability, BRAIN-002 v1 invariants, and immutable-base branch-scope checks also passed

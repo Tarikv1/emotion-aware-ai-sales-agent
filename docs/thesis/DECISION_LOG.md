@@ -2782,3 +2782,11 @@ Record important thesis and implementation decisions here with enough context to
   - `VOICE-024` becomes the current listening checkpoint
   - default runs remain dry-run and provider-safe
   - live MP3s are local ignored artifacts and are not thesis evidence until Tarik records listening observations
+
+### DEC-021 - Start customer-state work with an offline provenance and contract foundation
+
+- Date: 2026-07-14
+- Status: accepted
+- Decision: implement EMOTION-STATE-001 as separate gated phases, beginning with source provenance, annotation rules, strict contracts, and a detached BRAIN extension.
+- Why: acoustic cues are ambiguous, current affect fields can influence sales selection, BRAIN-002 v1 cannot enforce modality provenance or monotonic de-escalation, and public/private data provenance is incomplete.
+- Consequences: no acoustic code adaptation, private-data ingestion, provider work, live wiring, runtime activation, or customer-state claim is authorized by Phase A.

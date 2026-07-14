@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 from __future__ import annotations
 
+import ast
 import json
 import shutil
 import subprocess
@@ -308,12 +309,67 @@ REQUIRED_FIXTURE_FILES = [
     "scripts/validate_private_call_learning_pipeline.py",
     "scripts/validate_context_reading_policy.py",
     "scripts/validate_project_drift_guard.py",
+    "scripts/exp_002_frozen_response_baseline.py",
+    "scripts/run_exp_002_frozen_response_baseline.py",
+    "scripts/validate_exp_002_frozen_response_baseline.py",
+    "runtime/contracts/emotion_state_contracts.py",
+    "runtime/contracts/emotion_pattern_contracts.py",
+    "runtime/contracts/emotion_state_brain_extension.py",
+    "scripts/emotion_state_annotation_contracts.py",
+    "scripts/emotion_state_phase_a_contracts.py",
+    "scripts/run_emotion_state_001_phase_a_contracts.py",
+    "scripts/validate_emotion_state_001_phase_a_contracts.py",
+    "research/experiments/cases/emotion-state-001-phase-a-contracts.json",
+    "research/experiments/EMOTION-STATE-001-phase-a.md",
+    "docs/product/EMOTION_STATE_001_PHASE_A_CONTRACTS.md",
+    "docs/data/EMOTION_STATE_001_ANNOTATION_CODEBOOK.md",
+    "research/sources/creative_analysis_engine/source_manifest.json",
+    "research/sources/creative_analysis_engine/source_notes.md",
+    "research/sources/emotion_state/dataset_manifest_contract.json",
+    "research/sources/emotion_state/annotation_record_v1.schema.json",
+    "research/sources/emotion_state/split_manifest_v1.schema.json",
 ]
 
 
 def assert_condition(condition: bool, message: str) -> None:
     if not condition:
         raise AssertionError(message)
+
+
+def load_checker_required_files() -> list[str]:
+    tree = ast.parse(SCRIPT_PATH.read_text(encoding="utf-8"), filename=str(SCRIPT_PATH))
+    for node in tree.body:
+        if not isinstance(node, ast.Assign):
+            continue
+        if not any(isinstance(target, ast.Name) and target.id == "REQUIRED_FILES" for target in node.targets):
+            continue
+        value = ast.literal_eval(node.value)
+        assert_condition(
+            isinstance(value, list) and all(isinstance(item, str) for item in value),
+            "Project drift REQUIRED_FILES must be a literal list of paths.",
+        )
+        return value
+    raise AssertionError("Project drift checker REQUIRED_FILES inventory is missing.")
+
+
+def validate_required_file_inventory() -> None:
+    checker_files = load_checker_required_files()
+    assert_condition(
+        len(checker_files) == len(set(checker_files)),
+        "Project drift checker REQUIRED_FILES contains duplicate paths.",
+    )
+    assert_condition(
+        len(REQUIRED_FIXTURE_FILES) == len(set(REQUIRED_FIXTURE_FILES)),
+        "Project drift validator REQUIRED_FIXTURE_FILES contains duplicate paths.",
+    )
+    checker_paths = set(checker_files)
+    validator_paths = set(REQUIRED_FIXTURE_FILES)
+    assert_condition(
+        checker_paths == validator_paths,
+        "Project drift required-file inventories differ: "
+        f"only_checker={sorted(checker_paths - validator_paths)}, "
+        f"only_validator={sorted(validator_paths - checker_paths)}",
+    )
 
 
 def write_text(path: Path, text: str) -> None:
@@ -441,6 +497,7 @@ def validate_current_repo() -> None:
 
 def main() -> None:
     assert_condition(SCRIPT_PATH.exists(), "Project drift guard runner is missing.")
+    validate_required_file_inventory()
     FIXTURE_ROOT.mkdir(parents=True, exist_ok=True)
 
     try:

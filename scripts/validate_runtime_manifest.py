@@ -31,6 +31,9 @@ REQUIRED_RUNTIME_PATHS = {
     "runtime/providers/VOICE_PROVIDER_RUN_BOUNDARY.md",
     "runtime/providers/VOICE_GENERATED_AUDIO_ASSET_LOG.md",
     "runtime/persistence/SQLITE_PROTOTYPE.md",
+    "runtime/contracts/emotion_state_contracts.py",
+    "runtime/contracts/emotion_pattern_contracts.py",
+    "runtime/contracts/emotion_state_brain_extension.py",
 }
 
 REQUIRED_BOUNDARY_FLAGS = {
