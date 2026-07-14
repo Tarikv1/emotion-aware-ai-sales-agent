@@ -84,6 +84,7 @@ EVIDENCE_QUALITY_VALUES = frozenset({"text_only", "acoustic_only", "multimodal",
 TRAJECTORY_VALUES = frozenset({"stable", "improving", "worsening", "insufficient_history", "contradictory"})
 AGGREGATION_WINDOW_FIELDS = frozenset({"window_start_date", "window_end_date", "timezone"})
 EVIDENCE_POLICY_VERSION_PATTERN = re.compile(r"^emotion-state-evidence-v[1-9][0-9]*$")
+CANONICAL_DATE_PATTERN = re.compile(r"^[0-9]{4}-[0-9]{2}-[0-9]{2}$")
 EXPLICIT_STATEMENT_FIELDS = frozenset({
     "evidence_class", "redacted_reference_id", "operational_signal",
 })
@@ -103,6 +104,7 @@ class EventWatermarkV1:
     turn_id_by_sequence: tuple[tuple[int, str], ...]
     last_input_revision_by_turn: tuple[tuple[str, int], ...]
     seen_event_ids: frozenset[str]
+    event_history_by_id: tuple[tuple[str, str, int], ...] = ()
 
 
 def _find_forbidden_paths(value: Any, path: str = "$") -> list[str]:
@@ -164,7 +166,7 @@ def validate_decision_reference(value: Any, field: str) -> None:
 
 def _validate_event_watermark(
     watermark: EventWatermarkV1,
-) -> tuple[dict[str, int], dict[int, str], dict[str, int]]:
+) -> tuple[dict[str, int], dict[int, str], dict[str, int], dict[str, tuple[str, int]]]:
     if not isinstance(watermark, EventWatermarkV1):
         raise EmotionStateContractError("event watermark type is invalid")
     for field, value in (
@@ -180,10 +182,16 @@ def _validate_event_watermark(
         watermark.turn_id_by_sequence,
         watermark.last_input_revision_by_turn,
     )
-    if any(type(value) is not tuple for value in tuple_fields) or type(watermark.seen_event_ids) is not frozenset:
+    if (
+        any(type(value) is not tuple for value in tuple_fields)
+        or type(watermark.seen_event_ids) is not frozenset
+        or type(watermark.event_history_by_id) is not tuple
+    ):
         raise EmotionStateContractError("event watermark collections must be immutable")
     if any(type(pair) is not tuple or len(pair) != 2 for value in tuple_fields for pair in value):
         raise EmotionStateContractError("event watermark entries are invalid")
+    if any(type(entry) is not tuple or len(entry) != 3 for entry in watermark.event_history_by_id):
+        raise EmotionStateContractError("event watermark history entries are invalid")
     sequence_by_id = dict(watermark.turn_sequence_by_id)
     id_by_sequence = dict(watermark.turn_id_by_sequence)
     revision_by_turn = dict(watermark.last_input_revision_by_turn)
@@ -207,14 +215,37 @@ def _validate_event_watermark(
             raise EmotionStateContractError("event watermark revision is invalid")
     for event_id in watermark.seen_event_ids:
         validate_opaque_reference(event_id, "watermark.seen_event_id")
+    event_history_by_id: dict[str, tuple[str, int]] = {}
+    turn_revision_history: set[tuple[str, int]] = set()
+    revisions_by_turn: dict[str, list[int]] = {}
+    for event_id, turn_id, revision in watermark.event_history_by_id:
+        validate_opaque_reference(event_id, "watermark.history_event_id")
+        validate_opaque_reference(turn_id, "watermark.history_turn_id")
+        if type(revision) is not int or revision < 0:
+            raise EmotionStateContractError("event watermark history revision is invalid")
+        if event_id in event_history_by_id:
+            raise EmotionStateContractError("event watermark history contains duplicate event IDs")
+        if (turn_id, revision) in turn_revision_history:
+            raise EmotionStateContractError("event watermark history contains duplicate turn revisions")
+        event_history_by_id[event_id] = (turn_id, revision)
+        turn_revision_history.add((turn_id, revision))
+        revisions_by_turn.setdefault(turn_id, []).append(revision)
     if {sequence: turn_id for turn_id, sequence in sequence_by_id.items()} != id_by_sequence:
         raise EmotionStateContractError("event watermark turn maps are inconsistent")
     if set(revision_by_turn) != set(sequence_by_id):
         raise EmotionStateContractError("event watermark revision map is inconsistent")
+    if frozenset(event_history_by_id) != watermark.seen_event_ids:
+        raise EmotionStateContractError("event watermark seen events and history are inconsistent")
+    if set(revisions_by_turn) != set(sequence_by_id):
+        raise EmotionStateContractError("event watermark history turn coverage is inconsistent")
+    for turn_id, last_revision in revision_by_turn.items():
+        revisions = sorted(revisions_by_turn[turn_id])
+        if len(revisions) != last_revision + 1 or revisions != list(range(len(revisions))):
+            raise EmotionStateContractError("event watermark revision history is inconsistent")
     expected_last_sequence = max(id_by_sequence, default=-1)
     if watermark.last_turn_sequence != expected_last_sequence:
         raise EmotionStateContractError("event watermark last_turn_sequence is inconsistent")
-    return sequence_by_id, id_by_sequence, revision_by_turn
+    return sequence_by_id, id_by_sequence, revision_by_turn, event_history_by_id
 
 
 def _require_reference_list(value: Any, field: str) -> None:
@@ -235,12 +266,21 @@ def _require_enum_list(value: Any, allowed: frozenset[str], field: str) -> None:
         raise EmotionStateContractError(f"{field} contains an unknown value")
 
 
+def _is_finite_scalar(value: Any) -> bool:
+    if type(value) not in {int, float}:
+        return False
+    try:
+        return math.isfinite(value)
+    except (OverflowError, ValueError):
+        return False
+
+
 def _require_numeric_map(value: Any, field: str, *, minimum: float | None = None, maximum: float | None = None) -> None:
     if not isinstance(value, dict):
         raise EmotionStateContractError(f"{field} must be an object of scalar values")
     for key, number in value.items():
         validate_opaque_reference(key, f"{field} key")
-        if type(number) not in {int, float} or not math.isfinite(number):
+        if not _is_finite_scalar(number):
             raise EmotionStateContractError(f"{field}.{key} must be a finite scalar")
         if minimum is not None and number < minimum:
             raise EmotionStateContractError(f"{field}.{key} is below its minimum")
@@ -249,7 +289,7 @@ def _require_numeric_map(value: Any, field: str, *, minimum: float | None = None
 
 
 def _require_rate(value: Any, field: str) -> None:
-    if type(value) not in {int, float} or not math.isfinite(value) or not 0.0 <= value <= 1.0:
+    if not _is_finite_scalar(value) or not 0.0 <= value <= 1.0:
         raise EmotionStateContractError(f"{field} must be a finite rate in [0, 1]")
 
 
@@ -271,6 +311,11 @@ def _validate_aggregation_window(value: Any) -> None:
         raise EmotionStateContractError("aggregation_window fields mismatch")
     if value["timezone"] != "UTC":
         raise EmotionStateContractError("aggregation_window timezone must be UTC")
+    if any(
+        not isinstance(value[field], str) or CANONICAL_DATE_PATTERN.fullmatch(value[field]) is None
+        for field in ("window_start_date", "window_end_date")
+    ):
+        raise EmotionStateContractError("aggregation_window dates must use canonical YYYY-MM-DD")
     try:
         start = date.fromisoformat(value["window_start_date"])
         end = date.fromisoformat(value["window_end_date"])
@@ -449,18 +494,28 @@ def validate_perceived_customer_state(payload: dict[str, Any]) -> dict[str, Any]
     if not isinstance(provenance, dict) or set(provenance) != signal_keys:
         raise EmotionStateContractError("modality provenance must cover every operational signal")
     provenance_ref_union: set[str] = set()
+    nonempty_modalities: set[str] = set()
     for signal, modality_refs in provenance.items():
         if not isinstance(modality_refs, dict) or not set(modality_refs).issubset({"text", "acoustic", "dialogue"}):
             raise EmotionStateContractError(f"invalid modality provenance for {signal}")
         signal_ref_union: set[str] = set()
         for modality, references in modality_refs.items():
             _require_reference_list(references, f"signal_provenance_by_modality.{signal}.{modality}")
+            if references:
+                nonempty_modalities.add(modality)
             signal_ref_union.update(references)
         if not signal_ref_union:
             raise EmotionStateContractError(f"signal {signal} has no evidence provenance")
         provenance_ref_union.update(signal_ref_union)
     if provenance_ref_union != set(payload["evidence_refs"]):
         raise EmotionStateContractError("evidence_refs must equal the signal provenance reference union")
+    evidence_quality = payload["overall_evidence_quality"]
+    if evidence_quality == "text_only" and nonempty_modalities != {"text"}:
+        raise EmotionStateContractError("text_only evidence quality requires text-only provenance")
+    if evidence_quality == "acoustic_only" and nonempty_modalities != {"acoustic"}:
+        raise EmotionStateContractError("acoustic_only evidence quality requires acoustic-only provenance")
+    if evidence_quality == "multimodal" and len(nonempty_modalities) < 2:
+        raise EmotionStateContractError("multimodal evidence quality requires multiple modalities")
     _require_enum_list(payload["abstention_reasons"], ABSTENTION_REASON_CODES, "abstention_reasons")
     if type(payload["abstained"]) is not bool:
         raise EmotionStateContractError("abstained must be boolean")
@@ -483,7 +538,7 @@ def validate_event_identity(
     watermark: EventWatermarkV1,
 ) -> EventWatermarkV1:
     validate_customer_turn_evidence(payload)
-    sequence_by_id, id_by_sequence, revision_by_turn = _validate_event_watermark(watermark)
+    sequence_by_id, id_by_sequence, revision_by_turn, event_history_by_id = _validate_event_watermark(watermark)
     if payload["call_session_id"] != watermark.expected_session_id:
         raise EmotionStateContractError("cross-session event")
     if payload["campaign_profile_id"] != watermark.expected_campaign_profile_id:
@@ -514,6 +569,7 @@ def validate_event_identity(
         sequence_by_id[turn_id] = turn_sequence
         id_by_sequence[turn_sequence] = turn_id
     revision_by_turn[turn_id] = input_revision
+    event_history_by_id[payload["event_id"]] = (turn_id, input_revision)
     return EventWatermarkV1(
         expected_session_id=watermark.expected_session_id,
         expected_campaign_profile_id=watermark.expected_campaign_profile_id,
@@ -522,7 +578,11 @@ def validate_event_identity(
         turn_sequence_by_id=tuple(sorted(sequence_by_id.items())),
         turn_id_by_sequence=tuple(sorted(id_by_sequence.items())),
         last_input_revision_by_turn=tuple(sorted(revision_by_turn.items())),
-        seen_event_ids=watermark.seen_event_ids | {payload["event_id"]},
+        seen_event_ids=frozenset(event_history_by_id),
+        event_history_by_id=tuple(sorted(
+            (event_id, identity[0], identity[1])
+            for event_id, identity in event_history_by_id.items()
+        )),
     )
 
 
@@ -538,6 +598,21 @@ def _expect_contract_error(callback: Any) -> None:
     except EmotionStateContractError:
         return
     raise AssertionError("expected EmotionStateContractError")
+
+
+def _expect_named_contract_errors(cases: tuple[tuple[str, Any], ...]) -> None:
+    failures: list[str] = []
+    for name, callback in cases:
+        try:
+            callback()
+        except EmotionStateContractError:
+            continue
+        except Exception as exc:
+            failures.append(f"{name}: raised {type(exc).__name__}, not EmotionStateContractError")
+        else:
+            failures.append(f"{name}: accepted")
+    if failures:
+        raise AssertionError("; ".join(failures))
 
 
 def contract_self_check() -> str:
@@ -760,4 +835,99 @@ def contract_self_check() -> str:
         state,
         blocked_policy_effects=["expand_action_set"],
     )))
+    watermark_history_without_events = EventWatermarkV1(
+        expected_session_id="session-fixture-1",
+        expected_campaign_profile_id="emotion-state-phase-a-fixture",
+        expected_campaign_profile_version="fixture-v1",
+        last_turn_sequence=1,
+        turn_sequence_by_id=(("turn-1", 1),),
+        turn_id_by_sequence=((1, "turn-1"),),
+        last_input_revision_by_turn=(("turn-1", 0),),
+        seen_event_ids=frozenset(),
+        event_history_by_id=(("event-1", "turn-1", 0),),
+    )
+    watermark_events_without_history = EventWatermarkV1(
+        expected_session_id="session-fixture-1",
+        expected_campaign_profile_id="emotion-state-phase-a-fixture",
+        expected_campaign_profile_version="fixture-v1",
+        last_turn_sequence=-1,
+        turn_sequence_by_id=(),
+        turn_id_by_sequence=(),
+        last_input_revision_by_turn=(),
+        seen_event_ids=frozenset({"event-1"}),
+        event_history_by_id=(("event-1", "turn-ghost", 0),),
+    )
+    watermark_same_cardinality_substitution = EventWatermarkV1(
+        expected_session_id="session-fixture-1",
+        expected_campaign_profile_id="emotion-state-phase-a-fixture",
+        expected_campaign_profile_version="fixture-v1",
+        last_turn_sequence=1,
+        turn_sequence_by_id=(("turn-1", 1),),
+        turn_id_by_sequence=((1, "turn-1"),),
+        last_input_revision_by_turn=(("turn-1", 0),),
+        seen_event_ids=frozenset({"substituted-event-1"}),
+        event_history_by_id=(("event-1", "turn-1", 0),),
+    )
+    acoustic_only_reference = "evidence:uuid:33333333-3333-4333-8333-333333333333"
+    text_only_with_acoustic_only_provenance = dict(
+        state,
+        evidence_refs=[acoustic_only_reference],
+        signal_provenance_by_modality={
+            "possible_confusion": {"acoustic": [acoustic_only_reference]},
+        },
+    )
+    _expect_named_contract_errors((
+        (
+            "WATERMARK_HISTORY_WITHOUT_EVENTS_REPLAY",
+            lambda: validate_event_identity(
+                dict(evidence, input_revision=1),
+                watermark=watermark_history_without_events,
+            ),
+        ),
+        (
+            "WATERMARK_EVENTS_WITHOUT_HISTORY",
+            lambda: validate_event_identity(
+                dict(evidence, event_id="event-2"),
+                watermark=watermark_events_without_history,
+            ),
+        ),
+        (
+            "WATERMARK_SAME_CARDINALITY_EVENT_SUBSTITUTION",
+            lambda: validate_event_identity(
+                dict(evidence, input_revision=1),
+                watermark=watermark_same_cardinality_substitution,
+            ),
+        ),
+        (
+            "TEXT_ONLY_WITH_ACOUSTIC_ONLY_PROVENANCE",
+            lambda: validate_perceived_customer_state(text_only_with_acoustic_only_provenance),
+        ),
+        (
+            "NONCANONICAL_COMPACT_AGGREGATION_DATE",
+            lambda: validate_operational_aggregate(dict(
+                aggregate,
+                aggregation_window=dict(
+                    aggregate["aggregation_window"],
+                    window_start_date="20260701",
+                ),
+            )),
+        ),
+        (
+            "NONCANONICAL_ISO_WEEK_AGGREGATION_DATE",
+            lambda: validate_operational_aggregate(dict(
+                aggregate,
+                aggregation_window=dict(
+                    aggregate["aggregation_window"],
+                    window_start_date="2026-W27-3",
+                ),
+            )),
+        ),
+        (
+            "HUGE_INTEGER_PERCENTILE_NORMALIZED",
+            lambda: validate_operational_aggregate(dict(
+                aggregate,
+                processing_latency_percentiles={"p50": 0, "p95": 10 ** 10000},
+            )),
+        ),
+    ))
     return "pass"
