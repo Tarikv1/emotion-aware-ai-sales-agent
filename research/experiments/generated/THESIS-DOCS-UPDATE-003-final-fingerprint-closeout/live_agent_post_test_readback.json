@@ -1,0 +1,23 @@
+{
+  "captured_at_utc": "2026-07-14T02:47:17Z",
+  "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+  "agent_name": "web design",
+  "prompt_sha256": "41d34807238e25ebf02b535a2b761747452a5b4477218353c4dbbea9d638278a",
+  "prompt_matches_repo": true,
+  "knowledge_base_count": 17,
+  "knowledge_base_order_matches_manifest": true,
+  "analysis_criteria_count": 30,
+  "built_in_end_call_count": 1,
+  "duplicate_custom_or_server_end_call_count": 0,
+  "procedures_inactive": true,
+  "unrelated_tool_fingerprint_sha256": "b3003ec65390b71d740cc7163f86ded7b3df9590b0af034d2ce5564f8d5faebc",
+  "collateral_state_sha256": "b837f28d031624594f3ff7405d39ce281f30b535c3a0d18f241399478afdb9a6",
+  "llm": {
+    "llm": "gpt-5.5",
+    "temperature": 0.1,
+    "thinking_budget": null,
+    "reasoning_effort": "none"
+  },
+  "provider_writes_made": false,
+  "outbound_calls_made": false
+}

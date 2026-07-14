@@ -16,6 +16,24 @@ Use this file as a chronological research journal for the thesis implementation.
 
 ## Entries
 
+### 2026-07-14 - Atlas final-fingerprint and drift-guard closeout
+
+- Objective: close the two remaining wrap-up gaps without rerunning a full suite, modifying tests/evaluators, placing an outbound call, or deleting historical evidence.
+- Action taken:
+  - performed a fresh guarded live readback of `agent_7801kt0g32zxf4f8x5zkykj7syty` and verified the repo prompt hash, 17 ordered KB attachments, 30 Analysis criteria, one built-in `end_call`, zero custom/server duplicates, inactive Procedures, and unchanged protected collateral;
+  - ran exactly one existing 040 dashboard canary, `sim_040_direct_crm_integration_existing_site`, with `repeat_count: 1`;
+  - captured invocation `suite_7301kxf805wbecg8mc72j28zm39r`, ran the existing deterministic trace validator, manually reviewed the transcript, and commissioned an independent GPT-5.5 transcript review;
+  - traced 50 project-drift failures to the `sk-...` detector matching the internal `sk-9...` substring inside Task 9 report filenames, then added token boundaries and regression coverage while preserving standalone fake-key detection.
+- Result:
+  - provider status: pass, one observed run and zero failed runs;
+  - deterministic independent status: pass, with every CRM pricing/scope/CTA assertion green;
+  - independent transcript status: pass for buyer-triggered pricing, the `$1,000-$2,500+` lane, scope caveats, CTA suppression, state progression, and no exact-repeat loop across the tested near-repeat complexity follow-up;
+  - project drift guard: pass after the boundary-aware detector fix;
+  - ElevenLabs usage delta: 563 characters, with no overage, provider write, dashboard-test mutation, or outbound call.
+- Boundary: the canary did not contain an explicit buyer complaint such as "you already said that," so it does not fully prove that distinct complaint branch. It also does not establish PSTN audio, ASR, latency, interruptions, buyer perception, conversion impact, or real-customer performance.
+- Why it matters for the thesis: it closes a documented evidence gap with the smallest fixed case, independently adjudicates the transcript instead of trusting the provider label, and demonstrates that a security guard should distinguish credential tokens from filename substrings without excluding review evidence from scanning.
+- Evidence: `research/experiments/generated/THESIS-DOCS-UPDATE-003-final-fingerprint-closeout/` and the post-final capture/independent files under `ELEVENLABS-040-detailed-pricing-control/`.
+
 ### 2026-07-14 - Atlas 019-040 hosted evidence consolidation
 
 - Objective: consolidate the Atlas Web Studio ElevenLabs evidence arc from the post-018 hosted-agent work through 036 natural-sales scenarios, 039 terminal `end_call` hardening, and 040 detailed-pricing control without rewriting historical phase-one methodology or overstating production readiness.

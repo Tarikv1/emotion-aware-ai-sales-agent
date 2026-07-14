@@ -1,16 +1,16 @@
 {
   "checkpoint_id": "ELEVENLABS-040-detailed-pricing-control",
-  "captured_at_utc": "2026-07-12T20:36:01Z",
-  "status": "failed",
-  "invocation_id": "suite_2601kxc0p7w7fhhvqhma1339ke4e",
+  "captured_at_utc": "2026-07-14T02:41:52Z",
+  "status": "completed",
+  "invocation_id": "suite_7301kxf805wbecg8mc72j28zm39r",
   "repeat_count": 1,
   "selected_test_count": 1,
   "selected_test_ids": [
-    "sim_040_basic_site_direct_price"
+    "sim_040_direct_crm_integration_existing_site"
   ],
   "expected_terminal_run_count": 1,
   "observed_terminal_run_count": 1,
-  "failed_terminal_run_count": 1,
+  "failed_terminal_run_count": 0,
   "provider_status_code": 200,
   "provider_test_ids": {
     "sim_040_capability_question_no_unprompted_price": "test_9101kx9ddm04f0e8tjnwzja893a6",
@@ -26,14 +26,14 @@
   },
   "run_statuses": [
     {
-      "test_id": "test_0201kx9ddmfpeyh9mes2znh3j98b",
-      "test_name": "ELEVENLABS-040-detailed-pricing-control::sim_040_basic_site_direct_price",
-      "test_run_id": "trun_1701kxc0p7wbe7rr94p49a071sk5",
-      "status": "failed"
+      "test_id": "test_0101kx9ddndtfawsgcrcjg72ycce",
+      "test_name": "ELEVENLABS-040-detailed-pricing-control::sim_040_direct_crm_integration_existing_site",
+      "test_run_id": "trun_7001kxf805wvfz7b2xn7xnr7espd",
+      "status": "passed"
     }
   ],
   "final_run_statuses": [
-    "failed"
+    "passed"
   ],
   "outbound_calls_made": false,
   "mode": "canary_run",
@@ -53,15 +53,15 @@
         "body": {
           "tests": [
             {
-              "test_id": "test_0201kx9ddmfpeyh9mes2znh3j98b"
+              "test_id": "test_0101kx9ddndtfawsgcrcjg72ycce"
             }
           ],
           "repeat_count": 1
         },
-        "attempted_at_utc": "2026-07-12T20:35:51Z",
+        "attempted_at_utc": "2026-07-14T02:41:20Z",
         "status": "succeeded",
         "status_code": 200,
-        "completed_at_utc": "2026-07-12T20:35:51Z"
+        "completed_at_utc": "2026-07-14T02:41:20Z"
       }
     ]
   }

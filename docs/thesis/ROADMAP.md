@@ -33,12 +33,12 @@ Active phase: thesis evidence consolidation after the Atlas 019-040 hosted-agent
 
 Current checkpoint:
 
-- [ ] Current: consolidate thesis-facing evidence around the covered Atlas hosted configuration. Record that accumulated evidence supports the targeted natural-sales, terminal-control, and detailed-pricing behaviors, while the final live fingerprint remains without a fresh post-last-write transcript check and therefore does not support a broad live-readiness claim. Keep the broader non-production limits explicit: no claim yet for PSTN audio, ASR, latency, interruption handling, buyer perception, conversion impact, or real-customer use.
+- [x] Completed: consolidate thesis-facing evidence around the covered Atlas hosted configuration and run one bounded post-final-write CRM canary. Provider, deterministic independent, and GPT-5.5 transcript review passed for the tested near-repeat CRM progression; the drift guard also passes after a regression-tested filename-boundary fix. Keep the broader non-production limits explicit: no claim yet for PSTN audio, ASR, latency, interruption handling, buyer perception, conversion impact, or real-customer use.
 
 Next checkpoints:
 
 - [ ] Next: finish the thesis methodology, decision, evaluation, outline, and source-traceability updates so the Atlas 019-040 evidence is cited cleanly without rewriting historical phase-one documents.
-- [ ] Next: if a stronger Atlas readiness claim is needed, first run one bounded post-final-write text/simulation check for the CRM repetition patch, then define separate PSTN audio, ASR, latency, interruption-handling, and buyer-perception gates.
+- [ ] Next: freeze/archive the covered Atlas hosted text/simulation phase and continue only if a separate evidence objective is opened. An explicit repetition-complaint canary is optional narrow regression work; PSTN audio, ASR, latency, interruption-handling, and buyer-perception remain separate future gates.
 - [ ] Next: generate a reusable campaign-intake template that produces Campaign Sales Overlay and Campaign Profile And Facts files before any ElevenLabs upload.
 - [ ] Next: continue sales-dialogue quality work or test a non-LLM classifier/action-selector baseline against the OpenAI semantic/live-action cases. This remains serious because Qwen 7B and tested small local models did not meet both quality and live-turn latency expectations.
 - [ ] Next: decide whether the strongest action-id-only selector path deserves distillation, fine-tuning, or a simpler non-LLM baseline. Do not return to full local LLM response generation unless the model can meet quality and roughly 2-3 second live-turn latency gates.

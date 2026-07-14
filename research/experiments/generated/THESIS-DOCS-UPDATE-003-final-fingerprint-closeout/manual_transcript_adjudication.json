@@ -1,0 +1,23 @@
+{
+  "captured_at_utc": "2026-07-14T02:42:02Z",
+  "invocation_id": "suite_7301kxf805wbecg8mc72j28zm39r",
+  "test_run_id": "trun_7001kxf805wvfz7b2xn7xnr7espd",
+  "test_id": "sim_040_direct_crm_integration_existing_site",
+  "provider_test_id": "test_0101kx9ddndtfawsgcrcjg72ycce",
+  "verdict": "pass_with_explicit_complaint_branch_unproven",
+  "provider_status": "passed",
+  "deterministic_independent_status": "pass",
+  "independent_gpt55_status": "pass",
+  "checks": {
+    "buyer_triggered_pricing": "pass",
+    "direct_crm_lane_1000_2500_plus": "pass",
+    "api_data_flow_scope_caveat": "pass",
+    "mockup_email_send_cta_suppressed": "pass",
+    "near_repeat_progresses_to_missing_inputs": "pass",
+    "supplied_salesforce_state_reused": "pass",
+    "unsupported_fixed_quote_or_ceiling_absent": "pass",
+    "explicit_repetition_complaint_exercised": "not_exercised"
+  },
+  "manual_trace_summary": "The first CRM turn remained price-free. After an explicit cost question, the agent used only the direct CRM/API range and one cost driver. Successive complexity questions produced different, progressively narrower answers. After the buyer supplied Salesforce, the trigger action, and one-way direction, the agent reused those facts and named only the remaining field-mapping and validation checks.",
+  "maximum_justified_claim": "The final live fingerprint is behaviorally verified for the tested existing-site direct CRM pricing and near-repeat scope progression. This one canary does not independently establish broad production readiness or the explicit repetition-complaint branch."
+}

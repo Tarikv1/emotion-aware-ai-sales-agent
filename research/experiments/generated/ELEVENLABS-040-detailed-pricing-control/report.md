@@ -2,7 +2,7 @@
 
 ## Verdict
 
-The active Atlas product is broadly live-ready for the current pricing and natural-sales contract. This is a product verdict, not a claim that every unchanged ElevenLabs dashboard evaluator is green.
+The active Atlas configuration is ready to wrap the covered hosted text/simulation pricing and natural-sales phase. This is a scoped research/prototype closeout, not a broad live- or production-readiness claim and not a claim that every unchanged ElevenLabs dashboard evaluator is green.
 
 The remaining dashboard discrepancies are evaluator/test-contract mismatches:
 
@@ -61,7 +61,20 @@ KB order:
 
 ## Credit-Capped Verification
 
-No simulations were run after the user requested credit restraint. Existing evidence was reconciled instead of rerunning full suites.
+During the original readiness decision, no simulations were run after the user requested credit restraint; existing evidence was reconciled instead of rerunning full suites. On 2026-07-14, the user explicitly authorized closing the final fingerprint gap. Exactly one existing CRM canary ran with `repeat_count: 1`; no full suite or outbound call ran.
+
+Post-final-write CRM canary:
+
+- Scenario: `sim_040_direct_crm_integration_existing_site`
+- Provider test: `test_0101kx9ddndtfawsgcrcjg72ycce`
+- Invocation: `suite_7301kxf805wbecg8mc72j28zm39r`
+- Test run: `trun_7001kxf805wvfz7b2xn7xnr7espd`
+- Provider: pass
+- Deterministic independent validation: pass
+- Independent GPT-5.5 transcript adjudication: pass
+- Manual finding: the agent progressed from general complexity factors to the buyer's missing CRM inputs, then used the supplied Salesforce/action/direction details without repeating the prior sentence or reopening a CTA
+- Limitation: the simulated buyer used a near-repeat complexity follow-up, not an explicit "you already said that" complaint
+- Subscription character delta: `563`; post-run remaining characters: `27,611`; overage: `$0`
 
 040 evidence:
 
@@ -94,4 +107,4 @@ The committed product diff does not modify `runtime/providers/elevenlabs_agents/
 - Local dry-run guard initially rejected `atlas_close_and_followup_playbook.md` as an unknown target. No provider request was sent. The allowlist was then extended by fixed document ID and covered by validators.
 - Final GPT-5.5 review found an exact-repeat CRM loop. The product prompt and active output-quality KB were corrected and read back live without another simulation.
 - Simulations did run during this development cycle; no outbound call was placed.
-- No further simulation is required for this release decision. Future reruns should be targeted only after the stale 036 dashboard contract is deliberately revised as a separate test-governance change.
+- No additional broad simulation is required for this wrap-up decision. Any future run should answer a new bounded evidence question, such as the still-untested explicit repetition-complaint branch or a separately governed PSTN/ASR/latency gate.

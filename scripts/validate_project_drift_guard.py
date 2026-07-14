@@ -411,6 +411,15 @@ def validate_dirty_fixture() -> None:
         "stale_generated_artifact_reference",
     ]:
         assert_condition(expected_code in issue_codes, f"Dirty fixture did not report {expected_code}.")
+    dirty_secret_issues = [
+        issue
+        for issue in payload["issues"]
+        if issue["path"] == "docs/bad-secret.md" and issue["code"] == "secret_like_value"
+    ]
+    assert_condition(
+        dirty_secret_issues,
+        "Standalone fake sk- fixture should still trigger secret_like_value.",
+    )
 
     assert_condition(payload["summary"]["auto_fixes_applied"] is False, "Guard must not auto-fix dirty fixture.")
 
@@ -421,6 +430,11 @@ def validate_clean_fixture() -> None:
     audio_path = clean_root / "research" / "experiments" / "generated" / "VOICE-999" / "audio" / "ignored-audio.mp3"
     audio_path.parent.mkdir(parents=True, exist_ok=True)
     audio_path.write_bytes(b"fixture audio bytes")
+    task_report_reference = "task-9-source-byte-provenance-fix-report.md"
+    write_text(
+        clean_root / "docs" / "task-report-index.md",
+        f"Reference: `{task_report_reference}`.\n",
+    )
 
     completed = run_guard(clean_root)
     assert_condition(completed.returncode == 0, f"Clean fixture should pass. stderr={completed.stderr!r}")
@@ -428,6 +442,15 @@ def validate_clean_fixture() -> None:
     assert_condition(payload["status"] == "pass", "Clean fixture payload should be pass.")
     assert_condition(payload["summary"]["failure_count"] == 0, "Clean fixture should not have failures.")
     assert_condition(payload["summary"]["auto_fixes_applied"] is False, "Guard must not auto-fix clean fixture.")
+    task_report_secret_issues = [
+        issue
+        for issue in payload["issues"]
+        if issue["path"] == "docs/task-report-index.md" and issue["code"] == "secret_like_value"
+    ]
+    assert_condition(
+        not task_report_secret_issues,
+        "Task report filename reference should not trigger secret_like_value.",
+    )
 
 
 def validate_current_repo() -> None:

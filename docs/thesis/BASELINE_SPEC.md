@@ -160,7 +160,7 @@ Current baseline as of 2026-07-14:
 
 - deterministic/campaign-owned dialogue remains the active live-response authority in the covered Atlas hosted configuration
 - source-grounded campaign configs own product truth, plan names, price/source claims, privacy boundaries, close routes, and no-fit language
-- accumulated Atlas evidence supports the targeted hosted text/simulation behaviors, but the final live fingerprint is not transcript-verified because the last CRM repetition patch received structural readback without a fresh post-write simulation
+- accumulated Atlas evidence supports the targeted hosted text/simulation behaviors, and one bounded post-final-write CRM canary now behaviorally verifies the tested near-repeat pricing/scope progression on the final live fingerprint
 - paid prices are buyer-triggered and constrained to one applicable pricing lane
 - existing-site request-form work uses `$100-$250` only after a direct price ask; direct CRM/API integration uses `$1,000-$2,500+` only after a direct price ask; multi-feature new-site scope uses one `$4,000-$6,500` whole-project band
 - capability, scope, proof, and unresolved pricing turns do not reopen mockup/email/send CTAs
@@ -169,7 +169,7 @@ Current baseline as of 2026-07-14:
 - ElevenLabs remains the current live voice path
 - no outbound call was placed during the covered Atlas validation cycle
 - full-suite dashboard captures may still contain historical failures or stale evaluator/test-contract conflicts and must not be described as universally green
-- the earlier `ELEVENLABS-040-broad-live-readiness` checkpoint remained blocked; the later detailed-pricing work superseded its product configuration and structural facts but did not supply the missing post-final-write behavioral proof
+- the earlier `ELEVENLABS-040-broad-live-readiness` checkpoint remained blocked at the time; the later detailed-pricing work plus the 2026-07-14 post-final-write CRM canary now supplies targeted final-fingerprint behavioral proof, not a universally green full-suite or production claim
 - Ultravox is an evaluated hosted speech-native interface candidate, but it is not live-wired and is not the final ElevenLabs replacement
 - local LLMs are research-only and are not live-wired
 - Liquid, Fish, and Kokoro are not live-wired

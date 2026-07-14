@@ -1,0 +1,202 @@
+{
+  "checkpoint_id": "ELEVENLABS-040-detailed-pricing-control",
+  "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+  "invocation_id": "suite_7301kxf805wbecg8mc72j28zm39r",
+  "validation_mode": "partial_test",
+  "partial_test_id": "sim_040_direct_crm_integration_existing_site",
+  "independent_status": "pass",
+  "input_test_ids": [
+    "sim_040_direct_crm_integration_existing_site"
+  ],
+  "global_failures": [],
+  "provider_labels": {
+    "status_entries": [
+      {
+        "test_id": "sim_040_direct_crm_integration_existing_site",
+        "test_run_id": "trun_7001kxf805wvfz7b2xn7xnr7espd",
+        "status": "passed"
+      }
+    ],
+    "condition_result_entries": [
+      {
+        "test_id": "sim_040_direct_crm_integration_existing_site",
+        "test_run_id": "trun_7001kxf805wvfz7b2xn7xnr7espd",
+        "condition_result": {
+          "result": "success",
+          "rationale": {
+            "messages": [
+              "The agent provided the price range of \"one thousand to two thousand five hundred dollars plus\", mentioned \"API and data flow\" as the driver, and clarified that the final cost can go above the range if complexity increases, thus not claiming every behavior is included.",
+              "The conversation reached the maximum number of turns."
+            ],
+            "summary": "Evaluation succeeded"
+          }
+        }
+      }
+    ]
+  },
+  "tests": [
+    {
+      "test_id": "sim_040_direct_crm_integration_existing_site",
+      "test_name": "ELEVENLABS-040-detailed-pricing-control::sim_040_direct_crm_integration_existing_site",
+      "test_run_id": "trun_7001kxf805wvfz7b2xn7xnr7espd",
+      "independent_status": "pass",
+      "provider_status": "passed",
+      "provider_condition_result": {
+        "result": "success",
+        "rationale": {
+          "messages": [
+            "The agent provided the price range of \"one thousand to two thousand five hundred dollars plus\", mentioned \"API and data flow\" as the driver, and clarified that the final cost can go above the range if complexity increases, thus not claiming every behavior is included.",
+            "The conversation reached the maximum number of turns."
+          ],
+          "summary": "Evaluation succeeded"
+        }
+      },
+      "provider_evaluator_rationale": "{'messages': ['The agent provided the price range of \"one thousand to two thousand five hundred dollars plus\", mentioned \"API and data flow\" as the driver, and clarified that the final cost can go above the range if complexity increases, thus not claiming every behavior is included.', 'The conversation reached the maximum number of turns.'], 'summary': 'Evaluation succeeded'}",
+      "first_price_trigger_index": 3,
+      "first_agent_paid_price_index": 4,
+      "assertions": [
+        {
+          "name": "expected_test_name",
+          "passed": true
+        },
+        {
+          "name": "provider_test_id_reconciled",
+          "passed": true
+        },
+        {
+          "name": "ordered_agent_responses_present",
+          "passed": true
+        },
+        {
+          "name": "incomplete_simulation",
+          "passed": true
+        },
+        {
+          "name": "ordered_dialogue_extractable",
+          "passed": true
+        },
+        {
+          "name": "buyer_turn_present",
+          "passed": true
+        },
+        {
+          "name": "agent_turn_present",
+          "passed": true
+        },
+        {
+          "name": "no_more_than_two_approved_ranges_in_response",
+          "passed": true
+        },
+        {
+          "name": "no_menu_dump",
+          "passed": true
+        },
+        {
+          "name": "no_more_than_two_approved_ranges_in_response",
+          "passed": true
+        },
+        {
+          "name": "no_menu_dump",
+          "passed": true
+        },
+        {
+          "name": "no_more_than_two_approved_ranges_in_response",
+          "passed": true
+        },
+        {
+          "name": "no_menu_dump",
+          "passed": true
+        },
+        {
+          "name": "no_unsupported_fixed_quote_or_ceiling",
+          "passed": true
+        },
+        {
+          "name": "no_more_than_two_approved_ranges_in_response",
+          "passed": true
+        },
+        {
+          "name": "no_menu_dump",
+          "passed": true
+        },
+        {
+          "name": "no_more_than_two_approved_ranges_in_response",
+          "passed": true
+        },
+        {
+          "name": "no_menu_dump",
+          "passed": true
+        },
+        {
+          "name": "no_more_than_two_approved_ranges_in_response",
+          "passed": true
+        },
+        {
+          "name": "no_menu_dump",
+          "passed": true
+        },
+        {
+          "name": "no_more_than_two_approved_ranges_in_response",
+          "passed": true
+        },
+        {
+          "name": "no_menu_dump",
+          "passed": true
+        },
+        {
+          "name": "no_more_than_two_approved_ranges_in_response",
+          "passed": true
+        },
+        {
+          "name": "no_menu_dump",
+          "passed": true
+        },
+        {
+          "name": "post_quote_price_followup_no_cta",
+          "passed": true
+        },
+        {
+          "name": "unprompted_paid_price",
+          "passed": true
+        },
+        {
+          "name": "buyer_price_trigger_present",
+          "passed": true
+        },
+        {
+          "name": "approved_ranges_only_in_relevant_scenarios",
+          "passed": true
+        },
+        {
+          "name": "no_unapproved_paid_price_ranges",
+          "passed": true
+        },
+        {
+          "name": "crm_existing_site_expected_range",
+          "passed": true
+        },
+        {
+          "name": "crm_scope_caveat_present",
+          "passed": true
+        },
+        {
+          "name": "crm_one_lane_only",
+          "passed": true
+        },
+        {
+          "name": "crm_chain_no_mockup_or_email_cta",
+          "passed": true
+        },
+        {
+          "name": "crm_no_invented_contact_details",
+          "passed": true
+        },
+        {
+          "name": "crm_no_everything_included_claim",
+          "passed": true
+        }
+      ],
+      "failures": []
+    }
+  ]
+}

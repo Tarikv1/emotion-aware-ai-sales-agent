@@ -15,6 +15,27 @@ Record important thesis and implementation decisions here with enough context to
 
 ## Decisions
 
+### DEC-144 - Close the Atlas hosted phase with one post-final-write canary and explicit exclusions
+
+- Date: 2026-07-14
+- Status: accepted
+- Decision: close the documented final-fingerprint gap with one existing, fixed CRM canary after the last behavior-changing provider write. Accept wrap-up of the covered hosted text/simulation phase only when the provider result, deterministic trace validator, independent transcript review, and fresh structural readback agree. Preserve the untested explicit repetition-complaint branch and all speech/real-customer domains as exclusions.
+- Why:
+  - the last prompt/KB patch was structurally read back but had no post-write behavior trace;
+  - rerunning the full 036/040 suites would spend more credit while mixing stale test-contract conflicts into a narrow CRM repetition question;
+  - the existing 040 direct-CRM canary exercises buyer-triggered pricing, scope progression, CTA suppression, and near-repeat behavior without changing a dashboard test;
+  - one provider label is insufficient, so the captured transcript also requires deterministic and independent manual adjudication.
+- Alternatives considered:
+  - claim wrap-up from structural readback alone;
+  - rerun every historical suite;
+  - edit the 036 or 040 tests/evaluators to force agreement;
+  - leave the phase open despite a bounded fixed case already covering the final changed lane.
+- Consequences:
+  - the final live fingerprint has targeted transcript evidence for the tested existing-site direct CRM progression;
+  - the explicit "you already said that" complaint branch remains optional future regression work because this canary did not contain that buyer move;
+  - no production, PSTN, ASR, latency, interruption, buyer-perception, conversion, or real-customer claim follows;
+  - future provider tests should run only for a new bounded evidence objective, not to make historical dashboards universally green.
+
 ### DEC-143 - Reconcile hosted provider labels with independent transcript adjudication
 
 - Date: 2026-07-14

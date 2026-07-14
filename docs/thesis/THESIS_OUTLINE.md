@@ -619,11 +619,11 @@ Evidence sources:
 Claim boundaries:
 
 - targeted 040 repair traces passed independent validation; full 036/040 credit-capped captures remain mixed and must not be described as universally green
-- the last CRM repetition patch received structural readback but no fresh post-write simulation; targeted traces support the repaired behavior classes but do not transcript-verify the final live fingerprint
-- the earlier broad-readiness checkpoint remained blocked; later detailed-pricing evidence superseded its product configuration and structural facts, not the missing post-final-write behavioral proof
+- one bounded post-final-write CRM canary passed provider, deterministic independent, and independent transcript review, supplying targeted behavioral proof for the final live fingerprint
+- the earlier broad-readiness checkpoint remained blocked at the time; later detailed-pricing evidence plus the post-final-write canary supersedes that specific fingerprint gap without turning historical full-suite evidence universally green
 - no dashboard criterion or Analysis definition was weakened to manufacture a pass, but new 040 regression tests were added
 - no outbound call was placed
-- accumulated evidence supports targeted hosted Atlas text/simulation behavior; it does not establish broad live readiness, final-fingerprint transcript verification, PSTN audio, ASR, latency, interruption handling, buyer perception, conversion impact, or real-customer performance
+- accumulated evidence supports the covered hosted Atlas text/simulation work and the tested final-fingerprint CRM progression; it does not establish the explicit repetition-complaint branch, PSTN audio, ASR, latency, interruption handling, buyer perception, conversion impact, or real-customer performance
 
 ## 6. Results And Discussion
 
@@ -659,8 +659,8 @@ Likely themes:
 - Fish-inspired prosody taxonomy needs cleanup before any ElevenLabs mapping prototype
 - provider dashboard labels can disagree with deterministic trace review or active product contracts
 - full Atlas 036/040 credit-capped captures contain mixed or stale-contract evidence and should be used as limitations, not universal green results
-- the final Atlas fingerprint lacks a post-last-write behavior run; structural readback does not replace transcript verification
-- targeted hosted text/simulation evidence does not establish broad live readiness, PSTN audio, ASR, latency, interruption handling, buyer perception, conversion impact, or real-customer performance
+- the post-last-write CRM canary supplies targeted transcript verification, but it did not contain an explicit repetition complaint and does not make historical full suites universally green
+- covered hosted text/simulation evidence does not establish PSTN audio, ASR, latency, interruption handling, buyer perception, conversion impact, or real-customer performance
 
 ### 6.3 Threats To Validity
 

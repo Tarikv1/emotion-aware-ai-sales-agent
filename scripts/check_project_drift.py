@@ -399,7 +399,7 @@ REFERENCE_GUARD_SOURCE_FILES = {
 
 SECRET_PATTERNS = [
     r"sk_car_[A-Za-z0-9_-]{20,}",
-    r"sk-[A-Za-z0-9_-]{20,}",
+    r"(?<![A-Za-z0-9_-])sk-[A-Za-z0-9_-]{20,}(?![A-Za-z0-9_-])",
     r"AIza[0-9A-Za-z_-]{20,}",
     r"xox[baprs]-[A-Za-z0-9-]{20,}",
     r"CARTESIA_API_KEY\s*=\s*[^\s]+",
