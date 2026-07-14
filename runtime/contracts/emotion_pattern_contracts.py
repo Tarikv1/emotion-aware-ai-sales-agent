@@ -47,14 +47,53 @@ class RuntimeActivationBlocked(PatternContractError):
     pass
 
 
+def _require_json_domain(
+    value: Any,
+    label: str,
+    active_container_ids: set[int] | None = None,
+) -> None:
+    if value is None or type(value) in {str, int, bool}:
+        return
+    if type(value) is float:
+        if not math.isfinite(value):
+            raise PatternContractError(f"{label} contains a non-finite float")
+        return
+    if type(value) not in {dict, list}:
+        raise PatternContractError(f"{label} contains a non-JSON value")
+
+    if active_container_ids is None:
+        active_container_ids = set()
+    container_id = id(value)
+    if container_id in active_container_ids:
+        raise PatternContractError(f"{label} contains a circular reference")
+    active_container_ids.add(container_id)
+    try:
+        if type(value) is list:
+            for index, item in enumerate(value):
+                _require_json_domain(item, f"{label}[{index}]", active_container_ids)
+            return
+        for key, item in value.items():
+            if type(key) is not str:
+                raise PatternContractError(f"{label} object keys must be strings")
+            _require_json_domain(item, f"{label}.{key}", active_container_ids)
+    finally:
+        active_container_ids.remove(container_id)
+
+
 def canonical_json_bytes(payload: dict[str, Any]) -> bytes:
-    return json.dumps(
-        payload,
-        sort_keys=True,
-        separators=(",", ":"),
-        ensure_ascii=False,
-        allow_nan=False,
-    ).encode("utf-8")
+    if type(payload) is not dict:
+        raise PatternContractError("canonical JSON payload must be an object")
+    _require_json_domain(payload, "canonical JSON payload")
+    try:
+        return json.dumps(
+            payload,
+            sort_keys=True,
+            separators=(",", ":"),
+            ensure_ascii=False,
+            allow_nan=False,
+        ).encode("utf-8")
+    except (TypeError, ValueError, RecursionError) as error:
+        raise PatternContractError("canonical JSON payload cannot be serialized") from error
 
 
 def _sha256(payload: dict[str, Any]) -> str:
@@ -137,7 +176,9 @@ def validate_pattern_candidate(payload: dict[str, Any]) -> dict[str, Any]:
         or not 1 <= feature["tested_hypothesis_count"] <= feature["search_budget"]
     ):
         raise PatternContractError("feature_definition.tested_hypothesis_count is outside the frozen budget")
-    if feature["max_qualifying_turns_per_speaker"] != 2:
+    if type(feature["max_qualifying_turns_per_speaker"]) is not int or feature[
+        "max_qualifying_turns_per_speaker"
+    ] != 2:
         raise PatternContractError("candidate discovery permits at most two qualifying turns per speaker")
     agreement = payload["annotation_agreement"]
     if not isinstance(agreement, dict):
@@ -161,6 +202,7 @@ def validate_pattern_candidate(payload: dict[str, Any]) -> dict[str, Any]:
 
 def validate_pattern_content(payload: dict[str, Any]) -> dict[str, Any]:
     _require_exact(payload, PATTERN_CONTENT_FIELDS, "PatternPackageContentV1")
+    _require_json_domain(payload, "PatternPackageContentV1")
     for field in (
         "pattern_version", "feature_schema_version", "label_schema_version", "rollback_version",
         "minimum_engine_version", "maximum_engine_version",
@@ -193,7 +235,7 @@ def validate_pattern_content(payload: dict[str, Any]) -> dict[str, Any]:
         or any(not isinstance(limit, str) or not limit.strip() for limit in payload["known_limits"])
     ):
         raise PatternContractError("known_limits must be a nonempty list")
-    if not isinstance(payload["registry_sequence"], int) or payload["registry_sequence"] < 1:
+    if type(payload["registry_sequence"]) is not int or payload["registry_sequence"] < 1:
         raise PatternContractError("registry_sequence must be a positive integer")
     allowed = payload["allowed_runtime_effects"]
     blocked = payload["blocked_runtime_effects"]
@@ -335,6 +377,10 @@ def pattern_contract_self_check() -> str:
     )))
     _expect_pattern_error(lambda: validate_pattern_candidate(dict(
         candidate,
+        feature_definition=dict(candidate["feature_definition"], max_qualifying_turns_per_speaker=2.0),
+    )))
+    _expect_pattern_error(lambda: validate_pattern_candidate(dict(
+        candidate,
         feature_definition=dict(candidate["feature_definition"], minimum_observed_effect=float("inf")),
     )))
 
@@ -360,6 +406,32 @@ def pattern_contract_self_check() -> str:
         "compatible_state_schema_versions": ["PerceivedCustomerStateV1"],
         "registry_sequence": 1,
     }
+    _expect_pattern_error(lambda: validate_pattern_content(dict(content, registry_sequence=True)))
+    _expect_pattern_error(lambda: validate_pattern_content(dict(
+        content,
+        slice_results={"bad": float("nan")},
+    )))
+    _expect_pattern_error(lambda: validate_pattern_content(dict(
+        content,
+        slice_results={"bad": float("inf")},
+    )))
+    _expect_pattern_error(lambda: validate_pattern_content(dict(
+        content,
+        slice_results={"bad": (1, 2)},
+    )))
+    _expect_pattern_error(lambda: validate_pattern_content(dict(
+        content,
+        slice_results={"bad": b"not-json"},
+    )))
+    _expect_pattern_error(lambda: validate_pattern_content(dict(
+        content,
+        slice_results={"bad": {1, 2}},
+    )))
+    string_key_digest = content_digest(dict(content, slice_results={"1": "x"}))
+    assert len(string_key_digest) == 64
+    _expect_pattern_error(lambda: content_digest(dict(content, slice_results={1: "x"})))
+    assert canonical_json_bytes({"1": "x"}) == b'{"1":"x"}'
+    _expect_pattern_error(lambda: canonical_json_bytes({1: "x"}))
     candidate_digest = content_digest(content)
     shadow_report_digest = "C" * 64
     shadow = _fixture_approval("shadow_authorization", candidate_digest, [])
@@ -399,5 +471,19 @@ def pattern_contract_self_check() -> str:
         content,
         source_snapshot_hashes=["a" * 64],
     )))
-    _expect_pattern_error(lambda: authorize_runtime(envelope))
+    expected_runtime_block = (
+        "EMOTION-STATE-001 Phase A has no signature verifier, trust store, "
+        "promotion ACL, or runtime activation path"
+    )
+    try:
+        authorize_runtime(envelope)
+    except RuntimeActivationBlocked as error:
+        if type(error) is not RuntimeActivationBlocked:
+            raise AssertionError("authorize_runtime raised a RuntimeActivationBlocked subclass") from error
+        if str(error) != expected_runtime_block:
+            raise AssertionError("authorize_runtime block message mismatch") from error
+    except PatternContractError as error:
+        raise AssertionError("authorize_runtime raised the wrong pattern contract error") from error
+    else:
+        raise AssertionError("authorize_runtime unexpectedly returned")
     return "pass"
