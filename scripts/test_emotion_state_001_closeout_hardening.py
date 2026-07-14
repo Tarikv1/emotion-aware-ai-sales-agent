@@ -3,12 +3,15 @@ from __future__ import annotations
 import hashlib
 import json
 import os
+import subprocess
+import sys
 import tempfile
 import unittest
 from pathlib import Path
 from unittest.mock import patch
 
 from scripts.emotion_state_phase_a_contracts import render_phase_a_report
+from scripts import run_emotion_state_001_phase_a_contracts as publication_runner
 from scripts.run_emotion_state_001_phase_a_contracts import (
     EvidencePublicationError,
     JOURNAL_NAME,
@@ -79,6 +82,145 @@ class PublicationRecoveryTests(unittest.TestCase):
         self.assertFalse(self.journal_path.exists())
         if self.recovery_dir.exists():
             self.assertEqual(list(self.recovery_dir.iterdir()), [])
+
+    def test_active_publisher_lock_blocks_second_cli_without_mutation(self) -> None:
+        runner_path = ROOT / "scripts" / "run_emotion_state_001_phase_a_contracts.py"
+        result_path = publication_runner.DEFAULT_RESULT
+        report_path = publication_runner.DEFAULT_REPORT
+        recovery_dir = publication_runner.DEFAULT_RECOVERY_DIR
+        journal_path = recovery_dir / JOURNAL_NAME
+        self.assertFalse(journal_path.exists())
+        original_result = result_path.read_bytes()
+        original_report = report_path.read_bytes()
+        holder_script = r'''
+import json
+import os
+from pathlib import Path
+from unittest.mock import patch
+
+from scripts.run_emotion_state_001_phase_a_contracts import (
+    DEFAULT_RECOVERY_DIR,
+    DEFAULT_REPORT,
+    DEFAULT_RESULT,
+    JOURNAL_NAME,
+    publication_lock,
+    publish_evidence_pair,
+)
+
+payload = json.loads(DEFAULT_RESULT.read_bytes().decode("utf-8"))
+payload["status"] = "concurrency_test_incomplete_publication"
+real_replace = os.replace
+
+def interrupt_after_result_replace(source, destination):
+    real_replace(source, destination)
+    if Path(destination) == DEFAULT_RESULT:
+        raise KeyboardInterrupt("leave a live journal while retaining the lock")
+
+with publication_lock(recovery_dir=DEFAULT_RECOVERY_DIR):
+    with patch(
+        "scripts.run_emotion_state_001_phase_a_contracts.os.replace",
+        side_effect=interrupt_after_result_replace,
+    ):
+        try:
+            publish_evidence_pair(
+                payload,
+                result_path=DEFAULT_RESULT,
+                report_path=DEFAULT_REPORT,
+                recovery_dir=DEFAULT_RECOVERY_DIR,
+            )
+        except KeyboardInterrupt:
+            pass
+    if not (DEFAULT_RECOVERY_DIR / JOURNAL_NAME).exists():
+        raise RuntimeError("expected a durable live journal")
+    print("READY", flush=True)
+    input()
+'''
+        holder = subprocess.Popen(
+            [sys.executable, "-c", holder_script],
+            cwd=ROOT,
+            stdin=subprocess.PIPE,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True,
+        )
+        holder_output = ""
+        try:
+            assert holder.stdout is not None
+            ready = holder.stdout.readline().strip()
+            if ready != "READY":
+                assert holder.stderr is not None
+                self.fail(f"lock holder did not become ready: {holder.stderr.read()}")
+
+            live_result = result_path.read_bytes()
+            live_report = report_path.read_bytes()
+            live_state = {
+                path.name: path.read_bytes()
+                for path in recovery_dir.iterdir()
+                if path.is_file() and path.name != publication_runner.LOCK_NAME
+            }
+            self.assertIn(JOURNAL_NAME, live_state)
+
+            blocked = subprocess.run(
+                [sys.executable, str(runner_path)],
+                cwd=ROOT,
+                text=True,
+                capture_output=True,
+                timeout=30,
+                check=False,
+            )
+
+            self.assertEqual(blocked.returncode, 1, blocked.stdout + blocked.stderr)
+            self.assertIn("publication lock is already held", blocked.stderr)
+            self.assertNotIn("Traceback", blocked.stderr)
+            self.assertEqual(result_path.read_bytes(), live_result)
+            self.assertEqual(report_path.read_bytes(), live_report)
+            self.assertEqual(
+                {
+                    path.name: path.read_bytes()
+                    for path in recovery_dir.iterdir()
+                    if path.is_file() and path.name != publication_runner.LOCK_NAME
+                },
+                live_state,
+            )
+
+            holder.kill()
+            holder_output, holder_error = holder.communicate(timeout=10)
+            self.assertNotEqual(holder.returncode, 0, holder_output + holder_error)
+
+            recovered = subprocess.run(
+                [sys.executable, str(runner_path)],
+                cwd=ROOT,
+                text=True,
+                capture_output=True,
+                timeout=30,
+                check=False,
+            )
+            self.assertEqual(recovered.returncode, 0, recovered.stdout + recovered.stderr)
+            self.assertEqual(result_path.read_bytes(), original_result)
+            self.assertEqual(report_path.read_bytes(), original_report)
+            self.assertFalse(journal_path.exists())
+        finally:
+            if holder.poll() is None:
+                if holder.stdin is not None:
+                    try:
+                        holder.stdin.write("release\n")
+                        holder.stdin.flush()
+                    except OSError:
+                        pass
+                try:
+                    holder_output, _ = holder.communicate(timeout=5)
+                except subprocess.TimeoutExpired:
+                    holder.kill()
+                    holder.communicate(timeout=5)
+            if journal_path.exists():
+                try:
+                    recover_incomplete_publication(
+                        result_path=result_path,
+                        report_path=report_path,
+                        recovery_dir=recovery_dir,
+                    )
+                except EvidencePublicationError:
+                    pass
 
     def test_successful_publication_uses_report_as_commit_marker(self) -> None:
         self._publish()
@@ -152,6 +294,62 @@ class PublicationRecoveryTests(unittest.TestCase):
         )
         self.assertEqual(self.result_path.read_bytes(), old_result)
         self.assertEqual(self.report_path.read_bytes(), old_report)
+        self._assert_no_transaction_state()
+
+    def test_recovery_retries_cleanup_after_previous_pair_is_restored(self) -> None:
+        old_result, old_report = self._seed_legacy_pair()
+        real_replace = os.replace
+
+        def interrupt_after_result_replace(source: object, destination: object) -> None:
+            real_replace(source, destination)
+            if Path(destination) == self.result_path:
+                raise KeyboardInterrupt("simulated interruption after result replacement")
+
+        with patch(
+            "scripts.run_emotion_state_001_phase_a_contracts.os.replace",
+            side_effect=interrupt_after_result_replace,
+        ):
+            with self.assertRaises(KeyboardInterrupt):
+                self._publish()
+
+        result_backup = next(self.recovery_dir.glob("*.result.backup"))
+        report_backup = next(self.recovery_dir.glob("*.report.backup"))
+        path_type = type(report_backup)
+        real_unlink = path_type.unlink
+        cleanup_failure_injected = False
+
+        def fail_after_first_backup_deleted(
+            path: Path,
+            missing_ok: bool = False,
+        ) -> None:
+            nonlocal cleanup_failure_injected
+            if path == report_backup and not cleanup_failure_injected:
+                cleanup_failure_injected = True
+                raise OSError("simulated cleanup interruption")
+            real_unlink(path, missing_ok=missing_ok)
+
+        with patch.object(path_type, "unlink", new=fail_after_first_backup_deleted):
+            with self.assertRaisesRegex(EvidencePublicationError, "recovery failed"):
+                recover_incomplete_publication(
+                    result_path=self.result_path,
+                    report_path=self.report_path,
+                    recovery_dir=self.recovery_dir,
+                )
+
+        self.assertTrue(cleanup_failure_injected)
+        self.assertEqual(self.result_path.read_bytes(), old_result)
+        self.assertEqual(self.report_path.read_bytes(), old_report)
+        self.assertFalse(result_backup.exists())
+        self.assertTrue(report_backup.exists())
+        self.assertTrue(self.journal_path.exists())
+        self.assertEqual(
+            recover_incomplete_publication(
+                result_path=self.result_path,
+                report_path=self.report_path,
+                recovery_dir=self.recovery_dir,
+            ),
+            "restored",
+        )
         self._assert_no_transaction_state()
 
     def test_hard_interrupt_after_report_replace_finalizes_committed_pair(self) -> None:
@@ -233,6 +431,27 @@ class PublicationRecoveryTests(unittest.TestCase):
     def test_report_marker_requires_uppercase_sha256(self) -> None:
         with self.assertRaisesRegex(ValueError, "uppercase SHA-256"):
             render_phase_a_report(sample_payload(), result_sha256="a" * 64)
+
+    def test_recovery_directory_creation_failure_is_bounded(self) -> None:
+        path_type = type(self.recovery_dir)
+        real_mkdir = path_type.mkdir
+
+        def fail_recovery_directory_creation(
+            path: Path,
+            mode: int = 0o777,
+            parents: bool = False,
+            exist_ok: bool = False,
+        ) -> None:
+            if path == self.recovery_dir:
+                raise OSError("simulated recovery-directory failure")
+            real_mkdir(path, mode=mode, parents=parents, exist_ok=exist_ok)
+
+        with patch.object(path_type, "mkdir", new=fail_recovery_directory_creation):
+            with self.assertRaisesRegex(EvidencePublicationError, "recovery directory"):
+                self._publish()
+
+        self.assertFalse(self.result_path.exists())
+        self.assertFalse(self.report_path.exists())
 
 
 if __name__ == "__main__":

@@ -8,8 +8,14 @@ import os
 import re
 import sys
 import uuid
+from contextlib import contextmanager
 from pathlib import Path
-from typing import Any
+from typing import Any, BinaryIO, Iterator
+
+if os.name == "nt":
+    import msvcrt
+else:
+    import fcntl
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -40,6 +46,7 @@ DEFAULT_RESULT = DEFAULT_OUTPUT_DIR / "result.json"
 DEFAULT_REPORT = DEFAULT_OUTPUT_DIR / "report.md"
 DEFAULT_RECOVERY_DIR = ROOT / ".tmp" / "emotion-state-001-phase-a-publication"
 JOURNAL_NAME = "transaction.json"
+LOCK_NAME = "publication.lock"
 TRANSACTION_SCHEMA_VERSION = 1
 PRIVATE_PATH_PARTS = (("data", "private"), ("data", "private-restricted"))
 _TRANSACTION_ID_PATTERN = re.compile(r"^[0-9a-f]{32}$")
@@ -115,6 +122,66 @@ def resolve_project_path(path_value: str, *, allowed_root: Path) -> Path:
 
 def _sha256_bytes(content: bytes) -> str:
     return hashlib.sha256(content).hexdigest().upper()
+
+
+def _acquire_os_lock(handle: BinaryIO) -> None:
+    if os.name == "nt":
+        handle.seek(0, os.SEEK_END)
+        if handle.tell() == 0:
+            handle.write(b"\0")
+            handle.flush()
+            os.fsync(handle.fileno())
+        handle.seek(0)
+        msvcrt.locking(handle.fileno(), msvcrt.LK_NBLCK, 1)
+    else:
+        fcntl.flock(handle.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
+
+
+def _release_os_lock(handle: BinaryIO) -> None:
+    if os.name == "nt":
+        handle.seek(0)
+        msvcrt.locking(handle.fileno(), msvcrt.LK_UNLCK, 1)
+    else:
+        fcntl.flock(handle.fileno(), fcntl.LOCK_UN)
+
+
+@contextmanager
+def publication_lock(
+    *,
+    recovery_dir: Path = DEFAULT_RECOVERY_DIR,
+) -> Iterator[None]:
+    recovery_dir = Path(recovery_dir)
+    try:
+        recovery_dir.mkdir(parents=True, exist_ok=True)
+    except OSError as exc:
+        raise EvidencePublicationError(
+            "unable to prepare evidence publication recovery directory"
+        ) from exc
+    try:
+        handle = (recovery_dir / LOCK_NAME).open("a+b")
+    except OSError as exc:
+        raise EvidencePublicationError("unable to open evidence publication lock") from exc
+
+    lock_acquired = False
+    try:
+        try:
+            _acquire_os_lock(handle)
+        except OSError as exc:
+            raise EvidencePublicationError(
+                "evidence publication lock is already held or unavailable"
+            ) from exc
+        lock_acquired = True
+        yield
+    finally:
+        if lock_acquired:
+            try:
+                _release_os_lock(handle)
+            except OSError:
+                pass
+        try:
+            handle.close()
+        except OSError:
+            pass
 
 
 def _validate_sha256(value: Any, *, field: str) -> str:
@@ -304,6 +371,13 @@ def recover_incomplete_publication(
             else:
                 _cleanup_transaction(journal_path, paths)
                 return "committed"
+            if (
+                previous_pair["present"]
+                and _sha256_bytes(result_bytes) == previous_pair["result_sha256"]
+                and _sha256_bytes(report_bytes) == previous_pair["report_sha256"]
+            ):
+                _cleanup_transaction(journal_path, paths)
+                return "restored"
 
         if previous_pair["present"]:
             try:
@@ -364,7 +438,12 @@ def publish_evidence_pair(
     if result_path == report_path:
         raise EvidencePublicationError("result and report paths must be distinct")
 
-    recovery_dir.mkdir(parents=True, exist_ok=True)
+    try:
+        recovery_dir.mkdir(parents=True, exist_ok=True)
+    except OSError as exc:
+        raise EvidencePublicationError(
+            "unable to prepare evidence publication recovery directory"
+        ) from exc
     journal_path = recovery_dir / JOURNAL_NAME
     if journal_path.exists():
         raise EvidencePublicationError("an evidence publication transaction is already active")
@@ -456,18 +535,19 @@ def main() -> int:
             raise ValueError("result path must resolve to the fixed result destination")
         if report_path != DEFAULT_REPORT.resolve(strict=False):
             raise ValueError("report path must resolve to the fixed report destination")
-        recover_incomplete_publication(
-            result_path=result_path,
-            report_path=report_path,
-            recovery_dir=DEFAULT_RECOVERY_DIR,
-        )
-        payload = build_phase_a_payload(case_path, root=ROOT)
-        publish_evidence_pair(
-            payload,
-            result_path=result_path,
-            report_path=report_path,
-            recovery_dir=DEFAULT_RECOVERY_DIR,
-        )
+        with publication_lock(recovery_dir=DEFAULT_RECOVERY_DIR):
+            recover_incomplete_publication(
+                result_path=result_path,
+                report_path=report_path,
+                recovery_dir=DEFAULT_RECOVERY_DIR,
+            )
+            payload = build_phase_a_payload(case_path, root=ROOT)
+            publish_evidence_pair(
+                payload,
+                result_path=result_path,
+                report_path=report_path,
+                recovery_dir=DEFAULT_RECOVERY_DIR,
+            )
     except (EvidencePublicationError, ValueError) as exc:
         print(f"EMOTION-STATE-001 evidence publication failed: {exc}", file=sys.stderr)
         return 1
