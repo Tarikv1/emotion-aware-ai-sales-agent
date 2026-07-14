@@ -97,4 +97,3 @@
 - [ ] Run the explicit `7ad0a1a..HEAD` thesis update-gate check.
 - [ ] Review the full diff for overclaims, stale dates, unsupported green claims, private data, and accidental runtime changes.
 - [ ] Commit the completed thesis checkpoint.
-

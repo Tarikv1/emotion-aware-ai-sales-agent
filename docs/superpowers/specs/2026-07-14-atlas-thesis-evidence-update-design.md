@@ -68,4 +68,3 @@ git diff --check
 ```
 
 Also run the thesis update gate with every file in `7ad0a1a..HEAD` supplied through repeated `--changed-file` arguments so the committed branch range, not only the working tree, is covered.
-
