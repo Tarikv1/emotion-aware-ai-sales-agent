@@ -1,0 +1,20 @@
+{
+  "checkpoint_id": "EMOTION-STATE-001-phase-a-contracts",
+  "schema_version": 1,
+  "source_label": "synthetic-only",
+  "campaign_profile_id": "emotion-state-phase-a-fixture",
+  "campaign_profile_version": "fixture-v1",
+  "selected_public_datasets": [],
+  "private_data_access_allowed": false,
+  "provider_operations_allowed": false,
+  "runtime_behavior_change_allowed": false,
+  "runtime_activation_allowed": false,
+  "baseline_fingerprints": {
+    "packages/prompts/baseline-non-adaptive.txt": "BB1FD1EAC0D4DE858BFDCE4A880BBF2C59C14A216489A1A85EF149F3E88D7FCA",
+    "packages/prompts/baseline-adaptive.txt": "EBD4106841987CA4A322C2B8B95A33ECFFC4238BB476DEC611A640D5B000EB42",
+    "research/experiments/cases/exp-002-dataset-derived.json": "882B94C0A31C41A94540941A254AC7E8119CADE9AAD9B071089E854917BDC7D6",
+    "research/experiments/EXP-002-dataset-derived-baseline.md": "D930C845AC912D44610B3CE263B55EA03BFFD7CAB8706C2BC95CB17045FF1316",
+    "research/experiments/generated/EXP-002/EXP-002-prompt-packet.md": "14017F985D54D2B46A338EA2EFA796B24202E3E5A3D3EB8223346CEA96E5CD09",
+    "docs/thesis/EVALUATION_RUBRIC.md": "39D3CF33E38A0C13ADEE178F3DB4174D4D8E3A42B1DE4C274BF96FFA36FFB416"
+  }
+}
