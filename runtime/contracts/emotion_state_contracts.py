@@ -266,6 +266,11 @@ def _require_enum_list(value: Any, allowed: frozenset[str], field: str) -> None:
         raise EmotionStateContractError(f"{field} contains an unknown value")
 
 
+def _require_enum_value(value: Any, allowed: set[str] | frozenset[str], field: str) -> None:
+    if not isinstance(value, str) or value not in allowed:
+        raise EmotionStateContractError(f"{field} is invalid")
+
+
 def _is_finite_scalar(value: Any) -> bool:
     if type(value) not in {int, float}:
         return False
@@ -396,8 +401,11 @@ def validate_customer_turn_audit(payload: dict[str, Any]) -> dict[str, Any]:
         raise EmotionStateContractError("audit evidence_policy_version is invalid")
     if type(payload["turn_sequence"]) is not int or payload["turn_sequence"] < 0:
         raise EmotionStateContractError("audit turn_sequence must be a nonnegative integer")
-    if payload["audio_analysis_status"] not in {"unavailable", "complete", "partial", "failed", "abstained"}:
-        raise EmotionStateContractError("audio_analysis_status is invalid")
+    _require_enum_value(
+        payload["audio_analysis_status"],
+        {"unavailable", "complete", "partial", "failed", "abstained"},
+        "audio_analysis_status",
+    )
     if payload["audio_quality_bucket"] not in AUDIO_QUALITY_STATUSES:
         raise EmotionStateContractError("audio_quality_bucket is invalid")
     _require_enum_list(payload["enumerated_signal_types"], STATE_OPERATIONAL_SIGNALS, "enumerated_signal_types")
@@ -479,8 +487,7 @@ def validate_perceived_customer_state(payload: dict[str, Any]) -> dict[str, Any]
         raise EmotionStateContractError("confidence_by_signal must match operational_signals")
     if payload["selected_policy_signal"] not in STATE_OPERATIONAL_SIGNALS:
         raise EmotionStateContractError("selected_policy_signal is invalid")
-    if payload["overall_evidence_quality"] not in EVIDENCE_QUALITY_VALUES:
-        raise EmotionStateContractError("overall_evidence_quality is invalid")
+    _require_enum_value(payload["overall_evidence_quality"], EVIDENCE_QUALITY_VALUES, "overall_evidence_quality")
     if payload["trajectory"] not in TRAJECTORY_VALUES:
         raise EmotionStateContractError("trajectory is invalid")
     _require_enum_list(payload["allowed_policy_effects"], ALLOWED_POLICY_EFFECTS, "allowed_policy_effects")
@@ -559,8 +566,8 @@ def validate_event_identity(
     if turn_id in sequence_by_id:
         if turn_sequence != watermark.last_turn_sequence:
             raise EmotionStateContractError("correction targets a closed turn")
-        if input_revision <= revision_by_turn[turn_id]:
-            raise EmotionStateContractError("stale input revision")
+        if input_revision != revision_by_turn[turn_id] + 1:
+            raise EmotionStateContractError("correction input revision must increment by exactly one")
     else:
         if turn_sequence <= watermark.last_turn_sequence:
             raise EmotionStateContractError("new turn is not monotonic")
@@ -613,6 +620,29 @@ def _expect_named_contract_errors(cases: tuple[tuple[str, Any], ...]) -> None:
             failures.append(f"{name}: accepted")
     if failures:
         raise AssertionError("; ".join(failures))
+
+
+def _expect_named_contract_successes(cases: tuple[tuple[str, Any], ...]) -> None:
+    failures: list[str] = []
+    for name, callback in cases:
+        try:
+            callback()
+        except Exception as exc:
+            failures.append(f"{name}: raised {type(exc).__name__}")
+    if failures:
+        raise AssertionError("; ".join(failures))
+
+
+def _require_rejected_or_revalidatable_event(
+    payload: dict[str, Any],
+    *,
+    watermark: EventWatermarkV1,
+) -> None:
+    try:
+        returned_watermark = validate_event_identity(payload, watermark=watermark)
+    except EmotionStateContractError:
+        return
+    _validate_event_watermark(returned_watermark)
 
 
 def contract_self_check() -> str:
@@ -743,8 +773,14 @@ def contract_self_check() -> str:
     first_watermark = validate_event_identity(evidence, watermark=initial_watermark)
     corrected = dict(evidence, event_id="event-2", input_revision=1)
     corrected_watermark = validate_event_identity(corrected, watermark=first_watermark)
+    second_correction = dict(evidence, event_id="event-3", input_revision=2)
+    second_corrected_watermark = validate_event_identity(second_correction, watermark=corrected_watermark)
+    _validate_event_watermark(first_watermark)
+    _validate_event_watermark(corrected_watermark)
+    _validate_event_watermark(second_corrected_watermark)
     assert initial_watermark.turn_sequence_by_id == ()
     assert corrected_watermark.last_input_revision_by_turn == (("turn-1", 1),)
+    assert second_corrected_watermark.last_input_revision_by_turn == (("turn-1", 2),)
     assert json.loads(serialize_default_live_record("OperationalAggregateV1", aggregate)) == aggregate
     _expect_contract_error(lambda: validate_customer_turn_evidence(dict(evidence, raw_transcript="blocked")))
     _expect_contract_error(lambda: validate_customer_turn_evidence(dict(evidence, acoustic_features={"provider_payload": {}})))
@@ -928,6 +964,34 @@ def contract_self_check() -> str:
                 aggregate,
                 processing_latency_percentiles={"p50": 0, "p95": 10 ** 10000},
             )),
+        ),
+        (
+            "SKIPPED_CORRECTION_REV2_FROM_REV0",
+            lambda: validate_event_identity(
+                dict(evidence, event_id="event-skipped-correction", input_revision=2),
+                watermark=first_watermark,
+            ),
+        ),
+        (
+            "UNHASHABLE_AUDIO_ANALYSIS_STATUS",
+            lambda: validate_customer_turn_audit(dict(audit, audio_analysis_status=[])),
+        ),
+        (
+            "UNHASHABLE_OVERALL_EVIDENCE_QUALITY",
+            lambda: validate_perceived_customer_state(dict(state, overall_evidence_quality=[])),
+        ),
+    ))
+    _expect_named_contract_successes((
+        (
+            "SKIPPED_CORRECTION_REJECTED_OR_RETURNED_WATERMARK_REVALIDATES",
+            lambda: _require_rejected_or_revalidatable_event(
+                dict(evidence, event_id="event-skipped-correction", input_revision=2),
+                watermark=first_watermark,
+            ),
+        ),
+        (
+            "NORMAL_CORRECTIONS_0_TO_1_TO_2_REVALIDATE",
+            lambda: _validate_event_watermark(second_corrected_watermark),
         ),
     ))
     return "pass"
