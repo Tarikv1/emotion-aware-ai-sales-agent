@@ -95,6 +95,15 @@ def validate_source_manifest(manifest: Any) -> None:
         "source_archive_date_status": "unverified",
         "observed_license_status": "unverified_not_relied_on_for_permission",
     }
+    expected_booleans = {
+        "adaptation_allowed": False,
+        "runtime_dependency_added": False,
+        "project_local_only": True,
+    }
+    required_fields = set(expected_values) | set(expected_booleans) | set(MATERIAL_FIELDS)
+    missing_fields = sorted(required_fields - set(manifest))
+    if missing_fields:
+        raise ValueError(f"missing source manifest fields: {missing_fields}")
     mismatched = {
         key: manifest.get(key)
         for key, value in expected_values.items()
@@ -102,11 +111,6 @@ def validate_source_manifest(manifest: Any) -> None:
     }
     if mismatched:
         raise ValueError(f"invalid source manifest boundary: {sorted(mismatched)}")
-    expected_booleans = {
-        "adaptation_allowed": False,
-        "runtime_dependency_added": False,
-        "project_local_only": True,
-    }
     for field, expected in expected_booleans.items():
         value = manifest.get(field)
         if type(value) is not bool or value is not expected:

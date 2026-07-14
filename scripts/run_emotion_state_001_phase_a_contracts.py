@@ -104,6 +104,10 @@ def main() -> int:
     report_path = resolve_project_path(args.report_out, allowed_root=DEFAULT_OUTPUT_DIR)
     if result_path == report_path:
         raise ValueError("result and report paths must be distinct")
+    if result_path != DEFAULT_RESULT.resolve(strict=False):
+        raise ValueError("result path must resolve to the fixed result destination")
+    if report_path != DEFAULT_REPORT.resolve(strict=False):
+        raise ValueError("report path must resolve to the fixed report destination")
     payload = build_phase_a_payload(case_path, root=ROOT)
     result_path.parent.mkdir(parents=True, exist_ok=True)
     report_path.parent.mkdir(parents=True, exist_ok=True)
