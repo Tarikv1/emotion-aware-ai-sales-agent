@@ -1,0 +1,45 @@
+{
+  "checkpoint_id": "EMOTION-STATE-001-phase-a-contracts",
+  "schema_version": 1,
+  "status": "contract_artifact_validation_only_source_dataset_and_privacy_gates_open",
+  "summary": {
+    "contract_check_count": 5,
+    "contract_checks": {
+      "exp_002_frozen_response_baseline": "pass",
+      "emotion_state_annotation_contracts": "pass",
+      "emotion_state_contracts": "pass",
+      "emotion_pattern_contracts": "pass",
+      "emotion_state_brain_extension": "pass"
+    },
+    "baseline_fingerprint_count": 6,
+    "selected_public_dataset_count": 0,
+    "source_repository_url_status": "unverified",
+    "source_adaptation_allowed": false,
+    "code_adaptation_started": false,
+    "frozen_exp_002_evaluator_provenance_status": "not_recorded",
+    "provider_operations_performed_by_runner": false,
+    "private_data_read_by_runner": false,
+    "runtime_behavior_changed_by_runner": false,
+    "runtime_activation_allowed": false
+  },
+  "archive_sha256": "E579B966E226F2AF6E4F8F8203C7189FEC94FB448EFC09B4B6640C10A398ECCC",
+  "baseline_fingerprints": {
+    "packages/prompts/baseline-non-adaptive.txt": "BB1FD1EAC0D4DE858BFDCE4A880BBF2C59C14A216489A1A85EF149F3E88D7FCA",
+    "packages/prompts/baseline-adaptive.txt": "EBD4106841987CA4A322C2B8B95A33ECFFC4238BB476DEC611A640D5B000EB42",
+    "research/experiments/cases/exp-002-dataset-derived.json": "882B94C0A31C41A94540941A254AC7E8119CADE9AAD9B071089E854917BDC7D6",
+    "research/experiments/EXP-002-dataset-derived-baseline.md": "D930C845AC912D44610B3CE263B55EA03BFFD7CAB8706C2BC95CB17045FF1316",
+    "research/experiments/generated/EXP-002/EXP-002-prompt-packet.md": "14017F985D54D2B46A338EA2EFA796B24202E3E5A3D3EB8223346CEA96E5CD09",
+    "docs/thesis/EVALUATION_RUBRIC.md": "39D3CF33E38A0C13ADEE178F3DB4174D4D8E3A42B1DE4C274BF96FFA36FFB416"
+  },
+  "readiness_boundary": {
+    "phase_a_contract_artifacts_built": true,
+    "phase_a_complete": false,
+    "full_repository_gate_claimed_by_this_artifact": false,
+    "live_aggregate_release_unblocked": false,
+    "phase_b_unblocked": false,
+    "public_dataset_evaluation_unblocked": false,
+    "private_research_unblocked": false,
+    "provider_feasibility_unblocked": false,
+    "runtime_activation_unblocked": false
+  }
+}

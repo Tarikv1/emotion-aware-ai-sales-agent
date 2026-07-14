@@ -3861,6 +3861,17 @@ python scripts\run_elevenlabs_agent_automation.py `
   --api-requests-out research\experiments\generated\ELEVENLABS-019-demand-capture-conversion-leakage-repair\agent_patch_and_v4_tests_requests.json
 ```
 
+## EMOTION-STATE-001 Partial Phase A Contracts
+
+Run and validate the frozen EXP-002 response baseline, then run and validate the offline Phase A contract checkpoint:
+
+```powershell
+python scripts\run_exp_002_frozen_response_baseline.py
+python scripts\validate_exp_002_frozen_response_baseline.py
+python scripts\run_emotion_state_001_phase_a_contracts.py
+python scripts\validate_emotion_state_001_phase_a_contracts.py
+```
+
 ## Safety Rules
 
 - Do not commit API keys, private transcripts, raw private audio, customer exports, or client-specific sensitive details.
