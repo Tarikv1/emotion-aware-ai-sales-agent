@@ -26,7 +26,7 @@
   "protected_unchanged_surfaces": {
     "analysis": true,
     "procedures": true,
-    "existing_tests": true
+    "dashboard_test_definitions": true
   },
   "upload_intent": {
     "current_mode": "repo-driven ElevenLabs API simulation test creation",
@@ -47,6 +47,6 @@
     "The existing prompt and active KB files are documented under modified_product_files for traceability only.",
     "Analysis remains unchanged.",
     "Procedures remain unchanged.",
-    "Existing pre-040 tests remain byte-for-byte unchanged."
+    "Existing pre-040 dashboard test definition JSON files remain byte-for-byte unchanged; local validators may be strengthened with the product contract."
   ]
 }

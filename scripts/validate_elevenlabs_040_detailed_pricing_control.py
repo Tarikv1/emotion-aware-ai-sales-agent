@@ -26,6 +26,9 @@ VALIDATOR_PATH = "scripts/validate_elevenlabs_040_detailed_pricing_control.py"
 PACKAGE_MANIFEST_PATH = "runtime/providers/elevenlabs_agents/manifests/web_design_detailed_pricing_control.package.json"
 CAPTURE_PATH = "scripts/capture_elevenlabs_040_test_invocation.py"
 TRACE_VALIDATOR_PATH = "scripts/validate_elevenlabs_040_live_test_traces.py"
+TRACE_VALIDATOR_TEST_PATH = "scripts/test_validate_elevenlabs_040_live_test_traces.py"
+LEGACY_034_VALIDATOR_PATH = "scripts/validate_elevenlabs_034_human_phone_naturalness.py"
+LEGACY_038_VALIDATOR_PATH = "scripts/validate_elevenlabs_038_end_call_terminal_control.py"
 ACTIVE_MANIFEST_PATH = "runtime/providers/elevenlabs_agents/manifests/web_design_sales_spine_compression.package.json"
 ANALYSIS_CONFIG_PATH = "runtime/providers/elevenlabs_agents/analysis/atlas_web_studio_analysis_config.json"
 ANALYSIS_SETUP_PATH = "runtime/providers/elevenlabs_agents/analysis/atlas_web_studio_analysis_setup.md"
@@ -56,6 +59,9 @@ CHECKPOINT_DIFF_PATHS = (
     PATCHER_PATH,
     CAPTURE_PATH,
     TRACE_VALIDATOR_PATH,
+    TRACE_VALIDATOR_TEST_PATH,
+    LEGACY_034_VALIDATOR_PATH,
+    LEGACY_038_VALIDATOR_PATH,
 )
 
 EXPECTED_PRICE_DEFAULTS = {
@@ -169,7 +175,7 @@ PROMPT_MARKERS = (
     'CRM no-price capability, unknown context: only "Yes, we can build that. It depends whether you need a simple form handoff or a real integration. Is this for a new site or an addition to your existing site?"',
     'After real-integration plus context: only "Yes, we can build that as a real integration. We scope exact actions/data flow before paid work." Stop; no mockup/email/send.',
     "CRM price/scope/setup/logistics: answer, stop; no CTA.",
-    'Any CRM start/scope/process/next-step ask or complaint: only "We collect the CRM name, actions, field mapping, and sync direction during scoping before any paid commitment." Repeat forever; never transition.',
+    "CRM start/scope/process/next-step: ask for missing input - CRM name, action, field mapping, or sync direction; no price/CTA. If buyer flags repetition, narrow to one unanswered input; do not repeat.",
     "Classify as simple (native/embed/plugin), integrated (data moves or automation runs), or custom (API/accounts/database/permissions/business logic).",
     "Quote one relevant range, name one scope driver, and ask at most one necessary question. PRICE OUTPUT LOCK: stop; no mockup/send/email.",
     "Editor access: new-site included when agreed; existing-site unknown platform -> scope, no number; compatible CMS setup -> $300-$700. Never $100-$250.",
@@ -241,8 +247,8 @@ OUTPUT_MARKERS = (
     "CRM chain output lock: capability, comparison, scope, setup, start, requested-details, and logistics answers are complete turns.",
     "After the buyer selects a real integration and supplies new-site or existing-site context without asking price, output only:",
     '"Yes, we can build that as a real integration. We scope exact actions/data flow before paid work."',
-    'For every CRM "how do we start, scope, process, or take the next step?" question',
-    "Repeat it unchanged every time and stop. Repetition is not a topic change and never unlocks mockup, send, or email.",
+    'For CRM "how do we start, scope, process, or take the next step?" turns',
+    "If the buyer says the answer repeated, acknowledge briefly and narrow to one unanswered input; never repeat the same sentence unchanged.",
     "After the direct range is quoted, CRM why, meaning, which-one, and site-fit follow-ups explain classification only and must not repeat any range or introduce a second price.",
     "In a new-site chain, \"Is the live calendar extra?\" is explicit price intent: quote only $4,000-$6,500 for the whole-project integration lane.",
     "After Emma quotes a price, any follow-up about range, budget, drivers, scope, or new-vs-add-on stays in a price-only lane until that chain ends.",
