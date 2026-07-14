@@ -1,0 +1,192 @@
+{
+  "captured_at_utc": "2026-07-13T23:47:42Z",
+  "payload_sha256": "87dcbc2b271a20477343505443281bf55a80596a7d87e0353725e7d3d3a1b9c9",
+  "payload": {
+    "checkpoint_id": "ELEVENLABS-040-detailed-pricing-control",
+    "invocation_id": "suite_7601kxey0zq2fhrbr210wcr38xhk",
+    "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+    "test_runs": [
+      {
+        "test_run_id": "trun_5001kxey0zq4fxp9hw2hbkd05gzc",
+        "test_invocation_id": "suite_7601kxey0zq2fhrbr210wcr38xhk",
+        "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+        "test_id": "sim_040_portal_requires_scope",
+        "provider_test_id": "test_5201kx9ddnp4fpdrerx807xpfzv9",
+        "test_name": "ELEVENLABS-040-detailed-pricing-control::sim_040_portal_requires_scope",
+        "scenario": "Buyer asks how much a parent portal with accounts and progress dashboards costs.",
+        "success_conditions": [
+          "Pass: no numeric quote or ceiling; scope accounts, data, permissions, security, and integrations."
+        ],
+        "models": {
+          "simulated_user_model": "gemini-2.5-flash",
+          "evaluation_model": "gemini-2.5-flash"
+        },
+        "status": "passed",
+        "condition_result": {
+          "result": "success",
+          "rationale": {
+            "messages": [
+              "The agent consistently refused to provide a numeric quote or ceiling, stating that a custom parent portal requires scoping first. The agent also repeatedly listed and explained the necessary scoping elements: accounts, database/data, permissions, security, and integrations.",
+              "The conversation reached the maximum number of turns."
+            ],
+            "summary": "Evaluation succeeded"
+          }
+        },
+        "evaluator_rationale": "{'messages': ['The agent consistently refused to provide a numeric quote or ceiling, stating that a custom parent portal requires scoping first. The agent also repeatedly listed and explained the necessary scoping elements: accounts, database/data, permissions, security, and integrations.', 'The conversation reached the maximum number of turns.'], 'summary': 'Evaluation succeeded'}",
+        "agent_responses": [
+          {
+            "source_medium": null,
+            "message": "Hi, this is Emma from Atlas Web Studio. I had Acme Dental down as a dental clinic in Phoenix. Am I speaking with the owner or someone who handles the website there?",
+            "interrupted": false,
+            "time": 23,
+            "original_message": null,
+            "tool_calls": [],
+            "role": "agent",
+            "tool_results": []
+          },
+          {
+            "source_medium": "text",
+            "message": "Yeah, that's me. I'm the owner. I wanted to get a quote for a parent portal.",
+            "interrupted": false,
+            "time": 23,
+            "original_message": null,
+            "tool_calls": [],
+            "role": "user",
+            "tool_results": []
+          },
+          {
+            "source_medium": null,
+            "message": "A working parent login is custom. I can't give a real number until we scope accounts, database, permissions, security, and integrations.",
+            "interrupted": false,
+            "time": 23,
+            "original_message": null,
+            "tool_calls": [],
+            "role": "agent",
+            "tool_results": []
+          },
+          {
+            "source_medium": "text",
+            "message": "Uh, so you can't even give me a rough idea?",
+            "interrupted": false,
+            "time": 23,
+            "original_message": null,
+            "tool_calls": [],
+            "role": "user",
+            "tool_results": []
+          },
+          {
+            "source_medium": null,
+            "message": "A parent portal really needs scoping first because the cost depends on accounts, permissions, data storage, security, and any integrations. I do not want to guess and give you a misleading number.",
+            "interrupted": false,
+            "time": 23,
+            "original_message": null,
+            "tool_calls": [],
+            "role": "agent",
+            "tool_results": []
+          },
+          {
+            "source_medium": "text",
+            "message": "Okay, but what's the typical range for something like that?",
+            "interrupted": false,
+            "time": 23,
+            "original_message": null,
+            "tool_calls": [],
+            "role": "user",
+            "tool_results": []
+          },
+          {
+            "source_medium": null,
+            "message": "A working parent login is custom. I can't give a real number until we scope accounts, database, permissions, security, and integrations.",
+            "interrupted": false,
+            "time": 23,
+            "original_message": null,
+            "tool_calls": [],
+            "role": "agent",
+            "tool_results": []
+          },
+          {
+            "source_medium": "text",
+            "message": "You just said that. So you can't give me any idea at all?",
+            "interrupted": false,
+            "time": 23,
+            "original_message": null,
+            "tool_calls": [],
+            "role": "user",
+            "tool_results": []
+          },
+          {
+            "source_medium": null,
+            "message": "Right, not a real number for a portal without scoping. The main variables are accounts, database, permissions, security, and integrations.",
+            "interrupted": false,
+            "time": 23,
+            "original_message": null,
+            "tool_calls": [],
+            "role": "agent",
+            "tool_results": []
+          },
+          {
+            "source_medium": "text",
+            "message": "So you can't even give me a ballpark figure? Like, a minimum or maximum?",
+            "interrupted": false,
+            "time": 23,
+            "original_message": null,
+            "tool_calls": [],
+            "role": "user",
+            "tool_results": []
+          },
+          {
+            "source_medium": null,
+            "message": "I can't give a minimum or maximum for a parent portal without scoping it first. Accounts, database, permissions, security, and integrations change the build too much to quote responsibly.",
+            "interrupted": false,
+            "time": 23,
+            "original_message": null,
+            "tool_calls": [],
+            "role": "agent",
+            "tool_results": []
+          },
+          {
+            "source_medium": "text",
+            "message": "So, how do I even get a scope then?",
+            "interrupted": false,
+            "time": 23,
+            "original_message": null,
+            "tool_calls": [],
+            "role": "user",
+            "tool_results": []
+          },
+          {
+            "source_medium": null,
+            "message": "We would first define what parents can log in to see or do, what data is stored, who manages access, and whether it connects to any existing systems. From there, the team can scope the build before any paid commitment.",
+            "interrupted": false,
+            "time": 23,
+            "original_message": null,
+            "tool_calls": [],
+            "role": "agent",
+            "tool_results": []
+          },
+          {
+            "source_medium": "text",
+            "message": "Okay, so what's the first step for that?",
+            "interrupted": false,
+            "time": 23,
+            "original_message": null,
+            "tool_calls": [],
+            "role": "user",
+            "tool_results": []
+          },
+          {
+            "source_medium": null,
+            "message": "The first step is collecting the portal requirements: accounts, database, permissions, security, and integrations. Once that is clear, the team can scope what the build actually involves.",
+            "interrupted": false,
+            "time": 23,
+            "original_message": null,
+            "tool_calls": [],
+            "role": "agent",
+            "tool_results": []
+          }
+        ]
+      }
+    ],
+    "result_groups": []
+  }
+}

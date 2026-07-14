@@ -1,0 +1,143 @@
+{
+  "checkpoint_id": "ELEVENLABS-036-natural-sales-scenarios",
+  "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+  "invocation_id": "suite_7101kxeym4vxe87abyrc0y9m44q3",
+  "independent_status": "fail",
+  "allow_partial_repeats": true,
+  "coverage_complete": false,
+  "input_test_ids": [
+    "sim_036_crm_payment_capability_before_price"
+  ],
+  "missing_test_ids": [
+    "sim_036_custom_dashboard_scoped_separately",
+    "sim_036_email_confirmation_spoken_email_two_step",
+    "sim_036_email_plus_free_question_confirmation",
+    "sim_036_free_mockup_visual_not_working_site",
+    "sim_036_future_price_ballpark_no_overpricing",
+    "sim_036_goodbye_take_care_no_loop",
+    "sim_036_guarantee_required_clean_disqualify",
+    "sim_036_next_step_questions_no_cta_fatigue",
+    "sim_036_scheduling_simple_request_vs_live_integration"
+  ],
+  "global_failures": [],
+  "provider_labels": {
+    "status_entries": [
+      {
+        "test_id": "sim_036_crm_payment_capability_before_price",
+        "test_run_id": "trun_9201kxeym4w1e5p9revygy9t4kab",
+        "status": "failed"
+      }
+    ],
+    "condition_result_entries": [
+      {
+        "test_id": "sim_036_crm_payment_capability_before_price",
+        "test_run_id": "trun_9201kxeym4w1e5p9revygy9t4kab",
+        "condition_result": {
+          "result": "failure",
+          "rationale": {
+            "messages": [
+              "Emma answered capability before price and provided a price range for the heavy integration. However, she failed to note that a simple handoff is lighter and its cost implications when giving the price. She also missed proposing a natural next step after the capability and cost questions were answered, as the conversation ended abruptly.",
+              "The simulated user ended the conversation."
+            ],
+            "summary": "Evaluation failed"
+          }
+        }
+      }
+    ]
+  },
+  "tests": [
+    {
+      "test_id": "sim_036_crm_payment_capability_before_price",
+      "test_name": "ELEVENLABS-036-natural-sales-scenarios::sim_036_crm_payment_capability_before_price",
+      "test_run_id": "trun_9201kxeym4w1e5p9revygy9t4kab",
+      "independent_status": "fail",
+      "effective_contract": "ELEVENLABS-036",
+      "provider_status": "failed",
+      "provider_condition_result": {
+        "result": "failure",
+        "rationale": {
+          "messages": [
+            "Emma answered capability before price and provided a price range for the heavy integration. However, she failed to note that a simple handoff is lighter and its cost implications when giving the price. She also missed proposing a natural next step after the capability and cost questions were answered, as the conversation ended abruptly.",
+            "The simulated user ended the conversation."
+          ],
+          "summary": "Evaluation failed"
+        }
+      },
+      "provider_evaluator_rationale": "{'messages': ['Emma answered capability before price and provided a price range for the heavy integration. However, she failed to note that a simple handoff is lighter and its cost implications when giving the price. She also missed proposing a natural next step after the capability and cost questions were answered, as the conversation ended abruptly.', 'The simulated user ended the conversation.'], 'summary': 'Evaluation failed'}",
+      "assertions": [
+        {
+          "name": "expected_test_name",
+          "passed": true,
+          "detail": "expected test_name 'ELEVENLABS-036-natural-sales-scenarios::sim_036_crm_payment_capability_before_price'"
+        },
+        {
+          "name": "ordered_agent_responses_present",
+          "passed": true,
+          "detail": "agent_responses is not a list"
+        },
+        {
+          "name": "at_most_one_end_call",
+          "passed": true,
+          "detail": "found 0 end_call calls"
+        },
+        {
+          "name": "timing_spoken_at_most_once",
+          "passed": true,
+          "detail": "delivery timing appears 0 times in agent speech"
+        },
+        {
+          "name": "crm_capability_question_found",
+          "passed": true,
+          "detail": "initial CRM/payment capability question not found"
+        },
+        {
+          "name": "crm_answers_capability_before_price",
+          "passed": true,
+          "detail": "first CRM response must address capability before price"
+        },
+        {
+          "name": "crm_first_answer_no_price_numbers",
+          "passed": true,
+          "detail": "first CRM response must not quote price before the buyer asks cost"
+        },
+        {
+          "name": "crm_first_answer_says_handoff_vs_integration",
+          "passed": true,
+          "detail": "first CRM response must distinguish simple handoff from real integration"
+        },
+        {
+          "name": "crm_cost_question_found",
+          "passed": true,
+          "detail": "CRM cost question not found"
+        },
+        {
+          "name": "crm_cost_answer_integration_range",
+          "passed": true,
+          "detail": "CRM cost answer must map the real integration toward the heavier range"
+        },
+        {
+          "name": "crm_cost_answer_handoff_range",
+          "passed": false,
+          "detail": "CRM cost answer must keep the simple handoff as the lighter option",
+          "severity": "fail"
+        },
+        {
+          "name": "crm_cost_answer_depends_on_system",
+          "passed": true,
+          "detail": "CRM cost answer must say the real number depends on the system"
+        },
+        {
+          "name": "crm_natural_mockup_next_step",
+          "passed": false,
+          "detail": "CRM trace must contain a natural mockup next step after capability and price are answered",
+          "severity": "fail"
+        }
+      ],
+      "failures": [
+        "crm_cost_answer_handoff_range: CRM cost answer must keep the simple handoff as the lighter option",
+        "crm_natural_mockup_next_step: CRM trace must contain a natural mockup next step after capability and price are answered"
+      ],
+      "inconclusives": []
+    }
+  ]
+}

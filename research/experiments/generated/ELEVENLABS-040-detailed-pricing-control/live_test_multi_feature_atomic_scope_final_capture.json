@@ -1,0 +1,192 @@
+{
+  "captured_at_utc": "2026-07-13T23:29:28Z",
+  "payload_sha256": "611af4e6682ffcca563a747c2d7c786f4aa4d4ad95a6480dc2e12a712723c9f5",
+  "payload": {
+    "checkpoint_id": "ELEVENLABS-040-detailed-pricing-control",
+    "invocation_id": "suite_5901kxewzh87embrd44zh5sfgb9e",
+    "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+    "test_runs": [
+      {
+        "test_run_id": "trun_9301kxewzh89e3h8qqmtdyn2e1pp",
+        "test_invocation_id": "suite_5901kxewzh87embrd44zh5sfgb9e",
+        "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+        "test_id": "sim_040_multi_feature_no_price_stacking",
+        "provider_test_id": "test_9001kx9ddn6gfb0rbpcxdq5jjbc5",
+        "test_name": "ELEVENLABS-040-detailed-pricing-control::sim_040_multi_feature_no_price_stacking",
+        "scenario": "Buyer asks for a new site with booking, CRM, payments, service-area pages, and a blog, then asks total cost.",
+        "success_conditions": [
+          "Pass: one likely whole-project band and scope driver; no arithmetic sum or feature-menu recital."
+        ],
+        "models": {
+          "simulated_user_model": "gemini-2.5-flash",
+          "evaluation_model": "gemini-2.5-flash"
+        },
+        "status": "passed",
+        "condition_result": {
+          "result": "success",
+          "rationale": {
+            "messages": [
+              "The agent provided a clear price range of \"four thousand to six thousand five hundred dollars for the whole project\" and identified \"integration complexity\" as the main driver. This was confirmed to cover all requested features, avoiding an arithmetic sum or feature-menu recital.",
+              "The conversation reached the maximum number of turns."
+            ],
+            "summary": "Evaluation succeeded"
+          }
+        },
+        "evaluator_rationale": "{'messages': ['The agent provided a clear price range of \"four thousand to six thousand five hundred dollars for the whole project\" and identified \"integration complexity\" as the main driver. This was confirmed to cover all requested features, avoiding an arithmetic sum or feature-menu recital.', 'The conversation reached the maximum number of turns.'], 'summary': 'Evaluation succeeded'}",
+        "agent_responses": [
+          {
+            "role": "agent",
+            "interrupted": false,
+            "original_message": null,
+            "message": "Hi, this is Emma from Atlas Web Studio. I had Acme Dental down as a dental clinic in Phoenix. Am I speaking with the owner or someone who handles the website there?",
+            "time": 27,
+            "tool_results": [],
+            "tool_calls": [],
+            "source_medium": null
+          },
+          {
+            "role": "user",
+            "interrupted": false,
+            "original_message": null,
+            "message": "Yeah, that's me. I'm the owner. I'm calling about a new website.",
+            "time": 27,
+            "tool_results": [],
+            "tool_calls": [],
+            "source_medium": "text"
+          },
+          {
+            "role": "agent",
+            "interrupted": false,
+            "original_message": null,
+            "message": "Great. The reason I\u2019m calling is we put together free homepage mockups for local businesses, so you can see what a cleaner version of the site could look like before deciding anything. For a dental clinic, that would usually focus on trust, services, patient calls, and appointment requests. Would it be okay if I had one made for Acme Dental and sent it over?",
+            "time": 27,
+            "tool_results": [],
+            "tool_calls": [],
+            "source_medium": null
+          },
+          {
+            "role": "user",
+            "interrupted": false,
+            "original_message": null,
+            "message": "Hmm, yeah, I guess. But I'm actually looking for a whole new site, not just a homepage. I need a few things.",
+            "time": 27,
+            "tool_results": [],
+            "tool_calls": [],
+            "source_medium": "text"
+          },
+          {
+            "role": "agent",
+            "interrupted": false,
+            "original_message": null,
+            "message": "That makes sense. The free mockup is just the first look at the homepage direction, not the full build, but it can help you decide whether the style and structure feel right before talking about the rest. What are the main things you need on the new site?",
+            "time": 27,
+            "tool_results": [],
+            "tool_calls": [],
+            "source_medium": null
+          },
+          {
+            "role": "user",
+            "interrupted": false,
+            "original_message": null,
+            "message": "I need a booking system, a CRM, and a way to take payments. Also, some service-area pages and a blog. What's that all gonna cost?",
+            "time": 27,
+            "tool_results": [],
+            "tool_calls": [],
+            "source_medium": "text"
+          },
+          {
+            "role": "agent",
+            "interrupted": false,
+            "original_message": null,
+            "message": "For a new site with booking, CRM, and payments, you\u2019re usually looking at about four thousand to six thousand five hundred dollars for the whole project. The main driver is integration complexity.",
+            "time": 27,
+            "tool_results": [],
+            "tool_calls": [],
+            "source_medium": null
+          },
+          {
+            "role": "user",
+            "interrupted": false,
+            "original_message": null,
+            "message": "Hmm, okay. So that's for everything I just listed?",
+            "time": 27,
+            "tool_results": [],
+            "tool_calls": [],
+            "source_medium": "text"
+          },
+          {
+            "role": "agent",
+            "interrupted": false,
+            "original_message": null,
+            "message": "That\u2019s right.",
+            "time": 27,
+            "tool_results": [],
+            "tool_calls": [],
+            "source_medium": null
+          },
+          {
+            "role": "user",
+            "interrupted": false,
+            "original_message": null,
+            "message": "So that includes the service-area pages and the blog too?",
+            "time": 27,
+            "tool_results": [],
+            "tool_calls": [],
+            "source_medium": "text"
+          },
+          {
+            "role": "agent",
+            "interrupted": false,
+            "original_message": null,
+            "message": "Yes, that range is for the whole new-site project you described.",
+            "time": 27,
+            "tool_results": [],
+            "tool_calls": [],
+            "source_medium": null
+          },
+          {
+            "role": "user",
+            "interrupted": false,
+            "original_message": null,
+            "message": "Okay, so that price is for all of it then? That's good.",
+            "time": 27,
+            "tool_results": [],
+            "tool_calls": [],
+            "source_medium": "text"
+          },
+          {
+            "role": "agent",
+            "interrupted": false,
+            "original_message": null,
+            "message": "That\u2019s right.",
+            "time": 27,
+            "tool_results": [],
+            "tool_calls": [],
+            "source_medium": null
+          },
+          {
+            "role": "user",
+            "interrupted": false,
+            "original_message": null,
+            "message": "Alright, so what's the next step?",
+            "time": 27,
+            "tool_results": [],
+            "tool_calls": [],
+            "source_medium": "text"
+          },
+          {
+            "role": "agent",
+            "interrupted": false,
+            "original_message": null,
+            "message": "The next step would be the free homepage mockup first, so you can see the direction before any paid commitment. If it looks useful, you can reply to the email and we can scope the full site from there.",
+            "time": 27,
+            "tool_results": [],
+            "tool_calls": [],
+            "source_medium": null
+          }
+        ]
+      }
+    ],
+    "result_groups": []
+  }
+}

@@ -1,0 +1,302 @@
+{
+  "captured_at_utc": "2026-07-13T23:58:41Z",
+  "payload_sha256": "fa939663b1c2dc62c223124f72263ea91c530cc21547200d421bf871d4d342b6",
+  "payload": {
+    "checkpoint_id": "ELEVENLABS-036-natural-sales-scenarios",
+    "invocation_id": "suite_7101kxeym4vxe87abyrc0y9m44q3",
+    "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+    "test_runs": [
+      {
+        "test_run_id": "trun_9201kxeym4w1e5p9revygy9t4kab",
+        "test_invocation_id": "suite_7101kxeym4vxe87abyrc0y9m44q3",
+        "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+        "test_id": "sim_036_crm_payment_capability_before_price",
+        "provider_test_id": "test_4601ktwzq8xnfpbtry5qsepeprh3",
+        "test_name": "ELEVENLABS-036-natural-sales-scenarios::sim_036_crm_payment_capability_before_price",
+        "scenario": "The simulated user owns Iron Gate Garage Doors in Kansas City. They care about lead handling more than design. Their first technical question is: 'Can it connect to Jobber or take deposit payments?' They do not ask cost until later. If Emma jumps into price first, the buyer says: 'That is not what I asked. Can it actually connect or not?' Then they ask: 'Okay, what kind of price does that add?'",
+        "success_conditions": [
+          "The full conversation passes only if Emma answers capability before price. She should first say it can connect depending on whether it is a simple form handoff or a real integration. Only after the buyer asks cost should she map a real CRM or payment integration toward {{website_integration_heavy_range}}, while noting that a simple handoff is lighter and the real number depends on the system. It fails if Emma gives a price before answering capability, says CRM or payments are automatically included in a basic site, invents an exact final quote, gives a long technical dump, or misses a natural mockup next step after the capability and cost questions are answered."
+        ],
+        "models": {
+          "simulated_user_model": "gemini-2.5-flash",
+          "evaluation_model": "gemini-2.5-flash"
+        },
+        "status": "failed",
+        "condition_result": {
+          "result": "failure",
+          "rationale": {
+            "messages": [
+              "Emma answered capability before price and provided a price range for the heavy integration. However, she failed to note that a simple handoff is lighter and its cost implications when giving the price. She also missed proposing a natural next step after the capability and cost questions were answered, as the conversation ended abruptly.",
+              "The simulated user ended the conversation."
+            ],
+            "summary": "Evaluation failed"
+          }
+        },
+        "evaluator_rationale": "{'messages': ['Emma answered capability before price and provided a price range for the heavy integration. However, she failed to note that a simple handoff is lighter and its cost implications when giving the price. She also missed proposing a natural next step after the capability and cost questions were answered, as the conversation ended abruptly.', 'The simulated user ended the conversation.'], 'summary': 'Evaluation failed'}",
+        "agent_responses": [
+          {
+            "original_message": null,
+            "tool_calls": [],
+            "role": "agent",
+            "tool_results": [],
+            "time": 53,
+            "message": "Hi, this is Emma from Atlas Web Studio. I had Iron Gate Garage Doors down as a garage door repair company in Kansas City. Am I speaking with the owner or someone who handles the website there?",
+            "interrupted": false,
+            "source_medium": null
+          },
+          {
+            "original_message": null,
+            "tool_calls": [],
+            "role": "user",
+            "tool_results": [],
+            "time": 53,
+            "message": "Yeah, this is the owner. I'm calling about getting a new website. Can it connect to Jobber or take deposit payments?",
+            "interrupted": false,
+            "source_medium": "text"
+          },
+          {
+            "original_message": null,
+            "tool_calls": [],
+            "role": "agent",
+            "tool_results": [],
+            "time": 53,
+            "message": "Yes, we can build that. It depends whether you need a simple form handoff or a real integration. Is this for a new site or an addition to your existing site?",
+            "interrupted": false,
+            "source_medium": null
+          },
+          {
+            "original_message": null,
+            "tool_calls": [],
+            "role": "user",
+            "tool_results": [],
+            "time": 53,
+            "message": "It's for a new site. What's the difference between a form handoff and a real integration for Jobber?",
+            "interrupted": false,
+            "source_medium": "text"
+          },
+          {
+            "original_message": null,
+            "tool_calls": [],
+            "role": "agent",
+            "tool_results": [],
+            "time": 53,
+            "message": "A form handoff sends the lead details to you or into a basic intake path, while a real Jobber integration moves data between the website and Jobber automatically based on the actions you want. We collect the CRM name, actions, field mapping, and sync direction during scoping before any paid commitment.",
+            "interrupted": false,
+            "source_medium": null
+          },
+          {
+            "original_message": null,
+            "tool_calls": [],
+            "role": "user",
+            "tool_results": [],
+            "time": 53,
+            "message": "Okay, so a real integration means it'll automatically put new leads right into Jobber for me?",
+            "interrupted": false,
+            "source_medium": "text"
+          },
+          {
+            "original_message": null,
+            "tool_calls": [],
+            "role": "agent",
+            "tool_results": [],
+            "time": 53,
+            "message": "Yes, that is the idea if Jobber supports the needed workflow. We collect the CRM name, actions, field mapping, and sync direction during scoping before any paid commitment.",
+            "interrupted": false,
+            "source_medium": null
+          },
+          {
+            "original_message": null,
+            "tool_calls": [],
+            "role": "user",
+            "tool_results": [],
+            "time": 53,
+            "message": "Okay, so it can automatically put leads in, but what if Jobber doesn't support it? And what about taking deposit payments?",
+            "interrupted": false,
+            "source_medium": "text"
+          },
+          {
+            "original_message": null,
+            "tool_calls": [],
+            "role": "agent",
+            "tool_results": [],
+            "time": 53,
+            "message": "If Jobber does not support the needed workflow directly, we would scope the best available path before any paid work. Deposit payments can be built into a new site, but the exact setup depends on the payment flow and how it needs to connect with the rest of the site.",
+            "interrupted": false,
+            "source_medium": null
+          },
+          {
+            "original_message": null,
+            "tool_calls": [],
+            "role": "user",
+            "tool_results": [],
+            "time": 53,
+            "message": "So, it might not automatically put leads in then? And what about how those deposit payments connect?",
+            "interrupted": false,
+            "source_medium": "text"
+          },
+          {
+            "original_message": null,
+            "tool_calls": [],
+            "role": "agent",
+            "tool_results": [],
+            "time": 53,
+            "message": "It depends on Jobber\u2019s available connection options and the exact workflow, so we scope that before paid work instead of guessing. Deposit payments can connect as a standard payment flow or as part of a more integrated setup, depending on whether payment data needs to trigger anything else.",
+            "interrupted": false,
+            "source_medium": null
+          },
+          {
+            "original_message": null,
+            "tool_calls": [],
+            "role": "user",
+            "tool_results": [],
+            "time": 53,
+            "message": "So, you're saying even a \"real integration\" might not automatically put leads in? And can the deposit payments actually connect to Jobber, or is that a separate thing?",
+            "interrupted": false,
+            "source_medium": "text"
+          },
+          {
+            "original_message": null,
+            "tool_calls": [],
+            "role": "agent",
+            "tool_results": [],
+            "time": 53,
+            "message": "A real integration means the goal is automated data movement, but the exact actions depend on what Jobber allows and what workflow you need. Deposit payments may be separate or connected to Jobber depending on the available Jobber setup and the payment flow, so we would scope that before any paid commitment.",
+            "interrupted": false,
+            "source_medium": null
+          },
+          {
+            "original_message": null,
+            "tool_calls": [],
+            "role": "user",
+            "tool_results": [],
+            "time": 53,
+            "message": "So you can't actually tell me if it can connect to Jobber for leads or payments without me paying you first?",
+            "interrupted": false,
+            "source_medium": "text"
+          },
+          {
+            "original_message": null,
+            "tool_calls": [],
+            "role": "agent",
+            "tool_results": [],
+            "time": 53,
+            "message": "We scope exact actions and data flow before paid work, so you are not paying just to find out the basic feasibility. For Jobber, we would confirm the CRM name, actions, field mapping, and sync direction before any paid commitment.",
+            "interrupted": false,
+            "source_medium": null
+          },
+          {
+            "original_message": null,
+            "tool_calls": [],
+            "role": "user",
+            "tool_results": [],
+            "time": 53,
+            "message": "So, can you actually tell me if it's possible to connect to Jobber for leads and payments, or is that still a maybe?",
+            "interrupted": false,
+            "source_medium": "text"
+          },
+          {
+            "original_message": null,
+            "tool_calls": [],
+            "role": "agent",
+            "tool_results": [],
+            "time": 53,
+            "message": "Yes, we can build a real integration if Jobber supports the needed actions and payment workflow. We collect the CRM name, actions, field mapping, and sync direction during scoping before any paid commitment.",
+            "interrupted": false,
+            "source_medium": null
+          },
+          {
+            "original_message": null,
+            "tool_calls": [],
+            "role": "user",
+            "tool_results": [],
+            "time": 53,
+            "message": "So, you're saying it is possible, you just need to check Jobber's side to see how?",
+            "interrupted": false,
+            "source_medium": "text"
+          },
+          {
+            "original_message": null,
+            "tool_calls": [],
+            "role": "agent",
+            "tool_results": [],
+            "time": 53,
+            "message": "That's right.",
+            "interrupted": false,
+            "source_medium": null
+          },
+          {
+            "original_message": null,
+            "tool_calls": [],
+            "role": "user",
+            "tool_results": [],
+            "time": 53,
+            "message": "Okay, so what kind of price does that add?",
+            "interrupted": false,
+            "source_medium": "text"
+          },
+          {
+            "original_message": null,
+            "tool_calls": [],
+            "role": "agent",
+            "tool_results": [],
+            "time": 53,
+            "message": "For a new site with CRM and payment integration, the whole project is usually four thousand to six thousand five hundred dollars. The main driver is integration complexity.",
+            "interrupted": false,
+            "source_medium": null
+          },
+          {
+            "original_message": null,
+            "tool_calls": [],
+            "role": "user",
+            "tool_results": [],
+            "time": 53,
+            "message": "Okay, so that's the full price for the site and getting it to work with Jobber and payments?",
+            "interrupted": false,
+            "source_medium": "text"
+          },
+          {
+            "original_message": null,
+            "tool_calls": [],
+            "role": "agent",
+            "tool_results": [],
+            "time": 53,
+            "message": "That's right.",
+            "interrupted": false,
+            "source_medium": null
+          },
+          {
+            "original_message": null,
+            "tool_calls": [],
+            "role": "user",
+            "tool_results": [],
+            "time": 53,
+            "message": "Alright, got it. Thanks.",
+            "interrupted": false,
+            "source_medium": "text"
+          },
+          {
+            "original_message": null,
+            "tool_calls": [],
+            "role": "agent",
+            "tool_results": [],
+            "time": 53,
+            "message": "Of course.",
+            "interrupted": false,
+            "source_medium": null
+          },
+          {
+            "original_message": null,
+            "tool_calls": [],
+            "role": "user",
+            "tool_results": [],
+            "time": 53,
+            "message": "Alright, thanks. Goodbye.",
+            "interrupted": false,
+            "source_medium": null
+          }
+        ]
+      }
+    ],
+    "result_groups": []
+  }
+}

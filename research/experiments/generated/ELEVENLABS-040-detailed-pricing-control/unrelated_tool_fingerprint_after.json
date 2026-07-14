@@ -38,6 +38,7 @@
         "procedure_update": null,
         "procedure_create": null,
         "procedure_delete": null,
+        "transfer_to_genesys": null,
         "transfer_to_genesys_chat": null,
         "run_subagent": null
       },
@@ -78,6 +79,6 @@
       "no_fake_claims"
     ],
     "procedures_inactive": true,
-    "collateral_state_sha256": "69322e0d6c1dcd33a3f53a06b62e5ad2d5274511c5333dede09f207809715fae"
+    "collateral_state_sha256": "b837f28d031624594f3ff7405d39ce281f30b535c3a0d18f241399478afdb9a6"
   }
 }
