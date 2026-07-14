@@ -16,6 +16,35 @@ Use this file as a chronological research journal for the thesis implementation.
 
 ## Entries
 
+### 2026-07-14 - Atlas 019-040 hosted evidence consolidation
+
+- Objective: consolidate the Atlas Web Studio ElevenLabs evidence arc from the post-018 hosted-agent work through 036 natural-sales scenarios, 039 terminal `end_call` hardening, and 040 detailed-pricing control without rewriting historical phase-one methodology or overstating production readiness.
+- Action taken: reviewed the final 036, 039, and 040 reports and targeted independent trace files; mapped provider labels, deterministic trace checks, manual transcript review, product defects, stale evaluator or test-contract defects, incomplete simulations, provider patch/readback evidence, and remaining unproven voice-call boundaries into thesis-facing methodology.
+- Data used: repo-owned reports and sanitized/generated evidence under `research/experiments/generated/ELEVENLABS-036-natural-sales-scenarios/`, `research/experiments/generated/ELEVENLABS-039-end-call-edge-case-hardening/`, and `research/experiments/generated/ELEVENLABS-040-detailed-pricing-control/`. No private customer data, raw private transcript, customer audio, provider credential value, outbound call, or new simulation was used for this documentation update.
+- Output created: thesis documentation updates that describe the current Atlas hosted text/simulation contract, provider structural readback, targeted independent repair passes, and the limits of the evidence.
+- Method:
+  - treated provider pass/fail labels as one signal, not final truth;
+  - used deterministic independent trace validation and manual transcript review to classify each discrepancy as product defect, provider evaluator defect, stale test-contract defect, or incomplete simulation;
+  - fixed product behavior only for real product defects, such as multi-feature price stacking, CRM CTA reopening/repetition, and premature portal number echoing;
+  - preserved stale or conflicting dashboard criteria instead of weakening Analysis or tests to manufacture a green result;
+  - preferred targeted reruns for the repaired failure class before broader reruns, especially after credit restraint;
+  - required structural readback for live provider changes: prompt/KB write success, 17 ordered KB attachments, 30 Analysis criteria in order, one built-in `end_call`, inactive Procedures, and unrelated-tool/configuration preservation.
+- Result:
+  - 036 created and later exercised 10 natural-sales simulation tests; older 036 evidence includes both earlier clean behavior claims and later credit-capped mixed final captures, so it must not be summarized as universally green.
+  - 039 terminal-control evidence passed 4/4 under both ElevenLabs evaluation and independent raw-trace validation, with one `end_call` per scenario and no outbound calls.
+  - 040 guarded provider patch evidence succeeded and was read back structurally; the final patch wrote the compact prompt and `atlas_output_quality_rules.md` with `2/2` provider writes.
+  - 040 targeted multi-feature, CRM repetition-safe, and portal proof/scope final traces passed independent validation after real product defects were repaired.
+  - a later GPT-5.5 review identified an additional exact-repeat CRM loop; the compact prompt and output-quality KB were patched and structurally read back, but no simulation ran after that final write. The targeted traces therefore support the repaired behavior classes but do not transcript-verify the final live fingerprint.
+  - full 040 and later 036 credit-capped final captures still contain historical failures or stale-contract conflicts and should be cited as mixed evidence, not as clean full-suite proof.
+- Boundary:
+  - no outbound calls were placed;
+  - no PSTN audio, ASR accuracy, latency, interruption handling, buyer perception, conversion impact, or real-customer performance was proven;
+  - no production deployment or general production validation claim is supported;
+  - no dashboard criterion, Analysis definition, model, turn limit, or dynamic-variable contract should be described as weakened to force a pass, while the new 040 regression tests should be acknowledged as added test coverage;
+  - the earlier broad-readiness checkpoint remained blocked. Later detailed-pricing work superseded its product configuration and structural facts, but not its missing post-final-write behavioral proof; accumulated evidence supports targeted hosted behavior, not a broad live-readiness claim for the final fingerprint.
+- Why it matters for the thesis: this records a mature evaluation loop where hosted-provider simulation results, deterministic trace checks, manual transcript review, and live structural readback are reconciled instead of collapsed into a single pass/fail label. It also preserves threats to validity around provider dashboards, stale criteria, credit-capped evidence collection, and non-real-call evidence.
+- Open questions: whether future deliberately revised 036 dashboard contracts reproduce the current intended behavior, whether broader full-suite reruns stay clean after targeted fixes, and whether real speech-call gates for PSTN, ASR, latency, interruption, and buyer perception pass under supervised conditions.
+
 ### 2026-06-07 - ELEVENLABS-018 sales-value and contact-control repair
 
 - Objective: repair the next live cross-vertical transcript failures after `ELEVENLABS-017`, especially weak website value after non-guarantee answers, missing name capture, incomplete send-path confirmation, and buyer-instructed public-profile lookup refusal.

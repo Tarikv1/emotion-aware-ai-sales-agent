@@ -156,11 +156,20 @@ It is the first controlled adaptive comparison, not the finished thesis system.
 
 The historical phase-1 baseline remains useful as the first controlled adaptive comparison, but it is no longer the current system baseline.
 
-Current baseline as of 2026-05-29:
+Current baseline as of 2026-07-14:
 
-- deterministic/campaign-owned dialogue remains the active live-response authority
+- deterministic/campaign-owned dialogue remains the active live-response authority in the covered Atlas hosted configuration
 - source-grounded campaign configs own product truth, plan names, price/source claims, privacy boundaries, close routes, and no-fit language
-- ElevenLabs remains the current live TTS path
+- accumulated Atlas evidence supports the targeted hosted text/simulation behaviors, but the final live fingerprint is not transcript-verified because the last CRM repetition patch received structural readback without a fresh post-write simulation
+- paid prices are buyer-triggered and constrained to one applicable pricing lane
+- existing-site request-form work uses `$100-$250` only after a direct price ask; direct CRM/API integration uses `$1,000-$2,500+` only after a direct price ask; multi-feature new-site scope uses one `$4,000-$6,500` whole-project band
+- capability, scope, proof, and unresolved pricing turns do not reopen mockup/email/send CTAs
+- terminal control uses one built-in `end_call`, zero custom/server duplicates, hard-stop override behavior, delivery-timing deduplication, and atomic gatekeeper callback/note termination
+- the final guarded Atlas configuration preserved `17` KB attachments in manifest order, `30` Analysis criteria in original order, inactive Procedures, and unrelated tool/configuration state
+- ElevenLabs remains the current live voice path
+- no outbound call was placed during the covered Atlas validation cycle
+- full-suite dashboard captures may still contain historical failures or stale evaluator/test-contract conflicts and must not be described as universally green
+- the earlier `ELEVENLABS-040-broad-live-readiness` checkpoint remained blocked; the later detailed-pricing work superseded its product configuration and structural facts but did not supply the missing post-final-write behavioral proof
 - Ultravox is an evaluated hosted speech-native interface candidate, but it is not live-wired and is not the final ElevenLabs replacement
 - local LLMs are research-only and are not live-wired
 - Liquid, Fish, and Kokoro are not live-wired

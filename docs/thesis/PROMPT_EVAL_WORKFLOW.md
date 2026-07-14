@@ -117,3 +117,31 @@ Operational workflow:
 - run shared-runtime or full historical validators only when shared/core runtime behavior changed
 - avoid parallel Git/Codex sessions on the same repo when large commits are pending, because repeated Windows Git lock issues have occurred
 - do not include `continue from commit X` in future phase prompts unless a fixed baseline is truly needed; the current local repo state and verified evidence baseline should be the source of truth
+
+## Hosted Provider Trace Reconciliation
+
+For ElevenLabs-hosted Atlas work, use provider dashboard labels as inputs, not final evidence. A trace packet is thesis-ready only after the evidence is reconciled against the current product contract.
+
+Required reconciliation steps:
+
+1. Capture the provider result label, trace transcript, tool events, run IDs, and active source contract.
+2. Run the focused independent trace validator for the affected checkpoint when available.
+3. Manually review the transcript for sales-quality and contract fit, especially where provider labels and deterministic checks disagree.
+4. Classify each discrepancy:
+   - `product defect`: current product behavior is wrong or unsafe under the active contract.
+   - `provider evaluator defect`: the provider label disagrees with trace facts or misses event order.
+   - `test-contract defect`: the test expects stale or intentionally superseded behavior.
+   - `incomplete simulation`: the simulated buyer stopped before the required state could complete.
+5. Fix product behavior only for `product defect` findings.
+6. Preserve evaluator, test-contract, and incomplete-simulation limitations in evidence notes instead of editing criteria to create a green result.
+7. Rerun targeted cases for the repaired defect class first. Run broad suites only when the change is broad enough, credit budget permits it, and the result will answer a real release or thesis question.
+8. For provider writes, require structural readback: active prompt/KB source, attachment count and order, Analysis criteria count/order, tool count, Procedure state, and unrelated-tool/configuration preservation.
+9. Record side-effect boundaries explicitly: no outbound calls, no provider action beyond the authorized write/read/test, and no PSTN/ASR/latency/real-buyer proof unless those gates actually ran.
+
+Evidence wording rules:
+
+- "Targeted trace passed" means the named focused trace passed provider/manual/independent checks as applicable.
+- "Full suite passed" may be used only when the named full suite is clean under the required provider and independent checks.
+- "Broad readiness" must name its scope, such as covered hosted Atlas text/simulation behavior, and must not imply production deployment, PSTN audio, ASR, latency, interruption handling, buyer perception, conversion impact, or real-customer performance.
+- "Final live fingerprint behaviorally verified" may be used only when a relevant trace or suite ran after the last behavior-changing provider write. Structural readback proves configuration integrity, not transcript behavior.
+- If dashboard tests, Analysis criteria, model, turn limit, or dynamic variables were unchanged, say that exactly. If new tests were added, also say that; do not collapse both into "no tests changed."

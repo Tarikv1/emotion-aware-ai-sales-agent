@@ -140,3 +140,41 @@ Evidence interpretation:
 - a quality gate can fail and still produce useful thesis evidence
 - manual live tests and listening reviews remain required for sales naturalness, voice intelligibility, latency perception, and buyer trust
 - live-demo readiness, thesis-demo readiness, and product readiness are separate claims
+
+## Atlas Hosted Simulation Addendum
+
+For the Atlas 036/039/040 hosted ElevenLabs evidence, add these dimensions before accepting a trace as current-contract evidence.
+
+### Price intent and lane control
+
+- 1: volunteers paid pricing without buyer price intent, stacks unrelated feature ranges, or invents a fixed quote/ceiling.
+- 3: answers price intent but mixes lanes, uses vague cost drivers, or leaves the buyer unsure which scope applies.
+- 5: waits for buyer price intent, selects one applicable lane, names only supported ranges, and keeps capability/proof/process turns price-free when price was not asked.
+
+### Atomic tool-bound termination
+
+- 1: says a farewell separately from the terminal tool, calls `end_call` more than once, or ends with unresolved direct questions except hard-stop overrides.
+- 3: reaches the right terminal outcome but repeats timing, leaves minor ambiguity, or relies on provider label without event-order proof.
+- 5: uses one built-in `end_call`, with the final spoken message in the tool argument, no post-tool activity, and the correct hard-stop, delivery-timing, gatekeeper, or completed-goodbye branch.
+
+### State continuity and CTA discipline
+
+- 1: repeats a question already answered, reopens mockup/email/send CTAs during active scope or price follow-up, or ignores a repetition complaint.
+- 3: mostly tracks state but asks for too much at once or repeats one input after context narrows.
+- 5: asks only for the missing input, narrows after a repetition complaint, avoids CTA fatigue, and keeps scope, proof, pricing, and next-step states distinct.
+
+### Evaluator conflict classification
+
+- 1: treats provider pass/fail labels as final or edits tests/Analysis to force agreement.
+- 3: notes disagreement but does not classify whether the issue is product behavior, provider evaluation, test contract, or incomplete simulation.
+- 5: records provider label, independent validator result, manual transcript judgment, and a clear classification: product defect, provider evaluator defect, test-contract defect, or incomplete simulation.
+
+### Credit-aware evidence collection
+
+- 1: reruns broad suites reflexively or claims readiness after avoiding needed verification.
+- 3: reduces reruns but leaves unclear which evidence was skipped or why.
+- 5: uses targeted reruns for repaired failure classes first, records credit or provider constraints, distinguishes structural readback from post-last-write behavioral proof, and states which final-fingerprint, full-suite, PSTN, ASR, latency, interruption, buyer-perception, conversion, or real-customer claims remain unproven.
+
+Method note:
+
+These dimensions do not replace the original adaptive-prompt rubric. They cover hosted simulation reconciliation, pricing control, terminal-state behavior, and evidence interpretation for the current Atlas provider path.
