@@ -300,12 +300,27 @@ def validate_checkpoint() -> None:
         check=False,
     )
     assert_condition(completed.returncode == 0, completed.stdout + completed.stderr)
-    result = read_json(RESULT)
+    assert_condition(
+        {path.name for path in RESULT.parent.iterdir()} == {"result.json", "report.md"},
+        "canonical checkpoint directory must contain exactly result.json and report.md",
+    )
+    try:
+        result_bytes = RESULT.read_bytes()
+        result = json.loads(result_bytes.decode("utf-8"))
+    except (OSError, UnicodeError, json.JSONDecodeError) as exc:
+        raise AssertionError("unable to read committed checkpoint result bytes") from exc
+    result_sha256 = hashlib.sha256(result_bytes).hexdigest().upper()
     report = require_text(REPORT, [
         "EMOTION-STATE-001", "offline", "all of Phase A is complete",
         "Per-public-dataset manifests remain open", "Live aggregate release remains blocked",
         "Runtime activation remains blocked",
     ])
+    from scripts.emotion_state_phase_a_contracts import render_phase_a_report
+
+    assert_condition(
+        report == render_phase_a_report(result, result_sha256=result_sha256),
+        "result/report publication pair is not committed",
+    )
     assert_condition(result["checkpoint_id"] == "EMOTION-STATE-001-phase-a-contracts", result)
     assert_condition(result["archive_sha256"] == EXPECTED_ARCHIVE_SHA256, result)
     assert_condition(

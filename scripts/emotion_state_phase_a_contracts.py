@@ -190,7 +190,17 @@ def build_phase_a_payload(case_path: Path, *, root: Path) -> dict[str, Any]:
     }
 
 
-def render_phase_a_report(payload: dict[str, Any]) -> str:
+def render_phase_a_report(
+    payload: dict[str, Any],
+    *,
+    result_sha256: str,
+) -> str:
+    if (
+        not isinstance(result_sha256, str)
+        or len(result_sha256) != 64
+        or any(character not in "0123456789ABCDEF" for character in result_sha256)
+    ):
+        raise ValueError("result_sha256 must be exactly 64 uppercase SHA-256 hexadecimal characters")
     summary = payload["summary"]
     return "\n".join([
         "# EMOTION-STATE-001 Phase A Contract Report",
@@ -199,6 +209,7 @@ def render_phase_a_report(payload: dict[str, Any]) -> str:
         "",
         f"- Contract checks: `{summary['contract_check_count']}`",
         f"- Baseline fingerprints: `{summary['baseline_fingerprint_count']}`",
+        f"- Publication commit marker: `result.json sha256:{result_sha256}`",
         f"- Selected public datasets: `{summary['selected_public_dataset_count']}`",
         f"- Source URL status: `{summary['source_repository_url_status']}`",
         f"- Code adaptation started: `{summary['code_adaptation_started']}`",

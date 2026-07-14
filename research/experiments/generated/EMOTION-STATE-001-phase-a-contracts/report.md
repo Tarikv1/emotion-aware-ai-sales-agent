@@ -4,6 +4,7 @@ This artifact validates offline contract artifacts only; it does not claim that 
 
 - Contract checks: `5`
 - Baseline fingerprints: `6`
+- Publication commit marker: `result.json sha256:8A499F9A5CD3365AC98595A67250921C5E6A000E4218CDF3079E86071E57A618`
 - Selected public datasets: `0`
 - Source URL status: `unverified`
 - Code adaptation started: `False`
