@@ -12,6 +12,10 @@ from contextlib import redirect_stderr, redirect_stdout
 from pathlib import Path
 from unittest.mock import patch
 
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
 from scripts.emotion_state_phase_a_contracts import render_phase_a_report
 from scripts import run_emotion_state_001_phase_a_contracts as publication_runner
 from scripts import validate_emotion_state_001_phase_a_contracts as phase_a_validator
@@ -23,9 +27,6 @@ from scripts.run_emotion_state_001_phase_a_contracts import (
     recover_incomplete_publication,
     verify_evidence_pair_bytes,
 )
-
-
-ROOT = Path(__file__).resolve().parents[1]
 
 
 def sample_payload() -> dict[str, object]:
