@@ -350,8 +350,12 @@ def validate_split_manifest_v2(
         payload["dependency_covering_key_by_key"],
         "dependency_covering_key_by_key",
     )
+    if any(not isinstance(value, str) for value in requirements.values()):
+        raise ValueError("dependency_requirement_by_key values must be strings")
     if any(value not in DEPENDENCY_REQUIREMENTS for value in requirements.values()):
         raise ValueError("dependency_requirement_by_key contains an unsupported requirement")
+    if any(not isinstance(value, str) for value in statuses.values()):
+        raise ValueError("dependency_status_by_key values must be strings")
     if any(value not in DEPENDENCY_STATUSES for value in statuses.values()):
         raise ValueError("dependency_status_by_key contains an unsupported status")
     for field, actual in (
@@ -373,6 +377,8 @@ def validate_split_manifest_v2(
             record["dependency_status_by_key"],
             f"{case_id}.dependency_status_by_key",
         )
+        if any(not isinstance(value, str) for value in record_statuses.values()):
+            raise ValueError(f"{case_id}.dependency_status_by_key values must be strings")
         if any(value not in DEPENDENCY_STATUSES for value in record_statuses.values()):
             raise ValueError(f"{case_id}.dependency_status_by_key contains an unsupported status")
 

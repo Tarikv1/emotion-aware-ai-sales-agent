@@ -389,6 +389,63 @@ class PublicDatasetContractTests(unittest.TestCase):
 
 
 class SplitManifestV2Tests(unittest.TestCase):
+    def test_v2_rejects_unhashable_manifest_requirement_value_with_value_error(self) -> None:
+        from scripts.emotion_state_split_manifest_v2_contracts import (
+            fixture_split_manifest_v2,
+            fixture_split_records_v2,
+            validate_split_manifest_v2,
+        )
+        records = fixture_split_records_v2()
+        manifest = fixture_split_manifest_v2(records)
+        manifest["dependency_requirement_by_key"]["speaker"] = []
+        with self.assertRaisesRegex(
+            ValueError,
+            "dependency_requirement_by_key values must be strings",
+        ):
+            validate_split_manifest_v2(manifest, records)
+
+    def test_v2_rejects_unhashable_manifest_status_value_with_value_error(self) -> None:
+        from scripts.emotion_state_split_manifest_v2_contracts import (
+            fixture_split_manifest_v2,
+            fixture_split_records_v2,
+            validate_split_manifest_v2,
+        )
+        records = fixture_split_records_v2()
+        manifest = fixture_split_manifest_v2(records)
+        manifest["dependency_status_by_key"]["speaker"] = {}
+        with self.assertRaisesRegex(
+            ValueError,
+            "dependency_status_by_key values must be strings",
+        ):
+            validate_split_manifest_v2(manifest, records)
+
+    def test_v2_rejects_unhashable_record_status_value_with_value_error(self) -> None:
+        from scripts.emotion_state_split_manifest_v2_contracts import (
+            fixture_split_manifest_v2,
+            fixture_split_records_v2,
+            validate_split_manifest_v2,
+        )
+        records = fixture_split_records_v2()
+        manifest = fixture_split_manifest_v2(records)
+        records[0]["dependency_status_by_key"]["speaker"] = []
+        with self.assertRaisesRegex(
+            ValueError,
+            "case-training-a.dependency_status_by_key values must be strings",
+        ):
+            validate_split_manifest_v2(manifest, records)
+
+    def test_v2_rejects_unknown_covered_partition_case_before_dereference(self) -> None:
+        from scripts.emotion_state_split_manifest_v2_contracts import (
+            fixture_split_manifest_v2,
+            fixture_split_records_v2,
+            validate_split_manifest_v2,
+        )
+        records = fixture_split_records_v2()
+        manifest = fixture_split_manifest_v2(records)
+        manifest["calibration"]["case_ids"] = ["case-missing"]
+        with self.assertRaises(ValueError):
+            validate_split_manifest_v2(manifest, records)
+
     def test_v2_profile_registry_is_exact_and_rejects_unsupported_profiles(self) -> None:
         from scripts.emotion_state_split_manifest_v2_contracts import (
             DEPENDENCY_PROFILES_V2,
