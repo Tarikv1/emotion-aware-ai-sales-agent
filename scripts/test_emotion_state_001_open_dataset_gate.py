@@ -187,6 +187,57 @@ class PublicDatasetContractTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "unknown public dataset"):
             dataset_profile("unknown-dataset")
 
+    def test_canonical_profiles_are_recursively_immutable_and_public_reads_are_independent(self) -> None:
+        import scripts.emotion_state_public_dataset_contracts as contracts
+
+        canonical_profiles = contracts._DATASET_PROFILES
+        canonical_crema = canonical_profiles[contracts.CREMA_DATASET_ID]
+        original_artifacts = list(canonical_crema["selected_artifacts"])
+        original_label_map = dict(canonical_crema["raw_source_label_map"])
+
+        def replace_canonical_profile() -> None:
+            canonical_profiles[contracts.CREMA_DATASET_ID] = {}
+
+        def replace_canonical_field() -> None:
+            canonical_crema["domain"] = "mutated"
+
+        def append_canonical_artifact() -> None:
+            canonical_crema["selected_artifacts"].append("mutation")
+
+        def replace_canonical_label() -> None:
+            canonical_crema["raw_source_label_map"]["A"] = "mutated"
+
+        mutation_cases = (
+            ("root_mapping", replace_canonical_profile, TypeError),
+            ("nested_mapping", replace_canonical_field, TypeError),
+            ("nested_sequence", append_canonical_artifact, AttributeError),
+            ("nested_label_mapping", replace_canonical_label, TypeError),
+        )
+        for name, mutation, expected_error in mutation_cases:
+            with self.subTest(name=name):
+                try:
+                    with self.assertRaises(expected_error):
+                        mutation()
+                finally:
+                    if isinstance(canonical_profiles, dict):
+                        canonical_profiles[contracts.CREMA_DATASET_ID] = canonical_crema
+                    if isinstance(canonical_crema, dict):
+                        canonical_crema["domain"] = contracts.CREMA_PROFILE_IDENTITY["domain"]
+                        canonical_crema["selected_artifacts"] = deepcopy(original_artifacts)
+                        canonical_crema["raw_source_label_map"] = deepcopy(original_label_map)
+
+        public_profile = contracts.dataset_profile(contracts.CREMA_DATASET_ID)
+        public_profile["domain"] = "mutated"
+        public_profile["selected_artifacts"].append("mutation")
+        public_profile["raw_source_label_map"]["A"] = "mutated"
+        fresh_profile = contracts.dataset_profile(contracts.CREMA_DATASET_ID)
+        self.assertEqual(fresh_profile["domain"], contracts.CREMA_PROFILE_IDENTITY["domain"])
+        self.assertEqual(
+            fresh_profile["selected_artifacts"],
+            contracts.CREMA_PROFILE_IDENTITY["selected_artifacts"],
+        )
+        self.assertEqual(fresh_profile["raw_source_label_map"], contracts.CREMA_RAW_SOURCE_LABEL_MAP)
+
     def test_pending_and_verified_manifests_use_exact_evidence_reference_shapes(self) -> None:
         from scripts.emotion_state_public_dataset_contracts import (
             CREMA_DATASET_ID,
@@ -215,6 +266,41 @@ class PublicDatasetContractTests(unittest.TestCase):
         extra_field = dict(verified, unexpected=True)
         with self.assertRaisesRegex(ValueError, "fields mismatch"):
             validate_dataset_manifest(extra_field)
+
+    def test_integer_version_fields_reject_booleans_and_numeric_lookalikes(self) -> None:
+        from scripts.emotion_state_public_dataset_contracts import (
+            CREMA_DATASET_ID,
+            validate_dataset_manifest,
+            validate_hash_inventory,
+        )
+
+        manifest = self._manifest_fixture(CREMA_DATASET_ID, "material_verification_pending")
+        invalid_manifests = {
+            "manifest_version_boolean": dict(manifest, manifest_version=True),
+            "manifest_version_float": dict(manifest, manifest_version=2.0),
+            "hash_schema_version": deepcopy(manifest),
+            "quality_schema_version": deepcopy(manifest),
+        }
+        invalid_manifests["hash_schema_version"]["hash_inventory"]["schema_version"] = True
+        invalid_manifests["quality_schema_version"]["exclusion_inventory"]["schema_version"] = True
+        for name, invalid_manifest in invalid_manifests.items():
+            with self.subTest(name=name):
+                with self.assertRaisesRegex(ValueError, "version"):
+                    validate_dataset_manifest(invalid_manifest)
+
+        with tempfile.TemporaryDirectory() as directory:
+            inventory = {
+                "inventory_version": True,
+                "dataset_id": "synthetic-fixture",
+                "algorithm": "SHA-256",
+                "path_normalization": "project-relative-posix-nfc",
+                "ordering": "ordinal-by-normalized-path",
+                "selected_file_count": 0,
+                "selected_byte_count": 0,
+                "files": [],
+            }
+            with self.assertRaisesRegex(ValueError, "inventory_version"):
+                validate_hash_inventory(inventory, Path(directory))
 
     def test_forbidden_project_mappings_are_rejected(self) -> None:
         from scripts.emotion_state_public_dataset_contracts import (
@@ -287,6 +373,7 @@ class PublicDatasetContractTests(unittest.TestCase):
             )
         )
         self.assertEqual(contract["schema_id"], "emotion-state-dataset-manifest-v2")
+        self.assertIs(type(contract["schema_version"]), int)
         self.assertEqual(contract["schema_version"], 2)
         self.assertEqual(set(contract["required_v1_fields"]), REQUIRED_V1_FIELDS)
         self.assertEqual(set(contract["required_fields"]), REQUIRED_V2_FIELDS)

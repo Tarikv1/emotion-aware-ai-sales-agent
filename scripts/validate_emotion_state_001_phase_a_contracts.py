@@ -172,7 +172,11 @@ def validate_source() -> None:
     )
 
     assert_condition(dataset_contract["schema_id"] == "emotion-state-dataset-manifest-v2", dataset_contract)
-    assert_condition(dataset_contract["schema_version"] == 2, dataset_contract)
+    assert_condition(
+        type(dataset_contract["schema_version"]) is int
+        and dataset_contract["schema_version"] == 2,
+        dataset_contract,
+    )
     assert_condition(
         set(dataset_contract["required_v1_fields"]) == REQUIRED_V1_FIELDS,
         dataset_contract,

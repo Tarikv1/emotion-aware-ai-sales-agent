@@ -3,9 +3,11 @@ from __future__ import annotations
 import hashlib
 import re
 import unicodedata
+from collections.abc import Mapping
 from copy import deepcopy
 from datetime import date
 from pathlib import Path, PurePosixPath
+from types import MappingProxyType
 from typing import Any
 
 CREMA_DATASET_ID = "crema-d-v1.0-audio-wav"
@@ -241,7 +243,23 @@ AMI_PROFILE_SELECTION = {
     },
 }
 
-_DATASET_PROFILES: dict[str, dict[str, Any]] = {
+def _freeze_profile_value(value: Any) -> Any:
+    if isinstance(value, dict):
+        return MappingProxyType({key: _freeze_profile_value(item) for key, item in value.items()})
+    if isinstance(value, (list, tuple)):
+        return tuple(_freeze_profile_value(item) for item in value)
+    return value
+
+
+def _thaw_profile_value(value: Any) -> Any:
+    if isinstance(value, Mapping):
+        return {key: _thaw_profile_value(item) for key, item in value.items()}
+    if isinstance(value, tuple):
+        return [_thaw_profile_value(item) for item in value]
+    return deepcopy(value)
+
+
+_DATASET_PROFILES: Mapping[str, Mapping[str, Any]] = _freeze_profile_value({
     CREMA_DATASET_ID: {
         "dataset_id": CREMA_DATASET_ID,
         **deepcopy(CREMA_PROFILE_IDENTITY),
@@ -258,7 +276,7 @@ _DATASET_PROFILES: dict[str, dict[str, Any]] = {
         "manifest_version": 2,
         "runtime_influence_allowed": False,
     },
-}
+})
 
 COMPLETION_STATUSES = frozenset({"material_verification_pending", "verified"})
 LOCAL_FILE_HASH_FIELDS = frozenset({
@@ -313,9 +331,12 @@ def dataset_profile(dataset_id: str) -> dict[str, Any]:
     if not isinstance(dataset_id, str):
         raise ValueError(f"unknown public dataset: {dataset_id}")
     try:
-        return deepcopy(_DATASET_PROFILES[dataset_id])
+        profile = _thaw_profile_value(_DATASET_PROFILES[dataset_id])
     except KeyError as exc:
         raise ValueError(f"unknown public dataset: {dataset_id}") from exc
+    if not isinstance(profile, dict):
+        raise AssertionError("frozen dataset profile did not thaw to an object")
+    return profile
 
 
 def _require_exact_object(value: Any, fields: frozenset[str], field: str) -> dict[str, Any]:
@@ -327,6 +348,12 @@ def _require_exact_object(value: Any, fields: frozenset[str], field: str) -> dic
 def _require_nonnegative_integer(value: Any, field: str) -> int:
     if type(value) is not int or value < 0:
         raise PublicDatasetContractError(f"{field} must be a nonnegative integer")
+    return value
+
+
+def _require_exact_integer(value: Any, expected: int, field: str) -> int:
+    if type(value) is not int or value != expected:
+        raise PublicDatasetContractError(f"{field} must be integer {expected}")
     return value
 
 
@@ -379,16 +406,18 @@ def _validate_manifest_evidence_references(payload: dict[str, Any]) -> None:
         raise PublicDatasetContractError("inventory_path must be the exact project-relative dataset path")
     if hash_reference["schema_id"] != "emotion-state-dataset-hash-inventory-v1":
         raise PublicDatasetContractError("hash_inventory schema_id is invalid")
-    if hash_reference["schema_version"] != 1:
-        raise PublicDatasetContractError("hash_inventory schema_version is invalid")
+    _require_exact_integer(hash_reference["schema_version"], 1, "hash_inventory.schema_version")
     if hash_reference["path_normalization"] != "project-relative-posix-nfc":
         raise PublicDatasetContractError("hash_inventory path_normalization is invalid")
     if hash_reference["ordering"] != "ordinal-by-normalized-path":
         raise PublicDatasetContractError("hash_inventory ordering is invalid")
     if exclusion_reference["schema_id"] != "emotion-state-dataset-quality-inventory-reference-v1":
         raise PublicDatasetContractError("exclusion_inventory schema_id is invalid")
-    if exclusion_reference["schema_version"] != 1:
-        raise PublicDatasetContractError("exclusion_inventory schema_version is invalid")
+    _require_exact_integer(
+        exclusion_reference["schema_version"],
+        1,
+        "exclusion_inventory.schema_version",
+    )
     if exclusion_reference["quality_inventory_path"] != expected_quality_path:
         raise PublicDatasetContractError(
             "quality_inventory_path must be the exact project-relative dataset path"
@@ -453,6 +482,7 @@ def validate_dataset_manifest(payload: dict[str, Any]) -> dict[str, Any]:
     if dataset_id not in SELECTED_PUBLIC_DATASETS:
         raise PublicDatasetContractError("dataset_id is not selected")
     profile = dataset_profile(dataset_id)
+    _require_exact_integer(payload["manifest_version"], 2, "manifest_version")
     frozen_manifest_fields = (
         "canonical_source_url",
         "release_or_version",
@@ -519,8 +549,7 @@ def _sha256_file(path: Path) -> str:
 def validate_hash_inventory(payload: dict[str, Any], dataset_root: Path) -> dict[str, Any]:
     if not isinstance(payload, dict) or set(payload) != HASH_INVENTORY_FIELDS:
         raise PublicDatasetContractError("hash inventory fields mismatch")
-    if payload["inventory_version"] != 1:
-        raise PublicDatasetContractError("inventory_version must be 1")
+    _require_exact_integer(payload["inventory_version"], 1, "inventory_version")
     dataset_id = payload["dataset_id"]
     if not isinstance(dataset_id, str) or not dataset_id:
         raise PublicDatasetContractError("dataset_id must be a non-empty string")
