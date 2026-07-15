@@ -1,7 +1,7 @@
 {
-  "schema_id": "emotion-state-dataset-manifest-v1",
-  "schema_version": 1,
-  "required_fields": [
+  "schema_id": "emotion-state-dataset-manifest-v2",
+  "schema_version": 2,
+  "required_v1_fields": [
     "dataset_id",
     "canonical_source_url",
     "release_or_version",
@@ -19,9 +19,43 @@
     "permitted_research_lanes",
     "redistribution_status"
   ],
+  "required_fields": [
+    "dataset_id",
+    "canonical_source_url",
+    "release_or_version",
+    "accessed_on",
+    "terms_or_license",
+    "access_restrictions",
+    "local_file_hashes",
+    "source_label",
+    "source_labels",
+    "project_label_mapping",
+    "excluded_labels",
+    "language",
+    "domain",
+    "domain_limitations",
+    "permitted_research_lanes",
+    "redistribution_status",
+    "manifest_version",
+    "selected_artifacts",
+    "source_revision",
+    "release_published_at",
+    "dependency_keys",
+    "quality_rules",
+    "known_issues",
+    "exclusion_inventory",
+    "hash_inventory",
+    "completion_status",
+    "runtime_influence_allowed"
+  ],
   "allowed_source_labels": ["public-only", "private-restricted", "mixed-source", "synthetic-only"],
-  "selected_public_datasets": [],
+  "selected_public_datasets": [
+    "crema-d-v1.0-audio-wav",
+    "ami-manual-annotations-v1.6.2"
+  ],
+  "dataset_download_authorized": false,
+  "dataset_evaluation_started": false,
   "domain_boundary": "acted_and_non_sales_corpora_support_offline_thesis_comparison_only",
   "runtime_influence_allowed": false,
-  "notes": "Create one immutable manifest per dataset only after exact source, version, terms, restrictions, and local hashes are verified."
+  "notes": "The two public dataset profiles are selected, but dataset download and evaluation remain unauthorized. Create immutable per-dataset evidence only after separate authorization and exact local material verification."
 }

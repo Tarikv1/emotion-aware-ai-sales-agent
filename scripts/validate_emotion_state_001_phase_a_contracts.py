@@ -164,19 +164,35 @@ def validate_source() -> None:
     ]
     assert_condition(manifest["reviewed_files"] == expected_reviewed_files, manifest)
     dataset_contract = read_json(DATASET_CONTRACT)
-    assert_condition(dataset_contract["schema_id"] == "emotion-state-dataset-manifest-v1", dataset_contract)
-    assert_condition(set(dataset_contract["required_fields"]) == {
-        "dataset_id", "canonical_source_url", "release_or_version", "accessed_on",
-        "terms_or_license", "access_restrictions", "local_file_hashes", "source_label",
-        "source_labels", "project_label_mapping", "excluded_labels", "language", "domain",
-        "domain_limitations", "permitted_research_lanes", "redistribution_status",
-    }, dataset_contract)
+    from scripts.emotion_state_public_dataset_contracts import (
+        REQUIRED_V1_FIELDS,
+        REQUIRED_V2_FIELDS,
+        SELECTED_PUBLIC_DATASETS,
+        public_dataset_contract_self_check,
+    )
+
+    assert_condition(dataset_contract["schema_id"] == "emotion-state-dataset-manifest-v2", dataset_contract)
+    assert_condition(dataset_contract["schema_version"] == 2, dataset_contract)
+    assert_condition(
+        set(dataset_contract["required_v1_fields"]) == REQUIRED_V1_FIELDS,
+        dataset_contract,
+    )
+    assert_condition(set(dataset_contract["required_fields"]) == REQUIRED_V2_FIELDS, dataset_contract)
     assert_condition(set(dataset_contract["allowed_source_labels"]) == {
         "public-only", "private-restricted", "mixed-source", "synthetic-only",
     }, dataset_contract)
-    assert_condition(dataset_contract["selected_public_datasets"] == [], dataset_contract)
+    assert_condition(
+        dataset_contract["selected_public_datasets"] == list(SELECTED_PUBLIC_DATASETS),
+        dataset_contract,
+    )
+    assert_condition(dataset_contract["dataset_download_authorized"] is False, dataset_contract)
+    assert_condition(dataset_contract["dataset_evaluation_started"] is False, dataset_contract)
     assert_condition(dataset_contract["runtime_influence_allowed"] is False, dataset_contract)
     assert_condition(dataset_contract["domain_boundary"] == "acted_and_non_sales_corpora_support_offline_thesis_comparison_only", dataset_contract)
+    assert_condition(
+        public_dataset_contract_self_check() == "pass",
+        "public dataset contract self-check failed",
+    )
     annotation_schema = read_json(ANNOTATION_SCHEMA)
     from scripts.emotion_state_annotation_contracts import (
         ANNOTATION_FIELDS,
