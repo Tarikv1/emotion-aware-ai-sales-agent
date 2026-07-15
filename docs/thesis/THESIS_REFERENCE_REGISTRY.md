@@ -50,6 +50,7 @@ Use the source categories carefully:
 - Type: dataset source
 - Landing page: https://sail.usc.edu/iemocap/
 - Main source: https://sail.usc.edu/iemocap/iemocap_info.htm
+- Academic release form: https://sail.usc.edu/iemocap/release_form.php
 - USC SAIL database page: https://sail.usc.edu/software/databases/
 - Project use: speech emotion reference and possible audio-emotion baseline.
 - Current project status: local file appears to be a repackaged CSV-style export, not the full official corpus structure.
@@ -59,9 +60,52 @@ Use the source categories carefully:
 
 - Type: offline dataset candidate
 - Source: https://ecs.utdallas.edu/research/researchlabs/msp-lab/MSP-Podcast.html
+- Current access page: https://lab-msp.com/MSP/MSP-Podcast.html
+- Data-transfer agreement: https://lab-msp.com/MSP/publications/Busso-FDPDTUA-MSP-Podcast-v4.pdf
 - Project use: candidate for a later offline emotion-state comparison only.
 - Current project status: not selected. Exact version, terms, restrictions, access conditions, and local hashes remain unverified.
 - Thesis caution: registering this source does not select the dataset or satisfy the exact per-dataset manifest gate.
+
+### MSP-Conversation (unselected restricted-access reference)
+
+- Type: offline dataset reference
+- Source: https://lab-msp.com/MSP/MSP-Conversation.html
+- Project use: reference-only naturalistic conversational-emotion candidate considered during EMOTION-STATE Phase A dataset selection.
+- Current project status: not selected because the required institutional data-transfer authorization is unavailable. No bypass, download, or local use is approved.
+- Thesis caution: access restrictions are a hard provenance boundary, not an invitation to use a mirror or substitute agreement.
+
+### CREMA-D v1.0 (selected controlled acoustic-sensitivity source)
+
+- Type: public dataset and academic source
+- Official repository: https://github.com/CheyneyComputerScience/CREMA-D
+- Pinned release: https://github.com/CheyneyComputerScience/CREMA-D/releases/tag/v1.0
+- Dataset paper: https://pmc.ncbi.nlm.nih.gov/articles/PMC4313618/
+- Database license: https://opendatacommons.org/licenses/odbl/1-0/
+- Contents license: https://opendatacommons.org/licenses/dbcl/1-0/
+- Project use: selected for a later separately authorized, offline controlled acoustic-sensitivity lane using original audio-perception labels and speaker-disjoint metadata checks.
+- Current project status: source/release selection is approved; dataset download and material verification are not authorized by the design or implementation plan alone.
+- Thesis caution: acted isolated-utterance labels are not customer internal emotion, natural sales-conversation truth, or mappings to hesitation, frustration, confusion, interest, or disengagement.
+
+### AMI manual annotations v1.6.2 (selected conversational-mechanics source)
+
+- Type: public conversational annotation dataset
+- Corpus overview: https://groups.inf.ed.ac.uk/ami/corpus/
+- Official download and release page: https://groups.inf.ed.ac.uk/ami/download/
+- Manual annotation documentation: https://groups.inf.ed.ac.uk/ami/corpus/annotation.shtml
+- Transcript documentation: https://groups.inf.ed.ac.uk/ami/corpus/transcription.shtml
+- Official partitions: https://groups.inf.ed.ac.uk/ami/corpus/datasets.shtml
+- Documented data problems: https://groups.inf.ed.ac.uk/ami/corpus/dataproblems.shtml
+- Project use: selected for a later separately authorized, annotation-only conversational-mechanics lane covering speaker, timing, transcript structure, dialogue acts, and dependency-safe turn analysis.
+- Current project status: source/release selection is approved; no AMI audio, video, automatic annotation, speculative emotion material, download, or evaluation is authorized by the design or implementation plan alone.
+- Thesis caution: AMI supplies no project emotion ground truth. Dialogue acts, pauses, overlap, floor maintenance, and backchannels cannot be relabeled as operational customer-state signals.
+
+### Creative Analysis Engine private collaboration source
+
+- Type: private academic collaboration and interpretable evidence-design reference
+- Repository: https://github.com/WisdomBreathes/creative-analysis-engine
+- Project use: pinned read-only reference for modular, observable speech-feature and turn-dynamics concepts in the EMOTION-STATE design.
+- Current project status: the private `dev` revision and seven-file byte-equivalence scope were verified during approved read-only inspection. No source adaptation, copying, translation, or runtime dependency is authorized.
+- Thesis caution: author/supervisor collaboration permission and attribution do not override the current no-source-adaptation instruction or prove a repository license.
 
 ### MELD
 
