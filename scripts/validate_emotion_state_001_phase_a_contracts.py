@@ -79,13 +79,22 @@ def validate_source() -> None:
         manifest,
     )
     assert_condition(manifest["permission_attestation"]["credit_required"] is True, manifest)
-    assert_condition(manifest["source_repository_url"] is None, manifest)
-    assert_condition(manifest["source_repository_url_status"] == "unverified", manifest)
-    assert_condition(manifest["source_revision"] is None, manifest)
-    assert_condition(manifest["source_revision_status"] == "unverified", manifest)
+    assert_condition(
+        manifest["source_repository_url"]
+        == "https://github.com/WisdomBreathes/creative-analysis-engine",
+        manifest,
+    )
+    assert_condition(manifest["source_repository_url_status"] == "verified_read_only", manifest)
+    assert_condition(manifest["source_branch"] == "dev", manifest)
+    assert_condition(
+        manifest["source_revision"] == "7cb99ea2da3016cd82d0b5f805c015a808ce4e0d",
+        manifest,
+    )
+    assert_condition(manifest["source_revision_status"] == "verified_read_only", manifest)
     assert_condition(manifest["source_archive_date"] is None, manifest)
     assert_condition(manifest["source_archive_date_status"] == "unverified", manifest)
-    assert_condition(manifest["observed_license_status"] == "unverified_not_relied_on_for_permission", manifest)
+    assert_condition(manifest["observed_license"] is None, manifest)
+    assert_condition(manifest["observed_license_status"] == "absent_in_reviewed_root", manifest)
     assert_condition(manifest["copied_material"] == [], manifest)
     assert_condition(manifest["translated_material"] == [], manifest)
     assert_condition(manifest["adapted_material"] == [], manifest)
@@ -101,50 +110,59 @@ def validate_source() -> None:
     assert_condition(manifest["phase_b_approval"]["status"] == "not_requested", manifest)
     assert_condition(manifest["phase_b_approval"]["approved"] is False, manifest)
     assert_condition(manifest["phase_b_approval"]["approval_reference"] is None, manifest)
+    assert_condition(manifest["adaptation_allowed"] is False, manifest)
     assert_condition(manifest["adaptation_blockers"] == [
-        "source_repository_url_unverified",
-        "source_revision_or_authoritative_archive_date_unverified",
+        "current_instruction_prohibits_source_adaptation",
+        "observed_repository_license_absent",
         "phase_b_reuse_scope_not_defined",
         "phase_b_attribution_wording_pending",
         "phase_b_approval_not_granted",
     ], manifest)
     expected_reviewed_files = [
         {
-            "path": "src/features/temporal/speech_prosody.py",
-            "reuse_status": "inspiration_only",
-            "phase_a_action": "reviewed_no_code_adapted",
+            "path": "README.md",
+            "git_blob_sha1": "f8a1afe3842b361432d8dcc061c5c5b6969cf363",
+            "equivalence_status": "byte_identical_to_dev_blob",
+            "reuse_status": "reference_only",
         },
         {
-            "path": "src/features/temporal/speech_turn_dynamics.py",
-            "reuse_status": "inspiration_only",
-            "phase_a_action": "reviewed_no_code_adapted",
+            "path": "docs/features/FEATURE_speech_call_readiness_analytics.md",
+            "git_blob_sha1": "b5e63a3dd9ba72f5eefc46688129aa98bf20a509",
+            "equivalence_status": "byte_identical_to_dev_blob",
+            "reuse_status": "reference_only",
+        },
+        {
+            "path": "docs/features/FEATURE_speech_prosody.md",
+            "git_blob_sha1": "5d5cbd7e25dc7bce5fcf2c7fcb97448524c79f22",
+            "equivalence_status": "byte_identical_to_dev_blob",
+            "reuse_status": "reference_only",
+        },
+        {
+            "path": "docs/features/FEATURE_speech_turn_dynamics.md",
+            "git_blob_sha1": "03f737ce52262fcac733016ec57f344d783a69b4",
+            "equivalence_status": "byte_identical_to_dev_blob",
+            "reuse_status": "reference_only",
         },
         {
             "path": "src/aggregation/speech_call_readiness.py",
+            "git_blob_sha1": "8387ae5d365d22c816e407e315701a066e745599",
+            "equivalence_status": "byte_identical_to_dev_blob",
             "reuse_status": "excluded_from_emotion_labels",
-            "phase_a_action": "reviewed_no_code_adapted",
+        },
+        {
+            "path": "src/features/temporal/speech_prosody.py",
+            "git_blob_sha1": "dbadd19160affcd3aec864a9f4b77d3ed5e5a4d6",
+            "equivalence_status": "byte_identical_to_dev_blob",
+            "reuse_status": "reference_only",
+        },
+        {
+            "path": "src/features/temporal/speech_turn_dynamics.py",
+            "git_blob_sha1": "4a46634ca9531e5181f72a554545083defcff59d",
+            "equivalence_status": "byte_identical_to_dev_blob",
+            "reuse_status": "reference_only",
         },
     ]
     assert_condition(manifest["reviewed_files"] == expected_reviewed_files, manifest)
-    if manifest["source_repository_url_status"] != "verified":
-        assert_condition(manifest["source_repository_url"] is None, manifest)
-        assert_condition(manifest["adaptation_allowed"] is False, manifest)
-    if manifest["source_revision_status"] != "verified" and manifest["source_archive_date_status"] != "verified":
-        assert_condition(manifest["source_revision"] is None, manifest)
-        assert_condition(manifest["source_archive_date"] is None, manifest)
-        assert_condition(manifest["adaptation_allowed"] is False, manifest)
-    derived_adaptation_allowed = all([
-        manifest["source_repository_url_status"] == "verified",
-        manifest["source_revision_status"] == "verified" or manifest["source_archive_date_status"] == "verified",
-        manifest["attribution"]["phase_b_reuse_scope_status"] == "approved",
-        bool(manifest["attribution"]["phase_b_reuse_scope"]),
-        manifest["attribution"]["phase_b_attribution_wording_status"] == "recorded",
-        isinstance(manifest["attribution"]["phase_b_wording"], str) and bool(manifest["attribution"]["phase_b_wording"].strip()),
-        manifest["phase_b_approval"]["status"] == "approved",
-        manifest["phase_b_approval"]["approved"] is True,
-        isinstance(manifest["phase_b_approval"]["approval_reference"], str) and bool(manifest["phase_b_approval"]["approval_reference"].strip()),
-    ])
-    assert_condition(manifest["adaptation_allowed"] is derived_adaptation_allowed, manifest)
     dataset_contract = read_json(DATASET_CONTRACT)
     assert_condition(dataset_contract["schema_id"] == "emotion-state-dataset-manifest-v1", dataset_contract)
     assert_condition(set(dataset_contract["required_fields"]) == {
@@ -206,13 +224,23 @@ def validate_source() -> None:
         groups = split_schema[partition_name]["dependency_groups"]
         assert_condition(set(groups) == DEPENDENCY_GROUP_FIELDS, groups)
         assert_condition(all(identifiers == [] for identifiers in groups.values()), groups)
-    require_text(SOURCE_NOTES, ["inspiration only", "source_repository_url_unverified", "No code was copied"])
+    require_text(SOURCE_NOTES, [
+        "The seven reviewed files were verified byte-identical",
+        "The full ZIP was not proven equivalent",
+        "No code was copied, translated, adapted, or independently reimplemented",
+    ])
     require_text(CODEBOOK, [
         "not_inferable", "ambiguous", "Krippendorff", "three independent reviewers",
         "practice set", "`none` means", "abstention-policy error", "redacted, nonreversible",
         "evidence:uuid:", "Retain reviewer-level disagreement", "Derive every split dependency summary",
     ])
-    require_text(ROOT / "docs" / "third-party-inspirations.md", ["Creative Analysis Engine", "research/sources/creative_analysis_engine/source_manifest.json"])
+    require_text(ROOT / "docs" / "third-party-inspirations.md", [
+        "Creative Analysis Engine",
+        "research/sources/creative_analysis_engine/source_manifest.json",
+        "The seven reviewed files were verified byte-identical",
+        "The full ZIP was not proven equivalent",
+        "No code was copied, translated, adapted, or independently reimplemented",
+    ])
     require_text(THESIS_REFERENCE_REGISTRY, [
         "https://sail.usc.edu/iemocap/",
         "https://ecs.utdallas.edu/research/researchlabs/msp-lab/MSP-Podcast.html",

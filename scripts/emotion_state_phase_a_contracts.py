@@ -42,6 +42,50 @@ MATERIAL_FIELDS = (
     "adapted_material",
     "independently_reimplemented_material",
 )
+EXPECTED_REVIEWED_FILES = [
+    {
+        "path": "README.md",
+        "git_blob_sha1": "f8a1afe3842b361432d8dcc061c5c5b6969cf363",
+        "equivalence_status": "byte_identical_to_dev_blob",
+        "reuse_status": "reference_only",
+    },
+    {
+        "path": "docs/features/FEATURE_speech_call_readiness_analytics.md",
+        "git_blob_sha1": "b5e63a3dd9ba72f5eefc46688129aa98bf20a509",
+        "equivalence_status": "byte_identical_to_dev_blob",
+        "reuse_status": "reference_only",
+    },
+    {
+        "path": "docs/features/FEATURE_speech_prosody.md",
+        "git_blob_sha1": "5d5cbd7e25dc7bce5fcf2c7fcb97448524c79f22",
+        "equivalence_status": "byte_identical_to_dev_blob",
+        "reuse_status": "reference_only",
+    },
+    {
+        "path": "docs/features/FEATURE_speech_turn_dynamics.md",
+        "git_blob_sha1": "03f737ce52262fcac733016ec57f344d783a69b4",
+        "equivalence_status": "byte_identical_to_dev_blob",
+        "reuse_status": "reference_only",
+    },
+    {
+        "path": "src/aggregation/speech_call_readiness.py",
+        "git_blob_sha1": "8387ae5d365d22c816e407e315701a066e745599",
+        "equivalence_status": "byte_identical_to_dev_blob",
+        "reuse_status": "excluded_from_emotion_labels",
+    },
+    {
+        "path": "src/features/temporal/speech_prosody.py",
+        "git_blob_sha1": "dbadd19160affcd3aec864a9f4b77d3ed5e5a4d6",
+        "equivalence_status": "byte_identical_to_dev_blob",
+        "reuse_status": "reference_only",
+    },
+    {
+        "path": "src/features/temporal/speech_turn_dynamics.py",
+        "git_blob_sha1": "4a46634ca9531e5181f72a554545083defcff59d",
+        "equivalence_status": "byte_identical_to_dev_blob",
+        "reuse_status": "reference_only",
+    },
+]
 
 
 def read_json(path: Path) -> Any:
@@ -87,20 +131,24 @@ def validate_source_manifest(manifest: Any) -> None:
         raise ValueError("source manifest must be a JSON object")
     expected_values = {
         "archive_sha256": EXPECTED_ARCHIVE_SHA256,
-        "source_repository_url": None,
-        "source_repository_url_status": "unverified",
-        "source_revision": None,
-        "source_revision_status": "unverified",
-        "source_archive_date": None,
-        "source_archive_date_status": "unverified",
-        "observed_license_status": "unverified_not_relied_on_for_permission",
+        "source_repository_url": "https://github.com/WisdomBreathes/creative-analysis-engine",
+        "source_repository_url_status": "verified_read_only",
+        "source_branch": "dev",
+        "source_revision": "7cb99ea2da3016cd82d0b5f805c015a808ce4e0d",
+        "source_revision_status": "verified_read_only",
+        "observed_license": None,
+        "observed_license_status": "absent_in_reviewed_root",
     }
     expected_booleans = {
-        "adaptation_allowed": False,
         "runtime_dependency_added": False,
         "project_local_only": True,
     }
-    required_fields = set(expected_values) | set(expected_booleans) | set(MATERIAL_FIELDS)
+    required_fields = (
+        set(expected_values)
+        | set(expected_booleans)
+        | set(MATERIAL_FIELDS)
+        | {"adaptation_allowed", "phase_b_approval", "reviewed_files"}
+    )
     missing_fields = sorted(required_fields - set(manifest))
     if missing_fields:
         raise ValueError(f"missing source manifest fields: {missing_fields}")
@@ -111,6 +159,12 @@ def validate_source_manifest(manifest: Any) -> None:
     }
     if mismatched:
         raise ValueError(f"invalid source manifest boundary: {sorted(mismatched)}")
+    if manifest["reviewed_files"] != EXPECTED_REVIEWED_FILES:
+        raise ValueError("invalid source manifest reviewed-file provenance")
+    if manifest["adaptation_allowed"] is not False:
+        raise ValueError("source adaptation must remain blocked by the current instruction")
+    if manifest["phase_b_approval"]["approved"] is not False:
+        raise ValueError("Phase B source reuse approval must remain false")
     for field, expected in expected_booleans.items():
         value = manifest.get(field)
         if type(value) is not bool or value is not expected:
