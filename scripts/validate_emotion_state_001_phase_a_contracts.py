@@ -19,6 +19,7 @@ SOURCE_NOTES = SOURCE_MANIFEST.with_name("source_notes.md")
 DATASET_CONTRACT = ROOT / "research" / "sources" / "emotion_state" / "dataset_manifest_contract.json"
 ANNOTATION_SCHEMA = DATASET_CONTRACT.with_name("annotation_record_v1.schema.json")
 SPLIT_SCHEMA = DATASET_CONTRACT.with_name("split_manifest_v1.schema.json")
+SPLIT_SCHEMA_V2 = DATASET_CONTRACT.with_name("split_manifest_v2.schema.json")
 CODEBOOK = ROOT / "docs" / "data" / "EMOTION_STATE_001_ANNOTATION_CODEBOOK.md"
 THESIS_REFERENCE_REGISTRY = ROOT / "docs" / "thesis" / "THESIS_REFERENCE_REGISTRY.md"
 CASE_PATH = ROOT / "research" / "experiments" / "cases" / "emotion-state-001-phase-a-contracts.json"
@@ -244,6 +245,75 @@ def validate_source() -> None:
         groups = split_schema[partition_name]["dependency_groups"]
         assert_condition(set(groups) == DEPENDENCY_GROUP_FIELDS, groups)
         assert_condition(all(identifiers == [] for identifiers in groups.values()), groups)
+    split_schema_v2 = read_json(SPLIT_SCHEMA_V2)
+    from scripts.emotion_state_split_manifest_v2_contracts import (
+        DEPENDENCY_KEYS_V2,
+        DEPENDENCY_PROFILES_V2,
+        DEPENDENCY_REQUIREMENTS,
+        DEPENDENCY_STATUSES,
+        PARTITION_FIELDS_V2,
+        PARTITIONS,
+        QUARANTINE_FIELDS_V2,
+        SPLIT_MANIFEST_V2_FIELDS,
+        dependency_profiles_v2_contract,
+        split_manifest_v2_self_check,
+    )
+
+    assert_condition(
+        split_schema_v2["schema_id"] == "emotion-state-split-manifest-v2",
+        split_schema_v2,
+    )
+    assert_condition(
+        type(split_schema_v2["schema_version"]) is int
+        and split_schema_v2["schema_version"] == 2,
+        split_schema_v2,
+    )
+    assert_condition(
+        len(split_schema_v2["required_fields"]) == len(SPLIT_MANIFEST_V2_FIELDS)
+        and set(split_schema_v2["required_fields"]) == SPLIT_MANIFEST_V2_FIELDS,
+        split_schema_v2,
+    )
+    assert_condition(
+        split_schema_v2["dependency_keys"] == list(DEPENDENCY_KEYS_V2),
+        split_schema_v2,
+    )
+    assert_condition(
+        set(split_schema_v2["allowed_dependency_requirements"]) == DEPENDENCY_REQUIREMENTS,
+        split_schema_v2,
+    )
+    assert_condition(
+        set(split_schema_v2["allowed_dependency_statuses"]) == DEPENDENCY_STATUSES,
+        split_schema_v2,
+    )
+    assert_condition(
+        split_schema_v2["allowed_dependency_profile_ids"] == list(DEPENDENCY_PROFILES_V2),
+        split_schema_v2,
+    )
+    assert_condition(
+        split_schema_v2["dependency_profiles"] == dependency_profiles_v2_contract(),
+        split_schema_v2,
+    )
+    for partition_name in PARTITIONS:
+        partition = split_schema_v2[partition_name]
+        assert_condition(set(partition) == PARTITION_FIELDS_V2[partition_name], partition)
+        assert_condition(partition["case_ids"] == [], partition)
+        groups = partition["dependency_groups"]
+        assert_condition(tuple(groups) == DEPENDENCY_KEYS_V2, groups)
+        assert_condition(all(identifiers == [] for identifiers in groups.values()), groups)
+    quarantine = split_schema_v2["dependency_unknown_quarantine"]
+    assert_condition(set(quarantine) == QUARANTINE_FIELDS_V2, quarantine)
+    assert_condition(quarantine["case_ids"] == [], quarantine)
+    assert_condition(quarantine["reason_codes"] == [], quarantine)
+    assert_condition(quarantine["claims_allowed"] is False, quarantine)
+    assert_condition(split_schema_v2["metric_denominator_case_ids"] == [], split_schema_v2)
+    assert_condition(split_schema_v2["claim_denominator_case_ids"] == [], split_schema_v2)
+    assert_condition(split_schema_v2["frozen_candidate_family_digest"] is None, split_schema_v2)
+    assert_condition(split_schema_v2["confirmatory_claims_allowed"] is False, split_schema_v2)
+    assert_condition(split_schema_v2["runtime_influence_allowed"] is False, split_schema_v2)
+    assert_condition(
+        split_manifest_v2_self_check() == "pass",
+        "split manifest v2 contract self-check failed",
+    )
     require_text(SOURCE_NOTES, [
         "The seven reviewed files were verified byte-identical",
         "The full ZIP was not proven equivalent",

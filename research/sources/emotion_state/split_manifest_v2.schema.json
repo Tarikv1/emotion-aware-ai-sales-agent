@@ -1,0 +1,273 @@
+{
+  "schema_id": "emotion-state-split-manifest-v2",
+  "schema_version": 2,
+  "required_fields": [
+    "manifest_id",
+    "dataset_manifest_ids",
+    "dependency_profile_id",
+    "highest_dependency_unit",
+    "dependency_keys",
+    "dependency_requirement_by_key",
+    "dependency_status_by_key",
+    "dependency_applicability_reason_by_key",
+    "dependency_covering_key_by_key",
+    "dependency_unknown_quarantine",
+    "training_discovery",
+    "calibration",
+    "balanced_diagnostic",
+    "final_lockbox",
+    "metric_denominator_case_ids",
+    "claim_denominator_case_ids",
+    "frozen_candidate_family_digest",
+    "confirmatory_claims_allowed",
+    "runtime_influence_allowed"
+  ],
+  "dependency_keys": [
+    "speaker",
+    "call_session",
+    "dialogue_dyad",
+    "source_corpus",
+    "scripted_scenario",
+    "meeting_series",
+    "recording_site"
+  ],
+  "allowed_dependency_requirements": [
+    "required",
+    "covered_by_higher_dependency",
+    "advisory",
+    "not_applicable"
+  ],
+  "allowed_dependency_statuses": [
+    "available",
+    "not_available",
+    "not_applicable"
+  ],
+  "allowed_dependency_profile_ids": [
+    "crema-d-session-nesting-verified",
+    "crema-d-session-nesting-unverified",
+    "ami-scenario-series",
+    "ami-natural-standalone"
+  ],
+  "dependency_profiles": {
+    "crema-d-session-nesting-verified": {
+      "dataset_manifest_id": "crema-d-v1.0-audio-wav",
+      "dependency_requirement_by_key": {
+        "speaker": "required",
+        "call_session": "covered_by_higher_dependency",
+        "dialogue_dyad": "not_applicable",
+        "source_corpus": "required",
+        "scripted_scenario": "required",
+        "meeting_series": "not_applicable",
+        "recording_site": "advisory"
+      },
+      "dependency_status_by_key": {
+        "speaker": "available",
+        "call_session": "available",
+        "dialogue_dyad": "not_applicable",
+        "source_corpus": "available",
+        "scripted_scenario": "available",
+        "meeting_series": "not_applicable",
+        "recording_site": "not_available"
+      },
+      "dependency_applicability_reason_by_key": {
+        "speaker": "",
+        "call_session": "",
+        "dialogue_dyad": "crema_d_isolated_utterance_has_no_dialogue_dyad",
+        "source_corpus": "",
+        "scripted_scenario": "",
+        "meeting_series": "crema_d_isolated_utterance_has_no_meeting_series",
+        "recording_site": ""
+      },
+      "dependency_covering_key_by_key": {
+        "speaker": null,
+        "call_session": "speaker",
+        "dialogue_dyad": null,
+        "source_corpus": null,
+        "scripted_scenario": null,
+        "meeting_series": null,
+        "recording_site": null
+      }
+    },
+    "crema-d-session-nesting-unverified": {
+      "dataset_manifest_id": "crema-d-v1.0-audio-wav",
+      "dependency_requirement_by_key": {
+        "speaker": "required",
+        "call_session": "advisory",
+        "dialogue_dyad": "not_applicable",
+        "source_corpus": "required",
+        "scripted_scenario": "required",
+        "meeting_series": "not_applicable",
+        "recording_site": "advisory"
+      },
+      "dependency_status_by_key": {
+        "speaker": "available",
+        "call_session": "not_available",
+        "dialogue_dyad": "not_applicable",
+        "source_corpus": "available",
+        "scripted_scenario": "available",
+        "meeting_series": "not_applicable",
+        "recording_site": "not_available"
+      },
+      "dependency_applicability_reason_by_key": {
+        "speaker": "",
+        "call_session": "",
+        "dialogue_dyad": "crema_d_isolated_utterance_has_no_dialogue_dyad",
+        "source_corpus": "",
+        "scripted_scenario": "",
+        "meeting_series": "crema_d_isolated_utterance_has_no_meeting_series",
+        "recording_site": ""
+      },
+      "dependency_covering_key_by_key": {
+        "speaker": null,
+        "call_session": null,
+        "dialogue_dyad": null,
+        "source_corpus": null,
+        "scripted_scenario": null,
+        "meeting_series": null,
+        "recording_site": null
+      }
+    },
+    "ami-scenario-series": {
+      "dataset_manifest_id": "ami-manual-annotations-v1.6.2",
+      "dependency_requirement_by_key": {
+        "speaker": "required",
+        "call_session": "required",
+        "dialogue_dyad": "not_applicable",
+        "source_corpus": "required",
+        "scripted_scenario": "required",
+        "meeting_series": "required",
+        "recording_site": "required"
+      },
+      "dependency_status_by_key": {
+        "speaker": "available",
+        "call_session": "available",
+        "dialogue_dyad": "not_applicable",
+        "source_corpus": "available",
+        "scripted_scenario": "available",
+        "meeting_series": "available",
+        "recording_site": "available"
+      },
+      "dependency_applicability_reason_by_key": {
+        "speaker": "",
+        "call_session": "",
+        "dialogue_dyad": "ami_multi_party_meeting_has_no_dialogue_dyad",
+        "source_corpus": "",
+        "scripted_scenario": "",
+        "meeting_series": "",
+        "recording_site": ""
+      },
+      "dependency_covering_key_by_key": {
+        "speaker": null,
+        "call_session": null,
+        "dialogue_dyad": null,
+        "source_corpus": null,
+        "scripted_scenario": null,
+        "meeting_series": null,
+        "recording_site": null
+      }
+    },
+    "ami-natural-standalone": {
+      "dataset_manifest_id": "ami-manual-annotations-v1.6.2",
+      "dependency_requirement_by_key": {
+        "speaker": "required",
+        "call_session": "required",
+        "dialogue_dyad": "not_applicable",
+        "source_corpus": "required",
+        "scripted_scenario": "not_applicable",
+        "meeting_series": "not_applicable",
+        "recording_site": "required"
+      },
+      "dependency_status_by_key": {
+        "speaker": "available",
+        "call_session": "available",
+        "dialogue_dyad": "not_applicable",
+        "source_corpus": "available",
+        "scripted_scenario": "not_applicable",
+        "meeting_series": "not_applicable",
+        "recording_site": "available"
+      },
+      "dependency_applicability_reason_by_key": {
+        "speaker": "",
+        "call_session": "",
+        "dialogue_dyad": "ami_multi_party_meeting_has_no_dialogue_dyad",
+        "source_corpus": "",
+        "scripted_scenario": "ami_documented_natural_meeting_has_no_scripted_scenario",
+        "meeting_series": "ami_documented_standalone_meeting_has_no_meeting_series",
+        "recording_site": ""
+      },
+      "dependency_covering_key_by_key": {
+        "speaker": null,
+        "call_session": null,
+        "dialogue_dyad": null,
+        "source_corpus": null,
+        "scripted_scenario": null,
+        "meeting_series": null,
+        "recording_site": null
+      }
+    }
+  },
+  "training_discovery": {
+    "case_ids": [],
+    "dependency_groups": {
+      "speaker": [],
+      "call_session": [],
+      "dialogue_dyad": [],
+      "source_corpus": [],
+      "scripted_scenario": [],
+      "meeting_series": [],
+      "recording_site": []
+    }
+  },
+  "calibration": {
+    "case_ids": [],
+    "dependency_groups": {
+      "speaker": [],
+      "call_session": [],
+      "dialogue_dyad": [],
+      "source_corpus": [],
+      "scripted_scenario": [],
+      "meeting_series": [],
+      "recording_site": []
+    },
+    "prevalence_representative": true
+  },
+  "balanced_diagnostic": {
+    "case_ids": [],
+    "dependency_groups": {
+      "speaker": [],
+      "call_session": [],
+      "dialogue_dyad": [],
+      "source_corpus": [],
+      "scripted_scenario": [],
+      "meeting_series": [],
+      "recording_site": []
+    },
+    "calibration_claims_allowed": false
+  },
+  "final_lockbox": {
+    "case_ids": [],
+    "dependency_groups": {
+      "speaker": [],
+      "call_session": [],
+      "dialogue_dyad": [],
+      "source_corpus": [],
+      "scripted_scenario": [],
+      "meeting_series": [],
+      "recording_site": []
+    },
+    "prevalence_representative": true,
+    "one_use_only": true,
+    "open_count": 0
+  },
+  "dependency_unknown_quarantine": {
+    "case_ids": [],
+    "reason_codes": [],
+    "claims_allowed": false
+  },
+  "metric_denominator_case_ids": [],
+  "claim_denominator_case_ids": [],
+  "frozen_candidate_family_digest": null,
+  "confirmatory_claims_allowed": false,
+  "runtime_influence_allowed": false,
+  "notes": "Unpopulated Phase A meta-contract. It authorizes no dataset download, material access, case assignment, evaluation, runtime influence, or confirmatory claim."
+}

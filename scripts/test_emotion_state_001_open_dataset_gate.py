@@ -386,3 +386,72 @@ class PublicDatasetContractTests(unittest.TestCase):
         from scripts.emotion_state_public_dataset_contracts import public_dataset_contract_self_check
 
         self.assertEqual(public_dataset_contract_self_check(), "pass")
+
+
+class SplitManifestV2Tests(unittest.TestCase):
+    def test_v2_profile_registry_is_exact_and_rejects_unsupported_profiles(self) -> None:
+        from scripts.emotion_state_split_manifest_v2_contracts import (
+            DEPENDENCY_PROFILES_V2,
+            fixture_split_manifest_v2,
+            fixture_split_records_v2,
+            validate_split_manifest_v2,
+        )
+        self.assertEqual(tuple(DEPENDENCY_PROFILES_V2), (
+            "crema-d-session-nesting-verified",
+            "crema-d-session-nesting-unverified",
+            "ami-scenario-series",
+            "ami-natural-standalone",
+        ))
+        records = fixture_split_records_v2()
+        manifest = fixture_split_manifest_v2(records)
+        manifest["dependency_profile_id"] = "unsupported-profile"
+        with self.assertRaisesRegex(ValueError, "unsupported dependency profile"):
+            validate_split_manifest_v2(manifest, records)
+
+    def test_v2_rejects_mixed_dataset_records(self) -> None:
+        from scripts.emotion_state_public_dataset_contracts import AMI_DATASET_ID
+        from scripts.emotion_state_split_manifest_v2_contracts import (
+            fixture_split_manifest_v2,
+            fixture_split_records_v2,
+            validate_split_manifest_v2,
+        )
+        records = fixture_split_records_v2()
+        manifest = fixture_split_manifest_v2(records)
+        records[1]["dataset_manifest_id"] = AMI_DATASET_ID
+        with self.assertRaisesRegex(ValueError, "one dataset manifest ID"):
+            validate_split_manifest_v2(manifest, records)
+
+    def test_v2_dependency_rules_fail_closed(self) -> None:
+        from scripts.emotion_state_split_manifest_v2_contracts import (
+            DEPENDENCY_KEYS_V2,
+            fixture_split_manifest_v2,
+            fixture_split_records_v2,
+            validate_split_manifest_v2,
+        )
+        records = fixture_split_records_v2()
+        manifest = fixture_split_manifest_v2(records)
+        self.assertEqual(DEPENDENCY_KEYS_V2, (
+            "speaker", "call_session", "dialogue_dyad", "source_corpus",
+            "scripted_scenario", "meeting_series", "recording_site",
+        ))
+        validate_split_manifest_v2(manifest, records)
+        leaked = json.loads(json.dumps(manifest))
+        leaked["calibration"]["dependency_groups"]["speaker"] = ["speaker-training"]
+        with self.assertRaisesRegex(ValueError, "speaker leakage"):
+            validate_split_manifest_v2(leaked, records)
+
+    def test_required_unknown_is_quarantined_and_covering_key_is_proven(self) -> None:
+        from scripts.emotion_state_split_manifest_v2_contracts import (
+            fixture_split_manifest_v2,
+            fixture_split_records_v2,
+            validate_split_manifest_v2,
+        )
+        records = fixture_split_records_v2(include_required_unknown=True)
+        manifest = fixture_split_manifest_v2(records)
+        validated = validate_split_manifest_v2(manifest, records)
+        self.assertEqual(validated["dependency_unknown_quarantine"]["case_ids"], ["case-unknown"])
+        self.assertFalse(validated["dependency_unknown_quarantine"]["claims_allowed"])
+        broken = json.loads(json.dumps(manifest))
+        broken["dependency_covering_key_by_key"]["call_session"] = "missing-key"
+        with self.assertRaisesRegex(ValueError, "covering key"):
+            validate_split_manifest_v2(broken, records)
