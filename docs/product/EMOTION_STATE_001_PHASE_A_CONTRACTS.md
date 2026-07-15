@@ -35,7 +35,7 @@ At the next locked startup after a crash or interruption, recovery finalizes an 
 
 This protocol provides logical commit and crash recovery. It is not physical two-file atomicity, and file `fsync` does not make this a power-loss durability claim.
 
-Controlled timeout regression coverage injects `subprocess.TimeoutExpired` at exactly six subprocess positions: two in the EXP-002 validator, one in the Phase A BRAIN section, and three in the Phase A checkpoint section. Every covered 60-second timeout returns exit `1` with the stable validator failure prefix, empty stderr, and no traceback. The coverage performs no provider, private-data, acoustic, runtime, customer-call, simulation, or production operation.
+Controlled timeout regression coverage injects `subprocess.TimeoutExpired` at exactly six subprocess positions: two in the EXP-002 validator, one in the Phase A BRAIN section, and three in the Phase A checkpoint section. Every covered 60-second timeout returns exit `1` with the stable validator failure prefix, empty stderr, and no traceback. The coverage performs no provider, private-data, acoustic, runtime, customer-call, simulation, or production operation. Current-checkpoint hard stop: no ElevenLabs read or write occurred; neither an outbound call nor a customer call occurred; no simulation occurred; no source adaptation occurred; and no source-adaptation gate was opened.
 
 ## Contract Surfaces
 

@@ -12,7 +12,7 @@ Publication is result-first/report-last: the runner stages and `fsync`s both new
 
 On the next locked startup after an interruption, recovery either finalizes an exact new pair whose report marker and recorded digests match or restores the exact previous pair from verified backups. Cleanup is retry-safe when an exact new or previous pair is already canonical; corrupt or incomplete recovery evidence fails closed and is retained. This is a logical commit-and-recovery protocol, not physical two-file atomicity and not a claim of power-loss durability.
 
-Controlled regression coverage injects 60-second subprocess timeouts at exactly six positions: two EXP-002 validator calls, one Phase A BRAIN validator call, and three Phase A checkpoint calls. Each covered timeout returns the validator's controlled exit-`1` failure message without stderr or a traceback. This is offline failure-reporting coverage only; it opens no acoustic, private-data, public-dataset, provider, runtime, real-customer, or production-readiness gate.
+Controlled regression coverage injects 60-second subprocess timeouts at exactly six positions: two EXP-002 validator calls, one Phase A BRAIN validator call, and three Phase A checkpoint calls. Each covered timeout returns the validator's controlled exit-`1` failure message without stderr or a traceback. This is offline failure-reporting coverage only; it opens no acoustic, private-data, public-dataset, provider, runtime, real-customer, or production-readiness gate. Current-checkpoint hard stop: no ElevenLabs read or write occurred; neither an outbound call nor a customer call occurred; no simulation occurred; no source adaptation occurred; and no source-adaptation gate was opened.
 
 ## Purpose
 
