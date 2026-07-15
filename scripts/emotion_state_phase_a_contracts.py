@@ -9,6 +9,7 @@ from runtime.contracts.emotion_pattern_contracts import pattern_contract_self_ch
 from runtime.contracts.emotion_state_brain_extension import brain_extension_self_check
 from runtime.contracts.emotion_state_contracts import contract_self_check
 from scripts.emotion_state_annotation_contracts import annotation_contract_self_check
+from scripts.emotion_state_cohort_release_contracts import cohort_release_contract_self_check
 from scripts.exp_002_frozen_response_baseline import frozen_baseline_self_check
 
 
@@ -204,6 +205,7 @@ def build_phase_a_payload(case_path: Path, *, root: Path) -> dict[str, Any]:
     checks = {
         "exp_002_frozen_response_baseline": frozen_baseline_self_check(root),
         "emotion_state_annotation_contracts": annotation_contract_self_check(),
+        "emotion_state_cohort_release_contracts": cohort_release_contract_self_check(),
         "emotion_state_contracts": contract_self_check(),
         "emotion_pattern_contracts": pattern_contract_self_check(),
         "emotion_state_brain_extension": brain_extension_self_check(),

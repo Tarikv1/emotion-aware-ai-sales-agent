@@ -20,6 +20,14 @@ DATASET_CONTRACT = ROOT / "research" / "sources" / "emotion_state" / "dataset_ma
 ANNOTATION_SCHEMA = DATASET_CONTRACT.with_name("annotation_record_v1.schema.json")
 SPLIT_SCHEMA = DATASET_CONTRACT.with_name("split_manifest_v1.schema.json")
 SPLIT_SCHEMA_V2 = DATASET_CONTRACT.with_name("split_manifest_v2.schema.json")
+COHORT_RELEASE_SCHEMA = DATASET_CONTRACT.with_name("cohort_release_evidence_v1.schema.json")
+COHORT_RELEASE_FIXTURES = (
+    ROOT
+    / "research"
+    / "experiments"
+    / "cases"
+    / "emotion-state-001-cohort-release-fixtures.json"
+)
 CODEBOOK = ROOT / "docs" / "data" / "EMOTION_STATE_001_ANNOTATION_CODEBOOK.md"
 THESIS_REFERENCE_REGISTRY = ROOT / "docs" / "thesis" / "THESIS_REFERENCE_REGISTRY.md"
 CASE_PATH = ROOT / "research" / "experiments" / "cases" / "emotion-state-001-phase-a-contracts.json"
@@ -351,8 +359,117 @@ def validate_contracts() -> None:
     assert_condition(case["runtime_activation_allowed"] is False, case)
     assert_condition(case["baseline_fingerprints"] == EXPECTED_BASELINE_FINGERPRINTS, case)
     from runtime.contracts.emotion_state_contracts import contract_self_check
+    from scripts.emotion_state_cohort_release_contracts import (
+        ALLOWED_SPEAKER_BASES,
+        BOOLEAN_BOUNDARY_FIELDS,
+        COHORT_RELEASE_FIELDS,
+        MAX_RELEASE_CONTRIBUTIONS_PER_SPEAKER,
+        METRIC_ALLOWLIST_V1,
+        METRIC_ALLOWLIST_VERSION_V1,
+        MIN_RELEASE_SPEAKERS,
+        RELEASE_SCOPE,
+        RESERVED_DISABLED_SPEAKER_BASE,
+        cohort_release_contract_self_check,
+    )
 
     assert_condition(contract_self_check() == "pass", "emotion-state contract self-check failed")
+    cohort_schema = read_json(COHORT_RELEASE_SCHEMA)
+    assert_condition(
+        cohort_schema["schema_id"] == "emotion-state-cohort-release-evidence-v1",
+        cohort_schema,
+    )
+    assert_condition(
+        type(cohort_schema["schema_version"]) is int
+        and cohort_schema["schema_version"] == 1,
+        cohort_schema,
+    )
+    assert_condition(
+        len(cohort_schema["required_fields"]) == len(COHORT_RELEASE_FIELDS)
+        and set(cohort_schema["required_fields"]) == COHORT_RELEASE_FIELDS,
+        cohort_schema,
+    )
+    assert_condition(
+        cohort_schema["description"] == RELEASE_SCOPE,
+        cohort_schema,
+    )
+    assert_condition(
+        cohort_schema["allowed_speaker_bases"] == sorted(ALLOWED_SPEAKER_BASES),
+        cohort_schema,
+    )
+    assert_condition(
+        cohort_schema["reserved_disabled_speaker_basis"]
+        == RESERVED_DISABLED_SPEAKER_BASE,
+        cohort_schema,
+    )
+    assert_condition(
+        cohort_schema["max_contribution_per_speaker"]
+        == MAX_RELEASE_CONTRIBUTIONS_PER_SPEAKER,
+        cohort_schema,
+    )
+    assert_condition(
+        cohort_schema["minimum_unique_speakers"] == MIN_RELEASE_SPEAKERS,
+        cohort_schema,
+    )
+    assert_condition(
+        cohort_schema["minimum_unique_speakers_per_output_cell"]
+        == MIN_RELEASE_SPEAKERS,
+        cohort_schema,
+    )
+    assert_condition(
+        cohort_schema["metric_allowlist_version"] == METRIC_ALLOWLIST_VERSION_V1,
+        cohort_schema,
+    )
+    assert_condition(
+        cohort_schema["metric_allowlist"] == list(METRIC_ALLOWLIST_V1),
+        cohort_schema,
+    )
+    assert_condition(
+        cohort_schema["false_constants"]
+        == {field: False for field in BOOLEAN_BOUNDARY_FIELDS},
+        cohort_schema,
+    )
+    assert_condition(
+        cohort_schema["cross_corpus_identity_evidence_digest"] is None,
+        cohort_schema,
+    )
+    cohort_fixtures = read_json(COHORT_RELEASE_FIXTURES)
+    expected_scenarios = {
+        "twelve_calls_four_speakers",
+        "ten_calls_ten_speakers",
+        "twenty_turns_five_speakers",
+        "duplicate_public_actor_ids",
+        "cross_corpus_same_bare_id",
+        "missing_speaker_basis",
+        "call_id_as_speaker",
+        "forbidden_identity_basis",
+        "over_contribution",
+        "sparse_output_cell",
+        "overlapping_release",
+        "valid_replacement",
+    }
+    assert_condition(
+        set(cohort_fixtures["scenarios"]) == expected_scenarios,
+        cohort_fixtures,
+    )
+    assert_condition(
+        all(
+            isinstance(parameters, dict)
+            and "records" not in parameters
+            and "speaker_ids" not in parameters
+            for parameters in cohort_fixtures["scenarios"].values()
+        ),
+        cohort_fixtures,
+    )
+    assert_condition(
+        cohort_fixtures["private_data_access_allowed"] is False
+        and cohort_fixtures["provider_operations_allowed"] is False
+        and cohort_fixtures["runtime_influence_allowed"] is False,
+        cohort_fixtures,
+    )
+    assert_condition(
+        cohort_release_contract_self_check() == "pass",
+        "cohort release contract self-check failed",
+    )
 
 
 def validate_patterns() -> None:
@@ -465,6 +582,7 @@ def validate_checkpoint() -> None:
     expected_checks = {
         "exp_002_frozen_response_baseline",
         "emotion_state_annotation_contracts",
+        "emotion_state_cohort_release_contracts",
         "emotion_state_contracts",
         "emotion_pattern_contracts",
         "emotion_state_brain_extension",

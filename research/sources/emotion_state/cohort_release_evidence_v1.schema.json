@@ -1,0 +1,74 @@
+{
+  "schema_id": "emotion-state-cohort-release-evidence-v1",
+  "schema_version": 1,
+  "contract_name": "CohortReleaseEvidenceV1",
+  "description": "suppression-based, privacy-minimized contribution gate",
+  "required_fields": [
+    "release_scope",
+    "source_label",
+    "aggregation_window",
+    "input_record_count",
+    "eligible_record_count",
+    "unique_speaker_count",
+    "unique_speaker_basis",
+    "dependency_keys",
+    "max_contribution_per_speaker",
+    "dedup_evidence_digest",
+    "minimum_unique_speakers",
+    "metric_allowlist_version",
+    "minimum_unique_speakers_per_output_cell",
+    "fixed_window_id",
+    "window_overlaps_previous_release",
+    "previous_release_digest",
+    "release_replaces_digest",
+    "direct_identifiers_present",
+    "voiceprint_used",
+    "speaker_tokens_persisted",
+    "contains_per_speaker_rows",
+    "contains_demographic_slices",
+    "contains_state_or_signal_labels",
+    "release_status",
+    "suppression_reason_codes",
+    "runtime_influence_allowed",
+    "aggregate_metrics",
+    "output_cell_unique_speaker_counts"
+  ],
+  "allowed_source_labels": [
+    "public-only",
+    "synthetic-only"
+  ],
+  "allowed_speaker_bases": [
+    "public_dataset_actor_id",
+    "public_dataset_participant_id",
+    "synthetic_fixture_speaker_id"
+  ],
+  "reserved_disabled_speaker_basis": "privacy_reviewed_pseudonymous_cohort_token",
+  "release_statuses": [
+    "released",
+    "suppressed"
+  ],
+  "max_contribution_per_speaker": 1,
+  "minimum_unique_speakers": 10,
+  "minimum_unique_speakers_per_output_cell": 10,
+  "metric_allowlist_version": "emotion-state-operational-aggregate-v1",
+  "metric_allowlist": [
+    "eligible_call_count",
+    "audio_analysis_availability_rate",
+    "audio_quality_bucket_counts",
+    "abstention_rate",
+    "processing_latency_percentiles",
+    "evidence_policy_version_counts"
+  ],
+  "false_constants": {
+    "window_overlaps_previous_release": false,
+    "direct_identifiers_present": false,
+    "voiceprint_used": false,
+    "speaker_tokens_persisted": false,
+    "contains_per_speaker_rows": false,
+    "contains_demographic_slices": false,
+    "contains_state_or_signal_labels": false,
+    "runtime_influence_allowed": false
+  },
+  "cross_corpus_identity_evidence_digest": null,
+  "notes": "Only fixed closed windows, whole-release replacements, contribution-capped cohort metrics, and cells supported by at least ten proven unique speakers may be serialized."
+}
