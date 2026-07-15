@@ -23,7 +23,19 @@ python scripts\validate_emotion_state_001_phase_a_contracts.py
 - Frozen response/rating evidence: `research/experiments/generated/EXP-002-frozen-response-baseline/`
 - Phase A contract evidence: `research/experiments/generated/EMOTION-STATE-001-phase-a-contracts/`
 
-The Phase A runner writes only `result.json` and `report.md` under its fixed generated-artifact root. Case inputs must remain under `research/experiments/cases/`. Project escape, parent traversal, private paths, output-root escape, and identical result/report destinations fail closed.
+The canonical Phase A generated-artifact directory still contains exactly two files: `result.json` and `report.md`. Case inputs must remain under `research/experiments/cases/`. Project escape, parent traversal, private paths, output-root escape, and identical result/report destinations fail closed.
+
+## Publication And Recovery Boundary
+
+The runner holds an OS-level, non-blocking publication lock while it performs startup recovery and publication. Lock state, new-file stages, the transaction journal, previous-pair backups, and recovery scratch live under ignored `.tmp/`, not in the canonical generated-artifact directory. It stages and file-`fsync`s the new result and report, file-`fsync`s backups of the exact prior pair when one exists, persists the journal, replaces `result.json` first, and publishes `report.md` last.
+
+The report is the logical commit record and contains exactly one result SHA-256 commit marker in the form `result.json sha256:<64-uppercase-SHA-256>`. A consumer must require `python scripts\validate_emotion_state_001_phase_a_contracts.py` to pass; reading either canonical file alone is not sufficient evidence of a committed pair.
+
+At the next locked startup after a crash or interruption, recovery finalizes an exact new pair only when its recorded digests and report marker match. Otherwise it restores the exact previous pair from digest-verified backups, or restores the prior absence when no pair existed. If cleanup is interrupted after an exact new or previous pair is already canonical, a retry recognizes that pair and finishes cleanup. Corrupt or incomplete recovery evidence fails closed and is retained for diagnosis.
+
+This protocol provides logical commit and crash recovery. It is not physical two-file atomicity, and file `fsync` does not make this a power-loss durability claim.
+
+Controlled timeout regression coverage injects `subprocess.TimeoutExpired` at exactly six subprocess positions: two in the EXP-002 validator, one in the Phase A BRAIN section, and three in the Phase A checkpoint section. Every covered 60-second timeout returns exit `1` with the stable validator failure prefix, empty stderr, and no traceback. The coverage performs no provider, private-data, acoustic, runtime, customer-call, simulation, or production operation.
 
 ## Contract Surfaces
 
@@ -48,4 +60,4 @@ Prompt-packet normalization proves deterministic rendering after the machine-spe
 
 ## Readiness Boundary
 
-`phase_a_complete` remains `false`. This checkpoint is limited to offline synthetic contract-artifact evidence. It is not production readiness; it does not validate customer emotion, real-customer performance, PSTN, ASR, latency, provider feasibility, or runtime activation. It performs no provider operation, reads no private data, changes no runtime behavior, and leaves BRAIN-002 v1 unchanged.
+`phase_a_complete=false` remains the current readiness value. This checkpoint is limited to offline synthetic contract-artifact evidence. Acoustic implementation, private-data work, public-dataset evaluation, provider work, and runtime wiring or activation remain unstarted and blocked. It is not production readiness; it does not validate customer emotion, real-customer performance, PSTN, ASR, latency, provider feasibility, or runtime activation. It performs no provider operation, reads no private data, changes no runtime behavior, and leaves BRAIN-002 v1 unchanged.

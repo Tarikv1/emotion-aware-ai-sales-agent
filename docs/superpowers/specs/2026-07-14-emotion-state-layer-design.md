@@ -2,7 +2,17 @@
 
 Date: 2026-07-14
 
-Status: approved design direction; written specification pending user review; implementation not started
+Status: reviewed and approved design; offline partial Phase A contract foundation implemented; `phase_a_complete=false`; acoustic implementation, private-data work, provider work, and runtime activation remain unstarted and blocked
+
+## Current Offline Checkpoint Boundary
+
+The implemented offline partial Phase A runner serializes startup recovery and publication with an OS-level, non-blocking publication lock under ignored `.tmp/`. The canonical generated-artifact directory still contains exactly two files: `result.json` and `report.md`. New-file staging, file `fsync`, the transaction journal, previous-pair backups, and recovery scratch stay under ignored `.tmp/`, outside that canonical directory.
+
+Publication is result-first/report-last: the runner stages and `fsync`s both new files, backs up the exact prior pair when present, persists the journal, replaces `result.json` first, and publishes `report.md` last. The report carries the exact result SHA-256 commit marker in the form `result.json sha256:<64-uppercase-SHA-256>`. Consumers must require `python scripts\validate_emotion_state_001_phase_a_contracts.py` to pass before treating the pair as committed.
+
+On the next locked startup after an interruption, recovery either finalizes an exact new pair whose report marker and recorded digests match or restores the exact previous pair from verified backups. Cleanup is retry-safe when an exact new or previous pair is already canonical; corrupt or incomplete recovery evidence fails closed and is retained. This is a logical commit-and-recovery protocol, not physical two-file atomicity and not a claim of power-loss durability.
+
+Controlled regression coverage injects 60-second subprocess timeouts at exactly six positions: two EXP-002 validator calls, one Phase A BRAIN validator call, and three Phase A checkpoint calls. Each covered timeout returns the validator's controlled exit-`1` failure message without stderr or a traceback. This is offline failure-reporting coverage only; it opens no acoustic, private-data, public-dataset, provider, runtime, real-customer, or production-readiness gate.
 
 ## Purpose
 
