@@ -2,13 +2,18 @@ from __future__ import annotations
 
 import hashlib
 import json
+import math
 import re
 from copy import deepcopy
 from datetime import datetime, timedelta, timezone
 from typing import Any
 
 from runtime.contracts.emotion_pattern_contracts import validate_pattern_candidate
-from runtime.contracts.emotion_state_contracts import validate_operational_aggregate
+from runtime.contracts.emotion_state_contracts import (
+    AUDIO_QUALITY_STATUSES,
+    EVIDENCE_POLICY_VERSION_PATTERN,
+    validate_operational_aggregate,
+)
 from scripts.emotion_state_public_dataset_contracts import SELECTED_PUBLIC_DATASETS
 
 
@@ -53,6 +58,13 @@ MIN_CONFIRMATORY_SPEAKERS = 30
 MIN_CONFIRMATORY_POSITIVE_TURNS = 30
 MIN_CONFIRMATORY_NEGATIVE_TURNS = 30
 RELEASE_SCOPE = "suppression-based, privacy-minimized contribution gate"
+ALLOWED_SUPPRESSION_REASON_CODES = frozenset({
+    "speaker_basis_missing",
+    "dataset_namespaced_speaker_key_missing",
+    "deterministic_contribution_evidence_missing",
+    "cross_corpus_identity_not_proven",
+    "minimum_unique_speakers_not_met",
+})
 
 COHORT_RELEASE_FIELDS = frozenset({
     "release_scope",
@@ -108,12 +120,12 @@ REQUEST_FIELDS = frozenset({
     "slice_dimensions",
     "complementary_query",
     "differencing_query",
-    "previous_release",
+    "authoritative_release_history",
+    "authoritative_release_history_digest",
     "previous_release_digest",
     "release_replaces_digest",
     "replacement_scope",
     "cross_corpus_identity_evidence_digest",
-    "output_cell_unique_speaker_counts",
 })
 RECORD_ALLOWED_FIELDS = frozenset({
     "dataset_manifest_id",
@@ -121,6 +133,7 @@ RECORD_ALLOWED_FIELDS = frozenset({
     "source_timestamp",
     "canonical_record_digest",
     "eligible",
+    "metric_cell_memberships",
 })
 CONFIRMATORY_FIELDS = frozenset({
     "overall_unique_speaker_count",
@@ -204,23 +217,74 @@ def _validate_aggregation_window(window: Any) -> dict[str, Any]:
     return window
 
 
-def _validate_cell_count_shape(
+def _validate_metric_cell_memberships(
+    value: Any,
     aggregate: dict[str, Any],
-    counts: Any,
-) -> dict[str, Any]:
-    if not isinstance(counts, dict) or set(counts) != set(METRIC_ALLOWLIST_V1):
-        raise ValueError("output-cell speaker counts must cover the metric allowlist")
+    *,
+    record_index: int,
+) -> dict[str, list[str]]:
+    if not isinstance(value, dict) or set(value) != set(METRIC_ALLOWLIST_V1):
+        raise ValueError(
+            f"record {record_index}.metric_cell_memberships must cover the metric allowlist"
+        )
     for metric in METRIC_ALLOWLIST_V1:
-        value = aggregate[metric]
-        support = counts[metric]
-        if isinstance(value, dict):
-            if not isinstance(support, dict) or set(support) != set(value):
-                raise ValueError(f"output-cell speaker counts mismatch for {metric}")
-            values = support.values()
+        cells = value[metric]
+        if (
+            not isinstance(cells, list)
+            or any(not isinstance(cell, str) or not cell for cell in cells)
+            or len(cells) != len(set(cells))
+        ):
+            raise ValueError(
+                f"record {record_index}.metric_cell_memberships.{metric} "
+                "must be a unique string list"
+            )
+        aggregate_value = aggregate[metric]
+        if isinstance(aggregate_value, dict):
+            if any(cell not in aggregate_value for cell in cells):
+                raise ValueError(
+                    f"record {record_index}.metric_cell_memberships.{metric} "
+                    "contains an unknown aggregate cell"
+                )
+        elif cells != ["__scalar__"]:
+            raise ValueError(
+                f"record {record_index}.metric_cell_memberships.{metric} "
+                "must contain only __scalar__"
+            )
+    return value
+
+
+def _derive_cell_support(
+    selected: list[dict[str, Any]],
+) -> dict[str, int | dict[str, int]]:
+    support: dict[str, set[tuple[str, str]] | dict[str, set[tuple[str, str]]]] = {}
+    for metric in METRIC_ALLOWLIST_V1:
+        if selected and selected[0]["metric_cell_memberships"][metric] == ["__scalar__"]:
+            support[metric] = set()
         else:
-            values = (support,)
-        if any(type(count) is not int or count < 0 for count in values):
-            raise ValueError(f"output-cell speaker counts for {metric} must be nonnegative integers")
+            support[metric] = {}
+    for record in selected:
+        speaker_key = (record["dataset_manifest_id"], record["source_speaker_id"])
+        for metric, cells in record["metric_cell_memberships"].items():
+            if cells == ["__scalar__"]:
+                metric_support = support[metric]
+                if not isinstance(metric_support, set):
+                    raise ValueError("scalar metric membership shape mismatch")
+                metric_support.add(speaker_key)
+            else:
+                metric_support = support[metric]
+                if not isinstance(metric_support, dict):
+                    raise ValueError("dictionary metric membership shape mismatch")
+                for cell in cells:
+                    metric_support.setdefault(cell, set()).add(speaker_key)
+    counts: dict[str, int | dict[str, int]] = {}
+    for metric, metric_support in support.items():
+        if isinstance(metric_support, set):
+            counts[metric] = len(metric_support)
+        else:
+            counts[metric] = {
+                cell: len(speakers)
+                for cell, speakers in metric_support.items()
+            }
     return counts
 
 
@@ -239,7 +303,7 @@ def _filter_supported_cells(
             metric_values: dict[str, Any] = {}
             metric_counts: dict[str, int] = {}
             for cell_name, cell_value in value.items():
-                count = support[cell_name]
+                count = support.get(cell_name, 0)
                 if count > unique_speaker_count:
                     raise ValueError("output-cell speaker count exceeds the proven cohort")
                 if count >= MIN_RELEASE_SPEAKERS:
@@ -257,10 +321,84 @@ def _filter_supported_cells(
     return released_metrics, released_counts
 
 
+def _require_finite_number(value: Any, label: str, *, minimum: float = 0.0) -> None:
+    if type(value) not in {int, float} or not math.isfinite(value) or value < minimum:
+        raise ValueError(f"{label} must be a finite number at least {minimum}")
+
+
+def _validate_sparse_aggregate_metrics(
+    metrics: dict[str, Any],
+    *,
+    eligible_record_count: int,
+) -> None:
+    required_scalar_metrics = {
+        "eligible_call_count",
+        "audio_analysis_availability_rate",
+        "abstention_rate",
+    }
+    if not required_scalar_metrics <= set(metrics):
+        raise ValueError("released aggregate metrics must retain every scalar metric")
+    eligible_call_count = metrics["eligible_call_count"]
+    if type(eligible_call_count) is not int or eligible_call_count != eligible_record_count:
+        raise ValueError("released eligible_call_count must equal the capped contribution count")
+    for metric in ("audio_analysis_availability_rate", "abstention_rate"):
+        value = metrics[metric]
+        _require_finite_number(value, metric)
+        if value > 1.0:
+            raise ValueError(f"{metric} must not exceed one")
+    if "audio_quality_bucket_counts" in metrics:
+        counts = metrics["audio_quality_bucket_counts"]
+        if (
+            not isinstance(counts, dict)
+            or not counts
+            or any(
+                not isinstance(bucket, str)
+                or bucket not in AUDIO_QUALITY_STATUSES
+                or type(count) is not int
+                or count < 0
+                for bucket, count in counts.items()
+            )
+        ):
+            raise ValueError("released audio quality cells are malformed")
+    if "processing_latency_percentiles" in metrics:
+        percentiles = metrics["processing_latency_percentiles"]
+        if (
+            not isinstance(percentiles, dict)
+            or not percentiles
+            or any(
+                not isinstance(name, str) or name not in {"p50", "p95"}
+                for name in percentiles
+            )
+        ):
+            raise ValueError("released processing latency percentile cells are malformed")
+        for name, value in percentiles.items():
+            _require_finite_number(value, f"processing_latency_percentiles.{name}")
+        if {"p50", "p95"} <= set(percentiles) and percentiles["p95"] < percentiles["p50"]:
+            raise ValueError("released processing latency percentiles are non-monotonic")
+    if "evidence_policy_version_counts" in metrics:
+        counts = metrics["evidence_policy_version_counts"]
+        if (
+            not isinstance(counts, dict)
+            or not counts
+            or any(
+                not isinstance(version, str)
+                or EVIDENCE_POLICY_VERSION_PATTERN.fullmatch(version) is None
+                or type(count) is not int
+                or count < 0
+                for version, count in counts.items()
+            )
+        ):
+            raise ValueError("released evidence-policy version cells are malformed")
+
+
 def _validate_window_request(request: dict[str, Any]) -> None:
     if request["window_policy"] != "fixed_closed_non_overlapping":
         raise ValueError("release window must be fixed, closed, and non-overlapping")
-    if request["window_relationship"] not in {"new_non_overlapping", "replacement"}:
+    relationship = request["window_relationship"]
+    if (
+        not isinstance(relationship, str)
+        or relationship not in {"new_non_overlapping", "replacement"}
+    ):
         raise ValueError("overlapping, nested, repeated, or complementary windows are blocked")
     for field in ("ad_hoc_filters", "slice_dimensions"):
         value = request[field]
@@ -273,36 +411,95 @@ def _validate_window_request(request: dict[str, Any]) -> None:
             raise ValueError("complementary and differencing queries are blocked")
 
 
+def canonical_release_history_digest(history: Any) -> str:
+    if not isinstance(history, list):
+        raise ValueError("authoritative_release_history must be a list")
+    return _sha256(history)
+
+
+def _windows_overlap(left: dict[str, Any], right: dict[str, Any]) -> bool:
+    left_start = datetime.strptime(left["window_start_date"], "%Y-%m-%d")
+    left_end = datetime.strptime(left["window_end_date"], "%Y-%m-%d")
+    right_start = datetime.strptime(right["window_start_date"], "%Y-%m-%d")
+    right_end = datetime.strptime(right["window_end_date"], "%Y-%m-%d")
+    return left_start <= right_end and right_start <= left_end
+
+
+def _validate_authoritative_release_history(
+    history: Any,
+    history_digest: Any,
+) -> list[dict[str, Any]]:
+    if not isinstance(history, list):
+        raise ValueError("authoritative_release_history must be a list")
+    if (
+        not isinstance(history_digest, str)
+        or SHA256_PATTERN.fullmatch(history_digest) is None
+    ):
+        raise ValueError("authoritative release history digest must be uppercase SHA-256")
+    if canonical_release_history_digest(history) != history_digest:
+        raise ValueError("authoritative release history digest mismatch")
+    validated: list[dict[str, Any]] = []
+    for index, prior_release in enumerate(history):
+        if not isinstance(prior_release, dict):
+            raise ValueError(f"authoritative release history entry {index} must be an object")
+        validated.append(validate_cohort_release(prior_release))
+    canonical_order = sorted(
+        validated,
+        key=lambda release: (
+            release["aggregation_window"]["window_start_date"],
+            release["aggregation_window"]["window_end_date"],
+            release["fixed_window_id"],
+            canonical_release_digest(release),
+        ),
+    )
+    if validated != canonical_order:
+        raise ValueError("authoritative release history must use canonical window order")
+    release_digests = [canonical_release_digest(release) for release in validated]
+    if len(release_digests) != len(set(release_digests)):
+        raise ValueError("authoritative release history contains a duplicate release")
+    for left_index, left in enumerate(validated):
+        for right in validated[left_index + 1:]:
+            if _windows_overlap(left["aggregation_window"], right["aggregation_window"]):
+                raise ValueError("authoritative release history contains overlapping windows")
+    return validated
+
+
 def _validate_replacement_request(request: dict[str, Any]) -> None:
     relationship = request["window_relationship"]
-    previous = request["previous_release"]
     previous_digest = request["previous_release_digest"]
     replaces_digest = request["release_replaces_digest"]
     replacement_scope = request["replacement_scope"]
     _require_sha256_or_none(previous_digest, "previous_release_digest")
     _require_sha256_or_none(replaces_digest, "release_replaces_digest")
+    history = request["authoritative_release_history"]
+    current_window = request["operational_aggregate"]["aggregation_window"]
+    current_window_id = request["fixed_window_id"]
     if relationship == "new_non_overlapping":
         if any(value is not None for value in (
-            previous,
-            previous_digest,
-            replaces_digest,
-            replacement_scope,
+            previous_digest, replaces_digest, replacement_scope,
         )):
             raise ValueError("a new release cannot bind or duplicate a previous window")
+        for prior_release in history:
+            if (
+                current_window_id == prior_release["fixed_window_id"]
+                or _windows_overlap(current_window, prior_release["aggregation_window"])
+            ):
+                raise ValueError("new release window overlaps or duplicates authoritative history")
         return
-    if not isinstance(previous, dict):
-        raise ValueError("replacement requires the complete previous release")
-    validate_cohort_release(previous)
+    matches = [
+        prior_release
+        for prior_release in history
+        if prior_release["fixed_window_id"] == current_window_id
+        and prior_release["aggregation_window"] == current_window
+    ]
+    if len(matches) != 1:
+        raise ValueError("replacement requires exactly one matching authoritative history entry")
+    previous = matches[0]
     canonical_previous_digest = canonical_release_digest(previous)
     if previous_digest != canonical_previous_digest or replaces_digest != canonical_previous_digest:
         raise ValueError("replacement must bind the prior canonical release digest")
     if replacement_scope != "entire_prior_release":
         raise ValueError("replacement must replace the entire prior release")
-    aggregate_window = request["operational_aggregate"]["aggregation_window"]
-    if aggregate_window != previous["aggregation_window"]:
-        raise ValueError("replacement must preserve the exact aggregation window")
-    if request["fixed_window_id"] != previous["fixed_window_id"]:
-        raise ValueError("replacement must preserve the exact fixed window ID")
     if request["metric_allowlist_version"] != previous["metric_allowlist_version"]:
         raise ValueError("replacement must preserve the exact metric allowlist")
 
@@ -311,7 +508,10 @@ def _validate_request(request: Any) -> dict[str, Any]:
     _require_exact_fields(request, REQUEST_FIELDS, "cohort release request")
     if request["release_scope"] != RELEASE_SCOPE:
         raise ValueError("release_scope must name the privacy-minimized contribution gate")
-    if request["source_label"] not in ALLOWED_SOURCE_LABELS:
+    if (
+        not isinstance(request["source_label"], str)
+        or request["source_label"] not in ALLOWED_SOURCE_LABELS
+    ):
         raise ValueError("source_label must identify synthetic or public metadata")
     aggregate = validate_operational_aggregate(request["operational_aggregate"])
     if request["dependency_keys"] != list(DEPENDENCY_KEYS):
@@ -321,11 +521,14 @@ def _validate_request(request: Any) -> dict[str, Any]:
         raise ValueError("fixed_window_id does not bind the aggregation window")
     if request["cross_corpus_identity_evidence_digest"] is not None:
         raise ValueError("cross_corpus_identity_evidence_digest must remain null in Phase A")
+    request["authoritative_release_history"] = _validate_authoritative_release_history(
+        request["authoritative_release_history"],
+        request["authoritative_release_history_digest"],
+    )
     _validate_window_request(request)
     _validate_replacement_request(request)
     if request["metric_allowlist_version"] != METRIC_ALLOWLIST_VERSION_V1:
         raise ValueError("unsupported metric allowlist version")
-    _validate_cell_count_shape(aggregate, request["output_cell_unique_speaker_counts"])
     return request
 
 
@@ -333,6 +536,8 @@ def _speaker_basis_status(request: dict[str, Any]) -> tuple[str | None, list[str
     basis = request["unique_speaker_basis"]
     if basis is None:
         return None, ["speaker_basis_missing"]
+    if not isinstance(basis, str):
+        raise ValueError("forbidden or unsupported speaker basis")
     if basis == RESERVED_DISABLED_SPEAKER_BASE:
         raise ValueError("reserved speaker basis is disabled pending separate privacy and security review")
     if basis not in ALLOWED_SPEAKER_BASES:
@@ -344,10 +549,69 @@ def _speaker_basis_status(request: dict[str, Any]) -> tuple[str | None, list[str
     return basis, []
 
 
+def evaluate_discovery_gate(records: Any) -> dict[str, bool | int]:
+    if not isinstance(records, list):
+        raise ValueError("records must be a list")
+    eligible: list[dict[str, Any]] = []
+    for index, record in enumerate(records):
+        if not isinstance(record, dict) or set(record) - RECORD_ALLOWED_FIELDS:
+            raise ValueError(f"record {index} contains forbidden or unknown fields")
+        if "eligible" not in record or type(record["eligible"]) is not bool:
+            raise ValueError(f"record {index}.eligible must be boolean")
+        dataset_id = record.get("dataset_manifest_id")
+        if not isinstance(dataset_id, str) or not dataset_id.strip():
+            raise ValueError(f"record {index}.dataset_manifest_id must be a nonempty string")
+        if not record["eligible"]:
+            continue
+        speaker_id = record.get("source_speaker_id")
+        if not isinstance(speaker_id, str) or not speaker_id.strip():
+            raise ValueError(f"record {index}.source_speaker_id must be a nonempty string")
+        timestamp = record.get("source_timestamp")
+        if not isinstance(timestamp, str) or TIMESTAMP_PATTERN.fullmatch(timestamp) is None:
+            raise ValueError(f"record {index}.source_timestamp must be canonical UTC")
+        try:
+            datetime.strptime(timestamp, "%Y-%m-%dT%H:%M:%SZ")
+        except ValueError as exc:
+            raise ValueError(f"record {index}.source_timestamp is invalid") from exc
+        digest = record.get("canonical_record_digest")
+        if not isinstance(digest, str) or SHA256_PATTERN.fullmatch(digest) is None:
+            raise ValueError(f"record {index}.canonical_record_digest must be uppercase SHA-256")
+        eligible.append(record)
+
+    retained_per_speaker: dict[tuple[str, str], int] = {}
+    retained_turn_count = 0
+    for record in sorted(
+        eligible,
+        key=lambda item: (
+            item["dataset_manifest_id"],
+            item["source_speaker_id"],
+            item["source_timestamp"],
+            item["canonical_record_digest"],
+        ),
+    ):
+        speaker_key = (record["dataset_manifest_id"], record["source_speaker_id"])
+        retained_count = retained_per_speaker.get(speaker_key, 0)
+        if retained_count >= MAX_DISCOVERY_TURNS_PER_SPEAKER:
+            continue
+        retained_per_speaker[speaker_key] = retained_count + 1
+        retained_turn_count += 1
+
+    unique_speaker_count = len(retained_per_speaker)
+    return {
+        "discovery_eligible": (
+            unique_speaker_count >= MIN_DISCOVERY_SPEAKERS
+            and retained_turn_count >= MIN_DISCOVERY_TURNS
+        ),
+        "unique_speaker_count": unique_speaker_count,
+        "retained_turn_count": retained_turn_count,
+    }
+
+
 def _select_contributions(
     records: Any,
     *,
     basis_available: bool,
+    aggregate: dict[str, Any],
 ) -> tuple[list[dict[str, Any]], int, str | None, list[str]]:
     if not isinstance(records, list):
         raise ValueError("records must be a list")
@@ -364,19 +628,29 @@ def _select_contributions(
             raise ValueError(f"record {index} is missing eligible")
         if type(record["eligible"]) is not bool:
             raise ValueError(f"record {index}.eligible must be boolean")
+        if "metric_cell_memberships" not in record:
+            raise ValueError(f"record {index}.metric_cell_memberships is required")
+        _validate_metric_cell_memberships(
+            record["metric_cell_memberships"],
+            aggregate,
+            record_index=index,
+        )
+        dataset_id = record.get("dataset_manifest_id")
+        dataset_id_valid = isinstance(dataset_id, str) and bool(dataset_id.strip())
+        if dataset_id_valid:
+            dataset_ids.add(dataset_id)
+        else:
+            namespaced_key_missing = True
         if not record["eligible"]:
             continue
-        dataset_id = record.get("dataset_manifest_id")
         speaker_id = record.get("source_speaker_id")
         if (
-            not isinstance(dataset_id, str)
-            or not dataset_id.strip()
+            not dataset_id_valid
             or not isinstance(speaker_id, str)
             or not speaker_id.strip()
         ):
             namespaced_key_missing = True
             continue
-        dataset_ids.add(dataset_id)
         namespaced_keys.add((dataset_id, speaker_id))
         timestamp = record.get("source_timestamp")
         digest = record.get("canonical_record_digest")
@@ -432,6 +706,7 @@ def build_cohort_release(records: Any, request: Any) -> dict[str, Any]:
     selected, unique_count, dedup_digest, selection_reasons = _select_contributions(
         records,
         basis_available=basis is not None,
+        aggregate=request["operational_aggregate"],
     )
     reasons.extend(selection_reasons)
     if unique_count < MIN_RELEASE_SPEAKERS:
@@ -442,9 +717,10 @@ def build_cohort_release(records: Any, request: Any) -> dict[str, Any]:
     if released and aggregate["eligible_call_count"] != len(selected):
         raise ValueError("operational aggregate must use the contribution-capped cohort")
     if released:
+        derived_counts = _derive_cell_support(selected)
         aggregate_metrics, output_counts = _filter_supported_cells(
             aggregate,
-            request["output_cell_unique_speaker_counts"],
+            derived_counts,
             unique_speaker_count=unique_count,
         )
     else:
@@ -487,7 +763,10 @@ def validate_cohort_release(payload: Any) -> dict[str, Any]:
     _canonical_json_bytes(payload)
     if payload["release_scope"] != RELEASE_SCOPE:
         raise ValueError("CohortReleaseEvidenceV1 release scope mismatch")
-    if payload["source_label"] not in ALLOWED_SOURCE_LABELS:
+    if (
+        not isinstance(payload["source_label"], str)
+        or payload["source_label"] not in ALLOWED_SOURCE_LABELS
+    ):
         raise ValueError("CohortReleaseEvidenceV1 source label is invalid")
     window = _validate_aggregation_window(payload["aggregation_window"])
     if payload["fixed_window_id"] != _fixed_window_id(window):
@@ -498,16 +777,28 @@ def validate_cohort_release(payload: Any) -> dict[str, Any]:
     if payload["input_record_count"] < payload["eligible_record_count"]:
         raise ValueError("eligible record count exceeds input record count")
     basis = payload["unique_speaker_basis"]
-    if basis is not None and basis not in ALLOWED_SPEAKER_BASES:
+    if basis is not None and (
+        not isinstance(basis, str) or basis not in ALLOWED_SPEAKER_BASES
+    ):
         raise ValueError("CohortReleaseEvidenceV1 speaker basis is invalid")
     if payload["dependency_keys"] != list(DEPENDENCY_KEYS):
         raise ValueError("CohortReleaseEvidenceV1 dependency keys mismatch")
-    if payload["max_contribution_per_speaker"] != MAX_RELEASE_CONTRIBUTIONS_PER_SPEAKER:
+    if (
+        type(payload["max_contribution_per_speaker"]) is not int
+        or payload["max_contribution_per_speaker"]
+        != MAX_RELEASE_CONTRIBUTIONS_PER_SPEAKER
+    ):
         raise ValueError("CohortReleaseEvidenceV1 contribution cap mismatch")
     _require_sha256_or_none(payload["dedup_evidence_digest"], "dedup_evidence_digest")
-    if payload["minimum_unique_speakers"] != MIN_RELEASE_SPEAKERS:
+    if (
+        type(payload["minimum_unique_speakers"]) is not int
+        or payload["minimum_unique_speakers"] != MIN_RELEASE_SPEAKERS
+    ):
         raise ValueError("CohortReleaseEvidenceV1 speaker minimum mismatch")
-    if payload["minimum_unique_speakers_per_output_cell"] != MIN_RELEASE_SPEAKERS:
+    if (
+        type(payload["minimum_unique_speakers_per_output_cell"]) is not int
+        or payload["minimum_unique_speakers_per_output_cell"] != MIN_RELEASE_SPEAKERS
+    ):
         raise ValueError("CohortReleaseEvidenceV1 output-cell minimum mismatch")
     if payload["metric_allowlist_version"] != METRIC_ALLOWLIST_VERSION_V1:
         raise ValueError("CohortReleaseEvidenceV1 metric allowlist mismatch")
@@ -523,7 +814,7 @@ def validate_cohort_release(payload: Any) -> dict[str, Any]:
     ):
         raise ValueError("replacement digest bindings are inconsistent")
     status = payload["release_status"]
-    if status not in {"released", "suppressed"}:
+    if not isinstance(status, str) or status not in {"released", "suppressed"}:
         raise ValueError("CohortReleaseEvidenceV1 release status is invalid")
     reasons = payload["suppression_reason_codes"]
     if (
@@ -532,6 +823,36 @@ def validate_cohort_release(payload: Any) -> dict[str, Any]:
         or len(reasons) != len(set(reasons))
     ):
         raise ValueError("suppression_reason_codes must be a unique string list")
+    reason_set = set(reasons)
+    if reason_set - ALLOWED_SUPPRESSION_REASON_CODES:
+        raise ValueError("suppression_reason_codes contains an unknown code")
+    if ("speaker_basis_missing" in reason_set) != (basis is None):
+        raise ValueError("speaker-basis suppression reason contradicts the evidence")
+    minimum_not_met = (
+        payload["unique_speaker_count"] < payload["minimum_unique_speakers"]
+    )
+    if ("minimum_unique_speakers_not_met" in reason_set) != minimum_not_met:
+        raise ValueError("minimum-speaker suppression reason contradicts the evidence")
+    dedup_missing = payload["dedup_evidence_digest"] is None
+    if (
+        "deterministic_contribution_evidence_missing" in reason_set
+        and not dedup_missing
+    ):
+        raise ValueError("deterministic-evidence suppression reason contradicts the digest")
+    if (
+        "dataset_namespaced_speaker_key_missing" in reason_set
+        and not dedup_missing
+    ):
+        raise ValueError("speaker-key suppression reason contradicts the digest")
+    if (
+        dedup_missing
+        and basis is not None
+        and not reason_set.intersection({
+            "dataset_namespaced_speaker_key_missing",
+            "deterministic_contribution_evidence_missing",
+        })
+    ):
+        raise ValueError("missing dedup evidence lacks a corresponding suppression reason")
     metrics = payload["aggregate_metrics"]
     counts = payload["output_cell_unique_speaker_counts"]
     if not isinstance(metrics, dict) or set(metrics) - set(METRIC_ALLOWLIST_V1):
@@ -550,6 +871,10 @@ def validate_cohort_release(payload: Any) -> dict[str, Any]:
             raise ValueError("released cohort violates the contribution cap")
         if payload["dedup_evidence_digest"] is None or basis is None:
             raise ValueError("released cohort lacks unique-speaker evidence")
+        _validate_sparse_aggregate_metrics(
+            metrics,
+            eligible_record_count=payload["eligible_record_count"],
+        )
     for metric, value in metrics.items():
         support = counts[metric]
         if isinstance(value, dict):
@@ -643,6 +968,14 @@ def fixture_records(
             "source_timestamp": timestamp,
             "canonical_record_digest": digest,
             "eligible": True,
+            "metric_cell_memberships": {
+                "eligible_call_count": ["__scalar__"],
+                "audio_analysis_availability_rate": ["__scalar__"],
+                "audio_quality_bucket_counts": ["unavailable"],
+                "abstention_rate": ["__scalar__"],
+                "processing_latency_percentiles": ["p50", "p95"],
+                "evidence_policy_version_counts": ["emotion-state-evidence-v1"],
+            },
         })
     return records
 
@@ -686,19 +1019,12 @@ def fixture_request(**overrides: Any) -> dict[str, Any]:
         "slice_dimensions": [],
         "complementary_query": False,
         "differencing_query": False,
-        "previous_release": None,
+        "authoritative_release_history": [],
+        "authoritative_release_history_digest": canonical_release_history_digest([]),
         "previous_release_digest": None,
         "release_replaces_digest": None,
         "replacement_scope": None,
         "cross_corpus_identity_evidence_digest": None,
-        "output_cell_unique_speaker_counts": {
-            "eligible_call_count": 10,
-            "audio_analysis_availability_rate": 10,
-            "audio_quality_bucket_counts": {"unavailable": 10},
-            "abstention_rate": 10,
-            "processing_latency_percentiles": {"p50": 10, "p95": 10},
-            "evidence_policy_version_counts": {"emotion-state-evidence-v1": 10},
-        },
     }
     request.update(deepcopy(overrides))
     return request
