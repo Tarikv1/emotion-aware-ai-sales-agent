@@ -61,12 +61,19 @@ COUNT_MAP_METRICS = frozenset({
     "audio_quality_bucket_counts",
     "evidence_policy_version_counts",
 })
+SCALAR_METRICS = frozenset({
+    "eligible_call_count",
+    "audio_analysis_availability_rate",
+    "abstention_rate",
+})
 METRIC_ALLOWLIST_VERSION_V1 = "emotion-state-operational-aggregate-v1"
 MIN_DISCOVERY_SPEAKERS = 5
 MIN_DISCOVERY_TURNS = 10
 MAX_DISCOVERY_TURNS_PER_SPEAKER = 2
 MIN_RELEASE_SPEAKERS = 10
 MAX_RELEASE_CONTRIBUTIONS_PER_SPEAKER = 1
+MAX_AUTHORITATIVE_HISTORY_ENTRIES = 256
+MAX_AUTHORITATIVE_HISTORY_CANONICAL_BYTES = 4_194_304
 MIN_CONFIRMATORY_SPEAKERS = 30
 MIN_CONFIRMATORY_POSITIVE_TURNS = 30
 MIN_CONFIRMATORY_NEGATIVE_TURNS = 30
@@ -78,6 +85,13 @@ ALLOWED_SUPPRESSION_REASON_CODES = frozenset({
     "cross_corpus_identity_not_proven",
     "minimum_unique_speakers_not_met",
 })
+FIXED_COHORT_REPLACEMENT_FIELDS = (
+    "source_label",
+    "unique_speaker_basis",
+    "dedup_evidence_digest",
+    "eligible_record_count",
+    "unique_speaker_count",
+)
 
 COHORT_RELEASE_FIELDS = frozenset({
     "release_scope",
@@ -470,12 +484,7 @@ def _validate_sparse_aggregate_metrics(
     *,
     eligible_record_count: int,
 ) -> None:
-    required_scalar_metrics = {
-        "eligible_call_count",
-        "audio_analysis_availability_rate",
-        "abstention_rate",
-    }
-    if not required_scalar_metrics <= set(metrics):
+    if not SCALAR_METRICS <= set(metrics):
         raise ValueError("released aggregate metrics must retain every scalar metric")
     eligible_call_count = metrics["eligible_call_count"]
     if type(eligible_call_count) is not int or eligible_call_count != eligible_record_count:
@@ -564,6 +573,26 @@ def _windows_overlap(left: dict[str, Any], right: dict[str, Any]) -> bool:
     return left_start <= right_end and right_start <= left_end
 
 
+def _validate_fixed_cohort_replacement(
+    successor: dict[str, Any],
+    target: dict[str, Any],
+    *,
+    label: str,
+) -> None:
+    if (
+        target["release_status"] != "released"
+        or target["dedup_evidence_digest"] is None
+    ):
+        raise ValueError(
+            f"{label} replacement target must be released with non-null dedup evidence"
+        )
+    if any(
+        successor[field] != target[field]
+        for field in FIXED_COHORT_REPLACEMENT_FIELDS
+    ):
+        raise ValueError(f"{label} replacement must preserve the fixed cohort evidence")
+
+
 def _authoritative_history_active_heads(
     history: list[dict[str, Any]],
 ) -> dict[str, dict[str, Any]]:
@@ -623,6 +652,11 @@ def _authoritative_history_active_heads(
                     "authoritative release history replacement must preserve the exact "
                     "metric allowlist"
                 )
+            _validate_fixed_cohort_replacement(
+                release,
+                target,
+                label="authoritative release history",
+            )
             del active[target_digest]
         seen[release_digest] = release
         active[release_digest] = release
@@ -636,12 +670,26 @@ def _validate_authoritative_release_history(
 ) -> list[dict[str, Any]]:
     if not isinstance(history, list):
         raise ValueError("authoritative_release_history must be a list")
+    if len(history) > MAX_AUTHORITATIVE_HISTORY_ENTRIES:
+        raise ValueError(
+            "authoritative_release_history exceeds "
+            "MAX_AUTHORITATIVE_HISTORY_ENTRIES=256"
+        )
     if (
         not isinstance(history_digest, str)
         or SHA256_PATTERN.fullmatch(history_digest) is None
     ):
         raise ValueError("authoritative release history digest must be uppercase SHA-256")
-    if canonical_release_history_digest(history) != history_digest:
+    canonical_history_bytes = _canonical_json_bytes(history)
+    if len(canonical_history_bytes) > MAX_AUTHORITATIVE_HISTORY_CANONICAL_BYTES:
+        raise ValueError(
+            "authoritative_release_history exceeds "
+            "MAX_AUTHORITATIVE_HISTORY_CANONICAL_BYTES=4194304"
+        )
+    canonical_history_digest = hashlib.sha256(
+        canonical_history_bytes
+    ).hexdigest().upper()
+    if canonical_history_digest != history_digest:
         raise ValueError("authoritative release history digest mismatch")
     validated: list[dict[str, Any]] = []
     for index, prior_release in enumerate(history):
@@ -652,7 +700,9 @@ def _validate_authoritative_release_history(
     return validated
 
 
-def _validate_replacement_request(request: dict[str, Any]) -> None:
+def _validate_replacement_request(
+    request: dict[str, Any],
+) -> dict[str, Any] | None:
     relationship = request["window_relationship"]
     previous_digest = request["previous_release_digest"]
     replaces_digest = request["release_replaces_digest"]
@@ -673,7 +723,7 @@ def _validate_replacement_request(request: dict[str, Any]) -> None:
                 or _windows_overlap(current_window, prior_release["aggregation_window"])
             ):
                 raise ValueError("new release window overlaps or duplicates authoritative history")
-        return
+        return None
     if previous_digest != replaces_digest:
         raise ValueError("replacement digest bindings must match")
     active_heads = _authoritative_history_active_heads(history)
@@ -689,9 +739,19 @@ def _validate_replacement_request(request: dict[str, Any]) -> None:
         raise ValueError("replacement must replace the entire prior release")
     if request["metric_allowlist_version"] != previous["metric_allowlist_version"]:
         raise ValueError("replacement must preserve the exact metric allowlist")
+    if (
+        previous["release_status"] != "released"
+        or previous["dedup_evidence_digest"] is None
+    ):
+        raise ValueError(
+            "candidate replacement target must be released with non-null dedup evidence"
+        )
+    return previous
 
 
-def _validate_request(request: Any) -> dict[str, Any]:
+def _validate_request(
+    request: Any,
+) -> tuple[dict[str, Any], dict[str, Any] | None]:
     _require_exact_fields(request, REQUEST_FIELDS, "cohort release request")
     if request["release_scope"] != RELEASE_SCOPE:
         raise ValueError("release_scope must name the privacy-minimized contribution gate")
@@ -713,10 +773,10 @@ def _validate_request(request: Any) -> dict[str, Any]:
         request["authoritative_release_history_digest"],
     )
     _validate_window_request(request)
-    _validate_replacement_request(request)
+    replacement_target = _validate_replacement_request(request)
     if request["metric_allowlist_version"] != METRIC_ALLOWLIST_VERSION_V1:
         raise ValueError("unsupported metric allowlist version")
-    return request
+    return request, replacement_target
 
 
 def _validate_source_basis_pair(source_label: str, basis: Any) -> str:
@@ -745,6 +805,7 @@ def evaluate_discovery_gate(records: Any) -> dict[str, bool | int]:
         raise ValueError("records must be a list")
     eligible: list[dict[str, Any]] = []
     dataset_ids: set[str] = set()
+    canonical_record_digests: set[str] = set()
     for index, record in enumerate(records):
         if not isinstance(record, dict) or set(record) - RECORD_ALLOWED_FIELDS:
             raise ValueError(f"record {index} contains forbidden or unknown fields")
@@ -756,6 +817,12 @@ def evaluate_discovery_gate(records: Any) -> dict[str, bool | int]:
             require_complete_evidence=True,
         )
         dataset_ids.add(dataset_id)
+        digest = record["canonical_record_digest"]
+        if digest in canonical_record_digests:
+            raise ValueError(
+                "discovery input contains duplicate canonical_record_digest"
+            )
+        canonical_record_digests.add(digest)
         if not record["eligible"]:
             continue
         speaker_id = record.get("source_speaker_id")
@@ -908,7 +975,7 @@ def _select_contributions(
 
 
 def build_cohort_release(records: Any, request: Any) -> dict[str, Any]:
-    request = _validate_request(request)
+    request, replacement_target = _validate_request(request)
     basis, reasons = _speaker_basis_status(request)
     selected, unique_count, dedup_digest, selection_reasons = _select_contributions(
         records,
@@ -964,7 +1031,14 @@ def build_cohort_release(records: Any, request: Any) -> dict[str, Any]:
         "aggregate_metrics": aggregate_metrics,
         "output_cell_unique_speaker_counts": output_counts,
     }
-    return validate_cohort_release(payload)
+    validated = validate_cohort_release(payload)
+    if replacement_target is not None:
+        _validate_fixed_cohort_replacement(
+            validated,
+            replacement_target,
+            label="candidate",
+        )
+    return validated
 
 
 def validate_cohort_release(payload: Any) -> dict[str, Any]:
@@ -1119,7 +1193,19 @@ def validate_cohort_release(payload: Any) -> dict[str, Any]:
             for count in support_values
         ):
             raise ValueError(f"released cell for {metric} lacks ten proven speakers")
+        if metric in SCALAR_METRICS and support != payload["eligible_record_count"]:
+            raise ValueError(
+                f"scalar metric {metric} support must equal eligible_record_count"
+            )
     _validate_count_map_support(metrics, counts)
+    for metric in COUNT_MAP_METRICS.intersection(metrics):
+        if (
+            sum(metrics[metric].values()) > payload["eligible_record_count"]
+            or sum(counts[metric].values()) > payload["eligible_record_count"]
+        ):
+            raise ValueError(
+                f"count-map metric {metric} total must not exceed eligible_record_count"
+            )
     return payload
 
 
@@ -1348,6 +1434,12 @@ def cohort_release_schema_descriptor() -> dict[str, Any]:
         },
         "authoritative_history_boundary": {
             "history_order_semantics": "append_dependency_order",
+            "max_authoritative_history_entries": (
+                MAX_AUTHORITATIVE_HISTORY_ENTRIES
+            ),
+            "max_authoritative_history_canonical_bytes": (
+                MAX_AUTHORITATIVE_HISTORY_CANONICAL_BYTES
+            ),
             "external_append_only_registry_required": True,
             "signed_sequence_authentication_implemented": False,
             "unrelated_root_relative_append_order_authenticated": False,
@@ -1373,6 +1465,10 @@ def cohort_release_fixture_descriptor() -> dict[str, Any]:
         "minimum_discovery_unique_speakers": MIN_DISCOVERY_SPEAKERS,
         "minimum_discovery_retained_turns": MIN_DISCOVERY_TURNS,
         "max_discovery_turns_per_speaker": MAX_DISCOVERY_TURNS_PER_SPEAKER,
+        "max_authoritative_history_entries": MAX_AUTHORITATIVE_HISTORY_ENTRIES,
+        "max_authoritative_history_canonical_bytes": (
+            MAX_AUTHORITATIVE_HISTORY_CANONICAL_BYTES
+        ),
         "minimum_release_unique_speakers": MIN_RELEASE_SPEAKERS,
         "minimum_unique_speakers_per_output_cell": MIN_RELEASE_SPEAKERS,
         "max_contribution_per_speaker": MAX_RELEASE_CONTRIBUTIONS_PER_SPEAKER,

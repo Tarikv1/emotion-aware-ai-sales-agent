@@ -102,3 +102,29 @@ Verdict: not ready for Task 5. This is review pass 3 of a maximum 5-pass deep pr
 - Private/arbitrary dataset IDs, email-shaped/public-basis IDs, wrong public dataset-to-basis mappings, uncontrolled synthetic namespaces, and forged canonical record digests must fail in release and discovery paths.
 - Impossible standalone suppressed counts and the same entries inside authoritative history must fail.
 - Existing sparse omission, current adversarial cases, runtime/v1 immutability, and all hard boundaries must remain green.
+
+## Round 4 independent whole-range review at `bad5b39`
+
+Verdict: not ready for Task 5. Pass 5 is the final allowed deep review loop; any remaining Critical or Important issue after pass 5 is a hard stop and report.
+
+### Critical
+
+1. Same-window replacements preserve only window/ID/allowlist, so a synthetic root can be replaced by CREMA/public evidence or by a cohort with one of ten speakers changed. For every history successor and candidate replacement, preserve `source_label`, `unique_speaker_basis`, `dedup_evidence_digest`, `eligible_record_count`, and `unique_speaker_count` in addition to existing window/ID/allowlist bindings. The dedup digest is the exact selected-cohort/evidence binding. Apply this transitively. Disallow replacement of a suppressed/null-dedup active head in Phase A; a suppressed-to-released transition requires a separate reviewed rule. Preserve a same-cohort aggregate-correction positive.
+
+### Important
+
+1. Discovery counts duplicate identical canonical records as independent retained turns. Five unique records duplicated once incorrectly produce five speakers/ten turns and pass. Reject duplicate `canonical_record_digest` values across the complete discovery input before the per-speaker cap.
+2. Standalone/history validation accepts builder-impossible output support: a 20-speaker release can lower every scalar support to 10, and a 10-speaker release can claim two cells with count/support 10 in one exact-one count map. Require every scalar support to equal `eligible_record_count`. Require the sum of each released count-map's values/support to be no greater than `eligible_record_count`. History inherits the same validation.
+
+### Minor
+
+1. Authoritative history root scanning is quadratic and the input is unbounded. Add explicit fail-closed entry-count and canonical-byte caps with descriptor/test coverage so the remaining quadratic work is bounded. A larger or authenticated registry protocol remains outside Phase A.
+
+### Required pass-5 regressions
+
+- Reject source-label, speaker-basis, dedup/cohort, eligible-count, unique-count, and nine-of-ten speaker swaps for both candidate and historical successors.
+- Reject any replacement targeting a suppressed/null-dedup active head; preserve same-cohort released replacement and multi-step chain positives.
+- Reject duplicate discovery records before the two-turn cap.
+- Reject scalar-support mismatch and per-count-map summed support/value overflow directly and inside authoritative history.
+- Reject authoritative history above the fixed entry or canonical-byte caps.
+- Preserve all prior adversarial tests, exact schema/fixture parity, runtime/v1 immutability, and hard boundaries.

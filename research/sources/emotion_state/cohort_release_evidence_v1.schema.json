@@ -103,6 +103,8 @@
   },
   "authoritative_history_boundary": {
     "history_order_semantics": "append_dependency_order",
+    "max_authoritative_history_entries": 256,
+    "max_authoritative_history_canonical_bytes": 4194304,
     "external_append_only_registry_required": true,
     "signed_sequence_authentication_implemented": false,
     "unrelated_root_relative_append_order_authenticated": false

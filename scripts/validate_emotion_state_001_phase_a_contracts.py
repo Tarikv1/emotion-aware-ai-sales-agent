@@ -363,6 +363,8 @@ def validate_contracts() -> None:
         ALLOWED_SPEAKER_BASES,
         BOOLEAN_BOUNDARY_FIELDS,
         COHORT_RELEASE_FIELDS,
+        MAX_AUTHORITATIVE_HISTORY_CANONICAL_BYTES,
+        MAX_AUTHORITATIVE_HISTORY_ENTRIES,
         MAX_RELEASE_CONTRIBUTIONS_PER_SPEAKER,
         METRIC_ALLOWLIST_V1,
         METRIC_ALLOWLIST_VERSION_V1,
@@ -451,6 +453,20 @@ def validate_contracts() -> None:
         cohort_schema["cross_corpus_identity_evidence_digest"] is None,
         cohort_schema,
     )
+    assert_condition(
+        cohort_schema["authoritative_history_boundary"][
+            "max_authoritative_history_entries"
+        ]
+        == MAX_AUTHORITATIVE_HISTORY_ENTRIES,
+        cohort_schema,
+    )
+    assert_condition(
+        cohort_schema["authoritative_history_boundary"][
+            "max_authoritative_history_canonical_bytes"
+        ]
+        == MAX_AUTHORITATIVE_HISTORY_CANONICAL_BYTES,
+        cohort_schema,
+    )
     cohort_fixtures = read_json(COHORT_RELEASE_FIXTURES)
     assert_condition(
         json.dumps(
@@ -485,6 +501,13 @@ def validate_contracts() -> None:
     }
     assert_condition(
         set(cohort_fixtures["scenarios"]) == expected_scenarios,
+        cohort_fixtures,
+    )
+    assert_condition(
+        cohort_fixtures["max_authoritative_history_entries"]
+        == MAX_AUTHORITATIVE_HISTORY_ENTRIES
+        and cohort_fixtures["max_authoritative_history_canonical_bytes"]
+        == MAX_AUTHORITATIVE_HISTORY_CANONICAL_BYTES,
         cohort_fixtures,
     )
     assert_condition(

@@ -277,3 +277,68 @@ None within Task 4 scope. This remains an offline Phase A contract gate and does
 - No ElevenLabs or other provider access, outbound/customer calls, simulations, dataset downloads, private-data inspection, source adaptation, runtime activation, push, or merge occurred.
 - Task 5 was not started.
 - Intended commit subject: `Complete EMOTION-STATE cohort release chain validation`.
+
+## 2026-07-16 Round 4 Pass-5 Final Closure
+
+### Preserved Resume State And Final Loop Boundary
+
+- Resumed at exact HEAD `bad5b39f7d745ae855285cde8b6136cf9fc8d153` on `codex/emotion-state-phase-a-open-dataset-gate-design`.
+- The initial dirty state contained only the controller-appended Round 4 section in `.superpowers/sdd/task-4-review-findings.md`. It was preserved unchanged and included with this closure; no reset, stash, revert, or overwrite occurred.
+- Pass 5 was the fifth and final allowed Deep privacy/security/QA review loop. No Task 5 work or additional review pass was started.
+
+### Pass-5 RED Evidence
+
+1. Fixed-cohort replacement continuity:
+   - Focused command over the three new candidate/history/target methods exited `1`; `Ran 3 tests`; `FAILED (failures=12)`.
+   - Candidate failures were the synthetic-to-CREMA source/basis swap, nine-of-ten speaker swap with changed dedup at the same count, and the coupled eligible/unique count change from ten to eleven. Released evidence already requires eligible and unique counts to be equal, so the valid standalone count-change negative necessarily changes both fields while the continuity check binds each field explicitly.
+   - Historical failures were the synthetic-to-CREMA source/basis swap, changed dedup at the same counts, changed eligible/unique counts, a transitive second-successor dedup swap, and a public speaker-basis swap.
+   - Candidate and historical paths each accepted suppressed and null-dedup active targets. The same-cohort aggregate-correction positive passed during this RED run.
+2. Duplicate discovery evidence:
+   - Focused command exited `1`; `Ran 1 test`; `FAILED (failures=3)`.
+   - Five unique canonical records duplicated once falsely met the ten-turn floor; a duplicate beyond the two-turn speaker cap and an ineligible duplicate were also accepted because duplicate discovery evidence was not checked before capping/filtering.
+3. Standalone and authoritative-history support bounds:
+   - Focused command exited `1`; `Ran 2 tests`; `FAILED (failures=10)`.
+   - Direct and history validation accepted support `10` for each of the three scalar metrics on a twenty-speaker release, and accepted two count-map cells with value/support `10 + 10` on a ten-speaker release for both count-map metrics.
+4. Authoritative-history resource bounds:
+   - Focused command exited `1`; `Ran 3 tests`; `FAILED (failures=2, errors=1)`.
+   - The exact cap constants were missing; a 257-entry history reached duplicate-chain scanning; and a history above 4,194,304 canonical bytes reached entry validation.
+
+### Pass-5 Fixes
+
+- Every historical successor and final constructed candidate replacement now preserves the active head's exact `source_label`, `unique_speaker_basis`, `dedup_evidence_digest`, `eligible_record_count`, and `unique_speaker_count`, in addition to the existing exact window, fixed-window ID, and metric allowlist. Candidate dedup/count continuity is checked after contribution selection and payload construction, not inferred from request strings.
+- Replacement chains reject any active target whose status is suppressed or whose dedup evidence is null. Same-cohort aggregate corrections and root-to-replacement-to-replacement chains remain valid.
+- Discovery rejects a repeated `canonical_record_digest` across the complete validated input before eligibility filtering and before the two-turn-per-speaker cap.
+- Every released scalar support now equals `eligible_record_count`. Each released count-map retains exact per-cell value/support equality and also requires summed values and summed support to be no greater than `eligible_record_count`.
+- Added exact fail-closed limits `MAX_AUTHORITATIVE_HISTORY_ENTRIES=256` and `MAX_AUTHORITATIVE_HISTORY_CANONICAL_BYTES=4_194_304`. Entry count is checked before canonical serialization; canonical bytes are bounded before digest comparison, entry validation, and quadratic chain validation. The schema descriptor, fixture descriptor, tracked JSON, contracts validator, and parity tests bind both limits.
+
+### Final GREEN And Verification Evidence
+
+- Group A focused continuity/positive slice: exit `0`; `Ran 5 tests`; `OK`. Full cohort suite after Group A: `Ran 44 tests`; `OK`.
+- Group B focused discovery slice: exit `0`; `Ran 5 tests`; `OK`. Full cohort suite after Group B: `Ran 45 tests`; `OK`.
+- Group C focused support/cardinality slice: exit `0`; `Ran 5 tests`; `OK`. Full cohort suite after Group C: `Ran 47 tests`; `OK`.
+- Group D focused cap/parity slice: exit `0`; `Ran 4 tests`; `OK`. Full cohort suite after Group D: `Ran 50 tests`; `OK`.
+- `python -m unittest scripts.test_emotion_state_001_open_dataset_gate.CohortReleaseTests -q`
+  - Exit `0`; `Ran 50 tests`; `OK`.
+- `python -m unittest scripts.test_emotion_state_001_open_dataset_gate -q`
+  - Exit `0`; `Ran 69 tests`; `OK`.
+- Pass-2 four-method adversarial slice: exit `0`; `Ran 4 tests`; `OK`.
+- Pass-3/pass-4 ten-method adversarial slice: exit `0`; `Ran 10 tests`; `OK`.
+- Pass-5 nine-method adversarial slice: exit `0`; `Ran 9 tests`; `OK`.
+- `python scripts\validate_emotion_state_001_phase_a_contracts.py --section contracts`
+  - Exit `0`; `EMOTION-STATE-001 Phase A validation passed: contracts`.
+- `python -m py_compile scripts\emotion_state_cohort_release_contracts.py scripts\test_emotion_state_001_open_dataset_gate.py scripts\validate_emotion_state_001_phase_a_contracts.py`
+  - Exit `0`; no output.
+- Both `python -m json.tool` checks for the cohort schema and fixture JSON exited `0`.
+- Runtime immutability check from `7cc288a^` for `runtime\contracts\emotion_state_contracts.py` and `runtime\contracts\emotion_pattern_contracts.py`: exit `0`; no diff.
+- Frozen v1 immutability check from `7cc288a^` for `research\sources\emotion_state\split_manifest_v1.schema.json` and `scripts\emotion_state_annotation_contracts.py`: exit `0`; no diff.
+- `git diff --check`: exit `0`; no whitespace errors. Git emitted only working-copy LF-to-CRLF warnings for modified text files.
+
+### Pass-5 Stop Status And Trust Boundaries
+
+- The required pass-5 Critical, Important, and Minor finding set has no unresolved verification failure. The Deep review loop stops at pass 5 as required.
+- The external append-only registry remains outside Phase A. The bounded supplied history and its digest are structurally validated but their origin, completeness, unrelated-root append order, and authenticity are not established by this implementation.
+- Dataset ID/basis/identifier syntax and canonical record digests remain structural checks; they do not authenticate external material or authoritative participant assignments.
+- This remains a local, offline Phase A research/prototype contract gate only. It does not establish production readiness, anonymity, differential privacy, or proof against re-identification.
+- No ElevenLabs or other provider access, outbound/customer calls, simulations, dataset downloads, private-data inspection, source adaptation, runtime activation, push, or merge occurred.
+- Task 5 was not started.
+- Commit subject: `Finalize EMOTION-STATE cohort release invariants`.

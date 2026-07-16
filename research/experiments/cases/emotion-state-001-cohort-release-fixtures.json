@@ -11,6 +11,8 @@
   "minimum_discovery_unique_speakers": 5,
   "minimum_discovery_retained_turns": 10,
   "max_discovery_turns_per_speaker": 2,
+  "max_authoritative_history_entries": 256,
+  "max_authoritative_history_canonical_bytes": 4194304,
   "minimum_release_unique_speakers": 10,
   "minimum_unique_speakers_per_output_cell": 10,
   "max_contribution_per_speaker": 1,
