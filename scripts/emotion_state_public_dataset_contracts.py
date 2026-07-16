@@ -4,7 +4,10 @@ import csv
 import hashlib
 import json
 import math
+import os
 import re
+import shutil
+import tempfile
 import unicodedata
 import wave
 import zipfile
@@ -871,6 +874,7 @@ def validate_crema_material(
                 "classification": "crema_audio_directory_non_wav",
                 "disposition": "excluded",
                 "reason": "frozen_selection_requires_wav",
+                "selected_file_path": None,
                 "details": {},
             }
             continue
@@ -881,7 +885,7 @@ def validate_crema_material(
             except ValueError as exc:
                 if "Git LFS pointer" in str(exc):
                     raise
-                objective_failure = str(exc)
+                objective_failure = "objective_wav_validation_failed"
             else:
                 raise ValueError(
                     "official known no-audio issue was not confirmed by the pinned release"
@@ -891,6 +895,7 @@ def validate_crema_material(
                 "classification": "crema_wav",
                 "disposition": "excluded",
                 "reason": "official_known_no_audio_issue",
+                "selected_file_path": None,
                 "details": {
                     "filename_metadata": filename_metadata,
                     "official_issue": "1076_MTI_SAD_XX.wav_has_an_official_documented_no_audio_issue",
@@ -914,6 +919,10 @@ def validate_crema_material(
                 "official_mismatch_wav_counterpart_objectively_validated"
                 if relative_path in mismatch_counterparts
                 else "frozen_audio_wav_selection"
+            ),
+            "selected_file_path": normalized_relative_path(
+                wav_path,
+                inventory_root,
             ),
             "details": {
                 "filename_metadata": filename_metadata,
@@ -985,6 +994,10 @@ def validate_crema_material(
             "classification": "crema_release_metadata",
             "disposition": "included",
             "reason": "frozen_fixed_selection",
+            "selected_file_path": normalized_relative_path(
+                fixed_path,
+                inventory_root,
+            ),
             "details": {},
         }
 
@@ -1010,6 +1023,7 @@ def validate_crema_material(
             "classification": classification,
             "disposition": "excluded",
             "reason": reason,
+            "selected_file_path": None,
             "details": {},
         }
 
@@ -1019,6 +1033,21 @@ def validate_crema_material(
         selected_paths=expected_selected_paths,
         git_lfs_oids_by_path=git_lfs_oids_by_path,
     )
+    if git_lfs_oids_by_path is not None:
+        missing_lfs_evidence = [
+            entry["path"]
+            for entry in hash_inventory["files"]
+            if (
+                entry["path"].startswith(f"{CREMA_AUDIO_PREFIX}")
+                or f"/{CREMA_AUDIO_PREFIX}" in entry["path"]
+            )
+            and "git_lfs_oid_sha256" not in entry
+        ]
+        if missing_lfs_evidence:
+            raise ValueError(
+                "missing selected CREMA-D Git LFS OID evidence: "
+                + missing_lfs_evidence[0]
+            )
     quality_items = [
         quality_by_path[path]
         for path in sorted(quality_by_path)
@@ -1225,6 +1254,25 @@ def inspect_ami_archive(
                 normalized_paths.add(collision_key)
                 casefold_paths.add(casefold_key)
 
+            tree_nodes = sorted(
+                (
+                    (normalized_path.rstrip("/"), info.is_dir())
+                    for info, normalized_path in structurally_valid_members
+                ),
+                key=lambda item: (item[0].casefold(), item[0]),
+            )
+            for (path, is_directory), (next_path, _) in zip(
+                tree_nodes,
+                tree_nodes[1:],
+            ):
+                if (
+                    not is_directory
+                    and next_path.casefold().startswith(path.casefold() + "/")
+                ):
+                    raise ValueError(
+                        "AMI archive file/descendant prefix conflict"
+                    )
+
             for info, normalized_path in structurally_valid_members:
                 classification = classify_ami_member(normalized_path)
                 member = {
@@ -1247,6 +1295,72 @@ def inspect_ami_archive(
     }
 
 
+def _expected_ami_extraction_tree(
+    members: list[dict[str, Any]],
+) -> dict[str, str]:
+    expected: dict[str, str] = {}
+    for member in members:
+        path = member["path"].rstrip("/")
+        if member["classification"] == "directory":
+            expected[path] = "directory"
+        elif member["selected"]:
+            expected[path] = "file"
+        else:
+            continue
+        parts = path.split("/")
+        for index in range(1, len(parts)):
+            ancestor = "/".join(parts[:index])
+            existing = expected.get(ancestor)
+            if existing == "file":
+                raise ValueError("AMI archive file/descendant prefix conflict")
+            expected[ancestor] = "directory"
+    return expected
+
+
+def _validate_preexisting_ami_extraction_root(
+    extraction_root: Path,
+    expected_tree: dict[str, str],
+) -> None:
+    if not extraction_root.exists():
+        return
+    if not extraction_root.is_dir() or extraction_root.is_symlink():
+        raise ValueError("pre-existing extraction path conflict")
+    existing_by_casefold: dict[str, tuple[str, str]] = {}
+    for path in sorted(
+        extraction_root.rglob("*"),
+        key=lambda item: item.relative_to(extraction_root).as_posix(),
+    ):
+        relative = unicodedata.normalize(
+            "NFC",
+            path.relative_to(extraction_root).as_posix(),
+        )
+        kind = "directory" if path.is_dir() and not path.is_symlink() else "file"
+        casefold_path = relative.casefold()
+        prior = existing_by_casefold.get(casefold_path)
+        if prior is not None and prior[0] != relative:
+            raise ValueError("pre-existing extraction path conflict")
+        existing_by_casefold[casefold_path] = (relative, kind)
+    expected_casefold = {
+        path.casefold(): (path, kind)
+        for path, kind in expected_tree.items()
+    }
+    for casefold_path, (relative, kind) in existing_by_casefold.items():
+        expected = expected_casefold.get(casefold_path)
+        if expected is None or expected != (relative, kind):
+            raise ValueError("pre-existing extraction path conflict")
+
+
+def _fresh_absent_sibling_path(parent: Path, prefix: str) -> Path:
+    with tempfile.NamedTemporaryFile(
+        dir=parent,
+        prefix=prefix,
+        delete=False,
+    ) as marker:
+        path = Path(marker.name)
+    path.unlink()
+    return path
+
+
 def safe_extract_ami_archive(
     archive_path: Path,
     extract_root: Path,
@@ -1256,8 +1370,15 @@ def safe_extract_ami_archive(
     inspection = inspect_ami_archive(archive, extraction_root)
     if sha256_file(archive) != inspection["archive_sha256"]:
         raise ValueError("AMI archive changed after validation and before extraction")
-
-    extraction_root.mkdir(parents=True, exist_ok=True)
+    expected_tree = _expected_ami_extraction_tree(inspection["members"])
+    _validate_preexisting_ami_extraction_root(extraction_root, expected_tree)
+    extraction_parent = extraction_root.parent
+    extraction_parent.mkdir(parents=True, exist_ok=True)
+    staging_root = Path(tempfile.mkdtemp(
+        dir=extraction_parent,
+        prefix=f".{extraction_root.name}.staging.",
+    ))
+    backup_root: Path | None = None
     members_by_path = {
         member["path"]: member
         for member in inspection["members"]
@@ -1271,7 +1392,7 @@ def safe_extract_ami_archive(
             for normalized_path in sorted(members_by_path):
                 member = members_by_path[normalized_path]
                 info = infos_by_path[normalized_path]
-                destination = extraction_root.joinpath(
+                destination = staging_root.joinpath(
                     *normalized_path.rstrip("/").split("/")
                 )
                 if info.is_dir():
@@ -1281,7 +1402,7 @@ def safe_extract_ami_archive(
                     continue
                 destination.parent.mkdir(parents=True, exist_ok=True)
                 try:
-                    destination.resolve(strict=False).relative_to(extraction_root)
+                    destination.resolve(strict=False).relative_to(staging_root)
                 except ValueError as exc:
                     raise ValueError("AMI extraction destination escaped its exact root") from exc
                 if destination.is_symlink():
@@ -1289,10 +1410,42 @@ def safe_extract_ami_archive(
                 with source.open(info, "r") as member_source, destination.open("wb") as output:
                     for chunk in iter(lambda: member_source.read(1024 * 1024), b""):
                         output.write(chunk)
+        if sha256_file(archive) != inspection["archive_sha256"]:
+            raise ValueError("AMI archive changed during extraction")
+        for relative_path, kind in expected_tree.items():
+            candidate = staging_root.joinpath(*relative_path.split("/"))
+            if kind == "file" and not candidate.is_file():
+                raise ValueError("AMI staged extraction is incomplete")
+            if kind == "directory" and not candidate.is_dir():
+                raise ValueError("AMI staged extraction directory is missing")
+        if extraction_root.exists():
+            backup_root = _fresh_absent_sibling_path(
+                extraction_parent,
+                f".{extraction_root.name}.backup.",
+            )
+            os.replace(extraction_root, backup_root)
+        try:
+            os.replace(staging_root, extraction_root)
+        except OSError:
+            if backup_root is not None and not extraction_root.exists():
+                os.replace(backup_root, extraction_root)
+                backup_root = None
+            raise
+        if backup_root is not None:
+            shutil.rmtree(backup_root)
+            backup_root = None
     except zipfile.BadZipFile as exc:
-        raise ValueError("AMI archive is not a readable ZIP file") from exc
+        raise ValueError("AMI archive extraction failed") from exc
     except OSError as exc:
         raise ValueError("AMI archive extraction failed") from exc
+    finally:
+        if staging_root.exists():
+            shutil.rmtree(staging_root, ignore_errors=True)
+        if backup_root is not None and backup_root.exists():
+            if not extraction_root.exists():
+                os.replace(backup_root, extraction_root)
+            elif backup_root.exists():
+                shutil.rmtree(backup_root, ignore_errors=True)
     return inspection
 
 
@@ -1341,6 +1494,46 @@ def _ami_metadata_from_xml(path: Path) -> dict[str, set[str]]:
     return values
 
 
+def _ami_partition_definition(
+    path: Path,
+    *,
+    project_relative_path: str,
+) -> dict[str, Any]:
+    try:
+        text = path.read_text(encoding="utf-8-sig")
+    except (OSError, UnicodeError) as exc:
+        raise ValueError(f"AMI partition metadata is unreadable: {path}") from exc
+    meeting_ids: set[str] = set()
+    for line_number, raw_line in enumerate(text.splitlines(), start=1):
+        line = raw_line.split("#", 1)[0].strip()
+        if not line:
+            continue
+        for token in re.split(r"[\s,]+", line):
+            if re.fullmatch(r"[A-Z]{2,4}\d{4}[a-z]?", token) is None:
+                raise ValueError(
+                    f"AMI partition metadata line {line_number} has an invalid meeting ID"
+                )
+            meeting_ids.add(token)
+    if not meeting_ids:
+        raise ValueError("AMI partition metadata has no official meeting membership")
+    partition_id = path.stem
+    normalized_identity = partition_id.casefold().replace("_", "-")
+    if "scenario" in normalized_identity:
+        partition_type = "scenario"
+    elif "full" in normalized_identity and "corpus" in normalized_identity:
+        partition_type = "full_corpus"
+    else:
+        raise ValueError(
+            f"AMI partition metadata type is not approved: {partition_id}"
+        )
+    return {
+        "partition_id": partition_id,
+        "partition_type": partition_type,
+        "source_file_path": project_relative_path,
+        "meeting_ids": sorted(meeting_ids),
+    }
+
+
 def validate_ami_material(
     extract_root: Path,
     *,
@@ -1374,6 +1567,10 @@ def validate_ami_material(
         "classification": "downloaded_archive",
         "disposition": "included",
         "reason": "archive_hashed_before_extraction",
+        "selected_file_path": normalized_relative_path(
+            archive,
+            inventory_root,
+        ),
         "details": {
             "archive_sha256": extraction["archive_sha256"],
             "archive_size_bytes": extraction["archive_size_bytes"],
@@ -1388,6 +1585,7 @@ def validate_ami_material(
         "scenarios": set(),
     }
     partition_paths: list[str] = []
+    partition_definitions: list[dict[str, Any]] = []
     participant_required = frozenset({
         "speaker_aligned_orthographic_transcript",
         "timing_link",
@@ -1449,6 +1647,12 @@ def validate_ami_material(
                     })
             if classification == "official_partition_metadata":
                 partition_paths.append(project_relative_path)
+                partition_definition = _ami_partition_definition(
+                    extracted_path,
+                    project_relative_path=project_relative_path,
+                )
+                partition_definitions.append(partition_definition)
+                details = partition_definition
             disposition = "included"
         else:
             disposition = "excluded"
@@ -1457,6 +1661,11 @@ def validate_ami_material(
             "classification": classification,
             "disposition": disposition,
             "reason": member["reason"],
+            "selected_file_path": (
+                project_relative_path
+                if selected
+                else None
+            ),
             "details": details,
         })
 
@@ -1476,6 +1685,12 @@ def validate_ami_material(
     )
     quality_items.sort(key=lambda item: item["path"])
     dependency_quarantine.sort(key=lambda item: item["path"])
+    partition_definitions.sort(
+        key=lambda item: (
+            item["partition_id"],
+            item["source_file_path"],
+        )
+    )
     included_file_count = sum(
         item["disposition"] == "included"
         for item in quality_items
@@ -1505,6 +1720,7 @@ def validate_ami_material(
             "source_corpus": AMI_DATASET_ID,
             "multi_party_applicability": True,
             "official_partition_paths": sorted(partition_paths),
+            "official_partition_definitions": partition_definitions,
             "official_partition_definitions_are_source_metadata_only": True,
             "project_case_assignments": [],
             "dependency_keys": {

@@ -4,10 +4,12 @@ import hashlib
 import io
 import json
 import struct
+import tarfile
 import tempfile
 import unittest
 import wave
 import zipfile
+from contextlib import redirect_stderr, redirect_stdout
 from copy import deepcopy
 from pathlib import Path
 
@@ -443,6 +445,45 @@ class DatasetMaterialValidationTests(unittest.TestCase):
         )
 
     @staticmethod
+    def _synthetic_crema_lfs_oids(crema_root: Path) -> dict[Path, str]:
+        return {
+            path: hashlib.sha256(path.read_bytes()).hexdigest().upper()
+            for path in sorted((crema_root / "AudioWAV").glob("*.wav"))
+            if path.name != "1076_MTI_SAD_XX.wav"
+        }
+
+    @classmethod
+    def _crema_lfs_tar(
+        cls,
+        crema_root: Path,
+        *,
+        omit: frozenset[str] = frozenset(),
+        overrides: dict[str, bytes] | None = None,
+        extra: dict[str, bytes] | None = None,
+    ) -> bytes:
+        buffer = io.BytesIO()
+        with tarfile.open(fileobj=buffer, mode="w") as output:
+            for path in sorted((crema_root / "AudioWAV").glob("*.wav")):
+                relative = path.relative_to(crema_root).as_posix()
+                if relative in omit:
+                    continue
+                digest = hashlib.sha256(path.read_bytes()).hexdigest()
+                pointer = (
+                    "version https://git-lfs.github.com/spec/v1\n"
+                    f"oid sha256:{digest}\n"
+                    f"size {path.stat().st_size}\n"
+                ).encode("utf-8")
+                payload = (overrides or {}).get(relative, pointer)
+                info = tarfile.TarInfo(relative)
+                info.size = len(payload)
+                output.addfile(info, io.BytesIO(payload))
+            for relative, payload in sorted((extra or {}).items()):
+                info = tarfile.TarInfo(relative)
+                info.size = len(payload)
+                output.addfile(info, io.BytesIO(payload))
+        return buffer.getvalue()
+
+    @staticmethod
     def _ami_archive(path: Path, *, include_missing_participant: bool = False) -> None:
         path.parent.mkdir(parents=True, exist_ok=True)
         word_attributes = "" if include_missing_participant else ' participant="P1"'
@@ -472,6 +513,10 @@ class DatasetMaterialValidationTests(unittest.TestCase):
                 "ES2002a\n",
             )
             output.writestr(
+                "ami_public_manual_1.6.2/partitions/full-corpus.txt",
+                "ES2002b\nES2002a\n",
+            )
+            output.writestr(
                 "ami_public_manual_1.6.2/audio/",
                 b"",
             )
@@ -499,6 +544,44 @@ class DatasetMaterialValidationTests(unittest.TestCase):
                 "ami_public_manual_1.6.2/emotions/ES2002a.emotions.xml",
                 "<emotions />",
             )
+
+    @classmethod
+    def _material_fixture(
+        cls,
+        root: Path,
+    ) -> tuple[dict[str, dict[str, object]], Path]:
+        from scripts.emotion_state_public_dataset_contracts import (
+            AMI_DATASET_ID,
+            CREMA_DATASET_ID,
+            safe_extract_ami_archive,
+            validate_ami_material,
+            validate_crema_material,
+        )
+
+        public_root = root / "data" / "public" / "emotion-state"
+        crema_root = public_root / "crema"
+        cls._crema_fixture(crema_root)
+        archive = public_root / "ami.zip"
+        extract_root = public_root / "ami-extract"
+        cls._ami_archive(archive)
+        extraction = safe_extract_ami_archive(archive, extract_root)
+        materials = {
+            CREMA_DATASET_ID: validate_crema_material(
+                crema_root,
+                project_root=root,
+                git_lfs_oids_by_path=cls._synthetic_crema_lfs_oids(crema_root),
+            ),
+            AMI_DATASET_ID: validate_ami_material(
+                extract_root,
+                archive_path=archive,
+                extraction=extraction,
+                project_root=root,
+            ),
+        }
+        output_root = (
+            root / "research" / "sources" / "emotion_state" / "datasets"
+        )
+        return materials, output_root
 
     def test_crema_rejects_lfs_pointer_and_accepts_real_pcm_wav(self) -> None:
         from scripts.emotion_state_public_dataset_contracts import validate_wav_file
@@ -591,6 +674,86 @@ class DatasetMaterialValidationTests(unittest.TestCase):
                 output.writestr("manual/file.xml", "<root />")
             with self.assertRaisesRegex(ValueError, "case-fold"):
                 safe_extract_ami_archive(collision_archive, root / "collision-extract")
+
+    def test_ami_extraction_rejects_file_descendant_and_casefold_prefix_conflicts(
+        self,
+    ) -> None:
+        from scripts.emotion_state_public_dataset_contracts import safe_extract_ami_archive
+
+        conflicts = {
+            "exact": (
+                "metadata",
+                "metadata/words/ES2002a.A.words.xml",
+            ),
+            "casefold": (
+                "Metadata",
+                "metadata/words/ES2002a.A.words.xml",
+            ),
+        }
+        for name, (file_path, descendant_path) in conflicts.items():
+            with self.subTest(name=name), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                archive = root / "conflict.zip"
+                extract_root = root / "extract"
+                with zipfile.ZipFile(archive, "w") as output:
+                    output.writestr(file_path, "blocking file")
+                    output.writestr(descendant_path, "<root />")
+                with self.assertRaisesRegex(ValueError, "file.*descendant|prefix"):
+                    safe_extract_ami_archive(archive, extract_root)
+                self.assertFalse(extract_root.exists())
+                self.assertEqual(list(root.glob(".extract.staging.*")), [])
+
+    def test_ami_extraction_rejects_preexisting_path_conflict_without_residue(
+        self,
+    ) -> None:
+        from scripts.emotion_state_public_dataset_contracts import safe_extract_ami_archive
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            archive = root / "ami.zip"
+            extract_root = root / "extract"
+            self._ami_archive(archive)
+            blocker = extract_root / "ami_public_manual_1.6.2" / "words"
+            blocker.parent.mkdir(parents=True)
+            blocker.write_text("pre-existing blocker", encoding="utf-8")
+            with self.assertRaisesRegex(ValueError, "pre-existing extraction path conflict"):
+                safe_extract_ami_archive(archive, extract_root)
+            self.assertEqual(
+                blocker.read_text(encoding="utf-8"),
+                "pre-existing blocker",
+            )
+            self.assertEqual(list(root.glob(".extract.staging.*")), [])
+            self.assertEqual(list(root.glob(".extract.backup.*")), [])
+
+    def test_ami_extraction_failure_leaves_no_partial_root_or_staging_residue(
+        self,
+    ) -> None:
+        from scripts.emotion_state_public_dataset_contracts import safe_extract_ami_archive
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            archive = root / "corrupt.zip"
+            extract_root = root / "extract"
+            corrupt_payload = b"CORRUPT_SELECTED_PAYLOAD"
+            with zipfile.ZipFile(archive, "w", compression=zipfile.ZIP_STORED) as output:
+                output.writestr(
+                    "ami_public_manual_1.6.2/corpusResources/meetings.xml",
+                    "<meetings />",
+                )
+                output.writestr(
+                    "ami_public_manual_1.6.2/words/ES2002a.A.words.xml",
+                    corrupt_payload,
+                )
+            archive_bytes = bytearray(archive.read_bytes())
+            payload_index = archive_bytes.find(corrupt_payload)
+            self.assertGreaterEqual(payload_index, 0)
+            archive_bytes[payload_index] ^= 0x01
+            archive.write_bytes(archive_bytes)
+            with self.assertRaisesRegex(ValueError, "AMI archive|extraction"):
+                safe_extract_ami_archive(archive, extract_root)
+            self.assertFalse(extract_root.exists())
+            self.assertEqual(list(root.glob(".extract.staging.*")), [])
+            self.assertEqual(list(root.glob(".extract.backup.*")), [])
 
     def test_hash_inventory_is_path_sorted_and_byte_bound(self) -> None:
         from scripts.emotion_state_public_dataset_contracts import build_hash_inventory
@@ -735,6 +898,11 @@ class DatasetMaterialValidationTests(unittest.TestCase):
             self.assertTrue(
                 known_issue["details"]["objective_failure_confirmed"]
             )
+            self.assertEqual(
+                known_issue["details"]["objective_failure"],
+                "objective_wav_validation_failed",
+            )
+            self.assertNotIn(str(root), json.dumps(result))
             demographics = items["VideoDemographics.csv"]
             self.assertEqual(demographics["disposition"], "excluded")
             self.assertEqual(
@@ -913,6 +1081,58 @@ class DatasetMaterialValidationTests(unittest.TestCase):
                 quarantined_paths,
             )
 
+    def test_ami_retains_source_only_partition_definitions_deterministically(
+        self,
+    ) -> None:
+        from scripts.emotion_state_public_dataset_contracts import (
+            canonical_inventory_bytes,
+            safe_extract_ami_archive,
+            validate_ami_material,
+        )
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            archive = root / "ami.zip"
+            extract_root = root / "extract"
+            self._ami_archive(archive)
+            extraction = safe_extract_ami_archive(archive, extract_root)
+            first = validate_ami_material(
+                extract_root,
+                archive_path=archive,
+                extraction=extraction,
+                project_root=root,
+            )
+            second = validate_ami_material(
+                extract_root,
+                archive_path=archive,
+                extraction=extraction,
+                project_root=root,
+            )
+            source_metadata = first["quality_inventory"]["source_metadata"]
+            self.assertEqual(source_metadata["project_case_assignments"], [])
+            self.assertEqual(source_metadata["official_partition_definitions"], [
+                {
+                    "partition_id": "full-corpus",
+                    "partition_type": "full_corpus",
+                    "source_file_path": (
+                        "extract/ami_public_manual_1.6.2/partitions/full-corpus.txt"
+                    ),
+                    "meeting_ids": ["ES2002a", "ES2002b"],
+                },
+                {
+                    "partition_id": "scenario",
+                    "partition_type": "scenario",
+                    "source_file_path": (
+                        "extract/ami_public_manual_1.6.2/partitions/scenario.txt"
+                    ),
+                    "meeting_ids": ["ES2002a"],
+                },
+            ])
+            self.assertEqual(
+                canonical_inventory_bytes(first),
+                canonical_inventory_bytes(second),
+            )
+
     def test_archive_hashing_and_material_outputs_are_deterministic(self) -> None:
         from scripts.emotion_state_public_dataset_contracts import (
             canonical_inventory_bytes,
@@ -958,8 +1178,10 @@ class DatasetMaterialValidationTests(unittest.TestCase):
             self._ami_archive(archive)
             extract_root = public_root / "ami-extract"
             output_root = root / "research" / "sources" / "emotion_state" / "datasets"
-            self.assertEqual(
-                main(
+            stdout = io.StringIO()
+            stderr = io.StringIO()
+            with redirect_stdout(stdout), redirect_stderr(stderr):
+                exit_code = main(
                     [
                         "--ami-archive",
                         str(archive),
@@ -969,14 +1191,58 @@ class DatasetMaterialValidationTests(unittest.TestCase):
                         "list-ami",
                     ],
                     project_root=root,
+                )
+            self.assertEqual(exit_code, 0)
+            self.assertEqual(stderr.getvalue(), "")
+            self.assertEqual(stdout.getvalue().splitlines(), [
+                "ami_public_manual_1.6.2/DOME/ES2002a.dome.xml\tdome",
+                "ami_public_manual_1.6.2/audio/\tdirectory",
+                "ami_public_manual_1.6.2/audio/ES2002a.wav\taudio",
+                (
+                    "ami_public_manual_1.6.2/automatic/ES2002a.asr.xml"
+                    "\tautomatic_annotation"
                 ),
-                0,
-            )
+                (
+                    "ami_public_manual_1.6.2/corpusResources/meetings.xml"
+                    "\tmanual_nxt_metadata"
+                ),
+                (
+                    "ami_public_manual_1.6.2/dialogueActs/"
+                    "ES2002a.A.dialogue-acts.xml\tdialogue_act"
+                ),
+                (
+                    "ami_public_manual_1.6.2/emotions/ES2002a.emotions.xml"
+                    "\tspeculative_emotion"
+                ),
+                (
+                    "ami_public_manual_1.6.2/partitions/full-corpus.txt"
+                    "\tofficial_partition_metadata"
+                ),
+                (
+                    "ami_public_manual_1.6.2/partitions/scenario.txt"
+                    "\tofficial_partition_metadata"
+                ),
+                (
+                    "ami_public_manual_1.6.2/segments/ES2002a.A.segments.xml"
+                    "\ttiming_link"
+                ),
+                (
+                    "ami_public_manual_1.6.2/socialRoles/ES2002a.roles.xml"
+                    "\tsocial_role"
+                ),
+                "ami_public_manual_1.6.2/video/ES2002a.avi\tvideo",
+                (
+                    "ami_public_manual_1.6.2/words/ES2002a.A.words.xml"
+                    "\tspeaker_aligned_orthographic_transcript"
+                ),
+            ])
             private_archive = root / "data" / "private" / "ami.zip"
             private_archive.parent.mkdir(parents=True)
             private_archive.write_bytes(archive.read_bytes())
-            self.assertEqual(
-                main(
+            stdout = io.StringIO()
+            stderr = io.StringIO()
+            with redirect_stdout(stdout), redirect_stderr(stderr):
+                exit_code = main(
                     [
                         "--ami-archive",
                         str(private_archive),
@@ -986,11 +1252,20 @@ class DatasetMaterialValidationTests(unittest.TestCase):
                         "list-ami",
                     ],
                     project_root=root,
-                ),
-                1,
-            )
+                )
+            self.assertEqual(exit_code, 1)
+            self.assertEqual(stdout.getvalue(), "")
             self.assertEqual(
-                main(
+                stderr.getvalue(),
+                (
+                    "offline dataset verifier failed: "
+                    "ami-archive rejects private dataset paths\n"
+                ),
+            )
+            stdout = io.StringIO()
+            stderr = io.StringIO()
+            with redirect_stdout(stdout), redirect_stderr(stderr):
+                exit_code = main(
                     [
                         "--crema-root",
                         str(public_root / "crema"),
@@ -1006,10 +1281,59 @@ class DatasetMaterialValidationTests(unittest.TestCase):
                         "write-evidence",
                     ],
                     project_root=root,
+                )
+            self.assertEqual(exit_code, 1)
+            self.assertEqual(stdout.getvalue(), "")
+            self.assertEqual(
+                stderr.getvalue(),
+                (
+                    "offline dataset verifier failed: output root must be "
+                    "research/sources/emotion_state/datasets/\n"
                 ),
-                1,
             )
             self.assertFalse(output_root.exists())
+
+    def test_offline_cli_rejects_abbreviated_and_unknown_options_with_exit_2(
+        self,
+    ) -> None:
+        from scripts.build_emotion_state_public_dataset_manifests import main
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            public_root = root / "data" / "public" / "emotion-state"
+            public_root.mkdir(parents=True)
+            archive = public_root / "ami.zip"
+            self._ami_archive(archive)
+            extract_root = public_root / "ami-extract"
+            invalid_argv = {
+                "abbreviated": [
+                    "--ami-arch",
+                    str(archive),
+                    "--ami-extract-root",
+                    str(extract_root),
+                    "--mode",
+                    "list-ami",
+                ],
+                "unknown": [
+                    "--unknown-option",
+                    "value",
+                    "--mode",
+                    "list-ami",
+                ],
+            }
+            for name, argv in invalid_argv.items():
+                with self.subTest(name=name):
+                    stdout = io.StringIO()
+                    stderr = io.StringIO()
+                    with (
+                        redirect_stdout(stdout),
+                        redirect_stderr(stderr),
+                        self.assertRaises(SystemExit) as raised,
+                    ):
+                        main(argv, project_root=root)
+                    self.assertEqual(raised.exception.code, 2)
+                    self.assertEqual(stdout.getvalue(), "")
+                    self.assertIn("unrecognized arguments:", stderr.getvalue())
 
     def test_write_dataset_evidence_is_deterministic_and_manifest_immutable(self) -> None:
         from scripts.build_emotion_state_public_dataset_manifests import (
@@ -1037,6 +1361,9 @@ class DatasetMaterialValidationTests(unittest.TestCase):
                 CREMA_DATASET_ID: validate_crema_material(
                     crema_root,
                     project_root=root,
+                    git_lfs_oids_by_path=self._synthetic_crema_lfs_oids(
+                        crema_root
+                    ),
                 ),
                 AMI_DATASET_ID: validate_ami_material(
                     extract_root,
@@ -1083,6 +1410,424 @@ class DatasetMaterialValidationTests(unittest.TestCase):
                     materials=materials,
                     project_root=root,
                 )
+
+    def test_crema_lfs_pointer_parser_and_local_git_command_boundary(self) -> None:
+        from scripts.build_emotion_state_public_dataset_manifests import (
+            discover_crema_lfs_oids,
+            parse_git_lfs_pointer,
+        )
+
+        digest = "A" * 64
+        self.assertEqual(
+            parse_git_lfs_pointer(
+                (
+                    "version https://git-lfs.github.com/spec/v1\r\n"
+                    f"oid sha256:{digest.lower()}\r\n"
+                    "size 44\r\n"
+                ).encode("utf-8"),
+                path="AudioWAV/1001_DFA_ANG_XX.wav",
+            ),
+            digest,
+        )
+        for malformed in (
+            b"not a pointer\n",
+            (
+                b"version https://git-lfs.github.com/spec/v1\n"
+                b"oid sha256:BAD\nsize 44\n"
+            ),
+            (
+                b"version https://git-lfs.github.com/spec/v1\n"
+                + b"oid sha256:"
+                + b"A" * 64
+                + b"\n"
+            ),
+        ):
+            with self.subTest(malformed=malformed[:20]):
+                with self.assertRaisesRegex(ValueError, "Git LFS pointer"):
+                    parse_git_lfs_pointer(
+                        malformed,
+                        path="AudioWAV/1001_DFA_ANG_XX.wav",
+                    )
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            crema_root = root / "crema"
+            self._crema_fixture(crema_root)
+            expected_revision = "A" * 40
+            archive_bytes = self._crema_lfs_tar(crema_root)
+            calls: list[tuple[tuple[str, ...], Path, float]] = []
+
+            def fake_git(
+                argv: list[str],
+                *,
+                cwd: Path,
+                timeout_seconds: float,
+            ) -> bytes:
+                calls.append((tuple(argv), cwd, timeout_seconds))
+                command = tuple(argv[3:])
+                if command == ("rev-parse", "--show-toplevel"):
+                    return (str(crema_root.resolve()) + "\n").encode("utf-8")
+                if command == ("rev-parse", "HEAD"):
+                    return (expected_revision + "\n").encode("ascii")
+                if command == (
+                    "archive",
+                    "--format=tar",
+                    "HEAD",
+                    "--",
+                    "AudioWAV",
+                ):
+                    return archive_bytes
+                raise AssertionError(f"unexpected git argv: {argv}")
+
+            mapping = discover_crema_lfs_oids(
+                crema_root,
+                project_root=root,
+                expected_revision=expected_revision,
+                git_command=fake_git,
+            )
+            self.assertEqual(mapping, self._synthetic_crema_lfs_oids(crema_root))
+            self.assertEqual(len(calls), 3)
+            for argv, cwd, timeout_seconds in calls:
+                self.assertEqual(argv[:3], ("git", "-C", str(crema_root.resolve())))
+                self.assertEqual(cwd, root.resolve())
+                self.assertGreater(timeout_seconds, 0)
+                self.assertLessEqual(timeout_seconds, 60)
+
+    def test_crema_lfs_discovery_fails_closed_for_revision_pointer_and_binding_errors(
+        self,
+    ) -> None:
+        from scripts.build_emotion_state_public_dataset_manifests import (
+            discover_crema_lfs_oids,
+        )
+        from scripts.emotion_state_public_dataset_contracts import (
+            validate_crema_material,
+        )
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            crema_root = root / "crema"
+            self._crema_fixture(crema_root)
+            expected_revision = "A" * 40
+            selected_name = "AudioWAV/1001_DFA_ANG_XX.wav"
+
+            def command_for(
+                *,
+                revision: str = expected_revision,
+                archive_bytes: bytes,
+            ):
+                def fake_git(
+                    argv: list[str],
+                    *,
+                    cwd: Path,
+                    timeout_seconds: float,
+                ) -> bytes:
+                    command = tuple(argv[3:])
+                    if command == ("rev-parse", "--show-toplevel"):
+                        return (str(crema_root.resolve()) + "\n").encode("utf-8")
+                    if command == ("rev-parse", "HEAD"):
+                        return (revision + "\n").encode("ascii")
+                    if command[0] == "archive":
+                        return archive_bytes
+                    raise AssertionError(argv)
+
+                return fake_git
+
+            with self.assertRaisesRegex(ValueError, "revision"):
+                discover_crema_lfs_oids(
+                    crema_root,
+                    project_root=root,
+                    expected_revision=expected_revision,
+                    git_command=command_for(
+                        revision="B" * 40,
+                        archive_bytes=self._crema_lfs_tar(crema_root),
+                    ),
+                )
+            with self.assertRaisesRegex(ValueError, "missing"):
+                discover_crema_lfs_oids(
+                    crema_root,
+                    project_root=root,
+                    expected_revision=expected_revision,
+                    git_command=command_for(
+                        archive_bytes=self._crema_lfs_tar(
+                            crema_root,
+                            omit=frozenset({selected_name}),
+                        ),
+                    ),
+                )
+            malformed_archive = self._crema_lfs_tar(
+                crema_root,
+                overrides={selected_name: b"malformed pointer"},
+            )
+            with self.assertRaisesRegex(ValueError, "Git LFS pointer"):
+                discover_crema_lfs_oids(
+                    crema_root,
+                    project_root=root,
+                    expected_revision=expected_revision,
+                    git_command=command_for(archive_bytes=malformed_archive),
+                )
+            extra_pointer = (
+                "version https://git-lfs.github.com/spec/v1\n"
+                + "oid sha256:"
+                + "C" * 64
+                + "\nsize 44\n"
+            ).encode("utf-8")
+            with self.assertRaisesRegex(ValueError, "unbound"):
+                discover_crema_lfs_oids(
+                    crema_root,
+                    project_root=root,
+                    expected_revision=expected_revision,
+                    git_command=command_for(
+                        archive_bytes=self._crema_lfs_tar(
+                            crema_root,
+                            extra={
+                                "AudioWAV/9999_DFA_ANG_XX.wav": extra_pointer,
+                            },
+                        ),
+                    ),
+                )
+            mismatched = discover_crema_lfs_oids(
+                crema_root,
+                project_root=root,
+                expected_revision=expected_revision,
+                git_command=command_for(
+                    archive_bytes=self._crema_lfs_tar(
+                        crema_root,
+                        overrides={
+                            selected_name: (
+                                "version https://git-lfs.github.com/spec/v1\n"
+                                + "oid sha256:"
+                                + "D" * 64
+                                + "\nsize 44\n"
+                            ).encode("utf-8"),
+                        },
+                    ),
+                ),
+            )
+            with self.assertRaisesRegex(ValueError, "Git LFS OID"):
+                validate_crema_material(
+                    crema_root,
+                    project_root=root,
+                    git_lfs_oids_by_path=mismatched,
+                )
+
+    def test_write_evidence_cli_discovers_and_emits_complete_crema_lfs_oids(
+        self,
+    ) -> None:
+        from scripts.build_emotion_state_public_dataset_manifests import main
+        from scripts.emotion_state_public_dataset_contracts import CREMA_DATASET_ID
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            public_root = root / "data" / "public" / "emotion-state"
+            crema_root = public_root / "crema"
+            self._crema_fixture(crema_root)
+            ami_archive = public_root / "ami.zip"
+            ami_extract_root = public_root / "ami-extract"
+            self._ami_archive(ami_archive)
+            expected_revision = "A" * 40
+            archive_bytes = self._crema_lfs_tar(crema_root)
+
+            def fake_git(
+                argv: list[str],
+                *,
+                cwd: Path,
+                timeout_seconds: float,
+            ) -> bytes:
+                command = tuple(argv[3:])
+                if command == ("rev-parse", "--show-toplevel"):
+                    return (str(crema_root.resolve()) + "\n").encode("utf-8")
+                if command == ("rev-parse", "HEAD"):
+                    return (expected_revision + "\n").encode("ascii")
+                if command[0] == "archive":
+                    return archive_bytes
+                raise AssertionError(argv)
+
+            stdout = io.StringIO()
+            stderr = io.StringIO()
+            with redirect_stdout(stdout), redirect_stderr(stderr):
+                exit_code = main(
+                    [
+                        "--crema-root",
+                        str(crema_root),
+                        "--ami-archive",
+                        str(ami_archive),
+                        "--ami-extract-root",
+                        str(ami_extract_root),
+                        "--accessed-on",
+                        "2026-07-15",
+                        "--output-root",
+                        "research/sources/emotion_state/datasets",
+                        "--mode",
+                        "write-evidence",
+                    ],
+                    project_root=root,
+                    git_command=fake_git,
+                    crema_expected_revision=expected_revision,
+                )
+            self.assertEqual(exit_code, 0)
+            self.assertEqual(stdout.getvalue(), "")
+            self.assertEqual(stderr.getvalue(), "")
+            hashes_path = (
+                root
+                / "research"
+                / "sources"
+                / "emotion_state"
+                / "datasets"
+                / f"{CREMA_DATASET_ID}.hashes.json"
+            )
+            inventory = json.loads(hashes_path.read_text(encoding="utf-8"))
+            audio_entries = [
+                entry
+                for entry in inventory["files"]
+                if "/AudioWAV/" in entry["path"]
+            ]
+            self.assertEqual(len(audio_entries), 3)
+            for entry in audio_entries:
+                self.assertEqual(entry["git_lfs_oid_sha256"], entry["sha256"])
+
+    def test_write_evidence_rejects_nested_raw_text_and_unknown_fields_without_output(
+        self,
+    ) -> None:
+        from scripts.build_emotion_state_public_dataset_manifests import (
+            write_dataset_evidence,
+        )
+        from scripts.emotion_state_public_dataset_contracts import CREMA_DATASET_ID
+
+        injections = {
+            "raw_transcript": ("raw_transcript", "synthetic raw transcript body"),
+            "body": ("body", "synthetic body payload"),
+            "unexpected": ("unexpected_nested_field", "blocked"),
+        }
+        for name, (field, value) in injections.items():
+            with self.subTest(name=name), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                materials, output_root = self._material_fixture(root)
+                mutated = deepcopy(materials)
+                item = next(
+                    item
+                    for item in mutated[CREMA_DATASET_ID]["quality_inventory"]["items"]
+                    if item["classification"] == "crema_pcm_wav"
+                )
+                item["details"][field] = value
+                with self.assertRaisesRegex(ValueError, "quality inventory"):
+                    write_dataset_evidence(
+                        output_root=output_root,
+                        accessed_on="2026-07-15",
+                        materials=mutated,
+                        project_root=root,
+                    )
+                self.assertFalse(output_root.exists())
+
+    def test_write_evidence_rejects_deep_unknown_fields_and_raw_identifier_content(
+        self,
+    ) -> None:
+        from scripts.build_emotion_state_public_dataset_manifests import (
+            write_dataset_evidence,
+        )
+        from scripts.emotion_state_public_dataset_contracts import (
+            AMI_DATASET_ID,
+            CREMA_DATASET_ID,
+        )
+
+        def mutate_known_filename(materials: dict[str, dict[str, object]]) -> None:
+            item = next(
+                item
+                for item in materials[CREMA_DATASET_ID]["quality_inventory"]["items"]
+                if item["classification"] == "crema_wav"
+            )
+            item["details"]["filename_metadata"]["unexpected"] = "blocked"
+
+        def mutate_source_column(materials: dict[str, dict[str, object]]) -> None:
+            item = next(
+                item
+                for item in materials[CREMA_DATASET_ID]["quality_inventory"]["items"]
+                if item["classification"] == "crema_pcm_wav"
+            )
+            item["details"]["source_label_evidence"][
+                "source_column"
+            ] = "synthetic raw transcript sentence"
+
+        def mutate_participant_id(materials: dict[str, dict[str, object]]) -> None:
+            materials[AMI_DATASET_ID]["quality_inventory"]["source_metadata"][
+                "participants"
+            ] = ["synthetic raw transcript sentence"]
+
+        def mutate_mismatch_path(materials: dict[str, dict[str, object]]) -> None:
+            materials[CREMA_DATASET_ID]["quality_inventory"]["source_metadata"][
+                "official_mismatch_wav_counterparts"
+            ] = ["synthetic raw transcript sentence"]
+
+        def mutate_recording_site(materials: dict[str, dict[str, object]]) -> None:
+            materials[AMI_DATASET_ID]["quality_inventory"]["source_metadata"][
+                "recording_sites"
+            ] = ["synthetic raw transcript sentence"]
+
+        for name, mutate in {
+            "known_filename": mutate_known_filename,
+            "source_column": mutate_source_column,
+            "participant_id": mutate_participant_id,
+            "mismatch_path": mutate_mismatch_path,
+            "recording_site": mutate_recording_site,
+        }.items():
+            with self.subTest(name=name), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                materials, output_root = self._material_fixture(root)
+                mutated = deepcopy(materials)
+                mutate(mutated)
+                with self.assertRaisesRegex(ValueError, "quality inventory"):
+                    write_dataset_evidence(
+                        output_root=output_root,
+                        accessed_on="2026-07-15",
+                        materials=mutated,
+                        project_root=root,
+                    )
+                self.assertFalse(output_root.exists())
+
+    def test_write_evidence_rejects_cross_dataset_and_file_set_mismatch_without_output(
+        self,
+    ) -> None:
+        from scripts.build_emotion_state_public_dataset_manifests import (
+            write_dataset_evidence,
+        )
+        from scripts.emotion_state_public_dataset_contracts import (
+            AMI_DATASET_ID,
+            CREMA_DATASET_ID,
+        )
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            materials, output_root = self._material_fixture(root)
+            cross_dataset = deepcopy(materials)
+            cross_dataset[CREMA_DATASET_ID]["hash_inventory"][
+                "dataset_id"
+            ] = AMI_DATASET_ID
+            with self.assertRaisesRegex(ValueError, "hash inventory dataset_id"):
+                write_dataset_evidence(
+                    output_root=output_root,
+                    accessed_on="2026-07-15",
+                    materials=cross_dataset,
+                    project_root=root,
+                )
+            self.assertFalse(output_root.exists())
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            materials, output_root = self._material_fixture(root)
+            mismatch = deepcopy(materials)
+            item = next(
+                item
+                for item in mismatch[CREMA_DATASET_ID]["quality_inventory"]["items"]
+                if item["classification"] == "crema_pcm_wav"
+            )
+            item["selected_file_path"] = "different/selected.wav"
+            with self.assertRaisesRegex(ValueError, "selected file set"):
+                write_dataset_evidence(
+                    output_root=output_root,
+                    accessed_on="2026-07-15",
+                    materials=mismatch,
+                    project_root=root,
+                )
+            self.assertFalse(output_root.exists())
 
 
 class SplitManifestV2Tests(unittest.TestCase):
