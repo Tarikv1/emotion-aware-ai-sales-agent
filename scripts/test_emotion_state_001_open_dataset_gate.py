@@ -583,6 +583,33 @@ class DatasetMaterialValidationTests(unittest.TestCase):
         )
         return materials, output_root
 
+    @staticmethod
+    def _independent_ami_partition_definition_copies(
+        materials: dict[str, dict[str, object]],
+        *,
+        source_file_path: str,
+    ) -> tuple[dict[str, object], dict[str, object]]:
+        from scripts.emotion_state_public_dataset_contracts import AMI_DATASET_ID
+
+        quality_inventory = materials[AMI_DATASET_ID]["quality_inventory"]
+        quality_item = next(
+            item
+            for item in quality_inventory["items"]
+            if (
+                item["classification"] == "official_partition_metadata"
+                and item["details"]["source_file_path"] == source_file_path
+            )
+        )
+        quality_item["details"] = deepcopy(quality_item["details"])
+        source_definition = next(
+            definition
+            for definition in quality_inventory["source_metadata"][
+                "official_partition_definitions"
+            ]
+            if definition["source_file_path"] == source_file_path
+        )
+        return quality_item["details"], source_definition
+
     def test_crema_rejects_lfs_pointer_and_accepts_real_pcm_wav(self) -> None:
         from scripts.emotion_state_public_dataset_contracts import validate_wav_file
 
@@ -1309,6 +1336,108 @@ class DatasetMaterialValidationTests(unittest.TestCase):
                         project_root=root,
                     )
                 self.assertFalse(output_root.exists())
+
+    def test_write_evidence_rejects_synchronized_ami_partition_meeting_ids_tamper_without_output(
+        self,
+    ) -> None:
+        from scripts.build_emotion_state_public_dataset_manifests import (
+            write_dataset_evidence,
+        )
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            materials, output_root = self._material_fixture(root)
+            quality_definition, source_definition = (
+                self._independent_ami_partition_definition_copies(
+                    materials,
+                    source_file_path=(
+                        "data/public/emotion-state/ami-extract/"
+                        "ami_public_manual_1.6.2/partitions/scenario.txt"
+                    ),
+                )
+            )
+            quality_definition["meeting_ids"] = ["ES2002b"]
+            source_definition["meeting_ids"] = ["ES2002b"]
+
+            with self.assertRaises(ValueError):
+                write_dataset_evidence(
+                    output_root=output_root,
+                    accessed_on="2026-07-15",
+                    materials=materials,
+                    project_root=root,
+                )
+            self.assertFalse(output_root.exists())
+
+    def test_write_evidence_rejects_synchronized_ami_partition_id_tamper_without_output(
+        self,
+    ) -> None:
+        from scripts.build_emotion_state_public_dataset_manifests import (
+            write_dataset_evidence,
+        )
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            materials, output_root = self._material_fixture(root)
+            quality_definition, source_definition = (
+                self._independent_ami_partition_definition_copies(
+                    materials,
+                    source_file_path=(
+                        "data/public/emotion-state/ami-extract/"
+                        "ami_public_manual_1.6.2/partitions/scenario.txt"
+                    ),
+                )
+            )
+            quality_definition["partition_id"] = "scenario-tampered"
+            source_definition["partition_id"] = "scenario-tampered"
+
+            with self.assertRaises(ValueError):
+                write_dataset_evidence(
+                    output_root=output_root,
+                    accessed_on="2026-07-15",
+                    materials=materials,
+                    project_root=root,
+                )
+            self.assertFalse(output_root.exists())
+
+    def test_write_evidence_rejects_synchronized_ami_partition_type_tamper_without_output(
+        self,
+    ) -> None:
+        from scripts.build_emotion_state_public_dataset_manifests import (
+            write_dataset_evidence,
+        )
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            materials, output_root = self._material_fixture(root)
+            for source_file_path, partition_type in (
+                (
+                    "data/public/emotion-state/ami-extract/"
+                    "ami_public_manual_1.6.2/partitions/full-corpus.txt",
+                    "scenario",
+                ),
+                (
+                    "data/public/emotion-state/ami-extract/"
+                    "ami_public_manual_1.6.2/partitions/scenario.txt",
+                    "full_corpus",
+                ),
+            ):
+                quality_definition, source_definition = (
+                    self._independent_ami_partition_definition_copies(
+                        materials,
+                        source_file_path=source_file_path,
+                    )
+                )
+                quality_definition["partition_type"] = partition_type
+                source_definition["partition_type"] = partition_type
+
+            with self.assertRaises(ValueError):
+                write_dataset_evidence(
+                    output_root=output_root,
+                    accessed_on="2026-07-15",
+                    materials=materials,
+                    project_root=root,
+                )
+            self.assertFalse(output_root.exists())
 
     def test_archive_hashing_and_material_outputs_are_deterministic(self) -> None:
         from scripts.emotion_state_public_dataset_contracts import (

@@ -1501,10 +1501,10 @@ def _ami_metadata_from_xml(path: Path) -> dict[str, set[str]]:
     return values
 
 
-def _ami_partition_definition(
+def parse_ami_partition_definition(
     path: Path,
     *,
-    project_relative_path: str,
+    project_root: Path,
 ) -> dict[str, Any]:
     try:
         text = path.read_text(encoding="utf-8-sig")
@@ -1536,7 +1536,7 @@ def _ami_partition_definition(
     return {
         "partition_id": partition_id,
         "partition_type": partition_type,
-        "source_file_path": project_relative_path,
+        "source_file_path": normalized_relative_path(path, project_root),
         "meeting_ids": sorted(meeting_ids),
     }
 
@@ -1690,9 +1690,9 @@ def validate_ami_material(
                     })
             if classification == "official_partition_metadata":
                 partition_paths.append(project_relative_path)
-                partition_definition = _ami_partition_definition(
+                partition_definition = parse_ami_partition_definition(
                     extracted_path,
-                    project_relative_path=project_relative_path,
+                    project_root=inventory_root,
                 )
                 partition_definitions.append(partition_definition)
                 details = partition_definition

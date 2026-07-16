@@ -30,6 +30,7 @@ from scripts.emotion_state_public_dataset_contracts import (
     canonical_inventory_bytes,
     classify_ami_member,
     inspect_ami_archive,
+    parse_ami_partition_definition,
     parse_crema_filename,
     safe_extract_ami_archive,
     validate_ami_material,
@@ -1175,6 +1176,75 @@ def _validate_quality_inventory(
     return payload
 
 
+def _validate_ami_partition_source_bindings(
+    quality_inventory: dict[str, Any],
+    *,
+    selected_file_paths: set[str],
+    project_root: Path,
+) -> None:
+    quality_definitions: dict[str, dict[str, Any]] = {}
+    partition_item_count = 0
+    for item in quality_inventory["items"]:
+        if item["classification"] != "official_partition_metadata":
+            continue
+        partition_item_count += 1
+        source_file_path = item["selected_file_path"]
+        if source_file_path in quality_definitions:
+            raise ValueError("duplicate AMI partition quality definition")
+        quality_definitions[source_file_path] = item["details"]
+    if not quality_definitions:
+        raise ValueError("missing AMI partition quality definitions")
+    if partition_item_count != len(quality_definitions):
+        raise ValueError("duplicate AMI partition quality definition")
+
+    metadata = quality_inventory["source_metadata"]
+    metadata_definitions: dict[str, dict[str, Any]] = {}
+    for definition in metadata["official_partition_definitions"]:
+        source_file_path = definition["source_file_path"]
+        if source_file_path in metadata_definitions:
+            raise ValueError("duplicate AMI partition source definition")
+        metadata_definitions[source_file_path] = definition
+    partition_paths = metadata["official_partition_paths"]
+    if (
+        set(quality_definitions) != set(metadata_definitions)
+        or set(quality_definitions) != set(partition_paths)
+        or len(partition_paths) != len(set(partition_paths))
+    ):
+        raise ValueError("unmatched AMI partition definitions")
+
+    parsed_definitions: list[dict[str, Any]] = []
+    for source_file_path in sorted(quality_definitions):
+        if source_file_path not in selected_file_paths:
+            raise ValueError("AMI partition source is not a selected hashed file")
+        parsed_definition = parse_ami_partition_definition(
+            project_root.joinpath(*source_file_path.split("/")),
+            project_root=project_root,
+        )
+        if parsed_definition["source_file_path"] != source_file_path:
+            raise ValueError("AMI partition source path binding mismatch")
+        if (
+            parsed_definition != quality_definitions[source_file_path]
+            or parsed_definition != metadata_definitions[source_file_path]
+        ):
+            raise ValueError("AMI partition definition does not match selected source")
+        parsed_definitions.append(parsed_definition)
+
+    partition_ids = [
+        definition["partition_id"]
+        for definition in parsed_definitions
+    ]
+    if len(partition_ids) != len(set(partition_ids)):
+        raise ValueError("duplicate parsed AMI partition ID")
+    partition_types = {
+        definition["partition_type"]
+        for definition in parsed_definitions
+    }
+    if partition_types != {"scenario", "full_corpus"}:
+        raise ValueError(
+            "parsed AMI partition types must be exactly scenario and full_corpus"
+        )
+
+
 def _verified_manifest(
     *,
     dataset_id: str,
@@ -1295,6 +1365,12 @@ def write_dataset_evidence(
             dataset_id=dataset_id,
             selected_file_paths=selected_file_paths,
         )
+        if dataset_id == AMI_DATASET_ID:
+            _validate_ami_partition_source_bindings(
+                quality_inventory,
+                selected_file_paths=selected_file_paths,
+                project_root=resolved_project_root,
+            )
         hash_bytes = canonical_inventory_bytes(hash_inventory)
         quality_bytes = canonical_inventory_bytes(quality_inventory)
         manifest = _verified_manifest(
