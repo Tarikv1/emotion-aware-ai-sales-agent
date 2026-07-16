@@ -1,19 +1,31 @@
 from __future__ import annotations
 
+import ast
 import hashlib
 import io
 import json
+import os
+import re
 import struct
+import subprocess
+import sys
 import tarfile
 import tempfile
+import textwrap
 import unittest
 import wave
 import zipfile
 from contextlib import redirect_stderr, redirect_stdout
 from copy import deepcopy
 from pathlib import Path
+from unittest import mock
 
 ROOT = Path(__file__).resolve().parents[1]
+ACTIVE_GUARD_SELF_HOSTING_SKIP_REASON = (
+    "self-hosting guard unit runs in the direct unit gate; rerunning it under "
+    "an active guard would require authority outside the frozen focused-command "
+    "mapping"
+)
 
 
 class SourceProvenanceTests(unittest.TestCase):
@@ -4588,3 +4600,4648 @@ class CohortReleaseTests(unittest.TestCase):
             ],
             "pass",
         )
+
+
+class VerificationEvidenceTests(unittest.TestCase):
+    POLICY_PATH = (
+        ROOT
+        / "research/sources/emotion_state/phase_a_verification_guard_policy.json"
+    )
+    GUARD_SITE_PATH = ROOT / "scripts/emotion_state_phase_a_guard_site"
+    PARENT_ENVIRONMENT_ALLOWLIST = (
+        "COMSPEC",
+        "PATH",
+        "PATHEXT",
+        "SYSTEMDRIVE",
+        "SYSTEMROOT",
+        "WINDIR",
+    )
+    PROVIDER_ENVIRONMENT_EXACT_NAMES = (
+        "AWS_ACCESS_KEY_ID",
+        "AWS_SECRET_ACCESS_KEY",
+        "AWS_SESSION_TOKEN",
+        "CARTESIA_API_KEY",
+        "DIALOGUE_REASONER_API_KEY",
+        "ELEVENLABS_API_KEY",
+        "GH_TOKEN",
+        "GITHUB_TOKEN",
+        "GROQ_API_KEY",
+        "HF_TOKEN",
+        "HUGGING_FACE_HUB_TOKEN",
+        "LOCAL_DIALOGUE_REASONER_API_KEY",
+        "OPENAI_API_KEY",
+        "OPENAI_SECRET",
+        "OPENROUTER_API_KEY",
+        "TOGETHER_API_KEY",
+        "TOOL_AUTH_TOKEN",
+        "ULTRAVOX_API_KEY",
+    )
+
+    @staticmethod
+    def _verification_module():
+        import scripts.emotion_state_phase_a_verification_evidence as verification
+
+        return verification
+
+    def _guarded_child_environment(
+        self,
+        project_root: Path,
+        *,
+        allowed_subprocesses_json: str = "[]",
+        extra_parent_environment: dict[str, str] | None = None,
+    ) -> tuple[dict[str, str], list[str]]:
+        verification = self._verification_module()
+        transaction_root = project_root / "guard-runtime"
+        transaction_root.mkdir(exist_ok=True)
+        parent_environment = {
+            name: os.environ[name]
+            for name in self.PARENT_ENVIRONMENT_ALLOWLIST
+            if name in os.environ
+        }
+        if extra_parent_environment is not None:
+            parent_environment.update(extra_parent_environment)
+        injected_environment = {
+            "EMOTION_STATE_PHASE_A_ALLOWED_SUBPROCESSES_JSON": (
+                allowed_subprocesses_json
+            ),
+            "EMOTION_STATE_PHASE_A_GUARD_POLICY": str(self.POLICY_PATH),
+            "EMOTION_STATE_PHASE_A_PROJECT_ROOT": str(project_root),
+            "GIT_CONFIG_GLOBAL": "NUL",
+            "GIT_CONFIG_NOSYSTEM": "1",
+            "GIT_TERMINAL_PROMPT": "0",
+            "HOME": str(transaction_root),
+            "PYTHONDONTWRITEBYTECODE": "1",
+            "PYTHONIOENCODING": "utf-8",
+            "PYTHONPATH": os.pathsep.join((
+                str(self.GUARD_SITE_PATH),
+                str(ROOT),
+            )),
+            "PYTHONUTF8": "1",
+            "TEMP": str(transaction_root),
+            "TMP": str(transaction_root),
+            "USERPROFILE": str(transaction_root),
+        }
+        return verification.build_guarded_child_environment(
+            parent_environment=parent_environment,
+            injected_environment=injected_environment,
+        )
+
+    def _run_guarded_child(
+        self,
+        project_root: Path,
+        source: str,
+        *,
+        allowed_subprocesses_json: str = "[]",
+        extra_parent_environment: dict[str, str] | None = None,
+    ) -> tuple[subprocess.CompletedProcess[str], list[str]]:
+        environment, removed_names = self._guarded_child_environment(
+            project_root,
+            allowed_subprocesses_json=allowed_subprocesses_json,
+            extra_parent_environment=extra_parent_environment,
+        )
+        completed = subprocess.run(
+            [sys.executable, "-c", textwrap.dedent(source)],
+            cwd=project_root,
+            env=environment,
+            capture_output=True,
+            text=True,
+            timeout=20,
+            check=False,
+        )
+        self.assertEqual(
+            completed.returncode,
+            0,
+            msg=(
+                f"guarded child failed with exit {completed.returncode}\n"
+                f"stdout:\n{completed.stdout}\n"
+                f"stderr:\n{completed.stderr}"
+            ),
+        )
+        return completed, removed_names
+
+    def _run_guarded_target(
+        self,
+        project_root: Path,
+        target_relative_path: str,
+        *,
+        allowed_subprocesses: object,
+        cwd: Path | None = None,
+    ) -> subprocess.CompletedProcess[str]:
+        allowed_json = (
+            allowed_subprocesses
+            if isinstance(allowed_subprocesses, str)
+            else json.dumps(
+                allowed_subprocesses,
+                sort_keys=True,
+                separators=(",", ":"),
+            )
+        )
+        environment, _removed_names = self._guarded_child_environment(
+            project_root,
+            allowed_subprocesses_json=allowed_json,
+        )
+        return subprocess.run(
+            [
+                sys.executable,
+                str(project_root / target_relative_path),
+            ],
+            cwd=project_root if cwd is None else cwd,
+            env=environment,
+            capture_output=True,
+            text=True,
+            timeout=20,
+            check=False,
+        )
+
+    def test_policy_exclusions_are_exact_and_outputs_do_not_self_hash(self) -> None:
+        from scripts.emotion_state_phase_a_verification_evidence import OUTPUT_EXCLUSIONS
+
+        self.assertEqual(OUTPUT_EXCLUSIONS, (
+            "research/experiments/generated/EMOTION-STATE-001-phase-a-contracts/result.json",
+            "research/experiments/generated/EMOTION-STATE-001-phase-a-contracts/report.md",
+            ".tmp/emotion-state-001-phase-a-publication/**",
+        ))
+
+    def test_child_environment_is_allowlisted_without_logging_values(self) -> None:
+        from scripts.emotion_state_phase_a_verification_evidence import (
+            build_guarded_child_environment,
+        )
+
+        cleaned, removed_names = build_guarded_child_environment(
+            parent_environment={
+                "PATH": "safe",
+                "SYSTEMROOT": r"C:\Windows",
+                "DIALOGUE_REASONER_API_KEY": "fixture-only",
+                "GH_TOKEN": "fixture-only",
+                "GITHUB_TOKEN": "fixture-only",
+                "HF_TOKEN": "fixture-only",
+                "AWS_SECRET_ACCESS_KEY": "fixture-only",
+                "TOOL_AUTH_TOKEN": "fixture-only",
+                "UNLISTED_BENIGN": "fixture-only",
+            },
+            injected_environment={
+                "EMOTION_STATE_PHASE_A_GUARD_POLICY": "fixture-policy",
+            },
+        )
+        self.assertEqual(cleaned, {
+            "EMOTION_STATE_PHASE_A_GUARD_POLICY": "fixture-policy",
+            "PATH": "safe",
+            "SYSTEMROOT": r"C:\Windows",
+        })
+        self.assertEqual(removed_names, [
+            "AWS_SECRET_ACCESS_KEY",
+            "DIALOGUE_REASONER_API_KEY",
+            "GH_TOKEN",
+            "GITHUB_TOKEN",
+            "HF_TOKEN",
+            "TOOL_AUTH_TOKEN",
+            "UNLISTED_BENIGN",
+        ])
+        self.assertNotIn("fixture-only", json.dumps(removed_names))
+
+    def test_ledger_is_relative_deterministic_and_timestamp_free(self) -> None:
+        from scripts.emotion_state_phase_a_verification_evidence import (
+            canonical_command_entry,
+        )
+
+        entry = canonical_command_entry(
+            sequence_number=1,
+            command_id="focused-contract-tests",
+            argv=[
+                "python",
+                "-m",
+                "unittest",
+                "scripts.test_emotion_state_001_open_dataset_gate",
+            ],
+            working_directory=".",
+            exit_status=0,
+        )
+        self.assertEqual(entry["working_directory"], ".")
+        self.assertNotIn("timestamp", entry)
+        self.assertNotIn(str(ROOT), json.dumps(entry))
+
+    def test_repository_gates_are_derived_only_from_exact_mode_ledger(self) -> None:
+        from scripts.emotion_state_phase_a_verification_evidence import (
+            REPOSITORY_GATE_COMMAND_IDS,
+            derive_repository_gate_statuses,
+            validate_completion_evidence_request,
+        )
+
+        baseline_commit = "a" * 40
+        head_commit = "b" * 40
+        policy_commands = (
+            (
+                "focused-open-dataset-tests",
+                (
+                    "python",
+                    "-m",
+                    "unittest",
+                    "scripts.test_emotion_state_001_open_dataset_gate",
+                    "-v",
+                ),
+            ),
+            (
+                "closeout-hardening-tests",
+                (
+                    "python",
+                    "-m",
+                    "unittest",
+                    "scripts.test_emotion_state_001_closeout_hardening",
+                    "-v",
+                ),
+            ),
+            (
+                "phase-a-prepublication-validator",
+                (
+                    "python",
+                    "scripts/validate_emotion_state_001_phase_a_contracts.py",
+                    "--section",
+                    "prepublication",
+                    "--mode",
+                    "{mode}",
+                ),
+            ),
+            (
+                "phase-a-materials-validator",
+                (
+                    "python",
+                    "scripts/validate_emotion_state_001_phase_a_contracts.py",
+                    "--section",
+                    "materials",
+                ),
+            ),
+            (
+                "frozen-exp-002-validator",
+                (
+                    "python",
+                    "scripts/validate_exp_002_frozen_response_baseline.py",
+                ),
+            ),
+            (
+                "brain-schema-validator",
+                (
+                    "python",
+                    "scripts/validate_brain_002_runtime_state_schema.py",
+                ),
+            ),
+            (
+                "private-boundary-validator",
+                (
+                    "python",
+                    "scripts/validate_private_data_boundary.py",
+                ),
+            ),
+            (
+                "runtime-manifest-validator",
+                (
+                    "python",
+                    "scripts/validate_runtime_manifest.py",
+                ),
+            ),
+            (
+                "setup-validator",
+                (
+                    "python",
+                    "scripts/validate_check_setup.py",
+                ),
+            ),
+            (
+                "drift-validator",
+                (
+                    "python",
+                    "scripts/validate_project_drift_guard.py",
+                ),
+            ),
+            (
+                "thesis-reference-validator",
+                (
+                    "python",
+                    "scripts/check_thesis_reference_registry.py",
+                ),
+            ),
+            (
+                "thesis-update-validator",
+                (
+                    "python",
+                    "scripts/check_thesis_update_gate.py",
+                ),
+            ),
+            (
+                "context-policy-validator",
+                (
+                    "python",
+                    "scripts/validate_context_reading_policy.py",
+                ),
+            ),
+            (
+                "json-validator",
+                (
+                    "python",
+                    "scripts/emotion_state_phase_a_verification_evidence.py",
+                    "--validate-json-inputs",
+                ),
+            ),
+            (
+                "git-diff-check",
+                (
+                    "git",
+                    "diff",
+                    "--check",
+                    "{baseline_commit}..{head_commit}",
+                ),
+            ),
+        )
+        expected_gate_commands = {
+            "focused_tests": ("focused-open-dataset-tests",),
+            "closeout_hardening": ("closeout-hardening-tests",),
+            "phase_a_prepublication": ("phase-a-prepublication-validator",),
+            "materials": ("phase-a-materials-validator",),
+            "frozen_exp_002": ("frozen-exp-002-validator",),
+            "brain_schema": ("brain-schema-validator",),
+            "private_boundary": ("private-boundary-validator",),
+            "runtime_manifest": ("runtime-manifest-validator",),
+            "setup": ("setup-validator",),
+            "drift": ("drift-validator",),
+            "thesis_reference_registry": ("thesis-reference-validator",),
+            "thesis_update": ("thesis-update-validator",),
+            "context_policy": ("context-policy-validator",),
+            "json": ("json-validator",),
+            "diff_check": ("git-diff-check",),
+        }
+
+        def build_ledger(mode: str) -> list[dict[str, object]]:
+            commands = policy_commands
+            if mode == "material-pending":
+                commands = tuple(
+                    command
+                    for command in commands
+                    if command[0] != "phase-a-materials-validator"
+                )
+            return [
+                {
+                    "sequence_number": sequence_number,
+                    "command_id": command_id,
+                    "argv": [
+                        argument.format(
+                            mode=mode,
+                            baseline_commit=baseline_commit,
+                            head_commit=head_commit,
+                        )
+                        for argument in argv_template
+                    ],
+                    "working_directory": ".",
+                    "exit_status": 0,
+                }
+                for sequence_number, (command_id, argv_template) in enumerate(
+                    commands,
+                    start=1,
+                )
+            ]
+
+        self.assertEqual(
+            tuple(REPOSITORY_GATE_COMMAND_IDS.items()),
+            tuple(expected_gate_commands.items()),
+        )
+        complete_ledger = build_ledger("complete")
+        material_pending_ledger = build_ledger("material-pending")
+        self.assertEqual(
+            tuple(
+                derive_repository_gate_statuses(
+                    complete_ledger,
+                    "complete",
+                ).items()
+            ),
+            tuple((gate_id, "pass") for gate_id in expected_gate_commands),
+        )
+        self.assertEqual(
+            tuple(
+                derive_repository_gate_statuses(
+                    material_pending_ledger,
+                    "material-pending",
+                ).items()
+            ),
+            tuple(
+                (gate_id, "pass")
+                for gate_id in expected_gate_commands
+                if gate_id != "materials"
+            ),
+        )
+
+        missing = deepcopy(complete_ledger)
+        missing.pop(7)
+        for sequence_number, entry in enumerate(missing, start=1):
+            entry["sequence_number"] = sequence_number
+        duplicate = deepcopy(complete_ledger)
+        duplicate.append(deepcopy(duplicate[0]))
+        duplicate[-1]["sequence_number"] = len(duplicate)
+        reordered = deepcopy(complete_ledger)
+        reordered[5], reordered[6] = reordered[6], reordered[5]
+        for sequence_number, entry in enumerate(reordered, start=1):
+            entry["sequence_number"] = sequence_number
+        argv_mismatch = deepcopy(complete_ledger)
+        argv_mismatch[2]["argv"][-1] = "material-pending"
+        nonzero = deepcopy(complete_ledger)
+        nonzero[9]["exit_status"] = 1
+        unknown_id = deepcopy(complete_ledger)
+        unknown_id[12]["command_id"] = "unknown-validator"
+        invalid_ledgers = {
+            "missing": missing,
+            "duplicate": duplicate,
+            "reordered": reordered,
+            "argv_template_mismatch": argv_mismatch,
+            "nonzero": nonzero,
+            "unknown_id": unknown_id,
+        }
+        for case_name, invalid_ledger in invalid_ledgers.items():
+            with self.subTest(case=case_name):
+                with self.assertRaises(ValueError):
+                    derive_repository_gate_statuses(
+                        invalid_ledger,
+                        "complete",
+                    )
+
+        derived_projection_cases = {
+            "repository_gate_statuses": {
+                gate_id: "pass"
+                for gate_id in expected_gate_commands
+            },
+            "guarded_command_results": {
+                entry["command_id"]: entry["exit_status"]
+                for entry in complete_ledger
+            },
+        }
+        for field_name, caller_projection in derived_projection_cases.items():
+            with self.subTest(caller_projection=field_name):
+                request = {
+                    "mode": "complete",
+                    "executed_command_ledger": deepcopy(complete_ledger),
+                    field_name: caller_projection,
+                }
+                self.assertEqual(
+                    tuple(request),
+                    ("mode", "executed_command_ledger", field_name),
+                )
+                with self.assertRaisesRegex(ValueError, "derived-only"):
+                    validate_completion_evidence_request(request)
+
+    def test_guarded_command_is_policy_built_and_rejects_bad_substitutions(
+        self,
+    ) -> None:
+        from scripts.emotion_state_phase_a_verification_evidence import (
+            run_guarded_command,
+        )
+
+        entry = run_guarded_command(
+            "context-policy-validator",
+            ROOT,
+            {},
+        )
+        self.assertEqual(
+            set(entry),
+            {
+                "sequence_number",
+                "command_id",
+                "argv",
+                "working_directory",
+                "exit_status",
+            },
+        )
+        self.assertEqual(entry["sequence_number"], 1)
+        self.assertEqual(entry["command_id"], "context-policy-validator")
+        self.assertEqual(
+            entry["argv"],
+            [
+                "python",
+                "scripts/validate_context_reading_policy.py",
+            ],
+        )
+        self.assertEqual(entry["working_directory"], ".")
+        self.assertEqual(entry["exit_status"], 0)
+        serialized_entry = json.dumps(entry, sort_keys=True)
+        self.assertNotIn("timestamp", serialized_entry)
+        self.assertNotIn("environment", serialized_entry)
+        self.assertNotIn(str(ROOT), serialized_entry)
+
+        invalid_calls = (
+            ("unknown-validator", {}),
+            ("context-policy-validator", {"mode": "complete"}),
+            ("phase-a-prepublication-validator", {}),
+            (
+                "phase-a-prepublication-validator",
+                {"mode": "not-a-reviewed-mode"},
+            ),
+            (
+                "git-diff-check",
+                {
+                    "baseline_commit": "a" * 39,
+                    "head_commit": "b" * 40,
+                },
+            ),
+            (
+                "git-diff-check",
+                {
+                    "baseline_commit": "A" * 40,
+                    "head_commit": "b" * 40,
+                },
+            ),
+            (
+                "git-diff-check",
+                {
+                    "baseline_commit": "a" * 40,
+                    "head_commit": "not-a-commit",
+                },
+            ),
+            (
+                "git-diff-check",
+                {
+                    "baseline_commit": "a" * 40,
+                    "head_commit": "b" * 40,
+                    "mode": "complete",
+                },
+            ),
+        )
+        for command_id, substitutions in invalid_calls:
+            with self.subTest(
+                command_id=command_id,
+                substitutions=substitutions,
+            ):
+                with self.assertRaises(ValueError):
+                    run_guarded_command(
+                        command_id,
+                        ROOT,
+                        substitutions,
+                    )
+
+    def test_json_validation_is_derived_path_only_and_rejects_duplicate_keys(
+        self,
+    ) -> None:
+        from scripts.emotion_state_phase_a_verification_evidence import (
+            parse_args,
+            validate_json_inputs,
+        )
+
+        args = parse_args(["--validate-json-inputs"])
+        self.assertTrue(args.validate_json_inputs)
+        stderr = io.StringIO()
+        with redirect_stderr(stderr), self.assertRaises(SystemExit) as raised:
+            parse_args(["--validate-json-inputs", "arbitrary.json"])
+        self.assertEqual(raised.exception.code, 2)
+
+        with tempfile.TemporaryDirectory(
+            prefix="emotion-state-json-inputs-",
+        ) as temporary_directory:
+            root = Path(temporary_directory)
+            (root / "changed").mkdir()
+            (root / "closure").mkdir()
+            (root / "changed/valid.json").write_text(
+                '{"changed":true}\n',
+                encoding="utf-8",
+            )
+            (root / "closure/valid.json").write_text(
+                '{"closure":true}\n',
+                encoding="utf-8",
+            )
+            self.assertEqual(
+                validate_json_inputs(
+                    root=root,
+                    changed_json_paths=("changed/valid.json",),
+                    closure_json_paths=("closure/valid.json",),
+                ),
+                (
+                    "changed/valid.json",
+                    "closure/valid.json",
+                ),
+            )
+
+            duplicate_cases = (
+                ("changed", "changed/duplicate.json"),
+                ("closure", "closure/duplicate.json"),
+            )
+            for source, relative_path in duplicate_cases:
+                with self.subTest(source=source):
+                    (root / relative_path).write_text(
+                        '{"duplicate":1,"duplicate":2}\n',
+                        encoding="utf-8",
+                    )
+                    changed_paths = (
+                        (relative_path,)
+                        if source == "changed"
+                        else ("changed/valid.json",)
+                    )
+                    closure_paths = (
+                        (relative_path,)
+                        if source == "closure"
+                        else ("closure/valid.json",)
+                    )
+                    with self.assertRaisesRegex(
+                        ValueError,
+                        "duplicate JSON key",
+                    ):
+                        validate_json_inputs(
+                            root=root,
+                            changed_json_paths=changed_paths,
+                            closure_json_paths=closure_paths,
+                        )
+
+            with self.assertRaisesRegex(ValueError, "escapes"):
+                validate_json_inputs(
+                    root=root,
+                    changed_json_paths=("../outside.json",),
+                    closure_json_paths=(),
+                )
+
+    def test_verification_evidence_digests_are_deterministic_and_output_free(
+        self,
+    ) -> None:
+        import scripts.emotion_state_phase_a_verification_evidence as verification
+
+        baseline_commit = "a" * 40
+        head_commit = "b" * 40
+
+        def canonical_digest(value: object) -> str:
+            payload = (
+                json.dumps(
+                    value,
+                    sort_keys=True,
+                    separators=(",", ":"),
+                    ensure_ascii=False,
+                    allow_nan=False,
+                )
+                + "\n"
+            ).encode("utf-8")
+            return hashlib.sha256(payload).hexdigest().upper()
+
+        with tempfile.TemporaryDirectory(
+            prefix="emotion-state-verification-digest-",
+        ) as temporary_directory:
+            root = Path(temporary_directory)
+            policy_path = (
+                root
+                / "research/sources/emotion_state/"
+                "phase_a_verification_guard_policy.json"
+            )
+            policy_path.parent.mkdir(parents=True)
+            policy_bytes = self.POLICY_PATH.read_bytes()
+            policy_path.write_bytes(policy_bytes)
+            policy = json.loads(policy_bytes.decode("utf-8"))
+
+            ledger: list[dict[str, object]] = []
+            for command in policy["allowed_commands"]:
+                if command["command_id"] == "phase-a-materials-validator":
+                    continue
+                argv = [
+                    argument.format(
+                        mode="material-pending",
+                        baseline_commit=baseline_commit,
+                        head_commit=head_commit,
+                    )
+                    for argument in command["argv_template"]
+                ]
+                ledger.append({
+                    "sequence_number": len(ledger) + 1,
+                    "command_id": command["command_id"],
+                    "argv": argv,
+                    "working_directory": ".",
+                    "exit_status": 0,
+                })
+
+            committed_inventory = [{
+                "path": "scripts/fixture.py",
+                "git_mode": "100644",
+                "sha256": "A" * 64,
+            }]
+            uncommitted_inventory = [{
+                "path": "research/fixture.json",
+                "git_state": "untracked",
+                "git_mode": "100644",
+                "sha256": "B" * 64,
+            }]
+            closure_inventory = [{
+                "path": "scripts/fixture.py",
+                "git_mode": "100644",
+                "sha256": "A" * 64,
+            }]
+            closure_edges: list[dict[str, str]] = []
+            closure_digest = canonical_digest({
+                "edges": closure_edges,
+                "inventory": closure_inventory,
+            })
+            snapshot = {
+                "committed_change_inventory": committed_inventory,
+                "uncommitted_change_inventory": uncommitted_inventory,
+                "executable_dependency_closure": {
+                    "inventory": closure_inventory,
+                    "edges": closure_edges,
+                    "digest": closure_digest,
+                },
+                "dataset_manifest_digests": {},
+                "dataset_hash_inventory_digests": {},
+            }
+
+            def collect_snapshot(**_: object) -> dict[str, object]:
+                return deepcopy(snapshot)
+
+            def execute_commands(**_: object) -> list[dict[str, object]]:
+                return deepcopy(ledger)
+
+            with mock.patch.object(
+                verification,
+                "_collect_verification_snapshot",
+                side_effect=collect_snapshot,
+            ), mock.patch.object(
+                verification,
+                "_execute_guarded_commands",
+                side_effect=execute_commands,
+            ):
+                first = verification.build_verification_evidence(
+                    root,
+                    baseline_commit,
+                    head_commit,
+                    "material-pending",
+                )
+                second = verification.build_verification_evidence(
+                    root,
+                    baseline_commit,
+                    head_commit,
+                    "material-pending",
+                )
+
+            self.assertEqual(first, second)
+            input_inventory_digest = canonical_digest({
+                "committed_change_inventory": committed_inventory,
+                "uncommitted_change_inventory": uncommitted_inventory,
+            })
+            ledger_digest = canonical_digest(ledger)
+            guard_policy_digest = hashlib.sha256(policy_bytes).hexdigest().upper()
+            tree_payload = {
+                "implementation_baseline_commit": baseline_commit,
+                "repository_head_commit": head_commit,
+                "committed_change_inventory": committed_inventory,
+                "uncommitted_change_inventory": uncommitted_inventory,
+                "executable_dependency_closure_inventory": closure_inventory,
+                "executable_dependency_closure_edges": closure_edges,
+                "dataset_manifest_digests": {},
+                "dataset_hash_inventory_digests": {},
+                "executed_command_ledger": ledger,
+                "guard_policy_digest": guard_policy_digest,
+            }
+            tree_digest = canonical_digest(tree_payload)
+            expected_run_id = hashlib.sha256(
+                (
+                    "emotion-state-phase-a-validator-v1:"
+                    + tree_digest
+                ).encode("utf-8")
+            ).hexdigest().upper()
+            self.assertEqual(
+                first["verification_input_path_inventory_digest"],
+                input_inventory_digest,
+            )
+            self.assertEqual(
+                first["executable_dependency_closure_digest"],
+                closure_digest,
+            )
+            self.assertEqual(
+                first["executed_command_ledger_digest"],
+                ledger_digest,
+            )
+            self.assertEqual(first["guard_policy_digest"], guard_policy_digest)
+            self.assertEqual(first["verification_input_tree_digest"], tree_digest)
+            self.assertEqual(first["verification_run_id"], expected_run_id)
+            self.assertEqual(
+                first["guarded_command_results"],
+                {
+                    entry["command_id"]: entry["exit_status"]
+                    for entry in ledger
+                },
+            )
+            self.assertTrue(
+                all(
+                    value == "pass"
+                    for value in first["repository_gate_statuses"].values()
+                )
+            )
+            self.assertTrue(first["provider_environment_scrubbed"])
+            self.assertTrue(first["private_path_guard_enabled"])
+            self.assertTrue(first["network_guard_enabled"])
+            serialized = json.dumps(first, sort_keys=True)
+            self.assertNotIn("timestamp", serialized)
+            self.assertNotIn(str(root), serialized)
+            self.assertNotIn("result.json sha256", serialized)
+
+    def test_locked_reread_aborts_on_input_race_without_touching_valid_pair(
+        self,
+    ) -> None:
+        import scripts.emotion_state_phase_a_verification_evidence as verification
+
+        baseline_commit = "a" * 40
+        head_commit = "b" * 40
+        with tempfile.TemporaryDirectory(
+            prefix="emotion-state-verification-race-",
+        ) as temporary_directory:
+            root = Path(temporary_directory)
+            policy_path = (
+                root
+                / "research/sources/emotion_state/"
+                "phase_a_verification_guard_policy.json"
+            )
+            policy_path.parent.mkdir(parents=True)
+            policy_path.write_bytes(self.POLICY_PATH.read_bytes())
+            input_path = root / "scripts/input.py"
+            input_path.parent.mkdir(parents=True)
+            input_path.write_bytes(b"initial input\n")
+            output_root = (
+                root
+                / "research/experiments/generated/"
+                "EMOTION-STATE-001-phase-a-contracts"
+            )
+            output_root.mkdir(parents=True)
+            result_path = output_root / "result.json"
+            report_path = output_root / "report.md"
+            original_result = b'{"last_valid":true}\n'
+            original_report = b"# Last valid report\n"
+            result_path.write_bytes(original_result)
+            report_path.write_bytes(original_report)
+            recovery_dir = (
+                root / ".tmp/emotion-state-001-phase-a-publication"
+            )
+            calls = 0
+
+            def snapshot() -> dict[str, object]:
+                content = input_path.read_bytes()
+                digest = hashlib.sha256(content).hexdigest().upper()
+                inventory = [{
+                    "path": "scripts/input.py",
+                    "git_state": "untracked",
+                    "git_mode": "100644",
+                    "sha256": digest,
+                }]
+                return {
+                    "committed_change_inventory": [],
+                    "uncommitted_change_inventory": inventory,
+                    "executable_dependency_closure": {
+                        "inventory": [],
+                        "edges": [],
+                        "digest": hashlib.sha256(b'{"edges":[],"inventory":[]}\n')
+                        .hexdigest()
+                        .upper(),
+                    },
+                    "dataset_manifest_digests": {},
+                    "dataset_hash_inventory_digests": {},
+                }
+
+            def collect_snapshot(**_: object) -> dict[str, object]:
+                nonlocal calls
+                calls += 1
+                if calls == 2:
+                    self.assertTrue(
+                        (recovery_dir / "publication.lock").exists()
+                    )
+                    input_path.write_bytes(b"mutated after validation\n")
+                return snapshot()
+
+            with mock.patch.object(
+                verification,
+                "_collect_verification_snapshot",
+                side_effect=collect_snapshot,
+            ), mock.patch.object(
+                verification,
+                "_execute_guarded_commands",
+                return_value=[],
+            ):
+                with self.assertRaisesRegex(
+                    ValueError,
+                    "verification inputs changed during locked re-read",
+                ):
+                    verification.build_verification_evidence(
+                        root,
+                        baseline_commit,
+                        head_commit,
+                        "material-pending",
+                    )
+
+            self.assertEqual(calls, 2)
+            self.assertEqual(result_path.read_bytes(), original_result)
+            self.assertEqual(report_path.read_bytes(), original_report)
+
+    def test_guard_policy_is_exact_unique_and_substitution_closed(self) -> None:
+        self._verification_module()
+        policy = json.loads(self.POLICY_PATH.read_text(encoding="utf-8"))
+        expected_policy = {
+            "policy_id": "emotion-state-phase-a-verification-guard-v1",
+            "schema_version": 1,
+            "network_allowed": False,
+            "private_path_prefixes": [
+                "data/private",
+                "data/private-restricted",
+            ],
+            "parent_environment_allowlist": [
+                "COMSPEC",
+                "PATH",
+                "PATHEXT",
+                "SYSTEMDRIVE",
+                "SYSTEMROOT",
+                "WINDIR",
+            ],
+            "guard_generated_environment_names": [
+                "EMOTION_STATE_PHASE_A_ALLOWED_SUBPROCESSES_JSON",
+                "EMOTION_STATE_PHASE_A_GUARD_POLICY",
+                "EMOTION_STATE_PHASE_A_PROJECT_ROOT",
+                "GIT_CONFIG_GLOBAL",
+                "GIT_CONFIG_NOSYSTEM",
+                "GIT_TERMINAL_PROMPT",
+                "HOME",
+                "PYTHONDONTWRITEBYTECODE",
+                "PYTHONIOENCODING",
+                "PYTHONPATH",
+                "PYTHONUTF8",
+                "TEMP",
+                "TMP",
+                "USERPROFILE",
+            ],
+            "provider_environment_exact_names": list(
+                self.PROVIDER_ENVIRONMENT_EXACT_NAMES
+            ),
+            "provider_environment_prefixes": [
+                "ASSEMBLYAI_",
+                "AWS_",
+                "CARTESIA_",
+                "DEEPGRAM_",
+                "DIALOGUE_REASONER_",
+                "ELEVENLABS_",
+                "GH_",
+                "GITHUB_",
+                "GROQ_",
+                "HF_",
+                "HUGGING_FACE_",
+                "LOCAL_DIALOGUE_REASONER_",
+                "OPENAI_",
+                "OPENROUTER_",
+                "TOGETHER_",
+                "TWILIO_",
+                "ULTRAVOX_",
+            ],
+            "credential_environment_name_pattern": (
+                "(^|_)(API_KEY|ACCESS_KEY|ACCESS_TOKEN|AUTH_TOKEN|"
+                "BEARER_TOKEN|PRIVATE_KEY|SECRET|TOKEN|PASSWORD)$"
+            ),
+            "forbidden_import_prefixes": [
+                "_socket",
+                "aiohttp",
+                "assemblyai",
+                "cartesia",
+                "ctypes",
+                "deepgram",
+                "elevenlabs",
+                "ftplib",
+                "github",
+                "groq",
+                "http",
+                "httpx",
+                "openai",
+                "openrouter",
+                "requests",
+                "socket",
+                "together",
+                "twilio",
+                "ultravox",
+                "urllib",
+            ],
+            "output_exclusions": [
+                (
+                    "research/experiments/generated/"
+                    "EMOTION-STATE-001-phase-a-contracts/result.json"
+                ),
+                (
+                    "research/experiments/generated/"
+                    "EMOTION-STATE-001-phase-a-contracts/report.md"
+                ),
+                ".tmp/emotion-state-001-phase-a-publication/**",
+            ],
+            "canonical_output_files": [
+                "result.json",
+                "report.md",
+            ],
+            "allowed_commands": [
+                {
+                    "command_id": "focused-open-dataset-tests",
+                    "argv_template": [
+                        "python",
+                        "-m",
+                        "unittest",
+                        "scripts.test_emotion_state_001_open_dataset_gate",
+                        "-v",
+                    ],
+                },
+                {
+                    "command_id": "closeout-hardening-tests",
+                    "argv_template": [
+                        "python",
+                        "-m",
+                        "unittest",
+                        "scripts.test_emotion_state_001_closeout_hardening",
+                        "-v",
+                    ],
+                },
+                {
+                    "command_id": "phase-a-prepublication-validator",
+                    "argv_template": [
+                        "python",
+                        "scripts/validate_emotion_state_001_phase_a_contracts.py",
+                        "--section",
+                        "prepublication",
+                        "--mode",
+                        "{mode}",
+                    ],
+                },
+                {
+                    "command_id": "phase-a-materials-validator",
+                    "argv_template": [
+                        "python",
+                        "scripts/validate_emotion_state_001_phase_a_contracts.py",
+                        "--section",
+                        "materials",
+                    ],
+                },
+                {
+                    "command_id": "frozen-exp-002-validator",
+                    "argv_template": [
+                        "python",
+                        "scripts/validate_exp_002_frozen_response_baseline.py",
+                    ],
+                },
+                {
+                    "command_id": "brain-schema-validator",
+                    "argv_template": [
+                        "python",
+                        "scripts/validate_brain_002_runtime_state_schema.py",
+                    ],
+                },
+                {
+                    "command_id": "private-boundary-validator",
+                    "argv_template": [
+                        "python",
+                        "scripts/validate_private_data_boundary.py",
+                    ],
+                },
+                {
+                    "command_id": "runtime-manifest-validator",
+                    "argv_template": [
+                        "python",
+                        "scripts/validate_runtime_manifest.py",
+                    ],
+                },
+                {
+                    "command_id": "setup-validator",
+                    "argv_template": [
+                        "python",
+                        "scripts/validate_check_setup.py",
+                    ],
+                },
+                {
+                    "command_id": "drift-validator",
+                    "argv_template": [
+                        "python",
+                        "scripts/validate_project_drift_guard.py",
+                    ],
+                },
+                {
+                    "command_id": "thesis-reference-validator",
+                    "argv_template": [
+                        "python",
+                        "scripts/check_thesis_reference_registry.py",
+                    ],
+                },
+                {
+                    "command_id": "thesis-update-validator",
+                    "argv_template": [
+                        "python",
+                        "scripts/check_thesis_update_gate.py",
+                    ],
+                },
+                {
+                    "command_id": "context-policy-validator",
+                    "argv_template": [
+                        "python",
+                        "scripts/validate_context_reading_policy.py",
+                    ],
+                },
+                {
+                    "command_id": "json-validator",
+                    "argv_template": [
+                        "python",
+                        "scripts/emotion_state_phase_a_verification_evidence.py",
+                        "--validate-json-inputs",
+                    ],
+                },
+                {
+                    "command_id": "git-diff-check",
+                    "argv_template": [
+                        "git",
+                        "diff",
+                        "--check",
+                        "{baseline_commit}..{head_commit}",
+                    ],
+                },
+            ],
+        }
+        self.assertEqual(policy, expected_policy)
+        command_ids = [
+            command["command_id"]
+            for command in policy["allowed_commands"]
+        ]
+        command_templates = [
+            tuple(command["argv_template"])
+            for command in policy["allowed_commands"]
+        ]
+        self.assertEqual(len(command_ids), len(set(command_ids)))
+        self.assertEqual(len(command_templates), len(set(command_templates)))
+        substitutions = {
+            substitution
+            for command in policy["allowed_commands"]
+            for argument in command["argv_template"]
+            for substitution in re.findall(r"\{([a-z_]+)\}", argument)
+        }
+        self.assertEqual(
+            substitutions,
+            {"baseline_commit", "head_commit", "mode"},
+        )
+
+    def test_guard_denies_synthetic_private_paths_and_allows_public_fixtures(
+        self,
+    ) -> None:
+        self._verification_module()
+        with tempfile.TemporaryDirectory(
+            prefix="emotion-state-guard-private-",
+        ) as temporary_directory:
+            project_root = Path(temporary_directory)
+            public_directory = project_root / "public"
+            public_directory.mkdir()
+            public_file = public_directory / "fixture.txt"
+            public_file.write_bytes(b"public-fixture")
+            public_link = public_directory / "fixture-link.txt"
+            try:
+                public_link.symlink_to(public_file.name)
+            except OSError as exc:
+                if not (
+                    os.name == "nt"
+                    and getattr(exc, "winerror", None) == 1314
+                ):
+                    raise
+
+            completed, _ = self._run_guarded_child(
+                project_root,
+                """
+                import builtins
+                import io
+                import os
+                from pathlib import Path
+
+                project_root = Path(
+                    os.environ["EMOTION_STATE_PHASE_A_PROJECT_ROOT"]
+                )
+
+                def expect_denied(label, operation):
+                    resource = None
+                    try:
+                        resource = operation()
+                    except PermissionError:
+                        return
+                    except BaseException as exc:
+                        raise AssertionError(
+                            f"{label} raised {type(exc).__name__}, "
+                            "not PermissionError"
+                        ) from exc
+                    finally:
+                        if isinstance(resource, int):
+                            os.close(resource)
+                        elif resource is not None and hasattr(resource, "close"):
+                            resource.close()
+                    raise AssertionError(f"{label} was not denied")
+
+                for private_prefix in (
+                    Path("data/private"),
+                    Path("data/private-restricted"),
+                ):
+                    private_directory = project_root / private_prefix
+                    private_file = private_directory / "missing.txt"
+                    private_link = private_directory / "missing-link.txt"
+                    operations = (
+                        (
+                            "builtins.open",
+                            lambda path=private_file: builtins.open(path, "rb"),
+                        ),
+                        (
+                            "io.open",
+                            lambda path=private_file: io.open(path, "rb"),
+                        ),
+                        (
+                            "os.open",
+                            lambda path=private_file: os.open(path, os.O_RDONLY),
+                        ),
+                        (
+                            "os.stat",
+                            lambda path=private_file: os.stat(path),
+                        ),
+                        (
+                            "os.lstat",
+                            lambda path=private_file: os.lstat(path),
+                        ),
+                        (
+                            "os.listdir",
+                            lambda path=private_directory: os.listdir(path),
+                        ),
+                        (
+                            "os.scandir",
+                            lambda path=private_directory: os.scandir(path),
+                        ),
+                        (
+                            "os.readlink",
+                            lambda path=private_link: os.readlink(path),
+                        ),
+                    )
+                    for operation_name, operation in operations:
+                        expect_denied(
+                            f"{private_prefix.as_posix()}:{operation_name}",
+                            operation,
+                        )
+
+                public_directory = project_root / "public"
+                public_file = public_directory / "fixture.txt"
+                public_link = public_directory / "fixture-link.txt"
+                with builtins.open(public_file, "rb") as handle:
+                    assert handle.read() == b"public-fixture"
+                with io.open(public_file, "rb") as handle:
+                    assert handle.read() == b"public-fixture"
+                descriptor = os.open(public_file, os.O_RDONLY)
+                try:
+                    assert os.read(descriptor, 14) == b"public-fixture"
+                finally:
+                    os.close(descriptor)
+                assert os.stat(public_file).st_size == 14
+                assert os.lstat(public_file).st_size == 14
+                public_link_exists = os.path.lexists(public_link)
+                expected_names = ["fixture.txt"]
+                if public_link_exists:
+                    expected_names.insert(0, "fixture-link.txt")
+                assert sorted(os.listdir(public_directory)) == expected_names
+                with os.scandir(public_directory) as entries:
+                    assert sorted(entry.name for entry in entries) == expected_names
+                if public_link_exists:
+                    assert os.readlink(public_link) == "fixture.txt"
+                else:
+                    try:
+                        os.readlink(public_link)
+                    except FileNotFoundError:
+                        pass
+                    except PermissionError as exc:
+                        raise AssertionError(
+                            "public missing-link read was denied by the guard"
+                        ) from exc
+                    else:
+                        raise AssertionError(
+                            "public missing-link read unexpectedly succeeded"
+                        )
+                dir_fd_operations = {
+                    "os.open": lambda: os.open(
+                        public_file,
+                        os.O_RDONLY,
+                        dir_fd=0,
+                    ),
+                    "os.stat": lambda: os.stat(public_file, dir_fd=0),
+                    "os.lstat": lambda: os.lstat(public_file, dir_fd=0),
+                    "os.readlink": lambda: os.readlink(public_link, dir_fd=0),
+                }
+                for name, operation in dir_fd_operations.items():
+                    expect_denied(f"{name}:dir_fd", operation)
+                print("guarded-private-paths-ok")
+                """,
+            )
+            self.assertEqual(
+                completed.stdout.strip(),
+                "guarded-private-paths-ok",
+            )
+
+    def test_guard_denies_dns_inet_construction_and_socket_io_before_use(
+        self,
+    ) -> None:
+        self._verification_module()
+        with tempfile.TemporaryDirectory(
+            prefix="emotion-state-guard-network-",
+        ) as temporary_directory:
+            project_root = Path(temporary_directory)
+            completed, _ = self._run_guarded_child(
+                project_root,
+                """
+                import socket
+
+                expected_message = (
+                    "EMOTION-STATE Phase A network access is blocked"
+                )
+
+                def expect_denied(label, operation):
+                    try:
+                        operation()
+                    except PermissionError as exc:
+                        assert str(exc) == expected_message, (
+                            label,
+                            str(exc),
+                        )
+                        return
+                    except BaseException as exc:
+                        raise AssertionError(
+                            f"{label} raised {type(exc).__name__}, "
+                            "not PermissionError"
+                        ) from exc
+                    raise AssertionError(f"{label} was not denied")
+
+                dns_operations = {
+                    "getaddrinfo": lambda: socket.getaddrinfo(
+                        object(),
+                        object(),
+                    ),
+                    "gethostbyname": lambda: socket.gethostbyname(object()),
+                    "gethostbyname_ex": lambda: socket.gethostbyname_ex(
+                        object()
+                    ),
+                    "gethostbyaddr": lambda: socket.gethostbyaddr(object()),
+                    "getnameinfo": lambda: socket.getnameinfo(object(), 0),
+                }
+                for name, operation in dns_operations.items():
+                    expect_denied(name, operation)
+
+                for family_name in ("AF_INET", "AF_INET6"):
+                    family = getattr(socket, family_name)
+                    expect_denied(
+                        family_name,
+                        lambda family=family: socket.socket(family, object()),
+                    )
+
+                expect_denied(
+                    "create_connection",
+                    lambda: socket.create_connection((object(), object())),
+                )
+                expect_denied(
+                    "create_server",
+                    lambda: socket.create_server((object(), object())),
+                )
+                expect_denied("socketpair", lambda: socket.socketpair())
+                expect_denied(
+                    "fromfd",
+                    lambda: socket.fromfd(
+                        -1,
+                        socket.AF_INET,
+                        socket.SOCK_STREAM,
+                    ),
+                )
+                socket_operations = {
+                    "connect": lambda: socket.socket.connect(None, object()),
+                    "connect_ex": lambda: socket.socket.connect_ex(
+                        None,
+                        object(),
+                    ),
+                    "send": lambda: socket.socket.send(None, b"fixture"),
+                    "sendto": lambda: socket.socket.sendto(
+                        None,
+                        b"fixture",
+                        object(),
+                    ),
+                    "bind": lambda: socket.socket.bind(None, object()),
+                    "listen": lambda: socket.socket.listen(None),
+                    "accept": lambda: socket.socket.accept(None),
+                }
+                if hasattr(socket.socket, "sendmsg"):
+                    socket_operations["sendmsg"] = (
+                        lambda: socket.socket.sendmsg(None, [b"fixture"])
+                    )
+                for name, operation in socket_operations.items():
+                    expect_denied(name, operation)
+                print("guarded-network-ok")
+                """,
+            )
+            self.assertEqual(completed.stdout.strip(), "guarded-network-ok")
+
+    def test_guarded_child_omits_exact_and_generic_credential_names(
+        self,
+    ) -> None:
+        self._verification_module()
+        generic_credential_names = (
+            "OTHERWISE_UNLISTED_API_KEY",
+            "OTHERWISE_UNLISTED_ACCESS_TOKEN",
+            "OTHERWISE_UNLISTED_AUTH_TOKEN",
+            "OTHERWISE_UNLISTED_SECRET",
+            "OTHERWISE_UNLISTED_PASSWORD",
+        )
+        credential_names = (
+            *self.PROVIDER_ENVIRONMENT_EXACT_NAMES,
+            *generic_credential_names,
+        )
+        synthetic_parent_environment = {
+            name: f"synthetic-value-{index}"
+            for index, name in enumerate(credential_names)
+        }
+        expected_names_json = json.dumps(list(credential_names))
+        with tempfile.TemporaryDirectory(
+            prefix="emotion-state-guard-credentials-",
+        ) as temporary_directory:
+            project_root = Path(temporary_directory)
+            completed, removed_names = self._run_guarded_child(
+                project_root,
+                f"""
+                import json
+                import os
+
+                credential_names = json.loads({expected_names_json!r})
+                present_names = [
+                    name for name in credential_names if name in os.environ
+                ]
+                assert present_names == [], present_names
+                print("guarded-credentials-ok")
+                """,
+                extra_parent_environment=synthetic_parent_environment,
+            )
+            self.assertEqual(
+                completed.stdout.strip(),
+                "guarded-credentials-ok",
+            )
+            self.assertTrue(set(credential_names).issubset(removed_names))
+
+    def test_guard_rejects_unlisted_subprocesses_and_process_bypasses(
+        self,
+    ) -> None:
+        self._verification_module()
+        with tempfile.TemporaryDirectory(
+            prefix="emotion-state-guard-process-",
+        ) as temporary_directory:
+            project_root = Path(temporary_directory)
+            completed, _ = self._run_guarded_child(
+                project_root,
+                """
+                import os
+                import subprocess
+                from pathlib import Path
+
+                project_root = Path(
+                    os.environ["EMOTION_STATE_PHASE_A_PROJECT_ROOT"]
+                )
+                missing_command = (
+                    project_root / "public" / "not-allowlisted-command"
+                )
+
+                def expect_denied(label, operation):
+                    try:
+                        operation()
+                    except PermissionError:
+                        return
+                    except BaseException as exc:
+                        raise AssertionError(
+                            f"{label} raised {type(exc).__name__}, "
+                            "not PermissionError"
+                        ) from exc
+                    raise AssertionError(f"{label} was not denied")
+
+                expect_denied(
+                    "subprocess.Popen",
+                    lambda: subprocess.Popen([str(missing_command)]),
+                )
+                expect_denied(
+                    "subprocess.run",
+                    lambda: subprocess.run(
+                        [str(missing_command)],
+                        check=False,
+                    ),
+                )
+                for name in ("system", "popen"):
+                    operation = getattr(os, name)
+                    expect_denied(name, lambda operation=operation: operation())
+
+                bypass_names = sorted(
+                    name
+                    for name in dir(os)
+                    if name.startswith(("spawn", "exec"))
+                    and callable(getattr(os, name))
+                )
+                assert bypass_names
+                if hasattr(os, "startfile"):
+                    bypass_names.append("startfile")
+                for name in bypass_names:
+                    operation = getattr(os, name)
+                    expect_denied(name, lambda operation=operation: operation())
+                print("guarded-process-ok")
+                """,
+            )
+            self.assertEqual(completed.stdout.strip(), "guarded-process-ok")
+
+    @unittest.skipIf(
+        "EMOTION_STATE_PHASE_A_GUARD_POLICY" in os.environ,
+        ACTIVE_GUARD_SELF_HOSTING_SKIP_REASON,
+    )
+    def test_guard_rule_schema_accepts_empty_and_recursive_arrays(self) -> None:
+        with tempfile.TemporaryDirectory(
+            prefix="emotion-state-guard-rule-schema-",
+        ) as temporary_directory:
+            project_root = Path(temporary_directory)
+            self._write_bytes(
+                project_root,
+                "scripts/schema_probe.py",
+                (
+                    "import subprocess\n"
+                    "try:\n"
+                    "    subprocess.run(['unlisted-schema-probe'], check=False)\n"
+                    "except PermissionError:\n"
+                    "    print('schema-accepted')\n"
+                    "else:\n"
+                    "    raise AssertionError('guard did not activate')\n"
+                ).encode("utf-8"),
+            )
+            self._write_bytes(
+                project_root,
+                "scripts/child.py",
+                b'print("child")\n',
+            )
+            child_rule = {
+                "kind": "python_target",
+                "caller": "scripts/child.py",
+                "target": "scripts/child.py",
+                "args": [],
+                "cwd_class": "project_root",
+                "environment_class": "inherit",
+                "max_uses": 1,
+                "children": [],
+            }
+            recursive_rule = {
+                "kind": "python_target",
+                "caller": "scripts/schema_probe.py",
+                "target": "scripts/child.py",
+                "args": [],
+                "cwd_class": "project_root",
+                "environment_class": "inherit",
+                "max_uses": 1,
+                "children": [child_rule],
+            }
+            for case_name, rules in (
+                ("empty", []),
+                ("recursive", [recursive_rule]),
+            ):
+                with self.subTest(case=case_name):
+                    completed = self._run_guarded_target(
+                        project_root,
+                        "scripts/schema_probe.py",
+                        allowed_subprocesses=rules,
+                    )
+                    self.assertEqual(
+                        completed.returncode,
+                        0,
+                        completed.stdout + completed.stderr,
+                    )
+                    self.assertEqual(
+                        completed.stdout.strip(),
+                        "schema-accepted",
+                    )
+
+    @unittest.skipIf(
+        "EMOTION_STATE_PHASE_A_GUARD_POLICY" in os.environ,
+        ACTIVE_GUARD_SELF_HOSTING_SKIP_REASON,
+    )
+    def test_guard_rule_schema_rejects_malformed_duplicate_and_ambiguous_rules(
+        self,
+    ) -> None:
+        with tempfile.TemporaryDirectory(
+            prefix="emotion-state-guard-rule-rejections-",
+        ) as temporary_directory:
+            project_root = Path(temporary_directory)
+            marker_path = project_root / "schema-probe-ran.txt"
+            self._write_bytes(
+                project_root,
+                "scripts/schema_probe.py",
+                (
+                    "from pathlib import Path\n"
+                    f"Path({str(marker_path)!r}).write_text('ran')\n"
+                ).encode("utf-8"),
+            )
+            base_rule = {
+                "kind": "python_target",
+                "caller": "scripts/schema_probe.py",
+                "target": "scripts/child.py",
+                "args": [],
+                "cwd_class": "project_root",
+                "environment_class": "inherit",
+                "max_uses": 1,
+                "children": [],
+            }
+            malformed_digest_rule = {
+                "kind": "python_inline",
+                "caller": "scripts/schema_probe.py",
+                "source_sha256": "a" * 64,
+                "cwd_class": "project_root",
+                "environment_class": "inherit",
+                "max_uses": 1,
+                "children": [],
+            }
+            reviewed_process_digest = (
+                "0C84AD0AB699783710EE7729306E5D8763C8013297A26BE3197EA68AE3500A67"
+            )
+            unreviewed_digest_rule = {
+                **malformed_digest_rule,
+                "caller": (
+                    "scripts/test_emotion_state_001_open_dataset_gate.py"
+                ),
+                "source_sha256": "A" * 64,
+            }
+            unreviewed_caller_rule = {
+                **malformed_digest_rule,
+                "source_sha256": reviewed_process_digest,
+            }
+            ambiguous_rule = {
+                **base_rule,
+                "max_uses": 2,
+            }
+            duplicate_key_json = (
+                '[{"kind":"python_target","kind":"python_inline",'
+                '"caller":"scripts/schema_probe.py",'
+                '"target":"scripts/child.py","args":[],'
+                '"cwd_class":"project_root",'
+                '"environment_class":"inherit","max_uses":1,'
+                '"children":[]}]'
+            )
+            invalid_cases: tuple[tuple[str, object], ...] = (
+                (
+                    "unknown_field",
+                    [{**base_rule, "unexpected": True}],
+                ),
+                (
+                    "unknown_kind",
+                    [{**base_rule, "kind": "wildcard"}],
+                ),
+                ("duplicate_json_key", duplicate_key_json),
+                ("duplicate_rule", [base_rule, deepcopy(base_rule)]),
+                ("malformed_digest", [malformed_digest_rule]),
+                ("unreviewed_digest", [unreviewed_digest_rule]),
+                ("unreviewed_caller", [unreviewed_caller_rule]),
+                (
+                    "invalid_max_uses_zero",
+                    [{**base_rule, "max_uses": 0}],
+                ),
+                (
+                    "invalid_max_uses_boolean",
+                    [{**base_rule, "max_uses": True}],
+                ),
+                ("ambiguous_rules", [base_rule, ambiguous_rule]),
+            )
+            for case_name, rules in invalid_cases:
+                with self.subTest(case=case_name):
+                    marker_path.unlink(missing_ok=True)
+                    completed = self._run_guarded_target(
+                        project_root,
+                        "scripts/schema_probe.py",
+                        allowed_subprocesses=rules,
+                    )
+                    self.assertNotEqual(
+                        completed.returncode,
+                        0,
+                        completed.stdout + completed.stderr,
+                    )
+                    self.assertFalse(marker_path.exists())
+
+    @unittest.skipIf(
+        "EMOTION_STATE_PHASE_A_GUARD_POLICY" in os.environ,
+        ACTIVE_GUARD_SELF_HOSTING_SKIP_REASON,
+    )
+    def test_guard_python_inline_is_digest_exact_and_child_scoped(self) -> None:
+        with tempfile.TemporaryDirectory(
+            prefix="emotion-state-guard-inline-",
+        ) as temporary_directory:
+            project_root = Path(temporary_directory)
+            test_tree = ast.parse(
+                (
+                    ROOT
+                    / "scripts/test_emotion_state_001_open_dataset_gate.py"
+                ).read_text(encoding="utf-8")
+            )
+            process_test = next(
+                node
+                for node in ast.walk(test_tree)
+                if isinstance(node, ast.FunctionDef)
+                and node.name
+                == "test_guard_rejects_unlisted_subprocesses_and_process_bypasses"
+            )
+            guarded_child_call = next(
+                node
+                for node in ast.walk(process_test)
+                if isinstance(node, ast.Call)
+                and isinstance(node.func, ast.Attribute)
+                and node.func.attr == "_run_guarded_child"
+            )
+            inline_source = textwrap.dedent(
+                ast.literal_eval(guarded_child_call.args[1])
+            )
+            reviewed_digest = (
+                "0C84AD0AB699783710EE7729306E5D8763C8013297A26BE3197EA68AE3500A67"
+            )
+            self.assertEqual(
+                hashlib.sha256(
+                    inline_source.encode("utf-8")
+                ).hexdigest().upper(),
+                reviewed_digest,
+            )
+            child_rule = {
+                "kind": "python_target",
+                "caller": "scripts/unused-child-caller.py",
+                "target": "scripts/unused-child.py",
+                "args": [],
+                "cwd_class": "project_root",
+                "environment_class": "inherit",
+                "max_uses": 1,
+                "children": [],
+            }
+            sibling_rule = {
+                "kind": "python_target",
+                "caller": "scripts/unused-sibling-caller.py",
+                "target": "scripts/unused-sibling.py",
+                "args": [],
+                "cwd_class": "project_root",
+                "environment_class": "inherit",
+                "max_uses": 1,
+                "children": [],
+            }
+            inline_rule = {
+                "kind": "python_inline",
+                "caller": (
+                    "scripts/test_emotion_state_001_open_dataset_gate.py"
+                ),
+                "source_sha256": reviewed_digest,
+                "cwd_class": "project_root",
+                "environment_class": "inherit",
+                "max_uses": 1,
+                "children": [child_rule],
+            }
+            caller_source = (
+                "import subprocess\n"
+                "import sys\n"
+                f"source = {inline_source!r}\n"
+                "completed = subprocess.run(\n"
+                "    [sys.executable, '-c', source],\n"
+                "    capture_output=True,\n"
+                "    text=True,\n"
+                "    check=False,\n"
+                ")\n"
+                "assert completed.returncode == 0, completed.stderr\n"
+                "assert completed.stdout.strip() == 'guarded-process-ok'\n"
+                "print('guarded-process-ok')\n"
+                "try:\n"
+                "    subprocess.run(\n"
+                "        [sys.executable, '-c', source + ' '],\n"
+                "        check=False,\n"
+                "    )\n"
+                "except PermissionError:\n"
+                "    print('mutation-denied')\n"
+                "else:\n"
+                "    raise AssertionError('mutated inline source launched')\n"
+            )
+            self._write_bytes(
+                project_root,
+                "scripts/test_emotion_state_001_open_dataset_gate.py",
+                caller_source.encode("utf-8"),
+            )
+            completed = self._run_guarded_target(
+                project_root,
+                "scripts/test_emotion_state_001_open_dataset_gate.py",
+                allowed_subprocesses=[inline_rule, sibling_rule],
+            )
+            self.assertEqual(
+                completed.returncode,
+                0,
+                completed.stdout + completed.stderr,
+            )
+            self.assertEqual(
+                completed.stdout.splitlines(),
+                [
+                    "guarded-process-ok",
+                    "mutation-denied",
+                ],
+            )
+
+            synthetic_caller_source = (
+                "import os\n"
+                "import subprocess\n"
+                "import sys\n"
+                "from pathlib import Path\n"
+                f"source = {inline_source!r}\n"
+                "outer_transaction = Path(os.environ['TEMP'])\n"
+                "child_root = outer_transaction / 'synthetic-project'\n"
+                "child_transaction = child_root / 'runtime'\n"
+                "child_transaction.mkdir(parents=True)\n"
+                "def child_environment():\n"
+                "    environment = dict(os.environ)\n"
+                "    environment['EMOTION_STATE_PHASE_A_PROJECT_ROOT'] = (\n"
+                "        str(child_root)\n"
+                "    )\n"
+                "    for name in ('HOME', 'USERPROFILE', 'TEMP', 'TMP'):\n"
+                "        environment[name] = str(child_transaction)\n"
+                "    return environment\n"
+                "good = subprocess.run(\n"
+                "    [sys.executable, '-c', source],\n"
+                "    cwd=child_root,\n"
+                "    env=child_environment(),\n"
+                "    capture_output=True,\n"
+                "    text=True,\n"
+                "    check=False,\n"
+                ")\n"
+                "assert good.returncode == 0, good.stderr\n"
+                "assert good.stdout.strip() == 'guarded-process-ok'\n"
+                "bad_control = child_environment()\n"
+                "bad_control['GIT_CONFIG_NOSYSTEM'] = '0'\n"
+                "inconsistent_quartet = child_environment()\n"
+                "inconsistent_quartet['TMP'] = str(child_root)\n"
+                "for label, environment in (\n"
+                "    ('mutated-control', bad_control),\n"
+                "    ('inconsistent-quartet', inconsistent_quartet),\n"
+                "):\n"
+                "    try:\n"
+                "        subprocess.run(\n"
+                "            [sys.executable, '-c', source],\n"
+                "            cwd=child_root,\n"
+                "            env=environment,\n"
+                "            check=False,\n"
+                "        )\n"
+                "    except PermissionError:\n"
+                "        pass\n"
+                "    else:\n"
+                "        raise AssertionError(label)\n"
+                "print('synthetic-anchor-ok')\n"
+            )
+            self._write_bytes(
+                project_root,
+                "scripts/test_emotion_state_001_open_dataset_gate.py",
+                synthetic_caller_source.encode("utf-8"),
+            )
+            synthetic_rule = {
+                "kind": "python_inline",
+                "caller": (
+                    "scripts/test_emotion_state_001_open_dataset_gate.py"
+                ),
+                "source_sha256": reviewed_digest,
+                "cwd_class": "transaction_descendant",
+                "environment_class": "synthetic_guard",
+                "max_uses": 3,
+                "children": [],
+            }
+            synthetic_environment, _removed_names = (
+                self._guarded_child_environment(
+                    project_root,
+                    allowed_subprocesses_json=json.dumps(
+                        [synthetic_rule],
+                        sort_keys=True,
+                        separators=(",", ":"),
+                    ),
+                )
+            )
+            synthetic_environment["PYTHONPATH"] = os.pathsep.join((
+                str(self.GUARD_SITE_PATH),
+                str(project_root),
+            ))
+            synthetic_completed = subprocess.run(
+                [
+                    sys.executable,
+                    str(
+                        project_root
+                        / "scripts/test_emotion_state_001_open_dataset_gate.py"
+                    ),
+                ],
+                cwd=project_root,
+                env=synthetic_environment,
+                capture_output=True,
+                text=True,
+                timeout=20,
+                check=False,
+            )
+            self.assertEqual(
+                synthetic_completed.returncode,
+                0,
+                synthetic_completed.stdout + synthetic_completed.stderr,
+            )
+            self.assertEqual(
+                synthetic_completed.stdout.strip(),
+                "synthetic-anchor-ok",
+            )
+
+    @unittest.skipIf(
+        "EMOTION_STATE_PHASE_A_GUARD_POLICY" in os.environ,
+        ACTIVE_GUARD_SELF_HOSTING_SKIP_REASON,
+    )
+    def test_guard_python_target_requires_exact_target_args_and_cwd(self) -> None:
+        with tempfile.TemporaryDirectory(
+            prefix="emotion-state-guard-target-",
+        ) as temporary_directory:
+            project_root = Path(temporary_directory)
+            transaction_root = project_root / "guard-runtime" / "nested"
+            child_rule = {
+                "kind": "python_target",
+                "caller": "scripts/unused-child-caller.py",
+                "target": "scripts/unused-child.py",
+                "args": [],
+                "cwd_class": "project_root",
+                "environment_class": "inherit",
+                "max_uses": 1,
+                "children": [],
+            }
+            expected_child_rules_json = json.dumps(
+                [child_rule],
+                sort_keys=True,
+                separators=(",", ":"),
+            )
+            target_path = self._write_bytes(
+                project_root,
+                "scripts/target.py",
+                (
+                    "import os\n"
+                    "import sys\n"
+                    "assert sys.argv[1:] == ['--flag', 'fixture']\n"
+                    "assert os.environ[\n"
+                    "    'EMOTION_STATE_PHASE_A_ALLOWED_SUBPROCESSES_JSON'\n"
+                    f"] == {expected_child_rules_json!r}\n"
+                    "print('target-launched')\n"
+                ).encode("utf-8"),
+            )
+            caller_source = (
+                "import subprocess\n"
+                "import sys\n"
+                "from pathlib import Path\n"
+                f"target = {str(target_path)!r}\n"
+                f"transaction = {str(transaction_root)!r}\n"
+                "Path(transaction).mkdir(parents=True, exist_ok=True)\n"
+                "completed = subprocess.run(\n"
+                "    [sys.executable, target, '--flag', 'fixture'],\n"
+                "    capture_output=True,\n"
+                "    text=True,\n"
+                "    check=False,\n"
+                ")\n"
+                "assert completed.returncode == 0, completed.stderr\n"
+                "assert completed.stdout.strip() == 'target-launched'\n"
+                "denied = (\n"
+                "    ([sys.executable, target, '--flag', 'changed'], None),\n"
+                "    ([sys.executable, target, '--flag', 'fixture'], transaction),\n"
+                ")\n"
+                "for argv, cwd in denied:\n"
+                "    try:\n"
+                "        subprocess.run(argv, cwd=cwd, check=False)\n"
+                "    except PermissionError:\n"
+                "        pass\n"
+                "    else:\n"
+                "        raise AssertionError((argv, cwd))\n"
+                "print('target-boundaries-ok')\n"
+            )
+            self._write_bytes(
+                project_root,
+                "scripts/target_caller.py",
+                caller_source.encode("utf-8"),
+            )
+            rule = {
+                "kind": "python_target",
+                "caller": "scripts/target_caller.py",
+                "target": "scripts/target.py",
+                "args": ["--flag", "fixture"],
+                "cwd_class": "project_root",
+                "environment_class": "inherit",
+                "max_uses": 1,
+                "children": [child_rule],
+            }
+            sibling_rule = {
+                "kind": "python_target",
+                "caller": "scripts/unused-sibling-caller.py",
+                "target": "scripts/unused-sibling.py",
+                "args": [],
+                "cwd_class": "project_root",
+                "environment_class": "inherit",
+                "max_uses": 1,
+                "children": [],
+            }
+            completed = self._run_guarded_target(
+                project_root,
+                "scripts/target_caller.py",
+                allowed_subprocesses=[rule, sibling_rule],
+            )
+            self.assertEqual(
+                completed.returncode,
+                0,
+                completed.stdout + completed.stderr,
+            )
+            self.assertEqual(
+                completed.stdout.strip(),
+                "target-boundaries-ok",
+            )
+
+            anchored_controls = {
+                "EMOTION_STATE_PHASE_A_GUARD_POLICY": str(self.POLICY_PATH),
+                "EMOTION_STATE_PHASE_A_PROJECT_ROOT": str(project_root),
+                "GIT_CONFIG_GLOBAL": "NUL",
+                "GIT_CONFIG_NOSYSTEM": "1",
+                "GIT_TERMINAL_PROMPT": "0",
+                "PYTHONDONTWRITEBYTECODE": "1",
+                "PYTHONIOENCODING": "utf-8",
+                "PYTHONPATH": os.pathsep.join((
+                    str(self.GUARD_SITE_PATH),
+                    str(ROOT),
+                )),
+                "PYTHONUTF8": "1",
+            }
+            anchored_transaction = str(project_root / "guard-runtime")
+            expected_inherit_environment = {
+                **anchored_controls,
+                "HOME": anchored_transaction,
+                "TEMP": anchored_transaction,
+                "TMP": anchored_transaction,
+                "USERPROFILE": anchored_transaction,
+            }
+            anchor_target_path = self._write_bytes(
+                project_root,
+                "scripts/anchor_target.py",
+                (
+                    "import os\n"
+                    f"expected = {expected_inherit_environment!r}\n"
+                    "actual = {name: os.environ.get(name) for name in expected}\n"
+                    "assert actual == expected, (actual, expected)\n"
+                    "print('anchored-environment-ok')\n"
+                ).encode("utf-8"),
+            )
+            inherit_caller_source = (
+                "import os\n"
+                "import subprocess\n"
+                "import sys\n"
+                f"target = {str(anchor_target_path)!r}\n"
+                f"control_names = {tuple(anchored_controls)!r}\n"
+                "for name in control_names:\n"
+                "    os.environ.pop(name, None)\n"
+                "completed = subprocess.run(\n"
+                "    [sys.executable, target],\n"
+                "    capture_output=True,\n"
+                "    text=True,\n"
+                "    check=False,\n"
+                ")\n"
+                "assert completed.returncode == 0, completed.stderr\n"
+                "assert completed.stdout.strip() == 'anchored-environment-ok'\n"
+                "print('inherit-anchor-ok')\n"
+            )
+            self._write_bytes(
+                project_root,
+                "scripts/inherit_anchor_caller.py",
+                inherit_caller_source.encode("utf-8"),
+            )
+            inherit_anchor_rule = {
+                "kind": "python_target",
+                "caller": "scripts/inherit_anchor_caller.py",
+                "target": "scripts/anchor_target.py",
+                "args": [],
+                "cwd_class": "project_root",
+                "environment_class": "inherit",
+                "max_uses": 1,
+                "children": [],
+            }
+            inherit_completed = self._run_guarded_target(
+                project_root,
+                "scripts/inherit_anchor_caller.py",
+                allowed_subprocesses=[inherit_anchor_rule],
+            )
+            self.assertEqual(
+                inherit_completed.returncode,
+                0,
+                inherit_completed.stdout + inherit_completed.stderr,
+            )
+            self.assertEqual(
+                inherit_completed.stdout.strip(),
+                "inherit-anchor-ok",
+            )
+
+            guarded_target_path = self._write_bytes(
+                project_root,
+                "scripts/guarded_anchor_target.py",
+                (
+                    "import os\n"
+                    "from pathlib import Path\n"
+                    f"expected = {anchored_controls!r}\n"
+                    "actual = {name: os.environ.get(name) for name in expected}\n"
+                    "assert actual == expected, (actual, expected)\n"
+                    "quartet = {\n"
+                    "    os.environ[name]\n"
+                    "    for name in ('HOME', 'USERPROFILE', 'TEMP', 'TMP')\n"
+                    "}\n"
+                    "assert len(quartet) == 1, quartet\n"
+                    "transaction = Path(quartet.pop()).resolve(strict=True)\n"
+                    f"root = Path({str(project_root / 'guard-runtime')!r}).resolve()\n"
+                    "assert transaction.is_relative_to(root)\n"
+                    "assert transaction != root\n"
+                    "print('fresh-guarded-child-ok')\n"
+                ).encode("utf-8"),
+            )
+            guarded_caller_source = (
+                "import os\n"
+                "import subprocess\n"
+                "import sys\n"
+                "from pathlib import Path\n"
+                f"target = {str(guarded_target_path)!r}\n"
+                f"project_root = Path({str(project_root)!r})\n"
+                "fresh = project_root / 'guard-runtime' / 'fresh'\n"
+                "fresh.mkdir(parents=True)\n"
+                "good = dict(os.environ)\n"
+                "for name in ('HOME', 'USERPROFILE', 'TEMP', 'TMP'):\n"
+                "    good[name] = str(fresh)\n"
+                "completed = subprocess.run(\n"
+                "    [sys.executable, target],\n"
+                "    env=good,\n"
+                "    capture_output=True,\n"
+                "    text=True,\n"
+                "    check=False,\n"
+                ")\n"
+                "assert completed.returncode == 0, completed.stderr\n"
+                "assert completed.stdout.strip() == 'fresh-guarded-child-ok'\n"
+                "bad = dict(good)\n"
+                "bad['GIT_CONFIG_NOSYSTEM'] = '0'\n"
+                "try:\n"
+                "    subprocess.run(\n"
+                "        [sys.executable, target], env=bad, check=False\n"
+                "    )\n"
+                "except PermissionError:\n"
+                "    pass\n"
+                "else:\n"
+                "    raise AssertionError('mutated guarded-child control launched')\n"
+                "print('guarded-child-anchor-ok')\n"
+            )
+            self._write_bytes(
+                project_root,
+                "scripts/guarded_anchor_caller.py",
+                guarded_caller_source.encode("utf-8"),
+            )
+            guarded_anchor_rule = {
+                "kind": "python_target",
+                "caller": "scripts/guarded_anchor_caller.py",
+                "target": "scripts/guarded_anchor_target.py",
+                "args": [],
+                "cwd_class": "project_root",
+                "environment_class": "guarded_child",
+                "max_uses": 2,
+                "children": [],
+            }
+            guarded_completed = self._run_guarded_target(
+                project_root,
+                "scripts/guarded_anchor_caller.py",
+                allowed_subprocesses=[guarded_anchor_rule],
+            )
+            self.assertEqual(
+                guarded_completed.returncode,
+                0,
+                guarded_completed.stdout + guarded_completed.stderr,
+            )
+            self.assertEqual(
+                guarded_completed.stdout.strip(),
+                "guarded-child-anchor-ok",
+            )
+
+    @unittest.skipIf(
+        "EMOTION_STATE_PHASE_A_GUARD_POLICY" in os.environ,
+        ACTIVE_GUARD_SELF_HOSTING_SKIP_REASON,
+    )
+    def test_guard_git_families_are_transaction_scoped_and_prefix_closed(
+        self,
+    ) -> None:
+        with tempfile.TemporaryDirectory(
+            prefix="emotion-state-guard-git-families-",
+        ) as temporary_directory:
+            project_root = Path(temporary_directory)
+            fixture_root = (
+                project_root / "guard-runtime" / "fixture-repository"
+            )
+            fixture_root.mkdir(parents=True)
+            outside_directory = project_root / "outside-git-operand"
+            outside_directory.mkdir()
+            (outside_directory / "outside.txt").write_text(
+                "outside\n",
+                encoding="utf-8",
+            )
+            escape_directory = fixture_root / "escape"
+            link_supported = self._create_directory_link(
+                escape_directory,
+                outside_directory,
+            )
+            nested_links: list[Path] = []
+            for bundle_name in ("bundle-add", "bundle-add-force"):
+                bundle_directory = fixture_root / bundle_name
+                bundle_directory.mkdir()
+                (bundle_directory / "local.txt").write_text(
+                    "local\n",
+                    encoding="utf-8",
+                )
+                nested_link = bundle_directory / "nested"
+                if self._create_directory_link(
+                    nested_link,
+                    outside_directory,
+                ):
+                    nested_links.append(nested_link)
+            caller_source = r'''
+import os
+import subprocess
+from pathlib import Path
+
+project_root = Path(os.environ["EMOTION_STATE_PHASE_A_PROJECT_ROOT"])
+fixture_root = Path(os.environ["TEMP"]) / "fixture-repository"
+fixture_root.mkdir(exist_ok=True)
+
+def run(argv):
+    return subprocess.run(
+        argv,
+        cwd=fixture_root,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+
+for argv in (
+    ["git", "init"],
+    ["git", "config", "user.email", "fixture@example.invalid"],
+    ["git", "config", "user.name", "Fixture Author"],
+    ["git", "config", "core.autocrlf", "false"],
+    ["git", "config", "core.filemode", "false"],
+):
+    completed = run(argv)
+    assert completed.returncode == 0, completed.stderr
+(fixture_root / "tracked.txt").write_text("fixture\n", encoding="utf-8")
+(fixture_root / "deleted.txt").write_text("delete\n", encoding="utf-8")
+assert run([
+    "git",
+    "add",
+    "--",
+    "tracked.txt",
+    "deleted.txt",
+]).returncode == 0
+assert run(["git", "commit", "-m", "baseline"]).returncode == 0
+(fixture_root / "deleted.txt").unlink()
+assert run(["git", "add", "--", "deleted.txt"]).returncode == 0
+assert run(["git", "commit", "-m", "rename and delete"]).returncode == 0
+head = run(["git", "rev-parse", "HEAD"]).stdout.strip()
+assert len(head) == 40
+verified = run([
+    "git",
+    "--no-lazy-fetch",
+    "rev-parse",
+    "--verify",
+    "HEAD^{commit}",
+])
+assert verified.returncode == 0, verified.stderr
+assert verified.stdout.strip() == head
+
+guard_violations = []
+try:
+    missing_parent = run([
+        "git",
+        "add",
+        "--",
+        "missing-parent/missing.txt",
+    ])
+except PermissionError:
+    pass
+else:
+    guard_violations.append((
+        "missing-parent",
+        missing_parent.returncode,
+    ))
+(fixture_root / "a.txt").write_text("a\n", encoding="utf-8")
+(fixture_root / "b.txt").write_text("b\n", encoding="utf-8")
+pathspec_attempts = (
+    ["git", "add", "--", "*"],
+    ["git", "add", "-f", "--", "bundle-*"],
+    ["git", "add", "--", "?.txt"],
+    ["git", "add", "--", "[ab].txt"],
+    ["git", "add", "--", ":tracked.txt"],
+)
+pathspec_launches = []
+for argv in pathspec_attempts:
+    try:
+        completed = run(argv)
+    except PermissionError:
+        pass
+    else:
+        pathspec_launches.append((argv, completed.returncode))
+        guard_violations.append(("pathspec", argv, completed.returncode))
+assert len(pathspec_attempts) == 5
+directory_launches = []
+directory_attempt_count = 0
+for argv in (
+    ["git", "add", "--", "bundle-add"],
+    ["git", "add", "-f", "--", "bundle-add-force"],
+):
+    directory_attempt_count += 1
+    nested_link_present = (
+        fixture_root / argv[-1] / "nested"
+    ).exists()
+    try:
+        completed = run(argv)
+    except PermissionError:
+        pass
+    else:
+        directory_launches.append((
+            argv,
+            completed.returncode,
+            nested_link_present,
+        ))
+        guard_violations.append(("directory", argv, completed.returncode))
+assert directory_attempt_count == 2
+if directory_launches or pathspec_launches:
+    staged = run([
+        "git",
+        "--no-lazy-fetch",
+        "diff",
+        "--cached",
+        "--name-status",
+        "-z",
+        "--find-renames",
+        head,
+        "--",
+    ])
+    assert staged.returncode == 0, staged.stderr
+    if any(
+        nested_link_present
+        for _argv, _returncode, nested_link_present in directory_launches
+    ):
+        assert "outside.txt" in staged.stdout, staged.stdout
+if guard_violations:
+    raise AssertionError(("unsafe add reached native Git", guard_violations))
+
+denied = (
+    ["git", "rev-parse", "--verify", "HEAD^{commit}"],
+    ["git", "--no-lazy-fetch", "--no-lazy-fetch", "rev-parse", "HEAD"],
+    ["git", "rev-parse", "--no-lazy-fetch", "HEAD"],
+    ["git", "--no-lazy-fetch", "rev-parse", "HEAD"],
+)
+for argv in denied:
+    try:
+        run(argv)
+    except PermissionError:
+        pass
+    else:
+        raise AssertionError(argv)
+try:
+    subprocess.run(["git", "init"], cwd=project_root, check=False)
+except PermissionError:
+    pass
+else:
+    raise AssertionError("mutable fixture Git launched at project root")
+escape_directory = fixture_root / "escape"
+if escape_directory.exists():
+    try:
+        run(["git", "add", "--", "escape/outside.txt"])
+    except PermissionError:
+        pass
+    else:
+        raise AssertionError("Git operand symlink traversal launched")
+print("git-families-ok")
+'''
+            self._write_bytes(
+                project_root,
+                "scripts/git_caller.py",
+                textwrap.dedent(caller_source).encode("utf-8"),
+            )
+            rules = [
+                {
+                    "kind": "git",
+                    "caller": "scripts/git_caller.py",
+                    "matcher_id": "transaction_fixture",
+                    "cwd_class": "transaction_descendant",
+                    "children": [],
+                },
+                {
+                    "kind": "git",
+                    "caller": "scripts/git_caller.py",
+                    "matcher_id": "transaction_verification",
+                    "cwd_class": "transaction_descendant",
+                    "children": [],
+                },
+            ]
+            try:
+                completed = self._run_guarded_target(
+                    project_root,
+                    "scripts/git_caller.py",
+                    allowed_subprocesses=rules,
+                )
+            finally:
+                if link_supported:
+                    self._remove_directory_link(escape_directory)
+                for nested_link in nested_links:
+                    self._remove_directory_link(nested_link)
+            self.assertEqual(
+                completed.returncode,
+                0,
+                completed.stdout + completed.stderr,
+            )
+            self.assertEqual(completed.stdout.strip(), "git-families-ok")
+
+    @unittest.skipIf(
+        "EMOTION_STATE_PHASE_A_GUARD_POLICY" in os.environ,
+        ACTIVE_GUARD_SELF_HOSTING_SKIP_REASON,
+    )
+    def test_guard_project_root_sentinel_git_is_value_bound(self) -> None:
+        with tempfile.TemporaryDirectory(
+            prefix="emotion-state-guard-sentinel-git-",
+        ) as temporary_directory:
+            project_root = Path(temporary_directory)
+            head_commit = self._commit_private_gitignore_sentinel(project_root)
+            tree_line = self._git(
+                project_root,
+                "ls-tree",
+                head_commit,
+                "--",
+                "data/private/.gitignore",
+            ).stdout.strip()
+            sentinel_object_id = tree_line.split()[2]
+            self.assertRegex(sentinel_object_id, r"^[0-9a-f]{40,64}$")
+            caller_source = (
+                "import subprocess\n"
+                f"head = {head_commit!r}\n"
+                f"object_id = {sentinel_object_id!r}\n"
+                "commands = (\n"
+                "    ['git', '--no-lazy-fetch', 'rev-parse', '--verify', "
+                "'HEAD^{commit}'],\n"
+                "    ['git', '--no-lazy-fetch', 'ls-tree', '-z', head, '--', "
+                "':(literal)data/private/.gitignore'],\n"
+                "    ['git', '--no-lazy-fetch', 'cat-file', 'blob', object_id],\n"
+                ")\n"
+                "for argv in commands:\n"
+                "    completed = subprocess.run(\n"
+                "        argv,\n"
+                "        capture_output=True,\n"
+                "        check=False,\n"
+                "    )\n"
+                "    assert completed.returncode == 0, completed.stderr\n"
+                "denied = (\n"
+                "    ['git', '--no-lazy-fetch', 'ls-tree', '-z', '0' * 40, "
+                "'--', ':(literal)data/private/.gitignore'],\n"
+                "    ['git', '--no-lazy-fetch', 'ls-tree', '-z', head, '--', "
+                "':(literal)data/private-restricted/.gitignore'],\n"
+                "    ['git', '--no-lazy-fetch', 'cat-file', 'blob', '0' * 40],\n"
+                ")\n"
+                "for argv in denied:\n"
+                "    try:\n"
+                "        subprocess.run(argv, check=False)\n"
+                "    except PermissionError:\n"
+                "        pass\n"
+                "    else:\n"
+                "        raise AssertionError(argv)\n"
+                "print('sentinel-git-ok')\n"
+            )
+            self._write_bytes(
+                project_root,
+                "scripts/emotion_state_phase_a_verification_evidence.py",
+                caller_source.encode("utf-8"),
+            )
+            rule = {
+                "kind": "git",
+                "caller": (
+                    "scripts/emotion_state_phase_a_verification_evidence.py"
+                ),
+                "matcher_id": "project_root_sentinel",
+                "cwd_class": "project_root",
+                "captured_head": head_commit,
+                "sentinel_object_id": sentinel_object_id,
+                "children": [],
+            }
+            completed = self._run_guarded_target(
+                project_root,
+                "scripts/emotion_state_phase_a_verification_evidence.py",
+                allowed_subprocesses=[rule],
+            )
+            self.assertEqual(
+                completed.returncode,
+                0,
+                completed.stdout + completed.stderr,
+            )
+            self.assertEqual(completed.stdout.strip(), "sentinel-git-ok")
+
+    @unittest.skipIf(
+        "EMOTION_STATE_PHASE_A_GUARD_POLICY" in os.environ,
+        ACTIVE_GUARD_SELF_HOSTING_SKIP_REASON,
+    )
+    def test_guard_rejects_process_options_escapes_and_exceeded_uses(
+        self,
+    ) -> None:
+        with tempfile.TemporaryDirectory(
+            prefix="emotion-state-guard-process-options-",
+        ) as temporary_directory:
+            temporary_root = Path(temporary_directory)
+            project_root = temporary_root / "project"
+            project_root.mkdir()
+            target_path = self._write_bytes(
+                project_root,
+                "scripts/target.py",
+                b'print("target")\n',
+            )
+            outside_marker = temporary_root / "outside-ran.txt"
+            outside_path = self._write_bytes(
+                temporary_root,
+                "outside.py",
+                (
+                    "from pathlib import Path\n"
+                    f"Path({str(outside_marker)!r}).write_text('ran')\n"
+                ).encode("utf-8"),
+            )
+            escape_relative_path: str | None = None
+            escape_path = project_root / "scripts" / "escape.py"
+            try:
+                escape_path.symlink_to(outside_path)
+            except OSError as exc:
+                if not (
+                    os.name == "nt"
+                    and getattr(exc, "winerror", None) == 1314
+                ):
+                    raise
+            else:
+                escape_relative_path = "scripts/escape.py"
+
+            caller_source = (
+                "import os\n"
+                "import subprocess\n"
+                "import sys\n"
+                "from pathlib import Path\n"
+                f"target = {str(target_path)!r}\n"
+                f"outside = {str(outside_path)!r}\n"
+                "completed = subprocess.run(\n"
+                "    [sys.executable, target],\n"
+                "    capture_output=True,\n"
+                "    text=True,\n"
+                "    check=False,\n"
+                ")\n"
+                "assert completed.returncode == 0, completed.stderr\n"
+                "assert completed.stdout.strip() == 'target'\n"
+                "attempts = [\n"
+                "    lambda: subprocess.run([sys.executable, target], check=False),\n"
+                "    lambda: subprocess.run(sys.executable, check=False),\n"
+                "    lambda: subprocess.run(\n"
+                "        f'{sys.executable} {target}', shell=True, check=False\n"
+                "    ),\n"
+                "    lambda: subprocess.run(\n"
+                "        [sys.executable, target],\n"
+                "        executable=sys.executable,\n"
+                "        check=False,\n"
+                "    ),\n"
+                "    lambda: subprocess.run(\n"
+                "        [sys.executable, target], pass_fds=(1,), check=False\n"
+                "    ),\n"
+                "    lambda: subprocess.run(\n"
+                "        [sys.executable, target],\n"
+                "        preexec_fn=lambda: None,\n"
+                "        check=False,\n"
+                "    ),\n"
+                "    lambda: subprocess.run([sys.executable, outside], check=False),\n"
+                "]\n"
+                "if os.name == 'nt':\n"
+                "    startupinfo = subprocess.STARTUPINFO()\n"
+                "    startupinfo.lpAttributeList = {'handle_list': [1]}\n"
+                "    attempts.append(\n"
+                "        lambda: subprocess.run(\n"
+                "            [sys.executable, target],\n"
+                "            startupinfo=startupinfo,\n"
+                "            check=False,\n"
+                "        )\n"
+                "    )\n"
+                f"escape = {str(escape_path) if escape_relative_path else ''!r}\n"
+                "if escape:\n"
+                "    attempts.append(\n"
+                "        lambda: subprocess.run([sys.executable, escape], check=False)\n"
+                "    )\n"
+                "try:\n"
+                "    cwd_escape = Path(os.environ['TEMP']) / 'cwd-escape'\n"
+                f"    cwd_escape.symlink_to({str(temporary_root)!r}, target_is_directory=True)\n"
+                "except OSError:\n"
+                "    pass\n"
+                "else:\n"
+                "    attempts.append(\n"
+                "        lambda: subprocess.run(\n"
+                "            [sys.executable, target],\n"
+                "            cwd=cwd_escape,\n"
+                "            check=False,\n"
+                "        )\n"
+                "    )\n"
+                "for operation in attempts:\n"
+                "    try:\n"
+                "        operation()\n"
+                "    except PermissionError:\n"
+                "        pass\n"
+                "    else:\n"
+                "        raise AssertionError(operation)\n"
+                "print('process-options-ok')\n"
+            )
+            self._write_bytes(
+                project_root,
+                "scripts/process_options_caller.py",
+                caller_source.encode("utf-8"),
+            )
+            rules = [
+                {
+                    "kind": "python_target",
+                    "caller": "scripts/process_options_caller.py",
+                    "target": "scripts/target.py",
+                    "args": [],
+                    "cwd_class": "project_root",
+                    "environment_class": "inherit",
+                    "max_uses": 1,
+                    "children": [],
+                },
+                {
+                    "kind": "python_target",
+                    "caller": "scripts/process_options_caller.py",
+                    "target": "scripts/target.py",
+                    "args": [],
+                    "cwd_class": "transaction_descendant",
+                    "environment_class": "inherit",
+                    "max_uses": 1,
+                    "children": [],
+                },
+            ]
+            if escape_relative_path is not None:
+                rules.append({
+                    "kind": "python_target",
+                    "caller": "scripts/process_options_caller.py",
+                    "target": escape_relative_path,
+                    "args": [],
+                    "cwd_class": "project_root",
+                    "environment_class": "inherit",
+                    "max_uses": 1,
+                    "children": [],
+                })
+            completed = self._run_guarded_target(
+                project_root,
+                "scripts/process_options_caller.py",
+                allowed_subprocesses=rules,
+            )
+            self.assertEqual(
+                completed.returncode,
+                0,
+                completed.stdout + completed.stderr,
+            )
+            self.assertEqual(completed.stdout.strip(), "process-options-ok")
+            self.assertFalse(outside_marker.exists())
+
+            concurrent_target = self._write_bytes(
+                project_root,
+                "scripts/concurrent_target.py",
+                b'print("concurrent-target")\n',
+            )
+            concurrent_caller_source = (
+                "import sitecustomize\n"
+                "import subprocess\n"
+                "import sys\n"
+                "import threading\n"
+                "import time\n"
+                f"target = {str(concurrent_target)!r}\n"
+                "original_scrub = sitecustomize._scrub_child_environment\n"
+                "def slow_scrub(*args, **kwargs):\n"
+                "    result = original_scrub(*args, **kwargs)\n"
+                "    time.sleep(0.2)\n"
+                "    return result\n"
+                "sitecustomize._scrub_child_environment = slow_scrub\n"
+                "start = threading.Barrier(3)\n"
+                "results = []\n"
+                "def launch():\n"
+                "    start.wait()\n"
+                "    try:\n"
+                "        completed = subprocess.run(\n"
+                "            [sys.executable, target],\n"
+                "            capture_output=True,\n"
+                "            text=True,\n"
+                "            check=False,\n"
+                "        )\n"
+                "    except PermissionError:\n"
+                "        results.append('denied')\n"
+                "    else:\n"
+                "        assert completed.returncode == 0, completed.stderr\n"
+                "        results.append('launched')\n"
+                "threads = [threading.Thread(target=launch) for _ in range(2)]\n"
+                "for thread in threads:\n"
+                "    thread.start()\n"
+                "start.wait()\n"
+                "for thread in threads:\n"
+                "    thread.join(timeout=5)\n"
+                "assert all(not thread.is_alive() for thread in threads)\n"
+                "assert sorted(results) == ['denied', 'launched'], results\n"
+                "print('concurrent-max-uses-ok')\n"
+            )
+            self._write_bytes(
+                project_root,
+                "scripts/concurrent_caller.py",
+                concurrent_caller_source.encode("utf-8"),
+            )
+            concurrent_rule = {
+                "kind": "python_target",
+                "caller": "scripts/concurrent_caller.py",
+                "target": "scripts/concurrent_target.py",
+                "args": [],
+                "cwd_class": "project_root",
+                "environment_class": "inherit",
+                "max_uses": 1,
+                "children": [],
+            }
+            concurrent_completed = self._run_guarded_target(
+                project_root,
+                "scripts/concurrent_caller.py",
+                allowed_subprocesses=[concurrent_rule],
+            )
+            self.assertEqual(
+                concurrent_completed.returncode,
+                0,
+                concurrent_completed.stdout + concurrent_completed.stderr,
+            )
+            self.assertEqual(
+                concurrent_completed.stdout.strip(),
+                "concurrent-max-uses-ok",
+            )
+
+    @unittest.skipIf(
+        "EMOTION_STATE_PHASE_A_GUARD_POLICY" in os.environ,
+        ACTIVE_GUARD_SELF_HOSTING_SKIP_REASON,
+    )
+    def test_guarded_launcher_preserves_canonical_argv_and_safety_prefixes(
+        self,
+    ) -> None:
+        verification = self._verification_module()
+        from scripts.emotion_state_phase_a_verification_evidence import (
+            run_guarded_command,
+        )
+
+        with tempfile.TemporaryDirectory(
+            prefix="emotion-state-guard-launcher-",
+        ) as temporary_directory:
+            project_root = Path(temporary_directory)
+            canonical_policy_bytes = self.POLICY_PATH.read_bytes()
+
+            def prepare_launcher_root(
+                name: str,
+                policy_bytes: bytes,
+            ) -> Path:
+                root = project_root / name
+                self._write_bytes(
+                    root,
+                    "research/sources/emotion_state/"
+                    "phase_a_verification_guard_policy.json",
+                    policy_bytes,
+                )
+                self._write_bytes(
+                    root,
+                    "scripts/emotion_state_phase_a_guard_site/"
+                    "sitecustomize.py",
+                    (
+                        self.GUARD_SITE_PATH / "sitecustomize.py"
+                    ).read_bytes(),
+                )
+                self._write_bytes(
+                    root,
+                    "scripts/validate_context_reading_policy.py",
+                    b'print("context-policy")\n',
+                )
+                return root
+
+            policy_drift_cases = (
+                (
+                    "leading-whitespace",
+                    b" " + canonical_policy_bytes,
+                    "context-policy-validator",
+                    {},
+                ),
+                (
+                    "crlf-native-git",
+                    canonical_policy_bytes.replace(b"\n", b"\r\n"),
+                    "git-diff-check",
+                    {
+                        "baseline_commit": "0" * 40,
+                        "head_commit": "1" * 40,
+                    },
+                ),
+            )
+            for (
+                case_name,
+                drifted_policy_bytes,
+                command_id,
+                substitutions,
+            ) in policy_drift_cases:
+                with self.subTest(policy_drift=case_name):
+                    drift_root = prepare_launcher_root(
+                        f"policy-{case_name}",
+                        drifted_policy_bytes,
+                    )
+                    with (
+                        mock.patch.object(
+                            verification,
+                            "_command_subprocess_rules",
+                            side_effect=AssertionError(
+                                "rules generated before policy rejection"
+                            ),
+                        ),
+                        mock.patch.object(
+                            verification.subprocess,
+                            "run",
+                            side_effect=AssertionError(
+                                "process launched before policy rejection"
+                            ),
+                        ),
+                    ):
+                        with self.assertRaisesRegex(ValueError, "policy"):
+                            run_guarded_command(
+                                command_id,
+                                drift_root,
+                                substitutions,
+                            )
+                    self.assertFalse(
+                        (
+                            drift_root
+                            / ".tmp/emotion-state-001-phase-a-publication"
+                        ).exists()
+                    )
+
+            linked_policy_root = project_root / "linked-policy"
+            linked_policy_parent = (
+                linked_policy_root / "research/sources/emotion_state"
+            )
+            linked_policy_parent.parent.mkdir(parents=True)
+            linked_policy_supported = self._create_directory_link(
+                linked_policy_parent,
+                self.POLICY_PATH.parent,
+            )
+            if linked_policy_supported:
+                with self.subTest(policy_path="linked-parent"):
+                    self._write_bytes(
+                        linked_policy_root,
+                        "scripts/emotion_state_phase_a_guard_site/"
+                        "sitecustomize.py",
+                        (
+                            self.GUARD_SITE_PATH / "sitecustomize.py"
+                        ).read_bytes(),
+                    )
+                    try:
+                        with (
+                            mock.patch.object(
+                                verification,
+                                "_command_subprocess_rules",
+                                side_effect=AssertionError(
+                                    "rules generated through linked policy path"
+                                ),
+                            ),
+                            mock.patch.object(
+                                verification.subprocess,
+                                "run",
+                                side_effect=AssertionError(
+                                    "process launched through linked policy path"
+                                ),
+                            ),
+                        ):
+                            with self.assertRaisesRegex(ValueError, "policy"):
+                                run_guarded_command(
+                                    "context-policy-validator",
+                                    linked_policy_root,
+                                    {},
+                                )
+                    finally:
+                        self._remove_directory_link(linked_policy_parent)
+                    self.assertFalse(
+                        (
+                            linked_policy_root
+                            / ".tmp/emotion-state-001-phase-a-publication"
+                        ).exists()
+                    )
+
+            missing_site_root = project_root / "missing-site"
+            missing_site_policy_path = (
+                missing_site_root
+                / "research/sources/emotion_state/"
+                "phase_a_verification_guard_policy.json"
+            )
+            missing_site_policy_path.parent.mkdir(parents=True)
+            missing_site_policy_path.write_bytes(self.POLICY_PATH.read_bytes())
+            with self.assertRaisesRegex(ValueError, "guard site"):
+                run_guarded_command(
+                    "context-policy-validator",
+                    missing_site_root,
+                    {},
+                )
+            self.assertFalse(
+                (
+                    missing_site_root
+                    / ".tmp/emotion-state-001-phase-a-publication"
+                ).exists()
+            )
+
+            recovery_link_root = prepare_launcher_root(
+                "linked-recovery",
+                canonical_policy_bytes,
+            )
+            recovery_outside = project_root / "recovery-outside"
+            recovery_outside.mkdir()
+            recovery_marker = recovery_outside / "keep.txt"
+            recovery_marker.write_text("keep", encoding="utf-8")
+            recovery_link = (
+                recovery_link_root
+                / ".tmp/emotion-state-001-phase-a-publication"
+            )
+            recovery_link.parent.mkdir(parents=True)
+            recovery_link_supported = self._create_directory_link(
+                recovery_link,
+                recovery_outside,
+            )
+            if recovery_link_supported:
+                with self.subTest(recovery_root="linked"):
+                    try:
+                        with self.assertRaisesRegex(
+                            ValueError,
+                            "recovery|transaction",
+                        ):
+                            run_guarded_command(
+                                "context-policy-validator",
+                                recovery_link_root,
+                                {},
+                            )
+                    finally:
+                        self._remove_directory_link(recovery_link)
+                    self.assertEqual(
+                        recovery_marker.read_text(encoding="utf-8"),
+                        "keep",
+                    )
+
+            replacement_root = project_root / "replacement-transaction"
+            replacement_recovery = (
+                replacement_root
+                / ".tmp/emotion-state-001-phase-a-publication"
+            )
+            replacement_recovery.mkdir(parents=True)
+            replacement_outside = project_root / "replacement-outside"
+            replacement_outside.mkdir()
+            replacement_marker = replacement_outside / "keep.txt"
+            replacement_marker.write_text("keep", encoding="utf-8")
+            replacement_link: Path | None = None
+            with self.subTest(transaction_cleanup="replaced-link"):
+                try:
+                    with mock.patch.object(
+                        verification.shutil,
+                        "rmtree",
+                        side_effect=AssertionError(
+                            "recursive cleanup called on replaced transaction"
+                        ),
+                    ):
+                        with self.assertRaisesRegex(ValueError, "transaction"):
+                            with (
+                                verification
+                                ._fresh_guarded_transaction_directory(
+                                    replacement_recovery
+                                )
+                            ) as transaction_path:
+                                transaction_path.rmdir()
+                                self.assertTrue(
+                                    self._create_directory_link(
+                                        transaction_path,
+                                        replacement_outside,
+                                    )
+                                )
+                                replacement_link = transaction_path
+                finally:
+                    if replacement_link is not None and (
+                        replacement_link.exists()
+                        or replacement_link.is_symlink()
+                    ):
+                        self._remove_directory_link(replacement_link)
+                self.assertEqual(
+                    replacement_marker.read_text(encoding="utf-8"),
+                    "keep",
+                )
+
+            policy_path = (
+                project_root
+                / "research/sources/emotion_state/"
+                "phase_a_verification_guard_policy.json"
+            )
+            policy_path.parent.mkdir(parents=True)
+            policy_path.write_bytes(self.POLICY_PATH.read_bytes())
+            self._write_bytes(
+                project_root,
+                "scripts/emotion_state_phase_a_guard_site/sitecustomize.py",
+                (
+                    self.GUARD_SITE_PATH / "sitecustomize.py"
+                ).read_bytes(),
+            )
+            thesis_source = r'''
+import subprocess
+
+completed = subprocess.run(
+    ["git", "status", "--short", "--untracked-files=all"],
+    capture_output=True,
+    text=True,
+    check=False,
+)
+assert completed.returncode == 0, completed.stderr
+assert completed.args == [
+    "git",
+    "--no-lazy-fetch",
+    "status",
+    "--short",
+    "--untracked-files=all",
+], completed.args
+'''
+            self._write_bytes(
+                project_root,
+                "scripts/check_thesis_update_gate.py",
+                textwrap.dedent(thesis_source).encode("utf-8"),
+            )
+            self._initialize_git_repository(project_root)
+            self._git(
+                project_root,
+                "add",
+                "--",
+                "research/sources/emotion_state/"
+                "phase_a_verification_guard_policy.json",
+                "scripts/check_thesis_update_gate.py",
+            )
+            self._git(project_root, "commit", "-m", "baseline")
+            head_commit = self._git(
+                project_root,
+                "rev-parse",
+                "HEAD",
+            ).stdout.strip()
+
+            thesis_entry = run_guarded_command(
+                "thesis-update-validator",
+                project_root,
+                {},
+            )
+            self.assertEqual(thesis_entry["exit_status"], 0)
+            self.assertEqual(
+                thesis_entry["argv"],
+                ["python", "scripts/check_thesis_update_gate.py"],
+            )
+            diff_entry = run_guarded_command(
+                "git-diff-check",
+                project_root,
+                {
+                    "baseline_commit": head_commit,
+                    "head_commit": head_commit,
+                },
+            )
+            self.assertEqual(diff_entry["exit_status"], 0)
+            self.assertEqual(
+                diff_entry["argv"],
+                [
+                    "git",
+                    "diff",
+                    "--check",
+                    f"{head_commit}..{head_commit}",
+                ],
+            )
+            self.assertNotIn("--no-lazy-fetch", diff_entry["argv"])
+            module_source = (
+                ROOT
+                / "scripts/emotion_state_phase_a_verification_evidence.py"
+            ).read_text(encoding="utf-8")
+            self.assertIn(
+                '["git", "--no-lazy-fetch", *canonical_argv[1:]]',
+                module_source,
+            )
+
+    def _git(
+        self,
+        root: Path,
+        *arguments: str,
+    ) -> subprocess.CompletedProcess[str]:
+        completed = subprocess.run(
+            ["git", *arguments],
+            cwd=root,
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+        self.assertEqual(
+            completed.returncode,
+            0,
+            msg=(
+                f"git {' '.join(arguments)} failed with "
+                f"exit {completed.returncode}\n"
+                f"stdout:\n{completed.stdout}\n"
+                f"stderr:\n{completed.stderr}"
+            ),
+        )
+        return completed
+
+    def _initialize_git_repository(self, root: Path) -> None:
+        self._git(root, "init")
+        self._git(root, "config", "user.email", "fixture@example.invalid")
+        self._git(root, "config", "user.name", "Fixture Author")
+        self._git(root, "config", "core.autocrlf", "false")
+        self._git(root, "config", "core.filemode", "false")
+
+    @staticmethod
+    def _sha256_bytes(content: bytes) -> str:
+        return hashlib.sha256(content).hexdigest().upper()
+
+    @staticmethod
+    def _write_bytes(root: Path, relative_path: str, content: bytes) -> Path:
+        path = root / relative_path
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_bytes(content)
+        return path
+
+    @staticmethod
+    def _create_directory_link(link: Path, target: Path) -> bool:
+        try:
+            link.symlink_to(target, target_is_directory=True)
+        except OSError as exc:
+            if not (
+                os.name == "nt"
+                and getattr(exc, "winerror", None) == 1314
+            ):
+                raise
+            completed = subprocess.run(
+                [
+                    "cmd",
+                    "/d",
+                    "/c",
+                    "mklink",
+                    "/J",
+                    str(link),
+                    str(target),
+                ],
+                capture_output=True,
+                text=True,
+                check=False,
+            )
+            if completed.returncode != 0:
+                return False
+        return True
+
+    @staticmethod
+    def _remove_directory_link(link: Path) -> None:
+        if link.is_symlink():
+            link.unlink()
+        elif link.exists():
+            os.rmdir(link)
+
+    def _commit_private_gitignore_sentinel(
+        self,
+        root: Path,
+        *,
+        content: bytes = b"*\n!.gitignore\n",
+        remove_worktree_directory: bool = False,
+    ) -> str:
+        self._initialize_git_repository(root)
+        self._write_bytes(
+            root,
+            ".gitignore",
+            b"data/private/*\n!data/private/.gitignore\n",
+        )
+        sentinel_path = self._write_bytes(
+            root,
+            "data/private/.gitignore",
+            content,
+        )
+        self._git(
+            root,
+            "add",
+            "-f",
+            "--",
+            ".gitignore",
+            "data/private/.gitignore",
+        )
+        self._git(root, "commit", "-m", "private sentinel fixture")
+        head_commit = self._git(root, "rev-parse", "HEAD").stdout.strip()
+        if remove_worktree_directory:
+            sentinel_path.unlink()
+            sentinel_path.parent.rmdir()
+        return head_commit
+
+    def test_tracked_private_gitignore_sentinel_is_read_from_exact_head_blob(
+        self,
+    ) -> None:
+        verification = self._verification_module()
+        sentinel_bytes = b"*\n!.gitignore\n"
+        with tempfile.TemporaryDirectory(
+            prefix="emotion-state-private-sentinel-",
+        ) as temporary_directory:
+            root = Path(temporary_directory)
+            self._commit_private_gitignore_sentinel(
+                root,
+                content=sentinel_bytes,
+                remove_worktree_directory=True,
+            )
+            self.assertEqual(
+                verification.read_tracked_private_gitignore_sentinel(root),
+                sentinel_bytes,
+            )
+
+        with tempfile.TemporaryDirectory(
+            prefix="emotion-state-missing-private-sentinel-",
+        ) as temporary_directory:
+            root = Path(temporary_directory)
+            self._initialize_git_repository(root)
+            self._write_bytes(root, "tracked.txt", b"tracked fixture\n")
+            self._git(root, "add", "--", "tracked.txt")
+            self._git(root, "commit", "-m", "missing sentinel fixture")
+            with self.assertRaisesRegex(ValueError, "private sentinel"):
+                verification.read_tracked_private_gitignore_sentinel(root)
+
+    def test_internal_git_reads_disable_lazy_fetch_for_missing_promisor_blob(
+        self,
+    ) -> None:
+        verification = self._verification_module()
+        with tempfile.TemporaryDirectory(
+            prefix="emotion-state-promisor-sentinel-",
+        ) as temporary_directory:
+            temporary_root = Path(temporary_directory)
+            source_root = temporary_root / "source"
+            source_root.mkdir()
+            head_commit = self._commit_private_gitignore_sentinel(source_root)
+            sentinel_bytes = b"*\n!.gitignore\n"
+            sentinel_object_id = hashlib.sha1(
+                (
+                    b"blob "
+                    + str(len(sentinel_bytes)).encode("ascii")
+                    + b"\0"
+                    + sentinel_bytes
+                )
+            ).hexdigest()
+            source_git_dir = source_root / ".git"
+            source_sentinel_object = (
+                source_git_dir
+                / "objects"
+                / sentinel_object_id[:2]
+                / sentinel_object_id[2:]
+            )
+            self.assertTrue(source_sentinel_object.is_file())
+            source_config_path = source_git_dir / "config"
+            source_config_path.write_text(
+                source_config_path.read_text(encoding="utf-8")
+                + "\n[uploadpack]\n"
+                + "\tallowFilter = true\n"
+                + "\tallowAnySHA1InWant = true\n"
+                + "\tallowReachableSHA1InWant = true\n",
+                encoding="utf-8",
+            )
+
+            partial_root = temporary_root / "partial"
+            partial_root.mkdir()
+            self._initialize_git_repository(partial_root)
+            partial_git_dir = partial_root / ".git"
+            copied_object_ids = set()
+            for source_object in sorted(
+                (source_git_dir / "objects").glob("*/*")
+            ):
+                if (
+                    not source_object.is_file()
+                    or re.fullmatch(
+                        r"[0-9a-f]{2}",
+                        source_object.parent.name,
+                    )
+                    is None
+                    or re.fullmatch(
+                        r"[0-9a-f]{38}",
+                        source_object.name,
+                    )
+                    is None
+                ):
+                    continue
+                object_id = source_object.parent.name + source_object.name
+                if object_id == sentinel_object_id:
+                    continue
+                destination_object = (
+                    partial_git_dir
+                    / "objects"
+                    / object_id[:2]
+                    / object_id[2:]
+                )
+                destination_object.parent.mkdir(
+                    parents=True,
+                    exist_ok=True,
+                )
+                destination_object.write_bytes(source_object.read_bytes())
+                copied_object_ids.add(object_id)
+            self.assertNotIn(sentinel_object_id, copied_object_ids)
+
+            partial_config = (
+                "[core]\n"
+                "\trepositoryformatversion = 1\n"
+                "\tfilemode = false\n"
+                "\tbare = false\n"
+                "\tlogallrefupdates = true\n"
+                "[extensions]\n"
+                "\tpartialClone = origin\n"
+                '[remote "origin"]\n'
+                f'\turl = "{source_root.as_posix()}"\n'
+                "\tpromisor = true\n"
+                "\tpartialCloneFilter = blob:none\n"
+            )
+            (partial_git_dir / "config").write_text(
+                partial_config,
+                encoding="utf-8",
+            )
+            (partial_git_dir / "HEAD").write_text(
+                "ref: refs/heads/main\n",
+                encoding="ascii",
+            )
+            partial_head_ref = partial_git_dir / "refs" / "heads" / "main"
+            partial_head_ref.parent.mkdir(parents=True, exist_ok=True)
+            partial_head_ref.write_text(
+                head_commit + "\n",
+                encoding="ascii",
+            )
+
+            with self.assertRaises(ValueError):
+                verification._run_git_bytes(
+                    partial_root,
+                    "cat-file",
+                    "blob",
+                    sentinel_object_id,
+                )
+            captured_error: ValueError | None = None
+            try:
+                verification.read_tracked_private_gitignore_sentinel(
+                    partial_root
+                )
+            except ValueError as exc:
+                captured_error = exc
+            self.assertIsNotNone(captured_error)
+            self.assertEqual(
+                str(captured_error),
+                "private sentinel Git blob is unavailable",
+            )
+            with self.assertRaises(ValueError):
+                verification._run_git_bytes(
+                    partial_root,
+                    "cat-file",
+                    "blob",
+                    sentinel_object_id,
+                )
+
+    def test_promisor_fixture_avoids_unreviewed_git_launches(self) -> None:
+        tree = ast.parse(
+            (
+                ROOT
+                / "scripts/test_emotion_state_001_open_dataset_gate.py"
+            ).read_text(encoding="utf-8")
+        )
+        method = next(
+            node
+            for node in ast.walk(tree)
+            if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef))
+            and node.name
+            == "test_internal_git_reads_disable_lazy_fetch_for_missing_promisor_blob"
+        )
+        forbidden_launches = []
+        evidence_git_probe_shapes = []
+        for node in ast.walk(method):
+            if not isinstance(node, ast.Call):
+                continue
+            if (
+                isinstance(node.func, ast.Attribute)
+                and isinstance(node.func.value, ast.Name)
+                and node.func.value.id == "self"
+                and node.func.attr == "_git"
+            ):
+                forbidden_launches.append("self._git")
+            if (
+                isinstance(node.func, ast.Attribute)
+                and isinstance(node.func.value, ast.Name)
+                and node.func.value.id == "subprocess"
+                and node.func.attr == "run"
+            ):
+                forbidden_launches.append("subprocess.run")
+            if (
+                isinstance(node.func, ast.Attribute)
+                and isinstance(node.func.value, ast.Name)
+                and node.func.value.id == "verification"
+                and node.func.attr == "_run_git_bytes"
+            ):
+                evidence_git_probe_shapes.append([
+                    argument.id
+                    if isinstance(argument, ast.Name)
+                    else (
+                        argument.value
+                        if isinstance(argument, ast.Constant)
+                        else None
+                    )
+                    for argument in node.args
+                ])
+        forbidden_arguments = {
+            node.value
+            for node in ast.walk(method)
+            if isinstance(node, ast.Constant)
+            and isinstance(node.value, str)
+            and node.value in {"-c", "clone", "fetch"}
+        }
+        self.assertEqual(forbidden_launches, [])
+        self.assertEqual(forbidden_arguments, set())
+        self.assertEqual(
+            evidence_git_probe_shapes,
+            [
+                [
+                    "partial_root",
+                    "cat-file",
+                    "blob",
+                    "sentinel_object_id",
+                ],
+                [
+                    "partial_root",
+                    "cat-file",
+                    "blob",
+                    "sentinel_object_id",
+                ],
+            ],
+        )
+
+        verification_tree = ast.parse(
+            (
+                ROOT
+                / "scripts/emotion_state_phase_a_verification_evidence.py"
+            ).read_text(encoding="utf-8")
+        )
+        runner = next(
+            node
+            for node in verification_tree.body
+            if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef))
+            and node.name == "_run_git_bytes"
+        )
+        subprocess_call = next(
+            node
+            for node in ast.walk(runner)
+            if isinstance(node, ast.Call)
+            and isinstance(node.func, ast.Attribute)
+            and isinstance(node.func.value, ast.Name)
+            and node.func.value.id == "subprocess"
+            and node.func.attr == "run"
+        )
+        argv_expression = subprocess_call.args[0]
+        self.assertIsInstance(argv_expression, ast.List)
+        self.assertEqual(
+            [
+                element.value
+                if isinstance(element, ast.Constant)
+                else (
+                    "*" + element.value.id
+                    if isinstance(element, ast.Starred)
+                    and isinstance(element.value, ast.Name)
+                    else None
+                )
+                for element in argv_expression.elts
+            ],
+            ["git", "--no-lazy-fetch", "*arguments"],
+        )
+
+    def test_git_inventories_reject_all_private_states_before_byte_reads(
+        self,
+    ) -> None:
+        verification = self._verification_module()
+        private_prefixes = ("data/private", "data/private-restricted")
+        git_states = ("committed", "staged", "unstaged", "untracked")
+
+        def reject_byte_read(*_args: object, **_kwargs: object) -> None:
+            raise AssertionError(
+                "private Git path reached byte inventory creation"
+            )
+
+        for private_prefix in private_prefixes:
+            for git_state in git_states:
+                with self.subTest(
+                    private_prefix=private_prefix,
+                    git_state=git_state,
+                ):
+                    with tempfile.TemporaryDirectory(
+                        prefix="emotion-state-private-inventory-",
+                    ) as temporary_directory:
+                        root = Path(temporary_directory)
+                        self._initialize_git_repository(root)
+                        self._write_bytes(root, "tracked.txt", b"baseline\n")
+                        self._git(root, "add", "--", "tracked.txt")
+                        self._git(root, "commit", "-m", "baseline")
+                        baseline_commit = self._git(
+                            root,
+                            "rev-parse",
+                            "HEAD",
+                        ).stdout.strip()
+                        relative_path = (
+                            f"{private_prefix}/{git_state}-fixture.txt"
+                        )
+
+                        if git_state == "committed":
+                            self._write_bytes(
+                                root,
+                                relative_path,
+                                b"committed private fixture\n",
+                            )
+                            self._git(
+                                root,
+                                "add",
+                                "-f",
+                                "--",
+                                relative_path,
+                            )
+                            self._git(root, "commit", "-m", "private change")
+                            head_commit = self._git(
+                                root,
+                                "rev-parse",
+                                "HEAD",
+                            ).stdout.strip()
+                        elif git_state == "staged":
+                            head_commit = baseline_commit
+                            self._write_bytes(
+                                root,
+                                relative_path,
+                                b"staged private fixture\n",
+                            )
+                            self._git(
+                                root,
+                                "add",
+                                "-f",
+                                "--",
+                                relative_path,
+                            )
+                        elif git_state == "unstaged":
+                            self._write_bytes(
+                                root,
+                                relative_path,
+                                b"tracked private fixture\n",
+                            )
+                            self._git(
+                                root,
+                                "add",
+                                "-f",
+                                "--",
+                                relative_path,
+                            )
+                            self._git(
+                                root,
+                                "commit",
+                                "-m",
+                                "tracked private fixture",
+                            )
+                            head_commit = self._git(
+                                root,
+                                "rev-parse",
+                                "HEAD",
+                            ).stdout.strip()
+                            baseline_commit = head_commit
+                            self._write_bytes(
+                                root,
+                                relative_path,
+                                b"unstaged private fixture\n",
+                            )
+                        else:
+                            head_commit = baseline_commit
+                            self._write_bytes(
+                                root,
+                                relative_path,
+                                b"untracked private fixture\n",
+                            )
+
+                        with (
+                            mock.patch.object(
+                                verification,
+                                "_tree_file_bytes",
+                                side_effect=reject_byte_read,
+                            ),
+                            mock.patch.object(
+                                verification,
+                                "_index_file_bytes",
+                                side_effect=reject_byte_read,
+                            ),
+                            mock.patch.object(
+                                verification,
+                                "_worktree_file_bytes",
+                                side_effect=reject_byte_read,
+                            ),
+                        ):
+                            with self.assertRaisesRegex(
+                                ValueError,
+                                "private data boundary",
+                            ):
+                                verification.build_git_change_inventories(
+                                    root=root,
+                                    baseline_commit=baseline_commit,
+                                    head_commit=head_commit,
+                                )
+
+    def test_private_sentinel_consumers_do_not_probe_worktree_private_paths(
+        self,
+    ) -> None:
+        import scripts.check_project_drift as project_drift
+        import scripts.check_setup as check_setup
+        import scripts.validate_private_data_boundary as private_boundary
+
+        with tempfile.TemporaryDirectory(
+            prefix="emotion-state-private-consumers-",
+        ) as temporary_directory:
+            root = Path(temporary_directory)
+            self._commit_private_gitignore_sentinel(
+                root,
+                remove_worktree_directory=True,
+            )
+            root_absolute = Path(os.path.abspath(root))
+            original_methods = {
+                name: getattr(Path, name)
+                for name in (
+                    "exists",
+                    "is_dir",
+                    "is_file",
+                    "iterdir",
+                    "lstat",
+                    "open",
+                    "read_bytes",
+                    "read_text",
+                    "resolve",
+                    "stat",
+                )
+            }
+
+            def targets_private_path(path: Path) -> bool:
+                candidate = Path(os.path.abspath(path))
+                try:
+                    relative_path = candidate.relative_to(root_absolute).as_posix()
+                except ValueError:
+                    return False
+                return any(
+                    relative_path == prefix
+                    or relative_path.startswith(prefix + "/")
+                    for prefix in (
+                        "data/private",
+                        "data/private-restricted",
+                    )
+                )
+
+            def guarded_method(name: str):
+                original = original_methods[name]
+
+                def call(path: Path, *args: object, **kwargs: object):
+                    if targets_private_path(path):
+                        raise AssertionError(
+                            f"ordinary private filesystem probe: {name}"
+                        )
+                    return original(path, *args, **kwargs)
+
+                return call
+
+            patches = [
+                mock.patch.object(Path, name, new=guarded_method(name))
+                for name in original_methods
+            ]
+            for patch in patches:
+                patch.start()
+            try:
+                directory_checks = {
+                    check["id"]: check
+                    for check in check_setup.check_directories(root)
+                }
+                self.assertEqual(
+                    directory_checks["dir.data_private"],
+                    {
+                        "id": "dir.data_private",
+                        "status": "pass",
+                        "severity": "required",
+                        "message": (
+                            "Local-only private call-center data folder exists."
+                        ),
+                        "path": "data/private",
+                    },
+                )
+                self.assertEqual(
+                    directory_checks["dir.data_private_restricted"],
+                    {
+                        "id": "dir.data_private_restricted",
+                        "status": "pass",
+                        "severity": "optional",
+                        "message": (
+                            "Restricted data folder physical presence was not "
+                            "checked and is not required for default setup."
+                        ),
+                        "path": "data/private-restricted",
+                    },
+                )
+
+                file_checks = {
+                    check["id"]: check
+                    for check in check_setup.check_files(root)
+                }
+                self.assertEqual(
+                    file_checks["file.data_private_gitignore"],
+                    {
+                        "id": "file.data_private_gitignore",
+                        "status": "pass",
+                        "severity": "required",
+                        "message": "Private data local ignore rule exists.",
+                        "path": "data/private/.gitignore",
+                    },
+                )
+                private_boundary.validate_gitignore(root)
+                missing_issues = project_drift.detect_missing_required_files(
+                    root
+                )
+                self.assertNotIn(
+                    "data/private/.gitignore",
+                    {issue.path for issue in missing_issues},
+                )
+            finally:
+                for patch in reversed(patches):
+                    patch.stop()
+
+    def test_private_sentinel_consumers_reject_wrong_tracked_bytes(
+        self,
+    ) -> None:
+        import scripts.check_project_drift as project_drift
+        import scripts.check_setup as check_setup
+        import scripts.validate_private_data_boundary as private_boundary
+
+        with tempfile.TemporaryDirectory(
+            prefix="emotion-state-wrong-private-sentinel-",
+        ) as temporary_directory:
+            root = Path(temporary_directory)
+            self._commit_private_gitignore_sentinel(
+                root,
+                content=b"*\n",
+                remove_worktree_directory=True,
+            )
+            directory_checks = {
+                check["id"]: check
+                for check in check_setup.check_directories(root)
+            }
+            file_checks = {
+                check["id"]: check
+                for check in check_setup.check_files(root)
+            }
+            self.assertEqual(
+                directory_checks["dir.data_private"]["status"],
+                "fail",
+            )
+            self.assertEqual(
+                file_checks["file.data_private_gitignore"]["status"],
+                "fail",
+            )
+            with self.assertRaises(AssertionError):
+                private_boundary.validate_gitignore(root)
+            self.assertIn(
+                "data/private/.gitignore",
+                {
+                    issue.path
+                    for issue in project_drift.detect_missing_required_files(
+                        root
+                    )
+                },
+            )
+
+    def test_setup_report_accepts_explicit_value_free_environment_mapping(
+        self,
+    ) -> None:
+        import scripts.check_setup as check_setup
+
+        environment = {
+            "OPENAI_API_KEY": "synthetic-openai-value",
+            "CARTESIA_API_KEY": "synthetic-cartesia-value",
+            "CARTESIA_VOICE_ID": "synthetic-voice-value",
+        }
+        environment_report = check_setup.build_environment_report(environment)
+        environment_by_name = {
+            entry["name"]: entry
+            for entry in environment_report
+        }
+        for name, value in environment.items():
+            self.assertTrue(environment_by_name[name]["present"])
+            self.assertFalse(environment_by_name[name]["value_logged"])
+            self.assertNotIn(value, json.dumps(environment_report))
+
+        with tempfile.TemporaryDirectory(
+            prefix="emotion-state-setup-environment-",
+        ) as temporary_directory:
+            root = Path(temporary_directory)
+            self._commit_private_gitignore_sentinel(
+                root,
+                remove_worktree_directory=True,
+            )
+            report = check_setup.build_report(
+                root,
+                strict=False,
+                environment=environment,
+            )
+        self.assertEqual(report["environment"], environment_report)
+        serialized_report = json.dumps(report, sort_keys=True)
+        for value in environment.values():
+            self.assertNotIn(value, serialized_report)
+
+    def test_setup_and_drift_validators_use_in_process_checker_functions(
+        self,
+    ) -> None:
+        validator_contracts = {
+            "scripts/validate_check_setup.py": {
+                "required_call": "build_report",
+                "forbidden_attribute": "environ",
+            },
+            "scripts/validate_project_drift_guard.py": {
+                "required_call": "build_report",
+                "forbidden_attribute": None,
+            },
+        }
+        for relative_path, contract in validator_contracts.items():
+            with self.subTest(relative_path=relative_path):
+                source = (ROOT / relative_path).read_text(encoding="utf-8")
+                tree = ast.parse(source, filename=relative_path)
+                imported_names = {
+                    alias.name
+                    for node in ast.walk(tree)
+                    if isinstance(node, (ast.Import, ast.ImportFrom))
+                    for alias in node.names
+                }
+                self.assertNotIn("subprocess", imported_names)
+                call_attributes = {
+                    node.func.attr
+                    for node in ast.walk(tree)
+                    if isinstance(node, ast.Call)
+                    and isinstance(node.func, ast.Attribute)
+                }
+                self.assertIn(contract["required_call"], call_attributes)
+                forbidden_attribute = contract["forbidden_attribute"]
+                if forbidden_attribute is not None:
+                    self.assertNotIn(
+                        forbidden_attribute,
+                        {
+                            node.attr
+                            for node in ast.walk(tree)
+                            if isinstance(node, ast.Attribute)
+                        },
+                    )
+
+    def test_project_drift_excludes_local_superpowers_sdd_scratch(
+        self,
+    ) -> None:
+        import scripts.check_project_drift as project_drift
+
+        with tempfile.TemporaryDirectory(
+            prefix="emotion-state-drift-sdd-scratch-",
+        ) as temporary_directory:
+            root = Path(temporary_directory)
+            self._initialize_git_repository(root)
+            secret_like_content = (
+                "Synthetic credential-shaped example: "
+                + "sk-"
+                + "SYNTHETIC"
+                + ("X" * 24)
+                + "\n"
+            ).encode("ascii")
+            tracked_review_path = self._write_bytes(
+                root,
+                ".superpowers/sdd/task-4-report.md",
+                secret_like_content,
+            )
+            exact_scratch_paths = (
+                ".superpowers/sdd/task"
+                + "-4-targeted-correction-brief.md",
+                ".superpowers/sdd/task"
+                + "-6-c4-validator-refactor-brief.md",
+                ".superpowers/sdd/open-dataset-task"
+                + "-6-report.md",
+            )
+            for relative_path in exact_scratch_paths:
+                self._write_bytes(
+                    root,
+                    relative_path,
+                    secret_like_content,
+                )
+            unrelated_local_path = self._write_bytes(
+                root,
+                ".superpowers/sdd/unrelated-local.md",
+                secret_like_content,
+            )
+            self._git(
+                root,
+                "add",
+                "-f",
+                "--",
+                ".superpowers/sdd/task-4-report.md",
+            )
+            self._git(root, "commit", "-m", "reviewed SDD fixture")
+
+            scanned_paths = {
+                path.relative_to(root).as_posix()
+                for path in project_drift.iter_scan_files(root)
+            }
+            self.assertIn(
+                tracked_review_path.relative_to(root).as_posix(),
+                scanned_paths,
+            )
+            self.assertIn(
+                unrelated_local_path.relative_to(root).as_posix(),
+                scanned_paths,
+            )
+            for relative_path in exact_scratch_paths:
+                self.assertNotIn(relative_path, scanned_paths)
+
+            report = project_drift.build_report(root)
+            secret_issue_paths = {
+                issue["path"]
+                for issue in report["issues"]
+                if issue["code"] == "secret_like_value"
+            }
+            self.assertIn(
+                ".superpowers/sdd/task-4-report.md",
+                secret_issue_paths,
+            )
+            self.assertIn(
+                ".superpowers/sdd/unrelated-local.md",
+                secret_issue_paths,
+            )
+            for relative_path in exact_scratch_paths:
+                self.assertNotIn(relative_path, secret_issue_paths)
+
+    def test_project_drift_scans_current_reviewed_superpowers_paths(
+        self,
+    ) -> None:
+        import scripts.check_project_drift as project_drift
+
+        tracked_review_paths = {
+            ".superpowers/sdd/task-4-report.md",
+            ".superpowers/sdd/task-4-review-findings.md",
+        }
+        self.assertTrue(
+            all((ROOT / relative_path).is_file() for relative_path in tracked_review_paths)
+        )
+        scanned_paths = {
+            path.relative_to(ROOT).as_posix()
+            for path in project_drift.iter_scan_files(ROOT)
+        }
+        self.assertTrue(tracked_review_paths.issubset(scanned_paths))
+
+    def test_git_inventories_bind_committed_rename_deletion_and_exact_states(
+        self,
+    ) -> None:
+        verification = self._verification_module()
+        with tempfile.TemporaryDirectory(
+            prefix="emotion-state-git-inventory-",
+        ) as temporary_directory:
+            root = Path(temporary_directory)
+            self._initialize_git_repository(root)
+
+            renamed_old_bytes = (
+                b"\n".join(
+                    f"stable-line-{index:02d}: retained rename payload".encode(
+                        "ascii"
+                    )
+                    for index in range(24)
+                )
+                + b"\n"
+            )
+            renamed_new_bytes = renamed_old_bytes.replace(
+                b"stable-line-12: retained rename payload",
+                b"stable-line-12: changed rename payload",
+            )
+            deleted_bytes = b"baseline-only deleted bytes\n"
+            baseline_files = {
+                "both.txt": b"baseline both\n",
+                "deleted.txt": deleted_bytes,
+                "renamed-old.py": renamed_old_bytes,
+                "staged.txt": b"baseline staged\n",
+                "unstaged.txt": b"baseline unstaged\n",
+            }
+            for relative_path, content in baseline_files.items():
+                self._write_bytes(root, relative_path, content)
+            self._git(root, "add", "--", *sorted(baseline_files))
+            self._git(root, "commit", "-m", "baseline")
+            baseline_commit = self._git(root, "rev-parse", "HEAD").stdout.strip()
+
+            self._git(root, "mv", "--", "renamed-old.py", "renamed-new.py")
+            self._write_bytes(root, "renamed-new.py", renamed_new_bytes)
+            (root / "deleted.txt").unlink()
+            self._git(
+                root,
+                "add",
+                "--",
+                "deleted.txt",
+                "renamed-new.py",
+            )
+            self._git(root, "commit", "-m", "rename and delete")
+            head_commit = self._git(root, "rev-parse", "HEAD").stdout.strip()
+            name_status = self._git(
+                root,
+                "diff",
+                "--name-status",
+                "--find-renames",
+                f"{baseline_commit}..{head_commit}",
+            ).stdout.splitlines()
+            self.assertTrue(
+                any(
+                    line.startswith("R")
+                    and line.endswith("\trenamed-old.py\trenamed-new.py")
+                    for line in name_status
+                ),
+                name_status,
+            )
+            self.assertIn("D\tdeleted.txt", name_status)
+
+            staged_only_bytes = b"staged-only bytes\n"
+            staged_both_bytes = b"index bytes for dual-state path\n"
+            unstaged_both_bytes = b"worktree bytes for dual-state path\n"
+            unstaged_only_bytes = b"unstaged-only bytes\n"
+            untracked_bytes = b"untracked bytes\n"
+            self._write_bytes(root, "staged.txt", staged_only_bytes)
+            self._write_bytes(root, "both.txt", staged_both_bytes)
+            self._git(root, "add", "--", "both.txt", "staged.txt")
+            self._write_bytes(root, "both.txt", unstaged_both_bytes)
+            self._write_bytes(root, "unstaged.txt", unstaged_only_bytes)
+            self._write_bytes(root, "untracked.txt", untracked_bytes)
+
+            inventories = verification.build_git_change_inventories(
+                root=root,
+                baseline_commit=baseline_commit,
+                head_commit=head_commit,
+            )
+            self.assertEqual(
+                set(inventories),
+                {
+                    "committed_change_inventory",
+                    "uncommitted_change_inventory",
+                },
+            )
+            self.assertEqual(
+                inventories["committed_change_inventory"],
+                [
+                    {
+                        "path": "deleted.txt",
+                        "git_mode": "100644",
+                        "sha256": self._sha256_bytes(deleted_bytes),
+                    },
+                    {
+                        "path": "renamed-new.py",
+                        "git_mode": "100644",
+                        "sha256": self._sha256_bytes(renamed_new_bytes),
+                    },
+                    {
+                        "path": "renamed-old.py",
+                        "git_mode": "100644",
+                        "sha256": self._sha256_bytes(renamed_old_bytes),
+                    },
+                ],
+            )
+            expected_uncommitted = [
+                {
+                    "path": "both.txt",
+                    "git_state": "staged",
+                    "git_mode": "100644",
+                    "sha256": self._sha256_bytes(staged_both_bytes),
+                },
+                {
+                    "path": "both.txt",
+                    "git_state": "unstaged",
+                    "git_mode": "100644",
+                    "sha256": self._sha256_bytes(unstaged_both_bytes),
+                },
+                {
+                    "path": "staged.txt",
+                    "git_state": "staged",
+                    "git_mode": "100644",
+                    "sha256": self._sha256_bytes(staged_only_bytes),
+                },
+                {
+                    "path": "unstaged.txt",
+                    "git_state": "unstaged",
+                    "git_mode": "100644",
+                    "sha256": self._sha256_bytes(unstaged_only_bytes),
+                },
+                {
+                    "path": "untracked.txt",
+                    "git_state": "untracked",
+                    "git_mode": "100644",
+                    "sha256": self._sha256_bytes(untracked_bytes),
+                },
+            ]
+            self.assertEqual(
+                inventories["uncommitted_change_inventory"],
+                expected_uncommitted,
+            )
+            self.assertEqual(
+                [
+                    (entry["path"], entry["git_state"])
+                    for entry in inventories["uncommitted_change_inventory"]
+                ],
+                sorted(
+                    (entry["path"], entry["git_state"])
+                    for entry in expected_uncommitted
+                ),
+            )
+            self.assertEqual(
+                {
+                    entry["git_state"]
+                    for entry in inventories["uncommitted_change_inventory"]
+                },
+                {"staged", "unstaged", "untracked"},
+            )
+
+    def test_git_inventory_excludes_only_exact_canonical_outputs_and_transaction_tree(
+        self,
+    ) -> None:
+        verification = self._verification_module()
+        with tempfile.TemporaryDirectory(
+            prefix="emotion-state-git-exclusions-",
+        ) as temporary_directory:
+            root = Path(temporary_directory)
+            self._initialize_git_repository(root)
+            self._write_bytes(root, "tracked.txt", b"baseline\n")
+            self._git(root, "add", "--", "tracked.txt")
+            self._git(root, "commit", "-m", "baseline")
+            head_commit = self._git(root, "rev-parse", "HEAD").stdout.strip()
+
+            exact_exclusions = {
+                (
+                    "research/experiments/generated/"
+                    "EMOTION-STATE-001-phase-a-contracts/result.json"
+                ): b"generated result\n",
+                (
+                    "research/experiments/generated/"
+                    "EMOTION-STATE-001-phase-a-contracts/report.md"
+                ): b"generated report\n",
+                (
+                    ".tmp/emotion-state-001-phase-a-publication/"
+                    "transaction/scratch.json"
+                ): b"transaction state\n",
+            }
+            included_near_misses = {
+                ".tmp/emotion-state-001-phase-a-publication-neighbor/input.json": (
+                    b"neighbor input\n"
+                ),
+                ".tmp/emotion-state-001-phase-a-publication.txt": (
+                    b"near-miss input\n"
+                ),
+                (
+                    "research/experiments/generated/"
+                    "EMOTION-STATE-001-phase-a-contracts/nested/report.md"
+                ): b"nested input\n",
+                (
+                    "research/experiments/generated/"
+                    "EMOTION-STATE-001-phase-a-contracts/result.json.backup"
+                ): b"backup input\n",
+            }
+            for relative_path, content in {
+                **exact_exclusions,
+                **included_near_misses,
+            }.items():
+                self._write_bytes(root, relative_path, content)
+
+            inventories = verification.build_git_change_inventories(
+                root=root,
+                baseline_commit=head_commit,
+                head_commit=head_commit,
+            )
+            self.assertEqual(inventories["committed_change_inventory"], [])
+            self.assertEqual(
+                inventories["uncommitted_change_inventory"],
+                [
+                    {
+                        "path": relative_path,
+                        "git_state": "untracked",
+                        "git_mode": "100644",
+                        "sha256": self._sha256_bytes(content),
+                    }
+                    for relative_path, content in sorted(
+                        included_near_misses.items()
+                    )
+                ],
+            )
+
+    def test_executable_dependency_closure_is_exact_stable_and_byte_bound(
+        self,
+    ) -> None:
+        verification = self._verification_module()
+        with tempfile.TemporaryDirectory(
+            prefix="emotion-state-dependency-closure-",
+        ) as temporary_directory:
+            root = Path(temporary_directory)
+            self._initialize_git_repository(root)
+            fixture_files = {
+                "scripts/runner.py": (
+                    b"import subprocess\n"
+                    b"import sys\n"
+                    b"from support import helper\n"
+                    b"from support.constants import TOKEN\n"
+                    b"subprocess.run(\n"
+                    b"    [sys.executable, \"scripts/worker.py\"],\n"
+                    b"    check=True,\n"
+                    b")\n"
+                ),
+                "scripts/worker.py": (
+                    b"from support.constants import TOKEN\n"
+                    b"print(TOKEN)\n"
+                ),
+                "support/constants.py": b"TOKEN = \"fixture-token\"\n",
+                "support/helper.py": (
+                    b"from .constants import TOKEN\n"
+                    b"HELPER_TOKEN = TOKEN\n"
+                ),
+            }
+            for relative_path, content in fixture_files.items():
+                self._write_bytes(root, relative_path, content)
+            self._git(root, "add", "--", *sorted(fixture_files))
+            self._git(root, "commit", "-m", "closure fixture")
+
+            closure_arguments = {
+                "root": root,
+                "executable_roots": ["scripts/runner.py"],
+                "forbidden_import_prefixes": (
+                    "_socket",
+                    "ctypes",
+                    "elevenlabs",
+                    "requests",
+                    "socket",
+                ),
+                "guard_implementation_path": (
+                    "scripts/emotion_state_phase_a_guard_site/sitecustomize.py"
+                ),
+            }
+            first = verification.build_executable_dependency_closure(
+                **closure_arguments,
+            )
+            second = verification.build_executable_dependency_closure(
+                **closure_arguments,
+            )
+
+            expected_inventory = [
+                {
+                    "path": relative_path,
+                    "git_mode": "100644",
+                    "sha256": self._sha256_bytes(content),
+                }
+                for relative_path, content in sorted(fixture_files.items())
+            ]
+            expected_edges = [
+                {
+                    "consumer": "scripts/runner.py",
+                    "dependency": "scripts/worker.py",
+                    "edge_type": "python_subprocess_target",
+                },
+                {
+                    "consumer": "scripts/runner.py",
+                    "dependency": "support/constants.py",
+                    "edge_type": "python_import",
+                },
+                {
+                    "consumer": "scripts/runner.py",
+                    "dependency": "support/helper.py",
+                    "edge_type": "python_import",
+                },
+                {
+                    "consumer": "scripts/worker.py",
+                    "dependency": "support/constants.py",
+                    "edge_type": "python_import",
+                },
+                {
+                    "consumer": "support/helper.py",
+                    "dependency": "support/constants.py",
+                    "edge_type": "python_import",
+                },
+            ]
+            expected_digest = self._sha256_bytes(
+                json.dumps(
+                    {
+                        "edges": expected_edges,
+                        "inventory": expected_inventory,
+                    },
+                    ensure_ascii=True,
+                    separators=(",", ":"),
+                    sort_keys=True,
+                ).encode("utf-8")
+            )
+            self.assertEqual(
+                first,
+                {
+                    "inventory": expected_inventory,
+                    "edges": expected_edges,
+                    "digest": expected_digest,
+                },
+            )
+            self.assertEqual(second, first)
+
+    def test_executable_dependency_closure_resolves_reviewed_subprocess_forms(
+        self,
+    ) -> None:
+        verification = self._verification_module()
+        with tempfile.TemporaryDirectory(
+            prefix="emotion-state-reviewed-subprocess-",
+        ) as temporary_directory:
+            root = Path(temporary_directory)
+            self._initialize_git_repository(root)
+            fixture_files = {
+                "scripts/test_emotion_state_001_open_dataset_gate.py": (
+                    b"import subprocess\n"
+                    b"import sys\n"
+                    b"import textwrap\n"
+                    b"source = \"print('reviewed open-dataset fixture')\"\n"
+                    b"subprocess.run(\n"
+                    b"    [sys.executable, \"-c\", textwrap.dedent(source)],\n"
+                    b"    check=True,\n"
+                    b")\n"
+                ),
+                "scripts/test_emotion_state_001_closeout_hardening.py": (
+                    b"import subprocess\n"
+                    b"import sys\n"
+                    b"holder_script = \"print('reviewed closeout fixture')\"\n"
+                    b"subprocess.Popen(\n"
+                    b"    [sys.executable, \"-c\", holder_script],\n"
+                    b")\n"
+                ),
+                "scripts/path_consumer.py": (
+                    b"import subprocess\n"
+                    b"import sys\n"
+                    b"from pathlib import Path\n"
+                    b"ROOT = Path(__file__).resolve().parents[1]\n"
+                    b"RUNNER = ROOT / \"scripts\" / \"worker_a.py\"\n"
+                    b"subprocess.run(\n"
+                    b"    [sys.executable, str(ROOT / \"scripts\" / \"worker_b.py\")],\n"
+                    b"    check=True,\n"
+                    b")\n"
+                    b"subprocess.run([sys.executable, str(RUNNER)], check=True)\n"
+                    b"def invoke() -> None:\n"
+                    b"    runner_path = ROOT / \"scripts\" / \"worker_c.py\"\n"
+                    b"    subprocess.run(\n"
+                    b"        [sys.executable, str(runner_path)],\n"
+                    b"        check=True,\n"
+                    b"    )\n"
+                ),
+                "scripts/worker_a.py": b"print(\"worker-a\")\n",
+                "scripts/worker_b.py": b"print(\"worker-b\")\n",
+                "scripts/worker_c.py": b"print(\"worker-c\")\n",
+                "scripts/test_emotion_state_001_closeout_hardening_copy.py": (
+                    b"import subprocess\n"
+                    b"import sys\n"
+                    b"holder_script = \"print('unreviewed inline fixture')\"\n"
+                    b"subprocess.run(\n"
+                    b"    [sys.executable, \"-c\", holder_script],\n"
+                    b"    check=True,\n"
+                    b")\n"
+                ),
+                "scripts/dynamic_target.py": (
+                    b"import subprocess\n"
+                    b"import sys\n"
+                    b"target = \"scripts/worker_a.py\"\n"
+                    b"subprocess.run([sys.executable, target], check=True)\n"
+                ),
+            }
+            for relative_path, content in fixture_files.items():
+                self._write_bytes(root, relative_path, content)
+            self._git(root, "add", "--", *sorted(fixture_files))
+            self._git(root, "commit", "-m", "reviewed subprocess fixtures")
+
+            closure_arguments = {
+                "root": root,
+                "forbidden_import_prefixes": (
+                    "_socket",
+                    "ctypes",
+                    "elevenlabs",
+                    "requests",
+                    "socket",
+                ),
+                "guard_implementation_path": (
+                    "scripts/emotion_state_phase_a_guard_site/sitecustomize.py"
+                ),
+            }
+            closure = verification.build_executable_dependency_closure(
+                executable_roots=[
+                    "scripts/path_consumer.py",
+                    "scripts/test_emotion_state_001_closeout_hardening.py",
+                    "scripts/test_emotion_state_001_open_dataset_gate.py",
+                ],
+                **closure_arguments,
+            )
+            self.assertEqual(
+                [
+                    edge
+                    for edge in closure["edges"]
+                    if edge["edge_type"] == "python_subprocess_target"
+                ],
+                [
+                    {
+                        "consumer": "scripts/path_consumer.py",
+                        "dependency": "scripts/worker_a.py",
+                        "edge_type": "python_subprocess_target",
+                    },
+                    {
+                        "consumer": "scripts/path_consumer.py",
+                        "dependency": "scripts/worker_b.py",
+                        "edge_type": "python_subprocess_target",
+                    },
+                    {
+                        "consumer": "scripts/path_consumer.py",
+                        "dependency": "scripts/worker_c.py",
+                        "edge_type": "python_subprocess_target",
+                    },
+                ],
+            )
+
+            for executable_root in (
+                "scripts/test_emotion_state_001_closeout_hardening_copy.py",
+                "scripts/dynamic_target.py",
+            ):
+                with self.subTest(executable_root=executable_root):
+                    with self.assertRaisesRegex(
+                        ValueError,
+                        r"dynamic subprocess target",
+                    ):
+                        verification.build_executable_dependency_closure(
+                            executable_roots=[executable_root],
+                            **closure_arguments,
+                        )
+
+    def test_executable_dependency_closure_runtime_consumers_are_gate_only(
+        self,
+    ) -> None:
+        verification = self._verification_module()
+        with tempfile.TemporaryDirectory(
+            prefix="emotion-state-runtime-consumer-gate-",
+        ) as temporary_directory:
+            root = Path(temporary_directory)
+            self._initialize_git_repository(root)
+            safe_root_bytes = b"STATE = \"safe executable root\"\n"
+            fixture_files = {
+                "scripts/safe_root.py": safe_root_bytes,
+                "scripts/new_gate.py": b"STATE = \"detached gate\"\n",
+                "runtime/consumer.py": (
+                    b"import requests\n"
+                    b"STATE = \"runtime consumer without gate import\"\n"
+                ),
+            }
+            for relative_path, content in fixture_files.items():
+                self._write_bytes(root, relative_path, content)
+            self._git(root, "add", "--", *sorted(fixture_files))
+            self._git(root, "commit", "-m", "runtime consumer gate fixtures")
+
+            closure_arguments = {
+                "root": root,
+                "executable_roots": ["scripts/safe_root.py"],
+                "forbidden_import_prefixes": (
+                    "_socket",
+                    "ctypes",
+                    "elevenlabs",
+                    "requests",
+                    "socket",
+                ),
+                "guard_implementation_path": (
+                    "scripts/emotion_state_phase_a_guard_site/sitecustomize.py"
+                ),
+                "gate_module_paths": ("scripts/new_gate.py",),
+                "runtime_consumer_paths": ("runtime/consumer.py",),
+            }
+            closure = verification.build_executable_dependency_closure(
+                **closure_arguments,
+            )
+            self.assertEqual(
+                closure["inventory"],
+                [
+                    {
+                        "path": "scripts/safe_root.py",
+                        "git_mode": "100644",
+                        "sha256": self._sha256_bytes(safe_root_bytes),
+                    }
+                ],
+            )
+            self.assertEqual(closure["edges"], [])
+
+            self._write_bytes(
+                root,
+                "runtime/consumer.py",
+                (
+                    b"from scripts import new_gate\n"
+                    b"STATE = new_gate.STATE\n"
+                ),
+            )
+            with self.assertRaisesRegex(
+                ValueError,
+                r"runtime consumer.*imports gate module",
+            ):
+                verification.build_executable_dependency_closure(
+                    **closure_arguments,
+                )
+
+    def test_executable_dependency_closure_rejects_unsafe_or_unresolved_edges(
+        self,
+    ) -> None:
+        verification = self._verification_module()
+        rejection_cases = (
+            {
+                "name": "unresolved_local_import",
+                "files": {
+                    "localpkg/__init__.py": b"",
+                    "scripts/entry.py": b"import localpkg.missing\n",
+                },
+                "error": r"unresolved local import.*localpkg\.missing",
+            },
+            {
+                "name": "dynamic_subprocess_target",
+                "files": {
+                    "scripts/entry.py": (
+                        b"import subprocess\n"
+                        b"import sys\n"
+                        b"target = \"scripts/worker.py\"\n"
+                        b"subprocess.run([sys.executable, target], check=True)\n"
+                    ),
+                    "scripts/worker.py": b"print(\"fixture\")\n",
+                },
+                "error": r"dynamic subprocess target",
+            },
+            {
+                "name": "subprocess_path_escape",
+                "files": {
+                    "scripts/entry.py": (
+                        b"import subprocess\n"
+                        b"import sys\n"
+                        b"subprocess.run(\n"
+                        b"    [sys.executable, \"../outside.py\"],\n"
+                        b"    check=True,\n"
+                        b")\n"
+                    ),
+                },
+                "outside_file": True,
+                "error": r"path escape",
+            },
+            {
+                "name": "direct_ctypes_import",
+                "files": {
+                    "scripts/entry.py": b"import ctypes\n",
+                },
+                "error": r"forbidden import.*ctypes",
+            },
+            {
+                "name": "direct_private_socket_import",
+                "files": {
+                    "scripts/entry.py": b"import _socket\n",
+                },
+                "error": r"forbidden import.*_socket",
+            },
+            {
+                "name": "network_client_import",
+                "files": {
+                    "scripts/entry.py": b"import requests\n",
+                },
+                "error": r"forbidden import.*requests",
+            },
+            {
+                "name": "provider_import_outside_guard",
+                "files": {
+                    "scripts/entry.py": b"import elevenlabs\n",
+                },
+                "error": r"forbidden import.*elevenlabs",
+            },
+            {
+                "name": "runtime_consumer_imports_new_gate_module",
+                "files": {
+                    "scripts/safe_root.py": b"STATE = \"safe root\"\n",
+                    "runtime/consumer.py": (
+                        b"from scripts import new_gate\n"
+                        b"STATE = new_gate.STATE\n"
+                    ),
+                    "scripts/new_gate.py": b"STATE = \"detached\"\n",
+                },
+                "executable_roots": ["scripts/safe_root.py"],
+                "gate_module_paths": ("scripts/new_gate.py",),
+                "runtime_consumer_paths": ("runtime/consumer.py",),
+                "error": r"runtime consumer.*imports gate module",
+            },
+        )
+        for case in rejection_cases:
+            with self.subTest(case=case["name"]):
+                with tempfile.TemporaryDirectory(
+                    prefix="c-",
+                ) as temporary_directory:
+                    temporary_root = Path(temporary_directory)
+                    root = temporary_root / "repository"
+                    root.mkdir()
+                    self._initialize_git_repository(root)
+                    files = case["files"]
+                    for relative_path, content in files.items():
+                        self._write_bytes(root, relative_path, content)
+                    if case.get("outside_file"):
+                        self._write_bytes(
+                            temporary_root,
+                            "outside.py",
+                            b"print(\"outside fixture\")\n",
+                        )
+                    self._git(root, "add", "--", *sorted(files))
+                    self._git(root, "commit", "-m", "rejection fixture")
+
+                    arguments = {
+                        "root": root,
+                        "executable_roots": case.get(
+                            "executable_roots",
+                            ["scripts/entry.py"],
+                        ),
+                        "forbidden_import_prefixes": (
+                            "_socket",
+                            "ctypes",
+                            "elevenlabs",
+                            "requests",
+                            "socket",
+                        ),
+                        "guard_implementation_path": (
+                            "scripts/emotion_state_phase_a_guard_site/"
+                            "sitecustomize.py"
+                        ),
+                    }
+                    if "gate_module_paths" in case:
+                        arguments["gate_module_paths"] = case[
+                            "gate_module_paths"
+                        ]
+                    if "runtime_consumer_paths" in case:
+                        arguments["runtime_consumer_paths"] = case[
+                            "runtime_consumer_paths"
+                        ]
+                    with self.assertRaisesRegex(ValueError, case["error"]):
+                        verification.build_executable_dependency_closure(
+                            **arguments,
+                        )

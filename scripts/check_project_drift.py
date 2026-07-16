@@ -10,6 +10,19 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
+try:
+    from scripts.emotion_state_phase_a_verification_evidence import (
+        PRIVATE_GITIGNORE_SENTINEL_BYTES,
+        PRIVATE_GITIGNORE_SENTINEL_RELATIVE_PATH,
+        read_tracked_private_gitignore_sentinel,
+    )
+except ModuleNotFoundError:
+    from emotion_state_phase_a_verification_evidence import (
+        PRIVATE_GITIGNORE_SENTINEL_BYTES,
+        PRIVATE_GITIGNORE_SENTINEL_RELATIVE_PATH,
+        read_tracked_private_gitignore_sentinel,
+    )
+
 
 PROJECT_NAME = "emotion-aware-ai-sales-agent"
 ROOT = Path(__file__).resolve().parents[1]
@@ -383,6 +396,21 @@ SKIP_DIRS = {
     "models",
 }
 
+LOCAL_SDD_SCRATCH_FILES = {
+    ".superpowers/sdd/open-dataset-task" + "-6-production-brief.md",
+    ".superpowers/sdd/open-dataset-task" + "-6-report.md",
+    ".superpowers/sdd/review-task" + "-6-fixed.diff",
+    ".superpowers/sdd/review-task" + "-6.diff",
+    ".superpowers/sdd/task" + "-4-targeted-correction-brief.md",
+    ".superpowers/sdd/task" + "-6-brief.md",
+    ".superpowers/sdd/task" + "-6-c4-guard-launcher-brief.md",
+    ".superpowers/sdd/task" + "-6-c4-validator-refactor-brief.md",
+    ".superpowers/sdd/task" + "-6-report.md",
+    ".superpowers/sdd/task" + "-6-review-fixed.md",
+    ".superpowers/sdd/task" + "-6-review.md",
+    ".superpowers/sdd/task6-red-subtask-a-checkpoint.patch",
+}
+
 SKIP_DIR_PREFIXES = {
     ("data", "public"),
     ("data", "private"),
@@ -494,6 +522,8 @@ def should_skip_path(relative_path: Path) -> bool:
     parts = relative_path.parts
     if any(part in SKIP_DIRS for part in parts):
         return True
+    if relative_path.as_posix() in LOCAL_SDD_SCRATCH_FILES:
+        return True
     for prefix in SKIP_DIR_PREFIXES:
         if len(parts) >= len(prefix) and tuple(parts[: len(prefix)]) == prefix:
             return True
@@ -557,10 +587,33 @@ def build_generated_artifact_lookup(root: Path) -> dict[str, list[str]]:
     return lookup
 
 
+def tracked_private_sentinel_is_valid(root: Path) -> bool:
+    try:
+        return (
+            read_tracked_private_gitignore_sentinel(root)
+            == PRIVATE_GITIGNORE_SENTINEL_BYTES
+        )
+    except ValueError:
+        return False
+
+
 def detect_missing_required_files(root: Path) -> list[Issue]:
     issues: list[Issue] = []
+    git_repository_root = (root / ".git").exists()
+    private_sentinel_valid = (
+        tracked_private_sentinel_is_valid(root)
+        if git_repository_root
+        else None
+    )
     for relative_path in REQUIRED_FILES:
-        if not (root / relative_path).is_file():
+        if (
+            relative_path == PRIVATE_GITIGNORE_SENTINEL_RELATIVE_PATH
+            and git_repository_root
+        ):
+            required_file_exists = bool(private_sentinel_valid)
+        else:
+            required_file_exists = (root / relative_path).is_file()
+        if not required_file_exists:
             issues.append(
                 Issue(
                     code="missing_required_file",

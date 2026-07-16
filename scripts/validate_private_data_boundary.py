@@ -3,6 +3,17 @@ from __future__ import annotations
 
 from pathlib import Path
 
+try:
+    from scripts.emotion_state_phase_a_verification_evidence import (
+        PRIVATE_GITIGNORE_SENTINEL_BYTES,
+        read_tracked_private_gitignore_sentinel,
+    )
+except ModuleNotFoundError:
+    from emotion_state_phase_a_verification_evidence import (
+        PRIVATE_GITIGNORE_SENTINEL_BYTES,
+        read_tracked_private_gitignore_sentinel,
+    )
+
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -45,27 +56,24 @@ def assert_condition(condition: bool, message: str) -> None:
         raise AssertionError(message)
 
 
-def read_text(relative_path: str) -> str:
-    path = ROOT / relative_path
+def read_text(relative_path: str, root: Path = ROOT) -> str:
+    path = root / relative_path
     assert_condition(path.is_file(), f"Missing required file: {relative_path}")
     return path.read_text(encoding="utf-8")
 
 
-def validate_gitignore() -> None:
-    root_gitignore = read_text(".gitignore")
+def validate_gitignore(root: Path = ROOT) -> None:
+    root_gitignore = read_text(".gitignore", root)
     assert_condition("data/private/*" in root_gitignore, "Root .gitignore must ignore data/private/*.")
     assert_condition(
         "!data/private/.gitignore" in root_gitignore,
         "Root .gitignore must allow only data/private/.gitignore.",
     )
 
-    private_gitignore_path = ROOT / "data" / "private" / ".gitignore"
-    assert_condition(private_gitignore_path.is_file(), "data/private/.gitignore is missing.")
-    private_lines = private_gitignore_path.read_text(encoding="utf-8").splitlines()
-    assert_condition("*" in private_lines, "data/private/.gitignore must ignore all private files.")
     assert_condition(
-        "!.gitignore" in private_lines,
-        "data/private/.gitignore must allow itself to remain tracked.",
+        read_tracked_private_gitignore_sentinel(root)
+        == PRIVATE_GITIGNORE_SENTINEL_BYTES,
+        "Tracked data/private/.gitignore bytes do not match the private workspace contract.",
     )
 
 
@@ -97,7 +105,6 @@ def validate_guard_does_not_scan_private_data() -> None:
 
 
 def main() -> None:
-    assert_condition((ROOT / "data" / "private").is_dir(), "data/private/ folder is missing.")
     validate_gitignore()
     validate_docs()
     validate_guard_does_not_scan_private_data()

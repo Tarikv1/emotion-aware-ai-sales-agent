@@ -6,8 +6,20 @@ import json
 import os
 import platform
 import sys
+from collections.abc import Mapping
 from pathlib import Path
 from typing import Any
+
+try:
+    from scripts.emotion_state_phase_a_verification_evidence import (
+        PRIVATE_GITIGNORE_SENTINEL_BYTES,
+        read_tracked_private_gitignore_sentinel,
+    )
+except ModuleNotFoundError:
+    from emotion_state_phase_a_verification_evidence import (
+        PRIVATE_GITIGNORE_SENTINEL_BYTES,
+        read_tracked_private_gitignore_sentinel,
+    )
 
 
 PROJECT_NAME = "emotion-aware-ai-sales-agent"
@@ -613,36 +625,61 @@ def check_python_version() -> dict[str, Any]:
     )
 
 
+def private_sentinel_contract_present(root: Path) -> bool:
+    try:
+        return (
+            read_tracked_private_gitignore_sentinel(root)
+            == PRIVATE_GITIGNORE_SENTINEL_BYTES
+        )
+    except ValueError:
+        return False
+
+
 def check_directories(root: Path) -> list[dict[str, Any]]:
     checks = []
+    private_sentinel_present: bool | None = None
     for check_id, relative_path, label in REQUIRED_DIRS:
-        path = root / relative_path
-        if path.is_dir():
+        if check_id == "dir.data_private":
+            if private_sentinel_present is None:
+                private_sentinel_present = private_sentinel_contract_present(
+                    root
+                )
+            directory_exists = private_sentinel_present
+        else:
+            directory_exists = (root / relative_path).is_dir()
+        if directory_exists:
             checks.append(build_check(check_id, "pass", "required", f"{label} exists.", relative_path))
         else:
             checks.append(build_check(check_id, "fail", "required", f"{label} is missing.", relative_path))
     for check_id, relative_path, label in OPTIONAL_DIRS:
-        path = root / relative_path
-        if path.is_dir():
-            checks.append(build_check(check_id, "pass", "optional", f"{label} exists.", relative_path))
-        else:
-            checks.append(
-                build_check(
-                    check_id,
-                    "pass",
-                    "optional",
-                    f"{label} is absent. Default setup does not require restricted private data.",
-                    relative_path,
-                )
+        checks.append(
+            build_check(
+                check_id,
+                "pass",
+                "optional",
+                (
+                    f"{label} physical presence was not checked and is not "
+                    "required for default setup."
+                ),
+                relative_path,
             )
+        )
     return checks
 
 
 def check_files(root: Path) -> list[dict[str, Any]]:
     checks = []
+    private_sentinel_present: bool | None = None
     for check_id, relative_path, label in REQUIRED_FILES:
-        path = root / relative_path
-        if path.is_file():
+        if check_id == "file.data_private_gitignore":
+            if private_sentinel_present is None:
+                private_sentinel_present = private_sentinel_contract_present(
+                    root
+                )
+            file_exists = private_sentinel_present
+        else:
+            file_exists = (root / relative_path).is_file()
+        if file_exists:
             checks.append(build_check(check_id, "pass", "required", f"{label} exists.", relative_path))
         else:
             checks.append(build_check(check_id, "fail", "required", f"{label} is missing.", relative_path))
@@ -678,11 +715,14 @@ def check_write_path(root: Path) -> dict[str, Any]:
     )
 
 
-def build_environment_report() -> list[dict[str, Any]]:
+def build_environment_report(
+    environment: Mapping[str, str] | None = None,
+) -> list[dict[str, Any]]:
+    environment_values = os.environ if environment is None else environment
     return [
         {
             "name": name,
-            "present": bool(os.environ.get(name)),
+            "present": bool(environment_values.get(name)),
             "required_for_default_setup": False,
             "value_logged": False,
             "used_for": description,
@@ -705,7 +745,11 @@ def summarize_checks(checks: list[dict[str, Any]], strict: bool) -> tuple[str, d
     }
 
 
-def build_report(root: Path, strict: bool) -> dict[str, Any]:
+def build_report(
+    root: Path,
+    strict: bool,
+    environment: Mapping[str, str] | None = None,
+) -> dict[str, Any]:
     checks = [
         build_check(
             "root.exists",
@@ -731,7 +775,7 @@ def build_report(root: Path, strict: bool) -> dict[str, Any]:
             "python": platform.python_version(),
         },
         "summary": summary,
-        "environment": build_environment_report(),
+        "environment": build_environment_report(environment),
         "checks": checks,
     }
 

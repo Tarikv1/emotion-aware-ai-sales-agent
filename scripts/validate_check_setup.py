@@ -2,11 +2,13 @@
 import ast
 import copy
 import json
-import os
 import re
-import subprocess
-import sys
 from pathlib import Path
+
+if __package__:
+    from scripts import check_setup
+else:
+    import check_setup
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -150,16 +152,11 @@ def assert_setup_contract_self_check(
     expect_payload_rejected("failed emitted status", failed_payload)
 
 
-def run_setup_check() -> subprocess.CompletedProcess[str]:
-    env = os.environ.copy()
-    env.update(SECRET_VALUES)
-    return subprocess.run(
-        [sys.executable, str(SCRIPT_PATH), "--json"],
-        cwd=ROOT,
-        env=env,
-        text=True,
-        capture_output=True,
-        check=True,
+def run_setup_check() -> dict[str, object]:
+    return check_setup.build_report(
+        ROOT,
+        strict=False,
+        environment=SECRET_VALUES,
     )
 
 
@@ -168,11 +165,9 @@ def main() -> None:
     required_files = load_required_files()
     validate_required_file_contract(required_files)
 
-    completed = run_setup_check()
-    combined_output = completed.stdout + completed.stderr
-    assert_condition(SECRET_PATTERN.search(combined_output) is None, "Setup verifier leaked an environment value.")
-
-    payload = json.loads(completed.stdout)
+    payload = run_setup_check()
+    serialized_payload = json.dumps(payload, sort_keys=True)
+    assert_condition(SECRET_PATTERN.search(serialized_payload) is None, "Setup verifier leaked an environment value.")
     assert_condition(payload["project"] == "emotion-aware-ai-sales-agent", "Unexpected project name.")
     assert_condition(payload["status"] == "pass", "Current repo setup should pass required checks.")
     assert_condition(payload["summary"]["network_calls_made"] is False, "Setup verifier must not make network calls.")

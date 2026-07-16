@@ -2,13 +2,14 @@
 from __future__ import annotations
 
 import ast
-import json
 import shutil
-import subprocess
-import sys
 import uuid
 from pathlib import Path
-from typing import Any
+
+if __package__:
+    from scripts import check_project_drift
+else:
+    import check_project_drift
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -486,31 +487,15 @@ def create_dirty_fixture(root: Path) -> None:
     audio_path.write_bytes(b"fixture audio bytes")
 
 
-def run_guard(root: Path) -> subprocess.CompletedProcess[str]:
-    return subprocess.run(
-        [sys.executable, str(SCRIPT_PATH), "--root", str(root), "--json"],
-        cwd=ROOT,
-        text=True,
-        capture_output=True,
-        check=False,
-        timeout=180,
-    )
-
-
-def parse_json_output(completed: subprocess.CompletedProcess[str]) -> dict[str, Any]:
-    try:
-        return json.loads(completed.stdout)
-    except json.JSONDecodeError as exc:
-        raise AssertionError(f"Guard did not return valid JSON. stdout={completed.stdout!r} stderr={completed.stderr!r}") from exc
+def run_guard(root: Path) -> dict[str, object]:
+    return check_project_drift.build_report(root)
 
 
 def validate_dirty_fixture() -> None:
     dirty_root = FIXTURE_ROOT / "dirty"
     create_dirty_fixture(dirty_root)
 
-    completed = run_guard(dirty_root)
-    assert_condition(completed.returncode != 0, "Dirty fixture should fail project drift guard.")
-    payload = parse_json_output(completed)
+    payload = run_guard(dirty_root)
     assert_condition(payload["status"] == "fail", "Dirty fixture payload should be fail.")
 
     issue_codes = {issue["code"] for issue in payload["issues"]}
@@ -535,18 +520,14 @@ def validate_clean_fixture() -> None:
     audio_path.parent.mkdir(parents=True, exist_ok=True)
     audio_path.write_bytes(b"fixture audio bytes")
 
-    completed = run_guard(clean_root)
-    assert_condition(completed.returncode == 0, f"Clean fixture should pass. stderr={completed.stderr!r}")
-    payload = parse_json_output(completed)
+    payload = run_guard(clean_root)
     assert_condition(payload["status"] == "pass", "Clean fixture payload should be pass.")
     assert_condition(payload["summary"]["failure_count"] == 0, "Clean fixture should not have failures.")
     assert_condition(payload["summary"]["auto_fixes_applied"] is False, "Guard must not auto-fix clean fixture.")
 
 
 def validate_current_repo() -> None:
-    completed = run_guard(ROOT)
-    assert_condition(completed.returncode == 0, f"Current repo should pass project drift guard. stdout={completed.stdout!r}")
-    payload = parse_json_output(completed)
+    payload = run_guard(ROOT)
     assert_condition(payload["project"] == "emotion-aware-ai-sales-agent", "Unexpected project name.")
     assert_condition(payload["status"] == "pass", "Current repo drift guard status should be pass.")
     assert_condition(payload["summary"]["auto_fixes_applied"] is False, "Guard must not auto-fix current repo.")
