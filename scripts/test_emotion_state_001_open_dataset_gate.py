@@ -4724,12 +4724,15 @@ class VerificationEvidenceLockPhaseTests(unittest.TestCase):
                 recovery_dir = (
                     root / ".tmp/emotion-state-001-phase-a-publication"
                 )
-                with verification.publication_lock(
+                with verification.exclusive_verification_lock(
+                    prepared,
+                    root=root,
                     recovery_dir=recovery_dir,
-                ):
+                ) as capability:
                     explicit = verification.finalize_verification_evidence(
                         prepared,
                         root=root,
+                        capability=capability,
                     )
 
             self.assertEqual(
@@ -4768,8 +4771,8 @@ class VerificationEvidenceLockPhaseTests(unittest.TestCase):
             ):
                 self.assertEqual(explicit[field], wrapped[field])
 
-    def test_prepared_state_is_in_memory_relative_and_noncanonical(self) -> None:
-        from dataclasses import fields
+    def test_prepared_state_is_opaque_module_origin_and_noncopyable(self) -> None:
+        import copy
 
         import scripts.emotion_state_phase_a_verification_evidence as verification
 
@@ -4801,40 +4804,522 @@ class VerificationEvidenceLockPhaseTests(unittest.TestCase):
                 )
 
             self.assertEqual(
-                tuple(field.name for field in fields(prepared)),
-                (
-                    "baseline_commit",
-                    "head_commit",
-                    "mode",
-                    "initial_policy_bytes",
-                    "initial_snapshot_bytes",
-                    "executed_command_ledger_bytes",
-                ),
+                repr(prepared),
+                "<PreparedVerificationEvidence opaque>",
             )
-            prepared_text = "\n".join(
-                value.decode("utf-8") if isinstance(value, bytes) else value
-                for value in (
-                    prepared.baseline_commit,
-                    prepared.head_commit,
-                    prepared.mode,
-                    prepared.initial_policy_bytes,
-                    prepared.initial_snapshot_bytes,
-                    prepared.executed_command_ledger_bytes,
+            for field_name in (
+                "baseline_commit",
+                "head_commit",
+                "mode",
+                "initial_policy_bytes",
+                "initial_snapshot_bytes",
+                "executed_command_ledger_bytes",
+                "root",
+            ):
+                self.assertFalse(hasattr(prepared, field_name), field_name)
+            with self.assertRaisesRegex(TypeError, "cannot be copied"):
+                copy.copy(prepared)
+            with self.assertRaisesRegex(TypeError, "cannot be copied"):
+                copy.deepcopy(prepared)
+            with self.assertRaisesRegex(TypeError, "opaque"):
+                verification.PreparedVerificationEvidence(
+                    baseline_commit=baseline_commit,
+                    head_commit=head_commit,
+                    mode="material-pending",
+                    initial_policy_bytes=self.POLICY_PATH.read_bytes(),
+                    initial_snapshot_bytes=verification.canonical_json_bytes(
+                        snapshot
+                    ),
+                    executed_command_ledger_bytes=(
+                        verification.canonical_json_bytes(ledger)
+                    ),
                 )
+            forged = object.__new__(
+                verification.PreparedVerificationEvidence
             )
-            self.assertNotIn(str(root), prepared_text)
-            self.assertNotIn("fixture-secret-value", prepared_text)
-            self.assertNotIn("timestamp", prepared_text)
-            self.assertFalse(isinstance(prepared, dict))
+            with self.assertRaisesRegex(ValueError, "module-origin"):
+                with verification.exclusive_verification_lock(
+                    forged,
+                    root=root,
+                    recovery_dir=(
+                        root / ".tmp/emotion-state-001-phase-a-publication"
+                    ),
+                ):
+                    self.fail("forged prepared state acquired a lock")
 
-    def test_caller_locked_finalize_rejects_policy_and_snapshot_races(
+            class EqualPrepared(
+                verification.PreparedVerificationEvidence
+            ):
+                __slots__ = ()
+
+                def __hash__(self) -> int:
+                    return hash(prepared)
+
+                def __eq__(self, other: object) -> bool:
+                    return other is prepared
+
+            equal_forged = object.__new__(EqualPrepared)
+            with self.assertRaisesRegex(ValueError, "module-origin"):
+                with verification.exclusive_verification_lock(
+                    equal_forged,
+                    root=root,
+                    recovery_dir=(
+                        root / ".tmp/emotion-state-001-phase-a-publication"
+                    ),
+                ):
+                    self.fail(
+                        "equality-forged prepared state acquired a lock"
+                    )
+
+    def test_finalize_rejects_capability_misuse_without_consuming_state(
+        self,
+    ) -> None:
+        import copy
+
+        import scripts.emotion_state_phase_a_verification_evidence as verification
+
+        baseline_commit = "a" * 40
+        head_commit = "b" * 40
+        with tempfile.TemporaryDirectory(
+            prefix="emotion-state-verification-capability-",
+        ) as temporary_directory:
+            root = Path(temporary_directory)
+            _policy_bytes, snapshot, ledger = self._phase_fixture(
+                root,
+                baseline_commit,
+                head_commit,
+            )
+            with mock.patch.object(
+                verification,
+                "_collect_verification_snapshot",
+                return_value=deepcopy(snapshot),
+            ), mock.patch.object(
+                verification,
+                "_execute_guarded_commands",
+                return_value=deepcopy(ledger),
+            ):
+                prepared = verification.prepare_verification_evidence(
+                    root,
+                    baseline_commit,
+                    head_commit,
+                    "material-pending",
+                )
+                other_prepared = verification.prepare_verification_evidence(
+                    root,
+                    baseline_commit,
+                    head_commit,
+                    "material-pending",
+                )
+                forgery_prepared = verification.prepare_verification_evidence(
+                    root,
+                    baseline_commit,
+                    head_commit,
+                    "material-pending",
+                )
+                recovery_dir = (
+                    root / ".tmp/emotion-state-001-phase-a-publication"
+                )
+                with self.assertRaisesRegex(
+                    ValueError,
+                    "active verification lock capability",
+                ):
+                    verification.finalize_verification_evidence(
+                        prepared,
+                        root=root,
+                        capability=None,
+                    )
+                with self.assertRaisesRegex(TypeError, "opaque"):
+                    verification.VerificationLockCapability()
+                forged_capability = object.__new__(
+                    verification.VerificationLockCapability
+                )
+                with self.assertRaisesRegex(
+                    ValueError,
+                    "active verification lock capability",
+                ):
+                    verification.finalize_verification_evidence(
+                        prepared,
+                        root=root,
+                        capability=forged_capability,
+                    )
+                with self.assertRaisesRegex(
+                    ValueError,
+                    "verification recovery directory",
+                ):
+                    with verification.exclusive_verification_lock(
+                        prepared,
+                        root=root,
+                        recovery_dir=root / ".tmp/wrong-recovery-directory",
+                    ):
+                        self.fail(
+                            "capability acquired through the wrong lock path"
+                        )
+
+                with verification.exclusive_verification_lock(
+                    forgery_prepared,
+                    root=root,
+                    recovery_dir=recovery_dir,
+                ) as capability:
+                    class EqualCapability(
+                        verification.VerificationLockCapability
+                    ):
+                        __slots__ = ()
+
+                        def __hash__(self) -> int:
+                            return hash(capability)
+
+                        def __eq__(self, other: object) -> bool:
+                            return other is capability
+
+                    equal_forged_capability = object.__new__(
+                        EqualCapability
+                    )
+                    with self.assertRaisesRegex(
+                        ValueError,
+                        "active verification lock capability",
+                    ):
+                        verification.finalize_verification_evidence(
+                            forgery_prepared,
+                            root=root,
+                            capability=equal_forged_capability,
+                        )
+
+                expired_capability: object
+                with verification.exclusive_verification_lock(
+                    prepared,
+                    root=root,
+                    recovery_dir=recovery_dir,
+                ) as capability:
+                    expired_capability = capability
+                    with self.assertRaisesRegex(TypeError, "cannot be copied"):
+                        copy.copy(capability)
+                with self.assertRaisesRegex(ValueError, "expired"):
+                    verification.finalize_verification_evidence(
+                        prepared,
+                        root=root,
+                        capability=expired_capability,
+                    )
+
+                with verification.exclusive_verification_lock(
+                    prepared,
+                    root=root,
+                    recovery_dir=recovery_dir,
+                ) as capability:
+                    with self.assertRaisesRegex(
+                        ValueError,
+                        "different prepared",
+                    ):
+                        verification.finalize_verification_evidence(
+                            other_prepared,
+                            root=root,
+                            capability=capability,
+                        )
+                    verification.finalize_verification_evidence(
+                        prepared,
+                        root=root,
+                        capability=capability,
+                    )
+
+    def test_prepared_state_is_root_bound_and_one_shot(self) -> None:
+        import scripts.emotion_state_phase_a_verification_evidence as verification
+
+        baseline_commit = "a" * 40
+        head_commit = "b" * 40
+        with tempfile.TemporaryDirectory(
+            prefix="emotion-state-verification-root-one-",
+        ) as first_directory, tempfile.TemporaryDirectory(
+            prefix="emotion-state-verification-root-two-",
+        ) as second_directory:
+            first_root = Path(first_directory)
+            second_root = Path(second_directory)
+            _policy_bytes, snapshot, ledger = self._phase_fixture(
+                first_root,
+                baseline_commit,
+                head_commit,
+            )
+            self._phase_fixture(
+                second_root,
+                baseline_commit,
+                head_commit,
+            )
+            with mock.patch.object(
+                verification,
+                "_collect_verification_snapshot",
+                return_value=deepcopy(snapshot),
+            ), mock.patch.object(
+                verification,
+                "_execute_guarded_commands",
+                return_value=deepcopy(ledger),
+            ):
+                prepared = verification.prepare_verification_evidence(
+                    first_root,
+                    baseline_commit,
+                    head_commit,
+                    "material-pending",
+                )
+                recovery_dir = (
+                    first_root / ".tmp/emotion-state-001-phase-a-publication"
+                )
+                with verification.exclusive_verification_lock(
+                    prepared,
+                    root=first_root,
+                    recovery_dir=recovery_dir,
+                ) as capability:
+                    with self.assertRaisesRegex(
+                        ValueError,
+                        "prepared verification root",
+                    ):
+                        verification.finalize_verification_evidence(
+                            prepared,
+                            root=second_root,
+                            capability=capability,
+                        )
+                    first_result = verification.finalize_verification_evidence(
+                        prepared,
+                        root=first_root,
+                        capability=capability,
+                    )
+                    self.assertEqual(
+                        first_result["repository_head_commit"],
+                        head_commit,
+                    )
+                    with self.assertRaisesRegex(ValueError, "already consumed"):
+                        verification.finalize_verification_evidence(
+                            prepared,
+                            root=first_root,
+                            capability=capability,
+                        )
+
+    def test_prepared_state_rejects_replaced_directory_at_same_path(
         self,
     ) -> None:
         import scripts.emotion_state_phase_a_verification_evidence as verification
 
         baseline_commit = "a" * 40
         head_commit = "b" * 40
-        for mutation in ("policy", "snapshot"):
+        with tempfile.TemporaryDirectory(
+            prefix="emotion-state-verification-root-replacement-",
+        ) as temporary_directory:
+            parent = Path(temporary_directory)
+            root = parent / "verification-root"
+            root.mkdir()
+            _policy_bytes, snapshot, ledger = self._phase_fixture(
+                root,
+                baseline_commit,
+                head_commit,
+            )
+            with mock.patch.object(
+                verification,
+                "_collect_verification_snapshot",
+                return_value=deepcopy(snapshot),
+            ), mock.patch.object(
+                verification,
+                "_execute_guarded_commands",
+                return_value=deepcopy(ledger),
+            ):
+                prepared = verification.prepare_verification_evidence(
+                    root,
+                    baseline_commit,
+                    head_commit,
+                    "material-pending",
+                )
+                root.rename(parent / "original-verification-root")
+                root.mkdir()
+                self._phase_fixture(
+                    root,
+                    baseline_commit,
+                    head_commit,
+                )
+                with self.assertRaisesRegex(
+                    ValueError,
+                    "prepared verification root identity",
+                ):
+                    with verification.exclusive_verification_lock(
+                        prepared,
+                        root=root,
+                        recovery_dir=(
+                            root
+                            / ".tmp/emotion-state-001-phase-a-publication"
+                        ),
+                    ):
+                        self.fail(
+                            "replacement root acquired a prepared capability"
+                        )
+
+    def test_persistent_verification_lock_has_real_contention_and_expires(
+        self,
+    ) -> None:
+        import scripts.emotion_state_phase_a_verification_evidence as verification
+
+        baseline_commit = "a" * 40
+        head_commit = "b" * 40
+        with tempfile.TemporaryDirectory(
+            prefix="emotion-state-verification-persistent-lock-",
+        ) as temporary_directory:
+            root = Path(temporary_directory)
+            _policy_bytes, snapshot, ledger = self._phase_fixture(
+                root,
+                baseline_commit,
+                head_commit,
+            )
+            with mock.patch.object(
+                verification,
+                "_collect_verification_snapshot",
+                return_value=deepcopy(snapshot),
+            ), mock.patch.object(
+                verification,
+                "_execute_guarded_commands",
+                return_value=deepcopy(ledger),
+            ):
+                first = verification.prepare_verification_evidence(
+                    root,
+                    baseline_commit,
+                    head_commit,
+                    "material-pending",
+                )
+                second = verification.prepare_verification_evidence(
+                    root,
+                    baseline_commit,
+                    head_commit,
+                    "material-pending",
+                )
+                legacy = verification.prepare_verification_evidence(
+                    root,
+                    baseline_commit,
+                    head_commit,
+                    "material-pending",
+                )
+                blocked_by_legacy = (
+                    verification.prepare_verification_evidence(
+                        root,
+                        baseline_commit,
+                        head_commit,
+                        "material-pending",
+                    )
+                )
+                sentinel_prepared = (
+                    verification.prepare_verification_evidence(
+                        root,
+                        baseline_commit,
+                        head_commit,
+                        "material-pending",
+                    )
+                )
+                corrupt_prepared = (
+                    verification.prepare_verification_evidence(
+                        root,
+                        baseline_commit,
+                        head_commit,
+                        "material-pending",
+                    )
+                )
+                recovery_dir = (
+                    root / ".tmp/emotion-state-001-phase-a-publication"
+                )
+                lock_path = recovery_dir / "publication.lock"
+                with verification.exclusive_verification_lock(
+                    legacy,
+                    root=root,
+                    recovery_dir=recovery_dir,
+                ) as legacy_capability:
+                    with self.assertRaisesRegex(
+                        ValueError,
+                        "persistent verification lock is already held",
+                    ):
+                        with verification.persistent_verification_lock(
+                            blocked_by_legacy,
+                            root=root,
+                            recovery_dir=recovery_dir,
+                        ):
+                            self.fail(
+                                "persistent lock overlapped the legacy lock"
+                            )
+                    verification.finalize_verification_evidence(
+                        legacy,
+                        root=root,
+                        capability=legacy_capability,
+                    )
+
+                with mock.patch.object(
+                    verification,
+                    "_acquire_persistent_verification_os_lock",
+                ), mock.patch.object(
+                    verification,
+                    "_release_persistent_verification_os_lock",
+                ):
+                    with verification.persistent_verification_lock(
+                        sentinel_prepared,
+                        root=root,
+                        recovery_dir=recovery_dir,
+                    ) as sentinel_capability:
+                        self.assertEqual(lock_path.read_bytes(), b"\0")
+                        verification.finalize_verification_evidence(
+                            sentinel_prepared,
+                            root=root,
+                            capability=sentinel_capability,
+                        )
+                self.assertEqual(lock_path.read_bytes(), b"\0")
+                lock_path.write_bytes(b"X")
+                with self.assertRaisesRegex(
+                    ValueError,
+                    "persistent verification lock contents are invalid",
+                ):
+                    with verification.persistent_verification_lock(
+                        corrupt_prepared,
+                        root=root,
+                        recovery_dir=recovery_dir,
+                    ):
+                        self.fail("corrupt persistent lock was accepted")
+                lock_path.write_bytes(b"\0")
+
+                expired: object
+                with verification.persistent_verification_lock(
+                    first,
+                    root=root,
+                    recovery_dir=recovery_dir,
+                ) as capability:
+                    expired = capability
+                    with self.assertRaisesRegex(
+                        ValueError,
+                        "persistent verification lock is already held",
+                    ):
+                        with verification.persistent_verification_lock(
+                            second,
+                            root=root,
+                            recovery_dir=recovery_dir,
+                        ):
+                            self.fail("second persistent lock was acquired")
+                    verification.finalize_verification_evidence(
+                        first,
+                        root=root,
+                        capability=capability,
+                    )
+                self.assertEqual(lock_path.read_bytes(), b"\0")
+                with self.assertRaisesRegex(ValueError, "expired"):
+                    verification.finalize_verification_evidence(
+                        second,
+                        root=root,
+                        capability=expired,
+                    )
+                with verification.persistent_verification_lock(
+                    second,
+                    root=root,
+                    recovery_dir=recovery_dir,
+                ) as reused_capability:
+                    verification.finalize_verification_evidence(
+                        second,
+                        root=root,
+                        capability=reused_capability,
+                    )
+
+    def test_caller_locked_finalize_rejects_real_file_and_policy_races(
+        self,
+    ) -> None:
+        import scripts.emotion_state_phase_a_verification_evidence as verification
+
+        baseline_commit = "a" * 40
+        head_commit = "b" * 40
+        for mutation in ("policy", "snapshot-file"):
             with self.subTest(mutation=mutation), tempfile.TemporaryDirectory(
                 prefix=f"emotion-state-verification-{mutation}-race-",
             ) as temporary_directory:
@@ -4844,10 +5329,18 @@ class VerificationEvidenceLockPhaseTests(unittest.TestCase):
                     baseline_commit,
                     head_commit,
                 )
-                current_snapshot = deepcopy(snapshot)
+                input_path = root / "scripts/input.py"
+                input_path.parent.mkdir(parents=True)
+                input_path.write_bytes(b"initial input\n")
 
                 def collect_snapshot(**_: object) -> dict[str, object]:
-                    return deepcopy(current_snapshot)
+                    current = deepcopy(snapshot)
+                    current["uncommitted_change_inventory"][0][
+                        "sha256"
+                    ] = hashlib.sha256(
+                        input_path.read_bytes()
+                    ).hexdigest().upper()
+                    return current
 
                 with mock.patch.object(
                     verification,
@@ -4871,15 +5364,15 @@ class VerificationEvidenceLockPhaseTests(unittest.TestCase):
                             "phase_a_verification_guard_policy.json"
                         ).write_bytes(policy_bytes + b"\n")
                     else:
-                        current_snapshot[
-                            "uncommitted_change_inventory"
-                        ][0]["sha256"] = "C" * 64
+                        input_path.write_bytes(b"mutated after prepare\n")
                     recovery_dir = (
                         root / ".tmp/emotion-state-001-phase-a-publication"
                     )
-                    with verification.publication_lock(
+                    with verification.exclusive_verification_lock(
+                        prepared,
+                        root=root,
                         recovery_dir=recovery_dir,
-                    ):
+                    ) as capability:
                         with self.assertRaisesRegex(
                             ValueError,
                             "^verification inputs changed during locked re-read$",
@@ -4887,6 +5380,16 @@ class VerificationEvidenceLockPhaseTests(unittest.TestCase):
                             verification.finalize_verification_evidence(
                                 prepared,
                                 root=root,
+                                capability=capability,
+                            )
+                        with self.assertRaisesRegex(
+                            ValueError,
+                            "already consumed",
+                        ):
+                            verification.finalize_verification_evidence(
+                                prepared,
+                                root=root,
+                                capability=capability,
                             )
 
     def test_wrapper_signature_and_exclusive_lock_behavior_are_preserved(
