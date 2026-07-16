@@ -47,6 +47,13 @@
     "released",
     "suppressed"
   ],
+  "allowed_suppression_reason_codes": [
+    "cross_corpus_identity_not_proven",
+    "dataset_namespaced_speaker_key_missing",
+    "deterministic_contribution_evidence_missing",
+    "minimum_unique_speakers_not_met",
+    "speaker_basis_missing"
+  ],
   "max_contribution_per_speaker": 1,
   "minimum_unique_speakers": 10,
   "minimum_unique_speakers_per_output_cell": 10,
@@ -70,5 +77,35 @@
     "runtime_influence_allowed": false
   },
   "cross_corpus_identity_evidence_digest": null,
-  "notes": "Only fixed closed windows, whole-release replacements, contribution-capped cohort metrics, and cells supported by at least ten proven unique speakers may be serialized."
+  "record_provenance": {
+    "canonical_record_projection": "emotion-state-cohort-record-evidence-v1",
+    "approved_public_datasets": {
+      "crema-d-v1.0-audio-wav": {
+        "source_label": "public-only",
+        "unique_speaker_basis": "public_dataset_actor_id",
+        "source_speaker_id_pattern": "^[0-9]{4}$"
+      },
+      "ami-manual-annotations-v1.6.2": {
+        "source_label": "public-only",
+        "unique_speaker_basis": "public_dataset_participant_id",
+        "source_speaker_id_pattern": "^[MF][IET][EDO][0-9]{3}(?:PM|ID|ME|UID)?$"
+      }
+    },
+    "controlled_synthetic_fixture_dataset_ids": [
+      "synthetic-fixture-dataset-a-v1",
+      "synthetic-fixture-dataset-b-v1",
+      "synthetic-fixture-dataset-v1"
+    ],
+    "synthetic_fixture_source_label": "synthetic-only",
+    "synthetic_fixture_speaker_basis": "synthetic_fixture_speaker_id",
+    "synthetic_fixture_speaker_id_pattern": "^fixture-speaker-[0-9]{3}$",
+    "structural_validation_authenticates_external_material": false
+  },
+  "authoritative_history_boundary": {
+    "history_order_semantics": "append_dependency_order",
+    "external_append_only_registry_required": true,
+    "signed_sequence_authentication_implemented": false,
+    "unrelated_root_relative_append_order_authenticated": false
+  },
+  "notes": "Only fixed closed windows, append-ordered whole-release replacement chains, contribution-capped cohort metrics, and cells supported by at least ten proven unique speakers may be serialized. Structural validation does not authenticate external dataset material or the external append-only release registry."
 }

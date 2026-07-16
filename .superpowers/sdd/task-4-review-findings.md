@@ -75,3 +75,30 @@ Verdict: not ready for Task 5.
 - Direct standalone validation and authoritative-history entry tests must reject the source/basis and basis-null contradictions.
 
 The controller independently reproduced all three issue groups against committed HEAD before accepting the review. Preserve every existing assertion and boundary.
+
+## Round 3 independent whole-range review at `03af343f`
+
+Verdict: not ready for Task 5. This is review pass 3 of a maximum 5-pass deep privacy/security/QA loop.
+
+### Critical
+
+1. The authoritative history model rejects a valid complete append-only `[root, replacement]` chain as an overlap, while accepting a lone entry with arbitrary equal replacement digests. Treat history list order as append order. A root has null replacement digests. Each replacement must reference the canonical digest of exactly one earlier active head with the same window, fixed-window ID, and metric allowlist. Permit same-window overlap only for that valid successor and mark the predecessor superseded. Reject dangling/forward/self references, cycles, forks, stale-head replacements, duplicate entries, reordering, changed window/ID/allowlist, and overlap between distinct window chains. Candidate replacements target the unique active head.
+2. Count-map equality still permits balanced dual-plus-empty memberships: some selected records claim two cells while others claim none. Require exactly one membership cell per selected record for every count-map metric, retaining exact per-cell aggregate/support equality. Cover both count maps.
+
+### Important
+
+1. Synthetic/public provenance and identifier basis remain caller asserted. Bind public bases to the exact approved public dataset IDs and their matching actor/participant basis plus conservative dataset-specific non-PII identifier formats. Bind synthetic records to the controlled synthetic fixture dataset and speaker namespaces. Discovery must share the same validator. Verify each canonical record digest against a frozen canonical projection of the exact record evidence rather than trusting an opaque caller digest. Structural validation does not authenticate external material; keep that trust boundary explicit and do not claim it does.
+2. Standalone suppressed evidence accepts builder-impossible counts. Enforce `0 <= eligible_record_count <= unique_speaker_count <= input_record_count`; non-null dedup evidence requires eligible equals unique; null dedup evidence requires eligible zero; selection-failure reasons must remain consistent. Apply the same checks to authoritative history entries.
+
+### Minor
+
+1. Strengthen schema/fixture parity so the authoritative validator compares the complete schema descriptor and exact typed scenario parameters, including contract name, source labels, release statuses, thresholds, and expectations. Add mutation-negative tests if this remains a bounded Task 4 change; otherwise record it explicitly for whole-branch review.
+
+### Required pass-4 regressions
+
+- Valid root to replacement to replacement history and an unrelated later release must pass.
+- Missing predecessor, arbitrary digest, reordered history, stale-head fork, changed window/ID/allowlist, and distinct-window overlap must fail.
+- Balanced dual-plus-empty membership must fail for both count-map metrics.
+- Private/arbitrary dataset IDs, email-shaped/public-basis IDs, wrong public dataset-to-basis mappings, uncontrolled synthetic namespaces, and forged canonical record digests must fail in release and discovery paths.
+- Impossible standalone suppressed counts and the same entries inside authoritative history must fail.
+- Existing sparse omission, current adversarial cases, runtime/v1 immutability, and all hard boundaries must remain green.

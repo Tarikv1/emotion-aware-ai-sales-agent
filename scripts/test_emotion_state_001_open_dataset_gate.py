@@ -639,11 +639,12 @@ class CohortReleaseTests(unittest.TestCase):
             fixture_records,
             fixture_request,
         )
+        from scripts.emotion_state_public_dataset_contracts import CREMA_DATASET_ID
 
         records = fixture_records(
             12,
             10,
-            dataset_manifest_id="public-fixture-v1",
+            dataset_manifest_id=CREMA_DATASET_ID,
         )
         request = fixture_request(
             source_label="public-only",
@@ -659,6 +660,170 @@ class CohortReleaseTests(unittest.TestCase):
             ordered["dedup_evidence_digest"],
             reversed_release["dedup_evidence_digest"],
         )
+
+    def test_release_records_bind_approved_dataset_basis_id_and_digest_provenance(
+        self,
+    ) -> None:
+        from scripts.emotion_state_cohort_release_contracts import (
+            build_cohort_release,
+            fixture_records,
+            fixture_request,
+        )
+        from scripts.emotion_state_public_dataset_contracts import (
+            AMI_DATASET_ID,
+            CREMA_DATASET_ID,
+        )
+
+        private_records = fixture_records(
+            10,
+            10,
+            dataset_manifest_id="private-customer-audio-v1",
+        )
+        email_actor_records = fixture_records(
+            10,
+            10,
+            dataset_manifest_id=CREMA_DATASET_ID,
+        )
+        email_actor_records[0]["source_speaker_id"] = "actor@example.com"
+        ami_meeting_id_records = fixture_records(
+            10,
+            10,
+            dataset_manifest_id=AMI_DATASET_ID,
+        )
+        for index, record in enumerate(ami_meeting_id_records):
+            record["source_speaker_id"] = f"ES{2000 + index:04d}a"
+        uncontrolled_synthetic_records = fixture_records(
+            10,
+            10,
+            dataset_manifest_id="synthetic-corpus-uncontrolled-v1",
+        )
+        forged_digest_records = fixture_records(10, 10)
+        forged_digest_records[0]["canonical_record_digest"] = "A" * 64
+
+        invalid_cases = {
+            "private_dataset": (
+                private_records,
+                fixture_request(),
+                "approved|dataset",
+            ),
+            "email_public_actor_id": (
+                email_actor_records,
+                fixture_request(
+                    source_label="public-only",
+                    unique_speaker_basis="public_dataset_actor_id",
+                ),
+                "actor|speaker.*ID|identifier",
+            ),
+            "crema_participant_basis": (
+                fixture_records(10, 10, dataset_manifest_id=CREMA_DATASET_ID),
+                fixture_request(
+                    source_label="public-only",
+                    unique_speaker_basis="public_dataset_participant_id",
+                ),
+                "basis|CREMA",
+            ),
+            "ami_actor_basis": (
+                fixture_records(10, 10, dataset_manifest_id=AMI_DATASET_ID),
+                fixture_request(
+                    source_label="public-only",
+                    unique_speaker_basis="public_dataset_actor_id",
+                ),
+                "basis|AMI",
+            ),
+            "ami_meeting_id_as_participant": (
+                ami_meeting_id_records,
+                fixture_request(
+                    source_label="public-only",
+                    unique_speaker_basis="public_dataset_participant_id",
+                ),
+                "participant|speaker.*ID|identifier",
+            ),
+            "uncontrolled_synthetic_namespace": (
+                uncontrolled_synthetic_records,
+                fixture_request(),
+                "controlled synthetic|dataset",
+            ),
+            "forged_canonical_record_digest": (
+                forged_digest_records,
+                fixture_request(),
+                "canonical record digest mismatch",
+            ),
+        }
+        for name, (records, request, error_pattern) in invalid_cases.items():
+            with self.subTest(name=name):
+                with self.assertRaisesRegex(ValueError, error_pattern):
+                    build_cohort_release(records, request)
+
+    def test_discovery_records_share_the_release_provenance_validator(self) -> None:
+        from scripts.emotion_state_cohort_release_contracts import (
+            evaluate_discovery_gate,
+            fixture_records,
+        )
+        from scripts.emotion_state_public_dataset_contracts import (
+            AMI_DATASET_ID,
+            CREMA_DATASET_ID,
+        )
+
+        private_records = fixture_records(
+            10,
+            10,
+            dataset_manifest_id="private-customer-audio-v1",
+        )
+        email_actor_records = fixture_records(
+            10,
+            10,
+            dataset_manifest_id=CREMA_DATASET_ID,
+        )
+        email_actor_records[0]["source_speaker_id"] = "actor@example.com"
+        wrong_crema_id_records = fixture_records(
+            10,
+            10,
+            dataset_manifest_id=CREMA_DATASET_ID,
+        )
+        for index, record in enumerate(wrong_crema_id_records):
+            record["source_speaker_id"] = f"ES{2000 + index:04d}.A"
+        ami_meeting_id_records = fixture_records(
+            10,
+            10,
+            dataset_manifest_id=AMI_DATASET_ID,
+        )
+        for index, record in enumerate(ami_meeting_id_records):
+            record["source_speaker_id"] = f"ES{2000 + index:04d}a"
+        uncontrolled_synthetic_records = fixture_records(
+            10,
+            10,
+            dataset_manifest_id="synthetic-corpus-uncontrolled-v1",
+        )
+        forged_digest_records = fixture_records(10, 10)
+        forged_digest_records[0]["canonical_record_digest"] = "A" * 64
+
+        invalid_cases = {
+            "private_dataset": (private_records, "approved|dataset"),
+            "email_public_actor_id": (
+                email_actor_records,
+                "actor|speaker.*ID|identifier",
+            ),
+            "wrong_public_dataset_id_syntax": (
+                wrong_crema_id_records,
+                "actor|speaker.*ID|identifier",
+            ),
+            "ami_meeting_id_as_participant": (
+                ami_meeting_id_records,
+                "participant|speaker.*ID|identifier",
+            ),
+            "uncontrolled_synthetic_namespace": (
+                uncontrolled_synthetic_records,
+                "controlled synthetic|dataset",
+            ),
+            "forged_canonical_record_digest": (
+                forged_digest_records,
+                "canonical record digest mismatch",
+            ),
+        }
+        for name, (records, error_pattern) in invalid_cases.items():
+            with self.subTest(name=name):
+                with self.assertRaisesRegex(ValueError, error_pattern):
+                    evaluate_discovery_gate(records)
 
     def test_missing_or_nondeterministic_speaker_evidence_suppresses(self) -> None:
         from scripts.emotion_state_cohort_release_contracts import (
@@ -772,6 +937,7 @@ class CohortReleaseTests(unittest.TestCase):
     def test_sparse_output_cells_are_omitted_not_zeroed(self) -> None:
         from scripts.emotion_state_cohort_release_contracts import (
             build_cohort_release,
+            canonical_record_digest,
             fixture_records,
             fixture_request,
         )
@@ -786,6 +952,7 @@ class CohortReleaseTests(unittest.TestCase):
             record["metric_cell_memberships"]["audio_quality_bucket_counts"] = [
                 "usable" if index == 0 else "unavailable"
             ]
+            record["canonical_record_digest"] = canonical_record_digest(record)
         release = build_cohort_release(records, request)
         self.assertEqual(release["release_status"], "released")
         self.assertNotIn("audio_quality_bucket_counts", release["aggregate_metrics"])
@@ -816,6 +983,7 @@ class CohortReleaseTests(unittest.TestCase):
     def test_count_map_values_must_match_membership_derived_support(self) -> None:
         from scripts.emotion_state_cohort_release_contracts import (
             build_cohort_release,
+            canonical_record_digest,
             fixture_records,
             fixture_request,
             validate_cohort_release,
@@ -839,6 +1007,7 @@ class CohortReleaseTests(unittest.TestCase):
                 "unavailable",
                 "usable",
             ]
+            record["canonical_record_digest"] = canonical_record_digest(record)
         dual_membership_request = fixture_request()
         dual_membership_request["operational_aggregate"][
             "audio_quality_bucket_counts"
@@ -874,6 +1043,47 @@ class CohortReleaseTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "count-map.*support"):
             validate_cohort_release(contradictory_release)
 
+    def test_each_selected_record_has_exactly_one_cell_per_count_map_metric(
+        self,
+    ) -> None:
+        from scripts.emotion_state_cohort_release_contracts import (
+            build_cohort_release,
+            canonical_record_digest,
+            fixture_records,
+            fixture_request,
+        )
+
+        count_map_cases = {
+            "audio_quality_bucket_counts": ("unavailable", "usable"),
+            "evidence_policy_version_counts": (
+                "emotion-state-evidence-v1",
+                "emotion-state-evidence-v2",
+            ),
+        }
+        for metric, cells in count_map_cases.items():
+            with self.subTest(metric=metric):
+                records = fixture_records(20, 20)
+                request = fixture_request()
+                request["operational_aggregate"]["eligible_call_count"] = 20
+                request["operational_aggregate"][
+                    "audio_quality_bucket_counts"
+                ] = {"unavailable": 20}
+                request["operational_aggregate"][
+                    "evidence_policy_version_counts"
+                ] = {"emotion-state-evidence-v1": 20}
+                request["operational_aggregate"][metric] = {
+                    cells[0]: 10,
+                    cells[1]: 10,
+                }
+                for index, record in enumerate(records):
+                    record["metric_cell_memberships"][metric] = (
+                        list(cells) if index < 10 else []
+                    )
+                    record["canonical_record_digest"] = canonical_record_digest(record)
+
+                with self.assertRaisesRegex(ValueError, "exactly one.*count-map"):
+                    build_cohort_release(records, request)
+
     def test_request_cannot_assert_output_cell_support(self) -> None:
         from scripts.emotion_state_cohort_release_contracts import (
             build_cohort_release,
@@ -896,15 +1106,17 @@ class CohortReleaseTests(unittest.TestCase):
     def test_ineligible_foreign_dataset_record_still_suppresses(self) -> None:
         from scripts.emotion_state_cohort_release_contracts import (
             build_cohort_release,
+            canonical_record_digest,
             fixture_records,
             fixture_request,
         )
 
         records = fixture_records(10, 10)
         foreign = deepcopy(records[0])
-        foreign["dataset_manifest_id"] = "foreign-synthetic-corpus-v1"
-        foreign["source_speaker_id"] = "foreign-fixture-speaker"
+        foreign["dataset_manifest_id"] = "synthetic-fixture-dataset-b-v1"
+        foreign["source_speaker_id"] = "fixture-speaker-999"
         foreign["eligible"] = False
+        foreign["canonical_record_digest"] = canonical_record_digest(foreign)
         records.append(foreign)
         release = build_cohort_release(records, fixture_request())
         self.assertEqual(release["release_status"], "suppressed")
@@ -991,6 +1203,190 @@ class CohortReleaseTests(unittest.TestCase):
             with self.subTest(name=name):
                 with self.assertRaises(ValueError):
                     build_cohort_release(records, request)
+
+    def test_authoritative_history_accepts_ordered_replacement_chain_and_later_release(
+        self,
+    ) -> None:
+        from scripts.emotion_state_cohort_release_contracts import (
+            build_cohort_release,
+            canonical_release_digest,
+            canonical_release_history_digest,
+            fixture_records,
+            fixture_request,
+        )
+
+        records = fixture_records(10, 10)
+        root = build_cohort_release(records, fixture_request())
+        root_digest = canonical_release_digest(root)
+        first_history = [root]
+        first_replacement = build_cohort_release(
+            records,
+            fixture_request(
+                window_relationship="replacement",
+                authoritative_release_history=first_history,
+                authoritative_release_history_digest=(
+                    canonical_release_history_digest(first_history)
+                ),
+                previous_release_digest=root_digest,
+                release_replaces_digest=root_digest,
+                replacement_scope="entire_prior_release",
+            ),
+        )
+        first_replacement_digest = canonical_release_digest(first_replacement)
+        second_history = [root, first_replacement]
+        second_replacement = build_cohort_release(
+            records,
+            fixture_request(
+                window_relationship="replacement",
+                authoritative_release_history=second_history,
+                authoritative_release_history_digest=(
+                    canonical_release_history_digest(second_history)
+                ),
+                previous_release_digest=first_replacement_digest,
+                release_replaces_digest=first_replacement_digest,
+                replacement_scope="entire_prior_release",
+            ),
+        )
+
+        complete_history = [root, first_replacement, second_replacement]
+        later_request = fixture_request(
+            authoritative_release_history=complete_history,
+            authoritative_release_history_digest=canonical_release_history_digest(
+                complete_history
+            ),
+        )
+        later_request["operational_aggregate"]["aggregation_window"] = {
+            "window_start_date": "2026-07-15",
+            "window_end_date": "2026-07-28",
+            "timezone": "UTC",
+        }
+        later_request["fixed_window_id"] = "utc-2026-07-15--2026-07-28"
+
+        later_release = build_cohort_release(records, later_request)
+        self.assertEqual(second_replacement["release_status"], "released")
+        self.assertEqual(later_release["release_status"], "released")
+
+    def test_authoritative_history_rejects_invalid_replacement_dependencies(
+        self,
+    ) -> None:
+        from scripts.emotion_state_cohort_release_contracts import (
+            build_cohort_release,
+            canonical_release_digest,
+            canonical_release_history_digest,
+            fixture_records,
+            fixture_request,
+        )
+
+        records = fixture_records(10, 10)
+        root = build_cohort_release(records, fixture_request())
+        root_digest = canonical_release_digest(root)
+        root_history = [root]
+        replacement = build_cohort_release(
+            records,
+            fixture_request(
+                window_relationship="replacement",
+                authoritative_release_history=root_history,
+                authoritative_release_history_digest=(
+                    canonical_release_history_digest(root_history)
+                ),
+                previous_release_digest=root_digest,
+                release_replaces_digest=root_digest,
+                replacement_scope="entire_prior_release",
+            ),
+        )
+
+        def later_request(history: list[dict[str, object]]) -> dict[str, object]:
+            request = fixture_request(
+                authoritative_release_history=history,
+                authoritative_release_history_digest=(
+                    canonical_release_history_digest(history)
+                ),
+            )
+            request["operational_aggregate"]["aggregation_window"] = {
+                "window_start_date": "2026-08-01",
+                "window_end_date": "2026-08-14",
+                "timezone": "UTC",
+            }
+            request["fixed_window_id"] = "utc-2026-08-01--2026-08-14"
+            return request
+
+        dangling = deepcopy(root)
+        dangling["previous_release_digest"] = "A" * 64
+        dangling["release_replaces_digest"] = "A" * 64
+
+        stale_fork = deepcopy(replacement)
+        stale_fork["aggregate_metrics"]["audio_analysis_availability_rate"] = 0.25
+
+        changed_window = deepcopy(replacement)
+        changed_window["aggregation_window"] = {
+            "window_start_date": "2026-07-15",
+            "window_end_date": "2026-07-28",
+            "timezone": "UTC",
+        }
+        changed_window["fixed_window_id"] = "utc-2026-07-15--2026-07-28"
+
+        invalid_histories = {
+            "missing_predecessor": [replacement],
+            "arbitrary_digest": [dangling],
+            "successor_before_predecessor": [replacement, root],
+            "stale_head_fork": [root, replacement, stale_fork],
+            "changed_window_and_id": [root, changed_window],
+        }
+        for name, history in invalid_histories.items():
+            with self.subTest(name=name):
+                with self.assertRaises(ValueError):
+                    build_cohort_release(records, later_request(history))
+
+        active_history = [root, replacement]
+        with self.assertRaisesRegex(ValueError, "active|head|stale"):
+            build_cohort_release(
+                records,
+                fixture_request(
+                    window_relationship="replacement",
+                    authoritative_release_history=active_history,
+                    authoritative_release_history_digest=(
+                        canonical_release_history_digest(active_history)
+                    ),
+                    previous_release_digest=root_digest,
+                    release_replaces_digest=root_digest,
+                    replacement_scope="entire_prior_release",
+                ),
+            )
+
+    def test_authoritative_history_rejects_overlapping_distinct_window_chains(
+        self,
+    ) -> None:
+        from scripts.emotion_state_cohort_release_contracts import (
+            build_cohort_release,
+            canonical_release_history_digest,
+            fixture_records,
+            fixture_request,
+        )
+
+        records = fixture_records(10, 10)
+        root = build_cohort_release(records, fixture_request())
+        overlap_request = fixture_request()
+        overlap_request["operational_aggregate"]["aggregation_window"] = {
+            "window_start_date": "2026-07-10",
+            "window_end_date": "2026-07-20",
+            "timezone": "UTC",
+        }
+        overlap_request["fixed_window_id"] = "utc-2026-07-10--2026-07-20"
+        overlapping_root = build_cohort_release(records, overlap_request)
+        history = [root, overlapping_root]
+        candidate_request = fixture_request(
+            authoritative_release_history=history,
+            authoritative_release_history_digest=canonical_release_history_digest(history),
+        )
+        candidate_request["operational_aggregate"]["aggregation_window"] = {
+            "window_start_date": "2026-08-01",
+            "window_end_date": "2026-08-14",
+            "timezone": "UTC",
+        }
+        candidate_request["fixed_window_id"] = "utc-2026-08-01--2026-08-14"
+
+        with self.assertRaisesRegex(ValueError, "overlap"):
+            build_cohort_release(records, candidate_request)
 
     def test_authoritative_history_is_required_digest_bound_and_canonical(self) -> None:
         from scripts.emotion_state_cohort_release_contracts import (
@@ -1182,6 +1578,105 @@ class CohortReleaseTests(unittest.TestCase):
                 with self.assertRaisesRegex(ValueError, "basis-null evidence"):
                     validate_cohort_release(payload)
 
+    def test_standalone_suppressed_release_rejects_impossible_record_counts(
+        self,
+    ) -> None:
+        from scripts.emotion_state_cohort_release_contracts import (
+            build_cohort_release,
+            fixture_records,
+            fixture_request,
+            validate_cohort_release,
+        )
+
+        suppressed = build_cohort_release(fixture_records(12, 4), fixture_request())
+        dedup_null_with_selected = deepcopy(suppressed)
+        dedup_null_with_selected["dedup_evidence_digest"] = None
+        dedup_null_with_selected["suppression_reason_codes"] = [
+            "minimum_unique_speakers_not_met",
+            "deterministic_contribution_evidence_missing",
+        ]
+        unique_exceeds_input = deepcopy(suppressed)
+        unique_exceeds_input.update({
+            "input_record_count": 3,
+            "eligible_record_count": 0,
+            "unique_speaker_count": 4,
+            "dedup_evidence_digest": None,
+            "suppression_reason_codes": [
+                "minimum_unique_speakers_not_met",
+                "deterministic_contribution_evidence_missing",
+            ],
+        })
+        invalid = {
+            "eligible_exceeds_unique": dict(
+                suppressed,
+                eligible_record_count=5,
+            ),
+            "unique_exceeds_input": unique_exceeds_input,
+            "nonnull_dedup_requires_equal_counts": dict(
+                suppressed,
+                eligible_record_count=3,
+            ),
+            "null_dedup_requires_zero_eligible": dedup_null_with_selected,
+        }
+        for name, payload in invalid.items():
+            with self.subTest(name=name):
+                with self.assertRaisesRegex(
+                    ValueError,
+                    "record counts|eligible.*unique|dedup",
+                ):
+                    validate_cohort_release(payload)
+
+    def test_authoritative_history_rejects_impossible_suppressed_record_counts(
+        self,
+    ) -> None:
+        from scripts.emotion_state_cohort_release_contracts import (
+            build_cohort_release,
+            canonical_release_history_digest,
+            fixture_records,
+            fixture_request,
+        )
+
+        records = fixture_records(10, 10)
+        suppressed = build_cohort_release(fixture_records(12, 4), fixture_request())
+        invalid_entries = {
+            "eligible_exceeds_unique": dict(
+                suppressed,
+                eligible_record_count=5,
+            ),
+            "nonnull_dedup_requires_equal_counts": dict(
+                suppressed,
+                eligible_record_count=3,
+            ),
+        }
+        null_dedup_with_selected = deepcopy(suppressed)
+        null_dedup_with_selected["dedup_evidence_digest"] = None
+        null_dedup_with_selected["suppression_reason_codes"] = [
+            "minimum_unique_speakers_not_met",
+            "deterministic_contribution_evidence_missing",
+        ]
+        invalid_entries["null_dedup_requires_zero_eligible"] = null_dedup_with_selected
+
+        for name, invalid_entry in invalid_entries.items():
+            history = [invalid_entry]
+            request = fixture_request(
+                authoritative_release_history=history,
+                authoritative_release_history_digest=(
+                    canonical_release_history_digest(history)
+                ),
+            )
+            request["operational_aggregate"]["aggregation_window"] = {
+                "window_start_date": "2026-07-15",
+                "window_end_date": "2026-07-28",
+                "timezone": "UTC",
+            }
+            request["fixed_window_id"] = "utc-2026-07-15--2026-07-28"
+            with self.subTest(name=name):
+                with self.assertRaisesRegex(
+                    ValueError,
+                    "record counts|eligible.*unique|dedup",
+                ):
+                    build_cohort_release(records, request)
+
     def test_authoritative_history_rejects_invalid_source_basis_and_basis_null_entries(
         self,
     ) -> None:
@@ -1272,6 +1767,7 @@ class CohortReleaseTests(unittest.TestCase):
     def test_unhashable_request_and_membership_values_raise_value_error(self) -> None:
         from scripts.emotion_state_cohort_release_contracts import (
             build_cohort_release,
+            evaluate_discovery_gate,
             fixture_records,
             fixture_request,
         )
@@ -1295,6 +1791,20 @@ class CohortReleaseTests(unittest.TestCase):
             with self.subTest(membership_type=type(malformed).__name__):
                 with self.assertRaisesRegex(ValueError, "metric_cell_memberships"):
                     build_cohort_release(records, fixture_request())
+
+        for malformed_dataset_id in ([], {}):
+            records = fixture_records(10, 10)
+            records[0]["dataset_manifest_id"] = malformed_dataset_id
+            for path in ("release", "discovery"):
+                with self.subTest(
+                    dataset_id_type=type(malformed_dataset_id).__name__,
+                    path=path,
+                ):
+                    with self.assertRaisesRegex(ValueError, "dataset_manifest_id"):
+                        if path == "release":
+                            build_cohort_release(records, fixture_request())
+                        else:
+                            evaluate_discovery_gate(records)
 
     def test_runtime_operational_aggregate_contract_is_unchanged(self) -> None:
         from runtime.contracts.emotion_state_contracts import (
@@ -1499,6 +2009,58 @@ class CohortReleaseTests(unittest.TestCase):
         self.assertIn("suppression-based, privacy-minimized contribution gate", tracked_text)
         for prohibited_claim in ("anonymous", "differential privacy", "proof against re-identification"):
             self.assertNotIn(prohibited_claim, tracked_text)
+
+    def test_complete_schema_and_fixture_descriptor_parity_is_type_exact(self) -> None:
+        from scripts.emotion_state_cohort_release_contracts import (
+            cohort_release_fixture_descriptor,
+            cohort_release_schema_descriptor,
+        )
+
+        def canonical(value: object) -> str:
+            return json.dumps(
+                value,
+                sort_keys=True,
+                separators=(",", ":"),
+                ensure_ascii=False,
+                allow_nan=False,
+            )
+
+        schema = json.loads(
+            (
+                ROOT
+                / "research/sources/emotion_state/cohort_release_evidence_v1.schema.json"
+            ).read_text(encoding="utf-8")
+        )
+        fixtures = json.loads(
+            (
+                ROOT
+                / "research/experiments/cases/emotion-state-001-cohort-release-fixtures.json"
+            ).read_text(encoding="utf-8")
+        )
+        expected_schema = cohort_release_schema_descriptor()
+        expected_fixtures = cohort_release_fixture_descriptor()
+        self.assertEqual(canonical(schema), canonical(expected_schema))
+        self.assertEqual(canonical(fixtures), canonical(expected_fixtures))
+        self.assertEqual(expected_schema["contract_name"], "CohortReleaseEvidenceV1")
+        self.assertEqual(expected_schema["allowed_source_labels"], [
+            "public-only",
+            "synthetic-only",
+        ])
+        self.assertEqual(expected_schema["release_statuses"], [
+            "released",
+            "suppressed",
+        ])
+        self.assertIs(
+            expected_fixtures["scenarios"]["twenty_turns_five_speakers"][
+                "discovery_floor_met"
+            ],
+            True,
+        )
+        type_mutation = deepcopy(expected_fixtures)
+        type_mutation["scenarios"]["twenty_turns_five_speakers"][
+            "discovery_floor_met"
+        ] = 1
+        self.assertNotEqual(canonical(type_mutation), canonical(expected_fixtures))
 
     def test_cohort_release_contract_self_check_passes(self) -> None:
         from scripts.emotion_state_cohort_release_contracts import (

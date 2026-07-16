@@ -14,13 +14,22 @@ from runtime.contracts.emotion_state_contracts import (
     EVIDENCE_POLICY_VERSION_PATTERN,
     validate_operational_aggregate,
 )
-from scripts.emotion_state_public_dataset_contracts import SELECTED_PUBLIC_DATASETS
+from scripts.emotion_state_public_dataset_contracts import (
+    AMI_DATASET_ID,
+    CREMA_DATASET_ID,
+    SELECTED_PUBLIC_DATASETS,
+)
 
 
 ALLOWED_SPEAKER_BASES = frozenset({
     "public_dataset_actor_id",
     "public_dataset_participant_id",
     "synthetic_fixture_speaker_id",
+})
+CONTROLLED_SYNTHETIC_FIXTURE_DATASET_IDS = frozenset({
+    "synthetic-fixture-dataset-v1",
+    "synthetic-fixture-dataset-a-v1",
+    "synthetic-fixture-dataset-b-v1",
 })
 RESERVED_DISABLED_SPEAKER_BASE = "privacy_reviewed_pseudonymous_cohort_token"
 FORBIDDEN_SPEAKER_BASES = frozenset({
@@ -139,6 +148,8 @@ RECORD_ALLOWED_FIELDS = frozenset({
     "eligible",
     "metric_cell_memberships",
 })
+RECORD_EVIDENCE_FIELDS = RECORD_ALLOWED_FIELDS - {"canonical_record_digest"}
+CANONICAL_RECORD_PROJECTION = "emotion-state-cohort-record-evidence-v1"
 CONFIRMATORY_FIELDS = frozenset({
     "overall_unique_speaker_count",
     "promoted_labels",
@@ -154,6 +165,14 @@ ALLOWED_SOURCE_LABELS = frozenset({"public-only", "synthetic-only"})
 SHA256_PATTERN = re.compile(r"[0-9A-F]{64}")
 DATE_PATTERN = re.compile(r"\d{4}-\d{2}-\d{2}")
 TIMESTAMP_PATTERN = re.compile(r"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z")
+CREMA_ACTOR_ID_PATTERN_TEXT = r"^[0-9]{4}$"
+AMI_PARTICIPANT_ID_PATTERN_TEXT = r"^[MF][IET][EDO][0-9]{3}(?:PM|ID|ME|UID)?$"
+SYNTHETIC_FIXTURE_SPEAKER_ID_PATTERN_TEXT = r"^fixture-speaker-[0-9]{3}$"
+CREMA_ACTOR_ID_PATTERN = re.compile(CREMA_ACTOR_ID_PATTERN_TEXT)
+AMI_PARTICIPANT_ID_PATTERN = re.compile(AMI_PARTICIPANT_ID_PATTERN_TEXT)
+SYNTHETIC_FIXTURE_SPEAKER_ID_PATTERN = re.compile(
+    SYNTHETIC_FIXTURE_SPEAKER_ID_PATTERN_TEXT
+)
 
 
 def _canonical_json_bytes(payload: Any) -> bytes:
@@ -171,6 +190,104 @@ def _canonical_json_bytes(payload: Any) -> bytes:
 
 def _sha256(payload: Any) -> str:
     return hashlib.sha256(_canonical_json_bytes(payload)).hexdigest().upper()
+
+
+def canonical_record_digest(record: Any) -> str:
+    if not isinstance(record, dict) or set(record) - RECORD_ALLOWED_FIELDS:
+        raise ValueError("record evidence contains forbidden or unknown fields")
+    evidence_fields = set(record) - {"canonical_record_digest"}
+    if evidence_fields != RECORD_EVIDENCE_FIELDS:
+        raise ValueError("canonical record evidence fields mismatch")
+    evidence = {
+        field: deepcopy(record[field])
+        for field in sorted(RECORD_EVIDENCE_FIELDS)
+    }
+    return _sha256({
+        "projection": CANONICAL_RECORD_PROJECTION,
+        "record_evidence": evidence,
+    })
+
+
+def _validate_record_provenance(
+    record: dict[str, Any],
+    *,
+    record_index: int,
+    source_label: str | None = None,
+    speaker_basis: str | None = None,
+    require_complete_evidence: bool,
+) -> str:
+    dataset_id = record.get("dataset_manifest_id")
+    if not isinstance(dataset_id, str):
+        raise ValueError(
+            f"record {record_index}.dataset_manifest_id must be a string naming an "
+            "approved public dataset or controlled synthetic fixture dataset"
+        )
+    if dataset_id == CREMA_DATASET_ID:
+        expected_source_label = "public-only"
+        expected_basis = "public_dataset_actor_id"
+        speaker_pattern = CREMA_ACTOR_ID_PATTERN
+        speaker_error = "must be a four-digit CREMA actor identifier"
+    elif dataset_id == AMI_DATASET_ID:
+        expected_source_label = "public-only"
+        expected_basis = "public_dataset_participant_id"
+        speaker_pattern = AMI_PARTICIPANT_ID_PATTERN
+        speaker_error = "must be an official-format AMI participant identifier"
+    elif dataset_id in CONTROLLED_SYNTHETIC_FIXTURE_DATASET_IDS:
+        expected_source_label = "synthetic-only"
+        expected_basis = "synthetic_fixture_speaker_id"
+        speaker_pattern = SYNTHETIC_FIXTURE_SPEAKER_ID_PATTERN
+        speaker_error = "must use the controlled synthetic fixture speaker ID syntax"
+    else:
+        raise ValueError(
+            f"record {record_index}.dataset_manifest_id is not an approved public "
+            "dataset or controlled synthetic fixture dataset"
+        )
+    if source_label is not None and source_label != expected_source_label:
+        raise ValueError(
+            f"record {record_index} dataset provenance does not match source_label"
+        )
+    if speaker_basis is not None and speaker_basis != expected_basis:
+        dataset_name = "CREMA" if dataset_id == CREMA_DATASET_ID else (
+            "AMI" if dataset_id == AMI_DATASET_ID else "synthetic fixture"
+        )
+        raise ValueError(
+            f"record {record_index} {dataset_name} dataset does not match speaker basis"
+        )
+    speaker_id = record.get("source_speaker_id")
+    if not isinstance(speaker_id, str) or not speaker_id.strip():
+        if require_complete_evidence:
+            raise ValueError(
+                f"record {record_index}.source_speaker_id {speaker_error}"
+            )
+        return dataset_id
+    if speaker_pattern.fullmatch(speaker_id) is None:
+        raise ValueError(f"record {record_index}.source_speaker_id {speaker_error}")
+    complete = (
+        set(record) == RECORD_ALLOWED_FIELDS
+        and isinstance(record.get("source_timestamp"), str)
+        and isinstance(record.get("canonical_record_digest"), str)
+    )
+    if not complete:
+        if require_complete_evidence:
+            raise ValueError(
+                f"record {record_index} canonical record evidence must be complete"
+            )
+        return dataset_id
+    timestamp = record["source_timestamp"]
+    if TIMESTAMP_PATTERN.fullmatch(timestamp) is None:
+        raise ValueError(f"record {record_index}.source_timestamp must be canonical UTC")
+    try:
+        datetime.strptime(timestamp, "%Y-%m-%dT%H:%M:%SZ")
+    except ValueError as exc:
+        raise ValueError(f"record {record_index}.source_timestamp is invalid") from exc
+    digest = record["canonical_record_digest"]
+    if SHA256_PATTERN.fullmatch(digest) is None:
+        raise ValueError(
+            f"record {record_index}.canonical_record_digest must be uppercase SHA-256"
+        )
+    if digest != canonical_record_digest(record):
+        raise ValueError(f"record {record_index} canonical record digest mismatch")
+    return dataset_id
 
 
 def _require_exact_fields(payload: Any, fields: frozenset[str], label: str) -> None:
@@ -447,6 +564,72 @@ def _windows_overlap(left: dict[str, Any], right: dict[str, Any]) -> bool:
     return left_start <= right_end and right_start <= left_end
 
 
+def _authoritative_history_active_heads(
+    history: list[dict[str, Any]],
+) -> dict[str, dict[str, Any]]:
+    seen: dict[str, dict[str, Any]] = {}
+    active: dict[str, dict[str, Any]] = {}
+    release_chain: dict[str, str] = {}
+    chains: dict[str, dict[str, Any]] = {}
+    for index, release in enumerate(history):
+        release_digest = canonical_release_digest(release)
+        if release_digest in seen:
+            raise ValueError("authoritative release history contains a duplicate release")
+        target_digest = release["release_replaces_digest"]
+        if target_digest is None:
+            for chain in chains.values():
+                if (
+                    release["fixed_window_id"] == chain["fixed_window_id"]
+                    or _windows_overlap(
+                        release["aggregation_window"],
+                        chain["aggregation_window"],
+                    )
+                ):
+                    raise ValueError(
+                        "authoritative release history contains overlapping "
+                        "distinct window chains"
+                    )
+            chain_id = release_digest
+            chains[chain_id] = {
+                "aggregation_window": release["aggregation_window"],
+                "fixed_window_id": release["fixed_window_id"],
+                "metric_allowlist_version": release["metric_allowlist_version"],
+            }
+        else:
+            target = active.get(target_digest)
+            if target is None:
+                if target_digest in seen:
+                    raise ValueError(
+                        "authoritative release history replacement targets a stale head"
+                    )
+                raise ValueError(
+                    "authoritative release history replacement must target exactly one "
+                    "earlier active head"
+                )
+            chain_id = release_chain[target_digest]
+            if (
+                release["aggregation_window"] != target["aggregation_window"]
+                or release["fixed_window_id"] != target["fixed_window_id"]
+            ):
+                raise ValueError(
+                    "authoritative release history replacement must preserve the exact "
+                    "window and fixed-window ID"
+                )
+            if (
+                release["metric_allowlist_version"]
+                != target["metric_allowlist_version"]
+            ):
+                raise ValueError(
+                    "authoritative release history replacement must preserve the exact "
+                    "metric allowlist"
+                )
+            del active[target_digest]
+        seen[release_digest] = release
+        active[release_digest] = release
+        release_chain[release_digest] = chain_id
+    return active
+
+
 def _validate_authoritative_release_history(
     history: Any,
     history_digest: Any,
@@ -465,24 +648,7 @@ def _validate_authoritative_release_history(
         if not isinstance(prior_release, dict):
             raise ValueError(f"authoritative release history entry {index} must be an object")
         validated.append(validate_cohort_release(prior_release))
-    canonical_order = sorted(
-        validated,
-        key=lambda release: (
-            release["aggregation_window"]["window_start_date"],
-            release["aggregation_window"]["window_end_date"],
-            release["fixed_window_id"],
-            canonical_release_digest(release),
-        ),
-    )
-    if validated != canonical_order:
-        raise ValueError("authoritative release history must use canonical window order")
-    release_digests = [canonical_release_digest(release) for release in validated]
-    if len(release_digests) != len(set(release_digests)):
-        raise ValueError("authoritative release history contains a duplicate release")
-    for left_index, left in enumerate(validated):
-        for right in validated[left_index + 1:]:
-            if _windows_overlap(left["aggregation_window"], right["aggregation_window"]):
-                raise ValueError("authoritative release history contains overlapping windows")
+    _authoritative_history_active_heads(validated)
     return validated
 
 
@@ -508,18 +674,17 @@ def _validate_replacement_request(request: dict[str, Any]) -> None:
             ):
                 raise ValueError("new release window overlaps or duplicates authoritative history")
         return
-    matches = [
-        prior_release
-        for prior_release in history
-        if prior_release["fixed_window_id"] == current_window_id
-        and prior_release["aggregation_window"] == current_window
-    ]
-    if len(matches) != 1:
-        raise ValueError("replacement requires exactly one matching authoritative history entry")
-    previous = matches[0]
-    canonical_previous_digest = canonical_release_digest(previous)
-    if previous_digest != canonical_previous_digest or replaces_digest != canonical_previous_digest:
-        raise ValueError("replacement must bind the prior canonical release digest")
+    if previous_digest != replaces_digest:
+        raise ValueError("replacement digest bindings must match")
+    active_heads = _authoritative_history_active_heads(history)
+    previous = active_heads.get(previous_digest)
+    if previous is None:
+        raise ValueError("replacement must target exactly one active history head")
+    if (
+        previous["fixed_window_id"] != current_window_id
+        or previous["aggregation_window"] != current_window
+    ):
+        raise ValueError("replacement must preserve the exact window and fixed-window ID")
     if replacement_scope != "entire_prior_release":
         raise ValueError("replacement must replace the entire prior release")
     if request["metric_allowlist_version"] != previous["metric_allowlist_version"]:
@@ -585,9 +750,11 @@ def evaluate_discovery_gate(records: Any) -> dict[str, bool | int]:
             raise ValueError(f"record {index} contains forbidden or unknown fields")
         if "eligible" not in record or type(record["eligible"]) is not bool:
             raise ValueError(f"record {index}.eligible must be boolean")
-        dataset_id = record.get("dataset_manifest_id")
-        if not isinstance(dataset_id, str) or not dataset_id.strip():
-            raise ValueError(f"record {index}.dataset_manifest_id must be a nonempty string")
+        dataset_id = _validate_record_provenance(
+            record,
+            record_index=index,
+            require_complete_evidence=True,
+        )
         dataset_ids.add(dataset_id)
         if not record["eligible"]:
             continue
@@ -641,7 +808,8 @@ def evaluate_discovery_gate(records: Any) -> dict[str, bool | int]:
 def _select_contributions(
     records: Any,
     *,
-    basis_available: bool,
+    speaker_basis: str | None,
+    source_label: str,
     aggregate: dict[str, Any],
 ) -> tuple[list[dict[str, Any]], int, str | None, list[str]]:
     if not isinstance(records, list):
@@ -666,18 +834,19 @@ def _select_contributions(
             aggregate,
             record_index=index,
         )
-        dataset_id = record.get("dataset_manifest_id")
-        dataset_id_valid = isinstance(dataset_id, str) and bool(dataset_id.strip())
-        if dataset_id_valid:
-            dataset_ids.add(dataset_id)
-        else:
-            namespaced_key_missing = True
+        dataset_id = _validate_record_provenance(
+            record,
+            record_index=index,
+            source_label=source_label,
+            speaker_basis=speaker_basis,
+            require_complete_evidence=False,
+        )
+        dataset_ids.add(dataset_id)
         if not record["eligible"]:
             continue
         speaker_id = record.get("source_speaker_id")
         if (
-            not dataset_id_valid
-            or not isinstance(speaker_id, str)
+            not isinstance(speaker_id, str)
             or not speaker_id.strip()
         ):
             namespaced_key_missing = True
@@ -703,8 +872,8 @@ def _select_contributions(
         reasons.append("deterministic_contribution_evidence_missing")
     if len(dataset_ids) > 1:
         reasons.append("cross_corpus_identity_not_proven")
-    unique_count = len(namespaced_keys) if basis_available else 0
-    if not basis_available or namespaced_key_missing or deterministic_evidence_missing:
+    unique_count = len(namespaced_keys) if speaker_basis is not None else 0
+    if speaker_basis is None or namespaced_key_missing or deterministic_evidence_missing:
         return [], unique_count, None, reasons
     selected_by_speaker: dict[tuple[str, str], dict[str, Any]] = {}
     for record in sorted(
@@ -719,6 +888,13 @@ def _select_contributions(
         key = (record["dataset_manifest_id"], record["source_speaker_id"])
         selected_by_speaker.setdefault(key, record)
     selected = list(selected_by_speaker.values())
+    for record in selected:
+        for metric in COUNT_MAP_METRICS:
+            if len(record["metric_cell_memberships"][metric]) != 1:
+                raise ValueError(
+                    "selected record must have exactly one membership cell for each "
+                    f"count-map metric; count-map membership support is invalid: {metric}"
+                )
     evidence_projection = [
         {
             "dataset_manifest_id": record["dataset_manifest_id"],
@@ -736,7 +912,8 @@ def build_cohort_release(records: Any, request: Any) -> dict[str, Any]:
     basis, reasons = _speaker_basis_status(request)
     selected, unique_count, dedup_digest, selection_reasons = _select_contributions(
         records,
-        basis_available=basis is not None,
+        speaker_basis=basis,
+        source_label=request["source_label"],
         aggregate=request["operational_aggregate"],
     )
     reasons.extend(selection_reasons)
@@ -806,8 +983,6 @@ def validate_cohort_release(payload: Any) -> dict[str, Any]:
     for field in ("input_record_count", "eligible_record_count", "unique_speaker_count"):
         if type(payload[field]) is not int or payload[field] < 0:
             raise ValueError(f"CohortReleaseEvidenceV1 {field} must be a nonnegative integer")
-    if payload["input_record_count"] < payload["eligible_record_count"]:
-        raise ValueError("eligible record count exceeds input record count")
     basis = payload["unique_speaker_basis"]
     if basis is not None:
         _validate_source_basis_pair(payload["source_label"], basis)
@@ -828,6 +1003,21 @@ def validate_cohort_release(payload: Any) -> dict[str, Any]:
         raise ValueError(
             "basis-null evidence must have zero selected and unique speakers "
             "and null dedup evidence"
+        )
+    input_count = payload["input_record_count"]
+    eligible_count = payload["eligible_record_count"]
+    unique_count = payload["unique_speaker_count"]
+    if not 0 <= eligible_count <= unique_count <= input_count:
+        raise ValueError(
+            "record counts must satisfy 0 <= eligible_record_count <= "
+            "unique_speaker_count <= input_record_count"
+        )
+    dedup_digest = payload["dedup_evidence_digest"]
+    if dedup_digest is None and eligible_count != 0:
+        raise ValueError("null dedup evidence requires zero eligible records")
+    if dedup_digest is not None and eligible_count != unique_count:
+        raise ValueError(
+            "non-null dedup evidence requires eligible and unique record counts to match"
         )
     if (
         type(payload["minimum_unique_speakers"]) is not int
@@ -994,19 +1184,18 @@ def fixture_records(
     start = datetime(2026, 7, 1, tzinfo=timezone.utc)
     records: list[dict[str, Any]] = []
     for index in range(record_count):
-        speaker_id = f"fixture-speaker-{index % unique_speaker_count:03d}"
+        speaker_index = index % unique_speaker_count
+        if dataset_manifest_id == CREMA_DATASET_ID:
+            speaker_id = f"{1001 + speaker_index:04d}"
+        elif dataset_manifest_id == AMI_DATASET_ID:
+            speaker_id = f"MIO{16 + speaker_index:03d}"
+        else:
+            speaker_id = f"fixture-speaker-{speaker_index:03d}"
         timestamp = (start + timedelta(minutes=index)).strftime("%Y-%m-%dT%H:%M:%SZ")
-        digest = _sha256({
-            "dataset_manifest_id": dataset_manifest_id,
-            "fixture_index": index,
-            "source_speaker_id": speaker_id,
-            "source_timestamp": timestamp,
-        })
-        records.append({
+        record = {
             "dataset_manifest_id": dataset_manifest_id,
             "source_speaker_id": speaker_id,
             "source_timestamp": timestamp,
-            "canonical_record_digest": digest,
             "eligible": True,
             "metric_cell_memberships": {
                 "eligible_call_count": ["__scalar__"],
@@ -1016,14 +1205,24 @@ def fixture_records(
                 "processing_latency_percentiles": ["p50", "p95"],
                 "evidence_policy_version_counts": ["emotion-state-evidence-v1"],
             },
-        })
+        }
+        record["canonical_record_digest"] = canonical_record_digest(record)
+        records.append(record)
     return records
 
 
 def fixture_cross_corpus_records() -> list[dict[str, Any]]:
     return (
-        fixture_records(5, 5, dataset_manifest_id="synthetic-corpus-a-v1")
-        + fixture_records(5, 5, dataset_manifest_id="synthetic-corpus-b-v1")
+        fixture_records(
+            5,
+            5,
+            dataset_manifest_id="synthetic-fixture-dataset-a-v1",
+        )
+        + fixture_records(
+            5,
+            5,
+            dataset_manifest_id="synthetic-fixture-dataset-b-v1",
+        )
     )
 
 
@@ -1068,6 +1267,219 @@ def fixture_request(**overrides: Any) -> dict[str, Any]:
     }
     request.update(deepcopy(overrides))
     return request
+
+
+def cohort_release_schema_descriptor() -> dict[str, Any]:
+    return {
+        "schema_id": "emotion-state-cohort-release-evidence-v1",
+        "schema_version": 1,
+        "contract_name": "CohortReleaseEvidenceV1",
+        "description": RELEASE_SCOPE,
+        "required_fields": [
+            "release_scope",
+            "source_label",
+            "aggregation_window",
+            "input_record_count",
+            "eligible_record_count",
+            "unique_speaker_count",
+            "unique_speaker_basis",
+            "dependency_keys",
+            "max_contribution_per_speaker",
+            "dedup_evidence_digest",
+            "minimum_unique_speakers",
+            "metric_allowlist_version",
+            "minimum_unique_speakers_per_output_cell",
+            "fixed_window_id",
+            "window_overlaps_previous_release",
+            "previous_release_digest",
+            "release_replaces_digest",
+            "direct_identifiers_present",
+            "voiceprint_used",
+            "speaker_tokens_persisted",
+            "contains_per_speaker_rows",
+            "contains_demographic_slices",
+            "contains_state_or_signal_labels",
+            "release_status",
+            "suppression_reason_codes",
+            "runtime_influence_allowed",
+            "aggregate_metrics",
+            "output_cell_unique_speaker_counts",
+        ],
+        "allowed_source_labels": sorted(ALLOWED_SOURCE_LABELS),
+        "allowed_speaker_bases": sorted(ALLOWED_SPEAKER_BASES),
+        "reserved_disabled_speaker_basis": RESERVED_DISABLED_SPEAKER_BASE,
+        "release_statuses": ["released", "suppressed"],
+        "allowed_suppression_reason_codes": sorted(
+            ALLOWED_SUPPRESSION_REASON_CODES
+        ),
+        "max_contribution_per_speaker": MAX_RELEASE_CONTRIBUTIONS_PER_SPEAKER,
+        "minimum_unique_speakers": MIN_RELEASE_SPEAKERS,
+        "minimum_unique_speakers_per_output_cell": MIN_RELEASE_SPEAKERS,
+        "metric_allowlist_version": METRIC_ALLOWLIST_VERSION_V1,
+        "metric_allowlist": list(METRIC_ALLOWLIST_V1),
+        "false_constants": {
+            field: False
+            for field in BOOLEAN_BOUNDARY_FIELDS
+        },
+        "cross_corpus_identity_evidence_digest": None,
+        "record_provenance": {
+            "canonical_record_projection": CANONICAL_RECORD_PROJECTION,
+            "approved_public_datasets": {
+                CREMA_DATASET_ID: {
+                    "source_label": "public-only",
+                    "unique_speaker_basis": "public_dataset_actor_id",
+                    "source_speaker_id_pattern": CREMA_ACTOR_ID_PATTERN_TEXT,
+                },
+                AMI_DATASET_ID: {
+                    "source_label": "public-only",
+                    "unique_speaker_basis": "public_dataset_participant_id",
+                    "source_speaker_id_pattern": AMI_PARTICIPANT_ID_PATTERN_TEXT,
+                },
+            },
+            "controlled_synthetic_fixture_dataset_ids": sorted(
+                CONTROLLED_SYNTHETIC_FIXTURE_DATASET_IDS
+            ),
+            "synthetic_fixture_source_label": "synthetic-only",
+            "synthetic_fixture_speaker_basis": "synthetic_fixture_speaker_id",
+            "synthetic_fixture_speaker_id_pattern": (
+                SYNTHETIC_FIXTURE_SPEAKER_ID_PATTERN_TEXT
+            ),
+            "structural_validation_authenticates_external_material": False,
+        },
+        "authoritative_history_boundary": {
+            "history_order_semantics": "append_dependency_order",
+            "external_append_only_registry_required": True,
+            "signed_sequence_authentication_implemented": False,
+            "unrelated_root_relative_append_order_authenticated": False,
+        },
+        "notes": (
+            "Only fixed closed windows, append-ordered whole-release replacement "
+            "chains, contribution-capped cohort metrics, and cells supported by at "
+            "least ten proven unique speakers may be serialized. Structural "
+            "validation does not authenticate external dataset material or the "
+            "external append-only release registry."
+        ),
+    }
+
+
+def cohort_release_fixture_descriptor() -> dict[str, Any]:
+    return {
+        "fixture_id": "emotion-state-001-cohort-release-fixtures-v1",
+        "schema_version": 1,
+        "contract_name": "CohortReleaseEvidenceV1",
+        "source_label": "synthetic-only",
+        "description": RELEASE_SCOPE,
+        "release_statuses": ["released", "suppressed"],
+        "minimum_discovery_unique_speakers": MIN_DISCOVERY_SPEAKERS,
+        "minimum_discovery_retained_turns": MIN_DISCOVERY_TURNS,
+        "max_discovery_turns_per_speaker": MAX_DISCOVERY_TURNS_PER_SPEAKER,
+        "minimum_release_unique_speakers": MIN_RELEASE_SPEAKERS,
+        "minimum_unique_speakers_per_output_cell": MIN_RELEASE_SPEAKERS,
+        "max_contribution_per_speaker": MAX_RELEASE_CONTRIBUTIONS_PER_SPEAKER,
+        "scenarios": {
+            "twelve_calls_four_speakers": {
+                "record_count": 12,
+                "unique_speaker_count": 4,
+                "expected_release_status": "suppressed",
+                "expected_reason_code": "minimum_unique_speakers_not_met",
+            },
+            "ten_calls_ten_speakers": {
+                "record_count": 10,
+                "unique_speaker_count": 10,
+                "expected_release_status": "released",
+            },
+            "twenty_turns_five_speakers": {
+                "record_count": 20,
+                "unique_speaker_count": 5,
+                "max_discovery_turns_per_speaker": 2,
+                "discovery_floor_met": True,
+                "release_floor_met": False,
+                "expected_release_status": "suppressed",
+                "expected_reason_code": "minimum_unique_speakers_not_met",
+            },
+            "duplicate_public_actor_ids": {
+                "source_label": "public-only",
+                "dataset_manifest_id": CREMA_DATASET_ID,
+                "record_count": 12,
+                "unique_speaker_count": 10,
+                "unique_speaker_basis": "public_dataset_actor_id",
+                "expected_contribution_count": 10,
+                "expected_release_status": "released",
+            },
+            "cross_corpus_same_bare_id": {
+                "dataset_manifest_ids": [
+                    "synthetic-fixture-dataset-a-v1",
+                    "synthetic-fixture-dataset-b-v1",
+                ],
+                "dataset_count": 2,
+                "bare_id_count_per_dataset": 5,
+                "namespaced_key_count": 10,
+                "cross_corpus_identity_evidence_digest": None,
+                "expected_release_status": "suppressed",
+                "expected_reason_code": "cross_corpus_identity_not_proven",
+            },
+            "missing_speaker_basis": {
+                "unique_speaker_basis": None,
+                "expected_release_status": "suppressed",
+                "expected_reason_code": "speaker_basis_missing",
+            },
+            "call_id_as_speaker": {
+                "rejected_basis_values": ["call_id", "session_id", "turn_id"],
+                "expected_result": "rejected",
+            },
+            "forbidden_identity_basis": {
+                "rejected_basis_values": [
+                    "name",
+                    "phone_number",
+                    "email_address",
+                    "account_id",
+                    "crm_id",
+                    "undocumented_identifier_hash",
+                    "voiceprint",
+                    "speaker_embedding",
+                    "biometric_match",
+                    "provider_identity_prediction",
+                    "model_identity_prediction",
+                    "probabilistic_dedup_as_certain",
+                ],
+                "expected_result": "rejected",
+            },
+            "over_contribution": {
+                "record_count": 12,
+                "unique_speaker_count": 10,
+                "max_contribution_per_speaker": 1,
+                "expected_contribution_count": 10,
+                "expected_release_status": "released",
+                "selection_order": [
+                    "dataset_manifest_id",
+                    "source_speaker_id",
+                    "source_timestamp",
+                    "canonical_record_digest",
+                ],
+            },
+            "sparse_output_cell": {
+                "cell_unique_speaker_count": 9,
+                "minimum_unique_speakers_per_output_cell": 10,
+                "expected_release_status": "released",
+                "expected_serialization": "omitted",
+            },
+            "overlapping_release": {
+                "window_relationship": "overlapping",
+                "expected_result": "rejected",
+            },
+            "valid_replacement": {
+                "window_relationship": "replacement",
+                "replacement_scope": "entire_prior_release",
+                "binds_prior_canonical_digest": True,
+                "preserves_exact_window": True,
+                "preserves_metric_allowlist": True,
+                "expected_release_status": "released",
+            },
+        },
+        "private_data_access_allowed": False,
+        "provider_operations_allowed": False,
+        "runtime_influence_allowed": False,
+    }
 
 
 def cohort_release_contract_self_check() -> str:

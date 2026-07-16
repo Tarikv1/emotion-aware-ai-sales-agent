@@ -194,3 +194,86 @@ None within Task 4 scope. This remains an offline Phase A contract gate and does
 - The external append-only authoritative release registry remains outside Phase A; this code validates supplied history evidence but does not authenticate its origin.
 - Task 5 was not started.
 - Intended commit subject: `Close EMOTION-STATE cohort release review gaps`.
+
+## 2026-07-16 Round 3 Pass-4 Closure
+
+### Preserved Resume State
+
+- Resumed at exact HEAD `03af343f5ea4a2f3947a145627c604313e78b8b0` on `codex/emotion-state-phase-a-open-dataset-gate-design`.
+- The initial dirty state contained only the controller-appended Round 3 section in `.superpowers/sdd/task-4-review-findings.md`. It was preserved unchanged and included with this closure; no reset, stash, revert, or overwrite occurred.
+- All work remained inside the linked `emotion-state-layer-design` worktree.
+
+### Pass-4 RED Evidence
+
+1. Append-ordered authoritative history:
+   - First focused command: `python -m unittest scripts.test_emotion_state_001_open_dataset_gate.CohortReleaseTests.test_authoritative_history_accepts_ordered_replacement_chain_and_later_release -v`.
+   - Exit `1`; `Ran 1 test`; `FAILED (errors=1)` at the second replacement with exact error `ValueError: authoritative release history must use canonical window order`.
+   - Expanded three-test history RED: exit `1`; `FAILED (failures=4, errors=1)`. The validator rejected a valid root-to-replacement-to-replacement chain, while accepting missing predecessors, arbitrary equal digests, and a changed-window successor. Reordered successors, stale forks, and distinct-chain overlap were also retained as negative regressions.
+2. Count-map record cardinality:
+   - Focused command: `python -m unittest scripts.test_emotion_state_001_open_dataset_gate.CohortReleaseTests.test_each_selected_record_has_exactly_one_cell_per_count_map_metric -v`.
+   - Exit `1`; `Ran 1 test`; `FAILED (failures=2)` because the balanced 20-speaker dual-plus-empty construction was accepted for both `audio_quality_bucket_counts` and `evidence_policy_version_counts`.
+3. Record provenance and canonical record evidence:
+   - Initial release/discovery command over the two new provenance methods exited `1` with `FAILED (failures=11)`: private/arbitrary datasets, an email-shaped actor ID, both wrong public dataset-to-basis mappings, an uncontrolled synthetic namespace, wrong CREMA ID syntax in discovery, and forged canonical record digests were accepted.
+   - After the official AMI participant/meeting distinction was confirmed, explicit AMI meeting-ID-as-participant cases were added before production work. The expanded RED exited `1` with `FAILED (failures=13)`.
+4. Standalone and authoritative-history counts:
+   - Focused direct/history command exited `1`; `Ran 2 tests`; `FAILED (failures=7)` because `eligible > unique`, `unique > input`, non-null dedup with unequal eligible/unique counts, and null dedup with selected records were accepted directly and in history entries.
+5. Complete schema/fixture parity:
+   - Focused command exited `1`; `Ran 1 test`; `FAILED (errors=1)` with the expected missing `cohort_release_fixture_descriptor` import before the complete descriptor implementation.
+6. Self-review unhashable provenance regression:
+   - The expanded malformed-value test exited `1` with four errors because list/dict `dataset_manifest_id` values leaked `TypeError: unhashable type` in both release and discovery paths.
+
+### Pass-4 Fixes
+
+- Authoritative history now uses caller-supplied list order as append/dependency order. A root has null replacement digests. A replacement must target the canonical digest of the unique earlier active head, preserve its exact window, fixed-window ID, and metric allowlist, and supersede that head. Dangling/forward/reordered references, stale-head forks, duplicate releases, and overlap across distinct window chains fail closed. Candidate replacements target only the active head named by their digest.
+- Every deterministically selected record now has exactly one membership cell for each count-map metric. Exact aggregate-value-to-membership-support equality and sparse cell omission remain enforced.
+- Release and discovery now share structural record-provenance validation. CREMA-D binds to exact dataset ID `crema-d-v1.0-audio-wav`, actor basis, and four-digit actor IDs. AMI binds to exact dataset ID `ami-manual-annotations-v1.6.2`, participant basis, and the conservative participant-ID grammar `^[MF][IET][EDO][0-9]{3}(?:PM|ID|ME|UID)?$`. `ES`/`IS`/`TS`/`EN` meeting IDs are rejected as participant identities. Synthetic records bind to the explicit controlled fixture dataset set and `fixture-speaker-NNN` IDs.
+- Canonical record digests now bind one frozen domain-separated projection of every record evidence field except the digest itself, including eligibility and all metric-cell memberships. Fixture generation and mutated test setup recompute this digest explicitly.
+- Standalone and history-entry evidence now enforces `0 <= eligible_record_count <= unique_speaker_count <= input_record_count`, non-null dedup implies eligible equals unique, and null dedup implies zero eligible records. Existing selection-failure reason/digest consistency remains active.
+- The contracts validator and unit tests now compare the complete schema and fixture descriptors through type-sensitive canonical JSON, including contract name, source labels, release statuses, thresholds, false constants, provenance/history boundaries, and every named scenario expectation. A boolean-to-integer mutation is explicitly proven unequal.
+- Malformed unhashable dataset IDs now raise deterministic `ValueError` before set membership in both release and discovery paths.
+
+### Official AMI Identifier Boundary
+
+- The official [AMI participant-ID documentation](https://groups.inf.ed.ac.uk/ami/corpus/participantids.shtml) distinguishes participant identifiers and their limited role suffixes.
+- The official [AMI meeting-ID documentation](https://groups.inf.ed.ac.uk/ami/corpus/meetingids.shtml) confirms that identifiers beginning with `ES`, `IS`, `TS`, or `EN` are meeting identifiers, not participant keys.
+- These sources informed structural validation facts only. No external source code, dataset material, annotation data, or source adaptation was used.
+
+### Existing-Assertion Preservation
+
+- No existing assertion was removed, weakened, or rewritten.
+- Test setup changed only where the new provenance contract made the previous synthetic placeholders structurally invalid: `public-fixture-v1` became the exact CREMA-D dataset fixture; the ineligible foreign-corpus case now uses the second controlled synthetic fixture corpus; and membership/eligibility mutations explicitly refresh their canonical record digests.
+- The existing `count-map.*support` assertion remains unchanged; the new cardinality error text was kept compatible with it.
+
+### Final GREEN And Verification Evidence
+
+- `python -m unittest scripts.test_emotion_state_001_open_dataset_gate.CohortReleaseTests -v`
+  - Exit `0`; `Ran 41 tests`; `OK`.
+- `python -m unittest scripts.test_emotion_state_001_open_dataset_gate -v`
+  - Exit `0`; `Ran 60 tests`; `OK`.
+- Pass-2 four-method adversarial slice from the Round 2 report
+  - Exit `0`; `Ran 4 tests`; `OK`.
+- Pass-3/pass-4 ten-method history, cardinality, provenance, count, parity, and malformed-value slice
+  - Exit `0`; `Ran 10 tests`; `OK`.
+- `python scripts\validate_emotion_state_001_phase_a_contracts.py --section contracts`
+  - Exit `0`; `EMOTION-STATE-001 Phase A validation passed: contracts`.
+- `python -m py_compile scripts\emotion_state_cohort_release_contracts.py scripts\test_emotion_state_001_open_dataset_gate.py scripts\validate_emotion_state_001_phase_a_contracts.py`
+  - Exit `0`; no output.
+- `python -m json.tool research\sources\emotion_state\cohort_release_evidence_v1.schema.json`
+  - Exit `0`; valid JSON.
+- `python -m json.tool research\experiments\cases\emotion-state-001-cohort-release-fixtures.json`
+  - Exit `0`; valid JSON.
+- `git diff --exit-code 7cc288a^ -- runtime\contracts\emotion_state_contracts.py runtime\contracts\emotion_pattern_contracts.py`
+  - Exit `0`; no Task 4 runtime-contract diff.
+- `git diff --exit-code 7cc288a^ -- research\sources\emotion_state\split_manifest_v1.schema.json scripts\emotion_state_annotation_contracts.py`
+  - Exit `0`; no frozen v1 split-contract diff.
+- `git diff --check`
+  - Exit `0`; no whitespace errors. Git emitted only the existing LF-to-CRLF working-copy warnings.
+
+### Corrected Trust And Readiness Boundaries
+
+- Phase A validates dependency consistency inside the supplied authoritative history, but it cannot authenticate the relative append order or origin of unrelated root releases without a signed sequence from the external append-only registry. That registry remains outside this implementation.
+- Dataset ID/basis/identifier syntax and canonical record digests are structural checks. They do not authenticate that external material is genuine, that a public identifier assignment is authoritative, or that the caller supplied the complete registry or dataset evidence.
+- This remains a local, offline Phase A research/prototype contract gate only. It does not establish production readiness, anonymity, differential privacy, or proof against re-identification.
+- No ElevenLabs or other provider access, outbound/customer calls, simulations, dataset downloads, private-data inspection, source adaptation, runtime activation, push, or merge occurred.
+- Task 5 was not started.
+- Intended commit subject: `Complete EMOTION-STATE cohort release chain validation`.

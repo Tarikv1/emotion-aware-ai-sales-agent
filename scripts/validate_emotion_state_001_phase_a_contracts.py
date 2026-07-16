@@ -370,10 +370,29 @@ def validate_contracts() -> None:
         RELEASE_SCOPE,
         RESERVED_DISABLED_SPEAKER_BASE,
         cohort_release_contract_self_check,
+        cohort_release_fixture_descriptor,
+        cohort_release_schema_descriptor,
     )
 
     assert_condition(contract_self_check() == "pass", "emotion-state contract self-check failed")
     cohort_schema = read_json(COHORT_RELEASE_SCHEMA)
+    assert_condition(
+        json.dumps(
+            cohort_schema,
+            sort_keys=True,
+            separators=(",", ":"),
+            ensure_ascii=False,
+            allow_nan=False,
+        )
+        == json.dumps(
+            cohort_release_schema_descriptor(),
+            sort_keys=True,
+            separators=(",", ":"),
+            ensure_ascii=False,
+            allow_nan=False,
+        ),
+        cohort_schema,
+    )
     assert_condition(
         cohort_schema["schema_id"] == "emotion-state-cohort-release-evidence-v1",
         cohort_schema,
@@ -433,6 +452,23 @@ def validate_contracts() -> None:
         cohort_schema,
     )
     cohort_fixtures = read_json(COHORT_RELEASE_FIXTURES)
+    assert_condition(
+        json.dumps(
+            cohort_fixtures,
+            sort_keys=True,
+            separators=(",", ":"),
+            ensure_ascii=False,
+            allow_nan=False,
+        )
+        == json.dumps(
+            cohort_release_fixture_descriptor(),
+            sort_keys=True,
+            separators=(",", ":"),
+            ensure_ascii=False,
+            allow_nan=False,
+        ),
+        cohort_fixtures,
+    )
     expected_scenarios = {
         "twelve_calls_four_speakers",
         "ten_calls_ten_speakers",
