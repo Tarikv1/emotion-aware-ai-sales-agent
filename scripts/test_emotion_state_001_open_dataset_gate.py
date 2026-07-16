@@ -5550,6 +5550,176 @@ class VerificationEvidenceLockPhaseTests(unittest.TestCase):
                         capability=reused_capability,
                     )
 
+    def test_first_persistent_creation_is_fail_closed_during_initialization(
+        self,
+    ) -> None:
+        import threading
+
+        import scripts.emotion_state_phase_a_verification_evidence as verification
+
+        baseline_commit = "a" * 40
+        head_commit = "b" * 40
+        with tempfile.TemporaryDirectory(
+            prefix="emotion-state-verification-initializing-lock-",
+        ) as temporary_directory:
+            root = Path(temporary_directory)
+            _policy_bytes, snapshot, ledger = self._phase_fixture(
+                root,
+                baseline_commit,
+                head_commit,
+            )
+            recovery_dir = (
+                root / ".tmp/emotion-state-001-phase-a-publication"
+            )
+            lock_path = recovery_dir / "publication.lock"
+            with mock.patch.object(
+                verification,
+                "_collect_verification_snapshot",
+                return_value=deepcopy(snapshot),
+            ), mock.patch.object(
+                verification,
+                "_execute_guarded_commands",
+                return_value=deepcopy(ledger),
+            ):
+                creator = verification.prepare_verification_evidence(
+                    root,
+                    baseline_commit,
+                    head_commit,
+                    "material-pending",
+                )
+                contender = verification.prepare_verification_evidence(
+                    root,
+                    baseline_commit,
+                    head_commit,
+                    "material-pending",
+                )
+                third = verification.prepare_verification_evidence(
+                    root,
+                    baseline_commit,
+                    head_commit,
+                    "material-pending",
+                )
+
+            creator_at_advisory = threading.Event()
+            contender_progress = threading.Event()
+            creator_finished = threading.Event()
+            contender_acquired = threading.Event()
+            contender_advisory_attempted = threading.Event()
+            observed_before_advisory: list[bytes] = []
+            creator_errors: list[BaseException] = []
+            contender_errors: list[BaseException] = []
+
+            def controlled_advisory_acquire(handle: object) -> None:
+                if threading.current_thread().name == "lock-creator":
+                    observed_before_advisory.append(lock_path.read_bytes())
+                    creator_at_advisory.set()
+                    if not contender_progress.wait(5):
+                        raise OSError("contender orchestration timed out")
+                    raise OSError("synthetic creator advisory failure")
+                contender_advisory_attempted.set()
+                contender_progress.set()
+
+            def run_creator() -> None:
+                try:
+                    with verification.persistent_verification_lock(
+                        creator,
+                        root=root,
+                        recovery_dir=recovery_dir,
+                    ):
+                        raise AssertionError(
+                            "creator acquired after synthetic advisory failure"
+                        )
+                except BaseException as exc:
+                    creator_errors.append(exc)
+                finally:
+                    creator_finished.set()
+
+            def run_contender() -> None:
+                if not creator_at_advisory.wait(5):
+                    contender_errors.append(
+                        AssertionError("creator did not reach advisory phase")
+                    )
+                    contender_progress.set()
+                    return
+                try:
+                    with verification.persistent_verification_lock(
+                        contender,
+                        root=root,
+                        recovery_dir=recovery_dir,
+                    ):
+                        contender_acquired.set()
+                        creator_finished.wait(5)
+                except BaseException as exc:
+                    contender_errors.append(exc)
+                finally:
+                    contender_progress.set()
+
+            with mock.patch.object(
+                verification,
+                "_acquire_persistent_verification_os_lock",
+                side_effect=controlled_advisory_acquire,
+            ):
+                creator_thread = threading.Thread(
+                    target=run_creator,
+                    name="lock-creator",
+                )
+                creator_thread.start()
+                reached_advisory = creator_at_advisory.wait(5)
+                initializing_bytes = (
+                    lock_path.read_bytes() if lock_path.exists() else None
+                )
+                initializing_status = (
+                    lock_path.stat() if lock_path.exists() else None
+                )
+                contender_thread = threading.Thread(
+                    target=run_contender,
+                    name="lock-contender",
+                )
+                contender_thread.start()
+                creator_thread.join(5)
+                contender_thread.join(5)
+
+                self.assertTrue(reached_advisory)
+                self.assertFalse(creator_thread.is_alive())
+                self.assertFalse(contender_thread.is_alive())
+                self.assertEqual(observed_before_advisory, [b"I"])
+                self.assertEqual(initializing_bytes, b"I")
+                self.assertIsNotNone(initializing_status)
+                self.assertFalse(contender_advisory_attempted.is_set())
+                self.assertFalse(contender_acquired.is_set())
+                self.assertEqual(len(creator_errors), 1)
+                self.assertIsInstance(creator_errors[0], ValueError)
+                self.assertRegex(
+                    str(creator_errors[0]),
+                    "persistent verification lock is already held",
+                )
+                self.assertEqual(len(contender_errors), 1)
+                self.assertIsInstance(contender_errors[0], ValueError)
+                self.assertRegex(
+                    str(contender_errors[0]),
+                    "persistent verification lock is already held",
+                )
+                self.assertTrue(lock_path.exists())
+                self.assertEqual(lock_path.read_bytes(), b"I")
+                assert initializing_status is not None
+                final_status = lock_path.stat()
+                self.assertEqual(
+                    (final_status.st_dev, final_status.st_ino),
+                    (initializing_status.st_dev, initializing_status.st_ino),
+                )
+                with self.assertRaisesRegex(
+                    ValueError,
+                    "persistent verification lock is already held",
+                ):
+                    with verification.persistent_verification_lock(
+                        third,
+                        root=root,
+                        recovery_dir=recovery_dir,
+                    ):
+                        self.fail("third lock split the initializing lock")
+
+            lock_path.unlink()
+
     def test_verification_lock_rejects_recovery_and_lock_links(self) -> None:
         import scripts.emotion_state_phase_a_verification_evidence as verification
 
@@ -5767,6 +5937,77 @@ class VerificationEvidenceLockPhaseTests(unittest.TestCase):
                 self.assertFalse(
                     (recovery_dir / "publication.lock").exists()
                 )
+
+    def test_unlink_failure_preserves_the_original_acquisition_error(
+        self,
+    ) -> None:
+        import scripts.emotion_state_phase_a_verification_evidence as verification
+
+        baseline_commit = "a" * 40
+        head_commit = "b" * 40
+        with tempfile.TemporaryDirectory(
+            prefix="emotion-state-verification-unlink-failure-",
+        ) as temporary_directory:
+            root = Path(temporary_directory)
+            _policy_bytes, snapshot, ledger = self._phase_fixture(
+                root,
+                baseline_commit,
+                head_commit,
+            )
+            with mock.patch.object(
+                verification,
+                "_collect_verification_snapshot",
+                return_value=deepcopy(snapshot),
+            ), mock.patch.object(
+                verification,
+                "_execute_guarded_commands",
+                return_value=deepcopy(ledger),
+            ):
+                prepared = verification.prepare_verification_evidence(
+                    root,
+                    baseline_commit,
+                    head_commit,
+                    "material-pending",
+                )
+            recovery_dir = (
+                root / ".tmp/emotion-state-001-phase-a-publication"
+            )
+            lock_path = recovery_dir / "publication.lock"
+            lock_key = os.path.normcase(os.path.abspath(lock_path))
+            real_unlink = type(lock_path).unlink
+
+            def deny_lock_unlink(
+                path: Path,
+                *args: object,
+                **kwargs: object,
+            ) -> None:
+                if os.path.normcase(os.path.abspath(path)) == lock_key:
+                    raise PermissionError("synthetic unlink denial")
+                real_unlink(path, *args, **kwargs)
+
+            with mock.patch.object(
+                verification.os,
+                "fdopen",
+                side_effect=OSError("synthetic fdopen failure"),
+            ), mock.patch.object(
+                type(lock_path),
+                "unlink",
+                autospec=True,
+                side_effect=deny_lock_unlink,
+            ), self.assertRaisesRegex(
+                ValueError,
+                "unable to open verification publication lock",
+            ):
+                with verification.exclusive_verification_lock(
+                    prepared,
+                    root=root,
+                    recovery_dir=recovery_dir,
+                ):
+                    self.fail("fdopen failure acquired a lease")
+
+            self.assertTrue(lock_path.exists())
+            self.assertEqual(lock_path.read_bytes(), b"")
+            lock_path.unlink()
 
     def test_finalize_revalidates_the_active_lock_lease(self) -> None:
         import scripts.emotion_state_phase_a_verification_evidence as verification
@@ -6005,6 +6246,92 @@ class VerificationEvidenceLockPhaseTests(unittest.TestCase):
                                 capability=capability,
                             )
                             replaced = True
+                finally:
+                    replaced = False
+
+    def test_lock_context_preserves_body_error_when_exit_validation_fails(
+        self,
+    ) -> None:
+        import scripts.emotion_state_phase_a_verification_evidence as verification
+
+        baseline_commit = "a" * 40
+        head_commit = "b" * 40
+        with tempfile.TemporaryDirectory(
+            prefix="emotion-state-verification-body-error-",
+        ) as temporary_directory:
+            root = Path(temporary_directory)
+            _policy_bytes, snapshot, ledger = self._phase_fixture(
+                root,
+                baseline_commit,
+                head_commit,
+            )
+            root_key = os.path.normcase(os.path.abspath(root))
+            real_stat = verification.os.stat
+            replaced = False
+
+            def replacement_stat(
+                path: object,
+                *args: object,
+                **kwargs: object,
+            ) -> os.stat_result:
+                status = real_stat(path, *args, **kwargs)
+                try:
+                    candidate_key = os.path.normcase(
+                        os.path.abspath(os.fsdecode(path))
+                    )
+                except TypeError:
+                    return status
+                if not replaced or candidate_key != root_key:
+                    return status
+                values = list(status)
+                values[1] = max(1, int(status.st_ino) + 1)
+                return os.stat_result(values)
+
+            with mock.patch.object(
+                verification,
+                "_collect_verification_snapshot",
+                return_value=deepcopy(snapshot),
+            ), mock.patch.object(
+                verification,
+                "_execute_guarded_commands",
+                return_value=deepcopy(ledger),
+            ), mock.patch.object(
+                verification.os,
+                "stat",
+                side_effect=replacement_stat,
+            ):
+                prepared = verification.prepare_verification_evidence(
+                    root,
+                    baseline_commit,
+                    head_commit,
+                    "material-pending",
+                )
+                recovery_dir = (
+                    root / ".tmp/emotion-state-001-phase-a-publication"
+                )
+                try:
+                    with self.assertRaisesRegex(
+                        RuntimeError,
+                        "^synthetic body failure$",
+                    ) as raised:
+                        with verification.exclusive_verification_lock(
+                            prepared,
+                            root=root,
+                            recovery_dir=recovery_dir,
+                        ):
+                            replaced = True
+                            raise RuntimeError("synthetic body failure")
+                    self.assertTrue(
+                        any(
+                            "exit validation failed" in note
+                            and "verification root identity mismatch" in note
+                            for note in getattr(
+                                raised.exception,
+                                "__notes__",
+                                [],
+                            )
+                        )
+                    )
                 finally:
                     replaced = False
 

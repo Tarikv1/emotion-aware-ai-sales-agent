@@ -3201,7 +3201,10 @@ _LOCK_PATH_DIGEST_DOMAIN = (
     b"emotion-state-verification-lock-path-identity-v1"
 )
 _LEGACY_LOCK_SENTINEL_KIND = "legacy-zero"
+_INITIALIZING_LOCK_SENTINEL_KIND = "persistent-initializing"
 _PERSISTENT_LOCK_SENTINEL_KIND = "persistent-nul"
+_INITIALIZING_LOCK_SENTINEL = b"I"
+_PERSISTENT_LOCK_SENTINEL = b"\0"
 _VERIFICATION_STATE_LOCK = threading.RLock()
 _PREPARED_VERIFICATION_STATES: dict[
     int,
@@ -3516,11 +3519,6 @@ def _validated_verification_request(
 
 def _acquire_persistent_verification_os_lock(handle: BinaryIO) -> None:
     if os.name == "nt":
-        handle.seek(0, os.SEEK_END)
-        if handle.tell() == 0:
-            handle.write(b"\0")
-            handle.flush()
-            os.fsync(handle.fileno())
         handle.seek(0)
         msvcrt.locking(handle.fileno(), msvcrt.LK_NBLCK, 1)
     else:
@@ -3636,25 +3634,44 @@ def _validate_verification_lock_handle_path_identity(
         )
 
 
+def _read_verification_lock_contents(
+    handle: BinaryIO,
+    *,
+    invalid_message: str,
+    permission_message: str | None = None,
+) -> bytes:
+    try:
+        handle.seek(0, os.SEEK_END)
+        size = handle.tell()
+        handle.seek(0)
+        content = handle.read(min(size + 1, 2))
+        handle.seek(0)
+    except PermissionError as exc:
+        raise ValueError(
+            permission_message or invalid_message
+        ) from exc
+    except (OSError, ValueError) as exc:
+        raise ValueError(invalid_message) from exc
+    return content
+
+
 def _verification_lock_contents(
     handle: BinaryIO,
     *,
     sentinel_kind: str,
     invalid_message: str,
 ) -> None:
-    expected = (
-        b""
-        if sentinel_kind == _LEGACY_LOCK_SENTINEL_KIND
-        else b"\0"
+    expected = {
+        _LEGACY_LOCK_SENTINEL_KIND: b"",
+        _INITIALIZING_LOCK_SENTINEL_KIND: _INITIALIZING_LOCK_SENTINEL,
+        _PERSISTENT_LOCK_SENTINEL_KIND: _PERSISTENT_LOCK_SENTINEL,
+    }.get(sentinel_kind)
+    if expected is None:
+        raise ValueError(invalid_message)
+    content = _read_verification_lock_contents(
+        handle,
+        invalid_message=invalid_message,
     )
-    try:
-        handle.seek(0, os.SEEK_END)
-        size = handle.tell()
-        handle.seek(0)
-        content = handle.read(size + 1)
-        handle.seek(0)
-    except (OSError, ValueError) as exc:
-        raise ValueError(invalid_message) from exc
     if content != expected:
         raise ValueError(invalid_message)
 
@@ -3678,8 +3695,26 @@ def _safe_unlink_created_verification_lock(
         return
     try:
         lock_path.unlink()
-    except FileNotFoundError:
+    except OSError:
         pass
+
+
+def _write_verification_lock_sentinel(
+    handle: BinaryIO,
+    sentinel: bytes,
+    *,
+    error_message: str,
+) -> None:
+    try:
+        handle.seek(0)
+        if handle.write(sentinel) != 1:
+            raise OSError("verification lock sentinel write was incomplete")
+        handle.truncate(1)
+        handle.flush()
+        os.fsync(handle.fileno())
+        handle.seek(0)
+    except (OSError, ValueError) as exc:
+        raise ValueError(error_message) from exc
 
 
 def _acquire_verification_lock_lease(
@@ -3702,6 +3737,8 @@ def _acquire_verification_lock_lease(
     handle: BinaryIO | None = None
     created = False
     created_identity: tuple[int, int] | None = None
+    persistent_initialization_written = False
+    advisory_lock_attempted = False
     advisory_lock_acquired = False
     sentinel_kind = _PERSISTENT_LOCK_SENTINEL_KIND
     try:
@@ -3719,10 +3756,7 @@ def _acquire_verification_lock_lease(
                     root=root,
                 )
             )
-            if status.st_size == 0:
-                raise ValueError(held_message)
-            if status.st_size != 1:
-                raise ValueError(invalid_message)
+            del status
             try:
                 descriptor = os.open(
                     lock_path,
@@ -3764,7 +3798,7 @@ def _acquire_verification_lock_lease(
 
         if created:
             sentinel_kind = (
-                _PERSISTENT_LOCK_SENTINEL_KIND
+                _INITIALIZING_LOCK_SENTINEL_KIND
                 if persistent_api
                 else _LEGACY_LOCK_SENTINEL_KIND
             )
@@ -3776,26 +3810,68 @@ def _acquire_verification_lock_lease(
         )
 
         if created and persistent_api:
-            try:
-                if handle.write(b"\0") != 1:
-                    raise OSError(
-                        "persistent lock sentinel write was incomplete"
-                    )
-                handle.flush()
-                os.fsync(handle.fileno())
-                handle.seek(0)
-            except OSError as exc:
-                raise ValueError(
+            _write_verification_lock_sentinel(
+                handle,
+                _INITIALIZING_LOCK_SENTINEL,
+                error_message=(
                     "unable to initialize persistent verification publication lock"
-                ) from exc
+                ),
+            )
+            persistent_initialization_written = True
+            _verification_lock_contents(
+                handle,
+                sentinel_kind=_INITIALIZING_LOCK_SENTINEL_KIND,
+                invalid_message=invalid_message,
+            )
+            _validate_verification_lock_handle_path_identity(
+                handle,
+                lock_path,
+                root=root,
+                expected_identity=expected_identity,
+            )
+        elif not created:
+            existing_contents = _read_verification_lock_contents(
+                handle,
+                invalid_message=invalid_message,
+                permission_message=held_message,
+            )
+            if existing_contents in (
+                b"",
+                _INITIALIZING_LOCK_SENTINEL,
+            ):
+                raise ValueError(held_message)
+            if existing_contents != _PERSISTENT_LOCK_SENTINEL:
+                raise ValueError(invalid_message)
+            sentinel_kind = _PERSISTENT_LOCK_SENTINEL_KIND
+            _validate_verification_lock_handle_path_identity(
+                handle,
+                lock_path,
+                root=root,
+                expected_identity=expected_identity,
+            )
 
         advisory_lock_required = persistent_api or not created
         if advisory_lock_required:
+            advisory_lock_attempted = True
             try:
                 _acquire_persistent_verification_os_lock(handle)
             except OSError as exc:
                 raise ValueError(held_message) from exc
             advisory_lock_acquired = True
+
+        if created and persistent_api:
+            if not persistent_initialization_written:
+                raise ValueError(
+                    "unable to initialize persistent verification publication lock"
+                )
+            _write_verification_lock_sentinel(
+                handle,
+                _PERSISTENT_LOCK_SENTINEL,
+                error_message=(
+                    "unable to initialize persistent verification publication lock"
+                ),
+            )
+            sentinel_kind = _PERSISTENT_LOCK_SENTINEL_KIND
 
         _verification_lock_contents(
             handle,
@@ -3836,7 +3912,9 @@ def _acquire_verification_lock_lease(
                 os.close(descriptor)
             except OSError:
                 pass
-        if created:
+        if created and not (
+            persistent_api and advisory_lock_attempted
+        ):
             _safe_unlink_created_verification_lock(
                 lock_path,
                 root=root,
@@ -3942,6 +4020,55 @@ def _release_verification_lock_lease(
         )
 
 
+def _add_verification_lock_secondary_error_note(
+    primary: BaseException,
+    *,
+    phase: str,
+    secondary: BaseException,
+) -> None:
+    try:
+        primary.add_note(
+            f"{phase}: {type(secondary).__name__}: {secondary}"
+        )
+    except (AttributeError, TypeError):
+        pass
+
+
+def _verification_lock_context_exit_errors(
+    prepared: PreparedVerificationEvidence,
+    *,
+    root: Path,
+    capability: VerificationLockCapability,
+    lease: _VerificationLockLease,
+) -> tuple[BaseException | None, BaseException | None]:
+    validation_error: BaseException | None = None
+    cleanup_error: BaseException | None = None
+    try:
+        validate_active_verification_lock(
+            prepared,
+            root=root,
+            capability=capability,
+        )
+    except BaseException as exc:
+        validation_error = exc
+    try:
+        _expire_verification_lock_capability(capability)
+    except BaseException as exc:
+        cleanup_error = exc
+    try:
+        _release_verification_lock_lease(lease, root=root)
+    except BaseException as exc:
+        if cleanup_error is None:
+            cleanup_error = exc
+        else:
+            _add_verification_lock_secondary_error_note(
+                cleanup_error,
+                phase="additional verification lock cleanup failed",
+                secondary=exc,
+            )
+    return validation_error, cleanup_error
+
+
 @contextmanager
 def _verification_lock_context(
     prepared: PreparedVerificationEvidence,
@@ -3978,26 +4105,48 @@ def _verification_lock_context(
     except BaseException:
         _release_verification_lock_lease(lease, root=root_path)
         raise
-    validation_error: BaseException | None = None
     try:
         yield capability
-    finally:
-        try:
-            validate_active_verification_lock(
+    except BaseException as body_error:
+        validation_error, cleanup_error = (
+            _verification_lock_context_exit_errors(
                 prepared,
                 root=root_path,
                 capability=capability,
+                lease=lease,
             )
-        except BaseException as exc:
-            validation_error = exc
-        finally:
-            _expire_verification_lock_capability(capability)
-            _release_verification_lock_lease(
-                lease,
-                root=root_path,
-            )
+        )
         if validation_error is not None:
-            raise validation_error
+            _add_verification_lock_secondary_error_note(
+                body_error,
+                phase="verification lock exit validation failed",
+                secondary=validation_error,
+            )
+        if cleanup_error is not None:
+            _add_verification_lock_secondary_error_note(
+                body_error,
+                phase="verification lock cleanup failed",
+                secondary=cleanup_error,
+            )
+        raise
+    validation_error, cleanup_error = (
+        _verification_lock_context_exit_errors(
+            prepared,
+            root=root_path,
+            capability=capability,
+            lease=lease,
+        )
+    )
+    if validation_error is not None:
+        if cleanup_error is not None:
+            _add_verification_lock_secondary_error_note(
+                validation_error,
+                phase="verification lock cleanup failed",
+                secondary=cleanup_error,
+            )
+        raise validation_error
+    if cleanup_error is not None:
+        raise cleanup_error
 
 
 @contextmanager
