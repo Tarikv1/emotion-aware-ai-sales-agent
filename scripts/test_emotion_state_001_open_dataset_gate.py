@@ -4602,6 +4602,348 @@ class CohortReleaseTests(unittest.TestCase):
         )
 
 
+class VerificationEvidenceLockPhaseTests(unittest.TestCase):
+    POLICY_PATH = (
+        ROOT
+        / "research/sources/emotion_state/phase_a_verification_guard_policy.json"
+    )
+
+    def _phase_fixture(
+        self,
+        root: Path,
+        baseline_commit: str,
+        head_commit: str,
+    ) -> tuple[bytes, dict[str, object], list[dict[str, object]]]:
+        policy_path = (
+            root
+            / "research/sources/emotion_state/"
+            "phase_a_verification_guard_policy.json"
+        )
+        policy_path.parent.mkdir(parents=True)
+        policy_bytes = self.POLICY_PATH.read_bytes()
+        policy_path.write_bytes(policy_bytes)
+        policy = json.loads(policy_bytes.decode("utf-8"))
+        ledger: list[dict[str, object]] = []
+        for command in policy["allowed_commands"]:
+            if command["command_id"] == "phase-a-materials-validator":
+                continue
+            ledger.append({
+                "sequence_number": len(ledger) + 1,
+                "command_id": command["command_id"],
+                "argv": [
+                    argument.format(
+                        mode="material-pending",
+                        baseline_commit=baseline_commit,
+                        head_commit=head_commit,
+                    )
+                    for argument in command["argv_template"]
+                ],
+                "working_directory": ".",
+                "exit_status": 0,
+            })
+        closure_inventory = [{
+            "path": "scripts/fixture.py",
+            "git_mode": "100644",
+            "sha256": "A" * 64,
+        }]
+        closure_edges: list[dict[str, str]] = []
+        closure_digest = hashlib.sha256(
+            (
+                json.dumps(
+                    {
+                        "edges": closure_edges,
+                        "inventory": closure_inventory,
+                    },
+                    sort_keys=True,
+                    separators=(",", ":"),
+                    ensure_ascii=False,
+                    allow_nan=False,
+                )
+                + "\n"
+            ).encode("utf-8")
+        ).hexdigest().upper()
+        snapshot: dict[str, object] = {
+            "committed_change_inventory": [{
+                "path": "scripts/fixture.py",
+                "git_mode": "100644",
+                "sha256": "A" * 64,
+            }],
+            "uncommitted_change_inventory": [{
+                "path": "research/fixture.json",
+                "git_state": "untracked",
+                "git_mode": "100644",
+                "sha256": "B" * 64,
+            }],
+            "executable_dependency_closure": {
+                "inventory": closure_inventory,
+                "edges": closure_edges,
+                "digest": closure_digest,
+            },
+            "dataset_manifest_digests": {},
+            "dataset_hash_inventory_digests": {},
+        }
+        return policy_bytes, snapshot, ledger
+
+    def test_wrapper_and_caller_locked_phases_are_canonical_byte_identical(
+        self,
+    ) -> None:
+        import scripts.emotion_state_phase_a_verification_evidence as verification
+
+        baseline_commit = "a" * 40
+        head_commit = "b" * 40
+        with tempfile.TemporaryDirectory(
+            prefix="emotion-state-verification-phase-parity-",
+        ) as temporary_directory:
+            root = Path(temporary_directory)
+            _policy_bytes, snapshot, ledger = self._phase_fixture(
+                root,
+                baseline_commit,
+                head_commit,
+            )
+            with mock.patch.object(
+                verification,
+                "_collect_verification_snapshot",
+                return_value=deepcopy(snapshot),
+            ), mock.patch.object(
+                verification,
+                "_execute_guarded_commands",
+                return_value=deepcopy(ledger),
+            ):
+                wrapped = verification.build_verification_evidence(
+                    root,
+                    baseline_commit,
+                    head_commit,
+                    "material-pending",
+                )
+                prepared = verification.prepare_verification_evidence(
+                    root,
+                    baseline_commit,
+                    head_commit,
+                    "material-pending",
+                )
+                recovery_dir = (
+                    root / ".tmp/emotion-state-001-phase-a-publication"
+                )
+                with verification.publication_lock(
+                    recovery_dir=recovery_dir,
+                ):
+                    explicit = verification.finalize_verification_evidence(
+                        prepared,
+                        root=root,
+                    )
+
+            self.assertEqual(
+                verification.canonical_json_bytes(wrapped),
+                verification.canonical_json_bytes(explicit),
+            )
+            self.assertEqual(set(explicit), {
+                "implementation_baseline_commit",
+                "repository_head_commit",
+                "committed_change_inventory",
+                "uncommitted_change_inventory",
+                "executable_dependency_closure_inventory",
+                "executable_dependency_closure_edges",
+                "dataset_manifest_digests",
+                "dataset_hash_inventory_digests",
+                "executed_command_ledger",
+                "guard_policy_digest",
+                "verification_input_path_inventory_digest",
+                "executable_dependency_closure_digest",
+                "executed_command_ledger_digest",
+                "verification_input_tree_digest",
+                "verification_run_id",
+                "guarded_command_results",
+                "repository_gate_statuses",
+                "provider_environment_scrubbed",
+                "private_path_guard_enabled",
+                "network_guard_enabled",
+            })
+            for field in (
+                "guard_policy_digest",
+                "verification_input_path_inventory_digest",
+                "executable_dependency_closure_digest",
+                "executed_command_ledger_digest",
+                "verification_input_tree_digest",
+                "verification_run_id",
+            ):
+                self.assertEqual(explicit[field], wrapped[field])
+
+    def test_prepared_state_is_in_memory_relative_and_noncanonical(self) -> None:
+        from dataclasses import fields
+
+        import scripts.emotion_state_phase_a_verification_evidence as verification
+
+        baseline_commit = "a" * 40
+        head_commit = "b" * 40
+        with tempfile.TemporaryDirectory(
+            prefix="emotion-state-verification-prepared-state-",
+        ) as temporary_directory:
+            root = Path(temporary_directory)
+            _policy_bytes, snapshot, ledger = self._phase_fixture(
+                root,
+                baseline_commit,
+                head_commit,
+            )
+            with mock.patch.object(
+                verification,
+                "_collect_verification_snapshot",
+                return_value=deepcopy(snapshot),
+            ), mock.patch.object(
+                verification,
+                "_execute_guarded_commands",
+                return_value=deepcopy(ledger),
+            ):
+                prepared = verification.prepare_verification_evidence(
+                    root,
+                    baseline_commit,
+                    head_commit,
+                    "material-pending",
+                )
+
+            self.assertEqual(
+                tuple(field.name for field in fields(prepared)),
+                (
+                    "baseline_commit",
+                    "head_commit",
+                    "mode",
+                    "initial_policy_bytes",
+                    "initial_snapshot_bytes",
+                    "executed_command_ledger_bytes",
+                ),
+            )
+            prepared_text = "\n".join(
+                value.decode("utf-8") if isinstance(value, bytes) else value
+                for value in (
+                    prepared.baseline_commit,
+                    prepared.head_commit,
+                    prepared.mode,
+                    prepared.initial_policy_bytes,
+                    prepared.initial_snapshot_bytes,
+                    prepared.executed_command_ledger_bytes,
+                )
+            )
+            self.assertNotIn(str(root), prepared_text)
+            self.assertNotIn("fixture-secret-value", prepared_text)
+            self.assertNotIn("timestamp", prepared_text)
+            self.assertFalse(isinstance(prepared, dict))
+
+    def test_caller_locked_finalize_rejects_policy_and_snapshot_races(
+        self,
+    ) -> None:
+        import scripts.emotion_state_phase_a_verification_evidence as verification
+
+        baseline_commit = "a" * 40
+        head_commit = "b" * 40
+        for mutation in ("policy", "snapshot"):
+            with self.subTest(mutation=mutation), tempfile.TemporaryDirectory(
+                prefix=f"emotion-state-verification-{mutation}-race-",
+            ) as temporary_directory:
+                root = Path(temporary_directory)
+                policy_bytes, snapshot, ledger = self._phase_fixture(
+                    root,
+                    baseline_commit,
+                    head_commit,
+                )
+                current_snapshot = deepcopy(snapshot)
+
+                def collect_snapshot(**_: object) -> dict[str, object]:
+                    return deepcopy(current_snapshot)
+
+                with mock.patch.object(
+                    verification,
+                    "_collect_verification_snapshot",
+                    side_effect=collect_snapshot,
+                ), mock.patch.object(
+                    verification,
+                    "_execute_guarded_commands",
+                    return_value=deepcopy(ledger),
+                ):
+                    prepared = verification.prepare_verification_evidence(
+                        root,
+                        baseline_commit,
+                        head_commit,
+                        "material-pending",
+                    )
+                    if mutation == "policy":
+                        (
+                            root
+                            / "research/sources/emotion_state/"
+                            "phase_a_verification_guard_policy.json"
+                        ).write_bytes(policy_bytes + b"\n")
+                    else:
+                        current_snapshot[
+                            "uncommitted_change_inventory"
+                        ][0]["sha256"] = "C" * 64
+                    recovery_dir = (
+                        root / ".tmp/emotion-state-001-phase-a-publication"
+                    )
+                    with verification.publication_lock(
+                        recovery_dir=recovery_dir,
+                    ):
+                        with self.assertRaisesRegex(
+                            ValueError,
+                            "^verification inputs changed during locked re-read$",
+                        ):
+                            verification.finalize_verification_evidence(
+                                prepared,
+                                root=root,
+                            )
+
+    def test_wrapper_signature_and_exclusive_lock_behavior_are_preserved(
+        self,
+    ) -> None:
+        import inspect
+
+        import scripts.emotion_state_phase_a_verification_evidence as verification
+
+        self.assertEqual(
+            str(inspect.signature(verification.build_verification_evidence)),
+            (
+                "(root: 'Path', baseline_commit: 'str', "
+                "head_commit: 'str', mode: 'str') -> 'dict[str, object]'"
+            ),
+        )
+        baseline_commit = "a" * 40
+        head_commit = "b" * 40
+        with tempfile.TemporaryDirectory(
+            prefix="emotion-state-verification-wrapper-lock-",
+        ) as temporary_directory:
+            root = Path(temporary_directory)
+            _policy_bytes, snapshot, ledger = self._phase_fixture(
+                root,
+                baseline_commit,
+                head_commit,
+            )
+            recovery_dir = (
+                root / ".tmp/emotion-state-001-phase-a-publication"
+            )
+            lock_path = recovery_dir / "publication.lock"
+            lock_observations: list[bool] = []
+
+            def collect_snapshot(**_: object) -> dict[str, object]:
+                lock_observations.append(lock_path.exists())
+                return deepcopy(snapshot)
+
+            with mock.patch.object(
+                verification,
+                "_collect_verification_snapshot",
+                side_effect=collect_snapshot,
+            ), mock.patch.object(
+                verification,
+                "_execute_guarded_commands",
+                return_value=deepcopy(ledger),
+            ):
+                verification.build_verification_evidence(
+                    root,
+                    baseline_commit,
+                    head_commit,
+                    "material-pending",
+                )
+
+            self.assertEqual(lock_observations, [False, True])
+            self.assertFalse(lock_path.exists())
+
+
 class VerificationEvidenceTests(unittest.TestCase):
     POLICY_PATH = (
         ROOT

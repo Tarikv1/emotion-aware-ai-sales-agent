@@ -14,6 +14,7 @@ import subprocess
 import sys
 from collections.abc import Callable, Iterator, Mapping, Sequence
 from contextlib import contextmanager
+from dataclasses import dataclass
 from pathlib import Path, PurePosixPath, PureWindowsPath
 from typing import Any
 
@@ -3103,14 +3104,24 @@ def _verification_snapshot_components(
     )
 
 
-def build_verification_evidence(
+@dataclass(frozen=True, slots=True, repr=False)
+class PreparedVerificationEvidence:
+    """In-memory inputs awaiting a caller-controlled locked re-read."""
+
+    baseline_commit: str
+    head_commit: str
+    mode: str
+    initial_policy_bytes: bytes
+    initial_snapshot_bytes: bytes
+    executed_command_ledger_bytes: bytes
+
+
+def _validated_verification_request(
     root: Path,
     baseline_commit: str,
     head_commit: str,
     mode: str,
-) -> dict[str, object]:
-    """Build deterministic evidence only after an unchanged locked re-read."""
-
+) -> tuple[Path, str, str]:
     root_path = Path(root).resolve(strict=True)
     if not root_path.is_dir():
         raise ValueError("verification evidence root must be a directory")
@@ -3120,6 +3131,23 @@ def build_verification_evidence(
     )
     head = _validate_evidence_commit(head_commit, label="head_commit")
     _expected_mode_commands(mode)
+    return root_path, baseline, head
+
+
+def prepare_verification_evidence(
+    root: Path,
+    baseline_commit: str,
+    head_commit: str,
+    mode: str,
+) -> PreparedVerificationEvidence:
+    """Capture validated initial inputs and the exact guarded-command ledger."""
+
+    root_path, baseline, head = _validated_verification_request(
+        root,
+        baseline_commit,
+        head_commit,
+        mode,
+    )
 
     initial_policy_bytes = _read_validated_guard_policy_bytes(root_path)
     initial_snapshot = _collect_verification_snapshot(
@@ -3134,88 +3162,154 @@ def build_verification_evidence(
         head_commit=head,
         mode=mode,
     )
+    return PreparedVerificationEvidence(
+        baseline_commit=baseline,
+        head_commit=head,
+        mode=mode,
+        initial_policy_bytes=initial_policy_bytes,
+        initial_snapshot_bytes=canonical_json_bytes(initial_snapshot),
+        executed_command_ledger_bytes=canonical_json_bytes(
+            executed_command_ledger
+        ),
+    )
 
+
+def finalize_verification_evidence(
+    prepared: PreparedVerificationEvidence,
+    *,
+    root: Path,
+) -> dict[str, object]:
+    """Finalize canonical evidence while the caller holds its publication lock."""
+
+    if not isinstance(prepared, PreparedVerificationEvidence):
+        raise ValueError("prepared verification evidence is invalid")
+    root_path, baseline, head = _validated_verification_request(
+        root,
+        prepared.baseline_commit,
+        prepared.head_commit,
+        prepared.mode,
+    )
+    if (
+        not isinstance(prepared.initial_policy_bytes, bytes)
+        or not isinstance(prepared.initial_snapshot_bytes, bytes)
+        or not isinstance(prepared.executed_command_ledger_bytes, bytes)
+    ):
+        raise ValueError("prepared verification evidence is invalid")
+    initial_policy = _load_json_bytes(
+        prepared.initial_policy_bytes,
+        source="prepared guard policy",
+    )
+    _assert_exact_policy_value(initial_policy, EXPECTED_GUARD_POLICY, location="$")
+    initial_snapshot = _load_json_bytes(
+        prepared.initial_snapshot_bytes,
+        source="prepared verification snapshot",
+    )
+    executed_command_ledger = _load_json_bytes(
+        prepared.executed_command_ledger_bytes,
+        source="prepared guarded-command ledger",
+    )
+    if not isinstance(initial_snapshot, Mapping):
+        raise ValueError("prepared verification snapshot must be a mapping")
+    if not isinstance(executed_command_ledger, list):
+        raise ValueError("prepared guarded-command ledger must be a list")
+
+    locked_policy_bytes = _read_validated_guard_policy_bytes(root_path)
+    locked_snapshot = _collect_verification_snapshot(
+        root=root_path,
+        baseline_commit=baseline,
+        head_commit=head,
+        mode=prepared.mode,
+    )
+    if (
+        prepared.initial_policy_bytes != locked_policy_bytes
+        or prepared.initial_snapshot_bytes
+        != canonical_json_bytes(locked_snapshot)
+    ):
+        raise ValueError(
+            "verification inputs changed during locked re-read"
+        )
+
+    (
+        committed_inventory,
+        uncommitted_inventory,
+        closure_inventory,
+        closure_edges,
+        manifest_digests,
+        hash_inventory_digests,
+    ) = _verification_snapshot_components(locked_snapshot)
+    ledger = [dict(entry) for entry in executed_command_ledger]
+    repository_gate_statuses = derive_repository_gate_statuses(
+        ledger,
+        prepared.mode,
+    )
+    guarded_command_results = {
+        entry["command_id"]: entry["exit_status"]
+        for entry in ledger
+    }
+    input_inventory_digest = canonical_json_sha256({
+        "committed_change_inventory": committed_inventory,
+        "uncommitted_change_inventory": uncommitted_inventory,
+    })
+    closure_digest = canonical_json_sha256({
+        "edges": closure_edges,
+        "inventory": closure_inventory,
+    })
+    ledger_digest = canonical_json_sha256(ledger)
+    guard_policy_digest = sha256_bytes(locked_policy_bytes)
+    tree_payload = {
+        "implementation_baseline_commit": baseline,
+        "repository_head_commit": head,
+        "committed_change_inventory": committed_inventory,
+        "uncommitted_change_inventory": uncommitted_inventory,
+        "executable_dependency_closure_inventory": closure_inventory,
+        "executable_dependency_closure_edges": closure_edges,
+        "dataset_manifest_digests": dict(manifest_digests),
+        "dataset_hash_inventory_digests": dict(hash_inventory_digests),
+        "executed_command_ledger": ledger,
+        "guard_policy_digest": guard_policy_digest,
+    }
+    tree_digest = canonical_json_sha256(tree_payload)
+    verification_run_id = sha256_bytes(
+        (
+            "emotion-state-phase-a-validator-v1:"
+            + tree_digest
+        ).encode("utf-8")
+    )
+    return {
+        **tree_payload,
+        "verification_input_path_inventory_digest": input_inventory_digest,
+        "executable_dependency_closure_digest": closure_digest,
+        "executed_command_ledger_digest": ledger_digest,
+        "verification_input_tree_digest": tree_digest,
+        "verification_run_id": verification_run_id,
+        "guarded_command_results": guarded_command_results,
+        "repository_gate_statuses": repository_gate_statuses,
+        "provider_environment_scrubbed": True,
+        "private_path_guard_enabled": True,
+        "network_guard_enabled": True,
+    }
+
+
+def build_verification_evidence(
+    root: Path,
+    baseline_commit: str,
+    head_commit: str,
+    mode: str,
+) -> dict[str, object]:
+    """Build deterministic evidence only after an unchanged locked re-read."""
+
+    root_path = Path(root).resolve(strict=True)
+    prepared = prepare_verification_evidence(
+        root_path,
+        baseline_commit,
+        head_commit,
+        mode,
+    )
     recovery_dir = root_path.joinpath(
         *PurePosixPath(PUBLICATION_RECOVERY_RELATIVE_PATH).parts
     )
     with publication_lock(recovery_dir=recovery_dir):
-        locked_policy_bytes = _read_validated_guard_policy_bytes(root_path)
-        locked_snapshot = _collect_verification_snapshot(
-            root=root_path,
-            baseline_commit=baseline,
-            head_commit=head,
-            mode=mode,
-        )
-        if (
-            initial_policy_bytes != locked_policy_bytes
-            or canonical_json_bytes(initial_snapshot)
-            != canonical_json_bytes(locked_snapshot)
-        ):
-            raise ValueError(
-                "verification inputs changed during locked re-read"
-            )
-
-        (
-            committed_inventory,
-            uncommitted_inventory,
-            closure_inventory,
-            closure_edges,
-            manifest_digests,
-            hash_inventory_digests,
-        ) = _verification_snapshot_components(locked_snapshot)
-        ledger = [dict(entry) for entry in executed_command_ledger]
-        repository_gate_statuses = derive_repository_gate_statuses(
-            ledger,
-            mode,
-        )
-        guarded_command_results = {
-            entry["command_id"]: entry["exit_status"]
-            for entry in ledger
-        }
-        input_inventory_digest = canonical_json_sha256({
-            "committed_change_inventory": committed_inventory,
-            "uncommitted_change_inventory": uncommitted_inventory,
-        })
-        closure_digest = canonical_json_sha256({
-            "edges": closure_edges,
-            "inventory": closure_inventory,
-        })
-        ledger_digest = canonical_json_sha256(ledger)
-        guard_policy_digest = sha256_bytes(locked_policy_bytes)
-        tree_payload = {
-            "implementation_baseline_commit": baseline,
-            "repository_head_commit": head,
-            "committed_change_inventory": committed_inventory,
-            "uncommitted_change_inventory": uncommitted_inventory,
-            "executable_dependency_closure_inventory": closure_inventory,
-            "executable_dependency_closure_edges": closure_edges,
-            "dataset_manifest_digests": dict(manifest_digests),
-            "dataset_hash_inventory_digests": dict(hash_inventory_digests),
-            "executed_command_ledger": ledger,
-            "guard_policy_digest": guard_policy_digest,
-        }
-        tree_digest = canonical_json_sha256(tree_payload)
-        verification_run_id = sha256_bytes(
-            (
-                "emotion-state-phase-a-validator-v1:"
-                + tree_digest
-            ).encode("utf-8")
-        )
-        return {
-            **tree_payload,
-            "verification_input_path_inventory_digest": (
-                input_inventory_digest
-            ),
-            "executable_dependency_closure_digest": closure_digest,
-            "executed_command_ledger_digest": ledger_digest,
-            "verification_input_tree_digest": tree_digest,
-            "verification_run_id": verification_run_id,
-            "guarded_command_results": guarded_command_results,
-            "repository_gate_statuses": repository_gate_statuses,
-            "provider_environment_scrubbed": True,
-            "private_path_guard_enabled": True,
-            "network_guard_enabled": True,
-        }
+        return finalize_verification_evidence(prepared, root=root_path)
 
 
 def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
