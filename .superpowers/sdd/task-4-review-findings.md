@@ -54,3 +54,24 @@ Previously observed green additions in the same dirty patch cover history/digest
 ## Hard boundaries
 
 This task is offline contract/test work only. Do not access ElevenLabs or any provider, place outbound/customer calls, run simulations, download or inspect private data, adapt source code from the friend's repository, activate runtime behavior, push, merge, or claim production readiness.
+
+## Round 2 independent whole-range review at `a40a46e`
+
+Verdict: not ready for Task 5.
+
+### Critical
+
+1. Count-map values are not reconciled with membership-derived support. A validated aggregate with `{"unavailable": 5, "usable": 5}` and ten selected records claiming only `unavailable` is released as `{"unavailable": 5}` with claimed support `10`. The dual-membership variant releases both five-count cells with claimed support `10`. This defeats the ten-speaker per-cell floor. For count-map metrics, require each cell's aggregate count to equal its membership-derived unique-speaker support after the one-record-per-speaker cap, and reject zero-count/nonzero-membership or any other contradiction.
+
+### Important
+
+1. `evaluate_discovery_gate` pools namespaced speakers across dataset IDs. Phase A's unconditional cross-corpus grouping prohibition must apply before discovery eligibility; mixed-dataset input must be rejected or return ineligible.
+2. `validate_cohort_release` omits derivable cross-field invariants. It accepts `source_label="public-only"` with `unique_speaker_basis="synthetic_fixture_speaker_id"`, and accepts impossible suppressed evidence with a null basis but nonzero speakers and a non-null dedup digest. Because authoritative history is validated through this function, impossible entries can contaminate replacement chains. Share source/basis validation and require basis-null evidence to have zero selected/unique speakers and a null dedup digest.
+
+### Required regression groups
+
+- Count-map five/five mismatch and dual-membership inflation must fail before the production fix.
+- Mixed-corpus discovery input must not be eligible.
+- Direct standalone validation and authoritative-history entry tests must reject the source/basis and basis-null contradictions.
+
+The controller independently reproduced all three issue groups against committed HEAD before accepting the review. Preserve every existing assertion and boundary.

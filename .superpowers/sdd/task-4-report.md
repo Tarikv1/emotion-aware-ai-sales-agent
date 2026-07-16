@@ -135,3 +135,62 @@ None within Task 4 scope. This remains an offline Phase A contract gate and does
 - This does not establish production readiness, anonymity, differential privacy, or proof against re-identification.
 - The complete authoritative history and its digest still depend on an external append-only release registry. Phase A validates supplied evidence but does not implement or authenticate that registry.
 - Task 5 was not started.
+
+## 2026-07-16 Round 2 Cohort Release Review Closure
+
+### Preserved Review State
+
+- Resumed at exact HEAD `a40a46ece7cf0f6c7c01a2e3d60c9bf6ee3c9b8` on `codex/emotion-state-phase-a-open-dataset-gate-design`.
+- Preserved the controller-appended Round 2 findings in `.superpowers/sdd/task-4-review-findings.md`; no finding or existing test assertion was removed or weakened.
+
+### Round 2 RED Evidence
+
+1. Count-map aggregate/support contradiction:
+   - Focused command: `python -m unittest scripts.test_emotion_state_001_open_dataset_gate.CohortReleaseTests.test_count_map_values_must_match_membership_derived_support -v`.
+   - Exit `1`; `Ran 1 test`; `FAILED (failures=4)`.
+   - The five/five single-membership, five/five dual-membership, zero-count/nonzero-membership, and standalone released-count contradiction cases all failed because no `ValueError` was raised.
+2. Mixed-corpus discovery:
+   - Focused command: `python -m unittest scripts.test_emotion_state_001_open_dataset_gate.CohortReleaseTests.test_discovery_gate_rejects_mixed_dataset_input -v`.
+   - Exit `1`; `Ran 1 test`; `FAILED (failures=1)` because the mixed-dataset cohort was accepted instead of failing closed.
+3. Standalone and authoritative-history invariants:
+   - Focused command: `python -m unittest scripts.test_emotion_state_001_open_dataset_gate.CohortReleaseTests.test_standalone_release_rejects_source_basis_and_basis_null_contradictions scripts.test_emotion_state_001_open_dataset_gate.CohortReleaseTests.test_authoritative_history_rejects_invalid_source_basis_and_basis_null_entries -v`.
+   - Exit `1`; `Ran 2 tests`; `FAILED (failures=3)`.
+   - Standalone validation accepted the synthetic-basis/public-source contradiction; authoritative history accepted both that contradiction and a basis-null entry with selected records. The standalone basis-null subcases were behind the first failing assertion in that RED run and were exercised after the shared fix.
+
+### Round 2 Fixes
+
+- Count-map metrics now require each aggregate cell value to equal membership-derived unique-speaker support after deterministic one-record-per-speaker selection. Zero aggregate cells with zero membership remain valid and sparse output omission remains unchanged; zero-count/nonzero-membership and every other mismatch fail closed.
+- `evaluate_discovery_gate(records)` now collects every validated dataset ID before eligibility filtering and raises `ValueError` for mixed-dataset discovery input before threshold evaluation.
+- Request construction, standalone release validation, and authoritative-history entry validation now share the exact public/synthetic source-to-speaker-basis invariant.
+- Basis-null release evidence now requires zero selected records, zero unique speakers, and a null dedup evidence digest.
+
+### Round 2 GREEN And Verification Evidence
+
+- Exact adversarial regression command: `python -m unittest scripts.test_emotion_state_001_open_dataset_gate.CohortReleaseTests.test_count_map_values_must_match_membership_derived_support scripts.test_emotion_state_001_open_dataset_gate.CohortReleaseTests.test_discovery_gate_rejects_mixed_dataset_input scripts.test_emotion_state_001_open_dataset_gate.CohortReleaseTests.test_standalone_release_rejects_source_basis_and_basis_null_contradictions scripts.test_emotion_state_001_open_dataset_gate.CohortReleaseTests.test_authoritative_history_rejects_invalid_source_basis_and_basis_null_entries -v`.
+  - Exit `0`; `Ran 4 tests`; `OK`.
+  - Covered five/five single membership, five/five dual membership, zero-count/nonzero-membership, standalone count/support mismatch, mixed-corpus discovery, standalone source/basis mismatch, all three basis-null fields, and invalid authoritative-history entries.
+- `python -m unittest scripts.test_emotion_state_001_open_dataset_gate.CohortReleaseTests -v`
+  - Exit `0`; `Ran 32 tests`; `OK`.
+- `python -m unittest scripts.test_emotion_state_001_open_dataset_gate -v`
+  - Exit `0`; `Ran 51 tests`; `OK`.
+- `python scripts\validate_emotion_state_001_phase_a_contracts.py --section contracts`
+  - Exit `0`; `EMOTION-STATE-001 Phase A validation passed: contracts`.
+- `python -m py_compile scripts\emotion_state_cohort_release_contracts.py scripts\test_emotion_state_001_open_dataset_gate.py`
+  - Exit `0`; no output.
+- `python -m json.tool research\sources\emotion_state\cohort_release_evidence_v1.schema.json`
+  - Exit `0`; valid JSON.
+- `python -m json.tool research\experiments\cases\emotion-state-001-cohort-release-fixtures.json`
+  - Exit `0`; valid JSON.
+- `git diff --exit-code 7cc288a^ -- runtime\contracts\emotion_state_contracts.py runtime\contracts\emotion_pattern_contracts.py`
+  - Exit `0`; no Task 4 runtime-contract diff.
+- `git diff --exit-code 7cc288a^ -- research\sources\emotion_state\split_manifest_v1.schema.json scripts\emotion_state_annotation_contracts.py`
+  - Exit `0`; no frozen v1 split-contract diff.
+
+### Round 2 Boundary And Remaining Concern
+
+- This remained synthetic-fixture, local, offline contract/test work only.
+- No ElevenLabs or other provider access, outbound/customer calls, simulations, dataset downloads, private-data inspection, source adaptation, runtime activation, push, or merge occurred.
+- This does not establish production readiness, anonymity, differential privacy, or proof against re-identification.
+- The external append-only authoritative release registry remains outside Phase A; this code validates supplied history evidence but does not authenticate its origin.
+- Task 5 was not started.
+- Intended commit subject: `Close EMOTION-STATE cohort release review gaps`.

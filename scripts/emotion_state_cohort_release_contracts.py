@@ -48,6 +48,10 @@ METRIC_ALLOWLIST_V1 = (
     "processing_latency_percentiles",
     "evidence_policy_version_counts",
 )
+COUNT_MAP_METRICS = frozenset({
+    "audio_quality_bucket_counts",
+    "evidence_policy_version_counts",
+})
 METRIC_ALLOWLIST_VERSION_V1 = "emotion-state-operational-aggregate-v1"
 MIN_DISCOVERY_SPEAKERS = 5
 MIN_DISCOVERY_TURNS = 10
@@ -286,6 +290,24 @@ def _derive_cell_support(
                 for cell, speakers in metric_support.items()
             }
     return counts
+
+
+def _validate_count_map_support(
+    metrics: dict[str, Any],
+    counts: dict[str, Any],
+) -> None:
+    for metric in COUNT_MAP_METRICS.intersection(metrics):
+        values = metrics[metric]
+        support = counts.get(metric)
+        if not isinstance(values, dict) or not isinstance(support, dict):
+            raise ValueError(f"count-map metric {metric} support shape mismatch")
+        if any(
+            type(value) is not int or support.get(cell_name, 0) != value
+            for cell_name, value in values.items()
+        ) or set(support) - set(values):
+            raise ValueError(
+                f"count-map metric {metric} values must match membership-derived support"
+            )
 
 
 def _filter_supported_cells(
@@ -532,6 +554,16 @@ def _validate_request(request: Any) -> dict[str, Any]:
     return request
 
 
+def _validate_source_basis_pair(source_label: str, basis: Any) -> str:
+    if not isinstance(basis, str) or basis not in ALLOWED_SPEAKER_BASES:
+        raise ValueError("forbidden or unsupported speaker basis")
+    if basis.startswith("public_dataset_") and source_label != "public-only":
+        raise ValueError("public dataset speaker basis requires public-only metadata")
+    if basis == "synthetic_fixture_speaker_id" and source_label != "synthetic-only":
+        raise ValueError("synthetic fixture speaker basis requires synthetic-only metadata")
+    return basis
+
+
 def _speaker_basis_status(request: dict[str, Any]) -> tuple[str | None, list[str]]:
     basis = request["unique_speaker_basis"]
     if basis is None:
@@ -540,19 +572,14 @@ def _speaker_basis_status(request: dict[str, Any]) -> tuple[str | None, list[str
         raise ValueError("forbidden or unsupported speaker basis")
     if basis == RESERVED_DISABLED_SPEAKER_BASE:
         raise ValueError("reserved speaker basis is disabled pending separate privacy and security review")
-    if basis not in ALLOWED_SPEAKER_BASES:
-        raise ValueError("forbidden or unsupported speaker basis")
-    if basis.startswith("public_dataset_") and request["source_label"] != "public-only":
-        raise ValueError("public dataset speaker basis requires public-only metadata")
-    if basis == "synthetic_fixture_speaker_id" and request["source_label"] != "synthetic-only":
-        raise ValueError("synthetic fixture speaker basis requires synthetic-only metadata")
-    return basis, []
+    return _validate_source_basis_pair(request["source_label"], basis), []
 
 
 def evaluate_discovery_gate(records: Any) -> dict[str, bool | int]:
     if not isinstance(records, list):
         raise ValueError("records must be a list")
     eligible: list[dict[str, Any]] = []
+    dataset_ids: set[str] = set()
     for index, record in enumerate(records):
         if not isinstance(record, dict) or set(record) - RECORD_ALLOWED_FIELDS:
             raise ValueError(f"record {index} contains forbidden or unknown fields")
@@ -561,6 +588,7 @@ def evaluate_discovery_gate(records: Any) -> dict[str, bool | int]:
         dataset_id = record.get("dataset_manifest_id")
         if not isinstance(dataset_id, str) or not dataset_id.strip():
             raise ValueError(f"record {index}.dataset_manifest_id must be a nonempty string")
+        dataset_ids.add(dataset_id)
         if not record["eligible"]:
             continue
         speaker_id = record.get("source_speaker_id")
@@ -577,6 +605,9 @@ def evaluate_discovery_gate(records: Any) -> dict[str, bool | int]:
         if not isinstance(digest, str) or SHA256_PATTERN.fullmatch(digest) is None:
             raise ValueError(f"record {index}.canonical_record_digest must be uppercase SHA-256")
         eligible.append(record)
+
+    if len(dataset_ids) > 1:
+        raise ValueError("cross-corpus discovery input is blocked")
 
     retained_per_speaker: dict[tuple[str, str], int] = {}
     retained_turn_count = 0
@@ -718,6 +749,7 @@ def build_cohort_release(records: Any, request: Any) -> dict[str, Any]:
         raise ValueError("operational aggregate must use the contribution-capped cohort")
     if released:
         derived_counts = _derive_cell_support(selected)
+        _validate_count_map_support(aggregate, derived_counts)
         aggregate_metrics, output_counts = _filter_supported_cells(
             aggregate,
             derived_counts,
@@ -777,10 +809,8 @@ def validate_cohort_release(payload: Any) -> dict[str, Any]:
     if payload["input_record_count"] < payload["eligible_record_count"]:
         raise ValueError("eligible record count exceeds input record count")
     basis = payload["unique_speaker_basis"]
-    if basis is not None and (
-        not isinstance(basis, str) or basis not in ALLOWED_SPEAKER_BASES
-    ):
-        raise ValueError("CohortReleaseEvidenceV1 speaker basis is invalid")
+    if basis is not None:
+        _validate_source_basis_pair(payload["source_label"], basis)
     if payload["dependency_keys"] != list(DEPENDENCY_KEYS):
         raise ValueError("CohortReleaseEvidenceV1 dependency keys mismatch")
     if (
@@ -790,6 +820,15 @@ def validate_cohort_release(payload: Any) -> dict[str, Any]:
     ):
         raise ValueError("CohortReleaseEvidenceV1 contribution cap mismatch")
     _require_sha256_or_none(payload["dedup_evidence_digest"], "dedup_evidence_digest")
+    if basis is None and (
+        payload["eligible_record_count"] != 0
+        or payload["unique_speaker_count"] != 0
+        or payload["dedup_evidence_digest"] is not None
+    ):
+        raise ValueError(
+            "basis-null evidence must have zero selected and unique speakers "
+            "and null dedup evidence"
+        )
     if (
         type(payload["minimum_unique_speakers"]) is not int
         or payload["minimum_unique_speakers"] != MIN_RELEASE_SPEAKERS
@@ -890,6 +929,7 @@ def validate_cohort_release(payload: Any) -> dict[str, Any]:
             for count in support_values
         ):
             raise ValueError(f"released cell for {metric} lacks ten proven speakers")
+    _validate_count_map_support(metrics, counts)
     return payload
 
 

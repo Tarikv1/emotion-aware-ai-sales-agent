@@ -624,6 +624,15 @@ class CohortReleaseTests(unittest.TestCase):
             with self.subTest(name=name):
                 self.assertEqual(evaluate_discovery_gate(records), expected)
 
+    def test_discovery_gate_rejects_mixed_dataset_input(self) -> None:
+        from scripts.emotion_state_cohort_release_contracts import (
+            evaluate_discovery_gate,
+            fixture_cross_corpus_records,
+        )
+
+        with self.assertRaisesRegex(ValueError, "cross-corpus discovery"):
+            evaluate_discovery_gate(fixture_cross_corpus_records())
+
     def test_duplicate_actor_ids_deduplicate_and_contribution_is_deterministic(self) -> None:
         from scripts.emotion_state_cohort_release_contracts import (
             build_cohort_release,
@@ -803,6 +812,67 @@ class CohortReleaseTests(unittest.TestCase):
             ],
             {"unavailable": 10},
         )
+
+    def test_count_map_values_must_match_membership_derived_support(self) -> None:
+        from scripts.emotion_state_cohort_release_contracts import (
+            build_cohort_release,
+            fixture_records,
+            fixture_request,
+            validate_cohort_release,
+        )
+
+        invalid_builds: dict[str, tuple[list[dict[str, object]], dict[str, object]]] = {}
+
+        single_membership_records = fixture_records(10, 10)
+        single_membership_request = fixture_request()
+        single_membership_request["operational_aggregate"][
+            "audio_quality_bucket_counts"
+        ] = {"unavailable": 5, "usable": 5}
+        invalid_builds["five_five_single_membership"] = (
+            single_membership_records,
+            single_membership_request,
+        )
+
+        dual_membership_records = fixture_records(10, 10)
+        for record in dual_membership_records:
+            record["metric_cell_memberships"]["audio_quality_bucket_counts"] = [
+                "unavailable",
+                "usable",
+            ]
+        dual_membership_request = fixture_request()
+        dual_membership_request["operational_aggregate"][
+            "audio_quality_bucket_counts"
+        ] = {"unavailable": 5, "usable": 5}
+        invalid_builds["five_five_dual_membership"] = (
+            dual_membership_records,
+            dual_membership_request,
+        )
+
+        zero_count_records = fixture_records(10, 10)
+        zero_count_request = fixture_request()
+        zero_count_request["operational_aggregate"][
+            "audio_quality_bucket_counts"
+        ] = {"unavailable": 0, "usable": 10}
+        invalid_builds["zero_count_nonzero_membership"] = (
+            zero_count_records,
+            zero_count_request,
+        )
+
+        for name, (records, request) in invalid_builds.items():
+            with self.subTest(name=name):
+                with self.assertRaisesRegex(ValueError, "count-map.*support"):
+                    build_cohort_release(records, request)
+
+        valid_release = build_cohort_release(
+            fixture_records(10, 10),
+            fixture_request(),
+        )
+        contradictory_release = deepcopy(valid_release)
+        contradictory_release["aggregate_metrics"]["audio_quality_bucket_counts"][
+            "unavailable"
+        ] = 9
+        with self.assertRaisesRegex(ValueError, "count-map.*support"):
+            validate_cohort_release(contradictory_release)
 
     def test_request_cannot_assert_output_cell_support(self) -> None:
         from scripts.emotion_state_cohort_release_contracts import (
@@ -1075,6 +1145,90 @@ class CohortReleaseTests(unittest.TestCase):
             with self.subTest(name=name):
                 with self.assertRaises(ValueError):
                     validate_cohort_release(payload)
+
+    def test_standalone_release_rejects_source_basis_and_basis_null_contradictions(
+        self,
+    ) -> None:
+        from scripts.emotion_state_cohort_release_contracts import (
+            build_cohort_release,
+            fixture_records,
+            fixture_request,
+            validate_cohort_release,
+        )
+
+        valid_release = build_cohort_release(
+            fixture_records(10, 10),
+            fixture_request(),
+        )
+        source_basis_contradiction = deepcopy(valid_release)
+        source_basis_contradiction["source_label"] = "public-only"
+        with self.assertRaisesRegex(
+            ValueError,
+            "synthetic fixture speaker basis.*synthetic-only",
+        ):
+            validate_cohort_release(source_basis_contradiction)
+
+        basis_missing = build_cohort_release(
+            fixture_records(10, 10),
+            fixture_request(unique_speaker_basis=None),
+        )
+        basis_null_contradictions = {
+            "selected_records": dict(basis_missing, eligible_record_count=1),
+            "unique_speakers": dict(basis_missing, unique_speaker_count=1),
+            "dedup_digest": dict(basis_missing, dedup_evidence_digest="A" * 64),
+        }
+        for name, payload in basis_null_contradictions.items():
+            with self.subTest(name=name):
+                with self.assertRaisesRegex(ValueError, "basis-null evidence"):
+                    validate_cohort_release(payload)
+
+    def test_authoritative_history_rejects_invalid_source_basis_and_basis_null_entries(
+        self,
+    ) -> None:
+        from scripts.emotion_state_cohort_release_contracts import (
+            build_cohort_release,
+            canonical_release_history_digest,
+            fixture_records,
+            fixture_request,
+        )
+
+        valid_release = build_cohort_release(
+            fixture_records(10, 10),
+            fixture_request(),
+        )
+        source_basis_contradiction = deepcopy(valid_release)
+        source_basis_contradiction["source_label"] = "public-only"
+
+        basis_null_contradiction = build_cohort_release(
+            fixture_records(10, 10),
+            fixture_request(unique_speaker_basis=None),
+        )
+        basis_null_contradiction["eligible_record_count"] = 1
+
+        invalid_history_entries = {
+            "source_basis": (
+                source_basis_contradiction,
+                "synthetic fixture speaker basis.*synthetic-only",
+            ),
+            "basis_null": (basis_null_contradiction, "basis-null evidence"),
+        }
+        for name, (invalid_entry, error_pattern) in invalid_history_entries.items():
+            history = [invalid_entry]
+            request = fixture_request(
+                authoritative_release_history=history,
+                authoritative_release_history_digest=(
+                    canonical_release_history_digest(history)
+                ),
+            )
+            request["operational_aggregate"]["aggregation_window"] = {
+                "window_start_date": "2026-07-15",
+                "window_end_date": "2026-07-28",
+                "timezone": "UTC",
+            }
+            request["fixed_window_id"] = "utc-2026-07-15--2026-07-28"
+            with self.subTest(name=name):
+                with self.assertRaisesRegex(ValueError, error_pattern):
+                    build_cohort_release(fixture_records(10, 10), request)
 
     def test_suppression_reason_codes_are_frozen_and_semantically_consistent(self) -> None:
         from scripts.emotion_state_cohort_release_contracts import (
