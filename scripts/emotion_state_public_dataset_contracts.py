@@ -1254,24 +1254,31 @@ def inspect_ami_archive(
                 normalized_paths.add(collision_key)
                 casefold_paths.add(casefold_key)
 
-            tree_nodes = sorted(
-                (
-                    (normalized_path.rstrip("/"), info.is_dir())
-                    for info, normalized_path in structurally_valid_members
-                ),
-                key=lambda item: (item[0].casefold(), item[0]),
-            )
-            for (path, is_directory), (next_path, _) in zip(
-                tree_nodes,
-                tree_nodes[1:],
-            ):
-                if (
-                    not is_directory
-                    and next_path.casefold().startswith(path.casefold() + "/")
-                ):
-                    raise ValueError(
-                        "AMI archive file/descendant prefix conflict"
+            destination_tree: dict[str, tuple[str, str]] = {}
+            for info, normalized_path in structurally_valid_members:
+                member_path = normalized_path.rstrip("/")
+                parts = member_path.split("/")
+                for index in range(1, len(parts) + 1):
+                    node_path = "/".join(parts[:index])
+                    node_kind = (
+                        "directory"
+                        if index < len(parts) or info.is_dir()
+                        else "file"
                     )
+                    casefold_key = node_path.casefold()
+                    existing = destination_tree.get(casefold_key)
+                    if existing is None:
+                        destination_tree[casefold_key] = (node_path, node_kind)
+                        continue
+                    existing_path, existing_kind = existing
+                    if existing_path != node_path:
+                        raise ValueError(
+                            "AMI archive case-fold file/descendant prefix conflict"
+                        )
+                    if existing_kind != node_kind:
+                        raise ValueError(
+                            "AMI archive file/descendant prefix conflict"
+                        )
 
             for info, normalized_path in structurally_valid_members:
                 classification = classify_ami_member(normalized_path)
@@ -1534,6 +1541,42 @@ def _ami_partition_definition(
     }
 
 
+def _require_complete_ami_partition_definitions(
+    definitions: list[dict[str, Any]],
+) -> None:
+    signatures = [
+        (
+            definition["partition_id"],
+            definition["partition_type"],
+            definition["source_file_path"],
+            tuple(definition["meeting_ids"]),
+        )
+        for definition in definitions
+    ]
+    if len(signatures) != len(set(signatures)):
+        raise ValueError("duplicate AMI partition definition")
+    partition_ids = [
+        definition["partition_id"]
+        for definition in definitions
+    ]
+    if len(partition_ids) != len(set(partition_ids)):
+        raise ValueError("duplicate AMI partition ID")
+    source_paths = [
+        definition["source_file_path"]
+        for definition in definitions
+    ]
+    if len(source_paths) != len(set(source_paths)):
+        raise ValueError("duplicate AMI partition source path")
+    partition_types = {
+        definition["partition_type"]
+        for definition in definitions
+    }
+    if partition_types != {"scenario", "full_corpus"}:
+        raise ValueError(
+            "AMI partition definition types must be exactly scenario and full_corpus"
+        )
+
+
 def validate_ami_material(
     extract_root: Path,
     *,
@@ -1678,6 +1721,7 @@ def validate_ami_material(
             + sorted(missing_classifications)[0]
         )
 
+    _require_complete_ami_partition_definitions(partition_definitions)
     hash_inventory = build_hash_inventory(
         dataset_id=AMI_DATASET_ID,
         project_root=inventory_root,

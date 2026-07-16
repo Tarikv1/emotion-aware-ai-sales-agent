@@ -13,19 +13,24 @@ import tempfile
 import unicodedata
 from collections.abc import Callable, Mapping, Sequence
 from datetime import date
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 from typing import Any
 
 from scripts.emotion_state_public_dataset_contracts import (
     AMI_DATASET_ID,
+    CREMA_AUDIO_PREFIX,
     CREMA_DATASET_ID,
+    CREMA_EXCLUDED_PATHS,
     CREMA_KNOWN_NO_AUDIO_FILE,
     CREMA_PROFILE_IDENTITY,
     CREMA_RAW_SOURCE_LABEL_MAP,
+    CREMA_SELECTED_FIXED_PATHS,
     SELECTED_PUBLIC_DATASETS,
     _pending_manifest,
     canonical_inventory_bytes,
+    classify_ami_member,
     inspect_ami_archive,
+    parse_crema_filename,
     safe_extract_ami_archive,
     validate_ami_material,
     validate_crema_material,
@@ -351,6 +356,141 @@ def _require_quality_string_list(value: Any, field: str) -> list[str]:
     return values
 
 
+def _require_canonical_quality_path(value: Any, field: str) -> str:
+    path = _require_quality_string(value, field)
+    if (
+        path.startswith("/")
+        or re.match(r"^[A-Za-z]:", path) is not None
+        or "\\" in path
+        or ":" in path
+        or any(character.isspace() for character in path)
+    ):
+        raise ValueError(
+            f"quality inventory {field} must be a canonical relative path"
+        )
+    if unicodedata.normalize("NFC", path) != path:
+        raise ValueError(
+            f"quality inventory {field} must be a canonical relative path"
+        )
+    parts = path.split("/")
+    if any(part in {"", ".", ".."} for part in parts):
+        raise ValueError(
+            f"quality inventory {field} must be a canonical relative path"
+        )
+    pure = PurePosixPath(path)
+    if pure.is_absolute() or pure.as_posix() != path:
+        raise ValueError(
+            f"quality inventory {field} must be a canonical relative path"
+        )
+    return path
+
+
+def _require_canonical_quality_path_list(value: Any, field: str) -> list[str]:
+    paths = _require_quality_string_list(value, field)
+    for index, path in enumerate(paths):
+        _require_canonical_quality_path(path, f"{field}[{index}]")
+    return paths
+
+
+def _require_crema_audio_wav_path(value: Any, field: str) -> str:
+    path = _require_canonical_quality_path(value, field)
+    if not path.startswith(CREMA_AUDIO_PREFIX):
+        raise ValueError(f"quality inventory {field} is outside AudioWAV/")
+    filename = path.removeprefix(CREMA_AUDIO_PREFIX)
+    if not filename or "/" in filename or not filename.casefold().endswith(".wav"):
+        raise ValueError(f"quality inventory {field} is not a CREMA WAV path")
+    try:
+        parse_crema_filename(filename)
+    except ValueError as exc:
+        raise ValueError(
+            f"quality inventory {field} is not a CREMA WAV path"
+        ) from exc
+    return path
+
+
+def _require_crema_item_path(
+    value: Any,
+    *,
+    classification: str,
+    field: str,
+) -> str:
+    path = _require_canonical_quality_path(value, field)
+    if classification == "crema_pcm_wav":
+        _require_crema_audio_wav_path(path, field)
+        if path == CREMA_KNOWN_NO_AUDIO_FILE:
+            raise ValueError("quality inventory CREMA known issue path is misclassified")
+    elif classification == "crema_wav":
+        if path != CREMA_KNOWN_NO_AUDIO_FILE:
+            raise ValueError("quality inventory CREMA known issue path is invalid")
+    elif classification == "crema_audio_directory_non_wav":
+        if (
+            not path.startswith(CREMA_AUDIO_PREFIX)
+            or path.removeprefix(CREMA_AUDIO_PREFIX) == ""
+            or path.casefold().endswith(".wav")
+        ):
+            raise ValueError("quality inventory CREMA non-WAV path is invalid")
+    elif classification == "crema_release_metadata":
+        if path not in CREMA_SELECTED_FIXED_PATHS:
+            raise ValueError("quality inventory CREMA fixed metadata path is invalid")
+    elif classification == "crema_demographic_metadata":
+        if path not in CREMA_EXCLUDED_PATHS:
+            raise ValueError("quality inventory CREMA demographic path is invalid")
+    elif classification == "crema_unselected_release_material":
+        if (
+            path in CREMA_SELECTED_FIXED_PATHS
+            or path in CREMA_EXCLUDED_PATHS
+            or path.startswith(CREMA_AUDIO_PREFIX)
+        ):
+            raise ValueError("quality inventory CREMA exclusion path is invalid")
+    else:
+        raise ValueError("quality inventory CREMA classification is invalid")
+    return path
+
+
+def _require_ami_item_path(
+    value: Any,
+    *,
+    classification: str,
+    disposition: str,
+    field: str,
+) -> str:
+    path = _require_canonical_quality_path(value, field)
+    if classification == "downloaded_archive":
+        if not path.casefold().endswith(".zip"):
+            raise ValueError("quality inventory AMI archive path is invalid")
+        return path
+    classified = classify_ami_member(path)
+    if (
+        classified["classification"] != classification
+        or classified["selected"] is not (disposition == "included")
+    ):
+        raise ValueError("quality inventory AMI item path classification mismatch")
+    return path
+
+
+def _require_selected_path_binding(
+    value: Any,
+    *,
+    item_path: str,
+    classification: str,
+    field: str,
+) -> str:
+    selected_path = _require_canonical_quality_path(value, field)
+    if classification == "downloaded_archive":
+        bound = selected_path == item_path
+    else:
+        bound = (
+            selected_path == item_path
+            or selected_path.endswith("/" + item_path)
+        )
+    if not bound:
+        raise ValueError(
+            "quality inventory selected file set item binding mismatch: "
+            f"{field}"
+        )
+    return selected_path
+
+
 def _require_quality_identifier(value: Any, field: str) -> str:
     identifier = _require_quality_string(value, field)
     if re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}", identifier) is None:
@@ -519,7 +659,11 @@ def _validate_crema_quality_item(item: dict[str, Any]) -> None:
             "missing_audio_only_perceived_label",
         }:
             raise ValueError("quality inventory CREMA ambiguity reason is invalid")
-        if source["source_file_path"] != "finishedResponses.csv":
+        source_file_path = _require_canonical_quality_path(
+            source["source_file_path"],
+            "CREMA source_file_path",
+        )
+        if source_file_path != "finishedResponses.csv":
             raise ValueError("quality inventory CREMA source file path is invalid")
         vote_distribution = source["vote_distribution"]
         if not isinstance(vote_distribution, dict):
@@ -649,10 +793,14 @@ def _validate_ami_quality_item(item: dict[str, Any]) -> None:
         _require_quality_identifier(definition["partition_id"], "AMI partition_id")
         if definition["partition_type"] not in {"scenario", "full_corpus"}:
             raise ValueError("quality inventory AMI partition_type is invalid")
-        _require_quality_identifier(
+        source_file_path = _require_canonical_quality_path(
             definition["source_file_path"],
             "AMI partition source_file_path",
         )
+        if source_file_path != item["selected_file_path"]:
+            raise ValueError(
+                "quality inventory AMI partition source path is not selected"
+            )
         _require_quality_identifier_list(
             definition["meeting_ids"],
             "AMI partition meeting_ids",
@@ -677,7 +825,77 @@ def _validate_ami_quality_item(item: dict[str, Any]) -> None:
         raise ValueError("quality inventory AMI exclusion item is invalid")
 
 
-def _validate_quality_source_metadata(payload: dict[str, Any], dataset_id: str) -> None:
+def _require_complete_ami_quality_partition_definitions(
+    value: Any,
+    field: str,
+) -> list[dict[str, Any]]:
+    if not isinstance(value, list):
+        raise ValueError(f"quality inventory {field} must be a list")
+    definitions: list[dict[str, Any]] = []
+    normalized_definitions: list[tuple[str, str]] = []
+    signatures: list[tuple[str, str, str, tuple[str, ...]]] = []
+    for index, definition_value in enumerate(value):
+        definition = _require_exact_dict(
+            definition_value,
+            frozenset({
+                "partition_id",
+                "partition_type",
+                "source_file_path",
+                "meeting_ids",
+            }),
+            f"{field}[{index}]",
+        )
+        partition_id = _require_quality_identifier(
+            definition["partition_id"],
+            f"{field}[{index}].partition_id",
+        )
+        partition_type = definition["partition_type"]
+        if partition_type not in {"scenario", "full_corpus"}:
+            raise ValueError("quality inventory AMI partition type is invalid")
+        source_file_path = _require_canonical_quality_path(
+            definition["source_file_path"],
+            f"{field}[{index}].source_file_path",
+        )
+        meeting_ids = _require_quality_identifier_list(
+            definition["meeting_ids"],
+            f"{field}[{index}].meeting_ids",
+        )
+        definitions.append(definition)
+        normalized_definitions.append((partition_id, source_file_path))
+        signatures.append(
+            (
+                partition_id,
+                partition_type,
+                source_file_path,
+                tuple(meeting_ids),
+            )
+        )
+    if len(signatures) != len(set(signatures)):
+        raise ValueError("quality inventory contains a duplicate AMI partition definition")
+    partition_ids = [signature[0] for signature in signatures]
+    if len(partition_ids) != len(set(partition_ids)):
+        raise ValueError("quality inventory contains a duplicate AMI partition ID")
+    source_paths = [signature[2] for signature in signatures]
+    if len(source_paths) != len(set(source_paths)):
+        raise ValueError("quality inventory contains a duplicate AMI partition source path")
+    partition_types = {signature[1] for signature in signatures}
+    if partition_types != {"scenario", "full_corpus"}:
+        raise ValueError(
+            "quality inventory AMI partition types must be exactly "
+            "scenario and full_corpus"
+        )
+    if normalized_definitions != sorted(normalized_definitions):
+        raise ValueError("quality inventory AMI partition definitions must be sorted")
+    return definitions
+
+
+def _validate_quality_source_metadata(
+    payload: dict[str, Any],
+    dataset_id: str,
+    *,
+    item_paths: set[str],
+    ami_partition_definitions: list[dict[str, Any]],
+) -> None:
     if dataset_id == CREMA_DATASET_ID:
         metadata = _require_exact_dict(
             payload,
@@ -689,10 +907,19 @@ def _validate_quality_source_metadata(payload: dict[str, Any], dataset_id: str) 
             }),
             "CREMA source_metadata",
         )
-        _require_quality_identifier_list(
+        mismatch_paths = _require_canonical_quality_path_list(
             metadata["official_mismatch_wav_counterparts"],
             "CREMA official mismatch counterparts",
         )
+        for index, path in enumerate(mismatch_paths):
+            _require_crema_audio_wav_path(
+                path,
+                f"CREMA official mismatch counterparts[{index}]",
+            )
+        if not set(mismatch_paths).issubset(item_paths):
+            raise ValueError(
+                "quality inventory CREMA mismatch paths are not quality items"
+            )
         if (
             metadata["advertised_utterance_count_used"] is not False
             or metadata["selected_encoding"] != "wav"
@@ -725,51 +952,29 @@ def _validate_quality_source_metadata(payload: dict[str, Any], dataset_id: str) 
         "meeting_series",
         "recording_sites",
         "scenarios",
-        "official_partition_paths",
     ):
         _require_quality_identifier_list(
             metadata[key],
             f"AMI source_metadata.{key}",
         )
-    definitions = metadata["official_partition_definitions"]
-    if not isinstance(definitions, list):
-        raise ValueError(
-            "quality inventory AMI official_partition_definitions must be a list"
-        )
-    normalized_definitions: list[tuple[str, str]] = []
-    definition_paths: list[str] = []
-    for index, definition_value in enumerate(definitions):
-        definition = _require_exact_dict(
-            definition_value,
-            frozenset({
-                "partition_id",
-                "partition_type",
-                "source_file_path",
-                "meeting_ids",
-            }),
-            f"AMI official_partition_definitions[{index}]",
-        )
-        partition_id = _require_quality_identifier(
-            definition["partition_id"],
-            f"AMI official_partition_definitions[{index}].partition_id",
-        )
-        partition_type = definition["partition_type"]
-        if partition_type not in {"scenario", "full_corpus"}:
-            raise ValueError("quality inventory AMI partition type is invalid")
-        source_file_path = _require_quality_identifier(
-            definition["source_file_path"],
-            f"AMI official_partition_definitions[{index}].source_file_path",
-        )
-        _require_quality_identifier_list(
-            definition["meeting_ids"],
-            f"AMI official_partition_definitions[{index}].meeting_ids",
-        )
-        normalized_definitions.append((partition_id, source_file_path))
-        definition_paths.append(source_file_path)
-    if normalized_definitions != sorted(normalized_definitions):
-        raise ValueError("quality inventory AMI partition definitions must be sorted")
-    if definition_paths != metadata["official_partition_paths"]:
+    partition_paths = _require_canonical_quality_path_list(
+        metadata["official_partition_paths"],
+        "AMI source_metadata.official_partition_paths",
+    )
+    definitions = _require_complete_ami_quality_partition_definitions(
+        metadata["official_partition_definitions"],
+        "AMI official_partition_definitions",
+    )
+    definition_paths = [
+        definition["source_file_path"]
+        for definition in definitions
+    ]
+    if definition_paths != partition_paths:
         raise ValueError("quality inventory AMI partition paths mismatch definitions")
+    if definitions != ami_partition_definitions:
+        raise ValueError(
+            "quality inventory AMI partition definitions mismatch quality items"
+        )
     if (
         metadata["source_corpus"] != AMI_DATASET_ID
         or metadata["multi_party_applicability"] is not True
@@ -844,13 +1049,14 @@ def _validate_quality_inventory(
     dispositions: list[str] = []
     item_paths: list[str] = []
     included_paths: list[str] = []
+    ami_partition_definitions: list[dict[str, Any]] = []
+    ami_quarantine_eligible_paths: set[str] = set()
     for index, item_value in enumerate(items):
         item = _require_exact_dict(
             item_value,
             QUALITY_ITEM_FIELDS,
             f"items[{index}]",
         )
-        path = _require_quality_string(item["path"], f"items[{index}].path")
         classification = _require_quality_string(
             item["classification"],
             f"items[{index}].classification",
@@ -858,25 +1064,47 @@ def _validate_quality_inventory(
         disposition = item["disposition"]
         if disposition not in {"included", "excluded"}:
             raise ValueError("quality inventory disposition is invalid")
+        if dataset_id == CREMA_DATASET_ID:
+            path = _require_crema_item_path(
+                item["path"],
+                classification=classification,
+                field=f"items[{index}].path",
+            )
+        elif dataset_id == AMI_DATASET_ID:
+            path = _require_ami_item_path(
+                item["path"],
+                classification=classification,
+                disposition=disposition,
+                field=f"items[{index}].path",
+            )
+        else:
+            raise ValueError("quality inventory dataset_id is not selected")
         _require_quality_string(item["reason"], f"items[{index}].reason")
         if not isinstance(item["details"], dict):
             raise ValueError("quality inventory details must be an object")
         selected_file_path = item["selected_file_path"]
         if disposition == "included":
-            included_paths.append(
-                _require_quality_string(
-                    selected_file_path,
-                    f"items[{index}].selected_file_path",
-                )
+            selected_file_path = _require_selected_path_binding(
+                selected_file_path,
+                item_path=path,
+                classification=classification,
+                field=f"items[{index}].selected_file_path",
             )
+            included_paths.append(selected_file_path)
         elif selected_file_path is not None:
             raise ValueError("quality inventory excluded item selects a file")
         if dataset_id == CREMA_DATASET_ID:
             _validate_crema_quality_item(item)
-        elif dataset_id == AMI_DATASET_ID:
-            _validate_ami_quality_item(item)
         else:
-            raise ValueError("quality inventory dataset_id is not selected")
+            _validate_ami_quality_item(item)
+            if classification == "official_partition_metadata":
+                ami_partition_definitions.append(item["details"])
+            if classification in {
+                "speaker_aligned_orthographic_transcript",
+                "timing_link",
+                "dialogue_act",
+            }:
+                ami_quarantine_eligible_paths.add(selected_file_path)
         dispositions.append(disposition)
         item_paths.append(path)
         if not classification:
@@ -887,6 +1115,13 @@ def _validate_quality_inventory(
         raise ValueError("quality inventory selected file paths must be unique")
     if set(included_paths) != selected_file_paths:
         raise ValueError("quality inventory selected file set mismatch")
+    if dataset_id == AMI_DATASET_ID:
+        ami_partition_definitions = (
+            _require_complete_ami_quality_partition_definitions(
+                ami_partition_definitions,
+                "AMI partition quality items",
+            )
+        )
     included = sum(value == "included" for value in dispositions)
     excluded = sum(value == "excluded" for value in dispositions)
     if included != payload["included_file_count"]:
@@ -915,16 +1150,28 @@ def _validate_quality_inventory(
                 f"dependency_quarantine[{index}]",
             )
             quarantine_paths.append(
-                _require_quality_identifier(
+                _require_canonical_quality_path(
                     entry["path"],
                     f"dependency_quarantine[{index}].path",
                 )
             )
             if entry["reason"] != "required_participant_identity_missing":
                 raise ValueError("quality inventory AMI quarantine reason is invalid")
-        if quarantine_paths != sorted(quarantine_paths):
-            raise ValueError("quality inventory AMI quarantine must be sorted")
-    _validate_quality_source_metadata(payload["source_metadata"], dataset_id)
+        if (
+            quarantine_paths != sorted(quarantine_paths)
+            or len(quarantine_paths) != len(set(quarantine_paths))
+        ):
+            raise ValueError("quality inventory AMI quarantine must be sorted and unique")
+        if not set(quarantine_paths).issubset(ami_quarantine_eligible_paths):
+            raise ValueError(
+                "quality inventory AMI quarantine path is not a selected participant item"
+            )
+    _validate_quality_source_metadata(
+        payload["source_metadata"],
+        dataset_id,
+        item_paths=set(item_paths),
+        ami_partition_definitions=ami_partition_definitions,
+    )
     return payload
 
 

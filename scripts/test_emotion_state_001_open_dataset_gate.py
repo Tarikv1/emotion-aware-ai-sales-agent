@@ -703,6 +703,27 @@ class DatasetMaterialValidationTests(unittest.TestCase):
                 self.assertFalse(extract_root.exists())
                 self.assertEqual(list(root.glob(".extract.staging.*")), [])
 
+    def test_ami_extraction_rejects_interposed_casefold_ancestor_conflict(
+        self,
+    ) -> None:
+        from scripts.emotion_state_public_dataset_contracts import safe_extract_ami_archive
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            archive = root / "conflict.zip"
+            extract_root = root / "extract"
+            with zipfile.ZipFile(archive, "w") as output:
+                output.writestr("Metadata", "blocking file")
+                output.writestr("metadata-aux", "interposed sibling")
+                output.writestr(
+                    "metadata/words/ES2002a.A.words.xml",
+                    '<root><w participant="P1" meeting="ES2002a" /></root>',
+                )
+            with self.assertRaisesRegex(ValueError, "case-fold|file.*descendant|prefix"):
+                safe_extract_ami_archive(archive, extract_root)
+            self.assertFalse(extract_root.exists())
+            self.assertEqual(list(root.glob(".extract.staging.*")), [])
+
     def test_ami_extraction_rejects_preexisting_path_conflict_without_residue(
         self,
     ) -> None:
@@ -1132,6 +1153,162 @@ class DatasetMaterialValidationTests(unittest.TestCase):
                 canonical_inventory_bytes(first),
                 canonical_inventory_bytes(second),
             )
+
+    def test_ami_requires_scenario_and_full_corpus_partition_types_at_both_gates(
+        self,
+    ) -> None:
+        from scripts.build_emotion_state_public_dataset_manifests import (
+            write_dataset_evidence,
+        )
+        from scripts.emotion_state_public_dataset_contracts import (
+            AMI_DATASET_ID,
+            safe_extract_ami_archive,
+            validate_ami_material,
+        )
+
+        for missing_type, missing_name in (
+            ("scenario", "scenario.txt"),
+            ("full_corpus", "full-corpus.txt"),
+        ):
+            with self.subTest(
+                gate="material",
+                missing_type=missing_type,
+            ), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                archive = root / "ami.zip"
+                extract_root = root / "extract"
+                self._ami_archive(archive)
+                with zipfile.ZipFile(archive, "r") as source:
+                    retained = [
+                        (info, source.read(info))
+                        for info in source.infolist()
+                        if not info.filename.endswith(f"/partitions/{missing_name}")
+                    ]
+                with zipfile.ZipFile(archive, "w") as output:
+                    for info, payload in retained:
+                        output.writestr(info, payload)
+                extraction = safe_extract_ami_archive(archive, extract_root)
+                with self.assertRaisesRegex(
+                    ValueError,
+                    "scenario.*full_corpus|full_corpus.*scenario|partition type",
+                ):
+                    validate_ami_material(
+                        extract_root,
+                        archive_path=archive,
+                        extraction=extraction,
+                        project_root=root,
+                    )
+
+            with self.subTest(
+                gate="quality",
+                missing_type=missing_type,
+            ), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                materials, output_root = self._material_fixture(root)
+                mutated = deepcopy(materials)
+                metadata = mutated[AMI_DATASET_ID]["quality_inventory"][
+                    "source_metadata"
+                ]
+                metadata["official_partition_definitions"] = [
+                    definition
+                    for definition in metadata["official_partition_definitions"]
+                    if definition["partition_type"] != missing_type
+                ]
+                metadata["official_partition_paths"] = [
+                    definition["source_file_path"]
+                    for definition in metadata["official_partition_definitions"]
+                ]
+                with self.assertRaisesRegex(
+                    ValueError,
+                    "scenario.*full_corpus|full_corpus.*scenario|partition type",
+                ):
+                    write_dataset_evidence(
+                        output_root=output_root,
+                        accessed_on="2026-07-15",
+                        materials=mutated,
+                        project_root=root,
+                    )
+                self.assertFalse(output_root.exists())
+
+        with self.subTest(gate="material", duplicate="partition_id"), (
+            tempfile.TemporaryDirectory()
+        ) as directory:
+            root = Path(directory)
+            archive = root / "ami.zip"
+            extract_root = root / "extract"
+            self._ami_archive(archive)
+            with zipfile.ZipFile(archive, "a") as output:
+                output.writestr(
+                    "ami_public_manual_1.6.2/alternate-partitions/scenario.txt",
+                    "ES2002a\n",
+                )
+            extraction = safe_extract_ami_archive(archive, extract_root)
+            with self.assertRaisesRegex(ValueError, "duplicate AMI partition"):
+                validate_ami_material(
+                    extract_root,
+                    archive_path=archive,
+                    extraction=extraction,
+                    project_root=root,
+                )
+
+        with self.subTest(gate="material", duplicate="definition"), (
+            tempfile.TemporaryDirectory()
+        ) as directory:
+            root = Path(directory)
+            archive = root / "ami.zip"
+            extract_root = root / "extract"
+            self._ami_archive(archive)
+            extraction = safe_extract_ami_archive(archive, extract_root)
+            duplicated = deepcopy(extraction)
+            duplicated["members"].append(
+                deepcopy(next(
+                    member
+                    for member in duplicated["members"]
+                    if member["classification"] == "official_partition_metadata"
+                ))
+            )
+            with self.assertRaisesRegex(ValueError, "duplicate AMI partition"):
+                validate_ami_material(
+                    extract_root,
+                    archive_path=archive,
+                    extraction=duplicated,
+                    project_root=root,
+                )
+
+        for duplicate in ("definition", "partition_id", "source_path"):
+            with self.subTest(
+                gate="quality",
+                duplicate=duplicate,
+            ), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                materials, output_root = self._material_fixture(root)
+                mutated = deepcopy(materials)
+                definitions = mutated[AMI_DATASET_ID]["quality_inventory"][
+                    "source_metadata"
+                ]["official_partition_definitions"]
+                duplicate_definition = deepcopy(definitions[-1])
+                if duplicate == "partition_id":
+                    duplicate_definition["source_file_path"] = (
+                        "extract/ami_public_manual_1.6.2/partitions/"
+                        "scenario-copy.txt"
+                    )
+                elif duplicate == "source_path":
+                    duplicate_definition["partition_id"] = "scenario-copy"
+                definitions.append(duplicate_definition)
+                definitions.sort(
+                    key=lambda definition: (
+                        definition["partition_id"],
+                        definition["source_file_path"],
+                    )
+                )
+                with self.assertRaisesRegex(ValueError, "duplicate AMI partition"):
+                    write_dataset_evidence(
+                        output_root=output_root,
+                        accessed_on="2026-07-15",
+                        materials=mutated,
+                        project_root=root,
+                    )
+                self.assertFalse(output_root.exists())
 
     def test_archive_hashing_and_material_outputs_are_deterministic(self) -> None:
         from scripts.emotion_state_public_dataset_contracts import (
@@ -1709,6 +1886,171 @@ class DatasetMaterialValidationTests(unittest.TestCase):
                     if item["classification"] == "crema_pcm_wav"
                 )
                 item["details"][field] = value
+                with self.assertRaisesRegex(ValueError, "quality inventory"):
+                    write_dataset_evidence(
+                        output_root=output_root,
+                        accessed_on="2026-07-15",
+                        materials=mutated,
+                        project_root=root,
+                    )
+                self.assertFalse(output_root.exists())
+
+    def test_write_evidence_rejects_raw_sentence_in_every_quality_path_surface(
+        self,
+    ) -> None:
+        from scripts.build_emotion_state_public_dataset_manifests import (
+            write_dataset_evidence,
+        )
+        from scripts.emotion_state_public_dataset_contracts import (
+            AMI_DATASET_ID,
+            CREMA_DATASET_ID,
+        )
+
+        sentence = "zzzz synthetic raw transcript sentence"
+        for surface in (
+            "item_path",
+            "ami_selected_item_path",
+            "ami_archive_item_path",
+            "crema_item_path",
+            "selected_file_path",
+            "crema_source_file_path",
+            "crema_mismatch_path",
+            "ami_partition_item_source_path",
+            "ami_partition_paths",
+            "ami_partition_definition_source_path",
+            "ami_quarantine_path",
+        ):
+            with self.subTest(surface=surface), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                materials, output_root = self._material_fixture(root)
+                mutated = deepcopy(materials)
+                if surface == "item_path":
+                    item = next(
+                        item
+                        for item in mutated[AMI_DATASET_ID]["quality_inventory"]["items"]
+                        if item["disposition"] == "excluded"
+                    )
+                    item["path"] = sentence
+                    mutated[AMI_DATASET_ID]["quality_inventory"]["items"].sort(
+                        key=lambda value: value["path"]
+                    )
+                elif surface == "ami_selected_item_path":
+                    item = next(
+                        item
+                        for item in mutated[AMI_DATASET_ID]["quality_inventory"]["items"]
+                        if item["classification"]
+                        == "speaker_aligned_orthographic_transcript"
+                    )
+                    item["path"] = sentence
+                    mutated[AMI_DATASET_ID]["quality_inventory"]["items"].sort(
+                        key=lambda value: value["path"]
+                    )
+                elif surface == "ami_archive_item_path":
+                    item = next(
+                        item
+                        for item in mutated[AMI_DATASET_ID]["quality_inventory"]["items"]
+                        if item["classification"] == "downloaded_archive"
+                    )
+                    item["path"] = sentence
+                    mutated[AMI_DATASET_ID]["quality_inventory"]["items"].sort(
+                        key=lambda value: value["path"]
+                    )
+                elif surface == "crema_item_path":
+                    item = next(
+                        item
+                        for item in mutated[CREMA_DATASET_ID]["quality_inventory"]["items"]
+                        if item["classification"] == "crema_demographic_metadata"
+                    )
+                    item["path"] = sentence
+                    mutated[CREMA_DATASET_ID]["quality_inventory"]["items"].sort(
+                        key=lambda value: value["path"]
+                    )
+                elif surface == "selected_file_path":
+                    item = next(
+                        item
+                        for item in mutated[AMI_DATASET_ID]["quality_inventory"]["items"]
+                        if item["classification"]
+                        == "speaker_aligned_orthographic_transcript"
+                    )
+                    item["selected_file_path"] = sentence
+                elif surface == "crema_source_file_path":
+                    item = next(
+                        item
+                        for item in mutated[CREMA_DATASET_ID]["quality_inventory"]["items"]
+                        if item["classification"] == "crema_pcm_wav"
+                    )
+                    item["details"]["source_label_evidence"]["source_file_path"] = sentence
+                elif surface == "crema_mismatch_path":
+                    mutated[CREMA_DATASET_ID]["quality_inventory"]["source_metadata"][
+                        "official_mismatch_wav_counterparts"
+                    ] = [sentence]
+                elif surface == "ami_partition_item_source_path":
+                    item = next(
+                        item
+                        for item in mutated[AMI_DATASET_ID]["quality_inventory"]["items"]
+                        if item["classification"] == "official_partition_metadata"
+                    )
+                    item["details"]["source_file_path"] = sentence
+                elif surface == "ami_partition_paths":
+                    mutated[AMI_DATASET_ID]["quality_inventory"]["source_metadata"][
+                        "official_partition_paths"
+                    ] = [sentence]
+                elif surface == "ami_partition_definition_source_path":
+                    metadata = mutated[AMI_DATASET_ID]["quality_inventory"][
+                        "source_metadata"
+                    ]
+                    metadata["official_partition_definitions"][0][
+                        "source_file_path"
+                    ] = sentence
+                    metadata["official_partition_paths"] = sorted(
+                        definition["source_file_path"]
+                        for definition in metadata["official_partition_definitions"]
+                    )
+                else:
+                    mutated[AMI_DATASET_ID]["quality_inventory"][
+                        "dependency_quarantine"
+                    ] = [{
+                        "path": sentence,
+                        "reason": "required_participant_identity_missing",
+                    }]
+                with self.assertRaisesRegex(ValueError, "quality inventory"):
+                    write_dataset_evidence(
+                        output_root=output_root,
+                        accessed_on="2026-07-15",
+                        materials=mutated,
+                        project_root=root,
+                    )
+                self.assertFalse(output_root.exists())
+
+        invalid_paths = (
+            "/absolute/member.xml",
+            "C:/drive-qualified/member.xml",
+            "archive\\member.xml",
+            "archive/\x00member.xml",
+            "archive/./member.xml",
+            "archive/../member.xml",
+            "archive//member.xml",
+            "archive/cafe\u0301.xml",
+            "archive/member\n.xml",
+            "archive/bad:name.xml",
+        )
+        for invalid_path in invalid_paths:
+            with self.subTest(
+                surface="item_path_grammar",
+                invalid_path=repr(invalid_path),
+            ), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                materials, output_root = self._material_fixture(root)
+                mutated = deepcopy(materials)
+                item = next(
+                    item
+                    for item in mutated[AMI_DATASET_ID]["quality_inventory"]["items"]
+                    if item["disposition"] == "excluded"
+                )
+                item["path"] = invalid_path
+                mutated[AMI_DATASET_ID]["quality_inventory"]["items"].sort(
+                    key=lambda value: value["path"]
+                )
                 with self.assertRaisesRegex(ValueError, "quality inventory"):
                     write_dataset_evidence(
                         output_root=output_root,
