@@ -1,9 +1,13 @@
 from __future__ import annotations
 
 import hashlib
+import io
 import json
+import struct
 import tempfile
 import unittest
+import wave
+import zipfile
 from copy import deepcopy
 from pathlib import Path
 
@@ -386,6 +390,699 @@ class PublicDatasetContractTests(unittest.TestCase):
         from scripts.emotion_state_public_dataset_contracts import public_dataset_contract_self_check
 
         self.assertEqual(public_dataset_contract_self_check(), "pass")
+
+
+class DatasetMaterialValidationTests(unittest.TestCase):
+    @staticmethod
+    def _write_pcm_wav(path: Path, *, frame_count: int = 160) -> None:
+        path.parent.mkdir(parents=True, exist_ok=True)
+        with wave.open(str(path), "wb") as output:
+            output.setnchannels(1)
+            output.setsampwidth(2)
+            output.setframerate(16000)
+            output.writeframes(
+                struct.pack("<" + "h" * frame_count, *([100] * frame_count))
+            )
+
+    @classmethod
+    def _crema_fixture(cls, root: Path) -> None:
+        (root / "processedResults").mkdir(parents=True)
+        (root / "processedResults" / "summaryTable.csv").write_text(
+            "filename,issue\n"
+            "1001_DFA_ANG_XX.mp3,official encoding mismatch\n"
+            "1076_MTI_SAD_XX.wav,official no audio\n",
+            encoding="utf-8",
+        )
+        (root / "finishedResponses.csv").write_text(
+            "FileName,Modality,Response\n"
+            "1001_DFA_ANG_XX.mp3,audio,S\n"
+            "1002_IEO_HAP_HI.wav,audio,H\n"
+            "1002_IEO_HAP_HI.wav,audio,S\n"
+            "1003_TAI_FEA_XX.mp3,video,NOT_AN_AUDIO_LABEL\n",
+            encoding="utf-8",
+        )
+        (root / "SentenceFilenames.csv").write_text(
+            "sentence_code,text\nDFA,synthetic sentence\n",
+            encoding="utf-8",
+        )
+        (root / "README.md").write_text("synthetic CREMA fixture\n", encoding="utf-8")
+        (root / "LICENSE.txt").write_text("synthetic fixture license\n", encoding="utf-8")
+        for filename in (
+            "1001_DFA_ANG_XX.wav",
+            "1002_IEO_HAP_HI.wav",
+            "1003_TAI_FEA_XX.wav",
+        ):
+            cls._write_pcm_wav(root / "AudioWAV" / filename)
+        cls._write_pcm_wav(
+            root / "AudioWAV" / "1076_MTI_SAD_XX.wav",
+            frame_count=0,
+        )
+        (root / "VideoDemographics.csv").write_text(
+            "ActorID,Age\n1001,30\n",
+            encoding="utf-8",
+        )
+
+    @staticmethod
+    def _ami_archive(path: Path, *, include_missing_participant: bool = False) -> None:
+        path.parent.mkdir(parents=True, exist_ok=True)
+        word_attributes = "" if include_missing_participant else ' participant="P1"'
+        with zipfile.ZipFile(path, "w") as output:
+            output.writestr(
+                "ami_public_manual_1.6.2/corpusResources/meetings.xml",
+                '<meetings><meeting id="ES2002a" site="Edinburgh" '
+                'scenario="design" series="ES2002"><participant id="P1" />'
+                "</meeting></meetings>",
+            )
+            output.writestr(
+                "ami_public_manual_1.6.2/words/ES2002a.A.words.xml",
+                '<root><w meeting="ES2002a"'
+                + word_attributes
+                + ">PRIVATE SYNTHETIC TRANSCRIPT TEXT</w></root>",
+            )
+            output.writestr(
+                "ami_public_manual_1.6.2/dialogueActs/ES2002a.A.dialogue-acts.xml",
+                '<root><dialogue-act participant="P1" meeting="ES2002a" /></root>',
+            )
+            output.writestr(
+                "ami_public_manual_1.6.2/segments/ES2002a.A.segments.xml",
+                '<root><segment participant="P1" meeting="ES2002a" /></root>',
+            )
+            output.writestr(
+                "ami_public_manual_1.6.2/partitions/scenario.txt",
+                "ES2002a\n",
+            )
+            output.writestr(
+                "ami_public_manual_1.6.2/audio/",
+                b"",
+            )
+            output.writestr(
+                "ami_public_manual_1.6.2/audio/ES2002a.wav",
+                b"excluded audio",
+            )
+            output.writestr(
+                "ami_public_manual_1.6.2/video/ES2002a.avi",
+                b"excluded video",
+            )
+            output.writestr(
+                "ami_public_manual_1.6.2/automatic/ES2002a.asr.xml",
+                "<automatic />",
+            )
+            output.writestr(
+                "ami_public_manual_1.6.2/DOME/ES2002a.dome.xml",
+                "<dome />",
+            )
+            output.writestr(
+                "ami_public_manual_1.6.2/socialRoles/ES2002a.roles.xml",
+                "<roles />",
+            )
+            output.writestr(
+                "ami_public_manual_1.6.2/emotions/ES2002a.emotions.xml",
+                "<emotions />",
+            )
+
+    def test_crema_rejects_lfs_pointer_and_accepts_real_pcm_wav(self) -> None:
+        from scripts.emotion_state_public_dataset_contracts import validate_wav_file
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            pointer = root / "pointer.wav"
+            pointer.write_text(
+                "version https://" + "git-lfs.github.com/spec/v1\n"
+                "oid sha256:" + "A" * 64 + "\nsize 44\n",
+                encoding="utf-8",
+            )
+            with self.assertRaisesRegex(ValueError, "Git LFS pointer"):
+                validate_wav_file(pointer)
+            valid = root / "valid.wav"
+            with wave.open(str(valid), "wb") as output:
+                output.setnchannels(1)
+                output.setsampwidth(2)
+                output.setframerate(16000)
+                output.writeframes(struct.pack("<" + "h" * 160, *([100] * 160)))
+            metadata = validate_wav_file(valid)
+            self.assertEqual(metadata["frame_count"], 160)
+            self.assertEqual(metadata["sample_rate_hz"], 16000)
+
+    def test_wav_rejects_empty_zero_duration_unreadable_and_invalid_metadata(self) -> None:
+        from scripts.emotion_state_public_dataset_contracts import validate_wav_file
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            empty = root / "empty.wav"
+            empty.write_bytes(b"")
+            with self.assertRaisesRegex(ValueError, "RIFF/WAVE header"):
+                validate_wav_file(empty)
+
+            zero_duration = root / "zero.wav"
+            self._write_pcm_wav(zero_duration, frame_count=0)
+            with self.assertRaisesRegex(ValueError, "frame count|zero-duration"):
+                validate_wav_file(zero_duration)
+
+            unreadable = root / "unreadable.wav"
+            self._write_pcm_wav(unreadable, frame_count=4)
+            unreadable.write_bytes(unreadable.read_bytes()[:-2])
+            with self.assertRaisesRegex(ValueError, "unreadable frames"):
+                validate_wav_file(unreadable)
+
+            invalid_metadata = root / "invalid-metadata.wav"
+            self._write_pcm_wav(invalid_metadata, frame_count=4)
+            invalid_bytes = bytearray(invalid_metadata.read_bytes())
+            invalid_bytes[22:24] = b"\x00\x00"
+            invalid_metadata.write_bytes(invalid_bytes)
+            with self.assertRaisesRegex(ValueError, "metadata|channel"):
+                validate_wav_file(invalid_metadata)
+
+            floating_point = root / "floating-point.wav"
+            pcm = io.BytesIO()
+            with wave.open(pcm, "wb") as output:
+                output.setnchannels(1)
+                output.setsampwidth(4)
+                output.setframerate(16000)
+                output.writeframes(struct.pack("<f", 0.25))
+            floating_bytes = bytearray(pcm.getvalue())
+            floating_bytes[20:22] = b"\x03\x00"
+            floating_point.write_bytes(floating_bytes)
+            with self.assertRaisesRegex(ValueError, "unsupported|PCM"):
+                validate_wav_file(floating_point)
+
+    def test_ami_extraction_rejects_traversal_symlink_and_case_collision(self) -> None:
+        from scripts.emotion_state_public_dataset_contracts import safe_extract_ami_archive
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            archive = root / "bad.zip"
+            with zipfile.ZipFile(archive, "w") as output:
+                output.writestr("../escape.xml", "blocked")
+            with self.assertRaisesRegex(ValueError, "archive path escape"):
+                safe_extract_ami_archive(archive, root / "extract")
+
+            symlink_archive = root / "symlink.zip"
+            with zipfile.ZipFile(symlink_archive, "w") as output:
+                symlink = zipfile.ZipInfo("manual/link.xml")
+                symlink.create_system = 3
+                symlink.external_attr = 0o120777 << 16
+                output.writestr(symlink, "target.xml")
+            with self.assertRaisesRegex(ValueError, "symlink"):
+                safe_extract_ami_archive(symlink_archive, root / "symlink-extract")
+
+            collision_archive = root / "collision.zip"
+            with zipfile.ZipFile(collision_archive, "w") as output:
+                output.writestr("manual/File.xml", "<root />")
+                output.writestr("manual/file.xml", "<root />")
+            with self.assertRaisesRegex(ValueError, "case-fold"):
+                safe_extract_ami_archive(collision_archive, root / "collision-extract")
+
+    def test_hash_inventory_is_path_sorted_and_byte_bound(self) -> None:
+        from scripts.emotion_state_public_dataset_contracts import build_hash_inventory
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root / "b.txt").write_bytes(b"b")
+            (root / "a.txt").write_bytes(b"a")
+            inventory = build_hash_inventory(
+                dataset_id="synthetic-fixture",
+                project_root=root,
+                selected_paths=[root / "b.txt", root / "a.txt"],
+            )
+            self.assertEqual([item["path"] for item in inventory["files"]], ["a.txt", "b.txt"])
+            self.assertEqual(inventory["selected_file_count"], 2)
+            self.assertEqual(inventory["selected_byte_count"], 2)
+
+    def test_hash_inventory_rejects_escape_missing_collisions_and_lfs_mismatch(self) -> None:
+        from scripts.emotion_state_public_dataset_contracts import build_hash_inventory
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            selected = root / "selected.bin"
+            selected.write_bytes(b"selected")
+            outside = root.parent / f"{root.name}-outside.bin"
+            outside.write_bytes(b"outside")
+            try:
+                with self.assertRaisesRegex(ValueError, "escapes"):
+                    build_hash_inventory(
+                        dataset_id="synthetic-fixture",
+                        project_root=root,
+                        selected_paths=[outside],
+                    )
+                with self.assertRaisesRegex(ValueError, "missing"):
+                    build_hash_inventory(
+                        dataset_id="synthetic-fixture",
+                        project_root=root,
+                        selected_paths=[root / "missing.bin"],
+                    )
+                with self.assertRaisesRegex(ValueError, "duplicate"):
+                    build_hash_inventory(
+                        dataset_id="synthetic-fixture",
+                        project_root=root,
+                        selected_paths=[selected, selected],
+                    )
+                upper = root / "Straße.bin"
+                lower = root / "Strasse.bin"
+                upper.write_bytes(b"upper")
+                lower.write_bytes(b"lower")
+                with self.assertRaisesRegex(ValueError, "case-fold"):
+                    build_hash_inventory(
+                        dataset_id="synthetic-fixture",
+                        project_root=root,
+                        selected_paths=[upper, lower],
+                    )
+                with self.assertRaisesRegex(ValueError, "Git LFS OID"):
+                    build_hash_inventory(
+                        dataset_id="synthetic-fixture",
+                        project_root=root,
+                        selected_paths=[selected],
+                        git_lfs_oids_by_path={"selected.bin": "B" * 64},
+                    )
+            finally:
+                outside.unlink(missing_ok=True)
+
+    def test_crema_filename_parsing_keeps_intended_label_as_prompt_metadata(self) -> None:
+        from scripts.emotion_state_public_dataset_contracts import parse_crema_filename
+
+        parsed = parse_crema_filename("1001_DFA_ANG_XX.wav")
+        self.assertEqual(parsed["actor_id"], "1001")
+        self.assertEqual(parsed["sentence_code"], "DFA")
+        self.assertEqual(parsed["intended_emotion_code"], "ANG")
+        self.assertEqual(parsed["intensity_code"], "XX")
+        self.assertEqual(parsed["intended_label_role"], "prompt_metadata_only")
+        with self.assertRaisesRegex(ValueError, "CREMA-D filename"):
+            parse_crema_filename("not-a-crema-file.wav")
+
+    def test_crema_material_separates_intended_and_perceived_labels(self) -> None:
+        from scripts.emotion_state_public_dataset_contracts import validate_crema_material
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            self._crema_fixture(root)
+            result = validate_crema_material(root, project_root=root)
+            items = {
+                item["path"]: item
+                for item in result["quality_inventory"]["items"]
+            }
+            anger_file = items["AudioWAV/1001_DFA_ANG_XX.wav"]["details"]
+            self.assertEqual(
+                anger_file["filename_metadata"]["intended_emotion_code"],
+                "ANG",
+            )
+            self.assertEqual(
+                anger_file["source_label_evidence"]["raw_source_label"],
+                "S",
+            )
+            self.assertEqual(
+                anger_file["source_label_evidence"]["normalized_source_label"],
+                "sad",
+            )
+            self.assertEqual(
+                anger_file["source_label_evidence"]["source_column"],
+                "Response",
+            )
+            self.assertEqual(
+                anger_file["source_label_evidence"]["source_file_path"],
+                "finishedResponses.csv",
+            )
+            self.assertEqual(
+                anger_file["dependency_keys"],
+                {
+                    "speaker": "1001",
+                    "source_corpus": "crema-d-v1.0-audio-wav",
+                    "scripted_scenario": "DFA",
+                },
+            )
+            tie = items["AudioWAV/1002_IEO_HAP_HI.wav"]["details"][
+                "source_label_evidence"
+            ]
+            self.assertTrue(tie["ambiguous"])
+            self.assertTrue(tie["abstained"])
+            self.assertIsNone(tie["raw_source_label"])
+            self.assertEqual(tie["vote_distribution"], {"H": 1, "S": 1})
+            missing = items["AudioWAV/1003_TAI_FEA_XX.wav"]["details"][
+                "source_label_evidence"
+            ]
+            self.assertTrue(missing["ambiguous"])
+            self.assertIsNone(missing["normalized_source_label"])
+            self.assertNotEqual(
+                missing["normalized_source_label"],
+                items["AudioWAV/1003_TAI_FEA_XX.wav"]["details"][
+                    "filename_metadata"
+                ]["intended_emotion_code"],
+            )
+            known_issue = items["AudioWAV/1076_MTI_SAD_XX.wav"]
+            self.assertEqual(known_issue["disposition"], "excluded")
+            self.assertEqual(
+                known_issue["reason"],
+                "official_known_no_audio_issue",
+            )
+            self.assertTrue(
+                known_issue["details"]["objective_failure_confirmed"]
+            )
+            demographics = items["VideoDemographics.csv"]
+            self.assertEqual(demographics["disposition"], "excluded")
+            self.assertEqual(
+                demographics["reason"],
+                "excluded_demographic_metadata",
+            )
+            selected_paths = {
+                entry["path"] for entry in result["hash_inventory"]["files"]
+            }
+            self.assertNotIn("VideoDemographics.csv", selected_paths)
+            self.assertNotIn("AudioWAV/1076_MTI_SAD_XX.wav", selected_paths)
+            self.assertNotIn("7442", json.dumps(result))
+            self.assertIn(
+                "raters_heard_audio_presentation_encodings_while_feature_verification_uses_corresponding_wav_files",
+                result["quality_inventory"]["limitations"],
+            )
+
+    def test_crema_material_rejects_missing_and_extra_selected_files(self) -> None:
+        from scripts.emotion_state_public_dataset_contracts import validate_crema_material
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            self._crema_fixture(root)
+            complete = validate_crema_material(root, project_root=root)
+            selected_paths = [
+                root.joinpath(*entry["path"].split("/"))
+                for entry in complete["hash_inventory"]["files"]
+            ]
+            with self.assertRaisesRegex(ValueError, "missing selected file"):
+                validate_crema_material(
+                    root,
+                    project_root=root,
+                    selected_paths=selected_paths[1:],
+                )
+            with self.assertRaisesRegex(ValueError, "extra selected file"):
+                validate_crema_material(
+                    root,
+                    project_root=root,
+                    selected_paths=[*selected_paths, root / "VideoDemographics.csv"],
+                )
+            (root / "README.md").unlink()
+            with self.assertRaisesRegex(ValueError, "missing selected file"):
+                validate_crema_material(root, project_root=root)
+            (root / "README.md").write_text(
+                "synthetic CREMA fixture\n",
+                encoding="utf-8",
+            )
+            (root / "AudioWAV" / "1076_MTI_SAD_XX.wav").unlink()
+            with self.assertRaisesRegex(ValueError, "missing selected file"):
+                validate_crema_material(root, project_root=root)
+
+    def test_ami_selection_excludes_media_automatic_roles_and_emotions(self) -> None:
+        from scripts.emotion_state_public_dataset_contracts import (
+            safe_extract_ami_archive,
+            validate_ami_material,
+        )
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            archive = root / "ami.zip"
+            extract_root = root / "extract"
+            self._ami_archive(archive)
+            extraction = safe_extract_ami_archive(archive, extract_root)
+            members = {item["path"]: item for item in extraction["members"]}
+            excluded_expectations = {
+                "ami_public_manual_1.6.2/audio/ES2002a.wav": "audio",
+                "ami_public_manual_1.6.2/video/ES2002a.avi": "video",
+                "ami_public_manual_1.6.2/automatic/ES2002a.asr.xml": (
+                    "automatic_annotation"
+                ),
+                "ami_public_manual_1.6.2/DOME/ES2002a.dome.xml": "dome",
+                "ami_public_manual_1.6.2/socialRoles/ES2002a.roles.xml": (
+                    "social_role"
+                ),
+                "ami_public_manual_1.6.2/emotions/ES2002a.emotions.xml": (
+                    "speculative_emotion"
+                ),
+            }
+            for path, classification in excluded_expectations.items():
+                with self.subTest(path=path):
+                    self.assertEqual(members[path]["classification"], classification)
+                    self.assertFalse(members[path]["selected"])
+                    self.assertFalse(extract_root.joinpath(*path.split("/")).exists())
+            material = validate_ami_material(
+                extract_root,
+                archive_path=archive,
+                extraction=extraction,
+                project_root=root,
+            )
+            self.assertEqual(
+                material["quality_inventory"]["excluded_file_count"],
+                6,
+            )
+            self.assertEqual(
+                material["hash_inventory"]["files"][0]["path"],
+                "ami.zip",
+            )
+            serialized = json.dumps(material, sort_keys=True)
+            self.assertNotIn("PRIVATE SYNTHETIC TRANSCRIPT TEXT", serialized)
+            self.assertIn(
+                "some_tno_participant_metadata_was_not_gathered",
+                material["quality_inventory"]["limitations"],
+            )
+            self.assertIn(
+                "documented_synchronization_and_dropout_limitations_exist",
+                material["quality_inventory"]["limitations"],
+            )
+            self.assertTrue(
+                material["quality_inventory"]["source_metadata"][
+                    "multi_party_applicability"
+                ]
+            )
+            self.assertEqual(
+                material["quality_inventory"]["source_metadata"][
+                    "dependency_keys"
+                ],
+                {
+                    "speaker": ["P1"],
+                    "call_session": ["ES2002a"],
+                    "dialogue_dyad": "not_applicable_multi_party_meeting",
+                    "source_corpus": ["ami-manual-annotations-v1.6.2"],
+                    "scripted_scenario": ["design"],
+                    "meeting_series": ["ES2002"],
+                    "recording_site": ["Edinburgh"],
+                },
+            )
+
+    def test_ami_unclassified_candidate_fails_and_missing_participant_is_quarantined(
+        self,
+    ) -> None:
+        from scripts.emotion_state_public_dataset_contracts import (
+            safe_extract_ami_archive,
+            validate_ami_material,
+        )
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            unclassified = root / "unclassified.zip"
+            with zipfile.ZipFile(unclassified, "w") as output:
+                output.writestr("manual/mystery.xml", "<root />")
+            with self.assertRaisesRegex(ValueError, "unclassified AMI"):
+                safe_extract_ami_archive(unclassified, root / "unclassified-extract")
+
+            empty_archive = root / "empty.zip"
+            with zipfile.ZipFile(empty_archive, "w"):
+                pass
+            empty_extract_root = root / "empty-extract"
+            empty_extraction = safe_extract_ami_archive(
+                empty_archive,
+                empty_extract_root,
+            )
+            with self.assertRaisesRegex(ValueError, "missing selected AMI"):
+                validate_ami_material(
+                    empty_extract_root,
+                    archive_path=empty_archive,
+                    extraction=empty_extraction,
+                    project_root=root,
+                )
+
+            archive = root / "ami.zip"
+            extract_root = root / "extract"
+            self._ami_archive(archive, include_missing_participant=True)
+            extraction = safe_extract_ami_archive(archive, extract_root)
+            material = validate_ami_material(
+                extract_root,
+                archive_path=archive,
+                extraction=extraction,
+                project_root=root,
+            )
+            quarantined_paths = {
+                item["path"]
+                for item in material["quality_inventory"]["dependency_quarantine"]
+            }
+            self.assertIn(
+                "extract/ami_public_manual_1.6.2/words/ES2002a.A.words.xml",
+                quarantined_paths,
+            )
+
+    def test_archive_hashing_and_material_outputs_are_deterministic(self) -> None:
+        from scripts.emotion_state_public_dataset_contracts import (
+            canonical_inventory_bytes,
+            safe_extract_ami_archive,
+            sha256_file,
+            validate_ami_material,
+        )
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            archive = root / "ami.zip"
+            extract_root = root / "extract"
+            self._ami_archive(archive)
+            first_extraction = safe_extract_ami_archive(archive, extract_root)
+            first = validate_ami_material(
+                extract_root,
+                archive_path=archive,
+                extraction=first_extraction,
+                project_root=root,
+            )
+            second_extraction = safe_extract_ami_archive(archive, extract_root)
+            second = validate_ami_material(
+                extract_root,
+                archive_path=archive,
+                extraction=second_extraction,
+                project_root=root,
+            )
+            self.assertEqual(first_extraction["archive_sha256"], sha256_file(archive))
+            self.assertEqual(
+                canonical_inventory_bytes(first),
+                canonical_inventory_bytes(second),
+            )
+
+    def test_offline_cli_rejects_private_and_out_of_root_paths(self) -> None:
+        from scripts.build_emotion_state_public_dataset_manifests import main
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            public_root = root / "data" / "public" / "emotion-state"
+            public_root.mkdir(parents=True)
+            self._crema_fixture(public_root / "crema")
+            archive = public_root / "ami.zip"
+            self._ami_archive(archive)
+            extract_root = public_root / "ami-extract"
+            output_root = root / "research" / "sources" / "emotion_state" / "datasets"
+            self.assertEqual(
+                main(
+                    [
+                        "--ami-archive",
+                        str(archive),
+                        "--ami-extract-root",
+                        str(extract_root),
+                        "--mode",
+                        "list-ami",
+                    ],
+                    project_root=root,
+                ),
+                0,
+            )
+            private_archive = root / "data" / "private" / "ami.zip"
+            private_archive.parent.mkdir(parents=True)
+            private_archive.write_bytes(archive.read_bytes())
+            self.assertEqual(
+                main(
+                    [
+                        "--ami-archive",
+                        str(private_archive),
+                        "--ami-extract-root",
+                        str(extract_root),
+                        "--mode",
+                        "list-ami",
+                    ],
+                    project_root=root,
+                ),
+                1,
+            )
+            self.assertEqual(
+                main(
+                    [
+                        "--crema-root",
+                        str(public_root / "crema"),
+                        "--ami-archive",
+                        str(archive),
+                        "--ami-extract-root",
+                        str(extract_root),
+                        "--accessed-on",
+                        "2026-07-15",
+                        "--output-root",
+                        str(root / "outside"),
+                        "--mode",
+                        "write-evidence",
+                    ],
+                    project_root=root,
+                ),
+                1,
+            )
+            self.assertFalse(output_root.exists())
+
+    def test_write_dataset_evidence_is_deterministic_and_manifest_immutable(self) -> None:
+        from scripts.build_emotion_state_public_dataset_manifests import (
+            write_dataset_evidence,
+        )
+        from scripts.emotion_state_public_dataset_contracts import (
+            AMI_DATASET_ID,
+            CREMA_DATASET_ID,
+            canonical_inventory_bytes,
+            validate_ami_material,
+            validate_crema_material,
+            safe_extract_ami_archive,
+        )
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            public_root = root / "data" / "public" / "emotion-state"
+            crema_root = public_root / "crema"
+            self._crema_fixture(crema_root)
+            archive = public_root / "ami.zip"
+            extract_root = public_root / "ami-extract"
+            self._ami_archive(archive)
+            extraction = safe_extract_ami_archive(archive, extract_root)
+            materials = {
+                CREMA_DATASET_ID: validate_crema_material(
+                    crema_root,
+                    project_root=root,
+                ),
+                AMI_DATASET_ID: validate_ami_material(
+                    extract_root,
+                    archive_path=archive,
+                    extraction=extraction,
+                    project_root=root,
+                ),
+            }
+            output_root = (
+                root / "research" / "sources" / "emotion_state" / "datasets"
+            )
+            written = write_dataset_evidence(
+                output_root=output_root,
+                accessed_on="2026-07-15",
+                materials=materials,
+                project_root=root,
+            )
+            self.assertEqual(len(written), 6)
+            first_bytes = {
+                path.name: path.read_bytes()
+                for path in written
+            }
+            repeated = write_dataset_evidence(
+                output_root=output_root,
+                accessed_on="2026-07-15",
+                materials=materials,
+                project_root=root,
+            )
+            self.assertEqual(
+                first_bytes,
+                {path.name: path.read_bytes() for path in repeated},
+            )
+            manifest_path = output_root / f"{CREMA_DATASET_ID}.manifest.json"
+            manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+            manifest["accessed_on"] = "2026-07-16"
+            manifest_path.write_bytes(canonical_inventory_bytes(manifest))
+            with self.assertRaisesRegex(
+                ValueError,
+                "verified_manifest_version_is_immutable",
+            ):
+                write_dataset_evidence(
+                    output_root=output_root,
+                    accessed_on="2026-07-15",
+                    materials=materials,
+                    project_root=root,
+                )
 
 
 class SplitManifestV2Tests(unittest.TestCase):

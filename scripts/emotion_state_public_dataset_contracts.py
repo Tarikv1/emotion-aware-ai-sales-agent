@@ -1,14 +1,20 @@
 from __future__ import annotations
 
+import csv
 import hashlib
+import json
+import math
 import re
 import unicodedata
+import wave
+import zipfile
 from collections.abc import Mapping
 from copy import deepcopy
 from datetime import date
-from pathlib import Path, PurePosixPath
+from pathlib import Path, PurePosixPath, PureWindowsPath
 from types import MappingProxyType
 from typing import Any
+from xml.etree import ElementTree
 
 CREMA_DATASET_ID = "crema-d-v1.0-audio-wav"
 AMI_DATASET_ID = "ami-manual-annotations-v1.6.2"
@@ -321,10 +327,1201 @@ HASH_INVENTORY_FILE_FIELDS_WITH_LFS = HASH_INVENTORY_FILE_FIELDS | frozenset({
 })
 UPPER_SHA256_PATTERN = re.compile(r"^[0-9A-F]{64}$")
 ACCESS_DATE_PATTERN = re.compile(r"^\d{4}-\d{2}-\d{2}$")
+CREMA_FILENAME_PATTERN = re.compile(
+    r"^(?P<actor_id>\d{4})_(?P<sentence_code>[A-Z0-9]{3})_"
+    r"(?P<intended_emotion_code>ANG|DIS|FEA|HAP|NEU|SAD)_"
+    r"(?P<intensity_code>HI|LO|MD|XX)\.(?P<extension>wav|mp3|flv|mp4)$",
+    re.IGNORECASE,
+)
+GIT_LFS_POINTER_SIGNATURE = b"version https://git-lfs.github.com/spec/v1"
+
+CREMA_SELECTED_FIXED_PATHS = (
+    "processedResults/summaryTable.csv",
+    "finishedResponses.csv",
+    "SentenceFilenames.csv",
+    "README.md",
+    "LICENSE.txt",
+)
+CREMA_AUDIO_PREFIX = "AudioWAV/"
+CREMA_KNOWN_NO_AUDIO_FILE = "AudioWAV/1076_MTI_SAD_XX.wav"
+CREMA_EXCLUDED_PATHS = frozenset({"VideoDemographics.csv"})
+CREMA_INTENDED_EMOTION_CODE_MAP = {
+    "ANG": "anger",
+    "DIS": "disgust",
+    "FEA": "fear",
+    "HAP": "happy",
+    "NEU": "neutral",
+    "SAD": "sad",
+}
 
 
 class PublicDatasetContractError(ValueError):
     pass
+
+
+def sha256_file(path: Path) -> str:
+    try:
+        payload = Path(path).read_bytes()
+    except (OSError, RuntimeError) as exc:
+        raise ValueError(f"selected dataset file is missing or unreadable: {path}") from exc
+    return hashlib.sha256(payload).hexdigest().upper()
+
+
+def canonical_inventory_bytes(payload: dict[str, Any]) -> bytes:
+    return (
+        json.dumps(
+            payload,
+            sort_keys=True,
+            separators=(",", ":"),
+            ensure_ascii=False,
+            allow_nan=False,
+        )
+        + "\n"
+    ).encode("utf-8")
+
+
+def normalized_relative_path(path: Path, project_root: Path) -> str:
+    try:
+        resolved = Path(path).resolve(strict=True)
+    except (OSError, RuntimeError) as exc:
+        raise ValueError(f"selected dataset file is missing: {path}") from exc
+    try:
+        root = Path(project_root).resolve(strict=True)
+    except (OSError, RuntimeError) as exc:
+        raise ValueError("approved project root is missing") from exc
+    try:
+        relative = resolved.relative_to(root)
+    except ValueError as exc:
+        raise ValueError("selected dataset path escapes its approved root") from exc
+    value = unicodedata.normalize("NFC", relative.as_posix())
+    if not value or value.startswith("../"):
+        raise ValueError("selected dataset path is not canonical")
+    if any(part in {"", ".", ".."} for part in value.split("/")):
+        raise ValueError("selected dataset path is not canonical")
+    return value
+
+
+def _normalize_lfs_oid(value: Any) -> str:
+    if not isinstance(value, str):
+        raise ValueError("Git LFS OID must be a SHA-256 string or pointer text")
+    match = re.search(r"(?:^|\n)oid sha256:([0-9A-Fa-f]{64})(?:\n|$)", value)
+    digest = match.group(1) if match is not None else value
+    if re.fullmatch(r"[0-9A-Fa-f]{64}", digest) is None:
+        raise ValueError("Git LFS OID must be a SHA-256 string or pointer text")
+    return digest.upper()
+
+
+def build_hash_inventory(
+    *,
+    dataset_id: str,
+    project_root: Path,
+    selected_paths: list[Path] | tuple[Path, ...],
+    git_lfs_oids_by_path: Mapping[str | Path, str] | None = None,
+) -> dict[str, Any]:
+    if not isinstance(dataset_id, str) or not dataset_id:
+        raise ValueError("dataset_id must be a non-empty string")
+    root = Path(project_root)
+    try:
+        resolved_root = root.resolve(strict=True)
+    except (OSError, RuntimeError) as exc:
+        raise ValueError("approved project root is missing") from exc
+    if not resolved_root.is_dir():
+        raise ValueError("approved project root must be a directory")
+
+    normalized_lfs_oids: dict[str, str] = {}
+    if git_lfs_oids_by_path is not None:
+        if not isinstance(git_lfs_oids_by_path, Mapping):
+            raise ValueError("Git LFS OID pins must be a mapping")
+        for raw_path, raw_oid in git_lfs_oids_by_path.items():
+            if isinstance(raw_path, Path):
+                normalized_path = normalized_relative_path(raw_path, resolved_root)
+            elif isinstance(raw_path, str):
+                normalized_path = _normalized_inventory_path(raw_path)
+            else:
+                raise ValueError("Git LFS OID path keys must be paths or strings")
+            if normalized_path in normalized_lfs_oids:
+                raise ValueError("duplicate Git LFS OID path")
+            normalized_lfs_oids[normalized_path] = _normalize_lfs_oid(raw_oid)
+
+    entries: list[dict[str, Any]] = []
+    normalized_paths: set[str] = set()
+    casefold_paths: set[str] = set()
+    for selected_path in selected_paths:
+        path = Path(selected_path)
+        normalized_path = normalized_relative_path(path, resolved_root)
+        if normalized_path in normalized_paths:
+            raise ValueError("hash inventory contains a duplicate normalized path")
+        casefold_path = normalized_path.casefold()
+        if casefold_path in casefold_paths:
+            raise ValueError("hash inventory contains a case-fold path collision")
+        try:
+            resolved = path.resolve(strict=True)
+        except (OSError, RuntimeError) as exc:
+            raise ValueError(f"selected dataset file is missing: {path}") from exc
+        if not resolved.is_file():
+            raise ValueError(f"selected dataset path is not a file: {normalized_path}")
+        size_bytes = resolved.stat().st_size
+        digest = sha256_file(resolved)
+        entry: dict[str, Any] = {
+            "path": normalized_path,
+            "size_bytes": size_bytes,
+            "sha256": digest,
+        }
+        if normalized_path in normalized_lfs_oids:
+            lfs_digest = normalized_lfs_oids[normalized_path]
+            if lfs_digest != digest:
+                raise ValueError(
+                    f"Git LFS OID does not match the selected file hash: {normalized_path}"
+                )
+            entry["git_lfs_oid_sha256"] = lfs_digest
+        entries.append(entry)
+        normalized_paths.add(normalized_path)
+        casefold_paths.add(casefold_path)
+
+    unbound_lfs_paths = set(normalized_lfs_oids) - normalized_paths
+    if unbound_lfs_paths:
+        raise ValueError(
+            "Git LFS OID pin does not name a selected file: "
+            + sorted(unbound_lfs_paths)[0]
+        )
+    entries.sort(key=lambda item: item["path"])
+    return {
+        "inventory_version": 1,
+        "dataset_id": dataset_id,
+        "algorithm": "SHA-256",
+        "path_normalization": "project-relative-posix-nfc",
+        "ordering": "ordinal-by-normalized-path",
+        "selected_file_count": len(entries),
+        "selected_byte_count": sum(item["size_bytes"] for item in entries),
+        "files": entries,
+    }
+
+
+def validate_wav_file(path: Path) -> dict[str, Any]:
+    wav_path = Path(path)
+    try:
+        size_bytes = wav_path.stat().st_size
+        with wav_path.open("rb") as source:
+            prefix = source.read(max(128, len(GIT_LFS_POINTER_SIGNATURE)))
+    except (OSError, RuntimeError) as exc:
+        raise ValueError(f"WAV file is missing or unreadable: {wav_path}") from exc
+    if prefix.startswith(GIT_LFS_POINTER_SIGNATURE):
+        raise ValueError(f"Git LFS pointer is not WAV material: {wav_path}")
+    if size_bytes < 44:
+        raise ValueError(f"WAV file is smaller than a valid RIFF/WAVE header: {wav_path}")
+
+    try:
+        with wave.open(str(wav_path), "rb") as source:
+            channel_count = source.getnchannels()
+            sample_width_bytes = source.getsampwidth()
+            sample_rate_hz = source.getframerate()
+            frame_count = source.getnframes()
+            compression_type = source.getcomptype()
+            if compression_type != "NONE":
+                raise ValueError("unsupported WAV encoding; verified material must be PCM")
+            if channel_count <= 0:
+                raise ValueError("WAV channel metadata must be positive")
+            if sample_width_bytes not in {1, 2, 3, 4}:
+                raise ValueError("WAV sample-width metadata is unsupported")
+            if sample_rate_hz <= 0:
+                raise ValueError("WAV sample-rate metadata must be positive")
+            if frame_count <= 0:
+                raise ValueError("WAV frame count must be positive; zero-duration content is invalid")
+            expected_frame_bytes = frame_count * channel_count * sample_width_bytes
+            try:
+                frame_bytes = source.readframes(frame_count)
+            except (OSError, EOFError, wave.Error) as exc:
+                raise ValueError("WAV contains unreadable frames") from exc
+    except ValueError:
+        raise
+    except wave.Error as exc:
+        message = str(exc).lower()
+        if "unknown format" in message:
+            raise ValueError("unsupported WAV encoding; verified material must be PCM") from exc
+        raise ValueError(f"invalid WAV metadata: {exc}") from exc
+    except (EOFError, OSError) as exc:
+        raise ValueError(f"WAV file is unreadable or structurally invalid: {wav_path}") from exc
+
+    if len(frame_bytes) != expected_frame_bytes:
+        raise ValueError("WAV contains unreadable frames")
+    duration_seconds = frame_count / sample_rate_hz
+    if not math.isfinite(duration_seconds) or duration_seconds <= 0:
+        raise ValueError("WAV has zero-duration or non-finite duration")
+    return {
+        "channel_count": channel_count,
+        "sample_width_bytes": sample_width_bytes,
+        "sample_rate_hz": sample_rate_hz,
+        "frame_count": frame_count,
+        "duration_seconds": duration_seconds,
+        "encoding": "PCM",
+    }
+
+
+def parse_crema_filename(path_or_name: str | Path) -> dict[str, str]:
+    filename = Path(path_or_name).name
+    match = CREMA_FILENAME_PATTERN.fullmatch(filename)
+    if match is None:
+        raise ValueError(f"invalid CREMA-D filename: {filename}")
+    values = {key: value.upper() for key, value in match.groupdict().items()}
+    values["extension"] = values["extension"].lower()
+    values["intended_source_label"] = CREMA_INTENDED_EMOTION_CODE_MAP[
+        values["intended_emotion_code"]
+    ]
+    values["intended_label_role"] = "prompt_metadata_only"
+    return values
+
+
+def _relative_to_exact_root(path: Path, root: Path, *, field: str) -> str:
+    try:
+        resolved = Path(path).resolve(strict=True)
+    except (OSError, RuntimeError) as exc:
+        raise ValueError(f"{field} is missing: {path}") from exc
+    try:
+        relative = resolved.relative_to(root)
+    except ValueError as exc:
+        raise ValueError(f"{field} escapes its approved root") from exc
+    value = unicodedata.normalize("NFC", relative.as_posix())
+    if not value or any(part in {"", ".", ".."} for part in value.split("/")):
+        raise ValueError(f"{field} is not canonical")
+    return value
+
+
+def _first_present_field(
+    row: Mapping[str, str | None],
+    candidates: tuple[str, ...],
+) -> tuple[str | None, str | None]:
+    casefold_names = {
+        key.casefold(): key
+        for key in row
+        if isinstance(key, str)
+    }
+    for candidate in candidates:
+        source_key = casefold_names.get(candidate.casefold())
+        if source_key is None:
+            continue
+        value = row.get(source_key)
+        return source_key, value.strip() if isinstance(value, str) else None
+    return None, None
+
+
+def _parse_vote_value(value: str) -> dict[str, int]:
+    normalized = value.strip().upper()
+    if not normalized:
+        return {}
+    if normalized in CREMA_RAW_SOURCE_LABEL_MAP:
+        return {normalized: 1}
+    pairs = re.findall(r"\b([ADF HNS])\s*[:=]\s*(\d+)\b", normalized.replace(" ", ""))
+    if not pairs:
+        raise ValueError(f"invalid CREMA-D audio-only source label: {value}")
+    counts: dict[str, int] = {}
+    for code, count_text in pairs:
+        code = code.strip()
+        if code not in CREMA_RAW_SOURCE_LABEL_MAP:
+            raise ValueError(f"invalid CREMA-D audio-only source label: {code}")
+        count = int(count_text)
+        if count < 0:
+            raise ValueError("CREMA-D vote counts must be nonnegative")
+        counts[code] = counts.get(code, 0) + count
+    return counts
+
+
+def _read_crema_audio_only_votes(path: Path) -> dict[str, dict[str, Any]]:
+    try:
+        with path.open("r", encoding="utf-8-sig", newline="") as source:
+            reader = csv.DictReader(source)
+            if reader.fieldnames is None:
+                raise ValueError("finishedResponses.csv has invalid metadata")
+            rows = list(reader)
+    except (OSError, UnicodeError, csv.Error) as exc:
+        raise ValueError("finishedResponses.csv is unreadable or invalid") from exc
+
+    votes_by_wav: dict[str, dict[str, Any]] = {}
+    filename_candidates = (
+        "FileName",
+        "Filename",
+        "file_name",
+        "AudioFile",
+        "audio_file",
+        "Stimulus",
+        "Clip",
+    )
+    modality_candidates = (
+        "Modality",
+        "Presentation",
+        "presentation_modality",
+        "MediaType",
+    )
+    label_candidates = (
+        "Response",
+        "AudioVote",
+        "audio_vote",
+        "Vote",
+        "Label",
+        "Emotion",
+        "Answer",
+    )
+    for row_index, row in enumerate(rows, start=2):
+        filename_column, filename_value = _first_present_field(row, filename_candidates)
+        if filename_column is None or not filename_value:
+            continue
+        modality_column, modality_value = _first_present_field(row, modality_candidates)
+        label_column, label_value = _first_present_field(row, label_candidates)
+        modality = (modality_value or "").strip().casefold().replace("_", "-")
+        if modality_column is not None and modality:
+            audio_only = modality in {
+                "audio",
+                "audio-only",
+                "audio only",
+                "sound",
+                "a",
+            }
+        else:
+            audio_only = label_column is not None and "audio" in label_column.casefold()
+        if not audio_only:
+            continue
+        if label_column is None:
+            count_columns = {
+                code: _first_present_field(row, (code,))[1]
+                for code in CREMA_RAW_SOURCE_LABEL_MAP
+            }
+            present_counts = {
+                code: int(value)
+                for code, value in count_columns.items()
+                if isinstance(value, str) and value.strip()
+            }
+            if not present_counts:
+                continue
+            raw_votes = present_counts
+            label_column = "A/D/F/H/N/S"
+        else:
+            raw_votes = _parse_vote_value(label_value or "")
+        try:
+            filename_metadata = parse_crema_filename(filename_value)
+        except ValueError as exc:
+            raise ValueError(
+                f"finishedResponses.csv row {row_index} has an invalid CREMA-D filename"
+            ) from exc
+        wav_name = (
+            f"{filename_metadata['actor_id']}_{filename_metadata['sentence_code']}_"
+            f"{filename_metadata['intended_emotion_code']}_"
+            f"{filename_metadata['intensity_code']}.wav"
+        )
+        record = votes_by_wav.setdefault(
+            wav_name,
+            {
+                "vote_distribution": {},
+                "source_columns": set(),
+                "audio_presentation_encodings": set(),
+            },
+        )
+        record["source_columns"].add(label_column)
+        record["audio_presentation_encodings"].add(
+            filename_metadata["extension"]
+        )
+        for code, count in raw_votes.items():
+            if code not in CREMA_RAW_SOURCE_LABEL_MAP:
+                raise ValueError(
+                    f"finishedResponses.csv row {row_index} has an invalid source label"
+                )
+            if type(count) is not int or count < 0:
+                raise ValueError(
+                    f"finishedResponses.csv row {row_index} has an invalid vote count"
+                )
+            distribution = record["vote_distribution"]
+            distribution[code] = distribution.get(code, 0) + count
+
+    normalized: dict[str, dict[str, Any]] = {}
+    for wav_name, record in votes_by_wav.items():
+        distribution = {
+            code: record["vote_distribution"][code]
+            for code in sorted(record["vote_distribution"])
+            if record["vote_distribution"][code] > 0
+        }
+        total_votes = sum(distribution.values())
+        max_votes = max(distribution.values(), default=0)
+        winners = [
+            code
+            for code, count in distribution.items()
+            if count == max_votes and max_votes > 0
+        ]
+        ambiguous = len(winners) != 1
+        raw_source_label = winners[0] if not ambiguous else None
+        normalized[wav_name] = {
+            "raw_source_label": raw_source_label,
+            "normalized_source_label": (
+                CREMA_RAW_SOURCE_LABEL_MAP[raw_source_label]
+                if raw_source_label is not None
+                else None
+            ),
+            "source_column": (
+                sorted(record["source_columns"])[0]
+                if len(record["source_columns"]) == 1
+                else sorted(record["source_columns"])
+            ),
+            "vote_distribution": distribution,
+            "agreement": (max_votes / total_votes if total_votes else None),
+            "ambiguous": ambiguous,
+            "abstained": ambiguous,
+            "ambiguity_reason": (
+                None
+                if not ambiguous
+                else (
+                    "tied_audio_only_majority_labels"
+                    if len(winners) > 1
+                    else "missing_audio_only_perceived_label"
+                )
+            ),
+            "audio_presentation_encodings": sorted(
+                record["audio_presentation_encodings"]
+            ),
+            "source_file_path": "finishedResponses.csv",
+        }
+    return normalized
+
+
+def _missing_crema_source_label_evidence() -> dict[str, Any]:
+    return {
+        "raw_source_label": None,
+        "normalized_source_label": None,
+        "source_column": None,
+        "vote_distribution": {},
+        "agreement": None,
+        "ambiguous": True,
+        "abstained": True,
+        "ambiguity_reason": "missing_audio_only_perceived_label",
+        "audio_presentation_encodings": [],
+        "source_file_path": "finishedResponses.csv",
+    }
+
+
+def _crema_mismatch_counterparts(summary_path: Path) -> list[str]:
+    try:
+        text = summary_path.read_text(encoding="utf-8-sig")
+    except (OSError, UnicodeError) as exc:
+        raise ValueError("processedResults/summaryTable.csv is unreadable") from exc
+    names = {
+        match.group(0)
+        for match in re.finditer(
+            r"\b\d{4}_[A-Z0-9]{3}_(?:ANG|DIS|FEA|HAP|NEU|SAD)_"
+            r"(?:HI|LO|MD|XX)\.(?:wav|mp3|flv|mp4)\b",
+            text,
+            flags=re.IGNORECASE,
+        )
+    }
+    counterparts: set[str] = set()
+    for name in names:
+        parsed = parse_crema_filename(name)
+        counterparts.add(
+            f"{CREMA_AUDIO_PREFIX}{parsed['actor_id']}_{parsed['sentence_code']}_"
+            f"{parsed['intended_emotion_code']}_{parsed['intensity_code']}.wav"
+        )
+    return sorted(counterparts)
+
+
+def validate_crema_material(
+    crema_root: Path,
+    *,
+    project_root: Path | None = None,
+    selected_paths: list[Path] | tuple[Path, ...] | None = None,
+    git_lfs_oids_by_path: Mapping[str | Path, str] | None = None,
+) -> dict[str, Any]:
+    try:
+        root = Path(crema_root).resolve(strict=True)
+    except (OSError, RuntimeError) as exc:
+        raise ValueError("CREMA-D root is missing") from exc
+    if not root.is_dir():
+        raise ValueError("CREMA-D root must be a directory")
+    inventory_root = (
+        Path(project_root).resolve(strict=True)
+        if project_root is not None
+        else root
+    )
+
+    fixed_paths: list[Path] = []
+    for relative_path in CREMA_SELECTED_FIXED_PATHS:
+        candidate = root.joinpath(*relative_path.split("/"))
+        if not candidate.is_file():
+            raise ValueError(f"missing selected file: {relative_path}")
+        if candidate.stat().st_size <= 0:
+            raise ValueError(f"selected metadata file is empty: {relative_path}")
+        fixed_paths.append(candidate)
+
+    votes_by_wav = _read_crema_audio_only_votes(root / "finishedResponses.csv")
+    mismatch_counterparts = _crema_mismatch_counterparts(
+        root / "processedResults" / "summaryTable.csv"
+    )
+    audio_root = root / "AudioWAV"
+    if not audio_root.is_dir():
+        raise ValueError("missing selected file: AudioWAV/")
+
+    quality_by_path: dict[str, dict[str, Any]] = {}
+    selected_audio_paths: list[Path] = []
+    for wav_path in sorted(
+        (path for path in audio_root.rglob("*") if path.is_file()),
+        key=lambda item: item.relative_to(root).as_posix(),
+    ):
+        relative_path = _relative_to_exact_root(
+            wav_path,
+            root,
+            field="CREMA-D material path",
+        )
+        if wav_path.suffix.casefold() != ".wav":
+            quality_by_path[relative_path] = {
+                "path": relative_path,
+                "classification": "crema_audio_directory_non_wav",
+                "disposition": "excluded",
+                "reason": "frozen_selection_requires_wav",
+                "details": {},
+            }
+            continue
+        filename_metadata = parse_crema_filename(wav_path.name)
+        if relative_path == CREMA_KNOWN_NO_AUDIO_FILE:
+            try:
+                validate_wav_file(wav_path)
+            except ValueError as exc:
+                if "Git LFS pointer" in str(exc):
+                    raise
+                objective_failure = str(exc)
+            else:
+                raise ValueError(
+                    "official known no-audio issue was not confirmed by the pinned release"
+                )
+            quality_by_path[relative_path] = {
+                "path": relative_path,
+                "classification": "crema_wav",
+                "disposition": "excluded",
+                "reason": "official_known_no_audio_issue",
+                "details": {
+                    "filename_metadata": filename_metadata,
+                    "official_issue": "1076_MTI_SAD_XX.wav_has_an_official_documented_no_audio_issue",
+                    "objective_failure_confirmed": True,
+                    "objective_failure": objective_failure,
+                },
+            }
+            continue
+        wav_metadata = validate_wav_file(wav_path)
+        source_label_evidence = deepcopy(
+            votes_by_wav.get(
+                wav_path.name,
+                _missing_crema_source_label_evidence(),
+            )
+        )
+        quality_by_path[relative_path] = {
+            "path": relative_path,
+            "classification": "crema_pcm_wav",
+            "disposition": "included",
+            "reason": (
+                "official_mismatch_wav_counterpart_objectively_validated"
+                if relative_path in mismatch_counterparts
+                else "frozen_audio_wav_selection"
+            ),
+            "details": {
+                "filename_metadata": filename_metadata,
+                "wav_metadata": wav_metadata,
+                "source_label_evidence": source_label_evidence,
+                "dependency_keys": {
+                    "speaker": filename_metadata["actor_id"],
+                    "source_corpus": CREMA_DATASET_ID,
+                    "scripted_scenario": filename_metadata["sentence_code"],
+                },
+            },
+        }
+        selected_audio_paths.append(wav_path)
+
+    for counterpart in mismatch_counterparts:
+        if counterpart == CREMA_KNOWN_NO_AUDIO_FILE:
+            continue
+        if counterpart not in quality_by_path:
+            raise ValueError(
+                f"official mismatch WAV counterpart is missing: {counterpart}"
+            )
+        if quality_by_path[counterpart]["disposition"] != "included":
+            raise ValueError(
+                f"official mismatch WAV counterpart failed objective validation: {counterpart}"
+            )
+
+    if CREMA_KNOWN_NO_AUDIO_FILE not in quality_by_path:
+        raise ValueError(f"missing selected file: {CREMA_KNOWN_NO_AUDIO_FILE}")
+    for wav_name in votes_by_wav:
+        relative_path = f"{CREMA_AUDIO_PREFIX}{wav_name}"
+        if relative_path not in quality_by_path:
+            raise ValueError(f"missing selected file: {relative_path}")
+
+    expected_selected_paths = [*fixed_paths, *selected_audio_paths]
+    expected_dataset_relative = {
+        _relative_to_exact_root(path, root, field="selected CREMA-D file")
+        for path in expected_selected_paths
+    }
+    if selected_paths is not None:
+        provided_dataset_relative: set[str] = set()
+        for path in selected_paths:
+            try:
+                relative_path = _relative_to_exact_root(
+                    Path(path),
+                    root,
+                    field="selected CREMA-D file",
+                )
+            except ValueError as exc:
+                raise ValueError(f"extra selected file: {path}") from exc
+            if relative_path in provided_dataset_relative:
+                raise ValueError(f"extra selected file: {relative_path}")
+            provided_dataset_relative.add(relative_path)
+        missing = expected_dataset_relative - provided_dataset_relative
+        if missing:
+            raise ValueError(f"missing selected file: {sorted(missing)[0]}")
+        extra = provided_dataset_relative - expected_dataset_relative
+        if extra:
+            raise ValueError(f"extra selected file: {sorted(extra)[0]}")
+        expected_selected_paths = [Path(path) for path in selected_paths]
+
+    for fixed_path in fixed_paths:
+        relative_path = _relative_to_exact_root(
+            fixed_path,
+            root,
+            field="selected CREMA-D file",
+        )
+        quality_by_path[relative_path] = {
+            "path": relative_path,
+            "classification": "crema_release_metadata",
+            "disposition": "included",
+            "reason": "frozen_fixed_selection",
+            "details": {},
+        }
+
+    for file_path in sorted(
+        (path for path in root.rglob("*") if path.is_file()),
+        key=lambda item: item.relative_to(root).as_posix(),
+    ):
+        relative_path = _relative_to_exact_root(
+            file_path,
+            root,
+            field="CREMA-D material path",
+        )
+        if relative_path in quality_by_path:
+            continue
+        if relative_path in CREMA_EXCLUDED_PATHS:
+            classification = "crema_demographic_metadata"
+            reason = "excluded_demographic_metadata"
+        else:
+            classification = "crema_unselected_release_material"
+            reason = "outside_frozen_selection"
+        quality_by_path[relative_path] = {
+            "path": relative_path,
+            "classification": classification,
+            "disposition": "excluded",
+            "reason": reason,
+            "details": {},
+        }
+
+    hash_inventory = build_hash_inventory(
+        dataset_id=CREMA_DATASET_ID,
+        project_root=inventory_root,
+        selected_paths=expected_selected_paths,
+        git_lfs_oids_by_path=git_lfs_oids_by_path,
+    )
+    quality_items = [
+        quality_by_path[path]
+        for path in sorted(quality_by_path)
+    ]
+    included_file_count = sum(
+        item["disposition"] == "included"
+        for item in quality_items
+    )
+    excluded_file_count = sum(
+        item["disposition"] == "excluded"
+        for item in quality_items
+    )
+    quality_inventory = {
+        "quality_inventory_version": 1,
+        "dataset_id": CREMA_DATASET_ID,
+        "included_file_count": included_file_count,
+        "excluded_file_count": excluded_file_count,
+        "items": quality_items,
+        "limitations": [
+            "raters_heard_audio_presentation_encodings_while_feature_verification_uses_corresponding_wav_files",
+            "filename_intended_emotion_is_prompt_metadata_only_and_never_fills_a_missing_perceived_label",
+            "filename_agreement_cannot_override_an_official_mismatch_or_objective_content_or_duration_failure",
+        ],
+        "dependency_quarantine": [],
+        "source_metadata": {
+            "official_mismatch_wav_counterparts": mismatch_counterparts,
+            "advertised_utterance_count_used": False,
+            "selected_encoding": "wav",
+            "source_label_rows": "finishedResponses.csv audio-only rows",
+        },
+    }
+    return {
+        "hash_inventory": hash_inventory,
+        "quality_inventory": quality_inventory,
+    }
+
+
+AMI_SELECTED_CLASSIFICATIONS = frozenset({
+    "manual_nxt_metadata",
+    "speaker_aligned_orthographic_transcript",
+    "timing_link",
+    "dialogue_act",
+    "official_partition_metadata",
+})
+AMI_AUDIO_SUFFIXES = frozenset({".wav", ".mp3", ".flac", ".sph", ".m4a"})
+AMI_VIDEO_SUFFIXES = frozenset({".avi", ".mp4", ".mpeg", ".mpg", ".mov", ".wmv"})
+AMI_POTENTIALLY_SELECTED_SUFFIXES = frozenset({
+    ".xml",
+    ".nxt",
+    ".json",
+    ".csv",
+    ".txt",
+    ".list",
+})
+
+
+def _normalized_archive_member_path(value: str) -> str:
+    if not isinstance(value, str) or not value or "\x00" in value:
+        raise ValueError("AMI archive member path is invalid")
+    normalized_separators = value.replace("\\", "/")
+    if (
+        normalized_separators.startswith("/")
+        or PurePosixPath(normalized_separators).is_absolute()
+        or PureWindowsPath(value).drive
+        or re.match(r"^[A-Za-z]:", normalized_separators)
+    ):
+        raise ValueError("AMI archive path escape or absolute path")
+    is_directory = normalized_separators.endswith("/")
+    raw_parts = normalized_separators.rstrip("/").split("/")
+    if not raw_parts or any(part in {"", ".", ".."} for part in raw_parts):
+        raise ValueError("AMI archive path escape or dot segment")
+    normalized = unicodedata.normalize("NFC", "/".join(raw_parts))
+    if not normalized or normalized.startswith("../"):
+        raise ValueError("AMI archive path escape")
+    return normalized + ("/" if is_directory else "")
+
+
+def classify_ami_member(path: str) -> dict[str, Any]:
+    normalized = _normalized_archive_member_path(path)
+    if normalized.endswith("/"):
+        return {
+            "classification": "directory",
+            "selected": False,
+            "reason": "archive_directory",
+        }
+    pure = PurePosixPath(normalized)
+    suffix = pure.suffix.casefold()
+    components = [part.casefold() for part in pure.parts]
+    joined = "/".join(components)
+
+    if suffix in AMI_AUDIO_SUFFIXES or "audio" in components:
+        classification = "audio"
+    elif suffix in AMI_VIDEO_SUFFIXES or "video" in components:
+        classification = "video"
+    elif any(
+        marker in components or marker in joined
+        for marker in ("automatic", "ami_public_auto", "/asr", "asr/")
+    ):
+        classification = "automatic_annotation"
+    elif "dome" in joined:
+        classification = "dome"
+    elif any(
+        marker in joined
+        for marker in ("socialrole", "social_role", "social-role")
+    ):
+        classification = "social_role"
+    elif any(
+        marker in joined
+        for marker in ("emotion", "affect", "sentiment")
+    ):
+        classification = "speculative_emotion"
+    elif any(
+        marker in joined
+        for marker in ("dialogueact", "dialogue_act", "dialogue-act")
+    ):
+        classification = "dialogue_act"
+    elif any(
+        marker in joined
+        for marker in ("partition", "split-definition", "full-corpus")
+    ):
+        classification = "official_partition_metadata"
+    elif any(
+        marker in components or marker in joined
+        for marker in ("words", "transcript", "orthograph")
+    ):
+        classification = "speaker_aligned_orthographic_transcript"
+    elif any(
+        marker in components or marker in joined
+        for marker in ("segments", "timing", "time-link", "timelink")
+    ):
+        classification = "timing_link"
+    elif any(
+        marker in joined
+        for marker in (
+            "corpusresources",
+            "corpus-resources",
+            "metadata",
+            "meetings.xml",
+            "participants.xml",
+            "speakers.xml",
+        )
+    ):
+        classification = "manual_nxt_metadata"
+    elif pure.name.casefold().startswith(("readme", "license", "copying")):
+        classification = "documentation"
+    elif suffix in AMI_POTENTIALLY_SELECTED_SUFFIXES:
+        raise ValueError(f"unclassified AMI annotation candidate: {normalized}")
+    else:
+        classification = "unselected_release_material"
+
+    selected = classification in AMI_SELECTED_CLASSIFICATIONS
+    return {
+        "classification": classification,
+        "selected": selected,
+        "reason": (
+            "selected_manual_annotation_material"
+            if selected
+            else f"excluded_{classification}"
+        ),
+    }
+
+
+def _zip_info_is_symlink(info: zipfile.ZipInfo) -> bool:
+    unix_mode = info.external_attr >> 16
+    return (unix_mode & 0o170000) == 0o120000
+
+
+def inspect_ami_archive(
+    archive_path: Path,
+    extract_root: Path,
+) -> dict[str, Any]:
+    archive = Path(archive_path)
+    archive_sha256 = sha256_file(archive)
+    try:
+        archive_size_bytes = archive.stat().st_size
+    except OSError as exc:
+        raise ValueError("AMI archive is missing or unreadable") from exc
+    extraction_root = Path(extract_root).resolve(strict=False)
+
+    structurally_valid_members: list[tuple[zipfile.ZipInfo, str]] = []
+    validated_members: list[dict[str, Any]] = []
+    normalized_paths: set[str] = set()
+    casefold_paths: set[str] = set()
+    try:
+        with zipfile.ZipFile(archive, "r") as source:
+            for info in source.infolist():
+                normalized_path = _normalized_archive_member_path(info.filename)
+                collision_key = normalized_path.rstrip("/")
+                if collision_key in normalized_paths:
+                    raise ValueError("AMI archive contains a duplicate destination")
+                casefold_key = collision_key.casefold()
+                if casefold_key in casefold_paths:
+                    raise ValueError("AMI archive contains a case-fold destination collision")
+                if _zip_info_is_symlink(info):
+                    raise ValueError(f"AMI archive contains a symlink entry: {normalized_path}")
+                destination = extraction_root.joinpath(
+                    *normalized_path.rstrip("/").split("/")
+                )
+                try:
+                    destination.resolve(strict=False).relative_to(extraction_root)
+                except ValueError as exc:
+                    raise ValueError("AMI archive path escape") from exc
+                structurally_valid_members.append((info, normalized_path))
+                normalized_paths.add(collision_key)
+                casefold_paths.add(casefold_key)
+
+            for info, normalized_path in structurally_valid_members:
+                classification = classify_ami_member(normalized_path)
+                member = {
+                    "path": normalized_path,
+                    "classification": classification["classification"],
+                    "selected": classification["selected"],
+                    "reason": classification["reason"],
+                }
+                validated_members.append(member)
+            validated_members.sort(key=lambda item: item["path"])
+    except zipfile.BadZipFile as exc:
+        raise ValueError("AMI archive is not a readable ZIP file") from exc
+    except OSError as exc:
+        raise ValueError("AMI archive inspection failed") from exc
+
+    return {
+        "archive_sha256": archive_sha256,
+        "archive_size_bytes": archive_size_bytes,
+        "members": validated_members,
+    }
+
+
+def safe_extract_ami_archive(
+    archive_path: Path,
+    extract_root: Path,
+) -> dict[str, Any]:
+    archive = Path(archive_path)
+    extraction_root = Path(extract_root).resolve(strict=False)
+    inspection = inspect_ami_archive(archive, extraction_root)
+    if sha256_file(archive) != inspection["archive_sha256"]:
+        raise ValueError("AMI archive changed after validation and before extraction")
+
+    extraction_root.mkdir(parents=True, exist_ok=True)
+    members_by_path = {
+        member["path"]: member
+        for member in inspection["members"]
+    }
+    try:
+        with zipfile.ZipFile(archive, "r") as source:
+            infos_by_path = {
+                _normalized_archive_member_path(info.filename): info
+                for info in source.infolist()
+            }
+            for normalized_path in sorted(members_by_path):
+                member = members_by_path[normalized_path]
+                info = infos_by_path[normalized_path]
+                destination = extraction_root.joinpath(
+                    *normalized_path.rstrip("/").split("/")
+                )
+                if info.is_dir():
+                    destination.mkdir(parents=True, exist_ok=True)
+                    continue
+                if not member["selected"]:
+                    continue
+                destination.parent.mkdir(parents=True, exist_ok=True)
+                try:
+                    destination.resolve(strict=False).relative_to(extraction_root)
+                except ValueError as exc:
+                    raise ValueError("AMI extraction destination escaped its exact root") from exc
+                if destination.is_symlink():
+                    raise ValueError("AMI extraction destination is a symlink")
+                with source.open(info, "r") as member_source, destination.open("wb") as output:
+                    for chunk in iter(lambda: member_source.read(1024 * 1024), b""):
+                        output.write(chunk)
+    except zipfile.BadZipFile as exc:
+        raise ValueError("AMI archive is not a readable ZIP file") from exc
+    except OSError as exc:
+        raise ValueError("AMI archive extraction failed") from exc
+    return inspection
+
+
+def _xml_local_name(value: str) -> str:
+    return value.rsplit("}", 1)[-1].casefold()
+
+
+def _ami_metadata_from_xml(path: Path) -> dict[str, set[str]]:
+    values = {
+        "participants": set(),
+        "meetings": set(),
+        "meeting_series": set(),
+        "recording_sites": set(),
+        "scenarios": set(),
+    }
+    try:
+        root = ElementTree.parse(path).getroot()
+    except (ElementTree.ParseError, OSError) as exc:
+        raise ValueError(f"AMI selected annotation XML is unreadable: {path}") from exc
+    for element in root.iter():
+        tag = _xml_local_name(element.tag)
+        attributes = {
+            _xml_local_name(key): value.strip()
+            for key, value in element.attrib.items()
+            if isinstance(value, str) and value.strip()
+        }
+        for key in ("participant", "participantid", "speaker", "speakerid", "agent", "nxt_agent"):
+            if key in attributes:
+                values["participants"].add(attributes[key])
+        if tag in {"participant", "speaker", "person"} and "id" in attributes:
+            values["participants"].add(attributes["id"])
+        for key in ("meeting", "meetingid", "meeting_id"):
+            if key in attributes:
+                values["meetings"].add(attributes[key])
+        if tag == "meeting" and "id" in attributes:
+            values["meetings"].add(attributes["id"])
+        for key in ("series", "meetingseries", "meeting_series"):
+            if key in attributes:
+                values["meeting_series"].add(attributes[key])
+        for key in ("site", "recordingsite", "recording_site", "location"):
+            if key in attributes:
+                values["recording_sites"].add(attributes[key])
+        for key in ("scenario", "scenarioid", "scenario_id"):
+            if key in attributes:
+                values["scenarios"].add(attributes[key])
+    return values
+
+
+def validate_ami_material(
+    extract_root: Path,
+    *,
+    archive_path: Path,
+    extraction: Mapping[str, Any],
+    project_root: Path | None = None,
+) -> dict[str, Any]:
+    try:
+        root = Path(extract_root).resolve(strict=True)
+    except (OSError, RuntimeError) as exc:
+        raise ValueError("AMI extraction root is missing") from exc
+    if not root.is_dir():
+        raise ValueError("AMI extraction root must be a directory")
+    archive = Path(archive_path).resolve(strict=True)
+    inventory_root = (
+        Path(project_root).resolve(strict=True)
+        if project_root is not None
+        else root.parent
+    )
+    if not isinstance(extraction, Mapping):
+        raise ValueError("AMI extraction evidence must be a mapping")
+    if extraction.get("archive_sha256") != sha256_file(archive):
+        raise ValueError("AMI archive hash changed after extraction")
+    members = extraction.get("members")
+    if not isinstance(members, list):
+        raise ValueError("AMI extraction evidence members must be a list")
+
+    selected_paths: list[Path] = [archive]
+    quality_items: list[dict[str, Any]] = [{
+        "path": normalized_relative_path(archive, inventory_root),
+        "classification": "downloaded_archive",
+        "disposition": "included",
+        "reason": "archive_hashed_before_extraction",
+        "details": {
+            "archive_sha256": extraction["archive_sha256"],
+            "archive_size_bytes": extraction["archive_size_bytes"],
+        },
+    }]
+    dependency_quarantine: list[dict[str, str]] = []
+    source_values = {
+        "participants": set(),
+        "meetings": set(),
+        "meeting_series": set(),
+        "recording_sites": set(),
+        "scenarios": set(),
+    }
+    partition_paths: list[str] = []
+    participant_required = frozenset({
+        "speaker_aligned_orthographic_transcript",
+        "timing_link",
+        "dialogue_act",
+    })
+    observed_selected_classifications: set[str] = set()
+
+    if any(not isinstance(member, dict) for member in members):
+        raise ValueError("AMI extraction member evidence must be an object")
+    for member in sorted(members, key=lambda item: item.get("path", "")):
+        if not isinstance(member, dict):
+            raise ValueError("AMI extraction member evidence must be an object")
+        member_path = member.get("path")
+        classification = member.get("classification")
+        selected = member.get("selected")
+        if not isinstance(member_path, str) or not isinstance(classification, str):
+            raise ValueError("AMI extraction member evidence is invalid")
+        if type(selected) is not bool:
+            raise ValueError("AMI extraction member selected flag must be boolean")
+        classified = classify_ami_member(member_path)
+        if (
+            classified["classification"] != classification
+            or classified["selected"] is not selected
+        ):
+            raise ValueError(f"AMI member classification drifted: {member_path}")
+        if classification == "directory":
+            continue
+
+        details: dict[str, Any] = {}
+        if selected:
+            observed_selected_classifications.add(classification)
+            extracted_path = root.joinpath(*member_path.split("/"))
+            if not extracted_path.is_file():
+                raise ValueError(f"selected AMI annotation file is missing: {member_path}")
+            try:
+                extracted_path.resolve(strict=True).relative_to(root)
+            except ValueError as exc:
+                raise ValueError("selected AMI annotation path escaped extraction root") from exc
+            selected_paths.append(extracted_path)
+            project_relative_path = normalized_relative_path(
+                extracted_path,
+                inventory_root,
+            )
+            if extracted_path.suffix.casefold() in {".xml", ".nxt"}:
+                file_metadata = _ami_metadata_from_xml(extracted_path)
+                for key in source_values:
+                    source_values[key].update(file_metadata[key])
+                details = {
+                    key: sorted(values)
+                    for key, values in file_metadata.items()
+                }
+                if (
+                    classification in participant_required
+                    and not file_metadata["participants"]
+                ):
+                    dependency_quarantine.append({
+                        "path": project_relative_path,
+                        "reason": "required_participant_identity_missing",
+                    })
+            if classification == "official_partition_metadata":
+                partition_paths.append(project_relative_path)
+            disposition = "included"
+        else:
+            disposition = "excluded"
+        quality_items.append({
+            "path": member_path,
+            "classification": classification,
+            "disposition": disposition,
+            "reason": member["reason"],
+            "details": details,
+        })
+
+    missing_classifications = (
+        AMI_SELECTED_CLASSIFICATIONS - observed_selected_classifications
+    )
+    if missing_classifications:
+        raise ValueError(
+            "missing selected AMI material classification: "
+            + sorted(missing_classifications)[0]
+        )
+
+    hash_inventory = build_hash_inventory(
+        dataset_id=AMI_DATASET_ID,
+        project_root=inventory_root,
+        selected_paths=selected_paths,
+    )
+    quality_items.sort(key=lambda item: item["path"])
+    dependency_quarantine.sort(key=lambda item: item["path"])
+    included_file_count = sum(
+        item["disposition"] == "included"
+        for item in quality_items
+    )
+    excluded_file_count = sum(
+        item["disposition"] == "excluded"
+        for item in quality_items
+    )
+    quality_inventory = {
+        "quality_inventory_version": 1,
+        "dataset_id": AMI_DATASET_ID,
+        "included_file_count": included_file_count,
+        "excluded_file_count": excluded_file_count,
+        "items": quality_items,
+        "limitations": [
+            "some_tno_participant_metadata_was_not_gathered",
+            "documented_synchronization_and_dropout_limitations_exist",
+            "media_limitations_are_retained_even_though_media_is_unselected",
+        ],
+        "dependency_quarantine": dependency_quarantine,
+        "source_metadata": {
+            "participants": sorted(source_values["participants"]),
+            "meetings": sorted(source_values["meetings"]),
+            "meeting_series": sorted(source_values["meeting_series"]),
+            "recording_sites": sorted(source_values["recording_sites"]),
+            "scenarios": sorted(source_values["scenarios"]),
+            "source_corpus": AMI_DATASET_ID,
+            "multi_party_applicability": True,
+            "official_partition_paths": sorted(partition_paths),
+            "official_partition_definitions_are_source_metadata_only": True,
+            "project_case_assignments": [],
+            "dependency_keys": {
+                "speaker": sorted(source_values["participants"]),
+                "call_session": sorted(source_values["meetings"]),
+                "dialogue_dyad": "not_applicable_multi_party_meeting",
+                "source_corpus": [AMI_DATASET_ID],
+                "scripted_scenario": sorted(source_values["scenarios"]),
+                "meeting_series": sorted(source_values["meeting_series"]),
+                "recording_site": sorted(source_values["recording_sites"]),
+            },
+        },
+    }
+    return {
+        "hash_inventory": hash_inventory,
+        "quality_inventory": quality_inventory,
+    }
 
 
 def dataset_profile(dataset_id: str) -> dict[str, Any]:
