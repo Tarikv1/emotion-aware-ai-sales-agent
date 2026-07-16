@@ -5146,6 +5146,244 @@ class VerificationEvidenceLockPhaseTests(unittest.TestCase):
                             "replacement root acquired a prepared capability"
                         )
 
+    def test_registered_verification_state_is_pathless(self) -> None:
+        from dataclasses import fields, is_dataclass
+
+        import scripts.emotion_state_phase_a_verification_evidence as verification
+
+        baseline_commit = "a" * 40
+        head_commit = "b" * 40
+        with tempfile.TemporaryDirectory(
+            prefix="emotion-state-verification-pathless-state-",
+        ) as temporary_directory:
+            root = Path(temporary_directory)
+            _policy_bytes, snapshot, ledger = self._phase_fixture(
+                root,
+                baseline_commit,
+                head_commit,
+            )
+
+            def assert_pathless(value: object) -> None:
+                self.assertNotIsInstance(value, Path)
+                if isinstance(value, str):
+                    self.assertNotIn(str(root), value)
+                    return
+                if is_dataclass(value) and not isinstance(value, type):
+                    for field in fields(value):
+                        assert_pathless(getattr(value, field.name))
+                elif isinstance(value, (list, tuple)):
+                    for item in value:
+                        assert_pathless(item)
+                elif isinstance(value, dict):
+                    for key, item in value.items():
+                        assert_pathless(key)
+                        assert_pathless(item)
+
+            with mock.patch.object(
+                verification,
+                "_collect_verification_snapshot",
+                return_value=deepcopy(snapshot),
+            ), mock.patch.object(
+                verification,
+                "_execute_guarded_commands",
+                return_value=deepcopy(ledger),
+            ):
+                prepared = verification.prepare_verification_evidence(
+                    root,
+                    baseline_commit,
+                    head_commit,
+                    "material-pending",
+                )
+                prepared_state = (
+                    verification._lookup_prepared_verification_state(
+                        prepared
+                    )
+                )
+                self.assertIsNotNone(prepared_state)
+                assert_pathless(prepared_state)
+                self.assertRegex(
+                    prepared_state.root.binding_digest,
+                    r"^[0-9A-F]{64}$",
+                )
+                recovery_dir = (
+                    root / ".tmp/emotion-state-001-phase-a-publication"
+                )
+                with verification.exclusive_verification_lock(
+                    prepared,
+                    root=root,
+                    recovery_dir=recovery_dir,
+                ) as capability:
+                    capability_state = (
+                        verification
+                        ._lookup_verification_lock_capability_state(
+                            capability
+                        )
+                    )
+                    self.assertIsNotNone(capability_state)
+                    assert_pathless(capability_state)
+                    self.assertIsInstance(
+                        capability_state.lease.handle.name,
+                        int,
+                    )
+                    verification.finalize_verification_evidence(
+                        prepared,
+                        root=root,
+                        capability=capability,
+                    )
+
+    def test_prepare_requires_a_usable_stable_root_identity(self) -> None:
+        import scripts.emotion_state_phase_a_verification_evidence as verification
+
+        baseline_commit = "a" * 40
+        head_commit = "b" * 40
+        with tempfile.TemporaryDirectory(
+            prefix="emotion-state-verification-stable-root-identity-",
+        ) as temporary_directory:
+            root = Path(temporary_directory)
+            _policy_bytes, snapshot, ledger = self._phase_fixture(
+                root,
+                baseline_commit,
+                head_commit,
+            )
+            root_key = os.path.normcase(os.path.abspath(root))
+            real_stat = verification.os.stat
+
+            def zero_inode_stat(
+                path: object,
+                *args: object,
+                **kwargs: object,
+            ) -> os.stat_result:
+                status = real_stat(path, *args, **kwargs)
+                try:
+                    candidate_key = os.path.normcase(
+                        os.path.abspath(os.fsdecode(path))
+                    )
+                except TypeError:
+                    return status
+                if candidate_key != root_key:
+                    return status
+                values = list(status)
+                values[1] = 0
+                return os.stat_result(values)
+
+            with mock.patch.object(
+                verification,
+                "_collect_verification_snapshot",
+                return_value=deepcopy(snapshot),
+            ), mock.patch.object(
+                verification,
+                "_execute_guarded_commands",
+                return_value=deepcopy(ledger),
+            ), mock.patch.object(
+                verification.os,
+                "stat",
+                side_effect=zero_inode_stat,
+            ):
+                with self.assertRaisesRegex(
+                    ValueError,
+                    "stable filesystem identity is unavailable",
+                ):
+                    verification.prepare_verification_evidence(
+                        root,
+                        baseline_commit,
+                        head_commit,
+                        "material-pending",
+                    )
+
+    def test_hybrid_exclusive_lock_reuses_released_persistent_sentinel(
+        self,
+    ) -> None:
+        import scripts.emotion_state_phase_a_verification_evidence as verification
+
+        baseline_commit = "a" * 40
+        head_commit = "b" * 40
+        with tempfile.TemporaryDirectory(
+            prefix="emotion-state-verification-hybrid-lock-",
+        ) as temporary_directory:
+            root = Path(temporary_directory)
+            _policy_bytes, snapshot, ledger = self._phase_fixture(
+                root,
+                baseline_commit,
+                head_commit,
+            )
+            recovery_dir = (
+                root / ".tmp/emotion-state-001-phase-a-publication"
+            )
+            lock_path = recovery_dir / "publication.lock"
+            with mock.patch.object(
+                verification,
+                "_collect_verification_snapshot",
+                return_value=deepcopy(snapshot),
+            ), mock.patch.object(
+                verification,
+                "_execute_guarded_commands",
+                return_value=deepcopy(ledger),
+            ):
+                seed = verification.prepare_verification_evidence(
+                    root,
+                    baseline_commit,
+                    head_commit,
+                    "material-pending",
+                )
+                with verification.persistent_verification_lock(
+                    seed,
+                    root=root,
+                    recovery_dir=recovery_dir,
+                ) as seed_capability:
+                    verification.finalize_verification_evidence(
+                        seed,
+                        root=root,
+                        capability=seed_capability,
+                    )
+                self.assertEqual(lock_path.read_bytes(), b"\0")
+
+                wrapped = verification.build_verification_evidence(
+                    root,
+                    baseline_commit,
+                    head_commit,
+                    "material-pending",
+                )
+                self.assertEqual(
+                    wrapped["repository_head_commit"],
+                    head_commit,
+                )
+                self.assertEqual(lock_path.read_bytes(), b"\0")
+
+                active = verification.prepare_verification_evidence(
+                    root,
+                    baseline_commit,
+                    head_commit,
+                    "material-pending",
+                )
+                blocked = verification.prepare_verification_evidence(
+                    root,
+                    baseline_commit,
+                    head_commit,
+                    "material-pending",
+                )
+                with verification.persistent_verification_lock(
+                    active,
+                    root=root,
+                    recovery_dir=recovery_dir,
+                ) as active_capability:
+                    with self.assertRaisesRegex(
+                        ValueError,
+                        "verification lock is already held",
+                    ):
+                        with verification.exclusive_verification_lock(
+                            blocked,
+                            root=root,
+                            recovery_dir=recovery_dir,
+                        ):
+                            self.fail(
+                                "exclusive lock overlapped persistent lock"
+                            )
+                    verification.finalize_verification_evidence(
+                        active,
+                        root=root,
+                        capability=active_capability,
+                    )
+
     def test_persistent_verification_lock_has_real_contention_and_expires(
         self,
     ) -> None:
@@ -5312,6 +5550,539 @@ class VerificationEvidenceLockPhaseTests(unittest.TestCase):
                         capability=reused_capability,
                     )
 
+    def test_verification_lock_rejects_recovery_and_lock_links(self) -> None:
+        import scripts.emotion_state_phase_a_verification_evidence as verification
+
+        baseline_commit = "a" * 40
+        head_commit = "b" * 40
+        with tempfile.TemporaryDirectory(
+            prefix="emotion-state-verification-link-paths-",
+        ) as temporary_directory:
+            parent = Path(temporary_directory)
+            recovery_root = parent / "recovery-root"
+            recovery_root.mkdir()
+            lock_root = parent / "lock-root"
+            lock_root.mkdir()
+            _policy_bytes, snapshot, ledger = self._phase_fixture(
+                recovery_root,
+                baseline_commit,
+                head_commit,
+            )
+            self._phase_fixture(
+                lock_root,
+                baseline_commit,
+                head_commit,
+            )
+            with mock.patch.object(
+                verification,
+                "_collect_verification_snapshot",
+                return_value=deepcopy(snapshot),
+            ), mock.patch.object(
+                verification,
+                "_execute_guarded_commands",
+                return_value=deepcopy(ledger),
+            ):
+                recovery_prepared = (
+                    verification.prepare_verification_evidence(
+                        recovery_root,
+                        baseline_commit,
+                        head_commit,
+                        "material-pending",
+                    )
+                )
+                lock_prepared = verification.prepare_verification_evidence(
+                    lock_root,
+                    baseline_commit,
+                    head_commit,
+                    "material-pending",
+                )
+
+                external_directory = parent / "external-recovery"
+                external_directory.mkdir()
+                recovery_link_created = True
+                try:
+                    (recovery_root / ".tmp").symlink_to(
+                        external_directory,
+                        target_is_directory=True,
+                    )
+                except OSError:
+                    recovery_link_created = False
+                    (recovery_root / ".tmp").mkdir()
+                real_link_check = verification._path_is_link_or_reparse
+
+                def recovery_link_check(path: Path) -> bool:
+                    if (
+                        not recovery_link_created
+                        and os.path.normcase(os.path.abspath(path))
+                        == os.path.normcase(
+                            os.path.abspath(recovery_root / ".tmp")
+                        )
+                    ):
+                        return True
+                    return real_link_check(path)
+
+                with mock.patch.object(
+                    verification,
+                    "_path_is_link_or_reparse",
+                    side_effect=recovery_link_check,
+                ), self.assertRaisesRegex(
+                    ValueError,
+                    "link or reparse",
+                ):
+                    with verification.exclusive_verification_lock(
+                        recovery_prepared,
+                        root=recovery_root,
+                        recovery_dir=(
+                            recovery_root
+                            / ".tmp/emotion-state-001-phase-a-publication"
+                        ),
+                    ):
+                        self.fail("linked recovery path acquired a lock")
+
+                lock_recovery = (
+                    lock_root
+                    / ".tmp/emotion-state-001-phase-a-publication"
+                )
+                lock_recovery.mkdir(parents=True)
+                external_lock = parent / "external-publication.lock"
+                external_lock.write_bytes(b"\0")
+                lock_path = lock_recovery / "publication.lock"
+                lock_link_created = True
+                try:
+                    lock_path.symlink_to(external_lock)
+                except OSError:
+                    lock_link_created = False
+                    lock_path.write_bytes(b"\0")
+
+                def lock_link_check(path: Path) -> bool:
+                    if (
+                        not lock_link_created
+                        and os.path.normcase(os.path.abspath(path))
+                        == os.path.normcase(os.path.abspath(lock_path))
+                    ):
+                        return True
+                    return real_link_check(path)
+
+                with mock.patch.object(
+                    verification,
+                    "_path_is_link_or_reparse",
+                    side_effect=lock_link_check,
+                ), self.assertRaisesRegex(
+                    ValueError,
+                    "link or reparse",
+                ):
+                    with verification.exclusive_verification_lock(
+                        lock_prepared,
+                        root=lock_root,
+                        recovery_dir=lock_recovery,
+                    ):
+                        self.fail("linked lock path acquired a lock")
+
+    def test_verification_lock_rejects_handle_path_identity_mismatch(
+        self,
+    ) -> None:
+        import scripts.emotion_state_phase_a_verification_evidence as verification
+
+        baseline_commit = "a" * 40
+        head_commit = "b" * 40
+        with tempfile.TemporaryDirectory(
+            prefix="emotion-state-verification-lock-handle-mismatch-",
+        ) as temporary_directory:
+            root = Path(temporary_directory)
+            _policy_bytes, snapshot, ledger = self._phase_fixture(
+                root,
+                baseline_commit,
+                head_commit,
+            )
+            real_fstat = verification.os.fstat
+            fstat_calls = 0
+
+            def mismatched_fstat(descriptor: int) -> os.stat_result:
+                nonlocal fstat_calls
+                fstat_calls += 1
+                status = real_fstat(descriptor)
+                if fstat_calls == 1:
+                    return status
+                values = list(status)
+                values[1] = max(1, int(status.st_ino) + 1)
+                return os.stat_result(values)
+
+            with mock.patch.object(
+                verification,
+                "_collect_verification_snapshot",
+                return_value=deepcopy(snapshot),
+            ), mock.patch.object(
+                verification,
+                "_execute_guarded_commands",
+                return_value=deepcopy(ledger),
+            ):
+                prepared = verification.prepare_verification_evidence(
+                    root,
+                    baseline_commit,
+                    head_commit,
+                    "material-pending",
+                )
+                recovery_dir = (
+                    root / ".tmp/emotion-state-001-phase-a-publication"
+                )
+                with mock.patch.object(
+                    verification.os,
+                    "fstat",
+                    side_effect=mismatched_fstat,
+                ), self.assertRaisesRegex(
+                    ValueError,
+                    "lock handle/path identity mismatch",
+                ):
+                    with verification.exclusive_verification_lock(
+                        prepared,
+                        root=root,
+                        recovery_dir=recovery_dir,
+                    ):
+                        self.fail("mismatched lock handle acquired a lease")
+                self.assertFalse(
+                    (recovery_dir / "publication.lock").exists()
+                )
+                fdopen_failure = (
+                    verification.prepare_verification_evidence(
+                        root,
+                        baseline_commit,
+                        head_commit,
+                        "material-pending",
+                    )
+                )
+                with mock.patch.object(
+                    verification.os,
+                    "fdopen",
+                    side_effect=OSError("synthetic fdopen failure"),
+                ), self.assertRaisesRegex(
+                    ValueError,
+                    "unable to open verification publication lock",
+                ):
+                    with verification.exclusive_verification_lock(
+                        fdopen_failure,
+                        root=root,
+                        recovery_dir=recovery_dir,
+                    ):
+                        self.fail("fdopen failure acquired a lease")
+                self.assertFalse(
+                    (recovery_dir / "publication.lock").exists()
+                )
+
+    def test_finalize_revalidates_the_active_lock_lease(self) -> None:
+        import scripts.emotion_state_phase_a_verification_evidence as verification
+
+        baseline_commit = "a" * 40
+        head_commit = "b" * 40
+        with tempfile.TemporaryDirectory(
+            prefix="emotion-state-verification-finalize-lease-",
+        ) as temporary_directory:
+            root = Path(temporary_directory)
+            _policy_bytes, snapshot, ledger = self._phase_fixture(
+                root,
+                baseline_commit,
+                head_commit,
+            )
+            real_fstat = verification.os.fstat
+
+            def mismatched_fstat(descriptor: int) -> os.stat_result:
+                status = real_fstat(descriptor)
+                values = list(status)
+                values[1] = max(1, int(status.st_ino) + 1)
+                return os.stat_result(values)
+
+            with mock.patch.object(
+                verification,
+                "_collect_verification_snapshot",
+                return_value=deepcopy(snapshot),
+            ), mock.patch.object(
+                verification,
+                "_execute_guarded_commands",
+                return_value=deepcopy(ledger),
+            ):
+                prepared = verification.prepare_verification_evidence(
+                    root,
+                    baseline_commit,
+                    head_commit,
+                    "material-pending",
+                )
+                recovery_dir = (
+                    root / ".tmp/emotion-state-001-phase-a-publication"
+                )
+                context = verification.exclusive_verification_lock(
+                    prepared,
+                    root=root,
+                    recovery_dir=recovery_dir,
+                )
+                capability = context.__enter__()
+                try:
+                    with mock.patch.object(
+                        verification.os,
+                        "fstat",
+                        side_effect=mismatched_fstat,
+                    ), self.assertRaisesRegex(
+                        ValueError,
+                        "lock handle/path identity mismatch",
+                    ):
+                        verification.finalize_verification_evidence(
+                            prepared,
+                            root=root,
+                            capability=capability,
+                        )
+                    result = verification.finalize_verification_evidence(
+                        prepared,
+                        root=root,
+                        capability=capability,
+                    )
+                    self.assertEqual(
+                        result["repository_head_commit"],
+                        head_commit,
+                    )
+                finally:
+                    context.__exit__(None, None, None)
+
+    def test_active_lease_rejects_root_replacement_after_finalize(
+        self,
+    ) -> None:
+        import scripts.emotion_state_phase_a_verification_evidence as verification
+
+        baseline_commit = "a" * 40
+        head_commit = "b" * 40
+        with tempfile.TemporaryDirectory(
+            prefix="emotion-state-verification-staging-lease-",
+        ) as temporary_directory:
+            root = Path(temporary_directory)
+            _policy_bytes, snapshot, ledger = self._phase_fixture(
+                root,
+                baseline_commit,
+                head_commit,
+            )
+            root_key = os.path.normcase(os.path.abspath(root))
+            real_stat = verification.os.stat
+            replaced = False
+
+            def replacement_stat(
+                path: object,
+                *args: object,
+                **kwargs: object,
+            ) -> os.stat_result:
+                status = real_stat(path, *args, **kwargs)
+                try:
+                    candidate_key = os.path.normcase(
+                        os.path.abspath(os.fsdecode(path))
+                    )
+                except TypeError:
+                    return status
+                if not replaced or candidate_key != root_key:
+                    return status
+                values = list(status)
+                values[1] = max(1, int(status.st_ino) + 1)
+                return os.stat_result(values)
+
+            with mock.patch.object(
+                verification,
+                "_collect_verification_snapshot",
+                return_value=deepcopy(snapshot),
+            ), mock.patch.object(
+                verification,
+                "_execute_guarded_commands",
+                return_value=deepcopy(ledger),
+            ), mock.patch.object(
+                verification.os,
+                "stat",
+                side_effect=replacement_stat,
+            ):
+                prepared = verification.prepare_verification_evidence(
+                    root,
+                    baseline_commit,
+                    head_commit,
+                    "material-pending",
+                )
+                recovery_dir = (
+                    root / ".tmp/emotion-state-001-phase-a-publication"
+                )
+                context = verification.exclusive_verification_lock(
+                    prepared,
+                    root=root,
+                    recovery_dir=recovery_dir,
+                )
+                capability = context.__enter__()
+                try:
+                    verification.finalize_verification_evidence(
+                        prepared,
+                        root=root,
+                        capability=capability,
+                    )
+                    verification.validate_active_verification_lock(
+                        prepared,
+                        root=root,
+                        capability=capability,
+                    )
+                    replaced = True
+                    with self.assertRaisesRegex(
+                        ValueError,
+                        "verification root identity mismatch",
+                    ):
+                        verification.validate_active_verification_lock(
+                            prepared,
+                            root=root,
+                            capability=capability,
+                        )
+                finally:
+                    replaced = False
+                    context.__exit__(None, None, None)
+
+    def test_lock_context_exit_revalidates_root_identity(self) -> None:
+        import scripts.emotion_state_phase_a_verification_evidence as verification
+
+        baseline_commit = "a" * 40
+        head_commit = "b" * 40
+        with tempfile.TemporaryDirectory(
+            prefix="emotion-state-verification-exit-lease-",
+        ) as temporary_directory:
+            root = Path(temporary_directory)
+            _policy_bytes, snapshot, ledger = self._phase_fixture(
+                root,
+                baseline_commit,
+                head_commit,
+            )
+            root_key = os.path.normcase(os.path.abspath(root))
+            real_stat = verification.os.stat
+            replaced = False
+
+            def replacement_stat(
+                path: object,
+                *args: object,
+                **kwargs: object,
+            ) -> os.stat_result:
+                status = real_stat(path, *args, **kwargs)
+                try:
+                    candidate_key = os.path.normcase(
+                        os.path.abspath(os.fsdecode(path))
+                    )
+                except TypeError:
+                    return status
+                if not replaced or candidate_key != root_key:
+                    return status
+                values = list(status)
+                values[1] = max(1, int(status.st_ino) + 1)
+                return os.stat_result(values)
+
+            with mock.patch.object(
+                verification,
+                "_collect_verification_snapshot",
+                return_value=deepcopy(snapshot),
+            ), mock.patch.object(
+                verification,
+                "_execute_guarded_commands",
+                return_value=deepcopy(ledger),
+            ), mock.patch.object(
+                verification.os,
+                "stat",
+                side_effect=replacement_stat,
+            ):
+                prepared = verification.prepare_verification_evidence(
+                    root,
+                    baseline_commit,
+                    head_commit,
+                    "material-pending",
+                )
+                recovery_dir = (
+                    root / ".tmp/emotion-state-001-phase-a-publication"
+                )
+                try:
+                    with self.assertRaisesRegex(
+                        ValueError,
+                        "verification root identity mismatch",
+                    ):
+                        with verification.exclusive_verification_lock(
+                            prepared,
+                            root=root,
+                            recovery_dir=recovery_dir,
+                        ) as capability:
+                            verification.finalize_verification_evidence(
+                                prepared,
+                                root=root,
+                                capability=capability,
+                            )
+                            replaced = True
+                finally:
+                    replaced = False
+
+    def test_expired_capability_does_not_pin_prepared_state_and_pickle_rejects(
+        self,
+    ) -> None:
+        import gc
+        import pickle
+        import weakref
+
+        import scripts.emotion_state_phase_a_verification_evidence as verification
+
+        baseline_commit = "a" * 40
+        head_commit = "b" * 40
+        with tempfile.TemporaryDirectory(
+            prefix="emotion-state-verification-capability-gc-",
+        ) as temporary_directory:
+            root = Path(temporary_directory)
+            _policy_bytes, snapshot, ledger = self._phase_fixture(
+                root,
+                baseline_commit,
+                head_commit,
+            )
+            with mock.patch.object(
+                verification,
+                "_collect_verification_snapshot",
+                return_value=deepcopy(snapshot),
+            ), mock.patch.object(
+                verification,
+                "_execute_guarded_commands",
+                return_value=deepcopy(ledger),
+            ):
+                prepared = verification.prepare_verification_evidence(
+                    root,
+                    baseline_commit,
+                    head_commit,
+                    "material-pending",
+                )
+                with self.assertRaisesRegex(TypeError, "cannot be copied"):
+                    pickle.dumps(prepared)
+                prepared_identity = id(prepared)
+                prepared_reference = weakref.ref(prepared)
+                recovery_dir = (
+                    root / ".tmp/emotion-state-001-phase-a-publication"
+                )
+                with verification.exclusive_verification_lock(
+                    prepared,
+                    root=root,
+                    recovery_dir=recovery_dir,
+                ) as capability:
+                    with self.assertRaisesRegex(
+                        TypeError,
+                        "cannot be copied",
+                    ):
+                        pickle.dumps(capability)
+                capability_identity = id(capability)
+                capability_reference = weakref.ref(capability)
+
+                del prepared
+                gc.collect()
+                self.assertIsNone(prepared_reference())
+                self.assertNotIn(
+                    prepared_identity,
+                    verification._PREPARED_VERIFICATION_STATES,
+                )
+                self.assertIn(
+                    capability_identity,
+                    verification._VERIFICATION_LOCK_CAPABILITIES,
+                )
+
+                del capability
+                gc.collect()
+                self.assertIsNone(capability_reference())
+                self.assertNotIn(
+                    capability_identity,
+                    verification._VERIFICATION_LOCK_CAPABILITIES,
+                )
+
     def test_caller_locked_finalize_rejects_real_file_and_policy_races(
         self,
     ) -> None:
@@ -5421,10 +6192,14 @@ class VerificationEvidenceLockPhaseTests(unittest.TestCase):
                 root / ".tmp/emotion-state-001-phase-a-publication"
             )
             lock_path = recovery_dir / "publication.lock"
-            lock_observations: list[bool] = []
+            lock_observations: list[bytes | None] = []
 
             def collect_snapshot(**_: object) -> dict[str, object]:
-                lock_observations.append(lock_path.exists())
+                lock_observations.append(
+                    lock_path.read_bytes()
+                    if lock_path.exists()
+                    else None
+                )
                 return deepcopy(snapshot)
 
             with mock.patch.object(
@@ -5443,7 +6218,7 @@ class VerificationEvidenceLockPhaseTests(unittest.TestCase):
                     "material-pending",
                 )
 
-            self.assertEqual(lock_observations, [False, True])
+            self.assertEqual(lock_observations, [None, b""])
             self.assertFalse(lock_path.exists())
 
 

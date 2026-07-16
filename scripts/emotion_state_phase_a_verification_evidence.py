@@ -3011,39 +3011,6 @@ def _execute_guarded_commands(
     return ledger
 
 
-@contextmanager
-def publication_lock(*, recovery_dir: Path) -> Iterator[Path]:
-    """Hold the deterministic publication mutex for one locked re-read."""
-
-    recovery_path = Path(recovery_dir)
-    try:
-        recovery_path.mkdir(parents=True, exist_ok=True)
-    except OSError as exc:
-        raise ValueError(
-            "unable to prepare verification publication recovery directory"
-        ) from exc
-    lock_path = recovery_path / PUBLICATION_LOCK_NAME
-    flags = os.O_CREAT | os.O_EXCL | os.O_WRONLY
-    if hasattr(os, "O_BINARY"):
-        flags |= os.O_BINARY
-    try:
-        descriptor = os.open(lock_path, flags, 0o600)
-    except FileExistsError as exc:
-        raise ValueError("verification publication lock is already held") from exc
-    except OSError as exc:
-        raise ValueError("unable to acquire verification publication lock") from exc
-    try:
-        yield lock_path
-    finally:
-        try:
-            os.close(descriptor)
-        finally:
-            try:
-                lock_path.unlink()
-            except FileNotFoundError:
-                pass
-
-
 def _read_validated_guard_policy_bytes(root: Path) -> bytes:
     policy_path = root / GUARD_POLICY_RELATIVE_PATH
     try:
@@ -3191,8 +3158,17 @@ class VerificationLockCapability:
 
 @dataclass(frozen=True, slots=True)
 class _VerificationRootIdentity:
-    resolved_path: Path
-    filesystem_identity: tuple[int, int] | None
+    binding_digest: str
+
+
+@dataclass(slots=True)
+class _VerificationLockLease:
+    handle: BinaryIO
+    lock_path_digest: str
+    file_identity: tuple[int, int]
+    sentinel_kind: str
+    advisory_lock_acquired: bool
+    remove_on_exit: bool
 
 
 @dataclass(slots=True)
@@ -3209,12 +3185,23 @@ class _PreparedVerificationState:
 
 @dataclass(slots=True)
 class _VerificationLockCapabilityState:
-    prepared: PreparedVerificationEvidence
+    prepared_reference: (
+        weakref.ReferenceType[PreparedVerificationEvidence] | None
+    )
     root: _VerificationRootIdentity
+    lease: _VerificationLockLease | None
     active: bool = True
 
 
 _OPAQUE_VERIFICATION_TOKEN_FACTORY = object()
+_ROOT_IDENTITY_DIGEST_DOMAIN = (
+    b"emotion-state-verification-root-identity-v1"
+)
+_LOCK_PATH_DIGEST_DOMAIN = (
+    b"emotion-state-verification-lock-path-identity-v1"
+)
+_LEGACY_LOCK_SENTINEL_KIND = "legacy-zero"
+_PERSISTENT_LOCK_SENTINEL_KIND = "persistent-nul"
 _VERIFICATION_STATE_LOCK = threading.RLock()
 _PREPARED_VERIFICATION_STATES: dict[
     int,
@@ -3293,6 +3280,46 @@ def _resolve_verification_root(root: Path) -> Path:
     return root_path
 
 
+def _stable_filesystem_identity(
+    status: os.stat_result,
+    *,
+    label: str,
+) -> tuple[int, int]:
+    try:
+        device = int(status.st_dev)
+        inode = int(status.st_ino)
+    except (AttributeError, TypeError, ValueError) as exc:
+        raise ValueError(
+            f"{label} stable filesystem identity is unavailable"
+        ) from exc
+    if device < 0 or inode <= 0:
+        raise ValueError(
+            f"{label} stable filesystem identity is unavailable"
+        )
+    return device, inode
+
+
+def _path_identity_digest(
+    domain: bytes,
+    path: Path,
+    filesystem_identity: tuple[int, int],
+) -> str:
+    normalized_path = os.path.normcase(
+        os.path.normpath(str(Path(os.path.abspath(path))))
+    )
+    components = (
+        domain,
+        os.fsencode(normalized_path),
+        str(filesystem_identity[0]).encode("ascii"),
+        str(filesystem_identity[1]).encode("ascii"),
+    )
+    digest = hashlib.sha256()
+    for component in components:
+        digest.update(len(component).to_bytes(8, "big"))
+        digest.update(component)
+    return digest.hexdigest().upper()
+
+
 def _capture_verification_root_identity(
     root: Path,
 ) -> _VerificationRootIdentity:
@@ -3302,15 +3329,16 @@ def _capture_verification_root_identity(
         raise ValueError(
             "verification root identity could not be read"
         ) from exc
-    inode = int(status.st_ino)
-    filesystem_identity = (
-        (int(status.st_dev), inode)
-        if inode != 0
-        else None
+    filesystem_identity = _stable_filesystem_identity(
+        status,
+        label="verification root",
     )
     return _VerificationRootIdentity(
-        resolved_path=root,
-        filesystem_identity=filesystem_identity,
+        binding_digest=_path_identity_digest(
+            _ROOT_IDENTITY_DIGEST_DOMAIN,
+            root,
+            filesystem_identity,
+        ),
     )
 
 
@@ -3318,32 +3346,25 @@ def _same_verification_root_identity(
     expected: _VerificationRootIdentity,
     actual: _VerificationRootIdentity,
 ) -> bool:
-    if not _same_filesystem_path(
-        expected.resolved_path,
-        actual.resolved_path,
-    ):
-        return False
-    if expected.filesystem_identity is None:
-        return True
-    return expected.filesystem_identity == actual.filesystem_identity
+    return expected.binding_digest == actual.binding_digest
 
 
 def _validated_verification_recovery_directory(
     root: Path,
     recovery_dir: Path,
 ) -> Path:
-    expected = root.joinpath(
+    root_path = Path(os.path.abspath(root))
+    expected = root_path.joinpath(
         *PurePosixPath(PUBLICATION_RECOVERY_RELATIVE_PATH).parts
-    ).resolve(strict=False)
-    try:
-        candidate = Path(recovery_dir).resolve(strict=False)
-    except (OSError, RuntimeError, TypeError, ValueError) as exc:
-        raise ValueError(
-            "verification recovery directory could not be resolved"
-        ) from exc
+    )
+    candidate = Path(os.path.abspath(recovery_dir))
     if not _same_filesystem_path(candidate, expected):
         raise ValueError("verification recovery directory is not exact")
-    return candidate
+    return _ensure_exact_non_link_directory(
+        candidate,
+        root=root_path,
+        label="verification recovery directory",
+    )
 
 
 def _registered_prepared_state(
@@ -3362,11 +3383,6 @@ def _registered_prepared_state(
             raise ValueError(
                 "prepared verification evidence is not module-origin"
             )
-        if not _same_filesystem_path(
-            state.root.resolved_path,
-            root.resolved_path,
-        ):
-            raise ValueError("prepared verification root mismatch")
         if not _same_verification_root_identity(state.root, root):
             raise ValueError(
                 "prepared verification root identity mismatch"
@@ -3382,6 +3398,7 @@ def _activate_verification_lock_capability(
     prepared: PreparedVerificationEvidence,
     *,
     root: _VerificationRootIdentity,
+    lease: _VerificationLockLease,
 ) -> VerificationLockCapability:
     with _VERIFICATION_STATE_LOCK:
         _registered_prepared_state(
@@ -3395,8 +3412,9 @@ def _activate_verification_lock_capability(
         _register_verification_lock_capability(
             capability,
             _VerificationLockCapabilityState(
-                prepared=prepared,
+                prepared_reference=weakref.ref(prepared),
                 root=root,
+                lease=lease,
             ),
         )
         return capability
@@ -3409,6 +3427,56 @@ def _expire_verification_lock_capability(
         state = _lookup_verification_lock_capability_state(capability)
         if state is not None:
             state.active = False
+            state.prepared_reference = None
+            state.lease = None
+
+
+def _registered_verification_lock_capability_state(
+    prepared: PreparedVerificationEvidence,
+    *,
+    root: _VerificationRootIdentity,
+    capability: VerificationLockCapability | None,
+    require_unconsumed: bool,
+) -> tuple[
+    _PreparedVerificationState,
+    _VerificationLockCapabilityState,
+]:
+    prepared_state = _registered_prepared_state(
+        prepared,
+        root=root,
+        require_unconsumed=require_unconsumed,
+    )
+    if not isinstance(capability, VerificationLockCapability):
+        raise ValueError(
+            "active verification lock capability is required"
+        )
+    capability_state = _lookup_verification_lock_capability_state(
+        capability
+    )
+    if capability_state is None:
+        raise ValueError(
+            "active verification lock capability is required"
+        )
+    if not capability_state.active:
+        raise ValueError("verification lock capability is expired")
+    prepared_reference = capability_state.prepared_reference
+    if (
+        prepared_reference is None
+        or prepared_reference() is not prepared
+    ):
+        raise ValueError(
+            "verification lock capability is bound to a different prepared token"
+        )
+    if not _same_verification_root_identity(
+        capability_state.root,
+        root,
+    ):
+        raise ValueError(
+            "verification lock capability root identity mismatch"
+        )
+    if capability_state.lease is None:
+        raise ValueError("verification lock capability is expired")
+    return prepared_state, capability_state
 
 
 def _consume_prepared_verification_state(
@@ -3418,40 +3486,14 @@ def _consume_prepared_verification_state(
     capability: VerificationLockCapability | None,
 ) -> _PreparedVerificationState:
     with _VERIFICATION_STATE_LOCK:
-        prepared_state = _registered_prepared_state(
-            prepared,
-            root=root,
-            require_unconsumed=True,
+        prepared_state, _capability_state = (
+            _registered_verification_lock_capability_state(
+                prepared,
+                root=root,
+                capability=capability,
+                require_unconsumed=True,
+            )
         )
-        if not isinstance(capability, VerificationLockCapability):
-            raise ValueError(
-                "active verification lock capability is required"
-            )
-        capability_state = _lookup_verification_lock_capability_state(
-            capability
-        )
-        if capability_state is None:
-            raise ValueError(
-                "active verification lock capability is required"
-            )
-        if not capability_state.active:
-            raise ValueError("verification lock capability is expired")
-        if capability_state.prepared is not prepared:
-            raise ValueError(
-                "verification lock capability is bound to a different prepared token"
-            )
-        if not _same_filesystem_path(
-            capability_state.root.resolved_path,
-            root.resolved_path,
-        ):
-            raise ValueError("verification lock capability root mismatch")
-        if not _same_verification_root_identity(
-            capability_state.root,
-            root,
-        ):
-            raise ValueError(
-                "verification lock capability root identity mismatch"
-            )
         prepared_state.consumed = True
         return prepared_state
 
@@ -3496,109 +3538,418 @@ def _release_persistent_verification_os_lock(handle: BinaryIO) -> None:
         fcntl.flock(handle.fileno(), fcntl.LOCK_UN)
 
 
-def _validate_persistent_verification_lock_contents(
-    handle: BinaryIO,
-) -> None:
-    try:
-        handle.seek(0, os.SEEK_END)
-        if handle.tell() != 1:
-            raise ValueError(
-                "persistent verification lock contents are invalid"
-            )
-        handle.seek(0)
-        if handle.read(1) != b"\0":
-            raise ValueError(
-                "persistent verification lock contents are invalid"
-            )
-        handle.seek(0)
-    except OSError as exc:
-        raise ValueError(
-            "persistent verification lock contents are invalid"
-        ) from exc
-
-
-def _open_persistent_verification_lock(lock_path: Path) -> BinaryIO:
-    flags = os.O_CREAT | os.O_EXCL | os.O_RDWR
+def _verification_lock_open_flags(*, create: bool) -> int:
+    flags = os.O_RDWR
+    if create:
+        flags |= os.O_CREAT | os.O_EXCL
     if hasattr(os, "O_BINARY"):
         flags |= os.O_BINARY
+    flags |= getattr(os, "O_NOFOLLOW", 0)
+    return flags
+
+
+def _verification_lock_path_status(
+    lock_path: Path,
+    *,
+    root: Path,
+) -> tuple[os.stat_result, tuple[int, int]]:
+    _validate_exact_non_link_path(
+        lock_path,
+        root=root,
+        label="verification publication lock",
+        require_directory=False,
+    )
     try:
-        descriptor = os.open(lock_path, flags, 0o600)
-    except FileExistsError:
+        status = lock_path.lstat()
+    except OSError as exc:
+        raise ValueError(
+            "verification publication lock could not be inspected"
+        ) from exc
+    if _path_is_link_or_reparse(lock_path):
+        raise ValueError(
+            "verification publication lock traverses a link or reparse point"
+        )
+    if not stat.S_ISREG(status.st_mode):
+        raise ValueError(
+            "verification publication lock is not a regular file"
+        )
+    return status, _stable_filesystem_identity(
+        status,
+        label="verification publication lock",
+    )
+
+
+def _verification_lock_descriptor_identity(
+    descriptor: int,
+) -> tuple[int, int]:
+    try:
+        status = os.fstat(descriptor)
+    except (OSError, ValueError) as exc:
+        raise ValueError(
+            "verification lock handle/path identity mismatch"
+        ) from exc
+    if not stat.S_ISREG(status.st_mode):
+        raise ValueError(
+            "verification lock handle/path identity mismatch"
+        )
+    return _stable_filesystem_identity(
+        status,
+        label="verification publication lock",
+    )
+
+
+def _verification_lock_handle_identity(
+    handle: BinaryIO,
+) -> tuple[int, int]:
+    try:
+        descriptor = handle.fileno()
+    except (OSError, ValueError) as exc:
+        raise ValueError(
+            "verification lock handle/path identity mismatch"
+        ) from exc
+    return _verification_lock_descriptor_identity(descriptor)
+
+
+def _validate_verification_lock_handle_path_identity(
+    handle: BinaryIO,
+    lock_path: Path,
+    *,
+    root: Path,
+    expected_identity: tuple[int, int],
+) -> None:
+    _first_status, first_identity = _verification_lock_path_status(
+        lock_path,
+        root=root,
+    )
+    handle_identity = _verification_lock_handle_identity(handle)
+    _second_status, second_identity = _verification_lock_path_status(
+        lock_path,
+        root=root,
+    )
+    if (
+        first_identity != expected_identity
+        or handle_identity != expected_identity
+        or second_identity != expected_identity
+    ):
+        raise ValueError(
+            "verification lock handle/path identity mismatch"
+        )
+
+
+def _verification_lock_contents(
+    handle: BinaryIO,
+    *,
+    sentinel_kind: str,
+    invalid_message: str,
+) -> None:
+    expected = (
+        b""
+        if sentinel_kind == _LEGACY_LOCK_SENTINEL_KIND
+        else b"\0"
+    )
+    try:
+        handle.seek(0, os.SEEK_END)
+        size = handle.tell()
+        handle.seek(0)
+        content = handle.read(size + 1)
+        handle.seek(0)
+    except (OSError, ValueError) as exc:
+        raise ValueError(invalid_message) from exc
+    if content != expected:
+        raise ValueError(invalid_message)
+
+
+def _safe_unlink_created_verification_lock(
+    lock_path: Path,
+    *,
+    root: Path,
+    expected_identity: tuple[int, int] | None,
+) -> None:
+    if expected_identity is None:
+        return
+    try:
+        _status, current_identity = _verification_lock_path_status(
+            lock_path,
+            root=root,
+        )
+    except (FileNotFoundError, ValueError):
+        return
+    if current_identity != expected_identity:
+        return
+    try:
+        lock_path.unlink()
+    except FileNotFoundError:
+        pass
+
+
+def _acquire_verification_lock_lease(
+    lock_path: Path,
+    *,
+    root: Path,
+    persistent_api: bool,
+) -> _VerificationLockLease:
+    held_message = (
+        "persistent verification lock is already held"
+        if persistent_api
+        else "verification lock is already held"
+    )
+    invalid_message = (
+        "persistent verification lock contents are invalid"
+        if persistent_api
+        else "verification lock contents are invalid"
+    )
+    descriptor: int | None = None
+    handle: BinaryIO | None = None
+    created = False
+    created_identity: tuple[int, int] | None = None
+    advisory_lock_acquired = False
+    sentinel_kind = _PERSISTENT_LOCK_SENTINEL_KIND
+    try:
         try:
-            handle = lock_path.open("r+b")
+            descriptor = os.open(
+                lock_path,
+                _verification_lock_open_flags(create=True),
+                0o600,
+            )
+            created = True
+        except FileExistsError:
+            status, expected_identity = (
+                _verification_lock_path_status(
+                    lock_path,
+                    root=root,
+                )
+            )
+            if status.st_size == 0:
+                raise ValueError(held_message)
+            if status.st_size != 1:
+                raise ValueError(invalid_message)
+            try:
+                descriptor = os.open(
+                    lock_path,
+                    _verification_lock_open_flags(create=False),
+                )
+            except OSError as exc:
+                raise ValueError(
+                    "unable to open verification publication lock"
+                ) from exc
         except OSError as exc:
             raise ValueError(
-                "unable to open persistent verification publication lock"
+                "unable to create verification publication lock"
             ) from exc
+
+        if created:
+            _status, expected_identity = (
+                _verification_lock_path_status(
+                    lock_path,
+                    root=root,
+                )
+            )
+        descriptor_identity = _verification_lock_descriptor_identity(
+            descriptor
+        )
+        if descriptor_identity != expected_identity:
+            raise ValueError(
+                "verification lock handle/path identity mismatch"
+            )
+        if created:
+            created_identity = expected_identity
+
         try:
-            handle.seek(0, os.SEEK_END)
-            size = handle.tell()
-            if size == 0:
+            handle = os.fdopen(descriptor, "r+b")
+            descriptor = None
+        except OSError as exc:
+            raise ValueError(
+                "unable to open verification publication lock"
+            ) from exc
+
+        if created:
+            sentinel_kind = (
+                _PERSISTENT_LOCK_SENTINEL_KIND
+                if persistent_api
+                else _LEGACY_LOCK_SENTINEL_KIND
+            )
+        _validate_verification_lock_handle_path_identity(
+            handle,
+            lock_path,
+            root=root,
+            expected_identity=expected_identity,
+        )
+
+        if created and persistent_api:
+            try:
+                if handle.write(b"\0") != 1:
+                    raise OSError(
+                        "persistent lock sentinel write was incomplete"
+                    )
+                handle.flush()
+                os.fsync(handle.fileno())
+                handle.seek(0)
+            except OSError as exc:
                 raise ValueError(
-                    "persistent verification lock is already held"
-                )
-            if size != 1:
-                raise ValueError(
-                    "persistent verification lock contents are invalid"
-                )
-            handle.seek(0)
-            return handle
-        except (OSError, ValueError):
+                    "unable to initialize persistent verification publication lock"
+                ) from exc
+
+        advisory_lock_required = persistent_api or not created
+        if advisory_lock_required:
+            try:
+                _acquire_persistent_verification_os_lock(handle)
+            except OSError as exc:
+                raise ValueError(held_message) from exc
+            advisory_lock_acquired = True
+
+        _verification_lock_contents(
+            handle,
+            sentinel_kind=sentinel_kind,
+            invalid_message=invalid_message,
+        )
+        _validate_verification_lock_handle_path_identity(
+            handle,
+            lock_path,
+            root=root,
+            expected_identity=expected_identity,
+        )
+        return _VerificationLockLease(
+            handle=handle,
+            lock_path_digest=_path_identity_digest(
+                _LOCK_PATH_DIGEST_DOMAIN,
+                lock_path,
+                expected_identity,
+            ),
+            file_identity=expected_identity,
+            sentinel_kind=sentinel_kind,
+            advisory_lock_acquired=advisory_lock_acquired,
+            remove_on_exit=created and not persistent_api,
+        )
+    except BaseException:
+        if advisory_lock_acquired and handle is not None:
+            try:
+                _release_persistent_verification_os_lock(handle)
+            except OSError:
+                pass
+        if handle is not None:
             try:
                 handle.close()
             except OSError:
                 pass
-            raise
-    except OSError as exc:
-        raise ValueError(
-            "unable to open persistent verification publication lock"
-        ) from exc
-    try:
-        handle = os.fdopen(descriptor, "r+b")
-    except OSError as exc:
-        try:
-            os.close(descriptor)
-        except OSError:
-            pass
-        try:
-            lock_path.unlink()
-        except OSError:
-            pass
-        raise ValueError(
-            "unable to open persistent verification publication lock"
-        ) from exc
-    try:
-        if handle.write(b"\0") != 1:
-            raise OSError(
-                "persistent verification lock sentinel write was incomplete"
+        elif descriptor is not None:
+            try:
+                os.close(descriptor)
+            except OSError:
+                pass
+        if created:
+            _safe_unlink_created_verification_lock(
+                lock_path,
+                root=root,
+                expected_identity=created_identity,
             )
-        handle.flush()
-        os.fsync(handle.fileno())
-        handle.seek(0)
-        return handle
-    except OSError as exc:
-        try:
-            handle.close()
-        except OSError:
-            pass
-        try:
-            lock_path.unlink()
-        except OSError:
-            pass
+        raise
+
+
+def _validate_verification_lock_lease(
+    root: Path,
+    lease: _VerificationLockLease,
+) -> None:
+    if lease.handle.closed:
+        raise ValueError("verification lock capability is expired")
+    recovery_path = _validated_verification_recovery_directory(
+        root,
+        root.joinpath(
+            *PurePosixPath(PUBLICATION_RECOVERY_RELATIVE_PATH).parts
+        ),
+    )
+    lock_path = recovery_path / PUBLICATION_LOCK_NAME
+    _validate_verification_lock_handle_path_identity(
+        lease.handle,
+        lock_path,
+        root=root,
+        expected_identity=lease.file_identity,
+    )
+    if lease.lock_path_digest != _path_identity_digest(
+        _LOCK_PATH_DIGEST_DOMAIN,
+        lock_path,
+        lease.file_identity,
+    ):
         raise ValueError(
-            "unable to initialize persistent verification publication lock"
-        ) from exc
+            "verification lock handle/path identity mismatch"
+        )
+    _verification_lock_contents(
+        lease.handle,
+        sentinel_kind=lease.sentinel_kind,
+        invalid_message="verification lock contents are invalid",
+    )
+
+
+def validate_active_verification_lock(
+    prepared: PreparedVerificationEvidence,
+    *,
+    root: Path,
+    capability: VerificationLockCapability | None,
+) -> None:
+    """Revalidate an active, prepared-bound lease without consuming it."""
+
+    root_path = _resolve_verification_root(root)
+    root_identity = _capture_verification_root_identity(root_path)
+    with _VERIFICATION_STATE_LOCK:
+        _prepared_state, capability_state = (
+            _registered_verification_lock_capability_state(
+                prepared,
+                root=root_identity,
+                capability=capability,
+                require_unconsumed=False,
+            )
+        )
+        lease = capability_state.lease
+        if lease is None:
+            raise ValueError("verification lock capability is expired")
+        _validate_verification_lock_lease(root_path, lease)
+
+
+def _release_verification_lock_lease(
+    lease: _VerificationLockLease,
+    *,
+    root: Path,
+) -> None:
+    recovery_path = Path(os.path.abspath(root)).joinpath(
+        *PurePosixPath(PUBLICATION_RECOVERY_RELATIVE_PATH).parts
+    )
+    lock_path = recovery_path / PUBLICATION_LOCK_NAME
+    remove_lock = False
+    if lease.remove_on_exit:
+        try:
+            _validate_verification_lock_handle_path_identity(
+                lease.handle,
+                lock_path,
+                root=root,
+                expected_identity=lease.file_identity,
+            )
+            remove_lock = True
+        except ValueError:
+            remove_lock = False
+    if lease.advisory_lock_acquired:
+        try:
+            _release_persistent_verification_os_lock(lease.handle)
+        except OSError:
+            pass
+    try:
+        lease.handle.close()
+    except OSError:
+        pass
+    if remove_lock:
+        _safe_unlink_created_verification_lock(
+            lock_path,
+            root=root,
+            expected_identity=lease.file_identity,
+        )
 
 
 @contextmanager
-def exclusive_verification_lock(
+def _verification_lock_context(
     prepared: PreparedVerificationEvidence,
     *,
     root: Path,
     recovery_dir: Path,
+    persistent_api: bool,
 ) -> Iterator[VerificationLockCapability]:
-    """Yield a capability while the legacy exclusive-file lock is active."""
-
     root_path = _resolve_verification_root(root)
     root_identity = _capture_verification_root_identity(root_path)
     recovery_path = _validated_verification_recovery_directory(
@@ -3610,18 +3961,61 @@ def exclusive_verification_lock(
         root=root_identity,
         require_unconsumed=True,
     )
-    with publication_lock(recovery_dir=recovery_path):
+    lease = _acquire_verification_lock_lease(
+        recovery_path / PUBLICATION_LOCK_NAME,
+        root=root_path,
+        persistent_api=persistent_api,
+    )
+    try:
         locked_root_identity = _capture_verification_root_identity(
             root_path
         )
         capability = _activate_verification_lock_capability(
             prepared,
             root=locked_root_identity,
+            lease=lease,
         )
+    except BaseException:
+        _release_verification_lock_lease(lease, root=root_path)
+        raise
+    validation_error: BaseException | None = None
+    try:
+        yield capability
+    finally:
         try:
-            yield capability
+            validate_active_verification_lock(
+                prepared,
+                root=root_path,
+                capability=capability,
+            )
+        except BaseException as exc:
+            validation_error = exc
         finally:
             _expire_verification_lock_capability(capability)
+            _release_verification_lock_lease(
+                lease,
+                root=root_path,
+            )
+        if validation_error is not None:
+            raise validation_error
+
+
+@contextmanager
+def exclusive_verification_lock(
+    prepared: PreparedVerificationEvidence,
+    *,
+    root: Path,
+    recovery_dir: Path,
+) -> Iterator[VerificationLockCapability]:
+    """Yield a hybrid legacy-or-advisory verification lock capability."""
+
+    with _verification_lock_context(
+        prepared,
+        root=root,
+        recovery_dir=recovery_dir,
+        persistent_api=False,
+    ) as capability:
+        yield capability
 
 
 @contextmanager
@@ -3633,58 +4027,13 @@ def persistent_verification_lock(
 ) -> Iterator[VerificationLockCapability]:
     """Yield a capability while the runner-compatible OS lock is active."""
 
-    root_path = _resolve_verification_root(root)
-    root_identity = _capture_verification_root_identity(root_path)
-    recovery_path = _validated_verification_recovery_directory(
-        root_path,
-        recovery_dir,
-    )
-    _registered_prepared_state(
+    with _verification_lock_context(
         prepared,
-        root=root_identity,
-        require_unconsumed=True,
-    )
-    try:
-        recovery_path.mkdir(parents=True, exist_ok=True)
-    except OSError as exc:
-        raise ValueError(
-            "unable to prepare verification publication recovery directory"
-        ) from exc
-    handle = _open_persistent_verification_lock(
-        recovery_path / PUBLICATION_LOCK_NAME
-    )
-
-    lock_acquired = False
-    capability: VerificationLockCapability | None = None
-    try:
-        try:
-            _acquire_persistent_verification_os_lock(handle)
-        except OSError as exc:
-            raise ValueError(
-                "persistent verification lock is already held"
-            ) from exc
-        lock_acquired = True
-        _validate_persistent_verification_lock_contents(handle)
-        locked_root_identity = _capture_verification_root_identity(
-            root_path
-        )
-        capability = _activate_verification_lock_capability(
-            prepared,
-            root=locked_root_identity,
-        )
+        root=root,
+        recovery_dir=recovery_dir,
+        persistent_api=True,
+    ) as capability:
         yield capability
-    finally:
-        if capability is not None:
-            _expire_verification_lock_capability(capability)
-        if lock_acquired:
-            try:
-                _release_persistent_verification_os_lock(handle)
-            except OSError:
-                pass
-        try:
-            handle.close()
-        except OSError:
-            pass
 
 
 def prepare_verification_evidence(
@@ -3751,6 +4100,11 @@ def finalize_verification_evidence(
     """Finalize canonical evidence while the caller holds its publication lock."""
 
     root_path = _resolve_verification_root(root)
+    validate_active_verification_lock(
+        prepared,
+        root=root_path,
+        capability=capability,
+    )
     root_identity = _capture_verification_root_identity(root_path)
     prepared_state = _consume_prepared_verification_state(
         prepared,
