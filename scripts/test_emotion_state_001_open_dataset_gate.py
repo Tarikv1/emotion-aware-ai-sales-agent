@@ -596,6 +596,66 @@ class CohortReleaseTests(unittest.TestCase):
         self.assertEqual(release["release_status"], "suppressed")
         self.assertEqual(release["unique_speaker_count"], 5)
 
+    def test_discovery_gate_rejects_missing_metric_membership_keys(self) -> None:
+        from scripts.emotion_state_cohort_release_contracts import (
+            canonical_record_digest,
+            evaluate_discovery_gate,
+            fixture_records,
+        )
+
+        records = fixture_records(20, 5)
+        records[0]["metric_cell_memberships"] = {
+            "eligible_call_count": ["__scalar__"],
+        }
+        records[0]["canonical_record_digest"] = canonical_record_digest(records[0])
+
+        with self.assertRaisesRegex(
+            ValueError,
+            "metric_cell_memberships.*metric allowlist",
+        ):
+            evaluate_discovery_gate(records)
+
+    def test_discovery_gate_rejects_identity_bearing_scalar_membership(self) -> None:
+        from scripts.emotion_state_cohort_release_contracts import (
+            canonical_record_digest,
+            evaluate_discovery_gate,
+            fixture_records,
+        )
+
+        records = fixture_records(20, 5)
+        records[0]["metric_cell_memberships"]["eligible_call_count"] = [
+            "person@example.test",
+        ]
+        records[0]["canonical_record_digest"] = canonical_record_digest(records[0])
+
+        with self.assertRaisesRegex(
+            ValueError,
+            "metric_cell_memberships.eligible_call_count.*__scalar__",
+        ):
+            evaluate_discovery_gate(records)
+
+    def test_discovery_gate_rejects_nested_membership_on_ineligible_record(
+        self,
+    ) -> None:
+        from scripts.emotion_state_cohort_release_contracts import (
+            canonical_record_digest,
+            evaluate_discovery_gate,
+            fixture_records,
+        )
+
+        records = fixture_records(20, 5)
+        records[0]["eligible"] = False
+        records[0]["metric_cell_memberships"]["audio_quality_bucket_counts"] = [
+            {"email_address": "person@example.test"},
+        ]
+        records[0]["canonical_record_digest"] = canonical_record_digest(records[0])
+
+        with self.assertRaisesRegex(
+            ValueError,
+            "metric_cell_memberships.audio_quality_bucket_counts.*unique string list",
+        ):
+            evaluate_discovery_gate(records)
+
     def test_discovery_gate_requires_both_minimum_thresholds(self) -> None:
         from scripts.emotion_state_cohort_release_contracts import (
             evaluate_discovery_gate,

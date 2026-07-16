@@ -352,9 +352,8 @@ def _validate_aggregation_window(window: Any) -> dict[str, Any]:
     return window
 
 
-def _validate_metric_cell_memberships(
+def _validate_metric_cell_membership_structure(
     value: Any,
-    aggregate: dict[str, Any],
     *,
     record_index: int,
 ) -> dict[str, list[str]]:
@@ -373,6 +372,47 @@ def _validate_metric_cell_memberships(
                 f"record {record_index}.metric_cell_memberships.{metric} "
                 "must be a unique string list"
             )
+        if metric in SCALAR_METRICS:
+            if cells != ["__scalar__"]:
+                raise ValueError(
+                    f"record {record_index}.metric_cell_memberships.{metric} "
+                    "must contain only __scalar__"
+                )
+        elif metric == "audio_quality_bucket_counts":
+            if any(cell not in AUDIO_QUALITY_STATUSES for cell in cells):
+                raise ValueError(
+                    f"record {record_index}.metric_cell_memberships.{metric} "
+                    "contains an unsupported audio quality cell"
+                )
+        elif metric == "processing_latency_percentiles":
+            if any(cell not in {"p50", "p95"} for cell in cells):
+                raise ValueError(
+                    f"record {record_index}.metric_cell_memberships.{metric} "
+                    "contains an unsupported processing latency cell"
+                )
+        elif any(
+            EVIDENCE_POLICY_VERSION_PATTERN.fullmatch(cell) is None
+            for cell in cells
+        ):
+            raise ValueError(
+                f"record {record_index}.metric_cell_memberships.{metric} "
+                "contains a malformed evidence-policy version cell"
+            )
+    return value
+
+
+def _validate_metric_cell_memberships(
+    value: Any,
+    aggregate: dict[str, Any],
+    *,
+    record_index: int,
+) -> dict[str, list[str]]:
+    memberships = _validate_metric_cell_membership_structure(
+        value,
+        record_index=record_index,
+    )
+    for metric in METRIC_ALLOWLIST_V1:
+        cells = memberships[metric]
         aggregate_value = aggregate[metric]
         if isinstance(aggregate_value, dict):
             if any(cell not in aggregate_value for cell in cells):
@@ -385,7 +425,7 @@ def _validate_metric_cell_memberships(
                 f"record {record_index}.metric_cell_memberships.{metric} "
                 "must contain only __scalar__"
             )
-    return value
+    return memberships
 
 
 def _derive_cell_support(
@@ -811,6 +851,12 @@ def evaluate_discovery_gate(records: Any) -> dict[str, bool | int]:
             raise ValueError(f"record {index} contains forbidden or unknown fields")
         if "eligible" not in record or type(record["eligible"]) is not bool:
             raise ValueError(f"record {index}.eligible must be boolean")
+        if "metric_cell_memberships" not in record:
+            raise ValueError(f"record {index}.metric_cell_memberships is required")
+        _validate_metric_cell_membership_structure(
+            record["metric_cell_memberships"],
+            record_index=index,
+        )
         dataset_id = _validate_record_provenance(
             record,
             record_index=index,
