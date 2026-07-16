@@ -28,6 +28,147 @@ ACTIVE_GUARD_SELF_HOSTING_SKIP_REASON = (
 )
 
 
+class ThesisReferenceTraversalTests(unittest.TestCase):
+    FORBIDDEN_PREFIXES = (
+        "data/public",
+        "data/private",
+        "data/private-restricted",
+    )
+
+    @staticmethod
+    def _write_fixture(root: Path, relative_path: str, content: str) -> Path:
+        path = root / relative_path
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(content, encoding="utf-8")
+        return path
+
+    def _create_fixture(self, root: Path) -> list[str]:
+        registered_url = "https://" + "research.invalid/paper"
+        unregistered_url = "https://" + "unregistered.invalid/reference"
+        for relative_path in (
+            "docs/thesis/THESIS_REFERENCE_REGISTRY.md",
+            "docs/thesis/SPEECH_REALISM_REFERENCES.md",
+            "docs/third-party-inspirations.md",
+        ):
+            self._write_fixture(root, relative_path, f"# Registry\n\n{registered_url}\n")
+
+        for relative_path in (
+            "AGENTS.md",
+            "docs/zeta.md",
+            "research/alpha.txt",
+            "scripts/middle.py",
+        ):
+            self._write_fixture(root, relative_path, f"Allowed reference: {registered_url}\n")
+
+        for relative_path in (
+            "data/public/sentinel.md",
+            "data/private/sentinel.md",
+            "data/private-restricted/sentinel.md",
+            "research/experiments/generated/ignored.md",
+            "docs/node_modules/ignored.md",
+            "outside.md",
+        ):
+            self._write_fixture(
+                root,
+                relative_path,
+                f"Forbidden or excluded: {unregistered_url}\n",
+            )
+        self._write_fixture(root, "docs/ignored.bin", "not text\n")
+
+        return [
+            "AGENTS.md",
+            "docs/thesis/SPEECH_REALISM_REFERENCES.md",
+            "docs/thesis/THESIS_REFERENCE_REGISTRY.md",
+            "docs/third-party-inspirations.md",
+            "docs/zeta.md",
+            "research/alpha.txt",
+            "scripts/middle.py",
+        ]
+
+    def test_build_report_never_touches_forbidden_data_subtrees(self) -> None:
+        from scripts import check_thesis_reference_registry as thesis_reference
+
+        with tempfile.TemporaryDirectory() as temp_dir:
+            root = Path(temp_dir)
+            expected_paths = self._create_fixture(root)
+            operations: list[tuple[str, str]] = []
+
+            original_scandir = os.scandir
+            original_stat = Path.stat
+            original_open = Path.open
+            original_read_text = Path.read_text
+
+            def record(operation: str, target: object) -> None:
+                try:
+                    raw_path = os.fspath(target)
+                except TypeError:
+                    return
+                if isinstance(raw_path, bytes):
+                    raw_path = os.fsdecode(raw_path)
+                candidate = Path(raw_path)
+                if not candidate.is_absolute():
+                    candidate = Path.cwd() / candidate
+                try:
+                    relative_path = candidate.relative_to(root).as_posix()
+                except ValueError:
+                    return
+                operations.append((operation, relative_path))
+                if any(
+                    relative_path == prefix or relative_path.startswith(f"{prefix}/")
+                    for prefix in self.FORBIDDEN_PREFIXES
+                ):
+                    raise AssertionError(
+                        "forbidden synthetic subtree filesystem access: "
+                        f"{operation} {relative_path}"
+                    )
+
+            def guarded_scandir(path: object):
+                record("scandir", path)
+                return original_scandir(path)
+
+            def guarded_stat(path: Path, *args: object, **kwargs: object):
+                record("stat", path)
+                return original_stat(path, *args, **kwargs)
+
+            def guarded_open(path: Path, *args: object, **kwargs: object):
+                record("open", path)
+                return original_open(path, *args, **kwargs)
+
+            def guarded_read_text(path: Path, *args: object, **kwargs: object):
+                record("read_text", path)
+                return original_read_text(path, *args, **kwargs)
+
+            with (
+                mock.patch("os.scandir", new=guarded_scandir),
+                mock.patch.object(Path, "stat", new=guarded_stat),
+                mock.patch.object(Path, "open", new=guarded_open),
+                mock.patch.object(Path, "read_text", new=guarded_read_text),
+            ):
+                report = thesis_reference.build_report(root)
+
+            self.assertEqual(report["status"], "pass")
+            self.assertEqual(report["issues"], [])
+            self.assertEqual(report["summary"]["files_scanned"], len(expected_paths))
+            self.assertTrue(any(operation == "scandir" for operation, _ in operations))
+            self.assertTrue(any(operation == "stat" for operation, _ in operations))
+            self.assertTrue(any(operation == "open" for operation, _ in operations))
+            self.assertTrue(any(operation == "read_text" for operation, _ in operations))
+
+    def test_iter_scan_files_preserves_filters_and_deterministic_order(self) -> None:
+        from scripts import check_thesis_reference_registry as thesis_reference
+
+        with tempfile.TemporaryDirectory() as temp_dir:
+            root = Path(temp_dir)
+            expected_paths = self._create_fixture(root)
+
+            actual_paths = [
+                path.relative_to(root).as_posix()
+                for path in thesis_reference.iter_scan_files(root)
+            ]
+
+        self.assertEqual(actual_paths, expected_paths)
+
+
 class SourceProvenanceTests(unittest.TestCase):
     def test_private_source_pin_is_exact_and_non_adapting(self) -> None:
         path = ROOT / "research/sources/creative_analysis_engine/source_manifest.json"
