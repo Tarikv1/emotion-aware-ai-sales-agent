@@ -4,6 +4,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import os
 import re
 import subprocess
 import sys
@@ -602,7 +603,7 @@ def validate_materials() -> None:
 
 def validate_prepublication_inputs(mode: str) -> None:
     assert_condition(
-        mode in {"material-pending", "complete"},
+        isinstance(mode, str) and mode in {"material-pending", "complete"},
         "prepublication mode must be material-pending or complete",
     )
     assert_condition(RUNNER.exists(), f"missing runner: {RUNNER.relative_to(ROOT)}")
@@ -635,14 +636,19 @@ def _readback_pair(
     result_path: Path,
     report_path: Path,
 ) -> dict[str, Any]:
-    from scripts.emotion_state_phase_a_contracts import render_phase_a_report
+    from scripts.emotion_state_phase_a_contracts import (
+        render_phase_a_report,
+        validate_material_pending_payload,
+    )
     from scripts.run_emotion_state_001_phase_a_contracts import (
+        _validate_canonical_pair_metadata,
         verify_evidence_pair_bytes,
     )
 
     assert_condition(result_path.parent == report_path.parent, "canonical directory mismatch")
+    _validate_canonical_pair_metadata(result_path, report_path)
     assert_condition(
-        {path.name for path in result_path.parent.iterdir() if path.is_file()}
+        {path.name for path in result_path.parent.iterdir()}
         == {result_path.name, report_path.name},
         "canonical checkpoint directory must contain exactly result.json and report.md",
     )
@@ -651,10 +657,12 @@ def _readback_pair(
     verify_evidence_pair_bytes(result_bytes, report_bytes)
     result = json.loads(result_bytes.decode("utf-8"))
     assert_condition(isinstance(result, dict), "checkpoint result must be an object")
+    validate_material_pending_payload(result)
     result_sha256 = hashlib.sha256(result_bytes).hexdigest().upper()
+    expected_report = render_phase_a_report(result, result_sha256=result_sha256)
     assert_condition(
-        report_path.read_text(encoding="utf-8")
-        == render_phase_a_report(result, result_sha256=result_sha256),
+        report_bytes.decode("utf-8")
+        == expected_report.replace("\n", os.linesep),
         "result/report publication pair is not deterministic",
     )
     assert_condition(
@@ -682,11 +690,30 @@ def validate_candidate_readback(receipt_path: str | Path) -> None:
 
 
 def validate_checkpoint_readback() -> None:
-    from scripts.run_emotion_state_001_phase_a_contracts import JOURNAL_NAME
+    from scripts.run_emotion_state_001_phase_a_contracts import (
+        JOURNAL_NAME,
+        LOCK_NAME,
+    )
 
     assert_condition(
         not (RECOVERY_DIR / JOURNAL_NAME).exists(),
         "accepted checkpoint readback requires no live publication transaction",
+    )
+    residual_transaction_artifacts = (
+        sorted(
+            path.name
+            for path in RECOVERY_DIR.iterdir()
+            if path.name != LOCK_NAME
+        )
+        if RECOVERY_DIR.exists()
+        else []
+    )
+    assert_condition(
+        not residual_transaction_artifacts,
+        (
+            "accepted checkpoint readback requires no residual publication "
+            "transaction or receipt artifacts"
+        ),
     )
     _readback_pair(RESULT, REPORT)
 

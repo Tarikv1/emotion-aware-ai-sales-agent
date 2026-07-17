@@ -4768,75 +4768,9 @@ class PhaseAStateMachineTests(unittest.TestCase):
 
     @staticmethod
     def material_pending_payload() -> dict[str, object]:
-        return {
-            "checkpoint_id": "EMOTION-STATE-001-phase-a-contracts",
-            "schema_version": 2,
-            "mode": "material_pending",
-            "status": "material_pending",
-            "selected_public_datasets": [
-                "crema-d-v1.0-audio-wav",
-                "ami-manual-annotations-v1.6.2",
-            ],
-            "dataset_download_authorized": False,
-            "dataset_evaluation_started": False,
-            "dataset_manifest_evidence": [],
-            "source_pin": {
-                "source_repository_url": (
-                    "https://github.com/WisdomBreathes/creative-analysis-engine"
-                ),
-                "source_branch": "dev",
-                "source_revision": "7cb99ea2da3016cd82d0b5f805c015a808ce4e0d",
-                "archive_sha256": (
-                    "E579B966E226F2AF6E4F8F8203C7189FEC94FB448EFC09B4B6640C10A398ECCC"
-                ),
-                "source_adaptation_allowed": False,
-                "code_adaptation_started": False,
-            },
-            "contract_checks": dict(PhaseAStateMachineTests.PASSING_CONTRACTS),
-            "blocking_reason_codes": [
-                "dataset_download_not_authorized",
-                "selected_dataset_manifests_not_verified",
-            ],
-            "verification_evidence": {
-                "implementation_baseline_commit": "b" * 40,
-                "repository_head_commit": "c" * 40,
-                "verification_run_id": "A" * 64,
-                "repository_gate_statuses": {},
-                "guarded_command_results": {},
-            },
-            "summary": {
-                "contract_check_count": 3,
-                "contract_checks": dict(PhaseAStateMachineTests.PASSING_CONTRACTS),
-                "baseline_fingerprint_count": 6,
-                "selected_public_dataset_count": 2,
-                "source_repository_url_status": "verified_read_only",
-                "source_adaptation_allowed": False,
-                "code_adaptation_started": False,
-                "frozen_exp_002_evaluator_provenance_status": "not_recorded",
-                "provider_operations_performed_by_runner": False,
-                "private_data_read_by_runner": False,
-                "runtime_behavior_changed_by_runner": False,
-                "runtime_activation_allowed": False,
-            },
-            "baseline_fingerprints": {
-                "fixture": "B" * 64,
-            },
-            "readiness_boundary": {
-                "phase_a_contract_artifacts_built": True,
-                "phase_a_complete": False,
-                "phase_a_completion_scope": (
-                    "source_provenance_dataset_selection_and_offline_contracts_only_"
-                    "material_verification_pending"
-                ),
-                "full_repository_gate_claimed_by_this_artifact": False,
-                "live_aggregate_release_unblocked": False,
-                "phase_b_unblocked": False,
-                "public_dataset_evaluation_unblocked": False,
-                "private_research_unblocked": False,
-                "provider_feasibility_unblocked": False,
-                "runtime_activation_unblocked": False,
-            },
-        }
+        from scripts.test_emotion_state_001_closeout_hardening import sample_payload
+
+        return sample_payload()
 
     def test_selected_but_unverified_materials_keep_phase_incomplete(self) -> None:
         from scripts.emotion_state_phase_a_contracts import (
@@ -4855,6 +4789,69 @@ class PhaseAStateMachineTests(unittest.TestCase):
             "source_provenance_dataset_selection_and_offline_contracts_only_"
             "material_verification_pending",
         )
+        for field in (
+            "full_repository_gate_claimed_by_this_artifact",
+            "live_aggregate_release_unblocked",
+            "phase_b_unblocked",
+            "public_dataset_evaluation_unblocked",
+            "private_research_unblocked",
+            "provider_feasibility_unblocked",
+            "runtime_activation_unblocked",
+        ):
+            self.assertIs(state[field], False, field)
+
+    def test_complete_mode_still_leaves_phase_and_all_readiness_false(self) -> None:
+        from scripts.emotion_state_phase_a_contracts import (
+            determine_phase_a_completion,
+        )
+
+        evidence = self.material_pending_evidence()
+        evidence["mode"] = "complete"
+        evidence["dataset_download_authorized"] = True
+        evidence["dataset_evidence"] = [
+            {"dataset_id": dataset_id}
+            for dataset_id in self.SELECTED_DATASET_IDS
+        ]
+        state = determine_phase_a_completion(evidence)
+
+        self.assertIs(state["phase_a_complete"], False)
+        self.assertEqual(
+            state["blocking_reason_codes"],
+            ["complete_material_verification_gate_not_implemented"],
+        )
+        for field in (
+            "full_repository_gate_claimed_by_this_artifact",
+            "live_aggregate_release_unblocked",
+            "phase_b_unblocked",
+            "public_dataset_evaluation_unblocked",
+            "private_research_unblocked",
+            "provider_feasibility_unblocked",
+            "runtime_activation_unblocked",
+        ):
+            self.assertIs(state[field], False, field)
+
+    def test_material_pending_payload_keeps_every_safety_projection_false(
+        self,
+    ) -> None:
+        from scripts.emotion_state_phase_a_contracts import (
+            validate_material_pending_payload,
+        )
+
+        payload = validate_material_pending_payload(
+            self.material_pending_payload()
+        )
+        for field in (
+            "provider_operations_performed_by_runner",
+            "private_data_read_by_runner",
+            "runtime_behavior_changed_by_runner",
+            "runtime_activation_allowed",
+        ):
+            self.assertIs(payload["summary"][field], False, field)
+        for field, value in payload["readiness_boundary"].items():
+            if field == "phase_a_contract_artifacts_built":
+                self.assertIs(value, True)
+            elif isinstance(value, bool):
+                self.assertIs(value, False, field)
 
     def test_completion_state_rejects_caller_supplied_projection(self) -> None:
         from scripts.emotion_state_phase_a_contracts import (
@@ -4894,16 +4891,108 @@ class PhaseAStateMachineTests(unittest.TestCase):
             validate_material_pending_dataset_absence,
         )
 
-        with tempfile.TemporaryDirectory(
-            prefix="emotion-state-material-pending-",
-            dir=ROOT / ".tmp",
-        ) as temporary_directory:
-            material_root = Path(temporary_directory) / "synthetic-public-root"
-            validate_material_pending_dataset_absence(material_root)
-            material_root.mkdir()
-            (material_root / "crema-d-v1.0").mkdir()
-            with self.assertRaisesRegex(ValueError, "downloaded material"):
-                validate_material_pending_dataset_absence(material_root)
+        for directory_name in (
+            "crema-d-v1.0",
+            "ami-manual-annotations-v1.6.2",
+        ):
+            with self.subTest(directory_name=directory_name):
+                with tempfile.TemporaryDirectory(
+                    prefix="emotion-state-material-pending-",
+                    dir=ROOT / ".tmp",
+                ) as temporary_directory:
+                    material_root = (
+                        Path(temporary_directory) / "synthetic-public-root"
+                    )
+                    validate_material_pending_dataset_absence(material_root)
+                    material_root.mkdir()
+                    (material_root / directory_name).mkdir()
+                    with self.assertRaisesRegex(
+                        ValueError,
+                        "downloaded material",
+                    ):
+                        validate_material_pending_dataset_absence(material_root)
+
+    def test_material_pending_presence_check_uses_only_ordered_metadata_probes(
+        self,
+    ) -> None:
+        from scripts import run_emotion_state_001_phase_a_contracts as runner
+
+        material_root = ROOT / ".tmp" / "synthetic-metadata-probe-root"
+        expected_children = [
+            material_root / "crema-d-v1.0",
+            material_root / "ami-manual-annotations-v1.6.2",
+        ]
+        events: list[tuple[str, Path]] = []
+        path_type = type(material_root)
+
+        def probe_exists(path: Path) -> bool:
+            events.append(("exists", path))
+            return path == material_root
+
+        def probe_is_dir(path: Path) -> bool:
+            events.append(("is_dir", path))
+            return path == material_root
+
+        forbidden = AssertionError("metadata-only absence check crossed its boundary")
+        with (
+            mock.patch.object(
+                path_type,
+                "exists",
+                autospec=True,
+                side_effect=probe_exists,
+            ) as exists,
+            mock.patch.object(
+                path_type,
+                "is_dir",
+                autospec=True,
+                side_effect=probe_is_dir,
+            ) as is_dir,
+            mock.patch.object(path_type, "iterdir", side_effect=forbidden) as iterdir,
+            mock.patch.object(path_type, "glob", side_effect=forbidden) as glob,
+            mock.patch.object(path_type, "rglob", side_effect=forbidden) as rglob,
+            mock.patch.object(
+                path_type,
+                "read_bytes",
+                side_effect=forbidden,
+            ) as read_bytes,
+            mock.patch.object(
+                path_type,
+                "read_text",
+                side_effect=forbidden,
+            ) as read_text,
+            mock.patch.object(path_type, "open", side_effect=forbidden) as open_file,
+            mock.patch.object(
+                runner.hashlib,
+                "sha256",
+                side_effect=forbidden,
+            ) as sha256,
+        ):
+            runner.validate_material_pending_dataset_absence(material_root)
+
+        self.assertEqual(
+            events,
+            [
+                ("exists", material_root),
+                ("is_dir", material_root),
+                ("exists", expected_children[0]),
+                ("exists", expected_children[1]),
+            ],
+        )
+        self.assertEqual(
+            [call.args[0] for call in exists.call_args_list],
+            [material_root, *expected_children],
+        )
+        is_dir.assert_called_once_with(material_root)
+        for forbidden_probe in (
+            iterdir,
+            glob,
+            rglob,
+            read_bytes,
+            read_text,
+            open_file,
+            sha256,
+        ):
+            forbidden_probe.assert_not_called()
 
     def test_checkpoint_readback_does_not_invoke_runner(self) -> None:
         from scripts import run_emotion_state_001_phase_a_contracts as runner
@@ -4923,6 +5012,19 @@ class PhaseAStateMachineTests(unittest.TestCase):
                 report_path=report,
                 recovery_dir=recovery,
             )
+            canonical_before = {
+                path.name: path.read_bytes()
+                for path in result.parent.iterdir()
+            }
+            recovery_before = (
+                {
+                    path.name: path.read_bytes()
+                    for path in recovery.iterdir()
+                    if path.is_file()
+                }
+                if recovery.exists()
+                else {}
+            )
             with (
                 mock.patch.object(validator, "RESULT", result),
                 mock.patch.object(validator, "REPORT", report),
@@ -4931,6 +5033,57 @@ class PhaseAStateMachineTests(unittest.TestCase):
             ):
                 validator.validate_checkpoint_readback()
             run.assert_not_called()
+            self.assertEqual(
+                {
+                    path.name: path.read_bytes()
+                    for path in result.parent.iterdir()
+                },
+                canonical_before,
+            )
+            self.assertEqual(
+                (
+                    {
+                        path.name: path.read_bytes()
+                        for path in recovery.iterdir()
+                        if path.is_file()
+                    }
+                    if recovery.exists()
+                    else {}
+                ),
+                recovery_before,
+            )
+
+    def test_checkpoint_readback_rejects_live_candidate_transaction(self) -> None:
+        from scripts import run_emotion_state_001_phase_a_contracts as runner
+        from scripts import validate_emotion_state_001_phase_a_contracts as validator
+
+        with tempfile.TemporaryDirectory(
+            prefix="emotion-state-checkpoint-live-transaction-",
+            dir=ROOT / ".tmp",
+        ) as temporary_directory:
+            root = Path(temporary_directory)
+            result = root / "canonical" / "result.json"
+            report = result.with_name("report.md")
+            recovery = root / "recovery"
+            receipt = recovery / "candidate-receipt.json"
+            runner.stage_evidence_pair(
+                self.material_pending_payload(),
+                mode="material-pending",
+                receipt_path=receipt,
+                result_path=result,
+                report_path=report,
+                recovery_dir=recovery,
+            )
+            with (
+                mock.patch.object(validator, "RESULT", result),
+                mock.patch.object(validator, "REPORT", report),
+                mock.patch.object(validator, "RECOVERY_DIR", recovery, create=True),
+            ):
+                with self.assertRaisesRegex(
+                    AssertionError,
+                    "live publication transaction",
+                ):
+                    validator.validate_checkpoint_readback()
 
 
 class VerificationEvidenceLockPhaseTests(unittest.TestCase):
@@ -7018,10 +7171,16 @@ class VerificationEvidenceTests(unittest.TestCase):
             project_root,
             allowed_subprocesses_json=allowed_json,
         )
+        target_path = str(project_root / target_relative_path)
         return subprocess.run(
             [
                 sys.executable,
-                str(project_root / target_relative_path),
+                "-c",
+                (
+                    "import runpy, sys; "
+                    "runpy.run_path(sys.argv[1], run_name='__main__')"
+                ),
+                target_path,
             ],
             cwd=project_root if cwd is None else cwd,
             env=environment,
@@ -7029,6 +7188,54 @@ class VerificationEvidenceTests(unittest.TestCase):
             text=True,
             timeout=20,
             check=False,
+        )
+
+    def test_current_reviewed_executable_roots_build_a_static_closure(self) -> None:
+        from scripts.emotion_state_phase_a_contracts import (
+            TASKS_1_7_CHANGE_INVENTORY_PATHS,
+            TASKS_1_7_CLOSURE_EDGES,
+            TASKS_1_7_CLOSURE_PATHS,
+        )
+
+        verification = self._verification_module()
+        executable_roots = set(verification.REVIEWED_EXECUTABLE_ROOTS)
+        executable_roots.update(
+            path
+            for path in TASKS_1_7_CHANGE_INVENTORY_PATHS
+            if Path(path).suffix.casefold() == ".py"
+        )
+        executable_roots.add(
+            verification.GUARD_IMPLEMENTATION_RELATIVE_PATH
+        )
+
+        closure = verification.build_executable_dependency_closure(
+            root=ROOT,
+            executable_roots=tuple(sorted(executable_roots)),
+            forbidden_import_prefixes=verification.FORBIDDEN_IMPORT_PREFIXES,
+            guard_implementation_path=(
+                verification.GUARD_IMPLEMENTATION_RELATIVE_PATH
+            ),
+            gate_module_paths=verification.GATE_MODULE_PATHS,
+        )
+
+        inventory_paths = [
+            entry["path"]
+            for entry in closure["inventory"]
+        ]
+        self.assertEqual(
+            tuple(inventory_paths),
+            TASKS_1_7_CLOSURE_PATHS,
+        )
+        self.assertEqual(
+            tuple(
+                (
+                    edge["consumer"],
+                    edge["dependency"],
+                    edge["edge_type"],
+                )
+                for edge in closure["edges"]
+            ),
+            TASKS_1_7_CLOSURE_EDGES,
         )
 
     def test_policy_exclusions_are_exact_and_outputs_do_not_self_hash(self) -> None:
@@ -8780,6 +8987,11 @@ class VerificationEvidenceTests(unittest.TestCase):
             synthetic_completed = subprocess.run(
                 [
                     sys.executable,
+                    "-c",
+                    (
+                        "import runpy, sys; "
+                        "runpy.run_path(sys.argv[1], run_name='__main__')"
+                    ),
                     str(
                         project_root
                         / "scripts/test_emotion_state_001_open_dataset_gate.py"

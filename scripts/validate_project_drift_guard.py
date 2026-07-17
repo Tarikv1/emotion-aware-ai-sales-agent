@@ -585,6 +585,7 @@ def validate_scan_traversal_boundary() -> None:
     real_stat = Path.stat
     real_open = Path.open
     real_read_text = Path.read_text
+    data_ancestor_metadata_probes: list[str] = []
 
     def relative_key(value: object) -> str | None:
         if isinstance(value, int):
@@ -611,6 +612,13 @@ def validate_scan_traversal_boundary() -> None:
         return real_scandir(path)
 
     def guarded_stat(path: Path, *args: object, **kwargs: object):
+        if relative_key(path) == "data":
+            if kwargs.get("follow_symlinks") is not False:
+                raise AssertionError(
+                    "stat followed the synthetic data ancestor"
+                )
+            data_ancestor_metadata_probes.append("lstat")
+            return real_stat(path, *args, **kwargs)
         assert_allowed_boundary(path, "stat")
         return real_stat(path, *args, **kwargs)
 
@@ -636,7 +644,66 @@ def validate_scan_traversal_boundary() -> None:
         actual_files == allowed_files,
         f"Drift traversal returned the wrong synthetic paths: {actual_files}",
     )
+    assert_condition(
+        data_ancestor_metadata_probes
+        and set(data_ancestor_metadata_probes) == {"lstat"},
+        "Drift traversal did not limit data-ancestor access to no-follow metadata",
+    )
     assert_condition(not issues, f"Allowed synthetic paths produced drift issues: {issues}")
+
+
+def validate_scan_link_boundary() -> None:
+    mocked_root = FIXTURE_ROOT / "link-boundary-mocked"
+    mocked_entry = mocked_root / "data" / "external" / "linked.txt"
+    write_text(mocked_entry, "Synthetic linked-entry fixture.\n")
+    mocked_status = mocked_entry.lstat()
+    real_status_check = check_project_drift._status_is_link_or_reparse
+
+    def mocked_status_check(status: os.stat_result) -> bool:
+        return (
+            (status.st_mode, status.st_size)
+            == (mocked_status.st_mode, mocked_status.st_size)
+            or real_status_check(status)
+        )
+
+    with mock.patch.object(
+        check_project_drift,
+        "_status_is_link_or_reparse",
+        side_effect=mocked_status_check,
+    ):
+        try:
+            check_project_drift.iter_scan_files(mocked_root)
+        except ValueError as exc:
+            assert_condition(
+                "link or reparse" in str(exc),
+                f"Mocked external link failed for the wrong reason: {exc}",
+            )
+        else:
+            raise AssertionError(
+                "Drift traversal accepted a mocked data/external reparse entry"
+            )
+
+    symlink_root = FIXTURE_ROOT / "link-boundary-symlink"
+    external_root = symlink_root / "data" / "external"
+    external_root.mkdir(parents=True)
+    outside_file = symlink_root / "outside.txt"
+    write_text(outside_file, "Synthetic outside target.\n")
+    linked_entry = external_root / "linked.txt"
+    try:
+        linked_entry.symlink_to(outside_file)
+    except OSError:
+        return
+    try:
+        check_project_drift.iter_scan_files(symlink_root)
+    except ValueError as exc:
+        assert_condition(
+            "link or reparse" in str(exc),
+            f"Ordinary external symlink failed for the wrong reason: {exc}",
+        )
+    else:
+        raise AssertionError(
+            "Drift traversal accepted an ordinary data/external symlink"
+        )
 
 
 def validate_clean_fixture() -> None:
@@ -670,6 +737,7 @@ def main() -> None:
     try:
         validate_secret_pattern_token_boundaries()
         validate_scan_traversal_boundary()
+        validate_scan_link_boundary()
         validate_dirty_fixture()
         validate_clean_fixture()
         validate_current_repo()

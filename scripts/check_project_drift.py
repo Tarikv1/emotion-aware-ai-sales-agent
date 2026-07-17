@@ -6,6 +6,7 @@ import fnmatch
 import json
 import os
 import re
+import stat
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
@@ -541,10 +542,54 @@ def should_skip_path(relative_path: Path) -> bool:
     return relative_path.suffix.lower() in BINARY_EXTENSIONS
 
 
+def _status_is_link_or_reparse(status: os.stat_result) -> bool:
+    if stat.S_ISLNK(status.st_mode):
+        return True
+    file_attributes = getattr(status, "st_file_attributes", 0)
+    reparse_attribute = getattr(stat, "FILE_ATTRIBUTE_REPARSE_POINT", 0x400)
+    return bool(file_attributes & reparse_attribute)
+
+
+def _path_is_link_or_reparse(path: Path) -> bool:
+    return _status_is_link_or_reparse(Path(path).lstat())
+
+
+def _validate_external_scan_entry(
+    path: Path,
+    *,
+    require_directory: bool | None = None,
+    status: os.stat_result | None = None,
+) -> os.stat_result:
+    try:
+        if status is None:
+            status = Path(path).lstat()
+        if _status_is_link_or_reparse(status):
+            raise ValueError(
+                "data/external scan encountered a link or reparse point"
+            )
+    except FileNotFoundError:
+        raise
+    except ValueError:
+        raise
+    except OSError as exc:
+        raise ValueError("data/external scan entry could not be inspected") from exc
+    if require_directory is True and not stat.S_ISDIR(status.st_mode):
+        raise ValueError("data/external scan root must be a directory")
+    if require_directory is False and not (
+        stat.S_ISDIR(status.st_mode) or stat.S_ISREG(status.st_mode)
+    ):
+        raise ValueError("data/external scan entry has an unsupported file type")
+    return status
+
+
 def iter_scan_files(root: Path) -> list[Path]:
     files: list[Path] = []
 
-    def scan_tree(scan_root: Path, *, prune_top_level_data: bool) -> None:
+    def scan_tree(
+        scan_root: Path,
+        *,
+        prune_top_level_data: bool,
+    ) -> None:
         for dirpath, dirnames, filenames in os.walk(scan_root):
             current_dir = Path(dirpath)
             relative_dir = current_dir.relative_to(root)
@@ -568,8 +613,82 @@ def iter_scan_files(root: Path) -> list[Path]:
                     continue
                 files.append(path)
 
+    def optional_external_directory(path: Path) -> bool:
+        try:
+            _validate_external_scan_entry(path, require_directory=True)
+        except FileNotFoundError:
+            return False
+        return True
+
+    def scan_external_tree() -> None:
+        data_root = root / "data"
+        if not optional_external_directory(data_root):
+            return
+        external_root = data_root / "external"
+        if not optional_external_directory(external_root):
+            return
+
+        pending = [external_root]
+        while pending:
+            current_dir = pending.pop()
+            try:
+                _validate_external_scan_entry(
+                    current_dir,
+                    require_directory=True,
+                )
+                with os.scandir(current_dir) as entries:
+                    ordered_entries = sorted(
+                        entries,
+                        key=lambda entry: (entry.name.casefold(), entry.name),
+                    )
+            except FileNotFoundError as exc:
+                raise ValueError(
+                    "data/external scan entry could not be inspected"
+                ) from exc
+            except ValueError:
+                raise
+            except OSError as exc:
+                raise ValueError(
+                    "data/external scan entry could not be inspected"
+                ) from exc
+
+            child_directories: list[Path] = []
+            for entry in ordered_entries:
+                entry_path = Path(entry.path)
+                try:
+                    status = entry.stat(follow_symlinks=False)
+                    _validate_external_scan_entry(
+                        entry_path,
+                        require_directory=False,
+                        status=status,
+                    )
+                except FileNotFoundError as exc:
+                    raise ValueError(
+                        "data/external scan entry could not be inspected"
+                    ) from exc
+                except ValueError:
+                    raise
+                except OSError as exc:
+                    raise ValueError(
+                        "data/external scan entry could not be inspected"
+                    ) from exc
+
+                relative_path = entry_path.relative_to(root)
+                if should_skip_path(relative_path):
+                    continue
+                if stat.S_ISDIR(status.st_mode):
+                    child_directories.append(entry_path)
+                    continue
+                suffix = entry_path.suffix.lower()
+                if suffix and suffix not in TEXT_EXTENSIONS:
+                    continue
+                files.append(entry_path)
+
+            pending.extend(reversed(child_directories))
+
+    optional_external_directory(root / "data")
     scan_tree(root, prune_top_level_data=True)
-    scan_tree(root / "data" / "external", prune_top_level_data=False)
+    scan_external_tree()
     return sorted(files)
 
 
