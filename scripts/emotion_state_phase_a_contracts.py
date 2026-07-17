@@ -147,7 +147,9 @@ TASKS_1_7_CHANGE_INVENTORY_PATHS = (
     "scripts/emotion_state_phase_a_verification_evidence.py",
     "scripts/emotion_state_public_dataset_contracts.py",
     "scripts/emotion_state_split_manifest_v2_contracts.py",
+    "scripts/run_brain_002_runtime_state_schema.py",
     "scripts/run_emotion_state_001_phase_a_contracts.py",
+    "scripts/run_exp_002_frozen_response_baseline.py",
     "scripts/test_emotion_state_001_closeout_hardening.py",
     "scripts/test_emotion_state_001_open_dataset_gate.py",
     "scripts/validate_check_setup.py",
@@ -158,6 +160,7 @@ TASKS_1_7_CHANGE_INVENTORY_PATHS = (
 TASKS_1_7_CLOSURE_PATHS = (
     "runtime/__init__.py",
     "runtime/contracts/__init__.py",
+    "runtime/contracts/brain_runtime_state_schema.py",
     "runtime/contracts/emotion_pattern_contracts.py",
     "runtime/contracts/emotion_state_brain_extension.py",
     "runtime/contracts/emotion_state_contracts.py",
@@ -173,6 +176,7 @@ TASKS_1_7_CLOSURE_PATHS = (
     "scripts/emotion_state_public_dataset_contracts.py",
     "scripts/emotion_state_split_manifest_v2_contracts.py",
     "scripts/exp_002_frozen_response_baseline.py",
+    "scripts/run_brain_002_runtime_state_schema.py",
     "scripts/run_emotion_state_001_phase_a_contracts.py",
     "scripts/run_exp_002_frozen_response_baseline.py",
     "scripts/run_prompt_baseline.py",
@@ -317,6 +321,21 @@ TASKS_1_7_CLOSURE_EDGES = (
         "python_import",
     ),
     (
+        "scripts/run_brain_002_runtime_state_schema.py",
+        "runtime/__init__.py",
+        "python_import",
+    ),
+    (
+        "scripts/run_brain_002_runtime_state_schema.py",
+        "runtime/contracts/__init__.py",
+        "python_import",
+    ),
+    (
+        "scripts/run_brain_002_runtime_state_schema.py",
+        "runtime/contracts/brain_runtime_state_schema.py",
+        "python_import",
+    ),
+    (
         "scripts/run_emotion_state_001_phase_a_contracts.py",
         "scripts/emotion_state_phase_a_contracts.py",
         "python_import",
@@ -348,7 +367,17 @@ TASKS_1_7_CLOSURE_EDGES = (
     ),
     (
         "scripts/test_emotion_state_001_closeout_hardening.py",
+        "scripts/run_brain_002_runtime_state_schema.py",
+        "python_import",
+    ),
+    (
+        "scripts/test_emotion_state_001_closeout_hardening.py",
         "scripts/run_emotion_state_001_phase_a_contracts.py",
+        "python_import",
+    ),
+    (
+        "scripts/test_emotion_state_001_closeout_hardening.py",
+        "scripts/run_exp_002_frozen_response_baseline.py",
         "python_import",
     ),
     (

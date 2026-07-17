@@ -65,7 +65,9 @@ EXPECTED_TASKS_1_7_INPUT_PATHS = (
     "scripts/emotion_state_phase_a_verification_evidence.py",
     "scripts/emotion_state_public_dataset_contracts.py",
     "scripts/emotion_state_split_manifest_v2_contracts.py",
+    "scripts/run_brain_002_runtime_state_schema.py",
     "scripts/run_emotion_state_001_phase_a_contracts.py",
+    "scripts/run_exp_002_frozen_response_baseline.py",
     "scripts/test_emotion_state_001_closeout_hardening.py",
     "scripts/test_emotion_state_001_open_dataset_gate.py",
     "scripts/validate_check_setup.py",
@@ -77,6 +79,7 @@ EXPECTED_TASKS_1_7_INPUT_PATHS = (
 EXPECTED_TASKS_1_7_CLOSURE_PATHS = (
     "runtime/__init__.py",
     "runtime/contracts/__init__.py",
+    "runtime/contracts/brain_runtime_state_schema.py",
     "runtime/contracts/emotion_pattern_contracts.py",
     "runtime/contracts/emotion_state_brain_extension.py",
     "runtime/contracts/emotion_state_contracts.py",
@@ -92,6 +95,7 @@ EXPECTED_TASKS_1_7_CLOSURE_PATHS = (
     "scripts/emotion_state_public_dataset_contracts.py",
     "scripts/emotion_state_split_manifest_v2_contracts.py",
     "scripts/exp_002_frozen_response_baseline.py",
+    "scripts/run_brain_002_runtime_state_schema.py",
     "scripts/run_emotion_state_001_phase_a_contracts.py",
     "scripts/run_exp_002_frozen_response_baseline.py",
     "scripts/run_prompt_baseline.py",
@@ -354,6 +358,132 @@ def refresh_sample_verification_digests(payload: dict[str, object]) -> None:
             + tree_digest
         ).encode("utf-8")
     ).hexdigest().upper()
+
+
+class DeterministicLfWriterTests(unittest.TestCase):
+    def setUp(self) -> None:
+        temporary_root = ROOT / ".tmp"
+        temporary_root.mkdir(parents=True, exist_ok=True)
+        self._temporary_directory = tempfile.TemporaryDirectory(
+            prefix="emotion-state-001-lf-writer-test-",
+            dir=temporary_root,
+        )
+        self.output_root = Path(self._temporary_directory.name)
+
+    def tearDown(self) -> None:
+        self._temporary_directory.cleanup()
+
+    def assert_exact_utf8_outputs(
+        self,
+        outputs: tuple[tuple[Path, str], ...],
+    ) -> None:
+        mismatches: list[str] = []
+        for path, rendered in outputs:
+            actual = path.read_bytes()
+            expected = rendered.encode("utf-8")
+            if actual == expected:
+                continue
+            first_difference = next(
+                (
+                    index
+                    for index, (actual_byte, expected_byte) in enumerate(
+                        zip(actual, expected)
+                    )
+                    if actual_byte != expected_byte
+                ),
+                min(len(actual), len(expected)),
+            )
+            mismatches.append(
+                f"{path.name} bytes differ at offset {first_difference}; "
+                f"actual_crlf_count={actual.count(bytes((13, 10)))}; "
+                f"expected_crlf_count={expected.count(bytes((13, 10)))}"
+            )
+        if mismatches:
+            self.fail("; ".join(mismatches))
+
+    @unittest.skipIf(
+        "EMOTION_STATE_PHASE_A_GUARD_POLICY" in os.environ,
+        ACTIVE_GUARD_SELF_HOSTING_SKIP_REASON,
+    )
+    def test_exp_002_runner_writes_exact_utf8_lf_bytes(self) -> None:
+        from scripts import run_exp_002_frozen_response_baseline as runner
+
+        payload = runner.build_frozen_baseline_result(ROOT)
+        rendered_result = (
+            json.dumps(payload, indent=2, ensure_ascii=False) + "\n"
+        )
+        rendered_report = runner.render_frozen_baseline_report(payload)
+        output_dir = self.output_root / "EXP-002"
+        result_path = output_dir / "result.json"
+        report_path = output_dir / "report.md"
+        stdout = io.StringIO()
+        stderr = io.StringIO()
+
+        with patch.object(
+            runner,
+            "OUTPUT_DIR",
+            output_dir,
+        ), patch.object(
+            runner,
+            "RESULT",
+            result_path,
+        ), patch.object(
+            runner,
+            "REPORT",
+            report_path,
+        ), redirect_stdout(stdout), redirect_stderr(stderr):
+            exit_code = runner.main()
+
+        self.assertEqual(exit_code, 0)
+        self.assert_exact_utf8_outputs((
+            (result_path, rendered_result),
+            (report_path, rendered_report),
+        ))
+        self.assertEqual(stderr.getvalue(), "")
+        self.assertNotIn("Traceback", stdout.getvalue())
+
+    @unittest.skipIf(
+        "EMOTION_STATE_PHASE_A_GUARD_POLICY" in os.environ,
+        ACTIVE_GUARD_SELF_HOSTING_SKIP_REASON,
+    )
+    def test_brain_002_runner_writes_exact_utf8_lf_bytes(self) -> None:
+        from scripts import run_brain_002_runtime_state_schema as runner
+
+        payload = runner.build_brain_002_payload(
+            runner.DEFAULT_CASE,
+            root=ROOT,
+        )
+        rendered_result = json.dumps(
+            payload,
+            indent=2,
+            ensure_ascii=False,
+        )
+        rendered_report = runner.render_brain_002_report(payload)
+        output_dir = self.output_root / "BRAIN-002"
+        result_path = output_dir / "result.json"
+        report_path = output_dir / "report.md"
+        stdout = io.StringIO()
+        stderr = io.StringIO()
+
+        with patch.object(
+            runner.sys,
+            "argv",
+            [
+                "run_brain_002_runtime_state_schema.py",
+                "--out",
+                str(result_path),
+                "--report-out",
+                str(report_path),
+            ],
+        ), redirect_stdout(stdout), redirect_stderr(stderr):
+            runner.main()
+
+        self.assert_exact_utf8_outputs((
+            (result_path, rendered_result),
+            (report_path, rendered_report),
+        ))
+        self.assertEqual(stderr.getvalue(), "")
+        self.assertNotIn("Traceback", stdout.getvalue())
 
 
 class PublicationRecoveryTests(unittest.TestCase):
@@ -1254,9 +1384,9 @@ class PublicationAcceptanceTests(unittest.TestCase):
             EXPECTED_TASKS_1_7_CLOSURE_PATHS,
         )
         payload = sample_payload()
-        self.assertEqual(len(TASKS_1_7_CHANGE_INVENTORY_PATHS), 36)
+        self.assertEqual(len(TASKS_1_7_CHANGE_INVENTORY_PATHS), 38)
         self.assertEqual(len(payload["uncommitted_change_inventory"]), 0)
-        self.assertEqual(len(TASKS_1_7_CLOSURE_PATHS), 28)
+        self.assertEqual(len(TASKS_1_7_CLOSURE_PATHS), 30)
         validate_material_pending_payload(payload)
         self.assertEqual(
             _validate_evidence_path(
@@ -1393,7 +1523,7 @@ class PublicationAcceptanceTests(unittest.TestCase):
         )
 
         validate_material_pending_payload(sample_payload())
-        self.assertEqual(len(TASKS_1_7_CLOSURE_EDGES), 71)
+        self.assertEqual(len(TASKS_1_7_CLOSURE_EDGES), 76)
 
         payload = sample_payload()
         payload["executable_dependency_closure_edges"] = payload[

@@ -22,8 +22,8 @@ REPORT = OUTPUT_DIR / "report.md"
 def main() -> int:
     payload = build_frozen_baseline_result(ROOT)
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
-    RESULT.write_text(json.dumps(payload, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
-    REPORT.write_text(render_frozen_baseline_report(payload), encoding="utf-8")
+    RESULT.write_text(json.dumps(payload, indent=2, ensure_ascii=False) + "\n", encoding="utf-8", newline="\n")
+    REPORT.write_text(render_frozen_baseline_report(payload), encoding="utf-8", newline="\n")
     print(json.dumps(payload["summary"], indent=2))
     return 0
 
