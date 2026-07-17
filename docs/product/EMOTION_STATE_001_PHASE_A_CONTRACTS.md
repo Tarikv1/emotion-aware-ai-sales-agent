@@ -1,63 +1,76 @@
-# EMOTION-STATE-001 Partial Phase A Contracts
+# EMOTION-STATE-001 Material-Pending Phase A Contracts
 
-EMOTION-STATE-001 is an offline/prototype contract checkpoint. It establishes deterministic artifact and fail-closed interface evidence; it does not establish that all of Phase A is complete or authorize runtime use.
+EMOTION-STATE-001 is an offline, public-only material-pending checkpoint. It selects exactly `crema-d-v1.0-audio-wav` and `ami-manual-annotations-v1.6.2`, but it does not authorize or start dataset download or evaluation. `phase_a_complete=false`.
 
-## Commands
+CREMA-D is controlled acoustic-sensitivity evidence only. AMI manual annotations are conversational-mechanics evidence only. Neither source supplies customer internal-emotion truth or mappings to hesitation, frustration, confusion, interest, or disengagement.
 
-Run and validate the frozen EXP-002 response/rating arithmetic:
-
-```powershell
-python scripts\run_exp_002_frozen_response_baseline.py
-python scripts\validate_exp_002_frozen_response_baseline.py
-```
-
-Run and validate the Phase A contract checkpoint:
+## Prepublication Validation
 
 ```powershell
-python scripts\run_emotion_state_001_phase_a_contracts.py
-python scripts\validate_emotion_state_001_phase_a_contracts.py
+python -m unittest scripts.test_emotion_state_001_open_dataset_gate scripts.test_emotion_state_001_closeout_hardening -v
+python scripts\validate_emotion_state_001_phase_a_contracts.py --section prepublication --mode material-pending
 ```
 
-## Outputs
+Prepublication validation reads no canonical result/report pair and never invokes the Phase A runner. Candidate and accepted-checkpoint readback are also pure readback paths and never invoke the runner.
 
-- Frozen response/rating evidence: `research/experiments/generated/EXP-002-frozen-response-baseline/`
-- Phase A contract evidence: `research/experiments/generated/EMOTION-STATE-001-phase-a-contracts/`
+## Deferred Publication Transaction
 
-The canonical Phase A generated-artifact directory still contains exactly two files: `result.json` and `report.md`. Case inputs must remain under `research/experiments/cases/`. Project escape, parent traversal, private paths, output-root escape, and identical result/report destinations fail closed.
+The controller-only material-pending transaction is:
+
+```powershell
+$receipt = '.tmp\emotion-state-001-phase-a-publication\material-pending-receipt.json'
+python scripts\run_emotion_state_001_phase_a_contracts.py --mode material-pending --defer-acceptance --receipt $receipt
+try {
+    python scripts\validate_emotion_state_001_phase_a_contracts.py --section candidate --receipt $receipt
+    if ($LASTEXITCODE -ne 0) { throw 'Pending candidate readback failed' }
+    python -m unittest scripts.test_emotion_state_001_open_dataset_gate scripts.test_emotion_state_001_closeout_hardening -v
+    if ($LASTEXITCODE -ne 0) { throw 'Pending candidate tests failed' }
+    python scripts\run_emotion_state_001_phase_a_contracts.py --accept-receipt $receipt
+    if ($LASTEXITCODE -ne 0) { throw 'Pending candidate acceptance failed' }
+}
+catch {
+    if (Test-Path $receipt) {
+        python scripts\run_emotion_state_001_phase_a_contracts.py --reject-receipt $receipt
+        if ($LASTEXITCODE -ne 0) { throw 'Pending candidate rejection/restoration failed' }
+    }
+    throw
+}
+```
+
+The current Task 7 implementer boundary forbids probing any real `data/public` path. The synthetic absence check is implemented and tested through an injected temporary root. The CLI therefore fails closed before staging unless the controller supplies separately authorized material-root authority; the implementer did not run the transaction or modify the canonical pair.
 
 ## Publication And Recovery Boundary
 
-The runner holds an OS-level, non-blocking publication lock while it performs startup recovery and publication. Lock state, new-file stages, the transaction journal, previous-pair backups, and recovery scratch live under ignored `.tmp/`, not in the canonical generated-artifact directory. It stages and file-`fsync`s the new result and report, file-`fsync`s backups of the exact prior pair when one exists, persists the journal, replaces `result.json` first, and publishes `report.md` last.
+The runner uses the accepted verification prepare, persistent-lock, finalize, and active-lease validation APIs. The candidate transaction retains a durable `awaiting_acceptance` journal, byte-exact previous-pair backups, and an exact ignored receipt under `.tmp/emotion-state-001-phase-a-publication/`. The receipt contains only its schema version, transaction ID, mode, candidate digests, and prior-pair presence/digests; it contains no timestamp or absolute path.
 
-The report is the logical commit record and contains exactly one result SHA-256 commit marker in the form `result.json sha256:<64-uppercase-SHA-256>`. A consumer must require `python scripts\validate_emotion_state_001_phase_a_contracts.py` to pass; reading either canonical file alone is not sufficient evidence of a committed pair.
+Publication replaces `result.json` first and `report.md` last. Candidate readback requires the live receipt/journal and exact candidate digests. Acceptance revalidates those invariants, durably records `accepted`, then cleans transaction state. Any pre-acceptance failure or explicit rejection restores the byte-identical previous pair. Startup recovery treats `awaiting_acceptance` as rejected; only a valid durable `accepted` state may retain the candidate and finish interrupted cleanup.
 
-At the next locked startup after a crash or interruption, recovery finalizes an exact new pair only when its recorded digests and report marker match. Otherwise it restores the exact previous pair from digest-verified backups, or restores the prior absence when no pair existed. If cleanup is interrupted after an exact new or previous pair is already canonical, a retry recognizes that pair and finishes cleanup. Corrupt or incomplete recovery evidence fails closed and is retained for diagnosis.
+The canonical directory remains exactly:
 
-This protocol provides logical commit and crash recovery. It is not physical two-file atomicity, and file `fsync` does not make this a power-loss durability claim.
+- `research/experiments/generated/EMOTION-STATE-001-phase-a-contracts/result.json`
+- `research/experiments/generated/EMOTION-STATE-001-phase-a-contracts/report.md`
 
-Controlled timeout regression coverage injects `subprocess.TimeoutExpired` at exactly six subprocess positions: two in the EXP-002 validator, one in the Phase A BRAIN section, and three in the Phase A checkpoint section. Every covered 60-second timeout returns exit `1` with the stable validator failure prefix, empty stderr, and no traceback. The coverage performs no provider, private-data, acoustic, runtime, customer-call, simulation, or production operation. Current-checkpoint hard stop: no ElevenLabs read or write occurred; neither an outbound call nor a customer call occurred; no simulation occurred; no source adaptation occurred; and no source-adaptation gate was opened.
+No third canonical file is allowed. The protocol is logical commit and crash recovery, not physical two-file atomicity or a power-loss durability claim.
+
+## Material-Pending Payload
+
+The deterministic payload records the exact selected IDs, Creative Analysis Engine source pin, passing public-dataset/split-v2/cohort contract checks, blocker codes, six frozen baseline fingerprints, and normalized verification evidence. It records no invented local hashes, manifest counts, speaker evidence, or dataset material evidence.
+
+The exact blockers are:
+
+- `dataset_download_not_authorized`
+- `selected_dataset_manifests_not_verified`
+
+The completion scope is `source_provenance_dataset_selection_and_offline_contracts_only_material_verification_pending`. Every later readiness flag remains false.
 
 ## Contract Surfaces
 
-- `exp_002_frozen_response_baseline`: frozen response/rating structure, score totals, recorded preferences, and aggregate arithmetic.
-- `emotion_state_annotation_contracts`: reviewer-level annotation and dependency-safe split rules.
-- `emotion_state_contracts`: strict turn evidence, audit, aggregate, correction, and perceived-customer-state interfaces.
-- `emotion_pattern_contracts`: offline pattern-candidate, registry, approval-envelope, and fail-closed runtime-activation interfaces.
-- `emotion_state_brain_extension`: a detached offline extension that cannot mutate or connect to BRAIN-002 v1.
+- `emotion_state_public_dataset_contracts`: frozen CREMA-D and AMI public-source profiles and offline material rules.
+- `emotion_state_split_manifest_v2_contracts`: dependency-aware, quarantine-first synthetic split design.
+- `emotion_state_cohort_release_contracts`: synthetic discovery, unique-speaker, suppression, replacement, and confirmatory-floor design.
+- `emotion_state_phase_a_verification_evidence`: byte-bound Git/input inventory, dependency closure, guarded command ledger, and deterministic verification digests.
+- `emotion_state_annotation_contracts`, `emotion_state_contracts`, `emotion_pattern_contracts`, and `emotion_state_brain_extension`: offline reviewer, evidence, pattern, and detached BRAIN-extension contracts.
 
-## Determinism And Baseline Meaning
+## Hard Boundary
 
-The six baseline fingerprints are SHA-256 content locks over the two frozen prompts, EXP-002 case file, frozen response/rating record, generated prompt packet, and evaluation rubric. A mismatch stops checkpoint generation. A matching fingerprint means only that those exact inputs did not drift; it does not improve evaluator provenance or create new semantic evidence.
-
-Prompt-packet normalization proves deterministic rendering after the machine-specific source-case line is normalized. The separate Task 0 scorer reruns only frozen response/rating structure, totals, preferences, and aggregate arithmetic. Neither path regenerates responses or repeats semantic judgment. The frozen record does not establish evaluator type, identity or role, count, or procedure, so `evaluator_provenance_status` must remain `not_recorded`.
-
-## Open Gates
-
-- No public dataset is selected. Every selected dataset still needs an exact source/version, terms or license, access, local-file hash, label mapping, domain-limitation, split, and redistribution manifest.
-- The Creative Analysis Engine repository URL and revision or authoritative archive date remain unverified. Phase B reuse scope, attribution wording, and separate approval remain undefined or pending. Author permission is attested, but license metadata is not used as permission authority. Source adaptation remains false.
-- Live aggregate release remains blocked until a separately approved privacy-preserving unique-speaker cohort-release/dedup gate is designed, approved, satisfied, and validated. A small count of similar calls is not evidence of a stable population pattern.
-- Public-dataset evaluation, private research, provider feasibility, Phase B reuse, and runtime activation remain blocked.
-
-## Readiness Boundary
-
-`phase_a_complete=false` remains the current readiness value. This checkpoint is limited to offline synthetic contract-artifact evidence. Acoustic implementation, private-data work, public-dataset evaluation, provider work, and runtime wiring or activation remain unstarted and blocked. It is not production readiness; it does not validate customer emotion, real-customer performance, PSTN, ASR, latency, provider feasibility, or runtime activation. It performs no provider operation, reads no private data, changes no runtime behavior, and leaves BRAIN-002 v1 unchanged.
+Download and evaluation have not started. Source adaptation remains false. No private data, provider or ElevenLabs operation, outbound/customer call, simulation, runtime/prompt/KB/voice/LLM/phone/Procedure/dashboard change, or runtime activation occurred. This checkpoint makes no production, customer, PSTN, ASR, latency, provider-feasibility, or internal-emotion claim.

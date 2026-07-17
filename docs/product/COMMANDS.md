@@ -3861,15 +3861,34 @@ python scripts\run_elevenlabs_agent_automation.py `
   --api-requests-out research\experiments\generated\ELEVENLABS-019-demand-capture-conversion-leakage-repair\agent_patch_and_v4_tests_requests.json
 ```
 
-## EMOTION-STATE-001 Partial Phase A Contracts
+## EMOTION-STATE-001 Material-Pending Phase A Contracts
 
-Run and validate the frozen EXP-002 response baseline, then run and validate the offline Phase A contract checkpoint:
+Validate only the material-pending prepublication inputs without reading or writing the canonical checkpoint pair:
 
 ```powershell
-python scripts\run_exp_002_frozen_response_baseline.py
-python scripts\validate_exp_002_frozen_response_baseline.py
-python scripts\run_emotion_state_001_phase_a_contracts.py
-python scripts\validate_emotion_state_001_phase_a_contracts.py
+python scripts\validate_emotion_state_001_phase_a_contracts.py --section prepublication --mode material-pending
+```
+
+The following defer/readback/test/accept transaction is controller-only. The real defer step requires explicit controller authority to probe the real material root for absence; Task 7 implementers must not run it, create a real receipt, or modify the canonical pair.
+
+```powershell
+$receipt = '.tmp\emotion-state-001-phase-a-publication\material-pending-receipt.json'
+python scripts\run_emotion_state_001_phase_a_contracts.py --mode material-pending --defer-acceptance --receipt $receipt
+try {
+    python scripts\validate_emotion_state_001_phase_a_contracts.py --section candidate --receipt $receipt
+    if ($LASTEXITCODE -ne 0) { throw 'Pending candidate readback failed' }
+    python -m unittest scripts.test_emotion_state_001_open_dataset_gate scripts.test_emotion_state_001_closeout_hardening -v
+    if ($LASTEXITCODE -ne 0) { throw 'Pending candidate tests failed' }
+    python scripts\run_emotion_state_001_phase_a_contracts.py --accept-receipt $receipt
+    if ($LASTEXITCODE -ne 0) { throw 'Pending candidate acceptance failed' }
+}
+catch {
+    if (Test-Path $receipt) {
+        python scripts\run_emotion_state_001_phase_a_contracts.py --reject-receipt $receipt
+        if ($LASTEXITCODE -ne 0) { throw 'Pending candidate rejection/restoration failed' }
+    }
+    throw
+}
 ```
 
 ## Safety Rules

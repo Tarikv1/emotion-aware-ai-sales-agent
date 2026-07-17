@@ -2,9 +2,11 @@
 from __future__ import annotations
 
 import ast
+import os
 import shutil
 import uuid
 from pathlib import Path
+from unittest import mock
 
 if __package__:
     from scripts import check_project_drift
@@ -320,7 +322,16 @@ REQUIRED_FIXTURE_FILES = [
     "scripts/emotion_state_phase_a_contracts.py",
     "scripts/run_emotion_state_001_phase_a_contracts.py",
     "scripts/validate_emotion_state_001_phase_a_contracts.py",
+    "scripts/emotion_state_public_dataset_contracts.py",
+    "scripts/emotion_state_split_manifest_v2_contracts.py",
+    "scripts/emotion_state_cohort_release_contracts.py",
+    "scripts/emotion_state_phase_a_verification_evidence.py",
+    "scripts/emotion_state_phase_a_guard_site/sitecustomize.py",
+    "scripts/build_emotion_state_public_dataset_manifests.py",
+    "scripts/test_emotion_state_001_open_dataset_gate.py",
+    "scripts/test_emotion_state_001_closeout_hardening.py",
     "research/experiments/cases/emotion-state-001-phase-a-contracts.json",
+    "research/experiments/cases/emotion-state-001-cohort-release-fixtures.json",
     "research/experiments/EMOTION-STATE-001-phase-a.md",
     "docs/product/EMOTION_STATE_001_PHASE_A_CONTRACTS.md",
     "docs/data/EMOTION_STATE_001_ANNOTATION_CODEBOOK.md",
@@ -329,6 +340,9 @@ REQUIRED_FIXTURE_FILES = [
     "research/sources/emotion_state/dataset_manifest_contract.json",
     "research/sources/emotion_state/annotation_record_v1.schema.json",
     "research/sources/emotion_state/split_manifest_v1.schema.json",
+    "research/sources/emotion_state/split_manifest_v2.schema.json",
+    "research/sources/emotion_state/cohort_release_evidence_v1.schema.json",
+    "research/sources/emotion_state/phase_a_verification_guard_policy.json",
 ]
 
 PHASE_A_REQUIRED_PATHS = frozenset(
@@ -343,7 +357,16 @@ PHASE_A_REQUIRED_PATHS = frozenset(
         "scripts/emotion_state_phase_a_contracts.py",
         "scripts/run_emotion_state_001_phase_a_contracts.py",
         "scripts/validate_emotion_state_001_phase_a_contracts.py",
+        "scripts/emotion_state_public_dataset_contracts.py",
+        "scripts/emotion_state_split_manifest_v2_contracts.py",
+        "scripts/emotion_state_cohort_release_contracts.py",
+        "scripts/emotion_state_phase_a_verification_evidence.py",
+        "scripts/emotion_state_phase_a_guard_site/sitecustomize.py",
+        "scripts/build_emotion_state_public_dataset_manifests.py",
+        "scripts/test_emotion_state_001_open_dataset_gate.py",
+        "scripts/test_emotion_state_001_closeout_hardening.py",
         "research/experiments/cases/emotion-state-001-phase-a-contracts.json",
+        "research/experiments/cases/emotion-state-001-cohort-release-fixtures.json",
         "research/experiments/EMOTION-STATE-001-phase-a.md",
         "docs/product/EMOTION_STATE_001_PHASE_A_CONTRACTS.md",
         "docs/data/EMOTION_STATE_001_ANNOTATION_CODEBOOK.md",
@@ -352,6 +375,9 @@ PHASE_A_REQUIRED_PATHS = frozenset(
         "research/sources/emotion_state/dataset_manifest_contract.json",
         "research/sources/emotion_state/annotation_record_v1.schema.json",
         "research/sources/emotion_state/split_manifest_v1.schema.json",
+        "research/sources/emotion_state/split_manifest_v2.schema.json",
+        "research/sources/emotion_state/cohort_release_evidence_v1.schema.json",
+        "research/sources/emotion_state/phase_a_verification_guard_policy.json",
     }
 )
 
@@ -513,6 +539,106 @@ def validate_dirty_fixture() -> None:
     assert_condition(payload["summary"]["auto_fixes_applied"] is False, "Guard must not auto-fix dirty fixture.")
 
 
+def validate_secret_pattern_token_boundaries() -> None:
+    non_secret_task_paths = (
+        ".superpowers/sdd/task-7-material-pending-brief.md",
+        ".superpowers/sdd/open-dataset-task-7-material-pending-report.md",
+        ".superpowers/sdd/task-7-thesis-reference-traversal-prerequisite-report.md",
+    )
+    for value in non_secret_task_paths:
+        assert_condition(
+            check_project_drift.SECRET_RE.search(value) is None,
+            f"Secret detector misclassified an ordinary task path: {value}",
+        )
+
+    actual_secret = "sk-" + "TESTVALUE" + ("X" * 24)
+    assert_condition(
+        check_project_drift.SECRET_RE.search(actual_secret) is not None,
+        "Secret detector stopped recognizing a token-start sk credential",
+    )
+
+
+def validate_scan_traversal_boundary() -> None:
+    root = FIXTURE_ROOT / "traversal-boundary"
+    allowed_files = (
+        "data/external/allowed.txt",
+        "docs/allowed.md",
+        "README.md",
+    )
+    forbidden_files = (
+        "data/public/sentinel.md",
+        "data/private/sentinel.md",
+        "data/private-restricted/sentinel.md",
+    )
+    for relative_path in allowed_files:
+        write_text(root / relative_path, "Allowed synthetic fixture.\n")
+    for relative_path in forbidden_files:
+        write_text(root / relative_path, "Forbidden synthetic sentinel.\n")
+
+    root_absolute = Path(os.path.abspath(root))
+    forbidden_prefixes = (
+        "data/public",
+        "data/private",
+        "data/private-restricted",
+    )
+    real_scandir = os.scandir
+    real_stat = Path.stat
+    real_open = Path.open
+    real_read_text = Path.read_text
+
+    def relative_key(value: object) -> str | None:
+        if isinstance(value, int):
+            return None
+        candidate = Path(os.path.abspath(os.fspath(value)))
+        try:
+            return candidate.relative_to(root_absolute).as_posix()
+        except ValueError:
+            return None
+
+    def assert_allowed_boundary(value: object, operation: str) -> None:
+        relative = relative_key(value)
+        if relative == "data" or any(
+            relative == prefix or relative.startswith(prefix + "/")
+            for prefix in forbidden_prefixes
+            if relative is not None
+        ):
+            raise AssertionError(
+                f"{operation} crossed forbidden synthetic data boundary: {relative}"
+            )
+
+    def guarded_scandir(path: object):
+        assert_allowed_boundary(path, "scandir")
+        return real_scandir(path)
+
+    def guarded_stat(path: Path, *args: object, **kwargs: object):
+        assert_allowed_boundary(path, "stat")
+        return real_stat(path, *args, **kwargs)
+
+    def guarded_open(path: Path, *args: object, **kwargs: object):
+        assert_allowed_boundary(path, "open")
+        return real_open(path, *args, **kwargs)
+
+    def guarded_read_text(path: Path, *args: object, **kwargs: object):
+        assert_allowed_boundary(path, "read_text")
+        return real_read_text(path, *args, **kwargs)
+
+    with (
+        mock.patch.object(os, "scandir", side_effect=guarded_scandir),
+        mock.patch.object(Path, "stat", guarded_stat),
+        mock.patch.object(Path, "open", guarded_open),
+        mock.patch.object(Path, "read_text", guarded_read_text),
+    ):
+        files = check_project_drift.iter_scan_files(root)
+        issues = check_project_drift.detect_line_issues(root, files)
+
+    actual_files = tuple(path.relative_to(root).as_posix() for path in files)
+    assert_condition(
+        actual_files == allowed_files,
+        f"Drift traversal returned the wrong synthetic paths: {actual_files}",
+    )
+    assert_condition(not issues, f"Allowed synthetic paths produced drift issues: {issues}")
+
+
 def validate_clean_fixture() -> None:
     clean_root = FIXTURE_ROOT / "clean"
     create_base_fixture(clean_root)
@@ -542,6 +668,8 @@ def main() -> None:
     FIXTURE_ROOT.mkdir(parents=True, exist_ok=True)
 
     try:
+        validate_secret_pattern_token_boundaries()
+        validate_scan_traversal_boundary()
         validate_dirty_fixture()
         validate_clean_fixture()
         validate_current_repo()

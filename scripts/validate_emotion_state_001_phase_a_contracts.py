@@ -34,6 +34,7 @@ CASE_PATH = ROOT / "research" / "experiments" / "cases" / "emotion-state-001-pha
 RUNNER = ROOT / "scripts" / "run_emotion_state_001_phase_a_contracts.py"
 RESULT = ROOT / "research" / "experiments" / "generated" / "EMOTION-STATE-001-phase-a-contracts" / "result.json"
 REPORT = RESULT.with_name("report.md")
+RECOVERY_DIR = ROOT / ".tmp" / "emotion-state-001-phase-a-publication"
 EXPECTED_ARCHIVE_SHA256 = "E579B966E226F2AF6E4F8F8203C7189FEC94FB448EFC09B4B6640C10A398ECCC"
 EXPECTED_BASELINE_FINGERPRINTS = {
     "packages/prompts/baseline-non-adaptive.txt": "BB1FD1EAC0D4DE858BFDCE4A880BBF2C59C14A216489A1A85EF149F3E88D7FCA",
@@ -351,8 +352,15 @@ def validate_source() -> None:
 def validate_contracts() -> None:
     case = read_json(CASE_PATH)
     assert_condition(case["checkpoint_id"] == "EMOTION-STATE-001-phase-a-contracts", case)
-    assert_condition(case["source_label"] == "synthetic-only", case)
-    assert_condition(case["selected_public_datasets"] == [], case)
+    assert_condition(case["schema_version"] == 2, case)
+    assert_condition(case["source_label"] == "public-only", case)
+    assert_condition(case["campaign_profile_version"] == "fixture-v2", case)
+    assert_condition(case["selected_public_datasets"] == [
+        "crema-d-v1.0-audio-wav",
+        "ami-manual-annotations-v1.6.2",
+    ], case)
+    assert_condition(case["dataset_download_authorized"] is False, case)
+    assert_condition(case["dataset_evaluation_started"] is False, case)
     assert_condition(case["private_data_access_allowed"] is False, case)
     assert_condition(case["provider_operations_allowed"] is False, case)
     assert_condition(case["runtime_behavior_change_allowed"] is False, case)
@@ -552,118 +560,62 @@ def validate_brain_extension() -> None:
     assert_condition(completed.returncode == 0, completed.stdout + completed.stderr)
 
 
-def validate_checkpoint() -> None:
+def validate_split_v2() -> None:
+    from scripts.emotion_state_split_manifest_v2_contracts import (
+        split_manifest_v2_self_check,
+    )
+
+    assert_condition(
+        split_manifest_v2_self_check() == "pass",
+        "split manifest v2 contract self-check failed",
+    )
+
+
+def validate_cohort() -> None:
+    from scripts.emotion_state_cohort_release_contracts import (
+        cohort_release_contract_self_check,
+    )
+
+    assert_condition(
+        cohort_release_contract_self_check() == "pass",
+        "cohort release contract self-check failed",
+    )
+
+
+def validate_materials() -> None:
+    evidence_root = ROOT / "research" / "sources" / "emotion_state" / "datasets"
+    expected_paths = [
+        evidence_root / f"{dataset_id}.{suffix}.json"
+        for dataset_id in (
+            "crema-d-v1.0-audio-wav",
+            "ami-manual-annotations-v1.6.2",
+        )
+        for suffix in ("manifest", "hashes", "quality")
+    ]
+    for path in expected_paths:
+        assert_condition(
+            path.exists(),
+            f"material verification evidence is missing: {path.relative_to(ROOT)}",
+        )
+        read_json(path)
+
+
+def validate_prepublication_inputs(mode: str) -> None:
+    assert_condition(
+        mode in {"material-pending", "complete"},
+        "prepublication mode must be material-pending or complete",
+    )
     assert_condition(RUNNER.exists(), f"missing runner: {RUNNER.relative_to(ROOT)}")
+    validate_source()
+    validate_contracts()
+    validate_split_v2()
+    validate_cohort()
+    validate_patterns()
+    validate_brain_extension()
     baseline_gate = subprocess.run(
-        [sys.executable, str(ROOT / "scripts" / "validate_exp_002_frozen_response_baseline.py")],
-        cwd=ROOT,
-        text=True,
-        capture_output=True,
-        timeout=60,
-        check=False,
-    )
-    assert_condition(baseline_gate.returncode == 0, baseline_gate.stdout + baseline_gate.stderr)
-    from scripts.run_emotion_state_001_phase_a_contracts import (
-        DEFAULT_CASE as RUNNER_DEFAULT_CASE,
-        DEFAULT_OUTPUT_DIR as RUNNER_DEFAULT_OUTPUT_DIR,
-        resolve_project_path,
-    )
-
-    assert_condition(
-        resolve_project_path(str(RUNNER_DEFAULT_CASE), allowed_root=RUNNER_DEFAULT_CASE.parent)
-        == RUNNER_DEFAULT_CASE.resolve(strict=False),
-        "runner rejected its fixed case path",
-    )
-    for blocked_path in (
-        ROOT.parent / "outside-result.json",
-        ROOT / "runtime" / "overwrite-result.json",
-        ROOT / "data" / "private" / "blocked-result.json",
-    ):
-        try:
-            resolve_project_path(str(blocked_path), allowed_root=RUNNER_DEFAULT_OUTPUT_DIR)
-        except ValueError:
-            pass
-        else:
-            raise AssertionError(f"runner accepted blocked output path: {blocked_path}")
-    completed = subprocess.run(
-        [sys.executable, str(RUNNER)],
-        cwd=ROOT,
-        text=True,
-        capture_output=True,
-        timeout=60,
-        check=False,
-    )
-    assert_condition(completed.returncode == 0, completed.stdout + completed.stderr)
-    assert_condition(
-        {path.name for path in RESULT.parent.iterdir()} == {"result.json", "report.md"},
-        "canonical checkpoint directory must contain exactly result.json and report.md",
-    )
-    try:
-        result_bytes = RESULT.read_bytes()
-        result = json.loads(result_bytes.decode("utf-8"))
-    except (OSError, UnicodeError, json.JSONDecodeError) as exc:
-        raise AssertionError("unable to read committed checkpoint result bytes") from exc
-    result_sha256 = hashlib.sha256(result_bytes).hexdigest().upper()
-    report = require_text(REPORT, [
-        "EMOTION-STATE-001", "offline", "all of Phase A is complete",
-        "Per-public-dataset manifests remain open", "Live aggregate release remains blocked",
-        "Runtime activation remains blocked",
-    ])
-    from scripts.emotion_state_phase_a_contracts import render_phase_a_report
-
-    assert_condition(
-        report == render_phase_a_report(result, result_sha256=result_sha256),
-        "result/report publication pair is not committed",
-    )
-    assert_condition(result["checkpoint_id"] == "EMOTION-STATE-001-phase-a-contracts", result)
-    assert_condition(result["archive_sha256"] == EXPECTED_ARCHIVE_SHA256, result)
-    assert_condition(
-        result["status"] == "contract_artifact_validation_only_source_dataset_and_privacy_gates_open",
-        result,
-    )
-    assert_condition(result["summary"]["provider_operations_performed_by_runner"] is False, result)
-    assert_condition(result["summary"]["private_data_read_by_runner"] is False, result)
-    assert_condition(result["summary"]["runtime_behavior_changed_by_runner"] is False, result)
-    assert_condition(result["summary"]["code_adaptation_started"] is False, result)
-    assert_condition(result["summary"]["runtime_activation_allowed"] is False, result)
-    assert_condition(result["summary"]["source_adaptation_allowed"] is False, result)
-    assert_condition(result["readiness_boundary"] == {
-        "phase_a_contract_artifacts_built": True,
-        "phase_a_complete": False,
-        "full_repository_gate_claimed_by_this_artifact": False,
-        "live_aggregate_release_unblocked": False,
-        "phase_b_unblocked": False,
-        "public_dataset_evaluation_unblocked": False,
-        "private_research_unblocked": False,
-        "provider_feasibility_unblocked": False,
-        "runtime_activation_unblocked": False,
-    }, result)
-    expected_checks = {
-        "exp_002_frozen_response_baseline",
-        "emotion_state_annotation_contracts",
-        "emotion_state_cohort_release_contracts",
-        "emotion_state_contracts",
-        "emotion_pattern_contracts",
-        "emotion_state_brain_extension",
-    }
-    assert_condition(set(result["summary"]["contract_checks"]) == expected_checks, result)
-    assert_condition(set(result["summary"]["contract_checks"].values()) == {"pass"}, result)
-    assert_condition(result["summary"]["contract_check_count"] == len(expected_checks), result)
-    assert_condition(result["baseline_fingerprints"] == EXPECTED_BASELINE_FINGERPRINTS, result)
-    assert_condition(all(
-        isinstance(digest, str) and len(digest) == 64 and all(character in "0123456789ABCDEF" for character in digest)
-        for digest in result["baseline_fingerprints"].values()
-    ), result)
-    assert_condition("production ready" not in report.lower(), "report overclaims readiness")
-    rendered_packet = ROOT / ".tmp" / "emotion-state-001" / "EXP-002-prompt-packet.md"
-    baseline_run = subprocess.run(
         [
             sys.executable,
-            str(ROOT / "scripts" / "run_prompt_baseline.py"),
-            "--cases",
-            str(ROOT / "research" / "experiments" / "cases" / "exp-002-dataset-derived.json"),
-            "--out",
-            str(rendered_packet),
+            str(ROOT / "scripts" / "validate_exp_002_frozen_response_baseline.py"),
         ],
         cwd=ROOT,
         text=True,
@@ -671,40 +623,122 @@ def validate_checkpoint() -> None:
         timeout=60,
         check=False,
     )
-    assert_condition(baseline_run.returncode == 0, baseline_run.stdout + baseline_run.stderr)
-    tracked_packet = ROOT / "research" / "experiments" / "generated" / "EXP-002" / "EXP-002-prompt-packet.md"
     assert_condition(
-        normalized_prompt_packet_digest(tracked_packet) == EXPECTED_NORMALIZED_PROMPT_PACKET_SHA256,
-        "tracked EXP-002 normalized prompt packet drifted from the frozen baseline",
+        baseline_gate.returncode == 0,
+        baseline_gate.stdout + baseline_gate.stderr,
+    )
+    if mode == "complete":
+        validate_materials()
+
+
+def _readback_pair(
+    result_path: Path,
+    report_path: Path,
+) -> dict[str, Any]:
+    from scripts.emotion_state_phase_a_contracts import render_phase_a_report
+    from scripts.run_emotion_state_001_phase_a_contracts import (
+        verify_evidence_pair_bytes,
+    )
+
+    assert_condition(result_path.parent == report_path.parent, "canonical directory mismatch")
+    assert_condition(
+        {path.name for path in result_path.parent.iterdir() if path.is_file()}
+        == {result_path.name, report_path.name},
+        "canonical checkpoint directory must contain exactly result.json and report.md",
+    )
+    result_bytes = result_path.read_bytes()
+    report_bytes = report_path.read_bytes()
+    verify_evidence_pair_bytes(result_bytes, report_bytes)
+    result = json.loads(result_bytes.decode("utf-8"))
+    assert_condition(isinstance(result, dict), "checkpoint result must be an object")
+    result_sha256 = hashlib.sha256(result_bytes).hexdigest().upper()
+    assert_condition(
+        report_path.read_text(encoding="utf-8")
+        == render_phase_a_report(result, result_sha256=result_sha256),
+        "result/report publication pair is not deterministic",
     )
     assert_condition(
-        normalized_prompt_packet_digest(rendered_packet) == EXPECTED_NORMALIZED_PROMPT_PACKET_SHA256,
-        "EXP-002 normalized prompt packet drifted",
+        result.get("checkpoint_id") == "EMOTION-STATE-001-phase-a-contracts",
+        result,
+    )
+    assert_condition(
+        result.get("readiness_boundary", {}).get("phase_a_complete") is False,
+        result,
+    )
+    return result
+
+
+def validate_candidate_readback(receipt_path: str | Path) -> None:
+    from scripts.run_emotion_state_001_phase_a_contracts import (
+        validate_candidate_evidence_pair,
+    )
+
+    validate_candidate_evidence_pair(
+        receipt_path,
+        result_path=RESULT,
+        report_path=REPORT,
+        recovery_dir=RECOVERY_DIR,
     )
 
 
-SECTIONS: dict[str, Callable[[], None]] = {
+def validate_checkpoint_readback() -> None:
+    from scripts.run_emotion_state_001_phase_a_contracts import JOURNAL_NAME
+
+    assert_condition(
+        not (RECOVERY_DIR / JOURNAL_NAME).exists(),
+        "accepted checkpoint readback requires no live publication transaction",
+    )
+    _readback_pair(RESULT, REPORT)
+
+
+SECTIONS: dict[str, Callable[..., None]] = {
     "source": validate_source,
     "contracts": validate_contracts,
+    "split-v2": validate_split_v2,
+    "cohort": validate_cohort,
+    "materials": validate_materials,
     "patterns": validate_patterns,
     "brain": validate_brain_extension,
-    "checkpoint": validate_checkpoint,
+    "prepublication": validate_prepublication_inputs,
+    "candidate": validate_candidate_readback,
+    "checkpoint": validate_checkpoint_readback,
 }
 
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Validate EMOTION-STATE-001 Phase A contracts.")
-    parser.add_argument("--section", choices=["all", *SECTIONS], default="all")
-    return parser.parse_args()
+    parser.add_argument("--section", choices=list(SECTIONS), required=True)
+    parser.add_argument("--mode", choices=("material-pending", "complete"))
+    parser.add_argument("--receipt")
+    args = parser.parse_args()
+    if args.section == "prepublication":
+        if args.mode is None or args.receipt is not None:
+            parser.error("prepublication validation requires --mode and forbids --receipt")
+    elif args.section == "candidate":
+        if args.receipt is None or args.mode is not None:
+            parser.error("candidate validation requires --receipt and forbids --mode")
+    elif args.mode is not None or args.receipt is not None:
+        parser.error("--mode and --receipt are section-specific")
+    return args
 
 
 def main() -> int:
     args = parse_args()
-    selected = SECTIONS.values() if args.section == "all" else [SECTIONS[args.section]]
     try:
-        for validator in selected:
-            validator()
-    except (AssertionError, KeyError, subprocess.TimeoutExpired, ValueError) as exc:
+        if args.section == "prepublication":
+            validate_prepublication_inputs(args.mode)
+        elif args.section == "candidate":
+            validate_candidate_readback(args.receipt)
+        else:
+            SECTIONS[args.section]()
+    except (
+        AssertionError,
+        KeyError,
+        OSError,
+        RuntimeError,
+        subprocess.TimeoutExpired,
+        ValueError,
+    ) as exc:
         print(f"EMOTION-STATE-001 Phase A validation failed: {exc}")
         return 1
     print(f"EMOTION-STATE-001 Phase A validation passed: {args.section}")

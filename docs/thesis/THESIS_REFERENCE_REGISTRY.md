@@ -83,7 +83,7 @@ Use the source categories carefully:
 - Database license: https://opendatacommons.org/licenses/odbl/1-0/
 - Contents license: https://opendatacommons.org/licenses/dbcl/1-0/
 - Project use: selected for a later separately authorized, offline controlled acoustic-sensitivity lane using original audio-perception labels and speaker-disjoint metadata checks.
-- Current project status: source/release selection is approved; dataset download and material verification are not authorized by the design or implementation plan alone.
+- Current project status: source/release selection is approved; dataset download, material verification, and evaluation have not started and are not authorized by the design or implementation plan alone.
 - Thesis caution: acted isolated-utterance labels are not customer internal emotion, natural sales-conversation truth, or mappings to hesitation, frustration, confusion, interest, or disengagement.
 
 ### AMI manual annotations v1.6.2 (selected conversational-mechanics source)
@@ -96,8 +96,16 @@ Use the source categories carefully:
 - Official partitions: https://groups.inf.ed.ac.uk/ami/corpus/datasets.shtml
 - Documented data problems: https://groups.inf.ed.ac.uk/ami/corpus/dataproblems.shtml
 - Project use: selected for a later separately authorized, annotation-only conversational-mechanics lane covering speaker, timing, transcript structure, dialogue acts, and dependency-safe turn analysis.
-- Current project status: source/release selection is approved; no AMI audio, video, automatic annotation, speculative emotion material, download, or evaluation is authorized by the design or implementation plan alone.
+- Current project status: source/release selection is approved; dataset download and evaluation have not started. No AMI audio, video, automatic annotation, or speculative emotion material is authorized by the design or implementation plan alone.
 - Thesis caution: AMI supplies no project emotion ground truth. Dialogue acts, pauses, overlap, floor maintenance, and backchannels cannot be relabeled as operational customer-state signals.
+
+### Git LFS pointer specification v1
+
+- Type: primary file-format specification
+- Specification: https://git-lfs.github.com/spec/v1
+- Project use: reference for offline synthetic fixtures that detect unresolved Git LFS pointer bytes before any CREMA-D material can be treated as verified WAV content.
+- Current project status: reference-only parser contract; no dataset download, Git LFS fetch, or network action was performed for the material-pending checkpoint.
+- Thesis caution: recognizing the pointer format proves only that a file is a pointer; it does not verify or authorize the referenced dataset object.
 
 ### Creative Analysis Engine private collaboration source
 

@@ -5885,3 +5885,16 @@ Interpretation:
   - direct artifact readback, three expected-no-match forbidden scans, exact 19-entry setup/drift symmetry checks, frozen prompt/fingerprint byte stability, BRAIN-002 v1 invariants, and immutable-base branch-scope checks also passed
   - independent review found and the focused fix closed three durable-gate gaps: exact runtime metadata/date enforcement, exact unique setup tuple and emitted mapping enforcement, and an immutable 19-path drift subset; targeted in-memory mutation suites passed with no product or runtime behavior change
   - whole-branch review hardening added table-driven JSON list/object mutations across annotation, split, evidence, audit, state, watermark, and pattern contracts; malformed enum/container values now fail with their contract-domain exceptions while accepted canonical values and `phase_a_complete=false` remain unchanged
+
+### 2026-07-17 - EMOTION-STATE-001 material-pending open-dataset gate integration
+
+- Objective: integrate an offline, reviewable material-pending checkpoint without downloading or evaluating either selected dataset and without publishing a canonical checkpoint.
+- Inputs and design:
+  - selected exactly `crema-d-v1.0-audio-wav` and `ami-manual-annotations-v1.6.2`; download, material verification, and evaluation remain not started
+  - preserved `source_adaptation_performed=false` and exercised split-manifest v2 plus privacy-preserving cohort-release contracts only with synthetic fixtures
+  - consumed the accepted verification APIs `prepare_verification_evidence`, `persistent_verification_lock`, `finalize_verification_evidence`, and `validate_active_verification_lock` without modifying their implementation or frozen guard policy/site
+  - added a receipt-bound `awaiting_acceptance` transaction with candidate readback, explicit accept/reject, exact previous-pair restoration, and startup recovery under the existing publication lock
+- Boundary:
+  - no real dataset path was listed, probed, hashed, read, created, or written; no network, download, private data, provider, call, simulation, source adaptation, runtime, or canonical result/report action occurred
+  - `phase_a_complete=false`; the checkpoint makes no production, customer, PSTN, ASR, latency, provider-feasibility, or internal-emotion claim
+  - the real defer transaction remains controller-blocked until the controller explicitly authorizes the required real material-root absence probe; this requirement was implemented and tested through synthetic injected roots and was not weakened

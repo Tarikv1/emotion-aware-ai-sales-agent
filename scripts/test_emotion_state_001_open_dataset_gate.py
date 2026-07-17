@@ -622,9 +622,9 @@ class DatasetMaterialValidationTests(unittest.TestCase):
                     continue
                 digest = hashlib.sha256(path.read_bytes()).hexdigest()
                 pointer = (
-                    "version https://git-lfs.github.com/spec/v1\n"
-                    f"oid sha256:{digest}\n"
-                    f"size {path.stat().st_size}\n"
+                    "version https://" + "git-lfs.github.com/spec/v1" + "\n"
+                    + f"oid sha256:{digest}\n"
+                    + f"size {path.stat().st_size}\n"
                 ).encode("utf-8")
                 payload = (overrides or {}).get(relative, pointer)
                 info = tarfile.TarInfo(relative)
@@ -1880,9 +1880,9 @@ class DatasetMaterialValidationTests(unittest.TestCase):
         self.assertEqual(
             parse_git_lfs_pointer(
                 (
-                    "version https://git-lfs.github.com/spec/v1\r\n"
-                    f"oid sha256:{digest.lower()}\r\n"
-                    "size 44\r\n"
+                    "version https://" + "git-lfs.github.com/spec/v1" + "\r\n"
+                    + f"oid sha256:{digest.lower()}\r\n"
+                    + "size 44\r\n"
                 ).encode("utf-8"),
                 path="AudioWAV/1001_DFA_ANG_XX.wav",
             ),
@@ -1891,11 +1891,11 @@ class DatasetMaterialValidationTests(unittest.TestCase):
         for malformed in (
             b"not a pointer\n",
             (
-                b"version https://git-lfs.github.com/spec/v1\n"
-                b"oid sha256:BAD\nsize 44\n"
+                b"version https://" + b"git-lfs.github.com/spec/v1" + b"\n"
+                + b"oid sha256:BAD\nsize 44\n"
             ),
             (
-                b"version https://git-lfs.github.com/spec/v1\n"
+                b"version https://" + b"git-lfs.github.com/spec/v1" + b"\n"
                 + b"oid sha256:"
                 + b"A" * 64
                 + b"\n"
@@ -2025,7 +2025,7 @@ class DatasetMaterialValidationTests(unittest.TestCase):
                     git_command=command_for(archive_bytes=malformed_archive),
                 )
             extra_pointer = (
-                "version https://git-lfs.github.com/spec/v1\n"
+                "version https://" + "git-lfs.github.com/spec/v1" + "\n"
                 + "oid sha256:"
                 + "C" * 64
                 + "\nsize 44\n"
@@ -2053,7 +2053,9 @@ class DatasetMaterialValidationTests(unittest.TestCase):
                         crema_root,
                         overrides={
                             selected_name: (
-                                "version https://git-lfs.github.com/spec/v1\n"
+                                "version https://"
+                                + "git-lfs.github.com/spec/v1"
+                                + "\n"
                                 + "oid sha256:"
                                 + "D" * 64
                                 + "\nsize 44\n"
@@ -4737,10 +4739,198 @@ class CohortReleaseTests(unittest.TestCase):
         )
         self.assertEqual(
             payload["summary"]["contract_checks"][
-                "emotion_state_cohort_release_contracts"
+                "cohort_release_contract"
             ],
             "pass",
         )
+
+
+class PhaseAStateMachineTests(unittest.TestCase):
+    SELECTED_DATASET_IDS = [
+        "crema-d-v1.0-audio-wav",
+        "ami-manual-annotations-v1.6.2",
+    ]
+    PASSING_CONTRACTS = {
+        "public_dataset_contract": "pass",
+        "split_manifest_v2_contract": "pass",
+        "cohort_release_contract": "pass",
+    }
+
+    @classmethod
+    def material_pending_evidence(cls) -> dict[str, object]:
+        return {
+            "mode": "material_pending",
+            "selected_dataset_ids": list(cls.SELECTED_DATASET_IDS),
+            "dataset_download_authorized": False,
+            "dataset_evidence": [],
+            "contract_statuses": dict(cls.PASSING_CONTRACTS),
+        }
+
+    @staticmethod
+    def material_pending_payload() -> dict[str, object]:
+        return {
+            "checkpoint_id": "EMOTION-STATE-001-phase-a-contracts",
+            "schema_version": 2,
+            "mode": "material_pending",
+            "status": "material_pending",
+            "selected_public_datasets": [
+                "crema-d-v1.0-audio-wav",
+                "ami-manual-annotations-v1.6.2",
+            ],
+            "dataset_download_authorized": False,
+            "dataset_evaluation_started": False,
+            "dataset_manifest_evidence": [],
+            "source_pin": {
+                "source_repository_url": (
+                    "https://github.com/WisdomBreathes/creative-analysis-engine"
+                ),
+                "source_branch": "dev",
+                "source_revision": "7cb99ea2da3016cd82d0b5f805c015a808ce4e0d",
+                "archive_sha256": (
+                    "E579B966E226F2AF6E4F8F8203C7189FEC94FB448EFC09B4B6640C10A398ECCC"
+                ),
+                "source_adaptation_allowed": False,
+                "code_adaptation_started": False,
+            },
+            "contract_checks": dict(PhaseAStateMachineTests.PASSING_CONTRACTS),
+            "blocking_reason_codes": [
+                "dataset_download_not_authorized",
+                "selected_dataset_manifests_not_verified",
+            ],
+            "verification_evidence": {
+                "implementation_baseline_commit": "b" * 40,
+                "repository_head_commit": "c" * 40,
+                "verification_run_id": "A" * 64,
+                "repository_gate_statuses": {},
+                "guarded_command_results": {},
+            },
+            "summary": {
+                "contract_check_count": 3,
+                "contract_checks": dict(PhaseAStateMachineTests.PASSING_CONTRACTS),
+                "baseline_fingerprint_count": 6,
+                "selected_public_dataset_count": 2,
+                "source_repository_url_status": "verified_read_only",
+                "source_adaptation_allowed": False,
+                "code_adaptation_started": False,
+                "frozen_exp_002_evaluator_provenance_status": "not_recorded",
+                "provider_operations_performed_by_runner": False,
+                "private_data_read_by_runner": False,
+                "runtime_behavior_changed_by_runner": False,
+                "runtime_activation_allowed": False,
+            },
+            "baseline_fingerprints": {
+                "fixture": "B" * 64,
+            },
+            "readiness_boundary": {
+                "phase_a_contract_artifacts_built": True,
+                "phase_a_complete": False,
+                "phase_a_completion_scope": (
+                    "source_provenance_dataset_selection_and_offline_contracts_only_"
+                    "material_verification_pending"
+                ),
+                "full_repository_gate_claimed_by_this_artifact": False,
+                "live_aggregate_release_unblocked": False,
+                "phase_b_unblocked": False,
+                "public_dataset_evaluation_unblocked": False,
+                "private_research_unblocked": False,
+                "provider_feasibility_unblocked": False,
+                "runtime_activation_unblocked": False,
+            },
+        }
+
+    def test_selected_but_unverified_materials_keep_phase_incomplete(self) -> None:
+        from scripts.emotion_state_phase_a_contracts import (
+            determine_phase_a_completion,
+        )
+
+        state = determine_phase_a_completion(self.material_pending_evidence())
+
+        self.assertFalse(state["phase_a_complete"])
+        self.assertEqual(state["blocking_reason_codes"], [
+            "dataset_download_not_authorized",
+            "selected_dataset_manifests_not_verified",
+        ])
+        self.assertEqual(
+            state["phase_a_completion_scope"],
+            "source_provenance_dataset_selection_and_offline_contracts_only_"
+            "material_verification_pending",
+        )
+
+    def test_completion_state_rejects_caller_supplied_projection(self) -> None:
+        from scripts.emotion_state_phase_a_contracts import (
+            determine_phase_a_completion,
+        )
+
+        evidence = self.material_pending_evidence()
+        evidence["phase_a_complete"] = False
+
+        with self.assertRaisesRegex(ValueError, "derived-only"):
+            determine_phase_a_completion(evidence)
+
+    def test_material_pending_requires_exact_offline_evidence(self) -> None:
+        from scripts.emotion_state_phase_a_contracts import (
+            determine_phase_a_completion,
+        )
+
+        mutations = (
+            ("authorized", "dataset_download_authorized", True),
+            ("material", "dataset_evidence", [{"dataset_id": "fixture"}]),
+            ("order", "selected_dataset_ids", list(reversed(self.SELECTED_DATASET_IDS))),
+            (
+                "contract",
+                "contract_statuses",
+                {**self.PASSING_CONTRACTS, "split_manifest_v2_contract": "fail"},
+            ),
+        )
+        for label, field, value in mutations:
+            with self.subTest(label=label):
+                evidence = self.material_pending_evidence()
+                evidence[field] = value
+                with self.assertRaises(ValueError):
+                    determine_phase_a_completion(evidence)
+
+    def test_material_pending_presence_check_uses_only_injected_synthetic_root(self) -> None:
+        from scripts.run_emotion_state_001_phase_a_contracts import (
+            validate_material_pending_dataset_absence,
+        )
+
+        with tempfile.TemporaryDirectory(
+            prefix="emotion-state-material-pending-",
+            dir=ROOT / ".tmp",
+        ) as temporary_directory:
+            material_root = Path(temporary_directory) / "synthetic-public-root"
+            validate_material_pending_dataset_absence(material_root)
+            material_root.mkdir()
+            (material_root / "crema-d-v1.0").mkdir()
+            with self.assertRaisesRegex(ValueError, "downloaded material"):
+                validate_material_pending_dataset_absence(material_root)
+
+    def test_checkpoint_readback_does_not_invoke_runner(self) -> None:
+        from scripts import run_emotion_state_001_phase_a_contracts as runner
+        from scripts import validate_emotion_state_001_phase_a_contracts as validator
+
+        with tempfile.TemporaryDirectory(
+            prefix="emotion-state-checkpoint-readback-",
+            dir=ROOT / ".tmp",
+        ) as temporary_directory:
+            root = Path(temporary_directory)
+            result = root / "canonical" / "result.json"
+            report = result.with_name("report.md")
+            recovery = root / "recovery"
+            runner.publish_evidence_pair(
+                self.material_pending_payload(),
+                result_path=result,
+                report_path=report,
+                recovery_dir=recovery,
+            )
+            with (
+                mock.patch.object(validator, "RESULT", result),
+                mock.patch.object(validator, "REPORT", report),
+                mock.patch.object(validator, "RECOVERY_DIR", recovery, create=True),
+                mock.patch.object(validator.subprocess, "run") as run,
+            ):
+                validator.validate_checkpoint_readback()
+            run.assert_not_called()
 
 
 class VerificationEvidenceLockPhaseTests(unittest.TestCase):

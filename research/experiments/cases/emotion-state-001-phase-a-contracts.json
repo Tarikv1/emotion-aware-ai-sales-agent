@@ -1,10 +1,15 @@
 {
   "checkpoint_id": "EMOTION-STATE-001-phase-a-contracts",
-  "schema_version": 1,
-  "source_label": "synthetic-only",
+  "schema_version": 2,
+  "source_label": "public-only",
   "campaign_profile_id": "emotion-state-phase-a-fixture",
-  "campaign_profile_version": "fixture-v1",
-  "selected_public_datasets": [],
+  "campaign_profile_version": "fixture-v2",
+  "selected_public_datasets": [
+    "crema-d-v1.0-audio-wav",
+    "ami-manual-annotations-v1.6.2"
+  ],
+  "dataset_download_authorized": false,
+  "dataset_evaluation_started": false,
   "private_data_access_allowed": false,
   "provider_operations_allowed": false,
   "runtime_behavior_change_allowed": false,

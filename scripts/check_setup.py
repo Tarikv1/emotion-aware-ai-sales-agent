@@ -570,7 +570,16 @@ REQUIRED_FILES = [
     ("file.scripts_emotion_state_phase_a_contracts", "scripts/emotion_state_phase_a_contracts.py", "EMOTION-STATE Phase A checkpoint builder"),
     ("file.scripts_run_emotion_state_001_phase_a_contracts", "scripts/run_emotion_state_001_phase_a_contracts.py", "EMOTION-STATE Phase A checkpoint runner"),
     ("file.scripts_validate_emotion_state_001_phase_a_contracts", "scripts/validate_emotion_state_001_phase_a_contracts.py", "EMOTION-STATE Phase A validator"),
+    ("file.scripts_emotion_state_public_dataset_contracts", "scripts/emotion_state_public_dataset_contracts.py", "EMOTION-STATE public-dataset contracts"),
+    ("file.scripts_emotion_state_split_manifest_v2_contracts", "scripts/emotion_state_split_manifest_v2_contracts.py", "EMOTION-STATE split-manifest v2 contracts"),
+    ("file.scripts_emotion_state_cohort_release_contracts", "scripts/emotion_state_cohort_release_contracts.py", "EMOTION-STATE cohort-release contracts"),
+    ("file.scripts_emotion_state_phase_a_verification_evidence", "scripts/emotion_state_phase_a_verification_evidence.py", "EMOTION-STATE Phase A verification evidence"),
+    ("file.scripts_emotion_state_phase_a_guard_site_sitecustomize", "scripts/emotion_state_phase_a_guard_site/sitecustomize.py", "EMOTION-STATE Phase A verification guard site"),
+    ("file.scripts_build_emotion_state_public_dataset_manifests", "scripts/build_emotion_state_public_dataset_manifests.py", "EMOTION-STATE public-dataset manifest builder"),
+    ("file.scripts_test_emotion_state_001_open_dataset_gate", "scripts/test_emotion_state_001_open_dataset_gate.py", "EMOTION-STATE open-dataset gate tests"),
+    ("file.scripts_test_emotion_state_001_closeout_hardening", "scripts/test_emotion_state_001_closeout_hardening.py", "EMOTION-STATE closeout hardening tests"),
     ("file.research_case_emotion_state_001_phase_a_contracts", "research/experiments/cases/emotion-state-001-phase-a-contracts.json", "EMOTION-STATE Phase A fixed case"),
+    ("file.research_case_emotion_state_001_cohort_release_fixtures", "research/experiments/cases/emotion-state-001-cohort-release-fixtures.json", "EMOTION-STATE synthetic cohort-release fixtures"),
     ("file.research_experiment_emotion_state_001_phase_a", "research/experiments/EMOTION-STATE-001-phase-a.md", "EMOTION-STATE Phase A experiment note"),
     ("file.docs_product_emotion_state_001_phase_a_contracts", "docs/product/EMOTION_STATE_001_PHASE_A_CONTRACTS.md", "EMOTION-STATE Phase A product contract"),
     ("file.docs_data_emotion_state_001_annotation_codebook", "docs/data/EMOTION_STATE_001_ANNOTATION_CODEBOOK.md", "EMOTION-STATE annotation codebook"),
@@ -579,6 +588,9 @@ REQUIRED_FILES = [
     ("file.research_source_emotion_state_dataset_manifest_contract", "research/sources/emotion_state/dataset_manifest_contract.json", "EMOTION-STATE dataset-manifest contract"),
     ("file.research_source_emotion_state_annotation_record_schema", "research/sources/emotion_state/annotation_record_v1.schema.json", "EMOTION-STATE annotation-record schema"),
     ("file.research_source_emotion_state_split_manifest_schema", "research/sources/emotion_state/split_manifest_v1.schema.json", "EMOTION-STATE split-manifest schema"),
+    ("file.research_source_emotion_state_split_manifest_v2_schema", "research/sources/emotion_state/split_manifest_v2.schema.json", "EMOTION-STATE split-manifest v2 schema"),
+    ("file.research_source_emotion_state_cohort_release_evidence_v1_schema", "research/sources/emotion_state/cohort_release_evidence_v1.schema.json", "EMOTION-STATE cohort-release evidence schema"),
+    ("file.research_source_emotion_state_phase_a_verification_guard_policy", "research/sources/emotion_state/phase_a_verification_guard_policy.json", "EMOTION-STATE Phase A verification guard policy"),
 ]
 
 OPTIONAL_ENV_VARS = [

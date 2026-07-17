@@ -1,126 +1,57 @@
-# EMOTION-STATE-001: Partial Phase A Contract Foundation
+# EMOTION-STATE-001: Material-Pending Phase A Inputs
 
 ## Status
 
-Status: Completed - partial Phase A contract foundation checkpoint
+Status: Task 7 input integration complete; canonical material-pending publication deferred to the controller
 
-Readiness: `phase_a_complete=false`; acoustic implementation, private-data work, public-dataset evaluation, provider work, and runtime wiring or activation remain unstarted and blocked. No production-readiness claim is authorized.
+Readiness: `phase_a_complete=false`. Dataset download, dataset evaluation, private research, provider feasibility, Phase B, and runtime activation remain blocked.
 
 ## Source Label
 
-`synthetic-only`
+`public-only`
 
 ## Date
 
-2026-07-14
+2026-07-17
 
 ## Question
 
-Can the project establish deterministic, fail-closed emotion-state provenance and contract artifacts without using private data, provider operations, source-code adaptation, or runtime influence?
+Can the project select two bounded public sources and integrate offline contract, verification, and crash-safe acceptance inputs without downloading or inspecting dataset bytes?
 
-## Hypothesis
+## Selected Sources
 
-The existing synthetic fixture, frozen EXP-002 evidence, and offline self-checks can produce a deterministic checkpoint while every dataset, privacy, provider, adaptation, and runtime gate remains closed.
+1. `crema-d-v1.0-audio-wav`: controlled acoustic-sensitivity evidence only.
+2. `ami-manual-annotations-v1.6.2`: annotation-only conversational-mechanics evidence only.
 
-## Dataset
+Download authorized: `false`. Evaluation started: `false`. Local dataset evidence entries: `0`. Source adaptation: `false`.
 
-- Name: No public dataset selected
-- Source: None
-- License/usage notes: Exact per-public-dataset manifests remain open
-- Size: 0 selected datasets
-- Language: Not applicable
-- Labels: `synthetic-only`
-- Notes: Acted and non-sales corpora may support later offline thesis comparison only after dataset-specific approval and manifests.
-
-## Scope
-
-Editable scope: provenance and contract files only
-
-Fixed constraints: no code adaptation, no private data, no provider, no live aggregate release, no runtime influence
-
-Out of scope:
-
-- Public-dataset evaluation
-- Private-data ingestion
-- Provider feasibility
-- PSTN, ASR, latency, and real-customer validation
-- Runtime activation or BRAIN-002 v1 mutation
-- Phase B source reuse
-
-## Metrics
-
-Primary metric:
-
-- Five offline contract self-checks pass.
-
-Secondary metrics:
-
-- Six frozen baseline fingerprints match.
-- Selected public dataset count remains zero.
-- All readiness and activation gates remain false.
+Neither source is customer internal-emotion truth. Neither source maps to hesitation, frustration, confusion, interest, or disengagement.
 
 ## Method
 
-Run the deterministic checkpoint builder over the fixed synthetic case, verify the source manifest remains non-adapted, verify all six frozen baseline hashes, run the five offline self-checks, and publish the result/report pair under the fixed generated-artifact directory. Publication holds an OS-level lock; stages, file-`fsync`s, journals, and backs up under ignored `.tmp/`; replaces result first; and publishes report last with the exact result SHA-256 commit marker.
+- Preserve the six frozen baseline fingerprints.
+- Require passing public-dataset, split-manifest-v2, and cohort-release synthetic contract checks.
+- Derive `phase_a_complete` and blocker codes; reject caller-supplied completion projections.
+- Build normalized repository verification evidence through the accepted prepare/persistent-lock/finalize/lease-validation APIs.
+- Stage a result-first/report-last candidate with a durable `awaiting_acceptance` journal, exact prior-pair backups, and a pathless ignored receipt.
+- Validate candidate/checkpoint bytes without runner recursion; accept only after digest and invariant revalidation; otherwise restore the prior pair.
+- Exercise dataset-presence refusal only against injected synthetic temporary roots in this implementation run.
 
 ## Results
 
-Result: all Task 7 validators passed; generated result/report remain artifact-only evidence and do not claim the full gate themselves
+- Task 7 focused RED: 13 expected missing-API errors before production edits.
+- Task 7 focused GREEN: 13 tests passed after implementation.
+- Final state-machine/acceptance hardening: 14 tests passed, including tampered-receipt restoration and the under-lock material-absence recheck.
+- Legacy publication/recovery/timeout compatibility: 16 tests passed using synthetic roots; checkpoint/candidate readback launched no subprocess.
+- Full two-module suite: 191 tests passed. Every listed direct validator and `git diff --check` exited `0`; exact commands and outputs are recorded in `.superpowers/sdd/open-dataset-task-7-material-pending-report.md`.
+- The implementer did not run the real Phase A runner, create a real receipt/candidate, or modify/accept/reject the canonical result/report pair.
 
-Task 6 command evidence:
+## Controller Blocker
 
-- `python scripts\run_emotion_state_001_phase_a_contracts.py`: exit `0`.
-- `python scripts\validate_emotion_state_001_phase_a_contracts.py --section checkpoint`: exit `0`.
-- Full repository gate: not claimed by the generated artifact itself.
+The material-pending plan requires refusal when selected dataset material is locally present, while the Task 7 implementer is forbidden to access or probe any real `data/public` path. The synthetic/injected behavior is implemented and tested. The real defer command remains fail-closed until the controller has explicit authority for the required material-root absence probe; this requirement was not weakened or waived.
 
-Task 7 focused and governance command evidence:
+## Boundary
 
-- `python scripts\validate_exp_002_frozen_response_baseline.py`: exit `0`.
-- `python scripts\validate_emotion_state_001_phase_a_contracts.py`: exit `0`.
-- `python scripts\validate_brain_002_runtime_state_schema.py`: exit `0`.
-- `python scripts\validate_product_agent_output_contract.py`: exit `0`.
-- `python scripts\validate_runtime_manifest.py`: exit `0`; 90 runtime entries, with runtime behavior and response-text flags still `false`.
-- `python scripts\validate_private_data_boundary.py`: exit `0`.
-- `python scripts\validate_self_contained_project_policy.py`: exit `0`.
-- `python scripts\validate_check_setup.py`: exit `0`.
-- `python scripts\validate_project_drift_guard.py`: exit `0`.
-- `python scripts\check_thesis_reference_registry.py`: exit `0`; 0 failures, 0 warnings, 1,587 files scanned, and 361 registered URLs, with no waiver or baseline subtraction.
-- `python scripts\check_thesis_update_gate.py`: exit `0`.
-- `python scripts\validate_context_reading_policy.py`: exit `0`.
-- `git diff --check`: exit `0`; no whitespace error (Git emitted only local LF-to-CRLF conversion notices).
+No public dataset bytes were downloaded, listed, statted, probed, hashed, read, created, or written. No private or private-restricted data was accessed. No network, provider/ElevenLabs, outbound/customer call, simulation, source adaptation, dependency install, runtime/prompt/KB/voice/LLM/phone/Procedure/dashboard change, push, merge, rebase, amend, or Task 8 action occurred.
 
-Task 7 direct readback and invariant evidence:
-
-- Direct `result.json` and `report.md` readback: exit `0`; the artifact directory contains exactly those two files, `phase_a_contract_artifacts_built` is the only true readiness flag, and `phase_a_complete=false`.
-- Live-runtime consumer import scan: `rg` exit `1`, the expected no-match result.
-- Prohibited third-party dependency import scan: `rg` exit `1`, the expected no-match result.
-- Dependency-metadata change scan: `rg` exit `1`, the expected no-match result.
-- Setup equality/uniqueness check: exit `0`; all 530 setup IDs and paths are unique, and all 19 exact Phase A tuples and validator IDs are present once.
-- Drift equality/uniqueness check: exit `0`; checker and validator each contain 312 unique symmetric paths, including all 19 exact Phase A paths.
-- Frozen EXP-002 runner byte-stability and prompt-render/fingerprint validation: exit `0`; responses and semantic judgments were not regenerated.
-- BRAIN-002 v1 code/case/generated-artifact diff and validator checks: exit `0`; v1 remains unchanged.
-- Immutable-base branch-scope inspection: exit `0`; only authorized paths changed, with no provider/ElevenLabs, runtime consumer, dependency metadata, dashboard, Procedures, private-data, call, or simulation file changed.
-
-Closeout publication, recovery, and timeout evidence:
-
-- The canonical generated-artifact directory still contains exactly `result.json` and `report.md`; all lock, stage, transaction-journal, backup, restore, and cleanup state stays under ignored `.tmp/`.
-- Startup recovery under the OS lock either finalizes an exact new pair whose report commit marker matches the SHA-256 of the exact result bytes or restores the exact previous pair from digest-verified backups. Cleanup can be retried after an interruption once either exact pair is canonical; corrupt or incomplete recovery evidence fails closed and is retained.
-- Consumers must require `python scripts\validate_emotion_state_001_phase_a_contracts.py` to pass. The result-first/report-last protocol is logical commit and crash recovery, not physical two-file atomicity and not a power-loss durability claim.
-- Controlled timeout regression coverage injects 60-second timeouts at exactly six subprocess positions: two EXP-002 validator positions, one Phase A BRAIN position, and three Phase A checkpoint positions. Every covered timeout returns exit `1` with a stable failure prefix, empty stderr, and no traceback.
-- This hardening changes offline evidence publication and validator failure reporting only. It performs no provider or private-data operation, implements no acoustic feature, changes no runtime or BRAIN-002 behavior, and provides no customer-call, PSTN, ASR, latency, real-customer, or production-readiness evidence. Current-checkpoint hard stop: no ElevenLabs read or write occurred; neither an outbound call nor a customer call occurred; no simulation occurred; no source adaptation occurred; and no source-adaptation gate was opened. `phase_a_complete=false`.
-
-## Observations
-
-The checkpoint proves deterministic contract, fingerprint, logical publication/recovery, and controlled timeout-reporting behavior only. It does not infer a customer's internal emotion or establish production, provider, telephony, speech-recognition, latency, acoustic-feature, private-data, runtime, or real-customer performance.
-
-## Decision
-
-Decision: Keep contract foundation; per-public-dataset manifest and privacy-preserving unique-speaker cohort-release/dedup subgates remain open
-
-Reason:
-
-The partial contract checkpoint passed its repository gate. Exact dataset manifests and a separately approved privacy-preserving unique-speaker cohort-release/dedup gate remain required before `phase_a_complete` can change from `false`.
-
-## Next Step
-
-Resolve the source URL/revision or authoritative archive-date record, define Phase B reuse and attribution scope for separate approval, and design the public-dataset plus privacy-preserving unique-speaker cohort-release/dedup subgates without opening any provider, private-data, adaptation, or runtime gate.
+This work provides no production, customer, PSTN, ASR, latency, provider-feasibility, runtime-readiness, or internal-emotion evidence.

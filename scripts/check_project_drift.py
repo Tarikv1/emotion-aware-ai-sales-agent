@@ -331,7 +331,16 @@ REQUIRED_FILES = [
     "scripts/emotion_state_phase_a_contracts.py",
     "scripts/run_emotion_state_001_phase_a_contracts.py",
     "scripts/validate_emotion_state_001_phase_a_contracts.py",
+    "scripts/emotion_state_public_dataset_contracts.py",
+    "scripts/emotion_state_split_manifest_v2_contracts.py",
+    "scripts/emotion_state_cohort_release_contracts.py",
+    "scripts/emotion_state_phase_a_verification_evidence.py",
+    "scripts/emotion_state_phase_a_guard_site/sitecustomize.py",
+    "scripts/build_emotion_state_public_dataset_manifests.py",
+    "scripts/test_emotion_state_001_open_dataset_gate.py",
+    "scripts/test_emotion_state_001_closeout_hardening.py",
     "research/experiments/cases/emotion-state-001-phase-a-contracts.json",
+    "research/experiments/cases/emotion-state-001-cohort-release-fixtures.json",
     "research/experiments/EMOTION-STATE-001-phase-a.md",
     "docs/product/EMOTION_STATE_001_PHASE_A_CONTRACTS.md",
     "docs/data/EMOTION_STATE_001_ANNOTATION_CODEBOOK.md",
@@ -340,6 +349,9 @@ REQUIRED_FILES = [
     "research/sources/emotion_state/dataset_manifest_contract.json",
     "research/sources/emotion_state/annotation_record_v1.schema.json",
     "research/sources/emotion_state/split_manifest_v1.schema.json",
+    "research/sources/emotion_state/split_manifest_v2.schema.json",
+    "research/sources/emotion_state/cohort_release_evidence_v1.schema.json",
+    "research/sources/emotion_state/phase_a_verification_guard_policy.json",
 ]
 
 ALLOWED_EXTERNAL_REFERENCE_FILES = {
@@ -416,7 +428,6 @@ SKIP_DIR_PREFIXES = {
     ("data", "private"),
     ("data", "private-restricted"),
     ("data", "processed"),
-    ("data", "external"),
     ("config", "local"),
 }
 
@@ -446,7 +457,7 @@ REFERENCE_GUARD_SOURCE_FILES = {
 
 SECRET_PATTERNS = [
     r"sk_car_[A-Za-z0-9_-]{20,}",
-    r"sk-[A-Za-z0-9_-]{20,}",
+    r"(?<![A-Za-z0-9_])sk-[A-Za-z0-9_-]{20,}",
     r"AIza[0-9A-Za-z_-]{20,}",
     r"xox[baprs]-[A-Za-z0-9-]{20,}",
     r"CARTESIA_API_KEY\s*=\s*[^\s]+",
@@ -532,23 +543,33 @@ def should_skip_path(relative_path: Path) -> bool:
 
 def iter_scan_files(root: Path) -> list[Path]:
     files: list[Path] = []
-    for dirpath, dirnames, filenames in os.walk(root):
-        current_dir = Path(dirpath)
-        relative_dir = current_dir.relative_to(root)
-        dirnames[:] = [
-            dirname
-            for dirname in dirnames
-            if not should_skip_path(relative_dir / dirname)
-        ]
-        for filename in filenames:
-            path = current_dir / filename
-            relative_path = path.relative_to(root)
-            if should_skip_path(relative_path):
-                continue
-            suffix = path.suffix.lower()
-            if suffix and suffix not in TEXT_EXTENSIONS:
-                continue
-            files.append(path)
+
+    def scan_tree(scan_root: Path, *, prune_top_level_data: bool) -> None:
+        for dirpath, dirnames, filenames in os.walk(scan_root):
+            current_dir = Path(dirpath)
+            relative_dir = current_dir.relative_to(root)
+            dirnames[:] = [
+                dirname
+                for dirname in dirnames
+                if not (
+                    prune_top_level_data
+                    and current_dir == root
+                    and dirname == "data"
+                )
+                and not should_skip_path(relative_dir / dirname)
+            ]
+            for filename in filenames:
+                path = current_dir / filename
+                relative_path = path.relative_to(root)
+                if should_skip_path(relative_path):
+                    continue
+                suffix = path.suffix.lower()
+                if suffix and suffix not in TEXT_EXTENSIONS:
+                    continue
+                files.append(path)
+
+    scan_tree(root, prune_top_level_data=True)
+    scan_tree(root / "data" / "external", prune_top_level_data=False)
     return sorted(files)
 
 

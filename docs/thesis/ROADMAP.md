@@ -33,7 +33,7 @@ Active phase: thesis evidence consolidation after source-grounded OpenAI sales-r
 
 Current checkpoint:
 
-- [ ] Current: implement the `EMOTION-STATE-001` partial Phase A provenance and offline contract foundation checkpoint. Keep `phase_a_complete=false` until both exact per-public-dataset manifests and the separately approved privacy-preserving unique-speaker cohort-release/dedup gate are designed, approved, satisfied, and validated. No acoustic code adaptation, private-data ingestion, provider work, runtime wiring, or live customer use is authorized.
+- [ ] Current: review the `EMOTION-STATE-001` Task 7 material-pending input integration for exactly `crema-d-v1.0-audio-wav` and `ami-manual-annotations-v1.6.2`. Download and evaluation have not started; source adaptation remains false; split-manifest v2 and cohort-release design are implemented only against synthetic fixtures; `phase_a_complete=false`. The real defer transaction and material-root absence probe require separate controller authority, and Task 8 remains a hard stop. No private-data, provider, call, simulation, runtime, production, customer, PSTN, ASR, latency, provider-feasibility, or internal-emotion claim is authorized.
 
 Next checkpoints:
 

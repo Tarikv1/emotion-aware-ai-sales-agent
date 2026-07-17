@@ -2790,3 +2790,11 @@ Record important thesis and implementation decisions here with enough context to
 - Decision: implement EMOTION-STATE-001 as separate gated phases, beginning with source provenance, annotation rules, strict contracts, and a detached BRAIN extension.
 - Why: acoustic cues are ambiguous, current affect fields can influence sales selection, BRAIN-002 v1 cannot enforce modality provenance or monotonic de-escalation, and public/private data provenance is incomplete.
 - Consequences: no acoustic code adaptation, private-data ingestion, provider work, live wiring, runtime activation, or customer-state claim is authorized by Phase A.
+
+### DEC-022 - Integrate a material-pending public-dataset checkpoint before any download
+
+- Date: 2026-07-17
+- Status: accepted
+- Decision: select exactly `crema-d-v1.0-audio-wav` and `ami-manual-annotations-v1.6.2` at the contract layer while keeping dataset download, material verification, and evaluation not started; implement split-manifest v2 and cohort-release contracts only against synthetic fixtures.
+- Why: selection and contract design can be reviewed offline, but no completion claim is defensible until exact material manifests and cohort-release evidence exist and pass the guarded verification lease.
+- Consequences: source adaptation remains `false`; `phase_a_complete=false`; no private-data, provider, call, simulation, runtime, or canonical-publication action is part of the Task 7 input commit; no production, customer, PSTN, ASR, latency, provider-feasibility, or internal-emotion claim is authorized. A controller must separately authorize the real material-root absence probe before running the deferred candidate transaction.

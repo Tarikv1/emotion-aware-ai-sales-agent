@@ -6,8 +6,10 @@ import hashlib
 import json
 import os
 import re
+import subprocess
 import sys
 import uuid
+from collections.abc import Mapping, Sequence
 from contextlib import contextmanager
 from pathlib import Path
 from typing import Any, BinaryIO, Iterator
@@ -23,8 +25,17 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from scripts.emotion_state_phase_a_contracts import (
+    MATERIAL_PENDING_BLOCKERS,
+    MATERIAL_PENDING_COMPLETION_SCOPE,
+    SELECTED_PUBLIC_DATASET_IDS,
     build_phase_a_payload,
     render_phase_a_report,
+)
+from scripts.emotion_state_phase_a_verification_evidence import (
+    finalize_verification_evidence,
+    persistent_verification_lock,
+    prepare_verification_evidence,
+    validate_active_verification_lock,
 )
 
 
@@ -45,12 +56,19 @@ DEFAULT_OUTPUT_DIR = (
 DEFAULT_RESULT = DEFAULT_OUTPUT_DIR / "result.json"
 DEFAULT_REPORT = DEFAULT_OUTPUT_DIR / "report.md"
 DEFAULT_RECOVERY_DIR = ROOT / ".tmp" / "emotion-state-001-phase-a-publication"
+DEFAULT_MATERIAL_ROOT = ROOT / "data" / "public" / "emotion-state"
 JOURNAL_NAME = "transaction.json"
 LOCK_NAME = "publication.lock"
-TRANSACTION_SCHEMA_VERSION = 1
+TRANSACTION_SCHEMA_VERSION = 2
+IMPLEMENTATION_BASELINE_COMMIT = "fb0513545fc0167bcf89dbc81283b7b2a2820b67"
 PRIVATE_PATH_PARTS = (("data", "private"), ("data", "private-restricted"))
 _TRANSACTION_ID_PATTERN = re.compile(r"^[0-9a-f]{32}$")
 _SHA256_PATTERN = re.compile(r"^[0-9A-F]{64}$")
+_RECEIPT_NAME_PATTERN = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]*\.json$")
+MATERIAL_PENDING_DATASET_DIRECTORIES = {
+    "crema-d-v1.0-audio-wav": "crema-d-v1.0",
+    "ami-manual-annotations-v1.6.2": "ami-manual-annotations-v1.6.2",
+}
 _REPORT_COMMIT_MARKER_PATTERN = re.compile(
     r"(?m)^- Publication commit marker: `result\.json sha256:([0-9A-F]{64})`\r?$"
 )
@@ -60,14 +78,26 @@ class EvidencePublicationError(RuntimeError):
     """A bounded, recoverable evidence-publication failure."""
 
 
-def parse_args() -> argparse.Namespace:
+def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         description="Build EMOTION-STATE-001 Phase A contract evidence."
     )
     parser.add_argument("--case", default=str(DEFAULT_CASE))
     parser.add_argument("--out", default=str(DEFAULT_RESULT))
     parser.add_argument("--report-out", default=str(DEFAULT_REPORT))
-    return parser.parse_args()
+    actions = parser.add_mutually_exclusive_group(required=True)
+    actions.add_argument("--defer-acceptance", action="store_true")
+    actions.add_argument("--accept-receipt")
+    actions.add_argument("--reject-receipt")
+    parser.add_argument("--mode", choices=("material-pending", "complete"))
+    parser.add_argument("--receipt")
+    parsed = parser.parse_args(argv)
+    if parsed.defer_acceptance:
+        if parsed.mode is None or parsed.receipt is None:
+            parser.error("--defer-acceptance requires --mode and --receipt")
+    elif parsed.mode is not None or parsed.receipt is not None:
+        parser.error("--mode and --receipt are valid only with --defer-acceptance")
+    return parsed
 
 
 def _raw_path_parts(path_value: str) -> tuple[str, ...]:
@@ -118,6 +148,25 @@ def resolve_project_path(path_value: str, *, allowed_root: Path) -> Path:
     except ValueError as exc:
         raise ValueError(f"path is outside its allowed artifact root: {path_value}") from exc
     return resolved
+
+
+def validate_material_pending_dataset_absence(material_root: Path) -> None:
+    """Fail closed when selected material exists under the bounded fixed or injected root."""
+
+    try:
+        root = Path(material_root)
+    except TypeError as exc:
+        raise ValueError("material-pending root must be path-like") from exc
+    if root.exists():
+        if not root.is_dir():
+            raise ValueError("material-pending root must be a directory when present")
+        if tuple(MATERIAL_PENDING_DATASET_DIRECTORIES) != SELECTED_PUBLIC_DATASET_IDS:
+            raise ValueError("material-pending directory map does not match selected datasets")
+        for dataset_id, directory_name in MATERIAL_PENDING_DATASET_DIRECTORIES.items():
+            if (root / directory_name).exists():
+                raise ValueError(
+                    f"downloaded material is present for selected dataset: {dataset_id}"
+                )
 
 
 def _sha256_bytes(content: bytes) -> str:
@@ -205,6 +254,7 @@ def _transaction_paths(recovery_dir: Path, transaction_id: str) -> dict[str, Pat
         "previous_report": recovery_dir / f"{transaction_id}.report.backup",
         "restore_result": recovery_dir / f"{transaction_id}.result.restore",
         "restore_report": recovery_dir / f"{transaction_id}.report.restore",
+        "journal_update": recovery_dir / f"{transaction_id}.journal.stage",
     }
 
 
@@ -230,9 +280,16 @@ def _discard_unjournaled_transaction(paths: dict[str, Path]) -> None:
             pass
 
 
-def _cleanup_transaction(journal_path: Path, paths: dict[str, Path]) -> None:
+def _cleanup_transaction(
+    journal_path: Path,
+    paths: dict[str, Path],
+    *,
+    receipt_path: Path | None = None,
+) -> None:
     for path in paths.values():
         path.unlink(missing_ok=True)
+    if receipt_path is not None:
+        receipt_path.unlink(missing_ok=True)
     journal_path.unlink(missing_ok=True)
 
 
@@ -257,6 +314,20 @@ def _persist_journal_exclusively(journal_path: Path, transaction: dict[str, Any]
         raise
 
 
+def _replace_journal_durably(
+    journal_path: Path,
+    transaction: dict[str, Any],
+    paths: dict[str, Path],
+) -> None:
+    update_path = paths["journal_update"]
+    update_path.unlink(missing_ok=True)
+    _write_bytes_fsynced(
+        update_path,
+        (json.dumps(transaction, indent=2, sort_keys=True) + "\n").encode("utf-8"),
+    )
+    os.replace(update_path, journal_path)
+
+
 def _load_transaction(journal_path: Path) -> dict[str, Any]:
     try:
         journal_bytes = journal_path.read_bytes()
@@ -271,8 +342,11 @@ def _load_transaction(journal_path: Path) -> dict[str, Any]:
     if not isinstance(transaction, dict) or set(transaction) != {
         "schema_version",
         "transaction_id",
+        "mode",
+        "acceptance_status",
+        "receipt_name",
         "previous_pair",
-        "new_pair",
+        "candidate_pair",
     }:
         raise EvidencePublicationError("invalid publication transaction fields")
     if (
@@ -281,6 +355,25 @@ def _load_transaction(journal_path: Path) -> dict[str, Any]:
     ):
         raise EvidencePublicationError("unsupported publication transaction schema version")
     _validate_transaction_id(transaction["transaction_id"])
+    if transaction["mode"] not in {"material-pending", "complete"}:
+        raise EvidencePublicationError("invalid publication transaction mode")
+    if transaction["acceptance_status"] not in {
+        "awaiting_acceptance",
+        "accepted",
+    }:
+        raise EvidencePublicationError("invalid publication acceptance status")
+    receipt_name = transaction["receipt_name"]
+    if receipt_name is not None and (
+        not isinstance(receipt_name, str)
+        or _RECEIPT_NAME_PATTERN.fullmatch(receipt_name) is None
+        or receipt_name in {JOURNAL_NAME, LOCK_NAME}
+    ):
+        raise EvidencePublicationError("invalid publication receipt name")
+    if (
+        transaction["acceptance_status"] == "awaiting_acceptance"
+        and receipt_name is None
+    ):
+        raise EvidencePublicationError("awaiting publication transaction requires a receipt")
 
     previous_pair = transaction["previous_pair"]
     if not isinstance(previous_pair, dict) or set(previous_pair) != {
@@ -298,15 +391,297 @@ def _load_transaction(journal_path: Path) -> dict[str, Any]:
     elif previous_pair["result_sha256"] is not None or previous_pair["report_sha256"] is not None:
         raise EvidencePublicationError("absent previous pair cannot record digests")
 
-    new_pair = transaction["new_pair"]
-    if not isinstance(new_pair, dict) or set(new_pair) != {
+    candidate_pair = transaction["candidate_pair"]
+    if not isinstance(candidate_pair, dict) or set(candidate_pair) != {
         "result_sha256",
         "report_sha256",
     }:
-        raise EvidencePublicationError("invalid new-pair transaction fields")
-    _validate_sha256(new_pair["result_sha256"], field="new result")
-    _validate_sha256(new_pair["report_sha256"], field="new report")
+        raise EvidencePublicationError("invalid candidate-pair transaction fields")
+    _validate_sha256(candidate_pair["result_sha256"], field="candidate result")
+    _validate_sha256(candidate_pair["report_sha256"], field="candidate report")
     return transaction
+
+
+def resolve_receipt_path(
+    receipt_path: str | Path,
+    *,
+    recovery_dir: Path = DEFAULT_RECOVERY_DIR,
+) -> Path:
+    if not isinstance(receipt_path, (str, Path)):
+        raise EvidencePublicationError("publication receipt path must be path-like")
+    raw = str(receipt_path)
+    if not raw.strip() or "\x00" in raw or ".." in _raw_path_parts(raw):
+        raise EvidencePublicationError("publication receipt path is invalid")
+    try:
+        candidate = Path(receipt_path).resolve(strict=False)
+        expected_parent = Path(recovery_dir).resolve(strict=False)
+    except (OSError, RuntimeError, ValueError) as exc:
+        raise EvidencePublicationError("publication receipt path is invalid") from exc
+    if candidate.parent != expected_parent:
+        raise EvidencePublicationError(
+            "publication receipt must stay in the exact recovery directory"
+        )
+    if (
+        _RECEIPT_NAME_PATTERN.fullmatch(candidate.name) is None
+        or candidate.name in {JOURNAL_NAME, LOCK_NAME}
+    ):
+        raise EvidencePublicationError("publication receipt name is invalid")
+    return candidate
+
+
+def _receipt_from_transaction(transaction: Mapping[str, Any]) -> dict[str, Any]:
+    previous_pair = transaction["previous_pair"]
+    candidate_pair = transaction["candidate_pair"]
+    return {
+        "schema_version": transaction["schema_version"],
+        "transaction_id": transaction["transaction_id"],
+        "candidate_result_sha256": candidate_pair["result_sha256"],
+        "candidate_report_sha256": candidate_pair["report_sha256"],
+        "previous_pair_present": previous_pair["present"],
+        "previous_result_sha256": previous_pair["result_sha256"],
+        "previous_report_sha256": previous_pair["report_sha256"],
+        "mode": transaction["mode"],
+    }
+
+
+def _load_receipt(receipt_path: Path) -> dict[str, Any]:
+    try:
+        receipt_bytes = receipt_path.read_bytes()
+    except OSError as exc:
+        raise EvidencePublicationError("unable to read publication receipt") from exc
+    if len(receipt_bytes) > 8_192:
+        raise EvidencePublicationError("publication receipt is too large")
+    try:
+        receipt = json.loads(receipt_bytes.decode("utf-8"))
+    except (UnicodeError, json.JSONDecodeError) as exc:
+        raise EvidencePublicationError("invalid publication receipt") from exc
+    expected_fields = {
+        "schema_version",
+        "transaction_id",
+        "candidate_result_sha256",
+        "candidate_report_sha256",
+        "previous_pair_present",
+        "previous_result_sha256",
+        "previous_report_sha256",
+        "mode",
+    }
+    if not isinstance(receipt, dict) or set(receipt) != expected_fields:
+        raise EvidencePublicationError("invalid publication receipt fields")
+    if receipt["schema_version"] != TRANSACTION_SCHEMA_VERSION:
+        raise EvidencePublicationError("unsupported publication receipt schema version")
+    _validate_transaction_id(receipt["transaction_id"])
+    _validate_sha256(receipt["candidate_result_sha256"], field="receipt candidate result")
+    _validate_sha256(receipt["candidate_report_sha256"], field="receipt candidate report")
+    if type(receipt["previous_pair_present"]) is not bool:
+        raise EvidencePublicationError("invalid receipt previous-pair presence flag")
+    if receipt["previous_pair_present"]:
+        _validate_sha256(receipt["previous_result_sha256"], field="receipt previous result")
+        _validate_sha256(receipt["previous_report_sha256"], field="receipt previous report")
+    elif (
+        receipt["previous_result_sha256"] is not None
+        or receipt["previous_report_sha256"] is not None
+    ):
+        raise EvidencePublicationError("absent receipt previous pair cannot record digests")
+    if receipt["mode"] not in {"material-pending", "complete"}:
+        raise EvidencePublicationError("invalid publication receipt mode")
+    return receipt
+
+
+def _transaction_from_recovery_receipt(
+    receipt_path: Path,
+    receipt: Mapping[str, Any],
+) -> dict[str, Any]:
+    return {
+        "schema_version": receipt["schema_version"],
+        "transaction_id": receipt["transaction_id"],
+        "mode": receipt["mode"],
+        "acceptance_status": "awaiting_acceptance",
+        "receipt_name": receipt_path.name,
+        "previous_pair": {
+            "present": receipt["previous_pair_present"],
+            "result_sha256": receipt["previous_result_sha256"],
+            "report_sha256": receipt["previous_report_sha256"],
+        },
+        "candidate_pair": {
+            "result_sha256": receipt["candidate_result_sha256"],
+            "report_sha256": receipt["candidate_report_sha256"],
+        },
+    }
+
+
+def _validate_receipt_recovery_artifacts(
+    transaction: Mapping[str, Any],
+    *,
+    receipt_path: Path,
+    result_path: Path,
+    report_path: Path,
+    recovery_dir: Path,
+) -> None:
+    recovery_dir = Path(recovery_dir)
+    paths = _transaction_paths(recovery_dir, transaction["transaction_id"])
+    required_names = {JOURNAL_NAME, receipt_path.name}
+    allowed_names = set(required_names)
+    previous_pair = transaction["previous_pair"]
+    if previous_pair["present"]:
+        allowed_names.update(
+            {
+                paths["previous_result"].name,
+                paths["previous_report"].name,
+            }
+        )
+    try:
+        entries = list(recovery_dir.iterdir())
+        resolved_recovery_dir = recovery_dir.resolve(strict=True)
+    except (OSError, RuntimeError, ValueError) as exc:
+        raise EvidencePublicationError(
+            "unable to inspect receipt recovery artifacts"
+        ) from exc
+    actual_names = {entry.name for entry in entries}
+    if not required_names.issubset(actual_names) or not actual_names.issubset(
+        allowed_names | {LOCK_NAME}
+    ):
+        raise EvidencePublicationError(
+            "receipt recovery requires one exact transaction artifact set"
+        )
+    for entry in entries:
+        try:
+            resolved_entry = entry.resolve(strict=True)
+        except (OSError, RuntimeError, ValueError) as exc:
+            raise EvidencePublicationError(
+                "receipt recovery artifact path is invalid"
+            ) from exc
+        if resolved_entry.parent != resolved_recovery_dir or not resolved_entry.is_file():
+            raise EvidencePublicationError(
+                "receipt recovery artifact must be a contained regular file"
+            )
+
+    result_path = Path(result_path)
+    report_path = Path(report_path)
+    if previous_pair["present"]:
+        already_restored = _canonical_pair_matches_raw_digests(
+            result_path,
+            report_path,
+            result_sha256=previous_pair["result_sha256"],
+            report_sha256=previous_pair["report_sha256"],
+        )
+    else:
+        already_restored = not result_path.exists() and not report_path.exists()
+
+    if not already_restored:
+        if actual_names.intersection(allowed_names) != allowed_names:
+            raise EvidencePublicationError(
+                "candidate receipt recovery requires every exact backup artifact"
+            )
+        _validated_candidate_payload(
+            result_path=result_path,
+            report_path=report_path,
+            transaction=transaction,
+        )
+    if previous_pair["present"]:
+        for backup_path, expected_digest, label in (
+            (
+                paths["previous_result"],
+                previous_pair["result_sha256"],
+                "result",
+            ),
+            (
+                paths["previous_report"],
+                previous_pair["report_sha256"],
+                "report",
+            ),
+        ):
+            if not backup_path.exists():
+                if already_restored:
+                    continue
+                raise EvidencePublicationError(
+                    f"required receipt recovery {label} backup is missing"
+                )
+            try:
+                backup_bytes = backup_path.read_bytes()
+            except OSError as exc:
+                raise EvidencePublicationError(
+                    f"unable to read receipt recovery {label} backup"
+                ) from exc
+            if _sha256_bytes(backup_bytes) != expected_digest:
+                raise EvidencePublicationError(
+                    f"receipt recovery {label} backup digest mismatch"
+                )
+
+
+def _load_receipt_recovery_transaction(
+    receipt_path: str | Path,
+    *,
+    result_path: Path,
+    report_path: Path,
+    recovery_dir: Path,
+) -> dict[str, Any]:
+    recovery_dir = Path(recovery_dir)
+    resolved_receipt = resolve_receipt_path(
+        receipt_path,
+        recovery_dir=recovery_dir,
+    )
+    receipt = _load_receipt(resolved_receipt)
+    transaction = _transaction_from_recovery_receipt(resolved_receipt, receipt)
+    _validate_receipt_recovery_artifacts(
+        transaction,
+        receipt_path=resolved_receipt,
+        result_path=Path(result_path),
+        report_path=Path(report_path),
+        recovery_dir=recovery_dir,
+    )
+    return transaction
+
+
+def _discover_receipt_recovery_transaction(
+    *,
+    result_path: Path,
+    report_path: Path,
+    recovery_dir: Path,
+) -> dict[str, Any]:
+    recovery_dir = Path(recovery_dir)
+    try:
+        entries = list(recovery_dir.iterdir())
+    except OSError as exc:
+        raise EvidencePublicationError(
+            "unable to inspect publication receipt recovery directory"
+        ) from exc
+    receipt_paths = [
+        entry
+        for entry in entries
+        if entry.name not in {JOURNAL_NAME, LOCK_NAME}
+        and _RECEIPT_NAME_PATTERN.fullmatch(entry.name) is not None
+    ]
+    if len(receipt_paths) != 1:
+        raise EvidencePublicationError(
+            "journal recovery requires exactly one safe publication receipt"
+        )
+    return _load_receipt_recovery_transaction(
+        receipt_paths[0],
+        result_path=Path(result_path),
+        report_path=Path(report_path),
+        recovery_dir=recovery_dir,
+    )
+
+
+def _receipt_path_for_transaction(
+    recovery_dir: Path,
+    transaction: Mapping[str, Any],
+) -> Path | None:
+    receipt_name = transaction.get("receipt_name")
+    if receipt_name is None:
+        return None
+    return resolve_receipt_path(
+        Path(recovery_dir) / receipt_name,
+        recovery_dir=recovery_dir,
+    )
+
+
+def _validate_receipt_matches_transaction(
+    receipt: Mapping[str, Any],
+    transaction: Mapping[str, Any],
+) -> None:
+    if dict(receipt) != _receipt_from_transaction(transaction):
+        raise EvidencePublicationError("publication receipt does not match live transaction")
 
 
 def verify_evidence_pair_bytes(
@@ -350,93 +725,333 @@ def recover_incomplete_publication(
     if not journal_path.exists():
         return "none"
 
-    transaction = _load_transaction(journal_path)
+    try:
+        transaction = _load_transaction(journal_path)
+    except EvidencePublicationError as journal_error:
+        try:
+            recovery_transaction = _discover_receipt_recovery_transaction(
+                result_path=result_path,
+                report_path=report_path,
+                recovery_dir=recovery_dir,
+            )
+            return _force_restore_transaction(
+                recovery_transaction,
+                result_path=result_path,
+                report_path=report_path,
+                recovery_dir=recovery_dir,
+            )
+        except (EvidencePublicationError, OSError) as recovery_error:
+            raise EvidencePublicationError(
+                "invalid publication transaction journal; receipt recovery failed; "
+                "evidence retained"
+            ) from recovery_error
     paths = _transaction_paths(recovery_dir, transaction["transaction_id"])
-    new_pair = transaction["new_pair"]
-    previous_pair = transaction["previous_pair"]
+    receipt_path = _receipt_path_for_transaction(recovery_dir, transaction)
 
     try:
-        if result_path.exists() and report_path.exists():
-            result_bytes = result_path.read_bytes()
-            report_bytes = report_path.read_bytes()
+        if transaction["acceptance_status"] == "accepted":
             try:
-                verify_evidence_pair_bytes(
-                    result_bytes,
-                    report_bytes,
-                    expected_result_sha256=new_pair["result_sha256"],
-                    expected_report_sha256=new_pair["report_sha256"],
+                _validated_candidate_payload(
+                    result_path=result_path,
+                    report_path=report_path,
+                    transaction=transaction,
                 )
             except EvidencePublicationError:
                 pass
             else:
-                _cleanup_transaction(journal_path, paths)
+                _cleanup_transaction(
+                    journal_path,
+                    paths,
+                    receipt_path=receipt_path,
+                )
                 return "committed"
-            if (
-                previous_pair["present"]
-                and _sha256_bytes(result_bytes) == previous_pair["result_sha256"]
-                and _sha256_bytes(report_bytes) == previous_pair["report_sha256"]
-            ):
-                _cleanup_transaction(journal_path, paths)
-                return "restored"
-
-        if previous_pair["present"]:
-            try:
-                previous_result_bytes = paths["previous_result"].read_bytes()
-                previous_report_bytes = paths["previous_report"].read_bytes()
-            except OSError as exc:
-                raise EvidencePublicationError("required publication backup is missing") from exc
-            if _sha256_bytes(previous_result_bytes) != previous_pair["result_sha256"]:
-                raise EvidencePublicationError("result backup digest mismatch")
-            if _sha256_bytes(previous_report_bytes) != previous_pair["report_sha256"]:
-                raise EvidencePublicationError("report backup digest mismatch")
-
-            paths["restore_result"].unlink(missing_ok=True)
-            paths["restore_report"].unlink(missing_ok=True)
-            _write_bytes_fsynced(paths["restore_result"], previous_result_bytes)
-            _write_bytes_fsynced(paths["restore_report"], previous_report_bytes)
-            result_path.parent.mkdir(parents=True, exist_ok=True)
-            report_path.parent.mkdir(parents=True, exist_ok=True)
-            os.replace(paths["restore_result"], result_path)
-            os.replace(paths["restore_report"], report_path)
-            if _sha256_bytes(result_path.read_bytes()) != previous_pair["result_sha256"]:
-                raise EvidencePublicationError("restored result digest mismatch")
-            if _sha256_bytes(report_path.read_bytes()) != previous_pair["report_sha256"]:
-                raise EvidencePublicationError("restored report digest mismatch")
-        else:
-            for canonical_path, expected_digest, label in (
-                (result_path, new_pair["result_sha256"], "result"),
-                (report_path, new_pair["report_sha256"], "report"),
-            ):
-                if canonical_path.exists():
-                    if _sha256_bytes(canonical_path.read_bytes()) != expected_digest:
-                        raise EvidencePublicationError(
-                            f"cannot restore absent previous pair: unexpected {label} bytes"
-                        )
-            result_path.unlink(missing_ok=True)
-            report_path.unlink(missing_ok=True)
-            if result_path.exists() or report_path.exists():
-                raise EvidencePublicationError("unable to restore absent previous pair")
-
-        _cleanup_transaction(journal_path, paths)
-        return "restored"
+        return _force_restore_transaction(
+            transaction,
+            result_path=result_path,
+            report_path=report_path,
+            recovery_dir=recovery_dir,
+        )
     except EvidencePublicationError:
         raise
     except OSError as exc:
-        raise EvidencePublicationError("publication recovery failed; transaction retained") from exc
+        raise EvidencePublicationError(
+            "publication recovery failed; transaction retained"
+        ) from exc
+
+
+def _canonical_pair_matches_raw_digests(
+    result_path: Path,
+    report_path: Path,
+    *,
+    result_sha256: str,
+    report_sha256: str,
+) -> bool:
+    if not result_path.exists() or not report_path.exists():
+        return False
+    return (
+        _sha256_bytes(result_path.read_bytes()) == result_sha256
+        and _sha256_bytes(report_path.read_bytes()) == report_sha256
+    )
+
+
+def _force_restore_transaction(
+    transaction: Mapping[str, Any],
+    *,
+    result_path: Path,
+    report_path: Path,
+    recovery_dir: Path,
+) -> str:
+    result_path = Path(result_path)
+    report_path = Path(report_path)
+    recovery_dir = Path(recovery_dir)
+    journal_path = recovery_dir / JOURNAL_NAME
+    paths = _transaction_paths(recovery_dir, transaction["transaction_id"])
+    receipt_path = _receipt_path_for_transaction(recovery_dir, transaction)
+    previous_pair = transaction["previous_pair"]
+    candidate_pair = transaction["candidate_pair"]
+
+    if previous_pair["present"]:
+        if _canonical_pair_matches_raw_digests(
+            result_path,
+            report_path,
+            result_sha256=previous_pair["result_sha256"],
+            report_sha256=previous_pair["report_sha256"],
+        ):
+            _cleanup_transaction(
+                journal_path,
+                paths,
+                receipt_path=receipt_path,
+            )
+            return "restored"
+        try:
+            previous_result_bytes = paths["previous_result"].read_bytes()
+            previous_report_bytes = paths["previous_report"].read_bytes()
+        except OSError as exc:
+            raise EvidencePublicationError("required publication backup is missing") from exc
+        if _sha256_bytes(previous_result_bytes) != previous_pair["result_sha256"]:
+            raise EvidencePublicationError("result backup digest mismatch")
+        if _sha256_bytes(previous_report_bytes) != previous_pair["report_sha256"]:
+            raise EvidencePublicationError("report backup digest mismatch")
+        paths["restore_result"].unlink(missing_ok=True)
+        paths["restore_report"].unlink(missing_ok=True)
+        _write_bytes_fsynced(paths["restore_result"], previous_result_bytes)
+        _write_bytes_fsynced(paths["restore_report"], previous_report_bytes)
+        result_path.parent.mkdir(parents=True, exist_ok=True)
+        report_path.parent.mkdir(parents=True, exist_ok=True)
+        os.replace(paths["restore_result"], result_path)
+        os.replace(paths["restore_report"], report_path)
+        if not _canonical_pair_matches_raw_digests(
+            result_path,
+            report_path,
+            result_sha256=previous_pair["result_sha256"],
+            report_sha256=previous_pair["report_sha256"],
+        ):
+            raise EvidencePublicationError("restored publication pair digest mismatch")
+    else:
+        for canonical_path, expected_digest, label in (
+            (result_path, candidate_pair["result_sha256"], "result"),
+            (report_path, candidate_pair["report_sha256"], "report"),
+        ):
+            if canonical_path.exists() and (
+                _sha256_bytes(canonical_path.read_bytes()) != expected_digest
+            ):
+                raise EvidencePublicationError(
+                    f"cannot restore absent previous pair: unexpected {label} bytes"
+                )
+        result_path.unlink(missing_ok=True)
+        report_path.unlink(missing_ok=True)
+        if result_path.exists() or report_path.exists():
+            raise EvidencePublicationError("unable to restore absent previous pair")
+
+    _cleanup_transaction(
+        journal_path,
+        paths,
+        receipt_path=receipt_path,
+    )
+    return "restored"
+
+
+def _validated_candidate_payload(
+    *,
+    result_path: Path,
+    report_path: Path,
+    transaction: Mapping[str, Any],
+) -> dict[str, Any]:
+    result_path = Path(result_path)
+    report_path = Path(report_path)
+    if result_path.parent != report_path.parent:
+        raise EvidencePublicationError("candidate canonical directory mismatch")
+    try:
+        canonical_names = {
+            path.name
+            for path in result_path.parent.iterdir()
+            if path.is_file()
+        }
+    except OSError as exc:
+        raise EvidencePublicationError("unable to inspect candidate canonical directory") from exc
+    if canonical_names != {result_path.name, report_path.name}:
+        raise EvidencePublicationError(
+            "candidate canonical directory must contain exactly result and report"
+        )
+    try:
+        result_bytes = result_path.read_bytes()
+        report_bytes = report_path.read_bytes()
+    except OSError as exc:
+        raise EvidencePublicationError("unable to read candidate publication pair") from exc
+    candidate_pair = transaction["candidate_pair"]
+    verify_evidence_pair_bytes(
+        result_bytes,
+        report_bytes,
+        expected_result_sha256=candidate_pair["result_sha256"],
+        expected_report_sha256=candidate_pair["report_sha256"],
+    )
+    try:
+        payload = json.loads(result_bytes.decode("utf-8"))
+    except (UnicodeError, json.JSONDecodeError) as exc:
+        raise EvidencePublicationError("candidate result is not valid JSON") from exc
+    if not isinstance(payload, dict):
+        raise EvidencePublicationError("candidate result must be a JSON object")
+    expected_payload_mode = transaction["mode"].replace("-", "_")
+    if payload.get("mode") != expected_payload_mode:
+        raise EvidencePublicationError("candidate result mode mismatch")
+    readiness = payload.get("readiness_boundary")
+    if not isinstance(readiness, dict):
+        raise EvidencePublicationError("candidate readiness boundary is invalid")
+    if transaction["mode"] == "material-pending":
+        if payload.get("selected_public_datasets") != list(SELECTED_PUBLIC_DATASET_IDS):
+            raise EvidencePublicationError("candidate selected dataset IDs mismatch")
+        if payload.get("dataset_download_authorized") is not False:
+            raise EvidencePublicationError("candidate download authorization must remain false")
+        if payload.get("dataset_evaluation_started") is not False:
+            raise EvidencePublicationError("candidate evaluation state must remain false")
+        if payload.get("dataset_manifest_evidence") != []:
+            raise EvidencePublicationError("candidate material evidence must remain empty")
+        if payload.get("blocking_reason_codes") != MATERIAL_PENDING_BLOCKERS:
+            raise EvidencePublicationError("candidate blocker codes mismatch")
+        if readiness.get("phase_a_complete") is not False:
+            raise EvidencePublicationError("material-pending candidate cannot complete Phase A")
+        if readiness.get("phase_a_completion_scope") != MATERIAL_PENDING_COMPLETION_SCOPE:
+            raise EvidencePublicationError("candidate completion scope mismatch")
+    result_sha256 = _sha256_bytes(result_bytes)
+    try:
+        expected_report = render_phase_a_report(payload, result_sha256=result_sha256)
+        actual_report = report_path.read_text(encoding="utf-8")
+    except (KeyError, OSError, TypeError, UnicodeError, ValueError) as exc:
+        raise EvidencePublicationError("candidate report cannot be reproduced") from exc
+    if actual_report != expected_report:
+        raise EvidencePublicationError("candidate report is not a deterministic readback")
+    return payload
+
+
+def validate_candidate_evidence_pair(
+    receipt_path: str | Path,
+    *,
+    result_path: Path = DEFAULT_RESULT,
+    report_path: Path = DEFAULT_REPORT,
+    recovery_dir: Path = DEFAULT_RECOVERY_DIR,
+) -> dict[str, Any]:
+    recovery_dir = Path(recovery_dir)
+    resolved_receipt = resolve_receipt_path(
+        receipt_path,
+        recovery_dir=recovery_dir,
+    )
+    transaction = _load_transaction(recovery_dir / JOURNAL_NAME)
+    if transaction["acceptance_status"] != "awaiting_acceptance":
+        raise EvidencePublicationError("candidate transaction is not awaiting acceptance")
+    if transaction["receipt_name"] != resolved_receipt.name:
+        raise EvidencePublicationError("candidate receipt path does not match live transaction")
+    receipt = _load_receipt(resolved_receipt)
+    _validate_receipt_matches_transaction(receipt, transaction)
+    return _validated_candidate_payload(
+        result_path=result_path,
+        report_path=report_path,
+        transaction=transaction,
+    )
 
 
 def publish_evidence_pair(
     payload: dict[str, Any],
     *,
+    result_path: Path,
+    report_path: Path,
+    recovery_dir: Path,
+) -> None:
+    """Publish an immediate synthetic pair; canonical targets require acceptance."""
+
+    _write_evidence_pair_transaction(
+        payload,
+        mode="material-pending",
+        receipt_path=None,
+        result_path=result_path,
+        report_path=report_path,
+        recovery_dir=recovery_dir,
+    )
+
+
+def stage_evidence_pair(
+    payload: dict[str, Any],
+    *,
+    mode: str,
+    receipt_path: str | Path,
     result_path: Path = DEFAULT_RESULT,
     report_path: Path = DEFAULT_REPORT,
     recovery_dir: Path = DEFAULT_RECOVERY_DIR,
-) -> None:
+) -> dict[str, Any]:
+    receipt = _write_evidence_pair_transaction(
+        payload,
+        mode=mode,
+        receipt_path=receipt_path,
+        result_path=result_path,
+        report_path=report_path,
+        recovery_dir=recovery_dir,
+    )
+    if receipt is None:
+        raise EvidencePublicationError("deferred publication did not produce a receipt")
+    return receipt
+
+
+def _write_evidence_pair_transaction(
+    payload: dict[str, Any],
+    *,
+    mode: str,
+    receipt_path: str | Path | None,
+    result_path: Path,
+    report_path: Path,
+    recovery_dir: Path,
+) -> dict[str, Any] | None:
     result_path = Path(result_path)
     report_path = Path(report_path)
     recovery_dir = Path(recovery_dir)
     if result_path == report_path:
         raise EvidencePublicationError("result and report paths must be distinct")
+    if receipt_path is None:
+        try:
+            resolved_targets = {
+                result_path.resolve(strict=False),
+                report_path.resolve(strict=False),
+            }
+            canonical_targets = {
+                DEFAULT_RESULT.resolve(strict=False),
+                DEFAULT_REPORT.resolve(strict=False),
+            }
+        except (OSError, RuntimeError, ValueError) as exc:
+            raise EvidencePublicationError(
+                "immediate evidence publication paths are invalid"
+            ) from exc
+        if resolved_targets & canonical_targets:
+            raise EvidencePublicationError(
+                "canonical evidence publication requires deferred acceptance"
+            )
+    if mode not in {"material-pending", "complete"}:
+        raise EvidencePublicationError("invalid evidence publication mode")
+    resolved_receipt: Path | None = None
+    if receipt_path is not None:
+        resolved_receipt = resolve_receipt_path(
+            receipt_path,
+            recovery_dir=recovery_dir,
+        )
+        if resolved_receipt.exists():
+            raise EvidencePublicationError("publication receipt already exists")
 
     try:
         recovery_dir.mkdir(parents=True, exist_ok=True)
@@ -476,12 +1091,19 @@ def publish_evidence_pair(
         transaction = {
             "schema_version": TRANSACTION_SCHEMA_VERSION,
             "transaction_id": transaction_id,
+            "mode": mode,
+            "acceptance_status": (
+                "awaiting_acceptance" if resolved_receipt is not None else "accepted"
+            ),
+            "receipt_name": (
+                resolved_receipt.name if resolved_receipt is not None else None
+            ),
             "previous_pair": {
                 "present": result_exists,
                 "result_sha256": previous_result_sha256,
                 "report_sha256": previous_report_sha256,
             },
-            "new_pair": {
+            "candidate_pair": {
                 "result_sha256": result_sha256,
                 "report_sha256": report_sha256,
             },
@@ -499,7 +1121,15 @@ def publish_evidence_pair(
             expected_result_sha256=result_sha256,
             expected_report_sha256=report_sha256,
         )
+        if resolved_receipt is not None:
+            receipt = _receipt_from_transaction(transaction)
+            _write_bytes_fsynced(
+                resolved_receipt,
+                (json.dumps(receipt, indent=2, sort_keys=True) + "\n").encode("utf-8"),
+            )
+            return receipt
         _cleanup_transaction(journal_path, paths)
+        return None
     except EvidencePublicationError:
         if not journal_durable:
             _discard_unjournaled_transaction(paths)
@@ -523,8 +1153,240 @@ def publish_evidence_pair(
         raise EvidencePublicationError("evidence publication failed before commit") from exc
 
 
-def main() -> int:
-    args = parse_args()
+def _load_live_receipt_transaction(
+    receipt_path: str | Path,
+    *,
+    recovery_dir: Path,
+) -> tuple[Path, dict[str, Any], dict[str, Any]]:
+    recovery_dir = Path(recovery_dir)
+    resolved_receipt = resolve_receipt_path(
+        receipt_path,
+        recovery_dir=recovery_dir,
+    )
+    transaction = _load_transaction(recovery_dir / JOURNAL_NAME)
+    if transaction["receipt_name"] != resolved_receipt.name:
+        raise EvidencePublicationError("receipt path does not match live transaction")
+    receipt = _load_receipt(resolved_receipt)
+    _validate_receipt_matches_transaction(receipt, transaction)
+    return resolved_receipt, receipt, transaction
+
+
+def accept_evidence_receipt(
+    receipt_path: str | Path,
+    *,
+    result_path: Path = DEFAULT_RESULT,
+    report_path: Path = DEFAULT_REPORT,
+    recovery_dir: Path = DEFAULT_RECOVERY_DIR,
+) -> None:
+    recovery_dir = Path(recovery_dir)
+    journal_path = recovery_dir / JOURNAL_NAME
+    transaction: dict[str, Any] | None = None
+    try:
+        transaction = _load_transaction(journal_path)
+    except EvidencePublicationError as journal_error:
+        try:
+            recovery_transaction = _load_receipt_recovery_transaction(
+                receipt_path,
+                result_path=Path(result_path),
+                report_path=Path(report_path),
+                recovery_dir=recovery_dir,
+            )
+            _force_restore_transaction(
+                recovery_transaction,
+                result_path=Path(result_path),
+                report_path=Path(report_path),
+                recovery_dir=recovery_dir,
+            )
+        except (EvidencePublicationError, OSError) as restore_error:
+            raise EvidencePublicationError(
+                "publication acceptance requires a valid matching journal; "
+                "receipt restoration failed; evidence retained"
+            ) from restore_error
+        raise EvidencePublicationError(
+            "publication acceptance requires a valid matching journal; "
+            "previous pair restored"
+        ) from journal_error
+
+    try:
+        _resolved_receipt, _receipt, loaded_transaction = _load_live_receipt_transaction(
+            receipt_path,
+            recovery_dir=recovery_dir,
+        )
+        if loaded_transaction != transaction:
+            raise EvidencePublicationError(
+                "publication transaction changed during acceptance"
+            )
+        if transaction["acceptance_status"] != "awaiting_acceptance":
+            raise EvidencePublicationError("publication transaction is not awaiting acceptance")
+        _validated_candidate_payload(
+            result_path=Path(result_path),
+            report_path=Path(report_path),
+            transaction=transaction,
+        )
+    except (EvidencePublicationError, OSError) as exc:
+        if transaction is not None:
+            try:
+                _force_restore_transaction(
+                    transaction,
+                    result_path=Path(result_path),
+                    report_path=Path(report_path),
+                    recovery_dir=recovery_dir,
+                )
+            except (EvidencePublicationError, OSError) as restore_exc:
+                raise EvidencePublicationError(
+                    "publication acceptance failed and previous-pair restoration failed"
+                ) from restore_exc
+        if isinstance(exc, EvidencePublicationError):
+            raise
+        raise EvidencePublicationError("publication acceptance failed") from exc
+
+    transaction["acceptance_status"] = "accepted"
+    paths = _transaction_paths(recovery_dir, transaction["transaction_id"])
+    _replace_journal_durably(journal_path, transaction, paths)
+    _cleanup_transaction(
+        journal_path,
+        paths,
+        receipt_path=resolve_receipt_path(receipt_path, recovery_dir=recovery_dir),
+    )
+
+
+def reject_evidence_receipt(
+    receipt_path: str | Path,
+    *,
+    result_path: Path = DEFAULT_RESULT,
+    report_path: Path = DEFAULT_REPORT,
+    recovery_dir: Path = DEFAULT_RECOVERY_DIR,
+) -> None:
+    recovery_dir = Path(recovery_dir)
+    try:
+        transaction = _load_transaction(recovery_dir / JOURNAL_NAME)
+    except EvidencePublicationError:
+        recovery_transaction = _load_receipt_recovery_transaction(
+            receipt_path,
+            result_path=Path(result_path),
+            report_path=Path(report_path),
+            recovery_dir=recovery_dir,
+        )
+        _force_restore_transaction(
+            recovery_transaction,
+            result_path=Path(result_path),
+            report_path=Path(report_path),
+            recovery_dir=recovery_dir,
+        )
+        return
+    receipt_error: EvidencePublicationError | None = None
+    try:
+        resolved_receipt = resolve_receipt_path(
+            receipt_path,
+            recovery_dir=recovery_dir,
+        )
+        if transaction["receipt_name"] != resolved_receipt.name:
+            raise EvidencePublicationError("receipt path does not match live transaction")
+        _validate_receipt_matches_transaction(
+            _load_receipt(resolved_receipt),
+            transaction,
+        )
+    except EvidencePublicationError as exc:
+        receipt_error = exc
+    _force_restore_transaction(
+        transaction,
+        result_path=Path(result_path),
+        report_path=Path(report_path),
+        recovery_dir=recovery_dir,
+    )
+    if receipt_error is not None:
+        raise receipt_error
+
+
+def stage_verified_candidate(
+    *,
+    root: Path,
+    case_path: Path,
+    result_path: Path,
+    report_path: Path,
+    recovery_dir: Path,
+    receipt_path: Path,
+    material_root: Path,
+    baseline_commit: str,
+    head_commit: str,
+    mode: str,
+) -> dict[str, Any]:
+    root = Path(root)
+    recovery_dir = Path(recovery_dir)
+    if mode == "material-pending":
+        validate_material_pending_dataset_absence(material_root)
+    with publication_lock(recovery_dir=recovery_dir):
+        recover_incomplete_publication(
+            result_path=result_path,
+            report_path=report_path,
+            recovery_dir=recovery_dir,
+        )
+    prepared = prepare_verification_evidence(
+        root,
+        baseline_commit,
+        head_commit,
+        mode,
+    )
+    with persistent_verification_lock(
+        prepared,
+        root=root,
+        recovery_dir=recovery_dir,
+    ) as capability:
+        recover_incomplete_publication(
+            result_path=result_path,
+            report_path=report_path,
+            recovery_dir=recovery_dir,
+        )
+        verification_evidence = finalize_verification_evidence(
+            prepared,
+            root=root,
+            capability=capability,
+        )
+        payload = build_phase_a_payload(
+            case_path,
+            root=root,
+            verification_evidence=verification_evidence,
+        )
+        validate_active_verification_lock(
+            prepared,
+            root=root,
+            capability=capability,
+        )
+        if mode == "material-pending":
+            validate_material_pending_dataset_absence(material_root)
+        return stage_evidence_pair(
+            payload,
+            mode=mode,
+            receipt_path=receipt_path,
+            result_path=result_path,
+            report_path=report_path,
+            recovery_dir=recovery_dir,
+        )
+
+
+def _current_repository_head(root: Path) -> str:
+    completed = subprocess.run(
+        ["git", "rev-parse", "HEAD"],
+        cwd=root,
+        text=True,
+        capture_output=True,
+        timeout=30,
+        check=False,
+    )
+    if completed.returncode != 0:
+        raise ValueError("unable to capture current input HEAD")
+    head = completed.stdout.strip()
+    if re.fullmatch(r"[0-9a-f]{40}", head) is None:
+        raise ValueError("current input HEAD is not canonical lowercase Git hex")
+    return head
+
+
+def main(
+    argv: Sequence[str] | None = None,
+    *,
+    material_root: Path | None = None,
+) -> int:
+    args = parse_args(argv)
     try:
         case_path = resolve_project_path(args.case, allowed_root=DEFAULT_CASE.parent)
         result_path = resolve_project_path(args.out, allowed_root=DEFAULT_OUTPUT_DIR)
@@ -535,23 +1397,64 @@ def main() -> int:
             raise ValueError("result path must resolve to the fixed result destination")
         if report_path != DEFAULT_REPORT.resolve(strict=False):
             raise ValueError("report path must resolve to the fixed report destination")
-        with publication_lock(recovery_dir=DEFAULT_RECOVERY_DIR):
-            recover_incomplete_publication(
+        if args.accept_receipt is not None:
+            receipt_path = resolve_receipt_path(
+                args.accept_receipt,
+                recovery_dir=DEFAULT_RECOVERY_DIR,
+            )
+            with publication_lock(recovery_dir=DEFAULT_RECOVERY_DIR):
+                accept_evidence_receipt(
+                    receipt_path,
+                    result_path=result_path,
+                    report_path=report_path,
+                    recovery_dir=DEFAULT_RECOVERY_DIR,
+                )
+            output: dict[str, Any] = {"acceptance_status": "accepted"}
+        elif args.reject_receipt is not None:
+            receipt_path = resolve_receipt_path(
+                args.reject_receipt,
+                recovery_dir=DEFAULT_RECOVERY_DIR,
+            )
+            with publication_lock(recovery_dir=DEFAULT_RECOVERY_DIR):
+                reject_evidence_receipt(
+                    receipt_path,
+                    result_path=result_path,
+                    report_path=report_path,
+                    recovery_dir=DEFAULT_RECOVERY_DIR,
+                )
+            output = {"acceptance_status": "rejected"}
+        else:
+            if args.mode == "complete":
+                raise ValueError(
+                    "complete mode is blocked until separately authorized dataset work"
+                )
+            if material_root is None:
+                material_root = DEFAULT_MATERIAL_ROOT
+            receipt_path = resolve_receipt_path(
+                args.receipt,
+                recovery_dir=DEFAULT_RECOVERY_DIR,
+            )
+            output = stage_verified_candidate(
+                root=ROOT,
+                case_path=case_path,
                 result_path=result_path,
                 report_path=report_path,
                 recovery_dir=DEFAULT_RECOVERY_DIR,
+                receipt_path=receipt_path,
+                material_root=material_root,
+                baseline_commit=IMPLEMENTATION_BASELINE_COMMIT,
+                head_commit=_current_repository_head(ROOT),
+                mode=args.mode,
             )
-            payload = build_phase_a_payload(case_path, root=ROOT)
-            publish_evidence_pair(
-                payload,
-                result_path=result_path,
-                report_path=report_path,
-                recovery_dir=DEFAULT_RECOVERY_DIR,
-            )
-    except (EvidencePublicationError, ValueError) as exc:
+    except (
+        EvidencePublicationError,
+        OSError,
+        subprocess.TimeoutExpired,
+        ValueError,
+    ) as exc:
         print(f"EMOTION-STATE-001 evidence publication failed: {exc}", file=sys.stderr)
         return 1
-    print(json.dumps(payload["summary"], indent=2, ensure_ascii=False))
+    print(json.dumps(output, indent=2, ensure_ascii=False))
     return 0
 
 
