@@ -37,7 +37,7 @@ catch {
 }
 ```
 
-The current Task 7 implementer boundary forbids probing any real `data/public` path. The synthetic absence check is implemented and tested through an injected temporary root. The CLI therefore fails closed before staging unless the controller supplies separately authorized material-root authority; the implementer did not run the transaction or modify the canonical pair.
+The normal deferred `material-pending` CLI uses the fixed project-local root `data/public/emotion-state`; invocation authority remains external, and only an explicitly authorized controller may run that defer transaction. Each authorized defer transaction performs exactly two metadata-only, non-recursive absence-check cycles—before publication-lock acquisition and immediately before staging—limited to root `exists()`, conditional root `is_dir()`, and exact-child `exists()` for `crema-d-v1.0` and `ami-manual-annotations-v1.6.2`; it performs no listing, content read, hash, download, create, or write. Injected synthetic roots remain available for tests, while accept and reject do not access the material root. The implementer did not run the real defer transaction or modify the canonical pair; `phase_a_complete=false` remains the boundary.
 
 ## Publication And Recovery Boundary
 
