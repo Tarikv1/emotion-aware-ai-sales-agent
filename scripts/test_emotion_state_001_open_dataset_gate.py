@@ -7190,6 +7190,10 @@ class VerificationEvidenceTests(unittest.TestCase):
             check=False,
         )
 
+    @unittest.skipIf(
+        "EMOTION_STATE_PHASE_A_GUARD_POLICY" in os.environ,
+        ACTIVE_GUARD_SELF_HOSTING_SKIP_REASON,
+    )
     def test_current_reviewed_executable_roots_build_a_static_closure(self) -> None:
         from scripts.emotion_state_phase_a_contracts import (
             TASKS_1_7_CHANGE_INVENTORY_PATHS,

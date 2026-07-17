@@ -17,6 +17,11 @@ from unittest.mock import patch
 ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
+ACTIVE_GUARD_SELF_HOSTING_SKIP_REASON = (
+    "self-hosting guard unit runs in the direct unit gate; rerunning it under "
+    "an active guard would require authority outside the frozen focused-command "
+    "mapping"
+)
 
 EXPECTED_TASKS_1_7_INPUT_PATHS = (
     ".superpowers/sdd/task-4-report.md",
@@ -418,6 +423,10 @@ class PublicationRecoveryTests(unittest.TestCase):
 
         write.assert_not_called()
 
+    @unittest.skipIf(
+        "EMOTION_STATE_PHASE_A_GUARD_POLICY" in os.environ,
+        ACTIVE_GUARD_SELF_HOSTING_SKIP_REASON,
+    )
     def test_active_publisher_lock_blocks_second_cli_without_mutation(self) -> None:
         original_result, original_report = self._seed_legacy_pair()
         receipt_path = self.recovery_dir / "lock-holder-receipt.json"
@@ -3844,7 +3853,71 @@ class PublicationAcceptanceTests(unittest.TestCase):
         lease.assert_not_called()
         stage.assert_not_called()
 
+
 class ValidatorTimeoutTests(unittest.TestCase):
+    @staticmethod
+    def _prepublication_validators():
+        return patch.multiple(
+            phase_a_validator,
+            validate_source=mock.DEFAULT,
+            validate_contracts=mock.DEFAULT,
+            validate_split_v2=mock.DEFAULT,
+            validate_cohort=mock.DEFAULT,
+            validate_patterns=mock.DEFAULT,
+            validate_brain_extension=mock.DEFAULT,
+        )
+
+    @classmethod
+    def _prepublication_baseline_call_count(
+        cls,
+        sitecustomize: object,
+    ) -> int:
+        policy_path = ROOT / (
+            "research/sources/emotion_state/"
+            "phase_a_verification_guard_policy.json"
+        )
+        with patch.dict(
+            phase_a_validator.os.environ,
+            {
+                "EMOTION_STATE_PHASE_A_GUARD_POLICY": str(policy_path),
+                "EMOTION_STATE_PHASE_A_PROJECT_ROOT": str(ROOT),
+            },
+        ), patch.dict(
+            phase_a_validator.sys.modules,
+            {"sitecustomize": sitecustomize},
+        ), cls._prepublication_validators(), patch.object(
+            phase_a_validator.subprocess,
+            "run",
+            return_value=subprocess.CompletedProcess(
+                ["baseline-validator"], 0, stdout="", stderr=""
+            ),
+        ) as baseline_gate:
+            phase_a_validator.validate_prepublication_inputs("material-pending")
+        return baseline_gate.call_count
+
+    def test_phase_a_prepublication_active_guard_does_not_relaunch_baseline(
+        self,
+    ) -> None:
+        guard_module = mock.Mock(
+            __file__=str(
+                ROOT
+                / "scripts/emotion_state_phase_a_guard_site/sitecustomize.py"
+            ),
+            _GuardedPopen=phase_a_validator.subprocess.Popen,
+        )
+        self.assertEqual(
+            self._prepublication_baseline_call_count(guard_module),
+            0,
+        )
+
+    def test_phase_a_prepublication_environment_anchors_alone_do_not_bypass(
+        self,
+    ) -> None:
+        self.assertEqual(
+            self._prepublication_baseline_call_count(None),
+            1,
+        )
+
     def test_exp_runner_timeout_is_controlled(self) -> None:
         stdout = io.StringIO()
         stderr = io.StringIO()
@@ -3900,6 +3973,9 @@ class ValidatorTimeoutTests(unittest.TestCase):
             phase_a_validator.sys,
             "argv",
             ["validator", "--section", "brain"],
+        ), patch.dict(
+            phase_a_validator.sys.modules,
+            {"sitecustomize": None},
         ), patch(
             "scripts.validate_emotion_state_001_phase_a_contracts.subprocess.run",
             side_effect=timeout,
@@ -3930,25 +4006,10 @@ class ValidatorTimeoutTests(unittest.TestCase):
                 "--mode",
                 "material-pending",
             ],
-        ), patch.object(
-            phase_a_validator,
-            "validate_source",
-        ), patch.object(
-            phase_a_validator,
-            "validate_contracts",
-        ), patch.object(
-            phase_a_validator,
-            "validate_split_v2",
-        ), patch.object(
-            phase_a_validator,
-            "validate_cohort",
-        ), patch.object(
-            phase_a_validator,
-            "validate_patterns",
-        ), patch.object(
-            phase_a_validator,
-            "validate_brain_extension",
-        ), patch(
+        ), patch.dict(
+            phase_a_validator.sys.modules,
+            {"sitecustomize": None},
+        ), self._prepublication_validators(), patch(
             "scripts.validate_emotion_state_001_phase_a_contracts.subprocess.run",
             side_effect=timeout,
         ), redirect_stdout(stdout), redirect_stderr(stderr):

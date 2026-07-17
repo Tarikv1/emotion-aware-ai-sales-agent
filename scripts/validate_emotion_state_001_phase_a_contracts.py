@@ -550,6 +550,8 @@ def validate_brain_extension() -> None:
     from runtime.contracts.emotion_state_brain_extension import brain_extension_self_check
 
     assert_condition(brain_extension_self_check() == "pass", "BRAIN extension self-check failed")
+    if _active_phase_a_guard_context():
+        return
     completed = subprocess.run(
         [sys.executable, str(ROOT / "scripts" / "validate_brain_002_runtime_state_schema.py")],
         cwd=ROOT,
@@ -601,6 +603,34 @@ def validate_materials() -> None:
         read_json(path)
 
 
+def _active_phase_a_guard_context() -> bool:
+    guard_module = sys.modules.get("sitecustomize")
+    policy_anchor = os.environ.get("EMOTION_STATE_PHASE_A_GUARD_POLICY")
+    project_anchor = os.environ.get("EMOTION_STATE_PHASE_A_PROJECT_ROOT")
+    guard_site = getattr(guard_module, "__file__", None)
+    if not all(
+        isinstance(value, str)
+        for value in (policy_anchor, project_anchor, guard_site)
+    ):
+        return False
+    try:
+        project_root = ROOT.resolve(strict=True)
+        return (
+            subprocess.Popen
+            is getattr(guard_module, "_GuardedPopen", None)
+            and Path(project_anchor).resolve(strict=True) == project_root
+            and Path(policy_anchor).resolve(strict=True)
+            == project_root
+            / "research/sources/emotion_state/"
+            "phase_a_verification_guard_policy.json"
+            and Path(guard_site).resolve(strict=True)
+            == project_root
+            / "scripts/emotion_state_phase_a_guard_site/sitecustomize.py"
+        )
+    except (OSError, RuntimeError, ValueError):
+        return False
+
+
 def validate_prepublication_inputs(mode: str) -> None:
     assert_condition(
         isinstance(mode, str) and mode in {"material-pending", "complete"},
@@ -613,21 +643,22 @@ def validate_prepublication_inputs(mode: str) -> None:
     validate_cohort()
     validate_patterns()
     validate_brain_extension()
-    baseline_gate = subprocess.run(
-        [
-            sys.executable,
-            str(ROOT / "scripts" / "validate_exp_002_frozen_response_baseline.py"),
-        ],
-        cwd=ROOT,
-        text=True,
-        capture_output=True,
-        timeout=60,
-        check=False,
-    )
-    assert_condition(
-        baseline_gate.returncode == 0,
-        baseline_gate.stdout + baseline_gate.stderr,
-    )
+    if not _active_phase_a_guard_context():
+        baseline_gate = subprocess.run(
+            [
+                sys.executable,
+                str(ROOT / "scripts" / "validate_exp_002_frozen_response_baseline.py"),
+            ],
+            cwd=ROOT,
+            text=True,
+            capture_output=True,
+            timeout=60,
+            check=False,
+        )
+        assert_condition(
+            baseline_gate.returncode == 0,
+            baseline_gate.stdout + baseline_gate.stderr,
+        )
     if mode == "complete":
         validate_materials()
 
