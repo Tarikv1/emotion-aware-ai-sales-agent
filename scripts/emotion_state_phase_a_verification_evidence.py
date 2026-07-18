@@ -136,6 +136,13 @@ OUTPUT_EXCLUSIONS = (
     ".tmp/emotion-state-001-phase-a-publication/**",
 )
 CANONICAL_OUTPUT_FILES = ("result.json", "report.md")
+SELECTED_PUBLIC_DATASET_IDS = (
+    "crema-d-v1.0-audio-wav",
+    "ami-manual-annotations-v1.6.2",
+)
+DATASET_EVIDENCE_DIRECTORY = (
+    "research/sources/emotion_state/datasets"
+)
 PUBLICATION_RECOVERY_RELATIVE_PATH = (
     ".tmp/emotion-state-001-phase-a-publication"
 )
@@ -253,6 +260,10 @@ ALLOWED_COMMAND_TEMPLATES = (
             "{baseline_commit}..{head_commit}",
         ),
     ),
+)
+REQUIRED_PHASE_A_COMMAND_IDS = tuple(
+    command_id
+    for command_id, _argv_template in ALLOWED_COMMAND_TEMPLATES
 )
 
 REPOSITORY_GATE_COMMAND_IDS = {
@@ -1238,6 +1249,36 @@ def _expected_mode_commands(
             if command[0] != "phase-a-materials-validator"
         )
     return ALLOWED_COMMAND_TEMPLATES
+
+
+def expected_argv_for_command(
+    command_id: str,
+    *,
+    mode: str,
+    baseline_commit: str,
+    head_commit: str,
+) -> list[str]:
+    """Return one exact policy argv with its reviewed substitutions applied."""
+
+    commands = dict(_expected_mode_commands(mode))
+    if command_id not in commands:
+        raise ValueError(f"command is not required in {mode} mode: {command_id}")
+    commit_pattern = re.compile(r"[0-9a-f]{40}")
+    if (
+        commit_pattern.fullmatch(baseline_commit) is None
+        or commit_pattern.fullmatch(head_commit) is None
+    ):
+        raise ValueError("command commit substitutions must be lowercase commit IDs")
+    substitutions = {
+        "{mode}": mode,
+        "{baseline_commit}..{head_commit}": (
+            f"{baseline_commit}..{head_commit}"
+        ),
+    }
+    return [
+        substitutions.get(argument, argument)
+        for argument in commands[command_id]
+    ]
 
 
 def _validate_argv_template(
@@ -2915,10 +2956,8 @@ def _collect_verification_snapshot(
         label="baseline_commit",
     )
     head = _validate_evidence_commit(head_commit, label="head_commit")
-    if mode != "material-pending":
-        raise ValueError(
-            "complete verification snapshot requires authorized dataset evidence"
-        )
+    if mode not in {"material-pending", "complete"}:
+        raise ValueError("unsupported verification snapshot mode")
 
     inventories = build_git_change_inventories(root_path, baseline, head)
     executable_roots = set(REVIEWED_EXECUTABLE_ROOTS)
@@ -2942,7 +2981,7 @@ def _collect_verification_snapshot(
         gate_module_paths=GATE_MODULE_PATHS,
         runtime_consumer_paths=_tracked_runtime_python_paths(root_path),
     )
-    return {
+    snapshot = {
         "committed_change_inventory": inventories[
             "committed_change_inventory"
         ],
@@ -2953,6 +2992,43 @@ def _collect_verification_snapshot(
         "dataset_manifest_digests": {},
         "dataset_hash_inventory_digests": {},
     }
+    if mode == "complete":
+        manifest_digests: dict[str, str] = {}
+        hash_inventory_digests: dict[str, str] = {}
+        quality_inventory_digests: dict[str, str] = {}
+        evidence_root = root_path / DATASET_EVIDENCE_DIRECTORY
+        for dataset_id in SELECTED_PUBLIC_DATASET_IDS:
+            evidence_paths = {
+                "manifest": evidence_root / f"{dataset_id}.manifest.json",
+                "hash": evidence_root / f"{dataset_id}.hashes.json",
+                "quality": evidence_root / f"{dataset_id}.quality.json",
+            }
+            evidence_payloads = {
+                label: _load_json_bytes(
+                    path.read_bytes(),
+                    source=f"{dataset_id} {label} evidence",
+                )
+                for label, path in evidence_paths.items()
+            }
+            if any(
+                not isinstance(payload, Mapping)
+                or payload.get("dataset_id") != dataset_id
+                for payload in evidence_payloads.values()
+            ):
+                raise ValueError("dataset verification evidence identity mismatch")
+            manifest_digests[dataset_id] = sha256_bytes(
+                evidence_paths["manifest"].read_bytes()
+            )
+            hash_inventory_digests[dataset_id] = sha256_bytes(
+                evidence_paths["hash"].read_bytes()
+            )
+            quality_inventory_digests[dataset_id] = sha256_bytes(
+                evidence_paths["quality"].read_bytes()
+            )
+        snapshot["dataset_manifest_digests"] = manifest_digests
+        snapshot["dataset_hash_inventory_digests"] = hash_inventory_digests
+        snapshot["dataset_quality_inventory_digests"] = quality_inventory_digests
+    return snapshot
 
 
 def _execute_guarded_commands(
@@ -3033,21 +3109,31 @@ def _verification_snapshot_components(
     list[object],
     Mapping[str, object],
     Mapping[str, object],
+    Mapping[str, object],
 ]:
-    expected_fields = {
+    required_fields = {
         "committed_change_inventory",
         "uncommitted_change_inventory",
         "executable_dependency_closure",
         "dataset_manifest_digests",
         "dataset_hash_inventory_digests",
     }
-    if not isinstance(snapshot, Mapping) or set(snapshot) != expected_fields:
+    allowed_fields = required_fields | {"dataset_quality_inventory_digests"}
+    if (
+        not isinstance(snapshot, Mapping)
+        or not required_fields.issubset(snapshot)
+        or not set(snapshot).issubset(allowed_fields)
+    ):
         raise ValueError("verification snapshot fields mismatch")
     committed_inventory = snapshot["committed_change_inventory"]
     uncommitted_inventory = snapshot["uncommitted_change_inventory"]
     closure = snapshot["executable_dependency_closure"]
     manifest_digests = snapshot["dataset_manifest_digests"]
     hash_inventory_digests = snapshot["dataset_hash_inventory_digests"]
+    quality_inventory_digests = snapshot.get(
+        "dataset_quality_inventory_digests",
+        {},
+    )
     if not isinstance(committed_inventory, list):
         raise ValueError("committed change inventory must be a list")
     if not isinstance(uncommitted_inventory, list):
@@ -3068,6 +3154,8 @@ def _verification_snapshot_components(
         raise ValueError("dataset manifest digests must be a mapping")
     if not isinstance(hash_inventory_digests, Mapping):
         raise ValueError("dataset hash inventory digests must be a mapping")
+    if not isinstance(quality_inventory_digests, Mapping):
+        raise ValueError("dataset quality inventory digests must be a mapping")
     return (
         committed_inventory,
         uncommitted_inventory,
@@ -3075,6 +3163,7 @@ def _verification_snapshot_components(
         closure_edges,
         manifest_digests,
         hash_inventory_digests,
+        quality_inventory_digests,
     )
 
 
@@ -4314,6 +4403,7 @@ def finalize_verification_evidence(
         closure_edges,
         manifest_digests,
         hash_inventory_digests,
+        quality_inventory_digests,
     ) = _verification_snapshot_components(locked_snapshot)
     ledger = [dict(entry) for entry in executed_command_ledger]
     repository_gate_statuses = derive_repository_gate_statuses(
@@ -4346,6 +4436,10 @@ def finalize_verification_evidence(
         "executed_command_ledger": ledger,
         "guard_policy_digest": guard_policy_digest,
     }
+    if prepared_state.mode == "complete":
+        tree_payload["dataset_quality_inventory_digests"] = dict(
+            quality_inventory_digests
+        )
     tree_digest = canonical_json_sha256(tree_payload)
     verification_run_id = sha256_bytes(
         (
@@ -4353,7 +4447,7 @@ def finalize_verification_evidence(
             + tree_digest
         ).encode("utf-8")
     )
-    return {
+    evidence = {
         **tree_payload,
         "verification_input_path_inventory_digest": input_inventory_digest,
         "executable_dependency_closure_digest": closure_digest,
@@ -4366,6 +4460,9 @@ def finalize_verification_evidence(
         "private_path_guard_enabled": True,
         "network_guard_enabled": True,
     }
+    if prepared_state.mode == "complete":
+        evidence["prepublication_byte_lock_reread_status"] = "pass"
+    return evidence
 
 
 def build_verification_evidence(

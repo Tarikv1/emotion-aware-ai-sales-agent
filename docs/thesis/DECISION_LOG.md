@@ -2798,3 +2798,11 @@ Record important thesis and implementation decisions here with enough context to
 - Decision: select exactly `crema-d-v1.0-audio-wav` and `ami-manual-annotations-v1.6.2` at the contract layer while keeping dataset download, material verification, and evaluation not started; implement split-manifest v2 and cohort-release contracts only against synthetic fixtures.
 - Why: selection and contract design can be reviewed offline, but no completion claim is defensible until exact material manifests and cohort-release evidence exist and pass the guarded verification lease.
 - Consequences: source adaptation remains `false`; `phase_a_complete=false`; no private-data, provider, call, simulation, runtime, or canonical-publication action is part of the Task 7 input commit; no production, customer, PSTN, ASR, latency, provider-feasibility, or internal-emotion claim is authorized. A controller must separately authorize the real material-root absence probe before running the deferred candidate transaction.
+
+### DEC-023 - Close Phase A with two public-only lanes and a bounded completion claim
+
+- Date: 2026-07-19
+- Status: accepted
+- Decision: bind the exact verified CREMA-D controlled acoustic-sensitivity evidence and AMI manual-annotation conversational-mechanics evidence as two separate public-only lanes. Derive `phase_a_complete=true` only for `source_provenance_dataset_manifests_offline_contracts_and_cohort_release_gate_only`.
+- Why: the tracked manifests, hash inventories, quality inventories, offline contracts, guarded repository ledger, and crash-safe publication preconditions can close the provenance/contract gate without claiming that either source validates customer internal emotion or operational sales signals.
+- Consequences: dataset evaluation, live aggregate release, Phase B, private research, provider feasibility, runtime activation, model performance, production readiness, and source adaptation all remain blocked. Task 10 freezes inputs only; complete candidate generation and explicit acceptance remain Task 11.

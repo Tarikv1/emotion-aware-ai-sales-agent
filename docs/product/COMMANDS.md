@@ -3869,6 +3869,23 @@ Validate only the material-pending prepublication inputs without reading or writ
 python scripts\validate_emotion_state_001_phase_a_contracts.py --section prepublication --mode material-pending
 ```
 
+For a complete prepublication check, local ignored material must be present:
+
+```powershell
+python scripts\validate_emotion_state_001_phase_a_contracts.py --section materials
+python scripts\validate_emotion_state_001_phase_a_contracts.py --section prepublication --mode complete
+```
+
+After the verified input HEAD is committed, a controller may stage—but not implicitly accept—the complete pair:
+
+```powershell
+$receipt = '.tmp\emotion-state-001-phase-a-publication\complete-receipt.json'
+python scripts\run_emotion_state_001_phase_a_contracts.py --mode complete --defer-acceptance --receipt $receipt
+python scripts\validate_emotion_state_001_phase_a_contracts.py --section candidate --receipt $receipt
+```
+
+Run the explicit `--accept-receipt` or `--reject-receipt` command only after independent candidate inspection. `materials` requires ignored raw bytes. `checkpoint` validates the recorded tracked evidence and canonical pair in a clean clone; it does not re-prove that the raw bytes are available there.
+
 The following defer/readback/test/accept transaction is controller-only. The real defer step requires explicit controller authority to probe the real material root for absence; Task 7 implementers must not run it, create a real receipt, or modify the canonical pair.
 
 ```powershell

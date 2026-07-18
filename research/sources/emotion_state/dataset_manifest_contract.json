@@ -53,9 +53,15 @@
     "crema-d-v1.0-audio-wav",
     "ami-manual-annotations-v1.6.2"
   ],
-  "dataset_download_authorized": false,
+  "ami_partition_source": {
+    "canonical_source_url": "https://groups.inf.ed.ac.uk/ami/corpus/datasets.shtml",
+    "local_path": "data/public/emotion-state/ami-manual-annotations-v1.6.2/official-partitions/datasets.shtml",
+    "sha256": "30D038F540A91BA6E68133E8FDFAA1D2B4C1B7291F871B0D4821EA04F4C776ED",
+    "accessed_on": "2026-07-18"
+  },
+  "dataset_download_authorized": true,
   "dataset_evaluation_started": false,
   "domain_boundary": "acted_and_non_sales_corpora_support_offline_thesis_comparison_only",
   "runtime_influence_allowed": false,
-  "notes": "The two public dataset profiles are selected, but dataset download and evaluation remain unauthorized. Create immutable per-dataset evidence only after separate authorization and exact local material verification."
+  "notes": "The two public dataset profiles have separate download authorization. Dataset evaluation remains unauthorized; create immutable per-dataset evidence only after exact local material verification."
 }

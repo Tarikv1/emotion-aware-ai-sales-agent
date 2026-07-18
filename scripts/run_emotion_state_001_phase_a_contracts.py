@@ -30,6 +30,7 @@ from scripts.emotion_state_phase_a_contracts import (
     SELECTED_PUBLIC_DATASET_IDS,
     build_phase_a_payload,
     render_phase_a_report,
+    validate_complete_payload,
     validate_material_pending_payload,
 )
 from scripts.emotion_state_phase_a_verification_evidence import (
@@ -1144,16 +1145,14 @@ def _validated_candidate_payload(
     expected_payload_mode = transaction["mode"].replace("-", "_")
     if payload.get("mode") != expected_payload_mode:
         raise EvidencePublicationError("candidate result mode mismatch")
-    if transaction["mode"] != "material-pending":
-        raise EvidencePublicationError(
-            "complete candidate acceptance is unsupported until its "
-            "separately authorized contract exists"
-        )
     try:
-        validate_material_pending_payload(payload)
+        if transaction["mode"] == "complete":
+            validate_complete_payload(payload, root=trusted_root)
+        else:
+            validate_material_pending_payload(payload)
     except (TypeError, ValueError) as exc:
         raise EvidencePublicationError(
-            f"candidate material-pending payload is invalid: {exc}"
+            f"candidate {transaction['mode']} payload is invalid: {exc}"
         ) from exc
     result_sha256 = _sha256_bytes(result_bytes)
     try:
@@ -1258,12 +1257,17 @@ def _write_evidence_pair_transaction(
     recovery_dir: Path,
     trusted_root: Path = ROOT,
 ) -> dict[str, Any] | None:
-    if mode == "complete":
-        raise EvidencePublicationError(
-            "complete mode is blocked until separately authorized dataset work"
-        )
-    if not isinstance(mode, str) or mode != "material-pending":
+    if not isinstance(mode, str) or mode not in {"material-pending", "complete"}:
         raise EvidencePublicationError("invalid evidence publication mode")
+    try:
+        if mode == "complete":
+            validate_complete_payload(payload, root=trusted_root)
+        else:
+            validate_material_pending_payload(payload)
+    except (TypeError, ValueError) as exc:
+        raise EvidencePublicationError(
+            f"{mode} payload is invalid: {exc}"
+        ) from exc
     result_path = Path(result_path)
     report_path = Path(report_path)
     recovery_dir = Path(recovery_dir)
@@ -1680,11 +1684,7 @@ def stage_verified_candidate(
     head_commit: str,
     mode: str,
 ) -> dict[str, Any]:
-    if mode == "complete":
-        raise ValueError(
-            "complete mode is blocked until separately authorized dataset work"
-        )
-    if not isinstance(mode, str) or mode != "material-pending":
+    if not isinstance(mode, str) or mode not in {"material-pending", "complete"}:
         raise ValueError("invalid evidence verification mode")
     root = Path(root)
     recovery_dir = Path(recovery_dir)
@@ -1735,6 +1735,7 @@ def stage_verified_candidate(
             case_path,
             root=root,
             verification_evidence=verification_evidence,
+            mode=mode.replace("-", "_"),
         )
         _assert_repository_head(root, expected_head=head_commit)
         validate_active_verification_lock(
@@ -1835,10 +1836,6 @@ def main(
                 )
             output = {"acceptance_status": "rejected"}
         else:
-            if args.mode == "complete":
-                raise ValueError(
-                    "complete mode is blocked until separately authorized dataset work"
-                )
             if material_root is None:
                 material_root = DEFAULT_MATERIAL_ROOT
             receipt_path = resolve_receipt_path(

@@ -32,6 +32,9 @@ SELECTED_PUBLIC_DATASET_IDS = (
     "crema-d-v1.0-audio-wav",
     "ami-manual-annotations-v1.6.2",
 )
+DATASET_EVIDENCE_DIRECTORY = (
+    "research/sources/emotion_state/datasets"
+)
 MATERIAL_PENDING_CONTRACT_STATUSES = {
     "public_dataset_contract": "pass",
     "split_manifest_v2_contract": "pass",
@@ -40,6 +43,10 @@ MATERIAL_PENDING_CONTRACT_STATUSES = {
 MATERIAL_PENDING_COMPLETION_SCOPE = (
     "source_provenance_dataset_selection_and_offline_contracts_only_"
     "material_verification_pending"
+)
+COMPLETE_PHASE_A_COMPLETION_SCOPE = (
+    "source_provenance_dataset_manifests_offline_contracts_and_"
+    "cohort_release_gate_only"
 )
 MATERIAL_PENDING_BLOCKERS = [
     "dataset_download_not_authorized",
@@ -579,7 +586,7 @@ EXPECTED_CASE = {
     "campaign_profile_id": "emotion-state-phase-a-fixture",
     "campaign_profile_version": "fixture-v2",
     "selected_public_datasets": list(SELECTED_PUBLIC_DATASET_IDS),
-    "dataset_download_authorized": False,
+    "dataset_download_authorized": True,
     "dataset_evaluation_started": False,
     "private_data_access_allowed": False,
     "provider_operations_allowed": False,
@@ -734,20 +741,38 @@ def validate_source_manifest(manifest: Any) -> None:
 def determine_phase_a_completion(evidence: Mapping[str, Any]) -> dict[str, Any]:
     if not isinstance(evidence, Mapping):
         raise ValueError("Phase A completion evidence must be an object")
-    if "phase_a_complete" in evidence:
-        raise ValueError("phase_a_complete is derived-only and cannot be supplied")
-    expected_fields = {
+    derived_fields = {
+        "phase_a_complete",
+        "repository_gate_statuses",
+        "guarded_command_results",
+    }
+    supplied_derived_fields = derived_fields.intersection(evidence)
+    if supplied_derived_fields:
+        raise ValueError(
+            "Phase A completion evidence fields are derived-only: "
+            + ", ".join(sorted(supplied_derived_fields))
+        )
+    common_fields = {
         "mode",
         "selected_dataset_ids",
         "dataset_download_authorized",
         "dataset_evidence",
         "contract_statuses",
     }
-    if set(evidence) != expected_fields:
+    if not common_fields.issubset(evidence):
         raise ValueError("invalid Phase A completion evidence fields")
-    mode = evidence["mode"]
+    mode = evidence.get("mode")
     if not isinstance(mode, str) or mode not in {"material_pending", "complete"}:
         raise ValueError("invalid Phase A completion mode")
+    complete_fields = common_fields | {
+        "verification_evidence",
+        "executed_command_ledger",
+        "publication_integrity_preconditions",
+        "authorization_boundaries",
+    }
+    expected_fields = common_fields if mode == "material_pending" else complete_fields
+    if set(evidence) != expected_fields:
+        raise ValueError("invalid Phase A completion evidence fields")
     if evidence["selected_dataset_ids"] != list(SELECTED_PUBLIC_DATASET_IDS):
         raise ValueError("selected public dataset IDs or order changed")
     download_authorized = evidence["dataset_download_authorized"]
@@ -759,30 +784,215 @@ def determine_phase_a_completion(evidence: Mapping[str, Any]) -> dict[str, Any]:
     contract_statuses = evidence["contract_statuses"]
     if not isinstance(contract_statuses, Mapping):
         raise ValueError("contract_statuses must be an object")
-    if dict(contract_statuses) != MATERIAL_PENDING_CONTRACT_STATUSES:
-        raise ValueError("offline material-pending contract checks must all pass")
-
     if mode == "material_pending":
+        if dict(contract_statuses) != MATERIAL_PENDING_CONTRACT_STATUSES:
+            raise ValueError("offline material-pending contract checks must all pass")
         if download_authorized is not False:
             raise ValueError("material-pending mode requires download authorization false")
         if dataset_evidence:
             raise ValueError("material-pending mode requires zero dataset-evidence entries")
         blockers = list(MATERIAL_PENDING_BLOCKERS)
         completion_scope = MATERIAL_PENDING_COMPLETION_SCOPE
+        phase_a_complete = False
+        repository_gate_complete = False
     else:
         blockers = []
         if not download_authorized:
             blockers.append("dataset_download_not_authorized")
-        if len(dataset_evidence) != len(SELECTED_PUBLIC_DATASET_IDS):
+
+        expected_dataset_fields = {
+            "dataset_id",
+            "completion_status",
+            "manifest_sha256",
+            "hash_inventory_sha256",
+            "quality_inventory_sha256",
+            "source_provenance_status",
+            "material_validation_status",
+        }
+        dataset_evidence_valid = (
+            len(dataset_evidence) == len(SELECTED_PUBLIC_DATASET_IDS)
+        )
+        if dataset_evidence_valid:
+            for expected_dataset_id, dataset_entry in zip(
+                SELECTED_PUBLIC_DATASET_IDS,
+                dataset_evidence,
+                strict=True,
+            ):
+                if (
+                    not isinstance(dataset_entry, Mapping)
+                    or set(dataset_entry) != expected_dataset_fields
+                    or dataset_entry.get("dataset_id") != expected_dataset_id
+                    or dataset_entry.get("completion_status") != "verified"
+                    or dataset_entry.get("source_provenance_status") != "pass"
+                    or dataset_entry.get("material_validation_status") != "pass"
+                ):
+                    dataset_evidence_valid = False
+                    break
+                for digest_field in (
+                    "manifest_sha256",
+                    "hash_inventory_sha256",
+                    "quality_inventory_sha256",
+                ):
+                    digest = dataset_entry.get(digest_field)
+                    if (
+                        not isinstance(digest, str)
+                        or re.fullmatch(r"[0-9A-F]{64}", digest) is None
+                    ):
+                        dataset_evidence_valid = False
+                        break
+                if not dataset_evidence_valid:
+                    break
+        if not dataset_evidence_valid:
             blockers.append("selected_dataset_manifests_not_verified")
-        blockers.append("complete_material_verification_gate_not_implemented")
-        completion_scope = "complete_mode_material_verification_gate_pending"
+
+        if (
+            set(contract_statuses) != set(MATERIAL_PENDING_CONTRACT_STATUSES)
+            or any(
+                contract_statuses.get(field) != "pass"
+                for field in MATERIAL_PENDING_CONTRACT_STATUSES
+            )
+        ):
+            blockers.append("offline_contract_checks_not_verified")
+
+        verification_evidence = evidence["verification_evidence"]
+        expected_verification_fields = {
+            "implementation_baseline_commit",
+            "repository_head_commit",
+            "verification_run_id",
+            "verification_input_path_inventory_digest",
+            "executable_dependency_closure_digest",
+            "executed_command_ledger_digest",
+            "guard_policy_digest",
+            "verification_input_tree_digest",
+            "provider_environment_scrubbed",
+            "private_path_guard_enabled",
+            "network_guard_enabled",
+            "prepublication_byte_lock_reread_status",
+        }
+        verification_valid = (
+            isinstance(verification_evidence, Mapping)
+            and set(verification_evidence) == expected_verification_fields
+        )
+        if verification_valid:
+            for commit_field in (
+                "implementation_baseline_commit",
+                "repository_head_commit",
+            ):
+                commit = verification_evidence.get(commit_field)
+                if (
+                    not isinstance(commit, str)
+                    or re.fullmatch(r"[0-9a-f]{40}", commit) is None
+                ):
+                    verification_valid = False
+            for digest_field in (
+                "verification_run_id",
+                "verification_input_path_inventory_digest",
+                "executable_dependency_closure_digest",
+                "executed_command_ledger_digest",
+                "guard_policy_digest",
+                "verification_input_tree_digest",
+            ):
+                digest = verification_evidence.get(digest_field)
+                if (
+                    not isinstance(digest, str)
+                    or re.fullmatch(r"[0-9A-F]{64}", digest) is None
+                ):
+                    verification_valid = False
+            for guard_field in (
+                "provider_environment_scrubbed",
+                "private_path_guard_enabled",
+                "network_guard_enabled",
+            ):
+                if verification_evidence.get(guard_field) is not True:
+                    verification_valid = False
+            if (
+                verification_evidence.get(
+                    "prepublication_byte_lock_reread_status"
+                )
+                != "pass"
+            ):
+                verification_valid = False
+        if not verification_valid:
+            blockers.append("verification_evidence_not_verified")
+
+        repository_gate_complete = False
+        try:
+            from scripts.emotion_state_phase_a_verification_evidence import (
+                REPOSITORY_GATE_COMMAND_IDS,
+                derive_repository_gate_statuses,
+            )
+
+            repository_gate_statuses = derive_repository_gate_statuses(
+                evidence["executed_command_ledger"],
+                "complete",
+            )
+            repository_gate_complete = (
+                tuple(repository_gate_statuses)
+                == tuple(REPOSITORY_GATE_COMMAND_IDS)
+                and all(
+                    status == "pass"
+                    for status in repository_gate_statuses.values()
+                )
+            )
+        except (TypeError, ValueError):
+            repository_gate_complete = False
+        if not repository_gate_complete:
+            blockers.append("repository_gates_not_verified")
+
+        publication_preconditions = evidence["publication_integrity_preconditions"]
+        if (
+            not isinstance(publication_preconditions, Mapping)
+            or set(publication_preconditions)
+            != {
+                "crash_safe_pair_protocol_status",
+                "explicit_acceptance_transaction_status",
+                "last_valid_pair_preservation_status",
+                "output_self_reference_absent",
+            }
+            or publication_preconditions.get("crash_safe_pair_protocol_status")
+            != "pass"
+            or publication_preconditions.get(
+                "explicit_acceptance_transaction_status"
+            )
+            != "pass"
+            or publication_preconditions.get(
+                "last_valid_pair_preservation_status"
+            )
+            != "pass"
+            or publication_preconditions.get("output_self_reference_absent")
+            is not True
+        ):
+            blockers.append("publication_integrity_preconditions_not_verified")
+
+        authorization_boundaries = evidence["authorization_boundaries"]
+        expected_authorization_fields = {
+            "live_aggregate_release_unblocked",
+            "public_dataset_evaluation_unblocked",
+            "phase_b_unblocked",
+            "private_research_unblocked",
+            "provider_feasibility_unblocked",
+            "runtime_activation_unblocked",
+        }
+        if (
+            not isinstance(authorization_boundaries, Mapping)
+            or set(authorization_boundaries) != expected_authorization_fields
+            or any(
+                authorization_boundaries.get(field) is not False
+                for field in expected_authorization_fields
+            )
+        ):
+            blockers.append("authorization_boundaries_not_closed")
+
+        completion_scope = COMPLETE_PHASE_A_COMPLETION_SCOPE
+        phase_a_complete = not blockers
 
     return {
         "phase_a_contract_artifacts_built": True,
-        "phase_a_complete": False,
+        "phase_a_complete": phase_a_complete,
         "phase_a_completion_scope": completion_scope,
-        "full_repository_gate_claimed_by_this_artifact": False,
+        "full_repository_gate_claimed_by_this_artifact": (
+            repository_gate_complete
+        ),
         "live_aggregate_release_unblocked": False,
         "phase_b_unblocked": False,
         "public_dataset_evaluation_unblocked": False,
@@ -814,6 +1024,79 @@ def _normalized_verification_evidence(
     if not isinstance(normalized, dict):
         raise ValueError("verification evidence must normalize to an object")
     return normalized
+
+
+def _load_complete_dataset_evidence(
+    root: Path,
+) -> tuple[
+    list[dict[str, Any]],
+    dict[str, str],
+    dict[str, str],
+]:
+    """Read and byte-bind the exact ordered tracked public-dataset evidence."""
+
+    from scripts.emotion_state_public_dataset_contracts import (
+        validate_dataset_manifest,
+    )
+
+    dataset_evidence: list[dict[str, Any]] = []
+    hash_inventory_digests: dict[str, str] = {}
+    quality_inventory_digests: dict[str, str] = {}
+    evidence_root = root / DATASET_EVIDENCE_DIRECTORY
+    for dataset_id in SELECTED_PUBLIC_DATASET_IDS:
+        manifest_path = evidence_root / f"{dataset_id}.manifest.json"
+        hash_inventory_path = evidence_root / f"{dataset_id}.hashes.json"
+        quality_inventory_path = evidence_root / f"{dataset_id}.quality.json"
+        manifest = read_json(manifest_path)
+        hash_inventory = read_json(hash_inventory_path)
+        quality_inventory = read_json(quality_inventory_path)
+        validate_dataset_manifest(manifest)
+        if (
+            hash_inventory.get("dataset_id") != dataset_id
+            or quality_inventory.get("dataset_id") != dataset_id
+        ):
+            raise ValueError("dataset evidence identity mismatch")
+        manifest_sha256 = sha256_file(manifest_path)
+        hash_inventory_sha256 = sha256_file(hash_inventory_path)
+        quality_inventory_sha256 = sha256_file(quality_inventory_path)
+        if (
+            manifest.get("completion_status") != "verified"
+            or manifest.get("hash_inventory", {}).get("inventory_sha256")
+            != hash_inventory_sha256
+            or manifest.get("exclusion_inventory", {}).get(
+                "quality_inventory_sha256"
+            )
+            != quality_inventory_sha256
+            or manifest.get("hash_inventory", {}).get("selected_file_count")
+            != hash_inventory.get("selected_file_count")
+            or manifest.get("hash_inventory", {}).get("selected_byte_count")
+            != hash_inventory.get("selected_byte_count")
+            or manifest.get("exclusion_inventory", {}).get(
+                "included_file_count"
+            )
+            != quality_inventory.get("included_file_count")
+            or manifest.get("exclusion_inventory", {}).get(
+                "excluded_file_count"
+            )
+            != quality_inventory.get("excluded_file_count")
+        ):
+            raise ValueError("dataset evidence bytes do not match manifest references")
+        dataset_evidence.append({
+            "dataset_id": dataset_id,
+            "completion_status": "verified",
+            "manifest_sha256": manifest_sha256,
+            "hash_inventory_sha256": hash_inventory_sha256,
+            "quality_inventory_sha256": quality_inventory_sha256,
+            "source_provenance_status": "pass",
+            "material_validation_status": "pass",
+        })
+        hash_inventory_digests[dataset_id] = hash_inventory_sha256
+        quality_inventory_digests[dataset_id] = quality_inventory_sha256
+    return (
+        dataset_evidence,
+        hash_inventory_digests,
+        quality_inventory_digests,
+    )
 
 
 def _assert_exact_json_value(
@@ -1264,11 +1547,255 @@ def validate_material_pending_payload(payload: Any) -> dict[str, Any]:
     return payload
 
 
+def validate_complete_payload(
+    payload: Any,
+    *,
+    root: Path,
+) -> dict[str, Any]:
+    """Validate a complete candidate without treating it as accepted."""
+
+    if not isinstance(payload, dict):
+        raise ValueError("complete payload must be an object")
+    required_fields = {
+        "checkpoint_id",
+        "schema_version",
+        "mode",
+        "status",
+        "selected_public_datasets",
+        "dataset_download_authorized",
+        "dataset_evaluation_started",
+        "dataset_manifest_evidence",
+        "dataset_manifest_digests",
+        "dataset_hash_inventory_digests",
+        "dataset_quality_inventory_digests",
+        "dataset_material_validation_status",
+        "source_provenance_status",
+        "public_dataset_contract_status",
+        "cohort_release_contract_status",
+        "split_manifest_v2_contract_status",
+        "implementation_baseline_commit",
+        "repository_head_commit",
+        "verification_run_id",
+        "verification_input_path_inventory_digest",
+        "executable_dependency_closure_digest",
+        "executed_command_ledger_digest",
+        "guard_policy_digest",
+        "verification_input_tree_digest",
+        "provider_environment_scrubbed",
+        "private_path_guard_enabled",
+        "network_guard_enabled",
+        "prepublication_byte_lock_reread_status",
+        "executed_command_ledger",
+        "guarded_command_results",
+        "repository_gate_statuses",
+        "publication_integrity_preconditions",
+        "committed_change_inventory",
+        "uncommitted_change_inventory",
+        "executable_dependency_closure_inventory",
+        "executable_dependency_closure_edges",
+        "blocking_reason_codes",
+        "readiness_boundary",
+    }
+    if not required_fields.issubset(payload):
+        raise ValueError("complete payload is missing required owned fields")
+    if (
+        payload["checkpoint_id"] != "EMOTION-STATE-001-phase-a-contracts"
+        or payload["schema_version"] != 2
+        or payload["mode"] != "complete"
+        or payload["status"] != "complete"
+        or payload["selected_public_datasets"]
+        != list(SELECTED_PUBLIC_DATASET_IDS)
+        or payload["dataset_download_authorized"] is not True
+        or payload["dataset_evaluation_started"] is not False
+    ):
+        raise ValueError("complete payload identity or boundary mismatch")
+
+    (
+        expected_dataset_evidence,
+        expected_hash_digests,
+        expected_quality_digests,
+    ) = _load_complete_dataset_evidence(Path(root))
+    expected_manifest_digests = {
+        entry["dataset_id"]: entry["manifest_sha256"]
+        for entry in expected_dataset_evidence
+    }
+    _assert_exact_json_value(
+        payload["dataset_manifest_evidence"],
+        expected_dataset_evidence,
+        location="dataset_manifest_evidence",
+    )
+    _assert_exact_json_value(
+        payload["dataset_manifest_digests"],
+        expected_manifest_digests,
+        location="dataset_manifest_digests",
+    )
+    _assert_exact_json_value(
+        payload["dataset_hash_inventory_digests"],
+        expected_hash_digests,
+        location="dataset_hash_inventory_digests",
+    )
+    _assert_exact_json_value(
+        payload["dataset_quality_inventory_digests"],
+        expected_quality_digests,
+        location="dataset_quality_inventory_digests",
+    )
+    expected_statuses = {
+        dataset_id: "pass"
+        for dataset_id in SELECTED_PUBLIC_DATASET_IDS
+    }
+    _assert_exact_json_value(
+        payload["dataset_material_validation_status"],
+        expected_statuses,
+        location="dataset_material_validation_status",
+    )
+    _assert_exact_json_value(
+        payload["source_provenance_status"],
+        expected_statuses,
+        location="source_provenance_status",
+    )
+    contract_statuses = {
+        "public_dataset_contract": payload["public_dataset_contract_status"],
+        "split_manifest_v2_contract": payload[
+            "split_manifest_v2_contract_status"
+        ],
+        "cohort_release_contract": payload["cohort_release_contract_status"],
+    }
+    verification_fields = {
+        field: payload[field]
+        for field in (
+            "implementation_baseline_commit",
+            "repository_head_commit",
+            "verification_run_id",
+            "verification_input_path_inventory_digest",
+            "executable_dependency_closure_digest",
+            "executed_command_ledger_digest",
+            "guard_policy_digest",
+            "verification_input_tree_digest",
+            "provider_environment_scrubbed",
+            "private_path_guard_enabled",
+            "network_guard_enabled",
+            "prepublication_byte_lock_reread_status",
+        )
+    }
+    completion = determine_phase_a_completion({
+        "mode": "complete",
+        "selected_dataset_ids": list(payload["selected_public_datasets"]),
+        "dataset_download_authorized": payload["dataset_download_authorized"],
+        "dataset_evidence": payload["dataset_manifest_evidence"],
+        "contract_statuses": contract_statuses,
+        "verification_evidence": verification_fields,
+        "executed_command_ledger": payload["executed_command_ledger"],
+        "publication_integrity_preconditions": payload[
+            "publication_integrity_preconditions"
+        ],
+        "authorization_boundaries": {
+            field: payload["readiness_boundary"][field]
+            for field in (
+                "live_aggregate_release_unblocked",
+                "public_dataset_evaluation_unblocked",
+                "phase_b_unblocked",
+                "private_research_unblocked",
+                "provider_feasibility_unblocked",
+                "runtime_activation_unblocked",
+            )
+        },
+    })
+    blockers = completion.pop("blocking_reason_codes")
+    if blockers or not completion["phase_a_complete"]:
+        raise ValueError("complete payload gate evidence is incomplete")
+    _assert_exact_json_value(
+        payload["blocking_reason_codes"],
+        [],
+        location="blocking_reason_codes",
+    )
+    _assert_exact_json_value(
+        payload["readiness_boundary"],
+        completion,
+        location="readiness_boundary",
+    )
+
+    from scripts.emotion_state_phase_a_verification_evidence import (
+        FROZEN_GUARD_POLICY_DIGEST,
+        canonical_json_sha256,
+        derive_repository_gate_statuses,
+    )
+
+    ledger = payload["executed_command_ledger"]
+    derived_gate_statuses = derive_repository_gate_statuses(ledger, "complete")
+    _assert_exact_json_value(
+        payload["repository_gate_statuses"],
+        derived_gate_statuses,
+        location="repository_gate_statuses",
+    )
+    _assert_exact_json_value(
+        payload["guarded_command_results"],
+        {entry["command_id"]: 0 for entry in ledger},
+        location="guarded_command_results",
+    )
+    if payload["implementation_baseline_commit"] != EXPECTED_IMPLEMENTATION_BASELINE_COMMIT:
+        raise ValueError("implementation_baseline_commit is not fixed")
+    _validate_lower_commit(
+        payload["repository_head_commit"],
+        field="repository_head_commit",
+    )
+    if payload["guard_policy_digest"] != FROZEN_GUARD_POLICY_DIGEST:
+        raise ValueError("guard_policy_digest does not match the frozen policy")
+
+    expected_input_digest = canonical_json_sha256({
+        "committed_change_inventory": payload["committed_change_inventory"],
+        "uncommitted_change_inventory": payload["uncommitted_change_inventory"],
+    })
+    expected_closure_digest = canonical_json_sha256({
+        "edges": payload["executable_dependency_closure_edges"],
+        "inventory": payload["executable_dependency_closure_inventory"],
+    })
+    expected_ledger_digest = canonical_json_sha256(ledger)
+    tree_payload = {
+        "implementation_baseline_commit": payload["implementation_baseline_commit"],
+        "repository_head_commit": payload["repository_head_commit"],
+        "committed_change_inventory": payload["committed_change_inventory"],
+        "uncommitted_change_inventory": payload["uncommitted_change_inventory"],
+        "executable_dependency_closure_inventory": payload[
+            "executable_dependency_closure_inventory"
+        ],
+        "executable_dependency_closure_edges": payload[
+            "executable_dependency_closure_edges"
+        ],
+        "dataset_manifest_digests": payload["dataset_manifest_digests"],
+        "dataset_hash_inventory_digests": payload[
+            "dataset_hash_inventory_digests"
+        ],
+        "dataset_quality_inventory_digests": payload[
+            "dataset_quality_inventory_digests"
+        ],
+        "executed_command_ledger": ledger,
+        "guard_policy_digest": payload["guard_policy_digest"],
+    }
+    expected_tree_digest = canonical_json_sha256(tree_payload)
+    expected_run_id = hashlib.sha256(
+        (
+            "emotion-state-phase-a-validator-v1:"
+            + expected_tree_digest
+        ).encode("utf-8")
+    ).hexdigest().upper()
+    for field, expected in {
+        "verification_input_path_inventory_digest": expected_input_digest,
+        "executable_dependency_closure_digest": expected_closure_digest,
+        "executed_command_ledger_digest": expected_ledger_digest,
+        "verification_input_tree_digest": expected_tree_digest,
+        "verification_run_id": expected_run_id,
+    }.items():
+        if payload[field] != expected:
+            raise ValueError(f"{field} does not match its canonical inputs")
+    return payload
+
+
 def build_phase_a_payload(
     case_path: Path,
     *,
     root: Path,
     verification_evidence: Mapping[str, Any] | None = None,
+    mode: str | None = None,
 ) -> dict[str, Any]:
     try:
         case_path = Path(case_path)
@@ -1289,6 +1816,14 @@ def build_phase_a_payload(
     normalized_verification = _normalized_verification_evidence(
         verification_evidence
     )
+    if mode is None:
+        mode = (
+            "complete"
+            if case["dataset_download_authorized"]
+            else "material_pending"
+        )
+    if mode not in {"material_pending", "complete"}:
+        raise ValueError("invalid Phase A payload mode")
     reserved_fields = {
         "checkpoint_id",
         "schema_version",
@@ -1305,6 +1840,14 @@ def build_phase_a_payload(
         "archive_sha256",
         "baseline_fingerprints",
         "readiness_boundary",
+        "dataset_hash_inventory_digests",
+        "dataset_quality_inventory_digests",
+        "dataset_material_validation_status",
+        "source_provenance_status",
+        "public_dataset_contract_status",
+        "cohort_release_contract_status",
+        "split_manifest_v2_contract_status",
+        "publication_integrity_preconditions",
     }
     if reserved_fields.intersection(normalized_verification):
         raise ValueError("verification evidence collides with checkpoint fields")
@@ -1338,23 +1881,140 @@ def build_phase_a_payload(
         key: checks[key]
         for key in MATERIAL_PENDING_CONTRACT_STATUSES
     }
-    completion = determine_phase_a_completion({
-        "mode": "material_pending",
-        "selected_dataset_ids": list(case["selected_public_datasets"]),
-        "dataset_download_authorized": case["dataset_download_authorized"],
-        "dataset_evidence": [],
-        "contract_statuses": contract_statuses,
-    })
+    dataset_evidence: list[dict[str, Any]] = []
+    dataset_hash_inventory_digests: dict[str, str] = {}
+    dataset_quality_inventory_digests: dict[str, str] = {}
+    publication_integrity_preconditions = {
+        "crash_safe_pair_protocol_status": "pass",
+        "explicit_acceptance_transaction_status": "pass",
+        "last_valid_pair_preservation_status": "pass",
+        "output_self_reference_absent": True,
+    }
+    if mode == "complete":
+        (
+            dataset_evidence,
+            dataset_hash_inventory_digests,
+            dataset_quality_inventory_digests,
+        ) = _load_complete_dataset_evidence(root)
+
+    if mode == "material_pending":
+        completion_request: dict[str, Any] = {
+            "mode": "material_pending",
+            "selected_dataset_ids": list(case["selected_public_datasets"]),
+            "dataset_download_authorized": False,
+            "dataset_evidence": [],
+            "contract_statuses": contract_statuses,
+        }
+    elif normalized_verification:
+        verification_fields = {
+            field: normalized_verification.get(field)
+            for field in (
+                "implementation_baseline_commit",
+                "repository_head_commit",
+                "verification_run_id",
+                "verification_input_path_inventory_digest",
+                "executable_dependency_closure_digest",
+                "executed_command_ledger_digest",
+                "guard_policy_digest",
+                "verification_input_tree_digest",
+                "provider_environment_scrubbed",
+                "private_path_guard_enabled",
+                "network_guard_enabled",
+                "prepublication_byte_lock_reread_status",
+            )
+        }
+        ledger = normalized_verification.get("executed_command_ledger", [])
+        from scripts.emotion_state_phase_a_verification_evidence import (
+            derive_repository_gate_statuses,
+        )
+
+        try:
+            derived_repository_gates = derive_repository_gate_statuses(
+                ledger,
+                "complete",
+            )
+        except (TypeError, ValueError):
+            derived_repository_gates = {}
+        derived_guarded_results = {
+            entry.get("command_id"): entry.get("exit_status")
+            for entry in ledger
+            if isinstance(entry, Mapping)
+        }
+        if (
+            "repository_gate_statuses" in normalized_verification
+            and normalized_verification["repository_gate_statuses"]
+            != derived_repository_gates
+        ):
+            raise ValueError("repository_gate_statuses do not match derived ledger")
+        if (
+            "guarded_command_results" in normalized_verification
+            and normalized_verification["guarded_command_results"]
+            != derived_guarded_results
+        ):
+            raise ValueError("guarded_command_results do not match derived ledger")
+        normalized_verification["repository_gate_statuses"] = (
+            derived_repository_gates
+        )
+        normalized_verification["guarded_command_results"] = (
+            derived_guarded_results
+        )
+        completion_request = {
+            "mode": "complete",
+            "selected_dataset_ids": list(case["selected_public_datasets"]),
+            "dataset_download_authorized": case["dataset_download_authorized"],
+            "dataset_evidence": dataset_evidence,
+            "contract_statuses": contract_statuses,
+            "verification_evidence": verification_fields,
+            "executed_command_ledger": ledger,
+            "publication_integrity_preconditions": (
+                publication_integrity_preconditions
+            ),
+            "authorization_boundaries": {
+                "live_aggregate_release_unblocked": False,
+                "public_dataset_evaluation_unblocked": False,
+                "phase_b_unblocked": False,
+                "private_research_unblocked": False,
+                "provider_feasibility_unblocked": False,
+                "runtime_activation_unblocked": False,
+            },
+        }
+    else:
+        completion_request = {
+            "mode": "complete",
+            "selected_dataset_ids": list(case["selected_public_datasets"]),
+            "dataset_download_authorized": case["dataset_download_authorized"],
+            "dataset_evidence": dataset_evidence,
+            "contract_statuses": contract_statuses,
+            "verification_evidence": {},
+            "executed_command_ledger": [],
+            "publication_integrity_preconditions": (
+                publication_integrity_preconditions
+            ),
+            "authorization_boundaries": {
+                "live_aggregate_release_unblocked": False,
+                "public_dataset_evaluation_unblocked": False,
+                "phase_b_unblocked": False,
+                "private_research_unblocked": False,
+                "provider_feasibility_unblocked": False,
+                "runtime_activation_unblocked": False,
+            },
+        }
+    completion = determine_phase_a_completion(completion_request)
     blockers = completion.pop("blocking_reason_codes")
+    payload_download_authorized = (
+        case["dataset_download_authorized"]
+        if mode == "complete"
+        else False
+    )
     payload = {
         "checkpoint_id": "EMOTION-STATE-001-phase-a-contracts",
         "schema_version": 2,
-        "mode": "material_pending",
-        "status": "material_pending",
+        "mode": mode,
+        "status": mode,
         "selected_public_datasets": list(case["selected_public_datasets"]),
-        "dataset_download_authorized": case["dataset_download_authorized"],
+        "dataset_download_authorized": payload_download_authorized,
         "dataset_evaluation_started": case["dataset_evaluation_started"],
-        "dataset_manifest_evidence": [],
+        "dataset_manifest_evidence": dataset_evidence,
         "source_pin": {
             "source_repository_url": manifest["source_repository_url"],
             "source_branch": manifest["source_branch"],
@@ -1370,9 +2030,11 @@ def build_phase_a_payload(
             "contract_checks": checks,
             "baseline_fingerprint_count": len(baseline),
             "selected_public_dataset_count": len(case["selected_public_datasets"]),
-            "dataset_download_authorized": case["dataset_download_authorized"],
+            "dataset_download_authorized": payload_download_authorized,
             "dataset_evaluation_started": case["dataset_evaluation_started"],
-            "material_verification_status": "pending",
+            "material_verification_status": (
+                "verified" if mode == "complete" else "pending"
+            ),
             "source_repository_url_status": manifest["source_repository_url_status"],
             "source_adaptation_allowed": manifest["adaptation_allowed"],
             "code_adaptation_started": code_adaptation_started,
@@ -1386,7 +2048,47 @@ def build_phase_a_payload(
         "baseline_fingerprints": baseline,
         "readiness_boundary": completion,
     }
+    if mode == "complete":
+        payload.update({
+            "dataset_hash_inventory_digests": (
+                dataset_hash_inventory_digests
+            ),
+            "dataset_quality_inventory_digests": (
+                dataset_quality_inventory_digests
+            ),
+            "dataset_material_validation_status": {
+                dataset_id: "pass"
+                for dataset_id in SELECTED_PUBLIC_DATASET_IDS
+            },
+            "source_provenance_status": {
+                dataset_id: "pass"
+                for dataset_id in SELECTED_PUBLIC_DATASET_IDS
+            },
+            "public_dataset_contract_status": (
+                contract_statuses["public_dataset_contract"]
+            ),
+            "cohort_release_contract_status": (
+                contract_statuses["cohort_release_contract"]
+            ),
+            "split_manifest_v2_contract_status": (
+                contract_statuses["split_manifest_v2_contract"]
+            ),
+            "publication_integrity_preconditions": (
+                publication_integrity_preconditions
+            ),
+        })
     payload.update(normalized_verification)
+    if mode == "complete":
+        payload["dataset_manifest_digests"] = {
+            entry["dataset_id"]: entry["manifest_sha256"]
+            for entry in dataset_evidence
+        }
+        payload["dataset_hash_inventory_digests"] = (
+            dataset_hash_inventory_digests
+        )
+        payload["dataset_quality_inventory_digests"] = (
+            dataset_quality_inventory_digests
+        )
     return payload
 
 

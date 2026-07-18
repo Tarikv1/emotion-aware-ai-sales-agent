@@ -343,6 +343,12 @@ REQUIRED_FIXTURE_FILES = [
     "research/sources/emotion_state/split_manifest_v2.schema.json",
     "research/sources/emotion_state/cohort_release_evidence_v1.schema.json",
     "research/sources/emotion_state/phase_a_verification_guard_policy.json",
+    "research/sources/emotion_state/datasets/crema-d-v1.0-audio-wav.manifest.json",
+    "research/sources/emotion_state/datasets/crema-d-v1.0-audio-wav.hashes.json",
+    "research/sources/emotion_state/datasets/crema-d-v1.0-audio-wav.quality.json",
+    "research/sources/emotion_state/datasets/ami-manual-annotations-v1.6.2.manifest.json",
+    "research/sources/emotion_state/datasets/ami-manual-annotations-v1.6.2.hashes.json",
+    "research/sources/emotion_state/datasets/ami-manual-annotations-v1.6.2.quality.json",
 ]
 
 PHASE_A_REQUIRED_PATHS = frozenset(
@@ -378,6 +384,12 @@ PHASE_A_REQUIRED_PATHS = frozenset(
         "research/sources/emotion_state/split_manifest_v2.schema.json",
         "research/sources/emotion_state/cohort_release_evidence_v1.schema.json",
         "research/sources/emotion_state/phase_a_verification_guard_policy.json",
+        "research/sources/emotion_state/datasets/crema-d-v1.0-audio-wav.manifest.json",
+        "research/sources/emotion_state/datasets/crema-d-v1.0-audio-wav.hashes.json",
+        "research/sources/emotion_state/datasets/crema-d-v1.0-audio-wav.quality.json",
+        "research/sources/emotion_state/datasets/ami-manual-annotations-v1.6.2.manifest.json",
+        "research/sources/emotion_state/datasets/ami-manual-annotations-v1.6.2.hashes.json",
+        "research/sources/emotion_state/datasets/ami-manual-annotations-v1.6.2.quality.json",
     }
 )
 

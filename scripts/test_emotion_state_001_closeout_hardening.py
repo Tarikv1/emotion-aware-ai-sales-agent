@@ -1181,32 +1181,25 @@ class PublicationAcceptanceTests(unittest.TestCase):
                         orphan.unlink()
 
     def test_candidate_readback_rejects_builder_owned_status_tamper(self) -> None:
-        from scripts.run_emotion_state_001_phase_a_contracts import (
-            validate_candidate_evidence_pair,
-        )
-
         payload = sample_payload()
         payload["status"] = "complete"
         from scripts.run_emotion_state_001_phase_a_contracts import (
             stage_evidence_pair,
         )
 
-        stage_evidence_pair(
-            payload,
-            mode="material-pending",
-            receipt_path=self.receipt_path,
-            result_path=self.result_path,
-            report_path=self.report_path,
-            recovery_dir=self.recovery_dir,
-        )
-
         with self.assertRaisesRegex(EvidencePublicationError, "status"):
-            validate_candidate_evidence_pair(
-                self.receipt_path,
+            stage_evidence_pair(
+                payload,
+                mode="material-pending",
+                receipt_path=self.receipt_path,
                 result_path=self.result_path,
                 report_path=self.report_path,
                 recovery_dir=self.recovery_dir,
             )
+        self.assertFalse(self.result_path.exists())
+        self.assertFalse(self.report_path.exists())
+        self.assertFalse(self.receipt_path.exists())
+        self.assertFalse(self.journal_path.exists())
 
     def test_candidate_readback_rejects_full_semantic_mutation_matrix(self) -> None:
         from scripts.run_emotion_state_001_phase_a_contracts import (
@@ -1280,14 +1273,17 @@ class PublicationAcceptanceTests(unittest.TestCase):
                     receipt = recovery / "candidate-receipt.json"
                     payload = sample_payload()
                     mutate(payload)
-                    stage_evidence_pair(
-                        payload,
-                        mode="material-pending",
-                        receipt_path=receipt,
-                        result_path=result,
-                        report_path=report,
-                        recovery_dir=recovery,
-                    )
+                    try:
+                        stage_evidence_pair(
+                            payload,
+                            mode="material-pending",
+                            receipt_path=receipt,
+                            result_path=result,
+                            report_path=report,
+                            recovery_dir=recovery,
+                        )
+                    except EvidencePublicationError:
+                        continue
                     with self.assertRaises(EvidencePublicationError):
                         validate_candidate_evidence_pair(
                             receipt,
@@ -1622,7 +1618,7 @@ class PublicationAcceptanceTests(unittest.TestCase):
         payload["mode"] = "complete"
         with self.assertRaisesRegex(
             EvidencePublicationError,
-            "complete.*blocked|blocked.*complete",
+            "complete payload is invalid",
         ):
             stage_evidence_pair(
                 payload,
@@ -1637,86 +1633,40 @@ class PublicationAcceptanceTests(unittest.TestCase):
         self.assertFalse(self.receipt_path.exists())
         self.assertFalse(self.journal_path.exists())
 
-    def test_complete_mode_is_categorically_rejected_without_an_authorized_contract(
+    def test_incomplete_complete_payload_is_rejected_before_publication_mutation(
         self,
     ) -> None:
-        from contextlib import ExitStack
-
         payload = sample_payload()
         payload["mode"] = "complete"
         payload["status"] = "complete"
         payload["dataset_download_authorized"] = True
-        payload["dataset_evaluation_started"] = True
+        payload["dataset_evaluation_started"] = False
         payload["readiness_boundary"]["phase_a_complete"] = True
-        path_type = type(self.result_path)
-        module_guard_names = (
-            "_assert_repository_head",
-            "_current_repository_head",
-            "_validate_canonical_pair_metadata",
-            "_write_text_fsynced",
-            "build_phase_a_payload",
-            "finalize_verification_evidence",
-            "persistent_verification_lock",
-            "publication_lock",
-            "recover_incomplete_publication",
-            "validate_active_verification_lock",
-            "validate_material_pending_dataset_absence",
-        )
-        path_guard_names = (
-            "exists",
-            "is_dir",
-            "iterdir",
-            "lstat",
-            "open",
-            "read_bytes",
-            "read_text",
-            "resolve",
-            "stat",
-        )
-        with ExitStack() as stack:
-            guards: list[mock.MagicMock] = []
-            for name in module_guard_names:
-                guards.append(stack.enter_context(mock.patch.object(
-                    publication_runner,
-                    name,
-                    side_effect=AssertionError(
-                        f"complete mode reached {name}"
-                    ),
-                )))
-            for name in path_guard_names:
-                guards.append(stack.enter_context(mock.patch.object(
-                    path_type,
-                    name,
-                    side_effect=AssertionError(
-                        f"complete mode reached Path.{name}"
-                    ),
-                )))
-            guards.append(stack.enter_context(mock.patch.object(
+        with (
+            mock.patch.object(
+                publication_runner,
+                "_write_text_fsynced",
+            ) as write_guard,
+            mock.patch.object(
                 publication_runner.os,
                 "replace",
-                side_effect=AssertionError(
-                    "complete mode reached os.replace"
-                ),
-            )))
-            guards.append(stack.enter_context(mock.patch.object(
-                publication_runner.os,
-                "scandir",
-                side_effect=AssertionError(
-                    "complete mode reached os.scandir"
-                ),
-            )))
-
+            ) as replace_guard,
+            mock.patch.object(
+                publication_runner,
+                "publication_lock",
+            ) as lock_guard,
+        ):
             for entry_point in ("stage", "direct"):
                 with self.subTest(entry_point=entry_point):
+                    function = (
+                        publication_runner.stage_evidence_pair
+                        if entry_point == "stage"
+                        else publication_runner._write_evidence_pair_transaction
+                    )
                     with self.assertRaisesRegex(
                         EvidencePublicationError,
-                        "complete.*blocked|blocked.*complete",
+                        "complete payload is invalid",
                     ):
-                        function = (
-                            publication_runner.stage_evidence_pair
-                            if entry_point == "stage"
-                            else publication_runner._write_evidence_pair_transaction
-                        )
                         function(
                             payload,
                             mode="complete",
@@ -1725,25 +1675,13 @@ class PublicationAcceptanceTests(unittest.TestCase):
                             report_path=self.report_path,
                             recovery_dir=self.recovery_dir,
                         )
-
-            with self.assertRaisesRegex(
-                ValueError,
-                "complete.*blocked|blocked.*complete",
-            ):
-                publication_runner.stage_verified_candidate(
-                    root=self.test_root,
-                    case_path=self.test_root / "case.json",
-                    result_path=self.result_path,
-                    report_path=self.report_path,
-                    recovery_dir=self.recovery_dir,
-                    receipt_path=self.receipt_path,
-                    material_root=self.test_root / "synthetic-material-root",
-                    baseline_commit="b" * 40,
-                    head_commit="c" * 40,
-                    mode="complete",
-                )
-            for guard in guards:
-                guard.assert_not_called()
+            write_guard.assert_not_called()
+            replace_guard.assert_not_called()
+            lock_guard.assert_not_called()
+        self.assertFalse(self.result_path.exists())
+        self.assertFalse(self.report_path.exists())
+        self.assertFalse(self.receipt_path.exists())
+        self.assertFalse(self.journal_path.exists())
 
     def test_candidate_readback_rejects_third_directory_entry(self) -> None:
         from scripts.run_emotion_state_001_phase_a_contracts import (

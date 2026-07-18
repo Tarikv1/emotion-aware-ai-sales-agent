@@ -8,7 +8,7 @@
     "crema-d-v1.0-audio-wav",
     "ami-manual-annotations-v1.6.2"
   ],
-  "dataset_download_authorized": false,
+  "dataset_download_authorized": true,
   "dataset_evaluation_started": false,
   "private_data_access_allowed": false,
   "provider_operations_allowed": false,

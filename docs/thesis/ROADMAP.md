@@ -733,6 +733,8 @@ Key writing sources:
 
 Consolidate thesis evidence and then choose between sales-dialogue quality work and a non-LLM/action-selector baseline. Do not call providers, generate audio, wire live runtime, inject Fish tags, open `PROD-102`, add email/calendar/CRM side effects, run production calls, or claim official OpenAI representation.
 
+EMOTION-STATE Phase A now has a verified two-lane public-only input HEAD: CREMA-D for controlled acoustic-sensitivity checks and AMI manual annotations for conversational mechanics. Its maximum completion scope is `source_provenance_dataset_manifests_offline_contracts_and_cohort_release_gate_only`. The next operation is the separately gated Task 11 candidate/readback/acceptance transaction; it does not authorize dataset evaluation, Phase B, private research, live aggregate release, provider feasibility, runtime activation, or production claims.
+
 Purpose:
 
 - keep `10117b6d..HEAD` evidence reflected in thesis docs without changing runtime behavior

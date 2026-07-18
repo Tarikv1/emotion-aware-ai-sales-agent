@@ -18,6 +18,11 @@ from typing import Any
 
 from scripts.emotion_state_public_dataset_contracts import (
     AMI_DATASET_ID,
+    AMI_EXCLUDED_MANUAL_ANNOTATION_FAMILY_CLASSIFICATIONS,
+    AMI_EXCLUDED_MANUAL_ANNOTATION_ROOT_FILE_CLASSIFICATIONS,
+    AMI_PARTITIONS_SOURCE_RELATIVE_PATH,
+    AMI_PARTITIONS_SOURCE_SHA256,
+    AMI_PARTITIONS_SOURCE_URL,
     CREMA_AUDIO_PREFIX,
     CREMA_DATASET_ID,
     CREMA_EXCLUDED_PATHS,
@@ -26,11 +31,12 @@ from scripts.emotion_state_public_dataset_contracts import (
     CREMA_RAW_SOURCE_LABEL_MAP,
     CREMA_SELECTED_FIXED_PATHS,
     SELECTED_PUBLIC_DATASETS,
+    _ami_metadata_from_xml,
     _pending_manifest,
     canonical_inventory_bytes,
     classify_ami_member,
     inspect_ami_archive,
-    parse_ami_partition_definition,
+    parse_ami_partition_source,
     parse_crema_filename,
     safe_extract_ami_archive,
     validate_ami_material,
@@ -50,6 +56,10 @@ QUALITY_ITEM_FIELDS = frozenset({
     "selected_file_path",
     "details",
 })
+AMI_MANUAL_ANNOTATION_EXCLUSION_CLASSIFICATIONS = (
+    frozenset(AMI_EXCLUDED_MANUAL_ANNOTATION_FAMILY_CLASSIFICATIONS.values())
+    | frozenset(AMI_EXCLUDED_MANUAL_ANNOTATION_ROOT_FILE_CLASSIFICATIONS.values())
+)
 CREMA_LIMITATIONS = [
     "raters_heard_audio_presentation_encodings_while_feature_verification_uses_corresponding_wav_files",
     "filename_intended_emotion_is_prompt_metadata_only_and_never_fills_a_missing_perceived_label",
@@ -460,6 +470,10 @@ def _require_ami_item_path(
         if not path.casefold().endswith(".zip"):
             raise ValueError("quality inventory AMI archive path is invalid")
         return path
+    if classification == "official_partition_metadata":
+        if path != AMI_PARTITIONS_SOURCE_RELATIVE_PATH:
+            raise ValueError("quality inventory AMI partition source path is invalid")
+        return path
     classified = classify_ami_member(path)
     if (
         classified["classification"] != classification
@@ -779,32 +793,32 @@ def _validate_ami_quality_item(item: dict[str, Any]) -> None:
             _require_quality_identifier_list(value, f"AMI selected XML {key}")
         return
     if classification == "official_partition_metadata":
-        definition = _require_exact_dict(
+        source = _require_exact_dict(
             details,
             frozenset({
-                "partition_id",
-                "partition_type",
+                "canonical_source_url",
                 "source_file_path",
-                "meeting_ids",
+                "source_sha256",
+                "meeting_universe_source_file_path",
+                "partition_definitions",
             }),
-            "AMI partition details",
+            "AMI partition source details",
         )
-        if disposition != "included" or reason != "selected_manual_annotation_material":
+        if disposition != "included" or reason != "selected_official_partition_source":
             raise ValueError("quality inventory AMI partition item is invalid")
-        _require_quality_identifier(definition["partition_id"], "AMI partition_id")
-        if definition["partition_type"] not in {"scenario", "full_corpus"}:
-            raise ValueError("quality inventory AMI partition_type is invalid")
         source_file_path = _require_canonical_quality_path(
-            definition["source_file_path"],
+            source["source_file_path"],
             "AMI partition source_file_path",
         )
         if source_file_path != item["selected_file_path"]:
             raise ValueError(
                 "quality inventory AMI partition source path is not selected"
             )
-        _require_quality_identifier_list(
-            definition["meeting_ids"],
-            "AMI partition meeting_ids",
+        if re.fullmatch(r"[0-9A-F]{64}", source["source_sha256"]) is None:
+            raise ValueError("quality inventory AMI partition source hash is invalid")
+        _require_complete_ami_quality_partition_definitions(
+            source["partition_definitions"],
+            "AMI partition source definitions",
         )
         return
     allowed_exclusions = {
@@ -816,7 +830,7 @@ def _validate_ami_quality_item(item: dict[str, Any]) -> None:
         "speculative_emotion",
         "documentation",
         "unselected_release_material",
-    }
+    } | AMI_MANUAL_ANNOTATION_EXCLUSION_CLASSIFICATIONS
     if (
         classification not in allowed_exclusions
         or disposition != "excluded"
@@ -876,15 +890,14 @@ def _require_complete_ami_quality_partition_definitions(
     partition_ids = [signature[0] for signature in signatures]
     if len(partition_ids) != len(set(partition_ids)):
         raise ValueError("quality inventory contains a duplicate AMI partition ID")
-    source_paths = [signature[2] for signature in signatures]
-    if len(source_paths) != len(set(source_paths)):
-        raise ValueError("quality inventory contains a duplicate AMI partition source path")
     partition_types = {signature[1] for signature in signatures}
     if partition_types != {"scenario", "full_corpus"}:
         raise ValueError(
             "quality inventory AMI partition types must be exactly "
             "scenario and full_corpus"
         )
+    if {signature[0] for signature in signatures} != {"scenario-only", "full-corpus"}:
+        raise ValueError("quality inventory AMI partition IDs are invalid")
     if normalized_definitions != sorted(normalized_definitions):
         raise ValueError("quality inventory AMI partition definitions must be sorted")
     return definitions
@@ -940,6 +953,7 @@ def _validate_quality_source_metadata(
             "source_corpus",
             "multi_party_applicability",
             "official_partition_paths",
+            "official_partition_source",
             "official_partition_definitions",
             "official_partition_definitions_are_source_metadata_only",
             "project_case_assignments",
@@ -970,7 +984,7 @@ def _validate_quality_source_metadata(
         definition["source_file_path"]
         for definition in definitions
     ]
-    if definition_paths != partition_paths:
+    if partition_paths != [metadata["official_partition_source"]["source_file_path"]]:
         raise ValueError("quality inventory AMI partition paths mismatch definitions")
     if definitions != ami_partition_definitions:
         raise ValueError(
@@ -1099,7 +1113,7 @@ def _validate_quality_inventory(
         else:
             _validate_ami_quality_item(item)
             if classification == "official_partition_metadata":
-                ami_partition_definitions.append(item["details"])
+                ami_partition_definitions.extend(item["details"]["partition_definitions"])
             if classification in {
                 "speaker_aligned_orthographic_transcript",
                 "timing_link",
@@ -1182,67 +1196,46 @@ def _validate_ami_partition_source_bindings(
     selected_file_paths: set[str],
     project_root: Path,
 ) -> None:
-    quality_definitions: dict[str, dict[str, Any]] = {}
-    partition_item_count = 0
-    for item in quality_inventory["items"]:
-        if item["classification"] != "official_partition_metadata":
-            continue
-        partition_item_count += 1
-        source_file_path = item["selected_file_path"]
-        if source_file_path in quality_definitions:
-            raise ValueError("duplicate AMI partition quality definition")
-        quality_definitions[source_file_path] = item["details"]
-    if not quality_definitions:
-        raise ValueError("missing AMI partition quality definitions")
-    if partition_item_count != len(quality_definitions):
-        raise ValueError("duplicate AMI partition quality definition")
-
     metadata = quality_inventory["source_metadata"]
-    metadata_definitions: dict[str, dict[str, Any]] = {}
-    for definition in metadata["official_partition_definitions"]:
-        source_file_path = definition["source_file_path"]
-        if source_file_path in metadata_definitions:
-            raise ValueError("duplicate AMI partition source definition")
-        metadata_definitions[source_file_path] = definition
-    partition_paths = metadata["official_partition_paths"]
-    if (
-        set(quality_definitions) != set(metadata_definitions)
-        or set(quality_definitions) != set(partition_paths)
-        or len(partition_paths) != len(set(partition_paths))
-    ):
-        raise ValueError("unmatched AMI partition definitions")
-
-    parsed_definitions: list[dict[str, Any]] = []
-    for source_file_path in sorted(quality_definitions):
-        if source_file_path not in selected_file_paths:
-            raise ValueError("AMI partition source is not a selected hashed file")
-        parsed_definition = parse_ami_partition_definition(
-            project_root.joinpath(*source_file_path.split("/")),
-            project_root=project_root,
-        )
-        if parsed_definition["source_file_path"] != source_file_path:
-            raise ValueError("AMI partition source path binding mismatch")
-        if (
-            parsed_definition != quality_definitions[source_file_path]
-            or parsed_definition != metadata_definitions[source_file_path]
-        ):
-            raise ValueError("AMI partition definition does not match selected source")
-        parsed_definitions.append(parsed_definition)
-
-    partition_ids = [
-        definition["partition_id"]
-        for definition in parsed_definitions
+    partition_items = [
+        item for item in quality_inventory["items"]
+        if item["classification"] == "official_partition_metadata"
     ]
-    if len(partition_ids) != len(set(partition_ids)):
-        raise ValueError("duplicate parsed AMI partition ID")
-    partition_types = {
-        definition["partition_type"]
-        for definition in parsed_definitions
-    }
-    if partition_types != {"scenario", "full_corpus"}:
-        raise ValueError(
-            "parsed AMI partition types must be exactly scenario and full_corpus"
-        )
+    if len(partition_items) != 1:
+        raise ValueError("AMI partition source requires exactly one quality item")
+    source = partition_items[0]["details"]
+    if (
+        source["canonical_source_url"] != AMI_PARTITIONS_SOURCE_URL
+        or source["source_file_path"] != AMI_PARTITIONS_SOURCE_RELATIVE_PATH
+        or source["source_sha256"] != AMI_PARTITIONS_SOURCE_SHA256
+    ):
+        raise ValueError("AMI partition source pin does not match the tracked pin")
+    if source != metadata["official_partition_source"]:
+        raise ValueError("AMI partition source metadata does not match quality item")
+    source_file_path = source["source_file_path"]
+    if (
+        source_file_path not in selected_file_paths
+        or metadata["official_partition_paths"] != [source_file_path]
+        or metadata["official_partition_definitions"] != source["partition_definitions"]
+    ):
+        raise ValueError("AMI partition source bindings are invalid")
+    meeting_universe_path = source["meeting_universe_source_file_path"]
+    if meeting_universe_path not in selected_file_paths:
+        raise ValueError("AMI partition meeting universe is not a selected hashed file")
+    meeting_universe_ids = _ami_metadata_from_xml(
+        project_root.joinpath(*meeting_universe_path.split("/"))
+    )["meetings"]
+    if not meeting_universe_ids:
+        raise ValueError("AMI partition meeting universe has no meeting IDs")
+    parsed_source = parse_ami_partition_source(
+        project_root.joinpath(*source_file_path.split("/")),
+        project_root=project_root,
+        expected_sha256=source["source_sha256"],
+        available_meeting_ids=meeting_universe_ids,
+    )
+    parsed_source["meeting_universe_source_file_path"] = meeting_universe_path
+    if parsed_source != source:
+        raise ValueError("AMI partition source does not match selected source")
 
 
 def _verified_manifest(
@@ -1436,6 +1429,7 @@ def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--crema-root")
     parser.add_argument("--ami-archive")
     parser.add_argument("--ami-extract-root")
+    parser.add_argument("--ami-partitions-source")
     parser.add_argument("--accessed-on")
     parser.add_argument(
         "--output-root",
@@ -1494,6 +1488,15 @@ def main(
             must_be_directory=True,
         )
         output_root = _guard_output_root(args.output_root, resolved_project_root)
+        if args.ami_partitions_source is None:
+            raise ValueError("--ami-partitions-source is required for write-evidence")
+        ami_partitions_source = _guard_public_path(
+            args.ami_partitions_source,
+            project_root=resolved_project_root,
+            field="ami-partitions-source",
+            must_exist=True,
+            must_be_directory=False,
+        )
         accessed_on = _canonical_access_date(args.accessed_on)
         crema_lfs_oids = discover_crema_lfs_oids(
             crema_root,
@@ -1513,6 +1516,7 @@ def main(
                 ami_extract_root,
                 archive_path=ami_archive,
                 extraction=extraction,
+                partitions_source_path=ami_partitions_source,
                 project_root=resolved_project_root,
             ),
         }

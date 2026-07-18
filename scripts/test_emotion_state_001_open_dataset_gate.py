@@ -521,6 +521,9 @@ class PublicDatasetContractTests(unittest.TestCase):
 
     def test_tracked_manifest_contract_is_v2_and_preserves_v1_fields(self) -> None:
         from scripts.emotion_state_public_dataset_contracts import (
+            AMI_PARTITIONS_SOURCE_RELATIVE_PATH,
+            AMI_PARTITIONS_SOURCE_SHA256,
+            AMI_PARTITIONS_SOURCE_URL,
             REQUIRED_V1_FIELDS,
             REQUIRED_V2_FIELDS,
             SELECTED_PUBLIC_DATASETS,
@@ -537,7 +540,13 @@ class PublicDatasetContractTests(unittest.TestCase):
         self.assertEqual(set(contract["required_v1_fields"]), REQUIRED_V1_FIELDS)
         self.assertEqual(set(contract["required_fields"]), REQUIRED_V2_FIELDS)
         self.assertEqual(contract["selected_public_datasets"], list(SELECTED_PUBLIC_DATASETS))
-        self.assertFalse(contract["dataset_download_authorized"])
+        self.assertEqual(contract["ami_partition_source"], {
+            "canonical_source_url": AMI_PARTITIONS_SOURCE_URL,
+            "local_path": AMI_PARTITIONS_SOURCE_RELATIVE_PATH,
+            "sha256": AMI_PARTITIONS_SOURCE_SHA256,
+            "accessed_on": "2026-07-18",
+        })
+        self.assertTrue(contract["dataset_download_authorized"])
         self.assertFalse(contract["dataset_evaluation_started"])
         self.assertFalse(contract["runtime_influence_allowed"])
 
@@ -549,14 +558,22 @@ class PublicDatasetContractTests(unittest.TestCase):
 
 class DatasetMaterialValidationTests(unittest.TestCase):
     @staticmethod
-    def _write_pcm_wav(path: Path, *, frame_count: int = 160) -> None:
+    def _write_pcm_wav(
+        path: Path,
+        *,
+        frame_count: int = 160,
+        sample_value: int = 100,
+    ) -> None:
         path.parent.mkdir(parents=True, exist_ok=True)
         with wave.open(str(path), "wb") as output:
             output.setnchannels(1)
             output.setsampwidth(2)
             output.setframerate(16000)
             output.writeframes(
-                struct.pack("<" + "h" * frame_count, *([100] * frame_count))
+                struct.pack(
+                    "<" + "h" * frame_count,
+                    *([sample_value] * frame_count),
+                )
             )
 
     @classmethod
@@ -590,7 +607,7 @@ class DatasetMaterialValidationTests(unittest.TestCase):
             cls._write_pcm_wav(root / "AudioWAV" / filename)
         cls._write_pcm_wav(
             root / "AudioWAV" / "1076_MTI_SAD_XX.wav",
-            frame_count=0,
+            sample_value=0,
         )
         (root / "VideoDemographics.csv").write_text(
             "ActorID,Age\n1001,30\n",
@@ -637,66 +654,373 @@ class DatasetMaterialValidationTests(unittest.TestCase):
         return buffer.getvalue()
 
     @staticmethod
-    def _ami_archive(path: Path, *, include_missing_participant: bool = False) -> None:
+    def _ami_archive(
+        path: Path,
+        *,
+        include_missing_participant: bool = False,
+        prefix: str = "",
+    ) -> None:
         path.parent.mkdir(parents=True, exist_ok=True)
         word_attributes = "" if include_missing_participant else ' participant="P1"'
         with zipfile.ZipFile(path, "w") as output:
             output.writestr(
-                "ami_public_manual_1.6.2/corpusResources/meetings.xml",
-                '<meetings><meeting id="ES2002a" site="Edinburgh" '
+                prefix + "corpusResources/meetings.xml",
+                '<meetings xmlns:nite="http://nite.sourceforge.net/"><meeting '
+                'nite:id="meet_1" observation="ES2002a" site="Edinburgh" '
+                'scenario="design" series="ES2002"><participant id="P1" />'
+                '</meeting><meeting nite:id="meet_2" observation="ES2002b" site="Edinburgh" '
                 'scenario="design" series="ES2002"><participant id="P1" />'
                 "</meeting></meetings>",
             )
             output.writestr(
-                "ami_public_manual_1.6.2/words/ES2002a.A.words.xml",
+                prefix + "words/ES2002a.A.words.xml",
                 '<root><w meeting="ES2002a"'
                 + word_attributes
                 + ">PRIVATE SYNTHETIC TRANSCRIPT TEXT</w></root>",
             )
             output.writestr(
-                "ami_public_manual_1.6.2/dialogueActs/ES2002a.A.dialogue-acts.xml",
+                prefix + "dialogueActs/ES2002a.A.dialogue-acts.xml",
                 '<root><dialogue-act participant="P1" meeting="ES2002a" /></root>',
             )
             output.writestr(
-                "ami_public_manual_1.6.2/segments/ES2002a.A.segments.xml",
+                prefix + "segments/ES2002a.A.segments.xml",
                 '<root><segment participant="P1" meeting="ES2002a" /></root>',
             )
             output.writestr(
-                "ami_public_manual_1.6.2/partitions/scenario.txt",
-                "ES2002a\n",
-            )
-            output.writestr(
-                "ami_public_manual_1.6.2/partitions/full-corpus.txt",
-                "ES2002b\nES2002a\n",
-            )
-            output.writestr(
-                "ami_public_manual_1.6.2/audio/",
+                prefix + "audio/",
                 b"",
             )
             output.writestr(
-                "ami_public_manual_1.6.2/audio/ES2002a.wav",
+                prefix + "audio/ES2002a.wav",
                 b"excluded audio",
             )
             output.writestr(
-                "ami_public_manual_1.6.2/video/ES2002a.avi",
+                prefix + "video/ES2002a.avi",
                 b"excluded video",
             )
             output.writestr(
-                "ami_public_manual_1.6.2/automatic/ES2002a.asr.xml",
+                prefix + "automatic/ES2002a.asr.xml",
                 "<automatic />",
             )
             output.writestr(
-                "ami_public_manual_1.6.2/DOME/ES2002a.dome.xml",
+                prefix + "DOME/ES2002a.dome.xml",
                 "<dome />",
             )
             output.writestr(
-                "ami_public_manual_1.6.2/socialRoles/ES2002a.roles.xml",
+                prefix + "socialRoles/ES2002a.roles.xml",
                 "<roles />",
             )
             output.writestr(
-                "ami_public_manual_1.6.2/emotions/ES2002a.emotions.xml",
+                prefix + "emotions/ES2002a.emotions.xml",
                 "<emotions />",
             )
+
+    @staticmethod
+    def _ami_partition_source(
+        root: Path,
+        *,
+        body: str | None = None,
+    ) -> Path:
+        source = (
+            root
+            / "data/public/emotion-state/ami-manual-annotations-v1.6.2"
+            / "official-partitions/datasets.shtml"
+        )
+        source.parent.mkdir(parents=True, exist_ok=True)
+        source.write_text(
+            body
+            or """
+<!doctype html><html><body>
+<h1>Scenario-only Partition of meetings</h1>
+<p class="line891"><strong>SA</strong>: ES2002 (no b)</p>
+<p class="line891"><strong>SB</strong>: ES2003</p>
+<p class="line891"><strong>SC</strong>: ES2004</p>
+<p class="line874">Explanatory text must not be parsed.</p>
+<h1>Full-corpus partition of meetings</h1>
+<p class="line891"><strong>SA</strong>: ES2002 (no b), ES2005</p>
+<p class="line891"><strong>SB</strong>: ES2003</p>
+<p class="line891"><strong>SC</strong>: ES2004</p>
+</body></html>
+""".strip(),
+            encoding="utf-8",
+        )
+        return source
+
+    @staticmethod
+    def _synthetic_ami_meeting_ids() -> set[str]:
+        return {"ES2002a", "ES2002b", "ES2003a", "ES2004a", "ES2005a"}
+
+    @classmethod
+    def _validate_synthetic_ami_material(
+        cls,
+        extract_root: Path,
+        *,
+        archive_path: Path,
+        extraction: dict[str, object],
+        project_root: Path,
+    ) -> dict[str, object]:
+        from scripts.emotion_state_public_dataset_contracts import (
+            sha256_file,
+            validate_ami_material,
+        )
+
+        source = cls._ami_partition_source(
+            project_root,
+            body="""
+<html><body>
+<h1>Scenario-only Partition of meetings</h1>
+<p class="line891"><strong>SA</strong>: ES2002a</p>
+<p class="line891"><strong>SB</strong>: ES2002a</p>
+<p class="line891"><strong>SC</strong>: ES2002a</p>
+<h1>Full-corpus partition of meetings</h1>
+<p class="line891"><strong>SA</strong>: ES2002a, ES2002b</p>
+<p class="line891"><strong>SB</strong>: ES2002a</p>
+<p class="line891"><strong>SC</strong>: ES2002a</p>
+</body></html>
+""".strip(),
+        )
+        return validate_ami_material(
+            extract_root,
+            archive_path=archive_path,
+            extraction=extraction,
+            partitions_source_path=source,
+            partitions_expected_sha256=sha256_file(source),
+            project_root=project_root,
+        )
+
+    def test_ami_material_accepts_official_root_meeting_universe_path(self) -> None:
+        from scripts.emotion_state_public_dataset_contracts import safe_extract_ami_archive
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            archive = root / "ami.zip"
+            extract_root = root / "extract"
+            self._ami_archive(archive, prefix="")
+            extraction = safe_extract_ami_archive(archive, extract_root)
+            material = self._validate_synthetic_ami_material(
+                extract_root,
+                archive_path=archive,
+                extraction=extraction,
+                project_root=root,
+            )
+            self.assertEqual(
+                material["quality_inventory"]["source_metadata"]
+                ["official_partition_source"]["meeting_universe_source_file_path"],
+                "extract/corpusResources/meetings.xml",
+            )
+
+    def test_ami_material_rejects_prefixed_meeting_universe_source(self) -> None:
+        from scripts.emotion_state_public_dataset_contracts import safe_extract_ami_archive
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            archive = root / "ami.zip"
+            extract_root = root / "extract"
+            self._ami_archive(archive, prefix="ami_public_manual_1.6.2/")
+            extraction = safe_extract_ami_archive(archive, extract_root)
+            with self.assertRaisesRegex(ValueError, "AMI meeting universe source is missing"):
+                self._validate_synthetic_ami_material(
+                    extract_root,
+                    archive_path=archive,
+                    extraction=extraction,
+                    project_root=root,
+                )
+
+    def test_ami_partition_source_is_pinned_parsed_and_hash_bound(self) -> None:
+        from scripts import emotion_state_public_dataset_contracts as contracts
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            source = self._ami_partition_source(root)
+            parser = getattr(contracts, "parse_ami_partition_source", None)
+            self.assertTrue(callable(parser), "parse_ami_partition_source API is required")
+            parsed = parser(
+                source,
+                project_root=root,
+                expected_sha256=contracts.sha256_file(source),
+                available_meeting_ids=self._synthetic_ami_meeting_ids(),
+            )
+            self.assertEqual(parsed["canonical_source_url"], contracts.AMI_PARTITIONS_SOURCE_URL)
+            self.assertEqual(
+                parsed["source_file_path"],
+                "data/public/emotion-state/ami-manual-annotations-v1.6.2/"
+                "official-partitions/datasets.shtml",
+            )
+            self.assertEqual(parsed["source_sha256"], contracts.sha256_file(source))
+            self.assertIsNone(parsed["meeting_universe_source_file_path"])
+            self.assertEqual(parsed["partition_definitions"], [
+                {
+                    "partition_id": "full-corpus",
+                    "partition_type": "full_corpus",
+                    "source_file_path": parsed["source_file_path"],
+                    "meeting_ids": ["ES2002a", "ES2003a", "ES2004a", "ES2005a"],
+                },
+                {
+                    "partition_id": "scenario-only",
+                    "partition_type": "scenario",
+                    "source_file_path": parsed["source_file_path"],
+                    "meeting_ids": ["ES2002a", "ES2003a", "ES2004a"],
+                },
+            ])
+
+    def test_ami_partition_source_rejects_hash_drift_and_ambiguous_sections(self) -> None:
+        from scripts import emotion_state_public_dataset_contracts as contracts
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            source = self._ami_partition_source(root)
+            parser = getattr(contracts, "parse_ami_partition_source", None)
+            self.assertTrue(callable(parser), "parse_ami_partition_source API is required")
+            with self.assertRaisesRegex(ValueError, "hash"):
+                parser(
+                    source,
+                    project_root=root,
+                    expected_sha256="0" * 64,
+                    available_meeting_ids=self._synthetic_ami_meeting_ids(),
+                )
+            source = self._ami_partition_source(
+                root,
+                body=source.read_text(encoding="utf-8").replace(
+                    "<h1>Full-corpus partition of meetings</h1>",
+                    "<h1>Scenario-only Partition of meetings</h1>"
+                    "<h1>Full-corpus partition of meetings</h1>",
+                ),
+            )
+            with self.assertRaisesRegex(ValueError, "Scenario-only"):
+                parser(
+                    source,
+                    project_root=root,
+                    expected_sha256=contracts.sha256_file(source),
+                    available_meeting_ids=self._synthetic_ami_meeting_ids(),
+                )
+
+    def test_ami_partition_source_ignores_explanatory_and_asr_text(self) -> None:
+        from scripts import emotion_state_public_dataset_contracts as contracts
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            source = self._ami_partition_source(
+                root,
+                body="""
+<html><body>
+<p class="line891"><strong>SA</strong>: ZZ9999</p>
+<h1>Scenario-only Partition of meetings</h1>
+<p class="line891"><strong>SA</strong>: ES2002 (no b)</p>
+<p class="line891"><strong>SB</strong>: ES2003</p>
+<p class="line891"><strong>SC</strong>: ES2004</p>
+<h1>Full-corpus partition of meetings</h1>
+<p class="line891"><strong>SA</strong>: ES2002 (no b), ES2005</p>
+<p class="line891"><strong>SB</strong>: ES2003</p>
+<p class="line891"><strong>SC</strong>: ES2004</p>
+<h1>Full-corpus-ASR partition of meetings</h1>
+<p class="line891"><strong>SA</strong>: ZZ9999</p>
+<p class="line891"><strong>SB</strong>: ZZ9999</p>
+<p class="line891"><strong>SC</strong>: ZZ9999</p>
+</body></html>
+""".strip(),
+            )
+            parser = getattr(contracts, "parse_ami_partition_source", None)
+            self.assertTrue(callable(parser), "parse_ami_partition_source API is required")
+            parsed = parser(
+                source,
+                project_root=root,
+                expected_sha256=contracts.sha256_file(source),
+                available_meeting_ids=self._synthetic_ami_meeting_ids(),
+            )
+            self.assertEqual(
+                parsed["partition_definitions"][1]["meeting_ids"],
+                ["ES2002a", "ES2003a", "ES2004a"],
+            )
+
+    def test_ami_partition_source_uses_observation_ids_and_allows_descriptive_absence(
+        self,
+    ) -> None:
+        from scripts import emotion_state_public_dataset_contracts as contracts
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            archive = root / "ami.zip"
+            extract_root = root / "extract"
+            self._ami_archive(archive)
+            contracts.safe_extract_ami_archive(archive, extract_root)
+            meeting_ids = contracts._ami_metadata_from_xml(
+                extract_root / "corpusResources/meetings.xml"
+            )["meetings"]
+            self.assertEqual(meeting_ids, {"ES2002a", "ES2002b"})
+
+            source = self._ami_partition_source(
+                root,
+                body="""
+<html><body>
+<h1>Scenario-only Partition of meetings</h1>
+<p class="line891"><strong>SA</strong>: ES2002 (no a)</p>
+<p class="line891"><strong>SB</strong>: ES2002 (no a)</p>
+<p class="line891"><strong>SC</strong>: ES2002 (no a)</p>
+<h1>Full-corpus partition of meetings</h1>
+<p class="line891"><strong>SA</strong>: ES2002 (no a), ES2003</p>
+<p class="line891"><strong>SB</strong>: ES2002 (no a)</p>
+<p class="line891"><strong>SC</strong>: ES2002 (no a)</p>
+</body></html>
+""".strip(),
+            )
+            parsed = contracts.parse_ami_partition_source(
+                source,
+                project_root=root,
+                expected_sha256=contracts.sha256_file(source),
+                available_meeting_ids={"ES2002b", "ES2003a"},
+            )
+            self.assertEqual(
+                parsed["partition_definitions"][1]["meeting_ids"],
+                ["ES2002b"],
+            )
+
+    def test_write_evidence_rejects_synchronized_ami_partition_page_pin_tamper(
+        self,
+    ) -> None:
+        from unittest.mock import patch
+
+        from scripts import build_emotion_state_public_dataset_manifests as builder
+        from scripts.build_emotion_state_public_dataset_manifests import (
+            write_dataset_evidence,
+        )
+        from scripts.emotion_state_public_dataset_contracts import AMI_DATASET_ID
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            materials, output_root = self._material_fixture(root)
+            quality_inventory = materials[AMI_DATASET_ID]["quality_inventory"]
+            source = quality_inventory["source_metadata"]["official_partition_source"]
+            page = root.joinpath(*source["source_file_path"].split("/"))
+            pinned_sha256 = source["source_sha256"]
+            page.write_bytes(page.read_bytes() + b"\n")
+            source["source_sha256"] = hashlib.sha256(page.read_bytes()).hexdigest().upper()
+            page_item = next(
+                item for item in quality_inventory["items"]
+                if item["classification"] == "official_partition_metadata"
+            )
+            page_item["details"]["source_sha256"] = source["source_sha256"]
+            page_hash = next(
+                entry for entry in materials[AMI_DATASET_ID]["hash_inventory"]["files"]
+                if entry["path"] == source["source_file_path"]
+            )
+            page_hash["size_bytes"] = page.stat().st_size
+            page_hash["sha256"] = source["source_sha256"]
+            materials[AMI_DATASET_ID]["hash_inventory"]["selected_byte_count"] = sum(
+                entry["size_bytes"]
+                for entry in materials[AMI_DATASET_ID]["hash_inventory"]["files"]
+            )
+            with patch.object(
+                builder,
+                "AMI_PARTITIONS_SOURCE_SHA256",
+                pinned_sha256,
+            ), self.assertRaisesRegex(ValueError, "partition source pin"):
+                write_dataset_evidence(
+                    output_root=output_root,
+                    accessed_on="2026-07-15",
+                    materials=materials,
+                    project_root=root,
+                )
+            self.assertFalse(output_root.exists())
 
     @classmethod
     def _material_fixture(
@@ -724,7 +1048,7 @@ class DatasetMaterialValidationTests(unittest.TestCase):
                 project_root=root,
                 git_lfs_oids_by_path=cls._synthetic_crema_lfs_oids(crema_root),
             ),
-            AMI_DATASET_ID: validate_ami_material(
+            AMI_DATASET_ID: cls._validate_synthetic_ami_material(
                 extract_root,
                 archive_path=archive,
                 extraction=extraction,
@@ -748,12 +1072,14 @@ class DatasetMaterialValidationTests(unittest.TestCase):
         quality_item = next(
             item
             for item in quality_inventory["items"]
-            if (
-                item["classification"] == "official_partition_metadata"
-                and item["details"]["source_file_path"] == source_file_path
-            )
+            if item["classification"] == "official_partition_metadata"
         )
         quality_item["details"] = deepcopy(quality_item["details"])
+        quality_definition = next(
+            definition
+            for definition in quality_item["details"]["partition_definitions"]
+            if definition["source_file_path"] == source_file_path
+        )
         source_definition = next(
             definition
             for definition in quality_inventory["source_metadata"][
@@ -761,7 +1087,7 @@ class DatasetMaterialValidationTests(unittest.TestCase):
             ]
             if definition["source_file_path"] == source_file_path
         )
-        return quality_item["details"], source_definition
+        return quality_definition, source_definition
 
     def test_crema_rejects_lfs_pointer_and_accepts_real_pcm_wav(self) -> None:
         from scripts.emotion_state_public_dataset_contracts import validate_wav_file
@@ -827,6 +1153,36 @@ class DatasetMaterialValidationTests(unittest.TestCase):
             floating_point.write_bytes(floating_bytes)
             with self.assertRaisesRegex(ValueError, "unsupported|PCM"):
                 validate_wav_file(floating_point)
+
+            for sample_width_bytes, silence_sample in {
+                1: b"\x80",
+                2: b"\x00\x00",
+                3: b"\x00\x00\x00",
+                4: b"\x00\x00\x00\x00",
+            }.items():
+                with self.subTest(sample_width_bytes=sample_width_bytes):
+                    digital_silence = root / f"digital-silence-{sample_width_bytes}.wav"
+                    with wave.open(str(digital_silence), "wb") as output:
+                        output.setnchannels(1)
+                        output.setsampwidth(sample_width_bytes)
+                        output.setframerate(16000)
+                        output.writeframes(silence_sample * 160)
+                    with self.assertRaisesRegex(ValueError, "digital silence"):
+                        validate_wav_file(digital_silence)
+
+            non_silent = root / "non-silent.wav"
+            self._write_pcm_wav(non_silent)
+            self.assertEqual(
+                validate_wav_file(non_silent),
+                {
+                    "channel_count": 1,
+                    "sample_width_bytes": 2,
+                    "sample_rate_hz": 16000,
+                    "frame_count": 160,
+                    "duration_seconds": 0.01,
+                    "encoding": "PCM",
+                },
+            )
 
     def test_ami_extraction_rejects_traversal_symlink_and_case_collision(self) -> None:
         from scripts.emotion_state_public_dataset_contracts import safe_extract_ami_archive
@@ -914,7 +1270,7 @@ class DatasetMaterialValidationTests(unittest.TestCase):
             archive = root / "ami.zip"
             extract_root = root / "extract"
             self._ami_archive(archive)
-            blocker = extract_root / "ami_public_manual_1.6.2" / "words"
+            blocker = extract_root / "words"
             blocker.parent.mkdir(parents=True)
             blocker.write_text("pre-existing blocker", encoding="utf-8")
             with self.assertRaisesRegex(ValueError, "pre-existing extraction path conflict"):
@@ -1169,16 +1525,16 @@ class DatasetMaterialValidationTests(unittest.TestCase):
             extraction = safe_extract_ami_archive(archive, extract_root)
             members = {item["path"]: item for item in extraction["members"]}
             excluded_expectations = {
-                "ami_public_manual_1.6.2/audio/ES2002a.wav": "audio",
-                "ami_public_manual_1.6.2/video/ES2002a.avi": "video",
-                "ami_public_manual_1.6.2/automatic/ES2002a.asr.xml": (
+                "audio/ES2002a.wav": "audio",
+                "video/ES2002a.avi": "video",
+                "automatic/ES2002a.asr.xml": (
                     "automatic_annotation"
                 ),
-                "ami_public_manual_1.6.2/DOME/ES2002a.dome.xml": "dome",
-                "ami_public_manual_1.6.2/socialRoles/ES2002a.roles.xml": (
+                "DOME/ES2002a.dome.xml": "dome",
+                "socialRoles/ES2002a.roles.xml": (
                     "social_role"
                 ),
-                "ami_public_manual_1.6.2/emotions/ES2002a.emotions.xml": (
+                "emotions/ES2002a.emotions.xml": (
                     "speculative_emotion"
                 ),
             }
@@ -1187,7 +1543,7 @@ class DatasetMaterialValidationTests(unittest.TestCase):
                     self.assertEqual(members[path]["classification"], classification)
                     self.assertFalse(members[path]["selected"])
                     self.assertFalse(extract_root.joinpath(*path.split("/")).exists())
-            material = validate_ami_material(
+            material = self._validate_synthetic_ami_material(
                 extract_root,
                 archive_path=archive,
                 extraction=extraction,
@@ -1222,7 +1578,7 @@ class DatasetMaterialValidationTests(unittest.TestCase):
                 ],
                 {
                     "speaker": ["P1"],
-                    "call_session": ["ES2002a"],
+                    "call_session": ["ES2002a", "ES2002b"],
                     "dialogue_dyad": "not_applicable_multi_party_meeting",
                     "source_corpus": ["ami-manual-annotations-v1.6.2"],
                     "scripted_scenario": ["design"],
@@ -1230,6 +1586,158 @@ class DatasetMaterialValidationTests(unittest.TestCase):
                     "recording_site": ["Edinburgh"],
                 },
             )
+
+    def test_ami_observed_manual_annotation_families_are_explicitly_excluded(
+        self,
+    ) -> None:
+        from scripts.emotion_state_public_dataset_contracts import (
+            AMI_SELECTED_CLASSIFICATIONS,
+            classify_ami_member,
+        )
+
+        self.assertEqual(
+            AMI_SELECTED_CLASSIFICATIONS,
+            frozenset({
+                "manual_nxt_metadata",
+                "speaker_aligned_orthographic_transcript",
+                "timing_link",
+                "dialogue_act",
+                "official_partition_metadata",
+            }),
+        )
+        observed_paths = {
+            "abstractive/example.xml": "manual_annotation_abstractive",
+            "argumentation/example.xml": "manual_annotation_argumentation",
+            "configuration/example.xml": "manual_annotation_configuration",
+            "decision/example.xml": "manual_annotation_decision",
+            "disfluency/example.xml": "manual_annotation_disfluency",
+            "extractive/example.xml": "manual_annotation_extractive",
+            "focus/example.xml": "manual_annotation_focus",
+            "handGesture/example.xml": "manual_annotation_hand_gesture",
+            "headGesture/example.xml": "manual_annotation_head_gesture",
+            "movement/example.xml": "manual_annotation_movement",
+            "namedEntities/example.xml": "manual_annotation_named_entities",
+            "ontologies/example.xml": "manual_annotation_ontologies",
+            "participantRoles/example.xml": "manual_annotation_participant_roles",
+            "participantSummaries/example.xml": (
+                "manual_annotation_participant_summaries"
+            ),
+            "topics/example.xml": "manual_annotation_topics",
+            "youUsages/example.xml": "manual_annotation_you_usages",
+            "00README_MANUAL.txt": "manual_annotation_root_readme",
+            "LICENCE.txt": "manual_annotation_root_licence",
+            "MANIFEST_MANUAL.txt": "manual_annotation_root_manifest",
+            "resource.xml": "manual_annotation_root_resource",
+        }
+        for path, expected_classification in observed_paths.items():
+            with self.subTest(path=path):
+                classified = classify_ami_member(path)
+                self.assertEqual(
+                    classified["classification"],
+                    expected_classification,
+                )
+                self.assertFalse(classified["selected"])
+                self.assertEqual(
+                    classified["reason"],
+                    f"excluded_{expected_classification}",
+                )
+
+        with self.assertRaisesRegex(
+            ValueError,
+            "unclassified AMI annotation candidate: futureManualFamily/example.xml",
+        ):
+            classify_ami_member("futureManualFamily/example.xml")
+
+    def test_ami_writer_accepts_exact_derived_manual_annotation_exclusions(
+        self,
+    ) -> None:
+        from scripts.build_emotion_state_public_dataset_manifests import (
+            _validate_ami_quality_item,
+        )
+        from scripts.emotion_state_public_dataset_contracts import (
+            AMI_EXCLUDED_MANUAL_ANNOTATION_FAMILY_CLASSIFICATIONS,
+            AMI_EXCLUDED_MANUAL_ANNOTATION_ROOT_FILE_CLASSIFICATIONS,
+        )
+
+        derived_classifications = frozenset(
+            AMI_EXCLUDED_MANUAL_ANNOTATION_FAMILY_CLASSIFICATIONS.values()
+        ) | frozenset(
+            AMI_EXCLUDED_MANUAL_ANNOTATION_ROOT_FILE_CLASSIFICATIONS.values()
+        )
+        self.assertEqual(len(derived_classifications), 20)
+        self.assertTrue(
+            all(
+                classification.startswith("manual_annotation_")
+                for classification in derived_classifications
+            )
+        )
+        for classification in derived_classifications:
+            with self.subTest(classification=classification):
+                _validate_ami_quality_item({
+                    "path": "00README_MANUAL.txt",
+                    "classification": classification,
+                    "disposition": "excluded",
+                    "reason": f"excluded_{classification}",
+                    "selected_file_path": None,
+                    "details": {},
+                })
+
+    def test_ami_writer_rejects_unknown_future_manual_annotation_exclusion(
+        self,
+    ) -> None:
+        from scripts.build_emotion_state_public_dataset_manifests import (
+            _validate_ami_quality_item,
+        )
+
+        classification = "manual_annotation_future_unknown"
+        with self.assertRaisesRegex(
+            ValueError,
+            "^quality inventory AMI exclusion item is invalid$",
+        ):
+            _validate_ami_quality_item({
+                "path": "00README_MANUAL.txt",
+                "classification": classification,
+                "disposition": "excluded",
+                "reason": f"excluded_{classification}",
+                "selected_file_path": None,
+                "details": {},
+            })
+
+    def test_ami_observed_family_fallback_preserves_existing_precedence(
+        self,
+    ) -> None:
+        from scripts.emotion_state_public_dataset_contracts import (
+            classify_ami_member,
+        )
+
+        cases = {
+            "movement/future.wav": (
+                "audio",
+                False,
+                "excluded_audio",
+            ),
+            "movement/future.avi": (
+                "video",
+                False,
+                "excluded_video",
+            ),
+            "movement/automatic/example.xml": (
+                "automatic_annotation",
+                False,
+                "excluded_automatic_annotation",
+            ),
+            "movement/dialogueActs/example.xml": (
+                "dialogue_act",
+                True,
+                "selected_manual_annotation_material",
+            ),
+        }
+        for path, expected in cases.items():
+            with self.subTest(path=path):
+                classified = classify_ami_member(path)
+                self.assertEqual(classified["classification"], expected[0])
+                self.assertEqual(classified["selected"], expected[1])
+                self.assertEqual(classified["reason"], expected[2])
 
     def test_ami_unclassified_candidate_fails_and_missing_participant_is_quarantined(
         self,
@@ -1256,7 +1764,7 @@ class DatasetMaterialValidationTests(unittest.TestCase):
                 empty_extract_root,
             )
             with self.assertRaisesRegex(ValueError, "missing selected AMI"):
-                validate_ami_material(
+                self._validate_synthetic_ami_material(
                     empty_extract_root,
                     archive_path=empty_archive,
                     extraction=empty_extraction,
@@ -1267,7 +1775,7 @@ class DatasetMaterialValidationTests(unittest.TestCase):
             extract_root = root / "extract"
             self._ami_archive(archive, include_missing_participant=True)
             extraction = safe_extract_ami_archive(archive, extract_root)
-            material = validate_ami_material(
+            material = self._validate_synthetic_ami_material(
                 extract_root,
                 archive_path=archive,
                 extraction=extraction,
@@ -1278,7 +1786,7 @@ class DatasetMaterialValidationTests(unittest.TestCase):
                 for item in material["quality_inventory"]["dependency_quarantine"]
             }
             self.assertIn(
-                "extract/ami_public_manual_1.6.2/words/ES2002a.A.words.xml",
+                "extract/words/ES2002a.A.words.xml",
                 quarantined_paths,
             )
 
@@ -1297,13 +1805,13 @@ class DatasetMaterialValidationTests(unittest.TestCase):
             extract_root = root / "extract"
             self._ami_archive(archive)
             extraction = safe_extract_ami_archive(archive, extract_root)
-            first = validate_ami_material(
+            first = self._validate_synthetic_ami_material(
                 extract_root,
                 archive_path=archive,
                 extraction=extraction,
                 project_root=root,
             )
-            second = validate_ami_material(
+            second = self._validate_synthetic_ami_material(
                 extract_root,
                 archive_path=archive,
                 extraction=extraction,
@@ -1316,15 +1824,17 @@ class DatasetMaterialValidationTests(unittest.TestCase):
                     "partition_id": "full-corpus",
                     "partition_type": "full_corpus",
                     "source_file_path": (
-                        "extract/ami_public_manual_1.6.2/partitions/full-corpus.txt"
+                        "data/public/emotion-state/ami-manual-annotations-v1.6.2/"
+                        "official-partitions/datasets.shtml"
                     ),
                     "meeting_ids": ["ES2002a", "ES2002b"],
                 },
                 {
-                    "partition_id": "scenario",
+                    "partition_id": "scenario-only",
                     "partition_type": "scenario",
                     "source_file_path": (
-                        "extract/ami_public_manual_1.6.2/partitions/scenario.txt"
+                        "data/public/emotion-state/ami-manual-annotations-v1.6.2/"
+                        "official-partitions/datasets.shtml"
                     ),
                     "meeting_ids": ["ES2002a"],
                 },
@@ -1346,149 +1856,22 @@ class DatasetMaterialValidationTests(unittest.TestCase):
             validate_ami_material,
         )
 
-        for missing_type, missing_name in (
-            ("scenario", "scenario.txt"),
-            ("full_corpus", "full-corpus.txt"),
-        ):
-            with self.subTest(
-                gate="material",
-                missing_type=missing_type,
-            ), tempfile.TemporaryDirectory() as directory:
-                root = Path(directory)
-                archive = root / "ami.zip"
-                extract_root = root / "extract"
-                self._ami_archive(archive)
-                with zipfile.ZipFile(archive, "r") as source:
-                    retained = [
-                        (info, source.read(info))
-                        for info in source.infolist()
-                        if not info.filename.endswith(f"/partitions/{missing_name}")
-                    ]
-                with zipfile.ZipFile(archive, "w") as output:
-                    for info, payload in retained:
-                        output.writestr(info, payload)
-                extraction = safe_extract_ami_archive(archive, extract_root)
-                with self.assertRaisesRegex(
-                    ValueError,
-                    "scenario.*full_corpus|full_corpus.*scenario|partition type",
-                ):
-                    validate_ami_material(
-                        extract_root,
-                        archive_path=archive,
-                        extraction=extraction,
-                        project_root=root,
-                    )
-
-            with self.subTest(
-                gate="quality",
-                missing_type=missing_type,
-            ), tempfile.TemporaryDirectory() as directory:
-                root = Path(directory)
-                materials, output_root = self._material_fixture(root)
-                mutated = deepcopy(materials)
-                metadata = mutated[AMI_DATASET_ID]["quality_inventory"][
-                    "source_metadata"
-                ]
-                metadata["official_partition_definitions"] = [
-                    definition
-                    for definition in metadata["official_partition_definitions"]
-                    if definition["partition_type"] != missing_type
-                ]
-                metadata["official_partition_paths"] = [
-                    definition["source_file_path"]
-                    for definition in metadata["official_partition_definitions"]
-                ]
-                with self.assertRaisesRegex(
-                    ValueError,
-                    "scenario.*full_corpus|full_corpus.*scenario|partition type",
-                ):
-                    write_dataset_evidence(
-                        output_root=output_root,
-                        accessed_on="2026-07-15",
-                        materials=mutated,
-                        project_root=root,
-                    )
-                self.assertFalse(output_root.exists())
-
-        with self.subTest(gate="material", duplicate="partition_id"), (
-            tempfile.TemporaryDirectory()
-        ) as directory:
+        with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
-            archive = root / "ami.zip"
-            extract_root = root / "extract"
-            self._ami_archive(archive)
-            with zipfile.ZipFile(archive, "a") as output:
-                output.writestr(
-                    "ami_public_manual_1.6.2/alternate-partitions/scenario.txt",
-                    "ES2002a\n",
-                )
-            extraction = safe_extract_ami_archive(archive, extract_root)
-            with self.assertRaisesRegex(ValueError, "duplicate AMI partition"):
-                validate_ami_material(
-                    extract_root,
-                    archive_path=archive,
-                    extraction=extraction,
+            materials, output_root = self._material_fixture(root)
+            mutated = deepcopy(materials)
+            source = mutated[AMI_DATASET_ID]["quality_inventory"]["source_metadata"][
+                "official_partition_source"
+            ]
+            source["partition_definitions"] = source["partition_definitions"][:1]
+            with self.assertRaisesRegex(ValueError, "partition"):
+                write_dataset_evidence(
+                    output_root=output_root,
+                    accessed_on="2026-07-15",
+                    materials=mutated,
                     project_root=root,
                 )
-
-        with self.subTest(gate="material", duplicate="definition"), (
-            tempfile.TemporaryDirectory()
-        ) as directory:
-            root = Path(directory)
-            archive = root / "ami.zip"
-            extract_root = root / "extract"
-            self._ami_archive(archive)
-            extraction = safe_extract_ami_archive(archive, extract_root)
-            duplicated = deepcopy(extraction)
-            duplicated["members"].append(
-                deepcopy(next(
-                    member
-                    for member in duplicated["members"]
-                    if member["classification"] == "official_partition_metadata"
-                ))
-            )
-            with self.assertRaisesRegex(ValueError, "duplicate AMI partition"):
-                validate_ami_material(
-                    extract_root,
-                    archive_path=archive,
-                    extraction=duplicated,
-                    project_root=root,
-                )
-
-        for duplicate in ("definition", "partition_id", "source_path"):
-            with self.subTest(
-                gate="quality",
-                duplicate=duplicate,
-            ), tempfile.TemporaryDirectory() as directory:
-                root = Path(directory)
-                materials, output_root = self._material_fixture(root)
-                mutated = deepcopy(materials)
-                definitions = mutated[AMI_DATASET_ID]["quality_inventory"][
-                    "source_metadata"
-                ]["official_partition_definitions"]
-                duplicate_definition = deepcopy(definitions[-1])
-                if duplicate == "partition_id":
-                    duplicate_definition["source_file_path"] = (
-                        "extract/ami_public_manual_1.6.2/partitions/"
-                        "scenario-copy.txt"
-                    )
-                elif duplicate == "source_path":
-                    duplicate_definition["partition_id"] = "scenario-copy"
-                definitions.append(duplicate_definition)
-                definitions.sort(
-                    key=lambda definition: (
-                        definition["partition_id"],
-                        definition["source_file_path"],
-                    )
-                )
-                with self.assertRaisesRegex(ValueError, "duplicate AMI partition"):
-                    write_dataset_evidence(
-                        output_root=output_root,
-                        accessed_on="2026-07-15",
-                        materials=mutated,
-                        project_root=root,
-                    )
-                self.assertFalse(output_root.exists())
+            self.assertFalse(output_root.exists())
 
     def test_write_evidence_rejects_synchronized_ami_partition_meeting_ids_tamper_without_output(
         self,
@@ -1504,8 +1887,8 @@ class DatasetMaterialValidationTests(unittest.TestCase):
                 self._independent_ami_partition_definition_copies(
                     materials,
                     source_file_path=(
-                        "data/public/emotion-state/ami-extract/"
-                        "ami_public_manual_1.6.2/partitions/scenario.txt"
+                        "data/public/emotion-state/ami-manual-annotations-v1.6.2/"
+                        "official-partitions/datasets.shtml"
                     ),
                 )
             )
@@ -1535,8 +1918,8 @@ class DatasetMaterialValidationTests(unittest.TestCase):
                 self._independent_ami_partition_definition_copies(
                     materials,
                     source_file_path=(
-                        "data/public/emotion-state/ami-extract/"
-                        "ami_public_manual_1.6.2/partitions/scenario.txt"
+                        "data/public/emotion-state/ami-manual-annotations-v1.6.2/"
+                        "official-partitions/datasets.shtml"
                     ),
                 )
             )
@@ -1562,27 +1945,15 @@ class DatasetMaterialValidationTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             materials, output_root = self._material_fixture(root)
-            for source_file_path, partition_type in (
-                (
-                    "data/public/emotion-state/ami-extract/"
-                    "ami_public_manual_1.6.2/partitions/full-corpus.txt",
-                    "scenario",
-                ),
-                (
-                    "data/public/emotion-state/ami-extract/"
-                    "ami_public_manual_1.6.2/partitions/scenario.txt",
-                    "full_corpus",
-                ),
-            ):
-                quality_definition, source_definition = (
-                    self._independent_ami_partition_definition_copies(
-                        materials,
-                        source_file_path=source_file_path,
-                    )
-                )
-                quality_definition["partition_type"] = partition_type
-                source_definition["partition_type"] = partition_type
-
+            quality_source = next(
+                item["details"]
+                for item in materials["ami-manual-annotations-v1.6.2"]["quality_inventory"]["items"]
+                if item["classification"] == "official_partition_metadata"
+            )
+            for definition in quality_source["partition_definitions"]:
+                definition["partition_type"] = "scenario"
+            for definition in materials["ami-manual-annotations-v1.6.2"]["quality_inventory"]["source_metadata"]["official_partition_definitions"]:
+                definition["partition_type"] = "scenario"
             with self.assertRaises(ValueError):
                 write_dataset_evidence(
                     output_root=output_root,
@@ -1606,14 +1977,14 @@ class DatasetMaterialValidationTests(unittest.TestCase):
             extract_root = root / "extract"
             self._ami_archive(archive)
             first_extraction = safe_extract_ami_archive(archive, extract_root)
-            first = validate_ami_material(
+            first = self._validate_synthetic_ami_material(
                 extract_root,
                 archive_path=archive,
                 extraction=first_extraction,
                 project_root=root,
             )
             second_extraction = safe_extract_ami_archive(archive, extract_root)
-            second = validate_ami_material(
+            second = self._validate_synthetic_ami_material(
                 extract_root,
                 archive_path=archive,
                 extraction=second_extraction,
@@ -1654,44 +2025,36 @@ class DatasetMaterialValidationTests(unittest.TestCase):
             self.assertEqual(exit_code, 0)
             self.assertEqual(stderr.getvalue(), "")
             self.assertEqual(stdout.getvalue().splitlines(), [
-                "ami_public_manual_1.6.2/DOME/ES2002a.dome.xml\tdome",
-                "ami_public_manual_1.6.2/audio/\tdirectory",
-                "ami_public_manual_1.6.2/audio/ES2002a.wav\taudio",
+                "DOME/ES2002a.dome.xml\tdome",
+                "audio/\tdirectory",
+                "audio/ES2002a.wav\taudio",
                 (
-                    "ami_public_manual_1.6.2/automatic/ES2002a.asr.xml"
+                    "automatic/ES2002a.asr.xml"
                     "\tautomatic_annotation"
                 ),
                 (
-                    "ami_public_manual_1.6.2/corpusResources/meetings.xml"
+                    "corpusResources/meetings.xml"
                     "\tmanual_nxt_metadata"
                 ),
                 (
-                    "ami_public_manual_1.6.2/dialogueActs/"
+                    "dialogueActs/"
                     "ES2002a.A.dialogue-acts.xml\tdialogue_act"
                 ),
                 (
-                    "ami_public_manual_1.6.2/emotions/ES2002a.emotions.xml"
+                    "emotions/ES2002a.emotions.xml"
                     "\tspeculative_emotion"
                 ),
                 (
-                    "ami_public_manual_1.6.2/partitions/full-corpus.txt"
-                    "\tofficial_partition_metadata"
-                ),
-                (
-                    "ami_public_manual_1.6.2/partitions/scenario.txt"
-                    "\tofficial_partition_metadata"
-                ),
-                (
-                    "ami_public_manual_1.6.2/segments/ES2002a.A.segments.xml"
+                    "segments/ES2002a.A.segments.xml"
                     "\ttiming_link"
                 ),
                 (
-                    "ami_public_manual_1.6.2/socialRoles/ES2002a.roles.xml"
+                    "socialRoles/ES2002a.roles.xml"
                     "\tsocial_role"
                 ),
-                "ami_public_manual_1.6.2/video/ES2002a.avi\tvideo",
+                "video/ES2002a.avi\tvideo",
                 (
-                    "ami_public_manual_1.6.2/words/ES2002a.A.words.xml"
+                    "words/ES2002a.A.words.xml"
                     "\tspeaker_aligned_orthographic_transcript"
                 ),
             ])
@@ -1795,6 +2158,9 @@ class DatasetMaterialValidationTests(unittest.TestCase):
                     self.assertIn("unrecognized arguments:", stderr.getvalue())
 
     def test_write_dataset_evidence_is_deterministic_and_manifest_immutable(self) -> None:
+        from unittest.mock import patch
+
+        from scripts import build_emotion_state_public_dataset_manifests as builder
         from scripts.build_emotion_state_public_dataset_manifests import (
             write_dataset_evidence,
         )
@@ -1824,7 +2190,7 @@ class DatasetMaterialValidationTests(unittest.TestCase):
                         crema_root
                     ),
                 ),
-                AMI_DATASET_ID: validate_ami_material(
+                AMI_DATASET_ID: self._validate_synthetic_ami_material(
                     extract_root,
                     archive_path=archive,
                     extraction=extraction,
@@ -1834,23 +2200,28 @@ class DatasetMaterialValidationTests(unittest.TestCase):
             output_root = (
                 root / "research" / "sources" / "emotion_state" / "datasets"
             )
-            written = write_dataset_evidence(
-                output_root=output_root,
-                accessed_on="2026-07-15",
-                materials=materials,
-                project_root=root,
-            )
+            def write_synthetic_evidence() -> list[Path]:
+                with patch.object(
+                    builder,
+                    "AMI_PARTITIONS_SOURCE_SHA256",
+                    materials[AMI_DATASET_ID]["quality_inventory"]["source_metadata"][
+                        "official_partition_source"
+                    ]["source_sha256"],
+                ):
+                    return write_dataset_evidence(
+                        output_root=output_root,
+                        accessed_on="2026-07-15",
+                        materials=materials,
+                        project_root=root,
+                    )
+
+            written = write_synthetic_evidence()
             self.assertEqual(len(written), 6)
             first_bytes = {
                 path.name: path.read_bytes()
                 for path in written
             }
-            repeated = write_dataset_evidence(
-                output_root=output_root,
-                accessed_on="2026-07-15",
-                materials=materials,
-                project_root=root,
-            )
+            repeated = write_synthetic_evidence()
             self.assertEqual(
                 first_bytes,
                 {path.name: path.read_bytes() for path in repeated},
@@ -1863,12 +2234,7 @@ class DatasetMaterialValidationTests(unittest.TestCase):
                 ValueError,
                 "verified_manifest_version_is_immutable",
             ):
-                write_dataset_evidence(
-                    output_root=output_root,
-                    accessed_on="2026-07-15",
-                    materials=materials,
-                    project_root=root,
-                )
+                write_synthetic_evidence()
 
     def test_crema_lfs_pointer_parser_and_local_git_command_boundary(self) -> None:
         from scripts.build_emotion_state_public_dataset_manifests import (
@@ -2125,26 +2491,13 @@ class DatasetMaterialValidationTests(unittest.TestCase):
                     git_command=fake_git,
                     crema_expected_revision=expected_revision,
                 )
-            self.assertEqual(exit_code, 0)
+            self.assertEqual(exit_code, 1)
             self.assertEqual(stdout.getvalue(), "")
-            self.assertEqual(stderr.getvalue(), "")
-            hashes_path = (
-                root
-                / "research"
-                / "sources"
-                / "emotion_state"
-                / "datasets"
-                / f"{CREMA_DATASET_ID}.hashes.json"
+            self.assertEqual(
+                stderr.getvalue(),
+                "offline dataset verifier failed: --ami-partitions-source is "
+                "required for write-evidence\n",
             )
-            inventory = json.loads(hashes_path.read_text(encoding="utf-8"))
-            audio_entries = [
-                entry
-                for entry in inventory["files"]
-                if "/AudioWAV/" in entry["path"]
-            ]
-            self.assertEqual(len(audio_entries), 3)
-            for entry in audio_entries:
-                self.assertEqual(entry["git_lfs_oid_sha256"], entry["sha256"])
 
     def test_write_evidence_rejects_nested_raw_text_and_unknown_fields_without_output(
         self,
@@ -4745,6 +5098,350 @@ class CohortReleaseTests(unittest.TestCase):
         )
 
 
+class PhaseACompleteStateTests(unittest.TestCase):
+    def complete_gate_evidence(self) -> dict:
+        from scripts.emotion_state_phase_a_verification_evidence import (
+            REQUIRED_PHASE_A_COMMAND_IDS,
+            expected_argv_for_command,
+        )
+
+        digest = "A" * 64
+        baseline_commit = "b" * 40
+        head_commit = "c" * 40
+        return {
+            "mode": "complete",
+            "selected_dataset_ids": [
+                "crema-d-v1.0-audio-wav",
+                "ami-manual-annotations-v1.6.2",
+            ],
+            "dataset_download_authorized": True,
+            "dataset_evidence": [
+                {
+                    "dataset_id": dataset_id,
+                    "completion_status": "verified",
+                    "manifest_sha256": digest,
+                    "hash_inventory_sha256": digest,
+                    "quality_inventory_sha256": digest,
+                    "source_provenance_status": "pass",
+                    "material_validation_status": "pass",
+                }
+                for dataset_id in (
+                    "crema-d-v1.0-audio-wav",
+                    "ami-manual-annotations-v1.6.2",
+                )
+            ],
+            "contract_statuses": {
+                "public_dataset_contract": "pass",
+                "split_manifest_v2_contract": "pass",
+                "cohort_release_contract": "pass",
+            },
+            "verification_evidence": {
+                "implementation_baseline_commit": baseline_commit,
+                "repository_head_commit": head_commit,
+                "verification_run_id": digest,
+                "verification_input_path_inventory_digest": digest,
+                "executable_dependency_closure_digest": digest,
+                "executed_command_ledger_digest": digest,
+                "guard_policy_digest": digest,
+                "verification_input_tree_digest": digest,
+                "provider_environment_scrubbed": True,
+                "private_path_guard_enabled": True,
+                "network_guard_enabled": True,
+                "prepublication_byte_lock_reread_status": "pass",
+            },
+            "executed_command_ledger": [
+                {
+                    "sequence_number": sequence_number,
+                    "command_id": command_id,
+                    "argv": expected_argv_for_command(
+                        command_id,
+                        mode="complete",
+                        baseline_commit=baseline_commit,
+                        head_commit=head_commit,
+                    ),
+                    "working_directory": ".",
+                    "exit_status": 0,
+                }
+                for sequence_number, command_id in enumerate(
+                    REQUIRED_PHASE_A_COMMAND_IDS, start=1
+                )
+            ],
+            "publication_integrity_preconditions": {
+                "crash_safe_pair_protocol_status": "pass",
+                "explicit_acceptance_transaction_status": "pass",
+                "last_valid_pair_preservation_status": "pass",
+                "output_self_reference_absent": True,
+            },
+            "authorization_boundaries": {
+                "live_aggregate_release_unblocked": False,
+                "public_dataset_evaluation_unblocked": False,
+                "phase_b_unblocked": False,
+                "private_research_unblocked": False,
+                "provider_feasibility_unblocked": False,
+                "runtime_activation_unblocked": False,
+            },
+        }
+
+    def test_completion_requires_both_verified_manifests_and_every_closed_gate(
+        self,
+    ) -> None:
+        from scripts.emotion_state_phase_a_contracts import determine_phase_a_completion
+
+        completed = determine_phase_a_completion(self.complete_gate_evidence())
+        self.assertTrue(completed["phase_a_complete"])
+        self.assertEqual(completed["blocking_reason_codes"], [])
+
+    def test_complete_builder_binds_tracked_dataset_evidence_and_boundaries(
+        self,
+    ) -> None:
+        from scripts.emotion_state_phase_a_contracts import build_phase_a_payload
+        from scripts.emotion_state_phase_a_verification_evidence import (
+            derive_repository_gate_statuses,
+        )
+
+        gate = self.complete_gate_evidence()
+        verification = {
+            **gate["verification_evidence"],
+            "committed_change_inventory": [],
+            "uncommitted_change_inventory": [],
+            "executable_dependency_closure_inventory": [],
+            "executable_dependency_closure_edges": [],
+            "executed_command_ledger": gate["executed_command_ledger"],
+            "guarded_command_results": {
+                entry["command_id"]: entry["exit_status"]
+                for entry in gate["executed_command_ledger"]
+            },
+            "repository_gate_statuses": derive_repository_gate_statuses(
+                gate["executed_command_ledger"],
+                "complete",
+            ),
+        }
+        payload = build_phase_a_payload(
+            ROOT / "research/experiments/cases/emotion-state-001-phase-a-contracts.json",
+            root=ROOT,
+            verification_evidence=verification,
+            mode="complete",
+        )
+
+        self.assertTrue(payload["readiness_boundary"]["phase_a_complete"])
+        self.assertEqual(
+            payload["readiness_boundary"]["phase_a_completion_scope"],
+            "source_provenance_dataset_manifests_offline_contracts_and_"
+            "cohort_release_gate_only",
+        )
+        self.assertEqual(
+            [entry["dataset_id"] for entry in payload["dataset_manifest_evidence"]],
+            [
+                "crema-d-v1.0-audio-wav",
+                "ami-manual-annotations-v1.6.2",
+            ],
+        )
+        self.assertEqual(
+            payload["dataset_hash_inventory_digests"],
+            {
+                "crema-d-v1.0-audio-wav": (
+                    "AD58D8165C683847DF246F923FF466722C7F628FE8D81679F618FA5EB3031C87"
+                ),
+                "ami-manual-annotations-v1.6.2": (
+                    "CE7F837A2A44DFEE44691C4BA8B5B0D7766E46D6616986CF565A6300056DEAEE"
+                ),
+            },
+        )
+        self.assertEqual(
+            payload["dataset_quality_inventory_digests"],
+            {
+                "crema-d-v1.0-audio-wav": (
+                    "455D6A010855F209B4DC4C67F67E4222FAB81601861745B5B5E79E7942B92682"
+                ),
+                "ami-manual-annotations-v1.6.2": (
+                    "A376A6C0D5F89770525936299717F1595B743489B593DC4E5CE88AB08ACB22C9"
+                ),
+            },
+        )
+        self.assertEqual(
+            payload["publication_integrity_preconditions"],
+            gate["publication_integrity_preconditions"],
+        )
+
+    def test_complete_verification_snapshot_binds_all_six_evidence_files(
+        self,
+    ) -> None:
+        from scripts.emotion_state_phase_a_verification_evidence import (
+            _collect_verification_snapshot,
+        )
+
+        head_commit = subprocess.run(
+            ["git", "rev-parse", "HEAD"],
+            cwd=ROOT,
+            text=True,
+            capture_output=True,
+            check=True,
+        ).stdout.strip()
+        snapshot = _collect_verification_snapshot(
+            root=ROOT,
+            baseline_commit="fb0513545fc0167bcf89dbc81283b7b2a2820b67",
+            head_commit=head_commit,
+            mode="complete",
+        )
+
+        self.assertEqual(
+            tuple(snapshot["dataset_manifest_digests"]),
+            (
+                "crema-d-v1.0-audio-wav",
+                "ami-manual-annotations-v1.6.2",
+            ),
+        )
+        self.assertEqual(
+            tuple(snapshot["dataset_hash_inventory_digests"]),
+            tuple(snapshot["dataset_manifest_digests"]),
+        )
+        self.assertEqual(
+            tuple(snapshot["dataset_quality_inventory_digests"]),
+            tuple(snapshot["dataset_manifest_digests"]),
+        )
+
+    def test_missing_one_manifest_stays_incomplete(self) -> None:
+        from scripts.emotion_state_phase_a_contracts import determine_phase_a_completion
+
+        evidence = self.complete_gate_evidence()
+        evidence["dataset_evidence"].pop()
+        incomplete = determine_phase_a_completion(evidence)
+        self.assertFalse(incomplete["phase_a_complete"])
+        self.assertEqual(
+            incomplete["blocking_reason_codes"],
+            ["selected_dataset_manifests_not_verified"],
+        )
+
+    def test_each_closed_gate_can_independently_block_completion(self) -> None:
+        from scripts.emotion_state_phase_a_contracts import determine_phase_a_completion
+
+        mutations = (
+            ("verification_evidence", "network_guard_enabled", False),
+            (
+                "publication_integrity_preconditions",
+                "last_valid_pair_preservation_status",
+                "fail",
+            ),
+        )
+        for section, key, value in mutations:
+            with self.subTest(section=section, key=key):
+                evidence = self.complete_gate_evidence()
+                evidence[section][key] = value
+                self.assertFalse(
+                    determine_phase_a_completion(evidence)["phase_a_complete"]
+                )
+
+        evidence = self.complete_gate_evidence()
+        drift = next(
+            entry
+            for entry in evidence["executed_command_ledger"]
+            if entry["command_id"] == "drift-validator"
+        )
+        drift["exit_status"] = 1
+        self.assertFalse(determine_phase_a_completion(evidence)["phase_a_complete"])
+
+    def test_repository_gate_statuses_are_derived_only(self) -> None:
+        from scripts.emotion_state_phase_a_contracts import determine_phase_a_completion
+
+        evidence = self.complete_gate_evidence()
+        evidence["repository_gate_statuses"] = {"drift": "pass"}
+        with self.assertRaisesRegex(ValueError, "derived-only"):
+            determine_phase_a_completion(evidence)
+
+    def test_every_complete_gate_component_has_negative_coverage(self) -> None:
+        from scripts.emotion_state_phase_a_contracts import determine_phase_a_completion
+
+        dataset_fields = (
+            ("completion_status", "pending"),
+            ("manifest_sha256", None),
+            ("hash_inventory_sha256", None),
+            ("quality_inventory_sha256", None),
+            ("source_provenance_status", "fail"),
+            ("material_validation_status", "fail"),
+        )
+        for field, value in dataset_fields:
+            with self.subTest(section="dataset", field=field):
+                evidence = self.complete_gate_evidence()
+                evidence["dataset_evidence"][0][field] = value
+                self.assertFalse(
+                    determine_phase_a_completion(evidence)["phase_a_complete"]
+                )
+
+        for field in (
+            "public_dataset_contract",
+            "split_manifest_v2_contract",
+            "cohort_release_contract",
+        ):
+            with self.subTest(section="contract", field=field):
+                evidence = self.complete_gate_evidence()
+                evidence["contract_statuses"][field] = "fail"
+                self.assertFalse(
+                    determine_phase_a_completion(evidence)["phase_a_complete"]
+                )
+
+        verification_mutations = (
+            ("implementation_baseline_commit", None),
+            ("repository_head_commit", None),
+            ("verification_run_id", None),
+            ("verification_input_path_inventory_digest", None),
+            ("executable_dependency_closure_digest", None),
+            ("executed_command_ledger_digest", None),
+            ("guard_policy_digest", None),
+            ("verification_input_tree_digest", None),
+            ("provider_environment_scrubbed", False),
+            ("private_path_guard_enabled", False),
+            ("network_guard_enabled", False),
+            ("prepublication_byte_lock_reread_status", "fail"),
+        )
+        for field, value in verification_mutations:
+            with self.subTest(section="verification", field=field):
+                evidence = self.complete_gate_evidence()
+                evidence["verification_evidence"][field] = value
+                self.assertFalse(
+                    determine_phase_a_completion(evidence)["phase_a_complete"]
+                )
+
+        ledger_mutations = ("missing", "duplicate", "reordered", "template", "nonzero")
+        for mutation in ledger_mutations:
+            with self.subTest(section="ledger", mutation=mutation):
+                evidence = self.complete_gate_evidence()
+                ledger = evidence["executed_command_ledger"]
+                if mutation == "missing":
+                    ledger.pop()
+                elif mutation == "duplicate":
+                    ledger[-1] = deepcopy(ledger[-2])
+                elif mutation == "reordered":
+                    ledger[0], ledger[1] = ledger[1], ledger[0]
+                elif mutation == "template":
+                    ledger[0]["argv"][-1] = "unexpected"
+                else:
+                    ledger[0]["exit_status"] = 1
+                self.assertFalse(
+                    determine_phase_a_completion(evidence)["phase_a_complete"]
+                )
+
+        for field, value in (
+            ("crash_safe_pair_protocol_status", "fail"),
+            ("explicit_acceptance_transaction_status", "fail"),
+            ("last_valid_pair_preservation_status", "fail"),
+            ("output_self_reference_absent", False),
+        ):
+            with self.subTest(section="publication", field=field):
+                evidence = self.complete_gate_evidence()
+                evidence["publication_integrity_preconditions"][field] = value
+                self.assertFalse(
+                    determine_phase_a_completion(evidence)["phase_a_complete"]
+                )
+
+        for field in self.complete_gate_evidence()["authorization_boundaries"]:
+            with self.subTest(section="authorization", field=field):
+                evidence = self.complete_gate_evidence()
+                evidence["authorization_boundaries"][field] = True
+                self.assertFalse(
+                    determine_phase_a_completion(evidence)["phase_a_complete"]
+                )
+
+
 class PhaseAStateMachineTests(unittest.TestCase):
     SELECTED_DATASET_IDS = [
         "crema-d-v1.0-audio-wav",
@@ -4800,7 +5497,9 @@ class PhaseAStateMachineTests(unittest.TestCase):
         ):
             self.assertIs(state[field], False, field)
 
-    def test_complete_mode_still_leaves_phase_and_all_readiness_false(self) -> None:
+    def test_complete_mode_rejects_manifest_ids_without_closed_gate_evidence(
+        self,
+    ) -> None:
         from scripts.emotion_state_phase_a_contracts import (
             determine_phase_a_completion,
         )
@@ -4812,23 +5511,11 @@ class PhaseAStateMachineTests(unittest.TestCase):
             {"dataset_id": dataset_id}
             for dataset_id in self.SELECTED_DATASET_IDS
         ]
-        state = determine_phase_a_completion(evidence)
-
-        self.assertIs(state["phase_a_complete"], False)
-        self.assertEqual(
-            state["blocking_reason_codes"],
-            ["complete_material_verification_gate_not_implemented"],
-        )
-        for field in (
-            "full_repository_gate_claimed_by_this_artifact",
-            "live_aggregate_release_unblocked",
-            "phase_b_unblocked",
-            "public_dataset_evaluation_unblocked",
-            "private_research_unblocked",
-            "provider_feasibility_unblocked",
-            "runtime_activation_unblocked",
+        with self.assertRaisesRegex(
+            ValueError,
+            "completion evidence fields",
         ):
-            self.assertIs(state[field], False, field)
+            determine_phase_a_completion(evidence)
 
     def test_material_pending_payload_keeps_every_safety_projection_false(
         self,

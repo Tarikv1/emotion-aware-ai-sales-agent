@@ -1,10 +1,10 @@
-# EMOTION-STATE-001: Material-Pending Phase A Inputs
+# EMOTION-STATE-001: Verified Phase A Public-Dataset Inputs
 
 ## Status
 
-Status: Task 7 input integration complete; canonical material-pending publication deferred to the controller
+Status: Task 10 verified-input integration complete; complete canonical publication remains deferred to Task 11
 
-Readiness: `phase_a_complete=false`. Dataset download, dataset evaluation, private research, provider feasibility, Phase B, and runtime activation remain blocked.
+Readiness: the verified inputs can derive `phase_a_complete=true` only for `source_provenance_dataset_manifests_offline_contracts_and_cohort_release_gate_only`. Dataset evaluation, private research, provider feasibility, Phase B, live aggregate release, and runtime activation remain blocked.
 
 ## Source Label
 
@@ -12,7 +12,7 @@ Readiness: `phase_a_complete=false`. Dataset download, dataset evaluation, priva
 
 ## Date
 
-2026-07-17
+2026-07-19
 
 ## Question
 
@@ -23,7 +23,7 @@ Can the project select two bounded public sources and integrate offline contract
 1. `crema-d-v1.0-audio-wav`: controlled acoustic-sensitivity evidence only.
 2. `ami-manual-annotations-v1.6.2`: annotation-only conversational-mechanics evidence only.
 
-Download authorized: `false`. Evaluation started: `false`. Local dataset evidence entries: `0`. Source adaptation: `false`.
+Download authorized for the completed acquisition transaction: `true`. Evaluation started: `false`. Local tracked dataset evidence entries: `6`. Source adaptation: `false`.
 
 Neither source is customer internal-emotion truth. Neither source maps to hesitation, frustration, confusion, interest, or disengagement.
 
@@ -46,12 +46,18 @@ Neither source is customer internal-emotion truth. Neither source maps to hesita
 - Full two-module suite: 191 tests passed. Every listed direct validator and `git diff --check` exited `0`; exact commands and outputs are recorded in `.superpowers/sdd/open-dataset-task-7-material-pending-report.md`.
 - The implementer did not run the real Phase A runner, create a real receipt/candidate, or modify/accept/reject the canonical result/report pair.
 
+### Exact local verification evidence
+
+- CREMA-D: 7,446 selected files / 628,813,439 bytes; 7,446 included / 22,367 excluded; manifest `6E86F06358E4AD172C72BE1692CFF37291D9D5763DD7F6F5C7CE7405E7E01248`; hash inventory `AD58D8165C683847DF246F923FF466722C7F628FE8D81679F618FA5EB3031C87`; quality inventory `455D6A010855F209B4DC4C67F67E4222FAB81601861745B5B5E79E7942B92682`; accessed `2026-07-17`. The selected inventory includes 7,442 WAVs plus four required non-WAV evidence files.
+- AMI: 2,074 selected files / 180,905,698 bytes; 2,074 included / 3,086 excluded; archive `B56E5BABB2496B8795DEEEDA7E71178D7FBC9963F94276CF2A3F4B56EBBC9F9D`; manifest `3904D4A3A9EDF53B06A65354E02FBE1BDD44361B5E196FC6DD4A3882C74911DE`; hash inventory `CE7F837A2A44DFEE44691C4BA8B5B0D7766E46D6616986CF565A6300056DEAEE`; quality inventory `A376A6C0D5F89770525936299717F1595B743489B593DC4E5CE88AB08ACB22C9`; accessed `2026-07-17`.
+- `materials` validation rechecks ignored raw bytes. Clean-clone `checkpoint` validation can only validate the exact tracked evidence captured by the complete run.
+
 ## Controller Blocker
 
 The material-pending plan requires refusal when selected dataset material is locally present, while the Task 7 implementer is forbidden to access or probe any real `data/public` path. The synthetic/injected behavior is implemented and tested. The real defer command remains fail-closed until the controller has explicit authority for the required material-root absence probe; this requirement was not weakened or waived.
 
 ## Boundary
 
-No public dataset bytes were downloaded, listed, statted, probed, hashed, read, created, or written. No private or private-restricted data was accessed. No network, provider/ElevenLabs, outbound/customer call, simulation, source adaptation, dependency install, runtime/prompt/KB/voice/LLM/phone/Procedure/dashboard change, push, merge, rebase, amend, or Task 8 action occurred.
+Task 10 performed no new download or network action and no model/public-dataset evaluation. No private or private-restricted data was accessed. No provider/ElevenLabs operation, outbound/customer call, simulation, source adaptation, dependency install, runtime/prompt/KB/voice/LLM/phone/Procedure/dashboard change, push, merge, rebase, amend, or Task 11 canonical-pair action occurred.
 
 This work provides no production, customer, PSTN, ASR, latency, provider-feasibility, runtime-readiness, or internal-emotion evidence.

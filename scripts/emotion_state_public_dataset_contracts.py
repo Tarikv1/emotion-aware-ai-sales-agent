@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import csv
 import hashlib
+from html.parser import HTMLParser
 import json
 import math
 import os
@@ -21,6 +22,14 @@ from xml.etree import ElementTree
 
 CREMA_DATASET_ID = "crema-d-v1.0-audio-wav"
 AMI_DATASET_ID = "ami-manual-annotations-v1.6.2"
+AMI_PARTITIONS_SOURCE_URL = "https://groups.inf.ed.ac.uk/ami/corpus/datasets.shtml"
+AMI_PARTITIONS_SOURCE_RELATIVE_PATH = (
+    "data/public/emotion-state/ami-manual-annotations-v1.6.2/"
+    "official-partitions/datasets.shtml"
+)
+AMI_PARTITIONS_SOURCE_SHA256 = (
+    "30D038F540A91BA6E68133E8FDFAA1D2B4C1B7291F871B0D4821EA04F4C776ED"
+)
 SELECTED_PUBLIC_DATASETS = (CREMA_DATASET_ID, AMI_DATASET_ID)
 
 OPERATIONAL_SIGNALS = frozenset({
@@ -547,6 +556,9 @@ def validate_wav_file(path: Path) -> dict[str, Any]:
 
     if len(frame_bytes) != expected_frame_bytes:
         raise ValueError("WAV contains unreadable frames")
+    silence_byte = 0x80 if sample_width_bytes == 1 else 0x00
+    if all(sample_byte == silence_byte for sample_byte in frame_bytes):
+        raise ValueError("WAV contains digital silence")
     duration_seconds = frame_count / sample_rate_hz
     if not math.isfinite(duration_seconds) or duration_seconds <= 0:
         raise ValueError("WAV has zero-duration or non-finite duration")
@@ -1102,6 +1114,30 @@ AMI_POTENTIALLY_SELECTED_SUFFIXES = frozenset({
     ".txt",
     ".list",
 })
+AMI_EXCLUDED_MANUAL_ANNOTATION_FAMILY_CLASSIFICATIONS = {
+    "abstractive": "manual_annotation_abstractive",
+    "argumentation": "manual_annotation_argumentation",
+    "configuration": "manual_annotation_configuration",
+    "decision": "manual_annotation_decision",
+    "disfluency": "manual_annotation_disfluency",
+    "extractive": "manual_annotation_extractive",
+    "focus": "manual_annotation_focus",
+    "handgesture": "manual_annotation_hand_gesture",
+    "headgesture": "manual_annotation_head_gesture",
+    "movement": "manual_annotation_movement",
+    "namedentities": "manual_annotation_named_entities",
+    "ontologies": "manual_annotation_ontologies",
+    "participantroles": "manual_annotation_participant_roles",
+    "participantsummaries": "manual_annotation_participant_summaries",
+    "topics": "manual_annotation_topics",
+    "youusages": "manual_annotation_you_usages",
+}
+AMI_EXCLUDED_MANUAL_ANNOTATION_ROOT_FILE_CLASSIFICATIONS = {
+    "00readme_manual.txt": "manual_annotation_root_readme",
+    "licence.txt": "manual_annotation_root_licence",
+    "manifest_manual.txt": "manual_annotation_root_manifest",
+    "resource.xml": "manual_annotation_root_resource",
+}
 
 
 def _normalized_archive_member_path(value: str) -> str:
@@ -1194,7 +1230,22 @@ def classify_ami_member(path: str) -> dict[str, Any]:
     elif pure.name.casefold().startswith(("readme", "license", "copying")):
         classification = "documentation"
     elif suffix in AMI_POTENTIALLY_SELECTED_SUFFIXES:
-        raise ValueError(f"unclassified AMI annotation candidate: {normalized}")
+        if len(pure.parts) == 1:
+            classification = (
+                AMI_EXCLUDED_MANUAL_ANNOTATION_ROOT_FILE_CLASSIFICATIONS.get(
+                    pure.name.casefold()
+                )
+            )
+        else:
+            classification = (
+                AMI_EXCLUDED_MANUAL_ANNOTATION_FAMILY_CLASSIFICATIONS.get(
+                    components[0]
+                )
+            )
+        if classification is None:
+            raise ValueError(
+                f"unclassified AMI annotation candidate: {normalized}"
+            )
     else:
         classification = "unselected_release_material"
 
@@ -1487,7 +1538,9 @@ def _ami_metadata_from_xml(path: Path) -> dict[str, set[str]]:
         for key in ("meeting", "meetingid", "meeting_id"):
             if key in attributes:
                 values["meetings"].add(attributes[key])
-        if tag == "meeting" and "id" in attributes:
+        if tag == "meeting" and "observation" in attributes:
+            values["meetings"].add(attributes["observation"])
+        elif tag == "meeting" and "id" in attributes:
             values["meetings"].add(attributes["id"])
         for key in ("series", "meetingseries", "meeting_series"):
             if key in attributes:
@@ -1501,43 +1554,215 @@ def _ami_metadata_from_xml(path: Path) -> dict[str, set[str]]:
     return values
 
 
-def parse_ami_partition_definition(
+class _AmiPartitionPageParser(HTMLParser):
+    _TARGET_HEADINGS = {
+        "scenario-only partition of meetings": "scenario-only",
+        "full-corpus partition of meetings": "full-corpus",
+    }
+
+    def __init__(self) -> None:
+        super().__init__(convert_charrefs=True)
+        self.sections: dict[str, list[str]] = {
+            "scenario-only": [],
+            "full-corpus": [],
+        }
+        self.heading_counts = {"scenario-only": 0, "full-corpus": 0}
+        self._active_section: str | None = None
+        self._heading_depth: int | None = None
+        self._heading_text: list[str] = []
+        self._line_depth: int | None = None
+        self._line_text: list[str] = []
+
+    @staticmethod
+    def _classes(attributes: list[tuple[str, str | None]]) -> set[str]:
+        return {
+            value
+            for name, raw_value in attributes
+            if name.casefold() == "class" and raw_value is not None
+            for value in raw_value.split()
+        }
+
+    def handle_starttag(
+        self,
+        tag: str,
+        attrs: list[tuple[str, str | None]],
+    ) -> None:
+        normalized_tag = tag.casefold()
+        if normalized_tag == "h1":
+            self._heading_depth = 1
+            self._heading_text = []
+        elif self._heading_depth is not None:
+            self._heading_depth += 1
+        if (
+            normalized_tag == "p"
+            and self._active_section is not None
+            and "line891" in self._classes(attrs)
+        ):
+            self._line_depth = 1
+            self._line_text = []
+        elif self._line_depth is not None:
+            self._line_depth += 1
+
+    def handle_endtag(self, tag: str) -> None:
+        normalized_tag = tag.casefold()
+        if self._line_depth is not None:
+            self._line_depth -= 1
+            if self._line_depth == 0:
+                if normalized_tag != "p":
+                    raise ValueError("AMI partition page line state is malformed")
+                self.sections[self._active_section].append("".join(self._line_text))
+                self._line_depth = None
+                self._line_text = []
+        if self._heading_depth is not None:
+            self._heading_depth -= 1
+            if self._heading_depth == 0:
+                if normalized_tag != "h1":
+                    raise ValueError("AMI partition page heading state is malformed")
+                heading = " ".join("".join(self._heading_text).split()).casefold()
+                self._active_section = self._TARGET_HEADINGS.get(heading)
+                if self._active_section is not None:
+                    self.heading_counts[self._active_section] += 1
+                self._heading_depth = None
+                self._heading_text = []
+
+    def handle_data(self, data: str) -> None:
+        if self._heading_depth is not None:
+            self._heading_text.append(data)
+        if self._line_depth is not None:
+            self._line_text.append(data)
+
+
+_AMI_PARTITION_TOKEN = re.compile(
+    r"(?P<meeting>[A-Z]{2}\d{4}[a-z]?)(?:\s*\(no\s+(?P<excluded>[a-z])\))?"
+)
+
+
+def _parse_ami_partition_group(
+    line: str,
+    *,
+    available_meeting_ids: set[str],
+) -> tuple[str, set[str]]:
+    label_match = re.match(r"\s*(SA|SB|SC)\b", line)
+    if label_match is None:
+        raise ValueError("AMI partition section is missing an SA, SB, or SC group")
+    meeting_ids: set[str] = set()
+    tokens = list(_AMI_PARTITION_TOKEN.finditer(line))
+    if not tokens:
+        raise ValueError("AMI partition group has no meeting tokens")
+    for token in tokens:
+        meeting = token.group("meeting")
+        excluded = token.group("excluded")
+        if excluded is not None and meeting[-1:].islower():
+            raise ValueError(
+                "AMI partition exclusion cannot target an exact observation ID"
+            )
+        if meeting in available_meeting_ids:
+            resolved = {meeting}
+        else:
+            resolved = {
+                observation_id
+                for observation_id in available_meeting_ids
+                if observation_id.startswith(meeting)
+                and observation_id[len(meeting):].islower()
+                and len(observation_id) == len(meeting) + 1
+            }
+        if not resolved:
+            raise ValueError(f"AMI partition token is unresolved: {meeting}")
+        if excluded is not None:
+            excluded_id = f"{meeting}{excluded}"
+            resolved.discard(excluded_id)
+        if not resolved:
+            raise ValueError(f"AMI partition token resolves to no meetings: {meeting}")
+        meeting_ids.update(resolved)
+    return label_match.group(1), meeting_ids
+
+
+def parse_ami_partition_source(
     path: Path,
     *,
     project_root: Path,
+    expected_sha256: str,
+    available_meeting_ids: set[str],
 ) -> dict[str, Any]:
+    if not isinstance(expected_sha256, str) or re.fullmatch(r"[0-9A-F]{64}", expected_sha256) is None:
+        raise ValueError("AMI partition source expected hash is invalid")
+    if not isinstance(available_meeting_ids, set) or not available_meeting_ids:
+        raise ValueError("AMI partition source meeting universe is invalid")
+    if any(
+        not isinstance(meeting_id, str)
+        or re.fullmatch(r"[A-Z]{2}\d{4}[a-z]?", meeting_id) is None
+        for meeting_id in available_meeting_ids
+    ):
+        raise ValueError("AMI partition source meeting universe contains an invalid ID")
     try:
-        text = path.read_text(encoding="utf-8-sig")
+        source_bytes = path.read_bytes()
+        source_text = source_bytes.decode("utf-8", errors="strict")
     except (OSError, UnicodeError) as exc:
-        raise ValueError(f"AMI partition metadata is unreadable: {path}") from exc
-    meeting_ids: set[str] = set()
-    for line_number, raw_line in enumerate(text.splitlines(), start=1):
-        line = raw_line.split("#", 1)[0].strip()
-        if not line:
-            continue
-        for token in re.split(r"[\s,]+", line):
-            if re.fullmatch(r"[A-Z]{2,4}\d{4}[a-z]?", token) is None:
-                raise ValueError(
-                    f"AMI partition metadata line {line_number} has an invalid meeting ID"
-                )
-            meeting_ids.add(token)
-    if not meeting_ids:
-        raise ValueError("AMI partition metadata has no official meeting membership")
-    partition_id = path.stem
-    normalized_identity = partition_id.casefold().replace("_", "-")
-    if "scenario" in normalized_identity:
-        partition_type = "scenario"
-    elif "full" in normalized_identity and "corpus" in normalized_identity:
-        partition_type = "full_corpus"
-    else:
-        raise ValueError(
-            f"AMI partition metadata type is not approved: {partition_id}"
-        )
+        raise ValueError(f"AMI partition source is unreadable: {path}") from exc
+    source_sha256 = hashlib.sha256(source_bytes).hexdigest().upper()
+    if source_sha256 != expected_sha256:
+        raise ValueError("AMI partition source hash drifted")
+    source_file_path = normalized_relative_path(path, project_root)
+    if source_file_path != AMI_PARTITIONS_SOURCE_RELATIVE_PATH:
+        raise ValueError("AMI partition source path is not the pinned official page")
+    parser = _AmiPartitionPageParser()
+    try:
+        parser.feed(source_text)
+        parser.close()
+    except (ValueError, OSError) as exc:
+        raise ValueError("AMI partition source HTML is malformed") from exc
+    definitions: list[dict[str, Any]] = []
+    for partition_id, partition_type in (
+        ("scenario-only", "scenario"),
+        ("full-corpus", "full_corpus"),
+    ):
+        if parser.heading_counts[partition_id] != 1:
+            raise ValueError(
+                "AMI partition source must contain exactly one "
+                f"{('Scenario-only' if partition_id == 'scenario-only' else 'Full-corpus')} section"
+            )
+        lines = parser.sections[partition_id]
+        if len(lines) != 3:
+            raise ValueError(
+                f"AMI partition source must contain exactly three {partition_id} groups"
+            )
+        groups: dict[str, set[str]] = {}
+        for line in lines:
+            group_id, meeting_ids = _parse_ami_partition_group(
+                line,
+                available_meeting_ids=available_meeting_ids,
+            )
+            if group_id in groups:
+                raise ValueError(f"AMI partition source has duplicate {partition_id} {group_id}")
+            groups[group_id] = meeting_ids
+        if set(groups) != {"SA", "SB", "SC"}:
+            raise ValueError(f"AMI partition source has incomplete {partition_id} groups")
+        definition_meetings = set().union(*groups.values())
+        if not definition_meetings:
+            raise ValueError(f"AMI partition source {partition_id} is empty")
+        definitions.append({
+            "partition_id": partition_id,
+            "partition_type": partition_type,
+            "source_file_path": source_file_path,
+            "meeting_ids": sorted(definition_meetings),
+        })
+    definitions.sort(key=lambda definition: definition["partition_id"])
+    scenario = next(
+        definition for definition in definitions
+        if definition["partition_type"] == "scenario"
+    )
+    full_corpus = next(
+        definition for definition in definitions
+        if definition["partition_type"] == "full_corpus"
+    )
+    if not set(scenario["meeting_ids"]) < set(full_corpus["meeting_ids"]):
+        raise ValueError("AMI full-corpus partition is not a strict superset")
     return {
-        "partition_id": partition_id,
-        "partition_type": partition_type,
-        "source_file_path": normalized_relative_path(path, project_root),
-        "meeting_ids": sorted(meeting_ids),
+        "canonical_source_url": AMI_PARTITIONS_SOURCE_URL,
+        "source_file_path": source_file_path,
+        "source_sha256": source_sha256,
+        "meeting_universe_source_file_path": None,
+        "partition_definitions": definitions,
     }
 
 
@@ -1561,12 +1786,9 @@ def _require_complete_ami_partition_definitions(
     ]
     if len(partition_ids) != len(set(partition_ids)):
         raise ValueError("duplicate AMI partition ID")
-    source_paths = [
-        definition["source_file_path"]
-        for definition in definitions
-    ]
-    if len(source_paths) != len(set(source_paths)):
-        raise ValueError("duplicate AMI partition source path")
+    expected_ids = {"scenario-only", "full-corpus"}
+    if set(partition_ids) != expected_ids:
+        raise ValueError("AMI partition definition IDs must be exactly scenario-only and full-corpus")
     partition_types = {
         definition["partition_type"]
         for definition in definitions
@@ -1582,6 +1804,8 @@ def validate_ami_material(
     *,
     archive_path: Path,
     extraction: Mapping[str, Any],
+    partitions_source_path: Path,
+    partitions_expected_sha256: str = AMI_PARTITIONS_SOURCE_SHA256,
     project_root: Path | None = None,
 ) -> dict[str, Any]:
     try:
@@ -1627,8 +1851,7 @@ def validate_ami_material(
         "recording_sites": set(),
         "scenarios": set(),
     }
-    partition_paths: list[str] = []
-    partition_definitions: list[dict[str, Any]] = []
+    meeting_universe_path: Path | None = None
     participant_required = frozenset({
         "speaker_aligned_orthographic_transcript",
         "timing_link",
@@ -1688,14 +1911,10 @@ def validate_ami_material(
                         "path": project_relative_path,
                         "reason": "required_participant_identity_missing",
                     })
+            if member_path == "corpusResources/meetings.xml":
+                meeting_universe_path = extracted_path
             if classification == "official_partition_metadata":
-                partition_paths.append(project_relative_path)
-                partition_definition = parse_ami_partition_definition(
-                    extracted_path,
-                    project_root=inventory_root,
-                )
-                partition_definitions.append(partition_definition)
-                details = partition_definition
+                raise ValueError("AMI archive must not contain derived partition files")
             disposition = "included"
         else:
             disposition = "excluded"
@@ -1713,7 +1932,9 @@ def validate_ami_material(
         })
 
     missing_classifications = (
-        AMI_SELECTED_CLASSIFICATIONS - observed_selected_classifications
+        AMI_SELECTED_CLASSIFICATIONS
+        - {"official_partition_metadata"}
+        - observed_selected_classifications
     )
     if missing_classifications:
         raise ValueError(
@@ -1721,7 +1942,34 @@ def validate_ami_material(
             + sorted(missing_classifications)[0]
         )
 
+    if meeting_universe_path is None:
+        raise ValueError("AMI meeting universe source is missing")
+    meeting_universe_ids = _ami_metadata_from_xml(meeting_universe_path)["meetings"]
+    if not meeting_universe_ids:
+        raise ValueError("AMI meeting universe source has no meeting IDs")
+    partition_source = parse_ami_partition_source(
+        partitions_source_path,
+        project_root=inventory_root,
+        expected_sha256=partitions_expected_sha256,
+        available_meeting_ids=meeting_universe_ids,
+    )
+    meeting_universe_source_file_path = normalized_relative_path(
+        meeting_universe_path,
+        inventory_root,
+    )
+    partition_source["meeting_universe_source_file_path"] = meeting_universe_source_file_path
+    partition_definitions = partition_source["partition_definitions"]
     _require_complete_ami_partition_definitions(partition_definitions)
+    source_path = partitions_source_path.resolve(strict=True)
+    selected_paths.append(source_path)
+    quality_items.append({
+        "path": partition_source["source_file_path"],
+        "classification": "official_partition_metadata",
+        "disposition": "included",
+        "reason": "selected_official_partition_source",
+        "selected_file_path": partition_source["source_file_path"],
+        "details": partition_source,
+    })
     hash_inventory = build_hash_inventory(
         dataset_id=AMI_DATASET_ID,
         project_root=inventory_root,
@@ -1763,7 +2011,8 @@ def validate_ami_material(
             "scenarios": sorted(source_values["scenarios"]),
             "source_corpus": AMI_DATASET_ID,
             "multi_party_applicability": True,
-            "official_partition_paths": sorted(partition_paths),
+            "official_partition_paths": [partition_source["source_file_path"]],
+            "official_partition_source": partition_source,
             "official_partition_definitions": partition_definitions,
             "official_partition_definitions_are_source_metadata_only": True,
             "project_case_assignments": [],

@@ -591,6 +591,12 @@ REQUIRED_FILES = [
     ("file.research_source_emotion_state_split_manifest_v2_schema", "research/sources/emotion_state/split_manifest_v2.schema.json", "EMOTION-STATE split-manifest v2 schema"),
     ("file.research_source_emotion_state_cohort_release_evidence_v1_schema", "research/sources/emotion_state/cohort_release_evidence_v1.schema.json", "EMOTION-STATE cohort-release evidence schema"),
     ("file.research_source_emotion_state_phase_a_verification_guard_policy", "research/sources/emotion_state/phase_a_verification_guard_policy.json", "EMOTION-STATE Phase A verification guard policy"),
+    ("file.research_source_emotion_state_crema_manifest", "research/sources/emotion_state/datasets/crema-d-v1.0-audio-wav.manifest.json", "CREMA-D verified dataset manifest"),
+    ("file.research_source_emotion_state_crema_hashes", "research/sources/emotion_state/datasets/crema-d-v1.0-audio-wav.hashes.json", "CREMA-D verified hash inventory"),
+    ("file.research_source_emotion_state_crema_quality", "research/sources/emotion_state/datasets/crema-d-v1.0-audio-wav.quality.json", "CREMA-D verified quality inventory"),
+    ("file.research_source_emotion_state_ami_manifest", "research/sources/emotion_state/datasets/ami-manual-annotations-v1.6.2.manifest.json", "AMI verified dataset manifest"),
+    ("file.research_source_emotion_state_ami_hashes", "research/sources/emotion_state/datasets/ami-manual-annotations-v1.6.2.hashes.json", "AMI verified hash inventory"),
+    ("file.research_source_emotion_state_ami_quality", "research/sources/emotion_state/datasets/ami-manual-annotations-v1.6.2.quality.json", "AMI verified quality inventory"),
 ]
 
 OPTIONAL_ENV_VARS = [

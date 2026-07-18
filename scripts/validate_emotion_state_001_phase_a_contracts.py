@@ -200,7 +200,7 @@ def validate_source() -> None:
         dataset_contract["selected_public_datasets"] == list(SELECTED_PUBLIC_DATASETS),
         dataset_contract,
     )
-    assert_condition(dataset_contract["dataset_download_authorized"] is False, dataset_contract)
+    assert_condition(dataset_contract["dataset_download_authorized"] is True, dataset_contract)
     assert_condition(dataset_contract["dataset_evaluation_started"] is False, dataset_contract)
     assert_condition(dataset_contract["runtime_influence_allowed"] is False, dataset_contract)
     assert_condition(dataset_contract["domain_boundary"] == "acted_and_non_sales_corpora_support_offline_thesis_comparison_only", dataset_contract)
@@ -360,7 +360,7 @@ def validate_contracts() -> None:
         "crema-d-v1.0-audio-wav",
         "ami-manual-annotations-v1.6.2",
     ], case)
-    assert_condition(case["dataset_download_authorized"] is False, case)
+    assert_condition(case["dataset_download_authorized"] is True, case)
     assert_condition(case["dataset_evaluation_started"] is False, case)
     assert_condition(case["private_data_access_allowed"] is False, case)
     assert_condition(case["provider_operations_allowed"] is False, case)

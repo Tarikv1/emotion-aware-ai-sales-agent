@@ -1,6 +1,6 @@
-# EMOTION-STATE-001 Material-Pending Phase A Contracts
+# EMOTION-STATE-001 Phase A Public-Dataset Contracts
 
-EMOTION-STATE-001 is an offline, public-only material-pending checkpoint. It selects exactly `crema-d-v1.0-audio-wav` and `ami-manual-annotations-v1.6.2`, but it does not authorize or start dataset download or evaluation. `phase_a_complete=false`.
+EMOTION-STATE-001 is an offline, public-only checkpoint with `material-pending` and `complete` modes. The tracked inputs select exactly `crema-d-v1.0-audio-wav` and `ami-manual-annotations-v1.6.2`. The bounded complete state does not start dataset evaluation or authorize runtime use.
 
 CREMA-D is controlled acoustic-sensitivity evidence only. AMI manual annotations are conversational-mechanics evidence only. Neither source supplies customer internal-emotion truth or mappings to hesitation, frustration, confusion, interest, or disengagement.
 
@@ -9,6 +9,8 @@ CREMA-D is controlled acoustic-sensitivity evidence only. AMI manual annotations
 ```powershell
 python -m unittest scripts.test_emotion_state_001_open_dataset_gate scripts.test_emotion_state_001_closeout_hardening -v
 python scripts\validate_emotion_state_001_phase_a_contracts.py --section prepublication --mode material-pending
+python scripts\validate_emotion_state_001_phase_a_contracts.py --section materials
+python scripts\validate_emotion_state_001_phase_a_contracts.py --section prepublication --mode complete
 ```
 
 Prepublication validation reads no canonical result/report pair and never invokes the Phase A runner. Candidate and accepted-checkpoint readback are also pure readback paths and never invoke the runner.
@@ -71,6 +73,17 @@ The completion scope is `source_provenance_dataset_selection_and_offline_contrac
 - `emotion_state_phase_a_verification_evidence`: byte-bound Git/input inventory, dependency closure, guarded command ledger, and deterministic verification digests.
 - `emotion_state_annotation_contracts`, `emotion_state_contracts`, `emotion_pattern_contracts`, and `emotion_state_brain_extension`: offline reviewer, evidence, pattern, and detached BRAIN-extension contracts.
 
+## Complete Input Evidence
+
+Both manifests were accessed on `2026-07-17`. The complete tracked evidence is:
+
+- CREMA-D: 7,446 selected files, 628,813,439 selected bytes, 7,446 included and 22,367 excluded quality entries; manifest SHA-256 `6E86F06358E4AD172C72BE1692CFF37291D9D5763DD7F6F5C7CE7405E7E01248`, hash-inventory SHA-256 `AD58D8165C683847DF246F923FF466722C7F628FE8D81679F618FA5EB3031C87`, quality-inventory SHA-256 `455D6A010855F209B4DC4C67F67E4222FAB81601861745B5B5E79E7942B92682`, source revision `f3b8611a309886568dfa957141775b2e05add04a`. The 7,442 WAV files are only one subset of the 7,446 selected inventory entries and are not advertised as the included inventory count.
+- AMI: 2,074 selected files, 180,905,698 selected bytes, 2,074 included and 3,086 excluded quality entries; archive SHA-256 `B56E5BABB2496B8795DEEEDA7E71178D7FBC9963F94276CF2A3F4B56EBBC9F9D`, manifest SHA-256 `3904D4A3A9EDF53B06A65354E02FBE1BDD44361B5E196FC6DD4A3882C74911DE`, hash-inventory SHA-256 `CE7F837A2A44DFEE44691C4BA8B5B0D7766E46D6616986CF565A6300056DEAEE`, and quality-inventory SHA-256 `A376A6C0D5F89770525936299717F1595B743489B593DC4E5CE88AB08ACB22C9`.
+
+`materials` validation requires the ignored local raw bytes. `checkpoint` validation reads the tracked evidence and canonical pair, so it can run in a clean clone; it validates what the captured complete run recorded but cannot re-prove raw-byte availability.
+
+`phase_a_complete=true` is derived only for the scope `source_provenance_dataset_manifests_offline_contracts_and_cohort_release_gate_only`. It is not an accepted checkpoint until the deferred candidate passes independent readback and explicit acceptance.
+
 ## Hard Boundary
 
-Download and evaluation have not started. Source adaptation remains false. No private data, provider or ElevenLabs operation, outbound/customer call, simulation, runtime/prompt/KB/voice/LLM/phone/Procedure/dashboard change, or runtime activation occurred. This checkpoint makes no production, customer, PSTN, ASR, latency, provider-feasibility, or internal-emotion claim.
+Dataset evaluation has not started. Source adaptation remains false. No private data, provider or ElevenLabs operation, outbound/customer call, simulation, runtime/prompt/KB/voice/LLM/phone/Procedure/dashboard change, or runtime activation occurred. Live aggregate release, public-dataset evaluation, Phase B, private research, provider feasibility, and runtime activation remain blocked. This checkpoint makes no production, customer, PSTN, ASR, latency, provider-feasibility, or internal-emotion claim.
