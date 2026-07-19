@@ -1,9 +1,13 @@
 from __future__ import annotations
 
 import hashlib
+import importlib.metadata
 import json
 import math
+import re
+import struct
 import sys
+import sysconfig
 from collections.abc import Mapping
 from pathlib import Path
 from typing import Any
@@ -347,36 +351,85 @@ def validate_environment_lock(payload: Any) -> dict[str, Any]:
     )
 
 
-def validate_environment_identity(
-    *,
-    lock_path: Path,
-    wheelhouse_path: Path,
-    python_executable: Path,
-    python_version: tuple[int, int],
+def _normalize_distribution_name(value: str) -> str:
+    return re.sub(r"[-_.]+", "-", value).lower()
+
+
+def _current_interpreter_platform() -> str:
+    implementation_platform = (
+        sysconfig.get_platform().lower().replace("-", "_").replace(".", "_")
+    )
+    pointer_bits = struct.calcsize("P") * 8
+    if (
+        sys.platform == "win32"
+        and implementation_platform == "win_amd64"
+        and pointer_bits == 64
+    ):
+        return "win_amd64"
+    return f"{sys.platform}:{implementation_platform}:{pointer_bits}"
+
+
+def _installed_distributions() -> dict[str, str]:
+    installed: dict[str, str] = {}
+    for distribution in importlib.metadata.distributions():
+        raw_name = distribution.metadata["Name"]
+        if not isinstance(raw_name, str) or not raw_name:
+            raise ValueError("installed distribution is missing a name")
+        name = _normalize_distribution_name(raw_name)
+        if name in installed:
+            raise ValueError("installed distributions contain duplicate names")
+        installed[name] = distribution.version
+    return installed
+
+
+def _validate_installed_distributions(
+    lock: Mapping[str, Any],
     installed_distributions: Mapping[str, str],
-) -> dict[str, Any]:
-    expected_python = EVALUATION_PYTHON_PATH.resolve()
-    actual_python = Path(python_executable).resolve()
-    if str(actual_python).casefold() != str(expected_python).casefold():
-        raise ValueError("evaluation Python executable does not match fixed path")
-    if tuple(python_version) != (3, 11):
-        raise ValueError("evaluation Python version must be 3.11")
-    lock_file = Path(lock_path)
-    if not lock_file.is_file():
-        raise ValueError("environment lock is missing")
-    lock = validate_environment_lock(load_json_strict(lock_file))
+) -> dict[str, str]:
     expected_installed = {
         distribution["name"]: distribution["version"]
         for distribution in lock["distributions"]
     }
     normalized_installed: dict[str, str] = {}
     for raw_name, version in installed_distributions.items():
-        name = str(raw_name).lower().replace("_", "-").replace(".", "-")
+        name = _normalize_distribution_name(str(raw_name))
         if name in normalized_installed:
             raise ValueError("installed distributions contain duplicate names")
         normalized_installed[name] = str(version)
     if normalized_installed != expected_installed:
         raise ValueError("installed distributions do not match environment lock")
+    return dict(sorted(normalized_installed.items()))
+
+
+def validate_environment_identity(
+    *,
+    lock_path: Path,
+    wheelhouse_path: Path,
+) -> dict[str, Any]:
+    expected_python = EVALUATION_PYTHON_PATH.resolve()
+    actual_python = Path(sys.executable).resolve()
+    if str(actual_python).casefold() != str(expected_python).casefold():
+        raise ValueError("evaluation Python executable does not match fixed path")
+    actual_python_version = (
+        sys.version_info.major,
+        sys.version_info.minor,
+    )
+    if actual_python_version != (3, 11):
+        raise ValueError("evaluation Python version must be 3.11")
+    lock_file = Path(lock_path)
+    if not lock_file.is_file():
+        raise ValueError("environment lock is missing")
+    lock = validate_environment_lock(load_json_strict(lock_file))
+    actual_platform = _current_interpreter_platform()
+    if actual_platform != lock["platform"]:
+        raise ValueError(
+            "evaluation Python platform does not match environment lock: "
+            f"{actual_platform}"
+        )
+    normalized_installed = _validate_installed_distributions(
+        lock,
+        _installed_distributions(),
+    )
 
     wheelhouse = Path(wheelhouse_path)
     wheels = {
@@ -390,6 +443,7 @@ def validate_environment_identity(
     }
     if set(wheels) != expected_filenames:
         raise ValueError("wheel set does not match environment lock")
+    wheel_hashes: dict[str, str] = {}
     for distribution in lock["distributions"]:
         wheel = wheels[distribution["wheel_filename"]]
         digest = hashlib.sha256(wheel.read_bytes()).hexdigest().upper()
@@ -397,11 +451,14 @@ def validate_environment_identity(
             raise ValueError(
                 f"wheel hash does not match environment lock: {wheel.name}"
             )
+        wheel_hashes[wheel.name] = digest
     return {
         "python_executable": str(actual_python),
-        "python_version": "3.11",
-        "installed_distributions": dict(sorted(normalized_installed.items())),
+        "python_version": ".".join(str(value) for value in actual_python_version),
+        "platform": actual_platform,
+        "installed_distributions": normalized_installed,
         "wheel_count": len(wheels),
+        "wheel_hashes": wheel_hashes,
     }
 
 
@@ -474,6 +531,12 @@ def main() -> int:
         validate_feature_schema(load_json_strict(FEATURE_SCHEMA_PATH))
         validate_split_schema(load_json_strict(SPLIT_SCHEMA_PATH))
         validate_environment_lock(load_json_strict(ENVIRONMENT_LOCK_PATH))
+        validate_environment_identity(
+            lock_path=ENVIRONMENT_LOCK_PATH,
+            wheelhouse_path=(
+                ROOT / ".tmp/emotion-state-002-phase-b/dependencies/wheelhouse"
+            ),
+        )
     except (OSError, ValueError) as error:
         print(
             f"EMOTION-STATE-002 Phase B frozen contract validation failed: {error}",

@@ -1,8 +1,6 @@
 from __future__ import annotations
 
-import importlib.metadata
 import json
-import re
 import shutil
 import subprocess
 import sys
@@ -11,6 +9,7 @@ import unittest
 from copy import deepcopy
 from pathlib import Path
 from typing import Any, Callable
+from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[1]
 CONFIG = ROOT / "research/experiments/cases/emotion-state-002-phase-b-config.json"
@@ -32,6 +31,11 @@ EVALUATION_PYTHON = (
     ROOT / ".tmp/emotion-state-002-phase-b/venv/Scripts/python.exe"
 )
 RUNTIME_MANIFEST = ROOT / "runtime/runtime_manifest.json"
+IMPLEMENTATION_PLAN = (
+    ROOT
+    / "docs/superpowers/plans/"
+    "2026-07-19-emotion-state-phase-b-public-data-feasibility.md"
+)
 ENVIRONMENT_TEST_TEMP = (
     ROOT / ".tmp/emotion-state-002-phase-b/dependencies/test-temp"
 )
@@ -340,14 +344,6 @@ class PhaseBContractTests(unittest.TestCase):
 
 
 class EnvironmentLockTests(unittest.TestCase):
-    @staticmethod
-    def _installed_distributions() -> dict[str, str]:
-        return {
-            re.sub(r"[-_.]+", "-", distribution.metadata["Name"]).lower():
-            distribution.version
-            for distribution in importlib.metadata.distributions()
-        }
-
     def test_canonical_lock_matches_wheels_and_exact_runtime_identity(self) -> None:
         from scripts.validate_emotion_state_002_phase_b import (
             load_json_strict,
@@ -359,20 +355,66 @@ class EnvironmentLockTests(unittest.TestCase):
         report = validate_environment_identity(
             lock_path=ENVIRONMENT_LOCK,
             wheelhouse_path=WHEELHOUSE,
-            python_executable=Path(sys.executable),
-            python_version=sys.version_info[:2],
-            installed_distributions=self._installed_distributions(),
         )
         expected = {
             distribution["name"]: distribution["version"]
             for distribution in lock["distributions"]
         }
+        expected_hashes = {
+            distribution["wheel_filename"]: distribution["sha256"]
+            for distribution in lock["distributions"]
+        }
         self.assertEqual(report["installed_distributions"], expected)
         self.assertEqual(report["wheel_count"], len(expected))
+        self.assertEqual(report["wheel_hashes"], expected_hashes)
         self.assertEqual(
             Path(report["python_executable"]).resolve(),
             EVALUATION_PYTHON.resolve(),
         )
+        self.assertEqual(report["python_version"], "3.11")
+        self.assertEqual(report["platform"], "win_amd64")
+
+    def test_cli_accepts_only_fixed_evaluation_interpreter(self) -> None:
+        validator = ROOT / "scripts/validate_emotion_state_002_phase_b.py"
+        fixed = subprocess.run(
+            [str(EVALUATION_PYTHON), str(validator)],
+            cwd=ROOT,
+            capture_output=True,
+            check=False,
+            text=True,
+        )
+        self.assertEqual(fixed.returncode, 0, fixed.stderr)
+        self.assertEqual(
+            fixed.stdout,
+            "EMOTION-STATE-002 Phase B frozen contract validation passed.\n",
+        )
+        self.assertEqual(fixed.stderr, "")
+
+        system_python = Path(sys.base_prefix) / "python.exe"
+        self.assertTrue(system_python.is_file())
+        self.assertNotEqual(system_python.resolve(), EVALUATION_PYTHON.resolve())
+        refused = subprocess.run(
+            [str(system_python), str(validator)],
+            cwd=ROOT,
+            capture_output=True,
+            check=False,
+            text=True,
+        )
+        self.assertNotEqual(refused.returncode, 0)
+        self.assertEqual(refused.stdout, "")
+        self.assertIn("evaluation Python", refused.stderr)
+
+    def test_actual_interpreter_platform_mismatch_fails_closed(self) -> None:
+        from scripts.validate_emotion_state_002_phase_b import (
+            validate_environment_identity,
+        )
+
+        with patch("sysconfig.get_platform", return_value="linux-x86_64"):
+            with self.assertRaisesRegex(ValueError, "platform"):
+                validate_environment_identity(
+                    lock_path=ENVIRONMENT_LOCK,
+                    wheelhouse_path=WHEELHOUSE,
+                )
 
     def test_direct_dependencies_are_exact_and_runtime_manifest_is_untouched(
         self,
@@ -446,10 +488,9 @@ class EnvironmentLockTests(unittest.TestCase):
                 with self.assertRaisesRegex(ValueError, field):
                     validate_environment_lock(mutated)
 
-    def test_identity_refuses_system_python_missing_lock_extra_and_mismatch(
-        self,
-    ) -> None:
+    def test_identity_refuses_missing_lock_extra_and_version_mismatch(self) -> None:
         from scripts.validate_emotion_state_002_phase_b import (
+            _validate_installed_distributions,
             load_json_strict,
             validate_environment_identity,
             validate_environment_lock,
@@ -460,18 +501,6 @@ class EnvironmentLockTests(unittest.TestCase):
             distribution["name"]: distribution["version"]
             for distribution in lock["distributions"]
         }
-        common = {
-            "lock_path": ENVIRONMENT_LOCK,
-            "wheelhouse_path": WHEELHOUSE,
-            "python_version": (3, 11),
-            "installed_distributions": installed,
-        }
-
-        with self.assertRaisesRegex(ValueError, "evaluation Python"):
-            validate_environment_identity(
-                python_executable=ROOT / "python.exe",
-                **common,
-            )
 
         ENVIRONMENT_TEST_TEMP.mkdir(parents=True, exist_ok=True)
         with tempfile.TemporaryDirectory(dir=ENVIRONMENT_TEST_TEMP) as directory:
@@ -480,35 +509,52 @@ class EnvironmentLockTests(unittest.TestCase):
                 validate_environment_identity(
                     lock_path=missing,
                     wheelhouse_path=WHEELHOUSE,
-                    python_executable=EVALUATION_PYTHON,
-                    python_version=(3, 11),
-                    installed_distributions=installed,
                 )
 
         extra = dict(installed)
         extra["pip"] = "24.0"
         with self.assertRaisesRegex(ValueError, "installed distributions"):
-            validate_environment_identity(
-                python_executable=EVALUATION_PYTHON,
-                installed_distributions=extra,
-                **{key: value for key, value in common.items()
-                   if key != "installed_distributions"},
-            )
+            _validate_installed_distributions(lock, extra)
 
         mismatch = dict(installed)
         mismatch["numpy"] = "0.0.0"
         with self.assertRaisesRegex(ValueError, "installed distributions"):
-            validate_environment_identity(
-                python_executable=EVALUATION_PYTHON,
-                installed_distributions=mismatch,
-                **{key: value for key, value in common.items()
-                   if key != "installed_distributions"},
-            )
+            _validate_installed_distributions(lock, mismatch)
 
+    def test_missing_extra_and_tampered_wheels_fail_closed(self) -> None:
+        from scripts.validate_emotion_state_002_phase_b import (
+            load_json_strict,
+            validate_environment_identity,
+            validate_environment_lock,
+        )
+
+        lock = validate_environment_lock(load_json_strict(ENVIRONMENT_LOCK))
+        ENVIRONMENT_TEST_TEMP.mkdir(parents=True, exist_ok=True)
         with tempfile.TemporaryDirectory(dir=ENVIRONMENT_TEST_TEMP) as directory:
             temporary_wheelhouse = Path(directory)
             for wheel in WHEELHOUSE.glob("*.whl"):
                 shutil.copy2(wheel, temporary_wheelhouse / wheel.name)
+
+            missing = temporary_wheelhouse / lock["distributions"][0][
+                "wheel_filename"
+            ]
+            missing.unlink()
+            with self.assertRaisesRegex(ValueError, "wheel set"):
+                validate_environment_identity(
+                    lock_path=ENVIRONMENT_LOCK,
+                    wheelhouse_path=temporary_wheelhouse,
+                )
+            shutil.copy2(WHEELHOUSE / missing.name, missing)
+
+            extra = temporary_wheelhouse / "unexpected-1.0-py3-none-any.whl"
+            extra.write_bytes(b"unexpected")
+            with self.assertRaisesRegex(ValueError, "wheel set"):
+                validate_environment_identity(
+                    lock_path=ENVIRONMENT_LOCK,
+                    wheelhouse_path=temporary_wheelhouse,
+                )
+            extra.unlink()
+
             first = temporary_wheelhouse / lock["distributions"][0][
                 "wheel_filename"
             ]
@@ -517,10 +563,28 @@ class EnvironmentLockTests(unittest.TestCase):
                 validate_environment_identity(
                     lock_path=ENVIRONMENT_LOCK,
                     wheelhouse_path=temporary_wheelhouse,
-                    python_executable=EVALUATION_PYTHON,
-                    python_version=(3, 11),
-                    installed_distributions=installed,
                 )
+
+    def test_step_7_keeps_pip_out_of_evaluation_venv(self) -> None:
+        plan = IMPLEMENTATION_PLAN.read_text(encoding="utf-8")
+        task_3 = plan.split(
+            "### Task 3: Review and lock the isolated research environment",
+            1,
+        )[1].split("### Task 4:", 1)[0]
+        step_7 = task_3.split(
+            "- [ ] **Step 7: Add lock and runtime-identity tests**",
+            1,
+        )[1].split("- [ ] **Step 8:", 1)[0]
+        self.assertNotIn(
+            ".tmp/emotion-state-002-phase-b/venv/Scripts/python.exe -m pip",
+            step_7,
+        )
+        self.assertIn(
+            ".tmp/emotion-state-002-phase-b/resolver-venv/Scripts/python.exe "
+            "-m pip --python "
+            ".tmp/emotion-state-002-phase-b/venv/Scripts/python.exe check",
+            step_7,
+        )
 
 
 class CremaReferenceLabelTests(unittest.TestCase):

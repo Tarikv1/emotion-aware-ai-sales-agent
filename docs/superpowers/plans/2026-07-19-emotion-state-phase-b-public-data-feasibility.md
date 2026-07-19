@@ -931,16 +931,20 @@ Tests must prove that:
 - direct dependencies are exactly NumPy, SciPy, and scikit-learn;
 - the lock never enters a product/runtime manifest;
 - evaluation refuses system Python, a missing lock, an extra distribution, or
-  a version/hash mismatch.
+  a version/hash mismatch;
+- actual interpreter platform/architecture must match locked `win_amd64`;
+- a missing, extra, or hash-mismatched wheel fails closed.
 
 Run:
 
 ```powershell
 .tmp/emotion-state-002-phase-b/venv/Scripts/python.exe -m unittest scripts.test_emotion_state_002_phase_b -v
-.tmp/emotion-state-002-phase-b/venv/Scripts/python.exe -m pip check
+.tmp/emotion-state-002-phase-b/resolver-venv/Scripts/python.exe -m pip --python .tmp/emotion-state-002-phase-b/venv/Scripts/python.exe check
 ```
 
-Expected: all tests pass and the environment identity report matches the lock.
+Expected: all tests pass, resolver-side `pip check` reports no broken
+requirements, and the environment identity report matches the lock. The
+pip-free evaluation interpreter must never run `-m pip`.
 
 - [ ] **Step 8: Commit Task 3**
 
