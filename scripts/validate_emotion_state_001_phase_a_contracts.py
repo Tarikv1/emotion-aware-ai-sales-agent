@@ -586,21 +586,11 @@ def validate_cohort() -> None:
 
 
 def validate_materials() -> None:
-    evidence_root = ROOT / "research" / "sources" / "emotion_state" / "datasets"
-    expected_paths = [
-        evidence_root / f"{dataset_id}.{suffix}.json"
-        for dataset_id in (
-            "crema-d-v1.0-audio-wav",
-            "ami-manual-annotations-v1.6.2",
-        )
-        for suffix in ("manifest", "hashes", "quality")
-    ]
-    for path in expected_paths:
-        assert_condition(
-            path.exists(),
-            f"material verification evidence is missing: {path.relative_to(ROOT)}",
-        )
-        read_json(path)
+    from scripts.build_emotion_state_public_dataset_manifests import (
+        validate_existing_dataset_evidence,
+    )
+
+    validate_existing_dataset_evidence(project_root=ROOT)
 
 
 def _active_phase_a_guard_context() -> bool:
@@ -669,6 +659,7 @@ def _readback_pair(
 ) -> dict[str, Any]:
     from scripts.emotion_state_phase_a_contracts import (
         render_phase_a_report,
+        validate_complete_payload,
         validate_material_pending_payload,
     )
     from scripts.run_emotion_state_001_phase_a_contracts import (
@@ -688,7 +679,15 @@ def _readback_pair(
     verify_evidence_pair_bytes(result_bytes, report_bytes)
     result = json.loads(result_bytes.decode("utf-8"))
     assert_condition(isinstance(result, dict), "checkpoint result must be an object")
-    validate_material_pending_payload(result)
+    mode_status = (result.get("mode"), result.get("status"))
+    if mode_status == ("material_pending", "material_pending"):
+        validate_material_pending_payload(result)
+        expected_complete = False
+    elif mode_status == ("complete", "complete"):
+        validate_complete_payload(result, root=ROOT)
+        expected_complete = True
+    else:
+        raise ValueError("checkpoint mode/status pair is invalid")
     result_sha256 = hashlib.sha256(result_bytes).hexdigest().upper()
     expected_report = render_phase_a_report(result, result_sha256=result_sha256)
     assert_condition(
@@ -701,7 +700,8 @@ def _readback_pair(
         result,
     )
     assert_condition(
-        result.get("readiness_boundary", {}).get("phase_a_complete") is False,
+        result.get("readiness_boundary", {}).get("phase_a_complete")
+        is expected_complete,
         result,
     )
     return result

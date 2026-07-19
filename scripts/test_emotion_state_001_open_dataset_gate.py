@@ -1060,6 +1060,341 @@ class DatasetMaterialValidationTests(unittest.TestCase):
         )
         return materials, output_root
 
+    @classmethod
+    def _fixed_material_fixture(
+        cls,
+        root: Path,
+    ) -> tuple[Path, Path, str]:
+        from unittest.mock import patch
+
+        from scripts.build_emotion_state_public_dataset_manifests import (
+            write_dataset_evidence,
+        )
+        from scripts.emotion_state_public_dataset_contracts import (
+            AMI_DATASET_ID,
+            CREMA_DATASET_ID,
+            safe_extract_ami_archive,
+            sha256_file,
+            validate_crema_material,
+        )
+
+        public_root = root / "data" / "public" / "emotion-state"
+        crema_root = public_root / "crema-d-v1.0" / "repository"
+        cls._crema_fixture(crema_root)
+        ami_root = public_root / "ami-manual-annotations-v1.6.2"
+        archive = ami_root / "ami_manual_1.6.2.zip"
+        extract_root = ami_root / "extracted"
+        cls._ami_archive(archive)
+        extraction = safe_extract_ami_archive(archive, extract_root)
+        source = cls._ami_partition_source(
+            root,
+            body="""
+<html><body>
+<h1>Scenario-only Partition of meetings</h1>
+<p class="line891"><strong>SA</strong>: ES2002a</p>
+<p class="line891"><strong>SB</strong>: ES2002a</p>
+<p class="line891"><strong>SC</strong>: ES2002a</p>
+<h1>Full-corpus partition of meetings</h1>
+<p class="line891"><strong>SA</strong>: ES2002a, ES2002b</p>
+<p class="line891"><strong>SB</strong>: ES2002a</p>
+<p class="line891"><strong>SC</strong>: ES2002a</p>
+</body></html>
+""".strip(),
+        )
+        source_sha256 = sha256_file(source)
+        materials = {
+            CREMA_DATASET_ID: validate_crema_material(
+                crema_root,
+                project_root=root,
+                git_lfs_oids_by_path=cls._synthetic_crema_lfs_oids(crema_root),
+            ),
+            AMI_DATASET_ID: cls._validate_synthetic_ami_material(
+                extract_root,
+                archive_path=archive,
+                extraction=extraction,
+                project_root=root,
+            ),
+        }
+        output_root = (
+            root / "research" / "sources" / "emotion_state" / "datasets"
+        )
+        with patch(
+            "scripts.build_emotion_state_public_dataset_manifests."
+            "AMI_PARTITIONS_SOURCE_SHA256",
+            source_sha256,
+        ):
+            write_dataset_evidence(
+                output_root=output_root,
+                accessed_on="2026-07-17",
+                materials=materials,
+                project_root=root,
+            )
+        return crema_root, source, source_sha256
+
+    def test_existing_material_validator_recomputes_and_rejects_raw_drift(
+        self,
+    ) -> None:
+        from unittest.mock import patch
+
+        from scripts import build_emotion_state_public_dataset_manifests as builder
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            crema_root, _source, source_sha256 = self._fixed_material_fixture(root)
+            with patch.object(
+                builder,
+                "discover_crema_lfs_oids",
+                side_effect=lambda *_args, **_kwargs: (
+                    self._synthetic_crema_lfs_oids(crema_root)
+                ),
+            ), patch.object(
+                builder,
+                "AMI_PARTITIONS_SOURCE_SHA256",
+                source_sha256,
+            ):
+                builder.validate_existing_dataset_evidence(project_root=root)
+                self._write_pcm_wav(
+                    crema_root / "AudioWAV" / "1001_DFA_ANG_XX.wav",
+                    sample_value=101,
+                )
+                with self.assertRaisesRegex(
+                    ValueError,
+                    (
+                        "tracked dataset evidence does not match existing raw "
+                        f"material: dataset_id={builder.CREMA_DATASET_ID} "
+                        "suffix=manifest tracked_sha256=[0-9A-F]{64} "
+                        "recomputed_sha256=[0-9A-F]{64}"
+                    ),
+                ):
+                    builder.validate_existing_dataset_evidence(project_root=root)
+
+    def test_existing_material_validator_reports_safe_recomputation_stage(
+        self,
+    ) -> None:
+        from unittest.mock import patch
+
+        from scripts import build_emotion_state_public_dataset_manifests as builder
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            _crema_root, _source, source_sha256 = self._fixed_material_fixture(root)
+            with (
+                patch.object(
+                    builder,
+                    "discover_crema_lfs_oids",
+                    side_effect=ValueError(
+                        "Git LFS pointer is unexpectedly large: "
+                        "AudioWAV/1001_DFA_ANG_XX.wav"
+                    ),
+                ),
+                patch.object(
+                    builder,
+                    "AMI_PARTITIONS_SOURCE_SHA256",
+                    source_sha256,
+                ),
+                self.assertRaisesRegex(
+                    ValueError,
+                    (
+                        "tracked dataset evidence does not match existing raw "
+                        "material: stage=crema-lfs-discovery "
+                        "cause=Git LFS pointer is unexpectedly large: "
+                        "AudioWAV/1001_DFA_ANG_XX.wav"
+                    ),
+                ),
+            ):
+                builder.validate_existing_dataset_evidence(project_root=root)
+
+    def test_materials_section_rejects_tracked_evidence_without_raw_material(
+        self,
+    ) -> None:
+        from scripts import validate_emotion_state_001_phase_a_contracts as validator
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            source_root = (
+                ROOT / "research" / "sources" / "emotion_state" / "datasets"
+            )
+            target_root = (
+                root / "research" / "sources" / "emotion_state" / "datasets"
+            )
+            target_root.mkdir(parents=True)
+            for source in source_root.glob("*.json"):
+                (target_root / source.name).write_bytes(source.read_bytes())
+            with mock.patch.object(validator, "ROOT", root), self.assertRaisesRegex(
+                ValueError,
+                "tracked dataset evidence does not match existing raw material",
+            ):
+                validator.validate_materials()
+
+    def test_existing_material_validator_guards_fixed_paths_before_raw_read(
+        self,
+    ) -> None:
+        from unittest.mock import call, patch
+
+        from scripts import build_emotion_state_public_dataset_manifests as builder
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            public_root = root / "data" / "public" / "emotion-state"
+            (public_root / "crema-d-v1.0" / "repository").mkdir(parents=True)
+            ami_root = public_root / "ami-manual-annotations-v1.6.2"
+            (ami_root / "extracted").mkdir(parents=True)
+            (ami_root / "official-partitions").mkdir()
+            (ami_root / "ami_manual_1.6.2.zip").write_bytes(b"synthetic")
+            (ami_root / "official-partitions" / "datasets.shtml").write_bytes(
+                b"synthetic"
+            )
+            evidence_root = (
+                root / "research" / "sources" / "emotion_state" / "datasets"
+            )
+            evidence_root.mkdir(parents=True)
+            tracked_root = (
+                ROOT / "research" / "sources" / "emotion_state" / "datasets"
+            )
+            for source in tracked_root.glob("*.json"):
+                (evidence_root / source.name).write_bytes(source.read_bytes())
+
+            def guarded_path(
+                value: str | Path,
+                *,
+                project_root: Path,
+                field: str,
+                must_exist: bool,
+                must_be_directory: bool | None = None,
+            ) -> Path:
+                if field == "ami-archive":
+                    raise ValueError("ami-archive resolves outside public material")
+                candidate = Path(value)
+                return (
+                    candidate
+                    if candidate.is_absolute()
+                    else project_root / candidate
+                ).resolve(strict=True)
+
+            with (
+                patch.object(
+                    builder,
+                    "_guard_public_path",
+                    side_effect=guarded_path,
+                ) as guard,
+                patch.object(
+                    builder,
+                    "discover_crema_lfs_oids",
+                    side_effect=AssertionError("raw material read before guard"),
+                ) as discover,
+                self.assertRaisesRegex(
+                    ValueError,
+                    "tracked dataset evidence does not match existing raw material",
+                ),
+            ):
+                builder.validate_existing_dataset_evidence(project_root=root)
+
+            self.assertEqual(
+                guard.call_args_list,
+                [
+                    call(
+                        builder.PUBLIC_DATASET_ROOT,
+                        project_root=root.resolve(strict=True),
+                        field="material-root",
+                        must_exist=True,
+                        must_be_directory=True,
+                    ),
+                    call(
+                        builder.PUBLIC_DATASET_ROOT
+                        / "crema-d-v1.0"
+                        / "repository",
+                        project_root=root.resolve(strict=True),
+                        field="crema-root",
+                        must_exist=True,
+                        must_be_directory=True,
+                    ),
+                    call(
+                        builder.PUBLIC_DATASET_ROOT
+                        / "ami-manual-annotations-v1.6.2",
+                        project_root=root.resolve(strict=True),
+                        field="ami-root",
+                        must_exist=True,
+                        must_be_directory=True,
+                    ),
+                    call(
+                        builder.PUBLIC_DATASET_ROOT
+                        / "ami-manual-annotations-v1.6.2"
+                        / "ami_manual_1.6.2.zip",
+                        project_root=root.resolve(strict=True),
+                        field="ami-archive",
+                        must_exist=True,
+                        must_be_directory=False,
+                    ),
+                ],
+            )
+            discover.assert_not_called()
+
+    def test_existing_material_validator_rejects_reparse_public_root_before_resolution(
+        self,
+    ) -> None:
+        from unittest.mock import patch
+
+        from scripts import build_emotion_state_public_dataset_manifests as builder
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            public_root = root / "data" / "public" / "emotion-state"
+            public_root.mkdir(parents=True)
+            path_type = type(root)
+            real_lstat = path_type.lstat
+            real_resolve = path_type.resolve
+            resolve_calls: list[Path] = []
+
+            def mocked_lstat(path: Path):
+                status = real_lstat(path)
+                if Path(os.path.abspath(path)) == public_root:
+                    return mock.Mock(
+                        st_mode=status.st_mode,
+                        st_file_attributes=0x400,
+                    )
+                return status
+
+            def tracked_resolve(
+                path: Path,
+                strict: bool = False,
+            ) -> Path:
+                resolve_calls.append(path)
+                return real_resolve(path, strict=strict)
+
+            with (
+                patch.object(path_type, "lstat", new=mocked_lstat),
+                patch.object(path_type, "resolve", new=tracked_resolve),
+                patch.object(
+                    builder,
+                    "discover_crema_lfs_oids",
+                    side_effect=AssertionError("Git/LFS discovery reached"),
+                ),
+                patch.object(
+                    builder,
+                    "inspect_ami_archive",
+                    side_effect=AssertionError("archive inspection reached"),
+                ),
+                patch.object(
+                    builder,
+                    "validate_crema_material",
+                    side_effect=AssertionError("CREMA verifier reached"),
+                ),
+                patch.object(
+                    builder,
+                    "validate_ami_material",
+                    side_effect=AssertionError("AMI verifier reached"),
+                ),
+                patch.object(
+                    path_type,
+                    "read_bytes",
+                    side_effect=AssertionError("raw/evidence read reached"),
+                ),
+                self.assertRaisesRegex(ValueError, "link or reparse"),
+            ):
+                builder.validate_existing_dataset_evidence(project_root=root)
+
+            self.assertEqual(resolve_calls, [])
+
     @staticmethod
     def _independent_ami_partition_definition_copies(
         materials: dict[str, dict[str, object]],
@@ -2238,6 +2573,7 @@ class DatasetMaterialValidationTests(unittest.TestCase):
 
     def test_crema_lfs_pointer_parser_and_local_git_command_boundary(self) -> None:
         from scripts.build_emotion_state_public_dataset_manifests import (
+            _run_git_command,
             discover_crema_lfs_oids,
             parse_git_lfs_pointer,
         )
@@ -2317,6 +2653,44 @@ class DatasetMaterialValidationTests(unittest.TestCase):
                 self.assertEqual(cwd, root.resolve())
                 self.assertGreater(timeout_seconds, 0)
                 self.assertLessEqual(timeout_seconds, 60)
+
+        archive_argv = [
+            "git",
+            "-C",
+            "synthetic-repository",
+            "archive",
+            "--format=tar",
+            "HEAD",
+            "--",
+            "AudioWAV",
+        ]
+        completed = subprocess.CompletedProcess(
+            archive_argv,
+            returncode=0,
+            stdout=b"synthetic archive",
+            stderr=b"",
+        )
+        with (
+            mock.patch.dict(os.environ, {}, clear=True),
+            mock.patch(
+                "scripts.build_emotion_state_public_dataset_manifests."
+                "subprocess.run",
+                return_value=completed,
+            ) as run,
+        ):
+            self.assertEqual(
+                _run_git_command(
+                    archive_argv,
+                    cwd=Path("synthetic-project"),
+                    timeout_seconds=1,
+                ),
+                b"synthetic archive",
+            )
+            self.assertNotIn("GIT_LFS_SKIP_SMUDGE", os.environ)
+            self.assertEqual(
+                run.call_args.kwargs["env"]["GIT_LFS_SKIP_SMUDGE"],
+                "1",
+            )
 
     def test_crema_lfs_discovery_fails_closed_for_revision_pointer_and_binding_errors(
         self,
@@ -5182,6 +5556,206 @@ class PhaseACompleteStateTests(unittest.TestCase):
             },
         }
 
+    def complete_payload(
+        self,
+        *,
+        verification_overrides: dict[str, object] | None = None,
+    ) -> dict:
+        from scripts.emotion_state_phase_a_contracts import (
+            EXPECTED_IMPLEMENTATION_BASELINE_COMMIT,
+            TASKS_1_7_CHANGE_INVENTORY_PATHS,
+            TASKS_1_7_CLOSURE_EDGES,
+            TASKS_1_7_CLOSURE_PATHS,
+            build_phase_a_payload,
+            validate_complete_payload,
+        )
+        from scripts.emotion_state_phase_a_verification_evidence import (
+            FROZEN_GUARD_POLICY_DIGEST,
+            REQUIRED_PHASE_A_COMMAND_IDS,
+            canonical_json_sha256,
+            derive_repository_gate_statuses,
+            expected_argv_for_command,
+        )
+
+        baseline_commit = EXPECTED_IMPLEMENTATION_BASELINE_COMMIT
+        head_commit = "c" * 40
+        ledger = [
+            {
+                "sequence_number": sequence_number,
+                "command_id": command_id,
+                "argv": expected_argv_for_command(
+                    command_id,
+                    mode="complete",
+                    baseline_commit=baseline_commit,
+                    head_commit=head_commit,
+                ),
+                "working_directory": ".",
+                "exit_status": 0,
+            }
+            for sequence_number, command_id in enumerate(
+                REQUIRED_PHASE_A_COMMAND_IDS,
+                start=1,
+            )
+        ]
+        committed_inventory = [
+            {
+                "path": path,
+                "git_mode": "100644",
+                "sha256": "B" * 64,
+            }
+            for path in TASKS_1_7_CHANGE_INVENTORY_PATHS
+        ]
+        closure_inventory = [
+            {
+                "path": path,
+                "git_mode": "100644",
+                "sha256": "C" * 64,
+            }
+            for path in TASKS_1_7_CLOSURE_PATHS
+        ]
+        closure_edges = [
+            {
+                "consumer": consumer,
+                "dependency": dependency,
+                "edge_type": edge_type,
+            }
+            for consumer, dependency, edge_type in TASKS_1_7_CLOSURE_EDGES
+        ]
+        evidence_root = (
+            ROOT / "research" / "sources" / "emotion_state" / "datasets"
+        )
+        dataset_manifest_digests = {}
+        dataset_hash_inventory_digests = {}
+        dataset_quality_inventory_digests = {}
+        for dataset_id in (
+            "crema-d-v1.0-audio-wav",
+            "ami-manual-annotations-v1.6.2",
+        ):
+            dataset_manifest_digests[dataset_id] = hashlib.sha256(
+                (evidence_root / f"{dataset_id}.manifest.json").read_bytes()
+            ).hexdigest().upper()
+            dataset_hash_inventory_digests[dataset_id] = hashlib.sha256(
+                (evidence_root / f"{dataset_id}.hashes.json").read_bytes()
+            ).hexdigest().upper()
+            dataset_quality_inventory_digests[dataset_id] = hashlib.sha256(
+                (evidence_root / f"{dataset_id}.quality.json").read_bytes()
+            ).hexdigest().upper()
+        uncommitted_inventory: list[dict[str, object]] = []
+        tree_payload = {
+            "implementation_baseline_commit": baseline_commit,
+            "repository_head_commit": head_commit,
+            "committed_change_inventory": committed_inventory,
+            "uncommitted_change_inventory": uncommitted_inventory,
+            "executable_dependency_closure_inventory": closure_inventory,
+            "executable_dependency_closure_edges": closure_edges,
+            "dataset_manifest_digests": dataset_manifest_digests,
+            "dataset_hash_inventory_digests": dataset_hash_inventory_digests,
+            "dataset_quality_inventory_digests": dataset_quality_inventory_digests,
+            "executed_command_ledger": ledger,
+            "guard_policy_digest": FROZEN_GUARD_POLICY_DIGEST,
+        }
+        tree_digest = canonical_json_sha256(tree_payload)
+        verification = {
+            "implementation_baseline_commit": baseline_commit,
+            "repository_head_commit": head_commit,
+            "committed_change_inventory": committed_inventory,
+            "uncommitted_change_inventory": uncommitted_inventory,
+            "executable_dependency_closure_inventory": closure_inventory,
+            "executable_dependency_closure_edges": closure_edges,
+            "dataset_manifest_digests": dataset_manifest_digests,
+            "dataset_hash_inventory_digests": dataset_hash_inventory_digests,
+            "dataset_quality_inventory_digests": (
+                dataset_quality_inventory_digests
+            ),
+            "executed_command_ledger": ledger,
+            "guard_policy_digest": FROZEN_GUARD_POLICY_DIGEST,
+            "verification_input_path_inventory_digest": canonical_json_sha256({
+                "committed_change_inventory": committed_inventory,
+                "uncommitted_change_inventory": uncommitted_inventory,
+            }),
+            "executable_dependency_closure_digest": canonical_json_sha256({
+                "edges": closure_edges,
+                "inventory": closure_inventory,
+            }),
+            "executed_command_ledger_digest": canonical_json_sha256(ledger),
+            "verification_input_tree_digest": tree_digest,
+            "verification_run_id": hashlib.sha256(
+                (
+                    "emotion-state-phase-a-validator-v1:"
+                    + tree_digest
+                ).encode("utf-8")
+            ).hexdigest().upper(),
+            "guarded_command_results": {
+                entry["command_id"]: entry["exit_status"]
+                for entry in ledger
+            },
+            "repository_gate_statuses": derive_repository_gate_statuses(
+                ledger,
+                "complete",
+                baseline_commit=baseline_commit,
+                head_commit=head_commit,
+            ),
+            "provider_environment_scrubbed": True,
+            "private_path_guard_enabled": True,
+            "network_guard_enabled": True,
+            "prepublication_byte_lock_reread_status": "pass",
+        }
+        if verification_overrides:
+            verification.update(verification_overrides)
+        payload = build_phase_a_payload(
+            ROOT / "research/experiments/cases/emotion-state-001-phase-a-contracts.json",
+            root=ROOT,
+            verification_evidence=verification,
+            mode="complete",
+        )
+        return validate_complete_payload(payload, root=ROOT)
+
+    def test_complete_payload_and_builder_reject_unowned_top_level_fields(
+        self,
+    ) -> None:
+        from scripts.emotion_state_phase_a_contracts import validate_complete_payload
+
+        payload = self.complete_payload()
+        payload["unexpected_unbound_payload"] = "must-not-pass-through"
+        with self.assertRaisesRegex(ValueError, "exactly.*owned fields"):
+            validate_complete_payload(payload, root=ROOT)
+
+        with self.assertRaisesRegex(ValueError, "verification evidence fields"):
+            self.complete_payload(
+                verification_overrides={
+                    "unexpected_unbound_payload": "must-not-pass-through",
+                }
+            )
+
+    def test_complete_payload_rejects_malformed_readiness_boundary_shape(
+        self,
+    ) -> None:
+        from scripts.emotion_state_phase_a_contracts import validate_complete_payload
+
+        mutations = {
+            "wrong_type": [],
+            "missing": None,
+            "extra": None,
+        }
+        for label, replacement in mutations.items():
+            with self.subTest(label=label):
+                payload = self.complete_payload()
+                if label == "missing":
+                    readiness = dict(payload["readiness_boundary"])
+                    readiness.pop("runtime_activation_unblocked")
+                    replacement = readiness
+                elif label == "extra":
+                    replacement = {
+                        **payload["readiness_boundary"],
+                        "unexpected_unowned_boundary": False,
+                    }
+                payload["readiness_boundary"] = replacement
+                with self.assertRaisesRegex(
+                    ValueError,
+                    "readiness_boundary.*exact|exact.*readiness_boundary",
+                ):
+                    validate_complete_payload(payload, root=ROOT)
+
     def test_completion_requires_both_verified_manifests_and_every_closed_gate(
         self,
     ) -> None:
@@ -5214,6 +5788,12 @@ class PhaseACompleteStateTests(unittest.TestCase):
             "repository_gate_statuses": derive_repository_gate_statuses(
                 gate["executed_command_ledger"],
                 "complete",
+                baseline_commit=gate["verification_evidence"][
+                    "implementation_baseline_commit"
+                ],
+                head_commit=gate["verification_evidence"][
+                    "repository_head_commit"
+                ],
             ),
         }
         payload = build_phase_a_payload(
@@ -5348,6 +5928,49 @@ class PhaseACompleteStateTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "derived-only"):
             determine_phase_a_completion(evidence)
 
+    def test_ledger_commit_range_must_match_recorded_verification_commits(
+        self,
+    ) -> None:
+        from scripts.emotion_state_phase_a_contracts import determine_phase_a_completion
+
+        evidence = self.complete_gate_evidence()
+        diff_entry = next(
+            entry
+            for entry in evidence["executed_command_ledger"]
+            if entry["command_id"] == "git-diff-check"
+        )
+        diff_entry["argv"][-1] = f"{'d' * 40}..{'e' * 40}"
+
+        incomplete = determine_phase_a_completion(evidence)
+
+        self.assertFalse(incomplete["phase_a_complete"])
+        self.assertIn(
+            "repository_gates_not_verified",
+            incomplete["blocking_reason_codes"],
+        )
+
+    def test_non_mapping_verification_evidence_is_controlled_incomplete(
+        self,
+    ) -> None:
+        from scripts.emotion_state_phase_a_contracts import determine_phase_a_completion
+
+        for malformed in ([], "invalid", 1, None):
+            with self.subTest(malformed=malformed):
+                evidence = self.complete_gate_evidence()
+                evidence["verification_evidence"] = malformed
+
+                incomplete = determine_phase_a_completion(evidence)
+
+                self.assertFalse(incomplete["phase_a_complete"])
+                self.assertIn(
+                    "verification_evidence_not_verified",
+                    incomplete["blocking_reason_codes"],
+                )
+                self.assertIn(
+                    "repository_gates_not_verified",
+                    incomplete["blocking_reason_codes"],
+                )
+
     def test_every_complete_gate_component_has_negative_coverage(self) -> None:
         from scripts.emotion_state_phase_a_contracts import determine_phase_a_completion
 
@@ -5468,6 +6091,29 @@ class PhaseAStateMachineTests(unittest.TestCase):
         from scripts.test_emotion_state_001_closeout_hardening import sample_payload
 
         return sample_payload()
+
+    @staticmethod
+    def complete_payload() -> dict[str, object]:
+        return PhaseACompleteStateTests().complete_payload()
+
+    @staticmethod
+    def _write_readback_pair(
+        payload: dict[str, object],
+        result: Path,
+        report: Path,
+    ) -> None:
+        from scripts.emotion_state_phase_a_contracts import render_phase_a_report
+
+        result.parent.mkdir(parents=True)
+        result.write_text(
+            json.dumps(payload, indent=2, ensure_ascii=False) + "\n",
+            encoding="utf-8",
+        )
+        result_sha256 = hashlib.sha256(result.read_bytes()).hexdigest().upper()
+        report.write_text(
+            render_phase_a_report(payload, result_sha256=result_sha256),
+            encoding="utf-8",
+        )
 
     def test_selected_but_unverified_materials_keep_phase_incomplete(self) -> None:
         from scripts.emotion_state_phase_a_contracts import (
@@ -5739,6 +6385,64 @@ class PhaseAStateMachineTests(unittest.TestCase):
                 ),
                 recovery_before,
             )
+
+    def test_complete_checkpoint_readback_uses_only_tracked_evidence(
+        self,
+    ) -> None:
+        from scripts import validate_emotion_state_001_phase_a_contracts as validator
+
+        with tempfile.TemporaryDirectory(
+            prefix="emotion-state-complete-checkpoint-readback-",
+            dir=ROOT / ".tmp",
+        ) as temporary_directory:
+            root = Path(temporary_directory)
+            result = root / "canonical" / "result.json"
+            report = result.with_name("report.md")
+            recovery = root / "recovery"
+            self._write_readback_pair(self.complete_payload(), result, report)
+            with (
+                mock.patch.object(validator, "RESULT", result),
+                mock.patch.object(validator, "REPORT", report),
+                mock.patch.object(validator, "RECOVERY_DIR", recovery, create=True),
+                mock.patch.object(
+                    validator.subprocess,
+                    "run",
+                    side_effect=AssertionError("checkpoint launched subprocess"),
+                ) as run,
+                mock.patch.object(
+                    validator.subprocess,
+                    "Popen",
+                    side_effect=AssertionError("checkpoint launched subprocess"),
+                ) as popen,
+            ):
+                validator.validate_checkpoint_readback()
+            run.assert_not_called()
+            popen.assert_not_called()
+
+    def test_checkpoint_readback_rejects_unknown_or_mismatched_mode_status(
+        self,
+    ) -> None:
+        from scripts import validate_emotion_state_001_phase_a_contracts as validator
+
+        mutations = (
+            ("unknown", "unknown"),
+            ("complete", "material_pending"),
+            ("material_pending", "complete"),
+        )
+        for mode, status in mutations:
+            with self.subTest(mode=mode, status=status), tempfile.TemporaryDirectory(
+                prefix="emotion-state-invalid-checkpoint-readback-",
+                dir=ROOT / ".tmp",
+            ) as temporary_directory:
+                root = Path(temporary_directory)
+                result = root / "canonical" / "result.json"
+                report = result.with_name("report.md")
+                payload = self.complete_payload()
+                payload["mode"] = mode
+                payload["status"] = status
+                self._write_readback_pair(payload, result, report)
+                with self.assertRaises((AssertionError, ValueError)):
+                    validator._readback_pair(result, report)
 
     def test_checkpoint_readback_rejects_live_candidate_transaction(self) -> None:
         from scripts import run_emotion_state_001_phase_a_contracts as runner
@@ -8185,6 +8889,8 @@ class VerificationEvidenceTests(unittest.TestCase):
                 derive_repository_gate_statuses(
                     complete_ledger,
                     "complete",
+                    baseline_commit=baseline_commit,
+                    head_commit=head_commit,
                 ).items()
             ),
             tuple((gate_id, "pass") for gate_id in expected_gate_commands),
@@ -8194,6 +8900,8 @@ class VerificationEvidenceTests(unittest.TestCase):
                 derive_repository_gate_statuses(
                     material_pending_ledger,
                     "material-pending",
+                    baseline_commit=baseline_commit,
+                    head_commit=head_commit,
                 ).items()
             ),
             tuple(
@@ -8234,6 +8942,8 @@ class VerificationEvidenceTests(unittest.TestCase):
                     derive_repository_gate_statuses(
                         invalid_ledger,
                         "complete",
+                        baseline_commit=baseline_commit,
+                        head_commit=head_commit,
                     )
 
         derived_projection_cases = {
@@ -8250,12 +8960,20 @@ class VerificationEvidenceTests(unittest.TestCase):
             with self.subTest(caller_projection=field_name):
                 request = {
                     "mode": "complete",
+                    "implementation_baseline_commit": baseline_commit,
+                    "repository_head_commit": head_commit,
                     "executed_command_ledger": deepcopy(complete_ledger),
                     field_name: caller_projection,
                 }
                 self.assertEqual(
                     tuple(request),
-                    ("mode", "executed_command_ledger", field_name),
+                    (
+                        "mode",
+                        "implementation_baseline_commit",
+                        "repository_head_commit",
+                        "executed_command_ledger",
+                        field_name,
+                    ),
                 )
                 with self.assertRaisesRegex(ValueError, "derived-only"):
                     validate_completion_evidence_request(request)

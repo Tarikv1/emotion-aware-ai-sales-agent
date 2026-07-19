@@ -310,9 +310,6 @@ _CREDENTIAL_ENVIRONMENT_NAME_RE = re.compile(
     CREDENTIAL_ENVIRONMENT_NAME_PATTERN,
     re.IGNORECASE,
 )
-_LOWERCASE_COMMIT_RANGE_RE = re.compile(
-    r"(?P<baseline>[0-9a-f]{40})\.\.(?P<head>[0-9a-f]{40})"
-)
 _CANONICAL_COMMAND_KEYS = (
     "sequence_number",
     "command_id",
@@ -1286,6 +1283,8 @@ def _validate_argv_template(
     argv_template: tuple[str, ...],
     *,
     mode: str,
+    baseline_commit: str,
+    head_commit: str,
 ) -> None:
     if len(actual_argv) != len(argv_template):
         raise ValueError("command argv does not match the guard policy template")
@@ -1295,7 +1294,8 @@ def _validate_argv_template(
                 raise ValueError("command argv mode substitution mismatch")
             continue
         if template == "{baseline_commit}..{head_commit}":
-            if _LOWERCASE_COMMIT_RANGE_RE.fullmatch(actual) is None:
+            expected_range = f"{baseline_commit}..{head_commit}"
+            if actual != expected_range:
                 raise ValueError("command argv commit substitution mismatch")
             continue
         if actual != template:
@@ -1305,12 +1305,21 @@ def _validate_argv_template(
 def derive_repository_gate_statuses(
     ledger: Sequence[Mapping[str, object]],
     mode: str,
+    *,
+    baseline_commit: str,
+    head_commit: str,
 ) -> dict[str, str]:
     """Validate the exact mode ledger and derive repository-gate pass statuses."""
 
     if isinstance(ledger, (str, bytes)) or not isinstance(ledger, Sequence):
         raise ValueError("executed command ledger must be a sequence")
     expected_commands = _expected_mode_commands(mode)
+    expected_argv_for_command(
+        expected_commands[0][0],
+        mode=mode,
+        baseline_commit=baseline_commit,
+        head_commit=head_commit,
+    )
     if len(ledger) != len(expected_commands):
         raise ValueError("executed command ledger has the wrong command count")
 
@@ -1344,6 +1353,8 @@ def derive_repository_gate_statuses(
             actual_argv,
             expected_argv_template,
             mode=mode,
+            baseline_commit=baseline_commit,
+            head_commit=head_commit,
         )
         present_command_ids.add(expected_command_id)
 
@@ -1367,19 +1378,32 @@ def validate_completion_evidence_request(
         raise ValueError(
             f"completion evidence fields are derived-only and cannot be supplied: {names}"
         )
-    expected_fields = {"mode", "executed_command_ledger"}
+    expected_fields = {
+        "mode",
+        "implementation_baseline_commit",
+        "repository_head_commit",
+        "executed_command_ledger",
+    }
     if set(request) != expected_fields:
         raise ValueError(
-            "completion evidence request must contain only mode and "
-            "executed_command_ledger"
+            "completion evidence request fields mismatch"
         )
     mode = request["mode"]
     if not isinstance(mode, str):
         raise ValueError("completion evidence mode must be text")
     ledger = request["executed_command_ledger"]
-    derive_repository_gate_statuses(ledger, mode)
+    baseline_commit = request["implementation_baseline_commit"]
+    head_commit = request["repository_head_commit"]
+    derive_repository_gate_statuses(
+        ledger,
+        mode,
+        baseline_commit=baseline_commit,
+        head_commit=head_commit,
+    )
     return {
         "mode": mode,
+        "implementation_baseline_commit": baseline_commit,
+        "repository_head_commit": head_commit,
         "executed_command_ledger": [
             dict(entry)
             for entry in ledger
@@ -4409,6 +4433,8 @@ def finalize_verification_evidence(
     repository_gate_statuses = derive_repository_gate_statuses(
         ledger,
         prepared_state.mode,
+        baseline_commit=baseline,
+        head_commit=head,
     )
     guarded_command_results = {
         entry["command_id"]: entry["exit_status"]

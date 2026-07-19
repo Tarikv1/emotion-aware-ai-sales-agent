@@ -232,6 +232,8 @@ def sample_verification_evidence() -> dict[str, object]:
         "repository_gate_statuses": derive_repository_gate_statuses(
             ledger,
             "material-pending",
+            baseline_commit=baseline_commit,
+            head_commit=head_commit,
         ),
         "provider_environment_scrubbed": True,
         "private_path_guard_enabled": True,
@@ -324,6 +326,8 @@ def refresh_sample_verification_digests(payload: dict[str, object]) -> None:
     payload["repository_gate_statuses"] = derive_repository_gate_statuses(
         ledger,
         "material-pending",
+        baseline_commit=payload["implementation_baseline_commit"],
+        head_commit=payload["repository_head_commit"],
     )
     payload["verification_input_path_inventory_digest"] = canonical_json_sha256({
         "committed_change_inventory": payload["committed_change_inventory"],
@@ -1519,7 +1523,7 @@ class PublicationAcceptanceTests(unittest.TestCase):
         )
 
         validate_material_pending_payload(sample_payload())
-        self.assertEqual(len(TASKS_1_7_CLOSURE_EDGES), 76)
+        self.assertEqual(len(TASKS_1_7_CLOSURE_EDGES), 77)
 
         payload = sample_payload()
         payload["executable_dependency_closure_edges"] = payload[
@@ -1604,8 +1608,6 @@ class PublicationAcceptanceTests(unittest.TestCase):
             + ".."
             + payload["repository_head_commit"]
         )
-        refresh_sample_verification_digests(payload)
-
         with self.assertRaisesRegex(ValueError, "commit|range"):
             validate_material_pending_payload(payload)
 
@@ -1682,6 +1684,87 @@ class PublicationAcceptanceTests(unittest.TestCase):
         self.assertFalse(self.report_path.exists())
         self.assertFalse(self.receipt_path.exists())
         self.assertFalse(self.journal_path.exists())
+
+    def test_malformed_complete_readiness_shape_leaves_no_publication_residue(
+        self,
+    ) -> None:
+        from scripts.emotion_state_phase_a_contracts import (
+            COMPLETE_PAYLOAD_FIELDS,
+            COMPLETE_READINESS_BOUNDARY_FIELDS,
+        )
+
+        for mutation in ("wrong_type", "missing", "extra"):
+            for entry_point in ("stage", "direct"):
+                with self.subTest(mutation=mutation, entry_point=entry_point):
+                    payload = {
+                        field: None
+                        for field in COMPLETE_PAYLOAD_FIELDS
+                    }
+                    payload.update({
+                        "checkpoint_id": (
+                            "EMOTION-STATE-001-phase-a-contracts"
+                        ),
+                        "schema_version": 2,
+                        "mode": "complete",
+                        "status": "complete",
+                        "selected_public_datasets": [
+                            "crema-d-v1.0-audio-wav",
+                            "ami-manual-annotations-v1.6.2",
+                        ],
+                        "dataset_download_authorized": True,
+                        "dataset_evaluation_started": False,
+                        "readiness_boundary": {
+                            field: False
+                            for field in COMPLETE_READINESS_BOUNDARY_FIELDS
+                        },
+                    })
+                    if mutation == "wrong_type":
+                        payload["readiness_boundary"] = []
+                    else:
+                        readiness = dict(payload["readiness_boundary"])
+                        if mutation == "missing":
+                            readiness.pop("runtime_activation_unblocked")
+                        else:
+                            readiness["unexpected_unowned_boundary"] = False
+                        payload["readiness_boundary"] = readiness
+                    function = (
+                        publication_runner.stage_evidence_pair
+                        if entry_point == "stage"
+                        else publication_runner._write_evidence_pair_transaction
+                    )
+                    with (
+                        mock.patch.object(
+                            publication_runner,
+                            "_write_text_fsynced",
+                        ) as write_guard,
+                        mock.patch.object(
+                            publication_runner.os,
+                            "replace",
+                        ) as replace_guard,
+                        mock.patch.object(
+                            publication_runner,
+                            "publication_lock",
+                        ) as lock_guard,
+                        self.assertRaisesRegex(
+                            EvidencePublicationError,
+                            "complete payload is invalid.*readiness_boundary",
+                        ),
+                    ):
+                        function(
+                            payload,
+                            mode="complete",
+                            receipt_path=self.receipt_path,
+                            result_path=self.result_path,
+                            report_path=self.report_path,
+                            recovery_dir=self.recovery_dir,
+                        )
+                    write_guard.assert_not_called()
+                    replace_guard.assert_not_called()
+                    lock_guard.assert_not_called()
+                    self.assertFalse(self.result_path.exists())
+                    self.assertFalse(self.report_path.exists())
+                    self.assertFalse(self.receipt_path.exists())
+                    self.assertFalse(self.journal_path.exists())
 
     def test_candidate_readback_rejects_third_directory_entry(self) -> None:
         from scripts.run_emotion_state_001_phase_a_contracts import (

@@ -101,6 +101,33 @@ VERIFICATION_EVIDENCE_FIELDS = {
     "private_path_guard_enabled",
     "network_guard_enabled",
 }
+COMPLETE_VERIFICATION_EVIDENCE_FIELDS = VERIFICATION_EVIDENCE_FIELDS | {
+    "dataset_quality_inventory_digests",
+    "prepublication_byte_lock_reread_status",
+}
+COMPLETE_PAYLOAD_FIELDS = MATERIAL_PENDING_PAYLOAD_FIELDS | (
+    COMPLETE_VERIFICATION_EVIDENCE_FIELDS
+    | {
+        "dataset_material_validation_status",
+        "source_provenance_status",
+        "public_dataset_contract_status",
+        "cohort_release_contract_status",
+        "split_manifest_v2_contract_status",
+        "publication_integrity_preconditions",
+    }
+)
+COMPLETE_READINESS_BOUNDARY_FIELDS = {
+    "phase_a_contract_artifacts_built",
+    "phase_a_complete",
+    "phase_a_completion_scope",
+    "full_repository_gate_claimed_by_this_artifact",
+    "live_aggregate_release_unblocked",
+    "phase_b_unblocked",
+    "public_dataset_evaluation_unblocked",
+    "private_research_unblocked",
+    "provider_feasibility_unblocked",
+    "runtime_activation_unblocked",
+}
 VERIFICATION_OUTPUT_EXCLUSIONS = {
     "research/experiments/generated/EMOTION-STATE-001-phase-a-contracts/result.json",
     "research/experiments/generated/EMOTION-STATE-001-phase-a-contracts/report.md",
@@ -514,6 +541,11 @@ TASKS_1_7_CLOSURE_EDGES = (
     ),
     (
         "scripts/validate_emotion_state_001_phase_a_contracts.py",
+        "scripts/build_emotion_state_public_dataset_manifests.py",
+        "python_import",
+    ),
+    (
+        "scripts/validate_emotion_state_001_phase_a_contracts.py",
         "scripts/emotion_state_annotation_contracts.py",
         "python_import",
     ),
@@ -855,6 +887,11 @@ def determine_phase_a_completion(evidence: Mapping[str, Any]) -> dict[str, Any]:
             blockers.append("offline_contract_checks_not_verified")
 
         verification_evidence = evidence["verification_evidence"]
+        verification_mapping = (
+            verification_evidence
+            if isinstance(verification_evidence, Mapping)
+            else {}
+        )
         expected_verification_fields = {
             "implementation_baseline_commit",
             "repository_head_commit",
@@ -925,6 +962,10 @@ def determine_phase_a_completion(evidence: Mapping[str, Any]) -> dict[str, Any]:
             repository_gate_statuses = derive_repository_gate_statuses(
                 evidence["executed_command_ledger"],
                 "complete",
+                baseline_commit=verification_mapping.get(
+                    "implementation_baseline_commit"
+                ),
+                head_commit=verification_mapping.get("repository_head_commit"),
             )
             repository_gate_complete = (
                 tuple(repository_gate_statuses)
@@ -1452,9 +1493,11 @@ def validate_material_pending_payload(payload: Any) -> dict[str, Any]:
         expected_gate_statuses = derive_repository_gate_statuses(
             ledger,
             "material-pending",
+            baseline_commit=payload["implementation_baseline_commit"],
+            head_commit=payload["repository_head_commit"],
         )
     except (TypeError, ValueError) as exc:
-        raise ValueError("executed_command_ledger is invalid") from exc
+        raise ValueError(f"executed_command_ledger is invalid: {exc}") from exc
     expected_commit_range = (
         payload["implementation_baseline_commit"]
         + ".."
@@ -1556,48 +1599,8 @@ def validate_complete_payload(
 
     if not isinstance(payload, dict):
         raise ValueError("complete payload must be an object")
-    required_fields = {
-        "checkpoint_id",
-        "schema_version",
-        "mode",
-        "status",
-        "selected_public_datasets",
-        "dataset_download_authorized",
-        "dataset_evaluation_started",
-        "dataset_manifest_evidence",
-        "dataset_manifest_digests",
-        "dataset_hash_inventory_digests",
-        "dataset_quality_inventory_digests",
-        "dataset_material_validation_status",
-        "source_provenance_status",
-        "public_dataset_contract_status",
-        "cohort_release_contract_status",
-        "split_manifest_v2_contract_status",
-        "implementation_baseline_commit",
-        "repository_head_commit",
-        "verification_run_id",
-        "verification_input_path_inventory_digest",
-        "executable_dependency_closure_digest",
-        "executed_command_ledger_digest",
-        "guard_policy_digest",
-        "verification_input_tree_digest",
-        "provider_environment_scrubbed",
-        "private_path_guard_enabled",
-        "network_guard_enabled",
-        "prepublication_byte_lock_reread_status",
-        "executed_command_ledger",
-        "guarded_command_results",
-        "repository_gate_statuses",
-        "publication_integrity_preconditions",
-        "committed_change_inventory",
-        "uncommitted_change_inventory",
-        "executable_dependency_closure_inventory",
-        "executable_dependency_closure_edges",
-        "blocking_reason_codes",
-        "readiness_boundary",
-    }
-    if not required_fields.issubset(payload):
-        raise ValueError("complete payload is missing required owned fields")
+    if set(payload) != COMPLETE_PAYLOAD_FIELDS or len(payload) != 43:
+        raise ValueError("complete payload must contain exactly 43 owned fields")
     if (
         payload["checkpoint_id"] != "EMOTION-STATE-001-phase-a-contracts"
         or payload["schema_version"] != 2
@@ -1609,6 +1612,14 @@ def validate_complete_payload(
         or payload["dataset_evaluation_started"] is not False
     ):
         raise ValueError("complete payload identity or boundary mismatch")
+    readiness_boundary = payload["readiness_boundary"]
+    if (
+        not isinstance(readiness_boundary, Mapping)
+        or set(readiness_boundary) != COMPLETE_READINESS_BOUNDARY_FIELDS
+    ):
+        raise ValueError(
+            "readiness_boundary must contain exactly the owned fields"
+        )
 
     (
         expected_dataset_evidence,
@@ -1689,7 +1700,7 @@ def validate_complete_payload(
             "publication_integrity_preconditions"
         ],
         "authorization_boundaries": {
-            field: payload["readiness_boundary"][field]
+            field: readiness_boundary[field]
             for field in (
                 "live_aggregate_release_unblocked",
                 "public_dataset_evaluation_unblocked",
@@ -1709,7 +1720,7 @@ def validate_complete_payload(
         location="blocking_reason_codes",
     )
     _assert_exact_json_value(
-        payload["readiness_boundary"],
+        readiness_boundary,
         completion,
         location="readiness_boundary",
     )
@@ -1721,7 +1732,12 @@ def validate_complete_payload(
     )
 
     ledger = payload["executed_command_ledger"]
-    derived_gate_statuses = derive_repository_gate_statuses(ledger, "complete")
+    derived_gate_statuses = derive_repository_gate_statuses(
+        ledger,
+        "complete",
+        baseline_commit=payload["implementation_baseline_commit"],
+        head_commit=payload["repository_head_commit"],
+    )
     _assert_exact_json_value(
         payload["repository_gate_statuses"],
         derived_gate_statuses,
@@ -1840,8 +1856,6 @@ def build_phase_a_payload(
         "archive_sha256",
         "baseline_fingerprints",
         "readiness_boundary",
-        "dataset_hash_inventory_digests",
-        "dataset_quality_inventory_digests",
         "dataset_material_validation_status",
         "source_provenance_status",
         "public_dataset_contract_status",
@@ -1851,6 +1865,13 @@ def build_phase_a_payload(
     }
     if reserved_fields.intersection(normalized_verification):
         raise ValueError("verification evidence collides with checkpoint fields")
+    allowed_verification_fields = (
+        COMPLETE_VERIFICATION_EVIDENCE_FIELDS
+        if mode == "complete"
+        else VERIFICATION_EVIDENCE_FIELDS
+    )
+    if not set(normalized_verification).issubset(allowed_verification_fields):
+        raise ValueError("verification evidence fields mismatch")
     code_adaptation_started = any(manifest[field] for field in MATERIAL_FIELDS)
     baseline = {
         relative_path: sha256_file(root / relative_path)
@@ -1896,6 +1917,24 @@ def build_phase_a_payload(
             dataset_hash_inventory_digests,
             dataset_quality_inventory_digests,
         ) = _load_complete_dataset_evidence(root)
+        expected_dataset_digests = {
+            "dataset_manifest_digests": {
+                entry["dataset_id"]: entry["manifest_sha256"]
+                for entry in dataset_evidence
+            },
+            "dataset_hash_inventory_digests": dataset_hash_inventory_digests,
+            "dataset_quality_inventory_digests": (
+                dataset_quality_inventory_digests
+            ),
+        }
+        for field, expected in expected_dataset_digests.items():
+            if (
+                field in normalized_verification
+                and normalized_verification[field] != expected
+            ):
+                raise ValueError(
+                    f"verification evidence {field} does not match tracked evidence"
+                )
 
     if mode == "material_pending":
         completion_request: dict[str, Any] = {
@@ -1932,6 +1971,10 @@ def build_phase_a_payload(
             derived_repository_gates = derive_repository_gate_statuses(
                 ledger,
                 "complete",
+                baseline_commit=verification_fields[
+                    "implementation_baseline_commit"
+                ],
+                head_commit=verification_fields["repository_head_commit"],
             )
         except (TypeError, ValueError):
             derived_repository_gates = {}

@@ -6,6 +6,7 @@ import io
 import json
 import os
 import re
+import stat
 import subprocess
 import sys
 import tarfile
@@ -87,6 +88,80 @@ def _is_relative_to(path: Path, root: Path) -> bool:
     return True
 
 
+def _status_is_link_or_reparse(status: os.stat_result) -> bool:
+    if stat.S_ISLNK(status.st_mode):
+        return True
+    file_attributes = getattr(status, "st_file_attributes", 0)
+    reparse_attribute = getattr(stat, "FILE_ATTRIBUTE_REPARSE_POINT", 0x400)
+    return bool(file_attributes & reparse_attribute)
+
+
+def _validate_existing_material_lexical_paths(
+    project_root: Path,
+) -> dict[str, Path]:
+    try:
+        lexical_project_root = Path(os.path.abspath(Path(project_root)))
+        project_status = lexical_project_root.lstat()
+    except (OSError, RuntimeError, TypeError, ValueError) as exc:
+        raise ValueError("project root could not be inspected without following links") from exc
+    if _status_is_link_or_reparse(project_status):
+        raise ValueError("project root is a link or reparse point")
+    if not stat.S_ISDIR(project_status.st_mode):
+        raise ValueError("project root must be an ordinary directory")
+
+    fixed_paths = {
+        "material-root": (PUBLIC_DATASET_ROOT, True),
+        "crema-root": (
+            PUBLIC_DATASET_ROOT / "crema-d-v1.0" / "repository",
+            True,
+        ),
+        "ami-root": (
+            PUBLIC_DATASET_ROOT / "ami-manual-annotations-v1.6.2",
+            True,
+        ),
+        "ami-archive": (
+            PUBLIC_DATASET_ROOT
+            / "ami-manual-annotations-v1.6.2"
+            / "ami_manual_1.6.2.zip",
+            False,
+        ),
+        "ami-extract-root": (
+            PUBLIC_DATASET_ROOT
+            / "ami-manual-annotations-v1.6.2"
+            / "extracted",
+            True,
+        ),
+        "ami-partitions-source": (
+            PUBLIC_DATASET_ROOT
+            / "ami-manual-annotations-v1.6.2"
+            / "official-partitions"
+            / "datasets.shtml",
+            False,
+        ),
+    }
+    lexical_paths = {"project-root": lexical_project_root}
+    for field, (relative_path, must_be_directory) in fixed_paths.items():
+        if relative_path.is_absolute() or ".." in relative_path.parts:
+            raise ValueError(f"{field} fixed path is invalid")
+        current = lexical_project_root
+        for index, part in enumerate(relative_path.parts):
+            current /= part
+            try:
+                status = current.lstat()
+            except OSError as exc:
+                raise ValueError(f"{field} does not exist") from exc
+            if _status_is_link_or_reparse(status):
+                raise ValueError(f"{field} component is a link or reparse point")
+            is_final = index == len(relative_path.parts) - 1
+            if not is_final or must_be_directory:
+                if not stat.S_ISDIR(status.st_mode):
+                    raise ValueError(f"{field} component must be a directory")
+            elif not stat.S_ISREG(status.st_mode):
+                raise ValueError(f"{field} must be an ordinary file")
+        lexical_paths[field] = current
+    return lexical_paths
+
+
 def _guard_public_path(
     value: str | Path,
     *,
@@ -162,10 +237,21 @@ def _run_git_command(
         or timeout_seconds > 60
     ):
         raise ValueError("local Git command boundary is invalid")
+    child_environment: dict[str, str] | None = None
+    if argv[-5:] == [
+        "archive",
+        "--format=tar",
+        "HEAD",
+        "--",
+        "AudioWAV",
+    ]:
+        child_environment = os.environ.copy()
+        child_environment["GIT_LFS_SKIP_SMUDGE"] = "1"
     try:
         completed = subprocess.run(
             argv,
             cwd=cwd,
+            env=child_environment,
             stdin=subprocess.DEVNULL,
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
@@ -1309,23 +1395,35 @@ def _atomic_replace(path: Path, payload: bytes) -> None:
             temporary_path.unlink(missing_ok=True)
 
 
-def write_dataset_evidence(
+def _build_dataset_evidence_bytes(
     *,
-    output_root: Path,
-    accessed_on: str,
+    evidence_root: Path,
+    accessed_on_by_dataset: Mapping[str, str],
     materials: Mapping[str, Mapping[str, Any]],
-    project_root: Path = ROOT,
-) -> list[Path]:
+    project_root: Path,
+) -> dict[Path, bytes]:
     resolved_project_root = Path(project_root).resolve(strict=True)
-    resolved_output_root = _guard_output_root(output_root, resolved_project_root)
-    canonical_date = _canonical_access_date(accessed_on)
+    resolved_evidence_root = _guard_output_root(
+        evidence_root,
+        resolved_project_root,
+    )
     if not isinstance(materials, Mapping) or set(materials) != set(
         SELECTED_PUBLIC_DATASETS
     ):
         raise ValueError("materials must contain exactly the selected public datasets")
+    if (
+        not isinstance(accessed_on_by_dataset, Mapping)
+        or set(accessed_on_by_dataset) != set(SELECTED_PUBLIC_DATASETS)
+    ):
+        raise ValueError(
+            "accessed dates must contain exactly the selected public datasets"
+        )
 
     artifact_bytes: dict[Path, bytes] = {}
     for dataset_id in SELECTED_PUBLIC_DATASETS:
+        canonical_date = _canonical_access_date(
+            accessed_on_by_dataset[dataset_id]
+        )
         material = materials[dataset_id]
         if not isinstance(material, Mapping) or set(material) != {
             "hash_inventory",
@@ -1376,14 +1474,75 @@ def write_dataset_evidence(
         )
         manifest_bytes = canonical_inventory_bytes(manifest)
         artifact_bytes[
-            resolved_output_root / f"{dataset_id}.manifest.json"
+            resolved_evidence_root / f"{dataset_id}.manifest.json"
         ] = manifest_bytes
         artifact_bytes[
-            resolved_output_root / f"{dataset_id}.hashes.json"
+            resolved_evidence_root / f"{dataset_id}.hashes.json"
         ] = hash_bytes
         artifact_bytes[
-            resolved_output_root / f"{dataset_id}.quality.json"
+            resolved_evidence_root / f"{dataset_id}.quality.json"
         ] = quality_bytes
+    return artifact_bytes
+
+
+def _evidence_mismatch_detail(
+    *,
+    evidence_root: Path,
+    tracked_bytes: Mapping[Path, bytes],
+    recomputed_bytes: Mapping[Path, bytes],
+) -> str:
+    for dataset_id in SELECTED_PUBLIC_DATASETS:
+        for suffix in ("manifest", "hashes", "quality"):
+            path = evidence_root / f"{dataset_id}.{suffix}.json"
+            tracked_payload = tracked_bytes.get(path)
+            recomputed_payload = recomputed_bytes.get(path)
+            if tracked_payload != recomputed_payload:
+                if not isinstance(tracked_payload, bytes):
+                    raise ValueError("tracked dataset evidence bytes are missing")
+                if not isinstance(recomputed_payload, bytes):
+                    raise ValueError("recomputed dataset evidence bytes are missing")
+                return (
+                    f"dataset_id={dataset_id} suffix={suffix} "
+                    f"tracked_sha256={_sha256_bytes(tracked_payload)} "
+                    f"recomputed_sha256={_sha256_bytes(recomputed_payload)}"
+                )
+    raise ValueError("dataset evidence mapping mismatch has no differing artifact")
+
+
+def _safe_revalidation_cause(exc: BaseException) -> str:
+    if isinstance(exc, ValueError):
+        message = " ".join(str(exc).split())
+        return message[:512] if message else "ValueError"
+    if isinstance(exc, OSError):
+        fields = [type(exc).__name__]
+        if exc.errno is not None:
+            fields.append(f"errno={exc.errno}")
+        winerror = getattr(exc, "winerror", None)
+        if winerror is not None:
+            fields.append(f"winerror={winerror}")
+        return " ".join(fields)
+    return type(exc).__name__
+
+
+def write_dataset_evidence(
+    *,
+    output_root: Path,
+    accessed_on: str,
+    materials: Mapping[str, Mapping[str, Any]],
+    project_root: Path = ROOT,
+) -> list[Path]:
+    resolved_project_root = Path(project_root).resolve(strict=True)
+    resolved_output_root = _guard_output_root(output_root, resolved_project_root)
+    canonical_date = _canonical_access_date(accessed_on)
+    artifact_bytes = _build_dataset_evidence_bytes(
+        evidence_root=resolved_output_root,
+        accessed_on_by_dataset={
+            dataset_id: canonical_date
+            for dataset_id in SELECTED_PUBLIC_DATASETS
+        },
+        materials=materials,
+        project_root=resolved_project_root,
+    )
 
     for dataset_id in SELECTED_PUBLIC_DATASETS:
         manifest_path = resolved_output_root / f"{dataset_id}.manifest.json"
@@ -1419,6 +1578,140 @@ def write_dataset_evidence(
             _atomic_replace(path, payload)
         written.append(path)
     return written
+
+
+def validate_existing_dataset_evidence(
+    *,
+    project_root: Path = ROOT,
+) -> None:
+    """Recompute fixed local material and compare it to all tracked evidence bytes."""
+
+    stage = "guard-fixed-paths"
+    try:
+        lexical_paths = _validate_existing_material_lexical_paths(project_root)
+        resolved_project_root = lexical_paths["project-root"].resolve(strict=True)
+        material_root = _guard_public_path(
+            PUBLIC_DATASET_ROOT,
+            project_root=resolved_project_root,
+            field="material-root",
+            must_exist=True,
+            must_be_directory=True,
+        )
+        crema_root = _guard_public_path(
+            PUBLIC_DATASET_ROOT / "crema-d-v1.0" / "repository",
+            project_root=resolved_project_root,
+            field="crema-root",
+            must_exist=True,
+            must_be_directory=True,
+        )
+        ami_root = _guard_public_path(
+            PUBLIC_DATASET_ROOT / "ami-manual-annotations-v1.6.2",
+            project_root=resolved_project_root,
+            field="ami-root",
+            must_exist=True,
+            must_be_directory=True,
+        )
+        ami_archive = _guard_public_path(
+            PUBLIC_DATASET_ROOT
+            / "ami-manual-annotations-v1.6.2"
+            / "ami_manual_1.6.2.zip",
+            project_root=resolved_project_root,
+            field="ami-archive",
+            must_exist=True,
+            must_be_directory=False,
+        )
+        ami_extract_root = _guard_public_path(
+            PUBLIC_DATASET_ROOT
+            / "ami-manual-annotations-v1.6.2"
+            / "extracted",
+            project_root=resolved_project_root,
+            field="ami-extract-root",
+            must_exist=True,
+            must_be_directory=True,
+        )
+        ami_partitions_source = _guard_public_path(
+            PUBLIC_DATASET_ROOT
+            / "ami-manual-annotations-v1.6.2"
+            / "official-partitions"
+            / "datasets.shtml",
+            project_root=resolved_project_root,
+            field="ami-partitions-source",
+            must_exist=True,
+            must_be_directory=False,
+        )
+        evidence_root = (
+            resolved_project_root / OUTPUT_DATASET_ROOT
+        ).resolve(strict=True)
+
+        stage = "read-tracked-evidence"
+        tracked_bytes: dict[Path, bytes] = {}
+        tracked_manifests: dict[str, dict[str, Any]] = {}
+        for dataset_id in SELECTED_PUBLIC_DATASETS:
+            for suffix in ("manifest", "hashes", "quality"):
+                path = evidence_root / f"{dataset_id}.{suffix}.json"
+                payload_bytes = path.read_bytes()
+                payload = json.loads(payload_bytes.decode("utf-8"))
+                if not isinstance(payload, dict):
+                    raise ValueError("tracked dataset evidence must be an object")
+                tracked_bytes[path] = payload_bytes
+                if suffix == "manifest":
+                    tracked_manifests[dataset_id] = validate_dataset_manifest(payload)
+
+        stage = "crema-lfs-discovery"
+        crema_lfs_oids = discover_crema_lfs_oids(
+            crema_root,
+            project_root=resolved_project_root,
+        )
+        stage = "ami-archive-inspection"
+        ami_inspection = inspect_ami_archive(ami_archive, ami_extract_root)
+        stage = "crema-material-validation"
+        crema_material = validate_crema_material(
+            crema_root,
+            project_root=resolved_project_root,
+            git_lfs_oids_by_path=crema_lfs_oids,
+        )
+        stage = "ami-material-validation"
+        ami_material = validate_ami_material(
+            ami_extract_root,
+            archive_path=ami_archive,
+            extraction=ami_inspection,
+            partitions_source_path=ami_partitions_source,
+            partitions_expected_sha256=AMI_PARTITIONS_SOURCE_SHA256,
+            project_root=resolved_project_root,
+        )
+        materials = {
+            CREMA_DATASET_ID: crema_material,
+            AMI_DATASET_ID: ami_material,
+        }
+
+        stage = "evidence-rebuild"
+        recomputed_bytes = _build_dataset_evidence_bytes(
+            evidence_root=evidence_root,
+            accessed_on_by_dataset={
+                dataset_id: tracked_manifests[dataset_id]["accessed_on"]
+                for dataset_id in SELECTED_PUBLIC_DATASETS
+            },
+            materials=materials,
+            project_root=resolved_project_root,
+        )
+        if tracked_bytes != recomputed_bytes:
+            raise ValueError(
+                "tracked dataset evidence does not match existing raw material: "
+                + _evidence_mismatch_detail(
+                    evidence_root=evidence_root,
+                    tracked_bytes=tracked_bytes,
+                    recomputed_bytes=recomputed_bytes,
+                )
+            )
+    except (OSError, RuntimeError, UnicodeError, ValueError) as exc:
+        if str(exc).startswith(
+            "tracked dataset evidence does not match existing raw material:"
+        ):
+            raise
+        raise ValueError(
+            "tracked dataset evidence does not match existing raw material: "
+            f"stage={stage} cause={_safe_revalidation_cause(exc)}"
+        ) from exc
 
 
 def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
