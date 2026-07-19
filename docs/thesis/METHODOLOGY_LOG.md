@@ -5983,3 +5983,9 @@ Interpretation:
 - Authorized correction: Task 1 now includes this methodology trace and its implementation-plan file in the exact staged scope; the protocol truthfully states that offline implementation started while dependency, public-material, and model execution have not started.
 - Boundary: no dependency install, network, public/private material read, model evaluation, provider, call, simulation, source adaptation, runtime activation, canonical publication, push, merge, or history rewrite occurred.
 - GREEN/commit evidence: the complete Task 1 verification ledger must pass before the eight-path commit `Add EMOTION-STATE Phase B frozen contracts`; the implementation report records the exact command outputs and resulting commit SHA.
+
+### 2026-07-20 - EMOTION-STATE-002 Task 1 frozen-contract review correction
+
+- RED: Task 1 review found that partial validators accepted frozen-field mutations, unknown/missing fields, numeric-overflow JSON, and a no-op direct validator invocation. The added focused suite failed `149` fail-closed cases, plus overflow and CLI assertions.
+- GREEN: validators now compare type-aware exact frozen mappings, recursively reject every non-finite parsed number, and the direct entry point validates all three canonical artifacts with deterministic pass/fail output. The focused suite passed all five tests.
+- Boundary: this review correction changes only Task 1 validator/tests and this methodology trace; it does not access dependencies, network, public/private material, models, providers, calls, simulations, source adaptation, runtime, canonical output, push, merge, or history.
