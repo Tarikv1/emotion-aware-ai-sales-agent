@@ -2805,4 +2805,12 @@ Record important thesis and implementation decisions here with enough context to
 - Status: accepted
 - Decision: bind the exact verified CREMA-D controlled acoustic-sensitivity evidence and AMI manual-annotation conversational-mechanics evidence as two separate public-only lanes. Derive `phase_a_complete=true` only for `source_provenance_dataset_manifests_offline_contracts_and_cohort_release_gate_only`.
 - Why: the tracked manifests, hash inventories, quality inventories, offline contracts, guarded repository ledger, and crash-safe publication preconditions can close the provenance/contract gate without claiming that either source validates customer internal emotion or operational sales signals.
-- Consequences: dataset evaluation, live aggregate release, Phase B, private research, provider feasibility, runtime activation, model performance, production readiness, and source adaptation all remain blocked. Task 10 freezes inputs only; complete candidate generation and explicit acceptance remain Task 11.
+- Consequences at decision time: dataset evaluation, live aggregate release, Phase B, private research, provider feasibility, runtime activation, model performance, production readiness, and source adaptation remained blocked. Task 10 froze inputs only; the later reviewed Task 11 transaction closed the canonical Phase A checkpoint without changing those evidence boundaries.
+
+### DEC-024 - Start Phase B with an interpretable public-data feasibility study
+
+- Date: 2026-07-19
+- Status: accepted
+- Decision: implement `EMOTION-STATE-002` as two separate offline lanes: a frozen 17-feature, speaker-disjoint classical baseline for CREMA-D's original six audio-perception labels, and deterministic contribution-limited conversational-mechanics aggregates from AMI manual annotations.
+- Why: Phase A proves provenance, integrity, contracts, and bounded acceptance but no model performance. A classical baseline can test whether acoustic complexity is justified without inventing mappings from acted labels or meeting mechanics to customer operational signals.
+- Consequences: Phase B requires a new claim-scoped split contract because Phase A split v2 cannot partition a single required `source_corpus`. CREMA-D and AMI rows never join; neither lane creates `PatternCandidateV1`, populates `PerceivedCustomerStateV1`, or affects runtime. Design approval does not authorize dependency installation, public-material evaluation, private data, providers, calls, simulations, source adaptation, final-lockbox opening, runtime activation, push, or merge.

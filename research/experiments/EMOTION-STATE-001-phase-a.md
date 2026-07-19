@@ -2,9 +2,9 @@
 
 ## Status
 
-Status: Task 10 verified-input integration complete; complete canonical publication remains deferred to Task 11
+Status: complete and explicitly accepted at output-only commit `f8ba503c3670fec6e9dee53f03f306798e7b807b`
 
-Readiness: the verified inputs can derive `phase_a_complete=true` only for `source_provenance_dataset_manifests_offline_contracts_and_cohort_release_gate_only`. Dataset evaluation, private research, provider feasibility, Phase B, live aggregate release, and runtime activation remain blocked.
+Readiness: `phase_a_complete=true` only for `source_provenance_dataset_manifests_offline_contracts_and_cohort_release_gate_only`. Phase B design is approved separately, but dependency installation, dataset evaluation, private research, provider feasibility, live aggregate release, source adaptation, and runtime activation remain blocked.
 
 ## Source Label
 
@@ -14,7 +14,7 @@ Readiness: the verified inputs can derive `phase_a_complete=true` only for `sour
 
 2026-07-19
 
-## Question
+## Original Phase A Question
 
 Can the project select two bounded public sources and integrate offline contract, verification, and crash-safe acceptance inputs without downloading or inspecting dataset bytes?
 
@@ -37,7 +37,7 @@ Neither source is customer internal-emotion truth. Neither source maps to hesita
 - Validate candidate/checkpoint bytes without runner recursion; accept only after digest and invariant revalidation; otherwise restore the prior pair.
 - Exercise dataset-presence refusal only against injected synthetic temporary roots in this implementation run.
 
-## Results
+## Task 7-10 Implementation Results
 
 - Task 7 focused RED: 13 expected missing-API errors before production edits.
 - Task 7 focused GREEN: 13 tests passed after implementation.
@@ -52,12 +52,19 @@ Neither source is customer internal-emotion truth. Neither source maps to hesita
 - AMI: 2,074 selected files / 180,905,698 bytes; 2,074 included / 3,086 excluded; archive `B56E5BABB2496B8795DEEEDA7E71178D7FBC9963F94276CF2A3F4B56EBBC9F9D`; manifest `3904D4A3A9EDF53B06A65354E02FBE1BDD44361B5E196FC6DD4A3882C74911DE`; hash inventory `CE7F837A2A44DFEE44691C4BA8B5B0D7766E46D6616986CF565A6300056DEAEE`; quality inventory `A376A6C0D5F89770525936299717F1595B743489B593DC4E5CE88AB08ACB22C9`; accessed `2026-07-17`.
 - `materials` validation rechecks ignored raw bytes. Clean-clone `checkpoint` validation can only validate the exact tracked evidence captured by the complete run.
 
-## Controller Blocker
+## Historical Controller Blocker And Resolution
 
 The material-pending plan requires refusal when selected dataset material is locally present, while the Task 7 implementer is forbidden to access or probe any real `data/public` path. The synthetic/injected behavior is implemented and tested. The real defer command remains fail-closed until the controller has explicit authority for the required material-root absence probe; this requirement was not weakened or waived.
 
+The prerequisite authority was later granted through the reviewed Task 7-11 sequence. Replacement transaction `59324165c56446f7850e9a2abd37e4ff` passed the guarded ledger, post-staging checks, controller content inspection, and independent candidate review before one explicit acceptance. The accepted canonical hashes are:
+
+- result: `EED96BADBE916A38107A4289AD951F8953A5A96215E063890E07F054C7A90931`
+- report: `724C81C41C489B9BBAB0896009DE7CAB578F77082F230F78B90B65643586FE8A`
+
+Commit `f8ba503c3670fec6e9dee53f03f306798e7b807b` contains exactly that canonical pair.
+
 ## Boundary
 
-Task 10 performed no new download or network action and no model/public-dataset evaluation. No private or private-restricted data was accessed. No provider/ElevenLabs operation, outbound/customer call, simulation, source adaptation, dependency install, runtime/prompt/KB/voice/LLM/phone/Procedure/dashboard change, push, merge, rebase, amend, or Task 11 canonical-pair action occurred.
+Task 10 performed no new download or network action and no model/public-dataset evaluation. The later Task 11 transaction changed only the canonical pair and preserved the same no-private, no-provider, no-call, no-simulation, no-source-adaptation, and no-runtime boundaries. Phase B design approval adds no dependency install, material evaluation, runtime/prompt/KB/voice/LLM/phone/Procedure/dashboard change, push, merge, rebase, or amend.
 
 This work provides no production, customer, PSTN, ASR, latency, provider-feasibility, runtime-readiness, or internal-emotion evidence.
