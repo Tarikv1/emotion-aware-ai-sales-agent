@@ -1986,10 +1986,12 @@ try {
         @{ Label = 'setup'; Exe = 'python'; Args = @('scripts/validate_check_setup.py') },
         @{ Label = 'drift'; Exe = 'python'; Args = @('scripts/validate_project_drift_guard.py') },
         @{ Label = 'thesis references'; Exe = 'python'; Args = @('scripts/check_thesis_reference_registry.py') },
-        @{ Label = 'thesis update'; Exe = 'python'; Args = @('scripts/check_thesis_update_gate.py') },
         @{ Label = 'context policy'; Exe = 'python'; Args = @('scripts/validate_context_reading_policy.py') },
         @{ Label = 'JSON inputs'; Exe = 'python'; Args = @('scripts/emotion_state_phase_a_verification_evidence.py', '--validate-json-inputs') }
     )
+
+    # `thesis-update-validator` remains mandatory in the exact 15-command guarded input ledger run before candidate output is published. Candidate readback must prove both `guarded_command_results['thesis-update-validator'] == 0` and `repository_gate_statuses['thesis_update'] == 'pass'`. The default standalone thesis-update checker reads current Git status; once the candidate exists, its permitted changed-path scope is exactly the canonical generated `result.json` and `report.md`, so rerunning that checker would necessarily demand a third thesis file and contradict the pair-only output/successor invariant. This is not a validator waiver, ignore rule, altered checker input, or global generated-artifact exemption: do not use `--changed-file`, do not edit `scripts/check_thesis_update_gate.py`, and do not weaken any validator.
+
     foreach ($check in $checks) {
         $executable = $check.Exe
         $arguments = $check.Args
@@ -2016,6 +2018,12 @@ try {
     if ($result.publication_integrity_preconditions.last_valid_pair_preservation_status -ne 'pass') { throw 'Last-valid-pair evidence mismatch' }
     if (@($result.guarded_command_results.PSObject.Properties.Value | Where-Object { $_ -ne 0 }).Count -ne 0) { throw 'Guarded command failure recorded' }
     if (@($result.repository_gate_statuses.PSObject.Properties.Value | Where-Object { $_ -ne 'pass' }).Count -ne 0) { throw 'Derived repository gate failure recorded' }
+    if ($result.guarded_command_results.'thesis-update-validator' -ne 0) {
+        throw 'Guarded thesis-update command failure recorded'
+    }
+    if ($result.repository_gate_statuses.thesis_update -ne 'pass') {
+        throw 'Guarded thesis-update repository gate failure recorded'
+    }
 
     $canonicalNames = @(Get-ChildItem -Force $canonicalDirectory -File | Sort-Object Name | Select-Object -ExpandProperty Name)
     if (@(Compare-Object @('report.md', 'result.json') $canonicalNames).Count -ne 0) { throw 'Canonical directory contains a missing or third file' }
@@ -2041,7 +2049,7 @@ catch {
 }
 ```
 
-Expected: every check exits `0`, the canonical directory contains exactly the candidate pair, Git shows only those two files, and the prior pair remains recoverable because the receipt is still awaiting acceptance.
+Expected: every listed post-staging check exits `0` against the candidate; the candidate's guarded input ledger records `thesis-update-validator` exit `0` and its derived `thesis_update` repository gate as `pass`; the canonical directory contains exactly the candidate pair; Git shows exactly those two changed paths; and the prior pair remains recoverable because the receipt is still awaiting acceptance.
 
 - [ ] **Step 3: Inspect the evidence directly, then accept or reject**
 

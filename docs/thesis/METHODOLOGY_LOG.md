@@ -5927,3 +5927,11 @@ Interpretation:
 - Evidence: the resumed complete ledger passed all 15 commands, and the direct `materials` and complete `prepublication` validators passed. Independent review then identified this documentation correction and the synthetic symlink capability skip-reporting cleanup before re-review and commit.
 - Remaining status: this prerequisite does not publish the canonical pair; the later Task 11 defer/validate/accept transaction remains separate. Re-review and commit of this historical checkpoint remain external to the prerequisite.
 - Boundaries: no private data, network/download, provider, calls, simulations, source adaptation, model evaluation, runtime activation, Phase B, canonical publication, production-readiness claim, push, or merge.
+
+### 2026-07-19 - EMOTION-STATE-001 Task 11 generated-pair thesis-gate plan correction
+
+- Historical correction state: the first Task 11 candidate reached durable `awaiting_acceptance`. Its candidate, materials, focused, closeout, EXP, BRAIN, private, runtime, setup, drift, and thesis-reference checks passed before the default standalone thesis-update check failed with `missing_thesis_update`.
+- Recovery evidence: the prescribed reject ran once and restored the exact material-pending pair, clean index/worktree, absent receipt, and lock-only recovery state containing only `publication.lock`.
+- Root cause and correction: the standalone checker consumes current Git status and therefore conflicts with the exact generated-pair-only candidate scope. `thesis-update-validator` remains required in the guarded input ledger, and candidate readback must require its zero exit plus `thesis_update=pass`; only the redundant post-staging rerun is removed.
+- Preserved limits: no fake `--changed-file` input, checker edit, global exception, validator weakening, or Task 11 completion claim. This entry records correction-time state; Task 11 publication remains unaccepted until a later defer/validate/review/accept transaction succeeds.
+- Unchanged boundaries: all dataset, private-data, provider, call, simulation, model-evaluation, source-adaptation, runtime, Phase-B, push, merge, and history-rewrite boundaries remain unchanged.
