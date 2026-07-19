@@ -47,9 +47,14 @@ Phase B may not establish:
 1. **Offline implementation gate:** Tasks 1, 2, 4, 5, 6, 7, 8, and 9 edit
    tracked research code/docs and run only synthetic or tracked-metadata tests.
    They require a later implementation authorization.
-2. **Dependency gate:** Task 3 may access the package index, download wheels,
-   and install only into `.tmp/emotion-state-002-phase-b/venv/`. It requires
-   explicit network/download/install authority and a reviewed artifact lock.
+2. **Dependency gate:** Task 3 may access the package index and download wheels
+   only through the ignored
+   `.tmp/emotion-state-002-phase-b/resolver-venv/`, then install the reviewed
+   wheels into the pip-free ignored evaluation environment at
+   `.tmp/emotion-state-002-phase-b/venv/`. The split is required so evaluation
+   runtime identity equals the reviewed lock without exempting bootstrap
+   `pip`/`setuptools`. It requires explicit network/download/install authority
+   and a reviewed artifact lock.
 3. **Public-material gate:** Task 10 may read the two public CREMA CSVs, CREMA
    WAVs, and selected AMI annotation files from their fixed ignored roots. It
    requires explicit public-material evaluation authority.

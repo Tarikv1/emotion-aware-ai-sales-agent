@@ -80,9 +80,12 @@ standard-library `unittest`.
 1. **Offline implementation gate:** Tasks 1, 2, 4, 5, 6, 7, 8, and 9 edit
    tracked research code/docs and run only synthetic or tracked-metadata tests.
    They require a later implementation authorization.
-2. **Dependency gate:** Task 3 may access the package index, download wheels,
-   and install only into `.tmp/emotion-state-002-phase-b/venv/`. It requires
-   explicit network/download/install authority and a reviewed artifact lock.
+2. **Dependency gate:** Task 3 may access the package index and download wheels
+   only through `.tmp/emotion-state-002-phase-b/resolver-venv/`, then install
+   the reviewed wheels into the pip-free evaluation environment at
+   `.tmp/emotion-state-002-phase-b/venv/`. Both environments remain ignored
+   under the fixed Phase B root. This requires explicit
+   network/download/install authority and a reviewed artifact lock.
 3. **Public-material gate:** Task 10 may read the two public CREMA CSVs, CREMA
    WAVs, and selected AMI annotation files from their fixed ignored roots. It
    requires explicit public-material evaluation authority.
@@ -838,24 +841,28 @@ git commit -m "Add Phase B CREMA-D reference-label ledger"
 Do not run any command in the remaining Task 3 steps until network, wheel
 download, and ignored-venv installation are explicitly authorized.
 
-- [ ] **Step 2: Create an isolated Python 3.11 environment**
+- [ ] **Step 2: Create isolated resolver and evaluation environments**
 
 Run only after authorization:
 
 ```powershell
-py -3.11 -m venv .tmp/emotion-state-002-phase-b/venv
-.tmp/emotion-state-002-phase-b/venv/Scripts/python.exe -m pip --version
+py -3.11 -m venv .tmp/emotion-state-002-phase-b/resolver-venv
+.tmp/emotion-state-002-phase-b/resolver-venv/Scripts/python.exe -m pip --version
+py -3.11 -m venv --without-pip .tmp/emotion-state-002-phase-b/venv
+.tmp/emotion-state-002-phase-b/venv/Scripts/python.exe -c "import sys; print(sys.version); print(sys.executable)"
 ```
 
-Expected: Python reports `3.11`; the path remains under the ignored Phase B
-root.
+Expected: both interpreters report `3.11`; both paths remain under the ignored
+Phase B root; only the resolver environment contains bootstrap tooling. The
+fixed evaluation environment contains no `pip`, `setuptools`, or other
+distribution before reviewed-wheel installation.
 
 - [ ] **Step 3: Resolve binary distributions into an ignored wheelhouse**
 
 Run with provider credentials removed from the child environment:
 
 ```powershell
-.tmp/emotion-state-002-phase-b/venv/Scripts/python.exe -m pip download --only-binary=:all: --dest .tmp/emotion-state-002-phase-b/dependencies/wheelhouse "numpy>=2.4,<2.5" "scipy>=1.16,<1.18" "scikit-learn>=1.8,<1.9"
+.tmp/emotion-state-002-phase-b/resolver-venv/Scripts/python.exe -m pip download --only-binary=:all: --dest .tmp/emotion-state-002-phase-b/dependencies/wheelhouse "numpy>=2.4,<2.5" "scipy>=1.16,<1.18" "scikit-learn>=1.8,<1.9"
 ```
 
 Expected: only NumPy, SciPy, scikit-learn, and resolver-required transitive
@@ -907,12 +914,13 @@ committed.
 - [ ] **Step 6: Install only the reviewed wheel filenames without network**
 
 ```powershell
-.tmp/emotion-state-002-phase-b/venv/Scripts/python.exe -m pip install --no-index --find-links .tmp/emotion-state-002-phase-b/dependencies/wheelhouse numpy scipy scikit-learn
-.tmp/emotion-state-002-phase-b/venv/Scripts/python.exe -m pip check
+.tmp/emotion-state-002-phase-b/resolver-venv/Scripts/python.exe -m pip --python .tmp/emotion-state-002-phase-b/venv/Scripts/python.exe install --no-index --no-deps .tmp/emotion-state-002-phase-b/dependencies/wheelhouse/joblib-1.5.3-py3-none-any.whl .tmp/emotion-state-002-phase-b/dependencies/wheelhouse/numpy-2.4.6-cp311-cp311-win_amd64.whl .tmp/emotion-state-002-phase-b/dependencies/wheelhouse/scikit_learn-1.8.0-cp311-cp311-win_amd64.whl .tmp/emotion-state-002-phase-b/dependencies/wheelhouse/scipy-1.17.1-cp311-cp311-win_amd64.whl .tmp/emotion-state-002-phase-b/dependencies/wheelhouse/threadpoolctl-3.6.0-py3-none-any.whl
+.tmp/emotion-state-002-phase-b/resolver-venv/Scripts/python.exe -m pip --python .tmp/emotion-state-002-phase-b/venv/Scripts/python.exe check
 ```
 
-Expected: installation succeeds entirely from the wheelhouse and `pip check`
-reports no broken requirements.
+Expected: installation succeeds entirely from the wheelhouse, `pip check`
+reports no broken requirements through the resolver tooling, and evaluation
+runtime distribution identity equals the five reviewed lock entries exactly.
 
 - [ ] **Step 7: Add lock and runtime-identity tests**
 

@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import hashlib
 import json
 import math
 import sys
@@ -16,6 +17,12 @@ FEATURE_SCHEMA_PATH = (
 SPLIT_SCHEMA_PATH = (
     ROOT
     / "research/sources/emotion_state/emotion_state_evaluation_split_v1.schema.json"
+)
+ENVIRONMENT_LOCK_PATH = (
+    ROOT / "research/environments/emotion-state-002/requirements.lock"
+)
+EVALUATION_PYTHON_PATH = (
+    ROOT / ".tmp/emotion-state-002-phase-b/venv/Scripts/python.exe"
 )
 
 FEATURE_NAMES = (
@@ -138,6 +145,61 @@ EXPECTED_CONFIG: dict[str, Any] = {
     },
 }
 
+EXPECTED_ENVIRONMENT_LOCK: dict[str, Any] = {
+    "schema_id": "emotion-state-002-research-environment-lock-v1",
+    "python_version": "3.11",
+    "platform": "win_amd64",
+    "direct_requirements": [
+        "numpy",
+        "scipy",
+        "scikit-learn",
+    ],
+    "distributions": [
+        {
+            "name": "joblib",
+            "version": "1.5.3",
+            "direct": False,
+            "wheel_filename": "joblib-1.5.3-py3-none-any.whl",
+            "sha256": "5FC3C5039FC5CA8C0276333A188BBD59D6B7AB37FE6632DAA76BC7F9EC18E713",
+            "license": "BSD-3-Clause",
+        },
+        {
+            "name": "numpy",
+            "version": "2.4.6",
+            "direct": True,
+            "wheel_filename": "numpy-2.4.6-cp311-cp311-win_amd64.whl",
+            "sha256": "1E254A00CDF42B1E4D5B3D68D33AF63268D41340D8885DF2AB6470F2E1500147",
+            "license": "BSD-3-Clause AND 0BSD AND MIT AND Zlib AND CC0-1.0",
+        },
+        {
+            "name": "scikit-learn",
+            "version": "1.8.0",
+            "direct": True,
+            "wheel_filename": "scikit_learn-1.8.0-cp311-cp311-win_amd64.whl",
+            "sha256": "C57B1B610BD1F40BA43970E11CE62821C2E6569E4D74023DB19C6B26F246CB3B",
+            "license": "BSD-3-Clause",
+        },
+        {
+            "name": "scipy",
+            "version": "1.17.1",
+            "direct": True,
+            "wheel_filename": "scipy-1.17.1-cp311-cp311-win_amd64.whl",
+            "sha256": "D30E57C72013C2A4FE441C2FCB8E77B14E152AD48B5464858E07E2AD9FBFCEFF",
+            "license": "BSD-3-Clause",
+        },
+        {
+            "name": "threadpoolctl",
+            "version": "3.6.0",
+            "direct": False,
+            "wheel_filename": "threadpoolctl-3.6.0-py3-none-any.whl",
+            "sha256": "43A0B8FD5A2928500110039E43A5EED8480B918967083EA48DC3AB9F13C4A7FB",
+            "license": "BSD-3-Clause",
+        },
+    ],
+    "network_during_evaluation_allowed": False,
+    "product_dependency_manifest_influence_allowed": False,
+}
+
 CREMA_SOURCE_BINDING_FIELDS = (
     "finished_responses_sha256",
     "summary_table_sha256",
@@ -249,6 +311,100 @@ def validate_config(payload: Any) -> dict[str, Any]:
     return _validate_exact(payload, EXPECTED_CONFIG, "config")
 
 
+def validate_environment_lock(payload: Any) -> dict[str, Any]:
+    if not isinstance(payload, dict):
+        raise ValueError("environment lock must be an object")
+    distributions = payload.get("distributions")
+    if not isinstance(distributions, list) or not distributions:
+        raise ValueError("environment lock distributions must be non-empty")
+    expected_distributions = EXPECTED_ENVIRONMENT_LOCK["distributions"]
+    if len(distributions) != len(expected_distributions):
+        raise ValueError("environment lock distribution set does not match")
+    for actual, expected in zip(distributions, expected_distributions):
+        if not isinstance(actual, dict) or set(actual) != set(expected):
+            raise ValueError("environment lock distribution fields do not match")
+        if actual.get("name") != expected["name"]:
+            raise ValueError("environment lock distribution name does not match")
+        for field in ("version", "direct", "wheel_filename", "sha256", "license"):
+            if actual.get(field) != expected[field]:
+                raise ValueError(
+                    f"environment lock distribution {field} does not match"
+                )
+    if payload.get("direct_requirements") != [
+        "numpy",
+        "scipy",
+        "scikit-learn",
+    ]:
+        raise ValueError("environment lock direct requirements do not match")
+    if payload.get("network_during_evaluation_allowed") is not False:
+        raise ValueError("network during evaluation must remain disabled")
+    if payload.get("product_dependency_manifest_influence_allowed") is not False:
+        raise ValueError("product dependency manifest influence must remain disabled")
+    return _validate_exact(
+        payload,
+        EXPECTED_ENVIRONMENT_LOCK,
+        "environment lock",
+    )
+
+
+def validate_environment_identity(
+    *,
+    lock_path: Path,
+    wheelhouse_path: Path,
+    python_executable: Path,
+    python_version: tuple[int, int],
+    installed_distributions: Mapping[str, str],
+) -> dict[str, Any]:
+    expected_python = EVALUATION_PYTHON_PATH.resolve()
+    actual_python = Path(python_executable).resolve()
+    if str(actual_python).casefold() != str(expected_python).casefold():
+        raise ValueError("evaluation Python executable does not match fixed path")
+    if tuple(python_version) != (3, 11):
+        raise ValueError("evaluation Python version must be 3.11")
+    lock_file = Path(lock_path)
+    if not lock_file.is_file():
+        raise ValueError("environment lock is missing")
+    lock = validate_environment_lock(load_json_strict(lock_file))
+    expected_installed = {
+        distribution["name"]: distribution["version"]
+        for distribution in lock["distributions"]
+    }
+    normalized_installed: dict[str, str] = {}
+    for raw_name, version in installed_distributions.items():
+        name = str(raw_name).lower().replace("_", "-").replace(".", "-")
+        if name in normalized_installed:
+            raise ValueError("installed distributions contain duplicate names")
+        normalized_installed[name] = str(version)
+    if normalized_installed != expected_installed:
+        raise ValueError("installed distributions do not match environment lock")
+
+    wheelhouse = Path(wheelhouse_path)
+    wheels = {
+        path.name: path
+        for path in wheelhouse.iterdir()
+        if path.is_file()
+    } if wheelhouse.is_dir() else {}
+    expected_filenames = {
+        distribution["wheel_filename"]
+        for distribution in lock["distributions"]
+    }
+    if set(wheels) != expected_filenames:
+        raise ValueError("wheel set does not match environment lock")
+    for distribution in lock["distributions"]:
+        wheel = wheels[distribution["wheel_filename"]]
+        digest = hashlib.sha256(wheel.read_bytes()).hexdigest().upper()
+        if digest != distribution["sha256"]:
+            raise ValueError(
+                f"wheel hash does not match environment lock: {wheel.name}"
+            )
+    return {
+        "python_executable": str(actual_python),
+        "python_version": "3.11",
+        "installed_distributions": dict(sorted(normalized_installed.items())),
+        "wheel_count": len(wheels),
+    }
+
+
 def validate_crema_source_binding(
     source_binding: Any,
     contract: Mapping[str, Any],
@@ -317,6 +473,7 @@ def main() -> int:
         validate_config(load_json_strict(CONFIG_PATH))
         validate_feature_schema(load_json_strict(FEATURE_SCHEMA_PATH))
         validate_split_schema(load_json_strict(SPLIT_SCHEMA_PATH))
+        validate_environment_lock(load_json_strict(ENVIRONMENT_LOCK_PATH))
     except (OSError, ValueError) as error:
         print(
             f"EMOTION-STATE-002 Phase B frozen contract validation failed: {error}",
