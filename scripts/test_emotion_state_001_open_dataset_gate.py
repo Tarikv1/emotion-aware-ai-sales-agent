@@ -15,7 +15,7 @@ import textwrap
 import unittest
 import wave
 import zipfile
-from contextlib import redirect_stderr, redirect_stdout
+from contextlib import ExitStack, redirect_stderr, redirect_stdout
 from copy import deepcopy
 from pathlib import Path
 from unittest import mock
@@ -1225,6 +1225,47 @@ class DatasetMaterialValidationTests(unittest.TestCase):
                 "tracked dataset evidence does not match existing raw material",
             ):
                 validator.validate_materials()
+
+    def test_complete_prepublication_materials_ownership_tracks_guard(self) -> None:
+        from scripts import validate_emotion_state_001_phase_a_contracts as validator
+
+        dependency_names = (
+            "validate_source",
+            "validate_contracts",
+            "validate_split_v2",
+            "validate_cohort",
+            "validate_patterns",
+            "validate_brain_extension",
+        )
+        for guarded, expected_material_calls in ((True, 0), (False, 1)):
+            with ExitStack() as stack:
+                for name in dependency_names:
+                    stack.enter_context(mock.patch.object(validator, name))
+                stack.enter_context(mock.patch.object(
+                    validator,
+                    "_active_phase_a_guard_context",
+                    return_value=guarded,
+                ))
+                materials = stack.enter_context(
+                    mock.patch.object(validator, "validate_materials")
+                )
+                run = stack.enter_context(mock.patch.object(
+                    validator.subprocess,
+                    "run",
+                    return_value=subprocess.CompletedProcess(
+                        ["synthetic-baseline-validator"],
+                        returncode=0,
+                        stdout="",
+                        stderr="",
+                    ),
+                ))
+                validator.validate_prepublication_inputs("complete")
+            with self.subTest(guarded=guarded):
+                self.assertEqual(
+                    materials.call_count,
+                    expected_material_calls,
+                )
+                self.assertEqual(run.call_count, 0 if guarded else 1)
 
     def test_existing_material_validator_guards_fixed_paths_before_raw_read(
         self,
@@ -2571,6 +2612,137 @@ class DatasetMaterialValidationTests(unittest.TestCase):
             ):
                 write_synthetic_evidence()
 
+    def test_crema_git_commands_and_archive_environment_are_exact(self) -> None:
+        from scripts.build_emotion_state_public_dataset_manifests import (
+            _run_git_command,
+            discover_crema_lfs_oids,
+        )
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory).resolve()
+            crema_root = root / "crema"
+            self._crema_fixture(crema_root)
+            repository = crema_root.resolve()
+            expected_revision = "A" * 40
+            archive_bytes = self._crema_lfs_tar(crema_root)
+            calls: list[list[str]] = []
+
+            def fake_git(
+                argv: list[str],
+                *,
+                cwd: Path,
+                timeout_seconds: float,
+            ) -> bytes:
+                calls.append(list(argv))
+                self.assertEqual(cwd, root)
+                self.assertGreater(timeout_seconds, 0)
+                if argv[-2:] == ["rev-parse", "--show-toplevel"]:
+                    return (str(repository) + "\n").encode("utf-8")
+                if "rev-parse" in argv and argv[-1] in {
+                    "HEAD",
+                    "HEAD^{commit}",
+                }:
+                    return (expected_revision + "\n").encode("ascii")
+                if "archive" in argv:
+                    return archive_bytes
+                raise AssertionError(argv)
+
+            self.assertEqual(
+                discover_crema_lfs_oids(
+                    crema_root,
+                    project_root=root,
+                    expected_revision=expected_revision,
+                    git_command=fake_git,
+                ),
+                self._synthetic_crema_lfs_oids(crema_root),
+            )
+            expected_argvs = [
+                [
+                    "git",
+                    "--no-lazy-fetch",
+                    "-C",
+                    str(repository),
+                    "rev-parse",
+                    "--show-toplevel",
+                ],
+                [
+                    "git",
+                    "--no-lazy-fetch",
+                    "-C",
+                    str(repository),
+                    "rev-parse",
+                    "--verify",
+                    "HEAD^{commit}",
+                ],
+                [
+                    "git",
+                    "--no-lazy-fetch",
+                    "-C",
+                    str(repository),
+                    "archive",
+                    "--format=tar",
+                    "HEAD",
+                    "--",
+                    "AudioWAV",
+                ],
+            ]
+            for index, expected_argv in enumerate(expected_argvs):
+                with self.subTest(command=index):
+                    self.assertEqual(calls[index], expected_argv)
+
+            parent_environment = {
+                "PATH": "synthetic-path",
+                "SAFE_PARENT": "preserved",
+            }
+            parent_before = dict(parent_environment)
+            completed = subprocess.CompletedProcess(
+                expected_argvs[0],
+                returncode=0,
+                stdout=b"synthetic",
+                stderr=b"",
+            )
+            denied_archive_shape = [
+                "git",
+                "--no-lazy-fetch",
+                "--literal-extra-option",
+                "-C",
+                str(repository),
+                "archive",
+                "--format=tar",
+                "HEAD",
+                "--",
+                "AudioWAV",
+            ]
+            with (
+                mock.patch.dict(os.environ, parent_environment, clear=True),
+                mock.patch(
+                    "scripts.build_emotion_state_public_dataset_manifests."
+                    "subprocess.run",
+                    return_value=completed,
+                ) as run,
+            ):
+                for argv in (*expected_argvs[:2], denied_archive_shape):
+                    _run_git_command(
+                        argv,
+                        cwd=root,
+                        timeout_seconds=1,
+                    )
+                    self.assertIsNone(run.call_args.kwargs["env"])
+                _run_git_command(
+                    expected_argvs[2],
+                    cwd=root,
+                    timeout_seconds=1,
+                )
+                self.assertEqual(
+                    run.call_args.kwargs["env"],
+                    {
+                        **parent_before,
+                        "GIT_LFS_SKIP_SMUDGE": "1",
+                    },
+                )
+                self.assertIsNot(run.call_args.kwargs["env"], os.environ)
+                self.assertEqual(dict(os.environ), parent_before)
+
     def test_crema_lfs_pointer_parser_and_local_git_command_boundary(self) -> None:
         from scripts.build_emotion_state_public_dataset_manifests import (
             _run_git_command,
@@ -2625,10 +2797,10 @@ class DatasetMaterialValidationTests(unittest.TestCase):
                 timeout_seconds: float,
             ) -> bytes:
                 calls.append((tuple(argv), cwd, timeout_seconds))
-                command = tuple(argv[3:])
+                command = tuple(argv[4:])
                 if command == ("rev-parse", "--show-toplevel"):
                     return (str(crema_root.resolve()) + "\n").encode("utf-8")
-                if command == ("rev-parse", "HEAD"):
+                if command == ("rev-parse", "--verify", "HEAD^{commit}"):
                     return (expected_revision + "\n").encode("ascii")
                 if command == (
                     "archive",
@@ -2649,15 +2821,24 @@ class DatasetMaterialValidationTests(unittest.TestCase):
             self.assertEqual(mapping, self._synthetic_crema_lfs_oids(crema_root))
             self.assertEqual(len(calls), 3)
             for argv, cwd, timeout_seconds in calls:
-                self.assertEqual(argv[:3], ("git", "-C", str(crema_root.resolve())))
+                self.assertEqual(
+                    argv[:4],
+                    (
+                        "git",
+                        "--no-lazy-fetch",
+                        "-C",
+                        str(crema_root.resolve()),
+                    ),
+                )
                 self.assertEqual(cwd, root.resolve())
                 self.assertGreater(timeout_seconds, 0)
                 self.assertLessEqual(timeout_seconds, 60)
 
         archive_argv = [
             "git",
+            "--no-lazy-fetch",
             "-C",
-            "synthetic-repository",
+            str(Path("synthetic-repository").resolve()),
             "archive",
             "--format=tar",
             "HEAD",
@@ -2720,10 +2901,14 @@ class DatasetMaterialValidationTests(unittest.TestCase):
                     cwd: Path,
                     timeout_seconds: float,
                 ) -> bytes:
-                    command = tuple(argv[3:])
+                    command = tuple(argv[4:])
                     if command == ("rev-parse", "--show-toplevel"):
                         return (str(crema_root.resolve()) + "\n").encode("utf-8")
-                    if command == ("rev-parse", "HEAD"):
+                    if command == (
+                        "rev-parse",
+                        "--verify",
+                        "HEAD^{commit}",
+                    ):
                         return (revision + "\n").encode("ascii")
                     if command[0] == "archive":
                         return archive_bytes
@@ -2834,10 +3019,10 @@ class DatasetMaterialValidationTests(unittest.TestCase):
                 cwd: Path,
                 timeout_seconds: float,
             ) -> bytes:
-                command = tuple(argv[3:])
+                command = tuple(argv[4:])
                 if command == ("rev-parse", "--show-toplevel"):
                     return (str(crema_root.resolve()) + "\n").encode("utf-8")
-                if command == ("rev-parse", "HEAD"):
+                if command == ("rev-parse", "--verify", "HEAD^{commit}"):
                     return (expected_revision + "\n").encode("ascii")
                 if command[0] == "archive":
                     return archive_bytes
@@ -5851,7 +6036,13 @@ class PhaseACompleteStateTests(unittest.TestCase):
         )
 
         head_commit = subprocess.run(
-            ["git", "rev-parse", "HEAD"],
+            [
+                "git",
+                "--no-lazy-fetch",
+                "rev-parse",
+                "--verify",
+                "HEAD^{commit}",
+            ],
             cwd=ROOT,
             text=True,
             capture_output=True,
@@ -8679,6 +8870,522 @@ class VerificationEvidenceTests(unittest.TestCase):
         ])
         self.assertNotIn("fixture-only", json.dumps(removed_names))
 
+    def test_materials_command_alone_gets_three_closed_git_rules(self) -> None:
+        verification = self._verification_module()
+        caller = "scripts/build_emotion_state_public_dataset_manifests.py"
+        matcher_ids = (
+            "crema_material_show_toplevel_v1",
+            "crema_material_resolve_head_v1",
+            "crema_material_archive_audio_wav_v1",
+        )
+        expected = [
+            {
+                "kind": "git",
+                "caller": caller,
+                "matcher_id": matcher_id,
+                "cwd_class": "project_root",
+                "max_uses": 1,
+                "children": [],
+            }
+            for matcher_id in matcher_ids
+        ]
+        self.assertEqual(
+            verification._command_subprocess_rules(
+                command_id="phase-a-materials-validator",
+                root=ROOT,
+            ),
+            expected,
+        )
+        for command_id, _argv in verification.ALLOWED_COMMAND_TEMPLATES:
+            if command_id == "phase-a-materials-validator":
+                continue
+            with self.subTest(command_id=command_id):
+                generated = verification._command_subprocess_rules(
+                    command_id=command_id,
+                    root=ROOT,
+                )
+                self.assertFalse(
+                    any(
+                        rule.get("matcher_id") in matcher_ids
+                        for rule in generated
+                    )
+                )
+
+    @unittest.skipIf(
+        "EMOTION_STATE_PHASE_A_GUARD_POLICY" in os.environ,
+        ACTIVE_GUARD_SELF_HOSTING_SKIP_REASON,
+    )
+    def test_crema_material_git_rule_schema_is_exact(self) -> None:
+        with tempfile.TemporaryDirectory(
+            prefix="emotion-state-crema-rule-schema-",
+        ) as temporary_directory:
+            project_root = Path(temporary_directory)
+            marker = project_root / "schema-probe-ran.txt"
+            caller = "scripts/build_emotion_state_public_dataset_manifests.py"
+            self._write_bytes(
+                project_root,
+                caller,
+                (
+                    "from pathlib import Path\n"
+                    f"Path({str(marker)!r}).write_text('ran')\n"
+                ).encode("utf-8"),
+            )
+            base = {
+                "kind": "git",
+                "caller": caller,
+                "matcher_id": "crema_material_show_toplevel_v1",
+                "cwd_class": "project_root",
+                "max_uses": 1,
+                "children": [],
+            }
+            accepted = self._run_guarded_target(
+                project_root,
+                caller,
+                allowed_subprocesses=[base],
+            )
+            self.assertEqual(
+                accepted.returncode,
+                0,
+                accepted.stdout + accepted.stderr,
+            )
+            invalid_cases = (
+                ("duplicate", [base, deepcopy(base)]),
+                ("missing_max_uses", [{k: v for k, v in base.items() if k != "max_uses"}]),
+                ("zero_use", [{**base, "max_uses": 0}]),
+                ("boolean_use", [{**base, "max_uses": True}]),
+                ("two_use", [{**base, "max_uses": 2}]),
+                ("children", [{**base, "children": [deepcopy(base)]}]),
+                ("extra_field", [{**base, "environment_class": "inherit"}]),
+                ("wrong_caller", [{**base, "caller": "scripts/wrong.py"}]),
+                ("wrong_cwd", [{**base, "cwd_class": "transaction_descendant"}]),
+            )
+            for case_name, rules in invalid_cases:
+                with self.subTest(case=case_name):
+                    marker.unlink(missing_ok=True)
+                    completed = self._run_guarded_target(
+                        project_root,
+                        caller,
+                        allowed_subprocesses=rules,
+                    )
+                    self.assertNotEqual(
+                        completed.returncode,
+                        0,
+                        completed.stdout + completed.stderr,
+                    )
+                    self.assertFalse(marker.exists())
+
+    @unittest.skipIf(
+        "EMOTION_STATE_PHASE_A_GUARD_POLICY" in os.environ,
+        ACTIVE_GUARD_SELF_HOSTING_SKIP_REASON,
+    )
+    def test_crema_material_git_guard_is_request_environment_and_use_closed(
+        self,
+    ) -> None:
+        caller = "scripts/build_emotion_state_public_dataset_manifests.py"
+        matcher_ids = (
+            "crema_material_show_toplevel_v1",
+            "crema_material_resolve_head_v1",
+            "crema_material_archive_audio_wav_v1",
+        )
+        with tempfile.TemporaryDirectory(
+            prefix="emotion-state-crema-git-guard-",
+        ) as temporary_directory:
+            project_root = Path(temporary_directory).resolve()
+            repository = (
+                project_root
+                / "data/public/emotion-state/crema-d-v1.0/repository"
+            )
+            repository.mkdir(parents=True)
+            self._initialize_git_repository(repository)
+            self._write_bytes(
+                repository,
+                "AudioWAV/1001_DFA_ANG_XX.wav",
+                b"synthetic pointer fixture\n",
+            )
+            self._git(repository, "add", "--", "AudioWAV/1001_DFA_ANG_XX.wav")
+            self._git(repository, "commit", "-m", "baseline")
+            sibling = repository.parent / "repository-sibling"
+            sibling.mkdir()
+            descendant_cwd = project_root / "cwd-descendant"
+            descendant_cwd.mkdir()
+            exact_argvs = (
+                [
+                    "git",
+                    "--no-lazy-fetch",
+                    "-C",
+                    str(repository),
+                    "rev-parse",
+                    "--show-toplevel",
+                ],
+                [
+                    "git",
+                    "--no-lazy-fetch",
+                    "-C",
+                    str(repository),
+                    "rev-parse",
+                    "--verify",
+                    "HEAD^{commit}",
+                ],
+                [
+                    "git",
+                    "--no-lazy-fetch",
+                    "-C",
+                    str(repository),
+                    "archive",
+                    "--format=tar",
+                    "HEAD",
+                    "--",
+                    "AudioWAV",
+                ],
+            )
+            repository_variants = (
+                str(project_root / "wrong-repository"),
+                str(repository.parent),
+                str(sibling),
+                "data/public/emotion-state/crema-d-v1.0/repository",
+                str(repository) + os.sep,
+                str(repository).swapcase(),
+            )
+            common_argv_near_misses = [
+                ["git", "-C", str(repository)],
+                ["git", "-C", str(repository), "--no-lazy-fetch"],
+                ["git", "--no-lazy-fetch", "--no-lazy-fetch", "-C", str(repository)],
+                ["git", "--no-lazy-fetch", str(repository), "-C"],
+                ["git", "--no-lazy-fetch", "-C", "-C", str(repository)],
+            ]
+            operation_near_misses = (
+                [
+                    [*exact_argvs[0], "--absolute-git-dir"],
+                ],
+                [
+                    [
+                        "git", "--no-lazy-fetch", "-C", str(repository),
+                        "rev-parse", "HEAD",
+                    ],
+                    [
+                        "git", "--no-lazy-fetch", "-C", str(repository),
+                        "rev-parse", "--verify", "head",
+                    ],
+                    [
+                        "git", "--no-lazy-fetch", "-C", str(repository),
+                        "rev-parse", "HEAD^{commit}",
+                    ],
+                    [
+                        "git", "--no-lazy-fetch", "-C", str(repository),
+                        "rev-parse", "--verify", "HEAD^0",
+                    ],
+                ],
+                [
+                    [
+                        "git", "--no-lazy-fetch", "-C", str(repository),
+                        "archive", "--format=zip", "HEAD", "--", "AudioWAV",
+                    ],
+                    [
+                        "git", "--no-lazy-fetch", "-C", str(repository),
+                        "archive", "--format=tar", "HEAD^{commit}", "--", "AudioWAV",
+                    ],
+                    [
+                        "git", "--no-lazy-fetch", "-C", str(repository),
+                        "archive", "--format=tar", "HEAD", "AudioWAV",
+                    ],
+                    [
+                        "git", "--no-lazy-fetch", "-C", str(repository),
+                        "archive", "--format=tar", "HEAD", "--", "AudioWav",
+                    ],
+                    [*exact_argvs[2], "extra-pathspec"],
+                    [
+                        "git", "--no-lazy-fetch", "-C", str(repository),
+                        "archive", "--prefix=fixture/", "--format=tar",
+                        "HEAD", "--", "AudioWAV",
+                    ],
+                ],
+            )
+            rules = [
+                {
+                    "kind": "git",
+                    "caller": caller,
+                    "matcher_id": matcher_id,
+                    "cwd_class": "project_root",
+                    "max_uses": 1,
+                    "children": [],
+                }
+                for matcher_id in matcher_ids
+            ]
+
+            for index, (exact, matcher_id) in enumerate(
+                zip(exact_argvs, matcher_ids, strict=True)
+            ):
+                denied_argvs = [
+                    [*argv, *exact[4:]]
+                    for argv in common_argv_near_misses
+                ]
+                denied_argvs.extend(
+                    [
+                        [*exact[:3], repository_variant, *exact[4:]]
+                        for repository_variant in repository_variants
+                    ]
+                )
+                denied_argvs.extend(operation_near_misses[index])
+                source = f"""
+import os
+import subprocess
+
+exact = {exact!r}
+denied_argvs = {denied_argvs!r}
+project_root = {str(project_root)!r}
+descendant_cwd = {str(descendant_cwd)!r}
+
+def denied(argv, *, cwd=project_root, env_marker="omit"):
+    kwargs = {{"stdout": subprocess.PIPE, "stderr": subprocess.PIPE, "check": False}}
+    if cwd != "omit":
+        kwargs["cwd"] = cwd
+    if env_marker != "omit":
+        kwargs["env"] = env_marker
+    try:
+        subprocess.run(argv, **kwargs)
+    except PermissionError:
+        return
+    raise AssertionError((argv, cwd, env_marker))
+
+for argv in denied_argvs:
+    denied(argv)
+for cwd in (
+    "omit",
+    {str(project_root.parent)!r},
+    descendant_cwd,
+    project_root.swapcase(),
+):
+    denied(exact, cwd=cwd)
+
+parent = dict(os.environ)
+if {index} < 2:
+    denied(exact, env_marker=parent.copy())
+    for lfs_name in ("GIT_LFS_SKIP_SMUDGE", "Git_Lfs_Skip_Smudge"):
+        os.environ[lfs_name] = "1"
+        denied(exact, env_marker=None)
+        del os.environ[lfs_name]
+    exact_env = None
+else:
+    denied(exact)
+    denied(exact, env_marker=None)
+    invalid_environments = []
+    invalid_environments.append(parent.copy())
+    wrong_lfs = parent.copy()
+    wrong_lfs["GIT_LFS_SKIP_SMUDGE"] = "0"
+    invalid_environments.append(wrong_lfs)
+    alternate_lfs = parent.copy()
+    alternate_lfs["Git_Lfs_Skip_Smudge"] = "1"
+    invalid_environments.append(alternate_lfs)
+    duplicate_lfs = parent.copy()
+    duplicate_lfs["GIT_LFS_SKIP_SMUDGE"] = "1"
+    duplicate_lfs["Git_Lfs_Skip_Smudge"] = "1"
+    invalid_environments.append(duplicate_lfs)
+    extra = parent.copy()
+    extra["SAFE_EXTRA"] = "fixture"
+    extra["GIT_LFS_SKIP_SMUDGE"] = "1"
+    invalid_environments.append(extra)
+    changed = parent.copy()
+    changed["PATH"] = changed["PATH"] + os.pathsep + "changed"
+    changed["GIT_LFS_SKIP_SMUDGE"] = "1"
+    invalid_environments.append(changed)
+    removed = parent.copy()
+    del removed["PATH"]
+    removed["GIT_LFS_SKIP_SMUDGE"] = "1"
+    invalid_environments.append(removed)
+    credential = parent.copy()
+    credential["OPENAI_API_KEY"] = "fixture-only"
+    credential["GIT_LFS_SKIP_SMUDGE"] = "1"
+    invalid_environments.append(credential)
+    for environment in invalid_environments:
+        denied(exact, env_marker=environment)
+    exact_env = parent.copy()
+    exact_env["GIT_LFS_SKIP_SMUDGE"] = "1"
+
+completed = subprocess.run(
+    exact,
+    cwd=project_root,
+    env=exact_env,
+    stdout=subprocess.PIPE,
+    stderr=subprocess.PIPE,
+    check=False,
+)
+assert completed.returncode == 0, completed.stderr
+denied(exact, env_marker=exact_env)
+assert dict(os.environ) == parent
+print("crema-operation-ok")
+"""
+                self._write_bytes(
+                    project_root,
+                    caller,
+                    textwrap.dedent(source).encode("utf-8"),
+                )
+                completed = self._run_guarded_target(
+                    project_root,
+                    caller,
+                    allowed_subprocesses=[rules[index]],
+                )
+                with self.subTest(matcher_id=matcher_id):
+                    self.assertEqual(
+                        completed.returncode,
+                        0,
+                        completed.stdout + completed.stderr,
+                    )
+                    self.assertEqual(
+                        completed.stdout.strip(),
+                        "crema-operation-ok",
+                    )
+
+                scrub_source = f"""
+import os
+import sitecustomize
+
+exact = {exact!r}
+project_root = {str(project_root)!r}
+parent = dict(os.environ)
+environment = None
+if {index} == 2:
+    environment = parent.copy()
+    environment["GIT_LFS_SKIP_SMUDGE"] = "1"
+bound = sitecustomize._guarded_popen_arguments(
+    exact,
+    cwd=project_root,
+    env=environment,
+)
+child = bound.arguments["env"]
+if {index} == 2:
+    assert child["GIT_LFS_SKIP_SMUDGE"] == "1"
+    assert tuple(
+        name for name in child if name.upper() == "GIT_LFS_SKIP_SMUDGE"
+    ) == ("GIT_LFS_SKIP_SMUDGE",)
+else:
+    assert "GIT_LFS_SKIP_SMUDGE" not in child
+assert "OPENAI_API_KEY" not in child
+assert "SAFE_EXTRA" not in child
+assert dict(os.environ) == parent
+print("crema-environment-ok")
+"""
+                self._write_bytes(
+                    project_root,
+                    caller,
+                    textwrap.dedent(scrub_source).encode("utf-8"),
+                )
+                scrubbed = self._run_guarded_target(
+                    project_root,
+                    caller,
+                    allowed_subprocesses=[rules[index]],
+                )
+                with self.subTest(environment=matcher_id):
+                    self.assertEqual(
+                        scrubbed.returncode,
+                        0,
+                        scrubbed.stdout + scrubbed.stderr,
+                    )
+                    self.assertEqual(
+                        scrubbed.stdout.strip(),
+                        "crema-environment-ok",
+                    )
+
+            wrong_caller = "scripts/wrong_material_caller.py"
+            self._write_bytes(
+                project_root,
+                wrong_caller,
+                textwrap.dedent(
+                    f"""
+                    import subprocess
+                    exact_argvs = {exact_argvs!r}
+                    project_root = {str(project_root)!r}
+                    for exact in exact_argvs:
+                        try:
+                            subprocess.run(exact, cwd=project_root, check=False)
+                        except PermissionError:
+                            pass
+                        else:
+                            raise AssertionError(exact)
+                    print("wrong-caller-denied")
+                    """
+                ).encode("utf-8"),
+            )
+            wrong_caller_completed = self._run_guarded_target(
+                project_root,
+                wrong_caller,
+                allowed_subprocesses=rules,
+            )
+            self.assertEqual(
+                wrong_caller_completed.returncode,
+                0,
+                wrong_caller_completed.stdout + wrong_caller_completed.stderr,
+            )
+            self.assertEqual(
+                wrong_caller_completed.stdout.strip(),
+                "wrong-caller-denied",
+            )
+
+        with tempfile.TemporaryDirectory(
+            prefix="emotion-state-crema-link-guard-",
+        ) as temporary_directory:
+            project_root = Path(temporary_directory).resolve()
+            actual_repository = project_root / "ordinary-repository"
+            actual_repository.mkdir()
+            self._initialize_git_repository(actual_repository)
+            self._write_bytes(actual_repository, "tracked.txt", b"tracked\n")
+            self._git(actual_repository, "add", "--", "tracked.txt")
+            self._git(actual_repository, "commit", "-m", "baseline")
+            repository = (
+                project_root
+                / "data/public/emotion-state/crema-d-v1.0/repository"
+            )
+            repository.parent.mkdir(parents=True)
+            try:
+                repository.symlink_to(actual_repository, target_is_directory=True)
+            except OSError as exc:
+                with self.subTest(capability="directory symlink"):
+                    self.skipTest(
+                        "directory symlink capability unavailable: "
+                        f"{exc}"
+                    )
+                return
+            exact = [
+                "git", "--no-lazy-fetch", "-C", str(repository),
+                "rev-parse", "--show-toplevel",
+            ]
+            self._write_bytes(
+                project_root,
+                caller,
+                textwrap.dedent(
+                    f"""
+                    import subprocess
+                    try:
+                        subprocess.run(
+                            {exact!r},
+                            cwd={str(project_root)!r},
+                            check=False,
+                        )
+                    except PermissionError:
+                        print("link-denied")
+                    else:
+                        raise AssertionError("link launched")
+                    """
+                ).encode("utf-8"),
+            )
+            linked = self._run_guarded_target(
+                project_root,
+                caller,
+                allowed_subprocesses=[{
+                    "kind": "git",
+                    "caller": caller,
+                    "matcher_id": matcher_ids[0],
+                    "cwd_class": "project_root",
+                    "max_uses": 1,
+                    "children": [],
+                }],
+            )
+            self.assertEqual(
+                linked.returncode,
+                0,
+                linked.stdout + linked.stderr,
+            )
+            self.assertEqual(linked.stdout.strip(), "link-denied")
+
     def test_ledger_is_relative_deterministic_and_timestamp_free(self) -> None:
         from scripts.emotion_state_phase_a_verification_evidence import (
             canonical_command_entry,
@@ -10930,6 +11637,312 @@ print("git-families-ok")
                 completed.stdout + completed.stderr,
             )
             self.assertEqual(completed.stdout.strip(), "git-families-ok")
+
+    @unittest.skipIf(
+        "EMOTION_STATE_PHASE_A_GUARD_POLICY" in os.environ,
+        ACTIVE_GUARD_SELF_HOSTING_SKIP_REASON,
+    )
+    def test_guard_focused_test_project_head_read_is_exact_and_one_use(
+        self,
+    ) -> None:
+        with tempfile.TemporaryDirectory(
+            prefix="emotion-state-guard-focused-head-",
+        ) as temporary_directory:
+            project_root = Path(temporary_directory)
+            self._initialize_git_repository(project_root)
+            self._write_bytes(project_root, "tracked.txt", b"tracked\n")
+            self._git(project_root, "add", "--", "tracked.txt")
+            self._git(project_root, "commit", "-m", "baseline")
+            nested = project_root / "nested"
+            nested.mkdir()
+            exact_argv = [
+                "git",
+                "--no-lazy-fetch",
+                "rev-parse",
+                "--verify",
+                "HEAD^{commit}",
+            ]
+            denied_argvs = [
+                ["git", "rev-parse", "HEAD"],
+                ["git", "rev-parse", "--verify", "HEAD^{commit}"],
+                [
+                    "git",
+                    "--no-lazy-fetch",
+                    "--no-lazy-fetch",
+                    "rev-parse",
+                    "--verify",
+                    "HEAD^{commit}",
+                ],
+                [
+                    "git",
+                    "rev-parse",
+                    "--no-lazy-fetch",
+                    "--verify",
+                    "HEAD^{commit}",
+                ],
+                [
+                    "git",
+                    "--no-lazy-fetch",
+                    "rev-parse",
+                    "--verify",
+                    "HEAD",
+                ],
+                [*exact_argv, "--quiet"],
+            ]
+            caller_source = (
+                "import subprocess\n"
+                f"exact = {exact_argv!r}\n"
+                f"denied = {denied_argvs!r}\n"
+                f"project_root = {str(project_root)!r}\n"
+                f"nested = {str(nested)!r}\n"
+                "for argv in denied:\n"
+                "    try:\n"
+                "        subprocess.run(argv, cwd=project_root, check=False)\n"
+                "    except PermissionError:\n"
+                "        pass\n"
+                "    else:\n"
+                "        raise AssertionError(argv)\n"
+                "try:\n"
+                "    subprocess.run(exact, cwd=nested, check=False)\n"
+                "except PermissionError:\n"
+                "    pass\n"
+                "else:\n"
+                "    raise AssertionError('wrong cwd launched')\n"
+                "completed = subprocess.run(\n"
+                "    exact,\n"
+                "    cwd=project_root,\n"
+                "    capture_output=True,\n"
+                "    text=True,\n"
+                "    check=False,\n"
+                ")\n"
+                "assert completed.returncode == 0, completed.stderr\n"
+                "assert completed.args == exact, completed.args\n"
+                "try:\n"
+                "    subprocess.run(exact, cwd=project_root, check=False)\n"
+                "except PermissionError:\n"
+                "    pass\n"
+                "else:\n"
+                "    raise AssertionError('second use launched')\n"
+                "print('focused-head-ok')\n"
+            )
+            caller_path = (
+                "scripts/test_emotion_state_001_open_dataset_gate.py"
+            )
+            self._write_bytes(
+                project_root,
+                caller_path,
+                caller_source.encode("utf-8"),
+            )
+            rule = {
+                "kind": "git",
+                "caller": caller_path,
+                "matcher_id": "focused_test_project_head",
+                "cwd_class": "project_root",
+                "max_uses": 1,
+                "children": [],
+            }
+            completed = self._run_guarded_target(
+                project_root,
+                caller_path,
+                allowed_subprocesses=[rule],
+            )
+            self.assertEqual(
+                completed.returncode,
+                0,
+                completed.stdout + completed.stderr,
+            )
+            self.assertEqual(completed.stdout.strip(), "focused-head-ok")
+
+            wrong_caller_path = "scripts/wrong_caller.py"
+            wrong_caller_source = (
+                "import subprocess\n"
+                f"exact = {exact_argv!r}\n"
+                f"project_root = {str(project_root)!r}\n"
+                "try:\n"
+                "    subprocess.run(exact, cwd=project_root, check=False)\n"
+                "except PermissionError:\n"
+                "    pass\n"
+                "else:\n"
+                "    raise AssertionError('wrong caller launched')\n"
+                "print('wrong-caller-denied')\n"
+            )
+            self._write_bytes(
+                project_root,
+                wrong_caller_path,
+                wrong_caller_source.encode("utf-8"),
+            )
+            wrong_caller = self._run_guarded_target(
+                project_root,
+                wrong_caller_path,
+                allowed_subprocesses=[rule],
+            )
+            self.assertEqual(
+                wrong_caller.returncode,
+                0,
+                wrong_caller.stdout + wrong_caller.stderr,
+            )
+            self.assertEqual(
+                wrong_caller.stdout.strip(),
+                "wrong-caller-denied",
+            )
+
+    @unittest.skipIf(
+        "EMOTION_STATE_PHASE_A_GUARD_POLICY" in os.environ,
+        ACTIVE_GUARD_SELF_HOSTING_SKIP_REASON,
+    )
+    def test_focused_rules_bind_verification_git_reads_to_project_root(
+        self,
+    ) -> None:
+        verification = self._verification_module()
+        with tempfile.TemporaryDirectory(
+            prefix="emotion-state-guard-verification-root-git-",
+        ) as temporary_directory:
+            project_root = Path(temporary_directory)
+            self._initialize_git_repository(project_root)
+            self._write_bytes(project_root, "tracked.txt", b"tracked\n")
+            self._git(project_root, "add", "--", "tracked.txt")
+            self._git(project_root, "commit", "-m", "baseline")
+            head_commit = self._git(
+                project_root,
+                "rev-parse",
+                "HEAD",
+            ).stdout.strip()
+            generated_rules = verification._command_subprocess_rules(
+                command_id="focused-open-dataset-tests",
+                root=project_root,
+            )
+            project_root_rules = [
+                rule
+                for rule in generated_rules
+                if rule == {
+                    "kind": "git",
+                    "caller": (
+                        "scripts/emotion_state_phase_a_verification_evidence.py"
+                    ),
+                    "matcher_id": "transaction_verification",
+                    "cwd_class": "project_root",
+                    "children": [],
+                }
+            ]
+            exact_argv = [
+                "git",
+                "--no-lazy-fetch",
+                "rev-parse",
+                "--verify",
+                f"{head_commit}^{{commit}}",
+            ]
+            caller_source = (
+                "import subprocess\n"
+                "from pathlib import Path\n"
+                f"exact = {exact_argv!r}\n"
+                f"project_root = Path({str(project_root)!r})\n"
+                "if Path.cwd() == project_root:\n"
+                "    denied = (\n"
+                "        ['git', 'rev-parse', '--verify', "
+                f"{(head_commit + '^{commit}')!r}],\n"
+                "        ['git', '--no-lazy-fetch', '--no-lazy-fetch', "
+                "'rev-parse', '--verify', "
+                f"{(head_commit + '^{commit}')!r}],\n"
+                "        [*exact, '--quiet'],\n"
+                "        ['git', 'add', '--', 'tracked.txt'],\n"
+                "        ['git', '--no-lazy-fetch', 'status', '--short'],\n"
+                "    )\n"
+                "    for argv in denied:\n"
+                "        try:\n"
+                "            subprocess.run(argv, check=False)\n"
+                "        except PermissionError:\n"
+                "            pass\n"
+                "        else:\n"
+                "            raise AssertionError(argv)\n"
+                "    completed = subprocess.run(\n"
+                "        exact,\n"
+                "        capture_output=True,\n"
+                "        text=True,\n"
+                "        check=False,\n"
+                "    )\n"
+                "    assert completed.returncode == 0, completed.stderr\n"
+                "    assert completed.args == exact, completed.args\n"
+                "    print('verification-root-git-ok')\n"
+                "else:\n"
+                "    try:\n"
+                "        subprocess.run(exact, check=False)\n"
+                "    except PermissionError:\n"
+                "        pass\n"
+                "    else:\n"
+                "        raise AssertionError('wrong cwd launched')\n"
+                "    print('verification-wrong-cwd-denied')\n"
+            )
+            caller_path = (
+                "scripts/emotion_state_phase_a_verification_evidence.py"
+            )
+            self._write_bytes(
+                project_root,
+                caller_path,
+                caller_source.encode("utf-8"),
+            )
+            completed = self._run_guarded_target(
+                project_root,
+                caller_path,
+                allowed_subprocesses=project_root_rules,
+            )
+            self.assertEqual(
+                completed.returncode,
+                0,
+                completed.stdout + completed.stderr,
+            )
+            self.assertEqual(len(project_root_rules), 1)
+            self.assertEqual(
+                completed.stdout.strip(),
+                "verification-root-git-ok",
+            )
+
+            wrong_cwd = self._run_guarded_target(
+                project_root,
+                caller_path,
+                allowed_subprocesses=project_root_rules,
+                cwd=project_root / "guard-runtime",
+            )
+            self.assertEqual(
+                wrong_cwd.returncode,
+                0,
+                wrong_cwd.stdout + wrong_cwd.stderr,
+            )
+            self.assertEqual(
+                wrong_cwd.stdout.strip(),
+                "verification-wrong-cwd-denied",
+            )
+
+            wrong_caller_path = "scripts/wrong_verification_caller.py"
+            wrong_caller_source = (
+                "import subprocess\n"
+                f"exact = {exact_argv!r}\n"
+                "try:\n"
+                "    subprocess.run(exact, check=False)\n"
+                "except PermissionError:\n"
+                "    pass\n"
+                "else:\n"
+                "    raise AssertionError('wrong caller launched')\n"
+                "print('verification-wrong-caller-denied')\n"
+            )
+            self._write_bytes(
+                project_root,
+                wrong_caller_path,
+                wrong_caller_source.encode("utf-8"),
+            )
+            wrong_caller = self._run_guarded_target(
+                project_root,
+                wrong_caller_path,
+                allowed_subprocesses=project_root_rules,
+            )
+            self.assertEqual(
+                wrong_caller.returncode,
+                0,
+                wrong_caller.stdout + wrong_caller.stderr,
+            )
+            self.assertEqual(
+                wrong_caller.stdout.strip(),
+                "verification-wrong-caller-denied",
+            )
 
     @unittest.skipIf(
         "EMOTION_STATE_PHASE_A_GUARD_POLICY" in os.environ,

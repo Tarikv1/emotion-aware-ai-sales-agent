@@ -674,6 +674,7 @@ def _git_rule(
     cwd_class: str,
     captured_head: str | None = None,
     sentinel_object_id: str | None = None,
+    max_uses: int | None = None,
 ) -> dict[str, object]:
     rule: dict[str, object] = {
         "kind": "git",
@@ -687,6 +688,8 @@ def _git_rule(
             raise ValueError("sentinel Git rule values must be supplied together")
         rule["captured_head"] = captured_head
         rule["sentinel_object_id"] = sentinel_object_id
+    if max_uses is not None:
+        rule["max_uses"] = max_uses
     return rule
 
 
@@ -734,6 +737,12 @@ def _command_subprocess_rules(
     )
     if command_id == "focused-open-dataset-tests":
         return [
+            _git_rule(
+                caller=open_dataset_test_caller,
+                matcher_id="focused_test_project_head",
+                cwd_class="project_root",
+                max_uses=1,
+            ),
             _python_inline_rule(
                 caller=open_dataset_test_caller,
                 source_sha256=_INLINE_SOURCE_DIGESTS["private_path_probe"],
@@ -778,6 +787,33 @@ def _command_subprocess_rules(
                 caller=verification_caller,
                 matcher_id="transaction_verification",
                 cwd_class="transaction_descendant",
+            ),
+            _git_rule(
+                caller=verification_caller,
+                matcher_id="transaction_verification",
+                cwd_class="project_root",
+            ),
+        ]
+    if command_id == "phase-a-materials-validator":
+        caller = "scripts/build_emotion_state_public_dataset_manifests.py"
+        return [
+            _git_rule(
+                caller=caller,
+                matcher_id="crema_material_show_toplevel_v1",
+                cwd_class="project_root",
+                max_uses=1,
+            ),
+            _git_rule(
+                caller=caller,
+                matcher_id="crema_material_resolve_head_v1",
+                cwd_class="project_root",
+                max_uses=1,
+            ),
+            _git_rule(
+                caller=caller,
+                matcher_id="crema_material_archive_audio_wav_v1",
+                cwd_class="project_root",
+                max_uses=1,
             ),
         ]
     if command_id == "closeout-hardening-tests":

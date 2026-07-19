@@ -5918,3 +5918,12 @@ Interpretation:
   - non-mapping complete verification evidence now produces controlled incomplete blockers, and complete readiness evidence must be a mapping with exactly its ten owned fields before any nested authorization field is indexed; malformed readiness shapes are rejected before publication writes, replacement, locking, receipts, or journals
   - the final strict regressions moved the complete offline suite to `Ran 281 tests in 60.808s`, `OK (skipped=3)`; fresh real-material and complete-prepublication gates both passed with exact outputs `EMOTION-STATE-001 Phase A validation passed: materials` and `EMOTION-STATE-001 Phase A validation passed: prepublication`
 - Boundary: `materials` requires ignored raw bytes; clean-clone `checkpoint` validation confirms the recorded tracked evidence and pair but cannot re-prove raw-byte availability. No private data/path, provider, call, simulation, source adaptation, model evaluation, runtime configuration, or complete candidate publication occurred in Task 10.
+
+### 2026-07-19 - EMOTION-STATE-001 guarded CREMA-D material Git prerequisite
+
+- Goal: permit offline verification of the fixed ignored CREMA-D repository without lazy fetch or network access.
+- Method: exactly three one-use, builder-only, project-root-cwd Git capabilities are bound to the fixed repository: exact `show-toplevel`, verified `HEAD`, and `AudioWAV` archive commands; only the archive child receives process-local `GIT_LFS_SKIP_SMUDGE=1`.
+- Ledger ownership: authenticated guarded prepublication defers its recursive material check to the dedicated materials command, while unguarded complete prepublication retains the check.
+- Evidence: the resumed complete ledger passed all 15 commands, and the direct `materials` and complete `prepublication` validators passed. Independent review then identified this documentation correction and the synthetic symlink capability skip-reporting cleanup before re-review and commit.
+- Remaining status: this prerequisite does not publish the canonical pair; the later Task 11 defer/validate/accept transaction remains separate. Re-review and commit of this historical checkpoint remain external to the prerequisite.
+- Boundaries: no private data, network/download, provider, calls, simulations, source adaptation, model evaluation, runtime activation, Phase B, canonical publication, production-readiness claim, push, or merge.

@@ -238,13 +238,18 @@ def _run_git_command(
     ):
         raise ValueError("local Git command boundary is invalid")
     child_environment: dict[str, str] | None = None
-    if argv[-5:] == [
-        "archive",
-        "--format=tar",
-        "HEAD",
-        "--",
-        "AudioWAV",
-    ]:
+    if (
+        len(argv) == 9
+        and argv[:3] == ["git", "--no-lazy-fetch", "-C"]
+        and os.path.isabs(argv[3])
+        and argv[4:] == [
+            "archive",
+            "--format=tar",
+            "HEAD",
+            "--",
+            "AudioWAV",
+        ]
+    ):
         child_environment = os.environ.copy()
         child_environment["GIT_LFS_SKIP_SMUDGE"] = "1"
     try:
@@ -310,7 +315,12 @@ def discover_crema_lfs_oids(
     if re.fullmatch(r"[0-9A-Fa-f]{40}", expected_revision) is None:
         raise ValueError("frozen CREMA-D source revision is invalid")
 
-    base_argv = ["git", "-C", str(repository_root)]
+    base_argv = [
+        "git",
+        "--no-lazy-fetch",
+        "-C",
+        str(repository_root),
+    ]
     top_level_bytes = git_command(
         [*base_argv, "rev-parse", "--show-toplevel"],
         cwd=approved_project_root,
@@ -324,7 +334,7 @@ def discover_crema_lfs_oids(
         raise ValueError("CREMA-D root is not the exact local Git repository top-level")
 
     head = git_command(
-        [*base_argv, "rev-parse", "HEAD"],
+        [*base_argv, "rev-parse", "--verify", "HEAD^{commit}"],
         cwd=approved_project_root,
         timeout_seconds=GIT_COMMAND_TIMEOUT_SECONDS,
     ).decode("ascii", errors="strict").strip()

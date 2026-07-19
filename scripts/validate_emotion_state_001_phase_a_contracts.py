@@ -633,7 +633,8 @@ def validate_prepublication_inputs(mode: str) -> None:
     validate_cohort()
     validate_patterns()
     validate_brain_extension()
-    if not _active_phase_a_guard_context():
+    guarded = _active_phase_a_guard_context()
+    if not guarded:
         baseline_gate = subprocess.run(
             [
                 sys.executable,
@@ -649,7 +650,7 @@ def validate_prepublication_inputs(mode: str) -> None:
             baseline_gate.returncode == 0,
             baseline_gate.stdout + baseline_gate.stderr,
         )
-    if mode == "complete":
+    if mode == "complete" and not guarded:
         validate_materials()
 
 

@@ -28,7 +28,14 @@ _PROCESS_DENIAL = "EMOTION-STATE Phase A process launch is blocked"
 _RULE_KINDS = {"python_inline", "python_target", "git"}
 _CWD_CLASSES = {"project_root", "transaction_descendant"}
 _ENVIRONMENT_CLASSES = {"inherit", "guarded_child", "synthetic_guard"}
+_CREMA_MATERIAL_MATCHER_IDS = frozenset({
+    "crema_material_show_toplevel_v1",
+    "crema_material_resolve_head_v1",
+    "crema_material_archive_audio_wav_v1",
+})
 _GIT_MATCHER_IDS = {
+    *_CREMA_MATERIAL_MATCHER_IDS,
+    "focused_test_project_head",
     "transaction_fixture",
     "transaction_verification",
     "project_root_sentinel",
@@ -53,6 +60,10 @@ _UPPER_SHA256_RE = re.compile(r"[0-9A-F]{64}")
 _OPEN_DATASET_TEST_CALLER = (
     "scripts/test_emotion_state_001_open_dataset_gate.py"
 )
+_CREMA_MATERIAL_CALLER = (
+    "scripts/build_emotion_state_public_dataset_manifests.py"
+)
+_GIT_LFS_SKIP_SMUDGE = "GIT_LFS_SKIP_SMUDGE"
 _CLOSEOUT_TEST_CALLER = (
     "scripts/test_emotion_state_001_closeout_hardening.py"
 )
@@ -209,6 +220,7 @@ def _semantic_rule_key(rule: Mapping[str, object]) -> tuple[object, ...]:
         rule["cwd_class"],
         rule.get("captured_head"),
         rule.get("sentinel_object_id"),
+        rule.get("max_uses"),
     )
 
 
@@ -260,6 +272,11 @@ def _validate_rule_array(value: object) -> list[dict[str, object]]:
                     "captured_head",
                     "sentinel_object_id",
                 })
+            elif (
+                matcher_id == "focused_test_project_head"
+                or matcher_id in _CREMA_MATERIAL_MATCHER_IDS
+            ):
+                expected_keys.add("max_uses")
         if set(supplied_rule) != expected_keys:
             raise ValueError("allowed subprocess rule fields are not closed")
 
@@ -273,6 +290,7 @@ def _validate_rule_array(value: object) -> list[dict[str, object]]:
         if kind in {"python_inline", "python_target"}:
             if rule["environment_class"] not in _ENVIRONMENT_CLASSES:
                 raise ValueError("rule environment_class is not closed")
+        if "max_uses" in rule:
             if (
                 type(rule["max_uses"]) is not int
                 or rule["max_uses"] < 1
@@ -327,6 +345,19 @@ def _validate_rule_array(value: object) -> list[dict[str, object]]:
                 raise ValueError(
                     "sentinel_object_id must be lowercase 40-or-64-hex"
                 )
+        elif rule["matcher_id"] == "focused_test_project_head" and (
+            rule["caller"] != _OPEN_DATASET_TEST_CALLER
+            or rule["cwd_class"] != "project_root"
+            or rule["max_uses"] != 1
+        ):
+            raise ValueError("focused test HEAD rule differs from reviewed scope")
+        elif rule["matcher_id"] in _CREMA_MATERIAL_MATCHER_IDS and (
+            rule["caller"] != _CREMA_MATERIAL_CALLER
+            or rule["cwd_class"] != "project_root"
+            or rule["max_uses"] != 1
+            or rule["children"] != []
+        ):
+            raise ValueError("CREMA-D material Git rule differs from reviewed scope")
         rule["children"] = _validate_rule_array(rule["children"])
         semantic_key = _semantic_rule_key(rule)
         if semantic_key in semantic_keys:
@@ -652,6 +683,27 @@ def _existing_path_chain_is_safe(root: str, candidate: str) -> bool:
     return True
 
 
+def _existing_directory_chain_is_safe(root: str, candidate: str) -> bool:
+    if not _existing_path_chain_is_safe(root, candidate):
+        return False
+    current = os.path.abspath(root)
+    candidate_path = os.path.abspath(candidate)
+    paths = [current]
+    relative = os.path.relpath(candidate_path, current)
+    if relative != ".":
+        for part in relative.split(os.sep):
+            current = os.path.join(current, part)
+            paths.append(current)
+    try:
+        return all(
+            stat.S_ISDIR(_ORIGINAL_OS_LSTAT(path).st_mode)
+            and not _path_is_link_or_reparse(path)
+            for path in paths
+        )
+    except OSError:
+        return False
+
+
 def _fixture_git_operands(argv: list[str]) -> list[str]:
     if len(argv) >= 4 and argv[:3] == ["git", "add", "--"]:
         return argv[3:]
@@ -869,6 +921,52 @@ def _transaction_verification_git_match(argv: list[str]) -> bool:
     )
 
 
+def _crema_material_git_match(
+    argv: list[str],
+    matcher_id: str,
+) -> bool:
+    repository = os.path.join(
+        _PROJECT_ROOT,
+        "data",
+        "public",
+        "emotion-state",
+        "crema-d-v1.0",
+        "repository",
+    )
+    if not _existing_directory_chain_is_safe(_PROJECT_ROOT, repository):
+        return False
+    prefix = ["git", "--no-lazy-fetch", "-C", repository]
+    commands = {
+        "crema_material_show_toplevel_v1": [
+            "rev-parse",
+            "--show-toplevel",
+        ],
+        "crema_material_resolve_head_v1": [
+            "rev-parse",
+            "--verify",
+            "HEAD^{commit}",
+        ],
+        "crema_material_archive_audio_wav_v1": [
+            "archive",
+            "--format=tar",
+            "HEAD",
+            "--",
+            "AudioWAV",
+        ],
+    }
+    return argv == [*prefix, *commands[matcher_id]]
+
+
+def _focused_test_project_head_git_match(argv: list[str]) -> bool:
+    return argv == [
+        "git",
+        "--no-lazy-fetch",
+        "rev-parse",
+        "--verify",
+        "HEAD^{commit}",
+    ]
+
+
 def _project_sentinel_git_match(
     argv: list[str],
     rule: Mapping[str, object],
@@ -905,6 +1003,10 @@ def _git_rule_execution(
     rule: Mapping[str, object],
 ) -> list[str] | None:
     matcher_id = rule["matcher_id"]
+    if matcher_id in _CREMA_MATERIAL_MATCHER_IDS:
+        return argv if _crema_material_git_match(argv, matcher_id) else None
+    if matcher_id == "focused_test_project_head":
+        return argv if _focused_test_project_head_git_match(argv) else None
     if matcher_id == "transaction_fixture":
         return argv if _fixture_git_match(argv) else None
     if matcher_id == "transaction_verification":
@@ -928,6 +1030,7 @@ def _rule_execution(
     *,
     caller: str,
     argv: list[str],
+    cwd_argument: object,
     cwd_lexical: str,
     cwd_resolved: str,
 ) -> tuple[list[str], str] | None:
@@ -962,6 +1065,17 @@ def _rule_execution(
         return argv, rule["environment_class"]
     if argv[0] != "git":
         return None
+    if rule.get("matcher_id") in _CREMA_MATERIAL_MATCHER_IDS:
+        try:
+            raw_cwd = _normalized_path(cwd_argument)
+        except (TypeError, ValueError, OSError):
+            return None
+        if (
+            raw_cwd != _PROJECT_ROOT
+            or cwd_lexical != _PROJECT_ROOT
+            or cwd_resolved != _PROJECT_ROOT
+        ):
+            return None
     if (
         rule["matcher_id"] == "transaction_fixture"
         and not _fixture_git_paths_are_safe(argv, cwd=cwd_lexical)
@@ -987,6 +1101,46 @@ def _reject_inherited_descriptors(bound: inspect.BoundArguments) -> None:
         raise PermissionError(_PROCESS_DENIAL)
 
 
+def _material_child_environment(
+    rule: Mapping[str, object],
+    *,
+    supplied_environment: object,
+    child_cwd: str,
+) -> dict[str, str]:
+    parent = dict(os.environ)
+    normalized_parent = _validate_environment(parent)
+    if _GIT_LFS_SKIP_SMUDGE in normalized_parent:
+        raise PermissionError(_PROCESS_DENIAL)
+    matcher_id = rule["matcher_id"]
+    if matcher_id == "crema_material_archive_audio_wav_v1":
+        if not isinstance(supplied_environment, Mapping):
+            raise PermissionError(_PROCESS_DENIAL)
+        _validate_environment(supplied_environment)
+        expected = dict(parent)
+        expected[_GIT_LFS_SKIP_SMUDGE] = "1"
+        if dict(supplied_environment) != expected:
+            raise PermissionError(_PROCESS_DENIAL)
+        child_environment = _scrub_child_environment(
+            supplied_environment,
+            children=rule["children"],
+            environment_class="inherit",
+            child_cwd=child_cwd,
+        )
+        child_environment[_GIT_LFS_SKIP_SMUDGE] = "1"
+        return child_environment
+    if supplied_environment is not None:
+        raise PermissionError(_PROCESS_DENIAL)
+    child_environment = _scrub_child_environment(
+        parent,
+        children=rule["children"],
+        environment_class="inherit",
+        child_cwd=child_cwd,
+    )
+    if _GIT_LFS_SKIP_SMUDGE in child_environment:
+        raise PermissionError(_PROCESS_DENIAL)
+    return child_environment
+
+
 def _guarded_popen_arguments(
     *popen_args: object,
     **popen_kwargs: object,
@@ -1010,7 +1164,8 @@ def _guarded_popen_arguments(
         raise PermissionError(_PROCESS_DENIAL)
     _reject_inherited_descriptors(bound)
 
-    cwd_lexical, cwd_resolved = _resolved_cwd(bound.arguments.get("cwd"))
+    cwd_argument = bound.arguments.get("cwd")
+    cwd_lexical, cwd_resolved = _resolved_cwd(cwd_argument)
     caller = _caller_identity()
     if caller is None:
         raise PermissionError(_PROCESS_DENIAL)
@@ -1020,6 +1175,7 @@ def _guarded_popen_arguments(
             rule,
             caller=caller,
             argv=command,
+            cwd_argument=cwd_argument,
             cwd_lexical=cwd_lexical,
             cwd_resolved=cwd_resolved,
         )
@@ -1029,21 +1185,27 @@ def _guarded_popen_arguments(
         raise PermissionError(_PROCESS_DENIAL)
     rule_index, execution_argv, environment_class = matches[0]
     rule = _RULES[rule_index]
-    if rule["kind"] in {"python_inline", "python_target"}:
+    supplied_environment = bound.arguments.get("env")
+    if rule.get("matcher_id") in _CREMA_MATERIAL_MATCHER_IDS:
+        child_environment = _material_child_environment(
+            rule,
+            supplied_environment=supplied_environment,
+            child_cwd=cwd_resolved,
+        )
+    else:
+        if supplied_environment is None:
+            supplied_environment = os.environ
+        child_environment = _scrub_child_environment(
+            supplied_environment,
+            children=rule["children"],
+            environment_class=environment_class,
+            child_cwd=cwd_resolved,
+        )
+    if "max_uses" in rule:
         with _RULE_USE_LOCK:
             if _RULE_USE_COUNTS[rule_index] >= rule["max_uses"]:
                 raise PermissionError(_PROCESS_DENIAL)
             _RULE_USE_COUNTS[rule_index] += 1
-
-    supplied_environment = bound.arguments.get("env")
-    if supplied_environment is None:
-        supplied_environment = os.environ
-    child_environment = _scrub_child_environment(
-        supplied_environment,
-        children=rule["children"],
-        environment_class=environment_class,
-        child_cwd=cwd_resolved,
-    )
     bound.arguments["args"] = execution_argv
     bound.arguments["env"] = child_environment
     bound.arguments["shell"] = False
