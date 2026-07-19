@@ -138,6 +138,17 @@ EXPECTED_CONFIG: dict[str, Any] = {
     },
 }
 
+CREMA_SOURCE_BINDING_FIELDS = (
+    "finished_responses_sha256",
+    "summary_table_sha256",
+    "raw_join_field",
+    "raw_modality_field",
+    "raw_audio_modality",
+    "raw_label_field",
+    "summary_join_field",
+    "summary_label_field",
+)
+
 
 def _pairs(pairs: list[tuple[str, Any]]) -> dict[str, Any]:
     result: dict[str, Any] = {}
@@ -238,6 +249,22 @@ def validate_config(payload: Any) -> dict[str, Any]:
     return _validate_exact(payload, EXPECTED_CONFIG, "config")
 
 
+def validate_crema_source_binding(
+    source_binding: Any,
+    contract: Mapping[str, Any],
+) -> None:
+    if not isinstance(contract, Mapping):
+        raise ValueError("CREMA-D source binding contract must be a mapping")
+    try:
+        expected_binding = {
+            field: contract[field] for field in CREMA_SOURCE_BINDING_FIELDS
+        }
+    except KeyError as error:
+        raise ValueError("CREMA-D source binding contract is incomplete") from error
+    if not _matches_expected(source_binding, expected_binding):
+        raise ValueError("CREMA-D source binding does not match frozen contract")
+
+
 def validate_crema_label_ledger(ledger: Any, config: Mapping[str, Any]) -> None:
     validated_config = validate_config(config)
     expected_contract = validated_config["crema_label_contract"]
@@ -248,9 +275,11 @@ def validate_crema_label_ledger(ledger: Any, config: Mapping[str, Any]) -> None:
         "included_wav_count",
         "eligible_actor_count",
         "eligible_sentence_count",
+        "source_binding",
     }
     if not isinstance(ledger, dict) or set(ledger) != expected_keys:
         raise ValueError("CREMA-D ledger fields do not match frozen contract")
+    validate_crema_source_binding(ledger["source_binding"], expected_contract)
     status_counts = {key: ledger[key] for key in expected_status_counts}
     label_counts = ledger["label_counts"]
     aggregate_counts = (

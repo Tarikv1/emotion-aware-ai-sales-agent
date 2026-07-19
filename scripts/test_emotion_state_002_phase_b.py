@@ -189,6 +189,19 @@ class PhaseBContractTests(unittest.TestCase):
             "included_wav_count": 7441,
             "eligible_actor_count": 91,
             "eligible_sentence_count": 12,
+            "source_binding": {
+                key: config["crema_label_contract"][key]
+                for key in (
+                    "finished_responses_sha256",
+                    "summary_table_sha256",
+                    "raw_join_field",
+                    "raw_modality_field",
+                    "raw_audio_modality",
+                    "raw_label_field",
+                    "summary_join_field",
+                    "summary_label_field",
+                )
+            },
         }
         validate_crema_label_ledger(ledger, config)
 
@@ -211,7 +224,7 @@ class PhaseBContractTests(unittest.TestCase):
                 with self.assertRaises(ValueError):
                     validate_crema_label_ledger(mutated, config)
 
-        field_paths = [()] + [("label_counts",)]
+        field_paths = [(), ("label_counts",), ("source_binding",)]
         for path in field_paths:
             for key in self._value_at(ledger, path):
                 mutated = deepcopy(ledger)
@@ -373,6 +386,107 @@ class CremaReferenceLabelTests(unittest.TestCase):
         self.assertIsNone(rows[0].label)
         self.assertEqual(rows[0].abstention_reason, "summary_voice_tie")
         self.assertNotEqual(rows[0].label, "ANG")
+
+    def test_source_binding_rejects_substituted_bytes_and_contract_mismatches(
+        self,
+    ) -> None:
+        from scripts.emotion_state_phase_b_evaluation import (
+            load_crema_reference_labels,
+        )
+        from scripts.validate_emotion_state_002_phase_b import (
+            validate_crema_source_binding,
+        )
+
+        with tempfile.TemporaryDirectory() as directory:
+            finished, summary = self._write_sources(Path(directory))
+            _, ledger = load_crema_reference_labels(
+                finished, summary, {"1001_DFA_ANG_XX"}
+            )
+            contract = dict(ledger["source_binding"])
+            validate_crema_source_binding(ledger["source_binding"], contract)
+
+            finished.write_text(
+                "\ufeff" + finished.read_text(encoding="utf-8"),
+                encoding="utf-8",
+            )
+            _, substituted = load_crema_reference_labels(
+                finished, summary, {"1001_DFA_ANG_XX"}
+            )
+            with self.assertRaisesRegex(ValueError, "source binding"):
+                validate_crema_source_binding(substituted["source_binding"], contract)
+
+        for field, value in contract.items():
+            mutated = dict(contract)
+            mutated[field] = f"mutated-{value}"
+            with self.subTest(binding_field=field):
+                with self.assertRaisesRegex(ValueError, "source binding"):
+                    validate_crema_source_binding(contract, mutated)
+
+    def test_duplicate_included_stems_fail_closed(self) -> None:
+        from scripts.emotion_state_phase_b_evaluation import (
+            load_crema_reference_labels,
+        )
+
+        with tempfile.TemporaryDirectory() as directory:
+            finished, summary = self._write_sources(Path(directory))
+            with self.assertRaisesRegex(
+                ValueError,
+                "duplicate included CREMA-D clip stem",
+            ):
+                load_crema_reference_labels(
+                    finished,
+                    summary,
+                    ["1001_DFA_ANG_XX", "1001_DFA_ANG_XX"],
+                )
+
+    def test_malformed_csv_rows_raise_controlled_value_errors(self) -> None:
+        from scripts.emotion_state_phase_b_evaluation import (
+            load_crema_reference_labels,
+        )
+
+        def expect_failure(
+            mutation: Callable[[Path], None],
+            pattern: str,
+        ) -> None:
+            with tempfile.TemporaryDirectory() as directory:
+                finished, summary = self._write_sources(Path(directory))
+                mutation(finished)
+                with self.assertRaisesRegex(ValueError, pattern):
+                    load_crema_reference_labels(
+                        finished,
+                        summary,
+                        {"1001_DFA_ANG_XX"},
+                    )
+
+        with self.subTest(row="surplus"):
+            expect_failure(
+                lambda finished: finished.write_text(
+                    finished.read_text(encoding="utf-8").replace(
+                        ",s1,A,80,A,50,X\n", ",s1,A,80,A,50,X,surplus\n", 1,
+                    ),
+                    encoding="utf-8",
+                ),
+                "unexpected CSV row",
+            )
+        with self.subTest(row="short"):
+            expect_failure(
+                lambda finished: finished.write_text(
+                    finished.read_text(encoding="utf-8").replace(
+                        ",s1,A,80,A,50,X\n", ",s1,A,80,A,50\n", 1,
+                    ),
+                    encoding="utf-8",
+                ),
+                "unexpected CSV row",
+            )
+        with self.subTest(row="malformed"):
+            expect_failure(
+                lambda finished: finished.write_text(
+                    finished.read_text(encoding="utf-8").splitlines()[0]
+                    + "\n1,\"unterminated",
+                    encoding="utf-8",
+                ),
+                "malformed CSV row",
+            )
 
     def test_real_schema_and_reference_join_mutations_fail_closed(self) -> None:
         from scripts.emotion_state_phase_b_evaluation import (

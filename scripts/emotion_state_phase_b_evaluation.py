@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 import csv
+import hashlib
+import io
 import math
 import re
 from collections import Counter, defaultdict
@@ -10,6 +12,12 @@ from pathlib import Path
 from typing import Any
 
 LABELS = frozenset({"A", "D", "F", "H", "N", "S"})
+RAW_JOIN_FIELD = "clipName"
+RAW_MODALITY_FIELD = "queryType"
+RAW_AUDIO_MODALITY = "1"
+RAW_LABEL_FIELD = "respEmo"
+SUMMARY_JOIN_FIELD = "FileName"
+SUMMARY_LABEL_FIELD = "VoiceVote"
 CLIP_PATTERN = re.compile(
     r"^(?P<actor>\d{4})_(?P<sentence>[A-Z0-9]{3})_"
     r"(?:ANG|DIS|FEA|HAP|NEU|SAD)_(?:HI|LO|MD|XX)$"
@@ -28,15 +36,28 @@ class CremaLabelRecord:
     vote_entropy: float | None
 
 
-def _rows(path: Path, required: tuple[str, ...]) -> list[dict[str, str]]:
-    with Path(path).open("r", encoding="utf-8-sig", newline="") as handle:
-        reader = csv.DictReader(handle)
-        if reader.fieldnames is None or tuple(reader.fieldnames) != required:
-            raise ValueError(f"unexpected CSV schema: {path.name}")
-        return [
-            {key: (value or "").strip() for key, value in row.items()}
-            for row in reader
-        ]
+def _rows(path: Path, required: tuple[str, ...]) -> tuple[list[dict[str, str]], str]:
+    source_bytes = Path(path).read_bytes()
+    try:
+        with io.TextIOWrapper(
+            io.BytesIO(source_bytes),
+            encoding="utf-8-sig",
+            newline="",
+        ) as handle:
+            reader = csv.DictReader(handle, strict=True)
+            if reader.fieldnames is None or tuple(reader.fieldnames) != required:
+                raise ValueError(f"unexpected CSV schema: {path.name}")
+            rows: list[dict[str, str]] = []
+            for row in reader:
+                if (
+                    tuple(row) != required
+                    or any(not isinstance(row[key], str) for key in required)
+                ):
+                    raise ValueError(f"unexpected CSV row: {path.name}")
+                rows.append({key: row[key].strip() for key in required})
+    except csv.Error as error:
+        raise ValueError(f"malformed CSV row: {path.name}") from error
+    return rows, hashlib.sha256(source_bytes).hexdigest().upper()
 
 
 def _winners(distribution: Counter[str]) -> tuple[str, ...]:
@@ -72,30 +93,38 @@ def load_crema_reference_labels(
         "", "FileName", "VoiceVote", "VoiceLevel", "FaceVote", "FaceLevel",
         "MultiModalVote", "MultiModalLevel",
     )
+    finished_rows, finished_responses_sha256 = _rows(finished_path, finished_header)
     raw_groups: dict[str, Counter[str]] = defaultdict(Counter)
-    for row in _rows(finished_path, finished_header):
-        if row["queryType"] != "1":
+    for row in finished_rows:
+        if row[RAW_MODALITY_FIELD] != RAW_AUDIO_MODALITY:
             continue
-        if row["respEmo"] not in LABELS:
+        if row[RAW_LABEL_FIELD] not in LABELS:
             raise ValueError("invalid raw audio-perception label")
-        raw_groups[row["clipName"]][row["respEmo"]] += 1
+        raw_groups[row[RAW_JOIN_FIELD]][row[RAW_LABEL_FIELD]] += 1
 
+    summary_rows, summary_table_sha256 = _rows(summary_path, summary_header)
     released: dict[str, tuple[str, ...]] = {}
-    for row in _rows(summary_path, summary_header):
-        stem = row["FileName"]
+    for row in summary_rows:
+        stem = row[SUMMARY_JOIN_FIELD]
         if stem in released:
             raise ValueError("duplicate summary clip")
-        values = tuple(sorted(row["VoiceVote"].split(":")))
+        values = tuple(sorted(row[SUMMARY_LABEL_FIELD].split(":")))
         if not values or len(values) != len(set(values)) or any(
             value not in LABELS for value in values
         ):
             raise ValueError("invalid released VoiceVote")
         released[stem] = values
 
+    stems = tuple(included_clip_stems)
+    if any(not isinstance(stem, str) for stem in stems):
+        raise ValueError("invalid included CREMA-D clip stem")
+    if len(stems) != len(set(stems)):
+        raise ValueError("duplicate included CREMA-D clip stem")
+
     records: list[CremaLabelRecord] = []
     ledger: Counter[str] = Counter()
     label_counts: Counter[str] = Counter()
-    for stem in sorted(set(included_clip_stems)):
+    for stem in sorted(stems):
         match = CLIP_PATTERN.fullmatch(stem)
         if match is None:
             raise ValueError("invalid included CREMA-D clip stem")
@@ -135,4 +164,14 @@ def load_crema_reference_labels(
     result["eligible_sentence_count"] = len({
         record.sentence_id for record in eligible
     })
+    result["source_binding"] = {
+        "finished_responses_sha256": finished_responses_sha256,
+        "summary_table_sha256": summary_table_sha256,
+        "raw_join_field": RAW_JOIN_FIELD,
+        "raw_modality_field": RAW_MODALITY_FIELD,
+        "raw_audio_modality": RAW_AUDIO_MODALITY,
+        "raw_label_field": RAW_LABEL_FIELD,
+        "summary_join_field": SUMMARY_JOIN_FIELD,
+        "summary_label_field": SUMMARY_LABEL_FIELD,
+    }
     return tuple(records), result
