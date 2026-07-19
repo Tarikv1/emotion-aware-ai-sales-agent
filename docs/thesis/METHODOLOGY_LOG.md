@@ -5976,3 +5976,10 @@ Interpretation:
 - Decomposition: frozen contracts; real-schema CREMA-D label ledger; separately gated research dependency lock; deterministic acoustic features; claim-scoped actor split; classical evaluation; AMI mechanics; guarded runner; synthetic ledger; separately gated public-material preflight/non-lockbox run; one-use lockbox; staged review and explicit canonical acceptance.
 - Review gates: offline implementation, dependency acquisition, public-material evaluation, final-lockbox opening, canonical staging/acceptance, and push remain distinct. No gate implicitly authorizes the next.
 - Boundary: plan writing changed documentation only. It installed no dependency, read no audio or AMI material, ran no model, opened no lockbox, accessed no private data/provider/network/call/simulation/runtime path, adapted no source, and performed no push or merge.
+
+### 2026-07-20 - EMOTION-STATE-002 Task 1 thesis-gate correction
+
+- RED: the initial six-file Task 1 implementation passed its focused contract tests but `python scripts\\check_thesis_update_gate.py` failed with `missing_thesis_update`, because all six frozen-contract files are thesis-triggering and no thesis tracking document was in scope.
+- Authorized correction: Task 1 now includes this methodology trace and its implementation-plan file in the exact staged scope; the protocol truthfully states that offline implementation started while dependency, public-material, and model execution have not started.
+- Boundary: no dependency install, network, public/private material read, model evaluation, provider, call, simulation, source adaptation, runtime activation, canonical publication, push, merge, or history rewrite occurred.
+- GREEN/commit evidence: the complete Task 1 verification ledger must pass before the eight-path commit `Add EMOTION-STATE Phase B frozen contracts`; the implementation report records the exact command outputs and resulting commit SHA.

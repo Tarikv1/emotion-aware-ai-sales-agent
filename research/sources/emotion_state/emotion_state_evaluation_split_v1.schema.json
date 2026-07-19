@@ -1,0 +1,34 @@
+{
+  "schema_id": "emotion-state-evaluation-split-v1",
+  "schema_version": 1,
+  "dataset_id": "crema-d-v1.0-audio-wav",
+  "dependency_roles": {
+    "speaker": "exclusion_group",
+    "scripted_scenario": "stratification_factor",
+    "source_corpus": "scope_constant",
+    "call_session": "covered_by_higher_dependency",
+    "recording_site": "advisory_unavailable",
+    "meeting_series": "not_applicable",
+    "dialogue_dyad": "not_applicable"
+  },
+  "covering_dependencies": {
+    "call_session": "speaker"
+  },
+  "partition_order": [
+    "training_discovery",
+    "calibration",
+    "balanced_diagnostic",
+    "final_lockbox"
+  ],
+  "partition_actor_counts": {
+    "training_discovery": 35,
+    "calibration": 13,
+    "balanced_diagnostic": 13,
+    "final_lockbox": 30
+  },
+  "expected_actor_count": 91,
+  "expected_sentence_count": 12,
+  "unseen_sentence_claim_allowed": false,
+  "recording_site_generalization_allowed": false,
+  "runtime_influence_allowed": false
+}

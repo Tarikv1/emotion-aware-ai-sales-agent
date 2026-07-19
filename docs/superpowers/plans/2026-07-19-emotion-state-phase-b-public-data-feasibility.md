@@ -164,6 +164,9 @@ The runner must reject any local-state path outside that root.
   `research/experiments/EMOTION-STATE-002-phase-b-public-data-feasibility.md`
 - Create: `scripts/validate_emotion_state_002_phase_b.py`
 - Create: `scripts/test_emotion_state_002_phase_b.py`
+- Modify:
+  `docs/superpowers/plans/2026-07-19-emotion-state-phase-b-public-data-feasibility.md`
+- Modify: `docs/thesis/METHODOLOGY_LOG.md`
 
 **Interfaces:**
 - Consumes: the corrected design and immutable hashes in Global Constraints.
@@ -514,8 +517,8 @@ def validate_config(payload: Any) -> dict[str, Any]:
 
 Create
 `research/experiments/EMOTION-STATE-002-phase-b-public-data-feasibility.md`
-with status `design approved; implementation plan recorded; execution not
-started`,
+with status `offline implementation started; dependency/public-material/model
+execution not started`,
 the exact question/claim boundary from the design, the five Boundary Gates,
 the corrected `6570/644/204/23` label ledger, and a statement that a valid
 negative result completes the experiment.
@@ -538,7 +541,7 @@ pass and no network calls.
 - [ ] **Step 9: Commit Task 1**
 
 ```powershell
-git add -- research/experiments/cases/emotion-state-002-phase-b-config.json research/sources/emotion_state/emotion_state_phase_b_feature_v1.schema.json research/sources/emotion_state/emotion_state_evaluation_split_v1.schema.json research/experiments/EMOTION-STATE-002-phase-b-public-data-feasibility.md scripts/validate_emotion_state_002_phase_b.py scripts/test_emotion_state_002_phase_b.py
+git add -- research/experiments/cases/emotion-state-002-phase-b-config.json research/sources/emotion_state/emotion_state_phase_b_feature_v1.schema.json research/sources/emotion_state/emotion_state_evaluation_split_v1.schema.json research/experiments/EMOTION-STATE-002-phase-b-public-data-feasibility.md scripts/validate_emotion_state_002_phase_b.py scripts/test_emotion_state_002_phase_b.py docs/superpowers/plans/2026-07-19-emotion-state-phase-b-public-data-feasibility.md docs/thesis/METHODOLOGY_LOG.md
 git diff --cached --check
 git commit -m "Add EMOTION-STATE Phase B frozen contracts"
 ```
