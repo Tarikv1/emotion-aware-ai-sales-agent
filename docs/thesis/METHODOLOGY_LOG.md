@@ -5935,3 +5935,11 @@ Interpretation:
 - Root cause and correction: the standalone checker consumes current Git status and therefore conflicts with the exact generated-pair-only candidate scope. `thesis-update-validator` remains required in the guarded input ledger, and candidate readback must require its zero exit plus `thesis_update=pass`; only the redundant post-staging rerun is removed.
 - Preserved limits: no fake `--changed-file` input, checker edit, global exception, validator weakening, or Task 11 completion claim. This entry records correction-time state; Task 11 publication remains unaccepted until a later defer/validate/review/accept transaction succeeds.
 - Unchanged boundaries: all dataset, private-data, provider, call, simulation, model-evaluation, source-adaptation, runtime, Phase-B, push, merge, and history-rewrite boundaries remain unchanged.
+
+### 2026-07-19 - EMOTION-STATE-001 Task 11 mode-aware report correction
+
+- Historical failed transaction: the second Task 11 defer returned native exit `0`, and all 14 corrected post-staging checks passed. Direct readback then found a complete result paired with material-pending, incomplete, and open-manifest report prose.
+- Recovery evidence: the candidate was rejected exactly once, restoring result SHA-256 `F6044B1C28BAD7082868FE35039AE8FB4352C319BD2F7EB8242253F3549F841D`, report SHA-256 `A3A3689C6B5DDDD708638AEF36F01D4F2F9FCAB2C7B4BAA6490CCBD452931C90`, a clean worktree and index, an absent receipt, and lock-only recovery state containing the one-byte `publication.lock`.
+- Root cause: the static report renderer emitted pending prose for both modes, while candidate and checkpoint validation deterministically reproduced that same renderer output without independent semantic assertions.
+- Correction boundary: the accepted material-pending bytes remain frozen, complete mode receives accurate offline-completion prose, and independent candidate/checkpoint semantic validation rejects mode/report contradictions even if deterministic renderer equality agrees.
+- Acceptance state: Task 11 remained unaccepted at correction time. Dataset, private-data, provider, call, simulation, model-evaluation, source-adaptation, runtime, Phase-B, push, merge, and history-rewrite boundaries remained unchanged.

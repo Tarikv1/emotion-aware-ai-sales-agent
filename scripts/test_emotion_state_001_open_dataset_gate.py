@@ -6306,6 +6306,257 @@ class PhaseAStateMachineTests(unittest.TestCase):
             encoding="utf-8",
         )
 
+    def test_complete_report_uses_complete_offline_semantics_and_boundaries(
+        self,
+    ) -> None:
+        from scripts.emotion_state_phase_a_contracts import render_phase_a_report
+
+        report = render_phase_a_report(
+            self.complete_payload(),
+            result_sha256="A" * 64,
+        )
+
+        required_statements = (
+            (
+                "This complete offline Phase A artifact validates source provenance, "
+                "the two selected public-dataset manifests and local material "
+                "hash/quality inventories, offline contracts, and the "
+                "privacy-preserving cohort-release gate; Phase A completion is "
+                "limited to source_provenance_dataset_manifests_offline_contracts_"
+                "and_cohort_release_gate_only."
+            ),
+            (
+                "Source adaptation remains blocked by the current instruction, "
+                "absent observed license metadata, undefined Phase B reuse scope, "
+                "pending Phase B attribution wording, and separate Phase B approval."
+            ),
+            (
+                "The two selected public-dataset manifests and local material "
+                "hash/quality inventories are verified for this bounded offline "
+                "checkpoint. Public-dataset model evaluation remains not started "
+                "and unauthorized. Runtime activation remains blocked."
+            ),
+            (
+                "Live aggregate release remains blocked; the offline synthetic "
+                "cohort-release contract is not authorization for live data, "
+                "customer use, or aggregate release."
+            ),
+            (
+                "This is not production readiness, public-dataset model performance, "
+                "acoustic implementation or accuracy, real-customer validation, "
+                "PSTN, ASR, streaming, or latency validation, provider-feasibility "
+                "evidence, runtime activation, or proof of internal customer emotion."
+            ),
+        )
+        for statement in required_statements:
+            with self.subTest(statement=statement):
+                self.assertIn(statement, report)
+        for forbidden_statement in (
+            "This material-pending artifact",
+            "Phase A remains incomplete",
+            "Per-public-dataset manifests remain open and unverified",
+        ):
+            with self.subTest(forbidden_statement=forbidden_statement):
+                self.assertNotIn(forbidden_statement, report)
+
+    def test_material_pending_report_bytes_and_prose_remain_frozen(self) -> None:
+        from scripts.emotion_state_phase_a_contracts import render_phase_a_report
+
+        canonical_directory = (
+            ROOT
+            / "research"
+            / "experiments"
+            / "generated"
+            / "EMOTION-STATE-001-phase-a-contracts"
+        )
+        result_path = canonical_directory / "result.json"
+        report_path = canonical_directory / "report.md"
+        result_bytes = result_path.read_bytes()
+        report_bytes = report_path.read_bytes()
+        result_sha256 = hashlib.sha256(result_bytes).hexdigest().upper()
+        rendered = render_phase_a_report(
+            json.loads(result_bytes.decode("utf-8")),
+            result_sha256=result_sha256,
+        )
+        probe = render_phase_a_report(
+            self.material_pending_payload(),
+            result_sha256="A" * 64,
+        )
+
+        self.assertEqual(
+            result_sha256,
+            "F6044B1C28BAD7082868FE35039AE8FB4352C319BD2F7EB8242253F3549F841D",
+        )
+        self.assertEqual(
+            hashlib.sha256(report_bytes).hexdigest().upper(),
+            "A3A3689C6B5DDDD708638AEF36F01D4F2F9FCAB2C7B4BAA6490CCBD452931C90",
+        )
+        self.assertEqual(
+            rendered.replace("\n", os.linesep).encode("utf-8"),
+            report_bytes,
+        )
+        self.assertEqual(
+            hashlib.sha256(probe.encode("utf-8")).hexdigest().upper(),
+            "56CABDDCE9E957D4A1ADE83CDA48F29101A44E5B8CF09582F03CF99A5D8025C4",
+        )
+        for statement in (
+            "This material-pending artifact",
+            "Phase A remains incomplete",
+            "Per-public-dataset manifests remain open and unverified",
+        ):
+            with self.subTest(statement=statement):
+                self.assertIn(statement, rendered)
+
+    def test_report_renderer_rejects_invalid_mode_state_combinations(self) -> None:
+        from scripts.emotion_state_phase_a_contracts import render_phase_a_report
+
+        mutations = (
+            ("pending-status", self.material_pending_payload(), "status", "complete"),
+            (
+                "pending-readiness",
+                self.material_pending_payload(),
+                "readiness_boundary.phase_a_complete",
+                True,
+            ),
+            (
+                "pending-material",
+                self.material_pending_payload(),
+                "summary.material_verification_status",
+                "verified",
+            ),
+            ("complete-status", self.complete_payload(), "status", "material_pending"),
+            (
+                "complete-readiness",
+                self.complete_payload(),
+                "readiness_boundary.phase_a_complete",
+                False,
+            ),
+            (
+                "complete-material",
+                self.complete_payload(),
+                "summary.material_verification_status",
+                "pending",
+            ),
+        )
+        for label, payload, field_path, value in mutations:
+            with self.subTest(label=label):
+                target = payload
+                path_parts = field_path.split(".")
+                for path_part in path_parts[:-1]:
+                    target = target[path_part]
+                target[path_parts[-1]] = value
+                with self.assertRaises(ValueError):
+                    render_phase_a_report(payload, result_sha256="A" * 64)
+
+    def test_checkpoint_rejects_complete_payload_with_pending_semantics_even_when_renderer_agrees(
+        self,
+    ) -> None:
+        from scripts import validate_emotion_state_001_phase_a_contracts as validator
+        from scripts import emotion_state_phase_a_contracts as contracts
+
+        with tempfile.TemporaryDirectory(
+            prefix="emotion-state-checkpoint-semantic-mismatch-",
+            dir=ROOT / ".tmp",
+        ) as temporary_directory:
+            root = Path(temporary_directory)
+            result = root / "canonical" / "result.json"
+            report = result.with_name("report.md")
+            payload = self.complete_payload()
+            result.parent.mkdir(parents=True)
+            result.write_text(
+                json.dumps(payload, indent=2, ensure_ascii=False) + "\n",
+                encoding="utf-8",
+            )
+            result_sha256 = hashlib.sha256(result.read_bytes()).hexdigest().upper()
+            pending_report = contracts.render_phase_a_report(
+                self.material_pending_payload(),
+                result_sha256=result_sha256,
+            )
+            report.write_text(pending_report, encoding="utf-8")
+
+            with (
+                mock.patch.object(
+                    contracts,
+                    "render_phase_a_report",
+                    return_value=pending_report,
+                ),
+                self.assertRaisesRegex(
+                    AssertionError,
+                    "report semantic mode mismatch",
+                ),
+            ):
+                validator._readback_pair(result, report)
+
+    def test_candidate_rejects_complete_payload_with_pending_semantics_independently(
+        self,
+    ) -> None:
+        from scripts import run_emotion_state_001_phase_a_contracts as runner
+        from scripts import validate_emotion_state_001_phase_a_contracts as validator
+        from scripts.emotion_state_phase_a_contracts import render_phase_a_report
+
+        payload = self.complete_payload()
+        with tempfile.TemporaryDirectory(
+            prefix="emotion-state-candidate-semantic-mismatch-",
+            dir=ROOT / ".tmp",
+        ) as temporary_directory:
+            report = Path(temporary_directory) / "report.md"
+            report.write_text(
+                render_phase_a_report(
+                    self.material_pending_payload(),
+                    result_sha256="A" * 64,
+                ),
+                encoding="utf-8",
+            )
+            with (
+                mock.patch.object(validator, "REPORT", report),
+                mock.patch.object(
+                    runner,
+                    "validate_candidate_evidence_pair",
+                    return_value=payload,
+                ) as deterministic_validation,
+                self.assertRaisesRegex(
+                    AssertionError,
+                    "report semantic mode mismatch",
+                ),
+            ):
+                validator.validate_candidate_readback("synthetic-receipt.json")
+            deterministic_validation.assert_called_once()
+
+    def test_report_semantics_rejects_opposite_state_summary_bullets(
+        self,
+    ) -> None:
+        from scripts import validate_emotion_state_001_phase_a_contracts as validator
+        from scripts.emotion_state_phase_a_contracts import render_phase_a_report
+
+        cases = (
+            (
+                "complete-with-pending-bullets",
+                self.complete_payload(),
+                "- Material verification status: `pending`\n"
+                "- Phase A complete: `False`\n",
+            ),
+            (
+                "pending-with-complete-bullets",
+                self.material_pending_payload(),
+                "- Material verification status: `verified`\n"
+                "- Phase A complete: `True`\n",
+            ),
+        )
+        for label, payload, contradictory_bullets in cases:
+            with self.subTest(label=label):
+                report = render_phase_a_report(
+                    payload,
+                    result_sha256="A" * 64,
+                )
+                with self.assertRaisesRegex(
+                    AssertionError,
+                    "report semantic mode mismatch",
+                ):
+                    validator._validate_report_semantics(
+                        payload,
+                        report + contradictory_bullets,
+                    )
+
     def test_selected_but_unverified_materials_keep_phase_incomplete(self) -> None:
         from scripts.emotion_state_phase_a_contracts import (
             determine_phase_a_completion,
@@ -6631,7 +6882,25 @@ class PhaseAStateMachineTests(unittest.TestCase):
                 payload = self.complete_payload()
                 payload["mode"] = mode
                 payload["status"] = status
-                self._write_readback_pair(payload, result, report)
+                result.parent.mkdir(parents=True)
+                result.write_text(
+                    json.dumps(payload, indent=2, ensure_ascii=False) + "\n",
+                    encoding="utf-8",
+                )
+                result_sha256 = hashlib.sha256(
+                    result.read_bytes()
+                ).hexdigest().upper()
+                from scripts.emotion_state_phase_a_contracts import (
+                    render_phase_a_report,
+                )
+
+                report.write_text(
+                    render_phase_a_report(
+                        self.material_pending_payload(),
+                        result_sha256=result_sha256,
+                    ),
+                    encoding="utf-8",
+                )
                 with self.assertRaises((AssertionError, ValueError)):
                     validator._readback_pair(result, report)
 

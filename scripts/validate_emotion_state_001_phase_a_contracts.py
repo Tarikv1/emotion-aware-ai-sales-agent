@@ -696,6 +696,7 @@ def _readback_pair(
         == expected_report.replace("\n", os.linesep),
         "result/report publication pair is not deterministic",
     )
+    _validate_report_semantics(result, report_bytes.decode("utf-8"))
     assert_condition(
         result.get("checkpoint_id") == "EMOTION-STATE-001-phase-a-contracts",
         result,
@@ -708,17 +709,88 @@ def _readback_pair(
     return result
 
 
+def _validate_report_semantics(
+    payload: dict[str, Any],
+    report_text: str,
+) -> None:
+    mismatch = "report semantic mode mismatch"
+    summary = payload.get("summary")
+    readiness_boundary = payload.get("readiness_boundary")
+    assert_condition(isinstance(summary, dict), mismatch)
+    assert_condition(isinstance(readiness_boundary, dict), mismatch)
+    state = (
+        payload.get("mode"),
+        payload.get("status"),
+        readiness_boundary.get("phase_a_complete"),
+        summary.get("material_verification_status"),
+    )
+    pending_claims = (
+        (
+            "This material-pending artifact validates source provenance, selected "
+            "public-dataset IDs, and offline contract artifacts only; Phase A "
+            "remains incomplete until separately authorized local materials are "
+            "verified."
+        ),
+        "Phase A remains incomplete",
+        "Per-public-dataset manifests remain open and unverified",
+        "- Material verification status: `pending`",
+        "- Phase A complete: `False`",
+    )
+    complete_claims = (
+        (
+            "This complete offline Phase A artifact validates source provenance, "
+            "the two selected public-dataset manifests and local material "
+            "hash/quality inventories, offline contracts, and the privacy-preserving "
+            "cohort-release gate; Phase A completion is limited to "
+            "source_provenance_dataset_manifests_offline_contracts_and_cohort_release_gate_only."
+        ),
+        (
+            "Source adaptation remains blocked by the current instruction, absent "
+            "observed license metadata, undefined Phase B reuse scope, pending "
+            "Phase B attribution wording, and separate Phase B approval."
+        ),
+        (
+            "The two selected public-dataset manifests and local material "
+            "hash/quality inventories are verified for this bounded offline "
+            "checkpoint. Public-dataset model evaluation remains not started and "
+            "unauthorized. Runtime activation remains blocked."
+        ),
+        (
+            "Live aggregate release remains blocked; the offline synthetic "
+            "cohort-release contract is not authorization for live data, customer "
+            "use, or aggregate release."
+        ),
+        "- Material verification status: `verified`",
+        "- Phase A complete: `True`",
+    )
+    if state == ("material_pending", "material_pending", False, "pending"):
+        assert_condition(
+            all(claim in report_text for claim in pending_claims)
+            and not any(claim in report_text for claim in complete_claims),
+            mismatch,
+        )
+    elif state == ("complete", "complete", True, "verified"):
+        assert_condition(
+            all(claim in report_text for claim in complete_claims)
+            and not any(claim in report_text for claim in pending_claims),
+            mismatch,
+        )
+    else:
+        raise AssertionError(mismatch)
+
+
 def validate_candidate_readback(receipt_path: str | Path) -> None:
     from scripts.run_emotion_state_001_phase_a_contracts import (
         validate_candidate_evidence_pair,
     )
 
-    validate_candidate_evidence_pair(
+    payload = validate_candidate_evidence_pair(
         receipt_path,
         result_path=RESULT,
         report_path=REPORT,
         recovery_dir=RECOVERY_DIR,
     )
+    _validate_report_semantics(payload, REPORT.read_text(encoding="utf-8"))
 
 
 def validate_checkpoint_readback() -> None:

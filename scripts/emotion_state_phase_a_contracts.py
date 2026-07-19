@@ -2146,11 +2146,88 @@ def render_phase_a_report(
         or any(character not in "0123456789ABCDEF" for character in result_sha256)
     ):
         raise ValueError("result_sha256 must be exactly 64 uppercase SHA-256 hexadecimal characters")
-    summary = payload["summary"]
+    if not isinstance(payload, dict):
+        raise ValueError("report payload mode state is invalid")
+    summary = payload.get("summary")
+    readiness_boundary = payload.get("readiness_boundary")
+    if not isinstance(summary, dict) or not isinstance(readiness_boundary, dict):
+        raise ValueError("report payload mode state is invalid")
+    mode = payload.get("mode")
+    status = payload.get("status")
+    phase_a_complete = readiness_boundary.get("phase_a_complete")
+    material_verification_status = summary.get("material_verification_status")
+    if (
+        mode == "material_pending"
+        and status == "material_pending"
+        and phase_a_complete is False
+        and material_verification_status == "pending"
+    ):
+        intro = (
+            "This material-pending artifact validates source provenance, selected "
+            "public-dataset IDs, and offline contract artifacts only; Phase A "
+            "remains incomplete until separately authorized local materials are "
+            "verified."
+        )
+        source_adaptation = (
+            "Source adaptation remains blocked by the source URL, revision or "
+            "authoritative archive date, Phase B reuse scope, Phase B attribution "
+            "wording, and separate Phase B approval."
+        )
+        material_status = (
+            "Per-public-dataset manifests remain open and unverified. Acted and "
+            "non-sales corpora can support offline thesis comparison only. Runtime "
+            "activation remains blocked."
+        )
+        aggregate_release = (
+            "Live aggregate release remains blocked until a separately approved "
+            "privacy-preserving unique-speaker cohort-release and dedup gate exists."
+        )
+        disclaimer = (
+            "This is not production readiness, real-customer validation, "
+            "PSTN/ASR/latency validation, provider-feasibility evidence, runtime "
+            "activation, or proof of internal customer emotion."
+        )
+    elif (
+        mode == "complete"
+        and status == "complete"
+        and phase_a_complete is True
+        and material_verification_status == "verified"
+    ):
+        intro = (
+            "This complete offline Phase A artifact validates source provenance, "
+            "the two selected public-dataset manifests and local material "
+            "hash/quality inventories, offline contracts, and the privacy-preserving "
+            "cohort-release gate; Phase A completion is limited to "
+            "source_provenance_dataset_manifests_offline_contracts_and_cohort_release_gate_only."
+        )
+        source_adaptation = (
+            "Source adaptation remains blocked by the current instruction, absent "
+            "observed license metadata, undefined Phase B reuse scope, pending "
+            "Phase B attribution wording, and separate Phase B approval."
+        )
+        material_status = (
+            "The two selected public-dataset manifests and local material "
+            "hash/quality inventories are verified for this bounded offline "
+            "checkpoint. Public-dataset model evaluation remains not started and "
+            "unauthorized. Runtime activation remains blocked."
+        )
+        aggregate_release = (
+            "Live aggregate release remains blocked; the offline synthetic "
+            "cohort-release contract is not authorization for live data, customer "
+            "use, or aggregate release."
+        )
+        disclaimer = (
+            "This is not production readiness, public-dataset model performance, "
+            "acoustic implementation or accuracy, real-customer validation, PSTN, "
+            "ASR, streaming, or latency validation, provider-feasibility evidence, "
+            "runtime activation, or proof of internal customer emotion."
+        )
+    else:
+        raise ValueError("report payload mode state is invalid")
     return "\n".join([
         "# EMOTION-STATE-001 Phase A Contract Report",
         "",
-        "This material-pending artifact validates source provenance, selected public-dataset IDs, and offline contract artifacts only; Phase A remains incomplete until separately authorized local materials are verified.",
+        intro,
         "",
         f"- Contract checks: `{summary['contract_check_count']}`",
         f"- Baseline fingerprints: `{summary['baseline_fingerprint_count']}`",
@@ -2167,10 +2244,10 @@ def render_phase_a_report(
         f"- Private data read by this runner: `{summary['private_data_read_by_runner']}`",
         f"- Runtime behavior changed by this runner: `{summary['runtime_behavior_changed_by_runner']}`",
         "",
-        "Source adaptation remains blocked by the source URL, revision or authoritative archive date, Phase B reuse scope, Phase B attribution wording, and separate Phase B approval.",
-        "Per-public-dataset manifests remain open and unverified. Acted and non-sales corpora can support offline thesis comparison only. Runtime activation remains blocked.",
-        "Live aggregate release remains blocked until a separately approved privacy-preserving unique-speaker cohort-release and dedup gate exists.",
+        source_adaptation,
+        material_status,
+        aggregate_release,
         "",
-        "This is not production readiness, real-customer validation, PSTN/ASR/latency validation, provider-feasibility evidence, runtime activation, or proof of internal customer emotion.",
+        disclaimer,
         "",
     ])
