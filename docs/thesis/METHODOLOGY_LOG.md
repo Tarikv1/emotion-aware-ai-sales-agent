@@ -5943,3 +5943,10 @@ Interpretation:
 - Root cause: the static report renderer emitted pending prose for both modes, while candidate and checkpoint validation deterministically reproduced that same renderer output without independent semantic assertions.
 - Correction boundary: the accepted material-pending bytes remain frozen, complete mode receives accurate offline-completion prose, and independent candidate/checkpoint semantic validation rejects mode/report contradictions even if deterministic renderer equality agrees.
 - Acceptance state: Task 11 remained unaccepted at correction time. Dataset, private-data, provider, call, simulation, model-evaluation, source-adaptation, runtime, Phase-B, push, merge, and history-rewrite boundaries remained unchanged.
+
+### 2026-07-19 - EMOTION-STATE-001 Task 11 pending-report state-independence correction
+
+- Historical failed transaction: transaction `da9032a523674358901cc59554446242` staged the complete candidate result SHA-256 `14771872BFB8554AB3FF6566BE9EA0364A1F5B4D5D5EA7C09543696E852684BB` and report SHA-256 `5239A2899F20EC0637A22CB9DE7FEA56726B376467583F85795A157C276F892B`; defer, materials, and candidate readback passed.
+- Root cause: the focused preservation suite failed only because it read the staged complete canonical paths while asserting the fixed material-pending hashes. Rejection ran exactly once and restored the fixed pending result and report hashes, a clean worktree and index, absent receipt and journal, and lock-only recovery containing `publication.lock`.
+- Correction boundary: the preservation test freezes only renderer-owned material-pending inputs and removes all live canonical reads from that test. Task 11 remains unaccepted until a later replacement transaction passes review and explicit acceptance.
+- Unchanged boundaries: all dataset, private-data, provider, call, simulation, model-evaluation, source-adaptation, runtime, Phase-B, push, merge, and history-rewrite boundaries remain unchanged.

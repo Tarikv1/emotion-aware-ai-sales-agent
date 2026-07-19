@@ -6362,38 +6362,40 @@ class PhaseAStateMachineTests(unittest.TestCase):
     def test_material_pending_report_bytes_and_prose_remain_frozen(self) -> None:
         from scripts.emotion_state_phase_a_contracts import render_phase_a_report
 
-        canonical_directory = (
-            ROOT
-            / "research"
-            / "experiments"
-            / "generated"
-            / "EMOTION-STATE-001-phase-a-contracts"
-        )
-        result_path = canonical_directory / "result.json"
-        report_path = canonical_directory / "report.md"
-        result_bytes = result_path.read_bytes()
-        report_bytes = report_path.read_bytes()
-        result_sha256 = hashlib.sha256(result_bytes).hexdigest().upper()
+        frozen_pending_payload = {
+            "mode": "material_pending",
+            "status": "material_pending",
+            "summary": {
+                "contract_check_count": 8,
+                "baseline_fingerprint_count": 6,
+                "selected_public_dataset_count": 2,
+                "dataset_download_authorized": False,
+                "dataset_evaluation_started": False,
+                "material_verification_status": "pending",
+                "source_repository_url_status": "verified_read_only",
+                "code_adaptation_started": False,
+                "frozen_exp_002_evaluator_provenance_status": "not_recorded",
+                "provider_operations_performed_by_runner": False,
+                "private_data_read_by_runner": False,
+                "runtime_behavior_changed_by_runner": False,
+            },
+            "readiness_boundary": {
+                "phase_a_complete": False,
+            },
+        }
         rendered = render_phase_a_report(
-            json.loads(result_bytes.decode("utf-8")),
-            result_sha256=result_sha256,
+            frozen_pending_payload,
+            result_sha256="F6044B1C28BAD7082868FE35039AE8FB4352C319BD2F7EB8242253F3549F841D",
         )
+        pending_report_bytes = rendered.replace("\n", os.linesep).encode("utf-8")
         probe = render_phase_a_report(
             self.material_pending_payload(),
             result_sha256="A" * 64,
         )
 
         self.assertEqual(
-            result_sha256,
-            "F6044B1C28BAD7082868FE35039AE8FB4352C319BD2F7EB8242253F3549F841D",
-        )
-        self.assertEqual(
-            hashlib.sha256(report_bytes).hexdigest().upper(),
+            hashlib.sha256(pending_report_bytes).hexdigest().upper(),
             "A3A3689C6B5DDDD708638AEF36F01D4F2F9FCAB2C7B4BAA6490CCBD452931C90",
-        )
-        self.assertEqual(
-            rendered.replace("\n", os.linesep).encode("utf-8"),
-            report_bytes,
         )
         self.assertEqual(
             hashlib.sha256(probe.encode("utf-8")).hexdigest().upper(),
