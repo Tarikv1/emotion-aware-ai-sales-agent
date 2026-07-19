@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 import math
 import sys
+from collections.abc import Mapping
 from pathlib import Path
 from typing import Any
 
@@ -235,6 +236,51 @@ def validate_config(payload: Any) -> dict[str, Any]:
     if not isinstance(boundaries, dict) or any(value is not False for value in boundaries.values()):
         raise ValueError("runtime influence and every external boundary must remain disabled")
     return _validate_exact(payload, EXPECTED_CONFIG, "config")
+
+
+def validate_crema_label_ledger(ledger: Any, config: Mapping[str, Any]) -> None:
+    validated_config = validate_config(config)
+    expected_contract = validated_config["crema_label_contract"]
+    expected_status_counts = expected_contract["expected_status_counts"]
+    expected_label_counts = expected_contract["expected_label_counts"]
+    expected_keys = set(expected_status_counts) | {
+        "label_counts",
+        "included_wav_count",
+        "eligible_actor_count",
+        "eligible_sentence_count",
+    }
+    if not isinstance(ledger, dict) or set(ledger) != expected_keys:
+        raise ValueError("CREMA-D ledger fields do not match frozen contract")
+    status_counts = {key: ledger[key] for key in expected_status_counts}
+    label_counts = ledger["label_counts"]
+    aggregate_counts = (
+        ledger["included_wav_count"],
+        ledger["eligible_actor_count"],
+        ledger["eligible_sentence_count"],
+    )
+    if (
+        not all(type(value) is int for value in status_counts.values())
+        or not isinstance(label_counts, dict)
+        or not all(type(value) is int for value in label_counts.values())
+        or not all(type(value) is int for value in aggregate_counts)
+    ):
+        raise ValueError("CREMA-D ledger counts must be integers")
+    if status_counts != expected_status_counts:
+        raise ValueError("CREMA-D ledger status counts do not match frozen contract")
+    if label_counts != expected_label_counts:
+        raise ValueError("CREMA-D ledger label counts do not match frozen contract")
+    if sum(status_counts.values()) != 7441:
+        raise ValueError("CREMA-D ledger status counts must sum to 7441")
+    if ledger["included_wav_count"] != 7441:
+        raise ValueError("CREMA-D included WAV count must be 7441")
+    if sum(label_counts.values()) != status_counts[
+        "eligible_concordant_unique_winner"
+    ]:
+        raise ValueError("CREMA-D eligible label count does not match status count")
+    if ledger["eligible_actor_count"] != 91:
+        raise ValueError("CREMA-D eligible actor count must be 91")
+    if ledger["eligible_sentence_count"] != 12:
+        raise ValueError("CREMA-D eligible sentence count must be 12")
 
 
 def main() -> int:

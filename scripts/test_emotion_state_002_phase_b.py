@@ -165,6 +165,78 @@ class PhaseBContractTests(unittest.TestCase):
             self.assertEqual(failed.stdout, "")
             self.assertIn("frozen contract validation failed", failed.stderr)
 
+    def test_crema_label_ledger_validates_and_fails_closed(self) -> None:
+        from scripts.validate_emotion_state_002_phase_b import (
+            load_json_strict,
+            validate_config,
+            validate_crema_label_ledger,
+        )
+
+        config = validate_config(load_json_strict(CONFIG))
+        ledger: dict[str, Any] = {
+            "eligible_concordant_unique_winner": 6570,
+            "summary_voice_tie": 644,
+            "raw_audio_vote_tie": 204,
+            "unique_winner_disagreement": 23,
+            "label_counts": {
+                "A": 951,
+                "D": 500,
+                "F": 613,
+                "H": 330,
+                "N": 3834,
+                "S": 342,
+            },
+            "included_wav_count": 7441,
+            "eligible_actor_count": 91,
+            "eligible_sentence_count": 12,
+        }
+        validate_crema_label_ledger(ledger, config)
+
+        count_paths = [
+            (key,) for key in (
+                "eligible_concordant_unique_winner",
+                "summary_voice_tie",
+                "raw_audio_vote_tie",
+                "unique_winner_disagreement",
+                "included_wav_count",
+                "eligible_actor_count",
+                "eligible_sentence_count",
+            )
+        ] + [("label_counts", label) for label in ledger["label_counts"]]
+        for path in count_paths:
+            mutated = deepcopy(ledger)
+            current = self._value_at(mutated, path)
+            self._replace_at(mutated, path, current + 1)
+            with self.subTest(count=path):
+                with self.assertRaises(ValueError):
+                    validate_crema_label_ledger(mutated, config)
+
+        field_paths = [()] + [("label_counts",)]
+        for path in field_paths:
+            for key in self._value_at(ledger, path):
+                mutated = deepcopy(ledger)
+                mapping = self._value_at(mutated, path)
+                mapping[f"renamed_{key}"] = mapping.pop(key)
+                with self.subTest(field=path + (key,)):
+                    with self.assertRaises(ValueError):
+                        validate_crema_label_ledger(mutated, config)
+
+        mutated = deepcopy(ledger)
+        mutated["label_counts"]["Z"] = mutated["label_counts"].pop("A")
+        with self.assertRaises(ValueError):
+            validate_crema_label_ledger(mutated, config)
+
+        mutated_config = deepcopy(config)
+        mutated_config["crema_label_contract"]["raw_audio_modality"] = "2"
+        with self.assertRaises(ValueError):
+            validate_config(mutated_config)
+
+        with tempfile.TemporaryDirectory() as temporary_directory:
+            duplicate_keys = Path(temporary_directory) / "duplicate-keys.json"
+            duplicate_keys.write_text('{"same": 1, "same": 2}', encoding="utf-8")
+            with self.assertRaisesRegex(ValueError, "duplicate JSON key"):
+                load_json_strict(duplicate_keys)
+
     @staticmethod
     def _scalar_paths(value: Any, path: tuple[str | int, ...] = ()) -> list[tuple[str | int, ...]]:
         if isinstance(value, dict):
@@ -233,6 +305,161 @@ class PhaseBContractTests(unittest.TestCase):
         if isinstance(value, float):
             return value + 1.0
         raise AssertionError(f"unexpected scalar type: {type(value)!r}")
+
+
+class CremaReferenceLabelTests(unittest.TestCase):
+    def _write_sources(self, root: Path) -> tuple[Path, Path]:
+        finished = root / "finishedResponses.csv"
+        summary = root / "summaryTable.csv"
+        finished.write_text(
+            ",localid,pos,ans,ttr,queryType,numTries,clipNum,questNum,"
+            "subType,clipName,sessionNums,respEmo,respLevel,dispEmo,"
+            "dispVal,dispLevel\n"
+            "1,r1,1,A_80,1,1,0,1,1,4,1001_DFA_ANG_XX,s1,A,80,A,50,X\n"
+            "2,r2,1,A_70,1,1,0,1,1,4,1001_DFA_ANG_XX,s2,A,70,A,50,X\n"
+            "3,r3,1,N_60,1,1,0,1,1,4,1001_DFA_ANG_XX,s3,N,60,A,50,X\n"
+            "4,r1,1,A_80,1,1,0,2,1,4,1002_IEO_HAP_HI,s1,A,80,H,80,H\n"
+            "5,r2,1,H_80,1,1,0,2,1,4,1002_IEO_HAP_HI,s2,H,80,H,80,H\n"
+            "6,r1,1,S_80,1,1,0,3,1,4,1003_TAI_FEA_XX,s1,S,80,F,50,X\n",
+            encoding="utf-8",
+        )
+        summary.write_text(
+            ",FileName,VoiceVote,VoiceLevel,FaceVote,FaceLevel,"
+            "MultiModalVote,MultiModalLevel\n"
+            "1,1001_DFA_ANG_XX,A,75,A,75,A,75\n"
+            "2,1002_IEO_HAP_HI,H,80,H,80,H,80\n"
+            "3,1003_TAI_FEA_XX,F,80,F,80,F,80\n",
+            encoding="utf-8",
+        )
+        return finished, summary
+
+    def test_concordant_unique_winner_is_eligible(self) -> None:
+        from scripts.emotion_state_phase_b_evaluation import (
+            load_crema_reference_labels,
+        )
+
+        with tempfile.TemporaryDirectory() as directory:
+            finished, summary = self._write_sources(Path(directory))
+            rows, ledger = load_crema_reference_labels(
+                finished, summary,
+                {"1001_DFA_ANG_XX", "1002_IEO_HAP_HI", "1003_TAI_FEA_XX"},
+            )
+        by_stem = {row.clip_stem: row for row in rows}
+        self.assertEqual(by_stem["1001_DFA_ANG_XX"].label, "A")
+        self.assertEqual(
+            by_stem["1002_IEO_HAP_HI"].abstention_reason,
+            "raw_audio_vote_tie",
+        )
+        self.assertEqual(
+            by_stem["1003_TAI_FEA_XX"].abstention_reason,
+            "unique_winner_disagreement",
+        )
+        self.assertEqual(ledger["eligible_concordant_unique_winner"], 1)
+
+    def test_released_tie_and_filename_intent_abstain(self) -> None:
+        from scripts.emotion_state_phase_b_evaluation import (
+            load_crema_reference_labels,
+        )
+
+        with tempfile.TemporaryDirectory() as directory:
+            finished, summary = self._write_sources(Path(directory))
+            text = summary.read_text(encoding="utf-8").replace(
+                "1001_DFA_ANG_XX,A,75", "1001_DFA_ANG_XX,A:N,75"
+            )
+            summary.write_text(text, encoding="utf-8")
+            rows, _ = load_crema_reference_labels(
+                finished, summary, {"1001_DFA_ANG_XX"}
+            )
+        self.assertIsNone(rows[0].label)
+        self.assertEqual(rows[0].abstention_reason, "summary_voice_tie")
+        self.assertNotEqual(rows[0].label, "ANG")
+
+    def test_real_schema_and_reference_join_mutations_fail_closed(self) -> None:
+        from scripts.emotion_state_phase_b_evaluation import (
+            load_crema_reference_labels,
+        )
+
+        def expect_failure(
+            mutation: Callable[[Path, Path], None],
+            pattern: str,
+        ) -> None:
+            with tempfile.TemporaryDirectory() as directory:
+                finished, summary = self._write_sources(Path(directory))
+                mutation(finished, summary)
+                with self.assertRaisesRegex(ValueError, pattern):
+                    load_crema_reference_labels(
+                        finished, summary, {"1001_DFA_ANG_XX"}
+                    )
+
+        with self.subTest(mutation="finished_field_name"):
+            expect_failure(
+                lambda finished, summary: finished.write_text(
+                    finished.read_text(encoding="utf-8").replace(
+                        "respEmo", "responseEmotion",
+                    ),
+                    encoding="utf-8",
+                ),
+                "unexpected CSV schema",
+            )
+        with self.subTest(mutation="raw_audio_modality"):
+            expect_failure(
+                lambda finished, summary: finished.write_text(
+                    finished.read_text(encoding="utf-8").replace(
+                        ",1,1,0,", ",1,2,0,",
+                    ),
+                    encoding="utf-8",
+                ),
+                "missing CREMA-D reference-label join",
+            )
+        with self.subTest(mutation="duplicate_summary_clip"):
+            expect_failure(
+                lambda finished, summary: summary.write_text(
+                    summary.read_text(encoding="utf-8")
+                    + "4,1001_DFA_ANG_XX,A,75,A,75,A,75\n",
+                    encoding="utf-8",
+                ),
+                "duplicate summary clip",
+            )
+        with self.subTest(mutation="invalid_raw_label"):
+            expect_failure(
+                lambda finished, summary: finished.write_text(
+                    finished.read_text(encoding="utf-8").replace(
+                        ",s1,A,80,A,50,X", ",s1,Z,80,A,50,X", 1,
+                    ),
+                    encoding="utf-8",
+                ),
+                "invalid raw audio-perception label",
+            )
+        with self.subTest(mutation="invalid_summary_label"):
+            expect_failure(
+                lambda finished, summary: summary.write_text(
+                    summary.read_text(encoding="utf-8").replace(
+                        "1001_DFA_ANG_XX,A,75", "1001_DFA_ANG_XX,Z,75",
+                    ),
+                    encoding="utf-8",
+                ),
+                "invalid released VoiceVote",
+            )
+        with self.subTest(mutation="missing_raw_join"):
+            expect_failure(
+                lambda finished, summary: finished.write_text(
+                    finished.read_text(encoding="utf-8").replace(
+                        "1001_DFA_ANG_XX", "9999_DFA_ANG_XX",
+                    ),
+                    encoding="utf-8",
+                ),
+                "missing CREMA-D reference-label join",
+            )
+        with self.subTest(mutation="missing_summary_join"):
+            expect_failure(
+                lambda finished, summary: summary.write_text(
+                    summary.read_text(encoding="utf-8").replace(
+                        "1,1001_DFA_ANG_XX,A,75,A,75,A,75\n", "",
+                    ),
+                    encoding="utf-8",
+                ),
+                "missing CREMA-D reference-label join",
+            )
 
 
 if __name__ == "__main__":
