@@ -5969,3 +5969,10 @@ Interpretation:
 - Conservative eligibility: require a unique raw audio-vote maximum, a single released `VoiceVote`, and exact winner agreement. This yields 6,570 eligible clips and 871 abstentions: 644 released ties, 204 additional raw ties, and 23 unique-winner disagreements. Eligible counts are `A=951`, `D=500`, `F=613`, `H=330`, `N=3834`, and `S=342`, spanning all 91 actors and 12 controlled sentences.
 - Interpretation: Phase A material integrity remains valid, but its synthetic-column label projection is not Phase B label evidence. Phase B must parse the pinned real schemas directly, enforce the frozen aggregate ledger before features, and keep all identifiers and rows local-only.
 - Boundary: no audio was read, no dependency was installed, no model or public-dataset evaluation ran, and no private data, network, provider, call, source-adaptation, runtime, push, or merge action occurred.
+
+### 2026-07-19 - EMOTION-STATE-002 implementation plan
+
+- Plan: `docs/superpowers/plans/2026-07-19-emotion-state-phase-b-public-data-feasibility.md`, based on corrected design commit `e5049cf5a169cbd6887e451a1e00348fe7d1b868`.
+- Decomposition: frozen contracts; real-schema CREMA-D label ledger; separately gated research dependency lock; deterministic acoustic features; claim-scoped actor split; classical evaluation; AMI mechanics; guarded runner; synthetic ledger; separately gated public-material preflight/non-lockbox run; one-use lockbox; staged review and explicit canonical acceptance.
+- Review gates: offline implementation, dependency acquisition, public-material evaluation, final-lockbox opening, canonical staging/acceptance, and push remain distinct. No gate implicitly authorizes the next.
+- Boundary: plan writing changed documentation only. It installed no dependency, read no audio or AMI material, ran no model, opened no lockbox, accessed no private data/provider/network/call/simulation/runtime path, adapted no source, and performed no push or merge.
