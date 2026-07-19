@@ -68,3 +68,11 @@ Commit `f8ba503c3670fec6e9dee53f03f306798e7b807b` contains exactly that canonica
 Task 10 performed no new download or network action and no model/public-dataset evaluation. The later Task 11 transaction changed only the canonical pair and preserved the same no-private, no-provider, no-call, no-simulation, no-source-adaptation, and no-runtime boundaries. Phase B design approval adds no dependency install, material evaluation, runtime/prompt/KB/voice/LLM/phone/Procedure/dashboard change, push, merge, rebase, or amend.
 
 This work provides no production, customer, PSTN, ASR, latency, provider-feasibility, runtime-readiness, or internal-emotion evidence.
+
+Phase B planning later established that the Phase A quality inventory's
+`source_label_evidence` projection abstains for all 7,441 included WAVs
+because its parser expected synthetic column names rather than the verified
+release schema. This does not change Phase A's bounded provenance, hash,
+quality, contract, or cohort-release acceptance. It does mean that the
+projection is not valid Phase B label input; Phase B must use its separately
+reviewed, hash-bound real-schema concordance contract.

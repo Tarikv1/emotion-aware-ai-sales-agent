@@ -4,6 +4,11 @@
 
 Design approved on `2026-07-19`.
 
+The CREMA-D reference-label subsection was corrected on `2026-07-19` after
+the authorized read-only inspection of the two already-verified release CSVs.
+The correction binds the real release schema and a conservative concordance
+rule; it does not authorize implementation or evaluation.
+
 This document authorizes design documentation only. It does not authorize
 dependency installation, a public-material read, feature extraction, model
 evaluation, canonical result publication, source adaptation, provider access,
@@ -138,6 +143,10 @@ hash_inventory_sha256:
   AD58D8165C683847DF246F923FF466722C7F628FE8D81679F618FA5EB3031C87
 quality_inventory_sha256:
   455D6A010855F209B4DC4C67F67E4222FAB81601861745B5B5E79E7942B92682
+finishedResponses.csv_sha256:
+  939D02D2DDDDDF575BBCCFFB80F14F1D110FDA88F092F2A68201994EB3BCB45B
+processedResults/summaryTable.csv_sha256:
+  1EA0E13D98853D920C7C51E69A72BA5BA42018F85A9B89B8B2CC1B53C1AA56A9
 ```
 
 ### AMI
@@ -160,7 +169,38 @@ is created.
 
 ## CREMA-D Reference-Label Contract
 
-Only audio-perception rating rows may supply a target label.
+Only the two pinned release CSVs may supply CREMA-D reference-label evidence:
+
+```text
+finishedResponses.csv
+processedResults/summaryTable.csv
+```
+
+The accepted Phase A quality inventory remains valid for byte identity,
+selection, exclusion, WAV structure, and dependency metadata. Its projected
+`source_label_evidence` is not valid Phase B label input: the Phase A parser
+expected synthetic `FileName/Modality/Response` columns, while the verified
+release uses `clipName/queryType/respEmo`. Consequently, all 7,441 included
+WAV entries in that projection abstain. Phase B must ignore that projected
+field and parse the two pinned CSV schemas directly.
+
+The frozen real release bindings are:
+
+```text
+finishedResponses.csv:
+  join key: clipName
+  modality field: queryType
+  audio-only modality: "1"
+  raw perceived label: respEmo
+
+processedResults/summaryTable.csv:
+  join key: FileName
+  released audio-perception vote: VoiceVote
+```
+
+The filename-free join identity is the normalized clip stem. The value is
+used only to bind source evidence to an included hashed WAV and must never
+enter a model matrix or tracked row-level output.
 
 The frozen source-label map remains:
 
@@ -173,26 +213,60 @@ N -> neutral
 S -> sad
 ```
 
-Eligibility requires:
+Eligibility requires all of the following:
 
 - a Phase A included WAV with an exact verified hash;
 - no Phase A exclusion or known-no-audio status;
 - structurally valid mono PCM at `16,000 Hz` with a two-byte
   (`16-bit`) sample width;
-- at least one usable audio-perception vote;
-- one unique maximum in the audio-perception vote distribution;
+- exactly one matching `finishedResponses.csv` audio-only vote group;
+- only `A/D/F/H/N/S` values in that raw vote group;
+- one unique maximum in the raw audio-only vote distribution;
+- exactly one `summaryTable.csv` row with a single-code `VoiceVote`;
+- equality between the raw unique maximum and the released `VoiceVote`;
 - a complete actor and sentence dependency identity;
 - a finite feature vector.
 
-Tied vote maxima, missing usable votes, malformed material, digital silence,
-insufficient voiced frames, and unresolved required dependencies abstain and
-remain outside every fit, metric, and claim denominator.
+Colon-separated `VoiceVote` values are released ties and abstain. Raw tied
+maxima, a unique-winner disagreement between the two pinned sources, missing
+or duplicate joins, invalid labels, malformed material, digital silence,
+insufficient voiced frames, and unresolved required dependencies also abstain
+and remain outside every fit, metric, and claim denominator.
+
+The authorized planning inspection established the following pre-model input
+ledger:
+
+```text
+included hash-verified WAVs: 7441
+CSV joins missing from either source: 0
+eligible concordant unique winners: 6570
+summary VoiceVote ties: 644
+raw audio-vote ties after a single VoiceVote: 204
+unique-winner disagreements: 23
+eligible actors: 91
+eligible controlled sentences: 12
+```
+
+The frozen eligible source-label counts are:
+
+```text
+A: 951
+D: 500
+F: 613
+H: 330
+N: 3834
+S: 342
+```
+
+Any implementation preflight count that differs from this ledger stops before
+feature extraction. These are source-quality counts, not model results.
 
 The following are retained only for aggregate diagnostics:
 
 - maximum vote share;
 - vote-distribution entropy;
 - abstention reason;
+- raw/released source-concordance status;
 - source-label count;
 - actor count per output cell.
 
@@ -692,6 +766,8 @@ Stop before canonical output on:
 
 - Phase A checkpoint or evidence drift;
 - public-material hash or quality drift;
+- a CREMA-D CSV schema, join, modality, label, concordance, or frozen-count
+  mismatch;
 - environment or dependency drift;
 - unexpected files or classifications;
 - malformed, silent, or unsupported WAV input;
@@ -738,8 +814,15 @@ All implementation tasks use strict tests-first development.
 
 ### Label And Leakage Tests
 
-- tied perception votes abstain;
+- the exact real `clipName/queryType/respEmo` and
+  `FileName/VoiceVote` schemas are required;
+- `queryType="1"` is the only raw audio-perception vote group;
+- released `VoiceVote` ties abstain;
+- raw perception-vote ties abstain;
+- unique raw/released winner disagreements abstain;
 - missing votes abstain;
+- the frozen `6570/644/204/23` ledger is enforced before features;
+- the all-abstained Phase A label projection cannot become a Phase B target;
 - intended prompt code cannot become a label;
 - filename, label, vote, actor, sentence, path, and derived-proxy columns are
   rejected from the acoustic matrix;
@@ -847,15 +930,15 @@ data/private-restricted/
 The implementation plan may reduce this surface after dependency-impact
 inspection, but it may not broaden it without a reviewed design change.
 
-## Documentation Correction Prerequisite
+## Documentation Correction Completed
 
-Before implementation, correct two stale Phase A statements:
+This design checkpoint corrected two stale Phase A statements:
 
-1. `docs/thesis/ROADMAP.md` still says Task 11 is the next operation.
-2. `research/experiments/EMOTION-STATE-001-phase-a.md` still describes
+1. `docs/thesis/ROADMAP.md` no longer says Task 11 is the next operation.
+2. `research/experiments/EMOTION-STATE-001-phase-a.md` no longer describes
    complete canonical publication as deferred.
 
-The correction must record:
+The correction records:
 
 - accepted transaction `59324165c56446f7850e9a2abd37e4ff`;
 - result SHA-256
