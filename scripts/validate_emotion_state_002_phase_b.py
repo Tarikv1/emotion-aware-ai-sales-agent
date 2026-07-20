@@ -11,6 +11,7 @@ import struct
 import sys
 import sysconfig
 import unicodedata
+from collections import Counter, defaultdict
 from collections.abc import Mapping, Sequence
 from pathlib import Path
 from typing import Any
@@ -282,6 +283,10 @@ AMI_SCALAR_KEYS = (
     "floor_changes_per_minute",
     "speaker_balance_normalized_entropy",
     "backchannels_per_100_turns",
+)
+AMI_V2_TIMING_SCALAR_KEYS = (
+    "overlap_ratio",
+    "speaker_balance_normalized_entropy",
 )
 AMI_DIALOGUE_ACT_VOCABULARY = (
     "ami_da_1",
@@ -1946,6 +1951,919 @@ def validate_ami_mechanics_aggregates(
             "AMI aggregate does not match authoritative synthetic evidence"
         )
     return partitions
+
+
+def _ami_v2_exact_mapping(
+    value: Any,
+    keys: tuple[str, ...],
+    name: str,
+) -> Mapping[str, Any]:
+    if not isinstance(value, Mapping) or set(value) != set(keys):
+        raise ValueError(f"{name} keys do not match the v2 contract")
+    return value
+
+
+def _ami_v2_exact_identifier(value: Any, name: str) -> str:
+    canonical = _ami_canonical_identifier(value, name)
+    if value != canonical:
+        raise ValueError(f"{name} identifier is not exactly canonical")
+    return canonical
+
+
+def _ami_v2_identifier_sequence(
+    values: Any,
+    name: str,
+    *,
+    require_list: bool = False,
+) -> tuple[str, ...]:
+    if (
+        (require_list and type(values) is not list)
+        or isinstance(values, (str, bytes))
+        or not isinstance(values, Sequence)
+    ):
+        raise ValueError(f"{name} must be a sequence")
+    identifiers = tuple(
+        _ami_v2_exact_identifier(value, name.rstrip("s"))
+        for value in values
+    )
+    if not identifiers or len(set(identifiers)) != len(identifiers):
+        raise ValueError(f"{name} must contain unique canonical identifiers")
+    return identifiers
+
+
+def _ami_v2_serialized_turn(
+    value: Any,
+    *,
+    meeting_id: str,
+    participants: tuple[str, ...],
+    dialogue: bool,
+) -> dict[str, Any]:
+    keys = (
+        (
+            "meeting_id",
+            "participant_id",
+            "start_ms",
+            "end_ms",
+            "dialogue_act",
+        )
+        if dialogue
+        else (
+            "meeting_id",
+            "participant_id",
+            "start_ms",
+            "end_ms",
+        )
+    )
+    turn = _ami_v2_exact_mapping(value, keys, "AMI v2 serialized turn")
+    turn_meeting_id = _ami_v2_exact_identifier(
+        turn["meeting_id"],
+        "timed-turn meeting",
+    )
+    participant_id = _ami_v2_exact_identifier(
+        turn["participant_id"],
+        "timed-turn participant",
+    )
+    if turn_meeting_id != meeting_id:
+        raise ValueError("AMI v2 serialized turn crosses meeting identity")
+    if participant_id not in participants:
+        raise ValueError(
+            "AMI v2 serialized turn references an unknown participant"
+        )
+    start_ms = turn["start_ms"]
+    end_ms = turn["end_ms"]
+    if (
+        type(start_ms) is not int
+        or type(end_ms) is not int
+        or not 0 <= start_ms < end_ms
+    ):
+        raise ValueError("AMI v2 serialized turn span is malformed")
+    validated = {
+        "meeting_id": turn_meeting_id,
+        "participant_id": participant_id,
+        "start_ms": start_ms,
+        "end_ms": end_ms,
+    }
+    if dialogue:
+        dialogue_act = _ami_canonical_dialogue_act(turn["dialogue_act"])
+        if turn["dialogue_act"] != dialogue_act:
+            raise ValueError(
+                "AMI v2 serialized dialogue-act label is not canonical"
+            )
+        validated["dialogue_act"] = dialogue_act
+    return validated
+
+
+def _ami_v2_serialized_turns(
+    value: Any,
+    *,
+    meeting_id: str,
+    participants: tuple[str, ...],
+    dialogue: bool,
+) -> tuple[dict[str, Any], ...] | None:
+    if value is None:
+        return None
+    if type(value) is not list or not value:
+        raise ValueError(
+            "AMI v2 serialized turns must be a non-empty list or null"
+        )
+    turns = tuple(
+        _ami_v2_serialized_turn(
+            turn,
+            meeting_id=meeting_id,
+            participants=participants,
+            dialogue=dialogue,
+        )
+        for turn in value
+    )
+    order_keys = (
+        ("start_ms", "end_ms", "participant_id", "dialogue_act")
+        if dialogue
+        else ("start_ms", "end_ms", "participant_id")
+    )
+    key = lambda turn: tuple(turn[field] for field in order_keys)
+    if turns != tuple(sorted(turns, key=key)):
+        raise ValueError("AMI v2 serialized turn order is ambiguous")
+    if len({key(turn) for turn in turns}) != len(turns):
+        raise ValueError("AMI v2 serialized turns contain an exact duplicate")
+    if not dialogue and len({
+        turn["participant_id"]
+        for turn in turns
+    }) < 2:
+        raise ValueError(
+            "AMI v2 usable timing requires two represented participants"
+        )
+    return turns
+
+
+def _ami_v2_serialized_meetings(
+    meetings: Sequence[Any],
+) -> tuple[dict[str, Any], ...]:
+    if isinstance(meetings, (str, bytes)) or not isinstance(
+        meetings,
+        Sequence,
+    ):
+        raise ValueError("AMI v2 serialized meetings must be a sequence")
+    validated: list[dict[str, Any]] = []
+    meeting_keys = (
+        "meeting_id",
+        "participants",
+        "timing_file_present",
+        "timed_turns",
+        "dialogue_turns",
+        "dialogue_act_file_count",
+        "fully_labeled_dialogue_act_file_count",
+        "unlabeled_dialogue_act_record_count",
+        "unlabeled_dialogue_act_file_count",
+    )
+    for value in meetings:
+        meeting = _ami_v2_exact_mapping(
+            value,
+            meeting_keys,
+            "AMI v2 serialized meeting",
+        )
+        meeting_id = _ami_v2_exact_identifier(
+            meeting["meeting_id"],
+            "AMI v2 meeting",
+        )
+        participants = _ami_v2_identifier_sequence(
+            meeting["participants"],
+            "AMI v2 participants",
+            require_list=True,
+        )
+        if (
+            len(participants) < 2
+            or participants != tuple(sorted(participants))
+        ):
+            raise ValueError(
+                "AMI v2 participants must be unique, ordered, and plural"
+            )
+        timing_file_present = meeting["timing_file_present"]
+        if type(timing_file_present) is not bool:
+            raise ValueError(
+                "AMI v2 timing-file presence must be a boolean"
+            )
+        timed_turns = _ami_v2_serialized_turns(
+            meeting["timed_turns"],
+            meeting_id=meeting_id,
+            participants=participants,
+            dialogue=False,
+        )
+        if timed_turns is not None and not timing_file_present:
+            raise ValueError(
+                "AMI v2 timed turns require a present timing source file"
+            )
+        dialogue_turns = _ami_v2_serialized_turns(
+            meeting["dialogue_turns"],
+            meeting_id=meeting_id,
+            participants=participants,
+            dialogue=True,
+        )
+        count_names = (
+            "dialogue_act_file_count",
+            "fully_labeled_dialogue_act_file_count",
+            "unlabeled_dialogue_act_record_count",
+            "unlabeled_dialogue_act_file_count",
+        )
+        counts: dict[str, int] = {}
+        for name in count_names:
+            count = meeting[name]
+            if type(count) is not int or count < 0:
+                raise ValueError(
+                    f"AMI v2 {name} must be a non-negative integer"
+                )
+            counts[name] = count
+        file_count = counts["dialogue_act_file_count"]
+        fully_labeled_count = counts[
+            "fully_labeled_dialogue_act_file_count"
+        ]
+        unlabeled_record_count = counts[
+            "unlabeled_dialogue_act_record_count"
+        ]
+        unlabeled_file_count = counts[
+            "unlabeled_dialogue_act_file_count"
+        ]
+        if fully_labeled_count > file_count:
+            raise ValueError(
+                "AMI v2 fully labeled dialogue files exceed total files"
+            )
+        if unlabeled_file_count > file_count:
+            raise ValueError(
+                "AMI v2 unlabeled dialogue files exceed total files"
+            )
+        if unlabeled_record_count < unlabeled_file_count:
+            raise ValueError(
+                "AMI v2 unlabeled records cannot be fewer than files"
+            )
+        incomplete_file_count = file_count - fully_labeled_count
+        if unlabeled_file_count != incomplete_file_count:
+            raise ValueError(
+                "AMI v2 incomplete dialogue files require unlabeled records"
+            )
+        if incomplete_file_count == 0 and unlabeled_record_count != 0:
+            raise ValueError(
+                "AMI v2 unlabeled counts require an incomplete file"
+            )
+        if dialogue_turns is not None and (
+            file_count == 0 or incomplete_file_count != 0
+        ):
+            raise ValueError(
+                "AMI v2 complete dialogue turns require complete evidence"
+            )
+        validated.append({
+            "meeting_id": meeting_id,
+            "participants": participants,
+            "timing_file_present": timing_file_present,
+            "timed_turns": timed_turns,
+            "dialogue_turns": dialogue_turns,
+            **counts,
+        })
+    identifiers = [meeting["meeting_id"] for meeting in validated]
+    if len(set(identifiers)) != len(identifiers):
+        raise ValueError("duplicate AMI v2 serialized meeting identifier")
+    return tuple(validated)
+
+
+def _ami_v2_linear_percentile(
+    values: Sequence[int | float],
+    percentile: float,
+) -> float:
+    ordered = sorted(float(value) for value in values)
+    if not ordered:
+        return 0.0
+    position = (len(ordered) - 1) * percentile
+    lower = math.floor(position)
+    upper = math.ceil(position)
+    if lower == upper:
+        return ordered[lower]
+    fraction = position - lower
+    return ordered[lower] + fraction * (
+        ordered[upper] - ordered[lower]
+    )
+
+
+def _ami_v2_overlap_duration(
+    turns: Sequence[Mapping[str, Any]],
+) -> int:
+    events: dict[int, list[tuple[str, int]]] = defaultdict(list)
+    for turn in turns:
+        events[turn["start_ms"]].append((turn["participant_id"], 1))
+        events[turn["end_ms"]].append((turn["participant_id"], -1))
+    active: Counter[str] = Counter()
+    previous: int | None = None
+    overlap = 0
+    for instant in sorted(events):
+        if previous is not None and len(active) >= 2:
+            overlap += instant - previous
+        for participant, delta in events[instant]:
+            active[participant] += delta
+            if active[participant] == 0:
+                del active[participant]
+        previous = instant
+    return overlap
+
+
+def _ami_v2_timing_values(
+    turns: tuple[dict[str, Any], ...],
+) -> dict[str, float]:
+    durations = [
+        turn["end_ms"] - turn["start_ms"]
+        for turn in turns
+    ]
+    nonnegative_gaps = [
+        gap
+        for current, following in zip(turns, turns[1:])
+        if (
+            gap := following["start_ms"] - current["end_ms"]
+        ) >= 0
+    ]
+    meeting_span = (
+        max(turn["end_ms"] for turn in turns)
+        - min(turn["start_ms"] for turn in turns)
+    )
+    speaking_time: Counter[str] = Counter()
+    for turn, duration in zip(turns, durations):
+        speaking_time[turn["participant_id"]] += duration
+    total_speaking_time = sum(speaking_time.values())
+    entropy = -sum(
+        (duration / total_speaking_time)
+        * math.log(duration / total_speaking_time)
+        for duration in speaking_time.values()
+    )
+    normalized_entropy = entropy / math.log(len(speaking_time))
+    return {
+        "turn_duration_ms_median": _ami_v2_linear_percentile(
+            durations,
+            0.5,
+        ),
+        "turn_duration_ms_p90": _ami_v2_linear_percentile(
+            durations,
+            0.9,
+        ),
+        "inter_turn_gap_ms_median": _ami_v2_linear_percentile(
+            nonnegative_gaps,
+            0.5,
+        ),
+        "inter_turn_gap_ms_p90": _ami_v2_linear_percentile(
+            nonnegative_gaps,
+            0.9,
+        ),
+        "overlap_ratio": (
+            _ami_v2_overlap_duration(turns) / meeting_span
+        ),
+        "speaker_balance_normalized_entropy": normalized_entropy,
+    }
+
+
+def _ami_v2_aggregate_cell(
+    value: float,
+    participant_count: int,
+    minimum_contributors: int,
+) -> dict[str, Any]:
+    suppressed = participant_count < minimum_contributors
+    return {
+        "suppressed": suppressed,
+        "unique_participant_count": participant_count,
+        "value": None if suppressed else float(value),
+    }
+
+
+def _ami_v2_timing_family(
+    candidates: tuple[dict[str, Any], ...],
+    minimum_contributors: int,
+) -> dict[str, Any]:
+    coverage = {
+        "timing_file_meeting_count": sum(
+            meeting["timing_file_present"]
+            for meeting in candidates
+        ),
+        "usable_timing_meeting_count": sum(
+            meeting["timed_turns"] is not None
+            for meeting in candidates
+        ),
+    }
+    if coverage["usable_timing_meeting_count"] != len(candidates):
+        return {
+            "status": "unavailable",
+            "reason_codes": ["incomplete_usable_timing_coverage"],
+            "coverage": coverage,
+            "contribution": None,
+            "buckets": None,
+            "scalars": None,
+        }
+    selected: list[dict[str, Any]] = []
+    contributed: set[str] = set()
+    repeated = 0
+    for meeting in candidates:
+        if contributed.intersection(meeting["participants"]):
+            repeated += 1
+            continue
+        selected.append(meeting)
+        contributed.update(meeting["participants"])
+    if len(selected) + repeated != len(candidates):
+        raise ValueError("AMI v2 timing contribution accounting is invalid")
+    participant_count = len(contributed)
+    value_maps = [
+        _ami_v2_timing_values(meeting["timed_turns"])
+        for meeting in selected
+        if meeting["timed_turns"] is not None
+    ]
+    aggregates = {
+        key: sum(values[key] for values in value_maps) / len(value_maps)
+        for key in AMI_BUCKET_KEYS + AMI_V2_TIMING_SCALAR_KEYS
+    }
+    suppressed = participant_count < minimum_contributors
+    return {
+        "status": "available",
+        "reason_codes": [],
+        "coverage": coverage,
+        "contribution": {
+            "selected_meeting_count": len(selected),
+            "unique_participant_count": participant_count,
+            "repeated_participant_meeting_count": repeated,
+            "suppressed": suppressed,
+        },
+        "buckets": {
+            key: _ami_v2_aggregate_cell(
+                aggregates[key],
+                participant_count,
+                minimum_contributors,
+            )
+            for key in AMI_BUCKET_KEYS
+        },
+        "scalars": {
+            key: _ami_v2_aggregate_cell(
+                aggregates[key],
+                participant_count,
+                minimum_contributors,
+            )
+            for key in AMI_V2_TIMING_SCALAR_KEYS
+        },
+    }
+
+
+def _ami_v2_dialogue_family(
+    candidates: tuple[dict[str, Any], ...],
+) -> dict[str, Any]:
+    coverage = {
+        "dialogue_act_meeting_count": sum(
+            meeting["dialogue_act_file_count"] > 0
+            for meeting in candidates
+        ),
+        "dialogue_act_file_count": sum(
+            meeting["dialogue_act_file_count"]
+            for meeting in candidates
+        ),
+        "fully_labeled_dialogue_act_file_count": sum(
+            meeting["fully_labeled_dialogue_act_file_count"]
+            for meeting in candidates
+        ),
+    }
+    reason_codes: list[str] = []
+    if coverage["dialogue_act_meeting_count"] != len(candidates):
+        reason_codes.append(
+            "incomplete_dialogue_act_meeting_coverage"
+        )
+    if any(
+        meeting["unlabeled_dialogue_act_record_count"] > 0
+        or meeting["unlabeled_dialogue_act_file_count"] > 0
+        or meeting["fully_labeled_dialogue_act_file_count"]
+        != meeting["dialogue_act_file_count"]
+        for meeting in candidates
+    ):
+        reason_codes.append("unlabeled_dialogue_act_records")
+    if not reason_codes:
+        raise ValueError(
+            "AMI v2 available dialogue-act aggregation is not implemented"
+        )
+    return {
+        "status": "unavailable",
+        "reason_codes": reason_codes,
+        "coverage": coverage,
+        "contribution": None,
+        "scalars": None,
+        "dialogue_acts": None,
+    }
+
+
+def _expected_ami_mechanics_aggregates_v2(
+    meetings: Sequence[Any],
+    partition_membership: Mapping[str, Sequence[str]],
+    official_order: Sequence[str],
+    minimum_contributors: int,
+) -> dict[str, Any]:
+    if (
+        type(minimum_contributors) is not int
+        or minimum_contributors < 10
+    ):
+        raise ValueError("AMI v2 minimum contributors must be at least 10")
+    validated = _ami_v2_serialized_meetings(meetings)
+    by_id = {
+        meeting["meeting_id"]: meeting
+        for meeting in validated
+    }
+    if not isinstance(partition_membership, Mapping) or set(
+        partition_membership
+    ) != set(AMI_PARTITION_CELLS):
+        raise ValueError("AMI v2 partition membership fields are invalid")
+    membership = {
+        partition: _ami_v2_identifier_sequence(
+            partition_membership[partition],
+            f"{partition} memberships",
+        )
+        for partition in AMI_PARTITION_CELLS
+    }
+    scenario = set(membership["scenario_only"])
+    full_only = set(membership["full_only"])
+    full_corpus = set(membership["full_corpus"])
+    if not scenario.isdisjoint(full_only):
+        raise ValueError(
+            "AMI v2 scenario-only and full-only partitions overlap"
+        )
+    if scenario | full_only != full_corpus:
+        raise ValueError(
+            "AMI v2 partition union does not equal the full corpus"
+        )
+    order = _ami_v2_identifier_sequence(
+        official_order,
+        "official meeting orders",
+    )
+    if set(order) != full_corpus:
+        raise ValueError(
+            "AMI v2 official order does not equal the full corpus"
+        )
+    if set(by_id) != full_corpus:
+        raise ValueError(
+            "AMI v2 evidence does not equal the full corpus"
+        )
+    member_sets = {
+        partition: set(meeting_ids)
+        for partition, meeting_ids in membership.items()
+    }
+    partitions: dict[str, Any] = {}
+    for partition in AMI_PARTITION_CELLS:
+        candidates = tuple(
+            by_id[meeting_id]
+            for meeting_id in order
+            if meeting_id in member_sets[partition]
+        )
+        partitions[partition] = {
+            "population_meeting_count": len(candidates),
+            "metric_families": {
+                "timing": _ami_v2_timing_family(
+                    candidates,
+                    minimum_contributors,
+                ),
+                "dialogue_act": _ami_v2_dialogue_family(candidates),
+            },
+        }
+    return {
+        "schema_id": "emotion-state-ami-mechanics-aggregate-v2",
+        "schema_version": 2,
+        "source_quality": {
+            "unlabeled_dialogue_act_record_count": sum(
+                meeting["unlabeled_dialogue_act_record_count"]
+                for meeting in validated
+            ),
+            "unlabeled_dialogue_act_file_count": sum(
+                meeting["unlabeled_dialogue_act_file_count"]
+                for meeting in validated
+            ),
+        },
+        "partitions": partitions,
+    }
+
+
+def validate_ami_mechanics_aggregates_v2(
+    payload: Any,
+    *,
+    meetings: Sequence[Any],
+    partition_membership: Mapping[str, Sequence[str]],
+    official_order: Sequence[str],
+    minimum_contributors: int = 10,
+) -> Mapping[str, Any]:
+    expected = _expected_ami_mechanics_aggregates_v2(
+        meetings,
+        partition_membership,
+        official_order,
+        minimum_contributors,
+    )
+    if not _matches_expected(payload, expected):
+        raise ValueError(
+            "AMI v2 aggregate does not match serialized authority"
+        )
+    return expected
+
+
+def _validate_published_ami_cell_v2(
+    cell: Any,
+    *,
+    name: str,
+    participant_count: int,
+    suppressed: bool,
+    unit_interval: bool,
+) -> None:
+    validated = _ami_v2_exact_mapping(
+        cell,
+        ("suppressed", "unique_participant_count", "value"),
+        name,
+    )
+    if validated["suppressed"] is not suppressed:
+        raise ValueError(f"{name} suppression does not match contribution")
+    if (
+        type(validated["unique_participant_count"]) is not int
+        or validated["unique_participant_count"] != participant_count
+    ):
+        raise ValueError(f"{name} contributor count does not match")
+    if suppressed:
+        if validated["value"] is not None:
+            raise ValueError(f"{name} suppressed value must be null")
+        return
+    value = validated["value"]
+    if type(value) is not float or not math.isfinite(value):
+        raise ValueError(f"{name} value must be a finite float")
+    if value < 0.0:
+        raise ValueError(f"{name} value must be non-negative")
+    if unit_interval and not 0.0 <= value <= 1.0:
+        raise ValueError(f"{name} value must be within [0,1]")
+
+
+def validate_published_ami_aggregate_v2(
+    payload: Any,
+) -> Mapping[str, Any]:
+    aggregate = _ami_v2_exact_mapping(
+        payload,
+        ("schema_id", "schema_version", "source_quality", "partitions"),
+        "published AMI v2 aggregate",
+    )
+    if aggregate["schema_id"] != "emotion-state-ami-mechanics-aggregate-v2":
+        raise ValueError("published AMI v2 schema id is invalid")
+    if type(aggregate["schema_version"]) is not int or (
+        aggregate["schema_version"] != 2
+    ):
+        raise ValueError("published AMI v2 schema version must be integer 2")
+    source_quality = _ami_v2_exact_mapping(
+        aggregate["source_quality"],
+        (
+            "unlabeled_dialogue_act_record_count",
+            "unlabeled_dialogue_act_file_count",
+        ),
+        "published AMI v2 source quality",
+    )
+    if not _matches_expected(
+        source_quality,
+        {
+            "unlabeled_dialogue_act_record_count": 28,
+            "unlabeled_dialogue_act_file_count": 26,
+        },
+    ):
+        raise ValueError(
+            "published AMI v2 source quality does not match release"
+        )
+    partitions = _ami_v2_exact_mapping(
+        aggregate["partitions"],
+        AMI_PARTITION_CELLS,
+        "published AMI v2 partitions",
+    )
+    fixed = {
+        "scenario_only": {
+            "population": 138,
+            "timing": (138, 138),
+            "dialogue": (138, 552, 527),
+            "timing_status": ("available", []),
+            "dialogue_status": (
+                "unavailable",
+                ["unlabeled_dialogue_act_records"],
+            ),
+        },
+        "full_corpus": {
+            "population": 170,
+            "timing": (170, 165),
+            "dialogue": (139, 556, 530),
+            "timing_status": (
+                "unavailable",
+                ["incomplete_usable_timing_coverage"],
+            ),
+            "dialogue_status": (
+                "unavailable",
+                [
+                    "incomplete_dialogue_act_meeting_coverage",
+                    "unlabeled_dialogue_act_records",
+                ],
+            ),
+        },
+        "full_only": {
+            "population": 32,
+            "timing": (32, 27),
+            "dialogue": (1, 4, 3),
+            "timing_status": (
+                "unavailable",
+                ["incomplete_usable_timing_coverage"],
+            ),
+            "dialogue_status": (
+                "unavailable",
+                [
+                    "incomplete_dialogue_act_meeting_coverage",
+                    "unlabeled_dialogue_act_records",
+                ],
+            ),
+        },
+    }
+    for partition_name in AMI_PARTITION_CELLS:
+        release = fixed[partition_name]
+        partition = _ami_v2_exact_mapping(
+            partitions[partition_name],
+            ("population_meeting_count", "metric_families"),
+            f"{partition_name} published AMI v2 partition",
+        )
+        if (
+            type(partition["population_meeting_count"]) is not int
+            or partition["population_meeting_count"]
+            != release["population"]
+        ):
+            raise ValueError(
+                f"{partition_name} AMI v2 population does not match release"
+            )
+        families = _ami_v2_exact_mapping(
+            partition["metric_families"],
+            ("timing", "dialogue_act"),
+            f"{partition_name} AMI v2 metric families",
+        )
+        timing = _ami_v2_exact_mapping(
+            families["timing"],
+            (
+                "status",
+                "reason_codes",
+                "coverage",
+                "contribution",
+                "buckets",
+                "scalars",
+            ),
+            f"{partition_name} AMI v2 timing",
+        )
+        if (
+            type(timing["status"]) is not str
+            or type(timing["reason_codes"]) is not list
+            or (
+                timing["status"],
+                timing["reason_codes"],
+            ) != release["timing_status"]
+        ):
+            raise ValueError(
+                f"{partition_name} AMI v2 timing state is invalid"
+            )
+        timing_coverage = _ami_v2_exact_mapping(
+            timing["coverage"],
+            (
+                "timing_file_meeting_count",
+                "usable_timing_meeting_count",
+            ),
+            f"{partition_name} AMI v2 timing coverage",
+        )
+        if not _matches_expected(
+            timing_coverage,
+            {
+                "timing_file_meeting_count": release["timing"][0],
+                "usable_timing_meeting_count": release["timing"][1],
+            },
+        ):
+            raise ValueError(
+                f"{partition_name} AMI v2 timing coverage is invalid"
+            )
+        if partition_name == "scenario_only":
+            contribution = _ami_v2_exact_mapping(
+                timing["contribution"],
+                (
+                    "selected_meeting_count",
+                    "unique_participant_count",
+                    "repeated_participant_meeting_count",
+                    "suppressed",
+                ),
+                "scenario AMI v2 timing contribution",
+            )
+            selected = _positive_count(
+                contribution["selected_meeting_count"],
+                "scenario AMI v2 selected meeting count",
+            )
+            repeated = _count(
+                contribution["repeated_participant_meeting_count"],
+                "scenario AMI v2 repeated meeting count",
+            )
+            if selected + repeated != release["population"]:
+                raise ValueError(
+                    "scenario AMI v2 contribution accounting is invalid"
+                )
+            participant_count = _count(
+                contribution["unique_participant_count"],
+                "scenario AMI v2 contributor count",
+            )
+            if participant_count < 2 * selected:
+                raise ValueError(
+                    "scenario AMI v2 contributor count is impossible"
+                )
+            suppressed = contribution["suppressed"]
+            if (
+                type(suppressed) is not bool
+                or suppressed is not (participant_count < 10)
+            ):
+                raise ValueError(
+                    "scenario AMI v2 suppression is not derived"
+                )
+            buckets = _ami_v2_exact_mapping(
+                timing["buckets"],
+                AMI_BUCKET_KEYS,
+                "scenario AMI v2 timing buckets",
+            )
+            scalars = _ami_v2_exact_mapping(
+                timing["scalars"],
+                AMI_V2_TIMING_SCALAR_KEYS,
+                "scenario AMI v2 timing scalars",
+            )
+            for name, cell in buckets.items():
+                _validate_published_ami_cell_v2(
+                    cell,
+                    name=f"scenario AMI v2 timing bucket {name}",
+                    participant_count=participant_count,
+                    suppressed=suppressed,
+                    unit_interval=False,
+                )
+            for name, cell in scalars.items():
+                _validate_published_ami_cell_v2(
+                    cell,
+                    name=f"scenario AMI v2 timing scalar {name}",
+                    participant_count=participant_count,
+                    suppressed=suppressed,
+                    unit_interval=True,
+                )
+        elif any(
+            timing[field] is not None
+            for field in ("contribution", "buckets", "scalars")
+        ):
+            raise ValueError(
+                f"{partition_name} unavailable AMI v2 timing must be null"
+            )
+
+        dialogue = _ami_v2_exact_mapping(
+            families["dialogue_act"],
+            (
+                "status",
+                "reason_codes",
+                "coverage",
+                "contribution",
+                "scalars",
+                "dialogue_acts",
+            ),
+            f"{partition_name} AMI v2 dialogue",
+        )
+        if (
+            type(dialogue["status"]) is not str
+            or type(dialogue["reason_codes"]) is not list
+            or (
+                dialogue["status"],
+                dialogue["reason_codes"],
+            ) != release["dialogue_status"]
+        ):
+            raise ValueError(
+                f"{partition_name} AMI v2 dialogue state is invalid"
+            )
+        dialogue_coverage = _ami_v2_exact_mapping(
+            dialogue["coverage"],
+            (
+                "dialogue_act_meeting_count",
+                "dialogue_act_file_count",
+                "fully_labeled_dialogue_act_file_count",
+            ),
+            f"{partition_name} AMI v2 dialogue coverage",
+        )
+        if not _matches_expected(
+            dialogue_coverage,
+            {
+                "dialogue_act_meeting_count": release["dialogue"][0],
+                "dialogue_act_file_count": release["dialogue"][1],
+                "fully_labeled_dialogue_act_file_count": (
+                    release["dialogue"][2]
+                ),
+            },
+        ):
+            raise ValueError(
+                f"{partition_name} AMI v2 dialogue coverage is invalid"
+            )
+        if any(
+            dialogue[field] is not None
+            for field in ("contribution", "scalars", "dialogue_acts")
+        ):
+            raise ValueError(
+                f"{partition_name} unavailable AMI v2 dialogue must be null"
+            )
+    try:
+        return json.loads(json.dumps(
+            aggregate,
+            ensure_ascii=False,
+            allow_nan=False,
+        ))
+    except (TypeError, ValueError) as error:
+        raise ValueError(
+            "published AMI v2 aggregate is not JSON serializable"
+        ) from error
 
 
 def validate_crema_label_ledger(ledger: Any, config: Mapping[str, Any]) -> None:

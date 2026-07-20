@@ -4647,6 +4647,771 @@ class AmiMechanicsV2Tests(unittest.TestCase):
         )
 
 
+class AmiMechanicsV2ValidatorTests(unittest.TestCase):
+    @staticmethod
+    def _serialized_turn(turn: Any, *, dialogue: bool) -> dict[str, Any]:
+        payload = {
+            "meeting_id": turn.meeting_id,
+            "participant_id": turn.participant_id,
+            "start_ms": turn.start_ms,
+            "end_ms": turn.end_ms,
+        }
+        if dialogue:
+            payload["dialogue_act"] = turn.dialogue_act
+        return payload
+
+    @classmethod
+    def _serialized_meeting(cls, meeting: Any) -> dict[str, Any]:
+        return {
+            "meeting_id": meeting.meeting_id,
+            "participants": list(meeting.participants),
+            "timing_file_present": meeting.timing_file_present,
+            "timed_turns": (
+                [
+                    cls._serialized_turn(turn, dialogue=False)
+                    for turn in meeting.timed_turns
+                ]
+                if meeting.timed_turns is not None
+                else None
+            ),
+            "dialogue_turns": (
+                [
+                    cls._serialized_turn(turn, dialogue=True)
+                    for turn in meeting.dialogue_turns
+                ]
+                if meeting.dialogue_turns is not None
+                else None
+            ),
+            "dialogue_act_file_count": meeting.dialogue_act_file_count,
+            "fully_labeled_dialogue_act_file_count": (
+                meeting.fully_labeled_dialogue_act_file_count
+            ),
+            "unlabeled_dialogue_act_record_count": (
+                meeting.unlabeled_dialogue_act_record_count
+            ),
+            "unlabeled_dialogue_act_file_count": (
+                meeting.unlabeled_dialogue_act_file_count
+            ),
+        }
+
+    @classmethod
+    def _serialized_meetings(cls, meetings: Any) -> list[dict[str, Any]]:
+        return [cls._serialized_meeting(meeting) for meeting in meetings]
+
+    @staticmethod
+    def _validators() -> tuple[Callable[..., Any], Callable[..., Any]]:
+        from scripts.validate_emotion_state_002_phase_b import (
+            validate_ami_mechanics_aggregates_v2,
+            validate_published_ami_aggregate_v2,
+        )
+
+        return (
+            validate_ami_mechanics_aggregates_v2,
+            validate_published_ami_aggregate_v2,
+        )
+
+    @classmethod
+    def _fixed_authority(
+        cls,
+    ) -> tuple[
+        dict[str, Any],
+        list[dict[str, Any]],
+        dict[str, list[str]],
+        list[str],
+    ]:
+        evidence, membership, official_order = (
+            AmiMechanicsV2Tests._fixed_fixture()
+        )
+        aggregate = AmiMechanicsV2Tests._aggregate()
+        return (
+            aggregate,
+            cls._serialized_meetings(evidence),
+            {
+                partition: list(meeting_ids)
+                for partition, meeting_ids in membership.items()
+            },
+            list(official_order),
+        )
+
+    @classmethod
+    def _small_authority(
+        cls,
+    ) -> tuple[
+        dict[str, Any],
+        list[dict[str, Any]],
+        dict[str, list[str]],
+        list[str],
+    ]:
+        from scripts.emotion_state_phase_b_ami_mechanics import (
+            contribution_limited_aggregates_v2,
+        )
+
+        evidence = (
+            AmiMechanicsV2Tests._evidence("F1", timed=False),
+            AmiMechanicsV2Tests._evidence("S2"),
+            AmiMechanicsV2Tests._evidence(
+                "S1",
+                dialogue_act_file_count=1,
+                fully_labeled_dialogue_act_file_count=1,
+            ),
+        )
+        membership = {
+            "scenario_only": ("S1", "S2"),
+            "full_corpus": ("S1", "S2", "F1"),
+            "full_only": ("F1",),
+        }
+        official_order = ("S1", "S2", "F1")
+        aggregate = contribution_limited_aggregates_v2(
+            evidence,
+            membership,
+            official_order,
+        )
+        return (
+            aggregate,
+            cls._serialized_meetings(evidence),
+            {
+                partition: list(meeting_ids)
+                for partition, meeting_ids in membership.items()
+            },
+            list(official_order),
+        )
+
+    def _assert_authority_rejected(
+        self,
+        *,
+        payload: Any | None = None,
+        meetings: Any | None = None,
+        membership: Any | None = None,
+        official_order: Any | None = None,
+        minimum_contributors: Any = 10,
+    ) -> None:
+        validate_authority, _ = self._validators()
+        base_payload, base_meetings, base_membership, base_order = (
+            self._small_authority()
+        )
+        with self.assertRaises((TypeError, ValueError)):
+            validate_authority(
+                base_payload if payload is None else payload,
+                meetings=base_meetings if meetings is None else meetings,
+                partition_membership=(
+                    base_membership if membership is None else membership
+                ),
+                official_order=(
+                    base_order if official_order is None else official_order
+                ),
+                minimum_contributors=minimum_contributors,
+            )
+
+    def test_production_v2_output_passes_both_validators_and_is_alias_safe(
+        self,
+    ) -> None:
+        validate_authority, validate_published = self._validators()
+        aggregate, meetings, membership, official_order = (
+            self._fixed_authority()
+        )
+        authority_result = validate_authority(
+            aggregate,
+            meetings=meetings,
+            partition_membership=membership,
+            official_order=official_order,
+        )
+        published_result = validate_published(aggregate)
+        expected = deepcopy(aggregate)
+        aggregate["source_quality"]["unlabeled_dialogue_act_record_count"] = 0
+        aggregate["partitions"]["scenario_only"]["metric_families"]["timing"][
+            "reason_codes"
+        ].append("forged")
+        self.assertEqual(authority_result, expected)
+        self.assertEqual(published_result, expected)
+
+    def test_authority_rejects_serialized_evidence_invariant_mutations(
+        self,
+    ) -> None:
+        _, base_meetings, _, _ = self._small_authority()
+        by_id = {
+            meeting["meeting_id"]: index
+            for index, meeting in enumerate(base_meetings)
+        }
+        s1_index = by_id["S1"]
+        s2_index = by_id["S2"]
+        f1_index = by_id["F1"]
+        invalid_meetings: list[Any] = []
+
+        missing_key = deepcopy(base_meetings)
+        del missing_key[s1_index]["participants"]
+        invalid_meetings.append(missing_key)
+        extra_key = deepcopy(base_meetings)
+        extra_key[s1_index]["extra"] = None
+        invalid_meetings.append(extra_key)
+
+        for field, value in (
+            ("meeting_id", " S1"),
+            ("participants", ("P-S1-A", "P-S1-B")),
+            ("participants", ["P-S1-A"]),
+            ("participants", ["P-S1-A", "P-S1-A"]),
+            ("participants", ["P-S1-B", "P-S1-A"]),
+            ("participants", ["P-S1-A", 1]),
+            ("timing_file_present", 1),
+            ("timed_turns", []),
+            ("timed_turns", tuple(base_meetings[s1_index]["timed_turns"])),
+            ("dialogue_turns", []),
+            ("dialogue_turns", tuple(base_meetings[s1_index]["dialogue_turns"])),
+            ("dialogue_act_file_count", True),
+            ("dialogue_act_file_count", -1),
+            ("fully_labeled_dialogue_act_file_count", 2),
+            ("unlabeled_dialogue_act_record_count", 1),
+            ("unlabeled_dialogue_act_file_count", 1),
+        ):
+            mutated = deepcopy(base_meetings)
+            mutated[s1_index][field] = value
+            invalid_meetings.append(mutated)
+
+        for field, value in (
+            ("dialogue_act_file_count", 2),
+            ("fully_labeled_dialogue_act_file_count", 1),
+            ("unlabeled_dialogue_act_record_count", 1),
+            ("unlabeled_dialogue_act_file_count", 1),
+        ):
+            mutated = deepcopy(base_meetings)
+            mutated[s2_index][field] = value
+            invalid_meetings.append(mutated)
+
+        timed_mutations: list[Callable[[list[dict[str, Any]]], None]] = [
+            lambda turns: turns[0].__setitem__("meeting_id", "S2"),
+            lambda turns: turns[0].__setitem__("participant_id", "P-UNKNOWN"),
+            lambda turns: turns[0].__setitem__("start_ms", True),
+            lambda turns: turns[0].__setitem__("end_ms", turns[0]["start_ms"]),
+            lambda turns: turns[0].__setitem__("extra", 0),
+            lambda turns: turns[0].pop("end_ms"),
+            lambda turns: turns.reverse(),
+            lambda turns: turns.append(deepcopy(turns[-1])),
+            lambda turns: [
+                turn.__setitem__("participant_id", "P-S1-A")
+                for turn in turns
+            ],
+        ]
+        for mutate_turns in timed_mutations:
+            mutated = deepcopy(base_meetings)
+            mutate_turns(mutated[s1_index]["timed_turns"])
+            invalid_meetings.append(mutated)
+
+        dialogue_mutations: list[
+            Callable[[list[dict[str, Any]]], None]
+        ] = [
+            lambda turns: turns[0].__setitem__("meeting_id", "S2"),
+            lambda turns: turns[0].__setitem__("participant_id", "P-UNKNOWN"),
+            lambda turns: turns[0].__setitem__("dialogue_act", "AMI_DA_2"),
+            lambda turns: turns[0].__setitem__("start_ms", True),
+            lambda turns: turns[0].__setitem__("end_ms", turns[0]["start_ms"]),
+            lambda turns: turns[0].__setitem__("extra", 0),
+            lambda turns: turns[0].pop("dialogue_act"),
+            lambda turns: turns.reverse(),
+            lambda turns: turns.append(deepcopy(turns[-1])),
+        ]
+        for mutate_turns in dialogue_mutations:
+            mutated = deepcopy(base_meetings)
+            mutate_turns(mutated[s1_index]["dialogue_turns"])
+            invalid_meetings.append(mutated)
+
+        timing_without_file = deepcopy(base_meetings)
+        timing_without_file[s1_index]["timing_file_present"] = False
+        invalid_meetings.append(timing_without_file)
+        duplicate_id = deepcopy(base_meetings)
+        duplicate_id[f1_index]["meeting_id"] = "S2"
+        invalid_meetings.append(duplicate_id)
+        incomplete_with_dialogue = deepcopy(base_meetings)
+        incomplete_with_dialogue[s1_index][
+            "fully_labeled_dialogue_act_file_count"
+        ] = 0
+        incomplete_with_dialogue[s1_index][
+            "unlabeled_dialogue_act_record_count"
+        ] = 1
+        incomplete_with_dialogue[s1_index][
+            "unlabeled_dialogue_act_file_count"
+        ] = 1
+        invalid_meetings.append(incomplete_with_dialogue)
+
+        for index, meetings in enumerate(invalid_meetings):
+            with self.subTest(mutation=index):
+                self._assert_authority_rejected(meetings=meetings)
+
+    def test_authority_rejects_membership_order_and_outer_type_mutations(
+        self,
+    ) -> None:
+        _, meetings, membership, official_order = self._small_authority()
+        invalid_memberships = (
+            membership | {"extra": ["S1"]},
+            {key: value for key, value in membership.items() if key != "full_only"},
+            membership | {"scenario_only": "S1"},
+            membership | {"scenario_only": ["S1", "S1"]},
+            membership | {"scenario_only": [" S1", "S2"]},
+            membership | {"full_only": ["S1", "F1"]},
+            membership | {"full_corpus": ["S1", "F1"]},
+            membership | {"full_corpus": ["S1", "S2", "F1", "UNKNOWN"]},
+        )
+        for mutation in invalid_memberships:
+            with self.subTest(membership=mutation):
+                self._assert_authority_rejected(membership=mutation)
+
+        invalid_orders = (
+            "S1",
+            ["S1", "S1", "F1"],
+            ["S1", "F1"],
+            ["S1", "S2", "UNKNOWN"],
+            [" S1", "S2", "F1"],
+        )
+        for mutation in invalid_orders:
+            with self.subTest(order=mutation):
+                self._assert_authority_rejected(official_order=mutation)
+
+        for mutation in (
+            "meetings",
+            meetings[:-1],
+            meetings + [deepcopy(meetings[0])],
+        ):
+            with self.subTest(meetings=mutation):
+                self._assert_authority_rejected(meetings=mutation)
+        for minimum in (True, 9, 10.0):
+            with self.subTest(minimum=minimum):
+                self._assert_authority_rejected(
+                    minimum_contributors=minimum,
+                )
+
+    def test_authority_rejects_every_derived_payload_region_mutation(
+        self,
+    ) -> None:
+        aggregate, _, _, _ = self._small_authority()
+        mutations: list[dict[str, Any]] = []
+
+        for field, value in (
+            ("schema_id", "emotion-state-ami-mechanics-aggregate-v1"),
+            ("schema_version", 1),
+        ):
+            mutated = deepcopy(aggregate)
+            mutated[field] = value
+            mutations.append(mutated)
+        for field in (
+            "unlabeled_dialogue_act_record_count",
+            "unlabeled_dialogue_act_file_count",
+        ):
+            mutated = deepcopy(aggregate)
+            mutated["source_quality"][field] += 1
+            mutations.append(mutated)
+
+        for partition_name, partition in aggregate["partitions"].items():
+            mutated = deepcopy(aggregate)
+            mutated["partitions"][partition_name][
+                "population_meeting_count"
+            ] += 1
+            mutations.append(mutated)
+            timing = partition["metric_families"]["timing"]
+            dialogue = partition["metric_families"]["dialogue_act"]
+            for family_name, family in (
+                ("timing", timing),
+                ("dialogue_act", dialogue),
+            ):
+                mutated = deepcopy(aggregate)
+                target = mutated["partitions"][partition_name][
+                    "metric_families"
+                ][family_name]
+                target["status"] = (
+                    "available"
+                    if family["status"] == "unavailable"
+                    else "unavailable"
+                )
+                mutations.append(mutated)
+                mutated = deepcopy(aggregate)
+                target = mutated["partitions"][partition_name][
+                    "metric_families"
+                ][family_name]
+                target["reason_codes"] = list(family["reason_codes"]) + [
+                    "forged"
+                ]
+                mutations.append(mutated)
+                for coverage_field in family["coverage"]:
+                    mutated = deepcopy(aggregate)
+                    target = mutated["partitions"][partition_name][
+                        "metric_families"
+                    ][family_name]
+                    target["coverage"][coverage_field] += 1
+                    mutations.append(mutated)
+
+            if timing["status"] == "available":
+                for field in timing["contribution"]:
+                    mutated = deepcopy(aggregate)
+                    target = mutated["partitions"][partition_name][
+                        "metric_families"
+                    ]["timing"]["contribution"]
+                    current = target[field]
+                    target[field] = not current if type(current) is bool else current + 1
+                    mutations.append(mutated)
+                for group_name in ("buckets", "scalars"):
+                    for metric_name in timing[group_name]:
+                        for cell_field in (
+                            "suppressed",
+                            "unique_participant_count",
+                            "value",
+                        ):
+                            mutated = deepcopy(aggregate)
+                            cell = mutated["partitions"][partition_name][
+                                "metric_families"
+                            ]["timing"][group_name][metric_name]
+                            current = cell[cell_field]
+                            if type(current) is bool:
+                                cell[cell_field] = not current
+                            elif current is None:
+                                cell[cell_field] = 0.0
+                            else:
+                                cell[cell_field] = current + 1
+                            mutations.append(mutated)
+            else:
+                for field in ("contribution", "buckets", "scalars"):
+                    mutated = deepcopy(aggregate)
+                    mutated["partitions"][partition_name]["metric_families"][
+                        "timing"
+                    ][field] = {}
+                    mutations.append(mutated)
+            for field in ("contribution", "scalars", "dialogue_acts"):
+                mutated = deepcopy(aggregate)
+                mutated["partitions"][partition_name]["metric_families"][
+                    "dialogue_act"
+                ][field] = {}
+                mutations.append(mutated)
+
+        for index, mutation in enumerate(mutations):
+            with self.subTest(mutation=index):
+                self._assert_authority_rejected(payload=mutation)
+
+    def test_published_validator_requires_fixed_matrix_and_rejects_coordination(
+        self,
+    ) -> None:
+        _, validate_published = self._validators()
+        aggregate, _, _, _ = self._fixed_authority()
+        coverage_fields = {
+            "timing": (
+                "timing_file_meeting_count",
+                "usable_timing_meeting_count",
+            ),
+            "dialogue_act": (
+                "dialogue_act_meeting_count",
+                "dialogue_act_file_count",
+                "fully_labeled_dialogue_act_file_count",
+            ),
+        }
+        for partition_name in aggregate["partitions"]:
+            mutated = deepcopy(aggregate)
+            mutated["partitions"][partition_name][
+                "population_meeting_count"
+            ] += 1
+            with self.subTest(partition=partition_name, field="population"):
+                with self.assertRaises(ValueError):
+                    validate_published(mutated)
+            for family_name, fields in coverage_fields.items():
+                for field in fields:
+                    mutated = deepcopy(aggregate)
+                    mutated["partitions"][partition_name]["metric_families"][
+                        family_name
+                    ]["coverage"][field] += 1
+                    with self.subTest(
+                        partition=partition_name,
+                        family=family_name,
+                        field=field,
+                    ):
+                        with self.assertRaises(ValueError):
+                            validate_published(mutated)
+
+        coordinated = deepcopy(aggregate)
+        full_timing = coordinated["partitions"]["full_corpus"][
+            "metric_families"
+        ]["timing"]
+        scenario_timing = coordinated["partitions"]["scenario_only"][
+            "metric_families"
+        ]["timing"]
+        full_timing["coverage"]["usable_timing_meeting_count"] = 170
+        full_timing["status"] = "available"
+        full_timing["reason_codes"] = []
+        for field in ("contribution", "buckets", "scalars"):
+            full_timing[field] = deepcopy(scenario_timing[field])
+        with self.assertRaises(ValueError):
+            validate_published(coordinated)
+
+    def test_published_validator_rejects_non_null_unavailable_results(
+        self,
+    ) -> None:
+        _, validate_published = self._validators()
+        aggregate, _, _, _ = self._fixed_authority()
+        replacements = (
+            0,
+            {},
+            {
+                "suppressed": True,
+                "unique_participant_count": 0,
+                "value": None,
+            },
+            {"partial": None},
+        )
+        unavailable = (
+            ("full_corpus", "timing", ("contribution", "buckets", "scalars")),
+            ("full_only", "timing", ("contribution", "buckets", "scalars")),
+            (
+                "scenario_only",
+                "dialogue_act",
+                ("contribution", "scalars", "dialogue_acts"),
+            ),
+            (
+                "full_corpus",
+                "dialogue_act",
+                ("contribution", "scalars", "dialogue_acts"),
+            ),
+            (
+                "full_only",
+                "dialogue_act",
+                ("contribution", "scalars", "dialogue_acts"),
+            ),
+        )
+        for partition_name, family_name, result_fields in unavailable:
+            for result_field in result_fields:
+                for replacement in replacements:
+                    mutated = deepcopy(aggregate)
+                    mutated["partitions"][partition_name]["metric_families"][
+                        family_name
+                    ][result_field] = deepcopy(replacement)
+                    with self.subTest(
+                        partition=partition_name,
+                        family=family_name,
+                        field=result_field,
+                        replacement=replacement,
+                    ):
+                        with self.assertRaises(ValueError):
+                            validate_published(mutated)
+
+    def test_published_validator_rejects_types_domains_shapes_and_v1_schema(
+        self,
+    ) -> None:
+        _, validate_published = self._validators()
+        aggregate, _, _, _ = self._fixed_authority()
+        mutations: list[dict[str, Any]] = []
+        for field, value in (
+            ("schema_id", "emotion-state-ami-mechanics-aggregate-v1"),
+            ("schema_version", 1),
+            ("schema_version", True),
+        ):
+            mutated = deepcopy(aggregate)
+            mutated[field] = value
+            mutations.append(mutated)
+        missing = deepcopy(aggregate)
+        missing.pop("source_quality")
+        mutations.append(missing)
+        extra = deepcopy(aggregate)
+        extra["extra"] = None
+        mutations.append(extra)
+        for field, value in (
+            ("unlabeled_dialogue_act_record_count", True),
+            ("unlabeled_dialogue_act_record_count", 27),
+            ("unlabeled_dialogue_act_file_count", 25),
+        ):
+            mutated = deepcopy(aggregate)
+            mutated["source_quality"][field] = value
+            mutations.append(mutated)
+
+        timing = aggregate["partitions"]["scenario_only"]["metric_families"][
+            "timing"
+        ]
+        contribution_mutations = (
+            ("selected_meeting_count", True),
+            ("selected_meeting_count", 0),
+            ("repeated_participant_meeting_count", 1),
+            ("unique_participant_count", True),
+            (
+                "unique_participant_count",
+                2 * timing["contribution"]["selected_meeting_count"] - 1,
+            ),
+            ("suppressed", not timing["contribution"]["suppressed"]),
+        )
+        for field, value in contribution_mutations:
+            mutated = deepcopy(aggregate)
+            mutated["partitions"]["scenario_only"]["metric_families"][
+                "timing"
+            ]["contribution"][field] = value
+            mutations.append(mutated)
+
+        bucket_name = AmiMechanicsV2Tests.TIMING_BUCKET_KEYS[0]
+        scalar_name = "overlap_ratio"
+        for group_name, metric_name, field, value in (
+            ("buckets", bucket_name, "value", -1.0),
+            ("buckets", bucket_name, "value", float("nan")),
+            ("buckets", bucket_name, "value", float("inf")),
+            ("buckets", bucket_name, "value", True),
+            ("buckets", bucket_name, "unique_participant_count", True),
+            ("buckets", bucket_name, "suppressed", 0),
+            ("scalars", scalar_name, "value", 1.1),
+            (
+                "scalars",
+                "speaker_balance_normalized_entropy",
+                "value",
+                -0.1,
+            ),
+        ):
+            mutated = deepcopy(aggregate)
+            mutated["partitions"]["scenario_only"]["metric_families"][
+                "timing"
+            ][group_name][metric_name][field] = value
+            mutations.append(mutated)
+        missing_cell_key = deepcopy(aggregate)
+        missing_cell_key["partitions"]["scenario_only"]["metric_families"][
+            "timing"
+        ]["buckets"][bucket_name].pop("value")
+        mutations.append(missing_cell_key)
+        extra_cell_key = deepcopy(aggregate)
+        extra_cell_key["partitions"]["scenario_only"]["metric_families"][
+            "timing"
+        ]["buckets"][bucket_name]["extra"] = None
+        mutations.append(extra_cell_key)
+
+        for index, mutation in enumerate(mutations):
+            with self.subTest(mutation=index):
+                with self.assertRaises(ValueError):
+                    validate_published(mutation)
+
+    def test_authority_oracle_does_not_call_the_production_v2_builder(
+        self,
+    ) -> None:
+        from scripts import emotion_state_phase_b_ami_mechanics as ami
+
+        validate_authority, _ = self._validators()
+        aggregate, meetings, membership, official_order = (
+            self._small_authority()
+        )
+        with patch.object(
+            ami,
+            "contribution_limited_aggregates_v2",
+            side_effect=AssertionError("production v2 builder was called"),
+        ):
+            self.assertEqual(
+                validate_authority(
+                    aggregate,
+                    meetings=meetings,
+                    partition_membership=membership,
+                    official_order=official_order,
+                ),
+                aggregate,
+            )
+            forged = deepcopy(aggregate)
+            forged["partitions"]["scenario_only"]["metric_families"]["timing"][
+                "coverage"
+            ]["usable_timing_meeting_count"] -= 1
+            with self.assertRaises(ValueError):
+                validate_authority(
+                    forged,
+                    meetings=meetings,
+                    partition_membership=membership,
+                    official_order=official_order,
+                )
+
+    def test_overlapping_selection_uses_official_order_not_input_order(
+        self,
+    ) -> None:
+        from scripts.emotion_state_phase_b_ami_mechanics import (
+            AmiMeetingEvidenceV2,
+            TimedTurn,
+            contribution_limited_aggregates_v2,
+        )
+
+        validate_authority, _ = self._validators()
+        participants_a = tuple(sorted(
+            ("P-SHARED",) + tuple(f"P-A-{index}" for index in range(1, 10))
+        ))
+        participants_b = tuple(sorted(
+            ("P-SHARED",) + tuple(f"P-B-{index}" for index in range(1, 10))
+        ))
+
+        def meeting(
+            meeting_id: str,
+            participants: tuple[str, ...],
+            spans: tuple[tuple[int, int], ...],
+        ) -> Any:
+            first, second = participants[:2]
+            turns = tuple(
+                TimedTurn(
+                    meeting_id,
+                    first if index != 1 else second,
+                    start,
+                    end,
+                )
+                for index, (start, end) in enumerate(spans)
+            )
+            return AmiMeetingEvidenceV2(
+                meeting_id=meeting_id,
+                participants=participants,
+                timing_file_present=True,
+                timed_turns=turns,
+                dialogue_turns=None,
+                dialogue_act_file_count=0,
+                fully_labeled_dialogue_act_file_count=0,
+                unlabeled_dialogue_act_record_count=0,
+                unlabeled_dialogue_act_file_count=0,
+            )
+
+        first = meeting(
+            "A",
+            participants_a,
+            ((0, 100), (50, 250), (400, 700)),
+        )
+        second = meeting(
+            "B",
+            participants_b,
+            ((0, 1000), (500, 2500), (3000, 7000)),
+        )
+        full_only = AmiMechanicsV2Tests._evidence("F1", timed=False)
+        evidence = (second, first, full_only)
+        membership = {
+            "scenario_only": ("A", "B"),
+            "full_corpus": ("A", "B", "F1"),
+            "full_only": ("F1",),
+        }
+        serialized = self._serialized_meetings(evidence)
+        orders_and_expected = (
+            (("A", "B", "F1"), 200.0),
+            (("B", "A", "F1"), 2000.0),
+        )
+        observed: list[float] = []
+        for official_order, expected_median in orders_and_expected:
+            aggregate = contribution_limited_aggregates_v2(
+                evidence,
+                membership,
+                official_order,
+            )
+            timing = aggregate["partitions"]["scenario_only"][
+                "metric_families"
+            ]["timing"]
+            observed.append(
+                timing["buckets"]["turn_duration_ms_median"]["value"]
+            )
+            self.assertEqual(
+                timing["contribution"],
+                {
+                    "selected_meeting_count": 1,
+                    "unique_participant_count": 10,
+                    "repeated_participant_meeting_count": 1,
+                    "suppressed": False,
+                },
+            )
+            self.assertEqual(observed[-1], expected_median)
+            self.assertEqual(
+                validate_authority(
+                    aggregate,
+                    meetings=serialized,
+                    partition_membership={
+                        key: list(value)
+                        for key, value in membership.items()
+                    },
+                    official_order=list(official_order),
+                ),
+                aggregate,
+            )
+        self.assertNotEqual(observed[0], observed[1])
+
+
 class SecurePublicMaterialByteTests(unittest.TestCase):
     _OPEN_AUDIT_STATE: Any = None
     _OPEN_AUDIT_HOOK_INSTALLED = False
