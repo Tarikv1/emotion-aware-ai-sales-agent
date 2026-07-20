@@ -3949,6 +3949,9 @@ class AmiMechanicsTests(unittest.TestCase):
 
 
 class SecurePublicMaterialByteTests(unittest.TestCase):
+    _OPEN_AUDIT_STATE: Any = None
+    _OPEN_AUDIT_HOOK_INSTALLED = False
+
     @staticmethod
     def _runner_paths(root: Path) -> tuple[Any, Path]:
         from scripts import run_emotion_state_002_phase_b as runner
@@ -4045,115 +4048,92 @@ class SecurePublicMaterialByteTests(unittest.TestCase):
             )
         return output.getvalue()
 
+    @classmethod
+    def _ensure_open_audit_hook(cls) -> None:
+        import contextvars
+        import sys
+
+        if cls._OPEN_AUDIT_STATE is None:
+            cls._OPEN_AUDIT_STATE = contextvars.ContextVar(
+                "phase_b_parser_open_audit_state",
+                default=None,
+            )
+        if cls._OPEN_AUDIT_HOOK_INSTALLED:
+            return
+        state_variable = cls._OPEN_AUDIT_STATE
+
+        def reject_active_open(event: str, arguments: tuple[Any, ...]) -> None:
+            active_events = state_variable.get()
+            if event == "open" and active_events is not None:
+                active_events.append(arguments)
+                raise AssertionError("blocked filesystem open audit event")
+
+        sys.addaudithook(reject_active_open)
+        cls._OPEN_AUDIT_HOOK_INSTALLED = True
+
     @contextmanager
-    def _post_verified_reopen_guards(
+    def _post_verified_no_open_events(
         self,
-        runner: Any,
         *,
         wave_module: Any | None = None,
         xml_module: Any | None = None,
     ) -> Any:
-        import builtins
+        self._ensure_open_audit_hook()
+        open_events: list[tuple[Any, ...]] = []
+        token = self._OPEN_AUDIT_STATE.set(open_events)
+        try:
+            with ExitStack() as stack:
+                if wave_module is not None:
+                    real_wave_open = wave_module.wave.open
 
-        attempted: set[str] = set()
-        guarded = {
-            "builtins.open",
-            "Path.open",
-            "Path.read_bytes",
-            "os.open",
-            "_read_file_nofollow",
-        }
+                    def guarded_wave_open(
+                        source: Any,
+                        *args: Any,
+                        **kwargs: Any,
+                    ) -> Any:
+                        if isinstance(source, (str, os.PathLike)):
+                            raise AssertionError(
+                                "blocked path-like wave.open"
+                            )
+                        return real_wave_open(source, *args, **kwargs)
 
-        def blocked(label: str) -> Callable[..., Any]:
-            def fail(*args: Any, **kwargs: Any) -> Any:
-                attempted.add(label)
-                raise AssertionError(f"blocked reopen via {label}")
-
-            return fail
-
-        with ExitStack() as stack:
-            stack.enter_context(
-                patch.object(
-                    builtins,
-                    "open",
-                    side_effect=blocked("builtins.open"),
-                )
-            )
-            stack.enter_context(
-                patch.object(
-                    Path,
-                    "open",
-                    side_effect=blocked("Path.open"),
-                )
-            )
-            stack.enter_context(
-                patch.object(
-                    Path,
-                    "read_bytes",
-                    side_effect=blocked("Path.read_bytes"),
-                )
-            )
-            stack.enter_context(
-                patch.object(
-                    os,
-                    "open",
-                    side_effect=blocked("os.open"),
-                )
-            )
-            stack.enter_context(
-                patch.object(
-                    runner,
-                    "_read_file_nofollow",
-                    side_effect=blocked("_read_file_nofollow"),
-                )
-            )
-            if wave_module is not None:
-                real_wave_open = wave_module.wave.open
-                guarded.add("wave.open(path-like)")
-
-                def guarded_wave_open(
-                    source: Any,
-                    *args: Any,
-                    **kwargs: Any,
-                ) -> Any:
-                    if isinstance(source, (str, os.PathLike)):
-                        attempted.add("wave.open(path-like)")
-                        raise AssertionError(
-                            "blocked reopen via wave.open(path-like)"
+                    stack.enter_context(
+                        patch.object(
+                            wave_module.wave,
+                            "open",
+                            side_effect=guarded_wave_open,
                         )
-                    return real_wave_open(source, *args, **kwargs)
-
-                stack.enter_context(
-                    patch.object(
-                        wave_module.wave,
-                        "open",
-                        side_effect=guarded_wave_open,
                     )
-                )
-            if xml_module is not None:
-                guarded.add("ElementTree.parse")
-                stack.enter_context(
-                    patch.object(
-                        xml_module.ET,
-                        "parse",
-                        side_effect=blocked("ElementTree.parse"),
+                if xml_module is not None:
+                    stack.enter_context(
+                        patch.object(
+                            xml_module.ET,
+                            "parse",
+                            side_effect=AssertionError(
+                                "blocked ElementTree.parse"
+                            ),
+                        )
                     )
-                )
-            yield guarded, attempted
+                yield open_events
+        finally:
+            self._OPEN_AUDIT_STATE.reset(token)
 
-    def _exercise_reopen_guards(
+    def _exercise_open_audit_guard(
         self,
         runner: Any,
         source_path: Path,
-        guarded: set[str],
-        attempted: set[str],
+        open_events: list[tuple[Any, ...]],
+        prebound_io_open: Callable[..., Any],
         *,
         wave_module: Any | None = None,
         xml_module: Any | None = None,
     ) -> None:
         import builtins
+        import io
 
         probes: dict[str, Callable[[], Any]] = {
+            "pre-bound io.open": lambda: prebound_io_open(source_path, "rb"),
+            "dynamic io.open": lambda: io.open(source_path, "rb"),
             "builtins.open": lambda: builtins.open(source_path, "rb"),
             "Path.open": lambda: source_path.open("rb"),
             "Path.read_bytes": source_path.read_bytes,
@@ -4162,29 +4142,37 @@ class SecurePublicMaterialByteTests(unittest.TestCase):
                 source_path
             ),
         }
-        if wave_module is not None:
-            probes["wave.open(path-like)"] = lambda: wave_module.wave.open(
-                str(source_path),
-                "rb",
-            )
-        if xml_module is not None:
-            probes["ElementTree.parse"] = lambda: xml_module.ET.parse(
-                source_path
-            )
-        self.assertEqual(set(probes), guarded)
         for label, probe in probes.items():
-            with self.subTest(reopen_guard=label):
+            with self.subTest(open_audit_probe=label):
+                event_count = len(open_events)
                 with self.assertRaisesRegex(
                     AssertionError,
-                    re.escape(f"blocked reopen via {label}"),
+                    "blocked filesystem open audit event",
                 ):
                     probe()
-        self.assertEqual(attempted, guarded)
+                self.assertEqual(len(open_events), event_count + 1)
+        if wave_module is not None:
+            with self.assertRaisesRegex(
+                AssertionError,
+                "blocked path-like wave.open",
+            ):
+                wave_module.wave.open(str(source_path), "rb")
+        if xml_module is not None:
+            with self.assertRaisesRegex(
+                AssertionError,
+                "blocked ElementTree.parse",
+            ):
+                xml_module.ET.parse(source_path)
 
     def test_verified_crema_content_composes_without_reopen(self) -> None:
+        import codecs
+        import io
+
         from scripts import emotion_state_phase_b_evaluation as evaluation
         from scripts import run_emotion_state_002_phase_b as runner
 
+        prebound_io_open = io.open
+        codecs.lookup("utf-8-sig")
         finished_bytes = (
             b",localid,pos,ans,ttr,queryType,numTries,clipNum,questNum,"
             b"subType,clipName,sessionNums,respEmo,respLevel,dispEmo,"
@@ -4216,9 +4204,7 @@ class SecurePublicMaterialByteTests(unittest.TestCase):
                 summary_bytes,
             )
 
-            with self._post_verified_reopen_guards(
-                runner,
-            ) as (guarded, attempted):
+            with self._post_verified_no_open_events() as open_events:
                 first = evaluation.load_crema_reference_labels_bytes(
                     finished.content,
                     summary.content,
@@ -4229,7 +4215,7 @@ class SecurePublicMaterialByteTests(unittest.TestCase):
                     summary.content,
                     ("1001_DFA_ANG_XX",),
                 )
-                self.assertEqual(attempted, set())
+                self.assertEqual(open_events, [])
                 self.assertEqual(first, second)
                 records, ledger = first
                 self.assertEqual(len(records), 1)
@@ -4259,22 +4245,23 @@ class SecurePublicMaterialByteTests(unittest.TestCase):
                     ledger["source_binding"]["summary_table_sha256"],
                     summary.sha256,
                 )
-                self._exercise_reopen_guards(
+                self._exercise_open_audit_guard(
                     runner,
                     finished_path,
-                    guarded,
-                    attempted,
+                    open_events,
+                    prebound_io_open,
                 )
-                self.assertEqual(
-                    attempted,
-                    guarded,
-                    "explicit reopen-guard proof is not armed",
-                )
+            self.assertIsNone(self._OPEN_AUDIT_STATE.get())
+            with prebound_io_open(finished_path, "rb") as reopened:
+                self.assertEqual(reopened.read(1), finished_bytes[:1])
 
     def test_verified_wav_content_composes_without_reopen(self) -> None:
+        import io
+
         from scripts import emotion_state_phase_b_features as features
         from scripts import run_emotion_state_002_phase_b as runner
 
+        prebound_io_open = io.open
         wav_bytes = self._tone_wav_bytes()
         with tempfile.TemporaryDirectory() as directory:
             paths, public_root = self._runner_paths(Path(directory).resolve())
@@ -4287,17 +4274,16 @@ class SecurePublicMaterialByteTests(unittest.TestCase):
                 wav_bytes,
             )
 
-            with self._post_verified_reopen_guards(
-                runner,
+            with self._post_verified_no_open_events(
                 wave_module=features,
-            ) as (guarded, attempted):
+            ) as open_events:
                 first = features.extract_acoustic_features_bytes(
                     verified.content
                 )
                 second = features.extract_acoustic_features_bytes(
                     verified.content
                 )
-                self.assertEqual(attempted, set())
+                self.assertEqual(open_events, [])
                 self.assertEqual(first, second)
                 self.assertEqual(tuple(first), features.FEATURE_NAMES)
                 self.assertEqual(first["duration_seconds"], 1.0)
@@ -4306,23 +4292,22 @@ class SecurePublicMaterialByteTests(unittest.TestCase):
                     200.0,
                     delta=2.0,
                 )
-                self._exercise_reopen_guards(
+                self._exercise_open_audit_guard(
                     runner,
                     wav_path,
-                    guarded,
-                    attempted,
+                    open_events,
+                    prebound_io_open,
                     wave_module=features,
                 )
-                self.assertEqual(
-                    attempted,
-                    guarded,
-                    "explicit reopen-guard proof is not armed",
-                )
+            self.assertIsNone(self._OPEN_AUDIT_STATE.get())
 
     def test_verified_ami_content_composes_without_reopen(self) -> None:
+        import io
+
         from scripts import emotion_state_phase_b_ami_mechanics as ami
         from scripts import run_emotion_state_002_phase_b as runner
 
+        prebound_io_open = io.open
         contents = {
             "meetings.xml": (
                 b"<corpus><meeting id=\"M1\">"
@@ -4362,10 +4347,9 @@ class SecurePublicMaterialByteTests(unittest.TestCase):
                     content,
                 )
 
-            with self._post_verified_reopen_guards(
-                runner,
+            with self._post_verified_no_open_events(
                 xml_module=ami,
-            ) as (guarded, attempted):
+            ) as open_events:
                 arguments = {
                     "metadata": ami.AmiXmlBytes(
                         verified["meetings.xml"].logical_name,
@@ -4395,25 +4379,21 @@ class SecurePublicMaterialByteTests(unittest.TestCase):
                 }
                 first = ami.load_ami_turns_from_bytes(**arguments)
                 second = ami.load_ami_turns_from_bytes(**arguments)
-                self.assertEqual(attempted, set())
+                self.assertEqual(open_events, [])
                 self.assertEqual(first, second)
                 self.assertEqual(
                     first,
                     (ami.Turn("M1", "P-A", 0, 500, "ami_da_2"),),
                 )
                 self.assertNotIn("TRANSCRIPT", repr(first).upper())
-                self._exercise_reopen_guards(
+                self._exercise_open_audit_guard(
                     runner,
                     source_paths["meetings.xml"],
-                    guarded,
-                    attempted,
+                    open_events,
+                    prebound_io_open,
                     xml_module=ami,
                 )
-                self.assertEqual(
-                    attempted,
-                    guarded,
-                    "explicit reopen-guard proof is not armed",
-                )
+            self.assertIsNone(self._OPEN_AUDIT_STATE.get())
 
     def test_verified_reader_binds_one_nofollow_read_and_rejects_violations(
         self,
