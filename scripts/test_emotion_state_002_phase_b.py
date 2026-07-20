@@ -8955,8 +8955,7 @@ class Task10ProductionPipelineTests(unittest.TestCase):
             diagnostic_probabilities,
             artifacts["calibration"],
         ).to_payload()
-        RunnerStateTests.setUpClass()
-        return diagnostic, deepcopy(RunnerStateTests.AMI_AGGREGATE)
+        return diagnostic, AmiMechanicsV2Tests._aggregate()
 
     @staticmethod
     def _rewrite_and_reseal_identity(
@@ -9123,8 +9122,14 @@ class Task10ProductionPipelineTests(unittest.TestCase):
                 "label_reads": 0,
                 "feature_reads": 0,
                 "audio_reads": 0,
+                "cache_reads": 0,
             },
         )
+        self.assertEqual(
+            packet["schema_id"],
+            "emotion-state-phase-b-non-lockbox-review-v3",
+        )
+        self.assertEqual(packet["schema_version"], 3)
         self.assertFalse(packet["final_decision_eligible"])
         self.assertRegex(packet["diagnostic_aggregate_sha256"], r"^[0-9A-F]{64}$")
         self.assertRegex(packet["ami_aggregate_sha256"], r"^[0-9A-F]{64}$")
@@ -9161,6 +9166,389 @@ class Task10ProductionPipelineTests(unittest.TestCase):
                     "row_ids": ["synthetic-row"],
                 }
             )
+
+
+class Task10PacketV3Tests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls) -> None:
+        EvaluationTests.setUpClass()
+        RunnerStateTests.setUpClass()
+
+    @staticmethod
+    def _aggregates() -> tuple[dict[str, Any], dict[str, Any]]:
+        return Task10ProductionPipelineTests._non_lockbox_review_aggregates()
+
+    @classmethod
+    def _build_packet(
+        cls,
+    ) -> tuple[dict[str, Any], dict[str, Any], dict[str, Any]]:
+        from scripts import emotion_state_phase_b_public_pipeline as pipeline
+
+        diagnostic, ami = cls._aggregates()
+        packet = pipeline.build_non_lockbox_review_packet(
+            diagnostic_aggregate=diagnostic,
+            ami_aggregate=ami,
+            split_manifest_sha256=diagnostic["provenance"][
+                "split_manifest_sha256"
+            ],
+        )
+        return packet, diagnostic, ami
+
+    @staticmethod
+    def _reseal_packet(
+        packet: dict[str, Any],
+        *,
+        diagnostic: bool = False,
+        ami: bool = False,
+    ) -> None:
+        from scripts import emotion_state_phase_b_public_pipeline as pipeline
+
+        if diagnostic:
+            packet["diagnostic_aggregate_sha256"] = pipeline._canonical_digest(
+                packet["diagnostic_aggregate"]
+            )
+        if ami:
+            packet["ami_aggregate_sha256"] = pipeline._canonical_digest(
+                packet["ami_aggregate"]
+            )
+        packet_without_review = deepcopy(packet)
+        packet_without_review.pop("review_sha256", None)
+        packet["review_sha256"] = pipeline._canonical_digest(
+            packet_without_review
+        )
+
+    def test_packet_v3_builds_and_validates_exact_ami_v2_projection(
+        self,
+    ) -> None:
+        from scripts import emotion_state_phase_b_public_pipeline as pipeline
+
+        packet, diagnostic, ami = self._build_packet()
+        self.assertEqual(
+            packet["schema_id"],
+            "emotion-state-phase-b-non-lockbox-review-v3",
+        )
+        self.assertEqual(packet["schema_version"], 3)
+        self.assertEqual(packet["diagnostic_aggregate"], diagnostic)
+        self.assertEqual(packet["ami_aggregate"], ami)
+        self.assertEqual(
+            ami["schema_id"],
+            "emotion-state-ami-mechanics-aggregate-v2",
+        )
+        self.assertEqual(ami["schema_version"], 2)
+        self.assertIs(diagnostic["final_decision_eligible"], False)
+        self.assertIs(packet["final_decision_eligible"], False)
+        self.assertEqual(
+            pipeline.validate_non_lockbox_review_packet(packet),
+            packet,
+        )
+
+    def test_packet_v3_rejects_packet_v2_unknown_schema_and_ami_v1(
+        self,
+    ) -> None:
+        from scripts import emotion_state_phase_b_public_pipeline as pipeline
+
+        packet, diagnostic, _ami = self._build_packet()
+        for schema_id, schema_version in (
+            ("emotion-state-phase-b-non-lockbox-review-v2", 2),
+            ("emotion-state-phase-b-non-lockbox-review-v4", 4),
+        ):
+            with self.subTest(
+                schema_id=schema_id,
+                schema_version=schema_version,
+            ):
+                mutated = deepcopy(packet)
+                mutated["schema_id"] = schema_id
+                mutated["schema_version"] = schema_version
+                self._reseal_packet(mutated)
+                with self.assertRaises(
+                    pipeline.PublicMaterialPrerequisiteError
+                ):
+                    pipeline.validate_non_lockbox_review_packet(mutated)
+
+        ami_v1 = deepcopy(RunnerStateTests.AMI_AGGREGATE)
+        split_identity = diagnostic["provenance"]["split_manifest_sha256"]
+        with self.assertRaises(pipeline.PublicMaterialPrerequisiteError):
+            pipeline.build_non_lockbox_review_packet(
+                diagnostic_aggregate=diagnostic,
+                ami_aggregate=ami_v1,
+                split_manifest_sha256=split_identity,
+            )
+        mutated = deepcopy(packet)
+        mutated["ami_aggregate"] = ami_v1
+        self._reseal_packet(mutated, ami=True)
+        with self.assertRaises(pipeline.PublicMaterialPrerequisiteError):
+            pipeline.validate_non_lockbox_review_packet(mutated)
+
+    def test_packet_v3_rejects_resealed_ami_v2_release_matrix_drift(
+        self,
+    ) -> None:
+        from scripts import emotion_state_phase_b_public_pipeline as pipeline
+
+        packet, _diagnostic, _ami = self._build_packet()
+        mutations = (
+            (
+                "coverage",
+                (
+                    "partitions",
+                    "scenario_only",
+                    "metric_families",
+                    "timing",
+                    "coverage",
+                    "usable_timing_meeting_count",
+                ),
+                137,
+            ),
+            (
+                "status",
+                (
+                    "partitions",
+                    "scenario_only",
+                    "metric_families",
+                    "timing",
+                    "status",
+                ),
+                "unavailable",
+            ),
+            (
+                "reason",
+                (
+                    "partitions",
+                    "scenario_only",
+                    "metric_families",
+                    "timing",
+                    "reason_codes",
+                ),
+                ["forged"],
+            ),
+            (
+                "nullability",
+                (
+                    "partitions",
+                    "full_only",
+                    "metric_families",
+                    "timing",
+                    "contribution",
+                ),
+                {},
+            ),
+        )
+        for name, path, replacement in mutations:
+            with self.subTest(name=name):
+                mutated = deepcopy(packet)
+                target = mutated["ami_aggregate"]
+                for key in path[:-1]:
+                    target = target[key]
+                target[path[-1]] = replacement
+                self._reseal_packet(mutated, ami=True)
+                with self.assertRaises(
+                    pipeline.PublicMaterialPrerequisiteError
+                ):
+                    pipeline.validate_non_lockbox_review_packet(mutated)
+
+    def test_packet_v3_requires_every_lockbox_access_counter_as_integer_zero(
+        self,
+    ) -> None:
+        from scripts import emotion_state_phase_b_public_pipeline as pipeline
+
+        packet, _diagnostic, _ami = self._build_packet()
+        expected = {
+            "open_count": 0,
+            "label_reads": 0,
+            "feature_reads": 0,
+            "audio_reads": 0,
+            "cache_reads": 0,
+        }
+        self.assertEqual(packet["lockbox_access"], expected)
+        for key in expected:
+            with self.subTest(missing=key):
+                mutated = deepcopy(packet)
+                mutated["lockbox_access"].pop(key)
+                self._reseal_packet(mutated)
+                with self.assertRaises(
+                    pipeline.PublicMaterialPrerequisiteError
+                ):
+                    pipeline.validate_non_lockbox_review_packet(mutated)
+            for value in (False, 1):
+                with self.subTest(key=key, value=value):
+                    mutated = deepcopy(packet)
+                    mutated["lockbox_access"][key] = value
+                    self._reseal_packet(mutated)
+                    with self.assertRaises(
+                        pipeline.PublicMaterialPrerequisiteError
+                    ):
+                        pipeline.validate_non_lockbox_review_packet(mutated)
+        mutated = deepcopy(packet)
+        mutated["lockbox_access"]["extra_reads"] = 0
+        self._reseal_packet(mutated)
+        with self.assertRaises(pipeline.PublicMaterialPrerequisiteError):
+            pipeline.validate_non_lockbox_review_packet(mutated)
+
+    def test_packet_v3_rejects_resealed_identity_and_eligibility_drift(
+        self,
+    ) -> None:
+        from scripts import emotion_state_phase_b_public_pipeline as pipeline
+
+        packet, _diagnostic, _ami = self._build_packet()
+        mutations = (
+            ("configuration_sha256", "B" * 64),
+            ("split_manifest_sha256", "B" * 64),
+            ("model_settings", {}),
+            ("metric_definitions", {}),
+            ("slice_definitions", {}),
+            ("minimum_unique_contributors_per_cell", 11),
+            ("final_decision_eligible", True),
+        )
+        for field, replacement in mutations:
+            with self.subTest(field=field):
+                mutated = deepcopy(packet)
+                mutated[field] = replacement
+                self._reseal_packet(mutated)
+                with self.assertRaises(
+                    pipeline.PublicMaterialPrerequisiteError
+                ):
+                    pipeline.validate_non_lockbox_review_packet(mutated)
+
+        mutated = deepcopy(packet)
+        mutated["diagnostic_aggregate"]["final_decision_eligible"] = 0
+        self._reseal_packet(mutated, diagnostic=True)
+        with self.assertRaises(pipeline.PublicMaterialPrerequisiteError):
+            pipeline.validate_non_lockbox_review_packet(mutated)
+
+    def test_packet_v3_rejects_private_probability_malformed_and_extra_data(
+        self,
+    ) -> None:
+        from scripts import emotion_state_phase_b_public_pipeline as pipeline
+
+        packet, diagnostic, ami = self._build_packet()
+        mutations = (
+            ("row_id", "synthetic-private-row"),
+            ("probabilities", [0.25, 0.75]),
+            ("raw_text", r"C:\private\transcript.txt"),
+        )
+        for field, value in mutations:
+            with self.subTest(field=field):
+                mutated = deepcopy(packet)
+                mutated["ami_aggregate"]["source_quality"][field] = value
+                self._reseal_packet(mutated, ami=True)
+                with self.assertRaises(
+                    pipeline.PublicMaterialPrerequisiteError
+                ):
+                    pipeline.validate_non_lockbox_review_packet(mutated)
+
+        non_finite = deepcopy(ami)
+        non_finite["partitions"]["scenario_only"]["metric_families"]["timing"][
+            "scalars"
+        ]["overlap_ratio"]["value"] = math.nan
+        with self.assertRaises(pipeline.PublicMaterialPrerequisiteError):
+            pipeline.build_non_lockbox_review_packet(
+                diagnostic_aggregate=diagnostic,
+                ami_aggregate=non_finite,
+                split_manifest_sha256=diagnostic["provenance"][
+                    "split_manifest_sha256"
+                ],
+            )
+        for malformed in ([], {"unexpected": "field"}):
+            with self.subTest(malformed=type(malformed).__name__):
+                with self.assertRaises(
+                    pipeline.PublicMaterialPrerequisiteError
+                ):
+                    pipeline.validate_non_lockbox_review_packet(malformed)
+        mutated = deepcopy(packet)
+        mutated["unexpected"] = None
+        self._reseal_packet(mutated)
+        with self.assertRaises(pipeline.PublicMaterialPrerequisiteError):
+            pipeline.validate_non_lockbox_review_packet(mutated)
+
+    def test_packet_v3_rejects_aggregate_and_review_commitment_drift(
+        self,
+    ) -> None:
+        from scripts import emotion_state_phase_b_public_pipeline as pipeline
+
+        packet, _diagnostic, _ami = self._build_packet()
+        for field in (
+            "diagnostic_aggregate_sha256",
+            "ami_aggregate_sha256",
+            "review_sha256",
+        ):
+            with self.subTest(field=field):
+                mutated = deepcopy(packet)
+                mutated[field] = (
+                    "A" * 64 if mutated[field] != "A" * 64 else "B" * 64
+                )
+                with self.assertRaises(
+                    pipeline.PublicMaterialPrerequisiteError
+                ):
+                    pipeline.validate_non_lockbox_review_packet(mutated)
+
+    def test_packet_v3_builder_and_validator_are_deterministic_and_alias_safe(
+        self,
+    ) -> None:
+        from scripts import emotion_state_phase_b_public_pipeline as pipeline
+
+        diagnostic, ami = self._aggregates()
+        split_identity = diagnostic["provenance"]["split_manifest_sha256"]
+        first = pipeline.build_non_lockbox_review_packet(
+            diagnostic_aggregate=diagnostic,
+            ami_aggregate=ami,
+            split_manifest_sha256=split_identity,
+        )
+        second = pipeline.build_non_lockbox_review_packet(
+            diagnostic_aggregate=diagnostic,
+            ami_aggregate=ami,
+            split_manifest_sha256=split_identity,
+        )
+        self.assertEqual(first, second)
+        self.assertEqual(
+            json.dumps(first, sort_keys=True, separators=(",", ":")),
+            json.dumps(second, sort_keys=True, separators=(",", ":")),
+        )
+
+        diagnostic["final_decision_eligible"] = True
+        ami["source_quality"]["unlabeled_dialogue_act_record_count"] = 0
+        self.assertIs(first["diagnostic_aggregate"]["final_decision_eligible"], False)
+        self.assertEqual(
+            first["ami_aggregate"]["source_quality"][
+                "unlabeled_dialogue_act_record_count"
+            ],
+            28,
+        )
+
+        validated = pipeline.validate_non_lockbox_review_packet(first)
+        first["ami_aggregate"]["source_quality"][
+            "unlabeled_dialogue_act_record_count"
+        ] = 0
+        self.assertEqual(
+            validated["ami_aggregate"]["source_quality"][
+                "unlabeled_dialogue_act_record_count"
+            ],
+            28,
+        )
+
+    def test_packet_v3_preserves_v1_lockbox_and_injected_packet_contracts(
+        self,
+    ) -> None:
+        from scripts.validate_emotion_state_002_phase_b import (
+            _canonical_digest,
+            expected_non_lockbox_packet,
+            validate_lockbox_ami_input,
+            validate_non_lockbox_packet,
+        )
+
+        authority = deepcopy(RunnerStateTests.AMI_AUTHORITY)
+        lockbox_input = {
+            "schema_version": 1,
+            "ami": {
+                "aggregate": deepcopy(RunnerStateTests.AMI_AGGREGATE),
+                "authority": authority,
+                "authority_sha256": _canonical_digest(authority),
+            },
+        }
+        self.assertEqual(
+            validate_lockbox_ami_input(lockbox_input),
+            lockbox_input,
+        )
+        injected = expected_non_lockbox_packet("A" * 64)
+        self.assertEqual(validate_non_lockbox_packet(injected), injected)
 
 
 class RunnerStateTests(unittest.TestCase):

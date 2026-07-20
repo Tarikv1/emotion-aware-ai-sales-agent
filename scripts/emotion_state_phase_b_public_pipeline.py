@@ -16,7 +16,7 @@ from scripts.validate_emotion_state_002_phase_b import (
     EXPECTED_SLICE_DEFINITIONS,
     MINIMUM_UNIQUE_ACTORS,
     validate_evaluation_result,
-    validate_published_ami_aggregate,
+    validate_published_ami_aggregate_v2,
 )
 
 
@@ -229,7 +229,7 @@ def build_non_lockbox_review_packet(
             diagnostic,
             expected_role="balanced_diagnostic",
         )
-        validate_published_ami_aggregate(ami)
+        validate_published_ami_aggregate_v2(ami)
     except (TypeError, ValueError) as error:
         raise PublicMaterialPrerequisiteError(
             f"non-lockbox aggregate validation failed: {error}"
@@ -248,8 +248,8 @@ def build_non_lockbox_review_packet(
     validate_aggregate_privacy(diagnostic)
     validate_aggregate_privacy(ami)
     packet: dict[str, Any] = {
-        "schema_id": "emotion-state-phase-b-non-lockbox-review-v2",
-        "schema_version": 2,
+        "schema_id": "emotion-state-phase-b-non-lockbox-review-v3",
+        "schema_version": 3,
         "configuration_sha256": EXPECTED_EVIDENCE_IDENTITY_SHA256[
             "configuration_sha256"
         ],
@@ -263,6 +263,7 @@ def build_non_lockbox_review_packet(
             "label_reads": 0,
             "feature_reads": 0,
             "audio_reads": 0,
+            "cache_reads": 0,
         },
         "final_decision_eligible": False,
         "diagnostic_aggregate": diagnostic,
@@ -305,8 +306,8 @@ def validate_non_lockbox_review_packet(
         )
     if (
         packet["schema_id"]
-        != "emotion-state-phase-b-non-lockbox-review-v2"
-        or packet["schema_version"] != 2
+        != "emotion-state-phase-b-non-lockbox-review-v3"
+        or packet["schema_version"] != 3
         or type(packet["schema_version"]) is not int
     ):
         raise PublicMaterialPrerequisiteError(
@@ -343,12 +344,22 @@ def validate_non_lockbox_review_packet(
         raise PublicMaterialPrerequisiteError(
             "split manifest identity is invalid"
         )
-    if packet["lockbox_access"] != {
+    expected_lockbox_access = {
         "open_count": 0,
         "label_reads": 0,
         "feature_reads": 0,
         "audio_reads": 0,
-    }:
+        "cache_reads": 0,
+    }
+    lockbox_access = packet["lockbox_access"]
+    if (
+        not isinstance(lockbox_access, Mapping)
+        or set(lockbox_access) != set(expected_lockbox_access)
+        or any(
+            type(value) is not int or value != 0
+            for value in lockbox_access.values()
+        )
+    ):
         raise PublicMaterialPrerequisiteError(
             "non-lockbox review must record zero lockbox reads"
         )
@@ -361,7 +372,7 @@ def validate_non_lockbox_review_packet(
             packet["diagnostic_aggregate"],
             expected_role="balanced_diagnostic",
         )
-        validate_published_ami_aggregate(packet["ami_aggregate"])
+        validate_published_ami_aggregate_v2(packet["ami_aggregate"])
     except (TypeError, ValueError) as error:
         raise PublicMaterialPrerequisiteError(
             f"non-lockbox aggregate validation failed: {error}"
