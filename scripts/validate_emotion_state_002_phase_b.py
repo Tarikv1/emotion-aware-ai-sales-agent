@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import argparse
 import hashlib
 import importlib.metadata
 import json
@@ -1884,7 +1885,404 @@ def validate_crema_label_ledger(ledger: Any, config: Mapping[str, Any]) -> None:
         raise ValueError("CREMA-D eligible sentence count must be 12")
 
 
-def main() -> int:
+def _phase_b_json_tree(value: Any, name: str, *, depth: int = 0) -> None:
+    if depth > 12:
+        raise ValueError(f"{name} exceeds the aggregate nesting limit")
+    if value is None or type(value) in (bool, int, str):
+        return
+    if type(value) is float:
+        if not math.isfinite(value):
+            raise ValueError(f"{name} contains a non-finite number")
+        return
+    if isinstance(value, list):
+        for index, item in enumerate(value):
+            _phase_b_json_tree(item, f"{name}[{index}]", depth=depth + 1)
+        return
+    if isinstance(value, dict):
+        for key, item in value.items():
+            if not isinstance(key, str) or not key:
+                raise ValueError(f"{name} contains an invalid object key")
+            _phase_b_json_tree(item, f"{name}.{key}", depth=depth + 1)
+        return
+    raise ValueError(f"{name} contains a non-JSON value")
+
+
+def _phase_b_sha256_mapping(value: Any, name: str) -> dict[str, str]:
+    if not isinstance(value, dict) or not value:
+        raise ValueError(f"{name} must be a non-empty object")
+    validated: dict[str, str] = {}
+    for key, digest in value.items():
+        if (
+            not isinstance(key, str)
+            or not key
+            or "/" in key
+            or "\\" in key
+            or key in {".", ".."}
+        ):
+            raise ValueError(f"{name} contains an invalid artifact name")
+        validated[key] = _uppercase_sha256(digest, f"{name}.{key}")
+    return validated
+
+
+def _validate_phase_a_binding(value: Any) -> dict[str, Any]:
+    binding = _exact_keys(
+        value,
+        ("commit", "result_sha256", "report_sha256"),
+        "Phase A binding",
+    )
+    commit = binding["commit"]
+    if (
+        not isinstance(commit, str)
+        or re.fullmatch(r"[0-9a-f]{40}", commit) is None
+    ):
+        raise ValueError("Phase A commit must be a lowercase 40-hex commit")
+    _uppercase_sha256(binding["result_sha256"], "Phase A result")
+    _uppercase_sha256(binding["report_sha256"], "Phase A report")
+    return dict(binding)
+
+
+def _validate_dataset_evidence(value: Any) -> dict[str, Any]:
+    evidence = _exact_keys(
+        value,
+        ("crema_d", "ami"),
+        "dataset evidence",
+    )
+    for dataset_name, cell in evidence.items():
+        bound = _exact_keys(
+            cell,
+            ("manifest_sha256", "evidence_sha256"),
+            f"{dataset_name} evidence",
+        )
+        _uppercase_sha256(
+            bound["manifest_sha256"],
+            f"{dataset_name} manifest",
+        )
+        _uppercase_sha256(
+            bound["evidence_sha256"],
+            f"{dataset_name} evidence",
+        )
+    return dict(evidence)
+
+
+def _validate_label_aggregates(value: Any) -> dict[str, Any]:
+    aggregates = _exact_keys(
+        value,
+        ("eligible_count", "abstention_count", "status_counts"),
+        "label aggregates",
+    )
+    eligible = _count(aggregates["eligible_count"], "eligible count")
+    abstained = _count(aggregates["abstention_count"], "abstention count")
+    status_counts = aggregates["status_counts"]
+    if (
+        not isinstance(status_counts, dict)
+        or not status_counts
+        or not all(
+            isinstance(key, str)
+            and key
+            and type(count) is int
+            and count >= 0
+            for key, count in status_counts.items()
+        )
+    ):
+        raise ValueError("label status counts must be non-negative integers")
+    if sum(status_counts.values()) != eligible + abstained:
+        raise ValueError("label status counts do not match eligibility aggregates")
+    return dict(aggregates)
+
+
+def validate_phase_b_input_ledger(payload: Any) -> dict[str, Any]:
+    ledger = _exact_keys(
+        payload,
+        (
+            "schema_version",
+            "phase_a",
+            "dataset_evidence",
+            "raw_csv_sha256",
+            "label_aggregates",
+        ),
+        "Phase B input ledger",
+    )
+    if type(ledger["schema_version"]) is not int or ledger["schema_version"] != 1:
+        raise ValueError("Phase B input ledger schema version must be 1")
+    _validate_phase_a_binding(ledger["phase_a"])
+    _validate_dataset_evidence(ledger["dataset_evidence"])
+    raw_hashes = _phase_b_sha256_mapping(
+        ledger["raw_csv_sha256"],
+        "raw CSV hashes",
+    )
+    if not all(name.casefold().endswith(".csv") for name in raw_hashes):
+        raise ValueError("raw CSV hashes may bind only CSV artifact names")
+    _validate_label_aggregates(ledger["label_aggregates"])
+    return dict(ledger)
+
+
+def _validate_model_settings(value: Any) -> dict[str, Any]:
+    if not isinstance(value, dict) or not value:
+        raise ValueError("model settings must be a non-empty object")
+    _phase_b_json_tree(value, "model settings")
+    if value != EXPECTED_CONFIG["model"]:
+        raise ValueError("model settings do not match the frozen configuration")
+    return dict(value)
+
+
+def _validate_metric_definitions(value: Any) -> dict[str, str]:
+    if (
+        not isinstance(value, dict)
+        or not value
+        or not all(
+            isinstance(key, str)
+            and key
+            and isinstance(definition, str)
+            and definition.strip()
+            for key, definition in value.items()
+        )
+    ):
+        raise ValueError("metric definitions must be non-empty strings")
+    return dict(value)
+
+
+def validate_non_lockbox_packet(payload: Any) -> dict[str, Any]:
+    packet = _exact_keys(
+        payload,
+        (
+            "schema_version",
+            "review_sha256",
+            "model_settings",
+            "metric_definitions",
+        ),
+        "non-lockbox packet",
+    )
+    if type(packet["schema_version"]) is not int or packet["schema_version"] != 1:
+        raise ValueError("non-lockbox packet schema version must be 1")
+    _uppercase_sha256(packet["review_sha256"], "non-lockbox review")
+    _validate_model_settings(packet["model_settings"])
+    _validate_metric_definitions(packet["metric_definitions"])
+    return dict(packet)
+
+
+def _validate_lockbox_cell(
+    value: Any,
+    *,
+    aggregate_name: str,
+) -> dict[str, Any]:
+    expected = (
+        ("metrics", "intervals", "suppression_counts")
+        if aggregate_name == "CREMA"
+        else ("mechanics", "suppression_counts")
+    )
+    cell = _exact_keys(value, expected, f"{aggregate_name} lockbox aggregate")
+    _phase_b_json_tree(cell, f"{aggregate_name} lockbox aggregate")
+    suppression = cell["suppression_counts"]
+    if (
+        not isinstance(suppression, dict)
+        or not suppression
+        or not all(type(count) is int and count >= 0 for count in suppression.values())
+    ):
+        raise ValueError(
+            f"{aggregate_name} suppression counts must be non-negative integers"
+        )
+    aggregate_field = "metrics" if aggregate_name == "CREMA" else "mechanics"
+    if not isinstance(cell[aggregate_field], dict) or not cell[aggregate_field]:
+        raise ValueError(f"{aggregate_name} aggregate must be non-empty")
+    if aggregate_name == "CREMA" and (
+        not isinstance(cell["intervals"], dict) or not cell["intervals"]
+    ):
+        raise ValueError("CREMA intervals must be non-empty")
+    return dict(cell)
+
+
+def validate_lockbox_result(payload: Any) -> dict[str, Any]:
+    result = _exact_keys(
+        payload,
+        ("schema_version", "crema", "ami", "decision"),
+        "lockbox result",
+    )
+    if type(result["schema_version"]) is not int or result["schema_version"] != 1:
+        raise ValueError("lockbox result schema version must be 1")
+    _validate_lockbox_cell(result["crema"], aggregate_name="CREMA")
+    _validate_lockbox_cell(result["ami"], aggregate_name="AMI")
+    if result["decision"] not in {
+        "keep_for_research_only",
+        "revise",
+        "discard",
+    }:
+        raise ValueError("lockbox decision is invalid")
+    return dict(result)
+
+
+def validate_phase_b_result(payload: Any) -> dict[str, Any]:
+    result = _exact_keys(
+        payload,
+        (
+            "schema_id",
+            "schema_version",
+            "checkpoint_id",
+            "phase_a",
+            "dataset_evidence",
+            "raw_csv_sha256",
+            "configuration_sha256",
+            "environment_lock_sha256",
+            "feature_schema_sha256",
+            "split_manifest_sha256",
+            "label_aggregates",
+            "model_settings",
+            "metric_definitions",
+            "non_lockbox_review_sha256",
+            "lockbox",
+            "decision",
+            "closed_boundaries",
+        ),
+        "Phase B aggregate result",
+    )
+    if result["schema_id"] != "emotion-state-002-phase-b-result-v1":
+        raise ValueError("Phase B aggregate schema id is invalid")
+    if type(result["schema_version"]) is not int or result["schema_version"] != 1:
+        raise ValueError("Phase B aggregate schema version must be 1")
+    if result["checkpoint_id"] != EXPECTED_CONFIG["checkpoint_id"]:
+        raise ValueError("Phase B aggregate checkpoint id is invalid")
+    _validate_phase_a_binding(result["phase_a"])
+    _validate_dataset_evidence(result["dataset_evidence"])
+    raw_hashes = _phase_b_sha256_mapping(
+        result["raw_csv_sha256"],
+        "raw CSV hashes",
+    )
+    if not all(name.casefold().endswith(".csv") for name in raw_hashes):
+        raise ValueError("raw CSV hashes may bind only CSV artifact names")
+    for field in (
+        "configuration_sha256",
+        "environment_lock_sha256",
+        "feature_schema_sha256",
+        "split_manifest_sha256",
+        "non_lockbox_review_sha256",
+    ):
+        _uppercase_sha256(result[field], field)
+    _validate_label_aggregates(result["label_aggregates"])
+    _validate_model_settings(result["model_settings"])
+    _validate_metric_definitions(result["metric_definitions"])
+    lockbox = _exact_keys(
+        result["lockbox"],
+        ("open_count", "crema", "ami"),
+        "aggregate lockbox",
+    )
+    if type(lockbox["open_count"]) is not int or lockbox["open_count"] != 1:
+        raise ValueError("aggregate lockbox open count must be exactly 1")
+    _validate_lockbox_cell(lockbox["crema"], aggregate_name="CREMA")
+    _validate_lockbox_cell(lockbox["ami"], aggregate_name="AMI")
+    if result["decision"] not in {
+        "keep_for_research_only",
+        "revise",
+        "discard",
+    }:
+        raise ValueError("Phase B aggregate decision is invalid")
+    boundaries = _exact_keys(
+        result["closed_boundaries"],
+        tuple(EXPECTED_CONFIG["boundaries"]),
+        "closed boundaries",
+    )
+    if boundaries != EXPECTED_CONFIG["boundaries"]:
+        raise ValueError("every Phase B boundary must remain closed")
+    _phase_b_json_tree(result, "Phase B aggregate result")
+    return dict(result)
+
+
+def synthetic_phase_b_result_fixture() -> dict[str, Any]:
+    digests = tuple(character * 64 for character in "ABCDEF0123456789")
+    return {
+        "schema_id": "emotion-state-002-phase-b-result-v1",
+        "schema_version": 1,
+        "checkpoint_id": EXPECTED_CONFIG["checkpoint_id"],
+        "phase_a": {
+            "commit": "a" * 40,
+            "result_sha256": digests[0],
+            "report_sha256": digests[1],
+        },
+        "dataset_evidence": {
+            "crema_d": {
+                "manifest_sha256": digests[2],
+                "evidence_sha256": digests[3],
+            },
+            "ami": {
+                "manifest_sha256": digests[4],
+                "evidence_sha256": digests[5],
+            },
+        },
+        "raw_csv_sha256": {
+            "finishedResponses.csv": digests[6],
+            "summaryTable.csv": digests[7],
+        },
+        "configuration_sha256": digests[8],
+        "environment_lock_sha256": digests[9],
+        "feature_schema_sha256": digests[10],
+        "split_manifest_sha256": digests[11],
+        "label_aggregates": {
+            "eligible_count": 12,
+            "abstention_count": 3,
+            "status_counts": {"eligible": 12, "abstained": 3},
+        },
+        "model_settings": dict(EXPECTED_CONFIG["model"]),
+        "metric_definitions": {
+            "macro_f1": "unweighted mean of per-class F1",
+        },
+        "non_lockbox_review_sha256": digests[12],
+        "lockbox": {
+            "open_count": 1,
+            "crema": {
+                "metrics": {"macro_f1": 0.75},
+                "intervals": {"macro_f1": [0.70, 0.80]},
+                "suppression_counts": {"per_class_cells": 0},
+            },
+            "ami": {
+                "mechanics": {"overlap_ratio": 0.2},
+                "suppression_counts": {"meeting_cells": 1},
+            },
+        },
+        "decision": "revise",
+        "closed_boundaries": dict(EXPECTED_CONFIG["boundaries"]),
+    }
+
+
+def _parse_args(argv: Sequence[str] | None) -> argparse.Namespace:
+    parser = argparse.ArgumentParser(
+        description="Validate EMOTION-STATE-002 Phase B frozen contracts."
+    )
+    parser.add_argument(
+        "--synthetic-runner",
+        action="store_true",
+        help="validate only an in-memory synthetic runner result",
+    )
+    return parser.parse_args(argv)
+
+
+def main(argv: Sequence[str] | None = None) -> int:
+    arguments = _parse_args(argv)
+    if arguments.synthetic_runner:
+        try:
+            first = validate_phase_b_result(synthetic_phase_b_result_fixture())
+            first_bytes = json.dumps(
+                first,
+                indent=2,
+                sort_keys=True,
+                ensure_ascii=False,
+                allow_nan=False,
+            ).encode("utf-8")
+            second_bytes = json.dumps(
+                validate_phase_b_result(synthetic_phase_b_result_fixture()),
+                indent=2,
+                sort_keys=True,
+                ensure_ascii=False,
+                allow_nan=False,
+            ).encode("utf-8")
+            if first_bytes != second_bytes:
+                raise ValueError("synthetic runner result is not deterministic")
+        except (TypeError, ValueError) as error:
+            print(
+                "EMOTION-STATE-002 Phase B synthetic runner validation failed: "
+                f"{error}",
+                file=sys.stderr,
+            )
+            return 1
+        print("EMOTION-STATE-002 Phase B synthetic runner validation passed.")
+        return 0
     try:
         validate_config(load_json_strict(CONFIG_PATH))
         validate_feature_schema(load_json_strict(FEATURE_SCHEMA_PATH))
@@ -1907,4 +2305,4 @@ def main() -> int:
 
 
 if __name__ == "__main__":
-    raise SystemExit(main())
+    raise SystemExit(main(sys.argv[1:]))

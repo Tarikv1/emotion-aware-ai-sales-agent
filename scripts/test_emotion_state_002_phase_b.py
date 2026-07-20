@@ -3,7 +3,10 @@ from __future__ import annotations
 import hashlib
 import json
 import math
+import os
 import shutil
+import socket
+import stat
 import subprocess
 import sys
 import tempfile
@@ -13,6 +16,7 @@ from collections import Counter
 from copy import deepcopy
 from dataclasses import replace
 from pathlib import Path
+from types import SimpleNamespace
 from typing import Any, Callable
 from unittest.mock import patch
 
@@ -5243,6 +5247,683 @@ class EvaluationTests(unittest.TestCase):
         failed = deepcopy(fixture)
         failed["paired_macro_f1_lift"]["sentence_id"]["point_estimate"] = 0.0
         self.assertEqual(_decision_outcome(failed, validity), "discard")
+
+
+class RunnerStateTests(unittest.TestCase):
+    DIGESTS = tuple(character * 64 for character in "ABCDEF0123456789")
+
+    def setUp(self) -> None:
+        from scripts import run_emotion_state_002_phase_b as runner
+
+        self.runner = runner
+        self.temporary_directory = tempfile.TemporaryDirectory()
+        self.addCleanup(self.temporary_directory.cleanup)
+        self.root = Path(self.temporary_directory.name).resolve()
+        self.input_root = self.root / "public-inputs"
+        self.state_root = self.root / "ignored-state"
+        self.canonical_root = self.root / "canonical"
+        self.non_lockbox_root = self.state_root / "non-lockbox"
+        self.lockbox_root = self.state_root / "lockbox"
+        self.input_root.mkdir(parents=True)
+        self.non_lockbox_root.mkdir(parents=True)
+        self.lockbox_root.mkdir(parents=True)
+        self.canonical_root.mkdir(parents=True)
+
+        self.config_path = self.input_root / "config.json"
+        self.environment_lock_path = self.input_root / "requirements.lock"
+        self.feature_schema_path = self.input_root / "feature.schema.json"
+        self.split_manifest_path = self.input_root / "split-manifest.json"
+        self.input_ledger_path = self.input_root / "input-ledger.json"
+        self.non_lockbox_packet_path = (
+            self.non_lockbox_root / "non-lockbox-packet.json"
+        )
+        self.lockbox_result_path = self.lockbox_root / "lockbox-result.json"
+        shutil.copy2(CONFIG, self.config_path)
+        shutil.copy2(ENVIRONMENT_LOCK, self.environment_lock_path)
+        shutil.copy2(FEATURE_SCHEMA, self.feature_schema_path)
+        shutil.copy2(SPLIT_SCHEMA, self.split_manifest_path)
+
+        self.input_ledger = {
+            "schema_version": 1,
+            "phase_a": {
+                "commit": "a" * 40,
+                "result_sha256": self.DIGESTS[0],
+                "report_sha256": self.DIGESTS[1],
+            },
+            "dataset_evidence": {
+                "crema_d": {
+                    "manifest_sha256": self.DIGESTS[2],
+                    "evidence_sha256": self.DIGESTS[3],
+                },
+                "ami": {
+                    "manifest_sha256": self.DIGESTS[4],
+                    "evidence_sha256": self.DIGESTS[5],
+                },
+            },
+            "raw_csv_sha256": {
+                "finishedResponses.csv": self.DIGESTS[6],
+                "summaryTable.csv": self.DIGESTS[7],
+            },
+            "label_aggregates": {
+                "eligible_count": 12,
+                "abstention_count": 3,
+                "status_counts": {"eligible": 12, "abstained": 3},
+            },
+        }
+        self.non_lockbox_packet = {
+            "schema_version": 1,
+            "review_sha256": self.DIGESTS[8],
+            "model_settings": json.loads(
+                self.config_path.read_text(encoding="utf-8")
+            )["model"],
+            "metric_definitions": {
+                "macro_f1": "unweighted mean of per-class F1",
+                "multiclass_brier": "sum of squared probability errors",
+            },
+        }
+        self.lockbox_result = {
+            "schema_version": 1,
+            "crema": {
+                "metrics": {"macro_f1": 0.75, "multiclass_brier": 0.42},
+                "intervals": {"macro_f1": [0.70, 0.80]},
+                "suppression_counts": {"per_class_cells": 0},
+            },
+            "ami": {
+                "mechanics": {
+                    "overlap_ratio": 0.2,
+                    "turn_taking_entropy": 0.8,
+                },
+                "suppression_counts": {"meeting_cells": 1},
+            },
+            "decision": "revise",
+        }
+        self._write_json(self.input_ledger_path, self.input_ledger)
+        self._write_json(self.non_lockbox_packet_path, self.non_lockbox_packet)
+        self._write_json(self.lockbox_result_path, self.lockbox_result)
+        self.paths = self._paths()
+
+        clean_environment = {
+            "PATH": os.environ.get("PATH", ""),
+            "SYSTEMROOT": os.environ.get("SYSTEMROOT", ""),
+        }
+        self.environment_patcher = patch.dict(
+            os.environ,
+            clean_environment,
+            clear=True,
+        )
+        self.environment_patcher.start()
+        self.addCleanup(self.environment_patcher.stop)
+
+    def _paths(self, **changes: Path) -> Any:
+        values = {
+            "project_root": self.root,
+            "input_root": self.input_root,
+            "state_root": self.state_root,
+            "canonical_root": self.canonical_root,
+            "config_path": self.config_path,
+            "environment_lock_path": self.environment_lock_path,
+            "feature_schema_path": self.feature_schema_path,
+            "split_manifest_path": self.split_manifest_path,
+            "input_ledger_path": self.input_ledger_path,
+            "non_lockbox_packet_path": self.non_lockbox_packet_path,
+            "lockbox_result_path": self.lockbox_result_path,
+        }
+        values.update(changes)
+        return self.runner.RunnerPaths(**values)
+
+    @staticmethod
+    def _write_json(path: Path, payload: dict[str, Any]) -> None:
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_bytes(
+            (
+                json.dumps(
+                    payload,
+                    indent=2,
+                    sort_keys=True,
+                    ensure_ascii=False,
+                    allow_nan=False,
+                )
+                + "\n"
+            ).encode("utf-8")
+        )
+
+    def _state_bytes(self) -> bytes | None:
+        if not self.paths.state_path.exists():
+            return None
+        return self.paths.state_path.read_bytes()
+
+    def _canonical_bytes(self) -> tuple[bytes | None, bytes | None]:
+        return tuple(
+            path.read_bytes() if path.exists() else None
+            for path in (self.paths.result_path, self.paths.report_path)
+        )
+
+    def _advance_to_lockbox(self) -> None:
+        self.runner.run_preflight(self.paths)
+        self.runner.run_non_lockbox(self.paths)
+        self.runner.run_lockbox(self.paths)
+
+    def _install_previous_pair(self) -> tuple[bytes, bytes]:
+        result = b'{"previous":true}\n'
+        report = b"# Previous report\n"
+        self.paths.result_path.write_bytes(result)
+        self.paths.report_path.write_bytes(report)
+        return result, report
+
+    def test_invalid_phase_order_and_stale_state_leave_state_bytes_unchanged(
+        self,
+    ) -> None:
+        self.runner.initialize_state(self.paths)
+        before = self._state_bytes()
+        with self.assertRaisesRegex(self.runner.RunnerError, "transition"):
+            self.runner.run_non_lockbox(self.paths)
+        self.assertEqual(self._state_bytes(), before)
+
+        stale = json.loads(before.decode("utf-8"))
+        stale["unexpected"] = True
+        self._write_json(self.paths.state_path, stale)
+        stale_bytes = self._state_bytes()
+        with self.assertRaisesRegex(self.runner.RunnerError, "state"):
+            self.runner.run_preflight(self.paths)
+        self.assertEqual(self._state_bytes(), stale_bytes)
+
+    def test_preflight_binds_inputs_and_mutation_fails_without_state_change(
+        self,
+    ) -> None:
+        state = self.runner.run_preflight(self.paths)
+        self.assertEqual(state["phase"], "preflight_complete")
+        for field in (
+            "configuration_sha256",
+            "environment_lock_sha256",
+            "input_ledger_sha256",
+            "split_manifest_sha256",
+        ):
+            self.assertRegex(state[field], r"^[0-9A-F]{64}$")
+
+        before = self._state_bytes()
+        self.config_path.write_bytes(self.config_path.read_bytes() + b" ")
+        with self.assertRaisesRegex(self.runner.RunnerError, "configuration"):
+            self.runner.run_non_lockbox(self.paths)
+        self.assertEqual(self._state_bytes(), before)
+
+        shutil.copy2(CONFIG, self.config_path)
+        self.environment_lock_path.write_bytes(
+            self.environment_lock_path.read_bytes() + b" "
+        )
+        with self.assertRaisesRegex(self.runner.RunnerError, "environment"):
+            self.runner.run_non_lockbox(self.paths)
+        self.assertEqual(self._state_bytes(), before)
+
+    def test_phase_specific_state_placeholders_fail_closed(self) -> None:
+        self.runner.run_preflight(self.paths)
+        state = self.runner.load_state(self.paths)
+        state["non_lockbox_packet_sha256"] = self.DIGESTS[0]
+        self._write_json(self.paths.state_path, state)
+        before = self._state_bytes()
+        with self.assertRaisesRegex(self.runner.RunnerError, "preflight"):
+            self.runner.run_non_lockbox(self.paths)
+        self.assertEqual(self._state_bytes(), before)
+
+    def test_paths_escape_private_components_and_mocked_reparse_fail_closed(
+        self,
+    ) -> None:
+        outside = self.root.parent / f"{self.root.name}-outside-config.json"
+        shutil.copy2(CONFIG, outside)
+        self.addCleanup(outside.unlink, missing_ok=True)
+        escaped_paths = self._paths(config_path=outside)
+        with self.assertRaisesRegex(self.runner.RunnerError, "allowed root"):
+            self.runner.run_preflight(escaped_paths)
+        self.assertFalse(escaped_paths.state_path.exists())
+
+        private_ledger = self.root / "data" / "private" / "input-ledger.json"
+        self._write_json(private_ledger, self.input_ledger)
+        private_paths = self._paths(
+            input_root=self.root,
+            input_ledger_path=private_ledger,
+        )
+        with self.assertRaisesRegex(self.runner.RunnerError, "private"):
+            self.runner.run_preflight(private_paths)
+        self.assertFalse(private_paths.state_path.exists())
+
+        real_lstat = os.lstat
+
+        def fake_lstat(path: os.PathLike[str] | str) -> Any:
+            status = real_lstat(path)
+            if Path(path) == self.input_root:
+                return SimpleNamespace(
+                    st_mode=status.st_mode,
+                    st_file_attributes=getattr(
+                        stat,
+                        "FILE_ATTRIBUTE_REPARSE_POINT",
+                        0x400,
+                    ),
+                )
+            return status
+
+        with patch.object(self.runner.os, "lstat", side_effect=fake_lstat):
+            with self.assertRaisesRegex(self.runner.RunnerError, "reparse"):
+                self.runner.run_preflight(self.paths)
+        self.assertFalse(self.paths.state_path.exists())
+
+    def test_non_lockbox_rejects_lockbox_paths_credentials_runtime_and_network(
+        self,
+    ) -> None:
+        self.runner.run_preflight(self.paths)
+        before = self._state_bytes()
+        stolen = self.lockbox_root / "stolen-packet.json"
+        self._write_json(stolen, self.non_lockbox_packet)
+        stolen_paths = self._paths(non_lockbox_packet_path=stolen)
+        with self.assertRaisesRegex(self.runner.RunnerError, "non-lockbox"):
+            self.runner.run_non_lockbox(stolen_paths)
+        self.assertEqual(self._state_bytes(), before)
+
+        with patch.dict(os.environ, {"OPENAI_API_KEY": "synthetic-secret"}):
+            with self.assertRaisesRegex(self.runner.RunnerError, "credential"):
+                self.runner.run_non_lockbox(self.paths)
+        self.assertEqual(self._state_bytes(), before)
+
+        with patch.dict(sys.modules, {"runtime.synthetic": object()}):
+            with self.assertRaisesRegex(self.runner.RunnerError, "runtime"):
+                self.runner.run_non_lockbox(self.paths)
+        self.assertEqual(self._state_bytes(), before)
+
+        def network_attempt() -> None:
+            with socket.socket() as client:
+                client.connect(("127.0.0.1", 9))
+
+        with self.assertRaisesRegex(self.runner.RunnerError, "network"):
+            self.runner.run_non_lockbox(self.paths, operation=network_attempt)
+        self.assertEqual(self._state_bytes(), before)
+
+        with patch.dict(os.environ, {"SYNTHETIC_PASSWORD": "credential"}):
+            with self.assertRaisesRegex(self.runner.RunnerError, "credential"):
+                self.runner.run_non_lockbox(self.paths)
+        self.assertEqual(self._state_bytes(), before)
+
+    def test_non_lockbox_model_settings_must_match_frozen_configuration(
+        self,
+    ) -> None:
+        self.runner.run_preflight(self.paths)
+        mutated = deepcopy(self.non_lockbox_packet)
+        mutated["model_settings"]["C"] = 2.0
+        self._write_json(self.non_lockbox_packet_path, mutated)
+        before = self._state_bytes()
+        with self.assertRaisesRegex(self.runner.RunnerError, "model settings"):
+            self.runner.run_non_lockbox(self.paths)
+        self.assertEqual(self._state_bytes(), before)
+
+    def test_operation_cannot_activate_runtime_or_credentials(self) -> None:
+        self.runner.run_preflight(self.paths)
+        before = self._state_bytes()
+
+        def activate_runtime() -> None:
+            sys.modules["runtime.synthetic_activation"] = object()
+
+        try:
+            with self.assertRaisesRegex(self.runner.RunnerError, "runtime"):
+                self.runner.run_non_lockbox(
+                    self.paths,
+                    operation=activate_runtime,
+                )
+        finally:
+            sys.modules.pop("runtime.synthetic_activation", None)
+        self.assertEqual(self._state_bytes(), before)
+
+        def inject_credential() -> None:
+            os.environ["OPENAI_API_KEY"] = "synthetic-secret"
+
+        try:
+            with self.assertRaisesRegex(self.runner.RunnerError, "credential"):
+                self.runner.run_non_lockbox(
+                    self.paths,
+                    operation=inject_credential,
+                )
+        finally:
+            os.environ.pop("OPENAI_API_KEY", None)
+        self.assertEqual(self._state_bytes(), before)
+
+    def test_lockbox_is_one_use_and_exactly_bound(self) -> None:
+        self._advance_to_lockbox()
+        state = self.runner.load_state(self.paths)
+        self.assertEqual(state["phase"], "lockbox_complete")
+        self.assertEqual(state["lockbox_open_count"], 1)
+        self.assertRegex(state["lockbox_result_sha256"], r"^[0-9A-F]{64}$")
+        before = self._state_bytes()
+        with self.assertRaisesRegex(self.runner.RunnerError, "lockbox"):
+            self.runner.run_lockbox(self.paths)
+        self.assertEqual(self._state_bytes(), before)
+
+    def test_result_and_report_are_deterministic_and_bind_every_required_group(
+        self,
+    ) -> None:
+        self._advance_to_lockbox()
+        first = self.runner.build_aggregate_result(self.paths)
+        second = self.runner.build_aggregate_result(self.paths)
+        self.assertEqual(
+            self.runner.canonical_json_bytes(first),
+            self.runner.canonical_json_bytes(second),
+        )
+        required = {
+            "phase_a",
+            "dataset_evidence",
+            "raw_csv_sha256",
+            "configuration_sha256",
+            "environment_lock_sha256",
+            "feature_schema_sha256",
+            "split_manifest_sha256",
+            "label_aggregates",
+            "model_settings",
+            "metric_definitions",
+            "non_lockbox_review_sha256",
+            "lockbox",
+            "decision",
+            "closed_boundaries",
+        }
+        self.assertTrue(required.issubset(first))
+        self.assertEqual(first["lockbox"]["open_count"], 1)
+        self.assertEqual(
+            set(first["closed_boundaries"]),
+            {
+                "private_data_allowed",
+                "provider_operations_allowed",
+                "network_during_evaluation_allowed",
+                "source_adaptation_allowed",
+                "runtime_influence_allowed",
+                "customer_state_output_allowed",
+            },
+        )
+        self.assertTrue(
+            all(value is False for value in first["closed_boundaries"].values())
+        )
+        digest = hashlib.sha256(
+            self.runner.canonical_json_bytes(first)
+        ).hexdigest().upper()
+        report_a = self.runner.render_report(first, digest)
+        report_b = self.runner.render_report(deepcopy(first), digest)
+        self.assertEqual(report_a, report_b)
+        self.assertTrue(report_a.endswith("\n"))
+        self.assertNotIn("\r", report_a)
+
+    def test_stage_and_accept_publish_validated_pair_once(self) -> None:
+        self._advance_to_lockbox()
+        receipt = self.runner.stage_candidate(self.paths, "accept.json")
+        self.assertEqual(
+            self.runner.load_state(self.paths)["phase"],
+            "awaiting_acceptance",
+        )
+        result_bytes, report_bytes = self._canonical_bytes()
+        self.assertEqual(
+            hashlib.sha256(result_bytes).hexdigest().upper(),
+            receipt["result_sha256"],
+        )
+        self.assertEqual(
+            hashlib.sha256(report_bytes).hexdigest().upper(),
+            receipt["report_sha256"],
+        )
+        self.runner.accept_receipt(self.paths, self.paths.receipt_path("accept.json"))
+        self.assertEqual(self.runner.load_state(self.paths)["phase"], "accepted")
+        self.assertEqual(self._canonical_bytes(), (result_bytes, report_bytes))
+        self.assertFalse(self.paths.journal_path.exists())
+        self.assertFalse(self.paths.receipt_path("accept.json").exists())
+
+    def test_reject_restores_exact_previous_pair(self) -> None:
+        previous = self._install_previous_pair()
+        self._advance_to_lockbox()
+        self.runner.stage_candidate(self.paths, "reject.json")
+        self.assertNotEqual(self._canonical_bytes(), previous)
+        self.runner.reject_receipt(self.paths, self.paths.receipt_path("reject.json"))
+        self.assertEqual(self.runner.load_state(self.paths)["phase"], "rejected")
+        self.assertEqual(self._canonical_bytes(), previous)
+        self.assertFalse(self.paths.journal_path.exists())
+
+    def test_reject_receipt_tamper_still_restores_previous_pair(self) -> None:
+        previous = self._install_previous_pair()
+        self._advance_to_lockbox()
+        self.runner.stage_candidate(self.paths, "reject-tamper.json")
+        receipt_path = self.paths.receipt_path("reject-tamper.json")
+        receipt = json.loads(receipt_path.read_text(encoding="utf-8"))
+        receipt["report_sha256"] = self.DIGESTS[0]
+        self._write_json(receipt_path, receipt)
+        with self.assertRaisesRegex(self.runner.RunnerError, "receipt"):
+            self.runner.reject_receipt(self.paths, receipt_path)
+        self.assertEqual(self._canonical_bytes(), previous)
+        self.assertEqual(self.runner.load_state(self.paths)["phase"], "rejected")
+
+    def test_recovery_finishes_interrupted_rejected_cleanup(self) -> None:
+        previous = self._install_previous_pair()
+        self._advance_to_lockbox()
+        self.runner.stage_candidate(self.paths, "cleanup-crash.json")
+        original_cleanup = self.runner._cleanup_transaction
+        failed_once = False
+
+        def fail_cleanup_once(*args: Any, **kwargs: Any) -> None:
+            nonlocal failed_once
+            if not failed_once:
+                failed_once = True
+                raise OSError("synthetic cleanup crash")
+            original_cleanup(*args, **kwargs)
+
+        with patch.object(
+            self.runner,
+            "_cleanup_transaction",
+            side_effect=fail_cleanup_once,
+        ):
+            with self.assertRaises(OSError):
+                self.runner.reject_receipt(
+                    self.paths,
+                    self.paths.receipt_path("cleanup-crash.json"),
+                )
+        self.assertEqual(self._canonical_bytes(), previous)
+        self.assertEqual(self.runner.load_state(self.paths)["phase"], "rejected")
+        self.assertTrue(self.paths.journal_path.exists())
+        self.assertEqual(self.runner.recover_publication(self.paths), "restored")
+        self.assertFalse(self.paths.journal_path.exists())
+
+    def test_partial_previous_pair_fails_without_state_or_canonical_mutation(
+        self,
+    ) -> None:
+        self.paths.result_path.write_bytes(b"partial\n")
+        self._advance_to_lockbox()
+        state_before = self._state_bytes()
+        canonical_before = self._canonical_bytes()
+        with self.assertRaisesRegex(self.runner.RunnerError, "partial"):
+            self.runner.stage_candidate(self.paths, "partial.json")
+        self.assertEqual(self._state_bytes(), state_before)
+        self.assertEqual(self._canonical_bytes(), canonical_before)
+        self.assertFalse(self.paths.journal_path.exists())
+
+    def test_extra_canonical_entry_fails_without_publication_mutation(self) -> None:
+        self._advance_to_lockbox()
+        extra = self.canonical_root / "unexpected.txt"
+        extra.write_text("unexpected", encoding="utf-8")
+        state_before = self._state_bytes()
+        with self.assertRaisesRegex(self.runner.RunnerError, "exactly"):
+            self.runner.stage_candidate(self.paths, "extra.json")
+        self.assertEqual(self._state_bytes(), state_before)
+        self.assertEqual(extra.read_text(encoding="utf-8"), "unexpected")
+        self.assertEqual(self._canonical_bytes(), (None, None))
+
+    def test_accept_tampering_restores_previous_pair_and_rejects(self) -> None:
+        previous = self._install_previous_pair()
+        self._advance_to_lockbox()
+        self.runner.stage_candidate(self.paths, "tampered.json")
+        self.paths.result_path.write_bytes(b'{"tampered":true}\n')
+        with self.assertRaisesRegex(self.runner.RunnerError, "candidate"):
+            self.runner.accept_receipt(
+                self.paths,
+                self.paths.receipt_path("tampered.json"),
+            )
+        self.assertEqual(self._canonical_bytes(), previous)
+        self.assertEqual(self.runner.load_state(self.paths)["phase"], "rejected")
+
+    def test_accept_config_drift_restores_previous_pair(self) -> None:
+        previous = self._install_previous_pair()
+        self._advance_to_lockbox()
+        self.runner.stage_candidate(self.paths, "drift.json")
+        self.config_path.write_bytes(self.config_path.read_bytes() + b" ")
+        with self.assertRaisesRegex(self.runner.RunnerError, "configuration"):
+            self.runner.accept_receipt(
+                self.paths,
+                self.paths.receipt_path("drift.json"),
+            )
+        self.assertEqual(self._canonical_bytes(), previous)
+        self.assertEqual(self.runner.load_state(self.paths)["phase"], "rejected")
+
+    def test_accept_revalidates_config_semantics_and_restores_previous_pair(
+        self,
+    ) -> None:
+        previous = self._install_previous_pair()
+        self._advance_to_lockbox()
+        self.runner.stage_candidate(self.paths, "semantic.json")
+        with patch.object(
+            self.runner,
+            "validate_config",
+            side_effect=ValueError("synthetic semantic rejection"),
+        ):
+            with self.assertRaisesRegex(self.runner.RunnerError, "preflight"):
+                self.runner.accept_receipt(
+                    self.paths,
+                    self.paths.receipt_path("semantic.json"),
+                )
+        self.assertEqual(self._canonical_bytes(), previous)
+        self.assertEqual(self.runner.load_state(self.paths)["phase"], "rejected")
+
+    def test_accept_receipt_tamper_restores_previous_pair(self) -> None:
+        previous = self._install_previous_pair()
+        self._advance_to_lockbox()
+        self.runner.stage_candidate(self.paths, "receipt-tamper.json")
+        receipt_path = self.paths.receipt_path("receipt-tamper.json")
+        receipt = json.loads(receipt_path.read_text(encoding="utf-8"))
+        receipt["result_sha256"] = self.DIGESTS[0]
+        self._write_json(receipt_path, receipt)
+        with self.assertRaisesRegex(self.runner.RunnerError, "receipt"):
+            self.runner.accept_receipt(self.paths, receipt_path)
+        self.assertEqual(self._canonical_bytes(), previous)
+        self.assertEqual(self.runner.load_state(self.paths)["phase"], "rejected")
+
+    def test_accept_partial_candidate_restores_previous_pair(self) -> None:
+        previous = self._install_previous_pair()
+        self._advance_to_lockbox()
+        self.runner.stage_candidate(self.paths, "partial-candidate.json")
+        self.paths.report_path.unlink()
+        with self.assertRaisesRegex(self.runner.RunnerError, "partial"):
+            self.runner.accept_receipt(
+                self.paths,
+                self.paths.receipt_path("partial-candidate.json"),
+            )
+        self.assertEqual(self._canonical_bytes(), previous)
+        self.assertEqual(self.runner.load_state(self.paths)["phase"], "rejected")
+
+    def test_second_replace_fault_restores_exact_previous_pair(self) -> None:
+        previous = self._install_previous_pair()
+        self._advance_to_lockbox()
+        real_replace = os.replace
+        failed_once = False
+
+        def fail_report_replace(
+            source: os.PathLike[str] | str,
+            destination: os.PathLike[str] | str,
+        ) -> None:
+            nonlocal failed_once
+            if Path(destination) == self.paths.report_path and not failed_once:
+                failed_once = True
+                raise OSError("synthetic second replace crash")
+            real_replace(source, destination)
+
+        state_before = self._state_bytes()
+        with patch.object(
+            self.runner.os,
+            "replace",
+            side_effect=fail_report_replace,
+        ):
+            with self.assertRaisesRegex(self.runner.RunnerError, "restored"):
+                self.runner.stage_candidate(self.paths, "crash.json")
+        self.assertEqual(self._canonical_bytes(), previous)
+        self.assertEqual(self._state_bytes(), state_before)
+        self.assertFalse(self.paths.journal_path.exists())
+
+    def test_recovery_of_awaiting_transaction_restores_previous_pair(self) -> None:
+        previous = self._install_previous_pair()
+        self._advance_to_lockbox()
+        self.runner.stage_candidate(self.paths, "recovery.json")
+        outcome = self.runner.recover_publication(self.paths)
+        self.assertEqual(outcome, "restored")
+        self.assertEqual(self._canonical_bytes(), previous)
+        self.assertEqual(self.runner.load_state(self.paths)["phase"], "rejected")
+        self.assertFalse(self.paths.journal_path.exists())
+
+    def test_tampered_journal_fails_closed_with_evidence_retained(self) -> None:
+        self._install_previous_pair()
+        self._advance_to_lockbox()
+        self.runner.stage_candidate(self.paths, "journal.json")
+        candidate = self._canonical_bytes()
+        state_before = self._state_bytes()
+        self.paths.journal_path.write_bytes(b'{"tampered":true}\n')
+        with self.assertRaisesRegex(self.runner.RunnerError, "journal"):
+            self.runner.recover_publication(self.paths)
+        self.assertEqual(self._canonical_bytes(), candidate)
+        self.assertEqual(self._state_bytes(), state_before)
+        self.assertTrue(self.paths.journal_path.exists())
+
+    def test_recovery_rejects_journal_state_identity_mismatch(self) -> None:
+        self._install_previous_pair()
+        self._advance_to_lockbox()
+        self.runner.stage_candidate(self.paths, "identity.json")
+        candidate = self._canonical_bytes()
+        state = self.runner.load_state(self.paths)
+        state["candidate_transaction_id"] = "f" * 32
+        self._write_json(self.paths.state_path, state)
+        state_before = self._state_bytes()
+        with self.assertRaisesRegex(self.runner.RunnerError, "identity"):
+            self.runner.recover_publication(self.paths)
+        self.assertEqual(self._canonical_bytes(), candidate)
+        self.assertEqual(self._state_bytes(), state_before)
+        self.assertTrue(self.paths.journal_path.exists())
+
+    def test_output_roots_and_publication_lock_fail_closed(self) -> None:
+        outside_canonical = self.root.parent / f"{self.root.name}-canonical"
+        outside_canonical.mkdir()
+        self.addCleanup(outside_canonical.rmdir)
+        escaped_paths = self._paths(canonical_root=outside_canonical)
+        self._advance_to_lockbox()
+        with self.assertRaisesRegex(self.runner.RunnerError, "canonical root"):
+            self.runner.stage_candidate(escaped_paths, "escape.json")
+
+        state_before = self._state_bytes()
+        canonical_before = self._canonical_bytes()
+        with self.runner.publication_lock(self.paths):
+            with self.assertRaisesRegex(self.runner.RunnerError, "lock"):
+                self.runner.stage_candidate(self.paths, "locked.json")
+        self.assertEqual(self._state_bytes(), state_before)
+        self.assertEqual(self._canonical_bytes(), canonical_before)
+
+    def test_publication_lock_rejects_mocked_reparse_entry(self) -> None:
+        self._advance_to_lockbox()
+        self.paths.recovery_root.mkdir(parents=True, exist_ok=True)
+        self.paths.recovery_root.joinpath(self.runner.LOCK_NAME).write_bytes(b"\0")
+        real_lstat = os.lstat
+
+        def fake_lstat(path: os.PathLike[str] | str) -> Any:
+            status = real_lstat(path)
+            if Path(path) == self.paths.recovery_root / self.runner.LOCK_NAME:
+                return SimpleNamespace(
+                    st_mode=status.st_mode,
+                    st_file_attributes=getattr(
+                        stat,
+                        "FILE_ATTRIBUTE_REPARSE_POINT",
+                        0x400,
+                    ),
+                    st_dev=status.st_dev,
+                    st_ino=status.st_ino,
+                )
+            return status
+
+        state_before = self._state_bytes()
+        with patch.object(self.runner.os, "lstat", side_effect=fake_lstat):
+            with self.assertRaisesRegex(self.runner.RunnerError, "reparse"):
+                self.runner.stage_candidate(self.paths, "reparse-lock.json")
+        self.assertEqual(self._state_bytes(), state_before)
+        self.assertEqual(self._canonical_bytes(), (None, None))
 
 
 if __name__ == "__main__":
