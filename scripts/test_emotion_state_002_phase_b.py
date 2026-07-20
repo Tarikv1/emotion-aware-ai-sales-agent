@@ -15,7 +15,7 @@ import tempfile
 import unittest
 import warnings
 from collections import Counter
-from contextlib import contextmanager, redirect_stderr
+from contextlib import ExitStack, contextmanager, redirect_stderr
 from copy import deepcopy
 from dataclasses import replace
 from io import StringIO
@@ -4004,6 +4004,416 @@ class SecurePublicMaterialByteTests(unittest.TestCase):
                 else source(fixture["participant_metadata_path"])
             ),
         }
+
+    @staticmethod
+    def _read_verified_fixture(
+        runner: Any,
+        paths: Any,
+        path: Path,
+        content: bytes,
+    ) -> Any:
+        return runner._read_verified_public_bytes(
+            paths,
+            path,
+            expected_sha256=hashlib.sha256(content).hexdigest().upper(),
+            expected_size_bytes=len(content),
+            maximum_bytes=len(content),
+        )
+
+    @staticmethod
+    def _tone_wav_bytes() -> bytes:
+        import io
+        import struct
+        import wave
+
+        sample_rate = 16000
+        samples = [
+            round(
+                0.5
+                * 32767
+                * math.sin(2 * math.pi * 200.0 * index / sample_rate)
+            )
+            for index in range(sample_rate)
+        ]
+        output = io.BytesIO()
+        with wave.open(output, "wb") as target:
+            target.setnchannels(1)
+            target.setsampwidth(2)
+            target.setframerate(sample_rate)
+            target.writeframes(
+                struct.pack("<" + "h" * len(samples), *samples)
+            )
+        return output.getvalue()
+
+    @contextmanager
+    def _post_verified_reopen_guards(
+        self,
+        runner: Any,
+        *,
+        wave_module: Any | None = None,
+        xml_module: Any | None = None,
+    ) -> Any:
+        import builtins
+
+        attempted: set[str] = set()
+        guarded = {
+            "builtins.open",
+            "Path.open",
+            "Path.read_bytes",
+            "os.open",
+            "_read_file_nofollow",
+        }
+
+        def blocked(label: str) -> Callable[..., Any]:
+            def fail(*args: Any, **kwargs: Any) -> Any:
+                attempted.add(label)
+                raise AssertionError(f"blocked reopen via {label}")
+
+            return fail
+
+        with ExitStack() as stack:
+            stack.enter_context(
+                patch.object(
+                    builtins,
+                    "open",
+                    side_effect=blocked("builtins.open"),
+                )
+            )
+            stack.enter_context(
+                patch.object(
+                    Path,
+                    "open",
+                    side_effect=blocked("Path.open"),
+                )
+            )
+            stack.enter_context(
+                patch.object(
+                    Path,
+                    "read_bytes",
+                    side_effect=blocked("Path.read_bytes"),
+                )
+            )
+            stack.enter_context(
+                patch.object(
+                    os,
+                    "open",
+                    side_effect=blocked("os.open"),
+                )
+            )
+            stack.enter_context(
+                patch.object(
+                    runner,
+                    "_read_file_nofollow",
+                    side_effect=blocked("_read_file_nofollow"),
+                )
+            )
+            if wave_module is not None:
+                real_wave_open = wave_module.wave.open
+                guarded.add("wave.open(path-like)")
+
+                def guarded_wave_open(
+                    source: Any,
+                    *args: Any,
+                    **kwargs: Any,
+                ) -> Any:
+                    if isinstance(source, (str, os.PathLike)):
+                        attempted.add("wave.open(path-like)")
+                        raise AssertionError(
+                            "blocked reopen via wave.open(path-like)"
+                        )
+                    return real_wave_open(source, *args, **kwargs)
+
+                stack.enter_context(
+                    patch.object(
+                        wave_module.wave,
+                        "open",
+                        side_effect=guarded_wave_open,
+                    )
+                )
+            if xml_module is not None:
+                guarded.add("ElementTree.parse")
+                stack.enter_context(
+                    patch.object(
+                        xml_module.ET,
+                        "parse",
+                        side_effect=blocked("ElementTree.parse"),
+                    )
+                )
+            yield guarded, attempted
+
+    def _exercise_reopen_guards(
+        self,
+        runner: Any,
+        source_path: Path,
+        guarded: set[str],
+        attempted: set[str],
+        *,
+        wave_module: Any | None = None,
+        xml_module: Any | None = None,
+    ) -> None:
+        import builtins
+
+        probes: dict[str, Callable[[], Any]] = {
+            "builtins.open": lambda: builtins.open(source_path, "rb"),
+            "Path.open": lambda: source_path.open("rb"),
+            "Path.read_bytes": source_path.read_bytes,
+            "os.open": lambda: os.open(source_path, os.O_RDONLY),
+            "_read_file_nofollow": lambda: runner._read_file_nofollow(
+                source_path
+            ),
+        }
+        if wave_module is not None:
+            probes["wave.open(path-like)"] = lambda: wave_module.wave.open(
+                str(source_path),
+                "rb",
+            )
+        if xml_module is not None:
+            probes["ElementTree.parse"] = lambda: xml_module.ET.parse(
+                source_path
+            )
+        self.assertEqual(set(probes), guarded)
+        for label, probe in probes.items():
+            with self.subTest(reopen_guard=label):
+                with self.assertRaisesRegex(
+                    AssertionError,
+                    re.escape(f"blocked reopen via {label}"),
+                ):
+                    probe()
+        self.assertEqual(attempted, guarded)
+
+    def test_verified_crema_content_composes_without_reopen(self) -> None:
+        from scripts import emotion_state_phase_b_evaluation as evaluation
+        from scripts import run_emotion_state_002_phase_b as runner
+
+        finished_bytes = (
+            b",localid,pos,ans,ttr,queryType,numTries,clipNum,questNum,"
+            b"subType,clipName,sessionNums,respEmo,respLevel,dispEmo,"
+            b"dispVal,dispLevel\n"
+            b"1,r1,1,A_80,1,1,0,1,1,4,1001_DFA_ANG_XX,s1,A,80,A,50,X\n"
+            b"2,r2,1,A_70,1,1,0,1,1,4,1001_DFA_ANG_XX,s2,A,70,A,50,X\n"
+        )
+        summary_bytes = (
+            b",FileName,VoiceVote,VoiceLevel,FaceVote,FaceLevel,"
+            b"MultiModalVote,MultiModalLevel\n"
+            b"1,1001_DFA_ANG_XX,A,75,A,75,A,75\n"
+        )
+        with tempfile.TemporaryDirectory() as directory:
+            paths, public_root = self._runner_paths(Path(directory).resolve())
+            finished_path = public_root / "finishedResponses.csv"
+            summary_path = public_root / "summaryTable.csv"
+            finished_path.write_bytes(finished_bytes)
+            summary_path.write_bytes(summary_bytes)
+            finished = self._read_verified_fixture(
+                runner,
+                paths,
+                finished_path,
+                finished_bytes,
+            )
+            summary = self._read_verified_fixture(
+                runner,
+                paths,
+                summary_path,
+                summary_bytes,
+            )
+
+            with self._post_verified_reopen_guards(
+                runner,
+            ) as (guarded, attempted):
+                first = evaluation.load_crema_reference_labels_bytes(
+                    finished.content,
+                    summary.content,
+                    ("1001_DFA_ANG_XX",),
+                )
+                second = evaluation.load_crema_reference_labels_bytes(
+                    finished.content,
+                    summary.content,
+                    ("1001_DFA_ANG_XX",),
+                )
+                self.assertEqual(attempted, set())
+                self.assertEqual(first, second)
+                records, ledger = first
+                self.assertEqual(len(records), 1)
+                self.assertEqual(
+                    (
+                        records[0].clip_stem,
+                        records[0].actor_id,
+                        records[0].sentence_id,
+                        records[0].label,
+                        records[0].vote_distribution,
+                    ),
+                    (
+                        "1001_DFA_ANG_XX",
+                        "1001",
+                        "DFA",
+                        "A",
+                        (("A", 2),),
+                    ),
+                )
+                self.assertEqual(
+                    ledger["source_binding"][
+                        "finished_responses_sha256"
+                    ],
+                    finished.sha256,
+                )
+                self.assertEqual(
+                    ledger["source_binding"]["summary_table_sha256"],
+                    summary.sha256,
+                )
+                self._exercise_reopen_guards(
+                    runner,
+                    finished_path,
+                    guarded,
+                    attempted,
+                )
+                self.assertEqual(
+                    attempted,
+                    guarded,
+                    "explicit reopen-guard proof is not armed",
+                )
+
+    def test_verified_wav_content_composes_without_reopen(self) -> None:
+        from scripts import emotion_state_phase_b_features as features
+        from scripts import run_emotion_state_002_phase_b as runner
+
+        wav_bytes = self._tone_wav_bytes()
+        with tempfile.TemporaryDirectory() as directory:
+            paths, public_root = self._runner_paths(Path(directory).resolve())
+            wav_path = public_root / "tone.wav"
+            wav_path.write_bytes(wav_bytes)
+            verified = self._read_verified_fixture(
+                runner,
+                paths,
+                wav_path,
+                wav_bytes,
+            )
+
+            with self._post_verified_reopen_guards(
+                runner,
+                wave_module=features,
+            ) as (guarded, attempted):
+                first = features.extract_acoustic_features_bytes(
+                    verified.content
+                )
+                second = features.extract_acoustic_features_bytes(
+                    verified.content
+                )
+                self.assertEqual(attempted, set())
+                self.assertEqual(first, second)
+                self.assertEqual(tuple(first), features.FEATURE_NAMES)
+                self.assertEqual(first["duration_seconds"], 1.0)
+                self.assertAlmostEqual(
+                    first["f0_median_hz"],
+                    200.0,
+                    delta=2.0,
+                )
+                self._exercise_reopen_guards(
+                    runner,
+                    wav_path,
+                    guarded,
+                    attempted,
+                    wave_module=features,
+                )
+                self.assertEqual(
+                    attempted,
+                    guarded,
+                    "explicit reopen-guard proof is not armed",
+                )
+
+    def test_verified_ami_content_composes_without_reopen(self) -> None:
+        from scripts import emotion_state_phase_b_ami_mechanics as ami
+        from scripts import run_emotion_state_002_phase_b as runner
+
+        contents = {
+            "meetings.xml": (
+                b"<corpus><meeting id=\"M1\">"
+                b"<participant code=\"A\" participant_id=\"P-A\" />"
+                b"</meeting></corpus>"
+            ),
+            "M1.A.words.xml": (
+                b"<words meeting_id=\"M1\" agent=\"A\">"
+                b"<w id=\"w1\" starttime=\"0.000\" endtime=\"0.500\">"
+                b"DISCARDED TRANSCRIPT</w></words>"
+            ),
+            "M1.A.segments.xml": (
+                b"<segments meeting_id=\"M1\" agent=\"A\">"
+                b"<segment id=\"s1\"><child "
+                b"href=\"M1.A.words.xml#id(w1)\" /></segment></segments>"
+            ),
+            "M1.A.dialog-act.xml": (
+                b"<dialogue-acts meeting_id=\"M1\" agent=\"A\" "
+                b"synthetic_legacy_schema=\"phase_b_ami_mechanics_v1\">"
+                b"<dact id=\"d1\" type=\"ami_da_2\"><child "
+                b"href=\"M1.A.segments.xml#id(s1)\" /></dact>"
+                b"</dialogue-acts>"
+            ),
+        }
+        with tempfile.TemporaryDirectory() as directory:
+            paths, public_root = self._runner_paths(Path(directory).resolve())
+            verified: dict[str, Any] = {}
+            source_paths: dict[str, Path] = {}
+            for filename, content in contents.items():
+                source_path = public_root / filename
+                source_path.write_bytes(content)
+                source_paths[filename] = source_path
+                verified[filename] = self._read_verified_fixture(
+                    runner,
+                    paths,
+                    source_path,
+                    content,
+                )
+
+            with self._post_verified_reopen_guards(
+                runner,
+                xml_module=ami,
+            ) as (guarded, attempted):
+                arguments = {
+                    "metadata": ami.AmiXmlBytes(
+                        verified["meetings.xml"].logical_name,
+                        verified["meetings.xml"].content,
+                    ),
+                    "word_sources": (
+                        ami.AmiXmlBytes(
+                            verified["M1.A.words.xml"].logical_name,
+                            verified["M1.A.words.xml"].content,
+                        ),
+                    ),
+                    "timing_link_sources": (
+                        ami.AmiXmlBytes(
+                            verified["M1.A.segments.xml"].logical_name,
+                            verified["M1.A.segments.xml"].content,
+                        ),
+                    ),
+                    "dialogue_act_sources": (
+                        ami.AmiXmlBytes(
+                            verified[
+                                "M1.A.dialog-act.xml"
+                            ].logical_name,
+                            verified["M1.A.dialog-act.xml"].content,
+                        ),
+                    ),
+                    "known_meetings": ("M1",),
+                }
+                first = ami.load_ami_turns_from_bytes(**arguments)
+                second = ami.load_ami_turns_from_bytes(**arguments)
+                self.assertEqual(attempted, set())
+                self.assertEqual(first, second)
+                self.assertEqual(
+                    first,
+                    (ami.Turn("M1", "P-A", 0, 500, "ami_da_2"),),
+                )
+                self.assertNotIn("TRANSCRIPT", repr(first).upper())
+                self._exercise_reopen_guards(
+                    runner,
+                    source_paths["meetings.xml"],
+                    guarded,
+                    attempted,
+                    xml_module=ami,
+                )
+                self.assertEqual(
+                    attempted,
+                    guarded,
+                    "explicit reopen-guard proof is not armed",
+                )
 
     def test_verified_reader_binds_one_nofollow_read_and_rejects_violations(
         self,
