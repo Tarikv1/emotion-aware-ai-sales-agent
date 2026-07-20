@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import math
 import shutil
 import subprocess
 import sys
@@ -341,6 +342,331 @@ class PhaseBContractTests(unittest.TestCase):
         if isinstance(value, float):
             return value + 1.0
         raise AssertionError(f"unexpected scalar type: {type(value)!r}")
+
+
+class AcousticFeatureTests(unittest.TestCase):
+    FEATURE_NAMES = (
+        "duration_seconds",
+        "silence_ratio",
+        "voiced_fraction",
+        "f0_median_hz",
+        "f0_iqr_hz",
+        "f0_range_hz",
+        "rms_dbfs_mean",
+        "rms_dbfs_std",
+        "rms_dbfs_p90_minus_p10",
+        "zero_crossing_rate_mean",
+        "zero_crossing_rate_std",
+        "spectral_centroid_hz_mean",
+        "spectral_centroid_hz_std",
+        "spectral_bandwidth_hz_mean",
+        "spectral_bandwidth_hz_std",
+        "spectral_rolloff_85_hz_mean",
+        "spectral_rolloff_85_hz_std",
+    )
+
+    @staticmethod
+    def _write_tone(
+        path: Path, *, hz: float, seconds: float, amplitude: float
+    ) -> None:
+        import math
+        import struct
+        import wave
+
+        sample_rate = 16000
+        count = int(sample_rate * seconds)
+        samples = [
+            max(-32768, min(32767, round(
+                amplitude * 32767 * math.sin(2 * math.pi * hz * index / sample_rate)
+            )))
+            for index in range(count)
+        ]
+        with wave.open(str(path), "wb") as output:
+            output.setnchannels(1)
+            output.setsampwidth(2)
+            output.setframerate(sample_rate)
+            output.writeframes(struct.pack("<" + "h" * len(samples), *samples))
+
+    @staticmethod
+    def _write_pcm16(
+        path: Path,
+        samples: list[int],
+        *,
+        channels: int = 1,
+        sample_rate: int = 16000,
+    ) -> None:
+        import struct
+        import wave
+
+        with wave.open(str(path), "wb") as output:
+            output.setnchannels(channels)
+            output.setsampwidth(2)
+            output.setframerate(sample_rate)
+            output.writeframes(struct.pack("<" + "h" * len(samples), *samples))
+
+    def test_200_hz_tone_produces_finite_expected_f0_and_feature_order(
+        self,
+    ) -> None:
+        from scripts.emotion_state_phase_b_features import (
+            FEATURE_NAMES,
+            extract_acoustic_features,
+        )
+
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "tone.wav"
+            self._write_tone(path, hz=200.0, seconds=1.0, amplitude=0.5)
+            features = extract_acoustic_features(path)
+
+        self.assertEqual(FEATURE_NAMES, self.FEATURE_NAMES)
+        self.assertEqual(tuple(features), self.FEATURE_NAMES)
+        self.assertAlmostEqual(features["f0_median_hz"], 200.0, delta=2.0)
+        self.assertTrue(
+            all(
+                isinstance(value, float) and math.isfinite(value)
+                for value in features.values()
+            )
+        )
+
+    def test_amplitude_scaling_preserves_duration_and_f0_but_changes_rms(
+        self,
+    ) -> None:
+        from scripts.emotion_state_phase_b_features import extract_acoustic_features
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            quiet_path = root / "quiet.wav"
+            loud_path = root / "loud.wav"
+            self._write_tone(quiet_path, hz=200.0, seconds=1.0, amplitude=0.2)
+            self._write_tone(loud_path, hz=200.0, seconds=1.0, amplitude=0.6)
+            quiet = extract_acoustic_features(quiet_path)
+            loud = extract_acoustic_features(loud_path)
+
+        self.assertEqual(quiet["duration_seconds"], loud["duration_seconds"])
+        self.assertAlmostEqual(
+            quiet["f0_median_hz"],
+            loud["f0_median_hz"],
+            places=12,
+        )
+        self.assertGreater(loud["rms_dbfs_mean"], quiet["rms_dbfs_mean"])
+
+    def test_duration_scaling_changes_duration_without_changing_f0(self) -> None:
+        from scripts.emotion_state_phase_b_features import extract_acoustic_features
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            short_path = root / "short.wav"
+            long_path = root / "long.wav"
+            self._write_tone(short_path, hz=200.0, seconds=0.5, amplitude=0.5)
+            self._write_tone(long_path, hz=200.0, seconds=1.0, amplitude=0.5)
+            short = extract_acoustic_features(short_path)
+            long = extract_acoustic_features(long_path)
+
+        self.assertEqual(short["duration_seconds"], 0.5)
+        self.assertEqual(long["duration_seconds"], 1.0)
+        self.assertAlmostEqual(
+            short["f0_median_hz"],
+            long["f0_median_hz"],
+            places=12,
+        )
+
+    def test_silence_near_silence_and_insufficient_voicing_reject(self) -> None:
+        from scripts.emotion_state_phase_b_features import (
+            FeatureExtractionError,
+            extract_acoustic_features,
+        )
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            silence = root / "silence.wav"
+            near_silence = root / "near-silence.wav"
+            two_frames = root / "two-frames.wav"
+            self._write_pcm16(silence, [0] * 8000)
+            self._write_tone(
+                near_silence,
+                hz=200.0,
+                seconds=0.5,
+                amplitude=0.00001,
+            )
+            self._write_tone(
+                two_frames,
+                hz=200.0,
+                seconds=0.035,
+                amplitude=0.5,
+            )
+
+            for path in (silence, near_silence, two_frames):
+                with self.subTest(path=path.name):
+                    with self.assertRaises(FeatureExtractionError):
+                        extract_acoustic_features(path)
+
+    def test_unsupported_wav_formats_malformed_riff_and_clipping_reject(
+        self,
+    ) -> None:
+        import struct
+        import wave
+
+        from scripts.emotion_state_phase_b_features import (
+            FeatureExtractionError,
+            extract_acoustic_features,
+        )
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            stereo = root / "stereo.wav"
+            eight_bit = root / "eight-bit.wav"
+            wrong_rate = root / "wrong-rate.wav"
+            compressed = root / "compressed.wav"
+            malformed = root / "malformed.wav"
+            clipped = root / "clipped.wav"
+
+            self._write_pcm16(stereo, [1000, -1000] * 400, channels=2)
+            with wave.open(str(eight_bit), "wb") as output:
+                output.setnchannels(1)
+                output.setsampwidth(1)
+                output.setframerate(16000)
+                output.writeframes(bytes([128] * 800))
+            self._write_pcm16(
+                wrong_rate,
+                [1000, -1000] * 400,
+                sample_rate=44100,
+            )
+
+            compressed_data = bytes([0] * 800)
+            compressed_fmt = struct.pack(
+                "<HHIIHH",
+                6,
+                1,
+                16000,
+                16000,
+                1,
+                8,
+            )
+            compressed_body = (
+                b"fmt "
+                + struct.pack("<I", len(compressed_fmt))
+                + compressed_fmt
+                + b"data"
+                + struct.pack("<I", len(compressed_data))
+                + compressed_data
+            )
+            compressed.write_bytes(
+                b"RIFF"
+                + struct.pack("<I", 4 + len(compressed_body))
+                + b"WAVE"
+                + compressed_body
+            )
+            malformed.write_bytes(b"not-a-wave")
+            self._write_pcm16(clipped, [32767] + [1000, -1000] * 400)
+
+            for path in (
+                stereo,
+                eight_bit,
+                wrong_rate,
+                compressed,
+                malformed,
+                clipped,
+            ):
+                with self.subTest(path=path.name):
+                    with self.assertRaises(FeatureExtractionError):
+                        extract_acoustic_features(path)
+
+    def test_empty_and_incomplete_wavs_reject(self) -> None:
+        from scripts.emotion_state_phase_b_features import (
+            FeatureExtractionError,
+            extract_acoustic_features,
+        )
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            empty = root / "empty.wav"
+            incomplete = root / "incomplete.wav"
+            self._write_pcm16(empty, [])
+            self._write_pcm16(incomplete, [1000, -1000] * 199 + [1000])
+
+            for path in (empty, incomplete):
+                with self.subTest(path=path.name):
+                    with self.assertRaises(FeatureExtractionError):
+                        extract_acoustic_features(path)
+
+    def test_repeated_extraction_is_canonical_json_byte_deterministic(
+        self,
+    ) -> None:
+        from scripts.emotion_state_phase_b_features import extract_acoustic_features
+
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "tone.wav"
+            self._write_tone(path, hz=200.0, seconds=1.0, amplitude=0.5)
+            first = extract_acoustic_features(path)
+            second = extract_acoustic_features(path)
+
+        def canonical_bytes(payload: dict[str, float]) -> bytes:
+            return json.dumps(
+                payload,
+                allow_nan=False,
+                ensure_ascii=True,
+                separators=(",", ":"),
+            ).encode("utf-8")
+
+        self.assertEqual(canonical_bytes(first), canonical_bytes(second))
+
+    def test_feature_vector_is_canonical_and_rejects_imputation_and_schema_drift(
+        self,
+    ) -> None:
+        from scripts.emotion_state_phase_b_features import (
+            FeatureExtractionError,
+            feature_vector,
+        )
+
+        canonical = {
+            name: float(index)
+            for index, name in enumerate(self.FEATURE_NAMES)
+        }
+        reversed_row = dict(reversed(tuple(canonical.items())))
+        self.assertEqual(
+            feature_vector(reversed_row),
+            tuple(canonical[name] for name in self.FEATURE_NAMES),
+        )
+
+        imputed = dict(canonical)
+        imputed["f0_median_hz"] = float("nan")
+        with self.assertRaisesRegex(FeatureExtractionError, "non-finite"):
+            feature_vector(imputed)
+
+        missing = dict(canonical)
+        del missing["f0_median_hz"]
+        with self.assertRaisesRegex(FeatureExtractionError, "fields"):
+            feature_vector(missing)
+
+        extra = dict(canonical)
+        extra["filename"] = 1.0
+        with self.assertRaisesRegex(FeatureExtractionError, "fields"):
+            feature_vector(extra)
+
+    def test_feature_order_mutation_and_non_finite_frames_reject(self) -> None:
+        import numpy as np
+
+        from scripts.emotion_state_phase_b_features import (
+            FeatureExtractionError,
+            _summarize,
+        )
+        from scripts.validate_emotion_state_002_phase_b import (
+            load_json_strict,
+            validate_feature_schema,
+        )
+
+        feature_schema = load_json_strict(FEATURE_SCHEMA)
+        mutated = deepcopy(feature_schema)
+        mutated["ordered_features"][0], mutated["ordered_features"][1] = (
+            mutated["ordered_features"][1],
+            mutated["ordered_features"][0],
+        )
+        with self.assertRaisesRegex(ValueError, "ordered acoustic features"):
+            validate_feature_schema(mutated)
+
+        frames = np.zeros((3, 400), dtype=np.float64)
+        frames[0, 0] = np.nan
+        with self.assertRaisesRegex(FeatureExtractionError, "non-finite"):
+            _summarize(frames, sample_count=720, sample_rate=16000)
 
 
 class EnvironmentLockTests(unittest.TestCase):
