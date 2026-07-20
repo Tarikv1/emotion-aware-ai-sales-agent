@@ -2093,6 +2093,12 @@ def validate_non_lockbox_packet(payload: Any) -> dict[str, Any]:
 
 
 def derive_phase_b_decision(decision_evidence: Any) -> str:
+    """Derive a structural readback, not provenance authority.
+
+    The lockbox runner establishes authority by calling Task 6
+    decide_experiment on a recursively verified private DecisionEvidence
+    artifact before serializing and state-binding this mapping.
+    """
     metrics, validity = validate_decision_inputs(
         decision_evidence,
         dict(EXPECTED_VALIDITY),
@@ -2295,15 +2301,14 @@ def validate_published_ami_aggregate(payload: Any) -> Mapping[str, Any]:
     return partitions
 
 
-def validate_lockbox_result(payload: Any) -> dict[str, Any]:
+def validate_lockbox_ami_input(payload: Any) -> dict[str, Any]:
     result = _exact_keys(
         payload,
-        ("schema_version", "decision_evidence", "ami"),
-        "lockbox result",
+        ("schema_version", "ami"),
+        "lockbox AMI input",
     )
     if result["schema_version"] != 1 or type(result["schema_version"]) is not int:
-        raise ValueError("lockbox result schema version must be 1")
-    validate_decision_inputs(result["decision_evidence"], dict(EXPECTED_VALIDITY))
+        raise ValueError("lockbox AMI input schema version must be 1")
     ami = _exact_keys(
         result["ami"],
         ("aggregate", "authority", "authority_sha256"),
@@ -2320,6 +2325,43 @@ def validate_lockbox_result(payload: Any) -> dict[str, Any]:
         minimum_contributors=MINIMUM_UNIQUE_ACTORS,
     )
     validate_published_ami_aggregate(ami["aggregate"])
+    return dict(result)
+
+
+def serialized_decision_evidence_mint_sha256(payload: Any) -> str:
+    """Return the serialized mint digest without asserting provenance authority."""
+    validate_decision_inputs(payload, dict(EXPECTED_VALIDITY))
+    content = json.dumps(
+        payload,
+        sort_keys=True,
+        separators=(",", ":"),
+        ensure_ascii=True,
+        allow_nan=False,
+    ).encode("ascii")
+    return hashlib.sha256(content).hexdigest().upper()
+
+
+def validate_lockbox_result(payload: Any) -> dict[str, Any]:
+    """Structurally validate state-bound lockbox bytes.
+
+    This function does not mint decision authority. Provenance is established
+    only by recursively verifying a private DecisionEvidence lifecycle artifact
+    before the runner serializes and binds these bytes.
+    """
+    result = _exact_keys(
+        payload,
+        ("schema_version", "decision_evidence", "ami"),
+        "lockbox result",
+    )
+    if result["schema_version"] != 1 or type(result["schema_version"]) is not int:
+        raise ValueError("lockbox result schema version must be 1")
+    validate_decision_inputs(result["decision_evidence"], dict(EXPECTED_VALIDITY))
+    validate_lockbox_ami_input(
+        {
+            "schema_version": result["schema_version"],
+            "ami": result["ami"],
+        }
+    )
     return dict(result)
 
 
@@ -2343,15 +2385,29 @@ def validate_lockbox_lineage(
         raise ValueError("lockbox evidence does not bind validated split")
 
 
-def validated_lockbox_summary(payload: Any) -> dict[str, Any]:
+def validated_lockbox_summary(
+    payload: Any,
+    *,
+    bound_decision_evidence_sha256: str,
+    bound_decision_evidence_mint_sha256: str,
+) -> dict[str, Any]:
     validated = validate_lockbox_result(payload)
+    evidence = validated["decision_evidence"]
+    if _canonical_digest(evidence) != bound_decision_evidence_sha256:
+        raise ValueError("state-bound decision evidence digest does not match")
+    if (
+        serialized_decision_evidence_mint_sha256(evidence)
+        != bound_decision_evidence_mint_sha256
+    ):
+        raise ValueError(
+            "state-bound private decision evidence mint digest does not match"
+        )
     authority = validated["ami"]["authority"]
     return {
         "crema": {
-            "decision_evidence": validated["decision_evidence"],
-            "evidence_sha256": _canonical_digest(
-                validated["decision_evidence"]
-            ),
+            "decision_evidence": evidence,
+            "evidence_sha256": bound_decision_evidence_sha256,
+            "evidence_mint_sha256": bound_decision_evidence_mint_sha256,
         },
         "ami": {
             "aggregate": validated["ami"]["aggregate"],
@@ -2362,7 +2418,7 @@ def validated_lockbox_summary(payload: Any) -> dict[str, Any]:
             "minimum_unique_contributors_per_cell": MINIMUM_UNIQUE_ACTORS,
         },
         "validity": dict(EXPECTED_VALIDITY),
-        "decision": derive_phase_b_decision(validated["decision_evidence"]),
+        "decision": derive_phase_b_decision(evidence),
     }
 
 
@@ -2427,6 +2483,8 @@ def validate_phase_b_result(payload: Any) -> dict[str, Any]:
             "open_count",
             "reservation_sha256",
             "result_sha256",
+            "decision_evidence_sha256",
+            "decision_evidence_mint_sha256",
             "crema",
             "ami",
         ),
@@ -2436,13 +2494,38 @@ def validate_phase_b_result(payload: Any) -> dict[str, Any]:
         raise ValueError("aggregate lockbox open count must be exactly 1")
     _uppercase_sha256(lockbox["reservation_sha256"], "lockbox reservation")
     _uppercase_sha256(lockbox["result_sha256"], "lockbox result")
+    _uppercase_sha256(
+        lockbox["decision_evidence_sha256"],
+        "lockbox decision evidence",
+    )
+    _uppercase_sha256(
+        lockbox["decision_evidence_mint_sha256"],
+        "lockbox private decision evidence mint",
+    )
     crema = _exact_keys(
         lockbox["crema"],
-        ("decision_evidence", "evidence_sha256"),
+        (
+            "decision_evidence",
+            "evidence_sha256",
+            "evidence_mint_sha256",
+        ),
         "published CREMA evidence",
     )
     if _canonical_digest(crema["decision_evidence"]) != crema["evidence_sha256"]:
         raise ValueError("published CREMA evidence digest does not match")
+    if crema["evidence_sha256"] != lockbox["decision_evidence_sha256"]:
+        raise ValueError("published CREMA evidence does not match lockbox binding")
+    if (
+        serialized_decision_evidence_mint_sha256(
+            crema["decision_evidence"]
+        )
+        != crema["evidence_mint_sha256"]
+        or crema["evidence_mint_sha256"]
+        != lockbox["decision_evidence_mint_sha256"]
+    ):
+        raise ValueError(
+            "published CREMA private mint digest does not match lockbox binding"
+        )
     validate_decision_inputs(
         crema["decision_evidence"],
         dict(EXPECTED_VALIDITY),

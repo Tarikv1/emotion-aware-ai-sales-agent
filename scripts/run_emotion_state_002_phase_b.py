@@ -27,10 +27,15 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from scripts.validate_emotion_state_002_phase_b import (
+    EXPECTED_VALIDITY,
     EXPECTED_STATIC_FILE_SHA256,
+    derive_phase_b_decision,
+    serialized_decision_evidence_mint_sha256,
     validate_config,
+    validate_decision_inputs,
     validate_environment_lock,
     validate_feature_schema,
+    validate_lockbox_ami_input,
     validate_lockbox_lineage,
     validate_lockbox_result,
     validate_non_lockbox_packet,
@@ -110,6 +115,8 @@ STATE_FIELDS = frozenset(
         "non_lockbox_packet_sha256",
         "lockbox_open_count",
         "lockbox_result_sha256",
+        "lockbox_decision_evidence_sha256",
+        "lockbox_decision_evidence_mint_sha256",
         "candidate_transaction_id",
     }
 )
@@ -120,6 +127,8 @@ DIGEST_FIELDS = (
     "split_manifest_sha256",
     "non_lockbox_packet_sha256",
     "lockbox_result_sha256",
+    "lockbox_decision_evidence_sha256",
+    "lockbox_decision_evidence_mint_sha256",
 )
 _SHA256_PATTERN = re.compile(r"^[0-9A-F]{64}$")
 _COMMIT_PATTERN = re.compile(r"^[0-9a-f]{40}$")
@@ -298,6 +307,20 @@ def canonical_json_bytes(payload: Any) -> bytes:
 
 def _sha256_bytes(content: bytes) -> str:
     return hashlib.sha256(content).hexdigest().upper()
+
+
+def _mapping_digest(payload: Mapping[str, Any]) -> str:
+    content = (
+        json.dumps(
+            payload,
+            sort_keys=True,
+            ensure_ascii=False,
+            allow_nan=False,
+            separators=(",", ":"),
+        )
+        + "\n"
+    ).encode("utf-8")
+    return _sha256_bytes(content)
 
 
 def _sha256_file(path: Path) -> str:
@@ -505,6 +528,36 @@ def _verify_cached_path_proof(path: Path) -> None:
             != (expected_device, expected_inode)
         ):
             raise RunnerError("path component identity changed before open")
+
+
+def _require_mutation_path_proof(path: Path) -> None:
+    """Require a cached parent authority before mutating a directory entry."""
+    target = Path(path)
+    if str(target) not in _PATH_IDENTITY_PROOFS:
+        parent = target.parent
+        parent_proof = _PATH_IDENTITY_PROOFS.get(str(parent))
+        if parent_proof is None:
+            for proof in _PATH_IDENTITY_PROOFS.values():
+                if proof and Path(proof[-1][0]) == parent:
+                    parent_proof = proof
+                    break
+        if parent_proof is None:
+            raise RunnerError("trusted parent identity is not cached")
+        _PATH_IDENTITY_PROOFS[str(target)] = tuple(parent_proof)
+    _verify_cached_path_proof(target)
+
+
+def _bind_mutated_entry(path: Path, *, present: bool) -> None:
+    """Refresh a cached proof after this runner intentionally changes an entry."""
+    target = Path(path)
+    proof = _PATH_IDENTITY_PROOFS.get(str(target), ())
+    parent_proof = tuple(item for item in proof if Path(item[0]) != target)
+    if present:
+        status = os.stat(target, follow_symlinks=False)
+        if _is_link_or_reparse(target, status):
+            raise RunnerError("mutated entry became a link or reparse point")
+        parent_proof += ((str(target), status.st_dev, status.st_ino),)
+    _PATH_IDENTITY_PROOFS[str(target)] = parent_proof
 
 
 @contextmanager
@@ -872,94 +925,349 @@ def _ensure_directory_durable(path: Path) -> None:
         raise RunnerError("unable to durably create directory") from error
 
 
+def _windows_open_mutation_fd(
+    path: Path,
+    *,
+    access: int,
+    disposition: int,
+    descriptor_flags: int,
+) -> int:
+    from ctypes import wintypes
+
+    kernel32 = ctypes.WinDLL("kernel32", use_last_error=True)
+    create_file = kernel32.CreateFileW
+    create_file.argtypes = (
+        wintypes.LPCWSTR,
+        wintypes.DWORD,
+        wintypes.DWORD,
+        wintypes.LPVOID,
+        wintypes.DWORD,
+        wintypes.DWORD,
+        wintypes.HANDLE,
+    )
+    create_file.restype = wintypes.HANDLE
+    handle = create_file(
+        str(path),
+        access,
+        0x00000001 | 0x00000002,  # FILE_SHARE_READ | FILE_SHARE_WRITE
+        None,
+        disposition,
+        0x00000080 | 0x00200000 | 0x80000000,
+        None,
+    )
+    invalid = wintypes.HANDLE(-1).value
+    if handle == invalid:
+        raise OSError(ctypes.get_last_error(), "unable to open mutation handle")
+    try:
+        return msvcrt.open_osfhandle(handle, descriptor_flags)
+    except Exception:
+        kernel32.CloseHandle(handle)
+        raise
+
+
+def _verify_opened_mutation_identity(path: Path, descriptor: int) -> None:
+    opened = os.fstat(descriptor)
+    proof = _PATH_IDENTITY_PROOFS.get(str(Path(path)), ())
+    expected = next(
+        (
+            (device, inode)
+            for component, device, inode in proof
+            if Path(component) == Path(path)
+        ),
+        None,
+    )
+    if expected is not None and (opened.st_dev, opened.st_ino) != expected:
+        raise RunnerError("mutation target identity changed before handle open")
+    inspected = os.stat(path, follow_symlinks=False)
+    if (
+        _is_link_or_reparse(path, inspected)
+        or not stat.S_ISREG(opened.st_mode)
+        or (opened.st_dev, opened.st_ino)
+        != (inspected.st_dev, inspected.st_ino)
+    ):
+        raise RunnerError("mutation target handle identity does not match entry")
+
+
+def _windows_unlink_by_handle(path: Path) -> None:
+    from ctypes import wintypes
+
+    descriptor = _windows_open_mutation_fd(
+        path,
+        access=0x00010000 | 0x00000080,  # DELETE | FILE_READ_ATTRIBUTES
+        disposition=3,  # OPEN_EXISTING
+        descriptor_flags=os.O_RDONLY | getattr(os, "O_BINARY", 0),
+    )
+    try:
+        _verify_opened_mutation_identity(path, descriptor)
+        handle = msvcrt.get_osfhandle(descriptor)
+
+        class FileDispositionInfo(ctypes.Structure):
+            _fields_ = (("DeleteFile", wintypes.BOOL),)
+
+        information = FileDispositionInfo(True)
+        set_information = ctypes.WinDLL(
+            "kernel32",
+            use_last_error=True,
+        ).SetFileInformationByHandle
+        set_information.argtypes = (
+            wintypes.HANDLE,
+            ctypes.c_int,
+            wintypes.LPVOID,
+            wintypes.DWORD,
+        )
+        set_information.restype = wintypes.BOOL
+        if not set_information(
+            handle,
+            4,  # FileDispositionInfo
+            ctypes.byref(information),
+            ctypes.sizeof(information),
+        ):
+            raise OSError(
+                ctypes.get_last_error(),
+                "unable to mark file for handle-bound deletion",
+            )
+    finally:
+        os.close(descriptor)
+
+
+def _windows_open_directory_authority(path: Path) -> int:
+    from ctypes import wintypes
+
+    kernel32 = ctypes.WinDLL("kernel32", use_last_error=True)
+    create_file = kernel32.CreateFileW
+    create_file.argtypes = (
+        wintypes.LPCWSTR,
+        wintypes.DWORD,
+        wintypes.DWORD,
+        wintypes.LPVOID,
+        wintypes.DWORD,
+        wintypes.DWORD,
+        wintypes.HANDLE,
+    )
+    create_file.restype = wintypes.HANDLE
+    handle = create_file(
+        str(path),
+        0x80000000,  # GENERIC_READ
+        0x00000001 | 0x00000002,  # no FILE_SHARE_DELETE
+        None,
+        3,
+        0x02000000 | 0x00200000,
+        None,
+    )
+    invalid = wintypes.HANDLE(-1).value
+    if handle == invalid:
+        raise OSError(ctypes.get_last_error(), "unable to open directory authority")
+    return handle
+
+
+def _windows_replace_by_handle(source: Path, destination: Path) -> None:
+    from ctypes import wintypes
+
+    source_descriptor = _windows_open_mutation_fd(
+        source,
+        access=0x00010000 | 0x00000080,  # DELETE | FILE_READ_ATTRIBUTES
+        disposition=3,  # OPEN_EXISTING
+        descriptor_flags=os.O_RDONLY | getattr(os, "O_BINARY", 0),
+    )
+    destination_parent_handle = _windows_open_directory_authority(
+        destination.parent
+    )
+    kernel32 = ctypes.WinDLL("kernel32", use_last_error=True)
+    try:
+        _verify_opened_mutation_identity(source, source_descriptor)
+        source_handle = msvcrt.get_osfhandle(source_descriptor)
+        encoded_name = destination.name.encode("utf-16-le")
+
+        class FileRenameInfo(ctypes.Structure):
+            _fields_ = (
+                ("ReplaceIfExists", ctypes.c_ubyte),
+                ("RootDirectory", wintypes.HANDLE),
+                ("FileNameLength", wintypes.DWORD),
+                ("FileName", wintypes.WCHAR * 1),
+            )
+
+        name_offset = FileRenameInfo.FileName.offset
+        information_size = name_offset + len(encoded_name)
+        buffer = ctypes.create_string_buffer(information_size)
+        information = FileRenameInfo.from_buffer(buffer)
+        information.ReplaceIfExists = 1
+        information.RootDirectory = destination_parent_handle
+        information.FileNameLength = len(encoded_name)
+        ctypes.memmove(
+            ctypes.addressof(buffer) + name_offset,
+            encoded_name,
+            len(encoded_name),
+        )
+        class IoStatusBlock(ctypes.Structure):
+            _fields_ = (
+                ("Status", ctypes.c_void_p),
+                ("Information", ctypes.c_size_t),
+            )
+
+        io_status = IoStatusBlock()
+        set_information = ctypes.WinDLL(
+            "ntdll",
+            use_last_error=True,
+        ).NtSetInformationFile
+        set_information.argtypes = (
+            wintypes.HANDLE,
+            ctypes.POINTER(IoStatusBlock),
+            wintypes.LPVOID,
+            wintypes.DWORD,
+            ctypes.c_int,
+        )
+        set_information.restype = ctypes.c_long
+        status = set_information(
+            source_handle,
+            ctypes.byref(io_status),
+            buffer,
+            information_size,
+            10,  # FileRenameInformation
+        )
+        if status != 0:
+            raise OSError(
+                status & 0xFFFFFFFF,
+                "unable to perform handle-bound replacement",
+            )
+    finally:
+        kernel32.CloseHandle(destination_parent_handle)
+        os.close(source_descriptor)
+
+
 def _write_new_fsynced(path: Path, content: bytes) -> None:
     flags = os.O_WRONLY | os.O_CREAT | os.O_EXCL | getattr(os, "O_BINARY", 0)
     flags |= getattr(os, "O_NOFOLLOW", 0)
+    _require_mutation_path_proof(path)
     try:
-        descriptor = os.open(path, flags, 0o600)
-        try:
-            view = memoryview(content)
-            while view:
-                written = os.write(descriptor, view)
-                if written <= 0:
-                    raise OSError("short durable write")
-                view = view[written:]
-            os.fsync(descriptor)
-            opened = os.fstat(descriptor)
-            inspected = os.stat(path, follow_symlinks=False)
-            if (
-                _is_link_or_reparse(path, inspected)
-                or (opened.st_dev, opened.st_ino)
-                != (inspected.st_dev, inspected.st_ino)
-            ):
-                raise RunnerError("new file identity changed during create")
-        finally:
-            os.close(descriptor)
+        with _trusted_parent_handles(path, include_target=False) as parent_descriptor:
+            _verify_cached_path_proof(path)
+            if parent_descriptor is None:
+                descriptor = _windows_open_mutation_fd(
+                    path,
+                    access=0x80000000 | 0x40000000,
+                    disposition=1,  # CREATE_NEW
+                    descriptor_flags=os.O_RDWR | getattr(os, "O_BINARY", 0),
+                )
+            else:
+                descriptor = os.open(
+                    path.name,
+                    flags,
+                    0o600,
+                    dir_fd=parent_descriptor,
+                )
+            try:
+                view = memoryview(content)
+                while view:
+                    written = os.write(descriptor, view)
+                    if written <= 0:
+                        raise OSError("short durable write")
+                    view = view[written:]
+                os.fsync(descriptor)
+                opened = os.fstat(descriptor)
+                if parent_descriptor is None:
+                    inspected = os.stat(path, follow_symlinks=False)
+                else:
+                    inspected = os.stat(
+                        path.name,
+                        dir_fd=parent_descriptor,
+                        follow_symlinks=False,
+                    )
+                if (
+                    _is_link_or_reparse(path, inspected)
+                    or (opened.st_dev, opened.st_ino)
+                    != (inspected.st_dev, inspected.st_ino)
+                ):
+                    raise RunnerError("new file identity changed during create")
+            finally:
+                os.close(descriptor)
+            _bind_mutated_entry(path, present=True)
         _sync_directory(path.parent)
     except OSError as error:
         raise RunnerError(f"unable to durably write {path.name}") from error
 
 
 def _replace_entry_durably(source: Path, destination: Path) -> None:
+    _require_mutation_path_proof(source)
+    _require_mutation_path_proof(destination)
     source_parent = os.stat(source.parent, follow_symlinks=False)
     destination_parent = os.stat(destination.parent, follow_symlinks=False)
     if source_parent.st_dev != destination_parent.st_dev:
         raise RunnerError("atomic replace roots are on different devices")
     if os.name != "nt":
-        flags = os.O_RDONLY | getattr(os, "O_DIRECTORY", 0)
-        flags |= getattr(os, "O_NOFOLLOW", 0)
-        source_fd = os.open(source.parent, flags)
-        destination_fd = os.open(destination.parent, flags)
-        try:
-            if (
-                (os.fstat(source_fd).st_dev, os.fstat(source_fd).st_ino)
-                != (source_parent.st_dev, source_parent.st_ino)
-                or (
-                    os.fstat(destination_fd).st_dev,
-                    os.fstat(destination_fd).st_ino,
-                )
-                != (destination_parent.st_dev, destination_parent.st_ino)
-            ):
-                raise RunnerError("replace directory identity changed")
+        with _trusted_parent_handles(
+            source,
+            include_target=False,
+        ) as source_fd, _trusted_parent_handles(
+            destination,
+            include_target=False,
+        ) as destination_fd:
+            _verify_cached_path_proof(source)
+            _verify_cached_path_proof(destination)
             os.replace(
                 source.name,
                 destination.name,
                 src_dir_fd=source_fd,
                 dst_dir_fd=destination_fd,
             )
-        finally:
-            os.close(source_fd)
-            os.close(destination_fd)
     else:
-        with _trusted_parent_handles(destination, include_target=False):
+        with _trusted_parent_handles(
+            source,
+            include_target=False,
+        ), _trusted_parent_handles(destination, include_target=False):
+            _verify_cached_path_proof(source)
             _verify_cached_path_proof(destination)
-            os.replace(source, destination)
-            _verify_cached_path_proof(destination.parent)
+            _windows_replace_by_handle(source, destination)
+    _bind_mutated_entry(source, present=False)
+    _bind_mutated_entry(destination, present=True)
     _sync_directory(source.parent)
     if destination.parent != source.parent:
         _sync_directory(destination.parent)
 
 
 def _durable_unlink(path: Path, *, missing_ok: bool = True) -> None:
+    if missing_ok and not os.path.lexists(path):
+        target = Path(path)
+        proof = _PATH_IDENTITY_PROOFS.get(str(target))
+        if proof is not None:
+            _PATH_IDENTITY_PROOFS[str(target)] = tuple(
+                item for item in proof if Path(item[0]) != target
+            )
+        _require_mutation_path_proof(target)
+        return
+    _require_mutation_path_proof(path)
     try:
-        path.unlink(missing_ok=missing_ok)
+        with _trusted_parent_handles(path, include_target=False) as parent_descriptor:
+            _verify_cached_path_proof(path)
+            if parent_descriptor is None:
+                _windows_unlink_by_handle(path)
+            else:
+                os.unlink(path.name, dir_fd=parent_descriptor)
     except FileNotFoundError:
         if not missing_ok:
             raise
         return
+    except OSError as error:
+        raise RunnerError(f"unable to durably remove {path.name}") from error
+    _bind_mutated_entry(path, present=False)
     _sync_directory(path.parent)
 
 
 def _replace_bytes_durably(path: Path, content: bytes) -> None:
     _ensure_directory_durable(path.parent)
+    _require_mutation_path_proof(path)
     temporary = path.parent / f".{path.name}.{uuid.uuid4().hex}.tmp"
+    _PATH_IDENTITY_PROOFS[str(temporary)] = tuple(
+        item
+        for item in _PATH_IDENTITY_PROOFS[str(Path(path))]
+        if Path(item[0]) != Path(path)
+    )
     try:
         _write_new_fsynced(temporary, content)
         _replace_entry_durably(temporary, path)
     except Exception:
         try:
             _durable_unlink(temporary)
-        except OSError:
+        except (OSError, RunnerError):
             pass
         raise
 
@@ -975,6 +1283,8 @@ def _initial_state() -> dict[str, Any]:
         "non_lockbox_packet_sha256": "",
         "lockbox_open_count": 0,
         "lockbox_result_sha256": "",
+        "lockbox_decision_evidence_sha256": "",
+        "lockbox_decision_evidence_mint_sha256": "",
         "candidate_transaction_id": "",
     }
 
@@ -1008,6 +1318,9 @@ def _validate_state(payload: Any) -> dict[str, Any]:
             if (
                 payload["non_lockbox_packet_sha256"] != UNSET_DIGEST
                 or payload["lockbox_result_sha256"] != UNSET_DIGEST
+                or payload["lockbox_decision_evidence_sha256"] != UNSET_DIGEST
+                or payload["lockbox_decision_evidence_mint_sha256"]
+                != UNSET_DIGEST
             ):
                 raise RunnerError(
                     "preflight state must retain unopened artifact placeholders"
@@ -1016,6 +1329,9 @@ def _validate_state(payload: Any) -> dict[str, Any]:
             if (
                 payload["non_lockbox_packet_sha256"] == UNSET_DIGEST
                 or payload["lockbox_result_sha256"] != UNSET_DIGEST
+                or payload["lockbox_decision_evidence_sha256"] != UNSET_DIGEST
+                or payload["lockbox_decision_evidence_mint_sha256"]
+                != UNSET_DIGEST
             ):
                 raise RunnerError(
                     "non-lockbox state artifact digests do not match its phase"
@@ -1023,6 +1339,9 @@ def _validate_state(payload: Any) -> dict[str, Any]:
         elif (
             payload["non_lockbox_packet_sha256"] == UNSET_DIGEST
             or payload["lockbox_result_sha256"] == UNSET_DIGEST
+            or payload["lockbox_decision_evidence_sha256"] == UNSET_DIGEST
+            or payload["lockbox_decision_evidence_mint_sha256"]
+            == UNSET_DIGEST
         ):
             raise RunnerError(f"{phase} state has an unset artifact digest")
     open_count = payload["lockbox_open_count"]
@@ -1225,6 +1544,8 @@ def run_preflight(paths: RunnerPaths) -> dict[str, Any]:
         **digests,
         non_lockbox_packet_sha256=UNSET_DIGEST,
         lockbox_result_sha256=UNSET_DIGEST,
+        lockbox_decision_evidence_sha256=UNSET_DIGEST,
+        lockbox_decision_evidence_mint_sha256=UNSET_DIGEST,
     )
 
 
@@ -1296,6 +1617,7 @@ def run_non_lockbox(paths: RunnerPaths) -> dict[str, Any]:
 
 
 def _open_lock_handle(path: Path) -> BinaryIO:
+    _require_mutation_path_proof(path)
     if not os.path.lexists(path):
         try:
             _write_new_fsynced(path, b"")
@@ -1305,13 +1627,33 @@ def _open_lock_handle(path: Path) -> BinaryIO:
     flags = os.O_RDWR | getattr(os, "O_BINARY", 0)
     flags |= getattr(os, "O_NOFOLLOW", 0)
     try:
-        with _trusted_parent_handles(path):
+        with _trusted_parent_handles(path) as parent_descriptor:
             _verify_cached_path_proof(path)
-            before = os.stat(path, follow_symlinks=False)
-            descriptor = os.open(path, flags)
+            if parent_descriptor is None:
+                before = os.stat(path, follow_symlinks=False)
+                descriptor = os.open(path, flags)
+                after = os.stat(path, follow_symlinks=False)
+            else:
+                before = os.stat(
+                    path.name,
+                    dir_fd=parent_descriptor,
+                    follow_symlinks=False,
+                )
+                descriptor = os.open(
+                    path.name,
+                    flags,
+                    dir_fd=parent_descriptor,
+                )
+                after = os.stat(
+                    path.name,
+                    dir_fd=parent_descriptor,
+                    follow_symlinks=False,
+                )
             opened = os.fstat(descriptor)
-            after = os.stat(path, follow_symlinks=False)
             _verify_cached_path_proof(path)
+        if opened.st_nlink != 1:
+            os.close(descriptor)
+            raise RunnerError("lock file must have a single-link identity")
         if (
             _is_link_or_reparse(path, after)
             or (before.st_dev, before.st_ino)
@@ -1367,16 +1709,35 @@ def _reservation_payload(
     transaction_id: str,
     status: str,
     lockbox_result_sha256: str,
+    lockbox_decision_evidence_sha256: str,
+    lockbox_decision_evidence_mint_sha256: str,
 ) -> dict[str, Any]:
     if status not in {"reserved", "completed"}:
         raise RunnerError("invalid lockbox reservation status")
     if status == "reserved":
-        if lockbox_result_sha256 != UNSET_DIGEST:
-            raise RunnerError("reserved lockbox cannot bind result bytes")
+        if any(
+            digest != UNSET_DIGEST
+            for digest in (
+                lockbox_result_sha256,
+                lockbox_decision_evidence_sha256,
+                lockbox_decision_evidence_mint_sha256,
+            )
+        ):
+            raise RunnerError("reserved lockbox cannot bind minted evidence bytes")
     else:
-        _validate_digest(lockbox_result_sha256, "lockbox reservation result")
-        if lockbox_result_sha256 == UNSET_DIGEST:
-            raise RunnerError("completed lockbox reservation needs result bytes")
+        for label, digest in (
+            ("result", lockbox_result_sha256),
+            ("decision evidence", lockbox_decision_evidence_sha256),
+            (
+                "private decision evidence mint",
+                lockbox_decision_evidence_mint_sha256,
+            ),
+        ):
+            _validate_digest(digest, f"lockbox reservation {label}")
+            if digest == UNSET_DIGEST:
+                raise RunnerError(
+                    "completed lockbox reservation needs minted evidence bytes"
+                )
     return {
         "schema_version": 1,
         "transaction_id": _validate_transaction_id(transaction_id),
@@ -1387,6 +1748,12 @@ def _reservation_payload(
         "split_manifest_sha256": state["split_manifest_sha256"],
         "non_lockbox_packet_sha256": state["non_lockbox_packet_sha256"],
         "lockbox_result_sha256": lockbox_result_sha256,
+        "lockbox_decision_evidence_sha256": (
+            lockbox_decision_evidence_sha256
+        ),
+        "lockbox_decision_evidence_mint_sha256": (
+            lockbox_decision_evidence_mint_sha256
+        ),
     }
 
 
@@ -1401,6 +1768,8 @@ def _validate_reservation(payload: Any) -> dict[str, Any]:
         "split_manifest_sha256",
         "non_lockbox_packet_sha256",
         "lockbox_result_sha256",
+        "lockbox_decision_evidence_sha256",
+        "lockbox_decision_evidence_mint_sha256",
     }
     if not isinstance(payload, dict) or set(payload) != expected:
         raise RunnerError("invalid lockbox reservation fields")
@@ -1411,6 +1780,12 @@ def _validate_reservation(payload: Any) -> dict[str, Any]:
         transaction_id=payload["transaction_id"],
         status=payload["status"],
         lockbox_result_sha256=payload["lockbox_result_sha256"],
+        lockbox_decision_evidence_sha256=payload[
+            "lockbox_decision_evidence_sha256"
+        ],
+        lockbox_decision_evidence_mint_sha256=payload[
+            "lockbox_decision_evidence_mint_sha256"
+        ],
     )
 
 
@@ -1427,8 +1802,60 @@ def _load_reservation(paths: RunnerPaths) -> dict[str, Any]:
     )
 
 
+def _validated_private_decision_evidence(
+    decision_evidence: Any,
+) -> tuple[dict[str, Any], str, str, str]:
+    from scripts.emotion_state_phase_b_evaluation import decide_experiment
+
+    try:
+        authoritative_decision = decide_experiment(
+            decision_evidence,
+            dict(EXPECTED_VALIDITY),
+        )
+        payload = decision_evidence.to_payload()
+        validate_decision_inputs(payload, dict(EXPECTED_VALIDITY))
+        evidence_mint_sha256 = decision_evidence.mint_sha256
+    except (AttributeError, TypeError, ValueError) as error:
+        raise RunnerError(
+            "private DecisionEvidence mint and recursive lineage are required"
+        ) from error
+    if derive_phase_b_decision(payload) != authoritative_decision:
+        raise RunnerError("private decision and structural readback disagree")
+    if (
+        serialized_decision_evidence_mint_sha256(payload)
+        != evidence_mint_sha256
+    ):
+        raise RunnerError("private DecisionEvidence mint digest changed")
+    return (
+        payload,
+        authoritative_decision,
+        _mapping_digest(payload),
+        evidence_mint_sha256,
+    )
+
+
 def run_lockbox(paths: RunnerPaths) -> dict[str, Any]:
     _assert_closed_environment()
+    _validate_layout(paths)
+    raise RunnerError(
+        "production lockbox evaluator is not wired; "
+        "a private DecisionEvidence mint is required"
+    )
+
+
+def _run_lockbox_with_private_evidence_for_testing(
+    paths: RunnerPaths,
+    decision_evidence: Any,
+) -> dict[str, Any]:
+    if paths.authority != "injected-test":
+        raise RunnerError("private synthetic lockbox mint is test-only")
+    _assert_closed_environment()
+    (
+        decision_payload,
+        authoritative_decision,
+        decision_evidence_sha256,
+        decision_evidence_mint_sha256,
+    ) = _validated_private_decision_evidence(decision_evidence)
     with lockbox_lock(paths):
         state = load_state(paths)
         _require_phase(state, "non_lockbox_complete")
@@ -1446,6 +1873,13 @@ def run_lockbox(paths: RunnerPaths) -> dict[str, Any]:
             transaction_id=transaction_id,
             status="reserved",
             lockbox_result_sha256=UNSET_DIGEST,
+            lockbox_decision_evidence_sha256=UNSET_DIGEST,
+            lockbox_decision_evidence_mint_sha256=UNSET_DIGEST,
+        )
+        _safe_path(
+            paths.lockbox_reservation_path,
+            allowed_root=paths.state_root,
+            project_root=paths.project_root,
         )
         _replace_bytes_durably(
             paths.lockbox_reservation_path,
@@ -1456,17 +1890,27 @@ def run_lockbox(paths: RunnerPaths) -> dict[str, Any]:
 
         lockbox_path = _validate_lockbox_path(paths)
         try:
-            result_digest = _sha256_file(lockbox_path)
-            lockbox_result = _load_json_object(lockbox_path, "lockbox result")
+            lockbox_input = _load_json_object(lockbox_path, "lockbox AMI input")
             split_manifest = _load_json_object(
                 paths.split_manifest_path,
                 "split manifest",
             )
+            validated_ami = validate_lockbox_ami_input(lockbox_input)
+            lockbox_result = {
+                "schema_version": 1,
+                "decision_evidence": decision_payload,
+                "ami": validated_ami["ami"],
+            }
             validate_lockbox_lineage(lockbox_result, split_manifest)
         except (TypeError, ValueError) as error:
             raise RunnerError(f"invalid lockbox result: {error}") from error
-        if _sha256_file(lockbox_path) != result_digest:
-            raise RunnerError("lockbox result changed during semantic validation")
+        if derive_phase_b_decision(decision_payload) != authoritative_decision:
+            raise RunnerError("private decision changed before serialization")
+        result_bytes = canonical_json_bytes(lockbox_result)
+        _replace_bytes_durably(lockbox_path, result_bytes)
+        if _read_file_nofollow(lockbox_path) != result_bytes:
+            raise RunnerError("lockbox result changed after internal serialization")
+        result_digest = _sha256_file(lockbox_path)
 
         _revalidate_bound_preflight(paths, state)
         _validated_packet(paths, state, require_bound=True)
@@ -1479,7 +1923,16 @@ def run_lockbox(paths: RunnerPaths) -> dict[str, Any]:
             validate_lockbox_lineage(second_result, second_split)
         except (TypeError, ValueError) as error:
             raise RunnerError(f"invalid lockbox result: {error}") from error
-        if _sha256_file(lockbox_path) != result_digest:
+        if (
+            _sha256_file(lockbox_path) != result_digest
+            or second_result != lockbox_result
+            or _mapping_digest(second_result["decision_evidence"])
+            != decision_evidence_sha256
+            or serialized_decision_evidence_mint_sha256(
+                second_result["decision_evidence"]
+            )
+            != decision_evidence_mint_sha256
+        ):
             raise RunnerError("lockbox result changed during reserved validation")
         _assert_closed_environment()
 
@@ -1488,6 +1941,10 @@ def run_lockbox(paths: RunnerPaths) -> dict[str, Any]:
             transaction_id=transaction_id,
             status="completed",
             lockbox_result_sha256=result_digest,
+            lockbox_decision_evidence_sha256=decision_evidence_sha256,
+            lockbox_decision_evidence_mint_sha256=(
+                decision_evidence_mint_sha256
+            ),
         )
         _replace_bytes_durably(
             paths.lockbox_reservation_path,
@@ -1501,6 +1958,10 @@ def run_lockbox(paths: RunnerPaths) -> dict[str, Any]:
             "lockbox_complete",
             lockbox_open_count=1,
             lockbox_result_sha256=result_digest,
+            lockbox_decision_evidence_sha256=decision_evidence_sha256,
+            lockbox_decision_evidence_mint_sha256=(
+                decision_evidence_mint_sha256
+            ),
         )
 
 
@@ -1544,7 +2005,15 @@ def build_aggregate_result(paths: RunnerPaths) -> dict[str, Any]:
         )
         lockbox_payload = _load_json_object(lockbox_path, "lockbox result")
         validate_lockbox_result(lockbox_payload)
-        lockbox = validated_lockbox_summary(lockbox_payload)
+        lockbox = validated_lockbox_summary(
+            lockbox_payload,
+            bound_decision_evidence_sha256=state[
+                "lockbox_decision_evidence_sha256"
+            ],
+            bound_decision_evidence_mint_sha256=state[
+                "lockbox_decision_evidence_mint_sha256"
+            ],
+        )
     except (TypeError, ValueError) as error:
         raise RunnerError(f"aggregate input validation failed: {error}") from error
     reservation = _load_reservation(paths)
@@ -1560,6 +2029,8 @@ def build_aggregate_result(paths: RunnerPaths) -> dict[str, Any]:
                 "input_ledger_sha256",
                 "split_manifest_sha256",
                 "non_lockbox_packet_sha256",
+                "lockbox_decision_evidence_sha256",
+                "lockbox_decision_evidence_mint_sha256",
             )
         )
     ):
@@ -1587,6 +2058,12 @@ def build_aggregate_result(paths: RunnerPaths) -> dict[str, Any]:
             "open_count": state["lockbox_open_count"],
             "reservation_sha256": reservation_sha256,
             "result_sha256": state["lockbox_result_sha256"],
+            "decision_evidence_sha256": state[
+                "lockbox_decision_evidence_sha256"
+            ],
+            "decision_evidence_mint_sha256": state[
+                "lockbox_decision_evidence_mint_sha256"
+            ],
             "crema": lockbox["crema"],
             "ami": lockbox["ami"],
         },
@@ -1680,14 +2157,13 @@ def publication_lock(paths: RunnerPaths) -> Iterator[None]:
         require_final=True,
     )
     lock_path = paths.recovery_root / LOCK_NAME
-    if os.path.lexists(lock_path):
-        _safe_path(
-            lock_path,
-            allowed_root=paths.recovery_root,
-            project_root=paths.project_root,
-            final_kind="file",
-            require_final=True,
-        )
+    lock_path = _safe_path(
+        lock_path,
+        allowed_root=paths.recovery_root,
+        project_root=paths.project_root,
+        final_kind="file",
+        require_final=os.path.lexists(lock_path),
+    )
     handle = _open_lock_handle(lock_path)
     acquired = False
     try:

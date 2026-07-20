@@ -14,6 +14,7 @@ import tempfile
 import unittest
 import warnings
 from collections import Counter
+from contextlib import contextmanager
 from copy import deepcopy
 from dataclasses import replace
 from pathlib import Path
@@ -5264,9 +5265,8 @@ class RunnerStateTests(unittest.TestCase):
         evaluation_case = EvaluationTests(
             "test_rereview_decision_flags_cannot_be_caller_asserted"
         )
-        cls.DECISION_EVIDENCE = deepcopy(
-            evaluation_case._semantic_artifacts()["decision"].to_payload()
-        )
+        cls.DECISION_ARTIFACT = evaluation_case._semantic_artifacts()["decision"]
+        cls.DECISION_EVIDENCE = deepcopy(cls.DECISION_ARTIFACT.to_payload())
         cls.SPLIT_MANIFEST = deepcopy(
             EvaluationTests.SPLIT_ASSIGNMENT.to_payload()
         )
@@ -5369,9 +5369,13 @@ class RunnerStateTests(unittest.TestCase):
                 "authority_sha256": _canonical_digest(self.AMI_AUTHORITY),
             },
         }
+        self.lockbox_ami_input = {
+            "schema_version": 1,
+            "ami": deepcopy(self.lockbox_result["ami"]),
+        }
         self._write_json(self.input_ledger_path, self.input_ledger)
         self._write_json(self.non_lockbox_packet_path, self.non_lockbox_packet)
-        self._write_json(self.lockbox_result_path, self.lockbox_result)
+        self._write_json(self.lockbox_result_path, self.lockbox_ami_input)
         self.paths = self._paths()
 
         clean_environment = {
@@ -5457,12 +5461,16 @@ class RunnerStateTests(unittest.TestCase):
 import os
 from pathlib import Path
 from scripts import run_emotion_state_002_phase_b as runner
-from scripts import validate_emotion_state_002_phase_b as validator
+from scripts.test_emotion_state_002_phase_b import EvaluationTests
 
 values = {payload!r}
 paths = runner.RunnerPaths.for_testing(
     **{{key: Path(value) for key, value in values.items()}}
 )
+EvaluationTests.setUpClass()
+decision_evidence = EvaluationTests(
+    "test_rereview_decision_flags_cannot_be_caller_asserted"
+)._semantic_artifacts()["decision"]
 mode = {mode!r}
 marker = Path({str(marker)!r})
 
@@ -5483,19 +5491,22 @@ elif mode == "crash_after_reservation":
         return original_load(path, label)
     runner._load_json_object = crash_after
 else:
-    original_validate = validator.validate_lockbox_result
+    original_load = runner._load_json_object
     marked = False
-    def observed_validate(payload):
+    def observed_load(path, label):
         global marked
-        if not marked:
+        if Path(path) == paths.lockbox_result_path and not marked:
             with marker.open("ab", buffering=0) as handle:
                 handle.write(b"entered\\n")
             marked = True
-        return original_validate(payload)
-    validator.validate_lockbox_result = observed_validate
+        return original_load(path, label)
+    runner._load_json_object = observed_load
 
 try:
-    runner.run_lockbox(paths)
+    runner._run_lockbox_with_private_evidence_for_testing(
+        paths,
+        decision_evidence,
+    )
 except runner.RunnerError:
     raise SystemExit(2)
 """
@@ -5733,7 +5744,10 @@ runner.accept_receipt(paths, paths.receipt_path("accept.json"))
     def _advance_to_lockbox(self) -> None:
         self.runner.run_preflight(self.paths)
         self.runner.run_non_lockbox(self.paths)
-        self.runner.run_lockbox(self.paths)
+        self.runner._run_lockbox_with_private_evidence_for_testing(
+            self.paths,
+            self.DECISION_ARTIFACT,
+        )
 
     def _install_previous_pair(self) -> tuple[bytes, bytes]:
         result = b'{"previous":true}\n'
@@ -5894,7 +5908,10 @@ runner.accept_receipt(paths, paths.receipt_path("accept.json"))
         self.assertRegex(state["lockbox_result_sha256"], r"^[0-9A-F]{64}$")
         before = self._state_bytes()
         with self.assertRaisesRegex(self.runner.RunnerError, "lockbox"):
-            self.runner.run_lockbox(self.paths)
+            self.runner._run_lockbox_with_private_evidence_for_testing(
+                self.paths,
+                self.DECISION_ARTIFACT,
+            )
         self.assertEqual(self._state_bytes(), before)
 
     def test_result_and_report_are_deterministic_and_bind_every_required_group(
@@ -6135,7 +6152,7 @@ runner.accept_receipt(paths, paths.receipt_path("accept.json"))
     def test_second_replace_fault_restores_exact_previous_pair(self) -> None:
         previous = self._install_previous_pair()
         self._advance_to_lockbox()
-        real_replace = os.replace
+        real_replace = self.runner._replace_entry_durably
         failed_once = False
 
         def fail_report_replace(
@@ -6146,12 +6163,12 @@ runner.accept_receipt(paths, paths.receipt_path("accept.json"))
             if Path(destination) == self.paths.report_path and not failed_once:
                 failed_once = True
                 raise OSError("synthetic second replace crash")
-            real_replace(source, destination)
+            real_replace(Path(source), Path(destination))
 
         state_before = self._state_bytes()
         with patch.object(
-            self.runner.os,
-            "replace",
+            self.runner,
+            "_replace_entry_durably",
             side_effect=fail_report_replace,
         ):
             with self.assertRaisesRegex(self.runner.RunnerError, "restored"):
@@ -6411,11 +6428,9 @@ runner.accept_receipt(paths, paths.receipt_path("accept.json"))
         )
 
     def test_review_critical_lockbox_reentry_cannot_enter_twice(self) -> None:
-        from scripts import validate_emotion_state_002_phase_b as validator
-
         self.runner.run_preflight(self.paths)
         self.runner.run_non_lockbox(self.paths)
-        original = validator.validate_lockbox_result
+        original = self.runner.validate_lockbox_ami_input
         attempted_reentry = False
         logical_entries = 0
 
@@ -6425,15 +6440,21 @@ runner.accept_receipt(paths, paths.receipt_path("accept.json"))
                 attempted_reentry = True
                 logical_entries += 1
                 with self.assertRaisesRegex(self.runner.RunnerError, "lockbox"):
-                    self.runner.run_lockbox(self.paths)
+                    self.runner._run_lockbox_with_private_evidence_for_testing(
+                        self.paths,
+                        self.DECISION_ARTIFACT,
+                    )
             return original(payload)
 
         with patch.object(
-            validator,
-            "validate_lockbox_result",
+            self.runner,
+            "validate_lockbox_ami_input",
             side_effect=attempt_reentry,
         ):
-            self.runner.run_lockbox(self.paths)
+            self.runner._run_lockbox_with_private_evidence_for_testing(
+                self.paths,
+                self.DECISION_ARTIFACT,
+            )
         self.assertTrue(attempted_reentry)
         self.assertEqual(logical_entries, 1)
         self.assertEqual(
@@ -6537,33 +6558,29 @@ runner.accept_receipt(paths, paths.receipt_path("accept.json"))
     def test_review_important_lockbox_result_change_before_binding_invalidates(
         self,
     ) -> None:
-        from scripts import validate_emotion_state_002_phase_b as validator
-
         self.runner.run_preflight(self.paths)
         self.runner.run_non_lockbox(self.paths)
         state_before = self._state_bytes()
-        original_bytes = self.lockbox_result_path.read_bytes()
-        original = validator.validate_lockbox_lineage
+        original = self.runner._replace_bytes_durably
         mutated = False
 
-        def mutate_result(payload: Any, split: Any) -> None:
+        def mutate_result(path: Path, content: bytes) -> None:
             nonlocal mutated
-            original(payload, split)
-            if not mutated:
-                self.lockbox_result_path.write_bytes(original_bytes + b" ")
+            original(path, content)
+            if Path(path) == self.lockbox_result_path and not mutated:
+                self.lockbox_result_path.write_bytes(content + b" ")
                 mutated = True
 
         with patch.object(
-            validator,
-            "validate_lockbox_lineage",
-            side_effect=mutate_result,
-        ), patch.object(
             self.runner,
-            "validate_lockbox_lineage",
+            "_replace_bytes_durably",
             side_effect=mutate_result,
         ):
             with self.assertRaisesRegex(self.runner.RunnerError, "changed"):
-                self.runner.run_lockbox(self.paths)
+                self.runner._run_lockbox_with_private_evidence_for_testing(
+                    self.paths,
+                    self.DECISION_ARTIFACT,
+                )
         self.assertEqual(self._state_bytes(), state_before)
         reservation = json.loads(
             self.paths.lockbox_reservation_path.read_text(encoding="utf-8")
@@ -6753,6 +6770,259 @@ runner.accept_receipt(paths, paths.receipt_path("accept.json"))
         with self.assertRaisesRegex(self.runner.RunnerError, "metadata"):
             self.runner.run_preflight(metadata_paths)
 
+    def test_second_review_lockbox_authority_requires_private_mint(
+        self,
+    ) -> None:
+        from scripts.validate_emotion_state_002_phase_b import (
+            canonical_payload_sha256,
+            derive_phase_b_decision,
+        )
+
+        original_decision = derive_phase_b_decision(self.DECISION_EVIDENCE)
+        forged = deepcopy(self.lockbox_result)
+        evidence = forged["decision_evidence"]
+        evidence["models"]["sentence_id"]["macro_f1"] = evidence["models"][
+            "acoustic"
+        ]["macro_f1"]
+        evidence["paired_macro_f1_lift"]["sentence_id"][
+            "point_estimate"
+        ] = 0.0
+        evidence["sentence_driven_apparent_lift"] = (
+            evidence["models"]["sentence_id"]["macro_f1"]
+            > evidence["models"]["class_prior"]["macro_f1"]
+        )
+        evidence["self_sha256"] = canonical_payload_sha256(evidence)
+        self.assertNotEqual(
+            derive_phase_b_decision(forged["decision_evidence"]),
+            original_decision,
+        )
+        self._write_json(self.lockbox_result_path, forged)
+        self.runner.run_preflight(self.paths)
+        self.runner.run_non_lockbox(self.paths)
+
+        with self.assertRaisesRegex(
+            self.runner.RunnerError,
+            "private.*mint|evaluator.*not wired",
+        ):
+            self.runner.run_lockbox(self.paths)
+        self.assertFalse(self.paths.lockbox_reservation_path.exists())
+        self.assertEqual(
+            self.runner.load_state(self.paths)["phase"],
+            "non_lockbox_complete",
+        )
+
+    def test_second_review_private_synthetic_mint_is_bound_into_state(
+        self,
+    ) -> None:
+        from scripts.validate_emotion_state_002_phase_b import (
+            _canonical_digest,
+            derive_phase_b_decision,
+        )
+
+        self.assertTrue(
+            callable(
+                getattr(
+                    self.runner,
+                    "_run_lockbox_with_private_evidence_for_testing",
+                    None,
+                )
+            )
+        )
+        self._write_json(
+            self.lockbox_result_path,
+            {
+                "schema_version": 1,
+                "ami": deepcopy(self.lockbox_result["ami"]),
+            },
+        )
+        self.runner.run_preflight(self.paths)
+        self.runner.run_non_lockbox(self.paths)
+        state = self.runner._run_lockbox_with_private_evidence_for_testing(
+            self.paths,
+            self.DECISION_ARTIFACT,
+        )
+        expected_evidence_sha256 = _canonical_digest(self.DECISION_EVIDENCE)
+        self.assertEqual(
+            state["lockbox_decision_evidence_sha256"],
+            expected_evidence_sha256,
+        )
+        self.assertEqual(
+            state["lockbox_decision_evidence_mint_sha256"],
+            self.DECISION_ARTIFACT.mint_sha256,
+        )
+        reservation = json.loads(
+            self.paths.lockbox_reservation_path.read_text(encoding="utf-8")
+        )
+        self.assertEqual(
+            reservation["lockbox_decision_evidence_sha256"],
+            expected_evidence_sha256,
+        )
+        self.assertEqual(
+            reservation["lockbox_decision_evidence_mint_sha256"],
+            self.DECISION_ARTIFACT.mint_sha256,
+        )
+        minted = json.loads(
+            self.lockbox_result_path.read_text(encoding="utf-8")
+        )
+        self.assertEqual(
+            minted["decision_evidence"],
+            self.DECISION_EVIDENCE,
+        )
+        self.assertEqual(
+            derive_phase_b_decision(minted["decision_evidence"]),
+            derive_phase_b_decision(self.DECISION_EVIDENCE),
+        )
+
+        with self.assertRaisesRegex(
+            self.runner.RunnerError,
+            "private DecisionEvidence mint",
+        ):
+            self.runner._validated_private_decision_evidence(
+                deepcopy(self.DECISION_EVIDENCE)
+            )
+        direct = object.__new__(type(self.DECISION_ARTIFACT))
+        with self.assertRaisesRegex(
+            self.runner.RunnerError,
+            "private DecisionEvidence mint",
+        ):
+            self.runner._run_lockbox_with_private_evidence_for_testing(
+                self.paths,
+                direct,
+            )
+
+    def test_second_review_mutations_require_cached_parent_identity(
+        self,
+    ) -> None:
+        outside = self.root / "outside.txt"
+        outside.write_bytes(b"outside")
+
+        authority_root = self.root / "authority-project"
+        authority_parent = authority_root / "state"
+        authority_parent.mkdir(parents=True)
+        authority_target = authority_parent / "root-bound.json"
+        self.runner._safe_path(
+            authority_target,
+            allowed_root=authority_parent,
+            project_root=authority_root,
+        )
+        moved_authority_root = self.root / "authority-project-original"
+        authority_root.rename(moved_authority_root)
+        authority_parent.mkdir(parents=True)
+        with self.assertRaisesRegex(self.runner.RunnerError, "identity|trusted"):
+            self.runner._write_new_fsynced(authority_target, b"candidate")
+        self.assertFalse(authority_target.exists())
+        self.assertFalse(
+            (
+                moved_authority_root
+                / authority_target.relative_to(authority_root)
+            ).exists()
+        )
+
+        create_parent = self.root / "create-parent"
+        create_parent.mkdir()
+        create_target = create_parent / "new.json"
+        self.runner._safe_path(
+            create_target,
+            allowed_root=create_parent,
+            project_root=self.root,
+        )
+        moved_create_parent = self.root / "create-parent-original"
+        create_parent.rename(moved_create_parent)
+        create_parent.mkdir()
+        with self.assertRaisesRegex(self.runner.RunnerError, "identity|trusted"):
+            self.runner._write_new_fsynced(create_target, b"candidate")
+        self.assertFalse(create_target.exists())
+        self.assertFalse((moved_create_parent / create_target.name).exists())
+
+        remove_parent = self.root / "remove-parent"
+        remove_parent.mkdir()
+        remove_target = remove_parent / "remove.json"
+        remove_target.write_bytes(b"original")
+        self.runner._safe_path(
+            remove_target,
+            allowed_root=remove_parent,
+            project_root=self.root,
+            final_kind="file",
+            require_final=True,
+        )
+        attacker = self.root / "remove-attacker.json"
+        attacker.write_bytes(b"attacker")
+        os.replace(attacker, remove_target)
+        with self.assertRaisesRegex(self.runner.RunnerError, "identity|trusted"):
+            self.runner._durable_unlink(remove_target)
+        self.assertEqual(remove_target.read_bytes(), b"attacker")
+        self.assertEqual(outside.read_bytes(), b"outside")
+
+    def test_second_review_lock_and_replace_bind_both_path_authorities(
+        self,
+    ) -> None:
+        outside = self.root / "outside.bin"
+        outside.write_bytes(b"outside")
+        outside_lock = self.root / "outside-lock.bin"
+        outside_lock.write_bytes(b"")
+        hardlink_parent = self.root / "hardlink-parent"
+        hardlink_parent.mkdir()
+        hardlink_path = hardlink_parent / "identity.lock"
+        os.link(outside_lock, hardlink_path)
+        self.runner._safe_path(
+            hardlink_path,
+            allowed_root=hardlink_parent,
+            project_root=self.root,
+            final_kind="file",
+            require_final=True,
+        )
+        with self.assertRaisesRegex(
+            self.runner.RunnerError,
+            "hard link|single-link",
+        ):
+            self.runner._open_lock_handle(hardlink_path)
+        self.assertEqual(outside_lock.read_bytes(), b"")
+
+        lock_parent = self.root / "lock-parent"
+        lock_parent.mkdir()
+        lock_path = lock_parent / "identity.lock"
+        self.runner._safe_path(
+            lock_path,
+            allowed_root=lock_parent,
+            project_root=self.root,
+        )
+        moved_lock_parent = self.root / "lock-parent-original"
+        lock_parent.rename(moved_lock_parent)
+        lock_parent.mkdir()
+        with self.assertRaisesRegex(self.runner.RunnerError, "identity|trusted"):
+            self.runner._open_lock_handle(lock_path)
+        self.assertFalse(lock_path.exists())
+        self.assertFalse((moved_lock_parent / lock_path.name).exists())
+
+        for changed_side in ("source", "destination"):
+            with self.subTest(changed_side=changed_side):
+                pair_root = self.root / f"replace-{changed_side}"
+                pair_root.mkdir()
+                source = pair_root / "source.stage"
+                destination = pair_root / "destination.json"
+                source.write_bytes(b"source")
+                destination.write_bytes(b"destination")
+                for candidate in (source, destination):
+                    self.runner._safe_path(
+                        candidate,
+                        allowed_root=pair_root,
+                        project_root=self.root,
+                        final_kind="file",
+                        require_final=True,
+                    )
+                changed = source if changed_side == "source" else destination
+                attacker = self.root / f"{changed_side}-attacker.bin"
+                attacker.write_bytes(f"{changed_side}-attacker".encode("ascii"))
+                os.replace(attacker, changed)
+                with self.assertRaisesRegex(
+                    self.runner.RunnerError,
+                    "identity|trusted",
+                ):
+                    self.runner._replace_entry_durably(source, destination)
+                self.assertEqual(outside.read_bytes(), b"outside")
+                self.assertTrue(source.exists())
+                self.assertTrue(destination.exists())
+
     def test_review_important_open_handles_block_root_parent_file_races(
         self,
     ) -> None:
@@ -6839,29 +7109,49 @@ runner.accept_receipt(paths, paths.receipt_path("accept.json"))
 
         self._advance_to_lockbox()
         moved_canonical = self.root / "canonical-moved"
-        real_replace = self.runner.os.replace
+        real_handles = self.runner._trusted_parent_handles
+        canonical_race_attempted = False
         canonical_race_blocked = False
 
-        def race_canonical(source: Any, destination: Any, *args: Any, **kwargs: Any) -> None:
-            nonlocal canonical_race_blocked
-            if (
-                Path(destination) == self.paths.result_path
-                and not canonical_race_blocked
-            ):
-                try:
-                    self.canonical_root.rename(moved_canonical)
-                except OSError:
-                    canonical_race_blocked = True
-            real_replace(source, destination, *args, **kwargs)
+        @contextmanager
+        def race_canonical(
+            path: Path,
+            *,
+            include_target: bool = True,
+        ) -> Any:
+            nonlocal canonical_race_attempted, canonical_race_blocked
+            with real_handles(
+                path,
+                include_target=include_target,
+            ) as authority:
+                if (
+                    Path(path) == self.paths.result_path
+                    and not canonical_race_attempted
+                ):
+                    canonical_race_attempted = True
+                    try:
+                        self.canonical_root.rename(moved_canonical)
+                    except OSError:
+                        canonical_race_blocked = True
+                    else:
+                        self.canonical_root.mkdir()
+                yield authority
 
         with patch.object(
-            self.runner.os,
-            "replace",
+            self.runner,
+            "_trusted_parent_handles",
             side_effect=race_canonical,
         ):
-            self.runner.stage_candidate(self.paths, "race.json")
-        self.assertTrue(canonical_race_blocked)
-        self.assertFalse(moved_canonical.exists())
+            if os.name == "nt":
+                self.runner.stage_candidate(self.paths, "race.json")
+            else:
+                with self.assertRaises(self.runner.RunnerError):
+                    self.runner.stage_candidate(self.paths, "race.json")
+        self.assertTrue(canonical_race_attempted)
+        if canonical_race_blocked:
+            self.assertFalse(moved_canonical.exists())
+        else:
+            self.assertEqual(tuple(self.canonical_root.iterdir()), ())
 
 
 if __name__ == "__main__":
