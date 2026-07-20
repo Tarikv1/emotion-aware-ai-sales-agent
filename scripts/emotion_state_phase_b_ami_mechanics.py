@@ -47,6 +47,8 @@ DIALOGUE_ACT_VOCABULARY = (
     "ami_da_16",
 )
 _DA_ASPECT_TARGET = "da-types.xml"
+_SYNTHETIC_LEGACY_SCHEMA = "phase_b_ami_mechanics_v1"
+_DA_ASPECT_REFERENCE = re.compile(r"^([^#]+)#id\(([^()]+)\)$")
 _REFERENCE_FRAGMENT = re.compile(
     r"^id\(([^)]+)\)(?:\.\.id\(([^)]+)\))?$"
 )
@@ -152,6 +154,23 @@ def _canonical_dialogue_act(value: Any) -> str:
 def _normalized_name(name: str) -> str:
     local_name = name.rsplit("}", 1)[-1].split(":")[-1].lower()
     return re.sub(r"[^a-z0-9]", "", local_name)
+
+
+def _exact_local_name(name: str) -> str:
+    return name.rsplit("}", 1)[-1]
+
+
+def _exact_attribute(element: ET.Element, name: str) -> str | None:
+    values = [
+        value
+        for key, value in element.attrib.items()
+        if _exact_local_name(key) == name and value.strip()
+    ]
+    if not values:
+        return None
+    if len(values) != 1:
+        raise ValueError("conflicting exact XML attributes")
+    return values[0]
 
 
 def _attribute(element: ET.Element, *names: str) -> str | None:
@@ -282,44 +301,68 @@ def _merge_boundaries(boundaries: Sequence[_Boundary]) -> _Boundary:
 
 def _dialogue_act_from_element(
     element: ET.Element,
-    current_filename: str,
+    *,
+    allow_legacy_direct: bool,
 ) -> str | None:
-    direct = _attribute(
-        element,
-        "type",
-        "nite_type",
-        "dialogue_act",
-    )
+    direct_values = [
+        value
+        for name in ("type", "niteType", "nite_type", "dialogue_act")
+        if (value := _exact_attribute(element, name)) is not None
+    ]
+    if len(direct_values) > 1:
+        raise ValueError("AMI dialogue act has conflicting direct labels")
+    direct = direct_values[0] if direct_values else None
     aspect_pointers = [
         child
         for child in element.iter()
         if (
             child is not element
-            and _normalized_name(child.tag) == "pointer"
-            and _attribute(child, "role") == "da-aspect"
+            and _exact_local_name(child.tag) == "pointer"
+            and _exact_attribute(child, "role") == "da-aspect"
         )
     ]
     if direct is not None:
+        if not allow_legacy_direct:
+            raise ValueError(
+                "AMI real-schema dialogue act requires a da-aspect pointer"
+            )
         if aspect_pointers:
             raise ValueError(
                 "AMI dialogue act cannot mix a direct label and da-aspect pointer"
             )
-        return _canonical_dialogue_act(direct)
+        if direct not in DIALOGUE_ACT_VOCABULARY:
+            raise ValueError("dialogue-act vocabulary label is not allowed")
+        return direct
     if not aspect_pointers:
         return None
     if len(aspect_pointers) != 1:
         raise ValueError(
             "AMI dialogue act must have exactly one da-aspect pointer"
         )
-    target, first, last = _local_reference(
-        _attribute(aspect_pointers[0], "href"),
-        current_filename,
-    )
+    href = _exact_attribute(aspect_pointers[0], "href")
+    if href is None:
+        raise ValueError("AMI da-aspect pointer is malformed")
+    if (
+        "://" in href
+        or href.startswith(("/", "\\"))
+        or "\\" in href
+        or "/" in href
+        or ":" in href
+    ):
+        raise ValueError("AMI NXT reference uses an external URI")
+    match = _DA_ASPECT_REFERENCE.fullmatch(href)
+    if match is None:
+        raise ValueError("AMI da-aspect pointer is malformed")
+    target, label = match.groups()
     if target != _DA_ASPECT_TARGET:
+        if target.strip().casefold() == _DA_ASPECT_TARGET.casefold():
+            raise ValueError("AMI da-aspect pointer is malformed")
         raise ValueError("AMI da-aspect target is not the official local ontology")
-    if last is not None:
-        raise ValueError("AMI da-aspect pointer must target one ontology identifier")
-    return _canonical_dialogue_act(first)
+    if label not in DIALOGUE_ACT_VOCABULARY:
+        if label.strip().casefold() in DIALOGUE_ACT_VOCABULARY:
+            raise ValueError("AMI da-aspect pointer is malformed")
+        raise ValueError("dialogue-act vocabulary label is not allowed")
+    return label
 
 
 def _metadata_dependencies(
@@ -329,33 +372,51 @@ def _metadata_dependencies(
 ) -> dict[tuple[str, str], str]:
     dependencies: dict[tuple[str, str], str] = {}
     for meeting in _xml(path).iter():
-        if _normalized_name(meeting.tag) != "meeting":
+        if _exact_local_name(meeting.tag) != "meeting":
             continue
-        meeting_id = _attribute(meeting, "observation")
-        if meeting_id is None:
-            meeting_id = _attribute(meeting, "meeting_id", "id")
+        observation = _exact_attribute(meeting, "observation")
+        real_schema = observation is not None
+        meeting_id = (
+            observation
+            if real_schema
+            else _exact_attribute(meeting, "id")
+        )
         if meeting_id is None:
             continue
         meeting_id = _canonical_identifier(meeting_id, "meeting")
         if meeting_id not in known_meetings:
             continue
         for participant in meeting:
-            if _normalized_name(participant.tag) not in {"participant", "speaker"}:
-                continue
-            agent = _attribute(
-                participant,
-                "code",
-                "agent",
-                "nxt_agent",
-                "speaker",
-                "channel",
-            )
-            participant_id = _attribute(participant, "global_name", "globalname")
-            if participant_id is None:
-                participant_id = _attribute(
+            local_name = _exact_local_name(participant.tag)
+            if real_schema:
+                if local_name != "speaker":
+                    if _normalized_name(participant.tag) in {
+                        "participant",
+                        "speaker",
+                    }:
+                        raise ValueError(
+                            "AMI participant dependency is incomplete"
+                        )
+                    continue
+                agent = _exact_attribute(participant, "nxt_agent")
+                participant_id = _exact_attribute(
+                    participant,
+                    "global_name",
+                )
+            else:
+                if local_name != "participant":
+                    if _normalized_name(participant.tag) in {
+                        "participant",
+                        "speaker",
+                    }:
+                        raise ValueError(
+                            "AMI participant dependency is incomplete"
+                        )
+                    continue
+                agent = _exact_attribute(participant, "code")
+                participant_id = _exact_attribute(
                     participant,
                     "participant_id",
-                    "name",
                 )
             if agent is None or participant_id is None:
                 raise ValueError("AMI participant dependency is incomplete")
@@ -365,15 +426,18 @@ def _metadata_dependencies(
                 "participant",
             )
             key = (meeting_id, agent)
-            if key in dependencies and dependencies[key] != participant_id:
+            if key in dependencies:
                 raise ValueError("AMI participant dependency is conflicting")
             dependencies[key] = participant_id
     if participant_metadata_path is not None:
         enriched: set[str] = set()
         for participant in _xml(Path(participant_metadata_path)).iter():
-            if _normalized_name(participant.tag) != "participant":
+            local_name = _exact_local_name(participant.tag)
+            if local_name != "participant":
+                if _normalized_name(participant.tag) == "participant":
+                    raise ValueError("AMI participant enrichment is incomplete")
                 continue
-            participant_id = _attribute(participant, "id")
+            participant_id = _exact_attribute(participant, "id")
             if participant_id is None:
                 raise ValueError("AMI participant enrichment is incomplete")
             participant_id = _canonical_identifier(
@@ -527,6 +591,13 @@ def load_ami_turns(
     unlabeled_count = 0
     for path in act_files:
         root = _xml(path)
+        legacy_schema = _exact_attribute(root, "synthetic_legacy_schema")
+        if (
+            legacy_schema is not None
+            and legacy_schema != _SYNTHETIC_LEGACY_SCHEMA
+        ):
+            raise ValueError("AMI synthetic legacy schema marker is invalid")
+        allow_legacy_direct = legacy_schema == _SYNTHETIC_LEGACY_SCHEMA
         meeting_id, agent = _source_identity(path, root)
         if meeting_id not in meetings:
             raise ValueError(f"AMI annotation references unknown meeting: {meeting_id}")
@@ -544,7 +615,10 @@ def load_ami_turns(
             }:
                 continue
             found = True
-            dialogue_act = _dialogue_act_from_element(element, path.name)
+            dialogue_act = _dialogue_act_from_element(
+                element,
+                allow_legacy_direct=allow_legacy_direct,
+            )
             referenced: list[_Boundary] = []
             for child in element.iter():
                 if child is element or _normalized_name(child.tag) not in {
@@ -554,8 +628,8 @@ def load_ami_turns(
                 }:
                     continue
                 if (
-                    _normalized_name(child.tag) == "pointer"
-                    and _attribute(child, "role") == "da-aspect"
+                    _exact_local_name(child.tag) == "pointer"
+                    and _exact_attribute(child, "role") == "da-aspect"
                 ):
                     continue
                 target, first, last = _local_reference(

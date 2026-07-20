@@ -2489,7 +2489,8 @@ class AmiMechanicsTests(unittest.TestCase):
         acts_a.write_text(
             """
 <ami:dialogue-acts xmlns:ami="urn:ami" xmlns:nite="http://nite.sourceforge.net/"
-                   ami:meeting_id="M1" ami:agent="A">
+                   ami:meeting_id="M1" ami:agent="A"
+                   ami:synthetic_legacy_schema="phase_b_ami_mechanics_v1">
   <ami:dact nite:id="d1" ami:type="ami_da_2">
     <nite:child href="M1.A.segments.xml#id(s1)" />
   </ami:dact>
@@ -2503,7 +2504,8 @@ class AmiMechanicsTests(unittest.TestCase):
         acts_b.write_text(
             """
 <ami:dialogue-acts xmlns:ami="urn:ami" xmlns:nite="http://nite.sourceforge.net/"
-                   ami:meeting_id="M1" ami:agent="B">
+                   ami:meeting_id="M1" ami:agent="B"
+                   ami:synthetic_legacy_schema="phase_b_ami_mechanics_v1">
   <ami:dact nite:id="d2" ami:niteType="ami_da_1">
     <nite:child href="M1.B.segments.xml#id(s3)" />
   </ami:dact>
@@ -2566,6 +2568,11 @@ class AmiMechanicsTests(unittest.TestCase):
         }
         for path in fixture["dialogue_act_paths"]:
             source = path.read_text(encoding="utf-8")
+            source = source.replace(
+                '\n                   ami:synthetic_legacy_schema='
+                '"phase_b_ami_mechanics_v1"',
+                "",
+            )
             for original, replacement in replacements.items():
                 source = source.replace(original, replacement)
             path.write_text(source, encoding="utf-8")
@@ -2734,6 +2741,93 @@ class AmiMechanicsTests(unittest.TestCase):
             ):
                 load_ami_turns(**fixture)
 
+        with tempfile.TemporaryDirectory() as directory:
+            fixture = self._write_real_schema_fixture(
+                Path(directory),
+                include_participants=True,
+            )
+            participants = fixture["participant_metadata_path"]
+            participants.write_text(
+                participants.read_text(encoding="utf-8").replace(
+                    'nite:id="P-A"',
+                    'nite:ID="P-A"',
+                ),
+                encoding="utf-8",
+            )
+            with self.assertRaisesRegex(
+                ValueError,
+                "participant enrichment",
+            ):
+                load_ami_turns(**fixture)
+
+    def test_real_meeting_dependencies_reject_aliases_and_duplicates(
+        self,
+    ) -> None:
+        from scripts.emotion_state_phase_b_ami_mechanics import load_ami_turns
+
+        cases = (
+            (
+                "agent_alias",
+                'ami:nxt_agent="A"',
+                'ami:code="A"',
+            ),
+            (
+                "agent_case_alias",
+                'ami:nxt_agent="A"',
+                'ami:nxtAgent="A"',
+            ),
+            (
+                "participant_alias",
+                'ami:global_name="P-A"',
+                'ami:participant_id="P-A"',
+            ),
+            (
+                "participant_case_alias",
+                'ami:global_name="P-A"',
+                'ami:globalName="P-A"',
+            ),
+            (
+                "element_alias",
+                "<ami:speaker ",
+                "<ami:participant ",
+            ),
+        )
+        for name, original, replacement in cases:
+            with self.subTest(case=name):
+                with tempfile.TemporaryDirectory() as directory:
+                    fixture = self._write_real_schema_fixture(Path(directory))
+                    metadata = fixture["metadata_path"]
+                    source = metadata.read_text(encoding="utf-8")
+                    self.assertIn(original, source)
+                    metadata.write_text(
+                        source.replace(original, replacement, 1),
+                        encoding="utf-8",
+                    )
+                    with self.assertRaisesRegex(
+                        ValueError,
+                        "participant dependency",
+                    ):
+                        load_ami_turns(**fixture)
+
+        with tempfile.TemporaryDirectory() as directory:
+            fixture = self._write_real_schema_fixture(Path(directory))
+            metadata = fixture["metadata_path"]
+            source = metadata.read_text(encoding="utf-8")
+            binding = (
+                '    <ami:speaker ami:nxt_agent="A" '
+                'ami:global_name="P-A" />'
+            )
+            self.assertIn(binding, source)
+            metadata.write_text(
+                source.replace(binding, f"{binding}\n{binding}", 1),
+                encoding="utf-8",
+            )
+            with self.assertRaisesRegex(
+                ValueError,
+                "participant dependency is conflicting",
+            ):
+                load_ami_turns(**fixture)
+
     def test_real_da_aspect_pointer_is_exact_and_local(self) -> None:
         from scripts.emotion_state_phase_b_ami_mechanics import load_ami_turns
 
@@ -2745,9 +2839,35 @@ class AmiMechanicsTests(unittest.TestCase):
             ("ami_da_2", "ami_da_1", "ami_da_2", "ami_da_3"),
         )
 
+        with tempfile.TemporaryDirectory() as directory:
+            fixture = self._write_real_schema_fixture(Path(directory))
+            acts = fixture["dialogue_act_paths"][0]
+            source = acts.read_text(encoding="utf-8")
+            pointer_record = (
+                '<ami:dact nite:id="d1">\n'
+                '    <nite:pointer role="da-aspect" '
+                'href="da-types.xml#id(ami_da_2)" />'
+            )
+            self.assertIn(pointer_record, source)
+            acts.write_text(
+                source.replace(
+                    pointer_record,
+                    '<ami:dact nite:id="d1" ami:type="ami_da_2">',
+                    1,
+                ),
+                encoding="utf-8",
+            )
+            with self.assertRaisesRegex(ValueError, "da-aspect pointer"):
+                load_ami_turns(**fixture)
+
+    def test_real_da_aspect_pointer_rejects_nonexact_references(
+        self,
+    ) -> None:
+        from scripts.emotion_state_phase_b_ami_mechanics import load_ami_turns
+
         cases = (
             (
-                "cardinality",
+                "multiple_conflicting",
                 '    <nite:pointer role="da-aspect" '
                 'href="da-types.xml#id(ami_da_2)" />',
                 '    <nite:pointer role="da-aspect" '
@@ -2763,6 +2883,42 @@ class AmiMechanicsTests(unittest.TestCase):
                 "dialogue-act vocabulary",
             ),
             (
+                "identifier_case",
+                "da-types.xml#id(ami_da_2)",
+                "da-types.xml#id(AMI_DA_2)",
+                "da-aspect pointer",
+            ),
+            (
+                "identifier_whitespace",
+                "da-types.xml#id(ami_da_2)",
+                "da-types.xml#id( ami_da_2 )",
+                "da-aspect pointer",
+            ),
+            (
+                "fragment_whitespace",
+                "da-types.xml#id(ami_da_2)",
+                "da-types.xml# id(ami_da_2)",
+                "da-aspect pointer",
+            ),
+            (
+                "target_whitespace",
+                "da-types.xml#id(ami_da_2)",
+                "da-types.xml #id(ami_da_2)",
+                "da-aspect pointer",
+            ),
+            (
+                "target_case",
+                "da-types.xml#id(ami_da_2)",
+                "DA-TYPES.xml#id(ami_da_2)",
+                "da-aspect pointer",
+            ),
+            (
+                "range",
+                "da-types.xml#id(ami_da_2)",
+                "da-types.xml#id(ami_da_2)..id(ami_da_3)",
+                "da-aspect pointer",
+            ),
+            (
                 "external",
                 "da-types.xml#id(ami_da_2)",
                 "https://example.invalid/da-types.xml#id(ami_da_2)",
@@ -2773,6 +2929,12 @@ class AmiMechanicsTests(unittest.TestCase):
                 "da-types.xml#id(ami_da_2)",
                 "other-types.xml#id(ami_da_2)",
                 "da-aspect target",
+            ),
+            (
+                "direct_and_pointer",
+                '<ami:dact nite:id="d1">',
+                '<ami:dact nite:id="d1" ami:type="ami_da_2">',
+                "da-aspect pointer",
             ),
         )
         for name, original, replacement, pattern in cases:
