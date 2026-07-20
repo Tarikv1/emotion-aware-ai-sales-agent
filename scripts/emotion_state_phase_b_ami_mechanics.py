@@ -27,6 +27,10 @@ SCALAR_VALUE_KEYS = (
     "speaker_balance_normalized_entropy",
     "backchannels_per_100_turns",
 )
+TIMING_SCALAR_VALUE_KEYS_V2 = (
+    "overlap_ratio",
+    "speaker_balance_normalized_entropy",
+)
 VALUE_KEYS = BUCKET_VALUE_KEYS + SCALAR_VALUE_KEYS
 BACKCHANNEL_ACT = "ami_da_1"
 DIALOGUE_ACT_VOCABULARY = (
@@ -104,6 +108,50 @@ class Turn:
             "dialogue_act",
             _canonical_dialogue_act(self.dialogue_act),
         )
+
+
+@dataclass(frozen=True)
+class TimedTurn:
+    meeting_id: str
+    participant_id: str
+    start_ms: int
+    end_ms: int
+
+    def __post_init__(self) -> None:
+        if (
+            type(self.meeting_id) is not str
+            or self.meeting_id
+            != _canonical_identifier(self.meeting_id, "meeting")
+        ):
+            raise ValueError("timed-turn meeting identifier is invalid")
+        if (
+            type(self.participant_id) is not str
+            or self.participant_id
+            != _canonical_identifier(self.participant_id, "participant")
+        ):
+            raise ValueError("timed-turn participant identifier is invalid")
+        if (
+            type(self.start_ms) is not int
+            or type(self.end_ms) is not int
+            or not 0 <= self.start_ms < self.end_ms
+        ):
+            raise ValueError("timed-turn span is malformed")
+
+
+@dataclass(frozen=True)
+class AmiMeetingEvidenceV2:
+    meeting_id: str
+    participants: tuple[str, ...]
+    timing_file_present: bool
+    timed_turns: tuple[TimedTurn, ...] | None
+    dialogue_turns: tuple[Turn, ...] | None
+    dialogue_act_file_count: int
+    fully_labeled_dialogue_act_file_count: int
+    unlabeled_dialogue_act_record_count: int
+    unlabeled_dialogue_act_file_count: int
+
+    def __post_init__(self) -> None:
+        _validated_ami_meeting_evidence_v2(self)
 
 
 @dataclass(frozen=True)
@@ -1011,6 +1059,463 @@ def _aggregate_cell(
         "suppressed": suppressed,
         "unique_participant_count": participant_count,
         "value": None if suppressed else float(value),
+    }
+
+
+def _strict_identifier_sequence_v2(
+    values: Sequence[str],
+    name: str,
+) -> tuple[str, ...]:
+    if isinstance(values, (str, bytes)) or not isinstance(values, Sequence):
+        raise ValueError(f"{name} must be a sequence")
+    identifiers = tuple(values)
+    if not identifiers:
+        raise ValueError(f"{name} must be non-empty")
+    for value in identifiers:
+        if (
+            type(value) is not str
+            or value != _canonical_identifier(value, name.rstrip("s"))
+        ):
+            raise ValueError(f"{name} must contain canonical identifiers")
+    if len(set(identifiers)) != len(identifiers):
+        raise ValueError(f"{name} must contain unique identifiers")
+    return identifiers
+
+
+def _validated_ami_meeting_evidence_v2(
+    evidence: AmiMeetingEvidenceV2,
+) -> AmiMeetingEvidenceV2:
+    if type(evidence) is not AmiMeetingEvidenceV2:
+        raise ValueError(
+            "AMI v2 aggregate inputs must be AmiMeetingEvidenceV2 records"
+        )
+    if (
+        type(evidence.meeting_id) is not str
+        or evidence.meeting_id
+        != _canonical_identifier(evidence.meeting_id, "meeting")
+    ):
+        raise ValueError("AMI v2 meeting identifier is invalid")
+    if type(evidence.participants) is not tuple:
+        raise ValueError("AMI v2 participants must be a tuple")
+    participants = evidence.participants
+    if len(participants) < 2:
+        raise ValueError(
+            "AMI v2 meeting requires at least two authoritative participants"
+        )
+    for participant in participants:
+        if (
+            type(participant) is not str
+            or participant
+            != _canonical_identifier(participant, "participant")
+        ):
+            raise ValueError("AMI v2 participant identifier is invalid")
+    if participants != tuple(sorted(set(participants))):
+        raise ValueError(
+            "AMI v2 participants must be unique and canonically ordered"
+        )
+    if type(evidence.timing_file_present) is not bool:
+        raise ValueError("AMI v2 timing-file presence must be a boolean")
+
+    timed_turns = evidence.timed_turns
+    if timed_turns is not None:
+        if type(timed_turns) is not tuple or not timed_turns:
+            raise ValueError(
+                "AMI v2 timed turns must be a non-empty tuple or null"
+            )
+        if any(type(turn) is not TimedTurn for turn in timed_turns):
+            raise ValueError(
+                "AMI v2 timed turns must contain only TimedTurn records"
+            )
+        if any(turn.meeting_id != evidence.meeting_id for turn in timed_turns):
+            raise ValueError("AMI v2 timed turn crosses meeting identity")
+        if any(
+            turn.participant_id not in participants
+            for turn in timed_turns
+        ):
+            raise ValueError(
+                "AMI v2 timed turn references an unknown participant"
+            )
+        timed_key = lambda turn: (
+            turn.start_ms,
+            turn.end_ms,
+            turn.participant_id,
+        )
+        if timed_turns != tuple(sorted(timed_turns, key=timed_key)):
+            raise ValueError("AMI v2 timed-turn order is ambiguous")
+        if len(set(timed_turns)) != len(timed_turns):
+            raise ValueError("AMI v2 timed turns contain an exact duplicate")
+        if len({turn.participant_id for turn in timed_turns}) < 2:
+            raise ValueError(
+                "AMI v2 usable timing requires two represented participants"
+            )
+    if timed_turns is not None and not evidence.timing_file_present:
+        raise ValueError(
+            "AMI v2 timed turns require a present timing source file"
+        )
+
+    dialogue_turns = evidence.dialogue_turns
+    if dialogue_turns is not None:
+        if type(dialogue_turns) is not tuple or not dialogue_turns:
+            raise ValueError(
+                "AMI v2 dialogue turns must be a non-empty tuple or null"
+            )
+        if any(type(turn) is not Turn for turn in dialogue_turns):
+            raise ValueError(
+                "AMI v2 dialogue turns must contain only Turn records"
+            )
+        if any(
+            turn.meeting_id != evidence.meeting_id
+            for turn in dialogue_turns
+        ):
+            raise ValueError("AMI v2 dialogue turn crosses meeting identity")
+        if any(
+            turn.participant_id not in participants
+            for turn in dialogue_turns
+        ):
+            raise ValueError(
+                "AMI v2 dialogue turn references an unknown participant"
+            )
+        for turn in dialogue_turns:
+            if (
+                turn.meeting_id
+                != _canonical_identifier(turn.meeting_id, "meeting")
+                or turn.participant_id
+                != _canonical_identifier(turn.participant_id, "participant")
+                or turn.dialogue_act
+                != _canonical_dialogue_act(turn.dialogue_act)
+                or type(turn.start_ms) is not int
+                or type(turn.end_ms) is not int
+                or not 0 <= turn.start_ms < turn.end_ms
+            ):
+                raise ValueError("AMI v2 dialogue turn is malformed")
+        dialogue_key = lambda turn: (
+            turn.start_ms,
+            turn.end_ms,
+            turn.participant_id,
+            turn.dialogue_act,
+        )
+        if dialogue_turns != tuple(sorted(dialogue_turns, key=dialogue_key)):
+            raise ValueError("AMI v2 dialogue-turn order is ambiguous")
+        if len(set(dialogue_turns)) != len(dialogue_turns):
+            raise ValueError(
+                "AMI v2 dialogue turns contain an exact duplicate"
+            )
+
+    count_names = (
+        "dialogue_act_file_count",
+        "fully_labeled_dialogue_act_file_count",
+        "unlabeled_dialogue_act_record_count",
+        "unlabeled_dialogue_act_file_count",
+    )
+    for name in count_names:
+        value = getattr(evidence, name)
+        if type(value) is not int or value < 0:
+            raise ValueError(
+                f"AMI v2 {name} must be a non-negative integer"
+            )
+    file_count = evidence.dialogue_act_file_count
+    fully_labeled_count = evidence.fully_labeled_dialogue_act_file_count
+    unlabeled_record_count = evidence.unlabeled_dialogue_act_record_count
+    unlabeled_file_count = evidence.unlabeled_dialogue_act_file_count
+    if fully_labeled_count > file_count:
+        raise ValueError(
+            "AMI v2 fully labeled dialogue files exceed total files"
+        )
+    if unlabeled_file_count > file_count:
+        raise ValueError(
+            "AMI v2 unlabeled dialogue files exceed total files"
+        )
+    if unlabeled_record_count < unlabeled_file_count:
+        raise ValueError(
+            "AMI v2 unlabeled records cannot be fewer than unlabeled files"
+        )
+    incomplete_file_count = file_count - fully_labeled_count
+    if unlabeled_file_count != incomplete_file_count:
+        raise ValueError(
+            "AMI v2 incomplete dialogue files require unlabeled records"
+        )
+    if incomplete_file_count == 0 and unlabeled_record_count != 0:
+        raise ValueError(
+            "AMI v2 unlabeled counts require an incomplete dialogue file"
+        )
+    if dialogue_turns is not None and (
+        file_count == 0 or incomplete_file_count != 0
+    ):
+        raise ValueError(
+            "AMI v2 dialogue turns cannot assert incomplete evidence complete"
+        )
+    return evidence
+
+
+def _timing_values_v2(
+    timed_turns: tuple[TimedTurn, ...],
+) -> dict[str, float]:
+    durations = [
+        turn.end_ms - turn.start_ms
+        for turn in timed_turns
+    ]
+    nonnegative_gaps = [
+        gap
+        for current, following in zip(timed_turns, timed_turns[1:])
+        if (gap := following.start_ms - current.end_ms) >= 0
+    ]
+    meeting_span = (
+        max(turn.end_ms for turn in timed_turns)
+        - min(turn.start_ms for turn in timed_turns)
+    )
+    speaking_time: Counter[str] = Counter()
+    for turn, duration in zip(timed_turns, durations):
+        speaking_time[turn.participant_id] += duration
+    total_speaking_time = sum(speaking_time.values())
+    entropy = -sum(
+        (duration / total_speaking_time)
+        * math.log(duration / total_speaking_time)
+        for duration in speaking_time.values()
+    )
+    normalized_entropy = entropy / math.log(len(speaking_time))
+    return {
+        "turn_duration_ms_median": _linear_percentile(durations, 0.5),
+        "turn_duration_ms_p90": _linear_percentile(durations, 0.9),
+        "inter_turn_gap_ms_median": _linear_percentile(
+            nonnegative_gaps,
+            0.5,
+        ),
+        "inter_turn_gap_ms_p90": _linear_percentile(
+            nonnegative_gaps,
+            0.9,
+        ),
+        "overlap_ratio": _overlap_duration(timed_turns) / meeting_span,
+        "speaker_balance_normalized_entropy": normalized_entropy,
+    }
+
+
+def _select_contributors_v2(
+    meetings: tuple[AmiMeetingEvidenceV2, ...],
+) -> tuple[
+    tuple[AmiMeetingEvidenceV2, ...],
+    int,
+    set[str],
+]:
+    selected: list[AmiMeetingEvidenceV2] = []
+    contributed: set[str] = set()
+    repeated = 0
+    for meeting in meetings:
+        if contributed.intersection(meeting.participants):
+            repeated += 1
+            continue
+        selected.append(meeting)
+        contributed.update(meeting.participants)
+    return tuple(selected), repeated, contributed
+
+
+def _timing_family_v2(
+    candidates: tuple[AmiMeetingEvidenceV2, ...],
+    minimum_contributors: int,
+) -> dict[str, Any]:
+    coverage = {
+        "timing_file_meeting_count": sum(
+            meeting.timing_file_present
+            for meeting in candidates
+        ),
+        "usable_timing_meeting_count": sum(
+            meeting.timed_turns is not None
+            for meeting in candidates
+        ),
+    }
+    if coverage["usable_timing_meeting_count"] != len(candidates):
+        return {
+            "status": "unavailable",
+            "reason_codes": ["incomplete_usable_timing_coverage"],
+            "coverage": coverage,
+            "contribution": None,
+            "buckets": None,
+            "scalars": None,
+        }
+
+    selected, repeated, contributed = _select_contributors_v2(candidates)
+    if len(selected) + repeated != len(candidates):
+        raise ValueError("AMI v2 timing contribution accounting is invalid")
+    participant_count = len(contributed)
+    value_maps = [
+        _timing_values_v2(meeting.timed_turns)
+        for meeting in selected
+        if meeting.timed_turns is not None
+    ]
+    aggregates = {
+        key: sum(values[key] for values in value_maps) / len(value_maps)
+        for key in BUCKET_VALUE_KEYS + TIMING_SCALAR_VALUE_KEYS_V2
+    }
+    suppressed = participant_count < minimum_contributors
+    contribution = {
+        "selected_meeting_count": len(selected),
+        "unique_participant_count": participant_count,
+        "repeated_participant_meeting_count": repeated,
+        "suppressed": suppressed,
+    }
+    return {
+        "status": "available",
+        "reason_codes": [],
+        "coverage": coverage,
+        "contribution": contribution,
+        "buckets": {
+            key: _aggregate_cell(
+                aggregates[key],
+                participant_count,
+                minimum_contributors,
+            )
+            for key in BUCKET_VALUE_KEYS
+        },
+        "scalars": {
+            key: _aggregate_cell(
+                aggregates[key],
+                participant_count,
+                minimum_contributors,
+            )
+            for key in TIMING_SCALAR_VALUE_KEYS_V2
+        },
+    }
+
+
+def _dialogue_act_family_v2(
+    candidates: tuple[AmiMeetingEvidenceV2, ...],
+) -> dict[str, Any]:
+    coverage = {
+        "dialogue_act_meeting_count": sum(
+            meeting.dialogue_act_file_count > 0
+            for meeting in candidates
+        ),
+        "dialogue_act_file_count": sum(
+            meeting.dialogue_act_file_count
+            for meeting in candidates
+        ),
+        "fully_labeled_dialogue_act_file_count": sum(
+            meeting.fully_labeled_dialogue_act_file_count
+            for meeting in candidates
+        ),
+    }
+    reason_codes: list[str] = []
+    if coverage["dialogue_act_meeting_count"] != len(candidates):
+        reason_codes.append(
+            "incomplete_dialogue_act_meeting_coverage"
+        )
+    if any(
+        meeting.unlabeled_dialogue_act_record_count > 0
+        or meeting.unlabeled_dialogue_act_file_count > 0
+        or meeting.fully_labeled_dialogue_act_file_count
+        != meeting.dialogue_act_file_count
+        for meeting in candidates
+    ):
+        reason_codes.append("unlabeled_dialogue_act_records")
+    if not reason_codes:
+        raise ValueError(
+            "AMI v2 available dialogue-act aggregation is not implemented"
+        )
+    return {
+        "status": "unavailable",
+        "reason_codes": reason_codes,
+        "coverage": coverage,
+        "contribution": None,
+        "scalars": None,
+        "dialogue_acts": None,
+    }
+
+
+def contribution_limited_aggregates_v2(
+    meetings: Sequence[AmiMeetingEvidenceV2],
+    partition_membership: Mapping[str, Sequence[str]],
+    official_order: Sequence[str],
+    minimum_contributors: int = 10,
+) -> dict[str, Any]:
+    if (
+        type(minimum_contributors) is not int
+        or minimum_contributors < 10
+    ):
+        raise ValueError("minimum contributors must be at least 10")
+    if isinstance(meetings, (str, bytes)) or not isinstance(
+        meetings,
+        Sequence,
+    ):
+        raise ValueError("AMI v2 meetings must be a sequence")
+    validated = tuple(
+        _validated_ami_meeting_evidence_v2(meeting)
+        for meeting in meetings
+    )
+    by_id = {
+        meeting.meeting_id: meeting
+        for meeting in validated
+    }
+    if len(by_id) != len(validated):
+        raise ValueError("duplicate AMI v2 meeting identifier")
+    if not isinstance(partition_membership, Mapping) or set(
+        partition_membership
+    ) != set(PARTITION_CELLS):
+        raise ValueError("AMI v2 partition membership fields are invalid")
+    membership = {
+        partition: _strict_identifier_sequence_v2(
+            partition_membership[partition],
+            f"{partition} memberships",
+        )
+        for partition in PARTITION_CELLS
+    }
+    scenario = set(membership["scenario_only"])
+    full_only = set(membership["full_only"])
+    full_corpus = set(membership["full_corpus"])
+    if not scenario.isdisjoint(full_only):
+        raise ValueError(
+            "AMI v2 scenario-only and full-only partitions must be disjoint"
+        )
+    if scenario | full_only != full_corpus:
+        raise ValueError(
+            "AMI v2 partition union must equal the full corpus"
+        )
+    order = _strict_identifier_sequence_v2(
+        official_order,
+        "official meeting orders",
+    )
+    if set(order) != full_corpus:
+        raise ValueError(
+            "AMI v2 official order must contain exactly the full corpus"
+        )
+    if set(by_id) != full_corpus:
+        raise ValueError(
+            "AMI v2 evidence must contain exactly the full corpus"
+        )
+
+    member_sets = {
+        partition: set(member_ids)
+        for partition, member_ids in membership.items()
+    }
+    partitions: dict[str, Any] = {}
+    for partition in PARTITION_CELLS:
+        candidates = tuple(
+            by_id[meeting_id]
+            for meeting_id in order
+            if meeting_id in member_sets[partition]
+        )
+        partitions[partition] = {
+            "population_meeting_count": len(candidates),
+            "metric_families": {
+                "timing": _timing_family_v2(
+                    candidates,
+                    minimum_contributors,
+                ),
+                "dialogue_act": _dialogue_act_family_v2(candidates),
+            },
+        }
+    return {
+        "schema_id": "emotion-state-ami-mechanics-aggregate-v2",
+        "schema_version": 2,
+        "source_quality": {
+            "unlabeled_dialogue_act_record_count": sum(
+                meeting.unlabeled_dialogue_act_record_count
+                for meeting in validated
+            ),
+            "unlabeled_dialogue_act_file_count": sum(
+                meeting.unlabeled_dialogue_act_file_count
+                for meeting in validated
+            ),
+        },
+        "partitions": partitions,
     }
 
 

@@ -3948,6 +3948,705 @@ class AmiMechanicsTests(unittest.TestCase):
                     )
 
 
+class AmiMechanicsV2Tests(unittest.TestCase):
+    TIMING_BUCKET_KEYS = (
+        "turn_duration_ms_median",
+        "turn_duration_ms_p90",
+        "inter_turn_gap_ms_median",
+        "inter_turn_gap_ms_p90",
+    )
+    TIMING_SCALAR_KEYS = (
+        "overlap_ratio",
+        "speaker_balance_normalized_entropy",
+    )
+
+    @staticmethod
+    def _timed_turns(
+        meeting_id: str,
+        participants: tuple[str, str],
+    ) -> tuple[Any, ...]:
+        from scripts.emotion_state_phase_b_ami_mechanics import TimedTurn
+
+        first, second = participants
+        return (
+            TimedTurn(meeting_id, first, 0, 1000),
+            TimedTurn(meeting_id, second, 800, 1200),
+            TimedTurn(meeting_id, second, 1500, 2500),
+            TimedTurn(meeting_id, first, 2600, 3000),
+        )
+
+    @staticmethod
+    def _dialogue_turns(
+        meeting_id: str,
+        participants: tuple[str, str],
+    ) -> tuple[Any, ...]:
+        from scripts.emotion_state_phase_b_ami_mechanics import Turn
+
+        first, second = participants
+        return (
+            Turn(meeting_id, first, 0, 1000, "ami_da_2"),
+            Turn(meeting_id, second, 800, 1200, "ami_da_1"),
+            Turn(meeting_id, second, 1500, 2500, "ami_da_2"),
+            Turn(meeting_id, first, 2600, 3000, "ami_da_3"),
+        )
+
+    @classmethod
+    def _evidence(
+        cls,
+        meeting_id: str,
+        *,
+        timed: bool = True,
+        dialogue_act_file_count: int = 0,
+        fully_labeled_dialogue_act_file_count: int = 0,
+        unlabeled_dialogue_act_record_count: int = 0,
+        unlabeled_dialogue_act_file_count: int = 0,
+        participants: tuple[str, str] | None = None,
+    ) -> Any:
+        from scripts.emotion_state_phase_b_ami_mechanics import (
+            AmiMeetingEvidenceV2,
+        )
+
+        participant_ids = participants or (
+            f"P-{meeting_id}-A",
+            f"P-{meeting_id}-B",
+        )
+        dialogue_complete = (
+            dialogue_act_file_count > 0
+            and fully_labeled_dialogue_act_file_count
+            == dialogue_act_file_count
+            and unlabeled_dialogue_act_record_count == 0
+            and unlabeled_dialogue_act_file_count == 0
+        )
+        return AmiMeetingEvidenceV2(
+            meeting_id=meeting_id,
+            participants=participant_ids,
+            timing_file_present=True,
+            timed_turns=(
+                cls._timed_turns(meeting_id, participant_ids)
+                if timed
+                else None
+            ),
+            dialogue_turns=(
+                cls._dialogue_turns(meeting_id, participant_ids)
+                if dialogue_complete
+                else None
+            ),
+            dialogue_act_file_count=dialogue_act_file_count,
+            fully_labeled_dialogue_act_file_count=(
+                fully_labeled_dialogue_act_file_count
+            ),
+            unlabeled_dialogue_act_record_count=(
+                unlabeled_dialogue_act_record_count
+            ),
+            unlabeled_dialogue_act_file_count=(
+                unlabeled_dialogue_act_file_count
+            ),
+        )
+
+    @classmethod
+    def _fixed_fixture(
+        cls,
+    ) -> tuple[tuple[Any, ...], dict[str, tuple[str, ...]], tuple[str, ...]]:
+        scenario_ids = tuple(f"S{index:03d}" for index in range(1, 139))
+        full_only_ids = tuple(f"F{index:03d}" for index in range(1, 33))
+        official_order = scenario_ids + full_only_ids
+        evidence: list[Any] = []
+        for index, meeting_id in enumerate(scenario_ids, start=1):
+            incomplete = index <= 25
+            evidence.append(cls._evidence(
+                meeting_id,
+                dialogue_act_file_count=4,
+                fully_labeled_dialogue_act_file_count=(
+                    3 if incomplete else 4
+                ),
+                unlabeled_dialogue_act_record_count=1 if incomplete else 0,
+                unlabeled_dialogue_act_file_count=1 if incomplete else 0,
+            ))
+        for index, meeting_id in enumerate(full_only_ids, start=1):
+            has_dialogue = index == 1
+            evidence.append(cls._evidence(
+                meeting_id,
+                timed=index > 5,
+                dialogue_act_file_count=4 if has_dialogue else 0,
+                fully_labeled_dialogue_act_file_count=(
+                    3 if has_dialogue else 0
+                ),
+                unlabeled_dialogue_act_record_count=(
+                    3 if has_dialogue else 0
+                ),
+                unlabeled_dialogue_act_file_count=(
+                    1 if has_dialogue else 0
+                ),
+            ))
+        membership = {
+            "full_only": full_only_ids,
+            "scenario_only": scenario_ids,
+            "full_corpus": official_order,
+        }
+        return tuple(reversed(evidence)), membership, official_order
+
+    @classmethod
+    def _aggregate(cls) -> dict[str, Any]:
+        from scripts.emotion_state_phase_b_ami_mechanics import (
+            contribution_limited_aggregates_v2,
+        )
+
+        evidence, membership, official_order = cls._fixed_fixture()
+        return contribution_limited_aggregates_v2(
+            evidence,
+            membership,
+            official_order,
+        )
+
+    def test_v2_preserves_official_populations_and_partition_algebra(
+        self,
+    ) -> None:
+        evidence, membership, official_order = self._fixed_fixture()
+        aggregate = self._aggregate()
+        self.assertEqual(
+            {
+                partition: value["population_meeting_count"]
+                for partition, value in aggregate["partitions"].items()
+            },
+            {
+                "scenario_only": 138,
+                "full_corpus": 170,
+                "full_only": 32,
+            },
+        )
+        self.assertTrue(
+            set(membership["scenario_only"]).isdisjoint(
+                membership["full_only"]
+            )
+        )
+        self.assertEqual(
+            set(membership["scenario_only"]) | set(membership["full_only"]),
+            set(membership["full_corpus"]),
+        )
+        self.assertEqual(set(official_order), set(membership["full_corpus"]))
+        self.assertEqual(
+            {item.meeting_id for item in evidence},
+            set(membership["full_corpus"]),
+        )
+
+    def test_v2_distinguishes_timing_file_coverage_from_usable_counts(
+        self,
+    ) -> None:
+        timing = {
+            partition: payload["metric_families"]["timing"]
+            for partition, payload in self._aggregate()["partitions"].items()
+        }
+        self.assertEqual(
+            {
+                partition: family["coverage"]
+                for partition, family in timing.items()
+            },
+            {
+                "scenario_only": {
+                    "timing_file_meeting_count": 138,
+                    "usable_timing_meeting_count": 138,
+                },
+                "full_corpus": {
+                    "timing_file_meeting_count": 170,
+                    "usable_timing_meeting_count": 165,
+                },
+                "full_only": {
+                    "timing_file_meeting_count": 32,
+                    "usable_timing_meeting_count": 27,
+                },
+            },
+        )
+        self.assertEqual(
+            {
+                partition: (
+                    family["status"],
+                    family["reason_codes"],
+                )
+                for partition, family in timing.items()
+            },
+            {
+                "scenario_only": ("available", []),
+                "full_corpus": (
+                    "unavailable",
+                    ["incomplete_usable_timing_coverage"],
+                ),
+                "full_only": (
+                    "unavailable",
+                    ["incomplete_usable_timing_coverage"],
+                ),
+            },
+        )
+
+    def test_v2_dialogue_coverage_and_ordered_blockers_are_exact(
+        self,
+    ) -> None:
+        dialogue = {
+            partition: payload["metric_families"]["dialogue_act"]
+            for partition, payload in self._aggregate()["partitions"].items()
+        }
+        self.assertEqual(
+            {
+                partition: family["coverage"]
+                for partition, family in dialogue.items()
+            },
+            {
+                "scenario_only": {
+                    "dialogue_act_meeting_count": 138,
+                    "dialogue_act_file_count": 552,
+                    "fully_labeled_dialogue_act_file_count": 527,
+                },
+                "full_corpus": {
+                    "dialogue_act_meeting_count": 139,
+                    "dialogue_act_file_count": 556,
+                    "fully_labeled_dialogue_act_file_count": 530,
+                },
+                "full_only": {
+                    "dialogue_act_meeting_count": 1,
+                    "dialogue_act_file_count": 4,
+                    "fully_labeled_dialogue_act_file_count": 3,
+                },
+            },
+        )
+        self.assertEqual(
+            {
+                partition: family["reason_codes"]
+                for partition, family in dialogue.items()
+            },
+            {
+                "scenario_only": ["unlabeled_dialogue_act_records"],
+                "full_corpus": [
+                    "incomplete_dialogue_act_meeting_coverage",
+                    "unlabeled_dialogue_act_records",
+                ],
+                "full_only": [
+                    "incomplete_dialogue_act_meeting_coverage",
+                    "unlabeled_dialogue_act_records",
+                ],
+            },
+        )
+        self.assertTrue(
+            all(family["status"] == "unavailable" for family in dialogue.values())
+        )
+
+    def test_v2_exact_shape_and_global_source_quality_have_no_partition_claim(
+        self,
+    ) -> None:
+        aggregate = self._aggregate()
+        self.assertEqual(
+            tuple(aggregate),
+            ("schema_id", "schema_version", "source_quality", "partitions"),
+        )
+        self.assertEqual(
+            aggregate["schema_id"],
+            "emotion-state-ami-mechanics-aggregate-v2",
+        )
+        self.assertEqual(aggregate["schema_version"], 2)
+        self.assertEqual(
+            aggregate["source_quality"],
+            {
+                "unlabeled_dialogue_act_record_count": 28,
+                "unlabeled_dialogue_act_file_count": 26,
+            },
+        )
+        for partition in aggregate["partitions"].values():
+            self.assertEqual(
+                set(partition),
+                {"population_meeting_count", "metric_families"},
+            )
+            self.assertNotIn(
+                "unlabeled_dialogue_act_record_count",
+                partition,
+            )
+            self.assertEqual(
+                set(partition["metric_families"]),
+                {"timing", "dialogue_act"},
+            )
+
+    def test_unavailable_result_groups_are_null_and_selection_is_not_called(
+        self,
+    ) -> None:
+        from scripts import emotion_state_phase_b_ami_mechanics as ami
+
+        evidence, membership, official_order = self._fixed_fixture()
+        calls: list[tuple[str, ...]] = []
+        original = ami._select_contributors_v2
+
+        def recording_selector(
+            meetings: tuple[Any, ...],
+        ) -> tuple[tuple[Any, ...], int, set[str]]:
+            calls.append(tuple(item.meeting_id for item in meetings))
+            return original(meetings)
+
+        with patch.object(
+            ami,
+            "_select_contributors_v2",
+            side_effect=recording_selector,
+        ):
+            aggregate = ami.contribution_limited_aggregates_v2(
+                evidence,
+                membership,
+                official_order,
+            )
+        self.assertEqual(len(calls), 1)
+        self.assertEqual(len(calls[0]), 138)
+        partitions = aggregate["partitions"]
+        for partition in ("full_corpus", "full_only"):
+            timing = partitions[partition]["metric_families"]["timing"]
+            self.assertIsNone(timing["contribution"])
+            self.assertIsNone(timing["buckets"])
+            self.assertIsNone(timing["scalars"])
+        for partition in partitions.values():
+            dialogue = partition["metric_families"]["dialogue_act"]
+            self.assertIsNone(dialogue["contribution"])
+            self.assertIsNone(dialogue["scalars"])
+            self.assertIsNone(dialogue["dialogue_acts"])
+
+    def test_available_timing_has_only_six_metrics_and_matches_v1_definitions(
+        self,
+    ) -> None:
+        from scripts.emotion_state_phase_b_ami_mechanics import (
+            Turn,
+            compute_meeting_mechanics,
+        )
+
+        aggregate = self._aggregate()
+        timing = aggregate["partitions"]["scenario_only"]["metric_families"][
+            "timing"
+        ]
+        self.assertEqual(set(timing["buckets"]), set(self.TIMING_BUCKET_KEYS))
+        self.assertEqual(set(timing["scalars"]), set(self.TIMING_SCALAR_KEYS))
+        self.assertEqual(
+            set(timing),
+            {
+                "status",
+                "reason_codes",
+                "coverage",
+                "contribution",
+                "buckets",
+                "scalars",
+            },
+        )
+        equivalent = compute_meeting_mechanics((
+            Turn("M-EQUIV", "P-A", 0, 1000, "ami_da_2"),
+            Turn("M-EQUIV", "P-B", 800, 1200, "ami_da_1"),
+            Turn("M-EQUIV", "P-B", 1500, 2500, "ami_da_2"),
+            Turn("M-EQUIV", "P-A", 2600, 3000, "ami_da_3"),
+        ))
+        expected = dict(equivalent.values)
+        cells = timing["buckets"] | timing["scalars"]
+        for key in self.TIMING_BUCKET_KEYS + self.TIMING_SCALAR_KEYS:
+            with self.subTest(metric=key):
+                self.assertFalse(cells[key]["suppressed"])
+                self.assertEqual(
+                    cells[key]["unique_participant_count"],
+                    timing["contribution"]["unique_participant_count"],
+                )
+                self.assertAlmostEqual(
+                    cells[key]["value"],
+                    expected[key],
+                    places=12,
+                )
+
+    def test_available_timing_selects_then_derives_suppression(
+        self,
+    ) -> None:
+        from scripts.emotion_state_phase_b_ami_mechanics import (
+            contribution_limited_aggregates_v2,
+        )
+
+        shared = ("P-SHARED-A", "P-SHARED-B")
+        evidence = (
+            self._evidence("S1", participants=shared),
+            self._evidence("S2", participants=shared),
+            self._evidence("F1", timed=False),
+        )
+        membership = {
+            "scenario_only": ("S1", "S2"),
+            "full_only": ("F1",),
+            "full_corpus": ("S1", "S2", "F1"),
+        }
+        aggregate = contribution_limited_aggregates_v2(
+            evidence,
+            membership,
+            ("S1", "S2", "F1"),
+        )
+        scenario = aggregate["partitions"]["scenario_only"]["metric_families"][
+            "timing"
+        ]
+        self.assertEqual(
+            scenario["contribution"],
+            {
+                "selected_meeting_count": 1,
+                "unique_participant_count": 2,
+                "repeated_participant_meeting_count": 1,
+                "suppressed": True,
+            },
+        )
+        self.assertTrue(
+            all(
+                cell == {
+                    "suppressed": True,
+                    "unique_participant_count": 2,
+                    "value": None,
+                }
+                for cell in (
+                    list(scenario["buckets"].values())
+                    + list(scenario["scalars"].values())
+                )
+            )
+        )
+        self.assertIsNone(
+            aggregate["partitions"]["full_corpus"]["metric_families"][
+                "timing"
+            ]["contribution"]
+        )
+
+    def test_unlabeled_dialogue_records_cannot_receive_an_invented_label(
+        self,
+    ) -> None:
+        from scripts.emotion_state_phase_b_ami_mechanics import (
+            AmiMeetingEvidenceV2,
+        )
+
+        incomplete = self._evidence(
+            "M1",
+            dialogue_act_file_count=2,
+            fully_labeled_dialogue_act_file_count=1,
+            unlabeled_dialogue_act_record_count=1,
+            unlabeled_dialogue_act_file_count=1,
+        )
+        self.assertIsNone(incomplete.dialogue_turns)
+        with self.assertRaisesRegex(ValueError, "incomplete"):
+            AmiMeetingEvidenceV2(
+                meeting_id=incomplete.meeting_id,
+                participants=incomplete.participants,
+                timing_file_present=incomplete.timing_file_present,
+                timed_turns=incomplete.timed_turns,
+                dialogue_turns=self._dialogue_turns(
+                    incomplete.meeting_id,
+                    incomplete.participants,
+                ),
+                dialogue_act_file_count=incomplete.dialogue_act_file_count,
+                fully_labeled_dialogue_act_file_count=(
+                    incomplete.fully_labeled_dialogue_act_file_count
+                ),
+                unlabeled_dialogue_act_record_count=(
+                    incomplete.unlabeled_dialogue_act_record_count
+                ),
+                unlabeled_dialogue_act_file_count=(
+                    incomplete.unlabeled_dialogue_act_file_count
+                ),
+            )
+
+    def test_v2_records_reject_wrong_types_and_inconsistent_counts(
+        self,
+    ) -> None:
+        from scripts.emotion_state_phase_b_ami_mechanics import (
+            AmiMeetingEvidenceV2,
+            TimedTurn,
+        )
+
+        participants = ("P-A", "P-B")
+        turns = self._timed_turns("M1", participants)
+        valid = {
+            "meeting_id": "M1",
+            "participants": participants,
+            "timing_file_present": True,
+            "timed_turns": turns,
+            "dialogue_turns": None,
+            "dialogue_act_file_count": 0,
+            "fully_labeled_dialogue_act_file_count": 0,
+            "unlabeled_dialogue_act_record_count": 0,
+            "unlabeled_dialogue_act_file_count": 0,
+        }
+        mutations = (
+            ("meeting_id", " M1"),
+            ("participants", ["P-A", "P-B"]),
+            ("participants", ("P-A", "P-A")),
+            ("participants", ("P-A",)),
+            ("timing_file_present", 1),
+            ("timed_turns", list(turns)),
+            ("timed_turns", ()),
+            ("dialogue_turns", ()),
+            ("dialogue_act_file_count", True),
+            ("dialogue_act_file_count", -1),
+            ("fully_labeled_dialogue_act_file_count", 1),
+            ("unlabeled_dialogue_act_record_count", 1),
+            ("unlabeled_dialogue_act_file_count", 1),
+        )
+        for field, value in mutations:
+            with self.subTest(field=field, value=value):
+                payload = dict(valid)
+                payload[field] = value
+                with self.assertRaises(ValueError):
+                    AmiMeetingEvidenceV2(**payload)
+        count_mutations = (
+            {
+                "dialogue_act_file_count": 2,
+                "fully_labeled_dialogue_act_file_count": 1,
+                "unlabeled_dialogue_act_record_count": 0,
+                "unlabeled_dialogue_act_file_count": 0,
+            },
+            {
+                "dialogue_act_file_count": 2,
+                "fully_labeled_dialogue_act_file_count": 1,
+                "unlabeled_dialogue_act_record_count": 1,
+                "unlabeled_dialogue_act_file_count": 2,
+            },
+            {
+                "dialogue_act_file_count": 2,
+                "fully_labeled_dialogue_act_file_count": 1,
+                "unlabeled_dialogue_act_record_count": 1,
+                "unlabeled_dialogue_act_file_count": 0,
+            },
+        )
+        for mutation in count_mutations:
+            with self.subTest(counts=mutation):
+                payload = valid | mutation
+                with self.assertRaises(ValueError):
+                    AmiMeetingEvidenceV2(**payload)
+        with self.assertRaises(ValueError):
+            TimedTurn(" M1", "P-A", 0, 1)
+        with self.assertRaises(ValueError):
+            TimedTurn("M1", "P-A", True, 1)
+        with self.assertRaises(ValueError):
+            TimedTurn("M1", "P-A", 1, 1)
+
+    def test_v2_records_reject_cross_meeting_unknown_or_ambiguous_turns(
+        self,
+    ) -> None:
+        from scripts.emotion_state_phase_b_ami_mechanics import (
+            AmiMeetingEvidenceV2,
+            TimedTurn,
+        )
+
+        base = self._evidence("M1")
+        mutations = (
+            (
+                TimedTurn("M2", "P-M1-A", 0, 100),
+                TimedTurn("M2", "P-M1-B", 100, 200),
+            ),
+            (
+                TimedTurn("M1", "P-UNKNOWN", 0, 100),
+                TimedTurn("M1", "P-M1-B", 100, 200),
+            ),
+            tuple(reversed(base.timed_turns)),
+            base.timed_turns + (base.timed_turns[-1],),
+        )
+        for timed_turns in mutations:
+            with self.subTest(timed_turns=timed_turns):
+                with self.assertRaises(ValueError):
+                    replace(base, timed_turns=timed_turns)
+        with self.assertRaises(ValueError):
+            replace(
+                base,
+                timing_file_present=False,
+                timed_turns=base.timed_turns,
+            )
+        malformed_dialogue = self._dialogue_turns(
+            "M2",
+            ("P-M1-A", "P-M1-B"),
+        )
+        with self.assertRaises(ValueError):
+            replace(
+                self._evidence(
+                    "M1",
+                    dialogue_act_file_count=1,
+                    fully_labeled_dialogue_act_file_count=1,
+                ),
+                dialogue_turns=malformed_dialogue,
+            )
+
+    def test_v2_partition_order_evidence_and_status_inputs_fail_closed(
+        self,
+    ) -> None:
+        from scripts.emotion_state_phase_b_ami_mechanics import (
+            contribution_limited_aggregates_v2,
+        )
+
+        evidence = (
+            self._evidence("S1"),
+            self._evidence("F1", timed=False),
+        )
+        membership = {
+            "scenario_only": ("S1",),
+            "full_only": ("F1",),
+            "full_corpus": ("S1", "F1"),
+        }
+        invalid_calls = (
+            (
+                evidence,
+                membership | {"extra": ("S1",)},
+                ("S1", "F1"),
+            ),
+            (
+                evidence,
+                membership | {"full_only": ("S1", "F1")},
+                ("S1", "F1"),
+            ),
+            (
+                evidence,
+                membership | {"full_corpus": ("S1",)},
+                ("S1", "F1"),
+            ),
+            (evidence, membership, ("S1", "S1")),
+            (evidence, membership, ("S1",)),
+            (evidence + (evidence[0],), membership, ("S1", "F1")),
+            (evidence[:1], membership, ("S1", "F1")),
+            (
+                ({"meeting_id": "S1", "status": "available"}, evidence[1]),
+                membership,
+                ("S1", "F1"),
+            ),
+        )
+        for meetings, partitions, order in invalid_calls:
+            with self.subTest(
+                meeting_count=len(meetings),
+                partitions=partitions,
+                order=order,
+            ):
+                with self.assertRaises(ValueError):
+                    contribution_limited_aggregates_v2(
+                        meetings,
+                        partitions,
+                        order,
+                    )
+        with self.assertRaises(ValueError):
+            contribution_limited_aggregates_v2(
+                evidence,
+                membership,
+                ("S1", "F1"),
+                minimum_contributors=True,
+            )
+
+    def test_v2_output_is_deterministic_and_alias_safe(self) -> None:
+        from scripts.emotion_state_phase_b_ami_mechanics import (
+            contribution_limited_aggregates_v2,
+        )
+
+        evidence, membership, official_order = self._fixed_fixture()
+        first = contribution_limited_aggregates_v2(
+            evidence,
+            membership,
+            official_order,
+        )
+        canonical = deepcopy(first)
+        first["source_quality"]["unlabeled_dialogue_act_record_count"] = 0
+        first["partitions"]["scenario_only"]["metric_families"]["timing"][
+            "reason_codes"
+        ].append("forged")
+        second = contribution_limited_aggregates_v2(
+            tuple(reversed(evidence)),
+            dict(reversed(tuple(membership.items()))),
+            official_order,
+        )
+        self.assertEqual(second, canonical)
+        self.assertEqual(
+            json.dumps(second, sort_keys=True, separators=(",", ":")),
+            json.dumps(canonical, sort_keys=True, separators=(",", ":")),
+        )
+
+
 class SecurePublicMaterialByteTests(unittest.TestCase):
     _OPEN_AUDIT_STATE: Any = None
     _OPEN_AUDIT_HOOK_INSTALLED = False
