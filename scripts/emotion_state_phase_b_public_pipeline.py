@@ -133,6 +133,22 @@ def _canonical_digest(value: Any) -> str:
     return _sha256(content)
 
 
+def _matches_packet_contract_exactly(actual: Any, expected: Any) -> bool:
+    if type(actual) is not type(expected):
+        return False
+    if isinstance(expected, Mapping):
+        return set(actual) == set(expected) and all(
+            _matches_packet_contract_exactly(actual[key], value)
+            for key, value in expected.items()
+        )
+    if isinstance(expected, (list, tuple)):
+        return len(actual) == len(expected) and all(
+            _matches_packet_contract_exactly(actual_item, expected_item)
+            for actual_item, expected_item in zip(actual, expected)
+        )
+    return actual == expected
+
+
 def validate_aggregate_privacy(payload: Any) -> None:
     def visit(value: Any) -> None:
         if isinstance(value, Mapping):
@@ -320,19 +336,31 @@ def validate_non_lockbox_review_packet(
         raise PublicMaterialPrerequisiteError(
             "configuration identity does not match"
         )
-    if packet["model_settings"] != EXPECTED_CONFIG["model"]:
+    if not _matches_packet_contract_exactly(
+        packet["model_settings"],
+        EXPECTED_CONFIG["model"],
+    ):
         raise PublicMaterialPrerequisiteError(
             "model settings do not match the frozen configuration"
         )
-    if packet["metric_definitions"] != EXPECTED_METRIC_DEFINITIONS:
+    if not _matches_packet_contract_exactly(
+        packet["metric_definitions"],
+        EXPECTED_METRIC_DEFINITIONS,
+    ):
         raise PublicMaterialPrerequisiteError(
             "metric definitions do not match"
         )
-    if packet["slice_definitions"] != EXPECTED_SLICE_DEFINITIONS:
+    if not _matches_packet_contract_exactly(
+        packet["slice_definitions"],
+        EXPECTED_SLICE_DEFINITIONS,
+    ):
         raise PublicMaterialPrerequisiteError(
             "slice definitions do not match"
         )
-    if packet["minimum_unique_contributors_per_cell"] != MINIMUM_UNIQUE_ACTORS:
+    if not _matches_packet_contract_exactly(
+        packet["minimum_unique_contributors_per_cell"],
+        MINIMUM_UNIQUE_ACTORS,
+    ):
         raise PublicMaterialPrerequisiteError(
             "contributor floor does not match"
         )

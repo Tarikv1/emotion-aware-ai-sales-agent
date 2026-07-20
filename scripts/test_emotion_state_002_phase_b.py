@@ -9414,6 +9414,78 @@ class Task10PacketV3Tests(unittest.TestCase):
         with self.assertRaises(pipeline.PublicMaterialPrerequisiteError):
             pipeline.validate_non_lockbox_review_packet(mutated)
 
+    def test_packet_v3_rejects_resealed_recursive_type_only_identity_drift(
+        self,
+    ) -> None:
+        from scripts import emotion_state_phase_b_public_pipeline as pipeline
+
+        packet, _diagnostic, _ami = self._build_packet()
+        mutations = (
+            (
+                "contributor integer as float",
+                ("minimum_unique_contributors_per_cell",),
+                10.0,
+            ),
+            (
+                "model integer as float",
+                ("model_settings", "maximum_iterations"),
+                10000.0,
+            ),
+            (
+                "model boolean as integer",
+                ("model_settings", "hyperparameter_search_allowed"),
+                0,
+            ),
+            (
+                "metric bootstrap integer as float",
+                ("metric_definitions", "bootstrap_resamples"),
+                2000.0,
+            ),
+            (
+                "metric contributor integer as float",
+                (
+                    "metric_definitions",
+                    "minimum_unique_actors_per_published_cell",
+                ),
+                10.0,
+            ),
+            (
+                "slice boolean as integer",
+                ("slice_definitions", "demographic_slices_allowed"),
+                0,
+            ),
+            (
+                "nested slice scenario integer as float",
+                (
+                    "slice_definitions",
+                    "balanced_diagnostic",
+                    "scripted_scenario_count",
+                ),
+                12.0,
+            ),
+            (
+                "nested slice quartile integer as float",
+                (
+                    "slice_definitions",
+                    "balanced_diagnostic",
+                    "silence_ratio_quartiles",
+                ),
+                4.0,
+            ),
+        )
+        for name, path, replacement in mutations:
+            with self.subTest(name=name):
+                mutated = deepcopy(packet)
+                target = mutated
+                for key in path[:-1]:
+                    target = target[key]
+                target[path[-1]] = replacement
+                self._reseal_packet(mutated)
+                with self.assertRaises(
+                    pipeline.PublicMaterialPrerequisiteError
+                ):
+                    pipeline.validate_non_lockbox_review_packet(mutated)
+
     def test_packet_v3_rejects_private_probability_malformed_and_extra_data(
         self,
     ) -> None:
