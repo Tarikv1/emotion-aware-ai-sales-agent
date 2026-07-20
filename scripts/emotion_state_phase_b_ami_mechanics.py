@@ -1273,20 +1273,38 @@ def _timing_values_v2(
         for duration in speaking_time.values()
     )
     normalized_entropy = entropy / math.log(len(speaking_time))
-    return {
-        "turn_duration_ms_median": _linear_percentile(durations, 0.5),
-        "turn_duration_ms_p90": _linear_percentile(durations, 0.9),
-        "inter_turn_gap_ms_median": _linear_percentile(
-            nonnegative_gaps,
-            0.5,
-        ),
-        "inter_turn_gap_ms_p90": _linear_percentile(
-            nonnegative_gaps,
-            0.9,
-        ),
-        "overlap_ratio": _overlap_duration(timed_turns) / meeting_span,
-        "speaker_balance_normalized_entropy": normalized_entropy,
-    }
+    try:
+        values = {
+            "turn_duration_ms_median": _linear_percentile(
+                durations,
+                0.5,
+            ),
+            "turn_duration_ms_p90": _linear_percentile(
+                durations,
+                0.9,
+            ),
+            "inter_turn_gap_ms_median": _linear_percentile(
+                nonnegative_gaps,
+                0.5,
+            ),
+            "inter_turn_gap_ms_p90": _linear_percentile(
+                nonnegative_gaps,
+                0.9,
+            ),
+            "overlap_ratio": (
+                _overlap_duration(timed_turns) / meeting_span
+            ),
+            "speaker_balance_normalized_entropy": normalized_entropy,
+        }
+    except OverflowError as error:
+        raise ValueError(
+            "AMI v2 per-meeting timing values must be finite"
+        ) from error
+    if any(not math.isfinite(value) for value in values.values()):
+        raise ValueError(
+            "AMI v2 per-meeting timing values must be finite"
+        )
+    return values
 
 
 def _select_contributors_v2(
@@ -1345,6 +1363,8 @@ def _timing_family_v2(
         key: sum(values[key] for values in value_maps) / len(value_maps)
         for key in BUCKET_VALUE_KEYS + TIMING_SCALAR_VALUE_KEYS_V2
     }
+    if any(not math.isfinite(value) for value in aggregates.values()):
+        raise ValueError("AMI v2 aggregate timing values must be finite")
     suppressed = participant_count < minimum_contributors
     contribution = {
         "selected_meeting_count": len(selected),

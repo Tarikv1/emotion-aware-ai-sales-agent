@@ -4085,6 +4085,53 @@ class AmiMechanicsV2Tests(unittest.TestCase):
         }
         return tuple(reversed(evidence)), membership, official_order
 
+    @staticmethod
+    def _large_disjoint_timing_fixture(
+        duration_ms: int,
+    ) -> tuple[tuple[Any, ...], dict[str, tuple[str, ...]], tuple[str, ...]]:
+        from scripts.emotion_state_phase_b_ami_mechanics import (
+            AmiMeetingEvidenceV2,
+            TimedTurn,
+        )
+
+        evidence: list[Any] = []
+        for meeting_id in ("A", "B"):
+            participants = tuple(
+                f"P-{meeting_id}-{index:02d}"
+                for index in range(10)
+            )
+            evidence.append(AmiMeetingEvidenceV2(
+                meeting_id=meeting_id,
+                participants=participants,
+                timing_file_present=True,
+                timed_turns=(
+                    TimedTurn(
+                        meeting_id,
+                        participants[0],
+                        0,
+                        duration_ms,
+                    ),
+                    TimedTurn(
+                        meeting_id,
+                        participants[1],
+                        0,
+                        duration_ms,
+                    ),
+                ),
+                dialogue_turns=None,
+                dialogue_act_file_count=0,
+                fully_labeled_dialogue_act_file_count=0,
+                unlabeled_dialogue_act_record_count=0,
+                unlabeled_dialogue_act_file_count=0,
+            ))
+        evidence.append(AmiMechanicsV2Tests._evidence("F", timed=False))
+        membership = {
+            "scenario_only": ("A", "B"),
+            "full_corpus": ("A", "B", "F"),
+            "full_only": ("F",),
+        }
+        return tuple(evidence), membership, ("A", "B", "F")
+
     @classmethod
     def _aggregate(cls) -> dict[str, Any]:
         from scripts.emotion_state_phase_b_ami_mechanics import (
@@ -4645,6 +4692,21 @@ class AmiMechanicsV2Tests(unittest.TestCase):
             json.dumps(second, sort_keys=True, separators=(",", ":")),
             json.dumps(canonical, sort_keys=True, separators=(",", ":")),
         )
+
+    def test_v2_rejects_non_finite_multi_meeting_timing_mean(self) -> None:
+        from scripts.emotion_state_phase_b_ami_mechanics import (
+            contribution_limited_aggregates_v2,
+        )
+
+        evidence, membership, official_order = (
+            self._large_disjoint_timing_fixture(10**308)
+        )
+        with self.assertRaisesRegex(ValueError, "finite"):
+            contribution_limited_aggregates_v2(
+                evidence,
+                membership,
+                official_order,
+            )
 
 
 class AmiMechanicsV2ValidatorTests(unittest.TestCase):
@@ -5307,6 +5369,67 @@ class AmiMechanicsV2ValidatorTests(unittest.TestCase):
                     partition_membership=membership,
                     official_order=official_order,
                 )
+
+    def test_authority_rejects_non_finite_multi_meeting_timing_mean(
+        self,
+    ) -> None:
+        from scripts.emotion_state_phase_b_ami_mechanics import (
+            contribution_limited_aggregates_v2,
+        )
+
+        validate_authority, _ = self._validators()
+        safe_evidence, membership, official_order = (
+            AmiMechanicsV2Tests._large_disjoint_timing_fixture(1000)
+        )
+        aggregate = contribution_limited_aggregates_v2(
+            safe_evidence,
+            membership,
+            official_order,
+        )
+        timing = aggregate["partitions"]["scenario_only"][
+            "metric_families"
+        ]["timing"]
+        timing["buckets"]["turn_duration_ms_median"]["value"] = float("inf")
+        timing["buckets"]["turn_duration_ms_p90"]["value"] = float("inf")
+        huge_evidence, _, _ = (
+            AmiMechanicsV2Tests._large_disjoint_timing_fixture(10**308)
+        )
+        with self.assertRaisesRegex(ValueError, "finite"):
+            validate_authority(
+                aggregate,
+                meetings=self._serialized_meetings(huge_evidence),
+                partition_membership=membership,
+                official_order=official_order,
+            )
+
+    def test_authority_exact_float_comparison_distinguishes_signed_zero(
+        self,
+    ) -> None:
+        from scripts.emotion_state_phase_b_ami_mechanics import (
+            contribution_limited_aggregates_v2,
+        )
+
+        validate_authority, _ = self._validators()
+        evidence, membership, official_order = (
+            AmiMechanicsV2Tests._large_disjoint_timing_fixture(1000)
+        )
+        aggregate = contribution_limited_aggregates_v2(
+            evidence,
+            membership,
+            official_order,
+        )
+        gap = aggregate["partitions"]["scenario_only"]["metric_families"][
+            "timing"
+        ]["buckets"]["inter_turn_gap_ms_median"]
+        self.assertEqual(math.copysign(1.0, gap["value"]), 1.0)
+        gap["value"] = -0.0
+        with self.assertRaises(ValueError):
+            validate_authority(
+                aggregate,
+                meetings=self._serialized_meetings(evidence),
+                partition_membership=membership,
+                official_order=official_order,
+            )
 
     def test_overlapping_selection_uses_official_order_not_input_order(
         self,

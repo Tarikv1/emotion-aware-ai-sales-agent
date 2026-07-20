@@ -1963,6 +1963,36 @@ def _ami_v2_exact_mapping(
     return value
 
 
+def _ami_v2_matches_expected(actual: Any, expected: Any) -> bool:
+    if type(actual) is not type(expected):
+        return False
+    if isinstance(expected, dict):
+        return (
+            actual.keys() == expected.keys()
+            and all(
+                _ami_v2_matches_expected(actual[key], value)
+                for key, value in expected.items()
+            )
+        )
+    if isinstance(expected, list):
+        return len(actual) == len(expected) and all(
+            _ami_v2_matches_expected(item, expected_item)
+            for item, expected_item in zip(actual, expected)
+        )
+    if isinstance(expected, float):
+        return (
+            math.isfinite(actual)
+            and math.isfinite(expected)
+            and actual == expected
+            and (
+                actual != 0.0
+                or math.copysign(1.0, actual)
+                == math.copysign(1.0, expected)
+            )
+        )
+    return actual == expected
+
+
 def _ami_v2_exact_identifier(value: Any, name: str) -> str:
     canonical = _ami_canonical_identifier(value, name)
     if value != canonical:
@@ -2290,28 +2320,38 @@ def _ami_v2_timing_values(
         for duration in speaking_time.values()
     )
     normalized_entropy = entropy / math.log(len(speaking_time))
-    return {
-        "turn_duration_ms_median": _ami_v2_linear_percentile(
-            durations,
-            0.5,
-        ),
-        "turn_duration_ms_p90": _ami_v2_linear_percentile(
-            durations,
-            0.9,
-        ),
-        "inter_turn_gap_ms_median": _ami_v2_linear_percentile(
-            nonnegative_gaps,
-            0.5,
-        ),
-        "inter_turn_gap_ms_p90": _ami_v2_linear_percentile(
-            nonnegative_gaps,
-            0.9,
-        ),
-        "overlap_ratio": (
-            _ami_v2_overlap_duration(turns) / meeting_span
-        ),
-        "speaker_balance_normalized_entropy": normalized_entropy,
-    }
+    try:
+        values = {
+            "turn_duration_ms_median": _ami_v2_linear_percentile(
+                durations,
+                0.5,
+            ),
+            "turn_duration_ms_p90": _ami_v2_linear_percentile(
+                durations,
+                0.9,
+            ),
+            "inter_turn_gap_ms_median": _ami_v2_linear_percentile(
+                nonnegative_gaps,
+                0.5,
+            ),
+            "inter_turn_gap_ms_p90": _ami_v2_linear_percentile(
+                nonnegative_gaps,
+                0.9,
+            ),
+            "overlap_ratio": (
+                _ami_v2_overlap_duration(turns) / meeting_span
+            ),
+            "speaker_balance_normalized_entropy": normalized_entropy,
+        }
+    except OverflowError as error:
+        raise ValueError(
+            "AMI v2 authority per-meeting timing values must be finite"
+        ) from error
+    if any(not math.isfinite(value) for value in values.values()):
+        raise ValueError(
+            "AMI v2 authority per-meeting timing values must be finite"
+        )
+    return values
 
 
 def _ami_v2_aggregate_cell(
@@ -2371,6 +2411,10 @@ def _ami_v2_timing_family(
         key: sum(values[key] for values in value_maps) / len(value_maps)
         for key in AMI_BUCKET_KEYS + AMI_V2_TIMING_SCALAR_KEYS
     }
+    if any(not math.isfinite(value) for value in aggregates.values()):
+        raise ValueError(
+            "AMI v2 authority aggregate timing values must be finite"
+        )
     suppressed = participant_count < minimum_contributors
     return {
         "status": "available",
@@ -2547,7 +2591,7 @@ def validate_ami_mechanics_aggregates_v2(
         official_order,
         minimum_contributors,
     )
-    if not _matches_expected(payload, expected):
+    if not _ami_v2_matches_expected(payload, expected):
         raise ValueError(
             "AMI v2 aggregate does not match serialized authority"
         )
