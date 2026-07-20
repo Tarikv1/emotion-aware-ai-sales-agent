@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import hashlib
 import json
 import math
 import shutil
@@ -7,7 +8,9 @@ import subprocess
 import sys
 import tempfile
 import unittest
+from collections import Counter, defaultdict
 from copy import deepcopy
+from dataclasses import replace
 from pathlib import Path
 from typing import Any, Callable
 from unittest.mock import patch
@@ -342,6 +345,402 @@ class PhaseBContractTests(unittest.TestCase):
         if isinstance(value, float):
             return value + 1.0
         raise AssertionError(f"unexpected scalar type: {type(value)!r}")
+
+
+class ActorSplitTests(unittest.TestCase):
+    LABELS = ("A", "D", "F", "H", "N", "S")
+    SENTENCES = tuple(f"S{index:02d}" for index in range(12))
+    PARTITION_ORDER = (
+        "training_discovery",
+        "calibration",
+        "balanced_diagnostic",
+        "final_lockbox",
+    )
+    PARTITION_COUNTS = {
+        "training_discovery": 35,
+        "calibration": 13,
+        "balanced_diagnostic": 13,
+        "final_lockbox": 30,
+    }
+    SEED_DIGEST = hashlib.sha256(b"synthetic-phase-b-config").hexdigest()
+
+    @classmethod
+    def _records(
+        cls,
+        actor_count: int = 91,
+        *,
+        varied_vectors: bool = False,
+    ) -> tuple[Any, ...]:
+        from scripts.emotion_state_phase_b_evaluation import CremaLabelRecord
+
+        records = []
+        for actor_index in range(actor_count):
+            actor_id = f"{1001 + actor_index:04d}"
+            for sentence_index, sentence_id in enumerate(cls.SENTENCES):
+                label = cls.LABELS[(actor_index + sentence_index) % len(cls.LABELS)]
+                records.append(CremaLabelRecord(
+                    clip_stem=f"synthetic-{actor_id}-{sentence_id}",
+                    actor_id=actor_id,
+                    sentence_id=sentence_id,
+                    label=label,
+                    abstention_reason=None,
+                    vote_distribution=((label, 1),),
+                    vote_agreement=1.0,
+                    vote_entropy=0.0,
+                ))
+            if varied_vectors:
+                for extra_index in range(actor_index % 5):
+                    sentence_id = cls.SENTENCES[
+                        (actor_index * 3 + extra_index) % len(cls.SENTENCES)
+                    ]
+                    label = cls.LABELS[
+                        (actor_index * 2 + extra_index) % len(cls.LABELS)
+                    ]
+                    records.append(CremaLabelRecord(
+                        clip_stem=(
+                            f"synthetic-extra-{actor_id}-{extra_index:02d}"
+                        ),
+                        actor_id=actor_id,
+                        sentence_id=sentence_id,
+                        label=label,
+                        abstention_reason=None,
+                        vote_distribution=((label, 1),),
+                        vote_agreement=1.0,
+                        vote_entropy=0.0,
+                    ))
+        return tuple(records)
+
+    @classmethod
+    def _reference_assignment(
+        cls,
+        records: tuple[Any, ...],
+        seed_digest: str,
+    ) -> dict[str, str]:
+        sentence_order = tuple(sorted({record.sentence_id for record in records}))
+        vector_size = len(cls.LABELS) + len(sentence_order)
+        label_offsets = {label: index for index, label in enumerate(cls.LABELS)}
+        sentence_offsets = {
+            sentence: len(cls.LABELS) + index
+            for index, sentence in enumerate(sentence_order)
+        }
+        actors: dict[str, list[int]] = defaultdict(
+            lambda: [0] * vector_size
+        )
+        for record in records:
+            actors[record.actor_id][label_offsets[record.label]] += 1
+            actors[record.actor_id][sentence_offsets[record.sentence_id]] += 1
+        global_vector = [
+            sum(vector[index] for vector in actors.values())
+            for index in range(vector_size)
+        ]
+        actor_order = sorted(
+            actors,
+            key=lambda actor_id: (
+                -math.sqrt(sum(value * value for value in actors[actor_id])),
+                hashlib.sha256(
+                    f"{seed_digest}:{actor_id}".encode("utf-8")
+                ).hexdigest(),
+            ),
+        )
+        partition_vectors = {
+            partition: [0] * vector_size for partition in cls.PARTITION_ORDER
+        }
+        partition_actor_counts = Counter()
+        assignment: dict[str, str] = {}
+        for actor_id in actor_order:
+            actor_vector = actors[actor_id]
+            scored_partitions = []
+            for partition_index, partition in enumerate(cls.PARTITION_ORDER):
+                if (
+                    partition_actor_counts[partition]
+                    >= cls.PARTITION_COUNTS[partition]
+                ):
+                    continue
+                candidate_actor_count = partition_actor_counts[partition] + 1
+                candidate_vector = [
+                    current + added
+                    for current, added in zip(
+                        partition_vectors[partition],
+                        actor_vector,
+                    )
+                ]
+                score = sum(
+                    (
+                        candidate
+                        - global_value * candidate_actor_count / 91
+                    ) ** 2
+                    for candidate, global_value in zip(
+                        candidate_vector,
+                        global_vector,
+                    )
+                )
+                scored_partitions.append((score, partition_index, partition))
+            _, _, selected = min(scored_partitions)
+            assignment[actor_id] = selected
+            partition_actor_counts[selected] += 1
+            partition_vectors[selected] = [
+                current + added
+                for current, added in zip(
+                    partition_vectors[selected],
+                    actor_vector,
+                )
+            ]
+        return assignment
+
+    def test_exact_actor_partition_contract_and_aggregate_only_summary(
+        self,
+    ) -> None:
+        from scripts.emotion_state_phase_b_splits import (
+            build_actor_split,
+            validate_actor_split,
+        )
+
+        records = self._records()
+        assignment = build_actor_split(records, self.SEED_DIGEST)
+        actors = {record.actor_id for record in records}
+        actors_by_partition = {
+            partition: {
+                actor_id
+                for actor_id, assigned_partition in assignment.items()
+                if assigned_partition == partition
+            }
+            for partition in self.PARTITION_ORDER
+        }
+
+        self.assertEqual(Counter(assignment.values()), self.PARTITION_COUNTS)
+        self.assertEqual(set(assignment), actors)
+        self.assertEqual(set().union(*actors_by_partition.values()), actors)
+        for index, partition in enumerate(self.PARTITION_ORDER):
+            self.assertEqual(
+                len(actors_by_partition[partition]),
+                self.PARTITION_COUNTS[partition],
+            )
+            for other_partition in self.PARTITION_ORDER[index + 1:]:
+                self.assertTrue(
+                    actors_by_partition[partition].isdisjoint(
+                        actors_by_partition[other_partition]
+                    )
+                )
+            partition_records = [
+                record
+                for record in records
+                if assignment[record.actor_id] == partition
+            ]
+            self.assertEqual(
+                {record.sentence_id for record in partition_records},
+                set(self.SENTENCES),
+            )
+            self.assertEqual(
+                {record.label for record in partition_records},
+                set(self.LABELS),
+            )
+
+        summary = validate_actor_split(records, assignment)
+        self.assertEqual(summary["partition_actor_counts"], self.PARTITION_COUNTS)
+        self.assertEqual(
+            summary["partition_sentence_presence_counts"],
+            {partition: 12 for partition in self.PARTITION_ORDER},
+        )
+        self.assertEqual(
+            summary["partition_label_presence_counts"],
+            {partition: 6 for partition in self.PARTITION_ORDER},
+        )
+        serialized_summary = json.dumps(summary, sort_keys=True)
+        self.assertFalse(any(actor_id in serialized_summary for actor_id in actors))
+        self.assertNotIn("assignments", summary)
+        self.assertNotIn("actors", summary)
+
+    def test_frozen_vector_score_order_and_row_permutation_stability(self) -> None:
+        from scripts.emotion_state_phase_b_splits import (
+            PARTITION_ORDER,
+            build_actor_split,
+        )
+
+        varied_records = self._records(varied_vectors=True)
+        expected = self._reference_assignment(
+            varied_records,
+            self.SEED_DIGEST,
+        )
+        self.assertEqual(
+            build_actor_split(varied_records, self.SEED_DIGEST),
+            expected,
+        )
+        self.assertEqual(
+            build_actor_split(tuple(reversed(varied_records)), self.SEED_DIGEST),
+            expected,
+        )
+
+        tied_records = self._records()
+        tied_assignment = build_actor_split(tied_records, self.SEED_DIGEST)
+        first_actor = min(
+            {record.actor_id for record in tied_records},
+            key=lambda actor_id: hashlib.sha256(
+                f"{self.SEED_DIGEST}:{actor_id}".encode("utf-8")
+            ).hexdigest(),
+        )
+        self.assertEqual(tuple(PARTITION_ORDER), self.PARTITION_ORDER)
+        self.assertEqual(
+            tied_assignment[first_actor],
+            self.PARTITION_ORDER[0],
+        )
+
+    def test_manifest_digest_commits_to_one_local_assignment_change(self) -> None:
+        from scripts.emotion_state_phase_b_splits import (
+            build_actor_split,
+            split_manifest_digest,
+            validate_actor_split,
+        )
+
+        records = self._records()
+        assignment = build_actor_split(records, self.SEED_DIGEST)
+        digest = split_manifest_digest(records, assignment)
+        mutated = dict(assignment)
+        actor_id = sorted(mutated)[0]
+        mutated[actor_id] = next(
+            partition
+            for partition in self.PARTITION_ORDER
+            if partition != mutated[actor_id]
+        )
+
+        self.assertRegex(digest, r"^[0-9a-f]{64}$")
+        self.assertEqual(
+            split_manifest_digest(tuple(reversed(records)), assignment),
+            digest,
+        )
+        self.assertNotEqual(
+            split_manifest_digest(records, mutated),
+            digest,
+        )
+        with self.assertRaisesRegex(ValueError, "partition actor capacities"):
+            validate_actor_split(records, mutated)
+
+    def test_actor_count_90_and_92_fail_closed(self) -> None:
+        from scripts.emotion_state_phase_b_splits import build_actor_split
+
+        for actor_count in (90, 92):
+            with self.subTest(actor_count=actor_count):
+                with self.assertRaisesRegex(ValueError, "exactly 91 actors"):
+                    build_actor_split(
+                        self._records(actor_count),
+                        self.SEED_DIGEST,
+                    )
+
+    def test_malformed_seed_and_record_inputs_fail_closed(self) -> None:
+        from scripts.emotion_state_phase_b_splits import build_actor_split
+
+        records = self._records()
+        for malformed_seed in (
+            "",
+            "0" * 63,
+            "g" * 64,
+            0,
+            None,
+        ):
+            with self.subTest(seed=malformed_seed):
+                with self.assertRaisesRegex(ValueError, "seed digest"):
+                    build_actor_split(records, malformed_seed)
+
+        malformed_records = []
+        malformed_records.append(
+            records[:1] + (object(),) + records[2:]
+        )
+        malformed_records.append(
+            (replace(records[0], label=None, abstention_reason="tie"),)
+            + records[1:]
+        )
+        malformed_records.append(
+            (replace(records[0], label="Z"),) + records[1:]
+        )
+        malformed_records.append(
+            (replace(records[0], actor_id="actor"),) + records[1:]
+        )
+        malformed_records.append(
+            (replace(records[0], sentence_id="sentence"),) + records[1:]
+        )
+        malformed_records.append(
+            records[:1]
+            + (replace(records[1], clip_stem=records[0].clip_stem),)
+            + records[2:]
+        )
+        for index, malformed in enumerate(malformed_records):
+            with self.subTest(record_mutation=index):
+                with self.assertRaises(ValueError):
+                    build_actor_split(malformed, self.SEED_DIGEST)
+
+    def test_malformed_assignment_and_dependency_roles_fail_closed(self) -> None:
+        from scripts.emotion_state_phase_b_splits import (
+            DEPENDENCY_ROLES,
+            build_actor_split,
+            split_manifest_digest,
+            validate_actor_split,
+        )
+        from scripts.validate_emotion_state_002_phase_b import (
+            validate_actor_split_summary,
+        )
+
+        records = self._records()
+        assignment = build_actor_split(records, self.SEED_DIGEST)
+        missing = dict(assignment)
+        del missing[next(iter(missing))]
+        extra = dict(assignment)
+        extra["9999"] = self.PARTITION_ORDER[0]
+        invalid_partition = dict(assignment)
+        invalid_partition[next(iter(invalid_partition))] = "test"
+        for malformed in ([], missing, extra, invalid_partition):
+            with self.subTest(assignment_type=type(malformed).__name__):
+                with self.assertRaises(ValueError):
+                    validate_actor_split(records, malformed)
+                with self.assertRaises(ValueError):
+                    split_manifest_digest(records, malformed)
+
+        summary = validate_actor_split(records, assignment)
+        dependency_role_mutations = []
+        mutated_summary = deepcopy(summary)
+        mutated_summary["dependency_roles"]["speaker"] = "stratification_factor"
+        dependency_role_mutations.append(mutated_summary)
+        mutated_summary = deepcopy(summary)
+        del mutated_summary["dependency_roles"]["recording_site"]
+        dependency_role_mutations.append(mutated_summary)
+        mutated_summary = deepcopy(summary)
+        mutated_summary["dependency_roles"]["unexpected"] = "not_applicable"
+        dependency_role_mutations.append(mutated_summary)
+        for mutated_summary in dependency_role_mutations:
+            with self.assertRaisesRegex(ValueError, "dependency roles"):
+                validate_actor_split_summary(mutated_summary)
+
+        identity_bearing_summary = deepcopy(summary)
+        identity_bearing_summary["assignments"] = assignment
+        with self.assertRaisesRegex(ValueError, "summary fields"):
+            validate_actor_split_summary(identity_bearing_summary)
+
+        mutated_roles = dict(DEPENDENCY_ROLES)
+        mutated_roles["scripted_scenario"] = "exclusion_group"
+        with patch(
+            "scripts.emotion_state_phase_b_splits.DEPENDENCY_ROLES",
+            mutated_roles,
+        ):
+            with self.assertRaisesRegex(ValueError, "dependency roles"):
+                validate_actor_split(records, assignment)
+
+    def test_filename_and_vote_metadata_do_not_influence_assignment(self) -> None:
+        from scripts.emotion_state_phase_b_splits import build_actor_split
+
+        records = self._records(varied_vectors=True)
+        assignment = build_actor_split(records, self.SEED_DIGEST)
+        misleading_metadata = tuple(
+            replace(
+                record,
+                clip_stem=f"misleading-ANG-model-output-{index:04d}",
+                vote_distribution=(("N", 999),),
+                vote_agreement=0.123,
+                vote_entropy=9.99,
+            )
+            for index, record in enumerate(records)
+        )
+        self.assertEqual(
+            build_actor_split(misleading_metadata, self.SEED_DIGEST),
+            assignment,
+        )
 
 
 class AcousticFeatureTests(unittest.TestCase):
