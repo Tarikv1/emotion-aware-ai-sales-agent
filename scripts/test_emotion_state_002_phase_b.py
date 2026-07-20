@@ -9650,6 +9650,268 @@ class EvaluationTests(unittest.TestCase):
         self.assertEqual(_decision_outcome(failed, validity), "discard")
 
 
+class TrackedPublicAuthorityTests(unittest.TestCase):
+    EVIDENCE_ROOT = ROOT / "research/sources/emotion_state/datasets"
+
+    @classmethod
+    def setUpClass(cls) -> None:
+        from scripts import emotion_state_phase_b_public_pipeline as pipeline
+
+        cls.pipeline = pipeline
+        cls.evidence = {
+            name: (cls.EVIDENCE_ROOT / name).read_bytes()
+            for name in pipeline.TRACKED_DATASET_EVIDENCE_FILENAMES
+        }
+
+    def _resealed(
+        self,
+        name: str,
+        mutate: Callable[[dict[str, Any]], None],
+    ) -> dict[str, bytes]:
+        payload = json.loads(self.evidence[name])
+        mutate(payload)
+        content = json.dumps(
+            payload,
+            sort_keys=True,
+            separators=(",", ":"),
+            ensure_ascii=True,
+            allow_nan=False,
+        ).encode("ascii")
+        updated = dict(self.evidence)
+        updated[name] = content
+        return updated
+
+    def _assert_resealed_rejected(
+        self,
+        name: str,
+        mutate: Callable[[dict[str, Any]], None],
+        pattern: str,
+    ) -> None:
+        updated = self._resealed(name, mutate)
+        with patch.dict(
+            self.pipeline._EXPECTED_TRACKED_SHA256,
+            {name: hashlib.sha256(updated[name]).hexdigest().upper()},
+        ):
+            with self.assertRaisesRegex(
+                self.pipeline.PublicMaterialPrerequisiteError,
+                pattern,
+            ):
+                self.pipeline.validate_tracked_public_evidence(updated)
+
+    def test_exact_evidence_returns_immutable_exact_authority(self) -> None:
+        authority = self.pipeline.validate_tracked_public_evidence(
+            dict(reversed(tuple(self.evidence.items())))
+        )
+        self.assertIsInstance(
+            authority,
+            self.pipeline.TrackedPublicAuthority,
+        )
+        self.assertEqual(len(authority.crema_audio), 7441)
+        self.assertEqual(len(authority.ami_files), 2074)
+        self.assertTrue(
+            all(
+                type(item) is self.pipeline.SourceByteIdentity
+                for item in authority.crema_audio + authority.ami_files
+            )
+        )
+        self.assertFalse(hasattr(authority, "__dict__"))
+        with self.assertRaises((AttributeError, TypeError)):
+            authority.ami_official_order = ()
+        self.assertEqual(
+            authority.crema_finished_responses,
+            self.pipeline.SourceByteIdentity(
+                "data/public/emotion-state/crema-d-v1.0/repository/"
+                "finishedResponses.csv",
+                "939D02D2DDDDDF575BBCCFFB80F14F1D110FDA88F092F2A68201994EB3BCB45B",
+                22348253,
+            ),
+        )
+        self.assertEqual(
+            authority.crema_summary_table,
+            self.pipeline.SourceByteIdentity(
+                "data/public/emotion-state/crema-d-v1.0/repository/"
+                "processedResults/summaryTable.csv",
+                "1EA0E13D98853D920C7C51E69A72BA5BA42018F85A9B89B8B2CC1B53C1AA56A9",
+                456491,
+            ),
+        )
+        self.assertEqual(
+            tuple(name for name, _ in authority.ami_partition_membership),
+            ("scenario_only", "full_corpus", "full_only"),
+        )
+        self.assertEqual(
+            tuple(
+                len(meeting_ids)
+                for _, meeting_ids in authority.ami_partition_membership
+            ),
+            (138, 170, 32),
+        )
+        self.assertEqual(
+            authority.ami_partition_membership[1][1],
+            authority.ami_official_order,
+        )
+        self.assertEqual(len(authority.ami_official_order), 170)
+        self.assertNotIn("quarantine", repr(authority).casefold())
+
+    def test_validator_is_pure_after_supplied_tracked_bytes_exist(self) -> None:
+        with (
+            patch(
+                "builtins.open",
+                side_effect=AssertionError("validator opened a path"),
+            ),
+            patch.object(
+                Path,
+                "read_bytes",
+                side_effect=AssertionError("validator read a path"),
+            ),
+            patch.object(
+                Path,
+                "stat",
+                side_effect=AssertionError("validator statted a path"),
+            ),
+            patch.object(
+                Path,
+                "resolve",
+                side_effect=AssertionError("validator resolved a path"),
+            ),
+            patch.object(
+                Path,
+                "glob",
+                side_effect=AssertionError("validator globbed a path"),
+            ),
+            patch.object(
+                Path,
+                "rglob",
+                side_effect=AssertionError("validator rglobbed a path"),
+            ),
+        ):
+            authority = self.pipeline.validate_tracked_public_evidence(
+                self.evidence
+            )
+        self.assertEqual(len(authority.crema_audio), 7441)
+
+    def test_resealed_inventories_reject_authority_drift(self) -> None:
+        crema = "crema-d-v1.0-audio-wav.hashes.json"
+        ami = "ami-manual-annotations-v1.6.2.hashes.json"
+        cases = (
+            (
+                crema,
+                lambda payload: payload.__setitem__(
+                    "selected_file_count",
+                    True,
+                ),
+                "inventory|count|integer",
+            ),
+            (
+                crema,
+                lambda payload: payload["files"][0].__setitem__(
+                    "git_lfs_oid_sha256",
+                    "A" * 64,
+                ),
+                "LFS|hash",
+            ),
+            (
+                ami,
+                lambda payload: payload["files"][100].__setitem__(
+                    "path",
+                    payload["files"][100]["path"] + ":stream",
+                ),
+                "path|inventory",
+            ),
+            (
+                ami,
+                lambda payload: payload["files"].__setitem__(
+                    1,
+                    deepcopy(payload["files"][0]),
+                ),
+                "duplicate|order|path|inventory",
+            ),
+        )
+        for name, mutate, pattern in cases:
+            with self.subTest(name=name, pattern=pattern):
+                self._assert_resealed_rejected(name, mutate, pattern)
+
+    def test_resealed_quality_quarantine_and_partitions_fail_closed(self) -> None:
+        crema = "crema-d-v1.0-audio-wav.quality.json"
+        ami = "ami-manual-annotations-v1.6.2.quality.json"
+
+        def mutate_crema_reason(payload: dict[str, Any]) -> None:
+            included = next(
+                item
+                for item in payload["items"]
+                if item["disposition"] == "included"
+            )
+            included["reason"] = "future_reason"
+
+        def mutate_quarantine(payload: dict[str, Any]) -> None:
+            payload["dependency_quarantine"][0]["reason"] = "future_reason"
+
+        def mutate_partition(payload: dict[str, Any]) -> None:
+            definitions = payload["source_metadata"][
+                "official_partition_definitions"
+            ]
+            definitions[0]["meeting_ids"] = list(
+                reversed(definitions[0]["meeting_ids"])
+            )
+
+        for name, mutate, pattern in (
+            (crema, mutate_crema_reason, "classification|quality|reason"),
+            (ami, mutate_quarantine, "quarantine|participant"),
+            (ami, mutate_partition, "partition|order"),
+        ):
+            with self.subTest(name=name, pattern=pattern):
+                self._assert_resealed_rejected(name, mutate, pattern)
+
+    def test_windows_alias_and_escape_paths_fail_closed(self) -> None:
+        name = "crema-d-v1.0-audio-wav.hashes.json"
+        suffixes = (
+            ":stream",
+            ". ",
+            "/CON.wav",
+            '/bad"name.wav',
+            "/bad\x01name.wav",
+            "/../escape.wav",
+            "\\escape.wav",
+        )
+        for suffix in suffixes:
+            def mutate(payload: dict[str, Any], value: str = suffix) -> None:
+                original = payload["files"][0]["path"]
+                payload["files"][0]["path"] = original + value
+
+            with self.subTest(suffix=repr(suffix)):
+                self._assert_resealed_rejected(
+                    name,
+                    mutate,
+                    "path|inventory",
+                )
+
+    def test_strict_json_rejects_duplicate_keys_and_numeric_overflow(self) -> None:
+        name = "crema-d-v1.0-audio-wav.manifest.json"
+        original = self.evidence[name]
+        duplicate = original[:-1] + b',"dataset_id":"duplicate"}'
+        overflow = original.replace(
+            b'"manifest_version":2',
+            b'"manifest_version":1e9999',
+            1,
+        )
+        for label, content in (
+            ("duplicate", duplicate),
+            ("overflow", overflow),
+        ):
+            updated = dict(self.evidence)
+            updated[name] = content
+            with self.subTest(label=label):
+                with patch.dict(
+                    self.pipeline._EXPECTED_TRACKED_SHA256,
+                    {name: hashlib.sha256(content).hexdigest().upper()},
+                ):
+                    with self.assertRaisesRegex(
+                        self.pipeline.PublicMaterialPrerequisiteError,
+                        "tracked evidence|finite|manifest",
+                    ):
+                        self.pipeline.validate_tracked_public_evidence(updated)
+
+
 class Task10ProductionPipelineTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
@@ -9986,7 +10248,7 @@ class Task10ProductionPipelineTests(unittest.TestCase):
             EvaluationTests.SPLIT_ASSIGNMENT.to_payload()["assignment_sha256"],
         )
 
-    def test_tracked_ami_dependency_quarantine_blocks_material_access(
+    def test_tracked_ami_quarantine_is_integrity_not_availability(
         self,
     ) -> None:
         from scripts import emotion_state_phase_b_public_pipeline as pipeline
@@ -9996,11 +10258,9 @@ class Task10ProductionPipelineTests(unittest.TestCase):
             name: (evidence_root / name).read_bytes()
             for name in pipeline.TRACKED_DATASET_EVIDENCE_FILENAMES
         }
-        with self.assertRaisesRegex(
-            pipeline.PublicMaterialPrerequisiteError,
-            r"2069 .*participant identity",
-        ):
-            pipeline.validate_tracked_public_evidence(evidence)
+        authority = pipeline.validate_tracked_public_evidence(evidence)
+        self.assertEqual(len(authority.ami_files), 2074)
+        self.assertNotIn("quarantine", repr(authority).casefold())
 
     def test_production_prerequisite_reads_only_identity_bound_tracked_evidence(
         self,
@@ -10025,11 +10285,11 @@ class Task10ProductionPipelineTests(unittest.TestCase):
             "_read_file_nofollow",
             side_effect=observed_read,
         ):
-            with self.assertRaisesRegex(
-                runner.RunnerError,
-                r"2069 .*participant identity",
-            ):
-                runner._assert_production_material_prerequisites(paths)
+            runner._assert_production_material_prerequisites(paths)
+        self.assertEqual(
+            len(observed),
+            len(pipeline.TRACKED_DATASET_EVIDENCE_FILENAMES),
+        )
         self.assertEqual(
             set(observed),
             {
