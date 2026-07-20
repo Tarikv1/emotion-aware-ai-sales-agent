@@ -11,7 +11,7 @@ from collections import Counter, defaultdict
 from collections.abc import Collection, Iterator, Mapping, Sequence
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 import numpy as np
 from sklearn.dummy import DummyClassifier
@@ -36,6 +36,8 @@ from scripts.validate_emotion_state_002_phase_b import (
     validate_fit_inputs,
     validate_labels_and_actors,
     validate_payload_self_hash,
+    validate_phase_b_partition_authority_cache,
+    validate_phase_b_split_manifest,
     validate_partition_role,
     validate_probability_inputs,
     validate_probability_evidence_payload,
@@ -43,6 +45,11 @@ from scripts.validate_emotion_state_002_phase_b import (
     validate_split_schema,
     canonical_payload_sha256,
 )
+
+if TYPE_CHECKING:
+    from scripts.emotion_state_phase_b_public_pipeline import (
+        SourceByteIdentity,
+    )
 
 LABELS = frozenset({"A", "D", "F", "H", "N", "S"})
 RAW_JOIN_FIELD = "clipName"
@@ -121,14 +128,28 @@ def _winners(distribution: Counter[str]) -> tuple[str, ...]:
 
 
 def _entropy(distribution: Counter[str]) -> float | None:
-    total = sum(distribution.values())
+    cells = tuple(sorted(distribution.items(), key=lambda cell: cell[0]))
+    total = sum(count for _label, count in cells)
     if total == 0:
         return None
-    return -sum(
+    return _canonical_vote_metrics(cells)[1]
+
+
+def _canonical_vote_metrics(
+    vote_distribution: Sequence[tuple[str, int]],
+) -> tuple[float, float]:
+    cells = tuple(sorted(vote_distribution, key=lambda cell: cell[0]))
+    total = sum(count for _label, count in cells)
+    agreement = max(count for _label, count in cells) / total
+    entropy_terms = (
         (count / total) * math.log2(count / total)
-        for count in distribution.values()
+        for _label, count in cells
         if count
     )
+    entropy = -sum(entropy_terms)
+    agreement = 0.0 if agreement == 0.0 else float(agreement)
+    entropy = 0.0 if entropy == 0.0 else float(entropy)
+    return agreement, entropy
 
 
 def load_crema_reference_labels(
@@ -218,7 +239,9 @@ def load_crema_reference_labels_bytes(
             label_counts[label] += 1
         if reason is not None:
             ledger[reason] += 1
-        total = sum(distribution.values())
+        vote_agreement, vote_entropy = _canonical_vote_metrics(
+            tuple(distribution.items())
+        )
         records.append(CremaLabelRecord(
             clip_stem=stem,
             actor_id=actor_id,
@@ -226,8 +249,8 @@ def load_crema_reference_labels_bytes(
             label=label,
             abstention_reason=reason,
             vote_distribution=tuple(sorted(distribution.items())),
-            vote_agreement=max(distribution.values()) / total,
-            vote_entropy=_entropy(distribution),
+            vote_agreement=vote_agreement,
+            vote_entropy=vote_entropy,
         ))
     result = dict(sorted(ledger.items()))
     result["label_counts"] = dict(sorted(label_counts.items()))
@@ -413,17 +436,19 @@ def _verify_artifact_mint(
     return payload
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, slots=True)
 class _ValidatedSplitState:
     records: tuple[CremaLabelRecord, ...]
+    acoustic_bindings: tuple[tuple[str, str, int], ...]
     assignment: tuple[tuple[str, str], ...]
     seed_digest: str
     manifest_sha256: str
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, slots=True)
 class _ValidatedPartitionAuthorityState:
     records: tuple[CremaLabelRecord, ...]
+    acoustic_bindings: tuple[tuple[str, str, int], ...]
     role: str
     seed_digest: str
     manifest_sha256: str
@@ -465,6 +490,13 @@ class ValidatedSplitAssignment(_ImmutableArtifact):
 
 class ValidatedPartitionAuthority(_ImmutableArtifact):
     __slots__ = ()
+
+
+@dataclass(frozen=True, slots=True)
+class ValidatedPartitionRecord:
+    label_record: CremaLabelRecord
+    audio_sha256: str
+    audio_size_bytes: int
 
 
 class PartitionEvidence(_ImmutableArtifact):
@@ -515,9 +547,13 @@ def _validate_split_assignment_components(
     )
 
     try:
-        materialized = tuple(records)
+        supplied_records = tuple(records)
     except TypeError as error:
         raise ValueError("validated actor split records must be a sequence") from error
+    materialized = tuple(
+        _canonical_partition_authority_record(record)
+        for record in supplied_records
+    )
     if not isinstance(assignment, Mapping):
         raise ValueError("validated actor split assignment must be a mapping")
     supplied = dict(assignment)
@@ -538,80 +574,25 @@ def _validate_split_assignment_components(
     return materialized, canonical, manifest_sha256
 
 
-def _partition_authority_cache(
-    *,
-    role: str,
-    records: Sequence[CremaLabelRecord],
-    configuration_sha256: str,
-    split_manifest_sha256: str,
-    assignment_sha256: str,
-) -> dict[str, Any]:
-    validated_role = validate_partition_role(
-        role,
-        (
-            "training_discovery",
-            "calibration",
-            "balanced_diagnostic",
-        ),
-    )
-    try:
-        supplied = tuple(records)
-    except TypeError as error:
-        raise ValueError(
-            "partition authority records must be a sequence"
-        ) from error
-    if not supplied:
-        raise ValueError("partition authority records must be eligible CREMA records")
-    for record in supplied:
-        _validate_partition_authority_record(record)
-    materialized = tuple(
-        sorted(supplied, key=lambda record: record.clip_stem)
-    )
-    if len({record.clip_stem for record in materialized}) != len(materialized):
-        raise ValueError("partition authority clip identities must be unique")
-    expected_actor_count = {
-        "training_discovery": 35,
-        "calibration": 13,
-        "balanced_diagnostic": 13,
-    }[validated_role]
-    if len({record.actor_id for record in materialized}) != expected_actor_count:
-        raise ValueError("partition authority actor count does not match")
-    if len({record.sentence_id for record in materialized}) != 12:
-        raise ValueError("partition authority sentence count does not match")
-    if {record.label for record in materialized} != set(LABELS):
-        raise ValueError("partition authority label coverage does not match")
-    payload = {
-        "schema_id": "emotion-state-phase-b-partition-authority-cache-v1",
-        "schema_version": 1,
-        "partition_role": validated_role,
-        "configuration_sha256": configuration_sha256,
-        "split_manifest_sha256": split_manifest_sha256,
-        "assignment_sha256": assignment_sha256,
-        "records": [
-            {
-                "clip_stem": record.clip_stem,
-                "actor_id": record.actor_id,
-                "sentence_id": record.sentence_id,
-                "label": record.label,
-                "abstention_reason": record.abstention_reason,
-                "vote_distribution": [
-                    [label, count]
-                    for label, count in record.vote_distribution
-                ],
-                "vote_agreement": record.vote_agreement,
-                "vote_entropy": record.vote_entropy,
-            }
-            for record in materialized
-        ],
-    }
-    payload["self_sha256"] = canonical_payload_sha256(payload)
-    return payload
+_NONFINAL_PARTITION_ROLES = (
+    "training_discovery",
+    "calibration",
+    "balanced_diagnostic",
+)
+_PARTITION_ACTOR_COUNTS = {
+    "training_discovery": 35,
+    "calibration": 13,
+    "balanced_diagnostic": 13,
+    "final_lockbox": 30,
+}
 
 
-def _validate_partition_authority_record(record: Any) -> None:
-    if not isinstance(record, CremaLabelRecord):
+def _canonical_partition_authority_record(
+    record: Any,
+) -> CremaLabelRecord:
+    if type(record) is not CremaLabelRecord:
         raise ValueError(
-            "partition authority records must be eligible CREMA records"
+            "partition authority records must be exact eligible CREMA records"
         )
     try:
         clip_actor_id, clip_sentence_id = _parse_crema_clip_identity(
@@ -660,38 +641,393 @@ def _validate_partition_authority_record(record: Any) -> None:
         raise ValueError(
             "partition authority label does not match the unique vote winner"
         )
-    total = sum(counts.values())
-    expected_agreement = max(counts.values()) / total
+    expected_agreement, expected_entropy = _canonical_vote_metrics(
+        distribution
+    )
     if (
         type(record.vote_agreement) is not float
         or not math.isfinite(record.vote_agreement)
-        or not math.isclose(
-            record.vote_agreement,
-            expected_agreement,
-            rel_tol=0.0,
-            abs_tol=1e-15,
-        )
     ):
         raise ValueError("partition authority vote agreement is invalid")
-    expected_entropy = _entropy(counts)
+    vote_agreement = (
+        0.0 if record.vote_agreement == 0.0
+        else float(record.vote_agreement)
+    )
+    if vote_agreement.hex() != expected_agreement.hex():
+        raise ValueError("partition authority vote agreement is invalid")
     if (
-        expected_entropy is None
-        or type(record.vote_entropy) is not float
+        type(record.vote_entropy) is not float
         or not math.isfinite(record.vote_entropy)
-        or not math.isclose(
-            record.vote_entropy,
-            expected_entropy,
-            rel_tol=0.0,
-            abs_tol=1e-15,
-        )
     ):
         raise ValueError("partition authority vote entropy is invalid")
+    vote_entropy = (
+        0.0 if record.vote_entropy == 0.0
+        else float(record.vote_entropy)
+    )
+    if vote_entropy.hex() != expected_entropy.hex():
+        raise ValueError("partition authority vote entropy is invalid")
+    return CremaLabelRecord(
+        clip_stem=record.clip_stem,
+        actor_id=record.actor_id,
+        sentence_id=record.sentence_id,
+        label=record.label,
+        abstention_reason=None,
+        vote_distribution=tuple(distribution),
+        vote_agreement=vote_agreement,
+        vote_entropy=vote_entropy,
+    )
+
+
+def _validate_partition_authority_record(record: Any) -> None:
+    _canonical_partition_authority_record(record)
+
+
+_CREMA_LABEL_RECORD_FIELDS = (
+    "clip_stem",
+    "actor_id",
+    "sentence_id",
+    "label",
+    "abstention_reason",
+    "vote_distribution",
+    "vote_agreement",
+    "vote_entropy",
+)
+
+
+def _private_record_matches_canonical(
+    record: Any,
+    canonical: CremaLabelRecord,
+) -> bool:
+    if (
+        type(record) is not CremaLabelRecord
+        or set(vars(record)) != set(_CREMA_LABEL_RECORD_FIELDS)
+    ):
+        return False
+    for field in _CREMA_LABEL_RECORD_FIELDS:
+        supplied = getattr(record, field)
+        expected = getattr(canonical, field)
+        if field in ("vote_agreement", "vote_entropy"):
+            if (
+                type(supplied) is not float
+                or type(expected) is not float
+                or supplied.hex() != expected.hex()
+            ):
+                return False
+        elif supplied != expected:
+            return False
+    return True
+
+
+def _validated_internal_acoustic_bindings(
+    records: Sequence[CremaLabelRecord],
+    bindings: Any,
+) -> tuple[tuple[str, str, int], ...]:
+    if type(bindings) is not tuple:
+        raise ValueError("acoustic bindings private state must be an exact tuple")
+    expected_stems = {record.clip_stem for record in records}
+    result: list[tuple[str, str, int]] = []
+    previous: str | None = None
+    for binding in bindings:
+        if (
+            type(binding) is not tuple
+            or len(binding) != 3
+            or type(binding[0]) is not str
+            or type(binding[1]) is not str
+            or re.fullmatch(r"[0-9A-F]{64}", binding[1]) is None
+            or type(binding[2]) is not int
+            or binding[2] <= 0
+        ):
+            raise ValueError("acoustic bindings private state is invalid")
+        if previous is not None and binding[0] <= previous:
+            raise ValueError(
+                "acoustic bindings private state must have ascending unique stems"
+            )
+        previous = binding[0]
+        result.append((binding[0], binding[1], binding[2]))
+    if {binding[0] for binding in result} != expected_stems:
+        raise ValueError("acoustic bindings do not match eligible record stems")
+    return tuple(result)
+
+
+def _validate_acoustic_sources(
+    records: Sequence[CremaLabelRecord],
+    acoustic_sources: Mapping[str, "SourceByteIdentity"],
+) -> tuple[tuple[str, str, int], ...]:
+    from scripts.emotion_state_phase_b_public_pipeline import (
+        SourceByteIdentity,
+    )
+
+    if not isinstance(acoustic_sources, Mapping):
+        raise ValueError("acoustic sources must be a mapping")
+    supplied_keys = tuple(acoustic_sources)
+    if any(type(key) is not str for key in supplied_keys):
+        raise ValueError("acoustic source keys must be exact strings")
+    expected_stems = {record.clip_stem for record in records}
+    if (
+        len(supplied_keys) != len(set(supplied_keys))
+        or set(supplied_keys) != expected_stems
+    ):
+        raise ValueError("acoustic source keys must exactly match eligible stems")
+    result: list[tuple[str, str, int]] = []
+    prefix = (
+        "data/public/emotion-state/crema-d-v1.0/repository/AudioWAV/"
+    )
+    for stem in sorted(expected_stems):
+        source = acoustic_sources[stem]
+        if type(source) is not SourceByteIdentity:
+            raise ValueError("acoustic source identity must have exact type")
+        if (
+            type(source.project_relative_path) is not str
+            or source.project_relative_path != f"{prefix}{stem}.wav"
+        ):
+            raise ValueError("acoustic source path is not canonical")
+        if (
+            type(source.sha256) is not str
+            or re.fullmatch(r"[0-9A-F]{64}", source.sha256) is None
+        ):
+            raise ValueError("acoustic source SHA-256 is invalid")
+        if type(source.size_bytes) is not int or source.size_bytes <= 0:
+            raise ValueError("acoustic source size is invalid")
+        result.append((stem, source.sha256, source.size_bytes))
+    return tuple(result)
+
+
+def _canonical_cache_record(
+    record: CremaLabelRecord,
+    binding: tuple[str, str, int],
+) -> dict[str, Any]:
+    canonical = _canonical_partition_authority_record(record)
+    if binding[0] != canonical.clip_stem:
+        raise ValueError("acoustic binding does not match record identity")
+    return {
+        "clip_stem": canonical.clip_stem,
+        "actor_id": canonical.actor_id,
+        "sentence_id": canonical.sentence_id,
+        "label": canonical.label,
+        "abstention_reason": canonical.abstention_reason,
+        "vote_distribution": [
+            [label, count] for label, count in canonical.vote_distribution
+        ],
+        "vote_agreement": (
+            0.0 if canonical.vote_agreement == 0.0
+            else float(canonical.vote_agreement)
+        ),
+        "vote_entropy": (
+            0.0 if canonical.vote_entropy == 0.0
+            else float(canonical.vote_entropy)
+        ),
+        "audio_sha256": binding[1],
+        "audio_size_bytes": binding[2],
+    }
+
+
+def _partition_authority_cache(
+    *,
+    role: str,
+    records: Sequence[CremaLabelRecord],
+    acoustic_bindings: tuple[tuple[str, str, int], ...],
+    configuration_sha256: str,
+    split_manifest_sha256: str,
+    assignment_sha256: str,
+) -> dict[str, Any]:
+    validated_role = validate_partition_role(
+        role,
+        _NONFINAL_PARTITION_ROLES,
+    )
+    try:
+        supplied = tuple(records)
+    except TypeError as error:
+        raise ValueError(
+            "partition authority records must be a sequence"
+        ) from error
+    if not supplied:
+        raise ValueError("partition authority records must be eligible CREMA records")
+    materialized = tuple(sorted(
+        (_canonical_partition_authority_record(record) for record in supplied),
+        key=lambda record: record.clip_stem,
+    ))
+    if len({record.clip_stem for record in materialized}) != len(materialized):
+        raise ValueError("partition authority clip identities must be unique")
+    validated_bindings = _validated_internal_acoustic_bindings(
+        materialized,
+        acoustic_bindings,
+    )
+    binding_by_stem = {
+        stem: (stem, sha256, size_bytes)
+        for stem, sha256, size_bytes in validated_bindings
+    }
+    if (
+        len({record.actor_id for record in materialized})
+        != _PARTITION_ACTOR_COUNTS[validated_role]
+    ):
+        raise ValueError("partition authority actor count does not match")
+    if len({record.sentence_id for record in materialized}) != 12:
+        raise ValueError("partition authority sentence count does not match")
+    if {record.label for record in materialized} != set(LABELS):
+        raise ValueError("partition authority label coverage does not match")
+    payload = {
+        "schema_id": "emotion-state-phase-b-partition-authority-cache-v2",
+        "schema_version": 2,
+        "partition_role": validated_role,
+        "configuration_sha256": configuration_sha256,
+        "split_manifest_sha256": split_manifest_sha256,
+        "assignment_sha256": assignment_sha256,
+        "records": [
+            _canonical_cache_record(
+                record,
+                binding_by_stem[record.clip_stem],
+            )
+            for record in materialized
+        ],
+    }
+    payload["self_sha256"] = canonical_payload_sha256(payload)
+    return payload
+
+
+def _full_partition_records(
+    records: Sequence[CremaLabelRecord],
+    assignment: Mapping[str, str],
+) -> dict[str, tuple[CremaLabelRecord, ...]]:
+    result = {
+        role: tuple(sorted(
+            (
+                record for record in records
+                if assignment[record.actor_id] == role
+            ),
+            key=lambda record: record.clip_stem,
+        ))
+        for role in (*_NONFINAL_PARTITION_ROLES, "final_lockbox")
+    }
+    actor_sets = {
+        role: {record.actor_id for record in role_records}
+        for role, role_records in result.items()
+    }
+    record_sets = {
+        role: {record.clip_stem for record in role_records}
+        for role, role_records in result.items()
+    }
+    for role, expected_count in _PARTITION_ACTOR_COUNTS.items():
+        if len(actor_sets[role]) != expected_count:
+            raise ValueError("validated split partition actor count does not match")
+    roles = (*_NONFINAL_PARTITION_ROLES, "final_lockbox")
+    for index, role in enumerate(roles):
+        for other_role in roles[index + 1:]:
+            if not actor_sets[role].isdisjoint(actor_sets[other_role]):
+                raise ValueError("validated split partition actors overlap")
+            if not record_sets[role].isdisjoint(record_sets[other_role]):
+                raise ValueError("validated split partition records overlap")
+    complete_actors = {record.actor_id for record in records}
+    complete_records = {record.clip_stem for record in records}
+    if (
+        len(set().union(*actor_sets.values())) != 91
+        or set().union(*actor_sets.values()) != complete_actors
+        or sum(len(items) for items in record_sets.values()) != len(records)
+        or set().union(*record_sets.values()) != complete_records
+        or len(complete_records) != len(records)
+    ):
+        raise ValueError("validated split partition totals do not match")
+    final_count = len(result["final_lockbox"])
+    if not 0 < final_count < len(records):
+        raise ValueError("validated split final record count is invalid")
+    return result
+
+
+def _build_validated_split_payload(
+    *,
+    records: tuple[CremaLabelRecord, ...],
+    acoustic_bindings: tuple[tuple[str, str, int], ...],
+    assignment: tuple[tuple[str, str], ...],
+    seed_digest: str,
+    manifest_sha256: str,
+) -> dict[str, Any]:
+    assignment_by_actor = dict(assignment)
+    partitions = _full_partition_records(records, assignment_by_actor)
+    validated_bindings = _validated_internal_acoustic_bindings(
+        records,
+        acoustic_bindings,
+    )
+    binding_by_stem = {
+        stem: (stem, sha256, size_bytes)
+        for stem, sha256, size_bytes in validated_bindings
+    }
+    assignment_sha256 = _canonical_sha256([
+        [actor, role] for actor, role in assignment
+    ])
+    caches = {
+        role: _partition_authority_cache(
+            role=role,
+            records=partitions[role],
+            acoustic_bindings=tuple(
+                binding_by_stem[record.clip_stem]
+                for record in partitions[role]
+            ),
+            configuration_sha256=seed_digest.upper(),
+            split_manifest_sha256=manifest_sha256.upper(),
+            assignment_sha256=assignment_sha256,
+        )
+        for role in _NONFINAL_PARTITION_ROLES
+    }
+    all_record_preimages = [
+        _canonical_cache_record(
+            record,
+            binding_by_stem[record.clip_stem],
+        )
+        for record in sorted(records, key=lambda item: item.clip_stem)
+    ]
+    eligible_authority_commitment = _canonical_sha256({
+        "schema_id": "emotion-state-phase-b-eligible-authority-commitment-v2",
+        "configuration_sha256": seed_digest.upper(),
+        "split_manifest_sha256": manifest_sha256.upper(),
+        "assignment_sha256": assignment_sha256,
+        "records": all_record_preimages,
+    })
+    final_records = partitions["final_lockbox"]
+    final_authority_commitment = _canonical_sha256({
+        "schema_id": "emotion-state-phase-b-final-lockbox-sealed-authority-v2",
+        "partition_role": "final_lockbox",
+        "configuration_sha256": seed_digest.upper(),
+        "split_manifest_sha256": manifest_sha256.upper(),
+        "assignment_sha256": assignment_sha256,
+        "records": [
+            _canonical_cache_record(
+                record,
+                binding_by_stem[record.clip_stem],
+            )
+            for record in final_records
+        ],
+    })
+    return {
+        "schema_id": "emotion-state-phase-b-validated-split-v2",
+        "configuration_sha256": seed_digest.upper(),
+        "eligible_record_count": len(records),
+        "eligible_actor_count": len(assignment),
+        "eligible_authority_commitment_sha256": (
+            eligible_authority_commitment
+        ),
+        "assignment_sha256": assignment_sha256,
+        "split_manifest_sha256": manifest_sha256.upper(),
+        "partition_authority_sha256": {
+            role: caches[role]["self_sha256"]
+            for role in _NONFINAL_PARTITION_ROLES
+        },
+        "final_lockbox_commitment": {
+            "eligible_record_count": len(final_records),
+            "eligible_actor_count": len({
+                record.actor_id for record in final_records
+            }),
+            "sealed_authority_commitment_sha256": (
+                final_authority_commitment
+            ),
+        },
+    }
 
 
 def mint_validated_split_assignment(
     records: Sequence[CremaLabelRecord],
     assignment: Mapping[str, str],
     seed_digest: str,
+    *,
+    acoustic_sources: Mapping[str, "SourceByteIdentity"],
 ) -> ValidatedSplitAssignment:
     materialized, canonical, manifest_sha256 = (
         _validate_split_assignment_components(
@@ -700,94 +1036,44 @@ def mint_validated_split_assignment(
             seed_digest,
         )
     )
-    for record in materialized:
-        _validate_partition_authority_record(record)
-    assignment_sha256 = _canonical_sha256([
-        [actor, role] for actor, role in canonical
-    ])
-    record_sha256 = _canonical_sha256([
-        {
-            "clip_stem": record.clip_stem,
-            "actor_id": record.actor_id,
-            "sentence_id": record.sentence_id,
-            "label": record.label,
-        }
-        for record in sorted(materialized, key=lambda item: item.clip_stem)
-    ])
-    state = _ValidatedSplitState(
+    acoustic_bindings = _validate_acoustic_sources(
+        materialized,
+        acoustic_sources,
+    )
+    payload = _build_validated_split_payload(
         records=materialized,
+        acoustic_bindings=acoustic_bindings,
         assignment=canonical,
         seed_digest=seed_digest,
         manifest_sha256=manifest_sha256,
     )
-    assignment_by_actor = dict(canonical)
-    non_lockbox_roles = (
-        "training_discovery",
-        "calibration",
-        "balanced_diagnostic",
-    )
-    partition_cache_digests = {
-        role: _partition_authority_cache(
-            role=role,
-            records=tuple(
-                record
-                for record in materialized
-                if assignment_by_actor[record.actor_id] == role
-            ),
-            configuration_sha256=seed_digest.upper(),
-            split_manifest_sha256=manifest_sha256.upper(),
-            assignment_sha256=assignment_sha256,
-        )["self_sha256"]
-        for role in non_lockbox_roles
-    }
-    final_records = tuple(
-        sorted(
-            (
-                record
-                for record in materialized
-                if assignment_by_actor[record.actor_id] == "final_lockbox"
-            ),
-            key=lambda record: record.clip_stem,
-        )
-    )
-    final_record_commitment = _canonical_sha256(
-        [
-            {
-                "clip_stem": record.clip_stem,
-                "actor_id": record.actor_id,
-                "sentence_id": record.sentence_id,
-                "label": record.label,
-            }
-            for record in final_records
-        ]
+    state = _ValidatedSplitState(
+        records=materialized,
+        acoustic_bindings=acoustic_bindings,
+        assignment=canonical,
+        seed_digest=seed_digest,
+        manifest_sha256=manifest_sha256,
     )
     return _mint_artifact(
         ValidatedSplitAssignment,
-        {
-            "schema_id": "emotion-state-phase-b-validated-split-v1",
-            "configuration_sha256": seed_digest.upper(),
-            "split_manifest_sha256": manifest_sha256,
-            "assignment_sha256": assignment_sha256,
-            "eligible_record_commitment_sha256": record_sha256,
-            "eligible_record_count": len(materialized),
-            "eligible_actor_count": len(canonical),
-            "partition_authority_sha256": partition_cache_digests,
-            "final_lockbox_commitment": {
-                "eligible_record_count": len(final_records),
-                "eligible_actor_count": len(
-                    {record.actor_id for record in final_records}
-                ),
-                "eligible_record_commitment_sha256": final_record_commitment,
-            },
-        },
+        payload,
         state,
     )
 
 
 def _verify_validated_split_assignment(
     split_assignment: Any,
-) -> tuple[dict[str, str], str, str, tuple[CremaLabelRecord, ...]]:
-    _verify_artifact_mint(split_assignment, ValidatedSplitAssignment)
+) -> tuple[
+    dict[str, str],
+    str,
+    str,
+    tuple[CremaLabelRecord, ...],
+    tuple[tuple[str, str, int], ...],
+]:
+    payload = _verify_artifact_mint(
+        split_assignment,
+        ValidatedSplitAssignment,
+    )
     links = _artifact_links(split_assignment)
     if len(links) != 1 or type(links[0]) is not _ValidatedSplitState:
         raise ValueError("validated actor split private state is invalid")
@@ -799,21 +1085,62 @@ def _verify_validated_split_assignment(
             state.seed_digest,
         )
     )
+    acoustic_bindings = _validated_internal_acoustic_bindings(
+        materialized,
+        state.acoustic_bindings,
+    )
     if (
-        materialized != state.records
+        len(materialized) != len(state.records)
+        or any(
+            not _private_record_matches_canonical(record, canonical_record)
+            for record, canonical_record in zip(
+                state.records,
+                materialized,
+                strict=True,
+            )
+        )
+        or acoustic_bindings != state.acoustic_bindings
         or canonical != state.assignment
         or manifest_sha256 != state.manifest_sha256
     ):
         raise ValueError("validated actor split assignment commitment changed")
-    return dict(canonical), state.seed_digest, manifest_sha256, materialized
+    expected_payload = _build_validated_split_payload(
+        records=materialized,
+        acoustic_bindings=acoustic_bindings,
+        assignment=canonical,
+        seed_digest=state.seed_digest,
+        manifest_sha256=manifest_sha256,
+    )
+    reminted = _mint_artifact(
+        ValidatedSplitAssignment,
+        expected_payload,
+        state,
+    )
+    if (
+        reminted.to_payload() != payload
+        or reminted.mint_sha256 != split_assignment.mint_sha256
+    ):
+        raise ValueError("validated actor split assignment commitment changed")
+    validate_phase_b_split_manifest(payload)
+    return (
+        dict(canonical),
+        state.seed_digest,
+        manifest_sha256,
+        materialized,
+        acoustic_bindings,
+    )
 
 
 def serialize_partition_authority_caches(
     split_assignment: ValidatedSplitAssignment,
 ) -> dict[str, dict[str, Any]]:
-    assignment, seed_digest, manifest_sha256, records = (
+    assignment, seed_digest, manifest_sha256, records, acoustic_bindings = (
         _verify_validated_split_assignment(split_assignment)
     )
+    binding_by_stem = {
+        stem: (stem, sha256, size_bytes)
+        for stem, sha256, size_bytes in acoustic_bindings
+    }
     split_payload = split_assignment.to_payload()
     result = {
         role: _partition_authority_cache(
@@ -823,15 +1150,21 @@ def serialize_partition_authority_caches(
                 for record in records
                 if assignment[record.actor_id] == role
             ),
+            acoustic_bindings=tuple(
+                binding_by_stem[record.clip_stem]
+                for record in sorted(
+                    (
+                        record for record in records
+                        if assignment[record.actor_id] == role
+                    ),
+                    key=lambda record: record.clip_stem,
+                )
+            ),
             configuration_sha256=seed_digest.upper(),
             split_manifest_sha256=manifest_sha256.upper(),
             assignment_sha256=split_payload["assignment_sha256"],
         )
-        for role in (
-            "training_discovery",
-            "calibration",
-            "balanced_diagnostic",
-        )
+        for role in _NONFINAL_PARTITION_ROLES
     }
     if {
         role: payload["self_sha256"] for role, payload in result.items()
@@ -845,63 +1178,115 @@ def derive_validated_partition_authority(
     *,
     role: str,
 ) -> ValidatedPartitionAuthority:
-    assignment, seed_digest, manifest_sha256, records = (
-        _verify_validated_split_assignment(split_assignment)
-    )
     validated_role = validate_partition_role(
         role,
+        _NONFINAL_PARTITION_ROLES,
+    )
+    caches = serialize_partition_authority_caches(split_assignment)
+    return restore_validated_partition_authority_cache(
+        caches[validated_role],
+        split_assignment.to_payload(),
+        role=validated_role,
+    )
+
+
+def _rehydrate_cache_record(item: Mapping[str, Any]) -> CremaLabelRecord:
+    distribution = tuple(
+        (cell[0], cell[1]) for cell in item["vote_distribution"]
+    )
+    vote_agreement = (
+        0.0 if item["vote_agreement"] == 0.0
+        else float(item["vote_agreement"])
+    )
+    vote_entropy = (
+        0.0 if item["vote_entropy"] == 0.0
+        else float(item["vote_entropy"])
+    )
+    return _canonical_partition_authority_record(CremaLabelRecord(
+        clip_stem=item["clip_stem"],
+        actor_id=item["actor_id"],
+        sentence_id=item["sentence_id"],
+        label=item["label"],
+        abstention_reason=item["abstention_reason"],
+        vote_distribution=distribution,
+        vote_agreement=vote_agreement,
+        vote_entropy=vote_entropy,
+    ))
+
+
+def restore_validated_partition_authority_cache(
+    cache: Mapping[str, Any],
+    split_manifest: Mapping[str, Any],
+    *,
+    role: str,
+) -> ValidatedPartitionAuthority:
+    validated_role = validate_partition_role(
+        role,
+        _NONFINAL_PARTITION_ROLES,
+    )
+    validated_cache = validate_phase_b_partition_authority_cache(
+        cache,
+        split_manifest,
+        expected_role=validated_role,
+    )
+    records = tuple(
+        _rehydrate_cache_record(item)
+        for item in validated_cache["records"]
+    )
+    bindings = tuple(
         (
-            "training_discovery",
-            "calibration",
-            "balanced_diagnostic",
-        ),
-    )
-    split_payload = split_assignment.to_payload()
-    authoritative_records = tuple(
-        sorted(
-            (
-                record
-                for record in records
-                if assignment[record.actor_id] == validated_role
-            ),
-            key=lambda record: record.clip_stem,
+            item["clip_stem"],
+            item["audio_sha256"],
+            item["audio_size_bytes"],
         )
+        for item in validated_cache["records"]
     )
-    cache = _partition_authority_cache(
+    bindings = _validated_internal_acoustic_bindings(records, bindings)
+    rebuilt = _partition_authority_cache(
         role=validated_role,
-        records=authoritative_records,
-        configuration_sha256=seed_digest.upper(),
-        split_manifest_sha256=manifest_sha256.upper(),
-        assignment_sha256=split_payload["assignment_sha256"],
+        records=records,
+        acoustic_bindings=bindings,
+        configuration_sha256=validated_cache["configuration_sha256"],
+        split_manifest_sha256=validated_cache["split_manifest_sha256"],
+        assignment_sha256=validated_cache["assignment_sha256"],
     )
-    if (
-        cache["self_sha256"]
-        != split_payload["partition_authority_sha256"][validated_role]
-    ):
-        raise ValueError("partition authority cache commitment changed")
+    if rebuilt != validated_cache:
+        raise ValueError(
+            "partition authority cache changed during exact rehydration"
+        )
     state = _ValidatedPartitionAuthorityState(
-        records=authoritative_records,
+        records=records,
+        acoustic_bindings=bindings,
         role=validated_role,
-        seed_digest=seed_digest,
-        manifest_sha256=manifest_sha256,
-        assignment_sha256=split_payload["assignment_sha256"],
+        seed_digest=validated_cache["configuration_sha256"].lower(),
+        manifest_sha256=validated_cache["split_manifest_sha256"],
+        assignment_sha256=validated_cache["assignment_sha256"],
     )
-    return _mint_artifact(
+    authority = _mint_artifact(
         ValidatedPartitionAuthority,
         {
-            "schema_id": "emotion-state-phase-b-validated-partition-authority-v1",
-            "partition_role": validated_role,
-            "configuration_sha256": seed_digest.upper(),
-            "split_manifest_sha256": manifest_sha256.upper(),
-            "assignment_sha256": split_payload["assignment_sha256"],
-            "partition_authority_sha256": cache["self_sha256"],
-            "eligible_record_count": len(authoritative_records),
-            "eligible_actor_count": len(
-                {record.actor_id for record in authoritative_records}
+            "schema_id": (
+                "emotion-state-phase-b-validated-partition-authority-v2"
             ),
+            "partition_role": validated_role,
+            "configuration_sha256": validated_cache["configuration_sha256"],
+            "split_manifest_sha256": validated_cache[
+                "split_manifest_sha256"
+            ],
+            "assignment_sha256": validated_cache["assignment_sha256"],
+            "partition_authority_sha256": validated_cache["self_sha256"],
+            "eligible_record_count": len(records),
+            "eligible_actor_count": len({
+                record.actor_id for record in records
+            }),
         },
         state,
     )
+    _verify_validated_partition_authority(
+        authority,
+        expected_role=validated_role,
+    )
+    return authority
 
 
 def _verify_validated_partition_authority(
@@ -909,6 +1294,7 @@ def _verify_validated_partition_authority(
     *,
     expected_role: str,
 ) -> tuple[_ValidatedPartitionAuthorityState, dict[str, Any]]:
+    validate_partition_role(expected_role, _NONFINAL_PARTITION_ROLES)
     payload = _verify_artifact_mint(authority, ValidatedPartitionAuthority)
     links = _artifact_links(authority)
     if (
@@ -919,23 +1305,47 @@ def _verify_validated_partition_authority(
     state = links[0]
     if state.role != expected_role:
         raise ValueError("validated partition authority role does not match")
+    records = tuple(
+        _canonical_partition_authority_record(record)
+        for record in state.records
+    )
+    bindings = _validated_internal_acoustic_bindings(
+        records,
+        state.acoustic_bindings,
+    )
+    if (
+        len(records) != len(state.records)
+        or any(
+            not _private_record_matches_canonical(record, canonical_record)
+            for record, canonical_record in zip(
+                state.records,
+                records,
+                strict=True,
+            )
+        )
+        or bindings != state.acoustic_bindings
+    ):
+        raise ValueError(
+            "validated partition authority private state changed"
+        )
     cache = _partition_authority_cache(
         role=state.role,
-        records=state.records,
+        records=records,
+        acoustic_bindings=bindings,
         configuration_sha256=state.seed_digest.upper(),
         split_manifest_sha256=state.manifest_sha256.upper(),
         assignment_sha256=state.assignment_sha256,
     )
     expected_payload = {
-        "schema_id": "emotion-state-phase-b-validated-partition-authority-v1",
+        "schema_id": "emotion-state-phase-b-validated-partition-authority-v2",
         "partition_role": state.role,
         "configuration_sha256": state.seed_digest.upper(),
         "split_manifest_sha256": state.manifest_sha256.upper(),
         "assignment_sha256": state.assignment_sha256,
         "partition_authority_sha256": cache["self_sha256"],
-        "eligible_record_count": len(state.records),
+        "eligible_record_count": len(records),
         "eligible_actor_count": len(
-            {record.actor_id for record in state.records}
+            {record.actor_id for record in records}
         ),
     }
     reminted = _mint_artifact(
@@ -949,6 +1359,35 @@ def _verify_validated_partition_authority(
     ):
         raise ValueError("validated partition authority commitment changed")
     return state, payload
+
+
+def validated_partition_records(
+    authority: ValidatedPartitionAuthority,
+    *,
+    role: str,
+) -> tuple[ValidatedPartitionRecord, ...]:
+    validated_role = validate_partition_role(
+        role,
+        _NONFINAL_PARTITION_ROLES,
+    )
+    state, _payload = _verify_validated_partition_authority(
+        authority,
+        expected_role=validated_role,
+    )
+    bindings = {
+        stem: (sha256, size_bytes)
+        for stem, sha256, size_bytes in state.acoustic_bindings
+    }
+    result = []
+    for record in sorted(state.records, key=lambda item: item.clip_stem):
+        fresh_record = _canonical_partition_authority_record(record)
+        audio_sha256, audio_size_bytes = bindings[fresh_record.clip_stem]
+        result.append(ValidatedPartitionRecord(
+            label_record=_canonical_partition_authority_record(fresh_record),
+            audio_sha256=audio_sha256,
+            audio_size_bytes=audio_size_bytes,
+        ))
+    return tuple(result)
 
 
 def mint_partition_evidence(
@@ -1022,9 +1461,13 @@ def mint_partition_evidence(
         expected_rows=len(rows),
     )
     if type(split_assignment) is ValidatedSplitAssignment:
-        assignment, split_seed_digest, split_manifest_sha, eligible_records = (
-            _verify_validated_split_assignment(split_assignment)
-        )
+        (
+            assignment,
+            split_seed_digest,
+            split_manifest_sha,
+            eligible_records,
+            _acoustic_bindings,
+        ) = _verify_validated_split_assignment(split_assignment)
         authoritative = tuple(sorted(
             (
                 record

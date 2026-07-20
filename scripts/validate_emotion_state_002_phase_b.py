@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import copy
 import hashlib
 import importlib.metadata
 import json
@@ -2999,15 +3000,59 @@ def expected_non_lockbox_packet(review_sha256: str) -> dict[str, Any]:
     }
 
 
+_PHASE_B_NONFINAL_ROLES = (
+    "training_discovery",
+    "calibration",
+    "balanced_diagnostic",
+)
+_PHASE_B_ROLE_ACTOR_COUNTS = {
+    "training_discovery": 35,
+    "calibration": 13,
+    "balanced_diagnostic": 13,
+}
+_PHASE_B_CREMA_LABELS = frozenset({"A", "D", "F", "H", "N", "S"})
+_PHASE_B_CREMA_CLIP_PATTERN = re.compile(
+    r"^(?P<actor>\d{4})_(?P<sentence>[A-Z0-9]{3})_"
+    r"(?:ANG|DIS|FEA|HAP|NEU|SAD)_(?:HI|LO|MD|XX)$"
+)
+
+
+def _phase_b_exact_dict(
+    value: Any,
+    keys: tuple[str, ...],
+    name: str,
+) -> dict[str, Any]:
+    if type(value) is not dict or set(value) != set(keys):
+        raise ValueError(f"{name} keys do not match frozen contract")
+    return value
+
+
+def _phase_b_canonical_vote_metrics(
+    cells: tuple[tuple[str, int], ...],
+) -> tuple[float, float]:
+    ordered = tuple(sorted(cells, key=lambda cell: cell[0]))
+    total = sum(count for _label, count in ordered)
+    agreement = max(count for _label, count in ordered) / total
+    entropy_terms = (
+        (count / total) * math.log2(count / total)
+        for _label, count in ordered
+        if count
+    )
+    entropy = -sum(entropy_terms)
+    agreement = 0.0 if agreement == 0.0 else float(agreement)
+    entropy = 0.0 if entropy == 0.0 else float(entropy)
+    return agreement, entropy
+
+
 def validate_phase_b_split_manifest(payload: Any) -> dict[str, Any]:
-    manifest = _exact_keys(
-        payload,
+    manifest = _phase_b_exact_dict(
+        copy.deepcopy(payload),
         (
             "schema_id",
             "configuration_sha256",
             "eligible_actor_count",
             "eligible_record_count",
-            "eligible_record_commitment_sha256",
+            "eligible_authority_commitment_sha256",
             "assignment_sha256",
             "split_manifest_sha256",
             "partition_authority_sha256",
@@ -3017,53 +3062,241 @@ def validate_phase_b_split_manifest(payload: Any) -> dict[str, Any]:
         "validated split manifest",
     )
     validate_payload_self_hash(manifest, "validated split manifest")
-    if manifest["schema_id"] != "emotion-state-phase-b-validated-split-v1":
+    if (
+        type(manifest["schema_id"]) is not str
+        or manifest["schema_id"]
+        != "emotion-state-phase-b-validated-split-v2"
+    ):
         raise ValueError("validated split manifest schema does not match")
     if (
         manifest["configuration_sha256"]
         != EXPECTED_EVIDENCE_IDENTITY_SHA256["configuration_sha256"]
     ):
         raise ValueError("validated split configuration identity does not match")
-    if manifest["eligible_actor_count"] != 91:
+    if (
+        type(manifest["eligible_actor_count"]) is not int
+        or manifest["eligible_actor_count"] != 91
+    ):
         raise ValueError("validated split actor count must be exactly 91")
-    _positive_count(manifest["eligible_record_count"], "validated split record count")
+    eligible_record_count = _positive_count(
+        manifest["eligible_record_count"],
+        "validated split record count",
+    )
     for field in (
-        "eligible_record_commitment_sha256",
+        "eligible_authority_commitment_sha256",
         "assignment_sha256",
         "split_manifest_sha256",
     ):
         _uppercase_sha256(manifest[field], f"validated split {field}")
-    authority = _exact_keys(
+    authority = _phase_b_exact_dict(
         manifest["partition_authority_sha256"],
-        (
-            "training_discovery",
-            "calibration",
-            "balanced_diagnostic",
-        ),
+        _PHASE_B_NONFINAL_ROLES,
         "non-lockbox partition authority commitments",
     )
     for role, digest in authority.items():
         _uppercase_sha256(digest, f"{role} partition authority")
-    final_lockbox = _exact_keys(
+    final_lockbox = _phase_b_exact_dict(
         manifest["final_lockbox_commitment"],
         (
             "eligible_record_count",
             "eligible_actor_count",
-            "eligible_record_commitment_sha256",
+            "sealed_authority_commitment_sha256",
         ),
         "final-lockbox commitment",
     )
-    _positive_count(
+    final_record_count = _positive_count(
         final_lockbox["eligible_record_count"],
         "final-lockbox eligible record count",
     )
-    if final_lockbox["eligible_actor_count"] != 30:
+    if final_record_count >= eligible_record_count:
+        raise ValueError(
+            "final-lockbox eligible record count must be less than total"
+        )
+    if (
+        type(final_lockbox["eligible_actor_count"]) is not int
+        or final_lockbox["eligible_actor_count"] != 30
+    ):
         raise ValueError("final-lockbox actor count must be exactly 30")
     _uppercase_sha256(
-        final_lockbox["eligible_record_commitment_sha256"],
-        "final-lockbox eligible-record commitment",
+        final_lockbox["sealed_authority_commitment_sha256"],
+        "final-lockbox sealed-authority commitment",
     )
-    return dict(manifest)
+    return copy.deepcopy(manifest)
+
+
+def validate_phase_b_partition_authority_cache(
+    payload: Any,
+    split_manifest: Any,
+    *,
+    expected_role: str,
+) -> dict[str, Any]:
+    role = validate_partition_role(expected_role, _PHASE_B_NONFINAL_ROLES)
+    manifest = validate_phase_b_split_manifest(split_manifest)
+    cache = _phase_b_exact_dict(
+        copy.deepcopy(payload),
+        (
+            "schema_id",
+            "schema_version",
+            "partition_role",
+            "configuration_sha256",
+            "split_manifest_sha256",
+            "assignment_sha256",
+            "records",
+            "self_sha256",
+        ),
+        "partition authority cache",
+    )
+    validate_payload_self_hash(cache, "partition authority cache")
+    if (
+        type(cache["schema_id"]) is not str
+        or cache["schema_id"]
+        != "emotion-state-phase-b-partition-authority-cache-v2"
+    ):
+        raise ValueError("partition authority cache schema does not match")
+    if type(cache["schema_version"]) is not int or cache["schema_version"] != 2:
+        raise ValueError("partition authority cache schema version must be 2")
+    if type(cache["partition_role"]) is not str or cache["partition_role"] != role:
+        raise ValueError("partition authority cache role does not match")
+    for field in (
+        "configuration_sha256",
+        "split_manifest_sha256",
+        "assignment_sha256",
+    ):
+        _uppercase_sha256(cache[field], f"partition authority cache {field}")
+        if cache[field] != manifest[field]:
+            raise ValueError(
+                f"partition authority cache {field} does not match manifest"
+            )
+    if cache["self_sha256"] != manifest["partition_authority_sha256"][role]:
+        raise ValueError(
+            "partition authority cache commitment does not match manifest"
+        )
+
+    records = cache["records"]
+    if type(records) is not list or not records:
+        raise ValueError("partition authority cache records must be a non-empty list")
+    previous_stem: str | None = None
+    actors: set[str] = set()
+    sentences: set[str] = set()
+    labels: set[str] = set()
+    for index, item in enumerate(records):
+        record = _phase_b_exact_dict(
+            item,
+            (
+                "clip_stem",
+                "actor_id",
+                "sentence_id",
+                "label",
+                "abstention_reason",
+                "vote_distribution",
+                "vote_agreement",
+                "vote_entropy",
+                "audio_sha256",
+                "audio_size_bytes",
+            ),
+            f"partition authority cache record {index}",
+        )
+        clip_stem = record["clip_stem"]
+        actor_id = record["actor_id"]
+        sentence_id = record["sentence_id"]
+        if (
+            type(clip_stem) is not str
+            or (match := _PHASE_B_CREMA_CLIP_PATTERN.fullmatch(clip_stem)) is None
+            or type(actor_id) is not str
+            or type(sentence_id) is not str
+            or match.group("actor") != actor_id
+            or match.group("sentence") != sentence_id
+        ):
+            raise ValueError(
+                "partition authority cache clip identity does not match record"
+            )
+        if previous_stem is not None and clip_stem <= previous_stem:
+            raise ValueError(
+                "partition authority cache records must have unique ascending stems"
+            )
+        previous_stem = clip_stem
+        label = record["label"]
+        if (
+            type(label) is not str
+            or label not in _PHASE_B_CREMA_LABELS
+            or record["abstention_reason"] is not None
+        ):
+            raise ValueError("partition authority cache label record is invalid")
+        distribution = record["vote_distribution"]
+        if (
+            type(distribution) is not list
+            or not distribution
+            or any(
+                type(cell) is not list
+                or len(cell) != 2
+                or type(cell[0]) is not str
+                or cell[0] not in _PHASE_B_CREMA_LABELS
+                or type(cell[1]) is not int
+                or cell[1] <= 0
+                for cell in distribution
+            )
+        ):
+            raise ValueError(
+                "partition authority cache vote distribution is invalid"
+            )
+        cells = tuple((cell[0], cell[1]) for cell in distribution)
+        if (
+            tuple(sorted(cells, key=lambda cell: cell[0])) != cells
+            or len({cell[0] for cell in cells}) != len(cells)
+        ):
+            raise ValueError(
+                "partition authority cache vote distribution is invalid"
+            )
+        maximum = max(count for _label, count in cells)
+        winners = tuple(
+            vote_label
+            for vote_label, count in cells
+            if count == maximum
+        )
+        if winners != (label,):
+            raise ValueError(
+                "partition authority cache label does not match unique vote winner"
+            )
+        agreement = record["vote_agreement"]
+        entropy = record["vote_entropy"]
+        for value, name in (
+            (agreement, "agreement"),
+            (entropy, "entropy"),
+        ):
+            if type(value) is not float or not math.isfinite(value):
+                raise ValueError(
+                    f"partition authority cache vote {name} is invalid"
+                )
+            if value == 0.0 and math.copysign(1.0, value) < 0.0:
+                raise ValueError(
+                    f"partition authority cache vote {name} is negative zero"
+                )
+        expected_agreement, expected_entropy = (
+            _phase_b_canonical_vote_metrics(cells)
+        )
+        if (
+            agreement.hex() != expected_agreement.hex()
+            or entropy.hex() != expected_entropy.hex()
+        ):
+            raise ValueError("partition authority cache vote metrics are invalid")
+        _uppercase_sha256(
+            record["audio_sha256"],
+            "partition authority cache audio SHA-256",
+        )
+        _positive_count(
+            record["audio_size_bytes"],
+            "partition authority cache audio size",
+        )
+        actors.add(actor_id)
+        sentences.add(sentence_id)
+        labels.add(label)
+    if len(actors) != _PHASE_B_ROLE_ACTOR_COUNTS[role]:
+        raise ValueError("partition authority cache actor count does not match")
+    if len(sentences) != 12:
+        raise ValueError("partition authority cache sentence count does not match")
+    if labels != set(_PHASE_B_CREMA_LABELS):
+        raise ValueError("partition authority cache label coverage does not match")
+    return copy.deepcopy(cache)
 
 
 def validate_phase_b_input_ledger(payload: Any) -> dict[str, Any]:

@@ -7503,6 +7503,28 @@ class EvaluationTests(unittest.TestCase):
     MODEL_KEYS = ("class_prior", "sentence_id", "acoustic")
     MODEL_SEED = 71019
 
+    @staticmethod
+    def _synthetic_acoustic_sources(records: Any) -> dict[str, Any]:
+        from scripts.emotion_state_phase_b_public_pipeline import (
+            SourceByteIdentity,
+        )
+
+        return {
+            record.clip_stem: SourceByteIdentity(
+                project_relative_path=(
+                    "data/public/emotion-state/crema-d-v1.0/repository/"
+                    f"AudioWAV/{record.clip_stem}.wav"
+                ),
+                sha256=hashlib.sha256(
+                    f"synthetic-acoustic-source:{record.clip_stem}".encode(
+                        "ascii"
+                    )
+                ).hexdigest().upper(),
+                size_bytes=len(record.clip_stem.encode("ascii")) + 1,
+            )
+            for record in records
+        }
+
     @classmethod
     def setUpClass(cls) -> None:
         from scripts.emotion_state_phase_b_evaluation import (
@@ -7522,10 +7544,12 @@ class EvaluationTests(unittest.TestCase):
         assignment = build_actor_split(records, digest)
         cls.AUTHORITATIVE_RECORDS = tuple(records)
         cls.CONFIGURATION_DIGEST = digest
+        cls.ACOUSTIC_SOURCES = cls._synthetic_acoustic_sources(records)
         cls.SPLIT_ASSIGNMENT = mint_validated_split_assignment(
             records,
             assignment,
             digest,
+            acoustic_sources=cls.ACOUSTIC_SOURCES,
         )
         cls.ACTORS_BY_ROLE = {
             role: tuple(
@@ -10795,6 +10819,1190 @@ class TrackedPublicAuthorityTests(unittest.TestCase):
         )
 
 
+class AcousticPartitionAuthorityCacheTests(unittest.TestCase):
+    NONFINAL_ROLES = (
+        "training_discovery",
+        "calibration",
+        "balanced_diagnostic",
+    )
+
+    @classmethod
+    def setUpClass(cls) -> None:
+        EvaluationTests.setUpClass()
+        cls.RECORDS = EvaluationTests.AUTHORITATIVE_RECORDS
+        cls.SOURCES = EvaluationTests.ACOUSTIC_SOURCES
+        cls.SEED = EvaluationTests.CONFIGURATION_DIGEST
+
+    @classmethod
+    def _mint(
+        cls,
+        records: Any = None,
+        *,
+        acoustic_sources: Any = None,
+        seed_digest: str | None = None,
+    ) -> Any:
+        from scripts import emotion_state_phase_b_evaluation as evaluation
+        from scripts.emotion_state_phase_b_splits import build_actor_split
+
+        supplied_records = tuple(cls.RECORDS if records is None else records)
+        supplied_seed = cls.SEED if seed_digest is None else seed_digest
+        assignment = build_actor_split(supplied_records, supplied_seed)
+        supplied_sources = (
+            EvaluationTests._synthetic_acoustic_sources(supplied_records)
+            if acoustic_sources is None
+            else acoustic_sources
+        )
+        return evaluation.mint_validated_split_assignment(
+            supplied_records,
+            assignment,
+            supplied_seed,
+            acoustic_sources=supplied_sources,
+        )
+
+    @staticmethod
+    def _reseal(payload: dict[str, Any]) -> dict[str, Any]:
+        from scripts.validate_emotion_state_002_phase_b import (
+            canonical_payload_sha256,
+        )
+
+        payload["self_sha256"] = canonical_payload_sha256(payload)
+        return payload
+
+    @classmethod
+    def _pair(
+        cls,
+        role: str = "training_discovery",
+    ) -> tuple[dict[str, Any], dict[str, Any]]:
+        from scripts import emotion_state_phase_b_evaluation as evaluation
+
+        split = cls._mint()
+        return (
+            evaluation.serialize_partition_authority_caches(split)[role],
+            split.to_payload(),
+        )
+
+    @classmethod
+    def _coordinate_cache_manifest(
+        cls,
+        cache: dict[str, Any],
+        manifest: dict[str, Any],
+        role: str = "training_discovery",
+    ) -> tuple[dict[str, Any], dict[str, Any]]:
+        cache = cls._reseal(cache)
+        manifest["partition_authority_sha256"][role] = cache["self_sha256"]
+        return cache, cls._reseal(manifest)
+
+    @staticmethod
+    def _private_state(artifact: Any) -> Any:
+        return object.__getattribute__(
+            artifact,
+            "_ImmutableArtifact__links",
+        )[0]
+
+    def test_mint_requires_keyword_only_exact_acoustic_source_mapping(
+        self,
+    ) -> None:
+        from collections.abc import Mapping
+
+        from scripts import emotion_state_phase_b_evaluation as evaluation
+        from scripts.emotion_state_phase_b_splits import build_actor_split
+
+        signature = inspect.signature(evaluation.mint_validated_split_assignment)
+        parameter = signature.parameters["acoustic_sources"]
+        self.assertIs(parameter.kind, inspect.Parameter.KEYWORD_ONLY)
+        self.assertIs(parameter.default, inspect.Parameter.empty)
+        assignment = build_actor_split(self.RECORDS, self.SEED)
+        with self.assertRaises(TypeError):
+            evaluation.mint_validated_split_assignment(
+                self.RECORDS,
+                assignment,
+                self.SEED,
+            )
+
+        first_stem = self.RECORDS[0].clip_stem
+        variants = []
+        missing = dict(self.SOURCES)
+        del missing[first_stem]
+        variants.append(missing)
+        extra = dict(self.SOURCES)
+        extra["9999_S00_ANG_XX"] = next(iter(self.SOURCES.values()))
+        variants.append(extra)
+        non_string = dict(self.SOURCES)
+        non_string[1] = non_string.pop(first_stem)
+        variants.append(non_string)
+        wrong_stem = dict(self.SOURCES)
+        wrong_stem[f"{first_stem}-wrong"] = wrong_stem.pop(first_stem)
+        variants.append(wrong_stem)
+
+        class DuplicateKeyMapping(Mapping):
+            def __init__(self, values: dict[str, Any]) -> None:
+                self.values = values
+
+            def __getitem__(self, key: str) -> Any:
+                return self.values[key]
+
+            def __iter__(self) -> Any:
+                return iter((*self.values, first_stem))
+
+            def __len__(self) -> int:
+                return len(self.values) + 1
+
+        variants.append(DuplicateKeyMapping(dict(self.SOURCES)))
+        for sources in variants:
+            with self.subTest(keys=tuple(sources)[:1]):
+                with self.assertRaises((TypeError, ValueError)):
+                    evaluation.mint_validated_split_assignment(
+                        self.RECORDS,
+                        assignment,
+                        self.SEED,
+                        acoustic_sources=sources,
+                    )
+        self.assertEqual(
+            self._mint(acoustic_sources=dict(self.SOURCES)).to_payload()[
+                "schema_id"
+            ],
+            "emotion-state-phase-b-validated-split-v2",
+        )
+
+    def test_source_identity_requires_exact_type_canonical_path_hash_and_size(
+        self,
+    ) -> None:
+        from scripts.emotion_state_phase_b_public_pipeline import (
+            SourceByteIdentity,
+        )
+
+        stem = self.RECORDS[0].clip_stem
+        original = self.SOURCES[stem]
+
+        class SourceSubclass(SourceByteIdentity):
+            pass
+
+        class IntSubclass(int):
+            pass
+
+        class StrSubclass(str):
+            pass
+
+        variants = (
+            object(),
+            SourceSubclass(
+                original.project_relative_path,
+                original.sha256,
+                original.size_bytes,
+            ),
+            replace(
+                original,
+                project_relative_path=original.project_relative_path.replace(
+                    "AudioWAV", "audiowav"
+                ),
+            ),
+            replace(
+                original,
+                project_relative_path=original.project_relative_path.replace(
+                    ".wav", ".WAV"
+                ),
+            ),
+            replace(
+                original,
+                project_relative_path=original.project_relative_path.replace(
+                    "/", "\\"
+                ),
+            ),
+            replace(
+                original,
+                project_relative_path=f"other/{stem}.wav",
+            ),
+            replace(
+                original,
+                project_relative_path=(
+                    "data/public/emotion-state/crema-d-v1.0/repository/"
+                    f"AudioWAV/{self.RECORDS[1].clip_stem}.wav"
+                ),
+            ),
+            replace(original, sha256=original.sha256.lower()),
+            replace(original, sha256="A" * 63),
+            replace(original, sha256=StrSubclass(original.sha256)),
+            replace(original, size_bytes=0),
+            replace(original, size_bytes=-1),
+            replace(original, size_bytes=True),
+            replace(original, size_bytes=IntSubclass(original.size_bytes)),
+        )
+        for identity in variants:
+            sources = dict(self.SOURCES)
+            sources[stem] = identity
+            with self.subTest(identity=repr(identity)[:100]):
+                with self.assertRaises((TypeError, ValueError)):
+                    self._mint(acoustic_sources=sources)
+
+    def test_record_mint_requires_exact_base_type_and_reconstructs_declared_fields(
+        self,
+    ) -> None:
+        from scripts import emotion_state_phase_b_evaluation as evaluation
+
+        original = EvaluationTests.RECORDS_BY_ROLE[
+            "training_discovery"
+        ][0]
+        original_index = next(
+            index for index, record in enumerate(self.RECORDS)
+            if record.clip_stem == original.clip_stem
+        )
+
+        class RecordSubclass(evaluation.CremaLabelRecord):
+            pass
+
+        subclass = RecordSubclass(
+            original.clip_stem,
+            original.actor_id,
+            original.sentence_id,
+            original.label,
+            original.abstention_reason,
+            original.vote_distribution,
+            original.vote_agreement,
+            original.vote_entropy,
+        )
+        object.__setattr__(
+            subclass,
+            "project_relative_path",
+            "data/public/emotion-state/private.wav",
+        )
+        subclass_records = list(self.RECORDS)
+        subclass_records[original_index] = subclass
+        subclass_records = tuple(subclass_records)
+        with self.assertRaises((TypeError, ValueError)):
+            self._mint(
+                subclass_records,
+                acoustic_sources=EvaluationTests._synthetic_acoustic_sources(
+                    subclass_records
+                ),
+            )
+
+        injected = replace(original)
+        object.__setattr__(
+            injected,
+            "project_relative_path",
+            "data/public/emotion-state/private.wav",
+        )
+        injected_records = list(self.RECORDS)
+        injected_records[original_index] = injected
+        injected_records = tuple(injected_records)
+        split = self._mint(
+            injected_records,
+            acoustic_sources=EvaluationTests._synthetic_acoustic_sources(
+                injected_records
+            ),
+        )
+        role = dict(self._private_state(split).assignment)[injected.actor_id]
+        self.assertEqual(role, "training_discovery")
+        authority = evaluation.derive_validated_partition_authority(
+            split,
+            role=role,
+        )
+        extracted = evaluation.validated_partition_records(
+            authority,
+            role=role,
+        )
+        matching = next(
+            item for item in extracted
+            if item.label_record.clip_stem == injected.clip_stem
+        )
+        self.assertIs(type(matching.label_record), evaluation.CremaLabelRecord)
+        self.assertFalse(hasattr(matching.label_record, "project_relative_path"))
+        self.assertNotIn("path", json.dumps(split.to_payload()).lower())
+        self.assertNotIn(
+            "path",
+            json.dumps(
+                evaluation.serialize_partition_authority_caches(split)
+            ).lower(),
+        )
+
+    def test_caller_and_extractor_record_mutation_cannot_change_authority(
+        self,
+    ) -> None:
+        from scripts import emotion_state_phase_b_evaluation as evaluation
+
+        records = [replace(record) for record in self.RECORDS]
+        sources = EvaluationTests._synthetic_acoustic_sources(records)
+        split = self._mint(records, acoustic_sources=sources)
+        before_payload = split.to_payload()
+        before_caches = evaluation.serialize_partition_authority_caches(split)
+        caller_original_label = records[0].label
+        caller_mutated_label = next(
+            label for label in EvaluationTests.CLASS_ORDER
+            if label != caller_original_label
+        )
+        object.__setattr__(records[0], "label", caller_mutated_label)
+        self.assertEqual(split.to_payload(), before_payload)
+        self.assertEqual(
+            evaluation.serialize_partition_authority_caches(split),
+            before_caches,
+        )
+
+        role = "training_discovery"
+        authority = evaluation.derive_validated_partition_authority(
+            split,
+            role=role,
+        )
+        first_read = evaluation.validated_partition_records(
+            authority,
+            role=role,
+        )
+        expected = first_read[0]
+        expected_label = expected.label_record.label
+        extracted_mutated_label = next(
+            label for label in EvaluationTests.CLASS_ORDER
+            if label != expected_label
+        )
+        object.__setattr__(
+            expected.label_record,
+            "label",
+            extracted_mutated_label,
+        )
+        object.__setattr__(expected, "audio_size_bytes", 999999)
+        second_read = evaluation.validated_partition_records(
+            authority,
+            role=role,
+        )
+        self.assertEqual(second_read[0].label_record.label, expected_label)
+        self.assertNotEqual(second_read[0].audio_size_bytes, 999999)
+        self.assertIsNot(
+            second_read[0].label_record,
+            first_read[0].label_record,
+        )
+
+    def test_unanimous_byte_loader_mint_serialize_restore_normalizes_positive_zero(
+        self,
+    ) -> None:
+        from scripts import emotion_state_phase_b_evaluation as evaluation
+
+        target = EvaluationTests.RECORDS_BY_ROLE[
+            "training_discovery"
+        ][0]
+        finished_header = (
+            "", "localid", "pos", "ans", "ttr", "queryType", "numTries",
+            "clipNum", "questNum", "subType", "clipName", "sessionNums",
+            "respEmo", "respLevel", "dispEmo", "dispVal", "dispLevel",
+        )
+        finished_row = [""] * len(finished_header)
+        finished_row[5] = "1"
+        finished_row[10] = target.clip_stem
+        finished_row[12] = target.label
+        summary_header = (
+            "", "FileName", "VoiceVote", "VoiceLevel", "FaceVote", "FaceLevel",
+            "MultiModalVote", "MultiModalLevel",
+        )
+        summary_row = [""] * len(summary_header)
+        summary_row[1] = target.clip_stem
+        summary_row[2] = target.label
+        finished_bytes = (
+            ",".join(finished_header)
+            + "\r\n"
+            + ",".join(finished_row)
+            + "\r\n"
+        ).encode("utf-8")
+        summary_bytes = (
+            ",".join(summary_header)
+            + "\r\n"
+            + ",".join(summary_row)
+            + "\r\n"
+        ).encode("utf-8")
+        loaded, _ledger = evaluation.load_crema_reference_labels_bytes(
+            finished_bytes,
+            summary_bytes,
+            (target.clip_stem,),
+        )
+        self.assertEqual(math.copysign(1.0, loaded[0].vote_entropy), 1.0)
+        records = tuple(
+            loaded[0] if record.clip_stem == target.clip_stem else record
+            for record in self.RECORDS
+        )
+        split = self._mint(
+            records,
+            acoustic_sources=EvaluationTests._synthetic_acoustic_sources(
+                records
+            ),
+        )
+        assignment = dict(self._private_state(split).assignment)
+        role = assignment[target.actor_id]
+        self.assertEqual(role, "training_discovery")
+        cache = evaluation.serialize_partition_authority_caches(split)[role]
+        row = next(
+            item for item in cache["records"]
+            if item["clip_stem"] == loaded[0].clip_stem
+        )
+        self.assertEqual(math.copysign(1.0, row["vote_entropy"]), 1.0)
+        restored = evaluation.restore_validated_partition_authority_cache(
+            cache,
+            split.to_payload(),
+            role=role,
+        )
+        derived = evaluation.derive_validated_partition_authority(
+            split,
+            role=role,
+        )
+        self.assertEqual(restored.to_payload(), derived.to_payload())
+        output = evaluation.validated_partition_records(restored, role=role)
+        restored_row = next(
+            item for item in output
+            if item.label_record.clip_stem == loaded[0].clip_stem
+        )
+        self.assertEqual(
+            math.copysign(1.0, restored_row.label_record.vote_entropy),
+            1.0,
+        )
+        negative_zero = deepcopy(cache)
+        next(
+            item for item in negative_zero["records"]
+            if item["clip_stem"] == loaded[0].clip_stem
+        )["vote_entropy"] = -0.0
+        negative_zero = self._reseal(negative_zero)
+        with self.assertRaises(ValueError):
+            evaluation.restore_validated_partition_authority_cache(
+                negative_zero,
+                split.to_payload(),
+                role=role,
+            )
+
+    def test_split_mint_rejects_one_ulp_vote_metric_drift_in_nonfinal_and_final(
+        self,
+    ) -> None:
+        from scripts.emotion_state_phase_b_splits import build_actor_split
+
+        assignment = build_actor_split(self.RECORDS, self.SEED)
+        for role in ("training_discovery", "final_lockbox"):
+            index = next(
+                index
+                for index, record in enumerate(self.RECORDS)
+                if assignment[record.actor_id] == role
+            )
+            for field, value in (
+                ("vote_agreement", math.nextafter(1.0, 0.0)),
+                ("vote_entropy", math.nextafter(0.0, 1.0)),
+            ):
+                records = list(self.RECORDS)
+                records[index] = replace(records[index], **{field: value})
+                with self.subTest(role=role, field=field):
+                    with self.assertRaisesRegex(ValueError, "vote"):
+                        self._mint(
+                            records,
+                            acoustic_sources=(
+                                EvaluationTests._synthetic_acoustic_sources(
+                                    records
+                                )
+                            ),
+                        )
+
+    def test_v2_emits_exactly_three_nonfinal_acoustic_bound_caches(
+        self,
+    ) -> None:
+        from scripts import emotion_state_phase_b_evaluation as evaluation
+
+        split = self._mint()
+        caches = evaluation.serialize_partition_authority_caches(split)
+        self.assertEqual(tuple(caches), self.NONFINAL_ROLES)
+        self.assertNotIn("final_lockbox", caches)
+        for role, cache in caches.items():
+            self.assertEqual(
+                cache["schema_id"],
+                "emotion-state-phase-b-partition-authority-cache-v2",
+            )
+            self.assertIs(type(cache["schema_version"]), int)
+            self.assertEqual(cache["schema_version"], 2)
+            self.assertEqual(cache["partition_role"], role)
+            self.assertEqual(
+                [row["clip_stem"] for row in cache["records"]],
+                sorted(row["clip_stem"] for row in cache["records"]),
+            )
+            self.assertEqual(
+                len(cache["records"]),
+                len(EvaluationTests.RECORDS_BY_ROLE[role]),
+            )
+
+    def test_v2_cache_records_add_only_audio_sha256_and_audio_size(
+        self,
+    ) -> None:
+        from scripts import emotion_state_phase_b_evaluation as evaluation
+
+        caches = evaluation.serialize_partition_authority_caches(self._mint())
+        expected_keys = {
+            "clip_stem",
+            "actor_id",
+            "sentence_id",
+            "label",
+            "abstention_reason",
+            "vote_distribution",
+            "vote_agreement",
+            "vote_entropy",
+            "audio_sha256",
+            "audio_size_bytes",
+        }
+        for cache in caches.values():
+            for row in cache["records"]:
+                self.assertEqual(set(row), expected_keys)
+                source = self.SOURCES[row["clip_stem"]]
+                self.assertEqual(row["audio_sha256"], source.sha256)
+                self.assertEqual(row["audio_size_bytes"], source.size_bytes)
+                self.assertNotIn("path", row)
+        serialized = json.dumps(caches, sort_keys=True)
+        self.assertNotIn("AudioWAV", serialized)
+        self.assertNotIn("project_relative_path", serialized)
+
+    def test_v2_manifest_seals_complete_final_semantics_without_disclosure(
+        self,
+    ) -> None:
+        from scripts.emotion_state_phase_b_splits import build_actor_split
+
+        split = self._mint()
+        manifest = split.to_payload()
+        final = manifest["final_lockbox_commitment"]
+        self.assertEqual(
+            set(final),
+            {
+                "eligible_record_count",
+                "eligible_actor_count",
+                "sealed_authority_commitment_sha256",
+            },
+        )
+        self.assertEqual(final["eligible_actor_count"], 30)
+        serialized = json.dumps(final, sort_keys=True).lower()
+        for forbidden in (
+            "record",
+            "clip",
+            "sentence",
+            "label",
+            "vote",
+            "audio",
+            "path",
+            "cache",
+        ):
+            if forbidden == "record":
+                continue
+            self.assertNotIn(forbidden, serialized)
+
+        assignment = build_actor_split(self.RECORDS, self.SEED)
+        index = next(
+            index
+            for index, record in enumerate(self.RECORDS)
+            if assignment[record.actor_id] == "final_lockbox"
+        )
+        vote_records = list(self.RECORDS)
+        vote_records[index] = replace(
+            vote_records[index],
+            vote_distribution=((vote_records[index].label, 2),),
+        )
+        vote_split = self._mint(
+            vote_records,
+            acoustic_sources=EvaluationTests._synthetic_acoustic_sources(
+                vote_records
+            ),
+        )
+        audio_sources = dict(self.SOURCES)
+        stem = self.RECORDS[index].clip_stem
+        audio_sources[stem] = replace(
+            audio_sources[stem],
+            sha256="F" * 64,
+        )
+        audio_split = self._mint(acoustic_sources=audio_sources)
+        digests = {
+            manifest["final_lockbox_commitment"][
+                "sealed_authority_commitment_sha256"
+            ],
+            vote_split.to_payload()["final_lockbox_commitment"][
+                "sealed_authority_commitment_sha256"
+            ],
+            audio_split.to_payload()["final_lockbox_commitment"][
+                "sealed_authority_commitment_sha256"
+            ],
+        }
+        self.assertEqual(len(digests), 3)
+
+    def test_v2_eligible_commitment_seals_votes_audio_and_context(self) -> None:
+        original = self._mint().to_payload()
+        vote_records = list(self.RECORDS)
+        vote_records[0] = replace(
+            vote_records[0],
+            vote_distribution=((vote_records[0].label, 2),),
+        )
+        vote = self._mint(
+            vote_records,
+            acoustic_sources=EvaluationTests._synthetic_acoustic_sources(
+                vote_records
+            ),
+        ).to_payload()
+        audio_sources = dict(self.SOURCES)
+        stem = self.RECORDS[0].clip_stem
+        audio_sources[stem] = replace(
+            audio_sources[stem],
+            sha256="E" * 64,
+        )
+        audio = self._mint(acoustic_sources=audio_sources).to_payload()
+        alternate_seed = hashlib.sha256(b"alternate-context").hexdigest()
+        context = self._mint(seed_digest=alternate_seed).to_payload()
+        commitments = {
+            item["eligible_authority_commitment_sha256"]
+            for item in (original, vote, audio, context)
+        }
+        self.assertEqual(len(commitments), 4)
+        self.assertNotEqual(
+            original["assignment_sha256"],
+            context["assignment_sha256"],
+        )
+        self.assertNotEqual(
+            original["split_manifest_sha256"],
+            context["split_manifest_sha256"],
+        )
+        self.assertNotEqual(
+            original["configuration_sha256"],
+            context["configuration_sha256"],
+        )
+
+    def test_manifest_rejects_zero_equal_and_greater_final_record_counts(
+        self,
+    ) -> None:
+        from scripts.validate_emotion_state_002_phase_b import (
+            validate_phase_b_split_manifest,
+        )
+
+        manifest = self._mint().to_payload()
+        eligible = manifest["eligible_record_count"]
+        for value in (0, eligible, eligible + 1, True):
+            mutated = deepcopy(manifest)
+            mutated["final_lockbox_commitment"][
+                "eligible_record_count"
+            ] = value
+            self._reseal(mutated)
+            with self.subTest(value=value):
+                with self.assertRaises(ValueError):
+                    validate_phase_b_split_manifest(mutated)
+
+    def test_full_split_proves_partition_record_totals_and_actor_disjointness(
+        self,
+    ) -> None:
+        from scripts import emotion_state_phase_b_evaluation as evaluation
+
+        split = self._mint()
+        state = self._private_state(split)
+        assignment = dict(state.assignment)
+        actor_sets = {
+            role: {
+                record.actor_id
+                for record in state.records
+                if assignment[record.actor_id] == role
+            }
+            for role in ActorSplitTests.PARTITION_ORDER
+        }
+        record_sets = {
+            role: {
+                record.clip_stem
+                for record in state.records
+                if assignment[record.actor_id] == role
+            }
+            for role in ActorSplitTests.PARTITION_ORDER
+        }
+        self.assertEqual(
+            {role: len(value) for role, value in actor_sets.items()},
+            ActorSplitTests.PARTITION_COUNTS,
+        )
+        for index, role in enumerate(ActorSplitTests.PARTITION_ORDER):
+            for other in ActorSplitTests.PARTITION_ORDER[index + 1:]:
+                self.assertTrue(actor_sets[role].isdisjoint(actor_sets[other]))
+                self.assertTrue(record_sets[role].isdisjoint(record_sets[other]))
+        self.assertEqual(
+            sum(map(len, record_sets.values())),
+            split.to_payload()["eligible_record_count"],
+        )
+
+        corrupted = self._mint()
+        corrupted_state = self._private_state(corrupted)
+        object.__setattr__(
+            corrupted,
+            "_ImmutableArtifact__links",
+            (replace(
+                corrupted_state,
+                records=corrupted_state.records + (corrupted_state.records[0],),
+            ),),
+        )
+        with self.assertRaises(ValueError):
+            evaluation.serialize_partition_authority_caches(corrupted)
+
+        overlap = self._mint()
+        overlap_state = self._private_state(overlap)
+        actor, original_role = overlap_state.assignment[0]
+        other_role = next(
+            role for role in ActorSplitTests.PARTITION_ORDER
+            if role != original_role
+        )
+        object.__setattr__(
+            overlap,
+            "_ImmutableArtifact__links",
+            (replace(
+                overlap_state,
+                assignment=overlap_state.assignment + (
+                    (actor, other_role),
+                ),
+            ),),
+        )
+        with self.assertRaises(ValueError):
+            evaluation.serialize_partition_authority_caches(overlap)
+
+    def test_v1_split_cache_and_partition_authority_are_rejected(self) -> None:
+        from scripts import emotion_state_phase_b_evaluation as evaluation
+        from scripts.validate_emotion_state_002_phase_b import (
+            validate_phase_b_partition_authority_cache,
+            validate_phase_b_split_manifest,
+        )
+
+        cache, manifest = self._pair()
+        v1_manifest = deepcopy(manifest)
+        v1_manifest["schema_id"] = "emotion-state-phase-b-validated-split-v1"
+        v1_manifest["eligible_record_commitment_sha256"] = (
+            v1_manifest.pop("eligible_authority_commitment_sha256")
+        )
+        v1_manifest["final_lockbox_commitment"][
+            "eligible_record_commitment_sha256"
+        ] = v1_manifest["final_lockbox_commitment"].pop(
+            "sealed_authority_commitment_sha256"
+        )
+        self._reseal(v1_manifest)
+        with self.assertRaises(ValueError):
+            validate_phase_b_split_manifest(v1_manifest)
+
+        v1_cache = deepcopy(cache)
+        v1_cache["schema_id"] = (
+            "emotion-state-phase-b-partition-authority-cache-v1"
+        )
+        v1_cache["schema_version"] = 1
+        for row in v1_cache["records"]:
+            row.pop("audio_sha256")
+            row.pop("audio_size_bytes")
+        self._reseal(v1_cache)
+        with self.assertRaises(ValueError):
+            validate_phase_b_partition_authority_cache(
+                v1_cache,
+                manifest,
+                expected_role="training_discovery",
+            )
+        with self.assertRaises((TypeError, ValueError)):
+            evaluation.validated_partition_records(
+                {"schema_id": "emotion-state-phase-b-validated-partition-authority-v1"},
+                role="training_discovery",
+            )
+        valid_authority = evaluation.derive_validated_partition_authority(
+            self._mint(),
+            role="training_discovery",
+        )
+        v1_authority_payload = valid_authority.to_payload()
+        v1_authority_payload["schema_id"] = (
+            "emotion-state-phase-b-validated-partition-authority-v1"
+        )
+        v1_authority = evaluation._mint_artifact(
+            evaluation.ValidatedPartitionAuthority,
+            v1_authority_payload,
+            self._private_state(valid_authority),
+        )
+        with self.assertRaises(ValueError):
+            evaluation.validated_partition_records(
+                v1_authority,
+                role="training_discovery",
+            )
+
+    def test_restore_exact_pair_matches_derived_authority(self) -> None:
+        from scripts import emotion_state_phase_b_evaluation as evaluation
+
+        split = self._mint()
+        cache = evaluation.serialize_partition_authority_caches(split)[
+            "calibration"
+        ]
+        restored = evaluation.restore_validated_partition_authority_cache(
+            cache,
+            split.to_payload(),
+            role="calibration",
+        )
+        derived = evaluation.derive_validated_partition_authority(
+            split,
+            role="calibration",
+        )
+        self.assertEqual(restored.to_payload(), derived.to_payload())
+        self.assertEqual(restored.mint_sha256, derived.mint_sha256)
+        self.assertEqual(
+            evaluation.validated_partition_records(
+                restored,
+                role="calibration",
+            ),
+            evaluation.validated_partition_records(
+                derived,
+                role="calibration",
+            ),
+        )
+
+    def test_restore_rejects_role_configuration_semantic_split_and_assignment_drift(
+        self,
+    ) -> None:
+        from scripts import emotion_state_phase_b_evaluation as evaluation
+
+        cache, manifest = self._pair()
+        signature = inspect.signature(
+            evaluation.restore_validated_partition_authority_cache
+        )
+        self.assertNotIn(
+            "expected_split_manifest_file_sha256",
+            signature.parameters,
+        )
+        with self.assertRaises(ValueError):
+            evaluation.restore_validated_partition_authority_cache(
+                cache,
+                manifest,
+                role="calibration",
+            )
+        for field in (
+            "configuration_sha256",
+            "split_manifest_sha256",
+            "assignment_sha256",
+        ):
+            mutated = deepcopy(cache)
+            mutated[field] = "F" * 64
+            self._reseal(mutated)
+            with self.subTest(field=field):
+                with self.assertRaises(ValueError):
+                    evaluation.restore_validated_partition_authority_cache(
+                        mutated,
+                        manifest,
+                        role="training_discovery",
+                    )
+
+    def test_restore_rejects_cache_self_hash_and_manifest_cache_commitment_drift(
+        self,
+    ) -> None:
+        from scripts import emotion_state_phase_b_evaluation as evaluation
+
+        cache, manifest = self._pair()
+        unsealed = deepcopy(cache)
+        unsealed["records"][0]["audio_size_bytes"] += 1
+        resealed = self._reseal(deepcopy(unsealed))
+        for mutated in (unsealed, resealed):
+            with self.subTest(resealed=mutated is resealed):
+                with self.assertRaises(ValueError):
+                    evaluation.restore_validated_partition_authority_cache(
+                        mutated,
+                        manifest,
+                        role="training_discovery",
+                    )
+        changed_manifest = deepcopy(manifest)
+        changed_manifest["partition_authority_sha256"][
+            "training_discovery"
+        ] = "A" * 64
+        self._reseal(changed_manifest)
+        with self.assertRaises(ValueError):
+            evaluation.restore_validated_partition_authority_cache(
+                cache,
+                changed_manifest,
+                role="training_discovery",
+            )
+
+    def test_restore_rejects_record_order_duplicate_identity_and_role_coverage_drift(
+        self,
+    ) -> None:
+        from scripts import emotion_state_phase_b_evaluation as evaluation
+
+        cache, manifest = self._pair()
+        variants = []
+        reordered = deepcopy(cache)
+        reordered["records"][0], reordered["records"][1] = (
+            reordered["records"][1],
+            reordered["records"][0],
+        )
+        variants.append(reordered)
+        duplicate = deepcopy(cache)
+        duplicate["records"][1] = deepcopy(duplicate["records"][0])
+        variants.append(duplicate)
+        mismatch = deepcopy(cache)
+        mismatch["records"][0]["actor_id"] = "9999"
+        variants.append(mismatch)
+        missing_sentence = deepcopy(cache)
+        sentence = missing_sentence["records"][0]["sentence_id"]
+        missing_sentence["records"] = [
+            row for row in missing_sentence["records"]
+            if row["sentence_id"] != sentence
+        ]
+        variants.append(missing_sentence)
+        filename_independent = deepcopy(cache)
+        row = filename_independent["records"][0]
+        parts = row["clip_stem"].split("_")
+        parts[2] = "DIS" if parts[2] != "DIS" else "ANG"
+        row["clip_stem"] = "_".join(parts)
+        filename_independent, independent_manifest = (
+            self._coordinate_cache_manifest(
+                filename_independent,
+                deepcopy(manifest),
+            )
+        )
+        restored = evaluation.restore_validated_partition_authority_cache(
+            filename_independent,
+            independent_manifest,
+            role="training_discovery",
+        )
+        self.assertEqual(
+            restored.to_payload()["partition_role"],
+            "training_discovery",
+        )
+        for variant in variants:
+            coordinated, coordinated_manifest = self._coordinate_cache_manifest(
+                variant,
+                deepcopy(manifest),
+            )
+            with self.subTest(first=coordinated["records"][0]["clip_stem"]):
+                with self.assertRaises(ValueError):
+                    evaluation.restore_validated_partition_authority_cache(
+                        coordinated,
+                        coordinated_manifest,
+                        role="training_discovery",
+                    )
+
+    def test_restore_rejects_resealed_label_vote_agreement_entropy_drift(
+        self,
+    ) -> None:
+        from scripts import emotion_state_phase_b_evaluation as evaluation
+
+        cache, manifest = self._pair()
+        variants = []
+        label = deepcopy(cache)
+        label["records"][0]["label"] = next(
+            item for item in EvaluationTests.CLASS_ORDER
+            if item != label["records"][0]["label"]
+        )
+        variants.append(label)
+        vote = deepcopy(cache)
+        vote["records"][0]["vote_distribution"] = [["A", 1], ["D", 1]]
+        variants.append(vote)
+        agreement = deepcopy(cache)
+        agreement["records"][0]["vote_agreement"] = math.nextafter(1.0, 0.0)
+        variants.append(agreement)
+        entropy = deepcopy(cache)
+        entropy["records"][0]["vote_entropy"] = math.nextafter(0.0, 1.0)
+        variants.append(entropy)
+        negative_zero = deepcopy(cache)
+        negative_zero["records"][0]["vote_entropy"] = -0.0
+        variants.append(negative_zero)
+        for variant in variants:
+            coordinated, coordinated_manifest = self._coordinate_cache_manifest(
+                variant,
+                deepcopy(manifest),
+            )
+            with self.assertRaises(ValueError):
+                evaluation.restore_validated_partition_authority_cache(
+                    coordinated,
+                    coordinated_manifest,
+                    role="training_discovery",
+                )
+
+    def test_restore_rejects_audio_type_format_size_and_unbound_valid_drift(
+        self,
+    ) -> None:
+        from scripts import emotion_state_phase_b_evaluation as evaluation
+
+        cache, manifest = self._pair()
+        variants = []
+        for field, value in (
+            ("audio_sha256", "a" * 64),
+            ("audio_sha256", "A" * 63),
+            ("audio_sha256", 1),
+            ("audio_size_bytes", 0),
+            ("audio_size_bytes", -1),
+            ("audio_size_bytes", True),
+        ):
+            mutated = deepcopy(cache)
+            mutated["records"][0][field] = value
+            variants.append(mutated)
+        for variant in variants:
+            coordinated, coordinated_manifest = self._coordinate_cache_manifest(
+                variant,
+                deepcopy(manifest),
+            )
+            with self.assertRaises(ValueError):
+                evaluation.restore_validated_partition_authority_cache(
+                    coordinated,
+                    coordinated_manifest,
+                    role="training_discovery",
+                )
+
+        alternate = deepcopy(cache)
+        alternate["records"][0]["audio_sha256"] = "F" * 64
+        self._reseal(alternate)
+        with self.assertRaises(ValueError):
+            evaluation.restore_validated_partition_authority_cache(
+                alternate,
+                manifest,
+                role="training_discovery",
+            )
+
+    def test_restore_rejects_bool_numeric_subclass_container_and_extra_field_drift(
+        self,
+    ) -> None:
+        from scripts import emotion_state_phase_b_evaluation as evaluation
+
+        class IntSubclass(int):
+            pass
+
+        class StrSubclass(str):
+            pass
+
+        class DictSubclass(dict):
+            pass
+
+        cache, manifest = self._pair()
+        variants = []
+        cache_version = deepcopy(cache)
+        cache_version["schema_version"] = True
+        variants.append((cache_version, deepcopy(manifest)))
+        cache_schema = deepcopy(cache)
+        cache_schema["schema_id"] = StrSubclass(cache_schema["schema_id"])
+        variants.append((cache_schema, deepcopy(manifest)))
+        size_subclass = deepcopy(cache)
+        size_subclass["records"][0]["audio_size_bytes"] = IntSubclass(1)
+        variants.append((size_subclass, deepcopy(manifest)))
+        tuple_votes = deepcopy(cache)
+        tuple_votes["records"][0]["vote_distribution"] = (
+            ("A", 1),
+        )
+        variants.append((tuple_votes, deepcopy(manifest)))
+        extra = deepcopy(cache)
+        extra["records"][0]["extra"] = None
+        variants.append((extra, deepcopy(manifest)))
+        mapping_subclass = DictSubclass(deepcopy(cache))
+        variants.append((mapping_subclass, deepcopy(manifest)))
+        bool_manifest = deepcopy(manifest)
+        bool_manifest["eligible_record_count"] = True
+        variants.append((deepcopy(cache), bool_manifest))
+        schema_manifest = deepcopy(manifest)
+        schema_manifest["schema_id"] = StrSubclass(schema_manifest["schema_id"])
+        variants.append((deepcopy(cache), schema_manifest))
+        for variant, variant_manifest in variants:
+            self._reseal(variant)
+            variant_manifest["partition_authority_sha256"][
+                "training_discovery"
+            ] = variant["self_sha256"]
+            self._reseal(variant_manifest)
+            with self.assertRaises((TypeError, ValueError)):
+                evaluation.restore_validated_partition_authority_cache(
+                    variant,
+                    variant_manifest,
+                    role="training_discovery",
+                )
+
+    def test_restore_and_serialization_are_deterministic_and_alias_safe(
+        self,
+    ) -> None:
+        from scripts import emotion_state_phase_b_evaluation as evaluation
+
+        split = self._mint()
+        first_caches = evaluation.serialize_partition_authority_caches(split)
+        second_caches = evaluation.serialize_partition_authority_caches(split)
+        self.assertEqual(first_caches, second_caches)
+        self.assertIsNot(first_caches, second_caches)
+        first_caches["training_discovery"]["records"][0][
+            "audio_size_bytes"
+        ] = 999
+        self.assertNotEqual(
+            first_caches,
+            evaluation.serialize_partition_authority_caches(split),
+        )
+
+        cache = deepcopy(second_caches["training_discovery"])
+        manifest = split.to_payload()
+        restored = evaluation.restore_validated_partition_authority_cache(
+            cache,
+            manifest,
+            role="training_discovery",
+        )
+        expected_payload = restored.to_payload()
+        cache["records"].clear()
+        manifest["partition_authority_sha256"].clear()
+        self.assertEqual(restored.to_payload(), expected_payload)
+
+    def test_validated_partition_records_is_nonfinal_path_free_and_alias_safe(
+        self,
+    ) -> None:
+        from dataclasses import FrozenInstanceError
+
+        from scripts import emotion_state_phase_b_evaluation as evaluation
+
+        split = self._mint()
+        authority = evaluation.derive_validated_partition_authority(
+            split,
+            role="balanced_diagnostic",
+        )
+        first = evaluation.validated_partition_records(
+            authority,
+            role="balanced_diagnostic",
+        )
+        second = evaluation.validated_partition_records(
+            authority,
+            role="balanced_diagnostic",
+        )
+        self.assertIs(type(first), tuple)
+        self.assertEqual(first, second)
+        self.assertIsNot(first[0], second[0])
+        self.assertIs(type(first[0]), evaluation.ValidatedPartitionRecord)
+        self.assertIs(type(first[0].label_record), evaluation.CremaLabelRecord)
+        self.assertEqual(
+            [item.label_record.clip_stem for item in first],
+            sorted(item.label_record.clip_stem for item in first),
+        )
+        self.assertFalse(hasattr(first[0], "__dict__"))
+        self.assertFalse(hasattr(first[0], "project_relative_path"))
+        self.assertFalse(
+            hasattr(first[0].label_record, "project_relative_path")
+        )
+        with self.assertRaises(FrozenInstanceError):
+            first[0].audio_size_bytes = 1
+        for role in ("final_lockbox", "calibration"):
+            with self.subTest(role=role):
+                with self.assertRaises((TypeError, ValueError)):
+                    evaluation.validated_partition_records(
+                        authority,
+                        role=role,
+                    )
+        with self.assertRaises((TypeError, ValueError)):
+            evaluation.validated_partition_records(
+                authority.to_payload(),
+                role="balanced_diagnostic",
+            )
+        state = self._private_state(authority)
+        object.__setattr__(
+            authority,
+            "_ImmutableArtifact__links",
+            (replace(state, role="final_lockbox"),),
+        )
+        with self.assertRaises(ValueError):
+            evaluation.validated_partition_records(
+                authority,
+                role="balanced_diagnostic",
+            )
+        for mutation in ("extra_path", "negative_zero"):
+            fresh_authority = evaluation.derive_validated_partition_authority(
+                split,
+                role="balanced_diagnostic",
+            )
+            fresh_state = self._private_state(fresh_authority)
+            if mutation == "extra_path":
+                object.__setattr__(
+                    fresh_state.records[0],
+                    "project_relative_path",
+                    "data/public/emotion-state/private.wav",
+                )
+            else:
+                object.__setattr__(
+                    fresh_state.records[0],
+                    "vote_entropy",
+                    -0.0,
+                )
+            with self.subTest(private_state_mutation=mutation):
+                with self.assertRaises(ValueError):
+                    evaluation.validated_partition_records(
+                        fresh_authority,
+                        role="balanced_diagnostic",
+                    )
+
+
 class Task10ProductionPipelineTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
@@ -10903,7 +12111,7 @@ class Task10ProductionPipelineTests(unittest.TestCase):
         )
         self.assertRegex(
             split_manifest["final_lockbox_commitment"][
-                "eligible_record_commitment_sha256"
+                "sealed_authority_commitment_sha256"
             ],
             r"^[0-9A-F]{64}$",
         )
@@ -10973,6 +12181,9 @@ class Task10ProductionPipelineTests(unittest.TestCase):
                 records,
                 assignment,
                 EvaluationTests.CONFIGURATION_DIGEST,
+                acoustic_sources=EvaluationTests._synthetic_acoustic_sources(
+                    records
+                ),
             )
 
     def test_split_mint_rejects_clip_identity_not_matching_record(
@@ -11005,6 +12216,9 @@ class Task10ProductionPipelineTests(unittest.TestCase):
                         mutated,
                         assignment,
                         EvaluationTests.CONFIGURATION_DIGEST,
+                        acoustic_sources=(
+                            EvaluationTests._synthetic_acoustic_sources(mutated)
+                        ),
                     )
 
     def test_split_mint_rejects_stems_outside_source_clip_contract(
@@ -11034,6 +12248,9 @@ class Task10ProductionPipelineTests(unittest.TestCase):
                         mutated,
                         assignment,
                         EvaluationTests.CONFIGURATION_DIGEST,
+                        acoustic_sources=(
+                            EvaluationTests._synthetic_acoustic_sources(mutated)
+                        ),
                     )
 
     def test_filename_emotion_remains_independent_from_perceived_label(
@@ -11065,6 +12282,9 @@ class Task10ProductionPipelineTests(unittest.TestCase):
             records,
             assignment,
             EvaluationTests.CONFIGURATION_DIGEST,
+            acoustic_sources=EvaluationTests._synthetic_acoustic_sources(
+                records
+            ),
         )
         self.assertEqual(
             evaluation.derive_validated_partition_authority(
