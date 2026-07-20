@@ -961,6 +961,7 @@ def _validate_hash_inventory(
         )
     identities: list[SourceByteIdentity] = []
     paths: list[str] = []
+    exact_paths: set[str] = set()
     casefold_paths: set[str] = set()
     total_bytes = 0
     crema_audio_count = 0
@@ -985,7 +986,7 @@ def _validate_hash_inventory(
         )
         if (
             not path.startswith(prefix)
-            or path in paths
+            or path in exact_paths
             or path.casefold() in casefold_paths
         ):
             raise PublicMaterialPrerequisiteError(
@@ -1018,6 +1019,7 @@ def _validate_hash_inventory(
         elif crema:
             crema_metadata[path] = (sha256, size_bytes)
         paths.append(path)
+        exact_paths.add(path)
         casefold_paths.add(path.casefold())
         total_bytes += size_bytes
         identities.append(_identity(row))
@@ -1526,6 +1528,7 @@ def _validate_quality_inventory(
             f"{dataset_id} quality item count does not match"
         )
     item_paths: list[str] = []
+    exact_item_paths: set[str] = set()
     casefold_paths: set[str] = set()
     included_paths: list[str] = []
     core_paths: list[str] = []
@@ -1541,11 +1544,12 @@ def _validate_quality_inventory(
             item["path"],
             f"{dataset_id} quality item",
         )
-        if path in item_paths or path.casefold() in casefold_paths:
+        if path in exact_item_paths or path.casefold() in casefold_paths:
             raise PublicMaterialPrerequisiteError(
                 f"{dataset_id} quality item path is duplicate"
             )
         item_paths.append(path)
+        exact_item_paths.add(path)
         casefold_paths.add(path.casefold())
         disposition = _require_string(
             item["disposition"],

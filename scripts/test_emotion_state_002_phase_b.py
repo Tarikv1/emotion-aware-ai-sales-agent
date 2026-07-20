@@ -9687,7 +9687,7 @@ class TrackedPublicAuthorityTests(unittest.TestCase):
         mutate: Callable[[dict[str, Any]], None],
         pattern: str = "tracked|manifest|inventory|quality|path|partition|"
         "quarantine|identity|schema|fields|count|hash|order|size|integer|"
-        "classification|reason|detail|source|limitation|disposition",
+        "classification|reason|detail|source|limitation|disposition|exclusion",
     ) -> None:
         updated = self._resealed(name, mutate)
         with patch.dict(
@@ -9711,9 +9711,18 @@ class TrackedPublicAuthorityTests(unittest.TestCase):
             self.pipeline._EXPECTED_TRACKED_SHA256,
             {name: hashlib.sha256(content).hexdigest().upper()},
         ):
-            with self.assertRaisesRegex(
-                self.pipeline.PublicMaterialPrerequisiteError,
-                "tracked evidence|finite|manifest",
+            with (
+                patch.object(
+                    self.pipeline,
+                    "_validate_manifest_profile",
+                    side_effect=AssertionError(
+                        "invalid raw JSON reached semantic validation"
+                    ),
+                ),
+                self.assertRaisesRegex(
+                    self.pipeline.PublicMaterialPrerequisiteError,
+                    "tracked evidence|finite|manifest",
+                ),
             ):
                 self.pipeline.validate_tracked_public_evidence(updated)
 
@@ -9851,6 +9860,43 @@ class TrackedPublicAuthorityTests(unittest.TestCase):
     def test_resealed_manifests_reject_profile_key_type_and_identity_drift(
         self,
     ) -> None:
+        frozen_profile_fields = (
+            "canonical_source_url",
+            "release_or_version",
+            "terms_or_license",
+            "access_restrictions",
+            "source_labels",
+            "excluded_labels",
+            "language",
+            "domain",
+            "domain_limitations",
+            "permitted_research_lanes",
+            "redistribution_status",
+            "manifest_version",
+            "selected_artifacts",
+            "source_revision",
+            "release_published_at",
+            "dependency_keys",
+            "quality_rules",
+            "known_issues",
+            "runtime_influence_allowed",
+        )
+
+        def drift_value(value: Any) -> Any:
+            if type(value) is bool:
+                return 1
+            if type(value) is int:
+                return True
+            if type(value) is str:
+                return value + "-drift"
+            if value is None:
+                return "drift"
+            if type(value) is list:
+                return {"drift": True}
+            if type(value) is dict:
+                return ["drift"]
+            raise AssertionError(f"unsupported manifest fixture value: {value!r}")
+
         names = (
             "crema-d-v1.0-audio-wav.manifest.json",
             "ami-manual-annotations-v1.6.2.manifest.json",
@@ -9866,6 +9912,83 @@ class TrackedPublicAuthorityTests(unittest.TestCase):
 
                 with self.subTest(name=name, deleted=field):
                     self._assert_resealed_rejected(name, delete_field)
+
+            for field in frozen_profile_fields:
+                def mutate_frozen_value(
+                    candidate: dict[str, Any],
+                    key: str = field,
+                ) -> None:
+                    candidate[key] = drift_value(candidate[key])
+
+                with self.subTest(name=name, frozen_value=field):
+                    self._assert_resealed_rejected(
+                        name,
+                        mutate_frozen_value,
+                    )
+
+            profile_cases = (
+                ("dataset_id", "future-dataset"),
+                ("completion_status", True),
+                ("accessed_on", True),
+                ("source_label", "private"),
+                ("project_label_mapping", {"future": "drift"}),
+            )
+            for field, value in profile_cases:
+                def mutate_profile_value(
+                    candidate: dict[str, Any],
+                    key: str = field,
+                    replacement: Any = value,
+                ) -> None:
+                    candidate[key] = replacement
+
+                with self.subTest(name=name, profile_value=field):
+                    self._assert_resealed_rejected(
+                        name,
+                        mutate_profile_value,
+                    )
+
+            for parent in (
+                "local_file_hashes",
+                "hash_inventory",
+                "exclusion_inventory",
+            ):
+                for nested_field in tuple(payload[parent]):
+                    def delete_nested_field(
+                        candidate: dict[str, Any],
+                        container: str = parent,
+                        key: str = nested_field,
+                    ) -> None:
+                        candidate[container].pop(key)
+
+                    with self.subTest(
+                        name=name,
+                        parent=parent,
+                        deleted=nested_field,
+                    ):
+                        self._assert_resealed_rejected(
+                            name,
+                            delete_nested_field,
+                        )
+
+                def add_nested_field(
+                    candidate: dict[str, Any],
+                    container: str = parent,
+                ) -> None:
+                    candidate[container]["future"] = "drift"
+
+                def replace_nested_object(
+                    candidate: dict[str, Any],
+                    container: str = parent,
+                ) -> None:
+                    candidate[container] = ["drift"]
+
+                with self.subTest(name=name, parent=parent, added="future"):
+                    self._assert_resealed_rejected(name, add_nested_field)
+                with self.subTest(name=name, parent=parent, type="list"):
+                    self._assert_resealed_rejected(
+                        name,
+                        replace_nested_object,
+                    )
 
             nested_cases = (
                 ("local_file_hashes", "inventory_sha256", "0" * 64),
@@ -10007,9 +10130,9 @@ class TrackedPublicAuthorityTests(unittest.TestCase):
             ),
             (
                 "duplicate",
-                lambda candidate: candidate["files"].__setitem__(
-                    1,
-                    deepcopy(candidate["files"][0]),
+                lambda candidate: candidate["files"][1].__setitem__(
+                    "path",
+                    candidate["files"][0]["path"],
                 ),
             ),
         )
@@ -10081,6 +10204,20 @@ class TrackedPublicAuthorityTests(unittest.TestCase):
                 ),
             ),
             (
+                "ordering",
+                lambda candidate: candidate.__setitem__(
+                    "ordering",
+                    "ambient",
+                ),
+            ),
+            (
+                "normalization",
+                lambda candidate: candidate.__setitem__(
+                    "path_normalization",
+                    "native",
+                ),
+            ),
+            (
                 "count",
                 lambda candidate: candidate.__setitem__(
                     "selected_file_count",
@@ -10131,9 +10268,9 @@ class TrackedPublicAuthorityTests(unittest.TestCase):
             ),
             (
                 "duplicate",
-                lambda candidate: candidate["files"].__setitem__(
-                    1,
-                    deepcopy(candidate["files"][0]),
+                lambda candidate: candidate["files"][1].__setitem__(
+                    "path",
+                    candidate["files"][0]["path"],
                 ),
             ),
             (
@@ -10160,6 +10297,36 @@ class TrackedPublicAuthorityTests(unittest.TestCase):
     def test_resealed_quality_rejects_key_count_classification_and_cross_inventory_drift(
         self,
     ) -> None:
+        def drift_scalar(value: Any) -> Any:
+            if type(value) is bool:
+                return not value
+            if type(value) is int:
+                return value + 1
+            if type(value) is float:
+                return value + 0.125
+            if type(value) is str:
+                return value + "-drift"
+            if value is None:
+                return "drift"
+            raise AssertionError(f"unsupported detail scalar: {value!r}")
+
+        def mutate_existing_detail(value: dict[str, Any]) -> bool:
+            for key in sorted(value):
+                item = value[key]
+                if type(item) is dict:
+                    if mutate_existing_detail(item):
+                        return True
+                elif type(item) is list:
+                    if item:
+                        item[0] = drift_scalar(item[0])
+                    else:
+                        item.append("future")
+                    return True
+                else:
+                    value[key] = drift_scalar(item)
+                    return True
+            return False
+
         names = (
             "crema-d-v1.0-audio-wav.quality.json",
             "ami-manual-annotations-v1.6.2.quality.json",
@@ -10205,6 +10372,37 @@ class TrackedPublicAuthorityTests(unittest.TestCase):
                         "drift"
                     )
 
+                def mutate_classification(
+                    candidate: dict[str, Any],
+                    row_index: int = index,
+                ) -> None:
+                    candidate["items"][row_index]["classification"] = (
+                        "future_classification"
+                    )
+
+                def mutate_disposition(
+                    candidate: dict[str, Any],
+                    row_index: int = index,
+                ) -> None:
+                    item = candidate["items"][row_index]
+                    item["disposition"] = (
+                        "excluded"
+                        if item["disposition"] == "included"
+                        else "included"
+                    )
+
+                def mutate_bound_detail(
+                    candidate: dict[str, Any],
+                    row_index: int = index,
+                ) -> None:
+                    changed = mutate_existing_detail(
+                        candidate["items"][row_index]["details"]
+                    )
+                    if not changed:
+                        raise AssertionError(
+                            "classification has no existing detail value"
+                        )
+
                 with self.subTest(
                     name=name,
                     disposition=disposition,
@@ -10219,6 +10417,100 @@ class TrackedPublicAuthorityTests(unittest.TestCase):
                     property="details",
                 ):
                     self._assert_resealed_rejected(name, mutate_details)
+                with self.subTest(
+                    name=name,
+                    disposition=disposition,
+                    classification=classification,
+                    property="classification",
+                ):
+                    self._assert_resealed_rejected(
+                        name,
+                        mutate_classification,
+                    )
+                with self.subTest(
+                    name=name,
+                    disposition=disposition,
+                    classification=classification,
+                    property="disposition",
+                ):
+                    self._assert_resealed_rejected(
+                        name,
+                        mutate_disposition,
+                    )
+                if payload["items"][index]["details"]:
+                    with self.subTest(
+                        name=name,
+                        disposition=disposition,
+                        classification=classification,
+                        property="existing-detail",
+                    ):
+                        self._assert_resealed_rejected(
+                            name,
+                            mutate_bound_detail,
+                        )
+
+            if name.startswith("crema-"):
+                source_index = self._quality_item_index(
+                    payload,
+                    "excluded",
+                    "crema_demographic_metadata",
+                )
+                target_item = payload["items"][
+                    self._quality_item_index(
+                        payload,
+                        "excluded",
+                        "crema_unselected_release_material",
+                    )
+                ]
+
+                def mutate_classification_count(
+                    candidate: dict[str, Any],
+                    row_index: int = source_index,
+                    target_classification: str = target_item[
+                        "classification"
+                    ],
+                    target_reason: str = target_item["reason"],
+                ) -> None:
+                    item = candidate["items"][row_index]
+                    item["classification"] = target_classification
+                    item["reason"] = target_reason
+
+            else:
+                source_index = self._quality_item_index(
+                    payload,
+                    "excluded",
+                    "manual_annotation_abstractive",
+                )
+                target_item = payload["items"][
+                    self._quality_item_index(
+                        payload,
+                        "excluded",
+                        "manual_annotation_argumentation",
+                    )
+                ]
+
+                def mutate_classification_count(
+                    candidate: dict[str, Any],
+                    row_index: int = source_index,
+                    target_classification: str = target_item[
+                        "classification"
+                    ],
+                    target_reason: str = target_item["reason"],
+                ) -> None:
+                    item = candidate["items"][row_index]
+                    item["path"] = (
+                        "argumentation/ae/"
+                        "ZZ9999z.Z.argumentstructs.xml"
+                    )
+                    item["classification"] = target_classification
+                    item["reason"] = target_reason
+                    candidate["items"].sort(key=lambda value: value["path"])
+
+            with self.subTest(name=name, property="classification-count"):
+                self._assert_resealed_rejected(
+                    name,
+                    mutate_classification_count,
+                )
 
             included_index = next(
                 index
@@ -10414,8 +10706,12 @@ class TrackedPublicAuthorityTests(unittest.TestCase):
         name = "crema-d-v1.0-audio-wav.manifest.json"
         original = self.evidence[name].rstrip()
         prefix = original[:-1]
+        dataset_id = json.loads(original)["dataset_id"].encode("ascii")
         cases = (
-            ("duplicate", prefix + b',"dataset_id":"duplicate"}'),
+            (
+                "duplicate",
+                prefix + b',"dataset_id":"' + dataset_id + b'"}',
+            ),
             ("nan", prefix + b',"future":NaN}'),
             ("positive-infinity", prefix + b',"future":Infinity}'),
             ("negative-infinity", prefix + b',"future":-Infinity}'),
