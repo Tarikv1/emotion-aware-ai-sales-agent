@@ -38,6 +38,20 @@ FEATURE_NAMES = (
     "spectral_bandwidth_hz_std", "spectral_rolloff_85_hz_mean",
     "spectral_rolloff_85_hz_std",
 )
+EXPECTED_FEATURE_NUMERICAL_SEMANTICS = {
+    "f0_frame_input": "normalized_raw_frame",
+    "f0_centering": "subtract_full_frame_mean",
+    "f0_window": "none",
+    "f0_zero_residual_energy": "unvoiced",
+    "f0_autocorrelation_peak_tie_break": "lowest_lag_highest_f0",
+    "zero_frame_rms_floor": "one_pcm16_lsb_over_full_frame_rms",
+    "zero_frame_rms_floor_linear": 0.00000152587890625,
+    "rms_summary_frame_scope": "all_complete_frames",
+    "standard_deviation_ddof": 0,
+    "f0_range_definition": "maximum_minus_minimum_voiced_f0",
+    "voiced_fraction_denominator": "all_complete_frames",
+    "zcr_spectral_frame_scope": "nonsilent_frames",
+}
 PARTITION_COUNTS = {
     "training_discovery": 35,
     "calibration": 13,
@@ -58,8 +72,20 @@ EXPECTED_FEATURE_SCHEMA: dict[str, Any] = {
     "silence_relative_to_peak_db": -40.0,
     "f0_min_hz": 75.0,
     "f0_max_hz": 400.0,
+    "f0_frame_input": "normalized_raw_frame",
+    "f0_centering": "subtract_full_frame_mean",
+    "f0_window": "none",
+    "f0_zero_residual_energy": "unvoiced",
     "voiced_autocorrelation_threshold": 0.3,
     "minimum_voiced_frames": 3,
+    "f0_autocorrelation_peak_tie_break": "lowest_lag_highest_f0",
+    "zero_frame_rms_floor": "one_pcm16_lsb_over_full_frame_rms",
+    "zero_frame_rms_floor_linear": 0.00000152587890625,
+    "rms_summary_frame_scope": "all_complete_frames",
+    "standard_deviation_ddof": 0,
+    "f0_range_definition": "maximum_minus_minimum_voiced_f0",
+    "voiced_fraction_denominator": "all_complete_frames",
+    "zcr_spectral_frame_scope": "nonsilent_frames",
     "spectral_rolloff_fraction": 0.85,
     "percentile_method": "linear",
     "ordered_features": list(FEATURE_NAMES),
@@ -287,6 +313,11 @@ def validate_feature_schema(payload: Any) -> dict[str, Any]:
         raise ValueError("feature imputation must remain disabled")
     if payload.get("runtime_influence_allowed") is not False:
         raise ValueError("runtime influence must remain disabled")
+    for field, expected in EXPECTED_FEATURE_NUMERICAL_SEMANTICS.items():
+        if payload.get(field) != expected:
+            raise ValueError(
+                f"feature numerical semantic {field} does not match"
+            )
     return _validate_exact(payload, EXPECTED_FEATURE_SCHEMA, "feature schema")
 
 

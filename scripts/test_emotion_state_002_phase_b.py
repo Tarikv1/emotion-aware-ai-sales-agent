@@ -404,6 +404,22 @@ class AcousticFeatureTests(unittest.TestCase):
             output.setframerate(sample_rate)
             output.writeframes(struct.pack("<" + "h" * len(samples), *samples))
 
+    @staticmethod
+    def _tone_frame(hz: float, amplitude: float = 0.5) -> Any:
+        import numpy as np
+
+        indexes = np.arange(400, dtype=np.float64)
+        return amplitude * np.sin(2.0 * np.pi * hz * indexes / 16000.0)
+
+    @staticmethod
+    def _deterministic_noise(count: int) -> list[int]:
+        state = 0x12345678
+        samples: list[int] = []
+        for _ in range(count):
+            state = (1664525 * state + 1013904223) & 0xFFFFFFFF
+            samples.append(((state >> 16) & 0xFFFF) - 32768)
+        return samples
+
     def test_200_hz_tone_produces_finite_expected_f0_and_feature_order(
         self,
     ) -> None:
@@ -470,6 +486,9 @@ class AcousticFeatureTests(unittest.TestCase):
         )
 
     def test_silence_near_silence_and_insufficient_voicing_reject(self) -> None:
+        import struct
+        import wave
+
         from scripts.emotion_state_phase_b_features import (
             FeatureExtractionError,
             extract_acoustic_features,
@@ -481,12 +500,7 @@ class AcousticFeatureTests(unittest.TestCase):
             near_silence = root / "near-silence.wav"
             two_frames = root / "two-frames.wav"
             self._write_pcm16(silence, [0] * 8000)
-            self._write_tone(
-                near_silence,
-                hz=200.0,
-                seconds=0.5,
-                amplitude=0.00001,
-            )
+            self._write_pcm16(near_silence, [1, -1] * 4000)
             self._write_tone(
                 two_frames,
                 hz=200.0,
@@ -494,10 +508,239 @@ class AcousticFeatureTests(unittest.TestCase):
                 amplitude=0.5,
             )
 
+            with wave.open(str(near_silence), "rb") as source:
+                payload = source.readframes(source.getnframes())
+            near_silence_pcm = struct.unpack(
+                "<" + "h" * (len(payload) // 2),
+                payload,
+            )
+            self.assertTrue(any(sample != 0 for sample in near_silence_pcm))
+            self.assertEqual(max(abs(sample) for sample in near_silence_pcm), 1)
+
             for path in (silence, near_silence, two_frames):
                 with self.subTest(path=path.name):
                     with self.assertRaises(FeatureExtractionError):
                         extract_acoustic_features(path)
+
+    def test_dc_and_deterministic_unvoiced_noise_reject(self) -> None:
+        from scripts.emotion_state_phase_b_features import (
+            FeatureExtractionError,
+            extract_acoustic_features,
+        )
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            dc = root / "dc.wav"
+            noise = root / "noise.wav"
+            self._write_pcm16(dc, [1000] * 720)
+            self._write_pcm16(noise, self._deterministic_noise(720))
+
+            for path in (dc, noise):
+                with self.subTest(path=path.name):
+                    with self.assertRaisesRegex(
+                        FeatureExtractionError,
+                        "voiced",
+                    ):
+                        extract_acoustic_features(path)
+
+    def test_dc_biased_low_amplitude_tone_is_mean_centered_for_f0(self) -> None:
+        from scripts.emotion_state_phase_b_features import extract_acoustic_features
+
+        sample_rate = 16000
+        samples = [
+            round(
+                1000
+                + 300
+                * math.sin(2 * math.pi * 150.0 * index / sample_rate)
+            )
+            for index in range(sample_rate)
+        ]
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "dc-biased-tone.wav"
+            self._write_pcm16(path, samples)
+            features = extract_acoustic_features(path)
+
+        self.assertAlmostEqual(features["f0_median_hz"], 150.0, delta=2.0)
+
+    def test_mixed_frames_freeze_duration_silence_voiced_and_f0_summaries(
+        self,
+    ) -> None:
+        import numpy as np
+
+        from scripts.emotion_state_phase_b_features import _summarize
+
+        noise = np.asarray(
+            self._deterministic_noise(400),
+            dtype=np.float64,
+        ) / 65536.0
+        frames = np.stack(
+            [
+                np.zeros(400, dtype=np.float64),
+                np.tile(
+                    np.asarray([1.0, -1.0], dtype=np.float64) / 32768.0,
+                    200,
+                ),
+                self._tone_frame(100.0),
+                self._tone_frame(100.0),
+                self._tone_frame(200.0),
+                self._tone_frame(200.0),
+                self._tone_frame(400.0),
+                noise,
+            ]
+        )
+        features = _summarize(
+            frames,
+            sample_count=1520,
+            sample_rate=16000,
+        )
+
+        self.assertEqual(features["duration_seconds"], 0.095)
+        self.assertEqual(features["silence_ratio"], 0.25)
+        self.assertEqual(features["voiced_fraction"], 0.625)
+        self.assertAlmostEqual(features["f0_median_hz"], 200.0, places=12)
+        self.assertAlmostEqual(features["f0_iqr_hz"], 100.0, places=12)
+        self.assertAlmostEqual(features["f0_range_hz"], 300.0, places=12)
+
+    def test_pcm16_silence_floor_and_population_rms_summaries(self) -> None:
+        import numpy as np
+
+        from scripts.emotion_state_phase_b_features import _summarize
+
+        frames = np.stack(
+            [
+                np.zeros(400, dtype=np.float64),
+                self._tone_frame(200.0, amplitude=0.25),
+                self._tone_frame(200.0, amplitude=0.5),
+                self._tone_frame(200.0, amplitude=0.75),
+            ]
+        )
+        features = _summarize(
+            frames,
+            sample_count=880,
+            sample_rate=16000,
+        )
+
+        # Analytical values for RMS dBFS sequence:
+        # [20*log10(1/655360), 20*log10(0.25/sqrt(2)),
+        #  20*log10(0.5/sqrt(2)), 20*log10(0.75/sqrt(2))].
+        self.assertAlmostEqual(
+            features["rms_dbfs_mean"],
+            -36.48026823859957,
+            places=10,
+        )
+        self.assertAlmostEqual(
+            features["rms_dbfs_std"],
+            46.227130379274016,
+            places=10,
+        )
+        self.assertAlmostEqual(
+            features["rms_dbfs_p90_minus_p10"],
+            79.3805467205516,
+            places=10,
+        )
+
+    def test_zcr_is_exact_and_uses_only_nonsilent_frames(self) -> None:
+        import numpy as np
+
+        from scripts.emotion_state_phase_b_features import _summarize
+
+        square = np.tile(
+            np.concatenate(
+                (
+                    np.full(40, 0.25, dtype=np.float64),
+                    np.full(40, -0.25, dtype=np.float64),
+                )
+            ),
+            5,
+        )
+        features = _summarize(
+            np.stack(
+                [
+                    np.zeros(400, dtype=np.float64),
+                    square,
+                    square,
+                    square,
+                ]
+            ),
+            sample_count=880,
+            sample_rate=16000,
+        )
+
+        self.assertAlmostEqual(
+            features["zero_crossing_rate_mean"],
+            9.0 / 399.0,
+            places=15,
+        )
+        self.assertEqual(features["zero_crossing_rate_std"], 0.0)
+
+    def test_hann_power_spectral_moments_and_rolloff_are_analytical(
+        self,
+    ) -> None:
+        import numpy as np
+
+        from scripts.emotion_state_phase_b_features import _summarize
+
+        indexes = np.arange(400, dtype=np.float64)
+        tone_200 = 0.2 * np.cos(
+            2.0 * np.pi * 200.0 * indexes / 16000.0
+        )
+        tone_400 = 0.2 * np.cos(
+            2.0 * np.pi * 400.0 * indexes / 16000.0
+        )
+        features = _summarize(
+            np.stack([tone_200, tone_400, tone_200 + tone_400]),
+            sample_count=720,
+            sample_rate=16000,
+        )
+
+        # A bin-centered periodic-Hann tone has power ratio 1:4:1 across
+        # adjacent:center:adjacent bins, so bandwidth is 40/sqrt(3) Hz.
+        # The equal 200+400 Hz mixture has centroid 300 Hz and bandwidth
+        # sqrt(100**2 + (40/sqrt(3))**2).
+        self.assertAlmostEqual(
+            features["spectral_centroid_hz_mean"],
+            300.0,
+            places=10,
+        )
+        self.assertAlmostEqual(
+            features["spectral_centroid_hz_std"],
+            81.64965809277261,
+            places=10,
+        )
+        self.assertAlmostEqual(
+            features["spectral_bandwidth_hz_mean"],
+            49.60668344136925,
+            places=10,
+        )
+        self.assertAlmostEqual(
+            features["spectral_bandwidth_hz_std"],
+            37.49458127002419,
+            places=10,
+        )
+        self.assertAlmostEqual(
+            features["spectral_rolloff_85_hz_mean"],
+            360.0,
+            places=10,
+        )
+        self.assertAlmostEqual(
+            features["spectral_rolloff_85_hz_std"],
+            86.40987597877147,
+            places=10,
+        )
+
+    def test_autocorrelation_peak_ties_choose_lowest_lag(self) -> None:
+        from scripts.emotion_state_phase_b_features import (
+            _normalized_autocorrelation_f0,
+        )
+
+        f0_hz, peak = _normalized_autocorrelation_f0(
+            self._tone_frame(400.0),
+            sample_rate=16000,
+            minimum_hz=75.0,
+            maximum_hz=400.0,
+        )
+        self.assertEqual(f0_hz, 400.0)
+        self.assertAlmostEqual(peak, 1.0, places=15)
 
     def test_unsupported_wav_formats_malformed_riff_and_clipping_reject(
         self,
@@ -517,7 +760,8 @@ class AcousticFeatureTests(unittest.TestCase):
             wrong_rate = root / "wrong-rate.wav"
             compressed = root / "compressed.wav"
             malformed = root / "malformed.wav"
-            clipped = root / "clipped.wav"
+            clipped_positive = root / "clipped-positive.wav"
+            clipped_negative = root / "clipped-negative.wav"
 
             self._write_pcm16(stereo, [1000, -1000] * 400, channels=2)
             with wave.open(str(eight_bit), "wb") as output:
@@ -556,7 +800,14 @@ class AcousticFeatureTests(unittest.TestCase):
                 + compressed_body
             )
             malformed.write_bytes(b"not-a-wave")
-            self._write_pcm16(clipped, [32767] + [1000, -1000] * 400)
+            self._write_pcm16(
+                clipped_positive,
+                [32767] + [1000, -1000] * 400,
+            )
+            self._write_pcm16(
+                clipped_negative,
+                [-32768] + [1000, -1000] * 400,
+            )
 
             for path in (
                 stereo,
@@ -564,7 +815,8 @@ class AcousticFeatureTests(unittest.TestCase):
                 wrong_rate,
                 compressed,
                 malformed,
-                clipped,
+                clipped_positive,
+                clipped_negative,
             ):
                 with self.subTest(path=path.name):
                     with self.assertRaises(FeatureExtractionError):
@@ -667,6 +919,84 @@ class AcousticFeatureTests(unittest.TestCase):
         frames[0, 0] = np.nan
         with self.assertRaisesRegex(FeatureExtractionError, "non-finite"):
             _summarize(frames, sample_count=720, sample_rate=16000)
+
+    def test_feature_schema_freezes_every_new_numerical_semantic(self) -> None:
+        from scripts.validate_emotion_state_002_phase_b import (
+            load_json_strict,
+            validate_feature_schema,
+        )
+
+        expected = {
+            "f0_frame_input": "normalized_raw_frame",
+            "f0_centering": "subtract_full_frame_mean",
+            "f0_window": "none",
+            "f0_zero_residual_energy": "unvoiced",
+            "f0_autocorrelation_peak_tie_break": "lowest_lag_highest_f0",
+            "zero_frame_rms_floor": "one_pcm16_lsb_over_full_frame_rms",
+            "zero_frame_rms_floor_linear": 0.00000152587890625,
+            "rms_summary_frame_scope": "all_complete_frames",
+            "standard_deviation_ddof": 0,
+            "f0_range_definition": "maximum_minus_minimum_voiced_f0",
+            "voiced_fraction_denominator": "all_complete_frames",
+            "zcr_spectral_frame_scope": "nonsilent_frames",
+        }
+        schema = load_json_strict(FEATURE_SCHEMA)
+        self.assertEqual(
+            {field: schema.get(field) for field in expected},
+            expected,
+        )
+        validate_feature_schema(schema)
+
+        for field, value in expected.items():
+            missing = deepcopy(schema)
+            del missing[field]
+            with self.subTest(field=field, mutation="missing"):
+                with self.assertRaises(ValueError):
+                    validate_feature_schema(missing)
+
+            mutated = deepcopy(schema)
+            if isinstance(value, str):
+                mutated[field] = f"mutated-{value}"
+            elif isinstance(value, int):
+                mutated[field] = value + 1
+            else:
+                mutated[field] = value * 2.0
+            with self.subTest(field=field, mutation="value"):
+                with self.assertRaises(ValueError):
+                    validate_feature_schema(mutated)
+
+        extra = deepcopy(schema)
+        extra["unexpected_numerical_semantic"] = "not-frozen"
+        with self.assertRaises(ValueError):
+            validate_feature_schema(extra)
+
+    def test_task_4_plan_freezes_expanded_contract_paths_and_definitions(
+        self,
+    ) -> None:
+        plan = IMPLEMENTATION_PLAN.read_text(encoding="utf-8")
+        task_4 = plan.split(
+            "### Task 4: Implement deterministic acoustic feature extraction",
+            1,
+        )[1].split("### Task 5:", 1)[0]
+        normalized_task_4 = " ".join(task_4.split())
+        required_markers = (
+            "research/sources/emotion_state/"
+            "emotion_state_phase_b_feature_v1.schema.json",
+            "scripts/validate_emotion_state_002_phase_b.py",
+            "normalized raw frame with its full-frame mean subtracted",
+            "no window is applied to F0",
+            "zero centered residual energy is unvoiced",
+            "lowest allowed lag (highest F0)",
+            "1 / (32768 * sqrt(400))",
+            "RMS summaries use all complete frames",
+            "population standard deviation (`ddof=0`)",
+            "`f0_range_hz` is maximum minus minimum voiced F0",
+            "`voiced_fraction` is voiced frames divided by all complete frames",
+            "ZCR and spectral summaries use nonsilent frames only",
+        )
+        for marker in required_markers:
+            with self.subTest(marker=marker):
+                self.assertIn(marker, normalized_task_4)
 
 
 class EnvironmentLockTests(unittest.TestCase):

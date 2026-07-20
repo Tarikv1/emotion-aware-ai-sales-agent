@@ -28,6 +28,7 @@ FEATURE_NAMES = (
     "spectral_rolloff_85_hz_mean",
     "spectral_rolloff_85_hz_std",
 )
+ZERO_FRAME_RMS_FLOOR = 1.0 / (32768.0 * math.sqrt(400.0))
 
 
 class FeatureExtractionError(ValueError):
@@ -98,13 +99,17 @@ def _normalized_autocorrelation_f0(
     minimum_hz: float,
     maximum_hz: float,
 ) -> tuple[float, float]:
+    centered = np.asarray(frame, dtype=np.float64) - float(np.mean(frame))
+    residual_energy = float(np.dot(centered, centered))
+    if residual_energy == 0.0:
+        return 0.0, 0.0
     minimum_lag = math.ceil(sample_rate / maximum_hz)
     maximum_lag = math.floor(sample_rate / minimum_hz)
     lags = np.arange(minimum_lag, maximum_lag + 1, dtype=np.int64)
     correlations = np.empty(lags.size, dtype=np.float64)
     for index, lag in enumerate(lags):
-        left = frame[:-lag]
-        right = frame[lag:]
+        left = centered[:-lag]
+        right = centered[lag:]
         denominator = math.sqrt(
             float(np.dot(left, left)) * float(np.dot(right, right))
         )
@@ -113,9 +118,10 @@ def _normalized_autocorrelation_f0(
             if denominator > 0.0
             else 0.0
         )
-    peak_index = int(np.argmax(correlations))
+    peak = float(np.max(correlations))
+    peak_index = int(np.flatnonzero(correlations == peak)[0])
     lag = int(lags[peak_index])
-    return float(sample_rate / lag), float(correlations[peak_index])
+    return float(sample_rate / lag), peak
 
 
 def _summarize(
@@ -136,8 +142,9 @@ def _summarize(
         raise FeatureExtractionError("sample metadata does not match")
 
     frame_rms = np.sqrt(np.mean(np.square(values), axis=1))
-    rms_floor = np.finfo(np.float64).tiny
-    frame_dbfs = 20.0 * np.log10(np.maximum(frame_rms, rms_floor))
+    frame_dbfs = 20.0 * np.log10(
+        np.maximum(frame_rms, ZERO_FRAME_RMS_FLOOR)
+    )
     peak_frame_dbfs = float(np.max(frame_dbfs))
     nonsilent_threshold = max(-50.0, peak_frame_dbfs - 40.0)
     nonsilent_mask = frame_dbfs >= nonsilent_threshold
@@ -209,16 +216,24 @@ def _summarize(
         "f0_iqr_hz": float(f0_q75 - f0_q25),
         "f0_range_hz": float(np.max(f0) - np.min(f0)),
         "rms_dbfs_mean": float(np.mean(frame_dbfs)),
-        "rms_dbfs_std": float(np.std(frame_dbfs)),
+        "rms_dbfs_std": float(np.std(frame_dbfs, ddof=0)),
         "rms_dbfs_p90_minus_p10": float(rms_p90 - rms_p10),
         "zero_crossing_rate_mean": float(np.mean(zero_crossing_rates)),
-        "zero_crossing_rate_std": float(np.std(zero_crossing_rates)),
+        "zero_crossing_rate_std": float(
+            np.std(zero_crossing_rates, ddof=0)
+        ),
         "spectral_centroid_hz_mean": float(np.mean(spectral_centroids)),
-        "spectral_centroid_hz_std": float(np.std(spectral_centroids)),
+        "spectral_centroid_hz_std": float(
+            np.std(spectral_centroids, ddof=0)
+        ),
         "spectral_bandwidth_hz_mean": float(np.mean(spectral_bandwidths)),
-        "spectral_bandwidth_hz_std": float(np.std(spectral_bandwidths)),
+        "spectral_bandwidth_hz_std": float(
+            np.std(spectral_bandwidths, ddof=0)
+        ),
         "spectral_rolloff_85_hz_mean": float(np.mean(spectral_rolloffs)),
-        "spectral_rolloff_85_hz_std": float(np.std(spectral_rolloffs)),
+        "spectral_rolloff_85_hz_std": float(
+            np.std(spectral_rolloffs, ddof=0)
+        ),
     }
     if tuple(result) != FEATURE_NAMES:
         raise FeatureExtractionError("feature output order does not match")

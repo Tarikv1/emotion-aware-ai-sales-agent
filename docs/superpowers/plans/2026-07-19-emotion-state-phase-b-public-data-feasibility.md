@@ -959,6 +959,11 @@ git commit -m "Lock Phase B research dependencies"
 **Files:**
 - Create: `scripts/emotion_state_phase_b_features.py`
 - Modify: `scripts/test_emotion_state_002_phase_b.py`
+- Modify:
+  `research/sources/emotion_state/emotion_state_phase_b_feature_v1.schema.json`
+- Modify: `scripts/validate_emotion_state_002_phase_b.py`
+- Modify:
+  `docs/superpowers/plans/2026-07-19-emotion-state-phase-b-public-data-feasibility.md`
 
 **Interfaces:**
 - Consumes: one exact mono 16-bit PCM 16 kHz WAV path and the feature schema.
@@ -983,6 +988,12 @@ Add tests that create WAVs only in `TemporaryDirectory` and assert:
 - duration scaling changes duration but not F0;
 - digital silence, near-silence with no nonsilent frame, fewer than three
   voiced frames, stereo, 8-bit, 44.1 kHz, malformed RIFF, and clipping reject;
+- nonzero DC, deterministic unvoiced noise, and both clipping endpoints reject;
+- mixed voiced, unvoiced, and silent frames freeze the duration, silence,
+  voiced-fraction, F0 median, IQR, and range populations;
+- exact analytical fixtures freeze the PCM16-aware RMS floor, population
+  standard deviation, linear percentiles, ZCR, periodic-Hann power centroid,
+  bandwidth, and discrete 85% rolloff;
 - output keys equal the exact 17-feature order;
 - every value is finite and repeated extraction is byte-deterministic after
   canonical JSON encoding.
@@ -1030,14 +1041,22 @@ Implement these frozen operations in
 2. Normalize signed little-endian PCM by `32768.0`.
 3. Use full 400-sample frames, 160-sample hop, and SciPy's periodic Hann
    window; do not pad.
-4. Calculate frame RMS dBFS with finite floor handling. Set the nonsilent
-   threshold to `max(-50, peak_frame_dbfs - 40)`.
+4. Exact-zero frame RMS uses the linear floor
+   `1 / (32768 * sqrt(400))`. RMS summaries use all complete frames and
+   population standard deviation (`ddof=0`). Set the nonsilent threshold to
+   `max(-50, peak_frame_dbfs - 40)`.
 5. Calculate duration and silence ratio over all frames.
-6. Calculate zero-crossing and power-spectrum summaries over nonsilent frames.
-7. Calculate normalized autocorrelation F0 over lags corresponding to
-   `75-400 Hz`; retain frames whose peak is at least `0.30`; require three.
+6. ZCR and spectral summaries use nonsilent frames only. Calculate spectra
+   with SciPy's periodic Hann window and power, not magnitude.
+7. F0 input is the normalized raw frame with its full-frame mean subtracted;
+   no window is applied to F0. A frame with zero centered residual energy is
+   unvoiced. Calculate normalized autocorrelation over lags corresponding to
+   `75-400 Hz`. Autocorrelation peak ties select the lowest allowed lag
+   (highest F0). Retain frames whose peak is at least `0.30`; require three.
 8. Calculate the exact linear percentiles and 85% cumulative-power rolloff.
-9. Reject every non-finite result and return an insertion-ordered dictionary
+9. `f0_range_hz` is maximum minus minimum voiced F0; `voiced_fraction` is
+   voiced frames divided by all complete frames.
+10. Reject every non-finite result and return an insertion-ordered dictionary
    matching `FEATURE_NAMES`.
 
 Use this public surface:
@@ -1076,7 +1095,7 @@ schema drift tests reject.
 - [ ] **Step 5: Commit Task 4**
 
 ```powershell
-git add -- scripts/emotion_state_phase_b_features.py scripts/test_emotion_state_002_phase_b.py
+git add -- scripts/emotion_state_phase_b_features.py scripts/test_emotion_state_002_phase_b.py research/sources/emotion_state/emotion_state_phase_b_feature_v1.schema.json scripts/validate_emotion_state_002_phase_b.py docs/superpowers/plans/2026-07-19-emotion-state-phase-b-public-data-feasibility.md
 git diff --cached --check
 git commit -m "Add deterministic Phase B acoustic features"
 ```
