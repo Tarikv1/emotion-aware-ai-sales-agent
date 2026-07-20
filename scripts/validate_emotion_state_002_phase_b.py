@@ -283,7 +283,23 @@ AMI_SCALAR_KEYS = (
     "speaker_balance_normalized_entropy",
     "backchannels_per_100_turns",
 )
-AMI_DIALOGUE_ACT_VOCABULARY = ("backchannel", "inform", "question")
+AMI_DIALOGUE_ACT_VOCABULARY = (
+    "ami_da_1",
+    "ami_da_2",
+    "ami_da_3",
+    "ami_da_4",
+    "ami_da_5",
+    "ami_da_6",
+    "ami_da_7",
+    "ami_da_8",
+    "ami_da_9",
+    "ami_da_11",
+    "ami_da_12",
+    "ami_da_13",
+    "ami_da_14",
+    "ami_da_15",
+    "ami_da_16",
+)
 BOOTSTRAP_RESAMPLES = 2000
 VALIDITY_KEYS = (
     "material_valid",

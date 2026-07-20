@@ -2398,7 +2398,23 @@ class AmiMechanicsTests(unittest.TestCase):
     )
     FROZEN_BUCKET_KEYS = FROZEN_VALUE_KEYS[:4]
     FROZEN_SCALAR_KEYS = FROZEN_VALUE_KEYS[4:]
-    SAFE_DIALOGUE_ACTS = ("backchannel", "inform", "question")
+    OFFICIAL_DIALOGUE_ACTS = (
+        "ami_da_1",
+        "ami_da_2",
+        "ami_da_3",
+        "ami_da_4",
+        "ami_da_5",
+        "ami_da_6",
+        "ami_da_7",
+        "ami_da_8",
+        "ami_da_9",
+        "ami_da_11",
+        "ami_da_12",
+        "ami_da_13",
+        "ami_da_14",
+        "ami_da_15",
+        "ami_da_16",
+    )
 
     @staticmethod
     def _write_fixture(root: Path) -> dict[str, Any]:
@@ -2474,10 +2490,10 @@ class AmiMechanicsTests(unittest.TestCase):
             """
 <ami:dialogue-acts xmlns:ami="urn:ami" xmlns:nite="http://nite.sourceforge.net/"
                    ami:meeting_id="M1" ami:agent="A">
-  <ami:dact nite:id="d1" ami:type="inform">
+  <ami:dact nite:id="d1" ami:type="ami_da_2">
     <nite:child href="M1.A.segments.xml#id(s1)" />
   </ami:dact>
-  <ami:dact nite:id="d4" ami:type="question">
+  <ami:dact nite:id="d4" ami:type="ami_da_3">
     <nite:child href="M1.A.segments.xml#id(s2)" />
   </ami:dact>
 </ami:dialogue-acts>
@@ -2488,10 +2504,10 @@ class AmiMechanicsTests(unittest.TestCase):
             """
 <ami:dialogue-acts xmlns:ami="urn:ami" xmlns:nite="http://nite.sourceforge.net/"
                    ami:meeting_id="M1" ami:agent="B">
-  <ami:dact nite:id="d2" ami:niteType="backchannel">
+  <ami:dact nite:id="d2" ami:niteType="ami_da_1">
     <nite:child href="M1.B.segments.xml#id(s3)" />
   </ami:dact>
-  <ami:dact nite:id="d3" ami:type="inform">
+  <ami:dact nite:id="d3" ami:type="ami_da_2">
     <nite:child href="M1.B.segments.xml#id(s4)" />
   </ami:dact>
 </ami:dialogue-acts>
@@ -2505,6 +2521,67 @@ class AmiMechanicsTests(unittest.TestCase):
             "dialogue_act_paths": (acts_a, acts_b),
             "known_meetings": ("M1",),
         }
+
+    @classmethod
+    def _write_real_schema_fixture(
+        cls,
+        root: Path,
+        *,
+        include_participants: bool = False,
+    ) -> dict[str, Any]:
+        fixture = cls._write_fixture(root)
+        metadata = fixture["metadata_path"]
+        metadata.write_text(
+            """
+<ami:corpus xmlns:ami="urn:ami" xmlns:nite="http://nite.sourceforge.net/">
+  <ami:meeting nite:id="internal-meeting-1" ami:observation="M1">
+    <ami:speaker ami:nxt_agent="A" ami:global_name="P-A" />
+    <ami:speaker ami:nxt_agent="B" ami:global_name="P-B" />
+  </ami:meeting>
+</ami:corpus>
+""".strip(),
+            encoding="utf-8",
+        )
+        replacements = {
+            '<ami:dact nite:id="d1" ami:type="ami_da_2">': (
+                '<ami:dact nite:id="d1">\n'
+                '    <nite:pointer role="da-aspect" '
+                'href="da-types.xml#id(ami_da_2)" />'
+            ),
+            '<ami:dact nite:id="d4" ami:type="ami_da_3">': (
+                '<ami:dact nite:id="d4">\n'
+                '    <nite:pointer role="da-aspect" '
+                'href="da-types.xml#id(ami_da_3)" />'
+            ),
+            '<ami:dact nite:id="d2" ami:niteType="ami_da_1">': (
+                '<ami:dact nite:id="d2">\n'
+                '    <nite:pointer role="da-aspect" '
+                'href="da-types.xml#id(ami_da_1)" />'
+            ),
+            '<ami:dact nite:id="d3" ami:type="ami_da_2">': (
+                '<ami:dact nite:id="d3">\n'
+                '    <nite:pointer role="da-aspect" '
+                'href="da-types.xml#id(ami_da_2)" />'
+            ),
+        }
+        for path in fixture["dialogue_act_paths"]:
+            source = path.read_text(encoding="utf-8")
+            for original, replacement in replacements.items():
+                source = source.replace(original, replacement)
+            path.write_text(source, encoding="utf-8")
+        if include_participants:
+            participants = root / "participants.xml"
+            participants.write_text(
+                """
+<ami:participants xmlns:ami="urn:ami" xmlns:nite="http://nite.sourceforge.net/">
+  <ami:participant nite:id="P-A" />
+  <ami:participant nite:id="P-B" />
+</ami:participants>
+""".strip(),
+                encoding="utf-8",
+            )
+            fixture["participant_metadata_path"] = participants
+        return fixture
 
     @classmethod
     def _meeting(
@@ -2529,8 +2606,8 @@ class AmiMechanicsTests(unittest.TestCase):
                 ("backchannels_per_100_turns", 25.0),
             ),
             dialogue_act_distribution=(
-                ("backchannel", 0.25),
-                ("inform", 0.75),
+                ("ami_da_1", 0.25),
+                ("ami_da_2", 0.75),
             ),
         )
 
@@ -2567,14 +2644,208 @@ class AmiMechanicsTests(unittest.TestCase):
         self.assertEqual(
             mechanics.dialogue_act_distribution,
             (
-                ("backchannel", 0.25),
-                ("inform", 0.5),
-                ("question", 0.25),
+                ("ami_da_1", 0.25),
+                ("ami_da_2", 0.5),
+                ("ami_da_3", 0.25),
             ),
         )
         retained = repr((turns, mechanics)).upper()
         self.assertNotIn("SECRET", retained)
         self.assertTrue(all(not hasattr(turn, "text") for turn in turns))
+
+    def test_official_dialogue_act_vocabulary_is_exact(self) -> None:
+        from scripts.emotion_state_phase_b_ami_mechanics import (
+            BACKCHANNEL_ACT,
+            DIALOGUE_ACT_VOCABULARY,
+            Turn,
+        )
+        from scripts.validate_emotion_state_002_phase_b import (
+            AMI_DIALOGUE_ACT_VOCABULARY,
+        )
+
+        self.assertEqual(DIALOGUE_ACT_VOCABULARY, self.OFFICIAL_DIALOGUE_ACTS)
+        self.assertEqual(
+            AMI_DIALOGUE_ACT_VOCABULARY,
+            self.OFFICIAL_DIALOGUE_ACTS,
+        )
+        self.assertEqual(BACKCHANNEL_ACT, "ami_da_1")
+        self.assertNotIn("ami_da_10", DIALOGUE_ACT_VOCABULARY)
+        for label in ("backchannel", "inform", "question", "ami_da_10"):
+            with self.subTest(label=label):
+                with self.assertRaisesRegex(
+                    ValueError,
+                    "dialogue-act vocabulary",
+                ):
+                    Turn("M1", "P-A", 0, 100, label)
+
+    def test_real_meeting_schema_prefers_observation_and_optional_enrichment(
+        self,
+    ) -> None:
+        from scripts.emotion_state_phase_b_ami_mechanics import load_ami_turns
+
+        with tempfile.TemporaryDirectory() as directory:
+            fixture = self._write_real_schema_fixture(Path(directory))
+            without_enrichment = load_ami_turns(**fixture)
+        self.assertEqual(
+            {turn.participant_id for turn in without_enrichment},
+            {"P-A", "P-B"},
+        )
+
+        with tempfile.TemporaryDirectory() as directory:
+            fixture = self._write_real_schema_fixture(
+                Path(directory),
+                include_participants=True,
+            )
+            with_enrichment = load_ami_turns(**fixture)
+        self.assertEqual(with_enrichment, without_enrichment)
+
+        with tempfile.TemporaryDirectory() as directory:
+            fixture = self._write_real_schema_fixture(
+                Path(directory),
+                include_participants=True,
+            )
+            participants = fixture["participant_metadata_path"]
+            participants.write_text(
+                participants.read_text(encoding="utf-8").replace(
+                    'nite:id="P-A"',
+                    'nite:id="P-X"',
+                ),
+                encoding="utf-8",
+            )
+            partially_enriched = load_ami_turns(**fixture)
+        self.assertEqual(partially_enriched, without_enrichment)
+
+        with tempfile.TemporaryDirectory() as directory:
+            fixture = self._write_real_schema_fixture(
+                Path(directory),
+                include_participants=True,
+            )
+            participants = fixture["participant_metadata_path"]
+            participants.write_text(
+                participants.read_text(encoding="utf-8").replace(
+                    'nite:id="P-A"',
+                    'nite:id="P-B"',
+                ),
+                encoding="utf-8",
+            )
+            with self.assertRaisesRegex(
+                ValueError,
+                "participant enrichment",
+            ):
+                load_ami_turns(**fixture)
+
+    def test_real_da_aspect_pointer_is_exact_and_local(self) -> None:
+        from scripts.emotion_state_phase_b_ami_mechanics import load_ami_turns
+
+        with tempfile.TemporaryDirectory() as directory:
+            fixture = self._write_real_schema_fixture(Path(directory))
+            turns = load_ami_turns(**fixture)
+        self.assertEqual(
+            tuple(turn.dialogue_act for turn in turns),
+            ("ami_da_2", "ami_da_1", "ami_da_2", "ami_da_3"),
+        )
+
+        cases = (
+            (
+                "cardinality",
+                '    <nite:pointer role="da-aspect" '
+                'href="da-types.xml#id(ami_da_2)" />',
+                '    <nite:pointer role="da-aspect" '
+                'href="da-types.xml#id(ami_da_2)" />\n'
+                '    <nite:pointer role="da-aspect" '
+                'href="da-types.xml#id(ami_da_3)" />',
+                "da-aspect pointer",
+            ),
+            (
+                "unknown",
+                "da-types.xml#id(ami_da_2)",
+                "da-types.xml#id(ami_da_10)",
+                "dialogue-act vocabulary",
+            ),
+            (
+                "external",
+                "da-types.xml#id(ami_da_2)",
+                "https://example.invalid/da-types.xml#id(ami_da_2)",
+                "external URI",
+            ),
+            (
+                "wrong_local_target",
+                "da-types.xml#id(ami_da_2)",
+                "other-types.xml#id(ami_da_2)",
+                "da-aspect target",
+            ),
+        )
+        for name, original, replacement, pattern in cases:
+            with self.subTest(case=name):
+                with tempfile.TemporaryDirectory() as directory:
+                    fixture = self._write_real_schema_fixture(Path(directory))
+                    acts = fixture["dialogue_act_paths"][0]
+                    source = acts.read_text(encoding="utf-8")
+                    self.assertIn(original, source)
+                    acts.write_text(
+                        source.replace(original, replacement, 1),
+                        encoding="utf-8",
+                    )
+                    with self.assertRaisesRegex(ValueError, pattern):
+                        load_ami_turns(**fixture)
+
+    def test_real_loader_requires_exact_expected_unlabeled_count(self) -> None:
+        from scripts.emotion_state_phase_b_ami_mechanics import load_ami_turns
+
+        pointer = (
+            '    <nite:pointer role="da-aspect" '
+            'href="da-types.xml#id(ami_da_2)" />\n'
+        )
+        with tempfile.TemporaryDirectory() as directory:
+            fixture = self._write_real_schema_fixture(Path(directory))
+            acts = fixture["dialogue_act_paths"][0]
+            source = acts.read_text(encoding="utf-8")
+            self.assertIn(pointer, source)
+            acts.write_text(
+                source.replace(pointer, "", 1),
+                encoding="utf-8",
+            )
+            with self.assertRaisesRegex(ValueError, "unlabeled count"):
+                load_ami_turns(**fixture)
+            turns = load_ami_turns(
+                **fixture,
+                expected_unlabeled_count=1,
+            )
+            self.assertEqual(len(turns), 3)
+            with self.assertRaisesRegex(ValueError, "unlabeled count"):
+                load_ami_turns(
+                    **fixture,
+                    expected_unlabeled_count=2,
+                )
+
+        with tempfile.TemporaryDirectory() as directory:
+            fixture = self._write_real_schema_fixture(Path(directory))
+            for invalid in (True, -1):
+                with self.subTest(invalid_expected_count=invalid):
+                    with self.assertRaisesRegex(
+                        ValueError,
+                        "expected unlabeled",
+                    ):
+                        load_ami_turns(
+                            **fixture,
+                            expected_unlabeled_count=invalid,
+                        )
+
+    def test_official_backchannel_is_excluded_from_floor_changes(self) -> None:
+        from scripts.emotion_state_phase_b_ami_mechanics import (
+            Turn,
+            compute_meeting_mechanics,
+        )
+
+        mechanics = compute_meeting_mechanics((
+            Turn("M1", "P-A", 0, 100, "ami_da_2"),
+            Turn("M1", "P-B", 100, 200, "ami_da_1"),
+            Turn("M1", "P-A", 200, 300, "ami_da_3"),
+            Turn("M1", "P-B", 300, 400, "ami_da_2"),
+        ))
+        values = dict(mechanics.values)
+        self.assertEqual(values["floor_changes_per_minute"], 150.0)
+        self.assertEqual(values["backchannels_per_100_turns"], 25.0)
 
     def test_exact_frozen_metric_schema_uses_an_independent_oracle(self) -> None:
         from scripts.emotion_state_phase_b_ami_mechanics import (
@@ -2584,8 +2855,8 @@ class AmiMechanicsTests(unittest.TestCase):
         )
 
         mechanics = compute_meeting_mechanics((
-            Turn("M1", "P-A", 0, 100, "inform"),
-            Turn("M1", "P-B", 200, 300, "question"),
+            Turn("M1", "P-A", 0, 100, "ami_da_2"),
+            Turn("M1", "P-B", 200, 300, "ami_da_3"),
         ))
         self.assertEqual(
             tuple(key for key, _ in mechanics.values),
@@ -2639,12 +2910,12 @@ class AmiMechanicsTests(unittest.TestCase):
             validate_ami_mechanics_aggregates,
         )
 
-        turn = Turn(" M1 ", " P0 ", 0, 100, "inform")
+        turn = Turn(" M1 ", " P0 ", 0, 100, "ami_da_2")
         self.assertEqual((turn.meeting_id, turn.participant_id), ("M1", "P0"))
         with self.assertRaisesRegex(ValueError, "identifier"):
-            Turn("   ", "P0", 0, 100, "inform")
+            Turn("   ", "P0", 0, 100, "ami_da_2")
         with self.assertRaisesRegex(ValueError, "identifier"):
-            Turn("M1", "\t", 0, 100, "inform")
+            Turn("M1", "\t", 0, 100, "ami_da_2")
         with self.assertRaisesRegex(ValueError, "identifier"):
             self._meeting("   ", ("P0", "P1"), 1.0)
         with self.assertRaisesRegex(ValueError, "identifier"):
@@ -2707,8 +2978,8 @@ class AmiMechanicsTests(unittest.TestCase):
                 metric["unique_participant_count"] = 10
                 metric["suppressed"] = False
                 metric["value"] = 0.0
-        cell["dialogue_acts"]["backchannel"]["value"] = 0.25
-        cell["dialogue_acts"]["inform"]["value"] = 0.75
+        cell["dialogue_acts"]["ami_da_1"]["value"] = 0.25
+        cell["dialogue_acts"]["ami_da_2"]["value"] = 0.75
         with self.assertRaisesRegex(ValueError, "authoritative"):
             validate_ami_mechanics_aggregates(
                 inflated,
@@ -2743,10 +3014,10 @@ class AmiMechanicsTests(unittest.TestCase):
         )
 
         mechanics = compute_meeting_mechanics((
-            Turn("M1", "P-A", 0, 900, "inform"),
-            Turn("M1", "P-B", 1000, 1100, "question"),
-            Turn("M1", "P-A", 1200, 2100, "inform"),
-            Turn("M1", "P-B", 2200, 2300, "question"),
+            Turn("M1", "P-A", 0, 900, "ami_da_2"),
+            Turn("M1", "P-B", 1000, 1100, "ami_da_3"),
+            Turn("M1", "P-A", 1200, 2100, "ami_da_2"),
+            Turn("M1", "P-B", 2200, 2300, "ami_da_3"),
         ))
         expected = -(
             0.9 * math.log(0.9) + 0.1 * math.log(0.1)
@@ -2764,9 +3035,9 @@ class AmiMechanicsTests(unittest.TestCase):
         )
 
         mechanics = compute_meeting_mechanics((
-            Turn("M1", "P-A", 0, 1000, "inform"),
-            Turn("M1", "P-A", 500, 1500, "question"),
-            Turn("M1", "P-B", 1200, 1700, "inform"),
+            Turn("M1", "P-A", 0, 1000, "ami_da_2"),
+            Turn("M1", "P-A", 500, 1500, "ami_da_3"),
+            Turn("M1", "P-B", 1200, 1700, "ami_da_2"),
         ))
         self.assertAlmostEqual(
             dict(mechanics.values)["overlap_ratio"],
@@ -2778,6 +3049,9 @@ class AmiMechanicsTests(unittest.TestCase):
         from scripts.emotion_state_phase_b_ami_mechanics import Turn
 
         rejected = (
+            "backchannel",
+            "inform",
+            "question",
             "SECRET transcript",
             "P0",
             "M1",
@@ -2810,6 +3084,9 @@ class AmiMechanicsTests(unittest.TestCase):
         from scripts.emotion_state_phase_b_ami_mechanics import load_ami_turns
 
         rejected = (
+            "backchannel",
+            "inform",
+            "question",
             "SECRET transcript",
             "P0",
             "M1",
@@ -2825,7 +3102,7 @@ class AmiMechanicsTests(unittest.TestCase):
                     acts_a = fixture["dialogue_act_paths"][0]
                     acts_a.write_text(
                         acts_a.read_text(encoding="utf-8").replace(
-                            'ami:type="inform"',
+                            'ami:type="ami_da_2"',
                             f'ami:type="{label}"',
                             1,
                         ),
@@ -3035,22 +3312,22 @@ class AmiMechanicsTests(unittest.TestCase):
         )
 
         one_participant = (
-            Turn("M1", "P-A", 0, 100, "inform"),
-            Turn("M1", "P-A", 200, 300, "question"),
+            Turn("M1", "P-A", 0, 100, "ami_da_2"),
+            Turn("M1", "P-A", 200, 300, "ami_da_3"),
         )
         with self.assertRaisesRegex(ValueError, "two proven participants"):
             compute_meeting_mechanics(one_participant)
 
         malformed = (
-            Turn("M1", "P-A", 0, 100, "inform"),
-            Turn("M1", "P-B", 200, 200, "question"),
+            Turn("M1", "P-A", 0, 100, "ami_da_2"),
+            Turn("M1", "P-B", 200, 200, "ami_da_3"),
         )
         with self.assertRaisesRegex(ValueError, "time span"):
             compute_meeting_mechanics(malformed)
 
         mixed = (
-            Turn("M1", "P-A", 0, 100, "inform"),
-            Turn("M2", "P-B", 200, 300, "question"),
+            Turn("M1", "P-A", 0, 100, "ami_da_2"),
+            Turn("M2", "P-B", 200, 300, "ami_da_3"),
         )
         with self.assertRaisesRegex(ValueError, "one meeting"):
             compute_meeting_mechanics(mixed)
@@ -3255,7 +3532,7 @@ class AmiMechanicsTests(unittest.TestCase):
             official_order=meeting_ids,
         )
         mutated = deepcopy(aggregate)
-        mutated["scenario_only"]["dialogue_acts"]["inform"]["value"] = 0.5
+        mutated["scenario_only"]["dialogue_acts"]["ami_da_2"]["value"] = 0.5
         with self.assertRaisesRegex(ValueError, "authoritative|sum to one"):
             validate_ami_mechanics_aggregates(
                 mutated,
@@ -3293,6 +3570,10 @@ class AmiMechanicsTests(unittest.TestCase):
             meeting_ids,
         )
         rejected = (
+            "backchannel",
+            "inform",
+            "question",
+            "ami_da_10",
             "SECRET transcript",
             "P0",
             "M1",
@@ -3305,7 +3586,7 @@ class AmiMechanicsTests(unittest.TestCase):
             with self.subTest(label=label):
                 mutated = deepcopy(aggregate)
                 cells = mutated["scenario_only"]["dialogue_acts"]
-                cells[label] = cells.pop("inform")
+                cells[label] = cells.pop("ami_da_2")
                 with self.assertRaisesRegex(
                     ValueError,
                     "dialogue-act vocabulary",
@@ -3403,10 +3684,10 @@ class AmiMechanicsTests(unittest.TestCase):
                 "dialogue_values",
                 lambda payload: (
                     payload["scenario_only"]["dialogue_acts"][
-                        "backchannel"
+                        "ami_da_1"
                     ].__setitem__("value", 0.3),
                     payload["scenario_only"]["dialogue_acts"][
-                        "inform"
+                        "ami_da_2"
                     ].__setitem__("value", 0.7),
                 ),
             ),
@@ -6315,9 +6596,21 @@ class RunnerStateTests(unittest.TestCase):
                     ("backchannels_per_100_turns", 25.0),
                 ),
                 dialogue_act_distribution=(
-                    ("backchannel", 0.25),
-                    ("inform", 0.5),
-                    ("question", 0.25),
+                    ("ami_da_1", 0.25),
+                    ("ami_da_2", 0.5),
+                    ("ami_da_3", 0.25),
+                    ("ami_da_4", 0.0),
+                    ("ami_da_5", 0.0),
+                    ("ami_da_6", 0.0),
+                    ("ami_da_7", 0.0),
+                    ("ami_da_8", 0.0),
+                    ("ami_da_9", 0.0),
+                    ("ami_da_11", 0.0),
+                    ("ami_da_12", 0.0),
+                    ("ami_da_13", 0.0),
+                    ("ami_da_14", 0.0),
+                    ("ami_da_15", 0.0),
+                    ("ami_da_16", 0.0),
                 ),
             )
             for index in range(5)

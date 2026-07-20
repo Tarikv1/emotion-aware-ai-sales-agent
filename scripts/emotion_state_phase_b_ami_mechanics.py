@@ -28,11 +28,25 @@ SCALAR_VALUE_KEYS = (
     "backchannels_per_100_turns",
 )
 VALUE_KEYS = BUCKET_VALUE_KEYS + SCALAR_VALUE_KEYS
-BACKCHANNEL_ACT = "backchannel"
-# Synthetic/offline Task 7 vocabulary. It makes no claim about the vocabulary
-# in unread AMI materials; any expansion requires a separately reviewed,
-# hash-bound contract.
-DIALOGUE_ACT_VOCABULARY = ("backchannel", "inform", "question")
+BACKCHANNEL_ACT = "ami_da_1"
+DIALOGUE_ACT_VOCABULARY = (
+    "ami_da_1",
+    "ami_da_2",
+    "ami_da_3",
+    "ami_da_4",
+    "ami_da_5",
+    "ami_da_6",
+    "ami_da_7",
+    "ami_da_8",
+    "ami_da_9",
+    "ami_da_11",
+    "ami_da_12",
+    "ami_da_13",
+    "ami_da_14",
+    "ami_da_15",
+    "ami_da_16",
+)
+_DA_ASPECT_TARGET = "da-types.xml"
 _REFERENCE_FRAGMENT = re.compile(
     r"^id\(([^)]+)\)(?:\.\.id\(([^)]+)\))?$"
 )
@@ -266,15 +280,60 @@ def _merge_boundaries(boundaries: Sequence[_Boundary]) -> _Boundary:
     return _Boundary(meeting_id, agent, start_ms, end_ms)
 
 
+def _dialogue_act_from_element(
+    element: ET.Element,
+    current_filename: str,
+) -> str | None:
+    direct = _attribute(
+        element,
+        "type",
+        "nite_type",
+        "dialogue_act",
+    )
+    aspect_pointers = [
+        child
+        for child in element.iter()
+        if (
+            child is not element
+            and _normalized_name(child.tag) == "pointer"
+            and _attribute(child, "role") == "da-aspect"
+        )
+    ]
+    if direct is not None:
+        if aspect_pointers:
+            raise ValueError(
+                "AMI dialogue act cannot mix a direct label and da-aspect pointer"
+            )
+        return _canonical_dialogue_act(direct)
+    if not aspect_pointers:
+        return None
+    if len(aspect_pointers) != 1:
+        raise ValueError(
+            "AMI dialogue act must have exactly one da-aspect pointer"
+        )
+    target, first, last = _local_reference(
+        _attribute(aspect_pointers[0], "href"),
+        current_filename,
+    )
+    if target != _DA_ASPECT_TARGET:
+        raise ValueError("AMI da-aspect target is not the official local ontology")
+    if last is not None:
+        raise ValueError("AMI da-aspect pointer must target one ontology identifier")
+    return _canonical_dialogue_act(first)
+
+
 def _metadata_dependencies(
     path: Path,
     known_meetings: set[str],
+    participant_metadata_path: Path | None = None,
 ) -> dict[tuple[str, str], str]:
     dependencies: dict[tuple[str, str], str] = {}
     for meeting in _xml(path).iter():
         if _normalized_name(meeting.tag) != "meeting":
             continue
-        meeting_id = _attribute(meeting, "id", "meeting_id", "observation")
+        meeting_id = _attribute(meeting, "observation")
+        if meeting_id is None:
+            meeting_id = _attribute(meeting, "meeting_id", "id")
         if meeting_id is None:
             continue
         meeting_id = _canonical_identifier(meeting_id, "meeting")
@@ -291,13 +350,13 @@ def _metadata_dependencies(
                 "speaker",
                 "channel",
             )
-            participant_id = _attribute(
-                participant,
-                "participant_id",
-                "global_name",
-                "globalname",
-                "name",
-            )
+            participant_id = _attribute(participant, "global_name", "globalname")
+            if participant_id is None:
+                participant_id = _attribute(
+                    participant,
+                    "participant_id",
+                    "name",
+                )
             if agent is None or participant_id is None:
                 raise ValueError("AMI participant dependency is incomplete")
             agent = _canonical_identifier(agent, "speaker dependency")
@@ -309,6 +368,23 @@ def _metadata_dependencies(
             if key in dependencies and dependencies[key] != participant_id:
                 raise ValueError("AMI participant dependency is conflicting")
             dependencies[key] = participant_id
+    if participant_metadata_path is not None:
+        enriched: set[str] = set()
+        for participant in _xml(Path(participant_metadata_path)).iter():
+            if _normalized_name(participant.tag) != "participant":
+                continue
+            participant_id = _attribute(participant, "id")
+            if participant_id is None:
+                raise ValueError("AMI participant enrichment is incomplete")
+            participant_id = _canonical_identifier(
+                participant_id,
+                "participant",
+            )
+            if participant_id in enriched:
+                raise ValueError("AMI participant enrichment is conflicting")
+            enriched.add(participant_id)
+        if not enriched:
+            raise ValueError("AMI participant enrichment is incomplete")
     return dependencies
 
 
@@ -418,10 +494,23 @@ def load_ami_turns(
     timing_link_paths: Sequence[Path],
     dialogue_act_paths: Sequence[Path],
     known_meetings: Sequence[str],
+    *,
+    participant_metadata_path: Path | None = None,
+    expected_unlabeled_count: int = 0,
 ) -> tuple[Turn, ...]:
     """Load only local synthetic/verified AMI boundaries; transcript text is discarded."""
+    if type(expected_unlabeled_count) is not int or expected_unlabeled_count < 0:
+        raise ValueError(
+            "AMI expected unlabeled count must be a non-negative integer"
+        )
     meetings = set(_nonempty_identifiers(known_meetings, "known meetings"))
-    dependencies = _metadata_dependencies(Path(metadata_path), meetings)
+    dependencies = _metadata_dependencies(
+        Path(metadata_path),
+        meetings,
+        None
+        if participant_metadata_path is None
+        else Path(participant_metadata_path),
+    )
     word_files = tuple(Path(path) for path in word_paths)
     timing_files = tuple(Path(path) for path in timing_link_paths)
     act_files = tuple(Path(path) for path in dialogue_act_paths)
@@ -435,6 +524,7 @@ def load_ami_turns(
         word_identifiers,
     )
     turns: list[Turn] = []
+    unlabeled_count = 0
     for path in act_files:
         root = _xml(path)
         meeting_id, agent = _source_identity(path, root)
@@ -454,14 +544,7 @@ def load_ami_turns(
             }:
                 continue
             found = True
-            dialogue_act = _attribute(
-                element,
-                "type",
-                "nite_type",
-                "dialogue_act",
-            )
-            if dialogue_act is None:
-                raise ValueError("AMI dialogue act is missing")
+            dialogue_act = _dialogue_act_from_element(element, path.name)
             referenced: list[_Boundary] = []
             for child in element.iter():
                 if child is element or _normalized_name(child.tag) not in {
@@ -469,6 +552,11 @@ def load_ami_turns(
                     "link",
                     "pointer",
                 }:
+                    continue
+                if (
+                    _normalized_name(child.tag) == "pointer"
+                    and _attribute(child, "role") == "da-aspect"
+                ):
                     continue
                 target, first, last = _local_reference(
                     _attribute(child, "href"),
@@ -499,6 +587,9 @@ def load_ami_turns(
             boundary = _merge_boundaries(referenced)
             if (boundary.meeting_id, boundary.agent) != (meeting_id, agent):
                 raise ValueError("AMI dialogue act crosses source identity")
+            if dialogue_act is None:
+                unlabeled_count += 1
+                continue
             turns.append(Turn(
                 meeting_id=meeting_id,
                 participant_id=participant_id,
@@ -508,6 +599,8 @@ def load_ami_turns(
             ))
         if not found:
             raise ValueError("AMI dialogue-act file contains no dialogue acts")
+    if unlabeled_count != expected_unlabeled_count:
+        raise ValueError("AMI dialogue-act unlabeled count does not match expected")
     return tuple(sorted(
         turns,
         key=lambda turn: (
