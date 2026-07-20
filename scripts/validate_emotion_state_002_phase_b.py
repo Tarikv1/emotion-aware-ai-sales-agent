@@ -270,6 +270,71 @@ VALIDITY_KEYS = (
     "deterministic",
     "lockbox_valid",
 )
+EXPECTED_PHASE_A_BINDING = {
+    "commit": "f8ba503c3670fec6e9dee53f03f306798e7b807b",
+    "result_sha256": "EED96BADBE916A38107A4289AD951F8953A5A96215E063890E07F054C7A90931",
+    "report_sha256": "724C81C41C489B9BBAB0896009DE7CAB578F77082F230F78B90B65643586FE8A",
+}
+EXPECTED_DATASET_EVIDENCE = {
+    "crema_d": {
+        "dataset_id": "crema-d-v1.0-audio-wav",
+        "source_revision": "f3b8611a309886568dfa957141775b2e05add04a",
+        "manifest_sha256": "6E86F06358E4AD172C72BE1692CFF37291D9D5763DD7F6F5C7CE7405E7E01248",
+        "hash_inventory_sha256": "AD58D8165C683847DF246F923FF466722C7F628FE8D81679F618FA5EB3031C87",
+        "quality_inventory_sha256": "455D6A010855F209B4DC4C67F67E4222FAB81601861745B5B5E79E7942B92682",
+    },
+    "ami": {
+        "dataset_id": "ami-manual-annotations-v1.6.2",
+        "archive_sha256": "B56E5BABB2496B8795DEEEDA7E71178D7FBC9963F94276CF2A3F4B56EBBC9F9D",
+        "manifest_sha256": "3904D4A3A9EDF53B06A65354E02FBE1BDD44361B5E196FC6DD4A3882C74911DE",
+        "hash_inventory_sha256": "CE7F837A2A44DFEE44691C4BA8B5B0D7766E46D6616986CF565A6300056DEAEE",
+        "quality_inventory_sha256": "A376A6C0D5F89770525936299717F1595B743489B593DC4E5CE88AB08ACB22C9",
+    },
+}
+EXPECTED_RAW_CSV_SHA256 = {
+    "finishedResponses.csv": "939D02D2DDDDDF575BBCCFFB80F14F1D110FDA88F092F2A68201994EB3BCB45B",
+    "processedResults/summaryTable.csv": "1EA0E13D98853D920C7C51E69A72BA5BA42018F85A9B89B8B2CC1B53C1AA56A9",
+}
+EXPECTED_METRIC_DEFINITIONS = {
+    "primary": "paired_actor_cluster_macro_f1_lift",
+    "secondary": [
+        "balanced_accuracy",
+        "per_class_recall",
+        "multiclass_brier",
+        "log_loss",
+        "ece_10_equal_width_bins",
+        "retained_macro_f1_at_1.0_0.8_0.6_coverage",
+    ],
+    "bootstrap_resamples": 2000,
+    "bootstrap_unit": "actor_cluster",
+    "minimum_unique_actors_per_published_cell": 10,
+}
+EXPECTED_SLICE_DEFINITIONS = {
+    "balanced_diagnostic": {
+        "source_label": list(CLASS_ORDER),
+        "scripted_scenario_count": 12,
+        "vote_agreement_bins": [
+            "[0.00,0.50)",
+            "[0.50,0.75)",
+            "[0.75,1.00]",
+        ],
+        "silence_ratio_quartiles": 4,
+    },
+    "demographic_slices_allowed": False,
+}
+EXPECTED_VALIDITY = {key: True for key in VALIDITY_KEYS}
+EXPECTED_STATIC_FILE_SHA256 = {
+    "configuration_sha256": "BBB16BDB1205255B0D1C3F0F33891ECC75C4F074D0E6D7200D09A6B385CFE914",
+    "environment_lock_sha256": "F78229E8C84B90DB0EB4487CA37949940D13D9AB30A95B5148081CC1B8F60DE3",
+    "feature_schema_sha256": "81B55B25F405A99ED7B29449631CFD39B2FE6E1D4F500ADA3BBCD8668790AB75",
+    "split_schema_sha256": "6086D63E0796AA5F3FED7F7130F307264DE0BD9B299D2203249FB6268BAD399A",
+}
+EXPECTED_EVIDENCE_IDENTITY_SHA256 = {
+    "configuration_sha256": "24E2186A3ACB19817BF87689F09A2F069AC07B5C1D669364D5FC08BC9AD5FA8F",
+    "environment_lock_sha256": "ECAE7C41E8310C52AA62846EDB7F966F5CD05DFF2FD3635C0070B71B8AB7673C",
+    "feature_schema_sha256": "70A5B1531D5127D37FD89B30F03EC14682B0B6C97850A5452DEEB59033618EF4",
+    "split_schema_sha256": "CA1551AC5664391406920D117E21CA1E413F71C96EF29FEC76FA22DCB8D37E9A",
+}
 PROVENANCE_KEYS = (
     "schema_id",
     "partition_role",
@@ -1885,109 +1950,81 @@ def validate_crema_label_ledger(ledger: Any, config: Mapping[str, Any]) -> None:
         raise ValueError("CREMA-D eligible sentence count must be 12")
 
 
-def _phase_b_json_tree(value: Any, name: str, *, depth: int = 0) -> None:
-    if depth > 12:
-        raise ValueError(f"{name} exceeds the aggregate nesting limit")
-    if value is None or type(value) in (bool, int, str):
-        return
-    if type(value) is float:
-        if not math.isfinite(value):
-            raise ValueError(f"{name} contains a non-finite number")
-        return
-    if isinstance(value, list):
-        for index, item in enumerate(value):
-            _phase_b_json_tree(item, f"{name}[{index}]", depth=depth + 1)
-        return
-    if isinstance(value, dict):
-        for key, item in value.items():
-            if not isinstance(key, str) or not key:
-                raise ValueError(f"{name} contains an invalid object key")
-            _phase_b_json_tree(item, f"{name}.{key}", depth=depth + 1)
-        return
-    raise ValueError(f"{name} contains a non-JSON value")
+def _require_exact(value: Any, expected: Any, name: str) -> Any:
+    if not _matches_expected(value, expected):
+        raise ValueError(f"{name} does not match the frozen contract")
+    return value
 
 
-def _phase_b_sha256_mapping(value: Any, name: str) -> dict[str, str]:
-    if not isinstance(value, dict) or not value:
-        raise ValueError(f"{name} must be a non-empty object")
-    validated: dict[str, str] = {}
-    for key, digest in value.items():
-        if (
-            not isinstance(key, str)
-            or not key
-            or "/" in key
-            or "\\" in key
-            or key in {".", ".."}
-        ):
-            raise ValueError(f"{name} contains an invalid artifact name")
-        validated[key] = _uppercase_sha256(digest, f"{name}.{key}")
-    return validated
+def expected_crema_label_ledger() -> dict[str, Any]:
+    contract = EXPECTED_CONFIG["crema_label_contract"]
+    return {
+        **dict(contract["expected_status_counts"]),
+        "label_counts": dict(contract["expected_label_counts"]),
+        "included_wav_count": 7441,
+        "eligible_actor_count": 91,
+        "eligible_sentence_count": 12,
+        "source_binding": {
+            key: contract[key] for key in CREMA_SOURCE_BINDING_FIELDS
+        },
+    }
 
 
-def _validate_phase_a_binding(value: Any) -> dict[str, Any]:
-    binding = _exact_keys(
-        value,
-        ("commit", "result_sha256", "report_sha256"),
-        "Phase A binding",
+def expected_phase_b_input_ledger() -> dict[str, Any]:
+    return {
+        "schema_version": 1,
+        "phase_a": dict(EXPECTED_PHASE_A_BINDING),
+        "dataset_evidence": json.loads(json.dumps(EXPECTED_DATASET_EVIDENCE)),
+        "raw_csv_sha256": dict(EXPECTED_RAW_CSV_SHA256),
+        "crema_label_ledger": expected_crema_label_ledger(),
+    }
+
+
+def expected_non_lockbox_packet(review_sha256: str) -> dict[str, Any]:
+    _uppercase_sha256(review_sha256, "non-lockbox review")
+    return {
+        "schema_version": 1,
+        "review_sha256": review_sha256,
+        "model_settings": dict(EXPECTED_CONFIG["model"]),
+        "metric_definitions": json.loads(json.dumps(EXPECTED_METRIC_DEFINITIONS)),
+        "slice_definitions": json.loads(json.dumps(EXPECTED_SLICE_DEFINITIONS)),
+        "minimum_unique_contributors_per_cell": 10,
+    }
+
+
+def validate_phase_b_split_manifest(payload: Any) -> dict[str, Any]:
+    manifest = _exact_keys(
+        payload,
+        (
+            "schema_id",
+            "configuration_sha256",
+            "eligible_actor_count",
+            "eligible_record_count",
+            "eligible_record_commitment_sha256",
+            "assignment_sha256",
+            "split_manifest_sha256",
+            "self_sha256",
+        ),
+        "validated split manifest",
     )
-    commit = binding["commit"]
+    validate_payload_self_hash(manifest, "validated split manifest")
+    if manifest["schema_id"] != "emotion-state-phase-b-validated-split-v1":
+        raise ValueError("validated split manifest schema does not match")
     if (
-        not isinstance(commit, str)
-        or re.fullmatch(r"[0-9a-f]{40}", commit) is None
+        manifest["configuration_sha256"]
+        != EXPECTED_EVIDENCE_IDENTITY_SHA256["configuration_sha256"]
     ):
-        raise ValueError("Phase A commit must be a lowercase 40-hex commit")
-    _uppercase_sha256(binding["result_sha256"], "Phase A result")
-    _uppercase_sha256(binding["report_sha256"], "Phase A report")
-    return dict(binding)
-
-
-def _validate_dataset_evidence(value: Any) -> dict[str, Any]:
-    evidence = _exact_keys(
-        value,
-        ("crema_d", "ami"),
-        "dataset evidence",
-    )
-    for dataset_name, cell in evidence.items():
-        bound = _exact_keys(
-            cell,
-            ("manifest_sha256", "evidence_sha256"),
-            f"{dataset_name} evidence",
-        )
-        _uppercase_sha256(
-            bound["manifest_sha256"],
-            f"{dataset_name} manifest",
-        )
-        _uppercase_sha256(
-            bound["evidence_sha256"],
-            f"{dataset_name} evidence",
-        )
-    return dict(evidence)
-
-
-def _validate_label_aggregates(value: Any) -> dict[str, Any]:
-    aggregates = _exact_keys(
-        value,
-        ("eligible_count", "abstention_count", "status_counts"),
-        "label aggregates",
-    )
-    eligible = _count(aggregates["eligible_count"], "eligible count")
-    abstained = _count(aggregates["abstention_count"], "abstention count")
-    status_counts = aggregates["status_counts"]
-    if (
-        not isinstance(status_counts, dict)
-        or not status_counts
-        or not all(
-            isinstance(key, str)
-            and key
-            and type(count) is int
-            and count >= 0
-            for key, count in status_counts.items()
-        )
+        raise ValueError("validated split configuration identity does not match")
+    if manifest["eligible_actor_count"] != 91:
+        raise ValueError("validated split actor count must be exactly 91")
+    _positive_count(manifest["eligible_record_count"], "validated split record count")
+    for field in (
+        "eligible_record_commitment_sha256",
+        "assignment_sha256",
+        "split_manifest_sha256",
     ):
-        raise ValueError("label status counts must be non-negative integers")
-    if sum(status_counts.values()) != eligible + abstained:
-        raise ValueError("label status counts do not match eligibility aggregates")
-    return dict(aggregates)
+        _uppercase_sha256(manifest[field], f"validated split {field}")
+    return dict(manifest)
 
 
 def validate_phase_b_input_ledger(payload: Any) -> dict[str, Any]:
@@ -1998,47 +2035,25 @@ def validate_phase_b_input_ledger(payload: Any) -> dict[str, Any]:
             "phase_a",
             "dataset_evidence",
             "raw_csv_sha256",
-            "label_aggregates",
+            "crema_label_ledger",
         ),
         "Phase B input ledger",
     )
-    if type(ledger["schema_version"]) is not int or ledger["schema_version"] != 1:
+    if ledger["schema_version"] != 1 or type(ledger["schema_version"]) is not int:
         raise ValueError("Phase B input ledger schema version must be 1")
-    _validate_phase_a_binding(ledger["phase_a"])
-    _validate_dataset_evidence(ledger["dataset_evidence"])
-    raw_hashes = _phase_b_sha256_mapping(
+    _require_exact(ledger["phase_a"], EXPECTED_PHASE_A_BINDING, "Phase A binding")
+    _require_exact(
+        ledger["dataset_evidence"],
+        EXPECTED_DATASET_EVIDENCE,
+        "dataset evidence",
+    )
+    _require_exact(
         ledger["raw_csv_sha256"],
+        EXPECTED_RAW_CSV_SHA256,
         "raw CSV hashes",
     )
-    if not all(name.casefold().endswith(".csv") for name in raw_hashes):
-        raise ValueError("raw CSV hashes may bind only CSV artifact names")
-    _validate_label_aggregates(ledger["label_aggregates"])
+    validate_crema_label_ledger(ledger["crema_label_ledger"], EXPECTED_CONFIG)
     return dict(ledger)
-
-
-def _validate_model_settings(value: Any) -> dict[str, Any]:
-    if not isinstance(value, dict) or not value:
-        raise ValueError("model settings must be a non-empty object")
-    _phase_b_json_tree(value, "model settings")
-    if value != EXPECTED_CONFIG["model"]:
-        raise ValueError("model settings do not match the frozen configuration")
-    return dict(value)
-
-
-def _validate_metric_definitions(value: Any) -> dict[str, str]:
-    if (
-        not isinstance(value, dict)
-        or not value
-        or not all(
-            isinstance(key, str)
-            and key
-            and isinstance(definition, str)
-            and definition.strip()
-            for key, definition in value.items()
-        )
-    ):
-        raise ValueError("metric definitions must be non-empty strings")
-    return dict(value)
 
 
 def validate_non_lockbox_packet(payload: Any) -> dict[str, Any]:
@@ -2049,65 +2064,306 @@ def validate_non_lockbox_packet(payload: Any) -> dict[str, Any]:
             "review_sha256",
             "model_settings",
             "metric_definitions",
+            "slice_definitions",
+            "minimum_unique_contributors_per_cell",
         ),
         "non-lockbox packet",
     )
-    if type(packet["schema_version"]) is not int or packet["schema_version"] != 1:
+    if packet["schema_version"] != 1 or type(packet["schema_version"]) is not int:
         raise ValueError("non-lockbox packet schema version must be 1")
     _uppercase_sha256(packet["review_sha256"], "non-lockbox review")
-    _validate_model_settings(packet["model_settings"])
-    _validate_metric_definitions(packet["metric_definitions"])
+    _require_exact(
+        packet["model_settings"],
+        EXPECTED_CONFIG["model"],
+        "model settings",
+    )
+    _require_exact(
+        packet["metric_definitions"],
+        EXPECTED_METRIC_DEFINITIONS,
+        "metric definitions",
+    )
+    _require_exact(
+        packet["slice_definitions"],
+        EXPECTED_SLICE_DEFINITIONS,
+        "slice definitions",
+    )
+    if packet["minimum_unique_contributors_per_cell"] != 10:
+        raise ValueError("contributor floor does not match the frozen contract")
     return dict(packet)
 
 
-def _validate_lockbox_cell(
-    value: Any,
-    *,
-    aggregate_name: str,
-) -> dict[str, Any]:
-    expected = (
-        ("metrics", "intervals", "suppression_counts")
-        if aggregate_name == "CREMA"
-        else ("mechanics", "suppression_counts")
+def derive_phase_b_decision(decision_evidence: Any) -> str:
+    metrics, validity = validate_decision_inputs(
+        decision_evidence,
+        dict(EXPECTED_VALIDITY),
     )
-    cell = _exact_keys(value, expected, f"{aggregate_name} lockbox aggregate")
-    _phase_b_json_tree(cell, f"{aggregate_name} lockbox aggregate")
-    suppression = cell["suppression_counts"]
+    if not all(validity.values()):
+        return "discard"
+    if metrics["sentence_driven_apparent_lift"]:
+        return "discard"
+    lifts = metrics["paired_macro_f1_lift"]
+    if any(lifts[baseline]["point_estimate"] <= 0.0 for baseline in lifts):
+        return "discard"
+    models = metrics["models"]
+    acoustic = models["acoustic"]
+    class_prior = models["class_prior"]
     if (
-        not isinstance(suppression, dict)
-        or not suppression
-        or not all(type(count) is int and count >= 0 for count in suppression.values())
-    ):
-        raise ValueError(
-            f"{aggregate_name} suppression counts must be non-negative integers"
+        all(lifts[baseline]["lower_95"] > 0.0 for baseline in lifts)
+        and acoustic["multiclass_brier"] < class_prior["multiclass_brier"]
+        and acoustic["ece_10_bin"] <= class_prior["ece_10_bin"]
+        and all(
+            acoustic["per_class_recall"][label]["recall"] is not None
+            and acoustic["per_class_recall"][label]["recall"] > 0.0
+            for label in CLASS_ORDER
         )
-    aggregate_field = "metrics" if aggregate_name == "CREMA" else "mechanics"
-    if not isinstance(cell[aggregate_field], dict) or not cell[aggregate_field]:
-        raise ValueError(f"{aggregate_name} aggregate must be non-empty")
-    if aggregate_name == "CREMA" and (
-        not isinstance(cell["intervals"], dict) or not cell["intervals"]
+        and not metrics["eligible_slice_reversal"]
+        and not metrics["eligible_slice_instability"]
+        and metrics["confidence_abstention_improves"]
     ):
-        raise ValueError("CREMA intervals must be non-empty")
-    return dict(cell)
+        return "keep_for_research_only"
+    return "revise"
+
+
+def _meeting_from_payload(payload: Any) -> Any:
+    from scripts.emotion_state_phase_b_ami_mechanics import MeetingMechanics
+
+    meeting = _exact_keys(
+        payload,
+        (
+            "meeting_id",
+            "participants",
+            "values",
+            "dialogue_act_distribution",
+        ),
+        "authoritative AMI meeting",
+    )
+    if not isinstance(meeting["participants"], list):
+        raise ValueError("authoritative AMI participants must be a list")
+    values = _exact_keys(meeting["values"], AMI_BUCKET_KEYS + AMI_SCALAR_KEYS, "AMI values")
+    distribution = _exact_keys(
+        meeting["dialogue_act_distribution"],
+        AMI_DIALOGUE_ACT_VOCABULARY,
+        "AMI dialogue-act distribution",
+    )
+    return MeetingMechanics(
+        meeting_id=meeting["meeting_id"],
+        participants=tuple(meeting["participants"]),
+        values=tuple((key, values[key]) for key in AMI_BUCKET_KEYS + AMI_SCALAR_KEYS),
+        dialogue_act_distribution=tuple(
+            (key, distribution[key]) for key in AMI_DIALOGUE_ACT_VOCABULARY
+        ),
+    )
+
+
+def _canonical_digest(payload: Any) -> str:
+    content = (
+        json.dumps(
+            payload,
+            sort_keys=True,
+            ensure_ascii=False,
+            allow_nan=False,
+            separators=(",", ":"),
+        )
+        + "\n"
+    ).encode("utf-8")
+    return hashlib.sha256(content).hexdigest().upper()
+
+
+def _validate_ami_authority(payload: Any) -> tuple[tuple[Any, ...], dict[str, list[str]], tuple[str, ...]]:
+    authority = _exact_keys(
+        payload,
+        ("meetings", "partition_membership", "official_order"),
+        "AMI authority",
+    )
+    if not isinstance(authority["meetings"], list) or not authority["meetings"]:
+        raise ValueError("AMI authority meetings must be a non-empty list")
+    meetings = tuple(_meeting_from_payload(item) for item in authority["meetings"])
+    membership = _exact_keys(
+        authority["partition_membership"],
+        AMI_PARTITION_CELLS,
+        "AMI partition membership",
+    )
+    if any(not isinstance(membership[key], list) for key in AMI_PARTITION_CELLS):
+        raise ValueError("AMI partition memberships must be lists")
+    if not isinstance(authority["official_order"], list):
+        raise ValueError("AMI official order must be a list")
+    return meetings, dict(membership), tuple(authority["official_order"])
+
+
+def _validate_published_ami_cell(
+    cell: Any,
+    *,
+    name: str,
+    non_negative: bool,
+    unit_interval: bool,
+) -> None:
+    validated = _exact_keys(
+        cell,
+        ("suppressed", "unique_participant_count", "value"),
+        name,
+    )
+    count = _count(validated["unique_participant_count"], f"{name} contributor count")
+    if type(validated["suppressed"]) is not bool:
+        raise ValueError(f"{name} suppression flag must be boolean")
+    if validated["suppressed"] is not (count < MINIMUM_UNIQUE_ACTORS):
+        raise ValueError(f"{name} suppression is not derived from contributor count")
+    if validated["suppressed"]:
+        if validated["value"] is not None:
+            raise ValueError(f"{name} suppressed value must be absent")
+        return
+    value = _finite_float(validated["value"], f"{name} value")
+    if non_negative and value < 0.0:
+        raise ValueError(f"{name} value must be non-negative")
+    if unit_interval and not 0.0 <= value <= 1.0:
+        raise ValueError(f"{name} value must be within [0,1]")
+
+
+def validate_published_ami_aggregate(payload: Any) -> Mapping[str, Any]:
+    partitions = _exact_keys(payload, AMI_PARTITION_CELLS, "published AMI aggregate")
+    for partition_name in AMI_PARTITION_CELLS:
+        partition = _exact_keys(
+            partitions[partition_name],
+            (
+                "meeting_count",
+                "unique_participant_count",
+                "scalars",
+                "buckets",
+                "dialogue_acts",
+                "suppression_counts",
+            ),
+            f"{partition_name} AMI aggregate",
+        )
+        meeting_count = _count(partition["meeting_count"], "AMI meeting count")
+        participant_count = _count(
+            partition["unique_participant_count"],
+            "AMI participant count",
+        )
+        if participant_count < 2 * int(meeting_count > 0):
+            raise ValueError("AMI aggregate contributor count is impossible")
+        scalars = _exact_keys(partition["scalars"], AMI_SCALAR_KEYS, "AMI scalar fields")
+        buckets = _exact_keys(partition["buckets"], AMI_BUCKET_KEYS, "AMI bucket fields")
+        dialogue = _exact_keys(
+            partition["dialogue_acts"],
+            AMI_DIALOGUE_ACT_VOCABULARY,
+            "AMI dialogue-act fields",
+        )
+        for key, cell in scalars.items():
+            _validate_published_ami_cell(
+                cell,
+                name=f"AMI scalar {key}",
+                non_negative=True,
+                unit_interval=key in {"overlap_ratio", "speaker_balance_normalized_entropy"},
+            )
+        for key, cell in buckets.items():
+            _validate_published_ami_cell(
+                cell,
+                name=f"AMI bucket {key}",
+                non_negative=True,
+                unit_interval=False,
+            )
+        for key, cell in dialogue.items():
+            _validate_published_ami_cell(
+                cell,
+                name=f"AMI dialogue act {key}",
+                non_negative=True,
+                unit_interval=True,
+            )
+        suppression = _exact_keys(
+            partition["suppression_counts"],
+            (
+                "repeated_participant_meetings",
+                "scalar_cells",
+                "bucket_cells",
+                "dialogue_act_cells",
+            ),
+            "AMI suppression counts",
+        )
+        if any(type(value) is not int or value < 0 for value in suppression.values()):
+            raise ValueError("AMI suppression counts must be non-negative integers")
+        if suppression["repeated_participant_meetings"] > meeting_count:
+            raise ValueError("AMI repeated-meeting count exceeds meeting count")
+        expected_suppressed = participant_count < MINIMUM_UNIQUE_ACTORS
+        expected_counts = {
+            "scalar_cells": len(AMI_SCALAR_KEYS) if expected_suppressed else 0,
+            "bucket_cells": len(AMI_BUCKET_KEYS) if expected_suppressed else 0,
+            "dialogue_act_cells": len(AMI_DIALOGUE_ACT_VOCABULARY)
+            if expected_suppressed
+            else 0,
+        }
+        if any(suppression[key] != value for key, value in expected_counts.items()):
+            raise ValueError("AMI suppression counts are not derived")
+    return partitions
 
 
 def validate_lockbox_result(payload: Any) -> dict[str, Any]:
     result = _exact_keys(
         payload,
-        ("schema_version", "crema", "ami", "decision"),
+        ("schema_version", "decision_evidence", "ami"),
         "lockbox result",
     )
-    if type(result["schema_version"]) is not int or result["schema_version"] != 1:
+    if result["schema_version"] != 1 or type(result["schema_version"]) is not int:
         raise ValueError("lockbox result schema version must be 1")
-    _validate_lockbox_cell(result["crema"], aggregate_name="CREMA")
-    _validate_lockbox_cell(result["ami"], aggregate_name="AMI")
-    if result["decision"] not in {
-        "keep_for_research_only",
-        "revise",
-        "discard",
-    }:
-        raise ValueError("lockbox decision is invalid")
+    validate_decision_inputs(result["decision_evidence"], dict(EXPECTED_VALIDITY))
+    ami = _exact_keys(
+        result["ami"],
+        ("aggregate", "authority", "authority_sha256"),
+        "AMI lockbox evidence",
+    )
+    if _canonical_digest(ami["authority"]) != ami["authority_sha256"]:
+        raise ValueError("AMI authority digest does not match")
+    meetings, membership, order = _validate_ami_authority(ami["authority"])
+    validate_ami_mechanics_aggregates(
+        ami["aggregate"],
+        meetings=meetings,
+        partition_membership=membership,
+        official_order=order,
+        minimum_contributors=MINIMUM_UNIQUE_ACTORS,
+    )
+    validate_published_ami_aggregate(ami["aggregate"])
     return dict(result)
+
+
+def validate_lockbox_lineage(
+    payload: Any,
+    split_manifest: Any,
+) -> None:
+    validated = validate_lockbox_result(payload)
+    split = validate_phase_b_split_manifest(split_manifest)
+    provenance = validated["decision_evidence"]["provenance"]
+    if any(
+        provenance[field] != digest
+        for field, digest in EXPECTED_EVIDENCE_IDENTITY_SHA256.items()
+    ):
+        raise ValueError("lockbox evidence does not bind frozen identities")
+    if (
+        provenance["split_manifest_sha256"]
+        != split["split_manifest_sha256"]
+        or provenance["assignment_sha256"] != split["assignment_sha256"]
+    ):
+        raise ValueError("lockbox evidence does not bind validated split")
+
+
+def validated_lockbox_summary(payload: Any) -> dict[str, Any]:
+    validated = validate_lockbox_result(payload)
+    authority = validated["ami"]["authority"]
+    return {
+        "crema": {
+            "decision_evidence": validated["decision_evidence"],
+            "evidence_sha256": _canonical_digest(
+                validated["decision_evidence"]
+            ),
+        },
+        "ami": {
+            "aggregate": validated["ami"]["aggregate"],
+            "aggregate_sha256": _canonical_digest(
+                validated["ami"]["aggregate"]
+            ),
+            "source_commitment_sha256": _canonical_digest(authority),
+            "minimum_unique_contributors_per_cell": MINIMUM_UNIQUE_ACTORS,
+        },
+        "validity": dict(EXPECTED_VALIDITY),
+        "decision": derive_phase_b_decision(validated["decision_evidence"]),
+    }
 
 
 def validate_phase_b_result(payload: Any) -> dict[str, Any]:
@@ -2123,12 +2379,16 @@ def validate_phase_b_result(payload: Any) -> dict[str, Any]:
             "configuration_sha256",
             "environment_lock_sha256",
             "feature_schema_sha256",
+            "split_schema_sha256",
             "split_manifest_sha256",
-            "label_aggregates",
+            "split_evidence",
+            "crema_label_ledger",
             "model_settings",
             "metric_definitions",
+            "slice_definitions",
             "non_lockbox_review_sha256",
             "lockbox",
+            "validity",
             "decision",
             "closed_boundaries",
         ),
@@ -2136,109 +2396,102 @@ def validate_phase_b_result(payload: Any) -> dict[str, Any]:
     )
     if result["schema_id"] != "emotion-state-002-phase-b-result-v1":
         raise ValueError("Phase B aggregate schema id is invalid")
-    if type(result["schema_version"]) is not int or result["schema_version"] != 1:
+    if result["schema_version"] != 1 or type(result["schema_version"]) is not int:
         raise ValueError("Phase B aggregate schema version must be 1")
     if result["checkpoint_id"] != EXPECTED_CONFIG["checkpoint_id"]:
         raise ValueError("Phase B aggregate checkpoint id is invalid")
-    _validate_phase_a_binding(result["phase_a"])
-    _validate_dataset_evidence(result["dataset_evidence"])
-    raw_hashes = _phase_b_sha256_mapping(
-        result["raw_csv_sha256"],
-        "raw CSV hashes",
+    _require_exact(result["phase_a"], EXPECTED_PHASE_A_BINDING, "Phase A binding")
+    _require_exact(result["dataset_evidence"], EXPECTED_DATASET_EVIDENCE, "dataset evidence")
+    _require_exact(result["raw_csv_sha256"], EXPECTED_RAW_CSV_SHA256, "raw CSV hashes")
+    for field, digest in EXPECTED_STATIC_FILE_SHA256.items():
+        if result[field] != digest:
+            raise ValueError(f"{field} does not match the frozen tracked identity")
+    _uppercase_sha256(result["split_manifest_sha256"], "split manifest file")
+    split_evidence = validate_phase_b_split_manifest(result["split_evidence"])
+    _uppercase_sha256(result["non_lockbox_review_sha256"], "non-lockbox review")
+    validate_crema_label_ledger(result["crema_label_ledger"], EXPECTED_CONFIG)
+    _require_exact(result["model_settings"], EXPECTED_CONFIG["model"], "model settings")
+    _require_exact(
+        result["metric_definitions"],
+        EXPECTED_METRIC_DEFINITIONS,
+        "metric definitions",
     )
-    if not all(name.casefold().endswith(".csv") for name in raw_hashes):
-        raise ValueError("raw CSV hashes may bind only CSV artifact names")
-    for field in (
-        "configuration_sha256",
-        "environment_lock_sha256",
-        "feature_schema_sha256",
-        "split_manifest_sha256",
-        "non_lockbox_review_sha256",
-    ):
-        _uppercase_sha256(result[field], field)
-    _validate_label_aggregates(result["label_aggregates"])
-    _validate_model_settings(result["model_settings"])
-    _validate_metric_definitions(result["metric_definitions"])
+    _require_exact(
+        result["slice_definitions"],
+        EXPECTED_SLICE_DEFINITIONS,
+        "slice definitions",
+    )
     lockbox = _exact_keys(
         result["lockbox"],
-        ("open_count", "crema", "ami"),
+        (
+            "open_count",
+            "reservation_sha256",
+            "result_sha256",
+            "crema",
+            "ami",
+        ),
         "aggregate lockbox",
     )
-    if type(lockbox["open_count"]) is not int or lockbox["open_count"] != 1:
+    if lockbox["open_count"] != 1 or type(lockbox["open_count"]) is not int:
         raise ValueError("aggregate lockbox open count must be exactly 1")
-    _validate_lockbox_cell(lockbox["crema"], aggregate_name="CREMA")
-    _validate_lockbox_cell(lockbox["ami"], aggregate_name="AMI")
-    if result["decision"] not in {
-        "keep_for_research_only",
-        "revise",
-        "discard",
-    }:
-        raise ValueError("Phase B aggregate decision is invalid")
-    boundaries = _exact_keys(
+    _uppercase_sha256(lockbox["reservation_sha256"], "lockbox reservation")
+    _uppercase_sha256(lockbox["result_sha256"], "lockbox result")
+    crema = _exact_keys(
+        lockbox["crema"],
+        ("decision_evidence", "evidence_sha256"),
+        "published CREMA evidence",
+    )
+    if _canonical_digest(crema["decision_evidence"]) != crema["evidence_sha256"]:
+        raise ValueError("published CREMA evidence digest does not match")
+    validate_decision_inputs(
+        crema["decision_evidence"],
+        dict(EXPECTED_VALIDITY),
+    )
+    provenance = crema["decision_evidence"]["provenance"]
+    if any(
+        provenance[field] != digest
+        for field, digest in EXPECTED_EVIDENCE_IDENTITY_SHA256.items()
+    ):
+        raise ValueError("CREMA evidence does not bind frozen input identities")
+    if (
+        provenance["split_manifest_sha256"]
+        != split_evidence["split_manifest_sha256"]
+        or provenance["assignment_sha256"]
+        != split_evidence["assignment_sha256"]
+    ):
+        raise ValueError("CREMA evidence does not bind validated split evidence")
+    ami = _exact_keys(
+        lockbox["ami"],
+        (
+            "aggregate",
+            "aggregate_sha256",
+            "source_commitment_sha256",
+            "minimum_unique_contributors_per_cell",
+        ),
+        "published AMI evidence",
+    )
+    _uppercase_sha256(ami["source_commitment_sha256"], "AMI source commitment")
+    if _canonical_digest(ami["aggregate"]) != ami["aggregate_sha256"]:
+        raise ValueError("published AMI aggregate digest does not match")
+    if ami["minimum_unique_contributors_per_cell"] != MINIMUM_UNIQUE_ACTORS:
+        raise ValueError("AMI contributor floor does not match")
+    validate_published_ami_aggregate(ami["aggregate"])
+    _require_exact(result["validity"], EXPECTED_VALIDITY, "validity facts")
+    derived = derive_phase_b_decision(crema["decision_evidence"])
+    if result["decision"] != derived:
+        raise ValueError("Phase B decision is not derived from validated evidence")
+    _require_exact(
         result["closed_boundaries"],
-        tuple(EXPECTED_CONFIG["boundaries"]),
+        EXPECTED_CONFIG["boundaries"],
         "closed boundaries",
     )
-    if boundaries != EXPECTED_CONFIG["boundaries"]:
-        raise ValueError("every Phase B boundary must remain closed")
-    _phase_b_json_tree(result, "Phase B aggregate result")
     return dict(result)
 
 
 def synthetic_phase_b_result_fixture() -> dict[str, Any]:
-    digests = tuple(character * 64 for character in "ABCDEF0123456789")
-    return {
-        "schema_id": "emotion-state-002-phase-b-result-v1",
-        "schema_version": 1,
-        "checkpoint_id": EXPECTED_CONFIG["checkpoint_id"],
-        "phase_a": {
-            "commit": "a" * 40,
-            "result_sha256": digests[0],
-            "report_sha256": digests[1],
-        },
-        "dataset_evidence": {
-            "crema_d": {
-                "manifest_sha256": digests[2],
-                "evidence_sha256": digests[3],
-            },
-            "ami": {
-                "manifest_sha256": digests[4],
-                "evidence_sha256": digests[5],
-            },
-        },
-        "raw_csv_sha256": {
-            "finishedResponses.csv": digests[6],
-            "summaryTable.csv": digests[7],
-        },
-        "configuration_sha256": digests[8],
-        "environment_lock_sha256": digests[9],
-        "feature_schema_sha256": digests[10],
-        "split_manifest_sha256": digests[11],
-        "label_aggregates": {
-            "eligible_count": 12,
-            "abstention_count": 3,
-            "status_counts": {"eligible": 12, "abstained": 3},
-        },
-        "model_settings": dict(EXPECTED_CONFIG["model"]),
-        "metric_definitions": {
-            "macro_f1": "unweighted mean of per-class F1",
-        },
-        "non_lockbox_review_sha256": digests[12],
-        "lockbox": {
-            "open_count": 1,
-            "crema": {
-                "metrics": {"macro_f1": 0.75},
-                "intervals": {"macro_f1": [0.70, 0.80]},
-                "suppression_counts": {"per_class_cells": 0},
-            },
-            "ami": {
-                "mechanics": {"overlap_ratio": 0.2},
-                "suppression_counts": {"meeting_cells": 1},
-            },
-        },
-        "decision": "revise",
-        "closed_boundaries": dict(EXPECTED_CONFIG["boundaries"]),
-    }
+    raise ValueError(
+        "synthetic Phase B aggregate fixtures require validated Task 6/7 evidence"
+    )
 
 
 def _parse_args(argv: Sequence[str] | None) -> argparse.Namespace:
@@ -2248,7 +2501,7 @@ def _parse_args(argv: Sequence[str] | None) -> argparse.Namespace:
     parser.add_argument(
         "--synthetic-runner",
         action="store_true",
-        help="validate only an in-memory synthetic runner result",
+        help="validate exact in-memory runner input and non-lockbox contracts",
     )
     return parser.parse_args(argv)
 
@@ -2257,7 +2510,18 @@ def main(argv: Sequence[str] | None = None) -> int:
     arguments = _parse_args(argv)
     if arguments.synthetic_runner:
         try:
-            first = validate_phase_b_result(synthetic_phase_b_result_fixture())
+            fixture = {
+                "input_ledger": expected_phase_b_input_ledger(),
+                "non_lockbox_packet": expected_non_lockbox_packet("A" * 64),
+            }
+            first = {
+                "input_ledger": validate_phase_b_input_ledger(
+                    fixture["input_ledger"]
+                ),
+                "non_lockbox_packet": validate_non_lockbox_packet(
+                    fixture["non_lockbox_packet"]
+                ),
+            }
             first_bytes = json.dumps(
                 first,
                 indent=2,
@@ -2266,7 +2530,14 @@ def main(argv: Sequence[str] | None = None) -> int:
                 allow_nan=False,
             ).encode("utf-8")
             second_bytes = json.dumps(
-                validate_phase_b_result(synthetic_phase_b_result_fixture()),
+                {
+                    "input_ledger": validate_phase_b_input_ledger(
+                        expected_phase_b_input_ledger()
+                    ),
+                    "non_lockbox_packet": validate_non_lockbox_packet(
+                        expected_non_lockbox_packet("A" * 64)
+                    ),
+                },
                 indent=2,
                 sort_keys=True,
                 ensure_ascii=False,

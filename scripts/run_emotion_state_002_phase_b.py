@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import argparse
+import ctypes
 import hashlib
 import json
 import os
@@ -9,12 +10,11 @@ import re
 import stat
 import sys
 import uuid
-from collections.abc import Callable, Iterator, Mapping, Sequence
+from collections.abc import Iterator, Mapping, Sequence
 from contextlib import contextmanager
-from dataclasses import dataclass, replace
+from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, BinaryIO
-from unittest.mock import patch
 
 if os.name == "nt":
     import msvcrt
@@ -27,15 +27,18 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from scripts.validate_emotion_state_002_phase_b import (
-    load_json_strict,
+    EXPECTED_STATIC_FILE_SHA256,
     validate_config,
     validate_environment_lock,
     validate_feature_schema,
+    validate_lockbox_lineage,
     validate_lockbox_result,
     validate_non_lockbox_packet,
     validate_phase_b_input_ledger,
     validate_phase_b_result,
+    validate_phase_b_split_manifest,
     validate_split_schema,
+    validated_lockbox_summary,
 )
 
 
@@ -44,10 +47,13 @@ TRANSACTION_SCHEMA_VERSION = 1
 RECEIPT_SCHEMA_VERSION = 1
 JOURNAL_NAME = "transaction.json"
 LOCK_NAME = "publication.lock"
+LOCKBOX_LOCK_NAME = "lockbox.lock"
+LOCKBOX_RESERVATION_NAME = "lockbox-reservation.json"
 UNSET_DIGEST = "0" * 64
 PRIVATE_COMPONENTS = frozenset(
     {"private", "private-restricted", "secrets", ".secrets"}
 )
+REPOSITORY_METADATA_COMPONENTS = frozenset({".git", ".hg", ".svn"})
 FORBIDDEN_RUNTIME_PREFIXES = (
     "runtime",
     "apps",
@@ -119,6 +125,11 @@ _SHA256_PATTERN = re.compile(r"^[0-9A-F]{64}$")
 _COMMIT_PATTERN = re.compile(r"^[0-9a-f]{40}$")
 _TRANSACTION_ID_PATTERN = re.compile(r"^[0-9a-f]{32}$")
 _RECEIPT_NAME_PATTERN = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]*\.json$")
+_UNJOURNALED_NAME_PATTERN = re.compile(
+    r"^[0-9a-f]{32}\.(?:result|report)\.(?:stage|backup|restore)$"
+    r"|^[0-9a-f]{32}\.journal\.stage$"
+)
+_PATH_IDENTITY_PROOFS: dict[str, tuple[tuple[str, int, int], ...]] = {}
 
 
 class RunnerError(RuntimeError):
@@ -134,14 +145,16 @@ class RunnerPaths:
     config_path: Path
     environment_lock_path: Path
     feature_schema_path: Path
+    split_schema_path: Path
     split_manifest_path: Path
     input_ledger_path: Path
     non_lockbox_packet_path: Path
     lockbox_result_path: Path
+    authority: str = "invalid"
 
     @classmethod
-    def from_project_root(cls, project_root: Path = ROOT) -> "RunnerPaths":
-        root = Path(project_root)
+    def production(cls) -> "RunnerPaths":
+        root = ROOT
         state_root = root / ".tmp" / "emotion-state-002-phase-b"
         canonical_root = (
             root
@@ -176,18 +189,55 @@ class RunnerPaths:
                 / "emotion_state"
                 / "emotion_state_phase_b_feature_v1.schema.json"
             ),
-            split_manifest_path=(
+            split_schema_path=(
                 root
                 / "research"
                 / "sources"
                 / "emotion_state"
                 / "emotion_state_evaluation_split_v1.schema.json"
             ),
+            split_manifest_path=(
+                state_root / "split" / "validated-split-manifest.json"
+            ),
             input_ledger_path=state_root / "inputs" / "input-ledger.json",
             non_lockbox_packet_path=(
                 state_root / "non-lockbox" / "non-lockbox-packet.json"
             ),
             lockbox_result_path=state_root / "lockbox" / "lockbox-result.json",
+            authority="production",
+        )
+
+    @classmethod
+    def for_testing(
+        cls,
+        *,
+        project_root: Path,
+        input_root: Path,
+        state_root: Path,
+        canonical_root: Path,
+        config_path: Path,
+        environment_lock_path: Path,
+        feature_schema_path: Path,
+        split_schema_path: Path,
+        split_manifest_path: Path,
+        input_ledger_path: Path,
+        non_lockbox_packet_path: Path,
+        lockbox_result_path: Path,
+    ) -> "RunnerPaths":
+        return cls(
+            project_root=project_root,
+            input_root=input_root,
+            state_root=state_root,
+            canonical_root=canonical_root,
+            config_path=config_path,
+            environment_lock_path=environment_lock_path,
+            feature_schema_path=feature_schema_path,
+            split_schema_path=split_schema_path,
+            split_manifest_path=split_manifest_path,
+            input_ledger_path=input_ledger_path,
+            non_lockbox_packet_path=non_lockbox_packet_path,
+            lockbox_result_path=lockbox_result_path,
+            authority="injected-test",
         )
 
     @property
@@ -209,6 +259,14 @@ class RunnerPaths:
     @property
     def journal_path(self) -> Path:
         return self.recovery_root / JOURNAL_NAME
+
+    @property
+    def lockbox_lock_path(self) -> Path:
+        return Path(self.state_root) / LOCKBOX_LOCK_NAME
+
+    @property
+    def lockbox_reservation_path(self) -> Path:
+        return Path(self.state_root) / LOCKBOX_RESERVATION_NAME
 
     @property
     def result_path(self) -> Path:
@@ -243,10 +301,78 @@ def _sha256_bytes(content: bytes) -> str:
 
 
 def _sha256_file(path: Path) -> str:
+    return _sha256_bytes(_read_file_nofollow(path))
+
+
+def _read_file_nofollow(path: Path, *, maximum_bytes: int = 16_777_216) -> bytes:
+    """Read a regular file through a no-follow handle and bind its identity."""
+    flags = os.O_RDONLY | getattr(os, "O_BINARY", 0)
+    flags |= getattr(os, "O_NOFOLLOW", 0)
     try:
-        return _sha256_bytes(path.read_bytes())
+        with _trusted_parent_handles(path) as parent_descriptor:
+            _verify_cached_path_proof(path)
+            if parent_descriptor is None:
+                before = os.stat(path, follow_symlinks=False)
+                descriptor = os.open(path, flags)
+                after = os.stat(path, follow_symlinks=False)
+            else:
+                before = os.stat(
+                    path.name,
+                    dir_fd=parent_descriptor,
+                    follow_symlinks=False,
+                )
+                descriptor = os.open(path.name, flags, dir_fd=parent_descriptor)
+                after = os.stat(
+                    path.name,
+                    dir_fd=parent_descriptor,
+                    follow_symlinks=False,
+                )
+            if _is_link_or_reparse(path, before) or not stat.S_ISREG(
+                before.st_mode
+            ):
+                os.close(descriptor)
+                raise RunnerError("bound input is not a regular no-follow file")
+            try:
+                _verify_cached_path_proof(path)
+            except Exception:
+                os.close(descriptor)
+                raise
     except OSError as error:
-        raise RunnerError(f"unable to read bound file: {path.name}") from error
+        raise RunnerError(f"unable to open bound file: {Path(path).name}") from error
+    try:
+        opened = os.fstat(descriptor)
+        if (
+            _is_link_or_reparse(path, after)
+            or not stat.S_ISREG(opened.st_mode)
+            or (opened.st_dev, opened.st_ino) != (before.st_dev, before.st_ino)
+            or (opened.st_dev, opened.st_ino) != (after.st_dev, after.st_ino)
+        ):
+            raise RunnerError("bound file identity changed during open")
+        size = opened.st_size
+        if size < 0 or size > maximum_bytes:
+            raise RunnerError("bound file exceeds the allowed size")
+        chunks: list[bytes] = []
+        remaining = maximum_bytes + 1
+        while remaining:
+            chunk = os.read(descriptor, min(1_048_576, remaining))
+            if not chunk:
+                break
+            chunks.append(chunk)
+            remaining -= len(chunk)
+        content = b"".join(chunks)
+        if len(content) > maximum_bytes:
+            raise RunnerError("bound file exceeds the allowed size")
+        final = os.fstat(descriptor)
+        if (
+            (final.st_dev, final.st_ino, final.st_size)
+            != (opened.st_dev, opened.st_ino, opened.st_size)
+        ):
+            raise RunnerError("bound file changed while being read")
+        return content
+    except OSError as error:
+        raise RunnerError(f"unable to read bound file: {Path(path).name}") from error
+    finally:
+        os.close(descriptor)
 
 
 def _validate_digest(value: Any, field: str) -> str:
@@ -345,6 +471,116 @@ def _inspect_component_chain(
     return True
 
 
+def _cache_path_identity_proof(path: Path, trusted_root: Path) -> None:
+    target = Path(path)
+    root = Path(trusted_root)
+    proof: list[tuple[str, int, int]] = []
+    components = (root,) + tuple(
+        root.joinpath(*target.relative_to(root).parts[:index])
+        for index in range(1, len(target.relative_to(root).parts) + 1)
+    )
+    for component in components:
+        try:
+            status = os.stat(component, follow_symlinks=False)
+        except FileNotFoundError:
+            break
+        if _is_link_or_reparse(component, status):
+            raise RunnerError("path proof contains a symlink or reparse point")
+        proof.append((str(component), status.st_dev, status.st_ino))
+    _PATH_IDENTITY_PROOFS[str(target)] = tuple(proof)
+
+
+def _verify_cached_path_proof(path: Path) -> None:
+    proof = _PATH_IDENTITY_PROOFS.get(str(Path(path)))
+    if proof is None:
+        return
+    for component, expected_device, expected_inode in proof:
+        try:
+            status = os.stat(component, follow_symlinks=False)
+        except OSError as error:
+            raise RunnerError("path identity proof is no longer reachable") from error
+        if (
+            _is_link_or_reparse(Path(component), status)
+            or (status.st_dev, status.st_ino)
+            != (expected_device, expected_inode)
+        ):
+            raise RunnerError("path component identity changed before open")
+
+
+@contextmanager
+def _trusted_parent_handles(
+    path: Path,
+    *,
+    include_target: bool = True,
+) -> Iterator[int | None]:
+    target = Path(path)
+    proof = _PATH_IDENTITY_PROOFS.get(str(target), ())
+    parent_proof = [item for item in proof if Path(item[0]) != target]
+    if os.name != "nt":
+        flags = os.O_RDONLY | getattr(os, "O_DIRECTORY", 0)
+        flags |= getattr(os, "O_NOFOLLOW", 0)
+        descriptor = os.open(target.parent, flags)
+        try:
+            expected = next(
+                (
+                    (device, inode)
+                    for component, device, inode in parent_proof
+                    if Path(component) == target.parent
+                ),
+                None,
+            )
+            actual = os.fstat(descriptor)
+            if expected is not None and (actual.st_dev, actual.st_ino) != expected:
+                raise RunnerError("trusted parent handle identity changed")
+            yield descriptor
+        finally:
+            os.close(descriptor)
+        return
+
+    from ctypes import wintypes
+
+    kernel32 = ctypes.WinDLL("kernel32", use_last_error=True)
+    create_file = kernel32.CreateFileW
+    create_file.argtypes = (
+        wintypes.LPCWSTR,
+        wintypes.DWORD,
+        wintypes.DWORD,
+        wintypes.LPVOID,
+        wintypes.DWORD,
+        wintypes.DWORD,
+        wintypes.HANDLE,
+    )
+    create_file.restype = wintypes.HANDLE
+    close = kernel32.CloseHandle
+    close.argtypes = (wintypes.HANDLE,)
+    close.restype = wintypes.BOOL
+    handles: list[int] = []
+    invalid = wintypes.HANDLE(-1).value
+    try:
+        held_proof = proof if include_target else tuple(parent_proof)
+        for component, _device, _inode in held_proof:
+            handle = create_file(
+                component,
+                0x80000000,  # GENERIC_READ; enforces no-delete sharing
+                0x00000001 | 0x00000002,  # exclude FILE_SHARE_DELETE
+                None,
+                3,
+                0x02000000 | 0x00200000,
+                None,
+            )
+            if handle == invalid:
+                raise OSError(
+                    ctypes.get_last_error(),
+                    "unable to hold trusted directory component",
+                )
+            handles.append(handle)
+        _verify_cached_path_proof(target)
+        yield None
+    finally:
+        for handle in reversed(handles):
+            close(handle)
+
+
 def _safe_path(
     path: Path,
     *,
@@ -377,6 +613,7 @@ def _safe_path(
         final_kind=final_kind,
         require_final=require_final,
     )
+    _cache_path_identity_proof(candidate, project)
     return candidate
 
 
@@ -385,6 +622,43 @@ def _validate_layout(paths: RunnerPaths) -> None:
     input_root = _absolute_lexical(Path(paths.input_root), project)
     state_root = _absolute_lexical(Path(paths.state_root), project)
     canonical_root = _absolute_lexical(Path(paths.canonical_root), project)
+    if any(
+        part.casefold() in REPOSITORY_METADATA_COMPONENTS
+        for candidate in (state_root, canonical_root)
+        for part in candidate.parts
+    ):
+        raise RunnerError("repository metadata cannot be a runner output root")
+    if paths.authority == "production":
+        prescribed = RunnerPaths.production()
+        exact_fields = (
+            "project_root",
+            "input_root",
+            "state_root",
+            "canonical_root",
+            "config_path",
+            "environment_lock_path",
+            "feature_schema_path",
+            "split_schema_path",
+            "split_manifest_path",
+            "input_ledger_path",
+            "non_lockbox_packet_path",
+            "lockbox_result_path",
+        )
+        if any(
+            _absolute_lexical(Path(getattr(paths, field)), project)
+            != _absolute_lexical(Path(getattr(prescribed, field)), ROOT)
+            for field in exact_fields
+        ):
+            raise RunnerError("production root authority does not match prescribed paths")
+    elif paths.authority == "injected-test":
+        try:
+            project.relative_to(ROOT)
+        except ValueError:
+            pass
+        else:
+            raise RunnerError("injected test roots cannot target the real repository")
+    else:
+        raise RunnerError("runner path authority is invalid")
     if any(
         _contains_private_component(path)
         for path in (project, input_root, state_root, canonical_root)
@@ -511,25 +785,180 @@ def _validate_canonical_pair_metadata(
             )
 
 
-def _write_new_fsynced(path: Path, content: bytes) -> None:
+def _sync_directory(path: Path) -> None:
+    """Flush directory metadata.
+
+    POSIX uses fsync(2) on an O_DIRECTORY handle. Windows opens the directory
+    itself with FILE_FLAG_BACKUP_SEMANTICS | FILE_FLAG_OPEN_REPARSE_POINT and
+    GENERIC_WRITE, then calls FlushFileBuffers. The latter is the Windows
+    directory-entry durability barrier used after every create/replace/unlink.
+    """
+    directory = Path(path)
+    if os.name != "nt":
+        flags = os.O_RDONLY | getattr(os, "O_DIRECTORY", 0)
+        flags |= getattr(os, "O_NOFOLLOW", 0)
+        descriptor = os.open(directory, flags)
+        try:
+            os.fsync(descriptor)
+        finally:
+            os.close(descriptor)
+        return
+
+    from ctypes import wintypes
+
+    kernel32 = ctypes.WinDLL("kernel32", use_last_error=True)
+    create_file = kernel32.CreateFileW
+    create_file.argtypes = (
+        wintypes.LPCWSTR,
+        wintypes.DWORD,
+        wintypes.DWORD,
+        wintypes.LPVOID,
+        wintypes.DWORD,
+        wintypes.DWORD,
+        wintypes.HANDLE,
+    )
+    create_file.restype = wintypes.HANDLE
+    flush = kernel32.FlushFileBuffers
+    flush.argtypes = (wintypes.HANDLE,)
+    flush.restype = wintypes.BOOL
+    close = kernel32.CloseHandle
+    close.argtypes = (wintypes.HANDLE,)
+    close.restype = wintypes.BOOL
+    handle = create_file(
+        str(directory),
+        0x40000000,  # GENERIC_WRITE
+        0x00000001 | 0x00000002 | 0x00000004,
+        None,
+        3,  # OPEN_EXISTING
+        0x02000000 | 0x00200000 | 0x80000000,
+        None,
+    )
+    invalid = wintypes.HANDLE(-1).value
+    if handle == invalid:
+        raise OSError(ctypes.get_last_error(), "unable to open directory barrier")
     try:
-        with path.open("xb") as handle:
-            handle.write(content)
-            handle.flush()
-            os.fsync(handle.fileno())
+        if not flush(handle):
+            raise OSError(
+                ctypes.get_last_error(),
+                "unable to flush directory barrier",
+            )
+    finally:
+        close(handle)
+
+
+def _ensure_directory_durable(path: Path) -> None:
+    missing: list[Path] = []
+    cursor = Path(path)
+    while not os.path.lexists(cursor):
+        missing.append(cursor)
+        parent = cursor.parent
+        if parent == cursor:
+            raise RunnerError("unable to find an existing directory ancestor")
+        cursor = parent
+    try:
+        status = os.stat(cursor, follow_symlinks=False)
+        if _is_link_or_reparse(cursor, status) or not stat.S_ISDIR(status.st_mode):
+            raise RunnerError("directory ancestor is not a no-follow directory")
+        for directory in reversed(missing):
+            directory.mkdir()
+            created = os.stat(directory, follow_symlinks=False)
+            if _is_link_or_reparse(directory, created) or not stat.S_ISDIR(
+                created.st_mode
+            ):
+                raise RunnerError("created directory identity is unsafe")
+            _sync_directory(directory)
+            _sync_directory(directory.parent)
+    except OSError as error:
+        raise RunnerError("unable to durably create directory") from error
+
+
+def _write_new_fsynced(path: Path, content: bytes) -> None:
+    flags = os.O_WRONLY | os.O_CREAT | os.O_EXCL | getattr(os, "O_BINARY", 0)
+    flags |= getattr(os, "O_NOFOLLOW", 0)
+    try:
+        descriptor = os.open(path, flags, 0o600)
+        try:
+            view = memoryview(content)
+            while view:
+                written = os.write(descriptor, view)
+                if written <= 0:
+                    raise OSError("short durable write")
+                view = view[written:]
+            os.fsync(descriptor)
+            opened = os.fstat(descriptor)
+            inspected = os.stat(path, follow_symlinks=False)
+            if (
+                _is_link_or_reparse(path, inspected)
+                or (opened.st_dev, opened.st_ino)
+                != (inspected.st_dev, inspected.st_ino)
+            ):
+                raise RunnerError("new file identity changed during create")
+        finally:
+            os.close(descriptor)
+        _sync_directory(path.parent)
     except OSError as error:
         raise RunnerError(f"unable to durably write {path.name}") from error
 
 
+def _replace_entry_durably(source: Path, destination: Path) -> None:
+    source_parent = os.stat(source.parent, follow_symlinks=False)
+    destination_parent = os.stat(destination.parent, follow_symlinks=False)
+    if source_parent.st_dev != destination_parent.st_dev:
+        raise RunnerError("atomic replace roots are on different devices")
+    if os.name != "nt":
+        flags = os.O_RDONLY | getattr(os, "O_DIRECTORY", 0)
+        flags |= getattr(os, "O_NOFOLLOW", 0)
+        source_fd = os.open(source.parent, flags)
+        destination_fd = os.open(destination.parent, flags)
+        try:
+            if (
+                (os.fstat(source_fd).st_dev, os.fstat(source_fd).st_ino)
+                != (source_parent.st_dev, source_parent.st_ino)
+                or (
+                    os.fstat(destination_fd).st_dev,
+                    os.fstat(destination_fd).st_ino,
+                )
+                != (destination_parent.st_dev, destination_parent.st_ino)
+            ):
+                raise RunnerError("replace directory identity changed")
+            os.replace(
+                source.name,
+                destination.name,
+                src_dir_fd=source_fd,
+                dst_dir_fd=destination_fd,
+            )
+        finally:
+            os.close(source_fd)
+            os.close(destination_fd)
+    else:
+        with _trusted_parent_handles(destination, include_target=False):
+            _verify_cached_path_proof(destination)
+            os.replace(source, destination)
+            _verify_cached_path_proof(destination.parent)
+    _sync_directory(source.parent)
+    if destination.parent != source.parent:
+        _sync_directory(destination.parent)
+
+
+def _durable_unlink(path: Path, *, missing_ok: bool = True) -> None:
+    try:
+        path.unlink(missing_ok=missing_ok)
+    except FileNotFoundError:
+        if not missing_ok:
+            raise
+        return
+    _sync_directory(path.parent)
+
+
 def _replace_bytes_durably(path: Path, content: bytes) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
+    _ensure_directory_durable(path.parent)
     temporary = path.parent / f".{path.name}.{uuid.uuid4().hex}.tmp"
     try:
         _write_new_fsynced(temporary, content)
-        os.replace(temporary, path)
+        _replace_entry_durably(temporary, path)
     except Exception:
         try:
-            temporary.unlink(missing_ok=True)
+            _durable_unlink(temporary)
         except OSError:
             pass
         raise
@@ -618,8 +1047,22 @@ def _validate_state(payload: Any) -> dict[str, Any]:
 
 def _load_json_object(path: Path, label: str) -> dict[str, Any]:
     try:
-        payload = load_json_strict(path)
-    except (OSError, ValueError) as error:
+        def reject_duplicates(pairs: list[tuple[str, Any]]) -> dict[str, Any]:
+            value: dict[str, Any] = {}
+            for key, item in pairs:
+                if key in value:
+                    raise ValueError(f"duplicate JSON key: {key}")
+                value[key] = item
+            return value
+
+        payload = json.loads(
+            _read_file_nofollow(path).decode("utf-8"),
+            object_pairs_hook=reject_duplicates,
+            parse_constant=lambda value: (_ for _ in ()).throw(
+                ValueError(f"non-finite JSON constant: {value}")
+            ),
+        )
+    except (OSError, UnicodeError, ValueError, json.JSONDecodeError) as error:
         raise RunnerError(f"invalid {label}: {error}") from error
     if not isinstance(payload, dict):
         raise RunnerError(f"{label} must be a JSON object")
@@ -656,7 +1099,7 @@ def initialize_state(paths: RunnerPaths) -> dict[str, Any]:
     _validate_layout(paths)
     if os.path.lexists(paths.state_path):
         return load_state(paths)
-    Path(paths.state_root).mkdir(parents=True, exist_ok=True)
+    _ensure_directory_durable(Path(paths.state_root))
     return _write_state(paths, _initial_state())
 
 
@@ -721,24 +1164,6 @@ def _assert_closed_environment() -> None:
         )
 
 
-def _blocked_network(*_args: Any, **_kwargs: Any) -> None:
-    raise RunnerError("network access is blocked during Phase B evaluation")
-
-
-@contextmanager
-def _offline_operation_boundary() -> Iterator[None]:
-    _assert_closed_environment()
-    import socket
-
-    with (
-        patch.object(socket, "create_connection", _blocked_network),
-        patch.object(socket.socket, "connect", _blocked_network),
-        patch.object(socket.socket, "connect_ex", _blocked_network),
-        patch.object(socket.socket, "sendto", _blocked_network),
-    ):
-        yield
-
-
 def _validate_preflight_inputs(
     paths: RunnerPaths,
 ) -> tuple[dict[str, Any], dict[str, Any], dict[str, Any], dict[str, Any]]:
@@ -746,6 +1171,7 @@ def _validate_preflight_inputs(
     config_path = _validate_input_path(paths, paths.config_path)
     environment_path = _validate_input_path(paths, paths.environment_lock_path)
     feature_path = _validate_input_path(paths, paths.feature_schema_path)
+    split_schema_path = _validate_input_path(paths, paths.split_schema_path)
     split_path = _validate_input_path(paths, paths.split_manifest_path)
     ledger_path = _validate_input_path(paths, paths.input_ledger_path)
     try:
@@ -754,7 +1180,10 @@ def _validate_preflight_inputs(
             _load_json_object(environment_path, "environment lock")
         )
         validate_feature_schema(_load_json_object(feature_path, "feature schema"))
-        split = validate_split_schema(
+        validate_split_schema(
+            _load_json_object(split_schema_path, "split schema")
+        )
+        split = validate_phase_b_split_manifest(
             _load_json_object(split_path, "split manifest")
         )
         ledger = validate_phase_b_input_ledger(
@@ -762,9 +1191,21 @@ def _validate_preflight_inputs(
         )
     except (TypeError, ValueError) as error:
         raise RunnerError(f"preflight validation failed: {error}") from error
-    return config, split, ledger, {
+    static_checks = {
         "configuration_sha256": _sha256_file(config_path),
         "environment_lock_sha256": _sha256_file(environment_path),
+        "feature_schema_sha256": _sha256_file(feature_path),
+        "split_schema_sha256": _sha256_file(split_schema_path),
+    }
+    for field, digest in EXPECTED_STATIC_FILE_SHA256.items():
+        if static_checks[field] != digest:
+            label = field.removesuffix("_sha256").replace("_", " ")
+            raise RunnerError(
+                f"{label} tracked bytes do not match the frozen identity"
+            )
+    return config, split, ledger, {
+        "configuration_sha256": static_checks["configuration_sha256"],
+        "environment_lock_sha256": static_checks["environment_lock_sha256"],
         "input_ledger_sha256": _sha256_file(ledger_path),
         "split_manifest_sha256": _sha256_file(split_path),
     }
@@ -776,7 +1217,7 @@ def run_preflight(paths: RunnerPaths) -> dict[str, Any]:
     state_exists = os.path.lexists(paths.state_path)
     state = load_state(paths) if state_exists else _initial_state()
     _require_phase(state, "initialized")
-    Path(paths.state_root).mkdir(parents=True, exist_ok=True)
+    _ensure_directory_durable(Path(paths.state_root))
     return _transition(
         paths,
         state,
@@ -804,66 +1245,263 @@ def _assert_anchor_digests(paths: RunnerPaths, state: Mapping[str, Any]) -> None
             raise RunnerError(f"{label} changed after preflight")
 
 
-def run_non_lockbox(
+def _revalidate_bound_preflight(
     paths: RunnerPaths,
-    *,
-    operation: Callable[[], None] | None = None,
-) -> dict[str, Any]:
-    state = load_state(paths)
-    _require_phase(state, "preflight_complete")
+    state: Mapping[str, Any],
+) -> None:
     _assert_anchor_digests(paths, state)
+    _config, _split, _ledger, digests = _validate_preflight_inputs(paths)
+    if any(digests[field] != state[field] for field in digests):
+        raise RunnerError("preflight anchor changed after validation")
+
+
+def _validated_packet(
+    paths: RunnerPaths,
+    state: Mapping[str, Any],
+    *,
+    require_bound: bool,
+) -> tuple[dict[str, Any], str]:
     packet_path = _validate_non_lockbox_path(paths)
+    digest_before = _sha256_file(packet_path)
+    packet = _load_json_object(packet_path, "non-lockbox packet")
     try:
-        with _offline_operation_boundary():
-            if operation is not None:
-                operation()
-            _assert_closed_environment()
-            packet = _load_json_object(packet_path, "non-lockbox packet")
-            validate_non_lockbox_packet(packet)
-    except RunnerError:
-        raise
+        validated = validate_non_lockbox_packet(packet)
     except (TypeError, ValueError) as error:
         raise RunnerError(f"invalid non-lockbox packet: {error}") from error
+    digest = _sha256_file(packet_path)
+    if digest != digest_before:
+        raise RunnerError("non-lockbox packet changed during semantic validation")
+    if require_bound and digest != state["non_lockbox_packet_sha256"]:
+        raise RunnerError("non-lockbox packet changed after validation")
+    return validated, digest
+
+
+def run_non_lockbox(paths: RunnerPaths) -> dict[str, Any]:
+    _assert_closed_environment()
+    state = load_state(paths)
+    _require_phase(state, "preflight_complete")
+    _revalidate_bound_preflight(paths, state)
+    _packet, packet_digest = _validated_packet(paths, state, require_bound=False)
+    _revalidate_bound_preflight(paths, state)
+    _packet, second_digest = _validated_packet(paths, state, require_bound=False)
+    _assert_closed_environment()
+    if second_digest != packet_digest:
+        raise RunnerError("non-lockbox packet changed during validation")
     return _transition(
         paths,
         state,
         "non_lockbox_complete",
-        non_lockbox_packet_sha256=_sha256_file(packet_path),
+        non_lockbox_packet_sha256=packet_digest,
     )
 
 
-def run_lockbox(
-    paths: RunnerPaths,
-    *,
-    operation: Callable[[], None] | None = None,
-) -> dict[str, Any]:
-    state = load_state(paths)
-    _require_phase(state, "non_lockbox_complete")
-    if state["lockbox_open_count"] != 0:
-        raise RunnerError("final lockbox has already been opened")
-    _assert_anchor_digests(paths, state)
-    packet_path = _validate_non_lockbox_path(paths)
-    if _sha256_file(packet_path) != state["non_lockbox_packet_sha256"]:
-        raise RunnerError("non-lockbox packet changed before lockbox")
-    lockbox_path = _validate_lockbox_path(paths)
+def _open_lock_handle(path: Path) -> BinaryIO:
+    if not os.path.lexists(path):
+        try:
+            _write_new_fsynced(path, b"")
+        except RunnerError:
+            if not os.path.lexists(path):
+                raise
+    flags = os.O_RDWR | getattr(os, "O_BINARY", 0)
+    flags |= getattr(os, "O_NOFOLLOW", 0)
     try:
-        with _offline_operation_boundary():
-            if operation is not None:
-                operation()
-            _assert_closed_environment()
-            lockbox_result = _load_json_object(lockbox_path, "lockbox result")
-            validate_lockbox_result(lockbox_result)
-    except RunnerError:
-        raise
-    except (TypeError, ValueError) as error:
-        raise RunnerError(f"invalid lockbox result: {error}") from error
-    return _transition(
-        paths,
-        state,
-        "lockbox_complete",
-        lockbox_open_count=1,
-        lockbox_result_sha256=_sha256_file(lockbox_path),
+        with _trusted_parent_handles(path):
+            _verify_cached_path_proof(path)
+            before = os.stat(path, follow_symlinks=False)
+            descriptor = os.open(path, flags)
+            opened = os.fstat(descriptor)
+            after = os.stat(path, follow_symlinks=False)
+            _verify_cached_path_proof(path)
+        if (
+            _is_link_or_reparse(path, after)
+            or (before.st_dev, before.st_ino)
+            != (opened.st_dev, opened.st_ino)
+            or (after.st_dev, after.st_ino)
+            != (opened.st_dev, opened.st_ino)
+        ):
+            os.close(descriptor)
+            raise RunnerError("lock file identity changed during open")
+        return os.fdopen(descriptor, "r+b", closefd=True)
+    except OSError as error:
+        raise RunnerError("unable to open OS-backed lock") from error
+
+
+@contextmanager
+def lockbox_lock(paths: RunnerPaths) -> Iterator[None]:
+    _validate_layout(paths)
+    _ensure_directory_durable(Path(paths.state_root))
+    lock_path = _safe_path(
+        paths.lockbox_lock_path,
+        allowed_root=paths.state_root,
+        project_root=paths.project_root,
     )
+    if os.path.lexists(lock_path):
+        _safe_path(
+            lock_path,
+            allowed_root=paths.state_root,
+            project_root=paths.project_root,
+            final_kind="file",
+            require_final=True,
+        )
+    handle = _open_lock_handle(lock_path)
+    acquired = False
+    try:
+        try:
+            _acquire_os_lock(handle)
+        except OSError as error:
+            raise RunnerError("lockbox lock is already held or unavailable") from error
+        acquired = True
+        yield
+    finally:
+        if acquired:
+            try:
+                _release_os_lock(handle)
+            except OSError:
+                pass
+        handle.close()
+
+
+def _reservation_payload(
+    state: Mapping[str, Any],
+    *,
+    transaction_id: str,
+    status: str,
+    lockbox_result_sha256: str,
+) -> dict[str, Any]:
+    if status not in {"reserved", "completed"}:
+        raise RunnerError("invalid lockbox reservation status")
+    if status == "reserved":
+        if lockbox_result_sha256 != UNSET_DIGEST:
+            raise RunnerError("reserved lockbox cannot bind result bytes")
+    else:
+        _validate_digest(lockbox_result_sha256, "lockbox reservation result")
+        if lockbox_result_sha256 == UNSET_DIGEST:
+            raise RunnerError("completed lockbox reservation needs result bytes")
+    return {
+        "schema_version": 1,
+        "transaction_id": _validate_transaction_id(transaction_id),
+        "status": status,
+        "configuration_sha256": state["configuration_sha256"],
+        "environment_lock_sha256": state["environment_lock_sha256"],
+        "input_ledger_sha256": state["input_ledger_sha256"],
+        "split_manifest_sha256": state["split_manifest_sha256"],
+        "non_lockbox_packet_sha256": state["non_lockbox_packet_sha256"],
+        "lockbox_result_sha256": lockbox_result_sha256,
+    }
+
+
+def _validate_reservation(payload: Any) -> dict[str, Any]:
+    expected = {
+        "schema_version",
+        "transaction_id",
+        "status",
+        "configuration_sha256",
+        "environment_lock_sha256",
+        "input_ledger_sha256",
+        "split_manifest_sha256",
+        "non_lockbox_packet_sha256",
+        "lockbox_result_sha256",
+    }
+    if not isinstance(payload, dict) or set(payload) != expected:
+        raise RunnerError("invalid lockbox reservation fields")
+    if payload["schema_version"] != 1 or type(payload["schema_version"]) is not int:
+        raise RunnerError("invalid lockbox reservation schema")
+    return _reservation_payload(
+        payload,
+        transaction_id=payload["transaction_id"],
+        status=payload["status"],
+        lockbox_result_sha256=payload["lockbox_result_sha256"],
+    )
+
+
+def _load_reservation(paths: RunnerPaths) -> dict[str, Any]:
+    reservation_path = _safe_path(
+        paths.lockbox_reservation_path,
+        allowed_root=paths.state_root,
+        project_root=paths.project_root,
+        final_kind="file",
+        require_final=True,
+    )
+    return _validate_reservation(
+        _load_json_object(reservation_path, "lockbox reservation")
+    )
+
+
+def run_lockbox(paths: RunnerPaths) -> dict[str, Any]:
+    _assert_closed_environment()
+    with lockbox_lock(paths):
+        state = load_state(paths)
+        _require_phase(state, "non_lockbox_complete")
+        if state["lockbox_open_count"] != 0:
+            raise RunnerError("final lockbox has already been opened")
+        _revalidate_bound_preflight(paths, state)
+        _validated_packet(paths, state, require_bound=True)
+        if os.path.lexists(paths.lockbox_reservation_path):
+            _load_reservation(paths)
+            raise RunnerError("final lockbox experiment version is already reserved")
+
+        transaction_id = uuid.uuid4().hex
+        reservation = _reservation_payload(
+            state,
+            transaction_id=transaction_id,
+            status="reserved",
+            lockbox_result_sha256=UNSET_DIGEST,
+        )
+        _replace_bytes_durably(
+            paths.lockbox_reservation_path,
+            canonical_json_bytes(reservation),
+        )
+        if _load_reservation(paths) != reservation:
+            raise RunnerError("lockbox reservation readback mismatch")
+
+        lockbox_path = _validate_lockbox_path(paths)
+        try:
+            result_digest = _sha256_file(lockbox_path)
+            lockbox_result = _load_json_object(lockbox_path, "lockbox result")
+            split_manifest = _load_json_object(
+                paths.split_manifest_path,
+                "split manifest",
+            )
+            validate_lockbox_lineage(lockbox_result, split_manifest)
+        except (TypeError, ValueError) as error:
+            raise RunnerError(f"invalid lockbox result: {error}") from error
+        if _sha256_file(lockbox_path) != result_digest:
+            raise RunnerError("lockbox result changed during semantic validation")
+
+        _revalidate_bound_preflight(paths, state)
+        _validated_packet(paths, state, require_bound=True)
+        second_result = _load_json_object(lockbox_path, "lockbox result")
+        try:
+            second_split = _load_json_object(
+                paths.split_manifest_path,
+                "split manifest",
+            )
+            validate_lockbox_lineage(second_result, second_split)
+        except (TypeError, ValueError) as error:
+            raise RunnerError(f"invalid lockbox result: {error}") from error
+        if _sha256_file(lockbox_path) != result_digest:
+            raise RunnerError("lockbox result changed during reserved validation")
+        _assert_closed_environment()
+
+        completed = _reservation_payload(
+            state,
+            transaction_id=transaction_id,
+            status="completed",
+            lockbox_result_sha256=result_digest,
+        )
+        _replace_bytes_durably(
+            paths.lockbox_reservation_path,
+            canonical_json_bytes(completed),
+        )
+        if _load_reservation(paths) != completed:
+            raise RunnerError("completed lockbox reservation readback mismatch")
+        return _transition(
+            paths,
+            state,
+            "lockbox_complete",
+            lockbox_open_count=1,
+            lockbox_result_sha256=result_digest,
+        )
 
 
 def build_aggregate_result(paths: RunnerPaths) -> dict[str, Any]:
@@ -875,9 +1513,11 @@ def build_aggregate_result(paths: RunnerPaths) -> dict[str, Any]:
         "rejected",
     }:
         raise RunnerError("aggregate result requires a completed lockbox")
-    _assert_anchor_digests(paths, state)
+    _revalidate_bound_preflight(paths, state)
     config_path = _validate_input_path(paths, paths.config_path)
     feature_path = _validate_input_path(paths, paths.feature_schema_path)
+    split_schema_path = _validate_input_path(paths, paths.split_schema_path)
+    split_path = _validate_input_path(paths, paths.split_manifest_path)
     ledger_path = _validate_input_path(paths, paths.input_ledger_path)
     packet_path = _validate_non_lockbox_path(paths)
     lockbox_path = _validate_lockbox_path(paths)
@@ -890,17 +1530,41 @@ def build_aggregate_result(paths: RunnerPaths) -> dict[str, Any]:
         feature = validate_feature_schema(
             _load_json_object(feature_path, "feature schema")
         )
+        validate_split_schema(
+            _load_json_object(split_schema_path, "split schema")
+        )
+        split_evidence = validate_phase_b_split_manifest(
+            _load_json_object(split_path, "split manifest")
+        )
         ledger = validate_phase_b_input_ledger(
             _load_json_object(ledger_path, "input ledger")
         )
         packet = validate_non_lockbox_packet(
             _load_json_object(packet_path, "non-lockbox packet")
         )
-        lockbox = validate_lockbox_result(
-            _load_json_object(lockbox_path, "lockbox result")
-        )
+        lockbox_payload = _load_json_object(lockbox_path, "lockbox result")
+        validate_lockbox_result(lockbox_payload)
+        lockbox = validated_lockbox_summary(lockbox_payload)
     except (TypeError, ValueError) as error:
         raise RunnerError(f"aggregate input validation failed: {error}") from error
+    reservation = _load_reservation(paths)
+    if (
+        reservation["status"] != "completed"
+        or reservation["lockbox_result_sha256"]
+        != state["lockbox_result_sha256"]
+        or any(
+            reservation[field] != state[field]
+            for field in (
+                "configuration_sha256",
+                "environment_lock_sha256",
+                "input_ledger_sha256",
+                "split_manifest_sha256",
+                "non_lockbox_packet_sha256",
+            )
+        )
+    ):
+        raise RunnerError("completed lockbox reservation does not bind state")
+    reservation_sha256 = _sha256_file(paths.lockbox_reservation_path)
     result = {
         "schema_id": "emotion-state-002-phase-b-result-v1",
         "schema_version": 1,
@@ -911,20 +1575,33 @@ def build_aggregate_result(paths: RunnerPaths) -> dict[str, Any]:
         "configuration_sha256": state["configuration_sha256"],
         "environment_lock_sha256": state["environment_lock_sha256"],
         "feature_schema_sha256": _sha256_file(feature_path),
+        "split_schema_sha256": _sha256_file(split_schema_path),
         "split_manifest_sha256": state["split_manifest_sha256"],
-        "label_aggregates": ledger["label_aggregates"],
+        "split_evidence": split_evidence,
+        "crema_label_ledger": ledger["crema_label_ledger"],
         "model_settings": packet["model_settings"],
         "metric_definitions": packet["metric_definitions"],
+        "slice_definitions": packet["slice_definitions"],
         "non_lockbox_review_sha256": packet["review_sha256"],
         "lockbox": {
             "open_count": state["lockbox_open_count"],
+            "reservation_sha256": reservation_sha256,
+            "result_sha256": state["lockbox_result_sha256"],
             "crema": lockbox["crema"],
             "ami": lockbox["ami"],
         },
+        "validity": lockbox["validity"],
         "decision": lockbox["decision"],
         "closed_boundaries": config["boundaries"],
     }
     del feature
+    _revalidate_bound_preflight(paths, state)
+    _validated_packet(paths, state, require_bound=True)
+    if (
+        _sha256_file(lockbox_path) != state["lockbox_result_sha256"]
+        or _sha256_file(paths.lockbox_reservation_path) != reservation_sha256
+    ):
+        raise RunnerError("aggregate inputs changed during validation")
     try:
         return validate_phase_b_result(result)
     except (TypeError, ValueError) as error:
@@ -994,7 +1671,7 @@ def _release_os_lock(handle: BinaryIO) -> None:
 @contextmanager
 def publication_lock(paths: RunnerPaths) -> Iterator[None]:
     _validate_layout(paths)
-    Path(paths.recovery_root).mkdir(parents=True, exist_ok=True)
+    _ensure_directory_durable(Path(paths.recovery_root))
     _safe_path(
         paths.recovery_root,
         allowed_root=paths.state_root,
@@ -1011,28 +1688,9 @@ def publication_lock(paths: RunnerPaths) -> Iterator[None]:
             final_kind="file",
             require_final=True,
         )
-    try:
-        handle = lock_path.open("a+b")
-    except OSError as error:
-        raise RunnerError("unable to open publication lock") from error
+    handle = _open_lock_handle(lock_path)
     acquired = False
     try:
-        inspected_lock = _safe_path(
-            lock_path,
-            allowed_root=paths.recovery_root,
-            project_root=paths.project_root,
-            final_kind="file",
-            require_final=True,
-        )
-        lock_status = os.lstat(inspected_lock)
-        handle_status = os.fstat(handle.fileno())
-        if (
-            getattr(lock_status, "st_dev", None)
-            != getattr(handle_status, "st_dev", None)
-            or getattr(lock_status, "st_ino", None)
-            != getattr(handle_status, "st_ino", None)
-        ):
-            raise RunnerError("publication lock entry changed during open")
         try:
             _acquire_os_lock(handle)
         except OSError as error:
@@ -1088,16 +1746,7 @@ def _load_journal(paths: RunnerPaths) -> dict[str, Any]:
         final_kind="file",
         require_final=True,
     )
-    try:
-        content = journal_path.read_bytes()
-    except OSError as error:
-        raise RunnerError("unable to read publication journal") from error
-    if len(content) > 16_384:
-        raise RunnerError("publication journal is too large")
-    try:
-        value = json.loads(content.decode("utf-8"))
-    except (UnicodeError, json.JSONDecodeError) as error:
-        raise RunnerError("invalid publication journal") from error
+    value = _load_json_object(journal_path, "publication journal")
     expected = {
         "schema_version",
         "transaction_id",
@@ -1125,12 +1774,16 @@ def _load_journal(paths: RunnerPaths) -> dict[str, Any]:
 
 
 def _receipt_from_transaction(transaction: Mapping[str, Any]) -> dict[str, Any]:
+    previous = transaction["previous_pair"]
     return {
         "schema_version": RECEIPT_SCHEMA_VERSION,
         "transaction_id": transaction["transaction_id"],
         "configuration_sha256": transaction["configuration_sha256"],
         "result_sha256": transaction["candidate_pair"]["result_sha256"],
         "report_sha256": transaction["candidate_pair"]["report_sha256"],
+        "previous_pair_present": previous["present"],
+        "previous_result_sha256": previous["result_sha256"],
+        "previous_report_sha256": previous["report_sha256"],
     }
 
 
@@ -1149,6 +1802,9 @@ def _load_receipt(paths: RunnerPaths, receipt_path: Path) -> dict[str, Any]:
         "configuration_sha256",
         "result_sha256",
         "report_sha256",
+        "previous_pair_present",
+        "previous_result_sha256",
+        "previous_report_sha256",
     }:
         raise RunnerError("invalid publication receipt fields")
     if (
@@ -1159,6 +1815,16 @@ def _load_receipt(paths: RunnerPaths, receipt_path: Path) -> dict[str, Any]:
     _validate_transaction_id(value["transaction_id"])
     for field in ("configuration_sha256", "result_sha256", "report_sha256"):
         _validate_digest(value[field], f"receipt {field}")
+    if type(value["previous_pair_present"]) is not bool:
+        raise RunnerError("invalid receipt previous-pair presence")
+    if value["previous_pair_present"]:
+        _validate_digest(value["previous_result_sha256"], "receipt previous result")
+        _validate_digest(value["previous_report_sha256"], "receipt previous report")
+    elif (
+        value["previous_result_sha256"] is not None
+        or value["previous_report_sha256"] is not None
+    ):
+        raise RunnerError("absent receipt previous pair cannot record hashes")
     return value
 
 
@@ -1168,6 +1834,90 @@ def _validate_receipt_matches(
 ) -> None:
     if dict(receipt) != _receipt_from_transaction(transaction):
         raise RunnerError("publication receipt does not match journal")
+
+
+def _transaction_from_receipt(
+    receipt_path: Path,
+    receipt: Mapping[str, Any],
+) -> dict[str, Any]:
+    return {
+        "schema_version": TRANSACTION_SCHEMA_VERSION,
+        "transaction_id": receipt["transaction_id"],
+        "status": "awaiting_acceptance",
+        "receipt_name": receipt_path.name,
+        "configuration_sha256": receipt["configuration_sha256"],
+        "previous_pair": {
+            "present": receipt["previous_pair_present"],
+            "result_sha256": receipt["previous_result_sha256"],
+            "report_sha256": receipt["previous_report_sha256"],
+        },
+        "candidate_pair": {
+            "result_sha256": receipt["result_sha256"],
+            "report_sha256": receipt["report_sha256"],
+        },
+    }
+
+
+def _reconstruct_rollback_transaction(
+    paths: RunnerPaths,
+    receipt_path: Path,
+) -> dict[str, Any]:
+    state = load_state(paths)
+    if state["phase"] != "awaiting_acceptance":
+        raise RunnerError("receipt rollback reconstruction requires awaiting state")
+    receipt = _load_receipt(paths, receipt_path)
+    transaction = _transaction_from_receipt(receipt_path, receipt)
+    if (
+        transaction["transaction_id"] != state["candidate_transaction_id"]
+        or transaction["configuration_sha256"]
+        != state["configuration_sha256"]
+    ):
+        raise RunnerError("receipt/state identity conflict; evidence retained")
+    transaction_paths = _transaction_paths(paths, transaction["transaction_id"])
+    allowed = {
+        LOCK_NAME,
+        receipt_path.name,
+    }
+    if os.path.lexists(paths.journal_path):
+        allowed.add(JOURNAL_NAME)
+    previous = transaction["previous_pair"]
+    if previous["present"]:
+        allowed.update(
+            {
+                transaction_paths["previous_result"].name,
+                transaction_paths["previous_report"].name,
+            }
+        )
+        for path, digest in (
+            (transaction_paths["previous_result"], previous["result_sha256"]),
+            (transaction_paths["previous_report"], previous["report_sha256"]),
+        ):
+            if not os.path.lexists(path) or _sha256_file(path) != digest:
+                raise RunnerError(
+                    "receipt rollback backup identity mismatch; evidence retained"
+                )
+    try:
+        actual = {entry.name for entry in paths.recovery_root.iterdir()}
+    except OSError as error:
+        raise RunnerError("unable to inspect rollback recovery artifacts") from error
+    if actual != allowed:
+        raise RunnerError("rollback recovery artifacts conflict; evidence retained")
+    return transaction
+
+
+def _find_recovery_receipt(paths: RunnerPaths) -> Path:
+    try:
+        candidates = [
+            entry
+            for entry in paths.recovery_root.iterdir()
+            if entry.name not in {JOURNAL_NAME, LOCK_NAME}
+            and _RECEIPT_NAME_PATTERN.fullmatch(entry.name) is not None
+        ]
+    except OSError as error:
+        raise RunnerError("unable to inspect recovery receipts") from error
+    if len(candidates) != 1:
+        raise RunnerError("rollback recovery requires exactly one receipt")
+    return candidates[0]
 
 
 def _persist_journal(paths: RunnerPaths, transaction: Mapping[str, Any]) -> None:
@@ -1181,9 +1931,9 @@ def _persist_journal(paths: RunnerPaths, transaction: Mapping[str, Any]) -> None
 def _replace_journal(paths: RunnerPaths, transaction: Mapping[str, Any]) -> None:
     transaction_paths = _transaction_paths(paths, transaction["transaction_id"])
     update = transaction_paths["journal_update"]
-    update.unlink(missing_ok=True)
+    _durable_unlink(update)
     _write_new_fsynced(update, canonical_json_bytes(dict(transaction)))
-    os.replace(update, paths.journal_path)
+    _replace_entry_durably(update, paths.journal_path)
     if _load_journal(paths) != dict(transaction):
         raise RunnerError("publication journal update mismatch")
 
@@ -1194,15 +1944,15 @@ def _cleanup_transaction(
 ) -> None:
     transaction_paths = _transaction_paths(paths, transaction["transaction_id"])
     for path in transaction_paths.values():
-        path.unlink(missing_ok=True)
-    paths.receipt_path(transaction["receipt_name"]).unlink(missing_ok=True)
-    paths.journal_path.unlink(missing_ok=True)
+        _durable_unlink(path)
+    _durable_unlink(paths.receipt_path(transaction["receipt_name"]))
+    _durable_unlink(paths.journal_path)
 
 
 def _discard_unjournaled(paths: RunnerPaths, transaction_id: str) -> None:
     for path in _transaction_paths(paths, transaction_id).values():
         try:
-            path.unlink(missing_ok=True)
+            _durable_unlink(path)
         except OSError:
             pass
 
@@ -1213,8 +1963,8 @@ def _validate_candidate_pair(
 ) -> dict[str, Any]:
     _validate_canonical_pair_metadata(paths, require_entries=True)
     try:
-        result_bytes = paths.result_path.read_bytes()
-        report_bytes = paths.report_path.read_bytes()
+        result_bytes = _read_file_nofollow(paths.result_path)
+        report_bytes = _read_file_nofollow(paths.report_path)
     except OSError as error:
         raise RunnerError("unable to read candidate canonical pair") from error
     candidate = transaction["candidate_pair"]
@@ -1268,6 +2018,19 @@ def _restore_transaction(
     *,
     update_state: bool,
 ) -> str:
+    state = load_state(paths)
+    if update_state:
+        if (
+            state["phase"] not in {"awaiting_acceptance", "rejected"}
+            or state["candidate_transaction_id"] != transaction["transaction_id"]
+        ):
+            raise RunnerError(
+                "rollback identity does not match runner state; evidence retained"
+            )
+    elif state["phase"] != "lockbox_complete":
+        raise RunnerError(
+            "pre-awaiting rollback requires lockbox-complete state; evidence retained"
+        )
     transaction_paths = _transaction_paths(paths, transaction["transaction_id"])
     previous = transaction["previous_pair"]
     candidate = transaction["candidate_pair"]
@@ -1283,8 +2046,12 @@ def _restore_transaction(
             report_sha256=previous["report_sha256"],
         ):
             try:
-                previous_result = transaction_paths["previous_result"].read_bytes()
-                previous_report = transaction_paths["previous_report"].read_bytes()
+                previous_result = _read_file_nofollow(
+                    transaction_paths["previous_result"]
+                )
+                previous_report = _read_file_nofollow(
+                    transaction_paths["previous_report"]
+                )
             except OSError as error:
                 raise RunnerError("required previous-pair backup is missing") from error
             if _sha256_bytes(previous_result) != previous["result_sha256"]:
@@ -1292,7 +2059,7 @@ def _restore_transaction(
             if _sha256_bytes(previous_report) != previous["report_sha256"]:
                 raise RunnerError("previous report backup digest mismatch")
             for key in ("restore_result", "restore_report"):
-                transaction_paths[key].unlink(missing_ok=True)
+                _durable_unlink(transaction_paths[key])
             _write_new_fsynced(
                 transaction_paths["restore_result"],
                 previous_result,
@@ -1306,14 +2073,20 @@ def _restore_transaction(
                 require_entries=False,
                 allow_partial=True,
             )
-            Path(paths.canonical_root).mkdir(parents=True, exist_ok=True)
+            _ensure_directory_durable(Path(paths.canonical_root))
             _validate_canonical_pair_metadata(
                 paths,
                 require_entries=False,
                 allow_partial=True,
             )
-            os.replace(transaction_paths["restore_result"], paths.result_path)
-            os.replace(transaction_paths["restore_report"], paths.report_path)
+            _replace_entry_durably(
+                transaction_paths["restore_result"],
+                paths.result_path,
+            )
+            _replace_entry_durably(
+                transaction_paths["restore_report"],
+                paths.report_path,
+            )
             if not _canonical_pair_matches(
                 paths,
                 result_sha256=previous["result_sha256"],
@@ -1329,10 +2102,9 @@ def _restore_transaction(
                 raise RunnerError(
                     f"cannot restore absent previous pair over unexpected {label}"
                 )
-        paths.result_path.unlink(missing_ok=True)
-        paths.report_path.unlink(missing_ok=True)
+        _durable_unlink(paths.result_path)
+        _durable_unlink(paths.report_path)
     if update_state:
-        state = load_state(paths)
         if state["phase"] == "awaiting_acceptance":
             _transition(paths, state, "rejected")
         elif state["phase"] != "rejected":
@@ -1343,8 +2115,42 @@ def _restore_transaction(
 
 def _recover_locked(paths: RunnerPaths) -> str:
     if not os.path.lexists(paths.journal_path):
-        return "none"
-    transaction = _load_journal(paths)
+        state = load_state(paths)
+        if state["phase"] == "lockbox_complete":
+            try:
+                debris = [
+                    entry
+                    for entry in paths.recovery_root.iterdir()
+                    if entry.name != LOCK_NAME
+                ]
+            except OSError as error:
+                raise RunnerError("unable to inspect unjournaled recovery state") from error
+            if not debris:
+                return "none"
+            if any(
+                _UNJOURNALED_NAME_PATTERN.fullmatch(entry.name) is None
+                for entry in debris
+            ):
+                raise RunnerError(
+                    "unidentified unjournaled recovery evidence is retained"
+                )
+            for entry in debris:
+                _durable_unlink(entry)
+            return "discarded_unjournaled"
+        if state["phase"] != "awaiting_acceptance":
+            return "none"
+        receipt_path = _find_recovery_receipt(paths)
+        transaction = _reconstruct_rollback_transaction(paths, receipt_path)
+        return _restore_transaction(paths, transaction, update_state=True)
+    try:
+        transaction = _load_journal(paths)
+    except RunnerError:
+        state = load_state(paths)
+        if state["phase"] != "awaiting_acceptance":
+            raise
+        receipt_path = _find_recovery_receipt(paths)
+        transaction = _reconstruct_rollback_transaction(paths, receipt_path)
+        return _restore_transaction(paths, transaction, update_state=True)
     state = load_state(paths)
     if (
         state["phase"] in {"awaiting_acceptance", "accepted", "rejected"}
@@ -1385,7 +2191,7 @@ def stage_candidate(
         if recovery == "restored" and state["phase"] == "rejected":
             raise RunnerError("awaiting candidate was recovered as rejected")
         _require_phase(state, "lockbox_complete")
-        _assert_anchor_digests(paths, state)
+        _revalidate_bound_preflight(paths, state)
         _validate_canonical_pair_metadata(paths, require_entries=False)
         receipt_path = paths.receipt_path(receipt_name)
         _safe_path(
@@ -1408,8 +2214,9 @@ def stage_candidate(
             _write_new_fsynced(transaction_paths["new_result"], result_bytes)
             _write_new_fsynced(transaction_paths["new_report"], report_bytes)
             if (
-                transaction_paths["new_result"].read_bytes() != result_bytes
-                or transaction_paths["new_report"].read_bytes() != report_bytes
+                _read_file_nofollow(transaction_paths["new_result"]) != result_bytes
+                or _read_file_nofollow(transaction_paths["new_report"])
+                != report_bytes
             ):
                 raise RunnerError("staged candidate readback mismatch")
             result_exists = os.path.lexists(paths.result_path)
@@ -1419,8 +2226,8 @@ def stage_candidate(
             previous_result_sha256: str | None = None
             previous_report_sha256: str | None = None
             if result_exists:
-                previous_result = paths.result_path.read_bytes()
-                previous_report = paths.report_path.read_bytes()
+                previous_result = _read_file_nofollow(paths.result_path)
+                previous_report = _read_file_nofollow(paths.report_path)
                 previous_result_sha256 = _sha256_bytes(previous_result)
                 previous_report_sha256 = _sha256_bytes(previous_report)
                 _write_new_fsynced(
@@ -1450,15 +2257,28 @@ def stage_candidate(
             _persist_journal(paths, transaction)
             journal_durable = True
             _validate_canonical_pair_metadata(paths, require_entries=False)
-            Path(paths.canonical_root).mkdir(parents=True, exist_ok=True)
+            _ensure_directory_durable(Path(paths.canonical_root))
             _validate_canonical_pair_metadata(paths, require_entries=False)
-            os.replace(transaction_paths["new_result"], paths.result_path)
-            os.replace(transaction_paths["new_report"], paths.report_path)
+            _replace_entry_durably(
+                transaction_paths["new_result"],
+                paths.result_path,
+            )
+            _replace_entry_durably(
+                transaction_paths["new_report"],
+                paths.report_path,
+            )
             _validate_candidate_pair(paths, transaction)
             receipt = _receipt_from_transaction(transaction)
             _write_new_fsynced(receipt_path, canonical_json_bytes(receipt))
             if _load_receipt(paths, receipt_path) != receipt:
                 raise RunnerError("publication receipt readback mismatch")
+            _revalidate_bound_preflight(paths, state)
+            _validated_packet(paths, state, require_bound=True)
+            if _sha256_file(paths.lockbox_result_path) != state[
+                "lockbox_result_sha256"
+            ]:
+                raise RunnerError("lockbox result changed before awaiting transition")
+            _validate_candidate_pair(paths, transaction)
             _transition(
                 paths,
                 state,
@@ -1469,7 +2289,24 @@ def stage_candidate(
         except Exception as error:
             if journal_durable:
                 try:
-                    _restore_transaction(paths, transaction, update_state=False)
+                    current_state = load_state(paths)
+                    if (
+                        current_state["phase"] == "awaiting_acceptance"
+                        and current_state["candidate_transaction_id"]
+                        == transaction_id
+                    ):
+                        update_state = True
+                    elif current_state["phase"] == "lockbox_complete":
+                        update_state = False
+                    else:
+                        raise RunnerError(
+                            "staging failure state identity conflicts; evidence retained"
+                        )
+                    _restore_transaction(
+                        paths,
+                        transaction,
+                        update_state=update_state,
+                    )
                 except Exception as restore_error:
                     raise RunnerError(
                         "candidate staging failed and previous-pair restoration failed"
@@ -1511,6 +2348,7 @@ def accept_receipt(paths: RunnerPaths, receipt_path: Path) -> None:
         state = load_state(paths)
         _require_phase(state, "awaiting_acceptance")
         transaction: dict[str, Any] | None = None
+        identity_validated = False
         try:
             transaction = _load_journal(paths)
             transaction, _receipt = _load_matching_transaction_and_receipt(
@@ -1522,19 +2360,20 @@ def accept_receipt(paths: RunnerPaths, receipt_path: Path) -> None:
                 raise RunnerError("publication transaction is not awaiting acceptance")
             if transaction["transaction_id"] != state["candidate_transaction_id"]:
                 raise RunnerError("journal identity does not match runner state")
-            _config, _split, _ledger, digests = _validate_preflight_inputs(paths)
-            for field, digest in digests.items():
-                if state[field] != digest:
-                    label = field.removesuffix("_sha256").replace("_", " ")
-                    raise RunnerError(f"{label} changed after preflight")
             if (
                 transaction["configuration_sha256"]
                 != state["configuration_sha256"]
             ):
                 raise RunnerError("journal configuration does not match runner state")
+            identity_validated = True
+            _config, _split, _ledger, digests = _validate_preflight_inputs(paths)
+            for field, digest in digests.items():
+                if state[field] != digest:
+                    label = field.removesuffix("_sha256").replace("_", " ")
+                    raise RunnerError(f"{label} changed after preflight")
             _validate_candidate_pair(paths, transaction)
         except RunnerError as error:
-            if transaction is not None:
+            if transaction is not None and identity_validated:
                 try:
                     _restore_transaction(paths, transaction, update_state=True)
                 except Exception as restore_error:
@@ -1552,21 +2391,20 @@ def reject_receipt(paths: RunnerPaths, receipt_path: Path) -> None:
     with publication_lock(paths):
         state = load_state(paths)
         _require_phase(state, "awaiting_acceptance")
-        transaction = _load_journal(paths)
         try:
-            transaction, _receipt = _load_matching_transaction_and_receipt(
+            transaction = _load_journal(paths)
+        except RunnerError:
+            transaction = _reconstruct_rollback_transaction(
                 paths,
                 Path(receipt_path),
-                transaction=transaction,
             )
-        except RunnerError:
-            try:
-                _restore_transaction(paths, transaction, update_state=True)
-            except Exception as restore_error:
-                raise RunnerError(
-                    "rejection receipt failed and previous-pair restoration failed"
-                ) from restore_error
-            raise
+            _restore_transaction(paths, transaction, update_state=True)
+            return
+        transaction, _receipt = _load_matching_transaction_and_receipt(
+            paths,
+            Path(receipt_path),
+            transaction=transaction,
+        )
         if transaction["status"] != "awaiting_acceptance":
             raise RunnerError("accepted publication cannot be rejected")
         if transaction["transaction_id"] != state["candidate_transaction_id"]:
@@ -1589,17 +2427,6 @@ def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
             "reject-receipt",
         ),
     )
-    parser.add_argument("--project-root", default=str(ROOT))
-    parser.add_argument("--input-root")
-    parser.add_argument("--state-root")
-    parser.add_argument("--canonical-root")
-    parser.add_argument("--config")
-    parser.add_argument("--environment-lock")
-    parser.add_argument("--feature-schema")
-    parser.add_argument("--split-manifest")
-    parser.add_argument("--input-ledger")
-    parser.add_argument("--non-lockbox-packet")
-    parser.add_argument("--lockbox-result")
     parser.add_argument("--receipt")
     parsed = parser.parse_args(argv)
     needs_receipt = parsed.phase in {
@@ -1613,27 +2440,8 @@ def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
 
 
 def _paths_from_args(arguments: argparse.Namespace) -> RunnerPaths:
-    defaults = RunnerPaths.from_project_root(Path(arguments.project_root))
-    updates = {
-        "input_root": arguments.input_root,
-        "state_root": arguments.state_root,
-        "canonical_root": arguments.canonical_root,
-        "config_path": arguments.config,
-        "environment_lock_path": arguments.environment_lock,
-        "feature_schema_path": arguments.feature_schema,
-        "split_manifest_path": arguments.split_manifest,
-        "input_ledger_path": arguments.input_ledger,
-        "non_lockbox_packet_path": arguments.non_lockbox_packet,
-        "lockbox_result_path": arguments.lockbox_result,
-    }
-    return replace(
-        defaults,
-        **{
-            field: Path(value)
-            for field, value in updates.items()
-            if value is not None
-        },
-    )
+    del arguments
+    return RunnerPaths.production()
 
 
 def main(argv: Sequence[str] | None = None) -> int:

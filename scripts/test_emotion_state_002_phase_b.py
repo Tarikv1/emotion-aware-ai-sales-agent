@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import hashlib
+import inspect
 import json
 import math
 import os
@@ -5252,8 +5253,80 @@ class EvaluationTests(unittest.TestCase):
 class RunnerStateTests(unittest.TestCase):
     DIGESTS = tuple(character * 64 for character in "ABCDEF0123456789")
 
+    @classmethod
+    def setUpClass(cls) -> None:
+        from scripts.emotion_state_phase_b_ami_mechanics import (
+            MeetingMechanics,
+            contribution_limited_aggregates,
+        )
+
+        EvaluationTests.setUpClass()
+        evaluation_case = EvaluationTests(
+            "test_rereview_decision_flags_cannot_be_caller_asserted"
+        )
+        cls.DECISION_EVIDENCE = deepcopy(
+            evaluation_case._semantic_artifacts()["decision"].to_payload()
+        )
+        cls.SPLIT_MANIFEST = deepcopy(
+            EvaluationTests.SPLIT_ASSIGNMENT.to_payload()
+        )
+        meetings = tuple(
+            MeetingMechanics(
+                meeting_id=f"M{index}",
+                participants=(f"P{index * 2:02d}", f"P{index * 2 + 1:02d}"),
+                values=(
+                    ("turn_duration_ms_median", float(index)),
+                    ("turn_duration_ms_p90", float(index + 1)),
+                    ("inter_turn_gap_ms_median", float(index + 2)),
+                    ("inter_turn_gap_ms_p90", float(index + 3)),
+                    ("overlap_ratio", 0.1),
+                    ("floor_changes_per_minute", float(index + 4)),
+                    ("speaker_balance_normalized_entropy", 0.5),
+                    ("backchannels_per_100_turns", 25.0),
+                ),
+                dialogue_act_distribution=(
+                    ("backchannel", 0.25),
+                    ("inform", 0.5),
+                    ("question", 0.25),
+                ),
+            )
+            for index in range(5)
+        )
+        official_order = tuple(meeting.meeting_id for meeting in meetings)
+        membership = {
+            partition: official_order
+            for partition in ("scenario_only", "full_corpus", "full_only")
+        }
+        cls.AMI_AGGREGATE = contribution_limited_aggregates(
+            meetings,
+            membership,
+            official_order,
+        )
+        cls.AMI_AUTHORITY = {
+            "meetings": [
+                {
+                    "meeting_id": meeting.meeting_id,
+                    "participants": list(meeting.participants),
+                    "values": dict(meeting.values),
+                    "dialogue_act_distribution": dict(
+                        meeting.dialogue_act_distribution
+                    ),
+                }
+                for meeting in meetings
+            ],
+            "partition_membership": {
+                key: list(value) for key, value in membership.items()
+            },
+            "official_order": list(official_order),
+        }
+
     def setUp(self) -> None:
         from scripts import run_emotion_state_002_phase_b as runner
+        from scripts.validate_emotion_state_002_phase_b import (
+            _canonical_digest,
+            expected_non_lockbox_packet,
+            expected_phase_b_input_ledger,
+        )
 
         self.runner = runner
         self.temporary_directory = tempfile.TemporaryDirectory()
@@ -5272,6 +5345,7 @@ class RunnerStateTests(unittest.TestCase):
         self.config_path = self.input_root / "config.json"
         self.environment_lock_path = self.input_root / "requirements.lock"
         self.feature_schema_path = self.input_root / "feature.schema.json"
+        self.split_schema_path = self.input_root / "split.schema.json"
         self.split_manifest_path = self.input_root / "split-manifest.json"
         self.input_ledger_path = self.input_root / "input-ledger.json"
         self.non_lockbox_packet_path = (
@@ -5281,61 +5355,19 @@ class RunnerStateTests(unittest.TestCase):
         shutil.copy2(CONFIG, self.config_path)
         shutil.copy2(ENVIRONMENT_LOCK, self.environment_lock_path)
         shutil.copy2(FEATURE_SCHEMA, self.feature_schema_path)
-        shutil.copy2(SPLIT_SCHEMA, self.split_manifest_path)
+        shutil.copy2(SPLIT_SCHEMA, self.split_schema_path)
+        self._write_json(self.split_manifest_path, self.SPLIT_MANIFEST)
 
-        self.input_ledger = {
-            "schema_version": 1,
-            "phase_a": {
-                "commit": "a" * 40,
-                "result_sha256": self.DIGESTS[0],
-                "report_sha256": self.DIGESTS[1],
-            },
-            "dataset_evidence": {
-                "crema_d": {
-                    "manifest_sha256": self.DIGESTS[2],
-                    "evidence_sha256": self.DIGESTS[3],
-                },
-                "ami": {
-                    "manifest_sha256": self.DIGESTS[4],
-                    "evidence_sha256": self.DIGESTS[5],
-                },
-            },
-            "raw_csv_sha256": {
-                "finishedResponses.csv": self.DIGESTS[6],
-                "summaryTable.csv": self.DIGESTS[7],
-            },
-            "label_aggregates": {
-                "eligible_count": 12,
-                "abstention_count": 3,
-                "status_counts": {"eligible": 12, "abstained": 3},
-            },
-        }
-        self.non_lockbox_packet = {
-            "schema_version": 1,
-            "review_sha256": self.DIGESTS[8],
-            "model_settings": json.loads(
-                self.config_path.read_text(encoding="utf-8")
-            )["model"],
-            "metric_definitions": {
-                "macro_f1": "unweighted mean of per-class F1",
-                "multiclass_brier": "sum of squared probability errors",
-            },
-        }
+        self.input_ledger = expected_phase_b_input_ledger()
+        self.non_lockbox_packet = expected_non_lockbox_packet(self.DIGESTS[8])
         self.lockbox_result = {
             "schema_version": 1,
-            "crema": {
-                "metrics": {"macro_f1": 0.75, "multiclass_brier": 0.42},
-                "intervals": {"macro_f1": [0.70, 0.80]},
-                "suppression_counts": {"per_class_cells": 0},
-            },
+            "decision_evidence": deepcopy(self.DECISION_EVIDENCE),
             "ami": {
-                "mechanics": {
-                    "overlap_ratio": 0.2,
-                    "turn_taking_entropy": 0.8,
-                },
-                "suppression_counts": {"meeting_cells": 1},
+                "aggregate": deepcopy(self.AMI_AGGREGATE),
+                "authority": deepcopy(self.AMI_AUTHORITY),
+                "authority_sha256": _canonical_digest(self.AMI_AUTHORITY),
             },
-            "decision": "revise",
         }
         self._write_json(self.input_ledger_path, self.input_ledger)
         self._write_json(self.non_lockbox_packet_path, self.non_lockbox_packet)
@@ -5363,13 +5395,14 @@ class RunnerStateTests(unittest.TestCase):
             "config_path": self.config_path,
             "environment_lock_path": self.environment_lock_path,
             "feature_schema_path": self.feature_schema_path,
+            "split_schema_path": self.split_schema_path,
             "split_manifest_path": self.split_manifest_path,
             "input_ledger_path": self.input_ledger_path,
             "non_lockbox_packet_path": self.non_lockbox_packet_path,
             "lockbox_result_path": self.lockbox_result_path,
         }
         values.update(changes)
-        return self.runner.RunnerPaths(**values)
+        return self.runner.RunnerPaths.for_testing(**values)
 
     @staticmethod
     def _write_json(path: Path, payload: dict[str, Any]) -> None:
@@ -5396,6 +5429,305 @@ class RunnerStateTests(unittest.TestCase):
         return tuple(
             path.read_bytes() if path.exists() else None
             for path in (self.paths.result_path, self.paths.report_path)
+        )
+
+    def _lockbox_subprocess(
+        self,
+        mode: str,
+        marker: Path,
+    ) -> subprocess.Popen[str]:
+        path_fields = (
+            "project_root",
+            "input_root",
+            "state_root",
+            "canonical_root",
+            "config_path",
+            "environment_lock_path",
+            "feature_schema_path",
+            "split_schema_path",
+            "split_manifest_path",
+            "input_ledger_path",
+            "non_lockbox_packet_path",
+            "lockbox_result_path",
+        )
+        payload = {
+            field: str(getattr(self.paths, field)) for field in path_fields
+        }
+        code = f"""
+import os
+from pathlib import Path
+from scripts import run_emotion_state_002_phase_b as runner
+from scripts import validate_emotion_state_002_phase_b as validator
+
+values = {payload!r}
+paths = runner.RunnerPaths.for_testing(
+    **{{key: Path(value) for key, value in values.items()}}
+)
+mode = {mode!r}
+marker = Path({str(marker)!r})
+
+if mode == "crash_before_reservation":
+    original_replace = runner._replace_bytes_durably
+    def crash_before(path, content):
+        if Path(path) == paths.lockbox_reservation_path:
+            os._exit(72)
+        return original_replace(path, content)
+    runner._replace_bytes_durably = crash_before
+elif mode == "crash_after_reservation":
+    original_load = runner._load_json_object
+    def crash_after(path, label):
+        if Path(path) == paths.lockbox_result_path:
+            with marker.open("ab", buffering=0) as handle:
+                handle.write(b"entered\\n")
+            os._exit(73)
+        return original_load(path, label)
+    runner._load_json_object = crash_after
+else:
+    original_validate = validator.validate_lockbox_result
+    marked = False
+    def observed_validate(payload):
+        global marked
+        if not marked:
+            with marker.open("ab", buffering=0) as handle:
+                handle.write(b"entered\\n")
+            marked = True
+        return original_validate(payload)
+    validator.validate_lockbox_result = observed_validate
+
+try:
+    runner.run_lockbox(paths)
+except runner.RunnerError:
+    raise SystemExit(2)
+"""
+        clean_environment = {
+            "PATH": os.environ.get("PATH", ""),
+            "SYSTEMROOT": os.environ.get("SYSTEMROOT", ""),
+            "PYTHONPATH": str(ROOT),
+        }
+        return subprocess.Popen(
+            [str(EVALUATION_PYTHON), "-c", code],
+            cwd=ROOT,
+            env=clean_environment,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True,
+        )
+
+    def _clone_paths(self, clone_root: Path) -> Any:
+        shutil.copytree(self.root, clone_root, dirs_exist_ok=True)
+        values = {}
+        for field in (
+            "project_root",
+            "input_root",
+            "state_root",
+            "canonical_root",
+            "config_path",
+            "environment_lock_path",
+            "feature_schema_path",
+            "split_schema_path",
+            "split_manifest_path",
+            "input_ledger_path",
+            "non_lockbox_packet_path",
+            "lockbox_result_path",
+        ):
+            original = Path(getattr(self.paths, field))
+            values[field] = (
+                clone_root
+                if field == "project_root"
+                else clone_root / original.relative_to(self.root)
+            )
+        return self.runner.RunnerPaths.for_testing(**values)
+
+    def _stage_crash_subprocess(
+        self,
+        paths: Any,
+        target: str,
+        timing: str,
+    ) -> subprocess.CompletedProcess[str]:
+        values = {
+            field: str(getattr(paths, field))
+            for field in (
+                "project_root",
+                "input_root",
+                "state_root",
+                "canonical_root",
+                "config_path",
+                "environment_lock_path",
+                "feature_schema_path",
+                "split_schema_path",
+                "split_manifest_path",
+                "input_ledger_path",
+                "non_lockbox_packet_path",
+                "lockbox_result_path",
+            )
+        }
+        code = f"""
+import os
+from pathlib import Path
+from scripts import run_emotion_state_002_phase_b as runner
+
+values = {values!r}
+paths = runner.RunnerPaths.for_testing(
+    **{{key: Path(value) for key, value in values.items()}}
+)
+target = {target!r}
+timing = {timing!r}
+original_write = runner._write_new_fsynced
+original_replace = runner._replace_entry_durably
+
+def classify_write(path):
+    name = Path(path).name
+    if name.endswith(".result.stage"):
+        return "candidate_result"
+    if name.endswith(".report.stage"):
+        return "candidate_report"
+    if name.endswith(".result.backup"):
+        return "backup_result"
+    if name.endswith(".report.backup"):
+        return "backup_report"
+    if name == runner.JOURNAL_NAME:
+        return "journal"
+    if name == "crash.json":
+        return "receipt"
+    return ""
+
+def observed_write(path, content):
+    label = classify_write(path)
+    if label == target and timing == "before":
+        os._exit(86)
+    result = original_write(path, content)
+    if label == target and timing == "after":
+        os._exit(86)
+    return result
+
+def classify_replace(destination):
+    path = Path(destination)
+    if path == paths.result_path:
+        return "canonical_result"
+    if path == paths.report_path:
+        return "canonical_report"
+    if path == paths.state_path:
+        return "awaiting_state"
+    return ""
+
+def observed_replace(source, destination):
+    label = classify_replace(destination)
+    if label == target and timing == "before":
+        os._exit(86)
+    result = original_replace(source, destination)
+    if label == target and timing == "after":
+        os._exit(86)
+    return result
+
+runner._write_new_fsynced = observed_write
+runner._replace_entry_durably = observed_replace
+runner.stage_candidate(paths, "crash.json")
+"""
+        return subprocess.run(
+            [str(EVALUATION_PYTHON), "-c", code],
+            cwd=ROOT,
+            env={
+                "PATH": os.environ.get("PATH", ""),
+                "SYSTEMROOT": os.environ.get("SYSTEMROOT", ""),
+                "PYTHONPATH": str(ROOT),
+            },
+            capture_output=True,
+            text=True,
+            timeout=60,
+            check=False,
+        )
+
+    def _accept_crash_subprocess(
+        self,
+        paths: Any,
+        target: str,
+        timing: str,
+    ) -> subprocess.CompletedProcess[str]:
+        values = {
+            field: str(getattr(paths, field))
+            for field in (
+                "project_root",
+                "input_root",
+                "state_root",
+                "canonical_root",
+                "config_path",
+                "environment_lock_path",
+                "feature_schema_path",
+                "split_schema_path",
+                "split_manifest_path",
+                "input_ledger_path",
+                "non_lockbox_packet_path",
+                "lockbox_result_path",
+            )
+        }
+        code = f"""
+import os
+from pathlib import Path
+from scripts import run_emotion_state_002_phase_b as runner
+
+values = {values!r}
+paths = runner.RunnerPaths.for_testing(
+    **{{key: Path(value) for key, value in values.items()}}
+)
+target = {target!r}
+timing = {timing!r}
+original_replace = runner._replace_entry_durably
+original_unlink = runner._durable_unlink
+
+def classify_replace(destination):
+    path = Path(destination)
+    if path == paths.journal_path:
+        return "accepted_journal"
+    if path == paths.state_path:
+        return "accepted_state"
+    return ""
+
+def observed_replace(source, destination):
+    label = classify_replace(destination)
+    if label == target and timing == "before":
+        os._exit(87)
+    result = original_replace(source, destination)
+    if label == target and timing == "after":
+        os._exit(87)
+    return result
+
+def classify_unlink(path):
+    name = Path(path).name
+    if name.endswith(".result.backup"):
+        return "cleanup_result_backup"
+    if name.endswith(".report.backup"):
+        return "cleanup_report_backup"
+    if name == "accept.json":
+        return "cleanup_receipt"
+    if name == runner.JOURNAL_NAME:
+        return "cleanup_journal"
+    return ""
+
+def observed_unlink(path, *args, **kwargs):
+    label = classify_unlink(path)
+    if label == target and timing == "before":
+        os._exit(87)
+    result = original_unlink(path, *args, **kwargs)
+    if label == target and timing == "after":
+        os._exit(87)
+    return result
+
+runner._replace_entry_durably = observed_replace
+runner._durable_unlink = observed_unlink
+runner.accept_receipt(paths, paths.receipt_path("accept.json"))
+"""
+        return subprocess.run(
+            [str(EVALUATION_PYTHON), "-c", code],
+            cwd=ROOT,
+            env={
+                "PATH": os.environ.get("PATH", ""),
+                "SYSTEMROOT": os.environ.get("SYSTEMROOT", ""),
+                "PYTHONPATH": str(ROOT),
+            },
+            capture_output=True,
+            text=True,
+            timeout=60,
+            check=False,
         )
 
     def _advance_to_lockbox(self) -> None:
@@ -5527,14 +5859,6 @@ class RunnerStateTests(unittest.TestCase):
                 self.runner.run_non_lockbox(self.paths)
         self.assertEqual(self._state_bytes(), before)
 
-        def network_attempt() -> None:
-            with socket.socket() as client:
-                client.connect(("127.0.0.1", 9))
-
-        with self.assertRaisesRegex(self.runner.RunnerError, "network"):
-            self.runner.run_non_lockbox(self.paths, operation=network_attempt)
-        self.assertEqual(self._state_bytes(), before)
-
         with patch.dict(os.environ, {"SYNTHETIC_PASSWORD": "credential"}):
             with self.assertRaisesRegex(self.runner.RunnerError, "credential"):
                 self.runner.run_non_lockbox(self.paths)
@@ -5552,35 +5876,15 @@ class RunnerStateTests(unittest.TestCase):
             self.runner.run_non_lockbox(self.paths)
         self.assertEqual(self._state_bytes(), before)
 
-    def test_operation_cannot_activate_runtime_or_credentials(self) -> None:
-        self.runner.run_preflight(self.paths)
-        before = self._state_bytes()
-
-        def activate_runtime() -> None:
-            sys.modules["runtime.synthetic_activation"] = object()
-
-        try:
-            with self.assertRaisesRegex(self.runner.RunnerError, "runtime"):
-                self.runner.run_non_lockbox(
-                    self.paths,
-                    operation=activate_runtime,
-                )
-        finally:
-            sys.modules.pop("runtime.synthetic_activation", None)
-        self.assertEqual(self._state_bytes(), before)
-
-        def inject_credential() -> None:
-            os.environ["OPENAI_API_KEY"] = "synthetic-secret"
-
-        try:
-            with self.assertRaisesRegex(self.runner.RunnerError, "credential"):
-                self.runner.run_non_lockbox(
-                    self.paths,
-                    operation=inject_credential,
-                )
-        finally:
-            os.environ.pop("OPENAI_API_KEY", None)
-        self.assertEqual(self._state_bytes(), before)
+    def test_no_production_operation_callback_can_activate_boundaries(self) -> None:
+        self.assertNotIn(
+            "operation",
+            inspect.signature(self.runner.run_non_lockbox).parameters,
+        )
+        self.assertNotIn(
+            "operation",
+            inspect.signature(self.runner.run_lockbox).parameters,
+        )
 
     def test_lockbox_is_one_use_and_exactly_bound(self) -> None:
         self._advance_to_lockbox()
@@ -5611,7 +5915,7 @@ class RunnerStateTests(unittest.TestCase):
             "environment_lock_sha256",
             "feature_schema_sha256",
             "split_manifest_sha256",
-            "label_aggregates",
+            "crema_label_ledger",
             "model_settings",
             "metric_definitions",
             "non_lockbox_review_sha256",
@@ -5676,18 +5980,25 @@ class RunnerStateTests(unittest.TestCase):
         self.assertEqual(self._canonical_bytes(), previous)
         self.assertFalse(self.paths.journal_path.exists())
 
-    def test_reject_receipt_tamper_still_restores_previous_pair(self) -> None:
+    def test_reject_receipt_identity_tamper_retains_all_evidence(self) -> None:
         previous = self._install_previous_pair()
         self._advance_to_lockbox()
         self.runner.stage_candidate(self.paths, "reject-tamper.json")
+        candidate = self._canonical_bytes()
         receipt_path = self.paths.receipt_path("reject-tamper.json")
         receipt = json.loads(receipt_path.read_text(encoding="utf-8"))
         receipt["report_sha256"] = self.DIGESTS[0]
         self._write_json(receipt_path, receipt)
         with self.assertRaisesRegex(self.runner.RunnerError, "receipt"):
             self.runner.reject_receipt(self.paths, receipt_path)
-        self.assertEqual(self._canonical_bytes(), previous)
-        self.assertEqual(self.runner.load_state(self.paths)["phase"], "rejected")
+        self.assertNotEqual(candidate, previous)
+        self.assertEqual(self._canonical_bytes(), candidate)
+        self.assertEqual(
+            self.runner.load_state(self.paths)["phase"],
+            "awaiting_acceptance",
+        )
+        self.assertTrue(self.paths.journal_path.exists())
+        self.assertTrue(receipt_path.exists())
 
     def test_recovery_finishes_interrupted_rejected_cleanup(self) -> None:
         previous = self._install_previous_pair()
@@ -5788,18 +6099,25 @@ class RunnerStateTests(unittest.TestCase):
         self.assertEqual(self._canonical_bytes(), previous)
         self.assertEqual(self.runner.load_state(self.paths)["phase"], "rejected")
 
-    def test_accept_receipt_tamper_restores_previous_pair(self) -> None:
+    def test_accept_receipt_identity_tamper_retains_all_evidence(self) -> None:
         previous = self._install_previous_pair()
         self._advance_to_lockbox()
         self.runner.stage_candidate(self.paths, "receipt-tamper.json")
+        candidate = self._canonical_bytes()
         receipt_path = self.paths.receipt_path("receipt-tamper.json")
         receipt = json.loads(receipt_path.read_text(encoding="utf-8"))
         receipt["result_sha256"] = self.DIGESTS[0]
         self._write_json(receipt_path, receipt)
         with self.assertRaisesRegex(self.runner.RunnerError, "receipt"):
             self.runner.accept_receipt(self.paths, receipt_path)
-        self.assertEqual(self._canonical_bytes(), previous)
-        self.assertEqual(self.runner.load_state(self.paths)["phase"], "rejected")
+        self.assertNotEqual(candidate, previous)
+        self.assertEqual(self._canonical_bytes(), candidate)
+        self.assertEqual(
+            self.runner.load_state(self.paths)["phase"],
+            "awaiting_acceptance",
+        )
+        self.assertTrue(self.paths.journal_path.exists())
+        self.assertTrue(receipt_path.exists())
 
     def test_accept_partial_candidate_restores_previous_pair(self) -> None:
         previous = self._install_previous_pair()
@@ -5852,18 +6170,55 @@ class RunnerStateTests(unittest.TestCase):
         self.assertEqual(self.runner.load_state(self.paths)["phase"], "rejected")
         self.assertFalse(self.paths.journal_path.exists())
 
-    def test_tampered_journal_fails_closed_with_evidence_retained(self) -> None:
-        self._install_previous_pair()
+    def test_malformed_journal_uses_receipt_for_rollback_only_recovery(self) -> None:
+        previous = self._install_previous_pair()
         self._advance_to_lockbox()
         self.runner.stage_candidate(self.paths, "journal.json")
-        candidate = self._canonical_bytes()
-        state_before = self._state_bytes()
         self.paths.journal_path.write_bytes(b'{"tampered":true}\n')
-        with self.assertRaisesRegex(self.runner.RunnerError, "journal"):
-            self.runner.recover_publication(self.paths)
+        self.assertEqual(self.runner.recover_publication(self.paths), "restored")
+        self.assertEqual(self._canonical_bytes(), previous)
+        self.assertEqual(self.runner.load_state(self.paths)["phase"], "rejected")
+        self.assertFalse(self.paths.journal_path.exists())
+
+    def test_missing_journal_reconstructs_rollback_for_recovery(self) -> None:
+        previous = self._install_previous_pair()
+        self._advance_to_lockbox()
+        self.runner.stage_candidate(self.paths, "missing.json")
+        self.paths.journal_path.unlink()
+        self.assertEqual(self.runner.recover_publication(self.paths), "restored")
+        self.assertEqual(self._canonical_bytes(), previous)
+        self.assertEqual(self.runner.load_state(self.paths)["phase"], "rejected")
+
+    def test_missing_journal_reconstructs_rollback_for_reject(self) -> None:
+        previous = self._install_previous_pair()
+        self._advance_to_lockbox()
+        self.runner.stage_candidate(self.paths, "missing.json")
+        self.paths.journal_path.unlink()
+        self.runner.reject_receipt(
+            self.paths,
+            self.paths.receipt_path("missing.json"),
+        )
+        self.assertEqual(self._canonical_bytes(), previous)
+        self.assertEqual(self.runner.load_state(self.paths)["phase"], "rejected")
+
+    def test_missing_journal_accept_and_identity_conflicts_retain_evidence(
+        self,
+    ) -> None:
+        previous = self._install_previous_pair()
+        self._advance_to_lockbox()
+        self.runner.stage_candidate(self.paths, "conflict.json")
+        candidate = self._canonical_bytes()
+        self.paths.journal_path.unlink()
+        state_before = self._state_bytes()
+        with self.assertRaises(self.runner.RunnerError):
+            self.runner.accept_receipt(
+                self.paths,
+                self.paths.receipt_path("conflict.json"),
+            )
+        self.assertNotEqual(candidate, previous)
         self.assertEqual(self._canonical_bytes(), candidate)
         self.assertEqual(self._state_bytes(), state_before)
-        self.assertTrue(self.paths.journal_path.exists())
+        self.assertTrue(self.paths.receipt_path("conflict.json").exists())
 
     def test_recovery_rejects_journal_state_identity_mismatch(self) -> None:
         self._install_previous_pair()
@@ -5924,6 +6279,589 @@ class RunnerStateTests(unittest.TestCase):
                 self.runner.stage_candidate(self.paths, "reparse-lock.json")
         self.assertEqual(self._state_bytes(), state_before)
         self.assertEqual(self._canonical_bytes(), (None, None))
+
+    def test_review_critical_callbacks_are_not_a_production_interface(self) -> None:
+        self.assertNotIn(
+            "operation",
+            inspect.signature(self.runner.run_non_lockbox).parameters,
+        )
+        self.assertNotIn(
+            "operation",
+            inspect.signature(self.runner.run_lockbox).parameters,
+        )
+
+    def test_review_critical_input_ledger_binds_exact_accepted_evidence(self) -> None:
+        from scripts.validate_emotion_state_002_phase_b import (
+            validate_phase_b_input_ledger,
+        )
+
+        mutated = deepcopy(self.input_ledger)
+        mutated["phase_a"]["commit"] = "b" * 40
+        with self.assertRaisesRegex(ValueError, "Phase A"):
+            validate_phase_b_input_ledger(mutated)
+
+    def test_review_critical_every_runner_contract_leaf_and_shape_is_bound(
+        self,
+    ) -> None:
+        from scripts.validate_emotion_state_002_phase_b import (
+            validate_lockbox_result,
+            validate_non_lockbox_packet,
+            validate_phase_b_input_ledger,
+        )
+
+        contracts = (
+            (self.input_ledger, validate_phase_b_input_ledger),
+            (self.non_lockbox_packet, validate_non_lockbox_packet),
+            (self.lockbox_result, validate_lockbox_result),
+        )
+        for payload, validator in contracts:
+            validator(deepcopy(payload))
+            for path in PhaseBContractTests._scalar_paths(payload):
+                mutated = deepcopy(payload)
+                current = PhaseBContractTests._value_at(mutated, path)
+                PhaseBContractTests._replace_at(
+                    mutated,
+                    path,
+                    PhaseBContractTests._different_value(current),
+                )
+                with self.subTest(validator=validator.__name__, leaf=path):
+                    with self.assertRaises((TypeError, ValueError)):
+                        validator(mutated)
+            for path in PhaseBContractTests._mapping_paths(payload):
+                mapping = PhaseBContractTests._value_at(payload, path)
+                mutated = deepcopy(payload)
+                PhaseBContractTests._value_at(mutated, path)[
+                    "unexpected_field"
+                ] = True
+                with self.subTest(validator=validator.__name__, unknown=path):
+                    with self.assertRaises((TypeError, ValueError)):
+                        validator(mutated)
+                for key in mapping:
+                    mutated = deepcopy(payload)
+                    del PhaseBContractTests._value_at(mutated, path)[key]
+                    with self.subTest(
+                        validator=validator.__name__,
+                        missing=path + (key,),
+                    ):
+                        with self.assertRaises((TypeError, ValueError)):
+                            validator(mutated)
+
+    def test_review_critical_canonical_mutations_and_free_decision_reject(
+        self,
+    ) -> None:
+        from scripts.validate_emotion_state_002_phase_b import (
+            validate_phase_b_result,
+        )
+
+        self._advance_to_lockbox()
+        result = self.runner.build_aggregate_result(self.paths)
+        validate_phase_b_result(deepcopy(result))
+        for path in PhaseBContractTests._scalar_paths(result):
+            mutated = deepcopy(result)
+            current = PhaseBContractTests._value_at(mutated, path)
+            PhaseBContractTests._replace_at(
+                mutated,
+                path,
+                PhaseBContractTests._different_value(current),
+            )
+            with self.subTest(leaf=path):
+                with self.assertRaises((TypeError, ValueError)):
+                    validate_phase_b_result(mutated)
+        for forbidden in (
+            "row_records",
+            "actor_id",
+            "participant_id",
+            "meeting_id",
+            "filename",
+            "local_path",
+            "transcript_text",
+            "probability_rows",
+            "fitted_model",
+        ):
+            mutated = deepcopy(result)
+            mutated["lockbox"][forbidden] = [{"value": "forbidden"}]
+            with self.subTest(forbidden=forbidden):
+                with self.assertRaises(ValueError):
+                    validate_phase_b_result(mutated)
+        mutated = deepcopy(result)
+        alternatives = {
+            "keep_for_research_only",
+            "revise",
+            "discard",
+        } - {result["decision"]}
+        mutated["decision"] = sorted(alternatives)[0]
+        with self.assertRaisesRegex(ValueError, "decision"):
+            validate_phase_b_result(mutated)
+
+    def test_review_critical_independent_process_lockbox_concurrency(self) -> None:
+        self.runner.run_preflight(self.paths)
+        self.runner.run_non_lockbox(self.paths)
+        marker = self.root / "lockbox-entries.txt"
+        processes = [
+            self._lockbox_subprocess("normal", marker),
+            self._lockbox_subprocess("normal", marker),
+        ]
+        results = [process.communicate(timeout=60) for process in processes]
+        return_codes = [process.returncode for process in processes]
+        self.assertEqual(sorted(return_codes), [0, 2], results)
+        self.assertEqual(marker.read_text(encoding="utf-8"), "entered\n")
+        self.assertEqual(
+            self.runner.load_state(self.paths)["lockbox_open_count"],
+            1,
+        )
+
+    def test_review_critical_lockbox_reentry_cannot_enter_twice(self) -> None:
+        from scripts import validate_emotion_state_002_phase_b as validator
+
+        self.runner.run_preflight(self.paths)
+        self.runner.run_non_lockbox(self.paths)
+        original = validator.validate_lockbox_result
+        attempted_reentry = False
+        logical_entries = 0
+
+        def attempt_reentry(payload: Any) -> Any:
+            nonlocal attempted_reentry, logical_entries
+            if not attempted_reentry:
+                attempted_reentry = True
+                logical_entries += 1
+                with self.assertRaisesRegex(self.runner.RunnerError, "lockbox"):
+                    self.runner.run_lockbox(self.paths)
+            return original(payload)
+
+        with patch.object(
+            validator,
+            "validate_lockbox_result",
+            side_effect=attempt_reentry,
+        ):
+            self.runner.run_lockbox(self.paths)
+        self.assertTrue(attempted_reentry)
+        self.assertEqual(logical_entries, 1)
+        self.assertEqual(
+            self.runner.load_state(self.paths)["lockbox_open_count"],
+            1,
+        )
+
+    def test_review_critical_crash_before_and_after_reservation_fail_closed(
+        self,
+    ) -> None:
+        self.runner.run_preflight(self.paths)
+        self.runner.run_non_lockbox(self.paths)
+        marker = self.root / "lockbox-crash-entries.txt"
+        before = self._lockbox_subprocess(
+            "crash_before_reservation",
+            marker,
+        )
+        before.communicate(timeout=60)
+        self.assertEqual(before.returncode, 72)
+        self.assertFalse(self.paths.lockbox_reservation_path.exists())
+
+        after = self._lockbox_subprocess("crash_after_reservation", marker)
+        after.communicate(timeout=60)
+        self.assertEqual(after.returncode, 73)
+        reservation = json.loads(
+            self.paths.lockbox_reservation_path.read_text(encoding="utf-8")
+        )
+        self.assertEqual(reservation["status"], "reserved")
+        self.assertEqual(marker.read_text(encoding="utf-8"), "entered\n")
+        refused = self._lockbox_subprocess("normal", marker)
+        refused.communicate(timeout=60)
+        self.assertEqual(refused.returncode, 2)
+        self.assertEqual(marker.read_text(encoding="utf-8"), "entered\n")
+        self.assertEqual(
+            self.runner.load_state(self.paths)["phase"],
+            "non_lockbox_complete",
+        )
+
+    def test_review_important_anchor_is_revalidated_before_transition(self) -> None:
+        self.runner.run_preflight(self.paths)
+        state_before = self._state_bytes()
+        original_validator = self.runner.validate_non_lockbox_packet
+
+        def mutate_anchor(payload: Any) -> Any:
+            validated = original_validator(payload)
+            self.config_path.write_bytes(self.config_path.read_bytes() + b" ")
+            return validated
+
+        with patch.object(
+            self.runner,
+            "validate_non_lockbox_packet",
+            side_effect=mutate_anchor,
+        ):
+            with self.assertRaisesRegex(self.runner.RunnerError, "configuration"):
+                self.runner.run_non_lockbox(self.paths)
+        self.assertEqual(self._state_bytes(), state_before)
+
+    def test_review_important_every_non_lockbox_anchor_is_revalidated(self) -> None:
+        anchors = (
+            self.config_path,
+            self.environment_lock_path,
+            self.feature_schema_path,
+            self.split_schema_path,
+            self.split_manifest_path,
+            self.input_ledger_path,
+            self.non_lockbox_packet_path,
+        )
+        for index, anchor in enumerate(anchors):
+            if index:
+                self._write_json(
+                    self.paths.state_path,
+                    self.runner._initial_state(),
+                )
+            self.runner.run_preflight(self.paths)
+            state_before = self._state_bytes()
+            original = anchor.read_bytes()
+            original_validator = self.runner.validate_non_lockbox_packet
+            mutated = False
+
+            def mutate_anchor(payload: Any) -> Any:
+                nonlocal mutated
+                validated = original_validator(payload)
+                if not mutated:
+                    anchor.write_bytes(original + b" ")
+                    mutated = True
+                return validated
+
+            try:
+                with patch.object(
+                    self.runner,
+                    "validate_non_lockbox_packet",
+                    side_effect=mutate_anchor,
+                ):
+                    with self.subTest(anchor=anchor.name):
+                        with self.assertRaises(self.runner.RunnerError):
+                            self.runner.run_non_lockbox(self.paths)
+                self.assertEqual(self._state_bytes(), state_before)
+            finally:
+                anchor.write_bytes(original)
+
+    def test_review_important_lockbox_result_change_before_binding_invalidates(
+        self,
+    ) -> None:
+        from scripts import validate_emotion_state_002_phase_b as validator
+
+        self.runner.run_preflight(self.paths)
+        self.runner.run_non_lockbox(self.paths)
+        state_before = self._state_bytes()
+        original_bytes = self.lockbox_result_path.read_bytes()
+        original = validator.validate_lockbox_lineage
+        mutated = False
+
+        def mutate_result(payload: Any, split: Any) -> None:
+            nonlocal mutated
+            original(payload, split)
+            if not mutated:
+                self.lockbox_result_path.write_bytes(original_bytes + b" ")
+                mutated = True
+
+        with patch.object(
+            validator,
+            "validate_lockbox_lineage",
+            side_effect=mutate_result,
+        ), patch.object(
+            self.runner,
+            "validate_lockbox_lineage",
+            side_effect=mutate_result,
+        ):
+            with self.assertRaisesRegex(self.runner.RunnerError, "changed"):
+                self.runner.run_lockbox(self.paths)
+        self.assertEqual(self._state_bytes(), state_before)
+        reservation = json.loads(
+            self.paths.lockbox_reservation_path.read_text(encoding="utf-8")
+        )
+        self.assertEqual(reservation["status"], "reserved")
+
+    def test_review_important_post_awaiting_fault_is_terminally_recoverable(
+        self,
+    ) -> None:
+        previous = self._install_previous_pair()
+        self._advance_to_lockbox()
+        original_write_state = self.runner._write_state
+        failed_once = False
+
+        def fail_after_awaiting(
+            paths: Any,
+            state: dict[str, Any],
+        ) -> dict[str, Any]:
+            nonlocal failed_once
+            written = original_write_state(paths, state)
+            if state["phase"] == "awaiting_acceptance" and not failed_once:
+                failed_once = True
+                raise OSError("synthetic post-awaiting durability fault")
+            return written
+
+        with patch.object(
+            self.runner,
+            "_write_state",
+            side_effect=fail_after_awaiting,
+        ):
+            with self.assertRaisesRegex(self.runner.RunnerError, "restored"):
+                self.runner.stage_candidate(self.paths, "post-awaiting.json")
+        self.assertEqual(self._canonical_bytes(), previous)
+        self.assertEqual(self.runner.load_state(self.paths)["phase"], "rejected")
+        self.assertEqual(self.runner.recover_publication(self.paths), "none")
+
+    def test_review_important_real_process_crash_at_stage_durable_boundaries(
+        self,
+    ) -> None:
+        previous = self._install_previous_pair()
+        self._advance_to_lockbox()
+        targets = (
+            "candidate_result",
+            "candidate_report",
+            "backup_result",
+            "backup_report",
+            "journal",
+            "canonical_result",
+            "canonical_report",
+            "receipt",
+            "awaiting_state",
+        )
+        for target in targets:
+            for timing in ("before", "after"):
+                with tempfile.TemporaryDirectory() as directory:
+                    clone_root = Path(directory).resolve() / "clone"
+                    paths = self._clone_paths(clone_root)
+                    crashed = self._stage_crash_subprocess(
+                        paths,
+                        target,
+                        timing,
+                    )
+                    with self.subTest(target=target, timing=timing):
+                        self.assertEqual(crashed.returncode, 86, crashed.stderr)
+                        recovery = self.runner.recover_publication(paths)
+                        self.assertIn(
+                            recovery,
+                            {
+                                "discarded_unjournaled",
+                                "restored",
+                                "none",
+                            },
+                        )
+                        self.assertEqual(
+                            (
+                                paths.result_path.read_bytes(),
+                                paths.report_path.read_bytes(),
+                            ),
+                            previous,
+                        )
+                        expected_phase = (
+                            "rejected"
+                            if target == "awaiting_state" and timing == "after"
+                            else "lockbox_complete"
+                        )
+                        self.assertEqual(
+                            self.runner.load_state(paths)["phase"],
+                            expected_phase,
+                        )
+                        self.assertFalse(paths.journal_path.exists())
+                        residual = {
+                            entry.name
+                            for entry in paths.recovery_root.iterdir()
+                            if entry.name != self.runner.LOCK_NAME
+                        }
+                        self.assertEqual(residual, set())
+
+    def test_review_important_real_process_crash_at_accept_and_cleanup_boundaries(
+        self,
+    ) -> None:
+        previous = self._install_previous_pair()
+        self._advance_to_lockbox()
+        self.runner.stage_candidate(self.paths, "accept.json")
+        candidate = self._canonical_bytes()
+        targets = (
+            "accepted_journal",
+            "accepted_state",
+            "cleanup_result_backup",
+            "cleanup_report_backup",
+            "cleanup_receipt",
+            "cleanup_journal",
+        )
+        for target in targets:
+            for timing in ("before", "after"):
+                with tempfile.TemporaryDirectory() as directory:
+                    clone_root = Path(directory).resolve() / "clone"
+                    paths = self._clone_paths(clone_root)
+                    crashed = self._accept_crash_subprocess(
+                        paths,
+                        target,
+                        timing,
+                    )
+                    with self.subTest(target=target, timing=timing):
+                        self.assertEqual(crashed.returncode, 87, crashed.stderr)
+                        recovery = self.runner.recover_publication(paths)
+                        expected_rejected = (
+                            target == "accepted_journal" and timing == "before"
+                        )
+                        self.assertIn(
+                            recovery,
+                            {"accepted", "restored", "none"},
+                        )
+                        expected_pair = previous if expected_rejected else candidate
+                        self.assertEqual(
+                            (
+                                paths.result_path.read_bytes(),
+                                paths.report_path.read_bytes(),
+                            ),
+                            expected_pair,
+                        )
+                        self.assertEqual(
+                            self.runner.load_state(paths)["phase"],
+                            "rejected" if expected_rejected else "accepted",
+                        )
+                        residual = {
+                            entry.name
+                            for entry in paths.recovery_root.iterdir()
+                            if entry.name != self.runner.LOCK_NAME
+                        }
+                        self.assertEqual(residual, set())
+
+    def test_review_important_receipt_binds_previous_pair(self) -> None:
+        self._install_previous_pair()
+        self._advance_to_lockbox()
+        receipt = self.runner.stage_candidate(self.paths, "previous.json")
+        self.assertEqual(
+            set(receipt),
+            {
+                "schema_version",
+                "transaction_id",
+                "configuration_sha256",
+                "result_sha256",
+                "report_sha256",
+                "previous_pair_present",
+                "previous_result_sha256",
+                "previous_report_sha256",
+            },
+        )
+        self.assertIs(receipt["previous_pair_present"], True)
+        self.assertRegex(receipt["previous_result_sha256"], r"^[0-9A-F]{64}$")
+        self.assertRegex(receipt["previous_report_sha256"], r"^[0-9A-F]{64}$")
+
+    def test_review_important_durability_has_directory_barrier(self) -> None:
+        self.assertTrue(callable(self.runner._sync_directory))
+        self.assertTrue(callable(self.runner._durable_unlink))
+
+    def test_review_important_cli_rejects_root_authority_overrides(self) -> None:
+        with self.assertRaises(SystemExit):
+            self.runner.parse_args(
+                ["preflight", "--state-root", str(self.state_root)]
+            )
+        production = self.runner._paths_from_args(
+            self.runner.parse_args(["preflight"])
+        )
+        self.assertEqual(production, self.runner.RunnerPaths.production())
+        metadata_paths = self._paths(state_root=self.root / ".git")
+        with self.assertRaisesRegex(self.runner.RunnerError, "metadata"):
+            self.runner.run_preflight(metadata_paths)
+
+    def test_review_important_open_handles_block_root_parent_file_races(
+        self,
+    ) -> None:
+        safe_config = self.runner._validate_input_path(
+            self.paths,
+            self.config_path,
+        )
+        original_config = self.config_path.read_bytes()
+        attacker = self.root / "attacker-config.json"
+        attacker.write_bytes(original_config + b" ")
+        moved_root = self.root.parent / f"{self.root.name}-moved"
+        moved_input = self.root / "public-inputs-moved"
+
+        def restore_race_paths() -> None:
+            if moved_root.exists() and not self.root.exists():
+                moved_root.rename(self.root)
+            if moved_input.exists() and not self.input_root.exists():
+                moved_input.rename(self.input_root)
+
+        self.addCleanup(restore_race_paths)
+        real_open = self.runner.os.open
+        attempts: list[str] = []
+        blocked: list[str] = []
+        triggered = False
+
+        def racing_open(path: Any, flags: int, *args: Any, **kwargs: Any) -> int:
+            nonlocal triggered
+            if Path(path) == self.config_path and not triggered:
+                triggered = True
+                for label, operation in (
+                    (
+                        "file",
+                        lambda: os.replace(attacker, self.config_path),
+                    ),
+                    (
+                        "parent",
+                        lambda: self.input_root.rename(moved_input),
+                    ),
+                    (
+                        "root",
+                        lambda: self.root.rename(moved_root),
+                    ),
+                ):
+                    attempts.append(label)
+                    try:
+                        operation()
+                    except OSError:
+                        blocked.append(label)
+            return real_open(path, flags, *args, **kwargs)
+
+        with patch.object(self.runner.os, "open", side_effect=racing_open):
+            digest = self.runner._sha256_file(safe_config)
+        self.assertRegex(digest, r"^[0-9A-F]{64}$")
+        self.assertEqual(attempts, ["file", "parent", "root"])
+        self.assertEqual(blocked, attempts)
+        self.assertEqual(self.config_path.read_bytes(), original_config)
+        self.assertTrue(attacker.exists())
+
+    def test_review_important_lock_and_canonical_handle_races_are_blocked(
+        self,
+    ) -> None:
+        with self.runner.publication_lock(self.paths):
+            pass
+        lock_path = self.paths.recovery_root / self.runner.LOCK_NAME
+        attacker_lock = self.root / "attacker.lock"
+        attacker_lock.write_bytes(b"attacker")
+        real_open = self.runner.os.open
+        lock_race_blocked = False
+
+        def race_lock(path: Any, flags: int, *args: Any, **kwargs: Any) -> int:
+            nonlocal lock_race_blocked
+            if Path(path) == lock_path and not lock_race_blocked:
+                try:
+                    os.replace(attacker_lock, lock_path)
+                except OSError:
+                    lock_race_blocked = True
+            return real_open(path, flags, *args, **kwargs)
+
+        with patch.object(self.runner.os, "open", side_effect=race_lock):
+            with self.runner.publication_lock(self.paths):
+                pass
+        self.assertTrue(lock_race_blocked)
+        self.assertTrue(attacker_lock.exists())
+
+        self._advance_to_lockbox()
+        moved_canonical = self.root / "canonical-moved"
+        real_replace = self.runner.os.replace
+        canonical_race_blocked = False
+
+        def race_canonical(source: Any, destination: Any, *args: Any, **kwargs: Any) -> None:
+            nonlocal canonical_race_blocked
+            if (
+                Path(destination) == self.paths.result_path
+                and not canonical_race_blocked
+            ):
+                try:
+                    self.canonical_root.rename(moved_canonical)
+                except OSError:
+                    canonical_race_blocked = True
+            real_replace(source, destination, *args, **kwargs)
+
+        with patch.object(
+            self.runner.os,
+            "replace",
+            side_effect=race_canonical,
+        ):
+            self.runner.stage_candidate(self.paths, "race.json")
+        self.assertTrue(canonical_race_blocked)
+        self.assertFalse(moved_canonical.exists())
 
 
 if __name__ == "__main__":
