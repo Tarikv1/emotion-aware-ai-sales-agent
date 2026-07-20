@@ -3948,6 +3948,468 @@ class AmiMechanicsTests(unittest.TestCase):
                     )
 
 
+class SecurePublicMaterialByteTests(unittest.TestCase):
+    @staticmethod
+    def _runner_paths(root: Path) -> tuple[Any, Path]:
+        from scripts import run_emotion_state_002_phase_b as runner
+
+        input_root = root / "inputs"
+        state_root = root / "state"
+        canonical_root = root / "canonical"
+        public_root = input_root / "public-material"
+        for directory in (
+            input_root,
+            state_root,
+            canonical_root,
+            public_root,
+        ):
+            directory.mkdir(parents=True, exist_ok=True)
+        paths = runner.RunnerPaths.for_testing(
+            project_root=root,
+            input_root=input_root,
+            state_root=state_root,
+            canonical_root=canonical_root,
+            config_path=input_root / "config.json",
+            environment_lock_path=input_root / "requirements.lock",
+            feature_schema_path=input_root / "feature.schema.json",
+            split_schema_path=input_root / "split.schema.json",
+            split_manifest_path=input_root / "split-manifest.json",
+            input_ledger_path=input_root / "input-ledger.json",
+            non_lockbox_packet_path=state_root / "non-lockbox.json",
+            lockbox_result_path=state_root / "lockbox.json",
+            public_material_root=public_root,
+        )
+        return paths, public_root
+
+    @staticmethod
+    def _ami_byte_fixture(fixture: dict[str, Any]) -> dict[str, Any]:
+        from scripts.emotion_state_phase_b_ami_mechanics import AmiXmlBytes
+
+        def source(path: Path) -> Any:
+            return AmiXmlBytes(path.name, path.read_bytes())
+
+        return {
+            "metadata": source(fixture["metadata_path"]),
+            "word_sources": tuple(source(path) for path in fixture["word_paths"]),
+            "timing_link_sources": tuple(
+                source(path) for path in fixture["timing_link_paths"]
+            ),
+            "dialogue_act_sources": tuple(
+                source(path) for path in fixture["dialogue_act_paths"]
+            ),
+            "known_meetings": fixture["known_meetings"],
+            "participant_metadata": (
+                None
+                if "participant_metadata_path" not in fixture
+                else source(fixture["participant_metadata_path"])
+            ),
+        }
+
+    def test_verified_reader_binds_one_nofollow_read_and_rejects_violations(
+        self,
+    ) -> None:
+        from scripts import run_emotion_state_002_phase_b as runner
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory).resolve()
+            paths, public_root = self._runner_paths(root)
+            material = public_root / "nested" / "sample.bin"
+            material.parent.mkdir()
+            material.write_bytes(b"unused-on-disk-content")
+            content = b"identity-bound-returned-content"
+            digest = hashlib.sha256(content).hexdigest().upper()
+
+            with patch.object(
+                runner,
+                "_read_file_nofollow",
+                return_value=content,
+            ) as read:
+                verified = runner._read_verified_public_bytes(
+                    paths,
+                    material,
+                    expected_sha256=digest,
+                    expected_size_bytes=len(content),
+                    maximum_bytes=len(content),
+                )
+            read.assert_called_once_with(
+                material,
+                maximum_bytes=len(content),
+            )
+            self.assertEqual(verified.logical_name, "nested/sample.bin")
+            self.assertEqual(verified.content, content)
+            self.assertEqual(verified.sha256, digest)
+            self.assertEqual(verified.size_bytes, len(content))
+
+            for field, value, pattern in (
+                ("expected_sha256", digest.lower(), "uppercase SHA-256"),
+                ("expected_sha256", "A" * 63, "uppercase SHA-256"),
+                ("expected_size_bytes", True, "non-negative integer"),
+                ("expected_size_bytes", 1.0, "non-negative integer"),
+                ("expected_size_bytes", -1, "non-negative integer"),
+                ("maximum_bytes", True, "non-negative integer"),
+                ("maximum_bytes", 1.0, "non-negative integer"),
+                ("maximum_bytes", -1, "non-negative integer"),
+            ):
+                arguments = {
+                    "expected_sha256": digest,
+                    "expected_size_bytes": len(content),
+                    "maximum_bytes": len(content),
+                }
+                arguments[field] = value
+                with self.subTest(field=field, value=value):
+                    with self.assertRaisesRegex(runner.RunnerError, pattern):
+                        runner._read_verified_public_bytes(
+                            paths,
+                            material,
+                            **arguments,
+                        )
+
+            with patch.object(
+                runner,
+                "_read_file_nofollow",
+                return_value=content,
+            ) as read:
+                with self.assertRaisesRegex(runner.RunnerError, "SHA-256"):
+                    runner._read_verified_public_bytes(
+                        paths,
+                        material,
+                        expected_sha256="0" * 64,
+                        expected_size_bytes=len(content),
+                        maximum_bytes=len(content),
+                    )
+                read.assert_called_once()
+            with patch.object(
+                runner,
+                "_read_file_nofollow",
+                return_value=content,
+            ) as read:
+                with self.assertRaisesRegex(runner.RunnerError, "byte count"):
+                    runner._read_verified_public_bytes(
+                        paths,
+                        material,
+                        expected_sha256=digest,
+                        expected_size_bytes=len(content) + 1,
+                        maximum_bytes=len(content) + 1,
+                    )
+                read.assert_called_once()
+            with patch.object(
+                runner,
+                "_read_file_nofollow",
+                return_value=content,
+            ) as read:
+                with self.assertRaisesRegex(runner.RunnerError, "allowed size"):
+                    runner._read_verified_public_bytes(
+                        paths,
+                        material,
+                        expected_sha256=digest,
+                        expected_size_bytes=len(content),
+                        maximum_bytes=len(content) - 1,
+                    )
+                read.assert_not_called()
+
+            outside = root / "outside.bin"
+            outside.write_bytes(content)
+            private = public_root / "private" / "blocked.bin"
+            private.parent.mkdir()
+            private.write_bytes(content)
+            missing = public_root / "missing.bin"
+            directory_entry = public_root / "directory.bin"
+            directory_entry.mkdir()
+            for path, pattern in (
+                (outside, "allowed root"),
+                (private, "private path"),
+                (missing, "missing"),
+                (directory_entry, "regular file"),
+            ):
+                with self.subTest(path=path):
+                    with self.assertRaisesRegex(runner.RunnerError, pattern):
+                        runner._read_verified_public_bytes(
+                            paths,
+                            path,
+                            expected_sha256=digest,
+                            expected_size_bytes=len(content),
+                            maximum_bytes=len(content),
+                        )
+
+            real_link_check = runner._is_link_or_reparse
+
+            def material_is_reparse(
+                path: Path,
+                status: os.stat_result | Any,
+            ) -> bool:
+                return (
+                    Path(path) == material
+                    or real_link_check(Path(path), status)
+                )
+
+            with patch.object(
+                runner,
+                "_is_link_or_reparse",
+                side_effect=material_is_reparse,
+            ):
+                with self.assertRaisesRegex(runner.RunnerError, "reparse"):
+                    runner._read_verified_public_bytes(
+                        paths,
+                        material,
+                        expected_sha256=digest,
+                        expected_size_bytes=len(content),
+                        maximum_bytes=len(content),
+                    )
+
+    def test_crema_bytes_are_deterministic_without_filesystem_reopen(
+        self,
+    ) -> None:
+        from scripts.emotion_state_phase_b_evaluation import (
+            load_crema_reference_labels,
+            load_crema_reference_labels_bytes,
+        )
+
+        stems = {
+            "1001_DFA_ANG_XX",
+            "1002_IEO_HAP_HI",
+            "1003_TAI_FEA_XX",
+        }
+        with tempfile.TemporaryDirectory() as directory:
+            finished, summary = CremaReferenceLabelTests()._write_sources(
+                Path(directory)
+            )
+            finished_bytes = finished.read_bytes()
+            summary_bytes = summary.read_bytes()
+            compatibility = load_crema_reference_labels(
+                finished,
+                summary,
+                stems,
+            )
+            with patch.object(
+                Path,
+                "read_bytes",
+                side_effect=AssertionError("byte loader reopened a path"),
+            ):
+                first = load_crema_reference_labels_bytes(
+                    finished_bytes,
+                    summary_bytes,
+                    stems,
+                )
+                second = load_crema_reference_labels_bytes(
+                    finished_bytes,
+                    summary_bytes,
+                    stems,
+                )
+        self.assertEqual(first, compatibility)
+        self.assertEqual(second, first)
+        self.assertEqual(
+            first[1]["source_binding"]["finished_responses_sha256"],
+            hashlib.sha256(finished_bytes).hexdigest().upper(),
+        )
+        self.assertEqual(
+            first[1]["source_binding"]["summary_table_sha256"],
+            hashlib.sha256(summary_bytes).hexdigest().upper(),
+        )
+
+    def test_wav_bytes_match_wrapper_without_path_wave_open(
+        self,
+    ) -> None:
+        from scripts import emotion_state_phase_b_features as features
+
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "tone.wav"
+            AcousticFeatureTests._write_tone(
+                path,
+                hz=200.0,
+                seconds=1.0,
+                amplitude=0.5,
+            )
+            wav_bytes = path.read_bytes()
+            compatibility = features.extract_acoustic_features(path)
+            real_wave_open = features.wave.open
+
+            def memory_wave_open(source: Any, mode: str) -> Any:
+                if isinstance(source, (str, os.PathLike)):
+                    raise AssertionError("byte extractor used path-based wave.open")
+                return real_wave_open(source, mode)
+
+            with (
+                patch.object(
+                    Path,
+                    "read_bytes",
+                    side_effect=AssertionError("byte extractor reopened a path"),
+                ),
+                patch.object(
+                    features.wave,
+                    "open",
+                    side_effect=memory_wave_open,
+                ),
+            ):
+                extracted = features.extract_acoustic_features_bytes(wav_bytes)
+        self.assertEqual(extracted, compatibility)
+
+    def test_ami_bytes_match_wrapper_without_parse_or_filesystem_reopen(
+        self,
+    ) -> None:
+        from scripts import emotion_state_phase_b_ami_mechanics as ami
+
+        with tempfile.TemporaryDirectory() as directory:
+            fixture = AmiMechanicsTests._write_fixture(Path(directory))
+            byte_fixture = self._ami_byte_fixture(fixture)
+            compatibility = ami.load_ami_turns(**fixture)
+            with (
+                patch.object(
+                    Path,
+                    "read_bytes",
+                    side_effect=AssertionError("AMI byte loader reopened a path"),
+                ),
+                patch.object(
+                    ami.ET,
+                    "parse",
+                    side_effect=AssertionError("AMI byte loader used ET.parse"),
+                ),
+            ):
+                turns = ami.load_ami_turns_from_bytes(**byte_fixture)
+        self.assertEqual(turns, compatibility)
+        self.assertNotIn("SECRET", repr(turns).upper())
+        self.assertTrue(all(not hasattr(turn, "text") for turn in turns))
+
+    def test_byte_apis_reject_nonbytes_and_malformed_bytes(
+        self,
+    ) -> None:
+        from scripts import emotion_state_phase_b_ami_mechanics as ami
+        from scripts import emotion_state_phase_b_evaluation as evaluation
+        from scripts import emotion_state_phase_b_features as features
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            finished, summary = CremaReferenceLabelTests()._write_sources(root)
+            finished_bytes = finished.read_bytes()
+            summary_bytes = summary.read_bytes()
+            tone = root / "tone.wav"
+            AcousticFeatureTests._write_tone(
+                tone,
+                hz=200.0,
+                seconds=1.0,
+                amplitude=0.5,
+            )
+            wav_bytes = tone.read_bytes()
+            ami_root = root / "ami"
+            ami_root.mkdir()
+            fixture = AmiMechanicsTests._write_fixture(ami_root)
+            ami_bytes = self._ami_byte_fixture(fixture)
+
+        for value in (
+            bytearray(finished_bytes),
+            memoryview(finished_bytes),
+            "finishedResponses.csv",
+            Path("finishedResponses.csv"),
+        ):
+            with self.subTest(api="crema", value_type=type(value).__name__):
+                with self.assertRaisesRegex((TypeError, ValueError), "bytes"):
+                    evaluation.load_crema_reference_labels_bytes(
+                        value,
+                        summary_bytes,
+                        {"1001_DFA_ANG_XX"},
+                    )
+        for value in (
+            bytearray(wav_bytes),
+            memoryview(wav_bytes),
+            "tone.wav",
+            Path("tone.wav"),
+        ):
+            with self.subTest(api="wav", value_type=type(value).__name__):
+                with self.assertRaisesRegex((TypeError, ValueError), "bytes"):
+                    features.extract_acoustic_features_bytes(value)
+        for value in (
+            bytearray(b"<root />"),
+            memoryview(b"<root />"),
+            "<root />",
+            Path("meetings.xml"),
+        ):
+            with self.subTest(api="ami", value_type=type(value).__name__):
+                with self.assertRaisesRegex((TypeError, ValueError), "bytes"):
+                    ami.AmiXmlBytes("meetings.xml", value)
+
+        with self.assertRaisesRegex(ValueError, "CSV"):
+            evaluation.load_crema_reference_labels_bytes(
+                b"not,csv\n",
+                summary_bytes,
+                {"1001_DFA_ANG_XX"},
+            )
+        with self.assertRaisesRegex(
+            features.FeatureExtractionError,
+            "malformed",
+        ):
+            features.extract_acoustic_features_bytes(b"not a wav")
+        malformed_ami = {
+            **ami_bytes,
+            "metadata": ami.AmiXmlBytes("meetings.xml", b"<broken"),
+        }
+        with self.assertRaisesRegex(ValueError, "AMI XML"):
+            ami.load_ami_turns_from_bytes(**malformed_ami)
+
+    def test_ami_bytes_reject_unsafe_duplicate_and_unresolved_local_names(
+        self,
+    ) -> None:
+        from scripts import emotion_state_phase_b_ami_mechanics as ami
+
+        with tempfile.TemporaryDirectory() as directory:
+            fixture = AmiMechanicsTests._write_fixture(Path(directory))
+            byte_fixture = self._ami_byte_fixture(fixture)
+
+        with (
+            patch.object(
+                Path,
+                "read_bytes",
+                side_effect=AssertionError("AMI validation touched a path"),
+            ),
+            patch.object(
+                ami.ET,
+                "parse",
+                side_effect=AssertionError("AMI validation used ET.parse"),
+            ),
+        ):
+            duplicate = {
+                **byte_fixture,
+                "word_sources": (
+                    byte_fixture["word_sources"][0],
+                    byte_fixture["word_sources"][0],
+                ),
+            }
+            with self.assertRaisesRegex(ValueError, "duplicate AMI"):
+                ami.load_ami_turns_from_bytes(**duplicate)
+
+            for filename in (
+                "../M1.A.words.xml",
+                "nested/M1.A.words.xml",
+                r"nested\M1.A.words.xml",
+                "C:M1.A.words.xml",
+                ".",
+                "..",
+            ):
+                with self.subTest(filename=filename):
+                    with self.assertRaisesRegex(ValueError, "filename"):
+                        ami.AmiXmlBytes(
+                            filename,
+                            byte_fixture["word_sources"][0].content,
+                        )
+
+            unresolved_content = byte_fixture["timing_link_sources"][
+                0
+            ].content.replace(
+                b"M1.A.words.xml",
+                b"missing.words.xml",
+            )
+            unresolved = {
+                **byte_fixture,
+                "timing_link_sources": (
+                    replace(
+                        byte_fixture["timing_link_sources"][0],
+                        content=unresolved_content,
+                    ),
+                    byte_fixture["timing_link_sources"][1],
+                ),
+            }
+            with self.assertRaisesRegex(ValueError, "unknown local word file"):
+                ami.load_ami_turns_from_bytes(**unresolved)
+
+
 class EvaluationTests(unittest.TestCase):
     CLASS_ORDER = ("A", "D", "F", "H", "N", "S")
     MODEL_KEYS = ("class_prior", "sentence_id", "acoustic")

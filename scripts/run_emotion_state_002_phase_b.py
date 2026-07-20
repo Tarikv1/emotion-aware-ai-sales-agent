@@ -148,6 +148,14 @@ class RunnerError(RuntimeError):
 
 
 @dataclass(frozen=True)
+class VerifiedMaterialBytes:
+    logical_name: str
+    content: bytes
+    sha256: str
+    size_bytes: int
+
+
+@dataclass(frozen=True)
 class _DirectoryAuthority:
     path: Path
     posix_descriptor: int | None = None
@@ -882,6 +890,71 @@ def _validate_input_path(paths: RunnerPaths, path: Path) -> Path:
         project_root=paths.project_root,
         final_kind="file",
         require_final=True,
+    )
+
+
+def _read_verified_public_bytes(
+    paths: RunnerPaths,
+    path: Path,
+    *,
+    expected_sha256: str,
+    expected_size_bytes: int,
+    maximum_bytes: int,
+) -> VerifiedMaterialBytes:
+    _validate_layout(paths)
+    if not isinstance(path, Path):
+        raise RunnerError("public-material path must be a Path")
+    if paths.public_material_root is None:
+        raise RunnerError("public-material root is unavailable")
+    expected_digest = _validate_digest(
+        expected_sha256,
+        "expected public-material digest",
+    )
+    if (
+        type(expected_size_bytes) is not int
+        or expected_size_bytes < 0
+    ):
+        raise RunnerError(
+            "expected public-material size must be a non-negative integer"
+        )
+    if type(maximum_bytes) is not int or maximum_bytes < 0:
+        raise RunnerError(
+            "maximum public-material size must be a non-negative integer"
+        )
+    if expected_size_bytes > maximum_bytes:
+        raise RunnerError("expected public material exceeds the allowed size")
+
+    public_root = _absolute_lexical(
+        Path(paths.public_material_root),
+        Path(paths.project_root),
+    )
+    validated_path = _safe_path(
+        path,
+        allowed_root=public_root,
+        project_root=paths.project_root,
+        final_kind="file",
+        require_final=True,
+    )
+    content = _read_file_nofollow(
+        validated_path,
+        maximum_bytes=maximum_bytes,
+    )
+    if type(content) is not bytes:
+        raise RunnerError("bound public-material reader did not return bytes")
+    actual_size = len(content)
+    if actual_size > maximum_bytes:
+        raise RunnerError("bound file exceeds the allowed size")
+    actual_digest = _sha256_bytes(content)
+    if actual_digest != expected_digest:
+        raise RunnerError("public-material SHA-256 does not match expected")
+    if actual_size != expected_size_bytes:
+        raise RunnerError("public-material byte count does not match expected")
+    logical_name = validated_path.relative_to(public_root).as_posix()
+    return VerifiedMaterialBytes(
+        logical_name=logical_name,
+        content=content,
+        sha256=actual_digest,
+        size_bytes=actual_size,
     )
 
 

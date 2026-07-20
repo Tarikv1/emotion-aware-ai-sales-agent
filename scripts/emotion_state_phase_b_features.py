@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import io
 import math
 import wave
 from collections.abc import Mapping
@@ -35,9 +36,11 @@ class FeatureExtractionError(ValueError):
     pass
 
 
-def _read_pcm16_mono_16khz(path: Path) -> np.ndarray:
+def _read_pcm16_mono_16khz_bytes(wav_bytes: bytes) -> np.ndarray:
+    if type(wav_bytes) is not bytes:
+        raise TypeError("WAV content must be bytes")
     try:
-        with wave.open(str(Path(path)), "rb") as source:
+        with wave.open(io.BytesIO(wav_bytes), "rb") as source:
             if source.getnchannels() != 1:
                 raise FeatureExtractionError("WAV must be mono")
             if source.getsampwidth() != 2:
@@ -66,6 +69,14 @@ def _read_pcm16_mono_16khz(path: Path) -> np.ndarray:
     if not np.all(np.isfinite(samples)):
         raise FeatureExtractionError("WAV contains non-finite samples")
     return samples
+
+
+def _read_pcm16_mono_16khz(path: Path) -> np.ndarray:
+    try:
+        wav_bytes = Path(path).read_bytes()
+    except OSError as error:
+        raise FeatureExtractionError("WAV is malformed or unsupported") from error
+    return _read_pcm16_mono_16khz_bytes(wav_bytes)
 
 
 def _frames(
@@ -243,7 +254,15 @@ def _summarize(
 
 
 def extract_acoustic_features(path: Path) -> dict[str, float]:
-    samples = _read_pcm16_mono_16khz(Path(path))
+    try:
+        wav_bytes = Path(path).read_bytes()
+    except OSError as error:
+        raise FeatureExtractionError("WAV is malformed or unsupported") from error
+    return extract_acoustic_features_bytes(wav_bytes)
+
+
+def extract_acoustic_features_bytes(wav_bytes: bytes) -> dict[str, float]:
+    samples = _read_pcm16_mono_16khz_bytes(wav_bytes)
     frames = _frames(samples, frame_size=400, hop_size=160)
     if frames.shape[0] == 0:
         raise FeatureExtractionError("WAV has no complete analysis frame")

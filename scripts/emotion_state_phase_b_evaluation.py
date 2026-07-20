@@ -78,8 +78,13 @@ class CremaLabelRecord:
     vote_entropy: float | None
 
 
-def _rows(path: Path, required: tuple[str, ...]) -> tuple[list[dict[str, str]], str]:
-    source_bytes = Path(path).read_bytes()
+def _rows_bytes(
+    source_bytes: bytes,
+    required: tuple[str, ...],
+    source_name: str,
+) -> tuple[list[dict[str, str]], str]:
+    if type(source_bytes) is not bytes:
+        raise TypeError(f"{source_name} bytes must be bytes")
     try:
         with io.TextIOWrapper(
             io.BytesIO(source_bytes),
@@ -88,18 +93,23 @@ def _rows(path: Path, required: tuple[str, ...]) -> tuple[list[dict[str, str]], 
         ) as handle:
             reader = csv.DictReader(handle, strict=True)
             if reader.fieldnames is None or tuple(reader.fieldnames) != required:
-                raise ValueError(f"unexpected CSV schema: {path.name}")
+                raise ValueError(f"unexpected CSV schema: {source_name}")
             rows: list[dict[str, str]] = []
             for row in reader:
                 if (
                     tuple(row) != required
                     or any(not isinstance(row[key], str) for key in required)
                 ):
-                    raise ValueError(f"unexpected CSV row: {path.name}")
+                    raise ValueError(f"unexpected CSV row: {source_name}")
                 rows.append({key: row[key].strip() for key in required})
     except csv.Error as error:
-        raise ValueError(f"malformed CSV row: {path.name}") from error
+        raise ValueError(f"malformed CSV row: {source_name}") from error
     return rows, hashlib.sha256(source_bytes).hexdigest().upper()
+
+
+def _rows(path: Path, required: tuple[str, ...]) -> tuple[list[dict[str, str]], str]:
+    source = Path(path)
+    return _rows_bytes(source.read_bytes(), required, source.name)
 
 
 def _winners(distribution: Counter[str]) -> tuple[str, ...]:
@@ -126,6 +136,18 @@ def load_crema_reference_labels(
     summary_path: Path,
     included_clip_stems: Collection[str],
 ) -> tuple[tuple[CremaLabelRecord, ...], dict[str, Any]]:
+    return load_crema_reference_labels_bytes(
+        Path(finished_path).read_bytes(),
+        Path(summary_path).read_bytes(),
+        included_clip_stems,
+    )
+
+
+def load_crema_reference_labels_bytes(
+    finished_responses_bytes: bytes,
+    summary_table_bytes: bytes,
+    included_clip_stems: Collection[str],
+) -> tuple[tuple[CremaLabelRecord, ...], dict[str, Any]]:
     finished_header = (
         "", "localid", "pos", "ans", "ttr", "queryType", "numTries",
         "clipNum", "questNum", "subType", "clipName", "sessionNums",
@@ -135,7 +157,11 @@ def load_crema_reference_labels(
         "", "FileName", "VoiceVote", "VoiceLevel", "FaceVote", "FaceLevel",
         "MultiModalVote", "MultiModalLevel",
     )
-    finished_rows, finished_responses_sha256 = _rows(finished_path, finished_header)
+    finished_rows, finished_responses_sha256 = _rows_bytes(
+        finished_responses_bytes,
+        finished_header,
+        "finishedResponses.csv",
+    )
     raw_groups: dict[str, Counter[str]] = defaultdict(Counter)
     for row in finished_rows:
         if row[RAW_MODALITY_FIELD] != RAW_AUDIO_MODALITY:
@@ -144,7 +170,11 @@ def load_crema_reference_labels(
             raise ValueError("invalid raw audio-perception label")
         raw_groups[row[RAW_JOIN_FIELD]][row[RAW_LABEL_FIELD]] += 1
 
-    summary_rows, summary_table_sha256 = _rows(summary_path, summary_header)
+    summary_rows, summary_table_sha256 = _rows_bytes(
+        summary_table_bytes,
+        summary_header,
+        "summaryTable.csv",
+    )
     released: dict[str, tuple[str, ...]] = {}
     for row in summary_rows:
         stem = row[SUMMARY_JOIN_FIELD]

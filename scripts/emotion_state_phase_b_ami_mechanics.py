@@ -55,6 +55,32 @@ _REFERENCE_FRAGMENT = re.compile(
 
 
 @dataclass(frozen=True)
+class AmiXmlBytes:
+    filename: str
+    content: bytes
+
+    def __post_init__(self) -> None:
+        if type(self.filename) is not str:
+            raise ValueError("AMI filename must be a string")
+        normalized = unicodedata.normalize("NFC", self.filename)
+        if (
+            not normalized
+            or normalized != self.filename
+            or normalized in {".", ".."}
+            or "://" in normalized
+            or any(character in normalized for character in ("/", "\\", ":"))
+            or any(
+                character.isspace()
+                or unicodedata.category(character).startswith("C")
+                for character in normalized
+            )
+        ):
+            raise ValueError("AMI filename must be a safe local identity")
+        if type(self.content) is not bytes:
+            raise TypeError("AMI XML content must be bytes")
+
+
+@dataclass(frozen=True)
 class Turn:
     meeting_id: str
     participant_id: str
@@ -187,11 +213,13 @@ def _attribute(element: ET.Element, *names: str) -> str | None:
     return values[0]
 
 
-def _xml(path: Path) -> ET.Element:
+def _xml(source: AmiXmlBytes) -> ET.Element:
     try:
-        return ET.parse(path).getroot()
-    except (OSError, ET.ParseError) as error:
-        raise ValueError(f"AMI XML is unreadable: {path.name}") from error
+        return ET.fromstring(source.content)
+    except ET.ParseError as error:
+        raise ValueError(
+            f"AMI XML is unreadable: {source.filename}"
+        ) from error
 
 
 def _nonempty_identifiers(
@@ -224,10 +252,10 @@ def _milliseconds(value: str | None) -> int:
     return int(milliseconds)
 
 
-def _source_identity(path: Path, root: ET.Element) -> tuple[str, str]:
+def _source_identity(source: AmiXmlBytes, root: ET.Element) -> tuple[str, str]:
     meeting_id = _attribute(root, "meeting_id", "meeting", "observation")
     agent = _attribute(root, "agent", "speaker", "participant", "channel")
-    parts = path.name.split(".")
+    parts = source.filename.split(".")
     if meeting_id is None and len(parts) >= 3:
         meeting_id = parts[0]
     if agent is None and len(parts) >= 3:
@@ -366,12 +394,12 @@ def _dialogue_act_from_element(
 
 
 def _metadata_dependencies(
-    path: Path,
+    metadata: AmiXmlBytes,
     known_meetings: set[str],
-    participant_metadata_path: Path | None = None,
+    participant_metadata: AmiXmlBytes | None = None,
 ) -> dict[tuple[str, str], str]:
     dependencies: dict[tuple[str, str], str] = {}
-    for meeting in _xml(path).iter():
+    for meeting in _xml(metadata).iter():
         if _exact_local_name(meeting.tag) != "meeting":
             continue
         observation = _exact_attribute(meeting, "observation")
@@ -429,9 +457,9 @@ def _metadata_dependencies(
             if key in dependencies:
                 raise ValueError("AMI participant dependency is conflicting")
             dependencies[key] = participant_id
-    if participant_metadata_path is not None:
+    if participant_metadata is not None:
         enriched: set[str] = set()
-        for participant in _xml(Path(participant_metadata_path)).iter():
+        for participant in _xml(participant_metadata).iter():
             local_name = _exact_local_name(participant.tag)
             if local_name != "participant":
                 if _normalized_name(participant.tag) == "participant":
@@ -453,7 +481,7 @@ def _metadata_dependencies(
 
 
 def _word_boundaries(
-    paths: Sequence[Path],
+    sources: Sequence[AmiXmlBytes],
     known_meetings: set[str],
 ) -> tuple[
     dict[str, tuple[_Boundary, ...]],
@@ -461,9 +489,9 @@ def _word_boundaries(
 ]:
     words: dict[str, tuple[_Boundary, ...]] = {}
     identifiers: dict[str, dict[str, int]] = {}
-    for path in paths:
-        root = _xml(path)
-        meeting_id, agent = _source_identity(path, root)
+    for source in sources:
+        root = _xml(source)
+        meeting_id, agent = _source_identity(source, root)
         if meeting_id not in known_meetings:
             raise ValueError(f"AMI annotation references unknown meeting: {meeting_id}")
         ordered: list[_Boundary] = []
@@ -482,15 +510,15 @@ def _word_boundaries(
             ordered.append(_Boundary(meeting_id, agent, start_ms, end_ms))
         if not ordered:
             raise ValueError("AMI word file contains no timing boundaries")
-        if path.name in words:
+        if source.filename in words:
             raise ValueError("duplicate AMI word filename")
-        words[path.name] = tuple(ordered)
-        identifiers[path.name] = positions
+        words[source.filename] = tuple(ordered)
+        identifiers[source.filename] = positions
     return words, identifiers
 
 
 def _timing_boundaries(
-    paths: Sequence[Path],
+    sources: Sequence[AmiXmlBytes],
     known_meetings: set[str],
     words: Mapping[str, tuple[_Boundary, ...]],
     word_identifiers: Mapping[str, Mapping[str, int]],
@@ -500,9 +528,9 @@ def _timing_boundaries(
 ]:
     timing: dict[str, tuple[_Boundary, ...]] = {}
     identifiers: dict[str, dict[str, int]] = {}
-    for path in paths:
-        root = _xml(path)
-        meeting_id, agent = _source_identity(path, root)
+    for source in sources:
+        root = _xml(source)
+        meeting_id, agent = _source_identity(source, root)
         if meeting_id not in known_meetings:
             raise ValueError(f"AMI annotation references unknown meeting: {meeting_id}")
         ordered: list[_Boundary] = []
@@ -528,7 +556,7 @@ def _timing_boundaries(
                     continue
                 target, first, last = _local_reference(
                     _attribute(child, "href"),
-                    path.name,
+                    source.filename,
                 )
                 referenced.extend(_resolve_range(
                     target,
@@ -545,10 +573,10 @@ def _timing_boundaries(
             ordered.append(boundary)
         if not ordered:
             raise ValueError("AMI timing-link file contains no local links")
-        if path.name in timing:
+        if source.filename in timing:
             raise ValueError("duplicate AMI timing-link filename")
-        timing[path.name] = tuple(ordered)
-        identifiers[path.name] = positions
+        timing[source.filename] = tuple(ordered)
+        identifiers[source.filename] = positions
     return timing, identifiers
 
 
@@ -562,24 +590,92 @@ def load_ami_turns(
     participant_metadata_path: Path | None = None,
     expected_unlabeled_count: int = 0,
 ) -> tuple[Turn, ...]:
-    """Load only local synthetic/verified AMI boundaries; transcript text is discarded."""
+    return load_ami_turns_from_bytes(
+        _ami_xml_bytes_from_path(metadata_path),
+        tuple(_ami_xml_bytes_from_path(path) for path in word_paths),
+        tuple(_ami_xml_bytes_from_path(path) for path in timing_link_paths),
+        tuple(_ami_xml_bytes_from_path(path) for path in dialogue_act_paths),
+        known_meetings,
+        participant_metadata=(
+            None
+            if participant_metadata_path is None
+            else _ami_xml_bytes_from_path(participant_metadata_path)
+        ),
+        expected_unlabeled_count=expected_unlabeled_count,
+    )
+
+
+def _ami_xml_bytes_from_path(path: Path) -> AmiXmlBytes:
+    source = Path(path)
+    try:
+        content = source.read_bytes()
+    except OSError as error:
+        raise ValueError(f"AMI XML is unreadable: {source.name}") from error
+    return AmiXmlBytes(source.name, content)
+
+
+def _validated_ami_sources(
+    sources: Sequence[AmiXmlBytes],
+    name: str,
+) -> tuple[AmiXmlBytes, ...]:
+    if isinstance(sources, (str, bytes)) or not isinstance(sources, Sequence):
+        raise ValueError(f"{name} must be a sequence of AMI XML bytes")
+    validated = tuple(sources)
+    if not validated:
+        raise ValueError("AMI annotation inputs must be non-empty")
+    if any(type(source) is not AmiXmlBytes for source in validated):
+        raise ValueError(f"{name} must contain only AMI XML bytes")
+    return validated
+
+
+def load_ami_turns_from_bytes(
+    metadata: AmiXmlBytes,
+    word_sources: Sequence[AmiXmlBytes],
+    timing_link_sources: Sequence[AmiXmlBytes],
+    dialogue_act_sources: Sequence[AmiXmlBytes],
+    known_meetings: Sequence[str],
+    *,
+    participant_metadata: AmiXmlBytes | None = None,
+    expected_unlabeled_count: int = 0,
+) -> tuple[Turn, ...]:
+    """Load local AMI identities from verified bytes; transcript text is discarded."""
     if type(expected_unlabeled_count) is not int or expected_unlabeled_count < 0:
         raise ValueError(
             "AMI expected unlabeled count must be a non-negative integer"
         )
+    if type(metadata) is not AmiXmlBytes:
+        raise ValueError("metadata must be AMI XML bytes")
+    if (
+        participant_metadata is not None
+        and type(participant_metadata) is not AmiXmlBytes
+    ):
+        raise ValueError("participant metadata must be AMI XML bytes")
+    word_files = _validated_ami_sources(word_sources, "word sources")
+    timing_files = _validated_ami_sources(
+        timing_link_sources,
+        "timing-link sources",
+    )
+    act_files = _validated_ami_sources(
+        dialogue_act_sources,
+        "dialogue-act sources",
+    )
+    all_sources = (
+        (metadata,)
+        + word_files
+        + timing_files
+        + act_files
+        + (() if participant_metadata is None else (participant_metadata,))
+    )
+    filenames = tuple(source.filename for source in all_sources)
+    if len(filenames) != len(set(filenames)):
+        raise ValueError("duplicate AMI filename")
+
     meetings = set(_nonempty_identifiers(known_meetings, "known meetings"))
     dependencies = _metadata_dependencies(
-        Path(metadata_path),
+        metadata,
         meetings,
-        None
-        if participant_metadata_path is None
-        else Path(participant_metadata_path),
+        participant_metadata,
     )
-    word_files = tuple(Path(path) for path in word_paths)
-    timing_files = tuple(Path(path) for path in timing_link_paths)
-    act_files = tuple(Path(path) for path in dialogue_act_paths)
-    if not word_files or not timing_files or not act_files:
-        raise ValueError("AMI annotation inputs must be non-empty")
     words, word_identifiers = _word_boundaries(word_files, meetings)
     timing, timing_identifiers = _timing_boundaries(
         timing_files,
@@ -589,8 +685,8 @@ def load_ami_turns(
     )
     turns: list[Turn] = []
     unlabeled_count = 0
-    for path in act_files:
-        root = _xml(path)
+    for source in act_files:
+        root = _xml(source)
         legacy_schema = _exact_attribute(root, "synthetic_legacy_schema")
         if (
             legacy_schema is not None
@@ -598,7 +694,7 @@ def load_ami_turns(
         ):
             raise ValueError("AMI synthetic legacy schema marker is invalid")
         allow_legacy_direct = legacy_schema == _SYNTHETIC_LEGACY_SCHEMA
-        meeting_id, agent = _source_identity(path, root)
+        meeting_id, agent = _source_identity(source, root)
         if meeting_id not in meetings:
             raise ValueError(f"AMI annotation references unknown meeting: {meeting_id}")
         participant_id = dependencies.get((meeting_id, agent))
@@ -634,7 +730,7 @@ def load_ami_turns(
                     continue
                 target, first, last = _local_reference(
                     _attribute(child, "href"),
-                    path.name,
+                    source.filename,
                 )
                 if target in timing:
                     referenced.extend(_resolve_range(
