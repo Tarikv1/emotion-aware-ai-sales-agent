@@ -455,6 +455,16 @@ class _ValidatedPartitionAuthorityState:
     assignment_sha256: str
 
 
+@dataclass(frozen=True, slots=True)
+class _VerifiedPartitionAuthoritySnapshot:
+    records: tuple[CremaLabelRecord, ...]
+    acoustic_bindings: tuple[tuple[str, str, int], ...]
+    role: str
+    seed_digest: str
+    manifest_sha256: str
+    assignment_sha256: str
+
+
 @dataclass(frozen=True)
 class _PartitionState:
     rows: tuple[str, ...]
@@ -585,6 +595,82 @@ _PARTITION_ACTOR_COUNTS = {
     "balanced_diagnostic": 13,
     "final_lockbox": 30,
 }
+
+
+def _require_private_sha256(
+    value: Any,
+    *,
+    uppercase: bool,
+    name: str,
+) -> str:
+    pattern = r"[0-9A-F]{64}" if uppercase else r"[0-9a-f]{64}"
+    if type(value) is not str or re.fullmatch(pattern, value) is None:
+        raise ValueError(f"{name} private state is invalid")
+    return value
+
+
+def _validate_split_private_state_shape(
+    state: _ValidatedSplitState,
+) -> None:
+    if type(state.records) is not tuple:
+        raise ValueError("validated actor split records state must be an exact tuple")
+    if type(state.acoustic_bindings) is not tuple:
+        raise ValueError(
+            "validated actor split acoustic state must be an exact tuple"
+        )
+    if (
+        type(state.assignment) is not tuple
+        or any(
+            type(cell) is not tuple
+            or len(cell) != 2
+            or type(cell[0]) is not str
+            or type(cell[1]) is not str
+            or cell[1] not in (*_NONFINAL_PARTITION_ROLES, "final_lockbox")
+            for cell in state.assignment
+        )
+    ):
+        raise ValueError(
+            "validated actor split assignment state must use exact tuples"
+        )
+    _require_private_sha256(
+        state.seed_digest,
+        uppercase=False,
+        name="validated actor split seed",
+    )
+    _require_private_sha256(
+        state.manifest_sha256,
+        uppercase=True,
+        name="validated actor split manifest",
+    )
+
+
+def _validate_partition_private_state_shape(
+    state: _ValidatedPartitionAuthorityState,
+) -> None:
+    if type(state.records) is not tuple:
+        raise ValueError(
+            "validated partition authority records state must be an exact tuple"
+        )
+    if type(state.acoustic_bindings) is not tuple:
+        raise ValueError(
+            "validated partition authority acoustic state must be an exact tuple"
+        )
+    validate_partition_role(state.role, _NONFINAL_PARTITION_ROLES)
+    _require_private_sha256(
+        state.seed_digest,
+        uppercase=False,
+        name="validated partition authority seed",
+    )
+    _require_private_sha256(
+        state.manifest_sha256,
+        uppercase=True,
+        name="validated partition authority manifest",
+    )
+    _require_private_sha256(
+        state.assignment_sha256,
+        uppercase=True,
+        name="validated partition authority assignment",
+    )
 
 
 def _canonical_partition_authority_record(
@@ -1078,6 +1164,7 @@ def _verify_validated_split_assignment(
     if len(links) != 1 or type(links[0]) is not _ValidatedSplitState:
         raise ValueError("validated actor split private state is invalid")
     state = links[0]
+    _validate_split_private_state_shape(state)
     materialized, canonical, manifest_sha256 = (
         _validate_split_assignment_components(
             state.records,
@@ -1293,7 +1380,7 @@ def _verify_validated_partition_authority(
     authority: Any,
     *,
     expected_role: str,
-) -> tuple[_ValidatedPartitionAuthorityState, dict[str, Any]]:
+) -> tuple[_VerifiedPartitionAuthoritySnapshot, dict[str, Any]]:
     validate_partition_role(expected_role, _NONFINAL_PARTITION_ROLES)
     payload = _verify_artifact_mint(authority, ValidatedPartitionAuthority)
     links = _artifact_links(authority)
@@ -1303,12 +1390,19 @@ def _verify_validated_partition_authority(
     ):
         raise ValueError("validated partition authority private state is invalid")
     state = links[0]
+    _validate_partition_private_state_shape(state)
     if state.role != expected_role:
         raise ValueError("validated partition authority role does not match")
     records = tuple(
         _canonical_partition_authority_record(record)
         for record in state.records
     )
+    if tuple(record.clip_stem for record in records) != tuple(sorted(
+        record.clip_stem for record in records
+    )):
+        raise ValueError(
+            "validated partition authority records state is not canonical"
+        )
     bindings = _validated_internal_acoustic_bindings(
         records,
         state.acoustic_bindings,
@@ -1328,37 +1422,45 @@ def _verify_validated_partition_authority(
         raise ValueError(
             "validated partition authority private state changed"
         )
-    cache = _partition_authority_cache(
-        role=state.role,
+    snapshot = _VerifiedPartitionAuthoritySnapshot(
         records=records,
         acoustic_bindings=bindings,
-        configuration_sha256=state.seed_digest.upper(),
-        split_manifest_sha256=state.manifest_sha256.upper(),
+        role=state.role,
+        seed_digest=state.seed_digest,
+        manifest_sha256=state.manifest_sha256,
         assignment_sha256=state.assignment_sha256,
+    )
+    cache = _partition_authority_cache(
+        role=snapshot.role,
+        records=snapshot.records,
+        acoustic_bindings=snapshot.acoustic_bindings,
+        configuration_sha256=snapshot.seed_digest.upper(),
+        split_manifest_sha256=snapshot.manifest_sha256,
+        assignment_sha256=snapshot.assignment_sha256,
     )
     expected_payload = {
         "schema_id": "emotion-state-phase-b-validated-partition-authority-v2",
-        "partition_role": state.role,
-        "configuration_sha256": state.seed_digest.upper(),
-        "split_manifest_sha256": state.manifest_sha256.upper(),
-        "assignment_sha256": state.assignment_sha256,
+        "partition_role": snapshot.role,
+        "configuration_sha256": snapshot.seed_digest.upper(),
+        "split_manifest_sha256": snapshot.manifest_sha256,
+        "assignment_sha256": snapshot.assignment_sha256,
         "partition_authority_sha256": cache["self_sha256"],
-        "eligible_record_count": len(records),
+        "eligible_record_count": len(snapshot.records),
         "eligible_actor_count": len(
-            {record.actor_id for record in records}
+            {record.actor_id for record in snapshot.records}
         ),
     }
     reminted = _mint_artifact(
         ValidatedPartitionAuthority,
         expected_payload,
-        state,
+        snapshot,
     )
     if (
         reminted.to_payload() != payload
         or reminted.mint_sha256 != authority.mint_sha256
     ):
         raise ValueError("validated partition authority commitment changed")
-    return state, payload
+    return snapshot, payload
 
 
 def validated_partition_records(
@@ -1370,16 +1472,16 @@ def validated_partition_records(
         role,
         _NONFINAL_PARTITION_ROLES,
     )
-    state, _payload = _verify_validated_partition_authority(
+    snapshot, _payload = _verify_validated_partition_authority(
         authority,
         expected_role=validated_role,
     )
     bindings = {
         stem: (sha256, size_bytes)
-        for stem, sha256, size_bytes in state.acoustic_bindings
+        for stem, sha256, size_bytes in snapshot.acoustic_bindings
     }
     result = []
-    for record in sorted(state.records, key=lambda item: item.clip_stem):
+    for record in snapshot.records:
         fresh_record = _canonical_partition_authority_record(record)
         audio_sha256, audio_size_bytes = bindings[fresh_record.clip_stem]
         result.append(ValidatedPartitionRecord(
@@ -1480,19 +1582,14 @@ def mint_partition_evidence(
             [actor, assignment[actor]] for actor in sorted(assignment)
         ])
     elif type(split_assignment) is ValidatedPartitionAuthority:
-        partition_state, _ = _verify_validated_partition_authority(
+        partition_snapshot, _ = _verify_validated_partition_authority(
             split_assignment,
             expected_role=role,
         )
-        split_seed_digest = partition_state.seed_digest
-        split_manifest_sha = partition_state.manifest_sha256
-        authoritative = tuple(
-            sorted(
-                partition_state.records,
-                key=lambda record: record.clip_stem,
-            )
-        )
-        assignment_sha = partition_state.assignment_sha256
+        split_seed_digest = partition_snapshot.seed_digest
+        split_manifest_sha = partition_snapshot.manifest_sha256
+        authoritative = partition_snapshot.records
+        assignment_sha = partition_snapshot.assignment_sha256
     else:
         raise TypeError(
             "ValidatedSplitAssignment or ValidatedPartitionAuthority is required"

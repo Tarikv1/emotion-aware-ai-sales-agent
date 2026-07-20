@@ -3022,9 +3022,67 @@ def _phase_b_exact_dict(
     keys: tuple[str, ...],
     name: str,
 ) -> dict[str, Any]:
-    if type(value) is not dict or set(value) != set(keys):
+    if (
+        type(value) is not dict
+        or any(type(key) is not str for key in value)
+        or set(value) != set(keys)
+    ):
         raise ValueError(f"{name} keys do not match frozen contract")
     return value
+
+
+def _phase_b_require_exact_json_graph(
+    value: Any,
+    name: str,
+    active_containers: set[int] | None = None,
+    depth: int = 0,
+) -> None:
+    if depth > 128:
+        raise ValueError(f"{name} JSON nesting exceeds the validation limit")
+    active = set() if active_containers is None else active_containers
+    if type(value) is dict:
+        identity = id(value)
+        if identity in active:
+            raise ValueError(f"{name} contains a cyclic JSON container")
+        active.add(identity)
+        try:
+            for key, nested in value.items():
+                if type(key) is not str:
+                    raise ValueError(
+                        f"{name} keys must be exact built-in strings"
+                    )
+                _phase_b_require_exact_json_graph(
+                    nested,
+                    name,
+                    active,
+                    depth + 1,
+                )
+        finally:
+            active.remove(identity)
+        return
+    if type(value) is list:
+        identity = id(value)
+        if identity in active:
+            raise ValueError(f"{name} contains a cyclic JSON container")
+        active.add(identity)
+        try:
+            for nested in value:
+                _phase_b_require_exact_json_graph(
+                    nested,
+                    name,
+                    active,
+                    depth + 1,
+                )
+        finally:
+            active.remove(identity)
+        return
+    if value is None or type(value) in (str, int, bool):
+        return
+    if type(value) is float:
+        if not math.isfinite(value):
+            raise ValueError(f"{name} contains a non-finite float")
+        return
+    raise ValueError(f"{name} must contain only exact built-in JSON values")
 
 
 def _phase_b_canonical_vote_metrics(
@@ -3045,6 +3103,7 @@ def _phase_b_canonical_vote_metrics(
 
 
 def validate_phase_b_split_manifest(payload: Any) -> dict[str, Any]:
+    _phase_b_require_exact_json_graph(payload, "validated split manifest")
     manifest = _phase_b_exact_dict(
         copy.deepcopy(payload),
         (
@@ -3132,6 +3191,7 @@ def validate_phase_b_partition_authority_cache(
 ) -> dict[str, Any]:
     role = validate_partition_role(expected_role, _PHASE_B_NONFINAL_ROLES)
     manifest = validate_phase_b_split_manifest(split_manifest)
+    _phase_b_require_exact_json_graph(payload, "partition authority cache")
     cache = _phase_b_exact_dict(
         copy.deepcopy(payload),
         (

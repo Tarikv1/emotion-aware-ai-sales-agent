@@ -10828,10 +10828,39 @@ class AcousticPartitionAuthorityCacheTests(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls) -> None:
-        EvaluationTests.setUpClass()
-        cls.RECORDS = EvaluationTests.AUTHORITATIVE_RECORDS
-        cls.SOURCES = EvaluationTests.ACOUSTIC_SOURCES
-        cls.SEED = EvaluationTests.CONFIGURATION_DIGEST
+        from scripts.emotion_state_phase_b_evaluation import (
+            mint_validated_split_assignment,
+        )
+        from scripts.emotion_state_phase_b_splits import build_actor_split
+        from scripts.validate_emotion_state_002_phase_b import (
+            EXPECTED_EVIDENCE_IDENTITY_SHA256,
+        )
+
+        records = ActorSplitTests._records(varied_vectors=True)
+        seed_digest = EXPECTED_EVIDENCE_IDENTITY_SHA256[
+            "configuration_sha256"
+        ].lower()
+        assignment = build_actor_split(records, seed_digest)
+        sources = EvaluationTests._synthetic_acoustic_sources(records)
+        cls.RECORDS = tuple(records)
+        cls.SOURCES = sources
+        cls.SEED = seed_digest
+        cls.RECORDS_BY_ROLE = {
+            role: tuple(sorted(
+                (
+                    record for record in records
+                    if assignment[record.actor_id] == role
+                ),
+                key=lambda record: record.clip_stem,
+            ))
+            for role in ActorSplitTests.PARTITION_ORDER
+        }
+        cls.SPLIT_ASSIGNMENT = mint_validated_split_assignment(
+            records,
+            assignment,
+            seed_digest,
+            acoustic_sources=sources,
+        )
 
     @classmethod
     def _mint(
@@ -10898,6 +10927,437 @@ class AcousticPartitionAuthorityCacheTests(unittest.TestCase):
             artifact,
             "_ImmutableArtifact__links",
         )[0]
+
+    def test_private_states_require_exact_tuple_and_scalar_fields(self) -> None:
+        from scripts import emotion_state_phase_b_evaluation as evaluation
+
+        class StrSubclass(str):
+            pass
+
+        split_variants = []
+        split = self._mint()
+        split_state = self._private_state(split)
+        split_variants.extend((
+            replace(split_state, records=list(split_state.records)),
+            replace(
+                split_state,
+                acoustic_bindings=list(split_state.acoustic_bindings),
+            ),
+            replace(split_state, assignment=list(split_state.assignment)),
+            replace(
+                split_state,
+                assignment=(
+                    list(split_state.assignment[0]),
+                    *split_state.assignment[1:],
+                ),
+            ),
+            replace(
+                split_state,
+                seed_digest=StrSubclass(split_state.seed_digest),
+            ),
+            replace(
+                split_state,
+                manifest_sha256=StrSubclass(
+                    split_state.manifest_sha256
+                ),
+            ),
+        ))
+        for index, variant in enumerate(split_variants):
+            candidate = self._mint()
+            object.__setattr__(
+                candidate,
+                "_ImmutableArtifact__links",
+                (variant,),
+            )
+            with self.subTest(split_variant=index):
+                with self.assertRaises(ValueError):
+                    evaluation.serialize_partition_authority_caches(candidate)
+
+        authority_variants = []
+        authority = evaluation.derive_validated_partition_authority(
+            self._mint(),
+            role="training_discovery",
+        )
+        authority_state = self._private_state(authority)
+        authority_variants.extend((
+            replace(authority_state, records=list(authority_state.records)),
+            replace(
+                authority_state,
+                acoustic_bindings=list(
+                    authority_state.acoustic_bindings
+                ),
+            ),
+            replace(
+                authority_state,
+                role=StrSubclass(authority_state.role),
+            ),
+            replace(
+                authority_state,
+                seed_digest=StrSubclass(authority_state.seed_digest),
+            ),
+            replace(
+                authority_state,
+                manifest_sha256=StrSubclass(
+                    authority_state.manifest_sha256
+                ),
+            ),
+            replace(
+                authority_state,
+                assignment_sha256=StrSubclass(
+                    authority_state.assignment_sha256
+                ),
+            ),
+        ))
+        for index, variant in enumerate(authority_variants):
+            candidate = evaluation.derive_validated_partition_authority(
+                self._mint(),
+                role="training_discovery",
+            )
+            object.__setattr__(
+                candidate,
+                "_ImmutableArtifact__links",
+                (variant,),
+            )
+            with self.subTest(authority_variant=index):
+                with self.assertRaises(ValueError):
+                    evaluation.validated_partition_records(
+                        candidate,
+                        role="training_discovery",
+                    )
+
+    def test_stateful_sequence_and_duplicate_rows_cannot_escape_verification(
+        self,
+    ) -> None:
+        from collections.abc import Sequence
+
+        from scripts import emotion_state_phase_b_evaluation as evaluation
+
+        authority = evaluation.derive_validated_partition_authority(
+            self._mint(),
+            role="training_discovery",
+        )
+        state = self._private_state(authority)
+
+        class StatefulRecords(Sequence):
+            def __init__(self, records: tuple[Any, ...]) -> None:
+                self.records = records
+                self.iterations = 0
+
+            def __len__(self) -> int:
+                return len(self.records)
+
+            def __getitem__(self, index: int) -> Any:
+                return self.records[index]
+
+            def __iter__(self) -> Any:
+                self.iterations += 1
+                if self.iterations <= 2:
+                    return iter(self.records)
+                return iter((self.records[0],) * len(self.records))
+
+        stateful = StatefulRecords(state.records)
+        object.__setattr__(
+            authority,
+            "_ImmutableArtifact__links",
+            (replace(state, records=stateful),),
+        )
+        with self.assertRaises(ValueError):
+            evaluation.validated_partition_records(
+                authority,
+                role="training_discovery",
+            )
+
+        duplicate = evaluation.derive_validated_partition_authority(
+            self._mint(),
+            role="training_discovery",
+        )
+        duplicate_state = self._private_state(duplicate)
+        duplicate_records = (
+            duplicate_state.records[0],
+            duplicate_state.records[0],
+            *duplicate_state.records[2:],
+        )
+        object.__setattr__(
+            duplicate,
+            "_ImmutableArtifact__links",
+            (replace(duplicate_state, records=duplicate_records),),
+        )
+        with self.assertRaises(ValueError):
+            evaluation.validated_partition_records(
+                duplicate,
+                role="training_discovery",
+            )
+
+        reordered = evaluation.derive_validated_partition_authority(
+            self._mint(),
+            role="training_discovery",
+        )
+        reordered_state = self._private_state(reordered)
+        object.__setattr__(
+            reordered,
+            "_ImmutableArtifact__links",
+            (replace(
+                reordered_state,
+                records=tuple(reversed(reordered_state.records)),
+            ),),
+        )
+        with self.assertRaises(ValueError):
+            evaluation.validated_partition_records(
+                reordered,
+                role="training_discovery",
+            )
+
+    def test_cross_role_partition_evidence_cannot_reread_raw_authority_state(
+        self,
+    ) -> None:
+        from collections.abc import Sequence
+
+        import numpy as np
+
+        from scripts import emotion_state_phase_b_evaluation as evaluation
+        from scripts.validate_emotion_state_002_phase_b import (
+            EXPECTED_CONFIG,
+            EXPECTED_ENVIRONMENT_LOCK,
+            EXPECTED_FEATURE_SCHEMA,
+            EXPECTED_SPLIT_SCHEMA,
+        )
+
+        authority = evaluation.derive_validated_partition_authority(
+            self._mint(),
+            role="training_discovery",
+        )
+        state = self._private_state(authority)
+        calibration = self.RECORDS_BY_ROLE["calibration"][0]
+        substituted = tuple(sorted(
+            (calibration, *state.records[1:]),
+            key=lambda record: record.clip_stem,
+        ))
+
+        class CrossRoleRecords(Sequence):
+            def __init__(
+                self,
+                verified: tuple[Any, ...],
+                switched: tuple[Any, ...],
+            ) -> None:
+                self.verified = verified
+                self.switched = switched
+                self.iterations = 0
+
+            def __len__(self) -> int:
+                return len(self.verified)
+
+            def __getitem__(self, index: int) -> Any:
+                return self.verified[index]
+
+            def __iter__(self) -> Any:
+                self.iterations += 1
+                return iter(
+                    self.verified
+                    if self.iterations <= 2
+                    else self.switched
+                )
+
+        stateful = CrossRoleRecords(state.records, substituted)
+        object.__setattr__(
+            authority,
+            "_ImmutableArtifact__links",
+            (replace(state, records=stateful),),
+        )
+        with self.assertRaises(ValueError):
+            evaluation.mint_partition_evidence(
+                partition_role="training_discovery",
+                row_ids=[record.clip_stem for record in substituted],
+                actor_ids=[record.actor_id for record in substituted],
+                labels=np.asarray(
+                    [record.label for record in substituted],
+                    dtype="<U1",
+                ),
+                sentences=np.asarray(
+                    [record.sentence_id for record in substituted],
+                    dtype="<U3",
+                ),
+                features=np.zeros(
+                    (len(substituted), 17),
+                    dtype=np.float64,
+                ),
+                upstream_acoustic_source_commitment_sha256="A" * 64,
+                split_assignment=authority,
+                configuration=deepcopy(EXPECTED_CONFIG),
+                environment_lock=deepcopy(EXPECTED_ENVIRONMENT_LOCK),
+                feature_schema=deepcopy(EXPECTED_FEATURE_SCHEMA),
+                split_schema=deepcopy(EXPECTED_SPLIT_SCHEMA),
+                model_identity=evaluation.frozen_model_identity(
+                    EvaluationTests.MODEL_SEED
+                ),
+            )
+
+    def test_external_pair_rejects_copy_hooks_before_copying(self) -> None:
+        from scripts import emotion_state_phase_b_evaluation as evaluation
+
+        cache, manifest = self._pair()
+
+        class CopyMasquerade(dict):
+            def __init__(
+                self,
+                visible: dict[str, Any],
+                replacement: dict[str, Any],
+                calls: list[str],
+                name: str,
+            ) -> None:
+                super().__init__(visible)
+                self.replacement = replacement
+                self.calls = calls
+                self.name = name
+
+            def __deepcopy__(self, memo: dict[int, Any]) -> Any:
+                self.calls.append(self.name)
+                return deepcopy(self.replacement, memo)
+
+        cases = []
+        calls: list[str] = []
+        cases.append((
+            CopyMasquerade(
+                {"not": "a cache"},
+                deepcopy(cache),
+                calls,
+                "cache_root",
+            ),
+            deepcopy(manifest),
+            "cache_root",
+        ))
+        cases.append((
+            deepcopy(cache),
+            CopyMasquerade(
+                {"bad": "manifest"},
+                deepcopy(manifest),
+                calls,
+                "manifest_root",
+            ),
+            "manifest_root",
+        ))
+        nested_record = deepcopy(cache)
+        nested_record["records"][0] = CopyMasquerade(
+            {"bad": "record"},
+            deepcopy(cache["records"][0]),
+            calls,
+            "record_nested",
+        )
+        cases.append((nested_record, deepcopy(manifest), "record_nested"))
+        nested_final = deepcopy(manifest)
+        nested_final["final_lockbox_commitment"] = CopyMasquerade(
+            {"bad": "final"},
+            deepcopy(manifest["final_lockbox_commitment"]),
+            calls,
+            "final_nested",
+        )
+        cases.append((deepcopy(cache), nested_final, "final_nested"))
+
+        for supplied_cache, supplied_manifest, name in cases:
+            with self.subTest(name=name):
+                with self.assertRaises(ValueError):
+                    evaluation.restore_validated_partition_authority_cache(
+                        supplied_cache,
+                        supplied_manifest,
+                        role="training_discovery",
+                    )
+        self.assertEqual(calls, [])
+
+    def test_external_pair_rejects_str_subclass_keys_recursively(self) -> None:
+        from scripts import emotion_state_phase_b_evaluation as evaluation
+
+        class StrSubclass(str):
+            pass
+
+        def replace_key(
+            mapping: dict[str, Any],
+            key: str,
+        ) -> None:
+            value = mapping.pop(key)
+            mapping[StrSubclass(key)] = value
+
+        cache, manifest = self._pair()
+        cases = []
+        cache_root = deepcopy(cache)
+        replace_key(cache_root, "schema_id")
+        cases.append((cache_root, deepcopy(manifest), "cache_root"))
+        manifest_root = deepcopy(manifest)
+        replace_key(manifest_root, "schema_id")
+        cases.append((deepcopy(cache), manifest_root, "manifest_root"))
+        record_nested = deepcopy(cache)
+        replace_key(record_nested["records"][0], "clip_stem")
+        cases.append((record_nested, deepcopy(manifest), "record_nested"))
+        final_nested = deepcopy(manifest)
+        replace_key(
+            final_nested["final_lockbox_commitment"],
+            "eligible_record_count",
+        )
+        cases.append((deepcopy(cache), final_nested, "final_nested"))
+        authority_nested = deepcopy(manifest)
+        replace_key(
+            authority_nested["partition_authority_sha256"],
+            "training_discovery",
+        )
+        cases.append((
+            deepcopy(cache),
+            authority_nested,
+            "authority_nested",
+        ))
+        for supplied_cache, supplied_manifest, name in cases:
+            with self.subTest(name=name):
+                with self.assertRaises(ValueError):
+                    evaluation.restore_validated_partition_authority_cache(
+                        supplied_cache,
+                        supplied_manifest,
+                        role="training_discovery",
+                    )
+
+    def test_external_pair_rejects_cyclic_builtin_json_graphs_deterministically(
+        self,
+    ) -> None:
+        from scripts import emotion_state_phase_b_evaluation as evaluation
+
+        cache, manifest = self._pair()
+        cyclic_cache = deepcopy(cache)
+        cyclic_list: list[Any] = []
+        cyclic_list.append(cyclic_list)
+        cyclic_cache["records"] = cyclic_list
+
+        cyclic_manifest = deepcopy(manifest)
+        cyclic_dict: dict[str, Any] = {}
+        cyclic_dict["self"] = cyclic_dict
+        cyclic_manifest["final_lockbox_commitment"] = cyclic_dict
+
+        deep_cache = deepcopy(cache)
+        deep_root: list[Any] = []
+        deep_cursor = deep_root
+        for _index in range(1100):
+            nested: list[Any] = []
+            deep_cursor.append(nested)
+            deep_cursor = nested
+        deep_cache["records"] = deep_root
+
+        for supplied_cache, supplied_manifest in (
+            (cyclic_cache, deepcopy(manifest)),
+            (deepcopy(cache), cyclic_manifest),
+            (deep_cache, deepcopy(manifest)),
+        ):
+            with self.assertRaisesRegex(ValueError, "cyclic|nesting"):
+                evaluation.restore_validated_partition_authority_cache(
+                    supplied_cache,
+                    supplied_manifest,
+                    role="training_discovery",
+                )
+
+    def test_acoustic_fixture_setup_performs_no_path_read(self) -> None:
+        with patch.object(
+            Path,
+            "read_text",
+            side_effect=AssertionError("acoustic fixture read a path"),
+        ):
+            try:
+                type(self).setUpClass()
+            except AssertionError as error:
+                self.fail(str(error))
 
     def test_mint_requires_keyword_only_exact_acoustic_source_mapping(
         self,
@@ -11039,7 +11499,7 @@ class AcousticPartitionAuthorityCacheTests(unittest.TestCase):
     ) -> None:
         from scripts import emotion_state_phase_b_evaluation as evaluation
 
-        original = EvaluationTests.RECORDS_BY_ROLE[
+        original = self.RECORDS_BY_ROLE[
             "training_discovery"
         ][0]
         original_index = next(
@@ -11174,7 +11634,7 @@ class AcousticPartitionAuthorityCacheTests(unittest.TestCase):
     ) -> None:
         from scripts import emotion_state_phase_b_evaluation as evaluation
 
-        target = EvaluationTests.RECORDS_BY_ROLE[
+        target = self.RECORDS_BY_ROLE[
             "training_discovery"
         ][0]
         finished_header = (
@@ -11314,7 +11774,7 @@ class AcousticPartitionAuthorityCacheTests(unittest.TestCase):
             )
             self.assertEqual(
                 len(cache["records"]),
-                len(EvaluationTests.RECORDS_BY_ROLE[role]),
+                len(self.RECORDS_BY_ROLE[role]),
             )
 
     def test_v2_cache_records_add_only_audio_sha256_and_audio_size(
