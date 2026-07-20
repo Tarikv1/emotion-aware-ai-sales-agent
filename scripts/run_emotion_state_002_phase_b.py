@@ -1872,10 +1872,6 @@ def _load_bound_partition_authority(
     role: str,
     expected_split_manifest_sha256: str,
 ) -> Any:
-    from scripts.emotion_state_phase_b_evaluation import (
-        mint_validated_partition_authority,
-    )
-
     if role not in (
         "training_discovery",
         "calibration",
@@ -1886,38 +1882,9 @@ def _load_bound_partition_authority(
         expected_split_manifest_sha256,
         "split_manifest_sha256",
     )
-    split_path = _validate_input_path(paths, paths.split_manifest_path)
-    split_bytes = _read_file_nofollow(split_path)
-    if _sha256_bytes(split_bytes) != expected_split_manifest_sha256:
-        raise RunnerError("split manifest changed after preflight")
-
-    cache_path = _safe_path(
-        paths.preflight_cache_root / f"{role}.json",
-        allowed_root=paths.preflight_cache_root,
-        project_root=paths.project_root,
-        final_kind="file",
-        require_final=True,
+    raise RunnerError(
+        "runner-owned partition authority persistence is unavailable"
     )
-    cache_bytes = _read_file_nofollow(cache_path)
-    split_bytes_after = _read_file_nofollow(split_path)
-    if (
-        split_bytes_after != split_bytes
-        or _sha256_bytes(split_bytes_after)
-        != expected_split_manifest_sha256
-    ):
-        raise RunnerError("split manifest changed after preflight")
-    try:
-        return mint_validated_partition_authority(
-            _load_json_object_bytes(
-                cache_bytes,
-                f"{role} partition-authority cache",
-            ),
-            _load_json_object_bytes(split_bytes, "split manifest"),
-        )
-    except (TypeError, ValueError) as error:
-        raise RunnerError(
-            f"{role} partition authority validation failed: {error}"
-        ) from error
 
 
 def load_state(
@@ -2145,17 +2112,54 @@ def _revalidate_bound_preflight(
         raise RunnerError("preflight anchor changed after validation")
 
 
+def _validated_split_manifest_identity(
+    paths: RunnerPaths,
+    state: Mapping[str, Any],
+) -> str:
+    expected_file_sha256 = _validate_digest(
+        state["split_manifest_sha256"],
+        "split_manifest_sha256",
+    )
+    split_path = _validate_input_path(paths, paths.split_manifest_path)
+    split_bytes = _read_file_nofollow(split_path)
+    if _sha256_bytes(split_bytes) != expected_file_sha256:
+        raise RunnerError("split manifest changed after preflight")
+    try:
+        split = validate_phase_b_split_manifest(
+            _load_json_object_bytes(split_bytes, "split manifest")
+        )
+    except (TypeError, ValueError) as error:
+        raise RunnerError(
+            f"preflight split manifest validation failed: {error}"
+        ) from error
+    return split["split_manifest_sha256"]
+
+
 def _validate_non_lockbox_packet_for_authority(
     paths: RunnerPaths,
     packet: Mapping[str, Any],
+    *,
+    expected_split_manifest_sha256: str,
 ) -> dict[str, Any]:
+    _validate_digest(
+        expected_split_manifest_sha256,
+        "split_manifest_sha256",
+    )
     try:
         if paths.authority == "production":
             from scripts.emotion_state_phase_b_public_pipeline import (
                 validate_non_lockbox_review_packet,
             )
 
-            return validate_non_lockbox_review_packet(packet)
+            validated = validate_non_lockbox_review_packet(packet)
+            if (
+                validated["split_manifest_sha256"]
+                != expected_split_manifest_sha256
+            ):
+                raise RunnerError(
+                    "split manifest identity does not match preflight state"
+                )
+            return validated
         if paths.authority == "injected-test":
             return validate_non_lockbox_packet(packet)
     except (TypeError, ValueError) as error:
@@ -2177,7 +2181,15 @@ def _validated_packet(
     packet_path = _validate_non_lockbox_path(paths)
     digest_before = _sha256_file(packet_path)
     packet = _load_json_object(packet_path, "non-lockbox packet")
-    validated = _validate_non_lockbox_packet_for_authority(paths, packet)
+    validated_split_manifest_sha256 = _validated_split_manifest_identity(
+        paths,
+        state,
+    )
+    validated = _validate_non_lockbox_packet_for_authority(
+        paths,
+        packet,
+        expected_split_manifest_sha256=validated_split_manifest_sha256,
+    )
     digest = _sha256_file(packet_path)
     if digest != digest_before:
         raise RunnerError("non-lockbox packet changed during semantic validation")

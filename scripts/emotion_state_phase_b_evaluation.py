@@ -37,7 +37,6 @@ from scripts.validate_emotion_state_002_phase_b import (
     validate_labels_and_actors,
     validate_payload_self_hash,
     validate_partition_role,
-    validate_phase_b_split_manifest,
     validate_probability_inputs,
     validate_probability_evidence_payload,
     validate_provenance_payload,
@@ -515,17 +514,21 @@ def _partition_authority_cache(
             "balanced_diagnostic",
         ),
     )
-    materialized = tuple(sorted(records, key=lambda record: record.clip_stem))
-    if (
-        not materialized
-        or any(
-            not isinstance(record, CremaLabelRecord)
-            or record.label not in LABELS
-            or record.abstention_reason is not None
-            for record in materialized
-        )
-    ):
+    try:
+        supplied = tuple(records)
+    except TypeError as error:
+        raise ValueError(
+            "partition authority records must be a sequence"
+        ) from error
+    if not supplied:
         raise ValueError("partition authority records must be eligible CREMA records")
+    for record in supplied:
+        _validate_partition_authority_record(record)
+    materialized = tuple(
+        sorted(supplied, key=lambda record: record.clip_stem)
+    )
+    if len({record.clip_stem for record in materialized}) != len(materialized):
+        raise ValueError("partition authority clip identities must be unique")
     expected_actor_count = {
         "training_discovery": 35,
         "calibration": 13,
@@ -565,6 +568,75 @@ def _partition_authority_cache(
     return payload
 
 
+def _validate_partition_authority_record(record: Any) -> None:
+    if not isinstance(record, CremaLabelRecord):
+        raise ValueError(
+            "partition authority records must be eligible CREMA records"
+        )
+    if (
+        type(record.clip_stem) is not str
+        or not record.clip_stem
+        or type(record.actor_id) is not str
+        or re.fullmatch(r"\d{4}", record.actor_id) is None
+        or type(record.sentence_id) is not str
+        or re.fullmatch(r"[A-Z0-9]{3}", record.sentence_id) is None
+        or type(record.label) is not str
+        or record.label not in LABELS
+        or record.abstention_reason is not None
+    ):
+        raise ValueError(
+            "partition authority records must be eligible CREMA records"
+        )
+    distribution = record.vote_distribution
+    if (
+        type(distribution) is not tuple
+        or not distribution
+        or any(
+            type(cell) is not tuple
+            or len(cell) != 2
+            or type(cell[0]) is not str
+            or cell[0] not in LABELS
+            or type(cell[1]) is not int
+            or cell[1] <= 0
+            for cell in distribution
+        )
+        or tuple(sorted(distribution)) != distribution
+        or len({cell[0] for cell in distribution}) != len(distribution)
+    ):
+        raise ValueError("partition authority vote distribution is invalid")
+    counts = Counter(dict(distribution))
+    if _winners(counts) != (record.label,):
+        raise ValueError(
+            "partition authority label does not match the unique vote winner"
+        )
+    total = sum(counts.values())
+    expected_agreement = max(counts.values()) / total
+    if (
+        type(record.vote_agreement) is not float
+        or not math.isfinite(record.vote_agreement)
+        or not math.isclose(
+            record.vote_agreement,
+            expected_agreement,
+            rel_tol=0.0,
+            abs_tol=1e-15,
+        )
+    ):
+        raise ValueError("partition authority vote agreement is invalid")
+    expected_entropy = _entropy(counts)
+    if (
+        expected_entropy is None
+        or type(record.vote_entropy) is not float
+        or not math.isfinite(record.vote_entropy)
+        or not math.isclose(
+            record.vote_entropy,
+            expected_entropy,
+            rel_tol=0.0,
+            abs_tol=1e-15,
+        )
+    ):
+        raise ValueError("partition authority vote entropy is invalid")
+
+
 def mint_validated_split_assignment(
     records: Sequence[CremaLabelRecord],
     assignment: Mapping[str, str],
@@ -577,6 +649,8 @@ def mint_validated_split_assignment(
             seed_digest,
         )
     )
+    for record in materialized:
+        _validate_partition_authority_record(record)
     assignment_sha256 = _canonical_sha256([
         [actor, role] for actor, role in canonical
     ])
@@ -715,123 +789,65 @@ def serialize_partition_authority_caches(
     return copy.deepcopy(result)
 
 
-def mint_validated_partition_authority(
-    cache: Mapping[str, Any],
-    split_manifest: Mapping[str, Any],
+def derive_validated_partition_authority(
+    split_assignment: ValidatedSplitAssignment,
+    *,
+    role: str,
 ) -> ValidatedPartitionAuthority:
-    if not isinstance(cache, Mapping):
-        raise ValueError("partition authority cache must be a mapping")
-    payload = copy.deepcopy(dict(cache))
-    expected_cache_keys = {
-        "schema_id",
-        "schema_version",
-        "partition_role",
-        "configuration_sha256",
-        "split_manifest_sha256",
-        "assignment_sha256",
-        "records",
-        "self_sha256",
-    }
-    if set(payload) != expected_cache_keys:
-        raise ValueError("partition authority cache fields do not match")
-    validate_payload_self_hash(payload, "partition authority cache")
-    if (
-        payload["schema_id"]
-        != "emotion-state-phase-b-partition-authority-cache-v1"
-        or payload["schema_version"] != 1
-        or type(payload["schema_version"]) is not int
-    ):
-        raise ValueError("partition authority cache schema does not match")
-    role = validate_partition_role(
-        payload["partition_role"],
+    assignment, seed_digest, manifest_sha256, records = (
+        _verify_validated_split_assignment(split_assignment)
+    )
+    validated_role = validate_partition_role(
+        role,
         (
             "training_discovery",
             "calibration",
             "balanced_diagnostic",
         ),
     )
-    rows = payload["records"]
-    if not isinstance(rows, list) or not rows:
-        raise ValueError("partition authority cache records must be non-empty")
-    record_keys = {
-        "clip_stem",
-        "actor_id",
-        "sentence_id",
-        "label",
-        "abstention_reason",
-        "vote_distribution",
-        "vote_agreement",
-        "vote_entropy",
-    }
-    records: list[CremaLabelRecord] = []
-    for row in rows:
-        if not isinstance(row, Mapping) or set(row) != record_keys:
-            raise ValueError("partition authority record fields do not match")
-        distribution = row["vote_distribution"]
-        if (
-            not isinstance(distribution, list)
-            or not distribution
-            or any(
-                not isinstance(cell, list)
-                or len(cell) != 2
-                or type(cell[0]) is not str
-                or cell[0] not in LABELS
-                or type(cell[1]) is not int
-                or cell[1] <= 0
-                for cell in distribution
-            )
-        ):
-            raise ValueError("partition authority vote distribution is invalid")
-        records.append(
-            CremaLabelRecord(
-                clip_stem=row["clip_stem"],
-                actor_id=row["actor_id"],
-                sentence_id=row["sentence_id"],
-                label=row["label"],
-                abstention_reason=row["abstention_reason"],
-                vote_distribution=tuple(
-                    (cell[0], cell[1]) for cell in distribution
-                ),
-                vote_agreement=row["vote_agreement"],
-                vote_entropy=row["vote_entropy"],
-            )
+    split_payload = split_assignment.to_payload()
+    authoritative_records = tuple(
+        sorted(
+            (
+                record
+                for record in records
+                if assignment[record.actor_id] == validated_role
+            ),
+            key=lambda record: record.clip_stem,
         )
-    split = validate_phase_b_split_manifest(copy.deepcopy(dict(split_manifest)))
-    if (
-        payload["configuration_sha256"] != split["configuration_sha256"]
-        or payload["split_manifest_sha256"] != split["split_manifest_sha256"]
-        or payload["assignment_sha256"] != split["assignment_sha256"]
-        or payload["self_sha256"]
-        != split["partition_authority_sha256"][role]
-    ):
-        raise ValueError("partition authority cache does not bind split manifest")
-    rebuilt = _partition_authority_cache(
-        role=role,
-        records=records,
-        configuration_sha256=payload["configuration_sha256"],
-        split_manifest_sha256=payload["split_manifest_sha256"],
-        assignment_sha256=payload["assignment_sha256"],
     )
-    if rebuilt != payload:
-        raise ValueError("partition authority cache changed during validation")
+    cache = _partition_authority_cache(
+        role=validated_role,
+        records=authoritative_records,
+        configuration_sha256=seed_digest.upper(),
+        split_manifest_sha256=manifest_sha256.upper(),
+        assignment_sha256=split_payload["assignment_sha256"],
+    )
+    if (
+        cache["self_sha256"]
+        != split_payload["partition_authority_sha256"][validated_role]
+    ):
+        raise ValueError("partition authority cache commitment changed")
     state = _ValidatedPartitionAuthorityState(
-        records=tuple(records),
-        role=role,
-        seed_digest=payload["configuration_sha256"].lower(),
-        manifest_sha256=payload["split_manifest_sha256"],
-        assignment_sha256=payload["assignment_sha256"],
+        records=authoritative_records,
+        role=validated_role,
+        seed_digest=seed_digest,
+        manifest_sha256=manifest_sha256,
+        assignment_sha256=split_payload["assignment_sha256"],
     )
     return _mint_artifact(
         ValidatedPartitionAuthority,
         {
             "schema_id": "emotion-state-phase-b-validated-partition-authority-v1",
-            "partition_role": role,
-            "configuration_sha256": payload["configuration_sha256"],
-            "split_manifest_sha256": payload["split_manifest_sha256"],
-            "assignment_sha256": payload["assignment_sha256"],
-            "partition_authority_sha256": payload["self_sha256"],
-            "eligible_record_count": len(records),
-            "eligible_actor_count": len({record.actor_id for record in records}),
+            "partition_role": validated_role,
+            "configuration_sha256": seed_digest.upper(),
+            "split_manifest_sha256": manifest_sha256.upper(),
+            "assignment_sha256": split_payload["assignment_sha256"],
+            "partition_authority_sha256": cache["self_sha256"],
+            "eligible_record_count": len(authoritative_records),
+            "eligible_actor_count": len(
+                {record.actor_id for record in authoritative_records}
+            ),
         },
         state,
     )

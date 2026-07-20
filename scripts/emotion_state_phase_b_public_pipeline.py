@@ -192,6 +192,23 @@ def validate_aggregate_privacy(payload: Any) -> None:
     visit(payload)
 
 
+def _validate_diagnostic_identity_bindings(
+    diagnostic: Mapping[str, Any],
+    *,
+    configuration_sha256: str,
+    split_manifest_sha256: str,
+) -> None:
+    provenance = diagnostic["provenance"]
+    if provenance["configuration_sha256"] != configuration_sha256:
+        raise PublicMaterialPrerequisiteError(
+            "configuration identity does not match diagnostic provenance"
+        )
+    if provenance["split_manifest_sha256"] != split_manifest_sha256:
+        raise PublicMaterialPrerequisiteError(
+            "split manifest identity does not match diagnostic provenance"
+        )
+
+
 def build_non_lockbox_review_packet(
     *,
     diagnostic_aggregate: Mapping[str, Any],
@@ -221,6 +238,13 @@ def build_non_lockbox_review_packet(
         raise PublicMaterialPrerequisiteError(
             "balanced diagnostic cannot be final-decision eligible"
         )
+    _validate_diagnostic_identity_bindings(
+        diagnostic,
+        configuration_sha256=EXPECTED_EVIDENCE_IDENTITY_SHA256[
+            "configuration_sha256"
+        ],
+        split_manifest_sha256=split_manifest_sha256,
+    )
     validate_aggregate_privacy(diagnostic)
     validate_aggregate_privacy(ami)
     packet: dict[str, Any] = {
@@ -342,6 +366,11 @@ def validate_non_lockbox_review_packet(
         raise PublicMaterialPrerequisiteError(
             f"non-lockbox aggregate validation failed: {error}"
         ) from error
+    _validate_diagnostic_identity_bindings(
+        packet["diagnostic_aggregate"],
+        configuration_sha256=packet["configuration_sha256"],
+        split_manifest_sha256=packet["split_manifest_sha256"],
+    )
     validate_aggregate_privacy(packet["diagnostic_aggregate"])
     validate_aggregate_privacy(packet["ami_aggregate"])
     if (
