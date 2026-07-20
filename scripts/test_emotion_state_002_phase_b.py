@@ -11025,6 +11025,195 @@ class AcousticPartitionAuthorityCacheTests(unittest.TestCase):
                         role="training_discovery",
                     )
 
+    def test_outer_artifact_links_require_exact_singleton_tuple(self) -> None:
+        from scripts import emotion_state_phase_b_evaluation as evaluation
+
+        class TupleSubclass(tuple):
+            pass
+
+        class StableLinks:
+            def __init__(self, state: Any) -> None:
+                self.state = state
+
+            def __len__(self) -> int:
+                return 1
+
+            def __getitem__(self, index: int) -> Any:
+                if index != 0:
+                    raise IndexError(index)
+                return self.state
+
+        factories = (
+            lambda state: [state],
+            lambda state: TupleSubclass((state,)),
+            lambda state: StableLinks(state),
+        )
+        for index, factory in enumerate(factories):
+            split = self._mint()
+            split_state = self._private_state(split)
+            object.__setattr__(
+                split,
+                "_ImmutableArtifact__links",
+                factory(split_state),
+            )
+            with self.subTest(split_links=index):
+                with self.assertRaises(ValueError):
+                    evaluation.serialize_partition_authority_caches(split)
+
+            authority = evaluation.derive_validated_partition_authority(
+                self._mint(),
+                role="training_discovery",
+            )
+            authority_state = self._private_state(authority)
+            object.__setattr__(
+                authority,
+                "_ImmutableArtifact__links",
+                factory(authority_state),
+            )
+            with self.subTest(partition_links=index):
+                with self.assertRaises(ValueError):
+                    evaluation.validated_partition_records(
+                        authority,
+                        role="training_discovery",
+                    )
+
+    def test_outer_links_reject_before_evidence_or_fake_state_access(
+        self,
+    ) -> None:
+        import numpy as np
+
+        from scripts import emotion_state_phase_b_evaluation as evaluation
+        from scripts.validate_emotion_state_002_phase_b import (
+            EXPECTED_CONFIG,
+            EXPECTED_ENVIRONMENT_LOCK,
+            EXPECTED_FEATURE_SCHEMA,
+            EXPECTED_SPLIT_SCHEMA,
+        )
+
+        class TupleSubclass(tuple):
+            pass
+
+        class StableLinks:
+            def __init__(self, state: Any) -> None:
+                self.state = state
+
+            def __len__(self) -> int:
+                return 1
+
+            def __getitem__(self, index: int) -> Any:
+                if index != 0:
+                    raise IndexError(index)
+                return self.state
+
+        records = self.RECORDS_BY_ROLE["training_discovery"]
+
+        def mint_evidence(authority: Any) -> Any:
+            return evaluation.mint_partition_evidence(
+                partition_role="training_discovery",
+                row_ids=[record.clip_stem for record in records],
+                actor_ids=[record.actor_id for record in records],
+                labels=np.asarray(
+                    [record.label for record in records],
+                    dtype="<U1",
+                ),
+                sentences=np.asarray(
+                    [record.sentence_id for record in records],
+                    dtype="<U3",
+                ),
+                features=np.zeros((len(records), 17), dtype=np.float64),
+                upstream_acoustic_source_commitment_sha256="A" * 64,
+                split_assignment=authority,
+                configuration=deepcopy(EXPECTED_CONFIG),
+                environment_lock=deepcopy(EXPECTED_ENVIRONMENT_LOCK),
+                feature_schema=deepcopy(EXPECTED_FEATURE_SCHEMA),
+                split_schema=deepcopy(EXPECTED_SPLIT_SCHEMA),
+                model_identity=evaluation.frozen_model_identity(
+                    EvaluationTests.MODEL_SEED
+                ),
+            )
+
+        factories = (
+            lambda state: [state],
+            lambda state: TupleSubclass((state,)),
+            lambda state: StableLinks(state),
+        )
+        for index, factory in enumerate(factories):
+            authority = evaluation.derive_validated_partition_authority(
+                self._mint(),
+                role="training_discovery",
+            )
+            state = self._private_state(authority)
+            object.__setattr__(
+                authority,
+                "_ImmutableArtifact__links",
+                factory(state),
+            )
+            with self.subTest(evidence_links=index):
+                with self.assertRaises(ValueError):
+                    mint_evidence(authority)
+
+        class FakeState:
+            def __init__(self, source: Any) -> None:
+                object.__setattr__(self, "source", source)
+                object.__setattr__(self, "attribute_accesses", [])
+
+            def __getattribute__(self, name: str) -> Any:
+                if name in ("source", "attribute_accesses"):
+                    return object.__getattribute__(self, name)
+                accesses = object.__getattribute__(self, "attribute_accesses")
+                accesses.append(name)
+                return getattr(object.__getattribute__(self, "source"), name)
+
+        class FlippingLinks:
+            def __init__(self, checked: Any, consumed: Any) -> None:
+                self.checked = checked
+                self.consumed = consumed
+                self.length_calls = 0
+                self.item_calls = 0
+
+            def __len__(self) -> int:
+                self.length_calls += 1
+                return 1
+
+            def __getitem__(self, index: int) -> Any:
+                if index != 0:
+                    raise IndexError(index)
+                self.item_calls += 1
+                return self.checked if self.item_calls == 1 else self.consumed
+
+        split = self._mint()
+        split_state = self._private_state(split)
+        split_fake = FakeState(split_state)
+        split_links = FlippingLinks(split_state, split_fake)
+        object.__setattr__(
+            split,
+            "_ImmutableArtifact__links",
+            split_links,
+        )
+        with self.assertRaises(ValueError):
+            evaluation.serialize_partition_authority_caches(split)
+        self.assertEqual(split_links.length_calls, 0)
+        self.assertEqual(split_links.item_calls, 0)
+        self.assertEqual(split_fake.attribute_accesses, [])
+
+        authority = evaluation.derive_validated_partition_authority(
+            self._mint(),
+            role="training_discovery",
+        )
+        authority_state = self._private_state(authority)
+        authority_fake = FakeState(authority_state)
+        authority_links = FlippingLinks(authority_state, authority_fake)
+        object.__setattr__(
+            authority,
+            "_ImmutableArtifact__links",
+            authority_links,
+        )
+        with self.assertRaises(ValueError):
+            mint_evidence(authority)
+        self.assertEqual(authority_links.length_calls, 0)
+        self.assertEqual(authority_links.item_calls, 0)
+        self.assertEqual(authority_fake.attribute_accesses, [])
+
     def test_stateful_sequence_and_duplicate_rows_cannot_escape_verification(
         self,
     ) -> None:

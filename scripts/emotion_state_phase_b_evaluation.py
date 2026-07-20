@@ -1161,9 +1161,11 @@ def _verify_validated_split_assignment(
         ValidatedSplitAssignment,
     )
     links = _artifact_links(split_assignment)
-    if len(links) != 1 or type(links[0]) is not _ValidatedSplitState:
+    if type(links) is not tuple or len(links) != 1:
         raise ValueError("validated actor split private state is invalid")
     state = links[0]
+    if type(state) is not _ValidatedSplitState:
+        raise ValueError("validated actor split private state is invalid")
     _validate_split_private_state_shape(state)
     materialized, canonical, manifest_sha256 = (
         _validate_split_assignment_components(
@@ -1384,12 +1386,11 @@ def _verify_validated_partition_authority(
     validate_partition_role(expected_role, _NONFINAL_PARTITION_ROLES)
     payload = _verify_artifact_mint(authority, ValidatedPartitionAuthority)
     links = _artifact_links(authority)
-    if (
-        len(links) != 1
-        or type(links[0]) is not _ValidatedPartitionAuthorityState
-    ):
+    if type(links) is not tuple or len(links) != 1:
         raise ValueError("validated partition authority private state is invalid")
     state = links[0]
+    if type(state) is not _ValidatedPartitionAuthorityState:
+        raise ValueError("validated partition authority private state is invalid")
     _validate_partition_private_state_shape(state)
     if state.role != expected_role:
         raise ValueError("validated partition authority role does not match")
