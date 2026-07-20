@@ -3948,6 +3948,1039 @@ class AmiMechanicsTests(unittest.TestCase):
                     )
 
 
+class AmiMaterialEvidenceV2LoaderTests(unittest.TestCase):
+    @staticmethod
+    def _ami() -> Any:
+        from scripts import emotion_state_phase_b_ami_mechanics as ami
+
+        return ami
+
+    @classmethod
+    def _loader(cls) -> Callable[..., Any]:
+        return cls._ami().load_ami_meeting_evidence_v2
+
+    @classmethod
+    def _source(cls, filename: str, content: str | bytes) -> Any:
+        payload = content.encode("utf-8") if type(content) is str else content
+        return cls._ami().AmiXmlBytes(filename, payload)
+
+    @classmethod
+    def _metadata(
+        cls,
+        meetings: tuple[str, ...],
+        *,
+        agents: tuple[str, ...] = ("A", "B"),
+        extra_meetings: tuple[str, ...] = (),
+    ) -> Any:
+        rows = []
+        for meeting_id in meetings + extra_meetings:
+            speakers = "".join(
+                (
+                    f'<speaker nxt_agent="{agent}" '
+                    f'global_name="P-{meeting_id}-{agent}" />'
+                )
+                for agent in agents
+            )
+            rows.append(
+                f'<meeting observation="{meeting_id}">{speakers}</meeting>'
+            )
+        return cls._source("meetings.xml", f"<corpus>{''.join(rows)}</corpus>")
+
+    @staticmethod
+    def _agent_start(agent: str) -> int:
+        return {"A": 0, "B": 1000, "C": 2000, "D": 3000}.get(agent, 4000)
+
+    @classmethod
+    def _word_source(
+        cls,
+        meeting_id: str,
+        agent: str,
+        *,
+        root_identity: str | None = None,
+        records: str | None = None,
+    ) -> Any:
+        start_ms = cls._agent_start(agent)
+        identity = (
+            f'meeting_id="{meeting_id}" agent="{agent}"'
+            if root_identity is None
+            else root_identity
+        )
+        body = (
+            f'<w id="w1" starttime="{start_ms / 1000:.3f}" '
+            f'endtime="{(start_ms + 500) / 1000:.3f}">'
+            "SECRET TRANSCRIPT</w>"
+            if records is None
+            else records
+        )
+        return cls._source(
+            f"{meeting_id}.{agent}.words.xml",
+            f"<words {identity}>{body}</words>",
+        )
+
+    @classmethod
+    def _segment_source(
+        cls,
+        meeting_id: str,
+        agent: str,
+        *,
+        root_identity: str | None = None,
+        records: str | None = None,
+    ) -> Any:
+        identity = (
+            f'meeting_id="{meeting_id}" agent="{agent}"'
+            if root_identity is None
+            else root_identity
+        )
+        body = (
+            f'<segment id="s1"><child href="{meeting_id}.{agent}.words.xml'
+            '#id(w1)" /></segment>'
+            if records is None
+            else records
+        )
+        return cls._source(
+            f"{meeting_id}.{agent}.segments.xml",
+            f"<segments {identity}>{body}</segments>",
+        )
+
+    @classmethod
+    def _dialogue_source(
+        cls,
+        meeting_id: str,
+        agent: str,
+        records: tuple[tuple[str, str | None, str], ...],
+        *,
+        root_identity: str | None = None,
+    ) -> Any:
+        identity = (
+            f'meeting_id="{meeting_id}" agent="{agent}"'
+            if root_identity is None
+            else root_identity
+        )
+        rows = []
+        for identifier, label, href in records:
+            pointer = (
+                ""
+                if label is None
+                else (
+                    '<pointer role="da-aspect" '
+                    f'href="da-types.xml#id({label})" />'
+                )
+            )
+            rows.append(
+                f'<dact id="{identifier}">{pointer}'
+                f'<child href="{href}" /></dact>'
+            )
+        return cls._source(
+            f"{meeting_id}.{agent}.dialog-act.xml",
+            f"<dialogue-acts {identity}>{''.join(rows)}</dialogue-acts>",
+        )
+
+    @classmethod
+    def _timing_sources(
+        cls,
+        meetings: tuple[str, ...],
+        *,
+        agents: tuple[str, ...] = ("A", "B"),
+    ) -> tuple[tuple[Any, ...], tuple[Any, ...]]:
+        identities = tuple(
+            (meeting_id, agent)
+            for meeting_id in meetings
+            for agent in agents
+        )
+        return (
+            tuple(cls._word_source(*identity) for identity in identities),
+            tuple(cls._segment_source(*identity) for identity in identities),
+        )
+
+    @classmethod
+    def _arguments(
+        cls,
+        meetings: tuple[str, ...] = ("M1",),
+        *,
+        agents: tuple[str, ...] = ("A", "B"),
+        dialogue_sources: tuple[Any, ...] = (),
+    ) -> dict[str, Any]:
+        words, segments = cls._timing_sources(meetings, agents=agents)
+        return {
+            "metadata": cls._metadata(meetings, agents=agents),
+            "word_sources": words,
+            "timing_link_sources": segments,
+            "dialogue_act_sources": dialogue_sources,
+            "known_meetings": meetings,
+        }
+
+    @staticmethod
+    def _replace_source(
+        sources: tuple[Any, ...],
+        filename: str,
+        replacement: Any,
+    ) -> tuple[Any, ...]:
+        return tuple(
+            replacement if source.filename == filename else source
+            for source in sources
+        )
+
+    @staticmethod
+    def _meeting(evidence: tuple[Any, ...], meeting_id: str) -> Any:
+        return next(item for item in evidence if item.meeting_id == meeting_id)
+
+    @staticmethod
+    def _serialized_meetings(evidence: tuple[Any, ...]) -> list[dict[str, Any]]:
+        def turn_payload(turn: Any, dialogue: bool) -> dict[str, Any]:
+            payload = {
+                "meeting_id": turn.meeting_id,
+                "participant_id": turn.participant_id,
+                "start_ms": turn.start_ms,
+                "end_ms": turn.end_ms,
+            }
+            if dialogue:
+                payload["dialogue_act"] = turn.dialogue_act
+            return payload
+
+        return [
+            {
+                "meeting_id": meeting.meeting_id,
+                "participants": list(meeting.participants),
+                "timing_file_present": meeting.timing_file_present,
+                "timed_turns": (
+                    None
+                    if meeting.timed_turns is None
+                    else [
+                        turn_payload(turn, False)
+                        for turn in meeting.timed_turns
+                    ]
+                ),
+                "dialogue_turns": (
+                    None
+                    if meeting.dialogue_turns is None
+                    else [
+                        turn_payload(turn, True)
+                        for turn in meeting.dialogue_turns
+                    ]
+                ),
+                "dialogue_act_file_count": meeting.dialogue_act_file_count,
+                "fully_labeled_dialogue_act_file_count": (
+                    meeting.fully_labeled_dialogue_act_file_count
+                ),
+                "unlabeled_dialogue_act_record_count": (
+                    meeting.unlabeled_dialogue_act_record_count
+                ),
+                "unlabeled_dialogue_act_file_count": (
+                    meeting.unlabeled_dialogue_act_file_count
+                ),
+            }
+            for meeting in evidence
+        ]
+
+    def test_official_order_complete_timing_and_byte_only_no_open(self) -> None:
+        loader = self._loader()
+        words, segments = self._timing_sources(("M1", "M2"))
+        arguments = {
+            "metadata": self._metadata(("M1", "M2")),
+            "word_sources": tuple(reversed(words)),
+            "timing_link_sources": tuple(reversed(segments)),
+            "dialogue_act_sources": (),
+            "known_meetings": ("M2", "M1"),
+        }
+        ami = self._ami()
+        with (
+            patch(
+                "builtins.open",
+                side_effect=AssertionError("byte loader opened a file"),
+            ),
+            patch.object(
+                Path,
+                "read_bytes",
+                side_effect=AssertionError("byte loader read a path"),
+            ),
+            patch.object(
+                ami.ET,
+                "parse",
+                side_effect=AssertionError("byte loader used ET.parse"),
+            ),
+        ):
+            evidence = loader(**arguments)
+        self.assertEqual(
+            tuple(meeting.meeting_id for meeting in evidence),
+            ("M2", "M1"),
+        )
+        first = evidence[0]
+        self.assertEqual(first.participants, ("P-M2-A", "P-M2-B"))
+        self.assertEqual(
+            first.timed_turns,
+            (
+                ami.TimedTurn("M2", "P-M2-A", 0, 500),
+                ami.TimedTurn("M2", "P-M2-B", 1000, 1500),
+            ),
+        )
+        self.assertNotIn("SECRET", repr(evidence).upper())
+
+    def test_paired_empty_extra_identity_nulls_only_meeting_timing(self) -> None:
+        loader = self._loader()
+        arguments = self._arguments()
+        arguments["word_sources"] += (
+            self._word_source("M1", "D", records=""),
+        )
+        arguments["timing_link_sources"] += (
+            self._segment_source("M1", "D", records=""),
+        )
+        meeting = loader(**arguments)[0]
+        self.assertTrue(meeting.timing_file_present)
+        self.assertIsNone(meeting.timed_turns)
+
+    def test_all_timing_local_failures_are_isolated_to_affected_meeting(
+        self,
+    ) -> None:
+        loader = self._loader()
+        base = self._arguments(("M1", "M2"))
+        cases = (
+            "missing",
+            "unpaired",
+            "empty",
+            "nonempty_extra",
+            "malformed_xml",
+            "root_conflict",
+            "partial_root",
+            "duplicate_record",
+            "cross_agent",
+            "cross_meeting",
+            "external_reference",
+            "malformed_reference",
+            "unknown_identifier",
+            "unresolved_file",
+        )
+        for case in cases:
+            with self.subTest(case=case):
+                words = tuple(base["word_sources"])
+                segments = tuple(base["timing_link_sources"])
+                if case == "missing":
+                    words = tuple(
+                        item
+                        for item in words
+                        if item.filename != "M1.B.words.xml"
+                    )
+                    segments = tuple(
+                        item
+                        for item in segments
+                        if item.filename != "M1.B.segments.xml"
+                    )
+                elif case == "unpaired":
+                    segments = tuple(
+                        item
+                        for item in segments
+                        if item.filename != "M1.B.segments.xml"
+                    )
+                elif case == "empty":
+                    words = self._replace_source(
+                        words,
+                        "M1.A.words.xml",
+                        self._word_source("M1", "A", records=""),
+                    )
+                elif case == "nonempty_extra":
+                    words += (self._word_source("M1", "D"),)
+                    segments += (self._segment_source("M1", "D"),)
+                elif case == "malformed_xml":
+                    words = self._replace_source(
+                        words,
+                        "M1.A.words.xml",
+                        self._source("M1.A.words.xml", b"<broken"),
+                    )
+                elif case == "root_conflict":
+                    words = self._replace_source(
+                        words,
+                        "M1.A.words.xml",
+                        self._word_source(
+                            "M1",
+                            "A",
+                            root_identity='meeting_id="M1" agent="B"',
+                        ),
+                    )
+                elif case == "partial_root":
+                    words = self._replace_source(
+                        words,
+                        "M1.A.words.xml",
+                        self._word_source(
+                            "M1",
+                            "A",
+                            root_identity='meeting_id="M1"',
+                        ),
+                    )
+                elif case == "duplicate_record":
+                    words = self._replace_source(
+                        words,
+                        "M1.A.words.xml",
+                        self._word_source(
+                            "M1",
+                            "A",
+                            records=(
+                                '<w id="w1" starttime="0.000" '
+                                'endtime="0.500" />'
+                                '<w id="w1" starttime="0.500" '
+                                'endtime="1.000" />'
+                            ),
+                        ),
+                    )
+                else:
+                    hrefs = {
+                        "cross_agent": "M1.B.words.xml#id(w1)",
+                        "cross_meeting": "M2.A.words.xml#id(w1)",
+                        "external_reference": (
+                            "https://example.test/M1.A.words.xml#id(w1)"
+                        ),
+                        "malformed_reference": "M1.A.words.xml-id(w1)",
+                        "unknown_identifier": "M1.A.words.xml#id(missing)",
+                        "unresolved_file": "missing.words.xml#id(w1)",
+                    }
+                    segments = self._replace_source(
+                        segments,
+                        "M1.A.segments.xml",
+                        self._segment_source(
+                            "M1",
+                            "A",
+                            records=(
+                                '<segment id="s1"><child '
+                                f'href="{hrefs[case]}" /></segment>'
+                            ),
+                        ),
+                    )
+                evidence = loader(
+                    **{
+                        **base,
+                        "word_sources": words,
+                        "timing_link_sources": segments,
+                    }
+                )
+                affected = self._meeting(evidence, "M1")
+                preserved = self._meeting(evidence, "M2")
+                self.assertTrue(affected.timing_file_present)
+                self.assertIsNone(affected.timed_turns)
+                self.assertIsNotNone(preserved.timed_turns)
+
+    def test_no_timing_sources_preserve_false_presence_and_null_turns(
+        self,
+    ) -> None:
+        loader = self._loader()
+        evidence = loader(
+            metadata=self._metadata(("M1",)),
+            word_sources=(),
+            timing_link_sources=(),
+            dialogue_act_sources=(),
+            known_meetings=("M1",),
+        )
+        self.assertFalse(evidence[0].timing_file_present)
+        self.assertIsNone(evidence[0].timed_turns)
+
+    def test_complete_multifile_dialogue_counts_all_records_and_sorts_ties(
+        self,
+    ) -> None:
+        loader = self._loader()
+        dialogue = (
+            self._dialogue_source(
+                "M1",
+                "B",
+                (
+                    (
+                        "d3",
+                        "ami_da_1",
+                        "M1.B.segments.xml#id(s1)",
+                    ),
+                ),
+            ),
+            self._dialogue_source(
+                "M1",
+                "A",
+                (
+                    (
+                        "d1",
+                        "ami_da_3",
+                        "M1.A.segments.xml#id(s1)",
+                    ),
+                    (
+                        "d2",
+                        "ami_da_2",
+                        "M1.A.segments.xml#id(s1)",
+                    ),
+                ),
+            ),
+        )
+        meeting = loader(
+            **self._arguments(dialogue_sources=dialogue)
+        )[0]
+        self.assertEqual(
+            (
+                meeting.dialogue_act_file_count,
+                meeting.fully_labeled_dialogue_act_file_count,
+                meeting.unlabeled_dialogue_act_record_count,
+                meeting.unlabeled_dialogue_act_file_count,
+            ),
+            (2, 2, 0, 0),
+        )
+        self.assertEqual(
+            tuple(turn.dialogue_act for turn in meeting.dialogue_turns),
+            ("ami_da_2", "ami_da_3", "ami_da_1"),
+        )
+        self.assertEqual(len(meeting.dialogue_turns), 3)
+
+    def test_multifile_unlabeled_record_and_file_counts_are_distinct(
+        self,
+    ) -> None:
+        loader = self._loader()
+        dialogue = (
+            self._dialogue_source(
+                "M1",
+                "A",
+                (
+                    ("d1", None, "M1.A.segments.xml#id(s1)"),
+                    ("d2", None, "M1.A.segments.xml#id(s1)"),
+                ),
+            ),
+            self._dialogue_source(
+                "M1",
+                "B",
+                (("d3", None, "M1.B.segments.xml#id(s1)"),),
+            ),
+            self._dialogue_source(
+                "M1",
+                "C",
+                (("d4", "ami_da_2", "M1.C.segments.xml#id(s1)"),),
+            ),
+        )
+        meeting = loader(
+            **self._arguments(
+                agents=("A", "B", "C"),
+                dialogue_sources=dialogue,
+            )
+        )[0]
+        self.assertEqual(
+            (
+                meeting.dialogue_act_file_count,
+                meeting.fully_labeled_dialogue_act_file_count,
+                meeting.unlabeled_dialogue_act_record_count,
+                meeting.unlabeled_dialogue_act_file_count,
+            ),
+            (3, 1, 3, 2),
+        )
+        self.assertIsNone(meeting.dialogue_turns)
+
+    def test_no_dialogue_sources_have_exact_zero_counts_and_null_turns(
+        self,
+    ) -> None:
+        loader = self._loader()
+        meeting = loader(**self._arguments())[0]
+        self.assertEqual(
+            (
+                meeting.dialogue_act_file_count,
+                meeting.fully_labeled_dialogue_act_file_count,
+                meeting.unlabeled_dialogue_act_record_count,
+                meeting.unlabeled_dialogue_act_file_count,
+                meeting.dialogue_turns,
+            ),
+            (0, 0, 0, 0, None),
+        )
+
+    def test_dialogue_remains_independent_of_unreferenced_extra_timing(
+        self,
+    ) -> None:
+        loader = self._loader()
+        dialogue = (
+            self._dialogue_source(
+                "M1",
+                "A",
+                (("d1", "ami_da_2", "M1.A.segments.xml#id(s1)"),),
+            ),
+        )
+        arguments = self._arguments(dialogue_sources=dialogue)
+        arguments["word_sources"] += (
+            self._word_source("M1", "D", records=""),
+        )
+        arguments["timing_link_sources"] += (
+            self._segment_source("M1", "D", records=""),
+        )
+        meeting = loader(**arguments)[0]
+        self.assertIsNone(meeting.timed_turns)
+        self.assertIsNotNone(meeting.dialogue_turns)
+        self.assertEqual(
+            (
+                meeting.dialogue_act_file_count,
+                meeting.fully_labeled_dialogue_act_file_count,
+            ),
+            (1, 1),
+        )
+
+    def test_participant_enrichment_is_non_authoritative_and_fail_closed(
+        self,
+    ) -> None:
+        loader = self._loader()
+        arguments = self._arguments()
+        arguments["word_sources"] += (self._word_source("M1", "D"),)
+        arguments["timing_link_sources"] += (
+            self._segment_source("M1", "D"),
+        )
+        enrichment = self._source(
+            "participants.xml",
+            (
+                "<participants>"
+                '<participant id="P-M1-A" />'
+                '<participant id="P-OUTSIDE" />'
+                "</participants>"
+            ),
+        )
+        meeting = loader(
+            **arguments,
+            participant_metadata=enrichment,
+        )[0]
+        self.assertEqual(meeting.participants, ("P-M1-A", "P-M1-B"))
+        self.assertIsNone(meeting.timed_turns)
+        invalid = (
+            self._source(
+                "participants.xml",
+                (
+                    "<participants>"
+                    '<participant id="P-M1-A" />'
+                    '<participant id="P-M1-A" />'
+                    "</participants>"
+                ),
+            ),
+            self._source("participants.xml", "<participants />"),
+            self._source("participants.xml", b"<broken"),
+        )
+        for source in invalid:
+            with self.subTest(content=source.content):
+                with self.assertRaises(ValueError):
+                    loader(
+                        **self._arguments(),
+                        participant_metadata=source,
+                    )
+
+    def test_metadata_completeness_aliases_and_extra_observation_boundary(
+        self,
+    ) -> None:
+        loader = self._loader()
+        valid_extra = loader(
+            metadata=self._metadata(
+                ("M1",),
+                extra_meetings=("M-EXTRA",),
+            ),
+            word_sources=(),
+            timing_link_sources=(),
+            dialogue_act_sources=(),
+            known_meetings=("M1",),
+        )
+        self.assertEqual(
+            tuple(meeting.meeting_id for meeting in valid_extra),
+            ("M1",),
+        )
+        valid_m1 = (
+            '<meeting observation="M1">'
+            '<speaker nxt_agent="A" global_name="P-M1-A" />'
+            '<speaker nxt_agent="B" global_name="P-M1-B" />'
+            "</meeting>"
+        )
+        invalid_metadata = {
+            "omission": self._metadata(("M1",)),
+            "duplicate_observation": self._source(
+                "meetings.xml",
+                f"<corpus>{valid_m1}{valid_m1}</corpus>",
+            ),
+            "incomplete_speaker": self._source(
+                "meetings.xml",
+                (
+                    '<corpus><meeting observation="M1">'
+                    '<speaker nxt_agent="A" />'
+                    '<speaker nxt_agent="B" global_name="P-M1-B" />'
+                    "</meeting></corpus>"
+                ),
+            ),
+            "cardinality": self._source(
+                "meetings.xml",
+                (
+                    '<corpus><meeting observation="M1">'
+                    '<speaker nxt_agent="A" global_name="P-M1-A" />'
+                    "</meeting></corpus>"
+                ),
+            ),
+            "duplicate_agent": self._source(
+                "meetings.xml",
+                (
+                    '<corpus><meeting observation="M1">'
+                    '<speaker nxt_agent="A" global_name="P-M1-A" />'
+                    '<speaker nxt_agent="A" global_name="P-M1-B" />'
+                    "</meeting></corpus>"
+                ),
+            ),
+            "participant_alias": self._source(
+                "meetings.xml",
+                (
+                    '<corpus><meeting observation="M1">'
+                    '<speaker nxt_agent="A" global_name="P-SHARED" />'
+                    '<speaker nxt_agent="B" global_name="P-SHARED" />'
+                    "</meeting></corpus>"
+                ),
+            ),
+            "tag_alias": self._source(
+                "meetings.xml",
+                (
+                    '<corpus><meeting observation="M1">'
+                    '<Speaker nxt_agent="A" global_name="P-M1-A" />'
+                    '<speaker nxt_agent="B" global_name="P-M1-B" />'
+                    "</meeting></corpus>"
+                ),
+            ),
+        }
+        for case, metadata in invalid_metadata.items():
+            known = ("M1", "M2") if case == "omission" else ("M1",)
+            with self.subTest(case=case):
+                with self.assertRaises(ValueError):
+                    loader(
+                        metadata=metadata,
+                        word_sources=(),
+                        timing_link_sources=(),
+                        dialogue_act_sources=(),
+                        known_meetings=known,
+                    )
+
+    def test_loader_wide_type_identity_duplicate_and_filename_boundaries(
+        self,
+    ) -> None:
+        loader = self._loader()
+        base = self._arguments()
+        invalid_calls = (
+            {**base, "metadata": "meetings.xml"},
+            {**base, "word_sources": "M1.A.words.xml"},
+            {**base, "word_sources": (object(),)},
+            {**base, "known_meetings": "M1"},
+            {**base, "known_meetings": b"M1"},
+            {**base, "known_meetings": ()},
+            {**base, "known_meetings": ("M1", "M1")},
+            {**base, "known_meetings": (" M1",)},
+            {**base, "known_meetings": ("M1", 1)},
+            {
+                **base,
+                "participant_metadata": self._source(
+                    "participant.xml",
+                    '<participants><participant id="P-M1-A" /></participants>',
+                ),
+            },
+            {
+                **base,
+                "metadata": self._source(
+                    "meeting.xml",
+                    base["metadata"].content,
+                ),
+            },
+            {
+                **base,
+                "word_sources": (
+                    base["word_sources"][0],
+                    base["word_sources"][0],
+                ),
+            },
+            {
+                **base,
+                "word_sources": (
+                    base["timing_link_sources"][0],
+                ),
+            },
+            {
+                **base,
+                "word_sources": (
+                    self._word_source("M2", "A"),
+                ),
+            },
+        )
+        for index, arguments in enumerate(invalid_calls):
+            with self.subTest(index=index):
+                with self.assertRaises(ValueError):
+                    loader(**arguments)
+        invalid_filenames = (
+            "M1.A.Words.xml",
+            "M1.A.words.XML",
+            "M1.A.adjacency-pairs.xml",
+            "M1.A.words.xml.backup",
+            "M.1.A.words.xml",
+            ".A.words.xml",
+            "M1..words.xml",
+        )
+        for filename in invalid_filenames:
+            with self.subTest(filename=filename):
+                arguments = {
+                    **base,
+                    "word_sources": (
+                        self._source(
+                            filename,
+                            base["word_sources"][0].content,
+                        ),
+                    ),
+                }
+                with self.assertRaises(ValueError):
+                    loader(**arguments)
+        for filename in ("../M1.A.words.xml", "nested/M1.A.words.xml"):
+            with self.subTest(unsafe=filename):
+                with self.assertRaises(ValueError):
+                    self._source(filename, "<words />")
+
+    def test_every_structural_dialogue_failure_is_loader_wide(
+        self,
+    ) -> None:
+        loader = self._loader()
+        base = self._arguments(("M1", "M2"))
+        valid_other = self._dialogue_source(
+            "M2",
+            "A",
+            (("d-ok", "ami_da_2", "M2.A.segments.xml#id(s1)"),),
+        )
+
+        def wrap(body: str, identity: str = 'meeting_id="M1" agent="A"') -> str:
+            return f"<dialogue-acts {identity}>{body}</dialogue-acts>"
+
+        def record(
+            identifier: str,
+            *,
+            label: str = "ami_da_2",
+            href: str = "M1.A.segments.xml#id(s1)",
+        ) -> str:
+            return (
+                f'<dact id="{identifier}">'
+                '<pointer role="da-aspect" '
+                f'href="da-types.xml#id({label})" />'
+                f'<child href="{href}" /></dact>'
+            )
+
+        cases = {
+            "malformed_xml": self._source(
+                "M1.A.dialog-act.xml",
+                b"<broken",
+            ),
+            "empty_xml": self._source(
+                "M1.A.dialog-act.xml",
+                wrap(""),
+            ),
+            "root_conflict": self._source(
+                "M1.A.dialog-act.xml",
+                wrap(record("d1"), 'meeting_id="M1" agent="B"'),
+            ),
+            "partial_root": self._source(
+                "M1.A.dialog-act.xml",
+                wrap(record("d1"), 'meeting_id="M1"'),
+            ),
+            "unknown_dependency": self._source(
+                "M1.D.dialog-act.xml",
+                (
+                    '<dialogue-acts meeting_id="M1" agent="D">'
+                    f'{record("d1", href="M1.A.segments.xml#id(s1)")}'
+                    "</dialogue-acts>"
+                ),
+            ),
+            "duplicate_record": self._source(
+                "M1.A.dialog-act.xml",
+                wrap(record("d1") + record("d1", label="ami_da_3")),
+            ),
+            "unknown_label": self._source(
+                "M1.A.dialog-act.xml",
+                wrap(record("d1", label="ami_da_10")),
+            ),
+            "multiple_label_pointers": self._source(
+                "M1.A.dialog-act.xml",
+                wrap(
+                    '<dact id="d1">'
+                    '<pointer role="da-aspect" '
+                    'href="da-types.xml#id(ami_da_2)" />'
+                    '<pointer role="da-aspect" '
+                    'href="da-types.xml#id(ami_da_3)" />'
+                    '<child href="M1.A.segments.xml#id(s1)" />'
+                    "</dact>"
+                ),
+            ),
+            "malformed_label_pointer": self._source(
+                "M1.A.dialog-act.xml",
+                wrap(
+                    '<dact id="d1">'
+                    '<pointer role="da-aspect" href="da-types.xml#bad" />'
+                    '<child href="M1.A.segments.xml#id(s1)" />'
+                    "</dact>"
+                ),
+            ),
+            "direct_label": self._source(
+                "M1.A.dialog-act.xml",
+                wrap(
+                    '<dact id="d1" type="ami_da_2">'
+                    '<child href="M1.A.segments.xml#id(s1)" />'
+                    "</dact>"
+                ),
+            ),
+            "malformed_reference": self._source(
+                "M1.A.dialog-act.xml",
+                wrap(record("d1", href="missing-fragment")),
+            ),
+            "cross_agent": self._source(
+                "M1.A.dialog-act.xml",
+                wrap(record("d1", href="M1.B.segments.xml#id(s1)")),
+            ),
+            "cross_meeting": self._source(
+                "M1.A.dialog-act.xml",
+                wrap(record("d1", href="M2.A.segments.xml#id(s1)")),
+            ),
+            "external_reference": self._source(
+                "M1.A.dialog-act.xml",
+                wrap(
+                    record(
+                        "d1",
+                        href=(
+                            "https://example.test/"
+                            "M1.A.segments.xml#id(s1)"
+                        ),
+                    )
+                ),
+            ),
+            "unknown_identifier": self._source(
+                "M1.A.dialog-act.xml",
+                wrap(record("d1", href="M1.A.segments.xml#id(missing)")),
+            ),
+            "unresolved_file": self._source(
+                "M1.A.dialog-act.xml",
+                wrap(record("d1", href="missing.segments.xml#id(s1)")),
+            ),
+            "fully_labelled_without_turn": self._source(
+                "M1.A.dialog-act.xml",
+                wrap(
+                    '<dact id="d1"><pointer role="da-aspect" '
+                    'href="da-types.xml#id(ami_da_2)" /></dact>'
+                ),
+            ),
+            "duplicate_resulting_turn": self._source(
+                "M1.A.dialog-act.xml",
+                wrap(record("d1") + record("d2")),
+            ),
+        }
+        for case, corrupt in cases.items():
+            with self.subTest(case=case):
+                with self.assertRaises(ValueError):
+                    loader(
+                        **{
+                            **base,
+                            "dialogue_act_sources": (
+                                corrupt,
+                                valid_other,
+                            ),
+                        }
+                    )
+
+    def test_valid_unlabeled_dialogue_is_meeting_local_and_preserves_timing(
+        self,
+    ) -> None:
+        loader = self._loader()
+        dialogue = (
+            self._dialogue_source(
+                "M1",
+                "A",
+                (("d1", None, "M1.A.segments.xml#id(s1)"),),
+            ),
+            self._dialogue_source(
+                "M2",
+                "A",
+                (("d2", "ami_da_2", "M2.A.segments.xml#id(s1)"),),
+            ),
+        )
+        evidence = loader(
+            **self._arguments(
+                ("M1", "M2"),
+                dialogue_sources=dialogue,
+            )
+        )
+        affected = self._meeting(evidence, "M1")
+        preserved = self._meeting(evidence, "M2")
+        self.assertIsNotNone(affected.timed_turns)
+        self.assertIsNone(affected.dialogue_turns)
+        self.assertEqual(
+            (
+                affected.dialogue_act_file_count,
+                affected.fully_labeled_dialogue_act_file_count,
+                affected.unlabeled_dialogue_act_record_count,
+                affected.unlabeled_dialogue_act_file_count,
+            ),
+            (1, 0, 1, 1),
+        )
+        self.assertIsNotNone(preserved.dialogue_turns)
+
+    def test_legacy_official_schema_bytes_preserve_partial_enrichment(
+        self,
+    ) -> None:
+        self._loader()
+        ami = self._ami()
+        with tempfile.TemporaryDirectory() as directory:
+            fixture = AmiMechanicsTests._write_real_schema_fixture(
+                Path(directory),
+            )
+            byte_fixture = SecurePublicMaterialByteTests._ami_byte_fixture(
+                fixture
+            )
+        without_enrichment = ami.load_ami_turns_from_bytes(**byte_fixture)
+        partial = self._source(
+            "participants.xml",
+            (
+                "<participants>"
+                '<participant id="P-A" />'
+                '<participant id="P-NONMATCHING" />'
+                "</participants>"
+            ),
+        )
+        with_enrichment = ami.load_ami_turns_from_bytes(
+            **{
+                **byte_fixture,
+                "participant_metadata": partial,
+            }
+        )
+        self.assertEqual(with_enrichment, without_enrichment)
+
+    def test_loader_evidence_matches_frozen_builder_and_independent_oracle(
+        self,
+    ) -> None:
+        loader = self._loader()
+        from scripts.validate_emotion_state_002_phase_b import (
+            validate_ami_mechanics_aggregates_v2,
+        )
+
+        dialogue = (
+            self._dialogue_source(
+                "M1",
+                "A",
+                (("d1", None, "M1.A.segments.xml#id(s1)"),),
+            ),
+        )
+        arguments = self._arguments(
+            ("M1", "M2"),
+            dialogue_sources=dialogue,
+        )
+        arguments["word_sources"] += (
+            self._word_source("M2", "D", records=""),
+        )
+        arguments["timing_link_sources"] += (
+            self._segment_source("M2", "D", records=""),
+        )
+        evidence = loader(**arguments)
+        membership = {
+            "scenario_only": ("M1",),
+            "full_corpus": ("M1", "M2"),
+            "full_only": ("M2",),
+        }
+        official_order = ("M1", "M2")
+        aggregate = self._ami().contribution_limited_aggregates_v2(
+            evidence,
+            membership,
+            official_order,
+        )
+        validated = validate_ami_mechanics_aggregates_v2(
+            aggregate,
+            meetings=self._serialized_meetings(evidence),
+            partition_membership={
+                key: list(value)
+                for key, value in membership.items()
+            },
+            official_order=list(official_order),
+        )
+        self.assertEqual(validated, aggregate)
+
+
 class AmiMechanicsV2Tests(unittest.TestCase):
     TIMING_BUCKET_KEYS = (
         "turn_duration_ms_median",

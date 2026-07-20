@@ -829,6 +829,587 @@ def load_ami_turns_from_bytes(
     ))
 
 
+_AMI_V2_SOURCE_FILENAME = re.compile(
+    r"^([^.]+)\.([^.]+)\.(words|segments|dialog-act)\.xml$"
+)
+
+
+def _v2_exact_attribute(
+    element: ET.Element,
+    name: str,
+) -> str | None:
+    values = [
+        value
+        for key, value in element.attrib.items()
+        if _exact_local_name(key) == name
+    ]
+    if not values:
+        return None
+    if len(values) != 1 or not values[0]:
+        raise ValueError(f"AMI v2 {name} attribute is malformed")
+    return values[0]
+
+
+def _v2_exact_identifier(value: Any, name: str) -> str:
+    if (
+        type(value) is not str
+        or value != _canonical_identifier(value, name)
+    ):
+        raise ValueError(f"{name} identifier is not canonical")
+    return value
+
+
+def _v2_sources(
+    sources: Sequence[AmiXmlBytes],
+    name: str,
+) -> tuple[AmiXmlBytes, ...]:
+    if isinstance(sources, (str, bytes)) or not isinstance(sources, Sequence):
+        raise ValueError(f"{name} must be a sequence of AMI XML bytes")
+    validated = tuple(sources)
+    if any(type(source) is not AmiXmlBytes for source in validated):
+        raise ValueError(f"{name} must contain only AMI XML bytes")
+    return validated
+
+
+def _v2_source_identity(
+    source: AmiXmlBytes,
+    family: str,
+    known_meetings: set[str],
+) -> tuple[str, str]:
+    match = _AMI_V2_SOURCE_FILENAME.fullmatch(source.filename)
+    if match is None:
+        raise ValueError("AMI v2 annotation filename is not canonical")
+    meeting_id, agent, actual_family = match.groups()
+    if actual_family != family:
+        raise ValueError("AMI v2 annotation source is routed to the wrong family")
+    meeting_id = _v2_exact_identifier(meeting_id, "meeting")
+    agent = _v2_exact_identifier(agent, "speaker dependency")
+    if (
+        source.filename
+        != f"{meeting_id}.{agent}.{family}.xml"
+    ):
+        raise ValueError("AMI v2 annotation filename is not canonical")
+    if meeting_id not in known_meetings:
+        raise ValueError(
+            f"AMI v2 annotation references unknown meeting: {meeting_id}"
+        )
+    return meeting_id, agent
+
+
+def _v2_validate_root_identity(
+    root: ET.Element,
+    expected: tuple[str, str],
+) -> None:
+    exact_names = {"meeting_id", "agent"}
+    aliases = {
+        "meeting",
+        "observation",
+        "meetingid",
+        "speaker",
+        "participant",
+        "channel",
+    }
+    for key in root.attrib:
+        local_name = _exact_local_name(key)
+        if (
+            local_name not in exact_names
+            and _normalized_name(local_name) in aliases
+        ):
+            raise ValueError("AMI v2 root identity uses an alias")
+    meeting_id = _v2_exact_attribute(root, "meeting_id")
+    agent = _v2_exact_attribute(root, "agent")
+    if (meeting_id is None) != (agent is None):
+        raise ValueError("AMI v2 root identity is incomplete")
+    if meeting_id is None:
+        return
+    actual = (
+        _v2_exact_identifier(meeting_id, "meeting"),
+        _v2_exact_identifier(agent, "speaker dependency"),
+    )
+    if actual != expected:
+        raise ValueError("AMI v2 filename and root identity disagree")
+
+
+def _v2_validate_participant_enrichment(
+    participant_metadata: AmiXmlBytes,
+) -> None:
+    enriched: set[str] = set()
+    for element in _xml(participant_metadata).iter():
+        local_name = _exact_local_name(element.tag)
+        if local_name != "participant":
+            if _normalized_name(local_name) == "participant":
+                raise ValueError("AMI participant enrichment is incomplete")
+            continue
+        participant_id = _v2_exact_attribute(element, "id")
+        if participant_id is None:
+            raise ValueError("AMI participant enrichment is incomplete")
+        participant_id = _v2_exact_identifier(
+            participant_id,
+            "participant",
+        )
+        if participant_id in enriched:
+            raise ValueError("AMI participant enrichment is conflicting")
+        enriched.add(participant_id)
+    if not enriched:
+        raise ValueError("AMI participant enrichment is incomplete")
+
+
+def _v2_metadata_dependencies(
+    metadata: AmiXmlBytes,
+    known_meetings: tuple[str, ...],
+    participant_metadata: AmiXmlBytes | None,
+) -> tuple[
+    dict[str, dict[str, str]],
+    dict[str, tuple[str, ...]],
+]:
+    known = set(known_meetings)
+    observations: dict[str, list[ET.Element]] = defaultdict(list)
+    for element in _xml(metadata).iter():
+        local_name = _exact_local_name(element.tag)
+        if local_name != "meeting":
+            if _normalized_name(local_name) == "meeting":
+                raise ValueError("AMI v2 meeting metadata uses an alias")
+            continue
+        observation = _v2_exact_attribute(element, "observation")
+        if observation is None:
+            continue
+        observation = _v2_exact_identifier(observation, "meeting")
+        if observation in known:
+            observations[observation].append(element)
+
+    dependencies: dict[str, dict[str, str]] = {}
+    participants: dict[str, tuple[str, ...]] = {}
+    for meeting_id in known_meetings:
+        matches = observations.get(meeting_id, [])
+        if len(matches) != 1:
+            raise ValueError(
+                "AMI v2 metadata must contain each official observation once"
+            )
+        bindings: dict[str, str] = {}
+        participant_ids: set[str] = set()
+        for element in matches[0]:
+            local_name = _exact_local_name(element.tag)
+            if local_name != "speaker":
+                if _normalized_name(local_name) in {"speaker", "participant"}:
+                    raise ValueError("AMI v2 speaker metadata uses an alias")
+                continue
+            agent = _v2_exact_attribute(element, "nxt_agent")
+            participant_id = _v2_exact_attribute(element, "global_name")
+            if agent is None or participant_id is None:
+                raise ValueError("AMI v2 speaker metadata is incomplete")
+            agent = _v2_exact_identifier(agent, "speaker dependency")
+            participant_id = _v2_exact_identifier(
+                participant_id,
+                "participant",
+            )
+            if agent in bindings:
+                raise ValueError("AMI v2 speaker binding is duplicated")
+            if participant_id in participant_ids:
+                raise ValueError("AMI v2 participant identity is aliased")
+            bindings[agent] = participant_id
+            participant_ids.add(participant_id)
+        if len(bindings) < 2 or len(participant_ids) < 2:
+            raise ValueError(
+                "AMI v2 metadata requires two authoritative participants"
+            )
+        dependencies[meeting_id] = bindings
+        participants[meeting_id] = tuple(sorted(participant_ids))
+
+    if participant_metadata is not None:
+        _v2_validate_participant_enrichment(participant_metadata)
+    return dependencies, participants
+
+
+def _v2_word_boundaries(
+    source: AmiXmlBytes,
+    identity: tuple[str, str],
+) -> tuple[tuple[_Boundary, ...], dict[str, int]]:
+    root = _xml(source)
+    _v2_validate_root_identity(root, identity)
+    ordered: list[_Boundary] = []
+    positions: dict[str, int] = {}
+    for element in root.iter():
+        if _normalized_name(element.tag) not in {"w", "word"}:
+            continue
+        identifier = _attribute(element, "id")
+        if identifier is None or identifier in positions:
+            raise ValueError("AMI v2 word identifier is missing or duplicate")
+        start_ms = _milliseconds(_attribute(element, "starttime", "start"))
+        end_ms = _milliseconds(_attribute(element, "endtime", "end"))
+        if not 0 <= start_ms < end_ms:
+            raise ValueError("AMI v2 word time span is malformed")
+        positions[identifier] = len(ordered)
+        ordered.append(_Boundary(*identity, start_ms, end_ms))
+    if not ordered:
+        raise ValueError("AMI v2 word file contains no timing boundaries")
+    return tuple(ordered), positions
+
+
+def _v2_segment_boundaries(
+    source: AmiXmlBytes,
+    identity: tuple[str, str],
+    words: Mapping[str, tuple[_Boundary, ...]],
+    word_identifiers: Mapping[str, Mapping[str, int]],
+) -> tuple[tuple[_Boundary, ...], dict[str, int]]:
+    root = _xml(source)
+    _v2_validate_root_identity(root, identity)
+    ordered: list[_Boundary] = []
+    positions: dict[str, int] = {}
+    for element in root.iter():
+        if _normalized_name(element.tag) not in {
+            "segment",
+            "timinglink",
+            "turn",
+            "utterance",
+        }:
+            continue
+        identifier = _attribute(element, "id")
+        if identifier is None or identifier in positions:
+            raise ValueError(
+                "AMI v2 timing-link identifier is missing or duplicate"
+            )
+        referenced: list[_Boundary] = []
+        for child in element.iter():
+            if child is element or _normalized_name(child.tag) not in {
+                "child",
+                "link",
+                "pointer",
+            }:
+                continue
+            target, first, last = _local_reference(
+                _attribute(child, "href"),
+                source.filename,
+            )
+            referenced.extend(_resolve_range(
+                target,
+                first,
+                last,
+                words,
+                word_identifiers,
+                "word",
+            ))
+        boundary = _merge_boundaries(referenced)
+        if (boundary.meeting_id, boundary.agent) != identity:
+            raise ValueError("AMI v2 timing link crosses source identity")
+        positions[identifier] = len(ordered)
+        ordered.append(boundary)
+    if not ordered:
+        raise ValueError("AMI v2 timing-link file contains no local links")
+    return tuple(ordered), positions
+
+
+def _v2_dialogue_file(
+    source: AmiXmlBytes,
+    identity: tuple[str, str],
+    participant_id: str,
+    words: Mapping[str, tuple[_Boundary, ...]],
+    word_identifiers: Mapping[str, Mapping[str, int]],
+    segments: Mapping[str, tuple[_Boundary, ...]],
+    segment_identifiers: Mapping[str, Mapping[str, int]],
+) -> tuple[list[Turn], int]:
+    root = _xml(source)
+    _v2_validate_root_identity(root, identity)
+    turns: list[Turn] = []
+    identifiers: set[str] = set()
+    unlabeled = 0
+    found = False
+    for element in root.iter():
+        if _normalized_name(element.tag) not in {
+            "dact",
+            "dialogueact",
+            "da",
+        }:
+            continue
+        found = True
+        identifier = _attribute(element, "id")
+        if identifier is None or identifier in identifiers:
+            raise ValueError(
+                "AMI v2 dialogue-act identifier is missing or duplicate"
+            )
+        identifiers.add(identifier)
+        dialogue_act = _dialogue_act_from_element(
+            element,
+            allow_legacy_direct=False,
+        )
+        referenced: list[_Boundary] = []
+        for child in element.iter():
+            if child is element or _normalized_name(child.tag) not in {
+                "child",
+                "link",
+                "pointer",
+            }:
+                continue
+            if (
+                _exact_local_name(child.tag) == "pointer"
+                and _exact_attribute(child, "role") == "da-aspect"
+            ):
+                continue
+            target, first, last = _local_reference(
+                _attribute(child, "href"),
+                source.filename,
+            )
+            if target in segments:
+                referenced.extend(_resolve_range(
+                    target,
+                    first,
+                    last,
+                    segments,
+                    segment_identifiers,
+                    "timing link",
+                ))
+            elif target in words:
+                referenced.extend(_resolve_range(
+                    target,
+                    first,
+                    last,
+                    words,
+                    word_identifiers,
+                    "word",
+                ))
+            else:
+                raise ValueError(
+                    "AMI v2 dialogue reference targets an unknown local file"
+                )
+        boundary = _merge_boundaries(referenced)
+        if (boundary.meeting_id, boundary.agent) != identity:
+            raise ValueError("AMI v2 dialogue act crosses source identity")
+        if dialogue_act is None:
+            unlabeled += 1
+        else:
+            turns.append(Turn(
+                meeting_id=identity[0],
+                participant_id=participant_id,
+                start_ms=boundary.start_ms,
+                end_ms=boundary.end_ms,
+                dialogue_act=dialogue_act,
+            ))
+    if not found:
+        raise ValueError("AMI v2 dialogue-act file contains no dialogue acts")
+    return turns, unlabeled
+
+
+def load_ami_meeting_evidence_v2(
+    metadata: AmiXmlBytes,
+    word_sources: Sequence[AmiXmlBytes],
+    timing_link_sources: Sequence[AmiXmlBytes],
+    dialogue_act_sources: Sequence[AmiXmlBytes],
+    known_meetings: Sequence[str],
+    *,
+    participant_metadata: AmiXmlBytes | None = None,
+) -> tuple[AmiMeetingEvidenceV2, ...]:
+    """Load partial AMI v2 meeting evidence exclusively from verified bytes."""
+    if type(metadata) is not AmiXmlBytes:
+        raise ValueError("metadata must be AMI XML bytes")
+    if metadata.filename != "meetings.xml":
+        raise ValueError("AMI v2 metadata filename must be meetings.xml")
+    if (
+        participant_metadata is not None
+        and type(participant_metadata) is not AmiXmlBytes
+    ):
+        raise ValueError("participant metadata must be AMI XML bytes")
+    if (
+        participant_metadata is not None
+        and participant_metadata.filename != "participants.xml"
+    ):
+        raise ValueError(
+            "AMI v2 participant metadata filename must be participants.xml"
+        )
+    meetings = _strict_identifier_sequence_v2(
+        known_meetings,
+        "known meetings",
+    )
+    known = set(meetings)
+    word_files = _v2_sources(word_sources, "word sources")
+    segment_files = _v2_sources(
+        timing_link_sources,
+        "timing-link sources",
+    )
+    dialogue_files = _v2_sources(
+        dialogue_act_sources,
+        "dialogue-act sources",
+    )
+    all_sources = (
+        (metadata,)
+        + word_files
+        + segment_files
+        + dialogue_files
+        + (() if participant_metadata is None else (participant_metadata,))
+    )
+    filenames = tuple(source.filename for source in all_sources)
+    if len(filenames) != len(set(filenames)):
+        raise ValueError("duplicate AMI v2 filename")
+
+    word_identities = {
+        source.filename: _v2_source_identity(source, "words", known)
+        for source in word_files
+    }
+    segment_identities = {
+        source.filename: _v2_source_identity(source, "segments", known)
+        for source in segment_files
+    }
+    dialogue_identities = {
+        source.filename: _v2_source_identity(source, "dialog-act", known)
+        for source in dialogue_files
+    }
+    dependencies, participants = _v2_metadata_dependencies(
+        metadata,
+        meetings,
+        participant_metadata,
+    )
+    for identity in dialogue_identities.values():
+        if identity[1] not in dependencies[identity[0]]:
+            raise ValueError(
+                "AMI v2 dialogue source has unresolved participant dependency"
+            )
+
+    timing_bad: set[str] = set()
+    words: dict[str, tuple[_Boundary, ...]] = {}
+    word_positions: dict[str, dict[str, int]] = {}
+    for source in word_files:
+        identity = word_identities[source.filename]
+        try:
+            boundaries, positions = _v2_word_boundaries(source, identity)
+        except ValueError:
+            timing_bad.add(identity[0])
+            continue
+        words[source.filename] = boundaries
+        word_positions[source.filename] = positions
+
+    segments: dict[str, tuple[_Boundary, ...]] = {}
+    segment_positions: dict[str, dict[str, int]] = {}
+    for source in segment_files:
+        identity = segment_identities[source.filename]
+        try:
+            boundaries, positions = _v2_segment_boundaries(
+                source,
+                identity,
+                words,
+                word_positions,
+            )
+        except ValueError:
+            timing_bad.add(identity[0])
+            continue
+        segments[source.filename] = boundaries
+        segment_positions[source.filename] = positions
+
+    word_agents: dict[str, set[str]] = defaultdict(set)
+    segment_agents: dict[str, set[str]] = defaultdict(set)
+    for meeting_id, agent in word_identities.values():
+        word_agents[meeting_id].add(agent)
+    for meeting_id, agent in segment_identities.values():
+        segment_agents[meeting_id].add(agent)
+
+    timed_by_meeting: dict[str, tuple[TimedTurn, ...] | None] = {}
+    timing_present: dict[str, bool] = {}
+    for meeting_id in meetings:
+        present = bool(word_agents[meeting_id] or segment_agents[meeting_id])
+        timing_present[meeting_id] = present
+        mandatory = set(dependencies[meeting_id])
+        if (
+            not present
+            or meeting_id in timing_bad
+            or word_agents[meeting_id] != segment_agents[meeting_id]
+            or word_agents[meeting_id] != mandatory
+        ):
+            timed_by_meeting[meeting_id] = None
+            continue
+        turns = [
+            TimedTurn(
+                meeting_id=meeting_id,
+                participant_id=dependencies[meeting_id][agent],
+                start_ms=boundary.start_ms,
+                end_ms=boundary.end_ms,
+            )
+            for filename, identity in segment_identities.items()
+            if identity[0] == meeting_id
+            for boundary in segments[filename]
+            for agent in (identity[1],)
+        ]
+        turns.sort(
+            key=lambda turn: (
+                turn.start_ms,
+                turn.end_ms,
+                turn.participant_id,
+            )
+        )
+        if (
+            not turns
+            or len(set(turns)) != len(turns)
+            or len({turn.participant_id for turn in turns}) < 2
+        ):
+            timed_by_meeting[meeting_id] = None
+        else:
+            timed_by_meeting[meeting_id] = tuple(turns)
+
+    dialogue_turns: dict[str, list[Turn]] = defaultdict(list)
+    dialogue_file_count: Counter[str] = Counter()
+    fully_labeled_count: Counter[str] = Counter()
+    unlabeled_record_count: Counter[str] = Counter()
+    unlabeled_file_count: Counter[str] = Counter()
+    for source in dialogue_files:
+        identity = dialogue_identities[source.filename]
+        meeting_id, agent = identity
+        turns, unlabeled = _v2_dialogue_file(
+            source,
+            identity,
+            dependencies[meeting_id][agent],
+            words,
+            word_positions,
+            segments,
+            segment_positions,
+        )
+        dialogue_file_count[meeting_id] += 1
+        if unlabeled:
+            unlabeled_record_count[meeting_id] += unlabeled
+            unlabeled_file_count[meeting_id] += 1
+        else:
+            fully_labeled_count[meeting_id] += 1
+        dialogue_turns[meeting_id].extend(turns)
+
+    evidence: list[AmiMeetingEvidenceV2] = []
+    for meeting_id in meetings:
+        file_count = dialogue_file_count[meeting_id]
+        if not file_count or unlabeled_record_count[meeting_id]:
+            finalized_dialogue = None
+        else:
+            ordered_dialogue = tuple(sorted(
+                dialogue_turns[meeting_id],
+                key=lambda turn: (
+                    turn.start_ms,
+                    turn.end_ms,
+                    turn.participant_id,
+                    turn.dialogue_act,
+                ),
+            ))
+            if not ordered_dialogue:
+                raise ValueError(
+                    "AMI v2 fully labeled dialogue file produced no turns"
+                )
+            if len(set(ordered_dialogue)) != len(ordered_dialogue):
+                raise ValueError(
+                    "AMI v2 dialogue turns contain an exact duplicate"
+                )
+            finalized_dialogue = ordered_dialogue
+        evidence.append(AmiMeetingEvidenceV2(
+            meeting_id=meeting_id,
+            participants=participants[meeting_id],
+            timing_file_present=timing_present[meeting_id],
+            timed_turns=timed_by_meeting[meeting_id],
+            dialogue_turns=finalized_dialogue,
+            dialogue_act_file_count=file_count,
+            fully_labeled_dialogue_act_file_count=(
+                fully_labeled_count[meeting_id]
+            ),
+            unlabeled_dialogue_act_record_count=(
+                unlabeled_record_count[meeting_id]
+            ),
+            unlabeled_dialogue_act_file_count=(
+                unlabeled_file_count[meeting_id]
+            ),
+        ))
+    return tuple(evidence)
+
+
 def _linear_percentile(values: Sequence[int | float], percentile: float) -> float:
     ordered = sorted(float(value) for value in values)
     if not ordered:
