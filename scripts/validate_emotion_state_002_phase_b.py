@@ -253,6 +253,24 @@ VALIDITY_KEYS = (
     "deterministic",
     "lockbox_valid",
 )
+PROVENANCE_KEYS = (
+    "schema_id",
+    "partition_role",
+    "configuration_sha256",
+    "environment_lock_sha256",
+    "feature_schema_sha256",
+    "split_schema_sha256",
+    "split_manifest_sha256",
+    "assignment_sha256",
+    "row_commitment_sha256",
+    "actor_commitment_sha256",
+    "label_input_commitment_sha256",
+    "model_class_commitment_sha256",
+    "probability_commitment_sha256",
+    "case_count",
+    "unique_actor_count",
+    "self_sha256",
+)
 MODEL_METRIC_KEYS = (
     "suppressed",
     "unique_actor_count",
@@ -307,6 +325,83 @@ def _count(value: Any, name: str) -> int:
     if type(value) is not int or value < 0:
         raise ValueError(f"{name} must be a non-negative integer")
     return value
+
+
+def _positive_count(value: Any, name: str) -> int:
+    if type(value) is not int or value <= 0:
+        raise ValueError(f"{name} must be a positive integer")
+    return value
+
+
+def canonical_payload_sha256(payload: Mapping[str, Any]) -> str:
+    if not isinstance(payload, Mapping):
+        raise ValueError("self-hashed payload must be a mapping")
+    unsigned = dict(payload)
+    unsigned.pop("self_sha256", None)
+    _reject_non_finite(unsigned)
+    try:
+        canonical = json.dumps(
+            unsigned,
+            sort_keys=True,
+            separators=(",", ":"),
+            ensure_ascii=True,
+            allow_nan=False,
+        ).encode("ascii")
+    except (TypeError, ValueError) as error:
+        raise ValueError("payload is not canonically serializable") from error
+    return hashlib.sha256(canonical).hexdigest().upper()
+
+
+def validate_payload_self_hash(payload: Any, name: str) -> Mapping[str, Any]:
+    if not isinstance(payload, Mapping):
+        raise ValueError(f"{name} must be a mapping")
+    _reject_non_finite(payload)
+    digest = payload.get("self_sha256")
+    if (
+        type(digest) is not str
+        or re.fullmatch(r"[0-9A-F]{64}", digest) is None
+        or digest != canonical_payload_sha256(payload)
+    ):
+        raise ValueError(f"{name} self hash does not match canonical payload")
+    return payload
+
+
+def validate_provenance_payload(
+    payload: Any,
+    *,
+    expected_role: str | None = None,
+) -> Mapping[str, Any]:
+    _exact_keys(payload, PROVENANCE_KEYS, "provenance")
+    validate_payload_self_hash(payload, "provenance")
+    if payload["schema_id"] != "emotion-state-phase-b-partition-evidence-v1":
+        raise ValueError("provenance schema does not match")
+    role = validate_partition_role(
+        payload["partition_role"],
+        (
+            "training_discovery",
+            "calibration",
+            "balanced_diagnostic",
+            "final_lockbox",
+        ),
+    )
+    if expected_role is not None and role != expected_role:
+        raise ValueError(f"provenance must have {expected_role} partition role")
+    for key in PROVENANCE_KEYS:
+        if key.endswith("_sha256"):
+            value = payload[key]
+            if (
+                type(value) is not str
+                or re.fullmatch(r"[0-9A-F]{64}", value) is None
+            ):
+                raise ValueError(f"provenance {key} is invalid")
+    cases = _positive_count(payload["case_count"], "provenance case count")
+    actors = _positive_count(
+        payload["unique_actor_count"],
+        "provenance actor count",
+    )
+    if actors > cases:
+        raise ValueError("provenance actors cannot exceed cases")
+    return payload
 
 
 def validate_class_order(class_order: Any) -> tuple[str, ...]:
@@ -444,12 +539,27 @@ def validate_labels_and_actors(
 def validate_calibration_result(payload: Any) -> Mapping[str, Any]:
     _exact_keys(
         payload,
-        ("schema_id", "partition_role", "class_order", "targets", "models"),
+        (
+            "schema_id",
+            "partition_role",
+            "class_order",
+            "targets",
+            "models",
+            "provenance",
+            "self_sha256",
+        ),
         "calibration result",
     )
+    validate_payload_self_hash(payload, "calibration result")
     if payload["schema_id"] != "emotion-state-phase-b-calibration-v1":
         raise ValueError("calibration result schema does not match")
     validate_partition_role(payload["partition_role"], ("calibration",))
+    provenance = validate_provenance_payload(
+        payload["provenance"],
+        expected_role="calibration",
+    )
+    if payload["partition_role"] != provenance["partition_role"]:
+        raise ValueError("calibration provenance partition role does not match")
     validate_class_order(payload["class_order"])
     if tuple(payload["targets"]) != COVERAGE_TARGETS:
         raise ValueError("calibration targets do not match frozen contract")
@@ -489,8 +599,13 @@ def _validate_metric_models(models: Any) -> Mapping[str, Any]:
         suppressed = metric["suppressed"]
         if type(suppressed) is not bool:
             raise ValueError("metric suppression flag is invalid")
-        actor_count = _count(metric["unique_actor_count"], "metric actor count")
-        _count(metric["case_count"], "metric case count")
+        actor_count = _positive_count(
+            metric["unique_actor_count"],
+            "metric actor count",
+        )
+        case_count = _positive_count(metric["case_count"], "metric case count")
+        if actor_count > case_count:
+            raise ValueError("metric actors cannot exceed cases")
         for key in (
             "macro_f1",
             "balanced_accuracy",
@@ -503,7 +618,19 @@ def _validate_metric_models(models: Any) -> Mapping[str, Any]:
                 if value is not None:
                     raise ValueError("suppressed metric must not emit a value")
             else:
-                _finite_float(value, f"metric {key}")
+                numeric = _finite_float(value, f"metric {key}")
+                if key in (
+                    "macro_f1",
+                    "balanced_accuracy",
+                    "ece_10_bin",
+                ) and not 0.0 <= numeric <= 1.0:
+                    raise ValueError(f"metric {key} must be within [0,1]")
+                if key == "multiclass_brier" and not 0.0 <= numeric <= 2.0:
+                    raise ValueError(
+                        "metric multiclass_brier must be within [0,2]"
+                    )
+                if key == "log_loss" and numeric < 0.0:
+                    raise ValueError("metric log_loss must be non-negative")
         if suppressed != (actor_count < MINIMUM_UNIQUE_ACTORS):
             raise ValueError("metric suppression does not match actor floor")
         class_cells = _exact_keys(
@@ -521,7 +648,14 @@ def _validate_metric_models(models: Any) -> Mapping[str, Any]:
                 cell["unique_actor_count"],
                 "per-class recall actor count",
             )
-            _count(cell["case_count"], "per-class recall case count")
+            cell_cases = _count(
+                cell["case_count"],
+                "per-class recall case count",
+            )
+            if cell_actors > cell_cases or cell_cases > case_count:
+                raise ValueError(
+                    "per-class recall actors/cases exceed model cases"
+                )
             if type(cell["suppressed"]) is not bool:
                 raise ValueError("per-class recall suppression flag is invalid")
             if cell["suppressed"] != (cell_actors < MINIMUM_UNIQUE_ACTORS):
@@ -564,7 +698,18 @@ def _validate_metric_models(models: Any) -> Mapping[str, Any]:
                 cell["unique_actor_count"],
                 "retained actor count",
             )
-            _count(cell["case_count"], "retained case count")
+            retained_cases = _count(
+                cell["case_count"],
+                "retained case count",
+            )
+            if (
+                retained_actors > retained_cases
+                or retained_actors > actor_count
+                or retained_cases > case_count
+            ):
+                raise ValueError(
+                    "retained actors/cases cannot exceed total model counts"
+                )
             if type(cell["suppressed"]) is not bool:
                 raise ValueError("retained suppression flag is invalid")
             if cell["suppressed"] != (
@@ -575,10 +720,23 @@ def _validate_metric_models(models: Any) -> Mapping[str, Any]:
                 if cell["retained_macro_f1"] is not None:
                     raise ValueError("suppressed retained metric must be absent")
             else:
-                _finite_float(
+                retained_f1 = _finite_float(
                     cell["retained_macro_f1"],
                     "retained macro-F1",
                 )
+                if not 0.0 <= retained_f1 <= 1.0:
+                    raise ValueError(
+                        "retained macro-F1 must be within [0,1]"
+                    )
+    count_pairs = {
+        (
+            models[model]["unique_actor_count"],
+            models[model]["case_count"],
+        )
+        for model in MODEL_KEYS
+    }
+    if len(count_pairs) != 1:
+        raise ValueError("cross-model actor/case counts do not match")
     return models
 
 
@@ -595,9 +753,12 @@ def validate_evaluation_result(
             "class_order",
             "models",
             "final_decision_eligible",
+            "provenance",
+            "self_sha256",
         ),
         "evaluation result",
     )
+    validate_payload_self_hash(payload, "evaluation result")
     if payload["schema_id"] != "emotion-state-phase-b-evaluation-v1":
         raise ValueError("evaluation result schema does not match")
     role = validate_partition_role(
@@ -606,10 +767,28 @@ def validate_evaluation_result(
     )
     if expected_role is not None and role != expected_role:
         raise ValueError(f"evaluation result must have {expected_role} provenance")
+    provenance = validate_provenance_payload(
+        payload["provenance"],
+        expected_role=role,
+    )
+    if provenance["partition_role"] != role:
+        raise ValueError("evaluation provenance partition role does not match")
     validate_class_order(payload["class_order"])
     if payload["final_decision_eligible"] is not (role == "final_lockbox"):
         raise ValueError("diagnostic evaluation cannot produce a final decision")
-    _validate_metric_models(payload["models"])
+    models = _validate_metric_models(payload["models"])
+    expected_counts = (
+        provenance["unique_actor_count"],
+        provenance["case_count"],
+    )
+    if any(
+        (
+            models[model]["unique_actor_count"],
+            models[model]["case_count"],
+        ) != expected_counts
+        for model in MODEL_KEYS
+    ):
+        raise ValueError("evaluation counts do not match provenance")
     return payload
 
 
@@ -626,9 +805,12 @@ def validate_bootstrap_result(payload: Any) -> Mapping[str, Any]:
             "unique_actor_count",
             "case_count",
             "paired_macro_f1_lift",
+            "provenance",
+            "self_sha256",
         ),
         "bootstrap result",
     )
+    validate_payload_self_hash(payload, "bootstrap result")
     if payload["schema_id"] != "emotion-state-phase-b-bootstrap-v1":
         raise ValueError("bootstrap result schema does not match")
     validate_partition_role(payload["partition_role"], ("final_lockbox",))
@@ -642,8 +824,24 @@ def validate_bootstrap_result(payload: Any) -> Mapping[str, Any]:
         raise ValueError("bootstrap configuration SHA-256 is invalid")
     if payload["seed"] != int(digest[:16], 16):
         raise ValueError("bootstrap seed does not match configuration SHA-256")
-    _count(payload["unique_actor_count"], "bootstrap actor count")
-    _count(payload["case_count"], "bootstrap case count")
+    actor_count = _positive_count(
+        payload["unique_actor_count"],
+        "bootstrap actor count",
+    )
+    case_count = _positive_count(payload["case_count"], "bootstrap case count")
+    if actor_count > case_count:
+        raise ValueError("bootstrap actors cannot exceed cases")
+    provenance = validate_provenance_payload(
+        payload["provenance"],
+        expected_role="final_lockbox",
+    )
+    if (
+        provenance["unique_actor_count"],
+        provenance["case_count"],
+    ) != (actor_count, case_count):
+        raise ValueError("bootstrap counts do not match provenance")
+    if provenance["configuration_sha256"] != digest:
+        raise ValueError("bootstrap configuration does not match provenance")
     lifts = _exact_keys(
         payload["paired_macro_f1_lift"],
         ("class_prior", "sentence_id"),
@@ -658,8 +856,10 @@ def validate_bootstrap_result(payload: Any) -> Mapping[str, Any]:
         point = _finite_float(cell["point_estimate"], "bootstrap point estimate")
         lower = _finite_float(cell["lower_95"], "bootstrap lower interval")
         upper = _finite_float(cell["upper_95"], "bootstrap upper interval")
-        if not lower <= point <= upper:
-            raise ValueError("bootstrap interval does not contain point estimate")
+        if any(not -1.0 <= value <= 1.0 for value in (point, lower, upper)):
+            raise ValueError("bootstrap lift values must be within [-1,1]")
+        if lower > upper:
+            raise ValueError("bootstrap lower interval exceeds upper interval")
     return payload
 
 
@@ -680,13 +880,20 @@ def validate_decision_inputs(
             "eligible_slice_reversal",
             "eligible_slice_instability",
             "confidence_abstention_improves",
+            "provenance",
+            "self_sha256",
         ),
         "metric",
     )
+    validate_payload_self_hash(metrics, "decision evidence")
     if metrics["schema_id"] != "emotion-state-phase-b-decision-evidence-v1":
         raise ValueError("metric schema does not match frozen contract")
     validate_partition_role(metrics["partition_role"], ("final_lockbox",))
     validate_class_order(metrics["class_order"])
+    provenance = validate_provenance_payload(
+        metrics["provenance"],
+        expected_role="final_lockbox",
+    )
     if metrics["final_decision_eligible"] is not True:
         raise ValueError("final_lockbox evidence is not decision eligible")
     _validate_metric_models(metrics["models"])
@@ -704,8 +911,10 @@ def validate_decision_inputs(
         point = _finite_float(cell["point_estimate"], "paired lift point")
         lower = _finite_float(cell["lower_95"], "paired lift lower")
         upper = _finite_float(cell["upper_95"], "paired lift upper")
-        if not lower <= point <= upper:
-            raise ValueError("paired lift interval does not contain point")
+        if any(not -1.0 <= value <= 1.0 for value in (point, lower, upper)):
+            raise ValueError("paired lift values must be within [-1,1]")
+        if lower > upper:
+            raise ValueError("paired lift lower interval exceeds upper interval")
     for key in (
         "sentence_driven_apparent_lift",
         "eligible_slice_reversal",
@@ -715,6 +924,20 @@ def validate_decision_inputs(
         if type(metrics[key]) is not bool:
             raise ValueError(f"metric {key} must be boolean")
     models = metrics["models"]
+    expected_counts = (
+        provenance["unique_actor_count"],
+        provenance["case_count"],
+    )
+    if any(
+        (
+            models[model]["unique_actor_count"],
+            models[model]["case_count"],
+        ) != expected_counts
+        for model in MODEL_KEYS
+    ):
+        raise ValueError(
+            "decision cross-model counts do not match provenance"
+        )
     if any(models[model]["suppressed"] for model in MODEL_KEYS):
         raise ValueError("decision metrics cannot use suppressed model cells")
     if any(

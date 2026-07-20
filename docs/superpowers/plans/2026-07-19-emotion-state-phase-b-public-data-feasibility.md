@@ -1188,40 +1188,68 @@ git commit -m "Add Phase B actor-disjoint split contract"
 - Modify: `scripts/validate_emotion_state_002_phase_b.py`
 
 **Interfaces:**
-- Consumes: eligible local rows, exact feature vectors, actor assignments, and
-  frozen config/environment identity.
+- Consumes: eligible local rows, exact feature vectors, the deterministic
+  actor assignment minted by the frozen split validator, and frozen
+  config/environment identity.
 - Produces:
+  `mint_validated_split_assignment(records: Sequence[CremaLabelRecord],
+  assignment: Mapping[str, str], seed_digest: str) ->
+  ValidatedSplitAssignment`,
+  `mint_partition_evidence(*, partition_role: str, row_ids: Sequence[str],
+  actor_ids: Sequence[str], labels: np.ndarray, split_assignment:
+  ValidatedSplitAssignment, configuration: Mapping[str, Any],
+  environment_lock: Mapping[str, Any], feature_schema: Mapping[str, Any],
+  split_schema: Mapping[str, Any], features: np.ndarray | None, sentences:
+  np.ndarray | None, probabilities: Mapping[str, np.ndarray] | None,
+  model_identity: Mapping[str, Any]) -> PartitionEvidence`,
   `fit_frozen_models(training_features: np.ndarray, training_sentences:
   np.ndarray, training_labels: np.ndarray, seed: int, *,
-  partition_role: str, class_order: Sequence[str]) -> dict[str, object]`,
+  evidence: PartitionEvidence) -> dict[str, object]`,
   `calibrate_thresholds(probabilities: Mapping[str, np.ndarray], targets:
-  Sequence[float], *, partition_role: str, class_order: Sequence[str])
-  -> dict[str, Any]`,
+  Sequence[float], *, evidence: PartitionEvidence)
+  -> CalibrationEvidence`,
   `evaluate_partition(labels: np.ndarray, probabilities: Mapping[str,
-  np.ndarray], actor_ids: Sequence[str], thresholds: Mapping[str,
-  Any], *, partition_role: str, class_order: Sequence[str])
-  -> dict[str, Any]`,
+  np.ndarray], actor_ids: Sequence[str], thresholds: CalibrationEvidence,
+  *, evidence: PartitionEvidence) -> EvaluationEvidence`,
   `paired_actor_bootstrap(labels: np.ndarray, probabilities: Mapping[str,
-  np.ndarray], actor_ids: Sequence[str], resamples: int, seed: int) ->
-  dict[str, Any]` with mandatory keyword-only `partition_role`,
-  `class_order`, and `configuration_sha256`, and
-  `decide_experiment(metrics: Mapping[str, Any], validity: Mapping[str, bool])
-  -> str`.
+  np.ndarray], actor_ids: Sequence[str], resamples: int, seed: int, *,
+  evidence: PartitionEvidence) -> BootstrapEvidence`,
+  `build_decision_evidence(evaluation: EvaluationEvidence, bootstrap:
+  BootstrapEvidence, *, evidence: PartitionEvidence, ...) ->
+  DecisionEvidence`, and `decide_experiment(metrics: DecisionEvidence,
+  validity: Mapping[str, bool]) -> str`.
 
-All partition-sensitive interfaces fail closed on explicit provenance:
-fitting accepts only `training_discovery`, calibration accepts only
-`calibration`, diagnostic evaluation names `balanced_diagnostic` and cannot
-produce decision evidence, and paired bootstrap/final decision evidence
-accepts only `final_lockbox`. The validator freezes exact input/result keys,
-model keys, class order, thresholds, actor IDs, resample count, metric keys,
-validity keys, and finite array/numeric requirements. Diagnostic metrics are
-never accepted by `decide_experiment`.
+`ValidatedSplitAssignment` has no public constructor. Its mint reruns the
+frozen actor-split validator, requires the supplied assignment to equal the
+deterministic split for the exact records/configuration digest, and binds the
+existing split-manifest digest. `PartitionEvidence` also has no public
+constructor. It is minted only after exact frozen config, environment lock,
+feature schema, split schema, and authoritative split membership validate.
+Its canonical self-hashed payload commits to the partition, full split
+assignment/manifest, case order, rows, actors, labels/inputs, model
+identity/class columns, and probabilities without emitting identifiers.
+Every partition-sensitive interface independently recomputes and compares the
+commitments against its exact inputs. Calibration, evaluation, bootstrap, and
+decision results are privately minted bound payloads with their own canonical
+self-hash. Evaluation and bootstrap decision inputs must carry the exact same
+`final_lockbox` commitment payload; equal counts are insufficient. Plain
+arrays plus role strings, mutable mappings, relabeled diagnostic payloads, and
+fabricated decision mappings are rejected.
+
+Fitting accepts only bound `training_discovery` evidence, calibration accepts
+only bound `calibration` evidence, diagnostic evaluation names
+`balanced_diagnostic` and cannot produce decision evidence, and paired
+bootstrap/final decision evidence accepts only bound `final_lockbox`
+evidence. The validator freezes exact input/result keys, model keys, class
+order, thresholds, actor IDs, resample count, metric keys, validity keys,
+mathematical domains, count relationships, and finite requirements.
 
 - [ ] **Step 1: Write failing evaluation tests**
 
 Use synthetic arrays with explicit actor clusters. Tests must prove:
 
-- the class-prior baseline uses training prevalence only;
+- the class-prior baseline matches an exact imbalanced training-prevalence
+  oracle;
 - the sentence baseline contains only one-hot sentence IDs;
 - the acoustic pipeline contains only `StandardScaler` and the frozen
   logistic regression;
@@ -1229,11 +1257,14 @@ Use synthetic arrays with explicit actor clusters. Tests must prove:
 - 100/80/60% targets record achieved coverage under ties;
 - macro-F1, balanced accuracy, per-class recall, multiclass Brier, log loss,
   and ten-bin ECE match hand-calculated fixtures;
-- 2,000 paired actor-cluster bootstrap draws are deterministic;
+- 2,000 paired actor-cluster bootstrap draws match hard-coded independent
+  interval oracles over non-identical multi-row actors;
 - cells below ten actors suppress;
 - every `keep_for_research_only`, `revise`, and `discard` clause has a mutation
   test;
-- lockbox data cannot enter fit, calibration, or diagnostic decisions.
+- diagnostic relabeling, cross-run equal-count artifact mixing, and any exact
+  input/commitment mutation fail before a decision;
+- a valid skewed percentile interval may exclude the observed point estimate.
 
 - [ ] **Step 2: Run tests and confirm RED**
 
@@ -1260,12 +1291,12 @@ from sklearn.preprocessing import OneHotEncoder, StandardScaler
 
 def _classifier(seed: int) -> LogisticRegression:
     return LogisticRegression(
-        penalty="l2",
         C=1.0,
         class_weight=None,
         solver="lbfgs",
         max_iter=10000,
         random_state=seed,
+        l1_ratio=0.0,
     )
 
 
@@ -1283,9 +1314,10 @@ def build_models(seed: int) -> dict[str, object]:
     }
 ```
 
-Before accepting the dependency lock, prove this exact API produces
-multinomial six-class probabilities in the locked scikit-learn version. Abort
-the lock rather than changing model semantics silently.
+Before accepting the dependency lock, prove this warning-free scikit-learn
+1.8 API produces multinomial six-class probabilities and bit-identical
+coefficients/probabilities to the deprecated explicit `penalty="l2"` form.
+Abort the lock rather than changing model semantics silently.
 
 - [ ] **Step 4: Implement metrics and calibration**
 
@@ -1294,7 +1326,12 @@ of squared probability error. Equal-width ECE uses ten bins on maximum
 probability with left-closed/right-open bins except the final closed bin.
 Coverage thresholds are the highest deterministic threshold whose calibration
 coverage is at least each target; ties retain all equal-confidence rows and
-record achieved coverage.
+record achieved coverage. Validators enforce F1, balanced accuracy, recall,
+ECE, coverage, and retained F1 in `[0,1]`; six-class Brier in `[0,2]`; log
+loss at least zero; lift points/bounds in `[-1,1]` with `lower <= upper`; and
+positive total actor/case counts with non-negative, internally consistent
+class/retained counts. Percentile intervals do not have to contain the
+observed point estimate.
 
 - [ ] **Step 5: Implement paired actor-cluster bootstrap**
 

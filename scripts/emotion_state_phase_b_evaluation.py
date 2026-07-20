@@ -4,10 +4,11 @@ import csv
 import copy
 import hashlib
 import io
+import json
 import math
 import re
 from collections import Counter, defaultdict
-from collections.abc import Collection, Mapping, Sequence
+from collections.abc import Collection, Iterator, Mapping, Sequence
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
@@ -27,12 +28,19 @@ from scripts.validate_emotion_state_002_phase_b import (
     validate_bootstrap_result,
     validate_calibration_result,
     validate_class_order,
+    validate_config,
     validate_decision_inputs,
+    validate_environment_lock,
     validate_evaluation_result,
+    validate_feature_schema,
     validate_fit_inputs,
     validate_labels_and_actors,
+    validate_payload_self_hash,
     validate_partition_role,
     validate_probability_inputs,
+    validate_provenance_payload,
+    validate_split_schema,
+    canonical_payload_sha256,
 )
 
 LABELS = frozenset({"A", "D", "F", "H", "N", "S"})
@@ -201,14 +209,465 @@ def load_crema_reference_labels(
     return tuple(records), result
 
 
+def _canonical_sha256(value: Any) -> str:
+    canonical = json.dumps(
+        value,
+        sort_keys=True,
+        separators=(",", ":"),
+        ensure_ascii=True,
+        allow_nan=False,
+    ).encode("ascii")
+    return hashlib.sha256(canonical).hexdigest().upper()
+
+
+def _array_commitment(array: np.ndarray) -> str:
+    contiguous = np.ascontiguousarray(array)
+    metadata = json.dumps(
+        {
+            "dtype": contiguous.dtype.str,
+            "shape": list(contiguous.shape),
+        },
+        sort_keys=True,
+        separators=(",", ":"),
+    ).encode("ascii")
+    return hashlib.sha256(
+        metadata + b"\0" + contiguous.tobytes(order="C")
+    ).hexdigest().upper()
+
+
+def frozen_model_identity(seed: int) -> dict[str, Any]:
+    if type(seed) is not int or not 0 <= seed <= 0xFFFFFFFF:
+        raise ValueError("model seed must be a 32-bit non-negative integer")
+    classifier = {
+        "C": 1.0,
+        "class_weight": None,
+        "solver": "lbfgs",
+        "max_iter": 10000,
+        "random_state": seed,
+        "l1_ratio": 0.0,
+        "multiclass_semantics": "six_class_multinomial_softmax",
+    }
+    return {
+        "schema_id": "emotion-state-phase-b-frozen-model-identity-v1",
+        "model_order": list(MODEL_KEYS),
+        "class_order": list(CLASS_ORDER),
+        "class_prior": {"strategy": "prior"},
+        "sentence_id": {
+            "steps": ["one_hot", "classifier"],
+            "one_hot_handle_unknown": "ignore",
+            "classifier": dict(classifier),
+        },
+        "acoustic": {
+            "steps": ["standardize", "classifier"],
+            "standardizer": "StandardScaler",
+            "classifier": dict(classifier),
+        },
+    }
+
+
+@dataclass(frozen=True, init=False)
+class ValidatedSplitAssignment:
+    _records: tuple[CremaLabelRecord, ...]
+    _assignment: tuple[tuple[str, str], ...]
+    _seed_digest: str
+    _manifest_sha256: str
+
+    def __init__(self, *_: Any, **__: Any) -> None:
+        raise TypeError("validated split assignments are minted after validation")
+
+
+def _validate_split_assignment_components(
+    records: Sequence[CremaLabelRecord],
+    assignment: Mapping[str, str],
+    seed_digest: str,
+) -> tuple[
+    tuple[CremaLabelRecord, ...],
+    tuple[tuple[str, str], ...],
+    str,
+]:
+    from scripts.emotion_state_phase_b_splits import (
+        build_actor_split,
+        split_manifest_digest,
+        validate_actor_split,
+    )
+
+    try:
+        materialized = tuple(records)
+    except TypeError as error:
+        raise ValueError("validated actor split records must be a sequence") from error
+    if not isinstance(assignment, Mapping):
+        raise ValueError("validated actor split assignment must be a mapping")
+    supplied = dict(assignment)
+    validate_actor_split(materialized, supplied)
+    expected = build_actor_split(materialized, seed_digest)
+    if supplied != expected:
+        raise ValueError(
+            "validated actor split assignment does not match deterministic split"
+        )
+    canonical = tuple(
+        (actor, expected[actor]) for actor in sorted(expected)
+    )
+    manifest_sha256 = split_manifest_digest(
+        materialized,
+        expected,
+        seed_digest,
+    ).upper()
+    return materialized, canonical, manifest_sha256
+
+
+def mint_validated_split_assignment(
+    records: Sequence[CremaLabelRecord],
+    assignment: Mapping[str, str],
+    seed_digest: str,
+) -> ValidatedSplitAssignment:
+    materialized, canonical, manifest_sha256 = (
+        _validate_split_assignment_components(
+            records,
+            assignment,
+            seed_digest,
+        )
+    )
+    result = object.__new__(ValidatedSplitAssignment)
+    for name, value in (
+        ("_records", materialized),
+        ("_assignment", canonical),
+        ("_seed_digest", seed_digest),
+        ("_manifest_sha256", manifest_sha256),
+    ):
+        object.__setattr__(result, name, value)
+    return result
+
+
+def _verify_validated_split_assignment(
+    split_assignment: Any,
+) -> tuple[dict[str, str], str, str]:
+    if type(split_assignment) is not ValidatedSplitAssignment:
+        raise ValueError(
+            "partition evidence requires a validated actor split assignment"
+        )
+    materialized, canonical, manifest_sha256 = (
+        _validate_split_assignment_components(
+            split_assignment._records,
+            dict(split_assignment._assignment),
+            split_assignment._seed_digest,
+        )
+    )
+    if (
+        materialized != split_assignment._records
+        or canonical != split_assignment._assignment
+        or manifest_sha256 != split_assignment._manifest_sha256
+    ):
+        raise ValueError("validated actor split assignment commitment changed")
+    return dict(canonical), split_assignment._seed_digest, manifest_sha256
+
+
+@dataclass(frozen=True, init=False)
+class PartitionEvidence:
+    _payload: dict[str, Any]
+    _row_ids: tuple[str, ...]
+    _actor_ids: tuple[str, ...]
+    _labels: np.ndarray
+    _split_assignment: ValidatedSplitAssignment
+    _configuration: dict[str, Any]
+    _environment_lock: dict[str, Any]
+    _feature_schema: dict[str, Any]
+    _split_schema: dict[str, Any]
+    _features: np.ndarray | None
+    _sentences: np.ndarray | None
+    _probabilities: dict[str, np.ndarray] | None
+    _model_identity: dict[str, Any]
+
+    def __init__(self, *_: Any, **__: Any) -> None:
+        raise TypeError("partition evidence is minted after validation")
+
+    def to_payload(self) -> dict[str, Any]:
+        return copy.deepcopy(self._payload)
+
+
+class _BoundPayload(Mapping[str, Any]):
+    __slots__ = ("_payload", "_partition_evidence")
+
+    def __init__(self, *_: Any, **__: Any) -> None:
+        raise TypeError("bound evidence payloads are minted by evaluation functions")
+
+    def __getitem__(self, key: str) -> Any:
+        return self._payload[key]
+
+    def __iter__(self) -> Iterator[str]:
+        return iter(self._payload)
+
+    def __len__(self) -> int:
+        return len(self._payload)
+
+    def to_payload(self) -> dict[str, Any]:
+        return copy.deepcopy(self._payload)
+
+
+class CalibrationEvidence(_BoundPayload):
+    pass
+
+
+class EvaluationEvidence(_BoundPayload):
+    pass
+
+
+class BootstrapEvidence(_BoundPayload):
+    pass
+
+
+class DecisionEvidence(_BoundPayload):
+    pass
+
+
+def _mint_bound_payload(
+    evidence_type: type[_BoundPayload],
+    payload: dict[str, Any],
+    partition_evidence: PartitionEvidence,
+) -> _BoundPayload:
+    sealed = copy.deepcopy(payload)
+    sealed["self_sha256"] = canonical_payload_sha256(sealed)
+    result = object.__new__(evidence_type)
+    object.__setattr__(result, "_payload", sealed)
+    object.__setattr__(result, "_partition_evidence", partition_evidence)
+    return result
+
+
+def mint_partition_evidence(
+    *,
+    partition_role: str,
+    row_ids: Sequence[str],
+    actor_ids: Sequence[str],
+    labels: np.ndarray,
+    split_assignment: ValidatedSplitAssignment,
+    configuration: Mapping[str, Any],
+    environment_lock: Mapping[str, Any],
+    feature_schema: Mapping[str, Any],
+    split_schema: Mapping[str, Any],
+    features: np.ndarray | None,
+    sentences: np.ndarray | None,
+    probabilities: Mapping[str, np.ndarray] | None,
+    model_identity: Mapping[str, Any],
+) -> PartitionEvidence:
+    role = validate_partition_role(
+        partition_role,
+        (
+            "training_discovery",
+            "calibration",
+            "balanced_diagnostic",
+            "final_lockbox",
+        ),
+    )
+    validated_config = validate_config(copy.deepcopy(dict(configuration)))
+    validated_environment = validate_environment_lock(
+        copy.deepcopy(dict(environment_lock))
+    )
+    validated_feature = validate_feature_schema(
+        copy.deepcopy(dict(feature_schema))
+    )
+    validated_split = validate_split_schema(copy.deepcopy(dict(split_schema)))
+    if (
+        not isinstance(model_identity, Mapping)
+        or dict(model_identity) != frozen_model_identity(
+            model_identity.get("acoustic", {})
+            .get("classifier", {})
+            .get("random_state")
+        )
+    ):
+        raise ValueError("model identity does not match frozen model contract")
+    model_identity_dict = copy.deepcopy(dict(model_identity))
+    seed = model_identity_dict["acoustic"]["classifier"]["random_state"]
+
+    try:
+        rows = tuple(row_ids)
+        actors = tuple(actor_ids)
+    except TypeError as error:
+        raise ValueError("row and actor IDs must be sequences") from error
+    if (
+        not rows
+        or len(rows) != len(set(rows))
+        or any(
+            type(row) is not str or not row or row.strip() != row
+            for row in rows
+        )
+    ):
+        raise ValueError("case-order row IDs must be unique non-empty strings")
+    if len(actors) != len(rows):
+        raise ValueError("actor IDs do not match case-order rows")
+    validated_labels, validated_actors = validate_labels_and_actors(
+        labels,
+        actors,
+        expected_rows=len(rows),
+    )
+    assignment, split_seed_digest, split_manifest_sha = (
+        _verify_validated_split_assignment(split_assignment)
+    )
+    if (
+        any(actor not in assignment for actor in validated_actors)
+        or any(assignment[actor] != role for actor in validated_actors)
+    ):
+        raise ValueError(
+            "actor assignment membership does not match declared partition"
+        )
+
+    probability_arrays: dict[str, np.ndarray] | None = None
+    feature_copy: np.ndarray | None = None
+    sentence_copy: np.ndarray | None = None
+    if role == "training_discovery":
+        if probabilities is not None or features is None or sentences is None:
+            raise ValueError(
+                "training_discovery evidence requires features/sentences only"
+            )
+        validated_features, validated_sentences, _, _ = validate_fit_inputs(
+            features,
+            sentences,
+            validated_labels,
+            seed,
+            partition_role=role,
+            class_order=CLASS_ORDER,
+        )
+        feature_copy = validated_features.copy()
+        sentence_copy = validated_sentences.copy()
+        label_input_commitment = _canonical_sha256({
+            "labels_sha256": _array_commitment(validated_labels),
+            "features_sha256": _array_commitment(validated_features),
+            "sentences_sha256": _array_commitment(validated_sentences),
+        })
+        probability_commitment = _canonical_sha256({
+            "status": "not_applicable_before_fit"
+        })
+    else:
+        if features is not None or sentences is not None or probabilities is None:
+            raise ValueError(
+                "non-training evidence requires probabilities only"
+            )
+        probability_arrays, probability_rows = validate_probability_inputs(
+            probabilities,
+            class_order=CLASS_ORDER,
+            expected_rows=len(rows),
+        )
+        if probability_rows != len(rows):
+            raise ValueError("probability rows do not match case-order rows")
+        probability_arrays = {
+            key: probability_arrays[key].copy() for key in MODEL_KEYS
+        }
+        label_input_commitment = _canonical_sha256({
+            "labels_sha256": _array_commitment(validated_labels),
+        })
+        probability_commitment = _canonical_sha256({
+            key: _array_commitment(probability_arrays[key])
+            for key in MODEL_KEYS
+        })
+
+    configuration_sha = _canonical_sha256(validated_config)
+    environment_sha = _canonical_sha256(validated_environment)
+    feature_sha = _canonical_sha256(validated_feature)
+    split_schema_sha = _canonical_sha256(validated_split)
+    if split_seed_digest != configuration_sha.lower():
+        raise ValueError(
+            "validated actor split seed does not match configuration commitment"
+        )
+    assignment_sha = _canonical_sha256([
+        [actor, assignment[actor]] for actor in sorted(assignment)
+    ])
+    payload = {
+        "schema_id": "emotion-state-phase-b-partition-evidence-v1",
+        "partition_role": role,
+        "configuration_sha256": configuration_sha,
+        "environment_lock_sha256": environment_sha,
+        "feature_schema_sha256": feature_sha,
+        "split_schema_sha256": split_schema_sha,
+        "split_manifest_sha256": split_manifest_sha,
+        "assignment_sha256": assignment_sha,
+        "row_commitment_sha256": _canonical_sha256(list(rows)),
+        "actor_commitment_sha256": _canonical_sha256(list(validated_actors)),
+        "label_input_commitment_sha256": label_input_commitment,
+        "model_class_commitment_sha256": _canonical_sha256(
+            model_identity_dict
+        ),
+        "probability_commitment_sha256": probability_commitment,
+        "case_count": len(rows),
+        "unique_actor_count": len(set(validated_actors)),
+    }
+    payload["self_sha256"] = canonical_payload_sha256(payload)
+    validate_provenance_payload(payload, expected_role=role)
+
+    evidence = object.__new__(PartitionEvidence)
+    for name, value in (
+        ("_payload", payload),
+        ("_row_ids", rows),
+        ("_actor_ids", validated_actors),
+        ("_labels", validated_labels.copy()),
+        ("_split_assignment", split_assignment),
+        ("_configuration", copy.deepcopy(validated_config)),
+        ("_environment_lock", copy.deepcopy(validated_environment)),
+        ("_feature_schema", copy.deepcopy(validated_feature)),
+        ("_split_schema", copy.deepcopy(validated_split)),
+        ("_features", feature_copy),
+        ("_sentences", sentence_copy),
+        ("_probabilities", probability_arrays),
+        ("_model_identity", model_identity_dict),
+    ):
+        object.__setattr__(evidence, name, value)
+    return evidence
+
+
+def _verify_partition_evidence(
+    evidence: Any,
+    *,
+    expected_role: str,
+    labels: np.ndarray,
+    actor_ids: Sequence[str] | None = None,
+    features: np.ndarray | None = None,
+    sentences: np.ndarray | None = None,
+    probabilities: Mapping[str, np.ndarray] | None = None,
+    expected_seed: int | None = None,
+) -> PartitionEvidence:
+    if type(evidence) is not PartitionEvidence:
+        raise ValueError("partition-sensitive input requires bound evidence")
+    validate_provenance_payload(
+        evidence._payload,
+        expected_role=expected_role,
+    )
+    actors = evidence._actor_ids if actor_ids is None else tuple(actor_ids)
+    reminted = mint_partition_evidence(
+        partition_role=expected_role,
+        row_ids=evidence._row_ids,
+        actor_ids=actors,
+        labels=labels,
+        split_assignment=evidence._split_assignment,
+        configuration=evidence._configuration,
+        environment_lock=evidence._environment_lock,
+        feature_schema=evidence._feature_schema,
+        split_schema=evidence._split_schema,
+        features=features,
+        sentences=sentences,
+        probabilities=probabilities,
+        model_identity=evidence._model_identity,
+    )
+    if reminted._payload != evidence._payload:
+        if (
+            reminted._payload["probability_commitment_sha256"]
+            != evidence._payload["probability_commitment_sha256"]
+        ):
+            raise ValueError("probability commitment does not match exact inputs")
+        raise ValueError("partition evidence commitment does not match exact inputs")
+    if (
+        expected_seed is not None
+        and evidence._model_identity["acoustic"]["classifier"]["random_state"]
+        != expected_seed
+    ):
+        raise ValueError("model seed does not match evidence model identity")
+    return evidence
+
+
 def _classifier(seed: int) -> LogisticRegression:
     return LogisticRegression(
-        penalty="l2",
         C=1.0,
         class_weight=None,
         solver="lbfgs",
         max_iter=10000,
         random_state=seed,
+        l1_ratio=0.0,
     )
 
 
@@ -234,16 +693,23 @@ def fit_frozen_models(
     training_labels: np.ndarray,
     seed: int,
     *,
-    partition_role: str,
-    class_order: Sequence[str],
+    evidence: PartitionEvidence,
 ) -> dict[str, object]:
+    bound = _verify_partition_evidence(
+        evidence,
+        expected_role="training_discovery",
+        labels=training_labels,
+        features=training_features,
+        sentences=training_sentences,
+        expected_seed=seed,
+    )
     features, sentences, labels, validated_seed = validate_fit_inputs(
         training_features,
         training_sentences,
         training_labels,
         seed,
-        partition_role=partition_role,
-        class_order=class_order,
+        partition_role=bound._payload["partition_role"],
+        class_order=CLASS_ORDER,
     )
     models = build_models(validated_seed)
     models["class_prior"].fit(features, labels)
@@ -282,16 +748,19 @@ def calibrate_thresholds(
     probabilities: Mapping[str, np.ndarray],
     targets: Sequence[float],
     *,
-    partition_role: str,
-    class_order: Sequence[str],
-) -> dict[str, Any]:
-    validate_partition_role(partition_role, ("calibration",))
-    validate_class_order(class_order)
+    evidence: PartitionEvidence,
+) -> CalibrationEvidence:
+    bound = _verify_partition_evidence(
+        evidence,
+        expected_role="calibration",
+        labels=evidence._labels if type(evidence) is PartitionEvidence else None,
+        probabilities=probabilities,
+    )
     if tuple(targets) != COVERAGE_TARGETS:
         raise ValueError("calibration targets must be exactly 1.0, 0.8, 0.6")
     arrays, row_count = validate_probability_inputs(
         probabilities,
-        class_order=class_order,
+        class_order=CLASS_ORDER,
     )
     model_results: dict[str, dict[float, dict[str, float]]] = {}
     for model in MODEL_KEYS:
@@ -322,9 +791,15 @@ def calibrate_thresholds(
         "class_order": list(CLASS_ORDER),
         "targets": list(COVERAGE_TARGETS),
         "models": model_results,
+        "provenance": bound.to_payload(),
     }
-    validate_calibration_result(result)
-    return result
+    result_evidence = _mint_bound_payload(
+        CalibrationEvidence,
+        result,
+        bound,
+    )
+    validate_calibration_result(result_evidence.to_payload())
+    return result_evidence
 
 
 def _predicted_labels(probabilities: np.ndarray) -> np.ndarray:
@@ -434,26 +909,38 @@ def evaluate_partition(
     labels: np.ndarray,
     probabilities: Mapping[str, np.ndarray],
     actor_ids: Sequence[str],
-    thresholds: Mapping[str, Any],
+    thresholds: CalibrationEvidence,
     *,
-    partition_role: str,
-    class_order: Sequence[str],
-) -> dict[str, Any]:
+    evidence: PartitionEvidence,
+) -> EvaluationEvidence:
+    if type(thresholds) is not CalibrationEvidence:
+        raise ValueError("thresholds require bound calibration evidence")
+    validate_calibration_result(thresholds.to_payload())
+    if type(evidence) is not PartitionEvidence:
+        raise ValueError("evaluation requires bound partition evidence")
     role = validate_partition_role(
-        partition_role,
+        evidence._payload["partition_role"],
         ("balanced_diagnostic", "final_lockbox"),
     )
-    validate_class_order(class_order)
+    bound = _verify_partition_evidence(
+        evidence,
+        expected_role=role,
+        labels=labels,
+        actor_ids=actor_ids,
+        probabilities=probabilities,
+    )
     arrays, row_count = validate_probability_inputs(
         probabilities,
-        class_order=class_order,
+        class_order=CLASS_ORDER,
     )
     validated_labels, actors = validate_labels_and_actors(
         labels,
         actor_ids,
         expected_rows=row_count,
     )
-    validated_thresholds = validate_calibration_result(thresholds)
+    validated_thresholds = validate_calibration_result(
+        thresholds.to_payload()
+    )
     model_results: dict[str, Any] = {}
     all_rows = np.ones(row_count, dtype=bool)
     unique_actor_count = _actor_count(actors, all_rows)
@@ -530,9 +1017,18 @@ def evaluate_partition(
         "class_order": list(CLASS_ORDER),
         "models": model_results,
         "final_decision_eligible": role == "final_lockbox",
+        "provenance": bound.to_payload(),
     }
-    validate_evaluation_result(result, expected_role=role)
-    return result
+    result_evidence = _mint_bound_payload(
+        EvaluationEvidence,
+        result,
+        bound,
+    )
+    validate_evaluation_result(
+        result_evidence.to_payload(),
+        expected_role=role,
+    )
+    return result_evidence
 
 
 def paired_actor_bootstrap(
@@ -542,18 +1038,20 @@ def paired_actor_bootstrap(
     resamples: int,
     seed: int,
     *,
-    partition_role: str,
-    class_order: Sequence[str],
-    configuration_sha256: str,
-) -> dict[str, Any]:
-    validate_partition_role(partition_role, ("final_lockbox",))
-    validate_class_order(class_order)
+    evidence: PartitionEvidence,
+) -> BootstrapEvidence:
+    bound = _verify_partition_evidence(
+        evidence,
+        expected_role="final_lockbox",
+        labels=labels,
+        actor_ids=actor_ids,
+        probabilities=probabilities,
+    )
     if type(resamples) is not int or resamples != BOOTSTRAP_RESAMPLES:
         raise ValueError("paired actor bootstrap requires exactly 2,000 resamples")
+    configuration_sha256 = bound._payload["configuration_sha256"]
     if (
-        type(configuration_sha256) is not str
-        or re.fullmatch(r"[0-9A-F]{64}", configuration_sha256) is None
-        or type(seed) is not int
+        type(seed) is not int
         or seed != int(configuration_sha256[:16], 16)
     ):
         raise ValueError(
@@ -561,7 +1059,7 @@ def paired_actor_bootstrap(
         )
     arrays, row_count = validate_probability_inputs(
         probabilities,
-        class_order=class_order,
+        class_order=CLASS_ORDER,
     )
     validated_labels, actors = validate_labels_and_actors(
         labels,
@@ -636,25 +1134,56 @@ def paired_actor_bootstrap(
         "unique_actor_count": len(unique_actors),
         "case_count": row_count,
         "paired_macro_f1_lift": intervals,
+        "provenance": bound.to_payload(),
     }
-    validate_bootstrap_result(result)
-    return result
+    result_evidence = _mint_bound_payload(
+        BootstrapEvidence,
+        result,
+        bound,
+    )
+    validate_bootstrap_result(result_evidence.to_payload())
+    return result_evidence
 
 
 def build_decision_evidence(
-    evaluation: Mapping[str, Any],
-    bootstrap: Mapping[str, Any],
+    evaluation: EvaluationEvidence,
+    bootstrap: BootstrapEvidence,
     *,
+    evidence: PartitionEvidence,
     sentence_driven_apparent_lift: bool,
     eligible_slice_reversal: bool,
     eligible_slice_instability: bool,
     confidence_abstention_improves: bool,
-) -> dict[str, Any]:
+) -> DecisionEvidence:
+    if (
+        type(evaluation) is not EvaluationEvidence
+        or type(bootstrap) is not BootstrapEvidence
+        or type(evidence) is not PartitionEvidence
+    ):
+        raise ValueError("decision construction requires bound evidence objects")
+    _verify_partition_evidence(
+        evidence,
+        expected_role="final_lockbox",
+        labels=evidence._labels,
+        actor_ids=evidence._actor_ids,
+        probabilities=evidence._probabilities,
+    )
     validated_evaluation = validate_evaluation_result(
-        evaluation,
+        evaluation.to_payload(),
         expected_role="final_lockbox",
     )
-    validated_bootstrap = validate_bootstrap_result(bootstrap)
+    validated_bootstrap = validate_bootstrap_result(bootstrap.to_payload())
+    if (
+        evaluation._partition_evidence is not evidence
+        or bootstrap._partition_evidence is not evidence
+        or validated_evaluation["provenance"] != evidence._payload
+        or validated_bootstrap["provenance"] != evidence._payload
+        or validated_evaluation["provenance"]
+        != validated_bootstrap["provenance"]
+    ):
+        raise ValueError(
+            "evaluation/bootstrap provenance commitments do not match"
+        )
     evaluation_counts = {
         (
             validated_evaluation["models"][model]["unique_actor_count"],
@@ -692,6 +1221,7 @@ def build_decision_evidence(
         "eligible_slice_reversal": eligible_slice_reversal,
         "eligible_slice_instability": eligible_slice_instability,
         "confidence_abstention_improves": confidence_abstention_improves,
+        "provenance": evidence.to_payload(),
     }
     all_valid = {
         "material_valid": True,
@@ -701,16 +1231,30 @@ def build_decision_evidence(
         "deterministic": True,
         "lockbox_valid": True,
     }
-    validate_decision_inputs(result, all_valid)
-    return result
+    result_evidence = _mint_bound_payload(
+        DecisionEvidence,
+        result,
+        evidence,
+    )
+    validate_decision_inputs(result_evidence.to_payload(), all_valid)
+    return result_evidence
 
 
 def decide_experiment(
-    metrics: Mapping[str, Any],
+    metrics: DecisionEvidence,
     validity: Mapping[str, bool],
 ) -> str:
+    if type(metrics) is not DecisionEvidence:
+        raise ValueError(
+            "decide_experiment requires bound decision evidence"
+        )
+    if (
+        type(metrics._partition_evidence) is not PartitionEvidence
+        or metrics["provenance"] != metrics._partition_evidence._payload
+    ):
+        raise ValueError("bound decision evidence provenance does not match")
     validated_metrics, validated_validity = validate_decision_inputs(
-        metrics,
+        metrics.to_payload(),
         validity,
     )
     if not all(validated_validity.values()):
