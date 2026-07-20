@@ -1369,25 +1369,25 @@ def load_ami_meeting_evidence_v2(
     evidence: list[AmiMeetingEvidenceV2] = []
     for meeting_id in meetings:
         file_count = dialogue_file_count[meeting_id]
+        ordered_dialogue = tuple(sorted(
+            dialogue_turns[meeting_id],
+            key=lambda turn: (
+                turn.start_ms,
+                turn.end_ms,
+                turn.participant_id,
+                turn.dialogue_act,
+            ),
+        ))
+        if len(set(ordered_dialogue)) != len(ordered_dialogue):
+            raise ValueError(
+                "AMI v2 dialogue turns contain an exact duplicate"
+            )
         if not file_count or unlabeled_record_count[meeting_id]:
             finalized_dialogue = None
         else:
-            ordered_dialogue = tuple(sorted(
-                dialogue_turns[meeting_id],
-                key=lambda turn: (
-                    turn.start_ms,
-                    turn.end_ms,
-                    turn.participant_id,
-                    turn.dialogue_act,
-                ),
-            ))
             if not ordered_dialogue:
                 raise ValueError(
                     "AMI v2 fully labeled dialogue file produced no turns"
-                )
-            if len(set(ordered_dialogue)) != len(ordered_dialogue):
-                raise ValueError(
-                    "AMI v2 dialogue turns contain an exact duplicate"
                 )
             finalized_dialogue = ordered_dialogue
         evidence.append(AmiMeetingEvidenceV2(

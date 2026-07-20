@@ -4865,6 +4865,84 @@ class AmiMaterialEvidenceV2LoaderTests(unittest.TestCase):
                         }
                     )
 
+    def test_unlabeled_record_cannot_mask_duplicate_turns_in_same_file(
+        self,
+    ) -> None:
+        loader = self._loader()
+        mixed = self._dialogue_source(
+            "M1",
+            "A",
+            (
+                ("d1", "ami_da_2", "M1.A.segments.xml#id(s1)"),
+                ("d2", "ami_da_2", "M1.A.segments.xml#id(s1)"),
+                ("d3", None, "M1.A.segments.xml#id(s1)"),
+            ),
+        )
+        with self.assertRaisesRegex(ValueError, "exact duplicate"):
+            loader(
+                **self._arguments(dialogue_sources=(mixed,))
+            )
+
+    def test_unlabeled_file_cannot_mask_duplicate_turns_in_other_file(
+        self,
+    ) -> None:
+        loader = self._loader()
+        duplicate_fully_labeled = self._dialogue_source(
+            "M1",
+            "A",
+            (
+                ("d1", "ami_da_2", "M1.A.segments.xml#id(s1)"),
+                ("d2", "ami_da_2", "M1.A.segments.xml#id(s1)"),
+            ),
+        )
+        valid_unlabeled = self._dialogue_source(
+            "M1",
+            "B",
+            (("d3", None, "M1.B.segments.xml#id(s1)"),),
+        )
+        with self.assertRaisesRegex(ValueError, "exact duplicate"):
+            loader(
+                **self._arguments(
+                    dialogue_sources=(
+                        duplicate_fully_labeled,
+                        valid_unlabeled,
+                    ),
+                )
+            )
+
+    def test_distinct_labelled_turns_remain_valid_with_unlabeled_record(
+        self,
+    ) -> None:
+        loader = self._loader()
+        fully_labeled = self._dialogue_source(
+            "M1",
+            "A",
+            (("d1", "ami_da_2", "M1.A.segments.xml#id(s1)"),),
+        )
+        mixed_distinct = self._dialogue_source(
+            "M1",
+            "B",
+            (
+                ("d2", "ami_da_3", "M1.B.segments.xml#id(s1)"),
+                ("d3", None, "M1.B.segments.xml#id(s1)"),
+            ),
+        )
+        meeting = loader(
+            **self._arguments(
+                dialogue_sources=(fully_labeled, mixed_distinct),
+            )
+        )[0]
+        self.assertIsNone(meeting.dialogue_turns)
+        self.assertEqual(
+            (
+                meeting.dialogue_act_file_count,
+                meeting.fully_labeled_dialogue_act_file_count,
+                meeting.unlabeled_dialogue_act_record_count,
+                meeting.unlabeled_dialogue_act_file_count,
+            ),
+            (2, 1, 1, 1),
+        )
+
     def test_valid_unlabeled_dialogue_is_meeting_local_and_preserves_timing(
         self,
     ) -> None:
