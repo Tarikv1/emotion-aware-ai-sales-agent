@@ -38,6 +38,7 @@ from scripts.validate_emotion_state_002_phase_b import (
     validate_payload_self_hash,
     validate_partition_role,
     validate_probability_inputs,
+    validate_probability_evidence_payload,
     validate_provenance_payload,
     validate_split_schema,
     canonical_payload_sha256,
@@ -265,15 +266,184 @@ def frozen_model_identity(seed: int) -> dict[str, Any]:
     }
 
 
-@dataclass(frozen=True, init=False)
-class ValidatedSplitAssignment:
-    _records: tuple[CremaLabelRecord, ...]
-    _assignment: tuple[tuple[str, str], ...]
-    _seed_digest: str
-    _manifest_sha256: str
+class _ImmutableArtifact(Mapping[str, Any]):
+    __slots__ = ("__canonical_bytes", "__mint_digest", "__links")
 
     def __init__(self, *_: Any, **__: Any) -> None:
-        raise TypeError("validated split assignments are minted after validation")
+        raise TypeError("bound evidence artifacts are minted after validation")
+
+    def __setattr__(self, _name: str, _value: Any) -> None:
+        raise AttributeError("bound evidence artifacts are immutable")
+
+    def _fresh_payload(self) -> dict[str, Any]:
+        canonical = object.__getattribute__(
+            self,
+            "_ImmutableArtifact__canonical_bytes",
+        )
+        return json.loads(canonical.decode("ascii"))
+
+    def __getitem__(self, key: str) -> Any:
+        return self._fresh_payload()[key]
+
+    def __iter__(self) -> Iterator[str]:
+        return iter(self._fresh_payload())
+
+    def __len__(self) -> int:
+        return len(self._fresh_payload())
+
+    @property
+    def mint_sha256(self) -> str:
+        return object.__getattribute__(
+            self,
+            "_ImmutableArtifact__mint_digest",
+        )
+
+    def to_payload(self) -> dict[str, Any]:
+        return self._fresh_payload()
+
+
+def _sealed_payload(payload: Mapping[str, Any]) -> tuple[bytes, str]:
+    sealed = copy.deepcopy(dict(payload))
+    sealed["self_sha256"] = canonical_payload_sha256(sealed)
+    canonical = json.dumps(
+        sealed,
+        sort_keys=True,
+        separators=(",", ":"),
+        ensure_ascii=True,
+        allow_nan=False,
+    ).encode("ascii")
+    return canonical, hashlib.sha256(canonical).hexdigest().upper()
+
+
+def _mint_artifact(
+    artifact_type: type[_ImmutableArtifact],
+    payload: Mapping[str, Any],
+    *links: Any,
+) -> _ImmutableArtifact:
+    canonical, mint_digest = _sealed_payload(payload)
+    result = object.__new__(artifact_type)
+    object.__setattr__(
+        result,
+        "_ImmutableArtifact__canonical_bytes",
+        canonical,
+    )
+    object.__setattr__(
+        result,
+        "_ImmutableArtifact__mint_digest",
+        mint_digest,
+    )
+    object.__setattr__(
+        result,
+        "_ImmutableArtifact__links",
+        tuple(links),
+    )
+    return result
+
+
+def _artifact_links(artifact: _ImmutableArtifact) -> tuple[Any, ...]:
+    return object.__getattribute__(
+        artifact,
+        "_ImmutableArtifact__links",
+    )
+
+
+def _verify_artifact_mint(
+    artifact: Any,
+    expected_type: type[_ImmutableArtifact],
+) -> dict[str, Any]:
+    if type(artifact) is not expected_type:
+        raise TypeError(
+            f"{expected_type.__name__} is required; arbitrary mappings reject"
+        )
+    canonical = object.__getattribute__(
+        artifact,
+        "_ImmutableArtifact__canonical_bytes",
+    )
+    mint_digest = object.__getattribute__(
+        artifact,
+        "_ImmutableArtifact__mint_digest",
+    )
+    if hashlib.sha256(canonical).hexdigest().upper() != mint_digest:
+        raise ValueError("bound evidence mint digest does not match canonical bytes")
+    payload = json.loads(canonical.decode("ascii"))
+    expected_canonical, expected_mint = _sealed_payload(payload)
+    if expected_canonical != canonical or expected_mint != mint_digest:
+        raise ValueError("bound evidence canonical bytes changed after mint")
+    validate_payload_self_hash(payload, expected_type.__name__)
+    return payload
+
+
+@dataclass(frozen=True)
+class _ValidatedSplitState:
+    records: tuple[CremaLabelRecord, ...]
+    assignment: tuple[tuple[str, str], ...]
+    seed_digest: str
+    manifest_sha256: str
+
+
+@dataclass(frozen=True)
+class _PartitionState:
+    rows: tuple[str, ...]
+    actors: tuple[str, ...]
+    labels: tuple[str, ...]
+    sentences: tuple[str, ...]
+    features: np.ndarray
+    split_assignment: "ValidatedSplitAssignment"
+    configuration: dict[str, Any]
+    environment_lock: dict[str, Any]
+    feature_schema: dict[str, Any]
+    split_schema: dict[str, Any]
+    model_identity: dict[str, Any]
+
+
+@dataclass(frozen=True)
+class _FittedModelState:
+    models: tuple[tuple[str, object], ...]
+    model_state_sha256: str
+    training_evidence: "PartitionEvidence"
+
+
+@dataclass(frozen=True)
+class _ProbabilityState:
+    arrays: tuple[tuple[str, np.ndarray], ...]
+    fitted_models: "FittedModelEvidence"
+    partition_evidence: "PartitionEvidence"
+
+
+class ValidatedSplitAssignment(_ImmutableArtifact):
+    __slots__ = ()
+
+
+class PartitionEvidence(_ImmutableArtifact):
+    __slots__ = ()
+
+
+class FittedModelEvidence(_ImmutableArtifact):
+    __slots__ = ()
+
+
+class ProbabilityEvidence(_ImmutableArtifact):
+    __slots__ = ()
+
+
+class CalibrationEvidence(_ImmutableArtifact):
+    __slots__ = ()
+
+
+class EvaluationEvidence(_ImmutableArtifact):
+    __slots__ = ()
+
+
+class BootstrapEvidence(_ImmutableArtifact):
+    __slots__ = ()
+
+
+class SliceAnalysisEvidence(_ImmutableArtifact):
+    __slots__ = ()
+
+
+class DecisionEvidence(_ImmutableArtifact):
+    __slots__ = ()
 
 
 def _validate_split_assignment_components(
@@ -327,109 +497,61 @@ def mint_validated_split_assignment(
             seed_digest,
         )
     )
-    result = object.__new__(ValidatedSplitAssignment)
-    for name, value in (
-        ("_records", materialized),
-        ("_assignment", canonical),
-        ("_seed_digest", seed_digest),
-        ("_manifest_sha256", manifest_sha256),
-    ):
-        object.__setattr__(result, name, value)
-    return result
+    assignment_sha256 = _canonical_sha256([
+        [actor, role] for actor, role in canonical
+    ])
+    record_sha256 = _canonical_sha256([
+        {
+            "clip_stem": record.clip_stem,
+            "actor_id": record.actor_id,
+            "sentence_id": record.sentence_id,
+            "label": record.label,
+        }
+        for record in sorted(materialized, key=lambda item: item.clip_stem)
+    ])
+    state = _ValidatedSplitState(
+        records=materialized,
+        assignment=canonical,
+        seed_digest=seed_digest,
+        manifest_sha256=manifest_sha256,
+    )
+    return _mint_artifact(
+        ValidatedSplitAssignment,
+        {
+            "schema_id": "emotion-state-phase-b-validated-split-v1",
+            "configuration_sha256": seed_digest.upper(),
+            "split_manifest_sha256": manifest_sha256,
+            "assignment_sha256": assignment_sha256,
+            "eligible_record_commitment_sha256": record_sha256,
+            "eligible_record_count": len(materialized),
+            "eligible_actor_count": len(canonical),
+        },
+        state,
+    )
 
 
 def _verify_validated_split_assignment(
     split_assignment: Any,
-) -> tuple[dict[str, str], str, str]:
-    if type(split_assignment) is not ValidatedSplitAssignment:
-        raise ValueError(
-            "partition evidence requires a validated actor split assignment"
-        )
+) -> tuple[dict[str, str], str, str, tuple[CremaLabelRecord, ...]]:
+    _verify_artifact_mint(split_assignment, ValidatedSplitAssignment)
+    links = _artifact_links(split_assignment)
+    if len(links) != 1 or type(links[0]) is not _ValidatedSplitState:
+        raise ValueError("validated actor split private state is invalid")
+    state = links[0]
     materialized, canonical, manifest_sha256 = (
         _validate_split_assignment_components(
-            split_assignment._records,
-            dict(split_assignment._assignment),
-            split_assignment._seed_digest,
+            state.records,
+            dict(state.assignment),
+            state.seed_digest,
         )
     )
     if (
-        materialized != split_assignment._records
-        or canonical != split_assignment._assignment
-        or manifest_sha256 != split_assignment._manifest_sha256
+        materialized != state.records
+        or canonical != state.assignment
+        or manifest_sha256 != state.manifest_sha256
     ):
         raise ValueError("validated actor split assignment commitment changed")
-    return dict(canonical), split_assignment._seed_digest, manifest_sha256
-
-
-@dataclass(frozen=True, init=False)
-class PartitionEvidence:
-    _payload: dict[str, Any]
-    _row_ids: tuple[str, ...]
-    _actor_ids: tuple[str, ...]
-    _labels: np.ndarray
-    _split_assignment: ValidatedSplitAssignment
-    _configuration: dict[str, Any]
-    _environment_lock: dict[str, Any]
-    _feature_schema: dict[str, Any]
-    _split_schema: dict[str, Any]
-    _features: np.ndarray | None
-    _sentences: np.ndarray | None
-    _probabilities: dict[str, np.ndarray] | None
-    _model_identity: dict[str, Any]
-
-    def __init__(self, *_: Any, **__: Any) -> None:
-        raise TypeError("partition evidence is minted after validation")
-
-    def to_payload(self) -> dict[str, Any]:
-        return copy.deepcopy(self._payload)
-
-
-class _BoundPayload(Mapping[str, Any]):
-    __slots__ = ("_payload", "_partition_evidence")
-
-    def __init__(self, *_: Any, **__: Any) -> None:
-        raise TypeError("bound evidence payloads are minted by evaluation functions")
-
-    def __getitem__(self, key: str) -> Any:
-        return self._payload[key]
-
-    def __iter__(self) -> Iterator[str]:
-        return iter(self._payload)
-
-    def __len__(self) -> int:
-        return len(self._payload)
-
-    def to_payload(self) -> dict[str, Any]:
-        return copy.deepcopy(self._payload)
-
-
-class CalibrationEvidence(_BoundPayload):
-    pass
-
-
-class EvaluationEvidence(_BoundPayload):
-    pass
-
-
-class BootstrapEvidence(_BoundPayload):
-    pass
-
-
-class DecisionEvidence(_BoundPayload):
-    pass
-
-
-def _mint_bound_payload(
-    evidence_type: type[_BoundPayload],
-    payload: dict[str, Any],
-    partition_evidence: PartitionEvidence,
-) -> _BoundPayload:
-    sealed = copy.deepcopy(payload)
-    sealed["self_sha256"] = canonical_payload_sha256(sealed)
-    result = object.__new__(evidence_type)
-    object.__setattr__(result, "_payload", sealed)
-    object.__setattr__(result, "_partition_evidence", partition_evidence)
-    return result
+    return dict(canonical), state.seed_digest, manifest_sha256, materialized
 
 
 def mint_partition_evidence(
@@ -438,14 +560,14 @@ def mint_partition_evidence(
     row_ids: Sequence[str],
     actor_ids: Sequence[str],
     labels: np.ndarray,
+    sentences: np.ndarray,
+    features: np.ndarray,
+    upstream_acoustic_source_commitment_sha256: str,
     split_assignment: ValidatedSplitAssignment,
     configuration: Mapping[str, Any],
     environment_lock: Mapping[str, Any],
     feature_schema: Mapping[str, Any],
     split_schema: Mapping[str, Any],
-    features: np.ndarray | None,
-    sentences: np.ndarray | None,
-    probabilities: Mapping[str, np.ndarray] | None,
     model_identity: Mapping[str, Any],
 ) -> PartitionEvidence:
     role = validate_partition_role(
@@ -477,6 +599,10 @@ def mint_partition_evidence(
     model_identity_dict = copy.deepcopy(dict(model_identity))
     seed = model_identity_dict["acoustic"]["classifier"]["random_state"]
 
+    if isinstance(row_ids, (str, bytes)):
+        raise ValueError("row IDs must be a sequence, not bare str/bytes")
+    if isinstance(actor_ids, (str, bytes)):
+        raise ValueError("actor IDs must be a sequence, not bare str/bytes")
     try:
         rows = tuple(row_ids)
         actors = tuple(actor_ids)
@@ -498,65 +624,60 @@ def mint_partition_evidence(
         actors,
         expected_rows=len(rows),
     )
-    assignment, split_seed_digest, split_manifest_sha = (
+    assignment, split_seed_digest, split_manifest_sha, eligible_records = (
         _verify_validated_split_assignment(split_assignment)
     )
+    authoritative = tuple(sorted(
+        (
+            record
+            for record in eligible_records
+            if assignment[record.actor_id] == role
+        ),
+        key=lambda record: record.clip_stem,
+    ))
+    expected_rows = tuple(record.clip_stem for record in authoritative)
+    expected_actors = tuple(record.actor_id for record in authoritative)
+    expected_labels = tuple(str(record.label) for record in authoritative)
+    expected_sentences = tuple(record.sentence_id for record in authoritative)
+    if rows != expected_rows:
+        raise ValueError(
+            "authoritative row IDs must equal the exact eligible partition clips"
+        )
+    if validated_actors != expected_actors:
+        raise ValueError(
+            "authoritative row actors do not match eligible split records"
+        )
+    if tuple(validated_labels.tolist()) != expected_labels:
+        raise ValueError(
+            "authoritative label sequence does not match eligible split records"
+        )
     if (
-        any(actor not in assignment for actor in validated_actors)
-        or any(assignment[actor] != role for actor in validated_actors)
+        not isinstance(sentences, np.ndarray)
+        or sentences.ndim != 1
+        or sentences.dtype.kind != "U"
+        or tuple(sentences.tolist()) != expected_sentences
     ):
         raise ValueError(
-            "actor assignment membership does not match declared partition"
+            "authoritative sentence sequence does not match eligible split records"
         )
-
-    probability_arrays: dict[str, np.ndarray] | None = None
-    feature_copy: np.ndarray | None = None
-    sentence_copy: np.ndarray | None = None
-    if role == "training_discovery":
-        if probabilities is not None or features is None or sentences is None:
-            raise ValueError(
-                "training_discovery evidence requires features/sentences only"
-            )
-        validated_features, validated_sentences, _, _ = validate_fit_inputs(
-            features,
-            sentences,
-            validated_labels,
-            seed,
-            partition_role=role,
-            class_order=CLASS_ORDER,
+    if (
+        not isinstance(features, np.ndarray)
+        or features.dtype != np.dtype(np.float64)
+        or features.ndim != 2
+        or features.shape != (len(rows), 17)
+        or not np.isfinite(features).all()
+    ):
+        raise ValueError("partition feature array shape, dtype, or values are invalid")
+    if (
+        type(upstream_acoustic_source_commitment_sha256) is not str
+        or re.fullmatch(
+            r"[0-9A-F]{64}",
+            upstream_acoustic_source_commitment_sha256,
+        ) is None
+    ):
+        raise ValueError(
+            "upstream acoustic source commitment must be uppercase SHA-256"
         )
-        feature_copy = validated_features.copy()
-        sentence_copy = validated_sentences.copy()
-        label_input_commitment = _canonical_sha256({
-            "labels_sha256": _array_commitment(validated_labels),
-            "features_sha256": _array_commitment(validated_features),
-            "sentences_sha256": _array_commitment(validated_sentences),
-        })
-        probability_commitment = _canonical_sha256({
-            "status": "not_applicable_before_fit"
-        })
-    else:
-        if features is not None or sentences is not None or probabilities is None:
-            raise ValueError(
-                "non-training evidence requires probabilities only"
-            )
-        probability_arrays, probability_rows = validate_probability_inputs(
-            probabilities,
-            class_order=CLASS_ORDER,
-            expected_rows=len(rows),
-        )
-        if probability_rows != len(rows):
-            raise ValueError("probability rows do not match case-order rows")
-        probability_arrays = {
-            key: probability_arrays[key].copy() for key in MODEL_KEYS
-        }
-        label_input_commitment = _canonical_sha256({
-            "labels_sha256": _array_commitment(validated_labels),
-        })
-        probability_commitment = _canonical_sha256({
-            key: _array_commitment(probability_arrays[key])
-            for key in MODEL_KEYS
-        })
 
     configuration_sha = _canonical_sha256(validated_config)
     environment_sha = _canonical_sha256(validated_environment)
@@ -580,34 +701,35 @@ def mint_partition_evidence(
         "assignment_sha256": assignment_sha,
         "row_commitment_sha256": _canonical_sha256(list(rows)),
         "actor_commitment_sha256": _canonical_sha256(list(validated_actors)),
-        "label_input_commitment_sha256": label_input_commitment,
+        "label_input_commitment_sha256": _array_commitment(validated_labels),
+        "sentence_commitment_sha256": _array_commitment(sentences),
+        "feature_input_commitment_sha256": _array_commitment(features),
+        "upstream_acoustic_source_commitment_sha256": (
+            upstream_acoustic_source_commitment_sha256
+        ),
         "model_class_commitment_sha256": _canonical_sha256(
             model_identity_dict
         ),
-        "probability_commitment_sha256": probability_commitment,
         "case_count": len(rows),
         "unique_actor_count": len(set(validated_actors)),
     }
-    payload["self_sha256"] = canonical_payload_sha256(payload)
-    validate_provenance_payload(payload, expected_role=role)
-
-    evidence = object.__new__(PartitionEvidence)
-    for name, value in (
-        ("_payload", payload),
-        ("_row_ids", rows),
-        ("_actor_ids", validated_actors),
-        ("_labels", validated_labels.copy()),
-        ("_split_assignment", split_assignment),
-        ("_configuration", copy.deepcopy(validated_config)),
-        ("_environment_lock", copy.deepcopy(validated_environment)),
-        ("_feature_schema", copy.deepcopy(validated_feature)),
-        ("_split_schema", copy.deepcopy(validated_split)),
-        ("_features", feature_copy),
-        ("_sentences", sentence_copy),
-        ("_probabilities", probability_arrays),
-        ("_model_identity", model_identity_dict),
-    ):
-        object.__setattr__(evidence, name, value)
+    feature_copy = np.asarray(features, dtype=np.float64).copy()
+    feature_copy.setflags(write=False)
+    state = _PartitionState(
+        rows=rows,
+        actors=validated_actors,
+        labels=expected_labels,
+        sentences=expected_sentences,
+        features=feature_copy,
+        split_assignment=split_assignment,
+        configuration=copy.deepcopy(validated_config),
+        environment_lock=copy.deepcopy(validated_environment),
+        feature_schema=copy.deepcopy(validated_feature),
+        split_schema=copy.deepcopy(validated_split),
+        model_identity=model_identity_dict,
+    )
+    evidence = _mint_artifact(PartitionEvidence, payload, state)
+    validate_provenance_payload(evidence.to_payload(), expected_role=role)
     return evidence
 
 
@@ -615,49 +737,54 @@ def _verify_partition_evidence(
     evidence: Any,
     *,
     expected_role: str,
-    labels: np.ndarray,
-    actor_ids: Sequence[str] | None = None,
-    features: np.ndarray | None = None,
-    sentences: np.ndarray | None = None,
-    probabilities: Mapping[str, np.ndarray] | None = None,
     expected_seed: int | None = None,
 ) -> PartitionEvidence:
-    if type(evidence) is not PartitionEvidence:
-        raise ValueError("partition-sensitive input requires bound evidence")
+    payload = _verify_artifact_mint(evidence, PartitionEvidence)
     validate_provenance_payload(
-        evidence._payload,
+        payload,
         expected_role=expected_role,
     )
-    actors = evidence._actor_ids if actor_ids is None else tuple(actor_ids)
+    links = _artifact_links(evidence)
+    if len(links) != 1 or type(links[0]) is not _PartitionState:
+        raise ValueError("partition evidence private state is invalid")
+    state = links[0]
     reminted = mint_partition_evidence(
         partition_role=expected_role,
-        row_ids=evidence._row_ids,
-        actor_ids=actors,
-        labels=labels,
-        split_assignment=evidence._split_assignment,
-        configuration=evidence._configuration,
-        environment_lock=evidence._environment_lock,
-        feature_schema=evidence._feature_schema,
-        split_schema=evidence._split_schema,
-        features=features,
-        sentences=sentences,
-        probabilities=probabilities,
-        model_identity=evidence._model_identity,
+        row_ids=state.rows,
+        actor_ids=state.actors,
+        labels=np.asarray(state.labels, dtype="<U1"),
+        sentences=np.asarray(state.sentences, dtype="<U3"),
+        features=state.features,
+        upstream_acoustic_source_commitment_sha256=payload[
+            "upstream_acoustic_source_commitment_sha256"
+        ],
+        split_assignment=state.split_assignment,
+        configuration=state.configuration,
+        environment_lock=state.environment_lock,
+        feature_schema=state.feature_schema,
+        split_schema=state.split_schema,
+        model_identity=state.model_identity,
     )
-    if reminted._payload != evidence._payload:
-        if (
-            reminted._payload["probability_commitment_sha256"]
-            != evidence._payload["probability_commitment_sha256"]
-        ):
-            raise ValueError("probability commitment does not match exact inputs")
+    if (
+        reminted.to_payload() != payload
+        or reminted.mint_sha256 != evidence.mint_sha256
+    ):
         raise ValueError("partition evidence commitment does not match exact inputs")
     if (
         expected_seed is not None
-        and evidence._model_identity["acoustic"]["classifier"]["random_state"]
+        and state.model_identity["acoustic"]["classifier"]["random_state"]
         != expected_seed
     ):
         raise ValueError("model seed does not match evidence model identity")
     return evidence
+
+
+def _partition_state(evidence: PartitionEvidence) -> _PartitionState:
+    _verify_artifact_mint(evidence, PartitionEvidence)
+    links = _artifact_links(evidence)
+    if len(links) != 1 or type(links[0]) is not _PartitionState:
+        raise ValueError("partition evidence private state is invalid")
+    return links[0]
 
 
 def _classifier(seed: int) -> LogisticRegression:
@@ -687,31 +814,123 @@ def build_models(seed: int) -> dict[str, object]:
     }
 
 
+def _canonical_parameter(value: Any) -> Any:
+    if value is None or type(value) in (bool, int, float, str):
+        return value
+    if isinstance(value, (list, tuple)):
+        return [_canonical_parameter(item) for item in value]
+    if isinstance(value, np.ndarray):
+        return {
+            "array_sha256": _array_commitment(value),
+        }
+    if isinstance(value, type):
+        return f"{value.__module__}.{value.__qualname__}"
+    return repr(value)
+
+
+def _estimator_parameters(estimator: object) -> dict[str, Any]:
+    return {
+        key: _canonical_parameter(value)
+        for key, value in sorted(
+            estimator.get_params(deep=False).items()
+        )
+    }
+
+
+def _classifier_state(classifier: LogisticRegression) -> dict[str, Any]:
+    return {
+        "classes_sha256": _array_commitment(classifier.classes_),
+        "coef_sha256": _array_commitment(classifier.coef_),
+        "intercept_sha256": _array_commitment(classifier.intercept_),
+        "n_iter_sha256": _array_commitment(classifier.n_iter_),
+        "params": _estimator_parameters(classifier),
+    }
+
+
+def _model_state_payload(models: Mapping[str, object]) -> dict[str, Any]:
+    if tuple(models) != MODEL_KEYS:
+        raise ValueError("fitted model bundle has wrong model order")
+    prior = models["class_prior"]
+    sentence = models["sentence_id"]
+    acoustic = models["acoustic"]
+    if (
+        type(prior) is not DummyClassifier
+        or type(sentence) is not Pipeline
+        or type(acoustic) is not Pipeline
+    ):
+        raise ValueError("fitted model bundle has wrong estimator types")
+    one_hot = sentence.named_steps["one_hot"]
+    sentence_classifier = sentence.named_steps["classifier"]
+    standardizer = acoustic.named_steps["standardize"]
+    acoustic_classifier = acoustic.named_steps["classifier"]
+    return {
+        "class_prior": {
+            "params": _estimator_parameters(prior),
+            "classes_sha256": _array_commitment(prior.classes_),
+            "class_prior_sha256": _array_commitment(prior.class_prior_),
+        },
+        "sentence_id": {
+            "steps": list(sentence.named_steps),
+            "categories": [
+                [str(value) for value in category.tolist()]
+                for category in one_hot.categories_
+            ],
+            "one_hot_params": _estimator_parameters(one_hot),
+            "classifier": _classifier_state(sentence_classifier),
+        },
+        "acoustic": {
+            "steps": list(acoustic.named_steps),
+            "mean_sha256": _array_commitment(standardizer.mean_),
+            "var_sha256": _array_commitment(standardizer.var_),
+            "scale_sha256": _array_commitment(standardizer.scale_),
+            "n_samples_seen": int(standardizer.n_samples_seen_),
+            "standardizer_params": _estimator_parameters(standardizer),
+            "classifier": _classifier_state(acoustic_classifier),
+        },
+    }
+
+
+def _verify_fitted_models(
+    fitted: Any,
+) -> tuple[dict[str, object], _FittedModelState, dict[str, Any]]:
+    payload = _verify_artifact_mint(fitted, FittedModelEvidence)
+    links = _artifact_links(fitted)
+    if len(links) != 1 or type(links[0]) is not _FittedModelState:
+        raise ValueError("fitted model private state is invalid")
+    state = links[0]
+    training = _verify_partition_evidence(
+        state.training_evidence,
+        expected_role="training_discovery",
+        expected_seed=payload["seed"],
+    )
+    training_state = _partition_state(training)
+    models = dict(state.models)
+    current_state_sha256 = _canonical_sha256(_model_state_payload(models))
+    if (
+        current_state_sha256 != state.model_state_sha256
+        or current_state_sha256 != payload["model_state_sha256"]
+        or training.mint_sha256 != payload["training_evidence_mint_sha256"]
+        or training.to_payload() != payload["training_provenance"]
+        or training_state.model_identity != payload["model_identity"]
+    ):
+        raise ValueError("fitted model state or training lineage changed")
+    return models, state, payload
+
+
 def fit_frozen_models(
-    training_features: np.ndarray,
-    training_sentences: np.ndarray,
-    training_labels: np.ndarray,
-    seed: int,
-    *,
     evidence: PartitionEvidence,
-) -> dict[str, object]:
+    seed: int,
+) -> FittedModelEvidence:
     bound = _verify_partition_evidence(
         evidence,
         expected_role="training_discovery",
-        labels=training_labels,
-        features=training_features,
-        sentences=training_sentences,
         expected_seed=seed,
     )
-    features, sentences, labels, validated_seed = validate_fit_inputs(
-        training_features,
-        training_sentences,
-        training_labels,
-        seed,
-        partition_role=bound._payload["partition_role"],
-        class_order=CLASS_ORDER,
-    )
-    models = build_models(validated_seed)
+    state = _partition_state(bound)
+    features = state.features
+    sentences = np.asarray(state.sentences, dtype="<U3")
+    labels = np.asarray(state.labels, dtype="<U1")
+    models = build_models(seed)
     models["class_prior"].fit(features, labels)
     models["sentence_id"].fit(sentences.reshape(-1, 1), labels)
     models["acoustic"].fit(features, labels)
@@ -741,32 +960,206 @@ def fit_frozen_models(
             raise ValueError(
                 "locked scikit-learn did not produce six-class probabilities"
             )
-    return models
+    model_state_payload = _model_state_payload(models)
+    model_state_sha256 = _canonical_sha256(model_state_payload)
+    fitted_state = _FittedModelState(
+        models=tuple((key, models[key]) for key in MODEL_KEYS),
+        model_state_sha256=model_state_sha256,
+        training_evidence=bound,
+    )
+    result = _mint_artifact(
+        FittedModelEvidence,
+        {
+            "schema_id": "emotion-state-phase-b-fitted-model-evidence-v1",
+            "model_order": list(MODEL_KEYS),
+            "class_order": list(CLASS_ORDER),
+            "seed": seed,
+            "training_evidence_mint_sha256": bound.mint_sha256,
+            "training_provenance": bound.to_payload(),
+            "model_identity": copy.deepcopy(state.model_identity),
+            "model_state_sha256": model_state_sha256,
+            "training_class_counts": {
+                label: int(np.count_nonzero(labels == label))
+                for label in CLASS_ORDER
+            },
+        },
+        fitted_state,
+    )
+    _verify_fitted_models(result)
+    return result
 
 
-def calibrate_thresholds(
+def predict_probabilities(
+    fitted_models: FittedModelEvidence,
+    partition_evidence: PartitionEvidence,
+) -> ProbabilityEvidence:
+    models, fitted_state, fitted_payload = _verify_fitted_models(fitted_models)
+    partition_payload = _verify_artifact_mint(
+        partition_evidence,
+        PartitionEvidence,
+    )
+    role = validate_partition_role(
+        partition_payload["partition_role"],
+        (
+            "training_discovery",
+            "calibration",
+            "balanced_diagnostic",
+            "final_lockbox",
+        ),
+    )
+    _verify_partition_evidence(partition_evidence, expected_role=role)
+    partition_state = _partition_state(partition_evidence)
+    if any(
+        partition_payload[key]
+        != fitted_payload["training_provenance"][key]
+        for key in (
+            "configuration_sha256",
+            "environment_lock_sha256",
+            "feature_schema_sha256",
+            "split_schema_sha256",
+            "split_manifest_sha256",
+            "assignment_sha256",
+            "model_class_commitment_sha256",
+        )
+    ):
+        raise ValueError("prediction partition and fitted model lineage differ")
+    inputs = {
+        "class_prior": partition_state.features,
+        "sentence_id": np.asarray(
+            partition_state.sentences,
+            dtype="<U3",
+        ).reshape(-1, 1),
+        "acoustic": partition_state.features,
+    }
+    arrays: dict[str, np.ndarray] = {}
+    for key in MODEL_KEYS:
+        value = np.asarray(
+            models[key].predict_proba(inputs[key]),
+            dtype=np.float64,
+        )
+        arrays[key] = value
+    validated, row_count = validate_probability_inputs(
+        arrays,
+        class_order=CLASS_ORDER,
+        expected_rows=len(partition_state.rows),
+    )
+    if row_count != len(partition_state.rows):
+        raise ValueError("predicted probability rows do not match partition")
+    if (
+        _canonical_sha256(_model_state_payload(models))
+        != fitted_state.model_state_sha256
+    ):
+        raise ValueError("fitted model state changed during prediction")
+    frozen_arrays: list[tuple[str, np.ndarray]] = []
+    for key in MODEL_KEYS:
+        copied = validated[key].copy()
+        copied.setflags(write=False)
+        frozen_arrays.append((key, copied))
+    probability_commitment = _canonical_sha256({
+        key: _array_commitment(validated[key]) for key in MODEL_KEYS
+    })
+    state = _ProbabilityState(
+        arrays=tuple(frozen_arrays),
+        fitted_models=fitted_models,
+        partition_evidence=partition_evidence,
+    )
+    result = _mint_artifact(
+        ProbabilityEvidence,
+        {
+            "schema_id": "emotion-state-phase-b-probability-evidence-v1",
+            "partition_role": role,
+            "model_order": list(MODEL_KEYS),
+            "class_order": list(CLASS_ORDER),
+            "case_count": row_count,
+            "probability_commitment_sha256": probability_commitment,
+            "partition_evidence_mint_sha256": (
+                partition_evidence.mint_sha256
+            ),
+            "provenance": partition_payload,
+            "fitted_model_evidence_mint_sha256": fitted_models.mint_sha256,
+            "training_evidence_mint_sha256": (
+                fitted_payload["training_evidence_mint_sha256"]
+            ),
+            "training_provenance": fitted_payload["training_provenance"],
+            "model_state_sha256": fitted_payload["model_state_sha256"],
+        },
+        state,
+    )
+    _verify_probability_evidence(result, expected_role=role)
+    return result
+
+
+def _verify_probability_evidence(
+    evidence: Any,
+    *,
+    expected_role: str | None = None,
+) -> tuple[dict[str, np.ndarray], _ProbabilityState, dict[str, Any]]:
+    payload = _verify_artifact_mint(evidence, ProbabilityEvidence)
+    validate_probability_evidence_payload(
+        payload,
+        expected_role=expected_role,
+    )
+    role = validate_partition_role(
+        payload["partition_role"],
+        (
+            "training_discovery",
+            "calibration",
+            "balanced_diagnostic",
+            "final_lockbox",
+        ),
+    )
+    if expected_role is not None and role != expected_role:
+        raise ValueError(f"ProbabilityEvidence must have {expected_role} role")
+    links = _artifact_links(evidence)
+    if len(links) != 1 or type(links[0]) is not _ProbabilityState:
+        raise ValueError("probability evidence private state is invalid")
+    state = links[0]
+    models, _, fitted_payload = _verify_fitted_models(state.fitted_models)
+    del models
+    partition = _verify_partition_evidence(
+        state.partition_evidence,
+        expected_role=role,
+    )
+    arrays = dict(state.arrays)
+    validated, row_count = validate_probability_inputs(
+        arrays,
+        class_order=CLASS_ORDER,
+        expected_rows=payload["case_count"],
+    )
+    commitment = _canonical_sha256({
+        key: _array_commitment(validated[key]) for key in MODEL_KEYS
+    })
+    if (
+        commitment != payload["probability_commitment_sha256"]
+        or partition.mint_sha256 != payload["partition_evidence_mint_sha256"]
+        or partition.to_payload() != payload["provenance"]
+        or state.fitted_models.mint_sha256
+        != payload["fitted_model_evidence_mint_sha256"]
+        or fitted_payload["training_evidence_mint_sha256"]
+        != payload["training_evidence_mint_sha256"]
+        or fitted_payload["training_provenance"]
+        != payload["training_provenance"]
+        or row_count != payload["case_count"]
+    ):
+        raise ValueError("probability evidence lineage or commitment changed")
+    return validated, state, payload
+
+
+def _calibrate_probability_arrays(
     probabilities: Mapping[str, np.ndarray],
     targets: Sequence[float],
-    *,
-    evidence: PartitionEvidence,
-) -> CalibrationEvidence:
-    bound = _verify_partition_evidence(
-        evidence,
-        expected_role="calibration",
-        labels=evidence._labels if type(evidence) is PartitionEvidence else None,
-        probabilities=probabilities,
-    )
+) -> dict[str, dict[str, dict[str, float]]]:
     if tuple(targets) != COVERAGE_TARGETS:
         raise ValueError("calibration targets must be exactly 1.0, 0.8, 0.6")
     arrays, row_count = validate_probability_inputs(
         probabilities,
         class_order=CLASS_ORDER,
     )
-    model_results: dict[str, dict[float, dict[str, float]]] = {}
+    model_results: dict[str, dict[str, dict[str, float]]] = {}
     for model in MODEL_KEYS:
         confidence = np.max(arrays[model], axis=1)
         candidates = tuple(sorted(set(float(value) for value in confidence)))
-        cells: dict[float, dict[str, float]] = {}
+        cells: dict[str, dict[str, float]] = {}
         for target in COVERAGE_TARGETS:
             eligible = [
                 threshold
@@ -780,23 +1173,37 @@ def calibrate_thresholds(
             achieved = (
                 float(np.count_nonzero(confidence >= threshold)) / row_count
             )
-            cells[target] = {
+            cells[str(target)] = {
                 "threshold": float(threshold),
                 "achieved_coverage": float(achieved),
             }
         model_results[model] = cells
+    return model_results
+
+
+def calibrate_thresholds(
+    probabilities: ProbabilityEvidence,
+    targets: Sequence[float],
+) -> CalibrationEvidence:
+    arrays, state, probability_payload = _verify_probability_evidence(
+        probabilities,
+        expected_role="calibration",
+    )
+    model_results = _calibrate_probability_arrays(arrays, targets)
     result = {
         "schema_id": "emotion-state-phase-b-calibration-v1",
         "partition_role": "calibration",
         "class_order": list(CLASS_ORDER),
         "targets": list(COVERAGE_TARGETS),
         "models": model_results,
-        "provenance": bound.to_payload(),
+        "probability_evidence_mint_sha256": probabilities.mint_sha256,
+        "probability_evidence": probability_payload,
+        "provenance": state.partition_evidence.to_payload(),
     }
-    result_evidence = _mint_bound_payload(
+    result_evidence = _mint_artifact(
         CalibrationEvidence,
         result,
-        bound,
+        probabilities,
     )
     validate_calibration_result(result_evidence.to_payload())
     return result_evidence
@@ -905,30 +1312,63 @@ def _actor_count(actor_ids: tuple[str, ...], mask: np.ndarray) -> int:
     })
 
 
-def evaluate_partition(
+def _verify_calibration_evidence(
+    thresholds: Any,
+) -> tuple[ProbabilityEvidence, dict[str, Any]]:
+    payload = _verify_artifact_mint(thresholds, CalibrationEvidence)
+    validate_calibration_result(payload)
+    links = _artifact_links(thresholds)
+    if len(links) != 1 or type(links[0]) is not ProbabilityEvidence:
+        raise ValueError("calibration evidence private lineage is invalid")
+    probability = links[0]
+    _, state, probability_payload = _verify_probability_evidence(
+        probability,
+        expected_role="calibration",
+    )
+    if (
+        probability.mint_sha256
+        != payload["probability_evidence_mint_sha256"]
+        or probability_payload != payload["probability_evidence"]
+        or state.partition_evidence.to_payload() != payload["provenance"]
+    ):
+        raise ValueError("calibration evidence lineage changed")
+    return probability, payload
+
+
+def _shared_probability_lineage_matches(
+    left: Mapping[str, Any],
+    right: Mapping[str, Any],
+) -> bool:
+    if any(
+        left[key] != right[key]
+        for key in (
+            "fitted_model_evidence_mint_sha256",
+            "training_evidence_mint_sha256",
+            "training_provenance",
+            "model_state_sha256",
+        )
+    ):
+        return False
+    return all(
+        left["provenance"][key] == right["provenance"][key]
+        for key in (
+            "configuration_sha256",
+            "environment_lock_sha256",
+            "feature_schema_sha256",
+            "split_schema_sha256",
+            "split_manifest_sha256",
+            "assignment_sha256",
+            "model_class_commitment_sha256",
+        )
+    )
+
+
+def _evaluate_probability_arrays(
     labels: np.ndarray,
     probabilities: Mapping[str, np.ndarray],
     actor_ids: Sequence[str],
-    thresholds: CalibrationEvidence,
-    *,
-    evidence: PartitionEvidence,
-) -> EvaluationEvidence:
-    if type(thresholds) is not CalibrationEvidence:
-        raise ValueError("thresholds require bound calibration evidence")
-    validate_calibration_result(thresholds.to_payload())
-    if type(evidence) is not PartitionEvidence:
-        raise ValueError("evaluation requires bound partition evidence")
-    role = validate_partition_role(
-        evidence._payload["partition_role"],
-        ("balanced_diagnostic", "final_lockbox"),
-    )
-    bound = _verify_partition_evidence(
-        evidence,
-        expected_role=role,
-        labels=labels,
-        actor_ids=actor_ids,
-        probabilities=probabilities,
-    )
+    calibration_models: Mapping[str, Any],
+) -> dict[str, Any]:
     arrays, row_count = validate_probability_inputs(
         probabilities,
         class_order=CLASS_ORDER,
@@ -937,9 +1377,6 @@ def evaluate_partition(
         labels,
         actor_ids,
         expected_rows=row_count,
-    )
-    validated_thresholds = validate_calibration_result(
-        thresholds.to_payload()
     )
     model_results: dict[str, Any] = {}
     all_rows = np.ones(row_count, dtype=bool)
@@ -966,9 +1403,10 @@ def evaluate_partition(
                 "case_count": cases_for_class,
                 "recall": None if class_suppressed else float(recalls[label]),
             }
-        retained_cells: dict[float, Any] = {}
+        retained_cells: dict[str, Any] = {}
         for target in COVERAGE_TARGETS:
-            calibration_cell = validated_thresholds["models"][model][target]
+            target_key = str(target)
+            calibration_cell = calibration_models[model][target_key]
             threshold = calibration_cell["threshold"]
             mask = confidence >= threshold
             retained_actors = _actor_count(actors, mask)
@@ -977,7 +1415,7 @@ def evaluate_partition(
                 retained_actors < MINIMUM_UNIQUE_ACTORS
                 or retained_cases == 0
             )
-            retained_cells[target] = {
+            retained_cells[target_key] = {
                 "threshold": float(threshold),
                 "calibration_achieved_coverage": float(
                     calibration_cell["achieved_coverage"]
@@ -1011,18 +1449,59 @@ def evaluate_partition(
             "ece_10_bin": None if suppressed else values["ece_10_bin"],
             "retained": retained_cells,
         }
+    return model_results
+
+
+def evaluate_partition(
+    probabilities: ProbabilityEvidence,
+    thresholds: CalibrationEvidence,
+) -> EvaluationEvidence:
+    arrays, probability_state, probability_payload = (
+        _verify_probability_evidence(probabilities)
+    )
+    role = validate_partition_role(
+        probability_payload["partition_role"],
+        ("balanced_diagnostic", "final_lockbox"),
+    )
+    _, calibration_payload = _verify_calibration_evidence(thresholds)
+    calibration_probability_payload = calibration_payload[
+        "probability_evidence"
+    ]
+    if not _shared_probability_lineage_matches(
+        probability_payload,
+        calibration_probability_payload,
+    ):
+        raise ValueError(
+            "calibration lineage does not match evaluated model/training lineage"
+        )
+    partition_state = _partition_state(
+        probability_state.partition_evidence
+    )
+    labels = np.asarray(partition_state.labels, dtype="<U1")
+    actors = partition_state.actors
+    model_results = _evaluate_probability_arrays(
+        labels,
+        arrays,
+        actors,
+        calibration_payload["models"],
+    )
     result = {
         "schema_id": "emotion-state-phase-b-evaluation-v1",
         "partition_role": role,
         "class_order": list(CLASS_ORDER),
         "models": model_results,
         "final_decision_eligible": role == "final_lockbox",
-        "provenance": bound.to_payload(),
+        "probability_evidence_mint_sha256": probabilities.mint_sha256,
+        "probability_evidence": probability_payload,
+        "calibration_evidence_mint_sha256": thresholds.mint_sha256,
+        "calibration_evidence": calibration_payload,
+        "provenance": probability_state.partition_evidence.to_payload(),
     }
-    result_evidence = _mint_bound_payload(
+    result_evidence = _mint_artifact(
         EvaluationEvidence,
         result,
-        bound,
+        probabilities,
+        thresholds,
     )
     validate_evaluation_result(
         result_evidence.to_payload(),
@@ -1031,32 +1510,17 @@ def evaluate_partition(
     return result_evidence
 
 
-def paired_actor_bootstrap(
+def _paired_actor_bootstrap_arrays(
     labels: np.ndarray,
     probabilities: Mapping[str, np.ndarray],
     actor_ids: Sequence[str],
     resamples: int,
     seed: int,
-    *,
-    evidence: PartitionEvidence,
-) -> BootstrapEvidence:
-    bound = _verify_partition_evidence(
-        evidence,
-        expected_role="final_lockbox",
-        labels=labels,
-        actor_ids=actor_ids,
-        probabilities=probabilities,
-    )
+) -> dict[str, Any]:
     if type(resamples) is not int or resamples != BOOTSTRAP_RESAMPLES:
         raise ValueError("paired actor bootstrap requires exactly 2,000 resamples")
-    configuration_sha256 = bound._payload["configuration_sha256"]
-    if (
-        type(seed) is not int
-        or seed != int(configuration_sha256[:16], 16)
-    ):
-        raise ValueError(
-            "bootstrap seed must derive from the configuration SHA-256"
-        )
+    if type(seed) is not int or seed < 0:
+        raise ValueError("paired actor bootstrap seed must be non-negative")
     arrays, row_count = validate_probability_inputs(
         probabilities,
         class_order=CLASS_ORDER,
@@ -1124,6 +1588,41 @@ def paired_actor_bootstrap(
             "lower_95": float(lower),
             "upper_95": float(upper),
         }
+    return intervals
+
+
+def paired_actor_bootstrap(
+    probabilities: ProbabilityEvidence,
+    resamples: int,
+    seed: int,
+) -> BootstrapEvidence:
+    arrays, probability_state, probability_payload = (
+        _verify_probability_evidence(
+            probabilities,
+            expected_role="final_lockbox",
+        )
+    )
+    partition_state = _partition_state(
+        probability_state.partition_evidence
+    )
+    configuration_sha256 = probability_payload["provenance"][
+        "configuration_sha256"
+    ]
+    if (
+        type(seed) is not int
+        or seed != int(configuration_sha256[:16], 16)
+    ):
+        raise ValueError(
+            "bootstrap seed must derive from the configuration SHA-256"
+        )
+    labels = np.asarray(partition_state.labels, dtype="<U1")
+    intervals = _paired_actor_bootstrap_arrays(
+        labels,
+        arrays,
+        partition_state.actors,
+        resamples,
+        seed,
+    )
     result = {
         "schema_id": "emotion-state-phase-b-bootstrap-v1",
         "partition_role": "final_lockbox",
@@ -1131,55 +1630,372 @@ def paired_actor_bootstrap(
         "resamples": resamples,
         "seed": seed,
         "configuration_sha256": configuration_sha256,
-        "unique_actor_count": len(unique_actors),
-        "case_count": row_count,
+        "unique_actor_count": len(set(partition_state.actors)),
+        "case_count": len(partition_state.rows),
         "paired_macro_f1_lift": intervals,
-        "provenance": bound.to_payload(),
+        "probability_evidence_mint_sha256": probabilities.mint_sha256,
+        "probability_evidence": probability_payload,
+        "provenance": probability_state.partition_evidence.to_payload(),
     }
-    result_evidence = _mint_bound_payload(
+    result_evidence = _mint_artifact(
         BootstrapEvidence,
         result,
-        bound,
+        probabilities,
     )
     validate_bootstrap_result(result_evidence.to_payload())
     return result_evidence
 
 
+SLICE_INSTABILITY_TOLERANCE = 0.10
+
+
+def _verify_evaluation_evidence(
+    evaluation: Any,
+    *,
+    expected_role: str | None = None,
+) -> tuple[ProbabilityEvidence, CalibrationEvidence, dict[str, Any]]:
+    payload = _verify_artifact_mint(evaluation, EvaluationEvidence)
+    validate_evaluation_result(payload, expected_role=expected_role)
+    links = _artifact_links(evaluation)
+    if (
+        len(links) != 2
+        or type(links[0]) is not ProbabilityEvidence
+        or type(links[1]) is not CalibrationEvidence
+    ):
+        raise ValueError("evaluation evidence private lineage is invalid")
+    probability, calibration = links
+    _, _, probability_payload = _verify_probability_evidence(probability)
+    _, calibration_payload = _verify_calibration_evidence(calibration)
+    if (
+        probability.mint_sha256
+        != payload["probability_evidence_mint_sha256"]
+        or probability_payload != payload["probability_evidence"]
+        or calibration.mint_sha256
+        != payload["calibration_evidence_mint_sha256"]
+        or calibration_payload != payload["calibration_evidence"]
+    ):
+        raise ValueError("evaluation evidence lineage changed")
+    return probability, calibration, payload
+
+
+def _verify_bootstrap_evidence(
+    bootstrap: Any,
+) -> tuple[ProbabilityEvidence, dict[str, Any]]:
+    payload = _verify_artifact_mint(bootstrap, BootstrapEvidence)
+    validate_bootstrap_result(payload)
+    links = _artifact_links(bootstrap)
+    if len(links) != 1 or type(links[0]) is not ProbabilityEvidence:
+        raise ValueError("bootstrap evidence private lineage is invalid")
+    probability = links[0]
+    _, _, probability_payload = _verify_probability_evidence(
+        probability,
+        expected_role="final_lockbox",
+    )
+    if (
+        probability.mint_sha256
+        != payload["probability_evidence_mint_sha256"]
+        or probability_payload != payload["probability_evidence"]
+    ):
+        raise ValueError("bootstrap evidence lineage changed")
+    return probability, payload
+
+
+def mint_slice_analysis(
+    probabilities: ProbabilityEvidence,
+    evaluation: EvaluationEvidence,
+    slices: Mapping[str, Sequence[str]],
+) -> SliceAnalysisEvidence:
+    arrays, probability_state, probability_payload = (
+        _verify_probability_evidence(probabilities)
+    )
+    role = validate_partition_role(
+        probability_payload["partition_role"],
+        ("balanced_diagnostic", "final_lockbox"),
+    )
+    evaluation_probability, _, evaluation_payload = (
+        _verify_evaluation_evidence(evaluation, expected_role=role)
+    )
+    if evaluation_probability.mint_sha256 != probabilities.mint_sha256:
+        raise ValueError("slice analysis and evaluation probability lineage differ")
+    if not isinstance(slices, Mapping) or not slices:
+        raise ValueError("slice contributors must be a non-empty mapping")
+    partition_state = _partition_state(
+        probability_state.partition_evidence
+    )
+    row_index = {
+        row_id: index for index, row_id in enumerate(partition_state.rows)
+    }
+    labels = np.asarray(partition_state.labels, dtype="<U1")
+    full_lifts = {
+        baseline: (
+            evaluation_payload["models"]["acoustic"]["macro_f1"]
+            - evaluation_payload["models"][baseline]["macro_f1"]
+        )
+        for baseline in ("class_prior", "sentence_id")
+    }
+    cells: dict[str, Any] = {}
+    reversal = False
+    instability = False
+    for name, contributors in sorted(slices.items()):
+        if (
+            type(name) is not str
+            or not name
+            or name.strip() != name
+            or isinstance(contributors, (str, bytes))
+        ):
+            raise ValueError("slice contributors and names are invalid")
+        try:
+            contributor_rows = tuple(contributors)
+        except TypeError as error:
+            raise ValueError("slice contributors must be row-ID sequences") from error
+        if (
+            not contributor_rows
+            or len(contributor_rows) != len(set(contributor_rows))
+            or any(
+                type(row) is not str or row not in row_index
+                for row in contributor_rows
+            )
+        ):
+            raise ValueError("slice contributors must be unique authoritative rows")
+        indexes = np.asarray(
+            [row_index[row] for row in contributor_rows],
+            dtype=np.int64,
+        )
+        contributor_actors = tuple(
+            partition_state.actors[index] for index in indexes.tolist()
+        )
+        actor_count = len(set(contributor_actors))
+        if actor_count < MINIMUM_UNIQUE_ACTORS:
+            raise ValueError("slice contributors require at least ten actors")
+        scores = {
+            model: _macro_f1(
+                labels[indexes],
+                _predicted_labels(arrays[model][indexes]),
+            )
+            for model in MODEL_KEYS
+        }
+        lifts = {
+            baseline: scores["acoustic"] - scores[baseline]
+            for baseline in ("class_prior", "sentence_id")
+        }
+        reversal = reversal or any(value < 0.0 for value in lifts.values())
+        instability = instability or any(
+            abs(lifts[baseline] - full_lifts[baseline])
+            > SLICE_INSTABILITY_TOLERANCE
+            for baseline in lifts
+        )
+        cells[name] = {
+            "case_count": len(contributor_rows),
+            "unique_actor_count": actor_count,
+            "contributor_row_commitment_sha256": _canonical_sha256(
+                list(contributor_rows)
+            ),
+            "contributor_actor_commitment_sha256": _canonical_sha256(
+                list(contributor_actors)
+            ),
+            "model_macro_f1": scores,
+            "paired_macro_f1_lift": lifts,
+        }
+    result = _mint_artifact(
+        SliceAnalysisEvidence,
+        {
+            "schema_id": "emotion-state-phase-b-slice-analysis-v1",
+            "partition_role": role,
+            "class_order": list(CLASS_ORDER),
+            "instability_tolerance": SLICE_INSTABILITY_TOLERANCE,
+            "slices": cells,
+            "eligible_slice_reversal": reversal,
+            "eligible_slice_instability": instability,
+            "probability_evidence_mint_sha256": probabilities.mint_sha256,
+            "evaluation_evidence_mint_sha256": evaluation.mint_sha256,
+            "provenance": probability_state.partition_evidence.to_payload(),
+        },
+        probabilities,
+        evaluation,
+    )
+    _verify_slice_analysis(result, expected_role=role)
+    return result
+
+
+def _verify_slice_analysis(
+    analysis: Any,
+    *,
+    expected_role: str | None = None,
+) -> tuple[ProbabilityEvidence, EvaluationEvidence, dict[str, Any]]:
+    payload = _verify_artifact_mint(analysis, SliceAnalysisEvidence)
+    role = validate_partition_role(
+        payload["partition_role"],
+        ("balanced_diagnostic", "final_lockbox"),
+    )
+    if expected_role is not None and role != expected_role:
+        raise ValueError(f"slice analysis must have {expected_role} role")
+    if payload["schema_id"] != "emotion-state-phase-b-slice-analysis-v1":
+        raise ValueError("slice analysis schema does not match")
+    if payload["instability_tolerance"] != SLICE_INSTABILITY_TOLERANCE:
+        raise ValueError("slice analysis instability tolerance does not match")
+    if (
+        type(payload["eligible_slice_reversal"]) is not bool
+        or type(payload["eligible_slice_instability"]) is not bool
+        or not isinstance(payload["slices"], Mapping)
+        or not payload["slices"]
+    ):
+        raise ValueError("slice analysis derived fields are invalid")
+    links = _artifact_links(analysis)
+    if (
+        len(links) != 2
+        or type(links[0]) is not ProbabilityEvidence
+        or type(links[1]) is not EvaluationEvidence
+    ):
+        raise ValueError("slice analysis private lineage is invalid")
+    probability, evaluation = links
+    _, probability_state, probability_payload = _verify_probability_evidence(
+        probability,
+        expected_role=role,
+    )
+    evaluation_probability, _, evaluation_payload = (
+        _verify_evaluation_evidence(evaluation, expected_role=role)
+    )
+    if (
+        probability.mint_sha256
+        != payload["probability_evidence_mint_sha256"]
+        or evaluation.mint_sha256
+        != payload["evaluation_evidence_mint_sha256"]
+        or evaluation_probability.mint_sha256 != probability.mint_sha256
+        or probability_state.partition_evidence.to_payload()
+        != payload["provenance"]
+    ):
+        raise ValueError("slice analysis provenance commitments do not match")
+    full_lifts = {
+        baseline: (
+            evaluation_payload["models"]["acoustic"]["macro_f1"]
+            - evaluation_payload["models"][baseline]["macro_f1"]
+        )
+        for baseline in ("class_prior", "sentence_id")
+    }
+    derived_reversal = False
+    derived_instability = False
+    for name, cell in payload["slices"].items():
+        if type(name) is not str or not name:
+            raise ValueError("slice name is invalid")
+        if set(cell) != {
+            "case_count",
+            "unique_actor_count",
+            "contributor_row_commitment_sha256",
+            "contributor_actor_commitment_sha256",
+            "model_macro_f1",
+            "paired_macro_f1_lift",
+        }:
+            raise ValueError("slice analytical cell schema is invalid")
+        if (
+            type(cell["case_count"]) is not int
+            or cell["case_count"] <= 0
+            or type(cell["unique_actor_count"]) is not int
+            or cell["unique_actor_count"] < MINIMUM_UNIQUE_ACTORS
+            or cell["unique_actor_count"] > cell["case_count"]
+        ):
+            raise ValueError("slice contributor counts are invalid")
+        for digest_key in (
+            "contributor_row_commitment_sha256",
+            "contributor_actor_commitment_sha256",
+        ):
+            if (
+                type(cell[digest_key]) is not str
+                or re.fullmatch(r"[0-9A-F]{64}", cell[digest_key]) is None
+            ):
+                raise ValueError("slice contributor commitment is invalid")
+        if set(cell["model_macro_f1"]) != set(MODEL_KEYS):
+            raise ValueError("slice model metrics are invalid")
+        for value in cell["model_macro_f1"].values():
+            if type(value) is not float or not 0.0 <= value <= 1.0:
+                raise ValueError("slice macro-F1 is invalid")
+        if set(cell["paired_macro_f1_lift"]) != {
+            "class_prior",
+            "sentence_id",
+        }:
+            raise ValueError("slice lift metrics are invalid")
+        for baseline, value in cell["paired_macro_f1_lift"].items():
+            expected_lift = (
+                cell["model_macro_f1"]["acoustic"]
+                - cell["model_macro_f1"][baseline]
+            )
+            if (
+                type(value) is not float
+                or not -1.0 <= value <= 1.0
+                or not math.isclose(
+                    value,
+                    expected_lift,
+                    rel_tol=0.0,
+                    abs_tol=1e-15,
+                )
+            ):
+                raise ValueError("slice lift metric is invalid")
+            derived_reversal = derived_reversal or value < 0.0
+            derived_instability = derived_instability or (
+                abs(value - full_lifts[baseline])
+                > SLICE_INSTABILITY_TOLERANCE
+            )
+    if (
+        payload["eligible_slice_reversal"] is not derived_reversal
+        or payload["eligible_slice_instability"] is not derived_instability
+    ):
+        raise ValueError("slice analytical flags are not derived from metrics")
+    del probability_payload
+    return probability, evaluation, payload
+
+
+def _derived_confidence_abstention(models: Mapping[str, Any]) -> bool:
+    acoustic = models["acoustic"]
+    candidates = [
+        acoustic["retained"][key]
+        for key in ("0.8", "0.6")
+        if (
+            not acoustic["retained"][key]["suppressed"]
+            and acoustic["retained"][key]["coverage"] < 1.0
+        )
+    ]
+    return (
+        bool(candidates)
+        and any(
+            cell["retained_macro_f1"] > acoustic["macro_f1"]
+            for cell in candidates
+        )
+        and all(
+            cell["retained_macro_f1"] >= acoustic["macro_f1"]
+            for cell in candidates
+        )
+    )
+
+
 def build_decision_evidence(
     evaluation: EvaluationEvidence,
     bootstrap: BootstrapEvidence,
-    *,
-    evidence: PartitionEvidence,
-    sentence_driven_apparent_lift: bool,
-    eligible_slice_reversal: bool,
-    eligible_slice_instability: bool,
-    confidence_abstention_improves: bool,
+    slice_analysis: SliceAnalysisEvidence,
 ) -> DecisionEvidence:
-    if (
-        type(evaluation) is not EvaluationEvidence
-        or type(bootstrap) is not BootstrapEvidence
-        or type(evidence) is not PartitionEvidence
-    ):
-        raise ValueError("decision construction requires bound evidence objects")
-    _verify_partition_evidence(
-        evidence,
-        expected_role="final_lockbox",
-        labels=evidence._labels,
-        actor_ids=evidence._actor_ids,
-        probabilities=evidence._probabilities,
+    evaluation_probability, calibration, validated_evaluation = (
+        _verify_evaluation_evidence(
+            evaluation,
+            expected_role="final_lockbox",
+        )
     )
-    validated_evaluation = validate_evaluation_result(
-        evaluation.to_payload(),
-        expected_role="final_lockbox",
+    bootstrap_probability, validated_bootstrap = (
+        _verify_bootstrap_evidence(bootstrap)
     )
-    validated_bootstrap = validate_bootstrap_result(bootstrap.to_payload())
+    slice_probability, slice_evaluation, validated_slice = (
+        _verify_slice_analysis(
+            slice_analysis,
+            expected_role="final_lockbox",
+        )
+    )
     if (
-        evaluation._partition_evidence is not evidence
-        or bootstrap._partition_evidence is not evidence
-        or validated_evaluation["provenance"] != evidence._payload
-        or validated_bootstrap["provenance"] != evidence._payload
+        evaluation_probability.mint_sha256
+        != bootstrap_probability.mint_sha256
+        or evaluation_probability.mint_sha256
+        != slice_probability.mint_sha256
+        or slice_evaluation.mint_sha256 != evaluation.mint_sha256
         or validated_evaluation["provenance"]
         != validated_bootstrap["provenance"]
+        or validated_evaluation["probability_evidence"]
+        != validated_bootstrap["probability_evidence"]
     ):
         raise ValueError(
             "evaluation/bootstrap provenance commitments do not match"
@@ -1200,14 +2016,14 @@ def build_decision_evidence(
         raise ValueError(
             "final-lockbox evaluation and bootstrap counts do not match"
         )
-    flags = (
-        sentence_driven_apparent_lift,
-        eligible_slice_reversal,
-        eligible_slice_instability,
-        confidence_abstention_improves,
+    models = validated_evaluation["models"]
+    lifts = validated_bootstrap["paired_macro_f1_lift"]
+    sentence_driven_apparent_lift = (
+        models["sentence_id"]["macro_f1"]
+        > models["class_prior"]["macro_f1"]
+        and lifts["sentence_id"]["point_estimate"] <= 0.0
     )
-    if any(type(flag) is not bool for flag in flags):
-        raise ValueError("decision evidence flags must be booleans")
+    confidence_abstention_improves = _derived_confidence_abstention(models)
     result = {
         "schema_id": "emotion-state-phase-b-decision-evidence-v1",
         "partition_role": "final_lockbox",
@@ -1218,10 +2034,19 @@ def build_decision_evidence(
             validated_bootstrap["paired_macro_f1_lift"]
         ),
         "sentence_driven_apparent_lift": sentence_driven_apparent_lift,
-        "eligible_slice_reversal": eligible_slice_reversal,
-        "eligible_slice_instability": eligible_slice_instability,
+        "eligible_slice_reversal": validated_slice[
+            "eligible_slice_reversal"
+        ],
+        "eligible_slice_instability": validated_slice[
+            "eligible_slice_instability"
+        ],
         "confidence_abstention_improves": confidence_abstention_improves,
-        "provenance": evidence.to_payload(),
+        "evaluation_evidence_mint_sha256": evaluation.mint_sha256,
+        "bootstrap_evidence_mint_sha256": bootstrap.mint_sha256,
+        "slice_analysis_mint_sha256": slice_analysis.mint_sha256,
+        "calibration_evidence_mint_sha256": calibration.mint_sha256,
+        "calibration_evidence": calibration.to_payload(),
+        "provenance": validated_evaluation["provenance"],
     }
     all_valid = {
         "material_valid": True,
@@ -1231,32 +2056,21 @@ def build_decision_evidence(
         "deterministic": True,
         "lockbox_valid": True,
     }
-    result_evidence = _mint_bound_payload(
+    result_evidence = _mint_artifact(
         DecisionEvidence,
         result,
-        evidence,
+        evaluation,
+        bootstrap,
+        slice_analysis,
     )
     validate_decision_inputs(result_evidence.to_payload(), all_valid)
     return result_evidence
 
 
-def decide_experiment(
-    metrics: DecisionEvidence,
-    validity: Mapping[str, bool],
+def _decision_outcome(
+    validated_metrics: Mapping[str, Any],
+    validated_validity: Mapping[str, bool],
 ) -> str:
-    if type(metrics) is not DecisionEvidence:
-        raise ValueError(
-            "decide_experiment requires bound decision evidence"
-        )
-    if (
-        type(metrics._partition_evidence) is not PartitionEvidence
-        or metrics["provenance"] != metrics._partition_evidence._payload
-    ):
-        raise ValueError("bound decision evidence provenance does not match")
-    validated_metrics, validated_validity = validate_decision_inputs(
-        metrics.to_payload(),
-        validity,
-    )
     if not all(validated_validity.values()):
         return "discard"
     if validated_metrics["sentence_driven_apparent_lift"]:
@@ -1298,3 +2112,63 @@ def decide_experiment(
     ):
         return "keep_for_research_only"
     return "revise"
+
+
+def decide_experiment(
+    metrics: DecisionEvidence,
+    validity: Mapping[str, bool],
+) -> str:
+    payload = _verify_artifact_mint(metrics, DecisionEvidence)
+    links = _artifact_links(metrics)
+    if (
+        len(links) != 3
+        or type(links[0]) is not EvaluationEvidence
+        or type(links[1]) is not BootstrapEvidence
+        or type(links[2]) is not SliceAnalysisEvidence
+    ):
+        raise ValueError("bound decision evidence private lineage is invalid")
+    evaluation, bootstrap, slice_analysis = links
+    _, calibration, evaluation_payload = _verify_evaluation_evidence(
+        evaluation,
+        expected_role="final_lockbox",
+    )
+    _, bootstrap_payload = _verify_bootstrap_evidence(bootstrap)
+    _, _, slice_payload = _verify_slice_analysis(
+        slice_analysis,
+        expected_role="final_lockbox",
+    )
+    expected_fields = {
+        "models": evaluation_payload["models"],
+        "paired_macro_f1_lift": bootstrap_payload[
+            "paired_macro_f1_lift"
+        ],
+        "sentence_driven_apparent_lift": (
+            evaluation_payload["models"]["sentence_id"]["macro_f1"]
+            > evaluation_payload["models"]["class_prior"]["macro_f1"]
+            and bootstrap_payload["paired_macro_f1_lift"]["sentence_id"][
+                "point_estimate"
+            ] <= 0.0
+        ),
+        "eligible_slice_reversal": slice_payload[
+            "eligible_slice_reversal"
+        ],
+        "eligible_slice_instability": slice_payload[
+            "eligible_slice_instability"
+        ],
+        "confidence_abstention_improves": _derived_confidence_abstention(
+            evaluation_payload["models"]
+        ),
+        "evaluation_evidence_mint_sha256": evaluation.mint_sha256,
+        "bootstrap_evidence_mint_sha256": bootstrap.mint_sha256,
+        "slice_analysis_mint_sha256": slice_analysis.mint_sha256,
+        "calibration_evidence_mint_sha256": calibration.mint_sha256,
+        "calibration_evidence": calibration.to_payload(),
+        "provenance": evaluation_payload["provenance"],
+    }
+    if any(payload[key] != value for key, value in expected_fields.items()):
+        raise ValueError("bound decision evidence derived lineage changed")
+    validated_metrics, validated_validity = validate_decision_inputs(
+        payload,
+        validity,
+    )
+    return _decision_outcome(validated_metrics, validated_validity)

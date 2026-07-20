@@ -243,6 +243,7 @@ CREMA_SOURCE_BINDING_FIELDS = (
 CLASS_ORDER = ("A", "D", "F", "H", "N", "S")
 MODEL_KEYS = ("class_prior", "sentence_id", "acoustic")
 COVERAGE_TARGETS = (1.0, 0.8, 0.6)
+COVERAGE_TARGET_KEYS = tuple(str(value) for value in COVERAGE_TARGETS)
 MINIMUM_UNIQUE_ACTORS = 10
 BOOTSTRAP_RESAMPLES = 2000
 VALIDITY_KEYS = (
@@ -265,8 +266,10 @@ PROVENANCE_KEYS = (
     "row_commitment_sha256",
     "actor_commitment_sha256",
     "label_input_commitment_sha256",
+    "sentence_commitment_sha256",
+    "feature_input_commitment_sha256",
+    "upstream_acoustic_source_commitment_sha256",
     "model_class_commitment_sha256",
-    "probability_commitment_sha256",
     "case_count",
     "unique_actor_count",
     "self_sha256",
@@ -310,7 +313,7 @@ def _reject_non_finite(value: Any) -> None:
 
 
 def _exact_keys(value: Any, keys: tuple[Any, ...], name: str) -> Mapping[Any, Any]:
-    if not isinstance(value, Mapping) or tuple(value) != keys:
+    if not isinstance(value, Mapping) or set(value) != set(keys):
         raise ValueError(f"{name} keys do not match frozen contract")
     return value
 
@@ -401,6 +404,89 @@ def validate_provenance_payload(
     )
     if actors > cases:
         raise ValueError("provenance actors cannot exceed cases")
+    return payload
+
+
+def _uppercase_sha256(value: Any, name: str) -> str:
+    if type(value) is not str or re.fullmatch(r"[0-9A-F]{64}", value) is None:
+        raise ValueError(f"{name} must be uppercase SHA-256")
+    return value
+
+
+def validate_probability_evidence_payload(
+    payload: Any,
+    *,
+    expected_role: str | None = None,
+) -> Mapping[str, Any]:
+    _exact_keys(
+        payload,
+        (
+            "schema_id",
+            "partition_role",
+            "model_order",
+            "class_order",
+            "case_count",
+            "probability_commitment_sha256",
+            "partition_evidence_mint_sha256",
+            "provenance",
+            "fitted_model_evidence_mint_sha256",
+            "training_evidence_mint_sha256",
+            "training_provenance",
+            "model_state_sha256",
+            "self_sha256",
+        ),
+        "probability evidence",
+    )
+    validate_payload_self_hash(payload, "probability evidence")
+    if payload["schema_id"] != "emotion-state-phase-b-probability-evidence-v1":
+        raise ValueError("probability evidence schema does not match")
+    role = validate_partition_role(
+        payload["partition_role"],
+        (
+            "training_discovery",
+            "calibration",
+            "balanced_diagnostic",
+            "final_lockbox",
+        ),
+    )
+    if expected_role is not None and role != expected_role:
+        raise ValueError(f"probability evidence must have {expected_role} role")
+    if tuple(payload["model_order"]) != MODEL_KEYS:
+        raise ValueError("probability evidence model order does not match")
+    validate_class_order(payload["class_order"])
+    case_count = _positive_count(
+        payload["case_count"],
+        "probability evidence case count",
+    )
+    for key in (
+        "probability_commitment_sha256",
+        "partition_evidence_mint_sha256",
+        "fitted_model_evidence_mint_sha256",
+        "training_evidence_mint_sha256",
+        "model_state_sha256",
+    ):
+        _uppercase_sha256(payload[key], f"probability evidence {key}")
+    provenance = validate_provenance_payload(
+        payload["provenance"],
+        expected_role=role,
+    )
+    training = validate_provenance_payload(
+        payload["training_provenance"],
+        expected_role="training_discovery",
+    )
+    if provenance["case_count"] != case_count:
+        raise ValueError("probability evidence cases do not match provenance")
+    for key in (
+        "configuration_sha256",
+        "environment_lock_sha256",
+        "feature_schema_sha256",
+        "split_schema_sha256",
+        "split_manifest_sha256",
+        "assignment_sha256",
+        "model_class_commitment_sha256",
+    ):
+        if provenance[key] != training[key]:
+            raise ValueError("probability evidence shared lineage does not match")
     return payload
 
 
@@ -545,6 +631,8 @@ def validate_calibration_result(payload: Any) -> Mapping[str, Any]:
             "class_order",
             "targets",
             "models",
+            "probability_evidence_mint_sha256",
+            "probability_evidence",
             "provenance",
             "self_sha256",
         ),
@@ -558,6 +646,16 @@ def validate_calibration_result(payload: Any) -> Mapping[str, Any]:
         payload["provenance"],
         expected_role="calibration",
     )
+    probability = validate_probability_evidence_payload(
+        payload["probability_evidence"],
+        expected_role="calibration",
+    )
+    _uppercase_sha256(
+        payload["probability_evidence_mint_sha256"],
+        "calibration probability evidence mint",
+    )
+    if probability["provenance"] != provenance:
+        raise ValueError("calibration probability provenance does not match")
     if payload["partition_role"] != provenance["partition_role"]:
         raise ValueError("calibration provenance partition role does not match")
     validate_class_order(payload["class_order"])
@@ -567,13 +665,13 @@ def validate_calibration_result(payload: Any) -> Mapping[str, Any]:
     for model in MODEL_KEYS:
         cells = _exact_keys(
             payload["models"][model],
-            COVERAGE_TARGETS,
+            COVERAGE_TARGET_KEYS,
             "threshold",
         )
         previous_threshold = -1.0
-        for target in COVERAGE_TARGETS:
+        for target, target_key in zip(COVERAGE_TARGETS, COVERAGE_TARGET_KEYS):
             cell = _exact_keys(
-                cells[target],
+                cells[target_key],
                 ("threshold", "achieved_coverage"),
                 "threshold",
             )
@@ -638,6 +736,7 @@ def _validate_metric_models(models: Any) -> Mapping[str, Any]:
             CLASS_ORDER,
             "per-class recall",
         )
+        class_case_total = 0
         for label in CLASS_ORDER:
             cell = _exact_keys(
                 class_cells[label],
@@ -652,6 +751,11 @@ def _validate_metric_models(models: Any) -> Mapping[str, Any]:
                 cell["case_count"],
                 "per-class recall case count",
             )
+            class_case_total += cell_cases
+            if cell_actors > actor_count:
+                raise ValueError(
+                    "per-class class actors cannot exceed model actors"
+                )
             if cell_actors > cell_cases or cell_cases > case_count:
                 raise ValueError(
                     "per-class recall actors/cases exceed model cases"
@@ -667,14 +771,16 @@ def _validate_metric_models(models: Any) -> Mapping[str, Any]:
                 recall = _finite_float(cell["recall"], "per-class recall")
                 if not 0.0 <= recall <= 1.0:
                     raise ValueError("per-class recall is outside zero and one")
+        if class_case_total != case_count:
+            raise ValueError("six per-class class cases must sum to model cases")
         retained = _exact_keys(
             metric["retained"],
-            COVERAGE_TARGETS,
+            COVERAGE_TARGET_KEYS,
             "retained metric",
         )
-        for target in COVERAGE_TARGETS:
+        for target_key in COVERAGE_TARGET_KEYS:
             cell = _exact_keys(
-                retained[target],
+                retained[target_key],
                 (
                     "threshold",
                     "calibration_achieved_coverage",
@@ -702,6 +808,25 @@ def _validate_metric_models(models: Any) -> Mapping[str, Any]:
                 cell["case_count"],
                 "retained case count",
             )
+            coverage = cell["coverage"]
+            if not math.isclose(
+                coverage,
+                retained_cases / case_count,
+                rel_tol=0.0,
+                abs_tol=1e-15,
+            ):
+                raise ValueError(
+                    "retained coverage must equal retained cases / model cases"
+                )
+            if retained_cases == 0 and not (
+                retained_actors == 0
+                and cell["suppressed"] is True
+                and cell["retained_macro_f1"] is None
+            ):
+                raise ValueError(
+                    "zero retained cases require zero retained actors, "
+                    "suppression, and absent metric"
+                )
             if (
                 retained_actors > retained_cases
                 or retained_actors > actor_count
@@ -753,6 +878,10 @@ def validate_evaluation_result(
             "class_order",
             "models",
             "final_decision_eligible",
+            "probability_evidence_mint_sha256",
+            "probability_evidence",
+            "calibration_evidence_mint_sha256",
+            "calibration_evidence",
             "provenance",
             "self_sha256",
         ),
@@ -771,6 +900,34 @@ def validate_evaluation_result(
         payload["provenance"],
         expected_role=role,
     )
+    probability = validate_probability_evidence_payload(
+        payload["probability_evidence"],
+        expected_role=role,
+    )
+    calibration = validate_calibration_result(
+        payload["calibration_evidence"]
+    )
+    _uppercase_sha256(
+        payload["probability_evidence_mint_sha256"],
+        "evaluation probability evidence mint",
+    )
+    _uppercase_sha256(
+        payload["calibration_evidence_mint_sha256"],
+        "evaluation calibration evidence mint",
+    )
+    if probability["provenance"] != provenance:
+        raise ValueError("evaluation probability provenance does not match")
+    for key in (
+        "fitted_model_evidence_mint_sha256",
+        "training_evidence_mint_sha256",
+        "training_provenance",
+        "model_state_sha256",
+    ):
+        if (
+            probability[key]
+            != calibration["probability_evidence"][key]
+        ):
+            raise ValueError("evaluation calibration shared lineage does not match")
     if provenance["partition_role"] != role:
         raise ValueError("evaluation provenance partition role does not match")
     validate_class_order(payload["class_order"])
@@ -789,6 +946,18 @@ def validate_evaluation_result(
         for model in MODEL_KEYS
     ):
         raise ValueError("evaluation counts do not match provenance")
+    for model in MODEL_KEYS:
+        for target_key in COVERAGE_TARGET_KEYS:
+            retained = models[model]["retained"][target_key]
+            bound = calibration["models"][model][target_key]
+            if (
+                retained["threshold"] != bound["threshold"]
+                or retained["calibration_achieved_coverage"]
+                != bound["achieved_coverage"]
+            ):
+                raise ValueError(
+                    "retained cell does not match exact bound calibration"
+                )
     return payload
 
 
@@ -805,6 +974,8 @@ def validate_bootstrap_result(payload: Any) -> Mapping[str, Any]:
             "unique_actor_count",
             "case_count",
             "paired_macro_f1_lift",
+            "probability_evidence_mint_sha256",
+            "probability_evidence",
             "provenance",
             "self_sha256",
         ),
@@ -835,6 +1006,16 @@ def validate_bootstrap_result(payload: Any) -> Mapping[str, Any]:
         payload["provenance"],
         expected_role="final_lockbox",
     )
+    probability = validate_probability_evidence_payload(
+        payload["probability_evidence"],
+        expected_role="final_lockbox",
+    )
+    _uppercase_sha256(
+        payload["probability_evidence_mint_sha256"],
+        "bootstrap probability evidence mint",
+    )
+    if probability["provenance"] != provenance:
+        raise ValueError("bootstrap probability provenance does not match")
     if (
         provenance["unique_actor_count"],
         provenance["case_count"],
@@ -880,6 +1061,11 @@ def validate_decision_inputs(
             "eligible_slice_reversal",
             "eligible_slice_instability",
             "confidence_abstention_improves",
+            "evaluation_evidence_mint_sha256",
+            "bootstrap_evidence_mint_sha256",
+            "slice_analysis_mint_sha256",
+            "calibration_evidence_mint_sha256",
+            "calibration_evidence",
             "provenance",
             "self_sha256",
         ),
@@ -893,6 +1079,16 @@ def validate_decision_inputs(
     provenance = validate_provenance_payload(
         metrics["provenance"],
         expected_role="final_lockbox",
+    )
+    for key in (
+        "evaluation_evidence_mint_sha256",
+        "bootstrap_evidence_mint_sha256",
+        "slice_analysis_mint_sha256",
+        "calibration_evidence_mint_sha256",
+    ):
+        _uppercase_sha256(metrics[key], f"decision {key}")
+    calibration = validate_calibration_result(
+        metrics["calibration_evidence"]
     )
     if metrics["final_decision_eligible"] is not True:
         raise ValueError("final_lockbox evidence is not decision eligible")
@@ -959,6 +1155,53 @@ def validate_decision_inputs(
             raise ValueError(
                 "paired lift point estimate does not match final-lockbox metrics"
             )
+    expected_sentence_driven = (
+        models["sentence_id"]["macro_f1"]
+        > models["class_prior"]["macro_f1"]
+        and lifts["sentence_id"]["point_estimate"] <= 0.0
+    )
+    if (
+        metrics["sentence_driven_apparent_lift"]
+        is not expected_sentence_driven
+    ):
+        raise ValueError("sentence-driven lift flag is not derived")
+    acoustic = models["acoustic"]
+    abstention_candidates = [
+        acoustic["retained"][target_key]
+        for target_key in ("0.8", "0.6")
+        if (
+            not acoustic["retained"][target_key]["suppressed"]
+            and acoustic["retained"][target_key]["coverage"] < 1.0
+        )
+    ]
+    expected_confidence = (
+        bool(abstention_candidates)
+        and any(
+            cell["retained_macro_f1"] > acoustic["macro_f1"]
+            for cell in abstention_candidates
+        )
+        and all(
+            cell["retained_macro_f1"] >= acoustic["macro_f1"]
+            for cell in abstention_candidates
+        )
+    )
+    if (
+        metrics["confidence_abstention_improves"]
+        is not expected_confidence
+    ):
+        raise ValueError("confidence abstention flag is not derived")
+    for model in MODEL_KEYS:
+        for target_key in COVERAGE_TARGET_KEYS:
+            retained = models[model]["retained"][target_key]
+            bound = calibration["models"][model][target_key]
+            if (
+                retained["threshold"] != bound["threshold"]
+                or retained["calibration_achieved_coverage"]
+                != bound["achieved_coverage"]
+            ):
+                raise ValueError(
+                    "decision retained cell does not match bound calibration"
+                )
     _exact_keys(validity, VALIDITY_KEYS, "validity")
     if any(type(validity[key]) is not bool for key in VALIDITY_KEYS):
         raise ValueError("validity values must be booleans")

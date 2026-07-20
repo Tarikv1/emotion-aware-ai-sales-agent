@@ -1196,45 +1196,68 @@ git commit -m "Add Phase B actor-disjoint split contract"
   assignment: Mapping[str, str], seed_digest: str) ->
   ValidatedSplitAssignment`,
   `mint_partition_evidence(*, partition_role: str, row_ids: Sequence[str],
-  actor_ids: Sequence[str], labels: np.ndarray, split_assignment:
-  ValidatedSplitAssignment, configuration: Mapping[str, Any],
-  environment_lock: Mapping[str, Any], feature_schema: Mapping[str, Any],
-  split_schema: Mapping[str, Any], features: np.ndarray | None, sentences:
-  np.ndarray | None, probabilities: Mapping[str, np.ndarray] | None,
-  model_identity: Mapping[str, Any]) -> PartitionEvidence`,
-  `fit_frozen_models(training_features: np.ndarray, training_sentences:
-  np.ndarray, training_labels: np.ndarray, seed: int, *,
-  evidence: PartitionEvidence) -> dict[str, object]`,
-  `calibrate_thresholds(probabilities: Mapping[str, np.ndarray], targets:
-  Sequence[float], *, evidence: PartitionEvidence)
+  actor_ids: Sequence[str], labels: np.ndarray, sentences: np.ndarray,
+  features: np.ndarray, upstream_acoustic_source_commitment_sha256: str,
+  split_assignment: ValidatedSplitAssignment, configuration: Mapping[str,
+  Any], environment_lock: Mapping[str, Any], feature_schema: Mapping[str,
+  Any], split_schema: Mapping[str, Any], model_identity: Mapping[str, Any])
+  -> PartitionEvidence`,
+  `fit_frozen_models(evidence: PartitionEvidence, seed: int) ->
+  FittedModelEvidence`,
+  `predict_probabilities(fitted_models: FittedModelEvidence,
+  partition_evidence: PartitionEvidence) -> ProbabilityEvidence`,
+  `calibrate_thresholds(probabilities: ProbabilityEvidence, targets:
+  Sequence[float])
   -> CalibrationEvidence`,
-  `evaluate_partition(labels: np.ndarray, probabilities: Mapping[str,
-  np.ndarray], actor_ids: Sequence[str], thresholds: CalibrationEvidence,
-  *, evidence: PartitionEvidence) -> EvaluationEvidence`,
-  `paired_actor_bootstrap(labels: np.ndarray, probabilities: Mapping[str,
-  np.ndarray], actor_ids: Sequence[str], resamples: int, seed: int, *,
-  evidence: PartitionEvidence) -> BootstrapEvidence`,
+  `evaluate_partition(probabilities: ProbabilityEvidence, thresholds:
+  CalibrationEvidence) -> EvaluationEvidence`,
+  `paired_actor_bootstrap(probabilities: ProbabilityEvidence, resamples:
+  int, seed: int) -> BootstrapEvidence`,
+  `mint_slice_analysis(probabilities: ProbabilityEvidence, evaluation:
+  EvaluationEvidence, slices: Mapping[str, Sequence[str]]) ->
+  SliceAnalysisEvidence`,
   `build_decision_evidence(evaluation: EvaluationEvidence, bootstrap:
-  BootstrapEvidence, *, evidence: PartitionEvidence, ...) ->
-  DecisionEvidence`, and `decide_experiment(metrics: DecisionEvidence,
-  validity: Mapping[str, bool]) -> str`.
+  BootstrapEvidence, slice_analysis: SliceAnalysisEvidence) ->
+  DecisionEvidence`, and
+  `decide_experiment(metrics: DecisionEvidence, validity: Mapping[str, bool])
+  -> str`.
 
 `ValidatedSplitAssignment` has no public constructor. Its mint reruns the
 frozen actor-split validator, requires the supplied assignment to equal the
 deterministic split for the exact records/configuration digest, and binds the
-existing split-manifest digest. `PartitionEvidence` also has no public
-constructor. It is minted only after exact frozen config, environment lock,
-feature schema, split schema, and authoritative split membership validate.
-Its canonical self-hashed payload commits to the partition, full split
-assignment/manifest, case order, rows, actors, labels/inputs, model
-identity/class columns, and probabilities without emitting identifiers.
-Every partition-sensitive interface independently recomputes and compares the
-commitments against its exact inputs. Calibration, evaluation, bootstrap, and
-decision results are privately minted bound payloads with their own canonical
-self-hash. Evaluation and bootstrap decision inputs must carry the exact same
-`final_lockbox` commitment payload; equal counts are insufficient. Plain
-arrays plus role strings, mutable mappings, relabeled diagnostic payloads, and
-fabricated decision mappings are rejected.
+existing split-manifest digest and privately retains the exact eligible record
+set. `PartitionEvidence` also has no public constructor. Row IDs must be the
+complete ordered eligible clip stems for the declared partition; actor,
+label, and sentence arrays must match those records exactly. Its payload binds
+the full split assignment/manifest, config/environment/feature/split schemas,
+case order, authoritative rows/actors/labels/sentences, exact feature bytes,
+the later-runner-owned upstream acoustic-source commitment, and model/class
+identity without claiming that Task 6 validated source audio.
+
+`FittedModelEvidence` privately retains the three fitted estimators and binds
+the exact training partition, frozen estimator settings/classes, fitted
+encoder/scaler/classifier state, and shared config/environment/split lineage.
+`ProbabilityEvidence` can be minted only by revalidating that bundle,
+executing those exact models on an authoritative partition, and recomputing
+the fitted-state identity after prediction. Semantic calibration, evaluation,
+and bootstrap interfaces accept only `ProbabilityEvidence`; pure underscored
+array helpers remain available solely for hand-calculated numerical tests and
+cannot mint semantic evidence.
+
+Every bound object stores private canonical bytes plus a separately stored
+mint digest. It exposes fresh decoded copies/read-only values, blocks normal
+attribute mutation and public construction, and rechecks its mint digest and
+private lineage before use. A caller-recomputed public `self_sha256` on a
+detached mapping is never evidence authenticity.
+
+Evaluation requires calibration and evaluated probability evidence to share
+the exact fitted-model/training/config/environment/feature/split/assignment/
+class lineage while permitting distinct partition rows and probability
+commitments. Evaluation records the exact calibration mint and complete
+calibration provenance; retained thresholds and achieved calibration coverage
+must equal that artifact. Evaluation/bootstrap/slice artifacts must share the
+same exact final probability mint before a decision; equal counts are
+insufficient.
 
 Fitting accepts only bound `training_discovery` evidence, calibration accepts
 only bound `calibration` evidence, diagnostic evaluation names
@@ -1243,6 +1266,22 @@ bootstrap/final decision evidence accepts only bound `final_lockbox`
 evidence. The validator freezes exact input/result keys, model keys, class
 order, thresholds, actor IDs, resample count, metric keys, validity keys,
 mathematical domains, count relationships, and finite requirements.
+
+Decision-critical facts are derived, never caller booleans:
+
+- `sentence_driven_apparent_lift` is true exactly when sentence-ID macro-F1
+  exceeds class-prior macro-F1 while acoustic lift over sentence ID is not
+  positive;
+- `confidence_abstention_improves` is true only when at least one unsuppressed
+  acoustic `0.8`/`0.6` retained cell has actual coverage below one and strict
+  macro-F1 improvement, with no eligible retained cell worse than full
+  acoustic macro-F1;
+- slice reversal/instability come from a private `SliceAnalysisEvidence`
+  minted over authoritative contributor row IDs. Each slice requires at least
+  ten actors; its metrics/lifts, contributor commitments, domains, and counts
+  are validated. Reversal is any negative acoustic lift versus either
+  baseline. Instability is any slice lift differing from the full-partition
+  lift by more than the frozen absolute tolerance `0.10`.
 
 - [ ] **Step 1: Write failing evaluation tests**
 
@@ -1264,6 +1303,11 @@ Use synthetic arrays with explicit actor clusters. Tests must prove:
   test;
 - diagnostic relabeling, cross-run equal-count artifact mixing, and any exact
   input/commitment mutation fail before a decision;
+- cross-run calibration/model lineage mixing, nested mutation/reseal,
+  non-authoritative row/label inputs, arbitrary probability mappings,
+  bare-string row IDs, and caller-asserted decision flags fail closed;
+- per-class actor/case totals, retained coverage/count identities, zero
+  retained cells, and exact retained calibration cells are mutation tested;
 - a valid skewed percentile interval may exclude the observed point estimate.
 
 - [ ] **Step 2: Run tests and confirm RED**

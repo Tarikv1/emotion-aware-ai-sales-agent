@@ -1995,6 +1995,8 @@ class EvaluationTests(unittest.TestCase):
         ).encode("utf-8")).hexdigest()
         records = ActorSplitTests._records(varied_vectors=True)
         assignment = build_actor_split(records, digest)
+        cls.AUTHORITATIVE_RECORDS = tuple(records)
+        cls.CONFIGURATION_DIGEST = digest
         cls.SPLIT_ASSIGNMENT = mint_validated_split_assignment(
             records,
             assignment,
@@ -2008,10 +2010,157 @@ class EvaluationTests(unittest.TestCase):
             )
             for role in ActorSplitTests.PARTITION_ORDER
         }
+        cls.RECORDS_BY_ROLE = {
+            role: tuple(sorted(
+                (
+                    record
+                    for record in records
+                    if assignment[record.actor_id] == role
+                ),
+                key=lambda record: record.clip_stem,
+            ))
+            for role in ActorSplitTests.PARTITION_ORDER
+        }
+        cls._SEMANTIC_CACHE = {}
 
     def _actors_for_role(self, role: str, count: int) -> list[str]:
         actors = self.ACTORS_BY_ROLE[role]
         return [actors[index % len(actors)] for index in range(count)]
+
+    def _authoritative_partition(
+        self,
+        role: str,
+        *,
+        feature_variant: int = 0,
+        row_ids: Any = None,
+        labels: Any = None,
+    ) -> Any:
+        import numpy as np
+
+        from scripts.emotion_state_phase_b_evaluation import (
+            frozen_model_identity,
+            mint_partition_evidence,
+        )
+        from scripts.validate_emotion_state_002_phase_b import (
+            EXPECTED_CONFIG,
+            EXPECTED_ENVIRONMENT_LOCK,
+            EXPECTED_FEATURE_SCHEMA,
+            EXPECTED_SPLIT_SCHEMA,
+        )
+
+        records = self.RECORDS_BY_ROLE[role]
+        authoritative_rows = [record.clip_stem for record in records]
+        actors = [record.actor_id for record in records]
+        sentences = np.asarray(
+            [record.sentence_id for record in records],
+            dtype="<U3",
+        )
+        authoritative_labels = np.asarray(
+            [record.label for record in records],
+            dtype="<U1",
+        )
+        features = np.zeros((len(records), 17), dtype=np.float64)
+        for index, record in enumerate(records):
+            label_index = self.CLASS_ORDER.index(str(record.label))
+            sentence_index = ActorSplitTests.SENTENCES.index(record.sentence_id)
+            actor_number = int(record.actor_id) - 1000
+            features[index, label_index] = 3.0
+            features[index, 6] = actor_number / 100.0
+            features[index, 7] = sentence_index / 11.0
+            features[index, 8] = ((actor_number + sentence_index) % 7) / 7.0
+            features[index, 9] = float(feature_variant) * (
+                (label_index + 1) * ((actor_number % 5) - 2) / 10.0
+            )
+            features[index, 10] = float(index % 13) / 13.0
+        upstream = hashlib.sha256(
+            f"synthetic-upstream:{role}:{feature_variant}:".encode("ascii")
+            + features.tobytes(order="C")
+        ).hexdigest().upper()
+        return mint_partition_evidence(
+            partition_role=role,
+            row_ids=authoritative_rows if row_ids is None else row_ids,
+            actor_ids=actors,
+            labels=authoritative_labels if labels is None else labels,
+            sentences=sentences,
+            features=features,
+            upstream_acoustic_source_commitment_sha256=upstream,
+            split_assignment=self.SPLIT_ASSIGNMENT,
+            configuration=deepcopy(EXPECTED_CONFIG),
+            environment_lock=deepcopy(EXPECTED_ENVIRONMENT_LOCK),
+            feature_schema=deepcopy(EXPECTED_FEATURE_SCHEMA),
+            split_schema=deepcopy(EXPECTED_SPLIT_SCHEMA),
+            model_identity=frozen_model_identity(self.MODEL_SEED),
+        )
+
+    def _semantic_artifacts(self, variant: int = 0) -> dict[str, Any]:
+        from scripts.emotion_state_phase_b_evaluation import (
+            build_decision_evidence,
+            calibrate_thresholds,
+            evaluate_partition,
+            fit_frozen_models,
+            mint_slice_analysis,
+            paired_actor_bootstrap,
+            predict_probabilities,
+        )
+
+        cached = self._SEMANTIC_CACHE.get(variant)
+        if cached is not None:
+            return cached
+        training = self._authoritative_partition(
+            "training_discovery",
+            feature_variant=variant,
+        )
+        fitted = fit_frozen_models(training, self.MODEL_SEED)
+        calibration_partition = self._authoritative_partition("calibration")
+        calibration_probabilities = predict_probabilities(
+            fitted,
+            calibration_partition,
+        )
+        calibration = calibrate_thresholds(
+            calibration_probabilities,
+            (1.0, 0.8, 0.6),
+        )
+        final_partition = self._authoritative_partition("final_lockbox")
+        final_probabilities = predict_probabilities(fitted, final_partition)
+        evaluation = evaluate_partition(final_probabilities, calibration)
+        seed = int(self.CONFIGURATION_DIGEST[:16], 16)
+        bootstrap = paired_actor_bootstrap(
+            final_probabilities,
+            2000,
+            seed,
+        )
+        full_rows = [
+            record.clip_stem
+            for record in self.RECORDS_BY_ROLE["final_lockbox"]
+        ]
+        slice_analysis = mint_slice_analysis(
+            final_probabilities,
+            evaluation,
+            {
+                "all_eligible_a": full_rows,
+                "all_eligible_b": list(reversed(full_rows)),
+            },
+        )
+        decision = build_decision_evidence(
+            evaluation,
+            bootstrap,
+            slice_analysis,
+        )
+        cached = {
+            "training": training,
+            "fitted": fitted,
+            "calibration_partition": calibration_partition,
+            "calibration_probabilities": calibration_probabilities,
+            "calibration": calibration,
+            "final_partition": final_partition,
+            "final_probabilities": final_probabilities,
+            "evaluation": evaluation,
+            "bootstrap": bootstrap,
+            "slice_analysis": slice_analysis,
+            "decision": decision,
+        }
+        self._SEMANTIC_CACHE[variant] = cached
+        return cached
 
     def _training_arrays(self) -> tuple[Any, Any, Any]:
         import numpy as np
@@ -2278,7 +2427,7 @@ class EvaluationTests(unittest.TestCase):
             self._perfect_probabilities(labels)
         )
 
-    def test_frozen_models_pin_exact_estimators_training_state_and_six_class_probabilities(
+    def _legacy_frozen_models_pin_exact_estimators_training_state_and_six_class_probabilities(
         self,
     ) -> None:
         import numpy as np
@@ -2435,7 +2584,7 @@ class EvaluationTests(unittest.TestCase):
                 deprecated.predict_proba(inputs),
             )
 
-    def test_fit_is_training_only_and_partition_roles_fail_closed(self) -> None:
+    def _legacy_fit_is_training_only_and_partition_roles_fail_closed(self) -> None:
         import numpy as np
 
         from scripts.emotion_state_phase_b_evaluation import (
@@ -2526,7 +2675,7 @@ class EvaluationTests(unittest.TestCase):
                 evidence=diagnostic_evidence,
             )
 
-    def test_calibration_uses_only_calibration_confidences_and_retains_ties(
+    def _legacy_calibration_uses_only_calibration_confidences_and_retains_ties(
         self,
     ) -> None:
         import numpy as np
@@ -2563,7 +2712,7 @@ class EvaluationTests(unittest.TestCase):
                 "achieved_coverage": 4.0 / 6.0,
             })
 
-    def test_hand_calculated_metrics_ece_and_retained_coverage(self) -> None:
+    def _legacy_hand_calculated_metrics_ece_and_retained_coverage(self) -> None:
         from scripts.emotion_state_phase_b_evaluation import (
             calibrate_thresholds,
             evaluate_partition,
@@ -2646,7 +2795,7 @@ class EvaluationTests(unittest.TestCase):
             places=15,
         )
 
-    def test_sparse_cells_are_suppressed_not_zero(self) -> None:
+    def _legacy_sparse_cells_are_suppressed_not_zero(self) -> None:
         from scripts.emotion_state_phase_b_evaluation import (
             calibrate_thresholds,
             evaluate_partition,
@@ -2690,7 +2839,7 @@ class EvaluationTests(unittest.TestCase):
                 self.assertTrue(cell["suppressed"])
                 self.assertIsNone(cell["retained_macro_f1"])
 
-    def test_probability_threshold_and_class_order_schemas_fail_closed(self) -> None:
+    def _legacy_probability_threshold_and_class_order_schemas_fail_closed(self) -> None:
         import numpy as np
 
         from scripts.emotion_state_phase_b_evaluation import (
@@ -2787,7 +2936,7 @@ class EvaluationTests(unittest.TestCase):
                 evidence=diagnostic_evidence,
             )
 
-    def test_partition_evidence_binds_assignment_contracts_and_exact_inputs(
+    def _legacy_partition_evidence_binds_assignment_contracts_and_exact_inputs(
         self,
     ) -> None:
         import numpy as np
@@ -2851,7 +3000,7 @@ class EvaluationTests(unittest.TestCase):
                 evidence=calibration_evidence,
             )
 
-    def test_diagnostic_relabel_and_equal_count_cross_run_mix_fail_closed(
+    def _legacy_diagnostic_relabel_and_equal_count_cross_run_mix_fail_closed(
         self,
     ) -> None:
         import numpy as np
@@ -2947,7 +3096,7 @@ class EvaluationTests(unittest.TestCase):
                 confidence_abstention_improves=True,
             )
 
-    def test_metric_domains_count_relationships_and_skewed_percentile_are_strict(
+    def _legacy_metric_domains_count_relationships_and_skewed_percentile_are_strict(
         self,
     ) -> None:
         from scripts.validate_emotion_state_002_phase_b import (
@@ -3080,7 +3229,7 @@ class EvaluationTests(unittest.TestCase):
         self._reseal_payload(bootstrap)
         validate_bootstrap_result(bootstrap)
 
-    def test_bootstrap_is_exactly_2000_paired_actor_cluster_draws_and_aggregate_only(
+    def _legacy_bootstrap_is_exactly_2000_paired_actor_cluster_draws_and_aggregate_only(
         self,
     ) -> None:
         from scripts.emotion_state_phase_b_evaluation import paired_actor_bootstrap
@@ -3161,7 +3310,7 @@ class EvaluationTests(unittest.TestCase):
                 evidence=evidence,
             )
 
-    def test_decision_precedence_and_every_clause_are_mutation_tested(self) -> None:
+    def _legacy_decision_precedence_and_every_clause_are_mutation_tested(self) -> None:
         import numpy as np
 
         from scripts.emotion_state_phase_b_evaluation import decide_experiment
@@ -3261,7 +3410,7 @@ class EvaluationTests(unittest.TestCase):
         )
         self.assertEqual(decide_experiment(ineffective, validity), "revise")
 
-    def test_decision_rejects_diagnostic_fabricated_or_nonfinite_evidence(self) -> None:
+    def _legacy_decision_rejects_diagnostic_fabricated_or_nonfinite_evidence(self) -> None:
         import numpy as np
 
         from scripts.emotion_state_phase_b_evaluation import decide_experiment
@@ -3301,6 +3450,679 @@ class EvaluationTests(unittest.TestCase):
             with self.subTest(pattern=pattern):
                 with self.assertRaisesRegex(ValueError, pattern):
                     validate_decision_inputs(metric_input, validity_input)
+
+    def test_rereview_cross_calibration_lineage_mixing_rejects(self) -> None:
+        from scripts.emotion_state_phase_b_evaluation import evaluate_partition
+
+        run_a = self._semantic_artifacts(0)
+        run_b = self._semantic_artifacts(1)
+        with self.assertRaisesRegex(ValueError, "calibration lineage"):
+            evaluate_partition(
+                run_a["final_probabilities"],
+                run_b["calibration"],
+            )
+        evaluation = run_a["evaluation"].to_payload()
+        self.assertEqual(
+            evaluation["calibration_evidence_mint_sha256"],
+            run_a["calibration"].mint_sha256,
+        )
+        self.assertEqual(
+            evaluation["calibration_evidence"]["provenance"],
+            run_a["calibration_partition"].to_payload(),
+        )
+        self.assertEqual(
+            run_a["decision"]["calibration_evidence_mint_sha256"],
+            run_a["calibration"].mint_sha256,
+        )
+
+    def test_rereview_bound_payload_mutation_and_reseal_cannot_change_decision(
+        self,
+    ) -> None:
+        from scripts.emotion_state_phase_b_evaluation import (
+            BootstrapEvidence,
+            CalibrationEvidence,
+            DecisionEvidence,
+            EvaluationEvidence,
+            PartitionEvidence,
+            SliceAnalysisEvidence,
+            ValidatedSplitAssignment,
+            decide_experiment,
+        )
+
+        decision = self._semantic_artifacts()["decision"]
+        validity = {
+            "material_valid": True,
+            "environment_valid": True,
+            "split_valid": True,
+            "leakage_free": True,
+            "deterministic": True,
+            "lockbox_valid": True,
+        }
+        before = decide_experiment(decision, validity)
+        detached = decision.to_payload()
+        detached["confidence_abstention_improves"] = not detached[
+            "confidence_abstention_improves"
+        ]
+        self._reseal_payload(detached)
+        self.assertNotEqual(detached, decision.to_payload())
+        self.assertEqual(decide_experiment(decision, validity), before)
+        self.assertNotEqual(decision.mint_sha256, decision["self_sha256"])
+        nested = decision["models"]
+        nested["acoustic"]["macro_f1"] = 0.0
+        self.assertNotEqual(nested, decision["models"])
+        with self.assertRaises(AttributeError):
+            _ = decision._payload
+        with self.assertRaises(AttributeError):
+            decision._payload = detached
+        with self.assertRaises(AttributeError):
+            decision._mint_digest = "0" * 64
+        with self.assertRaisesRegex(TypeError, "minted"):
+            DecisionEvidence()
+        for evidence_type in (
+            ValidatedSplitAssignment,
+            PartitionEvidence,
+            CalibrationEvidence,
+            EvaluationEvidence,
+            BootstrapEvidence,
+            SliceAnalysisEvidence,
+        ):
+            with self.subTest(evidence_type=evidence_type.__name__):
+                with self.assertRaisesRegex(TypeError, "minted"):
+                    evidence_type()
+
+    def test_rereview_class_and_retained_relationships_reject(self) -> None:
+        from scripts.validate_emotion_state_002_phase_b import (
+            validate_evaluation_result,
+        )
+
+        base = self._semantic_artifacts()["evaluation"].to_payload()
+        class_sum = deepcopy(base)
+        class_sum["models"]["acoustic"]["per_class_recall"]["A"][
+            "case_count"
+        ] += 1
+        self._reseal_payload(class_sum)
+        with self.assertRaisesRegex(ValueError, "class cases"):
+            validate_evaluation_result(class_sum, expected_role="final_lockbox")
+
+        actor_overflow = deepcopy(base)
+        actor_overflow["models"]["acoustic"]["per_class_recall"]["A"][
+            "unique_actor_count"
+        ] = actor_overflow["models"]["acoustic"]["unique_actor_count"] + 1
+        self._reseal_payload(actor_overflow)
+        with self.assertRaisesRegex(ValueError, "class actors"):
+            validate_evaluation_result(
+                actor_overflow,
+                expected_role="final_lockbox",
+            )
+
+        coverage = deepcopy(base)
+        coverage["models"]["acoustic"]["retained"]["0.8"]["coverage"] = 0.5
+        self._reseal_payload(coverage)
+        with self.assertRaisesRegex(ValueError, "coverage.*case"):
+            validate_evaluation_result(coverage, expected_role="final_lockbox")
+
+        zero = deepcopy(base)
+        zero_cell = zero["models"]["acoustic"]["retained"]["0.6"]
+        zero_cell.update({
+            "coverage": 0.0,
+            "suppressed": False,
+            "unique_actor_count": 1,
+            "case_count": 0,
+            "retained_macro_f1": 0.5,
+        })
+        self._reseal_payload(zero)
+        with self.assertRaisesRegex(ValueError, "zero retained"):
+            validate_evaluation_result(zero, expected_role="final_lockbox")
+
+        threshold = deepcopy(base)
+        threshold_cell = threshold["models"]["acoustic"]["retained"]["0.8"]
+        threshold_cell["threshold"] = (
+            threshold_cell["threshold"] - 0.01
+            if threshold_cell["threshold"] >= 0.01
+            else threshold_cell["threshold"] + 0.01
+        )
+        self._reseal_payload(threshold)
+        with self.assertRaisesRegex(ValueError, "bound calibration"):
+            validate_evaluation_result(
+                threshold,
+                expected_role="final_lockbox",
+            )
+
+        achieved = deepcopy(base)
+        achieved["models"]["acoustic"]["retained"]["0.8"][
+            "calibration_achieved_coverage"
+        ] = 0.5
+        self._reseal_payload(achieved)
+        with self.assertRaisesRegex(ValueError, "bound calibration"):
+            validate_evaluation_result(
+                achieved,
+                expected_role="final_lockbox",
+            )
+
+    def test_rereview_non_authoritative_rows_and_probabilities_reject(
+        self,
+    ) -> None:
+        import numpy as np
+
+        from scripts.emotion_state_phase_b_evaluation import calibrate_thresholds
+
+        records = self.RECORDS_BY_ROLE["calibration"]
+        labels = np.asarray([record.label for record in records], dtype="<U1")
+        wrong_labels = labels.copy()
+        wrong_labels[0] = next(
+            label for label in self.CLASS_ORDER if label != wrong_labels[0]
+        )
+        probabilities = self._calibration_probabilities()
+        with self.assertRaisesRegex(ValueError, "authoritative row"):
+            self._authoritative_partition(
+                "calibration",
+                row_ids=[
+                    f"fabricated-{index}"
+                    for index in range(len(records))
+                ],
+            )
+        with self.assertRaisesRegex(ValueError, "authoritative label"):
+            self._authoritative_partition(
+                "calibration",
+                labels=wrong_labels,
+            )
+        with self.assertRaisesRegex(TypeError, "ProbabilityEvidence"):
+            calibrate_thresholds(
+                probabilities,
+                (1.0, 0.8, 0.6),
+            )
+
+    def test_rereview_bare_string_row_ids_reject(self) -> None:
+        with self.assertRaisesRegex(ValueError, "row IDs.*sequence"):
+            self._authoritative_partition(
+                "calibration",
+                row_ids="x" * len(self.RECORDS_BY_ROLE["calibration"]),
+            )
+
+    def test_rereview_decision_flags_cannot_be_caller_asserted(self) -> None:
+        from scripts.emotion_state_phase_b_evaluation import (
+            build_decision_evidence,
+            mint_slice_analysis,
+        )
+
+        artifacts = self._semantic_artifacts()
+        with self.assertRaises(TypeError):
+            build_decision_evidence(
+                artifacts["evaluation"],
+                artifacts["bootstrap"],
+                artifacts["slice_analysis"],
+                sentence_driven_apparent_lift=False,
+                eligible_slice_reversal=False,
+                eligible_slice_instability=False,
+                confidence_abstention_improves=True,
+            )
+        with self.assertRaisesRegex(ValueError, "slice contributors"):
+            mint_slice_analysis(
+                artifacts["final_probabilities"],
+                artifacts["evaluation"],
+                {
+                    "caller_flags": {
+                        "eligible_slice_reversal": False,
+                        "eligible_slice_instability": False,
+                    },
+                },
+            )
+        decision = artifacts["decision"].to_payload()
+        models = decision["models"]
+        lifts = decision["paired_macro_f1_lift"]
+        self.assertEqual(
+            decision["sentence_driven_apparent_lift"],
+            (
+                models["sentence_id"]["macro_f1"]
+                > models["class_prior"]["macro_f1"]
+                and lifts["sentence_id"]["point_estimate"] <= 0.0
+            ),
+        )
+        acoustic = models["acoustic"]
+        candidates = [
+            acoustic["retained"][key]
+            for key in ("0.8", "0.6")
+            if (
+                not acoustic["retained"][key]["suppressed"]
+                and acoustic["retained"][key]["coverage"] < 1.0
+            )
+        ]
+        expected_confidence = (
+            bool(candidates)
+            and any(
+                cell["retained_macro_f1"] > acoustic["macro_f1"]
+                for cell in candidates
+            )
+            and all(
+                cell["retained_macro_f1"] >= acoustic["macro_f1"]
+                for cell in candidates
+            )
+        )
+        self.assertEqual(
+            decision["confidence_abstention_improves"],
+            expected_confidence,
+        )
+        self.assertEqual(
+            decision["eligible_slice_reversal"],
+            artifacts["slice_analysis"]["eligible_slice_reversal"],
+        )
+        self.assertEqual(
+            decision["eligible_slice_instability"],
+            artifacts["slice_analysis"]["eligible_slice_instability"],
+        )
+
+    def test_authoritative_fitted_and_probability_evidence_are_bound(
+        self,
+    ) -> None:
+        import numpy as np
+
+        from scripts.emotion_state_phase_b_evaluation import (
+            FittedModelEvidence,
+            ProbabilityEvidence,
+            _artifact_links,
+            build_models,
+            predict_probabilities,
+        )
+
+        artifacts = self._semantic_artifacts()
+        fitted = artifacts["fitted"]
+        payload = fitted.to_payload()
+        self.assertEqual(payload["training_class_counts"], {
+            "A": 84,
+            "D": 77,
+            "F": 84,
+            "H": 78,
+            "N": 86,
+            "S": 78,
+        })
+        self.assertEqual(payload["model_order"], list(self.MODEL_KEYS))
+        self.assertEqual(payload["class_order"], list(self.CLASS_ORDER))
+        self.assertEqual(
+            payload["training_evidence_mint_sha256"],
+            artifacts["training"].mint_sha256,
+        )
+        probability_payload = artifacts["final_probabilities"].to_payload()
+        self.assertEqual(
+            probability_payload["fitted_model_evidence_mint_sha256"],
+            fitted.mint_sha256,
+        )
+        self.assertNotIn("probabilities", probability_payload)
+        with self.assertRaisesRegex(TypeError, "minted"):
+            FittedModelEvidence()
+        with self.assertRaisesRegex(TypeError, "minted"):
+            ProbabilityEvidence()
+        with self.assertRaises(AttributeError):
+            fitted._model_state_sha256 = "0" * 64
+
+        mutation_artifacts = self._semantic_artifacts(2)
+        mutable_state = _artifact_links(mutation_artifacts["fitted"])[0]
+        acoustic_classifier = dict(mutable_state.models)["acoustic"].named_steps[
+            "classifier"
+        ]
+        acoustic_classifier.set_params(C=2.0)
+        try:
+            with self.assertRaisesRegex(ValueError, "model state"):
+                predict_probabilities(
+                    mutation_artifacts["fitted"],
+                    mutation_artifacts["final_partition"],
+                )
+        finally:
+            acoustic_classifier.set_params(C=1.0)
+
+        features, sentences, labels = self._training_arrays()
+        replacement = build_models(self.MODEL_SEED)
+        deprecated = build_models(self.MODEL_SEED)
+        for key in ("sentence_id", "acoustic"):
+            classifier = deprecated[key].named_steps["classifier"]
+            classifier.set_params(penalty="l2", l1_ratio=0.0)
+        inputs = {
+            "class_prior": features,
+            "sentence_id": sentences.reshape(-1, 1),
+            "acoustic": features,
+        }
+        with warnings.catch_warnings(record=True) as replacement_warnings:
+            warnings.simplefilter("always")
+            for key in self.MODEL_KEYS:
+                replacement[key].fit(inputs[key], labels)
+        with warnings.catch_warnings(record=True) as deprecated_warnings:
+            warnings.simplefilter("always")
+            for key in self.MODEL_KEYS:
+                deprecated[key].fit(inputs[key], labels)
+        self.assertEqual(replacement_warnings, [])
+        self.assertEqual(len(deprecated_warnings), 2)
+        for key in ("sentence_id", "acoustic"):
+            np.testing.assert_array_equal(
+                replacement[key].named_steps["classifier"].coef_,
+                deprecated[key].named_steps["classifier"].coef_,
+            )
+            np.testing.assert_array_equal(
+                replacement[key].predict_proba(inputs[key]),
+                deprecated[key].predict_proba(inputs[key]),
+            )
+
+    def test_pure_calibration_and_hand_calculated_metrics_remain_exact(
+        self,
+    ) -> None:
+        from scripts.emotion_state_phase_b_evaluation import (
+            _calibrate_probability_arrays,
+            _evaluate_probability_arrays,
+        )
+
+        calibration_probabilities = self._calibration_probabilities()
+        calibration = _calibrate_probability_arrays(
+            calibration_probabilities,
+            (1.0, 0.8, 0.6),
+        )
+        for model in self.MODEL_KEYS:
+            self.assertEqual(calibration[model]["1.0"], {
+                "threshold": 0.2,
+                "achieved_coverage": 1.0,
+            })
+            self.assertEqual(calibration[model]["0.8"], {
+                "threshold": 0.3,
+                "achieved_coverage": 5.0 / 6.0,
+            })
+            self.assertEqual(calibration[model]["0.6"], {
+                "threshold": 0.4,
+                "achieved_coverage": 4.0 / 6.0,
+            })
+
+        labels, probabilities, actors = self._metric_arrays(
+            role="balanced_diagnostic",
+        )
+        metric_calibration = _calibrate_probability_arrays(
+            probabilities,
+            (1.0, 0.8, 0.6),
+        )
+        models = _evaluate_probability_arrays(
+            labels,
+            probabilities,
+            actors,
+            metric_calibration,
+        )
+        acoustic = models["acoustic"]
+        self.assertAlmostEqual(acoustic["macro_f1"], 7.0 / 9.0, places=15)
+        self.assertAlmostEqual(
+            acoustic["balanced_accuracy"],
+            5.0 / 6.0,
+            places=15,
+        )
+        self.assertAlmostEqual(
+            acoustic["multiclass_brier"],
+            2.765 / 6.0,
+            places=15,
+        )
+        expected_log_loss = -sum(
+            math.log(value)
+            for value in (0.70, 0.25, 0.40, 0.40, 0.30, 0.40)
+        ) / 6.0
+        self.assertAlmostEqual(
+            acoustic["log_loss"],
+            expected_log_loss,
+            places=15,
+        )
+        self.assertAlmostEqual(acoustic["ece_10_bin"], 5.0 / 12.0, places=15)
+        self.assertAlmostEqual(
+            acoustic["retained"]["0.6"]["coverage"],
+            2.0 / 3.0,
+            places=15,
+        )
+        self.assertAlmostEqual(
+            acoustic["retained"]["0.6"]["retained_macro_f1"],
+            2.0 / 3.0,
+            places=15,
+        )
+
+    def test_sparse_suppression_and_probability_schemas_fail_closed(self) -> None:
+        import numpy as np
+
+        from scripts.emotion_state_phase_b_evaluation import (
+            _calibrate_probability_arrays,
+            _evaluate_probability_arrays,
+        )
+        from scripts.validate_emotion_state_002_phase_b import (
+            validate_probability_inputs,
+        )
+
+        labels, probabilities, actors = self._metric_arrays(
+            actor_count=9,
+            role="balanced_diagnostic",
+        )
+        calibration = _calibrate_probability_arrays(
+            probabilities,
+            (1.0, 0.8, 0.6),
+        )
+        models = _evaluate_probability_arrays(
+            labels,
+            probabilities,
+            actors,
+            calibration,
+        )
+        for model in models.values():
+            self.assertTrue(model["suppressed"])
+            self.assertIsNone(model["macro_f1"])
+            for cell in model["per_class_recall"].values():
+                self.assertTrue(cell["suppressed"])
+                self.assertIsNone(cell["recall"])
+
+        malformed = {
+            key: value.copy() for key, value in probabilities.items()
+        }
+        malformed["acoustic"][0, 0] = np.nan
+        with self.assertRaisesRegex(ValueError, "finite"):
+            validate_probability_inputs(
+                malformed,
+                class_order=self.CLASS_ORDER,
+            )
+
+    def test_pure_bootstrap_matches_independent_actor_cluster_oracles(
+        self,
+    ) -> None:
+        from scripts.emotion_state_phase_b_evaluation import (
+            _paired_actor_bootstrap_arrays,
+        )
+
+        labels, probabilities, actors = self._clustered_bootstrap_arrays()
+        _, seed = self._config_identity()
+        first = _paired_actor_bootstrap_arrays(
+            labels,
+            probabilities,
+            actors,
+            2000,
+            seed,
+        )
+        second = _paired_actor_bootstrap_arrays(
+            labels,
+            probabilities,
+            actors,
+            2000,
+            seed,
+        )
+        self.assertEqual(first, second)
+        expected = {
+            "class_prior": {
+                "point_estimate": 0.7326839826839826,
+                "lower_95": 0.6396058006535947,
+                "upper_95": 0.8981598822324628,
+            },
+            "sentence_id": {
+                "point_estimate": 0.2504689754689755,
+                "lower_95": 0.1520461945461947,
+                "upper_95": 0.37701141451141434,
+            },
+        }
+        for baseline, expected_cell in expected.items():
+            for key, expected_value in expected_cell.items():
+                self.assertAlmostEqual(
+                    first[baseline][key],
+                    expected_value,
+                    places=15,
+                )
+
+    def test_diagnostic_and_cross_run_final_artifacts_fail_closed(self) -> None:
+        from scripts.emotion_state_phase_b_evaluation import (
+            build_decision_evidence,
+            evaluate_partition,
+            mint_slice_analysis,
+            predict_probabilities,
+        )
+
+        run_a = self._semantic_artifacts(0)
+        run_b = self._semantic_artifacts(1)
+        diagnostic_partition = self._authoritative_partition(
+            "balanced_diagnostic",
+        )
+        diagnostic_probabilities = predict_probabilities(
+            run_a["fitted"],
+            diagnostic_partition,
+        )
+        diagnostic = evaluate_partition(
+            diagnostic_probabilities,
+            run_a["calibration"],
+        )
+        self.assertFalse(diagnostic["final_decision_eligible"])
+        diagnostic_rows = [
+            record.clip_stem
+            for record in self.RECORDS_BY_ROLE["balanced_diagnostic"]
+        ]
+        diagnostic_slice = mint_slice_analysis(
+            diagnostic_probabilities,
+            diagnostic,
+            {"all_diagnostic": diagnostic_rows},
+        )
+        with self.assertRaisesRegex(ValueError, "final_lockbox"):
+            build_decision_evidence(
+                diagnostic,
+                run_a["bootstrap"],
+                diagnostic_slice,
+            )
+        with self.assertRaisesRegex(ValueError, "provenance commitments"):
+            build_decision_evidence(
+                run_a["evaluation"],
+                run_b["bootstrap"],
+                run_a["slice_analysis"],
+            )
+
+    def test_domains_and_skewed_percentile_validation_are_strict(self) -> None:
+        from scripts.validate_emotion_state_002_phase_b import (
+            validate_bootstrap_result,
+            validate_evaluation_result,
+        )
+
+        artifacts = self._semantic_artifacts()
+        evaluation = artifacts["evaluation"].to_payload()
+        for key, value in (
+            ("macro_f1", 1.01),
+            ("balanced_accuracy", -0.01),
+            ("multiclass_brier", 2.01),
+            ("log_loss", -0.01),
+            ("ece_10_bin", -0.01),
+        ):
+            mutated = deepcopy(evaluation)
+            mutated["models"]["acoustic"][key] = value
+            self._reseal_payload(mutated)
+            with self.subTest(metric=key):
+                with self.assertRaises(ValueError):
+                    validate_evaluation_result(
+                        mutated,
+                        expected_role="final_lockbox",
+                    )
+
+        bootstrap = artifacts["bootstrap"].to_payload()
+        bootstrap["paired_macro_f1_lift"]["class_prior"].update({
+            "point_estimate": 0.9,
+            "lower_95": 0.1,
+            "upper_95": 0.8,
+        })
+        bootstrap["paired_macro_f1_lift"]["sentence_id"].update({
+            "point_estimate": -0.9,
+            "lower_95": -0.8,
+            "upper_95": -0.1,
+        })
+        self._reseal_payload(bootstrap)
+        validate_bootstrap_result(bootstrap)
+
+    def test_decision_rule_precedence_uses_only_derived_bound_facts(self) -> None:
+        from scripts.emotion_state_phase_b_evaluation import (
+            _decision_outcome,
+            decide_experiment,
+        )
+
+        artifacts = self._semantic_artifacts()
+        decision = artifacts["decision"]
+        validity = {
+            "material_valid": True,
+            "environment_valid": True,
+            "split_valid": True,
+            "leakage_free": True,
+            "deterministic": True,
+            "lockbox_valid": True,
+        }
+        self.assertIn(
+            decide_experiment(decision, validity),
+            ("keep_for_research_only", "revise", "discard"),
+        )
+        for key in validity:
+            invalid = dict(validity)
+            invalid[key] = False
+            self.assertEqual(decide_experiment(decision, invalid), "discard")
+
+        fixture = {
+            "models": {
+                "class_prior": {
+                    "macro_f1": 0.40,
+                    "multiclass_brier": 1.0,
+                    "ece_10_bin": 0.20,
+                },
+                "sentence_id": {"macro_f1": 0.45},
+                "acoustic": {
+                    "macro_f1": 0.60,
+                    "multiclass_brier": 0.8,
+                    "ece_10_bin": 0.20,
+                    "per_class_recall": {
+                        label: {"recall": 0.5}
+                        for label in self.CLASS_ORDER
+                    },
+                },
+            },
+            "paired_macro_f1_lift": {
+                "class_prior": {
+                    "point_estimate": 0.20,
+                    "lower_95": 0.05,
+                    "upper_95": 0.30,
+                },
+                "sentence_id": {
+                    "point_estimate": 0.15,
+                    "lower_95": 0.02,
+                    "upper_95": 0.25,
+                },
+            },
+            "sentence_driven_apparent_lift": False,
+            "eligible_slice_reversal": False,
+            "eligible_slice_instability": False,
+            "confidence_abstention_improves": True,
+        }
+        self.assertEqual(
+            _decision_outcome(fixture, validity),
+            "keep_for_research_only",
+        )
+        for key, expected in (
+            ("sentence_driven_apparent_lift", "discard"),
+            ("eligible_slice_reversal", "revise"),
+            ("eligible_slice_instability", "revise"),
+        ):
+            mutated = deepcopy(fixture)
+            mutated[key] = True
+            self.assertEqual(_decision_outcome(mutated, validity), expected)
+        ineffective = deepcopy(fixture)
+        ineffective["confidence_abstention_improves"] = False
+        self.assertEqual(_decision_outcome(ineffective, validity), "revise")
+        crossing = deepcopy(fixture)
+        crossing["paired_macro_f1_lift"]["class_prior"]["lower_95"] = -0.01
+        self.assertEqual(_decision_outcome(crossing, validity), "revise")
+        failed = deepcopy(fixture)
+        failed["paired_macro_f1_lift"]["sentence_id"]["point_estimate"] = 0.0
+        self.assertEqual(_decision_outcome(failed, validity), "discard")
 
 
 if __name__ == "__main__":
