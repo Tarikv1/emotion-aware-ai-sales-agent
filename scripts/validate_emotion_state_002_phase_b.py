@@ -8,6 +8,7 @@ import re
 import struct
 import sys
 import sysconfig
+import unicodedata
 from collections.abc import Mapping, Sequence
 from pathlib import Path
 from typing import Any
@@ -247,17 +248,18 @@ COVERAGE_TARGET_KEYS = tuple(str(value) for value in COVERAGE_TARGETS)
 MINIMUM_UNIQUE_ACTORS = 10
 AMI_PARTITION_CELLS = ("scenario_only", "full_corpus", "full_only")
 AMI_BUCKET_KEYS = (
-    "turn_duration_median_ms",
-    "turn_duration_p90_ms",
-    "inter_turn_gap_median_ms",
-    "inter_turn_gap_p90_ms",
+    "turn_duration_ms_median",
+    "turn_duration_ms_p90",
+    "inter_turn_gap_ms_median",
+    "inter_turn_gap_ms_p90",
 )
 AMI_SCALAR_KEYS = (
     "overlap_ratio",
     "floor_changes_per_minute",
-    "normalized_speaker_entropy",
+    "speaker_balance_normalized_entropy",
     "backchannels_per_100_turns",
 )
+AMI_DIALOGUE_ACT_VOCABULARY = ("backchannel", "inform", "question")
 BOOTSTRAP_RESAMPLES = 2000
 VALIDITY_KEYS = (
     "material_valid",
@@ -1464,12 +1466,311 @@ def validate_crema_source_binding(
         raise ValueError("CREMA-D source binding does not match frozen contract")
 
 
-def validate_ami_mechanics_aggregates(
-    payload: Any,
-    minimum_contributors: int = 10,
-) -> Mapping[str, Any]:
+def _ami_canonical_identifier(value: Any, name: str) -> str:
+    if type(value) is not str:
+        raise ValueError(f"{name} identifier must be a string")
+    canonical = unicodedata.normalize("NFC", value.strip())
+    if (
+        not canonical
+        or any(
+            character.isspace()
+            or unicodedata.category(character).startswith("C")
+            for character in canonical
+        )
+    ):
+        raise ValueError(f"{name} identifier is not canonical")
+    return canonical
+
+
+def _ami_canonical_identifiers(
+    values: Sequence[str],
+    name: str,
+) -> tuple[str, ...]:
+    if isinstance(values, (str, bytes)) or not isinstance(values, Sequence):
+        raise ValueError(f"{name} must be a sequence")
+    canonical = tuple(
+        _ami_canonical_identifier(value, name.rstrip("s"))
+        for value in values
+    )
+    if not canonical or len(set(canonical)) != len(canonical):
+        raise ValueError(f"{name} must contain unique canonical identifiers")
+    return canonical
+
+
+def _ami_canonical_dialogue_act(value: Any) -> str:
+    if type(value) is not str:
+        raise ValueError("AMI dialogue-act vocabulary label must be a string")
+    canonical = unicodedata.normalize("NFC", value.strip().lower())
+    if canonical not in AMI_DIALOGUE_ACT_VOCABULARY:
+        raise ValueError("AMI dialogue-act vocabulary label is not allowed")
+    return canonical
+
+
+def _ami_validated_meetings(
+    meetings: Sequence[Any],
+) -> tuple[dict[str, Any], ...]:
+    if isinstance(meetings, (str, bytes)) or not isinstance(meetings, Sequence):
+        raise ValueError("authoritative AMI meetings must be a sequence")
+    validated: list[dict[str, Any]] = []
+    for meeting in meetings:
+        try:
+            meeting_id = _ami_canonical_identifier(
+                meeting.meeting_id,
+                "meeting",
+            )
+            participants = tuple(sorted(set(
+                _ami_canonical_identifiers(
+                    meeting.participants,
+                    "participant identifiers",
+                )
+            )))
+            raw_values = meeting.values
+            raw_distribution = meeting.dialogue_act_distribution
+        except AttributeError as error:
+            raise ValueError(
+                "authoritative AMI meeting record is incomplete"
+            ) from error
+        if len(participants) < 2:
+            raise ValueError(
+                "authoritative AMI meeting needs two canonical participants"
+            )
+        if (
+            type(raw_values) is not tuple
+            or any(
+                type(pair) is not tuple or len(pair) != 2
+                for pair in raw_values
+            )
+            or tuple(key for key, _ in raw_values)
+            != AMI_BUCKET_KEYS + AMI_SCALAR_KEYS
+            or any(
+                type(value) is not float or not math.isfinite(value)
+                for _, value in raw_values
+            )
+        ):
+            raise ValueError("authoritative AMI metric values are invalid")
+        values = dict(raw_values)
+        if any(values[key] < 0.0 for key in AMI_BUCKET_KEYS):
+            raise ValueError("authoritative AMI timing bucket is invalid")
+        if not 0.0 <= values["overlap_ratio"] <= 1.0:
+            raise ValueError("authoritative AMI overlap ratio is invalid")
+        if values["floor_changes_per_minute"] < 0.0:
+            raise ValueError("authoritative AMI floor-change rate is invalid")
+        if not 0.0 <= values[
+            "speaker_balance_normalized_entropy"
+        ] <= 1.0:
+            raise ValueError("authoritative AMI speaker balance is invalid")
+        if not 0.0 <= values["backchannels_per_100_turns"] <= 100.0:
+            raise ValueError("authoritative AMI backchannel rate is invalid")
+        if (
+            type(raw_distribution) is not tuple
+            or not raw_distribution
+            or any(
+                type(pair) is not tuple or len(pair) != 2
+                for pair in raw_distribution
+            )
+        ):
+            raise ValueError(
+                "authoritative AMI dialogue-act distribution is invalid"
+            )
+        distribution = tuple(sorted(
+            (
+                _ami_canonical_dialogue_act(label),
+                value,
+            )
+            for label, value in raw_distribution
+        ))
+        if (
+            len({label for label, _ in distribution}) != len(distribution)
+            or any(
+                type(value) is not float
+                or not math.isfinite(value)
+                or not 0.0 <= value <= 1.0
+                for _, value in distribution
+            )
+            or not math.isclose(
+                sum(value for _, value in distribution),
+                1.0,
+                rel_tol=0.0,
+                abs_tol=1e-12,
+            )
+        ):
+            raise ValueError(
+                "authoritative AMI dialogue-act distribution is invalid"
+            )
+        validated.append({
+            "meeting_id": meeting_id,
+            "participants": participants,
+            "values": tuple(raw_values),
+            "dialogue_act_distribution": distribution,
+        })
+    identifiers = [meeting["meeting_id"] for meeting in validated]
+    if len(set(identifiers)) != len(identifiers):
+        raise ValueError("duplicate authoritative AMI meeting identifier")
+    return tuple(validated)
+
+
+def _ami_meeting_digest(meeting: Mapping[str, Any]) -> str:
+    encoded = json.dumps(
+        {
+            "meeting_id": meeting["meeting_id"],
+            "participants": meeting["participants"],
+            "values": meeting["values"],
+            "dialogue_act_distribution": meeting[
+                "dialogue_act_distribution"
+            ],
+        },
+        sort_keys=True,
+        separators=(",", ":"),
+        ensure_ascii=False,
+        allow_nan=False,
+    ).encode("utf-8")
+    return hashlib.sha256(encoded).hexdigest()
+
+
+def _ami_aggregate_cell(
+    value: float,
+    participant_count: int,
+    minimum_contributors: int,
+) -> dict[str, Any]:
+    suppressed = participant_count < minimum_contributors
+    return {
+        "suppressed": suppressed,
+        "unique_participant_count": participant_count,
+        "value": None if suppressed else float(value),
+    }
+
+
+def _expected_ami_mechanics_aggregates(
+    meetings: Sequence[Any],
+    partition_membership: Mapping[str, Sequence[str]],
+    official_order: Sequence[str],
+    minimum_contributors: int,
+) -> dict[str, Any]:
     if type(minimum_contributors) is not int or minimum_contributors < 10:
         raise ValueError("AMI minimum contributors must be at least 10")
+    validated = _ami_validated_meetings(meetings)
+    by_id = {meeting["meeting_id"]: meeting for meeting in validated}
+    if not isinstance(partition_membership, Mapping) or set(
+        partition_membership
+    ) != set(AMI_PARTITION_CELLS):
+        raise ValueError("authoritative AMI partition fields are invalid")
+    order = _ami_canonical_identifiers(
+        official_order,
+        "official meeting order",
+    )
+    if set(order) != set(by_id):
+        raise ValueError(
+            "authoritative AMI official order does not match meetings"
+        )
+    order_index = {
+        meeting_id: index
+        for index, meeting_id in enumerate(order)
+    }
+    expected: dict[str, Any] = {}
+    for partition_name in AMI_PARTITION_CELLS:
+        member_ids = _ami_canonical_identifiers(
+            partition_membership[partition_name],
+            f"{partition_name} membership",
+        )
+        unknown = set(member_ids) - set(by_id)
+        if unknown:
+            raise ValueError(
+                "authoritative AMI partition references unknown meeting: "
+                f"{sorted(unknown)[0]}"
+            )
+        candidates = sorted(
+            (by_id[meeting_id] for meeting_id in member_ids),
+            key=lambda meeting: (
+                order_index[meeting["meeting_id"]],
+                _ami_meeting_digest(meeting),
+            ),
+        )
+        selected: list[Mapping[str, Any]] = []
+        participants: set[str] = set()
+        repeated = 0
+        for meeting in candidates:
+            if participants.intersection(meeting["participants"]):
+                repeated += 1
+                continue
+            selected.append(meeting)
+            participants.update(meeting["participants"])
+        participant_count = len(participants)
+        value_maps = [
+            dict(meeting["values"])
+            for meeting in selected
+        ]
+        aggregate_values = {
+            key: sum(values[key] for values in value_maps) / len(value_maps)
+            for key in AMI_BUCKET_KEYS + AMI_SCALAR_KEYS
+        }
+        dialogue_acts = sorted({
+            label
+            for meeting in selected
+            for label, _ in meeting["dialogue_act_distribution"]
+        })
+        distributions = [
+            dict(meeting["dialogue_act_distribution"])
+            for meeting in selected
+        ]
+        dialogue_values = {
+            label: sum(
+                distribution.get(label, 0.0)
+                for distribution in distributions
+            ) / len(distributions)
+            for label in dialogue_acts
+        }
+        suppressed = participant_count < minimum_contributors
+        expected[partition_name] = {
+            "meeting_count": len(selected),
+            "unique_participant_count": participant_count,
+            "scalars": {
+                key: _ami_aggregate_cell(
+                    aggregate_values[key],
+                    participant_count,
+                    minimum_contributors,
+                )
+                for key in AMI_SCALAR_KEYS
+            },
+            "buckets": {
+                key: _ami_aggregate_cell(
+                    aggregate_values[key],
+                    participant_count,
+                    minimum_contributors,
+                )
+                for key in AMI_BUCKET_KEYS
+            },
+            "dialogue_acts": {
+                key: _ami_aggregate_cell(
+                    value,
+                    participant_count,
+                    minimum_contributors,
+                )
+                for key, value in dialogue_values.items()
+            },
+            "suppression_counts": {
+                "repeated_participant_meetings": repeated,
+                "scalar_cells": (
+                    len(AMI_SCALAR_KEYS) if suppressed else 0
+                ),
+                "bucket_cells": (
+                    len(AMI_BUCKET_KEYS) if suppressed else 0
+                ),
+                "dialogue_act_cells": (
+                    len(dialogue_acts) if suppressed else 0
+                ),
+            },
+        }
+    return expected
+
+
+def validate_ami_mechanics_aggregates(
+    payload: Any,
+    *,
+    meetings: Sequence[Any],
+    partition_membership: Mapping[str, Sequence[str]],
+    official_order: Sequence[str],
+    minimum_contributors: int = 10,
+) -> Mapping[str, Any]:
     partitions = _exact_keys(
         payload,
         AMI_PARTITION_CELLS,
@@ -1488,95 +1789,32 @@ def validate_ami_mechanics_aggregates(
             ),
             "AMI partition fields",
         )
-        meeting_count = _positive_count(
-            partition["meeting_count"],
-            "AMI aggregate meeting count",
+        _exact_keys(
+            partition["scalars"],
+            AMI_SCALAR_KEYS,
+            "AMI scalar fields",
         )
-        participant_count = _positive_count(
-            partition["unique_participant_count"],
-            "AMI aggregate participant count",
-        )
-        if participant_count < meeting_count * 2:
-            raise ValueError("AMI aggregate participant count is inconsistent")
-        groups = (
-            (
-                "scalars",
-                _exact_keys(
-                    partition["scalars"],
-                    AMI_SCALAR_KEYS,
-                    "AMI scalar fields",
-                ),
-            ),
-            (
-                "buckets",
-                _exact_keys(
-                    partition["buckets"],
-                    AMI_BUCKET_KEYS,
-                    "AMI bucket fields",
-                ),
-            ),
+        _exact_keys(
+            partition["buckets"],
+            AMI_BUCKET_KEYS,
+            "AMI bucket fields",
         )
         dialogue_acts = partition["dialogue_acts"]
-        if (
-            not isinstance(dialogue_acts, Mapping)
-            or not dialogue_acts
-            or any(type(key) is not str or not key for key in dialogue_acts)
-            or tuple(dialogue_acts) != tuple(sorted(dialogue_acts))
-        ):
+        if not isinstance(dialogue_acts, Mapping) or not dialogue_acts:
             raise ValueError("AMI dialogue-act fields are invalid")
-        groups += (("dialogue_acts", dialogue_acts),)
-        expected_suppressed = participant_count < minimum_contributors
-        observed_suppression: dict[str, int] = {}
-        for group_name, group in groups:
-            suppressed_cells = 0
-            for key, raw_cell in group.items():
-                cell = _exact_keys(
-                    raw_cell,
+        for label in dialogue_acts:
+            if label != _ami_canonical_dialogue_act(label):
+                raise ValueError(
+                    "AMI dialogue-act vocabulary key is not canonical"
+                )
+        for group_name in ("scalars", "buckets", "dialogue_acts"):
+            for cell in partition[group_name].values():
+                _exact_keys(
+                    cell,
                     ("suppressed", "unique_participant_count", "value"),
                     f"AMI {group_name} cell fields",
                 )
-                if type(cell["suppressed"]) is not bool:
-                    raise ValueError("AMI aggregate suppression flag is invalid")
-                cell_participants = _positive_count(
-                    cell["unique_participant_count"],
-                    "AMI aggregate cell participant count",
-                )
-                if cell_participants != participant_count:
-                    raise ValueError("AMI aggregate cell participant count differs")
-                if cell["suppressed"] is not expected_suppressed:
-                    raise ValueError("AMI aggregate participant floor is invalid")
-                if cell["suppressed"]:
-                    suppressed_cells += 1
-                    if cell["value"] is not None:
-                        raise ValueError("suppressed AMI aggregate must be absent")
-                    continue
-                value = _finite_float(cell["value"], "AMI aggregate value")
-                if group_name == "buckets" and value < 0.0:
-                    raise ValueError("AMI timing bucket is invalid")
-                if key in {
-                    "overlap_ratio",
-                    "normalized_speaker_entropy",
-                } and not 0.0 <= value <= 1.0:
-                    raise ValueError("AMI bounded scalar is invalid")
-                if key == "floor_changes_per_minute" and value < 0.0:
-                    raise ValueError("AMI floor-change rate is invalid")
-                if key == "backchannels_per_100_turns" and not 0.0 <= value <= 100.0:
-                    raise ValueError("AMI backchannel rate is invalid")
-                if group_name == "dialogue_acts" and not 0.0 <= value <= 1.0:
-                    raise ValueError("AMI dialogue-act proportion is invalid")
-            observed_suppression[group_name] = suppressed_cells
-            if (
-                group_name == "dialogue_acts"
-                and not expected_suppressed
-                and not math.isclose(
-                    sum(cell["value"] for cell in group.values()),
-                    1.0,
-                    rel_tol=0.0,
-                    abs_tol=1e-12,
-                )
-            ):
-                raise ValueError("AMI dialogue-act proportions must sum to one")
-        suppression_counts = _exact_keys(
+        _exact_keys(
             partition["suppression_counts"],
             (
                 "repeated_participant_meetings",
@@ -1586,22 +1824,16 @@ def validate_ami_mechanics_aggregates(
             ),
             "AMI suppression-count fields",
         )
-        repeated = _count(
-            suppression_counts["repeated_participant_meetings"],
-            "AMI repeated-participant meeting count",
+    expected = _expected_ami_mechanics_aggregates(
+        meetings,
+        partition_membership,
+        official_order,
+        minimum_contributors,
+    )
+    if not _matches_expected(partitions, expected):
+        raise ValueError(
+            "AMI aggregate does not match authoritative synthetic evidence"
         )
-        if repeated + meeting_count <= 0:
-            raise ValueError("AMI aggregate has no partition meetings")
-        expected_counts = {
-            "scalar_cells": observed_suppression["scalars"],
-            "bucket_cells": observed_suppression["buckets"],
-            "dialogue_act_cells": observed_suppression["dialogue_acts"],
-        }
-        if any(
-            _count(suppression_counts[key], f"AMI {key}") != expected
-            for key, expected in expected_counts.items()
-        ):
-            raise ValueError("AMI suppression counts do not match cells")
     return partitions
 
 

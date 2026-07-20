@@ -4,6 +4,7 @@ import hashlib
 import json
 import math
 import re
+import unicodedata
 import xml.etree.ElementTree as ET
 from collections import Counter, defaultdict
 from collections.abc import Mapping, Sequence
@@ -15,19 +16,23 @@ from typing import Any
 
 PARTITION_CELLS = ("scenario_only", "full_corpus", "full_only")
 BUCKET_VALUE_KEYS = (
-    "turn_duration_median_ms",
-    "turn_duration_p90_ms",
-    "inter_turn_gap_median_ms",
-    "inter_turn_gap_p90_ms",
+    "turn_duration_ms_median",
+    "turn_duration_ms_p90",
+    "inter_turn_gap_ms_median",
+    "inter_turn_gap_ms_p90",
 )
 SCALAR_VALUE_KEYS = (
     "overlap_ratio",
     "floor_changes_per_minute",
-    "normalized_speaker_entropy",
+    "speaker_balance_normalized_entropy",
     "backchannels_per_100_turns",
 )
 VALUE_KEYS = BUCKET_VALUE_KEYS + SCALAR_VALUE_KEYS
 BACKCHANNEL_ACT = "backchannel"
+# Synthetic/offline Task 7 vocabulary. It makes no claim about the vocabulary
+# in unread AMI materials; any expansion requires a separately reviewed,
+# hash-bound contract.
+DIALOGUE_ACT_VOCABULARY = ("backchannel", "inform", "question")
 _REFERENCE_FRAGMENT = re.compile(
     r"^id\(([^)]+)\)(?:\.\.id\(([^)]+)\))?$"
 )
@@ -41,6 +46,23 @@ class Turn:
     end_ms: int
     dialogue_act: str
 
+    def __post_init__(self) -> None:
+        object.__setattr__(
+            self,
+            "meeting_id",
+            _canonical_identifier(self.meeting_id, "meeting"),
+        )
+        object.__setattr__(
+            self,
+            "participant_id",
+            _canonical_identifier(self.participant_id, "participant"),
+        )
+        object.__setattr__(
+            self,
+            "dialogue_act",
+            _canonical_dialogue_act(self.dialogue_act),
+        )
+
 
 @dataclass(frozen=True)
 class MeetingMechanics:
@@ -49,6 +71,36 @@ class MeetingMechanics:
     values: tuple[tuple[str, float], ...]
     dialogue_act_distribution: tuple[tuple[str, float], ...]
 
+    def __post_init__(self) -> None:
+        object.__setattr__(
+            self,
+            "meeting_id",
+            _canonical_identifier(self.meeting_id, "meeting"),
+        )
+        if type(self.participants) is not tuple:
+            raise ValueError("participant identifiers must be a tuple")
+        canonical = tuple(sorted({
+            _canonical_identifier(participant, "participant")
+            for participant in self.participants
+        }))
+        object.__setattr__(self, "participants", canonical)
+        if type(self.dialogue_act_distribution) is not tuple:
+            raise ValueError("dialogue-act distribution must be a tuple")
+        distribution = tuple(sorted(
+            (
+                _canonical_dialogue_act(dialogue_act),
+                value,
+            )
+            for dialogue_act, value in self.dialogue_act_distribution
+        ))
+        if len({label for label, _ in distribution}) != len(distribution):
+            raise ValueError("dialogue-act vocabulary contains an alias")
+        object.__setattr__(
+            self,
+            "dialogue_act_distribution",
+            distribution,
+        )
+
 
 @dataclass(frozen=True)
 class _Boundary:
@@ -56,6 +108,31 @@ class _Boundary:
     agent: str
     start_ms: int
     end_ms: int
+
+
+def _canonical_identifier(value: Any, name: str) -> str:
+    if type(value) is not str:
+        raise ValueError(f"{name} identifier must be a string")
+    canonical = unicodedata.normalize("NFC", value.strip())
+    if (
+        not canonical
+        or any(
+            character.isspace()
+            or unicodedata.category(character).startswith("C")
+            for character in canonical
+        )
+    ):
+        raise ValueError(f"{name} identifier is not canonical")
+    return canonical
+
+
+def _canonical_dialogue_act(value: Any) -> str:
+    if type(value) is not str:
+        raise ValueError("dialogue-act vocabulary label must be a string")
+    canonical = unicodedata.normalize("NFC", value.strip().lower())
+    if canonical not in DIALOGUE_ACT_VOCABULARY:
+        raise ValueError("dialogue-act vocabulary label is not allowed")
+    return canonical
 
 
 def _normalized_name(name: str) -> str:
@@ -90,13 +167,15 @@ def _nonempty_identifiers(
 ) -> tuple[str, ...]:
     if isinstance(values, (str, bytes)) or not isinstance(values, Sequence):
         raise ValueError(f"{name} must be a sequence")
-    normalized = tuple(values)
+    normalized = tuple(
+        _canonical_identifier(value, name.rstrip("s"))
+        for value in values
+    )
     if (
         not normalized
-        or any(type(value) is not str or not value.strip() for value in normalized)
         or len(set(normalized)) != len(normalized)
     ):
-        raise ValueError(f"{name} must contain unique non-empty identifiers")
+        raise ValueError(f"{name} must contain unique canonical identifiers")
     return normalized
 
 
@@ -122,7 +201,10 @@ def _source_identity(path: Path, root: ET.Element) -> tuple[str, str]:
         agent = parts[1]
     if meeting_id is None or agent is None:
         raise ValueError("AMI annotation source identity is incomplete")
-    return meeting_id, agent
+    return (
+        _canonical_identifier(meeting_id, "meeting"),
+        _canonical_identifier(agent, "speaker dependency"),
+    )
 
 
 def _local_reference(
@@ -193,7 +275,10 @@ def _metadata_dependencies(
         if _normalized_name(meeting.tag) != "meeting":
             continue
         meeting_id = _attribute(meeting, "id", "meeting_id", "observation")
-        if meeting_id is None or meeting_id not in known_meetings:
+        if meeting_id is None:
+            continue
+        meeting_id = _canonical_identifier(meeting_id, "meeting")
+        if meeting_id not in known_meetings:
             continue
         for participant in meeting:
             if _normalized_name(participant.tag) not in {"participant", "speaker"}:
@@ -215,6 +300,11 @@ def _metadata_dependencies(
             )
             if agent is None or participant_id is None:
                 raise ValueError("AMI participant dependency is incomplete")
+            agent = _canonical_identifier(agent, "speaker dependency")
+            participant_id = _canonical_identifier(
+                participant_id,
+                "participant",
+            )
             key = (meeting_id, agent)
             if key in dependencies and dependencies[key] != participant_id:
                 raise ValueError("AMI participant dependency is conflicting")
@@ -414,7 +504,7 @@ def load_ami_turns(
                 participant_id=participant_id,
                 start_ms=boundary.start_ms,
                 end_ms=boundary.end_ms,
-                dialogue_act=dialogue_act.strip().lower(),
+                dialogue_act=dialogue_act,
             ))
         if not found:
             raise ValueError("AMI dialogue-act file contains no dialogue acts")
@@ -449,12 +539,11 @@ def _validated_turns(turns: Sequence[Turn]) -> tuple[Turn, ...]:
         if not isinstance(turn, Turn):
             raise ValueError("meeting turns must be Turn records")
         if (
-            type(turn.meeting_id) is not str
-            or not turn.meeting_id
-            or type(turn.participant_id) is not str
-            or not turn.participant_id
-            or type(turn.dialogue_act) is not str
-            or not turn.dialogue_act
+            turn.meeting_id
+            != _canonical_identifier(turn.meeting_id, "meeting")
+            or turn.participant_id
+            != _canonical_identifier(turn.participant_id, "participant")
+            or turn.dialogue_act != _canonical_dialogue_act(turn.dialogue_act)
         ):
             raise ValueError("meeting turn identifiers are invalid")
         if (
@@ -536,14 +625,14 @@ def compute_meeting_mechanics(
     )
     acts = Counter(turn.dialogue_act.strip().lower() for turn in ordered)
     values = (
-        ("turn_duration_median_ms", _linear_percentile(durations, 0.5)),
-        ("turn_duration_p90_ms", _linear_percentile(durations, 0.9)),
+        ("turn_duration_ms_median", _linear_percentile(durations, 0.5)),
+        ("turn_duration_ms_p90", _linear_percentile(durations, 0.9)),
         (
-            "inter_turn_gap_median_ms",
+            "inter_turn_gap_ms_median",
             _linear_percentile(nonnegative_gaps, 0.5),
         ),
         (
-            "inter_turn_gap_p90_ms",
+            "inter_turn_gap_ms_p90",
             _linear_percentile(nonnegative_gaps, 0.9),
         ),
         ("overlap_ratio", _overlap_duration(ordered) / meeting_span),
@@ -551,7 +640,7 @@ def compute_meeting_mechanics(
             "floor_changes_per_minute",
             floor_changes * 60000.0 / meeting_span,
         ),
-        ("normalized_speaker_entropy", normalized_entropy),
+        ("speaker_balance_normalized_entropy", normalized_entropy),
         (
             "backchannels_per_100_turns",
             acts.get(BACKCHANNEL_ACT, 0) * 100.0 / len(ordered),
@@ -572,12 +661,18 @@ def compute_meeting_mechanics(
 def _validated_meeting(meeting: MeetingMechanics) -> MeetingMechanics:
     if not isinstance(meeting, MeetingMechanics):
         raise ValueError("AMI aggregate inputs must be MeetingMechanics records")
-    if type(meeting.meeting_id) is not str or not meeting.meeting_id:
+    if (
+        meeting.meeting_id
+        != _canonical_identifier(meeting.meeting_id, "meeting")
+    ):
         raise ValueError("AMI meeting identifier is invalid")
     if (
         type(meeting.participants) is not tuple
         or len(meeting.participants) < 2
-        or any(type(value) is not str or not value for value in meeting.participants)
+        or any(
+            value != _canonical_identifier(value, "participant")
+            for value in meeting.participants
+        )
         or meeting.participants != tuple(sorted(set(meeting.participants)))
     ):
         raise ValueError("AMI meeting participants are invalid")
@@ -597,7 +692,7 @@ def _validated_meeting(meeting: MeetingMechanics) -> MeetingMechanics:
         raise ValueError("AMI meeting overlap ratio is invalid")
     if values["floor_changes_per_minute"] < 0.0:
         raise ValueError("AMI meeting floor-change rate is invalid")
-    if not 0.0 <= values["normalized_speaker_entropy"] <= 1.0:
+    if not 0.0 <= values["speaker_balance_normalized_entropy"] <= 1.0:
         raise ValueError("AMI meeting speaker entropy is invalid")
     if not 0.0 <= values["backchannels_per_100_turns"] <= 100.0:
         raise ValueError("AMI meeting backchannel rate is invalid")
@@ -607,7 +702,7 @@ def _validated_meeting(meeting: MeetingMechanics) -> MeetingMechanics:
         or not distribution
         or any(
             type(act) is not str
-            or not act
+            or act != _canonical_dialogue_act(act)
             or type(value) is not float
             or not math.isfinite(value)
             or not 0.0 <= value <= 1.0
