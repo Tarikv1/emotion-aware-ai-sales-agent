@@ -3908,6 +3908,97 @@ catch {
 }
 ```
 
+## EMOTION-STATE-002 Phase B Offline Validation And Gates
+
+Run the complete Task 9 offline ledger with the ignored, reviewed Phase B
+Python. These commands read tracked metadata, frozen contracts, the reviewed
+wheelhouse/environment identity, and synthetic fixtures only:
+
+```powershell
+.tmp/emotion-state-002-phase-b/venv/Scripts/python.exe -m unittest scripts.test_emotion_state_002_phase_b -v
+.tmp/emotion-state-002-phase-b/venv/Scripts/python.exe scripts/validate_emotion_state_002_phase_b.py source
+.tmp/emotion-state-002-phase-b/venv/Scripts/python.exe scripts/validate_emotion_state_002_phase_b.py contracts
+.tmp/emotion-state-002-phase-b/venv/Scripts/python.exe scripts/validate_emotion_state_002_phase_b.py environment
+.tmp/emotion-state-002-phase-b/venv/Scripts/python.exe scripts/validate_emotion_state_002_phase_b.py synthetic
+python scripts/check_thesis_update_gate.py
+python scripts/check_thesis_reference_registry.py
+python scripts/validate_project_drift_guard.py
+python scripts/validate_context_reading_policy.py
+python scripts/validate_check_setup.py
+git diff --check
+```
+
+`candidate` and `checkpoint` are deliberately absent from the offline ledger.
+With the current absent publication state, both fail closed. They become
+read-only validation commands only after the separately gated lifecycle states
+described below exist.
+
+### Explicit gate: dependency acquisition
+
+Dependency acquisition was separately authorized and completed for the current
+reviewed lock. Recreating or changing it is a new network/download/install gate;
+Task 9 does not authorize these commands:
+
+```powershell
+py -3.11 -m venv .tmp/emotion-state-002-phase-b/resolver-venv
+py -3.11 -m venv --without-pip .tmp/emotion-state-002-phase-b/venv
+.tmp/emotion-state-002-phase-b/resolver-venv/Scripts/python.exe -m pip download --only-binary=:all: --dest .tmp/emotion-state-002-phase-b/dependencies/wheelhouse "numpy>=2.4,<2.5" "scipy>=1.16,<1.18" "scikit-learn>=1.8,<1.9"
+.tmp/emotion-state-002-phase-b/resolver-venv/Scripts/python.exe -m pip --python .tmp/emotion-state-002-phase-b/venv/Scripts/python.exe install --no-index --no-deps .tmp/emotion-state-002-phase-b/dependencies/wheelhouse/joblib-1.5.3-py3-none-any.whl .tmp/emotion-state-002-phase-b/dependencies/wheelhouse/numpy-2.4.6-cp311-cp311-win_amd64.whl .tmp/emotion-state-002-phase-b/dependencies/wheelhouse/scikit_learn-1.8.0-cp311-cp311-win_amd64.whl .tmp/emotion-state-002-phase-b/dependencies/wheelhouse/scipy-1.17.1-cp311-cp311-win_amd64.whl .tmp/emotion-state-002-phase-b/dependencies/wheelhouse/threadpoolctl-3.6.0-py3-none-any.whl
+```
+
+### Explicit gate: public-material evaluation
+
+These commands require separate authority to read the fixed public CREMA-D and
+AMI roots. They are not authorized by offline validation or dependency setup:
+
+```powershell
+.tmp/emotion-state-002-phase-b/venv/Scripts/python.exe scripts/run_emotion_state_002_phase_b.py preflight
+.tmp/emotion-state-002-phase-b/venv/Scripts/python.exe scripts/run_emotion_state_002_phase_b.py non-lockbox
+```
+
+### Explicit gate: final lockbox
+
+This is a separate one-use authorization after independent non-lockbox review:
+
+```powershell
+.tmp/emotion-state-002-phase-b/venv/Scripts/python.exe scripts/run_emotion_state_002_phase_b.py lockbox
+```
+
+### Explicit gate: canonical acceptance
+
+Staging and acceptance require separate authority after lockbox review. Staging
+does not imply acceptance. The validator is read-only and requires the exact
+live `awaiting_acceptance` receipt; checkpoint validation requires the accepted
+pair and no live journal or receipt:
+
+```powershell
+.tmp/emotion-state-002-phase-b/venv/Scripts/python.exe scripts/run_emotion_state_002_phase_b.py stage-candidate --receipt receipt.json
+.tmp/emotion-state-002-phase-b/venv/Scripts/python.exe scripts/validate_emotion_state_002_phase_b.py candidate --receipt .tmp/emotion-state-002-phase-b/publication/receipt.json
+.tmp/emotion-state-002-phase-b/venv/Scripts/python.exe scripts/run_emotion_state_002_phase_b.py accept-receipt --receipt receipt.json
+.tmp/emotion-state-002-phase-b/venv/Scripts/python.exe scripts/validate_emotion_state_002_phase_b.py checkpoint
+```
+
+### Explicit gate: push
+
+A reviewed accepted checkpoint still requires separate push authority:
+
+```powershell
+git push origin codex/emotion-state-phase-b-public-data-feasibility
+```
+
+### Explicit gate: merge
+
+Merge authority is separate from acceptance and push authority:
+
+```powershell
+git switch main
+git merge --ff-only codex/emotion-state-phase-b-public-data-feasibility
+```
+
+No gate implicitly authorizes the next gate. This command section exposes no
+private-data, external-provider, customer-call, simulation, or product-runtime
+operation.
+
 ## Safety Rules
 
 - Do not commit API keys, private transcripts, raw private audio, customer exports, or client-specific sensitive details.

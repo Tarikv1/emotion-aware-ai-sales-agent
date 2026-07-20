@@ -2,8 +2,8 @@
 
 ## Status
 
-offline implementation started; dependency/public-material/model execution not
-started
+offline implementation complete through Task 9; reviewed dependency environment
+complete; public-material/model execution not started
 
 ## Question
 
@@ -44,17 +44,18 @@ Phase B may not establish:
 
 ## Boundary Gates
 
-1. **Offline implementation gate:** Tasks 1, 2, 4, 5, 6, 7, 8, and 9 edit
-   tracked research code/docs and run only synthetic or tracked-metadata tests.
-   They require a later implementation authorization.
-2. **Dependency gate:** Task 3 may access the package index and download wheels
-   only through the ignored
+1. **Offline implementation gate:** Tasks 1-9 are implemented and independently
+   approved. Task 9 runs only synthetic fixtures, tracked metadata, and the
+   reviewed dependency-environment identity; it reads no public material.
+2. **Dependency gate:** Task 3 was separately authorized and completed. Any
+   dependency recreation or change may access the package index and download
+   wheels only through the ignored
    `.tmp/emotion-state-002-phase-b/resolver-venv/`, then install the reviewed
    wheels into the pip-free ignored evaluation environment at
    `.tmp/emotion-state-002-phase-b/venv/`. The split is required so evaluation
    runtime identity equals the reviewed lock without exempting bootstrap
-   `pip`/`setuptools`. It requires explicit network/download/install authority
-   and a reviewed artifact lock.
+   `pip`/`setuptools`. A rerun requires new explicit network/download/install
+   authority and a reviewed artifact lock.
 3. **Public-material gate:** Task 10 may read the two public CREMA CSVs, CREMA
    WAVs, and selected AMI annotation files from their fixed ignored roots. It
    requires explicit public-material evaluation authority.
@@ -65,6 +66,34 @@ Phase B may not establish:
    separately stated acceptance/push authority.
 
 No gate implicitly grants the next gate.
+
+## Task 9 Validation Interface
+
+The validator requires exactly one section:
+
+```text
+source
+contracts
+environment
+synthetic
+candidate --receipt .tmp/emotion-state-002-phase-b/publication/receipt.json
+checkpoint
+```
+
+`candidate` requires an injected-test or production `awaiting_acceptance`
+transaction whose journal, receipt, state, result, report, and hashes agree.
+`checkpoint` requires accepted state, no live journal or receipt, and exactly
+the state-bound canonical result/report pair. The production defaults currently
+have neither lifecycle state and therefore fail closed.
+
+Synthetic mutation coverage binds every result mapping shape and scalar leaf,
+the renderer-owned report lines, receipt hashes, the one-use lockbox count, the
+derived decision, the minimum contributor floor, and every closed-boundary
+flag. Candidate bytes are rejected if they expose absolute paths, timestamps,
+unapproved filenames or clip stems, actor/speaker/participant identifiers, row
+arrays, transcripts, audio payload markers, model serialization,
+probabilities, credentials, or hesitation, frustration, confusion, interest,
+or disengagement.
 
 ## Frozen CREMA-D Label Ledger
 

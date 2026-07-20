@@ -14,9 +14,10 @@ import tempfile
 import unittest
 import warnings
 from collections import Counter
-from contextlib import contextmanager
+from contextlib import contextmanager, redirect_stderr
 from copy import deepcopy
 from dataclasses import replace
+from io import StringIO
 from pathlib import Path
 from types import SimpleNamespace
 from typing import Any, Callable
@@ -147,7 +148,7 @@ class PhaseBContractTests(unittest.TestCase):
     def test_direct_cli_validates_canonical_and_malformed_artifacts(self) -> None:
         validator = ROOT / "scripts/validate_emotion_state_002_phase_b.py"
         passed = subprocess.run(
-            [sys.executable, str(validator)],
+            [sys.executable, str(validator), "contracts"],
             cwd=ROOT,
             capture_output=True,
             check=False,
@@ -156,7 +157,7 @@ class PhaseBContractTests(unittest.TestCase):
         self.assertEqual(passed.returncode, 0, passed.stderr)
         self.assertEqual(
             passed.stdout,
-            "EMOTION-STATE-002 Phase B frozen contract validation passed.\n",
+            "EMOTION-STATE-002 Phase B validation passed: contracts.\n",
         )
         self.assertEqual(passed.stderr, "")
 
@@ -189,7 +190,7 @@ class PhaseBContractTests(unittest.TestCase):
             )
 
             failed = subprocess.run(
-                [sys.executable, str(temporary_validator)],
+                [sys.executable, str(temporary_validator), "contracts"],
                 cwd=temporary_root,
                 capture_output=True,
                 check=False,
@@ -197,7 +198,168 @@ class PhaseBContractTests(unittest.TestCase):
             )
             self.assertNotEqual(failed.returncode, 0)
             self.assertEqual(failed.stdout, "")
-            self.assertIn("frozen contract validation failed", failed.stderr)
+            self.assertIn("Phase B validation failed: contracts", failed.stderr)
+
+    def test_task_9_cli_requires_exactly_one_section_and_scopes_receipt(self) -> None:
+        from scripts import validate_emotion_state_002_phase_b as validator
+
+        self.assertTrue(
+            hasattr(validator, "SECTIONS"),
+            "Task 9 section contract is missing",
+        )
+        SECTIONS = validator.SECTIONS
+        _parse_args = validator._parse_args
+
+        self.assertEqual(
+            SECTIONS,
+            (
+                "source",
+                "contracts",
+                "environment",
+                "synthetic",
+                "candidate",
+                "checkpoint",
+            ),
+        )
+        for section in SECTIONS:
+            arguments = (
+                [section, "--receipt", "synthetic-receipt.json"]
+                if section == "candidate"
+                else [section]
+            )
+            parsed = _parse_args(arguments)
+            self.assertEqual(parsed.section, section)
+            self.assertEqual(
+                parsed.receipt,
+                "synthetic-receipt.json" if section == "candidate" else None,
+            )
+
+        for invalid in (
+            [],
+            ["source", "contracts"],
+            ["source", "--receipt", "unexpected.json"],
+            ["checkpoint", "--receipt", "unexpected.json"],
+            ["candidate"],
+            ["candidate", "--receipt", "a.json", "--receipt", "b.json"],
+            ["--synthetic-runner"],
+        ):
+            with self.subTest(invalid=invalid):
+                with redirect_stderr(StringIO()):
+                    with self.assertRaises(SystemExit):
+                        _parse_args(invalid)
+
+    def test_task_9_offline_sections_validate_without_material_access(self) -> None:
+        from scripts import validate_emotion_state_002_phase_b as validator
+
+        section_functions = (
+            "validate_source_section",
+            "validate_contracts_section",
+            "validate_environment_section",
+            "validate_synthetic_section",
+        )
+        for function_name in section_functions:
+            with self.subTest(function=function_name):
+                self.assertTrue(
+                    hasattr(validator, function_name),
+                    f"Task 9 {function_name} is missing",
+                )
+                self.assertIsNone(getattr(validator, function_name)())
+
+    def test_task_9_command_docs_freeze_offline_commands_and_explicit_gates(
+        self,
+    ) -> None:
+        command_map = (ROOT / "docs/product/COMMANDS.md").read_text(
+            encoding="utf-8-sig"
+        )
+        heading = "## EMOTION-STATE-002 Phase B Offline Validation And Gates"
+        self.assertIn(heading, command_map)
+        section = command_map.split(heading, 1)[1].split("\n## ", 1)[0]
+        validator = (
+            ".tmp/emotion-state-002-phase-b/venv/Scripts/python.exe "
+            "scripts/validate_emotion_state_002_phase_b.py"
+        )
+        expected_validator_commands = (
+            f"{validator} source",
+            f"{validator} contracts",
+            f"{validator} environment",
+            f"{validator} synthetic",
+            (
+                f"{validator} candidate --receipt "
+                ".tmp/emotion-state-002-phase-b/publication/receipt.json"
+            ),
+            f"{validator} checkpoint",
+        )
+        for command in expected_validator_commands:
+            self.assertEqual(section.count(command), 1, command)
+        for gate in (
+            "Explicit gate: dependency acquisition",
+            "Explicit gate: public-material evaluation",
+            "Explicit gate: final lockbox",
+            "Explicit gate: canonical acceptance",
+            "Explicit gate: push",
+            "Explicit gate: merge",
+        ):
+            self.assertEqual(section.count(gate), 1, gate)
+        documented_commands = "\n".join(
+            line.strip()
+            for line in section.splitlines()
+            if line.startswith((".tmp/", "py ", "git "))
+        ).casefold()
+        for forbidden in (
+            "provider",
+            "elevenlabs",
+            "simulation",
+            "data/private",
+            "runtime/",
+            "outbound",
+        ):
+            self.assertNotIn(forbidden, documented_commands)
+
+    def test_task_9_production_publication_sections_fail_closed_without_state(
+        self,
+    ) -> None:
+        validator = ROOT / "scripts/validate_emotion_state_002_phase_b.py"
+        fixed_paths = (
+            ROOT / ".tmp/emotion-state-002-phase-b/state.json",
+            ROOT / ".tmp/emotion-state-002-phase-b/publication/transaction.json",
+            ROOT / ".tmp/emotion-state-002-phase-b/publication/receipt.json",
+            ROOT
+            / "research/experiments/generated/"
+            "EMOTION-STATE-002-phase-b-public-data-feasibility/result.json",
+            ROOT
+            / "research/experiments/generated/"
+            "EMOTION-STATE-002-phase-b-public-data-feasibility/report.md",
+        )
+        before = tuple(os.path.lexists(path) for path in fixed_paths)
+        self.assertEqual(before, (False,) * len(fixed_paths))
+        commands = (
+            (
+                "candidate",
+                "--receipt",
+                ".tmp/emotion-state-002-phase-b/publication/receipt.json",
+            ),
+            ("checkpoint",),
+        )
+        for arguments in commands:
+            completed = subprocess.run(
+                [str(EVALUATION_PYTHON), str(validator), *arguments],
+                cwd=ROOT,
+                capture_output=True,
+                check=False,
+                text=True,
+            )
+            with self.subTest(section=arguments[0]):
+                self.assertEqual(completed.returncode, 1)
+                self.assertEqual(completed.stdout, "")
+                self.assertIn(
+                    f"Phase B validation failed: {arguments[0]}",
+                    completed.stderr,
+                )
+                self.assertNotIn("Traceback", completed.stderr)
+        self.assertEqual(
+            tuple(os.path.lexists(path) for path in fixed_paths),
+            before,
+        )
 
     def test_crema_label_ledger_validates_and_fails_closed(self) -> None:
         from scripts.validate_emotion_state_002_phase_b import (
@@ -1513,7 +1675,7 @@ class EnvironmentLockTests(unittest.TestCase):
     def test_cli_accepts_only_fixed_evaluation_interpreter(self) -> None:
         validator = ROOT / "scripts/validate_emotion_state_002_phase_b.py"
         fixed = subprocess.run(
-            [str(EVALUATION_PYTHON), str(validator)],
+            [str(EVALUATION_PYTHON), str(validator), "environment"],
             cwd=ROOT,
             capture_output=True,
             check=False,
@@ -1522,7 +1684,7 @@ class EnvironmentLockTests(unittest.TestCase):
         self.assertEqual(fixed.returncode, 0, fixed.stderr)
         self.assertEqual(
             fixed.stdout,
-            "EMOTION-STATE-002 Phase B frozen contract validation passed.\n",
+            "EMOTION-STATE-002 Phase B validation passed: environment.\n",
         )
         self.assertEqual(fixed.stderr, "")
 
@@ -1530,7 +1692,7 @@ class EnvironmentLockTests(unittest.TestCase):
         self.assertTrue(system_python.is_file())
         self.assertNotEqual(system_python.resolve(), EVALUATION_PYTHON.resolve())
         refused = subprocess.run(
-            [str(system_python), str(validator)],
+            [str(system_python), str(validator), "environment"],
             cwd=ROOT,
             capture_output=True,
             check=False,
@@ -2615,7 +2777,7 @@ class AmiMechanicsTests(unittest.TestCase):
                 acts_a.write_text(
                     acts_a.read_text(encoding="utf-8").replace(
                         "M1.A.segments.xml#id(s1)",
-                        "https://example.test/M1.A.segments.xml#id(s1)",
+                        "synthetic:M1.A.segments.xml#id(s1)",
                     ),
                     encoding="utf-8",
                 )
@@ -6409,6 +6571,238 @@ runner.accept_receipt(paths, paths.receipt_path("accept.json"))
         mutated["decision"] = sorted(alternatives)[0]
         with self.assertRaisesRegex(ValueError, "decision"):
             validate_phase_b_result(mutated)
+
+    def test_task_9_every_result_shape_leaf_and_renderer_line_fails_closed(
+        self,
+    ) -> None:
+        from scripts import validate_emotion_state_002_phase_b as validator
+
+        self.assertTrue(
+            hasattr(validator, "validate_publication_pair_bytes"),
+            "Task 9 publication-pair validator is missing",
+        )
+        validate_publication_pair_bytes = validator.validate_publication_pair_bytes
+
+        self._advance_to_lockbox()
+        receipt = self.runner.stage_candidate(self.paths, "shape-review.json")
+        result_bytes, report_bytes = self._canonical_bytes()
+        self.assertIsNotNone(result_bytes)
+        self.assertIsNotNone(report_bytes)
+        assert result_bytes is not None
+        assert report_bytes is not None
+        result = json.loads(result_bytes.decode("utf-8"))
+        self.assertEqual(
+            validate_publication_pair_bytes(result_bytes, report_bytes),
+            result,
+        )
+
+        for path in PhaseBContractTests._scalar_paths(result):
+            mutated = deepcopy(result)
+            current = PhaseBContractTests._value_at(mutated, path)
+            PhaseBContractTests._replace_at(
+                mutated,
+                path,
+                PhaseBContractTests._different_value(current),
+            )
+            with self.subTest(leaf=path):
+                with self.assertRaises((TypeError, ValueError)):
+                    validate_publication_pair_bytes(
+                        self.runner.canonical_json_bytes(mutated),
+                        report_bytes,
+                    )
+
+        for path in PhaseBContractTests._mapping_paths(result):
+            mapping = PhaseBContractTests._value_at(result, path)
+            for key in mapping:
+                mutated = deepcopy(result)
+                del PhaseBContractTests._value_at(mutated, path)[key]
+                with self.subTest(missing=path + (key,)):
+                    with self.assertRaises((TypeError, ValueError)):
+                        validate_publication_pair_bytes(
+                            self.runner.canonical_json_bytes(mutated),
+                            report_bytes,
+                        )
+            mutated = deepcopy(result)
+            PhaseBContractTests._value_at(mutated, path)["unexpected_field"] = True
+            with self.subTest(unexpected=path):
+                with self.assertRaises((TypeError, ValueError)):
+                    validate_publication_pair_bytes(
+                        self.runner.canonical_json_bytes(mutated),
+                        report_bytes,
+                    )
+
+        report_lines = report_bytes.decode("utf-8").splitlines(keepends=True)
+        json_start = report_lines.index("```json\n")
+        renderer_lines = [
+            index
+            for index, line in enumerate(report_lines[:json_start])
+            if line.strip()
+        ]
+        self.assertEqual(len(renderer_lines), 6)
+        for index in renderer_lines:
+            mutated_lines = list(report_lines)
+            mutated_lines[index] = (
+                mutated_lines[index].rstrip("\n") + " mutated\n"
+            )
+            with self.subTest(renderer_line=report_lines[index].strip()):
+                with self.assertRaisesRegex(ValueError, "report"):
+                    validate_publication_pair_bytes(
+                        result_bytes,
+                        "".join(mutated_lines).encode("utf-8"),
+                    )
+
+        self.assertRegex(receipt["result_sha256"], r"^[0-9A-F]{64}$")
+        self.assertRegex(receipt["report_sha256"], r"^[0-9A-F]{64}$")
+
+    def test_task_9_candidate_receipt_hashes_fail_closed(self) -> None:
+        from scripts import validate_emotion_state_002_phase_b as validator
+
+        self.assertTrue(
+            hasattr(validator, "validate_candidate_readback"),
+            "Task 9 candidate validator is missing",
+        )
+        validate_candidate_readback = validator.validate_candidate_readback
+
+        self._install_previous_pair()
+        self._advance_to_lockbox()
+        self.runner.stage_candidate(self.paths, "hash-review.json")
+        receipt_path = self.paths.receipt_path("hash-review.json")
+        receipt = json.loads(receipt_path.read_text(encoding="utf-8"))
+        validate_candidate_readback(self.paths, receipt_path)
+        hash_fields = tuple(
+            field for field, value in receipt.items()
+            if field.endswith("_sha256") and isinstance(value, str)
+        )
+        self.assertEqual(
+            set(hash_fields),
+            {
+                "configuration_sha256",
+                "result_sha256",
+                "report_sha256",
+                "previous_result_sha256",
+                "previous_report_sha256",
+            },
+        )
+        for field in hash_fields:
+            mutated = deepcopy(receipt)
+            mutated[field] = (
+                "B" * 64 if mutated[field] == "A" * 64 else "A" * 64
+            )
+            self._write_json(receipt_path, mutated)
+            with self.subTest(hash_field=field):
+                with self.assertRaises((RuntimeError, ValueError)):
+                    validate_candidate_readback(self.paths, receipt_path)
+            self._write_json(receipt_path, receipt)
+        validate_candidate_readback(self.paths, receipt_path)
+
+    def test_task_9_synthetic_candidate_bytes_exclude_every_forbidden_class(
+        self,
+    ) -> None:
+        from scripts import validate_emotion_state_002_phase_b as validator
+
+        self.assertTrue(
+            hasattr(validator, "validate_candidate_output_bytes"),
+            "Task 9 output-leakage validator is missing",
+        )
+        validate_candidate_output_bytes = validator.validate_candidate_output_bytes
+
+        self._advance_to_lockbox()
+        self.runner.stage_candidate(self.paths, "leakage-review.json")
+        result_bytes, report_bytes = self._canonical_bytes()
+        self.assertIsNotNone(result_bytes)
+        self.assertIsNotNone(report_bytes)
+        assert result_bytes is not None
+        assert report_bytes is not None
+        candidate_bytes = result_bytes + b"\n" + report_bytes
+        validate_candidate_output_bytes(candidate_bytes)
+
+        forbidden_markers = {
+            "absolute_paths": (
+                str(self.root).encode("utf-8"),
+                str(ROOT).encode("utf-8"),
+                b"C:\\Users\\synthetic\\private\\clip.wav",
+            ),
+            "timestamps": (b"2030-01-02T03:04:05Z",),
+            "filenames": (b"synthetic_clip_0001.wav",),
+            "stems": (b"1001_DFA_ANG_XX",),
+            "actor_speaker_participant_ids": (
+                b'"actor_id":"A01"',
+                b'"speaker_id":"S01"',
+                b'"participant_id":"P01"',
+            ),
+            "row_arrays": (b'"row_records":[{"row_id":1}]',),
+            "transcripts": (b'"transcript_text":"private words"',),
+            "audio_markers": (b'"audio_bytes":"RIFF-WAVE"',),
+            "model_serialization": (b'"fitted_model":"pickle"',),
+            "probabilities": (b'"probabilities":[0.1,0.9]',),
+            "credentials": (b'"api_key":"synthetic-secret"',),
+            "operational_signals": (
+                b"hesitation",
+                b"frustration",
+                b"confusion",
+                b"interest",
+                b"disengagement",
+            ),
+        }
+        lowered_candidate = candidate_bytes.lower()
+        for output_class, markers in forbidden_markers.items():
+            for marker in markers:
+                with self.subTest(output_class=output_class, marker=marker):
+                    self.assertNotIn(marker.lower(), lowered_candidate)
+                    with self.assertRaisesRegex(ValueError, "forbidden output"):
+                        validate_candidate_output_bytes(
+                            candidate_bytes + b"\n" + marker
+                        )
+
+    def test_task_9_candidate_and_checkpoint_lifecycle_is_injected_and_read_only(
+        self,
+    ) -> None:
+        from scripts import validate_emotion_state_002_phase_b as validator
+
+        self.assertTrue(
+            hasattr(validator, "validate_candidate_readback")
+            and hasattr(validator, "validate_checkpoint_readback"),
+            "Task 9 candidate/checkpoint lifecycle validators are missing",
+        )
+        validate_candidate_readback = validator.validate_candidate_readback
+        validate_checkpoint_readback = validator.validate_checkpoint_readback
+
+        self._advance_to_lockbox()
+        self.runner.stage_candidate(self.paths, "lifecycle.json")
+        receipt_path = self.paths.receipt_path("lifecycle.json")
+        before_candidate = (
+            self._state_bytes(),
+            self._canonical_bytes(),
+            self.paths.journal_path.read_bytes(),
+            receipt_path.read_bytes(),
+        )
+        validate_candidate_readback(self.paths, receipt_path)
+        self.assertEqual(
+            (
+                self._state_bytes(),
+                self._canonical_bytes(),
+                self.paths.journal_path.read_bytes(),
+                receipt_path.read_bytes(),
+            ),
+            before_candidate,
+        )
+        with self.assertRaisesRegex(ValueError, "accepted"):
+            validate_checkpoint_readback(self.paths)
+
+        self.runner.accept_receipt(self.paths, receipt_path)
+        before_checkpoint = (self._state_bytes(), self._canonical_bytes())
+        validate_checkpoint_readback(self.paths)
+        self.assertEqual(
+            (self._state_bytes(), self._canonical_bytes()),
+            before_checkpoint,
+        )
+        with self.assertRaisesRegex(ValueError, "awaiting_acceptance"):
+            validate_candidate_readback(self.paths, receipt_path)
+
+        residual_receipt = self.paths.recovery_root / "residual-receipt.json"
+        residual_receipt.write_text("{}\n", encoding="utf-8")
+        with self.assertRaisesRegex(ValueError, "residual"):
+            validate_checkpoint_readback(self.paths)
 
     def test_review_critical_independent_process_lockbox_concurrency(self) -> None:
         self.runner.run_preflight(self.paths)

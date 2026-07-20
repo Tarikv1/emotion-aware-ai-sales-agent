@@ -5,6 +5,7 @@ import hashlib
 import importlib.metadata
 import json
 import math
+import os
 import re
 import struct
 import sys
@@ -15,6 +16,8 @@ from pathlib import Path
 from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
 CONFIG_PATH = ROOT / "research/experiments/cases/emotion-state-002-phase-b-config.json"
 FEATURE_SCHEMA_PATH = (
     ROOT
@@ -30,6 +33,26 @@ ENVIRONMENT_LOCK_PATH = (
 EVALUATION_PYTHON_PATH = (
     ROOT / ".tmp/emotion-state-002-phase-b/venv/Scripts/python.exe"
 )
+WHEELHOUSE_PATH = (
+    ROOT / ".tmp/emotion-state-002-phase-b/dependencies/wheelhouse"
+)
+PHASE_A_RESULT_PATH = (
+    ROOT
+    / "research/experiments/generated/EMOTION-STATE-001-phase-a-contracts/result.json"
+)
+PHASE_A_REPORT_PATH = PHASE_A_RESULT_PATH.with_name("report.md")
+SOURCE_MANIFEST_PATHS = {
+    "crema_d": (
+        ROOT
+        / "research/sources/emotion_state/datasets/"
+        "crema-d-v1.0-audio-wav.manifest.json"
+    ),
+    "ami": (
+        ROOT
+        / "research/sources/emotion_state/datasets/"
+        "ami-manual-annotations-v1.6.2.manifest.json"
+    ),
+}
 
 FEATURE_NAMES = (
     "duration_seconds", "silence_ratio", "voiced_fraction", "f0_median_hz",
@@ -2577,84 +2600,404 @@ def synthetic_phase_b_result_fixture() -> dict[str, Any]:
     )
 
 
+def _file_sha256(path: Path) -> str:
+    return hashlib.sha256(Path(path).read_bytes()).hexdigest().upper()
+
+
+def validate_source_section() -> None:
+    if _file_sha256(PHASE_A_RESULT_PATH) != EXPECTED_PHASE_A_BINDING["result_sha256"]:
+        raise ValueError("Phase A result does not match the accepted source binding")
+    if _file_sha256(PHASE_A_REPORT_PATH) != EXPECTED_PHASE_A_BINDING["report_sha256"]:
+        raise ValueError("Phase A report does not match the accepted source binding")
+    phase_a = load_json_strict(PHASE_A_RESULT_PATH)
+    if (
+        phase_a.get("checkpoint_id") != "EMOTION-STATE-001-phase-a-contracts"
+        or phase_a.get("mode") != "complete"
+        or phase_a.get("status") != "complete"
+        or phase_a.get("dataset_evaluation_started") is not False
+        or phase_a.get("selected_public_datasets")
+        != ["crema-d-v1.0-audio-wav", "ami-manual-annotations-v1.6.2"]
+    ):
+        raise ValueError("accepted Phase A source checkpoint is invalid")
+    evidence = phase_a.get("dataset_manifest_evidence")
+    if not isinstance(evidence, list) or len(evidence) != 2:
+        raise ValueError("Phase A dataset evidence set is invalid")
+    evidence_by_dataset = {
+        entry.get("dataset_id"): entry
+        for entry in evidence
+        if isinstance(entry, Mapping)
+    }
+    if set(evidence_by_dataset) != {
+        "crema-d-v1.0-audio-wav",
+        "ami-manual-annotations-v1.6.2",
+    }:
+        raise ValueError("Phase A dataset evidence identities are invalid")
+    for key, manifest_path in SOURCE_MANIFEST_PATHS.items():
+        expected = EXPECTED_DATASET_EVIDENCE[key]
+        manifest = load_json_strict(manifest_path)
+        dataset_id = expected["dataset_id"]
+        manifest_evidence = evidence_by_dataset[dataset_id]
+        if (
+            manifest.get("dataset_id") != dataset_id
+            or manifest.get("source_label") != "public-only"
+            or manifest.get("completion_status") != "verified"
+            or manifest.get("runtime_influence_allowed") is not False
+            or manifest.get("project_label_mapping") != {}
+            or tuple(manifest.get("excluded_labels", ()))
+            != ("hesitation", "frustration", "confusion", "interest", "disengagement")
+            or _file_sha256(manifest_path) != expected["manifest_sha256"]
+            or any(
+                manifest_evidence.get(field) != expected[field]
+                for field in (
+                    "manifest_sha256",
+                    "hash_inventory_sha256",
+                    "quality_inventory_sha256",
+                )
+            )
+        ):
+            raise ValueError(f"{dataset_id} tracked source evidence is invalid")
+        if key == "crema_d" and manifest.get("source_revision") != expected[
+            "source_revision"
+        ]:
+            raise ValueError("CREMA-D source revision is invalid")
+    validate_phase_b_input_ledger(expected_phase_b_input_ledger())
+
+
+def validate_contracts_section() -> None:
+    validate_config(load_json_strict(CONFIG_PATH))
+    validate_feature_schema(load_json_strict(FEATURE_SCHEMA_PATH))
+    validate_split_schema(load_json_strict(SPLIT_SCHEMA_PATH))
+    validate_environment_lock(load_json_strict(ENVIRONMENT_LOCK_PATH))
+    for field, path in (
+        ("configuration_sha256", CONFIG_PATH),
+        ("environment_lock_sha256", ENVIRONMENT_LOCK_PATH),
+        ("feature_schema_sha256", FEATURE_SCHEMA_PATH),
+        ("split_schema_sha256", SPLIT_SCHEMA_PATH),
+    ):
+        if _file_sha256(path) != EXPECTED_STATIC_FILE_SHA256[field]:
+            raise ValueError(f"{field} does not match the frozen tracked file")
+
+
+def validate_environment_section() -> None:
+    validate_environment_identity(
+        lock_path=ENVIRONMENT_LOCK_PATH,
+        wheelhouse_path=WHEELHOUSE_PATH,
+    )
+
+
+def validate_synthetic_section() -> None:
+    fixture = {
+        "input_ledger": expected_phase_b_input_ledger(),
+        "non_lockbox_packet": expected_non_lockbox_packet("A" * 64),
+    }
+    first = {
+        "input_ledger": validate_phase_b_input_ledger(
+            fixture["input_ledger"]
+        ),
+        "non_lockbox_packet": validate_non_lockbox_packet(
+            fixture["non_lockbox_packet"]
+        ),
+    }
+    second = {
+        "input_ledger": validate_phase_b_input_ledger(
+            expected_phase_b_input_ledger()
+        ),
+        "non_lockbox_packet": validate_non_lockbox_packet(
+            expected_non_lockbox_packet("A" * 64)
+        ),
+    }
+    first_bytes = json.dumps(
+        first,
+        indent=2,
+        sort_keys=True,
+        ensure_ascii=False,
+        allow_nan=False,
+    ).encode("utf-8")
+    second_bytes = json.dumps(
+        second,
+        indent=2,
+        sort_keys=True,
+        ensure_ascii=False,
+        allow_nan=False,
+    ).encode("utf-8")
+    if first_bytes != second_bytes:
+        raise ValueError("synthetic runner result is not deterministic")
+
+
+def validate_candidate_output_bytes(candidate_bytes: bytes) -> None:
+    if not isinstance(candidate_bytes, bytes):
+        raise TypeError("candidate output must be bytes")
+    try:
+        text = candidate_bytes.decode("utf-8")
+    except UnicodeError as error:
+        raise ValueError("forbidden output: candidate is not UTF-8") from error
+    if "\x00" in text:
+        raise ValueError("forbidden output: NUL byte")
+    lowered = text.casefold()
+    filename_scan = lowered.replace("finishedresponses.csv", "").replace(
+        "processedresults/summarytable.csv",
+        "",
+    )
+    patterns = (
+        (
+            "absolute path",
+            re.compile(
+                r"(?:[a-z]:[\\/]|\\\\[^\\\s]+[\\/]|"
+                r"(?<![a-z0-9])/(?:users|home|tmp|var|private|mnt)/)",
+                re.IGNORECASE,
+            ),
+            lowered,
+        ),
+        (
+            "timestamp",
+            re.compile(
+                r"\b\d{4}-\d{2}-\d{2}t\d{2}:\d{2}:\d{2}"
+                r"(?:\.\d+)?(?:z|[+-]\d{2}:\d{2})\b",
+                re.IGNORECASE,
+            ),
+            lowered,
+        ),
+        (
+            "filename",
+            re.compile(
+                r"\b[a-z0-9][a-z0-9_.-]*\."
+                r"(?:csv|json|xml|txt|wav|mp3|flac|ogg|m4a|npy|npz|"
+                r"pkl|pickle|joblib)\b",
+                re.IGNORECASE,
+            ),
+            filename_scan,
+        ),
+        (
+            "clip stem",
+            re.compile(r"\b\d{4}_[a-z]{3}_[a-z]{3}_[a-z]{2}\b", re.IGNORECASE),
+            lowered,
+        ),
+        (
+            "actor, speaker, or participant identifier",
+            re.compile(
+                r'"(?:actor|speaker|participant|meeting)_ids?"\s*:',
+                re.IGNORECASE,
+            ),
+            lowered,
+        ),
+        (
+            "row array",
+            re.compile(
+                r'"(?:rows?|row_records?|case_rows?|records?)"\s*:\s*\[',
+                re.IGNORECASE,
+            ),
+            lowered,
+        ),
+        (
+            "transcript",
+            re.compile(
+                r'"(?:transcript|transcript_text|utterance_text|raw_text)"\s*:',
+                re.IGNORECASE,
+            ),
+            lowered,
+        ),
+        (
+            "audio marker",
+            re.compile(
+                r'"(?:audio|audio_bytes|audio_path|waveform|samples?)"\s*:|'
+                r"\briff(?:-wave)?\b",
+                re.IGNORECASE,
+            ),
+            lowered,
+        ),
+        (
+            "model serialization",
+            re.compile(
+                r'"(?:fitted_model|serialized_model|model_bytes|coefficients?)"\s*:',
+                re.IGNORECASE,
+            ),
+            lowered,
+        ),
+        (
+            "probability rows",
+            re.compile(
+                r'"(?:probabilities|probability_rows|predict_proba)"\s*:',
+                re.IGNORECASE,
+            ),
+            lowered,
+        ),
+        (
+            "credential",
+            re.compile(
+                r'"(?:api[_-]?key|access[_-]?token|auth(?:orization)?|'
+                r'password|passwd|secret|bearer|credential)"\s*:',
+                re.IGNORECASE,
+            ),
+            lowered,
+        ),
+        (
+            "operational signal",
+            re.compile(
+                r"\b(?:hesitation|frustration|confusion|interest|disengagement)\b",
+                re.IGNORECASE,
+            ),
+            lowered,
+        ),
+    )
+    for label, pattern, candidate in patterns:
+        if pattern.search(candidate):
+            raise ValueError(f"forbidden output: {label}")
+
+
+def validate_publication_pair_bytes(
+    result_bytes: bytes,
+    report_bytes: bytes,
+) -> dict[str, Any]:
+    if not isinstance(result_bytes, bytes) or not isinstance(report_bytes, bytes):
+        raise TypeError("publication pair must be bytes")
+    try:
+        payload = json.loads(
+            result_bytes.decode("utf-8"),
+            object_pairs_hook=_pairs,
+            parse_constant=_constant,
+        )
+        report_bytes.decode("utf-8")
+    except (UnicodeError, json.JSONDecodeError) as error:
+        raise ValueError("publication pair is not valid UTF-8 JSON/text") from error
+    _reject_non_finite(payload)
+    validated = validate_phase_b_result(payload)
+    from scripts import run_emotion_state_002_phase_b as runner
+
+    canonical_result = runner.canonical_json_bytes(validated)
+    if canonical_result != result_bytes:
+        raise ValueError("publication result bytes are not deterministic")
+    result_sha256 = hashlib.sha256(result_bytes).hexdigest().upper()
+    expected_report = runner.render_report(
+        validated,
+        result_sha256,
+    ).encode("utf-8")
+    if report_bytes != expected_report:
+        raise ValueError("publication report is not a deterministic readback")
+    validate_candidate_output_bytes(result_bytes + b"\n" + report_bytes)
+    return dict(validated)
+
+
+def validate_candidate_readback(paths: Any, receipt_path: Path) -> dict[str, Any]:
+    from scripts import run_emotion_state_002_phase_b as runner
+
+    state = runner.load_state(paths)
+    if state["phase"] != "awaiting_acceptance":
+        raise ValueError("candidate validation requires live awaiting_acceptance state")
+    transaction = runner._load_journal(paths)
+    if (
+        transaction["status"] != "awaiting_acceptance"
+        or transaction["transaction_id"] != state["candidate_transaction_id"]
+        or transaction["configuration_sha256"] != state["configuration_sha256"]
+    ):
+        raise ValueError("candidate transaction does not match awaiting state")
+    transaction, receipt = runner._load_matching_transaction_and_receipt(
+        paths,
+        Path(receipt_path),
+        transaction=transaction,
+    )
+    runner_validated = runner._validate_candidate_pair(paths, transaction)
+    result_bytes = runner._read_file_nofollow(paths.result_path)
+    report_bytes = runner._read_file_nofollow(paths.report_path)
+    validated = validate_publication_pair_bytes(result_bytes, report_bytes)
+    if validated != runner_validated:
+        raise ValueError("candidate validators disagree")
+    if (
+        hashlib.sha256(result_bytes).hexdigest().upper()
+        != receipt["result_sha256"]
+        or hashlib.sha256(report_bytes).hexdigest().upper()
+        != receipt["report_sha256"]
+    ):
+        raise ValueError("candidate receipt hashes do not match publication pair")
+    return validated
+
+
+def validate_checkpoint_readback(paths: Any) -> dict[str, Any]:
+    from scripts import run_emotion_state_002_phase_b as runner
+
+    state = runner.load_state(paths)
+    if state["phase"] != "accepted":
+        raise ValueError("checkpoint validation requires accepted state")
+    if os.path.lexists(paths.journal_path):
+        raise ValueError("accepted checkpoint requires no live journal")
+    residual = (
+        sorted(
+            entry.name
+            for entry in paths.recovery_root.iterdir()
+            if entry.name != runner.LOCK_NAME
+        )
+        if paths.recovery_root.is_dir()
+        else []
+    )
+    if residual:
+        raise ValueError(
+            "accepted checkpoint requires no residual receipt or transaction artifacts"
+        )
+    runner._validate_canonical_pair_metadata(paths, require_entries=True)
+    result_bytes = runner._read_file_nofollow(paths.result_path)
+    report_bytes = runner._read_file_nofollow(paths.report_path)
+    validated = validate_publication_pair_bytes(result_bytes, report_bytes)
+    expected = runner.build_aggregate_result(paths)
+    if runner.canonical_json_bytes(expected) != result_bytes:
+        raise ValueError("accepted checkpoint is not the exact state-bound canonical pair")
+    return validated
+
+
+SECTIONS = (
+    "source",
+    "contracts",
+    "environment",
+    "synthetic",
+    "candidate",
+    "checkpoint",
+)
+
+
 def _parse_args(argv: Sequence[str] | None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(
-        description="Validate EMOTION-STATE-002 Phase B frozen contracts."
+        description="Validate EMOTION-STATE-002 Phase B offline evidence."
     )
     parser.add_argument(
-        "--synthetic-runner",
-        action="store_true",
-        help="validate exact in-memory runner input and non-lockbox contracts",
+        "section",
+        choices=SECTIONS,
     )
-    return parser.parse_args(argv)
+    parser.add_argument("--receipt", action="append")
+    parsed = parser.parse_args(argv)
+    if parsed.section == "candidate":
+        if parsed.receipt is None or len(parsed.receipt) != 1:
+            parser.error("candidate validation requires exactly one --receipt")
+        parsed.receipt = parsed.receipt[0]
+    elif parsed.receipt is not None:
+        parser.error("--receipt is valid only for candidate validation")
+    return parsed
 
 
 def main(argv: Sequence[str] | None = None) -> int:
     arguments = _parse_args(argv)
-    if arguments.synthetic_runner:
-        try:
-            fixture = {
-                "input_ledger": expected_phase_b_input_ledger(),
-                "non_lockbox_packet": expected_non_lockbox_packet("A" * 64),
-            }
-            first = {
-                "input_ledger": validate_phase_b_input_ledger(
-                    fixture["input_ledger"]
-                ),
-                "non_lockbox_packet": validate_non_lockbox_packet(
-                    fixture["non_lockbox_packet"]
-                ),
-            }
-            first_bytes = json.dumps(
-                first,
-                indent=2,
-                sort_keys=True,
-                ensure_ascii=False,
-                allow_nan=False,
-            ).encode("utf-8")
-            second_bytes = json.dumps(
-                {
-                    "input_ledger": validate_phase_b_input_ledger(
-                        expected_phase_b_input_ledger()
-                    ),
-                    "non_lockbox_packet": validate_non_lockbox_packet(
-                        expected_non_lockbox_packet("A" * 64)
-                    ),
-                },
-                indent=2,
-                sort_keys=True,
-                ensure_ascii=False,
-                allow_nan=False,
-            ).encode("utf-8")
-            if first_bytes != second_bytes:
-                raise ValueError("synthetic runner result is not deterministic")
-        except (TypeError, ValueError) as error:
-            print(
-                "EMOTION-STATE-002 Phase B synthetic runner validation failed: "
-                f"{error}",
-                file=sys.stderr,
-            )
-            return 1
-        print("EMOTION-STATE-002 Phase B synthetic runner validation passed.")
-        return 0
     try:
-        validate_config(load_json_strict(CONFIG_PATH))
-        validate_feature_schema(load_json_strict(FEATURE_SCHEMA_PATH))
-        validate_split_schema(load_json_strict(SPLIT_SCHEMA_PATH))
-        validate_environment_lock(load_json_strict(ENVIRONMENT_LOCK_PATH))
-        validate_environment_identity(
-            lock_path=ENVIRONMENT_LOCK_PATH,
-            wheelhouse_path=(
-                ROOT / ".tmp/emotion-state-002-phase-b/dependencies/wheelhouse"
-            ),
-        )
-    except (OSError, ValueError) as error:
+        if arguments.section == "source":
+            validate_source_section()
+        elif arguments.section == "contracts":
+            validate_contracts_section()
+        elif arguments.section == "environment":
+            validate_environment_section()
+        elif arguments.section == "synthetic":
+            validate_synthetic_section()
+        else:
+            from scripts import run_emotion_state_002_phase_b as runner
+
+            paths = runner.RunnerPaths.production()
+            if arguments.section == "candidate":
+                validate_candidate_readback(paths, Path(arguments.receipt))
+            else:
+                validate_checkpoint_readback(paths)
+    except (KeyError, OSError, RuntimeError, TypeError, ValueError) as error:
         print(
-            f"EMOTION-STATE-002 Phase B frozen contract validation failed: {error}",
+            f"EMOTION-STATE-002 Phase B validation failed: "
+            f"{arguments.section}: {error}",
             file=sys.stderr,
         )
         return 1
-    print("EMOTION-STATE-002 Phase B frozen contract validation passed.")
+    print(f"EMOTION-STATE-002 Phase B validation passed: {arguments.section}.")
     return 0
 
 
