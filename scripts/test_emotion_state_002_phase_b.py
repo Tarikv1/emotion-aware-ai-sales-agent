@@ -324,16 +324,26 @@ class PhaseBContractTests(unittest.TestCase):
         )
         heading = "## EMOTION-STATE-002 Phase B Offline Validation And Gates"
         section = command_map.split(heading, 1)[1].split("\n## ", 1)[0]
-        fenced_commands: list[str] = []
-        inside_fence = False
-        for raw_line in section.splitlines():
-            line = raw_line.strip()
-            if line.startswith("```"):
-                inside_fence = not inside_fence
-                continue
-            if inside_fence and line:
-                fenced_commands.append(line)
-        self.assertFalse(inside_fence, "Task 9 command fence is unclosed")
+        dependency_gate_heading = "### Explicit gate: dependency acquisition"
+        dependency_gate = section.split(dependency_gate_heading, 1)[1].split(
+            "\n### Explicit gate:", 1
+        )[0]
+
+        def fenced_lines(text: str) -> list[str]:
+            commands: list[str] = []
+            inside_fence = False
+            for raw_line in text.splitlines():
+                line = raw_line.strip()
+                if line.startswith("```"):
+                    inside_fence = not inside_fence
+                    continue
+                if inside_fence and line:
+                    commands.append(line)
+            self.assertFalse(inside_fence, "Task 9 command fence is unclosed")
+            return commands
+
+        fenced_commands = fenced_lines(section)
+        dependency_gate_commands = fenced_lines(dependency_gate)
 
         validator = (
             ".tmp/emotion-state-002-phase-b/venv/Scripts/python.exe "
@@ -351,6 +361,58 @@ class PhaseBContractTests(unittest.TestCase):
             f"{validator} checkpoint",
         ):
             self.assertEqual(fenced_commands.count(command), 1, command)
+
+        expected_dependency_commands = (
+            "py -3.11 -m venv .tmp/emotion-state-002-phase-b/resolver-venv",
+            (
+                ".tmp/emotion-state-002-phase-b/resolver-venv/Scripts/"
+                "python.exe -m pip --version"
+            ),
+            (
+                "py -3.11 -m venv --without-pip "
+                ".tmp/emotion-state-002-phase-b/venv"
+            ),
+            (
+                ".tmp/emotion-state-002-phase-b/venv/Scripts/python.exe "
+                '-c "import sys; print(sys.version); print(sys.executable)"'
+            ),
+            (
+                ".tmp/emotion-state-002-phase-b/resolver-venv/Scripts/"
+                "python.exe -m pip download --only-binary=:all: --dest "
+                ".tmp/emotion-state-002-phase-b/dependencies/wheelhouse "
+                '"numpy>=2.4,<2.5" "scipy>=1.16,<1.18" '
+                '"scikit-learn>=1.8,<1.9"'
+            ),
+            (
+                "Get-ChildItem -LiteralPath "
+                ".tmp/emotion-state-002-phase-b/dependencies/wheelhouse "
+                "-File | Sort-Object Name | Get-FileHash -Algorithm SHA256"
+            ),
+            (
+                ".tmp/emotion-state-002-phase-b/resolver-venv/Scripts/"
+                "python.exe -m pip --python "
+                ".tmp/emotion-state-002-phase-b/venv/Scripts/python.exe "
+                "install --no-index --no-deps "
+                ".tmp/emotion-state-002-phase-b/dependencies/wheelhouse/"
+                "joblib-1.5.3-py3-none-any.whl "
+                ".tmp/emotion-state-002-phase-b/dependencies/wheelhouse/"
+                "numpy-2.4.6-cp311-cp311-win_amd64.whl "
+                ".tmp/emotion-state-002-phase-b/dependencies/wheelhouse/"
+                "scikit_learn-1.8.0-cp311-cp311-win_amd64.whl "
+                ".tmp/emotion-state-002-phase-b/dependencies/wheelhouse/"
+                "scipy-1.17.1-cp311-cp311-win_amd64.whl "
+                ".tmp/emotion-state-002-phase-b/dependencies/wheelhouse/"
+                "threadpoolctl-3.6.0-py3-none-any.whl"
+            ),
+            (
+                ".tmp/emotion-state-002-phase-b/resolver-venv/Scripts/"
+                "python.exe -m pip --python "
+                ".tmp/emotion-state-002-phase-b/venv/Scripts/python.exe check"
+            ),
+        )
+        for command in expected_dependency_commands:
+            self.assertEqual(fenced_commands.count(command), 1, command)
+            self.assertEqual(dependency_gate_commands.count(command), 1, command)
 
         forbidden_command_forms = {
             "provider": re.compile(
@@ -371,18 +433,23 @@ class PhaseBContractTests(unittest.TestCase):
                 r"(?:runtime|apps|sales_agent)/",
                 re.IGNORECASE,
             ),
-            "network-download": re.compile(
-                r"\b(?:curl|wget|invoke-webrequest|invoke-restmethod)\b|"
-                r"\bpip\s+download\b|\bnpm\s+(?:install|ci)\b|"
-                r"\bgit\s+clone\b",
-                re.IGNORECASE,
-            ),
         }
+        dependency_command_form = re.compile(
+                r"\b(?:curl|wget|invoke-webrequest|invoke-restmethod)\b|"
+                r"\bpip\b|\bnpm\s+(?:install|ci)\b|\bgit\s+clone\b|"
+                r"\bpy(?:\.exe)?\s+-3\.11\s+-m\s+venv\b|"
+                r"\bget-childitem\b.*\bget-filehash\b",
+            re.IGNORECASE,
+        )
         for command in fenced_commands:
             normalized = command.replace("\\", "/")
             for operation, pattern in forbidden_command_forms.items():
                 with self.subTest(operation=operation, command=command):
                     self.assertIsNone(pattern.search(normalized))
+            if dependency_command_form.search(normalized):
+                with self.subTest(dependency_gate_command=command):
+                    self.assertIn(command, expected_dependency_commands)
+                    self.assertIn(command, dependency_gate_commands)
         unsafe_examples = {
             "provider": "python arbitrary.py --provider elevenlabs",
             "call": "python arbitrary.py outbound-call",
@@ -391,15 +458,12 @@ class PhaseBContractTests(unittest.TestCase):
             "private-data-windows": r"python.exe arbitrary.py data\private\input.json",
             "product-runtime-posix": "python runtime/launch.py",
             "product-runtime-windows": r"python.exe runtime\launch.py",
-            "network-download": "Invoke-WebRequest synthetic:network-target",
-            "download-subcommand": "python -m pip download synthetic-package",
         }
         operation_for_example = {
             "private-data-posix": "private-data",
             "private-data-windows": "private-data",
             "product-runtime-posix": "product-runtime",
             "product-runtime-windows": "product-runtime",
-            "download-subcommand": "network-download",
         }
         for label, example in unsafe_examples.items():
             operation = operation_for_example.get(label, label)
@@ -409,6 +473,20 @@ class PhaseBContractTests(unittest.TestCase):
                         example.replace("\\", "/")
                     )
                 )
+        unauthorized_dependency_examples = (
+            "Invoke-WebRequest synthetic:network-target",
+            "python -m pip download synthetic-package",
+            "python -m pip install synthetic-package",
+            "npm install synthetic-package",
+            "git clone synthetic:source-target",
+            "py -3.11 -m venv .tmp/arbitrary-environment",
+        )
+        for example in unauthorized_dependency_examples:
+            normalized = example.replace("\\", "/")
+            with self.subTest(unauthorized_dependency_command=example):
+                self.assertIsNotNone(dependency_command_form.search(normalized))
+                self.assertNotIn(example, expected_dependency_commands)
+                self.assertNotIn(example, dependency_gate_commands)
 
     def test_task_9_docs_hold_review_pending_status(self) -> None:
         conservative_status = (

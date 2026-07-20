@@ -3936,8 +3936,47 @@ described below exist.
 ### Explicit gate: dependency acquisition
 
 Dependency acquisition was separately authorized and completed for the current
-reviewed lock. Recreating or changing it is a new network/download/install
-gate. Task 9 documents no acquisition or installation command.
+reviewed lock. The commands below preserve the exact reviewed Task 3 workflow;
+documentation is not authorization. Rerunning or changing any of them requires
+a new explicit network/download/install authorization. Do not run them under
+the Task 9 offline-validation authorization.
+
+Create the ignored resolver environment and pip-free evaluation environment,
+then verify the resolver tooling and evaluation interpreter:
+
+```powershell
+py -3.11 -m venv .tmp/emotion-state-002-phase-b/resolver-venv
+.tmp/emotion-state-002-phase-b/resolver-venv/Scripts/python.exe -m pip --version
+py -3.11 -m venv --without-pip .tmp/emotion-state-002-phase-b/venv
+.tmp/emotion-state-002-phase-b/venv/Scripts/python.exe -c "import sys; print(sys.version); print(sys.executable)"
+```
+
+Resolve only binary wheels for the three reviewed direct requirement ranges
+into the ignored wheelhouse:
+
+```powershell
+.tmp/emotion-state-002-phase-b/resolver-venv/Scripts/python.exe -m pip download --only-binary=:all: --dest .tmp/emotion-state-002-phase-b/dependencies/wheelhouse "numpy>=2.4,<2.5" "scipy>=1.16,<1.18" "scikit-learn>=1.8,<1.9"
+```
+
+Hash the complete wheelhouse in deterministic filename order:
+
+```powershell
+Get-ChildItem -LiteralPath .tmp/emotion-state-002-phase-b/dependencies/wheelhouse -File | Sort-Object Name | Get-FileHash -Algorithm SHA256
+```
+
+Inspect every wheel's `METADATA` and license files without executing package
+code. Reject source archives, prereleases, unexpected packages, incompatible
+licenses, filename/metadata identity mismatches, or an incomplete dependency
+graph.
+
+Install exactly the five locked wheels into the pip-free evaluation
+environment, entirely offline and without dependency resolution, then run
+`pip check` through the resolver tooling:
+
+```powershell
+.tmp/emotion-state-002-phase-b/resolver-venv/Scripts/python.exe -m pip --python .tmp/emotion-state-002-phase-b/venv/Scripts/python.exe install --no-index --no-deps .tmp/emotion-state-002-phase-b/dependencies/wheelhouse/joblib-1.5.3-py3-none-any.whl .tmp/emotion-state-002-phase-b/dependencies/wheelhouse/numpy-2.4.6-cp311-cp311-win_amd64.whl .tmp/emotion-state-002-phase-b/dependencies/wheelhouse/scikit_learn-1.8.0-cp311-cp311-win_amd64.whl .tmp/emotion-state-002-phase-b/dependencies/wheelhouse/scipy-1.17.1-cp311-cp311-win_amd64.whl .tmp/emotion-state-002-phase-b/dependencies/wheelhouse/threadpoolctl-3.6.0-py3-none-any.whl
+.tmp/emotion-state-002-phase-b/resolver-venv/Scripts/python.exe -m pip --python .tmp/emotion-state-002-phase-b/venv/Scripts/python.exe check
+```
 
 ### Explicit gate: public-material evaluation
 
