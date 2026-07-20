@@ -5,6 +5,7 @@ import inspect
 import json
 import math
 import os
+import re
 import shutil
 import socket
 import stat
@@ -314,6 +315,136 @@ class PhaseBContractTests(unittest.TestCase):
             "outbound",
         ):
             self.assertNotIn(forbidden, documented_commands)
+
+    def test_task_9_command_docs_parse_every_fenced_command_and_block_operations(
+        self,
+    ) -> None:
+        command_map = (ROOT / "docs/product/COMMANDS.md").read_text(
+            encoding="utf-8-sig"
+        )
+        heading = "## EMOTION-STATE-002 Phase B Offline Validation And Gates"
+        section = command_map.split(heading, 1)[1].split("\n## ", 1)[0]
+        fenced_commands: list[str] = []
+        inside_fence = False
+        for raw_line in section.splitlines():
+            line = raw_line.strip()
+            if line.startswith("```"):
+                inside_fence = not inside_fence
+                continue
+            if inside_fence and line:
+                fenced_commands.append(line)
+        self.assertFalse(inside_fence, "Task 9 command fence is unclosed")
+
+        validator = (
+            ".tmp/emotion-state-002-phase-b/venv/Scripts/python.exe "
+            "scripts/validate_emotion_state_002_phase_b.py"
+        )
+        for command in (
+            f"{validator} source",
+            f"{validator} contracts",
+            f"{validator} environment",
+            f"{validator} synthetic",
+            (
+                f"{validator} candidate --receipt "
+                ".tmp/emotion-state-002-phase-b/publication/receipt.json"
+            ),
+            f"{validator} checkpoint",
+        ):
+            self.assertEqual(fenced_commands.count(command), 1, command)
+
+        forbidden_command_forms = {
+            "provider": re.compile(
+                r"\b(?:provider|elevenlabs|openai|cartesia)\b",
+                re.IGNORECASE,
+            ),
+            "call": re.compile(
+                r"\b(?:outbound|pstn|call|dial)\b",
+                re.IGNORECASE,
+            ),
+            "simulation": re.compile(r"\bsimulat[a-z]*\b", re.IGNORECASE),
+            "private-data": re.compile(
+                r"(?:^|[\s/])data/private(?:/|$)|\bprivate[-_ ]data\b",
+                re.IGNORECASE,
+            ),
+            "product-runtime": re.compile(
+                r"(?:^|\s)(?:python(?:\.exe)?\s+)?"
+                r"(?:runtime|apps|sales_agent)/",
+                re.IGNORECASE,
+            ),
+            "network-download": re.compile(
+                r"\b(?:curl|wget|invoke-webrequest|invoke-restmethod)\b|"
+                r"\bpip\s+download\b|\bnpm\s+(?:install|ci)\b|"
+                r"\bgit\s+clone\b",
+                re.IGNORECASE,
+            ),
+        }
+        for command in fenced_commands:
+            normalized = command.replace("\\", "/")
+            for operation, pattern in forbidden_command_forms.items():
+                with self.subTest(operation=operation, command=command):
+                    self.assertIsNone(pattern.search(normalized))
+        unsafe_examples = {
+            "provider": "python arbitrary.py --provider elevenlabs",
+            "call": "python arbitrary.py outbound-call",
+            "simulation": "python arbitrary.py --run-simulation",
+            "private-data-posix": "python arbitrary.py data/private/input.json",
+            "private-data-windows": r"python.exe arbitrary.py data\private\input.json",
+            "product-runtime-posix": "python runtime/launch.py",
+            "product-runtime-windows": r"python.exe runtime\launch.py",
+            "network-download": "Invoke-WebRequest synthetic:network-target",
+            "download-subcommand": "python -m pip download synthetic-package",
+        }
+        operation_for_example = {
+            "private-data-posix": "private-data",
+            "private-data-windows": "private-data",
+            "product-runtime-posix": "product-runtime",
+            "product-runtime-windows": "product-runtime",
+            "download-subcommand": "network-download",
+        }
+        for label, example in unsafe_examples.items():
+            operation = operation_for_example.get(label, label)
+            with self.subTest(unsafe_example=label):
+                self.assertIsNotNone(
+                    forbidden_command_forms[operation].search(
+                        example.replace("\\", "/")
+                    )
+                )
+
+    def test_task_9_docs_hold_review_pending_status(self) -> None:
+        conservative_status = (
+            "Task 9 is implemented; its independent review gate must pass "
+            "before Task 10. Task 10/public-material evaluation, the final "
+            "lockbox, canonical staging/acceptance, push, and merge remain blocked."
+        )
+        for relative_path in (
+            "docs/thesis/ROADMAP.md",
+            (
+                "research/experiments/"
+                "EMOTION-STATE-002-phase-b-public-data-feasibility.md"
+            ),
+        ):
+            text = (ROOT / relative_path).read_text(encoding="utf-8-sig")
+            with self.subTest(path=relative_path):
+                self.assertIn(conservative_status, text)
+                self.assertNotIn("independently approved", text)
+
+    def test_task_9_docs_state_production_lockbox_is_unavailable(self) -> None:
+        boundary = (
+            "The production lockbox evaluator remains unavailable; "
+            "authorization alone does not wire it."
+        )
+        command_map = (ROOT / "docs/product/COMMANDS.md").read_text(
+            encoding="utf-8-sig"
+        )
+        heading = "### Explicit gate: final lockbox"
+        lockbox_section = command_map.split(heading, 1)[1].split("\n### ", 1)[0]
+        self.assertIn(boundary, lockbox_section)
+        protocol = (
+            ROOT
+            / "research/experiments/"
+            "EMOTION-STATE-002-phase-b-public-data-feasibility.md"
+        ).read_text(encoding="utf-8-sig")
+        self.assertIn(boundary, protocol)
 
     def test_task_9_production_publication_sections_fail_closed_without_state(
         self,
@@ -5597,6 +5728,56 @@ class RunnerStateTests(unittest.TestCase):
             for path in (self.paths.result_path, self.paths.report_path)
         )
 
+    def _test_oracle_report_bytes(self, result: dict[str, Any]) -> bytes:
+        result_bytes = self.runner.canonical_json_bytes(result)
+        result_sha256 = hashlib.sha256(result_bytes).hexdigest().upper()
+        canonical_payload = result_bytes.decode("utf-8").rstrip("\n")
+        return (
+            "# EMOTION-STATE-002 Phase B public-data feasibility\n\n"
+            f"- Result SHA-256: `{result_sha256}`\n"
+            f"- Decision: `{result['decision']}`\n"
+            "- Final lockbox open count: `1`\n"
+            "- Boundary: aggregate public/synthetic evidence only; no private data, "
+            "provider operations, network evaluation, source adaptation, runtime "
+            "influence, or customer-state output.\n\n"
+            "## Canonical aggregate\n\n"
+            "```json\n"
+            f"{canonical_payload}\n"
+            "```\n"
+        ).encode("utf-8")
+
+    def _write_mutually_consistent_candidate_assertions(
+        self,
+        paths: Any,
+        result: dict[str, Any],
+    ) -> tuple[bytes, bytes]:
+        result_bytes = self.runner.canonical_json_bytes(result)
+        report_bytes = self._test_oracle_report_bytes(result)
+        paths.result_path.write_bytes(result_bytes)
+        paths.report_path.write_bytes(report_bytes)
+        transaction = json.loads(paths.journal_path.read_text(encoding="utf-8"))
+        transaction["candidate_pair"] = {
+            "result_sha256": hashlib.sha256(result_bytes).hexdigest().upper(),
+            "report_sha256": hashlib.sha256(report_bytes).hexdigest().upper(),
+        }
+        self._write_json(paths.journal_path, transaction)
+        receipt = self.runner._receipt_from_transaction(transaction)
+        self._write_json(
+            paths.receipt_path(transaction["receipt_name"]),
+            receipt,
+        )
+        return result_bytes, report_bytes
+
+    @staticmethod
+    def _snapshot_publication_bytes(paths: Any) -> dict[str, bytes]:
+        roots = (Path(paths.state_root), Path(paths.canonical_root))
+        return {
+            str(path.relative_to(paths.project_root)): path.read_bytes()
+            for root in roots
+            for path in sorted(root.rglob("*"))
+            if path.is_file()
+        }
+
     def _lockbox_subprocess(
         self,
         mode: str,
@@ -6694,6 +6875,310 @@ runner.accept_receipt(paths, paths.receipt_path("accept.json"))
                     validate_candidate_readback(self.paths, receipt_path)
             self._write_json(receipt_path, receipt)
         validate_candidate_readback(self.paths, receipt_path)
+
+    def test_task_9_candidate_rebuilds_every_state_bound_digest_and_report(
+        self,
+    ) -> None:
+        from scripts import validate_emotion_state_002_phase_b as validator
+
+        self._advance_to_lockbox()
+        self.runner.stage_candidate(self.paths, "state-bound-review.json")
+        receipt_path = self.paths.receipt_path("state-bound-review.json")
+        result = json.loads(self.paths.result_path.read_text(encoding="utf-8"))
+        baseline = {
+            "result": self.paths.result_path.read_bytes(),
+            "report": self.paths.report_path.read_bytes(),
+            "journal": self.paths.journal_path.read_bytes(),
+            "receipt": receipt_path.read_bytes(),
+        }
+        digest_paths = tuple(
+            path
+            for path in PhaseBContractTests._scalar_paths(result)
+            if (
+                isinstance(PhaseBContractTests._value_at(result, path), str)
+                and re.fullmatch(
+                    r"[0-9A-F]{64}",
+                    PhaseBContractTests._value_at(result, path),
+                )
+                and any(
+                    isinstance(component, str)
+                    and component.endswith("_sha256")
+                    for component in path
+                )
+            )
+        )
+        required_state_bound_paths = {
+            ("split_manifest_sha256",),
+            ("non_lockbox_review_sha256",),
+            ("lockbox", "reservation_sha256"),
+            ("lockbox", "result_sha256"),
+            ("lockbox", "decision_evidence_sha256"),
+            ("lockbox", "decision_evidence_mint_sha256"),
+            ("lockbox", "ami", "source_commitment_sha256"),
+        }
+        self.assertTrue(required_state_bound_paths.issubset(set(digest_paths)))
+
+        for path in digest_paths:
+            mutated = deepcopy(result)
+            current = PhaseBContractTests._value_at(mutated, path)
+            alternative = "B" * 64 if current != "B" * 64 else "A" * 64
+            PhaseBContractTests._replace_at(mutated, path, alternative)
+            _result_bytes, report_bytes = (
+                self._write_mutually_consistent_candidate_assertions(
+                    self.paths,
+                    mutated,
+                )
+            )
+            with self.subTest(state_bound_digest=path):
+                with patch.object(
+                    self.runner,
+                    "render_report",
+                    return_value=report_bytes.decode("utf-8"),
+                ):
+                    with self.assertRaises((RuntimeError, ValueError)):
+                        validator.validate_candidate_readback(
+                            self.paths,
+                            receipt_path,
+                        )
+            self.paths.result_path.write_bytes(baseline["result"])
+            self.paths.report_path.write_bytes(baseline["report"])
+            self.paths.journal_path.write_bytes(baseline["journal"])
+            receipt_path.write_bytes(baseline["receipt"])
+
+        forged_report = baseline["report"].replace(
+            b"- Final lockbox open count: `1`\n",
+            b"- Final lockbox open count: `01`\n",
+        )
+        self.paths.report_path.write_bytes(forged_report)
+        transaction = json.loads(
+            self.paths.journal_path.read_text(encoding="utf-8")
+        )
+        transaction["candidate_pair"]["report_sha256"] = (
+            hashlib.sha256(forged_report).hexdigest().upper()
+        )
+        self._write_json(self.paths.journal_path, transaction)
+        self._write_json(
+            receipt_path,
+            self.runner._receipt_from_transaction(transaction),
+        )
+        with patch.object(
+            self.runner,
+            "render_report",
+            return_value=forged_report.decode("utf-8"),
+        ):
+            with self.assertRaisesRegex(ValueError, "report"):
+                validator.validate_candidate_readback(self.paths, receipt_path)
+
+    def test_task_9_candidate_authority_blocks_lifecycle_interleavings(
+        self,
+    ) -> None:
+        from scripts import validate_emotion_state_002_phase_b as validator
+
+        self._advance_to_lockbox()
+        self.runner.stage_candidate(self.paths, "interleaving-review.json")
+        original_validator = validator.validate_publication_pair_bytes
+        for operation in ("accept", "reject", "cleanup"):
+            with tempfile.TemporaryDirectory() as directory:
+                clone_paths = self._clone_paths(
+                    Path(directory).resolve() / "clone"
+                )
+                receipt_path = clone_paths.receipt_path(
+                    "interleaving-review.json"
+                )
+                observation: list[str] = []
+
+                def interleave(
+                    result_bytes: bytes,
+                    report_bytes: bytes,
+                ) -> dict[str, Any]:
+                    if operation == "accept":
+                        try:
+                            self.runner.accept_receipt(
+                                clone_paths,
+                                receipt_path,
+                            )
+                        except self.runner.RunnerError:
+                            observation.append("blocked")
+                        else:
+                            observation.append("accepted")
+                    elif operation == "reject":
+                        try:
+                            self.runner.reject_receipt(
+                                clone_paths,
+                                receipt_path,
+                            )
+                        except self.runner.RunnerError:
+                            observation.append("blocked")
+                        else:
+                            observation.append("rejected")
+                    else:
+                        clone_paths.journal_path.unlink()
+                        receipt_path.unlink()
+                        observation.append("cleaned")
+                    return original_validator(result_bytes, report_bytes)
+
+                before = self._snapshot_publication_bytes(clone_paths)
+                with patch.object(
+                    validator,
+                    "validate_publication_pair_bytes",
+                    side_effect=interleave,
+                ):
+                    if operation == "cleanup":
+                        with self.subTest(operation=operation):
+                            with self.assertRaises(
+                                (RuntimeError, ValueError)
+                            ):
+                                validator.validate_candidate_readback(
+                                    clone_paths,
+                                    receipt_path,
+                                )
+                    else:
+                        with self.subTest(operation=operation):
+                            validator.validate_candidate_readback(
+                                clone_paths,
+                                receipt_path,
+                            )
+                            self.assertEqual(observation, ["blocked"])
+                            self.assertEqual(
+                                self.runner.load_state(clone_paths)["phase"],
+                                "awaiting_acceptance",
+                            )
+                            self.assertTrue(clone_paths.journal_path.is_file())
+                            self.assertTrue(receipt_path.is_file())
+                            self.assertEqual(
+                                self._snapshot_publication_bytes(clone_paths),
+                                before,
+                            )
+
+        with tempfile.TemporaryDirectory() as directory:
+            empty_lock_paths = self._clone_paths(
+                Path(directory).resolve() / "empty-lock-clone"
+            )
+            lock_path = (
+                empty_lock_paths.recovery_root / self.runner.LOCK_NAME
+            )
+            lock_path.write_bytes(b"")
+            try:
+                validator.validate_candidate_readback(
+                    empty_lock_paths,
+                    empty_lock_paths.receipt_path("interleaving-review.json"),
+                )
+            except self.runner.RunnerError:
+                pass
+            self.assertEqual(
+                lock_path.read_bytes(),
+                b"",
+                "read-only candidate validation initialized the lock file",
+            )
+
+    def test_task_9_output_projection_and_nested_scanner_are_fail_closed(
+        self,
+    ) -> None:
+        from scripts import validate_emotion_state_002_phase_b as validator
+
+        self._advance_to_lockbox()
+        self.runner.stage_candidate(self.paths, "projection-review.json")
+        result_bytes, report_bytes = self._canonical_bytes()
+        assert result_bytes is not None
+        assert report_bytes is not None
+        result = json.loads(result_bytes.decode("utf-8"))
+        self.assertEqual(
+            result["raw_csv_sha256"],
+            {
+                "finished_response_votes": (
+                    self.input_ledger["raw_csv_sha256"][
+                        "finishedResponses.csv"
+                    ]
+                ),
+                "summary_voice_votes": (
+                    self.input_ledger["raw_csv_sha256"][
+                        "processedResults/summaryTable.csv"
+                    ]
+                ),
+            },
+        )
+        self.assertEqual(
+            set(self.input_ledger["raw_csv_sha256"]),
+            {
+                "finishedResponses.csv",
+                "processedResults/summaryTable.csv",
+            },
+        )
+        combined = result_bytes + b"\n" + report_bytes
+        self.assertNotIn(b".csv", combined.lower())
+        validator.validate_candidate_output_bytes(combined)
+
+        forbidden_payloads = {
+            "posix-path": {"value": "/etc/passwd"},
+            "posix-root-path": {"value": "/secret"},
+            "windows-path": {"value": r"C:\Users\private\artifact"},
+            "unc-path": {"value": r"\\server\share\artifact"},
+            "broad-filename": {"value": "private.parquet"},
+            "speaker-container": {"metadata": {"speaker": "S01"}},
+            "participant-container": {
+                "metadata": {"participantIdentifiers": ["P01"]}
+            },
+            "meeting-container": {"meeting": {"id": "M01"}},
+            "row-container": {"payload": {"items": [{"row_id": 1}]}},
+            "row-array": {"rows": [{"value": 1}]},
+            "transcript": {
+                "metadata": {"transcript_lines": ["private words"]}
+            },
+            "audio-encoding": {"metadata": {"audio_base64": "UklGRg=="}},
+            "audio-marker": {"value": "RIFF-WAVE"},
+            "model-state": {"metadata": {"model_state": "opaque"}},
+            "model-serialization": {
+                "metadata": {"serialized_estimator": "opaque"}
+            },
+            "probability": {"metadata": {"class_probability": 0.9}},
+            "probabilities": {
+                "metadata": {"class_probabilities": [0.1, 0.9]}
+            },
+            "credential": {"metadata": {"client_secret": "secret-value"}},
+            "credential-token": {
+                "metadata": {"refresh_token": "secret-value"}
+            },
+        }
+        for output_class, payload in forbidden_payloads.items():
+            with self.subTest(output_class=output_class):
+                with self.assertRaisesRegex(ValueError, "forbidden output"):
+                    validator.validate_candidate_output_bytes(
+                        self.runner.canonical_json_bytes(payload)
+                    )
+        for output_class, encoded_payload in {
+            "decoded-posix-path": b'{"value":"\\u002fetc\\u002fpasswd"}',
+            "decoded-filename": b'{"value":"private\\u002eparquet"}',
+        }.items():
+            with self.subTest(output_class=output_class):
+                with self.assertRaisesRegex(ValueError, "forbidden output"):
+                    validator.validate_candidate_output_bytes(encoded_payload)
+
+        for signal in (
+            "hesitation",
+            "frustration",
+            "confusion",
+            "interest",
+            "disengagement",
+        ):
+            with self.subTest(signal=signal):
+                with self.assertRaisesRegex(ValueError, "forbidden output"):
+                    validator.validate_candidate_output_bytes(
+                        self.runner.canonical_json_bytes({"value": signal})
+                    )
+
+        safe_near_misses = {
+            "speaker_balance_normalized_entropy": 0.5,
+            "unique_actor_count": 10,
+            "meeting_count": 5,
+            "row_commitment_sha256": "A" * 64,
+            "model_settings": {"regularization": "l2"},
+            "probabilistic_metric": "multiclass_brier",
+            "audio_feature_count": 17,
+            "interesting_result": False,
+        }
+        validator.validate_candidate_output_bytes(
+            self.runner.canonical_json_bytes(safe_near_misses)
+        )
 
     def test_task_9_synthetic_candidate_bytes_exclude_every_forbidden_class(
         self,

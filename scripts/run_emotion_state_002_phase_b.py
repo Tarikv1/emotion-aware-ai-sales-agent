@@ -27,6 +27,7 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from scripts.validate_emotion_state_002_phase_b import (
+    EXPECTED_PUBLIC_RAW_SOURCE_SHA256,
     EXPECTED_VALIDITY,
     EXPECTED_STATIC_FILE_SHA256,
     derive_phase_b_decision,
@@ -1789,7 +1790,11 @@ def _load_json_object(path: Path, label: str) -> dict[str, Any]:
     return payload
 
 
-def load_state(paths: RunnerPaths) -> dict[str, Any]:
+def load_state(
+    paths: RunnerPaths,
+    *,
+    recover: bool = True,
+) -> dict[str, Any]:
     _validate_layout(paths)
     state_path = _safe_path(
         paths.state_path,
@@ -1798,7 +1803,8 @@ def load_state(paths: RunnerPaths) -> dict[str, Any]:
         final_kind="file",
         require_final=False,
     )
-    _recover_windows_replacement(state_path)
+    if recover:
+        _recover_windows_replacement(state_path)
     state_path = _safe_path(
         state_path,
         allowed_root=paths.state_root,
@@ -2025,9 +2031,11 @@ def run_non_lockbox(paths: RunnerPaths) -> dict[str, Any]:
     )
 
 
-def _open_lock_handle(path: Path) -> BinaryIO:
+def _open_lock_handle(path: Path, *, create: bool = True) -> BinaryIO:
     _require_mutation_path_proof(path)
     if not os.path.lexists(path):
+        if not create:
+            raise RunnerError("required publication lock is missing")
         try:
             _write_new_fsynced(path, b"")
         except RunnerError:
@@ -2209,12 +2217,17 @@ def _validate_reservation(payload: Any) -> dict[str, Any]:
     )
 
 
-def _load_reservation(paths: RunnerPaths) -> dict[str, Any]:
-    _recover_output_replacement(
-        paths,
-        paths.lockbox_reservation_path,
-        allowed_root=paths.state_root,
-    )
+def _load_reservation(
+    paths: RunnerPaths,
+    *,
+    recover: bool = True,
+) -> dict[str, Any]:
+    if recover:
+        _recover_output_replacement(
+            paths,
+            paths.lockbox_reservation_path,
+            allowed_root=paths.state_root,
+        )
     reservation_path = _safe_path(
         paths.lockbox_reservation_path,
         allowed_root=paths.state_root,
@@ -2390,8 +2403,12 @@ def _run_lockbox_with_private_evidence_for_testing(
         )
 
 
-def build_aggregate_result(paths: RunnerPaths) -> dict[str, Any]:
-    state = load_state(paths)
+def build_aggregate_result(
+    paths: RunnerPaths,
+    *,
+    read_only: bool = False,
+) -> dict[str, Any]:
+    state = load_state(paths, recover=not read_only)
     if state["phase"] not in {
         "lockbox_complete",
         "awaiting_acceptance",
@@ -2441,7 +2458,7 @@ def build_aggregate_result(paths: RunnerPaths) -> dict[str, Any]:
         )
     except (TypeError, ValueError) as error:
         raise RunnerError(f"aggregate input validation failed: {error}") from error
-    reservation = _load_reservation(paths)
+    reservation = _load_reservation(paths, recover=not read_only)
     if (
         reservation["status"] != "completed"
         or reservation["lockbox_result_sha256"]
@@ -2467,7 +2484,14 @@ def build_aggregate_result(paths: RunnerPaths) -> dict[str, Any]:
         "checkpoint_id": config["checkpoint_id"],
         "phase_a": ledger["phase_a"],
         "dataset_evidence": ledger["dataset_evidence"],
-        "raw_csv_sha256": ledger["raw_csv_sha256"],
+        "raw_csv_sha256": {
+            "finished_response_votes": ledger["raw_csv_sha256"][
+                "finishedResponses.csv"
+            ],
+            "summary_voice_votes": ledger["raw_csv_sha256"][
+                "processedResults/summaryTable.csv"
+            ],
+        },
         "configuration_sha256": state["configuration_sha256"],
         "environment_lock_sha256": state["environment_lock_sha256"],
         "feature_schema_sha256": _sha256_file(feature_path),
@@ -2496,6 +2520,8 @@ def build_aggregate_result(paths: RunnerPaths) -> dict[str, Any]:
         "decision": lockbox["decision"],
         "closed_boundaries": config["boundaries"],
     }
+    if result["raw_csv_sha256"] != EXPECTED_PUBLIC_RAW_SOURCE_SHA256:
+        raise RunnerError("published raw-source projection is invalid")
     del feature
     _revalidate_bound_preflight(paths, state)
     _validated_packet(paths, state, require_bound=True)
@@ -2549,10 +2575,18 @@ def _transaction_paths(paths: RunnerPaths, transaction_id: str) -> dict[str, Pat
     }
 
 
-def _acquire_os_lock(handle: BinaryIO) -> None:
+def _acquire_os_lock(
+    handle: BinaryIO,
+    *,
+    initialize: bool = True,
+) -> None:
     if os.name == "nt":
         handle.seek(0, os.SEEK_END)
         if handle.tell() == 0:
+            if not initialize:
+                raise RunnerError(
+                    "read-only publication lock is not initialized"
+                )
             handle.write(b"\0")
             handle.flush()
             os.fsync(handle.fileno())
@@ -2571,45 +2605,59 @@ def _release_os_lock(handle: BinaryIO) -> None:
 
 
 @contextmanager
-def publication_lock(paths: RunnerPaths) -> Iterator[None]:
+def publication_lock(
+    paths: RunnerPaths,
+    *,
+    read_only: bool = False,
+) -> Iterator[None]:
     _validate_layout(paths)
-    _ensure_directory_durable(Path(paths.recovery_root))
-    _safe_path(
-        paths.recovery_root,
-        allowed_root=paths.state_root,
-        project_root=paths.project_root,
-        final_kind="directory",
-        require_final=True,
-    )
+    if read_only:
+        _safe_path(
+            paths.recovery_root,
+            allowed_root=paths.state_root,
+            project_root=paths.project_root,
+            final_kind="directory",
+            require_final=True,
+        )
+    else:
+        _ensure_directory_durable(Path(paths.recovery_root))
+        _safe_path(
+            paths.recovery_root,
+            allowed_root=paths.state_root,
+            project_root=paths.project_root,
+            final_kind="directory",
+            require_final=True,
+        )
     lock_path = paths.recovery_root / LOCK_NAME
     lock_path = _safe_path(
         lock_path,
         allowed_root=paths.recovery_root,
         project_root=paths.project_root,
         final_kind="file",
-        require_final=os.path.lexists(lock_path),
+        require_final=read_only or os.path.lexists(lock_path),
     )
-    handle = _open_lock_handle(lock_path)
+    handle = _open_lock_handle(lock_path, create=not read_only)
     acquired = False
     try:
         try:
-            _acquire_os_lock(handle)
+            _acquire_os_lock(handle, initialize=not read_only)
         except OSError as error:
             raise RunnerError(
                 "publication lock is already held or unavailable"
             ) from error
         acquired = True
-        _recover_output_replacement(
-            paths,
-            paths.journal_path,
-            allowed_root=paths.recovery_root,
-        )
-        for canonical_path in (paths.result_path, paths.report_path):
+        if not read_only:
             _recover_output_replacement(
                 paths,
-                canonical_path,
-                allowed_root=paths.canonical_root,
+                paths.journal_path,
+                allowed_root=paths.recovery_root,
             )
+            for canonical_path in (paths.result_path, paths.report_path):
+                _recover_output_replacement(
+                    paths,
+                    canonical_path,
+                    allowed_root=paths.canonical_root,
+                )
         yield
     finally:
         if acquired:
@@ -2650,12 +2698,17 @@ def _validate_candidate_cell(value: Any) -> dict[str, Any]:
     return dict(value)
 
 
-def _load_journal(paths: RunnerPaths) -> dict[str, Any]:
-    _recover_output_replacement(
-        paths,
-        paths.journal_path,
-        allowed_root=paths.recovery_root,
-    )
+def _load_journal(
+    paths: RunnerPaths,
+    *,
+    recover: bool = True,
+) -> dict[str, Any]:
+    if recover:
+        _recover_output_replacement(
+            paths,
+            paths.journal_path,
+            allowed_root=paths.recovery_root,
+        )
     journal_path = _safe_path(
         paths.journal_path,
         allowed_root=paths.recovery_root,

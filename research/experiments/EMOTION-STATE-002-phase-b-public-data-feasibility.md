@@ -3,7 +3,10 @@
 ## Status
 
 offline implementation complete through Task 9; reviewed dependency environment
-complete; public-material/model execution not started
+complete; independent Task 9 gate pending; public-material/model execution not
+started
+
+Task 9 is implemented; its independent review gate must pass before Task 10. Task 10/public-material evaluation, the final lockbox, canonical staging/acceptance, push, and merge remain blocked.
 
 ## Question
 
@@ -44,9 +47,10 @@ Phase B may not establish:
 
 ## Boundary Gates
 
-1. **Offline implementation gate:** Tasks 1-9 are implemented and independently
-   approved. Task 9 runs only synthetic fixtures, tracked metadata, and the
-   reviewed dependency-environment identity; it reads no public material.
+1. **Offline implementation gate:** Task 9 is implemented, but its independent
+   review gate remains pending and must pass before Task 10. Task 9 runs only
+   synthetic fixtures, tracked metadata, and the reviewed
+   dependency-environment identity; it reads no public material.
 2. **Dependency gate:** Task 3 was separately authorized and completed. Any
    dependency recreation or change may access the package index and download
    wheels only through the ignored
@@ -56,11 +60,15 @@ Phase B may not establish:
    runtime identity equals the reviewed lock without exempting bootstrap
    `pip`/`setuptools`. A rerun requires new explicit network/download/install
    authority and a reviewed artifact lock.
-3. **Public-material gate:** Task 10 may read the two public CREMA CSVs, CREMA
-   WAVs, and selected AMI annotation files from their fixed ignored roots. It
-   requires explicit public-material evaluation authority.
-4. **Final-lockbox gate:** Task 11 requires an explicit one-use lockbox
-   authorization after independent review of the frozen non-lockbox packet.
+3. **Public-material gate:** Task 10 remains blocked. Only after the Task 9
+   independent gate passes may a new explicit public-material authorization
+   permit reading the two public CREMA CSVs, CREMA WAVs, and selected AMI
+   annotation files from their fixed ignored roots.
+4. **Final-lockbox gate:** Task 11 remains blocked and requires an explicit
+   one-use lockbox authorization after independent review of the frozen
+   non-lockbox packet.
+
+The production lockbox evaluator remains unavailable; authorization alone does not wire it.
 5. **Publication gate:** Task 12 may stage, independently validate, explicitly
    accept, commit, and optionally push the exact canonical pair only under
    separately stated acceptance/push authority.
@@ -81,7 +89,8 @@ checkpoint
 ```
 
 `candidate` requires an injected-test or production `awaiting_acceptance`
-transaction whose journal, receipt, state, result, report, and hashes agree.
+transaction held under the shared publication authority while the journal,
+receipt, state, result, and report are independently rebuilt and compared.
 `checkpoint` requires accepted state, no live journal or receipt, and exactly
 the state-bound canonical result/report pair. The production defaults currently
 have neither lifecycle state and therefore fail closed.
@@ -90,7 +99,7 @@ Synthetic mutation coverage binds every result mapping shape and scalar leaf,
 the renderer-owned report lines, receipt hashes, the one-use lockbox count, the
 derived decision, the minimum contributor floor, and every closed-boundary
 flag. Candidate bytes are rejected if they expose absolute paths, timestamps,
-unapproved filenames or clip stems, actor/speaker/participant identifiers, row
+filenames or clip stems, actor/speaker/participant identifiers, row
 arrays, transcripts, audio payload markers, model serialization,
 probabilities, credentials, or hesitation, frustration, confusion, interest,
 or disengagement.

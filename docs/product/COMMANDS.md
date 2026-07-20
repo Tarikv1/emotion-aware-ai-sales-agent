@@ -3936,20 +3936,15 @@ described below exist.
 ### Explicit gate: dependency acquisition
 
 Dependency acquisition was separately authorized and completed for the current
-reviewed lock. Recreating or changing it is a new network/download/install gate;
-Task 9 does not authorize these commands:
-
-```powershell
-py -3.11 -m venv .tmp/emotion-state-002-phase-b/resolver-venv
-py -3.11 -m venv --without-pip .tmp/emotion-state-002-phase-b/venv
-.tmp/emotion-state-002-phase-b/resolver-venv/Scripts/python.exe -m pip download --only-binary=:all: --dest .tmp/emotion-state-002-phase-b/dependencies/wheelhouse "numpy>=2.4,<2.5" "scipy>=1.16,<1.18" "scikit-learn>=1.8,<1.9"
-.tmp/emotion-state-002-phase-b/resolver-venv/Scripts/python.exe -m pip --python .tmp/emotion-state-002-phase-b/venv/Scripts/python.exe install --no-index --no-deps .tmp/emotion-state-002-phase-b/dependencies/wheelhouse/joblib-1.5.3-py3-none-any.whl .tmp/emotion-state-002-phase-b/dependencies/wheelhouse/numpy-2.4.6-cp311-cp311-win_amd64.whl .tmp/emotion-state-002-phase-b/dependencies/wheelhouse/scikit_learn-1.8.0-cp311-cp311-win_amd64.whl .tmp/emotion-state-002-phase-b/dependencies/wheelhouse/scipy-1.17.1-cp311-cp311-win_amd64.whl .tmp/emotion-state-002-phase-b/dependencies/wheelhouse/threadpoolctl-3.6.0-py3-none-any.whl
-```
+reviewed lock. Recreating or changing it is a new network/download/install
+gate. Task 9 documents no acquisition or installation command.
 
 ### Explicit gate: public-material evaluation
 
-These commands require separate authority to read the fixed public CREMA-D and
-AMI roots. They are not authorized by offline validation or dependency setup:
+This gate remains blocked until the Task 9 independent review passes. After
+that review, these commands still require separate authority to read the fixed
+public CREMA-D and AMI roots. They are not authorized by offline validation or
+dependency setup:
 
 ```powershell
 .tmp/emotion-state-002-phase-b/venv/Scripts/python.exe scripts/run_emotion_state_002_phase_b.py preflight
@@ -3958,7 +3953,8 @@ AMI roots. They are not authorized by offline validation or dependency setup:
 
 ### Explicit gate: final lockbox
 
-This is a separate one-use authorization after independent non-lockbox review:
+This is a separate one-use authorization after independent non-lockbox review.
+The production lockbox evaluator remains unavailable; authorization alone does not wire it.
 
 ```powershell
 .tmp/emotion-state-002-phase-b/venv/Scripts/python.exe scripts/run_emotion_state_002_phase_b.py lockbox

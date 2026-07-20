@@ -318,6 +318,12 @@ EXPECTED_RAW_CSV_SHA256 = {
     "finishedResponses.csv": "939D02D2DDDDDF575BBCCFFB80F14F1D110FDA88F092F2A68201994EB3BCB45B",
     "processedResults/summaryTable.csv": "1EA0E13D98853D920C7C51E69A72BA5BA42018F85A9B89B8B2CC1B53C1AA56A9",
 }
+EXPECTED_PUBLIC_RAW_SOURCE_SHA256 = {
+    "finished_response_votes": EXPECTED_RAW_CSV_SHA256["finishedResponses.csv"],
+    "summary_voice_votes": EXPECTED_RAW_CSV_SHA256[
+        "processedResults/summaryTable.csv"
+    ],
+}
 EXPECTED_METRIC_DEFINITIONS = {
     "primary": "paired_actor_cluster_macro_f1_lift",
     "secondary": [
@@ -2481,7 +2487,11 @@ def validate_phase_b_result(payload: Any) -> dict[str, Any]:
         raise ValueError("Phase B aggregate checkpoint id is invalid")
     _require_exact(result["phase_a"], EXPECTED_PHASE_A_BINDING, "Phase A binding")
     _require_exact(result["dataset_evidence"], EXPECTED_DATASET_EVIDENCE, "dataset evidence")
-    _require_exact(result["raw_csv_sha256"], EXPECTED_RAW_CSV_SHA256, "raw CSV hashes")
+    _require_exact(
+        result["raw_csv_sha256"],
+        EXPECTED_PUBLIC_RAW_SOURCE_SHA256,
+        "published raw-source hashes",
+    )
     for field, digest in EXPECTED_STATIC_FILE_SHA256.items():
         if result[field] != digest:
             raise ValueError(f"{field} does not match the frozen tracked identity")
@@ -2724,6 +2734,213 @@ def validate_synthetic_section() -> None:
         raise ValueError("synthetic runner result is not deterministic")
 
 
+def _normalized_output_key(value: str) -> str:
+    normalized = unicodedata.normalize("NFKC", value)
+    normalized = re.sub(r"(?<=[a-z0-9])(?=[A-Z])", "_", normalized)
+    normalized = re.sub(r"[^A-Za-z0-9]+", "_", normalized)
+    return normalized.strip("_").casefold()
+
+
+def _scan_output_structure(value: Any) -> None:
+    if isinstance(value, Mapping):
+        for raw_key, child in value.items():
+            if not isinstance(raw_key, str):
+                raise ValueError("forbidden output: non-text structured key")
+            key = _normalized_output_key(raw_key)
+            tokens = tuple(part for part in key.split("_") if part)
+            token_set = set(tokens)
+            identity_subjects = {
+                "actor",
+                "actors",
+                "speaker",
+                "speakers",
+                "participant",
+                "participants",
+                "meeting",
+                "meetings",
+                "row",
+                "rows",
+            }
+            identity_markers = {
+                "id",
+                "ids",
+                "identifier",
+                "identifiers",
+                "identity",
+                "identities",
+            }
+            if (
+                key in identity_subjects
+                or (
+                    token_set.intersection(identity_subjects)
+                    and token_set.intersection(identity_markers)
+                )
+            ):
+                raise ValueError("forbidden output: identity container")
+            if (
+                key in {"row", "rows", "record", "records", "row_records", "case_rows"}
+                and isinstance(child, Sequence)
+                and not isinstance(child, (str, bytes, bytearray))
+            ):
+                raise ValueError("forbidden output: row array")
+            if (
+                key == "transcript"
+                or key.startswith("transcript_")
+                or key
+                in {
+                    "utterance_text",
+                    "raw_text",
+                    "spoken_text",
+                    "speech_text",
+                    "dialogue_text",
+                }
+            ):
+                raise ValueError("forbidden output: transcript content")
+            audio_markers = {
+                "audio",
+                "audio_bytes",
+                "audio_path",
+                "audio_base64",
+                "audio_data",
+                "audio_payload",
+                "encoded_audio",
+                "waveform",
+                "sample",
+                "samples",
+                "pcm",
+                "pcm_samples",
+            }
+            if key in audio_markers or (
+                key.startswith("audio_")
+                and token_set.intersection(
+                    {
+                        "base64",
+                        "blob",
+                        "bytes",
+                        "data",
+                        "encoding",
+                        "path",
+                        "payload",
+                        "sample",
+                        "samples",
+                        "waveform",
+                    }
+                )
+            ):
+                raise ValueError("forbidden output: audio encoding or marker")
+            if not key.endswith("_sha256") and (
+                key
+                in {
+                    "model_state",
+                    "fitted_model",
+                    "serialized_model",
+                    "serialized_estimator",
+                    "model_bytes",
+                    "model_blob",
+                    "model_pickle",
+                    "coefficients",
+                    "coefficient",
+                    "intercepts",
+                    "intercept",
+                }
+                or (
+                    token_set.intersection({"model", "estimator"})
+                    and token_set.intersection(
+                        {"state", "serialized", "bytes", "blob", "pickle", "joblib"}
+                    )
+                )
+            ):
+                raise ValueError("forbidden output: model serialization")
+            probability_metadata_keys = {
+                "probability_evidence",
+                "probability_evidence_mint_sha256",
+                "probability_commitment_sha256",
+            }
+            if key in {"predict_proba", "probability_rows"} or (
+                token_set.intersection({"probability", "probabilities"})
+                and key not in probability_metadata_keys
+                and not key.endswith("_sha256")
+            ):
+                raise ValueError("forbidden output: probability value")
+            credential_keys = {
+                "api_key",
+                "access_key",
+                "access_token",
+                "auth_token",
+                "authorization",
+                "bearer",
+                "client_secret",
+                "credential",
+                "credentials",
+                "password",
+                "passwd",
+                "private_key",
+                "refresh_token",
+                "secret",
+                "session_token",
+            }
+            if key in credential_keys or any(
+                key.endswith(suffix)
+                for suffix in (
+                    "_api_key",
+                    "_access_key",
+                    "_access_token",
+                    "_auth_token",
+                    "_client_secret",
+                    "_credential",
+                    "_credentials",
+                    "_password",
+                    "_private_key",
+                    "_refresh_token",
+                    "_secret",
+                    "_session_token",
+                )
+            ):
+                raise ValueError("forbidden output: credential")
+            _scan_output_structure(child)
+    elif isinstance(value, str):
+        validate_candidate_output_bytes(value.encode("utf-8"))
+    elif isinstance(value, Sequence) and not isinstance(
+        value,
+        (bytes, bytearray),
+    ):
+        for item in value:
+            _scan_output_structure(item)
+
+
+def _decoded_output_payloads(text: str) -> list[Any]:
+    decoder = json.JSONDecoder(
+        object_pairs_hook=_pairs,
+        parse_constant=_constant,
+    )
+    payloads: list[Any] = []
+    start = len(text) - len(text.lstrip())
+    try:
+        payload, _end = decoder.raw_decode(text, start)
+    except (ValueError, json.JSONDecodeError):
+        pass
+    else:
+        payloads.append(payload)
+    for match in re.finditer(
+        r"```json[ \t]*\r?\n(?P<payload>.*?)\r?\n```",
+        text,
+        re.IGNORECASE | re.DOTALL,
+    ):
+        try:
+            payloads.append(
+                json.loads(
+                    match.group("payload"),
+                    object_pairs_hook=_pairs,
+                    parse_constant=_constant,
+                )
+            )
+        except (ValueError, json.JSONDecodeError) as error:
+            raise ValueError(
+                "forbidden output: invalid structured report content"
+            ) from error
+    return payloads
+
+
 def validate_candidate_output_bytes(candidate_bytes: bytes) -> None:
     if not isinstance(candidate_bytes, bytes):
         raise TypeError("candidate output must be bytes")
@@ -2733,20 +2950,19 @@ def validate_candidate_output_bytes(candidate_bytes: bytes) -> None:
         raise ValueError("forbidden output: candidate is not UTF-8") from error
     if "\x00" in text:
         raise ValueError("forbidden output: NUL byte")
-    lowered = text.casefold()
-    filename_scan = lowered.replace("finishedresponses.csv", "").replace(
-        "processedresults/summarytable.csv",
-        "",
-    )
+    for payload in _decoded_output_payloads(text):
+        _scan_output_structure(payload)
+    lowered = unicodedata.normalize("NFKC", text).casefold()
     patterns = (
         (
             "absolute path",
             re.compile(
-                r"(?:[a-z]:[\\/]|\\\\[^\\\s]+[\\/]|"
-                r"(?<![a-z0-9])/(?:users|home|tmp|var|private|mnt)/)",
+                r"(?<![a-z0-9_.-])[a-z]:[\\/]+[^\s\"'`]+|"
+                r"\\\\+[a-z0-9._$-]+\\+[a-z0-9._$-]+"
+                r"(?:\\+[^\s\"'`]+)*|"
+                r"(?<![a-z0-9_.-])/(?:[a-z0-9._-]+/)*[a-z0-9._-]+",
                 re.IGNORECASE,
             ),
-            lowered,
         ),
         (
             "timestamp",
@@ -2755,30 +2971,26 @@ def validate_candidate_output_bytes(candidate_bytes: bytes) -> None:
                 r"(?:\.\d+)?(?:z|[+-]\d{2}:\d{2})\b",
                 re.IGNORECASE,
             ),
-            lowered,
         ),
         (
             "filename",
             re.compile(
-                r"\b[a-z0-9][a-z0-9_.-]*\."
-                r"(?:csv|json|xml|txt|wav|mp3|flac|ogg|m4a|npy|npz|"
-                r"pkl|pickle|joblib)\b",
+                r"(?<![a-z0-9_.-])[a-z_][a-z0-9_.-]{0,127}"
+                r"\.[a-z][a-z0-9]{0,15}(?![a-z0-9_.-])",
                 re.IGNORECASE,
             ),
-            filename_scan,
         ),
         (
             "clip stem",
             re.compile(r"\b\d{4}_[a-z]{3}_[a-z]{3}_[a-z]{2}\b", re.IGNORECASE),
-            lowered,
         ),
         (
-            "actor, speaker, or participant identifier",
+            "identity container",
             re.compile(
-                r'"(?:actor|speaker|participant|meeting)_ids?"\s*:',
+                r'"(?:actor|speaker|participant|meeting|row)'
+                r'(?:[_-]?(?:id|ids|identifier|identifiers))?"\s*:',
                 re.IGNORECASE,
             ),
-            lowered,
         ),
         (
             "row array",
@@ -2786,49 +2998,49 @@ def validate_candidate_output_bytes(candidate_bytes: bytes) -> None:
                 r'"(?:rows?|row_records?|case_rows?|records?)"\s*:\s*\[',
                 re.IGNORECASE,
             ),
-            lowered,
         ),
         (
-            "transcript",
+            "transcript content",
             re.compile(
-                r'"(?:transcript|transcript_text|utterance_text|raw_text)"\s*:',
+                r'"(?:transcript(?:_[a-z0-9]+)*|utterance_text|raw_text|'
+                r'spoken_text|speech_text|dialogue_text)"\s*:',
                 re.IGNORECASE,
             ),
-            lowered,
         ),
         (
-            "audio marker",
+            "audio encoding or marker",
             re.compile(
-                r'"(?:audio|audio_bytes|audio_path|waveform|samples?)"\s*:|'
-                r"\briff(?:-wave)?\b",
+                r'"(?:audio(?:_(?:base64|blob|bytes|data|encoding|path|payload|'
+                r'samples?|waveform))?|encoded_audio|waveform|pcm(?:_samples?)?|'
+                r'samples?)"\s*:|\b(?:riff(?:-wave)?|uklgrg==|id3|flac|oggs)\b',
                 re.IGNORECASE,
             ),
-            lowered,
         ),
         (
             "model serialization",
             re.compile(
-                r'"(?:fitted_model|serialized_model|model_bytes|coefficients?)"\s*:',
+                r'"(?:model_(?:state|bytes|blob|pickle)|fitted_model|'
+                r'serialized_(?:model|estimator)|coefficients?|intercepts?)"\s*:',
                 re.IGNORECASE,
             ),
-            lowered,
         ),
         (
-            "probability rows",
+            "probability value",
             re.compile(
-                r'"(?:probabilities|probability_rows|predict_proba)"\s*:',
+                r'"(?:probability|probabilities|probability_rows|predict_proba|'
+                r'(?:class|label|row)_(?:probability|probabilities))"\s*:',
                 re.IGNORECASE,
             ),
-            lowered,
         ),
         (
             "credential",
             re.compile(
-                r'"(?:api[_-]?key|access[_-]?token|auth(?:orization)?|'
-                r'password|passwd|secret|bearer|credential)"\s*:',
+                r'"(?:[a-z0-9]+_)*(?:api_key|access_key|access_token|auth_token|'
+                r'authorization|bearer|client_secret|credentials?|password|'
+                r'passwd|private_key|refresh_token|secret|session_token)"\s*:|'
+                r"\bbearer\s+[a-z0-9._-]+",
                 re.IGNORECASE,
             ),
-            lowered,
         ),
         (
             "operational signal",
@@ -2836,12 +3048,53 @@ def validate_candidate_output_bytes(candidate_bytes: bytes) -> None:
                 r"\b(?:hesitation|frustration|confusion|interest|disengagement)\b",
                 re.IGNORECASE,
             ),
-            lowered,
         ),
     )
-    for label, pattern, candidate in patterns:
-        if pattern.search(candidate):
+    for label, pattern in patterns:
+        if pattern.search(lowered):
             raise ValueError(f"forbidden output: {label}")
+
+
+def canonical_publication_json_bytes(payload: Any) -> bytes:
+    try:
+        return (
+            json.dumps(
+                payload,
+                indent=2,
+                sort_keys=True,
+                ensure_ascii=False,
+                allow_nan=False,
+            )
+            + "\n"
+        ).encode("utf-8")
+    except (TypeError, ValueError) as error:
+        raise ValueError("publication payload is not canonical JSON") from error
+
+
+def render_phase_b_report(
+    result: Mapping[str, Any],
+    result_sha256: str,
+) -> str:
+    _uppercase_sha256(result_sha256, "result_sha256")
+    validated = validate_phase_b_result(dict(result))
+    canonical_bytes = canonical_publication_json_bytes(validated)
+    canonical_sha256 = hashlib.sha256(canonical_bytes).hexdigest().upper()
+    if canonical_sha256 != result_sha256:
+        raise ValueError("report result digest does not match canonical JSON")
+    canonical_payload = canonical_bytes.decode("utf-8").rstrip("\n")
+    return (
+        "# EMOTION-STATE-002 Phase B public-data feasibility\n\n"
+        f"- Result SHA-256: `{result_sha256}`\n"
+        f"- Decision: `{validated['decision']}`\n"
+        "- Final lockbox open count: `1`\n"
+        "- Boundary: aggregate public/synthetic evidence only; no private data, "
+        "provider operations, network evaluation, source adaptation, runtime "
+        "influence, or customer-state output.\n\n"
+        "## Canonical aggregate\n\n"
+        "```json\n"
+        f"{canonical_payload}\n"
+        "```\n"
+    )
 
 
 def validate_publication_pair_bytes(
@@ -2861,13 +3114,11 @@ def validate_publication_pair_bytes(
         raise ValueError("publication pair is not valid UTF-8 JSON/text") from error
     _reject_non_finite(payload)
     validated = validate_phase_b_result(payload)
-    from scripts import run_emotion_state_002_phase_b as runner
-
-    canonical_result = runner.canonical_json_bytes(validated)
+    canonical_result = canonical_publication_json_bytes(validated)
     if canonical_result != result_bytes:
         raise ValueError("publication result bytes are not deterministic")
     result_sha256 = hashlib.sha256(result_bytes).hexdigest().upper()
-    expected_report = runner.render_report(
+    expected_report = render_phase_b_report(
         validated,
         result_sha256,
     ).encode("utf-8")
@@ -2880,35 +3131,81 @@ def validate_publication_pair_bytes(
 def validate_candidate_readback(paths: Any, receipt_path: Path) -> dict[str, Any]:
     from scripts import run_emotion_state_002_phase_b as runner
 
-    state = runner.load_state(paths)
-    if state["phase"] != "awaiting_acceptance":
-        raise ValueError("candidate validation requires live awaiting_acceptance state")
-    transaction = runner._load_journal(paths)
-    if (
-        transaction["status"] != "awaiting_acceptance"
-        or transaction["transaction_id"] != state["candidate_transaction_id"]
-        or transaction["configuration_sha256"] != state["configuration_sha256"]
-    ):
-        raise ValueError("candidate transaction does not match awaiting state")
-    transaction, receipt = runner._load_matching_transaction_and_receipt(
-        paths,
-        Path(receipt_path),
-        transaction=transaction,
-    )
-    runner_validated = runner._validate_candidate_pair(paths, transaction)
-    result_bytes = runner._read_file_nofollow(paths.result_path)
-    report_bytes = runner._read_file_nofollow(paths.report_path)
-    validated = validate_publication_pair_bytes(result_bytes, report_bytes)
-    if validated != runner_validated:
-        raise ValueError("candidate validators disagree")
-    if (
-        hashlib.sha256(result_bytes).hexdigest().upper()
-        != receipt["result_sha256"]
-        or hashlib.sha256(report_bytes).hexdigest().upper()
-        != receipt["report_sha256"]
-    ):
-        raise ValueError("candidate receipt hashes do not match publication pair")
-    return validated
+    with runner.publication_lock(paths, read_only=True):
+        state = runner.load_state(paths, recover=False)
+        if state["phase"] != "awaiting_acceptance":
+            raise ValueError(
+                "candidate validation requires live awaiting_acceptance state"
+            )
+        transaction = runner._load_journal(paths, recover=False)
+        if (
+            transaction["status"] != "awaiting_acceptance"
+            or transaction["transaction_id"]
+            != state["candidate_transaction_id"]
+            or transaction["configuration_sha256"]
+            != state["configuration_sha256"]
+        ):
+            raise ValueError("candidate transaction does not match awaiting state")
+        transaction, receipt = runner._load_matching_transaction_and_receipt(
+            paths,
+            Path(receipt_path),
+            transaction=transaction,
+        )
+        runner._validate_canonical_pair_metadata(paths, require_entries=True)
+        result_bytes = runner._read_file_nofollow(paths.result_path)
+        report_bytes = runner._read_file_nofollow(paths.report_path)
+        result_sha256 = hashlib.sha256(result_bytes).hexdigest().upper()
+        report_sha256 = hashlib.sha256(report_bytes).hexdigest().upper()
+        if (
+            result_sha256 != transaction["candidate_pair"]["result_sha256"]
+            or report_sha256 != transaction["candidate_pair"]["report_sha256"]
+            or result_sha256 != receipt["result_sha256"]
+            or report_sha256 != receipt["report_sha256"]
+        ):
+            raise ValueError(
+                "candidate journal or receipt hashes do not match publication pair"
+            )
+        validated = validate_publication_pair_bytes(result_bytes, report_bytes)
+        expected = runner.build_aggregate_result(paths, read_only=True)
+        expected_result_bytes = canonical_publication_json_bytes(expected)
+        if expected_result_bytes != result_bytes:
+            raise ValueError(
+                "candidate is not the exact state-bound aggregate result"
+            )
+        expected_report_bytes = render_phase_b_report(
+            expected,
+            hashlib.sha256(expected_result_bytes).hexdigest().upper(),
+        ).encode("utf-8")
+        if expected_report_bytes != report_bytes:
+            raise ValueError(
+                "candidate report does not match independent state-bound rendering"
+            )
+
+        final_state = runner.load_state(paths, recover=False)
+        final_transaction = runner._load_journal(paths, recover=False)
+        final_transaction, final_receipt = (
+            runner._load_matching_transaction_and_receipt(
+                paths,
+                Path(receipt_path),
+                transaction=final_transaction,
+            )
+        )
+        runner._validate_canonical_pair_metadata(paths, require_entries=True)
+        final_result_bytes = runner._read_file_nofollow(paths.result_path)
+        final_report_bytes = runner._read_file_nofollow(paths.report_path)
+        if (
+            final_state != state
+            or final_transaction != transaction
+            or final_receipt != receipt
+            or final_state["phase"] != "awaiting_acceptance"
+            or final_transaction["status"] != "awaiting_acceptance"
+            or final_result_bytes != result_bytes
+            or final_report_bytes != report_bytes
+        ):
+            raise ValueError(
+                "candidate lifecycle changed during read-only validation"
+            )
+        return validated
 
 
 def validate_checkpoint_readback(paths: Any) -> dict[str, Any]:
