@@ -245,6 +245,19 @@ MODEL_KEYS = ("class_prior", "sentence_id", "acoustic")
 COVERAGE_TARGETS = (1.0, 0.8, 0.6)
 COVERAGE_TARGET_KEYS = tuple(str(value) for value in COVERAGE_TARGETS)
 MINIMUM_UNIQUE_ACTORS = 10
+AMI_PARTITION_CELLS = ("scenario_only", "full_corpus", "full_only")
+AMI_BUCKET_KEYS = (
+    "turn_duration_median_ms",
+    "turn_duration_p90_ms",
+    "inter_turn_gap_median_ms",
+    "inter_turn_gap_p90_ms",
+)
+AMI_SCALAR_KEYS = (
+    "overlap_ratio",
+    "floor_changes_per_minute",
+    "normalized_speaker_entropy",
+    "backchannels_per_100_turns",
+)
 BOOTSTRAP_RESAMPLES = 2000
 VALIDITY_KEYS = (
     "material_valid",
@@ -1449,6 +1462,147 @@ def validate_crema_source_binding(
         raise ValueError("CREMA-D source binding contract is incomplete") from error
     if not _matches_expected(source_binding, expected_binding):
         raise ValueError("CREMA-D source binding does not match frozen contract")
+
+
+def validate_ami_mechanics_aggregates(
+    payload: Any,
+    minimum_contributors: int = 10,
+) -> Mapping[str, Any]:
+    if type(minimum_contributors) is not int or minimum_contributors < 10:
+        raise ValueError("AMI minimum contributors must be at least 10")
+    partitions = _exact_keys(
+        payload,
+        AMI_PARTITION_CELLS,
+        "AMI aggregate fields",
+    )
+    for partition_name in AMI_PARTITION_CELLS:
+        partition = _exact_keys(
+            partitions[partition_name],
+            (
+                "meeting_count",
+                "unique_participant_count",
+                "scalars",
+                "buckets",
+                "dialogue_acts",
+                "suppression_counts",
+            ),
+            "AMI partition fields",
+        )
+        meeting_count = _positive_count(
+            partition["meeting_count"],
+            "AMI aggregate meeting count",
+        )
+        participant_count = _positive_count(
+            partition["unique_participant_count"],
+            "AMI aggregate participant count",
+        )
+        if participant_count < meeting_count * 2:
+            raise ValueError("AMI aggregate participant count is inconsistent")
+        groups = (
+            (
+                "scalars",
+                _exact_keys(
+                    partition["scalars"],
+                    AMI_SCALAR_KEYS,
+                    "AMI scalar fields",
+                ),
+            ),
+            (
+                "buckets",
+                _exact_keys(
+                    partition["buckets"],
+                    AMI_BUCKET_KEYS,
+                    "AMI bucket fields",
+                ),
+            ),
+        )
+        dialogue_acts = partition["dialogue_acts"]
+        if (
+            not isinstance(dialogue_acts, Mapping)
+            or not dialogue_acts
+            or any(type(key) is not str or not key for key in dialogue_acts)
+            or tuple(dialogue_acts) != tuple(sorted(dialogue_acts))
+        ):
+            raise ValueError("AMI dialogue-act fields are invalid")
+        groups += (("dialogue_acts", dialogue_acts),)
+        expected_suppressed = participant_count < minimum_contributors
+        observed_suppression: dict[str, int] = {}
+        for group_name, group in groups:
+            suppressed_cells = 0
+            for key, raw_cell in group.items():
+                cell = _exact_keys(
+                    raw_cell,
+                    ("suppressed", "unique_participant_count", "value"),
+                    f"AMI {group_name} cell fields",
+                )
+                if type(cell["suppressed"]) is not bool:
+                    raise ValueError("AMI aggregate suppression flag is invalid")
+                cell_participants = _positive_count(
+                    cell["unique_participant_count"],
+                    "AMI aggregate cell participant count",
+                )
+                if cell_participants != participant_count:
+                    raise ValueError("AMI aggregate cell participant count differs")
+                if cell["suppressed"] is not expected_suppressed:
+                    raise ValueError("AMI aggregate participant floor is invalid")
+                if cell["suppressed"]:
+                    suppressed_cells += 1
+                    if cell["value"] is not None:
+                        raise ValueError("suppressed AMI aggregate must be absent")
+                    continue
+                value = _finite_float(cell["value"], "AMI aggregate value")
+                if group_name == "buckets" and value < 0.0:
+                    raise ValueError("AMI timing bucket is invalid")
+                if key in {
+                    "overlap_ratio",
+                    "normalized_speaker_entropy",
+                } and not 0.0 <= value <= 1.0:
+                    raise ValueError("AMI bounded scalar is invalid")
+                if key == "floor_changes_per_minute" and value < 0.0:
+                    raise ValueError("AMI floor-change rate is invalid")
+                if key == "backchannels_per_100_turns" and not 0.0 <= value <= 100.0:
+                    raise ValueError("AMI backchannel rate is invalid")
+                if group_name == "dialogue_acts" and not 0.0 <= value <= 1.0:
+                    raise ValueError("AMI dialogue-act proportion is invalid")
+            observed_suppression[group_name] = suppressed_cells
+            if (
+                group_name == "dialogue_acts"
+                and not expected_suppressed
+                and not math.isclose(
+                    sum(cell["value"] for cell in group.values()),
+                    1.0,
+                    rel_tol=0.0,
+                    abs_tol=1e-12,
+                )
+            ):
+                raise ValueError("AMI dialogue-act proportions must sum to one")
+        suppression_counts = _exact_keys(
+            partition["suppression_counts"],
+            (
+                "repeated_participant_meetings",
+                "scalar_cells",
+                "bucket_cells",
+                "dialogue_act_cells",
+            ),
+            "AMI suppression-count fields",
+        )
+        repeated = _count(
+            suppression_counts["repeated_participant_meetings"],
+            "AMI repeated-participant meeting count",
+        )
+        if repeated + meeting_count <= 0:
+            raise ValueError("AMI aggregate has no partition meetings")
+        expected_counts = {
+            "scalar_cells": observed_suppression["scalars"],
+            "bucket_cells": observed_suppression["buckets"],
+            "dialogue_act_cells": observed_suppression["dialogue_acts"],
+        }
+        if any(
+            _count(suppression_counts[key], f"AMI {key}") != expected
+            for key, expected in expected_counts.items()
+        ):
+            raise ValueError("AMI suppression counts do not match cells")
+    return partitions
 
 
 def validate_crema_label_ledger(ledger: Any, config: Mapping[str, Any]) -> None:

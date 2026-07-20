@@ -1973,6 +1973,458 @@ class CremaReferenceLabelTests(unittest.TestCase):
             )
 
 
+class AmiMechanicsTests(unittest.TestCase):
+    VALUE_KEYS = (
+        "turn_duration_median_ms",
+        "turn_duration_p90_ms",
+        "inter_turn_gap_median_ms",
+        "inter_turn_gap_p90_ms",
+        "overlap_ratio",
+        "floor_changes_per_minute",
+        "normalized_speaker_entropy",
+        "backchannels_per_100_turns",
+    )
+
+    @staticmethod
+    def _write_fixture(root: Path) -> dict[str, Any]:
+        metadata = root / "meetings.xml"
+        words_a = root / "M1.A.words.xml"
+        words_b = root / "M1.B.words.xml"
+        segments_a = root / "M1.A.segments.xml"
+        segments_b = root / "M1.B.segments.xml"
+        acts_a = root / "M1.A.dialog-act.xml"
+        acts_b = root / "M1.B.dialog-act.xml"
+        metadata.write_text(
+            """
+<ami:corpus xmlns:ami="urn:ami" xmlns:nite="http://nite.sourceforge.net/">
+  <ami:meeting nite:id="M1">
+    <ami:participant ami:code="A" ami:participant_id="P-A" />
+    <ami:participant ami:code="B" ami:participant_id="P-B" />
+  </ami:meeting>
+</ami:corpus>
+""".strip(),
+            encoding="utf-8",
+        )
+        words_a.write_text(
+            """
+<ami:words xmlns:ami="urn:ami" xmlns:nite="http://nite.sourceforge.net/"
+           ami:meeting_id="M1" ami:agent="A">
+  <ami:w nite:id="a1" ami:starttime="0.000" ami:endtime="0.500">SECRET ALPHA</ami:w>
+  <ami:w nite:id="a2" ami:starttime="0.500" ami:endtime="1.000">SECRET BETA</ami:w>
+  <ami:w nite:id="a3" ami:starttime="2.600" ami:endtime="3.000">SECRET GAMMA</ami:w>
+</ami:words>
+""".strip(),
+            encoding="utf-8",
+        )
+        words_b.write_text(
+            """
+<ami:words xmlns:ami="urn:ami" xmlns:nite="http://nite.sourceforge.net/"
+           ami:meeting_id="M1" ami:agent="B">
+  <ami:w nite:id="b1" ami:starttime="0.800" ami:endtime="1.200">SECRET DELTA</ami:w>
+  <ami:w nite:id="b2" ami:starttime="1.500" ami:endtime="2.000">SECRET EPSILON</ami:w>
+  <ami:w nite:id="b3" ami:starttime="2.000" ami:endtime="2.500">SECRET ZETA</ami:w>
+</ami:words>
+""".strip(),
+            encoding="utf-8",
+        )
+        segments_a.write_text(
+            """
+<ami:segments xmlns:ami="urn:ami" xmlns:nite="http://nite.sourceforge.net/"
+              ami:meeting_id="M1" ami:agent="A">
+  <ami:segment nite:id="s1">
+    <nite:child href="M1.A.words.xml#id(a1)..id(a2)" />
+  </ami:segment>
+  <ami:segment nite:id="s2">
+    <nite:child href="M1.A.words.xml#id(a3)" />
+  </ami:segment>
+</ami:segments>
+""".strip(),
+            encoding="utf-8",
+        )
+        segments_b.write_text(
+            """
+<ami:segments xmlns:ami="urn:ami" xmlns:nite="http://nite.sourceforge.net/"
+              ami:meeting_id="M1" ami:agent="B">
+  <ami:segment nite:id="s3">
+    <nite:child href="M1.B.words.xml#id(b1)" />
+  </ami:segment>
+  <ami:segment nite:id="s4">
+    <nite:child href="M1.B.words.xml#id(b2)..id(b3)" />
+  </ami:segment>
+</ami:segments>
+""".strip(),
+            encoding="utf-8",
+        )
+        acts_a.write_text(
+            """
+<ami:dialogue-acts xmlns:ami="urn:ami" xmlns:nite="http://nite.sourceforge.net/"
+                   ami:meeting_id="M1" ami:agent="A">
+  <ami:dact nite:id="d1" ami:type="inform">
+    <nite:child href="M1.A.segments.xml#id(s1)" />
+  </ami:dact>
+  <ami:dact nite:id="d4" ami:type="question">
+    <nite:child href="M1.A.segments.xml#id(s2)" />
+  </ami:dact>
+</ami:dialogue-acts>
+""".strip(),
+            encoding="utf-8",
+        )
+        acts_b.write_text(
+            """
+<ami:dialogue-acts xmlns:ami="urn:ami" xmlns:nite="http://nite.sourceforge.net/"
+                   ami:meeting_id="M1" ami:agent="B">
+  <ami:dact nite:id="d2" ami:niteType="backchannel">
+    <nite:child href="M1.B.segments.xml#id(s3)" />
+  </ami:dact>
+  <ami:dact nite:id="d3" ami:type="inform">
+    <nite:child href="M1.B.segments.xml#id(s4)" />
+  </ami:dact>
+</ami:dialogue-acts>
+""".strip(),
+            encoding="utf-8",
+        )
+        return {
+            "metadata_path": metadata,
+            "word_paths": (words_a, words_b),
+            "timing_link_paths": (segments_a, segments_b),
+            "dialogue_act_paths": (acts_a, acts_b),
+            "known_meetings": ("M1",),
+        }
+
+    @classmethod
+    def _meeting(
+        cls,
+        meeting_id: str,
+        participants: tuple[str, ...],
+        value: float,
+    ) -> Any:
+        from scripts.emotion_state_phase_b_ami_mechanics import MeetingMechanics
+
+        return MeetingMechanics(
+            meeting_id=meeting_id,
+            participants=participants,
+            values=(
+                ("turn_duration_median_ms", value),
+                ("turn_duration_p90_ms", value),
+                ("inter_turn_gap_median_ms", value),
+                ("inter_turn_gap_p90_ms", value),
+                ("overlap_ratio", 0.1),
+                ("floor_changes_per_minute", value),
+                ("normalized_speaker_entropy", 0.5),
+                ("backchannels_per_100_turns", 25.0),
+            ),
+            dialogue_act_distribution=(
+                ("backchannel", 0.25),
+                ("inform", 0.75),
+            ),
+        )
+
+    def test_namespace_qualified_local_nxt_links_produce_exact_mechanics(
+        self,
+    ) -> None:
+        from scripts.emotion_state_phase_b_ami_mechanics import (
+            compute_meeting_mechanics,
+            load_ami_turns,
+        )
+
+        with tempfile.TemporaryDirectory() as directory:
+            fixture = self._write_fixture(Path(directory))
+            turns = load_ami_turns(**fixture)
+        mechanics = compute_meeting_mechanics(turns)
+        self.assertEqual(
+            mechanics.participants,
+            ("P-A", "P-B"),
+        )
+        values = dict(mechanics.values)
+        expected = {
+            "turn_duration_median_ms": 700.0,
+            "turn_duration_p90_ms": 1000.0,
+            "inter_turn_gap_median_ms": 200.0,
+            "inter_turn_gap_p90_ms": 280.0,
+            "overlap_ratio": 1.0 / 15.0,
+            "floor_changes_per_minute": 40.0,
+            "normalized_speaker_entropy": 1.0,
+            "backchannels_per_100_turns": 25.0,
+        }
+        self.assertEqual(tuple(values), self.VALUE_KEYS)
+        for key, value in expected.items():
+            self.assertAlmostEqual(values[key], value, places=12)
+        self.assertEqual(
+            mechanics.dialogue_act_distribution,
+            (
+                ("backchannel", 0.25),
+                ("inform", 0.5),
+                ("question", 0.25),
+            ),
+        )
+        retained = repr((turns, mechanics)).upper()
+        self.assertNotIn("SECRET", retained)
+        self.assertTrue(all(not hasattr(turn, "text") for turn in turns))
+
+    def test_xml_boundaries_fail_closed(self) -> None:
+        from scripts.emotion_state_phase_b_ami_mechanics import load_ami_turns
+
+        with self.subTest(boundary="unresolved participant"):
+            with tempfile.TemporaryDirectory() as directory:
+                fixture = self._write_fixture(Path(directory))
+                metadata = fixture["metadata_path"]
+                metadata.write_text(
+                    metadata.read_text(encoding="utf-8").replace(
+                        '    <ami:participant ami:code="B" '
+                        'ami:participant_id="P-B" />\n',
+                        "",
+                    ),
+                    encoding="utf-8",
+                )
+                with self.assertRaisesRegex(ValueError, "unresolved participant"):
+                    load_ami_turns(**fixture)
+
+        with self.subTest(boundary="malformed time span"):
+            with tempfile.TemporaryDirectory() as directory:
+                fixture = self._write_fixture(Path(directory))
+                words_a = fixture["word_paths"][0]
+                words_a.write_text(
+                    words_a.read_text(encoding="utf-8").replace(
+                        'ami:starttime="0.500" ami:endtime="1.000"',
+                        'ami:starttime="0.500" ami:endtime="0.500"',
+                    ),
+                    encoding="utf-8",
+                )
+                with self.assertRaisesRegex(ValueError, "time span"):
+                    load_ami_turns(**fixture)
+
+        with self.subTest(boundary="unknown meeting"):
+            with tempfile.TemporaryDirectory() as directory:
+                fixture = self._write_fixture(Path(directory))
+                fixture["known_meetings"] = ("M2",)
+                with self.assertRaisesRegex(ValueError, "unknown meeting"):
+                    load_ami_turns(**fixture)
+
+        with self.subTest(boundary="external URI"):
+            with tempfile.TemporaryDirectory() as directory:
+                fixture = self._write_fixture(Path(directory))
+                acts_a = fixture["dialogue_act_paths"][0]
+                acts_a.write_text(
+                    acts_a.read_text(encoding="utf-8").replace(
+                        "M1.A.segments.xml#id(s1)",
+                        "https://example.test/M1.A.segments.xml#id(s1)",
+                    ),
+                    encoding="utf-8",
+                )
+                with self.assertRaisesRegex(ValueError, "external URI"):
+                    load_ami_turns(**fixture)
+
+    def test_compute_rejects_invalid_or_unproven_turns(self) -> None:
+        from scripts.emotion_state_phase_b_ami_mechanics import (
+            Turn,
+            compute_meeting_mechanics,
+        )
+
+        one_participant = (
+            Turn("M1", "P-A", 0, 100, "inform"),
+            Turn("M1", "P-A", 200, 300, "question"),
+        )
+        with self.assertRaisesRegex(ValueError, "two proven participants"):
+            compute_meeting_mechanics(one_participant)
+
+        malformed = (
+            Turn("M1", "P-A", 0, 100, "inform"),
+            Turn("M1", "P-B", 200, 200, "question"),
+        )
+        with self.assertRaisesRegex(ValueError, "time span"):
+            compute_meeting_mechanics(malformed)
+
+        mixed = (
+            Turn("M1", "P-A", 0, 100, "inform"),
+            Turn("M2", "P-B", 200, 300, "question"),
+        )
+        with self.assertRaisesRegex(ValueError, "one meeting"):
+            compute_meeting_mechanics(mixed)
+
+    def test_contribution_limited_aggregates_use_official_order_once_per_person(
+        self,
+    ) -> None:
+        from scripts.emotion_state_phase_b_ami_mechanics import (
+            contribution_limited_aggregates,
+        )
+
+        meetings = [
+            self._meeting("M1", ("P00", "P01"), 1.0),
+            self._meeting("M2", ("P02", "P03"), 2.0),
+            self._meeting("M3", ("P04", "P05"), 3.0),
+            self._meeting("M4", ("P06", "P07"), 4.0),
+            self._meeting("M5", ("P08", "P09"), 5.0),
+            self._meeting("M6", ("P00", "P10"), 999.0),
+        ]
+        membership = {
+            key: tuple(meeting.meeting_id for meeting in meetings)
+            for key in ("scenario_only", "full_corpus", "full_only")
+        }
+        result = contribution_limited_aggregates(
+            meetings,
+            membership,
+            ("M1", "M6", "M2", "M3", "M4", "M5"),
+        )
+        for partition in ("scenario_only", "full_corpus", "full_only"):
+            cell = result[partition]
+            self.assertEqual(cell["meeting_count"], 5)
+            self.assertEqual(cell["unique_participant_count"], 10)
+            self.assertEqual(
+                cell["suppression_counts"]["repeated_participant_meetings"],
+                1,
+            )
+            for group in ("scalars", "buckets", "dialogue_acts"):
+                self.assertTrue(all(
+                    not metric["suppressed"]
+                    and metric["unique_participant_count"] == 10
+                    for metric in cell[group].values()
+                ))
+            self.assertEqual(
+                cell["buckets"]["turn_duration_median_ms"]["value"],
+                3.0,
+            )
+
+        reversed_result = contribution_limited_aggregates(
+            meetings,
+            membership,
+            ("M6", "M1", "M2", "M3", "M4", "M5"),
+        )
+        self.assertEqual(
+            reversed_result["scenario_only"]["buckets"][
+                "turn_duration_median_ms"
+            ]["value"],
+            202.6,
+        )
+        serialized = json.dumps(result, sort_keys=True)
+        self.assertNotIn("P00", serialized)
+        self.assertNotIn('"M1"', serialized)
+
+    def test_cells_below_ten_participants_are_suppressed_not_zero(
+        self,
+    ) -> None:
+        from scripts.emotion_state_phase_b_ami_mechanics import (
+            contribution_limited_aggregates,
+        )
+
+        meetings = (
+            self._meeting("M1", ("P00", "P01"), 1.0),
+            self._meeting("M2", ("P02", "P03"), 2.0),
+        )
+        membership = {
+            key: ("M1", "M2")
+            for key in ("scenario_only", "full_corpus", "full_only")
+        }
+        result = contribution_limited_aggregates(
+            meetings,
+            membership,
+            ("M1", "M2"),
+        )
+        for partition in result.values():
+            self.assertEqual(partition["unique_participant_count"], 4)
+            self.assertEqual(
+                partition["suppression_counts"],
+                {
+                    "repeated_participant_meetings": 0,
+                    "scalar_cells": 4,
+                    "bucket_cells": 4,
+                    "dialogue_act_cells": 2,
+                },
+            )
+            for group in ("scalars", "buckets", "dialogue_acts"):
+                for cell in partition[group].values():
+                    self.assertTrue(cell["suppressed"])
+                    self.assertEqual(cell["unique_participant_count"], 4)
+                    self.assertIsNone(cell["value"])
+
+    def test_aggregation_and_validator_fail_closed(self) -> None:
+        from scripts.emotion_state_phase_b_ami_mechanics import (
+            contribution_limited_aggregates,
+        )
+        from scripts.validate_emotion_state_002_phase_b import (
+            validate_ami_mechanics_aggregates,
+        )
+
+        meetings = (
+            self._meeting("M1", ("P00", "P01"), 1.0),
+            self._meeting("M2", ("P02", "P03"), 2.0),
+        )
+        membership = {
+            key: ("M1", "M2")
+            for key in ("scenario_only", "full_corpus", "full_only")
+        }
+        aggregate = contribution_limited_aggregates(
+            meetings,
+            membership,
+            ("M1", "M2"),
+        )
+        validate_ami_mechanics_aggregates(aggregate)
+
+        with self.assertRaisesRegex(ValueError, "unknown meeting"):
+            contribution_limited_aggregates(
+                meetings,
+                {**membership, "scenario_only": ("UNKNOWN",)},
+                ("M1", "M2"),
+            )
+        with self.assertRaisesRegex(ValueError, "duplicate meeting"):
+            contribution_limited_aggregates(
+                meetings + (meetings[0],),
+                membership,
+                ("M1", "M2"),
+            )
+        with self.assertRaisesRegex(ValueError, "at least 10"):
+            contribution_limited_aggregates(
+                meetings,
+                membership,
+                ("M1", "M2"),
+                minimum_contributors=9,
+            )
+
+        leaked = deepcopy(aggregate)
+        leaked["scenario_only"]["transcript_text"] = "SECRET"
+        with self.assertRaisesRegex(ValueError, "fields"):
+            validate_ami_mechanics_aggregates(leaked)
+
+        unsuppressed = deepcopy(aggregate)
+        unsuppressed["scenario_only"]["scalars"]["overlap_ratio"][
+            "suppressed"
+        ] = False
+        unsuppressed["scenario_only"]["scalars"]["overlap_ratio"]["value"] = 0.0
+        with self.assertRaisesRegex(ValueError, "participant floor"):
+            validate_ami_mechanics_aggregates(unsuppressed)
+
+    def test_validator_rejects_dialogue_act_distribution_drift(self) -> None:
+        from scripts.emotion_state_phase_b_ami_mechanics import (
+            contribution_limited_aggregates,
+        )
+        from scripts.validate_emotion_state_002_phase_b import (
+            validate_ami_mechanics_aggregates,
+        )
+
+        meetings = tuple(
+            self._meeting(
+                f"M{index}",
+                (f"P{index * 2:02d}", f"P{index * 2 + 1:02d}"),
+                float(index),
+            )
+            for index in range(1, 6)
+        )
+        meeting_ids = tuple(meeting.meeting_id for meeting in meetings)
+        membership = {
+            key: meeting_ids
+            for key in ("scenario_only", "full_corpus", "full_only")
+        }
+        aggregate = contribution_limited_aggregates(
+            meetings,
+            membership,
+            meeting_ids,
+        )
+        validate_ami_mechanics_aggregates(aggregate)
+        mutated = deepcopy(aggregate)
+        mutated["scenario_only"]["dialogue_acts"]["inform"]["value"] = 0.5
+        with self.assertRaisesRegex(ValueError, "sum to one"):
+            validate_ami_mechanics_aggregates(mutated)
+
+
 class EvaluationTests(unittest.TestCase):
     CLASS_ORDER = ("A", "D", "F", "H", "N", "S")
     MODEL_KEYS = ("class_prior", "sentence_id", "acoustic")
