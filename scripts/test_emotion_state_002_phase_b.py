@@ -410,9 +410,18 @@ class PhaseBContractTests(unittest.TestCase):
                 ".tmp/emotion-state-002-phase-b/venv/Scripts/python.exe check"
             ),
         )
+        self.assertEqual(
+            Counter(dependency_gate_commands),
+            Counter(expected_dependency_commands),
+            "dependency gate command multiset differs from the reviewed allowlist",
+        )
+        self.assertEqual(
+            tuple(dependency_gate_commands),
+            expected_dependency_commands,
+            "dependency gate command sequence differs from the reviewed allowlist",
+        )
         for command in expected_dependency_commands:
             self.assertEqual(fenced_commands.count(command), 1, command)
-            self.assertEqual(dependency_gate_commands.count(command), 1, command)
 
         forbidden_command_forms = {
             "provider": re.compile(
@@ -487,6 +496,27 @@ class PhaseBContractTests(unittest.TestCase):
                 self.assertIsNotNone(dependency_command_form.search(normalized))
                 self.assertNotIn(example, expected_dependency_commands)
                 self.assertNotIn(example, dependency_gate_commands)
+        exact_equality_alias_examples = (
+            "iwr synthetic:extra-acquisition",
+            "irm synthetic:extra-acquisition",
+            "choco install synthetic-package",
+            "winget install synthetic-package",
+            "scoop install synthetic-package",
+            "uv pip install synthetic-package",
+            "pnpm add synthetic-package",
+            "yarn add synthetic-package",
+        )
+        for example in exact_equality_alias_examples:
+            mutated_gate = (*dependency_gate_commands, example)
+            with self.subTest(exact_equality_alias=example):
+                self.assertNotEqual(
+                    Counter(mutated_gate),
+                    Counter(expected_dependency_commands),
+                )
+                self.assertNotEqual(
+                    mutated_gate,
+                    expected_dependency_commands,
+                )
 
     def test_task_9_docs_hold_review_pending_status(self) -> None:
         conservative_status = (
