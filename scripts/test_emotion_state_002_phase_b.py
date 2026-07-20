@@ -9685,7 +9685,9 @@ class TrackedPublicAuthorityTests(unittest.TestCase):
         self,
         name: str,
         mutate: Callable[[dict[str, Any]], None],
-        pattern: str,
+        pattern: str = "tracked|manifest|inventory|quality|path|partition|"
+        "quarantine|identity|schema|fields|count|hash|order|size|integer|"
+        "classification|reason|detail|source|limitation|disposition",
     ) -> None:
         updated = self._resealed(name, mutate)
         with patch.dict(
@@ -9698,7 +9700,39 @@ class TrackedPublicAuthorityTests(unittest.TestCase):
             ):
                 self.pipeline.validate_tracked_public_evidence(updated)
 
-    def test_exact_evidence_returns_immutable_exact_authority(self) -> None:
+    def _assert_raw_rejected(
+        self,
+        name: str,
+        content: bytes,
+    ) -> None:
+        updated = dict(self.evidence)
+        updated[name] = content
+        with patch.dict(
+            self.pipeline._EXPECTED_TRACKED_SHA256,
+            {name: hashlib.sha256(content).hexdigest().upper()},
+        ):
+            with self.assertRaisesRegex(
+                self.pipeline.PublicMaterialPrerequisiteError,
+                "tracked evidence|finite|manifest",
+            ):
+                self.pipeline.validate_tracked_public_evidence(updated)
+
+    @staticmethod
+    def _quality_item_index(
+        payload: dict[str, Any],
+        disposition: str,
+        classification: str,
+    ) -> int:
+        return next(
+            index
+            for index, item in enumerate(payload["items"])
+            if item["disposition"] == disposition
+            and item["classification"] == classification
+        )
+
+    def test_exact_evidence_returns_7441_crema_2074_ami_and_ordered_partitions(
+        self,
+    ) -> None:
         authority = self.pipeline.validate_tracked_public_evidence(
             dict(reversed(tuple(self.evidence.items())))
         )
@@ -9751,165 +9785,718 @@ class TrackedPublicAuthorityTests(unittest.TestCase):
             authority.ami_official_order,
         )
         self.assertEqual(len(authority.ami_official_order), 170)
-        self.assertNotIn("quarantine", repr(authority).casefold())
 
-    def test_validator_is_pure_after_supplied_tracked_bytes_exist(self) -> None:
-        with (
-            patch(
-                "builtins.open",
-                side_effect=AssertionError("validator opened a path"),
-            ),
-            patch.object(
-                Path,
+    def test_legacy_quarantine_is_validated_but_not_an_availability_blocker(
+        self,
+    ) -> None:
+        authority = self.pipeline.validate_tracked_public_evidence(self.evidence)
+        self.assertIs(type(authority), self.pipeline.TrackedPublicAuthority)
+        self.assertNotIn("quarantine", repr(authority).casefold())
+        self.assertNotIn(
+            "quarantine",
+            authority.__dataclass_fields__,
+        )
+        self.assertEqual(len(authority.ami_files), 2074)
+
+    def test_validator_is_pure_and_performs_no_filesystem_or_material_access(
+        self,
+    ) -> None:
+        from scripts import run_emotion_state_002_phase_b as runner
+
+        denied = AssertionError("validator touched a filesystem surface")
+        with ExitStack() as stack:
+            stack.enter_context(patch("builtins.open", side_effect=denied))
+            for method in (
+                "open",
                 "read_bytes",
-                side_effect=AssertionError("validator read a path"),
-            ),
-            patch.object(
-                Path,
+                "read_text",
                 "stat",
-                side_effect=AssertionError("validator statted a path"),
-            ),
-            patch.object(
-                Path,
+                "lstat",
                 "resolve",
-                side_effect=AssertionError("validator resolved a path"),
-            ),
-            patch.object(
-                Path,
+                "exists",
+                "is_file",
+                "is_dir",
+                "iterdir",
                 "glob",
-                side_effect=AssertionError("validator globbed a path"),
-            ),
-            patch.object(
-                Path,
                 "rglob",
-                side_effect=AssertionError("validator rglobbed a path"),
-            ),
-        ):
+            ):
+                stack.enter_context(
+                    patch.object(Path, method, side_effect=denied)
+                )
+            for method in (
+                "open",
+                "stat",
+                "lstat",
+                "scandir",
+                "listdir",
+                "walk",
+            ):
+                stack.enter_context(
+                    patch.object(os, method, side_effect=denied)
+                )
+            for helper in (
+                "_read_file_nofollow",
+                "_read_verified_public_bytes",
+                "_sha256_file",
+                "_sha256_descriptor",
+            ):
+                stack.enter_context(
+                    patch.object(runner, helper, side_effect=denied)
+                )
             authority = self.pipeline.validate_tracked_public_evidence(
                 self.evidence
             )
         self.assertEqual(len(authority.crema_audio), 7441)
 
-    def test_resealed_inventories_reject_authority_drift(self) -> None:
-        crema = "crema-d-v1.0-audio-wav.hashes.json"
-        ami = "ami-manual-annotations-v1.6.2.hashes.json"
-        cases = (
+    def test_resealed_manifests_reject_profile_key_type_and_identity_drift(
+        self,
+    ) -> None:
+        names = (
+            "crema-d-v1.0-audio-wav.manifest.json",
+            "ami-manual-annotations-v1.6.2.manifest.json",
+        )
+        for name in names:
+            payload = json.loads(self.evidence[name])
+            for field in tuple(payload):
+                def delete_field(
+                    candidate: dict[str, Any],
+                    key: str = field,
+                ) -> None:
+                    candidate.pop(key)
+
+                with self.subTest(name=name, deleted=field):
+                    self._assert_resealed_rejected(name, delete_field)
+
+            nested_cases = (
+                ("local_file_hashes", "inventory_sha256", "0" * 64),
+                ("local_file_hashes", "selected_file_count", True),
+                ("local_file_hashes", "selected_byte_count", -1),
+                ("hash_inventory", "inventory_sha256", "0" * 64),
+                ("hash_inventory", "selected_file_count", True),
+                ("hash_inventory", "selected_byte_count", -1),
+                (
+                    "exclusion_inventory",
+                    "quality_inventory_sha256",
+                    "0" * 64,
+                ),
+                ("exclusion_inventory", "included_file_count", True),
+                ("exclusion_inventory", "excluded_file_count", -1),
+            )
+            for parent, field, value in nested_cases:
+                def mutate_nested(
+                    candidate: dict[str, Any],
+                    container: str = parent,
+                    key: str = field,
+                    replacement: Any = value,
+                ) -> None:
+                    candidate[container][key] = replacement
+
+                with self.subTest(
+                    name=name,
+                    parent=parent,
+                    field=field,
+                ):
+                    self._assert_resealed_rejected(name, mutate_nested)
+
+    def test_resealed_crema_inventory_rejects_schema_count_total_order_and_row_drift(
+        self,
+    ) -> None:
+        name = "crema-d-v1.0-audio-wav.hashes.json"
+        payload = json.loads(self.evidence[name])
+        for field in tuple(payload):
+            def delete_field(
+                candidate: dict[str, Any],
+                key: str = field,
+            ) -> None:
+                candidate.pop(key)
+
+            with self.subTest(deleted=field):
+                self._assert_resealed_rejected(name, delete_field)
+
+        cases: tuple[tuple[str, Callable[[dict[str, Any]], None]], ...] = (
             (
-                crema,
-                lambda payload: payload.__setitem__(
+                "algorithm",
+                lambda candidate: candidate.__setitem__(
+                    "algorithm",
+                    "sha256",
+                ),
+            ),
+            (
+                "version-bool",
+                lambda candidate: candidate.__setitem__(
+                    "inventory_version",
+                    True,
+                ),
+            ),
+            (
+                "ordering",
+                lambda candidate: candidate.__setitem__(
+                    "ordering",
+                    "ambient",
+                ),
+            ),
+            (
+                "normalization",
+                lambda candidate: candidate.__setitem__(
+                    "path_normalization",
+                    "native",
+                ),
+            ),
+            (
+                "count-bool",
+                lambda candidate: candidate.__setitem__(
                     "selected_file_count",
                     True,
                 ),
-                "inventory|count|integer",
             ),
             (
-                crema,
-                lambda payload: payload["files"][0].__setitem__(
+                "total",
+                lambda candidate: candidate.__setitem__(
+                    "selected_byte_count",
+                    candidate["selected_byte_count"] + 1,
+                ),
+            ),
+            (
+                "row-order",
+                lambda candidate: candidate["files"].__setitem__(
+                    slice(0, 2),
+                    list(reversed(candidate["files"][:2])),
+                ),
+            ),
+            (
+                "row-extra-key",
+                lambda candidate: candidate["files"][0].__setitem__(
+                    "future",
+                    "drift",
+                ),
+            ),
+            (
+                "lowercase-sha",
+                lambda candidate: candidate["files"][0].__setitem__(
+                    "sha256",
+                    candidate["files"][0]["sha256"].lower(),
+                ),
+            ),
+            (
+                "zero-size",
+                lambda candidate: candidate["files"][0].__setitem__(
+                    "size_bytes",
+                    0,
+                ),
+            ),
+            (
+                "lfs-mismatch",
+                lambda candidate: candidate["files"][0].__setitem__(
                     "git_lfs_oid_sha256",
                     "A" * 64,
                 ),
-                "LFS|hash",
             ),
             (
-                ami,
-                lambda payload: payload["files"][100].__setitem__(
+                "wrong-prefix",
+                lambda candidate: candidate["files"][0].__setitem__(
                     "path",
-                    payload["files"][100]["path"] + ":stream",
+                    "outside/AudioWAV/1001_DFA_ANG_XX.wav",
                 ),
-                "path|inventory",
             ),
             (
-                ami,
-                lambda payload: payload["files"].__setitem__(
-                    1,
-                    deepcopy(payload["files"][0]),
+                "wrong-extension",
+                lambda candidate: candidate["files"][0].__setitem__(
+                    "path",
+                    candidate["files"][0]["path"][:-4] + ".mp3",
                 ),
-                "duplicate|order|path|inventory",
+            ),
+            (
+                "duplicate",
+                lambda candidate: candidate["files"].__setitem__(
+                    1,
+                    deepcopy(candidate["files"][0]),
+                ),
             ),
         )
-        for name, mutate, pattern in cases:
-            with self.subTest(name=name, pattern=pattern):
-                self._assert_resealed_rejected(name, mutate, pattern)
+        for label, mutate in cases:
+            with self.subTest(case=label):
+                self._assert_resealed_rejected(name, mutate)
 
-    def test_resealed_quality_quarantine_and_partitions_fail_closed(self) -> None:
-        crema = "crema-d-v1.0-audio-wav.quality.json"
-        ami = "ami-manual-annotations-v1.6.2.quality.json"
-
-        def mutate_crema_reason(payload: dict[str, Any]) -> None:
-            included = next(
-                item
-                for item in payload["items"]
-                if item["disposition"] == "included"
-            )
-            included["reason"] = "future_reason"
-
-        def mutate_quarantine(payload: dict[str, Any]) -> None:
-            payload["dependency_quarantine"][0]["reason"] = "future_reason"
-
-        def mutate_partition(payload: dict[str, Any]) -> None:
-            definitions = payload["source_metadata"][
-                "official_partition_definitions"
-            ]
-            definitions[0]["meeting_ids"] = list(
-                reversed(definitions[0]["meeting_ids"])
-            )
-
-        for name, mutate, pattern in (
-            (crema, mutate_crema_reason, "classification|quality|reason"),
-            (ami, mutate_quarantine, "quarantine|participant"),
-            (ami, mutate_partition, "partition|order"),
-        ):
-            with self.subTest(name=name, pattern=pattern):
-                self._assert_resealed_rejected(name, mutate, pattern)
-
-    def test_windows_alias_and_escape_paths_fail_closed(self) -> None:
-        name = "crema-d-v1.0-audio-wav.hashes.json"
-        suffixes = (
-            ":stream",
-            ". ",
-            "/CON.wav",
-            '/bad"name.wav',
-            "/bad\x01name.wav",
-            "/../escape.wav",
-            "\\escape.wav",
+        metadata_indices = tuple(
+            index
+            for index, row in enumerate(payload["files"])
+            if "/AudioWAV/" not in row["path"]
         )
-        for suffix in suffixes:
-            def mutate(payload: dict[str, Any], value: str = suffix) -> None:
-                original = payload["files"][0]["path"]
-                payload["files"][0]["path"] = original + value
+        self.assertEqual(len(metadata_indices), 5)
+        for index in metadata_indices:
+            def mutate_metadata(
+                candidate: dict[str, Any],
+                row_index: int = index,
+            ) -> None:
+                candidate["files"][row_index]["sha256"] = "A" * 64
 
-            with self.subTest(suffix=repr(suffix)):
-                self._assert_resealed_rejected(
-                    name,
-                    mutate,
-                    "path|inventory",
+            with self.subTest(metadata_index=index):
+                self._assert_resealed_rejected(name, mutate_metadata)
+
+    def test_resealed_ami_inventory_rejects_schema_count_total_order_and_row_drift(
+        self,
+    ) -> None:
+        name = "ami-manual-annotations-v1.6.2.hashes.json"
+        payload = json.loads(self.evidence[name])
+        for field in tuple(payload):
+            def delete_field(
+                candidate: dict[str, Any],
+                key: str = field,
+            ) -> None:
+                candidate.pop(key)
+
+            with self.subTest(deleted=field):
+                self._assert_resealed_rejected(name, delete_field)
+
+        archive_index = next(
+            index
+            for index, row in enumerate(payload["files"])
+            if row["path"].endswith("/ami_manual_1.6.2.zip")
+        )
+        partition_index = next(
+            index
+            for index, row in enumerate(payload["files"])
+            if row["path"].endswith("/official-partitions/datasets.shtml")
+        )
+        cases: tuple[tuple[str, Callable[[dict[str, Any]], None]], ...] = (
+            (
+                "dataset",
+                lambda candidate: candidate.__setitem__(
+                    "dataset_id",
+                    "future",
+                ),
+            ),
+            (
+                "algorithm",
+                lambda candidate: candidate.__setitem__(
+                    "algorithm",
+                    "sha256",
+                ),
+            ),
+            (
+                "version-bool",
+                lambda candidate: candidate.__setitem__(
+                    "inventory_version",
+                    True,
+                ),
+            ),
+            (
+                "count",
+                lambda candidate: candidate.__setitem__(
+                    "selected_file_count",
+                    candidate["selected_file_count"] - 1,
+                ),
+            ),
+            (
+                "total",
+                lambda candidate: candidate.__setitem__(
+                    "selected_byte_count",
+                    candidate["selected_byte_count"] + 1,
+                ),
+            ),
+            (
+                "row-order",
+                lambda candidate: candidate["files"].__setitem__(
+                    slice(0, 2),
+                    list(reversed(candidate["files"][:2])),
+                ),
+            ),
+            (
+                "row-extra-key",
+                lambda candidate: candidate["files"][0].__setitem__(
+                    "future",
+                    "drift",
+                ),
+            ),
+            (
+                "hash",
+                lambda candidate: candidate["files"][0].__setitem__(
+                    "sha256",
+                    "0" * 64,
+                ),
+            ),
+            (
+                "size-bool",
+                lambda candidate: candidate["files"][0].__setitem__(
+                    "size_bytes",
+                    True,
+                ),
+            ),
+            (
+                "path-ads",
+                lambda candidate: candidate["files"][100].__setitem__(
+                    "path",
+                    candidate["files"][100]["path"] + ":stream",
+                ),
+            ),
+            (
+                "duplicate",
+                lambda candidate: candidate["files"].__setitem__(
+                    1,
+                    deepcopy(candidate["files"][0]),
+                ),
+            ),
+            (
+                "archive-pin",
+                lambda candidate: candidate["files"][archive_index].__setitem__(
+                    "sha256",
+                    "A" * 64,
+                ),
+            ),
+            (
+                "partition-pin",
+                lambda candidate: candidate["files"][
+                    partition_index
+                ].__setitem__(
+                    "size_bytes",
+                    candidate["files"][partition_index]["size_bytes"] + 1,
+                ),
+            ),
+        )
+        for label, mutate in cases:
+            with self.subTest(case=label):
+                self._assert_resealed_rejected(name, mutate)
+
+    def test_resealed_quality_rejects_key_count_classification_and_cross_inventory_drift(
+        self,
+    ) -> None:
+        names = (
+            "crema-d-v1.0-audio-wav.quality.json",
+            "ami-manual-annotations-v1.6.2.quality.json",
+        )
+        for name in names:
+            payload = json.loads(self.evidence[name])
+            for field in tuple(payload):
+                def delete_field(
+                    candidate: dict[str, Any],
+                    key: str = field,
+                ) -> None:
+                    candidate.pop(key)
+
+                with self.subTest(name=name, deleted=field):
+                    self._assert_resealed_rejected(name, delete_field)
+
+            classifications = tuple(
+                sorted(
+                    {
+                        (item["disposition"], item["classification"])
+                        for item in payload["items"]
+                    }
+                )
+            )
+            for disposition, classification in classifications:
+                index = self._quality_item_index(
+                    payload,
+                    disposition,
+                    classification,
                 )
 
-    def test_strict_json_rejects_duplicate_keys_and_numeric_overflow(self) -> None:
-        name = "crema-d-v1.0-audio-wav.manifest.json"
-        original = self.evidence[name]
-        duplicate = original[:-1] + b',"dataset_id":"duplicate"}'
-        overflow = original.replace(
-            b'"manifest_version":2',
-            b'"manifest_version":1e9999',
-            1,
-        )
-        for label, content in (
-            ("duplicate", duplicate),
-            ("overflow", overflow),
-        ):
-            updated = dict(self.evidence)
-            updated[name] = content
-            with self.subTest(label=label):
-                with patch.dict(
-                    self.pipeline._EXPECTED_TRACKED_SHA256,
-                    {name: hashlib.sha256(content).hexdigest().upper()},
+                def mutate_reason(
+                    candidate: dict[str, Any],
+                    row_index: int = index,
+                ) -> None:
+                    candidate["items"][row_index]["reason"] = "future_reason"
+
+                def mutate_details(
+                    candidate: dict[str, Any],
+                    row_index: int = index,
+                ) -> None:
+                    candidate["items"][row_index]["details"]["future"] = (
+                        "drift"
+                    )
+
+                with self.subTest(
+                    name=name,
+                    disposition=disposition,
+                    classification=classification,
+                    property="reason",
                 ):
-                    with self.assertRaisesRegex(
-                        self.pipeline.PublicMaterialPrerequisiteError,
-                        "tracked evidence|finite|manifest",
-                    ):
-                        self.pipeline.validate_tracked_public_evidence(updated)
+                    self._assert_resealed_rejected(name, mutate_reason)
+                with self.subTest(
+                    name=name,
+                    disposition=disposition,
+                    classification=classification,
+                    property="details",
+                ):
+                    self._assert_resealed_rejected(name, mutate_details)
+
+            included_index = next(
+                index
+                for index, item in enumerate(payload["items"])
+                if item["disposition"] == "included"
+            )
+            source_cases: tuple[
+                tuple[str, Callable[[dict[str, Any]], None]],
+                ...,
+            ] = (
+                (
+                    "included-count-bool",
+                    lambda candidate: candidate.__setitem__(
+                        "included_file_count",
+                        True,
+                    ),
+                ),
+                (
+                    "excluded-count",
+                    lambda candidate: candidate.__setitem__(
+                        "excluded_file_count",
+                        candidate["excluded_file_count"] + 1,
+                    ),
+                ),
+                (
+                    "limitations-type",
+                    lambda candidate: candidate["limitations"].__setitem__(
+                        0,
+                        True,
+                    ),
+                ),
+                (
+                    "source-metadata-key",
+                    lambda candidate: candidate[
+                        "source_metadata"
+                    ].__setitem__("future", "drift"),
+                ),
+                (
+                    "included-cross-inventory",
+                    lambda candidate: candidate["items"][
+                        included_index
+                    ].__setitem__(
+                        "selected_file_path",
+                        "data/public/emotion-state/future.bin",
+                    ),
+                ),
+                (
+                    "item-order",
+                    lambda candidate: candidate["items"].__setitem__(
+                        slice(0, 2),
+                        list(reversed(candidate["items"][:2])),
+                    ),
+                ),
+            )
+            for label, mutate in source_cases:
+                with self.subTest(name=name, case=label):
+                    self._assert_resealed_rejected(name, mutate)
+
+    def test_resealed_ami_quarantine_rejects_shape_reason_duplicate_and_path_drift(
+        self,
+    ) -> None:
+        name = "ami-manual-annotations-v1.6.2.quality.json"
+        payload = json.loads(self.evidence[name])
+        non_core_path = next(
+            item["selected_file_path"]
+            for item in payload["items"]
+            if item["classification"] == "manual_nxt_metadata"
+        )
+
+        def wrong_shape(candidate: dict[str, Any]) -> None:
+            candidate["dependency_quarantine"][0]["future"] = "drift"
+
+        def wrong_reason(candidate: dict[str, Any]) -> None:
+            candidate["dependency_quarantine"][0]["reason"] = "future_reason"
+
+        def duplicate(candidate: dict[str, Any]) -> None:
+            candidate["dependency_quarantine"][1]["path"] = candidate[
+                "dependency_quarantine"
+            ][0]["path"]
+
+        def invalid_path(candidate: dict[str, Any]) -> None:
+            candidate["dependency_quarantine"][0]["path"] += ":stream"
+
+        def wrong_order(candidate: dict[str, Any]) -> None:
+            candidate["dependency_quarantine"][0:2] = reversed(
+                candidate["dependency_quarantine"][0:2]
+            )
+
+        def wrong_cross_set(candidate: dict[str, Any]) -> None:
+            candidate["dependency_quarantine"][0]["path"] = non_core_path
+
+        for label, mutate in (
+            ("shape", wrong_shape),
+            ("reason", wrong_reason),
+            ("duplicate", duplicate),
+            ("path", invalid_path),
+            ("order", wrong_order),
+            ("cross-set", wrong_cross_set),
+        ):
+            with self.subTest(case=label):
+                self._assert_resealed_rejected(name, mutate)
+
+    def test_resealed_ami_partitions_reject_membership_order_duplicate_and_algebra_drift(
+        self,
+    ) -> None:
+        name = "ami-manual-annotations-v1.6.2.quality.json"
+
+        def source_definitions(
+            candidate: dict[str, Any],
+        ) -> list[dict[str, Any]]:
+            return candidate["source_metadata"][
+                "official_partition_source"
+            ]["partition_definitions"]
+
+        def reverse_full(candidate: dict[str, Any]) -> None:
+            definitions = source_definitions(candidate)
+            definitions[0]["meeting_ids"].reverse()
+
+        def duplicate_scenario(candidate: dict[str, Any]) -> None:
+            meetings = source_definitions(candidate)[1]["meeting_ids"]
+            meetings[1] = meetings[0]
+
+        def alias_partition(candidate: dict[str, Any]) -> None:
+            source_definitions(candidate)[0]["partition_id"] = "full_corpus"
+
+        def break_algebra(candidate: dict[str, Any]) -> None:
+            definitions = source_definitions(candidate)
+            full = definitions[0]["meeting_ids"]
+            scenario = definitions[1]["meeting_ids"]
+            full_only = next(item for item in full if item not in scenario)
+            scenario[-1] = full_only
+
+        def swap_definitions(candidate: dict[str, Any]) -> None:
+            definitions = source_definitions(candidate)
+            definitions[:] = reversed(definitions)
+
+        def drift_duplicate_copy(candidate: dict[str, Any]) -> None:
+            candidate["source_metadata"][
+                "official_partition_definitions"
+            ][0]["meeting_ids"].reverse()
+
+        for label, mutate in (
+            ("membership-order", reverse_full),
+            ("duplicate", duplicate_scenario),
+            ("alias", alias_partition),
+            ("algebra", break_algebra),
+            ("definition-order", swap_definitions),
+            ("copy-drift", drift_duplicate_copy),
+        ):
+            with self.subTest(case=label):
+                self._assert_resealed_rejected(name, mutate)
+
+    def test_paths_reject_windows_alias_escape_and_collision_forms(self) -> None:
+        name = "crema-d-v1.0-audio-wav.hashes.json"
+        replacements = (
+            "/absolute.wav",
+            "C:/drive.wav",
+            "//server/share.wav",
+            "data\\public\\escape.wav",
+            "data/public/./escape.wav",
+            "data/public/../escape.wav",
+            "data/public//escape.wav",
+            "data/public/emotion-state/file:stream",
+            'data/public/emotion-state/bad"name.wav',
+            "data/public/emotion-state/bad\x01name.wav",
+            "data/public/emotion-state/trailing.",
+            "data/public/emotion-state/trailing ",
+            "data/public/emotion-state/CON.wav",
+            "data/public/emotion-state/AUX",
+            "data/public/emotion-state/e\u0301.wav",
+        )
+        for replacement in replacements:
+            def mutate(
+                candidate: dict[str, Any],
+                path: str = replacement,
+            ) -> None:
+                candidate["files"][0]["path"] = path
+
+            with self.subTest(path=repr(replacement)):
+                self._assert_resealed_rejected(name, mutate)
+
+        def case_collision(candidate: dict[str, Any]) -> None:
+            original = candidate["files"][0]["path"]
+            candidate["files"][1]["path"] = original[:-1] + original[
+                -1
+            ].swapcase()
+
+        self._assert_resealed_rejected(name, case_collision)
+
+    def test_strict_evidence_json_rejects_duplicate_keys_and_all_nonfinite_forms(
+        self,
+    ) -> None:
+        name = "crema-d-v1.0-audio-wav.manifest.json"
+        original = self.evidence[name].rstrip()
+        prefix = original[:-1]
+        cases = (
+            ("duplicate", prefix + b',"dataset_id":"duplicate"}'),
+            ("nan", prefix + b',"future":NaN}'),
+            ("positive-infinity", prefix + b',"future":Infinity}'),
+            ("negative-infinity", prefix + b',"future":-Infinity}'),
+            ("overflow", prefix + b',"future":1e9999}'),
+        )
+        for label, content in cases:
+            with self.subTest(label=label):
+                self._assert_raw_rejected(name, content)
+
+    def test_authority_is_alias_safe_and_unrelated_pipeline_apis_are_unchanged(
+        self,
+    ) -> None:
+        from scripts import emotion_state_phase_b_ami_mechanics as ami
+
+        evidence = dict(self.evidence)
+        authority = self.pipeline.validate_tracked_public_evidence(evidence)
+        evidence.clear()
+        self.assertEqual(len(authority.crema_audio), 7441)
+        self.assertEqual(len(authority.ami_files), 2074)
+        self.assertIs(type(authority.crema_audio), tuple)
+        self.assertIs(type(authority.ami_files), tuple)
+        self.assertIs(type(authority.ami_partition_membership), tuple)
+        self.assertTrue(
+            all(
+                type(item) is tuple
+                and type(item[1]) is tuple
+                for item in authority.ami_partition_membership
+            )
+        )
+        with self.assertRaises((AttributeError, TypeError)):
+            authority.crema_audio += ()
+        with self.assertRaises((AttributeError, TypeError)):
+            authority.crema_audio[0].sha256 = "0" * 64
+
+        packet_signature = inspect.signature(
+            self.pipeline.build_non_lockbox_review_packet
+        )
+        self.assertEqual(
+            tuple(packet_signature.parameters),
+            (
+                "diagnostic_aggregate",
+                "ami_aggregate",
+                "split_manifest_sha256",
+            ),
+        )
+        self.assertTrue(
+            all(
+                parameter.kind
+                is inspect.Parameter.KEYWORD_ONLY
+                for parameter in packet_signature.parameters.values()
+            )
+        )
+        self.assertEqual(
+            tuple(
+                inspect.signature(
+                    self.pipeline.validate_non_lockbox_review_packet
+                ).parameters
+            ),
+            ("payload",),
+        )
+        loader_signature = inspect.signature(
+            ami.load_ami_meeting_evidence_v2
+        )
+        self.assertEqual(
+            tuple(loader_signature.parameters),
+            (
+                "metadata",
+                "word_sources",
+                "timing_link_sources",
+                "dialogue_act_sources",
+                "known_meetings",
+                "participant_metadata",
+            ),
+        )
+        self.assertIs(
+            loader_signature.parameters["participant_metadata"].kind,
+            inspect.Parameter.KEYWORD_ONLY,
+        )
+        self.assertIsNone(
+            loader_signature.parameters["participant_metadata"].default
+        )
 
 
 class Task10ProductionPipelineTests(unittest.TestCase):
