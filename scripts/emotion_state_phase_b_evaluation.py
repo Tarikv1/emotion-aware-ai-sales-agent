@@ -57,6 +57,15 @@ CLIP_PATTERN = re.compile(
 )
 
 
+def _parse_crema_clip_identity(clip_stem: Any) -> tuple[str, str]:
+    if type(clip_stem) is not str:
+        raise ValueError("invalid CREMA-D clip identity")
+    match = CLIP_PATTERN.fullmatch(clip_stem)
+    if match is None:
+        raise ValueError("invalid CREMA-D clip identity")
+    return match.group("actor"), match.group("sentence")
+
+
 @dataclass(frozen=True)
 class CremaLabelRecord:
     clip_stem: str
@@ -158,9 +167,10 @@ def load_crema_reference_labels(
     ledger: Counter[str] = Counter()
     label_counts: Counter[str] = Counter()
     for stem in sorted(stems):
-        match = CLIP_PATTERN.fullmatch(stem)
-        if match is None:
-            raise ValueError("invalid included CREMA-D clip stem")
+        try:
+            actor_id, sentence_id = _parse_crema_clip_identity(stem)
+        except ValueError as error:
+            raise ValueError("invalid included CREMA-D clip stem") from error
         if stem not in raw_groups or stem not in released:
             raise ValueError("missing CREMA-D reference-label join")
         distribution = raw_groups[stem]
@@ -181,8 +191,8 @@ def load_crema_reference_labels(
         total = sum(distribution.values())
         records.append(CremaLabelRecord(
             clip_stem=stem,
-            actor_id=match.group("actor"),
-            sentence_id=match.group("sentence"),
+            actor_id=actor_id,
+            sentence_id=sentence_id,
             label=label,
             abstention_reason=reason,
             vote_distribution=tuple(sorted(distribution.items())),
@@ -573,10 +583,21 @@ def _validate_partition_authority_record(record: Any) -> None:
         raise ValueError(
             "partition authority records must be eligible CREMA records"
         )
+    try:
+        clip_actor_id, clip_sentence_id = _parse_crema_clip_identity(
+            record.clip_stem
+        )
+    except ValueError as error:
+        raise ValueError("partition authority clip identity is invalid") from error
     if (
-        type(record.clip_stem) is not str
-        or not record.clip_stem
-        or type(record.actor_id) is not str
+        clip_actor_id != record.actor_id
+        or clip_sentence_id != record.sentence_id
+    ):
+        raise ValueError(
+            "partition authority clip identity does not match record identity"
+        )
+    if (
+        type(record.actor_id) is not str
         or re.fullmatch(r"\d{4}", record.actor_id) is None
         or type(record.sentence_id) is not str
         or re.fullmatch(r"[A-Z0-9]{3}", record.sentence_id) is None

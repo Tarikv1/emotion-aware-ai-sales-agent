@@ -812,12 +812,16 @@ class ActorSplitTests(unittest.TestCase):
         from scripts.emotion_state_phase_b_evaluation import CremaLabelRecord
 
         records = []
+        filename_emotions = ("ANG", "DIS", "FEA", "HAP", "NEU", "SAD")
         for actor_index in range(actor_count):
             actor_id = f"{1001 + actor_index:04d}"
             for sentence_index, sentence_id in enumerate(cls.SENTENCES):
                 label = cls.LABELS[(actor_index + sentence_index) % len(cls.LABELS)]
                 records.append(CremaLabelRecord(
-                    clip_stem=f"synthetic-{actor_id}-{sentence_id}",
+                    clip_stem=(
+                        f"{actor_id}_{sentence_id}_"
+                        f"{filename_emotions[cls.LABELS.index(label)]}_XX"
+                    ),
                     actor_id=actor_id,
                     sentence_id=sentence_id,
                     label=label,
@@ -836,7 +840,8 @@ class ActorSplitTests(unittest.TestCase):
                     ]
                     records.append(CremaLabelRecord(
                         clip_stem=(
-                            f"synthetic-extra-{actor_id}-{extra_index:02d}"
+                            f"{actor_id}_{sentence_id}_"
+                            f"{filename_emotions[cls.LABELS.index(label)]}_HI"
                         ),
                         actor_id=actor_id,
                         sentence_id=sentence_id,
@@ -5831,6 +5836,105 @@ class Task10ProductionPipelineTests(unittest.TestCase):
                 assignment,
                 EvaluationTests.CONFIGURATION_DIGEST,
             )
+
+    def test_split_mint_rejects_clip_identity_not_matching_record(
+        self,
+    ) -> None:
+        from scripts import emotion_state_phase_b_evaluation as evaluation
+        from scripts.emotion_state_phase_b_splits import build_actor_split
+
+        records = list(EvaluationTests.AUTHORITATIVE_RECORDS)
+        index = next(
+            index
+            for index, record in enumerate(records)
+            if record.actor_id == "1002" and record.sentence_id == "S00"
+        )
+        original = records[index]
+        for clip_stem in (
+            "9999_ZZZ_ANG_XX",
+            "9999_S00_ANG_XX",
+            "1002_ZZZ_ANG_XX",
+        ):
+            with self.subTest(clip_stem=clip_stem):
+                mutated = list(records)
+                mutated[index] = replace(original, clip_stem=clip_stem)
+                assignment = build_actor_split(
+                    mutated,
+                    EvaluationTests.CONFIGURATION_DIGEST,
+                )
+                with self.assertRaisesRegex(ValueError, "clip identity"):
+                    evaluation.mint_validated_split_assignment(
+                        mutated,
+                        assignment,
+                        EvaluationTests.CONFIGURATION_DIGEST,
+                    )
+
+    def test_split_mint_rejects_stems_outside_source_clip_contract(
+        self,
+    ) -> None:
+        from scripts import emotion_state_phase_b_evaluation as evaluation
+        from scripts.emotion_state_phase_b_splits import build_actor_split
+
+        records = list(EvaluationTests.AUTHORITATIVE_RECORDS)
+        original = records[0]
+        malformed_stems = (
+            f"{original.actor_id}_{original.sentence_id}_JOY_XX",
+            f"{original.actor_id}_{original.sentence_id}_ANG_XY",
+            f"{original.actor_id}_{original.sentence_id}_ANG",
+            f"{original.actor_id}_{original.sentence_id}_ANG_XX.wav",
+        )
+        for clip_stem in malformed_stems:
+            with self.subTest(clip_stem=clip_stem):
+                mutated = list(records)
+                mutated[0] = replace(original, clip_stem=clip_stem)
+                assignment = build_actor_split(
+                    mutated,
+                    EvaluationTests.CONFIGURATION_DIGEST,
+                )
+                with self.assertRaisesRegex(ValueError, "clip identity"):
+                    evaluation.mint_validated_split_assignment(
+                        mutated,
+                        assignment,
+                        EvaluationTests.CONFIGURATION_DIGEST,
+                    )
+
+    def test_filename_emotion_remains_independent_from_perceived_label(
+        self,
+    ) -> None:
+        from scripts import emotion_state_phase_b_evaluation as evaluation
+        from scripts.emotion_state_phase_b_splits import build_actor_split
+
+        records = list(EvaluationTests.AUTHORITATIVE_RECORDS)
+        index = next(
+            index
+            for index, record in enumerate(records)
+            if record.actor_id == "1002" and record.sentence_id == "S00"
+        )
+        original = records[index]
+        filename_emotion = "ANG" if original.label != "A" else "DIS"
+        records[index] = replace(
+            original,
+            clip_stem=(
+                f"{original.actor_id}_{original.sentence_id}_"
+                f"{filename_emotion}_HI"
+            ),
+        )
+        assignment = build_actor_split(
+            records,
+            EvaluationTests.CONFIGURATION_DIGEST,
+        )
+        split = evaluation.mint_validated_split_assignment(
+            records,
+            assignment,
+            EvaluationTests.CONFIGURATION_DIGEST,
+        )
+        self.assertEqual(
+            evaluation.derive_validated_partition_authority(
+                split,
+                role=assignment[original.actor_id],
+            ).to_payload()["partition_role"],
+            assignment[original.actor_id],
+        )
 
     def test_non_lockbox_partition_evidence_uses_partition_authority_only(
         self,
