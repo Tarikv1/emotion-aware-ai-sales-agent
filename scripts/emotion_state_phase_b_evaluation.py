@@ -37,6 +37,7 @@ from scripts.validate_emotion_state_002_phase_b import (
     validate_labels_and_actors,
     validate_payload_self_hash,
     validate_partition_role,
+    validate_phase_b_split_manifest,
     validate_probability_inputs,
     validate_probability_evidence_payload,
     validate_provenance_payload,
@@ -382,13 +383,22 @@ class _ValidatedSplitState:
 
 
 @dataclass(frozen=True)
+class _ValidatedPartitionAuthorityState:
+    records: tuple[CremaLabelRecord, ...]
+    role: str
+    seed_digest: str
+    manifest_sha256: str
+    assignment_sha256: str
+
+
+@dataclass(frozen=True)
 class _PartitionState:
     rows: tuple[str, ...]
     actors: tuple[str, ...]
     labels: tuple[str, ...]
     sentences: tuple[str, ...]
     features: np.ndarray
-    split_assignment: "ValidatedSplitAssignment"
+    split_assignment: "ValidatedSplitAssignment | ValidatedPartitionAuthority"
     configuration: dict[str, Any]
     environment_lock: dict[str, Any]
     feature_schema: dict[str, Any]
@@ -411,6 +421,10 @@ class _ProbabilityState:
 
 
 class ValidatedSplitAssignment(_ImmutableArtifact):
+    __slots__ = ()
+
+
+class ValidatedPartitionAuthority(_ImmutableArtifact):
     __slots__ = ()
 
 
@@ -485,6 +499,72 @@ def _validate_split_assignment_components(
     return materialized, canonical, manifest_sha256
 
 
+def _partition_authority_cache(
+    *,
+    role: str,
+    records: Sequence[CremaLabelRecord],
+    configuration_sha256: str,
+    split_manifest_sha256: str,
+    assignment_sha256: str,
+) -> dict[str, Any]:
+    validated_role = validate_partition_role(
+        role,
+        (
+            "training_discovery",
+            "calibration",
+            "balanced_diagnostic",
+        ),
+    )
+    materialized = tuple(sorted(records, key=lambda record: record.clip_stem))
+    if (
+        not materialized
+        or any(
+            not isinstance(record, CremaLabelRecord)
+            or record.label not in LABELS
+            or record.abstention_reason is not None
+            for record in materialized
+        )
+    ):
+        raise ValueError("partition authority records must be eligible CREMA records")
+    expected_actor_count = {
+        "training_discovery": 35,
+        "calibration": 13,
+        "balanced_diagnostic": 13,
+    }[validated_role]
+    if len({record.actor_id for record in materialized}) != expected_actor_count:
+        raise ValueError("partition authority actor count does not match")
+    if len({record.sentence_id for record in materialized}) != 12:
+        raise ValueError("partition authority sentence count does not match")
+    if {record.label for record in materialized} != set(LABELS):
+        raise ValueError("partition authority label coverage does not match")
+    payload = {
+        "schema_id": "emotion-state-phase-b-partition-authority-cache-v1",
+        "schema_version": 1,
+        "partition_role": validated_role,
+        "configuration_sha256": configuration_sha256,
+        "split_manifest_sha256": split_manifest_sha256,
+        "assignment_sha256": assignment_sha256,
+        "records": [
+            {
+                "clip_stem": record.clip_stem,
+                "actor_id": record.actor_id,
+                "sentence_id": record.sentence_id,
+                "label": record.label,
+                "abstention_reason": record.abstention_reason,
+                "vote_distribution": [
+                    [label, count]
+                    for label, count in record.vote_distribution
+                ],
+                "vote_agreement": record.vote_agreement,
+                "vote_entropy": record.vote_entropy,
+            }
+            for record in materialized
+        ],
+    }
+    payload["self_sha256"] = canonical_payload_sha256(payload)
+    return payload
+
+
 def mint_validated_split_assignment(
     records: Sequence[CremaLabelRecord],
     assignment: Mapping[str, str],
@@ -515,6 +595,47 @@ def mint_validated_split_assignment(
         seed_digest=seed_digest,
         manifest_sha256=manifest_sha256,
     )
+    assignment_by_actor = dict(canonical)
+    non_lockbox_roles = (
+        "training_discovery",
+        "calibration",
+        "balanced_diagnostic",
+    )
+    partition_cache_digests = {
+        role: _partition_authority_cache(
+            role=role,
+            records=tuple(
+                record
+                for record in materialized
+                if assignment_by_actor[record.actor_id] == role
+            ),
+            configuration_sha256=seed_digest.upper(),
+            split_manifest_sha256=manifest_sha256.upper(),
+            assignment_sha256=assignment_sha256,
+        )["self_sha256"]
+        for role in non_lockbox_roles
+    }
+    final_records = tuple(
+        sorted(
+            (
+                record
+                for record in materialized
+                if assignment_by_actor[record.actor_id] == "final_lockbox"
+            ),
+            key=lambda record: record.clip_stem,
+        )
+    )
+    final_record_commitment = _canonical_sha256(
+        [
+            {
+                "clip_stem": record.clip_stem,
+                "actor_id": record.actor_id,
+                "sentence_id": record.sentence_id,
+                "label": record.label,
+            }
+            for record in final_records
+        ]
+    )
     return _mint_artifact(
         ValidatedSplitAssignment,
         {
@@ -525,6 +646,14 @@ def mint_validated_split_assignment(
             "eligible_record_commitment_sha256": record_sha256,
             "eligible_record_count": len(materialized),
             "eligible_actor_count": len(canonical),
+            "partition_authority_sha256": partition_cache_digests,
+            "final_lockbox_commitment": {
+                "eligible_record_count": len(final_records),
+                "eligible_actor_count": len(
+                    {record.actor_id for record in final_records}
+                ),
+                "eligible_record_commitment_sha256": final_record_commitment,
+            },
         },
         state,
     )
@@ -554,6 +683,207 @@ def _verify_validated_split_assignment(
     return dict(canonical), state.seed_digest, manifest_sha256, materialized
 
 
+def serialize_partition_authority_caches(
+    split_assignment: ValidatedSplitAssignment,
+) -> dict[str, dict[str, Any]]:
+    assignment, seed_digest, manifest_sha256, records = (
+        _verify_validated_split_assignment(split_assignment)
+    )
+    split_payload = split_assignment.to_payload()
+    result = {
+        role: _partition_authority_cache(
+            role=role,
+            records=tuple(
+                record
+                for record in records
+                if assignment[record.actor_id] == role
+            ),
+            configuration_sha256=seed_digest.upper(),
+            split_manifest_sha256=manifest_sha256.upper(),
+            assignment_sha256=split_payload["assignment_sha256"],
+        )
+        for role in (
+            "training_discovery",
+            "calibration",
+            "balanced_diagnostic",
+        )
+    }
+    if {
+        role: payload["self_sha256"] for role, payload in result.items()
+    } != split_payload["partition_authority_sha256"]:
+        raise ValueError("partition authority cache commitments changed")
+    return copy.deepcopy(result)
+
+
+def mint_validated_partition_authority(
+    cache: Mapping[str, Any],
+    split_manifest: Mapping[str, Any],
+) -> ValidatedPartitionAuthority:
+    if not isinstance(cache, Mapping):
+        raise ValueError("partition authority cache must be a mapping")
+    payload = copy.deepcopy(dict(cache))
+    expected_cache_keys = {
+        "schema_id",
+        "schema_version",
+        "partition_role",
+        "configuration_sha256",
+        "split_manifest_sha256",
+        "assignment_sha256",
+        "records",
+        "self_sha256",
+    }
+    if set(payload) != expected_cache_keys:
+        raise ValueError("partition authority cache fields do not match")
+    validate_payload_self_hash(payload, "partition authority cache")
+    if (
+        payload["schema_id"]
+        != "emotion-state-phase-b-partition-authority-cache-v1"
+        or payload["schema_version"] != 1
+        or type(payload["schema_version"]) is not int
+    ):
+        raise ValueError("partition authority cache schema does not match")
+    role = validate_partition_role(
+        payload["partition_role"],
+        (
+            "training_discovery",
+            "calibration",
+            "balanced_diagnostic",
+        ),
+    )
+    rows = payload["records"]
+    if not isinstance(rows, list) or not rows:
+        raise ValueError("partition authority cache records must be non-empty")
+    record_keys = {
+        "clip_stem",
+        "actor_id",
+        "sentence_id",
+        "label",
+        "abstention_reason",
+        "vote_distribution",
+        "vote_agreement",
+        "vote_entropy",
+    }
+    records: list[CremaLabelRecord] = []
+    for row in rows:
+        if not isinstance(row, Mapping) or set(row) != record_keys:
+            raise ValueError("partition authority record fields do not match")
+        distribution = row["vote_distribution"]
+        if (
+            not isinstance(distribution, list)
+            or not distribution
+            or any(
+                not isinstance(cell, list)
+                or len(cell) != 2
+                or type(cell[0]) is not str
+                or cell[0] not in LABELS
+                or type(cell[1]) is not int
+                or cell[1] <= 0
+                for cell in distribution
+            )
+        ):
+            raise ValueError("partition authority vote distribution is invalid")
+        records.append(
+            CremaLabelRecord(
+                clip_stem=row["clip_stem"],
+                actor_id=row["actor_id"],
+                sentence_id=row["sentence_id"],
+                label=row["label"],
+                abstention_reason=row["abstention_reason"],
+                vote_distribution=tuple(
+                    (cell[0], cell[1]) for cell in distribution
+                ),
+                vote_agreement=row["vote_agreement"],
+                vote_entropy=row["vote_entropy"],
+            )
+        )
+    split = validate_phase_b_split_manifest(copy.deepcopy(dict(split_manifest)))
+    if (
+        payload["configuration_sha256"] != split["configuration_sha256"]
+        or payload["split_manifest_sha256"] != split["split_manifest_sha256"]
+        or payload["assignment_sha256"] != split["assignment_sha256"]
+        or payload["self_sha256"]
+        != split["partition_authority_sha256"][role]
+    ):
+        raise ValueError("partition authority cache does not bind split manifest")
+    rebuilt = _partition_authority_cache(
+        role=role,
+        records=records,
+        configuration_sha256=payload["configuration_sha256"],
+        split_manifest_sha256=payload["split_manifest_sha256"],
+        assignment_sha256=payload["assignment_sha256"],
+    )
+    if rebuilt != payload:
+        raise ValueError("partition authority cache changed during validation")
+    state = _ValidatedPartitionAuthorityState(
+        records=tuple(records),
+        role=role,
+        seed_digest=payload["configuration_sha256"].lower(),
+        manifest_sha256=payload["split_manifest_sha256"],
+        assignment_sha256=payload["assignment_sha256"],
+    )
+    return _mint_artifact(
+        ValidatedPartitionAuthority,
+        {
+            "schema_id": "emotion-state-phase-b-validated-partition-authority-v1",
+            "partition_role": role,
+            "configuration_sha256": payload["configuration_sha256"],
+            "split_manifest_sha256": payload["split_manifest_sha256"],
+            "assignment_sha256": payload["assignment_sha256"],
+            "partition_authority_sha256": payload["self_sha256"],
+            "eligible_record_count": len(records),
+            "eligible_actor_count": len({record.actor_id for record in records}),
+        },
+        state,
+    )
+
+
+def _verify_validated_partition_authority(
+    authority: Any,
+    *,
+    expected_role: str,
+) -> tuple[_ValidatedPartitionAuthorityState, dict[str, Any]]:
+    payload = _verify_artifact_mint(authority, ValidatedPartitionAuthority)
+    links = _artifact_links(authority)
+    if (
+        len(links) != 1
+        or type(links[0]) is not _ValidatedPartitionAuthorityState
+    ):
+        raise ValueError("validated partition authority private state is invalid")
+    state = links[0]
+    if state.role != expected_role:
+        raise ValueError("validated partition authority role does not match")
+    cache = _partition_authority_cache(
+        role=state.role,
+        records=state.records,
+        configuration_sha256=state.seed_digest.upper(),
+        split_manifest_sha256=state.manifest_sha256.upper(),
+        assignment_sha256=state.assignment_sha256,
+    )
+    expected_payload = {
+        "schema_id": "emotion-state-phase-b-validated-partition-authority-v1",
+        "partition_role": state.role,
+        "configuration_sha256": state.seed_digest.upper(),
+        "split_manifest_sha256": state.manifest_sha256.upper(),
+        "assignment_sha256": state.assignment_sha256,
+        "partition_authority_sha256": cache["self_sha256"],
+        "eligible_record_count": len(state.records),
+        "eligible_actor_count": len(
+            {record.actor_id for record in state.records}
+        ),
+    }
+    reminted = _mint_artifact(
+        ValidatedPartitionAuthority,
+        expected_payload,
+        state,
+    )
+    if (
+        reminted.to_payload() != payload
+        or reminted.mint_sha256 != authority.mint_sha256
+    ):
+        raise ValueError("validated partition authority commitment changed")
+    return state, payload
+
+
 def mint_partition_evidence(
     *,
     partition_role: str,
@@ -563,7 +893,7 @@ def mint_partition_evidence(
     sentences: np.ndarray,
     features: np.ndarray,
     upstream_acoustic_source_commitment_sha256: str,
-    split_assignment: ValidatedSplitAssignment,
+    split_assignment: ValidatedSplitAssignment | ValidatedPartitionAuthority,
     configuration: Mapping[str, Any],
     environment_lock: Mapping[str, Any],
     feature_schema: Mapping[str, Any],
@@ -624,17 +954,39 @@ def mint_partition_evidence(
         actors,
         expected_rows=len(rows),
     )
-    assignment, split_seed_digest, split_manifest_sha, eligible_records = (
-        _verify_validated_split_assignment(split_assignment)
-    )
-    authoritative = tuple(sorted(
-        (
-            record
-            for record in eligible_records
-            if assignment[record.actor_id] == role
-        ),
-        key=lambda record: record.clip_stem,
-    ))
+    if type(split_assignment) is ValidatedSplitAssignment:
+        assignment, split_seed_digest, split_manifest_sha, eligible_records = (
+            _verify_validated_split_assignment(split_assignment)
+        )
+        authoritative = tuple(sorted(
+            (
+                record
+                for record in eligible_records
+                if assignment[record.actor_id] == role
+            ),
+            key=lambda record: record.clip_stem,
+        ))
+        assignment_sha = _canonical_sha256([
+            [actor, assignment[actor]] for actor in sorted(assignment)
+        ])
+    elif type(split_assignment) is ValidatedPartitionAuthority:
+        partition_state, _ = _verify_validated_partition_authority(
+            split_assignment,
+            expected_role=role,
+        )
+        split_seed_digest = partition_state.seed_digest
+        split_manifest_sha = partition_state.manifest_sha256
+        authoritative = tuple(
+            sorted(
+                partition_state.records,
+                key=lambda record: record.clip_stem,
+            )
+        )
+        assignment_sha = partition_state.assignment_sha256
+    else:
+        raise TypeError(
+            "ValidatedSplitAssignment or ValidatedPartitionAuthority is required"
+        )
     expected_rows = tuple(record.clip_stem for record in authoritative)
     expected_actors = tuple(record.actor_id for record in authoritative)
     expected_labels = tuple(str(record.label) for record in authoritative)
@@ -687,9 +1039,6 @@ def mint_partition_evidence(
         raise ValueError(
             "validated actor split seed does not match configuration commitment"
         )
-    assignment_sha = _canonical_sha256([
-        [actor, assignment[actor]] for actor in sorted(assignment)
-    ])
     payload = {
         "schema_id": "emotion-state-phase-b-partition-evidence-v1",
         "partition_role": role,

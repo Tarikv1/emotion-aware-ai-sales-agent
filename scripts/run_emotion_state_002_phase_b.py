@@ -168,6 +168,7 @@ class RunnerPaths:
     input_ledger_path: Path
     non_lockbox_packet_path: Path
     lockbox_result_path: Path
+    public_material_root: Path | None = None
     authority: str = "invalid"
 
     @classmethod
@@ -222,6 +223,7 @@ class RunnerPaths:
                 state_root / "non-lockbox" / "non-lockbox-packet.json"
             ),
             lockbox_result_path=state_root / "lockbox" / "lockbox-result.json",
+            public_material_root=root / "data" / "public" / "emotion-state",
             authority="production",
         )
 
@@ -241,6 +243,7 @@ class RunnerPaths:
         input_ledger_path: Path,
         non_lockbox_packet_path: Path,
         lockbox_result_path: Path,
+        public_material_root: Path | None = None,
     ) -> "RunnerPaths":
         return cls(
             project_root=project_root,
@@ -255,6 +258,7 @@ class RunnerPaths:
             input_ledger_path=input_ledger_path,
             non_lockbox_packet_path=non_lockbox_packet_path,
             lockbox_result_path=lockbox_result_path,
+            public_material_root=public_material_root,
             authority="injected-test",
         )
 
@@ -267,8 +271,75 @@ class RunnerPaths:
         return Path(self.state_root) / "non-lockbox"
 
     @property
+    def preflight_cache_root(self) -> Path:
+        return Path(self.state_root) / "preflight"
+
+    @property
+    def non_lockbox_cache_root(self) -> Path:
+        return self.non_lockbox_root / "cache"
+
+    @property
     def lockbox_root(self) -> Path:
         return Path(self.state_root) / "lockbox"
+
+    @property
+    def final_lockbox_cache_root(self) -> Path:
+        return self.lockbox_root / "cache"
+
+    @property
+    def crema_material_root(self) -> Path:
+        if self.public_material_root is None:
+            raise RunnerError("public-material root is unavailable")
+        return Path(self.public_material_root) / "crema-d-v1.0"
+
+    @property
+    def crema_audio_root(self) -> Path:
+        return self.crema_material_root / "repository" / "AudioWAV"
+
+    @property
+    def crema_finished_responses_path(self) -> Path:
+        return self.crema_material_root / "repository" / "finishedResponses.csv"
+
+    @property
+    def crema_summary_table_path(self) -> Path:
+        return (
+            self.crema_material_root
+            / "repository"
+            / "processedResults"
+            / "summaryTable.csv"
+        )
+
+    @property
+    def ami_material_root(self) -> Path:
+        if self.public_material_root is None:
+            raise RunnerError("public-material root is unavailable")
+        return Path(self.public_material_root) / "ami-manual-annotations-v1.6.2"
+
+    @property
+    def ami_archive_path(self) -> Path:
+        return self.ami_material_root / "ami_manual_1.6.2.zip"
+
+    @property
+    def ami_extracted_root(self) -> Path:
+        return self.ami_material_root / "extracted"
+
+    @property
+    def ami_partition_source_path(self) -> Path:
+        return (
+            self.ami_material_root
+            / "official-partitions"
+            / "datasets.shtml"
+        )
+
+    @property
+    def dataset_evidence_root(self) -> Path:
+        return (
+            Path(self.project_root)
+            / "research"
+            / "sources"
+            / "emotion_state"
+            / "datasets"
+        )
 
     @property
     def recovery_root(self) -> Path:
@@ -756,6 +827,7 @@ def _validate_layout(paths: RunnerPaths) -> None:
             "input_ledger_path",
             "non_lockbox_packet_path",
             "lockbox_result_path",
+            "public_material_root",
         )
         if any(
             _absolute_lexical(Path(getattr(paths, field)), project)
@@ -1766,7 +1838,7 @@ def _validate_state(payload: Any) -> dict[str, Any]:
     return dict(payload)
 
 
-def _load_json_object(path: Path, label: str) -> dict[str, Any]:
+def _load_json_object_bytes(content: bytes, label: str) -> dict[str, Any]:
     try:
         def reject_duplicates(pairs: list[tuple[str, Any]]) -> dict[str, Any]:
             value: dict[str, Any] = {}
@@ -1777,7 +1849,7 @@ def _load_json_object(path: Path, label: str) -> dict[str, Any]:
             return value
 
         payload = json.loads(
-            _read_file_nofollow(path).decode("utf-8"),
+            content.decode("utf-8"),
             object_pairs_hook=reject_duplicates,
             parse_constant=lambda value: (_ for _ in ()).throw(
                 ValueError(f"non-finite JSON constant: {value}")
@@ -1788,6 +1860,64 @@ def _load_json_object(path: Path, label: str) -> dict[str, Any]:
     if not isinstance(payload, dict):
         raise RunnerError(f"{label} must be a JSON object")
     return payload
+
+
+def _load_json_object(path: Path, label: str) -> dict[str, Any]:
+    return _load_json_object_bytes(_read_file_nofollow(path), label)
+
+
+def _load_bound_partition_authority(
+    paths: RunnerPaths,
+    *,
+    role: str,
+    expected_split_manifest_sha256: str,
+) -> Any:
+    from scripts.emotion_state_phase_b_evaluation import (
+        mint_validated_partition_authority,
+    )
+
+    if role not in (
+        "training_discovery",
+        "calibration",
+        "balanced_diagnostic",
+    ):
+        raise RunnerError("non-lockbox partition role is invalid")
+    _validate_digest(
+        expected_split_manifest_sha256,
+        "split_manifest_sha256",
+    )
+    split_path = _validate_input_path(paths, paths.split_manifest_path)
+    split_bytes = _read_file_nofollow(split_path)
+    if _sha256_bytes(split_bytes) != expected_split_manifest_sha256:
+        raise RunnerError("split manifest changed after preflight")
+
+    cache_path = _safe_path(
+        paths.preflight_cache_root / f"{role}.json",
+        allowed_root=paths.preflight_cache_root,
+        project_root=paths.project_root,
+        final_kind="file",
+        require_final=True,
+    )
+    cache_bytes = _read_file_nofollow(cache_path)
+    split_bytes_after = _read_file_nofollow(split_path)
+    if (
+        split_bytes_after != split_bytes
+        or _sha256_bytes(split_bytes_after)
+        != expected_split_manifest_sha256
+    ):
+        raise RunnerError("split manifest changed after preflight")
+    try:
+        return mint_validated_partition_authority(
+            _load_json_object_bytes(
+                cache_bytes,
+                f"{role} partition-authority cache",
+            ),
+            _load_json_object_bytes(split_bytes, "split manifest"),
+        )
+    except (TypeError, ValueError) as error:
+        raise RunnerError(
+            f"{role} partition authority validation failed: {error}"
+        ) from error
 
 
 def load_state(
@@ -1945,8 +2075,32 @@ def _validate_preflight_inputs(
     }
 
 
+def _assert_production_material_prerequisites(paths: RunnerPaths) -> None:
+    from scripts.emotion_state_phase_b_public_pipeline import (
+        PublicMaterialPrerequisiteError,
+        TRACKED_DATASET_EVIDENCE_FILENAMES,
+        validate_tracked_public_evidence,
+    )
+
+    _validate_layout(paths)
+    if paths.authority != "production":
+        raise RunnerError(
+            "public-material prerequisite gate requires production authority"
+        )
+    evidence: dict[str, bytes] = {}
+    for name in TRACKED_DATASET_EVIDENCE_FILENAMES:
+        path = _validate_input_path(paths, paths.dataset_evidence_root / name)
+        evidence[name] = _read_file_nofollow(path)
+    try:
+        validate_tracked_public_evidence(evidence)
+    except PublicMaterialPrerequisiteError as error:
+        raise RunnerError(str(error)) from error
+
+
 def run_preflight(paths: RunnerPaths) -> dict[str, Any]:
     _assert_closed_environment()
+    if paths.authority == "production":
+        _assert_production_material_prerequisites(paths)
     _config, _split, _ledger, digests = _validate_preflight_inputs(paths)
     state_exists = os.path.lexists(paths.state_path)
     state = load_state(paths) if state_exists else _initial_state()
@@ -1991,6 +2145,29 @@ def _revalidate_bound_preflight(
         raise RunnerError("preflight anchor changed after validation")
 
 
+def _validate_non_lockbox_packet_for_authority(
+    paths: RunnerPaths,
+    packet: Mapping[str, Any],
+) -> dict[str, Any]:
+    try:
+        if paths.authority == "production":
+            from scripts.emotion_state_phase_b_public_pipeline import (
+                validate_non_lockbox_review_packet,
+            )
+
+            return validate_non_lockbox_review_packet(packet)
+        if paths.authority == "injected-test":
+            return validate_non_lockbox_packet(packet)
+    except (TypeError, ValueError) as error:
+        label = (
+            "production non-lockbox packet"
+            if paths.authority == "production"
+            else "synthetic non-lockbox packet"
+        )
+        raise RunnerError(f"invalid {label}: {error}") from error
+    raise RunnerError("runner path authority is invalid")
+
+
 def _validated_packet(
     paths: RunnerPaths,
     state: Mapping[str, Any],
@@ -2000,10 +2177,7 @@ def _validated_packet(
     packet_path = _validate_non_lockbox_path(paths)
     digest_before = _sha256_file(packet_path)
     packet = _load_json_object(packet_path, "non-lockbox packet")
-    try:
-        validated = validate_non_lockbox_packet(packet)
-    except (TypeError, ValueError) as error:
-        raise RunnerError(f"invalid non-lockbox packet: {error}") from error
+    validated = _validate_non_lockbox_packet_for_authority(paths, packet)
     digest = _sha256_file(packet_path)
     if digest != digest_before:
         raise RunnerError("non-lockbox packet changed during semantic validation")

@@ -5652,6 +5652,361 @@ class EvaluationTests(unittest.TestCase):
         self.assertEqual(_decision_outcome(failed, validity), "discard")
 
 
+class Task10ProductionPipelineTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls) -> None:
+        EvaluationTests.setUpClass()
+
+    def test_production_paths_pin_only_verified_public_roots_and_ignored_outputs(
+        self,
+    ) -> None:
+        from scripts import run_emotion_state_002_phase_b as runner
+
+        paths = runner.RunnerPaths.production()
+        public_root = ROOT / "data/public/emotion-state"
+        crema_root = public_root / "crema-d-v1.0"
+        ami_root = public_root / "ami-manual-annotations-v1.6.2"
+
+        self.assertTrue(
+            hasattr(paths, "public_material_root"),
+            "production RunnerPaths must pin the public-material root",
+        )
+        self.assertEqual(paths.public_material_root, public_root)
+        self.assertEqual(paths.crema_material_root, crema_root)
+        self.assertEqual(
+            paths.crema_audio_root,
+            crema_root / "repository/AudioWAV",
+        )
+        self.assertEqual(
+            paths.crema_finished_responses_path,
+            crema_root / "repository/finishedResponses.csv",
+        )
+        self.assertEqual(
+            paths.crema_summary_table_path,
+            crema_root / "repository/processedResults/summaryTable.csv",
+        )
+        self.assertEqual(paths.ami_material_root, ami_root)
+        self.assertEqual(
+            paths.ami_archive_path,
+            ami_root / "ami_manual_1.6.2.zip",
+        )
+        self.assertEqual(paths.ami_extracted_root, ami_root / "extracted")
+        self.assertEqual(
+            paths.ami_partition_source_path,
+            ami_root / "official-partitions/datasets.shtml",
+        )
+        self.assertEqual(
+            paths.dataset_evidence_root,
+            ROOT / "research/sources/emotion_state/datasets",
+        )
+        for output in (
+            paths.preflight_cache_root,
+            paths.non_lockbox_cache_root,
+            paths.non_lockbox_packet_path,
+        ):
+            self.assertTrue(output.is_relative_to(paths.state_root))
+        self.assertTrue(
+            paths.final_lockbox_cache_root.is_relative_to(paths.lockbox_root)
+        )
+        self.assertFalse(paths.canonical_root.is_relative_to(paths.state_root))
+
+        altered = replace(
+            paths,
+            public_material_root=ROOT / "data/public/other",
+        )
+        with self.assertRaisesRegex(
+            runner.RunnerError,
+            "prescribed paths",
+        ):
+            runner._validate_layout(altered)
+
+    def test_preflight_serializes_partition_authorities_without_non_lockbox_reload(
+        self,
+    ) -> None:
+        from scripts import emotion_state_phase_b_evaluation as evaluation
+
+        self.assertTrue(
+            hasattr(evaluation, "serialize_partition_authority_caches"),
+            "preflight must serialize partition-separated split authorities",
+        )
+        caches = evaluation.serialize_partition_authority_caches(
+            EvaluationTests.SPLIT_ASSIGNMENT
+        )
+        self.assertEqual(
+            set(caches),
+            {
+                "training_discovery",
+                "calibration",
+                "balanced_diagnostic",
+            },
+        )
+        for role, cache in caches.items():
+            self.assertEqual(cache["partition_role"], role)
+            expected = EvaluationTests.RECORDS_BY_ROLE[role]
+            self.assertEqual(len(cache["records"]), len(expected))
+            self.assertEqual(
+                {row["clip_stem"] for row in cache["records"]},
+                {record.clip_stem for record in expected},
+            )
+
+        training_cache = deepcopy(caches["training_discovery"])
+        authority = evaluation.mint_validated_partition_authority(
+            training_cache,
+            EvaluationTests.SPLIT_ASSIGNMENT.to_payload(),
+        )
+        self.assertEqual(
+            authority.to_payload()["partition_role"],
+            "training_discovery",
+        )
+        split_manifest = EvaluationTests.SPLIT_ASSIGNMENT.to_payload()
+        self.assertEqual(
+            split_manifest["final_lockbox_commitment"]["eligible_actor_count"],
+            30,
+        )
+        self.assertEqual(
+            split_manifest["final_lockbox_commitment"]["eligible_record_count"],
+            len(EvaluationTests.RECORDS_BY_ROLE["final_lockbox"]),
+        )
+        self.assertRegex(
+            split_manifest["final_lockbox_commitment"][
+                "eligible_record_commitment_sha256"
+            ],
+            r"^[0-9A-F]{64}$",
+        )
+
+        tampered = deepcopy(training_cache)
+        tampered["records"][0]["label"] = (
+            "D" if tampered["records"][0]["label"] != "D" else "A"
+        )
+        with self.assertRaises(ValueError):
+            evaluation.mint_validated_partition_authority(
+                tampered,
+                EvaluationTests.SPLIT_ASSIGNMENT.to_payload(),
+            )
+
+    def test_non_lockbox_partition_evidence_uses_partition_authority_only(
+        self,
+    ) -> None:
+        import numpy as np
+
+        from scripts import emotion_state_phase_b_evaluation as evaluation
+        from scripts.validate_emotion_state_002_phase_b import (
+            EXPECTED_CONFIG,
+            EXPECTED_ENVIRONMENT_LOCK,
+            EXPECTED_FEATURE_SCHEMA,
+            EXPECTED_SPLIT_SCHEMA,
+        )
+
+        caches = evaluation.serialize_partition_authority_caches(
+            EvaluationTests.SPLIT_ASSIGNMENT
+        )
+        authority = evaluation.mint_validated_partition_authority(
+            caches["training_discovery"],
+            EvaluationTests.SPLIT_ASSIGNMENT.to_payload(),
+        )
+        records = EvaluationTests.RECORDS_BY_ROLE["training_discovery"]
+        features = np.zeros((len(records), 17), dtype=np.float64)
+        try:
+            evidence = evaluation.mint_partition_evidence(
+                partition_role="training_discovery",
+                row_ids=[record.clip_stem for record in records],
+                actor_ids=[record.actor_id for record in records],
+                labels=np.asarray(
+                    [record.label for record in records],
+                    dtype="<U1",
+                ),
+                sentences=np.asarray(
+                    [record.sentence_id for record in records],
+                    dtype="<U3",
+                ),
+                features=features,
+                upstream_acoustic_source_commitment_sha256="A" * 64,
+                split_assignment=authority,
+                configuration=deepcopy(EXPECTED_CONFIG),
+                environment_lock=deepcopy(EXPECTED_ENVIRONMENT_LOCK),
+                feature_schema=deepcopy(EXPECTED_FEATURE_SCHEMA),
+                split_schema=deepcopy(EXPECTED_SPLIT_SCHEMA),
+                model_identity=evaluation.frozen_model_identity(
+                    EvaluationTests.MODEL_SEED
+                ),
+            )
+        except (TypeError, ValueError) as error:
+            self.fail(
+                "partition-only authority must mint non-lockbox evidence: "
+                f"{error}"
+            )
+        self.assertEqual(
+            evidence.to_payload()["partition_role"],
+            "training_discovery",
+        )
+        self.assertEqual(
+            evidence.to_payload()["assignment_sha256"],
+            EvaluationTests.SPLIT_ASSIGNMENT.to_payload()["assignment_sha256"],
+        )
+
+    def test_tracked_ami_dependency_quarantine_blocks_material_access(
+        self,
+    ) -> None:
+        from scripts import emotion_state_phase_b_public_pipeline as pipeline
+
+        evidence_root = ROOT / "research/sources/emotion_state/datasets"
+        evidence = {
+            name: (evidence_root / name).read_bytes()
+            for name in pipeline.TRACKED_DATASET_EVIDENCE_FILENAMES
+        }
+        with self.assertRaisesRegex(
+            pipeline.PublicMaterialPrerequisiteError,
+            r"2069 .*participant identity",
+        ):
+            pipeline.validate_tracked_public_evidence(evidence)
+
+    def test_production_prerequisite_reads_only_identity_bound_tracked_evidence(
+        self,
+    ) -> None:
+        from scripts import emotion_state_phase_b_public_pipeline as pipeline
+        from scripts import run_emotion_state_002_phase_b as runner
+
+        self.assertTrue(
+            hasattr(runner, "_assert_production_material_prerequisites"),
+            "production preflight must gate on tracked evidence first",
+        )
+        paths = runner.RunnerPaths.production()
+        observed: list[Path] = []
+        real_read = runner._read_file_nofollow
+
+        def observed_read(path: Path, **kwargs: Any) -> bytes:
+            observed.append(Path(path))
+            return real_read(path, **kwargs)
+
+        with patch.object(
+            runner,
+            "_read_file_nofollow",
+            side_effect=observed_read,
+        ):
+            with self.assertRaisesRegex(
+                runner.RunnerError,
+                r"2069 .*participant identity",
+            ):
+                runner._assert_production_material_prerequisites(paths)
+        self.assertEqual(
+            set(observed),
+            {
+                paths.dataset_evidence_root / name
+                for name in pipeline.TRACKED_DATASET_EVIDENCE_FILENAMES
+            },
+        )
+        self.assertFalse(
+            any(
+                path.is_relative_to(paths.public_material_root)
+                for path in observed
+            )
+        )
+
+    def test_non_lockbox_review_packet_binds_aggregates_and_zero_lockbox_reads(
+        self,
+    ) -> None:
+        from scripts import emotion_state_phase_b_public_pipeline as pipeline
+        from scripts.emotion_state_phase_b_evaluation import (
+            evaluate_partition,
+            predict_probabilities,
+        )
+
+        case = EvaluationTests(
+            "test_diagnostic_and_cross_run_final_artifacts_fail_closed"
+        )
+        artifacts = case._semantic_artifacts()
+        diagnostic_partition = case._authoritative_partition(
+            "balanced_diagnostic"
+        )
+        diagnostic_probabilities = predict_probabilities(
+            artifacts["fitted"],
+            diagnostic_partition,
+        )
+        diagnostic = evaluate_partition(
+            diagnostic_probabilities,
+            artifacts["calibration"],
+        ).to_payload()
+        RunnerStateTests.setUpClass()
+        packet = pipeline.build_non_lockbox_review_packet(
+            diagnostic_aggregate=diagnostic,
+            ami_aggregate=deepcopy(RunnerStateTests.AMI_AGGREGATE),
+            split_manifest_sha256=EvaluationTests.SPLIT_ASSIGNMENT.to_payload()[
+                "split_manifest_sha256"
+            ],
+        )
+        validated = pipeline.validate_non_lockbox_review_packet(packet)
+        self.assertEqual(validated, packet)
+        from scripts import run_emotion_state_002_phase_b as runner
+        from scripts.validate_emotion_state_002_phase_b import (
+            expected_non_lockbox_packet,
+        )
+
+        self.assertTrue(
+            hasattr(runner, "_validate_non_lockbox_packet_for_authority"),
+            "production non-lockbox must require the aggregate-bound packet",
+        )
+        self.assertEqual(
+            runner._validate_non_lockbox_packet_for_authority(
+                runner.RunnerPaths.production(),
+                packet,
+            ),
+            packet,
+        )
+        with self.assertRaisesRegex(
+            runner.RunnerError,
+            "production non-lockbox packet",
+        ):
+            runner._validate_non_lockbox_packet_for_authority(
+                runner.RunnerPaths.production(),
+                expected_non_lockbox_packet("A" * 64),
+            )
+        self.assertEqual(
+            packet["lockbox_access"],
+            {
+                "open_count": 0,
+                "label_reads": 0,
+                "feature_reads": 0,
+                "audio_reads": 0,
+            },
+        )
+        self.assertFalse(packet["final_decision_eligible"])
+        self.assertRegex(packet["diagnostic_aggregate_sha256"], r"^[0-9A-F]{64}$")
+        self.assertRegex(packet["ami_aggregate_sha256"], r"^[0-9A-F]{64}$")
+        self.assertRegex(packet["review_sha256"], r"^[0-9A-F]{64}$")
+        serialized = json.dumps(packet, sort_keys=True).casefold()
+        for forbidden in (
+            '"row_ids"',
+            '"actor_ids"',
+            '"participant_ids"',
+            '"meeting_ids"',
+            '"probabilities"',
+            '"clip_stem"',
+            ".wav",
+        ):
+            self.assertNotIn(forbidden, serialized)
+
+        mutated = deepcopy(packet)
+        mutated["model_settings"]["C"] = 2.0
+        with self.assertRaisesRegex(
+            pipeline.PublicMaterialPrerequisiteError,
+            "model settings",
+        ):
+            pipeline.validate_non_lockbox_review_packet(mutated)
+        with self.assertRaisesRegex(
+            pipeline.PublicMaterialPrerequisiteError,
+            "private identifier",
+        ):
+            pipeline.validate_aggregate_privacy(
+                {
+                    "safe_cell": {
+                        "unique_actor_count": 10,
+                        "value": 0.5,
+                    },
+                    "row_ids": ["synthetic-row"],
+                }
+            )
+
+
 class RunnerStateTests(unittest.TestCase):
     DIGESTS = tuple(character * 64 for character in "ABCDEF0123456789")
 
@@ -6250,6 +6605,191 @@ runner.accept_receipt(paths, paths.receipt_path("accept.json"))
         with self.assertRaisesRegex(self.runner.RunnerError, "environment"):
             self.runner.run_non_lockbox(self.paths)
         self.assertEqual(self._state_bytes(), before)
+
+    def test_non_lockbox_rejects_coordinated_cache_and_manifest_tamper(
+        self,
+    ) -> None:
+        from scripts import emotion_state_phase_b_evaluation as evaluation
+        from scripts.validate_emotion_state_002_phase_b import (
+            canonical_payload_sha256,
+        )
+
+        self.assertTrue(
+            hasattr(self.runner, "_load_bound_partition_authority"),
+            "non-lockbox must load cache authority through preflight state",
+        )
+        caches = evaluation.serialize_partition_authority_caches(
+            EvaluationTests.SPLIT_ASSIGNMENT
+        )
+        cache_path = (
+            self.paths.preflight_cache_root / "training_discovery.json"
+        )
+        self._write_json(cache_path, caches["training_discovery"])
+        state = self.runner.run_preflight(self.paths)
+
+        tampered_cache = deepcopy(caches["training_discovery"])
+        tampered_cache["records"][0]["label"] = (
+            "D"
+            if tampered_cache["records"][0]["label"] != "D"
+            else "A"
+        )
+        tampered_cache["self_sha256"] = canonical_payload_sha256(
+            tampered_cache
+        )
+        tampered_manifest = deepcopy(self.SPLIT_MANIFEST)
+        tampered_manifest["partition_authority_sha256"][
+            "training_discovery"
+        ] = tampered_cache["self_sha256"]
+        tampered_manifest["self_sha256"] = canonical_payload_sha256(
+            tampered_manifest
+        )
+        self._write_json(cache_path, tampered_cache)
+        self._write_json(self.split_manifest_path, tampered_manifest)
+
+        state_before = self._state_bytes()
+        with self.assertRaisesRegex(
+            self.runner.RunnerError,
+            "split manifest changed after preflight",
+        ):
+            self.runner._load_bound_partition_authority(
+                self.paths,
+                role="training_discovery",
+                expected_split_manifest_sha256=state[
+                    "split_manifest_sha256"
+                ],
+            )
+        self.assertEqual(self._state_bytes(), state_before)
+
+    def test_partition_authority_read_rejects_identity_swap_and_reparse(
+        self,
+    ) -> None:
+        from scripts import emotion_state_phase_b_evaluation as evaluation
+
+        caches = evaluation.serialize_partition_authority_caches(
+            EvaluationTests.SPLIT_ASSIGNMENT
+        )
+        for role, payload in caches.items():
+            self._write_json(
+                self.paths.preflight_cache_root / f"{role}.json",
+                payload,
+            )
+        state = self.runner.run_preflight(self.paths)
+
+        swap_path = (
+            self.paths.preflight_cache_root / "training_discovery.json"
+        )
+        real_stat = self.runner.os.stat
+        target_stat_calls = 0
+
+        def changed_identity_after_open(
+            path: os.PathLike[str] | str,
+            *args: Any,
+            **kwargs: Any,
+        ) -> Any:
+            nonlocal target_stat_calls
+            status = real_stat(path, *args, **kwargs)
+            if Path(path) == swap_path:
+                target_stat_calls += 1
+                if target_stat_calls == 2:
+                    return SimpleNamespace(
+                        st_mode=status.st_mode,
+                        st_dev=status.st_dev,
+                        st_ino=status.st_ino + 1,
+                        st_size=status.st_size,
+                        st_file_attributes=getattr(
+                            status,
+                            "st_file_attributes",
+                            0,
+                        ),
+                    )
+            return status
+
+        with patch.object(
+            self.runner.os,
+            "stat",
+            side_effect=changed_identity_after_open,
+        ):
+            with self.assertRaisesRegex(
+                self.runner.RunnerError,
+                "identity",
+            ):
+                self.runner._load_bound_partition_authority(
+                    self.paths,
+                    role="training_discovery",
+                    expected_split_manifest_sha256=state[
+                        "split_manifest_sha256"
+                    ],
+                )
+        self.assertGreaterEqual(target_stat_calls, 2)
+
+        symlink_path = (
+            self.paths.preflight_cache_root / "calibration.json"
+        )
+        real_lstat = os.lstat
+
+        def fake_symlink_lstat(path: os.PathLike[str] | str) -> Any:
+            status = real_lstat(path)
+            if Path(path) == symlink_path:
+                return SimpleNamespace(
+                    st_mode=stat.S_IFLNK | 0o777,
+                    st_file_attributes=0,
+                    st_dev=status.st_dev,
+                    st_ino=status.st_ino,
+                )
+            return status
+
+        with patch.object(
+            self.runner.os,
+            "lstat",
+            side_effect=fake_symlink_lstat,
+        ):
+            with self.assertRaisesRegex(
+                self.runner.RunnerError,
+                "symlink",
+            ):
+                self.runner._load_bound_partition_authority(
+                    self.paths,
+                    role="calibration",
+                    expected_split_manifest_sha256=state[
+                        "split_manifest_sha256"
+                    ],
+                )
+
+        reparse_path = (
+            self.paths.preflight_cache_root / "balanced_diagnostic.json"
+        )
+
+        def fake_lstat(path: os.PathLike[str] | str) -> Any:
+            status = real_lstat(path)
+            if Path(path) == reparse_path:
+                return SimpleNamespace(
+                    st_mode=status.st_mode,
+                    st_file_attributes=getattr(
+                        stat,
+                        "FILE_ATTRIBUTE_REPARSE_POINT",
+                        0x400,
+                    ),
+                    st_dev=status.st_dev,
+                    st_ino=status.st_ino,
+                )
+            return status
+
+        with patch.object(
+            self.runner.os,
+            "lstat",
+            side_effect=fake_lstat,
+        ):
+            with self.assertRaisesRegex(
+                self.runner.RunnerError,
+                "reparse",
+            ):
+                self.runner._load_bound_partition_authority(
+                    self.paths,
+                    role="balanced_diagnostic",
+                    expected_split_manifest_sha256=state[
+                        "split_manifest_sha256"
+                    ],
+                )
 
     def test_phase_specific_state_placeholders_fail_closed(self) -> None:
         self.runner.run_preflight(self.paths)

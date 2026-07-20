@@ -2032,6 +2032,8 @@ def validate_phase_b_split_manifest(payload: Any) -> dict[str, Any]:
             "eligible_record_commitment_sha256",
             "assignment_sha256",
             "split_manifest_sha256",
+            "partition_authority_sha256",
+            "final_lockbox_commitment",
             "self_sha256",
         ),
         "validated split manifest",
@@ -2053,6 +2055,36 @@ def validate_phase_b_split_manifest(payload: Any) -> dict[str, Any]:
         "split_manifest_sha256",
     ):
         _uppercase_sha256(manifest[field], f"validated split {field}")
+    authority = _exact_keys(
+        manifest["partition_authority_sha256"],
+        (
+            "training_discovery",
+            "calibration",
+            "balanced_diagnostic",
+        ),
+        "non-lockbox partition authority commitments",
+    )
+    for role, digest in authority.items():
+        _uppercase_sha256(digest, f"{role} partition authority")
+    final_lockbox = _exact_keys(
+        manifest["final_lockbox_commitment"],
+        (
+            "eligible_record_count",
+            "eligible_actor_count",
+            "eligible_record_commitment_sha256",
+        ),
+        "final-lockbox commitment",
+    )
+    _positive_count(
+        final_lockbox["eligible_record_count"],
+        "final-lockbox eligible record count",
+    )
+    if final_lockbox["eligible_actor_count"] != 30:
+        raise ValueError("final-lockbox actor count must be exactly 30")
+    _uppercase_sha256(
+        final_lockbox["eligible_record_commitment_sha256"],
+        "final-lockbox eligible-record commitment",
+    )
     return dict(manifest)
 
 
