@@ -1019,6 +1019,7 @@ def _windows_open_mutation_fd(
     access: int,
     disposition: int,
     descriptor_flags: int,
+    share_mode: int = 0x00000001 | 0x00000002,
 ) -> int:
     from ctypes import wintypes
 
@@ -1037,7 +1038,7 @@ def _windows_open_mutation_fd(
     handle = create_file(
         str(path),
         access,
-        0x00000001 | 0x00000002,  # FILE_SHARE_READ | FILE_SHARE_WRITE
+        share_mode,
         None,
         disposition,
         0x00000080 | 0x00200000 | 0x80000000,
@@ -1379,72 +1380,112 @@ def _recover_windows_replacement(destination: Path) -> str:
         prior_path=prior_path,
     )
     destination_exists = os.path.lexists(destination)
-    destination_digest = (
-        _sha256_file(destination) if destination_exists else None
-    )
-    if prior_exists:
-        if _sha256_file(prior_path) != intent["prior_sha256"]:
-            raise RunnerError(
-                "durable replacement prior digest mismatch; evidence retained"
-            )
-        if destination_exists:
-            if destination_digest != intent["source_sha256"]:
-                raise RunnerError(
-                    "durable replacement destination conflicts; evidence retained"
-                )
-            _durable_unlink(prior_path, missing_ok=False)
-            _durable_unlink(intent_path, missing_ok=False)
-            return "committed"
-
-        with _trusted_parent_handles(
-            prior_path,
-            include_target=False,
-            mutation=True,
-        ) as parent_authority:
-            if parent_authority.windows_handle is None:
-                raise RunnerError(
-                    "Windows replacement recovery authority is missing"
-                )
-            descriptor = _windows_open_mutation_fd(
-                prior_path,
-                access=0x80000000 | 0x00010000 | 0x00000080,
+    destination_descriptor: int | None = None
+    destination_digest: str | None = None
+    if destination_exists:
+        try:
+            destination_descriptor = _windows_open_mutation_fd(
+                destination,
+                access=0x80000000 | 0x00000080,
                 disposition=3,
                 descriptor_flags=os.O_RDONLY | getattr(os, "O_BINARY", 0),
+                share_mode=0x00000001,  # exclude write and delete sharing
             )
-            try:
-                _verify_opened_mutation_identity(prior_path, descriptor)
-                _windows_rename_descriptor(
-                    descriptor,
-                    destination.name,
-                    destination_parent_handle=parent_authority.windows_handle,
-                )
-                _bind_mutated_entry(prior_path, present=False)
-                _bind_mutated_entry(destination, present=True)
-                _sync_directory(
-                    destination.parent,
-                    authority=parent_authority,
-                )
-            finally:
-                os.close(descriptor)
-        if _sha256_file(destination) != intent["prior_sha256"]:
-            raise RunnerError("restored durable replacement prior digest mismatch")
-        _durable_unlink(intent_path, missing_ok=False)
-        return "restored"
+            _verify_opened_mutation_identity(
+                destination,
+                destination_descriptor,
+            )
+            destination_digest = _sha256_descriptor(destination_descriptor)
+        except (OSError, RunnerError) as error:
+            if destination_descriptor is not None:
+                os.close(destination_descriptor)
+            raise RunnerError(
+                "unable to hold exact recovery destination; evidence retained"
+            ) from error
 
-    if destination_digest not in {
-        intent["prior_sha256"],
-        intent["source_sha256"],
-    }:
-        raise RunnerError(
-            "durable replacement state is ambiguous; evidence retained"
+    def verify_held_destination(expected_digest: str) -> None:
+        if (
+            destination_descriptor is None
+            or _sha256_descriptor(destination_descriptor) != expected_digest
+        ):
+            raise RunnerError(
+                "held recovery destination changed; evidence retained"
+            )
+
+    try:
+        if prior_exists:
+            if _sha256_file(prior_path) != intent["prior_sha256"]:
+                raise RunnerError(
+                    "durable replacement prior digest mismatch; evidence retained"
+                )
+            if destination_exists:
+                if destination_digest != intent["source_sha256"]:
+                    raise RunnerError(
+                        "durable replacement destination conflicts; evidence retained"
+                    )
+                verify_held_destination(intent["source_sha256"])
+                _durable_unlink(prior_path, missing_ok=False)
+                verify_held_destination(intent["source_sha256"])
+                _durable_unlink(intent_path, missing_ok=False)
+                verify_held_destination(intent["source_sha256"])
+                return "committed"
+
+            with _trusted_parent_handles(
+                prior_path,
+                include_target=False,
+                mutation=True,
+            ) as parent_authority:
+                if parent_authority.windows_handle is None:
+                    raise RunnerError(
+                        "Windows replacement recovery authority is missing"
+                    )
+                descriptor = _windows_open_mutation_fd(
+                    prior_path,
+                    access=0x80000000 | 0x00010000 | 0x00000080,
+                    disposition=3,
+                    descriptor_flags=os.O_RDONLY | getattr(os, "O_BINARY", 0),
+                )
+                try:
+                    _verify_opened_mutation_identity(prior_path, descriptor)
+                    _windows_rename_descriptor(
+                        descriptor,
+                        destination.name,
+                        destination_parent_handle=parent_authority.windows_handle,
+                    )
+                    _bind_mutated_entry(prior_path, present=False)
+                    _bind_mutated_entry(destination, present=True)
+                    _sync_directory(
+                        destination.parent,
+                        authority=parent_authority,
+                    )
+                finally:
+                    os.close(descriptor)
+            if _sha256_file(destination) != intent["prior_sha256"]:
+                raise RunnerError(
+                    "restored durable replacement prior digest mismatch"
+                )
+            _durable_unlink(intent_path, missing_ok=False)
+            return "restored"
+
+        if destination_digest not in {
+            intent["prior_sha256"],
+            intent["source_sha256"],
+        }:
+            raise RunnerError(
+                "durable replacement state is ambiguous; evidence retained"
+            )
+        outcome = (
+            "committed"
+            if destination_digest == intent["source_sha256"]
+            else "not_started"
         )
-    outcome = (
-        "committed"
-        if destination_digest == intent["source_sha256"]
-        else "not_started"
-    )
-    _durable_unlink(intent_path, missing_ok=False)
-    return outcome
+        verify_held_destination(destination_digest)
+        _durable_unlink(intent_path, missing_ok=False)
+        verify_held_destination(destination_digest)
+        return outcome
+    finally:
+        if destination_descriptor is not None:
+            os.close(destination_descriptor)
 
 
 def _recover_output_replacement(

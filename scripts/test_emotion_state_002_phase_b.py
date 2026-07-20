@@ -7287,6 +7287,145 @@ runner.accept_receipt(paths, paths.receipt_path("accept.json"))
                 self.assertTrue(authority_flags)
                 self.assertTrue(all(authority_flags))
 
+    @unittest.skipUnless(os.name == "nt", "Windows recovery authority test")
+    def test_final_rereview_not_started_holds_destination_through_cleanup(
+        self,
+    ) -> None:
+        recovery_root = self.root / "recovery-not-started"
+        recovery_root.mkdir()
+        destination = recovery_root / "state.json"
+        prior_bytes = b"exact-prior"
+        source_bytes = b"future-source"
+        destination.write_bytes(prior_bytes)
+        self.runner._safe_path(
+            destination,
+            allowed_root=recovery_root,
+            project_root=self.root,
+            final_kind="file",
+            require_final=True,
+        )
+        intent_path, prior_path = self.runner._replacement_control_paths(
+            destination
+        )
+        intent_path.write_bytes(
+            self.runner.canonical_json_bytes(
+                {
+                    "schema_version": 1,
+                    "destination_name": destination.name,
+                    "prior_name": prior_path.name,
+                    "source_sha256": hashlib.sha256(
+                        source_bytes
+                    ).hexdigest().upper(),
+                    "prior_sha256": hashlib.sha256(
+                        prior_bytes
+                    ).hexdigest().upper(),
+                }
+            )
+        )
+        attacker = self.root / "not-started-attacker.json"
+        attacker.write_bytes(b"attacker")
+        original_unlink = self.runner._durable_unlink
+        change_attempted = False
+        change_blocked = False
+
+        def timed_unlink(
+            path: Path,
+            *args: Any,
+            **kwargs: Any,
+        ) -> None:
+            nonlocal change_attempted, change_blocked
+            if Path(path) == intent_path and not change_attempted:
+                change_attempted = True
+                try:
+                    os.replace(attacker, destination)
+                except OSError:
+                    change_blocked = True
+            original_unlink(path, *args, **kwargs)
+
+        with patch.object(
+            self.runner,
+            "_durable_unlink",
+            side_effect=timed_unlink,
+        ):
+            outcome = self.runner._recover_windows_replacement(destination)
+        self.assertEqual(outcome, "not_started")
+        self.assertTrue(change_attempted)
+        self.assertTrue(change_blocked)
+        self.assertEqual(destination.read_bytes(), prior_bytes)
+        self.assertFalse(intent_path.exists())
+        self.assertFalse(prior_path.exists())
+        self.assertEqual(attacker.read_bytes(), b"attacker")
+
+    @unittest.skipUnless(os.name == "nt", "Windows recovery authority test")
+    def test_final_rereview_committed_holds_destination_through_cleanup(
+        self,
+    ) -> None:
+        recovery_root = self.root / "recovery-committed"
+        recovery_root.mkdir()
+        destination = recovery_root / "state.json"
+        source_bytes = b"installed-source"
+        prior_bytes = b"exact-prior"
+        destination.write_bytes(source_bytes)
+        self.runner._safe_path(
+            destination,
+            allowed_root=recovery_root,
+            project_root=self.root,
+            final_kind="file",
+            require_final=True,
+        )
+        intent_path, prior_path = self.runner._replacement_control_paths(
+            destination
+        )
+        prior_path.write_bytes(prior_bytes)
+        intent_path.write_bytes(
+            self.runner.canonical_json_bytes(
+                {
+                    "schema_version": 1,
+                    "destination_name": destination.name,
+                    "prior_name": prior_path.name,
+                    "source_sha256": hashlib.sha256(
+                        source_bytes
+                    ).hexdigest().upper(),
+                    "prior_sha256": hashlib.sha256(
+                        prior_bytes
+                    ).hexdigest().upper(),
+                }
+            )
+        )
+        attacker = self.root / "committed-attacker.json"
+        attacker.write_bytes(b"attacker")
+        original_unlink = self.runner._durable_unlink
+        change_attempted = False
+        change_blocked = False
+
+        def timed_unlink(
+            path: Path,
+            *args: Any,
+            **kwargs: Any,
+        ) -> None:
+            nonlocal change_attempted, change_blocked
+            if Path(path) == prior_path and not change_attempted:
+                change_attempted = True
+                try:
+                    os.replace(attacker, destination)
+                except OSError:
+                    change_blocked = True
+            original_unlink(path, *args, **kwargs)
+
+        with patch.object(
+            self.runner,
+            "_durable_unlink",
+            side_effect=timed_unlink,
+        ):
+            outcome = self.runner._recover_windows_replacement(destination)
+        self.assertEqual(outcome, "committed")
+        self.assertTrue(change_attempted)
+        self.assertTrue(change_blocked)
+        self.assertEqual(destination.read_bytes(), source_bytes)
+        self.assertFalse(intent_path.exists())
+        self.assertFalse(prior_path.exists())
+        self.assertEqual(attacker.read_bytes(), b"attacker")
+
     def test_review_important_open_handles_block_root_parent_file_races(
         self,
     ) -> None:
