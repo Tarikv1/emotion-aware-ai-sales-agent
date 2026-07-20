@@ -12,10 +12,7 @@ from typing import Any
 
 from scripts.emotion_state_phase_b_evaluation import CremaLabelRecord
 from scripts.validate_emotion_state_002_phase_b import (
-    ACTOR_SPLIT_SUMMARY_SCHEMA_ID,
-    EXPECTED_CONFIG,
     EXPECTED_SPLIT_SCHEMA,
-    validate_actor_split_summary,
 )
 
 LABEL_ORDER = ("A", "D", "F", "H", "N", "S")
@@ -27,6 +24,7 @@ EXPECTED_SENTENCE_COUNT = EXPECTED_SPLIT_SCHEMA["expected_sentence_count"]
 SEED_DIGEST_PATTERN = re.compile(r"^[0-9a-f]{64}$")
 ACTOR_ID_PATTERN = re.compile(r"^\d{4}$")
 SENTENCE_ID_PATTERN = re.compile(r"^[A-Z0-9]{3}$")
+ACTOR_SPLIT_SUMMARY_SCHEMA_ID = "emotion-state-actor-split-validation-v1"
 
 
 def _canonical_digest(payload: Any) -> str:
@@ -37,6 +35,14 @@ def _canonical_digest(payload: Any) -> str:
         sort_keys=True,
     ).encode("ascii")
     return hashlib.sha256(canonical).hexdigest()
+
+
+def _validate_seed_digest(seed_digest: str) -> None:
+    if (
+        not isinstance(seed_digest, str)
+        or SEED_DIGEST_PATTERN.fullmatch(seed_digest) is None
+    ):
+        raise ValueError("actor split seed digest must be lowercase SHA-256")
 
 
 def _validated_records(
@@ -139,11 +145,7 @@ def build_actor_split(
     records: Sequence[CremaLabelRecord],
     seed_digest: str,
 ) -> dict[str, str]:
-    if (
-        not isinstance(seed_digest, str)
-        or SEED_DIGEST_PATTERN.fullmatch(seed_digest) is None
-    ):
-        raise ValueError("actor split seed digest must be lowercase SHA-256")
+    _validate_seed_digest(seed_digest)
     materialized, actors, sentences = _validated_records(records)
     vectors, global_vector = _actor_vectors(materialized, actors, sentences)
     actor_order = sorted(
@@ -215,6 +217,8 @@ def validate_actor_split(
 ) -> dict[str, Any]:
     materialized, actors, _ = _validated_records(records)
     canonical_assignment = _validated_assignment(actors, assignment)
+    if DEPENDENCY_ROLES != EXPECTED_SPLIT_SCHEMA["dependency_roles"]:
+        raise ValueError("actor split dependency roles do not match frozen contract")
     actor_counts = Counter(canonical_assignment.values())
     if dict(actor_counts) != PARTITION_CAPACITIES:
         raise ValueError("actor split partition actor capacities do not match")
@@ -263,35 +267,27 @@ def validate_actor_split(
         "eligible_actor_count": len(actors),
         "eligible_sentence_count": EXPECTED_SENTENCE_COUNT,
         "eligible_label_count": len(LABEL_ORDER),
-        "actor_exclusivity_validated": True,
     }
-    return validate_actor_split_summary(summary)
+    return summary
 
 
 def split_manifest_digest(
     records: Sequence[CremaLabelRecord],
     assignment: Mapping[str, str],
+    seed_digest: str,
 ) -> str:
-    materialized, actors, _ = _validated_records(records)
+    validated_summary = validate_actor_split(records, assignment)
+    _validate_seed_digest(seed_digest)
+    _, actors, _ = _validated_records(records)
     canonical_assignment = _validated_assignment(actors, assignment)
     assignment_commitment = _canonical_digest([
         [actor_id, canonical_assignment[actor_id]] for actor_id in actors
     ])
-    actor_counts = Counter(canonical_assignment.values())
-    record_counts: Counter[str] = Counter(
-        canonical_assignment[record.actor_id] for record in materialized
-    )
     tracked_digest_payload = {
         "schema_id": "emotion-state-actor-split-manifest-commitment-v1",
         "schema_version": 1,
-        "checkpoint_id": EXPECTED_CONFIG["checkpoint_id"],
-        "split_schema_id": EXPECTED_SPLIT_SCHEMA["schema_id"],
+        "configuration_sha256": seed_digest,
+        "validated_summary": validated_summary,
         "assignment_sha256": assignment_commitment,
-        "partition_actor_counts": {
-            partition: actor_counts[partition] for partition in PARTITION_ORDER
-        },
-        "partition_record_counts": {
-            partition: record_counts[partition] for partition in PARTITION_ORDER
-        },
     }
     return _canonical_digest(tracked_digest_payload)

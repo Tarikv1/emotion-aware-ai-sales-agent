@@ -1113,14 +1113,18 @@ git commit -m "Add deterministic Phase B acoustic features"
   `build_actor_split(records: Sequence[CremaLabelRecord], seed_digest: str)
   -> dict[str, str]`,
   `validate_actor_split(records, assignment) -> dict[str, Any]`, and
-  `split_manifest_digest(records, assignment) -> str`.
+  `split_manifest_digest(records, assignment, seed_digest) -> str`.
 
 - [ ] **Step 1: Write failing split tests**
 
 Generate 91 synthetic actors, 12 sentences, and six labels without using
 acoustics. Tests must assert exact `35/13/13/30` actor counts, zero overlap,
 all sentences in each partition, stable output under row permutation, digest
-mutation on one assignment change, and failure on actor count `90` or `92`.
+mutation on a capacity-preserving cross-partition actor swap, digest mutation
+when the authoritative lowercase SHA-256 configuration digest changes, and
+failure on actor count `90` or `92`. Use a fixed expected assignment/digest
+oracle with deliberately non-identical actor vectors. Add capacity-preserving
+missing-label and missing-sentence mutations.
 
 - [ ] **Step 2: Run tests and confirm RED**
 
@@ -1145,9 +1149,19 @@ Break equal scores by the frozen partition order. After assignment, validate
 all capacities, sentence presence, label presence, actor exclusivity, and
 dependency roles. No acoustic feature or model output may be an input.
 
-The tracked digest payload may contain only schema/config identity and
-aggregate partition counts; the ignored local manifest contains actor
-assignments.
+Digest creation must first call the same full
+`validate_actor_split(records, assignment)` path. It must then commit to the
+exact authoritative lowercase SHA-256 configuration digest, the validated
+aggregate-only summary, and an inner canonical assignment commitment. Invalid
+capacity, sentence-presence, label-presence, assignment, or dependency-role
+input must never receive a digest.
+
+The tracked digest payload may contain only schema/config identity, the
+validated aggregate-only summary, and the opaque inner assignment commitment;
+the ignored local manifest contains actor assignments. There is no public
+standalone semantic validator for a fabricated aggregate summary. Only
+records-plus-assignment validation may establish actor exclusivity or partition
+presence.
 
 - [ ] **Step 4: Run split and contract tests**
 

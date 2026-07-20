@@ -58,7 +58,6 @@ PARTITION_COUNTS = {
     "balanced_diagnostic": 13,
     "final_lockbox": 30,
 }
-ACTOR_SPLIT_SUMMARY_SCHEMA_ID = "emotion-state-actor-split-validation-v1"
 
 EXPECTED_FEATURE_SCHEMA: dict[str, Any] = {
     "schema_id": "emotion-state-crema-interpretable-acoustic-v1",
@@ -334,95 +333,6 @@ def validate_split_schema(payload: Any) -> dict[str, Any]:
     if payload.get("runtime_influence_allowed") is not False:
         raise ValueError("runtime influence must remain disabled")
     return _validate_exact(payload, EXPECTED_SPLIT_SCHEMA, "split schema")
-
-
-def validate_actor_split_summary(payload: Any) -> dict[str, Any]:
-    expected_keys = {
-        "schema_id",
-        "schema_version",
-        "dataset_id",
-        "split_schema_id",
-        "dependency_roles",
-        "partition_order",
-        "partition_actor_counts",
-        "partition_record_counts",
-        "partition_label_presence_counts",
-        "partition_sentence_presence_counts",
-        "eligible_record_count",
-        "eligible_actor_count",
-        "eligible_sentence_count",
-        "eligible_label_count",
-        "actor_exclusivity_validated",
-    }
-    if not isinstance(payload, dict) or set(payload) != expected_keys:
-        raise ValueError("actor split summary fields do not match frozen contract")
-    if payload["schema_id"] != ACTOR_SPLIT_SUMMARY_SCHEMA_ID:
-        raise ValueError("actor split summary schema identity does not match")
-    if payload["schema_version"] != 1:
-        raise ValueError("actor split summary schema version does not match")
-    if payload["dataset_id"] != EXPECTED_SPLIT_SCHEMA["dataset_id"]:
-        raise ValueError("actor split summary dataset identity does not match")
-    if payload["split_schema_id"] != EXPECTED_SPLIT_SCHEMA["schema_id"]:
-        raise ValueError("actor split summary split schema identity does not match")
-    if not _matches_expected(
-        payload["dependency_roles"],
-        EXPECTED_SPLIT_SCHEMA["dependency_roles"],
-    ):
-        raise ValueError("actor split dependency roles do not match frozen contract")
-    if not _matches_expected(
-        payload["partition_order"],
-        EXPECTED_SPLIT_SCHEMA["partition_order"],
-    ):
-        raise ValueError("actor split partition order does not match frozen contract")
-    if not _matches_expected(payload["partition_actor_counts"], PARTITION_COUNTS):
-        raise ValueError("actor split partition actor counts do not match")
-
-    partition_keys = set(PARTITION_COUNTS)
-    for field in (
-        "partition_record_counts",
-        "partition_label_presence_counts",
-        "partition_sentence_presence_counts",
-    ):
-        counts = payload[field]
-        if (
-            not isinstance(counts, dict)
-            or set(counts) != partition_keys
-            or not all(type(value) is int and value >= 0 for value in counts.values())
-        ):
-            raise ValueError(f"actor split {field} must contain aggregate counts")
-    if payload["partition_label_presence_counts"] != {
-        partition: 6 for partition in EXPECTED_SPLIT_SCHEMA["partition_order"]
-    }:
-        raise ValueError("every actor split partition must contain all six labels")
-    if payload["partition_sentence_presence_counts"] != {
-        partition: 12 for partition in EXPECTED_SPLIT_SCHEMA["partition_order"]
-    }:
-        raise ValueError("every actor split partition must contain all 12 sentences")
-    aggregate_counts = (
-        payload["eligible_record_count"],
-        payload["eligible_actor_count"],
-        payload["eligible_sentence_count"],
-        payload["eligible_label_count"],
-    )
-    if not all(type(value) is int and value >= 0 for value in aggregate_counts):
-        raise ValueError("actor split eligible counts must be aggregate integers")
-    if payload["eligible_record_count"] != sum(
-        payload["partition_record_counts"].values()
-    ):
-        raise ValueError("actor split partition record counts are not exhaustive")
-    if payload["eligible_actor_count"] != EXPECTED_SPLIT_SCHEMA[
-        "expected_actor_count"
-    ]:
-        raise ValueError("actor split must contain exactly 91 actors")
-    if payload["eligible_sentence_count"] != EXPECTED_SPLIT_SCHEMA[
-        "expected_sentence_count"
-    ]:
-        raise ValueError("actor split must contain exactly 12 sentences")
-    if payload["eligible_label_count"] != 6:
-        raise ValueError("actor split must contain exactly six labels")
-    if payload["actor_exclusivity_validated"] is not True:
-        raise ValueError("actor split exclusivity must be validated")
-    return payload
 
 
 def validate_config(payload: Any) -> dict[str, Any]:
