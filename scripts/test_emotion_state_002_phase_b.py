@@ -7023,6 +7023,270 @@ runner.accept_receipt(paths, paths.receipt_path("accept.json"))
                 self.assertTrue(source.exists())
                 self.assertTrue(destination.exists())
 
+    @unittest.skipUnless(os.name == "nt", "Windows namespace authority test")
+    def test_final_review_existing_destination_is_held_through_replace(
+        self,
+    ) -> None:
+        pair_root = self.root / "held-destination"
+        pair_root.mkdir()
+        source = pair_root / "source.stage"
+        destination = pair_root / "destination.json"
+        source.write_bytes(b"new-candidate")
+        destination.write_bytes(b"exact-prior")
+        for path in (source, destination):
+            self.runner._safe_path(
+                path,
+                allowed_root=pair_root,
+                project_root=self.root,
+                final_kind="file",
+                require_final=True,
+            )
+        attacker = self.root / "destination-attacker.json"
+        attacker.write_bytes(b"attacker")
+        unrelated = self.root / "destination-unrelated.json"
+        unrelated.write_bytes(b"unrelated")
+        original_replace = self.runner._windows_replace_by_handle
+        race_attempted = False
+        race_blocked = False
+        observed_prior: list[bytes] = []
+
+        def timed_replace(
+            source_path: Path,
+            destination_path: Path,
+            *args: Any,
+            **kwargs: Any,
+        ) -> None:
+            nonlocal race_attempted, race_blocked
+            destination_descriptor = kwargs.get("destination_descriptor")
+            if destination_descriptor is not None:
+                position = os.lseek(destination_descriptor, 0, os.SEEK_CUR)
+                os.lseek(destination_descriptor, 0, os.SEEK_SET)
+                observed_prior.append(os.read(destination_descriptor, 4096))
+                os.lseek(destination_descriptor, position, os.SEEK_SET)
+            race_attempted = True
+            try:
+                os.replace(attacker, destination_path)
+            except OSError:
+                race_blocked = True
+            original_replace(
+                source_path,
+                destination_path,
+                *args,
+                **kwargs,
+            )
+            if destination_descriptor is not None:
+                position = os.lseek(destination_descriptor, 0, os.SEEK_CUR)
+                os.lseek(destination_descriptor, 0, os.SEEK_SET)
+                observed_prior.append(os.read(destination_descriptor, 4096))
+                os.lseek(destination_descriptor, position, os.SEEK_SET)
+
+        with patch.object(
+            self.runner,
+            "_windows_replace_by_handle",
+            side_effect=timed_replace,
+        ):
+            self.runner._replace_entry_durably(source, destination)
+        self.assertTrue(race_attempted)
+        self.assertTrue(race_blocked)
+        self.assertEqual(observed_prior, [b"exact-prior", b"exact-prior"])
+        self.assertEqual(destination.read_bytes(), b"new-candidate")
+        self.assertEqual(attacker.read_bytes(), b"attacker")
+        self.assertEqual(unrelated.read_bytes(), b"unrelated")
+
+    def test_final_review_posix_existing_destination_replace_fails_closed(
+        self,
+    ) -> None:
+        pair_root = self.root / "posix-unqualified"
+        pair_root.mkdir()
+        source = pair_root / "source.stage"
+        destination = pair_root / "destination.json"
+        source.write_bytes(b"source")
+        destination.write_bytes(b"prior")
+        for path in (source, destination):
+            self.runner._safe_path(
+                path,
+                allowed_root=pair_root,
+                project_root=self.root,
+                final_kind="file",
+                require_final=True,
+            )
+        outcome = ""
+        with patch.object(self.runner.os, "name", "posix"):
+            try:
+                self.runner._replace_entry_durably(source, destination)
+            except self.runner.RunnerError as error:
+                outcome = str(error)
+            except Exception as error:  # the old branch raises a platform error
+                outcome = f"unexpected {type(error).__name__}: {error}"
+        self.assertRegex(
+            outcome,
+            "POSIX existing-destination replacement is not qualified",
+        )
+        self.assertEqual(source.read_bytes(), b"source")
+        self.assertEqual(destination.read_bytes(), b"prior")
+
+    @unittest.skipUnless(os.name == "nt", "Windows durability authority test")
+    def test_final_review_mutation_barriers_keep_the_same_parent_authority(
+        self,
+    ) -> None:
+        unrelated = self.root / "barrier-unrelated.bin"
+        unrelated.write_bytes(b"unrelated")
+
+        def exercise(
+            label: str,
+            parents: tuple[Path, ...],
+            operation: Callable[[], None],
+        ) -> None:
+            original_sync = self.runner._sync_directory
+            attempted: set[Path] = set()
+            blocked: set[Path] = set()
+            authorities: dict[Path, bool] = {}
+
+            def timed_sync(
+                path: Path,
+                *args: Any,
+                **kwargs: Any,
+            ) -> None:
+                directory = Path(path)
+                authority = kwargs.get("authority")
+                if directory in parents and directory not in attempted:
+                    attempted.add(directory)
+                    authorities[directory] = authority is not None
+                    moved = directory.parent / f"{directory.name}-{label}-moved"
+                    try:
+                        directory.rename(moved)
+                    except OSError:
+                        blocked.add(directory)
+                    else:
+                        directory.mkdir()
+                original_sync(path, *args, **kwargs)
+
+            with patch.object(
+                self.runner,
+                "_sync_directory",
+                side_effect=timed_sync,
+            ):
+                operation()
+            self.assertEqual(attempted, set(parents), label)
+            self.assertEqual(blocked, set(parents), label)
+            self.assertTrue(all(authorities.values()), label)
+            self.assertEqual(unrelated.read_bytes(), b"unrelated")
+
+        create_parent = self.root / "barrier-create"
+        create_parent.mkdir()
+        create_path = create_parent / "created.json"
+        self.runner._safe_path(
+            create_path,
+            allowed_root=create_parent,
+            project_root=self.root,
+        )
+        exercise(
+            "create",
+            (create_parent,),
+            lambda: self.runner._write_new_fsynced(create_path, b"created"),
+        )
+
+        source_parent = self.root / "barrier-replace-source"
+        destination_parent = self.root / "barrier-replace-destination"
+        source_parent.mkdir()
+        destination_parent.mkdir()
+        source = source_parent / "source.stage"
+        destination = destination_parent / "destination.json"
+        source.write_bytes(b"replacement")
+        destination.write_bytes(b"prior")
+        for path, parent in (
+            (source, source_parent),
+            (destination, destination_parent),
+        ):
+            self.runner._safe_path(
+                path,
+                allowed_root=parent,
+                project_root=self.root,
+                final_kind="file",
+                require_final=True,
+            )
+        exercise(
+            "replace",
+            (source_parent, destination_parent),
+            lambda: self.runner._replace_entry_durably(source, destination),
+        )
+
+        unlink_parent = self.root / "barrier-unlink"
+        unlink_parent.mkdir()
+        unlink_path = unlink_parent / "remove.json"
+        unlink_path.write_bytes(b"remove")
+        self.runner._safe_path(
+            unlink_path,
+            allowed_root=unlink_parent,
+            project_root=self.root,
+            final_kind="file",
+            require_final=True,
+        )
+        exercise(
+            "unlink",
+            (unlink_parent,),
+            lambda: self.runner._durable_unlink(unlink_path),
+        )
+
+        lock_parent = self.root / "barrier-lock"
+        lock_parent.mkdir()
+        lock_path = lock_parent / "create.lock"
+        self.runner._safe_path(
+            lock_path,
+            allowed_root=lock_parent,
+            project_root=self.root,
+        )
+
+        def create_lock() -> None:
+            handle = self.runner._open_lock_handle(lock_path)
+            handle.close()
+
+        exercise("lock", (lock_parent,), create_lock)
+
+    def test_final_review_all_transaction_entry_barriers_carry_authority(
+        self,
+    ) -> None:
+        self.paths.recovery_root.mkdir(parents=True, exist_ok=True)
+        self._install_previous_pair()
+        expected_parents = {
+            self.state_root,
+            self.lockbox_root,
+            self.paths.recovery_root,
+            self.canonical_root,
+        }
+        observed: dict[Path, list[bool]] = {
+            path: [] for path in expected_parents
+        }
+        original_sync = self.runner._sync_directory
+
+        def observed_sync(
+            path: Path,
+            *args: Any,
+            **kwargs: Any,
+        ) -> None:
+            directory = Path(path)
+            if directory in observed:
+                observed[directory].append(
+                    kwargs.get("authority") is not None
+                )
+            original_sync(path, *args, **kwargs)
+
+        with patch.object(
+            self.runner,
+            "_sync_directory",
+            side_effect=observed_sync,
+        ):
+            self._advance_to_lockbox()
+            self.runner.stage_candidate(self.paths, "authority.json")
+            self.runner.reject_receipt(
+                self.paths,
+                self.paths.receipt_path("authority.json"),
+            )
+        for parent, authority_flags in observed.items():
+            with self.subTest(parent=parent):
+                self.assertTrue(authority_flags)
+                self.assertTrue(all(authority_flags))
+
     def test_review_important_open_handles_block_root_parent_file_races(
         self,
     ) -> None:
@@ -7118,11 +7382,13 @@ runner.accept_receipt(paths, paths.receipt_path("accept.json"))
             path: Path,
             *,
             include_target: bool = True,
+            mutation: bool = False,
         ) -> Any:
             nonlocal canonical_race_attempted, canonical_race_blocked
             with real_handles(
                 path,
                 include_target=include_target,
+                mutation=mutation,
             ) as authority:
                 if (
                     Path(path) == self.paths.result_path

@@ -138,11 +138,19 @@ _UNJOURNALED_NAME_PATTERN = re.compile(
     r"^[0-9a-f]{32}\.(?:result|report)\.(?:stage|backup|restore)$"
     r"|^[0-9a-f]{32}\.journal\.stage$"
 )
+_REPLACE_INTENT_SCHEMA_VERSION = 1
 _PATH_IDENTITY_PROOFS: dict[str, tuple[tuple[str, int, int], ...]] = {}
 
 
 class RunnerError(RuntimeError):
     """A fail-closed Phase B runner or publication error."""
+
+
+@dataclass(frozen=True)
+class _DirectoryAuthority:
+    path: Path
+    posix_descriptor: int | None = None
+    windows_handle: int | None = None
 
 
 @dataclass(frozen=True)
@@ -327,12 +335,28 @@ def _sha256_file(path: Path) -> str:
     return _sha256_bytes(_read_file_nofollow(path))
 
 
+def _sha256_descriptor(descriptor: int) -> str:
+    position = os.lseek(descriptor, 0, os.SEEK_CUR)
+    try:
+        os.lseek(descriptor, 0, os.SEEK_SET)
+        digest = hashlib.sha256()
+        while True:
+            chunk = os.read(descriptor, 1_048_576)
+            if not chunk:
+                break
+            digest.update(chunk)
+        return digest.hexdigest().upper()
+    finally:
+        os.lseek(descriptor, position, os.SEEK_SET)
+
+
 def _read_file_nofollow(path: Path, *, maximum_bytes: int = 16_777_216) -> bytes:
     """Read a regular file through a no-follow handle and bind its identity."""
     flags = os.O_RDONLY | getattr(os, "O_BINARY", 0)
     flags |= getattr(os, "O_NOFOLLOW", 0)
     try:
-        with _trusted_parent_handles(path) as parent_descriptor:
+        with _trusted_parent_handles(path) as parent_authority:
+            parent_descriptor = parent_authority.posix_descriptor
             _verify_cached_path_proof(path)
             if parent_descriptor is None:
                 before = os.stat(path, follow_symlinks=False)
@@ -560,12 +584,31 @@ def _bind_mutated_entry(path: Path, *, present: bool) -> None:
     _PATH_IDENTITY_PROOFS[str(target)] = parent_proof
 
 
+def _seed_sibling_path_proof(reference: Path, sibling: Path) -> None:
+    reference = Path(reference)
+    sibling = Path(sibling)
+    if reference.parent != sibling.parent:
+        raise RunnerError("sibling path proof requires one trusted parent")
+    proof = _PATH_IDENTITY_PROOFS.get(str(reference))
+    if proof is None:
+        raise RunnerError("reference path identity is not cached")
+    parent_proof = tuple(
+        item for item in proof if Path(item[0]) != reference
+    )
+    if not any(Path(component) == sibling.parent for component, _, _ in parent_proof):
+        raise RunnerError("trusted sibling parent identity is not cached")
+    _PATH_IDENTITY_PROOFS[str(sibling)] = parent_proof
+    if os.path.lexists(sibling):
+        _bind_mutated_entry(sibling, present=True)
+
+
 @contextmanager
 def _trusted_parent_handles(
     path: Path,
     *,
     include_target: bool = True,
-) -> Iterator[int | None]:
+    mutation: bool = False,
+) -> Iterator[_DirectoryAuthority]:
     target = Path(path)
     proof = _PATH_IDENTITY_PROOFS.get(str(target), ())
     parent_proof = [item for item in proof if Path(item[0]) != target]
@@ -585,7 +628,10 @@ def _trusted_parent_handles(
             actual = os.fstat(descriptor)
             if expected is not None and (actual.st_dev, actual.st_ino) != expected:
                 raise RunnerError("trusted parent handle identity changed")
-            yield descriptor
+            yield _DirectoryAuthority(
+                path=target.parent,
+                posix_descriptor=descriptor,
+            )
         finally:
             os.close(descriptor)
         return
@@ -608,13 +654,19 @@ def _trusted_parent_handles(
     close.argtypes = (wintypes.HANDLE,)
     close.restype = wintypes.BOOL
     handles: list[int] = []
+    parent_handle: int | None = None
     invalid = wintypes.HANDLE(-1).value
     try:
         held_proof = proof if include_target else tuple(parent_proof)
         for component, _device, _inode in held_proof:
+            is_parent = Path(component) == target.parent
             handle = create_file(
                 component,
-                0x80000000,  # GENERIC_READ; enforces no-delete sharing
+                (
+                    0x80000000 | 0x40000000
+                    if is_parent and mutation
+                    else 0x80000000
+                ),
                 0x00000001 | 0x00000002,  # exclude FILE_SHARE_DELETE
                 None,
                 3,
@@ -627,8 +679,15 @@ def _trusted_parent_handles(
                     "unable to hold trusted directory component",
                 )
             handles.append(handle)
+            if is_parent:
+                parent_handle = handle
+        if parent_handle is None:
+            raise RunnerError("trusted parent authority handle is unavailable")
         _verify_cached_path_proof(target)
-        yield None
+        yield _DirectoryAuthority(
+            path=target.parent,
+            windows_handle=parent_handle,
+        )
     finally:
         for handle in reversed(handles):
             close(handle)
@@ -838,15 +897,44 @@ def _validate_canonical_pair_metadata(
             )
 
 
-def _sync_directory(path: Path) -> None:
+def _sync_directory(
+    path: Path,
+    *,
+    authority: _DirectoryAuthority | None = None,
+) -> None:
     """Flush directory metadata.
 
-    POSIX uses fsync(2) on an O_DIRECTORY handle. Windows opens the directory
-    itself with FILE_FLAG_BACKUP_SEMANTICS | FILE_FLAG_OPEN_REPARSE_POINT and
-    GENERIC_WRITE, then calls FlushFileBuffers. The latter is the Windows
-    directory-entry durability barrier used after every create/replace/unlink.
+    File-entry mutations pass the exact still-held parent authority. Pathname
+    reopen is reserved for durable directory creation and is never used as the
+    success barrier for create/replace/unlink.
     """
     directory = Path(path)
+    if authority is not None:
+        if directory != authority.path:
+            raise RunnerError("directory barrier authority path does not match")
+        if authority.posix_descriptor is not None:
+            opened = os.fstat(authority.posix_descriptor)
+            if not stat.S_ISDIR(opened.st_mode):
+                raise RunnerError("POSIX barrier authority is not a directory")
+            os.fsync(authority.posix_descriptor)
+            return
+        if authority.windows_handle is None:
+            raise RunnerError("directory barrier authority handle is missing")
+        from ctypes import wintypes
+
+        flush = ctypes.WinDLL(
+            "kernel32",
+            use_last_error=True,
+        ).FlushFileBuffers
+        flush.argtypes = (wintypes.HANDLE,)
+        flush.restype = wintypes.BOOL
+        if not flush(authority.windows_handle):
+            raise OSError(
+                ctypes.get_last_error(),
+                "unable to flush held directory barrier",
+            )
+        return
+
     if os.name != "nt":
         flags = os.O_RDONLY | getattr(os, "O_DIRECTORY", 0)
         flags |= getattr(os, "O_NOFOLLOW", 0)
@@ -1030,108 +1118,145 @@ def _windows_unlink_by_handle(path: Path) -> None:
         os.close(descriptor)
 
 
-def _windows_open_directory_authority(path: Path) -> int:
+def _windows_rename_descriptor(
+    descriptor: int,
+    destination_name: str,
+    *,
+    destination_parent_handle: int,
+) -> None:
     from ctypes import wintypes
 
-    kernel32 = ctypes.WinDLL("kernel32", use_last_error=True)
-    create_file = kernel32.CreateFileW
-    create_file.argtypes = (
-        wintypes.LPCWSTR,
-        wintypes.DWORD,
-        wintypes.DWORD,
+    source_handle = msvcrt.get_osfhandle(descriptor)
+    encoded_name = destination_name.encode("utf-16-le")
+
+    class FileRenameInfoEx(ctypes.Structure):
+        _fields_ = (
+            ("Flags", wintypes.DWORD),
+            ("RootDirectory", wintypes.HANDLE),
+            ("FileNameLength", wintypes.DWORD),
+            ("FileName", wintypes.WCHAR * 1),
+        )
+
+    name_offset = FileRenameInfoEx.FileName.offset
+    information_size = name_offset + len(encoded_name)
+    buffer = ctypes.create_string_buffer(information_size)
+    information = FileRenameInfoEx.from_buffer(buffer)
+    information.Flags = 0  # exact-handle rename; never replace another entry
+    information.RootDirectory = destination_parent_handle
+    information.FileNameLength = len(encoded_name)
+    ctypes.memmove(
+        ctypes.addressof(buffer) + name_offset,
+        encoded_name,
+        len(encoded_name),
+    )
+
+    class IoStatusBlock(ctypes.Structure):
+        _fields_ = (
+            ("Status", ctypes.c_void_p),
+            ("Information", ctypes.c_size_t),
+        )
+
+    io_status = IoStatusBlock()
+    set_information = ctypes.WinDLL(
+        "ntdll",
+        use_last_error=True,
+    ).NtSetInformationFile
+    set_information.argtypes = (
+        wintypes.HANDLE,
+        ctypes.POINTER(IoStatusBlock),
         wintypes.LPVOID,
         wintypes.DWORD,
-        wintypes.DWORD,
-        wintypes.HANDLE,
+        ctypes.c_int,
     )
-    create_file.restype = wintypes.HANDLE
-    handle = create_file(
-        str(path),
-        0x80000000,  # GENERIC_READ
-        0x00000001 | 0x00000002,  # no FILE_SHARE_DELETE
-        None,
-        3,
-        0x02000000 | 0x00200000,
-        None,
+    set_information.restype = ctypes.c_long
+    status = set_information(
+        source_handle,
+        ctypes.byref(io_status),
+        buffer,
+        information_size,
+        65,  # FileRenameInformationEx
     )
-    invalid = wintypes.HANDLE(-1).value
-    if handle == invalid:
-        raise OSError(ctypes.get_last_error(), "unable to open directory authority")
-    return handle
+    if status != 0:
+        raise OSError(
+            status & 0xFFFFFFFF,
+            "unable to perform exact-target handle-bound rename",
+        )
 
 
-def _windows_replace_by_handle(source: Path, destination: Path) -> None:
+def _windows_unlink_open_descriptor(descriptor: int) -> None:
     from ctypes import wintypes
 
-    source_descriptor = _windows_open_mutation_fd(
-        source,
-        access=0x00010000 | 0x00000080,  # DELETE | FILE_READ_ATTRIBUTES
-        disposition=3,  # OPEN_EXISTING
-        descriptor_flags=os.O_RDONLY | getattr(os, "O_BINARY", 0),
+    class FileDispositionInfo(ctypes.Structure):
+        _fields_ = (("DeleteFile", wintypes.BOOL),)
+
+    information = FileDispositionInfo(True)
+    set_information = ctypes.WinDLL(
+        "kernel32",
+        use_last_error=True,
+    ).SetFileInformationByHandle
+    set_information.argtypes = (
+        wintypes.HANDLE,
+        ctypes.c_int,
+        wintypes.LPVOID,
+        wintypes.DWORD,
     )
-    destination_parent_handle = _windows_open_directory_authority(
-        destination.parent
+    set_information.restype = wintypes.BOOL
+    if not set_information(
+        msvcrt.get_osfhandle(descriptor),
+        4,  # FileDispositionInfo
+        ctypes.byref(information),
+        ctypes.sizeof(information),
+    ):
+        raise OSError(
+            ctypes.get_last_error(),
+            "unable to mark held file for handle-bound deletion",
+        )
+
+
+def _windows_replace_by_handle(
+    source: Path,
+    destination: Path,
+    *,
+    source_descriptor: int,
+    destination_descriptor: int | None,
+    source_authority: _DirectoryAuthority,
+    destination_authority: _DirectoryAuthority,
+    prior_path: Path | None,
+) -> None:
+    _verify_opened_mutation_identity(source, source_descriptor)
+    if source_authority.windows_handle is None:
+        raise RunnerError("Windows source parent authority handle is missing")
+    if destination_authority.windows_handle is None:
+        raise RunnerError("Windows destination parent authority handle is missing")
+    if destination_descriptor is not None:
+        if prior_path is None:
+            raise RunnerError("existing destination requires a preservation entry")
+        _verify_opened_mutation_identity(destination, destination_descriptor)
+        _windows_rename_descriptor(
+            destination_descriptor,
+            prior_path.name,
+            destination_parent_handle=destination_authority.windows_handle,
+        )
+        _bind_mutated_entry(destination, present=False)
+        _bind_mutated_entry(prior_path, present=True)
+        _sync_directory(
+            destination.parent,
+            authority=destination_authority,
+        )
+
+    _windows_rename_descriptor(
+        source_descriptor,
+        destination.name,
+        destination_parent_handle=destination_authority.windows_handle,
     )
-    kernel32 = ctypes.WinDLL("kernel32", use_last_error=True)
-    try:
-        _verify_opened_mutation_identity(source, source_descriptor)
-        source_handle = msvcrt.get_osfhandle(source_descriptor)
-        encoded_name = destination.name.encode("utf-16-le")
-
-        class FileRenameInfo(ctypes.Structure):
-            _fields_ = (
-                ("ReplaceIfExists", ctypes.c_ubyte),
-                ("RootDirectory", wintypes.HANDLE),
-                ("FileNameLength", wintypes.DWORD),
-                ("FileName", wintypes.WCHAR * 1),
-            )
-
-        name_offset = FileRenameInfo.FileName.offset
-        information_size = name_offset + len(encoded_name)
-        buffer = ctypes.create_string_buffer(information_size)
-        information = FileRenameInfo.from_buffer(buffer)
-        information.ReplaceIfExists = 1
-        information.RootDirectory = destination_parent_handle
-        information.FileNameLength = len(encoded_name)
-        ctypes.memmove(
-            ctypes.addressof(buffer) + name_offset,
-            encoded_name,
-            len(encoded_name),
+    _bind_mutated_entry(source, present=False)
+    _bind_mutated_entry(destination, present=True)
+    _sync_directory(source.parent, authority=source_authority)
+    if destination.parent != source.parent:
+        _sync_directory(
+            destination.parent,
+            authority=destination_authority,
         )
-        class IoStatusBlock(ctypes.Structure):
-            _fields_ = (
-                ("Status", ctypes.c_void_p),
-                ("Information", ctypes.c_size_t),
-            )
-
-        io_status = IoStatusBlock()
-        set_information = ctypes.WinDLL(
-            "ntdll",
-            use_last_error=True,
-        ).NtSetInformationFile
-        set_information.argtypes = (
-            wintypes.HANDLE,
-            ctypes.POINTER(IoStatusBlock),
-            wintypes.LPVOID,
-            wintypes.DWORD,
-            ctypes.c_int,
-        )
-        set_information.restype = ctypes.c_long
-        status = set_information(
-            source_handle,
-            ctypes.byref(io_status),
-            buffer,
-            information_size,
-            10,  # FileRenameInformation
-        )
-        if status != 0:
-            raise OSError(
-                status & 0xFFFFFFFF,
-                "unable to perform handle-bound replacement",
-            )
-    finally:
-        kernel32.CloseHandle(destination_parent_handle)
-        os.close(source_descriptor)
 
 
 def _write_new_fsynced(path: Path, content: bytes) -> None:
@@ -1139,7 +1264,12 @@ def _write_new_fsynced(path: Path, content: bytes) -> None:
     flags |= getattr(os, "O_NOFOLLOW", 0)
     _require_mutation_path_proof(path)
     try:
-        with _trusted_parent_handles(path, include_target=False) as parent_descriptor:
+        with _trusted_parent_handles(
+            path,
+            include_target=False,
+            mutation=True,
+        ) as parent_authority:
+            parent_descriptor = parent_authority.posix_descriptor
             _verify_cached_path_proof(path)
             if parent_descriptor is None:
                 descriptor = _windows_open_mutation_fd(
@@ -1181,47 +1311,272 @@ def _write_new_fsynced(path: Path, content: bytes) -> None:
             finally:
                 os.close(descriptor)
             _bind_mutated_entry(path, present=True)
-        _sync_directory(path.parent)
+            _sync_directory(path.parent, authority=parent_authority)
     except OSError as error:
         raise RunnerError(f"unable to durably write {path.name}") from error
 
 
+def _replacement_control_paths(destination: Path) -> tuple[Path, Path]:
+    destination = Path(destination)
+    token = hashlib.sha256(destination.name.encode("utf-8")).hexdigest()[:32]
+    stem = f".phase-b-replace-{token}"
+    return (
+        destination.parent / f"{stem}.intent.json",
+        destination.parent / f"{stem}.prior",
+    )
+
+
+def _validate_replacement_intent(
+    payload: Any,
+    *,
+    destination: Path,
+    prior_path: Path,
+) -> dict[str, Any]:
+    expected = {
+        "schema_version",
+        "destination_name",
+        "prior_name",
+        "source_sha256",
+        "prior_sha256",
+    }
+    if not isinstance(payload, dict) or set(payload) != expected:
+        raise RunnerError("invalid durable replacement intent fields")
+    if (
+        type(payload["schema_version"]) is not int
+        or payload["schema_version"] != _REPLACE_INTENT_SCHEMA_VERSION
+    ):
+        raise RunnerError("invalid durable replacement intent schema")
+    if payload["destination_name"] != destination.name:
+        raise RunnerError("durable replacement intent destination mismatch")
+    if payload["prior_name"] != prior_path.name:
+        raise RunnerError("durable replacement intent prior mismatch")
+    _validate_digest(payload["source_sha256"], "replacement source")
+    _validate_digest(payload["prior_sha256"], "replacement prior")
+    return dict(payload)
+
+
+def _recover_windows_replacement(destination: Path) -> str:
+    """Resolve a durable exact-target preservation intent after interruption."""
+    if os.name != "nt":
+        return "none"
+    destination = Path(destination)
+    _require_mutation_path_proof(destination)
+    intent_path, prior_path = _replacement_control_paths(destination)
+    _seed_sibling_path_proof(destination, intent_path)
+    _seed_sibling_path_proof(destination, prior_path)
+    intent_exists = os.path.lexists(intent_path)
+    prior_exists = os.path.lexists(prior_path)
+    if not intent_exists:
+        if prior_exists:
+            raise RunnerError(
+                "orphaned durable replacement prior is retained for review"
+            )
+        return "none"
+
+    intent = _validate_replacement_intent(
+        _load_json_object(intent_path, "durable replacement intent"),
+        destination=destination,
+        prior_path=prior_path,
+    )
+    destination_exists = os.path.lexists(destination)
+    destination_digest = (
+        _sha256_file(destination) if destination_exists else None
+    )
+    if prior_exists:
+        if _sha256_file(prior_path) != intent["prior_sha256"]:
+            raise RunnerError(
+                "durable replacement prior digest mismatch; evidence retained"
+            )
+        if destination_exists:
+            if destination_digest != intent["source_sha256"]:
+                raise RunnerError(
+                    "durable replacement destination conflicts; evidence retained"
+                )
+            _durable_unlink(prior_path, missing_ok=False)
+            _durable_unlink(intent_path, missing_ok=False)
+            return "committed"
+
+        with _trusted_parent_handles(
+            prior_path,
+            include_target=False,
+            mutation=True,
+        ) as parent_authority:
+            if parent_authority.windows_handle is None:
+                raise RunnerError(
+                    "Windows replacement recovery authority is missing"
+                )
+            descriptor = _windows_open_mutation_fd(
+                prior_path,
+                access=0x80000000 | 0x00010000 | 0x00000080,
+                disposition=3,
+                descriptor_flags=os.O_RDONLY | getattr(os, "O_BINARY", 0),
+            )
+            try:
+                _verify_opened_mutation_identity(prior_path, descriptor)
+                _windows_rename_descriptor(
+                    descriptor,
+                    destination.name,
+                    destination_parent_handle=parent_authority.windows_handle,
+                )
+                _bind_mutated_entry(prior_path, present=False)
+                _bind_mutated_entry(destination, present=True)
+                _sync_directory(
+                    destination.parent,
+                    authority=parent_authority,
+                )
+            finally:
+                os.close(descriptor)
+        if _sha256_file(destination) != intent["prior_sha256"]:
+            raise RunnerError("restored durable replacement prior digest mismatch")
+        _durable_unlink(intent_path, missing_ok=False)
+        return "restored"
+
+    if destination_digest not in {
+        intent["prior_sha256"],
+        intent["source_sha256"],
+    }:
+        raise RunnerError(
+            "durable replacement state is ambiguous; evidence retained"
+        )
+    outcome = (
+        "committed"
+        if destination_digest == intent["source_sha256"]
+        else "not_started"
+    )
+    _durable_unlink(intent_path, missing_ok=False)
+    return outcome
+
+
+def _recover_output_replacement(
+    paths: RunnerPaths,
+    path: Path,
+    *,
+    allowed_root: Path,
+) -> str:
+    target = _safe_path(
+        path,
+        allowed_root=allowed_root,
+        project_root=paths.project_root,
+        final_kind="file",
+        require_final=False,
+    )
+    outcome = _recover_windows_replacement(target)
+    if os.path.lexists(target):
+        _safe_path(
+            target,
+            allowed_root=allowed_root,
+            project_root=paths.project_root,
+            final_kind="file",
+            require_final=True,
+        )
+    return outcome
+
+
 def _replace_entry_durably(source: Path, destination: Path) -> None:
+    if os.name != "nt":
+        raise RunnerError(
+            "POSIX existing-destination replacement is not qualified; "
+            "Phase B file replacement fails closed on this platform"
+        )
     _require_mutation_path_proof(source)
     _require_mutation_path_proof(destination)
+    _recover_windows_replacement(destination)
     source_parent = os.stat(source.parent, follow_symlinks=False)
     destination_parent = os.stat(destination.parent, follow_symlinks=False)
     if source_parent.st_dev != destination_parent.st_dev:
         raise RunnerError("atomic replace roots are on different devices")
-    if os.name != "nt":
+    try:
         with _trusted_parent_handles(
             source,
             include_target=False,
-        ) as source_fd, _trusted_parent_handles(
+            mutation=True,
+        ) as source_authority, _trusted_parent_handles(
             destination,
             include_target=False,
-        ) as destination_fd:
+            mutation=True,
+        ) as destination_authority:
             _verify_cached_path_proof(source)
             _verify_cached_path_proof(destination)
-            os.replace(
-                source.name,
-                destination.name,
-                src_dir_fd=source_fd,
-                dst_dir_fd=destination_fd,
+            if (
+                source_authority.windows_handle is None
+                or destination_authority.windows_handle is None
+            ):
+                raise RunnerError("Windows replace authority handle is missing")
+            source_descriptor = _windows_open_mutation_fd(
+                source,
+                access=0x80000000 | 0x00010000 | 0x00000080,
+                disposition=3,
+                descriptor_flags=os.O_RDONLY | getattr(os, "O_BINARY", 0),
             )
-    else:
-        with _trusted_parent_handles(
-            source,
-            include_target=False,
-        ), _trusted_parent_handles(destination, include_target=False):
-            _verify_cached_path_proof(source)
-            _verify_cached_path_proof(destination)
-            _windows_replace_by_handle(source, destination)
-    _bind_mutated_entry(source, present=False)
-    _bind_mutated_entry(destination, present=True)
-    _sync_directory(source.parent)
-    if destination.parent != source.parent:
-        _sync_directory(destination.parent)
+            destination_descriptor: int | None = None
+            intent_path: Path | None = None
+            prior_path: Path | None = None
+            try:
+                _verify_opened_mutation_identity(source, source_descriptor)
+                if os.path.lexists(destination):
+                    intent_path, prior_path = _replacement_control_paths(
+                        destination
+                    )
+                    _seed_sibling_path_proof(destination, intent_path)
+                    _seed_sibling_path_proof(destination, prior_path)
+                    if os.path.lexists(intent_path) or os.path.lexists(prior_path):
+                        raise RunnerError(
+                            "durable replacement control entry already exists"
+                        )
+                    destination_descriptor = _windows_open_mutation_fd(
+                        destination,
+                        access=0x80000000 | 0x00010000 | 0x00000080,
+                        disposition=3,
+                        descriptor_flags=(
+                            os.O_RDONLY | getattr(os, "O_BINARY", 0)
+                        ),
+                    )
+                    _verify_opened_mutation_identity(
+                        destination,
+                        destination_descriptor,
+                    )
+                    intent = {
+                        "schema_version": _REPLACE_INTENT_SCHEMA_VERSION,
+                        "destination_name": destination.name,
+                        "prior_name": prior_path.name,
+                        "source_sha256": _sha256_descriptor(source_descriptor),
+                        "prior_sha256": _sha256_descriptor(
+                            destination_descriptor
+                        ),
+                    }
+                    _write_new_fsynced(
+                        intent_path,
+                        canonical_json_bytes(intent),
+                    )
+                _windows_replace_by_handle(
+                    source,
+                    destination,
+                    source_descriptor=source_descriptor,
+                    destination_descriptor=destination_descriptor,
+                    source_authority=source_authority,
+                    destination_authority=destination_authority,
+                    prior_path=prior_path,
+                )
+                if destination_descriptor is not None:
+                    if prior_path is None or intent_path is None:
+                        raise RunnerError(
+                            "durable replacement cleanup state is incomplete"
+                        )
+                    _windows_unlink_open_descriptor(destination_descriptor)
+                    os.close(destination_descriptor)
+                    destination_descriptor = None
+                    _bind_mutated_entry(prior_path, present=False)
+                    _sync_directory(
+                        destination.parent,
+                        authority=destination_authority,
+                    )
+                    _durable_unlink(intent_path, missing_ok=False)
+            finally:
+                if destination_descriptor is not None:
+                    os.close(destination_descriptor)
+                os.close(source_descriptor)
+    except OSError as error:
+        raise RunnerError("exact-target durable replacement failed") from error
 
 
 def _durable_unlink(path: Path, *, missing_ok: bool = True) -> None:
@@ -1236,20 +1591,25 @@ def _durable_unlink(path: Path, *, missing_ok: bool = True) -> None:
         return
     _require_mutation_path_proof(path)
     try:
-        with _trusted_parent_handles(path, include_target=False) as parent_descriptor:
+        with _trusted_parent_handles(
+            path,
+            include_target=False,
+            mutation=True,
+        ) as parent_authority:
+            parent_descriptor = parent_authority.posix_descriptor
             _verify_cached_path_proof(path)
             if parent_descriptor is None:
                 _windows_unlink_by_handle(path)
             else:
                 os.unlink(path.name, dir_fd=parent_descriptor)
+            _bind_mutated_entry(path, present=False)
+            _sync_directory(path.parent, authority=parent_authority)
     except FileNotFoundError:
         if not missing_ok:
             raise
         return
     except OSError as error:
         raise RunnerError(f"unable to durably remove {path.name}") from error
-    _bind_mutated_entry(path, present=False)
-    _sync_directory(path.parent)
 
 
 def _replace_bytes_durably(path: Path, content: bytes) -> None:
@@ -1392,6 +1752,14 @@ def load_state(paths: RunnerPaths) -> dict[str, Any]:
     _validate_layout(paths)
     state_path = _safe_path(
         paths.state_path,
+        allowed_root=paths.state_root,
+        project_root=paths.project_root,
+        final_kind="file",
+        require_final=False,
+    )
+    _recover_windows_replacement(state_path)
+    state_path = _safe_path(
+        state_path,
         allowed_root=paths.state_root,
         project_root=paths.project_root,
         final_kind="file",
@@ -1627,7 +1995,8 @@ def _open_lock_handle(path: Path) -> BinaryIO:
     flags = os.O_RDWR | getattr(os, "O_BINARY", 0)
     flags |= getattr(os, "O_NOFOLLOW", 0)
     try:
-        with _trusted_parent_handles(path) as parent_descriptor:
+        with _trusted_parent_handles(path) as parent_authority:
+            parent_descriptor = parent_authority.posix_descriptor
             _verify_cached_path_proof(path)
             if parent_descriptor is None:
                 before = os.stat(path, follow_symlinks=False)
@@ -1693,6 +2062,16 @@ def lockbox_lock(paths: RunnerPaths) -> Iterator[None]:
         except OSError as error:
             raise RunnerError("lockbox lock is already held or unavailable") from error
         acquired = True
+        _recover_output_replacement(
+            paths,
+            paths.lockbox_reservation_path,
+            allowed_root=paths.state_root,
+        )
+        _recover_output_replacement(
+            paths,
+            paths.lockbox_result_path,
+            allowed_root=paths.lockbox_root,
+        )
         yield
     finally:
         if acquired:
@@ -1790,6 +2169,11 @@ def _validate_reservation(payload: Any) -> dict[str, Any]:
 
 
 def _load_reservation(paths: RunnerPaths) -> dict[str, Any]:
+    _recover_output_replacement(
+        paths,
+        paths.lockbox_reservation_path,
+        allowed_root=paths.state_root,
+    )
     reservation_path = _safe_path(
         paths.lockbox_reservation_path,
         allowed_root=paths.state_root,
@@ -2174,6 +2558,17 @@ def publication_lock(paths: RunnerPaths) -> Iterator[None]:
                 "publication lock is already held or unavailable"
             ) from error
         acquired = True
+        _recover_output_replacement(
+            paths,
+            paths.journal_path,
+            allowed_root=paths.recovery_root,
+        )
+        for canonical_path in (paths.result_path, paths.report_path):
+            _recover_output_replacement(
+                paths,
+                canonical_path,
+                allowed_root=paths.canonical_root,
+            )
         yield
     finally:
         if acquired:
@@ -2215,6 +2610,11 @@ def _validate_candidate_cell(value: Any) -> dict[str, Any]:
 
 
 def _load_journal(paths: RunnerPaths) -> dict[str, Any]:
+    _recover_output_replacement(
+        paths,
+        paths.journal_path,
+        allowed_root=paths.recovery_root,
+    )
     journal_path = _safe_path(
         paths.journal_path,
         allowed_root=paths.recovery_root,
@@ -2246,6 +2646,17 @@ def _load_journal(paths: RunnerPaths) -> dict[str, Any]:
     _validate_digest(value["configuration_sha256"], "journal configuration")
     _validate_pair_cell(value["previous_pair"], "previous", allow_absent=True)
     _validate_candidate_cell(value["candidate_pair"])
+    for transaction_path in _transaction_paths(
+        paths,
+        value["transaction_id"],
+    ).values():
+        _safe_path(
+            transaction_path,
+            allowed_root=paths.recovery_root,
+            project_root=paths.project_root,
+            final_kind="file",
+            require_final=os.path.lexists(transaction_path),
+        )
     return value
 
 
@@ -2350,6 +2761,14 @@ def _reconstruct_rollback_transaction(
     ):
         raise RunnerError("receipt/state identity conflict; evidence retained")
     transaction_paths = _transaction_paths(paths, transaction["transaction_id"])
+    for transaction_path in transaction_paths.values():
+        _safe_path(
+            transaction_path,
+            allowed_root=paths.recovery_root,
+            project_root=paths.project_root,
+            final_kind="file",
+            require_final=os.path.lexists(transaction_path),
+        )
     allowed = {
         LOCK_NAME,
         receipt_path.name,
