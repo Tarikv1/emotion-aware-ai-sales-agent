@@ -8,6 +8,7 @@ import subprocess
 import sys
 import tempfile
 import unittest
+import warnings
 from collections import Counter
 from copy import deepcopy
 from dataclasses import replace
@@ -1970,6 +1971,727 @@ class CremaReferenceLabelTests(unittest.TestCase):
                 ),
                 "missing CREMA-D reference-label join",
             )
+
+
+class EvaluationTests(unittest.TestCase):
+    CLASS_ORDER = ("A", "D", "F", "H", "N", "S")
+    MODEL_KEYS = ("class_prior", "sentence_id", "acoustic")
+
+    def _training_arrays(self) -> tuple[Any, Any, Any]:
+        import numpy as np
+
+        labels = np.asarray(
+            [label for label in self.CLASS_ORDER for _ in range(10)],
+            dtype="<U1",
+        )
+        features = np.zeros((len(labels), 17), dtype=np.float64)
+        for row, label in enumerate(labels):
+            features[row, self.CLASS_ORDER.index(label)] = 3.0
+            features[row, 6] = float(row % 5) / 10.0
+        sentences = np.asarray(
+            [f"S{row % 12:02d}" for row in range(len(labels))],
+            dtype="<U3",
+        )
+        return features, sentences, labels
+
+    def _metric_arrays(self, actor_count: int = 10) -> tuple[Any, dict[str, Any], list[str]]:
+        import numpy as np
+
+        patterns = np.asarray(
+            [
+                [0.70, 0.10, 0.05, 0.05, 0.05, 0.05],
+                [0.30, 0.25, 0.20, 0.10, 0.10, 0.05],
+                [0.10, 0.10, 0.40, 0.20, 0.10, 0.10],
+                [0.10, 0.10, 0.10, 0.40, 0.20, 0.10],
+                [0.10, 0.10, 0.10, 0.10, 0.30, 0.30],
+                [0.20, 0.10, 0.10, 0.10, 0.10, 0.40],
+            ],
+            dtype=np.float64,
+        )
+        labels = np.asarray(self.CLASS_ORDER * actor_count, dtype="<U1")
+        probabilities = np.tile(patterns, (actor_count, 1))
+        actors = [
+            f"actor-{actor:02d}"
+            for actor in range(actor_count)
+            for _ in self.CLASS_ORDER
+        ]
+        return (
+            labels,
+            {key: probabilities.copy() for key in self.MODEL_KEYS},
+            actors,
+        )
+
+    def _calibration_probabilities(self) -> dict[str, Any]:
+        import numpy as np
+
+        confidences = (0.20, 0.30, 0.40, 0.40, 0.40, 0.50)
+        rows = np.asarray(
+            [
+                [confidence, *((1.0 - confidence) / 5.0 for _ in range(5))]
+                for confidence in confidences
+            ],
+            dtype=np.float64,
+        )
+        return {key: rows.copy() for key in self.MODEL_KEYS}
+
+    def _config_identity(self) -> tuple[str, int]:
+        payload = json.loads(CONFIG.read_text(encoding="utf-8"))
+        canonical = json.dumps(
+            payload,
+            sort_keys=True,
+            separators=(",", ":"),
+            ensure_ascii=False,
+            allow_nan=False,
+        ).encode("utf-8")
+        digest = hashlib.sha256(canonical).hexdigest().upper()
+        return digest, int(digest[:16], 16)
+
+    def _perfect_probabilities(self, labels: Any) -> dict[str, Any]:
+        import numpy as np
+
+        count = len(labels)
+        baseline = np.full((count, 6), 1.0 / 6.0, dtype=np.float64)
+        acoustic = np.zeros((count, 6), dtype=np.float64)
+        for row, label in enumerate(labels):
+            acoustic[row, self.CLASS_ORDER.index(str(label))] = 1.0
+        return {
+            "class_prior": baseline.copy(),
+            "sentence_id": baseline.copy(),
+            "acoustic": acoustic,
+        }
+
+    def _decision_fixture(self) -> tuple[dict[str, Any], dict[str, bool]]:
+        from scripts.emotion_state_phase_b_evaluation import (
+            build_decision_evidence,
+            calibrate_thresholds,
+            evaluate_partition,
+            paired_actor_bootstrap,
+        )
+
+        labels, _, actors = self._metric_arrays()
+        probabilities = self._perfect_probabilities(labels)
+        thresholds = calibrate_thresholds(
+            probabilities,
+            (1.0, 0.8, 0.6),
+            partition_role="calibration",
+            class_order=self.CLASS_ORDER,
+        )
+        evaluation = evaluate_partition(
+            labels,
+            probabilities,
+            actors,
+            thresholds,
+            partition_role="final_lockbox",
+            class_order=self.CLASS_ORDER,
+        )
+        digest, seed = self._config_identity()
+        bootstrap = paired_actor_bootstrap(
+            labels,
+            probabilities,
+            actors,
+            2000,
+            seed,
+            partition_role="final_lockbox",
+            class_order=self.CLASS_ORDER,
+            configuration_sha256=digest,
+        )
+        evidence = build_decision_evidence(
+            evaluation,
+            bootstrap,
+            sentence_driven_apparent_lift=False,
+            eligible_slice_reversal=False,
+            eligible_slice_instability=False,
+            confidence_abstention_improves=True,
+        )
+        validity = {
+            "material_valid": True,
+            "environment_valid": True,
+            "split_valid": True,
+            "leakage_free": True,
+            "deterministic": True,
+            "lockbox_valid": True,
+        }
+        return evidence, validity
+
+    def test_frozen_models_pin_exact_estimators_training_state_and_six_class_probabilities(
+        self,
+    ) -> None:
+        import numpy as np
+        from sklearn.dummy import DummyClassifier
+        from sklearn.linear_model import LogisticRegression
+        from sklearn.pipeline import Pipeline
+        from sklearn.preprocessing import OneHotEncoder, StandardScaler
+
+        from scripts.emotion_state_phase_b_evaluation import fit_frozen_models
+
+        features, sentences, labels = self._training_arrays()
+        with warnings.catch_warnings(record=True) as observed:
+            warnings.simplefilter("always")
+            models = fit_frozen_models(
+                features,
+                sentences,
+                labels,
+                71019,
+                partition_role="training_discovery",
+                class_order=self.CLASS_ORDER,
+            )
+        self.assertEqual(len(observed), 2)
+        self.assertTrue(all(
+            item.category is FutureWarning
+            and "'penalty' was deprecated in version 1.8" in str(item.message)
+            for item in observed
+        ))
+        self.assertEqual(tuple(models), self.MODEL_KEYS)
+
+        prior = models["class_prior"]
+        self.assertIs(type(prior), DummyClassifier)
+        self.assertEqual(prior.strategy, "prior")
+        np.testing.assert_allclose(prior.class_prior_, np.full(6, 1.0 / 6.0))
+
+        sentence = models["sentence_id"]
+        self.assertIs(type(sentence), Pipeline)
+        self.assertEqual(tuple(sentence.named_steps), ("one_hot", "classifier"))
+        self.assertIs(type(sentence.named_steps["one_hot"]), OneHotEncoder)
+        self.assertEqual(
+            sentence.named_steps["one_hot"].handle_unknown,
+            "ignore",
+        )
+
+        acoustic = models["acoustic"]
+        self.assertIs(type(acoustic), Pipeline)
+        self.assertEqual(
+            tuple(acoustic.named_steps),
+            ("standardize", "classifier"),
+        )
+        self.assertIs(type(acoustic.named_steps["standardize"]), StandardScaler)
+        np.testing.assert_allclose(
+            acoustic.named_steps["standardize"].mean_,
+            features.mean(axis=0),
+        )
+
+        for pipeline in (sentence, acoustic):
+            classifier = pipeline.named_steps["classifier"]
+            self.assertIs(type(classifier), LogisticRegression)
+            self.assertEqual(
+                {
+                    "penalty": classifier.penalty,
+                    "C": classifier.C,
+                    "class_weight": classifier.class_weight,
+                    "solver": classifier.solver,
+                    "max_iter": classifier.max_iter,
+                    "random_state": classifier.random_state,
+                },
+                {
+                    "penalty": "l2",
+                    "C": 1.0,
+                    "class_weight": None,
+                    "solver": "lbfgs",
+                    "max_iter": 10000,
+                    "random_state": 71019,
+                },
+            )
+        for model in models.values():
+            np.testing.assert_array_equal(model.classes_, self.CLASS_ORDER)
+
+        prediction_inputs = features[:7] + 1000.0
+        model_inputs = {
+            "class_prior": prediction_inputs,
+            "sentence_id": np.asarray(
+                [["UNSEEN"] for _ in range(7)],
+                dtype="<U6",
+            ),
+            "acoustic": prediction_inputs,
+        }
+        for key, model in models.items():
+            probabilities = model.predict_proba(model_inputs[key])
+            self.assertEqual(probabilities.shape, (7, 6))
+            self.assertTrue(np.isfinite(probabilities).all())
+            np.testing.assert_allclose(
+                probabilities.sum(axis=1),
+                np.ones(7),
+                rtol=0.0,
+                atol=1e-12,
+            )
+        np.testing.assert_allclose(
+            prior.predict_proba(prediction_inputs)[0],
+            np.full(6, 1.0 / 6.0),
+        )
+        scores = acoustic.decision_function(features[:7])
+        softmax = np.exp(scores - scores.max(axis=1, keepdims=True))
+        softmax /= softmax.sum(axis=1, keepdims=True)
+        np.testing.assert_allclose(
+            acoustic.predict_proba(features[:7]),
+            softmax,
+            rtol=0.0,
+            atol=1e-12,
+        )
+
+    def test_fit_is_training_only_and_partition_roles_fail_closed(self) -> None:
+        from scripts.emotion_state_phase_b_evaluation import (
+            calibrate_thresholds,
+            evaluate_partition,
+            fit_frozen_models,
+            paired_actor_bootstrap,
+        )
+
+        features, sentences, labels = self._training_arrays()
+        with self.assertRaisesRegex(ValueError, "training_discovery"):
+            fit_frozen_models(
+                features,
+                sentences,
+                labels,
+                1,
+                partition_role="final_lockbox",
+                class_order=self.CLASS_ORDER,
+            )
+        with self.assertRaises(TypeError):
+            fit_frozen_models(features, sentences, labels, 1)
+
+        probabilities = self._calibration_probabilities()
+        with self.assertRaisesRegex(ValueError, "calibration"):
+            calibrate_thresholds(
+                probabilities,
+                (1.0, 0.8, 0.6),
+                partition_role="final_lockbox",
+                class_order=self.CLASS_ORDER,
+            )
+        labels_for_metrics, metric_probabilities, actors = self._metric_arrays()
+        thresholds = calibrate_thresholds(
+            metric_probabilities,
+            (1.0, 0.8, 0.6),
+            partition_role="calibration",
+            class_order=self.CLASS_ORDER,
+        )
+        with self.assertRaisesRegex(ValueError, "partition role"):
+            evaluate_partition(
+                labels_for_metrics,
+                metric_probabilities,
+                actors,
+                thresholds,
+                partition_role="training_discovery",
+                class_order=self.CLASS_ORDER,
+            )
+        digest, seed = self._config_identity()
+        with self.assertRaisesRegex(ValueError, "final_lockbox"):
+            paired_actor_bootstrap(
+                labels_for_metrics,
+                metric_probabilities,
+                actors,
+                2000,
+                seed,
+                partition_role="balanced_diagnostic",
+                class_order=self.CLASS_ORDER,
+                configuration_sha256=digest,
+            )
+
+    def test_calibration_uses_only_calibration_confidences_and_retains_ties(
+        self,
+    ) -> None:
+        from scripts.emotion_state_phase_b_evaluation import calibrate_thresholds
+
+        result = calibrate_thresholds(
+            self._calibration_probabilities(),
+            (1.0, 0.8, 0.6),
+            partition_role="calibration",
+            class_order=self.CLASS_ORDER,
+        )
+        self.assertEqual(result["partition_role"], "calibration")
+        self.assertEqual(tuple(result["class_order"]), self.CLASS_ORDER)
+        self.assertEqual(tuple(result["models"]), self.MODEL_KEYS)
+        for model in self.MODEL_KEYS:
+            cells = result["models"][model]
+            self.assertEqual(tuple(cells), (1.0, 0.8, 0.6))
+            self.assertEqual(cells[1.0], {
+                "threshold": 0.2,
+                "achieved_coverage": 1.0,
+            })
+            self.assertEqual(cells[0.8], {
+                "threshold": 0.3,
+                "achieved_coverage": 5.0 / 6.0,
+            })
+            self.assertEqual(cells[0.6], {
+                "threshold": 0.4,
+                "achieved_coverage": 4.0 / 6.0,
+            })
+
+    def test_hand_calculated_metrics_ece_and_retained_coverage(self) -> None:
+        from scripts.emotion_state_phase_b_evaluation import (
+            calibrate_thresholds,
+            evaluate_partition,
+        )
+
+        labels, probabilities, actors = self._metric_arrays()
+        thresholds = calibrate_thresholds(
+            probabilities,
+            (1.0, 0.8, 0.6),
+            partition_role="calibration",
+            class_order=self.CLASS_ORDER,
+        )
+        result = evaluate_partition(
+            labels,
+            probabilities,
+            actors,
+            thresholds,
+            partition_role="balanced_diagnostic",
+            class_order=self.CLASS_ORDER,
+        )
+        self.assertFalse(result["final_decision_eligible"])
+        model = result["models"]["acoustic"]
+        self.assertFalse(model["suppressed"])
+        self.assertEqual(model["unique_actor_count"], 10)
+        self.assertEqual(model["case_count"], 60)
+        self.assertAlmostEqual(model["macro_f1"], 7.0 / 9.0, places=15)
+        self.assertAlmostEqual(
+            model["balanced_accuracy"],
+            5.0 / 6.0,
+            places=15,
+        )
+        expected_recalls = {
+            "A": 1.0,
+            "D": 0.0,
+            "F": 1.0,
+            "H": 1.0,
+            "N": 1.0,
+            "S": 1.0,
+        }
+        for label, expected in expected_recalls.items():
+            cell = model["per_class_recall"][label]
+            self.assertFalse(cell["suppressed"])
+            self.assertEqual(cell["unique_actor_count"], 10)
+            self.assertEqual(cell["case_count"], 10)
+            self.assertAlmostEqual(cell["recall"], expected, places=15)
+
+        # Row-summed errors are .11, .715, .44, .44, .62, and .44.
+        self.assertAlmostEqual(
+            model["multiclass_brier"],
+            2.765 / 6.0,
+            places=15,
+        )
+        expected_log_loss = -sum(
+            math.log(value)
+            for value in (0.70, 0.25, 0.40, 0.40, 0.30, 0.40)
+        ) / 6.0
+        self.assertAlmostEqual(model["log_loss"], expected_log_loss, places=15)
+        # ECE: 2/6*|.5-.3| + 3/6*|1-.4| + 1/6*|1-.7|.
+        self.assertAlmostEqual(model["ece_10_bin"], 5.0 / 12.0, places=15)
+        self.assertEqual(model["retained"][1.0]["coverage"], 1.0)
+        self.assertEqual(model["retained"][0.8]["coverage"], 1.0)
+        self.assertAlmostEqual(
+            model["retained"][0.6]["coverage"],
+            2.0 / 3.0,
+            places=15,
+        )
+        self.assertAlmostEqual(
+            model["retained"][0.6]["retained_macro_f1"],
+            2.0 / 3.0,
+            places=15,
+        )
+
+    def test_sparse_cells_are_suppressed_not_zero(self) -> None:
+        from scripts.emotion_state_phase_b_evaluation import (
+            calibrate_thresholds,
+            evaluate_partition,
+        )
+
+        labels, probabilities, actors = self._metric_arrays(actor_count=9)
+        thresholds = calibrate_thresholds(
+            probabilities,
+            (1.0, 0.8, 0.6),
+            partition_role="calibration",
+            class_order=self.CLASS_ORDER,
+        )
+        result = evaluate_partition(
+            labels,
+            probabilities,
+            actors,
+            thresholds,
+            partition_role="balanced_diagnostic",
+            class_order=self.CLASS_ORDER,
+        )
+        for model in result["models"].values():
+            self.assertTrue(model["suppressed"])
+            self.assertIsNone(model["macro_f1"])
+            self.assertIsNone(model["balanced_accuracy"])
+            self.assertIsNone(model["multiclass_brier"])
+            for cell in model["per_class_recall"].values():
+                self.assertTrue(cell["suppressed"])
+                self.assertIsNone(cell["recall"])
+            for cell in model["retained"].values():
+                self.assertTrue(cell["suppressed"])
+                self.assertIsNone(cell["retained_macro_f1"])
+
+    def test_probability_threshold_and_class_order_schemas_fail_closed(self) -> None:
+        import numpy as np
+
+        from scripts.emotion_state_phase_b_evaluation import (
+            calibrate_thresholds,
+            evaluate_partition,
+        )
+
+        probabilities = self._calibration_probabilities()
+        mutations: list[tuple[str, Any]] = []
+        missing = dict(probabilities)
+        missing.pop("sentence_id")
+        mutations.append(("model keys", missing))
+        extra = dict(probabilities)
+        extra["extra"] = extra["acoustic"]
+        mutations.append(("model keys", extra))
+        non_finite = {key: value.copy() for key, value in probabilities.items()}
+        non_finite["acoustic"][0, 0] = np.nan
+        mutations.append(("finite", non_finite))
+        wrong_sum = {key: value.copy() for key, value in probabilities.items()}
+        wrong_sum["acoustic"][0, 0] += 0.1
+        mutations.append(("sum", wrong_sum))
+        wrong_shape = {key: value.copy() for key, value in probabilities.items()}
+        wrong_shape["acoustic"] = wrong_shape["acoustic"][:, :5]
+        mutations.append(("shape", wrong_shape))
+        for pattern, mutated in mutations:
+            with self.subTest(pattern=pattern):
+                with self.assertRaisesRegex(ValueError, pattern):
+                    calibrate_thresholds(
+                        mutated,
+                        (1.0, 0.8, 0.6),
+                        partition_role="calibration",
+                        class_order=self.CLASS_ORDER,
+                    )
+        with self.assertRaisesRegex(ValueError, "class order"):
+            calibrate_thresholds(
+                probabilities,
+                (1.0, 0.8, 0.6),
+                partition_role="calibration",
+                class_order=tuple(reversed(self.CLASS_ORDER)),
+            )
+        with self.assertRaisesRegex(ValueError, "targets"):
+            calibrate_thresholds(
+                probabilities,
+                (1.0, 0.7, 0.6),
+                partition_role="calibration",
+                class_order=self.CLASS_ORDER,
+            )
+
+        labels, metric_probabilities, actors = self._metric_arrays()
+        thresholds = calibrate_thresholds(
+            metric_probabilities,
+            (1.0, 0.8, 0.6),
+            partition_role="calibration",
+            class_order=self.CLASS_ORDER,
+        )
+        malformed = deepcopy(thresholds)
+        malformed["models"]["acoustic"][0.8]["unexpected"] = 1.0
+        with self.assertRaisesRegex(ValueError, "threshold"):
+            evaluate_partition(
+                labels,
+                metric_probabilities,
+                actors,
+                malformed,
+                partition_role="balanced_diagnostic",
+                class_order=self.CLASS_ORDER,
+            )
+        with self.assertRaisesRegex(ValueError, "actor IDs"):
+            evaluate_partition(
+                labels,
+                metric_probabilities,
+                actors[:-1],
+                thresholds,
+                partition_role="balanced_diagnostic",
+                class_order=self.CLASS_ORDER,
+            )
+        invalid_actors = list(actors)
+        invalid_actors[0] = ""
+        with self.assertRaisesRegex(ValueError, "actor IDs"):
+            evaluate_partition(
+                labels,
+                metric_probabilities,
+                invalid_actors,
+                thresholds,
+                partition_role="balanced_diagnostic",
+                class_order=self.CLASS_ORDER,
+            )
+
+    def test_bootstrap_is_exactly_2000_paired_actor_cluster_draws_and_aggregate_only(
+        self,
+    ) -> None:
+        from scripts.emotion_state_phase_b_evaluation import paired_actor_bootstrap
+
+        labels, _, actors = self._metric_arrays()
+        probabilities = self._perfect_probabilities(labels)
+        digest, seed = self._config_identity()
+        first = paired_actor_bootstrap(
+            labels,
+            probabilities,
+            actors,
+            2000,
+            seed,
+            partition_role="final_lockbox",
+            class_order=self.CLASS_ORDER,
+            configuration_sha256=digest,
+        )
+        second = paired_actor_bootstrap(
+            labels,
+            probabilities,
+            actors,
+            2000,
+            seed,
+            partition_role="final_lockbox",
+            class_order=self.CLASS_ORDER,
+            configuration_sha256=digest,
+        )
+        canonical = lambda value: json.dumps(
+            value,
+            sort_keys=True,
+            separators=(",", ":"),
+            allow_nan=False,
+        ).encode("utf-8")
+        self.assertEqual(canonical(first), canonical(second))
+        self.assertEqual(first["resamples"], 2000)
+        self.assertEqual(first["partition_role"], "final_lockbox")
+        self.assertEqual(
+            first["paired_macro_f1_lift"]["class_prior"],
+            first["paired_macro_f1_lift"]["sentence_id"],
+        )
+        serialized_keys = set(first)
+        self.assertNotIn("draws", serialized_keys)
+        self.assertNotIn("indexes", serialized_keys)
+        self.assertNotIn("actor_ids", serialized_keys)
+        self.assertNotIn("samples", serialized_keys)
+        with self.assertRaisesRegex(ValueError, "2,000"):
+            paired_actor_bootstrap(
+                labels,
+                probabilities,
+                actors,
+                1999,
+                seed,
+                partition_role="final_lockbox",
+                class_order=self.CLASS_ORDER,
+                configuration_sha256=digest,
+            )
+        with self.assertRaisesRegex(ValueError, "configuration"):
+            paired_actor_bootstrap(
+                labels,
+                probabilities,
+                actors,
+                2000,
+                seed + 1,
+                partition_role="final_lockbox",
+                class_order=self.CLASS_ORDER,
+                configuration_sha256=digest,
+            )
+
+    def test_decision_precedence_and_every_clause_are_mutation_tested(self) -> None:
+        from scripts.emotion_state_phase_b_evaluation import decide_experiment
+
+        evidence, validity = self._decision_fixture()
+        self.assertEqual(
+            decide_experiment(evidence, validity),
+            "keep_for_research_only",
+        )
+
+        for key in validity:
+            mutated = dict(validity)
+            mutated[key] = False
+            with self.subTest(discard_validity=key):
+                self.assertEqual(
+                    decide_experiment(evidence, mutated),
+                    "discard",
+                )
+
+        sentence_driven = deepcopy(evidence)
+        sentence_driven["sentence_driven_apparent_lift"] = True
+        self.assertEqual(
+            decide_experiment(sentence_driven, validity),
+            "discard",
+        )
+
+        failed_baseline = deepcopy(evidence)
+        failed_baseline["models"]["acoustic"]["macro_f1"] = (
+            failed_baseline["models"]["sentence_id"]["macro_f1"]
+        )
+        for baseline in ("class_prior", "sentence_id"):
+            failed_baseline["paired_macro_f1_lift"][baseline] = {
+                "point_estimate": 0.0,
+                "lower_95": -0.1,
+                "upper_95": 0.1,
+            }
+        self.assertEqual(
+            decide_experiment(failed_baseline, validity),
+            "discard",
+        )
+
+        interval_crossing = deepcopy(evidence)
+        interval_crossing["paired_macro_f1_lift"]["class_prior"][
+            "lower_95"
+        ] = -0.01
+        self.assertEqual(
+            decide_experiment(interval_crossing, validity),
+            "revise",
+        )
+
+        worse_calibration = deepcopy(evidence)
+        worse_calibration["models"]["acoustic"]["multiclass_brier"] = (
+            worse_calibration["models"]["class_prior"]["multiclass_brier"]
+        )
+        self.assertEqual(
+            decide_experiment(worse_calibration, validity),
+            "revise",
+        )
+        worse_ece = deepcopy(evidence)
+        worse_ece["models"]["acoustic"]["ece_10_bin"] = (
+            worse_ece["models"]["class_prior"]["ece_10_bin"] + 0.01
+        )
+        self.assertEqual(decide_experiment(worse_ece, validity), "revise")
+
+        zero_recall = deepcopy(evidence)
+        zero_recall["models"]["acoustic"]["per_class_recall"]["D"]["recall"] = 0.0
+        self.assertEqual(decide_experiment(zero_recall, validity), "revise")
+
+        for key in (
+            "eligible_slice_reversal",
+            "eligible_slice_instability",
+        ):
+            mutated = deepcopy(evidence)
+            mutated[key] = True
+            with self.subTest(revise_slice=key):
+                self.assertEqual(
+                    decide_experiment(mutated, validity),
+                    "revise",
+                )
+
+        ineffective = deepcopy(evidence)
+        ineffective["confidence_abstention_improves"] = False
+        self.assertEqual(decide_experiment(ineffective, validity), "revise")
+
+    def test_decision_rejects_diagnostic_fabricated_or_nonfinite_evidence(self) -> None:
+        import numpy as np
+
+        from scripts.emotion_state_phase_b_evaluation import decide_experiment
+
+        evidence, validity = self._decision_fixture()
+        mutations: list[tuple[str, dict[str, Any], dict[str, bool]]] = []
+        diagnostic = deepcopy(evidence)
+        diagnostic["partition_role"] = "balanced_diagnostic"
+        mutations.append(("final_lockbox", diagnostic, validity))
+        missing_metric = deepcopy(evidence)
+        missing_metric.pop("eligible_slice_instability")
+        mutations.append(("metric keys", missing_metric, validity))
+        extra_metric = deepcopy(evidence)
+        extra_metric["runtime_recommendation"] = "deploy"
+        mutations.append(("metric keys", extra_metric, validity))
+        nonfinite = deepcopy(evidence)
+        nonfinite["models"]["acoustic"]["macro_f1"] = np.nan
+        mutations.append(("finite", nonfinite, validity))
+        fabricated = deepcopy(evidence)
+        fabricated["models"]["acoustic"]["macro_f1"] -= 0.01
+        mutations.append(("point estimate", fabricated, validity))
+        missing_validity = dict(validity)
+        missing_validity.pop("split_valid")
+        mutations.append(("validity keys", evidence, missing_validity))
+        extra_validity = dict(validity)
+        extra_validity["runtime_valid"] = True
+        mutations.append(("validity keys", evidence, extra_validity))
+        for pattern, metric_input, validity_input in mutations:
+            with self.subTest(pattern=pattern):
+                with self.assertRaisesRegex(ValueError, pattern):
+                    decide_experiment(metric_input, validity_input)
 
 
 if __name__ == "__main__":

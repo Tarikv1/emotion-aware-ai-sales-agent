@@ -1192,17 +1192,30 @@ git commit -m "Add Phase B actor-disjoint split contract"
   frozen config/environment identity.
 - Produces:
   `fit_frozen_models(training_features: np.ndarray, training_sentences:
-  np.ndarray, training_labels: np.ndarray, seed: int) -> dict[str, object]`,
+  np.ndarray, training_labels: np.ndarray, seed: int, *,
+  partition_role: str, class_order: Sequence[str]) -> dict[str, object]`,
   `calibrate_thresholds(probabilities: Mapping[str, np.ndarray], targets:
-  Sequence[float]) -> dict[str, dict[float, float]]`,
+  Sequence[float], *, partition_role: str, class_order: Sequence[str])
+  -> dict[str, Any]`,
   `evaluate_partition(labels: np.ndarray, probabilities: Mapping[str,
   np.ndarray], actor_ids: Sequence[str], thresholds: Mapping[str,
-  Mapping[float, float]]) -> dict[str, Any]`,
+  Any], *, partition_role: str, class_order: Sequence[str])
+  -> dict[str, Any]`,
   `paired_actor_bootstrap(labels: np.ndarray, probabilities: Mapping[str,
   np.ndarray], actor_ids: Sequence[str], resamples: int, seed: int) ->
-  dict[str, Any]`, and
+  dict[str, Any]` with mandatory keyword-only `partition_role`,
+  `class_order`, and `configuration_sha256`, and
   `decide_experiment(metrics: Mapping[str, Any], validity: Mapping[str, bool])
   -> str`.
+
+All partition-sensitive interfaces fail closed on explicit provenance:
+fitting accepts only `training_discovery`, calibration accepts only
+`calibration`, diagnostic evaluation names `balanced_diagnostic` and cannot
+produce decision evidence, and paired bootstrap/final decision evidence
+accepts only `final_lockbox`. The validator freezes exact input/result keys,
+model keys, class order, thresholds, actor IDs, resample count, metric keys,
+validity keys, and finite array/numeric requirements. Diagnostic metrics are
+never accepted by `decide_experiment`.
 
 - [ ] **Step 1: Write failing evaluation tests**
 
@@ -1315,7 +1328,7 @@ Expected: all tests pass deterministically in repeated runs.
 - [ ] **Step 8: Commit Task 6**
 
 ```powershell
-git add -- scripts/emotion_state_phase_b_evaluation.py scripts/test_emotion_state_002_phase_b.py scripts/validate_emotion_state_002_phase_b.py
+git add -- scripts/emotion_state_phase_b_evaluation.py scripts/test_emotion_state_002_phase_b.py scripts/validate_emotion_state_002_phase_b.py docs/superpowers/plans/2026-07-19-emotion-state-phase-b-public-data-feasibility.md
 git diff --cached --check
 git commit -m "Add Phase B classical evaluation contract"
 ```

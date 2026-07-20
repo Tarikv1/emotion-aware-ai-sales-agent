@@ -8,7 +8,7 @@ import re
 import struct
 import sys
 import sysconfig
-from collections.abc import Mapping
+from collections.abc import Mapping, Sequence
 from pathlib import Path
 from typing import Any
 
@@ -240,6 +240,31 @@ CREMA_SOURCE_BINDING_FIELDS = (
     "summary_join_field",
     "summary_label_field",
 )
+CLASS_ORDER = ("A", "D", "F", "H", "N", "S")
+MODEL_KEYS = ("class_prior", "sentence_id", "acoustic")
+COVERAGE_TARGETS = (1.0, 0.8, 0.6)
+MINIMUM_UNIQUE_ACTORS = 10
+BOOTSTRAP_RESAMPLES = 2000
+VALIDITY_KEYS = (
+    "material_valid",
+    "environment_valid",
+    "split_valid",
+    "leakage_free",
+    "deterministic",
+    "lockbox_valid",
+)
+MODEL_METRIC_KEYS = (
+    "suppressed",
+    "unique_actor_count",
+    "case_count",
+    "macro_f1",
+    "balanced_accuracy",
+    "per_class_recall",
+    "multiclass_brier",
+    "log_loss",
+    "ece_10_bin",
+    "retained",
+)
 
 
 def _pairs(pairs: list[tuple[str, Any]]) -> dict[str, Any]:
@@ -258,12 +283,463 @@ def _constant(value: str) -> None:
 def _reject_non_finite(value: Any) -> None:
     if isinstance(value, float) and not math.isfinite(value):
         raise ValueError("non-finite JSON number")
-    if isinstance(value, dict):
+    if isinstance(value, Mapping):
         for nested_value in value.values():
             _reject_non_finite(nested_value)
-    if isinstance(value, list):
+    if isinstance(value, (list, tuple)):
         for nested_value in value:
             _reject_non_finite(nested_value)
+
+
+def _exact_keys(value: Any, keys: tuple[Any, ...], name: str) -> Mapping[Any, Any]:
+    if not isinstance(value, Mapping) or tuple(value) != keys:
+        raise ValueError(f"{name} keys do not match frozen contract")
+    return value
+
+
+def _finite_float(value: Any, name: str) -> float:
+    if type(value) is not float or not math.isfinite(value):
+        raise ValueError(f"{name} must be a finite float")
+    return value
+
+
+def _count(value: Any, name: str) -> int:
+    if type(value) is not int or value < 0:
+        raise ValueError(f"{name} must be a non-negative integer")
+    return value
+
+
+def validate_class_order(class_order: Any) -> tuple[str, ...]:
+    if tuple(class_order) != CLASS_ORDER:
+        raise ValueError("class order does not match A,D,F,H,N,S")
+    return CLASS_ORDER
+
+
+def validate_partition_role(role: Any, allowed: tuple[str, ...]) -> str:
+    if type(role) is not str or role not in allowed:
+        raise ValueError(
+            "partition role must be exactly " + " or ".join(allowed)
+        )
+    return role
+
+
+def validate_fit_inputs(
+    training_features: Any,
+    training_sentences: Any,
+    training_labels: Any,
+    seed: Any,
+    *,
+    partition_role: Any,
+    class_order: Any,
+) -> tuple[Any, Any, Any, int]:
+    import numpy as np
+
+    validate_partition_role(partition_role, ("training_discovery",))
+    validate_class_order(class_order)
+    if (
+        not isinstance(training_features, np.ndarray)
+        or training_features.dtype != np.dtype(np.float64)
+        or training_features.ndim != 2
+        or training_features.shape[1] != len(FEATURE_NAMES)
+        or training_features.shape[0] == 0
+    ):
+        raise ValueError("training feature array shape or dtype is invalid")
+    if not np.isfinite(training_features).all():
+        raise ValueError("training feature array must be finite")
+    if (
+        not isinstance(training_sentences, np.ndarray)
+        or training_sentences.ndim != 1
+        or training_sentences.dtype.kind != "U"
+        or training_sentences.shape[0] != training_features.shape[0]
+        or any(not str(value).strip() for value in training_sentences.tolist())
+    ):
+        raise ValueError("training sentence array shape or values are invalid")
+    if (
+        not isinstance(training_labels, np.ndarray)
+        or training_labels.ndim != 1
+        or training_labels.dtype.kind != "U"
+        or training_labels.shape[0] != training_features.shape[0]
+        or set(training_labels.tolist()) != set(CLASS_ORDER)
+    ):
+        raise ValueError("training label array must contain exactly A,D,F,H,N,S")
+    if type(seed) is not int or not 0 <= seed <= 0xFFFFFFFF:
+        raise ValueError("model seed must be a 32-bit non-negative integer")
+    return training_features, training_sentences, training_labels, seed
+
+
+def validate_probability_inputs(
+    probabilities: Any,
+    *,
+    class_order: Any,
+    expected_rows: int | None = None,
+) -> tuple[dict[str, Any], int]:
+    import numpy as np
+
+    validate_class_order(class_order)
+    _exact_keys(probabilities, MODEL_KEYS, "model")
+    validated: dict[str, Any] = {}
+    row_count = expected_rows
+    for key in MODEL_KEYS:
+        array = probabilities[key]
+        if (
+            not isinstance(array, np.ndarray)
+            or array.dtype != np.dtype(np.float64)
+            or array.ndim != 2
+            or array.shape[1] != len(CLASS_ORDER)
+            or array.shape[0] == 0
+        ):
+            raise ValueError("probability array shape or dtype is invalid")
+        if row_count is None:
+            row_count = int(array.shape[0])
+        if array.shape[0] != row_count:
+            raise ValueError("probability array shape does not match rows")
+        if not np.isfinite(array).all():
+            raise ValueError("probability arrays must be finite")
+        if np.any(array < 0.0) or np.any(array > 1.0):
+            raise ValueError("probability values must be within zero and one")
+        if not np.allclose(
+            array.sum(axis=1),
+            np.ones(array.shape[0], dtype=np.float64),
+            rtol=0.0,
+            atol=1e-12,
+        ):
+            raise ValueError("probability row sum does not equal one")
+        validated[key] = array
+    assert row_count is not None
+    return validated, row_count
+
+
+def validate_labels_and_actors(
+    labels: Any,
+    actor_ids: Any,
+    *,
+    expected_rows: int,
+) -> tuple[Any, tuple[str, ...]]:
+    import numpy as np
+
+    if (
+        not isinstance(labels, np.ndarray)
+        or labels.ndim != 1
+        or labels.dtype.kind != "U"
+        or labels.shape[0] != expected_rows
+        or any(value not in CLASS_ORDER for value in labels.tolist())
+    ):
+        raise ValueError("label array shape, class order, or values are invalid")
+    if isinstance(actor_ids, (str, bytes)) or not isinstance(actor_ids, Sequence):
+        raise ValueError("actor IDs must be a sequence")
+    actors = tuple(actor_ids)
+    if (
+        len(actors) != expected_rows
+        or any(
+            type(actor) is not str
+            or not actor
+            or actor.strip() != actor
+            for actor in actors
+        )
+    ):
+        raise ValueError("actor IDs do not match frozen row contract")
+    return labels, actors
+
+
+def validate_calibration_result(payload: Any) -> Mapping[str, Any]:
+    _exact_keys(
+        payload,
+        ("schema_id", "partition_role", "class_order", "targets", "models"),
+        "calibration result",
+    )
+    if payload["schema_id"] != "emotion-state-phase-b-calibration-v1":
+        raise ValueError("calibration result schema does not match")
+    validate_partition_role(payload["partition_role"], ("calibration",))
+    validate_class_order(payload["class_order"])
+    if tuple(payload["targets"]) != COVERAGE_TARGETS:
+        raise ValueError("calibration targets do not match frozen contract")
+    _exact_keys(payload["models"], MODEL_KEYS, "calibration model")
+    for model in MODEL_KEYS:
+        cells = _exact_keys(
+            payload["models"][model],
+            COVERAGE_TARGETS,
+            "threshold",
+        )
+        previous_threshold = -1.0
+        for target in COVERAGE_TARGETS:
+            cell = _exact_keys(
+                cells[target],
+                ("threshold", "achieved_coverage"),
+                "threshold",
+            )
+            threshold = _finite_float(cell["threshold"], "threshold")
+            coverage = _finite_float(
+                cell["achieved_coverage"],
+                "threshold achieved coverage",
+            )
+            if not 0.0 <= threshold <= 1.0:
+                raise ValueError("threshold is outside zero and one")
+            if not target <= coverage <= 1.0:
+                raise ValueError("threshold achieved coverage is invalid")
+            if threshold < previous_threshold:
+                raise ValueError("threshold order is invalid")
+            previous_threshold = threshold
+    return payload
+
+
+def _validate_metric_models(models: Any) -> Mapping[str, Any]:
+    _exact_keys(models, MODEL_KEYS, "metric model")
+    for model in MODEL_KEYS:
+        metric = _exact_keys(models[model], MODEL_METRIC_KEYS, "metric")
+        suppressed = metric["suppressed"]
+        if type(suppressed) is not bool:
+            raise ValueError("metric suppression flag is invalid")
+        actor_count = _count(metric["unique_actor_count"], "metric actor count")
+        _count(metric["case_count"], "metric case count")
+        for key in (
+            "macro_f1",
+            "balanced_accuracy",
+            "multiclass_brier",
+            "log_loss",
+            "ece_10_bin",
+        ):
+            value = metric[key]
+            if suppressed:
+                if value is not None:
+                    raise ValueError("suppressed metric must not emit a value")
+            else:
+                _finite_float(value, f"metric {key}")
+        if suppressed != (actor_count < MINIMUM_UNIQUE_ACTORS):
+            raise ValueError("metric suppression does not match actor floor")
+        class_cells = _exact_keys(
+            metric["per_class_recall"],
+            CLASS_ORDER,
+            "per-class recall",
+        )
+        for label in CLASS_ORDER:
+            cell = _exact_keys(
+                class_cells[label],
+                ("suppressed", "unique_actor_count", "case_count", "recall"),
+                "per-class recall",
+            )
+            cell_actors = _count(
+                cell["unique_actor_count"],
+                "per-class recall actor count",
+            )
+            _count(cell["case_count"], "per-class recall case count")
+            if type(cell["suppressed"]) is not bool:
+                raise ValueError("per-class recall suppression flag is invalid")
+            if cell["suppressed"] != (cell_actors < MINIMUM_UNIQUE_ACTORS):
+                raise ValueError("per-class recall actor floor is invalid")
+            if cell["suppressed"]:
+                if cell["recall"] is not None:
+                    raise ValueError("suppressed recall must not emit zero")
+            else:
+                recall = _finite_float(cell["recall"], "per-class recall")
+                if not 0.0 <= recall <= 1.0:
+                    raise ValueError("per-class recall is outside zero and one")
+        retained = _exact_keys(
+            metric["retained"],
+            COVERAGE_TARGETS,
+            "retained metric",
+        )
+        for target in COVERAGE_TARGETS:
+            cell = _exact_keys(
+                retained[target],
+                (
+                    "threshold",
+                    "calibration_achieved_coverage",
+                    "coverage",
+                    "suppressed",
+                    "unique_actor_count",
+                    "case_count",
+                    "retained_macro_f1",
+                ),
+                "retained metric",
+            )
+            for key in (
+                "threshold",
+                "calibration_achieved_coverage",
+                "coverage",
+            ):
+                value = _finite_float(cell[key], f"retained metric {key}")
+                if not 0.0 <= value <= 1.0:
+                    raise ValueError(f"retained metric {key} is invalid")
+            retained_actors = _count(
+                cell["unique_actor_count"],
+                "retained actor count",
+            )
+            _count(cell["case_count"], "retained case count")
+            if type(cell["suppressed"]) is not bool:
+                raise ValueError("retained suppression flag is invalid")
+            if cell["suppressed"] != (
+                retained_actors < MINIMUM_UNIQUE_ACTORS
+            ):
+                raise ValueError("retained actor floor is invalid")
+            if cell["suppressed"]:
+                if cell["retained_macro_f1"] is not None:
+                    raise ValueError("suppressed retained metric must be absent")
+            else:
+                _finite_float(
+                    cell["retained_macro_f1"],
+                    "retained macro-F1",
+                )
+    return models
+
+
+def validate_evaluation_result(
+    payload: Any,
+    *,
+    expected_role: str | None = None,
+) -> Mapping[str, Any]:
+    _exact_keys(
+        payload,
+        (
+            "schema_id",
+            "partition_role",
+            "class_order",
+            "models",
+            "final_decision_eligible",
+        ),
+        "evaluation result",
+    )
+    if payload["schema_id"] != "emotion-state-phase-b-evaluation-v1":
+        raise ValueError("evaluation result schema does not match")
+    role = validate_partition_role(
+        payload["partition_role"],
+        ("balanced_diagnostic", "final_lockbox"),
+    )
+    if expected_role is not None and role != expected_role:
+        raise ValueError(f"evaluation result must have {expected_role} provenance")
+    validate_class_order(payload["class_order"])
+    if payload["final_decision_eligible"] is not (role == "final_lockbox"):
+        raise ValueError("diagnostic evaluation cannot produce a final decision")
+    _validate_metric_models(payload["models"])
+    return payload
+
+
+def validate_bootstrap_result(payload: Any) -> Mapping[str, Any]:
+    _exact_keys(
+        payload,
+        (
+            "schema_id",
+            "partition_role",
+            "class_order",
+            "resamples",
+            "seed",
+            "configuration_sha256",
+            "unique_actor_count",
+            "case_count",
+            "paired_macro_f1_lift",
+        ),
+        "bootstrap result",
+    )
+    if payload["schema_id"] != "emotion-state-phase-b-bootstrap-v1":
+        raise ValueError("bootstrap result schema does not match")
+    validate_partition_role(payload["partition_role"], ("final_lockbox",))
+    validate_class_order(payload["class_order"])
+    if payload["resamples"] != BOOTSTRAP_RESAMPLES:
+        raise ValueError("bootstrap requires exactly 2,000 resamples")
+    if type(payload["seed"]) is not int or payload["seed"] < 0:
+        raise ValueError("bootstrap seed is invalid")
+    digest = payload["configuration_sha256"]
+    if type(digest) is not str or re.fullmatch(r"[0-9A-F]{64}", digest) is None:
+        raise ValueError("bootstrap configuration SHA-256 is invalid")
+    if payload["seed"] != int(digest[:16], 16):
+        raise ValueError("bootstrap seed does not match configuration SHA-256")
+    _count(payload["unique_actor_count"], "bootstrap actor count")
+    _count(payload["case_count"], "bootstrap case count")
+    lifts = _exact_keys(
+        payload["paired_macro_f1_lift"],
+        ("class_prior", "sentence_id"),
+        "bootstrap lift",
+    )
+    for baseline in lifts:
+        cell = _exact_keys(
+            lifts[baseline],
+            ("point_estimate", "lower_95", "upper_95"),
+            "bootstrap interval",
+        )
+        point = _finite_float(cell["point_estimate"], "bootstrap point estimate")
+        lower = _finite_float(cell["lower_95"], "bootstrap lower interval")
+        upper = _finite_float(cell["upper_95"], "bootstrap upper interval")
+        if not lower <= point <= upper:
+            raise ValueError("bootstrap interval does not contain point estimate")
+    return payload
+
+
+def validate_decision_inputs(
+    metrics: Any,
+    validity: Any,
+) -> tuple[Mapping[str, Any], Mapping[str, bool]]:
+    _exact_keys(
+        metrics,
+        (
+            "schema_id",
+            "partition_role",
+            "class_order",
+            "final_decision_eligible",
+            "models",
+            "paired_macro_f1_lift",
+            "sentence_driven_apparent_lift",
+            "eligible_slice_reversal",
+            "eligible_slice_instability",
+            "confidence_abstention_improves",
+        ),
+        "metric",
+    )
+    if metrics["schema_id"] != "emotion-state-phase-b-decision-evidence-v1":
+        raise ValueError("metric schema does not match frozen contract")
+    validate_partition_role(metrics["partition_role"], ("final_lockbox",))
+    validate_class_order(metrics["class_order"])
+    if metrics["final_decision_eligible"] is not True:
+        raise ValueError("final_lockbox evidence is not decision eligible")
+    _validate_metric_models(metrics["models"])
+    lifts = _exact_keys(
+        metrics["paired_macro_f1_lift"],
+        ("class_prior", "sentence_id"),
+        "paired lift",
+    )
+    for baseline in lifts:
+        cell = _exact_keys(
+            lifts[baseline],
+            ("point_estimate", "lower_95", "upper_95"),
+            "paired lift",
+        )
+        point = _finite_float(cell["point_estimate"], "paired lift point")
+        lower = _finite_float(cell["lower_95"], "paired lift lower")
+        upper = _finite_float(cell["upper_95"], "paired lift upper")
+        if not lower <= point <= upper:
+            raise ValueError("paired lift interval does not contain point")
+    for key in (
+        "sentence_driven_apparent_lift",
+        "eligible_slice_reversal",
+        "eligible_slice_instability",
+        "confidence_abstention_improves",
+    ):
+        if type(metrics[key]) is not bool:
+            raise ValueError(f"metric {key} must be boolean")
+    models = metrics["models"]
+    if any(models[model]["suppressed"] for model in MODEL_KEYS):
+        raise ValueError("decision metrics cannot use suppressed model cells")
+    if any(
+        models["acoustic"]["per_class_recall"][label]["suppressed"]
+        for label in CLASS_ORDER
+    ):
+        raise ValueError("decision metrics cannot use suppressed recall cells")
+    for baseline in ("class_prior", "sentence_id"):
+        expected_point = (
+            models["acoustic"]["macro_f1"] - models[baseline]["macro_f1"]
+        )
+        actual_point = lifts[baseline]["point_estimate"]
+        if not math.isclose(
+            actual_point,
+            expected_point,
+            rel_tol=0.0,
+            abs_tol=1e-15,
+        ):
+            raise ValueError(
+                "paired lift point estimate does not match final-lockbox metrics"
+            )
+    _exact_keys(validity, VALIDITY_KEYS, "validity")
+    if any(type(validity[key]) is not bool for key in VALIDITY_KEYS):
+        raise ValueError("validity values must be booleans")
+    return metrics, validity
 
 
 def _matches_expected(actual: Any, expected: Any) -> bool:
