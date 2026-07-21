@@ -2706,8 +2706,7 @@ def mint_slice_analysis(
         except TypeError as error:
             raise ValueError("slice contributors must be row-ID sequences") from error
         if (
-            not contributor_rows
-            or len(contributor_rows) != len(set(contributor_rows))
+            len(contributor_rows) != len(set(contributor_rows))
             or any(
                 type(row) is not str or row not in row_index
                 for row in contributor_rows
@@ -2722,28 +2721,31 @@ def mint_slice_analysis(
             partition_state.actors[index] for index in indexes.tolist()
         )
         actor_count = len(set(contributor_actors))
-        if actor_count < MINIMUM_UNIQUE_ACTORS:
-            raise ValueError("slice contributors require at least ten actors")
-        scores = {
-            model: _macro_f1(
-                labels[indexes],
-                _predicted_labels(arrays[model][indexes]),
+        suppressed = actor_count < MINIMUM_UNIQUE_ACTORS
+        scores = None
+        lifts = None
+        if not suppressed:
+            scores = {
+                model: _macro_f1(
+                    labels[indexes],
+                    _predicted_labels(arrays[model][indexes]),
+                )
+                for model in MODEL_KEYS
+            }
+            lifts = {
+                baseline: scores["acoustic"] - scores[baseline]
+                for baseline in ("class_prior", "sentence_id")
+            }
+            reversal = reversal or any(value < 0.0 for value in lifts.values())
+            instability = instability or any(
+                abs(lifts[baseline] - full_lifts[baseline])
+                > SLICE_INSTABILITY_TOLERANCE
+                for baseline in lifts
             )
-            for model in MODEL_KEYS
-        }
-        lifts = {
-            baseline: scores["acoustic"] - scores[baseline]
-            for baseline in ("class_prior", "sentence_id")
-        }
-        reversal = reversal or any(value < 0.0 for value in lifts.values())
-        instability = instability or any(
-            abs(lifts[baseline] - full_lifts[baseline])
-            > SLICE_INSTABILITY_TOLERANCE
-            for baseline in lifts
-        )
         cells[name] = {
             "case_count": len(contributor_rows),
             "unique_actor_count": actor_count,
+            "suppressed": suppressed,
             "contributor_row_commitment_sha256": _canonical_sha256(
                 list(contributor_rows)
             ),
@@ -2756,7 +2758,7 @@ def mint_slice_analysis(
     result = _mint_artifact(
         SliceAnalysisEvidence,
         {
-            "schema_id": "emotion-state-phase-b-slice-analysis-v1",
+            "schema_id": "emotion-state-phase-b-slice-analysis-v2",
             "partition_role": role,
             "class_order": list(CLASS_ORDER),
             "instability_tolerance": SLICE_INSTABILITY_TOLERANCE,
@@ -2786,7 +2788,7 @@ def _verify_slice_analysis(
     )
     if expected_role is not None and role != expected_role:
         raise ValueError(f"slice analysis must have {expected_role} role")
-    if payload["schema_id"] != "emotion-state-phase-b-slice-analysis-v1":
+    if payload["schema_id"] != "emotion-state-phase-b-slice-analysis-v2":
         raise ValueError("slice analysis schema does not match")
     if payload["instability_tolerance"] != SLICE_INSTABILITY_TOLERANCE:
         raise ValueError("slice analysis instability tolerance does not match")
@@ -2837,6 +2839,7 @@ def _verify_slice_analysis(
         if set(cell) != {
             "case_count",
             "unique_actor_count",
+            "suppressed",
             "contributor_row_commitment_sha256",
             "contributor_actor_commitment_sha256",
             "model_macro_f1",
@@ -2845,10 +2848,11 @@ def _verify_slice_analysis(
             raise ValueError("slice analytical cell schema is invalid")
         if (
             type(cell["case_count"]) is not int
-            or cell["case_count"] <= 0
+            or cell["case_count"] < 0
             or type(cell["unique_actor_count"]) is not int
-            or cell["unique_actor_count"] < MINIMUM_UNIQUE_ACTORS
+            or cell["unique_actor_count"] < 0
             or cell["unique_actor_count"] > cell["case_count"]
+            or type(cell["suppressed"]) is not bool
         ):
             raise ValueError("slice contributor counts are invalid")
         for digest_key in (
@@ -2860,12 +2864,26 @@ def _verify_slice_analysis(
                 or re.fullmatch(r"[0-9A-F]{64}", cell[digest_key]) is None
             ):
                 raise ValueError("slice contributor commitment is invalid")
-        if set(cell["model_macro_f1"]) != set(MODEL_KEYS):
+        suppressed = cell["suppressed"]
+        if suppressed is not (cell["unique_actor_count"] < MINIMUM_UNIQUE_ACTORS):
+            raise ValueError("slice suppression contradicts contributor count")
+        if suppressed:
+            if (
+                cell["model_macro_f1"] is not None
+                or cell["paired_macro_f1_lift"] is not None
+            ):
+                raise ValueError("suppressed slice metrics must be null")
+            continue
+        if type(cell["model_macro_f1"]) is not dict or set(
+            cell["model_macro_f1"]
+        ) != set(MODEL_KEYS):
             raise ValueError("slice model metrics are invalid")
         for value in cell["model_macro_f1"].values():
             if type(value) is not float or not 0.0 <= value <= 1.0:
                 raise ValueError("slice macro-F1 is invalid")
-        if set(cell["paired_macro_f1_lift"]) != {
+        if type(cell["paired_macro_f1_lift"]) is not dict or set(
+            cell["paired_macro_f1_lift"]
+        ) != {
             "class_prior",
             "sentence_id",
         }:

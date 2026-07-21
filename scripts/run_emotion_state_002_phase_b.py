@@ -5,6 +5,7 @@ import argparse
 import ctypes
 import hashlib
 import json
+import math
 import os
 import re
 import stat
@@ -15,7 +16,7 @@ from copy import deepcopy
 from contextlib import ExitStack, contextmanager
 from dataclasses import dataclass
 from pathlib import Path
-from typing import TYPE_CHECKING, Any, BinaryIO, Literal, NoReturn
+from typing import TYPE_CHECKING, Any, BinaryIO, Callable, Literal, NoReturn
 
 if TYPE_CHECKING:
     from scripts.emotion_state_phase_b_evaluation import ValidatedPartitionAuthority
@@ -31,16 +32,23 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from scripts.validate_emotion_state_002_phase_b import (
+    EXPECTED_CONFIG,
     EXPECTED_EVIDENCE_IDENTITY_SHA256,
+    EXPECTED_ENVIRONMENT_LOCK,
+    EXPECTED_FEATURE_SCHEMA,
     EXPECTED_PUBLIC_RAW_SOURCE_SHA256,
+    EXPECTED_SPLIT_SCHEMA,
     EXPECTED_VALIDITY,
     EXPECTED_STATIC_FILE_SHA256,
     derive_phase_b_decision,
+    canonical_payload_sha256,
     serialized_decision_evidence_mint_sha256,
     validate_config,
     validate_decision_inputs,
+    validate_environment_identity_bytes,
     validate_environment_lock,
     validate_feature_schema,
+    validate_installed_environment_identity,
     validate_lockbox_ami_input,
     validate_lockbox_lineage,
     validate_lockbox_result,
@@ -53,11 +61,22 @@ from scripts.validate_emotion_state_002_phase_b import (
     validated_lockbox_summary,
 )
 from scripts.emotion_state_phase_b_public_pipeline import (
+    EXPECTED_AMI_SELECTED_SOURCE_COUNT,
+    EXPECTED_PRODUCTION_ELIGIBLE_RECORD_COUNT,
+    EXPECTED_PRODUCTION_FINAL_LOCKBOX_RECORD_COUNT,
+    EXPECTED_PRODUCTION_NONFINAL_RECORD_COUNT,
+    EXPECTED_PRODUCTION_PARTITION_RECORD_COUNTS,
+    NON_LOCKBOX_ROLE_ORDER,
+    ProductionNonLockboxArtifacts,
     ProductionPreflightArtifacts,
+    SourceByteIdentity,
     TRACKED_DATASET_EVIDENCE_FILENAMES,
     TrackedPublicAuthority,
+    build_production_non_lockbox_artifacts,
     build_production_preflight_artifacts,
+    restore_production_non_lockbox_artifacts,
     tracked_public_authority_commitment_sha256,
+    validate_non_lockbox_review_packet,
     validate_tracked_public_evidence,
 )
 
@@ -70,10 +89,52 @@ LOCK_NAME = "publication.lock"
 LOCKBOX_LOCK_NAME = "lockbox.lock"
 LOCKBOX_RESERVATION_NAME = "lockbox-reservation.json"
 MATERIAL_PIPELINE_LOCK_NAME = "material-pipeline.lock"
+OPAQUE_POST_NON_LOCKBOX_STATE_ROOT_ENTRY_NAMES = frozenset({
+    LOCKBOX_LOCK_NAME,
+    LOCKBOX_RESERVATION_NAME,
+    "lockbox",
+    "publication",
+})
 NONFINAL_PARTITION_ROLES = (
     "training_discovery",
     "calibration",
     "balanced_diagnostic",
+)
+NON_LOCKBOX_FEATURE_CACHE_FIELDS = (
+    "schema_id",
+    "schema_version",
+    "partition_role",
+    "configuration_sha256",
+    "environment_lock_sha256",
+    "feature_schema_sha256",
+    "split_schema_sha256",
+    "split_manifest_sha256",
+    "assignment_sha256",
+    "partition_authority_sha256",
+    "tracked_public_authority_commitment_sha256",
+    "upstream_acoustic_source_commitment_sha256",
+    "feature_names",
+    "records",
+    "self_sha256",
+)
+NON_LOCKBOX_FEATURE_RECORD_FIELDS = (
+    "clip_stem",
+    "audio_sha256",
+    "audio_size_bytes",
+    "features",
+)
+NON_LOCKBOX_AMI_EVIDENCE_FIELDS = (
+    "schema_id",
+    "schema_version",
+    "source_authority_sha256",
+    "tracked_public_authority_commitment_sha256",
+    "source_file_count",
+    "meetings",
+    "partition_membership",
+    "official_order",
+    "aggregate",
+    "aggregate_sha256",
+    "self_sha256",
 )
 UNSET_DIGEST = "0" * 64
 PRIVATE_COMPONENTS = frozenset(
@@ -106,6 +167,39 @@ CREDENTIAL_ENV_SUFFIXES = (
     "_PASSWORD",
     "_SECRET",
     "_TOKEN",
+)
+NETWORK_CONFIGURATION_ENV_NAMES = frozenset(
+    {
+        "CURL_CA_BUNDLE",
+        "HF_ENDPOINT",
+        "PIP_EXTRA_INDEX_URL",
+        "PIP_INDEX_URL",
+        "PIP_TRUSTED_HOST",
+        "REQUESTS_CA_BUNDLE",
+        "SSL_CERT_DIR",
+        "SSL_CERT_FILE",
+    }
+)
+NETWORK_CONFIGURATION_ENV_SUFFIXES = ("_PROXY",)
+_CREMA_AUDIO_SOURCE_PREFIX = (
+    "data/public/emotion-state/crema-d-v1.0/repository/AudioWAV/"
+)
+_AMI_SOURCE_ROOT = (
+    "data/public/emotion-state/ami-manual-annotations-v1.6.2/"
+)
+_AMI_EXTRACTED_SOURCE_ROOT = f"{_AMI_SOURCE_ROOT}extracted/"
+_AMI_MEETING_UNIVERSE_SOURCE = (
+    f"{_AMI_EXTRACTED_SOURCE_ROOT}corpusResources/meetings.xml"
+)
+_AMI_PARTICIPANTS_SOURCE = (
+    f"{_AMI_EXTRACTED_SOURCE_ROOT}corpusResources/participants.xml"
+)
+_AMI_EXCLUDED_SOURCES = frozenset(
+    {
+        f"{_AMI_SOURCE_ROOT}ami_manual_1.6.2.zip",
+        f"{_AMI_SOURCE_ROOT}official-partitions/datasets.shtml",
+        f"{_AMI_EXTRACTED_SOURCE_ROOT}corpusResources/da-types.xml",
+    }
 )
 ALLOWED_PHASES = frozenset(
     {
@@ -205,8 +299,31 @@ class _PreflightOutputAuthorities:
     preflight_root: _HeldDirectoryAuthority
 
 
+@dataclass(frozen=True, slots=True)
+class _NonLockboxOutputAuthorities:
+    root: _HeldDirectoryAuthority
+    cache_root: _HeldDirectoryAuthority
+
+
 @dataclass(slots=True)
 class _PreflightArtifactRecoveryPlan:
+    destination: Path
+    parent_authority: _HeldDirectoryAuthority
+    action: Literal[
+        "none",
+        "discard-stage",
+        "finish-committed",
+        "restore-prior",
+        "discard-uncommitted-stage",
+    ]
+    destination_file: _HeldRegularFileAuthority | None
+    intent_file: _HeldRegularFileAuthority | None
+    prior_file: _HeldRegularFileAuthority | None
+    stage_file: _HeldRegularFileAuthority | None
+
+
+@dataclass(slots=True)
+class _NonLockboxArtifactRecoveryPlan:
     destination: Path
     parent_authority: _HeldDirectoryAuthority
     action: Literal[
@@ -262,10 +379,19 @@ class _AdmittedStateAuthority:
 
 
 @dataclass(frozen=True, slots=True)
+class _AdmittedNonLockboxStateAuthority:
+    initial_state: dict[str, Any]
+    initial_bytes: bytes
+    initial_file: _HeldRegularFileAuthority
+    _initial_owner: _RegularFileAuthorityOwner
+
+
+@dataclass(frozen=True, slots=True)
 class _HeldCommittedStateAuthority:
     state: dict[str, Any]
     canonical_bytes: bytes
     file: _HeldRegularFileAuthority
+    _file_owner: _RegularFileAuthorityOwner
 
 
 @dataclass(frozen=True, slots=True)
@@ -276,8 +402,32 @@ class _PersistedPreflightReadback:
 
 
 @dataclass(frozen=True, slots=True)
+class _PersistedNonLockboxReadback:
+    feature_caches: tuple[dict[str, Any], ...]
+    ami_evidence: dict[str, Any]
+    review_packet: dict[str, Any]
+    files: tuple[_HeldRegularFileAuthority, ...]
+
+
+@dataclass(frozen=True, slots=True)
 class _HeldStaticPreflightInputs:
     configuration: dict[str, Any]
+    contents: tuple[bytes, ...]
+    digests: tuple[str, ...]
+    files: tuple[_HeldRegularFileAuthority, ...]
+
+
+@dataclass(frozen=True, slots=True)
+class _HeldEnvironmentWheelInputs:
+    filenames: tuple[str, ...]
+    contents: tuple[bytes, ...]
+    digests: tuple[str, ...]
+    files: tuple[_HeldRegularFileAuthority, ...]
+
+
+@dataclass(frozen=True, slots=True)
+class _HeldTrackedPublicEvidenceInputs:
+    names: tuple[str, ...]
     contents: tuple[bytes, ...]
     digests: tuple[str, ...]
     files: tuple[_HeldRegularFileAuthority, ...]
@@ -304,7 +454,7 @@ class RunnerPaths:
     split_manifest_path: Path
     input_ledger_path: Path
     non_lockbox_packet_path: Path
-    lockbox_result_path: Path
+    lockbox_result_path: Path | None
     public_material_root: Path | None = None
     authority: str = "invalid"
 
@@ -359,7 +509,7 @@ class RunnerPaths:
             non_lockbox_packet_path=(
                 state_root / "non-lockbox" / "non-lockbox-packet.json"
             ),
-            lockbox_result_path=state_root / "lockbox" / "lockbox-result.json",
+            lockbox_result_path=None,
             public_material_root=root / "data" / "public" / "emotion-state",
             authority="production",
         )
@@ -411,10 +561,31 @@ class RunnerPaths:
     def preflight_state_stage_path(self) -> Path:
         return Path(self.state_root) / ".state.json.preflight.stage"
 
+    @property
+    def non_lockbox_state_stage_path(self) -> Path:
+        return Path(self.state_root) / ".state.json.non-lockbox.stage"
+
+    @property
+    def non_lockbox_state_intent_path(self) -> Path:
+        return Path(self.state_root) / ".state.json.non-lockbox.intent.json"
+
+    @property
+    def non_lockbox_state_prior_path(self) -> Path:
+        return Path(self.state_root) / ".state.json.non-lockbox.prior"
+
     def partition_authority_cache_path(self, role: str) -> Path:
         if type(role) is not str or role not in NONFINAL_PARTITION_ROLES:
             raise RunnerError("preflight partition role is invalid")
         return self.preflight_cache_root / f"{role}.json"
+
+    def non_lockbox_feature_cache_path(self, role: str) -> Path:
+        if type(role) is not str or role not in NONFINAL_PARTITION_ROLES:
+            raise RunnerError("non-lockbox feature-cache role is invalid")
+        return self.non_lockbox_cache_root / f"{role}.json"
+
+    @property
+    def non_lockbox_ami_evidence_path(self) -> Path:
+        return self.non_lockbox_cache_root / "ami-v2-evidence.json"
 
     @property
     def non_lockbox_root(self) -> Path:
@@ -533,6 +704,23 @@ def canonical_json_bytes(payload: Any) -> bytes:
         ).encode("utf-8")
     except (TypeError, ValueError) as error:
         raise RunnerError("payload is not canonical JSON") from error
+
+
+def _non_lockbox_artifact_json_bytes(payload: Any) -> bytes:
+    """Render frozen insertion-order artifacts as deterministic LF JSON."""
+    try:
+        return (
+            json.dumps(
+                payload,
+                indent=2,
+                sort_keys=False,
+                ensure_ascii=False,
+                allow_nan=False,
+            )
+            + "\n"
+        ).encode("utf-8")
+    except (TypeError, ValueError) as error:
+        raise RunnerError("non-lockbox artifact is not deterministic JSON") from error
 
 
 def _sha256_bytes(content: bytes) -> str:
@@ -862,8 +1050,15 @@ def _windows_unlink_raw_handle(handle: int) -> None:
         )
 
 
-def _read_file_nofollow(path: Path, *, maximum_bytes: int = 16_777_216) -> bytes:
+def _read_file_nofollow(
+    path: Path,
+    *,
+    maximum_bytes: int = 16_777_216,
+    require_single_link: bool = False,
+) -> bytes:
     """Read a regular file through a no-follow handle and bind its identity."""
+    if type(require_single_link) is not bool:
+        raise RunnerError("single-link read policy must be a boolean")
     flags = os.O_RDONLY | getattr(os, "O_BINARY", 0)
     flags |= getattr(os, "O_NOFOLLOW", 0)
     try:
@@ -888,9 +1083,13 @@ def _read_file_nofollow(path: Path, *, maximum_bytes: int = 16_777_216) -> bytes
                 )
             if _is_link_or_reparse(path, before) or not stat.S_ISREG(
                 before.st_mode
-            ):
+            ) or (require_single_link and before.st_nlink != 1):
                 os.close(descriptor)
-                raise RunnerError("bound input is not a regular no-follow file")
+                raise RunnerError(
+                    "bound input is not a regular no-follow single-link file"
+                    if require_single_link
+                    else "bound input is not a regular no-follow file"
+                )
             try:
                 _verify_cached_path_proof(path)
             except Exception:
@@ -903,6 +1102,8 @@ def _read_file_nofollow(path: Path, *, maximum_bytes: int = 16_777_216) -> bytes
         if (
             _is_link_or_reparse(path, after)
             or not stat.S_ISREG(opened.st_mode)
+            or (require_single_link and opened.st_nlink != 1)
+            or (require_single_link and after.st_nlink != 1)
             or (opened.st_dev, opened.st_ino) != (before.st_dev, before.st_ino)
             or (opened.st_dev, opened.st_ino) != (after.st_dev, after.st_ino)
         ):
@@ -925,6 +1126,7 @@ def _read_file_nofollow(path: Path, *, maximum_bytes: int = 16_777_216) -> bytes
         if (
             (final.st_dev, final.st_ino, final.st_size)
             != (opened.st_dev, opened.st_ino, opened.st_size)
+            or (require_single_link and final.st_nlink != 1)
         ):
             raise RunnerError("bound file changed while being read")
         return content
@@ -1116,9 +1318,13 @@ def _windows_open_child_directory_handle(
 def _held_child_directory_authority(
     path: Path,
     parent_authority: _HeldDirectoryAuthority,
+    *,
+    create: bool = True,
 ) -> Iterator[_HeldDirectoryAuthority]:
     target = Path(path)
     _verify_held_directory_authority(parent_authority)
+    if type(create) is not bool:
+        raise RunnerError("directory creation policy type changed")
     if target.parent != parent_authority.path:
         raise RunnerError("directory creation parent authority does not match")
     exists = os.path.lexists(target)
@@ -1175,10 +1381,10 @@ def _held_child_directory_authority(
         handle = _windows_open_child_directory_handle(
             parent_authority.windows_handle,
             target.name,
-            create=not exists,
+            create=create and not exists,
         )
     except OSError as error:
-        label = "create" if not exists else "open"
+        label = "create" if create and not exists else "open"
         raise RunnerError(f"unable to {label} held child directory") from error
     try:
         identity, _size, _links, attributes = _windows_handle_information(handle)
@@ -1201,7 +1407,7 @@ def _held_child_directory_authority(
             windows_handle=handle,
         )
         _verify_held_directory_authority(authority)
-        if not exists:
+        if not exists and create:
             _flush_held_directory(authority)
             _flush_held_directory(parent_authority)
         yield authority
@@ -1216,80 +1422,224 @@ def _held_regular_file_with_bytes(
     *,
     maximum_bytes: int = 268_435_456,
     delete_access: bool = False,
+    proof_bound: bool = False,
 ) -> Iterator[tuple[_HeldRegularFileAuthority, bytes]]:
     target = Path(path)
-    before = os.stat(target, follow_symlinks=False)
-    if (
-        _is_link_or_reparse(target, before)
-        or not stat.S_ISREG(before.st_mode)
-        or before.st_nlink != 1
-    ):
-        raise RunnerError("held file must be regular, no-follow, and single-link")
-    if os.name == "nt":
-        access = 0x80000000 | 0x00000080
+    if type(delete_access) is not bool:
+        raise RunnerError("held-file delete policy type changed")
+    if type(proof_bound) is not bool:
+        raise RunnerError("held-file proof-bound policy type changed")
+    if type(maximum_bytes) is not int or maximum_bytes < 0:
+        raise RunnerError("held-file maximum size is invalid")
+    if not proof_bound:
+        before = os.stat(target, follow_symlinks=False)
+        if (
+            _is_link_or_reparse(target, before)
+            or not stat.S_ISREG(before.st_mode)
+            or before.st_nlink != 1
+        ):
+            raise RunnerError(
+                "held file must be regular, no-follow, and single-link"
+            )
+        if os.name == "nt":
+            access = 0x80000000 | 0x00000080
+            if delete_access:
+                access |= 0x00010000
+            handle = _windows_open_raw_handle(
+                target,
+                access=access,
+                share_mode=0x00000001,
+                disposition=3,
+            )
+            try:
+                identity, size, links, attributes = (
+                    _windows_handle_information(handle)
+                )
+                after = os.stat(target, follow_symlinks=False)
+                if (
+                    identity != _status_stable_identity(before)
+                    or identity != _status_stable_identity(after)
+                    or links != 1
+                    or attributes & (0x10 | 0x400)
+                    or _is_link_or_reparse(target, after)
+                ):
+                    raise RunnerError("held Windows file authority is unsafe")
+                content = _windows_read_raw_handle(handle, maximum_bytes)
+                if len(content) != size:
+                    raise RunnerError(
+                        "held Windows file size changed during read"
+                    )
+                authority = _HeldRegularFileAuthority(
+                    path=target,
+                    stable_identity=identity,
+                    sha256=_sha256_bytes(content),
+                    size_bytes=len(content),
+                    posix_descriptor=None,
+                    windows_handle=handle,
+                )
+                yield authority, content
+            finally:
+                _windows_close_raw_handle(handle)
+            return
+        flags = os.O_RDONLY | getattr(os, "O_NOFOLLOW", 0)
         if delete_access:
-            access |= 0x00010000
-        handle = _windows_open_raw_handle(
-            target,
-            access=access,
-            share_mode=0x00000001,
-            disposition=3,
-        )
+            flags = os.O_RDWR | getattr(os, "O_NOFOLLOW", 0)
+        descriptor = os.open(target, flags)
         try:
-            identity, size, links, attributes = _windows_handle_information(handle)
+            opened = os.fstat(descriptor)
             after = os.stat(target, follow_symlinks=False)
+            if not stat.S_ISREG(opened.st_mode) or opened.st_nlink != 1:
+                raise RunnerError("held POSIX file authority is unsafe")
             if (
-                identity != _status_stable_identity(before)
-                or identity != _status_stable_identity(after)
-                or links != 1
-                or attributes & (0x10 | 0x400)
+                _status_stable_identity(before)
+                != _status_stable_identity(opened)
+                or _status_stable_identity(after)
+                != _status_stable_identity(opened)
                 or _is_link_or_reparse(target, after)
             ):
-                raise RunnerError("held Windows file authority is unsafe")
-            content = _windows_read_raw_handle(handle, maximum_bytes)
-            if len(content) != size:
-                raise RunnerError("held Windows file size changed during read")
+                raise RunnerError("held POSIX file identity changed during open")
+            content = _read_posix_descriptor_bytes(descriptor, maximum_bytes)
             authority = _HeldRegularFileAuthority(
                 path=target,
-                stable_identity=identity,
+                stable_identity=(int(opened.st_dev), int(opened.st_ino)),
                 sha256=_sha256_bytes(content),
                 size_bytes=len(content),
-                posix_descriptor=None,
-                windows_handle=handle,
+                posix_descriptor=descriptor,
+                windows_handle=None,
             )
             yield authority, content
         finally:
-            _windows_close_raw_handle(handle)
+            os.close(descriptor)
         return
-    flags = os.O_RDONLY | getattr(os, "O_NOFOLLOW", 0)
-    if delete_access:
-        flags = os.O_RDWR | getattr(os, "O_NOFOLLOW", 0)
-    descriptor = os.open(target, flags)
-    try:
-        opened = os.fstat(descriptor)
-        after = os.stat(target, follow_symlinks=False)
-        if not stat.S_ISREG(opened.st_mode) or opened.st_nlink != 1:
-            raise RunnerError("held POSIX file authority is unsafe")
-        if (
-            _status_stable_identity(before)
-            != _status_stable_identity(opened)
-            or _status_stable_identity(after)
-            != _status_stable_identity(opened)
-            or _is_link_or_reparse(target, after)
-        ):
-            raise RunnerError("held POSIX file identity changed during open")
-        content = _read_posix_descriptor_bytes(descriptor, maximum_bytes)
-        authority = _HeldRegularFileAuthority(
-            path=target,
-            stable_identity=(int(opened.st_dev), int(opened.st_ino)),
-            sha256=_sha256_bytes(content),
-            size_bytes=len(content),
-            posix_descriptor=descriptor,
-            windows_handle=None,
-        )
-        yield authority, content
-    finally:
-        os.close(descriptor)
+    with _trusted_parent_handles(
+        target,
+        include_target=False,
+        mutation=delete_access,
+    ) as parent_authority:
+        _verify_cached_path_proof(target)
+        if os.name == "nt":
+            before = os.stat(target, follow_symlinks=False)
+            if (
+                _is_link_or_reparse(target, before)
+                or not stat.S_ISREG(before.st_mode)
+                or before.st_nlink != 1
+            ):
+                raise RunnerError(
+                    "held file must be regular, no-follow, and single-link"
+                )
+            access = 0x80000000 | 0x00000080
+            if delete_access:
+                access |= 0x00010000
+            handle = _windows_open_raw_handle(
+                target,
+                access=access,
+                share_mode=0x00000001,
+                disposition=3,
+            )
+            try:
+                _verify_cached_path_proof(target)
+                identity, size, links, attributes = (
+                    _windows_handle_information(handle)
+                )
+                after = os.stat(target, follow_symlinks=False)
+                if (
+                    identity != _status_stable_identity(before)
+                    or identity != _status_stable_identity(after)
+                    or links != 1
+                    or attributes & (0x10 | 0x400)
+                    or _is_link_or_reparse(target, after)
+                ):
+                    raise RunnerError("held Windows file authority is unsafe")
+                content = _windows_read_raw_handle(handle, maximum_bytes)
+                final_identity, final_size, final_links, final_attributes = (
+                    _windows_handle_information(handle)
+                )
+                _verify_cached_path_proof(target)
+                if (
+                    len(content) != size
+                    or final_identity != identity
+                    or final_size != size
+                    or final_links != 1
+                    or final_attributes & (0x10 | 0x400)
+                ):
+                    raise RunnerError(
+                        "held Windows file changed during read"
+                    )
+                authority = _HeldRegularFileAuthority(
+                    path=target,
+                    stable_identity=identity,
+                    sha256=_sha256_bytes(content),
+                    size_bytes=len(content),
+                    posix_descriptor=None,
+                    windows_handle=handle,
+                )
+                yield authority, content
+                _verify_cached_path_proof(target)
+                _verify_held_regular_file_authority(authority)
+            finally:
+                _windows_close_raw_handle(handle)
+            return
+
+        parent_descriptor = parent_authority.posix_descriptor
+        if parent_descriptor is None:
+            raise RunnerError("held POSIX parent descriptor is unavailable")
+        flags = os.O_RDONLY | getattr(os, "O_NOFOLLOW", 0)
+        if delete_access:
+            flags = os.O_RDWR | getattr(os, "O_NOFOLLOW", 0)
+        try:
+            before = os.stat(
+                target.name,
+                dir_fd=parent_descriptor,
+                follow_symlinks=False,
+            )
+            descriptor = os.open(
+                target.name,
+                flags,
+                dir_fd=parent_descriptor,
+            )
+            after = os.stat(
+                target.name,
+                dir_fd=parent_descriptor,
+                follow_symlinks=False,
+            )
+        except OSError as error:
+            raise RunnerError("unable to open held POSIX file") from error
+        try:
+            _verify_cached_path_proof(target)
+            opened = os.fstat(descriptor)
+            if not stat.S_ISREG(opened.st_mode) or opened.st_nlink != 1:
+                raise RunnerError("held POSIX file authority is unsafe")
+            if (
+                _status_stable_identity(before)
+                != _status_stable_identity(opened)
+                or _status_stable_identity(after)
+                != _status_stable_identity(opened)
+                or _is_link_or_reparse(target, after)
+            ):
+                raise RunnerError("held POSIX file identity changed during open")
+            content = _read_posix_descriptor_bytes(descriptor, maximum_bytes)
+            final = os.fstat(descriptor)
+            _verify_cached_path_proof(target)
+            if (
+                _status_stable_identity(final)
+                != _status_stable_identity(opened)
+                or final.st_size != opened.st_size
+                or final.st_nlink != 1
+            ):
+                raise RunnerError("held POSIX file changed during read")
+            authority = _HeldRegularFileAuthority(
+                path=target,
+                stable_identity=(int(opened.st_dev), int(opened.st_ino)),
+                sha256=_sha256_bytes(content),
+                size_bytes=len(content),
+                posix_descriptor=descriptor,
+                windows_handle=None,
+            )
+            yield authority, content
+            _verify_cached_path_proof(target)
+            _verify_held_regular_file_authority(authority)
+        finally:
+            os.close(descriptor)
 
 
 @contextmanager
@@ -1723,49 +2073,241 @@ def _state_replacement_paths(paths: RunnerPaths) -> tuple[Path, Path]:
     return _replacement_control_paths(paths.state_path)
 
 
-def _validate_state_root_allowlist(
+def _non_lockbox_state_root_entry_policy(
     paths: RunnerPaths,
-    authority: _HeldDirectoryAuthority,
-    *,
-    allow_state_controls: bool,
-) -> None:
+) -> tuple[frozenset[str], frozenset[str], frozenset[str]]:
     intent_path, prior_path = _state_replacement_paths(paths)
-    regular_names = {
+    regular_names = frozenset({
         MATERIAL_PIPELINE_LOCK_NAME,
         "state.json",
-        "lockbox.lock",
-        "lockbox-reservation.json",
-    }
-    control_names = {
+    })
+    control_names = frozenset({
         paths.preflight_state_stage_path.name,
         intent_path.name,
         prior_path.name,
-    }
-    directory_names = {
+        paths.non_lockbox_state_stage_path.name,
+        paths.non_lockbox_state_intent_path.name,
+        paths.non_lockbox_state_prior_path.name,
+    })
+    directory_names = frozenset({
         "inputs",
         "split",
         "preflight",
         "non-lockbox",
-        "lockbox",
-        "publication",
         "dependencies",
         "resolver-venv",
         "venv",
+    })
+    canonical_names = (
+        regular_names
+        | control_names
+        | directory_names
+        | OPAQUE_POST_NON_LOCKBOX_STATE_ROOT_ENTRY_NAMES
+    )
+    normalized_names = {
+        name.rstrip(" .").casefold() for name in canonical_names
     }
-    entries = _held_directory_entry_statuses(authority)
+    if len(normalized_names) != len(canonical_names):
+        raise RunnerError("canonical state-root entry names collide")
+    return regular_names, control_names, directory_names
+
+
+def _classify_non_lockbox_state_root_entry_names(
+    paths: RunnerPaths,
+    names: tuple[str, ...],
+    *,
+    allow_state_controls: bool,
+) -> tuple[str, ...]:
+    if type(names) is not tuple or type(allow_state_controls) is not bool:
+        raise RunnerError("state-root entry-name classifier input changed")
+    regular_names, control_names, directory_names = (
+        _non_lockbox_state_root_entry_policy(paths)
+    )
+    admitted_names = regular_names | control_names | directory_names
+    canonical_names = admitted_names | OPAQUE_POST_NON_LOCKBOX_STATE_ROOT_ENTRY_NAMES
+    canonical_by_normalized_name = {
+        name.rstrip(" .").casefold(): name for name in canonical_names
+    }
+    seen_normalized_names: set[str] = set()
+    admitted: list[str] = []
+    for name in names:
+        if type(name) is not str or not name:
+            raise RunnerError("state-root entry name is invalid")
+        normalized_name = name.rstrip(" .").casefold()
+        if normalized_name in seen_normalized_names:
+            raise RunnerError("duplicate normalized state-root entry name")
+        seen_normalized_names.add(normalized_name)
+        if name in OPAQUE_POST_NON_LOCKBOX_STATE_ROOT_ENTRY_NAMES:
+            continue
+        if name in admitted_names:
+            if not allow_state_controls and name in control_names:
+                raise RunnerError("unexpected state replacement control entry")
+            admitted.append(name)
+            continue
+        if normalized_name in canonical_by_normalized_name:
+            raise RunnerError("noncanonical state-root entry name")
+        raise RunnerError(
+            f"unknown state-root allowlist entry is retained: {name}"
+        )
+    return tuple(admitted)
+
+
+def _held_non_lockbox_state_root_entry_statuses(
+    paths: RunnerPaths,
+    authority: _HeldDirectoryAuthority,
+    *,
+    allow_state_controls: bool,
+) -> dict[str, os.stat_result]:
+    _verify_held_directory_authority(authority)
+    try:
+        with os.scandir(authority.path) as entries:
+            names = tuple(entry.name for entry in entries)
+    except OSError as error:
+        raise RunnerError("unable to enumerate held state root") from error
+    admitted_names = _classify_non_lockbox_state_root_entry_names(
+        paths,
+        names,
+        allow_state_controls=allow_state_controls,
+    )
+    try:
+        result = {
+            name: os.stat(
+                authority.path / name,
+                follow_symlinks=False,
+            )
+            for name in admitted_names
+        }
+    except OSError as error:
+        raise RunnerError("unable to inspect admitted state-root entry") from error
+    _verify_held_directory_authority(authority)
+    return result
+
+
+def _validated_state_root_allowlist_snapshot(
+    paths: RunnerPaths,
+    authority: _HeldDirectoryAuthority,
+    *,
+    allow_state_controls: bool,
+) -> frozenset[str]:
+    regular_names, control_names, directory_names = (
+        _non_lockbox_state_root_entry_policy(paths)
+    )
+    entries = _held_non_lockbox_state_root_entry_statuses(
+        paths,
+        authority,
+        allow_state_controls=allow_state_controls,
+    )
     unknown = set(entries) - regular_names - control_names - directory_names
     if unknown:
         raise RunnerError(
             "unknown state-root allowlist entry is retained: "
             + ", ".join(sorted(unknown))
         )
-    if not allow_state_controls and set(entries) & control_names:
-        raise RunnerError("unexpected state replacement control entry")
     for name, status in entries.items():
         if name in directory_names:
             _require_safe_directory_entry(authority, name, status)
         else:
             _require_safe_regular_entry(authority, name, status)
+    return frozenset(set(entries) & control_names)
+
+
+def _validate_state_root_allowlist(
+    paths: RunnerPaths,
+    authority: _HeldDirectoryAuthority,
+    *,
+    allow_state_controls: bool,
+) -> frozenset[str]:
+    return _validated_state_root_allowlist_snapshot(
+        paths,
+        authority,
+        allow_state_controls=allow_state_controls,
+    )
+
+
+def _validated_state_root_controls(
+    paths: RunnerPaths,
+    authority: _HeldDirectoryAuthority,
+    *,
+    allow_state_controls: bool,
+) -> frozenset[str]:
+    present_controls = _validate_state_root_allowlist(
+        paths,
+        authority,
+        allow_state_controls=allow_state_controls,
+    )
+    if present_controls is None:
+        present_controls = _validated_state_root_allowlist_snapshot(
+            paths,
+            authority,
+            allow_state_controls=allow_state_controls,
+        )
+    if type(present_controls) is not frozenset:
+        raise RunnerError("state-root allowlist control snapshot type changed")
+    return present_controls
+
+
+def _state_control_name_families(
+    paths: RunnerPaths,
+) -> tuple[frozenset[str], frozenset[str]]:
+    preflight_intent, preflight_prior = _state_replacement_paths(paths)
+    preflight = frozenset(
+        {
+            paths.preflight_state_stage_path.name,
+            preflight_intent.name,
+            preflight_prior.name,
+        }
+    )
+    non_lockbox = frozenset(
+        {
+            paths.non_lockbox_state_stage_path.name,
+            paths.non_lockbox_state_intent_path.name,
+            paths.non_lockbox_state_prior_path.name,
+        }
+    )
+    if preflight & non_lockbox:
+        raise RunnerError("state replacement control family names overlap")
+    return preflight, non_lockbox
+
+
+def _reject_mixed_state_control_families(
+    paths: RunnerPaths,
+    present_controls: frozenset[str],
+) -> None:
+    preflight, non_lockbox = _state_control_name_families(paths)
+    if present_controls & preflight and present_controls & non_lockbox:
+        raise RunnerError("mixed state replacement control families are retained")
+
+
+def _validate_exact_state_control_family(
+    paths: RunnerPaths,
+    present_controls: frozenset[str],
+    *,
+    family: Literal["preflight", "non_lockbox"],
+    include_prior: bool,
+) -> None:
+    preflight, non_lockbox = _state_control_name_families(paths)
+    if family == "preflight":
+        intent_path, prior_path = _state_replacement_paths(paths)
+        expected = {
+            paths.preflight_state_stage_path.name,
+            intent_path.name,
+        }
+        if include_prior:
+            expected.add(prior_path.name)
+    else:
+        expected = {
+            paths.non_lockbox_state_stage_path.name,
+            paths.non_lockbox_state_intent_path.name,
+        }
+        if include_prior:
+            expected.add(paths.non_lockbox_state_prior_path.name)
+    if present_controls != frozenset(expected):
+        other = non_lockbox if family == "preflight" else preflight
+        if present_controls & other:
+            raise RunnerError(
+                f"{family} transaction found the wrong state control family"
+            )
+        raise RunnerError(f"{family} state control family shape changed")
 
 
 def _lock_file_identity(handle: BinaryIO) -> tuple[int, ...]:
@@ -2730,6 +3272,445 @@ def _state_intent_matches_file(
     )
 
 
+_NON_LOCKBOX_STATE_INTENT_FIELDS = frozenset(
+    {
+        "schema_version",
+        "operation",
+        "source_phase",
+        "target_phase",
+        "destination_name",
+        "stage_name",
+        "prior_name",
+        "initial_stable_identity",
+        "initial_sha256",
+        "initial_size_bytes",
+        "stage_stable_identity",
+        "stage_sha256",
+        "stage_size_bytes",
+    }
+)
+
+
+def _validate_non_lockbox_state_transition(
+    initial_state: Mapping[str, Any],
+    target_state: Mapping[str, Any],
+) -> tuple[dict[str, Any], dict[str, Any]]:
+    initial = _validate_state(dict(initial_state))
+    target = _validate_state(dict(target_state))
+    if initial["phase"] != "preflight_complete":
+        raise RunnerError("non-lockbox state source must be preflight_complete")
+    expected = dict(initial)
+    expected.update(
+        {
+            "phase": "non_lockbox_complete",
+            "non_lockbox_packet_sha256": target["non_lockbox_packet_sha256"],
+        }
+    )
+    if target != expected:
+        raise RunnerError("non-lockbox state transition changed forbidden fields")
+    return initial, target
+
+
+def _non_lockbox_state_intent_payload(
+    paths: RunnerPaths,
+    *,
+    stage: _HeldRegularFileAuthority,
+    admitted: _AdmittedNonLockboxStateAuthority,
+) -> dict[str, Any]:
+    _validate_digest(stage.sha256, "non-lockbox state stage")
+    return {
+        "schema_version": _REPLACE_INTENT_SCHEMA_VERSION,
+        "operation": "non_lockbox",
+        "source_phase": "preflight_complete",
+        "target_phase": "non_lockbox_complete",
+        "destination_name": paths.state_path.name,
+        "stage_name": paths.non_lockbox_state_stage_path.name,
+        "prior_name": paths.non_lockbox_state_prior_path.name,
+        "initial_stable_identity": list(admitted.initial_file.stable_identity),
+        "initial_sha256": admitted.initial_file.sha256,
+        "initial_size_bytes": admitted.initial_file.size_bytes,
+        "stage_stable_identity": list(stage.stable_identity),
+        "stage_sha256": stage.sha256,
+        "stage_size_bytes": stage.size_bytes,
+    }
+
+
+def _validate_non_lockbox_state_intent(
+    payload: Any,
+    paths: RunnerPaths,
+) -> dict[str, Any]:
+    if (
+        type(payload) is not dict
+        or any(type(key) is not str for key in payload)
+        or set(payload) != _NON_LOCKBOX_STATE_INTENT_FIELDS
+    ):
+        raise RunnerError("invalid non-lockbox state intent fields")
+    exact_string_fields = (
+        "operation",
+        "source_phase",
+        "target_phase",
+        "destination_name",
+        "stage_name",
+        "prior_name",
+        "initial_sha256",
+        "stage_sha256",
+    )
+    if (
+        type(payload["schema_version"]) is not int
+        or payload["schema_version"] != _REPLACE_INTENT_SCHEMA_VERSION
+        or any(type(payload[field]) is not str for field in exact_string_fields)
+        or payload["operation"] != "non_lockbox"
+        or payload["source_phase"] != "preflight_complete"
+        or payload["target_phase"] != "non_lockbox_complete"
+        or payload["destination_name"] != paths.state_path.name
+        or payload["stage_name"] != paths.non_lockbox_state_stage_path.name
+        or payload["prior_name"] != paths.non_lockbox_state_prior_path.name
+    ):
+        raise RunnerError("invalid non-lockbox state intent identity")
+    for prefix in ("initial", "stage"):
+        identity = payload[f"{prefix}_stable_identity"]
+        size = payload[f"{prefix}_size_bytes"]
+        if (
+            type(identity) is not list
+            or not identity
+            or any(type(item) is not int or item < 0 for item in identity)
+            or type(size) is not int
+            or size < 0
+        ):
+            raise RunnerError(
+                f"invalid non-lockbox state {prefix} identity"
+            )
+        _validate_digest(
+            payload[f"{prefix}_sha256"],
+            f"non-lockbox state {prefix}",
+        )
+    return dict(payload)
+
+
+def _recover_non_lockbox_state_controls(
+    paths: RunnerPaths,
+    *,
+    state_root: _HeldDirectoryAuthority,
+) -> None:
+    state_path = Path(paths.state_path)
+    stage_path = Path(paths.non_lockbox_state_stage_path)
+    intent_path = Path(paths.non_lockbox_state_intent_path)
+    prior_path = Path(paths.non_lockbox_state_prior_path)
+    intent_exists = os.path.lexists(intent_path)
+    prior_exists = os.path.lexists(prior_path)
+    stage_exists = os.path.lexists(stage_path)
+
+    if not intent_exists:
+        if prior_exists:
+            raise RunnerError(
+                "non-lockbox state recovery is indeterminate; orphan prior retained"
+            )
+        if not stage_exists:
+            return
+        target_file: _HeldRegularFileAuthority | None = None
+        stage_file: _HeldRegularFileAuthority | None = None
+        cleanup_started = False
+        try:
+            if not os.path.lexists(state_path):
+                raise RunnerError(
+                    "non-lockbox state recovery is indeterminate; orphan stage retained"
+                )
+            target_file = _open_owned_regular_file_authority(
+                state_path,
+                parent_authority=state_root,
+                delete_access=True,
+            )
+            stage_file = _open_owned_regular_file_authority(
+                stage_path,
+                parent_authority=state_root,
+                delete_access=True,
+            )
+            initial_state, _ = _state_from_held_file(target_file)
+            target_state, _ = _state_from_held_file(stage_file)
+            _validate_non_lockbox_state_transition(initial_state, target_state)
+            owned_stage = stage_file
+            stage_file = None
+            cleanup_started = True
+            _safe_unlink_owned_file(owned_stage)
+            _flush_held_directory(state_root)
+            _validate_state_root_allowlist(
+                paths,
+                state_root,
+                allow_state_controls=False,
+            )
+            return
+        except Exception as error:
+            if cleanup_started and not (
+                isinstance(error, RunnerError) and "indeterminate" in str(error)
+            ):
+                raise RunnerError(
+                    "non-lockbox state precommit recovery cleanup failed"
+                ) from error
+            raise
+        finally:
+            active_error = sys.exc_info()[1]
+            remaining = tuple(
+                authority
+                for authority in (target_file, stage_file)
+                if authority is not None
+            )
+            close_error = _close_owned_regular_file_authorities_once(remaining)
+            if close_error is not None:
+                _raise_owner_cleanup_failure(
+                    "non-lockbox state recovery owner cleanup failed",
+                    close_error,
+                    active_error=active_error,
+                )
+
+    intent_file = _open_owned_regular_file_authority(
+        intent_path,
+        parent_authority=state_root,
+        delete_access=True,
+    )
+    target_file: _HeldRegularFileAuthority | None = None
+    stage_file: _HeldRegularFileAuthority | None = None
+    prior_file: _HeldRegularFileAuthority | None = None
+    committed_target_recognized = False
+    precommit_cleanup_started = False
+    try:
+        intent_bytes = _read_held_regular_file_bytes(intent_file)
+        intent = _validate_non_lockbox_state_intent(
+            _load_json_object_bytes(
+                intent_bytes,
+                "non-lockbox state replacement intent",
+            ),
+            paths,
+        )
+        if canonical_json_bytes(intent) != intent_bytes:
+            raise RunnerError("non-lockbox state intent is not canonical; retained")
+        if os.path.lexists(state_path):
+            target_file = _open_owned_regular_file_authority(
+                state_path,
+                parent_authority=state_root,
+                delete_access=True,
+            )
+        if stage_exists:
+            stage_file = _open_owned_regular_file_authority(
+                stage_path,
+                parent_authority=state_root,
+                delete_access=True,
+            )
+        if prior_exists:
+            prior_file = _open_owned_regular_file_authority(
+                prior_path,
+                parent_authority=state_root,
+                delete_access=True,
+            )
+        if stage_file is not None and not _state_intent_matches_file(
+            intent,
+            stage_file,
+            prefix="stage",
+        ):
+            raise RunnerError("non-lockbox state stage identity mismatch; retained")
+        if prior_file is not None and not _state_intent_matches_file(
+            intent,
+            prior_file,
+            prefix="initial",
+        ):
+            raise RunnerError("non-lockbox state prior identity mismatch; retained")
+
+        target_state: dict[str, Any] | None = None
+        stage_state: dict[str, Any] | None = None
+        prior_state: dict[str, Any] | None = None
+        if target_file is not None:
+            target_state, _ = _state_from_held_file(target_file)
+        if stage_file is not None:
+            stage_state, _ = _state_from_held_file(stage_file)
+        if prior_file is not None:
+            prior_state, _ = _state_from_held_file(prior_file)
+
+        if (
+            target_file is not None
+            and target_state is not None
+            and stage_file is None
+            and _state_intent_matches_file(intent, target_file, prefix="stage")
+        ):
+            if target_state["phase"] != intent["target_phase"]:
+                raise RunnerError(
+                    "non-lockbox committed target phase mismatch; retained"
+                )
+            if prior_state is not None:
+                _validate_non_lockbox_state_transition(prior_state, target_state)
+            else:
+                try:
+                    derived_source = dict(target_state)
+                    derived_source.update(
+                        {
+                            "phase": "preflight_complete",
+                            "non_lockbox_packet_sha256": UNSET_DIGEST,
+                        }
+                    )
+                    derived_source = _validate_state(derived_source)
+                    _validate_non_lockbox_state_transition(
+                        derived_source,
+                        target_state,
+                    )
+                    derived_source_bytes = canonical_json_bytes(derived_source)
+                    if (
+                        _sha256_bytes(derived_source_bytes)
+                        != intent["initial_sha256"]
+                        or len(derived_source_bytes)
+                        != intent["initial_size_bytes"]
+                    ):
+                        raise RunnerError(
+                            "derived non-lockbox source does not match intent"
+                        )
+                except Exception as error:
+                    raise RunnerError(
+                        "non-lockbox state recovery is indeterminate; evidence retained"
+                    ) from error
+            committed_target_recognized = True
+            _flush_held_directory(state_root)
+            if prior_file is not None:
+                owned_prior = prior_file
+                prior_file = None
+                _safe_unlink_owned_file(owned_prior)
+            owned_intent = intent_file
+            intent_file = None
+            _safe_unlink_owned_file(owned_intent)
+            _flush_held_directory(state_root)
+            _verify_held_regular_file_authority(target_file)
+            recovered_state, recovered_bytes = _state_from_held_file(target_file)
+            if (
+                recovered_state != target_state
+                or recovered_bytes != canonical_json_bytes(target_state)
+                or not _state_intent_matches_file(
+                    intent,
+                    target_file,
+                    prefix="stage",
+                )
+            ):
+                raise RunnerError(
+                    "recovered committed non-lockbox state changed after cleanup"
+                )
+            _validate_state_root_allowlist(
+                paths,
+                state_root,
+                allow_state_controls=False,
+            )
+            return
+
+        if (
+            target_file is not None
+            and target_state is not None
+            and stage_file is None
+            and prior_file is None
+            and _state_intent_matches_file(intent, target_file, prefix="initial")
+        ):
+            if target_state["phase"] != intent["source_phase"]:
+                raise RunnerError(
+                    "non-lockbox restored target phase mismatch; retained"
+                )
+            precommit_cleanup_started = True
+        elif (
+            target_file is not None
+            and target_state is not None
+            and stage_file is not None
+            and stage_state is not None
+            and prior_file is None
+            and _state_intent_matches_file(intent, target_file, prefix="initial")
+        ):
+            _validate_non_lockbox_state_transition(target_state, stage_state)
+            owned_stage = stage_file
+            stage_file = None
+            precommit_cleanup_started = True
+            _safe_unlink_owned_file(owned_stage)
+        elif (
+            target_file is None
+            and stage_file is not None
+            and stage_state is not None
+            and prior_file is not None
+            and prior_state is not None
+        ):
+            _validate_non_lockbox_state_transition(prior_state, stage_state)
+            try:
+                target_file = _renamed_held_regular_file_authority(
+                    prior_file,
+                    state_path,
+                    parent_authority=state_root,
+                )
+                prior_file = None
+            except Exception:
+                if os.path.lexists(state_path):
+                    status = os.stat(state_path, follow_symlinks=False)
+                    if _status_stable_identity(status) == prior_file.stable_identity:
+                        target_file = _retargeted_held_regular_file_authority(
+                            prior_file,
+                            state_path,
+                        )
+                        prior_file = None
+                    else:
+                        raise
+                else:
+                    raise
+            owned_stage = stage_file
+            stage_file = None
+            precommit_cleanup_started = True
+            _safe_unlink_owned_file(owned_stage)
+        else:
+            raise RunnerError(
+                "non-lockbox state recovery is indeterminate; evidence retained"
+            )
+        owned_intent = intent_file
+        intent_file = None
+        _safe_unlink_owned_file(owned_intent)
+        _flush_held_directory(state_root)
+        if target_file is None:
+            raise RunnerError("non-lockbox state recovery lost the restored target")
+        restored_state, restored_bytes = _state_from_held_file(target_file)
+        if (
+            restored_state["phase"] != "preflight_complete"
+            or not _state_intent_matches_file(intent, target_file, prefix="initial")
+            or restored_bytes != canonical_json_bytes(restored_state)
+        ):
+            raise RunnerError("restored non-lockbox prior changed")
+        _validate_state_root_allowlist(
+            paths,
+            state_root,
+            allow_state_controls=False,
+        )
+    except Exception as error:
+        if committed_target_recognized and not (
+            isinstance(error, RunnerError) and "indeterminate" in str(error)
+        ):
+            raise RunnerError(
+                "non-lockbox state recovery outcome is indeterminate during "
+                "committed cleanup"
+            ) from error
+        if precommit_cleanup_started and not (
+            isinstance(error, RunnerError) and "indeterminate" in str(error)
+        ):
+            raise RunnerError(
+                "non-lockbox state precommit recovery cleanup failed"
+            ) from error
+        raise
+    finally:
+        active_error = sys.exc_info()[1]
+        remaining = tuple(
+            authority
+            for authority in (target_file, stage_file, prior_file, intent_file)
+            if authority is not None
+        )
+        close_error = _close_owned_regular_file_authorities_once(remaining)
+        if close_error is not None:
+            message = "non-lockbox state recovery owner cleanup failed"
+            if active_error is not None and "indeterminate" in str(active_error):
+                message = (
+                    "non-lockbox state recovery remains indeterminate during "
+                    "owner cleanup"
+                )
+            _raise_owner_cleanup_failure(
+                message,
+                close_error,
+                active_error=active_error,
+            )
+
+
 def _recover_preflight_state_controls(
     paths: RunnerPaths,
     *,
@@ -3016,8 +3997,15 @@ def _admit_recovered_state(
 ) -> Iterator[_AdmittedStateAuthority | _HeldCommittedStateAuthority]:
     _verify_material_pipeline_authority(material_authority)
     state_root = material_authority.state_root
-    _validate_state_root_allowlist(paths, state_root, allow_state_controls=True)
+    present_controls = _validated_state_root_controls(
+        paths,
+        state_root,
+        allow_state_controls=True,
+    )
+    _reject_mixed_state_control_families(paths, present_controls)
+    _recover_non_lockbox_state_controls(paths, state_root=state_root)
     held = _recover_preflight_state_controls(paths, state_root=state_root)
+    owner: _RegularFileAuthorityOwner | None = None
     try:
         _validate_state_root_allowlist(paths, state_root, allow_state_controls=False)
         if held is None:
@@ -3035,30 +4023,38 @@ def _admit_recovered_state(
             expected = canonical_json_bytes(_initial_state())
             if content != expected:
                 raise RunnerError("initialized state is not byte-identical")
-            owner = _RegularFileAuthorityOwner(held)
+            initial_file = held
+            held = None
+            owner = _RegularFileAuthorityOwner(initial_file)
             yield _AdmittedStateAuthority(
                 admission="initialized",
                 state_root_stable_identity=state_root.stable_identity,
                 initial_bytes=content,
-                initial_file=held,
+                initial_file=initial_file,
                 _initial_owner=owner,
             )
             return
-        _flush_held_directory(state_root)
+        committed_file = held
+        held = None
+        owner = _RegularFileAuthorityOwner(committed_file)
         yield _HeldCommittedStateAuthority(
             state=state,
             canonical_bytes=content,
-            file=held,
+            file=committed_file,
+            _file_owner=owner,
         )
     finally:
         active_error = sys.exc_info()[1]
         owned: _HeldRegularFileAuthority | None = None
-        if held is not None and "owner" in locals():
+        if owner is not None:
             remaining = owner.peek()
-            held = None
             if remaining is not None:
                 owned = owner.take()
-        elif held is not None:
+        if held is not None:
+            if owned is not None:
+                raise RunnerError(
+                    "recovered state has duplicate regular-file ownership"
+                )
             owned = held
             held = None
         close_error = _close_owned_regular_file_authorities_once(
@@ -3142,6 +4138,7 @@ def _commit_preflight_state_durably(
     intent: _HeldRegularFileAuthority | None = None
     prior: _HeldRegularFileAuthority | None = None
     transferred_initial: _HeldRegularFileAuthority | None = None
+    committed_owner: _RegularFileAuthorityOwner | None = None
     linearized = False
     try:
         intent_path, prior_path = _state_replacement_paths(paths)
@@ -3161,7 +4158,17 @@ def _commit_preflight_state_durably(
             admitted_state_authority,
             state_root=state_root,
         )
-        _validate_state_root_allowlist(paths, state_root, allow_state_controls=True)
+        present_controls = _validated_state_root_controls(
+            paths,
+            state_root,
+            allow_state_controls=True,
+        )
+        _validate_exact_state_control_family(
+            paths,
+            present_controls,
+            family="preflight",
+            include_prior=False,
+        )
         if admitted_state_authority.admission == "initialized":
             assert admitted_state_authority._initial_owner is not None
             transferred_initial = admitted_state_authority._initial_owner.take()
@@ -3176,6 +4183,18 @@ def _commit_preflight_state_durably(
             _flush_held_directory(state_root)
         elif os.path.lexists(paths.state_path):
             raise RunnerError("admitted-absent state target appeared before commit")
+
+        present_controls = _validated_state_root_controls(
+            paths,
+            state_root,
+            allow_state_controls=True,
+        )
+        _validate_exact_state_control_family(
+            paths,
+            present_controls,
+            family="preflight",
+            include_prior=(admitted_state_authority.admission == "initialized"),
+        )
 
         promoted = _renamed_held_regular_file_authority(
             stage,
@@ -3206,17 +4225,27 @@ def _commit_preflight_state_durably(
             or post_cleanup_bytes != committed_bytes
         ):
             raise RunnerError("committed preflight state changed after control cleanup")
+        committed_file = promoted
+        promoted = None
+        committed_owner = _RegularFileAuthorityOwner(committed_file)
         committed = _HeldCommittedStateAuthority(
             state=post_cleanup_state,
             canonical_bytes=post_cleanup_bytes,
-            file=promoted,
+            file=committed_file,
+            _file_owner=committed_owner,
         )
         try:
             yield committed
-            _verify_held_regular_file_authority(promoted)
-            final_state, final_bytes = _state_from_held_file(promoted)
-            if final_state != committed_state or final_bytes != committed_bytes:
-                raise RunnerError("committed preflight state changed")
+            remaining_committed = committed_owner.peek()
+            if remaining_committed is not None:
+                if remaining_committed is not committed.file:
+                    raise RunnerError("committed preflight state owner changed")
+                _verify_held_regular_file_authority(remaining_committed)
+                final_state, final_bytes = _state_from_held_file(
+                    remaining_committed
+                )
+                if final_state != committed_state or final_bytes != committed_bytes:
+                    raise RunnerError("committed preflight state changed")
             _validate_state_root_allowlist(
                 paths,
                 state_root,
@@ -3235,7 +4264,11 @@ def _commit_preflight_state_durably(
                     state_root,
                     allow_state_controls=True,
                 )
-                entries = _held_directory_entry_statuses(state_root)
+                entries = _held_non_lockbox_state_root_entry_statuses(
+                    paths,
+                    state_root,
+                    allow_state_controls=True,
+                )
                 target_status = entries.get(paths.state_path.name)
                 stage_status = entries.get(paths.preflight_state_stage_path.name)
                 prior_status = entries.get(prior_path.name)
@@ -3266,14 +4299,15 @@ def _commit_preflight_state_durably(
                         == transferred_initial.stable_identity
                         and admitted_state_authority._initial_owner is not None
                     ):
-                        transferred_initial = (
-                            _retargeted_held_regular_file_authority(
-                                transferred_initial,
-                                paths.state_path,
-                            )
+                        _retargeted_held_regular_file_authority(
+                            transferred_initial,
+                            paths.state_path,
+                        )
+                        _verify_held_regular_file_authority(
+                            admitted_state_authority.initial_file
                         )
                         admitted_state_authority._initial_owner.restore(
-                            transferred_initial
+                            admitted_state_authority.initial_file
                         )
                         transferred_initial = None
                         prior = None
@@ -3356,6 +4390,10 @@ def _commit_preflight_state_durably(
             remaining_owners.append(intent)
         if promoted is not None:
             remaining_owners.append(promoted)
+        if committed_owner is not None:
+            remaining_committed = committed_owner.peek()
+            if remaining_committed is not None:
+                remaining_owners.append(committed_owner.take())
         prior = None
         transferred_initial = None
         intent = None
@@ -3375,6 +4413,448 @@ def _commit_preflight_state_durably(
             else:
                 message = (
                     "preflight state precommit owner cleanup failed after "
+                    "deterministic recovery"
+                )
+            _raise_owner_cleanup_failure(
+                message,
+                close_error,
+                active_error=active_error,
+            )
+
+
+def _verify_admitted_non_lockbox_state_cas(
+    paths: RunnerPaths,
+    admitted: _AdmittedNonLockboxStateAuthority,
+    *,
+    state_root: _HeldDirectoryAuthority,
+) -> None:
+    if (
+        type(admitted) is not _AdmittedNonLockboxStateAuthority
+        or type(admitted._initial_owner) is not _RegularFileAuthorityOwner
+        or admitted._initial_owner.peek() is not admitted.initial_file
+        or admitted.initial_file.path != Path(paths.state_path)
+    ):
+        raise RunnerError("admitted non-lockbox state authority changed")
+    _verify_held_directory_authority(state_root)
+    _verify_held_regular_file_authority(admitted.initial_file)
+    state, content = _state_from_held_file(admitted.initial_file)
+    if (
+        state != admitted.initial_state
+        or content != admitted.initial_bytes
+        or content != canonical_json_bytes(state)
+        or state["phase"] != "preflight_complete"
+    ):
+        raise RunnerError("admitted preflight state changed before non-lockbox commit")
+
+
+@contextmanager
+def _admit_non_lockbox_state(
+    paths: RunnerPaths,
+    *,
+    material_authority: _MaterialPipelineAuthority,
+    committed_state_authority: _HeldCommittedStateAuthority,
+) -> Iterator[_AdmittedNonLockboxStateAuthority]:
+    if type(committed_state_authority) is not _HeldCommittedStateAuthority:
+        raise RunnerError("committed preflight state authority type changed")
+    _verify_material_pipeline_authority(material_authority)
+    state_root = material_authority.state_root
+    owner = committed_state_authority._file_owner
+    if (
+        type(owner) is not _RegularFileAuthorityOwner
+        or owner.peek() is not committed_state_authority.file
+    ):
+        raise RunnerError("committed preflight state owner is unavailable")
+    _verify_held_regular_file_authority(committed_state_authority.file)
+    initial_state, initial_bytes = _state_from_held_file(
+        committed_state_authority.file
+    )
+    if (
+        initial_state != committed_state_authority.state
+        or initial_bytes != committed_state_authority.canonical_bytes
+        or initial_state["phase"] != "preflight_complete"
+    ):
+        raise RunnerError(
+            "non-lockbox state admission requires exact preflight_complete state"
+        )
+    _validate_state_root_allowlist(
+        paths,
+        state_root,
+        allow_state_controls=False,
+    )
+    admitted = _AdmittedNonLockboxStateAuthority(
+        initial_state=initial_state,
+        initial_bytes=initial_bytes,
+        initial_file=committed_state_authority.file,
+        _initial_owner=owner,
+    )
+    try:
+        yield admitted
+    finally:
+        remaining = owner.peek()
+        if remaining is not None:
+            if remaining is not committed_state_authority.file:
+                raise RunnerError("committed preflight state owner changed during admission")
+            _verify_admitted_non_lockbox_state_cas(
+                paths,
+                admitted,
+                state_root=state_root,
+            )
+
+
+@contextmanager
+def _commit_non_lockbox_state_durably(
+    paths: RunnerPaths,
+    state: Mapping[str, Any],
+    *,
+    material_authority: _MaterialPipelineAuthority,
+    admitted_state_authority: _AdmittedNonLockboxStateAuthority,
+) -> Iterator[_HeldCommittedStateAuthority]:
+    validated_state = _validate_state(dict(state))
+    initial_state, validated_state = _validate_non_lockbox_state_transition(
+        admitted_state_authority.initial_state,
+        validated_state,
+    )
+    content = canonical_json_bytes(validated_state)
+    _verify_material_pipeline_authority(material_authority)
+    state_root = material_authority.state_root
+    _verify_admitted_non_lockbox_state_cas(
+        paths,
+        admitted_state_authority,
+        state_root=state_root,
+    )
+    _validate_state_root_allowlist(paths, state_root, allow_state_controls=False)
+    stage = _create_held_regular_file_authority(
+        paths.non_lockbox_state_stage_path,
+        content,
+        parent_authority=state_root,
+    )
+    promoted: _HeldRegularFileAuthority | None = stage
+    intent: _HeldRegularFileAuthority | None = None
+    prior: _HeldRegularFileAuthority | None = None
+    transferred_initial: _HeldRegularFileAuthority | None = None
+    committed_owner: _RegularFileAuthorityOwner | None = None
+    linearized = False
+    try:
+        intent = _create_held_regular_file_authority(
+            paths.non_lockbox_state_intent_path,
+            canonical_json_bytes(
+                _non_lockbox_state_intent_payload(
+                    paths,
+                    stage=stage,
+                    admitted=admitted_state_authority,
+                )
+            ),
+            parent_authority=state_root,
+        )
+        _verify_admitted_non_lockbox_state_cas(
+            paths,
+            admitted_state_authority,
+            state_root=state_root,
+        )
+        present_controls = _validated_state_root_controls(
+            paths,
+            state_root,
+            allow_state_controls=True,
+        )
+        _validate_exact_state_control_family(
+            paths,
+            present_controls,
+            family="non_lockbox",
+            include_prior=False,
+        )
+        transferred_initial = admitted_state_authority._initial_owner.take()
+        if transferred_initial is not admitted_state_authority.initial_file:
+            raise RunnerError("non-lockbox initial state owner transfer changed")
+        prior = _renamed_held_regular_file_authority(
+            transferred_initial,
+            paths.non_lockbox_state_prior_path,
+            parent_authority=state_root,
+        )
+        transferred_initial = prior
+        _flush_held_directory(state_root)
+
+        present_controls = _validated_state_root_controls(
+            paths,
+            state_root,
+            allow_state_controls=True,
+        )
+        _validate_exact_state_control_family(
+            paths,
+            present_controls,
+            family="non_lockbox",
+            include_prior=True,
+        )
+
+        promoted = _renamed_held_regular_file_authority(
+            stage,
+            paths.state_path,
+            parent_authority=state_root,
+        )
+        linearized = True
+        _flush_held_directory(state_root)
+        _verify_held_regular_file_authority(promoted)
+        committed_state, committed_bytes = _state_from_held_file(promoted)
+        if committed_state != validated_state or committed_bytes != content:
+            raise RunnerError("committed non-lockbox state readback mismatch")
+        if prior is not None:
+            owned_prior = prior
+            prior = None
+            transferred_initial = None
+            _safe_unlink_owned_file(owned_prior)
+        if intent is not None:
+            owned_intent = intent
+            intent = None
+            _safe_unlink_owned_file(owned_intent)
+        _flush_held_directory(state_root)
+        _validate_state_root_allowlist(
+            paths,
+            state_root,
+            allow_state_controls=False,
+        )
+        _verify_held_regular_file_authority(promoted)
+        post_cleanup_state, post_cleanup_bytes = _state_from_held_file(promoted)
+        if (
+            post_cleanup_state != committed_state
+            or post_cleanup_bytes != committed_bytes
+        ):
+            raise RunnerError(
+                "committed non-lockbox state changed after control cleanup"
+            )
+        committed_file = promoted
+        promoted = None
+        committed_owner = _RegularFileAuthorityOwner(committed_file)
+        committed = _HeldCommittedStateAuthority(
+            state=post_cleanup_state,
+            canonical_bytes=post_cleanup_bytes,
+            file=committed_file,
+            _file_owner=committed_owner,
+        )
+        try:
+            yield committed
+            remaining_committed = committed_owner.peek()
+            if remaining_committed is not None:
+                if remaining_committed is not committed.file:
+                    raise RunnerError("committed non-lockbox state owner changed")
+                _verify_held_regular_file_authority(remaining_committed)
+                final_state, final_bytes = _state_from_held_file(
+                    remaining_committed
+                )
+                if final_state != committed_state or final_bytes != committed_bytes:
+                    raise RunnerError("committed non-lockbox state changed")
+            _validate_state_root_allowlist(
+                paths,
+                state_root,
+                allow_state_controls=False,
+            )
+        except Exception as error:
+            raise RunnerError(
+                f"non-lockbox state postcommit outcome is indeterminate: {error}"
+            ) from error
+    except Exception as error:
+        if not linearized:
+            try:
+                _verify_material_pipeline_authority(material_authority)
+                _validate_state_root_allowlist(
+                    paths,
+                    state_root,
+                    allow_state_controls=True,
+                )
+                entries = _held_non_lockbox_state_root_entry_statuses(
+                    paths,
+                    state_root,
+                    allow_state_controls=True,
+                )
+                target_status = entries.get(paths.state_path.name)
+                stage_status = entries.get(paths.non_lockbox_state_stage_path.name)
+                prior_status = entries.get(paths.non_lockbox_state_prior_path.name)
+                if target_status is not None:
+                    if (
+                        promoted is not None
+                        and _status_stable_identity(target_status)
+                        == promoted.stable_identity
+                    ):
+                        promoted = _retargeted_held_regular_file_authority(
+                            promoted,
+                            paths.state_path,
+                        )
+                        recovered_state, recovered_bytes = _state_from_held_file(
+                            promoted
+                        )
+                        if (
+                            recovered_state != validated_state
+                            or recovered_bytes != content
+                        ):
+                            raise RunnerError(
+                                "visible non-lockbox target does not match stage bytes"
+                            )
+                        linearized = True
+                    elif (
+                        transferred_initial is not None
+                        and _status_stable_identity(target_status)
+                        == transferred_initial.stable_identity
+                    ):
+                        _retargeted_held_regular_file_authority(
+                            transferred_initial,
+                            paths.state_path,
+                        )
+                        _verify_held_regular_file_authority(
+                            admitted_state_authority.initial_file
+                        )
+                        admitted_state_authority._initial_owner.restore(
+                            admitted_state_authority.initial_file
+                        )
+                        transferred_initial = None
+                        prior = None
+                    elif (
+                        admitted_state_authority._initial_owner.peek()
+                        is not admitted_state_authority.initial_file
+                        or _status_stable_identity(target_status)
+                        != admitted_state_authority.initial_file.stable_identity
+                    ):
+                        raise RunnerError(
+                            "unrecognized state target appeared during non-lockbox rename"
+                        )
+                elif transferred_initial is not None:
+                    if (
+                        prior_status is None
+                        or _status_stable_identity(prior_status)
+                        != transferred_initial.stable_identity
+                    ):
+                        raise RunnerError(
+                            "transferred preflight state is not the held prior"
+                        )
+                    prior = _retargeted_held_regular_file_authority(
+                        transferred_initial,
+                        paths.non_lockbox_state_prior_path,
+                    )
+                    transferred_initial = prior
+                else:
+                    raise RunnerError(
+                        "preflight state target disappeared before non-lockbox commit"
+                    )
+                if not linearized and promoted is not None:
+                    if (
+                        stage_status is None
+                        or _status_stable_identity(stage_status)
+                        != promoted.stable_identity
+                    ):
+                        raise RunnerError(
+                            "held non-lockbox state stage left its precommit entry"
+                        )
+            except Exception as reconciliation_error:
+                raise RunnerError(
+                    "non-lockbox state outcome is indeterminate during rename "
+                    "reconciliation"
+                ) from reconciliation_error
+        if linearized:
+            if isinstance(error, RunnerError) and "indeterminate" in str(error):
+                raise
+            raise RunnerError(
+                f"non-lockbox state postcommit outcome is indeterminate: {error}"
+            ) from error
+        try:
+            if prior is not None and not os.path.lexists(paths.state_path):
+                try:
+                    restored = _renamed_held_regular_file_authority(
+                        prior,
+                        paths.state_path,
+                        parent_authority=state_root,
+                    )
+                except Exception:
+                    if os.path.lexists(paths.state_path):
+                        restored_status = os.stat(
+                            paths.state_path,
+                            follow_symlinks=False,
+                        )
+                        if (
+                            _status_stable_identity(restored_status)
+                            == prior.stable_identity
+                        ):
+                            restored = _retargeted_held_regular_file_authority(
+                                prior,
+                                paths.state_path,
+                            )
+                        else:
+                            raise
+                    else:
+                        raise
+                prior = None
+                del restored
+                _verify_held_regular_file_authority(
+                    admitted_state_authority.initial_file
+                )
+                transferred_initial = admitted_state_authority.initial_file
+            if transferred_initial is not None:
+                admitted_state_authority._initial_owner.restore(
+                    transferred_initial
+                )
+                transferred_initial = None
+                prior = None
+            if promoted is not None and os.path.lexists(promoted.path):
+                owned_promoted = promoted
+                promoted = None
+                _safe_unlink_owned_file(owned_promoted)
+            if intent is not None:
+                owned_intent = intent
+                intent = None
+                _safe_unlink_owned_file(owned_intent)
+            _flush_held_directory(state_root)
+            _validate_state_root_allowlist(
+                paths,
+                state_root,
+                allow_state_controls=False,
+            )
+            _verify_admitted_non_lockbox_state_cas(
+                paths,
+                admitted_state_authority,
+                state_root=state_root,
+            )
+            restored_state, restored_bytes = _state_from_held_file(
+                admitted_state_authority.initial_file
+            )
+            if restored_state != initial_state or restored_bytes != admitted_state_authority.initial_bytes:
+                raise RunnerError("restored preflight state bytes changed")
+        except Exception as recovery_error:
+            raise RunnerError(
+                "non-lockbox state outcome is indeterminate during precommit recovery"
+            ) from recovery_error
+        if isinstance(error, RunnerError):
+            raise
+        raise RunnerError(f"non-lockbox state precommit failed: {error}") from error
+    finally:
+        active_error = sys.exc_info()[1]
+        remaining_owners: list[_HeldRegularFileAuthority] = []
+        if prior is not None:
+            remaining_owners.append(prior)
+        elif transferred_initial is not None:
+            remaining_owners.append(transferred_initial)
+        if intent is not None:
+            remaining_owners.append(intent)
+        if promoted is not None:
+            remaining_owners.append(promoted)
+        if committed_owner is not None:
+            remaining_committed = committed_owner.peek()
+            if remaining_committed is not None:
+                remaining_owners.append(committed_owner.take())
+        prior = None
+        transferred_initial = None
+        intent = None
+        promoted = None
+        close_error = _close_owned_regular_file_authorities_once(remaining_owners)
+        if close_error is not None:
+            if linearized:
+                message = (
+                    "non-lockbox state postcommit outcome is indeterminate during "
+                    "owner cleanup"
+                )
+            elif active_error is not None and "indeterminate" in str(active_error):
+                message = (
+                    "non-lockbox state outcome is indeterminate during precommit "
+                    "owner cleanup"
+                )
+            else:
+                message = (
+                    "non-lockbox state precommit owner cleanup failed after "
                     "deterministic recovery"
                 )
             _raise_owner_cleanup_failure(
@@ -3548,6 +5028,859 @@ def _persist_preflight_artifacts(
                 output_authorities,
                 require_complete=True,
                 allow_controls=False,
+            )
+
+
+def _non_lockbox_artifact_destinations(
+    paths: RunnerPaths,
+) -> tuple[Path, ...]:
+    if tuple(NON_LOCKBOX_ROLE_ORDER) != NONFINAL_PARTITION_ROLES:
+        raise RunnerError("non-lockbox role order changed")
+    destinations = (
+        *(Path(paths.non_lockbox_feature_cache_path(role)) for role in NONFINAL_PARTITION_ROLES),
+        Path(paths.non_lockbox_ami_evidence_path),
+        Path(paths.non_lockbox_packet_path),
+    )
+    expected_packet = Path(paths.non_lockbox_root) / "non-lockbox-packet.json"
+    if destinations[-1] != expected_packet:
+        raise RunnerError("non-lockbox packet destination is not fixed")
+    return destinations
+
+
+def _non_lockbox_artifact_stage_path(destination: Path) -> Path:
+    target = Path(destination)
+    return target.with_name(f".{target.name}.non-lockbox.stage")
+
+
+def _non_lockbox_output_parent_for_destination(
+    paths: RunnerPaths,
+    destination: Path,
+    authorities: _NonLockboxOutputAuthorities,
+) -> _HeldDirectoryAuthority:
+    target = Path(destination)
+    destinations = _non_lockbox_artifact_destinations(paths)
+    if target in destinations[:4]:
+        parent = authorities.cache_root
+    elif target == destinations[4]:
+        parent = authorities.root
+    else:
+        raise RunnerError("non-lockbox artifact destination is not fixed")
+    if target.parent != parent.path:
+        raise RunnerError("non-lockbox artifact parent authority changed")
+    _verify_held_directory_authority(parent)
+    return parent
+
+
+def _validate_non_lockbox_self_hashed_payload(
+    payload: Any,
+    *,
+    label: str,
+    expected_fields: tuple[str, ...],
+    role: str | None = None,
+) -> dict[str, Any]:
+    if (
+        type(payload) is not dict
+        or any(type(key) is not str for key in payload)
+        or tuple(payload) != expected_fields
+        or type(payload.get("self_sha256")) is not str
+    ):
+        raise RunnerError(f"invalid {label} shape")
+    if role is not None and (
+        type(payload.get("partition_role")) is not str
+        or payload["partition_role"] != role
+    ):
+        raise RunnerError(f"invalid {label} partition role")
+    try:
+        expected = canonical_payload_sha256(payload)
+    except (TypeError, ValueError) as error:
+        raise RunnerError(f"invalid {label}: {error}") from error
+    if payload["self_sha256"] != expected:
+        raise RunnerError(f"invalid {label} self commitment")
+    _validate_digest(payload["self_sha256"], f"{label} self")
+    return deepcopy(payload)
+
+
+def _validated_non_lockbox_payload_for_destination(
+    paths: RunnerPaths,
+    destination: Path,
+    payload: Any,
+) -> dict[str, Any]:
+    target = Path(destination)
+    destinations = _non_lockbox_artifact_destinations(paths)
+    if target in destinations[:3]:
+        role = NONFINAL_PARTITION_ROLES[destinations.index(target)]
+        cache = _validate_non_lockbox_self_hashed_payload(
+            payload,
+            label=f"{role} feature cache",
+            expected_fields=NON_LOCKBOX_FEATURE_CACHE_FIELDS,
+            role=role,
+        )
+        feature_names = cache.get("feature_names")
+        records = cache.get("records")
+        if (
+            type(feature_names) is not list
+            or not feature_names
+            or any(type(name) is not str or not name for name in feature_names)
+            or len(set(feature_names)) != len(feature_names)
+            or type(records) is not list
+            or not records
+        ):
+            raise RunnerError(f"invalid {role} feature cache record shape")
+        for record in records:
+            if (
+                type(record) is not dict
+                or tuple(record) != NON_LOCKBOX_FEATURE_RECORD_FIELDS
+                or type(record.get("clip_stem")) is not str
+                or not record["clip_stem"]
+                or type(record.get("audio_sha256")) is not str
+                or type(record.get("audio_size_bytes")) is not int
+                or record["audio_size_bytes"] <= 0
+                or type(record.get("features")) is not dict
+                or tuple(record["features"]) != tuple(feature_names)
+                or any(
+                    type(value) is not float or not math.isfinite(value)
+                    for value in record["features"].values()
+                )
+            ):
+                raise RunnerError(f"invalid {role} feature cache record")
+            _validate_digest(
+                record["audio_sha256"],
+                f"{role} feature-cache audio",
+            )
+        return cache
+    if target == destinations[3]:
+        return _validate_non_lockbox_self_hashed_payload(
+            payload,
+            label="AMI evidence cache",
+            expected_fields=NON_LOCKBOX_AMI_EVIDENCE_FIELDS,
+        )
+    if target == destinations[4]:
+        if type(payload) is not dict or any(
+            type(key) is not str for key in payload
+        ):
+            raise RunnerError("invalid non-lockbox packet shape")
+        try:
+            public = validate_non_lockbox_review_packet(deepcopy(payload))
+            independent = validate_non_lockbox_packet(deepcopy(payload))
+        except (TypeError, ValueError) as error:
+            raise RunnerError(f"invalid non-lockbox packet: {error}") from error
+        if (
+            type(public) is not dict
+            or type(independent) is not dict
+            or canonical_json_bytes(public) != canonical_json_bytes(payload)
+            or canonical_json_bytes(independent) != canonical_json_bytes(payload)
+        ):
+            raise RunnerError("non-lockbox packet validators disagree")
+        return deepcopy(payload)
+    raise RunnerError("non-lockbox artifact destination is not fixed")
+
+
+def _non_lockbox_payload_bytes(
+    paths: RunnerPaths,
+    artifacts: ProductionNonLockboxArtifacts,
+) -> tuple[tuple[Path, bytes], ...]:
+    if type(artifacts) is not ProductionNonLockboxArtifacts:
+        raise RunnerError("exact ProductionNonLockboxArtifacts value is required")
+    if (
+        type(artifacts.feature_caches) is not dict
+        or tuple(artifacts.feature_caches) != NONFINAL_PARTITION_ROLES
+        or any(
+            type(role) is not str or type(payload) is not dict
+            for role, payload in artifacts.feature_caches.items()
+        )
+        or type(artifacts.ami_evidence) is not dict
+        or type(artifacts.review_packet) is not dict
+    ):
+        raise RunnerError("non-lockbox artifact aggregate shape changed")
+    destinations = _non_lockbox_artifact_destinations(paths)
+    payloads = (
+        *(artifacts.feature_caches[role] for role in NONFINAL_PARTITION_ROLES),
+        artifacts.ami_evidence,
+        artifacts.review_packet,
+    )
+    validated = tuple(
+        _validated_non_lockbox_payload_for_destination(
+            paths,
+            destination,
+            deepcopy(payload),
+        )
+        for destination, payload in zip(destinations, payloads, strict=True)
+    )
+    expected_commitments = {
+        **{
+            role: validated[index]["self_sha256"]
+            for index, role in enumerate(NONFINAL_PARTITION_ROLES)
+        },
+        "ami_evidence": validated[3]["self_sha256"],
+    }
+    if validated[4].get("artifact_cache_commitments") != expected_commitments:
+        raise RunnerError("non-lockbox packet cache commitments changed")
+    return tuple(
+        (destination, _non_lockbox_artifact_json_bytes(payload))
+        for destination, payload in zip(destinations, validated, strict=True)
+    )
+
+
+def _parse_non_lockbox_artifact_bytes(
+    paths: RunnerPaths,
+    destination: Path,
+    content: bytes,
+) -> dict[str, Any]:
+    if type(content) is not bytes:
+        raise RunnerError("non-lockbox artifact readback is not bytes")
+    payload = _load_json_object_bytes(
+        content,
+        f"{Path(destination).name} non-lockbox artifact",
+    )
+    validated = _validated_non_lockbox_payload_for_destination(
+        paths,
+        destination,
+        payload,
+    )
+    if _non_lockbox_artifact_json_bytes(validated) != content:
+        raise RunnerError("non-lockbox artifact bytes are not canonical")
+    return validated
+
+
+def _validate_non_lockbox_output_shape(
+    paths: RunnerPaths,
+    authorities: _NonLockboxOutputAuthorities,
+    *,
+    require_complete: bool,
+    allow_controls: bool,
+) -> None:
+    if type(authorities) is not _NonLockboxOutputAuthorities:
+        raise RunnerError("non-lockbox output authority type changed")
+    expected_roots = (
+        Path(paths.non_lockbox_root),
+        Path(paths.non_lockbox_cache_root),
+    )
+    held_roots = (authorities.root, authorities.cache_root)
+    if any(
+        type(authority) is not _HeldDirectoryAuthority
+        or authority.path != expected
+        for authority, expected in zip(held_roots, expected_roots, strict=True)
+    ):
+        raise RunnerError("non-lockbox output capability does not match paths")
+    destinations = _non_lockbox_artifact_destinations(paths)
+    groups = (
+        (authorities.root, destinations[4:]),
+        (authorities.cache_root, destinations[:4]),
+    )
+    for parent, fixed_destinations in groups:
+        fixed_names = {destination.name for destination in fixed_destinations}
+        control_names: set[str] = set()
+        for destination in fixed_destinations:
+            intent, prior = _replacement_control_paths(destination)
+            control_names.update({
+                _non_lockbox_artifact_stage_path(destination).name,
+                intent.name,
+                prior.name,
+            })
+        entries = _held_directory_entry_statuses(parent)
+        if parent is authorities.root:
+            unknown = set(entries) - fixed_names - control_names - {"cache"}
+        else:
+            unknown = set(entries) - fixed_names - control_names
+        if unknown:
+            raise RunnerError(
+                "unknown non-lockbox output entry is retained: "
+                + ", ".join(sorted(unknown))
+            )
+        if not allow_controls and set(entries) & control_names:
+            raise RunnerError("non-lockbox recovery control is retained")
+        expected_names = set(fixed_names)
+        if parent is authorities.root:
+            expected_names.add("cache")
+            cache_status = entries.get("cache")
+            if cache_status is None:
+                raise RunnerError("non-lockbox cache root is missing")
+            _require_safe_directory_entry(parent, "cache", cache_status)
+        if require_complete and set(entries) != expected_names:
+            raise RunnerError("non-lockbox output shape is incomplete")
+        for name, status in entries.items():
+            if parent is authorities.root and name == "cache":
+                continue
+            _require_safe_regular_entry(parent, name, status)
+
+
+def _non_lockbox_recovery_plan_files(
+    plan: _NonLockboxArtifactRecoveryPlan,
+) -> tuple[_HeldRegularFileAuthority, ...]:
+    return tuple(
+        authority
+        for authority in (
+            plan.destination_file,
+            plan.intent_file,
+            plan.prior_file,
+            plan.stage_file,
+        )
+        if authority is not None
+    )
+
+
+def _close_non_lockbox_recovery_plan(
+    plan: _NonLockboxArtifactRecoveryPlan,
+) -> None:
+    files = _non_lockbox_recovery_plan_files(plan)
+    plan.destination_file = None
+    plan.intent_file = None
+    plan.prior_file = None
+    plan.stage_file = None
+    close_error = _close_owned_regular_file_authorities_once(files)
+    if close_error is not None:
+        raise close_error
+
+
+def _plan_non_lockbox_artifact_destination_recovery(
+    paths: RunnerPaths,
+    destination: Path,
+    *,
+    parent_authority: _HeldDirectoryAuthority,
+    entry_names: frozenset[str],
+) -> _NonLockboxArtifactRecoveryPlan:
+    target = Path(destination)
+    if target.parent != parent_authority.path:
+        raise RunnerError("non-lockbox recovery parent authority changed")
+    stage_path = _non_lockbox_artifact_stage_path(target)
+    intent_path, prior_path = _replacement_control_paths(target)
+    recognized_names = {
+        target.name,
+        stage_path.name,
+        intent_path.name,
+        prior_path.name,
+    }
+    if not entry_names <= recognized_names:
+        raise RunnerError("non-lockbox recovery received an unknown entry")
+
+    opened: list[_HeldRegularFileAuthority] = []
+
+    def open_if_present(path: Path) -> _HeldRegularFileAuthority | None:
+        if path.name not in entry_names:
+            return None
+        authority = _open_owned_regular_file_authority(
+            path,
+            parent_authority=parent_authority,
+            delete_access=True,
+        )
+        opened.append(authority)
+        return authority
+
+    try:
+        destination_file = open_if_present(target)
+        intent_file = open_if_present(intent_path)
+        prior_file = open_if_present(prior_path)
+        stage_file = open_if_present(stage_path)
+        for label, authority in (
+            ("destination", destination_file),
+            ("prior", prior_file),
+            ("stage", stage_file),
+        ):
+            if authority is not None:
+                try:
+                    _parse_non_lockbox_artifact_bytes(
+                        paths,
+                        target,
+                        _read_held_regular_file_bytes(authority),
+                    )
+                except RunnerError as error:
+                    raise RunnerError(
+                        f"malformed non-lockbox {label} is retained"
+                    ) from error
+        if intent_file is None:
+            if prior_file is not None:
+                raise RunnerError("orphaned non-lockbox prior is retained")
+            action = "discard-stage" if stage_file is not None else "none"
+        else:
+            intent_bytes = _read_held_regular_file_bytes(intent_file)
+            try:
+                intent = _validate_replacement_intent(
+                    _load_json_object_bytes(
+                        intent_bytes,
+                        "non-lockbox replacement intent",
+                    ),
+                    destination=target,
+                    prior_path=prior_path,
+                )
+            except RunnerError as error:
+                raise RunnerError(
+                    "malformed non-lockbox replacement intent is retained"
+                ) from error
+            if canonical_json_bytes(intent) != intent_bytes:
+                raise RunnerError(
+                    "noncanonical non-lockbox replacement intent is retained"
+                )
+            if (
+                destination_file is not None
+                and destination_file.sha256 == intent["source_sha256"]
+                and stage_file is None
+            ):
+                if (
+                    prior_file is not None
+                    and prior_file.sha256 != intent["prior_sha256"]
+                ):
+                    raise RunnerError(
+                        "non-lockbox recovery prior digest mismatch is retained"
+                    )
+                action = "finish-committed"
+            elif (
+                destination_file is None
+                and prior_file is not None
+                and stage_file is not None
+                and prior_file.sha256 == intent["prior_sha256"]
+                and stage_file.sha256 == intent["source_sha256"]
+            ):
+                action = "restore-prior"
+            elif (
+                destination_file is not None
+                and destination_file.sha256 == intent["prior_sha256"]
+                and prior_file is None
+                and stage_file is not None
+                and stage_file.sha256 == intent["source_sha256"]
+            ):
+                action = "discard-uncommitted-stage"
+            else:
+                raise RunnerError(
+                    "non-lockbox recovery is ambiguous; evidence retained"
+                )
+        plan = _NonLockboxArtifactRecoveryPlan(
+            destination=target,
+            parent_authority=parent_authority,
+            action=action,
+            destination_file=destination_file,
+            intent_file=intent_file,
+            prior_file=prior_file,
+            stage_file=stage_file,
+        )
+        opened.clear()
+        return plan
+    finally:
+        close_error = _close_owned_regular_file_authorities_once(opened)
+        if close_error is not None:
+            raise close_error
+
+
+def _execute_non_lockbox_artifact_recovery_plan(
+    plan: _NonLockboxArtifactRecoveryPlan,
+) -> None:
+    parent = plan.parent_authority
+    _verify_held_directory_authority(parent)
+    for authority in _non_lockbox_recovery_plan_files(plan):
+        _verify_held_regular_file_authority(authority)
+    if plan.action == "discard-stage":
+        assert plan.stage_file is not None
+        owned_stage = plan.stage_file
+        plan.stage_file = None
+        _safe_unlink_owned_file(owned_stage)
+    elif plan.action == "finish-committed":
+        if plan.prior_file is not None:
+            owned_prior = plan.prior_file
+            plan.prior_file = None
+            _safe_unlink_owned_file(owned_prior)
+        assert plan.intent_file is not None
+        owned_intent = plan.intent_file
+        plan.intent_file = None
+        _safe_unlink_owned_file(owned_intent)
+    elif plan.action == "restore-prior":
+        assert plan.prior_file is not None
+        plan.prior_file = _renamed_held_regular_file_authority(
+            plan.prior_file,
+            plan.destination,
+            parent_authority=parent,
+        )
+        assert plan.stage_file is not None
+        owned_stage = plan.stage_file
+        plan.stage_file = None
+        _safe_unlink_owned_file(owned_stage)
+        assert plan.intent_file is not None
+        owned_intent = plan.intent_file
+        plan.intent_file = None
+        _safe_unlink_owned_file(owned_intent)
+    elif plan.action == "discard-uncommitted-stage":
+        assert plan.stage_file is not None
+        owned_stage = plan.stage_file
+        plan.stage_file = None
+        _safe_unlink_owned_file(owned_stage)
+        assert plan.intent_file is not None
+        owned_intent = plan.intent_file
+        plan.intent_file = None
+        _safe_unlink_owned_file(owned_intent)
+    elif plan.action != "none":
+        raise RunnerError("non-lockbox recovery action changed")
+    _flush_held_directory(parent)
+
+
+def _reconcile_non_lockbox_artifacts(
+    paths: RunnerPaths,
+    authorities: _NonLockboxOutputAuthorities,
+) -> None:
+    _validate_non_lockbox_output_shape(
+        paths,
+        authorities,
+        require_complete=False,
+        allow_controls=True,
+    )
+    destinations = _non_lockbox_artifact_destinations(paths)
+    groups = (
+        (authorities.root, destinations[4:]),
+        (authorities.cache_root, destinations[:4]),
+    )
+    snapshots: dict[Path, frozenset[str]] = {}
+    names_by_destination: dict[Path, frozenset[str]] = {}
+    for parent, fixed_destinations in groups:
+        entries = _held_directory_entry_statuses(parent)
+        snapshots[parent.path] = frozenset(entries)
+        for destination in fixed_destinations:
+            intent, prior = _replacement_control_paths(destination)
+            recognized = {
+                destination.name,
+                _non_lockbox_artifact_stage_path(destination).name,
+                intent.name,
+                prior.name,
+            }
+            names_by_destination[destination] = frozenset(
+                set(entries) & recognized
+            )
+
+    plans: list[_NonLockboxArtifactRecoveryPlan] = []
+    try:
+        for destination in destinations:
+            parent = _non_lockbox_output_parent_for_destination(
+                paths,
+                destination,
+                authorities,
+            )
+            plans.append(
+                _plan_non_lockbox_artifact_destination_recovery(
+                    paths,
+                    destination,
+                    parent_authority=parent,
+                    entry_names=names_by_destination[destination],
+                )
+            )
+        for parent, _fixed_destinations in groups:
+            if frozenset(_held_directory_entry_statuses(parent)) != snapshots[
+                parent.path
+            ]:
+                raise RunnerError(
+                    "non-lockbox recovery namespace changed during planning"
+                )
+        for plan in plans:
+            _execute_non_lockbox_artifact_recovery_plan(plan)
+    finally:
+        active_error = sys.exc_info()[1]
+        cleanup_error: Exception | None = None
+        for plan in plans:
+            try:
+                _close_non_lockbox_recovery_plan(plan)
+            except Exception as error:
+                if cleanup_error is None:
+                    cleanup_error = error
+        if cleanup_error is not None:
+            _raise_owner_cleanup_failure(
+                "non-lockbox recovery owner cleanup failed",
+                cleanup_error,
+                active_error=active_error,
+            )
+    _validate_non_lockbox_output_shape(
+        paths,
+        authorities,
+        require_complete=False,
+        allow_controls=False,
+    )
+
+
+@contextmanager
+def _held_non_lockbox_output_authorities(
+    paths: RunnerPaths,
+    material_authority: _MaterialPipelineAuthority,
+) -> Iterator[_NonLockboxOutputAuthorities]:
+    _validate_layout(paths)
+    if type(material_authority) is not _MaterialPipelineAuthority:
+        raise RunnerError("material-pipeline authority is required")
+    _verify_material_pipeline_authority(material_authority)
+    if material_authority.state_root.path != Path(paths.state_root):
+        raise RunnerError("material-pipeline state root changed")
+    with ExitStack() as stack:
+        root = stack.enter_context(_held_child_directory_authority(
+            Path(paths.non_lockbox_root),
+            material_authority.state_root,
+        ))
+        cache_root = stack.enter_context(_held_child_directory_authority(
+            Path(paths.non_lockbox_cache_root),
+            root,
+        ))
+        authorities = _NonLockboxOutputAuthorities(
+            root=root,
+            cache_root=cache_root,
+        )
+        _reconcile_non_lockbox_artifacts(paths, authorities)
+        try:
+            yield authorities
+        finally:
+            _verify_material_pipeline_authority(material_authority)
+            _validate_non_lockbox_output_shape(
+                paths,
+                authorities,
+                require_complete=False,
+                allow_controls=False,
+            )
+
+
+@contextmanager
+def _held_existing_non_lockbox_outputs(
+    paths: RunnerPaths,
+    material_authority: _MaterialPipelineAuthority,
+) -> Iterator[_NonLockboxOutputAuthorities]:
+    """Bind a complete committed output tree without creating or recovering it."""
+    _verify_material_pipeline_authority(material_authority)
+    if (
+        type(material_authority) is not _MaterialPipelineAuthority
+        or material_authority.state_root.path != Path(paths.state_root)
+    ):
+        raise RunnerError("material-pipeline state-root capability changed")
+    with ExitStack() as stack:
+        try:
+            root = stack.enter_context(_held_child_directory_authority(
+                Path(paths.non_lockbox_root),
+                material_authority.state_root,
+                create=False,
+            ))
+            cache_root = stack.enter_context(_held_child_directory_authority(
+                Path(paths.non_lockbox_cache_root),
+                root,
+                create=False,
+            ))
+            authorities = _NonLockboxOutputAuthorities(
+                root=root,
+                cache_root=cache_root,
+            )
+        except (OSError, RunnerError) as error:
+            raise RunnerError(
+                "committed non-lockbox output root is unavailable"
+            ) from error
+        _validate_non_lockbox_output_shape(
+            paths,
+            authorities,
+            require_complete=True,
+            allow_controls=False,
+        )
+        try:
+            yield authorities
+        finally:
+            _verify_material_pipeline_authority(material_authority)
+            _validate_non_lockbox_output_shape(
+                paths,
+                authorities,
+                require_complete=True,
+                allow_controls=False,
+            )
+
+
+def _replace_non_lockbox_bytes_durably(
+    paths: RunnerPaths,
+    destination: Path,
+    content: bytes,
+    *,
+    output_authorities: _NonLockboxOutputAuthorities,
+) -> _HeldRegularFileAuthority:
+    target = Path(destination)
+    if (
+        type(paths) is not RunnerPaths
+        or type(content) is not bytes
+        or target not in _non_lockbox_artifact_destinations(paths)
+        or type(output_authorities) is not _NonLockboxOutputAuthorities
+    ):
+        raise RunnerError("non-lockbox replacement target is invalid")
+    parent = _non_lockbox_output_parent_for_destination(
+        paths,
+        target,
+        output_authorities,
+    )
+    _validate_non_lockbox_output_shape(
+        paths,
+        output_authorities,
+        require_complete=False,
+        allow_controls=False,
+    )
+    if os.name != "nt":
+        raise RunnerError(
+            "non-lockbox durable replacement is Windows-qualified only"
+        )
+    stage_path = _non_lockbox_artifact_stage_path(target)
+    intent_path, prior_path = _replacement_control_paths(target)
+    stage = _create_held_regular_file_authority(
+        stage_path,
+        content,
+        parent_authority=parent,
+    )
+    promoted: _HeldRegularFileAuthority | None = stage
+    previous: _HeldRegularFileAuthority | None = None
+    intent: _HeldRegularFileAuthority | None = None
+    try:
+        if os.path.lexists(target):
+            if os.path.lexists(intent_path) or os.path.lexists(prior_path):
+                raise RunnerError(
+                    "non-lockbox replacement control entry already exists"
+                )
+            previous = _open_owned_regular_file_authority(
+                target,
+                parent_authority=parent,
+                delete_access=True,
+            )
+            intent = _create_held_regular_file_authority(
+                intent_path,
+                canonical_json_bytes({
+                    "schema_version": _REPLACE_INTENT_SCHEMA_VERSION,
+                    "destination_name": target.name,
+                    "prior_name": prior_path.name,
+                    "source_sha256": stage.sha256,
+                    "prior_sha256": previous.sha256,
+                }),
+                parent_authority=parent,
+            )
+            previous = _renamed_held_regular_file_authority(
+                previous,
+                prior_path,
+                parent_authority=parent,
+            )
+        promoted = _renamed_held_regular_file_authority(
+            stage,
+            target,
+            parent_authority=parent,
+        )
+        _flush_held_directory(parent)
+        _verify_held_regular_file_authority(promoted)
+        if _read_held_regular_file_bytes(promoted) != content:
+            raise RunnerError("non-lockbox artifact immediate readback mismatch")
+        if previous is not None:
+            owned_previous = previous
+            previous = None
+            _safe_unlink_owned_file(owned_previous)
+        if intent is not None:
+            owned_intent = intent
+            intent = None
+            _safe_unlink_owned_file(owned_intent)
+        _flush_held_directory(parent)
+        _verify_held_regular_file_authority(promoted)
+        result = promoted
+        promoted = None
+        return result
+    finally:
+        close_error = _close_owned_regular_file_authorities_once(tuple(
+            authority
+            for authority in (previous, intent, promoted)
+            if authority is not None
+        ))
+        if close_error is not None:
+            raise close_error
+
+
+def _validate_non_lockbox_readback_files(
+    paths: RunnerPaths,
+    files: tuple[_HeldRegularFileAuthority, ...],
+) -> tuple[tuple[dict[str, Any], ...], dict[str, Any], dict[str, Any]]:
+    destinations = _non_lockbox_artifact_destinations(paths)
+    if (
+        type(files) is not tuple
+        or len(files) != len(destinations)
+        or tuple(authority.path for authority in files) != destinations
+    ):
+        raise RunnerError("non-lockbox readback file order changed")
+    payloads: list[dict[str, Any]] = []
+    for destination, authority in zip(destinations, files, strict=True):
+        _verify_held_regular_file_authority(authority)
+        payloads.append(_parse_non_lockbox_artifact_bytes(
+            paths,
+            destination,
+            _read_held_regular_file_bytes(authority),
+        ))
+    artifacts = ProductionNonLockboxArtifacts(
+        feature_caches={
+            role: payloads[index]
+            for index, role in enumerate(NONFINAL_PARTITION_ROLES)
+        },
+        ami_evidence=payloads[3],
+        review_packet=payloads[4],
+    )
+    expected_bytes = _non_lockbox_payload_bytes(paths, artifacts)
+    for authority, (_destination, expected) in zip(
+        files,
+        expected_bytes,
+        strict=True,
+    ):
+        if _read_held_regular_file_bytes(authority) != expected:
+            raise RunnerError("persisted non-lockbox artifact bytes changed")
+    return (
+        tuple(deepcopy(payload) for payload in payloads[:3]),
+        deepcopy(payloads[3]),
+        deepcopy(payloads[4]),
+    )
+
+
+@contextmanager
+def _persist_non_lockbox_artifacts(
+    paths: RunnerPaths,
+    artifacts: ProductionNonLockboxArtifacts,
+    *,
+    material_authority: _MaterialPipelineAuthority,
+    output_authorities: _NonLockboxOutputAuthorities,
+) -> Iterator[_PersistedNonLockboxReadback]:
+    _verify_material_pipeline_authority(material_authority)
+    if type(output_authorities) is not _NonLockboxOutputAuthorities:
+        raise RunnerError("non-lockbox output authority type changed")
+    if material_authority.state_root.path != Path(paths.state_root):
+        raise RunnerError("material-pipeline state root changed")
+    payload_bytes = _non_lockbox_payload_bytes(paths, artifacts)
+    files: list[_HeldRegularFileAuthority] = []
+    try:
+        for destination, content in payload_bytes:
+            files.append(_replace_non_lockbox_bytes_durably(
+                paths,
+                destination,
+                content,
+                output_authorities=output_authorities,
+            ))
+        held_files = tuple(files)
+        _validate_non_lockbox_output_shape(
+            paths,
+            output_authorities,
+            require_complete=True,
+            allow_controls=False,
+        )
+        feature_caches, ami_evidence, review_packet = (
+            _validate_non_lockbox_readback_files(paths, held_files)
+        )
+        readback = _PersistedNonLockboxReadback(
+            feature_caches=feature_caches,
+            ami_evidence=ami_evidence,
+            review_packet=review_packet,
+            files=held_files,
+        )
+        try:
+            yield readback
+        finally:
+            _verify_material_pipeline_authority(material_authority)
+            for authority in held_files:
+                _verify_held_regular_file_authority(authority)
+            replay = _validate_non_lockbox_readback_files(paths, held_files)
+            if replay != (feature_caches, ami_evidence, review_packet):
+                raise RunnerError("non-lockbox retained readback changed")
+            _validate_non_lockbox_output_shape(
+                paths,
+                output_authorities,
+                require_complete=True,
+                allow_controls=False,
+            )
+    finally:
+        active_error = sys.exc_info()[1]
+        close_error = _close_owned_regular_file_authorities_once(files)
+        files.clear()
+        if close_error is not None:
+            _raise_owner_cleanup_failure(
+                "non-lockbox retained file cleanup failed",
+                close_error,
+                active_error=active_error,
             )
 
 
@@ -3734,6 +6067,13 @@ def _read_committed_preflight_checkpoint(
     try:
         if type(committed_state_authority) is not _HeldCommittedStateAuthority:
             raise RunnerError("committed state authority type changed")
+        if (
+            type(committed_state_authority._file_owner)
+            is not _RegularFileAuthorityOwner
+            or committed_state_authority._file_owner.peek()
+            is not committed_state_authority.file
+        ):
+            raise RunnerError("committed state owner changed before preflight readback")
         _verify_material_pipeline_authority(material_authority)
         _verify_held_regular_file_authority(committed_state_authority.file)
         state, state_bytes = _state_from_held_file(committed_state_authority.file)
@@ -3790,11 +6130,478 @@ def _read_committed_preflight_checkpoint(
             yield readback
             for authority in files:
                 _verify_held_regular_file_authority(authority)
-            _verify_held_regular_file_authority(committed_state_authority.file)
+            remaining_state_file = committed_state_authority._file_owner.peek()
+            if remaining_state_file is not None:
+                if remaining_state_file is not committed_state_authority.file:
+                    raise RunnerError(
+                        "committed state owner changed after preflight readback"
+                    )
+                _verify_held_regular_file_authority(remaining_state_file)
     except RunnerError as error:
         if "already complete" in str(error):
             raise
         raise RunnerError(f"committed checkpoint integrity failure: {error}") from error
+
+
+def _validate_runner_non_lockbox_role_algebra(
+    preflight_readback: _CommittedPreflightReadback,
+) -> tuple[
+    dict[str, Any],
+    dict[str, "ValidatedPartitionAuthority"],
+    dict[str, tuple[Any, ...]],
+]:
+    from scripts import emotion_state_phase_b_evaluation as evaluation
+
+    if type(preflight_readback) is not _CommittedPreflightReadback:
+        raise RunnerError("committed preflight readback type changed")
+    if (
+        type(preflight_readback.restored) is not tuple
+        or len(preflight_readback.restored) != len(NONFINAL_PARTITION_ROLES)
+        or len({id(item) for item in preflight_readback.restored})
+        != len(NONFINAL_PARTITION_ROLES)
+        or any(
+            type(item) is not evaluation.ValidatedPartitionAuthority
+            for item in preflight_readback.restored
+        )
+    ):
+        raise RunnerError("runner non-lockbox authority aggregate changed")
+    try:
+        manifest = validate_phase_b_split_manifest(
+            deepcopy(preflight_readback.artifacts.split_manifest)
+        )
+    except (TypeError, ValueError) as error:
+        raise RunnerError(f"runner split authority is invalid: {error}") from error
+    authorities = dict(zip(
+        NONFINAL_PARTITION_ROLES,
+        preflight_readback.restored,
+        strict=True,
+    ))
+    if tuple(authorities) != tuple(EXPECTED_PRODUCTION_PARTITION_RECORD_COUNTS):
+        raise RunnerError("runner non-lockbox role order changed")
+    authority_commitments = manifest.get("partition_authority_sha256")
+    if (
+        type(authority_commitments) is not dict
+        or set(authority_commitments) != set(NONFINAL_PARTITION_ROLES)
+    ):
+        raise RunnerError("runner split role commitments changed")
+    records_by_role: dict[str, tuple[Any, ...]] = {}
+    for role in NONFINAL_PARTITION_ROLES:
+        authority = authorities[role]
+        payload = authority.to_payload()
+        expected_count = EXPECTED_PRODUCTION_PARTITION_RECORD_COUNTS[role]
+        records = evaluation.validated_partition_records(authority, role=role)
+        if (
+            type(payload) is not dict
+            or payload.get("partition_role") != role
+            or type(payload.get("eligible_record_count")) is not int
+            or payload["eligible_record_count"] != expected_count
+            or payload.get("configuration_sha256")
+            != manifest["configuration_sha256"]
+            or payload.get("split_manifest_sha256")
+            != manifest["split_manifest_sha256"]
+            or payload.get("assignment_sha256")
+            != manifest["assignment_sha256"]
+            or payload.get("partition_authority_sha256")
+            != authority_commitments[role]
+            or type(records) is not tuple
+            or len(records) != expected_count
+            or any(
+                hasattr(record, "project_relative_path")
+                or hasattr(record.label_record, "project_relative_path")
+                for record in records
+            )
+        ):
+            raise RunnerError(
+                f"runner {role} authority does not match frozen role algebra"
+            )
+        records_by_role[role] = records
+    final_commitment = manifest.get("final_lockbox_commitment")
+    nonfinal_count = sum(
+        len(records_by_role[role]) for role in NONFINAL_PARTITION_ROLES
+    )
+    if (
+        type(final_commitment) is not dict
+        or type(final_commitment.get("eligible_record_count")) is not int
+        or final_commitment["eligible_record_count"]
+        != EXPECTED_PRODUCTION_FINAL_LOCKBOX_RECORD_COUNT
+        or type(manifest.get("eligible_record_count")) is not int
+        or manifest["eligible_record_count"]
+        != EXPECTED_PRODUCTION_ELIGIBLE_RECORD_COUNT
+        or type(nonfinal_count) is not int
+        or nonfinal_count != EXPECTED_PRODUCTION_NONFINAL_RECORD_COUNT
+        or type(nonfinal_count + final_commitment["eligible_record_count"])
+        is not int
+        or nonfinal_count + final_commitment["eligible_record_count"]
+        != EXPECTED_PRODUCTION_ELIGIBLE_RECORD_COUNT
+        or "final_lockbox" in authorities
+        or "final_lockbox" in records_by_role
+    ):
+        raise RunnerError(
+            "runner role algebra must be exactly 2491/959/939 plus 2181"
+        )
+    return deepcopy(manifest), authorities, records_by_role
+
+
+def _validate_runner_non_lockbox_source_derivation_inputs(
+    tracked_authority: TrackedPublicAuthority,
+    records_by_role: Mapping[str, tuple[Any, ...]],
+) -> None:
+    if (
+        type(tracked_authority) is not TrackedPublicAuthority
+        or type(records_by_role) is not dict
+        or tuple(records_by_role) != NONFINAL_PARTITION_ROLES
+        or any(type(records_by_role[role]) is not tuple for role in records_by_role)
+        or any(
+            len(records_by_role[role])
+            != EXPECTED_PRODUCTION_PARTITION_RECORD_COUNTS[role]
+            for role in NONFINAL_PARTITION_ROLES
+        )
+    ):
+        raise RunnerError("runner source derivation authority changed")
+
+
+def _derive_runner_non_lockbox_audio_source_identities(
+    tracked_authority: TrackedPublicAuthority,
+    records_by_role: Mapping[str, tuple[Any, ...]],
+) -> dict[str, tuple[SourceByteIdentity, ...]]:
+    _validate_runner_non_lockbox_source_derivation_inputs(
+        tracked_authority,
+        records_by_role,
+    )
+    audio_identities = tracked_authority.crema_audio
+    if type(audio_identities) is not tuple or len(audio_identities) != 7441:
+        raise RunnerError("runner CREMA source authority count changed")
+    by_stem: dict[str, SourceByteIdentity] = {}
+    audio_paths: set[str] = set()
+    for source in audio_identities:
+        if type(source) is not SourceByteIdentity:
+            raise RunnerError("runner CREMA source identity type changed")
+        path = source.project_relative_path
+        if (
+            type(path) is not str
+            or not path.startswith(_CREMA_AUDIO_SOURCE_PREFIX)
+            or not path.endswith(".wav")
+            or "\\" in path
+            or path in audio_paths
+        ):
+            raise RunnerError("runner CREMA source path changed")
+        stem = path[len(_CREMA_AUDIO_SOURCE_PREFIX):-4]
+        if not stem or "/" in stem or stem in by_stem:
+            raise RunnerError("runner CREMA source stem changed")
+        _validate_digest(source.sha256, "runner CREMA source")
+        if type(source.size_bytes) is not int or source.size_bytes <= 0:
+            raise RunnerError("runner CREMA source size changed")
+        audio_paths.add(path)
+        by_stem[stem] = source
+
+    selected_audio: dict[str, tuple[SourceByteIdentity, ...]] = {}
+    consumed: set[str] = set()
+    for role in NONFINAL_PARTITION_ROLES:
+        expected_count = EXPECTED_PRODUCTION_PARTITION_RECORD_COUNTS[role]
+        sources: list[SourceByteIdentity] = []
+        for record in records_by_role[role]:
+            label_record = getattr(record, "label_record", None)
+            stem = getattr(label_record, "clip_stem", None)
+            source = by_stem.get(stem)
+            if (
+                type(stem) is not str
+                or source is None
+                or source.sha256 != getattr(record, "audio_sha256", None)
+                or source.size_bytes != getattr(record, "audio_size_bytes", None)
+                or stem in consumed
+            ):
+                raise RunnerError(
+                    f"runner {role} audio source does not match sealed authority"
+                )
+            consumed.add(stem)
+            sources.append(source)
+        if len(sources) != expected_count:
+            raise RunnerError(f"runner {role} audio source count changed")
+        selected_audio[role] = tuple(sources)
+    if len(consumed) != EXPECTED_PRODUCTION_NONFINAL_RECORD_COUNT:
+        raise RunnerError("runner non-lockbox audio source count changed")
+    return selected_audio
+
+
+def _derive_runner_non_lockbox_ami_source_identities(
+    tracked_authority: TrackedPublicAuthority,
+    records_by_role: Mapping[str, tuple[Any, ...]],
+) -> tuple[SourceByteIdentity, ...]:
+    _validate_runner_non_lockbox_source_derivation_inputs(
+        tracked_authority,
+        records_by_role,
+    )
+    ami_identities = tracked_authority.ami_files
+    if type(ami_identities) is not tuple or len(ami_identities) != 2074:
+        raise RunnerError("runner AMI source authority count changed")
+    selected_ami: list[SourceByteIdentity] = []
+    excluded: set[str] = set()
+    ami_paths: set[str] = set()
+    family_counts = {
+        "meetings": 0,
+        "participants": 0,
+        "words": 0,
+        "segments": 0,
+        "dialogue_acts": 0,
+    }
+    direct_families = (
+        ("words", f"{_AMI_EXTRACTED_SOURCE_ROOT}words/", ".words.xml"),
+        ("segments", f"{_AMI_EXTRACTED_SOURCE_ROOT}segments/", ".segments.xml"),
+        (
+            "dialogue_acts",
+            f"{_AMI_EXTRACTED_SOURCE_ROOT}dialogueActs/",
+            ".dialog-act.xml",
+        ),
+    )
+    for source in ami_identities:
+        if type(source) is not SourceByteIdentity:
+            raise RunnerError("runner AMI source identity type changed")
+        path = source.project_relative_path
+        if (
+            type(path) is not str
+            or not path.startswith(_AMI_SOURCE_ROOT)
+            or "\\" in path
+            or path in ami_paths
+        ):
+            raise RunnerError("runner AMI source path changed")
+        _validate_digest(source.sha256, "runner AMI source")
+        if type(source.size_bytes) is not int or source.size_bytes <= 0:
+            raise RunnerError("runner AMI source size changed")
+        ami_paths.add(path)
+        family: str | None = None
+        if path == _AMI_MEETING_UNIVERSE_SOURCE:
+            family = "meetings"
+        elif path == _AMI_PARTICIPANTS_SOURCE:
+            family = "participants"
+        else:
+            for candidate, prefix, suffix in direct_families:
+                basename = path[len(prefix):] if path.startswith(prefix) else ""
+                if (
+                    basename
+                    and "/" not in basename
+                    and basename.endswith(suffix)
+                    and len(basename) > len(suffix)
+                ):
+                    family = candidate
+                    break
+        if family is None and path in _AMI_EXCLUDED_SOURCES:
+            excluded.add(path)
+            continue
+        if family is None:
+            raise RunnerError("runner AMI source is not in a frozen family")
+        family_counts[family] += 1
+        selected_ami.append(source)
+    if (
+        family_counts
+        != {
+            "meetings": 1,
+            "participants": 1,
+            "words": 687,
+            "segments": 687,
+            "dialogue_acts": 695,
+        }
+        or excluded != set(_AMI_EXCLUDED_SOURCES)
+        or len(selected_ami) != EXPECTED_AMI_SELECTED_SOURCE_COUNT
+    ):
+        raise RunnerError("runner AMI selected source families changed")
+    return tuple(selected_ami)
+
+
+def _derive_runner_non_lockbox_source_identities(
+    tracked_authority: TrackedPublicAuthority,
+    records_by_role: Mapping[str, tuple[Any, ...]],
+) -> tuple[
+    dict[str, tuple[SourceByteIdentity, ...]],
+    tuple[SourceByteIdentity, ...],
+]:
+    return (
+        _derive_runner_non_lockbox_audio_source_identities(
+            tracked_authority,
+            records_by_role,
+        ),
+        _derive_runner_non_lockbox_ami_source_identities(
+            tracked_authority,
+            records_by_role,
+        ),
+    )
+
+
+@contextmanager
+def _read_committed_non_lockbox_checkpoint(
+    paths: RunnerPaths,
+    *,
+    material_authority: _MaterialPipelineAuthority,
+    committed_state_authority: _HeldCommittedStateAuthority,
+    preflight_readback: _CommittedPreflightReadback,
+) -> Iterator[_PersistedNonLockboxReadback]:
+    """Authenticate and replay an existing checkpoint without source reads/writes."""
+    try:
+        if type(committed_state_authority) is not _HeldCommittedStateAuthority:
+            raise RunnerError("committed state authority type changed")
+        if (
+            type(committed_state_authority._file_owner)
+            is not _RegularFileAuthorityOwner
+            or committed_state_authority._file_owner.peek()
+            is not committed_state_authority.file
+        ):
+            raise RunnerError(
+                "committed state owner changed before non-lockbox readback"
+            )
+        if type(preflight_readback) is not _CommittedPreflightReadback:
+            raise RunnerError("committed preflight readback type changed")
+        if (
+            preflight_readback.state_file is not committed_state_authority.file
+            or preflight_readback.state != committed_state_authority.state
+        ):
+            raise RunnerError("committed preflight/state capability changed")
+        _verify_material_pipeline_authority(material_authority)
+        _verify_held_regular_file_authority(committed_state_authority.file)
+        state, state_bytes = _state_from_held_file(
+            committed_state_authority.file
+        )
+        if (
+            state != committed_state_authority.state
+            or state_bytes != committed_state_authority.canonical_bytes
+            or state["phase"] not in {
+                "non_lockbox_complete",
+                "lockbox_complete",
+                "awaiting_acceptance",
+                "accepted",
+                "rejected",
+            }
+            or state["non_lockbox_packet_sha256"] == UNSET_DIGEST
+        ):
+            raise RunnerError("committed non-lockbox state capability changed")
+        if (
+            state["configuration_sha256"]
+            != EXPECTED_STATIC_FILE_SHA256["configuration_sha256"]
+            or state["environment_lock_sha256"]
+            != EXPECTED_STATIC_FILE_SHA256["environment_lock_sha256"]
+        ):
+            raise RunnerError("committed non-lockbox static anchor changed")
+
+        preflight_files = preflight_readback.artifacts.files
+        ledger, manifest, replayed_preflight = (
+            _validate_and_restore_readback_files(paths, preflight_files)
+        )
+        if (
+            ledger != preflight_readback.artifacts.input_ledger
+            or manifest != preflight_readback.artifacts.split_manifest
+            or len(replayed_preflight) != len(NONFINAL_PARTITION_ROLES)
+            or len(preflight_readback.restored) != len(NONFINAL_PARTITION_ROLES)
+            or any(
+                actual.to_payload() != retained.to_payload()
+                for actual, retained in zip(
+                    replayed_preflight,
+                    preflight_readback.restored,
+                    strict=True,
+                )
+            )
+        ):
+            raise RunnerError("committed preflight semantic replay changed")
+
+        configuration = validate_config(deepcopy(EXPECTED_CONFIG))
+        environment_lock = validate_environment_lock(
+            deepcopy(EXPECTED_ENVIRONMENT_LOCK)
+        )
+        feature_schema = validate_feature_schema(
+            deepcopy(EXPECTED_FEATURE_SCHEMA)
+        )
+        split_schema = validate_split_schema(deepcopy(EXPECTED_SPLIT_SCHEMA))
+        authorities = dict(zip(
+            NONFINAL_PARTITION_ROLES,
+            preflight_readback.restored,
+            strict=True,
+        ))
+
+        with _held_existing_non_lockbox_outputs(
+            paths,
+            material_authority,
+        ) as output_authorities, ExitStack() as stack:
+            files = tuple(
+                stack.enter_context(_held_regular_file(path))
+                for path in _non_lockbox_artifact_destinations(paths)
+            )
+            if files[-1].sha256 != state["non_lockbox_packet_sha256"]:
+                raise RunnerError("committed non-lockbox packet anchor changed")
+            feature_caches, ami_evidence, review_packet = (
+                _validate_non_lockbox_readback_files(paths, files)
+            )
+            restored = restore_production_non_lockbox_artifacts(
+                authorities=authorities,
+                split_manifest=deepcopy(manifest),
+                feature_caches={
+                    role: deepcopy(payload)
+                    for role, payload in zip(
+                        NONFINAL_PARTITION_ROLES,
+                        feature_caches,
+                        strict=True,
+                    )
+                },
+                ami_evidence=deepcopy(ami_evidence),
+                review_packet=deepcopy(review_packet),
+                configuration=deepcopy(configuration),
+                environment_lock=deepcopy(environment_lock),
+                feature_schema=deepcopy(feature_schema),
+                split_schema=deepcopy(split_schema),
+            )
+            expected_bytes = tuple(
+                _non_lockbox_artifact_json_bytes(payload)
+                for payload in (
+                    *(restored.feature_caches[role]
+                      for role in NONFINAL_PARTITION_ROLES),
+                    restored.ami_evidence,
+                    restored.review_packet,
+                )
+            )
+            retained_bytes = tuple(
+                _read_held_regular_file_bytes(file) for file in files
+            )
+            if expected_bytes != retained_bytes:
+                raise RunnerError(
+                    "committed non-lockbox semantic replay changed bytes"
+                )
+            validate_installed_environment_identity()
+            _assert_closed_environment()
+            _verify_material_pipeline_authority(material_authority)
+            _verify_held_regular_file_authority(
+                committed_state_authority.file
+            )
+            for file in (*preflight_files, *files):
+                _verify_held_regular_file_authority(file)
+            _validate_non_lockbox_output_shape(
+                paths,
+                output_authorities,
+                require_complete=True,
+                allow_controls=False,
+            )
+            readback = _PersistedNonLockboxReadback(
+                feature_caches=feature_caches,
+                ami_evidence=ami_evidence,
+                review_packet=review_packet,
+                files=files,
+            )
+            yield readback
+            if tuple(
+                _read_held_regular_file_bytes(file) for file in files
+            ) != retained_bytes:
+                raise RunnerError("committed non-lockbox retained bytes changed")
+            for file in (*preflight_files, *files):
+                _verify_held_regular_file_authority(file)
+            remaining_state = committed_state_authority._file_owner.peek()
+            if remaining_state is not committed_state_authority.file:
+                raise RunnerError(
+                    "committed state owner changed after non-lockbox readback"
+                )
+            _verify_held_regular_file_authority(remaining_state)
+    except RunnerError as error:
+        raise RunnerError(
+            f"committed non-lockbox checkpoint integrity failure: {error}"
+        ) from error
+    except (AttributeError, OSError, TypeError, ValueError) as error:
+        raise RunnerError(
+            "committed non-lockbox checkpoint integrity failure"
+        ) from error
 
 
 def _validate_digest(value: Any, field: str) -> str:
@@ -4116,6 +6923,10 @@ def _validate_layout(paths: RunnerPaths) -> None:
     ):
         raise RunnerError("repository metadata cannot be a runner output root")
     if paths.authority == "production":
+        if paths.lockbox_result_path is not None:
+            raise RunnerError(
+                "production lockbox-result capability must stay inert"
+            )
         prescribed = RunnerPaths.production()
         exact_fields = (
             "project_root",
@@ -4129,7 +6940,6 @@ def _validate_layout(paths: RunnerPaths) -> None:
             "split_manifest_path",
             "input_ledger_path",
             "non_lockbox_packet_path",
-            "lockbox_result_path",
             "public_material_root",
         )
         if any(
@@ -4149,14 +6959,22 @@ def _validate_layout(paths: RunnerPaths) -> None:
         expected_split_manifest = (
             state_root / "split" / "validated-split-manifest.json"
         )
+        expected_non_lockbox_packet = (
+            state_root / "non-lockbox" / "non-lockbox-packet.json"
+        )
         if (
             _absolute_lexical(Path(paths.input_ledger_path), project)
             != expected_input_ledger
             or _absolute_lexical(Path(paths.split_manifest_path), project)
             != expected_split_manifest
+            or _absolute_lexical(
+                Path(paths.non_lockbox_packet_path),
+                project,
+            )
+            != expected_non_lockbox_packet
         ):
             raise RunnerError(
-                "injected preflight outputs must use fixed state-root paths"
+                "injected outputs must use fixed state-root paths"
             )
         if paths.public_material_root is None:
             raise RunnerError("injected public-material root is unavailable")
@@ -4256,6 +7074,7 @@ def _read_verified_public_bytes(
     content = _read_file_nofollow(
         validated_path,
         maximum_bytes=maximum_bytes,
+        require_single_link=True,
     )
     if type(content) is not bytes:
         raise RunnerError("bound public-material reader did not return bytes")
@@ -4276,6 +7095,131 @@ def _read_verified_public_bytes(
     )
 
 
+def _frozen_non_lockbox_public_source_reader(
+    paths: RunnerPaths,
+    sources: tuple[SourceByteIdentity, ...],
+    *,
+    family: Literal["crema_wav", "ami_xml"],
+) -> Callable[[SourceByteIdentity], bytes]:
+    """Mint one exact-set, byte-only source capability for the Cut 4 lane."""
+    _validate_layout(paths)
+    if (
+        type(sources) is not tuple
+        or not sources
+        or type(family) is not str
+        or family not in {"crema_wav", "ami_xml"}
+    ):
+        raise RunnerError("non-lockbox source authority is invalid")
+    project_root = _absolute_lexical(
+        Path(paths.project_root),
+        Path(paths.project_root),
+    )
+    if paths.public_material_root is None:
+        raise RunnerError("public-material root is unavailable")
+    public_root = _absolute_lexical(
+        Path(paths.public_material_root),
+        project_root,
+    )
+    expected_family_root = _absolute_lexical(
+        (
+            Path(paths.crema_audio_root)
+            if family == "crema_wav"
+            else Path(paths.ami_extracted_root)
+        ),
+        project_root,
+    )
+    try:
+        public_root.relative_to(project_root)
+        expected_family_root.relative_to(public_root)
+    except ValueError as error:
+        raise RunnerError("non-lockbox source root is outside public material") from error
+
+    frozen: dict[SourceByteIdentity, tuple[Path, str]] = {}
+    for source in sources:
+        if type(source) is not SourceByteIdentity:
+            raise RunnerError("non-lockbox source identity type changed")
+        relative_text = source.project_relative_path
+        if (
+            type(relative_text) is not str
+            or not relative_text
+            or "\\" in relative_text
+        ):
+            raise RunnerError("non-lockbox source path is not canonical")
+        relative = Path(relative_text)
+        if (
+            relative.is_absolute()
+            or relative.as_posix() != relative_text
+            or any(part in {"", ".", ".."} for part in relative.parts)
+        ):
+            raise RunnerError("non-lockbox source path is not canonical")
+        candidate = _absolute_lexical(project_root / relative, project_root)
+        try:
+            candidate.relative_to(public_root)
+        except ValueError as error:
+            raise RunnerError(
+                "non-lockbox source is outside fixed public material"
+            ) from error
+        if (
+            _contains_private_component(candidate)
+            or any(
+                part.casefold() in REPOSITORY_METADATA_COMPONENTS
+                for part in candidate.parts
+            )
+        ):
+            raise RunnerError("non-lockbox source uses a blocked path component")
+        if family == "crema_wav":
+            if candidate.parent != expected_family_root or candidate.suffix != ".wav":
+                raise RunnerError("CREMA source is outside the sealed WAV family")
+        else:
+            try:
+                candidate.relative_to(expected_family_root)
+            except ValueError as error:
+                raise RunnerError("AMI source is outside the sealed XML family") from error
+            if candidate.suffix != ".xml":
+                raise RunnerError("AMI source is outside the sealed XML family")
+        if type(source.sha256) is not str:
+            raise RunnerError("non-lockbox source digest type changed")
+        _validate_digest(source.sha256, "non-lockbox source")
+        if type(source.size_bytes) is not int or source.size_bytes <= 0:
+            raise RunnerError("non-lockbox source size is invalid")
+        if source in frozen:
+            raise RunnerError("non-lockbox source identity is duplicated")
+        frozen[source] = (
+            candidate,
+            candidate.relative_to(public_root).as_posix(),
+        )
+    if len(frozen) != len(sources):  # pragma: no cover - guarded above
+        raise RunnerError("non-lockbox source identity set changed")
+
+    def read(source: SourceByteIdentity) -> bytes:
+        if type(source) is not SourceByteIdentity or source not in frozen:
+            raise RunnerError("unknown non-lockbox source identity")
+        path, expected_logical_name = frozen[source]
+        verified = _read_verified_public_bytes(
+            paths,
+            path,
+            expected_sha256=source.sha256,
+            expected_size_bytes=source.size_bytes,
+            maximum_bytes=source.size_bytes,
+        )
+        if (
+            type(verified) is not VerifiedMaterialBytes
+            or type(verified.logical_name) is not str
+            or verified.logical_name != expected_logical_name
+            or type(verified.content) is not bytes
+            or type(verified.sha256) is not str
+            or verified.sha256 != source.sha256
+            or type(verified.size_bytes) is not int
+            or verified.size_bytes != source.size_bytes
+            or len(verified.content) != source.size_bytes
+            or _sha256_bytes(verified.content) != source.sha256
+        ):
+            raise RunnerError("non-lockbox source readback identity changed")
+        return verified.content
+
+    return read
+
+
 def _validate_non_lockbox_path(paths: RunnerPaths) -> Path:
     try:
         return _safe_path(
@@ -4289,10 +7233,24 @@ def _validate_non_lockbox_path(paths: RunnerPaths) -> Path:
         raise RunnerError(f"non-lockbox artifact path rejected: {error}") from error
 
 
+def _resolve_final_lockbox_result_path(paths: RunnerPaths) -> Path:
+    if paths.authority == "production":
+        if paths.lockbox_result_path is not None:
+            raise RunnerError(
+                "production lockbox-result capability must stay inert"
+            )
+        return Path(paths.state_root) / "lockbox" / "lockbox-result.json"
+    if paths.authority == "injected-test":
+        if paths.lockbox_result_path is None:
+            raise RunnerError("injected lockbox-result path is unavailable")
+        return Path(paths.lockbox_result_path)
+    raise RunnerError("runner path authority is invalid")
+
+
 def _validate_lockbox_path(paths: RunnerPaths) -> Path:
     try:
         return _safe_path(
-            paths.lockbox_result_path,
+            _resolve_final_lockbox_result_path(paths),
             allowed_root=paths.lockbox_root,
             project_root=paths.project_root,
             final_kind="file",
@@ -5342,12 +8300,34 @@ def _forbidden_credentials() -> tuple[str, ...]:
     )
 
 
+def _forbidden_network_configuration() -> tuple[str, ...]:
+    return tuple(
+        sorted(
+            name
+            for name, value in os.environ.items()
+            if value
+            and (
+                name.upper() in NETWORK_CONFIGURATION_ENV_NAMES
+                or name.upper().endswith(
+                    NETWORK_CONFIGURATION_ENV_SUFFIXES
+                )
+            )
+        )
+    )
+
+
 def _assert_closed_environment() -> None:
     credentials = _forbidden_credentials()
     if credentials:
         raise RunnerError(
             "credential environment variables are blocked: "
             + ", ".join(credentials)
+        )
+    network_configuration = _forbidden_network_configuration()
+    if network_configuration:
+        raise RunnerError(
+            "network/configuration environment variables are blocked: "
+            + ", ".join(network_configuration)
         )
     forbidden_modules = tuple(
         sorted(
@@ -5434,7 +8414,9 @@ def _held_preflight_static_inputs(
     )
     with ExitStack() as stack:
         opened = tuple(
-            stack.enter_context(_held_regular_file_with_bytes(path))
+            stack.enter_context(
+                _held_regular_file_with_bytes(path, proof_bound=True)
+            )
             for path in validated_paths
         )
         files = tuple(authority for authority, _content in opened)
@@ -5448,6 +8430,179 @@ def _held_preflight_static_inputs(
         )
         yield authority
         _revalidate_held_static_preflight_inputs(authority)
+
+
+def _environment_wheel_filenames() -> tuple[str, ...]:
+    distributions = EXPECTED_ENVIRONMENT_LOCK.get("distributions")
+    if type(distributions) is not list or len(distributions) != 5:
+        raise RunnerError("frozen environment distribution set changed")
+    filenames = tuple(
+        distribution.get("wheel_filename")
+        if type(distribution) is dict
+        else None
+        for distribution in distributions
+    )
+    if (
+        any(
+            type(filename) is not str
+            or not filename
+            or Path(filename).name != filename
+            for filename in filenames
+        )
+        or len(set(filenames)) != len(filenames)
+    ):
+        raise RunnerError("frozen environment wheel filename set changed")
+    return filenames  # type: ignore[return-value]
+
+
+def _revalidate_held_environment_wheel_inputs(
+    authority: _HeldEnvironmentWheelInputs,
+) -> None:
+    if type(authority) is not _HeldEnvironmentWheelInputs:
+        raise RunnerError("held environment-wheel authority type changed")
+    expected_names = _environment_wheel_filenames()
+    if (
+        authority.filenames != expected_names
+        or len(authority.files) != len(expected_names)
+        or tuple(file.path.name for file in authority.files) != expected_names
+    ):
+        raise RunnerError("held environment-wheel order changed")
+    for file in authority.files:
+        _verify_held_regular_file_metadata(file)
+    current = tuple(
+        _read_held_regular_file_bytes(file) for file in authority.files
+    )
+    if (
+        current != authority.contents
+        or tuple(_sha256_bytes(content) for content in current)
+        != authority.digests
+    ):
+        raise RunnerError("held environment-wheel bytes changed")
+
+
+@contextmanager
+def _held_environment_wheel_inputs(
+    paths: RunnerPaths,
+) -> Iterator[_HeldEnvironmentWheelInputs]:
+    filenames = _environment_wheel_filenames()
+    wheelhouse = _absolute_lexical(
+        Path(paths.project_root)
+        / ".tmp"
+        / "emotion-state-002-phase-b"
+        / "dependencies"
+        / "wheelhouse",
+        Path(paths.project_root),
+    )
+    with ExitStack() as stack:
+        opened = tuple(
+            stack.enter_context(_held_regular_file_with_bytes(
+                _safe_path(
+                    wheelhouse / filename,
+                    allowed_root=wheelhouse,
+                    project_root=paths.project_root,
+                    final_kind="file",
+                    require_final=True,
+                ),
+                maximum_bytes=1_073_741_824,
+                proof_bound=True,
+            ))
+            for filename in filenames
+        )
+        files = tuple(file for file, _content in opened)
+        contents = tuple(content for _file, content in opened)
+        authority = _HeldEnvironmentWheelInputs(
+            filenames=filenames,
+            contents=contents,
+            digests=tuple(_sha256_bytes(content) for content in contents),
+            files=files,
+        )
+        _revalidate_held_environment_wheel_inputs(authority)
+        yield authority
+        _revalidate_held_environment_wheel_inputs(authority)
+
+
+def _revalidate_held_tracked_public_evidence_inputs(
+    authority: _HeldTrackedPublicEvidenceInputs,
+) -> None:
+    if type(authority) is not _HeldTrackedPublicEvidenceInputs:
+        raise RunnerError("held tracked-evidence authority type changed")
+    expected_names = tuple(TRACKED_DATASET_EVIDENCE_FILENAMES)
+    if (
+        len(expected_names) != 6
+        or authority.names != expected_names
+        or len(authority.files) != len(expected_names)
+        or tuple(file.path.name for file in authority.files) != expected_names
+    ):
+        raise RunnerError("held tracked-evidence order changed")
+    for file in authority.files:
+        _verify_held_regular_file_metadata(file)
+    current = tuple(
+        _read_held_regular_file_bytes(file) for file in authority.files
+    )
+    if (
+        current != authority.contents
+        or tuple(_sha256_bytes(content) for content in current)
+        != authority.digests
+    ):
+        raise RunnerError("held tracked-evidence bytes changed")
+
+
+@contextmanager
+def _held_tracked_public_evidence_inputs(
+    paths: RunnerPaths,
+) -> Iterator[_HeldTrackedPublicEvidenceInputs]:
+    names = tuple(TRACKED_DATASET_EVIDENCE_FILENAMES)
+    if len(names) != 6 or len(set(names)) != len(names):
+        raise RunnerError("frozen tracked-evidence filename set changed")
+    evidence_root = _absolute_lexical(
+        Path(paths.dataset_evidence_root),
+        Path(paths.project_root),
+    )
+    with ExitStack() as stack:
+        opened = tuple(
+            stack.enter_context(_held_regular_file_with_bytes(
+                _safe_path(
+                    evidence_root / name,
+                    allowed_root=evidence_root,
+                    project_root=paths.project_root,
+                    final_kind="file",
+                    require_final=True,
+                ),
+                proof_bound=True,
+            ))
+            for name in names
+        )
+        files = tuple(file for file, _content in opened)
+        contents = tuple(content for _file, content in opened)
+        authority = _HeldTrackedPublicEvidenceInputs(
+            names=names,
+            contents=contents,
+            digests=tuple(_sha256_bytes(content) for content in contents),
+            files=files,
+        )
+        _revalidate_held_tracked_public_evidence_inputs(authority)
+        yield authority
+        _revalidate_held_tracked_public_evidence_inputs(authority)
+
+
+def _tracked_public_authority_from_held_evidence(
+    evidence: _HeldTrackedPublicEvidenceInputs,
+) -> tuple[TrackedPublicAuthority, str]:
+    _revalidate_held_tracked_public_evidence_inputs(evidence)
+    snapshot = dict(zip(evidence.names, evidence.contents, strict=True))
+    try:
+        authority = validate_tracked_public_evidence(dict(snapshot))
+        commitment = tracked_public_authority_commitment_sha256(
+            tracked_evidence=dict(snapshot),
+            authority=authority,
+        )
+    except (TypeError, ValueError) as error:
+        raise RunnerError(f"held tracked public evidence is invalid: {error}") from error
+    if type(authority) is not TrackedPublicAuthority:
+        raise RunnerError("held tracked public authority type changed")
+    _validate_digest(commitment, "tracked public authority commitment")
+    _revalidate_held_tracked_public_evidence_inputs(evidence)
+    return authority, commitment
 
 
 def _read_tracked_preflight_evidence(
@@ -5796,7 +8951,13 @@ def _validated_split_manifest_identity(
         state["split_manifest_sha256"],
         "split_manifest_sha256",
     )
-    split_path = _validate_input_path(paths, paths.split_manifest_path)
+    split_path = _safe_path(
+        paths.split_manifest_path,
+        allowed_root=paths.state_root,
+        project_root=paths.project_root,
+        final_kind="file",
+        require_final=True,
+    )
     split_bytes = _read_file_nofollow(split_path)
     if _sha256_bytes(split_bytes) != expected_file_sha256:
         raise RunnerError("split manifest changed after preflight")
@@ -5821,31 +8982,27 @@ def _validate_non_lockbox_packet_for_authority(
         expected_split_manifest_sha256,
         "split_manifest_sha256",
     )
+    if paths.authority not in {"production", "injected-test"}:
+        raise RunnerError("runner path authority is invalid")
+    label = (
+        "production non-lockbox packet"
+        if paths.authority == "production"
+        else "synthetic non-lockbox packet"
+    )
     try:
-        if paths.authority == "production":
-            from scripts.emotion_state_phase_b_public_pipeline import (
-                validate_non_lockbox_review_packet,
-            )
-
-            validated = validate_non_lockbox_review_packet(packet)
-            if (
-                validated["split_manifest_sha256"]
-                != expected_split_manifest_sha256
-            ):
-                raise RunnerError(
-                    "split manifest identity does not match preflight state"
-                )
-            return validated
-        if paths.authority == "injected-test":
-            return validate_non_lockbox_packet(packet)
-    except (TypeError, ValueError) as error:
-        label = (
-            "production non-lockbox packet"
-            if paths.authority == "production"
-            else "synthetic non-lockbox packet"
+        from scripts.emotion_state_phase_b_public_pipeline import (
+            validate_non_lockbox_review_packet,
         )
+
+        public_validated = validate_non_lockbox_review_packet(packet)
+        independent_validated = validate_non_lockbox_packet(packet)
+    except (TypeError, ValueError) as error:
         raise RunnerError(f"invalid {label}: {error}") from error
-    raise RunnerError("runner path authority is invalid")
+    if public_validated != independent_validated:
+        raise RunnerError("non-lockbox packet validators disagree")
+    if public_validated["split_manifest_sha256"] != expected_split_manifest_sha256:
+        raise RunnerError("split manifest identity does not match preflight state")
+    return public_validated
 
 
 def _validated_packet(
@@ -5874,25 +9031,572 @@ def _validated_packet(
     return validated, digest
 
 
-def run_non_lockbox(paths: RunnerPaths) -> dict[str, Any]:
-    _assert_closed_environment()
-    if paths.authority == "production":
-        raise RunnerError("production non-lockbox execution is unavailable")
-    state = load_state(paths)
-    _require_phase(state, "preflight_complete")
-    _revalidate_bound_preflight(paths, state)
-    _packet, packet_digest = _validated_packet(paths, state, require_bound=False)
-    _revalidate_bound_preflight(paths, state)
-    _packet, second_digest = _validated_packet(paths, state, require_bound=False)
-    _assert_closed_environment()
-    if second_digest != packet_digest:
-        raise RunnerError("non-lockbox packet changed during validation")
-    return _transition(
-        paths,
-        state,
+def _classify_non_lockbox_checkpoint_phase(
+    preflight_readback: _CommittedPreflightReadback,
+) -> Literal["build", "committed"]:
+    if type(preflight_readback) is not _CommittedPreflightReadback:
+        raise RunnerError("committed preflight readback type changed")
+    phase = preflight_readback.state.get("phase")
+    if phase == "preflight_complete":
+        return "build"
+    if phase in {
         "non_lockbox_complete",
-        non_lockbox_packet_sha256=packet_digest,
+        "lockbox_complete",
+        "awaiting_acceptance",
+        "accepted",
+        "rejected",
+    }:
+        return "committed"
+    raise RunnerError(f"non-lockbox cannot run from phase {phase}")
+
+
+def _non_lockbox_preflight_placeholders_are_unopened(
+    state: Mapping[str, Any],
+) -> bool:
+    return not (
+        type(state) is not dict
+        or state.get("phase") != "preflight_complete"
+        or state.get("non_lockbox_packet_sha256") != UNSET_DIGEST
+        or state.get("lockbox_open_count") != 0
+        or state.get("lockbox_result_sha256") != UNSET_DIGEST
+        or state.get("lockbox_decision_evidence_sha256") != UNSET_DIGEST
+        or state.get("lockbox_decision_evidence_mint_sha256") != UNSET_DIGEST
+        or state.get("candidate_transaction_id") != ""
     )
+
+
+def _require_non_lockbox_preflight_placeholders(
+    state: Mapping[str, Any],
+) -> None:
+    if not _non_lockbox_preflight_placeholders_are_unopened(state):
+        raise RunnerError("preflight state placeholders are not unopened")
+
+
+def _validated_static_non_lockbox_mappings(
+    static_inputs: _HeldStaticPreflightInputs,
+    *,
+    state: Mapping[str, Any],
+    split_manifest: Mapping[str, Any],
+) -> tuple[dict[str, Any], dict[str, Any], dict[str, Any], dict[str, Any]]:
+    if (
+        type(state) is not dict
+        or static_inputs.digests[0] != state.get("configuration_sha256")
+        or static_inputs.digests[1] != state.get("environment_lock_sha256")
+    ):
+        raise RunnerError("held static bytes do not match committed state")
+    try:
+        mappings = (
+            validate_config(_load_json_object_bytes(
+                static_inputs.contents[0],
+                "non-lockbox configuration",
+            )),
+            validate_environment_lock(_load_json_object_bytes(
+                static_inputs.contents[1],
+                "non-lockbox environment lock",
+            )),
+            validate_feature_schema(_load_json_object_bytes(
+                static_inputs.contents[2],
+                "non-lockbox feature schema",
+            )),
+            validate_split_schema(_load_json_object_bytes(
+                static_inputs.contents[3],
+                "non-lockbox split schema",
+            )),
+        )
+    except (TypeError, ValueError) as error:
+        raise RunnerError(f"held non-lockbox static semantics changed: {error}") from error
+    identity_fields = (
+        "configuration_sha256",
+        "environment_lock_sha256",
+        "feature_schema_sha256",
+        "split_schema_sha256",
+    )
+    identities = tuple(canonical_payload_sha256(mapping) for mapping in mappings)
+    if (
+        mappings[0] != static_inputs.configuration
+        or identities
+        != tuple(EXPECTED_EVIDENCE_IDENTITY_SHA256[field] for field in identity_fields)
+        or split_manifest.get("configuration_sha256") != identities[0]
+    ):
+        raise RunnerError("held static semantic identity changed")
+    return tuple(deepcopy(mapping) for mapping in mappings)  # type: ignore[return-value]
+
+
+def _validate_first_build_environment_inputs(
+    static_inputs: _HeldStaticPreflightInputs,
+    wheel_inputs: _HeldEnvironmentWheelInputs,
+) -> dict[str, Any]:
+    if type(static_inputs) is not _HeldStaticPreflightInputs:
+        raise RunnerError("held static-input authority type changed")
+    _revalidate_held_environment_wheel_inputs(wheel_inputs)
+    wheel_bytes = dict(zip(
+        wheel_inputs.filenames,
+        wheel_inputs.contents,
+        strict=True,
+    ))
+    try:
+        report = validate_environment_identity_bytes(
+            static_inputs.contents[1],
+            wheel_bytes,
+        )
+    except (TypeError, ValueError) as error:
+        raise RunnerError(f"held environment identity is invalid: {error}") from error
+    if type(report) is not dict:
+        raise RunnerError("held environment identity report type changed")
+    _revalidate_held_environment_wheel_inputs(wheel_inputs)
+    return deepcopy(report)
+
+
+def _validate_first_build_non_lockbox_artifacts(
+    paths: RunnerPaths,
+    artifacts: ProductionNonLockboxArtifacts,
+    *,
+    tracked_public_authority_commitment_sha256: str,
+) -> tuple[tuple[Path, bytes], ...]:
+    expected_commitment = _validate_digest(
+        tracked_public_authority_commitment_sha256,
+        "tracked public authority commitment",
+    )
+    payload_bytes = _non_lockbox_payload_bytes(paths, artifacts)
+    copies = (
+        *(artifacts.feature_caches[role].get(
+            "tracked_public_authority_commitment_sha256"
+        ) for role in NONFINAL_PARTITION_ROLES),
+        artifacts.ami_evidence.get(
+            "tracked_public_authority_commitment_sha256"
+        ),
+        artifacts.review_packet.get(
+            "tracked_public_authority_commitment_sha256"
+        ),
+    )
+    if any(copy != expected_commitment for copy in copies):
+        raise RunnerError("built tracked-public commitment copies changed")
+    return payload_bytes
+
+
+def _restore_and_compare_non_lockbox_readback(
+    paths: RunnerPaths,
+    readback: _PersistedNonLockboxReadback,
+    *,
+    authorities: Mapping[str, "ValidatedPartitionAuthority"],
+    split_manifest: Mapping[str, Any],
+    static_mappings: tuple[
+        dict[str, Any],
+        dict[str, Any],
+        dict[str, Any],
+        dict[str, Any],
+    ],
+) -> ProductionNonLockboxArtifacts:
+    if (
+        type(readback) is not _PersistedNonLockboxReadback
+        or type(authorities) is not dict
+        or tuple(authorities) != NONFINAL_PARTITION_ROLES
+        or type(static_mappings) is not tuple
+        or len(static_mappings) != 4
+    ):
+        raise RunnerError("non-lockbox semantic readback capability changed")
+    configuration, environment_lock, feature_schema, split_schema = (
+        static_mappings
+    )
+    try:
+        restored = restore_production_non_lockbox_artifacts(
+            authorities=dict(authorities),
+            split_manifest=deepcopy(split_manifest),
+            feature_caches={
+                role: deepcopy(payload)
+                for role, payload in zip(
+                    NONFINAL_PARTITION_ROLES,
+                    readback.feature_caches,
+                    strict=True,
+                )
+            },
+            ami_evidence=deepcopy(readback.ami_evidence),
+            review_packet=deepcopy(readback.review_packet),
+            configuration=deepcopy(configuration),
+            environment_lock=deepcopy(environment_lock),
+            feature_schema=deepcopy(feature_schema),
+            split_schema=deepcopy(split_schema),
+        )
+    except (TypeError, ValueError) as error:
+        raise RunnerError(f"non-lockbox semantic restore failed: {error}") from error
+    expected = _non_lockbox_payload_bytes(paths, restored)
+    retained = tuple(
+        _read_held_regular_file_bytes(file) for file in readback.files
+    )
+    if tuple(content for _path, content in expected) != retained:
+        raise RunnerError("non-lockbox semantic restore changed retained bytes")
+    if readback.files[-1].sha256 != _sha256_bytes(retained[-1]):
+        raise RunnerError("non-lockbox packet retained-file identity changed")
+    return restored
+
+
+def _revalidate_non_lockbox_first_build_capabilities(
+    paths: RunnerPaths,
+    *,
+    material_authority: _MaterialPipelineAuthority,
+    committed_preflight: _HeldCommittedStateAuthority,
+    preflight_readback: _CommittedPreflightReadback,
+    admitted_state: _AdmittedNonLockboxStateAuthority,
+    static_inputs: _HeldStaticPreflightInputs,
+    wheel_inputs: _HeldEnvironmentWheelInputs,
+    evidence_inputs: _HeldTrackedPublicEvidenceInputs,
+    output_authorities: _NonLockboxOutputAuthorities,
+    non_lockbox_readback: _PersistedNonLockboxReadback,
+    committed_non_lockbox: _HeldCommittedStateAuthority | None = None,
+    expected_state: Mapping[str, Any] | None = None,
+) -> None:
+    _verify_material_pipeline_authority(material_authority)
+    _revalidate_held_static_preflight_inputs(static_inputs)
+    _revalidate_held_environment_wheel_inputs(wheel_inputs)
+    _revalidate_held_tracked_public_evidence_inputs(evidence_inputs)
+    ledger, manifest, restored = _validate_and_restore_readback_files(
+        paths,
+        preflight_readback.artifacts.files,
+    )
+    if (
+        ledger != preflight_readback.artifacts.input_ledger
+        or manifest != preflight_readback.artifacts.split_manifest
+        or any(
+            actual.to_payload() != retained.to_payload()
+            for actual, retained in zip(
+                restored,
+                preflight_readback.restored,
+                strict=True,
+            )
+        )
+    ):
+        raise RunnerError("retained preflight capability changed")
+    _validate_non_lockbox_output_shape(
+        paths,
+        output_authorities,
+        require_complete=True,
+        allow_controls=False,
+    )
+    replay = _validate_non_lockbox_readback_files(
+        paths,
+        non_lockbox_readback.files,
+    )
+    if replay != (
+        non_lockbox_readback.feature_caches,
+        non_lockbox_readback.ami_evidence,
+        non_lockbox_readback.review_packet,
+    ):
+        raise RunnerError("retained non-lockbox capability changed")
+    if committed_non_lockbox is None:
+        _verify_admitted_non_lockbox_state_cas(
+            paths,
+            admitted_state,
+            state_root=material_authority.state_root,
+        )
+        if committed_preflight._file_owner.peek() is not committed_preflight.file:
+            raise RunnerError("preflight state owner changed before commit")
+    else:
+        if (
+            type(committed_non_lockbox) is not _HeldCommittedStateAuthority
+            or type(expected_state) is not dict
+            or committed_non_lockbox.state != expected_state
+            or committed_non_lockbox._file_owner.peek()
+            is not committed_non_lockbox.file
+        ):
+            raise RunnerError("committed non-lockbox state capability changed")
+        _verify_held_regular_file_authority(committed_non_lockbox.file)
+        state, state_bytes = _state_from_held_file(committed_non_lockbox.file)
+        if (
+            state != expected_state
+            or state_bytes != canonical_json_bytes(expected_state)
+        ):
+            raise RunnerError("committed non-lockbox state bytes changed")
+    _validate_state_root_allowlist(
+        paths,
+        material_authority.state_root,
+        allow_state_controls=False,
+    )
+
+
+def _proposed_non_lockbox_complete_state(
+    admitted_state: _AdmittedNonLockboxStateAuthority,
+    *,
+    packet_file_sha256: str,
+) -> dict[str, Any]:
+    if type(admitted_state) is not _AdmittedNonLockboxStateAuthority:
+        raise RunnerError("admitted non-lockbox state capability changed")
+    if not _non_lockbox_preflight_placeholders_are_unopened(
+        admitted_state.initial_state
+    ):
+        raise RunnerError("preflight state placeholders are not unopened")
+    packet_digest = _validate_digest(
+        packet_file_sha256,
+        "non-lockbox packet file",
+    )
+    proposed = dict(admitted_state.initial_state)
+    proposed.update({
+        "phase": "non_lockbox_complete",
+        "non_lockbox_packet_sha256": packet_digest,
+    })
+    proposed = _validate_state(proposed)
+    changed = {
+        key
+        for key in proposed
+        if proposed[key] != admitted_state.initial_state[key]
+    }
+    if changed != {"phase", "non_lockbox_packet_sha256"}:
+        raise RunnerError("non-lockbox proposed state changed extra fields")
+    return proposed
+
+
+@contextmanager
+def _classify_non_lockbox_post_commit_unwind(
+    marker: list[bool],
+) -> Iterator[None]:
+    try:
+        yield
+    except Exception as error:
+        if marker == [True]:
+            if isinstance(error, RunnerError) and "indeterminate" in str(error):
+                raise
+            raise RunnerError(
+                "non-lockbox state outcome is indeterminate during "
+                f"post-commit outer unwind: {error}"
+            ) from error
+        raise
+
+
+def _run_production_non_lockbox_lane(paths: RunnerPaths) -> dict[str, Any]:
+    """Run the locked first-build/retry lane after entry boundary checks."""
+    _validate_layout(paths)
+    post_commit = [False]
+    result: dict[str, Any] | None = None
+    with _classify_non_lockbox_post_commit_unwind(post_commit):
+        with material_pipeline_lock(paths) as material_authority:
+            with _admit_recovered_state(
+                paths,
+                material_authority=material_authority,
+            ) as committed_preflight:
+                if type(committed_preflight) is not _HeldCommittedStateAuthority:
+                    raise RunnerError(
+                        "non-lockbox requires a committed preflight checkpoint"
+                    )
+                with _read_committed_preflight_checkpoint(
+                    paths,
+                    material_authority=material_authority,
+                    committed_state_authority=committed_preflight,
+                ) as preflight_readback:
+                    split_manifest, authorities, records_by_role = (
+                        _validate_runner_non_lockbox_role_algebra(
+                            preflight_readback
+                        )
+                    )
+                    checkpoint_phase = _classify_non_lockbox_checkpoint_phase(
+                        preflight_readback
+                    )
+                    if checkpoint_phase == "committed":
+                        with _read_committed_non_lockbox_checkpoint(
+                            paths,
+                            material_authority=material_authority,
+                            committed_state_authority=committed_preflight,
+                            preflight_readback=preflight_readback,
+                        ):
+                            pass
+                        raise RunnerError(
+                            "non-lockbox checkpoint is already complete from phase "
+                            f"{preflight_readback.state['phase']}"
+                        )
+
+                    _require_non_lockbox_preflight_placeholders(
+                        preflight_readback.state
+                    )
+                    with _admit_non_lockbox_state(
+                        paths,
+                        material_authority=material_authority,
+                        committed_state_authority=committed_preflight,
+                    ) as admitted_state:
+                        with _held_preflight_static_inputs(
+                            paths
+                        ) as static_inputs, _held_environment_wheel_inputs(
+                            paths
+                        ) as wheel_inputs:
+                            static_mappings = (
+                                _validated_static_non_lockbox_mappings(
+                                    static_inputs,
+                                    state=preflight_readback.state,
+                                    split_manifest=split_manifest,
+                                )
+                            )
+                            _validate_first_build_environment_inputs(
+                                static_inputs,
+                                wheel_inputs,
+                            )
+                            with _held_tracked_public_evidence_inputs(
+                                paths
+                            ) as evidence_inputs:
+                                tracked_authority, tracked_commitment = (
+                                    _tracked_public_authority_from_held_evidence(
+                                        evidence_inputs
+                                    )
+                                )
+                                audio_by_role = (
+                                    _derive_runner_non_lockbox_audio_source_identities(
+                                        tracked_authority,
+                                        records_by_role,
+                                    )
+                                )
+                                ami_sources = (
+                                    _derive_runner_non_lockbox_ami_source_identities(
+                                        tracked_authority,
+                                        records_by_role,
+                                    )
+                                )
+                                audio_sources = tuple(
+                                    source
+                                    for role in NONFINAL_PARTITION_ROLES
+                                    for source in audio_by_role[role]
+                                )
+                                audio_reader = (
+                                    _frozen_non_lockbox_public_source_reader(
+                                        paths,
+                                        audio_sources,
+                                        family="crema_wav",
+                                    )
+                                )
+                                ami_reader = (
+                                    _frozen_non_lockbox_public_source_reader(
+                                        paths,
+                                        ami_sources,
+                                        family="ami_xml",
+                                    )
+                                )
+                                tracked_evidence = dict(zip(
+                                    evidence_inputs.names,
+                                    evidence_inputs.contents,
+                                    strict=True,
+                                ))
+                                try:
+                                    artifacts = (
+                                        build_production_non_lockbox_artifacts(
+                                            authorities=dict(authorities),
+                                            split_manifest=deepcopy(
+                                                split_manifest
+                                            ),
+                                            read_verified_audio=audio_reader,
+                                            read_verified_ami=ami_reader,
+                                            tracked_evidence=tracked_evidence,
+                                            tracked_authority=tracked_authority,
+                                            configuration=deepcopy(
+                                                static_mappings[0]
+                                            ),
+                                            environment_lock=deepcopy(
+                                                static_mappings[1]
+                                            ),
+                                            feature_schema=deepcopy(
+                                                static_mappings[2]
+                                            ),
+                                            split_schema=deepcopy(
+                                                static_mappings[3]
+                                            ),
+                                        )
+                                    )
+                                except (TypeError, ValueError) as error:
+                                    raise RunnerError(
+                                        "production non-lockbox build failed: "
+                                        f"{error}"
+                                    ) from error
+                                _validate_first_build_non_lockbox_artifacts(
+                                    paths,
+                                    artifacts,
+                                    tracked_public_authority_commitment_sha256=(
+                                        tracked_commitment
+                                    ),
+                                )
+                                with _held_non_lockbox_output_authorities(
+                                    paths,
+                                    material_authority,
+                                ) as output_authorities:
+                                    with _persist_non_lockbox_artifacts(
+                                        paths,
+                                        artifacts,
+                                        material_authority=material_authority,
+                                        output_authorities=output_authorities,
+                                    ) as non_lockbox_readback:
+                                        _restore_and_compare_non_lockbox_readback(
+                                            paths,
+                                            non_lockbox_readback,
+                                            authorities=authorities,
+                                            split_manifest=split_manifest,
+                                            static_mappings=static_mappings,
+                                        )
+                                        validate_installed_environment_identity()
+                                        _assert_closed_environment()
+                                        _revalidate_non_lockbox_first_build_capabilities(
+                                            paths,
+                                            material_authority=material_authority,
+                                            committed_preflight=committed_preflight,
+                                            preflight_readback=preflight_readback,
+                                            admitted_state=admitted_state,
+                                            static_inputs=static_inputs,
+                                            wheel_inputs=wheel_inputs,
+                                            evidence_inputs=evidence_inputs,
+                                            output_authorities=output_authorities,
+                                            non_lockbox_readback=(
+                                                non_lockbox_readback
+                                            ),
+                                        )
+                                        proposed_state = (
+                                            _proposed_non_lockbox_complete_state(
+                                                admitted_state,
+                                                packet_file_sha256=(
+                                                    non_lockbox_readback.files[
+                                                        -1
+                                                    ].sha256
+                                                ),
+                                            )
+                                        )
+                                        with _commit_non_lockbox_state_durably(
+                                            paths,
+                                            proposed_state,
+                                            material_authority=material_authority,
+                                            admitted_state_authority=(
+                                                admitted_state
+                                            ),
+                                        ) as committed_non_lockbox:
+                                            post_commit[0] = True
+                                            _revalidate_non_lockbox_first_build_capabilities(
+                                                paths,
+                                                material_authority=(
+                                                    material_authority
+                                                ),
+                                                committed_preflight=(
+                                                    committed_preflight
+                                                ),
+                                                preflight_readback=(
+                                                    preflight_readback
+                                                ),
+                                                admitted_state=admitted_state,
+                                                static_inputs=static_inputs,
+                                                wheel_inputs=wheel_inputs,
+                                                evidence_inputs=evidence_inputs,
+                                                output_authorities=(
+                                                    output_authorities
+                                                ),
+                                                non_lockbox_readback=(
+                                                    non_lockbox_readback
+                                                ),
+                                                committed_non_lockbox=(
+                                                    committed_non_lockbox
+                                                ),
+                                                expected_state=proposed_state,
+                                            )
+                                            result = deepcopy(
+                                                committed_non_lockbox.state
+                                            )
+    if result is None:
+        raise RunnerError("non-lockbox lane did not commit a state")
+    return result
+
+
+def run_non_lockbox(paths: RunnerPaths) -> dict[str, Any]:
+    validate_installed_environment_identity()
+    _assert_closed_environment()
+    return _run_production_non_lockbox_lane(paths)
 
 
 def _open_lock_handle(path: Path, *, create: bool = True) -> BinaryIO:
@@ -5982,7 +9686,7 @@ def lockbox_lock(paths: RunnerPaths) -> Iterator[None]:
         )
         _recover_output_replacement(
             paths,
-            paths.lockbox_result_path,
+            _resolve_final_lockbox_result_path(paths),
             allowed_root=paths.lockbox_root,
         )
         yield
@@ -6284,8 +9988,20 @@ def build_aggregate_result(
     config_path = _validate_input_path(paths, paths.config_path)
     feature_path = _validate_input_path(paths, paths.feature_schema_path)
     split_schema_path = _validate_input_path(paths, paths.split_schema_path)
-    split_path = _validate_input_path(paths, paths.split_manifest_path)
-    ledger_path = _validate_input_path(paths, paths.input_ledger_path)
+    split_path = _safe_path(
+        paths.split_manifest_path,
+        allowed_root=paths.state_root,
+        project_root=paths.project_root,
+        final_kind="file",
+        require_final=True,
+    )
+    ledger_path = _safe_path(
+        paths.input_ledger_path,
+        allowed_root=paths.state_root,
+        project_root=paths.project_root,
+        final_kind="file",
+        require_final=True,
+    )
     packet_path = _validate_non_lockbox_path(paths)
     lockbox_path = _validate_lockbox_path(paths)
     if _sha256_file(packet_path) != state["non_lockbox_packet_sha256"]:
@@ -7127,7 +10843,7 @@ def stage_candidate(
                 raise RunnerError("publication receipt readback mismatch")
             _revalidate_bound_preflight(paths, state)
             _validated_packet(paths, state, require_bound=True)
-            if _sha256_file(paths.lockbox_result_path) != state[
+            if _sha256_file(_validate_lockbox_path(paths)) != state[
                 "lockbox_result_sha256"
             ]:
                 raise RunnerError("lockbox result changed before awaiting transition")

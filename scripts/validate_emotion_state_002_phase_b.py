@@ -487,6 +487,26 @@ def canonical_payload_sha256(payload: Mapping[str, Any]) -> str:
     return hashlib.sha256(canonical).hexdigest().upper()
 
 
+def canonical_artifact_mint_sha256(payload: Mapping[str, Any]) -> str:
+    """Hash the complete sealed artifact payload, including self_sha256."""
+    if not isinstance(payload, Mapping):
+        raise ValueError("minted artifact payload must be a mapping")
+    _reject_non_finite(payload)
+    try:
+        canonical = json.dumps(
+            payload,
+            sort_keys=True,
+            separators=(",", ":"),
+            ensure_ascii=True,
+            allow_nan=False,
+        ).encode("ascii")
+    except (TypeError, ValueError, UnicodeError) as error:
+        raise ValueError(
+            "minted artifact payload is not canonically serializable"
+        ) from error
+    return hashlib.sha256(canonical).hexdigest().upper()
+
+
 def validate_payload_self_hash(payload: Any, name: str) -> Mapping[str, Any]:
     if not isinstance(payload, Mapping):
         raise ValueError(f"{name} must be a mapping")
@@ -606,6 +626,20 @@ def validate_probability_evidence_payload(
         payload["training_provenance"],
         expected_role="training_discovery",
     )
+    if (
+        payload["partition_evidence_mint_sha256"]
+        != canonical_artifact_mint_sha256(provenance)
+    ):
+        raise ValueError(
+            "probability partition evidence mint does not match provenance"
+        )
+    if (
+        payload["training_evidence_mint_sha256"]
+        != canonical_artifact_mint_sha256(training)
+    ):
+        raise ValueError(
+            "probability training evidence mint does not match provenance"
+        )
     if provenance["case_count"] != case_count:
         raise ValueError("probability evidence cases do not match provenance")
     for key in (
@@ -786,6 +820,13 @@ def validate_calibration_result(payload: Any) -> Mapping[str, Any]:
         payload["probability_evidence_mint_sha256"],
         "calibration probability evidence mint",
     )
+    if (
+        payload["probability_evidence_mint_sha256"]
+        != canonical_artifact_mint_sha256(probability)
+    ):
+        raise ValueError(
+            "calibration probability evidence mint does not match payload"
+        )
     if probability["provenance"] != provenance:
         raise ValueError("calibration probability provenance does not match")
     if payload["partition_role"] != provenance["partition_role"]:
@@ -1047,6 +1088,20 @@ def validate_evaluation_result(
         payload["calibration_evidence_mint_sha256"],
         "evaluation calibration evidence mint",
     )
+    if (
+        payload["probability_evidence_mint_sha256"]
+        != canonical_artifact_mint_sha256(probability)
+    ):
+        raise ValueError(
+            "evaluation probability evidence mint does not match payload"
+        )
+    if (
+        payload["calibration_evidence_mint_sha256"]
+        != canonical_artifact_mint_sha256(calibration)
+    ):
+        raise ValueError(
+            "evaluation calibration evidence mint does not match payload"
+        )
     if probability["provenance"] != provenance:
         raise ValueError("evaluation probability provenance does not match")
     for key in (
@@ -1146,6 +1201,13 @@ def validate_bootstrap_result(payload: Any) -> Mapping[str, Any]:
         payload["probability_evidence_mint_sha256"],
         "bootstrap probability evidence mint",
     )
+    if (
+        payload["probability_evidence_mint_sha256"]
+        != canonical_artifact_mint_sha256(probability)
+    ):
+        raise ValueError(
+            "bootstrap probability evidence mint does not match payload"
+        )
     if probability["provenance"] != provenance:
         raise ValueError("bootstrap probability provenance does not match")
     if (
@@ -1222,6 +1284,13 @@ def validate_decision_inputs(
     calibration = validate_calibration_result(
         metrics["calibration_evidence"]
     )
+    if (
+        metrics["calibration_evidence_mint_sha256"]
+        != canonical_artifact_mint_sha256(calibration)
+    ):
+        raise ValueError(
+            "decision calibration evidence mint does not match payload"
+        )
     if metrics["final_decision_eligible"] is not True:
         raise ValueError("final_lockbox evidence is not decision eligible")
     _validate_metric_models(metrics["models"])
@@ -1478,12 +1547,15 @@ def _installed_distributions() -> dict[str, str]:
     installed: dict[str, str] = {}
     for distribution in importlib.metadata.distributions():
         raw_name = distribution.metadata["Name"]
-        if not isinstance(raw_name, str) or not raw_name:
+        if type(raw_name) is not str or not raw_name:
             raise ValueError("installed distribution is missing a name")
+        version = distribution.version
+        if type(version) is not str or not version:
+            raise ValueError("installed distribution is missing a version")
         name = _normalize_distribution_name(raw_name)
         if name in installed:
             raise ValueError("installed distributions contain duplicate names")
-        installed[name] = distribution.version
+        installed[name] = version
     return installed
 
 
@@ -1497,23 +1569,40 @@ def _validate_installed_distributions(
     }
     normalized_installed: dict[str, str] = {}
     for raw_name, version in installed_distributions.items():
-        name = _normalize_distribution_name(str(raw_name))
+        if type(raw_name) is not str or type(version) is not str:
+            raise ValueError(
+                "installed distribution names and versions must be exact strings"
+            )
+        name = _normalize_distribution_name(raw_name)
         if name in normalized_installed:
             raise ValueError("installed distributions contain duplicate names")
-        normalized_installed[name] = str(version)
+        normalized_installed[name] = version
     if normalized_installed != expected_installed:
         raise ValueError("installed distributions do not match environment lock")
     return dict(sorted(normalized_installed.items()))
 
 
-def validate_environment_identity(
-    *,
-    lock_path: Path,
-    wheelhouse_path: Path,
-) -> dict[str, Any]:
-    expected_python = EVALUATION_PYTHON_PATH.resolve()
-    actual_python = Path(sys.executable).resolve()
-    if str(actual_python).casefold() != str(expected_python).casefold():
+def _normalized_absolute_path(value: str | os.PathLike[str]) -> str:
+    return os.path.normcase(os.path.abspath(os.path.normpath(os.fspath(value))))
+
+
+def validate_installed_environment_identity() -> dict[str, Any]:
+    """Validate only process-local interpreter and installed metadata."""
+    expected_root = _normalized_absolute_path(ROOT)
+    expected_python = _normalized_absolute_path(EVALUATION_PYTHON_PATH)
+    actual_python = _normalized_absolute_path(sys.executable)
+    try:
+        expected_relative = os.path.relpath(expected_python, expected_root)
+    except ValueError as error:
+        raise ValueError(
+            "fixed evaluation Python is outside the project root"
+        ) from error
+    if (
+        expected_relative == os.pardir
+        or expected_relative.startswith(os.pardir + os.sep)
+    ):
+        raise ValueError("fixed evaluation Python is outside the project root")
+    if actual_python.casefold() != expected_python.casefold():
         raise ValueError("evaluation Python executable does not match fixed path")
     actual_python_version = (
         sys.version_info.major,
@@ -1521,49 +1610,106 @@ def validate_environment_identity(
     )
     if actual_python_version != (3, 11):
         raise ValueError("evaluation Python version must be 3.11")
-    lock_file = Path(lock_path)
-    if not lock_file.is_file():
-        raise ValueError("environment lock is missing")
-    lock = validate_environment_lock(load_json_strict(lock_file))
     actual_platform = _current_interpreter_platform()
-    if actual_platform != lock["platform"]:
+    if actual_platform != EXPECTED_ENVIRONMENT_LOCK["platform"]:
         raise ValueError(
             "evaluation Python platform does not match environment lock: "
             f"{actual_platform}"
         )
     normalized_installed = _validate_installed_distributions(
-        lock,
+        EXPECTED_ENVIRONMENT_LOCK,
         _installed_distributions(),
     )
+    return {
+        "python_executable": actual_python,
+        "python_version": ".".join(
+            str(value) for value in actual_python_version
+        ),
+        "platform": actual_platform,
+        "installed_distributions": normalized_installed,
+    }
 
+
+def _load_json_object_bytes_strict(content: bytes, name: str) -> dict[str, Any]:
+    if type(content) is not bytes:
+        raise ValueError(f"{name} bytes must be exact bytes")
+    try:
+        text = content.decode("utf-8")
+    except UnicodeDecodeError as error:
+        raise ValueError(f"{name} bytes must be valid UTF-8") from error
+    try:
+        value = json.loads(
+            text,
+            object_pairs_hook=_pairs,
+            parse_constant=_constant,
+        )
+    except (json.JSONDecodeError, ValueError) as error:
+        raise ValueError(f"{name} bytes are not strict JSON: {error}") from error
+    if type(value) is not dict:
+        raise ValueError(f"{name} root must be an object")
+    _reject_non_finite(value)
+    return value
+
+
+def validate_environment_identity_bytes(
+    lock_bytes: bytes,
+    wheel_bytes: Mapping[str, bytes],
+) -> dict[str, Any]:
+    """Validate held environment sources without performing path reads."""
+    lock = validate_environment_lock(
+        _load_json_object_bytes_strict(lock_bytes, "environment lock")
+    )
+    if (
+        type(wheel_bytes) is not dict
+        or any(type(name) is not str for name in wheel_bytes)
+        or any(type(content) is not bytes for content in wheel_bytes.values())
+    ):
+        raise ValueError("wheel bytes must be an exact filename-to-bytes mapping")
+    expected_filenames = {
+        distribution["wheel_filename"]
+        for distribution in EXPECTED_ENVIRONMENT_LOCK["distributions"]
+    }
+    if set(wheel_bytes) != expected_filenames:
+        raise ValueError("wheel set does not match environment lock")
+    wheel_hashes: dict[str, str] = {}
+    for distribution in EXPECTED_ENVIRONMENT_LOCK["distributions"]:
+        filename = distribution["wheel_filename"]
+        digest = hashlib.sha256(wheel_bytes[filename]).hexdigest().upper()
+        if digest != distribution["sha256"]:
+            raise ValueError(
+                f"wheel hash does not match environment lock: {filename}"
+            )
+        wheel_hashes[filename] = digest
+    return {
+        "environment_lock": copy.deepcopy(lock),
+        "wheel_count": len(wheel_hashes),
+        "wheel_hashes": wheel_hashes,
+    }
+
+
+def validate_environment_identity(
+    *,
+    lock_path: Path,
+    wheelhouse_path: Path,
+) -> dict[str, Any]:
+    installed_report = validate_installed_environment_identity()
+    lock_file = Path(lock_path)
+    if not lock_file.is_file():
+        raise ValueError("environment lock is missing")
     wheelhouse = Path(wheelhouse_path)
     wheels = {
         path.name: path
         for path in wheelhouse.iterdir()
         if path.is_file()
     } if wheelhouse.is_dir() else {}
-    expected_filenames = {
-        distribution["wheel_filename"]
-        for distribution in lock["distributions"]
-    }
-    if set(wheels) != expected_filenames:
-        raise ValueError("wheel set does not match environment lock")
-    wheel_hashes: dict[str, str] = {}
-    for distribution in lock["distributions"]:
-        wheel = wheels[distribution["wheel_filename"]]
-        digest = hashlib.sha256(wheel.read_bytes()).hexdigest().upper()
-        if digest != distribution["sha256"]:
-            raise ValueError(
-                f"wheel hash does not match environment lock: {wheel.name}"
-            )
-        wheel_hashes[wheel.name] = digest
+    byte_report = validate_environment_identity_bytes(
+        lock_file.read_bytes(),
+        {name: path.read_bytes() for name, path in wheels.items()},
+    )
     return {
-        "python_executable": str(actual_python),
-        "python_version": ".".join(str(value) for value in actual_python_version),
-        "platform": actual_platform,
-        "installed_distributions": normalized_installed,
-        "wheel_count": len(wheels),
-        "wheel_hashes": wheel_hashes,
+        **installed_report,
+        "wheel_count": byte_report["wheel_count"],
+        "wheel_hashes": byte_report["wheel_hashes"],
     }
 
 
@@ -3388,22 +3534,383 @@ def validate_phase_b_input_ledger(payload: Any) -> dict[str, Any]:
     return dict(ledger)
 
 
-def validate_non_lockbox_packet(payload: Any) -> dict[str, Any]:
-    packet = _exact_keys(
+_NON_LOCKBOX_PACKET_V4_KEYS = (
+    "schema_id",
+    "schema_version",
+    "configuration_sha256",
+    "split_manifest_sha256",
+    "model_settings",
+    "metric_definitions",
+    "slice_definitions",
+    "minimum_unique_contributors_per_cell",
+    "lockbox_access",
+    "final_decision_eligible",
+    "tracked_public_authority_commitment_sha256",
+    "diagnostic_aggregate",
+    "diagnostic_aggregate_sha256",
+    "diagnostic_slice_analysis",
+    "diagnostic_slice_analysis_sha256",
+    "ami_aggregate",
+    "ami_aggregate_sha256",
+    "artifact_cache_commitments",
+    "artifact_cache_commitments_sha256",
+    "review_sha256",
+)
+_NON_LOCKBOX_SLICE_KEYS = (
+    "schema_id",
+    "partition_role",
+    "class_order",
+    "instability_tolerance",
+    "slices",
+    "eligible_slice_reversal",
+    "eligible_slice_instability",
+    "probability_evidence_mint_sha256",
+    "evaluation_evidence_mint_sha256",
+    "provenance",
+    "self_sha256",
+)
+_NON_LOCKBOX_SLICE_CELL_KEYS = (
+    "case_count",
+    "unique_actor_count",
+    "suppressed",
+    "contributor_row_commitment_sha256",
+    "contributor_actor_commitment_sha256",
+    "model_macro_f1",
+    "paired_macro_f1_lift",
+)
+_NON_LOCKBOX_CACHE_ROLES = (
+    "training_discovery",
+    "calibration",
+    "balanced_diagnostic",
+    "ami_evidence",
+)
+_NON_LOCKBOX_PRIVATE_KEYS = frozenset(
+    {
+        "row_id",
+        "row_ids",
+        "actor_id",
+        "actor_ids",
+        "participant_id",
+        "participant_ids",
+        "meeting_id",
+        "meeting_ids",
+        "clip_stem",
+        "clip_stems",
+        "filename",
+        "filenames",
+        "file_path",
+        "file_paths",
+        "source_path",
+        "source_paths",
+        "path",
+        "paths",
+        "probabilities",
+        "labels",
+        "sentences",
+        "transcript",
+        "transcripts",
+        "utterance_text",
+        "raw_text",
+        "audio",
+    }
+)
+
+
+def _non_lockbox_packet_digest(payload: Any) -> str:
+    try:
+        canonical = json.dumps(
+            payload,
+            sort_keys=True,
+            separators=(",", ":"),
+            ensure_ascii=True,
+            allow_nan=False,
+        ).encode("ascii")
+    except (TypeError, ValueError, UnicodeError) as error:
+        raise ValueError(
+            "non-lockbox packet is not canonical JSON"
+        ) from error
+    return hashlib.sha256(canonical).hexdigest().upper()
+
+
+def _validate_non_lockbox_aggregate_privacy(payload: Any) -> None:
+    def visit(value: Any) -> None:
+        if type(value) is dict:
+            for raw_key, item in value.items():
+                key = raw_key.casefold()
+                if (
+                    key in _NON_LOCKBOX_PRIVATE_KEYS
+                    or key.endswith("_path")
+                    or key.endswith("_filename")
+                ):
+                    raise ValueError(
+                        "private identifier, row, text, or path field is blocked"
+                    )
+                visit(item)
+            for count_key in (
+                "unique_actor_count",
+                "unique_participant_count",
+            ):
+                if count_key not in value:
+                    continue
+                count = value[count_key]
+                if type(count) is not int or count < 0:
+                    raise ValueError("published contributor count is invalid")
+                suppressed = value.get("suppressed")
+                has_published_value = (
+                    "value" not in value or value.get("value") is not None
+                )
+                if (
+                    count < MINIMUM_UNIQUE_ACTORS
+                    and suppressed is not True
+                    and has_published_value
+                ):
+                    raise ValueError(
+                        "published aggregate cell has fewer than ten contributors"
+                    )
+            return
+        if type(value) is list:
+            for item in value:
+                visit(item)
+            return
+        if type(value) is str and (
+            "\\" in value
+            or "/" in value
+            or re.search(r"(?i)\.(?:wav|xml|csv)(?:$|[?#])", value)
+            or re.match(r"^[A-Za-z]:", value)
+        ):
+            raise ValueError(
+                "private identifier, row, text, or path value is blocked"
+            )
+
+    visit(payload)
+
+
+def _validate_non_lockbox_slice_v2(
+    payload: Any,
+    *,
+    diagnostic: Mapping[str, Any],
+) -> dict[str, Any]:
+    sliced = _phase_b_exact_dict(
         payload,
-        (
-            "schema_version",
-            "review_sha256",
-            "model_settings",
-            "metric_definitions",
-            "slice_definitions",
-            "minimum_unique_contributors_per_cell",
-        ),
-        "non-lockbox packet",
+        _NON_LOCKBOX_SLICE_KEYS,
+        "diagnostic slice analysis",
     )
-    if packet["schema_version"] != 1 or type(packet["schema_version"]) is not int:
-        raise ValueError("non-lockbox packet schema version must be 1")
-    _uppercase_sha256(packet["review_sha256"], "non-lockbox review")
+    if (
+        sliced["schema_id"] != "emotion-state-phase-b-slice-analysis-v2"
+        or sliced["partition_role"] != "balanced_diagnostic"
+        or type(sliced["class_order"]) is not list
+        or any(type(label) is not str for label in sliced["class_order"])
+        or tuple(sliced["class_order"]) != CLASS_ORDER
+        or type(sliced["instability_tolerance"]) is not float
+        or sliced["instability_tolerance"] != 0.10
+        or type(sliced["eligible_slice_reversal"]) is not bool
+        or type(sliced["eligible_slice_instability"]) is not bool
+    ):
+        raise ValueError("diagnostic slice analysis contract does not match")
+    validate_provenance_payload(
+        sliced["provenance"],
+        expected_role="balanced_diagnostic",
+    )
+    if not _matches_expected(sliced["provenance"], diagnostic["provenance"]):
+        raise ValueError(
+            "diagnostic slice provenance does not match diagnostic"
+        )
+    for field in (
+        "probability_evidence_mint_sha256",
+        "evaluation_evidence_mint_sha256",
+        "self_sha256",
+    ):
+        _uppercase_sha256(sliced[field], f"diagnostic slice {field}")
+    if (
+        sliced["probability_evidence_mint_sha256"]
+        != diagnostic["probability_evidence_mint_sha256"]
+        or sliced["evaluation_evidence_mint_sha256"]
+        != _non_lockbox_packet_digest(diagnostic)
+        or sliced["self_sha256"] != canonical_payload_sha256(sliced)
+    ):
+        raise ValueError("diagnostic slice lineage or self commitment changed")
+
+    cells = sliced["slices"]
+    if (
+        type(cells) is not dict
+        or any(type(name) is not str for name in cells)
+        or tuple(cells) != tuple(sorted(cells))
+    ):
+        raise ValueError("diagnostic slice names must be an ordered mapping")
+    names = tuple(cells)
+    source_labels = tuple(
+        name for name in names if name.startswith("source_label:")
+    )
+    scenarios = tuple(
+        name for name in names if name.startswith("scripted_scenario:")
+    )
+    vote_names = tuple(
+        name for name in names if name.startswith("vote_agreement:")
+    )
+    silence_names = tuple(
+        name for name in names if name.startswith("silence_ratio:")
+    )
+    expected_source_labels = tuple(
+        sorted(f"source_label:{label}" for label in CLASS_ORDER)
+    )
+    expected_vote_names = tuple(sorted((
+        "vote_agreement:[0.00,0.50)",
+        "vote_agreement:[0.50,0.75)",
+        "vote_agreement:[0.75,1.00]",
+    )))
+    expected_silence_names = tuple(
+        sorted(f"silence_ratio:Q{index}" for index in range(1, 5))
+    )
+    if (
+        len(names) != 25
+        or source_labels != expected_source_labels
+        or len(scenarios) != 12
+        or any(
+            re.fullmatch(r"scripted_scenario:[A-Z0-9]{3}", name) is None
+            for name in scenarios
+        )
+        or vote_names != expected_vote_names
+        or silence_names != expected_silence_names
+        or set(names) != set(
+            (*source_labels, *scenarios, *vote_names, *silence_names)
+        )
+    ):
+        raise ValueError(
+            "diagnostic slice families do not match the frozen 25 cells"
+        )
+
+    diagnostic_cases = diagnostic["provenance"]["case_count"]
+    diagnostic_actors = diagnostic["provenance"]["unique_actor_count"]
+    full_lifts = {
+        baseline: (
+            diagnostic["models"]["acoustic"]["macro_f1"]
+            - diagnostic["models"][baseline]["macro_f1"]
+        )
+        for baseline in ("class_prior", "sentence_id")
+    }
+    derived_reversal = False
+    derived_instability = False
+    for name, raw_cell in cells.items():
+        cell = _phase_b_exact_dict(
+            raw_cell,
+            _NON_LOCKBOX_SLICE_CELL_KEYS,
+            f"diagnostic slice cell {name}",
+        )
+        case_count = cell["case_count"]
+        actor_count = cell["unique_actor_count"]
+        suppressed = cell["suppressed"]
+        if (
+            type(case_count) is not int
+            or not 0 <= case_count <= diagnostic_cases
+            or type(actor_count) is not int
+            or not 0 <= actor_count <= min(case_count, diagnostic_actors)
+            or type(suppressed) is not bool
+            or suppressed is not (actor_count < MINIMUM_UNIQUE_ACTORS)
+        ):
+            raise ValueError(
+                f"diagnostic slice count or suppression contradicts: {name}"
+            )
+        for field in (
+            "contributor_row_commitment_sha256",
+            "contributor_actor_commitment_sha256",
+        ):
+            _uppercase_sha256(cell[field], f"diagnostic slice {name} {field}")
+        if suppressed:
+            if (
+                cell["model_macro_f1"] is not None
+                or cell["paired_macro_f1_lift"] is not None
+            ):
+                raise ValueError(
+                    f"suppressed diagnostic slice metrics must be null: {name}"
+                )
+            continue
+        scores = _phase_b_exact_dict(
+            cell["model_macro_f1"],
+            MODEL_KEYS,
+            f"diagnostic slice model metrics {name}",
+        )
+        lifts = _phase_b_exact_dict(
+            cell["paired_macro_f1_lift"],
+            ("class_prior", "sentence_id"),
+            f"diagnostic slice lift metrics {name}",
+        )
+        for model, value in scores.items():
+            if (
+                type(value) is not float
+                or not math.isfinite(value)
+                or not 0.0 <= value <= 1.0
+            ):
+                raise ValueError(
+                    f"diagnostic slice model metric is invalid: {name}/{model}"
+                )
+        for baseline, value in lifts.items():
+            expected = scores["acoustic"] - scores[baseline]
+            if (
+                type(value) is not float
+                or not math.isfinite(value)
+                or not -1.0 <= value <= 1.0
+                or not math.isclose(
+                    value,
+                    expected,
+                    rel_tol=0.0,
+                    abs_tol=1e-15,
+                )
+            ):
+                raise ValueError(
+                    f"diagnostic slice lift is invalid: {name}/{baseline}"
+                )
+            derived_reversal = derived_reversal or value < 0.0
+            derived_instability = derived_instability or (
+                abs(value - full_lifts[baseline]) > 0.10
+            )
+    for family in (source_labels, scenarios, vote_names, silence_names):
+        if sum(cells[name]["case_count"] for name in family) != diagnostic_cases:
+            raise ValueError(
+                "diagnostic slice family case counts do not cover the diagnostic set"
+            )
+    if (
+        sliced["eligible_slice_reversal"] is not derived_reversal
+        or sliced["eligible_slice_instability"] is not derived_instability
+    ):
+        raise ValueError(
+            "diagnostic slice derived flags do not match unsuppressed cells"
+        )
+    _validate_non_lockbox_aggregate_privacy(sliced)
+    return copy.deepcopy(sliced)
+
+
+def validate_non_lockbox_packet(payload: Any) -> dict[str, Any]:
+    _phase_b_require_exact_json_graph(payload, "non-lockbox packet")
+    packet = copy.deepcopy(
+        _phase_b_exact_dict(
+            payload,
+            _NON_LOCKBOX_PACKET_V4_KEYS,
+            "non-lockbox packet",
+        )
+    )
+    if (
+        packet["schema_id"]
+        != "emotion-state-phase-b-non-lockbox-review-v4"
+        or type(packet["schema_version"]) is not int
+        or packet["schema_version"] != 4
+    ):
+        raise ValueError("non-lockbox packet schema must be exact v4/4")
+    digest_fields = (
+        "configuration_sha256",
+        "split_manifest_sha256",
+        "tracked_public_authority_commitment_sha256",
+        "diagnostic_aggregate_sha256",
+        "diagnostic_slice_analysis_sha256",
+        "ami_aggregate_sha256",
+        "artifact_cache_commitments_sha256",
+        "review_sha256",
+    )
+    for field in digest_fields:
+        _uppercase_sha256(packet[field], f"non-lockbox packet {field}")
+    if packet["configuration_sha256"] != EXPECTED_EVIDENCE_IDENTITY_SHA256[
+        "configuration_sha256"
+    ]:
+        raise ValueError("configuration identity does not match")
     _require_exact(
         packet["model_settings"],
         EXPECTED_CONFIG["model"],
@@ -3419,9 +3926,81 @@ def validate_non_lockbox_packet(payload: Any) -> dict[str, Any]:
         EXPECTED_SLICE_DEFINITIONS,
         "slice definitions",
     )
-    if packet["minimum_unique_contributors_per_cell"] != 10:
+    if (
+        type(packet["minimum_unique_contributors_per_cell"]) is not int
+        or packet["minimum_unique_contributors_per_cell"]
+        != MINIMUM_UNIQUE_ACTORS
+    ):
         raise ValueError("contributor floor does not match the frozen contract")
-    return dict(packet)
+    lockbox_access = _phase_b_exact_dict(
+        packet["lockbox_access"],
+        (
+            "open_count",
+            "label_reads",
+            "feature_reads",
+            "audio_reads",
+            "cache_reads",
+        ),
+        "non-lockbox access counters",
+    )
+    if any(type(value) is not int or value != 0 for value in lockbox_access.values()):
+        raise ValueError("non-lockbox packet must record integer-zero lockbox access")
+    if packet["final_decision_eligible"] is not False:
+        raise ValueError("non-lockbox packet cannot be decision eligible")
+
+    diagnostic = packet["diagnostic_aggregate"]
+    validate_evaluation_result(
+        diagnostic,
+        expected_role="balanced_diagnostic",
+    )
+    if diagnostic["final_decision_eligible"] is not False:
+        raise ValueError("balanced diagnostic cannot be decision eligible")
+    if (
+        diagnostic["provenance"]["configuration_sha256"]
+        != packet["configuration_sha256"]
+        or diagnostic["provenance"]["split_manifest_sha256"]
+        != packet["split_manifest_sha256"]
+    ):
+        raise ValueError("diagnostic identity bindings do not match packet")
+    sliced = _validate_non_lockbox_slice_v2(
+        packet["diagnostic_slice_analysis"],
+        diagnostic=diagnostic,
+    )
+    if not _matches_expected(sliced, packet["diagnostic_slice_analysis"]):
+        raise ValueError("diagnostic slice analysis changed during validation")
+    ami = validate_published_ami_aggregate_v2(packet["ami_aggregate"])
+    if not _matches_expected(ami, packet["ami_aggregate"]):
+        raise ValueError("AMI aggregate changed during validation")
+
+    cache_commitments = _phase_b_exact_dict(
+        packet["artifact_cache_commitments"],
+        _NON_LOCKBOX_CACHE_ROLES,
+        "artifact cache commitments",
+    )
+    if tuple(cache_commitments) != _NON_LOCKBOX_CACHE_ROLES:
+        raise ValueError("artifact cache commitment order does not match")
+    for role, digest in cache_commitments.items():
+        _uppercase_sha256(digest, f"artifact cache commitment {role}")
+    _validate_non_lockbox_aggregate_privacy(diagnostic)
+    _validate_non_lockbox_aggregate_privacy(sliced)
+    _validate_non_lockbox_aggregate_privacy(packet["ami_aggregate"])
+
+    if (
+        _non_lockbox_packet_digest(diagnostic)
+        != packet["diagnostic_aggregate_sha256"]
+        or _non_lockbox_packet_digest(sliced)
+        != packet["diagnostic_slice_analysis_sha256"]
+        or _non_lockbox_packet_digest(packet["ami_aggregate"])
+        != packet["ami_aggregate_sha256"]
+        or _non_lockbox_packet_digest(cache_commitments)
+        != packet["artifact_cache_commitments_sha256"]
+    ):
+        raise ValueError("non-lockbox aggregate commitment changed")
+    unsigned = copy.deepcopy(packet)
+    review_sha256 = unsigned.pop("review_sha256")
+    if _non_lockbox_packet_digest(unsigned) != review_sha256:
+        raise ValueError("non-lockbox review commitment changed")
+    return copy.deepcopy(packet)
 
 
 def derive_phase_b_decision(decision_evidence: Any) -> str:
@@ -3999,6 +4578,13 @@ def validate_environment_section() -> None:
 
 
 def validate_synthetic_section() -> None:
+    def rejects_legacy_summary(payload: Any) -> bool:
+        try:
+            validate_non_lockbox_packet(payload)
+        except (TypeError, ValueError):
+            return True
+        raise ValueError("legacy summary-only non-lockbox packet was accepted")
+
     fixture = {
         "input_ledger": expected_phase_b_input_ledger(),
         "non_lockbox_packet": expected_non_lockbox_packet("A" * 64),
@@ -4007,7 +4593,7 @@ def validate_synthetic_section() -> None:
         "input_ledger": validate_phase_b_input_ledger(
             fixture["input_ledger"]
         ),
-        "non_lockbox_packet": validate_non_lockbox_packet(
+        "legacy_summary_only_packet_rejected": rejects_legacy_summary(
             fixture["non_lockbox_packet"]
         ),
     }
@@ -4015,7 +4601,7 @@ def validate_synthetic_section() -> None:
         "input_ledger": validate_phase_b_input_ledger(
             expected_phase_b_input_ledger()
         ),
-        "non_lockbox_packet": validate_non_lockbox_packet(
+        "legacy_summary_only_packet_rejected": rejects_legacy_summary(
             expected_non_lockbox_packet("A" * 64)
         ),
     }

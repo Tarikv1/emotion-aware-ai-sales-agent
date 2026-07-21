@@ -7,9 +7,15 @@ import math
 import re
 import unicodedata
 from collections import Counter
-from collections.abc import Mapping
+from collections.abc import Callable, Mapping, Sequence
 from dataclasses import dataclass
-from typing import Any
+from pathlib import Path
+from typing import TYPE_CHECKING, Any
+
+if TYPE_CHECKING:
+    from scripts.emotion_state_phase_b_evaluation import (
+        ValidatedPartitionAuthority,
+    )
 
 from scripts.emotion_state_public_dataset_contracts import (
     PublicDatasetContractError,
@@ -17,21 +23,32 @@ from scripts.emotion_state_public_dataset_contracts import (
     validate_dataset_manifest,
 )
 from scripts.validate_emotion_state_002_phase_b import (
+    CLASS_ORDER,
     EXPECTED_DATASET_EVIDENCE,
     EXPECTED_EVIDENCE_IDENTITY_SHA256,
     EXPECTED_CONFIG,
+    EXPECTED_ENVIRONMENT_LOCK,
+    EXPECTED_FEATURE_SCHEMA,
     EXPECTED_METRIC_DEFINITIONS,
     EXPECTED_PHASE_A_BINDING,
     EXPECTED_RAW_CSV_SHA256,
     EXPECTED_SLICE_DEFINITIONS,
+    EXPECTED_SPLIT_SCHEMA,
     MINIMUM_UNIQUE_ACTORS,
+    MODEL_KEYS,
+    canonical_payload_sha256,
     validate_config,
     validate_crema_label_ledger,
+    validate_ami_mechanics_aggregates_v2,
+    validate_environment_lock,
     validate_evaluation_result,
+    validate_feature_schema,
     validate_phase_b_input_ledger,
     validate_phase_b_partition_authority_cache,
     validate_phase_b_split_manifest,
     validate_published_ami_aggregate_v2,
+    validate_provenance_payload,
+    validate_split_schema,
 )
 
 
@@ -101,6 +118,17 @@ _AMI_PARTITION_SOURCE_URL = (
 _AMI_MEETING_UNIVERSE_PATH = (
     f"{_AMI_EXTRACTED_ROOT}corpusResources/meetings.xml"
 )
+_AMI_PARTICIPANTS_PATH = (
+    f"{_AMI_EXTRACTED_ROOT}corpusResources/participants.xml"
+)
+_AMI_DIALOGUE_ACT_TYPES_PATH = (
+    f"{_AMI_EXTRACTED_ROOT}corpusResources/da-types.xml"
+)
+_AMI_EXCLUDED_SOURCE_PATHS = frozenset({
+    _AMI_ARCHIVE_PATH,
+    _AMI_PARTITION_SOURCE_PATH,
+    _AMI_DIALOGUE_ACT_TYPES_PATH,
+})
 _MANIFEST_FIELDS = frozenset(
     {
         "access_restrictions",
@@ -346,6 +374,13 @@ class ProductionPreflightArtifacts:
     partition_authority_caches: dict[str, dict[str, Any]]
 
 
+@dataclass(frozen=True, slots=True)
+class ProductionNonLockboxArtifacts:
+    feature_caches: dict[str, dict[str, Any]]
+    ami_evidence: dict[str, Any]
+    review_packet: dict[str, Any]
+
+
 class PublicMaterialPrerequisiteError(ValueError):
     """A tracked-evidence blocker that must fail before public material access."""
 
@@ -381,6 +416,92 @@ _PRIVATE_AGGREGATE_KEYS = frozenset(
         "audio",
     }
 )
+EXPECTED_PRODUCTION_PARTITION_RECORD_COUNTS = {
+    "training_discovery": 2491,
+    "calibration": 959,
+    "balanced_diagnostic": 939,
+}
+EXPECTED_PRODUCTION_NONFINAL_RECORD_COUNT = 4389
+EXPECTED_PRODUCTION_FINAL_LOCKBOX_RECORD_COUNT = 2181
+EXPECTED_PRODUCTION_ELIGIBLE_RECORD_COUNT = 6570
+NON_LOCKBOX_ROLE_ORDER = tuple(EXPECTED_PRODUCTION_PARTITION_RECORD_COUNTS)
+ARTIFACT_CACHE_COMMITMENT_ORDER = (*NON_LOCKBOX_ROLE_ORDER, "ami_evidence")
+ACOUSTIC_FEATURE_CACHE_SCHEMA_ID = (
+    "emotion-state-phase-b-acoustic-feature-cache-v1"
+)
+AMI_EVIDENCE_CACHE_SCHEMA_ID = "emotion-state-phase-b-ami-evidence-cache-v1"
+SLICE_ANALYSIS_SCHEMA_ID = "emotion-state-phase-b-slice-analysis-v2"
+NON_LOCKBOX_PACKET_SCHEMA_ID = "emotion-state-phase-b-non-lockbox-review-v4"
+EXPECTED_AMI_SELECTED_SOURCE_COUNT = 2071
+EXPECTED_DIAGNOSTIC_SLICE_COUNT = 25
+_VOTE_SLICE_NAMES = (
+    "vote_agreement:[0.00,0.50)",
+    "vote_agreement:[0.50,0.75)",
+    "vote_agreement:[0.75,1.00]",
+)
+_SILENCE_SLICE_NAMES = tuple(f"silence_ratio:Q{index}" for index in range(1, 5))
+_SLICE_ANALYSIS_KEYS = frozenset(
+    {
+        "schema_id",
+        "partition_role",
+        "class_order",
+        "instability_tolerance",
+        "slices",
+        "eligible_slice_reversal",
+        "eligible_slice_instability",
+        "probability_evidence_mint_sha256",
+        "evaluation_evidence_mint_sha256",
+        "provenance",
+        "self_sha256",
+    }
+)
+_SLICE_CELL_KEYS = frozenset(
+    {
+        "case_count",
+        "unique_actor_count",
+        "suppressed",
+        "contributor_row_commitment_sha256",
+        "contributor_actor_commitment_sha256",
+        "model_macro_f1",
+        "paired_macro_f1_lift",
+    }
+)
+_FEATURE_CACHE_KEYS = (
+    "schema_id",
+    "schema_version",
+    "partition_role",
+    "configuration_sha256",
+    "environment_lock_sha256",
+    "feature_schema_sha256",
+    "split_schema_sha256",
+    "split_manifest_sha256",
+    "assignment_sha256",
+    "partition_authority_sha256",
+    "tracked_public_authority_commitment_sha256",
+    "upstream_acoustic_source_commitment_sha256",
+    "feature_names",
+    "records",
+    "self_sha256",
+)
+_FEATURE_CACHE_RECORD_KEYS = (
+    "clip_stem",
+    "audio_sha256",
+    "audio_size_bytes",
+    "features",
+)
+_AMI_EVIDENCE_CACHE_KEYS = (
+    "schema_id",
+    "schema_version",
+    "source_authority_sha256",
+    "tracked_public_authority_commitment_sha256",
+    "source_file_count",
+    "meetings",
+    "partition_membership",
+    "official_order",
+    "aggregate",
+    "aggregate_sha256",
+    "self_sha256",
+)
 
 
 def _sha256(content: bytes) -> str:
@@ -407,16 +528,38 @@ def _matches_packet_contract_exactly(actual: Any, expected: Any) -> bool:
     if type(actual) is not type(expected):
         return False
     if isinstance(expected, Mapping):
-        return set(actual) == set(expected) and all(
-            _matches_packet_contract_exactly(actual[key], value)
-            for key, value in expected.items()
-        )
+        if len(actual) != len(expected):
+            return False
+        for expected_key, expected_value in expected.items():
+            exact_keys = tuple(
+                actual_key
+                for actual_key in actual
+                if type(actual_key) is type(expected_key)
+                and actual_key == expected_key
+            )
+            if len(exact_keys) != 1 or not _matches_packet_contract_exactly(
+                actual[exact_keys[0]],
+                expected_value,
+            ):
+                return False
+        return True
     if isinstance(expected, (list, tuple)):
         return len(actual) == len(expected) and all(
             _matches_packet_contract_exactly(actual_item, expected_item)
             for actual_item, expected_item in zip(actual, expected)
         )
     return actual == expected
+
+
+def _has_exact_string_keys(
+    value: Any,
+    expected: Sequence[str] | set[str] | frozenset[str],
+) -> bool:
+    return (
+        type(value) is dict
+        and all(type(key) is str for key in value)
+        and set(value) == set(expected)
+    )
 
 
 def validate_aggregate_privacy(payload: Any) -> None:
@@ -495,21 +638,1021 @@ def _validate_diagnostic_identity_bindings(
         )
 
 
+def _acoustic_source_commitment(
+    role: str,
+    records: Sequence[Any],
+) -> str:
+    return _canonical_digest({
+        "schema_id": "emotion-state-phase-b-acoustic-source-commitment-v1",
+        "partition_role": role,
+        "records": [
+            {
+                "clip_stem": record.label_record.clip_stem,
+                "audio_sha256": record.audio_sha256,
+                "audio_size_bytes": record.audio_size_bytes,
+            }
+            for record in records
+        ],
+    })
+
+
+def _exact_feature_values(value: Any) -> dict[str, float]:
+    from scripts.emotion_state_phase_b_features import FEATURE_NAMES
+
+    if (
+        not _has_exact_string_keys(value, set(FEATURE_NAMES))
+        or tuple(value) != tuple(FEATURE_NAMES)
+    ):
+        raise PublicMaterialPrerequisiteError(
+            "acoustic feature mapping order does not match"
+        )
+    if any(
+        type(item) is not float or not math.isfinite(item)
+        for item in value.values()
+    ):
+        raise PublicMaterialPrerequisiteError(
+            "acoustic feature values must be finite built-in floats"
+        )
+    return dict(value)
+
+
+def _feature_cache_role_records(
+    *,
+    authority: Any,
+    role: str,
+    validated_records: tuple[Any, ...] | None,
+) -> tuple[Any, ...]:
+    if validated_records is None:
+        from scripts.emotion_state_phase_b_evaluation import (
+            validated_partition_records,
+        )
+
+        return validated_partition_records(authority, role=role)
+    if (
+        type(validated_records) is not tuple
+        or len(validated_records)
+        != EXPECTED_PRODUCTION_PARTITION_RECORD_COUNTS[role]
+    ):
+        raise PublicMaterialPrerequisiteError(
+            "prevalidated feature-cache records do not match production algebra"
+        )
+    return validated_records
+
+
+def _build_acoustic_feature_cache(
+    *,
+    role: str,
+    authority: Any,
+    feature_rows: Sequence[Mapping[str, float]],
+    tracked_public_authority_commitment_sha256: str,
+    environment_lock_sha256: str,
+    feature_schema_sha256: str,
+    split_schema_sha256: str,
+    _validated_records: tuple[Any, ...] | None = None,
+) -> dict[str, Any]:
+    from scripts.emotion_state_phase_b_features import FEATURE_NAMES
+
+    if type(role) is not str or role not in NON_LOCKBOX_ROLE_ORDER:
+        raise PublicMaterialPrerequisiteError(
+            "feature cache partition role does not match"
+        )
+    records = _feature_cache_role_records(
+        authority=authority,
+        role=role,
+        validated_records=_validated_records,
+    )
+    expected_count = EXPECTED_PRODUCTION_PARTITION_RECORD_COUNTS[role]
+    if len(records) != expected_count:
+        raise PublicMaterialPrerequisiteError(
+            "feature cache authority count does not match production algebra"
+        )
+    if (
+        isinstance(feature_rows, (str, bytes, Mapping))
+        or not isinstance(feature_rows, Sequence)
+        or len(feature_rows) != len(records)
+    ):
+        raise PublicMaterialPrerequisiteError(
+            "feature cache rows do not match partition authority"
+        )
+    authority_payload = authority.to_payload()
+    for name, digest in (
+        (
+            "tracked public authority commitment",
+            tracked_public_authority_commitment_sha256,
+        ),
+        ("environment lock identity", environment_lock_sha256),
+        ("feature schema identity", feature_schema_sha256),
+        ("split schema identity", split_schema_sha256),
+    ):
+        _require_sha256(digest, name)
+    cache_records = []
+    for authority_record, raw_features in zip(records, feature_rows, strict=True):
+        cache_records.append({
+            "clip_stem": authority_record.label_record.clip_stem,
+            "audio_sha256": authority_record.audio_sha256,
+            "audio_size_bytes": authority_record.audio_size_bytes,
+            "features": _exact_feature_values(raw_features),
+        })
+    cache: dict[str, Any] = {
+        "schema_id": ACOUSTIC_FEATURE_CACHE_SCHEMA_ID,
+        "schema_version": 1,
+        "partition_role": role,
+        "configuration_sha256": authority_payload["configuration_sha256"],
+        "environment_lock_sha256": environment_lock_sha256,
+        "feature_schema_sha256": feature_schema_sha256,
+        "split_schema_sha256": split_schema_sha256,
+        "split_manifest_sha256": authority_payload["split_manifest_sha256"],
+        "assignment_sha256": authority_payload["assignment_sha256"],
+        "partition_authority_sha256": authority_payload[
+            "partition_authority_sha256"
+        ],
+        "tracked_public_authority_commitment_sha256": (
+            tracked_public_authority_commitment_sha256
+        ),
+        "upstream_acoustic_source_commitment_sha256": (
+            _acoustic_source_commitment(role, records)
+        ),
+        "feature_names": list(FEATURE_NAMES),
+        "records": cache_records,
+    }
+    cache["self_sha256"] = canonical_payload_sha256(cache)
+    return _validate_acoustic_feature_cache(
+        cache,
+        role=role,
+        authority=authority,
+        tracked_public_authority_commitment_sha256=(
+            tracked_public_authority_commitment_sha256
+        ),
+        environment_lock_sha256=environment_lock_sha256,
+        feature_schema_sha256=feature_schema_sha256,
+        split_schema_sha256=split_schema_sha256,
+        _validated_records=records,
+    )
+
+
+def _validate_acoustic_feature_cache(
+    payload: Any,
+    *,
+    role: str,
+    authority: Any,
+    tracked_public_authority_commitment_sha256: str,
+    environment_lock_sha256: str,
+    feature_schema_sha256: str,
+    split_schema_sha256: str,
+    _validated_records: tuple[Any, ...] | None = None,
+) -> dict[str, Any]:
+    from scripts.emotion_state_phase_b_features import FEATURE_NAMES
+
+    if (
+        not _has_exact_string_keys(payload, set(_FEATURE_CACHE_KEYS))
+        or tuple(payload) != _FEATURE_CACHE_KEYS
+    ):
+        raise PublicMaterialPrerequisiteError("feature cache fields do not match")
+    if type(role) is not str or role not in NON_LOCKBOX_ROLE_ORDER:
+        raise PublicMaterialPrerequisiteError(
+            "feature cache partition role does not match"
+        )
+    cache = copy.deepcopy(payload)
+    records = _feature_cache_role_records(
+        authority=authority,
+        role=role,
+        validated_records=_validated_records,
+    )
+    authority_payload = authority.to_payload()
+    if (
+        len(records) != EXPECTED_PRODUCTION_PARTITION_RECORD_COUNTS[role]
+        or type(cache["schema_id"]) is not str
+        or cache["schema_id"] != ACOUSTIC_FEATURE_CACHE_SCHEMA_ID
+        or type(cache["schema_version"]) is not int
+        or cache["schema_version"] != 1
+        or type(cache["partition_role"]) is not str
+        or cache["partition_role"] != role
+        or cache["configuration_sha256"]
+        != authority_payload["configuration_sha256"]
+        or cache["environment_lock_sha256"] != environment_lock_sha256
+        or cache["feature_schema_sha256"] != feature_schema_sha256
+        or cache["split_schema_sha256"] != split_schema_sha256
+        or cache["split_manifest_sha256"]
+        != authority_payload["split_manifest_sha256"]
+        or cache["assignment_sha256"] != authority_payload["assignment_sha256"]
+        or cache["partition_authority_sha256"]
+        != authority_payload["partition_authority_sha256"]
+        or cache["tracked_public_authority_commitment_sha256"]
+        != tracked_public_authority_commitment_sha256
+        or cache["upstream_acoustic_source_commitment_sha256"]
+        != _acoustic_source_commitment(role, records)
+        or type(cache["feature_names"]) is not list
+        or any(type(name) is not str for name in cache["feature_names"])
+        or tuple(cache["feature_names"]) != tuple(FEATURE_NAMES)
+        or type(cache["records"]) is not list
+        or len(cache["records"]) != len(records)
+        or cache["self_sha256"] != canonical_payload_sha256(cache)
+    ):
+        raise PublicMaterialPrerequisiteError(
+            "feature cache authority or commitment does not match"
+        )
+    for name, digest in (
+        ("feature cache configuration", cache["configuration_sha256"]),
+        ("feature cache environment", cache["environment_lock_sha256"]),
+        ("feature cache feature schema", cache["feature_schema_sha256"]),
+        ("feature cache split schema", cache["split_schema_sha256"]),
+        ("feature cache split manifest", cache["split_manifest_sha256"]),
+        ("feature cache assignment", cache["assignment_sha256"]),
+        ("feature cache authority", cache["partition_authority_sha256"]),
+        (
+            "feature cache tracked authority",
+            cache["tracked_public_authority_commitment_sha256"],
+        ),
+        (
+            "feature cache acoustic source",
+            cache["upstream_acoustic_source_commitment_sha256"],
+        ),
+        ("feature cache self", cache["self_sha256"]),
+    ):
+        _require_sha256(digest, name)
+    seen: set[str] = set()
+    for cached, authoritative in zip(cache["records"], records, strict=True):
+        if (
+            not _has_exact_string_keys(
+                cached,
+                set(_FEATURE_CACHE_RECORD_KEYS),
+            )
+            or tuple(cached) != _FEATURE_CACHE_RECORD_KEYS
+            or type(cached["clip_stem"]) is not str
+            or cached["clip_stem"] in seen
+            or cached["clip_stem"] != authoritative.label_record.clip_stem
+            or cached["audio_sha256"] != authoritative.audio_sha256
+            or type(cached["audio_size_bytes"]) is not int
+            or cached["audio_size_bytes"] <= 0
+            or cached["audio_size_bytes"] != authoritative.audio_size_bytes
+        ):
+            raise PublicMaterialPrerequisiteError(
+                "feature cache record authority does not match"
+            )
+        _require_sha256(cached["audio_sha256"], "feature cache audio identity")
+        _exact_feature_values(cached["features"])
+        seen.add(cached["clip_stem"])
+    return cache
+
+
+def _build_frozen_diagnostic_slice_mapping(
+    *,
+    training_authority: Any,
+    training_feature_cache: Mapping[str, Any],
+    diagnostic_authority: Any,
+    diagnostic_feature_cache: Mapping[str, Any],
+    _validated_training_records: tuple[Any, ...] | None = None,
+    _validated_diagnostic_records: tuple[Any, ...] | None = None,
+    _feature_caches_are_validated: bool = False,
+) -> dict[str, list[str]]:
+    import numpy as np
+
+    from scripts.emotion_state_phase_b_evaluation import (
+        validated_partition_records,
+    )
+
+    if type(_feature_caches_are_validated) is not bool:
+        raise PublicMaterialPrerequisiteError(
+            "feature-cache validation state must be an exact boolean"
+        )
+    tracked_commitment = training_feature_cache[
+        "tracked_public_authority_commitment_sha256"
+    ]
+    if _feature_caches_are_validated:
+        if (
+            type(training_feature_cache) is not dict
+            or type(diagnostic_feature_cache) is not dict
+            or _validated_training_records is None
+            or _validated_diagnostic_records is None
+        ):
+            raise PublicMaterialPrerequisiteError(
+                "validated slice inputs are incomplete"
+            )
+        training = training_feature_cache
+        diagnostic = diagnostic_feature_cache
+    else:
+        training = _validate_acoustic_feature_cache(
+            training_feature_cache,
+            role="training_discovery",
+            authority=training_authority,
+            tracked_public_authority_commitment_sha256=tracked_commitment,
+            environment_lock_sha256=EXPECTED_EVIDENCE_IDENTITY_SHA256[
+                "environment_lock_sha256"
+            ],
+            feature_schema_sha256=EXPECTED_EVIDENCE_IDENTITY_SHA256[
+                "feature_schema_sha256"
+            ],
+            split_schema_sha256=EXPECTED_EVIDENCE_IDENTITY_SHA256[
+                "split_schema_sha256"
+            ],
+        )
+        diagnostic = _validate_acoustic_feature_cache(
+            diagnostic_feature_cache,
+            role="balanced_diagnostic",
+            authority=diagnostic_authority,
+            tracked_public_authority_commitment_sha256=tracked_commitment,
+            environment_lock_sha256=EXPECTED_EVIDENCE_IDENTITY_SHA256[
+                "environment_lock_sha256"
+            ],
+            feature_schema_sha256=EXPECTED_EVIDENCE_IDENTITY_SHA256[
+                "feature_schema_sha256"
+            ],
+            split_schema_sha256=EXPECTED_EVIDENCE_IDENTITY_SHA256[
+                "split_schema_sha256"
+            ],
+        )
+    if (
+        diagnostic["tracked_public_authority_commitment_sha256"]
+        != tracked_commitment
+    ):
+        raise PublicMaterialPrerequisiteError(
+            "diagnostic and training cache authority commitments differ"
+        )
+    training_records = (
+        validated_partition_records(
+            training_authority,
+            role="training_discovery",
+        )
+        if _validated_training_records is None
+        else _validated_training_records
+    )
+    diagnostic_records = (
+        validated_partition_records(
+            diagnostic_authority,
+            role="balanced_diagnostic",
+        )
+        if _validated_diagnostic_records is None
+        else _validated_diagnostic_records
+    )
+    if (
+        type(training_records) is not tuple
+        or len(training_records)
+        != EXPECTED_PRODUCTION_PARTITION_RECORD_COUNTS["training_discovery"]
+        or type(diagnostic_records) is not tuple
+        or len(diagnostic_records)
+        != EXPECTED_PRODUCTION_PARTITION_RECORD_COUNTS["balanced_diagnostic"]
+    ):
+        raise PublicMaterialPrerequisiteError(
+            "validated slice record counts do not match production algebra"
+        )
+    sentence_ids = tuple(sorted({
+        record.label_record.sentence_id
+        for record in (*training_records, *diagnostic_records)
+    }))
+    if len(sentence_ids) != 12:
+        raise PublicMaterialPrerequisiteError(
+            "frozen diagnostic scenario set must contain exactly 12 IDs"
+        )
+    names = (
+        *(f"source_label:{label}" for label in CLASS_ORDER),
+        *(f"scripted_scenario:{sentence}" for sentence in sentence_ids),
+        *_VOTE_SLICE_NAMES,
+        *_SILENCE_SLICE_NAMES,
+    )
+    mapping: dict[str, list[str]] = {name: [] for name in names}
+    training_silence = np.asarray(
+        [
+            record["features"]["silence_ratio"]
+            for record in training["records"]
+        ],
+        dtype=np.float64,
+    )
+    quartiles = tuple(float(value) for value in np.percentile(
+        training_silence,
+        (25, 50, 75),
+        method="linear",
+    ))
+    for authoritative, cached in zip(
+        diagnostic_records,
+        diagnostic["records"],
+        strict=True,
+    ):
+        label = authoritative.label_record
+        row_id = label.clip_stem
+        mapping[f"source_label:{label.label}"].append(row_id)
+        mapping[f"scripted_scenario:{label.sentence_id}"].append(row_id)
+        if label.vote_agreement < 0.50:
+            vote_name = _VOTE_SLICE_NAMES[0]
+        elif label.vote_agreement < 0.75:
+            vote_name = _VOTE_SLICE_NAMES[1]
+        else:
+            vote_name = _VOTE_SLICE_NAMES[2]
+        mapping[vote_name].append(row_id)
+        silence = cached["features"]["silence_ratio"]
+        if silence <= quartiles[0]:
+            quartile_name = _SILENCE_SLICE_NAMES[0]
+        elif silence <= quartiles[1]:
+            quartile_name = _SILENCE_SLICE_NAMES[1]
+        elif silence <= quartiles[2]:
+            quartile_name = _SILENCE_SLICE_NAMES[2]
+        else:
+            quartile_name = _SILENCE_SLICE_NAMES[3]
+        mapping[quartile_name].append(row_id)
+    result = dict(sorted(mapping.items()))
+    if len(result) != EXPECTED_DIAGNOSTIC_SLICE_COUNT or any(
+        sum(len(result[name]) for name in family) != len(diagnostic_records)
+        for family in (
+            tuple(name for name in result if name.startswith("source_label:")),
+            tuple(name for name in result if name.startswith("scripted_scenario:")),
+            tuple(name for name in result if name.startswith("vote_agreement:")),
+            tuple(name for name in result if name.startswith("silence_ratio:")),
+        )
+    ):
+        raise PublicMaterialPrerequisiteError(
+            "frozen diagnostic slice mapping does not partition all records"
+        )
+    return result
+
+
+def _select_ami_source_identities(
+    authority: TrackedPublicAuthority,
+) -> tuple[SourceByteIdentity, ...]:
+    direct_families = (
+        ("words", f"{_AMI_EXTRACTED_ROOT}words/", ".words.xml"),
+        ("segments", f"{_AMI_EXTRACTED_ROOT}segments/", ".segments.xml"),
+        (
+            "dialogue_acts",
+            f"{_AMI_EXTRACTED_ROOT}dialogueActs/",
+            ".dialog-act.xml",
+        ),
+    )
+
+    def direct_family(path: str) -> str | None:
+        for family, prefix, suffix in direct_families:
+            if not path.startswith(prefix):
+                continue
+            basename = path[len(prefix):]
+            if (
+                "/" not in basename
+                and basename.endswith(suffix)
+                and len(basename) > len(suffix)
+            ):
+                return family
+        return None
+
+    frozen = _exact_tracked_public_authority(authority)
+    selected: list[SourceByteIdentity] = []
+    excluded: list[str] = []
+    family_counts = Counter()
+    basenames: set[str] = set()
+    paths: set[str] = set()
+    for identity in frozen.ami_files:
+        path = _validate_lexical_project_path(
+            identity.project_relative_path,
+            "AMI source identity",
+        )
+        if not path.startswith(_AMI_ROOT):
+            raise PublicMaterialPrerequisiteError(
+                "AMI source identity is outside the frozen AMI root"
+            )
+        if path in paths:
+            raise PublicMaterialPrerequisiteError(
+                "AMI source identity path is duplicated"
+            )
+        paths.add(path)
+        _require_sha256(identity.sha256, "AMI source identity")
+        if type(identity.size_bytes) is not int or identity.size_bytes <= 0:
+            raise PublicMaterialPrerequisiteError(
+                "AMI source identity size must be a positive integer"
+            )
+        if path == _AMI_MEETING_UNIVERSE_PATH:
+            family = "meetings"
+        elif path == _AMI_PARTICIPANTS_PATH:
+            family = "participants"
+        else:
+            family = direct_family(path)
+        if family is None and path in _AMI_EXCLUDED_SOURCE_PATHS:
+            excluded.append(path)
+            continue
+        if family is None:
+            raise PublicMaterialPrerequisiteError(
+                "AMI source identity is not an exact frozen source path"
+            )
+        basename = path.rsplit("/", 1)[-1]
+        if basename in basenames:
+            raise PublicMaterialPrerequisiteError(
+                "AMI selected source basename collides"
+            )
+        basenames.add(basename)
+        family_counts[family] += 1
+        selected.append(identity)
+    if family_counts != Counter({
+        "meetings": 1,
+        "participants": 1,
+        "words": 687,
+        "segments": 687,
+        "dialogue_acts": 695,
+    }) or len(selected) != EXPECTED_AMI_SELECTED_SOURCE_COUNT or (
+        len(excluded) != 3
+        or set(excluded) != set(_AMI_EXCLUDED_SOURCE_PATHS)
+    ):
+        raise PublicMaterialPrerequisiteError(
+            "AMI selected source families do not match the frozen 2,071 files"
+        )
+    return tuple(selected)
+
+
+def _ami_source_authority_sha256(
+    selected: Sequence[SourceByteIdentity],
+) -> str:
+    return _canonical_digest({
+        "schema_id": "emotion-state-phase-b-ami-selected-source-authority-v1",
+        "files": [
+            {
+                "project_relative_path": item.project_relative_path,
+                "sha256": item.sha256,
+                "size_bytes": item.size_bytes,
+            }
+            for item in selected
+        ],
+    })
+
+
+def _serialize_ami_meeting(meeting: Any) -> dict[str, Any]:
+    from scripts.emotion_state_phase_b_ami_mechanics import (
+        _validated_ami_meeting_evidence_v2,
+    )
+
+    validated = _validated_ami_meeting_evidence_v2(meeting)
+
+    def turn_payload(turn: Any, *, dialogue: bool) -> dict[str, Any]:
+        payload = {
+            "meeting_id": turn.meeting_id,
+            "participant_id": turn.participant_id,
+            "start_ms": turn.start_ms,
+            "end_ms": turn.end_ms,
+        }
+        if dialogue:
+            payload["dialogue_act"] = turn.dialogue_act
+        return payload
+
+    return {
+        "meeting_id": validated.meeting_id,
+        "participants": list(validated.participants),
+        "timing_file_present": validated.timing_file_present,
+        "timed_turns": (
+            None
+            if validated.timed_turns is None
+            else [turn_payload(turn, dialogue=False) for turn in validated.timed_turns]
+        ),
+        "dialogue_turns": (
+            None
+            if validated.dialogue_turns is None
+            else [
+                turn_payload(turn, dialogue=True)
+                for turn in validated.dialogue_turns
+            ]
+        ),
+        "dialogue_act_file_count": validated.dialogue_act_file_count,
+        "fully_labeled_dialogue_act_file_count": (
+            validated.fully_labeled_dialogue_act_file_count
+        ),
+        "unlabeled_dialogue_act_record_count": (
+            validated.unlabeled_dialogue_act_record_count
+        ),
+        "unlabeled_dialogue_act_file_count": (
+            validated.unlabeled_dialogue_act_file_count
+        ),
+    }
+
+
+def _restore_ami_meetings(value: Any) -> tuple[Any, ...]:
+    from scripts.emotion_state_phase_b_ami_mechanics import (
+        AmiMeetingEvidenceV2,
+        TimedTurn,
+        Turn,
+    )
+    from scripts.validate_emotion_state_002_phase_b import (
+        _ami_v2_serialized_meetings,
+    )
+
+    if type(value) is not list:
+        raise PublicMaterialPrerequisiteError(
+            "AMI evidence meetings must be a list"
+        )
+    try:
+        validated = _ami_v2_serialized_meetings(value)
+    except (TypeError, ValueError) as error:
+        raise PublicMaterialPrerequisiteError(
+            f"AMI evidence meeting projection is invalid: {error}"
+        ) from error
+    meetings = []
+    for meeting in validated:
+        timed = meeting["timed_turns"]
+        dialogue = meeting["dialogue_turns"]
+        meetings.append(AmiMeetingEvidenceV2(
+            meeting_id=meeting["meeting_id"],
+            participants=tuple(meeting["participants"]),
+            timing_file_present=meeting["timing_file_present"],
+            timed_turns=(
+                None
+                if timed is None
+                else tuple(TimedTurn(**turn) for turn in timed)
+            ),
+            dialogue_turns=(
+                None
+                if dialogue is None
+                else tuple(Turn(**turn) for turn in dialogue)
+            ),
+            dialogue_act_file_count=meeting["dialogue_act_file_count"],
+            fully_labeled_dialogue_act_file_count=(
+                meeting["fully_labeled_dialogue_act_file_count"]
+            ),
+            unlabeled_dialogue_act_record_count=(
+                meeting["unlabeled_dialogue_act_record_count"]
+            ),
+            unlabeled_dialogue_act_file_count=(
+                meeting["unlabeled_dialogue_act_file_count"]
+            ),
+        ))
+    return tuple(meetings)
+
+
+def _build_ami_evidence_cache(
+    *,
+    tracked_authority: TrackedPublicAuthority,
+    meetings: Sequence[Any],
+    aggregate: Mapping[str, Any],
+    tracked_public_authority_commitment_sha256: str,
+) -> dict[str, Any]:
+    if type(aggregate) is not dict:
+        raise PublicMaterialPrerequisiteError(
+            "AMI aggregate must be an exact mapping"
+        )
+    selected = _select_ami_source_identities(tracked_authority)
+    if isinstance(meetings, (str, bytes)) or not isinstance(meetings, Sequence):
+        raise PublicMaterialPrerequisiteError("AMI meeting evidence must be a sequence")
+    meeting_tuple = tuple(meetings)
+    membership = tuple(tracked_authority.ami_partition_membership)
+    official_order = tuple(tracked_authority.ami_official_order)
+    if tuple(meeting.meeting_id for meeting in meeting_tuple) != official_order:
+        raise PublicMaterialPrerequisiteError(
+            "AMI meeting evidence does not match official order"
+        )
+    tracked_commitment = _require_sha256(
+        tracked_public_authority_commitment_sha256,
+        "AMI tracked public authority commitment",
+    )
+    serialized = [_serialize_ami_meeting(meeting) for meeting in meeting_tuple]
+    payload: dict[str, Any] = {
+        "schema_id": AMI_EVIDENCE_CACHE_SCHEMA_ID,
+        "schema_version": 1,
+        "source_authority_sha256": _ami_source_authority_sha256(selected),
+        "tracked_public_authority_commitment_sha256": tracked_commitment,
+        "source_file_count": EXPECTED_AMI_SELECTED_SOURCE_COUNT,
+        "meetings": serialized,
+        "partition_membership": [
+            [name, list(identifiers)] for name, identifiers in membership
+        ],
+        "official_order": list(official_order),
+        "aggregate": copy.deepcopy(dict(aggregate)),
+    }
+    payload["aggregate_sha256"] = _canonical_digest(payload["aggregate"])
+    payload["self_sha256"] = canonical_payload_sha256(payload)
+    return _validate_ami_evidence_cache(
+        payload,
+        tracked_authority=tracked_authority,
+        tracked_public_authority_commitment_sha256=tracked_commitment,
+    )
+
+
+def _validate_ami_evidence_cache(
+    payload: Any,
+    *,
+    tracked_authority: TrackedPublicAuthority,
+    tracked_public_authority_commitment_sha256: str,
+) -> dict[str, Any]:
+    from scripts.emotion_state_phase_b_ami_mechanics import (
+        contribution_limited_aggregates_v2,
+    )
+
+    if (
+        not _has_exact_string_keys(payload, set(_AMI_EVIDENCE_CACHE_KEYS))
+        or tuple(payload) != _AMI_EVIDENCE_CACHE_KEYS
+    ):
+        raise PublicMaterialPrerequisiteError(
+            "AMI evidence cache fields do not match"
+        )
+    cache = copy.deepcopy(payload)
+    authority = _exact_tracked_public_authority(tracked_authority)
+    selected = _select_ami_source_identities(authority)
+    expected_membership = [
+        [name, list(identifiers)]
+        for name, identifiers in authority.ami_partition_membership
+    ]
+
+    def exact_membership(value: Any) -> bool:
+        if type(value) is not list or len(value) != len(expected_membership):
+            return False
+        for actual, expected in zip(value, expected_membership, strict=True):
+            if (
+                type(actual) is not list
+                or len(actual) != 2
+                or type(actual[0]) is not str
+                or type(actual[1]) is not list
+                or any(type(item) is not str for item in actual[1])
+                or actual != expected
+            ):
+                return False
+        return True
+
+    official_order = cache["official_order"]
+    if (
+        type(cache["schema_id"]) is not str
+        or cache["schema_id"] != AMI_EVIDENCE_CACHE_SCHEMA_ID
+        or type(cache["schema_version"]) is not int
+        or cache["schema_version"] != 1
+        or cache["source_authority_sha256"]
+        != _ami_source_authority_sha256(selected)
+        or cache["tracked_public_authority_commitment_sha256"]
+        != tracked_public_authority_commitment_sha256
+        or type(cache["source_file_count"]) is not int
+        or cache["source_file_count"] != EXPECTED_AMI_SELECTED_SOURCE_COUNT
+        or not exact_membership(cache["partition_membership"])
+        or type(official_order) is not list
+        or any(type(item) is not str for item in official_order)
+        or official_order != list(authority.ami_official_order)
+        or cache["aggregate_sha256"] != _canonical_digest(cache["aggregate"])
+        or cache["self_sha256"] != canonical_payload_sha256(cache)
+    ):
+        raise PublicMaterialPrerequisiteError(
+            "AMI evidence cache authority or commitment does not match"
+        )
+    for name in (
+        "source_authority_sha256",
+        "tracked_public_authority_commitment_sha256",
+        "aggregate_sha256",
+        "self_sha256",
+    ):
+        _require_sha256(cache[name], f"AMI evidence cache {name}")
+    meetings = _restore_ami_meetings(cache["meetings"])
+    if tuple(meeting.meeting_id for meeting in meetings) != tuple(
+        authority.ami_official_order
+    ):
+        raise PublicMaterialPrerequisiteError(
+            "AMI evidence meeting order does not match authority"
+        )
+    membership = {
+        name: tuple(identifiers)
+        for name, identifiers in authority.ami_partition_membership
+    }
+    try:
+        rebuilt = contribution_limited_aggregates_v2(
+            meetings,
+            membership,
+            authority.ami_official_order,
+            minimum_contributors=MINIMUM_UNIQUE_ACTORS,
+        )
+        validate_ami_mechanics_aggregates_v2(
+            cache["aggregate"],
+            meetings=cache["meetings"],
+            partition_membership=membership,
+            official_order=authority.ami_official_order,
+            minimum_contributors=MINIMUM_UNIQUE_ACTORS,
+        )
+        validate_published_ami_aggregate_v2(cache["aggregate"])
+    except (TypeError, ValueError) as error:
+        raise PublicMaterialPrerequisiteError(
+            f"AMI evidence aggregate validation failed: {error}"
+        ) from error
+    if not _matches_packet_contract_exactly(cache["aggregate"], rebuilt):
+        raise PublicMaterialPrerequisiteError(
+            "AMI evidence aggregate does not replay from meetings"
+        )
+    return cache
+
+
+def _validate_slice_analysis_v2(
+    payload: Any,
+    *,
+    diagnostic: Mapping[str, Any],
+) -> dict[str, Any]:
+    if not _has_exact_string_keys(payload, _SLICE_ANALYSIS_KEYS):
+        raise PublicMaterialPrerequisiteError(
+            "diagnostic slice analysis fields do not match"
+        )
+    sliced = copy.deepcopy(payload)
+    if (
+        type(sliced["schema_id"]) is not str
+        or sliced["schema_id"] != SLICE_ANALYSIS_SCHEMA_ID
+        or type(sliced["partition_role"]) is not str
+        or sliced["partition_role"] != "balanced_diagnostic"
+        or type(sliced["class_order"]) is not list
+        or any(type(label) is not str for label in sliced["class_order"])
+        or tuple(sliced["class_order"]) != tuple(CLASS_ORDER)
+        or type(sliced["instability_tolerance"]) is not float
+        or sliced["instability_tolerance"] != 0.10
+        or type(sliced["eligible_slice_reversal"]) is not bool
+        or type(sliced["eligible_slice_instability"]) is not bool
+    ):
+        raise PublicMaterialPrerequisiteError(
+            "diagnostic slice analysis contract does not match"
+        )
+    try:
+        validate_provenance_payload(
+            sliced["provenance"],
+            expected_role="balanced_diagnostic",
+        )
+    except (TypeError, ValueError) as error:
+        raise PublicMaterialPrerequisiteError(
+            f"diagnostic slice provenance is invalid: {error}"
+        ) from error
+    if not _matches_packet_contract_exactly(
+        sliced["provenance"],
+        diagnostic["provenance"],
+    ):
+        raise PublicMaterialPrerequisiteError(
+            "diagnostic slice provenance does not match diagnostic"
+        )
+    for key in (
+        "probability_evidence_mint_sha256",
+        "evaluation_evidence_mint_sha256",
+        "self_sha256",
+    ):
+        _require_sha256(sliced[key], f"diagnostic slice {key}")
+    if (
+        sliced["probability_evidence_mint_sha256"]
+        != diagnostic["probability_evidence_mint_sha256"]
+        or sliced["evaluation_evidence_mint_sha256"]
+        != _canonical_digest(diagnostic)
+        or sliced["self_sha256"] != canonical_payload_sha256(sliced)
+    ):
+        raise PublicMaterialPrerequisiteError(
+            "diagnostic slice lineage or self commitment changed"
+        )
+    cells = sliced["slices"]
+    if (
+        type(cells) is not dict
+        or any(type(name) is not str for name in cells)
+        or tuple(cells) != tuple(sorted(cells))
+    ):
+        raise PublicMaterialPrerequisiteError(
+            "diagnostic slice names must be an ordered mapping"
+        )
+    names = tuple(cells)
+    source_labels = tuple(
+        name for name in names if name.startswith("source_label:")
+    )
+    scenarios = tuple(
+        name for name in names if name.startswith("scripted_scenario:")
+    )
+    vote_names = tuple(name for name in names if name.startswith("vote_agreement:"))
+    silence_names = tuple(name for name in names if name.startswith("silence_ratio:"))
+    expected_source_labels = tuple(
+        sorted(f"source_label:{label}" for label in CLASS_ORDER)
+    )
+    if (
+        len(names) != EXPECTED_DIAGNOSTIC_SLICE_COUNT
+        or source_labels != expected_source_labels
+        or len(scenarios) != 12
+        or any(
+            re.fullmatch(r"scripted_scenario:[A-Z0-9]{3}", name) is None
+            for name in scenarios
+        )
+        or vote_names != tuple(sorted(_VOTE_SLICE_NAMES))
+        or silence_names != tuple(sorted(_SILENCE_SLICE_NAMES))
+        or set(names) != set(
+            (*source_labels, *scenarios, *vote_names, *silence_names)
+        )
+    ):
+        raise PublicMaterialPrerequisiteError(
+            "diagnostic slice families do not match the frozen 25 cells"
+        )
+    diagnostic_cases = diagnostic["provenance"]["case_count"]
+    diagnostic_actors = diagnostic["provenance"]["unique_actor_count"]
+    full_lifts = {
+        baseline: (
+            diagnostic["models"]["acoustic"]["macro_f1"]
+            - diagnostic["models"][baseline]["macro_f1"]
+        )
+        for baseline in ("class_prior", "sentence_id")
+    }
+    derived_reversal = False
+    derived_instability = False
+    for name, raw_cell in cells.items():
+        if not _has_exact_string_keys(raw_cell, _SLICE_CELL_KEYS):
+            raise PublicMaterialPrerequisiteError(
+                f"diagnostic slice cell fields do not match: {name}"
+            )
+        cell = raw_cell
+        case_count = cell["case_count"]
+        actor_count = cell["unique_actor_count"]
+        suppressed = cell["suppressed"]
+        if (
+            type(case_count) is not int
+            or not 0 <= case_count <= diagnostic_cases
+            or type(actor_count) is not int
+            or not 0 <= actor_count <= min(case_count, diagnostic_actors)
+            or type(suppressed) is not bool
+            or suppressed is not (actor_count < MINIMUM_UNIQUE_ACTORS)
+        ):
+            raise PublicMaterialPrerequisiteError(
+                f"diagnostic slice count or suppression contradicts: {name}"
+            )
+        for key in (
+            "contributor_row_commitment_sha256",
+            "contributor_actor_commitment_sha256",
+        ):
+            _require_sha256(cell[key], f"diagnostic slice {name} {key}")
+        if suppressed:
+            if (
+                cell["model_macro_f1"] is not None
+                or cell["paired_macro_f1_lift"] is not None
+            ):
+                raise PublicMaterialPrerequisiteError(
+                    f"suppressed diagnostic slice metrics must be null: {name}"
+                )
+            continue
+        scores = cell["model_macro_f1"]
+        lifts = cell["paired_macro_f1_lift"]
+        if (
+            not _has_exact_string_keys(scores, set(MODEL_KEYS))
+            or not _has_exact_string_keys(
+                lifts,
+                {"class_prior", "sentence_id"},
+            )
+        ):
+            raise PublicMaterialPrerequisiteError(
+                f"diagnostic slice metrics do not match: {name}"
+            )
+        for model, value in scores.items():
+            if type(value) is not float or not math.isfinite(value) or not 0.0 <= value <= 1.0:
+                raise PublicMaterialPrerequisiteError(
+                    f"diagnostic slice model metric is invalid: {name}/{model}"
+                )
+        for baseline, value in lifts.items():
+            expected = scores["acoustic"] - scores[baseline]
+            if (
+                type(value) is not float
+                or not math.isfinite(value)
+                or not -1.0 <= value <= 1.0
+                or not math.isclose(value, expected, rel_tol=0.0, abs_tol=1e-15)
+            ):
+                raise PublicMaterialPrerequisiteError(
+                    f"diagnostic slice lift is invalid: {name}/{baseline}"
+                )
+            derived_reversal = derived_reversal or value < 0.0
+            derived_instability = derived_instability or (
+                abs(value - full_lifts[baseline]) > 0.10
+            )
+    for family in (source_labels, scenarios, vote_names, silence_names):
+        if sum(cells[name]["case_count"] for name in family) != diagnostic_cases:
+            raise PublicMaterialPrerequisiteError(
+                "diagnostic slice family case counts do not cover the diagnostic set"
+            )
+    if (
+        sliced["eligible_slice_reversal"] is not derived_reversal
+        or sliced["eligible_slice_instability"] is not derived_instability
+    ):
+        raise PublicMaterialPrerequisiteError(
+            "diagnostic slice derived flags do not match unsuppressed cells"
+        )
+    validate_aggregate_privacy(sliced)
+    return sliced
+
+
 def build_non_lockbox_review_packet(
     *,
     diagnostic_aggregate: Mapping[str, Any],
+    diagnostic_slice_analysis: Mapping[str, Any],
     ami_aggregate: Mapping[str, Any],
+    artifact_cache_commitments: Mapping[str, str],
     split_manifest_sha256: str,
+    tracked_public_authority_commitment_sha256: str,
 ) -> dict[str, Any]:
     if (
-        type(split_manifest_sha256) is not str
-        or _SHA256_PATTERN.fullmatch(split_manifest_sha256) is None
+        type(diagnostic_aggregate) is not dict
+        or type(diagnostic_slice_analysis) is not dict
+        or type(ami_aggregate) is not dict
     ):
         raise PublicMaterialPrerequisiteError(
-            "split manifest identity is invalid"
+            "non-lockbox packet inputs must be exact mappings"
         )
+    split_manifest_sha256 = _require_sha256(
+        split_manifest_sha256,
+        "split manifest identity",
+    )
     diagnostic = copy.deepcopy(dict(diagnostic_aggregate))
+    sliced = copy.deepcopy(dict(diagnostic_slice_analysis))
     ami = copy.deepcopy(dict(ami_aggregate))
+    if (
+        type(artifact_cache_commitments) is not dict
+        or any(
+            type(role) is not str
+            for role in artifact_cache_commitments
+        )
+        or tuple(artifact_cache_commitments) != ARTIFACT_CACHE_COMMITMENT_ORDER
+    ):
+        raise PublicMaterialPrerequisiteError(
+            "artifact cache commitment order does not match"
+        )
+    cache_commitments = copy.deepcopy(artifact_cache_commitments)
+    for role, digest in cache_commitments.items():
+        _require_sha256(digest, f"artifact cache commitment {role}")
+    tracked_commitment = _require_sha256(
+        tracked_public_authority_commitment_sha256,
+        "tracked public authority commitment",
+    )
     try:
         validate_evaluation_result(
             diagnostic,
@@ -531,11 +1674,12 @@ def build_non_lockbox_review_packet(
         ],
         split_manifest_sha256=split_manifest_sha256,
     )
+    sliced = _validate_slice_analysis_v2(sliced, diagnostic=diagnostic)
     validate_aggregate_privacy(diagnostic)
     validate_aggregate_privacy(ami)
     packet: dict[str, Any] = {
-        "schema_id": "emotion-state-phase-b-non-lockbox-review-v3",
-        "schema_version": 3,
+        "schema_id": NON_LOCKBOX_PACKET_SCHEMA_ID,
+        "schema_version": 4,
         "configuration_sha256": EXPECTED_EVIDENCE_IDENTITY_SHA256[
             "configuration_sha256"
         ],
@@ -552,19 +1696,26 @@ def build_non_lockbox_review_packet(
             "cache_reads": 0,
         },
         "final_decision_eligible": False,
+        "tracked_public_authority_commitment_sha256": tracked_commitment,
         "diagnostic_aggregate": diagnostic,
         "diagnostic_aggregate_sha256": _canonical_digest(diagnostic),
+        "diagnostic_slice_analysis": sliced,
+        "diagnostic_slice_analysis_sha256": _canonical_digest(sliced),
         "ami_aggregate": ami,
         "ami_aggregate_sha256": _canonical_digest(ami),
+        "artifact_cache_commitments": cache_commitments,
+        "artifact_cache_commitments_sha256": _canonical_digest(
+            cache_commitments
+        ),
     }
     packet["review_sha256"] = _canonical_digest(packet)
-    return packet
+    return validate_non_lockbox_review_packet(packet)
 
 
 def validate_non_lockbox_review_packet(
     payload: Any,
 ) -> dict[str, Any]:
-    if not isinstance(payload, Mapping):
+    if type(payload) is not dict:
         raise PublicMaterialPrerequisiteError(
             "non-lockbox review packet must be a mapping"
         )
@@ -580,29 +1731,45 @@ def validate_non_lockbox_review_packet(
         "minimum_unique_contributors_per_cell",
         "lockbox_access",
         "final_decision_eligible",
+        "tracked_public_authority_commitment_sha256",
         "diagnostic_aggregate",
         "diagnostic_aggregate_sha256",
+        "diagnostic_slice_analysis",
+        "diagnostic_slice_analysis_sha256",
         "ami_aggregate",
         "ami_aggregate_sha256",
+        "artifact_cache_commitments",
+        "artifact_cache_commitments_sha256",
         "review_sha256",
     }
-    if set(packet) != expected_keys:
+    if not _has_exact_string_keys(packet, expected_keys):
         raise PublicMaterialPrerequisiteError(
             "non-lockbox review packet fields do not match"
         )
     if (
-        packet["schema_id"]
-        != "emotion-state-phase-b-non-lockbox-review-v3"
-        or packet["schema_version"] != 3
+        type(packet["schema_id"]) is not str
+        or packet["schema_id"] != NON_LOCKBOX_PACKET_SCHEMA_ID
+        or packet["schema_version"] != 4
         or type(packet["schema_version"]) is not int
     ):
         raise PublicMaterialPrerequisiteError(
             "non-lockbox review packet schema does not match"
         )
-    if (
-        packet["configuration_sha256"]
-        != EXPECTED_EVIDENCE_IDENTITY_SHA256["configuration_sha256"]
-    ):
+    digest_fields = (
+        "configuration_sha256",
+        "split_manifest_sha256",
+        "tracked_public_authority_commitment_sha256",
+        "diagnostic_aggregate_sha256",
+        "diagnostic_slice_analysis_sha256",
+        "ami_aggregate_sha256",
+        "artifact_cache_commitments_sha256",
+        "review_sha256",
+    )
+    for field in digest_fields:
+        _require_sha256(packet[field], f"non-lockbox review {field}")
+    if packet["configuration_sha256"] != EXPECTED_EVIDENCE_IDENTITY_SHA256[
+        "configuration_sha256"
+    ]:
         raise PublicMaterialPrerequisiteError(
             "configuration identity does not match"
         )
@@ -634,14 +1801,6 @@ def validate_non_lockbox_review_packet(
         raise PublicMaterialPrerequisiteError(
             "contributor floor does not match"
         )
-    if (
-        type(packet["split_manifest_sha256"]) is not str
-        or _SHA256_PATTERN.fullmatch(packet["split_manifest_sha256"])
-        is None
-    ):
-        raise PublicMaterialPrerequisiteError(
-            "split manifest identity is invalid"
-        )
     expected_lockbox_access = {
         "open_count": 0,
         "label_reads": 0,
@@ -651,7 +1810,8 @@ def validate_non_lockbox_review_packet(
     }
     lockbox_access = packet["lockbox_access"]
     if (
-        not isinstance(lockbox_access, Mapping)
+        type(lockbox_access) is not dict
+        or any(type(key) is not str for key in lockbox_access)
         or set(lockbox_access) != set(expected_lockbox_access)
         or any(
             type(value) is not int or value != 0
@@ -680,22 +1840,44 @@ def validate_non_lockbox_review_packet(
         configuration_sha256=packet["configuration_sha256"],
         split_manifest_sha256=packet["split_manifest_sha256"],
     )
+    sliced = _validate_slice_analysis_v2(
+        packet["diagnostic_slice_analysis"],
+        diagnostic=packet["diagnostic_aggregate"],
+    )
+    if sliced != packet["diagnostic_slice_analysis"]:
+        raise PublicMaterialPrerequisiteError(
+            "diagnostic slice analysis changed during validation"
+        )
+    cache_commitments = packet["artifact_cache_commitments"]
+    if (
+        type(cache_commitments) is not dict
+        or any(type(role) is not str for role in cache_commitments)
+        or tuple(cache_commitments) != ARTIFACT_CACHE_COMMITMENT_ORDER
+    ):
+        raise PublicMaterialPrerequisiteError(
+            "artifact cache commitment order does not match"
+        )
+    for role, digest in cache_commitments.items():
+        _require_sha256(digest, f"artifact cache commitment {role}")
     validate_aggregate_privacy(packet["diagnostic_aggregate"])
+    validate_aggregate_privacy(packet["diagnostic_slice_analysis"])
     validate_aggregate_privacy(packet["ami_aggregate"])
     if (
         _canonical_digest(packet["diagnostic_aggregate"])
         != packet["diagnostic_aggregate_sha256"]
+        or _canonical_digest(packet["diagnostic_slice_analysis"])
+        != packet["diagnostic_slice_analysis_sha256"]
         or _canonical_digest(packet["ami_aggregate"])
         != packet["ami_aggregate_sha256"]
+        or _canonical_digest(cache_commitments)
+        != packet["artifact_cache_commitments_sha256"]
     ):
         raise PublicMaterialPrerequisiteError(
             "non-lockbox aggregate commitment changed"
         )
     review_sha256 = packet.pop("review_sha256")
     if (
-        type(review_sha256) is not str
-        or _SHA256_PATTERN.fullmatch(review_sha256) is None
-        or _canonical_digest(packet) != review_sha256
+        _canonical_digest(packet) != review_sha256
     ):
         raise PublicMaterialPrerequisiteError(
             "non-lockbox review commitment changed"
@@ -2262,4 +3444,982 @@ def build_production_preflight_artifacts(
         input_ledger=copy.deepcopy(validated_ledger),
         split_manifest=copy.deepcopy(split_manifest),
         partition_authority_caches=copy.deepcopy(validated_caches),
+    )
+
+
+def _exact_json_mapping(value: Any, label: str) -> dict[str, Any]:
+    if type(value) is not dict or any(type(key) is not str for key in value):
+        raise PublicMaterialPrerequisiteError(
+            f"{label} must be an exact JSON object"
+        )
+    try:
+        _validate_finite_json_tree(value)
+    except (TypeError, ValueError) as error:
+        raise PublicMaterialPrerequisiteError(
+            f"{label} must contain exact built-in JSON values"
+        ) from error
+    return copy.deepcopy(value)
+
+
+def _validated_non_lockbox_static_mappings(
+    *,
+    configuration: Mapping[str, Any],
+    environment_lock: Mapping[str, Any],
+    feature_schema: Mapping[str, Any],
+    split_schema: Mapping[str, Any],
+) -> tuple[
+    dict[str, Any],
+    dict[str, Any],
+    dict[str, Any],
+    dict[str, Any],
+]:
+    candidates = (
+        (
+            "configuration",
+            configuration,
+            validate_config,
+            EXPECTED_CONFIG,
+            "configuration_sha256",
+        ),
+        (
+            "environment lock",
+            environment_lock,
+            validate_environment_lock,
+            EXPECTED_ENVIRONMENT_LOCK,
+            "environment_lock_sha256",
+        ),
+        (
+            "feature schema",
+            feature_schema,
+            validate_feature_schema,
+            EXPECTED_FEATURE_SCHEMA,
+            "feature_schema_sha256",
+        ),
+        (
+            "split schema",
+            split_schema,
+            validate_split_schema,
+            EXPECTED_SPLIT_SCHEMA,
+            "split_schema_sha256",
+        ),
+    )
+    validated: list[dict[str, Any]] = []
+    for label, supplied, validator, expected, identity_name in candidates:
+        candidate = _exact_json_mapping(supplied, label)
+        try:
+            checked = validator(candidate)
+        except (TypeError, ValueError) as error:
+            raise PublicMaterialPrerequisiteError(
+                f"{label} does not match the frozen contract: {error}"
+            ) from error
+        if not _matches_packet_contract_exactly(checked, expected):
+            raise PublicMaterialPrerequisiteError(
+                f"{label} does not match the frozen contract"
+            )
+        digest = _canonical_digest(checked)
+        if digest != EXPECTED_EVIDENCE_IDENTITY_SHA256[identity_name]:
+            raise PublicMaterialPrerequisiteError(
+                f"{label} semantic identity changed"
+            )
+        validated.append(copy.deepcopy(checked))
+    return validated[0], validated[1], validated[2], validated[3]
+
+
+def _validated_production_role_algebra(
+    *,
+    authorities: Mapping[str, "ValidatedPartitionAuthority"],
+    split_manifest: Mapping[str, Any],
+) -> tuple[dict[str, Any], dict[str, tuple[Any, ...]]]:
+    from scripts.emotion_state_phase_b_evaluation import (
+        ValidatedPartitionAuthority,
+        validated_partition_records,
+    )
+
+    if (
+        type(authorities) is not dict
+        or any(type(role) is not str for role in authorities)
+        or tuple(authorities) != NON_LOCKBOX_ROLE_ORDER
+        or len({id(authority) for authority in authorities.values()})
+        != len(NON_LOCKBOX_ROLE_ORDER)
+        or any(
+            type(authority) is not ValidatedPartitionAuthority
+            for authority in authorities.values()
+        )
+    ):
+        raise PublicMaterialPrerequisiteError(
+            "production authorities must be three distinct exact non-lockbox roles"
+        )
+    manifest_candidate = _exact_json_mapping(
+        split_manifest,
+        "validated split manifest",
+    )
+    try:
+        manifest = validate_phase_b_split_manifest(manifest_candidate)
+    except (TypeError, ValueError) as error:
+        raise PublicMaterialPrerequisiteError(
+            f"validated split manifest is invalid: {error}"
+        ) from error
+    authority_commitments = manifest["partition_authority_sha256"]
+    if not _has_exact_string_keys(
+        authority_commitments,
+        set(NON_LOCKBOX_ROLE_ORDER),
+    ):
+        raise PublicMaterialPrerequisiteError(
+            "split manifest non-lockbox authorities do not match"
+        )
+
+    records_by_role: dict[str, tuple[Any, ...]] = {}
+    common_configuration: str | None = None
+    common_assignment: str | None = None
+    for role in NON_LOCKBOX_ROLE_ORDER:
+        authority = authorities[role]
+        payload = authority.to_payload()
+        try:
+            _validate_finite_json_tree(payload)
+        except (TypeError, ValueError) as error:
+            raise PublicMaterialPrerequisiteError(
+                f"{role} authority payload contains non-exact values"
+            ) from error
+        expected_count = EXPECTED_PRODUCTION_PARTITION_RECORD_COUNTS[role]
+        if (
+            type(payload) is not dict
+            or type(payload.get("partition_role")) is not str
+            or payload["partition_role"] != role
+            or type(payload.get("eligible_record_count")) is not int
+            or payload["eligible_record_count"] != expected_count
+            or type(payload.get("eligible_actor_count")) is not int
+            or payload.get("split_manifest_sha256")
+            != manifest["split_manifest_sha256"]
+            or payload.get("partition_authority_sha256")
+            != authority_commitments[role]
+            or payload.get("configuration_sha256")
+            != manifest["configuration_sha256"]
+            or payload.get("assignment_sha256")
+            != manifest["assignment_sha256"]
+        ):
+            raise PublicMaterialPrerequisiteError(
+                f"{role} authority does not match production role algebra"
+            )
+        records = validated_partition_records(authority, role=role)
+        if type(records) is not tuple or len(records) != expected_count:
+            raise PublicMaterialPrerequisiteError(
+                f"{role} record count does not match production role algebra"
+            )
+        records_by_role[role] = records
+        common_configuration = common_configuration or payload[
+            "configuration_sha256"
+        ]
+        common_assignment = common_assignment or payload["assignment_sha256"]
+        if (
+            payload["configuration_sha256"] != common_configuration
+            or payload["assignment_sha256"] != common_assignment
+        ):
+            raise PublicMaterialPrerequisiteError(
+                "non-lockbox authorities do not share frozen lineage"
+            )
+
+    final_commitment = manifest["final_lockbox_commitment"]
+    nonfinal_count = sum(
+        EXPECTED_PRODUCTION_PARTITION_RECORD_COUNTS[role]
+        for role in NON_LOCKBOX_ROLE_ORDER
+    )
+    if (
+        type(manifest["eligible_record_count"]) is not int
+        or manifest["eligible_record_count"]
+        != EXPECTED_PRODUCTION_ELIGIBLE_RECORD_COUNT
+        or type(final_commitment["eligible_record_count"]) is not int
+        or final_commitment["eligible_record_count"]
+        != EXPECTED_PRODUCTION_FINAL_LOCKBOX_RECORD_COUNT
+        or type(nonfinal_count) is not int
+        or nonfinal_count != EXPECTED_PRODUCTION_NONFINAL_RECORD_COUNT
+        or type(
+            nonfinal_count + final_commitment["eligible_record_count"]
+        ) is not int
+        or nonfinal_count + final_commitment["eligible_record_count"]
+        != EXPECTED_PRODUCTION_ELIGIBLE_RECORD_COUNT
+        or sum(len(records) for records in records_by_role.values())
+        != EXPECTED_PRODUCTION_NONFINAL_RECORD_COUNT
+    ):
+        raise PublicMaterialPrerequisiteError(
+            "production role algebra must be exactly 2491/959/939 plus 2181"
+        )
+    return copy.deepcopy(manifest), records_by_role
+
+
+def _selected_nonfinal_audio_sources(
+    *,
+    tracked_authority: TrackedPublicAuthority,
+    records_by_role: Mapping[str, Sequence[Any]],
+) -> dict[str, tuple[SourceByteIdentity, ...]]:
+    authority = _exact_tracked_public_authority(tracked_authority)
+    by_stem: dict[str, SourceByteIdentity] = {}
+    paths: set[str] = set()
+    for source in authority.crema_audio:
+        path = _validate_lexical_project_path(
+            source.project_relative_path,
+            "CREMA audio source identity",
+        )
+        _require_sha256(source.sha256, "CREMA audio source identity")
+        if (
+            type(source.size_bytes) is not int
+            or source.size_bytes <= 0
+            or not path.startswith(_CREMA_AUDIO_ROOT)
+            or not path.endswith(".wav")
+            or path in paths
+        ):
+            raise PublicMaterialPrerequisiteError(
+                "CREMA audio source identity does not match frozen authority"
+            )
+        stem = path[len(_CREMA_AUDIO_ROOT):-4]
+        if not stem or "/" in stem or stem in by_stem:
+            raise PublicMaterialPrerequisiteError(
+                "CREMA audio source stem is duplicated or invalid"
+            )
+        paths.add(path)
+        by_stem[stem] = source
+    if len(by_stem) != 7441:
+        raise PublicMaterialPrerequisiteError(
+            "CREMA audio source authority count changed"
+        )
+
+    selected: dict[str, tuple[SourceByteIdentity, ...]] = {}
+    consumed: set[str] = set()
+    for role in NON_LOCKBOX_ROLE_ORDER:
+        role_sources: list[SourceByteIdentity] = []
+        for record in records_by_role[role]:
+            stem = record.label_record.clip_stem
+            source = by_stem.get(stem)
+            if (
+                source is None
+                or source.sha256 != record.audio_sha256
+                or source.size_bytes != record.audio_size_bytes
+                or stem in consumed
+            ):
+                raise PublicMaterialPrerequisiteError(
+                    f"{role} audio source does not match sealed authority"
+                )
+            consumed.add(stem)
+            role_sources.append(source)
+        if len(role_sources) != EXPECTED_PRODUCTION_PARTITION_RECORD_COUNTS[role]:
+            raise PublicMaterialPrerequisiteError(
+                f"{role} audio source count changed"
+            )
+        selected[role] = tuple(role_sources)
+    if len(consumed) != EXPECTED_PRODUCTION_NONFINAL_RECORD_COUNT:
+        raise PublicMaterialPrerequisiteError(
+            "non-lockbox audio source count changed"
+        )
+    return selected
+
+
+def _validated_non_lockbox_tracked_authority(
+    authority: Any,
+) -> TrackedPublicAuthority:
+    frozen = _exact_tracked_public_authority(authority)
+    metadata = (
+        (
+            frozen.crema_finished_responses,
+            f"{_CREMA_ROOT}finishedResponses.csv",
+            "CREMA finished-responses source",
+        ),
+        (
+            frozen.crema_summary_table,
+            f"{_CREMA_ROOT}processedResults/summaryTable.csv",
+            "CREMA summary-table source",
+        ),
+    )
+    for source, expected_path, label in metadata:
+        if (
+            _validate_lexical_project_path(
+                source.project_relative_path,
+                label,
+            ) != expected_path
+            or type(source.size_bytes) is not int
+            or source.size_bytes <= 0
+        ):
+            raise PublicMaterialPrerequisiteError(
+                f"{label} identity changed"
+            )
+        _require_sha256(source.sha256, label)
+    scenario_only = tuple(
+        meeting
+        for meeting in AMI_FULL_CORPUS_ORDER
+        if meeting not in set(AMI_FULL_ONLY_ORDER)
+    )
+    expected_membership = (
+        ("scenario_only", scenario_only),
+        ("full_corpus", AMI_FULL_CORPUS_ORDER),
+        ("full_only", AMI_FULL_ONLY_ORDER),
+    )
+    if (
+        not _matches_packet_contract_exactly(
+            frozen.ami_partition_membership,
+            expected_membership,
+        )
+        or not _matches_packet_contract_exactly(
+            frozen.ami_official_order,
+            AMI_FULL_CORPUS_ORDER,
+        )
+    ):
+        raise PublicMaterialPrerequisiteError(
+            "AMI partition authority does not match the frozen release matrix"
+        )
+    return frozen
+
+
+def _partition_evidence_from_feature_cache(
+    *,
+    role: str,
+    authority: "ValidatedPartitionAuthority",
+    records: Sequence[Any],
+    cache: Mapping[str, Any],
+    configuration: Mapping[str, Any],
+    environment_lock: Mapping[str, Any],
+    feature_schema: Mapping[str, Any],
+    split_schema: Mapping[str, Any],
+    model_identity: Mapping[str, Any],
+) -> Any:
+    import numpy as np
+
+    from scripts.emotion_state_phase_b_evaluation import mint_partition_evidence
+    from scripts.emotion_state_phase_b_features import FEATURE_NAMES
+
+    feature_rows = [
+        [cached["features"][name] for name in FEATURE_NAMES]
+        for cached in cache["records"]
+    ]
+    return mint_partition_evidence(
+        partition_role=role,
+        row_ids=tuple(
+            record.label_record.clip_stem for record in records
+        ),
+        actor_ids=tuple(
+            record.label_record.actor_id for record in records
+        ),
+        labels=np.asarray(
+            [record.label_record.label for record in records],
+            dtype="<U1",
+        ),
+        sentences=np.asarray(
+            [record.label_record.sentence_id for record in records],
+            dtype="<U3",
+        ),
+        features=np.asarray(feature_rows, dtype=np.float64),
+        upstream_acoustic_source_commitment_sha256=cache[
+            "upstream_acoustic_source_commitment_sha256"
+        ],
+        split_assignment=authority,
+        configuration=configuration,
+        environment_lock=environment_lock,
+        feature_schema=feature_schema,
+        split_schema=split_schema,
+        model_identity=model_identity,
+    )
+
+
+def _evaluate_non_lockbox_partition_evidence(
+    *,
+    partition_evidence: Mapping[str, Any],
+    model_seed: int,
+    configuration: Mapping[str, Any],
+) -> tuple[Any, Any, Any]:
+    from scripts.emotion_state_phase_b_evaluation import (
+        calibrate_thresholds,
+        evaluate_partition,
+        fit_frozen_models,
+        predict_probabilities,
+    )
+
+    fitted = fit_frozen_models(
+        partition_evidence["training_discovery"],
+        model_seed,
+    )
+    calibration_probabilities = predict_probabilities(
+        fitted,
+        partition_evidence["calibration"],
+    )
+    thresholds = calibrate_thresholds(
+        calibration_probabilities,
+        tuple(configuration["coverage_targets"]),
+    )
+    diagnostic_probabilities = predict_probabilities(
+        fitted,
+        partition_evidence["balanced_diagnostic"],
+    )
+    diagnostic = evaluate_partition(
+        diagnostic_probabilities,
+        thresholds,
+    )
+    return diagnostic_probabilities, diagnostic, thresholds
+
+
+def _ami_loader_inputs(
+    *,
+    selected_sources: Sequence[SourceByteIdentity],
+    read_verified_ami: Callable[[SourceByteIdentity], bytes],
+) -> tuple[Any, tuple[Any, ...], tuple[Any, ...], tuple[Any, ...], Any]:
+    from scripts.emotion_state_phase_b_ami_mechanics import AmiXmlBytes
+
+    metadata = None
+    participant_metadata = None
+    words: list[AmiXmlBytes] = []
+    segments: list[AmiXmlBytes] = []
+    dialogue_acts: list[AmiXmlBytes] = []
+    for source in selected_sources:
+        content = read_verified_ami(source)
+        if (
+            type(content) is not bytes
+            or len(content) != source.size_bytes
+            or _sha256(content) != source.sha256
+        ):
+            raise PublicMaterialPrerequisiteError(
+                "AMI source bytes do not match sealed identity"
+            )
+        filename = Path(source.project_relative_path).name
+        wrapped = AmiXmlBytes(filename, content)
+        path = source.project_relative_path
+        if path == _AMI_MEETING_UNIVERSE_PATH:
+            if metadata is not None:
+                raise PublicMaterialPrerequisiteError(
+                    "AMI meetings metadata is duplicated"
+                )
+            metadata = wrapped
+        elif path == _AMI_PARTICIPANTS_PATH:
+            if participant_metadata is not None:
+                raise PublicMaterialPrerequisiteError(
+                    "AMI participant metadata is duplicated"
+                )
+            participant_metadata = wrapped
+        elif path.startswith(f"{_AMI_EXTRACTED_ROOT}words/"):
+            words.append(wrapped)
+        elif path.startswith(f"{_AMI_EXTRACTED_ROOT}segments/"):
+            segments.append(wrapped)
+        elif path.startswith(f"{_AMI_EXTRACTED_ROOT}dialogueActs/"):
+            dialogue_acts.append(wrapped)
+        else:
+            raise PublicMaterialPrerequisiteError(
+                "AMI selected source was not consumed"
+            )
+    if (
+        metadata is None
+        or participant_metadata is None
+        or len(words) != 687
+        or len(segments) != 687
+        or len(dialogue_acts) != 695
+    ):
+        raise PublicMaterialPrerequisiteError(
+            "AMI loader source families do not match frozen counts"
+        )
+    return (
+        metadata,
+        tuple(words),
+        tuple(segments),
+        tuple(dialogue_acts),
+        participant_metadata,
+    )
+
+
+def _canonical_artifact_bytes(value: Any) -> bytes:
+    try:
+        return json.dumps(
+            value,
+            sort_keys=True,
+            separators=(",", ":"),
+            ensure_ascii=True,
+            allow_nan=False,
+        ).encode("ascii")
+    except (TypeError, ValueError, UnicodeError) as error:
+        raise PublicMaterialPrerequisiteError(
+            "non-lockbox artifact is not canonical JSON"
+        ) from error
+
+
+def _validate_source_silent_ami_evidence_cache(
+    payload: Any,
+    *,
+    tracked_public_authority_commitment_sha256: str,
+) -> dict[str, Any]:
+    from scripts.emotion_state_phase_b_ami_mechanics import (
+        contribution_limited_aggregates_v2,
+    )
+
+    if (
+        not _has_exact_string_keys(payload, set(_AMI_EVIDENCE_CACHE_KEYS))
+        or tuple(payload) != _AMI_EVIDENCE_CACHE_KEYS
+    ):
+        raise PublicMaterialPrerequisiteError(
+            "AMI evidence cache fields do not match"
+        )
+    cache = _exact_json_mapping(payload, "AMI evidence cache")
+    scenario_only = tuple(
+        meeting
+        for meeting in AMI_FULL_CORPUS_ORDER
+        if meeting not in set(AMI_FULL_ONLY_ORDER)
+    )
+    expected_membership = [
+        ["scenario_only", list(scenario_only)],
+        ["full_corpus", list(AMI_FULL_CORPUS_ORDER)],
+        ["full_only", list(AMI_FULL_ONLY_ORDER)],
+    ]
+    if (
+        type(cache["schema_id"]) is not str
+        or cache["schema_id"] != AMI_EVIDENCE_CACHE_SCHEMA_ID
+        or type(cache["schema_version"]) is not int
+        or cache["schema_version"] != 1
+        or type(cache["source_file_count"]) is not int
+        or cache["source_file_count"] != EXPECTED_AMI_SELECTED_SOURCE_COUNT
+        or not _matches_packet_contract_exactly(
+            cache["partition_membership"],
+            expected_membership,
+        )
+        or not _matches_packet_contract_exactly(
+            cache["official_order"],
+            list(AMI_FULL_CORPUS_ORDER),
+        )
+        or cache["tracked_public_authority_commitment_sha256"]
+        != tracked_public_authority_commitment_sha256
+        or cache["aggregate_sha256"] != _canonical_digest(cache["aggregate"])
+        or cache["self_sha256"] != canonical_payload_sha256(cache)
+    ):
+        raise PublicMaterialPrerequisiteError(
+            "AMI evidence cache authority or commitment does not match"
+        )
+    for name in (
+        "source_authority_sha256",
+        "tracked_public_authority_commitment_sha256",
+        "aggregate_sha256",
+        "self_sha256",
+    ):
+        _require_sha256(cache[name], f"AMI evidence cache {name}")
+    meetings = _restore_ami_meetings(cache["meetings"])
+    if tuple(meeting.meeting_id for meeting in meetings) != AMI_FULL_CORPUS_ORDER:
+        raise PublicMaterialPrerequisiteError(
+            "AMI evidence meeting order does not match authority"
+        )
+    membership = {
+        name: tuple(identifiers)
+        for name, identifiers in expected_membership
+    }
+    try:
+        rebuilt = contribution_limited_aggregates_v2(
+            meetings,
+            membership,
+            AMI_FULL_CORPUS_ORDER,
+            minimum_contributors=MINIMUM_UNIQUE_ACTORS,
+        )
+        validate_ami_mechanics_aggregates_v2(
+            cache["aggregate"],
+            meetings=cache["meetings"],
+            partition_membership=membership,
+            official_order=AMI_FULL_CORPUS_ORDER,
+            minimum_contributors=MINIMUM_UNIQUE_ACTORS,
+        )
+        validate_published_ami_aggregate_v2(cache["aggregate"])
+    except (TypeError, ValueError) as error:
+        raise PublicMaterialPrerequisiteError(
+            f"AMI evidence aggregate validation failed: {error}"
+        ) from error
+    if not _matches_packet_contract_exactly(cache["aggregate"], rebuilt):
+        raise PublicMaterialPrerequisiteError(
+            "AMI evidence aggregate does not replay from meetings"
+        )
+    return cache
+
+
+def _artifact_cache_commitments(
+    *,
+    feature_caches: Mapping[str, Mapping[str, Any]],
+    ami_evidence: Mapping[str, Any],
+) -> dict[str, str]:
+    return {
+        **{
+            role: feature_caches[role]["self_sha256"]
+            for role in NON_LOCKBOX_ROLE_ORDER
+        },
+        "ami_evidence": ami_evidence["self_sha256"],
+    }
+
+
+def build_production_non_lockbox_artifacts(
+    *,
+    authorities: Mapping[str, "ValidatedPartitionAuthority"],
+    split_manifest: Mapping[str, Any],
+    read_verified_audio: Callable[[SourceByteIdentity], bytes],
+    read_verified_ami: Callable[[SourceByteIdentity], bytes],
+    tracked_evidence: Mapping[str, bytes],
+    tracked_authority: TrackedPublicAuthority,
+    configuration: Mapping[str, Any],
+    environment_lock: Mapping[str, Any],
+    feature_schema: Mapping[str, Any],
+    split_schema: Mapping[str, Any],
+) -> ProductionNonLockboxArtifacts:
+    from scripts.emotion_state_phase_b_ami_mechanics import (
+        contribution_limited_aggregates_v2,
+        load_ami_meeting_evidence_v2,
+    )
+    from scripts.emotion_state_phase_b_evaluation import (
+        frozen_model_identity,
+        mint_slice_analysis,
+    )
+    from scripts.emotion_state_phase_b_features import (
+        extract_acoustic_features_bytes,
+    )
+
+    if (
+        not callable(read_verified_audio)
+        or not callable(read_verified_ami)
+        or read_verified_audio is read_verified_ami
+        or type(tracked_evidence) is not dict
+        or any(type(name) is not str for name in tracked_evidence)
+        or tuple(tracked_evidence) != TRACKED_DATASET_EVIDENCE_FILENAMES
+    ):
+        raise PublicMaterialPrerequisiteError(
+            "exact evidence and two distinct byte-reader capabilities are required"
+        )
+    if (
+        type(authorities) is not dict
+        or any(type(role) is not str for role in authorities)
+        or tuple(authorities) != NON_LOCKBOX_ROLE_ORDER
+    ):
+        raise PublicMaterialPrerequisiteError(
+            "production authorities must be exactly the three non-lockbox roles"
+        )
+    authority_snapshot = {
+        role: authorities[role] for role in NON_LOCKBOX_ROLE_ORDER
+    }
+    manifest, records_by_role = _validated_production_role_algebra(
+        authorities=authority_snapshot,
+        split_manifest=split_manifest,
+    )
+    (
+        validated_configuration,
+        validated_environment,
+        validated_feature_schema,
+        validated_split_schema,
+    ) = _validated_non_lockbox_static_mappings(
+        configuration=configuration,
+        environment_lock=environment_lock,
+        feature_schema=feature_schema,
+        split_schema=split_schema,
+    )
+    configuration_sha256 = _canonical_digest(validated_configuration)
+    if configuration_sha256 != manifest["configuration_sha256"]:
+        raise PublicMaterialPrerequisiteError(
+            "configuration identity does not match split authority"
+        )
+    evidence_snapshot = _tracked_evidence_snapshot(tracked_evidence)
+    frozen_tracked_authority = _validated_non_lockbox_tracked_authority(
+        tracked_authority
+    )
+    audio_sources = _selected_nonfinal_audio_sources(
+        tracked_authority=frozen_tracked_authority,
+        records_by_role=records_by_role,
+    )
+    ami_sources = _select_ami_source_identities(frozen_tracked_authority)
+    tracked_commitment = tracked_public_authority_commitment_sha256(
+        tracked_evidence=evidence_snapshot,
+        authority=frozen_tracked_authority,
+    )
+    model_seed = int(configuration_sha256[:8], 16)
+    model_identity = frozen_model_identity(model_seed)
+
+    feature_caches: dict[str, dict[str, Any]] = {}
+    partition_evidence: dict[str, Any] = {}
+    for role in NON_LOCKBOX_ROLE_ORDER:
+        feature_rows: list[dict[str, float]] = []
+        for source in audio_sources[role]:
+            content = read_verified_audio(source)
+            if (
+                type(content) is not bytes
+                or len(content) != source.size_bytes
+                or _sha256(content) != source.sha256
+            ):
+                raise PublicMaterialPrerequisiteError(
+                    f"{role} audio bytes do not match sealed identity"
+                )
+            feature_rows.append(_exact_feature_values(
+                extract_acoustic_features_bytes(content)
+            ))
+        cache = _build_acoustic_feature_cache(
+            role=role,
+            authority=authority_snapshot[role],
+            feature_rows=feature_rows,
+            tracked_public_authority_commitment_sha256=tracked_commitment,
+            environment_lock_sha256=EXPECTED_EVIDENCE_IDENTITY_SHA256[
+                "environment_lock_sha256"
+            ],
+            feature_schema_sha256=EXPECTED_EVIDENCE_IDENTITY_SHA256[
+                "feature_schema_sha256"
+            ],
+            split_schema_sha256=EXPECTED_EVIDENCE_IDENTITY_SHA256[
+                "split_schema_sha256"
+            ],
+            _validated_records=records_by_role[role],
+        )
+        feature_caches[role] = cache
+        partition_evidence[role] = _partition_evidence_from_feature_cache(
+            role=role,
+            authority=authority_snapshot[role],
+            records=records_by_role[role],
+            cache=cache,
+            configuration=validated_configuration,
+            environment_lock=validated_environment,
+            feature_schema=validated_feature_schema,
+            split_schema=validated_split_schema,
+            model_identity=model_identity,
+        )
+
+    diagnostic_probabilities, diagnostic, _thresholds = (
+        _evaluate_non_lockbox_partition_evidence(
+            partition_evidence=partition_evidence,
+            model_seed=model_seed,
+            configuration=validated_configuration,
+        )
+    )
+
+    metadata, words, segments, dialogue_acts, participants = (
+        _ami_loader_inputs(
+            selected_sources=ami_sources,
+            read_verified_ami=read_verified_ami,
+        )
+    )
+    meetings = load_ami_meeting_evidence_v2(
+        metadata,
+        words,
+        segments,
+        dialogue_acts,
+        frozen_tracked_authority.ami_official_order,
+        participant_metadata=participants,
+    )
+    membership = {
+        name: identifiers
+        for name, identifiers
+        in frozen_tracked_authority.ami_partition_membership
+    }
+    ami_aggregate = contribution_limited_aggregates_v2(
+        meetings,
+        membership,
+        frozen_tracked_authority.ami_official_order,
+        minimum_contributors=MINIMUM_UNIQUE_ACTORS,
+    )
+    serialized_meetings = [
+        _serialize_ami_meeting(meeting) for meeting in meetings
+    ]
+    try:
+        validate_ami_mechanics_aggregates_v2(
+            ami_aggregate,
+            meetings=serialized_meetings,
+            partition_membership=membership,
+            official_order=frozen_tracked_authority.ami_official_order,
+            minimum_contributors=MINIMUM_UNIQUE_ACTORS,
+        )
+        validate_published_ami_aggregate_v2(ami_aggregate)
+    except (TypeError, ValueError) as error:
+        raise PublicMaterialPrerequisiteError(
+            f"AMI v2 aggregate is invalid: {error}"
+        ) from error
+    ami_evidence = _build_ami_evidence_cache(
+        tracked_authority=frozen_tracked_authority,
+        meetings=meetings,
+        aggregate=ami_aggregate,
+        tracked_public_authority_commitment_sha256=tracked_commitment,
+    )
+
+    slices = _build_frozen_diagnostic_slice_mapping(
+        training_authority=authority_snapshot["training_discovery"],
+        training_feature_cache=feature_caches["training_discovery"],
+        diagnostic_authority=authority_snapshot["balanced_diagnostic"],
+        diagnostic_feature_cache=feature_caches["balanced_diagnostic"],
+        _validated_training_records=records_by_role["training_discovery"],
+        _validated_diagnostic_records=records_by_role[
+            "balanced_diagnostic"
+        ],
+        _feature_caches_are_validated=True,
+    )
+    diagnostic_slices = mint_slice_analysis(
+        diagnostic_probabilities,
+        diagnostic,
+        slices,
+    )
+    cache_commitments = _artifact_cache_commitments(
+        feature_caches=feature_caches,
+        ami_evidence=ami_evidence,
+    )
+    review_packet = build_non_lockbox_review_packet(
+        diagnostic_aggregate=diagnostic.to_payload(),
+        diagnostic_slice_analysis=diagnostic_slices.to_payload(),
+        ami_aggregate=ami_evidence["aggregate"],
+        artifact_cache_commitments=cache_commitments,
+        split_manifest_sha256=manifest["split_manifest_sha256"],
+        tracked_public_authority_commitment_sha256=tracked_commitment,
+    )
+    if review_packet["artifact_cache_commitments"] != cache_commitments:
+        raise PublicMaterialPrerequisiteError(
+            "packet cache commitments do not match minted artifacts"
+        )
+    return ProductionNonLockboxArtifacts(
+        feature_caches=copy.deepcopy(feature_caches),
+        ami_evidence=copy.deepcopy(ami_evidence),
+        review_packet=copy.deepcopy(review_packet),
+    )
+
+
+def restore_production_non_lockbox_artifacts(
+    *,
+    authorities: Mapping[str, "ValidatedPartitionAuthority"],
+    split_manifest: Mapping[str, Any],
+    feature_caches: Mapping[str, Mapping[str, Any]],
+    ami_evidence: Mapping[str, Any],
+    review_packet: Mapping[str, Any],
+    configuration: Mapping[str, Any],
+    environment_lock: Mapping[str, Any],
+    feature_schema: Mapping[str, Any],
+    split_schema: Mapping[str, Any],
+) -> ProductionNonLockboxArtifacts:
+    from scripts.emotion_state_phase_b_evaluation import (
+        frozen_model_identity,
+        mint_slice_analysis,
+    )
+
+    if (
+        type(feature_caches) is not dict
+        or any(type(role) is not str for role in feature_caches)
+        or tuple(feature_caches) != NON_LOCKBOX_ROLE_ORDER
+        or any(type(cache) is not dict for cache in feature_caches.values())
+        or type(ami_evidence) is not dict
+        or type(review_packet) is not dict
+    ):
+        raise PublicMaterialPrerequisiteError(
+            "persisted non-lockbox artifacts do not match exact shape"
+        )
+    manifest, records_by_role = _validated_production_role_algebra(
+        authorities=authorities,
+        split_manifest=split_manifest,
+    )
+    (
+        validated_configuration,
+        validated_environment,
+        validated_feature_schema,
+        validated_split_schema,
+    ) = _validated_non_lockbox_static_mappings(
+        configuration=configuration,
+        environment_lock=environment_lock,
+        feature_schema=feature_schema,
+        split_schema=split_schema,
+    )
+    configuration_sha256 = _canonical_digest(validated_configuration)
+    if configuration_sha256 != manifest["configuration_sha256"]:
+        raise PublicMaterialPrerequisiteError(
+            "configuration identity does not match split authority"
+        )
+    packet = validate_non_lockbox_review_packet(review_packet)
+    if packet["split_manifest_sha256"] != manifest["split_manifest_sha256"]:
+        raise PublicMaterialPrerequisiteError(
+            "packet split identity does not match restored authority"
+        )
+    tracked_commitment = packet[
+        "tracked_public_authority_commitment_sha256"
+    ]
+
+    validated_caches: dict[str, dict[str, Any]] = {}
+    for role in NON_LOCKBOX_ROLE_ORDER:
+        validated_caches[role] = _validate_acoustic_feature_cache(
+            feature_caches[role],
+            role=role,
+            authority=authorities[role],
+            tracked_public_authority_commitment_sha256=tracked_commitment,
+            environment_lock_sha256=EXPECTED_EVIDENCE_IDENTITY_SHA256[
+                "environment_lock_sha256"
+            ],
+            feature_schema_sha256=EXPECTED_EVIDENCE_IDENTITY_SHA256[
+                "feature_schema_sha256"
+            ],
+            split_schema_sha256=EXPECTED_EVIDENCE_IDENTITY_SHA256[
+                "split_schema_sha256"
+            ],
+            _validated_records=records_by_role[role],
+        )
+    validated_ami = _validate_source_silent_ami_evidence_cache(
+        ami_evidence,
+        tracked_public_authority_commitment_sha256=tracked_commitment,
+    )
+    actual_commitments = _artifact_cache_commitments(
+        feature_caches=validated_caches,
+        ami_evidence=validated_ami,
+    )
+    if not _matches_packet_contract_exactly(
+        packet["artifact_cache_commitments"],
+        actual_commitments,
+    ):
+        raise PublicMaterialPrerequisiteError(
+            "packet cache commitments do not match restored artifacts"
+        )
+
+    model_seed = int(configuration_sha256[:8], 16)
+    model_identity = frozen_model_identity(model_seed)
+    partition_evidence = {
+        role: _partition_evidence_from_feature_cache(
+            role=role,
+            authority=authorities[role],
+            records=records_by_role[role],
+            cache=validated_caches[role],
+            configuration=validated_configuration,
+            environment_lock=validated_environment,
+            feature_schema=validated_feature_schema,
+            split_schema=validated_split_schema,
+            model_identity=model_identity,
+        )
+        for role in NON_LOCKBOX_ROLE_ORDER
+    }
+    diagnostic_probabilities, diagnostic, _thresholds = (
+        _evaluate_non_lockbox_partition_evidence(
+            partition_evidence=partition_evidence,
+            model_seed=model_seed,
+            configuration=validated_configuration,
+        )
+    )
+    slices = _build_frozen_diagnostic_slice_mapping(
+        training_authority=authorities["training_discovery"],
+        training_feature_cache=validated_caches["training_discovery"],
+        diagnostic_authority=authorities["balanced_diagnostic"],
+        diagnostic_feature_cache=validated_caches["balanced_diagnostic"],
+        _validated_training_records=records_by_role["training_discovery"],
+        _validated_diagnostic_records=records_by_role[
+            "balanced_diagnostic"
+        ],
+        _feature_caches_are_validated=True,
+    )
+    diagnostic_slices = mint_slice_analysis(
+        diagnostic_probabilities,
+        diagnostic,
+        slices,
+    )
+    rebuilt_packet = build_non_lockbox_review_packet(
+        diagnostic_aggregate=diagnostic.to_payload(),
+        diagnostic_slice_analysis=diagnostic_slices.to_payload(),
+        ami_aggregate=validated_ami["aggregate"],
+        artifact_cache_commitments=actual_commitments,
+        split_manifest_sha256=manifest["split_manifest_sha256"],
+        tracked_public_authority_commitment_sha256=tracked_commitment,
+    )
+    comparisons = (
+        *(
+            (feature_caches[role], validated_caches[role])
+            for role in NON_LOCKBOX_ROLE_ORDER
+        ),
+        (ami_evidence, validated_ami),
+        (review_packet, rebuilt_packet),
+    )
+    if any(
+        _canonical_artifact_bytes(supplied)
+        != _canonical_artifact_bytes(rebuilt)
+        for supplied, rebuilt in comparisons
+    ):
+        raise PublicMaterialPrerequisiteError(
+            "persisted non-lockbox artifacts do not replay canonically"
+        )
+    return ProductionNonLockboxArtifacts(
+        feature_caches=copy.deepcopy(validated_caches),
+        ami_evidence=copy.deepcopy(validated_ami),
+        review_packet=copy.deepcopy(rebuilt_packet),
     )

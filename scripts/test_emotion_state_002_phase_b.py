@@ -19,13 +19,18 @@ import time
 import unittest
 import warnings
 from collections import Counter
-from contextlib import ExitStack, contextmanager, nullcontext, redirect_stderr
+from contextlib import (
+    ExitStack,
+    contextmanager,
+    nullcontext,
+    redirect_stderr,
+)
 from copy import deepcopy
-from dataclasses import replace
+from dataclasses import fields, replace
 from io import StringIO
 from pathlib import Path
 from types import SimpleNamespace
-from typing import Any, Callable
+from typing import Any, Callable, Mapping
 from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -558,51 +563,85 @@ class PhaseBContractTests(unittest.TestCase):
         ).read_text(encoding="utf-8-sig")
         self.assertIn(boundary, protocol)
 
-    def test_task_9_production_publication_sections_fail_closed_without_state(
+    def test_task_9_publication_cli_sections_fail_closed_without_state(
         self,
     ) -> None:
-        validator = ROOT / "scripts/validate_emotion_state_002_phase_b.py"
-        fixed_paths = (
-            ROOT / ".tmp/emotion-state-002-phase-b/state.json",
-            ROOT / ".tmp/emotion-state-002-phase-b/publication/transaction.json",
-            ROOT / ".tmp/emotion-state-002-phase-b/publication/receipt.json",
-            ROOT
-            / "research/experiments/generated/"
-            "EMOTION-STATE-002-phase-b-public-data-feasibility/result.json",
-            ROOT
-            / "research/experiments/generated/"
-            "EMOTION-STATE-002-phase-b-public-data-feasibility/report.md",
-        )
-        before = tuple(os.path.lexists(path) for path in fixed_paths)
-        self.assertEqual(before, (False,) * len(fixed_paths))
-        commands = (
-            (
-                "candidate",
-                "--receipt",
-                ".tmp/emotion-state-002-phase-b/publication/receipt.json",
-            ),
-            ("checkpoint",),
-        )
-        for arguments in commands:
-            completed = subprocess.run(
-                [str(EVALUATION_PYTHON), str(validator), *arguments],
-                cwd=ROOT,
-                capture_output=True,
-                check=False,
-                text=True,
+        from scripts import run_emotion_state_002_phase_b as runner
+        from scripts import validate_emotion_state_002_phase_b as validator
+
+        with tempfile.TemporaryDirectory() as temporary:
+            project_root = Path(temporary)
+            input_root = project_root / "inputs"
+            state_root = project_root / "state"
+            canonical_root = project_root / "canonical"
+            public_root = project_root / "public"
+            for root in (input_root, state_root, canonical_root, public_root):
+                root.mkdir(parents=True)
+            paths = runner.RunnerPaths.for_testing(
+                project_root=project_root,
+                input_root=input_root,
+                state_root=state_root,
+                canonical_root=canonical_root,
+                config_path=input_root / "config.json",
+                environment_lock_path=input_root / "requirements.lock",
+                feature_schema_path=input_root / "feature.schema.json",
+                split_schema_path=input_root / "split.schema.json",
+                split_manifest_path=(
+                    state_root / "split/validated-split-manifest.json"
+                ),
+                input_ledger_path=state_root / "inputs/input-ledger.json",
+                non_lockbox_packet_path=(
+                    state_root / "non-lockbox/non-lockbox-packet.json"
+                ),
+                lockbox_result_path=state_root / "lockbox/lockbox-result.json",
+                public_material_root=public_root,
             )
-            with self.subTest(section=arguments[0]):
-                self.assertEqual(completed.returncode, 1)
-                self.assertEqual(completed.stdout, "")
-                self.assertIn(
-                    f"Phase B validation failed: {arguments[0]}",
-                    completed.stderr,
-                )
-                self.assertNotIn("Traceback", completed.stderr)
-        self.assertEqual(
-            tuple(os.path.lexists(path) for path in fixed_paths),
-            before,
-        )
+            with runner.publication_lock(paths):
+                pass
+            receipt_path = paths.receipt_path("receipt.json")
+            fixed_paths = (
+                paths.state_path,
+                paths.journal_path,
+                receipt_path,
+                paths.result_path,
+                paths.report_path,
+            )
+            before = tuple(os.path.lexists(path) for path in fixed_paths)
+            self.assertEqual(before, (False,) * len(fixed_paths))
+            commands = (
+                ("candidate", "--receipt", str(receipt_path)),
+                ("checkpoint",),
+            )
+            with patch.object(
+                runner.RunnerPaths,
+                "production",
+                return_value=paths,
+            ) as production_factory:
+                for arguments in commands:
+                    stdout = StringIO()
+                    stderr = StringIO()
+                    with patch("sys.stdout", new=stdout), redirect_stderr(stderr):
+                        returncode = validator.main(arguments)
+                    with self.subTest(section=arguments[0]):
+                        self.assertEqual(returncode, 1)
+                        self.assertEqual(stdout.getvalue(), "")
+                        self.assertEqual(
+                            stderr.getvalue(),
+                            "EMOTION-STATE-002 Phase B validation failed: "
+                            f"{arguments[0]}: required path is missing\n",
+                        )
+                        self.assertNotIn("Traceback", stderr.getvalue())
+                        self.assertEqual(
+                            tuple(
+                                os.path.lexists(path) for path in fixed_paths
+                            ),
+                            before,
+                        )
+                self.assertEqual(production_factory.call_count, len(commands))
+            self.assertEqual(
+                tuple(os.path.lexists(path) for path in fixed_paths),
+                before,
+            )
 
     def test_crema_label_ledger_validates_and_fails_closed(self) -> None:
         from scripts.validate_emotion_state_002_phase_b import (
@@ -1891,13 +1930,54 @@ class AcousticFeatureTests(unittest.TestCase):
 
 class EnvironmentLockTests(unittest.TestCase):
     def test_canonical_lock_matches_wheels_and_exact_runtime_identity(self) -> None:
+        from scripts import validate_emotion_state_002_phase_b as validator
         from scripts.validate_emotion_state_002_phase_b import (
             load_json_strict,
+            validate_environment_identity_bytes,
             validate_environment_identity,
             validate_environment_lock,
+            validate_installed_environment_identity,
         )
 
         lock = validate_environment_lock(load_json_strict(ENVIRONMENT_LOCK))
+        wheel_bytes = {
+            distribution["wheel_filename"]: (
+                WHEELHOUSE / distribution["wheel_filename"]
+            ).read_bytes()
+            for distribution in lock["distributions"]
+        }
+        lock_bytes = ENVIRONMENT_LOCK.read_bytes()
+        with patch.object(
+            validator,
+            "validate_environment_identity_bytes",
+            side_effect=AssertionError("installed check read held source bytes"),
+        ), patch.object(
+            validator,
+            "load_json_strict",
+            side_effect=AssertionError("installed check read a static JSON path"),
+        ), patch.object(
+            validator,
+            "validate_environment_lock",
+            side_effect=AssertionError("installed check consumed held lock data"),
+        ):
+            installed_report = validate_installed_environment_identity()
+        with patch.object(
+            Path,
+            "read_bytes",
+            side_effect=AssertionError("byte check performed a path read"),
+        ), patch.object(
+            Path,
+            "iterdir",
+            side_effect=AssertionError("byte check enumerated a directory"),
+        ), patch.object(
+            validator,
+            "validate_installed_environment_identity",
+            side_effect=AssertionError("byte check inspected the process"),
+        ):
+            byte_report = validate_environment_identity_bytes(
+                lock_bytes,
+                wheel_bytes,
+            )
         report = validate_environment_identity(
             lock_path=ENVIRONMENT_LOCK,
             wheelhouse_path=WHEELHOUSE,
@@ -1910,6 +1990,12 @@ class EnvironmentLockTests(unittest.TestCase):
             distribution["wheel_filename"]: distribution["sha256"]
             for distribution in lock["distributions"]
         }
+        self.assertEqual(installed_report["installed_distributions"], expected)
+        self.assertNotIn("wheel_count", installed_report)
+        self.assertNotIn("wheel_hashes", installed_report)
+        self.assertEqual(byte_report["environment_lock"], lock)
+        self.assertEqual(byte_report["wheel_count"], len(expected))
+        self.assertEqual(byte_report["wheel_hashes"], expected_hashes)
         self.assertEqual(report["installed_distributions"], expected)
         self.assertEqual(report["wheel_count"], len(expected))
         self.assertEqual(report["wheel_hashes"], expected_hashes)
@@ -1953,9 +2039,12 @@ class EnvironmentLockTests(unittest.TestCase):
     def test_actual_interpreter_platform_mismatch_fails_closed(self) -> None:
         from scripts.validate_emotion_state_002_phase_b import (
             validate_environment_identity,
+            validate_installed_environment_identity,
         )
 
         with patch("sysconfig.get_platform", return_value="linux-x86_64"):
+            with self.assertRaisesRegex(ValueError, "platform"):
+                validate_installed_environment_identity()
             with self.assertRaisesRegex(ValueError, "platform"):
                 validate_environment_identity(
                     lock_path=ENVIRONMENT_LOCK,
@@ -2038,6 +2127,7 @@ class EnvironmentLockTests(unittest.TestCase):
         from scripts.validate_emotion_state_002_phase_b import (
             _validate_installed_distributions,
             load_json_strict,
+            validate_environment_identity_bytes,
             validate_environment_identity,
             validate_environment_lock,
         )
@@ -2067,14 +2157,53 @@ class EnvironmentLockTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "installed distributions"):
             _validate_installed_distributions(lock, mismatch)
 
+        wheel_bytes = {
+            distribution["wheel_filename"]: (
+                WHEELHOUSE / distribution["wheel_filename"]
+            ).read_bytes()
+            for distribution in lock["distributions"]
+        }
+        malformed_lock_bytes = (
+            b'{"schema_id":"first","schema_id":"duplicate"}'
+        )
+        with self.assertRaisesRegex(ValueError, "duplicate"):
+            validate_environment_identity_bytes(
+                malformed_lock_bytes,
+                wheel_bytes,
+            )
+        with self.assertRaisesRegex(ValueError, "UTF-8|environment lock"):
+            validate_environment_identity_bytes(b"\xff", wheel_bytes)
+
     def test_missing_extra_and_tampered_wheels_fail_closed(self) -> None:
         from scripts.validate_emotion_state_002_phase_b import (
             load_json_strict,
+            validate_environment_identity_bytes,
             validate_environment_identity,
             validate_environment_lock,
         )
 
         lock = validate_environment_lock(load_json_strict(ENVIRONMENT_LOCK))
+        canonical_wheel_bytes = {
+            distribution["wheel_filename"]: (
+                WHEELHOUSE / distribution["wheel_filename"]
+            ).read_bytes()
+            for distribution in lock["distributions"]
+        }
+        lock_bytes = ENVIRONMENT_LOCK.read_bytes()
+        missing_bytes = dict(canonical_wheel_bytes)
+        missing_bytes.pop(next(iter(missing_bytes)))
+        with self.assertRaisesRegex(ValueError, "wheel set"):
+            validate_environment_identity_bytes(lock_bytes, missing_bytes)
+        extra_bytes = dict(canonical_wheel_bytes)
+        extra_bytes["unexpected-1.0-py3-none-any.whl"] = b"unexpected"
+        with self.assertRaisesRegex(ValueError, "wheel set"):
+            validate_environment_identity_bytes(lock_bytes, extra_bytes)
+        tampered_bytes = dict(canonical_wheel_bytes)
+        first_name = next(iter(tampered_bytes))
+        tampered_bytes[first_name] += b"tampered"
+        with self.assertRaisesRegex(ValueError, "wheel hash"):
+            validate_environment_identity_bytes(lock_bytes, tampered_bytes)
+
         ENVIRONMENT_TEST_TEMP.mkdir(parents=True, exist_ok=True)
         with tempfile.TemporaryDirectory(dir=ENVIRONMENT_TEST_TEMP) as directory:
             temporary_wheelhouse = Path(directory)
@@ -4329,7 +4458,7 @@ class AmiMaterialEvidenceV2LoaderTests(unittest.TestCase):
                         "cross_agent": "M1.B.words.xml#id(w1)",
                         "cross_meeting": "M2.A.words.xml#id(w1)",
                         "external_reference": (
-                            "https://example.test/M1.A.words.xml#id(w1)"
+                            "urn:example:M1.A.words.xml#id(w1)"
                         ),
                         "malformed_reference": "M1.A.words.xml-id(w1)",
                         "unknown_identifier": "M1.A.words.xml#id(missing)",
@@ -4830,8 +4959,7 @@ class AmiMaterialEvidenceV2LoaderTests(unittest.TestCase):
                     record(
                         "d1",
                         href=(
-                            "https://example.test/"
-                            "M1.A.segments.xml#id(s1)"
+                            "urn:example:M1.A.segments.xml#id(s1)"
                         ),
                     )
                 ),
@@ -6678,9 +6806,13 @@ class SecurePublicMaterialByteTests(unittest.TestCase):
             environment_lock_path=input_root / "requirements.lock",
             feature_schema_path=input_root / "feature.schema.json",
             split_schema_path=input_root / "split.schema.json",
-            split_manifest_path=input_root / "split-manifest.json",
-            input_ledger_path=input_root / "input-ledger.json",
-            non_lockbox_packet_path=state_root / "non-lockbox.json",
+            split_manifest_path=(
+                state_root / "split/validated-split-manifest.json"
+            ),
+            input_ledger_path=state_root / "inputs/input-ledger.json",
+            non_lockbox_packet_path=(
+                state_root / "non-lockbox/non-lockbox-packet.json"
+            ),
             lockbox_result_path=state_root / "lockbox.json",
             public_material_root=public_root,
         )
@@ -7126,6 +7258,7 @@ class SecurePublicMaterialByteTests(unittest.TestCase):
             read.assert_called_once_with(
                 material,
                 maximum_bytes=len(content),
+                require_single_link=True,
             )
             self.assertEqual(verified.logical_name, "nested/sample.bin")
             self.assertEqual(verified.content, content)
@@ -7170,6 +7303,25 @@ class SecurePublicMaterialByteTests(unittest.TestCase):
                         maximum_bytes=len(content),
                     )
                 read.assert_called_once()
+
+            hardlink = public_root / "nested" / "sample-hardlink.bin"
+            os.link(material, hardlink)
+            try:
+                with self.assertRaisesRegex(
+                    runner.RunnerError,
+                    "single-link",
+                ):
+                    runner._read_verified_public_bytes(
+                        paths,
+                        material,
+                        expected_sha256=hashlib.sha256(
+                            material.read_bytes()
+                        ).hexdigest().upper(),
+                        expected_size_bytes=material.stat().st_size,
+                        maximum_bytes=material.stat().st_size,
+                    )
+            finally:
+                hardlink.unlink()
             with patch.object(
                 runner,
                 "_read_file_nofollow",
@@ -9006,6 +9158,11 @@ class EvaluationTests(unittest.TestCase):
 
     def test_rereview_cross_calibration_lineage_mixing_rejects(self) -> None:
         from scripts.emotion_state_phase_b_evaluation import evaluate_partition
+        from scripts.validate_emotion_state_002_phase_b import (
+            derive_phase_b_decision,
+            validate_calibration_result,
+            validate_decision_inputs,
+        )
 
         run_a = self._semantic_artifacts(0)
         run_b = self._semantic_artifacts(1)
@@ -9027,6 +9184,49 @@ class EvaluationTests(unittest.TestCase):
             run_a["decision"]["calibration_evidence_mint_sha256"],
             run_a["calibration"].mint_sha256,
         )
+
+        detached_calibration = run_a["calibration"].to_payload()
+        detached_calibration["probability_evidence_mint_sha256"] = (
+            "F" * 64
+            if detached_calibration["probability_evidence_mint_sha256"]
+            != "F" * 64
+            else "E" * 64
+        )
+        self._reseal_payload(detached_calibration)
+        with self.assertRaisesRegex(
+            ValueError,
+            "calibration probability evidence mint",
+        ):
+            validate_calibration_result(detached_calibration)
+
+        detached = run_a["decision"].to_payload()
+        detached["calibration_evidence_mint_sha256"] = (
+            "F" * 64
+            if detached["calibration_evidence_mint_sha256"] != "F" * 64
+            else "E" * 64
+        )
+        self._reseal_payload(detached)
+        validity = {
+            "material_valid": True,
+            "environment_valid": True,
+            "split_valid": True,
+            "leakage_free": True,
+            "deterministic": True,
+            "lockbox_valid": True,
+        }
+        for name, operation in (
+            (
+                "input validator",
+                lambda: validate_decision_inputs(detached, validity),
+            ),
+            (
+                "decision derivation",
+                lambda: derive_phase_b_decision(detached),
+            ),
+        ):
+            with self.subTest(detached_calibration_mint=name):
+                with self.assertRaisesRegex(ValueError, "calibration.*mint"):
+                    operation()
 
     def test_rereview_bound_payload_mutation_and_reseal_cannot_change_decision(
         self,
@@ -9594,6 +9794,12 @@ class EvaluationTests(unittest.TestCase):
         })
         self._reseal_payload(bootstrap)
         validate_bootstrap_result(bootstrap)
+
+        detached_probability = artifacts["bootstrap"].to_payload()
+        detached_probability["probability_evidence_mint_sha256"] = "F" * 64
+        self._reseal_payload(detached_probability)
+        with self.assertRaisesRegex(ValueError, "probability.*mint"):
+            validate_bootstrap_result(detached_probability)
 
     def test_decision_rule_precedence_uses_only_derived_bound_facts(self) -> None:
         from scripts.emotion_state_phase_b_evaluation import (
@@ -10781,8 +10987,11 @@ class TrackedPublicAuthorityTests(unittest.TestCase):
             tuple(packet_signature.parameters),
             (
                 "diagnostic_aggregate",
+                "diagnostic_slice_analysis",
                 "ami_aggregate",
+                "artifact_cache_commitments",
                 "split_manifest_sha256",
+                "tracked_public_authority_commitment_sha256",
             ),
         )
         self.assertTrue(
@@ -13846,6 +14055,7 @@ with Fixture.patches(runner=runner), ExitStack() as sentinels:
             0,
             msg=f"junction stdout={result.stdout!r} stderr={result.stderr!r}",
         )
+
         status = os.stat(link, follow_symlinks=False)
         self.assertTrue(self.runner._is_link_or_reparse(link, status))
 
@@ -14550,6 +14760,7 @@ with Fixture.patches(runner=runner), ExitStack() as sentinels:
                 state_intent,
                 "verify-admitted-state-cas",
                 "state-root-allowlist:True",
+                "state-root-allowlist:True",
                 state_stage,
                 committed_state,
                 "flush:state",
@@ -14574,6 +14785,10 @@ with Fixture.patches(runner=runner), ExitStack() as sentinels:
                 "preflight-output-shape:True:False",
                 "preflight-output-shape:True:False",
                 "state-root-allowlist:True",
+                "verify-held-file:inputs/split.schema.json",
+                "verify-held-file:inputs/feature.schema.json",
+                "verify-held-file:inputs/requirements.lock",
+                "verify-held-file:inputs/config.json",
             ],
         )
         self.assertEqual(state["phase"], "preflight_complete")
@@ -14823,9 +15038,16 @@ with Fixture.patches(runner=runner), ExitStack() as sentinels:
         source_set = set(expected)
         self.assertEqual([path for path in observed if path in source_set], expected)
         self.assertEqual([item[0] for item in static_reads], list(static_paths))
+        # Explicit precommit, held-group post-yield, and proof-bound close reads.
+        expected_held_revalidations_per_path = 3
         self.assertEqual(
             Counter(final_static_reads),
-            Counter({path: 2 for path in static_paths}),
+            Counter(
+                {
+                    path: expected_held_revalidations_per_path
+                    for path in static_paths
+                }
+            ),
         )
         self.assertEqual(observed.count(self.paths.crema_finished_responses_path), 1)
         self.assertEqual(observed.count(self.paths.crema_summary_table_path), 1)
@@ -17781,20 +18003,23 @@ with Fixture.patches(runner=runner), ExitStack() as sentinels:
             )
             self.assertEqual(close_counts[id(state_intents[0])], 1)
             self.assertTrue(all(count == 1 for count in close_counts.values()))
+            committed = committed_instances[0]
+            committed_cleanup = (committed._file_owner, committed.file)
+            self.assertEqual(owner_restore_calls, [])
 
             if admission == "absent":
                 self.assertTrue(cas_absence)
                 self.assertTrue(all(cas_absence))
-                self.assertEqual(owner_take_calls, [])
+                self.assertEqual(owner_take_calls, [committed_cleanup])
                 self.assertEqual(rename_priors, [])
             else:
                 admitted = admitted_instances[0]
                 initial = admitted.initial_file
                 self.assertIsNotNone(initial)
-                self.assertEqual(len(owner_take_calls), 1)
+                self.assertEqual(len(owner_take_calls), 2)
                 self.assertIs(owner_take_calls[0][0], admitted._initial_owner)
                 self.assertIs(owner_take_calls[0][1], initial)
-                self.assertEqual(owner_restore_calls, [])
+                self.assertEqual(owner_take_calls[1], committed_cleanup)
                 self.assertEqual(len(rename_priors), 1)
                 self.assertIs(rename_priors[0][0], initial)
                 self.assertEqual(
@@ -18535,14 +18760,6321 @@ with Fixture.patches(runner=runner), ExitStack() as sentinels:
                     )
 
         production = self.runner.RunnerPaths.production()
+        activated: list[Any] = []
+
+        class SyntheticNonLockboxLaneActivated(Exception):
+            pass
+
+        def activate_lane(paths: Any) -> dict[str, Any]:
+            activated.append(paths)
+            raise SyntheticNonLockboxLaneActivated
+
         with (
-            patch.object(self.runner, "_forbidden_credentials", return_value=()),
-            self.assertRaisesRegex(
-                self.runner.RunnerError,
-                "production non-lockbox execution is unavailable",
+            patch.object(
+                self.runner,
+                "validate_installed_environment_identity",
+                return_value=None,
             ),
+            patch.object(
+                self.runner,
+                "_assert_closed_environment",
+                return_value=None,
+            ),
+            patch.object(
+                self.runner,
+                "_run_production_non_lockbox_lane",
+                side_effect=activate_lane,
+            ),
+            self.assertRaises(SyntheticNonLockboxLaneActivated),
         ):
             self.runner.run_non_lockbox(production)
+        self.assertEqual(activated, [production])
+
+
+CUT4_ROLE_COUNTS = {
+    "training_discovery": 2491,
+    "calibration": 959,
+    "balanced_diagnostic": 939,
+    "final_lockbox": 2181,
+}
+CUT4_NONFINAL_COUNT = 4389
+CUT4_ELIGIBLE_COUNT = 6570
+CUT4_AMI_XML_COUNT = 2071
+CUT4_FEATURE_COUNT = 17
+CUT4_SLICE_COUNT = 25
+CUT4_NONFINAL_ROLES = (
+    "training_discovery",
+    "calibration",
+    "balanced_diagnostic",
+)
+
+
+class _Cut4ProductionShapeFixture:
+    """Production-cardinality, temporary-root-only Cut 4 source authority."""
+
+    _initialized = False
+    LABELS = ("A", "D", "F", "H", "N", "S")
+    LABEL_COUNTS = {
+        "A": 951,
+        "D": 500,
+        "F": 613,
+        "H": 330,
+        "N": 3834,
+        "S": 342,
+    }
+    SENTENCES = tuple(f"S{index:02d}" for index in range(12))
+    EMOTIONS = ("ANG", "DIS", "FEA", "HAP", "NEU", "SAD")
+    INTENSITIES = ("XX", "LO", "MD", "HI")
+
+    @staticmethod
+    def _pcm_bytes(index: int) -> bytes:
+        import io
+        import struct
+        import wave
+
+        samples = tuple(
+            ((index * 37 + sample * 101) % 12000) - 6000
+            for sample in range(48)
+        )
+        output = io.BytesIO()
+        with wave.open(output, "wb") as destination:
+            destination.setnchannels(1)
+            destination.setsampwidth(2)
+            destination.setframerate(16000)
+            destination.writeframes(struct.pack(f"<{len(samples)}h", *samples))
+        return output.getvalue()
+
+    @staticmethod
+    def _features_from_pcm_bytes(content: bytes) -> dict[str, float]:
+        from scripts.emotion_state_phase_b_features import FEATURE_NAMES
+
+        if type(content) is not bytes:
+            raise AssertionError("Cut 4 feature fixture requires exact bytes")
+        digest = hashlib.sha256(content).digest()
+        values = [
+            float(int.from_bytes(
+                digest[(index * 2) % 32: ((index * 2) % 32) + 2],
+                "big",
+            ) + 1) / 65536.0
+            for index in range(CUT4_FEATURE_COUNT)
+        ]
+        values[0] = 0.1 + values[0]
+        values[1] = float(digest[2] & 1)
+        values[3] = 80.0 + 220.0 * values[3]
+        values[4] = 100.0 * values[4]
+        values[5] = 250.0 * values[5]
+        return {
+            name: float(value)
+            for name, value in zip(FEATURE_NAMES, values, strict=True)
+        }
+
+    @classmethod
+    def _actor_record_counts(cls) -> dict[str, int]:
+        counts = (
+            78, 71, 74, 72, 71, 71, 76, 71, 74, 80, 79, 69, 79,
+            75, 73, 71, 71, 76, 72, 72, 70, 76, 74, 70, 70, 77,
+            72, 70, 71, 77, 71, 71, 79, 71, 74, 74, 75, 71, 71,
+            70, 71, 64, 77, 69, 72, 71, 73, 69, 72, 72, 70, 72,
+            69, 76, 74, 70, 71, 73, 69, 74, 71, 76, 74, 74, 72,
+            73, 75, 75, 73, 72, 73, 69, 70, 72, 70, 74, 71, 80,
+            64, 73, 67, 72, 69, 66, 75, 75, 70, 59, 69, 69, 71,
+        )
+        result = {
+            f"{1001 + index:04d}": count
+            for index, count in enumerate(counts)
+        }
+        if len(result) != 91 or sum(result.values()) != CUT4_ELIGIBLE_COUNT:
+            raise AssertionError("Cut 4 synthetic actor record counts changed")
+        return result
+
+    @classmethod
+    def _actor_label_counts(
+        cls,
+        actor_record_counts: dict[str, int],
+    ) -> dict[str, dict[str, int]]:
+        remaining_targets = (860, 409, 522, 239, 3743, 251)
+        ratios = tuple(value / 6024 for value in remaining_targets)
+        result: dict[str, dict[str, int]] = {}
+        for actor, count in actor_record_counts.items():
+            remaining = count - len(cls.LABELS)
+            raw = [remaining * ratio for ratio in ratios]
+            cells = [1 + int(value) for value in raw]
+            left = count - sum(cells)
+            actor_index = int(actor) - 1001
+            order = sorted(
+                range(len(cls.LABELS)),
+                key=lambda index: (
+                    -(raw[index] - int(raw[index])),
+                    (index - actor_index) % len(cls.LABELS),
+                ),
+            )
+            for index in order[:left]:
+                cells[index] += 1
+            result[actor] = dict(zip(cls.LABELS, cells, strict=True))
+        swaps = (
+            ("1091", "S", "N"), ("1080", "S", "D"),
+            ("1038", "H", "D"), ("1079", "S", "D"),
+            ("1045", "H", "D"), ("1004", "S", "D"),
+            ("1062", "H", "N"), ("1084", "F", "D"),
+            ("1026", "H", "D"), ("1068", "H", "D"),
+            ("1010", "H", "D"), ("1014", "H", "N"),
+            ("1003", "S", "D"), ("1048", "H", "D"),
+            ("1035", "S", "D"), ("1017", "H", "A"),
+            ("1036", "S", "D"), ("1059", "S", "N"),
+            ("1066", "S", "A"), ("1081", "S", "N"),
+            ("1042", "H", "A"), ("1044", "F", "D"),
+            ("1013", "S", "A"), ("1032", "S", "N"),
+            ("1007", "F", "D"), ("1025", "H", "D"),
+            ("1065", "S", "D"), ("1078", "H", "A"),
+            ("1029", "H", "D"), ("1027", "F", "D"),
+            ("1083", "S", "D"), ("1040", "S", "D"),
+            ("1055", "F", "D"), ("1063", "S", "D"),
+            ("1019", "S", "D"), ("1088", "H", "N"),
+            ("1030", "H", "D"), ("1060", "S", "D"),
+            ("1053", "H", "N"), ("1064", "F", "A"),
+            ("1090", "H", "D"), ("1086", "S", "A"),
+            ("1069", "F", "A"), ("1020", "S", "D"),
+            ("1057", "H", "D"), ("1021", "S", "A"),
+            ("1043", "F", "D"), ("1061", "F", "A"),
+            ("1054", "F", "N"), ("1022", "H", "D"),
+        )
+        for actor, donor, recipient in swaps:
+            result[actor][donor] -= 1
+            result[actor][recipient] += 1
+        observed = {
+            label: sum(result[actor][label] for actor in result)
+            for label in cls.LABELS
+        }
+        if observed != cls.LABEL_COUNTS or any(
+            sum(cells.values()) != actor_record_counts[actor]
+            or any(type(value) is not int or value < 1 for value in cells.values())
+            for actor, cells in result.items()
+        ):
+            raise AssertionError("Cut 4 synthetic label allocation changed")
+        return result
+
+    @classmethod
+    def _actor_stems(cls, actor: str) -> tuple[str, ...]:
+        actor_index = int(actor) - 1001
+        by_sentence: dict[str, list[str]] = {}
+        for sentence_index, sentence in enumerate(cls.SENTENCES):
+            baseline = (
+                f"{actor}_{sentence}_{cls.EMOTIONS[sentence_index % 6]}_"
+                f"{cls.INTENSITIES[sentence_index % 4]}"
+            )
+            candidates = [baseline]
+            for emotion in cls.EMOTIONS:
+                for intensity in cls.INTENSITIES:
+                    stem = f"{actor}_{sentence}_{emotion}_{intensity}"
+                    if stem != baseline:
+                        candidates.append(stem)
+            by_sentence[sentence] = candidates
+        result = [by_sentence[sentence][0] for sentence in cls.SENTENCES]
+        for layer in range(1, 24):
+            for offset in range(12):
+                sentence = cls.SENTENCES[(actor_index + offset) % 12]
+                result.append(by_sentence[sentence][layer])
+        if len(result) != 288 or len(set(result)) != 288:
+            raise AssertionError("Cut 4 per-actor stem order changed")
+        return tuple(result)
+
+    @classmethod
+    def _csv_bytes(
+        cls,
+        eligible_stems: tuple[str, ...],
+        eligible_labels: tuple[str, ...],
+        all_stems: tuple[str, ...],
+    ) -> tuple[bytes, bytes]:
+        finished_header = (
+            "", "localid", "pos", "ans", "ttr", "queryType", "numTries",
+            "clipNum", "questNum", "subType", "clipName", "sessionNums",
+            "respEmo", "respLevel", "dispEmo", "dispVal", "dispLevel",
+        )
+        summary_header = (
+            "", "FileName", "VoiceVote", "VoiceLevel", "FaceVote",
+            "FaceLevel", "MultiModalVote", "MultiModalLevel",
+        )
+        finished_rows = [",".join(finished_header)]
+        summary_rows = [",".join(summary_header)]
+
+        def add_raw(stem: str, label: str, local_id: int) -> None:
+            values = [""] * len(finished_header)
+            values[1] = str(local_id)
+            values[5] = "1"
+            values[10] = stem
+            values[12] = label
+            finished_rows.append(",".join(values))
+
+        for index, stem in enumerate(all_stems):
+            if index < CUT4_ELIGIBLE_COUNT:
+                raw_labels = (eligible_labels[index],)
+                summary_label = eligible_labels[index]
+            elif index < CUT4_ELIGIBLE_COUNT + 644:
+                raw_labels = ("A",)
+                summary_label = "A:D"
+            elif index < CUT4_ELIGIBLE_COUNT + 644 + 204:
+                raw_labels = ("A", "D")
+                summary_label = "A"
+            else:
+                raw_labels = ("A",)
+                summary_label = "D"
+            for offset, label in enumerate(raw_labels):
+                add_raw(stem, label, index * 2 + offset)
+            summary_values = [""] * len(summary_header)
+            summary_values[1] = stem
+            summary_values[2] = summary_label
+            summary_rows.append(",".join(summary_values))
+        return (
+            ("\r\n".join(finished_rows) + "\r\n").encode("utf-8"),
+            ("\r\n".join(summary_rows) + "\r\n").encode("utf-8"),
+        )
+
+    @staticmethod
+    def _timed_turns(
+        meeting_id: str,
+        participants: tuple[str, str],
+    ) -> tuple[Any, ...]:
+        from scripts.emotion_state_phase_b_ami_mechanics import TimedTurn
+
+        first, second = participants
+        return (
+            TimedTurn(meeting_id, first, 0, 1000),
+            TimedTurn(meeting_id, second, 800, 1200),
+            TimedTurn(meeting_id, second, 1500, 2500),
+            TimedTurn(meeting_id, first, 2600, 3000),
+        )
+
+    @staticmethod
+    def _dialogue_turns(
+        meeting_id: str,
+        participants: tuple[str, str],
+    ) -> tuple[Any, ...]:
+        from scripts.emotion_state_phase_b_ami_mechanics import Turn
+
+        first, second = participants
+        return (
+            Turn(meeting_id, first, 0, 1000, "ami_da_2"),
+            Turn(meeting_id, second, 800, 1200, "ami_da_1"),
+            Turn(meeting_id, second, 1500, 2500, "ami_da_2"),
+            Turn(meeting_id, first, 2600, 3000, "ami_da_3"),
+        )
+
+    @classmethod
+    def _ami_evidence(
+        cls,
+        meeting_id: str,
+        *,
+        timed: bool = True,
+        dialogue_act_file_count: int = 0,
+        fully_labeled_dialogue_act_file_count: int = 0,
+        unlabeled_dialogue_act_record_count: int = 0,
+        unlabeled_dialogue_act_file_count: int = 0,
+    ) -> Any:
+        from scripts.emotion_state_phase_b_ami_mechanics import (
+            AmiMeetingEvidenceV2,
+        )
+
+        participants = (f"P-{meeting_id}-A", f"P-{meeting_id}-B")
+        dialogue_complete = (
+            dialogue_act_file_count > 0
+            and fully_labeled_dialogue_act_file_count == dialogue_act_file_count
+            and unlabeled_dialogue_act_record_count == 0
+            and unlabeled_dialogue_act_file_count == 0
+        )
+        return AmiMeetingEvidenceV2(
+            meeting_id=meeting_id,
+            participants=participants,
+            timing_file_present=True,
+            timed_turns=(
+                cls._timed_turns(meeting_id, participants) if timed else None
+            ),
+            dialogue_turns=(
+                cls._dialogue_turns(meeting_id, participants)
+                if dialogue_complete
+                else None
+            ),
+            dialogue_act_file_count=dialogue_act_file_count,
+            fully_labeled_dialogue_act_file_count=(
+                fully_labeled_dialogue_act_file_count
+            ),
+            unlabeled_dialogue_act_record_count=(
+                unlabeled_dialogue_act_record_count
+            ),
+            unlabeled_dialogue_act_file_count=unlabeled_dialogue_act_file_count,
+        )
+
+    @classmethod
+    def _ami_meetings(cls) -> tuple[Any, ...]:
+        from scripts import emotion_state_phase_b_public_pipeline as pipeline
+
+        full_only = set(pipeline.AMI_FULL_ONLY_ORDER)
+        scenario_index = 0
+        full_only_index = 0
+        meetings = []
+        for meeting_id in pipeline.AMI_FULL_CORPUS_ORDER:
+            if meeting_id in full_only:
+                full_only_index += 1
+                has_dialogue = full_only_index == 1
+                meetings.append(cls._ami_evidence(
+                    meeting_id,
+                    timed=full_only_index > 5,
+                    dialogue_act_file_count=4 if has_dialogue else 0,
+                    fully_labeled_dialogue_act_file_count=(
+                        3 if has_dialogue else 0
+                    ),
+                    unlabeled_dialogue_act_record_count=(
+                        3 if has_dialogue else 0
+                    ),
+                    unlabeled_dialogue_act_file_count=(
+                        1 if has_dialogue else 0
+                    ),
+                ))
+            else:
+                scenario_index += 1
+                incomplete = scenario_index <= 25
+                meetings.append(cls._ami_evidence(
+                    meeting_id,
+                    dialogue_act_file_count=4,
+                    fully_labeled_dialogue_act_file_count=(
+                        3 if incomplete else 4
+                    ),
+                    unlabeled_dialogue_act_record_count=(
+                        1 if incomplete else 0
+                    ),
+                    unlabeled_dialogue_act_file_count=(
+                        1 if incomplete else 0
+                    ),
+                ))
+        if scenario_index != 138 or full_only_index != 32:
+            raise AssertionError("Cut 4 AMI meeting universe changed")
+        return tuple(meetings)
+
+    @classmethod
+    def initialize(cls) -> None:
+        if cls._initialized:
+            return
+        from scripts import emotion_state_phase_b_evaluation as evaluation
+        from scripts import emotion_state_phase_b_public_pipeline as pipeline
+        from scripts import emotion_state_phase_b_splits as splits
+        from scripts.validate_emotion_state_002_phase_b import (
+            EXPECTED_CONFIG,
+            EXPECTED_ENVIRONMENT_LOCK,
+            EXPECTED_FEATURE_SCHEMA,
+            EXPECTED_SPLIT_SCHEMA,
+        )
+
+        cls.configuration = deepcopy(EXPECTED_CONFIG)
+        cls.environment_lock = deepcopy(EXPECTED_ENVIRONMENT_LOCK)
+        cls.feature_schema = deepcopy(EXPECTED_FEATURE_SCHEMA)
+        cls.split_schema = deepcopy(EXPECTED_SPLIT_SCHEMA)
+        cls.static_bytes = {
+            "configuration": CONFIG.read_bytes(),
+            "environment_lock": ENVIRONMENT_LOCK.read_bytes(),
+            "feature_schema": FEATURE_SCHEMA.read_bytes(),
+            "split_schema": SPLIT_SCHEMA.read_bytes(),
+        }
+        cls.evidence = {
+            name: f"cut4-synthetic-evidence:{name}".encode("ascii")
+            for name in pipeline.TRACKED_DATASET_EVIDENCE_FILENAMES
+        }
+        actor_record_counts = cls._actor_record_counts()
+        actor_label_counts = cls._actor_label_counts(actor_record_counts)
+
+        eligible_stems_list: list[str] = []
+        all_candidates: dict[str, tuple[str, ...]] = {}
+        for actor in sorted(actor_record_counts):
+            candidates = cls._actor_stems(actor)
+            all_candidates[actor] = candidates
+            count = actor_record_counts[actor]
+            eligible_stems_list.extend(candidates[:count])
+        if len(eligible_stems_list) != CUT4_ELIGIBLE_COUNT:
+            raise AssertionError("Cut 4 eligible stem count changed")
+        eligible_stems = tuple(eligible_stems_list)
+
+        eligible_labels_list: list[str] = []
+        for actor in sorted(actor_record_counts):
+            eligible_labels_list.extend(
+                label
+                for label in cls.LABELS
+                for _ in range(actor_label_counts[actor][label])
+            )
+        eligible_labels = tuple(eligible_labels_list)
+        if Counter(eligible_labels) != Counter(cls.LABEL_COUNTS):
+            raise AssertionError("Cut 4 eligible label counts changed")
+
+        extra_stems = []
+        needed = 7441 - CUT4_ELIGIBLE_COUNT
+        for actor in sorted(actor_record_counts):
+            count = actor_record_counts[actor]
+            for stem in all_candidates[actor][count:]:
+                extra_stems.append(stem)
+                if len(extra_stems) == needed:
+                    break
+            if len(extra_stems) == needed:
+                break
+        all_stems = eligible_stems + tuple(extra_stems)
+        if len(all_stems) != 7441 or len(set(all_stems)) != 7441:
+            raise AssertionError("Cut 4 full CREMA identity count changed")
+        cls.eligible_stems = eligible_stems
+        cls.all_stems = all_stems
+        cls.finished_responses, cls.summary_table = cls._csv_bytes(
+            eligible_stems,
+            eligible_labels,
+            all_stems,
+        )
+        records, ledger = evaluation.load_crema_reference_labels_bytes(
+            cls.finished_responses,
+            cls.summary_table,
+            all_stems,
+        )
+        eligible_records = tuple(record for record in records if record.label is not None)
+        abstentions = tuple(record for record in records if record.label is None)
+        configuration_sha256 = hashlib.sha256(json.dumps(
+            cls.configuration,
+            sort_keys=True,
+            separators=(",", ":"),
+            ensure_ascii=False,
+            allow_nan=False,
+        ).encode("utf-8")).hexdigest()
+        assignment = splits.build_actor_split(
+            eligible_records,
+            configuration_sha256,
+        )
+        cls.assignment = dict(assignment)
+        observed_role_counts = {
+            role: sum(
+                1
+                for record in eligible_records
+                if assignment[record.actor_id] == role
+            )
+            for role in (
+                "training_discovery",
+                "calibration",
+                "balanced_diagnostic",
+                "final_lockbox",
+            )
+        }
+        if (
+            len(records) != 7441
+            or len(eligible_records) != CUT4_ELIGIBLE_COUNT
+            or len(abstentions) != 871
+            or len({record.actor_id for record in eligible_records}) != 91
+            or len({record.sentence_id for record in eligible_records}) != 12
+            or {record.label for record in eligible_records} != set(cls.LABELS)
+            or observed_role_counts != CUT4_ROLE_COUNTS
+            or {
+                key: ledger[key]
+                for key in (
+                    "eligible_concordant_unique_winner",
+                    "summary_voice_tie",
+                    "raw_audio_vote_tie",
+                    "unique_winner_disagreement",
+                )
+            } != {
+                "eligible_concordant_unique_winner": 6570,
+                "summary_voice_tie": 644,
+                "raw_audio_vote_tie": 204,
+                "unique_winner_disagreement": 23,
+            }
+        ):
+            raise AssertionError("Cut 4 real split/corpus algebra changed")
+
+        crema_prefix = "data/public/emotion-state/crema-d-v1.0/repository/"
+        audio_identities = []
+        retained_audio: dict[Any, bytes] = {}
+        feature_by_content: dict[bytes, dict[str, float]] = {}
+        label_by_stem = dict(zip(eligible_stems, eligible_labels, strict=True))
+        identity_only_audio = []
+
+        for index, stem in enumerate(all_stems):
+            role = assignment[stem[:4]] if stem in label_by_stem else None
+            if role in CUT4_NONFINAL_ROLES:
+                content = cls._pcm_bytes(index)
+                digest = hashlib.sha256(content).hexdigest().upper()
+                size_bytes = len(content)
+            else:
+                identity_sentinel = f"cut4-identity-only:{stem}".encode("ascii")
+                content = None
+                digest = hashlib.sha256(identity_sentinel).hexdigest().upper()
+                size_bytes = 140
+            identity = pipeline.SourceByteIdentity(
+                project_relative_path=f"{crema_prefix}AudioWAV/{stem}.wav",
+                sha256=digest,
+                size_bytes=size_bytes,
+            )
+            audio_identities.append(identity)
+            if role in CUT4_NONFINAL_ROLES:
+                assert content is not None
+                retained_audio[identity] = content
+                feature_by_content[content] = cls._features_from_pcm_bytes(content)
+            else:
+                identity_only_audio.append(identity)
+        cls.audio_identities = tuple(audio_identities)
+        cls.audio_bytes = retained_audio
+        cls.identity_only_audio = tuple(identity_only_audio)
+        cls.feature_by_content = feature_by_content
+        if (
+            len(retained_audio) != CUT4_NONFINAL_COUNT
+            or len(identity_only_audio) != 3052
+            or set(retained_audio).intersection(identity_only_audio)
+        ):
+            raise AssertionError("Cut 4 retained WAV count changed")
+
+        ami_prefix = (
+            "data/public/emotion-state/ami-manual-annotations-v1.6.2/"
+        )
+        ami_sources: list[Any] = []
+        ami_bytes: dict[Any, bytes] = {}
+
+        def add_ami(path: str, content: bytes, *, retained: bool) -> None:
+            source = pipeline.SourceByteIdentity(
+                project_relative_path=f"{ami_prefix}{path}",
+                sha256=hashlib.sha256(content).hexdigest().upper(),
+                size_bytes=len(content),
+            )
+            ami_sources.append(source)
+            if retained:
+                ami_bytes[source] = content
+
+        add_ami("ami_manual_1.6.2.zip", b"synthetic archive", retained=False)
+        add_ami(
+            "official-partitions/datasets.shtml",
+            b"<html>synthetic partitions</html>",
+            retained=False,
+        )
+        add_ami(
+            "extracted/corpusResources/meetings.xml",
+            b"<meetings synthetic='true'/>",
+            retained=True,
+        )
+        add_ami(
+            "extracted/corpusResources/participants.xml",
+            b"<participants synthetic='true'/>",
+            retained=True,
+        )
+        add_ami(
+            "extracted/corpusResources/da-types.xml",
+            b"<da-types synthetic='true'/>",
+            retained=False,
+        )
+        for family, count, suffix in (
+            ("words", 687, "words.xml"),
+            ("segments", 687, "segments.xml"),
+            ("dialogueActs", 695, "dialog-act.xml"),
+        ):
+            for index in range(count):
+                filename = f"C{index:04d}.A.{suffix}"
+                content = (
+                    f"<{family} synthetic='{index:04d}'/>".encode("ascii")
+                )
+                add_ami(f"extracted/{family}/{filename}", content, retained=True)
+        if len(ami_sources) != 2074 or len(ami_bytes) != CUT4_AMI_XML_COUNT:
+            raise AssertionError("Cut 4 AMI identity count changed")
+        cls.ami_bytes = ami_bytes
+        cls.selected_ami_sources = tuple(
+            source for source in ami_sources if source in ami_bytes
+        )
+        scenario_only = tuple(
+            meeting
+            for meeting in pipeline.AMI_FULL_CORPUS_ORDER
+            if meeting not in set(pipeline.AMI_FULL_ONLY_ORDER)
+        )
+        cls.tracked_authority = pipeline.TrackedPublicAuthority(
+            crema_audio=tuple(audio_identities),
+            crema_finished_responses=pipeline.SourceByteIdentity(
+                project_relative_path=f"{crema_prefix}finishedResponses.csv",
+                sha256=hashlib.sha256(cls.finished_responses).hexdigest().upper(),
+                size_bytes=len(cls.finished_responses),
+            ),
+            crema_summary_table=pipeline.SourceByteIdentity(
+                project_relative_path=(
+                    f"{crema_prefix}processedResults/summaryTable.csv"
+                ),
+                sha256=hashlib.sha256(cls.summary_table).hexdigest().upper(),
+                size_bytes=len(cls.summary_table),
+            ),
+            ami_files=tuple(ami_sources),
+            ami_partition_membership=(
+                ("scenario_only", scenario_only),
+                ("full_corpus", tuple(pipeline.AMI_FULL_CORPUS_ORDER)),
+                ("full_only", tuple(pipeline.AMI_FULL_ONLY_ORDER)),
+            ),
+            ami_official_order=tuple(pipeline.AMI_FULL_CORPUS_ORDER),
+        )
+        cls.ami_meetings = cls._ami_meetings()
+
+        with (
+            patch.object(
+                pipeline,
+                "validate_tracked_public_evidence",
+                side_effect=cls.validate_authority,
+            ),
+            patch.object(
+                pipeline,
+                "validate_phase_b_input_ledger",
+                side_effect=cls.validate_ledger,
+            ),
+            patch.object(
+                pipeline,
+                "validate_crema_label_ledger",
+                side_effect=cls.validate_crema_ledger,
+            ),
+        ):
+            cls.preflight_artifacts = pipeline.build_production_preflight_artifacts(
+                tracked_evidence=dict(cls.evidence),
+                finished_responses=cls.finished_responses,
+                summary_table=cls.summary_table,
+                configuration=deepcopy(cls.configuration),
+            )
+        cls.split_manifest = deepcopy(cls.preflight_artifacts.split_manifest)
+        cls.partition_caches = deepcopy(
+            cls.preflight_artifacts.partition_authority_caches
+        )
+        cls.authorities = {
+            role: evaluation.restore_validated_partition_authority_cache(
+                cls.partition_caches[role],
+                cls.split_manifest,
+                role=role,
+            )
+            for role in CUT4_NONFINAL_ROLES
+        }
+        observed_counts = {
+            role: len(evaluation.validated_partition_records(
+                cls.authorities[role],
+                role=role,
+            ))
+            for role in CUT4_NONFINAL_ROLES
+        }
+        if observed_counts != {
+            role: CUT4_ROLE_COUNTS[role] for role in CUT4_NONFINAL_ROLES
+        }:
+            raise AssertionError("Cut 4 restored authority count changed")
+        cls.source_commitment = (
+            pipeline.tracked_public_authority_commitment_sha256(
+                tracked_evidence=dict(cls.evidence),
+                authority=cls.tracked_authority,
+            )
+        )
+        cls._initialized = True
+
+    @classmethod
+    def validate_authority(cls, evidence: Any) -> Any:
+        from scripts import emotion_state_phase_b_public_pipeline as pipeline
+
+        if type(evidence) is not dict:
+            raise pipeline.PublicMaterialPrerequisiteError(
+                "Cut 4 evidence must be an exact dict"
+            )
+        if tuple(evidence) != pipeline.TRACKED_DATASET_EVIDENCE_FILENAMES:
+            raise pipeline.PublicMaterialPrerequisiteError(
+                "Cut 4 evidence order changed"
+            )
+        if any(
+            type(evidence[name]) is not bytes
+            or evidence[name] != cls.evidence[name]
+            for name in pipeline.TRACKED_DATASET_EVIDENCE_FILENAMES
+        ):
+            raise pipeline.PublicMaterialPrerequisiteError(
+                "Cut 4 evidence bytes changed"
+            )
+        return cls.tracked_authority
+
+    @staticmethod
+    def validate_ledger(payload: Any) -> dict[str, Any]:
+        from scripts.validate_emotion_state_002_phase_b import (
+            EXPECTED_RAW_CSV_SHA256,
+            validate_phase_b_input_ledger,
+        )
+
+        candidate = deepcopy(payload)
+        proof = deepcopy(payload)
+        proof["raw_csv_sha256"] = dict(EXPECTED_RAW_CSV_SHA256)
+        source = proof["crema_label_ledger"]["source_binding"]
+        source["finished_responses_sha256"] = EXPECTED_RAW_CSV_SHA256[
+            "finishedResponses.csv"
+        ]
+        source["summary_table_sha256"] = EXPECTED_RAW_CSV_SHA256[
+            "processedResults/summaryTable.csv"
+        ]
+        validate_phase_b_input_ledger(proof)
+        return candidate
+
+    @staticmethod
+    def validate_crema_ledger(payload: Any, configuration: Any) -> None:
+        from scripts.validate_emotion_state_002_phase_b import (
+            EXPECTED_RAW_CSV_SHA256,
+            validate_crema_label_ledger,
+        )
+
+        proof = deepcopy(payload)
+        source = proof["source_binding"]
+        source["finished_responses_sha256"] = EXPECTED_RAW_CSV_SHA256[
+            "finishedResponses.csv"
+        ]
+        source["summary_table_sha256"] = EXPECTED_RAW_CSV_SHA256[
+            "processedResults/summaryTable.csv"
+        ]
+        validate_crema_label_ledger(proof, configuration)
+
+    @classmethod
+    def require_builder_api(cls, case: unittest.TestCase) -> Any:
+        from scripts import emotion_state_phase_b_public_pipeline as pipeline
+
+        case.assertTrue(
+            hasattr(pipeline, "build_production_non_lockbox_artifacts"),
+            "missing Cut 4 build_production_non_lockbox_artifacts API",
+        )
+        case.assertTrue(
+            hasattr(pipeline, "restore_production_non_lockbox_artifacts"),
+            "missing Cut 4 restore_production_non_lockbox_artifacts API",
+        )
+        return pipeline
+
+    @classmethod
+    def new_probe(cls) -> SimpleNamespace:
+        return SimpleNamespace(
+            audio_reads=[],
+            ami_reads=[],
+            feature_calls=[],
+            ami_loader_calls=[],
+            model_calls=[],
+            persistence_calls=[],
+            state_calls=[],
+            forbidden_calls=[],
+        )
+
+    @classmethod
+    @contextmanager
+    def semantic_patches(cls, probe: SimpleNamespace):
+        from scripts import emotion_state_phase_b_ami_mechanics as ami
+        from scripts import emotion_state_phase_b_evaluation as evaluation
+        from scripts import emotion_state_phase_b_features as features
+        from scripts import emotion_state_phase_b_public_pipeline as pipeline
+
+        def extract(content: bytes) -> dict[str, float]:
+            probe.feature_calls.append(content)
+            if type(content) is not bytes or content not in cls.feature_by_content:
+                raise AssertionError("Cut 4 feature extractor received unknown bytes")
+            return dict(cls.feature_by_content[content])
+
+        def load_ami(*args: Any, **kwargs: Any) -> tuple[Any, ...]:
+            probe.ami_loader_calls.append((args, kwargs))
+            return deepcopy(cls.ami_meetings)
+
+        original_model_calls = {
+            name: getattr(evaluation, name)
+            for name in (
+                "fit_frozen_models",
+                "predict_probabilities",
+                "calibrate_thresholds",
+                "evaluate_partition",
+            )
+        }
+
+        def model_call(name: str) -> Callable[..., Any]:
+            def call(*args: Any, **kwargs: Any) -> Any:
+                probe.model_calls.append(name)
+                return original_model_calls[name](*args, **kwargs)
+
+            return call
+
+        with ExitStack() as stack:
+            stack.enter_context(
+                patch.object(features, "extract_acoustic_features_bytes", extract)
+            )
+            stack.enter_context(
+                patch.object(ami, "load_ami_meeting_evidence_v2", load_ami)
+            )
+            for name in original_model_calls:
+                stack.enter_context(patch.object(
+                    evaluation,
+                    name,
+                    model_call(name),
+                ))
+            if hasattr(pipeline, "extract_acoustic_features_bytes"):
+                stack.enter_context(patch.object(
+                    pipeline,
+                    "extract_acoustic_features_bytes",
+                    extract,
+                ))
+            if hasattr(pipeline, "load_ami_meeting_evidence_v2"):
+                stack.enter_context(patch.object(
+                    pipeline,
+                    "load_ami_meeting_evidence_v2",
+                    load_ami,
+                ))
+            yield
+
+    @classmethod
+    @contextmanager
+    def preflight_patches(cls, runner: Any):
+        cls.initialize()
+        with ExitStack() as stack:
+            stack.enter_context(patch.object(
+                runner,
+                "validate_tracked_public_evidence",
+                side_effect=cls.validate_authority,
+            ))
+            stack.enter_context(patch.object(
+                runner,
+                "validate_phase_b_input_ledger",
+                side_effect=cls.validate_ledger,
+            ))
+            if hasattr(runner, "validate_crema_label_ledger"):
+                stack.enter_context(patch.object(
+                    runner,
+                    "validate_crema_label_ledger",
+                    side_effect=cls.validate_crema_ledger,
+                ))
+            stack.enter_context(patch.object(
+                runner,
+                "build_production_preflight_artifacts",
+                return_value=deepcopy(cls.preflight_artifacts),
+            ))
+            stack.enter_context(
+                patch.object(runner, "_forbidden_credentials", return_value=())
+            )
+            if hasattr(runner, "_forbidden_network_configuration"):
+                stack.enter_context(patch.object(
+                    runner,
+                    "_forbidden_network_configuration",
+                    return_value=(),
+                ))
+            yield
+
+    @classmethod
+    @contextmanager
+    def runtime_patches(
+        cls,
+        paths: Any,
+        runner: Any,
+        probe: SimpleNamespace | None = None,
+    ):
+        from scripts import validate_emotion_state_002_phase_b as validator
+
+        cls.initialize()
+        probe = probe or cls.new_probe()
+        source_map = {
+            source.project_relative_path: (source, content, "audio")
+            for source, content in cls.audio_bytes.items()
+        }
+        source_map.update({
+            source.project_relative_path: (source, content, "ami")
+            for source, content in cls.ami_bytes.items()
+        })
+
+        def verified(
+            supplied_paths: Any,
+            path: Path,
+            *,
+            expected_sha256: str,
+            expected_size_bytes: int,
+            maximum_bytes: int,
+        ) -> Any:
+            if supplied_paths is not paths:
+                raise AssertionError("Cut 4 reader received a foreign path authority")
+            relative = Path(path).relative_to(paths.project_root).as_posix()
+            if relative not in source_map:
+                raise AssertionError(f"Cut 4 reader touched excluded source: {relative}")
+            source, content, family = source_map[relative]
+            if (
+                expected_sha256 != source.sha256
+                or expected_size_bytes != source.size_bytes
+                or maximum_bytes != source.size_bytes
+            ):
+                raise AssertionError("Cut 4 reader identity arguments changed")
+            if family == "audio":
+                probe.audio_reads.append(source)
+            else:
+                probe.ami_reads.append(source)
+            logical_name = Path(relative).relative_to(
+                Path(paths.public_material_root).relative_to(paths.project_root)
+            ).as_posix()
+            return runner.VerifiedMaterialBytes(
+                logical_name=logical_name,
+                content=content,
+                sha256=source.sha256,
+                size_bytes=source.size_bytes,
+            )
+
+        def installed_identity() -> dict[str, Any]:
+            probe.state_calls.append("installed_environment")
+            return deepcopy(cls.environment_lock)
+
+        def byte_identity(
+            lock_bytes: bytes,
+            wheel_bytes: Any,
+        ) -> dict[str, Any]:
+            probe.state_calls.append("environment_bytes")
+            if type(lock_bytes) is not bytes or not isinstance(wheel_bytes, dict):
+                raise AssertionError("Cut 4 environment byte capability changed")
+            return deepcopy(cls.environment_lock)
+
+        def forbidden(surface: str) -> Callable[..., Any]:
+            def call(*args: Any, **kwargs: Any) -> Any:
+                probe.forbidden_calls.append(surface)
+                raise AssertionError(f"Cut 4 touched forbidden surface: {surface}")
+            return call
+
+        with ExitStack() as stack:
+            stack.enter_context(cls.semantic_patches(probe))
+            stack.enter_context(patch.object(
+                runner,
+                "validate_tracked_public_evidence",
+                side_effect=cls.validate_authority,
+            ))
+            stack.enter_context(patch.object(
+                runner,
+                "validate_phase_b_input_ledger",
+                side_effect=cls.validate_ledger,
+            ))
+            stack.enter_context(
+                patch.object(runner, "_forbidden_credentials", return_value=())
+            )
+            if hasattr(runner, "_forbidden_network_configuration"):
+                stack.enter_context(patch.object(
+                    runner,
+                    "_forbidden_network_configuration",
+                    return_value=(),
+                ))
+            stack.enter_context(patch.object(
+                runner,
+                "_read_verified_public_bytes",
+                side_effect=verified,
+            ))
+            for name in (
+                "run_lockbox",
+                "lockbox_lock",
+                "_validate_lockbox_path",
+                "_validated_private_decision_evidence",
+                "_run_lockbox_with_private_evidence_for_testing",
+                "_validate_canonical_pair_metadata",
+                "_canonical_pair_matches",
+            ):
+                if hasattr(runner, name):
+                    stack.enter_context(
+                        patch.object(runner, name, forbidden(name))
+                    )
+            stack.enter_context(
+                patch.object(
+                    socket,
+                    "create_connection",
+                    forbidden("socket.create_connection"),
+                )
+            )
+            stack.enter_context(
+                patch.object(
+                    socket.socket,
+                    "connect",
+                    forbidden("socket.socket.connect"),
+                )
+            )
+            for module in (runner, validator):
+                if hasattr(module, "validate_installed_environment_identity"):
+                    stack.enter_context(patch.object(
+                        module,
+                        "validate_installed_environment_identity",
+                        side_effect=installed_identity,
+                    ))
+                if hasattr(module, "validate_environment_identity_bytes"):
+                    stack.enter_context(patch.object(
+                        module,
+                        "validate_environment_identity_bytes",
+                        side_effect=byte_identity,
+                    ))
+            yield probe
+
+    @classmethod
+    def build(
+        cls,
+        *,
+        probe: SimpleNamespace | None = None,
+        authorities: Any = None,
+        split_manifest: Any = None,
+        audio_reader: Callable[[Any], bytes] | None = None,
+        ami_reader: Callable[[Any], bytes] | None = None,
+    ) -> tuple[Any, SimpleNamespace]:
+        cls.initialize()
+        probe = probe or cls.new_probe()
+        from scripts import emotion_state_phase_b_public_pipeline as pipeline
+
+        def read_audio(source: Any) -> bytes:
+            probe.audio_reads.append(source)
+            if source not in cls.audio_bytes:
+                raise AssertionError("final or unknown WAV authority was accessed")
+            return cls.audio_bytes[source]
+
+        def read_ami(source: Any) -> bytes:
+            probe.ami_reads.append(source)
+            if source not in cls.ami_bytes:
+                raise AssertionError("excluded or unknown AMI authority was accessed")
+            return cls.ami_bytes[source]
+
+        with cls.semantic_patches(probe):
+            artifacts = pipeline.build_production_non_lockbox_artifacts(
+                authorities=(
+                    dict(cls.authorities)
+                    if authorities is None
+                    else authorities
+                ),
+                split_manifest=(
+                    deepcopy(cls.split_manifest)
+                    if split_manifest is None
+                    else split_manifest
+                ),
+                read_verified_audio=audio_reader or read_audio,
+                read_verified_ami=ami_reader or read_ami,
+                tracked_evidence=dict(cls.evidence),
+                tracked_authority=cls.tracked_authority,
+                configuration=deepcopy(cls.configuration),
+                environment_lock=deepcopy(cls.environment_lock),
+                feature_schema=deepcopy(cls.feature_schema),
+                split_schema=deepcopy(cls.split_schema),
+            )
+        return artifacts, probe
+
+    @classmethod
+    def restore(cls, artifacts: Any) -> Any:
+        cls.initialize()
+        from scripts import emotion_state_phase_b_public_pipeline as pipeline
+
+        return pipeline.restore_production_non_lockbox_artifacts(
+            authorities=dict(cls.authorities),
+            split_manifest=deepcopy(cls.split_manifest),
+            feature_caches=deepcopy(artifacts.feature_caches),
+            ami_evidence=deepcopy(artifacts.ami_evidence),
+            review_packet=deepcopy(artifacts.review_packet),
+            configuration=deepcopy(cls.configuration),
+            environment_lock=deepcopy(cls.environment_lock),
+            feature_schema=deepcopy(cls.feature_schema),
+            split_schema=deepcopy(cls.split_schema),
+        )
+
+    @classmethod
+    def expected_audio_order(cls) -> tuple[Any, ...]:
+        from scripts import emotion_state_phase_b_evaluation as evaluation
+        from scripts import emotion_state_phase_b_public_pipeline as pipeline
+
+        sources = {
+            Path(source.project_relative_path).stem: source
+            for source in cls.audio_identities
+        }
+        result = []
+        for role in CUT4_NONFINAL_ROLES:
+            for record in evaluation.validated_partition_records(
+                cls.authorities[role],
+                role=role,
+            ):
+                result.append(sources[record.label_record.clip_stem])
+        if len(result) != CUT4_NONFINAL_COUNT or any(
+            type(source) is not pipeline.SourceByteIdentity for source in result
+        ):
+            raise AssertionError("Cut 4 expected audio order changed")
+        return tuple(result)
+
+
+class ProductionNonLockboxBuilderTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls) -> None:
+        _Cut4ProductionShapeFixture.initialize()
+        cls.fixture = _Cut4ProductionShapeFixture
+
+    def _require(self) -> Any:
+        return self.fixture.require_builder_api(self)
+
+    def _build(self, **kwargs: Any) -> tuple[Any, SimpleNamespace]:
+        self._require()
+        return self.fixture.build(**kwargs)
+
+    @staticmethod
+    def _independent_digest(payload: Any) -> str:
+        return hashlib.sha256(json.dumps(
+            payload,
+            sort_keys=True,
+            separators=(",", ":"),
+            ensure_ascii=True,
+            allow_nan=False,
+        ).encode("ascii")).hexdigest().upper()
+
+    @staticmethod
+    def _independent_self_hash(payload: Any) -> str:
+        unsigned = deepcopy(payload)
+        unsigned.pop("self_sha256")
+        return ProductionNonLockboxBuilderTests._independent_digest(unsigned)
+
+    def _task2_feature_caches(self) -> dict[str, dict[str, Any]]:
+        from scripts import emotion_state_phase_b_evaluation as evaluation
+        from scripts import emotion_state_phase_b_public_pipeline as pipeline
+        from scripts.validate_emotion_state_002_phase_b import (
+            EXPECTED_EVIDENCE_IDENTITY_SHA256,
+        )
+
+        by_stem = {
+            Path(source.project_relative_path).stem: source
+            for source in self.fixture.audio_bytes
+        }
+        result = {}
+        for role in CUT4_NONFINAL_ROLES:
+            records = evaluation.validated_partition_records(
+                self.fixture.authorities[role],
+                role=role,
+            )
+            feature_rows = []
+            for record in records:
+                source = by_stem[record.label_record.clip_stem]
+                content = self.fixture.audio_bytes[source]
+                feature_rows.append(dict(self.fixture.feature_by_content[content]))
+            result[role] = pipeline._build_acoustic_feature_cache(
+                role=role,
+                authority=self.fixture.authorities[role],
+                feature_rows=feature_rows,
+                tracked_public_authority_commitment_sha256=(
+                    self.fixture.source_commitment
+                ),
+                environment_lock_sha256=EXPECTED_EVIDENCE_IDENTITY_SHA256[
+                    "environment_lock_sha256"
+                ],
+                feature_schema_sha256=EXPECTED_EVIDENCE_IDENTITY_SHA256[
+                    "feature_schema_sha256"
+                ],
+                split_schema_sha256=EXPECTED_EVIDENCE_IDENTITY_SHA256[
+                    "split_schema_sha256"
+                ],
+            )
+        return result
+
+    def _task2_ami_cache(self) -> dict[str, Any]:
+        from scripts import emotion_state_phase_b_public_pipeline as pipeline
+        from scripts.emotion_state_phase_b_ami_mechanics import (
+            contribution_limited_aggregates_v2,
+        )
+
+        membership = {
+            name: identifiers
+            for name, identifiers in self.fixture.tracked_authority.ami_partition_membership
+        }
+        aggregate = contribution_limited_aggregates_v2(
+            self.fixture.ami_meetings,
+            membership,
+            self.fixture.tracked_authority.ami_official_order,
+            minimum_contributors=10,
+        )
+        return pipeline._build_ami_evidence_cache(
+            tracked_authority=self.fixture.tracked_authority,
+            meetings=self.fixture.ami_meetings,
+            aggregate=aggregate,
+            tracked_public_authority_commitment_sha256=(
+                self.fixture.source_commitment
+            ),
+        )
+
+    def _task2_artifacts(self) -> Any:
+        from scripts import emotion_state_phase_b_public_pipeline as pipeline
+
+        feature_caches = self._task2_feature_caches()
+        ami_evidence = self._task2_ami_cache()
+        Task10PacketV4Tests.setUpClass()
+        diagnostic, expected_ami = Task10PacketV4Tests._aggregates()
+        self.assertEqual(ami_evidence["aggregate"], expected_ami)
+        packet = pipeline.build_non_lockbox_review_packet(
+            diagnostic_aggregate=diagnostic,
+            diagnostic_slice_analysis=(
+                Task10PacketV4Tests._diagnostic_slice_analysis()
+            ),
+            ami_aggregate=ami_evidence["aggregate"],
+            artifact_cache_commitments={
+                **{
+                    role: feature_caches[role]["self_sha256"]
+                    for role in CUT4_NONFINAL_ROLES
+                },
+                "ami_evidence": ami_evidence["self_sha256"],
+            },
+            split_manifest_sha256=diagnostic["provenance"][
+                "split_manifest_sha256"
+            ],
+            tracked_public_authority_commitment_sha256=(
+                self.fixture.source_commitment
+            ),
+        )
+        return SimpleNamespace(
+            feature_caches=feature_caches,
+            ami_evidence=ami_evidence,
+            review_packet=packet,
+        )
+
+    def test_builder_reads_exact_three_authorities_and_4389_wavs_in_frozen_order(self) -> None:
+        from scripts import emotion_state_phase_b_evaluation as evaluation
+
+        original_records = evaluation.validated_partition_records
+        record_calls: Counter[str] = Counter()
+
+        def observed_records(authority: Any, *, role: str) -> Any:
+            record_calls[role] += 1
+            return original_records(authority, role=role)
+
+        with patch.object(
+            evaluation,
+            "validated_partition_records",
+            observed_records,
+        ):
+            artifacts, probe = self._build()
+        self.assertEqual(
+            record_calls,
+            Counter({role: 1 for role in CUT4_NONFINAL_ROLES}),
+        )
+        self.assertEqual(tuple(artifacts.feature_caches), CUT4_NONFINAL_ROLES)
+        self.assertEqual(tuple(probe.audio_reads), self.fixture.expected_audio_order())
+        self.assertEqual(len(probe.audio_reads), CUT4_NONFINAL_COUNT)
+        self.assertEqual(len(self.fixture.audio_identities), 7441)
+        self.assertEqual(len(self.fixture.audio_bytes), CUT4_NONFINAL_COUNT)
+        self.assertEqual(len(self.fixture.identity_only_audio), 3052)
+        for source in self.fixture.identity_only_audio:
+            stem = Path(source.project_relative_path).stem
+            self.assertEqual(
+                source.sha256,
+                hashlib.sha256(
+                    f"cut4-identity-only:{stem}".encode("ascii")
+                ).hexdigest().upper(),
+            )
+            self.assertNotIn(source, self.fixture.audio_bytes)
+        for source in probe.audio_reads:
+            content = self.fixture.audio_bytes[source]
+            self.assertEqual(len(content), source.size_bytes)
+            self.assertEqual(
+                hashlib.sha256(content).hexdigest().upper(),
+                source.sha256,
+            )
+
+    def test_builder_rechecks_exact_wav_bytes_and_extracts_17_finite_features_once(self) -> None:
+        artifacts, probe = self._build()
+        self.assertEqual(len(probe.feature_calls), CUT4_NONFINAL_COUNT)
+        self.assertEqual(Counter(probe.feature_calls).most_common(1)[0][1], 1)
+        feature_source = inspect.getsource(self.fixture._features_from_pcm_bytes)
+        for forbidden in ("label", "role", "actor", "sentence", "stem"):
+            self.assertNotIn(forbidden, feature_source.casefold())
+        from scripts.emotion_state_phase_b_features import FEATURE_NAMES
+
+        for content in probe.feature_calls:
+            digest = hashlib.sha256(content).digest()
+            expected_values = [
+                float(int.from_bytes(
+                    digest[(index * 2) % 32: ((index * 2) % 32) + 2],
+                    "big",
+                ) + 1) / 65536.0
+                for index in range(CUT4_FEATURE_COUNT)
+            ]
+            expected_values[0] = 0.1 + expected_values[0]
+            expected_values[1] = float(digest[2] & 1)
+            expected_values[3] = 80.0 + 220.0 * expected_values[3]
+            expected_values[4] = 100.0 * expected_values[4]
+            expected_values[5] = 250.0 * expected_values[5]
+            self.assertEqual(
+                self.fixture.feature_by_content[content],
+                dict(zip(FEATURE_NAMES, expected_values, strict=True)),
+            )
+        for cache in artifacts.feature_caches.values():
+            for record in cache["records"]:
+                self.assertEqual(len(record["features"]), CUT4_FEATURE_COUNT)
+                self.assertTrue(all(
+                    type(value) is float and math.isfinite(value)
+                    for value in record["features"].values()
+                ))
+        first = self.fixture.expected_audio_order()[0]
+
+        def corrupt(source: Any) -> bytes:
+            content = self.fixture.audio_bytes[source]
+            return content + b"x" if source == first else content
+
+        with self.assertRaises((TypeError, ValueError)):
+            self.fixture.build(audio_reader=corrupt)
+
+    def test_feature_caches_are_exact_role_bound_deterministic_and_replayable(self) -> None:
+        from scripts import emotion_state_phase_b_public_pipeline as pipeline
+        from scripts.validate_emotion_state_002_phase_b import (
+            EXPECTED_EVIDENCE_IDENTITY_SHA256,
+            canonical_payload_sha256,
+        )
+
+        class StrSubclass(str):
+            pass
+
+        def replace_key(
+            value: dict[str, Any],
+            target: str,
+        ) -> dict[str, Any]:
+            return {
+                (StrSubclass(key) if key == target else key): deepcopy(item)
+                for key, item in value.items()
+            }
+
+        def reseal(value: dict[str, Any]) -> dict[str, Any]:
+            value["self_sha256"] = canonical_payload_sha256(value)
+            return value
+
+        def validate(value: dict[str, Any]) -> dict[str, Any]:
+            return pipeline._validate_acoustic_feature_cache(
+                value,
+                role="training_discovery",
+                authority=self.fixture.authorities["training_discovery"],
+                tracked_public_authority_commitment_sha256=(
+                    self.fixture.source_commitment
+                ),
+                environment_lock_sha256=EXPECTED_EVIDENCE_IDENTITY_SHA256[
+                    "environment_lock_sha256"
+                ],
+                feature_schema_sha256=EXPECTED_EVIDENCE_IDENTITY_SHA256[
+                    "feature_schema_sha256"
+                ],
+                split_schema_sha256=EXPECTED_EVIDENCE_IDENTITY_SHA256[
+                    "split_schema_sha256"
+                ],
+            )
+
+        first = self._task2_feature_caches()
+        second = self._task2_feature_caches()
+        self.assertEqual(first, second)
+        expected_keys = (
+            "schema_id", "schema_version", "partition_role",
+            "configuration_sha256", "environment_lock_sha256",
+            "feature_schema_sha256", "split_schema_sha256",
+            "split_manifest_sha256", "assignment_sha256",
+            "partition_authority_sha256",
+            "tracked_public_authority_commitment_sha256",
+            "upstream_acoustic_source_commitment_sha256", "feature_names",
+            "records", "self_sha256",
+        )
+        for role in CUT4_NONFINAL_ROLES:
+            cache = first[role]
+            self.assertEqual(tuple(cache), expected_keys)
+            self.assertEqual(cache["partition_role"], role)
+            self.assertEqual(len(cache["records"]), CUT4_ROLE_COUNTS[role])
+            self.assertEqual(
+                cache["self_sha256"],
+                self._independent_self_hash(cache),
+            )
+        restored = {}
+        for role in CUT4_NONFINAL_ROLES:
+            restored[role] = pipeline._validate_acoustic_feature_cache(
+                first[role],
+                role=role,
+                authority=self.fixture.authorities[role],
+                tracked_public_authority_commitment_sha256=(
+                    self.fixture.source_commitment
+                ),
+                environment_lock_sha256=EXPECTED_EVIDENCE_IDENTITY_SHA256[
+                    "environment_lock_sha256"
+                ],
+                feature_schema_sha256=EXPECTED_EVIDENCE_IDENTITY_SHA256[
+                    "feature_schema_sha256"
+                ],
+                split_schema_sha256=EXPECTED_EVIDENCE_IDENTITY_SHA256[
+                    "split_schema_sha256"
+                ],
+            )
+        self.assertEqual(restored, first)
+
+        malformed = deepcopy(first["training_discovery"])
+        first_feature = next(iter(malformed["records"][0]["features"]))
+        malformed["records"][0]["features"][first_feature] = 1
+        malformed["self_sha256"] = canonical_payload_sha256(malformed)
+        with self.assertRaises((TypeError, ValueError)):
+            validate(malformed)
+
+        baseline = first["training_discovery"]
+        mutations: list[tuple[str, dict[str, Any]]] = []
+        mutations.append(("root key subclass", reseal(replace_key(
+            baseline,
+            "schema_id",
+        ))))
+        mutated = deepcopy(baseline)
+        mutated["schema_id"] = StrSubclass(mutated["schema_id"])
+        mutations.append(("schema subclass", reseal(mutated)))
+        mutated = deepcopy(baseline)
+        mutated["partition_role"] = StrSubclass(mutated["partition_role"])
+        mutations.append(("role subclass", reseal(mutated)))
+        mutated = deepcopy(baseline)
+        mutated["feature_names"][0] = StrSubclass(mutated["feature_names"][0])
+        mutations.append(("feature name subclass", reseal(mutated)))
+        mutated = deepcopy(baseline)
+        mutated["records"][0] = replace_key(
+            mutated["records"][0],
+            "clip_stem",
+        )
+        mutations.append(("record key subclass", reseal(mutated)))
+        mutated = deepcopy(baseline)
+        first_feature = next(iter(mutated["records"][0]["features"]))
+        mutated["records"][0]["features"] = replace_key(
+            mutated["records"][0]["features"],
+            first_feature,
+        )
+        mutations.append(("feature map key subclass", reseal(mutated)))
+        for name, mutated in mutations:
+            with self.subTest(type_drift=name):
+                with self.assertRaises((TypeError, ValueError)):
+                    validate(mutated)
+
+    def test_model_seed_and_fit_calibrate_diagnostic_call_order_are_exact(self) -> None:
+        from scripts import emotion_state_phase_b_evaluation as evaluation
+
+        self._require()
+        calls: list[tuple[str, str | None, int | None]] = []
+        originals = {
+            name: getattr(evaluation, name)
+            for name in (
+                "fit_frozen_models", "predict_probabilities",
+                "calibrate_thresholds", "evaluate_partition",
+            )
+        }
+
+        def wrapped(name: str) -> Callable[..., Any]:
+            def call(*args: Any, **kwargs: Any) -> Any:
+                role = None
+                for value in args:
+                    if role is None and hasattr(value, "to_payload"):
+                        payload = value.to_payload()
+                        role = payload.get("partition_role", role)
+                seed = args[1] if name == "fit_frozen_models" else None
+                calls.append((name, role, seed))
+                return originals[name](*args, **kwargs)
+            return call
+
+        with ExitStack() as stack:
+            for name in originals:
+                stack.enter_context(patch.object(evaluation, name, wrapped(name)))
+            self.fixture.build()
+        names = [name for name, _role, _seed in calls]
+        self.assertEqual(
+            names,
+            [
+                "fit_frozen_models", "predict_probabilities",
+                "calibrate_thresholds", "predict_probabilities",
+                "evaluate_partition",
+            ],
+        )
+        expected_seed = int(
+            self.fixture.authorities["training_discovery"].to_payload()[
+                "configuration_sha256"
+            ][:8],
+            16,
+        )
+        self.assertEqual(calls[0], ("fit_frozen_models", "training_discovery", expected_seed))
+        self.assertEqual(
+            [role for _name, role, _seed in calls[1:]],
+            [
+                "calibration", "calibration",
+                "balanced_diagnostic", "balanced_diagnostic",
+            ],
+        )
+
+    def test_fit_calibration_and_diagnostic_roles_cannot_be_swapped(self) -> None:
+        self._require()
+        swapped = dict(self.fixture.authorities)
+        swapped["calibration"], swapped["balanced_diagnostic"] = (
+            swapped["balanced_diagnostic"],
+            swapped["calibration"],
+        )
+        probe = self.fixture.new_probe()
+        with self.assertRaises((TypeError, ValueError)):
+            self.fixture.build(authorities=swapped, probe=probe)
+        self.assertEqual(probe.audio_reads, [])
+        self.assertEqual(probe.feature_calls, [])
+
+    def test_builder_reads_exact_2071_ami_xml_identities_without_archive_html_or_da_types(self) -> None:
+        _artifacts, probe = self._build()
+        self.assertEqual(tuple(probe.ami_reads), self.fixture.selected_ami_sources)
+        self.assertEqual(len(probe.ami_reads), CUT4_AMI_XML_COUNT)
+        self.assertEqual(len(self.fixture.tracked_authority.ami_files), 2074)
+        self.assertEqual(len(self.fixture.ami_bytes), CUT4_AMI_XML_COUNT)
+        for source in probe.ami_reads:
+            content = self.fixture.ami_bytes[source]
+            self.assertEqual(len(content), source.size_bytes)
+            self.assertEqual(
+                hashlib.sha256(content).hexdigest().upper(),
+                source.sha256,
+            )
+        rendered = "\n".join(source.project_relative_path for source in probe.ami_reads)
+        self.assertNotIn("ami_manual_1.6.2.zip", rendered)
+        self.assertNotIn("datasets.shtml", rendered)
+        self.assertNotIn("da-types.xml", rendered)
+
+    def test_ami_v2_cache_reconstructs_exact_release_matrix_and_missingness_rules(self) -> None:
+        from scripts.validate_emotion_state_002_phase_b import (
+            validate_published_ami_aggregate_v2,
+        )
+
+        artifacts, _probe = self._build()
+        aggregate = artifacts.ami_evidence["aggregate"]
+        self.assertEqual(
+            artifacts.ami_evidence["self_sha256"],
+            self._independent_self_hash(artifacts.ami_evidence),
+        )
+        self.assertEqual(
+            artifacts.ami_evidence["aggregate_sha256"],
+            self._independent_digest(aggregate),
+        )
+        self.assertEqual(validate_published_ami_aggregate_v2(aggregate), aggregate)
+        available_timing = {
+            "status": "available",
+            "reason_codes": [],
+            "coverage": {
+                "timing_file_meeting_count": 138,
+                "usable_timing_meeting_count": 138,
+            },
+            "contribution": {
+                "selected_meeting_count": 138,
+                "unique_participant_count": 276,
+                "repeated_participant_meeting_count": 0,
+                "suppressed": False,
+            },
+            "buckets": {
+                "turn_duration_ms_median": {
+                    "suppressed": False,
+                    "unique_participant_count": 276,
+                    "value": 700.0,
+                },
+                "turn_duration_ms_p90": {
+                    "suppressed": False,
+                    "unique_participant_count": 276,
+                    "value": 1000.0,
+                },
+                "inter_turn_gap_ms_median": {
+                    "suppressed": False,
+                    "unique_participant_count": 276,
+                    "value": 200.0,
+                },
+                "inter_turn_gap_ms_p90": {
+                    "suppressed": False,
+                    "unique_participant_count": 276,
+                    "value": 280.0,
+                },
+            },
+            "scalars": {
+                "overlap_ratio": {
+                    "suppressed": False,
+                    "unique_participant_count": 276,
+                    "value": 0.06666666666666657,
+                },
+                "speaker_balance_normalized_entropy": {
+                    "suppressed": False,
+                    "unique_participant_count": 276,
+                    "value": 1.0,
+                },
+            },
+        }
+        expected = {
+            "schema_id": "emotion-state-ami-mechanics-aggregate-v2",
+            "schema_version": 2,
+            "source_quality": {
+                "unlabeled_dialogue_act_record_count": 28,
+                "unlabeled_dialogue_act_file_count": 26,
+            },
+            "partitions": {
+                "scenario_only": {
+                    "population_meeting_count": 138,
+                    "metric_families": {
+                        "timing": available_timing,
+                        "dialogue_act": {
+                            "status": "unavailable",
+                            "reason_codes": ["unlabeled_dialogue_act_records"],
+                            "coverage": {
+                                "dialogue_act_meeting_count": 138,
+                                "dialogue_act_file_count": 552,
+                                "fully_labeled_dialogue_act_file_count": 527,
+                            },
+                            "contribution": None,
+                            "scalars": None,
+                            "dialogue_acts": None,
+                        },
+                    },
+                },
+                "full_corpus": {
+                    "population_meeting_count": 170,
+                    "metric_families": {
+                        "timing": {
+                            "status": "unavailable",
+                            "reason_codes": [
+                                "incomplete_usable_timing_coverage",
+                            ],
+                            "coverage": {
+                                "timing_file_meeting_count": 170,
+                                "usable_timing_meeting_count": 165,
+                            },
+                            "contribution": None,
+                            "buckets": None,
+                            "scalars": None,
+                        },
+                        "dialogue_act": {
+                            "status": "unavailable",
+                            "reason_codes": [
+                                "incomplete_dialogue_act_meeting_coverage",
+                                "unlabeled_dialogue_act_records",
+                            ],
+                            "coverage": {
+                                "dialogue_act_meeting_count": 139,
+                                "dialogue_act_file_count": 556,
+                                "fully_labeled_dialogue_act_file_count": 530,
+                            },
+                            "contribution": None,
+                            "scalars": None,
+                            "dialogue_acts": None,
+                        },
+                    },
+                },
+                "full_only": {
+                    "population_meeting_count": 32,
+                    "metric_families": {
+                        "timing": {
+                            "status": "unavailable",
+                            "reason_codes": [
+                                "incomplete_usable_timing_coverage",
+                            ],
+                            "coverage": {
+                                "timing_file_meeting_count": 32,
+                                "usable_timing_meeting_count": 27,
+                            },
+                            "contribution": None,
+                            "buckets": None,
+                            "scalars": None,
+                        },
+                        "dialogue_act": {
+                            "status": "unavailable",
+                            "reason_codes": [
+                                "incomplete_dialogue_act_meeting_coverage",
+                                "unlabeled_dialogue_act_records",
+                            ],
+                            "coverage": {
+                                "dialogue_act_meeting_count": 1,
+                                "dialogue_act_file_count": 4,
+                                "fully_labeled_dialogue_act_file_count": 3,
+                            },
+                            "contribution": None,
+                            "scalars": None,
+                            "dialogue_acts": None,
+                        },
+                    },
+                },
+            },
+        }
+        self.assertEqual(aggregate, expected)
+
+    def test_packet_v4_binds_source_slices_and_all_four_caches_is_private_and_records_zero_lockbox_access(self) -> None:
+        from scripts import emotion_state_phase_b_public_pipeline as pipeline
+        from scripts.validate_emotion_state_002_phase_b import (
+            canonical_payload_sha256,
+        )
+
+        class ListSubclass(list):
+            pass
+
+        class StrSubclass(str):
+            pass
+
+        def replace_key(
+            value: dict[str, Any],
+            target: str,
+        ) -> dict[str, Any]:
+            return {
+                (StrSubclass(key) if key == target else key): deepcopy(item)
+                for key, item in value.items()
+            }
+
+        def reseal_ami(value: dict[str, Any]) -> dict[str, Any]:
+            value["self_sha256"] = canonical_payload_sha256(value)
+            return value
+
+        def validate_ami(value: dict[str, Any]) -> dict[str, Any]:
+            return pipeline._validate_ami_evidence_cache(
+                value,
+                tracked_authority=self.fixture.tracked_authority,
+                tracked_public_authority_commitment_sha256=(
+                    self.fixture.source_commitment
+                ),
+            )
+
+        artifacts = self._task2_artifacts()
+        packet = artifacts.review_packet
+        self.assertEqual(packet["schema_id"], "emotion-state-phase-b-non-lockbox-review-v4")
+        self.assertEqual(packet["schema_version"], 4)
+        self.assertEqual(
+            packet["tracked_public_authority_commitment_sha256"],
+            self.fixture.source_commitment,
+        )
+        self.assertEqual(
+            tuple(packet["artifact_cache_commitments"]),
+            (*CUT4_NONFINAL_ROLES, "ami_evidence"),
+        )
+        self.assertEqual(
+            packet["artifact_cache_commitments"],
+            {
+                **{
+                    role: artifacts.feature_caches[role]["self_sha256"]
+                    for role in CUT4_NONFINAL_ROLES
+                },
+                "ami_evidence": artifacts.ami_evidence["self_sha256"],
+            },
+        )
+        selected = pipeline._select_ami_source_identities(
+            self.fixture.tracked_authority
+        )
+        self.assertEqual(len(selected), CUT4_AMI_XML_COUNT)
+        rendered_sources = "\n".join(
+            source.project_relative_path for source in selected
+        )
+        self.assertNotIn("ami_manual_1.6.2.zip", rendered_sources)
+        self.assertNotIn("datasets.shtml", rendered_sources)
+        self.assertNotIn("da-types.xml", rendered_sources)
+        self.assertEqual(
+            tuple(artifacts.ami_evidence),
+            (
+                "schema_id", "schema_version", "source_authority_sha256",
+                "tracked_public_authority_commitment_sha256",
+                "source_file_count", "meetings", "partition_membership",
+                "official_order", "aggregate", "aggregate_sha256",
+                "self_sha256",
+            ),
+        )
+        self.assertEqual(
+            artifacts.ami_evidence["self_sha256"],
+            self._independent_self_hash(artifacts.ami_evidence),
+        )
+        excluded_index = next(
+            index
+            for index, source in enumerate(
+                self.fixture.tracked_authority.ami_files
+            )
+            if source.project_relative_path.endswith("/da-types.xml")
+        )
+        unknown_files = list(self.fixture.tracked_authority.ami_files)
+        unknown_files[excluded_index] = replace(
+            unknown_files[excluded_index],
+            project_relative_path=(
+                "data/public/emotion-state/ami-manual-annotations-v1.6.2/"
+                "extracted/corpusResources/future-unknown.xml"
+            ),
+        )
+        unknown_authority = replace(
+            self.fixture.tracked_authority,
+            ami_files=tuple(unknown_files),
+        )
+        with self.assertRaises((TypeError, ValueError)):
+            pipeline._select_ami_source_identities(unknown_authority)
+        ami_root = (
+            "data/public/emotion-state/ami-manual-annotations-v1.6.2/"
+        )
+        exact_lookalikes = [
+            (
+                "archive",
+                f"{ami_root}ami_manual_1.6.2.zip",
+                f"{ami_root}nested/ami_manual_1.6.2.zip",
+            ),
+            (
+                "partitions HTML",
+                f"{ami_root}official-partitions/datasets.shtml",
+                f"{ami_root}nested/official-partitions/datasets.shtml",
+            ),
+            (
+                "meetings metadata",
+                f"{ami_root}extracted/corpusResources/meetings.xml",
+                (
+                    f"{ami_root}nested/extracted/corpusResources/"
+                    "meetings.xml"
+                ),
+            ),
+            (
+                "participants metadata",
+                f"{ami_root}extracted/corpusResources/participants.xml",
+                (
+                    f"{ami_root}nested/extracted/corpusResources/"
+                    "participants.xml"
+                ),
+            ),
+            (
+                "dialogue-act metadata",
+                f"{ami_root}extracted/corpusResources/da-types.xml",
+                (
+                    f"{ami_root}nested/extracted/corpusResources/"
+                    "da-types.xml"
+                ),
+            ),
+        ]
+        for family in ("words", "segments", "dialogueActs"):
+            prefix = f"{ami_root}extracted/{family}/"
+            direct = next(
+                source.project_relative_path
+                for source in self.fixture.tracked_authority.ami_files
+                if source.project_relative_path.startswith(prefix)
+            )
+            exact_lookalikes.append((
+                f"{family} family",
+                direct,
+                direct.replace(prefix, f"{prefix}nested/", 1),
+            ))
+        for name, exact_path, lookalike_path in exact_lookalikes:
+            with self.subTest(nested_ami_lookalike=name):
+                replacement_count = 0
+                lookalike_files = []
+                for source in self.fixture.tracked_authority.ami_files:
+                    if source.project_relative_path == exact_path:
+                        source = replace(
+                            source,
+                            project_relative_path=lookalike_path,
+                        )
+                        replacement_count += 1
+                    lookalike_files.append(source)
+                self.assertEqual(replacement_count, 1)
+                lookalike_authority = replace(
+                    self.fixture.tracked_authority,
+                    ami_files=tuple(lookalike_files),
+                )
+                with self.assertRaises((TypeError, ValueError)):
+                    pipeline._select_ami_source_identities(
+                        lookalike_authority
+                    )
+        malformed_ami = deepcopy(artifacts.ami_evidence)
+        malformed_ami["source_file_count"] -= 1
+        malformed_ami["self_sha256"] = canonical_payload_sha256(malformed_ami)
+        with self.assertRaises((TypeError, ValueError)):
+            validate_ami(malformed_ami)
+        baseline_ami = artifacts.ami_evidence
+        ami_type_mutations: list[tuple[str, dict[str, Any]]] = []
+        ami_type_mutations.append((
+            "root key subclass",
+            reseal_ami(replace_key(baseline_ami, "schema_id")),
+        ))
+        mutated_ami = deepcopy(baseline_ami)
+        mutated_ami["schema_id"] = StrSubclass(mutated_ami["schema_id"])
+        ami_type_mutations.append((
+            "schema subclass",
+            reseal_ami(mutated_ami),
+        ))
+        mutated_ami = deepcopy(baseline_ami)
+        mutated_ami["partition_membership"] = ListSubclass(
+            mutated_ami["partition_membership"]
+        )
+        ami_type_mutations.append((
+            "partition membership list subclass",
+            reseal_ami(mutated_ami),
+        ))
+        mutated_ami = deepcopy(baseline_ami)
+        mutated_ami["partition_membership"][0] = ListSubclass(
+            mutated_ami["partition_membership"][0]
+        )
+        ami_type_mutations.append((
+            "partition cell list subclass",
+            reseal_ami(mutated_ami),
+        ))
+        mutated_ami = deepcopy(baseline_ami)
+        mutated_ami["partition_membership"][0][0] = StrSubclass(
+            mutated_ami["partition_membership"][0][0]
+        )
+        ami_type_mutations.append((
+            "partition name subclass",
+            reseal_ami(mutated_ami),
+        ))
+        mutated_ami = deepcopy(baseline_ami)
+        mutated_ami["partition_membership"][0][1] = ListSubclass(
+            mutated_ami["partition_membership"][0][1]
+        )
+        ami_type_mutations.append((
+            "partition identifiers list subclass",
+            reseal_ami(mutated_ami),
+        ))
+        mutated_ami = deepcopy(baseline_ami)
+        mutated_ami["partition_membership"][0][1][0] = StrSubclass(
+            mutated_ami["partition_membership"][0][1][0]
+        )
+        ami_type_mutations.append((
+            "partition identifier subclass",
+            reseal_ami(mutated_ami),
+        ))
+        mutated_ami = deepcopy(baseline_ami)
+        mutated_ami["official_order"] = ListSubclass(
+            mutated_ami["official_order"]
+        )
+        ami_type_mutations.append((
+            "official order list subclass",
+            reseal_ami(mutated_ami),
+        ))
+        mutated_ami = deepcopy(baseline_ami)
+        mutated_ami["official_order"][0] = StrSubclass(
+            mutated_ami["official_order"][0]
+        )
+        ami_type_mutations.append((
+            "official order item subclass",
+            reseal_ami(mutated_ami),
+        ))
+        for digest_field in (
+            "source_authority_sha256",
+            "tracked_public_authority_commitment_sha256",
+            "aggregate_sha256",
+            "self_sha256",
+        ):
+            mutated_ami = deepcopy(baseline_ami)
+            mutated_ami[digest_field] = StrSubclass(
+                mutated_ami[digest_field]
+            )
+            if digest_field != "self_sha256":
+                reseal_ami(mutated_ami)
+            ami_type_mutations.append((
+                f"{digest_field} subclass",
+                mutated_ami,
+            ))
+        for name, mutated_ami in ami_type_mutations:
+            with self.subTest(ami_type_drift=name):
+                with self.assertRaises((TypeError, ValueError)):
+                    validate_ami(mutated_ami)
+        self.assertEqual(packet["lockbox_access"], {
+            "open_count": 0,
+            "label_reads": 0,
+            "feature_reads": 0,
+            "audio_reads": 0,
+            "cache_reads": 0,
+        })
+        rendered = json.dumps(packet, sort_keys=True).casefold()
+        for forbidden in (
+            "clip_stem", "row_ids", "actor_ids", "participant_ids",
+            "meeting_ids", "probabilities", ".wav", "transcript",
+        ):
+            self.assertNotIn(forbidden, rendered)
+
+    def test_builder_rejects_final_authority_accessor_mapping_alias_and_type_drift(self) -> None:
+        self._require()
+        mutations = []
+        final = dict(self.fixture.authorities)
+        final["final_lockbox"] = object()
+        mutations.append(final)
+        alias = dict(self.fixture.authorities)
+        alias["calibration"] = alias["training_discovery"]
+        mutations.append(alias)
+        mutations.append([*self.fixture.authorities.items()])
+        for index, mutated in enumerate(mutations):
+            with self.subTest(index=index):
+                probe = self.fixture.new_probe()
+                with self.assertRaises((TypeError, ValueError)):
+                    self.fixture.build(authorities=mutated, probe=probe)
+                self.assertEqual(probe.audio_reads, [])
+                self.assertEqual(probe.ami_reads, [])
+
+    def test_builder_and_restore_are_alias_safe_and_byte_deterministic(self) -> None:
+        from scripts import emotion_state_phase_b_evaluation as evaluation
+
+        first, _probe = self._build()
+        second, _probe = self._build()
+        first_bytes = tuple(
+            json.dumps(value, sort_keys=True, separators=(",", ":"))
+            for value in (
+                *first.feature_caches.values(),
+                first.ami_evidence,
+                first.review_packet,
+            )
+        )
+        second_bytes = tuple(
+            json.dumps(value, sort_keys=True, separators=(",", ":"))
+            for value in (
+                *second.feature_caches.values(),
+                second.ami_evidence,
+                second.review_packet,
+            )
+        )
+        self.assertEqual(first_bytes, second_bytes)
+
+        caller_authorities = dict(self.fixture.authorities)
+        reader_calls: list[Any] = []
+
+        def mutate_caller_authorities(source: Any) -> bytes:
+            content = self.fixture.audio_bytes[source]
+            reader_calls.append(source)
+            if len(reader_calls) == 1:
+                caller_authorities.clear()
+            return content
+
+        callback_artifacts, _probe = self.fixture.build(
+            authorities=caller_authorities,
+            audio_reader=mutate_caller_authorities,
+        )
+        callback_bytes = tuple(
+            json.dumps(value, sort_keys=True, separators=(",", ":"))
+            for value in (
+                *callback_artifacts.feature_caches.values(),
+                callback_artifacts.ami_evidence,
+                callback_artifacts.review_packet,
+            )
+        )
+        self.assertEqual(len(reader_calls), CUT4_NONFINAL_COUNT)
+        self.assertEqual(callback_bytes, second_bytes)
+
+        original_records = evaluation.validated_partition_records
+        restore_record_calls: Counter[str] = Counter()
+
+        def observed_records(authority: Any, *, role: str) -> Any:
+            restore_record_calls[role] += 1
+            return original_records(authority, role=role)
+
+        with patch.object(
+            evaluation,
+            "validated_partition_records",
+            observed_records,
+        ):
+            restored = self.fixture.restore(first)
+        self.assertEqual(
+            restore_record_calls,
+            Counter({role: 1 for role in CUT4_NONFINAL_ROLES}),
+        )
+        first.feature_caches["training_discovery"]["records"][0]["features"][
+            "duration_seconds"
+        ] = 999.0
+        self.assertNotEqual(first, restored)
+        self.assertEqual(restored, second)
+
+    def test_slice_mapping_has_exact_25_cells_training_quartiles_and_suppression(self) -> None:
+        import numpy as np
+
+        from scripts import emotion_state_phase_b_evaluation as evaluation
+
+        from scripts import emotion_state_phase_b_public_pipeline as pipeline
+
+        feature_caches = self._task2_feature_caches()
+        slices = pipeline._build_frozen_diagnostic_slice_mapping(
+            training_authority=self.fixture.authorities["training_discovery"],
+            training_feature_cache=feature_caches["training_discovery"],
+            diagnostic_authority=self.fixture.authorities["balanced_diagnostic"],
+            diagnostic_feature_cache=feature_caches["balanced_diagnostic"],
+        )
+        self.assertEqual(len(slices), CUT4_SLICE_COUNT)
+        expected_names = (
+            *(f"source_label:{label}" for label in self.fixture.LABELS),
+            *(f"scripted_scenario:{sentence}" for sentence in self.fixture.SENTENCES),
+            "vote_agreement:[0.00,0.50)",
+            "vote_agreement:[0.50,0.75)",
+            "vote_agreement:[0.75,1.00]",
+            "silence_ratio:Q1",
+            "silence_ratio:Q2",
+            "silence_ratio:Q3",
+            "silence_ratio:Q4",
+        )
+        self.assertEqual(tuple(slices), tuple(sorted(expected_names)))
+
+        training_silence = [
+            record["features"]["silence_ratio"]
+            for record in feature_caches["training_discovery"]["records"]
+        ]
+        quartiles = tuple(float(value) for value in np.percentile(
+            np.asarray(training_silence, dtype=np.float64),
+            (25, 50, 75),
+            method="linear",
+        ))
+        self.assertLess(len(set(quartiles)), 3)
+
+        diagnostic_records = evaluation.validated_partition_records(
+            self.fixture.authorities["balanced_diagnostic"],
+            role="balanced_diagnostic",
+        )
+        diagnostic_cache = feature_caches["balanced_diagnostic"]["records"]
+        self.assertEqual(len(diagnostic_records), len(diagnostic_cache))
+        expected_membership = {name: [] for name in expected_names}
+        actor_by_row: dict[str, str] = {}
+        silence_assignment: dict[str, str] = {}
+        for authority_record, cache_record in zip(
+            diagnostic_records,
+            diagnostic_cache,
+            strict=True,
+        ):
+            label_record = authority_record.label_record
+            row = label_record.clip_stem
+            self.assertEqual(cache_record["clip_stem"], row)
+            actor_by_row[row] = label_record.actor_id
+            expected_membership[f"source_label:{label_record.label}"].append(row)
+            expected_membership[
+                f"scripted_scenario:{label_record.sentence_id}"
+            ].append(row)
+            agreement = label_record.vote_agreement
+            if agreement < 0.50:
+                vote_name = "vote_agreement:[0.00,0.50)"
+            elif agreement < 0.75:
+                vote_name = "vote_agreement:[0.50,0.75)"
+            else:
+                vote_name = "vote_agreement:[0.75,1.00]"
+            expected_membership[vote_name].append(row)
+            silence = cache_record["features"]["silence_ratio"]
+            if silence <= quartiles[0]:
+                quartile_name = "silence_ratio:Q1"
+            elif silence <= quartiles[1]:
+                quartile_name = "silence_ratio:Q2"
+            elif silence <= quartiles[2]:
+                quartile_name = "silence_ratio:Q3"
+            else:
+                quartile_name = "silence_ratio:Q4"
+            expected_membership[quartile_name].append(row)
+            silence_assignment[row] = quartile_name
+
+        def commitment(values: list[str]) -> str:
+            return hashlib.sha256(json.dumps(
+                values,
+                sort_keys=True,
+                separators=(",", ":"),
+                ensure_ascii=True,
+                allow_nan=False,
+            ).encode("ascii")).hexdigest().upper()
+
+        for name in expected_names:
+            rows = expected_membership[name]
+            actors = [actor_by_row[row] for row in rows]
+            self.assertEqual(slices[name], rows, msg=name)
+            self.assertEqual(commitment(slices[name]), commitment(rows), msg=name)
+            self.assertEqual(
+                len({actor_by_row[row] for row in slices[name]}),
+                len(set(actors)),
+                msg=name,
+            )
+
+        for row, quartile_name in silence_assignment.items():
+            silence = next(
+                cache_record["features"]["silence_ratio"]
+                for cache_record in diagnostic_cache
+                if cache_record["clip_stem"] == row
+            )
+            matching = [
+                name
+                for name, upper in zip(
+                    ("silence_ratio:Q1", "silence_ratio:Q2", "silence_ratio:Q3"),
+                    quartiles,
+                    strict=True,
+                )
+                if silence <= upper
+            ]
+            if matching:
+                self.assertEqual(quartile_name, matching[0])
+
+    def test_packet_v3_and_summary_only_independent_validation_are_rejected(self) -> None:
+        from scripts.validate_emotion_state_002_phase_b import (
+            validate_non_lockbox_packet,
+        )
+
+        from scripts import emotion_state_phase_b_public_pipeline as pipeline
+
+        artifacts = self._task2_artifacts()
+        legacy = deepcopy(artifacts.review_packet)
+        legacy["schema_id"] = "emotion-state-phase-b-non-lockbox-review-v3"
+        legacy["schema_version"] = 3
+        for field in (
+            "tracked_public_authority_commitment_sha256",
+            "diagnostic_slice_analysis",
+            "diagnostic_slice_analysis_sha256",
+            "artifact_cache_commitments",
+            "artifact_cache_commitments_sha256",
+        ):
+            legacy.pop(field)
+        legacy.pop("review_sha256")
+        legacy["review_sha256"] = pipeline._canonical_digest(legacy)
+        with self.assertRaises((TypeError, ValueError)):
+            pipeline.validate_non_lockbox_review_packet(legacy)
+        with self.assertRaises((TypeError, ValueError)):
+            validate_non_lockbox_packet({
+                "schema_id": artifacts.review_packet["schema_id"],
+                "schema_version": 4,
+                "review_sha256": artifacts.review_packet["review_sha256"],
+            })
+
+    def test_role_algebra_2491_959_939_2181_is_required_before_any_material_or_model_call(self) -> None:
+        from scripts import emotion_state_phase_b_evaluation as evaluation
+        from scripts.validate_emotion_state_002_phase_b import (
+            canonical_payload_sha256,
+        )
+
+        self._require()
+        mutations = []
+        for role in CUT4_NONFINAL_ROLES:
+            cache = deepcopy(self.fixture.partition_caches[role])
+            actor_counts = Counter(
+                record["actor_id"] for record in cache["records"]
+            )
+            sentence_counts = Counter(
+                record["sentence_id"] for record in cache["records"]
+            )
+            label_counts = Counter(
+                record["label"] for record in cache["records"]
+            )
+            removable_index = next(
+                index
+                for index, record in enumerate(cache["records"])
+                if actor_counts[record["actor_id"]] > 1
+                and sentence_counts[record["sentence_id"]] > 1
+                and label_counts[record["label"]] > 1
+            )
+            del cache["records"][removable_index]
+            cache["self_sha256"] = canonical_payload_sha256(cache)
+            mutated = deepcopy(self.fixture.split_manifest)
+            mutated["partition_authority_sha256"][role] = cache["self_sha256"]
+            mutated["self_sha256"] = canonical_payload_sha256(mutated)
+            drifted_authority = (
+                evaluation.restore_validated_partition_authority_cache(
+                    cache,
+                    mutated,
+                    role=role,
+                )
+            )
+            authorities = dict(self.fixture.authorities)
+            authorities[role] = drifted_authority
+            mutations.append((role, authorities, mutated))
+
+        final_manifest = deepcopy(self.fixture.split_manifest)
+        final_manifest["final_lockbox_commitment"][
+            "eligible_record_count"
+        ] += 1
+        final_manifest["self_sha256"] = canonical_payload_sha256(
+            final_manifest
+        )
+        mutations.append((
+            "final_lockbox",
+            dict(self.fixture.authorities),
+            final_manifest,
+        ))
+
+        for role, authorities, mutated in mutations:
+            with self.subTest(role=role):
+                probe = self.fixture.new_probe()
+                with self.assertRaises((TypeError, ValueError)):
+                    self.fixture.build(
+                        authorities=authorities,
+                        split_manifest=mutated,
+                        probe=probe,
+                    )
+                self.assertEqual(probe.audio_reads, [])
+                self.assertEqual(probe.ami_reads, [])
+                self.assertEqual(probe.feature_calls, [])
+                self.assertEqual(probe.ami_loader_calls, [])
+                self.assertEqual(probe.model_calls, [])
+
+    def test_slice_v2_suppresses_sparse_and_empty_cells_without_zero_or_false_flags(self) -> None:
+        from scripts import emotion_state_phase_b_evaluation as evaluation
+
+        EvaluationTests.setUpClass()
+        case = EvaluationTests("test_sparse_suppression_and_probability_schemas_fail_closed")
+        artifacts = case._semantic_artifacts()
+        diagnostic_partition = case._authoritative_partition("balanced_diagnostic")
+        probabilities = evaluation.predict_probabilities(
+            artifacts["fitted"],
+            diagnostic_partition,
+        )
+        diagnostic = evaluation.evaluate_partition(
+            probabilities,
+            artifacts["calibration"],
+        )
+        rows = [
+            record.clip_stem
+            for record in case.RECORDS_BY_ROLE["balanced_diagnostic"]
+        ]
+        sliced = evaluation.mint_slice_analysis(
+            probabilities,
+            diagnostic,
+            {"dense": rows, "empty": [], "sparse": rows[:1]},
+        ).to_payload()
+        self.assertEqual(sliced["schema_id"], "emotion-state-phase-b-slice-analysis-v2")
+        for name in ("empty", "sparse"):
+            self.assertIs(sliced["slices"][name]["suppressed"], True)
+            self.assertIsNone(sliced["slices"][name]["model_macro_f1"])
+            self.assertIsNone(sliced["slices"][name]["paired_macro_f1_lift"])
+
+    def test_source_silent_restore_rejects_each_cache_rewrite_even_when_aggregate_is_unchanged(self) -> None:
+        from scripts.validate_emotion_state_002_phase_b import (
+            canonical_payload_sha256,
+        )
+
+        self._require()
+        artifacts, probe = self._build()
+        self.assertEqual(len(probe.audio_reads), CUT4_NONFINAL_COUNT)
+        for name in (*CUT4_NONFINAL_ROLES, "ami_evidence"):
+            with self.subTest(cache=name):
+                mutated = deepcopy(artifacts)
+                if name == "ami_evidence":
+                    target = mutated.ami_evidence
+                    target["source_file_count"] = CUT4_AMI_XML_COUNT - 1
+                else:
+                    target = mutated.feature_caches[name]
+                    feature_name = next(iter(target["records"][0]["features"]))
+                    target["records"][0]["features"][feature_name] += 0.125
+                target["self_sha256"] = canonical_payload_sha256(target)
+                with self.assertRaises((TypeError, ValueError)):
+                    self.fixture.restore(mutated)
+
+
+class ProductionNonLockboxExecutionTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls) -> None:
+        from scripts import run_emotion_state_002_phase_b as runner
+
+        _Cut4ProductionShapeFixture.initialize()
+        cls.fixture = _Cut4ProductionShapeFixture
+        cls.runner = runner
+
+    def setUp(self) -> None:
+        self.temporary = tempfile.TemporaryDirectory()
+        self.addCleanup(self.temporary.cleanup)
+        self.case_root = Path(self.temporary.name)
+        self.paths = self._make_paths(self.case_root / "primary")
+
+    def _require(self) -> None:
+        self.fixture.require_builder_api(self)
+        for name in (
+            "_held_non_lockbox_output_authorities",
+            "_persist_non_lockbox_artifacts",
+            "_admit_non_lockbox_state",
+            "_commit_non_lockbox_state_durably",
+            "_read_committed_non_lockbox_checkpoint",
+        ):
+            self.assertTrue(
+                hasattr(self.runner, name),
+                f"missing Cut 4 runner capability: {name}",
+            )
+
+    def _require_task5(self) -> None:
+        self.fixture.require_builder_api(self)
+        for name in (
+            "_frozen_non_lockbox_public_source_reader",
+            "_held_non_lockbox_output_authorities",
+            "_persist_non_lockbox_artifacts",
+        ):
+            self.assertTrue(
+                hasattr(self.runner, name),
+                f"missing Cut 4 Task 5 runner capability: {name}",
+            )
+
+    def _require_task6(self) -> None:
+        for name in (
+            "_admit_non_lockbox_state",
+            "_commit_non_lockbox_state_durably",
+        ):
+            self.assertTrue(
+                hasattr(self.runner, name),
+                f"missing Cut 4 Task 6 runner capability: {name}",
+            )
+
+    def _task6_proposed_state(
+        self,
+        initial: Mapping[str, Any],
+        *,
+        packet_sha256: str | None = None,
+    ) -> dict[str, Any]:
+        proposed = dict(initial)
+        proposed.update(
+            {
+                "phase": "non_lockbox_complete",
+                "non_lockbox_packet_sha256": (
+                    "A" * 64 if packet_sha256 is None else packet_sha256
+                ),
+            }
+        )
+        return self.runner._validate_state(proposed)
+
+    @contextmanager
+    def _task6_transition(
+        self,
+        paths: Any | None = None,
+        probe: SimpleNamespace | None = None,
+        *,
+        packet_sha256: str | None = None,
+    ):
+        selected = paths or self.paths
+        observed = probe or self.fixture.new_probe()
+        with self.fixture.runtime_patches(selected, self.runner, observed):
+            with self.runner.material_pipeline_lock(selected) as material_authority:
+                with self.runner._admit_recovered_state(
+                    selected,
+                    material_authority=material_authority,
+                ) as committed_preflight:
+                    self.assertIs(
+                        type(committed_preflight),
+                        self.runner._HeldCommittedStateAuthority,
+                    )
+                    self.assertIs(
+                        committed_preflight._file_owner.peek(),
+                        committed_preflight.file,
+                    )
+                    with self.runner._read_committed_preflight_checkpoint(
+                        selected,
+                        material_authority=material_authority,
+                        committed_state_authority=committed_preflight,
+                    ) as preflight_readback:
+                        with self.runner._admit_non_lockbox_state(
+                            selected,
+                            material_authority=material_authority,
+                            committed_state_authority=committed_preflight,
+                        ) as admitted:
+                            self.assertIs(
+                                admitted._initial_owner,
+                                committed_preflight._file_owner,
+                            )
+                            self.assertIs(
+                                committed_preflight._file_owner.peek(),
+                                committed_preflight.file,
+                            )
+                            self.assertIs(admitted.initial_file, committed_preflight.file)
+                            proposed = self._task6_proposed_state(
+                                admitted.initial_state,
+                                packet_sha256=packet_sha256,
+                            )
+                            with self.runner._commit_non_lockbox_state_durably(
+                                selected,
+                                proposed,
+                                material_authority=material_authority,
+                                admitted_state_authority=admitted,
+                            ) as committed_non_lockbox:
+                                self.assertIsNone(admitted._initial_owner.peek())
+                                self.assertIs(
+                                    committed_non_lockbox._file_owner.peek(),
+                                    committed_non_lockbox.file,
+                                )
+                                yield SimpleNamespace(
+                                    material=material_authority,
+                                    committed_preflight=committed_preflight,
+                                    preflight_readback=preflight_readback,
+                                    admitted=admitted,
+                                    proposed=proposed,
+                                    committed=committed_non_lockbox,
+                                    probe=observed,
+                                )
+
+    def _task6_synthetic_preflight_state(
+        self,
+        paths: Any,
+    ) -> tuple[dict[str, Any], bytes]:
+        state = self._task6_preflight_state_payload()
+        content = self.runner.canonical_json_bytes(state)
+        paths.state_root.mkdir(parents=True)
+        paths.state_path.write_bytes(content)
+        return state, content
+
+    def _task6_preflight_state_payload(self) -> dict[str, Any]:
+        state = self.runner._initial_state()
+        state.update(
+            {
+                "phase": "preflight_complete",
+                "configuration_sha256": "1" * 64,
+                "environment_lock_sha256": "2" * 64,
+                "input_ledger_sha256": "3" * 64,
+                "split_manifest_sha256": "4" * 64,
+                "non_lockbox_packet_sha256": self.runner.UNSET_DIGEST,
+                "lockbox_result_sha256": self.runner.UNSET_DIGEST,
+                "lockbox_decision_evidence_sha256": self.runner.UNSET_DIGEST,
+                "lockbox_decision_evidence_mint_sha256": self.runner.UNSET_DIGEST,
+            }
+        )
+        return self.runner._validate_state(state)
+
+    def _seed_task6_recovery_case(
+        self,
+        paths: Any,
+        case: str,
+    ) -> tuple[bytes, bytes]:
+        _state, initial_bytes = self._task6_synthetic_preflight_state(paths)
+        target_bytes = b""
+        with self.runner.material_pipeline_lock(paths) as material_authority:
+            with self.runner._admit_recovered_state(
+                paths,
+                material_authority=material_authority,
+            ) as committed_preflight:
+                with self.runner._admit_non_lockbox_state(
+                    paths,
+                    material_authority=material_authority,
+                    committed_state_authority=committed_preflight,
+                ) as admitted:
+                    proposed = self._task6_proposed_state(admitted.initial_state)
+                    if case == "committed-intent-no-prior-forbidden-anchor":
+                        proposed = dict(proposed)
+                        proposed["input_ledger_sha256"] = "5" * 64
+                        proposed = self.runner._validate_state(proposed)
+                    target_bytes = self.runner.canonical_json_bytes(proposed)
+                    stage = self.runner._create_held_regular_file_authority(
+                        paths.non_lockbox_state_stage_path,
+                        target_bytes,
+                        parent_authority=material_authority.state_root,
+                    )
+                    intent = None
+                    if case not in {
+                        "target-stage-no-intent",
+                        "orphan-prior",
+                        "mixed-family-controls",
+                    }:
+                        intent_bytes = (
+                            b'{"operation":"malformed"}\n'
+                            if case == "malformed-intent"
+                            else self.runner.canonical_json_bytes(
+                                self.runner._non_lockbox_state_intent_payload(
+                                    paths,
+                                    stage=stage,
+                                    admitted=admitted,
+                                )
+                            )
+                        )
+                        intent = self.runner._create_held_regular_file_authority(
+                            paths.non_lockbox_state_intent_path,
+                            intent_bytes,
+                            parent_authority=material_authority.state_root,
+                        )
+                    if case == "initial-intent-no-stage":
+                        self.runner._safe_unlink_owned_file(stage)
+                    elif case in {
+                        "initial-intent-stage",
+                        "malformed-intent",
+                        "target-stage-no-intent",
+                        "mixed-family-controls",
+                    }:
+                        self.runner._close_owned_regular_file_authority(stage)
+                    elif case in {
+                        "absent-intent-stage-prior",
+                        "committed-intent-prior",
+                        "committed-intent-no-prior",
+                        "committed-intent-no-prior-forbidden-anchor",
+                        "orphan-prior",
+                        "ambiguous-intent-prior-no-stage",
+                    }:
+                        initial = admitted._initial_owner.take()
+                        prior = self.runner._renamed_held_regular_file_authority(
+                            initial,
+                            paths.non_lockbox_state_prior_path,
+                            parent_authority=material_authority.state_root,
+                        )
+                        if case.startswith("committed-intent"):
+                            promoted = self.runner._renamed_held_regular_file_authority(
+                                stage,
+                                paths.state_path,
+                                parent_authority=material_authority.state_root,
+                            )
+                            if case in {
+                                "committed-intent-no-prior",
+                                "committed-intent-no-prior-forbidden-anchor",
+                            }:
+                                self.runner._safe_unlink_owned_file(prior)
+                            else:
+                                self.runner._close_owned_regular_file_authority(prior)
+                            self.runner._close_owned_regular_file_authority(promoted)
+                        else:
+                            if case in {
+                                "orphan-prior",
+                                "ambiguous-intent-prior-no-stage",
+                            }:
+                                self.runner._safe_unlink_owned_file(stage)
+                            else:
+                                self.runner._close_owned_regular_file_authority(stage)
+                            self.runner._close_owned_regular_file_authority(prior)
+                    else:
+                        raise AssertionError(f"unknown Task 6 recovery case: {case}")
+                    if intent is not None:
+                        self.runner._close_owned_regular_file_authority(intent)
+                    if case == "mixed-family-controls":
+                        wrong_family = self.runner._create_held_regular_file_authority(
+                            paths.preflight_state_stage_path,
+                            initial_bytes,
+                            parent_authority=material_authority.state_root,
+                        )
+                        self.runner._close_owned_regular_file_authority(wrong_family)
+        return initial_bytes, target_bytes
+
+    def _assert_task6_intent_type_drift_is_rejected(self, paths: Any) -> None:
+        class DictSubclass(dict):
+            pass
+
+        class StrSubclass(str):
+            pass
+
+        payload = {
+            "schema_version": 1,
+            "operation": "non_lockbox",
+            "source_phase": "preflight_complete",
+            "target_phase": "non_lockbox_complete",
+            "destination_name": paths.state_path.name,
+            "stage_name": paths.non_lockbox_state_stage_path.name,
+            "prior_name": paths.non_lockbox_state_prior_path.name,
+            "initial_stable_identity": [1],
+            "initial_sha256": "A" * 64,
+            "initial_size_bytes": 1,
+            "stage_stable_identity": [2],
+            "stage_sha256": "B" * 64,
+            "stage_size_bytes": 2,
+        }
+        self.assertEqual(
+            self.runner._validate_non_lockbox_state_intent(payload, paths),
+            payload,
+        )
+        drifted_payloads: list[dict[str, Any]] = [DictSubclass(payload)]
+        for field in (
+            "operation",
+            "source_phase",
+            "target_phase",
+            "destination_name",
+            "stage_name",
+            "prior_name",
+            "initial_sha256",
+            "stage_sha256",
+        ):
+            drifted = dict(payload)
+            drifted[field] = StrSubclass(drifted[field])
+            drifted_payloads.append(drifted)
+        drifted_key = dict(payload)
+        value = drifted_key.pop("operation")
+        drifted_key[StrSubclass("operation")] = value
+        drifted_payloads.append(drifted_key)
+        for index, drifted in enumerate(drifted_payloads):
+            with self.subTest(intent_type_drift=index):
+                with self.assertRaisesRegex(
+                    self.runner.RunnerError,
+                    "intent fields|intent identity|identity",
+                ):
+                    self.runner._validate_non_lockbox_state_intent(
+                        drifted,
+                        paths,
+                    )
+
+    @contextmanager
+    def _task5_artifacts(
+        self,
+        paths: Any | None = None,
+        probe: SimpleNamespace | None = None,
+    ):
+        selected = paths or self.paths
+        observed = probe or self.fixture.new_probe()
+        with self.fixture.runtime_patches(selected, self.runner, observed):
+            audio_reader = self.runner._frozen_non_lockbox_public_source_reader(
+                selected,
+                self.fixture.expected_audio_order(),
+                family="crema_wav",
+            )
+            ami_reader = self.runner._frozen_non_lockbox_public_source_reader(
+                selected,
+                self.fixture.selected_ami_sources,
+                family="ami_xml",
+            )
+            artifacts, _probe = self.fixture.build(
+                probe=observed,
+                audio_reader=audio_reader,
+                ami_reader=ami_reader,
+            )
+            self.assertIs(_probe, observed)
+            yield artifacts, observed, audio_reader, ami_reader
+
+    @contextmanager
+    def _task5_persisted(self, paths: Any, artifacts: Any):
+        with self.runner.material_pipeline_lock(paths) as material_authority:
+            with self.runner._held_non_lockbox_output_authorities(
+                paths,
+                material_authority,
+            ) as output_authorities:
+                with self.runner._persist_non_lockbox_artifacts(
+                    paths,
+                    artifacts,
+                    material_authority=material_authority,
+                    output_authorities=output_authorities,
+                ) as readback:
+                    yield readback
+
+    def _make_paths(self, root: Path) -> Any:
+        from scripts.validate_emotion_state_002_phase_b import (
+            EXPECTED_ENVIRONMENT_LOCK,
+        )
+
+        project_root = root
+        input_root = project_root / "inputs"
+        state_root = project_root / "state"
+        public_root = project_root / "data/public/emotion-state"
+        canonical_root = project_root / "canonical"
+        input_root.mkdir(parents=True)
+        static_paths = {
+            "config_path": input_root / "config.json",
+            "environment_lock_path": input_root / "requirements.lock",
+            "feature_schema_path": input_root / "feature.schema.json",
+            "split_schema_path": input_root / "split.schema.json",
+        }
+        for name, source_name in (
+            ("config_path", "configuration"),
+            ("environment_lock_path", "environment_lock"),
+            ("feature_schema_path", "feature_schema"),
+            ("split_schema_path", "split_schema"),
+        ):
+            static_paths[name].write_bytes(self.fixture.static_bytes[source_name])
+        evidence_root = project_root / "research/sources/emotion_state/datasets"
+        evidence_root.mkdir(parents=True)
+        for name, content in self.fixture.evidence.items():
+            (evidence_root / name).write_bytes(content)
+        repository = public_root / "crema-d-v1.0/repository"
+        (repository / "processedResults").mkdir(parents=True)
+        (repository / "finishedResponses.csv").write_bytes(
+            self.fixture.finished_responses
+        )
+        (repository / "processedResults/summaryTable.csv").write_bytes(
+            self.fixture.summary_table
+        )
+        wheelhouse = (
+            project_root
+            / ".tmp/emotion-state-002-phase-b/dependencies/wheelhouse"
+        )
+        wheelhouse.mkdir(parents=True)
+        for distribution in EXPECTED_ENVIRONMENT_LOCK["distributions"]:
+            filename = distribution["wheel_filename"]
+            (wheelhouse / filename).write_bytes(
+                f"synthetic-wheel:{filename}".encode("ascii")
+            )
+        return self.runner.RunnerPaths.for_testing(
+            project_root=project_root,
+            input_root=input_root,
+            state_root=state_root,
+            canonical_root=canonical_root,
+            config_path=static_paths["config_path"],
+            environment_lock_path=static_paths["environment_lock_path"],
+            feature_schema_path=static_paths["feature_schema_path"],
+            split_schema_path=static_paths["split_schema_path"],
+            split_manifest_path=state_root / "split/validated-split-manifest.json",
+            input_ledger_path=state_root / "inputs/input-ledger.json",
+            non_lockbox_packet_path=(
+                state_root / "non-lockbox/non-lockbox-packet.json"
+            ),
+            lockbox_result_path=state_root / "lockbox/lockbox-result.json",
+            public_material_root=public_root,
+        )
+
+    def _prepare(self, paths: Any | None = None) -> dict[str, Any]:
+        selected = paths or self.paths
+        with self.fixture.preflight_patches(self.runner):
+            state = self.runner.run_preflight(selected)
+        self.assertEqual(state["phase"], "preflight_complete")
+        return state
+
+    def _run(
+        self,
+        paths: Any | None = None,
+        probe: SimpleNamespace | None = None,
+    ) -> tuple[dict[str, Any], SimpleNamespace]:
+        selected = paths or self.paths
+        probe = probe or self.fixture.new_probe()
+        with self.fixture.runtime_patches(selected, self.runner, probe):
+            state = self.runner.run_non_lockbox(selected)
+        return state, probe
+
+    @staticmethod
+    def _output_paths(paths: Any) -> tuple[Path, ...]:
+        return (
+            paths.non_lockbox_cache_root / "training_discovery.json",
+            paths.non_lockbox_cache_root / "calibration.json",
+            paths.non_lockbox_cache_root / "balanced_diagnostic.json",
+            paths.non_lockbox_cache_root / "ami-v2-evidence.json",
+            paths.non_lockbox_packet_path,
+        )
+
+    @classmethod
+    def _output_bytes(cls, paths: Any) -> tuple[bytes, ...]:
+        return tuple(path.read_bytes() for path in cls._output_paths(paths))
+
+    @staticmethod
+    def _paths_payload(paths: Any) -> dict[str, str]:
+        return {
+            name: str(getattr(paths, name))
+            for name in (
+                "project_root", "input_root", "state_root", "canonical_root",
+                "config_path", "environment_lock_path", "feature_schema_path",
+                "split_schema_path", "split_manifest_path", "input_ledger_path",
+                "non_lockbox_packet_path", "lockbox_result_path",
+                "public_material_root",
+            )
+        }
+
+    def _child_script(
+        self,
+        paths: Any,
+        body: str,
+        *,
+        use_runtime_patches: bool = True,
+    ) -> str:
+        payload = json.dumps(self._paths_payload(paths), sort_keys=True)
+        body = textwrap.indent(textwrap.dedent(body).strip(), "    ")
+        patch_context = (
+            "Fixture.runtime_patches(paths, runner)"
+            if use_runtime_patches
+            else "nullcontext()"
+        )
+        return f"""
+import json
+import os
+import time
+from contextlib import ExitStack, contextmanager, nullcontext
+from pathlib import Path
+from unittest.mock import patch
+from scripts import run_emotion_state_002_phase_b as runner
+from scripts.test_emotion_state_002_phase_b import _Cut4ProductionShapeFixture as Fixture
+
+payload = json.loads({payload!r})
+paths = runner.RunnerPaths.for_testing(**{{
+    key: Path(value) for key, value in payload.items()
+}})
+Fixture.initialize()
+with {patch_context}:
+{body}
+"""
+
+    def _start_child(
+        self,
+        paths: Any,
+        body: str,
+        *,
+        use_runtime_patches: bool = True,
+    ) -> subprocess.Popen[str]:
+        script = self._child_script(
+            paths,
+            body,
+            use_runtime_patches=use_runtime_patches,
+        )
+        compile(script, "<cut4-test-child>", "exec")
+        return subprocess.Popen(
+            [
+                str(EVALUATION_PYTHON),
+                "-u",
+                "-c",
+                script,
+            ],
+            cwd=ROOT,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True,
+        )
+
+    @staticmethod
+    def _compose_child_body(*parts: str) -> str:
+        return "\n\n".join(
+            textwrap.dedent(part).strip()
+            for part in parts
+            if textwrap.dedent(part).strip()
+        )
+
+    def _source_race_child_body(
+        self,
+        *,
+        scenario: str,
+        source: Path,
+        held_marker: Path,
+        release_marker: Path,
+        expected_digest: str,
+        expected_size: int,
+    ) -> str:
+        if scenario == "junction-before-open":
+            boundary = """
+            held_marker.write_bytes(b"held")
+            deadline = time.monotonic() + 45.0
+            while not release_marker.exists():
+                if time.monotonic() >= deadline:
+                    raise TimeoutError("parent did not release before-open race")
+                time.sleep(0.02)
+            invoke()
+            """
+        elif scenario == "junction-after-parent-validation":
+            boundary = """
+            original_parent = runner._trusted_parent_handles
+
+            @contextmanager
+            def paused_parent(*args, **kwargs):
+                with original_parent(*args, **kwargs) as authority:
+                    held_marker.write_bytes(b"held")
+                    deadline = time.monotonic() + 45.0
+                    while not release_marker.exists():
+                        if time.monotonic() >= deadline:
+                            raise TimeoutError("parent did not release parent race")
+                        time.sleep(0.02)
+                    yield authority
+
+            with patch.object(runner, "_trusted_parent_handles", paused_parent):
+                invoke()
+            """
+        elif scenario == "hardlink-before-open":
+            boundary = """
+            original_reader = runner._read_file_nofollow
+
+            def paused_reader(*args, **kwargs):
+                held_marker.write_bytes(b"held")
+                deadline = time.monotonic() + 45.0
+                while not release_marker.exists():
+                    if time.monotonic() >= deadline:
+                        raise TimeoutError("parent did not release hardlink race")
+                    time.sleep(0.02)
+                return original_reader(*args, **kwargs)
+
+            with patch.object(runner, "_read_file_nofollow", paused_reader):
+                invoke()
+            """
+        elif scenario == "replacement-mid-read":
+            boundary = """
+            original_read = os.read
+            paused = False
+
+            def paused_read(*args, **kwargs):
+                global paused
+                if not paused:
+                    paused = True
+                    held_marker.write_bytes(b"held")
+                    deadline = time.monotonic() + 45.0
+                    while not release_marker.exists():
+                        if time.monotonic() >= deadline:
+                            raise TimeoutError("parent did not release mid-read race")
+                        time.sleep(0.02)
+                return original_read(*args, **kwargs)
+
+            with patch.object(os, "read", paused_read):
+                invoke()
+            """
+        else:
+            raise AssertionError(f"unknown Cut 4 source race: {scenario}")
+        return self._compose_child_body(
+            f"""
+            source = Path({str(source)!r})
+            held_marker = Path({str(held_marker)!r})
+            release_marker = Path({str(release_marker)!r})
+
+            def invoke():
+                try:
+                    result = runner._read_verified_public_bytes(
+                        paths,
+                        source,
+                        expected_sha256={expected_digest!r},
+                        expected_size_bytes={expected_size!r},
+                        maximum_bytes={expected_size!r},
+                    )
+                except runner.RunnerError as error:
+                    print("FAIL_CLOSED:" + str(error), flush=True)
+                else:
+                    print("SUCCESS:" + result.sha256, flush=True)
+            """,
+            boundary,
+        )
+
+    def _held_input_race_child_body(
+        self,
+        *,
+        family: str,
+        target: Path,
+        held_marker: Path,
+        release_marker: Path,
+        outside_digest: str,
+    ) -> str:
+        if family not in {"wheel", "evidence"}:
+            raise AssertionError(f"unknown held-input family: {family}")
+        context = (
+            "runner._held_environment_wheel_inputs(paths)"
+            if family == "wheel"
+            else "runner._held_tracked_public_evidence_inputs(paths)"
+        )
+        return self._compose_child_body(
+            f"""
+            target = Path({str(target)!r})
+            held_marker = Path({str(held_marker)!r})
+            release_marker = Path({str(release_marker)!r})
+            outside_digest = {outside_digest!r}
+            original_held = runner._held_regular_file_with_bytes
+
+            @contextmanager
+            def paused_held(path, *args, **kwargs):
+                if Path(path) == target:
+                    held_marker.write_bytes(b"held")
+                    deadline = time.monotonic() + 45.0
+                    while not release_marker.exists():
+                        if time.monotonic() >= deadline:
+                            raise TimeoutError("parent did not release held-input race")
+                        time.sleep(0.02)
+                with original_held(path, *args, **kwargs) as opened:
+                    if runner._sha256_bytes(opened[1]) == outside_digest:
+                        print("OUTSIDE_READ:" + Path(path).name, flush=True)
+                    yield opened
+
+            with patch.object(
+                runner,
+                "_held_regular_file_with_bytes",
+                paused_held,
+            ):
+                try:
+                    with {context}:
+                        pass
+                except runner.RunnerError as error:
+                    print("FAIL_CLOSED:" + str(error), flush=True)
+                else:
+                    print("SUCCESS", flush=True)
+            """,
+        )
+
+    def _output_race_child_body(
+        self,
+        *,
+        scenario: str,
+        held_marker: Path,
+        release_marker: Path,
+    ) -> str:
+        if scenario in {"non-lockbox-root-rename", "cache-root-rename"}:
+            boundary = """
+            original_outputs = runner._held_non_lockbox_output_authorities
+
+            @contextmanager
+            def paused_outputs(*args, **kwargs):
+                with original_outputs(*args, **kwargs) as authority:
+                    held_marker.write_bytes(b"held")
+                    deadline = time.monotonic() + 45.0
+                    while not release_marker.exists():
+                        if time.monotonic() >= deadline:
+                            raise TimeoutError("parent did not release output-root race")
+                        time.sleep(0.02)
+                    yield authority
+
+            patch_name = "_held_non_lockbox_output_authorities"
+            replacement = paused_outputs
+            """
+        elif scenario in {"cache-file-replacement", "cache-file-hardlink"}:
+            boundary = """
+            original_persist = runner._persist_non_lockbox_artifacts
+
+            @contextmanager
+            def paused_persist(*args, **kwargs):
+                with original_persist(*args, **kwargs) as readback:
+                    held_marker.write_bytes(b"held")
+                    deadline = time.monotonic() + 45.0
+                    while not release_marker.exists():
+                        if time.monotonic() >= deadline:
+                            raise TimeoutError("parent did not release cache-file race")
+                        time.sleep(0.02)
+                    yield readback
+
+            patch_name = "_persist_non_lockbox_artifacts"
+            replacement = paused_persist
+            """
+        elif scenario == "state-target-creation":
+            boundary = """
+            original_rename = runner._renamed_held_regular_file_authority
+
+            def paused_state_target(authority, destination, **kwargs):
+                if Path(destination) == paths.state_path:
+                    held_marker.write_bytes(b"held")
+                    deadline = time.monotonic() + 45.0
+                    while not release_marker.exists():
+                        if time.monotonic() >= deadline:
+                            raise TimeoutError("parent did not release state-target race")
+                        time.sleep(0.02)
+                return original_rename(authority, destination, **kwargs)
+
+            patch_name = "_renamed_held_regular_file_authority"
+            replacement = paused_state_target
+            """
+        else:
+            raise AssertionError(f"unknown Cut 4 output race: {scenario}")
+        if scenario == "state-target-creation":
+            operation = """
+            with runner.material_pipeline_lock(paths) as material_authority:
+                with runner._admit_recovered_state(
+                    paths,
+                    material_authority=material_authority,
+                ) as committed_preflight:
+                    with runner._read_committed_preflight_checkpoint(
+                        paths,
+                        material_authority=material_authority,
+                        committed_state_authority=committed_preflight,
+                    ):
+                        with runner._admit_non_lockbox_state(
+                            paths,
+                            material_authority=material_authority,
+                            committed_state_authority=committed_preflight,
+                        ) as admitted:
+                            proposed = dict(admitted.initial_state)
+                            proposed.update({
+                                "phase": "non_lockbox_complete",
+                                "non_lockbox_packet_sha256": "A" * 64,
+                            })
+                            with runner._commit_non_lockbox_state_durably(
+                                paths,
+                                proposed,
+                                material_authority=material_authority,
+                                admitted_state_authority=admitted,
+                            ) as committed:
+                                result = committed.state["phase"]
+            """
+        else:
+            operation = """
+            audio_reader = runner._frozen_non_lockbox_public_source_reader(
+                paths,
+                Fixture.expected_audio_order(),
+                family="crema_wav",
+            )
+            ami_reader = runner._frozen_non_lockbox_public_source_reader(
+                paths,
+                Fixture.selected_ami_sources,
+                family="ami_xml",
+            )
+            artifacts, _probe = Fixture.build(
+                audio_reader=audio_reader,
+                ami_reader=ami_reader,
+            )
+            with runner.material_pipeline_lock(paths) as material_authority:
+                with runner._held_non_lockbox_output_authorities(
+                    paths,
+                    material_authority,
+                ) as output_authorities:
+                    with runner._persist_non_lockbox_artifacts(
+                        paths,
+                        artifacts,
+                        material_authority=material_authority,
+                        output_authorities=output_authorities,
+                    ):
+                        result = "artifacts"
+            """
+        return self._compose_child_body(
+            f"""
+            held_marker = Path({str(held_marker)!r})
+            release_marker = Path({str(release_marker)!r})
+            """,
+            boundary,
+            f"""
+            with patch.object(runner, patch_name, replacement):
+                try:
+{textwrap.indent(textwrap.dedent(operation).strip(), ' ' * 20)}
+                except runner.RunnerError as error:
+                    print("DENIED:" + str(error), flush=True)
+                else:
+                    print("SUCCESS:" + result, flush=True)
+            """,
+        )
+
+    def _finish_child(
+        self,
+        child: subprocess.Popen[str],
+        *,
+        timeout: float = 180.0,
+    ) -> tuple[str, str]:
+        try:
+            stdout, stderr = child.communicate(timeout=timeout)
+        except subprocess.TimeoutExpired:
+            child.kill()
+            stdout, stderr = child.communicate(timeout=10.0)
+            self.fail(f"Cut 4 child timed out: {stdout!r} {stderr!r}")
+        self.assertEqual(
+            child.returncode,
+            0,
+            msg=f"Cut 4 child failed: stdout={stdout!r} stderr={stderr!r}",
+        )
+        return stdout, stderr
+
+    def _wait_for_child_marker(
+        self,
+        child: subprocess.Popen[str],
+        marker: Path,
+        *,
+        timeout: float = 45.0,
+    ) -> None:
+        deadline = time.monotonic() + timeout
+        while not marker.exists():
+            if child.poll() is not None:
+                stdout, stderr = child.communicate(timeout=5.0)
+                self.fail(
+                    "Cut 4 child exited before marker: "
+                    f"code={child.returncode} stdout={stdout!r} stderr={stderr!r}"
+                )
+            if time.monotonic() >= deadline:
+                child.terminate()
+                stdout, stderr = child.communicate(timeout=5.0)
+                self.fail(
+                    "Cut 4 child marker timed out: "
+                    f"stdout={stdout!r} stderr={stderr!r}"
+                )
+            time.sleep(0.02)
+
+    def _terminate_child(self, child: subprocess.Popen[str]) -> None:
+        if child.poll() is not None:
+            return
+        child.terminate()
+        try:
+            child.communicate(timeout=5.0)
+        except subprocess.TimeoutExpired:
+            child.kill()
+            child.communicate(timeout=5.0)
+
+    def _create_windows_junction(self, link: Path, target: Path) -> None:
+        self.assertEqual(os.name, "nt")
+        self.assertFalse(os.path.lexists(link))
+        target.mkdir(parents=True, exist_ok=True)
+        result = subprocess.run(
+            [
+                os.environ.get("COMSPEC", "cmd.exe"),
+                "/d",
+                "/c",
+                "mklink",
+                "/J",
+                str(link),
+                str(target),
+            ],
+            capture_output=True,
+            text=True,
+            timeout=15.0,
+            check=False,
+        )
+        self.assertEqual(
+            result.returncode,
+            0,
+            msg=f"junction stdout={result.stdout!r} stderr={result.stderr!r}",
+        )
+
+    def test_non_lockbox_holds_material_and_preflight_authority_for_complete_lifetime(self) -> None:
+        self._require_task6()
+        original_close = self.runner._close_owned_regular_file_authority
+        fresh_closes: Counter[tuple[int, ...]] = Counter()
+
+        def close_fresh(authority: Any) -> Any:
+            fresh_closes[authority.stable_identity] += 1
+            return original_close(authority)
+
+        with patch.object(
+            self.runner,
+            "_close_owned_regular_file_authority",
+            close_fresh,
+        ):
+            self._prepare()
+        preflight_identity = self.runner._status_stable_identity(
+            os.stat(self.paths.state_path, follow_symlinks=False)
+        )
+        self.assertEqual(fresh_closes[preflight_identity], 1)
+
+        recovered_closes: Counter[tuple[int, ...]] = Counter()
+
+        def close_recovered(authority: Any) -> Any:
+            recovered_closes[authority.stable_identity] += 1
+            return original_close(authority)
+
+        with patch.object(
+            self.runner,
+            "_close_owned_regular_file_authority",
+            close_recovered,
+        ):
+            with self.runner.material_pipeline_lock(self.paths) as material_authority:
+                with self.runner._admit_recovered_state(
+                    self.paths,
+                    material_authority=material_authority,
+                ) as recovered:
+                    self.assertIs(
+                        recovered._file_owner.peek(),
+                        recovered.file,
+                    )
+        self.assertEqual(recovered_closes[preflight_identity], 1)
+
+        early_closes: Counter[tuple[int, ...]] = Counter()
+        readback_body_returned = [False]
+        final_state_verifications = [0]
+        early_original_preflight = self.runner._read_committed_preflight_checkpoint
+        original_verify = self.runner._verify_held_regular_file_authority
+
+        class SyntheticAdmissionAbort(Exception):
+            pass
+
+        def close_early(authority: Any) -> Any:
+            early_closes[authority.stable_identity] += 1
+            return original_close(authority)
+
+        def verify_early(authority: Any) -> Any:
+            if (
+                readback_body_returned[0]
+                and Path(authority.path) == self.paths.state_path
+            ):
+                final_state_verifications[0] += 1
+            return original_verify(authority)
+
+        @contextmanager
+        def observed_early_preflight(*args: Any, **kwargs: Any):
+            with early_original_preflight(*args, **kwargs) as authority:
+                try:
+                    yield authority
+                finally:
+                    readback_body_returned[0] = True
+
+        with (
+            self.fixture.runtime_patches(self.paths, self.runner),
+            patch.object(
+                self.runner,
+                "_read_committed_preflight_checkpoint",
+                observed_early_preflight,
+            ),
+            patch.object(
+                self.runner,
+                "_verify_held_regular_file_authority",
+                verify_early,
+            ),
+            patch.object(
+                self.runner,
+                "_close_owned_regular_file_authority",
+                close_early,
+            ),
+        ):
+            with self.runner.material_pipeline_lock(self.paths) as material_authority:
+                with self.runner._admit_recovered_state(
+                    self.paths,
+                    material_authority=material_authority,
+                ) as committed_preflight:
+                    original_owner = committed_preflight._file_owner
+                    with self.runner._read_committed_preflight_checkpoint(
+                        self.paths,
+                        material_authority=material_authority,
+                        committed_state_authority=committed_preflight,
+                    ):
+                        try:
+                            with self.runner._admit_non_lockbox_state(
+                                self.paths,
+                                material_authority=material_authority,
+                                committed_state_authority=committed_preflight,
+                            ) as admitted:
+                                self.assertIs(admitted._initial_owner, original_owner)
+                                self.assertIs(original_owner.peek(), committed_preflight.file)
+                                raise SyntheticAdmissionAbort
+                        except SyntheticAdmissionAbort:
+                            pass
+                        self.assertIs(original_owner.peek(), committed_preflight.file)
+        self.assertGreaterEqual(final_state_verifications[0], 1)
+        self.assertEqual(early_closes[preflight_identity], 1)
+
+        events: list[str] = []
+        live = {"material": False, "preflight": False}
+        transition_closes: Counter[tuple[int, ...]] = Counter()
+        original_lock = self.runner.material_pipeline_lock
+        original_preflight = self.runner._read_committed_preflight_checkpoint
+        original_commit = self.runner._commit_non_lockbox_state_durably
+
+        def close_transition(authority: Any) -> Any:
+            transition_closes[authority.stable_identity] += 1
+            return original_close(authority)
+
+        @contextmanager
+        def observed_lock(*args: Any, **kwargs: Any):
+            with original_lock(*args, **kwargs) as authority:
+                live["material"] = True
+                events.append("material-enter")
+                try:
+                    yield authority
+                finally:
+                    events.append("material-exit")
+                    live["material"] = False
+
+        @contextmanager
+        def observed_preflight(*args: Any, **kwargs: Any):
+            with original_preflight(*args, **kwargs) as authority:
+                live["preflight"] = True
+                events.append("preflight-enter")
+                try:
+                    yield authority
+                finally:
+                    events.append("preflight-exit")
+                    live["preflight"] = False
+
+        @contextmanager
+        def observed_commit(*args: Any, **kwargs: Any):
+            self.assertTrue(live["material"] and live["preflight"])
+            events.append("commit-enter")
+            with original_commit(*args, **kwargs) as authority:
+                self.assertTrue(live["material"] and live["preflight"])
+                try:
+                    yield authority
+                finally:
+                    self.assertTrue(live["material"] and live["preflight"])
+                    events.append("commit-exit")
+
+        with (
+            patch.object(self.runner, "material_pipeline_lock", observed_lock),
+            patch.object(
+                self.runner,
+                "_read_committed_preflight_checkpoint",
+                observed_preflight,
+            ),
+            patch.object(
+                self.runner,
+                "_commit_non_lockbox_state_durably",
+                observed_commit,
+            ),
+            patch.object(
+                self.runner,
+                "_close_owned_regular_file_authority",
+                close_transition,
+            ),
+        ):
+            with self._task6_transition() as transition:
+                committed_identity = transition.committed.file.stable_identity
+                self.assertEqual(
+                    transition.committed.state["phase"],
+                    "non_lockbox_complete",
+                )
+        self.assertLess(events.index("material-enter"), events.index("preflight-enter"))
+        self.assertLess(events.index("preflight-enter"), events.index("commit-enter"))
+        self.assertLess(events.index("commit-exit"), events.index("preflight-exit"))
+        self.assertLess(events.index("preflight-exit"), events.index("material-exit"))
+        self.assertEqual(transition_closes[preflight_identity], 1)
+        self.assertEqual(transition_closes[committed_identity], 1)
+
+        required_lane_helpers = (
+            "_classify_non_lockbox_checkpoint_phase",
+            "_require_non_lockbox_preflight_placeholders",
+            "_validated_static_non_lockbox_mappings",
+            "_validate_first_build_environment_inputs",
+            "_derive_runner_non_lockbox_audio_source_identities",
+            "_derive_runner_non_lockbox_ami_source_identities",
+            "_validate_first_build_non_lockbox_artifacts",
+            "_restore_and_compare_non_lockbox_readback",
+            "_revalidate_non_lockbox_first_build_capabilities",
+            "_proposed_non_lockbox_complete_state",
+            "_classify_non_lockbox_post_commit_unwind",
+        )
+        for name in required_lane_helpers:
+            self.assertTrue(
+                hasattr(self.runner, name),
+                f"missing Task 7 lane helper: {name}",
+            )
+
+        trace_paths = self._make_paths(self.case_root / "exact-lane-trace")
+        self._prepare(trace_paths)
+        trace: list[str] = []
+        calls = Counter()
+        probe = self.fixture.new_probe()
+
+        expected_trace = [
+            "01-entry-environment",
+            "02-layout",
+            "03-material-lock",
+            "04-non-lockbox-recovery",
+            "05-committed-state",
+            "06-preflight-readback",
+            "07-role-algebra",
+            "08-phase-classification",
+            "09-preflight-placeholders",
+            "10-admit-non-lockbox-state",
+            "11-static-wheel-environment",
+            "12-held-evidence-authority",
+            "13-audio-source-identities",
+            "14-ami-source-identities",
+            "15-two-frozen-readers",
+            "16-build-artifacts",
+            "17-validate-artifacts",
+            "18-output-authorities",
+            "19-persist-five",
+            "20-retained-readback",
+            "21-semantic-restore",
+            "22-repeat-environment",
+            "23-precommit-revalidation",
+            "24-proposed-state",
+            "25-state-commit",
+            "26-postcommit-revalidation",
+            "27-final-state-and-unwind",
+        ]
+
+        with self.fixture.runtime_patches(
+            trace_paths,
+            self.runner,
+            probe,
+        ):
+            with ExitStack() as stack:
+                original_installed = (
+                    self.runner.validate_installed_environment_identity
+                )
+                original_closed = self.runner._assert_closed_environment
+                original_layout = self.runner._validate_layout
+                original_recovery = (
+                    self.runner._recover_non_lockbox_state_controls
+                )
+                original_source_reader = (
+                    self.runner._frozen_non_lockbox_public_source_reader
+                )
+
+                def installed(*args: Any, **kwargs: Any) -> Any:
+                    calls["installed"] += 1
+                    trace.append(
+                        "01-entry-environment"
+                        if calls["installed"] == 1
+                        else "22-repeat-environment"
+                    )
+                    return original_installed(*args, **kwargs)
+
+                def closed(*args: Any, **kwargs: Any) -> Any:
+                    calls["closed"] += 1
+                    return original_closed(*args, **kwargs)
+
+                def layout(*args: Any, **kwargs: Any) -> Any:
+                    calls["layout"] += 1
+                    if calls["layout"] == 1:
+                        trace.append("02-layout")
+                    return original_layout(*args, **kwargs)
+
+                def recovery(*args: Any, **kwargs: Any) -> Any:
+                    trace.append("04-non-lockbox-recovery")
+                    return original_recovery(*args, **kwargs)
+
+                def source_reader(*args: Any, **kwargs: Any) -> Any:
+                    result = original_source_reader(*args, **kwargs)
+                    calls["source_reader"] += 1
+                    if calls["source_reader"] == 2:
+                        trace.append("15-two-frozen-readers")
+                    return result
+
+                stack.enter_context(patch.object(
+                    self.runner,
+                    "validate_installed_environment_identity",
+                    installed,
+                ))
+                stack.enter_context(patch.object(
+                    self.runner,
+                    "_assert_closed_environment",
+                    closed,
+                ))
+                stack.enter_context(patch.object(
+                    self.runner,
+                    "_validate_layout",
+                    layout,
+                ))
+                stack.enter_context(patch.object(
+                    self.runner,
+                    "_recover_non_lockbox_state_controls",
+                    recovery,
+                ))
+                stack.enter_context(patch.object(
+                    self.runner,
+                    "_frozen_non_lockbox_public_source_reader",
+                    source_reader,
+                ))
+
+                simple_functions = (
+                    (
+                        "_validate_runner_non_lockbox_role_algebra",
+                        "07-role-algebra",
+                    ),
+                    (
+                        "_classify_non_lockbox_checkpoint_phase",
+                        "08-phase-classification",
+                    ),
+                    (
+                        "_require_non_lockbox_preflight_placeholders",
+                        "09-preflight-placeholders",
+                    ),
+                    (
+                        "_validate_first_build_environment_inputs",
+                        "11-static-wheel-environment",
+                    ),
+                    (
+                        "_tracked_public_authority_from_held_evidence",
+                        "12-held-evidence-authority",
+                    ),
+                    (
+                        "_derive_runner_non_lockbox_audio_source_identities",
+                        "13-audio-source-identities",
+                    ),
+                    (
+                        "_derive_runner_non_lockbox_ami_source_identities",
+                        "14-ami-source-identities",
+                    ),
+                    (
+                        "build_production_non_lockbox_artifacts",
+                        "16-build-artifacts",
+                    ),
+                    (
+                        "_validate_first_build_non_lockbox_artifacts",
+                        "17-validate-artifacts",
+                    ),
+                    (
+                        "_restore_and_compare_non_lockbox_readback",
+                        "21-semantic-restore",
+                    ),
+                    (
+                        "_proposed_non_lockbox_complete_state",
+                        "24-proposed-state",
+                    ),
+                )
+                for attribute, label in simple_functions:
+                    original = getattr(self.runner, attribute)
+
+                    def observed(
+                        *args: Any,
+                        _original: Any = original,
+                        _label: str = label,
+                        **kwargs: Any,
+                    ) -> Any:
+                        trace.append(_label)
+                        return _original(*args, **kwargs)
+
+                    stack.enter_context(patch.object(
+                        self.runner,
+                        attribute,
+                        observed,
+                    ))
+
+                original_revalidate = (
+                    self.runner._revalidate_non_lockbox_first_build_capabilities
+                )
+
+                def revalidate(*args: Any, **kwargs: Any) -> Any:
+                    calls["revalidate"] += 1
+                    trace.append(
+                        "23-precommit-revalidation"
+                        if calls["revalidate"] == 1
+                        else "26-postcommit-revalidation"
+                    )
+                    return original_revalidate(*args, **kwargs)
+
+                stack.enter_context(patch.object(
+                    self.runner,
+                    "_revalidate_non_lockbox_first_build_capabilities",
+                    revalidate,
+                ))
+
+                def observed_context(
+                    attribute: str,
+                    label: str,
+                    *,
+                    after_enter: str | None = None,
+                    after_exit: str | None = None,
+                ) -> None:
+                    original = getattr(self.runner, attribute)
+
+                    @contextmanager
+                    def wrapper(*args: Any, **kwargs: Any):
+                        if after_enter is None:
+                            trace.append(label)
+                        with original(*args, **kwargs) as authority:
+                            if after_enter is not None:
+                                trace.append(after_enter)
+                            yield authority
+                        if after_exit is not None:
+                            trace.append(after_exit)
+
+                    stack.enter_context(patch.object(
+                        self.runner,
+                        attribute,
+                        wrapper,
+                    ))
+
+                observed_context(
+                    "material_pipeline_lock",
+                    "03-material-lock",
+                    after_enter="03-material-lock",
+                )
+                observed_context(
+                    "_admit_recovered_state",
+                    "05-committed-state",
+                    after_enter="05-committed-state",
+                )
+                observed_context(
+                    "_read_committed_preflight_checkpoint",
+                    "06-preflight-readback",
+                    after_enter="06-preflight-readback",
+                )
+                observed_context(
+                    "_admit_non_lockbox_state",
+                    "10-admit-non-lockbox-state",
+                    after_enter="10-admit-non-lockbox-state",
+                )
+                observed_context(
+                    "_held_non_lockbox_output_authorities",
+                    "18-output-authorities",
+                    after_enter="18-output-authorities",
+                )
+
+                original_persist = self.runner._persist_non_lockbox_artifacts
+
+                @contextmanager
+                def persist(*args: Any, **kwargs: Any):
+                    trace.append("19-persist-five")
+                    with original_persist(*args, **kwargs) as authority:
+                        trace.append("20-retained-readback")
+                        yield authority
+
+                stack.enter_context(patch.object(
+                    self.runner,
+                    "_persist_non_lockbox_artifacts",
+                    persist,
+                ))
+
+                original_commit_lane = (
+                    self.runner._commit_non_lockbox_state_durably
+                )
+
+                @contextmanager
+                def commit_lane(*args: Any, **kwargs: Any):
+                    trace.append("25-state-commit")
+                    with original_commit_lane(*args, **kwargs) as authority:
+                        yield authority
+                    trace.append("27-final-state-and-unwind")
+
+                stack.enter_context(patch.object(
+                    self.runner,
+                    "_commit_non_lockbox_state_durably",
+                    commit_lane,
+                ))
+                result = self.runner.run_non_lockbox(trace_paths)
+
+        self.assertEqual(result["phase"], "non_lockbox_complete")
+        self.assertEqual(trace, expected_trace)
+        self.assertEqual(calls["installed"], 2)
+        self.assertEqual(calls["closed"], 3)
+        self.assertEqual(calls["source_reader"], 2)
+        self.assertEqual(calls["revalidate"], 2)
+
+    def test_non_lockbox_revalidates_state_static_and_tracked_evidence_before_sources(self) -> None:
+        from scripts import emotion_state_phase_b_public_pipeline as pipeline
+
+        self._require()
+        self._prepare()
+        order: list[str] = []
+        source_calls = Counter()
+
+        def source(*args: Any, **kwargs: Any) -> Any:
+            source_calls["public"] += 1
+            raise AssertionError("runner helper touched public material")
+
+        with (
+            self.fixture.preflight_patches(self.runner),
+            patch.object(self.runner, "_read_verified_public_bytes", source),
+            self.runner.material_pipeline_lock(self.paths) as material_authority,
+            self.runner._admit_recovered_state(
+                self.paths,
+                material_authority=material_authority,
+            ) as committed_state,
+            self.runner._read_committed_preflight_checkpoint(
+                self.paths,
+                material_authority=material_authority,
+                committed_state_authority=committed_state,
+            ) as preflight_readback,
+        ):
+            self.runner._require_non_lockbox_preflight_placeholders(
+                preflight_readback.state
+            )
+            manifest, authorities, records_by_role = (
+                self.runner._validate_runner_non_lockbox_role_algebra(
+                    preflight_readback
+                )
+            )
+            order.append("role-algebra")
+            with self.runner._held_preflight_static_inputs(
+                self.paths
+            ) as static_inputs:
+                self.runner._revalidate_held_static_preflight_inputs(
+                    static_inputs
+                )
+                order.append("static")
+                with self.runner._held_tracked_public_evidence_inputs(
+                    self.paths
+                ) as evidence_inputs:
+                    tracked_authority, commitment = (
+                        self.runner._tracked_public_authority_from_held_evidence(
+                            evidence_inputs
+                        )
+                    )
+                    order.extend(("tracked-validate", "tracked-commitment"))
+                    self.runner._revalidate_held_tracked_public_evidence_inputs(
+                        evidence_inputs
+                    )
+                    audio_by_role, ami_sources = (
+                        self.runner._derive_runner_non_lockbox_source_identities(
+                            tracked_authority,
+                            records_by_role,
+                        )
+                    )
+                    order.append("source-identities")
+
+        self.assertEqual(tuple(authorities), CUT4_NONFINAL_ROLES)
+        self.assertEqual(tuple(records_by_role), CUT4_NONFINAL_ROLES)
+        self.assertEqual(
+            tuple(len(records_by_role[role]) for role in CUT4_NONFINAL_ROLES),
+            (2491, 959, 939),
+        )
+        self.assertEqual(manifest["eligible_record_count"], CUT4_ELIGIBLE_COUNT)
+        self.assertNotIn("final_lockbox", authorities)
+        self.assertNotIn("final_lockbox", records_by_role)
+        self.assertEqual(tracked_authority, self.fixture.tracked_authority)
+        self.assertEqual(commitment, self.fixture.source_commitment)
+        self.assertEqual(tuple(audio_by_role), CUT4_NONFINAL_ROLES)
+        self.assertEqual(
+            tuple(
+                source
+                for role in CUT4_NONFINAL_ROLES
+                for source in audio_by_role[role]
+            ),
+            self.fixture.expected_audio_order(),
+        )
+        self.assertEqual(tuple(ami_sources), self.fixture.selected_ami_sources)
+        self.assertEqual(sum(map(len, audio_by_role.values())), CUT4_NONFINAL_COUNT)
+        self.assertEqual(len(ami_sources), CUT4_AMI_XML_COUNT)
+        self.assertEqual(source_calls, Counter())
+        audio_only_authority = replace(
+            tracked_authority,
+            ami_files=(),
+        )
+        ami_only_authority = replace(
+            tracked_authority,
+            crema_audio=(),
+        )
+        independently_derived_audio = (
+            self.runner._derive_runner_non_lockbox_audio_source_identities(
+                audio_only_authority,
+                records_by_role,
+            )
+        )
+        self.assertEqual(
+            tuple(
+                source
+                for role in CUT4_NONFINAL_ROLES
+                for source in independently_derived_audio[role]
+            ),
+            self.fixture.expected_audio_order(),
+        )
+        self.assertEqual(
+            self.runner._derive_runner_non_lockbox_ami_source_identities(
+                ami_only_authority,
+                records_by_role,
+            ),
+            self.fixture.selected_ami_sources,
+        )
+        self.assertEqual(
+            order,
+            [
+                "role-algebra",
+                "static",
+                "tracked-validate",
+                "tracked-commitment",
+                "source-identities",
+            ],
+        )
+
+    def test_non_lockbox_reads_only_sealed_nonfinal_wavs_without_directory_listing(self) -> None:
+        self._require_task5()
+        original_listdir = os.listdir
+        original_scandir = os.scandir
+
+        def guarded(original: Any) -> Callable[..., Any]:
+            def call(path: Any = ".", *args: Any, **kwargs: Any) -> Any:
+                try:
+                    target = Path(path)
+                except TypeError:
+                    return original(path, *args, **kwargs)
+                if target == self.paths.crema_audio_root:
+                    raise AssertionError("Cut 4 listed the CREMA audio directory")
+                return original(path, *args, **kwargs)
+            return call
+
+        probe = self.fixture.new_probe()
+        first_source = self.fixture.expected_audio_order()[0]
+        with self.assertRaisesRegex(
+            self.runner.RunnerError,
+            "authority|digest type|invalid",
+        ):
+            self.runner._frozen_non_lockbox_public_source_reader(
+                self.paths,
+                (replace(
+                    first_source,
+                    sha256=type("DigestAlias", (str,), {})(first_source.sha256),
+                ),),
+                family="crema_wav",
+            )
+        with self.assertRaisesRegex(
+            self.runner.RunnerError,
+            "authority.*invalid",
+        ):
+            self.runner._frozen_non_lockbox_public_source_reader(
+                self.paths,
+                (first_source,),
+                family=type("FamilyAlias", (str,), {})("crema_wav"),
+            )
+        with (
+            patch.object(os, "listdir", guarded(original_listdir)),
+            patch.object(os, "scandir", guarded(original_scandir)),
+        ):
+            with self._task5_artifacts(self.paths, probe) as (
+                _artifacts,
+                _probe,
+                audio_reader,
+                _ami_reader,
+            ):
+                with self.assertRaisesRegex(
+                    self.runner.RunnerError,
+                    "outside|unknown|sealed|identity|source",
+                ):
+                    audio_reader(self.fixture.identity_only_audio[0])
+        self.assertEqual(tuple(probe.audio_reads), self.fixture.expected_audio_order())
+        self.assertEqual(len(probe.audio_reads), CUT4_NONFINAL_COUNT)
+
+    def test_non_lockbox_reads_only_authority_selected_ami_xml_without_directory_listing(self) -> None:
+        self._require_task5()
+        original_listdir = os.listdir
+        original_scandir = os.scandir
+
+        def guarded(original: Any) -> Callable[..., Any]:
+            def call(path: Any = ".", *args: Any, **kwargs: Any) -> Any:
+                try:
+                    target = Path(path)
+                except TypeError:
+                    return original(path, *args, **kwargs)
+                if target == self.paths.ami_material_root or (
+                    target != self.paths.project_root
+                    and self.paths.ami_material_root in target.parents
+                ):
+                    raise AssertionError("Cut 4 listed the AMI material tree")
+                return original(path, *args, **kwargs)
+            return call
+
+        probe = self.fixture.new_probe()
+        with (
+            patch.object(os, "listdir", guarded(original_listdir)),
+            patch.object(os, "scandir", guarded(original_scandir)),
+        ):
+            with self._task5_artifacts(self.paths, probe) as (
+                _artifacts,
+                _probe,
+                _audio_reader,
+                ami_reader,
+            ):
+                excluded = next(
+                    source
+                    for source in self.fixture.tracked_authority.ami_files
+                    if source not in self.fixture.ami_bytes
+                )
+                with self.assertRaisesRegex(
+                    self.runner.RunnerError,
+                    "outside|unknown|sealed|identity|source",
+                ):
+                    ami_reader(excluded)
+        self.assertEqual(tuple(probe.ami_reads), self.fixture.selected_ami_sources)
+
+    def test_final_wav_label_feature_cache_result_and_reservation_sentinels_are_silent(self) -> None:
+        self._require_task5()
+        self._prepare()
+        calls: list[str] = []
+        probe = self.fixture.new_probe()
+        lockbox_root = self.paths.state_root / "lockbox"
+        lockbox_result = Path(self.paths.lockbox_result_path)
+        lockbox_lock = Path(self.paths.lockbox_lock_path)
+        lockbox_reservation = Path(self.paths.lockbox_reservation_path)
+        final_cache = self.paths.non_lockbox_cache_root / "final_lockbox.json"
+        forbidden_paths = {lockbox_result, lockbox_lock, lockbox_reservation}
+        forbidden_attributes = {
+            "lockbox_result_path",
+            "lockbox_root",
+            "final_lockbox_cache_root",
+            "lockbox_lock_path",
+            "lockbox_reservation_path",
+        }
+        original_getattribute = self.runner.RunnerPaths.__getattribute__
+
+        def forbidden(name: str) -> Callable[..., Any]:
+            def call(*args: Any, **kwargs: Any) -> Any:
+                calls.append(name)
+                raise AssertionError(f"Cut 4 touched forbidden surface: {name}")
+            return call
+
+        def guarded_getattribute(instance: Any, name: str) -> Any:
+            if instance is self.paths and name in forbidden_attributes:
+                calls.append(f"RunnerPaths.{name}")
+                raise AssertionError(f"Cut 4 touched final property: {name}")
+            return original_getattribute(instance, name)
+
+        def is_final_path(value: Any) -> bool:
+            if not isinstance(value, (str, bytes, os.PathLike)):
+                return False
+            try:
+                candidate = Path(value)
+            except (TypeError, ValueError):
+                return False
+            if not candidate.is_absolute():
+                return False
+            candidate = Path(os.path.abspath(candidate))
+            return (
+                candidate in forbidden_paths
+                or candidate == lockbox_root
+                or lockbox_root in candidate.parents
+            )
+
+        def guard_path_api(name: str, original: Any) -> Callable[..., Any]:
+            def call(*args: Any, **kwargs: Any) -> Any:
+                values = (*args, *kwargs.values())
+                if any(is_final_path(value) for value in values):
+                    calls.append(name)
+                    raise AssertionError(f"Cut 4 touched final path through {name}")
+                return original(*args, **kwargs)
+            return call
+
+        with ExitStack() as stack:
+            stack.enter_context(patch.object(
+                self.runner.RunnerPaths,
+                "__getattribute__",
+                guarded_getattribute,
+            ))
+            helper_names = tuple(sorted(
+                name
+                for name, value in vars(self.runner).items()
+                if (
+                    "lockbox" in name.casefold()
+                    or name == "_validated_private_decision_evidence"
+                )
+                and "non_lockbox" not in name.casefold()
+                and inspect.isfunction(value)
+            ))
+            self.assertIn("run_lockbox", helper_names)
+            self.assertIn("_validated_private_decision_evidence", helper_names)
+            for name in helper_names:
+                stack.enter_context(
+                    patch.object(self.runner, name, forbidden(name))
+                )
+            for owner, name in (
+                (os, "stat"),
+                (os, "lstat"),
+                (os, "open"),
+                (os, "listdir"),
+                (os, "scandir"),
+                (os.path, "lexists"),
+            ):
+                original = getattr(owner, name)
+                stack.enter_context(
+                    patch.object(owner, name, guard_path_api(name, original))
+                )
+            artifacts, _probe, _audio_reader, _ami_reader = stack.enter_context(
+                self._task5_artifacts(self.paths, probe)
+            )
+            stack.enter_context(self._task5_persisted(self.paths, artifacts))
+        self.assertEqual(calls, [])
+        final_actors = {
+            actor
+            for actor, role in self.fixture.assignment.items()
+            if role == "final_lockbox"
+        }
+        self.assertFalse(any(
+            Path(source.project_relative_path).stem[:4] in final_actors
+            for source in probe.audio_reads
+        ))
+        self.assertEqual(probe.forbidden_calls, [])
+        self.assertFalse(os.path.lexists(lockbox_result))
+        self.assertFalse(os.path.lexists(lockbox_lock))
+        self.assertFalse(os.path.lexists(lockbox_reservation))
+        self.assertFalse(os.path.lexists(lockbox_root))
+        self.assertFalse(os.path.lexists(final_cache))
+        self.assertNotIn(b"final_lockbox", b"".join(self._output_bytes(self.paths)))
+        self.assertFalse(os.path.lexists(self.paths.canonical_root))
+
+    def test_non_lockbox_writes_five_artifacts_in_exact_order_and_state_last(self) -> None:
+        self._require_task5()
+        self._prepare()
+        before_state = self.paths.state_path.read_bytes()
+        destinations: list[Path] = []
+        original = self.runner._renamed_held_regular_file_authority
+
+        def observed(authority: Any, destination: Path, **kwargs: Any) -> Any:
+            destinations.append(Path(destination))
+            return original(authority, destination, **kwargs)
+
+        with self._task5_artifacts(self.paths) as (
+            artifacts,
+            _probe,
+            _audio_reader,
+            _ami_reader,
+        ):
+            with patch.object(
+                self.runner,
+                "_renamed_held_regular_file_authority",
+                observed,
+            ):
+                with self._task5_persisted(self.paths, artifacts):
+                    pass
+        expected = self._output_paths(self.paths)
+        self.assertEqual(
+            expected,
+            (
+                *(
+                    self.paths.non_lockbox_feature_cache_path(role)
+                    for role in CUT4_NONFINAL_ROLES
+                ),
+                self.paths.non_lockbox_ami_evidence_path,
+                self.paths.non_lockbox_packet_path,
+            ),
+        )
+        for invalid_role in (
+            "final_lockbox",
+            "training-discovery",
+            None,
+            type("RoleAlias", (str,), {})("training_discovery"),
+        ):
+            with self.subTest(invalid_role=invalid_role):
+                with self.assertRaisesRegex(
+                    self.runner.RunnerError,
+                    "feature-cache role",
+                ):
+                    self.paths.non_lockbox_feature_cache_path(invalid_role)
+        self.assertEqual(destinations, list(expected))
+        # Task 5 owns artifacts only. Task 6/7 must append the state-prior and
+        # state-target renames after this exact prefix; this helper cannot do so.
+        self.assertEqual(self.paths.state_path.read_bytes(), before_state)
+        for control in (
+            self.paths.non_lockbox_state_stage_path,
+            self.paths.non_lockbox_state_intent_path,
+            self.paths.non_lockbox_state_prior_path,
+        ):
+            self.assertFalse(os.path.lexists(control))
+
+    def test_non_lockbox_independent_readback_replays_features_ami_model_and_packet(self) -> None:
+        self._require_task5()
+        self._prepare()
+        from scripts import emotion_state_phase_b_public_pipeline as pipeline
+        from scripts import validate_emotion_state_002_phase_b as validator
+
+        calls = Counter()
+        original_restore = pipeline.restore_production_non_lockbox_artifacts
+        original_public = pipeline.validate_non_lockbox_review_packet
+        original_independent = validator.validate_non_lockbox_packet
+
+        def wrap(name: str, original: Any) -> Callable[..., Any]:
+            def call(*args: Any, **kwargs: Any) -> Any:
+                calls[name] += 1
+                return original(*args, **kwargs)
+            return call
+
+        with self._task5_artifacts(self.paths) as (
+            artifacts,
+            _probe,
+            _audio_reader,
+            _ami_reader,
+        ):
+            stack = ExitStack()
+            self.addCleanup(stack.close)
+            replacements = (
+                (
+                    "restore_production_non_lockbox_artifacts",
+                    "restore",
+                    original_restore,
+                ),
+                (
+                    "validate_non_lockbox_review_packet",
+                    "public",
+                    original_public,
+                ),
+                (
+                    "validate_non_lockbox_packet",
+                    "independent",
+                    original_independent,
+                ),
+            )
+            for attribute, name, original in replacements:
+                replacement = wrap(name, original)
+                owner = validator if attribute == "validate_non_lockbox_packet" else pipeline
+                stack.enter_context(patch.object(owner, attribute, replacement))
+                if hasattr(self.runner, attribute):
+                    stack.enter_context(
+                        patch.object(self.runner, attribute, replacement)
+                    )
+            with stack:
+                with self._task5_persisted(self.paths, artifacts) as readback:
+                    persisted = pipeline.ProductionNonLockboxArtifacts(
+                        feature_caches=dict(zip(
+                            CUT4_NONFINAL_ROLES,
+                            readback.feature_caches,
+                            strict=True,
+                        )),
+                        ami_evidence=readback.ami_evidence,
+                        review_packet=readback.review_packet,
+                    )
+                    restored = self.fixture.restore(persisted)
+                    self.assertEqual(
+                        tuple(self.runner._non_lockbox_artifact_json_bytes(value) for value in (
+                            *restored.feature_caches.values(),
+                            restored.ami_evidence,
+                            restored.review_packet,
+                        )),
+                        tuple(
+                            self.runner._read_held_regular_file_bytes(authority)
+                            for authority in readback.files
+                        ),
+                    )
+        self.assertGreaterEqual(calls["restore"], 1)
+        self.assertGreaterEqual(calls["public"], 1)
+        self.assertGreaterEqual(calls["independent"], 1)
+
+    def test_non_lockbox_failure_before_state_rename_leaves_preflight_state_byte_identical(self) -> None:
+        self._require_task6()
+        self._prepare()
+        with self.subTest(reviewer_control_family_probe="non-lockbox-commit"):
+            paths = self._make_paths(self.case_root / "reviewer-non-lockbox-family")
+            self._prepare(paths)
+            initial_bytes = paths.state_path.read_bytes()
+            wrong_control_bytes = initial_bytes
+            original_cas = self.runner._verify_admitted_non_lockbox_state_cas
+            original_family_rename = self.runner._renamed_held_regular_file_authority
+            cas_hits = [0]
+            injection_hits = [0]
+            final_restored_cas_observed = [False]
+            target_rename_hits = [0]
+
+            def inject_preflight_control(*args: Any, **kwargs: Any) -> Any:
+                result = original_cas(*args, **kwargs)
+                cas_hits[0] += 1
+                if cas_hits[0] == 2:
+                    injection_hits[0] += 1
+                    paths.preflight_state_stage_path.write_bytes(wrong_control_bytes)
+                elif cas_hits[0] == 3:
+                    admitted = args[1]
+                    final_restored_cas_observed[0] = (
+                        admitted._initial_owner.peek() is admitted.initial_file
+                        and self.runner._read_held_regular_file_bytes(
+                            admitted.initial_file
+                        )
+                        == initial_bytes
+                    )
+                return result
+
+            def observe_non_lockbox_rename(
+                authority: Any,
+                destination: Path,
+                **kwargs: Any,
+            ) -> Any:
+                if (
+                    Path(destination) == paths.state_path
+                    and Path(authority.path) == paths.non_lockbox_state_stage_path
+                ):
+                    target_rename_hits[0] += 1
+                return original_family_rename(authority, destination, **kwargs)
+
+            observed_error: Exception | None = None
+            try:
+                with (
+                    self.fixture.runtime_patches(paths, self.runner),
+                    patch.object(
+                        self.runner,
+                        "_verify_admitted_non_lockbox_state_cas",
+                        inject_preflight_control,
+                    ),
+                    patch.object(
+                        self.runner,
+                        "_renamed_held_regular_file_authority",
+                        observe_non_lockbox_rename,
+                    ),
+                ):
+                    with self.runner.material_pipeline_lock(paths) as material_authority:
+                        with self.runner._admit_recovered_state(
+                            paths,
+                            material_authority=material_authority,
+                        ) as committed_preflight:
+                            with self.runner._read_committed_preflight_checkpoint(
+                                paths,
+                                material_authority=material_authority,
+                                committed_state_authority=committed_preflight,
+                            ):
+                                with self.runner._admit_non_lockbox_state(
+                                    paths,
+                                    material_authority=material_authority,
+                                    committed_state_authority=committed_preflight,
+                                ) as admitted:
+                                    proposed = self._task6_proposed_state(
+                                        admitted.initial_state
+                                    )
+                                    with self.runner._commit_non_lockbox_state_durably(
+                                        paths,
+                                        proposed,
+                                        material_authority=material_authority,
+                                        admitted_state_authority=admitted,
+                                    ):
+                                        pass
+            except self.runner.RunnerError as error:
+                observed_error = error
+            wrong_retained = (
+                paths.preflight_state_stage_path.read_bytes()
+                if os.path.lexists(paths.preflight_state_stage_path)
+                else None
+            )
+            self.assertTrue(
+                observed_error is not None
+                and cas_hits[0] == 3
+                and injection_hits[0] == 1
+                and final_restored_cas_observed[0]
+                and target_rename_hits[0] == 0
+                and paths.state_path.read_bytes() == initial_bytes
+                and wrong_retained == wrong_control_bytes,
+                msg=(
+                    "non-lockbox commit did not reject the preflight control before "
+                    f"linearization: error={observed_error!r}, cas={cas_hits[0]}, "
+                    f"injections={injection_hits[0]}, "
+                    f"final_restored_cas={final_restored_cas_observed[0]}, "
+                    f"renames={target_rename_hits[0]}, "
+                    f"phase={json.loads(paths.state_path.read_bytes())['phase']!r}, "
+                    f"wrong_retained={wrong_retained is not None}"
+                ),
+            )
+
+        with self.subTest(reviewer_control_family_probe="preflight-commit"):
+            paths = self._make_paths(self.case_root / "reviewer-preflight-family")
+            paths.state_root.mkdir(parents=True)
+            initial_bytes = self.runner.canonical_json_bytes(
+                self.runner._initial_state()
+            )
+            paths.state_path.write_bytes(initial_bytes)
+            proposed = self._task6_preflight_state_payload()
+            wrong_control_bytes = b"known non-lockbox control\n"
+            original_cas = self.runner._verify_admitted_state_cas
+            original_family_rename = self.runner._renamed_held_regular_file_authority
+            cas_hits = [0]
+            target_rename_hits = [0]
+
+            def inject_non_lockbox_control(*args: Any, **kwargs: Any) -> Any:
+                result = original_cas(*args, **kwargs)
+                cas_hits[0] += 1
+                if cas_hits[0] == 2:
+                    paths.non_lockbox_state_stage_path.write_bytes(
+                        wrong_control_bytes
+                    )
+                return result
+
+            def observe_preflight_rename(
+                authority: Any,
+                destination: Path,
+                **kwargs: Any,
+            ) -> Any:
+                if (
+                    Path(destination) == paths.state_path
+                    and Path(authority.path) == paths.preflight_state_stage_path
+                ):
+                    target_rename_hits[0] += 1
+                return original_family_rename(authority, destination, **kwargs)
+
+            observed_error = None
+            try:
+                with (
+                    patch.object(
+                        self.runner,
+                        "_verify_admitted_state_cas",
+                        inject_non_lockbox_control,
+                    ),
+                    patch.object(
+                        self.runner,
+                        "_renamed_held_regular_file_authority",
+                        observe_preflight_rename,
+                    ),
+                ):
+                    with self.runner.material_pipeline_lock(paths) as material_authority:
+                        with self.runner._admit_recovered_state(
+                            paths,
+                            material_authority=material_authority,
+                        ) as admitted:
+                            with self.runner._commit_preflight_state_durably(
+                                paths,
+                                proposed,
+                                material_authority=material_authority,
+                                admitted_state_authority=admitted,
+                            ):
+                                pass
+            except self.runner.RunnerError as error:
+                observed_error = error
+            wrong_retained = (
+                paths.non_lockbox_state_stage_path.read_bytes()
+                if os.path.lexists(paths.non_lockbox_state_stage_path)
+                else None
+            )
+            self.assertTrue(
+                observed_error is not None
+                and cas_hits[0] == 2
+                and target_rename_hits[0] == 0
+                and paths.state_path.read_bytes() == initial_bytes
+                and wrong_retained == wrong_control_bytes,
+                msg=(
+                    "preflight commit did not reject the non-lockbox control before "
+                    f"linearization: error={observed_error!r}, cas={cas_hits[0]}, "
+                    f"renames={target_rename_hits[0]}, "
+                    f"phase={json.loads(paths.state_path.read_bytes())['phase']!r}, "
+                    f"wrong_retained={wrong_retained is not None}"
+                ),
+            )
+
+        before = self.paths.state_path.read_bytes()
+        original = self.runner._renamed_held_regular_file_authority
+        linearization_hits = [0]
+
+        def fail(authority: Any, destination: Path, **kwargs: Any) -> Any:
+            is_linearization = (
+                Path(destination) == self.paths.state_path
+                and Path(authority.path)
+                == self.paths.non_lockbox_state_stage_path
+                and self.runner._status_stable_identity(
+                    os.stat(authority.path, follow_symlinks=False)
+                )
+                == authority.stable_identity
+            )
+            if is_linearization:
+                linearization_hits[0] += 1
+                raise OSError("synthetic precommit state failure")
+            return original(authority, destination, **kwargs)
+
+        with (
+            patch.object(self.runner, "_renamed_held_regular_file_authority", fail),
+            self.assertRaisesRegex(self.runner.RunnerError, "precommit state failure"),
+        ):
+            with self._task6_transition():
+                pass
+        self.assertEqual(linearization_hits[0], 1)
+        self.assertEqual(self.paths.state_path.read_bytes(), before)
+        for control in (
+            self.paths.non_lockbox_state_stage_path,
+            self.paths.non_lockbox_state_intent_path,
+            self.paths.non_lockbox_state_prior_path,
+        ):
+            self.assertFalse(os.path.lexists(control))
+
+    def test_crash_after_each_non_lockbox_artifact_replacement_is_retryable(self) -> None:
+        self._require_task5()
+        for index in range(5):
+            with self.subTest(artifact_index=index):
+                paths = self._make_paths(self.case_root / f"crash-artifact-{index}")
+                self._prepare(paths)
+                before_state = paths.state_path.read_bytes()
+                target = self._output_paths(paths)[index]
+                original = self.runner._renamed_held_regular_file_authority
+                injected = [False]
+
+                def crash(authority: Any, destination: Path, **kwargs: Any) -> Any:
+                    renamed = original(authority, destination, **kwargs)
+                    if Path(destination) == target and not injected[0]:
+                        injected[0] = True
+                        raise OSError(f"synthetic artifact {index} crash")
+                    return renamed
+
+                with self._task5_artifacts(paths) as (
+                    artifacts,
+                    _probe,
+                    _audio_reader,
+                    _ami_reader,
+                ):
+                    with (
+                        patch.object(
+                            self.runner,
+                            "_renamed_held_regular_file_authority",
+                            crash,
+                        ),
+                        self.assertRaises((OSError, self.runner.RunnerError)),
+                    ):
+                        with self._task5_persisted(paths, artifacts):
+                            pass
+                    self.assertTrue(injected[0])
+                    with self._task5_persisted(paths, artifacts):
+                        pass
+                self.assertEqual(
+                    self._output_bytes(paths),
+                    tuple(self.runner._non_lockbox_artifact_json_bytes(value) for value in (
+                        *artifacts.feature_caches.values(),
+                        artifacts.ami_evidence,
+                        artifacts.review_packet,
+                    )),
+                )
+                self.assertEqual(paths.state_path.read_bytes(), before_state)
+
+    def test_non_lockbox_state_target_rename_is_the_only_linearization_point(self) -> None:
+        self._require_task6()
+        self._assert_task6_intent_type_drift_is_rejected(self.paths)
+        recovery_probes = (
+            (
+                "committed-intent-no-prior-forbidden-anchor",
+                "indeterminate; evidence retained",
+            ),
+            (
+                "mixed-family-controls",
+                "mixed state replacement control families",
+            ),
+        )
+        for case, expected_message in recovery_probes:
+            with self.subTest(reviewer_recovery_probe=case):
+                paths = self._make_paths(self.case_root / f"reviewer-{case}")
+                self._seed_task6_recovery_case(paths, case)
+                generic_intent, generic_prior = self.runner._state_replacement_paths(
+                    paths
+                )
+                evidence_paths = (
+                    paths.state_path,
+                    paths.preflight_state_stage_path,
+                    generic_intent,
+                    generic_prior,
+                    paths.non_lockbox_state_stage_path,
+                    paths.non_lockbox_state_intent_path,
+                    paths.non_lockbox_state_prior_path,
+                )
+                before = {
+                    path: path.read_bytes()
+                    for path in evidence_paths
+                    if os.path.lexists(path)
+                }
+                observed_error: Exception | None = None
+                try:
+                    with self.runner.material_pipeline_lock(paths) as material_authority:
+                        with self.runner._admit_recovered_state(
+                            paths,
+                            material_authority=material_authority,
+                        ):
+                            pass
+                except self.runner.RunnerError as error:
+                    observed_error = error
+                after = {
+                    path: path.read_bytes()
+                    for path in evidence_paths
+                    if os.path.lexists(path)
+                }
+                self.assertTrue(
+                    observed_error is not None
+                    and re.search(expected_message, str(observed_error)) is not None
+                    and after == before,
+                    msg=(
+                        f"reviewer recovery probe {case!r} did not fail closed "
+                        f"without mutation: error={observed_error!r}, "
+                        f"before={tuple(path.name for path in before)}, "
+                        f"after={tuple(path.name for path in after)}"
+                    ),
+                )
+        for when in ("before", "after"):
+            with self.subTest(when=when):
+                paths = self._make_paths(self.case_root / f"state-linear-{when}")
+                self._prepare(paths)
+                original = self.runner._renamed_held_regular_file_authority
+                linearization_hits = [0]
+
+                def crash(authority: Any, destination: Path, **kwargs: Any) -> Any:
+                    is_linearization = (
+                        Path(destination) == paths.state_path
+                        and Path(authority.path)
+                        == paths.non_lockbox_state_stage_path
+                        and self.runner._status_stable_identity(
+                            os.stat(authority.path, follow_symlinks=False)
+                        )
+                        == authority.stable_identity
+                    )
+                    if is_linearization and when == "before":
+                        linearization_hits[0] += 1
+                        raise OSError("synthetic before state target")
+                    renamed = original(authority, destination, **kwargs)
+                    if is_linearization and when == "after":
+                        linearization_hits[0] += 1
+                        raise OSError("synthetic after state target")
+                    return renamed
+
+                with (
+                    patch.object(self.runner, "_renamed_held_regular_file_authority", crash),
+                    self.assertRaises((OSError, self.runner.RunnerError)),
+                ):
+                    with self._task6_transition(paths):
+                        pass
+                self.assertEqual(linearization_hits[0], 1)
+                phase = json.loads(paths.state_path.read_bytes())["phase"]
+                self.assertEqual(
+                    phase,
+                    "preflight_complete" if when == "before" else "non_lockbox_complete",
+                )
+                with self.runner.material_pipeline_lock(paths) as material_authority:
+                    with self.runner._admit_recovered_state(
+                        paths,
+                        material_authority=material_authority,
+                    ) as recovered:
+                        self.assertEqual(recovered.state["phase"], phase)
+                for control in (
+                    paths.non_lockbox_state_stage_path,
+                    paths.non_lockbox_state_intent_path,
+                    paths.non_lockbox_state_prior_path,
+                ):
+                    self.assertFalse(os.path.lexists(control))
+        recovery_cases = (
+            ("target-stage-no-intent", "preflight_complete"),
+            ("initial-intent-no-stage", "preflight_complete"),
+            ("initial-intent-stage", "preflight_complete"),
+            ("absent-intent-stage-prior", "preflight_complete"),
+            ("committed-intent-prior", "non_lockbox_complete"),
+            ("committed-intent-no-prior", "non_lockbox_complete"),
+        )
+        for case, expected_phase in recovery_cases:
+            with self.subTest(recovery_case=case):
+                paths = self._make_paths(self.case_root / f"state-recovery-{case}")
+                initial_bytes, target_bytes = self._seed_task6_recovery_case(
+                    paths,
+                    case,
+                )
+                with self.runner.material_pipeline_lock(paths) as material_authority:
+                    with self.runner._admit_recovered_state(
+                        paths,
+                        material_authority=material_authority,
+                    ) as recovered:
+                        self.assertEqual(recovered.state["phase"], expected_phase)
+                        self.assertEqual(
+                            recovered.canonical_bytes,
+                            initial_bytes
+                            if expected_phase == "preflight_complete"
+                            else target_bytes,
+                        )
+                self.assertEqual(
+                    paths.state_path.read_bytes(),
+                    initial_bytes
+                    if expected_phase == "preflight_complete"
+                    else target_bytes,
+                )
+                for control in (
+                    paths.non_lockbox_state_stage_path,
+                    paths.non_lockbox_state_intent_path,
+                    paths.non_lockbox_state_prior_path,
+                ):
+                    self.assertFalse(os.path.lexists(control))
+        retained_cases = (
+            ("orphan-prior", "orphan prior retained"),
+            ("malformed-intent", "invalid non-lockbox state intent fields"),
+            ("ambiguous-intent-prior-no-stage", "indeterminate; evidence retained"),
+        )
+        for case, message in retained_cases:
+            with self.subTest(retained_recovery_case=case):
+                paths = self._make_paths(self.case_root / f"state-retained-{case}")
+                self._seed_task6_recovery_case(paths, case)
+                before = {
+                    path: path.read_bytes()
+                    for path in (
+                        paths.state_path,
+                        paths.non_lockbox_state_stage_path,
+                        paths.non_lockbox_state_intent_path,
+                        paths.non_lockbox_state_prior_path,
+                    )
+                    if os.path.lexists(path)
+                }
+                with self.assertRaisesRegex(self.runner.RunnerError, message):
+                    with self.runner.material_pipeline_lock(paths) as material_authority:
+                        with self.runner._admit_recovered_state(
+                            paths,
+                            material_authority=material_authority,
+                        ):
+                            pass
+                self.assertEqual(
+                    {
+                        path: path.read_bytes()
+                        for path in before
+                        if os.path.lexists(path)
+                    },
+                    before,
+                )
+                self.assertTrue(all(os.path.lexists(path) for path in before))
+        unknown_paths = self._make_paths(self.case_root / "state-retained-unknown")
+        _unknown_state, unknown_state_bytes = self._task6_synthetic_preflight_state(
+            unknown_paths
+        )
+        unknown = unknown_paths.state_root / "unknown-retained.bin"
+        unknown.write_bytes(b"unknown retained evidence")
+        with self.assertRaisesRegex(
+            self.runner.RunnerError,
+            "unknown state-root allowlist entry is retained",
+        ):
+            with self.runner.material_pipeline_lock(unknown_paths):
+                pass
+        self.assertEqual(unknown_paths.state_path.read_bytes(), unknown_state_bytes)
+        self.assertEqual(unknown.read_bytes(), b"unknown retained evidence")
+
+    def test_non_lockbox_postcommit_readback_failure_is_indeterminate_and_authoritative(self) -> None:
+        self._require_task6()
+        self._prepare()
+        original_rename = self.runner._renamed_held_regular_file_authority
+        original_verify = self.runner._verify_held_regular_file_authority
+        committed = [False]
+
+        def rename(authority: Any, destination: Path, **kwargs: Any) -> Any:
+            renamed = original_rename(authority, destination, **kwargs)
+            if Path(destination) == self.paths.state_path:
+                committed[0] = True
+            return renamed
+
+        def verify(authority: Any) -> Any:
+            if committed[0] and Path(authority.path) == self.paths.state_path:
+                raise OSError("synthetic postcommit readback failure")
+            return original_verify(authority)
+
+        with (
+            patch.object(self.runner, "_renamed_held_regular_file_authority", rename),
+            patch.object(self.runner, "_verify_held_regular_file_authority", verify),
+            self.assertRaisesRegex(
+                self.runner.RunnerError,
+                "indeterminate.*postcommit|postcommit.*indeterminate",
+            ),
+        ):
+            with self._task6_transition():
+                pass
+        self.assertTrue(committed[0])
+        self.assertEqual(
+            json.loads(self.paths.state_path.read_bytes())["phase"],
+            "non_lockbox_complete",
+        )
+
+        outer_paths = self._make_paths(
+            self.case_root / "postlinear-outer-finalizer"
+        )
+        self._prepare(outer_paths)
+        outer_calls = Counter()
+        original_static_revalidate = (
+            self.runner._revalidate_held_static_preflight_inputs
+        )
+
+        def outer_finalizer_fault(*args: Any, **kwargs: Any) -> Any:
+            outer_calls["static_revalidate"] += 1
+            if outer_calls["static_revalidate"] == 3:
+                raise OSError("synthetic outer-finalizer fault")
+            return original_static_revalidate(*args, **kwargs)
+
+        with (
+            self.fixture.runtime_patches(outer_paths, self.runner),
+            patch.object(
+                self.runner,
+                "_revalidate_held_static_preflight_inputs",
+                outer_finalizer_fault,
+            ),
+            self.assertRaisesRegex(
+                self.runner.RunnerError,
+                "non-lockbox.*indeterminate.*post-commit outer unwind",
+            ),
+        ):
+            self.runner.run_non_lockbox(outer_paths)
+        self.assertEqual(outer_calls["static_revalidate"], 3)
+        self.assertEqual(
+            json.loads(outer_paths.state_path.read_bytes())["phase"],
+            "non_lockbox_complete",
+        )
+
+    def test_already_complete_non_lockbox_checkpoint_is_source_and_lockbox_silent(self) -> None:
+        import builtins
+
+        from scripts import emotion_state_phase_b_ami_mechanics as ami
+        from scripts import emotion_state_phase_b_evaluation as evaluation
+        from scripts import emotion_state_phase_b_features as features
+        from scripts import emotion_state_phase_b_public_pipeline as pipeline
+        from scripts import validate_emotion_state_002_phase_b as validator
+        from scripts.validate_emotion_state_002_phase_b import (
+            EXPECTED_ENVIRONMENT_LOCK,
+        )
+
+        self._require()
+        real_installed_environment_validator = (
+            validator.validate_installed_environment_identity
+        )
+        self._prepare()
+        with self._task5_artifacts(self.paths) as (
+            artifacts,
+            _probe,
+            _audio_reader,
+            _ami_reader,
+        ):
+            with self._task5_persisted(self.paths, artifacts) as persisted:
+                packet_sha256 = persisted.files[-1].sha256
+        with self._task6_transition(
+            packet_sha256=packet_sha256,
+        ) as transition:
+            first = dict(transition.committed.state)
+        before_state = self.paths.state_path.read_bytes()
+        output_paths = self._output_paths(self.paths)
+        before_outputs = self._output_bytes(self.paths)
+        state_root = Path(self.paths.state_root)
+        lockbox_root = state_root / "lockbox"
+        lockbox_result = Path(self.paths.lockbox_result_path)
+        lockbox_lock = Path(self.paths.lockbox_lock_path)
+        lockbox_reservation = Path(self.paths.lockbox_reservation_path)
+        publication_root = state_root / "publication"
+        publication_sentinel = publication_root / "opaque-publication.bin"
+        lockbox_root.mkdir()
+        lockbox_result.write_bytes(b"opaque lockbox result")
+        lockbox_lock.write_bytes(b"opaque lockbox lock")
+        lockbox_reservation.write_bytes(b"opaque lockbox reservation")
+        publication_root.mkdir()
+        publication_sentinel.write_bytes(b"opaque publication state")
+        opaque_roots = {
+            lockbox_root,
+            lockbox_lock,
+            lockbox_reservation,
+            publication_root,
+        }
+        opaque_bytes = {
+            lockbox_result: b"opaque lockbox result",
+            lockbox_lock: b"opaque lockbox lock",
+            lockbox_reservation: b"opaque lockbox reservation",
+            publication_sentinel: b"opaque publication state",
+        }
+        forbidden_attributes = {
+            "lockbox_result_path",
+            "lockbox_root",
+            "final_lockbox_cache_root",
+            "lockbox_lock_path",
+            "lockbox_reservation_path",
+            "recovery_root",
+            "journal_path",
+            "receipt_path",
+        }
+        original_getattribute = self.runner.RunnerPaths.__getattribute__
+
+        exact_source_paths: dict[Path, str] = {}
+        for name, path in (
+            ("static:configuration", self.paths.config_path),
+            ("static:environment_lock", self.paths.environment_lock_path),
+            ("static:feature_schema", self.paths.feature_schema_path),
+            ("static:split_schema", self.paths.split_schema_path),
+        ):
+            exact_source_paths[Path(path)] = name
+        wheelhouse = (
+            self.paths.project_root
+            / ".tmp/emotion-state-002-phase-b/dependencies/wheelhouse"
+        )
+        for distribution in EXPECTED_ENVIRONMENT_LOCK["distributions"]:
+            filename = distribution["wheel_filename"]
+            exact_source_paths[wheelhouse / filename] = f"wheel:{filename}"
+        for name in pipeline.TRACKED_DATASET_EVIDENCE_FILENAMES:
+            exact_source_paths[
+                self.paths.dataset_evidence_root / name
+            ] = f"tracked:{name}"
+        exact_source_paths[
+            self.paths.crema_finished_responses_path
+        ] = "crema:finishedResponses.csv"
+        exact_source_paths[
+            self.paths.crema_summary_table_path
+        ] = "crema:processedResults/summaryTable.csv"
+        for source in self.fixture.audio_identities:
+            exact_source_paths[
+                self.paths.project_root / source.project_relative_path
+            ] = f"wav:{source.project_relative_path}"
+        for source in self.fixture.tracked_authority.ami_files:
+            exact_source_paths[
+                self.paths.project_root / source.project_relative_path
+            ] = f"ami:{source.project_relative_path}"
+        source_counts = {label: 0 for label in exact_source_paths.values()}
+        zero_calls = Counter()
+        replay_calls = Counter()
+        model_calls: list[str] = []
+        probe = self.fixture.new_probe()
+
+        def target_path(value: Any) -> Path | None:
+            if not isinstance(value, (str, bytes, os.PathLike)):
+                return None
+            try:
+                candidate = Path(value)
+            except (TypeError, ValueError):
+                return None
+            return candidate if candidate.is_absolute() else None
+
+        def is_opaque_later_phase_path(candidate: Path | None) -> bool:
+            return candidate is not None and any(
+                candidate == root or root in candidate.parents
+                for root in opaque_roots
+            )
+
+        def guarded_reader(name: str, original: Any) -> Callable[..., Any]:
+            def call(*args: Any, **kwargs: Any) -> Any:
+                for value in (*args, *kwargs.values()):
+                    candidate = target_path(value)
+                    if is_opaque_later_phase_path(candidate):
+                        zero_calls[f"later-phase:{name}"] += 1
+                        raise AssertionError(
+                            f"committed retry touched later-phase path: {name}"
+                        )
+                    if candidate in exact_source_paths:
+                        label = exact_source_paths[candidate]
+                        source_counts[label] += 1
+                        raise AssertionError(
+                            f"committed retry read forbidden source: {label}"
+                        )
+                return original(*args, **kwargs)
+            return call
+
+        def guarded_path_api(name: str, original: Any) -> Callable[..., Any]:
+            def call(*args: Any, **kwargs: Any) -> Any:
+                if any(
+                    is_opaque_later_phase_path(target_path(value))
+                    for value in (*args, *kwargs.values())
+                ):
+                    zero_calls[f"later-phase:{name}"] += 1
+                    raise AssertionError(
+                        f"committed retry used later-phase path API: {name}"
+                    )
+                return original(*args, **kwargs)
+
+            return call
+
+        def zero(name: str) -> Callable[..., Any]:
+            def call(*args: Any, **kwargs: Any) -> Any:
+                zero_calls[name] += 1
+                raise AssertionError(f"committed retry called forbidden API: {name}")
+            return call
+
+        def guarded_getattribute(instance: Any, name: str) -> Any:
+            if instance is self.paths and name in forbidden_attributes:
+                zero_calls[f"RunnerPaths.{name}"] += 1
+                raise AssertionError(f"committed retry touched lockbox property: {name}")
+            return original_getattribute(instance, name)
+
+        def wrap(name: str, original: Any) -> Callable[..., Any]:
+            def call(*args: Any, **kwargs: Any) -> Any:
+                replay_calls[name] += 1
+                return original(*args, **kwargs)
+            return call
+
+        originals = {
+            name: getattr(evaluation, name)
+            for name in (
+                "fit_frozen_models",
+                "predict_probabilities",
+                "calibrate_thresholds",
+                "evaluate_partition",
+            )
+        }
+
+        def observed_model(name: str) -> Callable[..., Any]:
+            def call(*args: Any, **kwargs: Any) -> Any:
+                model_calls.append(name)
+                return originals[name](*args, **kwargs)
+            return call
+
+        original_child_directory = self.runner._held_child_directory_authority
+        path_type = type(state_root)
+        original_path_join = path_type.__truediv__
+        original_joinpath = path_type.joinpath
+        original_scandir = os.scandir
+        child_bindings: list[tuple[Path, Path, bool]] = []
+
+        def guarded_path_join(parent: Any, component: Any) -> Any:
+            if Path(parent) == state_root and str(component) in {
+                "lockbox",
+                "lockbox.lock",
+                "lockbox-reservation.json",
+                "publication",
+            }:
+                zero_calls[f"later-phase:path-join:{component}"] += 1
+                raise AssertionError(
+                    f"committed retry formed later-phase path: {component}"
+                )
+            return original_path_join(parent, component)
+
+        def guarded_joinpath(parent: Any, *components: Any) -> Any:
+            if (
+                Path(parent) == state_root
+                and components
+                and str(components[0]) in {
+                    "lockbox",
+                    "lockbox.lock",
+                    "lockbox-reservation.json",
+                    "publication",
+                }
+            ):
+                zero_calls[f"later-phase:joinpath:{components[0]}"] += 1
+                raise AssertionError(
+                    f"committed retry joined later-phase path: {components[0]}"
+                )
+            return original_joinpath(parent, *components)
+
+        class GuardedDirEntry:
+            def __init__(self, entry: Any) -> None:
+                self._entry = entry
+                self.name = entry.name
+                self._opaque = self.name in {
+                    "lockbox",
+                    "lockbox.lock",
+                    "lockbox-reservation.json",
+                    "publication",
+                }
+
+            def __getattr__(self, name: str) -> Any:
+                if self._opaque:
+                    zero_calls[f"later-phase:DirEntry.{name}"] += 1
+                    raise AssertionError(
+                        f"committed retry inspected opaque DirEntry.{name}"
+                    )
+                return getattr(self._entry, name)
+
+            def __fspath__(self) -> str:
+                if self._opaque:
+                    zero_calls["later-phase:DirEntry.__fspath__"] += 1
+                    raise AssertionError(
+                        "committed retry converted opaque DirEntry to a path"
+                    )
+                return os.fspath(self._entry)
+
+        class GuardedScandir:
+            def __init__(self, inner: Any) -> None:
+                self._inner = inner
+                self._iterator: Any = None
+
+            def __enter__(self) -> "GuardedScandir":
+                self._iterator = iter(self._inner.__enter__())
+                return self
+
+            def __exit__(self, *args: Any) -> Any:
+                return self._inner.__exit__(*args)
+
+            def __iter__(self) -> "GuardedScandir":
+                return self
+
+            def __next__(self) -> GuardedDirEntry:
+                return GuardedDirEntry(next(self._iterator))
+
+        def guarded_scandir(path: Any, *args: Any, **kwargs: Any) -> Any:
+            candidate = target_path(path)
+            if is_opaque_later_phase_path(candidate):
+                zero_calls["later-phase:scandir"] += 1
+                raise AssertionError(
+                    "committed retry listed a later-phase directory"
+                )
+            inner = original_scandir(path, *args, **kwargs)
+            if candidate == state_root:
+                return GuardedScandir(inner)
+            return inner
+
+        @contextmanager
+        def observed_child_directory(
+            path: Path,
+            parent_authority: Any,
+            *,
+            create: bool = True,
+        ):
+            if is_opaque_later_phase_path(Path(path)):
+                zero_calls["later-phase:_held_child_directory_authority"] += 1
+                raise AssertionError(
+                    "committed retry entered a later-phase directory"
+                )
+            child_bindings.append((
+                Path(path),
+                Path(parent_authority.path),
+                create,
+            ))
+            with original_child_directory(
+                path,
+                parent_authority,
+                create=create,
+            ) as authority:
+                yield authority
+
+        with ExitStack() as stack:
+            stack.enter_context(
+                self.fixture.runtime_patches(self.paths, self.runner, probe)
+            )
+            stack.enter_context(patch.object(
+                self.runner.RunnerPaths,
+                "__getattribute__",
+                guarded_getattribute,
+            ))
+            stack.enter_context(patch.object(
+                self.runner,
+                "_held_child_directory_authority",
+                observed_child_directory,
+            ))
+            stack.enter_context(patch.object(
+                path_type,
+                "__truediv__",
+                guarded_path_join,
+            ))
+            stack.enter_context(patch.object(
+                path_type,
+                "joinpath",
+                guarded_joinpath,
+            ))
+            stack.enter_context(patch.object(os, "scandir", guarded_scandir))
+            for owner, name in (
+                (builtins, "open"),
+                (os, "stat"),
+                (os, "lstat"),
+                (os, "open"),
+                (os, "listdir"),
+                (os.path, "lexists"),
+                (Path, "open"),
+            ):
+                stack.enter_context(patch.object(
+                    owner,
+                    name,
+                    guarded_path_api(name, getattr(owner, name)),
+                ))
+            for name in (
+                "_read_file_nofollow",
+                "_held_regular_file_with_bytes",
+                "_held_regular_file",
+            ):
+                original = getattr(self.runner, name)
+                stack.enter_context(patch.object(
+                    self.runner,
+                    name,
+                    guarded_reader(name, original),
+                ))
+            stack.enter_context(patch.object(
+                self.runner,
+                "_read_verified_public_bytes",
+                zero("_read_verified_public_bytes"),
+            ))
+            for name in (
+                "_held_preflight_static_inputs",
+                "_read_tracked_preflight_evidence",
+                "validate_environment_identity_bytes",
+                "validate_tracked_public_evidence",
+                "build_production_preflight_artifacts",
+            ):
+                if hasattr(self.runner, name):
+                    stack.enter_context(patch.object(
+                        self.runner,
+                        name,
+                        zero(name),
+                    ))
+            for owner, name in (
+                (features, "extract_acoustic_features_bytes"),
+                (ami, "load_ami_meeting_evidence_v2"),
+            ):
+                stack.enter_context(patch.object(owner, name, zero(name)))
+                for module in (pipeline, self.runner):
+                    if hasattr(module, name):
+                        stack.enter_context(patch.object(module, name, zero(name)))
+
+            lockbox_helpers = tuple(sorted(
+                name
+                for name, value in vars(self.runner).items()
+                if "lockbox" in name.casefold()
+                and "non_lockbox" not in name.casefold()
+                and "nonlockbox" not in name.casefold()
+                and inspect.isfunction(value)
+            ))
+            for name in lockbox_helpers:
+                stack.enter_context(patch.object(self.runner, name, zero(name)))
+
+            write_helpers = (
+                "_windows_write_raw_handle",
+                "_windows_flush_raw_handle",
+                "_windows_rename_raw_handle",
+                "_windows_unlink_raw_handle",
+                "_create_held_regular_file_authority",
+                "_renamed_held_regular_file_authority",
+                "_unlink_held_regular_file_authority",
+                "_flush_held_directory",
+                "_safe_unlink_owned_file",
+                "_replace_preflight_bytes_durably",
+                "_commit_preflight_state_durably",
+                "_persist_preflight_artifacts",
+                "_windows_unlink_by_handle",
+                "_windows_rename_descriptor",
+                "_windows_unlink_open_descriptor",
+                "_windows_replace_by_handle",
+                "_write_new_fsynced",
+                "_replace_entry_durably",
+                "_durable_unlink",
+                "_replace_bytes_durably",
+                "_write_state",
+                "_transition",
+                "_persist_non_lockbox_artifacts",
+                "_held_non_lockbox_output_authorities",
+                "_reconcile_non_lockbox_artifacts",
+                "_replace_non_lockbox_bytes_durably",
+                "_admit_non_lockbox_state",
+                "_commit_non_lockbox_state_durably",
+            )
+            for name in write_helpers:
+                if hasattr(self.runner, name):
+                    stack.enter_context(patch.object(
+                        self.runner,
+                        name,
+                        zero(name),
+                    ))
+
+            original_readback = self.runner._read_committed_non_lockbox_checkpoint
+
+            @contextmanager
+            def readback_wrapper(*args: Any, **kwargs: Any):
+                with original_readback(*args, **kwargs) as readback:
+                    replay_calls["five_file_readback"] += 1
+                    self.assertEqual(len(readback.feature_caches), 3)
+                    self.assertEqual(len(readback.files), 5)
+                    self.assertEqual(
+                        tuple(Path(file.path) for file in readback.files),
+                        output_paths,
+                    )
+                    self.assertEqual(
+                        readback.files[-1].sha256,
+                        first["non_lockbox_packet_sha256"],
+                    )
+                    self.assertEqual(
+                        self.runner._non_lockbox_artifact_json_bytes(
+                            readback.review_packet
+                        ),
+                        before_outputs[-1],
+                    )
+                    yield readback
+
+            stack.enter_context(patch.object(
+                self.runner,
+                "_read_committed_non_lockbox_checkpoint",
+                readback_wrapper,
+            ))
+
+            restore = wrap(
+                "semantic_restore",
+                pipeline.restore_production_non_lockbox_artifacts,
+            )
+            public_validate = wrap(
+                "public_packet_validator",
+                pipeline.validate_non_lockbox_review_packet,
+            )
+            independent_validate = wrap(
+                "independent_packet_validator",
+                validator.validate_non_lockbox_packet,
+            )
+            for owner, name, replacement in (
+                (pipeline, "restore_production_non_lockbox_artifacts", restore),
+                (pipeline, "validate_non_lockbox_review_packet", public_validate),
+                (validator, "validate_non_lockbox_packet", independent_validate),
+            ):
+                stack.enter_context(patch.object(owner, name, replacement))
+                if hasattr(self.runner, name):
+                    stack.enter_context(patch.object(self.runner, name, replacement))
+
+            installed = real_installed_environment_validator
+            closed = self.runner._assert_closed_environment
+            installed_wrapper = wrap("installed_environment", installed)
+            for owner in (validator, self.runner):
+                stack.enter_context(patch.object(
+                    owner,
+                    "validate_installed_environment_identity",
+                    installed_wrapper,
+                ))
+            stack.enter_context(patch.object(
+                self.runner,
+                "_assert_closed_environment",
+                wrap("closed_environment", closed),
+            ))
+            for name in originals:
+                stack.enter_context(patch.object(
+                    evaluation,
+                    name,
+                    observed_model(name),
+                ))
+            with self.assertRaisesRegex(
+                self.runner.RunnerError,
+                "already complete|phase",
+            ):
+                self.runner.run_non_lockbox(self.paths)
+
+        self.assertEqual(len(EXPECTED_ENVIRONMENT_LOCK["distributions"]), 5)
+        self.assertEqual(len(source_counts), 4 + 5 + 6 + 2 + 7441 + 2074)
+        self.assertTrue(all(count == 0 for count in source_counts.values()))
+        self.assertEqual(zero_calls, Counter())
+        self.assertEqual(probe.audio_reads, [])
+        self.assertEqual(probe.ami_reads, [])
+        self.assertEqual(probe.feature_calls, [])
+        self.assertEqual(probe.ami_loader_calls, [])
+        self.assertEqual(replay_calls["five_file_readback"], 1)
+        self.assertEqual(replay_calls["semantic_restore"], 1)
+        self.assertGreaterEqual(replay_calls["public_packet_validator"], 1)
+        self.assertGreaterEqual(replay_calls["independent_packet_validator"], 1)
+        self.assertEqual(replay_calls["installed_environment"], 2)
+        self.assertEqual(replay_calls["closed_environment"], 3)
+        self.assertEqual(
+            child_bindings,
+            [
+                (
+                    Path(self.paths.state_root),
+                    Path(self.paths.project_root),
+                    True,
+                ),
+                (
+                    Path(self.paths.non_lockbox_root),
+                    Path(self.paths.state_root),
+                    False,
+                ),
+                (
+                    Path(self.paths.non_lockbox_cache_root),
+                    Path(self.paths.non_lockbox_root),
+                    False,
+                ),
+            ],
+        )
+        self.assertEqual(
+            model_calls,
+            [
+                "fit_frozen_models",
+                "predict_probabilities",
+                "calibrate_thresholds",
+                "predict_probabilities",
+                "evaluate_partition",
+            ],
+        )
+        self.assertEqual(self.paths.state_path.read_bytes(), before_state)
+        self.assertEqual(self._output_bytes(self.paths), before_outputs)
+        self.assertTrue(all(path.read_bytes() == content for path, content in opaque_bytes.items()))
+        self.assertTrue(lockbox_root.is_dir())
+        self.assertTrue(publication_root.is_dir())
+        self.assertEqual(first["phase"], "non_lockbox_complete")
+
+        classify_names = (
+            self.runner._classify_non_lockbox_state_root_entry_names
+        )
+        self.assertEqual(
+            classify_names(
+                self.paths,
+                (
+                    "lockbox",
+                    "lockbox.lock",
+                    "lockbox-reservation.json",
+                    "publication",
+                ),
+                allow_state_controls=True,
+            ),
+            (),
+        )
+        for alias in (
+            "LOCKBOX",
+            "LockBox.Lock",
+            "LOCKBOX-RESERVATION.JSON",
+            "PUBLICATION",
+            "lockbox.",
+            "publication ",
+            "LOCKBO~1",
+            "PUBLIC~1",
+        ):
+            with self.subTest(opaque_alias=alias):
+                with self.assertRaisesRegex(
+                    self.runner.RunnerError,
+                    "noncanonical|unknown",
+                ):
+                    classify_names(
+                        self.paths,
+                        (alias,),
+                        allow_state_controls=True,
+                    )
+        with self.assertRaisesRegex(
+            self.runner.RunnerError,
+            "noncanonical|duplicate",
+        ):
+            classify_names(
+                self.paths,
+                ("state.json", "STATE.JSON"),
+                allow_state_controls=True,
+            )
+
+    def test_two_non_lockbox_processes_cannot_both_build_or_transition(self) -> None:
+        self._require_task6()
+        self._prepare()
+        body = """
+try:
+    with runner.material_pipeline_lock(paths) as material_authority:
+        with runner._admit_recovered_state(
+            paths,
+            material_authority=material_authority,
+        ) as committed_preflight:
+            with runner._read_committed_preflight_checkpoint(
+                paths,
+                material_authority=material_authority,
+                committed_state_authority=committed_preflight,
+            ):
+                with runner._admit_non_lockbox_state(
+                    paths,
+                    material_authority=material_authority,
+                    committed_state_authority=committed_preflight,
+                ) as admitted:
+                    print("BUILD:" + admitted.initial_state["phase"], flush=True)
+                    proposed = dict(admitted.initial_state)
+                    proposed.update({
+                        "phase": "non_lockbox_complete",
+                        "non_lockbox_packet_sha256": "A" * 64,
+                    })
+                    with runner._commit_non_lockbox_state_durably(
+                        paths,
+                        proposed,
+                        material_authority=material_authority,
+                        admitted_state_authority=admitted,
+                    ) as committed:
+                        print("SUCCESS:" + committed.state["phase"], flush=True)
+except runner.RunnerError as error:
+    print("DENIED:" + str(error), flush=True)
+"""
+        first = self._start_child(self.paths, body)
+        second = self._start_child(self.paths, body)
+        first_output = self._finish_child(first)
+        second_output = self._finish_child(second)
+        combined = (first_output[0] + second_output[0]).splitlines()
+        self.assertEqual(sum(line.startswith("BUILD:") for line in combined), 1)
+        self.assertEqual(sum(line.startswith("SUCCESS:") for line in combined), 1)
+        self.assertEqual(sum(line.startswith("DENIED:") for line in combined), 1)
+        self.assertEqual(
+            json.loads(self.paths.state_path.read_bytes())["phase"],
+            "non_lockbox_complete",
+        )
+
+    def test_windows_wav_xml_parent_reparse_and_midread_races_fail_closed(self) -> None:
+        self._require()
+        self.assertEqual(os.name, "nt")
+        denial_codes = {5, 32, 33}
+        retained_wav = next(iter(self.fixture.audio_bytes.values()))
+        scenarios = (
+            "junction-before-open",
+            "junction-after-parent-validation",
+            "hardlink-before-open",
+            "replacement-mid-read",
+        )
+        for scenario in scenarios:
+            with self.subTest(scenario=scenario):
+                paths = self._make_paths(self.case_root / f"source-race-{scenario}")
+                source_root = paths.public_material_root / f"race-{scenario}"
+                outside_root = paths.project_root / f"outside-{scenario}"
+                sync_root = paths.project_root / f"sync-{scenario}"
+                source_root.mkdir(parents=True)
+                outside_root.mkdir()
+                sync_root.mkdir()
+                suffix = ".xml" if "junction" in scenario else ".wav"
+                content = (
+                    b"<original synthetic='true'/>"
+                    if suffix == ".xml"
+                    else retained_wav
+                )
+                outside_content = (
+                    b"<outside synthetic='true'/>"
+                    if suffix == ".xml"
+                    else b"outside replacement bytes"
+                )
+                source = source_root / f"sample{suffix}"
+                outside_source = outside_root / source.name
+                sentinel = outside_root / "sentinel.bin"
+                source.write_bytes(content)
+                outside_source.write_bytes(outside_content)
+                sentinel.write_bytes(b"outside sentinel unchanged")
+                held_marker = sync_root / "held.marker"
+                release_marker = sync_root / "release.marker"
+                expected_digest = hashlib.sha256(content).hexdigest().upper()
+
+                body = self._source_race_child_body(
+                    scenario=scenario,
+                    source=source,
+                    held_marker=held_marker,
+                    release_marker=release_marker,
+                    expected_digest=expected_digest,
+                    expected_size=len(content),
+                )
+                child = self._start_child(
+                    paths,
+                    body,
+                    use_runtime_patches=False,
+                )
+                denial_code: int | None = None
+                displaced = sync_root / "displaced-source"
+                hardlink = sync_root / f"hardlink{suffix}"
+                replacement = sync_root / f"replacement{suffix}"
+                mutation_succeeded = False
+                try:
+                    self._wait_for_child_marker(child, held_marker)
+                    try:
+                        if scenario.startswith("junction"):
+                            os.rename(source_root, displaced)
+                            self._create_windows_junction(source_root, outside_root)
+                        elif scenario == "hardlink-before-open":
+                            os.link(source, hardlink)
+                        else:
+                            replacement.write_bytes(outside_content)
+                            os.replace(replacement, source)
+                    except OSError as error:
+                        denial_code = error.winerror
+                    else:
+                        mutation_succeeded = True
+                    release_marker.write_bytes(b"release")
+                    stdout, _stderr = self._finish_child(child)
+                finally:
+                    self._terminate_child(child)
+
+                self.assertTrue(
+                    "FAIL_CLOSED:" in stdout
+                    or f"SUCCESS:{expected_digest}" in stdout,
+                    msg=f"{scenario}: {stdout!r}",
+                )
+                if denial_code is not None:
+                    self.assertIn(denial_code, denial_codes, msg=scenario)
+                if scenario == "junction-before-open":
+                    self.assertTrue(mutation_succeeded)
+                    self.assertIn("FAIL_CLOSED:", stdout)
+                if scenario == "hardlink-before-open" and mutation_succeeded:
+                    self.assertIn("FAIL_CLOSED:", stdout)
+                self.assertEqual(sentinel.read_bytes(), b"outside sentinel unchanged")
+                self.assertEqual(outside_source.read_bytes(), outside_content)
+
+                if os.path.lexists(source_root):
+                    status = os.stat(source_root, follow_symlinks=False)
+                    if self.runner._is_link_or_reparse(source_root, status):
+                        os.rmdir(source_root)
+                if displaced.exists() and not source_root.exists():
+                    os.rename(displaced, source_root)
+                if hardlink.exists():
+                    hardlink.unlink()
+                if replacement.exists():
+                    replacement.unlink()
+
+    def test_windows_non_lockbox_root_cache_file_and_state_target_races_fail_closed(self) -> None:
+        self._require_task5()
+        self._require_task6()
+        self.assertEqual(os.name, "nt")
+        denial_codes = {5, 32, 33, 80, 183}
+        scenarios = (
+            "non-lockbox-root-rename",
+            "cache-root-rename",
+            "cache-file-replacement",
+            "cache-file-hardlink",
+            "state-target-creation",
+        )
+        for scenario in scenarios:
+            with self.subTest(scenario=scenario):
+                paths = self._make_paths(self.case_root / f"output-race-{scenario}")
+                self._prepare(paths)
+                before_state = paths.state_path.read_bytes()
+                sync_root = paths.project_root / f"sync-{scenario}"
+                outside_root = paths.project_root / f"outside-{scenario}"
+                sync_root.mkdir()
+                outside_root.mkdir()
+                sentinel = outside_root / "sentinel.bin"
+                sentinel.write_bytes(b"outside sentinel unchanged")
+                held_marker = sync_root / "held.marker"
+                release_marker = sync_root / "release.marker"
+
+                body = self._output_race_child_body(
+                    scenario=scenario,
+                    held_marker=held_marker,
+                    release_marker=release_marker,
+                )
+                child = self._start_child(paths, body)
+                denial_code: int | None = None
+                mutation_succeeded = False
+                displaced = sync_root / "displaced-output"
+                target_cache = (
+                    paths.non_lockbox_cache_root / "training_discovery.json"
+                )
+                concurrent = sync_root / "concurrent-cache.json"
+                foreign_state = b'{"foreign_state":true}\n'
+                try:
+                    self._wait_for_child_marker(child, held_marker)
+                    if scenario == "state-target-creation":
+                        self.assertFalse(os.path.lexists(paths.state_path))
+                    try:
+                        if scenario == "non-lockbox-root-rename":
+                            os.rename(paths.non_lockbox_root, displaced)
+                        elif scenario == "cache-root-rename":
+                            os.rename(paths.non_lockbox_cache_root, displaced)
+                        elif scenario == "cache-file-replacement":
+                            concurrent.write_bytes(b'{"concurrent_cache":true}\n')
+                            os.replace(concurrent, target_cache)
+                        elif scenario == "cache-file-hardlink":
+                            os.link(target_cache, concurrent)
+                        else:
+                            paths.state_path.write_bytes(foreign_state)
+                    except OSError as error:
+                        denial_code = error.winerror
+                    else:
+                        mutation_succeeded = True
+                    release_marker.write_bytes(b"release")
+                    stdout, _stderr = self._finish_child(child)
+                finally:
+                    self._terminate_child(child)
+
+                self.assertTrue(
+                    "DENIED:" in stdout
+                    or "SUCCESS:artifacts" in stdout
+                    or "SUCCESS:non_lockbox_complete" in stdout,
+                    msg=f"{scenario}: {stdout!r}",
+                )
+                if denial_code is not None:
+                    self.assertIn(denial_code, denial_codes, msg=scenario)
+                if mutation_succeeded:
+                    self.assertIn("DENIED:", stdout)
+                self.assertEqual(sentinel.read_bytes(), b"outside sentinel unchanged")
+
+                if scenario == "state-target-creation" and mutation_succeeded:
+                    self.assertEqual(paths.state_path.read_bytes(), foreign_state)
+                elif "root-rename" in scenario and mutation_succeeded:
+                    self.assertTrue(displaced.exists())
+                    self.assertEqual(
+                        json.loads(before_state)["phase"],
+                        "preflight_complete",
+                    )
+                elif scenario == "cache-file-replacement" and mutation_succeeded:
+                    self.assertEqual(
+                        target_cache.read_bytes(),
+                        b'{"concurrent_cache":true}\n',
+                    )
+                elif scenario == "cache-file-hardlink" and mutation_succeeded:
+                    self.assertTrue(concurrent.exists())
+                    self.assertGreaterEqual(
+                        os.stat(target_cache, follow_symlinks=False).st_nlink,
+                        2,
+                    )
+
+    def test_unknown_or_malformed_non_lockbox_recovery_entries_are_retained(self) -> None:
+        self._require_task5()
+        self._require_task6()
+        cases = (
+            (
+                "unknown-output",
+                lambda paths: paths.non_lockbox_root / "unknown-retained.bin",
+                b"retain unknown output",
+            ),
+            (
+                "malformed-cache-stage",
+                lambda paths: (
+                    paths.non_lockbox_cache_root
+                    / ".training_discovery.json.non-lockbox.stage"
+                ),
+                b"{malformed-cache-stage",
+            ),
+            (
+                "malformed-state-stage",
+                lambda paths: paths.state_root / ".state.json.non-lockbox.stage",
+                b"{malformed-state-stage",
+            ),
+            (
+                "malformed-state-intent",
+                lambda paths: (
+                    paths.state_root / ".state.json.non-lockbox.intent.json"
+                ),
+                b'{"operation":"wrong"}\n',
+            ),
+            (
+                "malformed-state-prior",
+                lambda paths: paths.state_root / ".state.json.non-lockbox.prior",
+                b"{malformed-state-prior",
+            ),
+        )
+        for name, control_factory, content in cases:
+            with self.subTest(name=name):
+                paths = self._make_paths(self.case_root / f"recovery-{name}")
+                self._prepare(paths)
+                before_state = paths.state_path.read_bytes()
+                control = control_factory(paths)
+                control.parent.mkdir(parents=True, exist_ok=True)
+                control.write_bytes(content)
+                with self.assertRaisesRegex(
+                    self.runner.RunnerError,
+                    "unknown|malformed|invalid|shape|retained|recovery|indeterminate",
+                ):
+                    with self.runner.material_pipeline_lock(paths) as material:
+                        if name.startswith("malformed-state-"):
+                            with self.runner._admit_recovered_state(
+                                paths,
+                                material_authority=material,
+                            ):
+                                pass
+                        else:
+                            with self.runner._held_non_lockbox_output_authorities(
+                                paths,
+                                material,
+                            ):
+                                pass
+                self.assertTrue(os.path.lexists(control))
+                self.assertEqual(control.read_bytes(), content)
+                self.assertEqual(paths.state_path.read_bytes(), before_state)
+                self.assertEqual(
+                    json.loads(paths.state_path.read_bytes())["phase"],
+                    "preflight_complete",
+                )
+
+    def test_pinned_cli_credentials_network_constructors_runtime_private_and_canonical_surfaces_are_silent(self) -> None:
+        import builtins
+        import http.client
+        import urllib.request
+        from types import ModuleType
+
+        self._require()
+        self._prepare()
+        before_state = self.paths.state_path.read_bytes()
+        self.assertEqual(Path(sys.executable).resolve(), EVALUATION_PYTHON.resolve())
+        with (
+            patch.dict(os.environ, {"OPENAI_API_KEY": "synthetic-secret"}),
+            self.assertRaisesRegex(self.runner.RunnerError, "credential|environment"),
+        ):
+            self.runner.run_non_lockbox(self.paths)
+        self.assertEqual(self.paths.state_path.read_bytes(), before_state)
+        network_names = {
+            "CURL_CA_BUNDLE",
+            "HF_ENDPOINT",
+            "PIP_EXTRA_INDEX_URL",
+            "PIP_INDEX_URL",
+            "PIP_TRUSTED_HOST",
+            "REQUESTS_CA_BUNDLE",
+            "SSL_CERT_DIR",
+            "SSL_CERT_FILE",
+        }
+        sanitized_environment = {
+            name: value
+            for name, value in os.environ.items()
+            if name.upper() not in self.runner.CREDENTIAL_ENV_NAMES
+            and not name.upper().endswith(
+                self.runner.CREDENTIAL_ENV_SUFFIXES
+            )
+            and name.upper() not in network_names
+            and not name.upper().endswith("_PROXY")
+        }
+        for name in ("PIP_INDEX_URL", "https_proxy", "No_PrOxY"):
+            with self.subTest(network_environment=name):
+                with (
+                    patch.dict(
+                        os.environ,
+                        {**sanitized_environment, name: "synthetic-blocked"},
+                        clear=True,
+                    ),
+                    patch.object(
+                        self.runner,
+                        "material_pipeline_lock",
+                        side_effect=AssertionError(
+                            "blocked environment reached material authority"
+                        ),
+                    ),
+                    self.assertRaisesRegex(
+                        self.runner.RunnerError,
+                        "network|configuration|environment",
+                    ),
+                ):
+                    self.runner.run_non_lockbox(self.paths)
+                self.assertEqual(self.paths.state_path.read_bytes(), before_state)
+        for prefix in ("runtime", "apps", "sales_agent"):
+            with self.subTest(runtime_prefix=prefix):
+                module_name = f"{prefix}.synthetic"
+                with (
+                    patch.dict(
+                        os.environ,
+                        sanitized_environment,
+                        clear=True,
+                    ),
+                    patch.dict(sys.modules, {module_name: ModuleType(module_name)}),
+                    self.assertRaisesRegex(self.runner.RunnerError, "runtime"),
+                ):
+                    self.runner.run_non_lockbox(self.paths)
+                self.assertEqual(self.paths.state_path.read_bytes(), before_state)
+        calls = Counter()
+        probe = self.fixture.new_probe()
+
+        def blocked(name: str) -> Callable[..., Any]:
+            def call(*args: Any, **kwargs: Any) -> Any:
+                calls[name] += 1
+                raise AssertionError(f"network/runtime constructor called: {name}")
+            return call
+
+        provider_modules = {}
+        for module_name, names in {
+            "openai": ("OpenAI", "AsyncOpenAI"),
+            "elevenlabs": ("ElevenLabs", "AsyncElevenLabs"),
+            "requests": ("Session", "request", "get", "post"),
+            "httpx": ("Client", "AsyncClient", "request", "get", "post"),
+            "urllib3": ("PoolManager", "ProxyManager", "request"),
+            "aiohttp": ("ClientSession", "request"),
+        }.items():
+            module = ModuleType(module_name)
+            for name in names:
+                setattr(module, name, blocked(f"{module_name}.{name}"))
+            provider_modules[module_name] = module
+
+        original_import = builtins.__import__
+
+        def guarded_import(name: str, *args: Any, **kwargs: Any) -> Any:
+            if name.split(".", 1)[0].casefold() in {
+                "runtime", "apps", "sales_agent",
+            }:
+                calls[f"import:{name}"] += 1
+                raise AssertionError(f"runtime import attempted: {name}")
+            return original_import(name, *args, **kwargs)
+
+        canonical_root = Path(self.paths.canonical_root)
+
+        def path_classification(value: Any) -> tuple[bool, bool]:
+            if not isinstance(value, (str, bytes, os.PathLike)):
+                return False, False
+            try:
+                candidate = Path(value)
+            except (TypeError, ValueError):
+                return False, False
+            if not candidate.is_absolute():
+                return False, False
+            candidate = Path(os.path.abspath(candidate))
+            private = any(
+                part.casefold() in self.runner.PRIVATE_COMPONENTS
+                for part in candidate.parts
+            )
+            canonical = (
+                candidate == canonical_root
+                or canonical_root in candidate.parents
+            )
+            return private, canonical
+
+        def guarded_path_api(
+            name: str,
+            original: Any,
+            *,
+            canonical_forbidden: bool,
+        ) -> Callable[..., Any]:
+            def call(*args: Any, **kwargs: Any) -> Any:
+                for value in (*args, *kwargs.values()):
+                    private, canonical = path_classification(value)
+                    if private or (canonical_forbidden and canonical):
+                        calls[f"path:{name}"] += 1
+                        raise AssertionError(
+                            f"private/canonical path action attempted through {name}"
+                        )
+                return original(*args, **kwargs)
+            return call
+
+        with ExitStack() as stack:
+            stack.enter_context(
+                self.fixture.runtime_patches(
+                    self.paths,
+                    self.runner,
+                    probe,
+                )
+            )
+            stack.enter_context(patch.object(
+                self.runner,
+                "_resolve_final_lockbox_result_path",
+                blocked("_resolve_final_lockbox_result_path"),
+                create=True,
+            ))
+            stack.enter_context(patch.dict(sys.modules, provider_modules))
+            stack.enter_context(patch.object(
+                builtins,
+                "__import__",
+                guarded_import,
+            ))
+            for owner, name in (
+                (socket, "create_connection"),
+                (socket.socket, "connect"),
+                (urllib.request, "urlopen"),
+                (urllib.request, "build_opener"),
+                (http.client.HTTPConnection, "__init__"),
+                (http.client.HTTPConnection, "request"),
+                (http.client.HTTPSConnection, "__init__"),
+                (http.client.HTTPSConnection, "request"),
+                (subprocess, "Popen"),
+                (subprocess, "run"),
+            ):
+                stack.enter_context(patch.object(
+                    owner,
+                    name,
+                    blocked(f"{owner.__name__}.{name}"),
+                ))
+            for owner, name, canonical_forbidden in (
+                (builtins, "open", True),
+                (os, "open", True),
+                (Path, "open", True),
+                (os, "mkdir", True),
+                (os, "makedirs", True),
+                (os, "rename", True),
+                (os, "replace", True),
+                (os, "remove", True),
+                (os, "unlink", True),
+                (os, "stat", False),
+                (os, "lstat", False),
+                (os, "listdir", False),
+                (os, "scandir", False),
+                (os.path, "lexists", False),
+            ):
+                stack.enter_context(patch.object(
+                    owner,
+                    name,
+                    guarded_path_api(
+                        name,
+                        getattr(owner, name),
+                        canonical_forbidden=canonical_forbidden,
+                    ),
+                ))
+            state = self.runner.run_non_lockbox(self.paths)
+        self.assertEqual(state["phase"], "non_lockbox_complete")
+        self.assertEqual(calls, Counter())
+        self.assertEqual(probe.forbidden_calls, [])
+        self.assertFalse(os.path.lexists(self.paths.canonical_root))
+
+    def test_production_non_lockbox_has_no_operation_callback_or_bypass(self) -> None:
+        self.fixture.require_builder_api(self)
+        self.assertEqual(tuple(inspect.signature(self.runner.run_non_lockbox).parameters), ("paths",))
+        source = inspect.getsource(self.runner.run_non_lockbox)
+        for forbidden in ("callback", "operation", "bypass", "ALLOW_", "os.environ"):
+            self.assertNotIn(forbidden, source)
+        self.assertNotIn(
+            'RunnerError("production non-lockbox execution is unavailable")',
+            source,
+        )
+
+        class PathFormationProbe:
+            def __init__(self, parts: tuple[str, ...] = ()) -> None:
+                self.parts = parts
+
+            def __truediv__(self, component: object) -> "PathFormationProbe":
+                segment = str(component)
+                if segment in {"lockbox", "lockbox-result.json"}:
+                    raise AssertionError(
+                        f"production factory formed final-lockbox segment: {segment}"
+                    )
+                return PathFormationProbe((*self.parts, segment))
+
+        with patch.object(self.runner, "ROOT", PathFormationProbe()):
+            probed = self.runner.RunnerPaths.production()
+        self.assertIsNone(probed.lockbox_result_path)
+
+        production = self.runner.RunnerPaths.production()
+        final_attributes = {
+            "lockbox_root",
+            "final_lockbox_cache_root",
+            "lockbox_lock_path",
+            "lockbox_reservation_path",
+        }
+        accessed: list[str] = []
+        inert_field_reads: list[int] = []
+        original_getattribute = self.runner.RunnerPaths.__getattribute__
+
+        def guarded_getattribute(instance: Any, name: str) -> Any:
+            authority = object.__getattribute__(instance, "authority")
+            if authority == "production" and name == "lockbox_result_path":
+                inert_field_reads.append(id(instance))
+            if authority == "production" and name in final_attributes:
+                accessed.append(name)
+                raise AssertionError(
+                    f"generic production layout touched final attribute: {name}"
+                )
+            return original_getattribute(instance, name)
+
+        class CapabilityBomb:
+            @staticmethod
+            def explode(*_args: Any, **_kwargs: Any) -> Any:
+                raise AssertionError(
+                    "layout operated on a non-None lockbox-result capability"
+                )
+
+            __bool__ = explode
+            __eq__ = explode
+            __fspath__ = explode
+            __hash__ = explode
+            __repr__ = explode
+            __str__ = explode
+            __truediv__ = explode
+            __rtruediv__ = explode
+
+        tampered = replace(
+            production,
+            lockbox_result_path=CapabilityBomb(),
+        )
+
+        with (
+            patch.object(
+                self.runner.RunnerPaths,
+                "__getattribute__",
+                guarded_getattribute,
+            ),
+            patch.object(
+                self.runner,
+                "_inspect_component_chain",
+                return_value=None,
+            ),
+            patch.object(
+                self.runner,
+                "_resolve_final_lockbox_result_path",
+                side_effect=AssertionError(
+                    "generic layout invoked final-lockbox resolver"
+                ),
+                create=True,
+            ),
+        ):
+            self.runner._validate_layout(production)
+            self.assertEqual(inert_field_reads, [id(production)])
+            inert_field_reads.clear()
+            with self.assertRaisesRegex(
+                self.runner.RunnerError,
+                "production lockbox-result capability must stay inert",
+            ):
+                self.runner._validate_layout(tampered)
+            self.assertEqual(inert_field_reads, [id(tampered)])
+        self.assertEqual(accessed, [])
+
+        module_tree = ast.parse(
+            Path(self.runner.__file__).read_text(encoding="utf-8")
+        )
+        resolver_callers = {
+            node.name
+            for node in module_tree.body
+            if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef))
+            and any(
+                isinstance(call, ast.Call)
+                and isinstance(call.func, ast.Name)
+                and call.func.id == "_resolve_final_lockbox_result_path"
+                for call in ast.walk(node)
+            )
+        }
+        self.assertEqual(
+            resolver_callers,
+            {"_validate_lockbox_path", "lockbox_lock"},
+        )
+
+    def test_non_lockbox_is_byte_deterministic_across_two_fresh_roots(self) -> None:
+        self._require()
+        first = self._make_paths(self.case_root / "deterministic-a")
+        second = self._make_paths(self.case_root / "deterministic-b")
+        self._prepare(first)
+        self._prepare(second)
+        first_state, _probe = self._run(first)
+        second_state, _probe = self._run(second)
+        self.assertEqual(self._output_bytes(first), self._output_bytes(second))
+        self.assertEqual(first_state, second_state)
+        self.assertEqual(first.state_path.read_bytes(), second.state_path.read_bytes())
+
+    def test_cut4_preserves_cut3c_preflight_retry_and_source_silent_readback(self) -> None:
+        self._require_task6()
+        self._prepare()
+        transition_probe = self.fixture.new_probe()
+        with self._task6_transition(probe=transition_probe) as transition:
+            completed = dict(transition.committed.state)
+        before = self.paths.state_path.read_bytes()
+        retry_probe = self.fixture.new_probe()
+        with (
+            self.fixture.runtime_patches(self.paths, self.runner, retry_probe),
+            self.assertRaisesRegex(self.runner.RunnerError, "already complete|phase"),
+        ):
+            self.runner.run_preflight(self.paths)
+        self.assertEqual(completed["phase"], "non_lockbox_complete")
+        self.assertEqual(self.paths.state_path.read_bytes(), before)
+        self.assertEqual(retry_probe.audio_reads, [])
+        self.assertEqual(retry_probe.ami_reads, [])
+
+    def test_environment_checks_split_source_silent_retry_from_held_first_build(self) -> None:
+        from scripts import emotion_state_phase_b_public_pipeline as pipeline
+        from scripts.validate_emotion_state_002_phase_b import (
+            EXPECTED_ENVIRONMENT_LOCK,
+        )
+
+        self._require()
+        self._prepare()
+        proof_bound_parameter = inspect.signature(
+            self.runner._held_regular_file_with_bytes
+        ).parameters["proof_bound"]
+        self.assertIs(proof_bound_parameter.default, False)
+        uncached_legacy = self.case_root / "uncached-legacy-held-file.bin"
+        uncached_legacy.write_bytes(b"legacy-no-proof")
+        self.runner._PATH_IDENTITY_PROOFS.pop(str(uncached_legacy), None)
+        with self.assertRaisesRegex(
+            self.runner.RunnerError,
+            "proof-bound policy type changed",
+        ):
+            with self.runner._held_regular_file_with_bytes(
+                uncached_legacy,
+                proof_bound=1,
+            ):
+                pass
+        with self.runner._held_regular_file_with_bytes(
+            uncached_legacy
+        ) as (_legacy_authority, legacy_content):
+            self.assertEqual(legacy_content, b"legacy-no-proof")
+        self.assertNotIn(
+            str(uncached_legacy),
+            self.runner._PATH_IDENTITY_PROOFS,
+        )
+        wheelhouse = (
+            self.paths.project_root
+            / ".tmp/emotion-state-002-phase-b/dependencies/wheelhouse"
+        )
+        evidence_root = self.paths.dataset_evidence_root
+        expected_wheels = tuple(
+            distribution["wheel_filename"]
+            for distribution in EXPECTED_ENVIRONMENT_LOCK["distributions"]
+        )
+        expected_network_names = {
+            "CURL_CA_BUNDLE",
+            "HF_ENDPOINT",
+            "PIP_EXTRA_INDEX_URL",
+            "PIP_INDEX_URL",
+            "PIP_TRUSTED_HOST",
+            "REQUESTS_CA_BUNDLE",
+            "SSL_CERT_DIR",
+            "SSL_CERT_FILE",
+        }
+        self.assertEqual(
+            self.runner.NETWORK_CONFIGURATION_ENV_NAMES,
+            frozenset(expected_network_names),
+        )
+        self.assertEqual(
+            self.runner.NETWORK_CONFIGURATION_ENV_SUFFIXES,
+            ("_PROXY",),
+        )
+        for name in (*sorted(expected_network_names), "https_proxy", "No_PrOxY"):
+            with self.subTest(blocked_environment=name):
+                with (
+                    patch.dict(os.environ, {name: "blocked"}, clear=True),
+                    patch.object(
+                        self.runner,
+                        "_forbidden_credentials",
+                        return_value=(),
+                    ),
+                    self.assertRaisesRegex(
+                        self.runner.RunnerError,
+                        "network/configuration environment",
+                    ),
+                ):
+                    self.runner._assert_closed_environment()
+        probe = self.fixture.new_probe()
+        original_listdir = os.listdir
+        original_scandir = os.scandir
+        original_held = self.runner._held_regular_file_with_bytes
+        proof_bound_calls: list[tuple[Path, bool]] = []
+
+        @contextmanager
+        def recorded_held(path: Path, *args: Any, **kwargs: Any) -> Any:
+            proof_bound_calls.append(
+                (Path(path), kwargs.get("proof_bound", False))
+            )
+            with original_held(path, *args, **kwargs) as opened:
+                yield opened
+
+        def guarded_listing(original: Any) -> Callable[..., Any]:
+            def call(path: Any = ".", *args: Any, **kwargs: Any) -> Any:
+                target = Path(path)
+                if target in {wheelhouse, evidence_root}:
+                    raise AssertionError("held fixed-input capability listed a root")
+                return original(path, *args, **kwargs)
+            return call
+
+        with (
+            self.fixture.runtime_patches(self.paths, self.runner, probe),
+            patch.object(os, "listdir", guarded_listing(original_listdir)),
+            patch.object(os, "scandir", guarded_listing(original_scandir)),
+            patch.object(
+                self.runner,
+                "_held_regular_file_with_bytes",
+                recorded_held,
+            ),
+            self.runner._held_preflight_static_inputs(self.paths) as static_inputs,
+            self.runner._held_environment_wheel_inputs(self.paths) as wheel_inputs,
+            self.runner._held_tracked_public_evidence_inputs(
+                self.paths
+            ) as evidence_inputs,
+        ):
+            self.assertEqual(wheel_inputs.filenames, expected_wheels)
+            self.assertEqual(
+                tuple(Path(file.path).name for file in wheel_inputs.files),
+                expected_wheels,
+            )
+            self.assertEqual(
+                evidence_inputs.names,
+                pipeline.TRACKED_DATASET_EVIDENCE_FILENAMES,
+            )
+            self.assertEqual(
+                tuple(Path(file.path).name for file in evidence_inputs.files),
+                pipeline.TRACKED_DATASET_EVIDENCE_FILENAMES,
+            )
+            self.runner.validate_environment_identity_bytes(
+                static_inputs.contents[1],
+                dict(zip(
+                    wheel_inputs.filenames,
+                    wheel_inputs.contents,
+                    strict=True,
+                )),
+            )
+            self.runner._revalidate_held_environment_wheel_inputs(
+                wheel_inputs
+            )
+            self.runner._revalidate_held_tracked_public_evidence_inputs(
+                evidence_inputs
+            )
+        expected_proof_bound_paths = (
+            *self.runner._static_preflight_paths(self.paths),
+            *(wheelhouse / name for name in expected_wheels),
+            *(
+                evidence_root / name
+                for name in pipeline.TRACKED_DATASET_EVIDENCE_FILENAMES
+            ),
+        )
+        self.assertEqual(
+            tuple(path for path, _proof_bound in proof_bound_calls),
+            expected_proof_bound_paths,
+        )
+        self.assertTrue(all(proof_bound for _path, proof_bound in proof_bound_calls))
+        self.assertEqual(probe.state_calls.count("environment_bytes"), 1)
+
+        missing = self._make_paths(self.case_root / "missing-fixed-inputs")
+        missing_wheel = (
+            missing.project_root
+            / ".tmp/emotion-state-002-phase-b/dependencies/wheelhouse"
+            / expected_wheels[0]
+        )
+        missing_wheel.unlink()
+        with self.assertRaisesRegex(
+            self.runner.RunnerError,
+            "missing|unavailable|held file|path",
+        ):
+            with self.runner._held_environment_wheel_inputs(missing):
+                pass
+        self.assertFalse(os.path.lexists(missing_wheel))
+
+        hardlinked = self._make_paths(self.case_root / "hardlinked-fixed-inputs")
+        hardlinked_wheel = (
+            hardlinked.project_root
+            / ".tmp/emotion-state-002-phase-b/dependencies/wheelhouse"
+            / expected_wheels[0]
+        )
+        wheel_alias = hardlinked_wheel.with_name("synthetic-wheel-hardlink.bin")
+        os.link(hardlinked_wheel, wheel_alias)
+        try:
+            with self.assertRaisesRegex(
+                self.runner.RunnerError,
+                "single-link|unsafe|held file",
+            ):
+                with self.runner._held_environment_wheel_inputs(hardlinked):
+                    pass
+        finally:
+            wheel_alias.unlink()
+
+        hardlinked_evidence = (
+            hardlinked.dataset_evidence_root
+            / pipeline.TRACKED_DATASET_EVIDENCE_FILENAMES[0]
+        )
+        evidence_alias = hardlinked_evidence.with_name(
+            "synthetic-evidence-hardlink.bin"
+        )
+        os.link(hardlinked_evidence, evidence_alias)
+        try:
+            with self.assertRaisesRegex(
+                self.runner.RunnerError,
+                "single-link|unsafe|held file",
+            ):
+                with self.runner._held_tracked_public_evidence_inputs(
+                    hardlinked
+                ):
+                    pass
+        finally:
+            evidence_alias.unlink()
+
+        self.assertEqual(os.name, "nt")
+        for family in ("wheel", "evidence"):
+            with self.subTest(intermediate_parent_race=family):
+                raced = self._make_paths(
+                    self.case_root / f"held-parent-race-{family}"
+                )
+                sync_root = raced.project_root / f"sync-{family}"
+                outside_root = raced.project_root / f"outside-{family}"
+                sync_root.mkdir()
+                outside_root.mkdir()
+                held_marker = sync_root / "held.marker"
+                release_marker = sync_root / "release.marker"
+                if family == "wheel":
+                    bound_root = (
+                        raced.project_root
+                        / ".tmp/emotion-state-002-phase-b/dependencies/wheelhouse"
+                    )
+                    names = expected_wheels
+                else:
+                    bound_root = raced.dataset_evidence_root
+                    names = pipeline.TRACKED_DATASET_EVIDENCE_FILENAMES
+                outside_content = (
+                    f"outside-{family}-bytes"
+                ).encode("ascii")
+                for name in names:
+                    (outside_root / name).write_bytes(outside_content)
+                target = bound_root / names[0]
+                outside_digest = hashlib.sha256(
+                    outside_content
+                ).hexdigest().upper()
+                child = self._start_child(
+                    raced,
+                    self._held_input_race_child_body(
+                        family=family,
+                        target=target,
+                        held_marker=held_marker,
+                        release_marker=release_marker,
+                        outside_digest=outside_digest,
+                    ),
+                    use_runtime_patches=False,
+                )
+                displaced = sync_root / "displaced-bound-root"
+                try:
+                    self._wait_for_child_marker(child, held_marker)
+                    os.rename(bound_root, displaced)
+                    self._create_windows_junction(bound_root, outside_root)
+                    release_marker.write_bytes(b"release")
+                    stdout, _stderr = self._finish_child(child)
+                finally:
+                    self._terminate_child(child)
+                self.assertIn("FAIL_CLOSED:", stdout, msg=stdout)
+                self.assertNotIn("OUTSIDE_READ:", stdout, msg=stdout)
+                self.assertNotIn("SUCCESS", stdout, msg=stdout)
+                if os.path.lexists(bound_root):
+                    status = os.stat(bound_root, follow_symlinks=False)
+                    if self.runner._is_link_or_reparse(bound_root, status):
+                        os.rmdir(bound_root)
+                if displaced.exists() and not bound_root.exists():
+                    os.rename(displaced, bound_root)
 
 
 class Task10ProductionPipelineTests(unittest.TestCase):
@@ -18598,9 +25130,7 @@ class Task10ProductionPipelineTests(unittest.TestCase):
             paths.non_lockbox_packet_path,
         ):
             self.assertTrue(output.is_relative_to(paths.state_root))
-        self.assertTrue(
-            paths.final_lockbox_cache_root.is_relative_to(paths.lockbox_root)
-        )
+        self.assertIsNone(paths.lockbox_result_path)
         self.assertFalse(paths.canonical_root.is_relative_to(paths.state_root))
 
         altered = replace(
@@ -19021,6 +25551,9 @@ class Task10ProductionPipelineTests(unittest.TestCase):
         from scripts import emotion_state_phase_b_public_pipeline as pipeline
 
         diagnostic, ami = self._non_lockbox_review_aggregates()
+        diagnostic_slice_analysis = (
+            Task10PacketV4Tests._diagnostic_slice_analysis()
+        )
         split_identity = diagnostic["provenance"]["split_manifest_sha256"]
         conflicting_split = (
             "A" * 64 if split_identity != "A" * 64 else "B" * 64
@@ -19031,25 +25564,25 @@ class Task10ProductionPipelineTests(unittest.TestCase):
         ):
             pipeline.build_non_lockbox_review_packet(
                 diagnostic_aggregate=diagnostic,
+                diagnostic_slice_analysis=diagnostic_slice_analysis,
                 ami_aggregate=ami,
+                artifact_cache_commitments=deepcopy(
+                    Task10PacketV4Tests.CACHE_COMMITMENTS
+                ),
                 split_manifest_sha256=conflicting_split,
+                tracked_public_authority_commitment_sha256=(
+                    Task10PacketV4Tests.TRACKED_PUBLIC_AUTHORITY_SHA256
+                ),
             )
 
-        altered_configuration = self._rewrite_and_reseal_identity(
-            diagnostic,
-            field="configuration_sha256",
-            replacement="B" * 64,
-        )
         with self.assertRaisesRegex(
             pipeline.PublicMaterialPrerequisiteError,
             "configuration identity does not match diagnostic provenance",
         ):
-            pipeline.build_non_lockbox_review_packet(
-                diagnostic_aggregate=altered_configuration,
-                ami_aggregate=ami,
-                split_manifest_sha256=altered_configuration[
-                    "provenance"
-                ]["split_manifest_sha256"],
+            pipeline._validate_diagnostic_identity_bindings(
+                diagnostic,
+                configuration_sha256="B" * 64,
+                split_manifest_sha256=split_identity,
             )
 
     def test_non_lockbox_packet_validator_and_runner_bind_exact_split_identity(
@@ -19058,13 +25591,8 @@ class Task10ProductionPipelineTests(unittest.TestCase):
         from scripts import emotion_state_phase_b_public_pipeline as pipeline
         from scripts import run_emotion_state_002_phase_b as runner
 
-        diagnostic, ami = self._non_lockbox_review_aggregates()
+        packet, diagnostic, ami = Task10PacketV4Tests._build_packet()
         split_identity = diagnostic["provenance"]["split_manifest_sha256"]
-        packet = pipeline.build_non_lockbox_review_packet(
-            diagnostic_aggregate=diagnostic,
-            ami_aggregate=ami,
-            split_manifest_sha256=split_identity,
-        )
         conflicting_split = (
             "A" * 64 if split_identity != "A" * 64 else "B" * 64
         )
@@ -19100,13 +25628,8 @@ class Task10ProductionPipelineTests(unittest.TestCase):
         self,
     ) -> None:
         from scripts import emotion_state_phase_b_public_pipeline as pipeline
-        diagnostic, ami = self._non_lockbox_review_aggregates()
+        packet, diagnostic, ami = Task10PacketV4Tests._build_packet()
         split_identity = diagnostic["provenance"]["split_manifest_sha256"]
-        packet = pipeline.build_non_lockbox_review_packet(
-            diagnostic_aggregate=diagnostic,
-            ami_aggregate=ami,
-            split_manifest_sha256=split_identity,
-        )
         validated = pipeline.validate_non_lockbox_review_packet(packet)
         self.assertEqual(validated, packet)
         from scripts import run_emotion_state_002_phase_b as runner
@@ -19147,9 +25670,9 @@ class Task10ProductionPipelineTests(unittest.TestCase):
         )
         self.assertEqual(
             packet["schema_id"],
-            "emotion-state-phase-b-non-lockbox-review-v3",
+            "emotion-state-phase-b-non-lockbox-review-v4",
         )
-        self.assertEqual(packet["schema_version"], 3)
+        self.assertEqual(packet["schema_version"], 4)
         self.assertFalse(packet["final_decision_eligible"])
         self.assertRegex(packet["diagnostic_aggregate_sha256"], r"^[0-9A-F]{64}$")
         self.assertRegex(packet["ami_aggregate_sha256"], r"^[0-9A-F]{64}$")
@@ -19188,7 +25711,15 @@ class Task10ProductionPipelineTests(unittest.TestCase):
             )
 
 
-class Task10PacketV3Tests(unittest.TestCase):
+class Task10PacketV4Tests(unittest.TestCase):
+    TRACKED_PUBLIC_AUTHORITY_SHA256 = "E" * 64
+    CACHE_COMMITMENTS = {
+        "training_discovery": "A" * 64,
+        "calibration": "B" * 64,
+        "balanced_diagnostic": "C" * 64,
+        "ami_evidence": "D" * 64,
+    }
+
     @classmethod
     def setUpClass(cls) -> None:
         EvaluationTests.setUpClass()
@@ -19198,6 +25729,81 @@ class Task10PacketV3Tests(unittest.TestCase):
     def _aggregates() -> tuple[dict[str, Any], dict[str, Any]]:
         return Task10ProductionPipelineTests._non_lockbox_review_aggregates()
 
+    @staticmethod
+    def _diagnostic_slice_analysis() -> dict[str, Any]:
+        import numpy as np
+
+        from scripts.emotion_state_phase_b_evaluation import (
+            evaluate_partition,
+            mint_slice_analysis,
+            predict_probabilities,
+        )
+
+        case = EvaluationTests(
+            "test_diagnostic_and_cross_run_final_artifacts_fail_closed"
+        )
+        artifacts = case._semantic_artifacts()
+        partition = case._authoritative_partition("balanced_diagnostic")
+        probabilities = predict_probabilities(artifacts["fitted"], partition)
+        diagnostic = evaluate_partition(
+            probabilities,
+            artifacts["calibration"],
+        )
+        names = (
+            *(f"source_label:{label}" for label in case.CLASS_ORDER),
+            *(
+                f"scripted_scenario:{sentence}"
+                for sentence in ActorSplitTests.SENTENCES
+            ),
+            "vote_agreement:[0.00,0.50)",
+            "vote_agreement:[0.50,0.75)",
+            "vote_agreement:[0.75,1.00]",
+            "silence_ratio:Q1",
+            "silence_ratio:Q2",
+            "silence_ratio:Q3",
+            "silence_ratio:Q4",
+        )
+        if len(names) != CUT4_SLICE_COUNT or len(set(names)) != CUT4_SLICE_COUNT:
+            raise AssertionError("Cut 4 packet slice-name fixture changed")
+        mapping = {name: [] for name in names}
+        training_silence = np.asarray(
+            [
+                3.0 if record.label == "D" else 0.0
+                for record in case.RECORDS_BY_ROLE["training_discovery"]
+            ],
+            dtype=np.float64,
+        )
+        quartiles = tuple(float(value) for value in np.percentile(
+            training_silence,
+            (25, 50, 75),
+            method="linear",
+        ))
+        for record in case.RECORDS_BY_ROLE["balanced_diagnostic"]:
+            row = record.clip_stem
+            mapping[f"source_label:{record.label}"].append(row)
+            mapping[f"scripted_scenario:{record.sentence_id}"].append(row)
+            if record.vote_agreement < 0.50:
+                mapping["vote_agreement:[0.00,0.50)"].append(row)
+            elif record.vote_agreement < 0.75:
+                mapping["vote_agreement:[0.50,0.75)"].append(row)
+            else:
+                mapping["vote_agreement:[0.75,1.00]"].append(row)
+            silence = 3.0 if record.label == "D" else 0.0
+            if silence <= quartiles[0]:
+                quartile = "silence_ratio:Q1"
+            elif silence <= quartiles[1]:
+                quartile = "silence_ratio:Q2"
+            elif silence <= quartiles[2]:
+                quartile = "silence_ratio:Q3"
+            else:
+                quartile = "silence_ratio:Q4"
+            mapping[quartile].append(row)
+        return mint_slice_analysis(
+            probabilities,
+            diagnostic,
+            mapping,
+        ).to_payload()
+
     @classmethod
     def _build_packet(
         cls,
@@ -19205,12 +25811,18 @@ class Task10PacketV3Tests(unittest.TestCase):
         from scripts import emotion_state_phase_b_public_pipeline as pipeline
 
         diagnostic, ami = cls._aggregates()
+        diagnostic_slice_analysis = cls._diagnostic_slice_analysis()
         packet = pipeline.build_non_lockbox_review_packet(
             diagnostic_aggregate=diagnostic,
+            diagnostic_slice_analysis=diagnostic_slice_analysis,
             ami_aggregate=ami,
+            artifact_cache_commitments=deepcopy(cls.CACHE_COMMITMENTS),
             split_manifest_sha256=diagnostic["provenance"][
                 "split_manifest_sha256"
             ],
+            tracked_public_authority_commitment_sha256=(
+                cls.TRACKED_PUBLIC_AUTHORITY_SHA256
+            ),
         )
         return packet, diagnostic, ami
 
@@ -19219,7 +25831,9 @@ class Task10PacketV3Tests(unittest.TestCase):
         packet: dict[str, Any],
         *,
         diagnostic: bool = False,
+        diagnostic_slice: bool = False,
         ami: bool = False,
+        cache_commitments: bool = False,
     ) -> None:
         from scripts import emotion_state_phase_b_public_pipeline as pipeline
 
@@ -19227,9 +25841,17 @@ class Task10PacketV3Tests(unittest.TestCase):
             packet["diagnostic_aggregate_sha256"] = pipeline._canonical_digest(
                 packet["diagnostic_aggregate"]
             )
+        if diagnostic_slice:
+            packet["diagnostic_slice_analysis_sha256"] = (
+                pipeline._canonical_digest(packet["diagnostic_slice_analysis"])
+            )
         if ami:
             packet["ami_aggregate_sha256"] = pipeline._canonical_digest(
                 packet["ami_aggregate"]
+            )
+        if cache_commitments:
+            packet["artifact_cache_commitments_sha256"] = (
+                pipeline._canonical_digest(packet["artifact_cache_commitments"])
             )
         packet_without_review = deepcopy(packet)
         packet_without_review.pop("review_sha256", None)
@@ -19237,19 +25859,46 @@ class Task10PacketV3Tests(unittest.TestCase):
             packet_without_review
         )
 
-    def test_packet_v3_builds_and_validates_exact_ami_v2_projection(
+    def _assert_independent_rejects(self, payload: Any) -> None:
+        from scripts.validate_emotion_state_002_phase_b import (
+            validate_non_lockbox_packet,
+        )
+
+        with self.assertRaises((TypeError, ValueError)):
+            validate_non_lockbox_packet(payload)
+
+    def test_packet_v4_builds_and_validates_exact_slice_source_cache_and_ami_v2_projection(
         self,
     ) -> None:
         from scripts import emotion_state_phase_b_public_pipeline as pipeline
+        from scripts.validate_emotion_state_002_phase_b import (
+            validate_non_lockbox_packet,
+        )
 
         packet, diagnostic, ami = self._build_packet()
         self.assertEqual(
             packet["schema_id"],
-            "emotion-state-phase-b-non-lockbox-review-v3",
+            "emotion-state-phase-b-non-lockbox-review-v4",
         )
-        self.assertEqual(packet["schema_version"], 3)
+        self.assertEqual(packet["schema_version"], 4)
         self.assertEqual(packet["diagnostic_aggregate"], diagnostic)
         self.assertEqual(packet["ami_aggregate"], ami)
+        self.assertEqual(
+            packet["diagnostic_slice_analysis"]["schema_id"],
+            "emotion-state-phase-b-slice-analysis-v2",
+        )
+        self.assertEqual(
+            packet["tracked_public_authority_commitment_sha256"],
+            self.TRACKED_PUBLIC_AUTHORITY_SHA256,
+        )
+        self.assertEqual(
+            packet["artifact_cache_commitments"],
+            self.CACHE_COMMITMENTS,
+        )
+        self.assertEqual(
+            tuple(packet["artifact_cache_commitments"]),
+            (*CUT4_NONFINAL_ROLES, "ami_evidence"),
+        )
         self.assertEqual(
             ami["schema_id"],
             "emotion-state-ami-mechanics-aggregate-v2",
@@ -19261,8 +25910,14 @@ class Task10PacketV3Tests(unittest.TestCase):
             pipeline.validate_non_lockbox_review_packet(packet),
             packet,
         )
+        with patch.object(
+            pipeline,
+            "validate_non_lockbox_review_packet",
+            side_effect=AssertionError("independent validator delegated"),
+        ):
+            self.assertEqual(validate_non_lockbox_packet(packet), packet)
 
-    def test_packet_v3_rejects_packet_v2_unknown_schema_and_ami_v1(
+    def test_packet_v4_rejects_packet_v3_unknown_schema_slice_v1_ami_v1_and_summary_only(
         self,
     ) -> None:
         from scripts import emotion_state_phase_b_public_pipeline as pipeline
@@ -19270,7 +25925,8 @@ class Task10PacketV3Tests(unittest.TestCase):
         packet, diagnostic, _ami = self._build_packet()
         for schema_id, schema_version in (
             ("emotion-state-phase-b-non-lockbox-review-v2", 2),
-            ("emotion-state-phase-b-non-lockbox-review-v4", 4),
+            ("emotion-state-phase-b-non-lockbox-review-v3", 3),
+            ("emotion-state-phase-b-non-lockbox-review-v5", 5),
         ):
             with self.subTest(
                 schema_id=schema_id,
@@ -19284,22 +25940,50 @@ class Task10PacketV3Tests(unittest.TestCase):
                     pipeline.PublicMaterialPrerequisiteError
                 ):
                     pipeline.validate_non_lockbox_review_packet(mutated)
+                self._assert_independent_rejects(mutated)
 
         ami_v1 = deepcopy(RunnerStateTests.AMI_AGGREGATE)
         split_identity = diagnostic["provenance"]["split_manifest_sha256"]
         with self.assertRaises(pipeline.PublicMaterialPrerequisiteError):
             pipeline.build_non_lockbox_review_packet(
                 diagnostic_aggregate=diagnostic,
+                diagnostic_slice_analysis=self._diagnostic_slice_analysis(),
                 ami_aggregate=ami_v1,
+                artifact_cache_commitments=deepcopy(self.CACHE_COMMITMENTS),
                 split_manifest_sha256=split_identity,
+                tracked_public_authority_commitment_sha256=(
+                    self.TRACKED_PUBLIC_AUTHORITY_SHA256
+                ),
             )
         mutated = deepcopy(packet)
         mutated["ami_aggregate"] = ami_v1
         self._reseal_packet(mutated, ami=True)
         with self.assertRaises(pipeline.PublicMaterialPrerequisiteError):
             pipeline.validate_non_lockbox_review_packet(mutated)
+        self._assert_independent_rejects(mutated)
 
-    def test_packet_v3_rejects_resealed_ami_v2_release_matrix_drift(
+        slice_v1 = deepcopy(packet)
+        slice_v1["diagnostic_slice_analysis"]["schema_id"] = (
+            "emotion-state-phase-b-slice-analysis-v1"
+        )
+        self._reseal_packet(slice_v1, diagnostic_slice=True)
+        with self.assertRaises(pipeline.PublicMaterialPrerequisiteError):
+            pipeline.validate_non_lockbox_review_packet(slice_v1)
+        self._assert_independent_rejects(slice_v1)
+
+        from scripts.validate_emotion_state_002_phase_b import (
+            validate_non_lockbox_packet,
+        )
+
+        summary_only = {
+            "schema_id": "emotion-state-phase-b-non-lockbox-review-v4",
+            "schema_version": 4,
+            "review_sha256": packet["review_sha256"],
+        }
+        with self.assertRaises((TypeError, ValueError)):
+            validate_non_lockbox_packet(summary_only)
+
+    def test_packet_v4_rejects_resealed_ami_v2_release_matrix_drift(
         self,
     ) -> None:
         from scripts import emotion_state_phase_b_public_pipeline as pipeline
@@ -19364,8 +26048,9 @@ class Task10PacketV3Tests(unittest.TestCase):
                     pipeline.PublicMaterialPrerequisiteError
                 ):
                     pipeline.validate_non_lockbox_review_packet(mutated)
+                self._assert_independent_rejects(mutated)
 
-    def test_packet_v3_requires_every_lockbox_access_counter_as_integer_zero(
+    def test_packet_v4_requires_every_lockbox_access_counter_as_integer_zero(
         self,
     ) -> None:
         from scripts import emotion_state_phase_b_public_pipeline as pipeline
@@ -19388,6 +26073,7 @@ class Task10PacketV3Tests(unittest.TestCase):
                     pipeline.PublicMaterialPrerequisiteError
                 ):
                     pipeline.validate_non_lockbox_review_packet(mutated)
+                self._assert_independent_rejects(mutated)
             for value in (False, 1):
                 with self.subTest(key=key, value=value):
                     mutated = deepcopy(packet)
@@ -19397,13 +26083,15 @@ class Task10PacketV3Tests(unittest.TestCase):
                         pipeline.PublicMaterialPrerequisiteError
                     ):
                         pipeline.validate_non_lockbox_review_packet(mutated)
+                    self._assert_independent_rejects(mutated)
         mutated = deepcopy(packet)
         mutated["lockbox_access"]["extra_reads"] = 0
         self._reseal_packet(mutated)
         with self.assertRaises(pipeline.PublicMaterialPrerequisiteError):
             pipeline.validate_non_lockbox_review_packet(mutated)
+        self._assert_independent_rejects(mutated)
 
-    def test_packet_v3_rejects_resealed_identity_and_eligibility_drift(
+    def test_packet_v4_rejects_resealed_identity_and_eligibility_drift(
         self,
     ) -> None:
         from scripts import emotion_state_phase_b_public_pipeline as pipeline
@@ -19427,17 +26115,38 @@ class Task10PacketV3Tests(unittest.TestCase):
                     pipeline.PublicMaterialPrerequisiteError
                 ):
                     pipeline.validate_non_lockbox_review_packet(mutated)
+                self._assert_independent_rejects(mutated)
 
         mutated = deepcopy(packet)
         mutated["diagnostic_aggregate"]["final_decision_eligible"] = 0
         self._reseal_packet(mutated, diagnostic=True)
         with self.assertRaises(pipeline.PublicMaterialPrerequisiteError):
             pipeline.validate_non_lockbox_review_packet(mutated)
+        self._assert_independent_rejects(mutated)
 
-    def test_packet_v3_rejects_resealed_recursive_type_only_identity_drift(
+    def test_packet_v4_rejects_resealed_recursive_type_only_identity_drift(
         self,
     ) -> None:
         from scripts import emotion_state_phase_b_public_pipeline as pipeline
+
+        class StrSubclass(str):
+            pass
+
+        def replace_key(
+            value: dict[str, Any],
+            target: str,
+        ) -> dict[str, Any]:
+            return {
+                (StrSubclass(key) if key == target else key): deepcopy(item)
+                for key, item in value.items()
+            }
+
+        def reseal_slice(value: dict[str, Any]) -> None:
+            sliced = value["diagnostic_slice_analysis"]
+            unsigned = deepcopy(sliced)
+            unsigned.pop("self_sha256")
+            sliced["self_sha256"] = pipeline._canonical_digest(unsigned)
+            self._reseal_packet(value, diagnostic_slice=True)
 
         packet, _diagnostic, _ami = self._build_packet()
         mutations = (
@@ -19506,7 +26215,163 @@ class Task10PacketV3Tests(unittest.TestCase):
                 ):
                     pipeline.validate_non_lockbox_review_packet(mutated)
 
-    def test_packet_v3_rejects_private_probability_malformed_and_extra_data(
+        packet_type_mutations: list[tuple[str, dict[str, Any]]] = []
+        mutated = replace_key(packet, "schema_id")
+        self._reseal_packet(mutated)
+        packet_type_mutations.append(("packet root key subclass", mutated))
+        mutated = deepcopy(packet)
+        mutated["schema_id"] = StrSubclass(mutated["schema_id"])
+        self._reseal_packet(mutated)
+        packet_type_mutations.append(("packet schema subclass", mutated))
+        for digest_field in (
+            "configuration_sha256",
+            "split_manifest_sha256",
+            "tracked_public_authority_commitment_sha256",
+            "diagnostic_aggregate_sha256",
+            "diagnostic_slice_analysis_sha256",
+            "ami_aggregate_sha256",
+            "artifact_cache_commitments_sha256",
+            "review_sha256",
+        ):
+            mutated = deepcopy(packet)
+            if digest_field != "review_sha256":
+                mutated[digest_field] = StrSubclass(mutated[digest_field])
+                self._reseal_packet(mutated)
+            else:
+                mutated[digest_field] = StrSubclass(mutated[digest_field])
+            packet_type_mutations.append((
+                f"packet {digest_field} subclass",
+                mutated,
+            ))
+        mutated = deepcopy(packet)
+        mutated["lockbox_access"] = replace_key(
+            mutated["lockbox_access"],
+            "open_count",
+        )
+        self._reseal_packet(mutated)
+        packet_type_mutations.append(("lockbox key subclass", mutated))
+        mutated = deepcopy(packet)
+        mutated["artifact_cache_commitments"] = replace_key(
+            mutated["artifact_cache_commitments"],
+            "training_discovery",
+        )
+        self._reseal_packet(mutated, cache_commitments=True)
+        packet_type_mutations.append((
+            "cache commitment key subclass",
+            mutated,
+        ))
+        mutated = deepcopy(packet)
+        mutated["artifact_cache_commitments"]["training_discovery"] = (
+            StrSubclass(
+                mutated["artifact_cache_commitments"]["training_discovery"]
+            )
+        )
+        self._reseal_packet(mutated, cache_commitments=True)
+        packet_type_mutations.append((
+            "cache commitment digest subclass",
+            mutated,
+        ))
+        for name, mutated in packet_type_mutations:
+            with self.subTest(packet_type_drift=name):
+                with self.assertRaises(
+                    pipeline.PublicMaterialPrerequisiteError
+                ):
+                    pipeline.validate_non_lockbox_review_packet(mutated)
+                self._assert_independent_rejects(mutated)
+
+        slice_type_mutations: list[tuple[str, dict[str, Any]]] = []
+        mutated = deepcopy(packet)
+        mutated["diagnostic_slice_analysis"] = replace_key(
+            mutated["diagnostic_slice_analysis"],
+            "schema_id",
+        )
+        reseal_slice(mutated)
+        slice_type_mutations.append(("slice root key subclass", mutated))
+        mutated = deepcopy(packet)
+        mutated["diagnostic_slice_analysis"]["schema_id"] = StrSubclass(
+            mutated["diagnostic_slice_analysis"]["schema_id"]
+        )
+        reseal_slice(mutated)
+        slice_type_mutations.append(("slice schema subclass", mutated))
+        mutated = deepcopy(packet)
+        mutated["diagnostic_slice_analysis"]["partition_role"] = StrSubclass(
+            mutated["diagnostic_slice_analysis"]["partition_role"]
+        )
+        reseal_slice(mutated)
+        slice_type_mutations.append(("slice role subclass", mutated))
+        mutated = deepcopy(packet)
+        mutated["diagnostic_slice_analysis"]["class_order"][0] = StrSubclass(
+            mutated["diagnostic_slice_analysis"]["class_order"][0]
+        )
+        reseal_slice(mutated)
+        slice_type_mutations.append(("slice class item subclass", mutated))
+        mutated = deepcopy(packet)
+        slices = mutated["diagnostic_slice_analysis"]["slices"]
+        first_slice = next(iter(slices))
+        mutated["diagnostic_slice_analysis"]["slices"] = replace_key(
+            slices,
+            first_slice,
+        )
+        reseal_slice(mutated)
+        slice_type_mutations.append(("slice name subclass", mutated))
+        mutated = deepcopy(packet)
+        slices = mutated["diagnostic_slice_analysis"]["slices"]
+        first_slice = next(iter(slices))
+        slices[first_slice] = replace_key(
+            slices[first_slice],
+            "case_count",
+        )
+        reseal_slice(mutated)
+        slice_type_mutations.append(("slice cell key subclass", mutated))
+        mutated = deepcopy(packet)
+        slices = mutated["diagnostic_slice_analysis"]["slices"]
+        scored_name = next(
+            name
+            for name, cell in slices.items()
+            if cell["suppressed"] is False
+        )
+        scores = slices[scored_name]["model_macro_f1"]
+        score_name = next(iter(scores))
+        slices[scored_name]["model_macro_f1"] = replace_key(
+            scores,
+            score_name,
+        )
+        reseal_slice(mutated)
+        slice_type_mutations.append(("slice model key subclass", mutated))
+        mutated = deepcopy(packet)
+        slices = mutated["diagnostic_slice_analysis"]["slices"]
+        scored_name = next(
+            name
+            for name, cell in slices.items()
+            if cell["suppressed"] is False
+        )
+        lifts = slices[scored_name]["paired_macro_f1_lift"]
+        lift_name = next(iter(lifts))
+        slices[scored_name]["paired_macro_f1_lift"] = replace_key(
+            lifts,
+            lift_name,
+        )
+        reseal_slice(mutated)
+        slice_type_mutations.append(("slice lift key subclass", mutated))
+        mutated = deepcopy(packet)
+        slices = mutated["diagnostic_slice_analysis"]["slices"]
+        first_slice = next(iter(slices))
+        slices[first_slice]["contributor_row_commitment_sha256"] = (
+            StrSubclass(
+                slices[first_slice]["contributor_row_commitment_sha256"]
+            )
+        )
+        reseal_slice(mutated)
+        slice_type_mutations.append(("slice digest subclass", mutated))
+        for name, mutated in slice_type_mutations:
+            with self.subTest(slice_type_drift=name):
+                with self.assertRaises(
+                    pipeline.PublicMaterialPrerequisiteError
+                ):
+                    pipeline.validate_non_lockbox_review_packet(mutated)
+                self._assert_independent_rejects(mutated)
+
+    def test_packet_v4_rejects_private_probability_malformed_and_extra_data(
         self,
     ) -> None:
         from scripts import emotion_state_phase_b_public_pipeline as pipeline
@@ -19526,6 +26391,7 @@ class Task10PacketV3Tests(unittest.TestCase):
                     pipeline.PublicMaterialPrerequisiteError
                 ):
                     pipeline.validate_non_lockbox_review_packet(mutated)
+                self._assert_independent_rejects(mutated)
 
         non_finite = deepcopy(ami)
         non_finite["partitions"]["scenario_only"]["metric_families"]["timing"][
@@ -19534,10 +26400,15 @@ class Task10PacketV3Tests(unittest.TestCase):
         with self.assertRaises(pipeline.PublicMaterialPrerequisiteError):
             pipeline.build_non_lockbox_review_packet(
                 diagnostic_aggregate=diagnostic,
+                diagnostic_slice_analysis=self._diagnostic_slice_analysis(),
                 ami_aggregate=non_finite,
+                artifact_cache_commitments=deepcopy(self.CACHE_COMMITMENTS),
                 split_manifest_sha256=diagnostic["provenance"][
                     "split_manifest_sha256"
                 ],
+                tracked_public_authority_commitment_sha256=(
+                    self.TRACKED_PUBLIC_AUTHORITY_SHA256
+                ),
             )
         for malformed in ([], {"unexpected": "field"}):
             with self.subTest(malformed=type(malformed).__name__):
@@ -19545,21 +26416,54 @@ class Task10PacketV3Tests(unittest.TestCase):
                     pipeline.PublicMaterialPrerequisiteError
                 ):
                     pipeline.validate_non_lockbox_review_packet(malformed)
+                self._assert_independent_rejects(malformed)
         mutated = deepcopy(packet)
         mutated["unexpected"] = None
         self._reseal_packet(mutated)
         with self.assertRaises(pipeline.PublicMaterialPrerequisiteError):
             pipeline.validate_non_lockbox_review_packet(mutated)
+        self._assert_independent_rejects(mutated)
 
-    def test_packet_v3_rejects_aggregate_and_review_commitment_drift(
+    def test_packet_v4_rejects_aggregate_slice_cache_and_review_commitment_drift(
         self,
     ) -> None:
         from scripts import emotion_state_phase_b_public_pipeline as pipeline
 
+        def reseal_artifact(payload: dict[str, Any]) -> None:
+            payload.pop("self_sha256", None)
+            payload["self_sha256"] = pipeline._canonical_digest(payload)
+
+        def artifact_mint(payload: dict[str, Any]) -> str:
+            return pipeline._canonical_digest(payload)
+
+        def reseal_diagnostic_packet(payload: dict[str, Any]) -> None:
+            diagnostic = payload["diagnostic_aggregate"]
+            sliced = payload["diagnostic_slice_analysis"]
+            reseal_artifact(diagnostic)
+            sliced["probability_evidence_mint_sha256"] = diagnostic[
+                "probability_evidence_mint_sha256"
+            ]
+            sliced["evaluation_evidence_mint_sha256"] = pipeline._canonical_digest(
+                diagnostic
+            )
+            reseal_artifact(sliced)
+            self._reseal_packet(
+                payload,
+                diagnostic=True,
+                diagnostic_slice=True,
+            )
+
+        def assert_both_reject(payload: dict[str, Any]) -> None:
+            with self.assertRaises(pipeline.PublicMaterialPrerequisiteError):
+                pipeline.validate_non_lockbox_review_packet(payload)
+            self._assert_independent_rejects(payload)
+
         packet, _diagnostic, _ami = self._build_packet()
         for field in (
             "diagnostic_aggregate_sha256",
+            "diagnostic_slice_analysis_sha256",
             "ami_aggregate_sha256",
+            "artifact_cache_commitments_sha256",
             "review_sha256",
         ):
             with self.subTest(field=field):
@@ -19571,23 +26475,148 @@ class Task10PacketV3Tests(unittest.TestCase):
                     pipeline.PublicMaterialPrerequisiteError
                 ):
                     pipeline.validate_non_lockbox_review_packet(mutated)
+                self._assert_independent_rejects(mutated)
 
-    def test_packet_v3_builder_and_validator_are_deterministic_and_alias_safe(
+        detached_probability = deepcopy(packet)
+        detached_probability["diagnostic_aggregate"][
+            "probability_evidence_mint_sha256"
+        ] = "F" * 64
+        reseal_diagnostic_packet(detached_probability)
+        with self.subTest(detached_lineage="evaluation probability mint"):
+            assert_both_reject(detached_probability)
+
+        detached_calibration = deepcopy(packet)
+        detached_calibration["diagnostic_aggregate"][
+            "calibration_evidence_mint_sha256"
+        ] = "F" * 64
+        reseal_diagnostic_packet(detached_calibration)
+        with self.subTest(detached_lineage="evaluation calibration mint"):
+            assert_both_reject(detached_calibration)
+
+        detached_partition = deepcopy(packet)
+        diagnostic = detached_partition["diagnostic_aggregate"]
+        probability = diagnostic["probability_evidence"]
+        probability["partition_evidence_mint_sha256"] = "F" * 64
+        reseal_artifact(probability)
+        diagnostic["probability_evidence_mint_sha256"] = artifact_mint(
+            probability
+        )
+        reseal_diagnostic_packet(detached_partition)
+        with self.subTest(detached_lineage="partition evidence mint"):
+            assert_both_reject(detached_partition)
+
+        detached_training = deepcopy(packet)
+        diagnostic = detached_training["diagnostic_aggregate"]
+        direct_probability = diagnostic["probability_evidence"]
+        calibration = diagnostic["calibration_evidence"]
+        calibration_probability = calibration["probability_evidence"]
+        for probability in (direct_probability, calibration_probability):
+            probability["training_evidence_mint_sha256"] = "F" * 64
+            reseal_artifact(probability)
+        calibration["probability_evidence_mint_sha256"] = artifact_mint(
+            calibration_probability
+        )
+        reseal_artifact(calibration)
+        diagnostic["probability_evidence_mint_sha256"] = artifact_mint(
+            direct_probability
+        )
+        diagnostic["calibration_evidence_mint_sha256"] = artifact_mint(
+            calibration
+        )
+        reseal_diagnostic_packet(detached_training)
+        with self.subTest(detached_lineage="training evidence mint"):
+            assert_both_reject(detached_training)
+
+        resealed_slice = deepcopy(packet)
+        first_slice = next(iter(resealed_slice["diagnostic_slice_analysis"]["slices"]))
+        resealed_slice["diagnostic_slice_analysis"]["slices"][first_slice][
+            "case_count"
+        ] += 1
+        slice_without_self = deepcopy(resealed_slice["diagnostic_slice_analysis"])
+        slice_without_self.pop("self_sha256")
+        resealed_slice["diagnostic_slice_analysis"]["self_sha256"] = (
+            pipeline._canonical_digest(slice_without_self)
+        )
+        self._reseal_packet(resealed_slice, diagnostic_slice=True)
+        with self.assertRaises(pipeline.PublicMaterialPrerequisiteError):
+            pipeline.validate_non_lockbox_review_packet(resealed_slice)
+        self._assert_independent_rejects(resealed_slice)
+
+        resealed_cache = deepcopy(packet)
+        resealed_cache["artifact_cache_commitments"]["training_discovery"] = (
+            "F" * 64
+        )
+        self._reseal_packet(resealed_cache, cache_commitments=True)
+        validated_cache = pipeline.validate_non_lockbox_review_packet(
+            resealed_cache
+        )
+        from scripts.validate_emotion_state_002_phase_b import (
+            validate_non_lockbox_packet,
+        )
+        independently_validated_cache = validate_non_lockbox_packet(
+            resealed_cache
+        )
+        self.assertNotEqual(
+            validated_cache["artifact_cache_commitments"],
+            self.CACHE_COMMITMENTS,
+        )
+        self.assertEqual(independently_validated_cache, validated_cache)
+
+        reordered_cache = deepcopy(packet)
+        reordered_cache["artifact_cache_commitments"] = {
+            "calibration": "B" * 64,
+            "training_discovery": "A" * 64,
+            "balanced_diagnostic": "C" * 64,
+            "ami_evidence": "D" * 64,
+        }
+        self._reseal_packet(reordered_cache, cache_commitments=True)
+        with self.assertRaises(pipeline.PublicMaterialPrerequisiteError):
+            pipeline.validate_non_lockbox_review_packet(reordered_cache)
+        self._assert_independent_rejects(reordered_cache)
+
+        resealed_source = deepcopy(packet)
+        resealed_source["tracked_public_authority_commitment_sha256"] = "F" * 64
+        self._reseal_packet(resealed_source)
+        validated_source = pipeline.validate_non_lockbox_review_packet(
+            resealed_source
+        )
+        independently_validated_source = validate_non_lockbox_packet(
+            resealed_source
+        )
+        self.assertNotEqual(
+            validated_source["tracked_public_authority_commitment_sha256"],
+            self.TRACKED_PUBLIC_AUTHORITY_SHA256,
+        )
+        self.assertEqual(independently_validated_source, validated_source)
+
+    def test_packet_v4_builder_and_validator_are_deterministic_and_alias_safe(
         self,
     ) -> None:
         from scripts import emotion_state_phase_b_public_pipeline as pipeline
 
         diagnostic, ami = self._aggregates()
+        diagnostic_slice_analysis = self._diagnostic_slice_analysis()
+        cache_commitments = deepcopy(self.CACHE_COMMITMENTS)
         split_identity = diagnostic["provenance"]["split_manifest_sha256"]
         first = pipeline.build_non_lockbox_review_packet(
             diagnostic_aggregate=diagnostic,
+            diagnostic_slice_analysis=diagnostic_slice_analysis,
             ami_aggregate=ami,
+            artifact_cache_commitments=cache_commitments,
             split_manifest_sha256=split_identity,
+            tracked_public_authority_commitment_sha256=(
+                self.TRACKED_PUBLIC_AUTHORITY_SHA256
+            ),
         )
         second = pipeline.build_non_lockbox_review_packet(
             diagnostic_aggregate=diagnostic,
+            diagnostic_slice_analysis=diagnostic_slice_analysis,
             ami_aggregate=ami,
+            artifact_cache_commitments=cache_commitments,
             split_manifest_sha256=split_identity,
+            tracked_public_authority_commitment_sha256=(
+                self.TRACKED_PUBLIC_AUTHORITY_SHA256
+            ),
         )
         self.assertEqual(first, second)
         self.assertEqual(
@@ -19596,16 +26625,29 @@ class Task10PacketV3Tests(unittest.TestCase):
         )
 
         diagnostic["final_decision_eligible"] = True
+        diagnostic_slice_analysis["schema_id"] = "mutated-after-build"
         ami["source_quality"]["unlabeled_dialogue_act_record_count"] = 0
+        cache_commitments["training_discovery"] = "F" * 64
         self.assertIs(first["diagnostic_aggregate"]["final_decision_eligible"], False)
+        self.assertNotEqual(
+            first["diagnostic_slice_analysis"]["schema_id"],
+            "mutated-after-build",
+        )
+        self.assertEqual(
+            first["artifact_cache_commitments"]["training_discovery"],
+            "A" * 64,
+        )
         self.assertEqual(
             first["ami_aggregate"]["source_quality"][
                 "unlabeled_dialogue_act_record_count"
             ],
             28,
         )
-
         validated = pipeline.validate_non_lockbox_review_packet(first)
+        from scripts.validate_emotion_state_002_phase_b import (
+            validate_non_lockbox_packet,
+        )
+        independently_validated = validate_non_lockbox_packet(first)
         first["ami_aggregate"]["source_quality"][
             "unlabeled_dialogue_act_record_count"
         ] = 0
@@ -19615,8 +26657,14 @@ class Task10PacketV3Tests(unittest.TestCase):
             ],
             28,
         )
+        self.assertEqual(
+            independently_validated["ami_aggregate"]["source_quality"][
+                "unlabeled_dialogue_act_record_count"
+            ],
+            28,
+        )
 
-    def test_packet_v3_preserves_v1_lockbox_and_injected_packet_contracts(
+    def test_packet_v4_preserves_v1_lockbox_and_rejects_injected_summary_contract(
         self,
     ) -> None:
         from scripts.validate_emotion_state_002_phase_b import (
@@ -19640,11 +26688,27 @@ class Task10PacketV3Tests(unittest.TestCase):
             lockbox_input,
         )
         injected = expected_non_lockbox_packet("A" * 64)
-        self.assertEqual(validate_non_lockbox_packet(injected), injected)
+        with self.assertRaises((TypeError, ValueError)):
+            validate_non_lockbox_packet(injected)
 
 
 class RunnerStateTests(unittest.TestCase):
     DIGESTS = tuple(character * 64 for character in "ABCDEF0123456789")
+    RUNNER_PATH_FIELDS = (
+        "project_root",
+        "input_root",
+        "state_root",
+        "canonical_root",
+        "config_path",
+        "environment_lock_path",
+        "feature_schema_path",
+        "split_schema_path",
+        "split_manifest_path",
+        "input_ledger_path",
+        "non_lockbox_packet_path",
+        "lockbox_result_path",
+        "public_material_root",
+    )
 
     @classmethod
     def setUpClass(cls) -> None:
@@ -19723,12 +26787,18 @@ class RunnerStateTests(unittest.TestCase):
             },
             "official_order": list(official_order),
         }
+        packet, _diagnostic, _ami_aggregate = Task10PacketV4Tests._build_packet()
+        if (
+            packet["split_manifest_sha256"]
+            != cls.SPLIT_MANIFEST["split_manifest_sha256"]
+        ):
+            raise AssertionError("RunnerState v4 packet split identity changed")
+        cls.NON_LOCKBOX_PACKET = packet
 
     def setUp(self) -> None:
         from scripts import run_emotion_state_002_phase_b as runner
         from scripts.validate_emotion_state_002_phase_b import (
             _canonical_digest,
-            expected_non_lockbox_packet,
             expected_phase_b_input_ledger,
         )
 
@@ -19737,21 +26807,43 @@ class RunnerStateTests(unittest.TestCase):
         self.addCleanup(self.temporary_directory.cleanup)
         self.root = Path(self.temporary_directory.name).resolve()
         self.input_root = self.root / "public-inputs"
+        self.public_root = self.root / "public-material"
         self.state_root = self.root / "ignored-state"
         self.canonical_root = self.root / "canonical"
         self.non_lockbox_root = self.state_root / "non-lockbox"
         self.lockbox_root = self.state_root / "lockbox"
         self.input_root.mkdir(parents=True)
+        self.public_root.mkdir(parents=True)
         self.non_lockbox_root.mkdir(parents=True)
         self.lockbox_root.mkdir(parents=True)
         self.canonical_root.mkdir(parents=True)
+
+        _ProductionPreflightSyntheticFixture.initialize()
+        evidence_root = (
+            self.root / "research" / "sources" / "emotion_state" / "datasets"
+        )
+        evidence_root.mkdir(parents=True)
+        for name, content in _ProductionPreflightSyntheticFixture.evidence.items():
+            (evidence_root / name).write_bytes(content)
+        crema_repository = (
+            self.public_root / "crema-d-v1.0" / "repository"
+        )
+        (crema_repository / "processedResults").mkdir(parents=True)
+        (crema_repository / "finishedResponses.csv").write_bytes(
+            _ProductionPreflightSyntheticFixture.finished_responses
+        )
+        (crema_repository / "processedResults" / "summaryTable.csv").write_bytes(
+            _ProductionPreflightSyntheticFixture.summary_table
+        )
 
         self.config_path = self.input_root / "config.json"
         self.environment_lock_path = self.input_root / "requirements.lock"
         self.feature_schema_path = self.input_root / "feature.schema.json"
         self.split_schema_path = self.input_root / "split.schema.json"
-        self.split_manifest_path = self.input_root / "split-manifest.json"
-        self.input_ledger_path = self.input_root / "input-ledger.json"
+        self.split_manifest_path = (
+            self.state_root / "split/validated-split-manifest.json"
+        )
+        self.input_ledger_path = self.state_root / "inputs/input-ledger.json"
         self.non_lockbox_packet_path = (
             self.non_lockbox_root / "non-lockbox-packet.json"
         )
@@ -19760,10 +26852,8 @@ class RunnerStateTests(unittest.TestCase):
         shutil.copy2(ENVIRONMENT_LOCK, self.environment_lock_path)
         shutil.copy2(FEATURE_SCHEMA, self.feature_schema_path)
         shutil.copy2(SPLIT_SCHEMA, self.split_schema_path)
-        self._write_json(self.split_manifest_path, self.SPLIT_MANIFEST)
-
         self.input_ledger = expected_phase_b_input_ledger()
-        self.non_lockbox_packet = expected_non_lockbox_packet(self.DIGESTS[8])
+        self.non_lockbox_packet = deepcopy(self.NON_LOCKBOX_PACKET)
         self.lockbox_result = {
             "schema_version": 1,
             "decision_evidence": deepcopy(self.DECISION_EVIDENCE),
@@ -19777,8 +26867,6 @@ class RunnerStateTests(unittest.TestCase):
             "schema_version": 1,
             "ami": deepcopy(self.lockbox_result["ami"]),
         }
-        self._write_json(self.input_ledger_path, self.input_ledger)
-        self._write_json(self.non_lockbox_packet_path, self.non_lockbox_packet)
         self._write_json(self.lockbox_result_path, self.lockbox_ami_input)
         self.paths = self._paths()
 
@@ -19793,6 +26881,21 @@ class RunnerStateTests(unittest.TestCase):
         )
         self.environment_patcher.start()
         self.addCleanup(self.environment_patcher.stop)
+        self.synthetic_preflight_stack = ExitStack()
+        self.addCleanup(self.synthetic_preflight_stack.close)
+        self.synthetic_preflight_stack.enter_context(
+            _ProductionPreflightSyntheticFixture.patches()
+        )
+        self.synthetic_preflight_stack.enter_context(patch.object(
+            self.runner,
+            "validate_tracked_public_evidence",
+            side_effect=_ProductionPreflightSyntheticFixture.validate_authority,
+        ))
+        self.synthetic_preflight_stack.enter_context(patch.object(
+            self.runner,
+            "validate_phase_b_input_ledger",
+            side_effect=_ProductionPreflightSyntheticFixture.validate_ledger,
+        ))
 
     def _paths(self, **changes: Path) -> Any:
         values = {
@@ -19808,6 +26911,7 @@ class RunnerStateTests(unittest.TestCase):
             "input_ledger_path": self.input_ledger_path,
             "non_lockbox_packet_path": self.non_lockbox_packet_path,
             "lockbox_result_path": self.lockbox_result_path,
+            "public_material_root": self.public_root,
         }
         values.update(changes)
         return self.runner.RunnerPaths.for_testing(**values)
@@ -19826,6 +26930,55 @@ class RunnerStateTests(unittest.TestCase):
                 )
                 + "\n"
             ).encode("utf-8")
+        )
+
+    def _write_non_lockbox_packet(
+        self,
+        path: Path,
+        payload: dict[str, Any],
+    ) -> None:
+        path.parent.mkdir(parents=True, exist_ok=True)
+        content = self.runner._non_lockbox_artifact_json_bytes(payload)
+        path.write_bytes(content)
+        readback = json.loads(content.decode("utf-8"))
+        self.assertEqual(
+            tuple(readback["artifact_cache_commitments"]),
+            tuple(payload["artifact_cache_commitments"]),
+        )
+
+    def _install_intentionally_incomplete_lifecycle_artifacts(self) -> None:
+        """Install only synthetic lifecycle anchors, never a Cut 4 checkpoint."""
+        generated = (
+            self.input_ledger_path,
+            self.split_manifest_path,
+            self.non_lockbox_packet_path,
+        )
+        preflight_caches = tuple(
+            self.paths.partition_authority_cache_path(role)
+            for role in CUT4_NONFINAL_ROLES
+        )
+        other_non_lockbox_artifacts = (
+            *(
+                self.paths.non_lockbox_feature_cache_path(role)
+                for role in CUT4_NONFINAL_ROLES
+            ),
+            self.paths.non_lockbox_ami_evidence_path,
+        )
+        self.assertTrue(all(not path.exists() for path in generated))
+        self.assertTrue(all(not path.exists() for path in preflight_caches))
+        self.assertTrue(
+            all(not path.exists() for path in other_non_lockbox_artifacts)
+        )
+        self._write_json(self.input_ledger_path, self.input_ledger)
+        self._write_json(self.split_manifest_path, self.SPLIT_MANIFEST)
+        self._write_non_lockbox_packet(
+            self.non_lockbox_packet_path,
+            self.non_lockbox_packet,
+        )
+        self.assertTrue(all(path.is_file() for path in generated))
+        self.assertTrue(all(not path.exists() for path in preflight_caches))
+        self.assertTrue(
+            all(not path.exists() for path in other_non_lockbox_artifacts)
         )
 
     def _state_bytes(self) -> bytes | None:
@@ -19894,22 +27047,9 @@ class RunnerStateTests(unittest.TestCase):
         mode: str,
         marker: Path,
     ) -> subprocess.Popen[str]:
-        path_fields = (
-            "project_root",
-            "input_root",
-            "state_root",
-            "canonical_root",
-            "config_path",
-            "environment_lock_path",
-            "feature_schema_path",
-            "split_schema_path",
-            "split_manifest_path",
-            "input_ledger_path",
-            "non_lockbox_packet_path",
-            "lockbox_result_path",
-        )
         payload = {
-            field: str(getattr(self.paths, field)) for field in path_fields
+            field: str(getattr(self.paths, field))
+            for field in self.RUNNER_PATH_FIELDS
         }
         code = f"""
 import os
@@ -19981,20 +27121,7 @@ except runner.RunnerError:
     def _clone_paths(self, clone_root: Path) -> Any:
         shutil.copytree(self.root, clone_root, dirs_exist_ok=True)
         values = {}
-        for field in (
-            "project_root",
-            "input_root",
-            "state_root",
-            "canonical_root",
-            "config_path",
-            "environment_lock_path",
-            "feature_schema_path",
-            "split_schema_path",
-            "split_manifest_path",
-            "input_ledger_path",
-            "non_lockbox_packet_path",
-            "lockbox_result_path",
-        ):
+        for field in self.RUNNER_PATH_FIELDS:
             original = Path(getattr(self.paths, field))
             values[field] = (
                 clone_root
@@ -20011,20 +27138,7 @@ except runner.RunnerError:
     ) -> subprocess.CompletedProcess[str]:
         values = {
             field: str(getattr(paths, field))
-            for field in (
-                "project_root",
-                "input_root",
-                "state_root",
-                "canonical_root",
-                "config_path",
-                "environment_lock_path",
-                "feature_schema_path",
-                "split_schema_path",
-                "split_manifest_path",
-                "input_ledger_path",
-                "non_lockbox_packet_path",
-                "lockbox_result_path",
-            )
+            for field in self.RUNNER_PATH_FIELDS
         }
         code = f"""
 import os
@@ -20110,20 +27224,7 @@ runner.stage_candidate(paths, "crash.json")
     ) -> subprocess.CompletedProcess[str]:
         values = {
             field: str(getattr(paths, field))
-            for field in (
-                "project_root",
-                "input_root",
-                "state_root",
-                "canonical_root",
-                "config_path",
-                "environment_lock_path",
-                "feature_schema_path",
-                "split_schema_path",
-                "split_manifest_path",
-                "input_ledger_path",
-                "non_lockbox_packet_path",
-                "lockbox_result_path",
-            )
+            for field in self.RUNNER_PATH_FIELDS
         }
         code = f"""
 import os
@@ -20195,9 +27296,69 @@ runner.accept_receipt(paths, paths.receipt_path("accept.json"))
             check=False,
         )
 
+    def _seed_intentionally_incomplete_non_lockbox_state_for_lifecycle_testing(
+        self,
+    ) -> dict[str, Any]:
+        """Seed lifecycle state without claiming a complete Cut 4 checkpoint."""
+        self._install_intentionally_incomplete_lifecycle_artifacts()
+        _configuration, _split, _ledger, digests = (
+            self.runner._validate_bound_preflight_inputs(self.paths)
+        )
+        preflight_state = self.runner._initial_state()
+        preflight_state.update(
+            {
+                "phase": "preflight_complete",
+                **digests,
+                "non_lockbox_packet_sha256": self.runner.UNSET_DIGEST,
+                "lockbox_result_sha256": self.runner.UNSET_DIGEST,
+                "lockbox_decision_evidence_sha256": self.runner.UNSET_DIGEST,
+                "lockbox_decision_evidence_mint_sha256": (
+                    self.runner.UNSET_DIGEST
+                ),
+            }
+        )
+        preflight_state = self.runner._validate_state(preflight_state)
+        packet_sha256 = hashlib.sha256(
+            self.non_lockbox_packet_path.read_bytes()
+        ).hexdigest().upper()
+        with self.runner.material_pipeline_lock(
+            self.paths
+        ) as material_authority:
+            with self.runner._admit_recovered_state(
+                self.paths,
+                material_authority=material_authority,
+            ) as admitted_preflight:
+                with self.runner._commit_preflight_state_durably(
+                    self.paths,
+                    preflight_state,
+                    material_authority=material_authority,
+                    admitted_state_authority=admitted_preflight,
+                ) as committed_preflight:
+                    with self.runner._admit_non_lockbox_state(
+                        self.paths,
+                        material_authority=material_authority,
+                        committed_state_authority=committed_preflight,
+                    ) as admitted_state:
+                        proposed = (
+                            self.runner._proposed_non_lockbox_complete_state(
+                                admitted_state,
+                                packet_file_sha256=packet_sha256,
+                            )
+                        )
+                        with self.runner._commit_non_lockbox_state_durably(
+                            self.paths,
+                            proposed,
+                            material_authority=material_authority,
+                            admitted_state_authority=admitted_state,
+                        ) as committed:
+                            self.assertEqual(
+                                committed.state["non_lockbox_packet_sha256"],
+                                packet_sha256,
+                            )
+                            return dict(committed.state)
+
     def _advance_to_lockbox(self) -> None:
-        self.runner.run_preflight(self.paths)
-        self.runner.run_non_lockbox(self.paths)
+        self._seed_intentionally_incomplete_non_lockbox_state_for_lifecycle_testing()
         self.runner._run_lockbox_with_private_evidence_for_testing(
             self.paths,
             self.DECISION_ARTIFACT,
@@ -20215,7 +27376,10 @@ runner.accept_receipt(paths, paths.receipt_path("accept.json"))
     ) -> None:
         self.runner.initialize_state(self.paths)
         before = self._state_bytes()
-        with self.assertRaisesRegex(self.runner.RunnerError, "transition"):
+        with self.assertRaisesRegex(
+            self.runner.RunnerError,
+            "committed preflight checkpoint",
+        ):
             self.runner.run_non_lockbox(self.paths)
         self.assertEqual(self._state_bytes(), before)
 
@@ -20242,88 +27406,97 @@ runner.accept_receipt(paths, paths.receipt_path("accept.json"))
 
         before = self._state_bytes()
         self.config_path.write_bytes(self.config_path.read_bytes() + b" ")
-        with self.assertRaisesRegex(self.runner.RunnerError, "configuration"):
-            self.runner.run_non_lockbox(self.paths)
+        with self.assertRaisesRegex(
+            self.runner.RunnerError,
+            "configuration tracked bytes do not match the frozen identity",
+        ):
+            self.runner._revalidate_bound_preflight(self.paths, state)
         self.assertEqual(self._state_bytes(), before)
 
         shutil.copy2(CONFIG, self.config_path)
         self.environment_lock_path.write_bytes(
             self.environment_lock_path.read_bytes() + b" "
         )
-        with self.assertRaisesRegex(self.runner.RunnerError, "environment"):
-            self.runner.run_non_lockbox(self.paths)
+        with self.assertRaisesRegex(
+            self.runner.RunnerError,
+            "environment lock tracked bytes do not match the frozen identity",
+        ):
+            self.runner._revalidate_bound_preflight(self.paths, state)
         self.assertEqual(self._state_bytes(), before)
 
     def test_state_bound_manifest_reader_returns_payload_identity_not_file_digest(
         self,
     ) -> None:
         state = self.runner.run_preflight(self.paths)
-        semantic_identity = self.SPLIT_MANIFEST["split_manifest_sha256"]
+        semantic_identity = json.loads(
+            self.split_manifest_path.read_text(encoding="utf-8")
+        )["split_manifest_sha256"]
         self.assertNotEqual(
             semantic_identity,
             state["split_manifest_sha256"],
             "state must separately bind the exact split-manifest file bytes",
         )
-        self.assertEqual(
-            self.runner._validated_split_manifest_identity(
-                self.paths,
-                state,
-            ),
-            semantic_identity,
-        )
+        self.assertTrue(self.split_manifest_path.is_relative_to(self.state_root))
+        self.assertFalse(self.split_manifest_path.is_relative_to(self.input_root))
+        with patch.object(
+            self.runner,
+            "_validate_input_path",
+            side_effect=AssertionError("input-root fallback is forbidden"),
+        ):
+            self.assertEqual(
+                self.runner._validated_split_manifest_identity(
+                    self.paths,
+                    state,
+                ),
+                semantic_identity,
+            )
 
     def test_production_packet_readback_uses_state_bound_manifest_payload_identity(
         self,
     ) -> None:
         from scripts import emotion_state_phase_b_public_pipeline as pipeline
 
-        state = self.runner.run_preflight(self.paths)
-        diagnostic, ami = (
-            Task10ProductionPipelineTests._non_lockbox_review_aggregates()
+        state = (
+            self._seed_intentionally_incomplete_non_lockbox_state_for_lifecycle_testing()
         )
-        semantic_identity = self.SPLIT_MANIFEST["split_manifest_sha256"]
-        packet = pipeline.build_non_lockbox_review_packet(
-            diagnostic_aggregate=diagnostic,
-            ami_aggregate=ami,
-            split_manifest_sha256=semantic_identity,
-        )
-        self._write_json(self.non_lockbox_packet_path, packet)
-        production_readback_paths = replace(
-            self.paths,
-            authority="production",
-        )
+        packet = deepcopy(self.non_lockbox_packet)
         validated, _digest = self.runner._validated_packet(
-            production_readback_paths,
+            self.paths,
             state,
-            require_bound=False,
+            require_bound=True,
         )
         self.assertEqual(validated, packet)
 
+        semantic_identity = packet["split_manifest_sha256"]
         conflicting_identity = (
             "A" * 64 if semantic_identity != "A" * 64 else "B" * 64
         )
-        conflicting_diagnostic = (
-            Task10ProductionPipelineTests._rewrite_and_reseal_identity(
-                diagnostic,
-                field="split_manifest_sha256",
-                replacement=conflicting_identity,
-            )
-        )
-        conflicting_packet = pipeline.build_non_lockbox_review_packet(
-            diagnostic_aggregate=conflicting_diagnostic,
-            ami_aggregate=ami,
-            split_manifest_sha256=conflicting_identity,
-        )
-        self._write_json(self.non_lockbox_packet_path, conflicting_packet)
         with self.assertRaisesRegex(
             self.runner.RunnerError,
             "split manifest identity does not match preflight state",
         ):
-            self.runner._validated_packet(
-                production_readback_paths,
-                state,
-                require_bound=False,
+            self.runner._validate_non_lockbox_packet_for_authority(
+                self.paths,
+                packet,
+                expected_split_manifest_sha256=conflicting_identity,
             )
+
+        disagreed = deepcopy(packet)
+        disagreed["review_sha256"] = "A" * 64
+        with patch.object(
+            pipeline,
+            "validate_non_lockbox_review_packet",
+            return_value=disagreed,
+        ):
+            with self.assertRaisesRegex(
+                self.runner.RunnerError,
+                "packet validators disagree",
+            ):
+                self.runner._validate_non_lockbox_packet_for_authority(
+                    self.paths,
+                    packet,
+                    expected_split_manifest_sha256=semantic_identity,
+                )
 
     def test_preflight_cannot_promote_preexisting_rehashed_cache_and_manifest(
         self,
@@ -20428,11 +27601,12 @@ runner.accept_receipt(paths, paths.receipt_path("accept.json"))
             self.runner.run_preflight(escaped_paths)
         self.assertFalse(escaped_paths.state_path.exists())
 
-        private_ledger = self.root / "data" / "private" / "input-ledger.json"
-        self._write_json(private_ledger, self.input_ledger)
+        private_config = self.root / "data" / "private" / "config.json"
+        private_config.parent.mkdir(parents=True)
+        shutil.copy2(CONFIG, private_config)
         private_paths = self._paths(
             input_root=self.root,
-            input_ledger_path=private_ledger,
+            config_path=private_config,
         )
         with self.assertRaisesRegex(self.runner.RunnerError, "private"):
             self.runner.run_preflight(private_paths)
@@ -20464,9 +27638,12 @@ runner.accept_receipt(paths, paths.receipt_path("accept.json"))
         self.runner.run_preflight(self.paths)
         before = self._state_bytes()
         stolen = self.lockbox_root / "stolen-packet.json"
-        self._write_json(stolen, self.non_lockbox_packet)
+        self._write_non_lockbox_packet(stolen, self.non_lockbox_packet)
         stolen_paths = self._paths(non_lockbox_packet_path=stolen)
-        with self.assertRaisesRegex(self.runner.RunnerError, "non-lockbox"):
+        with self.assertRaisesRegex(
+            self.runner.RunnerError,
+            "fixed state-root paths",
+        ):
             self.runner.run_non_lockbox(stolen_paths)
         self.assertEqual(self._state_bytes(), before)
 
@@ -20488,14 +27665,17 @@ runner.accept_receipt(paths, paths.receipt_path("accept.json"))
     def test_non_lockbox_model_settings_must_match_frozen_configuration(
         self,
     ) -> None:
-        self.runner.run_preflight(self.paths)
-        mutated = deepcopy(self.non_lockbox_packet)
+        mutated = deepcopy(self.NON_LOCKBOX_PACKET)
         mutated["model_settings"]["C"] = 2.0
-        self._write_json(self.non_lockbox_packet_path, mutated)
-        before = self._state_bytes()
         with self.assertRaisesRegex(self.runner.RunnerError, "model settings"):
-            self.runner.run_non_lockbox(self.paths)
-        self.assertEqual(self._state_bytes(), before)
+            self.runner._validate_non_lockbox_packet_for_authority(
+                self.paths,
+                mutated,
+                expected_split_manifest_sha256=mutated[
+                    "split_manifest_sha256"
+                ],
+            )
+        self.assertFalse(self.paths.state_path.exists())
 
     def test_no_production_operation_callback_can_activate_boundaries(self) -> None:
         self.assertNotIn(
@@ -20505,6 +27685,39 @@ runner.accept_receipt(paths, paths.receipt_path("accept.json"))
         self.assertNotIn(
             "operation",
             inspect.signature(self.runner.run_lockbox).parameters,
+        )
+
+    def test_runner_path_transport_fields_are_exact(self) -> None:
+        derived_fields = tuple(
+            field.name
+            for field in fields(self.runner.RunnerPaths)
+            if field.name != "authority"
+        )
+        self.assertEqual(derived_fields, self.RUNNER_PATH_FIELDS)
+        self.assertEqual(
+            self.RUNNER_PATH_FIELDS,
+            (
+                "project_root",
+                "input_root",
+                "state_root",
+                "canonical_root",
+                "config_path",
+                "environment_lock_path",
+                "feature_schema_path",
+                "split_schema_path",
+                "split_manifest_path",
+                "input_ledger_path",
+                "non_lockbox_packet_path",
+                "lockbox_result_path",
+                "public_material_root",
+            ),
+        )
+        self.assertTrue(
+            all(getattr(self.paths, field) is not None for field in self.RUNNER_PATH_FIELDS)
+        )
+        self.assertEqual(
+            self.runner._resolve_final_lockbox_result_path(self.paths),
+            self.lockbox_result_path,
         )
 
     def test_lockbox_is_one_use_and_exactly_bound(self) -> None:
@@ -20520,6 +27733,39 @@ runner.accept_receipt(paths, paths.receipt_path("accept.json"))
                 self.DECISION_ARTIFACT,
             )
         self.assertEqual(self._state_bytes(), before)
+
+    def test_aggregate_result_keeps_generated_inputs_out_of_input_root_validator(
+        self,
+    ) -> None:
+        self._advance_to_lockbox()
+        original_validator = self.runner._validate_input_path
+        observed: list[Path] = []
+        generated = {self.split_manifest_path, self.input_ledger_path}
+        static = {
+            self.config_path,
+            self.environment_lock_path,
+            self.feature_schema_path,
+            self.split_schema_path,
+        }
+
+        def static_only(paths: Any, path: Path) -> Path:
+            candidate = Path(path)
+            observed.append(candidate)
+            if candidate in generated:
+                raise AssertionError(
+                    "generated state-root input reached input-root validator"
+                )
+            return original_validator(paths, candidate)
+
+        with patch.object(
+            self.runner,
+            "_validate_input_path",
+            side_effect=static_only,
+        ):
+            result = self.runner.build_aggregate_result(self.paths)
+        self.assertEqual(result["schema_version"], 1)
+        self.assertTrue(static.issubset(set(observed)))
+        self.assertTrue(generated.isdisjoint(observed))
 
     def test_result_and_report_are_deterministic_and_bind_every_required_group(
         self,
@@ -21554,8 +28800,7 @@ runner.accept_receipt(paths, paths.receipt_path("accept.json"))
             validate_checkpoint_readback(self.paths)
 
     def test_review_critical_independent_process_lockbox_concurrency(self) -> None:
-        self.runner.run_preflight(self.paths)
-        self.runner.run_non_lockbox(self.paths)
+        self._seed_intentionally_incomplete_non_lockbox_state_for_lifecycle_testing()
         marker = self.root / "lockbox-entries.txt"
         processes = [
             self._lockbox_subprocess("normal", marker),
@@ -21571,8 +28816,7 @@ runner.accept_receipt(paths, paths.receipt_path("accept.json"))
         )
 
     def test_review_critical_lockbox_reentry_cannot_enter_twice(self) -> None:
-        self.runner.run_preflight(self.paths)
-        self.runner.run_non_lockbox(self.paths)
+        self._seed_intentionally_incomplete_non_lockbox_state_for_lifecycle_testing()
         original = self.runner.validate_lockbox_ami_input
         attempted_reentry = False
         logical_entries = 0
@@ -21608,8 +28852,7 @@ runner.accept_receipt(paths, paths.receipt_path("accept.json"))
     def test_review_critical_crash_before_and_after_reservation_fail_closed(
         self,
     ) -> None:
-        self.runner.run_preflight(self.paths)
-        self.runner.run_non_lockbox(self.paths)
+        self._seed_intentionally_incomplete_non_lockbox_state_for_lifecycle_testing()
         marker = self.root / "lockbox-crash-entries.txt"
         before = self._lockbox_subprocess(
             "crash_before_reservation",
@@ -21637,63 +28880,68 @@ runner.accept_receipt(paths, paths.receipt_path("accept.json"))
         )
 
     def test_review_important_anchor_is_revalidated_before_transition(self) -> None:
-        self.runner.run_preflight(self.paths)
+        state = (
+            self._seed_intentionally_incomplete_non_lockbox_state_for_lifecycle_testing()
+        )
         state_before = self._state_bytes()
-        original_validator = self.runner.validate_non_lockbox_packet
-
-        def mutate_anchor(payload: Any) -> Any:
-            validated = original_validator(payload)
-            self.config_path.write_bytes(self.config_path.read_bytes() + b" ")
-            return validated
-
-        with patch.object(
-            self.runner,
-            "validate_non_lockbox_packet",
-            side_effect=mutate_anchor,
-        ):
-            with self.assertRaisesRegex(self.runner.RunnerError, "configuration"):
-                self.runner.run_non_lockbox(self.paths)
-        self.assertEqual(self._state_bytes(), state_before)
+        original = self.non_lockbox_packet_path.read_bytes()
+        mutated = False
+        try:
+            self.non_lockbox_packet_path.write_bytes(original + b" ")
+            mutated = True
+            with self.assertRaisesRegex(
+                self.runner.RunnerError,
+                "non-lockbox packet changed after validation",
+            ):
+                self.runner._validated_packet(
+                    self.paths,
+                    state,
+                    require_bound=True,
+                )
+            self.assertTrue(mutated)
+            self.assertEqual(self._state_bytes(), state_before)
+        finally:
+            self.non_lockbox_packet_path.write_bytes(original)
 
     def test_review_important_every_non_lockbox_anchor_is_revalidated(self) -> None:
+        state = self.runner.run_preflight(self.paths)
+        state_before = self._state_bytes()
         anchors = (
-            self.config_path,
-            self.environment_lock_path,
-            self.feature_schema_path,
-            self.split_schema_path,
-            self.split_manifest_path,
-            self.input_ledger_path,
-            self.non_lockbox_packet_path,
+            (
+                self.config_path,
+                "configuration tracked bytes do not match the frozen identity",
+            ),
+            (
+                self.environment_lock_path,
+                "environment lock tracked bytes do not match the frozen identity",
+            ),
+            (
+                self.feature_schema_path,
+                "feature schema tracked bytes do not match the frozen identity",
+            ),
+            (
+                self.split_schema_path,
+                "split schema tracked bytes do not match the frozen identity",
+            ),
+            (self.split_manifest_path, "preflight anchor changed after validation"),
+            (self.input_ledger_path, "preflight anchor changed after validation"),
         )
-        for index, anchor in enumerate(anchors):
-            if index:
-                self._write_json(
-                    self.paths.state_path,
-                    self.runner._initial_state(),
-                )
-            self.runner.run_preflight(self.paths)
-            state_before = self._state_bytes()
+        for anchor, expected_error in anchors:
             original = anchor.read_bytes()
-            original_validator = self.runner.validate_non_lockbox_packet
             mutated = False
-
-            def mutate_anchor(payload: Any) -> Any:
-                nonlocal mutated
-                validated = original_validator(payload)
-                if not mutated:
-                    anchor.write_bytes(original + b" ")
-                    mutated = True
-                return validated
-
             try:
-                with patch.object(
-                    self.runner,
-                    "validate_non_lockbox_packet",
-                    side_effect=mutate_anchor,
-                ):
-                    with self.subTest(anchor=anchor.name):
-                        with self.assertRaises(self.runner.RunnerError):
-                            self.runner.run_non_lockbox(self.paths)
+                anchor.write_bytes(original + b" ")
+                mutated = True
+                with self.subTest(anchor=anchor.name):
+                    with self.assertRaisesRegex(
+                        self.runner.RunnerError,
+                        expected_error,
+                    ):
+                        self.runner._revalidate_bound_preflight(
+                            self.paths,
+                            state,
+                        )
+                self.assertTrue(mutated)
                 self.assertEqual(self._state_bytes(), state_before)
             finally:
                 anchor.write_bytes(original)
@@ -21701,8 +28949,7 @@ runner.accept_receipt(paths, paths.receipt_path("accept.json"))
     def test_review_important_lockbox_result_change_before_binding_invalidates(
         self,
     ) -> None:
-        self.runner.run_preflight(self.paths)
-        self.runner.run_non_lockbox(self.paths)
+        self._seed_intentionally_incomplete_non_lockbox_state_for_lifecycle_testing()
         state_before = self._state_bytes()
         original = self.runner._replace_bytes_durably
         mutated = False
@@ -21940,8 +29187,7 @@ runner.accept_receipt(paths, paths.receipt_path("accept.json"))
             original_decision,
         )
         self._write_json(self.lockbox_result_path, forged)
-        self.runner.run_preflight(self.paths)
-        self.runner.run_non_lockbox(self.paths)
+        self._seed_intentionally_incomplete_non_lockbox_state_for_lifecycle_testing()
 
         with self.assertRaisesRegex(
             self.runner.RunnerError,
@@ -21978,8 +29224,7 @@ runner.accept_receipt(paths, paths.receipt_path("accept.json"))
                 "ami": deepcopy(self.lockbox_result["ami"]),
             },
         )
-        self.runner.run_preflight(self.paths)
-        self.runner.run_non_lockbox(self.paths)
+        self._seed_intentionally_incomplete_non_lockbox_state_for_lifecycle_testing()
         state = self.runner._run_lockbox_with_private_evidence_for_testing(
             self.paths,
             self.DECISION_ARTIFACT,
