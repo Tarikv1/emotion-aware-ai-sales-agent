@@ -11,10 +11,14 @@ import stat
 import sys
 import uuid
 from collections.abc import Iterator, Mapping, Sequence
-from contextlib import contextmanager
+from copy import deepcopy
+from contextlib import ExitStack, contextmanager
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, BinaryIO
+from typing import TYPE_CHECKING, Any, BinaryIO, Literal, NoReturn
+
+if TYPE_CHECKING:
+    from scripts.emotion_state_phase_b_evaluation import ValidatedPartitionAuthority
 
 if os.name == "nt":
     import msvcrt
@@ -27,6 +31,7 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from scripts.validate_emotion_state_002_phase_b import (
+    EXPECTED_EVIDENCE_IDENTITY_SHA256,
     EXPECTED_PUBLIC_RAW_SOURCE_SHA256,
     EXPECTED_VALIDITY,
     EXPECTED_STATIC_FILE_SHA256,
@@ -41,10 +46,19 @@ from scripts.validate_emotion_state_002_phase_b import (
     validate_lockbox_result,
     validate_non_lockbox_packet,
     validate_phase_b_input_ledger,
+    validate_phase_b_partition_authority_cache,
     validate_phase_b_result,
     validate_phase_b_split_manifest,
     validate_split_schema,
     validated_lockbox_summary,
+)
+from scripts.emotion_state_phase_b_public_pipeline import (
+    ProductionPreflightArtifacts,
+    TRACKED_DATASET_EVIDENCE_FILENAMES,
+    TrackedPublicAuthority,
+    build_production_preflight_artifacts,
+    tracked_public_authority_commitment_sha256,
+    validate_tracked_public_evidence,
 )
 
 
@@ -55,6 +69,12 @@ JOURNAL_NAME = "transaction.json"
 LOCK_NAME = "publication.lock"
 LOCKBOX_LOCK_NAME = "lockbox.lock"
 LOCKBOX_RESERVATION_NAME = "lockbox-reservation.json"
+MATERIAL_PIPELINE_LOCK_NAME = "material-pipeline.lock"
+NONFINAL_PARTITION_ROLES = (
+    "training_discovery",
+    "calibration",
+    "balanced_diagnostic",
+)
 UNSET_DIGEST = "0" * 64
 PRIVATE_COMPONENTS = frozenset(
     {"private", "private-restricted", "secrets", ".secrets"}
@@ -160,6 +180,115 @@ class _DirectoryAuthority:
     path: Path
     posix_descriptor: int | None = None
     windows_handle: int | None = None
+
+
+@dataclass(frozen=True, slots=True)
+class _HeldDirectoryAuthority:
+    path: Path
+    stable_identity: tuple[int, ...]
+    posix_descriptor: int | None
+    windows_handle: int | None
+
+
+@dataclass(frozen=True, slots=True)
+class _MaterialPipelineAuthority:
+    state_root: _HeldDirectoryAuthority
+    lock_path: Path
+    lock_stable_identity: tuple[int, ...]
+    lock_file: BinaryIO
+
+
+@dataclass(frozen=True, slots=True)
+class _PreflightOutputAuthorities:
+    inputs_root: _HeldDirectoryAuthority
+    split_root: _HeldDirectoryAuthority
+    preflight_root: _HeldDirectoryAuthority
+
+
+@dataclass(slots=True)
+class _PreflightArtifactRecoveryPlan:
+    destination: Path
+    parent_authority: _HeldDirectoryAuthority
+    action: Literal[
+        "none",
+        "discard-stage",
+        "finish-committed",
+        "restore-prior",
+        "discard-uncommitted-stage",
+    ]
+    destination_file: _HeldRegularFileAuthority | None
+    intent_file: _HeldRegularFileAuthority | None
+    prior_file: _HeldRegularFileAuthority | None
+    stage_file: _HeldRegularFileAuthority | None
+
+
+@dataclass(frozen=True, slots=True)
+class _HeldRegularFileAuthority:
+    path: Path
+    stable_identity: tuple[int, ...]
+    sha256: str
+    size_bytes: int
+    posix_descriptor: int | None
+    windows_handle: int | None
+
+
+@dataclass(slots=True)
+class _RegularFileAuthorityOwner:
+    authority: _HeldRegularFileAuthority | None
+
+    def peek(self) -> _HeldRegularFileAuthority | None:
+        return self.authority
+
+    def take(self) -> _HeldRegularFileAuthority:
+        authority = self.authority
+        if authority is None:
+            raise RunnerError("regular-file authority owner is already consumed")
+        self.authority = None
+        return authority
+
+    def restore(self, authority: _HeldRegularFileAuthority) -> None:
+        if self.authority is not None:
+            raise RunnerError("regular-file authority owner is not empty")
+        self.authority = authority
+
+
+@dataclass(frozen=True, slots=True)
+class _AdmittedStateAuthority:
+    admission: Literal["absent", "initialized"]
+    state_root_stable_identity: tuple[int, ...]
+    initial_bytes: bytes | None
+    initial_file: _HeldRegularFileAuthority | None
+    _initial_owner: _RegularFileAuthorityOwner | None
+
+
+@dataclass(frozen=True, slots=True)
+class _HeldCommittedStateAuthority:
+    state: dict[str, Any]
+    canonical_bytes: bytes
+    file: _HeldRegularFileAuthority
+
+
+@dataclass(frozen=True, slots=True)
+class _PersistedPreflightReadback:
+    input_ledger: dict[str, Any]
+    split_manifest: dict[str, Any]
+    files: tuple[_HeldRegularFileAuthority, ...]
+
+
+@dataclass(frozen=True, slots=True)
+class _HeldStaticPreflightInputs:
+    configuration: dict[str, Any]
+    contents: tuple[bytes, ...]
+    digests: tuple[str, ...]
+    files: tuple[_HeldRegularFileAuthority, ...]
+
+
+@dataclass(frozen=True, slots=True)
+class _CommittedPreflightReadback:
+    state: dict[str, Any]
+    state_file: _HeldRegularFileAuthority
+    artifacts: _PersistedPreflightReadback
+    restored: tuple[ValidatedPartitionAuthority, ...]
 
 
 @dataclass(frozen=True)
@@ -273,6 +402,19 @@ class RunnerPaths:
     @property
     def state_path(self) -> Path:
         return Path(self.state_root) / "state.json"
+
+    @property
+    def material_pipeline_lock_path(self) -> Path:
+        return Path(self.state_root) / MATERIAL_PIPELINE_LOCK_NAME
+
+    @property
+    def preflight_state_stage_path(self) -> Path:
+        return Path(self.state_root) / ".state.json.preflight.stage"
+
+    def partition_authority_cache_path(self, role: str) -> Path:
+        if type(role) is not str or role not in NONFINAL_PARTITION_ROLES:
+            raise RunnerError("preflight partition role is invalid")
+        return self.preflight_cache_root / f"{role}.json"
 
     @property
     def non_lockbox_root(self) -> Path:
@@ -430,6 +572,296 @@ def _sha256_descriptor(descriptor: int) -> str:
         os.lseek(descriptor, position, os.SEEK_SET)
 
 
+def _windows_handle_information(handle: int) -> tuple[tuple[int, ...], int, int, int]:
+    from ctypes import wintypes
+
+    class ByHandleFileInformation(ctypes.Structure):
+        _fields_ = (
+            ("FileAttributes", wintypes.DWORD),
+            ("CreationTimeLow", wintypes.DWORD),
+            ("CreationTimeHigh", wintypes.DWORD),
+            ("LastAccessTimeLow", wintypes.DWORD),
+            ("LastAccessTimeHigh", wintypes.DWORD),
+            ("LastWriteTimeLow", wintypes.DWORD),
+            ("LastWriteTimeHigh", wintypes.DWORD),
+            ("VolumeSerialNumber", wintypes.DWORD),
+            ("FileSizeHigh", wintypes.DWORD),
+            ("FileSizeLow", wintypes.DWORD),
+            ("NumberOfLinks", wintypes.DWORD),
+            ("FileIndexHigh", wintypes.DWORD),
+            ("FileIndexLow", wintypes.DWORD),
+        )
+
+    information = ByHandleFileInformation()
+    function = ctypes.WinDLL(
+        "kernel32", use_last_error=True
+    ).GetFileInformationByHandle
+    function.argtypes = (
+        wintypes.HANDLE,
+        ctypes.POINTER(ByHandleFileInformation),
+    )
+    function.restype = wintypes.BOOL
+    if not function(handle, ctypes.byref(information)):
+        raise OSError(
+            ctypes.get_last_error(),
+            "unable to query held Windows handle",
+        )
+    identity = (
+        int(information.VolumeSerialNumber),
+        int(information.FileIndexHigh),
+        int(information.FileIndexLow),
+    )
+    size = (int(information.FileSizeHigh) << 32) | int(information.FileSizeLow)
+    return (
+        identity,
+        size,
+        int(information.NumberOfLinks),
+        int(information.FileAttributes),
+    )
+
+
+def _status_stable_identity(status: os.stat_result | Any) -> tuple[int, ...]:
+    if os.name == "nt":
+        inode = int(status.st_ino)
+        return (
+            int(status.st_dev),
+            (inode >> 32) & 0xFFFFFFFF,
+            inode & 0xFFFFFFFF,
+        )
+    return (int(status.st_dev), int(status.st_ino))
+
+
+def _windows_open_raw_handle(
+    path: Path,
+    *,
+    access: int,
+    share_mode: int,
+    disposition: int,
+    directory: bool = False,
+) -> int:
+    from ctypes import wintypes
+
+    function = ctypes.WinDLL("kernel32", use_last_error=True).CreateFileW
+    function.argtypes = (
+        wintypes.LPCWSTR,
+        wintypes.DWORD,
+        wintypes.DWORD,
+        wintypes.LPVOID,
+        wintypes.DWORD,
+        wintypes.DWORD,
+        wintypes.HANDLE,
+    )
+    function.restype = wintypes.HANDLE
+    flags = 0x00200000  # FILE_FLAG_OPEN_REPARSE_POINT
+    flags |= 0x02000000 if directory else 0x00000080
+    handle = function(
+        str(path),
+        access,
+        share_mode,
+        None,
+        disposition,
+        flags,
+        None,
+    )
+    invalid = wintypes.HANDLE(-1).value
+    if handle == invalid:
+        raise OSError(ctypes.get_last_error(), "unable to open held Windows handle")
+    return int(handle)
+
+
+def _windows_close_raw_handle(handle: int) -> None:
+    from ctypes import wintypes
+
+    function = ctypes.WinDLL("kernel32", use_last_error=True).CloseHandle
+    function.argtypes = (wintypes.HANDLE,)
+    function.restype = wintypes.BOOL
+    if not function(handle):
+        raise OSError(ctypes.get_last_error(), "unable to close held Windows handle")
+
+
+def _windows_seek_start(handle: int) -> None:
+    from ctypes import wintypes
+
+    function = ctypes.WinDLL("kernel32", use_last_error=True).SetFilePointerEx
+    function.argtypes = (
+        wintypes.HANDLE,
+        ctypes.c_longlong,
+        ctypes.POINTER(ctypes.c_longlong),
+        wintypes.DWORD,
+    )
+    function.restype = wintypes.BOOL
+    if not function(handle, 0, None, 0):
+        raise OSError(ctypes.get_last_error(), "unable to seek held Windows handle")
+
+
+def _windows_read_raw_handle(handle: int, maximum_bytes: int) -> bytes:
+    from ctypes import wintypes
+
+    _windows_seek_start(handle)
+    read_file = ctypes.WinDLL("kernel32", use_last_error=True).ReadFile
+    read_file.argtypes = (
+        wintypes.HANDLE,
+        wintypes.LPVOID,
+        wintypes.DWORD,
+        ctypes.POINTER(wintypes.DWORD),
+        wintypes.LPVOID,
+    )
+    read_file.restype = wintypes.BOOL
+    chunks: list[bytes] = []
+    remaining = maximum_bytes + 1
+    while remaining:
+        requested = min(1_048_576, remaining)
+        buffer = ctypes.create_string_buffer(requested)
+        count = wintypes.DWORD()
+        if not read_file(
+            handle,
+            buffer,
+            requested,
+            ctypes.byref(count),
+            None,
+        ):
+            raise OSError(ctypes.get_last_error(), "unable to read held Windows handle")
+        if count.value == 0:
+            break
+        chunks.append(buffer.raw[:count.value])
+        remaining -= count.value
+    content = b"".join(chunks)
+    if len(content) > maximum_bytes:
+        raise RunnerError("held file exceeds the allowed size")
+    return content
+
+
+def _windows_write_raw_handle(handle: int, content: bytes) -> None:
+    from ctypes import wintypes
+
+    _windows_seek_start(handle)
+    write_file = ctypes.WinDLL("kernel32", use_last_error=True).WriteFile
+    write_file.argtypes = (
+        wintypes.HANDLE,
+        wintypes.LPCVOID,
+        wintypes.DWORD,
+        ctypes.POINTER(wintypes.DWORD),
+        wintypes.LPVOID,
+    )
+    write_file.restype = wintypes.BOOL
+    offset = 0
+    while offset < len(content):
+        chunk = content[offset:offset + 1_048_576]
+        buffer = ctypes.create_string_buffer(chunk)
+        count = wintypes.DWORD()
+        if not write_file(
+            handle,
+            buffer,
+            len(chunk),
+            ctypes.byref(count),
+            None,
+        ) or count.value != len(chunk):
+            raise OSError(ctypes.get_last_error(), "unable to write held Windows handle")
+        offset += count.value
+
+
+def _windows_flush_raw_handle(handle: int) -> None:
+    from ctypes import wintypes
+
+    function = ctypes.WinDLL("kernel32", use_last_error=True).FlushFileBuffers
+    function.argtypes = (wintypes.HANDLE,)
+    function.restype = wintypes.BOOL
+    if not function(handle):
+        raise OSError(ctypes.get_last_error(), "unable to flush held Windows handle")
+
+
+def _windows_rename_raw_handle(
+    handle: int,
+    destination_name: str,
+    *,
+    destination_parent_handle: int,
+) -> None:
+    from ctypes import wintypes
+
+    encoded_name = destination_name.encode("utf-16-le")
+
+    class FileRenameInfoEx(ctypes.Structure):
+        _fields_ = (
+            ("Flags", wintypes.DWORD),
+            ("RootDirectory", wintypes.HANDLE),
+            ("FileNameLength", wintypes.DWORD),
+            ("FileName", wintypes.WCHAR * 1),
+        )
+
+    name_offset = FileRenameInfoEx.FileName.offset
+    information_size = name_offset + len(encoded_name)
+    buffer = ctypes.create_string_buffer(information_size)
+    information = FileRenameInfoEx.from_buffer(buffer)
+    information.Flags = 0
+    information.RootDirectory = destination_parent_handle
+    information.FileNameLength = len(encoded_name)
+    ctypes.memmove(
+        ctypes.addressof(buffer) + name_offset,
+        encoded_name,
+        len(encoded_name),
+    )
+
+    class IoStatusBlock(ctypes.Structure):
+        _fields_ = (
+            ("Status", ctypes.c_void_p),
+            ("Information", ctypes.c_size_t),
+        )
+
+    io_status = IoStatusBlock()
+    function = ctypes.WinDLL("ntdll", use_last_error=True).NtSetInformationFile
+    function.argtypes = (
+        wintypes.HANDLE,
+        ctypes.POINTER(IoStatusBlock),
+        wintypes.LPVOID,
+        wintypes.DWORD,
+        ctypes.c_int,
+    )
+    function.restype = ctypes.c_long
+    status_code = function(
+        handle,
+        ctypes.byref(io_status),
+        buffer,
+        information_size,
+        65,
+    )
+    if status_code != 0:
+        raise OSError(
+            status_code & 0xFFFFFFFF,
+            "unable to perform held-handle rename",
+        )
+
+
+def _windows_unlink_raw_handle(handle: int) -> None:
+    from ctypes import wintypes
+
+    class FileDispositionInfoEx(ctypes.Structure):
+        _fields_ = (("Flags", wintypes.DWORD),)
+
+    information = FileDispositionInfoEx(
+        0x00000001 | 0x00000002  # DELETE | POSIX_SEMANTICS
+    )
+    function = ctypes.WinDLL(
+        "kernel32", use_last_error=True
+    ).SetFileInformationByHandle
+    function.argtypes = (
+        wintypes.HANDLE,
+        ctypes.c_int,
+        wintypes.LPVOID,
+        wintypes.DWORD,
+    )
+    function.restype = wintypes.BOOL
+    if not function(
+        handle,
+        21,  # FileDispositionInfoEx
+        ctypes.byref(information),
+        ctypes.sizeof(information),
+    ):
+        raise OSError(
+            ctypes.get_last_error(),
+            "unable to unlink held Windows handle with POSIX semantics",
+        )
+
+
 def _read_file_nofollow(path: Path, *, maximum_bytes: int = 16_777_216) -> bytes:
     """Read a regular file through a no-follow handle and bind its identity."""
     flags = os.O_RDONLY | getattr(os, "O_BINARY", 0)
@@ -500,6 +932,2869 @@ def _read_file_nofollow(path: Path, *, maximum_bytes: int = 16_777_216) -> bytes
         raise RunnerError(f"unable to read bound file: {Path(path).name}") from error
     finally:
         os.close(descriptor)
+
+
+@contextmanager
+def _held_directory_authority(path: Path) -> Iterator[_HeldDirectoryAuthority]:
+    target = Path(path)
+    try:
+        status = os.stat(target, follow_symlinks=False)
+    except OSError as error:
+        raise RunnerError("held directory is unavailable") from error
+    if _is_link_or_reparse(target, status) or not stat.S_ISDIR(status.st_mode):
+        raise RunnerError("held directory is a symlink, reparse point, or non-directory")
+    if os.name == "nt":
+        handle = _windows_open_raw_handle(
+            target,
+            access=0x80000000 | 0x40000000,
+            share_mode=0x00000001 | 0x00000002,
+            disposition=3,
+            directory=True,
+        )
+        try:
+            identity, _size, _links, attributes = _windows_handle_information(handle)
+            after = os.stat(target, follow_symlinks=False)
+            if (
+                identity != _status_stable_identity(status)
+                or identity != _status_stable_identity(after)
+                or not (attributes & 0x10)
+                or attributes & 0x400
+                or _is_link_or_reparse(target, after)
+            ):
+                raise RunnerError("held Windows directory authority is unsafe")
+            authority = _HeldDirectoryAuthority(
+                path=target,
+                stable_identity=identity,
+                posix_descriptor=None,
+                windows_handle=handle,
+            )
+            _verify_held_directory_authority(authority)
+            yield authority
+            _verify_held_directory_authority(authority)
+        finally:
+            _windows_close_raw_handle(handle)
+        return
+    flags = os.O_RDONLY | getattr(os, "O_DIRECTORY", 0)
+    flags |= getattr(os, "O_NOFOLLOW", 0)
+    try:
+        descriptor = os.open(target, flags)
+    except OSError as error:
+        raise RunnerError("unable to open held directory authority") from error
+    try:
+        opened = os.fstat(descriptor)
+        after = os.stat(target, follow_symlinks=False)
+        if (
+            _status_stable_identity(status)
+            != _status_stable_identity(opened)
+            or _status_stable_identity(after)
+            != _status_stable_identity(opened)
+            or _is_link_or_reparse(target, after)
+        ):
+            raise RunnerError("held POSIX directory identity changed during open")
+        authority = _HeldDirectoryAuthority(
+            path=target,
+            stable_identity=(int(opened.st_dev), int(opened.st_ino)),
+            posix_descriptor=descriptor,
+            windows_handle=None,
+        )
+        _verify_held_directory_authority(authority)
+        yield authority
+        _verify_held_directory_authority(authority)
+    finally:
+        os.close(descriptor)
+
+
+def _verify_held_directory_authority(authority: _HeldDirectoryAuthority) -> None:
+    if type(authority) is not _HeldDirectoryAuthority:
+        raise RunnerError("held directory authority type changed")
+    if os.name == "nt":
+        if authority.windows_handle is None or authority.posix_descriptor is not None:
+            raise RunnerError("held Windows directory handle is unavailable")
+        identity, _size, _links, attributes = _windows_handle_information(
+            authority.windows_handle
+        )
+        if identity != authority.stable_identity or not (attributes & 0x10) or attributes & 0x400:
+            raise RunnerError("held directory identity changed")
+    else:
+        if authority.posix_descriptor is None or authority.windows_handle is not None:
+            raise RunnerError("held POSIX directory descriptor is unavailable")
+        opened = os.fstat(authority.posix_descriptor)
+        if (int(opened.st_dev), int(opened.st_ino)) != authority.stable_identity:
+            raise RunnerError("held directory identity changed")
+    inspected = os.stat(authority.path, follow_symlinks=False)
+    if _is_link_or_reparse(authority.path, inspected) or not stat.S_ISDIR(
+        inspected.st_mode
+    ) or _status_stable_identity(inspected) != authority.stable_identity:
+        raise RunnerError("held directory path changed")
+
+
+def _windows_open_child_directory_handle(
+    parent_handle: int,
+    name: str,
+    *,
+    create: bool,
+) -> int:
+    from ctypes import wintypes
+
+    if not name or name in {".", ".."} or "/" in name or "\\" in name:
+        raise RunnerError("child directory name is invalid")
+
+    class UnicodeString(ctypes.Structure):
+        _fields_ = (
+            ("Length", wintypes.USHORT),
+            ("MaximumLength", wintypes.USHORT),
+            ("Buffer", wintypes.LPWSTR),
+        )
+
+    class ObjectAttributes(ctypes.Structure):
+        _fields_ = (
+            ("Length", wintypes.ULONG),
+            ("RootDirectory", wintypes.HANDLE),
+            ("ObjectName", ctypes.POINTER(UnicodeString)),
+            ("Attributes", wintypes.ULONG),
+            ("SecurityDescriptor", wintypes.LPVOID),
+            ("SecurityQualityOfService", wintypes.LPVOID),
+        )
+
+    class IoStatusBlock(ctypes.Structure):
+        _fields_ = (("Status", ctypes.c_void_p), ("Information", ctypes.c_size_t))
+
+    name_buffer = ctypes.create_unicode_buffer(name)
+    encoded_length = len(name.encode("utf-16-le"))
+    unicode_name = UnicodeString(
+        encoded_length,
+        encoded_length + 2,
+        ctypes.cast(name_buffer, wintypes.LPWSTR),
+    )
+    attributes = ObjectAttributes(
+        ctypes.sizeof(ObjectAttributes),
+        parent_handle,
+        ctypes.pointer(unicode_name),
+        0x00000040,  # OBJ_CASE_INSENSITIVE
+        None,
+        None,
+    )
+    io_status = IoStatusBlock()
+    result_handle = wintypes.HANDLE()
+    function = ctypes.WinDLL("ntdll", use_last_error=True).NtCreateFile
+    function.argtypes = (
+        ctypes.POINTER(wintypes.HANDLE),
+        wintypes.DWORD,
+        ctypes.POINTER(ObjectAttributes),
+        ctypes.POINTER(IoStatusBlock),
+        ctypes.c_void_p,
+        wintypes.ULONG,
+        wintypes.ULONG,
+        wintypes.ULONG,
+        wintypes.ULONG,
+        ctypes.c_void_p,
+        wintypes.ULONG,
+    )
+    function.restype = ctypes.c_long
+    status_code = int(function(
+        ctypes.byref(result_handle),
+        0x80000000 | 0x40000000 | 0x00100000,
+        ctypes.byref(attributes),
+        ctypes.byref(io_status),
+        None,
+        0x00000080,
+        0x00000001 | 0x00000002,
+        2 if create else 1,  # FILE_CREATE / FILE_OPEN
+        0x00000001 | 0x00000020 | 0x00200000,
+        None,
+        0,
+    ))
+    if status_code < 0:
+        raise OSError(
+            status_code & 0xFFFFFFFF,
+            "unable to bind child directory under held parent",
+        )
+    return int(result_handle.value)
+
+
+@contextmanager
+def _held_child_directory_authority(
+    path: Path,
+    parent_authority: _HeldDirectoryAuthority,
+) -> Iterator[_HeldDirectoryAuthority]:
+    target = Path(path)
+    _verify_held_directory_authority(parent_authority)
+    if target.parent != parent_authority.path:
+        raise RunnerError("directory creation parent authority does not match")
+    exists = os.path.lexists(target)
+    before = os.stat(target, follow_symlinks=False) if exists else None
+    if before is not None and (
+        _is_link_or_reparse(target, before) or not stat.S_ISDIR(before.st_mode)
+    ):
+        raise RunnerError("preflight directory entry is unsafe")
+    if os.name != "nt":
+        if not exists:
+            raise RunnerError(
+                "POSIX preflight directory creation is not qualified"
+            )
+        if parent_authority.posix_descriptor is None:
+            raise RunnerError("held POSIX parent descriptor is unavailable")
+        flags = os.O_RDONLY | getattr(os, "O_DIRECTORY", 0)
+        flags |= getattr(os, "O_NOFOLLOW", 0)
+        descriptor = os.open(
+            target.name,
+            flags,
+            dir_fd=parent_authority.posix_descriptor,
+        )
+        try:
+            opened = os.fstat(descriptor)
+            after = os.stat(
+                target.name,
+                dir_fd=parent_authority.posix_descriptor,
+                follow_symlinks=False,
+            )
+            if (
+                before is None
+                or _status_stable_identity(before)
+                != _status_stable_identity(opened)
+                or _status_stable_identity(after)
+                != _status_stable_identity(opened)
+            ):
+                raise RunnerError("held POSIX child directory identity changed")
+            authority = _HeldDirectoryAuthority(
+                path=target,
+                stable_identity=_status_stable_identity(opened),
+                posix_descriptor=descriptor,
+                windows_handle=None,
+            )
+            _verify_held_directory_authority(authority)
+            yield authority
+            _verify_held_directory_authority(authority)
+        finally:
+            os.close(descriptor)
+        return
+
+    if parent_authority.windows_handle is None:
+        raise RunnerError("held Windows parent handle is unavailable")
+    try:
+        handle = _windows_open_child_directory_handle(
+            parent_authority.windows_handle,
+            target.name,
+            create=not exists,
+        )
+    except OSError as error:
+        label = "create" if not exists else "open"
+        raise RunnerError(f"unable to {label} held child directory") from error
+    try:
+        identity, _size, _links, attributes = _windows_handle_information(handle)
+        after = os.stat(target, follow_symlinks=False)
+        if (
+            not (attributes & 0x10)
+            or attributes & 0x400
+            or _is_link_or_reparse(target, after)
+            or identity != _status_stable_identity(after)
+            or (
+                before is not None
+                and identity != _status_stable_identity(before)
+            )
+        ):
+            raise RunnerError("held Windows child directory identity changed")
+        authority = _HeldDirectoryAuthority(
+            path=target,
+            stable_identity=identity,
+            posix_descriptor=None,
+            windows_handle=handle,
+        )
+        _verify_held_directory_authority(authority)
+        if not exists:
+            _flush_held_directory(authority)
+            _flush_held_directory(parent_authority)
+        yield authority
+        _verify_held_directory_authority(authority)
+    finally:
+        _windows_close_raw_handle(handle)
+
+
+@contextmanager
+def _held_regular_file_with_bytes(
+    path: Path,
+    *,
+    maximum_bytes: int = 268_435_456,
+    delete_access: bool = False,
+) -> Iterator[tuple[_HeldRegularFileAuthority, bytes]]:
+    target = Path(path)
+    before = os.stat(target, follow_symlinks=False)
+    if (
+        _is_link_or_reparse(target, before)
+        or not stat.S_ISREG(before.st_mode)
+        or before.st_nlink != 1
+    ):
+        raise RunnerError("held file must be regular, no-follow, and single-link")
+    if os.name == "nt":
+        access = 0x80000000 | 0x00000080
+        if delete_access:
+            access |= 0x00010000
+        handle = _windows_open_raw_handle(
+            target,
+            access=access,
+            share_mode=0x00000001,
+            disposition=3,
+        )
+        try:
+            identity, size, links, attributes = _windows_handle_information(handle)
+            after = os.stat(target, follow_symlinks=False)
+            if (
+                identity != _status_stable_identity(before)
+                or identity != _status_stable_identity(after)
+                or links != 1
+                or attributes & (0x10 | 0x400)
+                or _is_link_or_reparse(target, after)
+            ):
+                raise RunnerError("held Windows file authority is unsafe")
+            content = _windows_read_raw_handle(handle, maximum_bytes)
+            if len(content) != size:
+                raise RunnerError("held Windows file size changed during read")
+            authority = _HeldRegularFileAuthority(
+                path=target,
+                stable_identity=identity,
+                sha256=_sha256_bytes(content),
+                size_bytes=len(content),
+                posix_descriptor=None,
+                windows_handle=handle,
+            )
+            yield authority, content
+        finally:
+            _windows_close_raw_handle(handle)
+        return
+    flags = os.O_RDONLY | getattr(os, "O_NOFOLLOW", 0)
+    if delete_access:
+        flags = os.O_RDWR | getattr(os, "O_NOFOLLOW", 0)
+    descriptor = os.open(target, flags)
+    try:
+        opened = os.fstat(descriptor)
+        after = os.stat(target, follow_symlinks=False)
+        if not stat.S_ISREG(opened.st_mode) or opened.st_nlink != 1:
+            raise RunnerError("held POSIX file authority is unsafe")
+        if (
+            _status_stable_identity(before)
+            != _status_stable_identity(opened)
+            or _status_stable_identity(after)
+            != _status_stable_identity(opened)
+            or _is_link_or_reparse(target, after)
+        ):
+            raise RunnerError("held POSIX file identity changed during open")
+        content = _read_posix_descriptor_bytes(descriptor, maximum_bytes)
+        authority = _HeldRegularFileAuthority(
+            path=target,
+            stable_identity=(int(opened.st_dev), int(opened.st_ino)),
+            sha256=_sha256_bytes(content),
+            size_bytes=len(content),
+            posix_descriptor=descriptor,
+            windows_handle=None,
+        )
+        yield authority, content
+    finally:
+        os.close(descriptor)
+
+
+@contextmanager
+def _held_regular_file(
+    path: Path,
+    *,
+    maximum_bytes: int = 268_435_456,
+    delete_access: bool = False,
+) -> Iterator[_HeldRegularFileAuthority]:
+    with _held_regular_file_with_bytes(
+        path,
+        maximum_bytes=maximum_bytes,
+        delete_access=delete_access,
+    ) as (authority, _content):
+        yield authority
+
+
+def _read_posix_descriptor_bytes(descriptor: int, maximum_bytes: int) -> bytes:
+    os.lseek(descriptor, 0, os.SEEK_SET)
+    chunks: list[bytes] = []
+    remaining = maximum_bytes + 1
+    while remaining:
+        chunk = os.read(descriptor, min(1_048_576, remaining))
+        if not chunk:
+            break
+        chunks.append(chunk)
+        remaining -= len(chunk)
+    content = b"".join(chunks)
+    if len(content) > maximum_bytes:
+        raise RunnerError("held file exceeds the allowed size")
+    return content
+
+
+def _read_held_regular_file_bytes(
+    authority: _HeldRegularFileAuthority,
+    *,
+    maximum_bytes: int = 268_435_456,
+) -> bytes:
+    if type(authority) is not _HeldRegularFileAuthority:
+        raise RunnerError("held regular-file authority type changed")
+    if os.name == "nt":
+        if authority.windows_handle is None or authority.posix_descriptor is not None:
+            raise RunnerError("held Windows file handle is unavailable")
+        return _windows_read_raw_handle(authority.windows_handle, maximum_bytes)
+    if authority.posix_descriptor is None or authority.windows_handle is not None:
+        raise RunnerError("held POSIX file descriptor is unavailable")
+    return _read_posix_descriptor_bytes(authority.posix_descriptor, maximum_bytes)
+
+
+def _verify_held_regular_file_metadata(
+    authority: _HeldRegularFileAuthority,
+    *,
+    require_path: bool = True,
+) -> None:
+    if type(authority) is not _HeldRegularFileAuthority:
+        raise RunnerError("held regular-file authority type changed")
+    if os.name == "nt":
+        assert authority.windows_handle is not None
+        identity, size, links, attributes = _windows_handle_information(
+            authority.windows_handle
+        )
+        if (
+            identity != authority.stable_identity
+            or size != authority.size_bytes
+            or links != 1
+            or attributes & (0x10 | 0x400)
+        ):
+            raise RunnerError("held regular-file identity changed")
+    else:
+        assert authority.posix_descriptor is not None
+        opened = os.fstat(authority.posix_descriptor)
+        if (
+            (int(opened.st_dev), int(opened.st_ino)) != authority.stable_identity
+            or opened.st_size != authority.size_bytes
+            or opened.st_nlink != 1
+        ):
+            raise RunnerError("held regular-file identity changed")
+    if require_path:
+        inspected = os.stat(authority.path, follow_symlinks=False)
+        if (
+            _is_link_or_reparse(authority.path, inspected)
+            or not stat.S_ISREG(inspected.st_mode)
+            or inspected.st_nlink != 1
+            or _status_stable_identity(inspected) != authority.stable_identity
+        ):
+            raise RunnerError("held regular-file path changed")
+
+
+def _verify_held_regular_file_authority(
+    authority: _HeldRegularFileAuthority,
+    *,
+    require_path: bool = True,
+) -> None:
+    _verify_held_regular_file_metadata(authority, require_path=require_path)
+    content = _read_held_regular_file_bytes(authority)
+    if (
+        len(content) != authority.size_bytes
+        or _sha256_bytes(content) != authority.sha256
+    ):
+        raise RunnerError("held regular-file bytes changed")
+
+
+def _create_held_regular_file_authority(
+    path: Path,
+    content: bytes,
+    *,
+    parent_authority: _HeldDirectoryAuthority,
+) -> _HeldRegularFileAuthority:
+    target = Path(path)
+    if type(content) is not bytes or target.parent != parent_authority.path:
+        raise RunnerError("held file creation authority does not match")
+    _verify_held_directory_authority(parent_authority)
+    if os.path.lexists(target):
+        raise RunnerError("held file creation target already exists")
+    if os.name != "nt":
+        raise RunnerError(
+            "POSIX preflight mutation is not qualified; file creation fails closed"
+        )
+    handle = _windows_open_raw_handle(
+        target,
+        access=0x80000000 | 0x40000000 | 0x00010000 | 0x00000080,
+        share_mode=0x00000001,
+        disposition=1,
+    )
+    try:
+        _windows_write_raw_handle(handle, content)
+        _windows_flush_raw_handle(handle)
+        identity, size, links, attributes = _windows_handle_information(handle)
+        inspected = os.stat(target, follow_symlinks=False)
+        if (
+            identity != _status_stable_identity(inspected)
+            or size != len(content)
+            or links != 1
+            or attributes & (0x10 | 0x400)
+            or _is_link_or_reparse(target, inspected)
+        ):
+            raise RunnerError("new held file identity is unsafe")
+        authority = _HeldRegularFileAuthority(
+            path=target,
+            stable_identity=identity,
+            sha256=_sha256_bytes(content),
+            size_bytes=len(content),
+            posix_descriptor=None,
+            windows_handle=handle,
+        )
+        _verify_held_regular_file_authority(authority)
+        _verify_held_directory_authority(parent_authority)
+        return authority
+    except Exception:
+        _windows_close_raw_handle(handle)
+        raise
+
+
+def _open_owned_regular_file_authority(
+    path: Path,
+    *,
+    parent_authority: _HeldDirectoryAuthority,
+    delete_access: bool,
+    maximum_bytes: int = 268_435_456,
+) -> _HeldRegularFileAuthority:
+    target = Path(path)
+    if target.parent != parent_authority.path:
+        raise RunnerError("held file open parent authority does not match")
+    _verify_held_directory_authority(parent_authority)
+    if os.name != "nt":
+        raise RunnerError(
+            "POSIX preflight mutation is not qualified; file open fails closed"
+        )
+    before = os.stat(target, follow_symlinks=False)
+    if (
+        _is_link_or_reparse(target, before)
+        or not stat.S_ISREG(before.st_mode)
+        or before.st_nlink != 1
+    ):
+        raise RunnerError("held file must be regular, no-follow, and single-link")
+    access = 0x80000000 | 0x00000080
+    if delete_access:
+        access |= 0x00010000
+    handle = _windows_open_raw_handle(
+        target,
+        access=access,
+        share_mode=0x00000001,
+        disposition=3,
+    )
+    try:
+        identity, size, links, attributes = _windows_handle_information(handle)
+        after = os.stat(target, follow_symlinks=False)
+        content = _windows_read_raw_handle(handle, maximum_bytes)
+        if (
+            identity != _status_stable_identity(before)
+            or identity != _status_stable_identity(after)
+            or size != len(content)
+            or links != 1
+            or attributes & (0x10 | 0x400)
+            or _is_link_or_reparse(target, after)
+        ):
+            raise RunnerError("held file identity changed during open")
+        authority = _HeldRegularFileAuthority(
+            path=target,
+            stable_identity=identity,
+            sha256=_sha256_bytes(content),
+            size_bytes=len(content),
+            posix_descriptor=None,
+            windows_handle=handle,
+        )
+        _verify_held_regular_file_authority(authority)
+        return authority
+    except Exception:
+        _windows_close_raw_handle(handle)
+        raise
+
+
+def _close_owned_regular_file_authority(
+    authority: _HeldRegularFileAuthority,
+) -> None:
+    if os.name == "nt":
+        if authority.windows_handle is None:
+            raise RunnerError("owned Windows file handle is unavailable")
+        _windows_close_raw_handle(authority.windows_handle)
+        return
+    if authority.posix_descriptor is None:
+        raise RunnerError("owned POSIX file descriptor is unavailable")
+    os.close(authority.posix_descriptor)
+
+
+def _close_owned_regular_file_authorities_once(
+    authorities: Sequence[_HeldRegularFileAuthority],
+) -> Exception | None:
+    first_error: Exception | None = None
+    seen_handles: set[tuple[str, int]] = set()
+    for authority in authorities:
+        if type(authority) is not _HeldRegularFileAuthority:
+            error = RunnerError("owned regular-file cleanup authority type changed")
+            if first_error is None:
+                first_error = error
+            continue
+        if os.name == "nt":
+            raw_handle = authority.windows_handle
+            handle_kind = "windows"
+        else:
+            raw_handle = authority.posix_descriptor
+            handle_kind = "posix"
+        if raw_handle is None:
+            error = RunnerError("owned regular-file cleanup handle is unavailable")
+            if first_error is None:
+                first_error = error
+            continue
+        handle_key = (handle_kind, int(raw_handle))
+        if handle_key in seen_handles:
+            error = RunnerError("owned regular-file handle has duplicate cleanup ownership")
+            if first_error is None:
+                first_error = error
+            continue
+        seen_handles.add(handle_key)
+        try:
+            _close_owned_regular_file_authority(authority)
+        except Exception as error:
+            if first_error is None:
+                first_error = error
+    return first_error
+
+
+def _raise_owner_cleanup_failure(
+    message: str,
+    close_error: Exception,
+    *,
+    active_error: BaseException | None,
+) -> NoReturn:
+    classified = RunnerError(message)
+    classified.add_note(
+        f"owner cleanup error: {type(close_error).__name__}: {close_error}"
+    )
+    if active_error is not None:
+        raise classified from active_error
+    raise classified from close_error
+
+
+def _renamed_held_regular_file_authority(
+    authority: _HeldRegularFileAuthority,
+    destination: Path,
+    *,
+    parent_authority: _HeldDirectoryAuthority,
+) -> _HeldRegularFileAuthority:
+    target = Path(destination)
+    if target.parent != parent_authority.path:
+        raise RunnerError("held rename parent authority does not match")
+    if os.name != "nt" or authority.windows_handle is None:
+        raise RunnerError("held file rename is qualified only for Windows")
+    _verify_held_directory_authority(parent_authority)
+    _verify_held_regular_file_authority(authority)
+    if os.path.lexists(target):
+        raise RunnerError("held file rename target is not absent")
+    if parent_authority.windows_handle is None:
+        raise RunnerError("held rename directory handle is unavailable")
+    _windows_rename_raw_handle(
+        authority.windows_handle,
+        target.name,
+        destination_parent_handle=parent_authority.windows_handle,
+    )
+    _verify_held_directory_authority(parent_authority)
+    renamed = _HeldRegularFileAuthority(
+        path=target,
+        stable_identity=authority.stable_identity,
+        sha256=authority.sha256,
+        size_bytes=authority.size_bytes,
+        posix_descriptor=None,
+        windows_handle=authority.windows_handle,
+    )
+    _verify_held_regular_file_authority(renamed)
+    _verify_held_directory_authority(parent_authority)
+    return renamed
+
+
+def _retargeted_held_regular_file_authority(
+    authority: _HeldRegularFileAuthority,
+    path: Path,
+) -> _HeldRegularFileAuthority:
+    retargeted = _HeldRegularFileAuthority(
+        path=Path(path),
+        stable_identity=authority.stable_identity,
+        sha256=authority.sha256,
+        size_bytes=authority.size_bytes,
+        posix_descriptor=authority.posix_descriptor,
+        windows_handle=authority.windows_handle,
+    )
+    _verify_held_regular_file_authority(retargeted)
+    return retargeted
+
+
+def _unlink_held_regular_file_authority(
+    authority: _HeldRegularFileAuthority,
+) -> None:
+    if os.name != "nt" or authority.windows_handle is None:
+        raise RunnerError("held file unlink is qualified only for Windows")
+    _verify_held_regular_file_authority(authority)
+    _windows_unlink_raw_handle(authority.windows_handle)
+
+
+def _directory_barrier_authority(
+    authority: _HeldDirectoryAuthority,
+) -> _DirectoryAuthority:
+    _verify_held_directory_authority(authority)
+    return _DirectoryAuthority(
+        path=authority.path,
+        posix_descriptor=authority.posix_descriptor,
+        windows_handle=authority.windows_handle,
+    )
+
+
+def _flush_held_directory(authority: _HeldDirectoryAuthority) -> None:
+    _sync_directory(
+        authority.path,
+        authority=_directory_barrier_authority(authority),
+    )
+    _verify_held_directory_authority(authority)
+
+
+@contextmanager
+def _held_state_root_authority(
+    paths: RunnerPaths,
+) -> Iterator[_HeldDirectoryAuthority]:
+    project_root = _absolute_lexical(
+        Path(paths.project_root),
+        Path(paths.project_root),
+    )
+    state_root = _absolute_lexical(Path(paths.state_root), project_root)
+    try:
+        relative_parts = state_root.relative_to(project_root).parts
+    except ValueError as error:  # pragma: no cover - layout already rejects it
+        raise RunnerError("state root is outside the project") from error
+    if not relative_parts:
+        raise RunnerError("state root cannot equal the project root")
+
+    with ExitStack() as stack:
+        parent = stack.enter_context(_held_directory_authority(project_root))
+        cursor = project_root
+        for component in relative_parts:
+            cursor /= component
+            parent = stack.enter_context(
+                _held_child_directory_authority(cursor, parent)
+            )
+        if parent.path != state_root:
+            raise RunnerError("held state-root path changed")
+        yield parent
+
+
+def _held_directory_entry_statuses(
+    authority: _HeldDirectoryAuthority,
+) -> dict[str, os.stat_result]:
+    _verify_held_directory_authority(authority)
+    try:
+        with os.scandir(authority.path) as entries:
+            result = {
+                entry.name: os.stat(
+                    authority.path / entry.name,
+                    follow_symlinks=False,
+                )
+                for entry in entries
+            }
+    except OSError as error:
+        raise RunnerError("unable to enumerate held directory") from error
+    _verify_held_directory_authority(authority)
+    return result
+
+
+def _require_safe_regular_entry(
+    parent: _HeldDirectoryAuthority,
+    name: str,
+    status: os.stat_result,
+) -> None:
+    path = parent.path / name
+    if (
+        _is_link_or_reparse(path, status)
+        or not stat.S_ISREG(status.st_mode)
+        or status.st_nlink != 1
+    ):
+        raise RunnerError(f"unsafe regular entry in held directory: {name}")
+
+
+def _require_safe_directory_entry(
+    parent: _HeldDirectoryAuthority,
+    name: str,
+    status: os.stat_result,
+) -> None:
+    path = parent.path / name
+    if _is_link_or_reparse(path, status) or not stat.S_ISDIR(status.st_mode):
+        raise RunnerError(f"unsafe directory entry in held directory: {name}")
+
+
+def _state_replacement_paths(paths: RunnerPaths) -> tuple[Path, Path]:
+    return _replacement_control_paths(paths.state_path)
+
+
+def _validate_state_root_allowlist(
+    paths: RunnerPaths,
+    authority: _HeldDirectoryAuthority,
+    *,
+    allow_state_controls: bool,
+) -> None:
+    intent_path, prior_path = _state_replacement_paths(paths)
+    regular_names = {
+        MATERIAL_PIPELINE_LOCK_NAME,
+        "state.json",
+        "lockbox.lock",
+        "lockbox-reservation.json",
+    }
+    control_names = {
+        paths.preflight_state_stage_path.name,
+        intent_path.name,
+        prior_path.name,
+    }
+    directory_names = {
+        "inputs",
+        "split",
+        "preflight",
+        "non-lockbox",
+        "lockbox",
+        "publication",
+        "dependencies",
+        "resolver-venv",
+        "venv",
+    }
+    entries = _held_directory_entry_statuses(authority)
+    unknown = set(entries) - regular_names - control_names - directory_names
+    if unknown:
+        raise RunnerError(
+            "unknown state-root allowlist entry is retained: "
+            + ", ".join(sorted(unknown))
+        )
+    if not allow_state_controls and set(entries) & control_names:
+        raise RunnerError("unexpected state replacement control entry")
+    for name, status in entries.items():
+        if name in directory_names:
+            _require_safe_directory_entry(authority, name, status)
+        else:
+            _require_safe_regular_entry(authority, name, status)
+
+
+def _lock_file_identity(handle: BinaryIO) -> tuple[int, ...]:
+    descriptor = handle.fileno()
+    if os.name == "nt":
+        return _windows_handle_information(msvcrt.get_osfhandle(descriptor))[0]
+    opened = os.fstat(descriptor)
+    return (int(opened.st_dev), int(opened.st_ino))
+
+
+def _open_material_lock_handle(
+    path: Path,
+    *,
+    parent_authority: _HeldDirectoryAuthority,
+) -> BinaryIO:
+    if Path(path).parent != parent_authority.path:
+        raise RunnerError("material lock parent authority does not match")
+    _verify_held_directory_authority(parent_authority)
+    exists = os.path.lexists(path)
+    before = os.stat(path, follow_symlinks=False) if exists else None
+    if before is not None and (
+        _is_link_or_reparse(path, before)
+        or not stat.S_ISREG(before.st_mode)
+        or before.st_nlink != 1
+    ):
+        raise RunnerError("material-pipeline lock is unsafe")
+    try:
+        if os.name == "nt":
+            descriptor = _windows_open_mutation_fd(
+                path,
+                access=0x80000000 | 0x40000000 | 0x00000080,
+                disposition=3 if exists else 1,
+                descriptor_flags=os.O_RDWR | getattr(os, "O_BINARY", 0),
+                share_mode=0x00000001,
+            )
+        else:
+            flags = os.O_RDWR | getattr(os, "O_NOFOLLOW", 0)
+            flags |= os.O_CREAT | os.O_EXCL if not exists else 0
+            descriptor = os.open(path, flags, 0o600)
+    except OSError as error:
+        raise RunnerError("unable to open material-pipeline lock") from error
+    try:
+        opened = os.fstat(descriptor)
+        after = os.stat(path, follow_symlinks=False)
+        if (
+            _is_link_or_reparse(path, after)
+            or not stat.S_ISREG(opened.st_mode)
+            or opened.st_nlink != 1
+            or _status_stable_identity(opened)
+            != _status_stable_identity(after)
+            or (
+                before is not None
+                and _status_stable_identity(before)
+                != _status_stable_identity(opened)
+            )
+        ):
+            raise RunnerError("material-pipeline lock identity changed")
+        return os.fdopen(descriptor, "r+b", closefd=True)
+    except Exception:
+        os.close(descriptor)
+        raise
+
+
+def _verify_material_pipeline_authority(
+    authority: _MaterialPipelineAuthority,
+) -> None:
+    if type(authority) is not _MaterialPipelineAuthority:
+        raise RunnerError("material-pipeline authority type changed")
+    _verify_held_directory_authority(authority.state_root)
+    if authority.lock_file.closed:
+        raise RunnerError("material-pipeline lock handle is closed")
+    if _lock_file_identity(authority.lock_file) != authority.lock_stable_identity:
+        raise RunnerError("material-pipeline lock identity changed")
+    status = os.stat(authority.lock_path, follow_symlinks=False)
+    if (
+        _is_link_or_reparse(authority.lock_path, status)
+        or not stat.S_ISREG(status.st_mode)
+        or status.st_nlink != 1
+        or _status_stable_identity(status) != authority.lock_stable_identity
+    ):
+        raise RunnerError("material-pipeline lock path changed")
+
+
+@contextmanager
+def material_pipeline_lock(
+    paths: RunnerPaths,
+) -> Iterator[_MaterialPipelineAuthority]:
+    _validate_layout(paths)
+    with _held_state_root_authority(paths) as state_root:
+        lock_path = Path(paths.material_pipeline_lock_path)
+        lock_file = _open_material_lock_handle(
+            lock_path,
+            parent_authority=state_root,
+        )
+        acquired = False
+        try:
+            try:
+                _acquire_os_lock(lock_file)
+            except OSError as error:
+                raise RunnerError(
+                    "material-pipeline lock is already held or unavailable"
+                ) from error
+            acquired = True
+            authority = _MaterialPipelineAuthority(
+                state_root=state_root,
+                lock_path=lock_path,
+                lock_stable_identity=_lock_file_identity(lock_file),
+                lock_file=lock_file,
+            )
+            _verify_material_pipeline_authority(authority)
+            _validate_state_root_allowlist(
+                paths,
+                state_root,
+                allow_state_controls=True,
+            )
+            yield authority
+            _verify_material_pipeline_authority(authority)
+        finally:
+            active_error = sys.exc_info()[1]
+            cleanup_errors: list[tuple[str, OSError]] = []
+            if acquired:
+                try:
+                    _release_os_lock(lock_file)
+                except OSError as error:
+                    cleanup_errors.append(("release", error))
+            try:
+                lock_file.close()
+            except OSError as error:
+                cleanup_errors.append(("close", error))
+            if cleanup_errors:
+                classified = RunnerError("material-pipeline lock cleanup failed")
+                for operation, error in cleanup_errors:
+                    classified.add_note(
+                        "material-pipeline lock "
+                        f"{operation} error: {type(error).__name__}: {error}"
+                    )
+                if active_error is not None:
+                    raise classified from active_error
+                raise classified from cleanup_errors[0][1]
+
+
+def _preflight_artifact_destinations(paths: RunnerPaths) -> tuple[Path, ...]:
+    return (
+        Path(paths.input_ledger_path),
+        Path(paths.split_manifest_path),
+        *(Path(paths.partition_authority_cache_path(role)) for role in NONFINAL_PARTITION_ROLES),
+    )
+
+
+def _artifact_stage_path(destination: Path) -> Path:
+    target = Path(destination)
+    return target.with_name(f".{target.name}.preflight.stage")
+
+
+def _output_parent_for_destination(
+    paths: RunnerPaths,
+    destination: Path,
+    authorities: _PreflightOutputAuthorities,
+) -> _HeldDirectoryAuthority:
+    target = Path(destination)
+    if target == Path(paths.input_ledger_path):
+        parent = authorities.inputs_root
+    elif target == Path(paths.split_manifest_path):
+        parent = authorities.split_root
+    elif target in {
+        Path(paths.partition_authority_cache_path(role))
+        for role in NONFINAL_PARTITION_ROLES
+    }:
+        parent = authorities.preflight_root
+    else:
+        raise RunnerError("preflight artifact destination is not fixed")
+    if target.parent != parent.path:
+        raise RunnerError("preflight artifact parent authority changed")
+    _verify_held_directory_authority(parent)
+    return parent
+
+
+def _safe_unlink_owned_file(authority: _HeldRegularFileAuthority) -> None:
+    unlink_error: Exception | None = None
+    try:
+        _unlink_held_regular_file_authority(authority)
+    except Exception as error:
+        unlink_error = error
+    try:
+        _close_owned_regular_file_authority(authority)
+    except Exception:
+        if unlink_error is None:
+            raise
+    if unlink_error is not None:
+        raise unlink_error
+
+
+def _recover_preflight_artifact_destination(
+    destination: Path,
+    *,
+    parent_authority: _HeldDirectoryAuthority,
+) -> None:
+    target = Path(destination)
+    if target.parent != parent_authority.path:
+        raise RunnerError("artifact recovery parent authority changed")
+    stage_path = _artifact_stage_path(target)
+    intent_path, prior_path = _replacement_control_paths(target)
+    _verify_held_directory_authority(parent_authority)
+
+    intent_exists = os.path.lexists(intent_path)
+    prior_exists = os.path.lexists(prior_path)
+    stage_exists = os.path.lexists(stage_path)
+    if not intent_exists:
+        if prior_exists:
+            raise RunnerError("orphaned preflight replacement prior is retained")
+        if stage_exists:
+            stage = _open_owned_regular_file_authority(
+                stage_path,
+                parent_authority=parent_authority,
+                delete_access=True,
+            )
+            owned_stage = stage
+            stage = None
+            _safe_unlink_owned_file(owned_stage)
+            _flush_held_directory(parent_authority)
+        return
+
+    intent_file = _open_owned_regular_file_authority(
+        intent_path,
+        parent_authority=parent_authority,
+        delete_access=True,
+    )
+    try:
+        intent = _validate_replacement_intent(
+            _load_json_object_bytes(
+                _read_held_regular_file_bytes(intent_file),
+                "preflight artifact replacement intent",
+            ),
+            destination=target,
+            prior_path=prior_path,
+        )
+        destination_file = (
+            _open_owned_regular_file_authority(
+                target,
+                parent_authority=parent_authority,
+                delete_access=True,
+            )
+            if os.path.lexists(target)
+            else None
+        )
+        prior_file = (
+            _open_owned_regular_file_authority(
+                prior_path,
+                parent_authority=parent_authority,
+                delete_access=True,
+            )
+            if prior_exists
+            else None
+        )
+        stage_file = (
+            _open_owned_regular_file_authority(
+                stage_path,
+                parent_authority=parent_authority,
+                delete_access=True,
+            )
+            if stage_exists
+            else None
+        )
+        try:
+            if (
+                destination_file is not None
+                and destination_file.sha256 == intent["source_sha256"]
+                and stage_file is None
+            ):
+                if prior_file is not None:
+                    if prior_file.sha256 != intent["prior_sha256"]:
+                        raise RunnerError("artifact recovery prior digest mismatch")
+                    owned_prior = prior_file
+                    prior_file = None
+                    _safe_unlink_owned_file(owned_prior)
+            elif (
+                destination_file is None
+                and prior_file is not None
+                and stage_file is not None
+                and prior_file.sha256 == intent["prior_sha256"]
+                and stage_file.sha256 == intent["source_sha256"]
+            ):
+                restored = _renamed_held_regular_file_authority(
+                    prior_file,
+                    target,
+                    parent_authority=parent_authority,
+                )
+                prior_file = restored
+                owned_stage = stage_file
+                stage_file = None
+                _safe_unlink_owned_file(owned_stage)
+            elif (
+                destination_file is not None
+                and destination_file.sha256 == intent["prior_sha256"]
+                and prior_file is None
+                and stage_file is not None
+                and stage_file.sha256 == intent["source_sha256"]
+            ):
+                owned_stage = stage_file
+                stage_file = None
+                _safe_unlink_owned_file(owned_stage)
+            else:
+                raise RunnerError(
+                    "preflight artifact recovery is ambiguous; evidence retained"
+                )
+        finally:
+            for held in (destination_file, prior_file, stage_file):
+                if held is not None:
+                    _close_owned_regular_file_authority(held)
+        owned_intent = intent_file
+        intent_file = None
+        _safe_unlink_owned_file(owned_intent)
+        _flush_held_directory(parent_authority)
+    finally:
+        if intent_file is not None:
+            _close_owned_regular_file_authority(intent_file)
+
+
+def _preflight_recovery_plan_files(
+    plan: _PreflightArtifactRecoveryPlan,
+) -> tuple[_HeldRegularFileAuthority, ...]:
+    return tuple(
+        authority
+        for authority in (
+            plan.destination_file,
+            plan.intent_file,
+            plan.prior_file,
+            plan.stage_file,
+        )
+        if authority is not None
+    )
+
+
+def _close_preflight_artifact_recovery_plan(
+    plan: _PreflightArtifactRecoveryPlan,
+) -> None:
+    authorities = _preflight_recovery_plan_files(plan)
+    plan.destination_file = None
+    plan.intent_file = None
+    plan.prior_file = None
+    plan.stage_file = None
+    cleanup_error = _close_owned_regular_file_authorities_once(authorities)
+    if cleanup_error is not None:
+        raise cleanup_error
+
+
+def _plan_preflight_artifact_destination_recovery(
+    destination: Path,
+    *,
+    parent_authority: _HeldDirectoryAuthority,
+    entry_names: frozenset[str],
+) -> _PreflightArtifactRecoveryPlan:
+    target = Path(destination)
+    if target.parent != parent_authority.path:
+        raise RunnerError("artifact recovery parent authority changed")
+    stage_path = _artifact_stage_path(target)
+    intent_path, prior_path = _replacement_control_paths(target)
+    recognized_names = {
+        target.name,
+        stage_path.name,
+        intent_path.name,
+        prior_path.name,
+    }
+    if not entry_names <= recognized_names:
+        raise RunnerError("artifact recovery plan received an unknown entry")
+
+    opened: list[_HeldRegularFileAuthority] = []
+
+    def open_if_present(path: Path) -> _HeldRegularFileAuthority | None:
+        if path.name not in entry_names:
+            return None
+        authority = _open_owned_regular_file_authority(
+            path,
+            parent_authority=parent_authority,
+            delete_access=True,
+        )
+        opened.append(authority)
+        return authority
+
+    try:
+        destination_file = open_if_present(target)
+        intent_file = open_if_present(intent_path)
+        prior_file = open_if_present(prior_path)
+        stage_file = open_if_present(stage_path)
+        if intent_file is None:
+            if prior_file is not None:
+                raise RunnerError("orphaned preflight replacement prior is retained")
+            action = "discard-stage" if stage_file is not None else "none"
+        else:
+            intent = _validate_replacement_intent(
+                _load_json_object_bytes(
+                    _read_held_regular_file_bytes(intent_file),
+                    "preflight artifact replacement intent",
+                ),
+                destination=target,
+                prior_path=prior_path,
+            )
+            if (
+                destination_file is not None
+                and destination_file.sha256 == intent["source_sha256"]
+                and stage_file is None
+            ):
+                if (
+                    prior_file is not None
+                    and prior_file.sha256 != intent["prior_sha256"]
+                ):
+                    raise RunnerError("artifact recovery prior digest mismatch")
+                action = "finish-committed"
+            elif (
+                destination_file is None
+                and prior_file is not None
+                and stage_file is not None
+                and prior_file.sha256 == intent["prior_sha256"]
+                and stage_file.sha256 == intent["source_sha256"]
+            ):
+                action = "restore-prior"
+            elif (
+                destination_file is not None
+                and destination_file.sha256 == intent["prior_sha256"]
+                and prior_file is None
+                and stage_file is not None
+                and stage_file.sha256 == intent["source_sha256"]
+            ):
+                action = "discard-uncommitted-stage"
+            else:
+                raise RunnerError(
+                    "preflight artifact recovery is ambiguous; evidence retained"
+                )
+        plan = _PreflightArtifactRecoveryPlan(
+            destination=target,
+            parent_authority=parent_authority,
+            action=action,
+            destination_file=destination_file,
+            intent_file=intent_file,
+            prior_file=prior_file,
+            stage_file=stage_file,
+        )
+        opened.clear()
+        return plan
+    finally:
+        cleanup_error = _close_owned_regular_file_authorities_once(opened)
+        if cleanup_error is not None:
+            raise cleanup_error
+
+
+def _plan_preflight_artifact_recovery(
+    paths: RunnerPaths,
+    authorities: _PreflightOutputAuthorities,
+) -> tuple[_PreflightArtifactRecoveryPlan, ...]:
+    destinations = _preflight_artifact_destinations(paths)
+    groups = (
+        (authorities.inputs_root, destinations[:1]),
+        (authorities.split_root, destinations[1:2]),
+        (authorities.preflight_root, destinations[2:]),
+    )
+    entry_names_by_parent: dict[Path, frozenset[str]] = {}
+    destination_names_by_parent: dict[Path, dict[Path, frozenset[str]]] = {}
+    for parent, fixed_destinations in groups:
+        fixed_names = {path.name for path in fixed_destinations}
+        control_names: set[str] = set()
+        names_for_destination: dict[Path, frozenset[str]] = {}
+        entries = _held_directory_entry_statuses(parent)
+        for destination in fixed_destinations:
+            intent, prior = _replacement_control_paths(destination)
+            recognized = frozenset(
+                {
+                    destination.name,
+                    _artifact_stage_path(destination).name,
+                    intent.name,
+                    prior.name,
+                }
+            )
+            names_for_destination[destination] = frozenset(set(entries) & recognized)
+            control_names.update(recognized - {destination.name})
+        unknown = set(entries) - fixed_names - control_names
+        if unknown:
+            raise RunnerError(
+                "unknown preflight output shape entry is retained: "
+                + ", ".join(sorted(unknown))
+            )
+        for name, status in entries.items():
+            _require_safe_regular_entry(parent, name, status)
+        entry_names_by_parent[parent.path] = frozenset(entries)
+        destination_names_by_parent[parent.path] = names_for_destination
+
+    plans: list[_PreflightArtifactRecoveryPlan] = []
+    try:
+        for destination in destinations:
+            parent = _output_parent_for_destination(paths, destination, authorities)
+            plans.append(
+                _plan_preflight_artifact_destination_recovery(
+                    destination,
+                    parent_authority=parent,
+                    entry_names=destination_names_by_parent[parent.path][destination],
+                )
+            )
+        planned_files = tuple(
+            authority
+            for plan in plans
+            for authority in _preflight_recovery_plan_files(plan)
+        )
+        for parent, _fixed_destinations in groups:
+            current_entries = _held_directory_entry_statuses(parent)
+            if frozenset(current_entries) != entry_names_by_parent[parent.path]:
+                raise RunnerError(
+                    "preflight output recovery namespace changed during planning"
+                )
+        if {authority.path for authority in planned_files} != {
+            parent.path / name
+            for parent, _fixed_destinations in groups
+            for name in entry_names_by_parent[parent.path]
+        }:
+            raise RunnerError("preflight output recovery plan is incomplete")
+        for authority in planned_files:
+            _verify_held_regular_file_authority(authority)
+        return tuple(plans)
+    except Exception:
+        cleanup_error: Exception | None = None
+        for plan in plans:
+            try:
+                _close_preflight_artifact_recovery_plan(plan)
+            except Exception as error:
+                if cleanup_error is None:
+                    cleanup_error = error
+        if cleanup_error is not None:
+            raise cleanup_error
+        raise
+
+
+def _execute_preflight_artifact_recovery_plan(
+    plan: _PreflightArtifactRecoveryPlan,
+) -> None:
+    parent = plan.parent_authority
+    _verify_held_directory_authority(parent)
+    for authority in _preflight_recovery_plan_files(plan):
+        _verify_held_regular_file_authority(authority)
+    if plan.action == "discard-stage":
+        assert plan.stage_file is not None
+        owned_stage = plan.stage_file
+        plan.stage_file = None
+        _safe_unlink_owned_file(owned_stage)
+        _flush_held_directory(parent)
+    elif plan.action == "finish-committed":
+        if plan.prior_file is not None:
+            owned_prior = plan.prior_file
+            plan.prior_file = None
+            _safe_unlink_owned_file(owned_prior)
+        assert plan.intent_file is not None
+        owned_intent = plan.intent_file
+        plan.intent_file = None
+        _safe_unlink_owned_file(owned_intent)
+        _flush_held_directory(parent)
+    elif plan.action == "restore-prior":
+        assert plan.prior_file is not None
+        restored = _renamed_held_regular_file_authority(
+            plan.prior_file,
+            plan.destination,
+            parent_authority=parent,
+        )
+        plan.prior_file = restored
+        assert plan.stage_file is not None
+        owned_stage = plan.stage_file
+        plan.stage_file = None
+        _safe_unlink_owned_file(owned_stage)
+        assert plan.intent_file is not None
+        owned_intent = plan.intent_file
+        plan.intent_file = None
+        _safe_unlink_owned_file(owned_intent)
+        _flush_held_directory(parent)
+    elif plan.action == "discard-uncommitted-stage":
+        assert plan.stage_file is not None
+        owned_stage = plan.stage_file
+        plan.stage_file = None
+        _safe_unlink_owned_file(owned_stage)
+        assert plan.intent_file is not None
+        owned_intent = plan.intent_file
+        plan.intent_file = None
+        _safe_unlink_owned_file(owned_intent)
+        _flush_held_directory(parent)
+    elif plan.action != "none":
+        raise RunnerError("preflight artifact recovery plan action changed")
+
+
+def _verify_preflight_artifact_recovery_plans(
+    paths: RunnerPaths,
+    authorities: _PreflightOutputAuthorities,
+    plans: tuple[_PreflightArtifactRecoveryPlan, ...],
+) -> None:
+    destinations = _preflight_artifact_destinations(paths)
+    if (
+        type(plans) is not tuple
+        or len(plans) != len(destinations)
+        or any(
+            type(plan) is not _PreflightArtifactRecoveryPlan
+            or plan.destination != destination
+            for plan, destination in zip(plans, destinations, strict=True)
+        )
+    ):
+        raise RunnerError("preflight artifact recovery plan order changed")
+    held_roots = (
+        authorities.inputs_root,
+        authorities.split_root,
+        authorities.preflight_root,
+    )
+    expected_names = {root.path: set() for root in held_roots}
+    for plan in plans:
+        expected_parent = _output_parent_for_destination(
+            paths,
+            plan.destination,
+            authorities,
+        )
+        if plan.parent_authority is not expected_parent:
+            raise RunnerError("preflight artifact recovery plan parent changed")
+        for authority in _preflight_recovery_plan_files(plan):
+            if authority.path.parent != expected_parent.path:
+                raise RunnerError("preflight recovery file parent changed")
+            expected_names[expected_parent.path].add(authority.path.name)
+            _verify_held_regular_file_authority(authority)
+    for parent in held_roots:
+        entries = _held_directory_entry_statuses(parent)
+        if set(entries) != expected_names[parent.path]:
+            raise RunnerError(
+                "preflight output recovery namespace changed before execution"
+            )
+        for name, status in entries.items():
+            _require_safe_regular_entry(parent, name, status)
+
+
+def _validate_preflight_output_shape(
+    paths: RunnerPaths,
+    authorities: _PreflightOutputAuthorities,
+    *,
+    require_complete: bool,
+    allow_controls: bool,
+) -> None:
+    destinations = _preflight_artifact_destinations(paths)
+    groups = (
+        (authorities.inputs_root, destinations[:1]),
+        (authorities.split_root, destinations[1:2]),
+        (authorities.preflight_root, destinations[2:]),
+    )
+    for parent, fixed_destinations in groups:
+        fixed_names = {path.name for path in fixed_destinations}
+        control_names: set[str] = set()
+        for destination in fixed_destinations:
+            intent, prior = _replacement_control_paths(destination)
+            control_names.update(
+                {_artifact_stage_path(destination).name, intent.name, prior.name}
+            )
+        entries = _held_directory_entry_statuses(parent)
+        unknown = set(entries) - fixed_names - control_names
+        if unknown:
+            raise RunnerError(
+                "unknown preflight output shape entry is retained: "
+                + ", ".join(sorted(unknown))
+            )
+        if not allow_controls and set(entries) & control_names:
+            raise RunnerError("preflight output recovery control remains")
+        if require_complete and set(entries) != fixed_names:
+            raise RunnerError("preflight output shape is incomplete")
+        for name, status in entries.items():
+            _require_safe_regular_entry(parent, name, status)
+
+
+@contextmanager
+def _held_preflight_output_authorities(
+    paths: RunnerPaths,
+    material_authority: _MaterialPipelineAuthority,
+) -> Iterator[_PreflightOutputAuthorities]:
+    if type(material_authority) is not _MaterialPipelineAuthority:
+        raise RunnerError("material-pipeline authority is required")
+    _verify_material_pipeline_authority(material_authority)
+    state_root = material_authority.state_root
+    with ExitStack() as stack:
+        held: list[_HeldDirectoryAuthority] = []
+        for path in (
+            Path(paths.input_ledger_path).parent,
+            Path(paths.split_manifest_path).parent,
+            Path(paths.preflight_cache_root),
+        ):
+            held.append(
+                stack.enter_context(
+                    _held_child_directory_authority(path, state_root)
+                )
+            )
+        authorities = _PreflightOutputAuthorities(*held)
+        recovery_plans = _plan_preflight_artifact_recovery(paths, authorities)
+        try:
+            _verify_preflight_artifact_recovery_plans(
+                paths,
+                authorities,
+                recovery_plans,
+            )
+            for recovery_plan in recovery_plans:
+                _execute_preflight_artifact_recovery_plan(recovery_plan)
+        finally:
+            cleanup_error: Exception | None = None
+            for recovery_plan in recovery_plans:
+                try:
+                    _close_preflight_artifact_recovery_plan(recovery_plan)
+                except Exception as error:
+                    if cleanup_error is None:
+                        cleanup_error = error
+            if cleanup_error is not None:
+                raise cleanup_error
+        _validate_preflight_output_shape(
+            paths,
+            authorities,
+            require_complete=False,
+            allow_controls=False,
+        )
+        try:
+            yield authorities
+        except Exception:
+            for authority in held:
+                _verify_held_directory_authority(authority)
+            raise
+        _validate_preflight_output_shape(
+            paths,
+            authorities,
+            require_complete=True,
+            allow_controls=False,
+        )
+        _validate_state_root_allowlist(
+            paths,
+            state_root,
+            allow_state_controls=True,
+        )
+
+
+def _replace_preflight_bytes_durably(
+    paths: RunnerPaths,
+    destination: Path,
+    content: bytes,
+    *,
+    output_authorities: _PreflightOutputAuthorities,
+) -> None:
+    target = Path(destination)
+    if (
+        type(paths) is not RunnerPaths
+        or type(content) is not bytes
+        or target not in _preflight_artifact_destinations(paths)
+        or type(output_authorities) is not _PreflightOutputAuthorities
+    ):
+        raise RunnerError("artifact-only preflight replacement target is invalid")
+    expected_roots = (
+        Path(paths.input_ledger_path).parent,
+        Path(paths.split_manifest_path).parent,
+        Path(paths.preflight_cache_root),
+    )
+    held_roots = (
+        output_authorities.inputs_root,
+        output_authorities.split_root,
+        output_authorities.preflight_root,
+    )
+    if any(
+        type(authority) is not _HeldDirectoryAuthority
+        or authority.path != expected
+        for authority, expected in zip(held_roots, expected_roots, strict=True)
+    ):
+        raise RunnerError("preflight output capability does not match paths")
+    for authority in held_roots:
+        _verify_held_directory_authority(authority)
+    parent_authority = _output_parent_for_destination(
+        paths,
+        target,
+        output_authorities,
+    )
+    _validate_preflight_output_shape(
+        paths,
+        output_authorities,
+        require_complete=False,
+        allow_controls=False,
+    )
+    if os.name != "nt":
+        raise RunnerError("preflight durable replacement is Windows-qualified only")
+
+    _recover_preflight_artifact_destination(
+        target,
+        parent_authority=parent_authority,
+    )
+    stage_path = _artifact_stage_path(target)
+    intent_path, prior_path = _replacement_control_paths(target)
+    stage = _create_held_regular_file_authority(
+        stage_path,
+        content,
+        parent_authority=parent_authority,
+    )
+    promoted: _HeldRegularFileAuthority | None = stage
+    previous: _HeldRegularFileAuthority | None = None
+    intent: _HeldRegularFileAuthority | None = None
+    try:
+        if os.path.lexists(target):
+            if os.path.lexists(intent_path) or os.path.lexists(prior_path):
+                raise RunnerError("preflight replacement control entry already exists")
+            previous = _open_owned_regular_file_authority(
+                target,
+                parent_authority=parent_authority,
+                delete_access=True,
+            )
+            intent_payload = {
+                "schema_version": _REPLACE_INTENT_SCHEMA_VERSION,
+                "destination_name": target.name,
+                "prior_name": prior_path.name,
+                "source_sha256": stage.sha256,
+                "prior_sha256": previous.sha256,
+            }
+            intent = _create_held_regular_file_authority(
+                intent_path,
+                canonical_json_bytes(intent_payload),
+                parent_authority=parent_authority,
+            )
+            previous = _renamed_held_regular_file_authority(
+                previous,
+                prior_path,
+                parent_authority=parent_authority,
+            )
+        promoted = _renamed_held_regular_file_authority(
+            stage,
+            target,
+            parent_authority=parent_authority,
+        )
+        _flush_held_directory(parent_authority)
+        _verify_held_regular_file_authority(promoted)
+        if _read_held_regular_file_bytes(promoted) != content:
+            raise RunnerError("preflight artifact immediate readback mismatch")
+        if previous is not None:
+            owned_previous = previous
+            previous = None
+            _safe_unlink_owned_file(owned_previous)
+        if intent is not None:
+            owned_intent = intent
+            intent = None
+            _safe_unlink_owned_file(owned_intent)
+        _flush_held_directory(parent_authority)
+        _verify_held_regular_file_authority(promoted)
+    finally:
+        if previous is not None:
+            _close_owned_regular_file_authority(previous)
+        if intent is not None:
+            _close_owned_regular_file_authority(intent)
+        if promoted is not None:
+            _close_owned_regular_file_authority(promoted)
+
+
+_STATE_REPLACEMENT_INTENT_FIELDS = frozenset(
+    {
+        "schema_version",
+        "destination_name",
+        "stage_name",
+        "prior_name",
+        "admission",
+        "stage_stable_identity",
+        "stage_sha256",
+        "stage_size_bytes",
+        "initial_stable_identity",
+        "initial_sha256",
+        "initial_size_bytes",
+    }
+)
+
+
+def _state_replacement_intent_payload(
+    paths: RunnerPaths,
+    *,
+    stage: _HeldRegularFileAuthority,
+    admitted: _AdmittedStateAuthority,
+) -> dict[str, Any]:
+    _validate_digest(stage.sha256, "state stage")
+    intent_path, prior_path = _state_replacement_paths(paths)
+    del intent_path
+    initial = admitted.initial_file
+    return {
+        "schema_version": _REPLACE_INTENT_SCHEMA_VERSION,
+        "destination_name": paths.state_path.name,
+        "stage_name": paths.preflight_state_stage_path.name,
+        "prior_name": prior_path.name,
+        "admission": admitted.admission,
+        "stage_stable_identity": list(stage.stable_identity),
+        "stage_sha256": stage.sha256,
+        "stage_size_bytes": stage.size_bytes,
+        "initial_stable_identity": (
+            list(initial.stable_identity) if initial is not None else None
+        ),
+        "initial_sha256": initial.sha256 if initial is not None else None,
+        "initial_size_bytes": initial.size_bytes if initial is not None else None,
+    }
+
+
+def _validate_state_replacement_intent(
+    payload: Any,
+    paths: RunnerPaths,
+) -> dict[str, Any]:
+    _intent_path, prior_path = _state_replacement_paths(paths)
+    if not isinstance(payload, dict) or set(payload) != _STATE_REPLACEMENT_INTENT_FIELDS:
+        raise RunnerError("invalid preflight state intent fields")
+    if (
+        type(payload["schema_version"]) is not int
+        or payload["schema_version"] != _REPLACE_INTENT_SCHEMA_VERSION
+        or payload["destination_name"] != paths.state_path.name
+        or payload["stage_name"] != paths.preflight_state_stage_path.name
+        or payload["prior_name"] != prior_path.name
+        or payload["admission"] not in {"absent", "initialized"}
+    ):
+        raise RunnerError("invalid preflight state intent identity")
+    stage_identity = payload["stage_stable_identity"]
+    if (
+        type(stage_identity) is not list
+        or not stage_identity
+        or any(type(item) is not int or item < 0 for item in stage_identity)
+        or type(payload["stage_size_bytes"]) is not int
+        or payload["stage_size_bytes"] < 0
+    ):
+        raise RunnerError("invalid preflight state stage identity")
+    _validate_digest(payload["stage_sha256"], "preflight state stage")
+    if payload["admission"] == "absent":
+        if any(
+            payload[field] is not None
+            for field in (
+                "initial_stable_identity",
+                "initial_sha256",
+                "initial_size_bytes",
+            )
+        ):
+            raise RunnerError("absent state intent carries an initial identity")
+    else:
+        initial_identity = payload["initial_stable_identity"]
+        if (
+            type(initial_identity) is not list
+            or not initial_identity
+            or any(type(item) is not int or item < 0 for item in initial_identity)
+            or type(payload["initial_size_bytes"]) is not int
+            or payload["initial_size_bytes"] < 0
+        ):
+            raise RunnerError("initialized state intent identity is invalid")
+        _validate_digest(payload["initial_sha256"], "preflight initial state")
+    return dict(payload)
+
+
+def _state_from_held_file(
+    authority: _HeldRegularFileAuthority,
+) -> tuple[dict[str, Any], bytes]:
+    content = _read_held_regular_file_bytes(authority)
+    if _sha256_bytes(content) != authority.sha256 or len(content) != authority.size_bytes:
+        raise RunnerError("held Phase B state bytes changed")
+    state = _validate_state(_load_json_object_bytes(content, "Phase B state"))
+    if canonical_json_bytes(state) != content:
+        raise RunnerError("Phase B state bytes are not canonical")
+    return state, content
+
+
+def _state_intent_matches_file(
+    intent: Mapping[str, Any],
+    authority: _HeldRegularFileAuthority,
+    *,
+    prefix: str,
+) -> bool:
+    return (
+        list(authority.stable_identity) == intent[f"{prefix}_stable_identity"]
+        and authority.sha256 == intent[f"{prefix}_sha256"]
+        and authority.size_bytes == intent[f"{prefix}_size_bytes"]
+    )
+
+
+def _recover_preflight_state_controls(
+    paths: RunnerPaths,
+    *,
+    state_root: _HeldDirectoryAuthority,
+) -> _HeldRegularFileAuthority | None:
+    state_path = Path(paths.state_path)
+    stage_path = Path(paths.preflight_state_stage_path)
+    intent_path, prior_path = _state_replacement_paths(paths)
+    intent_exists = os.path.lexists(intent_path)
+    prior_exists = os.path.lexists(prior_path)
+    stage_exists = os.path.lexists(stage_path)
+
+    if not intent_exists:
+        if prior_exists:
+            raise RunnerError(
+                "preflight state recovery is indeterminate; orphan prior retained"
+            )
+        state_file = (
+            _open_owned_regular_file_authority(
+                state_path,
+                parent_authority=state_root,
+                delete_access=True,
+            )
+            if os.path.lexists(state_path)
+            else None
+        )
+        stage: _HeldRegularFileAuthority | None = None
+        cleanup_started = False
+        try:
+            target_state: dict[str, Any] | None = None
+            target_bytes: bytes | None = None
+            if state_file is not None:
+                try:
+                    target_state, target_bytes = _state_from_held_file(state_file)
+                except RunnerError as error:
+                    if stage_exists:
+                        raise RunnerError(
+                            "preflight state target and no-intent stage coexistence "
+                            "is indeterminate; evidence retained"
+                        ) from error
+                    raise
+            if stage_exists:
+                stage = _open_owned_regular_file_authority(
+                    stage_path,
+                    parent_authority=state_root,
+                    delete_access=True,
+                )
+                stage_state, _ = _state_from_held_file(stage)
+                if stage_state["phase"] != "preflight_complete":
+                    raise RunnerError("malformed state stage is retained")
+                if state_file is not None and (
+                    target_state != _initial_state()
+                    or target_bytes != canonical_json_bytes(_initial_state())
+                ):
+                    raise RunnerError(
+                        "preflight state target and no-intent stage coexistence "
+                        "is indeterminate; evidence retained"
+                    )
+                owned_stage = stage
+                stage = None
+                cleanup_started = True
+                _safe_unlink_owned_file(owned_stage)
+                _flush_held_directory(state_root)
+            result = state_file
+            state_file = None
+            return result
+        except Exception as error:
+            if cleanup_started and not (
+                isinstance(error, RunnerError) and "indeterminate" in str(error)
+            ):
+                raise RunnerError(
+                    "preflight state precommit recovery cleanup failed"
+                ) from error
+            raise
+        finally:
+            active_error = sys.exc_info()[1]
+            remaining = tuple(
+                authority
+                for authority in (state_file, stage)
+                if authority is not None
+            )
+            state_file = None
+            stage = None
+            close_error = _close_owned_regular_file_authorities_once(remaining)
+            if close_error is not None:
+                message = "preflight state recovery owner cleanup failed"
+                if active_error is not None and "indeterminate" in str(active_error):
+                    message = (
+                        "preflight state recovery remains indeterminate during "
+                        "owner cleanup"
+                    )
+                _raise_owner_cleanup_failure(
+                    message,
+                    close_error,
+                    active_error=active_error,
+                )
+
+    intent_file = _open_owned_regular_file_authority(
+        intent_path,
+        parent_authority=state_root,
+        delete_access=True,
+    )
+    target_file: _HeldRegularFileAuthority | None = None
+    stage_file: _HeldRegularFileAuthority | None = None
+    prior_file: _HeldRegularFileAuthority | None = None
+    committed_target_recognized = False
+    precommit_cleanup_started = False
+    try:
+        intent = _validate_state_replacement_intent(
+            _load_json_object_bytes(
+                _read_held_regular_file_bytes(intent_file),
+                "preflight state replacement intent",
+            ),
+            paths,
+        )
+        if os.path.lexists(state_path):
+            target_file = _open_owned_regular_file_authority(
+                state_path,
+                parent_authority=state_root,
+                delete_access=True,
+            )
+        if stage_exists:
+            stage_file = _open_owned_regular_file_authority(
+                stage_path,
+                parent_authority=state_root,
+                delete_access=True,
+            )
+        if prior_exists:
+            prior_file = _open_owned_regular_file_authority(
+                prior_path,
+                parent_authority=state_root,
+                delete_access=True,
+            )
+        if stage_file is not None and not _state_intent_matches_file(
+            intent,
+            stage_file,
+            prefix="stage",
+        ):
+            raise RunnerError("preflight state stage identity mismatch; retained")
+        if prior_file is not None and (
+            intent["admission"] != "initialized"
+            or not _state_intent_matches_file(intent, prior_file, prefix="initial")
+        ):
+            raise RunnerError("preflight state prior identity mismatch; retained")
+
+        target_state: dict[str, Any] | None = None
+        if target_file is not None:
+            target_state, _ = _state_from_held_file(target_file)
+        if (
+            target_file is not None
+            and target_state is not None
+            and target_state["phase"] != "initialized"
+            and _state_intent_matches_file(intent, target_file, prefix="stage")
+            and stage_file is None
+        ):
+            committed_target_recognized = True
+            _flush_held_directory(state_root)
+            if prior_file is not None:
+                owned_prior = prior_file
+                prior_file = None
+                _safe_unlink_owned_file(owned_prior)
+            owned_intent = intent_file
+            intent_file = None
+            _safe_unlink_owned_file(owned_intent)
+            _flush_held_directory(state_root)
+            _verify_held_regular_file_authority(target_file)
+            recovered_state, recovered_bytes = _state_from_held_file(target_file)
+            if (
+                recovered_state != target_state
+                or recovered_bytes != canonical_json_bytes(target_state)
+                or not _state_intent_matches_file(
+                    intent,
+                    target_file,
+                    prefix="stage",
+                )
+            ):
+                raise RunnerError(
+                    "recovered committed preflight state changed after cleanup"
+                )
+            _validate_state_root_allowlist(
+                paths,
+                state_root,
+                allow_state_controls=False,
+            )
+            result = target_file
+            target_file = None
+            return result
+
+        if (
+            target_file is None
+            and stage_file is not None
+            and intent["admission"] == "initialized"
+            and prior_file is not None
+        ):
+            target_file = _renamed_held_regular_file_authority(
+                prior_file,
+                state_path,
+                parent_authority=state_root,
+            )
+            prior_file = None
+            owned_stage = stage_file
+            stage_file = None
+            precommit_cleanup_started = True
+            _safe_unlink_owned_file(owned_stage)
+        elif (
+            target_file is None
+            and stage_file is not None
+            and intent["admission"] == "absent"
+            and prior_file is None
+        ):
+            owned_stage = stage_file
+            stage_file = None
+            precommit_cleanup_started = True
+            _safe_unlink_owned_file(owned_stage)
+        elif (
+            target_file is not None
+            and target_state is not None
+            and target_state["phase"] == "initialized"
+            and intent["admission"] == "initialized"
+            and _state_intent_matches_file(intent, target_file, prefix="initial")
+            and stage_file is not None
+            and prior_file is None
+        ):
+            owned_stage = stage_file
+            stage_file = None
+            precommit_cleanup_started = True
+            _safe_unlink_owned_file(owned_stage)
+        else:
+            raise RunnerError(
+                "preflight state recovery is indeterminate; evidence retained"
+            )
+        owned_intent = intent_file
+        intent_file = None
+        _safe_unlink_owned_file(owned_intent)
+        _flush_held_directory(state_root)
+        result = target_file
+        target_file = None
+        return result
+    except Exception as error:
+        if committed_target_recognized and not (
+            isinstance(error, RunnerError) and "indeterminate" in str(error)
+        ):
+            raise RunnerError(
+                "preflight state recovery outcome is indeterminate during "
+                "committed cleanup"
+            ) from error
+        if precommit_cleanup_started and not (
+            isinstance(error, RunnerError) and "indeterminate" in str(error)
+        ):
+            raise RunnerError(
+                "preflight state precommit recovery cleanup failed"
+            ) from error
+        raise
+    finally:
+        active_error = sys.exc_info()[1]
+        remaining = tuple(
+            authority
+            for authority in (target_file, stage_file, prior_file, intent_file)
+            if authority is not None
+        )
+        target_file = None
+        stage_file = None
+        prior_file = None
+        intent_file = None
+        close_error = _close_owned_regular_file_authorities_once(remaining)
+        if close_error is not None:
+            message = "preflight state recovery owner cleanup failed"
+            if active_error is not None and "indeterminate" in str(active_error):
+                message = (
+                    "preflight state recovery remains indeterminate during owner cleanup"
+                )
+            _raise_owner_cleanup_failure(
+                message,
+                close_error,
+                active_error=active_error,
+            )
+
+
+@contextmanager
+def _admit_recovered_state(
+    paths: RunnerPaths,
+    *,
+    material_authority: _MaterialPipelineAuthority,
+) -> Iterator[_AdmittedStateAuthority | _HeldCommittedStateAuthority]:
+    _verify_material_pipeline_authority(material_authority)
+    state_root = material_authority.state_root
+    _validate_state_root_allowlist(paths, state_root, allow_state_controls=True)
+    held = _recover_preflight_state_controls(paths, state_root=state_root)
+    try:
+        _validate_state_root_allowlist(paths, state_root, allow_state_controls=False)
+        if held is None:
+            admitted = _AdmittedStateAuthority(
+                admission="absent",
+                state_root_stable_identity=state_root.stable_identity,
+                initial_bytes=None,
+                initial_file=None,
+                _initial_owner=None,
+            )
+            yield admitted
+            return
+        state, content = _state_from_held_file(held)
+        if state["phase"] == "initialized":
+            expected = canonical_json_bytes(_initial_state())
+            if content != expected:
+                raise RunnerError("initialized state is not byte-identical")
+            owner = _RegularFileAuthorityOwner(held)
+            yield _AdmittedStateAuthority(
+                admission="initialized",
+                state_root_stable_identity=state_root.stable_identity,
+                initial_bytes=content,
+                initial_file=held,
+                _initial_owner=owner,
+            )
+            return
+        _flush_held_directory(state_root)
+        yield _HeldCommittedStateAuthority(
+            state=state,
+            canonical_bytes=content,
+            file=held,
+        )
+    finally:
+        active_error = sys.exc_info()[1]
+        owned: _HeldRegularFileAuthority | None = None
+        if held is not None and "owner" in locals():
+            remaining = owner.peek()
+            held = None
+            if remaining is not None:
+                owned = owner.take()
+        elif held is not None:
+            owned = held
+            held = None
+        close_error = _close_owned_regular_file_authorities_once(
+            (owned,) if owned is not None else ()
+        )
+        if close_error is not None:
+            message = "recovered preflight state owner cleanup failed"
+            if active_error is not None and "indeterminate" in str(active_error):
+                message = (
+                    "preflight state outcome remains indeterminate during recovered "
+                    "owner cleanup"
+                )
+            _raise_owner_cleanup_failure(
+                message,
+                close_error,
+                active_error=active_error,
+            )
+
+
+def _verify_admitted_state_cas(
+    paths: RunnerPaths,
+    admitted: _AdmittedStateAuthority,
+    *,
+    state_root: _HeldDirectoryAuthority,
+) -> None:
+    if (
+        type(admitted) is not _AdmittedStateAuthority
+        or admitted.state_root_stable_identity != state_root.stable_identity
+    ):
+        raise RunnerError("admitted state authority changed")
+    _verify_held_directory_authority(state_root)
+    if admitted.admission == "absent":
+        if (
+            admitted.initial_file is not None
+            or admitted.initial_bytes is not None
+            or admitted._initial_owner is not None
+        ):
+            raise RunnerError("absent state admission carries an initial file")
+        if os.path.lexists(paths.state_path):
+            raise RunnerError("admitted-absent state target appeared")
+        return
+    if (
+        admitted.admission != "initialized"
+        or admitted.initial_file is None
+        or admitted._initial_owner is None
+        or admitted._initial_owner.peek() is not admitted.initial_file
+    ):
+        raise RunnerError("initialized state admission is incomplete")
+    _verify_held_regular_file_authority(admitted.initial_file)
+    content = _read_held_regular_file_bytes(admitted.initial_file)
+    if content != admitted.initial_bytes or content != canonical_json_bytes(_initial_state()):
+        raise RunnerError("admitted initialized state changed")
+
+
+@contextmanager
+def _commit_preflight_state_durably(
+    paths: RunnerPaths,
+    state: Mapping[str, Any],
+    *,
+    material_authority: _MaterialPipelineAuthority,
+    admitted_state_authority: _AdmittedStateAuthority,
+) -> Iterator[_HeldCommittedStateAuthority]:
+    validated_state = _validate_state(dict(state))
+    if validated_state["phase"] != "preflight_complete":
+        raise RunnerError("preflight state commit requires preflight_complete")
+    content = canonical_json_bytes(validated_state)
+    _verify_material_pipeline_authority(material_authority)
+    state_root = material_authority.state_root
+    _verify_admitted_state_cas(
+        paths,
+        admitted_state_authority,
+        state_root=state_root,
+    )
+    _validate_state_root_allowlist(paths, state_root, allow_state_controls=False)
+    stage = _create_held_regular_file_authority(
+        paths.preflight_state_stage_path,
+        content,
+        parent_authority=state_root,
+    )
+    promoted: _HeldRegularFileAuthority | None = stage
+    intent: _HeldRegularFileAuthority | None = None
+    prior: _HeldRegularFileAuthority | None = None
+    transferred_initial: _HeldRegularFileAuthority | None = None
+    linearized = False
+    try:
+        intent_path, prior_path = _state_replacement_paths(paths)
+        intent = _create_held_regular_file_authority(
+            intent_path,
+            canonical_json_bytes(
+                _state_replacement_intent_payload(
+                    paths,
+                    stage=stage,
+                    admitted=admitted_state_authority,
+                )
+            ),
+            parent_authority=state_root,
+        )
+        _verify_admitted_state_cas(
+            paths,
+            admitted_state_authority,
+            state_root=state_root,
+        )
+        _validate_state_root_allowlist(paths, state_root, allow_state_controls=True)
+        if admitted_state_authority.admission == "initialized":
+            assert admitted_state_authority._initial_owner is not None
+            transferred_initial = admitted_state_authority._initial_owner.take()
+            if transferred_initial is not admitted_state_authority.initial_file:
+                raise RunnerError("initialized state owner transfer changed")
+            prior = _renamed_held_regular_file_authority(
+                transferred_initial,
+                prior_path,
+                parent_authority=state_root,
+            )
+            transferred_initial = prior
+            _flush_held_directory(state_root)
+        elif os.path.lexists(paths.state_path):
+            raise RunnerError("admitted-absent state target appeared before commit")
+
+        promoted = _renamed_held_regular_file_authority(
+            stage,
+            paths.state_path,
+            parent_authority=state_root,
+        )
+        linearized = True
+        _flush_held_directory(state_root)
+        _verify_held_regular_file_authority(promoted)
+        committed_state, committed_bytes = _state_from_held_file(promoted)
+        if committed_bytes != content or committed_state != validated_state:
+            raise RunnerError("committed preflight state readback mismatch")
+        if prior is not None:
+            owned_prior = prior
+            prior = None
+            transferred_initial = None
+            _safe_unlink_owned_file(owned_prior)
+        if intent is not None:
+            owned_intent = intent
+            intent = None
+            _safe_unlink_owned_file(owned_intent)
+        _flush_held_directory(state_root)
+        _validate_state_root_allowlist(paths, state_root, allow_state_controls=False)
+        _verify_held_regular_file_authority(promoted)
+        post_cleanup_state, post_cleanup_bytes = _state_from_held_file(promoted)
+        if (
+            post_cleanup_state != committed_state
+            or post_cleanup_bytes != committed_bytes
+        ):
+            raise RunnerError("committed preflight state changed after control cleanup")
+        committed = _HeldCommittedStateAuthority(
+            state=post_cleanup_state,
+            canonical_bytes=post_cleanup_bytes,
+            file=promoted,
+        )
+        try:
+            yield committed
+            _verify_held_regular_file_authority(promoted)
+            final_state, final_bytes = _state_from_held_file(promoted)
+            if final_state != committed_state or final_bytes != committed_bytes:
+                raise RunnerError("committed preflight state changed")
+            _validate_state_root_allowlist(
+                paths,
+                state_root,
+                allow_state_controls=False,
+            )
+        except Exception as error:
+            raise RunnerError(
+                f"preflight state outcome is indeterminate: {error}"
+            ) from error
+    except Exception as error:
+        if not linearized:
+            try:
+                _verify_material_pipeline_authority(material_authority)
+                _validate_state_root_allowlist(
+                    paths,
+                    state_root,
+                    allow_state_controls=True,
+                )
+                entries = _held_directory_entry_statuses(state_root)
+                target_status = entries.get(paths.state_path.name)
+                stage_status = entries.get(paths.preflight_state_stage_path.name)
+                prior_status = entries.get(prior_path.name)
+                if target_status is not None:
+                    if (
+                        promoted is not None
+                        and _status_stable_identity(target_status)
+                        == promoted.stable_identity
+                    ):
+                        promoted = _retargeted_held_regular_file_authority(
+                            promoted,
+                            paths.state_path,
+                        )
+                        recovered_state, recovered_bytes = _state_from_held_file(
+                            promoted
+                        )
+                        if (
+                            recovered_state != validated_state
+                            or recovered_bytes != content
+                        ):
+                            raise RunnerError(
+                                "visible renamed state does not match proposed bytes"
+                            )
+                        linearized = True
+                    elif (
+                        transferred_initial is not None
+                        and _status_stable_identity(target_status)
+                        == transferred_initial.stable_identity
+                        and admitted_state_authority._initial_owner is not None
+                    ):
+                        transferred_initial = (
+                            _retargeted_held_regular_file_authority(
+                                transferred_initial,
+                                paths.state_path,
+                            )
+                        )
+                        admitted_state_authority._initial_owner.restore(
+                            transferred_initial
+                        )
+                        transferred_initial = None
+                        prior = None
+                    else:
+                        raise RunnerError(
+                            "unrecognized state target appeared during rename"
+                        )
+                elif transferred_initial is not None:
+                    if (
+                        prior_status is None
+                        or _status_stable_identity(prior_status)
+                        != transferred_initial.stable_identity
+                    ):
+                        raise RunnerError(
+                            "transferred initialized state is not the held prior"
+                        )
+                    prior = _retargeted_held_regular_file_authority(
+                        transferred_initial,
+                        prior_path,
+                    )
+                    transferred_initial = prior
+                if not linearized and promoted is not None:
+                    if (
+                        stage_status is None
+                        or _status_stable_identity(stage_status)
+                        != promoted.stable_identity
+                    ):
+                        raise RunnerError(
+                            "held state stage left its reserved precommit entry"
+                        )
+            except Exception as reconciliation_error:
+                raise RunnerError(
+                    "preflight state outcome is indeterminate during rename reconciliation"
+                ) from reconciliation_error
+        if linearized:
+            if isinstance(error, RunnerError) and "indeterminate" in str(error):
+                raise
+            raise RunnerError(
+                f"preflight state outcome is indeterminate: {error}"
+            ) from error
+        try:
+            if prior is not None and not os.path.lexists(paths.state_path):
+                prior = _renamed_held_regular_file_authority(
+                    prior,
+                    paths.state_path,
+                    parent_authority=state_root,
+                )
+                transferred_initial = prior
+            if (
+                admitted_state_authority._initial_owner is not None
+                and transferred_initial is not None
+            ):
+                admitted_state_authority._initial_owner.restore(
+                    transferred_initial
+                )
+                transferred_initial = None
+                prior = None
+            if promoted is not None and os.path.lexists(promoted.path):
+                owned_promoted = promoted
+                promoted = None
+                _safe_unlink_owned_file(owned_promoted)
+            if intent is not None:
+                owned_intent = intent
+                intent = None
+                _safe_unlink_owned_file(owned_intent)
+            _flush_held_directory(state_root)
+        except Exception as recovery_error:
+            raise RunnerError(
+                "preflight state outcome is indeterminate during precommit recovery"
+            ) from recovery_error
+        raise
+    finally:
+        active_error = sys.exc_info()[1]
+        remaining_owners: list[_HeldRegularFileAuthority] = []
+        if prior is not None:
+            remaining_owners.append(prior)
+        elif transferred_initial is not None:
+            remaining_owners.append(transferred_initial)
+        if intent is not None:
+            remaining_owners.append(intent)
+        if promoted is not None:
+            remaining_owners.append(promoted)
+        prior = None
+        transferred_initial = None
+        intent = None
+        promoted = None
+        close_error = _close_owned_regular_file_authorities_once(remaining_owners)
+        if close_error is not None:
+            if linearized:
+                message = (
+                    "preflight state outcome is indeterminate during committed "
+                    "owner cleanup"
+                )
+            elif active_error is not None and "indeterminate" in str(active_error):
+                message = (
+                    "preflight state outcome is indeterminate during precommit "
+                    "owner cleanup"
+                )
+            else:
+                message = (
+                    "preflight state precommit owner cleanup failed after "
+                    "deterministic recovery"
+                )
+            _raise_owner_cleanup_failure(
+                message,
+                close_error,
+                active_error=active_error,
+            )
+
+
+def _preflight_payload_bytes(
+    paths: RunnerPaths,
+    artifacts: ProductionPreflightArtifacts,
+) -> tuple[tuple[Path, bytes], ...]:
+    if type(artifacts) is not ProductionPreflightArtifacts:
+        raise RunnerError("exact ProductionPreflightArtifacts value is required")
+    _validate_digest(
+        artifacts.source_authority_commitment_sha256,
+        "source authority commitment",
+    )
+    try:
+        ledger = validate_phase_b_input_ledger(deepcopy(artifacts.input_ledger))
+        manifest = validate_phase_b_split_manifest(deepcopy(artifacts.split_manifest))
+        if type(artifacts.partition_authority_caches) is not dict or tuple(
+            artifacts.partition_authority_caches
+        ) != NONFINAL_PARTITION_ROLES:
+            raise ValueError("preflight cache roles changed")
+        caches = {
+            role: validate_phase_b_partition_authority_cache(
+                deepcopy(artifacts.partition_authority_caches[role]),
+                manifest,
+                expected_role=role,
+            )
+            for role in NONFINAL_PARTITION_ROLES
+        }
+    except (TypeError, ValueError) as error:
+        raise RunnerError(f"invalid preflight artifacts: {error}") from error
+    payloads = (ledger, manifest, *(caches[role] for role in NONFINAL_PARTITION_ROLES))
+    return tuple(
+        (path, canonical_json_bytes(payload))
+        for path, payload in zip(
+            _preflight_artifact_destinations(paths),
+            payloads,
+            strict=True,
+        )
+    )
+
+
+def _validate_and_restore_readback_files(
+    paths: RunnerPaths,
+    files: tuple[_HeldRegularFileAuthority, ...],
+) -> tuple[dict[str, Any], dict[str, Any], tuple[Any, ...]]:
+    if len(files) != 5:
+        raise RunnerError("preflight readback file count changed")
+    expected_paths = _preflight_artifact_destinations(paths)
+    if tuple(item.path for item in files) != expected_paths:
+        raise RunnerError("preflight readback path order changed")
+    for authority in files:
+        _verify_held_regular_file_authority(authority)
+    ledger_bytes, manifest_bytes, *cache_bytes = tuple(
+        _read_held_regular_file_bytes(authority) for authority in files
+    )
+    try:
+        ledger = validate_phase_b_input_ledger(
+            _load_json_object_bytes(ledger_bytes, "preflight input ledger")
+        )
+        manifest = validate_phase_b_split_manifest(
+            _load_json_object_bytes(manifest_bytes, "preflight split manifest")
+        )
+        if canonical_json_bytes(ledger) != ledger_bytes:
+            raise ValueError("preflight input ledger bytes are not canonical")
+        if canonical_json_bytes(manifest) != manifest_bytes:
+            raise ValueError("preflight split manifest bytes are not canonical")
+        from scripts import emotion_state_phase_b_evaluation as evaluation
+
+        restored: list[Any] = []
+        for role, content in zip(
+            NONFINAL_PARTITION_ROLES,
+            cache_bytes,
+            strict=True,
+        ):
+            cache = validate_phase_b_partition_authority_cache(
+                _load_json_object_bytes(content, f"{role} partition cache"),
+                manifest,
+                expected_role=role,
+            )
+            if canonical_json_bytes(cache) != content:
+                raise ValueError(f"{role} partition cache bytes are not canonical")
+            authority = evaluation.restore_validated_partition_authority_cache(
+                cache,
+                manifest,
+                role=role,
+            )
+            records = evaluation.validated_partition_records(authority, role=role)
+            if not records or any(
+                hasattr(record, "project_relative_path")
+                or hasattr(record.label_record, "project_relative_path")
+                for record in records
+            ):
+                raise ValueError("restored partition records are empty or path-bearing")
+            payload = authority.to_payload()
+            if (
+                payload["partition_role"] != role
+                or payload["configuration_sha256"]
+                != manifest["configuration_sha256"]
+                or payload["split_manifest_sha256"]
+                != manifest["split_manifest_sha256"]
+                or payload["assignment_sha256"] != manifest["assignment_sha256"]
+                or payload["partition_authority_sha256"]
+                != manifest["partition_authority_sha256"][role]
+            ):
+                raise ValueError("restored partition authority link changed")
+            restored.append(authority)
+    except (TypeError, ValueError) as error:
+        raise RunnerError(f"preflight readback validation failed: {error}") from error
+    return ledger, manifest, tuple(restored)
+
+
+@contextmanager
+def _persist_preflight_artifacts(
+    paths: RunnerPaths,
+    artifacts: ProductionPreflightArtifacts,
+    *,
+    material_authority: _MaterialPipelineAuthority,
+    output_authorities: _PreflightOutputAuthorities,
+) -> Iterator[_PersistedPreflightReadback]:
+    _verify_material_pipeline_authority(material_authority)
+    if type(output_authorities) is not _PreflightOutputAuthorities:
+        raise RunnerError("preflight output authority type changed")
+    payload_bytes = _preflight_payload_bytes(paths, artifacts)
+    for destination, content in payload_bytes:
+        _replace_preflight_bytes_durably(
+            paths,
+            destination,
+            content,
+            output_authorities=output_authorities,
+        )
+    _validate_preflight_output_shape(
+        paths,
+        output_authorities,
+        require_complete=True,
+        allow_controls=False,
+    )
+    with ExitStack() as stack:
+        files = tuple(
+            stack.enter_context(_held_regular_file(destination))
+            for destination, _content in payload_bytes
+        )
+        for authority, (_destination, expected) in zip(
+            files,
+            payload_bytes,
+            strict=True,
+        ):
+            if _read_held_regular_file_bytes(authority) != expected:
+                raise RunnerError("persisted preflight artifact bytes changed")
+        ledger, manifest, _restored = _validate_and_restore_readback_files(
+            paths,
+            files,
+        )
+        readback = _PersistedPreflightReadback(
+            input_ledger=ledger,
+            split_manifest=manifest,
+            files=files,
+        )
+        try:
+            yield readback
+        finally:
+            for authority in files:
+                _verify_held_regular_file_authority(authority)
+            _validate_preflight_output_shape(
+                paths,
+                output_authorities,
+                require_complete=True,
+                allow_controls=False,
+            )
+
+
+def _verify_complete_preflight_readback_authority(
+    paths: RunnerPaths,
+    output_authorities: _PreflightOutputAuthorities,
+    readback_authority: _PersistedPreflightReadback,
+) -> None:
+    try:
+        if type(output_authorities) is not _PreflightOutputAuthorities:
+            raise RunnerError("preflight output authority type changed")
+        if type(readback_authority) is not _PersistedPreflightReadback:
+            raise RunnerError("persisted preflight readback authority changed")
+        held_roots = (
+            output_authorities.inputs_root,
+            output_authorities.split_root,
+            output_authorities.preflight_root,
+        )
+        expected_roots = (
+            Path(paths.input_ledger_path).parent,
+            Path(paths.split_manifest_path).parent,
+            Path(paths.preflight_cache_root),
+        )
+        if any(
+            type(authority) is not _HeldDirectoryAuthority
+            or authority.path != expected
+            for authority, expected in zip(held_roots, expected_roots, strict=True)
+        ):
+            raise RunnerError("preflight output authority aggregate changed")
+        files = readback_authority.files
+        expected_paths = _preflight_artifact_destinations(paths)
+        if (
+            type(files) is not tuple
+            or len(files) != len(expected_paths)
+            or any(
+                type(authority) is not _HeldRegularFileAuthority
+                or authority.path != expected
+                for authority, expected in zip(files, expected_paths, strict=True)
+            )
+        ):
+            raise RunnerError("persisted preflight file aggregate changed")
+        expected_parents = (
+            held_roots[0],
+            held_roots[1],
+            held_roots[2],
+            held_roots[2],
+            held_roots[2],
+        )
+        if any(
+            authority.path.parent != parent.path
+            for authority, parent in zip(files, expected_parents, strict=True)
+        ):
+            raise RunnerError("persisted preflight parent relationship changed")
+        for authority in held_roots:
+            _verify_held_directory_authority(authority)
+        for authority in files:
+            _verify_held_regular_file_authority(authority)
+    except RunnerError:
+        raise
+    except (AttributeError, OSError, TypeError, ValueError) as error:
+        raise RunnerError("preflight readback capability is unavailable") from error
+
+
+def _load_bound_partition_authority(
+    paths: RunnerPaths,
+    *,
+    role: str,
+    expected_split_manifest_file_sha256: str,
+    material_authority: _MaterialPipelineAuthority,
+    output_authorities: _PreflightOutputAuthorities,
+    readback_authority: _PersistedPreflightReadback,
+) -> Any:
+    if type(role) is not str or role not in NONFINAL_PARTITION_ROLES:
+        raise RunnerError("non-lockbox partition role is invalid")
+    expected_digest = _validate_digest(
+        expected_split_manifest_file_sha256,
+        "split manifest file",
+    )
+    _verify_material_pipeline_authority(material_authority)
+    _verify_complete_preflight_readback_authority(
+        paths,
+        output_authorities,
+        readback_authority,
+    )
+    files = readback_authority.files
+    manifest_file = files[1]
+    cache_index = 2 + NONFINAL_PARTITION_ROLES.index(role)
+    cache_file = files[cache_index]
+    if (
+        manifest_file.path != Path(paths.split_manifest_path)
+        or cache_file.path != Path(paths.partition_authority_cache_path(role))
+    ):
+        raise RunnerError("bound partition path or role changed")
+    _verify_held_regular_file_authority(manifest_file)
+    _verify_held_regular_file_authority(cache_file)
+    if manifest_file.sha256 != expected_digest:
+        raise RunnerError("split manifest file anchor changed")
+    try:
+        manifest = validate_phase_b_split_manifest(
+            _load_json_object_bytes(
+                _read_held_regular_file_bytes(manifest_file),
+                "bound split manifest",
+            )
+        )
+        cache = validate_phase_b_partition_authority_cache(
+            _load_json_object_bytes(
+                _read_held_regular_file_bytes(cache_file),
+                f"bound {role} cache",
+            ),
+            manifest,
+            expected_role=role,
+        )
+        from scripts import emotion_state_phase_b_evaluation as evaluation
+
+        restored = evaluation.restore_validated_partition_authority_cache(
+            cache,
+            manifest,
+            role=role,
+        )
+        records = evaluation.validated_partition_records(restored, role=role)
+        if not records:
+            raise ValueError("bound partition records are empty")
+        payload = restored.to_payload()
+        if (
+            payload["partition_role"] != role
+            or payload["configuration_sha256"] != manifest["configuration_sha256"]
+            or payload["split_manifest_sha256"] != manifest["split_manifest_sha256"]
+            or payload["assignment_sha256"] != manifest["assignment_sha256"]
+            or payload["partition_authority_sha256"]
+            != manifest["partition_authority_sha256"][role]
+        ):
+            raise ValueError("bound partition authority link changed")
+    except (TypeError, ValueError) as error:
+        raise RunnerError(f"bound partition authority is invalid: {error}") from error
+    _verify_complete_preflight_readback_authority(
+        paths,
+        output_authorities,
+        readback_authority,
+    )
+    return restored
+
+
+@contextmanager
+def _held_existing_preflight_outputs(
+    paths: RunnerPaths,
+    material_authority: _MaterialPipelineAuthority,
+) -> Iterator[_PreflightOutputAuthorities]:
+    _verify_material_pipeline_authority(material_authority)
+    roots = (
+        Path(paths.input_ledger_path).parent,
+        Path(paths.split_manifest_path).parent,
+        Path(paths.preflight_cache_root),
+    )
+    with ExitStack() as stack:
+        try:
+            authorities = _PreflightOutputAuthorities(*(
+                stack.enter_context(_held_directory_authority(path))
+                for path in roots
+            ))
+        except (OSError, RunnerError) as error:
+            raise RunnerError("committed checkpoint output root is unavailable") from error
+        _validate_preflight_output_shape(
+            paths,
+            authorities,
+            require_complete=True,
+            allow_controls=False,
+        )
+        yield authorities
+        _validate_preflight_output_shape(
+            paths,
+            authorities,
+            require_complete=True,
+            allow_controls=False,
+        )
+
+
+@contextmanager
+def _read_committed_preflight_checkpoint(
+    paths: RunnerPaths,
+    *,
+    material_authority: _MaterialPipelineAuthority,
+    committed_state_authority: _HeldCommittedStateAuthority,
+) -> Iterator[_CommittedPreflightReadback]:
+    try:
+        if type(committed_state_authority) is not _HeldCommittedStateAuthority:
+            raise RunnerError("committed state authority type changed")
+        _verify_material_pipeline_authority(material_authority)
+        _verify_held_regular_file_authority(committed_state_authority.file)
+        state, state_bytes = _state_from_held_file(committed_state_authority.file)
+        if (
+            state != committed_state_authority.state
+            or state_bytes != committed_state_authority.canonical_bytes
+            or state["phase"] == "initialized"
+        ):
+            raise RunnerError("committed state capability changed")
+        if (
+            state["configuration_sha256"]
+            != EXPECTED_STATIC_FILE_SHA256["configuration_sha256"]
+            or state["environment_lock_sha256"]
+            != EXPECTED_STATIC_FILE_SHA256["environment_lock_sha256"]
+        ):
+            raise RunnerError("committed state static anchor changed")
+        with _held_existing_preflight_outputs(
+            paths,
+            material_authority,
+        ) as output_authorities, ExitStack() as stack:
+            files = tuple(
+                stack.enter_context(_held_regular_file(path))
+                for path in _preflight_artifact_destinations(paths)
+            )
+            if (
+                files[0].sha256 != state["input_ledger_sha256"]
+                or files[1].sha256 != state["split_manifest_sha256"]
+            ):
+                raise RunnerError("committed checkpoint file anchor changed")
+            ledger, manifest, restored = _validate_and_restore_readback_files(
+                paths,
+                files,
+            )
+            artifacts = _PersistedPreflightReadback(
+                input_ledger=ledger,
+                split_manifest=manifest,
+                files=files,
+            )
+            _assert_closed_environment()
+            for authority in files:
+                _verify_held_regular_file_authority(authority)
+            _verify_held_regular_file_authority(committed_state_authority.file)
+            _validate_state_root_allowlist(
+                paths,
+                material_authority.state_root,
+                allow_state_controls=False,
+            )
+            readback = _CommittedPreflightReadback(
+                state=state,
+                state_file=committed_state_authority.file,
+                artifacts=artifacts,
+                restored=restored,
+            )
+            yield readback
+            for authority in files:
+                _verify_held_regular_file_authority(authority)
+            _verify_held_regular_file_authority(committed_state_authority.file)
+    except RunnerError as error:
+        if "already complete" in str(error):
+            raise
+        raise RunnerError(f"committed checkpoint integrity failure: {error}") from error
 
 
 def _validate_digest(value: Any, field: str) -> str:
@@ -850,6 +4145,29 @@ def _validate_layout(paths: RunnerPaths) -> None:
             pass
         else:
             raise RunnerError("injected test roots cannot target the real repository")
+        expected_input_ledger = state_root / "inputs" / "input-ledger.json"
+        expected_split_manifest = (
+            state_root / "split" / "validated-split-manifest.json"
+        )
+        if (
+            _absolute_lexical(Path(paths.input_ledger_path), project)
+            != expected_input_ledger
+            or _absolute_lexical(Path(paths.split_manifest_path), project)
+            != expected_split_manifest
+        ):
+            raise RunnerError(
+                "injected preflight outputs must use fixed state-root paths"
+            )
+        if paths.public_material_root is None:
+            raise RunnerError("injected public-material root is unavailable")
+        try:
+            _absolute_lexical(
+                Path(paths.public_material_root), project
+            ).relative_to(project)
+        except ValueError as error:
+            raise RunnerError(
+                "injected public-material root must stay inside project root"
+            ) from error
     else:
         raise RunnerError("runner path authority is invalid")
     if any(
@@ -1939,27 +5257,6 @@ def _load_json_object(path: Path, label: str) -> dict[str, Any]:
     return _load_json_object_bytes(_read_file_nofollow(path), label)
 
 
-def _load_bound_partition_authority(
-    paths: RunnerPaths,
-    *,
-    role: str,
-    expected_split_manifest_sha256: str,
-) -> Any:
-    if role not in (
-        "training_discovery",
-        "calibration",
-        "balanced_diagnostic",
-    ):
-        raise RunnerError("non-lockbox partition role is invalid")
-    _validate_digest(
-        expected_split_manifest_sha256,
-        "split_manifest_sha256",
-    )
-    raise RunnerError(
-        "runner-owned partition authority persistence is unavailable"
-    )
-
-
 def load_state(
     paths: RunnerPaths,
     *,
@@ -2068,119 +5365,425 @@ def _assert_closed_environment() -> None:
         )
 
 
-def _validate_preflight_inputs(
-    paths: RunnerPaths,
-) -> tuple[dict[str, Any], dict[str, Any], dict[str, Any], dict[str, Any]]:
-    _validate_layout(paths)
-    config_path = _validate_input_path(paths, paths.config_path)
-    environment_path = _validate_input_path(paths, paths.environment_lock_path)
-    feature_path = _validate_input_path(paths, paths.feature_schema_path)
-    split_schema_path = _validate_input_path(paths, paths.split_schema_path)
-    split_path = _validate_input_path(paths, paths.split_manifest_path)
-    ledger_path = _validate_input_path(paths, paths.input_ledger_path)
-    try:
-        config = validate_config(_load_json_object(config_path, "configuration"))
-        validate_environment_lock(
-            _load_json_object(environment_path, "environment lock")
-        )
-        validate_feature_schema(_load_json_object(feature_path, "feature schema"))
-        validate_split_schema(
-            _load_json_object(split_schema_path, "split schema")
-        )
-        split = validate_phase_b_split_manifest(
-            _load_json_object(split_path, "split manifest")
-        )
-        ledger = validate_phase_b_input_ledger(
-            _load_json_object(ledger_path, "input ledger")
-        )
-    except (TypeError, ValueError) as error:
-        raise RunnerError(f"preflight validation failed: {error}") from error
-    static_checks = {
-        "configuration_sha256": _sha256_file(config_path),
-        "environment_lock_sha256": _sha256_file(environment_path),
-        "feature_schema_sha256": _sha256_file(feature_path),
-        "split_schema_sha256": _sha256_file(split_schema_path),
-    }
-    for field, digest in EXPECTED_STATIC_FILE_SHA256.items():
-        if static_checks[field] != digest:
-            label = field.removesuffix("_sha256").replace("_", " ")
-            raise RunnerError(
-                f"{label} tracked bytes do not match the frozen identity"
-            )
-    return config, split, ledger, {
-        "configuration_sha256": static_checks["configuration_sha256"],
-        "environment_lock_sha256": static_checks["environment_lock_sha256"],
-        "input_ledger_sha256": _sha256_file(ledger_path),
-        "split_manifest_sha256": _sha256_file(split_path),
-    }
+_STATIC_PREFLIGHT_FIELDS = (
+    ("configuration", "configuration_sha256"),
+    ("environment lock", "environment_lock_sha256"),
+    ("feature schema", "feature_schema_sha256"),
+    ("split schema", "split_schema_sha256"),
+)
 
 
-def _assert_production_material_prerequisites(paths: RunnerPaths) -> None:
-    from scripts.emotion_state_phase_b_public_pipeline import (
-        PublicMaterialPrerequisiteError,
-        TRACKED_DATASET_EVIDENCE_FILENAMES,
-        validate_tracked_public_evidence,
+def _static_preflight_paths(paths: RunnerPaths) -> tuple[Path, ...]:
+    return (
+        Path(paths.config_path),
+        Path(paths.environment_lock_path),
+        Path(paths.feature_schema_path),
+        Path(paths.split_schema_path),
     )
 
-    _validate_layout(paths)
-    if paths.authority != "production":
-        raise RunnerError(
-            "public-material prerequisite gate requires production authority"
-        )
-    evidence: dict[str, bytes] = {}
-    for name in TRACKED_DATASET_EVIDENCE_FILENAMES:
-        path = _validate_input_path(paths, paths.dataset_evidence_root / name)
-        evidence[name] = _read_file_nofollow(path)
+
+def _validate_static_preflight_bytes(
+    contents: tuple[bytes, ...],
+) -> dict[str, Any]:
+    if len(contents) != 4 or any(type(content) is not bytes for content in contents):
+        raise RunnerError("tracked static byte shape changed")
+    payloads: list[dict[str, Any]] = []
+    for content, (label, digest_field) in zip(
+        contents,
+        _STATIC_PREFLIGHT_FIELDS,
+        strict=True,
+    ):
+        if _sha256_bytes(content) != EXPECTED_STATIC_FILE_SHA256[digest_field]:
+            raise RunnerError(f"{label} tracked bytes do not match the frozen identity")
+        payloads.append(_load_json_object_bytes(content, label))
     try:
-        validate_tracked_public_evidence(evidence)
-    except PublicMaterialPrerequisiteError as error:
-        raise RunnerError(str(error)) from error
+        configuration = validate_config(payloads[0])
+        validate_environment_lock(payloads[1])
+        validate_feature_schema(payloads[2])
+        validate_split_schema(payloads[3])
+    except (TypeError, ValueError) as error:
+        raise RunnerError(f"preflight static validation failed: {error}") from error
+    return configuration
+
+
+def _revalidate_held_static_preflight_inputs(
+    authority: _HeldStaticPreflightInputs,
+) -> None:
+    if type(authority) is not _HeldStaticPreflightInputs:
+        raise RunnerError("held static-input authority type changed")
+    for file in authority.files:
+        _verify_held_regular_file_metadata(file)
+    current = tuple(
+        _read_held_regular_file_bytes(file) for file in authority.files
+    )
+    if current != authority.contents or tuple(
+        _sha256_bytes(content) for content in current
+    ) != authority.digests:
+        raise RunnerError("tracked static input changed through its held handle")
+    if _validate_static_preflight_bytes(current) != authority.configuration:
+        raise RunnerError("tracked static semantics changed")
+
+
+@contextmanager
+def _held_preflight_static_inputs(
+    paths: RunnerPaths,
+) -> Iterator[_HeldStaticPreflightInputs]:
+    validated_paths = tuple(
+        _validate_input_path(paths, path)
+        for path in _static_preflight_paths(paths)
+    )
+    with ExitStack() as stack:
+        opened = tuple(
+            stack.enter_context(_held_regular_file_with_bytes(path))
+            for path in validated_paths
+        )
+        files = tuple(authority for authority, _content in opened)
+        contents = tuple(content for _authority, content in opened)
+        configuration = _validate_static_preflight_bytes(contents)
+        authority = _HeldStaticPreflightInputs(
+            configuration=configuration,
+            contents=contents,
+            digests=tuple(_sha256_bytes(content) for content in contents),
+            files=files,
+        )
+        yield authority
+        _revalidate_held_static_preflight_inputs(authority)
+
+
+def _read_tracked_preflight_evidence(
+    paths: RunnerPaths,
+) -> tuple[dict[str, bytes], tuple[tuple[str, bytes], ...]]:
+    snapshot: dict[str, bytes] = {}
+    pairs: list[tuple[str, bytes]] = []
+    for name in TRACKED_DATASET_EVIDENCE_FILENAMES:
+        path = _safe_path(
+            paths.dataset_evidence_root / name,
+            allowed_root=paths.dataset_evidence_root,
+            project_root=paths.project_root,
+            final_kind="file",
+            require_final=True,
+        )
+        content = _read_file_nofollow(path)
+        if type(content) is not bytes:
+            raise RunnerError("tracked evidence reader did not return exact bytes")
+        snapshot[name] = content
+        pairs.append((name, content))
+    return snapshot, tuple(pairs)
+
+
+def _crosscheck_built_preflight_artifacts(
+    artifacts: ProductionPreflightArtifacts,
+    *,
+    authority: TrackedPublicAuthority,
+    finished_responses: bytes,
+    summary_table: bytes,
+) -> None:
+    finished_digest = _sha256_bytes(finished_responses)
+    summary_digest = _sha256_bytes(summary_table)
+    ledger = artifacts.input_ledger
+    raw = ledger.get("raw_csv_sha256")
+    source = ledger.get("crema_label_ledger", {}).get("source_binding")
+    if raw != {
+        "finishedResponses.csv": finished_digest,
+        "processedResults/summaryTable.csv": summary_digest,
+    } or not isinstance(source, dict) or (
+        source.get("finished_responses_sha256") != finished_digest
+        or source.get("summary_table_sha256") != summary_digest
+    ):
+        raise RunnerError("preflight ledger CSV source binding changed")
+    if (
+        finished_digest != authority.crema_finished_responses.sha256
+        or len(finished_responses) != authority.crema_finished_responses.size_bytes
+        or summary_digest != authority.crema_summary_table.sha256
+        or len(summary_table) != authority.crema_summary_table.size_bytes
+    ):
+        raise RunnerError("preflight CSV authority cross-check failed")
+    acoustic_by_stem: dict[str, tuple[str, int]] = {}
+    for identity in authority.crema_audio:
+        path = identity.project_relative_path
+        if not path.endswith(".wav"):
+            raise RunnerError("CREMA acoustic authority path changed")
+        stem = path.rsplit("/", 1)[-1][:-4]
+        if not stem or stem in acoustic_by_stem:
+            raise RunnerError("CREMA acoustic authority stem changed")
+        acoustic_by_stem[stem] = (identity.sha256, identity.size_bytes)
+    for role in NONFINAL_PARTITION_ROLES:
+        cache = artifacts.partition_authority_caches[role]
+        for record in cache["records"]:
+            if acoustic_by_stem.get(record["clip_stem"]) != (
+                record["audio_sha256"],
+                record["audio_size_bytes"],
+            ):
+                raise RunnerError("preflight cache acoustic authority changed")
+
+
+def _compare_restored_preflight_authority(
+    artifacts: ProductionPreflightArtifacts,
+    restored: Mapping[str, Any],
+) -> None:
+    from scripts import emotion_state_phase_b_evaluation as evaluation
+
+    for role in NONFINAL_PARTITION_ROLES:
+        expected = evaluation.restore_validated_partition_authority_cache(
+            artifacts.partition_authority_caches[role],
+            artifacts.split_manifest,
+            role=role,
+        )
+        actual = restored[role]
+        if (
+            actual.to_payload() != expected.to_payload()
+            or evaluation.validated_partition_records(actual, role=role)
+            != evaluation.validated_partition_records(expected, role=role)
+        ):
+            raise RunnerError("persisted partition restoration changed")
+
+
+@contextmanager
+def _classify_post_commit_unwind(
+    marker: list[bool],
+    *,
+    boundary: Literal["build", "outer"],
+) -> Iterator[None]:
+    try:
+        yield
+    except Exception as error:
+        if marker == [True]:
+            if isinstance(error, RunnerError) and "indeterminate" in str(error):
+                raise
+            label = (
+                "post-commit build unwind"
+                if boundary == "build"
+                else "post-commit outer unwind"
+            )
+            raise RunnerError(
+                f"preflight state outcome is indeterminate during {label}: {error}"
+            ) from error
+        raise
+
+
+def _run_admitted_preflight_build(
+    paths: RunnerPaths,
+    *,
+    material_authority: _MaterialPipelineAuthority,
+    state_authority: _AdmittedStateAuthority,
+) -> dict[str, Any]:
+    committed_yielded = [False]
+    with _classify_post_commit_unwind(committed_yielded, boundary="build"):
+        with _held_preflight_static_inputs(paths) as static_authority:
+            configuration = static_authority.configuration
+            static_digests = {
+                field: digest
+                for (_label, field), digest in zip(
+                    _STATIC_PREFLIGHT_FIELDS,
+                    static_authority.digests,
+                    strict=True,
+                )
+            }
+            evidence, evidence_pairs = _read_tracked_preflight_evidence(paths)
+            try:
+                early_authority = validate_tracked_public_evidence(dict(evidence_pairs))
+                early_commitment = tracked_public_authority_commitment_sha256(
+                    tracked_evidence=dict(evidence_pairs),
+                    authority=early_authority,
+                )
+            except (TypeError, ValueError) as error:
+                raise RunnerError(f"tracked public evidence is invalid: {error}") from error
+
+            finished = _read_verified_public_bytes(
+                paths,
+                paths.crema_finished_responses_path,
+                expected_sha256=early_authority.crema_finished_responses.sha256,
+                expected_size_bytes=early_authority.crema_finished_responses.size_bytes,
+                maximum_bytes=early_authority.crema_finished_responses.size_bytes,
+            ).content
+            summary = _read_verified_public_bytes(
+                paths,
+                paths.crema_summary_table_path,
+                expected_sha256=early_authority.crema_summary_table.sha256,
+                expected_size_bytes=early_authority.crema_summary_table.size_bytes,
+                maximum_bytes=early_authority.crema_summary_table.size_bytes,
+            ).content
+            try:
+                artifacts = build_production_preflight_artifacts(
+                    tracked_evidence=dict(evidence_pairs),
+                    finished_responses=finished,
+                    summary_table=summary,
+                    configuration=deepcopy(configuration),
+                )
+            except (TypeError, ValueError) as error:
+                raise RunnerError(f"production preflight build failed: {error}") from error
+            if artifacts.source_authority_commitment_sha256 != early_commitment:
+                raise RunnerError("early and builder source authorities differ")
+            _crosscheck_built_preflight_artifacts(
+                artifacts,
+                authority=early_authority,
+                finished_responses=finished,
+                summary_table=summary,
+            )
+
+            with _held_preflight_output_authorities(
+                paths,
+                material_authority,
+            ) as output_authorities, _persist_preflight_artifacts(
+                paths,
+                artifacts,
+                material_authority=material_authority,
+                output_authorities=output_authorities,
+            ) as readback:
+                manifest_file_sha256 = readback.files[1].sha256
+                restored = {
+                    role: _load_bound_partition_authority(
+                        paths,
+                        role=role,
+                        expected_split_manifest_file_sha256=manifest_file_sha256,
+                        material_authority=material_authority,
+                        output_authorities=output_authorities,
+                        readback_authority=readback,
+                    )
+                    for role in NONFINAL_PARTITION_ROLES
+                }
+                _compare_restored_preflight_authority(artifacts, restored)
+                _assert_closed_environment()
+                _revalidate_held_static_preflight_inputs(static_authority)
+                _verify_material_pipeline_authority(material_authority)
+                _verify_admitted_state_cas(
+                    paths,
+                    state_authority,
+                    state_root=material_authority.state_root,
+                )
+                _validate_preflight_output_shape(
+                    paths,
+                    output_authorities,
+                    require_complete=True,
+                    allow_controls=False,
+                )
+                for authority in readback.files:
+                    _verify_held_regular_file_authority(authority)
+                _validate_state_root_allowlist(
+                    paths,
+                    material_authority.state_root,
+                    allow_state_controls=False,
+                )
+                proposed = _initial_state()
+                proposed.update(
+                    {
+                        "phase": "preflight_complete",
+                        "configuration_sha256": static_digests["configuration_sha256"],
+                        "environment_lock_sha256": static_digests["environment_lock_sha256"],
+                        "input_ledger_sha256": readback.files[0].sha256,
+                        "split_manifest_sha256": readback.files[1].sha256,
+                        "non_lockbox_packet_sha256": UNSET_DIGEST,
+                        "lockbox_result_sha256": UNSET_DIGEST,
+                        "lockbox_decision_evidence_sha256": UNSET_DIGEST,
+                        "lockbox_decision_evidence_mint_sha256": UNSET_DIGEST,
+                    }
+                )
+                proposed = _validate_state(proposed)
+                with _commit_preflight_state_durably(
+                    paths,
+                    proposed,
+                    material_authority=material_authority,
+                    admitted_state_authority=state_authority,
+                ) as committed:
+                    committed_yielded[0] = True
+                    for authority in readback.files:
+                        _verify_held_regular_file_authority(authority)
+                    _validate_preflight_output_shape(
+                        paths,
+                        output_authorities,
+                        require_complete=True,
+                        allow_controls=False,
+                    )
+                    if committed.state != proposed:
+                        raise RunnerError("committed preflight state changed")
+                    return dict(committed.state)
 
 
 def run_preflight(paths: RunnerPaths) -> dict[str, Any]:
     _assert_closed_environment()
-    if paths.authority == "production":
-        _assert_production_material_prerequisites(paths)
-    _config, _split, _ledger, digests = _validate_preflight_inputs(paths)
-    state_exists = os.path.lexists(paths.state_path)
-    state = load_state(paths) if state_exists else _initial_state()
-    _require_phase(state, "initialized")
-    _ensure_directory_durable(Path(paths.state_root))
-    return _transition(
-        paths,
-        state,
-        "preflight_complete",
-        **digests,
-        non_lockbox_packet_sha256=UNSET_DIGEST,
-        lockbox_result_sha256=UNSET_DIGEST,
-        lockbox_decision_evidence_sha256=UNSET_DIGEST,
-        lockbox_decision_evidence_mint_sha256=UNSET_DIGEST,
-    )
+    _validate_layout(paths)
+    committed_build_returned = [False]
+    with _classify_post_commit_unwind(
+        committed_build_returned,
+        boundary="outer",
+    ):
+        with material_pipeline_lock(paths) as material_authority:
+            with _admit_recovered_state(
+                paths,
+                material_authority=material_authority,
+            ) as state_authority:
+                if type(state_authority) is _HeldCommittedStateAuthority:
+                    with _read_committed_preflight_checkpoint(
+                        paths,
+                        material_authority=material_authority,
+                        committed_state_authority=state_authority,
+                    ):
+                        pass
+                    raise RunnerError(
+                        "preflight is already complete at phase "
+                        f"{state_authority.state['phase']}"
+                    )
+                if type(state_authority) is not _AdmittedStateAuthority:
+                    raise RunnerError("preflight state admission type changed")
+                result = _run_admitted_preflight_build(
+                    paths,
+                    material_authority=material_authority,
+                    state_authority=state_authority,
+                )
+                committed_build_returned[0] = True
+                return result
 
 
-def _assert_anchor_digests(paths: RunnerPaths, state: Mapping[str, Any]) -> None:
-    checks = (
-        ("configuration", paths.config_path, state["configuration_sha256"]),
-        (
-            "environment",
-            paths.environment_lock_path,
-            state["environment_lock_sha256"],
-        ),
-        ("input ledger", paths.input_ledger_path, state["input_ledger_sha256"]),
-        ("split manifest", paths.split_manifest_path, state["split_manifest_sha256"]),
+def _validate_bound_preflight_inputs(
+    paths: RunnerPaths,
+) -> tuple[dict[str, Any], dict[str, Any], dict[str, Any], dict[str, str]]:
+    _validate_layout(paths)
+    static_contents = tuple(
+        _read_file_nofollow(_validate_input_path(paths, path))
+        for path in _static_preflight_paths(paths)
     )
-    for label, path, expected in checks:
-        _validate_input_path(paths, path)
-        if _sha256_file(path) != expected:
-            raise RunnerError(f"{label} changed after preflight")
+    configuration = _validate_static_preflight_bytes(static_contents)
+    ledger_path = _safe_path(
+        paths.input_ledger_path,
+        allowed_root=paths.state_root,
+        project_root=paths.project_root,
+        final_kind="file",
+        require_final=True,
+    )
+    manifest_path = _safe_path(
+        paths.split_manifest_path,
+        allowed_root=paths.state_root,
+        project_root=paths.project_root,
+        final_kind="file",
+        require_final=True,
+    )
+    ledger_bytes = _read_file_nofollow(ledger_path)
+    manifest_bytes = _read_file_nofollow(manifest_path)
+    if type(ledger_bytes) is not bytes or type(manifest_bytes) is not bytes:
+        raise RunnerError("bound preflight reader did not return exact bytes")
+    try:
+        ledger = validate_phase_b_input_ledger(
+            _load_json_object_bytes(ledger_bytes, "preflight input ledger")
+        )
+        split = validate_phase_b_split_manifest(
+            _load_json_object_bytes(manifest_bytes, "preflight split manifest")
+        )
+    except (TypeError, ValueError) as error:
+        raise RunnerError(f"bound preflight validation failed: {error}") from error
+    digests = {
+        "configuration_sha256": _sha256_bytes(static_contents[0]),
+        "environment_lock_sha256": _sha256_bytes(static_contents[1]),
+        "input_ledger_sha256": _sha256_bytes(ledger_bytes),
+        "split_manifest_sha256": _sha256_bytes(manifest_bytes),
+    }
+    return configuration, split, ledger, digests
 
 
 def _revalidate_bound_preflight(
     paths: RunnerPaths,
     state: Mapping[str, Any],
 ) -> None:
-    _assert_anchor_digests(paths, state)
-    _config, _split, _ledger, digests = _validate_preflight_inputs(paths)
+    _config, _split, _ledger, digests = _validate_bound_preflight_inputs(paths)
     if any(digests[field] != state[field] for field in digests):
         raise RunnerError("preflight anchor changed after validation")
 
@@ -2273,6 +5876,8 @@ def _validated_packet(
 
 def run_non_lockbox(paths: RunnerPaths) -> dict[str, Any]:
     _assert_closed_environment()
+    if paths.authority == "production":
+        raise RunnerError("production non-lockbox execution is unavailable")
     state = load_state(paths)
     _require_phase(state, "preflight_complete")
     _revalidate_bound_preflight(paths, state)
@@ -3614,7 +7219,7 @@ def accept_receipt(paths: RunnerPaths, receipt_path: Path) -> None:
             ):
                 raise RunnerError("journal configuration does not match runner state")
             identity_validated = True
-            _config, _split, _ledger, digests = _validate_preflight_inputs(paths)
+            _config, _split, _ledger, digests = _validate_bound_preflight_inputs(paths)
             for field, digest in digests.items():
                 if state[field] != digest:
                     label = field.removesuffix("_sha256").replace("_", " ")

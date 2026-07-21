@@ -21,9 +21,16 @@ from scripts.validate_emotion_state_002_phase_b import (
     EXPECTED_EVIDENCE_IDENTITY_SHA256,
     EXPECTED_CONFIG,
     EXPECTED_METRIC_DEFINITIONS,
+    EXPECTED_PHASE_A_BINDING,
+    EXPECTED_RAW_CSV_SHA256,
     EXPECTED_SLICE_DEFINITIONS,
     MINIMUM_UNIQUE_ACTORS,
+    validate_config,
+    validate_crema_label_ledger,
     validate_evaluation_result,
+    validate_phase_b_input_ledger,
+    validate_phase_b_partition_authority_cache,
+    validate_phase_b_split_manifest,
     validate_published_ami_aggregate_v2,
 )
 
@@ -329,6 +336,14 @@ class TrackedPublicAuthority:
         tuple[str, tuple[str, ...]], ...
     ]
     ami_official_order: tuple[str, ...]
+
+
+@dataclass(frozen=True, slots=True)
+class ProductionPreflightArtifacts:
+    source_authority_commitment_sha256: str
+    input_ledger: dict[str, Any]
+    split_manifest: dict[str, Any]
+    partition_authority_caches: dict[str, dict[str, Any]]
 
 
 class PublicMaterialPrerequisiteError(ValueError):
@@ -1941,4 +1956,310 @@ def validate_tracked_public_evidence(
             ("full_only", AMI_FULL_ONLY_ORDER),
         ),
         ami_official_order=AMI_FULL_CORPUS_ORDER,
+    )
+
+
+def _exact_tracked_public_authority(authority: Any) -> TrackedPublicAuthority:
+    if type(authority) is not TrackedPublicAuthority:
+        raise PublicMaterialPrerequisiteError(
+            "tracked public authority type changed"
+        )
+    if (
+        type(authority.crema_audio) is not tuple
+        or len(authority.crema_audio) != 7441
+        or type(authority.ami_files) is not tuple
+        or len(authority.ami_files) != 2074
+        or type(authority.ami_partition_membership) is not tuple
+        or type(authority.ami_official_order) is not tuple
+        or type(authority.crema_finished_responses) is not SourceByteIdentity
+        or type(authority.crema_summary_table) is not SourceByteIdentity
+        or any(type(item) is not SourceByteIdentity for item in authority.crema_audio)
+        or any(type(item) is not SourceByteIdentity for item in authority.ami_files)
+    ):
+        raise PublicMaterialPrerequisiteError(
+            "tracked public authority cardinality or frozen type changed"
+        )
+    for index, cell in enumerate(authority.ami_partition_membership):
+        if (
+            type(cell) is not tuple
+            or len(cell) != 2
+            or type(cell[0]) is not str
+            or type(cell[1]) is not tuple
+            or any(type(item) is not str for item in cell[1])
+        ):
+            raise PublicMaterialPrerequisiteError(
+                f"AMI partition authority {index} changed"
+            )
+    if any(type(item) is not str for item in authority.ami_official_order):
+        raise PublicMaterialPrerequisiteError(
+            "AMI official order authority changed"
+        )
+    return authority
+
+
+def _tracked_evidence_snapshot(
+    tracked_evidence: Mapping[str, bytes],
+) -> dict[str, bytes]:
+    if not isinstance(tracked_evidence, Mapping):
+        raise PublicMaterialPrerequisiteError(
+            "tracked dataset evidence must be a mapping"
+        )
+    try:
+        keys = set(tracked_evidence)
+    except (TypeError, ValueError) as error:
+        raise PublicMaterialPrerequisiteError(
+            "tracked dataset evidence keys are invalid"
+        ) from error
+    if keys != set(TRACKED_DATASET_EVIDENCE_FILENAMES):
+        raise PublicMaterialPrerequisiteError(
+            "tracked dataset evidence set does not match"
+        )
+    snapshot: dict[str, bytes] = {}
+    for name in TRACKED_DATASET_EVIDENCE_FILENAMES:
+        content = tracked_evidence[name]
+        if type(content) is not bytes:
+            raise PublicMaterialPrerequisiteError(
+                f"{name} tracked evidence must be bytes"
+            )
+        snapshot[name] = content
+    return snapshot
+
+
+def tracked_public_authority_commitment_sha256(
+    *,
+    tracked_evidence: Mapping[str, bytes],
+    authority: TrackedPublicAuthority,
+) -> str:
+    evidence_snapshot = _tracked_evidence_snapshot(tracked_evidence)
+    validated_authority = _exact_tracked_public_authority(authority)
+
+    def identity_payload(source: SourceByteIdentity) -> dict[str, Any]:
+        return {
+            "project_relative_path": source.project_relative_path,
+            "sha256": source.sha256,
+            "size_bytes": source.size_bytes,
+        }
+
+    preimage = {
+        "schema_id": (
+            "emotion-state-phase-b-tracked-public-authority-commitment-v1"
+        ),
+        "tracked_evidence": [
+            {
+                "name": name,
+                "sha256": hashlib.sha256(
+                    evidence_snapshot[name]
+                ).hexdigest().upper(),
+                "size_bytes": len(evidence_snapshot[name]),
+            }
+            for name in TRACKED_DATASET_EVIDENCE_FILENAMES
+        ],
+        "crema_audio": [
+            identity_payload(source)
+            for source in validated_authority.crema_audio
+        ],
+        "crema_finished_responses": identity_payload(
+            validated_authority.crema_finished_responses
+        ),
+        "crema_summary_table": identity_payload(
+            validated_authority.crema_summary_table
+        ),
+        "ami_files": [
+            identity_payload(source)
+            for source in validated_authority.ami_files
+        ],
+        "ami_partition_membership": [
+            [partition_name, list(meeting_ids)]
+            for partition_name, meeting_ids
+            in validated_authority.ami_partition_membership
+        ],
+        "ami_official_order": list(validated_authority.ami_official_order),
+    }
+    return hashlib.sha256(json.dumps(
+        preimage,
+        sort_keys=True,
+        separators=(",", ":"),
+        ensure_ascii=True,
+        allow_nan=False,
+    ).encode("ascii")).hexdigest().upper()
+
+
+def build_production_preflight_artifacts(
+    *,
+    tracked_evidence: Mapping[str, bytes],
+    finished_responses: bytes,
+    summary_table: bytes,
+    configuration: Mapping[str, Any],
+) -> ProductionPreflightArtifacts:
+    if type(finished_responses) is not bytes:
+        raise TypeError("finishedResponses.csv content must be exact bytes")
+    if type(summary_table) is not bytes:
+        raise TypeError("summaryTable.csv content must be exact bytes")
+    if not isinstance(configuration, Mapping):
+        raise TypeError("configuration must be a mapping")
+    evidence_snapshot = _tracked_evidence_snapshot(tracked_evidence)
+    authority = _exact_tracked_public_authority(
+        validate_tracked_public_evidence(dict(evidence_snapshot))
+    )
+    source_commitment = tracked_public_authority_commitment_sha256(
+        tracked_evidence=dict(evidence_snapshot),
+        authority=authority,
+    )
+    configuration_copy = copy.deepcopy(dict(configuration))
+    validated_configuration = validate_config(configuration_copy)
+
+    finished_identity = authority.crema_finished_responses
+    summary_identity = authority.crema_summary_table
+    supplied_identities = (
+        (finished_responses, finished_identity, "finishedResponses.csv"),
+        (summary_table, summary_identity, "summaryTable.csv"),
+    )
+    for content, expected, name in supplied_identities:
+        if (
+            len(content) != expected.size_bytes
+            or _sha256(content) != expected.sha256
+        ):
+            raise PublicMaterialPrerequisiteError(
+                f"{name} byte identity does not match tracked authority"
+            )
+
+    stems: list[str] = []
+    source_by_stem: dict[str, SourceByteIdentity] = {}
+    for source in authority.crema_audio:
+        path = source.project_relative_path
+        if (
+            type(path) is not str
+            or not path.startswith(_CREMA_AUDIO_ROOT)
+            or not path.endswith(".wav")
+        ):
+            raise PublicMaterialPrerequisiteError(
+                "CREMA audio authority path changed"
+            )
+        stem = path[len(_CREMA_AUDIO_ROOT):-4]
+        if not stem or "/" in stem or "\\" in stem or stem in source_by_stem:
+            raise PublicMaterialPrerequisiteError(
+                "CREMA audio authority stem changed"
+            )
+        stems.append(stem)
+        source_by_stem[stem] = source
+    if len(stems) != 7441:
+        raise PublicMaterialPrerequisiteError(
+            "CREMA audio authority count changed"
+        )
+
+    from scripts import emotion_state_phase_b_evaluation as evaluation
+    from scripts.emotion_state_phase_b_splits import build_actor_split
+
+    required_evaluation_apis = (
+        evaluation.load_crema_reference_labels_bytes,
+        evaluation.mint_validated_split_assignment,
+        evaluation.serialize_partition_authority_caches,
+        evaluation.restore_validated_partition_authority_cache,
+        evaluation.validated_partition_records,
+    )
+    if any(not callable(api) for api in required_evaluation_apis):
+        raise PublicMaterialPrerequisiteError(
+            "accepted Phase B evaluation API is unavailable"
+        )
+    records, crema_ledger = evaluation.load_crema_reference_labels_bytes(
+        finished_responses,
+        summary_table,
+        tuple(stems),
+    )
+    validate_crema_label_ledger(crema_ledger, validated_configuration)
+    if len(records) != 7441:
+        raise PublicMaterialPrerequisiteError(
+            "CREMA label record count changed"
+        )
+
+    finished_sha256 = _sha256(finished_responses)
+    summary_sha256 = _sha256(summary_table)
+    source_binding = crema_ledger.get("source_binding")
+    if not isinstance(source_binding, dict) or (
+        source_binding.get("finished_responses_sha256") != finished_sha256
+        or source_binding.get("summary_table_sha256") != summary_sha256
+    ):
+        raise PublicMaterialPrerequisiteError(
+            "CREMA label ledger source binding does not match supplied CSV bytes"
+        )
+    input_ledger = {
+        "schema_version": 1,
+        "phase_a": copy.deepcopy(EXPECTED_PHASE_A_BINDING),
+        "dataset_evidence": copy.deepcopy(EXPECTED_DATASET_EVIDENCE),
+        "raw_csv_sha256": {
+            "finishedResponses.csv": finished_sha256,
+            "processedResults/summaryTable.csv": summary_sha256,
+        },
+        "crema_label_ledger": copy.deepcopy(crema_ledger),
+    }
+    validated_ledger = validate_phase_b_input_ledger(input_ledger)
+    if (
+        validated_ledger["raw_csv_sha256"] != input_ledger["raw_csv_sha256"]
+        or validated_ledger["crema_label_ledger"]["source_binding"]
+        != input_ledger["crema_label_ledger"]["source_binding"]
+    ):
+        raise PublicMaterialPrerequisiteError(
+            "validated input ledger lost supplied CSV identity"
+        )
+
+    configuration_sha256 = hashlib.sha256(json.dumps(
+        validated_configuration,
+        sort_keys=True,
+        separators=(",", ":"),
+        ensure_ascii=False,
+        allow_nan=False,
+    ).encode("utf-8")).hexdigest().upper()
+    if configuration_sha256 != (
+        "24E2186A3ACB19817BF87689F09A2F069AC07B5C1D669364D5FC08BC9AD5FA8F"
+    ):
+        raise PublicMaterialPrerequisiteError(
+            "Phase B semantic configuration identity changed"
+        )
+    seed_digest = configuration_sha256.lower()
+    eligible_records = tuple(record for record in records if record.label is not None)
+    if len(eligible_records) != 6570:
+        raise PublicMaterialPrerequisiteError(
+            "eligible CREMA record count changed"
+        )
+    eligible_stems = {record.clip_stem for record in eligible_records}
+    acoustic_sources = {
+        stem: source_by_stem[stem]
+        for stem in sorted(eligible_stems)
+    }
+    if set(acoustic_sources) != eligible_stems:
+        raise PublicMaterialPrerequisiteError(
+            "eligible acoustic authority mapping is incomplete"
+        )
+    assignment = build_actor_split(eligible_records, seed_digest)
+    split_assignment = evaluation.mint_validated_split_assignment(
+        eligible_records,
+        assignment,
+        seed_digest,
+        acoustic_sources=acoustic_sources,
+    )
+    split_manifest = validate_phase_b_split_manifest(
+        split_assignment.to_payload()
+    )
+    caches = evaluation.serialize_partition_authority_caches(split_assignment)
+    roles = (
+        "training_discovery",
+        "calibration",
+        "balanced_diagnostic",
+    )
+    if type(caches) is not dict or tuple(caches) != roles:
+        raise PublicMaterialPrerequisiteError(
+            "partition authority cache roles changed"
+        )
+    validated_caches: dict[str, dict[str, Any]] = {}
+    for role in roles:
+        validated_caches[role] = validate_phase_b_partition_authority_cache(
+            caches[role],
+            split_manifest,
+            expected_role=role,
+        )
+    return ProductionPreflightArtifacts(
+        source_authority_commitment_sha256=source_commitment,
+        input_ledger=copy.deepcopy(validated_ledger),
+        split_manifest=copy.deepcopy(split_manifest),
+        partition_authority_caches=copy.deepcopy(validated_caches),
     )
