@@ -1,7 +1,7 @@
 # Phase B Cut 4B PCM Endpoint Admissibility Design
 
 **Date:** 2026-07-22
-**Status:** approved design; implementation not yet started
+**Status:** approved design; legacy-seed cross-binding amendment accepted for implementation
 **Approved approach:** endpoint-neutral policy v2
 **Current implementation base:** `8195ac9f7cbab23c6de4eadced6ed47293f3668b`
 
@@ -130,6 +130,42 @@ lineage must all bind the v2 bytes or their existing validated transitive
 commitments. No caller flag, environment variable, alternate reader, or
 unbound fallback may select the policy.
 
+### Frozen configuration seed lineage and active-schema cross-binding
+
+The tracked Phase B configuration remains byte-identical. Its existing field:
+
+```json
+"feature_schema_id": "emotion-state-crema-interpretable-acoustic-v1"
+```
+
+is an immutable **legacy seed-lineage token**, not the active feature-schema
+selector for Cut 4B. Changing that tracked value would change the configuration
+semantic identity that deterministically seeds actor assignment and model
+identity, violating this correction's fixed-split/fixed-model boundary.
+
+The only accepted Cut 4B compatibility tuple is therefore exact:
+
+```text
+legacy configuration token: emotion-state-crema-interpretable-acoustic-v1
+active feature schema:       emotion-state-crema-interpretable-acoustic-v2
+active schema semantic SHA:  AEC550285DF6A92B3E86E16F66A2E5B554836BBE47C625106F517EB0CF1375DB
+configuration raw SHA:       BBB16BDB1205255B0D1C3F0F33891ECC75C4F074D0E6D7200D09A6B385CFE914
+configuration semantic SHA:  24E2186A3ACB19817BF87689F09A2F069AC07B5C1D669364D5FC08BC9AD5FA8F
+model seed:                  618797162
+```
+
+The fixed v2 path plus its raw and semantic identities are the exclusive active
+schema authority. The legacy token cannot select v1, authorize an alternate
+path, or weaken v2 validation. An explicit cross-binding validator must require
+the exact tuple after separately validating both mappings, and it must run in
+the offline contracts validator, production static preflight, direct
+non-lockbox builder, committed non-lockbox readback/source-silent replay, and
+aggregate-result reconstruction. Either-side drift fails closed.
+
+Any future change to the configuration token or its semantic identity requires
+a new experiment version and reviewed re-preregistration because it remints
+the split assignment and model identity. Cut 4B does not make that change.
+
 The feature-cache schema and packet schema do not need structural version
 bumps. Their existing `feature_schema_sha256` and cache self-commitments already
 bind the changed feature authority transitively. Tests must prove that caches
@@ -217,7 +253,8 @@ changes, execution stops. No cleanup or retry is implicit.
 
 - The fresh preflight mints a new split/input lineage bound to the v2 feature
   schema; it must not copy the retired split manifest or input ledger.
-- The same deterministic split algorithm and public identities remain fixed.
+- The same deterministic split algorithm, exact configuration seed identity,
+  resulting actor assignment, model seed, and public identities remain fixed.
 - The three acoustic cache formats retain their accepted exact key sets and
   17-feature order.
 - Every cache must carry the v2 feature-schema identity and its existing source,
@@ -244,6 +281,9 @@ RED must establish all of the following before implementation:
    fixtures are still bound to v1 rather than the required v2 authority; and
 5. production split/preflight/non-lockbox paths still resolve under the
    retired state root rather than an isolated Cut 4B root.
+6. no explicit validator currently distinguishes the legacy configuration
+   seed token from the exclusive active v2 schema authority or enforces their
+   exact compatibility tuple across production/replay entry points.
 
 GREEN must make only the endpoint-neutral policy, v2 binding, and new-root
 lineage changes necessary to close those failures. Focused tests run first;
@@ -271,7 +311,9 @@ public identities; fixed deterministic split/evaluation configuration.
 linearization on any endpoint-bearing WAV.
 
 **Editable surface:** PCM endpoint admissibility plus the mechanically required
-v2 schema binding and fresh state-root routing.
+v2 schema binding, exact legacy-seed/active-schema compatibility enforcement,
+and fresh state-root routing. The configuration bytes and identities are not
+editable.
 
 **Decision rule:** Keep only if all fixed negative tests remain negative, all
 endpoint-neutral positive tests pass, independent review approves the exact

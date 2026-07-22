@@ -22,6 +22,11 @@
 - Historical v1 semantic SHA-256: `70A5B1531D5127D37FD89B30F03EC14682B0B6C97850A5452DEEB59033618EF4`.
 - Required v2 static file SHA-256: `C2A7DE308BAD32C3798016061777669881E7FDD3403979DCCC166DCE38F307C4`.
 - Required v2 semantic SHA-256: `AEC550285DF6A92B3E86E16F66A2E5B554836BBE47C625106F517EB0CF1375DB`.
+- Frozen configuration raw SHA-256: `BBB16BDB1205255B0D1C3F0F33891ECC75C4F074D0E6D7200D09A6B385CFE914`.
+- Frozen configuration semantic SHA-256: `24E2186A3ACB19817BF87689F09A2F069AC07B5C1D669364D5FC08BC9AD5FA8F`.
+- Frozen configuration legacy seed-lineage token: `emotion-state-crema-interpretable-acoustic-v1`.
+- Frozen model seed: `618797162`.
+- The config token is not the active schema selector. The fixed v2 path and v2 raw/semantic identities are the exclusive active authority; only the exact legacy-v1-token/active-v2 compatibility tuple is allowed.
 - Feature-cache schema v1 and packet schema v4 structures remain unchanged; their existing `feature_schema_sha256` and cache self-commitments bind v2 transitively.
 - No endpoint rate threshold, run-length threshold, clipping classifier, feature, label, or exclusion is authorized.
 - No parsing, reuse, deletion, recovery, cleanup, or mutation of retired split/preflight/non-lockbox lineage is authorized.
@@ -90,6 +95,24 @@ Load both schemas strictly. Treat v1 only as historical bytes and assert `valida
 ```
 
 Mutate each policy scalar, endpoint value/order, key set, root position, threshold, and boolean flag; every mutation must fail closed. Reuse the existing exhaustive exact-object mutation helper where possible.
+
+Add `PhaseBContractTests.test_legacy_config_seed_token_is_cross_bound_to_active_v2_schema`. It must import the new cross-binding validator and prove:
+
+```python
+self.assertEqual(
+    hashlib.sha256(CONFIG.read_bytes()).hexdigest().upper(),
+    "BBB16BDB1205255B0D1C3F0F33891ECC75C4F074D0E6D7200D09A6B385CFE914",
+)
+self.assertEqual(
+    canonical_payload_sha256(load_json_strict(CONFIG)),
+    "24E2186A3ACB19817BF87689F09A2F069AC07B5C1D669364D5FC08BC9AD5FA8F",
+)
+self.assertEqual(int("24E2186A", 16), 618797162)
+```
+
+The exact accepted pair is legacy config token v1 plus active schema v2/AEC550...75DB. Mutating the config token, active schema id, active schema semantic identity, or substituting v1 as the active mapping must fail. The test must also prove the fixed v2 path—not the config token—remains the production selector.
+
+Extend existing offline-contracts, production preflight, non-lockbox builder/readback, source-silent replay, and aggregate-reconstruction tests so a patched cross-binding validator failure is propagated fail-closed from `validate_contracts_section()` and each production/replay entry point before output. Extend existing methods for these propagation checks so the planned `349/349` count remains exact. Do not change the configuration file, configuration hashes, deterministic actor assignment, or model seed.
 
 ### Step 3: Replace the false clipping test and add the endpoint-positive test
 
@@ -180,6 +203,7 @@ Run with the verified immutable interpreter:
 
 ```powershell
 .tmp/emotion-state-002-phase-b/venv/Scripts/python.exe -m unittest scripts.test_emotion_state_002_phase_b.PhaseBContractTests.test_feature_schema_v2_endpoint_policy_and_v1_history_are_exact -v
+.tmp/emotion-state-002-phase-b/venv/Scripts/python.exe -m unittest scripts.test_emotion_state_002_phase_b.PhaseBContractTests.test_legacy_config_seed_token_is_cross_bound_to_active_v2_schema -v
 .tmp/emotion-state-002-phase-b/venv/Scripts/python.exe -m unittest scripts.test_emotion_state_002_phase_b.AcousticFeatureTests.test_pcm_endpoints_are_observations_not_clipping_rejections -v
 .tmp/emotion-state-002-phase-b/venv/Scripts/python.exe -m unittest scripts.test_emotion_state_002_phase_b.ProductionNonLockboxBuilderTests.test_feature_caches_are_exact_role_bound_deterministic_and_replayable -v
 .tmp/emotion-state-002-phase-b/venv/Scripts/python.exe -m unittest scripts.test_emotion_state_002_phase_b.Task10ProductionPipelineTests.test_cut4b_production_paths_use_fresh_lineage_and_fixed_dependencies -v
@@ -189,6 +213,7 @@ Run with the verified immutable interpreter:
 Expected RED:
 
 - v2 schema path is absent or the validator remains v1-only;
+- the explicit legacy-seed/active-schema cross-binding validator is absent;
 - endpoint-bearing viable audio raises `WAV contains clipped samples`;
 - a cache carrying the v1 semantic identity is still accepted because v1 is the current authority;
 - production paths still resolve under `.tmp/emotion-state-002-phase-b`.
@@ -203,6 +228,7 @@ If a test passes before implementation, stop and explain why it does not prove t
 - Create: `research/sources/emotion_state/emotion_state_phase_b_feature_v2.schema.json`
 - Modify: `scripts/emotion_state_phase_b_features.py`
 - Modify: `scripts/validate_emotion_state_002_phase_b.py`
+- Modify: `scripts/emotion_state_phase_b_public_pipeline.py`
 - Modify: `scripts/run_emotion_state_002_phase_b.py`
 - Modify: `scripts/test_emotion_state_002_phase_b.py`
 - Modify: `docs/superpowers/plans/2026-07-19-emotion-state-phase-b-public-data-feasibility.md`
@@ -262,6 +288,17 @@ In `scripts/validate_emotion_state_002_phase_b.py`:
 
 Do not change feature-cache or packet structural schemas.
 
+Add `validate_config_feature_schema_binding(configuration, feature_schema)`.
+It must separately call the exact config and feature-schema validators, then
+require the frozen config raw-independent semantic identity `24E218...FA8F`,
+legacy token v1, active schema id v2, and active schema semantic identity
+`AEC550...75DB`. Return deep validated copies as one pair. Document in the
+function that the config token is a seed-lineage compatibility token, not a
+selector.
+
+Call the cross-binding validator from `validate_contracts_section()` after
+loading the exact tracked config and v2 schema.
+
 ### Step 3: Remove only the false endpoint rejection
 
 In `_read_pcm16_mono_16khz_bytes()` in `scripts/emotion_state_phase_b_features.py`, delete exactly:
@@ -284,6 +321,25 @@ state_root = root / ".tmp" / "emotion-state-002-phase-b-cut4b"
 Point `feature_schema_path` to v2. Keep `_held_environment_wheel_inputs()` and all installed-environment checks bound to `.tmp/emotion-state-002-phase-b/dependencies/wheelhouse` and `.tmp/emotion-state-002-phase-b/venv` respectively.
 
 Do not add a fallback, migration, cleanup, recovery, or old-lineage read path.
+
+### Step 4A: Enforce the config/v2 cross-binding at every composition boundary
+
+Import and call `validate_config_feature_schema_binding()` in:
+
+- `scripts/emotion_state_phase_b_public_pipeline.py` inside
+  `_validated_non_lockbox_static_mappings()` after the four exact mappings and
+  semantic identities validate;
+- `scripts/run_emotion_state_002_phase_b.py` inside
+  `_validate_static_preflight_bytes()`;
+- committed non-lockbox semantic replay after expected config/schema mappings
+  are reconstructed;
+- held non-lockbox static-input readback before identities are returned; and
+- `build_aggregate_result()` after config/schema validation.
+
+Every boundary must translate a cross-binding `TypeError`/`ValueError` into its
+existing controlled pipeline/runner error type. Do not change the config file,
+its two identities, the hardcoded pipeline config semantic guard, split seed,
+assignment, model seed, feature-cache schema, or packet schema.
 
 ### Step 5: Correct the live plan, command map, experiment status, and thesis trace
 
@@ -308,7 +364,7 @@ Append a dated Cut 4B entry to `docs/thesis/METHODOLOGY_LOG.md`; do not rewrite 
 - RED/GREEN/full-suite evidence;
 - the still-blocked boundaries.
 
-Update `docs/thesis/ROADMAP.md` and the experiment brief with the exact live status sentence frozen in Task 1. Describe the implementation as pending independent review/one fresh replacement transaction; do not claim Task 10 completion.
+Update `docs/thesis/ROADMAP.md` and the experiment brief with the exact live status sentence frozen in Task 1. Describe the implementation as pending independent review/one fresh replacement transaction; do not claim Task 10 completion. In the experiment brief, replace the stale Task 9-review-pending/public-material-gate prose with the reviewed Cut 4A/Cut 4B state, update the validator receipt example to `.tmp/emotion-state-002-phase-b-cut4b/publication/receipt.json`, and document the legacy config token versus active v2 authority explicitly.
 
 ### Step 6: Run focused GREEN tests
 
@@ -319,7 +375,7 @@ Update `docs/thesis/ROADMAP.md` and the experiment brief with the exact live sta
 .tmp/emotion-state-002-phase-b/venv/Scripts/python.exe -m unittest scripts.test_emotion_state_002_phase_b.Task10ProductionPipelineTests -v
 ```
 
-Expected: `14`, `19`, `1`, and `14` tests pass respectively, subject to the exact discovered baseline counts. Any count drift must be explained by named test additions/removals, not ignored.
+Expected: `15`, `19`, `1`, and `14` tests pass respectively, subject to the exact discovered baseline counts. Any count drift must be explained by named test additions/removals, not ignored.
 
 ### Step 7: Run the full correction ledger
 
@@ -329,7 +385,7 @@ Expected: `14`, `19`, `1`, and `14` tests pass respectively, subject to the exac
 .tmp/emotion-state-002-phase-b/venv/Scripts/python.exe scripts/validate_emotion_state_002_phase_b.py contracts
 .tmp/emotion-state-002-phase-b/venv/Scripts/python.exe scripts/validate_emotion_state_002_phase_b.py environment
 .tmp/emotion-state-002-phase-b/venv/Scripts/python.exe scripts/validate_emotion_state_002_phase_b.py synthetic
-.tmp/emotion-state-002-phase-b/venv/Scripts/python.exe -m py_compile scripts/emotion_state_phase_b_features.py scripts/validate_emotion_state_002_phase_b.py scripts/run_emotion_state_002_phase_b.py scripts/test_emotion_state_002_phase_b.py
+.tmp/emotion-state-002-phase-b/venv/Scripts/python.exe -m py_compile scripts/emotion_state_phase_b_features.py scripts/validate_emotion_state_002_phase_b.py scripts/emotion_state_phase_b_public_pipeline.py scripts/run_emotion_state_002_phase_b.py scripts/test_emotion_state_002_phase_b.py
 python scripts/check_thesis_update_gate.py
 python scripts/check_thesis_reference_registry.py
 python scripts/validate_project_drift_guard.py
@@ -339,7 +395,7 @@ git diff --check
 git status --short
 ```
 
-Expected full test count: `348/348` if exactly three test methods are added and the old clipping method is renamed in place. All validator/gate commands must exit zero. The only changed paths must be the ten listed Task 2 paths plus this already-committed implementation plan; the ignored production roots must not be touched during code verification.
+Expected full test count: `349/349` if exactly four test methods are added and the old clipping method is renamed in place. All validator/gate commands must exit zero. The only changed paths must be the eleven listed Task 2 paths plus this already-committed implementation plan; the ignored production roots must not be touched during code verification.
 
 ### Step 8: Independently review before commit
 
@@ -360,7 +416,7 @@ Required verdict: `SPEC_PASS` and `QUALITY_PASS`, with zero open Critical or Imp
 ### Step 9: Commit the one behavior-changing correction
 
 ```powershell
-git add research/sources/emotion_state/emotion_state_phase_b_feature_v2.schema.json scripts/emotion_state_phase_b_features.py scripts/validate_emotion_state_002_phase_b.py scripts/run_emotion_state_002_phase_b.py scripts/test_emotion_state_002_phase_b.py docs/superpowers/plans/2026-07-19-emotion-state-phase-b-public-data-feasibility.md docs/product/COMMANDS.md docs/thesis/METHODOLOGY_LOG.md docs/thesis/ROADMAP.md research/experiments/EMOTION-STATE-002-phase-b-public-data-feasibility.md
+git add research/sources/emotion_state/emotion_state_phase_b_feature_v2.schema.json scripts/emotion_state_phase_b_features.py scripts/validate_emotion_state_002_phase_b.py scripts/emotion_state_phase_b_public_pipeline.py scripts/run_emotion_state_002_phase_b.py scripts/test_emotion_state_002_phase_b.py docs/superpowers/plans/2026-07-19-emotion-state-phase-b-public-data-feasibility.md docs/product/COMMANDS.md docs/thesis/METHODOLOGY_LOG.md docs/thesis/ROADMAP.md research/experiments/EMOTION-STATE-002-phase-b-public-data-feasibility.md
 git diff --cached --check
 git commit -m "Correct Phase B PCM endpoint admissibility"
 ```
