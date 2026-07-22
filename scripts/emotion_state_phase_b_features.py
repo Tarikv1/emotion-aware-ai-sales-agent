@@ -63,8 +63,6 @@ def _read_pcm16_mono_16khz_bytes(wav_bytes: bytes) -> np.ndarray:
     pcm = np.frombuffer(payload, dtype="<i2")
     if pcm.size != frame_count:
         raise FeatureExtractionError("WAV sample count does not match")
-    if np.any((pcm == -32768) | (pcm == 32767)):
-        raise FeatureExtractionError("WAV contains clipped samples")
     samples = pcm.astype(np.float64) / 32768.0
     if not np.all(np.isfinite(samples)):
         raise FeatureExtractionError("WAV contains non-finite samples")

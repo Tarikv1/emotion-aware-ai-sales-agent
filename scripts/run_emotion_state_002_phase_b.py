@@ -44,6 +44,7 @@ from scripts.validate_emotion_state_002_phase_b import (
     canonical_payload_sha256,
     serialized_decision_evidence_mint_sha256,
     validate_config,
+    validate_config_feature_schema_binding,
     validate_decision_inputs,
     validate_environment_identity_bytes,
     validate_environment_lock,
@@ -461,7 +462,7 @@ class RunnerPaths:
     @classmethod
     def production(cls) -> "RunnerPaths":
         root = ROOT
-        state_root = root / ".tmp" / "emotion-state-002-phase-b"
+        state_root = root / ".tmp" / "emotion-state-002-phase-b-cut4b"
         canonical_root = (
             root
             / "research"
@@ -493,7 +494,7 @@ class RunnerPaths:
                 / "research"
                 / "sources"
                 / "emotion_state"
-                / "emotion_state_phase_b_feature_v1.schema.json"
+                / "emotion_state_phase_b_feature_v2.schema.json"
             ),
             split_schema_path=(
                 root
@@ -6518,6 +6519,18 @@ def _read_committed_non_lockbox_checkpoint(
             deepcopy(EXPECTED_FEATURE_SCHEMA)
         )
         split_schema = validate_split_schema(deepcopy(EXPECTED_SPLIT_SCHEMA))
+        try:
+            configuration, feature_schema = (
+                validate_config_feature_schema_binding(
+                    configuration,
+                    feature_schema,
+                )
+            )
+        except (TypeError, ValueError) as error:
+            raise RunnerError(
+                "committed non-lockbox config/schema cross-binding failed: "
+                f"{error}"
+            ) from error
         authorities = dict(zip(
             NONFINAL_PARTITION_ROLES,
             preflight_readback.restored,
@@ -8389,8 +8402,12 @@ def _validate_static_preflight_bytes(
     try:
         configuration = validate_config(payloads[0])
         validate_environment_lock(payloads[1])
-        validate_feature_schema(payloads[2])
+        feature_schema = validate_feature_schema(payloads[2])
         validate_split_schema(payloads[3])
+        configuration, _ = validate_config_feature_schema_binding(
+            configuration,
+            feature_schema,
+        )
     except (TypeError, ValueError) as error:
         raise RunnerError(f"preflight static validation failed: {error}") from error
     return configuration
@@ -9129,6 +9146,20 @@ def _validated_static_non_lockbox_mappings(
         or split_manifest.get("configuration_sha256") != identities[0]
     ):
         raise RunnerError("held static semantic identity changed")
+    try:
+        bound_configuration, bound_feature_schema = (
+            validate_config_feature_schema_binding(mappings[0], mappings[2])
+        )
+    except (TypeError, ValueError) as error:
+        raise RunnerError(
+            f"held non-lockbox static semantics changed: {error}"
+        ) from error
+    mappings = (
+        bound_configuration,
+        mappings[1],
+        bound_feature_schema,
+        mappings[3],
+    )
     return tuple(deepcopy(mapping) for mapping in mappings)  # type: ignore[return-value]
 
 
@@ -10023,6 +10054,7 @@ def build_aggregate_result(
         feature = validate_feature_schema(
             _load_json_object(feature_path, "feature schema")
         )
+        config, feature = validate_config_feature_schema_binding(config, feature)
         validate_split_schema(
             _load_json_object(split_schema_path, "split schema")
         )

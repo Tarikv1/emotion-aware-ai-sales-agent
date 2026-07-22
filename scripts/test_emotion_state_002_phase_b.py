@@ -35,9 +35,13 @@ from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[1]
 CONFIG = ROOT / "research/experiments/cases/emotion-state-002-phase-b-config.json"
-FEATURE_SCHEMA = (
+FEATURE_SCHEMA_V1 = (
     ROOT
     / "research/sources/emotion_state/emotion_state_phase_b_feature_v1.schema.json"
+)
+FEATURE_SCHEMA = (
+    ROOT
+    / "research/sources/emotion_state/emotion_state_phase_b_feature_v2.schema.json"
 )
 SPLIT_SCHEMA = (
     ROOT
@@ -64,6 +68,229 @@ ENVIRONMENT_TEST_TEMP = (
 
 
 class PhaseBContractTests(unittest.TestCase):
+    def test_feature_schema_v2_endpoint_policy_and_v1_history_are_exact(
+        self,
+    ) -> None:
+        from scripts.validate_emotion_state_002_phase_b import (
+            canonical_payload_sha256,
+            load_json_strict,
+            validate_feature_schema,
+        )
+
+        self.assertEqual(
+            hashlib.sha256(FEATURE_SCHEMA_V1.read_bytes()).hexdigest().upper(),
+            "81B55B25F405A99ED7B29449631CFD39B2FE6E1D4F500ADA3BBCD8668790AB75",
+        )
+        self.assertEqual(
+            hashlib.sha256(FEATURE_SCHEMA.read_bytes()).hexdigest().upper(),
+            "C2A7DE308BAD32C3798016061777669881E7FDD3403979DCCC166DCE38F307C4",
+        )
+        historical = load_json_strict(FEATURE_SCHEMA_V1)
+        schema = load_json_strict(FEATURE_SCHEMA)
+        with self.assertRaises(ValueError):
+            validate_feature_schema(historical)
+        self.assertEqual(
+            canonical_payload_sha256(schema),
+            "AEC550285DF6A92B3E86E16F66A2E5B554836BBE47C625106F517EB0CF1375DB",
+        )
+        self.assertEqual(validate_feature_schema(schema), schema)
+
+        expected_root_order = (
+            "schema_id",
+            "schema_version",
+            "sample_rate_hz",
+            "sample_width_bytes",
+            "channel_count",
+            "pcm_endpoint_admissibility",
+            "window_ms",
+            "hop_ms",
+            "window",
+            "silence_floor_dbfs",
+            "silence_relative_to_peak_db",
+            "f0_min_hz",
+            "f0_max_hz",
+            "f0_frame_input",
+            "f0_centering",
+            "f0_window",
+            "f0_zero_residual_energy",
+            "voiced_autocorrelation_threshold",
+            "minimum_voiced_frames",
+            "f0_autocorrelation_peak_tie_break",
+            "zero_frame_rms_floor",
+            "zero_frame_rms_floor_linear",
+            "rms_summary_frame_scope",
+            "standard_deviation_ddof",
+            "f0_range_definition",
+            "voiced_fraction_denominator",
+            "zcr_spectral_frame_scope",
+            "spectral_rolloff_fraction",
+            "percentile_method",
+            "ordered_features",
+            "imputation_allowed",
+            "runtime_influence_allowed",
+        )
+        self.assertEqual(tuple(schema), expected_root_order)
+        policy = schema["pcm_endpoint_admissibility"]
+        expected_policy = {
+            "policy_id": "emotion-state-pcm16-endpoint-admissibility-v1",
+            "endpoint_values": [-32768, 32767],
+            "presence_interpretation": (
+                "numeric_saturation_observation_not_clipping_proof"
+            ),
+            "reject_on_presence": False,
+            "rate_threshold": None,
+            "run_length_threshold": None,
+            "clipping_classification_implemented": False,
+        }
+        self.assertEqual(
+            tuple(policy),
+            (
+                "policy_id",
+                "endpoint_values",
+                "presence_interpretation",
+                "reject_on_presence",
+                "rate_threshold",
+                "run_length_threshold",
+                "clipping_classification_implemented",
+            ),
+        )
+        self.assertEqual(policy, expected_policy)
+        self.assertIs(type(policy), dict)
+        self.assertIs(type(policy["policy_id"]), str)
+        self.assertIs(type(policy["endpoint_values"]), list)
+        self.assertTrue(
+            all(type(value) is int for value in policy["endpoint_values"])
+        )
+        self.assertIs(type(policy["presence_interpretation"]), str)
+        self.assertIs(type(policy["reject_on_presence"]), bool)
+        self.assertIs(policy["rate_threshold"], None)
+        self.assertIs(policy["run_length_threshold"], None)
+        self.assertIs(type(policy["clipping_classification_implemented"]), bool)
+
+        for path in self._scalar_paths(
+            policy,
+            ("pcm_endpoint_admissibility",),
+        ):
+            mutated = deepcopy(schema)
+            current = self._value_at(mutated, path)
+            self._replace_at(mutated, path, self._different_value(current))
+            with self.subTest(policy_scalar=path):
+                with self.assertRaises(ValueError):
+                    validate_feature_schema(mutated)
+
+        for key in policy:
+            mutated = deepcopy(schema)
+            del mutated["pcm_endpoint_admissibility"][key]
+            with self.subTest(missing_policy_key=key):
+                with self.assertRaises(ValueError):
+                    validate_feature_schema(mutated)
+
+        mutated = deepcopy(schema)
+        mutated["pcm_endpoint_admissibility"]["unexpected_field"] = True
+        with self.assertRaises(ValueError):
+            validate_feature_schema(mutated)
+
+        mutated = deepcopy(schema)
+        mutated["pcm_endpoint_admissibility"]["endpoint_values"].reverse()
+        with self.assertRaises(ValueError):
+            validate_feature_schema(mutated)
+
+        for field, replacement in (
+            ("endpoint_values", [-32768.0, 32767]),
+            ("reject_on_presence", 0),
+            ("rate_threshold", 0.0),
+            ("run_length_threshold", 10),
+            ("clipping_classification_implemented", 0),
+        ):
+            mutated = deepcopy(schema)
+            mutated["pcm_endpoint_admissibility"][field] = replacement
+            with self.subTest(policy_type_or_threshold=field):
+                with self.assertRaises(ValueError):
+                    validate_feature_schema(mutated)
+
+        root_reordered = deepcopy(schema)
+        moved_policy = root_reordered.pop("pcm_endpoint_admissibility")
+        root_reordered["pcm_endpoint_admissibility"] = moved_policy
+        policy_reordered = deepcopy(schema)
+        moved_policy_id = policy_reordered["pcm_endpoint_admissibility"].pop(
+            "policy_id"
+        )
+        policy_reordered["pcm_endpoint_admissibility"]["policy_id"] = (
+            moved_policy_id
+        )
+        for name, mutated in (
+            ("root", root_reordered),
+            ("policy", policy_reordered),
+        ):
+            with self.subTest(reordered_mapping=name):
+                with self.assertRaises(ValueError):
+                    validate_feature_schema(mutated)
+
+    def test_legacy_config_seed_token_is_cross_bound_to_active_v2_schema(
+        self,
+    ) -> None:
+        from scripts import run_emotion_state_002_phase_b as runner
+        from scripts.validate_emotion_state_002_phase_b import (
+            canonical_payload_sha256,
+            load_json_strict,
+            validate_config_feature_schema_binding,
+        )
+
+        configuration = load_json_strict(CONFIG)
+        active_schema = load_json_strict(FEATURE_SCHEMA)
+        self.assertEqual(
+            hashlib.sha256(CONFIG.read_bytes()).hexdigest().upper(),
+            "BBB16BDB1205255B0D1C3F0F33891ECC75C4F074D0E6D7200D09A6B385CFE914",
+        )
+        self.assertEqual(
+            canonical_payload_sha256(configuration),
+            "24E2186A3ACB19817BF87689F09A2F069AC07B5C1D669364D5FC08BC9AD5FA8F",
+        )
+        self.assertEqual(int("24E2186A", 16), 618797162)
+        self.assertEqual(
+            configuration["feature_schema_id"],
+            "emotion-state-crema-interpretable-acoustic-v1",
+        )
+        self.assertEqual(
+            active_schema["schema_id"],
+            "emotion-state-crema-interpretable-acoustic-v2",
+        )
+        self.assertEqual(
+            canonical_payload_sha256(active_schema),
+            "AEC550285DF6A92B3E86E16F66A2E5B554836BBE47C625106F517EB0CF1375DB",
+        )
+        validated_configuration, validated_schema = (
+            validate_config_feature_schema_binding(configuration, active_schema)
+        )
+        self.assertEqual(validated_configuration, configuration)
+        self.assertEqual(validated_schema, active_schema)
+        self.assertIsNot(validated_configuration, configuration)
+        self.assertIsNot(validated_schema, active_schema)
+        self.assertEqual(
+            runner.RunnerPaths.production().feature_schema_path,
+            FEATURE_SCHEMA,
+        )
+
+        wrong_token = deepcopy(configuration)
+        wrong_token["feature_schema_id"] = active_schema["schema_id"]
+        wrong_schema_id = deepcopy(active_schema)
+        wrong_schema_id["schema_id"] = configuration["feature_schema_id"]
+        wrong_schema_identity = deepcopy(active_schema)
+        wrong_schema_identity["pcm_endpoint_admissibility"]["policy_id"] += "-drift"
+        historical_schema = load_json_strict(FEATURE_SCHEMA_V1)
+        for name, candidate_configuration, candidate_schema in (
+            ("config-token", wrong_token, active_schema),
+            ("active-schema-id", configuration, wrong_schema_id),
+            ("active-schema-identity", configuration, wrong_schema_identity),
+            ("historical-schema-substitution", configuration, historical_schema),
+        ):
+            with self.subTest(binding=name):
+                with self.assertRaises((TypeError, ValueError)):
+                    validate_config_feature_schema_binding(
+                        candidate_configuration,
+                        candidate_schema,
+                    )
+
     def test_frozen_contracts_validate(self) -> None:
         from scripts.validate_emotion_state_002_phase_b import (
             load_json_strict,
@@ -274,6 +501,13 @@ class PhaseBContractTests(unittest.TestCase):
                     f"Task 9 {function_name} is missing",
                 )
                 self.assertIsNone(getattr(validator, function_name)())
+        with patch.object(
+            validator,
+            "validate_config_feature_schema_binding",
+            side_effect=ValueError("synthetic config/schema cross-binding rejection"),
+        ):
+            with self.assertRaisesRegex(ValueError, "cross-binding rejection"):
+                validator.validate_contracts_section()
 
     def test_task_9_command_docs_freeze_offline_commands_and_explicit_gates(
         self,
@@ -295,7 +529,7 @@ class PhaseBContractTests(unittest.TestCase):
             f"{validator} synthetic",
             (
                 f"{validator} candidate --receipt "
-                ".tmp/emotion-state-002-phase-b/publication/receipt.json"
+                ".tmp/emotion-state-002-phase-b-cut4b/publication/receipt.json"
             ),
             f"{validator} checkpoint",
         )
@@ -365,7 +599,7 @@ class PhaseBContractTests(unittest.TestCase):
             f"{validator} synthetic",
             (
                 f"{validator} candidate --receipt "
-                ".tmp/emotion-state-002-phase-b/publication/receipt.json"
+                ".tmp/emotion-state-002-phase-b-cut4b/publication/receipt.json"
             ),
             f"{validator} checkpoint",
         ):
@@ -527,11 +761,20 @@ class PhaseBContractTests(unittest.TestCase):
                     expected_dependency_commands,
                 )
 
-    def test_task_9_docs_hold_review_pending_status(self) -> None:
-        conservative_status = (
-            "Task 9 is implemented; its independent review gate must pass "
-            "before Task 10. Task 10/public-material evaluation, the final "
-            "lockbox, canonical staging/acceptance, push, and merge remain blocked."
+    def test_cut4b_docs_hold_transaction_pending_status(self) -> None:
+        transaction_pending_status = (
+            "Cut 4B implementation and independent review are prerequisites to one "
+            "fresh Task 10 replacement transaction under "
+            "`.tmp/emotion-state-002-phase-b-cut4b`; until that transaction passes "
+            "aggregate-only independent review, no non-lockbox checkpoint is accepted."
+        )
+        retired_lineage_status = (
+            "The retired lineage is not reused or mutated."
+        )
+        blocked_status = (
+            "Final lockbox, canonical publication, push, merge, runtime activation, "
+            "Phase C, providers, private data, calls, simulations, and source "
+            "adaptation remain blocked."
         )
         for relative_path in (
             "docs/thesis/ROADMAP.md",
@@ -542,8 +785,9 @@ class PhaseBContractTests(unittest.TestCase):
         ):
             text = (ROOT / relative_path).read_text(encoding="utf-8-sig")
             with self.subTest(path=relative_path):
-                self.assertIn(conservative_status, text)
-                self.assertNotIn("independently approved", text)
+                self.assertIn(transaction_pending_status, text)
+                self.assertIn(retired_lineage_status, text)
+                self.assertIn(blocked_status, text)
 
     def test_task_9_docs_state_production_lockbox_is_unavailable(self) -> None:
         boundary = (
@@ -1671,7 +1915,63 @@ class AcousticFeatureTests(unittest.TestCase):
         self.assertEqual(f0_hz, 400.0)
         self.assertAlmostEqual(peak, 1.0, places=15)
 
-    def test_unsupported_wav_formats_malformed_riff_and_clipping_reject(
+    def test_pcm_endpoints_are_observations_not_clipping_rejections(
+        self,
+    ) -> None:
+        import io
+        import struct
+        import wave
+
+        from scripts.emotion_state_phase_b_features import (
+            extract_acoustic_features_bytes,
+        )
+
+        sample_rate = 16000
+        samples = [
+            round(
+                0.5
+                * 32767
+                * math.sin(2 * math.pi * 200.0 * index / sample_rate)
+            )
+            for index in range(sample_rate)
+        ]
+        cases: dict[str, list[int]] = {}
+        for name in ("positive", "negative", "both", "run"):
+            cases[name] = list(samples)
+        cases["positive"][101] = 32767
+        cases["negative"][201] = -32768
+        cases["both"][301] = 32767
+        cases["both"][302] = -32768
+        cases["run"][401:411] = [-32768] * 10
+
+        for name, endpoint_samples in cases.items():
+            output = io.BytesIO()
+            with wave.open(output, "wb") as destination:
+                destination.setnchannels(1)
+                destination.setsampwidth(2)
+                destination.setframerate(sample_rate)
+                destination.writeframes(
+                    struct.pack(
+                        "<" + "h" * len(endpoint_samples),
+                        *endpoint_samples,
+                    )
+                )
+            with self.subTest(endpoint_case=name):
+                features = extract_acoustic_features_bytes(output.getvalue())
+                self.assertEqual(tuple(features), self.FEATURE_NAMES)
+                self.assertTrue(
+                    all(
+                        type(value) is float and math.isfinite(value)
+                        for value in features.values()
+                    )
+                )
+                self.assertAlmostEqual(
+                    features["f0_median_hz"],
+                    200.0,
+                    delta=2.0,
+                )
+
+    def test_unsupported_wav_formats_and_malformed_riff_reject(
         self,
     ) -> None:
         import struct
@@ -1689,8 +1989,6 @@ class AcousticFeatureTests(unittest.TestCase):
             wrong_rate = root / "wrong-rate.wav"
             compressed = root / "compressed.wav"
             malformed = root / "malformed.wav"
-            clipped_positive = root / "clipped-positive.wav"
-            clipped_negative = root / "clipped-negative.wav"
 
             self._write_pcm16(stereo, [1000, -1000] * 400, channels=2)
             with wave.open(str(eight_bit), "wb") as output:
@@ -1729,14 +2027,6 @@ class AcousticFeatureTests(unittest.TestCase):
                 + compressed_body
             )
             malformed.write_bytes(b"not-a-wave")
-            self._write_pcm16(
-                clipped_positive,
-                [32767] + [1000, -1000] * 400,
-            )
-            self._write_pcm16(
-                clipped_negative,
-                [-32768] + [1000, -1000] * 400,
-            )
 
             for path in (
                 stereo,
@@ -1744,8 +2034,6 @@ class AcousticFeatureTests(unittest.TestCase):
                 wrong_rate,
                 compressed,
                 malformed,
-                clipped_positive,
-                clipped_negative,
             ):
                 with self.subTest(path=path.name):
                     with self.assertRaises(FeatureExtractionError):
@@ -15094,6 +15382,22 @@ with Fixture.patches(runner=runner), ExitStack() as sentinels:
                 self.runner.run_preflight(paths)
             self.assertFalse(paths.state_path.exists())
 
+        rejected_paths = self._fresh_paths("static-cross-binding-rejection")
+        with (
+            self.fixture.patches(runner=self.runner),
+            patch.object(
+                self.runner,
+                "validate_config_feature_schema_binding",
+                side_effect=ValueError("synthetic config/schema cross-binding rejection"),
+            ),
+            self.assertRaisesRegex(
+                self.runner.RunnerError,
+                "preflight static validation failed.*cross-binding rejection",
+            ),
+        ):
+            self.runner.run_preflight(rejected_paths)
+        self.assertFalse(rejected_paths.state_path.exists())
+
     def test_preflight_succeeds_with_absent_audio_and_ami_material_roots(self) -> None:
         import builtins
         import glob
@@ -20014,6 +20318,7 @@ class ProductionNonLockboxBuilderTests(unittest.TestCase):
 
     def test_builder_reads_exact_three_authorities_and_4389_wavs_in_frozen_order(self) -> None:
         from scripts import emotion_state_phase_b_evaluation as evaluation
+        from scripts import emotion_state_phase_b_public_pipeline as pipeline
 
         original_records = evaluation.validated_partition_records
         record_calls: Counter[str] = Counter()
@@ -20054,6 +20359,22 @@ class ProductionNonLockboxBuilderTests(unittest.TestCase):
                 hashlib.sha256(content).hexdigest().upper(),
                 source.sha256,
             )
+
+        rejected_probe = self.fixture.new_probe()
+        with (
+            patch.object(
+                pipeline,
+                "validate_config_feature_schema_binding",
+                side_effect=ValueError("synthetic config/schema cross-binding rejection"),
+            ),
+            self.assertRaisesRegex(
+                pipeline.PublicMaterialPrerequisiteError,
+                "cross-binding rejection",
+            ),
+        ):
+            self._build(probe=rejected_probe)
+        self.assertEqual(rejected_probe.audio_reads, [])
+        self.assertEqual(rejected_probe.ami_reads, [])
 
     def test_builder_rechecks_exact_wav_bytes_and_extracts_17_finite_features_once(self) -> None:
         artifacts, probe = self._build()
@@ -20182,6 +20503,14 @@ class ProductionNonLockboxBuilderTests(unittest.TestCase):
                 ],
             )
         self.assertEqual(restored, first)
+
+        legacy = deepcopy(first["training_discovery"])
+        legacy["feature_schema_sha256"] = (
+            "70A5B1531D5127D37FD89B30F03EC14682B0B6C97850A5452DEEB59033618EF4"
+        )
+        legacy = reseal(legacy)
+        with self.assertRaises(ValueError):
+            validate(legacy)
 
         malformed = deepcopy(first["training_discovery"])
         first_feature = next(iter(malformed["records"][0]["features"]))
@@ -21197,6 +21526,7 @@ class ProductionNonLockboxBuilderTests(unittest.TestCase):
             self.assertIsNone(sliced["slices"][name]["paired_macro_f1_lift"])
 
     def test_source_silent_restore_rejects_each_cache_rewrite_even_when_aggregate_is_unchanged(self) -> None:
+        from scripts import emotion_state_phase_b_public_pipeline as pipeline
         from scripts.validate_emotion_state_002_phase_b import (
             canonical_payload_sha256,
         )
@@ -21217,6 +21547,20 @@ class ProductionNonLockboxBuilderTests(unittest.TestCase):
                 target["self_sha256"] = canonical_payload_sha256(target)
                 with self.assertRaises((TypeError, ValueError)):
                     self.fixture.restore(mutated)
+        retained = deepcopy(artifacts)
+        with (
+            patch.object(
+                pipeline,
+                "validate_config_feature_schema_binding",
+                side_effect=ValueError("synthetic config/schema cross-binding rejection"),
+            ),
+            self.assertRaisesRegex(
+                pipeline.PublicMaterialPrerequisiteError,
+                "cross-binding rejection",
+            ),
+        ):
+            self.fixture.restore(artifacts)
+        self.assertEqual(artifacts, retained)
 
 
 class ProductionNonLockboxExecutionTests(unittest.TestCase):
@@ -22668,6 +23012,28 @@ with {patch_context}:
                 self.runner._revalidate_held_static_preflight_inputs(
                     static_inputs
                 )
+                static_mappings = self.runner._validated_static_non_lockbox_mappings(
+                    static_inputs,
+                    state=preflight_readback.state,
+                    split_manifest=manifest,
+                )
+                self.assertEqual(len(static_mappings), 4)
+                with patch.object(
+                    self.runner,
+                    "validate_config_feature_schema_binding",
+                    side_effect=ValueError(
+                        "synthetic config/schema cross-binding rejection"
+                    ),
+                ):
+                    with self.assertRaisesRegex(
+                        self.runner.RunnerError,
+                        "held non-lockbox static semantics changed.*cross-binding rejection",
+                    ):
+                        self.runner._validated_static_non_lockbox_mappings(
+                            static_inputs,
+                            state=preflight_readback.state,
+                            split_manifest=manifest,
+                        )
                 order.append("static")
                 with self.runner._held_tracked_public_evidence_inputs(
                     self.paths
@@ -24161,6 +24527,31 @@ with {patch_context}:
                 "already complete|phase",
             ):
                 self.runner.run_non_lockbox(self.paths)
+            with (
+                patch.object(
+                    self.runner,
+                    "validate_config_feature_schema_binding",
+                    side_effect=ValueError(
+                        "synthetic config/schema cross-binding rejection"
+                    ),
+                ),
+                patch.object(
+                    self.runner,
+                    "validate_installed_environment_identity",
+                    installed,
+                ),
+                patch.object(
+                    validator,
+                    "validate_installed_environment_identity",
+                    installed,
+                ),
+                patch.object(self.runner, "_assert_closed_environment", closed),
+                self.assertRaisesRegex(
+                    self.runner.RunnerError,
+                    "committed non-lockbox checkpoint integrity failure.*cross-binding",
+                ),
+            ):
+                self.runner.run_non_lockbox(self.paths)
 
         self.assertEqual(len(EXPECTED_ENVIRONMENT_LOCK["distributions"]), 5)
         self.assertEqual(len(source_counts), 4 + 5 + 6 + 2 + 7441 + 2074)
@@ -24193,6 +24584,11 @@ with {patch_context}:
                     Path(self.paths.non_lockbox_cache_root),
                     Path(self.paths.non_lockbox_root),
                     False,
+                ),
+                (
+                    Path(self.paths.state_root),
+                    Path(self.paths.project_root),
+                    True,
                 ),
             ],
         )
@@ -25211,6 +25607,52 @@ class Task10ProductionPipelineTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         EvaluationTests.setUpClass()
+
+    def test_cut4b_production_paths_use_fresh_lineage_and_fixed_dependencies(
+        self,
+    ) -> None:
+        from scripts.run_emotion_state_002_phase_b import RunnerPaths
+
+        paths = RunnerPaths.production()
+        new_root = ROOT / ".tmp" / "emotion-state-002-phase-b-cut4b"
+        old_root = ROOT / ".tmp" / "emotion-state-002-phase-b"
+        self.assertEqual(paths.state_root, new_root)
+        self.assertEqual(
+            paths.feature_schema_path,
+            ROOT
+            / "research/sources/emotion_state/"
+            "emotion_state_phase_b_feature_v2.schema.json",
+        )
+        for path in (
+            paths.state_path,
+            paths.material_pipeline_lock_path,
+            paths.preflight_state_stage_path,
+            paths.non_lockbox_state_stage_path,
+            paths.non_lockbox_state_intent_path,
+            paths.non_lockbox_state_prior_path,
+            paths.split_manifest_path,
+            paths.input_ledger_path,
+            paths.non_lockbox_packet_path,
+            paths.preflight_cache_root,
+            paths.non_lockbox_root,
+            paths.non_lockbox_cache_root,
+            paths.recovery_root,
+            paths.journal_path,
+            paths.lockbox_root,
+            paths.final_lockbox_cache_root,
+            paths.lockbox_lock_path,
+            paths.lockbox_reservation_path,
+        ):
+            with self.subTest(path=path):
+                path.relative_to(new_root)
+                with self.assertRaises(ValueError):
+                    path.relative_to(old_root)
+        self.assertIsNone(paths.lockbox_result_path)
+        for dependency_path in (EVALUATION_PYTHON, WHEELHOUSE):
+            with self.subTest(dependency_path=dependency_path):
+                dependency_path.relative_to(old_root)
+                with self.assertRaises(ValueError):
+                    dependency_path.relative_to(new_root)
 
     def test_production_paths_pin_only_verified_public_roots_and_ignored_outputs(
         self,
@@ -27896,6 +28338,23 @@ runner.accept_receipt(paths, paths.receipt_path("accept.json"))
         self.assertEqual(result["schema_version"], 1)
         self.assertTrue(static.issubset(set(observed)))
         self.assertTrue(generated.isdisjoint(observed))
+        before = self._state_bytes()
+        with (
+            patch.object(self.runner, "_revalidate_bound_preflight"),
+            patch.object(
+                self.runner,
+                "validate_config_feature_schema_binding",
+                side_effect=ValueError(
+                    "synthetic config/schema cross-binding rejection"
+                ),
+            ),
+        ):
+            with self.assertRaisesRegex(
+                self.runner.RunnerError,
+                "aggregate input validation failed.*cross-binding rejection",
+            ):
+                self.runner.build_aggregate_result(self.paths)
+        self.assertEqual(self._state_bytes(), before)
 
     def test_result_and_report_are_deterministic_and_bind_every_required_group(
         self,

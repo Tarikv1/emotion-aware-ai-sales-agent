@@ -3980,10 +3980,12 @@ environment, entirely offline and without dependency resolution, then run
 
 ### Explicit gate: public-material evaluation
 
-This gate remains blocked until the Task 9 independent review passes. After
-that review, these commands still require separate authority to read the fixed
-public CREMA-D and AMI roots. They are not authorized by offline validation or
-dependency setup:
+This gate remains blocked until Cut 4B implementation and independent review
+pass. One separately authorized replacement transaction will write fresh state
+only under `.tmp/emotion-state-002-phase-b-cut4b`; its executable and immutable
+dependency inputs remain under `.tmp/emotion-state-002-phase-b`. These commands
+still require separate authority to read the fixed public CREMA-D and AMI
+roots. They are not authorized by offline validation or dependency setup:
 
 ```powershell
 .tmp/emotion-state-002-phase-b/venv/Scripts/python.exe scripts/run_emotion_state_002_phase_b.py preflight
@@ -4008,7 +4010,7 @@ pair and no live journal or receipt:
 
 ```powershell
 .tmp/emotion-state-002-phase-b/venv/Scripts/python.exe scripts/run_emotion_state_002_phase_b.py stage-candidate --receipt receipt.json
-.tmp/emotion-state-002-phase-b/venv/Scripts/python.exe scripts/validate_emotion_state_002_phase_b.py candidate --receipt .tmp/emotion-state-002-phase-b/publication/receipt.json
+.tmp/emotion-state-002-phase-b/venv/Scripts/python.exe scripts/validate_emotion_state_002_phase_b.py candidate --receipt .tmp/emotion-state-002-phase-b-cut4b/publication/receipt.json
 .tmp/emotion-state-002-phase-b/venv/Scripts/python.exe scripts/run_emotion_state_002_phase_b.py accept-receipt --receipt receipt.json
 .tmp/emotion-state-002-phase-b/venv/Scripts/python.exe scripts/validate_emotion_state_002_phase_b.py checkpoint
 ```

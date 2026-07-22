@@ -731,7 +731,13 @@ Key writing sources:
 
 ## Near-Term Next Step
 
-Task 9 is implemented; its independent review gate must pass before Task 10. Task 10/public-material evaluation, the final lockbox, canonical staging/acceptance, push, and merge remain blocked. The reviewed dependency environment was acquired under its separate gate, but that authority does not transfer. Task 9 created no real receipt, journal, canonical pair, or publication state. The separate broader product track may continue choosing between sales-dialogue quality work and a non-LLM/action-selector baseline. Do not call providers, generate customer audio, wire live runtime, inject Fish tags, open `PROD-102`, add email/calendar/CRM side effects, run production calls, or claim official OpenAI representation.
+Cut 4B implementation and independent review are prerequisites to one fresh Task 10 replacement transaction under `.tmp/emotion-state-002-phase-b-cut4b`; until that transaction passes aggregate-only independent review, no non-lockbox checkpoint is accepted.
+
+The retired lineage is not reused or mutated.
+
+Final lockbox, canonical publication, push, merge, runtime activation, Phase C, providers, private data, calls, simulations, and source adaptation remain blocked. The reviewed venv and wheelhouse under `.tmp/emotion-state-002-phase-b` remain immutable dependency inputs only; no authority transfers to another gate.
+
+The configuration's `emotion-state-crema-interpretable-acoustic-v1` value remains an immutable seed-lineage compatibility token, not the production schema selector. It preserves the existing deterministic actor assignment and model seed `618797162`; the fixed v2 path and v2 static/semantic identities are the exclusive active feature-schema authority for Cut 4B. Independent review required this explicit cross-binding at offline contracts, preflight, non-lockbox build/readback and committed replay, and aggregate reconstruction before the replacement transaction can be considered.
 
 EMOTION-STATE Phase A is accepted at output-only commit `f8ba503c3670fec6e9dee53f03f306798e7b807b` with the bounded scope `source_provenance_dataset_manifests_offline_contracts_and_cohort_release_gate_only`. Phase B is `EMOTION-STATE-002`: an offline public-data feasibility study using CREMA-D's 6,570 concordant original audio-perception labels and AMI only for conversational mechanics. The implemented synthetic validator proves contracts and fail-closed publication readback, not model/material results, customer emotion, the five operational signals, provider feasibility, runtime activation, or production readiness.
 

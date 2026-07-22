@@ -38,6 +38,7 @@ from scripts.validate_emotion_state_002_phase_b import (
     MODEL_KEYS,
     canonical_payload_sha256,
     validate_config,
+    validate_config_feature_schema_binding,
     validate_crema_label_ledger,
     validate_ami_mechanics_aggregates_v2,
     validate_environment_lock,
@@ -3529,6 +3530,16 @@ def _validated_non_lockbox_static_mappings(
                 f"{label} semantic identity changed"
             )
         validated.append(copy.deepcopy(checked))
+    try:
+        bound_configuration, bound_feature_schema = (
+            validate_config_feature_schema_binding(validated[0], validated[2])
+        )
+    except (TypeError, ValueError) as error:
+        raise PublicMaterialPrerequisiteError(
+            f"configuration and feature schema cross-binding failed: {error}"
+        ) from error
+    validated[0] = bound_configuration
+    validated[2] = bound_feature_schema
     return validated[0], validated[1], validated[2], validated[3]
 
 

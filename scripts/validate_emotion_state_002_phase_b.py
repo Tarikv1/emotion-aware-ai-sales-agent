@@ -23,7 +23,7 @@ if str(ROOT) not in sys.path:
 CONFIG_PATH = ROOT / "research/experiments/cases/emotion-state-002-phase-b-config.json"
 FEATURE_SCHEMA_PATH = (
     ROOT
-    / "research/sources/emotion_state/emotion_state_phase_b_feature_v1.schema.json"
+    / "research/sources/emotion_state/emotion_state_phase_b_feature_v2.schema.json"
 )
 SPLIT_SCHEMA_PATH = (
     ROOT
@@ -87,11 +87,22 @@ PARTITION_COUNTS = {
 }
 
 EXPECTED_FEATURE_SCHEMA: dict[str, Any] = {
-    "schema_id": "emotion-state-crema-interpretable-acoustic-v1",
-    "schema_version": 1,
+    "schema_id": "emotion-state-crema-interpretable-acoustic-v2",
+    "schema_version": 2,
     "sample_rate_hz": 16000,
     "sample_width_bytes": 2,
     "channel_count": 1,
+    "pcm_endpoint_admissibility": {
+        "policy_id": "emotion-state-pcm16-endpoint-admissibility-v1",
+        "endpoint_values": [-32768, 32767],
+        "presence_interpretation": (
+            "numeric_saturation_observation_not_clipping_proof"
+        ),
+        "reject_on_presence": False,
+        "rate_threshold": None,
+        "run_length_threshold": None,
+        "clipping_classification_implemented": False,
+    },
     "window_ms": 25,
     "hop_ms": 10,
     "window": "hann_periodic",
@@ -377,13 +388,13 @@ EXPECTED_VALIDITY = {key: True for key in VALIDITY_KEYS}
 EXPECTED_STATIC_FILE_SHA256 = {
     "configuration_sha256": "BBB16BDB1205255B0D1C3F0F33891ECC75C4F074D0E6D7200D09A6B385CFE914",
     "environment_lock_sha256": "F78229E8C84B90DB0EB4487CA37949940D13D9AB30A95B5148081CC1B8F60DE3",
-    "feature_schema_sha256": "81B55B25F405A99ED7B29449631CFD39B2FE6E1D4F500ADA3BBCD8668790AB75",
+    "feature_schema_sha256": "C2A7DE308BAD32C3798016061777669881E7FDD3403979DCCC166DCE38F307C4",
     "split_schema_sha256": "6086D63E0796AA5F3FED7F7130F307264DE0BD9B299D2203249FB6268BAD399A",
 }
 EXPECTED_EVIDENCE_IDENTITY_SHA256 = {
     "configuration_sha256": "24E2186A3ACB19817BF87689F09A2F069AC07B5C1D669364D5FC08BC9AD5FA8F",
     "environment_lock_sha256": "ECAE7C41E8310C52AA62846EDB7F966F5CD05DFF2FD3635C0070B71B8AB7673C",
-    "feature_schema_sha256": "70A5B1531D5127D37FD89B30F03EC14682B0B6C97850A5452DEEB59033618EF4",
+    "feature_schema_sha256": "AEC550285DF6A92B3E86E16F66A2E5B554836BBE47C625106F517EB0CF1375DB",
     "split_schema_sha256": "CA1551AC5664391406920D117E21CA1E413F71C96EF29FEC76FA22DCB8D37E9A",
 }
 PROVENANCE_KEYS = (
@@ -1448,9 +1459,20 @@ def load_json_strict(path: Path) -> dict[str, Any]:
 def validate_feature_schema(payload: Any) -> dict[str, Any]:
     if not isinstance(payload, dict):
         raise ValueError("feature schema must be an object")
+    if tuple(payload) != tuple(EXPECTED_FEATURE_SCHEMA):
+        raise ValueError("feature schema field order does not match")
+    endpoint_policy = payload.get("pcm_endpoint_admissibility")
+    expected_endpoint_policy = EXPECTED_FEATURE_SCHEMA[
+        "pcm_endpoint_admissibility"
+    ]
+    if (
+        type(endpoint_policy) is not dict
+        or tuple(endpoint_policy) != tuple(expected_endpoint_policy)
+    ):
+        raise ValueError("PCM endpoint policy field order does not match")
     if tuple(payload.get("ordered_features", ())) != FEATURE_NAMES:
         raise ValueError("ordered acoustic features do not match")
-    if payload.get("schema_id") != "emotion-state-crema-interpretable-acoustic-v1":
+    if payload.get("schema_id") != "emotion-state-crema-interpretable-acoustic-v2":
         raise ValueError("feature schema identity does not match")
     if payload.get("imputation_allowed") is not False:
         raise ValueError("feature imputation must remain disabled")
@@ -1487,6 +1509,34 @@ def validate_config(payload: Any) -> dict[str, Any]:
     if not isinstance(boundaries, dict) or any(value is not False for value in boundaries.values()):
         raise ValueError("runtime influence and every external boundary must remain disabled")
     return _validate_exact(payload, EXPECTED_CONFIG, "config")
+
+
+def validate_config_feature_schema_binding(
+    configuration: Any,
+    feature_schema: Any,
+) -> tuple[dict[str, Any], dict[str, Any]]:
+    """Bind the legacy seed-lineage token to the active v2 schema authority.
+
+    The config's v1 feature-schema token is retained only for deterministic
+    seed-lineage compatibility; it is not the active schema selector.
+    """
+    validated_configuration = validate_config(configuration)
+    validated_feature_schema = validate_feature_schema(feature_schema)
+    if (
+        canonical_payload_sha256(validated_configuration)
+        != "24E2186A3ACB19817BF87689F09A2F069AC07B5C1D669364D5FC08BC9AD5FA8F"
+        or validated_configuration.get("feature_schema_id")
+        != "emotion-state-crema-interpretable-acoustic-v1"
+        or validated_feature_schema.get("schema_id")
+        != "emotion-state-crema-interpretable-acoustic-v2"
+        or canonical_payload_sha256(validated_feature_schema)
+        != "AEC550285DF6A92B3E86E16F66A2E5B554836BBE47C625106F517EB0CF1375DB"
+    ):
+        raise ValueError("config and active feature schema binding does not match")
+    return (
+        copy.deepcopy(validated_configuration),
+        copy.deepcopy(validated_feature_schema),
+    )
 
 
 def validate_environment_lock(payload: Any) -> dict[str, Any]:
@@ -4556,8 +4606,11 @@ def validate_source_section() -> None:
 
 
 def validate_contracts_section() -> None:
-    validate_config(load_json_strict(CONFIG_PATH))
-    validate_feature_schema(load_json_strict(FEATURE_SCHEMA_PATH))
+    configuration = load_json_strict(CONFIG_PATH)
+    feature_schema = load_json_strict(FEATURE_SCHEMA_PATH)
+    validate_config(configuration)
+    validate_feature_schema(feature_schema)
+    validate_config_feature_schema_binding(configuration, feature_schema)
     validate_split_schema(load_json_strict(SPLIT_SCHEMA_PATH))
     validate_environment_lock(load_json_strict(ENVIRONMENT_LOCK_PATH))
     for field, path in (

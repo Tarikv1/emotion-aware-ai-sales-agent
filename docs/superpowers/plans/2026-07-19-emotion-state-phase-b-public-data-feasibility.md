@@ -19,6 +19,31 @@ customer-state evidence or influence runtime.
 scikit-learn distributions in an ignored research-only virtual environment;
 standard-library `unittest`.
 
+## Cut 4B Active Overlay (2026-07-22)
+
+- `emotion_state_phase_b_feature_v2.schema.json` supersedes v1 for every new
+  production execution; v1 remains unchanged historical authority only.
+- The unchanged config field value
+  `emotion-state-crema-interpretable-acoustic-v1` is a legacy seed-lineage
+  compatibility token, not an active selector. The exact config identities,
+  actor assignment, and model seed `618797162` remain frozen; the fixed v2 path
+  and its static/semantic identities are the exclusive active authority. The
+  review correction cross-binds that tuple at every composition and replay
+  boundary.
+- The corrected production lineage root is exactly
+  `.tmp/emotion-state-002-phase-b-cut4b`. The retired
+  `.tmp/emotion-state-002-phase-b` split, preflight, and non-lockbox lineage is
+  opaque and must not be parsed, reused, recovered, deleted, or mutated.
+- The old `.tmp/emotion-state-002-phase-b/venv` and
+  `.tmp/emotion-state-002-phase-b/dependencies/wheelhouse` remain immutable
+  dependency inputs. Command executables continue to use that venv.
+- At most one fresh replacement preflight/non-lockbox attempt may be issued
+  after Cut 4B implementation and independent review. No fallback, cleanup,
+  retry, or migration is implicit.
+- Task 10 review remains aggregate-only. Final-lockbox access, canonical
+  staging or acceptance, runtime activation, push, merge, and Phase C remain
+  blocked under their separate gates.
+
 ## Global Constraints
 
 - Implementation base:
@@ -1722,7 +1747,7 @@ git commit -m "Document and validate Phase B offline implementation"
 ### Task 10: Run the authorized public-material preflight and non-lockbox experiment
 
 **Files:**
-- Local ignored writes only under `.tmp/emotion-state-002-phase-b/`
+- Local ignored writes only under `.tmp/emotion-state-002-phase-b-cut4b/`
 - Modify tracked docs only after reviewed aggregate evidence exists:
   `docs/thesis/METHODOLOGY_LOG.md`,
   `docs/thesis/ROADMAP.md`, and
@@ -1784,7 +1809,7 @@ Do not commit ignored caches or canonical result/report files.
 ### Task 11: Open the final lockbox once and review the aggregate result
 
 **Files:**
-- Local ignored writes only under `.tmp/emotion-state-002-phase-b/`
+- Local ignored writes only under `.tmp/emotion-state-002-phase-b-cut4b/`
 
 **Interfaces:**
 - Consumes: the independently accepted non-lockbox packet.
@@ -1847,7 +1872,7 @@ explicit actions.
 - [ ] **Step 2: Stage the candidate transaction**
 
 ```powershell
-.tmp/emotion-state-002-phase-b/venv/Scripts/python.exe scripts/run_emotion_state_002_phase_b.py stage-candidate --receipt .tmp/emotion-state-002-phase-b/publication/receipt.json
+.tmp/emotion-state-002-phase-b/venv/Scripts/python.exe scripts/run_emotion_state_002_phase_b.py stage-candidate --receipt .tmp/emotion-state-002-phase-b-cut4b/publication/receipt.json
 ```
 
 Expected: exact canonical pair is staged, previous pair is recoverable, journal
@@ -1856,7 +1881,7 @@ status is `awaiting_acceptance`, and no Git commit occurs.
 - [ ] **Step 3: Independently validate and inspect candidate content**
 
 ```powershell
-.tmp/emotion-state-002-phase-b/venv/Scripts/python.exe scripts/validate_emotion_state_002_phase_b.py candidate --receipt .tmp/emotion-state-002-phase-b/publication/receipt.json
+.tmp/emotion-state-002-phase-b/venv/Scripts/python.exe scripts/validate_emotion_state_002_phase_b.py candidate --receipt .tmp/emotion-state-002-phase-b-cut4b/publication/receipt.json
 git diff -- research/experiments/generated/EMOTION-STATE-002-phase-b-public-data-feasibility/result.json research/experiments/generated/EMOTION-STATE-002-phase-b-public-data-feasibility/report.md
 ```
 
@@ -1869,13 +1894,13 @@ decision contract, and every readiness limitation.
 Accept only after review:
 
 ```powershell
-.tmp/emotion-state-002-phase-b/venv/Scripts/python.exe scripts/run_emotion_state_002_phase_b.py accept-receipt --receipt .tmp/emotion-state-002-phase-b/publication/receipt.json
+.tmp/emotion-state-002-phase-b/venv/Scripts/python.exe scripts/run_emotion_state_002_phase_b.py accept-receipt --receipt .tmp/emotion-state-002-phase-b-cut4b/publication/receipt.json
 ```
 
 Otherwise restore:
 
 ```powershell
-.tmp/emotion-state-002-phase-b/venv/Scripts/python.exe scripts/run_emotion_state_002_phase_b.py reject-receipt --receipt .tmp/emotion-state-002-phase-b/publication/receipt.json
+.tmp/emotion-state-002-phase-b/venv/Scripts/python.exe scripts/run_emotion_state_002_phase_b.py reject-receipt --receipt .tmp/emotion-state-002-phase-b-cut4b/publication/receipt.json
 ```
 
 - [ ] **Step 5: Run final checkpoint and repository ledger**
