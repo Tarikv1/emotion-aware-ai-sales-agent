@@ -1,8 +1,8 @@
 # Phase B Cut 4B PCM Endpoint Admissibility Design
 
-**Date:** 2026-07-22  
-**Status:** approved design; implementation not yet started  
-**Approved approach:** endpoint-neutral policy v2  
+**Date:** 2026-07-22
+**Status:** approved design; implementation not yet started
+**Approved approach:** endpoint-neutral policy v2
 **Current implementation base:** `8195ac9f7cbab23c6de4eadced6ed47293f3668b`
 
 ## Decision
