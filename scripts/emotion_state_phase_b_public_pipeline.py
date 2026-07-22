@@ -121,13 +121,11 @@ _AMI_MEETING_UNIVERSE_PATH = (
 _AMI_PARTICIPANTS_PATH = (
     f"{_AMI_EXTRACTED_ROOT}corpusResources/participants.xml"
 )
-_AMI_DIALOGUE_ACT_TYPES_PATH = (
-    f"{_AMI_EXTRACTED_ROOT}corpusResources/da-types.xml"
-)
+_AMI_METADATA_PATH = f"{_AMI_EXTRACTED_ROOT}AMI-metadata.xml"
 _AMI_EXCLUDED_SOURCE_PATHS = frozenset({
     _AMI_ARCHIVE_PATH,
     _AMI_PARTITION_SOURCE_PATH,
-    _AMI_DIALOGUE_ACT_TYPES_PATH,
+    _AMI_METADATA_PATH,
 })
 _MANIFEST_FIELDS = frozenset(
     {
@@ -432,7 +430,7 @@ ACOUSTIC_FEATURE_CACHE_SCHEMA_ID = (
 AMI_EVIDENCE_CACHE_SCHEMA_ID = "emotion-state-phase-b-ami-evidence-cache-v1"
 SLICE_ANALYSIS_SCHEMA_ID = "emotion-state-phase-b-slice-analysis-v2"
 NON_LOCKBOX_PACKET_SCHEMA_ID = "emotion-state-phase-b-non-lockbox-review-v4"
-EXPECTED_AMI_SELECTED_SOURCE_COUNT = 2071
+EXPECTED_AMI_SELECTED_SOURCE_COUNT = 1932
 EXPECTED_DIAGNOSTIC_SLICE_COUNT = 25
 _VOTE_SLICE_NAMES = (
     "vote_agreement:[0.00,0.50)",
@@ -1075,6 +1073,11 @@ def _select_ami_source_identities(
             f"{_AMI_EXTRACTED_ROOT}dialogueActs/",
             ".dialog-act.xml",
         ),
+        (
+            "adjacency_pairs",
+            f"{_AMI_EXTRACTED_ROOT}dialogueActs/",
+            ".adjacency-pairs.xml",
+        ),
     )
 
     def direct_family(path: str) -> str | None:
@@ -1093,6 +1096,7 @@ def _select_ami_source_identities(
     frozen = _exact_tracked_public_authority(authority)
     selected: list[SourceByteIdentity] = []
     excluded: list[str] = []
+    excluded_family_counts = Counter()
     family_counts = Counter()
     basenames: set[str] = set()
     paths: set[str] = set()
@@ -1124,6 +1128,9 @@ def _select_ami_source_identities(
         if family is None and path in _AMI_EXCLUDED_SOURCE_PATHS:
             excluded.append(path)
             continue
+        if family == "adjacency_pairs":
+            excluded_family_counts[family] += 1
+            continue
         if family is None:
             raise PublicMaterialPrerequisiteError(
                 "AMI source identity is not an exact frozen source path"
@@ -1141,13 +1148,13 @@ def _select_ami_source_identities(
         "participants": 1,
         "words": 687,
         "segments": 687,
-        "dialogue_acts": 695,
+        "dialogue_acts": 556,
     }) or len(selected) != EXPECTED_AMI_SELECTED_SOURCE_COUNT or (
         len(excluded) != 3
         or set(excluded) != set(_AMI_EXCLUDED_SOURCE_PATHS)
-    ):
+    ) or excluded_family_counts != Counter({"adjacency_pairs": 139}):
         raise PublicMaterialPrerequisiteError(
-            "AMI selected source families do not match the frozen 2,071 files"
+            "AMI selected source families do not match the frozen 1,932 files"
         )
     return tuple(selected)
 
@@ -3905,7 +3912,7 @@ def _ami_loader_inputs(
         or participant_metadata is None
         or len(words) != 687
         or len(segments) != 687
-        or len(dialogue_acts) != 695
+        or len(dialogue_acts) != 556
     ):
         raise PublicMaterialPrerequisiteError(
             "AMI loader source families do not match frozen counts"

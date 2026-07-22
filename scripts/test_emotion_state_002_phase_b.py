@@ -18799,7 +18799,7 @@ CUT4_ROLE_COUNTS = {
 }
 CUT4_NONFINAL_COUNT = 4389
 CUT4_ELIGIBLE_COUNT = 6570
-CUT4_AMI_XML_COUNT = 2071
+CUT4_AMI_XML_COUNT = 1932
 CUT4_FEATURE_COUNT = 17
 CUT4_SLICE_COUNT = 25
 CUT4_NONFINAL_ROLES = (
@@ -19353,14 +19353,14 @@ class _Cut4ProductionShapeFixture:
             retained=True,
         )
         add_ami(
-            "extracted/corpusResources/da-types.xml",
-            b"<da-types synthetic='true'/>",
+            "extracted/AMI-metadata.xml",
+            b"<ami-metadata synthetic='true'/>",
             retained=False,
         )
         for family, count, suffix in (
             ("words", 687, "words.xml"),
             ("segments", 687, "segments.xml"),
-            ("dialogueActs", 695, "dialog-act.xml"),
+            ("dialogueActs", 556, "dialog-act.xml"),
         ):
             for index in range(count):
                 filename = f"C{index:04d}.A.{suffix}"
@@ -19368,6 +19368,16 @@ class _Cut4ProductionShapeFixture:
                     f"<{family} synthetic='{index:04d}'/>".encode("ascii")
                 )
                 add_ami(f"extracted/{family}/{filename}", content, retained=True)
+        for index in range(139):
+            filename = f"C{index:04d}.adjacency-pairs.xml"
+            content = f"<adjacencyPairs synthetic='{index:04d}'/>".encode(
+                "ascii"
+            )
+            add_ami(
+                f"extracted/dialogueActs/{filename}",
+                content,
+                retained=False,
+            )
         if len(ami_sources) != 2074 or len(ami_bytes) != CUT4_AMI_XML_COUNT:
             raise AssertionError("Cut 4 AMI identity count changed")
         cls.ami_bytes = ami_bytes
@@ -20279,7 +20289,9 @@ class ProductionNonLockboxBuilderTests(unittest.TestCase):
         self.assertEqual(probe.audio_reads, [])
         self.assertEqual(probe.feature_calls, [])
 
-    def test_builder_reads_exact_2071_ami_xml_identities_without_archive_html_or_da_types(self) -> None:
+    def test_builder_reads_exact_1932_parser_compatible_ami_xml_identities(self) -> None:
+        from scripts import emotion_state_phase_b_public_pipeline as pipeline
+
         _artifacts, probe = self._build()
         self.assertEqual(tuple(probe.ami_reads), self.fixture.selected_ami_sources)
         self.assertEqual(len(probe.ami_reads), CUT4_AMI_XML_COUNT)
@@ -20292,10 +20304,119 @@ class ProductionNonLockboxBuilderTests(unittest.TestCase):
                 hashlib.sha256(content).hexdigest().upper(),
                 source.sha256,
             )
-        rendered = "\n".join(source.project_relative_path for source in probe.ami_reads)
-        self.assertNotIn("ami_manual_1.6.2.zip", rendered)
-        self.assertNotIn("datasets.shtml", rendered)
-        self.assertNotIn("da-types.xml", rendered)
+
+        evidence_root = ROOT / "research/sources/emotion_state/datasets"
+        self.assertEqual(len(pipeline.TRACKED_DATASET_EVIDENCE_FILENAMES), 6)
+        tracked_authority = pipeline.validate_tracked_public_evidence({
+            name: (evidence_root / name).read_bytes()
+            for name in pipeline.TRACKED_DATASET_EVIDENCE_FILENAMES
+        })
+
+        ami_root = "data/public/emotion-state/ami-manual-annotations-v1.6.2/"
+        archive_path = f"{ami_root}ami_manual_1.6.2.zip"
+        html_path = f"{ami_root}official-partitions/datasets.shtml"
+        metadata_path = f"{ami_root}extracted/AMI-metadata.xml"
+        meetings_path = f"{ami_root}extracted/corpusResources/meetings.xml"
+        participants_path = (
+            f"{ami_root}extracted/corpusResources/participants.xml"
+        )
+        words_prefix = f"{ami_root}extracted/words/"
+        segments_prefix = f"{ami_root}extracted/segments/"
+        dialogue_prefix = f"{ami_root}extracted/dialogueActs/"
+
+        def assert_exact_shape(authority: Any) -> None:
+            selected = pipeline._select_ami_source_identities(authority)
+            all_paths = tuple(
+                source.project_relative_path for source in authority.ami_files
+            )
+            selected_paths = tuple(
+                source.project_relative_path for source in selected
+            )
+            dialogue_act_paths = tuple(
+                path
+                for path in all_paths
+                if path.startswith(dialogue_prefix)
+                and path.endswith(".dialog-act.xml")
+            )
+            adjacency_paths = tuple(
+                path
+                for path in all_paths
+                if path.startswith(dialogue_prefix)
+                and path.endswith(".adjacency-pairs.xml")
+            )
+            independently_selected_paths = tuple(
+                path
+                for path in all_paths
+                if path in (meetings_path, participants_path)
+                or (
+                    path.startswith(words_prefix)
+                    and path.endswith(".words.xml")
+                )
+                or (
+                    path.startswith(segments_prefix)
+                    and path.endswith(".segments.xml")
+                )
+                or (
+                    path.startswith(dialogue_prefix)
+                    and path.endswith(".dialog-act.xml")
+                )
+            )
+
+            self.assertEqual(len(all_paths), 2074)
+            self.assertEqual(len(selected_paths), CUT4_AMI_XML_COUNT)
+            self.assertEqual(len(dialogue_act_paths), 556)
+            self.assertEqual(len(adjacency_paths), 139)
+            self.assertEqual(all_paths.count(archive_path), 1)
+            self.assertEqual(all_paths.count(html_path), 1)
+            self.assertEqual(all_paths.count(metadata_path), 1)
+            self.assertEqual(
+                tuple(path for path in selected_paths if path == meetings_path),
+                (meetings_path,),
+            )
+            self.assertEqual(
+                tuple(path for path in selected_paths if path == participants_path),
+                (participants_path,),
+            )
+            self.assertEqual(
+                sum(
+                    path.startswith(words_prefix)
+                    and path.endswith(".words.xml")
+                    for path in selected_paths
+                ),
+                687,
+            )
+            self.assertEqual(
+                sum(
+                    path.startswith(segments_prefix)
+                    and path.endswith(".segments.xml")
+                    for path in selected_paths
+                ),
+                687,
+            )
+            self.assertEqual(
+                sum(
+                    path.startswith(dialogue_prefix)
+                    and path.endswith(".dialog-act.xml")
+                    for path in selected_paths
+                ),
+                556,
+            )
+            self.assertNotIn(archive_path, selected_paths)
+            self.assertNotIn(html_path, selected_paths)
+            self.assertNotIn(metadata_path, selected_paths)
+            self.assertTrue(set(adjacency_paths).isdisjoint(selected_paths))
+            self.assertEqual(selected_paths, independently_selected_paths)
+            self.assertEqual(
+                selected,
+                tuple(
+                    source
+                    for source in authority.ami_files
+                    if source.project_relative_path in independently_selected_paths
+                ),
+            )
+
+        assert_exact_shape(self.fixture.tracked_authority)
+        assert_exact_shape(tracked_authority)
 
     def test_ami_v2_cache_reconstructs_exact_release_matrix_and_missingness_rules(self) -> None:
         from scripts.validate_emotion_state_002_phase_b import (
@@ -20522,7 +20643,8 @@ class ProductionNonLockboxBuilderTests(unittest.TestCase):
         )
         self.assertNotIn("ami_manual_1.6.2.zip", rendered_sources)
         self.assertNotIn("datasets.shtml", rendered_sources)
-        self.assertNotIn("da-types.xml", rendered_sources)
+        self.assertNotIn("AMI-metadata.xml", rendered_sources)
+        self.assertNotIn(".adjacency-pairs.xml", rendered_sources)
         self.assertEqual(
             tuple(artifacts.ami_evidence),
             (
@@ -20542,7 +20664,7 @@ class ProductionNonLockboxBuilderTests(unittest.TestCase):
             for index, source in enumerate(
                 self.fixture.tracked_authority.ami_files
             )
-            if source.project_relative_path.endswith("/da-types.xml")
+            if source.project_relative_path.endswith("/AMI-metadata.xml")
         )
         unknown_files = list(self.fixture.tracked_authority.ami_files)
         unknown_files[excluded_index] = replace(
@@ -20589,11 +20711,10 @@ class ProductionNonLockboxBuilderTests(unittest.TestCase):
                 ),
             ),
             (
-                "dialogue-act metadata",
-                f"{ami_root}extracted/corpusResources/da-types.xml",
+                "AMI metadata",
+                f"{ami_root}extracted/AMI-metadata.xml",
                 (
-                    f"{ami_root}nested/extracted/corpusResources/"
-                    "da-types.xml"
+                    f"{ami_root}nested/extracted/AMI-metadata.xml"
                 ),
             ),
         ]
@@ -22560,6 +22681,11 @@ with {patch_context}:
                     self.runner._revalidate_held_tracked_public_evidence_inputs(
                         evidence_inputs
                     )
+                    pipeline_ami_sources = (
+                        pipeline._select_ami_source_identities(
+                            tracked_authority
+                        )
+                    )
                     audio_by_role, ami_sources = (
                         self.runner._derive_runner_non_lockbox_source_identities(
                             tracked_authority,
@@ -22589,6 +22715,10 @@ with {patch_context}:
             self.fixture.expected_audio_order(),
         )
         self.assertEqual(tuple(ami_sources), self.fixture.selected_ami_sources)
+        self.assertEqual(
+            tuple(pipeline_ami_sources),
+            self.fixture.selected_ami_sources,
+        )
         self.assertEqual(sum(map(len, audio_by_role.values())), CUT4_NONFINAL_COUNT)
         self.assertEqual(len(ami_sources), CUT4_AMI_XML_COUNT)
         self.assertEqual(source_calls, Counter())

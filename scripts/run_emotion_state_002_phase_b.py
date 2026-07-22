@@ -198,7 +198,7 @@ _AMI_EXCLUDED_SOURCES = frozenset(
     {
         f"{_AMI_SOURCE_ROOT}ami_manual_1.6.2.zip",
         f"{_AMI_SOURCE_ROOT}official-partitions/datasets.shtml",
-        f"{_AMI_EXTRACTED_SOURCE_ROOT}corpusResources/da-types.xml",
+        f"{_AMI_EXTRACTED_SOURCE_ROOT}AMI-metadata.xml",
     }
 )
 ALLOWED_PHASES = frozenset(
@@ -6336,6 +6336,7 @@ def _derive_runner_non_lockbox_ami_source_identities(
         raise RunnerError("runner AMI source authority count changed")
     selected_ami: list[SourceByteIdentity] = []
     excluded: set[str] = set()
+    adjacency_pair_count = 0
     ami_paths: set[str] = set()
     family_counts = {
         "meetings": 0,
@@ -6351,6 +6352,11 @@ def _derive_runner_non_lockbox_ami_source_identities(
             "dialogue_acts",
             f"{_AMI_EXTRACTED_SOURCE_ROOT}dialogueActs/",
             ".dialog-act.xml",
+        ),
+        (
+            "adjacency_pairs",
+            f"{_AMI_EXTRACTED_SOURCE_ROOT}dialogueActs/",
+            ".adjacency-pairs.xml",
         ),
     )
     for source in ami_identities:
@@ -6387,6 +6393,9 @@ def _derive_runner_non_lockbox_ami_source_identities(
         if family is None and path in _AMI_EXCLUDED_SOURCES:
             excluded.add(path)
             continue
+        if family == "adjacency_pairs":
+            adjacency_pair_count += 1
+            continue
         if family is None:
             raise RunnerError("runner AMI source is not in a frozen family")
         family_counts[family] += 1
@@ -6398,9 +6407,10 @@ def _derive_runner_non_lockbox_ami_source_identities(
             "participants": 1,
             "words": 687,
             "segments": 687,
-            "dialogue_acts": 695,
+            "dialogue_acts": 556,
         }
         or excluded != set(_AMI_EXCLUDED_SOURCES)
+        or adjacency_pair_count != 139
         or len(selected_ami) != EXPECTED_AMI_SELECTED_SOURCE_COUNT
     ):
         raise RunnerError("runner AMI selected source families changed")
