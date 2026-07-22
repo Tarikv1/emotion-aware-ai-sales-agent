@@ -62,6 +62,8 @@ from scripts.validate_emotion_state_002_phase_b import (
     validated_lockbox_summary,
 )
 from scripts.emotion_state_phase_b_public_pipeline import (
+    AMI_FULL_CORPUS_ORDER,
+    AMI_EXPECTED_ANNOTATION_PATHS,
     EXPECTED_AMI_SELECTED_SOURCE_COUNT,
     EXPECTED_PRODUCTION_ELIGIBLE_RECORD_COUNT,
     EXPECTED_PRODUCTION_FINAL_LOCKBOX_RECORD_COUNT,
@@ -202,6 +204,23 @@ _AMI_EXCLUDED_SOURCES = frozenset(
         f"{_AMI_EXTRACTED_SOURCE_ROOT}AMI-metadata.xml",
     }
 )
+_AMI_PARSER_ANNOTATION_FILENAME = re.compile(
+    r"^(?P<meeting>[A-Z]{2}\d{4}[a-e]?)\.(?P<speaker>[A-Z])\."
+    r"(?P<family>words|segments|dialog-act)\.xml$"
+)
+_AMI_ADJACENCY_FILENAME = re.compile(
+    r"^(?P<meeting>[A-Z]{2}\d{4}[a-e]?)\.adjacency-pairs\.xml$"
+)
+_AMI_OUTSIDE_PARTITION_SOURCES = frozenset({
+    *{
+        f"{_AMI_EXTRACTED_SOURCE_ROOT}words/IB4005.{speaker}.words.xml"
+        for speaker in "ABCD"
+    },
+    *{
+        f"{_AMI_EXTRACTED_SOURCE_ROOT}segments/IB4005.{speaker}.segments.xml"
+        for speaker in "ABCD"
+    },
+})
 ALLOWED_PHASES = frozenset(
     {
         "initialized",
@@ -6335,17 +6354,22 @@ def _derive_runner_non_lockbox_ami_source_identities(
     ami_identities = tracked_authority.ami_files
     if type(ami_identities) is not tuple or len(ami_identities) != 2074:
         raise RunnerError("runner AMI source authority count changed")
+    if tracked_authority.ami_official_order != AMI_FULL_CORPUS_ORDER:
+        raise RunnerError("runner AMI official order changed")
+    official_meetings = frozenset(tracked_authority.ami_official_order)
     selected_ami: list[SourceByteIdentity] = []
     excluded: set[str] = set()
+    outside_partition_paths: set[str] = set()
     adjacency_pair_count = 0
     ami_paths: set[str] = set()
-    family_counts = {
+    full_family_counts = {
         "meetings": 0,
         "participants": 0,
         "words": 0,
         "segments": 0,
         "dialogue_acts": 0,
     }
+    retained_family_counts = dict(full_family_counts)
     direct_families = (
         ("words", f"{_AMI_EXTRACTED_SOURCE_ROOT}words/", ".words.xml"),
         ("segments", f"{_AMI_EXTRACTED_SOURCE_ROOT}segments/", ".segments.xml"),
@@ -6394,15 +6418,51 @@ def _derive_runner_non_lockbox_ami_source_identities(
         if family is None and path in _AMI_EXCLUDED_SOURCES:
             excluded.add(path)
             continue
+        if family is None:
+            raise RunnerError("runner AMI source is not in a frozen family")
+        if family in {"words", "segments", "dialogue_acts", "adjacency_pairs"}:
+            filename = path.rsplit("/", 1)[-1]
+            match = (
+                _AMI_ADJACENCY_FILENAME.fullmatch(filename)
+                if family == "adjacency_pairs"
+                else _AMI_PARSER_ANNOTATION_FILENAME.fullmatch(filename)
+            )
+            expected_annotation_family = (
+                None
+                if family == "adjacency_pairs"
+                else {
+                    "words": "words",
+                    "segments": "segments",
+                    "dialogue_acts": "dialog-act",
+                }[family]
+            )
+            if match is None or (
+                family != "adjacency_pairs"
+                and match.group("family") != expected_annotation_family
+            ):
+                raise RunnerError("runner AMI annotation filename is not canonical")
+            if path not in AMI_EXPECTED_ANNOTATION_PATHS:
+                raise RunnerError(
+                    "runner AMI annotation path is outside the exact tracked family"
+                )
+            if family != "adjacency_pairs":
+                full_family_counts[family] += 1
+            if match.group("meeting") not in official_meetings:
+                if path not in _AMI_OUTSIDE_PARTITION_SOURCES:
+                    raise RunnerError(
+                        "runner AMI annotation is outside the official partition"
+                    )
+                outside_partition_paths.add(path)
+                continue
         if family == "adjacency_pairs":
             adjacency_pair_count += 1
             continue
-        if family is None:
-            raise RunnerError("runner AMI source is not in a frozen family")
-        family_counts[family] += 1
+        if family in {"meetings", "participants"}:
+            full_family_counts[family] += 1
+        retained_family_counts[family] += 1
         selected_ami.append(source)
     if (
-        family_counts
+        full_family_counts
         != {
             "meetings": 1,
             "participants": 1,
@@ -6410,7 +6470,16 @@ def _derive_runner_non_lockbox_ami_source_identities(
             "segments": 687,
             "dialogue_acts": 556,
         }
+        or retained_family_counts
+        != {
+            "meetings": 1,
+            "participants": 1,
+            "words": 683,
+            "segments": 683,
+            "dialogue_acts": 556,
+        }
         or excluded != set(_AMI_EXCLUDED_SOURCES)
+        or outside_partition_paths != _AMI_OUTSIDE_PARTITION_SOURCES
         or adjacency_pair_count != 139
         or len(selected_ami) != EXPECTED_AMI_SELECTED_SOURCE_COUNT
     ):

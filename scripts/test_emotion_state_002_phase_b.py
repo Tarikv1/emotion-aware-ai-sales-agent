@@ -19103,7 +19103,8 @@ CUT4_ROLE_COUNTS = {
 }
 CUT4_NONFINAL_COUNT = 4389
 CUT4_ELIGIBLE_COUNT = 6570
-CUT4_AMI_XML_COUNT = 1932
+CUT4_AMI_XML_COUNT = 1924
+CUT4_AMI_PARSER_COMPATIBLE_COUNT = 1932
 CUT4_FEATURE_COUNT = 17
 CUT4_SLICE_COUNT = 25
 CUT4_NONFINAL_ROLES = (
@@ -19453,6 +19454,90 @@ class _Cut4ProductionShapeFixture:
             raise AssertionError("Cut 4 AMI meeting universe changed")
         return tuple(meetings)
 
+    @staticmethod
+    def _build_ami_identities(
+        pipeline: Any,
+    ) -> tuple[tuple[Any, ...], dict[Any, bytes], tuple[Any, ...], tuple[Any, ...]]:
+        ami_prefix = "data/public/emotion-state/ami-manual-annotations-v1.6.2/"
+        ami_sources: list[Any] = []
+        ami_bytes: dict[Any, bytes] = {}
+
+        def add_ami(path: str, content: bytes, *, retained: bool) -> None:
+            source = pipeline.SourceByteIdentity(
+                project_relative_path=f"{ami_prefix}{path}",
+                sha256=hashlib.sha256(content).hexdigest().upper(),
+                size_bytes=len(content),
+            )
+            ami_sources.append(source)
+            if retained:
+                ami_bytes[source] = content
+
+        add_ami("ami_manual_1.6.2.zip", b"synthetic archive", retained=False)
+        add_ami("official-partitions/datasets.shtml", b"<html>synthetic partitions</html>", retained=False)
+        add_ami("extracted/corpusResources/meetings.xml", b"<meetings synthetic='true'/>", retained=True)
+        add_ami("extracted/corpusResources/participants.xml", b"<participants synthetic='true'/>", retained=True)
+        add_ami("extracted/AMI-metadata.xml", b"<ami-metadata synthetic='true'/>", retained=False)
+        official_pairs = [
+            (meeting, speaker)
+            for meeting in pipeline.AMI_FULL_CORPUS_ORDER
+            for speaker in "ABCD"
+        ]
+        words_segments_pairs = [
+            *official_pairs,
+            *(("IB4005", speaker) for speaker in "ABCD"),
+            *((meeting, "E") for meeting in ("EN2001a", "EN2001d", "EN2001e")),
+        ]
+        dialogue_meetings = (
+            *(
+                meeting
+                for meeting in pipeline.AMI_FULL_CORPUS_ORDER
+                if meeting not in set(pipeline.AMI_FULL_ONLY_ORDER)
+            ),
+            "IB4003",
+        )
+        if len(words_segments_pairs) != 687 or len(dialogue_meetings) != 139:
+            raise AssertionError("Cut 4 AMI exact membership changed")
+        for family, suffix in (("words", "words.xml"), ("segments", "segments.xml")):
+            for index, (meeting, speaker) in enumerate(words_segments_pairs):
+                add_ami(
+                    f"extracted/{family}/{meeting}.{speaker}.{suffix}",
+                    f"<{family} synthetic='{index:04d}'/>".encode("ascii"),
+                    retained=meeting != "IB4005",
+                )
+        for index, (meeting, speaker) in enumerate(
+            (meeting, speaker)
+            for meeting in dialogue_meetings
+            for speaker in "ABCD"
+        ):
+            add_ami(
+                f"extracted/dialogueActs/{meeting}.{speaker}.dialog-act.xml",
+                f"<dialogueActs synthetic='{index:04d}'/>".encode("ascii"),
+                retained=True,
+            )
+        for index, meeting in enumerate(dialogue_meetings):
+            add_ami(
+                f"extracted/dialogueActs/{meeting}.adjacency-pairs.xml",
+                f"<adjacencyPairs synthetic='{index:04d}'/>".encode("ascii"),
+                retained=False,
+            )
+        parser_compatible = tuple(
+            source
+            for source in ami_sources
+            if source.project_relative_path.startswith(f"{ami_prefix}extracted/corpusResources/")
+            or source.project_relative_path.startswith(f"{ami_prefix}extracted/words/")
+            or source.project_relative_path.startswith(f"{ami_prefix}extracted/segments/")
+            or source.project_relative_path.endswith(".dialog-act.xml")
+        )
+        selected = tuple(source for source in ami_sources if source in ami_bytes)
+        if (
+            len(ami_sources) != 2074
+            or len(ami_bytes) != CUT4_AMI_XML_COUNT
+            or len(parser_compatible) != CUT4_AMI_PARSER_COMPATIBLE_COUNT
+            or len(selected) != CUT4_AMI_XML_COUNT
+        ):
+            raise AssertionError("Cut 4 AMI identity count changed")
+        return tuple(ami_sources), ami_bytes, parser_compatible, selected
+
     @classmethod
     def initialize(cls) -> None:
         if cls._initialized:
@@ -19624,70 +19709,12 @@ class _Cut4ProductionShapeFixture:
         ):
             raise AssertionError("Cut 4 retained WAV count changed")
 
-        ami_prefix = (
-            "data/public/emotion-state/ami-manual-annotations-v1.6.2/"
-        )
-        ami_sources: list[Any] = []
-        ami_bytes: dict[Any, bytes] = {}
-
-        def add_ami(path: str, content: bytes, *, retained: bool) -> None:
-            source = pipeline.SourceByteIdentity(
-                project_relative_path=f"{ami_prefix}{path}",
-                sha256=hashlib.sha256(content).hexdigest().upper(),
-                size_bytes=len(content),
-            )
-            ami_sources.append(source)
-            if retained:
-                ami_bytes[source] = content
-
-        add_ami("ami_manual_1.6.2.zip", b"synthetic archive", retained=False)
-        add_ami(
-            "official-partitions/datasets.shtml",
-            b"<html>synthetic partitions</html>",
-            retained=False,
-        )
-        add_ami(
-            "extracted/corpusResources/meetings.xml",
-            b"<meetings synthetic='true'/>",
-            retained=True,
-        )
-        add_ami(
-            "extracted/corpusResources/participants.xml",
-            b"<participants synthetic='true'/>",
-            retained=True,
-        )
-        add_ami(
-            "extracted/AMI-metadata.xml",
-            b"<ami-metadata synthetic='true'/>",
-            retained=False,
-        )
-        for family, count, suffix in (
-            ("words", 687, "words.xml"),
-            ("segments", 687, "segments.xml"),
-            ("dialogueActs", 556, "dialog-act.xml"),
-        ):
-            for index in range(count):
-                filename = f"C{index:04d}.A.{suffix}"
-                content = (
-                    f"<{family} synthetic='{index:04d}'/>".encode("ascii")
-                )
-                add_ami(f"extracted/{family}/{filename}", content, retained=True)
-        for index in range(139):
-            filename = f"C{index:04d}.adjacency-pairs.xml"
-            content = f"<adjacencyPairs synthetic='{index:04d}'/>".encode(
-                "ascii"
-            )
-            add_ami(
-                f"extracted/dialogueActs/{filename}",
-                content,
-                retained=False,
-            )
-        if len(ami_sources) != 2074 or len(ami_bytes) != CUT4_AMI_XML_COUNT:
-            raise AssertionError("Cut 4 AMI identity count changed")
-        cls.ami_bytes = ami_bytes
-        cls.selected_ami_sources = tuple(
-            source for source in ami_sources if source in ami_bytes
-        )
+        (
+            ami_sources,
+            cls.ami_bytes,
+            cls.parser_compatible_ami_sources,
+            cls.selected_ami_sources,
+        ) = cls._build_ami_identities(pipeline)
         scenario_only = tuple(
             meeting
             for meeting in pipeline.AMI_FULL_CORPUS_ORDER
@@ -20187,6 +20214,411 @@ class _Cut4ProductionShapeFixture:
         return tuple(result)
 
 
+class _SelectorOnlyAmiAuthorityFixture:
+    """Pure source identities for direct selector tests; no builder dependencies."""
+
+    _initialized = False
+
+    @classmethod
+    def initialize(cls) -> None:
+        if cls._initialized:
+            return
+        from scripts import emotion_state_phase_b_public_pipeline as pipeline
+
+        ami_root = "data/public/emotion-state/ami-manual-annotations-v1.6.2/"
+
+        def identity(path: str) -> Any:
+            digest = hashlib.sha256(path.encode("ascii")).hexdigest().upper()
+            return pipeline.SourceByteIdentity(path, digest, 1)
+
+        cls.official_meetings = tuple(pipeline.AMI_FULL_CORPUS_ORDER)
+        cls.scenario_meetings = tuple(
+            meeting
+            for meeting in cls.official_meetings
+            if meeting not in set(pipeline.AMI_FULL_ONLY_ORDER)
+        )
+        cls.extra_e_meetings = ("EN2001a", "EN2001d", "EN2001e")
+        cls.dialogue_meetings = (*cls.scenario_meetings, "IB4003")
+        if (
+            len(cls.official_meetings) != 170
+            or len(cls.scenario_meetings) != 138
+            or len(cls.dialogue_meetings) != 139
+        ):
+            raise AssertionError("selector-only AMI meeting algebra changed")
+
+        ami_files = [
+            identity(f"{ami_root}ami_manual_1.6.2.zip"),
+            identity(f"{ami_root}official-partitions/datasets.shtml"),
+            identity(f"{ami_root}extracted/corpusResources/meetings.xml"),
+            identity(f"{ami_root}extracted/corpusResources/participants.xml"),
+            identity(f"{ami_root}extracted/AMI-metadata.xml"),
+        ]
+        cls.expected_word_paths = frozenset(
+            f"{ami_root}extracted/words/{meeting}.{speaker}.words.xml"
+            for meeting in (*cls.official_meetings, "IB4005")
+            for speaker in "ABCD"
+        ) | frozenset(
+            f"{ami_root}extracted/words/{meeting}.E.words.xml"
+            for meeting in cls.extra_e_meetings
+        )
+        cls.expected_segment_paths = frozenset(
+            path.replace("/words/", "/segments/").replace(
+                ".words.xml", ".segments.xml"
+            )
+            for path in cls.expected_word_paths
+        )
+        cls.expected_dialogue_paths = frozenset(
+            f"{ami_root}extracted/dialogueActs/{meeting}.{speaker}.dialog-act.xml"
+            for meeting in cls.dialogue_meetings
+            for speaker in "ABCD"
+        )
+        cls.expected_adjacency_paths = frozenset(
+            f"{ami_root}extracted/dialogueActs/{meeting}.adjacency-pairs.xml"
+            for meeting in cls.dialogue_meetings
+        )
+        for path in sorted(cls.expected_word_paths):
+            ami_files.append(identity(path))
+        for path in sorted(cls.expected_segment_paths):
+            ami_files.append(identity(path))
+        for path in sorted(cls.expected_dialogue_paths):
+            ami_files.append(identity(path))
+        for path in sorted(cls.expected_adjacency_paths):
+            ami_files.append(identity(path))
+        if len(ami_files) != 2074:
+            raise AssertionError("selector-only AMI identity count changed")
+
+        crema_root = "data/public/emotion-state/crema-d-v1.0/repository/"
+        cls.tracked_authority = pipeline.TrackedPublicAuthority(
+            crema_audio=tuple(
+                identity(f"{crema_root}AudioWAV/C{index:04d}.wav")
+                for index in range(7441)
+            ),
+            crema_finished_responses=identity(f"{crema_root}finishedResponses.csv"),
+            crema_summary_table=identity(
+                f"{crema_root}processedResults/summaryTable.csv"
+            ),
+            ami_files=tuple(ami_files),
+            ami_partition_membership=(
+                ("scenario_only", cls.scenario_meetings),
+                ("full_corpus", cls.official_meetings),
+                ("full_only", tuple(pipeline.AMI_FULL_ONLY_ORDER)),
+            ),
+            ami_official_order=cls.official_meetings,
+        )
+        cls.parser_compatible_ami_sources = tuple(
+            source
+            for source in ami_files
+            if source.project_relative_path.endswith("meetings.xml")
+            or source.project_relative_path.endswith("participants.xml")
+            or source.project_relative_path in cls.expected_word_paths
+            or source.project_relative_path in cls.expected_segment_paths
+            or source.project_relative_path in cls.expected_dialogue_paths
+        )
+        cls.selected_ami_sources = tuple(
+            source
+            for source in cls.parser_compatible_ami_sources
+            if "/IB4005." not in source.project_relative_path
+        )
+        if (
+            len(cls.parser_compatible_ami_sources) != 1932
+            or len(cls.selected_ami_sources) != 1924
+        ):
+            raise AssertionError("selector-only AMI selection count changed")
+        cls._initialized = True
+
+
+class AmiSourceSelectionTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls) -> None:
+        from scripts import run_emotion_state_002_phase_b as runner
+
+        _SelectorOnlyAmiAuthorityFixture.initialize()
+        cls.fixture = _SelectorOnlyAmiAuthorityFixture
+        cls.runner = runner
+
+    @contextmanager
+    def _selector_call_guard(self) -> Any:
+        from scripts import emotion_state_phase_b_evaluation as evaluation
+        from scripts import emotion_state_phase_b_public_pipeline as pipeline
+
+        def prohibited(*_args: Any, **_kwargs: Any) -> None:
+            raise AssertionError("direct selector test crossed a prohibited boundary")
+
+        with ExitStack() as stack:
+            for target, name in (
+                (pipeline, "build_production_preflight_artifacts"),
+                (pipeline, "build_production_non_lockbox_artifacts"),
+                (self.runner, "run_preflight"),
+                (self.runner, "run_non_lockbox"),
+                (evaluation, "fit_frozen_models"),
+                (evaluation, "predict_probabilities"),
+                (evaluation, "calibrate_thresholds"),
+                (evaluation, "evaluate_partition"),
+            ):
+                stack.enter_context(patch.object(target, name, side_effect=prohibited))
+            yield
+
+    def _select_with_both_implementations(self, authority: Any) -> tuple[Any, Any]:
+        from scripts import emotion_state_phase_b_public_pipeline as pipeline
+
+        records_by_role = {
+            role: (None,) * CUT4_ROLE_COUNTS[role]
+            for role in CUT4_NONFINAL_ROLES
+        }
+        with self._selector_call_guard():
+            return (
+                pipeline._select_ami_source_identities(authority),
+                self.runner._derive_runner_non_lockbox_ami_source_identities(
+                    authority,
+                    records_by_role,
+                ),
+            )
+
+    def _assert_rejected_by_both_selectors(self, authority: Any) -> None:
+        from scripts import emotion_state_phase_b_public_pipeline as pipeline
+
+        records_by_role = {
+            role: (None,) * CUT4_ROLE_COUNTS[role]
+            for role in CUT4_NONFINAL_ROLES
+        }
+        with self._selector_call_guard():
+            try:
+                pipeline._select_ami_source_identities(authority)
+            except (TypeError, ValueError):
+                pipeline_rejected = True
+            else:
+                pipeline_rejected = False
+            try:
+                self.runner._derive_runner_non_lockbox_ami_source_identities(
+                    authority,
+                    records_by_role,
+                )
+            except (TypeError, ValueError, self.runner.RunnerError):
+                runner_rejected = True
+            else:
+                runner_rejected = False
+        self.assertTrue(pipeline_rejected)
+        self.assertTrue(runner_rejected)
+
+    def test_selectors_retain_only_the_official_170_meeting_partition(self) -> None:
+        selected_pipeline, selected_runner = self._select_with_both_implementations(
+            self.fixture.tracked_authority
+        )
+        outside_paths = frozenset(
+            source.project_relative_path
+            for source in self.fixture.tracked_authority.ami_files
+            if "/IB4005." in source.project_relative_path
+        )
+        ami_root = "data/public/emotion-state/ami-manual-annotations-v1.6.2/"
+        expected_outside_paths = frozenset({
+            *{
+                f"{ami_root}extracted/words/IB4005.{speaker}.words.xml"
+                for speaker in "ABCD"
+            },
+            *{
+                f"{ami_root}extracted/segments/IB4005.{speaker}.segments.xml"
+                for speaker in "ABCD"
+            },
+        })
+        expected_paths = tuple(
+            source.project_relative_path
+            for source in self.fixture.selected_ami_sources
+        )
+        self.assertEqual(len(self.fixture.tracked_authority.ami_files), 2074)
+        self.assertEqual(
+            len(self.fixture.parser_compatible_ami_sources),
+            CUT4_AMI_PARSER_COMPATIBLE_COUNT,
+        )
+        all_paths = frozenset(
+            source.project_relative_path
+            for source in self.fixture.tracked_authority.ami_files
+        )
+        self.assertEqual(
+            frozenset(path for path in all_paths if "/words/" in path),
+            self.fixture.expected_word_paths,
+        )
+        self.assertEqual(
+            frozenset(path for path in all_paths if "/segments/" in path),
+            self.fixture.expected_segment_paths,
+        )
+        self.assertEqual(
+            frozenset(path for path in all_paths if path.endswith(".dialog-act.xml")),
+            self.fixture.expected_dialogue_paths,
+        )
+        self.assertEqual(
+            frozenset(path for path in all_paths if path.endswith(".adjacency-pairs.xml")),
+            self.fixture.expected_adjacency_paths,
+        )
+        self.assertEqual(outside_paths, expected_outside_paths)
+        self.assertEqual(len(selected_pipeline), CUT4_AMI_XML_COUNT)
+        self.assertEqual(len(selected_runner), CUT4_AMI_XML_COUNT)
+        self.assertEqual(
+            tuple(source.project_relative_path for source in selected_pipeline),
+            expected_paths,
+        )
+        self.assertEqual(
+            tuple(source.project_relative_path for source in selected_runner),
+            expected_paths,
+        )
+        self.assertTrue(
+            outside_paths.isdisjoint(
+                source.project_relative_path for source in selected_pipeline
+            )
+        )
+
+    def test_selectors_fail_closed_on_outside_partition_contract_drift(self) -> None:
+        files = list(self.fixture.tracked_authority.ami_files)
+        ib4005_index = next(
+            index
+            for index, source in enumerate(files)
+            if source.project_relative_path.endswith("IB4005.A.words.xml")
+        )
+        official_index = next(
+            index
+            for index, source in enumerate(files)
+            if source.project_relative_path.endswith("EN2001a.A.words.xml")
+        )
+        adjacency_index = next(
+            index
+            for index, source in enumerate(files)
+            if source.project_relative_path.endswith("ES2002a.adjacency-pairs.xml")
+        )
+        mutations = (
+            (
+                "missing expected IB4005 identity",
+                replace(
+                    self.fixture.tracked_authority,
+                    ami_files=tuple(
+                        replace(
+                            source,
+                            project_relative_path=source.project_relative_path.replace(
+                                "IB4005.A.words.xml",
+                                "TS3012d.Z.words.xml",
+                            ),
+                        )
+                        if index == ib4005_index
+                        else source
+                        for index, source in enumerate(files)
+                    ),
+                ),
+            ),
+            (
+                "unknown outside meeting",
+                replace(
+                    self.fixture.tracked_authority,
+                    ami_files=tuple(
+                        replace(
+                            source,
+                            project_relative_path=source.project_relative_path.replace(
+                                "EN2001a.A.words.xml",
+                                "ZZ9999.A.words.xml",
+                            ),
+                        )
+                        if index == official_index
+                        else source
+                        for index, source in enumerate(files)
+                    ),
+                ),
+            ),
+            (
+                "official order changed",
+                replace(
+                    self.fixture.tracked_authority,
+                    ami_official_order=tuple(
+                        reversed(self.fixture.tracked_authority.ami_official_order)
+                    ),
+                ),
+            ),
+            (
+                "noncanonical annotation filename",
+                replace(
+                    self.fixture.tracked_authority,
+                    ami_files=tuple(
+                        replace(
+                            source,
+                            project_relative_path=source.project_relative_path.replace(
+                                "IB4005.A.words.xml",
+                                "IB4005..A.words.xml",
+                            ),
+                        )
+                        if index == ib4005_index
+                        else source
+                        for index, source in enumerate(files)
+                    ),
+                ),
+            ),
+            (
+                "adjacency filename with a speaker token",
+                replace(
+                    self.fixture.tracked_authority,
+                    ami_files=tuple(
+                        replace(
+                            source,
+                            project_relative_path=source.project_relative_path.replace(
+                                "ES2002a.adjacency-pairs.xml",
+                                "ES2002a.A.adjacency-pairs.xml",
+                            ),
+                        )
+                        if index == adjacency_index
+                        else source
+                        for index, source in enumerate(files)
+                    ),
+                ),
+            ),
+            (
+                "same-count dialogue speaker mutation",
+                replace(
+                    self.fixture.tracked_authority,
+                    ami_files=tuple(
+                        replace(
+                            source,
+                            project_relative_path=source.project_relative_path.replace(
+                                "ES2002a.A.dialog-act.xml",
+                                "ES2002a.Z.dialog-act.xml",
+                            ),
+                        )
+                        if source.project_relative_path.endswith(
+                            "ES2002a.A.dialog-act.xml"
+                        )
+                        else source
+                        for source in files
+                    ),
+                ),
+            ),
+        )
+        for name, authority in mutations:
+            with self.subTest(mutation=name):
+                self._assert_rejected_by_both_selectors(authority)
+
+    def test_production_fixture_ami_identity_helper_has_exact_membership(self) -> None:
+        from scripts import emotion_state_phase_b_public_pipeline as pipeline
+
+        ami_sources, ami_bytes, parser_compatible, selected = (
+            _Cut4ProductionShapeFixture._build_ami_identities(pipeline)
+        )
+        paths = frozenset(source.project_relative_path for source in ami_sources)
+        self.assertEqual(len(ami_sources), 2074)
+        self.assertEqual(len(ami_bytes), 1924)
+        self.assertEqual(len(parser_compatible), 1932)
+        self.assertEqual(len(selected), 1924)
+        self.assertEqual(
+            frozenset(path for path in paths if "/words/" in path),
+            self.fixture.expected_word_paths,
+        )
+        self.assertEqual(
+            frozenset(path for path in paths if "/segments/" in path),
+            self.fixture.expected_segment_paths,
+        )
+        self.assertEqual(
+            frozenset(path for path in paths if path.endswith(".dialog-act.xml")),
+            self.fixture.expected_dialogue_paths,
+        )
+        self.assertEqual(
+            frozenset(path for path in paths if path.endswith(".adjacency-pairs.xml")),
+            self.fixture.expected_adjacency_paths,
+        )
+
+
 class ProductionNonLockboxBuilderTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
@@ -20618,7 +21050,7 @@ class ProductionNonLockboxBuilderTests(unittest.TestCase):
         self.assertEqual(probe.audio_reads, [])
         self.assertEqual(probe.feature_calls, [])
 
-    def test_builder_reads_exact_1932_parser_compatible_ami_xml_identities(self) -> None:
+    def test_builder_reads_exact_1924_official_partition_ami_xml_identities(self) -> None:
         from scripts import emotion_state_phase_b_public_pipeline as pipeline
 
         _artifacts, probe = self._build()
@@ -20680,10 +21112,12 @@ class ProductionNonLockboxBuilderTests(unittest.TestCase):
                 or (
                     path.startswith(words_prefix)
                     and path.endswith(".words.xml")
+                    and "/IB4005." not in path
                 )
                 or (
                     path.startswith(segments_prefix)
                     and path.endswith(".segments.xml")
+                    and "/IB4005." not in path
                 )
                 or (
                     path.startswith(dialogue_prefix)
@@ -20712,7 +21146,7 @@ class ProductionNonLockboxBuilderTests(unittest.TestCase):
                     and path.endswith(".words.xml")
                     for path in selected_paths
                 ),
-                687,
+                683,
             )
             self.assertEqual(
                 sum(
@@ -20720,7 +21154,7 @@ class ProductionNonLockboxBuilderTests(unittest.TestCase):
                     and path.endswith(".segments.xml")
                     for path in selected_paths
                 ),
-                687,
+                683,
             )
             self.assertEqual(
                 sum(

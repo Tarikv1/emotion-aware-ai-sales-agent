@@ -128,6 +128,23 @@ _AMI_EXCLUDED_SOURCE_PATHS = frozenset({
     _AMI_PARTITION_SOURCE_PATH,
     _AMI_METADATA_PATH,
 })
+_AMI_PARSER_ANNOTATION_FILENAME = re.compile(
+    r"^(?P<meeting>[A-Z]{2}\d{4}[a-e]?)\.(?P<speaker>[A-Z])\."
+    r"(?P<family>words|segments|dialog-act)\.xml$"
+)
+_AMI_ADJACENCY_FILENAME = re.compile(
+    r"^(?P<meeting>[A-Z]{2}\d{4}[a-e]?)\.adjacency-pairs\.xml$"
+)
+_AMI_OUTSIDE_PARTITION_SOURCE_PATHS = frozenset({
+    *{
+        f"{_AMI_EXTRACTED_ROOT}words/IB4005.{speaker}.words.xml"
+        for speaker in "ABCD"
+    },
+    *{
+        f"{_AMI_EXTRACTED_ROOT}segments/IB4005.{speaker}.segments.xml"
+        for speaker in "ABCD"
+    },
+})
 _MANIFEST_FIELDS = frozenset(
     {
         "access_restrictions",
@@ -344,6 +361,46 @@ AMI_FULL_ONLY_ORDER = (
     "IN1005", "IN1007", "IN1008", "IN1009", "IN1012", "IN1013",
     "IN1014", "IN1016",
 )
+AMI_EXPECTED_ANNOTATION_PATHS = frozenset({
+    *{
+        f"{_AMI_EXTRACTED_ROOT}words/{meeting}.{speaker}.words.xml"
+        for meeting in (*AMI_FULL_CORPUS_ORDER, "IB4005")
+        for speaker in "ABCD"
+    },
+    *{
+        f"{_AMI_EXTRACTED_ROOT}segments/{meeting}.{speaker}.segments.xml"
+        for meeting in (*AMI_FULL_CORPUS_ORDER, "IB4005")
+        for speaker in "ABCD"
+    },
+    *{
+        f"{_AMI_EXTRACTED_ROOT}{family}/{meeting}.E.{suffix}"
+        for family, suffix in (("words", "words.xml"), ("segments", "segments.xml"))
+        for meeting in ("EN2001a", "EN2001d", "EN2001e")
+    },
+    *{
+        f"{_AMI_EXTRACTED_ROOT}dialogueActs/{meeting}.{speaker}.dialog-act.xml"
+        for meeting in (
+            *(
+                item
+                for item in AMI_FULL_CORPUS_ORDER
+                if item not in set(AMI_FULL_ONLY_ORDER)
+            ),
+            "IB4003",
+        )
+        for speaker in "ABCD"
+    },
+    *{
+        f"{_AMI_EXTRACTED_ROOT}dialogueActs/{meeting}.adjacency-pairs.xml"
+        for meeting in (
+            *(
+                item
+                for item in AMI_FULL_CORPUS_ORDER
+                if item not in set(AMI_FULL_ONLY_ORDER)
+            ),
+            "IB4003",
+        )
+    },
+})
 
 
 @dataclass(frozen=True, slots=True)
@@ -431,7 +488,7 @@ ACOUSTIC_FEATURE_CACHE_SCHEMA_ID = (
 AMI_EVIDENCE_CACHE_SCHEMA_ID = "emotion-state-phase-b-ami-evidence-cache-v1"
 SLICE_ANALYSIS_SCHEMA_ID = "emotion-state-phase-b-slice-analysis-v2"
 NON_LOCKBOX_PACKET_SCHEMA_ID = "emotion-state-phase-b-non-lockbox-review-v4"
-EXPECTED_AMI_SELECTED_SOURCE_COUNT = 1932
+EXPECTED_AMI_SELECTED_SOURCE_COUNT = 1924
 EXPECTED_DIAGNOSTIC_SLICE_COUNT = 25
 _VOTE_SLICE_NAMES = (
     "vote_agreement:[0.00,0.50)",
@@ -1095,10 +1152,15 @@ def _select_ami_source_identities(
         return None
 
     frozen = _exact_tracked_public_authority(authority)
+    if frozen.ami_official_order != AMI_FULL_CORPUS_ORDER:
+        raise PublicMaterialPrerequisiteError("AMI official order changed")
+    official_meetings = frozenset(frozen.ami_official_order)
     selected: list[SourceByteIdentity] = []
     excluded: list[str] = []
+    outside_partition_paths: set[str] = set()
     excluded_family_counts = Counter()
-    family_counts = Counter()
+    full_family_counts = Counter()
+    retained_family_counts = Counter()
     basenames: set[str] = set()
     paths: set[str] = set()
     for identity in frozen.ami_files:
@@ -1129,33 +1191,79 @@ def _select_ami_source_identities(
         if family is None and path in _AMI_EXCLUDED_SOURCE_PATHS:
             excluded.append(path)
             continue
-        if family == "adjacency_pairs":
-            excluded_family_counts[family] += 1
-            continue
         if family is None:
             raise PublicMaterialPrerequisiteError(
                 "AMI source identity is not an exact frozen source path"
             )
+        if family in {"words", "segments", "dialogue_acts", "adjacency_pairs"}:
+            filename = path.rsplit("/", 1)[-1]
+            match = (
+                _AMI_ADJACENCY_FILENAME.fullmatch(filename)
+                if family == "adjacency_pairs"
+                else _AMI_PARSER_ANNOTATION_FILENAME.fullmatch(filename)
+            )
+            expected_annotation_family = (
+                None
+                if family == "adjacency_pairs"
+                else {
+                    "words": "words",
+                    "segments": "segments",
+                    "dialogue_acts": "dialog-act",
+                }[family]
+            )
+            if match is None or (
+                family != "adjacency_pairs"
+                and match.group("family") != expected_annotation_family
+            ):
+                raise PublicMaterialPrerequisiteError(
+                    "AMI annotation filename is not canonical"
+                )
+            if path not in AMI_EXPECTED_ANNOTATION_PATHS:
+                raise PublicMaterialPrerequisiteError(
+                    "AMI annotation path is outside the exact tracked family"
+                )
+            if family != "adjacency_pairs":
+                full_family_counts[family] += 1
+            if match.group("meeting") not in official_meetings:
+                if path not in _AMI_OUTSIDE_PARTITION_SOURCE_PATHS:
+                    raise PublicMaterialPrerequisiteError(
+                        "AMI annotation is outside the official partition"
+                    )
+                outside_partition_paths.add(path)
+                continue
+        if family == "adjacency_pairs":
+            excluded_family_counts[family] += 1
+            continue
         basename = path.rsplit("/", 1)[-1]
         if basename in basenames:
             raise PublicMaterialPrerequisiteError(
                 "AMI selected source basename collides"
             )
         basenames.add(basename)
-        family_counts[family] += 1
+        if family in {"meetings", "participants"}:
+            full_family_counts[family] += 1
+        retained_family_counts[family] += 1
         selected.append(identity)
-    if family_counts != Counter({
+    if full_family_counts != Counter({
         "meetings": 1,
         "participants": 1,
         "words": 687,
         "segments": 687,
         "dialogue_acts": 556,
+    }) or retained_family_counts != Counter({
+        "meetings": 1,
+        "participants": 1,
+        "words": 683,
+        "segments": 683,
+        "dialogue_acts": 556,
     }) or len(selected) != EXPECTED_AMI_SELECTED_SOURCE_COUNT or (
         len(excluded) != 3
         or set(excluded) != set(_AMI_EXCLUDED_SOURCE_PATHS)
-    ) or excluded_family_counts != Counter({"adjacency_pairs": 139}):
+    ) or outside_partition_paths != _AMI_OUTSIDE_PARTITION_SOURCE_PATHS or (
+        excluded_family_counts != Counter({"adjacency_pairs": 139})
+    ):
         raise PublicMaterialPrerequisiteError(
-            "AMI selected source families do not match the frozen 1,932 files"
+            "AMI selected source families do not match the official partition"
         )
     return tuple(selected)
 
@@ -3921,8 +4029,8 @@ def _ami_loader_inputs(
     if (
         metadata is None
         or participant_metadata is None
-        or len(words) != 687
-        or len(segments) != 687
+        or len(words) != 683
+        or len(segments) != 683
         or len(dialogue_acts) != 556
     ):
         raise PublicMaterialPrerequisiteError(
