@@ -116,6 +116,9 @@ and adds this exact nested contract:
 }
 ```
 
+`pcm_endpoint_admissibility` appears immediately after `channel_count` in the
+root insertion order. Its nested keys appear in exactly the order shown above.
+
 The strict independent validator must require the exact key set, built-in JSON
 types, values, ordering, and policy text. It must reject v1 when v2 is required,
 unknown policy fields, threshold substitution, `true` rejection/classification
