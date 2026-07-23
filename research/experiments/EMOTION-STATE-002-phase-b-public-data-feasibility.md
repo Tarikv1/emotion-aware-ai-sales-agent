@@ -2,14 +2,23 @@
 
 ## Status
 
-Cut 4B tracked implementation pending independent review; one fresh replacement
-Task 10 transaction remains pending; no non-lockbox checkpoint is accepted
+Task 10 non-lockbox checkpoint independently reviewed and accepted;
+final-lockbox and canonical gates remain unopened
 
-Cut 4B implementation and independent review are prerequisites to one fresh Task 10 replacement transaction under `.tmp/emotion-state-002-phase-b-cut4b`; until that transaction passes aggregate-only independent review, no non-lockbox checkpoint is accepted.
+The single Cut 4E replacement child exited `0` after `797.5s`. The committed
+state is `non_lockbox_complete`, `912` bytes, SHA-256
+`8BB141DFBF651889F0E1FD66C2DF35FF31F8DC211D98A7CD27512AE7D82ACC20`.
+Independent aggregate-only review returned `NON_LOCKBOX_PACKET_PASS`,
+`SEMANTIC_REPLAY_PASS`, `PRIVACY_PASS`, `ZERO_LOCKBOX_ACCESS_PASS`, and
+`C0 I0`.
 
 The retired lineage is not reused or mutated.
 
-Final lockbox, canonical publication, push, merge, runtime activation, Phase C, providers, private data, calls, simulations, and source adaptation remain blocked. The old `.tmp/emotion-state-002-phase-b/venv` and `.tmp/emotion-state-002-phase-b/dependencies/wheelhouse` remain immutable dependency inputs only.
+Final lockbox access, canonical publication, merge, runtime activation, Phase C,
+providers, private data, calls, simulations, and source adaptation remain
+blocked. The old `.tmp/emotion-state-002-phase-b/venv` and
+`.tmp/emotion-state-002-phase-b/dependencies/wheelhouse` remain immutable
+dependency inputs only.
 
 ## Question
 
@@ -51,11 +60,10 @@ Phase B may not establish:
 ## Boundary Gates
 
 1. **Offline implementation gate:** Task 9 and the Cut 4A source-contract
-   correction passed independent review. Cut 4B now carries the tracked
-   endpoint-admissibility implementation and its review correction; independent
-   Cut 4B approval remains required before the one fresh Task 10 replacement
-   transaction. Offline validation reads only synthetic fixtures, tracked
-   metadata, and the reviewed dependency-environment identity.
+   correction passed independent review. The Cut 4B endpoint-admissibility,
+   Cut 4C AMI source/range corrections, and Cut 4D published timing-matrix
+   correction are committed and independently reviewed. The Cut 4E
+   non-lockbox transaction and aggregate-only replay passed.
 2. **Dependency gate:** Task 3 was separately authorized and completed. Any
    dependency recreation or change may access the package index and download
    wheels only through the ignored
@@ -65,13 +73,10 @@ Phase B may not establish:
    runtime identity equals the reviewed lock without exempting bootstrap
    `pip`/`setuptools`. A rerun requires new explicit network/download/install
    authority and a reviewed artifact lock.
-3. **Public-material gate:** The prior Cut 4A attempt failed closed before
-   linearization on `WAV contains clipped samples`. Cut 4B routes only one fresh
-   replacement transaction to `.tmp/emotion-state-002-phase-b-cut4b` after
-   independent approval; the retired split/preflight/non-lockbox lineage under
-   `.tmp/emotion-state-002-phase-b` is neither reused nor mutated. The two
-   public CREMA CSVs, verified CREMA WAVs, and selected AMI annotation files
-   remain fixed read authorities for that separately controlled transaction.
+3. **Public-material gate:** Completed for the non-lockbox checkpoint. Exactly
+   one Cut 4E child used the fixed public CREMA CSV/WAV and selected AMI
+   authorities. The retired split/preflight/non-lockbox lineage under
+   `.tmp/emotion-state-002-phase-b` was neither reused nor mutated.
 4. **Final-lockbox gate:** Task 11 remains blocked and requires an explicit
    one-use lockbox authorization after independent review of the frozen
    non-lockbox packet.
@@ -91,6 +96,56 @@ execution selects only the fixed v2 schema path, static SHA-256
 `C2A7DE308BAD32C3798016061777669881E7FDD3403979DCCC166DCE38F307C4`, and
 semantic SHA-256
 `AEC550285DF6A92B3E86E16F66A2E5B554836BBE47C625106F517EB0CF1375DB`.
+
+## Task 10 Non-Lockbox Result
+
+The fixed actor-disjoint partitions contain:
+
+| Partition | Records | Unique actors |
+| --- | ---: | ---: |
+| Training discovery | 2,491 | 35 |
+| Calibration | 959 | 13 |
+| Balanced diagnostic | 939 | 13 |
+
+Every record has exactly `17` acoustic features. On the balanced diagnostic
+partition:
+
+- acoustic macro-F1: `0.3397005982`;
+- class-prior macro-F1: `0.1349809886`;
+- sentence-ID macro-F1: `0.1349809886`;
+- acoustic lift over either baseline: `+0.2047196096`;
+- diagnostic slices: `25`, with `0` suppressed;
+- eligible slice instability: `true`;
+- eligible slice reversal: `true`;
+- final-decision eligible: `false`.
+
+AMI v2 remains a separate conversational-mechanics lane:
+
+| Partition | Meetings | Timing present | Timing usable | Dialogue-act files | Dialogue meetings | Fully labelled files |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| Full corpus | 170 | 170 | 137 | 556 | 139 | 530 |
+| Scenario-only | 138 | 138 | 136 | 552 | 138 | 527 |
+| Full-only | 32 | 32 | 1 | 4 | 1 | 3 |
+
+There are `26` dialogue-act files and `28` records without labels. Timing and
+dialogue-act contributions remain unavailable under their recorded incomplete
+coverage and unlabeled-record reasons.
+
+All five packet lockbox counters are `0`. The packet SHA-256 is
+`676D55D95978FBB27DDE50758A98C530979DC730A87C30CD6485178B624B313B`;
+its internal review commitment is
+`06F02FBF48337D4CB03B7AB5E82E87C9C79C95C232B8A073965CEA0C0C103B84`.
+The diagnostic, slice, AMI, and cache-commitment SHA-256 values are,
+respectively:
+
+- `CE0D413F258B3F3AF9ECB87C620E52718F95BDF181D7C9E80E41162AA9BB8561`;
+- `B557621438D71C05C9153B1379EB4F18167839941D3102822B8496860F127308`;
+- `00B8F20CEAAD6B235A5FB415303ADD2FE6FC2A1A7C42FEF562585646FDC728CF`;
+- `E0CB15583D43525B84745D3B0B4ABC1B8C4538BA410C7C89AF18C5D19112782F`.
+
+This is acted-perception public-data evidence. The aggregate lift does not
+overcome the observed slice instability/reversal or the unavailable AMI
+contribution contracts, and it does not estimate customer internal emotion.
 
 ## Task 9 Validation Interface
 

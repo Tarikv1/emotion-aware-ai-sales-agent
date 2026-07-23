@@ -761,20 +761,26 @@ class PhaseBContractTests(unittest.TestCase):
                     expected_dependency_commands,
                 )
 
-    def test_cut4b_docs_hold_transaction_pending_status(self) -> None:
-        transaction_pending_status = (
+    def test_task10_docs_hold_accepted_non_lockbox_status(self) -> None:
+        obsolete_pending_status = (
             "Cut 4B implementation and independent review are prerequisites to one "
             "fresh Task 10 replacement transaction under "
             "`.tmp/emotion-state-002-phase-b-cut4b`; until that transaction passes "
             "aggregate-only independent review, no non-lockbox checkpoint is accepted."
         )
-        retired_lineage_status = (
-            "The retired lineage is not reused or mutated."
+        required_anchors = (
+            "Task 10",
+            "`non_lockbox_complete`",
+            "`NON_LOCKBOX_PACKET_PASS`",
+            "`SEMANTIC_REPLAY_PASS`",
+            "`PRIVACY_PASS`",
+            "`ZERO_LOCKBOX_ACCESS_PASS`",
         )
+        retired_lineage_status = "The retired lineage is not reused or mutated."
         blocked_status = (
-            "Final lockbox, canonical publication, push, merge, runtime activation, "
-            "Phase C, providers, private data, calls, simulations, and source "
-            "adaptation remain blocked."
+            "Final lockbox access, canonical publication, merge, runtime activation, "
+            "Phase C, providers, private data, calls, simulations, and source adaptation "
+            "remain blocked."
         )
         for relative_path in (
             "docs/thesis/ROADMAP.md",
@@ -784,10 +790,13 @@ class PhaseBContractTests(unittest.TestCase):
             ),
         ):
             text = (ROOT / relative_path).read_text(encoding="utf-8-sig")
+            normalized = " ".join(text.split())
             with self.subTest(path=relative_path):
-                self.assertIn(transaction_pending_status, text)
-                self.assertIn(retired_lineage_status, text)
-                self.assertIn(blocked_status, text)
+                for anchor in required_anchors:
+                    self.assertIn(anchor, normalized)
+                self.assertIn(retired_lineage_status, normalized)
+                self.assertIn(blocked_status, normalized)
+                self.assertNotIn(obsolete_pending_status, normalized)
 
     def test_task_9_docs_state_production_lockbox_is_unavailable(self) -> None:
         boundary = (
