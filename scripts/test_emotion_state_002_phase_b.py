@@ -6054,6 +6054,7 @@ class AmiMechanicsV2Tests(unittest.TestCase):
             incomplete = index <= 25
             evidence.append(cls._evidence(
                 meeting_id,
+                timed=index > 2,
                 dialogue_act_file_count=4,
                 fully_labeled_dialogue_act_file_count=(
                     3 if incomplete else 4
@@ -6065,7 +6066,7 @@ class AmiMechanicsV2Tests(unittest.TestCase):
             has_dialogue = index == 1
             evidence.append(cls._evidence(
                 meeting_id,
-                timed=index > 5,
+                timed=index == 32,
                 dialogue_act_file_count=4 if has_dialogue else 0,
                 fully_labeled_dialogue_act_file_count=(
                     3 if has_dialogue else 0
@@ -6190,15 +6191,15 @@ class AmiMechanicsV2Tests(unittest.TestCase):
             {
                 "scenario_only": {
                     "timing_file_meeting_count": 138,
-                    "usable_timing_meeting_count": 138,
+                    "usable_timing_meeting_count": 136,
                 },
                 "full_corpus": {
                     "timing_file_meeting_count": 170,
-                    "usable_timing_meeting_count": 165,
+                    "usable_timing_meeting_count": 137,
                 },
                 "full_only": {
                     "timing_file_meeting_count": 32,
-                    "usable_timing_meeting_count": 27,
+                    "usable_timing_meeting_count": 1,
                 },
             },
         )
@@ -6211,7 +6212,10 @@ class AmiMechanicsV2Tests(unittest.TestCase):
                 for partition, family in timing.items()
             },
             {
-                "scenario_only": ("available", []),
+                "scenario_only": (
+                    "unavailable",
+                    ["incomplete_usable_timing_coverage"],
+                ),
                 "full_corpus": (
                     "unavailable",
                     ["incomplete_usable_timing_coverage"],
@@ -6333,10 +6337,9 @@ class AmiMechanicsV2Tests(unittest.TestCase):
                 membership,
                 official_order,
             )
-        self.assertEqual(len(calls), 1)
-        self.assertEqual(len(calls[0]), 138)
+        self.assertEqual(calls, [])
         partitions = aggregate["partitions"]
-        for partition in ("full_corpus", "full_only"):
+        for partition in ("scenario_only", "full_corpus", "full_only"):
             timing = partitions[partition]["metric_families"]["timing"]
             self.assertIsNone(timing["contribution"])
             self.assertIsNone(timing["buckets"])
@@ -6353,9 +6356,23 @@ class AmiMechanicsV2Tests(unittest.TestCase):
         from scripts.emotion_state_phase_b_ami_mechanics import (
             Turn,
             compute_meeting_mechanics,
+            contribution_limited_aggregates_v2,
         )
 
-        aggregate = self._aggregate()
+        scenario_ids = tuple(f"S{index}" for index in range(1, 6))
+        evidence = (
+            *(self._evidence(meeting_id) for meeting_id in scenario_ids),
+            self._evidence("F1", timed=False),
+        )
+        aggregate = contribution_limited_aggregates_v2(
+            evidence,
+            {
+                "scenario_only": scenario_ids,
+                "full_corpus": (*scenario_ids, "F1"),
+                "full_only": ("F1",),
+            },
+            (*scenario_ids, "F1"),
+        )
         timing = aggregate["partitions"]["scenario_only"]["metric_families"][
             "timing"
         ]
@@ -7212,6 +7229,11 @@ class AmiMechanicsV2ValidatorTests(unittest.TestCase):
             {"partial": None},
         )
         unavailable = (
+            (
+                "scenario_only",
+                "timing",
+                ("contribution", "buckets", "scalars"),
+            ),
             ("full_corpus", "timing", ("contribution", "buckets", "scalars")),
             ("full_only", "timing", ("contribution", "buckets", "scalars")),
             (
@@ -7274,60 +7296,6 @@ class AmiMechanicsV2ValidatorTests(unittest.TestCase):
             mutated = deepcopy(aggregate)
             mutated["source_quality"][field] = value
             mutations.append(mutated)
-
-        timing = aggregate["partitions"]["scenario_only"]["metric_families"][
-            "timing"
-        ]
-        contribution_mutations = (
-            ("selected_meeting_count", True),
-            ("selected_meeting_count", 0),
-            ("repeated_participant_meeting_count", 1),
-            ("unique_participant_count", True),
-            (
-                "unique_participant_count",
-                2 * timing["contribution"]["selected_meeting_count"] - 1,
-            ),
-            ("suppressed", not timing["contribution"]["suppressed"]),
-        )
-        for field, value in contribution_mutations:
-            mutated = deepcopy(aggregate)
-            mutated["partitions"]["scenario_only"]["metric_families"][
-                "timing"
-            ]["contribution"][field] = value
-            mutations.append(mutated)
-
-        bucket_name = AmiMechanicsV2Tests.TIMING_BUCKET_KEYS[0]
-        scalar_name = "overlap_ratio"
-        for group_name, metric_name, field, value in (
-            ("buckets", bucket_name, "value", -1.0),
-            ("buckets", bucket_name, "value", float("nan")),
-            ("buckets", bucket_name, "value", float("inf")),
-            ("buckets", bucket_name, "value", True),
-            ("buckets", bucket_name, "unique_participant_count", True),
-            ("buckets", bucket_name, "suppressed", 0),
-            ("scalars", scalar_name, "value", 1.1),
-            (
-                "scalars",
-                "speaker_balance_normalized_entropy",
-                "value",
-                -0.1,
-            ),
-        ):
-            mutated = deepcopy(aggregate)
-            mutated["partitions"]["scenario_only"]["metric_families"][
-                "timing"
-            ][group_name][metric_name][field] = value
-            mutations.append(mutated)
-        missing_cell_key = deepcopy(aggregate)
-        missing_cell_key["partitions"]["scenario_only"]["metric_families"][
-            "timing"
-        ]["buckets"][bucket_name].pop("value")
-        mutations.append(missing_cell_key)
-        extra_cell_key = deepcopy(aggregate)
-        extra_cell_key["partitions"]["scenario_only"]["metric_families"][
-            "timing"
-        ]["buckets"][bucket_name]["extra"] = None
-        mutations.append(extra_cell_key)
 
         for index, mutation in enumerate(mutations):
             with self.subTest(mutation=index):
@@ -19890,7 +19858,7 @@ class _Cut4ProductionShapeFixture:
                 has_dialogue = full_only_index == 1
                 meetings.append(cls._ami_evidence(
                     meeting_id,
-                    timed=full_only_index > 5,
+                    timed=full_only_index == 32,
                     dialogue_act_file_count=4 if has_dialogue else 0,
                     fully_labeled_dialogue_act_file_count=(
                         3 if has_dialogue else 0
@@ -19907,6 +19875,7 @@ class _Cut4ProductionShapeFixture:
                 incomplete = scenario_index <= 25
                 meetings.append(cls._ami_evidence(
                     meeting_id,
+                    timed=scenario_index > 2,
                     dialogue_act_file_count=4,
                     fully_labeled_dialogue_act_file_count=(
                         3 if incomplete else 4
@@ -21665,54 +21634,23 @@ class ProductionNonLockboxBuilderTests(unittest.TestCase):
             self._independent_digest(aggregate),
         )
         self.assertEqual(validate_published_ami_aggregate_v2(aggregate), aggregate)
-        available_timing = {
-            "status": "available",
-            "reason_codes": [],
-            "coverage": {
-                "timing_file_meeting_count": 138,
-                "usable_timing_meeting_count": 138,
-            },
-            "contribution": {
-                "selected_meeting_count": 138,
-                "unique_participant_count": 276,
-                "repeated_participant_meeting_count": 0,
-                "suppressed": False,
-            },
-            "buckets": {
-                "turn_duration_ms_median": {
-                    "suppressed": False,
-                    "unique_participant_count": 276,
-                    "value": 700.0,
+        def unavailable_timing(
+            timing_file_meeting_count: int,
+            usable_timing_meeting_count: int,
+        ) -> dict[str, Any]:
+            return {
+                "status": "unavailable",
+                "reason_codes": ["incomplete_usable_timing_coverage"],
+                "coverage": {
+                    "timing_file_meeting_count": timing_file_meeting_count,
+                    "usable_timing_meeting_count": (
+                        usable_timing_meeting_count
+                    ),
                 },
-                "turn_duration_ms_p90": {
-                    "suppressed": False,
-                    "unique_participant_count": 276,
-                    "value": 1000.0,
-                },
-                "inter_turn_gap_ms_median": {
-                    "suppressed": False,
-                    "unique_participant_count": 276,
-                    "value": 200.0,
-                },
-                "inter_turn_gap_ms_p90": {
-                    "suppressed": False,
-                    "unique_participant_count": 276,
-                    "value": 280.0,
-                },
-            },
-            "scalars": {
-                "overlap_ratio": {
-                    "suppressed": False,
-                    "unique_participant_count": 276,
-                    "value": 0.06666666666666657,
-                },
-                "speaker_balance_normalized_entropy": {
-                    "suppressed": False,
-                    "unique_participant_count": 276,
-                    "value": 1.0,
-                },
-            },
-        }
+                "contribution": None,
+                "buckets": None,
+                "scalars": None,
+            }
         expected = {
             "schema_id": "emotion-state-ami-mechanics-aggregate-v2",
             "schema_version": 2,
@@ -21724,7 +21662,7 @@ class ProductionNonLockboxBuilderTests(unittest.TestCase):
                 "scenario_only": {
                     "population_meeting_count": 138,
                     "metric_families": {
-                        "timing": available_timing,
+                        "timing": unavailable_timing(138, 136),
                         "dialogue_act": {
                             "status": "unavailable",
                             "reason_codes": ["unlabeled_dialogue_act_records"],
@@ -21742,19 +21680,7 @@ class ProductionNonLockboxBuilderTests(unittest.TestCase):
                 "full_corpus": {
                     "population_meeting_count": 170,
                     "metric_families": {
-                        "timing": {
-                            "status": "unavailable",
-                            "reason_codes": [
-                                "incomplete_usable_timing_coverage",
-                            ],
-                            "coverage": {
-                                "timing_file_meeting_count": 170,
-                                "usable_timing_meeting_count": 165,
-                            },
-                            "contribution": None,
-                            "buckets": None,
-                            "scalars": None,
-                        },
+                        "timing": unavailable_timing(170, 137),
                         "dialogue_act": {
                             "status": "unavailable",
                             "reason_codes": [
@@ -21775,19 +21701,7 @@ class ProductionNonLockboxBuilderTests(unittest.TestCase):
                 "full_only": {
                     "population_meeting_count": 32,
                     "metric_families": {
-                        "timing": {
-                            "status": "unavailable",
-                            "reason_codes": [
-                                "incomplete_usable_timing_coverage",
-                            ],
-                            "coverage": {
-                                "timing_file_meeting_count": 32,
-                                "usable_timing_meeting_count": 27,
-                            },
-                            "contribution": None,
-                            "buckets": None,
-                            "scalars": None,
-                        },
+                        "timing": unavailable_timing(32, 1),
                         "dialogue_act": {
                             "status": "unavailable",
                             "reason_codes": [
@@ -27485,7 +27399,7 @@ class Task10PacketV4Tests(unittest.TestCase):
                     "timing",
                     "status",
                 ),
-                "unavailable",
+                "available",
             ),
             (
                 "reason",
@@ -27869,8 +27783,8 @@ class Task10PacketV4Tests(unittest.TestCase):
 
         non_finite = deepcopy(ami)
         non_finite["partitions"]["scenario_only"]["metric_families"]["timing"][
-            "scalars"
-        ]["overlap_ratio"]["value"] = math.nan
+            "coverage"
+        ]["usable_timing_meeting_count"] = math.nan
         with self.assertRaises(pipeline.PublicMaterialPrerequisiteError):
             pipeline.build_non_lockbox_review_packet(
                 diagnostic_aggregate=diagnostic,

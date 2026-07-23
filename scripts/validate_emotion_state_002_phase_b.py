@@ -2868,9 +2868,12 @@ def validate_published_ami_aggregate_v2(
     fixed = {
         "scenario_only": {
             "population": 138,
-            "timing": (138, 138),
+            "timing": (138, 136),
             "dialogue": (138, 552, 527),
-            "timing_status": ("available", []),
+            "timing_status": (
+                "unavailable",
+                ["incomplete_usable_timing_coverage"],
+            ),
             "dialogue_status": (
                 "unavailable",
                 ["unlabeled_dialogue_act_records"],
@@ -2878,7 +2881,7 @@ def validate_published_ami_aggregate_v2(
         },
         "full_corpus": {
             "population": 170,
-            "timing": (170, 165),
+            "timing": (170, 137),
             "dialogue": (139, 556, 530),
             "timing_status": (
                 "unavailable",
@@ -2894,7 +2897,7 @@ def validate_published_ami_aggregate_v2(
         },
         "full_only": {
             "population": 32,
-            "timing": (32, 27),
+            "timing": (32, 1),
             "dialogue": (1, 4, 3),
             "timing_status": (
                 "unavailable",
@@ -2970,7 +2973,7 @@ def validate_published_ami_aggregate_v2(
             raise ValueError(
                 f"{partition_name} AMI v2 timing coverage is invalid"
             )
-        if partition_name == "scenario_only":
+        if timing["status"] == "available":
             contribution = _ami_v2_exact_mapping(
                 timing["contribution"],
                 (
