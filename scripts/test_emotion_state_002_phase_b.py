@@ -4659,16 +4659,6 @@ class AmiMaterialEvidenceV2LoaderTests(unittest.TestCase):
             "unpaired",
             "empty",
             "nonempty_extra",
-            "malformed_xml",
-            "root_conflict",
-            "partial_root",
-            "duplicate_record",
-            "cross_agent",
-            "cross_meeting",
-            "external_reference",
-            "malformed_reference",
-            "unknown_identifier",
-            "unresolved_file",
         )
         for case in cases:
             with self.subTest(case=case):
@@ -4700,7 +4690,40 @@ class AmiMaterialEvidenceV2LoaderTests(unittest.TestCase):
                 elif case == "nonempty_extra":
                     words += (self._word_source("M1", "D"),)
                     segments += (self._segment_source("M1", "D"),)
-                elif case == "malformed_xml":
+                evidence = loader(
+                    **{
+                        **base,
+                        "word_sources": words,
+                        "timing_link_sources": segments,
+                    }
+                )
+                affected = self._meeting(evidence, "M1")
+                preserved = self._meeting(evidence, "M2")
+                self.assertTrue(affected.timing_file_present)
+                self.assertIsNone(affected.timed_turns)
+                self.assertIsNotNone(preserved.timed_turns)
+
+    def test_structural_timing_failures_remain_loader_fatal(self) -> None:
+        loader = self._loader()
+        base = self._arguments(("M1", "M2"))
+        cases = (
+            "malformed_xml",
+            "root_conflict",
+            "partial_root",
+            "duplicate_record",
+            "cross_agent",
+            "cross_meeting",
+            "external_reference",
+            "malformed_reference",
+            "unknown_identifier",
+            "unresolved_file",
+            "reversed_range",
+        )
+        for case in cases:
+            with self.subTest(case=case):
+                words = tuple(base["word_sources"])
+                segments = tuple(base["timing_link_sources"])
+                if case == "malformed_xml":
                     words = self._replace_source(
                         words,
                         "M1.A.words.xml",
@@ -4741,6 +4764,34 @@ class AmiMaterialEvidenceV2LoaderTests(unittest.TestCase):
                             ),
                         ),
                     )
+                elif case == "reversed_range":
+                    words = self._replace_source(
+                        words,
+                        "M1.A.words.xml",
+                        self._word_source(
+                            "M1",
+                            "A",
+                            records=(
+                                '<w id="w1" starttime="0.000" '
+                                'endtime="0.100" />'
+                                '<w id="w2" starttime="0.100" '
+                                'endtime="0.200" />'
+                            ),
+                        ),
+                    )
+                    segments = self._replace_source(
+                        segments,
+                        "M1.A.segments.xml",
+                        self._segment_source(
+                            "M1",
+                            "A",
+                            records=(
+                                '<segment id="s1"><child '
+                                'href="M1.A.words.xml#id(w2)..id(w1)" '
+                                '/></segment>'
+                            ),
+                        ),
+                    )
                 else:
                     hrefs = {
                         "cross_agent": "M1.B.words.xml#id(w1)",
@@ -4764,18 +4815,435 @@ class AmiMaterialEvidenceV2LoaderTests(unittest.TestCase):
                             ),
                         ),
                     )
-                evidence = loader(
-                    **{
-                        **base,
-                        "word_sources": words,
-                        "timing_link_sources": segments,
-                    }
+                with self.assertRaises(ValueError):
+                    loader(
+                        **{
+                            **base,
+                            "word_sources": words,
+                            "timing_link_sources": segments,
+                        }
+                    )
+
+    def test_unusable_segment_does_not_mask_later_structural_failure(
+        self,
+    ) -> None:
+        base = self._arguments(("M1", "M2"))
+        words = self._replace_source(
+            base["word_sources"],
+            "M1.A.words.xml",
+            self._word_source(
+                "M1",
+                "A",
+                records=(
+                    '<w id="zero" starttime="0.000" endtime="0.000" />'
+                    '<w id="w1" starttime="0.000" endtime="0.100" />'
+                    '<w id="w2" starttime="0.100" endtime="0.200" />'
+                ),
+            ),
+        )
+        first = (
+            '<segment id="s0"><child '
+            'href="M1.A.words.xml#id(zero)" /></segment>'
+        )
+        later_records = {
+            "duplicate_record": (
+                '<segment id="s0"><child '
+                'href="M1.A.words.xml#id(w1)" /></segment>'
+            ),
+            "cross_agent": (
+                '<segment id="s1"><child '
+                'href="M1.B.words.xml#id(w1)" /></segment>'
+            ),
+            "external_reference": (
+                '<segment id="s1"><child '
+                'href="urn:example:M1.A.words.xml#id(w1)" /></segment>'
+            ),
+            "unknown_identifier": (
+                '<segment id="s1"><child '
+                'href="M1.A.words.xml#id(missing)" /></segment>'
+            ),
+            "reversed_range": (
+                '<segment id="s1"><child '
+                'href="M1.A.words.xml#id(w2)..id(w1)" /></segment>'
+            ),
+        }
+        for case, later in later_records.items():
+            with self.subTest(case=case):
+                segments = self._replace_source(
+                    base["timing_link_sources"],
+                    "M1.A.segments.xml",
+                    self._segment_source(
+                        "M1",
+                        "A",
+                        records=first + later,
+                    ),
                 )
-                affected = self._meeting(evidence, "M1")
-                preserved = self._meeting(evidence, "M2")
-                self.assertTrue(affected.timing_file_present)
-                self.assertIsNone(affected.timed_turns)
-                self.assertIsNotNone(preserved.timed_turns)
+                with self.assertRaises(ValueError) as raised:
+                    self._loader()(
+                        **{
+                            **base,
+                            "word_sources": words,
+                            "timing_link_sources": segments,
+                        }
+                    )
+                self.assertNotIsInstance(
+                    raised.exception,
+                    self._ami()._AmiV2TimingUnavailable,
+                )
+
+    def test_unusable_word_timings_remain_indexable_range_markers(
+        self,
+    ) -> None:
+        arguments = self._arguments(
+            dialogue_sources=(
+                self._dialogue_source(
+                    "M1",
+                    "A",
+                    ((
+                        "d1",
+                        "ami_da_2",
+                        "M1.A.words.xml#id(missing)..id(valid)",
+                    ),),
+                ),
+            ),
+        )
+        words = self._replace_source(
+            arguments["word_sources"],
+            "M1.A.words.xml",
+            self._word_source(
+                "M1",
+                "A",
+                records=(
+                    '<w id="missing" starttime="0.000" />'
+                    '<w id="malformed" starttime="not-a-number" '
+                    'endtime="0.100" />'
+                    '<w id="negative" starttime="-0.100" '
+                    'endtime="0.100" />'
+                    '<w id="nonfinite" starttime="Infinity" '
+                    'endtime="0.100" />'
+                    '<w id="overflow" starttime="1e999999" '
+                    'endtime="1e999999" />'
+                    '<w id="nonintegral" starttime="0.0001" '
+                    'endtime="0.001" />'
+                    '<w id="reversed" starttime="0.200" '
+                    'endtime="0.100" />'
+                    '<w id="zero" starttime="0.300" '
+                    'endtime="0.300" />'
+                    '<word id="compat" starttime="0.350" '
+                    'endtime="0.375" />'
+                    '<w id="valid" starttime="0.400" '
+                    'endtime="0.500" />'
+                ),
+            ),
+        )
+        segments = self._replace_source(
+            arguments["timing_link_sources"],
+            "M1.A.segments.xml",
+            self._segment_source(
+                "M1",
+                "A",
+                records=(
+                    '<segment id="s1"><child '
+                    'href="M1.A.words.xml#id(missing)..id(valid)" />'
+                    '</segment>'
+                ),
+            ),
+        )
+
+        meeting = self._loader()(
+            **{
+                **arguments,
+                "word_sources": words,
+                "timing_link_sources": segments,
+            }
+        )[0]
+
+        self.assertEqual(
+            meeting.timed_turns[0],
+            self._ami().TimedTurn("M1", "P-M1-A", 350, 500),
+        )
+        self.assertEqual(
+            meeting.dialogue_turns,
+            (self._ami().Turn("M1", "P-M1-A", 350, 500, "ami_da_2"),),
+        )
+
+    def test_official_word_terminal_families_resolve_exact_ranges(
+        self,
+    ) -> None:
+        arguments = self._arguments(
+            dialogue_sources=(
+                self._dialogue_source(
+                    "M1",
+                    "A",
+                    ((
+                        "d1",
+                        "ami_da_3",
+                        "M1.A.words.xml#id(g1)..id(d1)",
+                    ),),
+                ),
+            ),
+        )
+        words = self._replace_source(
+            arguments["word_sources"],
+            "M1.A.words.xml",
+            self._word_source(
+                "M1",
+                "A",
+                records=(
+                    '<vocalsound id="v1" starttime="0.000" '
+                    'endtime="0.100" />'
+                    '<gap id="g1" starttime="0.100" '
+                    'endtime="0.200" />'
+                    '<disfmarker id="d1" starttime="0.200" '
+                    'endtime="0.300" />'
+                    '<w id="w1" starttime="0.300" '
+                    'endtime="0.400" />'
+                    '<transformerror id="t1" starttime="0.400" '
+                    'endtime="0.400" />'
+                ),
+            ),
+        )
+        segments = self._replace_source(
+            arguments["timing_link_sources"],
+            "M1.A.segments.xml",
+            self._segment_source(
+                "M1",
+                "A",
+                records=(
+                    '<segment id="s1"><child '
+                    'href="M1.A.words.xml#id(v1)..id(t1)" />'
+                    '</segment>'
+                ),
+            ),
+        )
+
+        meeting = self._loader()(
+            **{
+                **arguments,
+                "word_sources": words,
+                "timing_link_sources": segments,
+            }
+        )[0]
+
+        self.assertEqual(
+            meeting.timed_turns[0],
+            self._ami().TimedTurn("M1", "P-M1-A", 0, 400),
+        )
+        self.assertEqual(
+            meeting.dialogue_turns,
+            (self._ami().Turn("M1", "P-M1-A", 100, 300, "ami_da_3"),),
+        )
+
+    def test_no_positive_dialogue_range_nulls_only_affected_meeting(
+        self,
+    ) -> None:
+        dialogue = (
+            self._dialogue_source(
+                "M1",
+                "A",
+                (("d1", "ami_da_2", "M1.A.words.xml#id(zero)"),),
+            ),
+            self._dialogue_source(
+                "M2",
+                "A",
+                (("d2", "ami_da_3", "M2.A.words.xml#id(w1)"),),
+            ),
+        )
+        arguments = self._arguments(("M1", "M2"), dialogue_sources=dialogue)
+        words = self._replace_source(
+            arguments["word_sources"],
+            "M1.A.words.xml",
+            self._word_source(
+                "M1",
+                "A",
+                records=(
+                    '<vocalsound id="zero" starttime="0.500" '
+                    'endtime="0.500" />'
+                ),
+            ),
+        )
+        segments = self._replace_source(
+            arguments["timing_link_sources"],
+            "M1.A.segments.xml",
+            self._segment_source(
+                "M1",
+                "A",
+                records=(
+                    '<segment id="s1"><child '
+                    'href="M1.A.words.xml#id(zero)" /></segment>'
+                ),
+            ),
+        )
+
+        evidence = self._loader()(
+            **{
+                **arguments,
+                "word_sources": words,
+                "timing_link_sources": segments,
+            }
+        )
+        affected = self._meeting(evidence, "M1")
+        preserved = self._meeting(evidence, "M2")
+
+        self.assertIsNone(affected.timed_turns)
+        self.assertIsNone(affected.dialogue_turns)
+        self.assertEqual(
+            (
+                affected.dialogue_act_file_count,
+                affected.fully_labeled_dialogue_act_file_count,
+                affected.unlabeled_dialogue_act_record_count,
+                affected.unlabeled_dialogue_act_file_count,
+            ),
+            (1, 1, 0, 0),
+        )
+        self.assertEqual(
+            preserved.dialogue_turns,
+            (self._ami().Turn("M2", "P-M2-A", 0, 500, "ami_da_3"),),
+        )
+
+    def test_unknown_word_terminal_remains_fail_closed(self) -> None:
+        arguments = self._arguments(
+            dialogue_sources=(
+                self._dialogue_source(
+                    "M1",
+                    "A",
+                    (("d1", "ami_da_2", "M1.A.words.xml#id(f1)"),),
+                ),
+            ),
+        )
+        words = self._replace_source(
+            arguments["word_sources"],
+            "M1.A.words.xml",
+            self._word_source(
+                "M1",
+                "A",
+                records=(
+                    '<future-terminal id="f1" starttime="0.000" '
+                    'endtime="0.500" />'
+                ),
+            ),
+        )
+        segments = self._replace_source(
+            arguments["timing_link_sources"],
+            "M1.A.segments.xml",
+            self._segment_source(
+                "M1",
+                "A",
+                records=(
+                    '<segment id="s1"><child '
+                    'href="M1.A.words.xml#id(f1)" /></segment>'
+                ),
+            ),
+        )
+
+        with self.assertRaisesRegex(ValueError, "terminal family is unsupported"):
+            self._loader()(
+                **{
+                    **arguments,
+                    "word_sources": words,
+                    "timing_link_sources": segments,
+                }
+            )
+
+    def test_unusable_cross_identity_dialogue_reference_remains_fatal(
+        self,
+    ) -> None:
+        base = self._arguments(("M1", "M2"))
+        for target in ("M1.B.words.xml", "M2.A.words.xml"):
+            with self.subTest(target=target):
+                meeting_id, agent, _ = target.split(".", 2)
+                words = self._replace_source(
+                    base["word_sources"],
+                    target,
+                    self._word_source(
+                        meeting_id,
+                        agent,
+                        records=(
+                            '<vocalsound id="zero" starttime="0.500" '
+                            'endtime="0.500" />'
+                        ),
+                    ),
+                )
+                segments = self._replace_source(
+                    base["timing_link_sources"],
+                    f"{meeting_id}.{agent}.segments.xml",
+                    self._segment_source(
+                        meeting_id,
+                        agent,
+                        records=(
+                            '<segment id="s1"><child '
+                            f'href="{target}#id(zero)" /></segment>'
+                        ),
+                    ),
+                )
+                dialogue = self._dialogue_source(
+                    "M1",
+                    "A",
+                    (("d1", "ami_da_2", f"{target}#id(zero)"),),
+                )
+
+                with self.assertRaisesRegex(ValueError, "crosses source identity"):
+                    self._loader()(
+                        **{
+                            **base,
+                            "word_sources": words,
+                            "timing_link_sources": segments,
+                            "dialogue_act_sources": (dialogue,),
+                        }
+                    )
+
+    def test_unusable_cross_identity_segment_reference_remains_fatal(
+        self,
+    ) -> None:
+        base = self._arguments(("M1", "M2"))
+        for target in ("M1.B.words.xml", "M2.A.words.xml"):
+            with self.subTest(target=target):
+                meeting_id, agent, _ = target.split(".", 2)
+                words = self._replace_source(
+                    base["word_sources"],
+                    target,
+                    self._word_source(
+                        meeting_id,
+                        agent,
+                        records=(
+                            '<w id="zero" starttime="0.500" '
+                            'endtime="0.500" />'
+                        ),
+                    ),
+                )
+                segments = self._replace_source(
+                    base["timing_link_sources"],
+                    f"{meeting_id}.{agent}.segments.xml",
+                    self._segment_source(
+                        meeting_id,
+                        agent,
+                        records=(
+                            '<segment id="s1"><child '
+                            f'href="{target}#id(zero)" /></segment>'
+                        ),
+                    ),
+                )
+                segments = self._replace_source(
+                    segments,
+                    "M1.A.segments.xml",
+                    self._segment_source(
+                        "M1",
+                        "A",
+                        records=(
+                            '<segment id="s1"><child '
+                            f'href="{target}#id(zero)" /></segment>'
+                        ),
+                    ),
+                )
+
+                with self.assertRaisesRegex(ValueError, "crosses source identity"):
+                    self._loader()(
+                        **{
+                            **base,
+                            "word_sources": words,
+                            "timing_link_sources": segments,
+                        }
+                    )
 
     def test_no_timing_sources_preserve_false_presence_and_null_turns(
         self,

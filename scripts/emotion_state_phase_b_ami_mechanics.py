@@ -9,7 +9,7 @@ import xml.etree.ElementTree as ET
 from collections import Counter, defaultdict
 from collections.abc import Mapping, Sequence
 from dataclasses import dataclass
-from decimal import Decimal, InvalidOperation
+from decimal import Decimal, DecimalException, InvalidOperation
 from pathlib import Path
 from typing import Any
 
@@ -56,6 +56,14 @@ _DA_ASPECT_REFERENCE = re.compile(r"^([^#]+)#id\(([^()]+)\)$")
 _REFERENCE_FRAGMENT = re.compile(
     r"^id\(([^)]+)\)(?:\.\.id\(([^)]+)\))?$"
 )
+_AMI_V2_WORD_TERMINAL_TAGS = frozenset({
+    "disfmarker",
+    "gap",
+    "transformerror",
+    "vocalsound",
+    "w",
+    "word",
+})
 
 
 @dataclass(frozen=True)
@@ -198,6 +206,10 @@ class _Boundary:
     agent: str
     start_ms: int
     end_ms: int
+
+
+class _AmiV2TimingUnavailable(ValueError):
+    """Expected local absence of usable timing, not structural corruption."""
 
 
 def _canonical_identifier(value: Any, name: str) -> str:
@@ -1023,38 +1035,98 @@ def _v2_metadata_dependencies(
 def _v2_word_boundaries(
     source: AmiXmlBytes,
     identity: tuple[str, str],
-) -> tuple[tuple[_Boundary, ...], dict[str, int]]:
+) -> tuple[tuple[_Boundary | None, ...], dict[str, int]]:
     root = _xml(source)
     _v2_validate_root_identity(root, identity)
-    ordered: list[_Boundary] = []
+    ordered: list[_Boundary | None] = []
     positions: dict[str, int] = {}
     for element in root.iter():
-        if _normalized_name(element.tag) not in {"w", "word"}:
+        if element is root:
             continue
         identifier = _attribute(element, "id")
+        tag = _exact_local_name(element.tag)
+        if tag not in _AMI_V2_WORD_TERMINAL_TAGS:
+            if identifier is not None:
+                raise ValueError(
+                    "AMI v2 word terminal family is unsupported"
+                )
+            continue
         if identifier is None or identifier in positions:
             raise ValueError("AMI v2 word identifier is missing or duplicate")
-        start_ms = _milliseconds(_attribute(element, "starttime", "start"))
-        end_ms = _milliseconds(_attribute(element, "endtime", "end"))
-        if not 0 <= start_ms < end_ms:
-            raise ValueError("AMI v2 word time span is malformed")
         positions[identifier] = len(ordered)
-        ordered.append(_Boundary(*identity, start_ms, end_ms))
+        start = _attribute(element, "starttime", "start")
+        end = _attribute(element, "endtime", "end")
+        try:
+            start_ms = None if start is None else Decimal(start) * 1000
+            end_ms = None if end is None else Decimal(end) * 1000
+        except DecimalException:
+            start_ms = None
+            end_ms = None
+        if (
+            start_ms is None
+            or end_ms is None
+            or not start_ms.is_finite()
+            or not end_ms.is_finite()
+            or start_ms != start_ms.to_integral()
+            or end_ms != end_ms.to_integral()
+            or not 0 <= start_ms < end_ms
+        ):
+            ordered.append(None)
+        else:
+            ordered.append(_Boundary(
+                *identity,
+                int(start_ms),
+                int(end_ms),
+            ))
     if not ordered:
-        raise ValueError("AMI v2 word file contains no timing boundaries")
+        raise _AmiV2TimingUnavailable(
+            "AMI v2 word file contains no terminal records"
+        )
     return tuple(ordered), positions
+
+
+def _v2_resolve_range(
+    target: str,
+    first_id: str,
+    last_id: str | None,
+    items: Mapping[str, tuple[_Boundary | None, ...]],
+    identifiers: Mapping[str, Mapping[str, int]],
+    kind: str,
+) -> tuple[_Boundary, ...]:
+    if target not in items or target not in identifiers:
+        raise ValueError(
+            f"AMI NXT reference targets an unknown local {kind} file"
+        )
+    positions = identifiers[target]
+    if (
+        first_id not in positions
+        or (last_id is not None and last_id not in positions)
+    ):
+        raise ValueError(f"AMI NXT reference targets an unknown local {kind}")
+    first = positions[first_id]
+    last = first if last_id is None else positions[last_id]
+    if first > last:
+        raise ValueError(f"AMI NXT {kind} range is reversed")
+    return tuple(
+        boundary
+        for boundary in items[target][first:last + 1]
+        if boundary is not None
+    )
 
 
 def _v2_segment_boundaries(
     source: AmiXmlBytes,
     identity: tuple[str, str],
-    words: Mapping[str, tuple[_Boundary, ...]],
+    words: Mapping[str, tuple[_Boundary | None, ...]],
     word_identifiers: Mapping[str, Mapping[str, int]],
+    word_source_identities: Mapping[str, tuple[str, str]],
 ) -> tuple[tuple[_Boundary, ...], dict[str, int]]:
     root = _xml(source)
     _v2_validate_root_identity(root, identity)
     ordered: list[_Boundary] = []
     positions: dict[str, int] = {}
+    identifiers: set[str] = set()
+    timing_unavailable = False
     for element in root.iter():
         if _normalized_name(element.tag) not in {
             "segment",
@@ -1064,11 +1136,13 @@ def _v2_segment_boundaries(
         }:
             continue
         identifier = _attribute(element, "id")
-        if identifier is None or identifier in positions:
+        if identifier is None or identifier in identifiers:
             raise ValueError(
                 "AMI v2 timing-link identifier is missing or duplicate"
             )
+        identifiers.add(identifier)
         referenced: list[_Boundary] = []
+        reference_found = False
         for child in element.iter():
             if child is element or _normalized_name(child.tag) not in {
                 "child",
@@ -1080,21 +1154,46 @@ def _v2_segment_boundaries(
                 _attribute(child, "href"),
                 source.filename,
             )
-            referenced.extend(_resolve_range(
+            reference_found = True
+            if target not in word_source_identities:
+                raise ValueError(
+                    "AMI NXT reference targets an unknown local word file"
+                )
+            if word_source_identities[target] != identity:
+                raise ValueError("AMI v2 timing link crosses source identity")
+            if target not in words or target not in word_identifiers:
+                timing_unavailable = True
+                continue
+            resolved = _v2_resolve_range(
                 target,
                 first,
                 last,
                 words,
                 word_identifiers,
                 "word",
-            ))
+            )
+            if not resolved:
+                timing_unavailable = True
+            else:
+                referenced.extend(resolved)
+        if not reference_found:
+            raise ValueError("AMI v2 timing link contains no local reference")
+        if not referenced:
+            timing_unavailable = True
+            continue
         boundary = _merge_boundaries(referenced)
         if (boundary.meeting_id, boundary.agent) != identity:
             raise ValueError("AMI v2 timing link crosses source identity")
         positions[identifier] = len(ordered)
         ordered.append(boundary)
-    if not ordered:
-        raise ValueError("AMI v2 timing-link file contains no local links")
+    if not identifiers:
+        raise _AmiV2TimingUnavailable(
+            "AMI v2 timing-link file contains no timing-link records"
+        )
+    if timing_unavailable:
+        raise _AmiV2TimingUnavailable(
+            "AMI v2 timing-link file contains unavailable word timing"
+        )
     return tuple(ordered), positions
 
 
@@ -1102,16 +1201,19 @@ def _v2_dialogue_file(
     source: AmiXmlBytes,
     identity: tuple[str, str],
     participant_id: str,
-    words: Mapping[str, tuple[_Boundary, ...]],
+    words: Mapping[str, tuple[_Boundary | None, ...]],
     word_identifiers: Mapping[str, Mapping[str, int]],
     segments: Mapping[str, tuple[_Boundary, ...]],
     segment_identifiers: Mapping[str, Mapping[str, int]],
-) -> tuple[list[Turn], int]:
+    word_source_identities: Mapping[str, tuple[str, str]],
+    segment_source_identities: Mapping[str, tuple[str, str]],
+) -> tuple[list[Turn], int, int]:
     root = _xml(source)
     _v2_validate_root_identity(root, identity)
     turns: list[Turn] = []
     identifiers: set[str] = set()
     unlabeled = 0
+    timing_unavailable = 0
     found = False
     for element in root.iter():
         if _normalized_name(element.tag) not in {
@@ -1132,6 +1234,8 @@ def _v2_dialogue_file(
             allow_legacy_direct=False,
         )
         referenced: list[_Boundary] = []
+        reference_found = False
+        reference_unavailable = False
         for child in element.iter():
             if child is element or _normalized_name(child.tag) not in {
                 "child",
@@ -1148,34 +1252,58 @@ def _v2_dialogue_file(
                 _attribute(child, "href"),
                 source.filename,
             )
-            if target in segments:
-                referenced.extend(_resolve_range(
+            reference_found = True
+            if target in segment_source_identities:
+                if segment_source_identities[target] != identity:
+                    raise ValueError(
+                        "AMI v2 dialogue act crosses source identity"
+                    )
+                if target not in segments or target not in segment_identifiers:
+                    reference_unavailable = True
+                    continue
+                resolved = _v2_resolve_range(
                     target,
                     first,
                     last,
                     segments,
                     segment_identifiers,
                     "timing link",
-                ))
-            elif target in words:
-                referenced.extend(_resolve_range(
+                )
+            elif target in word_source_identities:
+                if word_source_identities[target] != identity:
+                    raise ValueError(
+                        "AMI v2 dialogue act crosses source identity"
+                    )
+                if target not in words or target not in word_identifiers:
+                    reference_unavailable = True
+                    continue
+                resolved = _v2_resolve_range(
                     target,
                     first,
                     last,
                     words,
                     word_identifiers,
                     "word",
-                ))
+                )
             else:
                 raise ValueError(
                     "AMI v2 dialogue reference targets an unknown local file"
                 )
+            if not resolved:
+                reference_unavailable = True
+            else:
+                referenced.extend(resolved)
+        if not reference_found:
+            _merge_boundaries(())
+        if dialogue_act is None:
+            unlabeled += 1
+        if reference_unavailable:
+            timing_unavailable += 1
+            continue
         boundary = _merge_boundaries(referenced)
         if (boundary.meeting_id, boundary.agent) != identity:
             raise ValueError("AMI v2 dialogue act crosses source identity")
-        if dialogue_act is None:
-            unlabeled += 1
-        else:
+        if dialogue_act is not None:
             turns.append(Turn(
                 meeting_id=identity[0],
                 participant_id=participant_id,
@@ -1185,7 +1313,7 @@ def _v2_dialogue_file(
             ))
     if not found:
         raise ValueError("AMI v2 dialogue-act file contains no dialogue acts")
-    return turns, unlabeled
+    return turns, unlabeled, timing_unavailable
 
 
 def load_ami_meeting_evidence_v2(
@@ -1263,13 +1391,13 @@ def load_ami_meeting_evidence_v2(
             )
 
     timing_bad: set[str] = set()
-    words: dict[str, tuple[_Boundary, ...]] = {}
+    words: dict[str, tuple[_Boundary | None, ...]] = {}
     word_positions: dict[str, dict[str, int]] = {}
     for source in word_files:
         identity = word_identities[source.filename]
         try:
             boundaries, positions = _v2_word_boundaries(source, identity)
-        except ValueError:
+        except _AmiV2TimingUnavailable:
             timing_bad.add(identity[0])
             continue
         words[source.filename] = boundaries
@@ -1285,8 +1413,9 @@ def load_ami_meeting_evidence_v2(
                 identity,
                 words,
                 word_positions,
+                word_identities,
             )
-        except ValueError:
+        except _AmiV2TimingUnavailable:
             timing_bad.add(identity[0])
             continue
         segments[source.filename] = boundaries
@@ -1346,10 +1475,11 @@ def load_ami_meeting_evidence_v2(
     fully_labeled_count: Counter[str] = Counter()
     unlabeled_record_count: Counter[str] = Counter()
     unlabeled_file_count: Counter[str] = Counter()
+    dialogue_timing_bad: set[str] = set()
     for source in dialogue_files:
         identity = dialogue_identities[source.filename]
         meeting_id, agent = identity
-        turns, unlabeled = _v2_dialogue_file(
+        turns, unlabeled, timing_unavailable = _v2_dialogue_file(
             source,
             identity,
             dependencies[meeting_id][agent],
@@ -1357,7 +1487,11 @@ def load_ami_meeting_evidence_v2(
             word_positions,
             segments,
             segment_positions,
+            word_identities,
+            segment_identities,
         )
+        if timing_unavailable:
+            dialogue_timing_bad.add(meeting_id)
         dialogue_file_count[meeting_id] += 1
         if unlabeled:
             unlabeled_record_count[meeting_id] += unlabeled
@@ -1382,7 +1516,11 @@ def load_ami_meeting_evidence_v2(
             raise ValueError(
                 "AMI v2 dialogue turns contain an exact duplicate"
             )
-        if not file_count or unlabeled_record_count[meeting_id]:
+        if (
+            not file_count
+            or unlabeled_record_count[meeting_id]
+            or meeting_id in dialogue_timing_bad
+        ):
             finalized_dialogue = None
         else:
             if not ordered_dialogue:
