@@ -1819,16 +1819,40 @@ Do not commit ignored caches or canonical result/report files.
 - [ ] **Step 1: Stop at the final-lockbox authorization gate**
 
 Require explicit one-use authorization tied to the exact non-lockbox packet
-SHA-256 and current HEAD.
+SHA-256 and current HEAD. First write the fixed ignored source-silent admission
+receipt bound to the reviewed clean HEAD, guarded-ledger SHA-256, accepted
+predecessor-state SHA-256, and packet SHA-256. Admission and every production
+recheck use exactly three local no-fetch Git reads (`show-toplevel`, `HEAD`, and
+clean status including untracked files) with `GIT_LFS_SKIP_SMUDGE=1`. The runner must durably
+write and read back the exact `reserved` record before minting its private
+final-audio authority, hold that exact reservation file through final
+evaluation and result persistence, and revalidate admission during completed
+recovery. Completed reservation bytes remain held through recovery validation
+and the state transition. A reserved failure is terminal.
+
+The reviewed guarded ledger is the fixed ignored
+`.tmp/emotion-state-002-phase-b-cut4b/task-11-guarded-ledger.json`. Render it as
+canonical UTF-8 LF JSON with two-space indentation, sorted keys, and one terminal
+LF. Bind `schema_version`, `task_id`, the exact committed implementation HEAD,
+and the exact ordered guarded command vectors. Each command entry contains only
+`argv`, `exit_code`, `stdout_sha256`, and `stderr_sha256`; do not persist raw
+command output. The guarded-ledger digest is the uppercase SHA-256 of those exact
+bytes. After `admit-lockbox`, independently hash the exact
+`lockbox-admission.json` bytes and pass both reviewed digests to `lockbox`.
 
 - [ ] **Step 2: Run the one-use lockbox command**
 
 ```powershell
-.tmp/emotion-state-002-phase-b/venv/Scripts/python.exe scripts/run_emotion_state_002_phase_b.py lockbox
+.tmp/emotion-state-002-phase-b/venv/Scripts/python.exe scripts/run_emotion_state_002_phase_b.py admit-lockbox --reviewed-head <reviewed-lowercase-head> --guarded-ledger-sha256 <guarded-ledger-sha256> --expected-state-sha256 <accepted-state-sha256> --expected-non-lockbox-packet-sha256 <accepted-packet-sha256>
+.tmp/emotion-state-002-phase-b/venv/Scripts/python.exe scripts/run_emotion_state_002_phase_b.py lockbox --admission-sha256 <admission-receipt-sha256> --guarded-ledger-sha256 <guarded-ledger-sha256>
 ```
 
 Expected: state transitions once from `non_lockbox_complete` to
-`lockbox_complete`; a rerun fails before reading lockbox rows.
+`lockbox_complete`; a rerun fails before reading lockbox rows. The ignored
+result contains the AMI aggregate and retained-authority SHA-256 only. Full AMI
+meeting, participant, turn, and dialogue-label evidence remains in memory and
+is replayed source-silently from the committed non-lockbox cache during mint
+and completed forward recovery.
 
 - [ ] **Step 3: Review the aggregate decision evidence**
 

@@ -81,7 +81,30 @@ Phase B may not establish:
    one-use lockbox authorization after independent review of the frozen
    non-lockbox packet.
 
-The production lockbox evaluator remains unavailable; authorization alone does not wire it.
+The production lockbox evaluator is wired but remains unopened. Execute it only
+once after the exact implementation commit, clean guarded ledger, source-silent
+admission, and independent review are bound to the accepted Task 10 checkpoint.
+The source-silent admission receipt is bound to the reviewed clean HEAD,
+guarded-ledger SHA-256, accepted predecessor-state SHA-256, and non-lockbox
+packet SHA-256 through exactly three local, no-fetch Git reads, including a
+clean status check over tracked and untracked files. The
+runner-owned final-audio capability exists only after durable `reserved`
+write/readback; the exact reservation file remains held across final
+evaluation and result persistence, and admission is revalidated during
+completed recovery. Completed reservation bytes remain held across recovery
+validation and state transition. The ignored lockbox result will retain only the AMI
+aggregate and authority SHA-256; AMI meeting, participant, timing-turn,
+dialogue-turn, and dialogue-label rows remain source-silent in-memory
+validation inputs. Underscore-private pure pipeline helpers are procedural
+inside the trusted runner process and cannot mint a production file reader;
+hostile same-process imports remain outside this prototype threat model.
+The reviewed guarded ledger is the canonical UTF-8 LF JSON file
+`.tmp/emotion-state-002-phase-b-cut4b/task-11-guarded-ledger.json`, binding the
+committed HEAD and exact ordered guarded command vectors. Each entry retains
+only its vector, exit code, and stdout/stderr SHA-256 values. The production
+command separately receives the SHA-256 of those exact ledger bytes and the
+SHA-256 of the exact source-silent admission receipt, preventing either identity
+from being silently changed before the first reservation.
 5. **Publication gate:** Task 12 may stage, independently validate, explicitly
    accept, commit, and optionally push the exact canonical pair only under
    separately stated acceptance/push authority.

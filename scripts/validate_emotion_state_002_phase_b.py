@@ -4160,6 +4160,31 @@ def _validate_ami_authority(payload: Any) -> tuple[tuple[Any, ...], dict[str, li
     return meetings, dict(membership), tuple(authority["official_order"])
 
 
+def _validate_ami_v2_authority(
+    payload: Any,
+) -> tuple[tuple[dict[str, Any], ...], dict[str, list[str]], tuple[str, ...]]:
+    authority = _exact_keys(
+        payload,
+        ("meetings", "partition_membership", "official_order"),
+        "AMI v2 authority",
+    )
+    _ami_v2_serialized_meetings(authority["meetings"])
+    meetings = tuple(copy.deepcopy(authority["meetings"]))
+    membership = _exact_keys(
+        authority["partition_membership"],
+        AMI_PARTITION_CELLS,
+        "AMI v2 partition membership",
+    )
+    if any(
+        type(membership[name]) is not list
+        for name in AMI_PARTITION_CELLS
+    ):
+        raise ValueError("AMI v2 partition memberships must be lists")
+    if type(authority["official_order"]) is not list:
+        raise ValueError("AMI v2 official order must be a list")
+    return meetings, dict(membership), tuple(authority["official_order"])
+
+
 def _validate_published_ami_cell(
     cell: Any,
     *,
@@ -4280,16 +4305,60 @@ def validate_lockbox_ami_input(payload: Any) -> dict[str, Any]:
     )
     if _canonical_digest(ami["authority"]) != ami["authority_sha256"]:
         raise ValueError("AMI authority digest does not match")
-    meetings, membership, order = _validate_ami_authority(ami["authority"])
-    validate_ami_mechanics_aggregates(
-        ami["aggregate"],
-        meetings=meetings,
-        partition_membership=membership,
-        official_order=order,
-        minimum_contributors=MINIMUM_UNIQUE_ACTORS,
-    )
-    validate_published_ami_aggregate(ami["aggregate"])
+    aggregate = ami["aggregate"]
+    if (
+        type(aggregate) is dict
+        and aggregate.get("schema_id")
+        == "emotion-state-ami-mechanics-aggregate-v2"
+    ):
+        meetings, membership, order = _validate_ami_v2_authority(
+            ami["authority"]
+        )
+        validate_ami_mechanics_aggregates_v2(
+            aggregate,
+            meetings=meetings,
+            partition_membership=membership,
+            official_order=order,
+            minimum_contributors=MINIMUM_UNIQUE_ACTORS,
+        )
+        validate_published_ami_aggregate_v2(aggregate)
+    else:
+        meetings, membership, order = _validate_ami_authority(
+            ami["authority"]
+        )
+        validate_ami_mechanics_aggregates(
+            aggregate,
+            meetings=meetings,
+            partition_membership=membership,
+            official_order=order,
+            minimum_contributors=MINIMUM_UNIQUE_ACTORS,
+        )
+        validate_published_ami_aggregate(aggregate)
     return dict(result)
+
+
+def validate_persisted_lockbox_ami(payload: Any) -> dict[str, Any]:
+    ami = _exact_keys(
+        payload,
+        ("aggregate", "authority_sha256"),
+        "persisted AMI lockbox commitment",
+    )
+    _uppercase_sha256(
+        ami["authority_sha256"],
+        "persisted AMI authority commitment",
+    )
+    aggregate = ami["aggregate"]
+    if (
+        type(aggregate) is dict
+        and aggregate.get("schema_id")
+        == "emotion-state-ami-mechanics-aggregate-v2"
+    ):
+        validate_published_ami_aggregate_v2(aggregate)
+    elif type(aggregate) is dict and "schema_id" in aggregate:
+        raise ValueError("persisted AMI aggregate schema id is invalid")
+    else:
+        validate_published_ami_aggregate(aggregate)
+    return dict(ami)
 
 
 def serialized_decision_evidence_mint_sha256(payload: Any) -> str:
@@ -4320,12 +4389,7 @@ def validate_lockbox_result(payload: Any) -> dict[str, Any]:
     if result["schema_version"] != 1 or type(result["schema_version"]) is not int:
         raise ValueError("lockbox result schema version must be 1")
     validate_decision_inputs(result["decision_evidence"], dict(EXPECTED_VALIDITY))
-    validate_lockbox_ami_input(
-        {
-            "schema_version": result["schema_version"],
-            "ami": result["ami"],
-        }
-    )
+    validate_persisted_lockbox_ami(result["ami"])
     return dict(result)
 
 
@@ -4366,7 +4430,6 @@ def validated_lockbox_summary(
         raise ValueError(
             "state-bound private decision evidence mint digest does not match"
         )
-    authority = validated["ami"]["authority"]
     return {
         "crema": {
             "decision_evidence": evidence,
@@ -4378,7 +4441,9 @@ def validated_lockbox_summary(
             "aggregate_sha256": _canonical_digest(
                 validated["ami"]["aggregate"]
             ),
-            "source_commitment_sha256": _canonical_digest(authority),
+            "source_commitment_sha256": validated["ami"][
+                "authority_sha256"
+            ],
             "minimum_unique_contributors_per_cell": MINIMUM_UNIQUE_ACTORS,
         },
         "validity": dict(EXPECTED_VALIDITY),
@@ -4526,7 +4591,17 @@ def validate_phase_b_result(payload: Any) -> dict[str, Any]:
         raise ValueError("published AMI aggregate digest does not match")
     if ami["minimum_unique_contributors_per_cell"] != MINIMUM_UNIQUE_ACTORS:
         raise ValueError("AMI contributor floor does not match")
-    validate_published_ami_aggregate(ami["aggregate"])
+    aggregate = ami["aggregate"]
+    if (
+        type(aggregate) is dict
+        and aggregate.get("schema_id")
+        == "emotion-state-ami-mechanics-aggregate-v2"
+    ):
+        validate_published_ami_aggregate_v2(aggregate)
+    elif type(aggregate) is dict and "schema_id" in aggregate:
+        raise ValueError("published AMI aggregate schema id is invalid")
+    else:
+        validate_published_ami_aggregate(aggregate)
     _require_exact(result["validity"], EXPECTED_VALIDITY, "validity facts")
     derived = derive_phase_b_decision(crema["decision_evidence"])
     if result["decision"] != derived:

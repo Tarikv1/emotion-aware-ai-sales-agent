@@ -1493,6 +1493,39 @@ def validated_partition_records(
     return tuple(result)
 
 
+def validated_final_lockbox_records(
+    split_assignment: ValidatedSplitAssignment,
+) -> tuple[ValidatedPartitionRecord, ...]:
+    assignment, _seed, _manifest, records, acoustic_bindings = (
+        _verify_validated_split_assignment(split_assignment)
+    )
+    bindings = {
+        stem: (sha256, size_bytes)
+        for stem, sha256, size_bytes in acoustic_bindings
+    }
+    result = []
+    for record in records:
+        if assignment[record.actor_id] != "final_lockbox":
+            continue
+        fresh_record = _canonical_partition_authority_record(record)
+        audio_sha256, audio_size_bytes = bindings[fresh_record.clip_stem]
+        result.append(ValidatedPartitionRecord(
+            label_record=fresh_record,
+            audio_sha256=audio_sha256,
+            audio_size_bytes=audio_size_bytes,
+        ))
+    if (
+        len({record.label_record.actor_id for record in result})
+        != _PARTITION_ACTOR_COUNTS["final_lockbox"]
+        or not result
+    ):
+        raise ValueError("final-lockbox private authority changed")
+    return tuple(sorted(
+        result,
+        key=lambda record: record.label_record.clip_stem,
+    ))
+
+
 def mint_partition_evidence(
     *,
     partition_role: str,

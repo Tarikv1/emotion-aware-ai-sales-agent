@@ -9,6 +9,7 @@ import math
 import os
 import re
 import stat
+import subprocess
 import sys
 import uuid
 from collections.abc import Iterator, Mapping, Sequence
@@ -53,6 +54,7 @@ from scripts.validate_emotion_state_002_phase_b import (
     validate_lockbox_ami_input,
     validate_lockbox_lineage,
     validate_lockbox_result,
+    validate_persisted_lockbox_ami,
     validate_non_lockbox_packet,
     validate_phase_b_input_ledger,
     validate_phase_b_partition_authority_cache,
@@ -71,12 +73,17 @@ from scripts.emotion_state_phase_b_public_pipeline import (
     EXPECTED_PRODUCTION_PARTITION_RECORD_COUNTS,
     NON_LOCKBOX_ROLE_ORDER,
     ProductionNonLockboxArtifacts,
+    ProductionLockboxArtifacts,
     ProductionPreflightArtifacts,
     SourceByteIdentity,
     TRACKED_DATASET_EVIDENCE_FILENAMES,
     TrackedPublicAuthority,
     build_production_non_lockbox_artifacts,
     build_production_preflight_artifacts,
+    _ProductionLockboxPlan,
+    _evaluate_production_lockbox_plan,
+    _persisted_ami_lockbox_commitment,
+    _prepare_production_lockbox_plan,
     restore_production_non_lockbox_artifacts,
     tracked_public_authority_commitment_sha256,
     validate_non_lockbox_review_packet,
@@ -90,10 +97,12 @@ RECEIPT_SCHEMA_VERSION = 1
 JOURNAL_NAME = "transaction.json"
 LOCK_NAME = "publication.lock"
 LOCKBOX_LOCK_NAME = "lockbox.lock"
+LOCKBOX_ADMISSION_NAME = "lockbox-admission.json"
 LOCKBOX_RESERVATION_NAME = "lockbox-reservation.json"
 MATERIAL_PIPELINE_LOCK_NAME = "material-pipeline.lock"
 OPAQUE_POST_NON_LOCKBOX_STATE_ROOT_ENTRY_NAMES = frozenset({
     LOCKBOX_LOCK_NAME,
+    LOCKBOX_ADMISSION_NAME,
     LOCKBOX_RESERVATION_NAME,
     "lockbox",
     "publication",
@@ -430,6 +439,37 @@ class _PersistedNonLockboxReadback:
 
 
 @dataclass(frozen=True, slots=True)
+class _LockboxCheckpointAuthority:
+    state: dict[str, Any]
+    state_bytes: bytes
+    state_file: _HeldRegularFileAuthority | None
+    split_manifest: dict[str, Any]
+    authorities: dict[str, Any] | None
+    non_lockbox_readback: _PersistedNonLockboxReadback | None
+
+
+@dataclass(frozen=True, slots=True)
+class _Task11AdmissionAuthority:
+    receipt: dict[str, Any]
+    canonical_bytes: bytes
+    receipt_sha256: str
+    file: _HeldRegularFileAuthority
+
+
+_RESERVED_LOCKBOX_AUTHORITY_GUARD = object()
+
+
+@dataclass(frozen=True, slots=True)
+class _ReservedLockboxAuthority:
+    transaction_id: str
+    reservation_sha256: str
+    checkpoint_state_sha256: str
+    admission_authority: _Task11AdmissionAuthority | None
+    reservation_file: _HeldRegularFileAuthority
+    _guard: object
+
+
+@dataclass(frozen=True, slots=True)
 class _HeldStaticPreflightInputs:
     configuration: dict[str, Any]
     contents: tuple[bytes, ...]
@@ -693,6 +733,10 @@ class RunnerPaths:
     @property
     def lockbox_lock_path(self) -> Path:
         return Path(self.state_root) / LOCKBOX_LOCK_NAME
+
+    @property
+    def lockbox_admission_path(self) -> Path:
+        return Path(self.state_root) / LOCKBOX_ADMISSION_NAME
 
     @property
     def lockbox_reservation_path(self) -> Path:
@@ -9789,16 +9833,6 @@ def lockbox_lock(paths: RunnerPaths) -> Iterator[None]:
         except OSError as error:
             raise RunnerError("lockbox lock is already held or unavailable") from error
         acquired = True
-        _recover_output_replacement(
-            paths,
-            paths.lockbox_reservation_path,
-            allowed_root=paths.state_root,
-        )
-        _recover_output_replacement(
-            paths,
-            _resolve_final_lockbox_result_path(paths),
-            allowed_root=paths.lockbox_root,
-        )
         yield
     finally:
         if acquired:
@@ -9809,6 +9843,357 @@ def lockbox_lock(paths: RunnerPaths) -> Iterator[None]:
         handle.close()
 
 
+def _validate_task11_implementation_head(value: Any) -> str:
+    if type(value) is not str or _COMMIT_PATTERN.fullmatch(value) is None:
+        raise RunnerError("Task 11 implementation HEAD must be a lowercase commit")
+    return value
+
+
+def _task11_git_environment() -> dict[str, str]:
+    retained_names = {
+        "COMSPEC",
+        "HOME",
+        "PATH",
+        "PATHEXT",
+        "SYSTEMDRIVE",
+        "SYSTEMROOT",
+        "TEMP",
+        "TMP",
+        "USERPROFILE",
+        "WINDIR",
+    }
+    environment = {
+        name: value
+        for name, value in os.environ.items()
+        if name.upper() in retained_names
+    }
+    environment.update({
+        "GIT_LFS_SKIP_SMUDGE": "1",
+        "GIT_OPTIONAL_LOCKS": "0",
+        "GIT_TERMINAL_PROMPT": "0",
+    })
+    return environment
+
+
+def _task11_git_output(paths: RunnerPaths, arguments: tuple[str, ...]) -> bytes:
+    if (
+        type(arguments) is not tuple
+        or not arguments
+        or any(type(argument) is not str or not argument for argument in arguments)
+    ):
+        raise RunnerError("Task 11 Git command changed")
+    try:
+        completed = subprocess.run(
+            ("git", *arguments),
+            cwd=Path(paths.project_root),
+            env=_task11_git_environment(),
+            stdin=subprocess.DEVNULL,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            check=False,
+            shell=False,
+            timeout=30,
+        )
+    except (OSError, subprocess.SubprocessError) as error:
+        raise RunnerError("Task 11 repository identity is unavailable") from error
+    if completed.returncode != 0:
+        raise RunnerError("Task 11 repository identity command failed")
+    return bytes(completed.stdout)
+
+
+def _validated_task11_repository_head(paths: RunnerPaths) -> str:
+    _validate_layout(paths)
+    root_bytes = _task11_git_output(paths, ("rev-parse", "--show-toplevel"))
+    head_bytes = _task11_git_output(paths, ("rev-parse", "--verify", "HEAD"))
+    status_bytes = _task11_git_output(
+        paths,
+        ("status", "--porcelain=v1", "--untracked-files=all"),
+    )
+    try:
+        repository_root = Path(root_bytes.decode("utf-8", errors="strict").strip())
+        head = head_bytes.decode("ascii", errors="strict").strip()
+    except (UnicodeError, ValueError) as error:
+        raise RunnerError("Task 11 repository identity output is invalid") from error
+    project_root = Path(paths.project_root)
+    if (
+        os.path.normcase(os.path.abspath(repository_root))
+        != os.path.normcase(os.path.abspath(project_root))
+        or status_bytes != b""
+    ):
+        raise RunnerError("Task 11 requires the exact clean reviewed checkout")
+    return _validate_task11_implementation_head(head)
+
+
+def _task11_admission_payload(
+    *,
+    implementation_head: Any,
+    guarded_ledger_sha256: Any,
+    checkpoint_state_sha256: Any,
+    non_lockbox_packet_sha256: Any,
+) -> dict[str, Any]:
+    head = _validate_task11_implementation_head(implementation_head)
+    ledger = _validate_digest(
+        guarded_ledger_sha256,
+        "Task 11 guarded ledger",
+    )
+    state_digest = _validate_digest(
+        checkpoint_state_sha256,
+        "Task 11 checkpoint state",
+    )
+    packet_digest = _validate_digest(
+        non_lockbox_packet_sha256,
+        "Task 11 non-lockbox packet",
+    )
+    if (
+        head == "0" * 40
+        or ledger == UNSET_DIGEST
+        or state_digest == UNSET_DIGEST
+        or packet_digest == UNSET_DIGEST
+    ):
+        raise RunnerError("Task 11 admission cannot bind unset identities")
+    return {
+        "schema_version": 1,
+        "task_id": "EMOTION-STATE-002-phase-b-task-11",
+        "implementation_head": head,
+        "guarded_ledger_sha256": ledger,
+        "checkpoint_state_sha256": state_digest,
+        "non_lockbox_packet_sha256": packet_digest,
+    }
+
+
+def _task11_admission_checkpoint_state_sha256(
+    checkpoint: _LockboxCheckpointAuthority,
+) -> str:
+    if type(checkpoint) is not _LockboxCheckpointAuthority:
+        raise RunnerError("Task 11 admission checkpoint authority changed")
+    if checkpoint.state["phase"] == "non_lockbox_complete":
+        predecessor = checkpoint.state
+        predecessor_bytes = checkpoint.state_bytes
+    elif checkpoint.state["phase"] == "lockbox_complete":
+        predecessor = dict(checkpoint.state)
+        predecessor.update({
+            "phase": "non_lockbox_complete",
+            "lockbox_open_count": 0,
+            "lockbox_result_sha256": UNSET_DIGEST,
+            "lockbox_decision_evidence_sha256": UNSET_DIGEST,
+            "lockbox_decision_evidence_mint_sha256": UNSET_DIGEST,
+        })
+        predecessor = _validate_state(predecessor)
+        predecessor_bytes = canonical_json_bytes(predecessor)
+    else:
+        raise RunnerError("Task 11 admission checkpoint phase changed")
+    if predecessor_bytes != canonical_json_bytes(predecessor):
+        raise RunnerError("Task 11 admission checkpoint bytes changed")
+    return hashlib.sha256(predecessor_bytes).hexdigest().upper()
+
+
+def _validate_task11_admission(payload: Any) -> dict[str, Any]:
+    expected = {
+        "schema_version",
+        "task_id",
+        "implementation_head",
+        "guarded_ledger_sha256",
+        "checkpoint_state_sha256",
+        "non_lockbox_packet_sha256",
+    }
+    if not isinstance(payload, dict) or set(payload) != expected:
+        raise RunnerError("invalid Task 11 lockbox admission fields")
+    if (
+        type(payload["schema_version"]) is not int
+        or payload["schema_version"] != 1
+        or payload["task_id"] != "EMOTION-STATE-002-phase-b-task-11"
+    ):
+        raise RunnerError("invalid Task 11 lockbox admission schema")
+    return _task11_admission_payload(
+        implementation_head=payload["implementation_head"],
+        guarded_ledger_sha256=payload["guarded_ledger_sha256"],
+        checkpoint_state_sha256=payload["checkpoint_state_sha256"],
+        non_lockbox_packet_sha256=payload["non_lockbox_packet_sha256"],
+    )
+
+
+def _write_task11_admission_receipt(
+    paths: RunnerPaths,
+    receipt: Mapping[str, Any],
+) -> dict[str, Any]:
+    validated = _validate_task11_admission(dict(receipt))
+    path = _safe_path(
+        paths.lockbox_admission_path,
+        allowed_root=paths.state_root,
+        project_root=paths.project_root,
+        final_kind="file",
+        require_final=False,
+    )
+    if os.path.lexists(path):
+        raise RunnerError("Task 11 lockbox admission already exists")
+    expected_bytes = canonical_json_bytes(validated)
+    _replace_bytes_durably(path, expected_bytes)
+    persisted = _read_file_nofollow(path, maximum_bytes=4096)
+    if (
+        persisted != expected_bytes
+        or _validate_task11_admission(
+            _load_json_object_bytes(persisted, "Task 11 lockbox admission")
+        )
+        != validated
+    ):
+        raise RunnerError("Task 11 lockbox admission readback changed")
+    return validated
+
+
+@contextmanager
+def _held_task11_admission(
+    paths: RunnerPaths,
+    checkpoint: _LockboxCheckpointAuthority,
+    *,
+    expected_admission_sha256: str,
+    expected_guarded_ledger_sha256: str,
+) -> Iterator[_Task11AdmissionAuthority]:
+    if type(checkpoint) is not _LockboxCheckpointAuthority:
+        raise RunnerError("Task 11 lockbox admission lacks checkpoint authority")
+    expected_admission_sha256 = _validate_digest(
+        expected_admission_sha256,
+        "expected Task 11 lockbox admission",
+    )
+    expected_guarded_ledger_sha256 = _validate_digest(
+        expected_guarded_ledger_sha256,
+        "expected Task 11 guarded ledger",
+    )
+    if (
+        expected_admission_sha256 == UNSET_DIGEST
+        or expected_guarded_ledger_sha256 == UNSET_DIGEST
+    ):
+        raise RunnerError("Task 11 lockbox expected authority is unset")
+    if not os.path.lexists(paths.lockbox_admission_path):
+        raise RunnerError("Task 11 lockbox admission receipt is required")
+    path = _safe_path(
+        paths.lockbox_admission_path,
+        allowed_root=paths.state_root,
+        project_root=paths.project_root,
+        final_kind="file",
+        require_final=True,
+    )
+    with _held_regular_file_with_bytes(
+        path,
+        maximum_bytes=4096,
+    ) as (file_authority, content):
+        try:
+            receipt = _validate_task11_admission(
+                _load_json_object_bytes(content, "Task 11 lockbox admission")
+            )
+        except RunnerError:
+            raise
+        if (
+            content != canonical_json_bytes(receipt)
+            or hashlib.sha256(content).hexdigest().upper()
+            != expected_admission_sha256
+            or receipt["guarded_ledger_sha256"]
+            != expected_guarded_ledger_sha256
+            or receipt["checkpoint_state_sha256"]
+            != _task11_admission_checkpoint_state_sha256(checkpoint)
+            or receipt["non_lockbox_packet_sha256"]
+            != checkpoint.state["non_lockbox_packet_sha256"]
+            or _validated_task11_repository_head(paths)
+            != receipt["implementation_head"]
+        ):
+            raise RunnerError("Task 11 lockbox admission authority changed")
+        authority = _Task11AdmissionAuthority(
+            receipt=receipt,
+            canonical_bytes=content,
+            receipt_sha256=expected_admission_sha256,
+            file=file_authority,
+        )
+        yield authority
+        _verify_held_regular_file_authority(file_authority)
+        if (
+            _read_held_regular_file_bytes(file_authority, maximum_bytes=4096)
+            != content
+            or hashlib.sha256(content).hexdigest().upper()
+            != expected_admission_sha256
+            or receipt["guarded_ledger_sha256"]
+            != expected_guarded_ledger_sha256
+            or _validated_task11_repository_head(paths)
+            != receipt["implementation_head"]
+        ):
+            raise RunnerError("Task 11 lockbox admission authority changed")
+
+
+@contextmanager
+def _optional_task11_admission(
+    paths: RunnerPaths,
+    checkpoint: _LockboxCheckpointAuthority,
+    *,
+    production: bool,
+    expected_admission_sha256: str | None,
+    expected_guarded_ledger_sha256: str | None,
+) -> Iterator[_Task11AdmissionAuthority | None]:
+    if type(production) is not bool:
+        raise RunnerError("Task 11 optional admission mode changed")
+    if not production:
+        if (
+            expected_admission_sha256 is not None
+            or expected_guarded_ledger_sha256 is not None
+        ):
+            raise RunnerError("synthetic lockbox received expected admission")
+        yield None
+        return
+    if (
+        expected_admission_sha256 is None
+        or expected_guarded_ledger_sha256 is None
+    ):
+        raise RunnerError("production lockbox expected admission is required")
+    with _held_task11_admission(
+        paths,
+        checkpoint,
+        expected_admission_sha256=expected_admission_sha256,
+        expected_guarded_ledger_sha256=expected_guarded_ledger_sha256,
+    ) as authority:
+        yield authority
+
+
+def _validate_reservation_admission(
+    paths: RunnerPaths,
+    reservation: Mapping[str, Any],
+    authority: _Task11AdmissionAuthority | None,
+    *,
+    production: bool,
+) -> None:
+    if type(production) is not bool:
+        raise RunnerError("Task 11 reservation admission mode changed")
+    if not production:
+        if authority is not None or any(
+            reservation.get(field) != expected
+            for field, expected in (
+                ("implementation_head", "0" * 40),
+                ("guarded_ledger_sha256", UNSET_DIGEST),
+                ("lockbox_admission_sha256", UNSET_DIGEST),
+            )
+        ):
+            raise RunnerError("synthetic lockbox received production admission")
+        return
+    if type(authority) is not _Task11AdmissionAuthority:
+        raise RunnerError("Task 11 lockbox admission authority is required")
+    receipt = authority.receipt
+    _verify_held_regular_file_authority(authority.file)
+    if (
+        canonical_json_bytes(receipt) != authority.canonical_bytes
+        or hashlib.sha256(authority.canonical_bytes).hexdigest().upper()
+        != authority.receipt_sha256
+        or authority.file.sha256 != authority.receipt_sha256
+        or authority.file.path != Path(paths.lockbox_admission_path)
+        or reservation.get("implementation_head")
+        != receipt["implementation_head"]
+        or reservation.get("guarded_ledger_sha256")
+        != receipt["guarded_ledger_sha256"]
+        or reservation.get("lockbox_admission_sha256")
+        != authority.receipt_sha256
+        or _read_held_regular_file_bytes(authority.file, maximum_bytes=4096)
+        != authority.canonical_bytes
+        or _validated_task11_repository_head(paths)
+        != receipt["implementation_head"]
+    ):
+        raise RunnerError("Task 11 lockbox admission disagrees with reservation")
+
+
 def _reservation_payload(
     state: Mapping[str, Any],
     *,
@@ -9817,6 +10202,9 @@ def _reservation_payload(
     lockbox_result_sha256: str,
     lockbox_decision_evidence_sha256: str,
     lockbox_decision_evidence_mint_sha256: str,
+    implementation_head: str = "0" * 40,
+    guarded_ledger_sha256: str = UNSET_DIGEST,
+    lockbox_admission_sha256: str = UNSET_DIGEST,
 ) -> dict[str, Any]:
     if status not in {"reserved", "completed"}:
         raise RunnerError("invalid lockbox reservation status")
@@ -9844,10 +10232,36 @@ def _reservation_payload(
                 raise RunnerError(
                     "completed lockbox reservation needs minted evidence bytes"
                 )
+    implementation_head = _validate_task11_implementation_head(
+        implementation_head
+    )
+    guarded_ledger_sha256 = _validate_digest(
+        guarded_ledger_sha256,
+        "lockbox guarded ledger",
+    )
+    lockbox_admission_sha256 = _validate_digest(
+        lockbox_admission_sha256,
+        "lockbox admission",
+    )
+    admission_is_unset = (
+        implementation_head == "0" * 40
+        and guarded_ledger_sha256 == UNSET_DIGEST
+        and lockbox_admission_sha256 == UNSET_DIGEST
+    )
+    admission_is_bound = (
+        implementation_head != "0" * 40
+        and guarded_ledger_sha256 != UNSET_DIGEST
+        and lockbox_admission_sha256 != UNSET_DIGEST
+    )
+    if not (admission_is_unset or admission_is_bound):
+        raise RunnerError("lockbox reservation admission binding is partial")
     return {
-        "schema_version": 1,
+        "schema_version": 2,
         "transaction_id": _validate_transaction_id(transaction_id),
         "status": status,
+        "implementation_head": implementation_head,
+        "guarded_ledger_sha256": guarded_ledger_sha256,
+        "lockbox_admission_sha256": lockbox_admission_sha256,
         "configuration_sha256": state["configuration_sha256"],
         "environment_lock_sha256": state["environment_lock_sha256"],
         "input_ledger_sha256": state["input_ledger_sha256"],
@@ -9868,6 +10282,9 @@ def _validate_reservation(payload: Any) -> dict[str, Any]:
         "schema_version",
         "transaction_id",
         "status",
+        "implementation_head",
+        "guarded_ledger_sha256",
+        "lockbox_admission_sha256",
         "configuration_sha256",
         "environment_lock_sha256",
         "input_ledger_sha256",
@@ -9879,7 +10296,7 @@ def _validate_reservation(payload: Any) -> dict[str, Any]:
     }
     if not isinstance(payload, dict) or set(payload) != expected:
         raise RunnerError("invalid lockbox reservation fields")
-    if payload["schema_version"] != 1 or type(payload["schema_version"]) is not int:
+    if payload["schema_version"] != 2 or type(payload["schema_version"]) is not int:
         raise RunnerError("invalid lockbox reservation schema")
     return _reservation_payload(
         payload,
@@ -9892,6 +10309,9 @@ def _validate_reservation(payload: Any) -> dict[str, Any]:
         lockbox_decision_evidence_mint_sha256=payload[
             "lockbox_decision_evidence_mint_sha256"
         ],
+        implementation_head=payload["implementation_head"],
+        guarded_ledger_sha256=payload["guarded_ledger_sha256"],
+        lockbox_admission_sha256=payload["lockbox_admission_sha256"],
     )
 
 
@@ -9950,12 +10370,1257 @@ def _validated_private_decision_evidence(
     )
 
 
-def run_lockbox(paths: RunnerPaths) -> dict[str, Any]:
-    _assert_closed_environment()
+def _reservation_binds_state(
+    reservation: Mapping[str, Any],
+    state: Mapping[str, Any],
+) -> bool:
+    fields = (
+        "configuration_sha256",
+        "environment_lock_sha256",
+        "input_ledger_sha256",
+        "split_manifest_sha256",
+        "non_lockbox_packet_sha256",
+    )
+    return all(reservation.get(field) == state.get(field) for field in fields)
+
+
+def _assert_lockbox_state_cas(
+    paths: RunnerPaths,
+    expected_state: Mapping[str, Any],
+    expected_bytes: bytes,
+) -> None:
+    validated = _validate_state(dict(expected_state))
+    if type(expected_bytes) is not bytes:
+        raise RunnerError("lockbox state CAS bytes changed type")
+    state_path = _safe_path(
+        paths.state_path,
+        allowed_root=paths.state_root,
+        project_root=paths.project_root,
+        final_kind="file",
+        require_final=True,
+    )
+    current_bytes = _read_file_nofollow(state_path)
+    if (
+        current_bytes != expected_bytes
+        or current_bytes != canonical_json_bytes(validated)
+        or _validate_state(
+            _load_json_object_bytes(current_bytes, "lockbox CAS state")
+        )
+        != validated
+    ):
+        raise RunnerError("lockbox state CAS changed during transaction")
+
+
+def _assert_lockbox_checkpoint_state_cas(
+    paths: RunnerPaths,
+    checkpoint: _LockboxCheckpointAuthority,
+) -> None:
+    if type(checkpoint) is not _LockboxCheckpointAuthority:
+        raise RunnerError("lockbox checkpoint CAS authority changed")
+    if checkpoint.state_file is None:
+        _assert_lockbox_state_cas(
+            paths,
+            checkpoint.state,
+            checkpoint.state_bytes,
+        )
+        return
+    _verify_held_regular_file_authority(checkpoint.state_file)
+    current_state, current_bytes = _state_from_held_file(
+        checkpoint.state_file
+    )
+    if (
+        current_state != checkpoint.state
+        or current_bytes != checkpoint.state_bytes
+    ):
+        raise RunnerError("lockbox state CAS changed during transaction")
+
+
+def _transition_lockbox_state_cas(
+    paths: RunnerPaths,
+    expected_state: Mapping[str, Any],
+    expected_bytes: bytes,
+    *,
+    result_sha256: str,
+    decision_evidence_sha256: str,
+    decision_evidence_mint_sha256: str,
+) -> dict[str, Any]:
+    _assert_lockbox_state_cas(paths, expected_state, expected_bytes)
+    transitioned = _transition(
+        paths,
+        expected_state,
+        "lockbox_complete",
+        lockbox_open_count=1,
+        lockbox_result_sha256=_validate_digest(
+            result_sha256,
+            "lockbox result",
+        ),
+        lockbox_decision_evidence_sha256=_validate_digest(
+            decision_evidence_sha256,
+            "lockbox decision evidence",
+        ),
+        lockbox_decision_evidence_mint_sha256=_validate_digest(
+            decision_evidence_mint_sha256,
+            "lockbox decision evidence mint",
+        ),
+    )
+    changed = {
+        field
+        for field in transitioned
+        if transitioned[field] != expected_state[field]
+    }
+    if changed != {
+        "phase",
+        "lockbox_open_count",
+        "lockbox_result_sha256",
+        "lockbox_decision_evidence_sha256",
+        "lockbox_decision_evidence_mint_sha256",
+    }:
+        raise RunnerError("lockbox transition changed extra state fields")
+    return transitioned
+
+
+def _write_lockbox_reservation(
+    paths: RunnerPaths,
+    reservation: Mapping[str, Any],
+) -> dict[str, Any]:
+    validated = _validate_reservation(dict(reservation))
+    _safe_path(
+        paths.lockbox_reservation_path,
+        allowed_root=paths.state_root,
+        project_root=paths.project_root,
+        final_kind="file",
+        require_final=os.path.lexists(paths.lockbox_reservation_path),
+    )
+    _replace_bytes_durably(
+        paths.lockbox_reservation_path,
+        canonical_json_bytes(validated),
+    )
+    readback = _load_reservation(paths, recover=False)
+    if readback != validated:
+        raise RunnerError("lockbox reservation readback mismatch")
+    return readback
+
+
+@contextmanager
+def _held_reserved_lockbox_reservation(
+    paths: RunnerPaths,
+    checkpoint: _LockboxCheckpointAuthority,
+    reservation: Mapping[str, Any],
+    *,
+    admission_authority: _Task11AdmissionAuthority | None,
+    production: bool,
+) -> Iterator[_ReservedLockboxAuthority]:
+    if type(checkpoint) is not _LockboxCheckpointAuthority:
+        raise RunnerError("lockbox reservation checkpoint authority changed")
+    requested = _validate_reservation(dict(reservation))
+    if (
+        requested["status"] != "reserved"
+        or not _reservation_binds_state(requested, checkpoint.state)
+    ):
+        raise RunnerError("lockbox reservation is not bound to its checkpoint")
+    _validate_reservation_admission(
+        paths,
+        requested,
+        admission_authority,
+        production=production,
+    )
+    readback = _write_lockbox_reservation(paths, requested)
+    expected_bytes = canonical_json_bytes(requested)
+    persisted_bytes = _read_file_nofollow(paths.lockbox_reservation_path)
+    if (
+        readback != requested
+        or persisted_bytes != expected_bytes
+        or _validate_reservation(
+            _load_json_object_bytes(
+                persisted_bytes,
+                "reserved lockbox reservation",
+            )
+        )
+        != requested
+    ):
+        raise RunnerError("durable reserved lockbox readback changed")
+    with _held_regular_file_with_bytes(
+        paths.lockbox_reservation_path,
+        maximum_bytes=4096,
+    ) as (reservation_file, held_bytes):
+        if held_bytes != persisted_bytes:
+            raise RunnerError("held reserved lockbox bytes changed")
+        authority = _ReservedLockboxAuthority(
+            transaction_id=requested["transaction_id"],
+            reservation_sha256=hashlib.sha256(
+                persisted_bytes
+            ).hexdigest().upper(),
+            checkpoint_state_sha256=hashlib.sha256(
+                checkpoint.state_bytes
+            ).hexdigest().upper(),
+            admission_authority=admission_authority,
+            reservation_file=reservation_file,
+            _guard=_RESERVED_LOCKBOX_AUTHORITY_GUARD,
+        )
+        _require_live_reserved_lockbox_authority(
+            paths,
+            checkpoint,
+            authority,
+        )
+        yield authority
+        _require_live_reserved_lockbox_authority(
+            paths,
+            checkpoint,
+            authority,
+        )
+
+
+@contextmanager
+def _held_completed_lockbox_reservation(
+    paths: RunnerPaths,
+    reservation: Mapping[str, Any],
+) -> Iterator[_HeldRegularFileAuthority]:
+    validated = _validate_reservation(dict(reservation))
+    if validated["status"] != "completed":
+        raise RunnerError("completed lockbox reservation authority is not complete")
+    expected_bytes = canonical_json_bytes(validated)
+    with _held_regular_file_with_bytes(
+        paths.lockbox_reservation_path,
+        maximum_bytes=4096,
+    ) as (reservation_file, held_bytes):
+        if held_bytes != expected_bytes:
+            raise RunnerError("held completed lockbox reservation changed")
+        _verify_held_regular_file_authority(reservation_file)
+        yield reservation_file
+        _verify_held_regular_file_authority(reservation_file)
+        if (
+            _read_held_regular_file_bytes(
+                reservation_file,
+                maximum_bytes=4096,
+            )
+            != expected_bytes
+        ):
+            raise RunnerError("held completed lockbox reservation changed")
+
+
+def _require_held_completed_lockbox_reservation(
+    reservation_file: _HeldRegularFileAuthority,
+    reservation: Mapping[str, Any],
+) -> None:
+    if type(reservation_file) is not _HeldRegularFileAuthority:
+        raise RunnerError("completed lockbox reservation authority changed")
+    expected_bytes = canonical_json_bytes(
+        _validate_reservation(dict(reservation))
+    )
+    _verify_held_regular_file_authority(reservation_file)
+    if (
+        _read_held_regular_file_bytes(
+            reservation_file,
+            maximum_bytes=4096,
+        )
+        != expected_bytes
+    ):
+        raise RunnerError("held completed lockbox reservation changed")
+
+
+def _require_live_reserved_lockbox_authority(
+    paths: RunnerPaths,
+    checkpoint: _LockboxCheckpointAuthority,
+    authority: Any,
+) -> _ReservedLockboxAuthority:
+    if (
+        type(checkpoint) is not _LockboxCheckpointAuthority
+        or type(authority) is not _ReservedLockboxAuthority
+        or authority._guard is not _RESERVED_LOCKBOX_AUTHORITY_GUARD
+        or authority.checkpoint_state_sha256
+        != hashlib.sha256(checkpoint.state_bytes).hexdigest().upper()
+    ):
+        raise RunnerError("live durable lockbox reservation authority is required")
+    _verify_held_regular_file_authority(authority.reservation_file)
+    persisted_bytes = _read_held_regular_file_bytes(
+        authority.reservation_file,
+        maximum_bytes=4096,
+    )
+    reservation = _validate_reservation(
+        _load_json_object_bytes(
+            persisted_bytes,
+            "held reserved lockbox reservation",
+        )
+    )
+    if (
+        reservation["status"] != "reserved"
+        or not _reservation_binds_state(reservation, checkpoint.state)
+        or reservation["transaction_id"] != authority.transaction_id
+        or canonical_json_bytes(reservation) != persisted_bytes
+        or hashlib.sha256(persisted_bytes).hexdigest().upper()
+        != authority.reservation_sha256
+    ):
+        raise RunnerError("live durable lockbox reservation authority changed")
+    _validate_reservation_admission(
+        paths,
+        reservation,
+        authority.admission_authority,
+        production=authority.admission_authority is not None,
+    )
+    return authority
+
+
+def _require_persisted_reserved_lockbox_authority(
+    paths: RunnerPaths,
+    checkpoint: _LockboxCheckpointAuthority,
+    authority: _ReservedLockboxAuthority,
+) -> dict[str, Any]:
+    if (
+        type(authority) is not _ReservedLockboxAuthority
+        or authority._guard is not _RESERVED_LOCKBOX_AUTHORITY_GUARD
+    ):
+        raise RunnerError("persisted reserved lockbox authority is required")
+    reservation = _load_reservation(paths, recover=False)
+    persisted_bytes = _read_file_nofollow(
+        paths.lockbox_reservation_path,
+        maximum_bytes=4096,
+    )
+    if (
+        reservation["status"] != "reserved"
+        or not _reservation_binds_state(reservation, checkpoint.state)
+        or reservation["transaction_id"] != authority.transaction_id
+        or canonical_json_bytes(reservation) != persisted_bytes
+        or hashlib.sha256(persisted_bytes).hexdigest().upper()
+        != authority.reservation_sha256
+    ):
+        raise RunnerError("persisted reserved lockbox authority changed")
+    _validate_reservation_admission(
+        paths,
+        reservation,
+        authority.admission_authority,
+        production=authority.admission_authority is not None,
+    )
+    return reservation
+
+
+def _require_unopened_lockbox_output(
+    paths: RunnerPaths,
+    *,
+    allow_existing_test_input: bool,
+) -> None:
+    if type(allow_existing_test_input) is not bool:
+        raise RunnerError("lockbox input compatibility mode changed")
+    result_path = _safe_path(
+        _resolve_final_lockbox_result_path(paths),
+        allowed_root=paths.lockbox_root,
+        project_root=paths.project_root,
+        final_kind="file",
+        require_final=False,
+    )
+    root = Path(paths.lockbox_root)
+    if os.path.lexists(root):
+        root = _safe_path(
+            root,
+            allowed_root=paths.lockbox_root,
+            project_root=paths.project_root,
+            final_kind="directory",
+            require_final=True,
+        )
+        try:
+            entries = tuple(entry.name for entry in root.iterdir())
+        except OSError as error:
+            raise RunnerError("unable to inspect unopened lockbox output") from error
+        expected_entries = (
+            (result_path.name,)
+            if allow_existing_test_input
+            else ()
+        )
+        if tuple(sorted(entries)) != tuple(sorted(expected_entries)):
+            raise RunnerError(
+                "unreserved lockbox output or recovery control already exists"
+            )
+    if (
+        os.path.lexists(result_path)
+        and not allow_existing_test_input
+    ):  # pragma: no cover - covered by root shape
+        raise RunnerError("unreserved lockbox result already exists")
+    if allow_existing_test_input:
+        _safe_path(
+            result_path,
+            allowed_root=paths.lockbox_root,
+            project_root=paths.project_root,
+            final_kind="file",
+            require_final=True,
+        )
+
+
+def _validate_lockbox_ami_commitment_against_checkpoint(
+    persisted_ami: Mapping[str, Any],
+    *,
+    checkpoint: _LockboxCheckpointAuthority | None,
+    production: bool,
+) -> dict[str, Any]:
+    if type(production) is not bool:
+        raise RunnerError("lockbox AMI checkpoint validation mode changed")
+    try:
+        validated_ami = validate_persisted_lockbox_ami(
+            deepcopy(persisted_ami)
+        )
+    except (TypeError, ValueError) as error:
+        raise RunnerError(
+            f"persisted lockbox AMI commitment is invalid: {error}"
+        ) from error
+    if not production:
+        if checkpoint is not None:
+            raise RunnerError(
+                "synthetic lockbox AMI received production authority"
+            )
+        return validated_ami
+    if (
+        type(checkpoint) is not _LockboxCheckpointAuthority
+        or checkpoint.non_lockbox_readback is None
+    ):
+        raise RunnerError(
+            "production lockbox lacks retained AMI authority"
+        )
+    try:
+        expected_ami = _persisted_ami_lockbox_commitment(
+            checkpoint.non_lockbox_readback.ami_evidence
+        )
+    except (TypeError, ValueError) as error:
+        raise RunnerError(
+            f"retained AMI authority is invalid: {error}"
+        ) from error
+    if validated_ami != expected_ami:
+        raise RunnerError(
+            "lockbox AMI commitment disagrees with retained cache"
+        )
+    return validated_ami
+
+
+def _validate_completed_lockbox_result(
+    paths: RunnerPaths,
+    state: Mapping[str, Any],
+    reservation: Mapping[str, Any],
+    *,
+    checkpoint: _LockboxCheckpointAuthority | None,
+    admission_authority: _Task11AdmissionAuthority | None,
+    production: bool,
+) -> dict[str, Any]:
+    if type(production) is not bool:
+        raise RunnerError("completed lockbox validation mode changed")
+    if (
+        reservation.get("status") != "completed"
+        or not _reservation_binds_state(reservation, state)
+    ):
+        raise RunnerError("completed lockbox reservation does not bind state")
+    _validate_reservation_admission(
+        paths,
+        reservation,
+        admission_authority,
+        production=production,
+    )
+    result_path = _resolve_final_lockbox_result_path(paths)
+    _recover_output_replacement(
+        paths,
+        result_path,
+        allowed_root=paths.lockbox_root,
+    )
+    result_path = _validate_lockbox_path(paths)
+    result_digest = _sha256_file(result_path)
+    if result_digest != reservation["lockbox_result_sha256"]:
+        raise RunnerError("completed lockbox result digest changed")
+    result = _load_json_object(result_path, "completed lockbox result")
+    try:
+        validated = validate_lockbox_result(result)
+        if production:
+            if type(checkpoint) is not _LockboxCheckpointAuthority:
+                raise RunnerError(
+                    "completed production lockbox lacks retained split authority"
+                )
+            split_manifest = validate_phase_b_split_manifest(
+                deepcopy(checkpoint.split_manifest)
+            )
+        else:
+            split_manifest = validate_phase_b_split_manifest(
+                _load_json_object(paths.split_manifest_path, "split manifest")
+            )
+        validate_lockbox_lineage(validated, split_manifest)
+    except (TypeError, ValueError) as error:
+        raise RunnerError(f"completed lockbox result is invalid: {error}") from error
+    if (
+        production and checkpoint.split_manifest != split_manifest
+    ):
+        raise RunnerError(
+            "completed production lockbox lacks retained split authority"
+        )
+    _validate_lockbox_ami_commitment_against_checkpoint(
+        validated["ami"],
+        checkpoint=checkpoint,
+        production=production,
+    )
+    evidence = validated["decision_evidence"]
+    if (
+        _mapping_digest(evidence)
+        != reservation["lockbox_decision_evidence_sha256"]
+        or serialized_decision_evidence_mint_sha256(evidence)
+        != reservation["lockbox_decision_evidence_mint_sha256"]
+        or _sha256_file(result_path) != result_digest
+    ):
+        raise RunnerError("completed lockbox evidence changed")
+    _validate_reservation_admission(
+        paths,
+        reservation,
+        admission_authority,
+        production=production,
+    )
+    return validated
+
+
+@contextmanager
+def _admitted_lockbox_checkpoint(
+    paths: RunnerPaths,
+    material_authority: _MaterialPipelineAuthority,
+    *,
+    production: bool,
+    expected_phase: Literal["non_lockbox_complete", "lockbox_complete"] = (
+        "non_lockbox_complete"
+    ),
+) -> Iterator[_LockboxCheckpointAuthority]:
+    if (
+        type(production) is not bool
+        or expected_phase not in {
+            "non_lockbox_complete",
+            "lockbox_complete",
+        }
+        or (not production and expected_phase != "non_lockbox_complete")
+    ):
+        raise RunnerError("lockbox checkpoint authority mode changed")
+    if not production:
+        state = load_state(paths, recover=False)
+        _require_phase(state, "non_lockbox_complete")
+        _revalidate_bound_preflight(paths, state)
+        _validated_packet(paths, state, require_bound=True)
+        split_manifest = validate_phase_b_split_manifest(
+            _load_json_object(paths.split_manifest_path, "split manifest")
+        )
+        state_bytes = canonical_json_bytes(state)
+        checkpoint = _LockboxCheckpointAuthority(
+            state=state,
+            state_bytes=state_bytes,
+            state_file=None,
+            split_manifest=split_manifest,
+            authorities=None,
+            non_lockbox_readback=None,
+        )
+        yield checkpoint
+        _assert_lockbox_checkpoint_state_cas(paths, checkpoint)
+        return
+
+    with _admit_recovered_state(
+        paths,
+        material_authority=material_authority,
+    ) as committed:
+        if type(committed) is not _HeldCommittedStateAuthority:
+            raise RunnerError("lockbox requires a committed predecessor state")
+        _require_phase(committed.state, expected_phase)
+        with _read_committed_preflight_checkpoint(
+            paths,
+            material_authority=material_authority,
+            committed_state_authority=committed,
+        ) as preflight_readback:
+            split_manifest, authorities, _records_by_role = (
+                _validate_runner_non_lockbox_role_algebra(preflight_readback)
+            )
+            with _read_committed_non_lockbox_checkpoint(
+                paths,
+                material_authority=material_authority,
+                committed_state_authority=committed,
+                preflight_readback=preflight_readback,
+            ) as non_lockbox_readback:
+                checkpoint = _LockboxCheckpointAuthority(
+                    state=deepcopy(committed.state),
+                    state_bytes=bytes(committed.canonical_bytes),
+                    state_file=committed.file,
+                    split_manifest=deepcopy(split_manifest),
+                    authorities=dict(authorities),
+                    non_lockbox_readback=non_lockbox_readback,
+                )
+                yield checkpoint
+                _assert_lockbox_checkpoint_state_cas(paths, checkpoint)
+
+
+def admit_task11_lockbox(
+    paths: RunnerPaths,
+    *,
+    reviewed_head: str,
+    guarded_ledger_sha256: str,
+    expected_state_sha256: str,
+    expected_non_lockbox_packet_sha256: str,
+) -> dict[str, Any]:
+    reviewed_head = _validate_task11_implementation_head(reviewed_head)
+    guarded_ledger_sha256 = _validate_digest(
+        guarded_ledger_sha256,
+        "Task 11 guarded ledger",
+    )
+    expected_state_sha256 = _validate_digest(
+        expected_state_sha256,
+        "Task 11 expected checkpoint state",
+    )
+    expected_non_lockbox_packet_sha256 = _validate_digest(
+        expected_non_lockbox_packet_sha256,
+        "Task 11 expected non-lockbox packet",
+    )
+    if _validated_task11_repository_head(paths) != reviewed_head:
+        raise RunnerError("Task 11 reviewed HEAD does not match the checkout")
+    with lockbox_lock(paths):
+        with material_pipeline_lock(paths) as material_authority:
+            if os.path.lexists(paths.lockbox_admission_path):
+                raise RunnerError("Task 11 lockbox admission already exists")
+            if os.path.lexists(paths.lockbox_reservation_path):
+                raise RunnerError("Task 11 lockbox is already reserved")
+            state = load_state(paths)
+            _require_phase(state, "non_lockbox_complete")
+            with _admitted_lockbox_checkpoint(
+                paths,
+                material_authority,
+                production=True,
+            ) as checkpoint:
+                if (
+                    checkpoint.state != state
+                    or checkpoint.state["lockbox_open_count"] != 0
+                    or hashlib.sha256(checkpoint.state_bytes).hexdigest().upper()
+                    != expected_state_sha256
+                    or checkpoint.state["non_lockbox_packet_sha256"]
+                    != expected_non_lockbox_packet_sha256
+                    or _validated_task11_repository_head(paths) != reviewed_head
+                ):
+                    raise RunnerError(
+                        "Task 11 admission does not bind the accepted checkpoint"
+                    )
+                receipt = _task11_admission_payload(
+                    implementation_head=reviewed_head,
+                    guarded_ledger_sha256=guarded_ledger_sha256,
+                    checkpoint_state_sha256=expected_state_sha256,
+                    non_lockbox_packet_sha256=(
+                        expected_non_lockbox_packet_sha256
+                    ),
+                )
+                persisted = _write_task11_admission_receipt(paths, receipt)
+                _assert_lockbox_checkpoint_state_cas(paths, checkpoint)
+                if _validated_task11_repository_head(paths) != reviewed_head:
+                    raise RunnerError(
+                        "Task 11 reviewed checkout changed during admission"
+                    )
+                return persisted
+
+
+def _frozen_final_lockbox_public_source_reader(
+    paths: RunnerPaths,
+    sources: tuple[SourceByteIdentity, ...],
+) -> Callable[[SourceByteIdentity], bytes]:
+    if (
+        type(sources) is not tuple
+        or len(sources) != EXPECTED_PRODUCTION_FINAL_LOCKBOX_RECORD_COUNT
+        or len(set(sources)) != len(sources)
+    ):
+        raise RunnerError("final-lockbox source capability count changed")
+    return _frozen_non_lockbox_public_source_reader(
+        paths,
+        sources,
+        family="crema_wav",
+    )
+
+
+def _build_production_lockbox_artifacts_after_reservation(
+    paths: RunnerPaths,
+    checkpoint: _LockboxCheckpointAuthority,
+    reservation_authority: _ReservedLockboxAuthority,
+) -> ProductionLockboxArtifacts:
+    reservation_authority = _require_live_reserved_lockbox_authority(
+        paths,
+        checkpoint,
+        reservation_authority,
+    )
+    if (
+        type(checkpoint) is not _LockboxCheckpointAuthority
+        or checkpoint.authorities is None
+        or checkpoint.non_lockbox_readback is None
+    ):
+        raise RunnerError("production lockbox checkpoint capability changed")
+    with _held_preflight_static_inputs(
+        paths
+    ) as static_inputs, _held_tracked_public_evidence_inputs(
+        paths
+    ) as evidence_inputs:
+        static_mappings = _validated_static_non_lockbox_mappings(
+            static_inputs,
+            state=checkpoint.state,
+            split_manifest=checkpoint.split_manifest,
+        )
+        tracked_authority, _tracked_commitment = (
+            _tracked_public_authority_from_held_evidence(evidence_inputs)
+        )
+        finished = _read_verified_public_bytes(
+            paths,
+            paths.crema_finished_responses_path,
+            expected_sha256=(
+                tracked_authority.crema_finished_responses.sha256
+            ),
+            expected_size_bytes=(
+                tracked_authority.crema_finished_responses.size_bytes
+            ),
+            maximum_bytes=(
+                tracked_authority.crema_finished_responses.size_bytes
+            ),
+        )
+        summary = _read_verified_public_bytes(
+            paths,
+            paths.crema_summary_table_path,
+            expected_sha256=tracked_authority.crema_summary_table.sha256,
+            expected_size_bytes=(
+                tracked_authority.crema_summary_table.size_bytes
+            ),
+            maximum_bytes=tracked_authority.crema_summary_table.size_bytes,
+        )
+        readback = checkpoint.non_lockbox_readback
+        tracked_evidence = dict(zip(
+            evidence_inputs.names,
+            evidence_inputs.contents,
+            strict=True,
+        ))
+        try:
+            plan = _prepare_production_lockbox_plan(
+                authorities=dict(checkpoint.authorities),
+                split_manifest=deepcopy(checkpoint.split_manifest),
+                feature_caches={
+                    role: deepcopy(payload)
+                    for role, payload in zip(
+                        NONFINAL_PARTITION_ROLES,
+                        readback.feature_caches,
+                        strict=True,
+                    )
+                },
+                ami_evidence=deepcopy(readback.ami_evidence),
+                review_packet=deepcopy(readback.review_packet),
+                tracked_evidence=tracked_evidence,
+                tracked_authority=tracked_authority,
+                finished_responses=finished.content,
+                summary_table=summary.content,
+                configuration=deepcopy(static_mappings[0]),
+                environment_lock=deepcopy(static_mappings[1]),
+                feature_schema=deepcopy(static_mappings[2]),
+                split_schema=deepcopy(static_mappings[3]),
+            )
+            if type(plan) is not _ProductionLockboxPlan:
+                raise RunnerError("production lockbox plan type changed")
+            _require_live_reserved_lockbox_authority(
+                paths,
+                checkpoint,
+                reservation_authority,
+            )
+            final_reader = _frozen_final_lockbox_public_source_reader(
+                paths,
+                plan.final_sources,
+            )
+            artifacts = _evaluate_production_lockbox_plan(
+                plan,
+                read_verified_audio=final_reader,
+            )
+        except RunnerError:
+            raise
+        except (TypeError, ValueError) as error:
+            raise RunnerError(
+                f"production lockbox evaluation failed: {error}"
+            ) from error
+        if type(artifacts) is not ProductionLockboxArtifacts:
+            raise RunnerError("production lockbox artifacts type changed")
+        validate_installed_environment_identity()
+        _assert_closed_environment()
+        _revalidate_held_static_preflight_inputs(static_inputs)
+        _revalidate_held_tracked_public_evidence_inputs(evidence_inputs)
+        return artifacts
+
+
+def _mint_and_persist_lockbox_result(
+    paths: RunnerPaths,
+    checkpoint: _LockboxCheckpointAuthority,
+    artifacts: ProductionLockboxArtifacts,
+    *,
+    allow_replace_test_input: bool,
+) -> tuple[str, str, str]:
+    if type(allow_replace_test_input) is not bool:
+        raise RunnerError("lockbox result compatibility mode changed")
+    if type(artifacts) is not ProductionLockboxArtifacts:
+        raise RunnerError("lockbox artifact capability changed")
+    (
+        decision_payload,
+        authoritative_decision,
+        decision_evidence_sha256,
+        decision_evidence_mint_sha256,
+    ) = _validated_private_decision_evidence(artifacts.decision_evidence)
+    try:
+        persisted_ami = _validate_lockbox_ami_commitment_against_checkpoint(
+            artifacts.ami,
+            checkpoint=(
+                checkpoint
+                if checkpoint.non_lockbox_readback is not None
+                else None
+            ),
+            production=checkpoint.non_lockbox_readback is not None,
+        )
+        lockbox_result = {
+            "schema_version": 1,
+            "decision_evidence": decision_payload,
+            "ami": persisted_ami,
+        }
+        validate_lockbox_result(lockbox_result)
+        validate_lockbox_lineage(
+            lockbox_result,
+            checkpoint.split_manifest,
+        )
+    except (TypeError, ValueError) as error:
+        raise RunnerError(f"invalid lockbox result: {error}") from error
+    if derive_phase_b_decision(decision_payload) != authoritative_decision:
+        raise RunnerError("private decision changed before serialization")
+
+    _ensure_directory_durable(Path(paths.lockbox_root))
+    _safe_path(
+        Path(paths.lockbox_root),
+        allowed_root=paths.state_root,
+        project_root=paths.project_root,
+        final_kind="directory",
+        require_final=True,
+    )
+    result_path = _safe_path(
+        _resolve_final_lockbox_result_path(paths),
+        allowed_root=paths.lockbox_root,
+        project_root=paths.project_root,
+        final_kind="file",
+        require_final=False,
+    )
+    if os.path.lexists(result_path) and not allow_replace_test_input:
+        raise RunnerError("unreserved lockbox result already exists")
+    if os.path.lexists(result_path):
+        _safe_path(
+            result_path,
+            allowed_root=paths.lockbox_root,
+            project_root=paths.project_root,
+            final_kind="file",
+            require_final=True,
+        )
+    result_bytes = canonical_json_bytes(lockbox_result)
+    _replace_bytes_durably(result_path, result_bytes)
+    if _read_file_nofollow(result_path) != result_bytes:
+        raise RunnerError("lockbox result changed after serialization")
+    result_digest = _sha256_file(result_path)
+    second_result = _load_json_object(result_path, "lockbox result")
+    try:
+        validate_lockbox_result(second_result)
+        validate_lockbox_lineage(
+            second_result,
+            checkpoint.split_manifest,
+        )
+    except (TypeError, ValueError) as error:
+        raise RunnerError(f"invalid lockbox result readback: {error}") from error
+    if (
+        second_result != lockbox_result
+        or _sha256_file(result_path) != result_digest
+        or _mapping_digest(second_result["decision_evidence"])
+        != decision_evidence_sha256
+        or serialized_decision_evidence_mint_sha256(
+            second_result["decision_evidence"]
+        )
+        != decision_evidence_mint_sha256
+    ):
+        raise RunnerError("lockbox result changed during reserved validation")
+    return (
+        result_digest,
+        decision_evidence_sha256,
+        decision_evidence_mint_sha256,
+    )
+
+
+def _run_lockbox_transaction(
+    paths: RunnerPaths,
+    artifact_builder: Callable[
+        [
+            _LockboxCheckpointAuthority,
+            _ReservedLockboxAuthority,
+        ],
+        ProductionLockboxArtifacts,
+    ],
+    *,
+    production: bool,
+    allow_existing_test_input: bool,
+    expected_admission_sha256: str | None = None,
+    expected_guarded_ledger_sha256: str | None = None,
+) -> dict[str, Any]:
+    if (
+        not callable(artifact_builder)
+        or type(production) is not bool
+        or type(allow_existing_test_input) is not bool
+        or (production and allow_existing_test_input)
+    ):
+        raise RunnerError("lockbox transaction capability changed")
+    if production:
+        if (
+            expected_admission_sha256 is None
+            or expected_guarded_ledger_sha256 is None
+        ):
+            raise RunnerError(
+                "production lockbox expected admission authority is required"
+            )
+        expected_admission_sha256 = _validate_digest(
+            expected_admission_sha256,
+            "expected Task 11 lockbox admission",
+        )
+        expected_guarded_ledger_sha256 = _validate_digest(
+            expected_guarded_ledger_sha256,
+            "expected Task 11 guarded ledger",
+        )
+        if (
+            expected_admission_sha256 == UNSET_DIGEST
+            or expected_guarded_ledger_sha256 == UNSET_DIGEST
+        ):
+            raise RunnerError("production lockbox expected authority is unset")
+    elif (
+        expected_admission_sha256 is not None
+        or expected_guarded_ledger_sha256 is not None
+    ):
+        raise RunnerError("synthetic lockbox received expected admission")
     _validate_layout(paths)
-    raise RunnerError(
-        "production lockbox evaluator is not wired; "
-        "a private DecisionEvidence mint is required"
+    with lockbox_lock(paths):
+        with material_pipeline_lock(paths) as material_authority:
+            state = load_state(paths)
+            _recover_output_replacement(
+                paths,
+                paths.lockbox_reservation_path,
+                allowed_root=paths.state_root,
+            )
+            if os.path.lexists(paths.lockbox_reservation_path):
+                reservation = _load_reservation(paths, recover=False)
+                if not _reservation_binds_state(reservation, state):
+                    raise RunnerError("lockbox reservation does not bind state")
+                if reservation["status"] == "reserved":
+                    if production:
+                        _require_phase(state, "non_lockbox_complete")
+                        with _admitted_lockbox_checkpoint(
+                            paths,
+                            material_authority,
+                            production=True,
+                        ) as checkpoint, _held_task11_admission(
+                            paths,
+                            checkpoint,
+                            expected_admission_sha256=(
+                                expected_admission_sha256
+                            ),
+                            expected_guarded_ledger_sha256=(
+                                expected_guarded_ledger_sha256
+                            ),
+                        ) as admission_authority:
+                            _validate_reservation_admission(
+                                paths,
+                                reservation,
+                                admission_authority,
+                                production=True,
+                            )
+                    else:
+                        _validate_reservation_admission(
+                            paths,
+                            reservation,
+                            None,
+                            production=False,
+                        )
+                    raise RunnerError(
+                        "final lockbox experiment version is already reserved"
+                    )
+                with _held_completed_lockbox_reservation(
+                    paths,
+                    reservation,
+                ) as completed_reservation_file:
+                    if state["phase"] == "lockbox_complete":
+                        if production:
+                            with _admitted_lockbox_checkpoint(
+                                paths,
+                                material_authority,
+                                production=True,
+                                expected_phase="lockbox_complete",
+                            ) as checkpoint, _held_task11_admission(
+                                paths,
+                                checkpoint,
+                                expected_admission_sha256=(
+                                    expected_admission_sha256
+                                ),
+                                expected_guarded_ledger_sha256=(
+                                    expected_guarded_ledger_sha256
+                                ),
+                            ) as admission_authority:
+                                if checkpoint.state != state:
+                                    raise RunnerError(
+                                        "completed lockbox state authority changed"
+                                    )
+                                _validate_completed_lockbox_result(
+                                    paths,
+                                    state,
+                                    reservation,
+                                    checkpoint=checkpoint,
+                                    admission_authority=admission_authority,
+                                    production=True,
+                                )
+                        else:
+                            _validate_completed_lockbox_result(
+                                paths,
+                                state,
+                                reservation,
+                                checkpoint=None,
+                                admission_authority=None,
+                                production=False,
+                            )
+                        _require_held_completed_lockbox_reservation(
+                            completed_reservation_file,
+                            reservation,
+                        )
+                        if (
+                            state["lockbox_open_count"] != 1
+                            or state["lockbox_result_sha256"]
+                            != reservation["lockbox_result_sha256"]
+                            or state["lockbox_decision_evidence_sha256"]
+                            != reservation[
+                                "lockbox_decision_evidence_sha256"
+                            ]
+                            or state[
+                                "lockbox_decision_evidence_mint_sha256"
+                            ]
+                            != reservation[
+                                "lockbox_decision_evidence_mint_sha256"
+                            ]
+                        ):
+                            raise RunnerError(
+                                "completed lockbox reservation "
+                                "disagrees with state"
+                            )
+                        raise RunnerError("final lockbox is already complete")
+                    _require_phase(state, "non_lockbox_complete")
+                    with _admitted_lockbox_checkpoint(
+                        paths,
+                        material_authority,
+                        production=production,
+                    ) as checkpoint, _optional_task11_admission(
+                        paths,
+                        checkpoint,
+                        production=production,
+                        expected_admission_sha256=(
+                            expected_admission_sha256
+                        ),
+                        expected_guarded_ledger_sha256=(
+                            expected_guarded_ledger_sha256
+                        ),
+                    ) as admission_authority:
+                        if checkpoint.state != state:
+                            raise RunnerError(
+                                "completed lockbox predecessor state changed"
+                            )
+                        _validate_completed_lockbox_result(
+                            paths,
+                            state,
+                            reservation,
+                            checkpoint=checkpoint if production else None,
+                            admission_authority=admission_authority,
+                            production=production,
+                        )
+                    _require_held_completed_lockbox_reservation(
+                        completed_reservation_file,
+                        reservation,
+                    )
+                    return _transition_lockbox_state_cas(
+                        paths,
+                        state,
+                        canonical_json_bytes(state),
+                        result_sha256=reservation[
+                            "lockbox_result_sha256"
+                        ],
+                        decision_evidence_sha256=reservation[
+                            "lockbox_decision_evidence_sha256"
+                        ],
+                        decision_evidence_mint_sha256=reservation[
+                            "lockbox_decision_evidence_mint_sha256"
+                        ],
+                    )
+
+            _require_phase(state, "non_lockbox_complete")
+            if state["lockbox_open_count"] != 0:
+                raise RunnerError("final lockbox has already been opened")
+            with _admitted_lockbox_checkpoint(
+                paths,
+                material_authority,
+                production=production,
+            ) as checkpoint, _optional_task11_admission(
+                paths,
+                checkpoint,
+                production=production,
+                expected_admission_sha256=expected_admission_sha256,
+                expected_guarded_ledger_sha256=(
+                    expected_guarded_ledger_sha256
+                ),
+            ) as admission_authority:
+                if checkpoint.state != state:
+                    raise RunnerError("lockbox predecessor state changed")
+                _require_unopened_lockbox_output(
+                    paths,
+                    allow_existing_test_input=allow_existing_test_input,
+                )
+                admission_fields = (
+                    {
+                        "implementation_head": admission_authority.receipt[
+                            "implementation_head"
+                        ],
+                        "guarded_ledger_sha256": admission_authority.receipt[
+                            "guarded_ledger_sha256"
+                        ],
+                        "lockbox_admission_sha256": (
+                            admission_authority.receipt_sha256
+                        ),
+                    }
+                    if admission_authority is not None
+                    else {
+                        "implementation_head": "0" * 40,
+                        "guarded_ledger_sha256": UNSET_DIGEST,
+                        "lockbox_admission_sha256": UNSET_DIGEST,
+                    }
+                )
+                transaction_id = uuid.uuid4().hex
+                reserved = _reservation_payload(
+                    state,
+                    transaction_id=transaction_id,
+                    status="reserved",
+                    lockbox_result_sha256=UNSET_DIGEST,
+                    lockbox_decision_evidence_sha256=UNSET_DIGEST,
+                    lockbox_decision_evidence_mint_sha256=UNSET_DIGEST,
+                    **admission_fields,
+                )
+                with _held_reserved_lockbox_reservation(
+                    paths,
+                    checkpoint,
+                    reserved,
+                    admission_authority=admission_authority,
+                    production=production,
+                ) as reservation_authority:
+                    artifacts = artifact_builder(
+                        checkpoint,
+                        reservation_authority,
+                    )
+                    _require_live_reserved_lockbox_authority(
+                        paths,
+                        checkpoint,
+                        reservation_authority,
+                    )
+                    _assert_lockbox_checkpoint_state_cas(paths, checkpoint)
+                    (
+                        result_sha256,
+                        decision_evidence_sha256,
+                        decision_evidence_mint_sha256,
+                    ) = _mint_and_persist_lockbox_result(
+                        paths,
+                        checkpoint,
+                        artifacts,
+                        allow_replace_test_input=allow_existing_test_input,
+                    )
+                    _require_live_reserved_lockbox_authority(
+                        paths,
+                        checkpoint,
+                        reservation_authority,
+                    )
+                    _assert_lockbox_checkpoint_state_cas(paths, checkpoint)
+                _require_persisted_reserved_lockbox_authority(
+                    paths,
+                    checkpoint,
+                    reservation_authority,
+                )
+                completed = _reservation_payload(
+                    state,
+                    transaction_id=transaction_id,
+                    status="completed",
+                    lockbox_result_sha256=result_sha256,
+                    lockbox_decision_evidence_sha256=(
+                        decision_evidence_sha256
+                    ),
+                    lockbox_decision_evidence_mint_sha256=(
+                        decision_evidence_mint_sha256
+                    ),
+                    **admission_fields,
+                )
+                completed = _write_lockbox_reservation(paths, completed)
+                _validate_reservation_admission(
+                    paths,
+                    completed,
+                    admission_authority,
+                    production=production,
+                )
+            with _held_completed_lockbox_reservation(
+                paths,
+                completed,
+            ) as completed_reservation_file:
+                _require_held_completed_lockbox_reservation(
+                    completed_reservation_file,
+                    completed,
+                )
+                return _transition_lockbox_state_cas(
+                    paths,
+                    state,
+                    canonical_json_bytes(state),
+                    result_sha256=result_sha256,
+                    decision_evidence_sha256=decision_evidence_sha256,
+                    decision_evidence_mint_sha256=(
+                        decision_evidence_mint_sha256
+                    ),
+                )
+
+
+def _run_lockbox_transaction_for_testing(
+    paths: RunnerPaths,
+    artifact_builder: Callable[[], ProductionLockboxArtifacts],
+) -> dict[str, Any]:
+    if paths.authority != "injected-test":
+        raise RunnerError("Task 11 transaction harness is test-only")
+    _assert_closed_environment()
+    return _run_lockbox_transaction(
+        paths,
+        lambda _checkpoint, _reservation_authority: artifact_builder(),
+        production=False,
+        allow_existing_test_input=False,
+    )
+
+
+def _run_production_lockbox_lane(
+    paths: RunnerPaths,
+    *,
+    expected_admission_sha256: str,
+    expected_guarded_ledger_sha256: str,
+) -> dict[str, Any]:
+    if paths.authority != "production":
+        raise RunnerError(
+            "production lockbox requires production path authority; "
+            "private evidence mint cannot be injected"
+        )
+    return _run_lockbox_transaction(
+        paths,
+        lambda checkpoint, reservation_authority: (
+            _build_production_lockbox_artifacts_after_reservation(
+                paths,
+                checkpoint,
+                reservation_authority,
+            )
+        ),
+        production=True,
+        allow_existing_test_input=False,
+        expected_admission_sha256=expected_admission_sha256,
+        expected_guarded_ledger_sha256=expected_guarded_ledger_sha256,
+    )
+
+
+def run_lockbox(
+    paths: RunnerPaths,
+    *,
+    expected_admission_sha256: str,
+    expected_guarded_ledger_sha256: str,
+) -> dict[str, Any]:
+    validate_installed_environment_identity()
+    _assert_closed_environment()
+    return _run_production_lockbox_lane(
+        paths,
+        expected_admission_sha256=expected_admission_sha256,
+        expected_guarded_ledger_sha256=expected_guarded_ledger_sha256,
     )
 
 
@@ -9966,119 +11631,32 @@ def _run_lockbox_with_private_evidence_for_testing(
     if paths.authority != "injected-test":
         raise RunnerError("private synthetic lockbox mint is test-only")
     _assert_closed_environment()
-    (
-        decision_payload,
-        authoritative_decision,
-        decision_evidence_sha256,
-        decision_evidence_mint_sha256,
-    ) = _validated_private_decision_evidence(decision_evidence)
-    with lockbox_lock(paths):
-        state = load_state(paths)
-        _require_phase(state, "non_lockbox_complete")
-        if state["lockbox_open_count"] != 0:
-            raise RunnerError("final lockbox has already been opened")
-        _revalidate_bound_preflight(paths, state)
-        _validated_packet(paths, state, require_bound=True)
-        if os.path.lexists(paths.lockbox_reservation_path):
-            _load_reservation(paths)
-            raise RunnerError("final lockbox experiment version is already reserved")
-
-        transaction_id = uuid.uuid4().hex
-        reservation = _reservation_payload(
-            state,
-            transaction_id=transaction_id,
-            status="reserved",
-            lockbox_result_sha256=UNSET_DIGEST,
-            lockbox_decision_evidence_sha256=UNSET_DIGEST,
-            lockbox_decision_evidence_mint_sha256=UNSET_DIGEST,
-        )
-        _safe_path(
-            paths.lockbox_reservation_path,
-            allowed_root=paths.state_root,
-            project_root=paths.project_root,
-        )
-        _replace_bytes_durably(
-            paths.lockbox_reservation_path,
-            canonical_json_bytes(reservation),
-        )
-        if _load_reservation(paths) != reservation:
-            raise RunnerError("lockbox reservation readback mismatch")
-
+    def build_after_reservation(
+        _checkpoint: _LockboxCheckpointAuthority,
+        _reservation_authority: _ReservedLockboxAuthority,
+    ) -> ProductionLockboxArtifacts:
         lockbox_path = _validate_lockbox_path(paths)
         try:
             lockbox_input = _load_json_object(lockbox_path, "lockbox AMI input")
-            split_manifest = _load_json_object(
-                paths.split_manifest_path,
-                "split manifest",
-            )
             validated_ami = validate_lockbox_ami_input(lockbox_input)
-            lockbox_result = {
-                "schema_version": 1,
-                "decision_evidence": decision_payload,
-                "ami": validated_ami["ami"],
-            }
-            validate_lockbox_lineage(lockbox_result, split_manifest)
         except (TypeError, ValueError) as error:
-            raise RunnerError(f"invalid lockbox result: {error}") from error
-        if derive_phase_b_decision(decision_payload) != authoritative_decision:
-            raise RunnerError("private decision changed before serialization")
-        result_bytes = canonical_json_bytes(lockbox_result)
-        _replace_bytes_durably(lockbox_path, result_bytes)
-        if _read_file_nofollow(lockbox_path) != result_bytes:
-            raise RunnerError("lockbox result changed after internal serialization")
-        result_digest = _sha256_file(lockbox_path)
+            raise RunnerError(f"invalid lockbox AMI input: {error}") from error
+        return ProductionLockboxArtifacts(
+            decision_evidence=decision_evidence,
+            ami={
+                "aggregate": deepcopy(validated_ami["ami"]["aggregate"]),
+                "authority_sha256": validated_ami["ami"][
+                    "authority_sha256"
+                ],
+            },
+        )
 
-        _revalidate_bound_preflight(paths, state)
-        _validated_packet(paths, state, require_bound=True)
-        second_result = _load_json_object(lockbox_path, "lockbox result")
-        try:
-            second_split = _load_json_object(
-                paths.split_manifest_path,
-                "split manifest",
-            )
-            validate_lockbox_lineage(second_result, second_split)
-        except (TypeError, ValueError) as error:
-            raise RunnerError(f"invalid lockbox result: {error}") from error
-        if (
-            _sha256_file(lockbox_path) != result_digest
-            or second_result != lockbox_result
-            or _mapping_digest(second_result["decision_evidence"])
-            != decision_evidence_sha256
-            or serialized_decision_evidence_mint_sha256(
-                second_result["decision_evidence"]
-            )
-            != decision_evidence_mint_sha256
-        ):
-            raise RunnerError("lockbox result changed during reserved validation")
-        _assert_closed_environment()
-
-        completed = _reservation_payload(
-            state,
-            transaction_id=transaction_id,
-            status="completed",
-            lockbox_result_sha256=result_digest,
-            lockbox_decision_evidence_sha256=decision_evidence_sha256,
-            lockbox_decision_evidence_mint_sha256=(
-                decision_evidence_mint_sha256
-            ),
-        )
-        _replace_bytes_durably(
-            paths.lockbox_reservation_path,
-            canonical_json_bytes(completed),
-        )
-        if _load_reservation(paths) != completed:
-            raise RunnerError("completed lockbox reservation readback mismatch")
-        return _transition(
-            paths,
-            state,
-            "lockbox_complete",
-            lockbox_open_count=1,
-            lockbox_result_sha256=result_digest,
-            lockbox_decision_evidence_sha256=decision_evidence_sha256,
-            lockbox_decision_evidence_mint_sha256=(
-                decision_evidence_mint_sha256
-            ),
-        )
+    return _run_lockbox_transaction(
+        paths,
+        build_after_reservation,
+        production=False,
+        allow_existing_test_input=True,
+    )
 
 
 def build_aggregate_result(
@@ -11101,6 +12679,7 @@ def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
         choices=(
             "preflight",
             "non-lockbox",
+            "admit-lockbox",
             "lockbox",
             "stage-candidate",
             "accept-receipt",
@@ -11108,6 +12687,11 @@ def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
         ),
     )
     parser.add_argument("--receipt")
+    parser.add_argument("--reviewed-head")
+    parser.add_argument("--admission-sha256")
+    parser.add_argument("--guarded-ledger-sha256")
+    parser.add_argument("--expected-state-sha256")
+    parser.add_argument("--expected-non-lockbox-packet-sha256")
     parsed = parser.parse_args(argv)
     needs_receipt = parsed.phase in {
         "stage-candidate",
@@ -11116,6 +12700,55 @@ def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
     }
     if needs_receipt != (parsed.receipt is not None):
         parser.error("--receipt is required only for publication receipt phases")
+    admission_creation_values = (
+        parsed.reviewed_head,
+        parsed.guarded_ledger_sha256,
+        parsed.expected_state_sha256,
+        parsed.expected_non_lockbox_packet_sha256,
+    )
+    if parsed.phase == "admit-lockbox":
+        if (
+            not all(
+                value is not None
+                for value in admission_creation_values
+            )
+            or parsed.admission_sha256 is not None
+        ):
+            parser.error(
+                "admit-lockbox requires the complete Task 11 admission "
+                "identity and no admission receipt SHA"
+            )
+    elif parsed.phase == "lockbox":
+        if (
+            parsed.admission_sha256 is None
+            or parsed.guarded_ledger_sha256 is None
+            or any(
+                value is not None
+                for value in (
+                    parsed.reviewed_head,
+                    parsed.expected_state_sha256,
+                    parsed.expected_non_lockbox_packet_sha256,
+                )
+            )
+        ):
+            parser.error(
+                "lockbox requires only the reviewed admission and guarded "
+                "ledger SHA-256 values"
+            )
+    elif any(
+        value is not None
+        for value in (
+            parsed.reviewed_head,
+            parsed.admission_sha256,
+            parsed.guarded_ledger_sha256,
+            parsed.expected_state_sha256,
+            parsed.expected_non_lockbox_packet_sha256,
+        )
+    ):
+        parser.error(
+            "Task 11 admission identity arguments are only valid for "
+            "admit-lockbox or lockbox"
+        )
     return parsed
 
 
@@ -11133,8 +12766,24 @@ def main(argv: Sequence[str] | None = None) -> int:
             output: Any = state
         elif arguments.phase == "non-lockbox":
             output = run_non_lockbox(paths)
+        elif arguments.phase == "admit-lockbox":
+            output = admit_task11_lockbox(
+                paths,
+                reviewed_head=arguments.reviewed_head,
+                guarded_ledger_sha256=arguments.guarded_ledger_sha256,
+                expected_state_sha256=arguments.expected_state_sha256,
+                expected_non_lockbox_packet_sha256=(
+                    arguments.expected_non_lockbox_packet_sha256
+                ),
+            )
         elif arguments.phase == "lockbox":
-            output = run_lockbox(paths)
+            output = run_lockbox(
+                paths,
+                expected_admission_sha256=arguments.admission_sha256,
+                expected_guarded_ledger_sha256=(
+                    arguments.guarded_ledger_sha256
+                ),
+            )
         elif arguments.phase == "stage-candidate":
             output = stage_candidate(paths, arguments.receipt)
         elif arguments.phase == "accept-receipt":

@@ -3980,12 +3980,12 @@ environment, entirely offline and without dependency resolution, then run
 
 ### Explicit gate: public-material evaluation
 
-This gate remains blocked until Cut 4B implementation and independent review
-pass. One separately authorized replacement transaction will write fresh state
-only under `.tmp/emotion-state-002-phase-b-cut4b`; its executable and immutable
-dependency inputs remain under `.tmp/emotion-state-002-phase-b`. These commands
-still require separate authority to read the fixed public CREMA-D and AMI
-roots. They are not authorized by offline validation or dependency setup:
+This gate produced the accepted Task 10 non-lockbox checkpoint and is now
+closed. Do not rerun these commands. Any replacement requires a separately
+reviewed transaction and explicit authority to read the fixed public CREMA-D
+and AMI roots. The accepted state remains under
+`.tmp/emotion-state-002-phase-b-cut4b`; its executable and immutable dependency
+inputs remain under `.tmp/emotion-state-002-phase-b`:
 
 ```powershell
 .tmp/emotion-state-002-phase-b/venv/Scripts/python.exe scripts/run_emotion_state_002_phase_b.py preflight
@@ -3995,10 +3995,42 @@ roots. They are not authorized by offline validation or dependency setup:
 ### Explicit gate: final lockbox
 
 This is a separate one-use authorization after independent non-lockbox review.
-The production lockbox evaluator remains unavailable; authorization alone does not wire it.
+The production lockbox evaluator is wired but remains unopened. Execute it only
+once after the exact implementation commit, clean guarded ledger, source-silent
+admission, and independent review are bound to the accepted Task 10 checkpoint.
+The runner must durably write and read back the exact `reserved` transaction
+before it can create the fixed 2,181-WAV reader. A reserved failure is terminal.
+The separate `admit-lockbox` phase writes a fixed ignored receipt bound to the
+reviewed clean HEAD, guarded-ledger SHA-256, accepted predecessor-state
+SHA-256, and non-lockbox packet SHA-256 without forming the final-result path.
+Each production admission check uses exactly three local, no-fetch Git reads:
+`show-toplevel`, `HEAD`, and clean status including untracked files, with child-only
+`GIT_LFS_SKIP_SMUDGE=1`. The reservation persists the receipt digest, HEAD, and
+ledger digest; the runner holds the exact reservation file across final
+evaluation and result persistence, then holds the completed reservation through
+recovery validation and the state transition. Admission is revalidated during
+completed recovery.
+The ignored lockbox result persists the AMI aggregate and its retained-authority
+SHA-256 only; meeting, participant, turn, dialogue-label, and transcript rows
+remain confined to source-silent in-memory validation.
+
+The guarded ledger is the fixed ignored file
+`.tmp/emotion-state-002-phase-b-cut4b/task-11-guarded-ledger.json`. Its exact
+bytes are canonical UTF-8 LF JSON: two-space indentation, sorted keys, and one
+terminal LF. The top-level object contains `schema_version`, `task_id`,
+`implementation_head`, and `commands`. `commands` records the exact ordered
+guarded command vectors; every entry contains only `argv`, `exit_code`,
+`stdout_sha256`, and `stderr_sha256`. Raw command output is not persisted.
+`guarded-ledger-sha256` is the uppercase SHA-256 of those exact file bytes after
+the clean committed run and independent review. `admission-receipt-sha256` is
+the uppercase SHA-256 of the exact ignored `lockbox-admission.json` bytes written
+by `admit-lockbox`. The `lockbox` phase independently requires both digests and
+compares them with the held receipt before the first reservation and during
+recovery.
 
 ```powershell
-.tmp/emotion-state-002-phase-b/venv/Scripts/python.exe scripts/run_emotion_state_002_phase_b.py lockbox
+.tmp/emotion-state-002-phase-b/venv/Scripts/python.exe scripts/run_emotion_state_002_phase_b.py admit-lockbox --reviewed-head <reviewed-lowercase-head> --guarded-ledger-sha256 <guarded-ledger-sha256> --expected-state-sha256 <accepted-state-sha256> --expected-non-lockbox-packet-sha256 <accepted-packet-sha256>
+.tmp/emotion-state-002-phase-b/venv/Scripts/python.exe scripts/run_emotion_state_002_phase_b.py lockbox --admission-sha256 <admission-receipt-sha256> --guarded-ledger-sha256 <guarded-ledger-sha256>
 ```
 
 ### Explicit gate: canonical acceptance

@@ -437,6 +437,31 @@ class ProductionNonLockboxArtifacts:
     review_packet: dict[str, Any]
 
 
+@dataclass(frozen=True, slots=True)
+class ProductionLockboxArtifacts:
+    decision_evidence: Any
+    ami: dict[str, Any]
+
+
+@dataclass(frozen=True, slots=True)
+class _ProductionLockboxPlan:
+    authorities: dict[str, Any]
+    split_manifest: dict[str, Any]
+    records_by_role: dict[str, tuple[Any, ...]]
+    split_assignment: Any
+    final_records: tuple[Any, ...]
+    final_sources: tuple[SourceByteIdentity, ...]
+    tracked_authority: TrackedPublicAuthority
+    restored_non_lockbox: ProductionNonLockboxArtifacts
+    configuration: dict[str, Any]
+    environment_lock: dict[str, Any]
+    feature_schema: dict[str, Any]
+    split_schema: dict[str, Any]
+    model_seed: int
+    model_identity: dict[str, Any]
+    ami: dict[str, Any]
+
+
 class PublicMaterialPrerequisiteError(ValueError):
     """A tracked-evidence blocker that must fail before public material access."""
 
@@ -4548,4 +4573,696 @@ def restore_production_non_lockbox_artifacts(
         feature_caches=copy.deepcopy(validated_caches),
         ami_evidence=copy.deepcopy(validated_ami),
         review_packet=copy.deepcopy(rebuilt_packet),
+    )
+
+
+def _rebuild_production_split_assignment(
+    *,
+    authorities: Mapping[str, Any],
+    split_manifest: Mapping[str, Any],
+    tracked_evidence: Mapping[str, bytes],
+    tracked_authority: TrackedPublicAuthority,
+    finished_responses: bytes,
+    summary_table: bytes,
+    configuration: Mapping[str, Any],
+) -> Any:
+    from scripts import emotion_state_phase_b_evaluation as evaluation
+    from scripts.emotion_state_phase_b_splits import build_actor_split
+
+    rebuilt = build_production_preflight_artifacts(
+        tracked_evidence=tracked_evidence,
+        finished_responses=finished_responses,
+        summary_table=summary_table,
+        configuration=configuration,
+    )
+    manifest, _records_by_role = _validated_production_role_algebra(
+        authorities=authorities,
+        split_manifest=split_manifest,
+    )
+    frozen_authority = _validated_non_lockbox_tracked_authority(
+        tracked_authority
+    )
+    expected_commitment = tracked_public_authority_commitment_sha256(
+        tracked_evidence=tracked_evidence,
+        authority=frozen_authority,
+    )
+    if (
+        rebuilt.source_authority_commitment_sha256 != expected_commitment
+        or not _matches_packet_contract_exactly(
+            rebuilt.split_manifest,
+            manifest,
+        )
+    ):
+        raise PublicMaterialPrerequisiteError(
+            "rebuilt final split does not match committed preflight"
+        )
+    if (
+        type(finished_responses) is not bytes
+        or type(summary_table) is not bytes
+        or _sha256(finished_responses)
+        != frozen_authority.crema_finished_responses.sha256
+        or len(finished_responses)
+        != frozen_authority.crema_finished_responses.size_bytes
+        or _sha256(summary_table)
+        != frozen_authority.crema_summary_table.sha256
+        or len(summary_table)
+        != frozen_authority.crema_summary_table.size_bytes
+    ):
+        raise PublicMaterialPrerequisiteError(
+            "final split CSV bytes do not match tracked authority"
+        )
+
+    by_stem: dict[str, SourceByteIdentity] = {}
+    stems: list[str] = []
+    for source in frozen_authority.crema_audio:
+        path = source.project_relative_path
+        if (
+            type(path) is not str
+            or not path.startswith(_CREMA_AUDIO_ROOT)
+            or not path.endswith(".wav")
+        ):
+            raise PublicMaterialPrerequisiteError(
+                "final split acoustic authority path changed"
+            )
+        stem = path[len(_CREMA_AUDIO_ROOT):-4]
+        if not stem or "/" in stem or stem in by_stem:
+            raise PublicMaterialPrerequisiteError(
+                "final split acoustic authority stem changed"
+            )
+        by_stem[stem] = source
+        stems.append(stem)
+    if len(stems) != 7441:
+        raise PublicMaterialPrerequisiteError(
+            "final split acoustic authority count changed"
+        )
+
+    records, ledger = evaluation.load_crema_reference_labels_bytes(
+        finished_responses,
+        summary_table,
+        tuple(stems),
+    )
+    validate_crema_label_ledger(ledger, configuration)
+    eligible = tuple(record for record in records if record.label is not None)
+    if len(records) != 7441 or len(eligible) != EXPECTED_PRODUCTION_ELIGIBLE_RECORD_COUNT:
+        raise PublicMaterialPrerequisiteError(
+            "final split label population changed"
+        )
+    configuration_sha256 = _canonical_digest(dict(configuration))
+    assignment = build_actor_split(eligible, configuration_sha256.lower())
+    acoustic_sources = {
+        record.clip_stem: by_stem[record.clip_stem]
+        for record in eligible
+    }
+    split_assignment = evaluation.mint_validated_split_assignment(
+        eligible,
+        assignment,
+        configuration_sha256.lower(),
+        acoustic_sources=acoustic_sources,
+    )
+    if not _matches_packet_contract_exactly(
+        split_assignment.to_payload(),
+        manifest,
+    ):
+        raise PublicMaterialPrerequisiteError(
+            "private final split mint does not match committed manifest"
+        )
+    serialized = evaluation.serialize_partition_authority_caches(
+        split_assignment
+    )
+    if not _matches_packet_contract_exactly(
+        serialized,
+        rebuilt.partition_authority_caches,
+    ):
+        raise PublicMaterialPrerequisiteError(
+            "private final split non-lockbox caches changed"
+        )
+    for role in NON_LOCKBOX_ROLE_ORDER:
+        derived = evaluation.derive_validated_partition_authority(
+            split_assignment,
+            role=role,
+        )
+        retained = authorities[role]
+        if (
+            derived.to_payload() != retained.to_payload()
+            or derived.mint_sha256 != retained.mint_sha256
+        ):
+            raise PublicMaterialPrerequisiteError(
+                f"private final split {role} authority changed"
+            )
+    return split_assignment
+
+
+def _selected_final_audio_sources(
+    *,
+    tracked_authority: TrackedPublicAuthority,
+    final_records: Sequence[Any],
+) -> tuple[SourceByteIdentity, ...]:
+    frozen = _validated_non_lockbox_tracked_authority(tracked_authority)
+    by_stem = {
+        source.project_relative_path[len(_CREMA_AUDIO_ROOT):-4]: source
+        for source in frozen.crema_audio
+    }
+    selected = []
+    for record in final_records:
+        stem = record.label_record.clip_stem
+        source = by_stem.get(stem)
+        if (
+            source is None
+            or source.sha256 != record.audio_sha256
+            or source.size_bytes != record.audio_size_bytes
+        ):
+            raise PublicMaterialPrerequisiteError(
+                "final audio source does not match private split authority"
+            )
+        selected.append(source)
+    if (
+        len(selected) != EXPECTED_PRODUCTION_FINAL_LOCKBOX_RECORD_COUNT
+        or len(set(selected)) != len(selected)
+    ):
+        raise PublicMaterialPrerequisiteError(
+            "final audio source count changed"
+        )
+    return tuple(selected)
+
+
+def _build_frozen_final_slice_mapping(
+    *,
+    training_records: Sequence[Any],
+    training_feature_cache: Mapping[str, Any],
+    final_records: Sequence[Any],
+    final_features: Sequence[Mapping[str, float]],
+) -> dict[str, list[str]]:
+    import numpy as np
+
+    if (
+        len(training_records)
+        != EXPECTED_PRODUCTION_PARTITION_RECORD_COUNTS["training_discovery"]
+        or len(final_records) != EXPECTED_PRODUCTION_FINAL_LOCKBOX_RECORD_COUNT
+        or len(final_features) != len(final_records)
+    ):
+        raise PublicMaterialPrerequisiteError(
+            "final slice population changed"
+        )
+    sentence_ids = tuple(sorted({
+        record.label_record.sentence_id
+        for record in (*training_records, *final_records)
+    }))
+    if len(sentence_ids) != 12:
+        raise PublicMaterialPrerequisiteError(
+            "final slice scenario set changed"
+        )
+    names = (
+        *(f"source_label:{label}" for label in CLASS_ORDER),
+        *(f"scripted_scenario:{sentence}" for sentence in sentence_ids),
+        *_VOTE_SLICE_NAMES,
+        *_SILENCE_SLICE_NAMES,
+    )
+    mapping: dict[str, list[str]] = {name: [] for name in names}
+    training_silence = np.asarray(
+        [
+            record["features"]["silence_ratio"]
+            for record in training_feature_cache["records"]
+        ],
+        dtype=np.float64,
+    )
+    quartiles = tuple(float(value) for value in np.percentile(
+        training_silence,
+        (25, 50, 75),
+        method="linear",
+    ))
+    for authoritative, features in zip(
+        final_records,
+        final_features,
+        strict=True,
+    ):
+        label = authoritative.label_record
+        row_id = label.clip_stem
+        mapping[f"source_label:{label.label}"].append(row_id)
+        mapping[f"scripted_scenario:{label.sentence_id}"].append(row_id)
+        if label.vote_agreement < 0.50:
+            vote_name = _VOTE_SLICE_NAMES[0]
+        elif label.vote_agreement < 0.75:
+            vote_name = _VOTE_SLICE_NAMES[1]
+        else:
+            vote_name = _VOTE_SLICE_NAMES[2]
+        mapping[vote_name].append(row_id)
+        silence = features["silence_ratio"]
+        if silence <= quartiles[0]:
+            silence_name = _SILENCE_SLICE_NAMES[0]
+        elif silence <= quartiles[1]:
+            silence_name = _SILENCE_SLICE_NAMES[1]
+        elif silence <= quartiles[2]:
+            silence_name = _SILENCE_SLICE_NAMES[2]
+        else:
+            silence_name = _SILENCE_SLICE_NAMES[3]
+        mapping[silence_name].append(row_id)
+    result = dict(sorted(mapping.items()))
+    if len(result) != EXPECTED_DIAGNOSTIC_SLICE_COUNT or any(
+        sum(len(result[name]) for name in family) != len(final_records)
+        for family in (
+            tuple(name for name in result if name.startswith("source_label:")),
+            tuple(name for name in result if name.startswith("scripted_scenario:")),
+            tuple(name for name in result if name.startswith("vote_agreement:")),
+            tuple(name for name in result if name.startswith("silence_ratio:")),
+        )
+    ):
+        raise PublicMaterialPrerequisiteError(
+            "final slice mapping does not partition all records"
+        )
+    return result
+
+
+def _lockbox_authority_sha256(payload: Mapping[str, Any]) -> str:
+    try:
+        content = (
+            json.dumps(
+                payload,
+                sort_keys=True,
+                ensure_ascii=False,
+                allow_nan=False,
+                separators=(",", ":"),
+            )
+            + "\n"
+        ).encode("utf-8")
+    except (TypeError, ValueError, UnicodeError) as error:
+        raise PublicMaterialPrerequisiteError(
+            "lockbox AMI authority is not canonical JSON"
+        ) from error
+    return hashlib.sha256(content).hexdigest().upper()
+
+
+def _validated_lockbox_ami_projection_from_retained_evidence(
+    retained_ami: Mapping[str, Any],
+) -> dict[str, Any]:
+    from scripts.validate_emotion_state_002_phase_b import (
+        validate_lockbox_ami_input,
+    )
+
+    if type(retained_ami) is not dict:
+        raise PublicMaterialPrerequisiteError(
+            "retained AMI evidence must be an exact mapping"
+        )
+    tracked_commitment = retained_ami.get(
+        "tracked_public_authority_commitment_sha256"
+    )
+    if type(tracked_commitment) is not str:
+        raise PublicMaterialPrerequisiteError(
+            "retained AMI evidence lacks its tracked authority commitment"
+        )
+    cache = _validate_source_silent_ami_evidence_cache(
+        retained_ami,
+        tracked_public_authority_commitment_sha256=tracked_commitment,
+    )
+    authority = {
+        "meetings": copy.deepcopy(cache["meetings"]),
+        "partition_membership": {
+            name: list(meetings)
+            for name, meetings in cache["partition_membership"]
+        },
+        "official_order": copy.deepcopy(cache["official_order"]),
+    }
+    projected = {
+        "aggregate": copy.deepcopy(cache["aggregate"]),
+        "authority": authority,
+        "authority_sha256": _lockbox_authority_sha256(authority),
+    }
+    try:
+        validated = validate_lockbox_ami_input({
+            "schema_version": 1,
+            "ami": copy.deepcopy(projected),
+        })
+    except (TypeError, ValueError) as error:
+        raise PublicMaterialPrerequisiteError(
+            f"production lockbox AMI projection is invalid: {error}"
+        ) from error
+    if validated["ami"] != projected:
+        raise PublicMaterialPrerequisiteError(
+            "production lockbox AMI projection changed"
+        )
+    return {
+        "aggregate": copy.deepcopy(projected["aggregate"]),
+        "authority_sha256": projected["authority_sha256"],
+    }
+
+
+def _persisted_ami_lockbox_commitment(
+    retained_ami: Mapping[str, Any],
+) -> dict[str, Any]:
+    return _validated_lockbox_ami_projection_from_retained_evidence(
+        retained_ami
+    )
+
+
+def _prepare_production_lockbox_plan(
+    *,
+    authorities: Mapping[str, Any],
+    split_manifest: Mapping[str, Any],
+    feature_caches: Mapping[str, Mapping[str, Any]],
+    ami_evidence: Mapping[str, Any],
+    review_packet: Mapping[str, Any],
+    tracked_evidence: Mapping[str, bytes],
+    tracked_authority: TrackedPublicAuthority,
+    finished_responses: bytes,
+    summary_table: bytes,
+    configuration: Mapping[str, Any],
+    environment_lock: Mapping[str, Any],
+    feature_schema: Mapping[str, Any],
+    split_schema: Mapping[str, Any],
+) -> _ProductionLockboxPlan:
+    from scripts import emotion_state_phase_b_evaluation as evaluation
+
+    (
+        validated_configuration,
+        validated_environment,
+        validated_feature_schema,
+        validated_split_schema,
+    ) = _validated_non_lockbox_static_mappings(
+        configuration=configuration,
+        environment_lock=environment_lock,
+        feature_schema=feature_schema,
+        split_schema=split_schema,
+    )
+    manifest, records_by_role = _validated_production_role_algebra(
+        authorities=authorities,
+        split_manifest=split_manifest,
+    )
+    restored = restore_production_non_lockbox_artifacts(
+        authorities=authorities,
+        split_manifest=manifest,
+        feature_caches=feature_caches,
+        ami_evidence=ami_evidence,
+        review_packet=review_packet,
+        configuration=validated_configuration,
+        environment_lock=validated_environment,
+        feature_schema=validated_feature_schema,
+        split_schema=validated_split_schema,
+    )
+    expected_tracked_commitment = tracked_public_authority_commitment_sha256(
+        tracked_evidence=tracked_evidence,
+        authority=_validated_non_lockbox_tracked_authority(
+            tracked_authority
+        ),
+    )
+    retained_commitments = (
+        *(
+            restored.feature_caches[role][
+                "tracked_public_authority_commitment_sha256"
+            ]
+            for role in NON_LOCKBOX_ROLE_ORDER
+        ),
+        restored.ami_evidence[
+            "tracked_public_authority_commitment_sha256"
+        ],
+        restored.review_packet[
+            "tracked_public_authority_commitment_sha256"
+        ],
+    )
+    if any(
+        commitment != expected_tracked_commitment
+        for commitment in retained_commitments
+    ):
+        raise PublicMaterialPrerequisiteError(
+            "restored checkpoint does not bind the tracked-public authority"
+        )
+    split_assignment = _rebuild_production_split_assignment(
+        authorities=authorities,
+        split_manifest=manifest,
+        tracked_evidence=tracked_evidence,
+        tracked_authority=tracked_authority,
+        finished_responses=finished_responses,
+        summary_table=summary_table,
+        configuration=validated_configuration,
+    )
+    final_records = evaluation.validated_final_lockbox_records(
+        split_assignment
+    )
+    final_sources = _selected_final_audio_sources(
+        tracked_authority=tracked_authority,
+        final_records=final_records,
+    )
+    configuration_sha256 = _canonical_digest(validated_configuration)
+    model_seed = int(configuration_sha256[:8], 16)
+    model_identity = evaluation.frozen_model_identity(model_seed)
+
+    ami = _validated_lockbox_ami_projection_from_retained_evidence(
+        restored.ami_evidence
+    )
+    return _ProductionLockboxPlan(
+        authorities=dict(authorities),
+        split_manifest=copy.deepcopy(manifest),
+        records_by_role={
+            role: tuple(records_by_role[role])
+            for role in NON_LOCKBOX_ROLE_ORDER
+        },
+        split_assignment=split_assignment,
+        final_records=tuple(final_records),
+        final_sources=tuple(final_sources),
+        tracked_authority=tracked_authority,
+        restored_non_lockbox=ProductionNonLockboxArtifacts(
+            feature_caches=copy.deepcopy(restored.feature_caches),
+            ami_evidence=copy.deepcopy(restored.ami_evidence),
+            review_packet=copy.deepcopy(restored.review_packet),
+        ),
+        configuration=copy.deepcopy(validated_configuration),
+        environment_lock=copy.deepcopy(validated_environment),
+        feature_schema=copy.deepcopy(validated_feature_schema),
+        split_schema=copy.deepcopy(validated_split_schema),
+        model_seed=model_seed,
+        model_identity=copy.deepcopy(model_identity),
+        ami=copy.deepcopy(ami),
+    )
+
+
+def _validated_production_lockbox_plan(
+    plan: _ProductionLockboxPlan,
+) -> tuple[
+    dict[str, Any],
+    dict[str, tuple[Any, ...]],
+    tuple[Any, ...],
+    tuple[SourceByteIdentity, ...],
+    ProductionNonLockboxArtifacts,
+]:
+    from scripts import emotion_state_phase_b_evaluation as evaluation
+    from scripts.validate_emotion_state_002_phase_b import (
+        validate_persisted_lockbox_ami,
+    )
+
+    if type(plan) is not _ProductionLockboxPlan:
+        raise PublicMaterialPrerequisiteError(
+            "production lockbox plan capability changed"
+        )
+    (
+        configuration,
+        environment_lock,
+        feature_schema,
+        split_schema,
+    ) = _validated_non_lockbox_static_mappings(
+        configuration=plan.configuration,
+        environment_lock=plan.environment_lock,
+        feature_schema=plan.feature_schema,
+        split_schema=plan.split_schema,
+    )
+    manifest, records_by_role = _validated_production_role_algebra(
+        authorities=plan.authorities,
+        split_manifest=plan.split_manifest,
+    )
+    if (
+        manifest != plan.split_manifest
+        or records_by_role != plan.records_by_role
+    ):
+        raise PublicMaterialPrerequisiteError(
+            "production lockbox plan nonfinal authority changed"
+        )
+    final_records = evaluation.validated_final_lockbox_records(
+        plan.split_assignment
+    )
+    final_sources = _selected_final_audio_sources(
+        tracked_authority=plan.tracked_authority,
+        final_records=final_records,
+    )
+    if (
+        final_records != plan.final_records
+        or final_sources != plan.final_sources
+    ):
+        raise PublicMaterialPrerequisiteError(
+            "production lockbox plan final authority changed"
+        )
+    restored = restore_production_non_lockbox_artifacts(
+        authorities=plan.authorities,
+        split_manifest=manifest,
+        feature_caches=plan.restored_non_lockbox.feature_caches,
+        ami_evidence=plan.restored_non_lockbox.ami_evidence,
+        review_packet=plan.restored_non_lockbox.review_packet,
+        configuration=configuration,
+        environment_lock=environment_lock,
+        feature_schema=feature_schema,
+        split_schema=split_schema,
+    )
+    if restored != plan.restored_non_lockbox:
+        raise PublicMaterialPrerequisiteError(
+            "production lockbox plan nonfinal evidence changed"
+        )
+    configuration_sha256 = _canonical_digest(configuration)
+    model_seed = int(configuration_sha256[:8], 16)
+    model_identity = evaluation.frozen_model_identity(model_seed)
+    if (
+        model_seed != plan.model_seed
+        or model_identity != plan.model_identity
+    ):
+        raise PublicMaterialPrerequisiteError(
+            "production lockbox plan model identity changed"
+        )
+    try:
+        validated_ami = validate_persisted_lockbox_ami(
+            copy.deepcopy(plan.ami)
+        )
+    except (TypeError, ValueError) as error:
+        raise PublicMaterialPrerequisiteError(
+            f"production lockbox AMI projection is invalid: {error}"
+        ) from error
+    if validated_ami != plan.ami:
+        raise PublicMaterialPrerequisiteError(
+            "production lockbox AMI projection changed"
+        )
+    return (
+        configuration,
+        records_by_role,
+        final_records,
+        final_sources,
+        restored,
+    )
+
+
+def _evaluate_production_lockbox_plan(
+    plan: _ProductionLockboxPlan,
+    *,
+    read_verified_audio: Callable[[SourceByteIdentity], bytes],
+) -> ProductionLockboxArtifacts:
+    import numpy as np
+
+    from scripts import emotion_state_phase_b_evaluation as evaluation
+    from scripts.emotion_state_phase_b_features import (
+        FEATURE_NAMES,
+        extract_acoustic_features_bytes,
+    )
+
+    if not callable(read_verified_audio):
+        raise PublicMaterialPrerequisiteError(
+            "final audio byte-reader capability is required"
+        )
+    (
+        validated_configuration,
+        records_by_role,
+        final_records,
+        final_sources,
+        restored,
+    ) = _validated_production_lockbox_plan(plan)
+
+    final_features = []
+    for source in final_sources:
+        content = read_verified_audio(source)
+        if (
+            type(content) is not bytes
+            or len(content) != source.size_bytes
+            or _sha256(content) != source.sha256
+        ):
+            raise PublicMaterialPrerequisiteError(
+                "final audio bytes do not match sealed identity"
+            )
+        final_features.append(_exact_feature_values(
+            extract_acoustic_features_bytes(content)
+        ))
+
+    configuration_sha256 = _canonical_digest(validated_configuration)
+    nonfinal_partition_evidence = {
+        role: _partition_evidence_from_feature_cache(
+            role=role,
+            authority=plan.authorities[role],
+            records=records_by_role[role],
+            cache=restored.feature_caches[role],
+            configuration=validated_configuration,
+            environment_lock=plan.environment_lock,
+            feature_schema=plan.feature_schema,
+            split_schema=plan.split_schema,
+            model_identity=plan.model_identity,
+        )
+        for role in ("training_discovery", "calibration")
+    }
+    final_partition_evidence = evaluation.mint_partition_evidence(
+        partition_role="final_lockbox",
+        row_ids=tuple(
+            record.label_record.clip_stem for record in final_records
+        ),
+        actor_ids=tuple(
+            record.label_record.actor_id for record in final_records
+        ),
+        labels=np.asarray(
+            [record.label_record.label for record in final_records],
+            dtype="<U1",
+        ),
+        sentences=np.asarray(
+            [record.label_record.sentence_id for record in final_records],
+            dtype="<U3",
+        ),
+        features=np.asarray(
+            [
+                [features[name] for name in FEATURE_NAMES]
+                for features in final_features
+            ],
+            dtype=np.float64,
+        ),
+        upstream_acoustic_source_commitment_sha256=(
+            _acoustic_source_commitment("final_lockbox", final_records)
+        ),
+        split_assignment=plan.split_assignment,
+        configuration=validated_configuration,
+        environment_lock=plan.environment_lock,
+        feature_schema=plan.feature_schema,
+        split_schema=plan.split_schema,
+        model_identity=plan.model_identity,
+    )
+    fitted = evaluation.fit_frozen_models(
+        nonfinal_partition_evidence["training_discovery"],
+        plan.model_seed,
+    )
+    calibration_probability = evaluation.predict_probabilities(
+        fitted,
+        nonfinal_partition_evidence["calibration"],
+    )
+    thresholds = evaluation.calibrate_thresholds(
+        calibration_probability,
+        tuple(validated_configuration["coverage_targets"]),
+    )
+    final_probability = evaluation.predict_probabilities(
+        fitted,
+        final_partition_evidence,
+    )
+    final_evaluation = evaluation.evaluate_partition(
+        final_probability,
+        thresholds,
+    )
+    bootstrap = evaluation.paired_actor_bootstrap(
+        final_probability,
+        validated_configuration["bootstrap_resamples"],
+        int(configuration_sha256[:16], 16),
+    )
+    slices = _build_frozen_final_slice_mapping(
+        training_records=records_by_role["training_discovery"],
+        training_feature_cache=restored.feature_caches["training_discovery"],
+        final_records=final_records,
+        final_features=final_features,
+    )
+    slice_analysis = evaluation.mint_slice_analysis(
+        final_probability,
+        final_evaluation,
+        slices,
+    )
+    decision_evidence = evaluation.build_decision_evidence(
+        final_evaluation,
+        bootstrap,
+        slice_analysis,
+    )
+    return ProductionLockboxArtifacts(
+        decision_evidence=decision_evidence,
+        ami=copy.deepcopy(plan.ami),
     )

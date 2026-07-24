@@ -798,8 +798,14 @@ class PhaseBContractTests(unittest.TestCase):
                 self.assertIn(blocked_status, normalized)
                 self.assertNotIn(obsolete_pending_status, normalized)
 
-    def test_task_9_docs_state_production_lockbox_is_unavailable(self) -> None:
+    def test_task_11_docs_state_wired_lockbox_remains_unopened(self) -> None:
         boundary = (
+            "The production lockbox evaluator is wired but remains unopened. "
+            "Execute it only once after the exact implementation commit, clean "
+            "guarded ledger, source-silent admission, and independent review "
+            "are bound to the accepted Task 10 checkpoint."
+        )
+        obsolete = (
             "The production lockbox evaluator remains unavailable; "
             "authorization alone does not wire it."
         )
@@ -808,13 +814,31 @@ class PhaseBContractTests(unittest.TestCase):
         )
         heading = "### Explicit gate: final lockbox"
         lockbox_section = command_map.split(heading, 1)[1].split("\n### ", 1)[0]
-        self.assertIn(boundary, lockbox_section)
+        normalized_lockbox_section = " ".join(lockbox_section.split())
+        self.assertIn(boundary, normalized_lockbox_section)
+        self.assertNotIn(obsolete, normalized_lockbox_section)
+        for anchor in (
+            (
+                "`.tmp/emotion-state-002-phase-b-cut4b/"
+                "task-11-guarded-ledger.json`"
+            ),
+            "canonical UTF-8 LF JSON",
+            "`exit_code`, `stdout_sha256`, and `stderr_sha256`",
+            (
+                "lockbox --admission-sha256 "
+                "<admission-receipt-sha256> --guarded-ledger-sha256 "
+                "<guarded-ledger-sha256>"
+            ),
+        ):
+            self.assertIn(anchor, normalized_lockbox_section)
         protocol = (
             ROOT
             / "research/experiments/"
             "EMOTION-STATE-002-phase-b-public-data-feasibility.md"
         ).read_text(encoding="utf-8-sig")
-        self.assertIn(boundary, protocol)
+        normalized_protocol = " ".join(protocol.split())
+        self.assertIn(boundary, normalized_protocol)
+        self.assertNotIn(obsolete, normalized_protocol)
 
     def test_task_9_publication_cli_sections_fail_closed_without_state(
         self,
@@ -21160,6 +21184,46 @@ class ProductionNonLockboxBuilderTests(unittest.TestCase):
             ),
         )
 
+    def test_committed_ami_v2_cache_forms_a_valid_lockbox_projection(self) -> None:
+        from scripts.validate_emotion_state_002_phase_b import (
+            validate_lockbox_ami_input,
+        )
+
+        cache = self._task2_ami_cache()
+        authority = {
+            "meetings": deepcopy(cache["meetings"]),
+            "partition_membership": {
+                name: list(meetings)
+                for name, meetings in cache["partition_membership"]
+            },
+            "official_order": deepcopy(cache["official_order"]),
+        }
+        authority_sha256 = hashlib.sha256(
+            (
+                json.dumps(
+                    authority,
+                    sort_keys=True,
+                    ensure_ascii=False,
+                    allow_nan=False,
+                    separators=(",", ":"),
+                )
+                + "\n"
+            ).encode("utf-8")
+        ).hexdigest().upper()
+        lockbox_input = {
+            "schema_version": 1,
+            "ami": {
+                "aggregate": deepcopy(cache["aggregate"]),
+                "authority": authority,
+                "authority_sha256": authority_sha256,
+            },
+        }
+
+        self.assertEqual(
+            validate_lockbox_ami_input(deepcopy(lockbox_input)),
+            lockbox_input,
+        )
+
     def _task2_artifacts(self) -> Any:
         from scripts import emotion_state_phase_b_public_pipeline as pipeline
 
@@ -22388,7 +22452,538 @@ class ProductionNonLockboxBuilderTests(unittest.TestCase):
         self.assertEqual(artifacts, retained)
 
 
+class Task11ProductionLockboxBuilderTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls) -> None:
+        from scripts import emotion_state_phase_b_evaluation as evaluation
+        from scripts import emotion_state_phase_b_public_pipeline as pipeline
+
+        _Cut4ProductionShapeFixture.initialize()
+        cls.fixture = _Cut4ProductionShapeFixture
+        index_by_stem = {
+            stem: index for index, stem in enumerate(cls.fixture.all_stems)
+        }
+        final_audio: dict[Any, bytes] = {}
+        rebound_sources = []
+        for source in cls.fixture.audio_identities:
+            stem = Path(source.project_relative_path).stem
+            if (
+                stem in cls.fixture.eligible_stems
+                and cls.fixture.assignment[stem[:4]] == "final_lockbox"
+            ):
+                content = cls.fixture._pcm_bytes(index_by_stem[stem])
+                rebound = pipeline.SourceByteIdentity(
+                    project_relative_path=source.project_relative_path,
+                    sha256=hashlib.sha256(content).hexdigest().upper(),
+                    size_bytes=len(content),
+                )
+                final_audio[rebound] = content
+                rebound_sources.append(rebound)
+            else:
+                rebound_sources.append(source)
+        cls.final_audio = final_audio
+        cls.tracked_authority = replace(
+            cls.fixture.tracked_authority,
+            crema_audio=tuple(rebound_sources),
+        )
+
+        def validate_authority(evidence: Any) -> Any:
+            cls.fixture.validate_authority(evidence)
+            return cls.tracked_authority
+
+        with (
+            patch.object(
+                pipeline,
+                "validate_tracked_public_evidence",
+                side_effect=validate_authority,
+            ),
+            patch.object(
+                pipeline,
+                "validate_phase_b_input_ledger",
+                side_effect=cls.fixture.validate_ledger,
+            ),
+            patch.object(
+                pipeline,
+                "validate_crema_label_ledger",
+                side_effect=cls.fixture.validate_crema_ledger,
+            ),
+        ):
+            cls.preflight = pipeline.build_production_preflight_artifacts(
+                tracked_evidence=dict(cls.fixture.evidence),
+                finished_responses=cls.fixture.finished_responses,
+                summary_table=cls.fixture.summary_table,
+                configuration=deepcopy(cls.fixture.configuration),
+            )
+        cls.authorities = {
+            role: evaluation.restore_validated_partition_authority_cache(
+                cls.preflight.partition_authority_caches[role],
+                cls.preflight.split_manifest,
+                role=role,
+            )
+            for role in CUT4_NONFINAL_ROLES
+        }
+        source_commitment = (
+            pipeline.tracked_public_authority_commitment_sha256(
+                tracked_evidence=dict(cls.fixture.evidence),
+                authority=cls.tracked_authority,
+            )
+        )
+        if len(final_audio) != CUT4_ROLE_COUNTS["final_lockbox"]:
+            raise AssertionError("Task 11 final synthetic audio count changed")
+
+        def read_nonfinal(source: Any) -> bytes:
+            return cls.fixture.audio_bytes[source]
+
+        def read_ami(source: Any) -> bytes:
+            return cls.fixture.ami_bytes[source]
+
+        probe = cls.fixture.new_probe()
+        with cls.fixture.semantic_patches(probe):
+            cls.non_lockbox = pipeline.build_production_non_lockbox_artifacts(
+                authorities=dict(cls.authorities),
+                split_manifest=deepcopy(cls.preflight.split_manifest),
+                read_verified_audio=read_nonfinal,
+                read_verified_ami=read_ami,
+                tracked_evidence=dict(cls.fixture.evidence),
+                tracked_authority=cls.tracked_authority,
+                configuration=deepcopy(cls.fixture.configuration),
+                environment_lock=deepcopy(cls.fixture.environment_lock),
+                feature_schema=deepcopy(cls.fixture.feature_schema),
+                split_schema=deepcopy(cls.fixture.split_schema),
+            )
+        if any(
+            cache["tracked_public_authority_commitment_sha256"]
+            != source_commitment
+            for cache in cls.non_lockbox.feature_caches.values()
+        ):
+            raise AssertionError("Task 11 non-lockbox commitment changed")
+
+    def _prepare_plan(self, **changes: Any) -> Any:
+        from scripts import emotion_state_phase_b_public_pipeline as pipeline
+
+        values = {
+            "authorities": dict(self.authorities),
+            "split_manifest": deepcopy(self.preflight.split_manifest),
+            "feature_caches": deepcopy(self.non_lockbox.feature_caches),
+            "ami_evidence": deepcopy(self.non_lockbox.ami_evidence),
+            "review_packet": deepcopy(self.non_lockbox.review_packet),
+            "tracked_evidence": dict(self.fixture.evidence),
+            "tracked_authority": self.tracked_authority,
+            "finished_responses": self.fixture.finished_responses,
+            "summary_table": self.fixture.summary_table,
+            "configuration": deepcopy(self.fixture.configuration),
+            "environment_lock": deepcopy(self.fixture.environment_lock),
+            "feature_schema": deepcopy(self.fixture.feature_schema),
+            "split_schema": deepcopy(self.fixture.split_schema),
+        }
+        values.update(changes)
+
+        def validate_authority(evidence: Any) -> Any:
+            self.fixture.validate_authority(evidence)
+            return self.tracked_authority
+
+        with (
+            patch.object(
+                pipeline,
+                "validate_tracked_public_evidence",
+                side_effect=validate_authority,
+            ),
+            patch.object(
+                pipeline,
+                "validate_phase_b_input_ledger",
+                side_effect=self.fixture.validate_ledger,
+            ),
+            patch.object(
+                pipeline,
+                "validate_crema_label_ledger",
+                side_effect=self.fixture.validate_crema_ledger,
+            ),
+        ):
+            return pipeline._prepare_production_lockbox_plan(**values)
+
+    def test_pipeline_does_not_claim_runner_reservation_authority(
+        self,
+    ) -> None:
+        from scripts import emotion_state_phase_b_public_pipeline as pipeline
+
+        for public_name in (
+            "ProductionLockboxPlan",
+            "prepare_production_lockbox_plan",
+            "evaluate_production_lockbox_plan",
+            "build_production_lockbox_artifacts",
+        ):
+            self.assertFalse(
+                hasattr(pipeline, public_name),
+                f"public final-lockbox capability remains exposed: {public_name}",
+            )
+        self.assertTrue(
+            callable(
+                getattr(
+                    pipeline,
+                    "_evaluate_production_lockbox_plan",
+                    None,
+                )
+            )
+        )
+        self.assertNotIn(
+            "reservation_authority",
+            inspect.signature(
+                pipeline._prepare_production_lockbox_plan
+            ).parameters,
+        )
+        self.assertNotIn(
+            "reservation_authority",
+            inspect.signature(
+                pipeline._evaluate_production_lockbox_plan
+            ).parameters,
+        )
+        self.assertNotIn(
+            "reservation_authority",
+            {field.name for field in fields(pipeline._ProductionLockboxPlan)},
+        )
+        for name, value in vars(pipeline).items():
+            if (
+                name.startswith("_")
+                or "lockbox" not in name.lower()
+                or "non_lockbox" in name.lower()
+                or not callable(value)
+            ):
+                continue
+            try:
+                parameters = inspect.signature(value).parameters
+            except (TypeError, ValueError):
+                continue
+            self.assertNotIn(
+                "read_verified_audio",
+                parameters,
+                f"public final-audio callback remains exposed: {name}",
+            )
+        reads = []
+        with self.assertRaises((TypeError, ValueError)):
+            pipeline._evaluate_production_lockbox_plan(
+                object(),
+                read_verified_audio=lambda source: reads.append(source) or b"",
+            )
+        self.assertEqual(reads, [])
+
+    def test_builder_reads_exact_final_authority_and_mints_private_decision(
+        self,
+    ) -> None:
+        from scripts import emotion_state_phase_b_evaluation as evaluation
+        from scripts import emotion_state_phase_b_features as features
+        from scripts import emotion_state_phase_b_public_pipeline as pipeline
+        from scripts.validate_emotion_state_002_phase_b import (
+            EXPECTED_VALIDITY,
+            validate_persisted_lockbox_ami,
+        )
+
+        reads = []
+        extracted = []
+        feature_by_content = {
+            content: self.fixture._features_from_pcm_bytes(content)
+            for content in self.final_audio.values()
+        }
+
+        def read_final(source: Any) -> bytes:
+            reads.append(source)
+            if source not in self.final_audio:
+                raise AssertionError("Task 11 read a nonfinal or unknown WAV")
+            return self.final_audio[source]
+
+        def extract(content: bytes) -> dict[str, float]:
+            extracted.append(content)
+            return deepcopy(feature_by_content[content])
+
+        with (
+            patch.object(
+                features,
+                "extract_acoustic_features_bytes",
+                side_effect=extract,
+            ),
+        ):
+            plan = self._prepare_plan()
+            artifacts = (
+                pipeline._evaluate_production_lockbox_plan(
+                    plan,
+                    read_verified_audio=read_final,
+                )
+            )
+
+        self.assertIsInstance(
+            artifacts.decision_evidence,
+            evaluation.DecisionEvidence,
+        )
+        payload = artifacts.decision_evidence.to_payload()
+        self.assertEqual(payload["partition_role"], "final_lockbox")
+        self.assertTrue(payload["final_decision_eligible"])
+        self.assertEqual(
+            {
+                (
+                    model["unique_actor_count"],
+                    model["case_count"],
+                )
+                for model in payload["models"].values()
+            },
+            {(30, CUT4_ROLE_COUNTS["final_lockbox"])},
+        )
+        self.assertIn(
+            evaluation.decide_experiment(
+                artifacts.decision_evidence,
+                dict(EXPECTED_VALIDITY),
+            ),
+            {"keep_for_research_only", "revise", "discard"},
+        )
+        self.assertEqual(len(reads), CUT4_ROLE_COUNTS["final_lockbox"])
+        self.assertEqual(len(set(reads)), len(reads))
+        self.assertEqual(set(reads), set(self.final_audio))
+        self.assertEqual(Counter(extracted), Counter(self.final_audio.values()))
+        self.assertEqual(
+            validate_persisted_lockbox_ami(deepcopy(artifacts.ami)),
+            artifacts.ami,
+        )
+        self.assertEqual(set(artifacts.ami), {"aggregate", "authority_sha256"})
+
+    def test_plan_seals_exact_final_source_capability_before_evaluation(
+        self,
+    ) -> None:
+        from scripts import emotion_state_phase_b_public_pipeline as pipeline
+
+        plan = self._prepare_plan()
+        self.assertIs(type(plan), pipeline._ProductionLockboxPlan)
+        self.assertEqual(len(plan.final_sources), CUT4_ROLE_COUNTS["final_lockbox"])
+        self.assertEqual(len(set(plan.final_sources)), len(plan.final_sources))
+        self.assertEqual(set(plan.final_sources), set(self.final_audio))
+
+        reads = []
+        extracted = []
+        feature_by_content = {
+            content: self.fixture._features_from_pcm_bytes(content)
+            for content in self.final_audio.values()
+        }
+
+        def read_final(source: Any) -> bytes:
+            reads.append(source)
+            if source not in self.final_audio:
+                raise AssertionError("Task 11 exact capability admitted another WAV")
+            return self.final_audio[source]
+
+        def extract(content: bytes) -> dict[str, float]:
+            extracted.append(content)
+            return deepcopy(feature_by_content[content])
+
+        from scripts import emotion_state_phase_b_features as features
+
+        with patch.object(
+            features,
+            "extract_acoustic_features_bytes",
+            side_effect=extract,
+        ):
+            artifacts = (
+                pipeline._evaluate_production_lockbox_plan(
+                    plan,
+                    read_verified_audio=read_final,
+                )
+            )
+        self.assertIs(type(artifacts), pipeline.ProductionLockboxArtifacts)
+        self.assertEqual(tuple(reads), plan.final_sources)
+        self.assertEqual(Counter(extracted), Counter(self.final_audio.values()))
+
+    def test_plan_and_evaluator_fail_closed_before_any_final_read(
+        self,
+    ) -> None:
+        from scripts import emotion_state_phase_b_public_pipeline as pipeline
+
+        tampered_caches = deepcopy(self.non_lockbox.feature_caches)
+        feature_name = next(iter(
+            tampered_caches["training_discovery"]["records"][0]["features"]
+        ))
+        tampered_caches["training_discovery"]["records"][0]["features"][
+            feature_name
+        ] += 0.125
+        with self.assertRaises((TypeError, ValueError)):
+            self._prepare_plan(feature_caches=tampered_caches)
+
+        plan = self._prepare_plan()
+        nonfinal = next(
+            source
+            for source in self.tracked_authority.crema_audio
+            if source not in self.final_audio
+        )
+        forged = replace(
+            plan,
+            final_sources=(nonfinal, *plan.final_sources[1:]),
+        )
+        reads = []
+        with (
+            self.assertRaises((TypeError, ValueError)),
+            patch.object(
+                pipeline,
+                "_exact_feature_values",
+                side_effect=AssertionError("feature evaluation started"),
+            ),
+        ):
+            pipeline._evaluate_production_lockbox_plan(
+                forged,
+                read_verified_audio=lambda source: reads.append(source) or b"",
+            )
+        self.assertEqual(reads, [])
+
+    def test_plan_crosschecks_restored_checkpoint_against_tracked_authority(
+        self,
+    ) -> None:
+        from scripts import emotion_state_phase_b_public_pipeline as pipeline
+
+        original_restore = pipeline.restore_production_non_lockbox_artifacts
+
+        def drifted_restore(**kwargs: Any) -> Any:
+            restored = original_restore(**kwargs)
+            restored.review_packet[
+                "tracked_public_authority_commitment_sha256"
+            ] = "F" * 64
+            return restored
+
+        with (
+            patch.object(
+                pipeline,
+                "restore_production_non_lockbox_artifacts",
+                side_effect=drifted_restore,
+            ),
+            self.assertRaisesRegex(
+                pipeline.PublicMaterialPrerequisiteError,
+                "tracked-public|tracked public|commitment",
+            ),
+        ):
+            self._prepare_plan()
+
+    def test_rowless_ami_commitment_replays_from_retained_authority(
+        self,
+    ) -> None:
+        from scripts import run_emotion_state_002_phase_b as runner
+
+        plan = self._prepare_plan()
+        readback = runner._PersistedNonLockboxReadback(
+            feature_caches=(),
+            ami_evidence=deepcopy(self.non_lockbox.ami_evidence),
+            review_packet={},
+            files=(),
+        )
+        checkpoint = runner._LockboxCheckpointAuthority(
+            state={},
+            state_bytes=b"",
+            state_file=None,
+            split_manifest={},
+            authorities={},
+            non_lockbox_readback=readback,
+        )
+        self.assertEqual(
+            runner._validate_lockbox_ami_commitment_against_checkpoint(
+                plan.ami,
+                checkpoint=checkpoint,
+                production=True,
+            ),
+            plan.ami,
+        )
+        changed = deepcopy(plan.ami)
+        changed["authority_sha256"] = "F" * 64
+        with self.assertRaisesRegex(
+            runner.RunnerError,
+            "disagrees with retained cache",
+        ):
+            runner._validate_lockbox_ami_commitment_against_checkpoint(
+                changed,
+                checkpoint=checkpoint,
+                production=True,
+            )
+
+    def test_evaluator_runs_the_frozen_final_sequence_exactly_once(
+        self,
+    ) -> None:
+        from scripts import emotion_state_phase_b_evaluation as evaluation
+        from scripts import emotion_state_phase_b_features as features
+        from scripts import emotion_state_phase_b_public_pipeline as pipeline
+
+        plan = self._prepare_plan()
+        feature_by_content = {
+            content: self.fixture._features_from_pcm_bytes(content)
+            for content in self.final_audio.values()
+        }
+        originals = {
+            name: getattr(evaluation, name)
+            for name in (
+                "fit_frozen_models",
+                "predict_probabilities",
+                "calibrate_thresholds",
+                "evaluate_partition",
+                "paired_actor_bootstrap",
+                "mint_slice_analysis",
+                "build_decision_evidence",
+            )
+        }
+        patches = {
+            name: patch.object(evaluation, name, wraps=original)
+            for name, original in originals.items()
+        }
+        with (
+            patch.object(
+                features,
+                "extract_acoustic_features_bytes",
+                side_effect=lambda content: deepcopy(feature_by_content[content]),
+            ),
+            patches["fit_frozen_models"] as fit,
+            patches["predict_probabilities"] as predict,
+            patches["calibrate_thresholds"] as calibrate,
+            patches["evaluate_partition"] as evaluate,
+            patches["paired_actor_bootstrap"] as bootstrap,
+            patches["mint_slice_analysis"] as slice_analysis,
+            patches["build_decision_evidence"] as decision,
+        ):
+            pipeline._evaluate_production_lockbox_plan(
+                plan,
+                read_verified_audio=lambda source: self.final_audio[source],
+            )
+        self.assertGreaterEqual(fit.call_count, 1)
+        self.assertTrue(all(
+            call.args[0].to_payload()["partition_role"]
+            == "training_discovery"
+            and call.args[1] == plan.model_seed
+            for call in fit.call_args_list
+        ))
+        final_predict = [
+            call
+            for call in predict.call_args_list
+            if call.args[1].to_payload()["partition_role"] == "final_lockbox"
+        ]
+        final_evaluate = [
+            call
+            for call in evaluate.call_args_list
+            if call.args[0].to_payload()["partition_role"] == "final_lockbox"
+        ]
+        final_bootstrap = [
+            call
+            for call in bootstrap.call_args_list
+            if call.args[0].to_payload()["partition_role"] == "final_lockbox"
+        ]
+        final_slices = [
+            call
+            for call in slice_analysis.call_args_list
+            if call.args[0].to_payload()["partition_role"] == "final_lockbox"
+        ]
+        self.assertEqual(len(final_predict), 1)
+        self.assertGreaterEqual(calibrate.call_count, 1)
+        self.assertEqual(len(final_evaluate), 1)
+        self.assertEqual(len(final_bootstrap), 1)
+        self.assertEqual(
+            final_bootstrap[0].args[1],
+            self.fixture.configuration["bootstrap_resamples"],
+        )
+        self.assertEqual(len(final_slices), 1)
+        self.assertEqual(decision.call_count, 1)
+
+
 class ProductionNonLockboxExecutionTests(unittest.TestCase):
+    TASK11_REVIEWED_HEAD = "a" * 40
+    TASK11_GUARDED_LEDGER_SHA256 = "B" * 64
+
     @classmethod
     def setUpClass(cls) -> None:
         from scripts import run_emotion_state_002_phase_b as runner
@@ -22402,6 +22997,7 @@ class ProductionNonLockboxExecutionTests(unittest.TestCase):
         self.addCleanup(self.temporary.cleanup)
         self.case_root = Path(self.temporary.name)
         self.paths = self._make_paths(self.case_root / "primary")
+        self.task11_expected_admission_sha256: str | None = None
 
     def _require(self) -> None:
         self.fixture.require_builder_api(self)
@@ -22838,6 +23434,532 @@ class ProductionNonLockboxExecutionTests(unittest.TestCase):
         with self.fixture.runtime_patches(selected, self.runner, probe):
             state = self.runner.run_non_lockbox(selected)
         return state, probe
+
+    def _admit_task11(
+        self,
+        *,
+        paths: Any | None = None,
+        probe: SimpleNamespace | None = None,
+    ) -> dict[str, Any]:
+        selected = paths or self.paths
+        observed = probe or self.fixture.new_probe()
+        state = self.runner.load_state(selected, recover=False)
+        state_sha256 = hashlib.sha256(
+            self.runner.canonical_json_bytes(state)
+        ).hexdigest().upper()
+        with (
+            self._task11_source_silent_patches(observed),
+            patch.object(
+                self.runner,
+                "_validated_task11_repository_head",
+                return_value=self.TASK11_REVIEWED_HEAD,
+            ),
+            patch.object(
+                self.runner,
+                "_resolve_final_lockbox_result_path",
+                side_effect=AssertionError(
+                    "source-silent admission formed the final path"
+                ),
+            ),
+        ):
+            receipt = self.runner.admit_task11_lockbox(
+                selected,
+                reviewed_head=self.TASK11_REVIEWED_HEAD,
+                guarded_ledger_sha256=self.TASK11_GUARDED_LEDGER_SHA256,
+                expected_state_sha256=state_sha256,
+                expected_non_lockbox_packet_sha256=state[
+                    "non_lockbox_packet_sha256"
+                ],
+            )
+        self.task11_expected_admission_sha256 = hashlib.sha256(
+            selected.lockbox_admission_path.read_bytes()
+        ).hexdigest().upper()
+        return receipt
+
+    def _run_task11_production_transaction(
+        self,
+        artifact_builder: Callable[[Any, Any], Any],
+    ) -> dict[str, Any]:
+        self.assertIsNotNone(self.task11_expected_admission_sha256)
+        return self.runner._run_lockbox_transaction(
+            self.paths,
+            artifact_builder,
+            production=True,
+            allow_existing_test_input=False,
+            expected_admission_sha256=self.task11_expected_admission_sha256,
+            expected_guarded_ledger_sha256=(
+                self.TASK11_GUARDED_LEDGER_SHA256
+            ),
+        )
+
+    @classmethod
+    def _task11_recovery_artifacts(cls) -> Any:
+        from scripts import emotion_state_phase_b_features as features
+        from scripts import emotion_state_phase_b_public_pipeline as pipeline
+
+        retained = getattr(cls, "_cached_task11_recovery_artifacts", None)
+        if retained is None:
+            Task11ProductionLockboxBuilderTests.setUpClass()
+            case = Task11ProductionLockboxBuilderTests(
+                "test_builder_reads_exact_final_authority_and_mints_private_decision"
+            )
+            plan = case._prepare_plan()
+            feature_by_content = {
+                content: cls.fixture._features_from_pcm_bytes(content)
+                for content in case.final_audio.values()
+            }
+            with patch.object(
+                features,
+                "extract_acoustic_features_bytes",
+                side_effect=lambda content: deepcopy(
+                    feature_by_content[content]
+                ),
+            ):
+                retained = (
+                    pipeline._evaluate_production_lockbox_plan(
+                        plan,
+                        read_verified_audio=lambda source: case.final_audio[
+                            source
+                        ],
+                    )
+                )
+            cls._cached_task11_recovery_artifacts = retained
+        return pipeline.ProductionLockboxArtifacts(
+            decision_evidence=retained.decision_evidence,
+            ami=deepcopy(retained.ami),
+        )
+
+    def _seed_task11_completed_reservation_crash(self) -> Any:
+        self._prepare()
+        state, _initial_probe = self._run()
+        self.assertEqual(state["phase"], "non_lockbox_complete")
+        self._admit_task11()
+        artifacts = self._task11_recovery_artifacts()
+        probe = self.fixture.new_probe()
+        with (
+            self._task11_source_silent_patches(probe),
+            patch.object(
+                self.runner,
+                "_transition_lockbox_state_cas",
+                side_effect=self.runner.RunnerError(
+                    "synthetic crash after completed production reservation"
+                ),
+            ),
+            self.assertRaisesRegex(
+                self.runner.RunnerError,
+                "synthetic crash after completed production reservation",
+            ),
+        ):
+            self._run_task11_production_transaction(
+                lambda _checkpoint, _reservation_authority: artifacts,
+            )
+        self.assertEqual(probe.audio_reads, [])
+        self.assertEqual(probe.ami_reads, [])
+        self.assertEqual(probe.forbidden_calls, [])
+        self.assertEqual(
+            self.runner.load_state(self.paths, recover=False)["phase"],
+            "non_lockbox_complete",
+        )
+        self.assertEqual(
+            self.runner._load_reservation(
+                self.paths,
+                recover=False,
+            )["status"],
+            "completed",
+        )
+        return artifacts
+
+    @contextmanager
+    def _task11_source_silent_patches(
+        self,
+        probe: SimpleNamespace,
+    ):
+        from scripts import validate_emotion_state_002_phase_b as validator
+
+        def installed_identity() -> dict[str, Any]:
+            probe.state_calls.append("task11_installed_environment")
+            return deepcopy(self.fixture.environment_lock)
+
+        def forbidden(surface: str) -> Callable[..., Any]:
+            def call(*args: Any, **kwargs: Any) -> Any:
+                probe.forbidden_calls.append(surface)
+                raise AssertionError(
+                    f"Task 11 source-silent admission touched {surface}"
+                )
+            return call
+
+        with ExitStack() as stack:
+            stack.enter_context(self.fixture.semantic_patches(probe))
+            stack.enter_context(patch.object(
+                self.runner,
+                "validate_tracked_public_evidence",
+                side_effect=self.fixture.validate_authority,
+            ))
+            stack.enter_context(patch.object(
+                self.runner,
+                "validate_phase_b_input_ledger",
+                side_effect=self.fixture.validate_ledger,
+            ))
+            stack.enter_context(patch.object(
+                self.runner,
+                "_forbidden_credentials",
+                return_value=(),
+            ))
+            stack.enter_context(patch.object(
+                self.runner,
+                "_forbidden_network_configuration",
+                return_value=(),
+            ))
+            stack.enter_context(patch.object(
+                socket,
+                "create_connection",
+                forbidden("socket.create_connection"),
+            ))
+            stack.enter_context(patch.object(
+                socket.socket,
+                "connect",
+                forbidden("socket.socket.connect"),
+            ))
+            for module in (self.runner, validator):
+                stack.enter_context(patch.object(
+                    module,
+                    "validate_installed_environment_identity",
+                    side_effect=installed_identity,
+                ))
+            stack.enter_context(patch.object(
+                self.runner,
+                "_validated_task11_repository_head",
+                return_value=self.TASK11_REVIEWED_HEAD,
+            ))
+            yield
+
+    def test_task11_deep_admission_reserves_only_after_checkpoint_replay(
+        self,
+    ) -> None:
+        self._prepare()
+        state, initial_probe = self._run()
+        self.assertEqual(state["phase"], "non_lockbox_complete")
+        self.assertEqual(len(initial_probe.audio_reads), CUT4_NONFINAL_COUNT)
+        self._admit_task11()
+        probe = self.fixture.new_probe()
+        entries = []
+
+        def stop_after_reservation(
+            _checkpoint: Any,
+            reservation_authority: Any,
+        ) -> Any:
+            reservation = json.loads(
+                self.paths.lockbox_reservation_path.read_text(encoding="utf-8")
+            )
+            self.assertEqual(reservation["status"], "reserved")
+            self.assertEqual(
+                reservation_authority.transaction_id,
+                reservation["transaction_id"],
+            )
+            self.assertIs(
+                type(reservation_authority.reservation_file),
+                self.runner._HeldRegularFileAuthority,
+            )
+            self.runner._verify_held_regular_file_authority(
+                reservation_authority.reservation_file
+            )
+            self.assertEqual(
+                self.runner._read_held_regular_file_bytes(
+                    reservation_authority.reservation_file,
+                    maximum_bytes=4096,
+                ),
+                self.runner.canonical_json_bytes(reservation),
+            )
+            entries.append("reserved")
+            raise self.runner.RunnerError(
+                "synthetic stop after deep Task 11 admission"
+            )
+
+        with (
+            self._task11_source_silent_patches(probe),
+            self.assertRaisesRegex(
+                self.runner.RunnerError,
+                "synthetic stop after deep Task 11 admission",
+            ),
+        ):
+            self._run_task11_production_transaction(
+                stop_after_reservation,
+            )
+        self.assertEqual(entries, ["reserved"])
+        self.assertEqual(probe.audio_reads, [])
+        self.assertEqual(probe.ami_reads, [])
+        self.assertEqual(probe.forbidden_calls, [])
+        self.assertFalse(self.paths.lockbox_result_path.exists())
+        self.assertEqual(
+            json.loads(
+                self.paths.lockbox_reservation_path.read_text(encoding="utf-8")
+            )["status"],
+            "reserved",
+        )
+
+    def test_task11_requires_reviewed_admission_before_reservation(
+        self,
+    ) -> None:
+        self._prepare()
+        state, _initial_probe = self._run()
+        self.assertEqual(state["phase"], "non_lockbox_complete")
+        probe = self.fixture.new_probe()
+        entered = []
+        with (
+            self._task11_source_silent_patches(probe),
+            patch.object(
+                self.runner,
+                "_validated_task11_repository_head",
+                return_value=self.TASK11_REVIEWED_HEAD,
+            ),
+            self.assertRaisesRegex(
+                self.runner.RunnerError,
+                "Task 11 lockbox admission",
+            ),
+        ):
+            self.runner._run_lockbox_transaction(
+                self.paths,
+                lambda _checkpoint, _authority: entered.append("builder"),
+                production=True,
+                allow_existing_test_input=False,
+                expected_admission_sha256="A" * 64,
+                expected_guarded_ledger_sha256=(
+                    self.TASK11_GUARDED_LEDGER_SHA256
+                ),
+            )
+        self.assertEqual(entered, [])
+        self.assertFalse(self.paths.lockbox_reservation_path.exists())
+        self.assertFalse(self.paths.lockbox_result_path.exists())
+
+    def test_task11_source_silent_admission_binds_reviewed_identity(
+        self,
+    ) -> None:
+        self._prepare()
+        state, _initial_probe = self._run()
+        self.assertEqual(state["phase"], "non_lockbox_complete")
+        probe = self.fixture.new_probe()
+        receipt = self._admit_task11(probe=probe)
+        self.assertEqual(receipt["implementation_head"], self.TASK11_REVIEWED_HEAD)
+        self.assertEqual(
+            receipt["guarded_ledger_sha256"],
+            self.TASK11_GUARDED_LEDGER_SHA256,
+        )
+        self.assertEqual(
+            receipt["checkpoint_state_sha256"],
+            hashlib.sha256(
+                self.runner.canonical_json_bytes(state)
+            ).hexdigest().upper(),
+        )
+        self.assertEqual(
+            receipt["non_lockbox_packet_sha256"],
+            state["non_lockbox_packet_sha256"],
+        )
+        self.assertEqual(
+            json.loads(
+                self.paths.lockbox_admission_path.read_text(encoding="utf-8")
+            ),
+            receipt,
+        )
+        self.assertEqual(probe.audio_reads, [])
+        self.assertEqual(probe.ami_reads, [])
+        self.assertEqual(probe.forbidden_calls, [])
+        self.assertFalse(self.paths.lockbox_reservation_path.exists())
+        self.assertFalse(self.paths.lockbox_result_path.exists())
+
+    def test_task11_rejects_changed_admission_before_first_reservation(
+        self,
+    ) -> None:
+        self._prepare()
+        state, _initial_probe = self._run()
+        self.assertEqual(state["phase"], "non_lockbox_complete")
+        self._admit_task11()
+        receipt = json.loads(
+            self.paths.lockbox_admission_path.read_text(encoding="utf-8")
+        )
+        receipt["guarded_ledger_sha256"] = "C" * 64
+        self.paths.lockbox_admission_path.write_bytes(
+            self.runner.canonical_json_bytes(receipt)
+        )
+        probe = self.fixture.new_probe()
+        entered = []
+        with (
+            self._task11_source_silent_patches(probe),
+            self.assertRaisesRegex(
+                self.runner.RunnerError,
+                "admission authority changed",
+            ),
+        ):
+            self._run_task11_production_transaction(
+                lambda _checkpoint, _authority: entered.append("builder"),
+            )
+        self.assertEqual(entered, [])
+        self.assertFalse(self.paths.lockbox_reservation_path.exists())
+        self.assertFalse(self.paths.lockbox_result_path.exists())
+        self.assertEqual(probe.audio_reads, [])
+        self.assertEqual(probe.ami_reads, [])
+        self.assertEqual(probe.forbidden_calls, [])
+
+    def test_task11_deep_admission_rejects_tampered_cache_before_reservation(
+        self,
+    ) -> None:
+        self._prepare()
+        state, _initial_probe = self._run()
+        self.assertEqual(state["phase"], "non_lockbox_complete")
+        self._admit_task11()
+        cache_path = self.paths.non_lockbox_feature_cache_path(
+            "training_discovery"
+        )
+        cache_path.write_bytes(cache_path.read_bytes() + b" ")
+        probe = self.fixture.new_probe()
+        entered = []
+        with (
+            self._task11_source_silent_patches(probe),
+            self.assertRaisesRegex(
+                self.runner.RunnerError,
+                "checkpoint integrity|semantic replay|artifact",
+            ),
+        ):
+            self._run_task11_production_transaction(
+                lambda _checkpoint, _reservation_authority: entered.append(
+                    "builder"
+                ),
+            )
+        self.assertEqual(entered, [])
+        self.assertFalse(self.paths.lockbox_reservation_path.exists())
+        self.assertFalse(self.paths.lockbox_result_path.exists())
+        self.assertEqual(probe.audio_reads, [])
+        self.assertEqual(probe.ami_reads, [])
+        self.assertEqual(probe.forbidden_calls, [])
+
+    def test_task11_production_forward_recovery_rejects_ami_mismatch_source_silently(
+        self,
+    ) -> None:
+        self._seed_task11_completed_reservation_crash()
+        result = json.loads(
+            self.paths.lockbox_result_path.read_text(encoding="utf-8")
+        )
+        result["ami"]["authority_sha256"] = "F" * 64
+        result_bytes = self.runner.canonical_json_bytes(result)
+        self.paths.lockbox_result_path.write_bytes(result_bytes)
+        reservation = self.runner._load_reservation(
+            self.paths,
+            recover=False,
+        )
+        reservation["lockbox_result_sha256"] = hashlib.sha256(
+            result_bytes
+        ).hexdigest().upper()
+        self.paths.lockbox_reservation_path.write_bytes(
+            self.runner.canonical_json_bytes(reservation)
+        )
+
+        from scripts import emotion_state_phase_b_public_pipeline as pipeline
+
+        probe = self.fixture.new_probe()
+        entries = []
+        with (
+            self._task11_source_silent_patches(probe),
+            patch.object(
+                self.runner,
+                "_frozen_final_lockbox_public_source_reader",
+                side_effect=AssertionError("forward recovery formed final reader"),
+            ),
+            patch.object(
+                pipeline,
+                "_evaluate_production_lockbox_plan",
+                side_effect=AssertionError(
+                    "forward recovery invoked final evaluator"
+                ),
+            ),
+            self.assertRaisesRegex(
+                self.runner.RunnerError,
+                "AMI commitment disagrees with retained cache",
+            ),
+        ):
+            self._run_task11_production_transaction(
+                lambda _checkpoint, _authority: entries.append("builder"),
+            )
+        self.assertEqual(entries, [])
+        self.assertEqual(probe.audio_reads, [])
+        self.assertEqual(probe.ami_reads, [])
+        self.assertEqual(probe.forbidden_calls, [])
+        self.assertEqual(
+            self.runner.load_state(self.paths, recover=False)["phase"],
+            "non_lockbox_complete",
+        )
+
+    def test_task11_production_recovery_rejects_changed_admission_identity(
+        self,
+    ) -> None:
+        self._seed_task11_completed_reservation_crash()
+        receipt = json.loads(
+            self.paths.lockbox_admission_path.read_text(encoding="utf-8")
+        )
+        receipt["guarded_ledger_sha256"] = "C" * 64
+        self.paths.lockbox_admission_path.write_bytes(
+            self.runner.canonical_json_bytes(receipt)
+        )
+        probe = self.fixture.new_probe()
+        entries = []
+        with (
+            self._task11_source_silent_patches(probe),
+            self.assertRaisesRegex(
+                self.runner.RunnerError,
+                "admission.*reservation|admission authority changed",
+            ),
+        ):
+            self._run_task11_production_transaction(
+                lambda _checkpoint, _authority: entries.append("builder"),
+            )
+        self.assertEqual(entries, [])
+        self.assertEqual(probe.audio_reads, [])
+        self.assertEqual(probe.ami_reads, [])
+        self.assertEqual(probe.forbidden_calls, [])
+        self.assertEqual(
+            self.runner.load_state(self.paths, recover=False)["phase"],
+            "non_lockbox_complete",
+        )
+
+    def test_task11_production_recovery_and_complete_reentry_are_source_silent(
+        self,
+    ) -> None:
+        self._seed_task11_completed_reservation_crash()
+        probe = self.fixture.new_probe()
+        entries = []
+
+        def builder_bomb(_checkpoint: Any, _authority: Any) -> Any:
+            entries.append("builder")
+            raise AssertionError("recovery entered final builder")
+
+        from scripts import emotion_state_phase_b_public_pipeline as pipeline
+
+        with (
+            self._task11_source_silent_patches(probe),
+            patch.object(
+                self.runner,
+                "_frozen_final_lockbox_public_source_reader",
+                side_effect=AssertionError("recovery formed final reader"),
+            ),
+            patch.object(
+                pipeline,
+                "_evaluate_production_lockbox_plan",
+                side_effect=AssertionError("recovery invoked final evaluator"),
+            ),
+        ):
+            recovered = self._run_task11_production_transaction(
+                builder_bomb,
+            )
+            self.assertEqual(recovered["phase"], "lockbox_complete")
+            with self.assertRaisesRegex(
+                self.runner.RunnerError,
+                "already complete",
+            ):
+                self._run_task11_production_transaction(
+                    builder_bomb,
+                )
+        self.assertEqual(entries, [])
+        self.assertEqual(probe.audio_reads, [])
+        self.assertEqual(probe.ami_reads, [])
+        self.assertEqual(probe.forbidden_calls, [])
 
     @staticmethod
     def _output_paths(paths: Any) -> tuple[Path, ...]:
@@ -26128,7 +27250,15 @@ except runner.RunnerError as error:
         }
         self.assertEqual(
             resolver_callers,
-            {"_validate_lockbox_path", "lockbox_lock"},
+            {
+                "_validate_lockbox_path",
+                "_require_unopened_lockbox_output",
+                "_mint_and_persist_lockbox_result",
+                "_validate_completed_lockbox_result",
+            },
+        )
+        self.assertTrue(
+            all("lockbox" in name for name in resolver_callers)
         )
 
     def test_non_lockbox_is_byte_deterministic_across_two_fresh_roots(self) -> None:
@@ -26584,6 +27714,44 @@ class Task10ProductionPipelineTests(unittest.TestCase):
             ],
             r"^[0-9A-F]{64}$",
         )
+
+    def test_final_lockbox_records_require_the_private_split_lifecycle(
+        self,
+    ) -> None:
+        from scripts import emotion_state_phase_b_evaluation as evaluation
+
+        self.assertTrue(
+            hasattr(evaluation, "validated_final_lockbox_records"),
+            "missing private-lifecycle final-lockbox record accessor",
+        )
+        records = evaluation.validated_final_lockbox_records(
+            EvaluationTests.SPLIT_ASSIGNMENT
+        )
+        self.assertEqual(
+            len(records),
+            len(EvaluationTests.RECORDS_BY_ROLE["final_lockbox"]),
+        )
+        self.assertEqual(
+            {record.label_record.clip_stem for record in records},
+            {
+                record.clip_stem
+                for record in EvaluationTests.RECORDS_BY_ROLE["final_lockbox"]
+            },
+        )
+        self.assertEqual(
+            tuple(record.label_record.clip_stem for record in records),
+            tuple(sorted(
+                record.label_record.clip_stem for record in records
+            )),
+        )
+        self.assertEqual(
+            len({record.label_record.actor_id for record in records}),
+            30,
+        )
+        with self.assertRaises((TypeError, ValueError)):
+            evaluation.validated_final_lockbox_records(
+                EvaluationTests.SPLIT_ASSIGNMENT.to_payload()
+            )
 
     def test_partition_authority_derivation_requires_private_split_lifecycle(
         self,
@@ -28251,18 +29419,23 @@ class RunnerStateTests(unittest.TestCase):
         shutil.copy2(SPLIT_SCHEMA, self.split_schema_path)
         self.input_ledger = expected_phase_b_input_ledger()
         self.non_lockbox_packet = deepcopy(self.NON_LOCKBOX_PACKET)
-        self.lockbox_result = {
+        self.lockbox_ami_input = {
             "schema_version": 1,
-            "decision_evidence": deepcopy(self.DECISION_EVIDENCE),
             "ami": {
                 "aggregate": deepcopy(self.AMI_AGGREGATE),
                 "authority": deepcopy(self.AMI_AUTHORITY),
                 "authority_sha256": _canonical_digest(self.AMI_AUTHORITY),
             },
         }
-        self.lockbox_ami_input = {
+        self.lockbox_result = {
             "schema_version": 1,
-            "ami": deepcopy(self.lockbox_result["ami"]),
+            "decision_evidence": deepcopy(self.DECISION_EVIDENCE),
+            "ami": {
+                "aggregate": deepcopy(self.AMI_AGGREGATE),
+                "authority_sha256": self.lockbox_ami_input["ami"][
+                    "authority_sha256"
+                ],
+            },
         }
         self._write_json(self.lockbox_result_path, self.lockbox_ami_input)
         self.paths = self._paths()
@@ -29131,6 +30304,513 @@ runner.accept_receipt(paths, paths.receipt_path("accept.json"))
             )
         self.assertEqual(self._state_bytes(), before)
 
+    def _task11_transaction_artifacts(self) -> Any:
+        from scripts.emotion_state_phase_b_public_pipeline import (
+            ProductionLockboxArtifacts,
+        )
+
+        return ProductionLockboxArtifacts(
+            decision_evidence=self.DECISION_ARTIFACT,
+            ami=deepcopy(self.lockbox_result["ami"]),
+        )
+
+    def _task11_seed_transaction(self) -> bytes:
+        self._seed_intentionally_incomplete_non_lockbox_state_for_lifecycle_testing()
+        self.lockbox_result_path.unlink()
+        return self.paths.state_path.read_bytes()
+
+    def test_task11_transaction_reserves_before_builder_and_completes_once(
+        self,
+    ) -> None:
+        state_before = self._task11_seed_transaction()
+        entries = []
+
+        def build() -> Any:
+            reservation = json.loads(
+                self.paths.lockbox_reservation_path.read_text(encoding="utf-8")
+            )
+            self.assertEqual(reservation["status"], "reserved")
+            self.assertEqual(self.paths.state_path.read_bytes(), state_before)
+            self.assertFalse(self.lockbox_result_path.exists())
+            entries.append("builder")
+            return self._task11_transaction_artifacts()
+
+        self.assertTrue(
+            hasattr(self.runner, "_run_lockbox_transaction_for_testing"),
+            "missing Task 11 transaction harness",
+        )
+        state = self.runner._run_lockbox_transaction_for_testing(
+            self.paths,
+            build,
+        )
+        self.assertEqual(entries, ["builder"])
+        self.assertEqual(state["phase"], "lockbox_complete")
+        self.assertEqual(state["lockbox_open_count"], 1)
+        reservation = json.loads(
+            self.paths.lockbox_reservation_path.read_text(encoding="utf-8")
+        )
+        self.assertEqual(reservation["status"], "completed")
+        self.assertEqual(
+            reservation["lockbox_result_sha256"],
+            state["lockbox_result_sha256"],
+        )
+        persisted = json.loads(
+            self.lockbox_result_path.read_text(encoding="utf-8")
+        )
+        self.assertEqual(
+            set(persisted["ami"]),
+            {"aggregate", "authority_sha256"},
+        )
+        serialized_ami = json.dumps(
+            persisted["ami"],
+            sort_keys=True,
+            ensure_ascii=True,
+        )
+        for forbidden in (
+            '"authority"',
+            '"meeting_id"',
+            '"participant_id"',
+            '"timed_turns"',
+            '"dialogue_turns"',
+            '"dialogue_act"',
+        ):
+            self.assertNotIn(forbidden, serialized_ami)
+        with self.assertRaisesRegex(self.runner.RunnerError, "already"):
+            self.runner._run_lockbox_transaction_for_testing(
+                self.paths,
+                lambda: (_ for _ in ()).throw(
+                    AssertionError("one-use builder re-entered")
+                ),
+            )
+        self.assertEqual(entries, ["builder"])
+
+    def test_task11_reserved_authority_requires_durable_readback(self) -> None:
+        state_bytes = self._task11_seed_transaction()
+        state = self.runner.load_state(self.paths, recover=False)
+        checkpoint = self.runner._LockboxCheckpointAuthority(
+            state=deepcopy(state),
+            state_bytes=state_bytes,
+            state_file=None,
+            split_manifest=deepcopy(self.SPLIT_MANIFEST),
+            authorities=None,
+            non_lockbox_readback=None,
+        )
+        reserved = self.runner._reservation_payload(
+            state,
+            transaction_id="a" * 32,
+            status="reserved",
+            lockbox_result_sha256=self.runner.UNSET_DIGEST,
+            lockbox_decision_evidence_sha256=self.runner.UNSET_DIGEST,
+            lockbox_decision_evidence_mint_sha256=self.runner.UNSET_DIGEST,
+        )
+        with (
+            patch.object(
+                self.runner,
+                "_write_lockbox_reservation",
+                return_value=deepcopy(reserved),
+            ),
+            self.assertRaises(self.runner.RunnerError),
+        ):
+            with self.runner._held_reserved_lockbox_reservation(
+                self.paths,
+                checkpoint,
+                reserved,
+                admission_authority=None,
+                production=False,
+            ):
+                self.fail("synthetic reservation should lack durable bytes")
+        self.assertFalse(self.paths.lockbox_reservation_path.exists())
+
+    def test_task11_live_reserved_authority_rejects_replacement(self) -> None:
+        self._task11_seed_transaction()
+        observations = []
+
+        def replace_reservation(
+            checkpoint: Any,
+            authority: Any,
+        ) -> Any:
+            self.runner._require_live_reserved_lockbox_authority(
+                self.paths,
+                checkpoint,
+                authority,
+            )
+            current = self.runner._load_reservation(
+                self.paths,
+                recover=False,
+            )
+            replacement = self.runner._reservation_payload(
+                checkpoint.state,
+                transaction_id="b" * 32,
+                status="reserved",
+                lockbox_result_sha256=self.runner.UNSET_DIGEST,
+                lockbox_decision_evidence_sha256=self.runner.UNSET_DIGEST,
+                lockbox_decision_evidence_mint_sha256=(
+                    self.runner.UNSET_DIGEST
+                ),
+            )
+            self.assertNotEqual(
+                current["transaction_id"],
+                replacement["transaction_id"],
+            )
+            try:
+                self.runner._write_lockbox_reservation(
+                    self.paths,
+                    replacement,
+                )
+            except (OSError, self.runner.RunnerError):
+                observations.append("held")
+                raise self.runner.RunnerError(
+                    "synthetic stop after held reservation rejection"
+                )
+            with self.assertRaisesRegex(
+                self.runner.RunnerError,
+                "authority changed",
+            ):
+                self.runner._require_live_reserved_lockbox_authority(
+                    self.paths,
+                    checkpoint,
+                    authority,
+                )
+            observations.append("rejected")
+            raise self.runner.RunnerError(
+                "synthetic stop after stale reservation rejection"
+            )
+
+        with self.assertRaisesRegex(
+            self.runner.RunnerError,
+            "synthetic stop",
+        ):
+            self.runner._run_lockbox_transaction(
+                self.paths,
+                replace_reservation,
+                production=False,
+                allow_existing_test_input=False,
+            )
+        self.assertIn(observations, (["held"], ["rejected"]))
+        self.assertFalse(self.lockbox_result_path.exists())
+
+    def test_task11_persisted_ami_contract_rejects_row_authority(self) -> None:
+        from scripts.validate_emotion_state_002_phase_b import (
+            _canonical_digest,
+            validate_lockbox_result,
+        )
+
+        persisted = deepcopy(self.lockbox_result)
+        persisted["ami"] = {
+            "aggregate": deepcopy(self.AMI_AGGREGATE),
+            "authority_sha256": _canonical_digest(self.AMI_AUTHORITY),
+        }
+        self.assertEqual(validate_lockbox_result(deepcopy(persisted)), persisted)
+
+        leaked = deepcopy(persisted)
+        leaked["ami"]["authority"] = deepcopy(self.AMI_AUTHORITY)
+        with self.assertRaises((TypeError, ValueError)):
+            validate_lockbox_result(leaked)
+
+    def test_task11_reserved_failure_is_terminal_and_source_silent_on_retry(
+        self,
+    ) -> None:
+        self._task11_seed_transaction()
+        attempts = []
+
+        def fail_after_reservation() -> Any:
+            reservation = json.loads(
+                self.paths.lockbox_reservation_path.read_text(encoding="utf-8")
+            )
+            self.assertEqual(reservation["status"], "reserved")
+            attempts.append("entered")
+            raise self.runner.RunnerError("synthetic final evaluation failure")
+
+        with self.assertRaisesRegex(
+            self.runner.RunnerError,
+            "synthetic final evaluation failure",
+        ):
+            self.runner._run_lockbox_transaction_for_testing(
+                self.paths,
+                fail_after_reservation,
+            )
+        self.assertEqual(attempts, ["entered"])
+        self.assertFalse(self.lockbox_result_path.exists())
+        self.assertEqual(
+            json.loads(
+                self.paths.lockbox_reservation_path.read_text(encoding="utf-8")
+            )["status"],
+            "reserved",
+        )
+
+        recovered_targets = []
+        original_recover = self.runner._recover_output_replacement
+
+        def observe_recover(paths: Any, path: Path, **kwargs: Any) -> str:
+            recovered_targets.append(Path(path))
+            return original_recover(paths, path, **kwargs)
+
+        with (
+            patch.object(
+                self.runner,
+                "_recover_output_replacement",
+                side_effect=observe_recover,
+            ),
+            self.assertRaisesRegex(self.runner.RunnerError, "reserved"),
+        ):
+            self.runner._run_lockbox_transaction_for_testing(
+                self.paths,
+                lambda: (_ for _ in ()).throw(
+                    AssertionError("reserved transaction retried final sources")
+                ),
+            )
+        self.assertNotIn(self.lockbox_result_path, recovered_targets)
+        self.assertEqual(attempts, ["entered"])
+
+    def test_task11_completed_reservation_recovers_state_without_builder(
+        self,
+    ) -> None:
+        self._task11_seed_transaction()
+        with (
+            patch.object(
+                self.runner,
+                "_transition_lockbox_state_cas",
+                side_effect=self.runner.RunnerError(
+                    "synthetic crash after completed reservation"
+                ),
+            ),
+            self.assertRaisesRegex(
+                self.runner.RunnerError,
+                "synthetic crash after completed reservation",
+            ),
+        ):
+            self.runner._run_lockbox_transaction_for_testing(
+                self.paths,
+                self._task11_transaction_artifacts,
+            )
+        self.assertEqual(
+            self.runner.load_state(self.paths)["phase"],
+            "non_lockbox_complete",
+        )
+        self.assertEqual(
+            json.loads(
+                self.paths.lockbox_reservation_path.read_text(encoding="utf-8")
+            )["status"],
+            "completed",
+        )
+        self.assertTrue(self.lockbox_result_path.is_file())
+
+        recovered = self.runner._run_lockbox_transaction_for_testing(
+            self.paths,
+            lambda: (_ for _ in ()).throw(
+                AssertionError("completed transaction re-entered final sources")
+            ),
+        )
+        self.assertEqual(recovered["phase"], "lockbox_complete")
+        self.assertEqual(recovered["lockbox_open_count"], 1)
+
+    def test_task11_completed_recovery_holds_reservation_until_transition(
+        self,
+    ) -> None:
+        self._task11_seed_transaction()
+        with (
+            patch.object(
+                self.runner,
+                "_transition_lockbox_state_cas",
+                side_effect=self.runner.RunnerError(
+                    "synthetic crash after completed reservation"
+                ),
+            ),
+            self.assertRaisesRegex(
+                self.runner.RunnerError,
+                "synthetic crash after completed reservation",
+            ),
+        ):
+            self.runner._run_lockbox_transaction_for_testing(
+                self.paths,
+                self._task11_transaction_artifacts,
+            )
+        self.assertEqual(
+            self.runner.load_state(self.paths)["phase"],
+            "non_lockbox_complete",
+        )
+        original_validate = self.runner._validate_completed_lockbox_result
+        replacement_attempts: list[str] = []
+
+        def replace_after_validation(*args: Any, **kwargs: Any) -> Any:
+            validated = original_validate(*args, **kwargs)
+            replacement = self.paths.lockbox_reservation_path.with_name(
+                "lockbox-reservation-replacement.json"
+            )
+            replacement.write_bytes(
+                self.paths.lockbox_reservation_path.read_bytes()
+            )
+            try:
+                os.replace(
+                    replacement,
+                    self.paths.lockbox_reservation_path,
+                )
+            except PermissionError:
+                replacement_attempts.append("blocked")
+                replacement.unlink(missing_ok=True)
+            else:
+                replacement_attempts.append("replaced")
+            return validated
+
+        recovered: dict[str, Any] | None = None
+        failure: Exception | None = None
+        try:
+            with patch.object(
+                self.runner,
+                "_validate_completed_lockbox_result",
+                side_effect=replace_after_validation,
+            ):
+                recovered = self.runner._run_lockbox_transaction_for_testing(
+                    self.paths,
+                    lambda: (_ for _ in ()).throw(
+                        AssertionError(
+                            "completed recovery re-entered final sources"
+                        )
+                    ),
+                )
+        except self.runner.RunnerError as error:
+            failure = error
+
+        if replacement_attempts == ["blocked"]:
+            self.assertIsNone(failure)
+            self.assertIsNotNone(recovered)
+            self.assertEqual(recovered["phase"], "lockbox_complete")
+        else:
+            self.assertEqual(replacement_attempts, ["replaced"])
+            self.assertIsNotNone(failure)
+            self.assertRegex(
+                str(failure),
+                "held completed lockbox|reservation.*changed|authority",
+            )
+            self.assertEqual(
+                self.runner.load_state(self.paths)["phase"],
+                "non_lockbox_complete",
+            )
+
+    def test_task11_completed_reservation_rejects_changed_result(
+        self,
+    ) -> None:
+        self._task11_seed_transaction()
+        with (
+            patch.object(
+                self.runner,
+                "_transition_lockbox_state_cas",
+                side_effect=self.runner.RunnerError(
+                    "synthetic crash after completed reservation"
+                ),
+            ),
+            self.assertRaises(self.runner.RunnerError),
+        ):
+            self.runner._run_lockbox_transaction_for_testing(
+                self.paths,
+                self._task11_transaction_artifacts,
+            )
+        self.lockbox_result_path.write_bytes(
+            self.lockbox_result_path.read_bytes() + b" "
+        )
+        state_before = self.paths.state_path.read_bytes()
+        with self.assertRaisesRegex(self.runner.RunnerError, "digest|changed"):
+            self.runner._run_lockbox_transaction_for_testing(
+                self.paths,
+                lambda: (_ for _ in ()).throw(
+                    AssertionError("inconsistent completion retried final sources")
+                ),
+            )
+        self.assertEqual(self.paths.state_path.read_bytes(), state_before)
+
+    def test_task11_completed_recovery_revalidates_nonlockbox_predecessor(
+        self,
+    ) -> None:
+        self._task11_seed_transaction()
+        with (
+            patch.object(
+                self.runner,
+                "_transition_lockbox_state_cas",
+                side_effect=self.runner.RunnerError(
+                    "synthetic crash after completed reservation"
+                ),
+            ),
+            self.assertRaises(self.runner.RunnerError),
+        ):
+            self.runner._run_lockbox_transaction_for_testing(
+                self.paths,
+                self._task11_transaction_artifacts,
+            )
+        self.non_lockbox_packet_path.write_bytes(
+            self.non_lockbox_packet_path.read_bytes() + b" "
+        )
+        state_before = self.paths.state_path.read_bytes()
+        with self.assertRaisesRegex(
+            self.runner.RunnerError,
+            "packet.*changed|checkpoint",
+        ):
+            self.runner._run_lockbox_transaction_for_testing(
+                self.paths,
+                lambda: (_ for _ in ()).throw(
+                    AssertionError("completed recovery retried final sources")
+                ),
+            )
+        self.assertEqual(self.paths.state_path.read_bytes(), state_before)
+        self.assertEqual(
+            self.runner.load_state(self.paths)["phase"],
+            "non_lockbox_complete",
+        )
+
+    def test_task11_state_cas_rejects_builder_side_mutation_before_result(
+        self,
+    ) -> None:
+        self._task11_seed_transaction()
+
+        def mutate_state() -> Any:
+            state = self.runner.load_state(self.paths)
+            state["non_lockbox_packet_sha256"] = "F" * 64
+            self.paths.state_path.write_bytes(
+                self.runner.canonical_json_bytes(
+                    self.runner._validate_state(state)
+                )
+            )
+            return self._task11_transaction_artifacts()
+
+        with self.assertRaisesRegex(self.runner.RunnerError, "state.*changed|CAS"):
+            self.runner._run_lockbox_transaction_for_testing(
+                self.paths,
+                mutate_state,
+            )
+        self.assertFalse(self.lockbox_result_path.exists())
+        self.assertEqual(
+            json.loads(
+                self.paths.lockbox_reservation_path.read_text(encoding="utf-8")
+            )["status"],
+            "reserved",
+        )
+
+    def test_private_synthetic_helper_validates_evidence_only_after_reservation(
+        self,
+    ) -> None:
+        self._seed_intentionally_incomplete_non_lockbox_state_for_lifecycle_testing()
+        original = self.runner._validated_private_decision_evidence
+        observed = []
+
+        def validate_after_reservation(decision: Any) -> Any:
+            reservation = json.loads(
+                self.paths.lockbox_reservation_path.read_text(encoding="utf-8")
+            )
+            self.assertEqual(reservation["status"], "reserved")
+            observed.append("validated")
+            return original(decision)
+
+        with patch.object(
+            self.runner,
+            "_validated_private_decision_evidence",
+            side_effect=validate_after_reservation,
+        ):
+            state = self.runner._run_lockbox_with_private_evidence_for_testing(
+                self.paths,
+                self.DECISION_ARTIFACT,
+            )
+        self.assertEqual(observed, ["validated"])
+        self.assertEqual(state["phase"], "lockbox_complete")
+
     def test_aggregate_result_keeps_generated_inputs_out_of_input_root_validator(
         self,
     ) -> None:
@@ -29180,6 +30860,28 @@ runner.accept_receipt(paths, paths.receipt_path("accept.json"))
             ):
                 self.runner.build_aggregate_result(self.paths)
         self.assertEqual(self._state_bytes(), before)
+
+    def test_phase_b_result_accepts_the_committed_ami_v2_aggregate(
+        self,
+    ) -> None:
+        from scripts.validate_emotion_state_002_phase_b import (
+            _canonical_digest,
+            validate_phase_b_result,
+        )
+
+        self._advance_to_lockbox()
+        result = self.runner.build_aggregate_result(self.paths)
+        packet, _diagnostic, _ami = Task10PacketV4Tests._build_packet()
+        aggregate = deepcopy(packet["ami_aggregate"])
+        self.assertEqual(
+            aggregate["schema_id"],
+            "emotion-state-ami-mechanics-aggregate-v2",
+        )
+        result["lockbox"]["ami"]["aggregate"] = aggregate
+        result["lockbox"]["ami"]["aggregate_sha256"] = (
+            _canonical_digest(aggregate)
+        )
+        self.assertEqual(validate_phase_b_result(deepcopy(result)), result)
 
     def test_result_and_report_are_deterministic_and_bind_every_required_group(
         self,
@@ -29601,6 +31303,14 @@ runner.accept_receipt(paths, paths.receipt_path("accept.json"))
         for payload, validator in contracts:
             validator(deepcopy(payload))
             for path in PhaseBContractTests._scalar_paths(payload):
+                if (
+                    validator is validate_lockbox_result
+                    and path[:2] == ("ami", "aggregate")
+                ):
+                    # The rowless result validator checks the published shape.
+                    # Exact values are rebound to the retained AMI authority by
+                    # the runner during mint and completed forward recovery.
+                    continue
                 mutated = deepcopy(payload)
                 current = PhaseBContractTests._value_at(mutated, path)
                 PhaseBContractTests._replace_at(
@@ -30574,6 +32284,121 @@ runner.accept_receipt(paths, paths.receipt_path("accept.json"))
         with self.assertRaisesRegex(self.runner.RunnerError, "metadata"):
             self.runner.run_preflight(metadata_paths)
 
+    def test_task11_repository_identity_uses_three_fixed_clean_git_reads(
+        self,
+    ) -> None:
+        reviewed_head = "a" * 40
+        calls = []
+        outputs = {
+            ("git", "rev-parse", "--show-toplevel"): (
+                f"{self.root}\n".encode("utf-8")
+            ),
+            ("git", "rev-parse", "--verify", "HEAD"): (
+                f"{reviewed_head}\n".encode("ascii")
+            ),
+            (
+                "git",
+                "status",
+                "--porcelain=v1",
+                "--untracked-files=all",
+            ): b"",
+        }
+
+        def run(command: Any, **kwargs: Any) -> Any:
+            command = tuple(command)
+            calls.append((command, kwargs))
+            return SimpleNamespace(
+                returncode=0,
+                stdout=outputs[command],
+                stderr=b"",
+            )
+
+        with (
+            patch.dict(
+                os.environ,
+                {
+                    "GIT_DIR": "forbidden",
+                    "HTTPS_PROXY": "http://forbidden.invalid",
+                },
+            ),
+            patch.object(self.runner.subprocess, "run", side_effect=run),
+        ):
+            self.assertEqual(
+                self.runner._validated_task11_repository_head(self.paths),
+                reviewed_head,
+            )
+        self.assertEqual(tuple(command for command, _ in calls), tuple(outputs))
+        self.assertEqual(len(calls), 3)
+        for _command, kwargs in calls:
+            self.assertIs(kwargs["shell"], False)
+            self.assertEqual(kwargs["cwd"], Path(self.paths.project_root))
+            self.assertEqual(kwargs["env"]["GIT_LFS_SKIP_SMUDGE"], "1")
+            self.assertEqual(kwargs["env"]["GIT_OPTIONAL_LOCKS"], "0")
+            self.assertEqual(kwargs["env"]["GIT_TERMINAL_PROMPT"], "0")
+            self.assertNotIn("GIT_DIR", kwargs["env"])
+            self.assertNotIn("HTTPS_PROXY", kwargs["env"])
+        outputs[
+            (
+                "git",
+                "status",
+                "--porcelain=v1",
+                "--untracked-files=all",
+            )
+        ] = b"?? unreviewed.py\n"
+        with (
+            patch.object(self.runner.subprocess, "run", side_effect=run),
+            self.assertRaisesRegex(
+                self.runner.RunnerError,
+                "clean reviewed checkout",
+            ),
+        ):
+            self.runner._validated_task11_repository_head(self.paths)
+
+    def test_task11_cli_requires_complete_admission_identity(self) -> None:
+        arguments = self.runner.parse_args([
+            "admit-lockbox",
+            "--reviewed-head",
+            "a" * 40,
+            "--guarded-ledger-sha256",
+            "B" * 64,
+            "--expected-state-sha256",
+            "C" * 64,
+            "--expected-non-lockbox-packet-sha256",
+            "D" * 64,
+        ])
+        self.assertEqual(arguments.phase, "admit-lockbox")
+        lockbox_arguments = self.runner.parse_args([
+            "lockbox",
+            "--admission-sha256",
+            "E" * 64,
+            "--guarded-ledger-sha256",
+            "B" * 64,
+        ])
+        self.assertEqual(lockbox_arguments.phase, "lockbox")
+        self.assertEqual(lockbox_arguments.admission_sha256, "E" * 64)
+        self.assertEqual(
+            lockbox_arguments.guarded_ledger_sha256,
+            "B" * 64,
+        )
+        with self.assertRaises(SystemExit):
+            self.runner.parse_args([
+                "admit-lockbox",
+                "--reviewed-head",
+                "a" * 40,
+            ])
+        with self.assertRaises(SystemExit):
+            self.runner.parse_args([
+                "lockbox",
+                "--guarded-ledger-sha256",
+                "B" * 64,
+            ])
+        with self.assertRaises(SystemExit):
+            self.runner.parse_args([
+                "preflight",
+                "--admission-sha256",
+                "E" * 64,
+            ])
+
     def test_second_review_lockbox_authority_requires_private_mint(
         self,
     ) -> None:
@@ -30607,7 +32432,11 @@ runner.accept_receipt(paths, paths.receipt_path("accept.json"))
             self.runner.RunnerError,
             "private.*mint|evaluator.*not wired",
         ):
-            self.runner.run_lockbox(self.paths)
+            self.runner.run_lockbox(
+                self.paths,
+                expected_admission_sha256="E" * 64,
+                expected_guarded_ledger_sha256="B" * 64,
+            )
         self.assertFalse(self.paths.lockbox_reservation_path.exists())
         self.assertEqual(
             self.runner.load_state(self.paths)["phase"],
@@ -30635,7 +32464,7 @@ runner.accept_receipt(paths, paths.receipt_path("accept.json"))
             self.lockbox_result_path,
             {
                 "schema_version": 1,
-                "ami": deepcopy(self.lockbox_result["ami"]),
+                "ami": deepcopy(self.lockbox_ami_input["ami"]),
             },
         )
         self._seed_intentionally_incomplete_non_lockbox_state_for_lifecycle_testing()
@@ -30683,9 +32512,18 @@ runner.accept_receipt(paths, paths.receipt_path("accept.json"))
                 deepcopy(self.DECISION_EVIDENCE)
             )
         direct = object.__new__(type(self.DECISION_ARTIFACT))
-        with self.assertRaisesRegex(
-            self.runner.RunnerError,
-            "private DecisionEvidence mint",
+        with (
+            patch.object(
+                self.runner,
+                "_validated_private_decision_evidence",
+                side_effect=AssertionError(
+                    "completed lockbox inspected supplied private evidence"
+                ),
+            ),
+            self.assertRaisesRegex(
+                self.runner.RunnerError,
+                "already complete",
+            ),
         ):
             self.runner._run_lockbox_with_private_evidence_for_testing(
                 self.paths,
