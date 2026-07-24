@@ -342,8 +342,9 @@ class PhaseCEventIdentityTests(unittest.TestCase):
         )
         with self.assertRaises(PhaseCContractError):
             validate_phase_c_event_watermark(malformed)
-        with self.assertRaises(PhaseCContractError):
+        with self.assertRaises(PhaseCContractError) as caught:
             validate_phase_c_event_watermark("not-a-watermark")  # type: ignore[arg-type]
+        self.assertEqual(caught.exception.code, "event_watermark_type")
 
 
 class PhaseCIdentityHardeningTests(unittest.TestCase):
