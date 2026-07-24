@@ -5,15 +5,27 @@ from typing import Any, Mapping
 from scripts.emotion_state_phase_c_contracts import (
     PhaseCContractError,
     PhaseCFrameFoldV1,
+    PhaseCHysteresisV1,
+    PhaseCProjectionContextV1,
+    PhaseCReplayV1,
     PhaseCSignalAccumulatorV1,
     PhaseCSyntheticEvidenceAtomV1,
     PhaseCSyntheticEvidenceFrameV1,
+    PhaseCTemporalSessionStateV1,
+    canonical_json_bytes,
+    initial_phase_c_watermark,
+    sha256_bytes,
+    validate_phase_c_event_identity,
     validate_phase_c_atom,
     validate_phase_c_frame,
     validate_phase_c_frame_fold,
+    validate_phase_c_hysteresis,
     validate_phase_c_policy,
+    validate_phase_c_perceived_state,
     validate_phase_c_seen_independence_keys,
     validate_phase_c_signal_accumulator,
+    validate_phase_c_temporal_state,
+    _phase_c_output_expected,
 )
 
 
@@ -346,3 +358,242 @@ def fold_frame_support(
     )
     validate_phase_c_frame_fold(fold, frame, validated_policy)
     return fold
+
+
+def _empty_hysteresis(policy: Mapping[str, Any]) -> PhaseCHysteresisV1:
+    return PhaseCHysteresisV1(
+        internal_incumbent=None,
+        incumbent_tenure=0,
+        entry_confirmation_keys_by_signal=tuple(
+            (signal, ()) for signal in policy["canonical_signal_order"]
+        ),
+        switch_challenger=None,
+        switch_confirmation_keys=(),
+        release_streak=0,
+    )
+
+
+def _append_or_clear(streak: tuple[str, ...], key: str | None) -> tuple[str, ...]:
+    if key is None:
+        return ()
+    return (*streak, key) if key not in streak else (key,)
+
+
+def update_hysteresis(
+    previous_state: PhaseCTemporalSessionStateV1 | None,
+    fold: PhaseCFrameFoldV1,
+    frame: PhaseCSyntheticEvidenceFrameV1,
+    policy: Mapping[str, Any],
+) -> PhaseCHysteresisV1:
+    validated_policy = _validated_policy(policy)
+    validate_phase_c_frame(frame, validated_policy)
+    validate_phase_c_frame_fold(fold, frame, validated_policy)
+    if previous_state is not None:
+        validate_phase_c_temporal_state(previous_state, validated_policy)
+    signals = tuple(validated_policy["canonical_signal_order"])
+    signal_index = {signal: index for index, signal in enumerate(signals)}
+    nets = dict(fold.accumulator.capped_net_support)
+    keys = dict(fold.confirming_keys_by_signal)
+    previous = _empty_hysteresis(validated_policy) if previous_state is None else previous_state.hysteresis
+    entry = {signal: tuple(keys_) for signal, keys_ in previous.entry_confirmation_keys_by_signal}
+    switch_challenger = previous.switch_challenger
+    switch_keys = previous.switch_confirmation_keys
+    release_streak = previous.release_streak
+    incumbent = previous.internal_incumbent
+    ranked = sorted(signals, key=lambda signal: (-nets[signal], signal_index[signal]))
+    top = ranked[0]
+    top_tied = len(signals) > 1 and nets[ranked[1]] == nets[top]
+
+    def new_key(signal: str) -> str | None:
+        return keys[signal][0] if keys[signal] else None
+
+    if incumbent is None:
+        switch_challenger = None
+        switch_keys = ()
+        release_streak = 0
+        if top_tied or nets[top] < validated_policy["entry_threshold"]:
+            entry = {signal: () for signal in signals}
+            next_incumbent = None
+        else:
+            entry = {signal: entry[signal] if signal == top else () for signal in signals}
+            entry[top] = _append_or_clear(entry[top], new_key(top))
+            explicit_now = any(
+                atom.operational_signal == top
+                and atom.direction == "supports"
+                and atom.independence_key in keys[top]
+                and atom.evidence_class == validated_policy["explicit_entry_evidence_class"]
+                and (
+                    validated_policy["base_support_units"][atom.evidence_class]
+                    * validated_policy["quality_multipliers"][atom.quality_bucket]
+                ) // validated_policy["scale"] > 0
+                for atom in frame.evidence_atoms
+            )
+            required = (
+                validated_policy["confirmation_counts"]["explicit_statement_entry"]
+                if explicit_now
+                else validated_policy["confirmation_counts"]["entry"]
+            )
+            if len(entry[top]) >= required:
+                next_incumbent = top
+                entry = {signal: () for signal in signals}
+            else:
+                next_incumbent = None
+    elif nets[incumbent] < validated_policy["release_threshold"]:
+        entry = {signal: () for signal in signals}
+        switch_challenger = None
+        switch_keys = ()
+        release_streak += 1
+        if release_streak >= validated_policy["confirmation_counts"]["release"]:
+            next_incumbent = None
+            release_streak = 0
+        else:
+            next_incumbent = incumbent
+    else:
+        entry = {signal: () for signal in signals}
+        release_streak = 0
+        challengers = sorted(
+            (signal for signal in signals if signal != incumbent),
+            key=lambda signal: (-nets[signal], signal_index[signal]),
+        )
+        challenger = challengers[0]
+        tied = len(challengers) > 1 and nets[challengers[1]] == nets[challenger]
+        qualified = (
+            not tied
+            and nets[challenger] >= validated_policy["switch_threshold"]
+            and nets[challenger] - nets[incumbent] >= validated_policy["minimum_switch_advantage"]
+        )
+        if not qualified:
+            switch_challenger = None
+            switch_keys = ()
+            next_incumbent = incumbent
+        else:
+            if switch_challenger != challenger:
+                switch_keys = ()
+            key = new_key(challenger)
+            switch_keys = _append_or_clear(switch_keys, key)
+            if key is None:
+                next_incumbent = incumbent
+                switch_challenger = None
+            elif len(switch_keys) >= validated_policy["confirmation_counts"]["switch"]:
+                next_incumbent = challenger
+                switch_challenger = None
+                switch_keys = ()
+            else:
+                next_incumbent = incumbent
+                switch_challenger = challenger
+
+    tenure = (
+        0 if next_incumbent is None else
+        1 if next_incumbent != incumbent else
+        previous.incumbent_tenure + 1
+    )
+    result = PhaseCHysteresisV1(
+        internal_incumbent=next_incumbent,
+        incumbent_tenure=tenure,
+        entry_confirmation_keys_by_signal=tuple((signal, entry[signal]) for signal in signals),
+        switch_challenger=switch_challenger if next_incumbent is not None else None,
+        switch_confirmation_keys=switch_keys if next_incumbent is not None else (),
+        release_streak=release_streak if next_incumbent is not None else 0,
+    )
+    validate_phase_c_hysteresis(result, validated_policy)
+    return result
+
+
+def project_perceived_customer_state(
+    session_state: PhaseCTemporalSessionStateV1,
+    context: PhaseCProjectionContextV1,
+    policy: Mapping[str, Any],
+) -> dict[str, Any]:
+    validated_policy = _validated_policy(policy)
+    validate_phase_c_temporal_state(session_state, validated_policy)
+    if type(context) is not PhaseCProjectionContextV1:
+        raise PhaseCContractError("projection_context_type")
+    validate_phase_c_frame_fold(context.fold, context.frame, validated_policy)
+    return _phase_c_output_expected(session_state, context, validated_policy)
+
+
+def replay_validated_frames(
+    frames: tuple[PhaseCSyntheticEvidenceFrameV1, ...],
+    policy: Mapping[str, Any],
+) -> PhaseCReplayV1:
+    validated_policy = _validated_policy(policy)
+    if type(frames) is not tuple or not frames:
+        raise PhaseCContractError("replay_frames")
+    for frame in frames:
+        validate_phase_c_frame(frame, validated_policy)
+    first = frames[0]
+    identities = (first.call_session_id, first.campaign_profile_id, first.campaign_profile_version)
+    if any((frame.call_session_id, frame.campaign_profile_id, frame.campaign_profile_version) != identities for frame in frames):
+        raise PhaseCContractError("replay_identity")
+    if any(frame.input_revision != 0 for frame in frames):
+        raise PhaseCContractError("replay_correction_not_supported")
+    if any(later.turn_sequence <= earlier.turn_sequence for earlier, later in zip(frames, frames[1:])):
+        raise PhaseCContractError("replay_turn_sequence")
+    turn_ids = tuple(frame.turn_id for frame in frames)
+    event_ids = tuple(frame.event_id for frame in frames)
+    refs = tuple(atom.evidence_ref for frame in frames for atom in frame.evidence_atoms)
+    if len(set(turn_ids)) != len(turn_ids) or len(set(event_ids)) != len(event_ids) or len(set(refs)) != len(refs):
+        raise PhaseCContractError("replay_duplicate_identity")
+    watermark = initial_phase_c_watermark(first)
+    previous: PhaseCTemporalSessionStateV1 | None = None
+    states: list[PhaseCTemporalSessionStateV1] = []
+    outputs: list[dict[str, Any]] = []
+    seen_keys: frozenset[str] = frozenset()
+    seen_refs: tuple[str, ...] = ()
+    for frame in frames:
+        watermark = validate_phase_c_event_identity(frame, watermark)
+        fold = fold_frame_support(
+            None if previous is None else previous.accumulator,
+            frame,
+            validated_policy,
+            seen_keys,
+        )
+        hysteresis = update_hysteresis(previous, fold, frame, validated_policy)
+        accepted_frames = (frame,) if previous is None else (*previous.accepted_frames, frame)
+        history = (
+            (frame.event_id, fold.accepted_evidence_refs, fold.accepted_independence_keys),
+        ) if previous is None else (*previous.evidence_history_by_event, (frame.event_id, fold.accepted_evidence_refs, fold.accepted_independence_keys))
+        seen_refs = (*seen_refs, *fold.accepted_evidence_refs)
+        provisional = PhaseCTemporalSessionStateV1(
+            schema_version="PhaseCTemporalSessionStateV1",
+            policy_id=validated_policy["policy_id"],
+            policy_sha256=sha256_bytes(canonical_json_bytes(dict(validated_policy))),
+            call_session_id=frame.call_session_id,
+            campaign_profile_id=frame.campaign_profile_id,
+            campaign_profile_version=frame.campaign_profile_version,
+            watermark=watermark,
+            accepted_frames=accepted_frames,
+            evidence_history_by_event=history,
+            accumulator=fold.accumulator,
+            hysteresis=hysteresis,
+            seen_evidence_refs=seen_refs,
+            seen_independence_keys=tuple((*seen_keys, *fold.accepted_independence_keys)),
+            retired_independence_keys=(),
+            contributing_evidence_refs=fold.contributing_evidence_refs,
+            accepted_turn_count=len(accepted_frames),
+            last_emitted_selected_signal=None if previous is None else previous.last_emitted_selected_signal,
+            last_emitted_selected_support=None if previous is None else previous.last_emitted_selected_support,
+        )
+        validate_phase_c_temporal_state(provisional, validated_policy)
+        context = PhaseCProjectionContextV1(
+            provisional.last_emitted_selected_signal,
+            provisional.last_emitted_selected_support,
+            fold,
+            frame,
+        )
+        output = project_perceived_customer_state(provisional, context, validated_policy)
+        selected = output["selected_policy_signal"]
+        final = PhaseCTemporalSessionStateV1(
+            **{
+                **provisional.__dict__,
+                "last_emitted_selected_signal": None if selected == "none" else selected,
+                "last_emitted_selected_support": None if selected == "none" else dict(fold.accumulator.capped_net_support)[selected],
+            },
+        )
+        validate_phase_c_perceived_state(output, final, context, validated_policy)
+        validate_phase_c_temporal_state(final, validated_policy)
+        previous = final
+        seen_keys = frozenset(final.seen_independence_keys)
+        states.append(final)
+        outputs.append(output)
+    return PhaseCReplayV1(final_state=states[-1], states=tuple(states), outputs=tuple(outputs))

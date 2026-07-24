@@ -27,6 +27,10 @@ class PhaseCEventRejected(PhaseCContractError):
     pass
 
 
+class PhaseCOutputSemanticError(PhaseCContractError):
+    pass
+
+
 @dataclass(frozen=True)
 class PhaseCSyntheticEvidenceAtomV1:
     schema_version: str
@@ -102,6 +106,53 @@ class PhaseCEventWatermarkV1:
     last_input_revision_by_turn: tuple[tuple[str, int], ...]
     seen_event_ids: frozenset[str]
     event_history_by_id: tuple[tuple[str, str, int], ...]
+
+
+@dataclass(frozen=True)
+class PhaseCProjectionContextV1:
+    prior_emitted_selected_signal: str | None
+    prior_emitted_selected_support: int | None
+    fold: PhaseCFrameFoldV1
+    frame: PhaseCSyntheticEvidenceFrameV1
+
+
+@dataclass(frozen=True)
+class PhaseCHysteresisV1:
+    internal_incumbent: str | None
+    incumbent_tenure: int
+    entry_confirmation_keys_by_signal: tuple[tuple[str, tuple[str, ...]], ...]
+    switch_challenger: str | None
+    switch_confirmation_keys: tuple[str, ...]
+    release_streak: int
+
+
+@dataclass(frozen=True)
+class PhaseCTemporalSessionStateV1:
+    schema_version: str
+    policy_id: str
+    policy_sha256: str
+    call_session_id: str
+    campaign_profile_id: str
+    campaign_profile_version: str
+    watermark: PhaseCEventWatermarkV1
+    accepted_frames: tuple[PhaseCSyntheticEvidenceFrameV1, ...]
+    evidence_history_by_event: tuple[tuple[str, tuple[str, ...], tuple[str, ...]], ...]
+    accumulator: PhaseCSignalAccumulatorV1
+    hysteresis: PhaseCHysteresisV1
+    seen_evidence_refs: tuple[str, ...]
+    seen_independence_keys: tuple[str, ...]
+    retired_independence_keys: tuple[str, ...]
+    contributing_evidence_refs: tuple[str, ...]
+    accepted_turn_count: int
+    last_emitted_selected_signal: str | None
+    last_emitted_selected_support: int | None
+
+
+@dataclass(frozen=True)
+class PhaseCReplayV1:
+    final_state: PhaseCTemporalSessionStateV1
+    states: tuple[PhaseCTemporalSessionStateV1, ...]
+    outputs: tuple[dict[str, Any], ...]
 
 
 @dataclass(frozen=True)
@@ -2390,3 +2441,333 @@ def validate_phase_c_event_identity(
             for event_id, (turn_id, revision) in history_by_id.items()
         )),
     )
+
+
+def _phase_c_entry_map(policy: Mapping[str, Any]) -> tuple[tuple[str, tuple[str, ...]], ...]:
+    return tuple((signal, ()) for signal in policy["canonical_signal_order"])
+
+
+def validate_phase_c_hysteresis(
+    hysteresis: PhaseCHysteresisV1,
+    policy: Mapping[str, Any],
+) -> None:
+    validate_phase_c_policy(policy)
+    if type(hysteresis) is not PhaseCHysteresisV1:
+        raise PhaseCContractError("hysteresis_type")
+    signals = tuple(policy["canonical_signal_order"])
+    entries = hysteresis.entry_confirmation_keys_by_signal
+    if (
+        type(entries) is not tuple
+        or len(entries) != len(signals)
+        or any(type(item) is not tuple or len(item) != 2 for item in entries)
+        or tuple(item[0] for item in entries) != signals
+        or any(
+            type(keys) is not tuple
+            or len(keys) >= policy["confirmation_counts"]["entry"]
+            or len(keys) != len(set(keys))
+            or any(type(key) is not str for key in keys)
+            for _, keys in entries
+        )
+    ):
+        raise PhaseCContractError("hysteresis_entry_map")
+    if hysteresis.internal_incumbent is not None and (
+        type(hysteresis.internal_incumbent) is not str
+        or hysteresis.internal_incumbent not in signals
+    ):
+        raise PhaseCContractError("hysteresis_incumbent")
+    if type(hysteresis.incumbent_tenure) is not int or hysteresis.incumbent_tenure < 0:
+        raise PhaseCContractError("hysteresis_tenure")
+    if type(hysteresis.switch_challenger) is not (str if hysteresis.switch_challenger is not None else type(None)):
+        raise PhaseCContractError("hysteresis_switch")
+    if hysteresis.switch_challenger is not None and hysteresis.switch_challenger not in signals:
+        raise PhaseCContractError("hysteresis_switch")
+    if (
+        type(hysteresis.switch_confirmation_keys) is not tuple
+        or len(hysteresis.switch_confirmation_keys) >= policy["confirmation_counts"]["switch"]
+        or len(hysteresis.switch_confirmation_keys) != len(set(hysteresis.switch_confirmation_keys))
+        or any(type(key) is not str for key in hysteresis.switch_confirmation_keys)
+        or type(hysteresis.release_streak) is not int
+        or hysteresis.release_streak < 0
+        or hysteresis.release_streak >= policy["confirmation_counts"]["release"]
+    ):
+        raise PhaseCContractError("hysteresis_switch")
+    if hysteresis.internal_incumbent is None:
+        if (
+            hysteresis.incumbent_tenure != 0
+            or hysteresis.switch_challenger is not None
+            or hysteresis.switch_confirmation_keys
+            or hysteresis.release_streak != 0
+        ):
+            raise PhaseCContractError("hysteresis_cross_field")
+    elif (
+        hysteresis.incumbent_tenure == 0
+        or any(keys for _, keys in entries)
+        or (hysteresis.switch_challenger is None and bool(hysteresis.switch_confirmation_keys))
+    ):
+        raise PhaseCContractError("hysteresis_cross_field")
+
+
+def validate_phase_c_temporal_state(
+    state: PhaseCTemporalSessionStateV1,
+    policy: Mapping[str, Any],
+) -> None:
+    validate_phase_c_policy(policy)
+    if type(state) is not PhaseCTemporalSessionStateV1:
+        raise PhaseCContractError("temporal_state_type")
+    if (
+        state.schema_version != "PhaseCTemporalSessionStateV1"
+        or state.policy_id != policy["policy_id"]
+        or state.policy_sha256 != sha256_bytes(canonical_json_bytes(dict(policy)))
+    ):
+        raise PhaseCContractError("temporal_state_identity")
+    for value in (state.call_session_id, state.campaign_profile_id, state.campaign_profile_version):
+        _require_opaque_identifier(value)
+    validate_phase_c_event_watermark(state.watermark)
+    validate_phase_c_signal_accumulator(state.accumulator, policy)
+    validate_phase_c_hysteresis(state.hysteresis, policy)
+    tuple_fields = (
+        state.accepted_frames, state.evidence_history_by_event, state.seen_evidence_refs,
+        state.seen_independence_keys, state.retired_independence_keys,
+        state.contributing_evidence_refs,
+    )
+    if any(type(value) is not tuple for value in tuple_fields):
+        raise PhaseCContractError("temporal_state_collections")
+    if type(state.accepted_turn_count) is not int or state.accepted_turn_count < 0:
+        raise PhaseCContractError("temporal_state_counter")
+    if state.accepted_turn_count != len(state.accepted_frames):
+        raise PhaseCContractError("temporal_state_counter")
+    for frame in state.accepted_frames:
+        validate_phase_c_frame(frame, policy)
+    if any(
+        type(row) is not tuple or len(row) != 3 or type(row[0]) is not str
+        or type(row[1]) is not tuple or type(row[2]) is not tuple
+        for row in state.evidence_history_by_event
+    ) or tuple(row[0] for row in state.evidence_history_by_event) != tuple(frame.event_id for frame in state.accepted_frames):
+        raise PhaseCContractError("temporal_state_history")
+    if any(type(value) is not str for value in (*state.seen_evidence_refs, *state.seen_independence_keys, *state.retired_independence_keys, *state.contributing_evidence_refs)):
+        raise PhaseCContractError("temporal_state_collections")
+    if state.last_emitted_selected_signal is None:
+        if state.last_emitted_selected_support is not None:
+            raise PhaseCContractError("temporal_state_emission")
+    elif (
+        state.last_emitted_selected_signal not in policy["canonical_signal_order"]
+        or type(state.last_emitted_selected_support) is not int
+        or state.last_emitted_selected_support < 0
+    ):
+        raise PhaseCContractError("temporal_state_emission")
+
+
+def _phase_c_output_expected(
+    session_state: PhaseCTemporalSessionStateV1,
+    context: PhaseCProjectionContextV1,
+    policy: Mapping[str, Any],
+) -> dict[str, Any]:
+    signals = tuple(policy["canonical_signal_order"])
+    modalities = tuple(policy["canonical_modality_order"])
+    nets = dict(context.fold.accumulator.capped_net_support)
+    visible = [signal for signal in signals if nets[signal] >= policy["visibility_threshold"]]
+    reasons: list[str] = []
+    if context.fold.accumulator.contradictory_signals:
+        reasons.append("contradictory_evidence")
+    if context.fold.low_audio_quality_only:
+        reasons.append("low_audio_quality")
+    if context.fold.missing_input:
+        reasons.append("missing_input")
+    candidate = session_state.hysteresis.internal_incumbent
+    candidate_visible = candidate is not None and candidate in visible
+    if candidate is None or not candidate_visible:
+        reasons.append("insufficient_evidence")
+    reason_order = tuple(policy["abstention_reason_order"])
+    reasons = sorted(set(reasons), key=reason_order.index)
+    abstained = bool(reasons)
+    selected = "none" if abstained else candidate
+    emitted = (
+        [selected] + [f"possible_{signal}" for signal in visible if signal != selected]
+        if selected != "none"
+        else [f"possible_{signal}" for signal in visible] or ["none"]
+    )
+    provenance_source = {
+        signal: {
+            direction: dict(modality_rows)
+            for direction, modality_rows in directions
+        }
+        for signal, directions in context.fold.accumulator.modality_refs_by_signal_direction
+    }
+    quality_source = {
+        signal: dict(rows)
+        for signal, rows in context.fold.accumulator.highest_quality_by_signal_direction
+    }
+    confidence: dict[str, float] = {}
+    provenance: dict[str, dict[str, list[str]]] = {}
+    refs: list[str] = []
+    live_qualities: list[str] = []
+    live_modalities: set[str] = set()
+    for emitted_signal in emitted:
+        if emitted_signal == "none":
+            continue
+        signal = emitted_signal.removeprefix("possible_")
+        confidence[emitted_signal] = nets[signal] / policy["scale"]
+        modality_map: dict[str, list[str]] = {}
+        for modality in modalities:
+            modality_refs = [
+                reference
+                for direction in policy["canonical_direction_order"]
+                for reference in provenance_source[signal][direction][modality]
+            ]
+            if modality_refs:
+                modality_map[modality] = modality_refs
+                live_modalities.add(modality)
+                for reference in modality_refs:
+                    if reference not in refs:
+                        refs.append(reference)
+        provenance[emitted_signal] = modality_map
+        for direction in policy["canonical_direction_order"]:
+            if any(provenance_source[signal][direction][modality] for modality in modalities):
+                quality = quality_source[signal][direction]
+                if quality is not None:
+                    live_qualities.append(quality)
+    if selected == "none":
+        bucket = "low"
+    elif nets[selected] >= policy["confidence_bucket_thresholds"]["high"]:
+        bucket = "high"
+    elif nets[selected] >= policy["confidence_bucket_thresholds"]["medium"]:
+        bucket = "medium"
+    else:
+        bucket = "low"
+    if not refs:
+        quality = "low_quality" if context.fold.low_audio_quality_only else "insufficient"
+    elif live_qualities and all(value in {"low", "unusable"} for value in live_qualities):
+        quality = "low_quality"
+    elif live_modalities == {"text"}:
+        quality = "text_only"
+    elif live_modalities == {"acoustic"}:
+        quality = "acoustic_only"
+    elif live_modalities == {"dialogue"}:
+        quality = "low_quality"
+    else:
+        quality = "multimodal"
+    if context.fold.accumulator.contradictory_signals:
+        trajectory = "contradictory"
+    elif (
+        abstained
+        or context.prior_emitted_selected_signal is None
+        or selected != context.prior_emitted_selected_signal
+    ):
+        trajectory = "insufficient_history"
+    else:
+        delta = nets[selected] - context.prior_emitted_selected_support
+        if abs(delta) < policy["trajectory_delta_threshold"]:
+            trajectory = "stable"
+        elif selected == "interest":
+            trajectory = "improving" if delta > 0 else "worsening"
+        else:
+            trajectory = "worsening" if delta > 0 else "improving"
+    allowed = (
+        ["preserve"]
+        if abstained or quality == "acoustic_only"
+        else list(policy["allowed_effects_by_signal"][selected])
+    )
+    return {
+        "call_session_id": context.frame.call_session_id,
+        "campaign_profile_id": context.frame.campaign_profile_id,
+        "campaign_profile_version": context.frame.campaign_profile_version,
+        "turn_id": context.frame.turn_id,
+        "turn_sequence": context.frame.turn_sequence,
+        "valence_estimate": "not_inferable",
+        "activation_estimate": "not_inferable",
+        "engagement_estimate": "not_inferable",
+        "operational_signals": emitted,
+        "confidence_by_signal": confidence,
+        "selected_policy_signal": selected,
+        "selected_signal_confidence_bucket": bucket,
+        "overall_evidence_quality": quality,
+        "trajectory": trajectory,
+        "evidence_refs": refs,
+        "signal_provenance_by_modality": provenance,
+        "allowed_policy_effects": allowed,
+        "blocked_policy_effects": list(policy["blocked_effect_order"]),
+        "abstained": abstained,
+        "abstention_reasons": reasons,
+        "evidence_policy_version": policy["evidence_policy_version"],
+        "runtime_approved": False,
+    }
+
+
+def validate_phase_c_perceived_state(
+    payload: object,
+    session_state: PhaseCTemporalSessionStateV1,
+    context: PhaseCProjectionContextV1,
+    policy: Mapping[str, Any],
+) -> dict[str, Any]:
+    if type(payload) is not dict:
+        raise PhaseCOutputSemanticError("perceived_not_object")
+    validate_phase_c_policy(policy)
+    if type(session_state) is not PhaseCTemporalSessionStateV1 or type(context) is not PhaseCProjectionContextV1:
+        raise PhaseCOutputSemanticError("perceived_field_type")
+    if set(payload) != PERCEIVED_STATE_FIELDS:
+        raise PhaseCOutputSemanticError("perceived_field_set")
+    string_fields = (
+        "call_session_id", "campaign_profile_id", "campaign_profile_version", "turn_id",
+        "valence_estimate", "activation_estimate", "engagement_estimate",
+        "selected_policy_signal", "selected_signal_confidence_bucket",
+        "overall_evidence_quality", "trajectory", "evidence_policy_version",
+    )
+    if (
+        any(type(payload[field]) is not str for field in string_fields)
+        or type(payload["turn_sequence"]) is not int
+        or type(payload["operational_signals"]) is not list
+        or type(payload["confidence_by_signal"]) is not dict
+        or type(payload["evidence_refs"]) is not list
+        or type(payload["signal_provenance_by_modality"]) is not dict
+        or type(payload["allowed_policy_effects"]) is not list
+        or type(payload["blocked_policy_effects"]) is not list
+        or type(payload["abstained"]) is not bool
+        or type(payload["abstention_reasons"]) is not list
+        or type(payload["runtime_approved"]) is not bool
+    ):
+        raise PhaseCOutputSemanticError("perceived_field_type")
+    if any(payload[field] != getattr(context.frame, field) for field in ("call_session_id", "campaign_profile_id", "campaign_profile_version", "turn_id", "turn_sequence",)):
+        raise PhaseCOutputSemanticError("perceived_identity")
+    if any(value != "not_inferable" for value in (payload["valence_estimate"], payload["activation_estimate"], payload["engagement_estimate"])):
+        raise PhaseCOutputSemanticError("inferable_estimate")
+    if payload["runtime_approved"] is not False:
+        raise PhaseCOutputSemanticError("runtime_approved")
+    if any(type(reason) is not str or reason not in policy["emitted_abstention_reasons"] for reason in payload["abstention_reasons"]):
+        raise PhaseCOutputSemanticError("forbidden_abstention_reason")
+    expected = _phase_c_output_expected(session_state, context, policy)
+    selected = expected["selected_policy_signal"]
+    selected_support = (
+        None if selected == "none"
+        else dict(context.fold.accumulator.capped_net_support)[selected]
+    )
+    if (
+        session_state.last_emitted_selected_signal
+        != (None if selected == "none" else selected)
+        or session_state.last_emitted_selected_support != selected_support
+    ):
+        raise PhaseCOutputSemanticError("signal_projection")
+    if payload["operational_signals"] != expected["operational_signals"] or payload["selected_policy_signal"] != expected["selected_policy_signal"]:
+        raise PhaseCOutputSemanticError("signal_projection")
+    if payload["confidence_by_signal"] != expected["confidence_by_signal"]:
+        raise PhaseCOutputSemanticError("confidence_projection")
+    if payload["selected_signal_confidence_bucket"] != expected["selected_signal_confidence_bucket"]:
+        raise PhaseCOutputSemanticError("confidence_bucket")
+    if payload["signal_provenance_by_modality"] != expected["signal_provenance_by_modality"]:
+        raise PhaseCOutputSemanticError("provenance_projection")
+    if payload["evidence_refs"] != expected["evidence_refs"]:
+        raise PhaseCOutputSemanticError("evidence_ref_union")
+    if payload["overall_evidence_quality"] != expected["overall_evidence_quality"]:
+        raise PhaseCOutputSemanticError("evidence_quality")
+    if payload["trajectory"] != expected["trajectory"]:
+        raise PhaseCOutputSemanticError("trajectory")
+    if payload["allowed_policy_effects"] != expected["allowed_policy_effects"]:
+        raise PhaseCOutputSemanticError("allowed_effects")
+    if payload["blocked_policy_effects"] != expected["blocked_policy_effects"]:
+        raise PhaseCOutputSemanticError("blocked_effects")
+    if payload["abstained"] != expected["abstained"] or payload["abstention_reasons"] != expected["abstention_reasons"]:
+        raise PhaseCOutputSemanticError("abstention_semantics")
+    try:
+        validate_perceived_customer_state(payload)
+    except EmotionStateContractError as exc:
+        raise PhaseCOutputSemanticError("base_perceived_state_contract") from exc
+    return payload
