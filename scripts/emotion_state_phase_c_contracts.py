@@ -2497,12 +2497,25 @@ def validate_phase_c_hysteresis(
             or hysteresis.switch_challenger is not None
             or hysteresis.switch_confirmation_keys
             or hysteresis.release_streak != 0
+            or sum(bool(keys) for _, keys in entries) > 1
         ):
             raise PhaseCContractError("hysteresis_cross_field")
     elif (
         hysteresis.incumbent_tenure == 0
         or any(keys for _, keys in entries)
         or (hysteresis.switch_challenger is None and bool(hysteresis.switch_confirmation_keys))
+        or (
+            hysteresis.switch_challenger is not None
+            and not hysteresis.switch_confirmation_keys
+        )
+        or hysteresis.switch_challenger == hysteresis.internal_incumbent
+        or (
+            hysteresis.release_streak != 0
+            and (
+                hysteresis.switch_challenger is not None
+                or bool(hysteresis.switch_confirmation_keys)
+            )
+        )
     ):
         raise PhaseCContractError("hysteresis_cross_field")
 
@@ -2729,28 +2742,45 @@ def validate_phase_c_perceived_state(
         or type(payload["runtime_approved"]) is not bool
     ):
         raise PhaseCOutputSemanticError("perceived_field_type")
+    string_list_fields = (
+        "operational_signals",
+        "evidence_refs",
+        "allowed_policy_effects",
+        "blocked_policy_effects",
+        "abstention_reasons",
+    )
+    if (
+        any(
+            any(type(value) is not str for value in payload[field])
+            for field in string_list_fields
+        )
+        or any(
+            type(key) is not str or type(value) is not float
+            for key, value in payload["confidence_by_signal"].items()
+        )
+        or any(
+            type(signal) is not str
+            or type(modality_map) is not dict
+            or any(
+                type(modality) is not str
+                or type(references) is not list
+                or any(type(reference) is not str for reference in references)
+                for modality, references in modality_map.items()
+            )
+            for signal, modality_map in payload[
+                "signal_provenance_by_modality"
+            ].items()
+        )
+    ):
+        raise PhaseCOutputSemanticError("perceived_field_type")
     if any(payload[field] != getattr(context.frame, field) for field in ("call_session_id", "campaign_profile_id", "campaign_profile_version", "turn_id", "turn_sequence",)):
         raise PhaseCOutputSemanticError("perceived_identity")
     if any(value != "not_inferable" for value in (payload["valence_estimate"], payload["activation_estimate"], payload["engagement_estimate"])):
         raise PhaseCOutputSemanticError("inferable_estimate")
     if payload["runtime_approved"] is not False:
         raise PhaseCOutputSemanticError("runtime_approved")
-    if any(type(reason) is not str or reason not in policy["emitted_abstention_reasons"] for reason in payload["abstention_reasons"]):
+    if any(reason not in policy["emitted_abstention_reasons"] for reason in payload["abstention_reasons"]):
         raise PhaseCOutputSemanticError("forbidden_abstention_reason")
-    if any(type(key) is not str or type(value) is not float for key, value in payload["confidence_by_signal"].items()):
-        raise PhaseCOutputSemanticError("confidence_projection")
-    if any(
-        type(signal) is not str
-        or type(modality_map) is not dict
-        or any(
-            type(modality) is not str
-            or type(references) is not list
-            or any(type(reference) is not str for reference in references)
-            for modality, references in modality_map.items()
-        )
-        for signal, modality_map in payload["signal_provenance_by_modality"].items()
-    ):
-        raise PhaseCOutputSemanticError("provenance_projection")
     expected = _phase_c_output_expected(session_state, context, policy)
     selected = expected["selected_policy_signal"]
     selected_support = (

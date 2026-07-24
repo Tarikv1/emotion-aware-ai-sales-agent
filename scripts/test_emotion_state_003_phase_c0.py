@@ -2970,7 +2970,7 @@ class PhaseCTaskFiveBoundaryCorrectionTests(PhaseCTestCase):
             "same_signal_contradiction", "low_quality_acoustic_abstains", "empty_frame_missing_input",
             "release_after_two_below_threshold", "switch_after_two_confirmations", "entry_tie_abstains",
             "incumbent_survives_unqualified_challenger", "dialogue_only_low_quality", "support_saturation",
-            "opposition_below_contradiction_threshold",
+            "opposition_below_contradiction_threshold", "canonical_replay_bytes",
         )
         for case_id in applicable:
             scenario = self.case(case_id)
@@ -2984,6 +2984,10 @@ class PhaseCTaskFiveBoundaryCorrectionTests(PhaseCTestCase):
                     self.assertEqual(actual_state.hysteresis.switch_confirmation_keys, frozen.switch_confirmation_keys)
                     self.assertEqual(actual_state.hysteresis.release_streak, frozen.release_streak)
                     self.assertEqual(actual_state.hysteresis.incumbent_tenure, frozen.incumbent_tenure)
+                    self.assertEqual(
+                        canonical_json_bytes(actual_output),
+                        expected.expected_output_bytes,
+                    )
                     for field in ("confidence_by_signal", "signal_provenance_by_modality", "evidence_refs", "overall_evidence_quality", "trajectory", "abstention_reasons"):
                         self.assertEqual(actual_output[field], frozen_output[field])
 
@@ -3084,10 +3088,435 @@ class PhaseCTaskFiveBoundaryCorrectionTests(PhaseCTestCase):
         payload, state, context = self._projection_fixture()
         nested_key = StringSubclass("confusion")
         cases = (
-            ("confidence_projection", dict(payload, confidence_by_signal={nested_key: 0.8, "possible_interest": 0.2})),
-            ("confidence_projection", dict(payload, confidence_by_signal={"confusion": 0.8, "possible_interest": 0})),
-            ("provenance_projection", dict(payload, signal_provenance_by_modality={nested_key: payload["signal_provenance_by_modality"]["confusion"], "possible_interest": payload["signal_provenance_by_modality"]["possible_interest"]})),
+            ("perceived_field_type", dict(payload, confidence_by_signal={nested_key: 0.8, "possible_interest": 0.2})),
+            ("perceived_field_type", dict(payload, confidence_by_signal={"confusion": 0.8, "possible_interest": 0})),
+            ("perceived_field_type", dict(payload, signal_provenance_by_modality={nested_key: payload["signal_provenance_by_modality"]["confusion"], "possible_interest": payload["signal_provenance_by_modality"]["possible_interest"]})),
         )
         for code, mutated in cases:
             with self.subTest(code=code):
                 self.assertEqual(self._semantic_code(mutated, state, context), code)
+
+    def _last_replay_fixture(self, case_id: str) -> tuple[dict[str, Any], Any, Any]:
+        scenario = self.case(case_id)
+        frames = scenario.sessions[0].frames
+        replay = self.run_case(case_id)
+        previous = replay.states[-2] if len(replay.states) > 1 else None
+        frame = frames[-1]
+        fold = self.tracker.fold_frame_support(
+            None if previous is None else previous.accumulator,
+            frame,
+            self.policy,
+            frozenset() if previous is None else frozenset(previous.seen_independence_keys),
+        )
+        context = phase_c_contracts.PhaseCProjectionContextV1(
+            None if previous is None else previous.last_emitted_selected_signal,
+            None if previous is None else previous.last_emitted_selected_support,
+            fold,
+            frame,
+        )
+        return replay.outputs[-1], replay.final_state, context
+
+    def test_final_nested_type_inventory_precedes_all_semantic_operations(self) -> None:
+        class StringSubclass(str):
+            pass
+
+        class FloatSubclass(float):
+            pass
+
+        payload, state, context = self._projection_fixture()
+        signal = payload["operational_signals"][0]
+        provenance = payload["signal_provenance_by_modality"]
+        first_provenance_signal = next(iter(provenance))
+        modality = next(iter(provenance[first_provenance_signal]))
+        mutations: list[tuple[str, dict[str, Any]]] = []
+
+        for label, value in (
+            ("ordinary", 7),
+            ("unhashable", []),
+            ("subclass", StringSubclass(signal)),
+        ):
+            mutations.append((
+                f"operational_{label}",
+                dict(payload, operational_signals=[value, *payload["operational_signals"][1:]]),
+            ))
+        for label, value in (
+            ("ordinary_key", 7),
+            ("subclass_key", StringSubclass(signal)),
+        ):
+            confidence = {
+                (value if key == signal else key): item
+                for key, item in payload["confidence_by_signal"].items()
+            }
+            mutations.append((f"confidence_{label}", dict(payload, confidence_by_signal=confidence)))
+        for label, value in (
+            ("ordinary_value", 7),
+            ("unhashable_value", []),
+            ("subclass_value", FloatSubclass(payload["confidence_by_signal"][signal])),
+        ):
+            confidence = dict(payload["confidence_by_signal"])
+            confidence[signal] = value
+            mutations.append((f"confidence_{label}", dict(payload, confidence_by_signal=confidence)))
+        for label, value in (
+            ("ordinary", 7),
+            ("unhashable", []),
+            ("subclass", StringSubclass(payload["evidence_refs"][0])),
+        ):
+            mutations.append((
+                f"evidence_ref_{label}",
+                dict(payload, evidence_refs=[value, *payload["evidence_refs"][1:]]),
+            ))
+
+        signal_key_mutations = (
+            ("ordinary", 7),
+            ("subclass", StringSubclass(first_provenance_signal)),
+        )
+        for label, value in signal_key_mutations:
+            mutated_provenance = {
+                (value if key == first_provenance_signal else key): copy.deepcopy(item)
+                for key, item in provenance.items()
+            }
+            mutations.append((
+                f"provenance_signal_key_{label}",
+                dict(payload, signal_provenance_by_modality=mutated_provenance),
+            ))
+        for label, value in (
+            ("ordinary", 7),
+            ("subclass", StringSubclass(modality)),
+        ):
+            mutated_provenance = copy.deepcopy(provenance)
+            modality_map = mutated_provenance[first_provenance_signal]
+            mutated_provenance[first_provenance_signal] = {
+                (value if key == modality else key): item
+                for key, item in modality_map.items()
+            }
+            mutations.append((
+                f"provenance_modality_key_{label}",
+                dict(payload, signal_provenance_by_modality=mutated_provenance),
+            ))
+        mutated_provenance = copy.deepcopy(provenance)
+        mutated_provenance[first_provenance_signal][modality] = tuple(
+            mutated_provenance[first_provenance_signal][modality],
+        )
+        mutations.append((
+            "provenance_reference_list_type",
+            dict(payload, signal_provenance_by_modality=mutated_provenance),
+        ))
+        for label, value in (
+            ("ordinary", 7),
+            ("unhashable", []),
+            (
+                "subclass",
+                StringSubclass(provenance[first_provenance_signal][modality][0]),
+            ),
+        ):
+            mutated_provenance = copy.deepcopy(provenance)
+            references = mutated_provenance[first_provenance_signal][modality]
+            references[0] = value
+            mutations.append((
+                f"provenance_reference_{label}",
+                dict(payload, signal_provenance_by_modality=mutated_provenance),
+            ))
+
+        for field in ("allowed_policy_effects", "blocked_policy_effects"):
+            for label, value in (
+                ("ordinary", 7),
+                ("unhashable", []),
+                ("subclass", StringSubclass(payload[field][0])),
+            ):
+                mutations.append((
+                    f"{field}_{label}",
+                    dict(payload, **{field: [value, *payload[field][1:]]}),
+                ))
+
+        abstained_payload, abstained_state, abstained_context = self._last_replay_fixture(
+            "empty_frame_missing_input",
+        )
+        for label, value in (
+            ("ordinary", 7),
+            ("unhashable", []),
+            ("subclass", StringSubclass(abstained_payload["abstention_reasons"][0])),
+        ):
+            mutated = dict(
+                abstained_payload,
+                abstention_reasons=[
+                    value,
+                    *abstained_payload["abstention_reasons"][1:],
+                ],
+            )
+            with self.subTest(field=f"abstention_reasons_{label}"):
+                self.assertEqual(
+                    self._semantic_code(mutated, abstained_state, abstained_context),
+                    "perceived_field_type",
+                )
+
+        for label, mutated in mutations:
+            with self.subTest(field=label):
+                self.assertEqual(
+                    self._semantic_code(mutated, state, context),
+                    "perceived_field_type",
+                )
+
+    def test_final_hysteresis_cross_fields_fail_closed(self) -> None:
+        valid = (
+            self._hysteresis(
+                None,
+                entries={"confusion": ("ind:fixture:5:entry",)},
+            ),
+            self._hysteresis(
+                "frustration",
+                tenure=2,
+                challenger="confusion",
+                switch_keys=("ind:fixture:5:switch",),
+            ),
+            self._hysteresis("frustration", tenure=2, release=1),
+        )
+        for hysteresis in valid:
+            with self.subTest(valid=hysteresis):
+                phase_c_contracts.validate_phase_c_hysteresis(
+                    hysteresis,
+                    self.policy,
+                )
+
+        invalid = (
+            self._hysteresis(
+                "frustration",
+                tenure=2,
+                challenger="confusion",
+            ),
+            self._hysteresis(
+                "confusion",
+                tenure=2,
+                challenger="confusion",
+                switch_keys=("ind:fixture:5:switch",),
+            ),
+            self._hysteresis(
+                "frustration",
+                tenure=2,
+                challenger="confusion",
+                switch_keys=("ind:fixture:5:switch",),
+                release=1,
+            ),
+            self._hysteresis(
+                None,
+                entries={
+                    "confusion": ("ind:fixture:5:entry-a",),
+                    "interest": ("ind:fixture:5:entry-b",),
+                },
+            ),
+        )
+        for hysteresis in invalid:
+            with self.subTest(invalid=hysteresis):
+                with self.assertRaises(PhaseCContractError) as captured:
+                    phase_c_contracts.validate_phase_c_hysteresis(
+                        hysteresis,
+                        self.policy,
+                    )
+                self.assertEqual(captured.exception.code, "hysteresis_cross_field")
+
+        nets = {signal: 0 for signal in self.policy["canonical_signal_order"]}
+        previous_frame = self._frame_for(
+            signal="frustration",
+            key="ind:fixture:5:incumbent",
+        )
+        previous_fold = self._dense_fold(
+            previous_frame,
+            dict(nets, frustration=500),
+            confirming=previous_frame.evidence_atoms[0].independence_key,
+        )
+        previous = self._state(
+            previous_frame,
+            previous_fold,
+            self._hysteresis("frustration", tenure=2),
+        )
+        challenger_frame = self._frame_for(
+            signal="confusion",
+            key="ind:fixture:5:no-key",
+            sequence=1,
+        )
+        challenger_fold = self._dense_fold(
+            challenger_frame,
+            dict(nets, confusion=700, frustration=500),
+            confirming=None,
+        )
+        result = self.tracker.update_hysteresis(
+            previous,
+            challenger_fold,
+            challenger_frame,
+            self.policy,
+        )
+        self.assertEqual(result.internal_incumbent, "frustration")
+        self.assertIsNone(result.switch_challenger)
+        self.assertEqual(result.switch_confirmation_keys, ())
+
+    def test_final_semantic_order_abstention_and_effect_boundaries(self) -> None:
+        payload, state, context = self._projection_fixture()
+        confidence_reordered = dict(payload)
+        confidence_reordered["confidence_by_signal"] = dict(
+            reversed(tuple(payload["confidence_by_signal"].items())),
+        )
+        provenance_reordered = dict(payload)
+        provenance_reordered["signal_provenance_by_modality"] = dict(
+            reversed(tuple(payload["signal_provenance_by_modality"].items())),
+        )
+        for label, mutated in (
+            ("confidence_map", confidence_reordered),
+            ("provenance_signal_map", provenance_reordered),
+        ):
+            with self.subTest(order=label):
+                self.assertEqual(
+                    self._semantic_code(mutated, state, context),
+                    "noncanonical_output_order",
+                )
+
+        multimodal, multimodal_state, multimodal_context = self._last_replay_fixture(
+            "multimodal_two_turn_entry",
+        )
+        modality_reordered = copy.deepcopy(multimodal)
+        signal = next(iter(modality_reordered["signal_provenance_by_modality"]))
+        modality_reordered["signal_provenance_by_modality"][signal] = dict(
+            reversed(tuple(
+                modality_reordered["signal_provenance_by_modality"][signal].items(),
+            )),
+        )
+        self.assertEqual(
+            self._semantic_code(
+                modality_reordered,
+                multimodal_state,
+                multimodal_context,
+            ),
+            "noncanonical_output_order",
+        )
+
+        abstained, abstained_state, abstained_context = self._last_replay_fixture(
+            "empty_frame_missing_input",
+        )
+        reason_reordered = dict(
+            abstained,
+            abstention_reasons=list(reversed(abstained["abstention_reasons"])),
+        )
+        self.assertEqual(
+            self._semantic_code(reason_reordered, abstained_state, abstained_context),
+            "noncanonical_output_order",
+        )
+        self.assertEqual(
+            self._semantic_code(
+                dict(payload, abstained=True, abstention_reasons=[]),
+                state,
+                context,
+            ),
+            "abstention_semantics",
+        )
+        self.assertEqual(
+            self._semantic_code(
+                dict(payload, abstention_reasons=["missing_input"]),
+                state,
+                context,
+            ),
+            "abstention_semantics",
+        )
+
+        acoustic, acoustic_state, acoustic_context = self._last_replay_fixture(
+            "acoustic_only_capped",
+        )
+        expanded_effects = ["preserve", "soften"]
+        self.assertEqual(
+            self._semantic_code(
+                dict(acoustic, allowed_policy_effects=expanded_effects),
+                acoustic_state,
+                acoustic_context,
+            ),
+            "allowed_effects",
+        )
+        self.assertEqual(
+            self._semantic_code(
+                dict(abstained, allowed_policy_effects=expanded_effects),
+                abstained_state,
+                abstained_context,
+            ),
+            "allowed_effects",
+        )
+
+    def test_final_replay_precondition_inventory(self) -> None:
+        scenario = self.case("transcript_three_turn_entry")
+        frames = scenario.sessions[0].frames
+        first, second = frames[:2]
+        cases: tuple[tuple[str, object, str], ...] = (
+            ("non_tuple", [first], "replay_frames"),
+            ("empty", (), "replay_frames"),
+            (
+                "session_mismatch",
+                (first, dataclasses.replace(second, call_session_id="session:other")),
+                "replay_identity",
+            ),
+            (
+                "campaign_mismatch",
+                (first, dataclasses.replace(second, campaign_profile_id="campaign:other")),
+                "replay_identity",
+            ),
+            (
+                "version_mismatch",
+                (
+                    first,
+                    dataclasses.replace(second, campaign_profile_version="version:other"),
+                ),
+                "replay_identity",
+            ),
+            (
+                "non_increasing_sequence",
+                (first, dataclasses.replace(second, turn_sequence=first.turn_sequence)),
+                "replay_turn_sequence",
+            ),
+            (
+                "duplicate_turn_id",
+                (first, dataclasses.replace(second, turn_id=first.turn_id)),
+                "replay_duplicate_identity",
+            ),
+            (
+                "duplicate_event_id",
+                (first, dataclasses.replace(second, event_id=first.event_id)),
+                "replay_duplicate_identity",
+            ),
+            (
+                "duplicate_evidence_ref",
+                (
+                    first,
+                    dataclasses.replace(
+                        second,
+                        evidence_atoms=(
+                            dataclasses.replace(
+                                second.evidence_atoms[0],
+                                evidence_ref=first.evidence_atoms[0].evidence_ref,
+                            ),
+                            *second.evidence_atoms[1:],
+                        ),
+                    ),
+                ),
+                "replay_duplicate_identity",
+            ),
+            (
+                "nonzero_revision",
+                (dataclasses.replace(first, input_revision=1),),
+                "replay_correction_not_supported",
+            ),
+        )
+        for label, mutated_frames, code in cases:
+            with self.subTest(precondition=label):
+                with self.assertRaises(PhaseCContractError) as captured:
+                    self.tracker.replay_validated_frames(
+                        mutated_frames,
+                        self.policy,
+                    )
+                self.assertEqual(captured.exception.code, code)
+
+    def test_projection_implementation_is_readable_and_independent(self) -> None:
+        source = inspect.getsource(
+            self.tracker.project_perceived_customer_state,
+        )
+        self.assertNotIn(";", source)
+        self.assertNotIn(
+            "from runtime.contracts.emotion_state_contracts import",
+            source,
+        )
+        self.assertNotIn("_phase_c_output_expected", source)
+        self.assertNotIn("validate_phase_c_perceived_state", source)
+        self.assertLessEqual(max(map(len, source.splitlines())), 119)
