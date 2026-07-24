@@ -348,6 +348,18 @@ class PhaseCScenarioContractTests(unittest.TestCase):
     def setUp(self) -> None:
         self.policy = validate_phase_c_policy(load_json_strict(POLICY_PATH))
 
+    def assert_scenario_code(
+        self,
+        payload: dict[str, Any],
+        expected_code: str,
+    ) -> None:
+        with self.assertRaises(PhaseCContractError) as captured:
+            phase_c_contracts.validate_phase_c_scenario_payload(
+                payload,
+                self.policy,
+            )
+        self.assertEqual(captured.exception.code, expected_code)
+
     def test_scenario_ids_order_count_and_classifications_are_frozen(self) -> None:
         scenarios = phase_c_contracts.load_and_validate_phase_c_scenarios(
             SCENARIO_PATH,
@@ -530,6 +542,376 @@ class PhaseCScenarioContractTests(unittest.TestCase):
                         payload,
                         self.policy,
                     )
+
+    def test_loader_rejects_reviewed_order_reference_and_hysteresis_bypasses(self) -> None:
+        original = load_json_strict(SCENARIO_PATH)
+
+        reversed_reasons = copy.deepcopy(original)
+        contradiction = reversed_reasons["scenarios"][
+            EXPECTED_SCENARIO_IDS_FOR_TEST.index("same_signal_contradiction")
+        ]
+        contradiction["expected_steps"][0]["expected_output"][
+            "abstention_reasons"
+        ].reverse()
+        self.assert_scenario_code(
+            reversed_reasons,
+            "scenario_abstention_reason_order",
+        )
+
+        reversed_keys = copy.deepcopy(original)
+        switch = reversed_keys["scenarios"][
+            EXPECTED_SCENARIO_IDS_FOR_TEST.index(
+                "switch_after_two_confirmations",
+            )
+        ]
+        switch["expected_steps"][2]["expected_internal"][
+            "seen_independence_keys"
+        ].reverse()
+        self.assert_scenario_code(
+            reversed_keys,
+            "scenario_internal_key_order",
+        )
+
+        unknown_key = copy.deepcopy(original)
+        switch = unknown_key["scenarios"][
+            EXPECTED_SCENARIO_IDS_FOR_TEST.index(
+                "switch_after_two_confirmations",
+            )
+        ]
+        switch["expected_steps"][2]["expected_internal"][
+            "seen_independence_keys"
+        ][0] = "bogus"
+        self.assert_scenario_code(
+            unknown_key,
+            "scenario_internal_unknown_key",
+        )
+
+        impossible_hysteresis = copy.deepcopy(original)
+        expected_internal = impossible_hysteresis["scenarios"][0][
+            "expected_steps"
+        ][0]["expected_internal"]
+        expected_internal["internal_incumbent"] = None
+        expected_internal["incumbent_tenure"] = 0
+        expected_internal["switch_challenger"] = "frustration"
+        expected_internal["switch_confirmation_keys"] = [
+            expected_internal["seen_independence_keys"][0],
+        ]
+        self.assert_scenario_code(
+            impossible_hysteresis,
+            "expected_internal_hysteresis",
+        )
+
+    def test_loader_binds_every_case_recipe_to_frozen_authority(self) -> None:
+        original = load_json_strict(SCENARIO_PATH)
+        for scenario_index, scenario in enumerate(original["scenarios"]):
+            mutated = copy.deepcopy(original)
+            frame = mutated["scenarios"][scenario_index]["sessions"][0][
+                "frames"
+            ][0]
+            frame["event_id"] = f"event:{scenario['case_id']}:authority-drift"
+            with self.subTest(case_id=scenario["case_id"]):
+                self.assert_scenario_code(
+                    mutated,
+                    "scenario_authority_digest",
+                )
+
+    def test_loader_binds_every_attempt_disposition_and_rejection_recipe(self) -> None:
+        original = load_json_strict(SCENARIO_PATH)
+        accepted_template = copy.deepcopy(
+            original["scenarios"][0]["expected_steps"][0],
+        )
+        forbidden_parameters = (
+            "acoustic_features",
+            "probabilities",
+            "model_id",
+            "dataset_id",
+        )
+        for scenario_index, scenario in enumerate(original["scenarios"]):
+            for attempt_index, attempt in enumerate(scenario["attempt_order"]):
+                mutated = copy.deepcopy(original)
+                candidate_attempt = mutated["scenarios"][scenario_index][
+                    "attempt_order"
+                ][attempt_index]
+                candidate_step = mutated["scenarios"][scenario_index][
+                    "expected_steps"
+                ][attempt_index]
+                if attempt["mutation_kind"] == "add_forbidden_field":
+                    parameter_index = forbidden_parameters.index(
+                        attempt["mutation_parameter"],
+                    )
+                    candidate_attempt["mutation_parameter"] = (
+                        forbidden_parameters[(parameter_index + 1) % 4]
+                    )
+                else:
+                    candidate_attempt["mutation_kind"] = "add_forbidden_field"
+                    candidate_attempt["mutation_parameter"] = "acoustic_features"
+                    candidate_step.clear()
+                    candidate_step.update({
+                        "disposition": "rejected",
+                        "rejection_code": "forbidden_field",
+                        "prior_state_bytes_unchanged": True,
+                    })
+                with self.subTest(
+                    authority="attempt",
+                    case_id=scenario["case_id"],
+                    attempt_index=attempt_index,
+                ):
+                    self.assert_scenario_code(
+                        mutated,
+                        "scenario_attempt_authority",
+                    )
+
+                mutated = copy.deepcopy(original)
+                candidate_step = mutated["scenarios"][scenario_index][
+                    "expected_steps"
+                ][attempt_index]
+                if candidate_step["disposition"] == "accepted":
+                    candidate_step.clear()
+                    candidate_step.update({
+                        "disposition": "rejected",
+                        "rejection_code": "duplicate_event",
+                        "prior_state_bytes_unchanged": True,
+                    })
+                else:
+                    candidate_step.clear()
+                    candidate_step.update(copy.deepcopy(accepted_template))
+                with self.subTest(
+                    authority="disposition",
+                    case_id=scenario["case_id"],
+                    attempt_index=attempt_index,
+                ):
+                    self.assert_scenario_code(
+                        mutated,
+                        "scenario_disposition_authority",
+                    )
+
+                if scenario["expected_steps"][attempt_index][
+                    "disposition"
+                ] == "rejected":
+                    mutated = copy.deepcopy(original)
+                    candidate_step = mutated["scenarios"][scenario_index][
+                        "expected_steps"
+                    ][attempt_index]
+                    candidate_step["rejection_code"] = (
+                        "cross_session"
+                        if candidate_step["rejection_code"] != "cross_session"
+                        else "duplicate_event"
+                    )
+                    with self.subTest(
+                        authority="rejection",
+                        case_id=scenario["case_id"],
+                        attempt_index=attempt_index,
+                    ):
+                        self.assert_scenario_code(
+                            mutated,
+                            "scenario_rejection_authority",
+                        )
+
+    def test_materializer_rejects_direct_dataclass_bypasses_exactly(self) -> None:
+        scenarios = phase_c_contracts.load_and_validate_phase_c_scenarios(
+            SCENARIO_PATH,
+            self.policy,
+        )
+        scenario = scenarios[0]
+        attempt = scenario.attempt_order[0]
+
+        bad_alias = dataclasses.replace(
+            attempt,
+            state_session_alias="C",
+        )
+        with self.assertRaises(PhaseCContractError) as captured:
+            phase_c_contracts.materialize_phase_c_scenario_attempt_payload(
+                scenario,
+                bad_alias,
+            )
+        self.assertEqual(captured.exception.code, "scenario_attempt_alias")
+
+        direct_attempt_bypasses = (
+            (
+                "frame_alias",
+                dataclasses.replace(attempt, frame_session_alias="C"),
+                "scenario_attempt_alias",
+            ),
+            (
+                "frame_index",
+                dataclasses.replace(attempt, frame_index=99),
+                "scenario_attempt_frame_index",
+            ),
+            (
+                "mutation_kind",
+                dataclasses.replace(attempt, mutation_kind="future"),
+                "scenario_attempt_mutation",
+            ),
+            (
+                "none_parameter",
+                dataclasses.replace(attempt, mutation_parameter="dataset_id"),
+                "scenario_attempt_mutation_parameter",
+            ),
+            (
+                "reverse_size",
+                dataclasses.replace(attempt, mutation_kind="reverse_atom_order"),
+                "scenario_attempt_reverse_size",
+            ),
+            (
+                "forbidden_parameter",
+                dataclasses.replace(
+                    attempt,
+                    mutation_kind="add_forbidden_field",
+                    mutation_parameter="future",
+                ),
+                "scenario_attempt_mutation_parameter",
+            ),
+        )
+        for name, bypass, expected_code in direct_attempt_bypasses:
+            with self.subTest(name=name):
+                with self.assertRaises(PhaseCContractError) as captured:
+                    phase_c_contracts.materialize_phase_c_scenario_attempt_payload(
+                        scenario,
+                        bypass,
+                    )
+                self.assertEqual(captured.exception.code, expected_code)
+
+        not_a_member = dataclasses.replace(
+            attempt,
+            mutation_kind="add_forbidden_field",
+            mutation_parameter="acoustic_features",
+        )
+        with self.assertRaises(PhaseCContractError) as captured:
+            phase_c_contracts.materialize_phase_c_scenario_attempt_payload(
+                scenario,
+                not_a_member,
+            )
+        self.assertEqual(
+            captured.exception.code,
+            "scenario_attempt_membership",
+        )
+
+        bad_sessions = dataclasses.replace(
+            scenario,
+            sessions=(scenario.sessions[0], scenario.sessions[0]),
+        )
+        with self.assertRaises(PhaseCContractError) as captured:
+            phase_c_contracts.materialize_phase_c_scenario_attempt_payload(
+                bad_sessions,
+                attempt,
+            )
+        self.assertEqual(
+            captured.exception.code,
+            "scenario_session_aliases",
+        )
+
+        two_session_scenario = scenarios[
+            EXPECTED_SCENARIO_IDS_FOR_TEST.index(
+                "simultaneous_sessions_isolated",
+            )
+        ]
+        wrong_session_order = dataclasses.replace(
+            two_session_scenario,
+            sessions=tuple(reversed(two_session_scenario.sessions)),
+        )
+        with self.assertRaises(PhaseCContractError) as captured:
+            phase_c_contracts.materialize_phase_c_scenario_attempt_payload(
+                wrong_session_order,
+                two_session_scenario.attempt_order[0],
+            )
+        self.assertEqual(
+            captured.exception.code,
+            "scenario_session_aliases",
+        )
+
+        wrong_disposition = dataclasses.replace(
+            scenario,
+            expected_steps=(
+                phase_c_contracts.PhaseCExpectedRejectedStepV1(
+                    disposition="rejected",
+                    rejection_code="duplicate_event",
+                    prior_state_bytes_unchanged=True,
+                ),
+            ),
+        )
+        with self.assertRaises(PhaseCContractError) as captured:
+            phase_c_contracts.materialize_phase_c_scenario_attempt_payload(
+                wrong_disposition,
+                attempt,
+            )
+        self.assertEqual(
+            captured.exception.code,
+            "scenario_disposition_authority",
+        )
+
+    def test_materializer_binds_direct_dataclass_frames_and_goldens(self) -> None:
+        scenario = phase_c_contracts.load_and_validate_phase_c_scenarios(
+            SCENARIO_PATH,
+            self.policy,
+        )[0]
+        attempt = scenario.attempt_order[0]
+
+        original_session = scenario.sessions[0]
+        drifted_frame = dataclasses.replace(
+            original_session.frames[0],
+            event_id="event:explicit_confusion_entry:A:authority-drift",
+        )
+        frame_drift = dataclasses.replace(
+            scenario,
+            sessions=(
+                dataclasses.replace(
+                    original_session,
+                    frames=(drifted_frame,),
+                ),
+            ),
+        )
+
+        accepted = scenario.expected_steps[0]
+        self.assertIsInstance(
+            accepted,
+            phase_c_contracts.PhaseCExpectedAcceptedStepV1,
+        )
+        output_payload = json.loads(
+            accepted.expected_output_bytes.decode("utf-8"),
+        )
+        output_payload["trajectory"] = "stable"
+        output_drift = dataclasses.replace(
+            scenario,
+            expected_steps=(
+                dataclasses.replace(
+                    accepted,
+                    expected_output_bytes=canonical_json_bytes(output_payload),
+                ),
+            ),
+        )
+
+        internal = accepted.expected_internal
+        internal_drift = dataclasses.replace(
+            scenario,
+            expected_steps=(
+                dataclasses.replace(
+                    accepted,
+                    expected_internal=dataclasses.replace(
+                        internal,
+                        gross_supporting_units=(
+                            ("confusion", 699),
+                            *internal.gross_supporting_units[1:],
+                        ),
+                    ),
+                ),
+            ),
+        )
+
+        for name, mutated in (
+            ("frame", frame_drift),
+            ("output", output_drift),
+            ("internal", internal_drift),
+        ):
+            with self.subTest(name=name):
+                with self.assertRaises(PhaseCContractError) as captured:
+                    phase_c_contracts.materialize_phase_c_scenario_attempt_payload(
+                        mutated,
+                        attempt,
+                    )
+                self.assertEqual(
+                    captured.exception.code,
+                    "scenario_dataclass_authority_digest",
+                )
 
 
 class PhaseCInputContractTests(unittest.TestCase):

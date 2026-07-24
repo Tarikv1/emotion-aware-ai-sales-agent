@@ -312,6 +312,167 @@ SCENARIO_REJECTION_CODES = frozenset({
     "noncanonical_atom_order",
     "forbidden_field",
 })
+FROZEN_SCENARIO_CANONICAL_SHA256: Final[str] = (
+    "D01FBD7677537A0A91D01E0EA8354D079491C13BBD81EC8BAC97E7BBC4520FB0"
+)
+# Per-case attempt and acceptance/rejection authority. Each step is
+# (state alias, frame alias, frame index, mutation kind, mutation parameter,
+#  disposition, rejection code).
+EXPECTED_SCENARIO_STEP_AUTHORITY = (
+    ("explicit_confusion_entry", (("A", "A", 0, "none", None, "accepted", None),)),
+    ("explicit_disengagement_entry", (("A", "A", 0, "none", None, "accepted", None),)),
+    ("explicit_frustration_entry", (("A", "A", 0, "none", None, "accepted", None),)),
+    ("explicit_hesitation_entry", (("A", "A", 0, "none", None, "accepted", None),)),
+    ("explicit_interest_entry", (("A", "A", 0, "none", None, "accepted", None),)),
+    ("transcript_three_turn_entry", (
+        ("A", "A", 0, "none", None, "accepted", None),
+        ("A", "A", 1, "none", None, "accepted", None),
+        ("A", "A", 2, "none", None, "accepted", None),
+    )),
+    ("repeated_independence_zero_addition", (
+        ("A", "A", 0, "none", None, "accepted", None),
+        ("A", "A", 1, "none", None, "accepted", None),
+    )),
+    ("duplicate_event_rejected", (
+        ("A", "A", 0, "none", None, "accepted", None),
+        ("A", "A", 1, "none", None, "rejected", "duplicate_event"),
+    )),
+    ("duplicate_reference_rejected", (
+        ("A", "A", 0, "none", None, "accepted", None),
+        (
+            "A", "A", 1, "none", None, "rejected",
+            "duplicate_evidence_reference",
+        ),
+    )),
+    ("acoustic_only_capped", (
+        ("A", "A", 0, "none", None, "accepted", None),
+        ("A", "A", 1, "none", None, "accepted", None),
+        ("A", "A", 2, "none", None, "accepted", None),
+    )),
+    ("multimodal_two_turn_entry", (
+        ("A", "A", 0, "none", None, "accepted", None),
+        ("A", "A", 1, "none", None, "accepted", None),
+    )),
+    ("same_signal_contradiction", (("A", "A", 0, "none", None, "accepted", None),)),
+    ("low_quality_acoustic_abstains", (("A", "A", 0, "none", None, "accepted", None),)),
+    ("empty_frame_missing_input", (("A", "A", 0, "none", None, "accepted", None),)),
+    ("release_after_two_below_threshold", (
+        ("A", "A", 0, "none", None, "accepted", None),
+        ("A", "A", 1, "none", None, "accepted", None),
+        ("A", "A", 2, "none", None, "accepted", None),
+        ("A", "A", 3, "none", None, "accepted", None),
+        ("A", "A", 4, "none", None, "accepted", None),
+        ("A", "A", 5, "none", None, "accepted", None),
+    )),
+    ("switch_after_two_confirmations", (
+        ("A", "A", 0, "none", None, "accepted", None),
+        ("A", "A", 1, "none", None, "accepted", None),
+        ("A", "A", 2, "none", None, "accepted", None),
+        ("A", "A", 3, "none", None, "accepted", None),
+    )),
+    ("entry_tie_abstains", (("A", "A", 0, "none", None, "accepted", None),)),
+    ("incumbent_survives_unqualified_challenger", (
+        ("A", "A", 0, "none", None, "accepted", None),
+        ("A", "A", 1, "none", None, "accepted", None),
+        ("A", "A", 2, "none", None, "accepted", None),
+        ("A", "A", 3, "none", None, "accepted", None),
+    )),
+    ("latest_turn_correction_replay", (
+        ("A", "A", 0, "none", None, "accepted", None),
+        ("A", "A", 1, "none", None, "accepted", None),
+    )),
+    ("closed_turn_correction_rejected", (
+        ("A", "A", 0, "none", None, "accepted", None),
+        ("A", "A", 1, "none", None, "accepted", None),
+        ("A", "A", 2, "none", None, "rejected", "stale_turn"),
+    )),
+    ("cross_session_rejected", (
+        ("A", "A", 0, "none", None, "accepted", None),
+        ("A", "B", 0, "none", None, "rejected", "cross_session"),
+    )),
+    ("cross_campaign_rejected", (
+        ("A", "A", 0, "none", None, "accepted", None),
+        ("A", "A", 1, "none", None, "rejected", "cross_campaign"),
+    )),
+    ("wrong_campaign_version_rejected", (
+        ("A", "A", 0, "none", None, "accepted", None),
+        (
+            "A", "A", 1, "none", None, "rejected",
+            "wrong_campaign_version",
+        ),
+    )),
+    ("noncanonical_atom_order_rejected", ((
+        "A", "A", 0, "reverse_atom_order", None, "rejected",
+        "noncanonical_atom_order",
+    ),)),
+    ("forbidden_phase_b_field_rejected", (
+        (
+            "A", "A", 0, "add_forbidden_field", "acoustic_features",
+            "rejected", "forbidden_field",
+        ),
+        (
+            "A", "A", 0, "add_forbidden_field", "probabilities",
+            "rejected", "forbidden_field",
+        ),
+        (
+            "A", "A", 0, "add_forbidden_field", "model_id",
+            "rejected", "forbidden_field",
+        ),
+        (
+            "A", "A", 0, "add_forbidden_field", "dataset_id",
+            "rejected", "forbidden_field",
+        ),
+    )),
+    ("simultaneous_sessions_isolated", (
+        ("A", "A", 0, "none", None, "accepted", None),
+        ("B", "B", 0, "none", None, "accepted", None),
+        ("A", "A", 1, "none", None, "accepted", None),
+        ("B", "B", 1, "none", None, "accepted", None),
+    )),
+    ("canonical_replay_bytes", (
+        ("A", "A", 0, "none", None, "accepted", None),
+        ("A", "A", 1, "none", None, "accepted", None),
+        ("A", "A", 2, "none", None, "accepted", None),
+    )),
+    ("dialogue_only_low_quality", (("A", "A", 0, "none", None, "accepted", None),)),
+    ("support_saturation", (("A", "A", 0, "none", None, "accepted", None),)),
+    (
+        "opposition_below_contradiction_threshold",
+        (("A", "A", 0, "none", None, "accepted", None),),
+    ),
+)
+EXPECTED_SCENARIO_CANONICAL_SHA256_BY_CASE = (
+    ("explicit_confusion_entry", "9909AD632F63B99C5859FC344C21DCFFD52B84F7036B0F2B4D31493D39186B09"),
+    ("explicit_disengagement_entry", "14D063CA3E580A87BB06080FA0C8EC7DB53931DDB1C01FD964B7C3A89DF1583D"),
+    ("explicit_frustration_entry", "C4014510E81E08A0AC04CE3A466453BB27374D163555DFF9776701A17551119F"),
+    ("explicit_hesitation_entry", "114A3D9FD39601B090DD2FB19D177F5C958B9A95C6EA2D4C486F83465373034D"),
+    ("explicit_interest_entry", "EFCD5127EA8C1545CFF39E680C61B6FB772E1085FCE8AF00965E26467FD358CE"),
+    ("transcript_three_turn_entry", "E6FAE470664B5D5201B0F4BEA3AD64ED31BE077FD8774B3BE5765E988D416199"),
+    ("repeated_independence_zero_addition", "DC4C0A6F1E5F19A45AB39468A66C87FEE50A858CBBAD0F9C7A4ABA239D8A794D"),
+    ("duplicate_event_rejected", "167BBC419D083B135F908D1823EAF2EAE385DCB731F6592AD220B1DAEA92E67D"),
+    ("duplicate_reference_rejected", "61F2A9EE41BB7FF82B311BFEFE9468F3062ACB2FF192292FD4BF5EE604D58587"),
+    ("acoustic_only_capped", "C430F926882A76B8EDF84B8B4447780EEE7F23187A100F93560A4DF288930031"),
+    ("multimodal_two_turn_entry", "08041615DD9AFED33EE76BF68C956EC5BF690AEE056A69EC5CBB39E0CCD92EC1"),
+    ("same_signal_contradiction", "41CBA9BB6D91FE588E548CA5A019CEE7C00E940011ECC51A772AFD719E0BEB95"),
+    ("low_quality_acoustic_abstains", "A0F52E987CBDD03E462BDFC59B3F8412B4EAEB62BA1E2686903AC3E9929C1C85"),
+    ("empty_frame_missing_input", "1504C9C7CB96F74CF4230FAC5485B78C9702E4E6573ABB8883C4AAD07F13818B"),
+    ("release_after_two_below_threshold", "F737E07E8DEA22C686E86B7AA41006E34690AC29FEEA8F3E1DF926C384F5080A"),
+    ("switch_after_two_confirmations", "7C567A077C89ACC15FDF7E0581CE6EA408F7C6106BE0DA155988443C6630DF50"),
+    ("entry_tie_abstains", "93828CAE2CF3AA80795624DFE129F05B9E2A8891799CB9E423936FCA40CBC3D2"),
+    ("incumbent_survives_unqualified_challenger", "586B22D2099F3258FE45A667407A7C81D83411AADE34482D74288284A32D71D8"),
+    ("latest_turn_correction_replay", "DD37300E263BCB11491658CA5CB718C131FFAA168FF9C639A69FF6AA901595E3"),
+    ("closed_turn_correction_rejected", "4A61A56322859211748701EB16CBDC90C6A61BBA30C4587B25E84E6AC0FAC6B6"),
+    ("cross_session_rejected", "B1E612D6F92A7E701C90151947DFB775480B6ED4285D54ED244A167E2263925A"),
+    ("cross_campaign_rejected", "A53BC809F5ADDECE0A61CEECC23061A8AAB3085A1EA003C9259FF21B831EB597"),
+    ("wrong_campaign_version_rejected", "803BDB282463B2116C5557E9D44A2BF81D4DAE268D2C64780EDCAABBC768CEC6"),
+    ("noncanonical_atom_order_rejected", "46C0E807815118E24B40CF1F36566F9968675909B66D657811BE832F2D42F34C"),
+    ("forbidden_phase_b_field_rejected", "B394D3C3C4AA9A87CB50B29AA6D2D431A37B593EAF815439AD18FD88F04EC36C"),
+    ("simultaneous_sessions_isolated", "407470F495B082BF5153D3B8F2F9A22977D1B966771C4C11709DEBDCADA4BDC5"),
+    ("canonical_replay_bytes", "1EC07EBDB964DFCDE810968C7E12ACC3F0BB11170036CB2B1F0265163DEB5452"),
+    ("dialogue_only_low_quality", "FE94FE265F3E4ECB2FF77239B128AF38CCF84C4DDADE68C7834596BBEF4F32B3"),
+    ("support_saturation", "318AB5EBF8E413710DBFC16E07741B2EBC768A2B0E3B8433A6BFC8ED47208AB8"),
+    ("opposition_below_contradiction_threshold", "A5A5B0B344793AE31A8678D4A9D51D3463327346B699113D45F6B49A2CB11168"),
+)
 
 
 FROZEN_POLICY_CANONICAL_JSON: Final[str] = r'''{
@@ -701,6 +862,32 @@ def _parse_string_tuple(
     return result
 
 
+def _unique_authority_order(values: tuple[str, ...]) -> tuple[str, ...]:
+    seen: set[str] = set()
+    ordered: list[str] = []
+    for value in values:
+        if value not in seen:
+            seen.add(value)
+            ordered.append(value)
+    return tuple(ordered)
+
+
+def _validate_identity_sequence(
+    values: tuple[str, ...],
+    authority: tuple[str, ...],
+    *,
+    unknown_code: str,
+    order_code: str | None,
+) -> None:
+    ordered_authority = _unique_authority_order(authority)
+    if any(value not in ordered_authority for value in values):
+        raise PhaseCContractError(unknown_code)
+    if order_code is not None and tuple(
+        value for value in ordered_authority if value in values
+    ) != values:
+        raise PhaseCContractError(order_code)
+
+
 def _parse_dense_signal_int_map(
     value: Any,
     policy: dict[str, Any],
@@ -721,25 +908,32 @@ def _parse_dense_signal_int_map(
 def _parse_entry_confirmation_map(
     value: Any,
     policy: dict[str, Any],
+    known_independence_keys: tuple[str, ...],
 ) -> tuple[tuple[str, tuple[str, ...]], ...]:
     signals = tuple(policy["canonical_signal_order"])
     if type(value) is not dict or tuple(value) != signals:
         raise PhaseCContractError("expected_internal_entry_signal_order")
-    return tuple(
-        (
-            signal,
-            _parse_string_tuple(
-                value[signal],
-                prefix="expected_internal_entry_keys",
-            ),
+    result: list[tuple[str, tuple[str, ...]]] = []
+    for signal in signals:
+        keys = _parse_string_tuple(
+            value[signal],
+            prefix="expected_internal_entry_keys",
         )
-        for signal in signals
-    )
+        _validate_identity_sequence(
+            keys,
+            known_independence_keys,
+            unknown_code="scenario_internal_unknown_key",
+            order_code="scenario_internal_key_order",
+        )
+        result.append((signal, keys))
+    return tuple(result)
 
 
 def _parse_expected_internal(
     payload: Any,
     policy: dict[str, Any],
+    known_independence_keys: tuple[str, ...],
+    known_evidence_refs: tuple[str, ...],
 ) -> PhaseCExpectedInternalProjectionV1:
     internal = _require_scenario_fields(
         payload,
@@ -771,27 +965,58 @@ def _parse_expected_internal(
         internal["seen_independence_keys"],
         prefix="expected_internal_seen_keys",
     )
+    _validate_identity_sequence(
+        seen_keys,
+        known_independence_keys,
+        unknown_code="scenario_internal_unknown_key",
+        order_code="scenario_internal_key_order",
+    )
     entry = _parse_entry_confirmation_map(
         internal["entry_confirmation_keys_by_signal"],
         policy,
+        known_independence_keys,
     )
     switch_keys = _parse_string_tuple(
         internal["switch_confirmation_keys"],
         prefix="expected_internal_switch_keys",
+    )
+    _validate_identity_sequence(
+        switch_keys,
+        known_independence_keys,
+        unknown_code="scenario_internal_unknown_key",
+        order_code="scenario_internal_key_order",
     )
     contributing_refs = _parse_string_tuple(
         internal["contributing_evidence_refs"],
         prefix="expected_internal_contributing_refs",
         evidence_refs=True,
     )
+    _validate_identity_sequence(
+        contributing_refs,
+        known_evidence_refs,
+        unknown_code="scenario_internal_unknown_reference",
+        order_code=None,
+    )
     seen_refs = _parse_string_tuple(
         internal["seen_evidence_refs"],
         prefix="expected_internal_seen_refs",
         evidence_refs=True,
     )
+    _validate_identity_sequence(
+        seen_refs,
+        known_evidence_refs,
+        unknown_code="scenario_internal_unknown_reference",
+        order_code="scenario_internal_reference_order",
+    )
     retired_keys = _parse_string_tuple(
         internal["retired_independence_keys"],
         prefix="expected_internal_retired_keys",
+    )
+    _validate_identity_sequence(
+        retired_keys,
+        known_independence_keys,
+        unknown_code="scenario_internal_unknown_key",
+        order_code="scenario_internal_key_order",
     )
     if not set(contributing_refs).issubset(seen_refs):
         raise PhaseCContractError("expected_internal_reference_coverage")
@@ -833,6 +1058,43 @@ def _parse_expected_internal(
         raise PhaseCContractError("expected_internal_last_support")
     if incumbent is None and internal["incumbent_tenure"] != 0:
         raise PhaseCContractError("expected_internal_incumbent_tenure")
+    entry_keys = tuple(
+        key
+        for _, keys in entry
+        for key in keys
+    )
+    if (
+        not set(entry_keys).issubset(seen_keys)
+        or not set(switch_keys).issubset(seen_keys)
+        or internal["accepted_turn_count"] < 1
+        or (
+            incumbent is None
+            and (
+                challenger is not None
+                or switch_keys
+                or internal["release_streak"] != 0
+                or last_signal is not None
+            )
+        )
+        or (
+            incumbent is not None
+            and (
+                internal["incumbent_tenure"] < 1
+                or entry_keys
+                or (challenger is None) != (not switch_keys)
+                or (
+                    internal["release_streak"] > 0
+                    and (challenger is not None or switch_keys)
+                )
+                or (
+                    last_signal is not None
+                    and last_signal != incumbent
+                )
+            )
+        )
+        or internal["release_streak"] >= policy["confirmation_counts"]["release"]
+    ):
+        raise PhaseCContractError("expected_internal_hysteresis")
     return PhaseCExpectedInternalProjectionV1(
         **numeric,
         contradictory_signals=contradictory,
@@ -855,6 +1117,8 @@ def _parse_expected_internal(
 def _parse_expected_step(
     payload: Any,
     policy: dict[str, Any],
+    known_independence_keys: tuple[str, ...],
+    known_evidence_refs: tuple[str, ...],
 ) -> PhaseCExpectedAcceptedStepV1 | PhaseCExpectedRejectedStepV1:
     if type(payload) is not dict:
         raise PhaseCContractError("expected_step_not_object")
@@ -868,6 +1132,13 @@ def _parse_expected_step(
         output = accepted["expected_output"]
         if type(output) is not dict or set(output) != PERCEIVED_STATE_FIELDS:
             raise PhaseCContractError("expected_output_fields")
+        reasons = output["abstention_reasons"]
+        if type(reasons) is list and tuple(reasons) != tuple(
+            reason
+            for reason in policy["abstention_reason_order"]
+            if reason in reasons
+        ):
+            raise PhaseCContractError("scenario_abstention_reason_order")
         if (
             output["runtime_approved"] is not False
             or output["valence_estimate"] != "not_inferable"
@@ -885,6 +1156,8 @@ def _parse_expected_step(
             expected_internal=_parse_expected_internal(
                 accepted["expected_internal"],
                 policy,
+                known_independence_keys,
+                known_evidence_refs,
             ),
         )
     if disposition == "rejected":
@@ -979,6 +1252,18 @@ def validate_phase_c_scenario_payload(
         aliases = tuple(raw_aliases)
         if aliases not in (("A",), ("A", "B")) or len(set(aliases)) != len(aliases):
             raise PhaseCContractError("scenario_session_aliases")
+        known_independence_keys = tuple(
+            atom.independence_key
+            for session in sessions
+            for frame in session.frames
+            for atom in frame.evidence_atoms
+        )
+        known_evidence_refs = tuple(
+            atom.evidence_ref
+            for session in sessions
+            for frame in session.frames
+            for atom in frame.evidence_atoms
+        )
         if type(scenario["attempt_order"]) is not list:
             raise PhaseCContractError("scenario_attempts_type")
         attempts: list[PhaseCScenarioAttemptV1] = []
@@ -1028,12 +1313,53 @@ def validate_phase_c_scenario_payload(
             ))
         if type(scenario["expected_steps"]) is not list:
             raise PhaseCContractError("scenario_expected_steps_type")
-        expected_steps = tuple(
-            _parse_expected_step(step, policy)
-            for step in scenario["expected_steps"]
-        )
-        if len(expected_steps) != len(attempts):
+        raw_expected_steps = scenario["expected_steps"]
+        if len(raw_expected_steps) != len(attempts):
             raise PhaseCContractError("scenario_expected_step_count")
+        authority = _scenario_step_authority(case_id)
+        actual_attempt_authority = tuple(
+            (
+                attempt.state_session_alias,
+                attempt.frame_session_alias,
+                attempt.frame_index,
+                attempt.mutation_kind,
+                attempt.mutation_parameter,
+            )
+            for attempt in attempts
+        )
+        expected_attempt_authority = tuple(step[:5] for step in authority)
+        if actual_attempt_authority != expected_attempt_authority:
+            raise PhaseCContractError("scenario_attempt_authority")
+        actual_dispositions = tuple(
+            expected.get("disposition")
+            if type(expected) is dict
+            else None
+            for expected in raw_expected_steps
+        )
+        expected_dispositions = tuple(step[5] for step in authority)
+        if actual_dispositions != expected_dispositions:
+            raise PhaseCContractError("scenario_disposition_authority")
+        actual_rejections = tuple(
+            expected.get("rejection_code")
+            if (
+                type(expected) is dict
+                and expected.get("disposition") == "rejected"
+            )
+            else None
+            for expected in raw_expected_steps
+        )
+        expected_rejections = tuple(step[6] for step in authority)
+        if actual_rejections != expected_rejections:
+            raise PhaseCContractError("scenario_rejection_authority")
+        expected_steps = tuple(
+            _parse_expected_step(
+                step,
+                policy,
+                known_independence_keys,
+                known_evidence_refs,
+            )
+            for step in raw_expected_steps
+        )
         for attempt, expected in zip(attempts, expected_steps, strict=True):
             if attempt.mutation_kind == "reverse_atom_order" and (
                 type(expected) is not PhaseCExpectedRejectedStepV1
@@ -1056,6 +1382,8 @@ def validate_phase_c_scenario_payload(
         ))
     if tuple(case_ids) != EXPECTED_SCENARIO_IDS or len(set(case_ids)) != len(case_ids):
         raise PhaseCContractError("scenario_ids")
+    if scenario_payload_sha256(payload) != FROZEN_SCENARIO_CANONICAL_SHA256:
+        raise PhaseCContractError("scenario_authority_digest")
     return tuple(parsed)
 
 
@@ -1071,18 +1399,300 @@ def load_and_validate_phase_c_scenarios(
     return scenarios
 
 
+def _scenario_step_authority(
+    case_id: str,
+) -> tuple[tuple[Any, ...], ...]:
+    authority = next(
+        (
+            steps
+            for authority_case_id, steps in EXPECTED_SCENARIO_STEP_AUTHORITY
+            if authority_case_id == case_id
+        ),
+        None,
+    )
+    if authority is None:
+        raise PhaseCContractError("scenario_ids")
+    return authority
+
+
+def _validate_scenario_attempt_dataclass(
+    attempt: PhaseCScenarioAttemptV1,
+    sessions: tuple[PhaseCScenarioSessionV1, ...],
+    aliases: tuple[str, ...],
+) -> None:
+    if type(attempt) is not PhaseCScenarioAttemptV1:
+        raise PhaseCContractError("scenario_attempt_type")
+    if (
+        type(attempt.state_session_alias) is not str
+        or type(attempt.frame_session_alias) is not str
+        or type(attempt.frame_index) is not int
+        or type(attempt.mutation_kind) is not str
+        or (
+            attempt.mutation_parameter is not None
+            and type(attempt.mutation_parameter) is not str
+        )
+    ):
+        raise PhaseCContractError("scenario_attempt_type")
+    if (
+        attempt.state_session_alias not in aliases
+        or attempt.frame_session_alias not in aliases
+    ):
+        raise PhaseCContractError("scenario_attempt_alias")
+    source = sessions[aliases.index(attempt.frame_session_alias)]
+    if attempt.frame_index < 0 or attempt.frame_index >= len(source.frames):
+        raise PhaseCContractError("scenario_attempt_frame_index")
+    if attempt.mutation_kind not in ALLOWED_SCENARIO_MUTATIONS:
+        raise PhaseCContractError("scenario_attempt_mutation")
+    if (
+        attempt.mutation_kind in ("none", "reverse_atom_order")
+        and attempt.mutation_parameter is not None
+    ):
+        raise PhaseCContractError("scenario_attempt_mutation_parameter")
+    if (
+        attempt.mutation_kind == "reverse_atom_order"
+        and len(source.frames[attempt.frame_index].evidence_atoms) < 2
+    ):
+        raise PhaseCContractError("scenario_attempt_reverse_size")
+    if (
+        attempt.mutation_kind == "add_forbidden_field"
+        and attempt.mutation_parameter not in SCENARIO_FORBIDDEN_FIELD_MUTATIONS
+    ):
+        raise PhaseCContractError("scenario_attempt_mutation_parameter")
+
+
+def _expected_internal_to_payload(
+    internal: PhaseCExpectedInternalProjectionV1,
+) -> dict[str, Any]:
+    if type(internal) is not PhaseCExpectedInternalProjectionV1:
+        raise PhaseCContractError("expected_internal_not_object")
+    return {
+        "gross_supporting_units": dict(internal.gross_supporting_units),
+        "gross_opposing_units": dict(internal.gross_opposing_units),
+        "uncapped_net_support": dict(internal.uncapped_net_support),
+        "capped_net_support": dict(internal.capped_net_support),
+        "contradictory_signals": list(internal.contradictory_signals),
+        "seen_independence_keys": list(internal.seen_independence_keys),
+        "internal_incumbent": internal.internal_incumbent,
+        "incumbent_tenure": internal.incumbent_tenure,
+        "entry_confirmation_keys_by_signal": {
+            signal: list(keys)
+            for signal, keys in internal.entry_confirmation_keys_by_signal
+        },
+        "switch_challenger": internal.switch_challenger,
+        "switch_confirmation_keys": list(internal.switch_confirmation_keys),
+        "release_streak": internal.release_streak,
+        "contributing_evidence_refs": list(internal.contributing_evidence_refs),
+        "seen_evidence_refs": list(internal.seen_evidence_refs),
+        "retired_independence_keys": list(internal.retired_independence_keys),
+        "accepted_turn_count": internal.accepted_turn_count,
+        "last_emitted_selected_signal": internal.last_emitted_selected_signal,
+        "last_emitted_selected_support": internal.last_emitted_selected_support,
+    }
+
+
+def _expected_step_dataclass_to_payload(
+    expected: PhaseCExpectedAcceptedStepV1 | PhaseCExpectedRejectedStepV1,
+) -> dict[str, Any]:
+    if type(expected) is PhaseCExpectedRejectedStepV1:
+        return {
+            "disposition": expected.disposition,
+            "rejection_code": expected.rejection_code,
+            "prior_state_bytes_unchanged": expected.prior_state_bytes_unchanged,
+        }
+    if type(expected) is not PhaseCExpectedAcceptedStepV1:
+        raise PhaseCContractError("expected_step_disposition")
+    if type(expected.expected_output_bytes) is not bytes:
+        raise PhaseCContractError("expected_output_contract")
+    try:
+        output = json.loads(
+            expected.expected_output_bytes.decode("utf-8"),
+            parse_constant=_reject_constant,
+            parse_float=_parse_finite_float,
+            object_pairs_hook=_unique_object,
+        )
+    except (UnicodeError, json.JSONDecodeError) as exc:
+        raise PhaseCContractError("expected_output_contract") from exc
+    if (
+        type(output) is not dict
+        or canonical_json_bytes(output) != expected.expected_output_bytes
+    ):
+        raise PhaseCContractError("expected_output_contract")
+    return {
+        "disposition": expected.disposition,
+        "expected_output": output,
+        "expected_internal": _expected_internal_to_payload(
+            expected.expected_internal,
+        ),
+    }
+
+
+def _phase_c_scenario_dataclass_to_payload(
+    scenario: PhaseCScenarioV1,
+) -> dict[str, Any]:
+    return {
+        "case_id": scenario.case_id,
+        "family": scenario.family,
+        "signal_family": scenario.signal_family,
+        "modality_family": scenario.modality_family,
+        "sessions": [
+            {
+                "session_alias": session.session_alias,
+                "frames": [
+                    phase_c_frame_to_payload(frame)
+                    for frame in session.frames
+                ],
+            }
+            for session in scenario.sessions
+        ],
+        "attempt_order": [
+            {
+                "state_session_alias": attempt.state_session_alias,
+                "frame_session_alias": attempt.frame_session_alias,
+                "frame_index": attempt.frame_index,
+                "mutation_kind": attempt.mutation_kind,
+                "mutation_parameter": attempt.mutation_parameter,
+            }
+            for attempt in scenario.attempt_order
+        ],
+        "expected_steps": [
+            _expected_step_dataclass_to_payload(expected)
+            for expected in scenario.expected_steps
+        ],
+    }
+
+
+def _validate_phase_c_scenario_dataclass(
+    scenario: PhaseCScenarioV1,
+    policy: dict[str, Any],
+) -> tuple[str, ...]:
+    if type(scenario) is not PhaseCScenarioV1:
+        raise PhaseCContractError("scenario_type")
+    expected_classification = EXPECTED_SCENARIO_CLASSIFICATIONS.get(
+        scenario.case_id,
+    )
+    if expected_classification is None or (
+        scenario.family,
+        scenario.signal_family,
+        scenario.modality_family,
+    ) != expected_classification:
+        raise PhaseCContractError("scenario_classification")
+    if type(scenario.sessions) is not tuple or any(
+        type(session) is not PhaseCScenarioSessionV1
+        for session in scenario.sessions
+    ):
+        raise PhaseCContractError("scenario_session_type")
+    aliases = tuple(session.session_alias for session in scenario.sessions)
+    if aliases not in (("A",), ("A", "B")) or len(set(aliases)) != len(aliases):
+        raise PhaseCContractError("scenario_session_aliases")
+    for session in scenario.sessions:
+        if (
+            type(session.session_alias) is not str
+            or type(session.frames) is not tuple
+        ):
+            raise PhaseCContractError("scenario_session_type")
+        for frame in session.frames:
+            validate_phase_c_frame(frame, policy)
+            if frame.call_session_id != (
+                f"session:{scenario.case_id}:{session.session_alias}"
+            ):
+                raise PhaseCContractError("scenario_frame_identity")
+    if (
+        type(scenario.attempt_order) is not tuple
+        or type(scenario.expected_steps) is not tuple
+    ):
+        raise PhaseCContractError("scenario_attempt_type")
+    if len(scenario.attempt_order) != len(scenario.expected_steps):
+        raise PhaseCContractError("scenario_expected_step_count")
+    for attempt in scenario.attempt_order:
+        _validate_scenario_attempt_dataclass(
+            attempt,
+            scenario.sessions,
+            aliases,
+        )
+    known_independence_keys = tuple(
+        atom.independence_key
+        for session in scenario.sessions
+        for frame in session.frames
+        for atom in frame.evidence_atoms
+    )
+    known_evidence_refs = tuple(
+        atom.evidence_ref
+        for session in scenario.sessions
+        for frame in session.frames
+        for atom in frame.evidence_atoms
+    )
+    authority = _scenario_step_authority(scenario.case_id)
+    actual_attempt_authority = tuple(
+        (
+            attempt.state_session_alias,
+            attempt.frame_session_alias,
+            attempt.frame_index,
+            attempt.mutation_kind,
+            attempt.mutation_parameter,
+        )
+        for attempt in scenario.attempt_order
+    )
+    if actual_attempt_authority != tuple(step[:5] for step in authority):
+        raise PhaseCContractError("scenario_attempt_authority")
+    if tuple(
+        step.disposition
+        if type(step) in (
+            PhaseCExpectedAcceptedStepV1,
+            PhaseCExpectedRejectedStepV1,
+        )
+        else None
+        for step in scenario.expected_steps
+    ) != tuple(
+        step[5] for step in authority
+    ):
+        raise PhaseCContractError("scenario_disposition_authority")
+    if tuple(
+        step.rejection_code
+        if type(step) is PhaseCExpectedRejectedStepV1
+        else None
+        for step in scenario.expected_steps
+    ) != tuple(step[6] for step in authority):
+        raise PhaseCContractError("scenario_rejection_authority")
+    for expected in scenario.expected_steps:
+        _parse_expected_step(
+            _expected_step_dataclass_to_payload(expected),
+            policy,
+            known_independence_keys,
+            known_evidence_refs,
+        )
+    expected_digest = next(
+        (
+            digest
+            for case_id, digest in EXPECTED_SCENARIO_CANONICAL_SHA256_BY_CASE
+            if case_id == scenario.case_id
+        ),
+        None,
+    )
+    if (
+        expected_digest is None
+        or sha256_bytes(canonical_json_bytes(
+            _phase_c_scenario_dataclass_to_payload(scenario),
+        )) != expected_digest
+    ):
+        raise PhaseCContractError("scenario_dataclass_authority_digest")
+    return aliases
+
+
 def materialize_phase_c_scenario_attempt_payload(
     scenario: PhaseCScenarioV1,
     attempt: PhaseCScenarioAttemptV1,
 ) -> dict[str, Any]:
-    if type(scenario) is not PhaseCScenarioV1 or type(attempt) is not PhaseCScenarioAttemptV1:
-        raise PhaseCContractError("scenario_attempt_type")
+    policy = _frozen_phase_c_policy()
+    aliases = _validate_phase_c_scenario_dataclass(scenario, policy)
+    _validate_scenario_attempt_dataclass(
+        attempt,
+        scenario.sessions,
+        aliases,
+    )
+    if scenario.attempt_order.count(attempt) != 1:
+        raise PhaseCContractError("scenario_attempt_membership")
     sessions = {session.session_alias: session for session in scenario.sessions}
-    if attempt.frame_session_alias not in sessions:
-        raise PhaseCContractError("scenario_attempt_alias")
     source = sessions[attempt.frame_session_alias]
-    if attempt.frame_index < 0 or attempt.frame_index >= len(source.frames):
-        raise PhaseCContractError("scenario_attempt_frame_index")
     payload = deepcopy(phase_c_frame_to_payload(source.frames[attempt.frame_index]))
     if attempt.mutation_kind == "none":
         if attempt.mutation_parameter is not None:
