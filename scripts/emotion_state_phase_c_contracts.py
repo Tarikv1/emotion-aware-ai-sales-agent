@@ -54,6 +54,44 @@ class PhaseCSyntheticEvidenceFrameV1:
 
 
 @dataclass(frozen=True)
+class PhaseCSignalAccumulatorV1:
+    gross_supporting_units: tuple[tuple[str, int], ...]
+    gross_opposing_units: tuple[tuple[str, int], ...]
+    uncapped_net_support: tuple[tuple[str, int], ...]
+    capped_net_support: tuple[tuple[str, int], ...]
+    highest_quality_by_signal_direction: tuple[
+        tuple[str, tuple[tuple[str, str | None], ...]],
+        ...
+    ]
+    contradictory_signals: tuple[str, ...]
+    modality_refs_by_signal_direction: tuple[
+        tuple[
+            str,
+            tuple[
+                tuple[
+                    str,
+                    tuple[tuple[str, tuple[str, ...]], ...],
+                ],
+                ...
+            ],
+        ],
+        ...
+    ]
+
+
+@dataclass(frozen=True)
+class PhaseCFrameFoldV1:
+    accumulator: PhaseCSignalAccumulatorV1
+    accepted_evidence_refs: tuple[str, ...]
+    contributing_evidence_refs: tuple[str, ...]
+    accepted_independence_keys: tuple[str, ...]
+    confirming_keys_by_signal: tuple[tuple[str, tuple[str, ...]], ...]
+    acoustic_only: bool
+    missing_input: bool
+    low_audio_quality_only: bool
+
+
+@dataclass(frozen=True)
 class PhaseCEventWatermarkV1:
     expected_session_id: str
     expected_campaign_profile_id: str
@@ -808,6 +846,359 @@ def validate_phase_c_frame(
 ) -> None:
     validate_phase_c_policy(policy)
     _validate_frame_payload(_frame_to_payload(frame), policy)
+
+
+def _validate_dense_signal_units(
+    value: Any,
+    policy: dict[str, Any],
+) -> dict[str, int]:
+    if type(value) is not tuple:
+        raise PhaseCContractError("accumulator_field_type")
+    signals = tuple(policy["canonical_signal_order"])
+    if len(value) != len(signals):
+        raise PhaseCContractError("accumulator_signal_order")
+    result: dict[str, int] = {}
+    for expected_signal, item in zip(signals, value):
+        if (
+            type(item) is not tuple
+            or len(item) != 2
+            or type(item[0]) is not str
+            or type(item[1]) is not int
+        ):
+            raise PhaseCContractError("accumulator_field_type")
+        signal, units = item
+        if signal != expected_signal:
+            raise PhaseCContractError("accumulator_signal_order")
+        if units < 0 or units > policy["support_saturation"]:
+            raise PhaseCContractError("accumulator_unit_range")
+        result[signal] = units
+    return result
+
+
+def _validate_quality_by_signal_direction(
+    value: Any,
+    policy: dict[str, Any],
+) -> dict[str, dict[str, str | None]]:
+    if type(value) is not tuple:
+        raise PhaseCContractError("accumulator_field_type")
+    signals = tuple(policy["canonical_signal_order"])
+    directions = tuple(policy["canonical_direction_order"])
+    if len(value) != len(signals):
+        raise PhaseCContractError("accumulator_signal_order")
+    result: dict[str, dict[str, str | None]] = {}
+    for expected_signal, item in zip(signals, value):
+        if type(item) is not tuple or len(item) != 2:
+            raise PhaseCContractError("accumulator_field_type")
+        signal, direction_items = item
+        if signal != expected_signal:
+            raise PhaseCContractError("accumulator_signal_order")
+        if type(direction_items) is not tuple or len(direction_items) != len(
+            directions,
+        ):
+            raise PhaseCContractError("accumulator_direction_order")
+        result[signal] = {}
+        for expected_direction, direction_item in zip(
+            directions,
+            direction_items,
+        ):
+            if (
+                type(direction_item) is not tuple
+                or len(direction_item) != 2
+            ):
+                raise PhaseCContractError("accumulator_field_type")
+            direction, quality = direction_item
+            if direction != expected_direction:
+                raise PhaseCContractError("accumulator_direction_order")
+            if quality is not None and (
+                type(quality) is not str
+                or quality not in policy["canonical_quality_order"]
+            ):
+                raise PhaseCContractError("accumulator_quality")
+            result[signal][direction] = quality
+    return result
+
+
+def _validate_modality_refs_by_signal_direction(
+    value: Any,
+    policy: dict[str, Any],
+) -> dict[str, dict[str, dict[str, tuple[str, ...]]]]:
+    if type(value) is not tuple:
+        raise PhaseCContractError("accumulator_field_type")
+    signals = tuple(policy["canonical_signal_order"])
+    directions = tuple(policy["canonical_direction_order"])
+    modalities = tuple(policy["canonical_modality_order"])
+    if len(value) != len(signals):
+        raise PhaseCContractError("accumulator_signal_order")
+    result: dict[str, dict[str, dict[str, tuple[str, ...]]]] = {}
+    all_refs: list[str] = []
+    for expected_signal, item in zip(signals, value):
+        if type(item) is not tuple or len(item) != 2:
+            raise PhaseCContractError("accumulator_field_type")
+        signal, direction_items = item
+        if signal != expected_signal:
+            raise PhaseCContractError("accumulator_signal_order")
+        if type(direction_items) is not tuple or len(direction_items) != len(
+            directions,
+        ):
+            raise PhaseCContractError("accumulator_direction_order")
+        result[signal] = {}
+        for expected_direction, direction_item in zip(
+            directions,
+            direction_items,
+        ):
+            if (
+                type(direction_item) is not tuple
+                or len(direction_item) != 2
+            ):
+                raise PhaseCContractError("accumulator_field_type")
+            direction, modality_items = direction_item
+            if direction != expected_direction:
+                raise PhaseCContractError("accumulator_direction_order")
+            if type(modality_items) is not tuple or len(modality_items) != len(
+                modalities,
+            ):
+                raise PhaseCContractError("accumulator_modality_order")
+            result[signal][direction] = {}
+            for expected_modality, modality_item in zip(
+                modalities,
+                modality_items,
+            ):
+                if (
+                    type(modality_item) is not tuple
+                    or len(modality_item) != 2
+                ):
+                    raise PhaseCContractError("accumulator_field_type")
+                modality, refs = modality_item
+                if modality != expected_modality:
+                    raise PhaseCContractError("accumulator_modality_order")
+                if type(refs) is not tuple:
+                    raise PhaseCContractError("accumulator_field_type")
+                for reference in refs:
+                    if (
+                        type(reference) is not str
+                        or EVIDENCE_REF_PATTERN.fullmatch(reference) is None
+                    ):
+                        raise PhaseCContractError(
+                            "invalid_evidence_reference",
+                        )
+                if len(set(refs)) != len(refs) or refs != tuple(sorted(refs)):
+                    raise PhaseCContractError(
+                        "accumulator_reference_order",
+                    )
+                result[signal][direction][modality] = refs
+                all_refs.extend(refs)
+    if len(set(all_refs)) != len(all_refs):
+        raise PhaseCContractError("accumulator_duplicate_reference")
+    return result
+
+
+def validate_phase_c_signal_accumulator(
+    accumulator: PhaseCSignalAccumulatorV1,
+    policy: dict[str, Any],
+) -> None:
+    validate_phase_c_policy(policy)
+    if type(accumulator) is not PhaseCSignalAccumulatorV1:
+        raise PhaseCContractError("accumulator_field_type")
+    supporting = _validate_dense_signal_units(
+        accumulator.gross_supporting_units,
+        policy,
+    )
+    opposing = _validate_dense_signal_units(
+        accumulator.gross_opposing_units,
+        policy,
+    )
+    uncapped = _validate_dense_signal_units(
+        accumulator.uncapped_net_support,
+        policy,
+    )
+    capped = _validate_dense_signal_units(
+        accumulator.capped_net_support,
+        policy,
+    )
+    qualities = _validate_quality_by_signal_direction(
+        accumulator.highest_quality_by_signal_direction,
+        policy,
+    )
+    provenance = _validate_modality_refs_by_signal_direction(
+        accumulator.modality_refs_by_signal_direction,
+        policy,
+    )
+    signals = tuple(policy["canonical_signal_order"])
+    directions = tuple(policy["canonical_direction_order"])
+    modalities = tuple(policy["canonical_modality_order"])
+    if type(accumulator.contradictory_signals) is not tuple:
+        raise PhaseCContractError("accumulator_field_type")
+    expected_contradictory: list[str] = []
+    for signal in signals:
+        for direction, units in (
+            ("supports", supporting[signal]),
+            ("opposes", opposing[signal]),
+        ):
+            side_quality = qualities[signal][direction]
+            side_refs = tuple(
+                reference
+                for modality in modalities
+                for reference in provenance[signal][direction][modality]
+            )
+            if units == 0:
+                if side_quality is not None or side_refs:
+                    raise PhaseCContractError(
+                        "accumulator_side_metadata",
+                    )
+            elif side_quality is None or not side_refs:
+                raise PhaseCContractError("accumulator_side_metadata")
+
+        contradictory = (
+            supporting[signal]
+            >= policy["contradiction_thresholds"]["gross_support"]
+            and opposing[signal]
+            >= policy["contradiction_thresholds"]["gross_opposition"]
+        )
+        if contradictory:
+            expected_contradictory.append(signal)
+        expected_uncapped = max(0, supporting[signal] - opposing[signal])
+        if uncapped[signal] != expected_uncapped:
+            raise PhaseCContractError("accumulator_projection")
+        live_qualities = [
+            qualities[signal][direction]
+            for direction in directions
+            if qualities[signal][direction] is not None
+        ]
+        quality_cap = 0
+        if live_qualities:
+            best_quality = min(
+                live_qualities,
+                key=policy["canonical_quality_order"].index,
+            )
+            quality_cap = policy["total_quality_caps"][best_quality]
+        live_modalities = {
+            modality
+            for direction in directions
+            for modality in modalities
+            if provenance[signal][direction][modality]
+        }
+        caps = [expected_uncapped, quality_cap]
+        if live_modalities == {"acoustic"}:
+            caps.append(policy["acoustic_only_cap"])
+        if contradictory:
+            caps.append(policy["contradiction_cap"])
+        if capped[signal] != min(caps):
+            raise PhaseCContractError("accumulator_projection")
+    if accumulator.contradictory_signals != tuple(expected_contradictory):
+        raise PhaseCContractError("accumulator_contradiction")
+
+
+def validate_phase_c_seen_independence_keys(value: Any) -> None:
+    if type(value) is not frozenset:
+        raise PhaseCContractError("seen_independence_keys_type")
+    for key in value:
+        _require_opaque_identifier(key)
+
+
+def validate_phase_c_frame_fold(
+    fold: PhaseCFrameFoldV1,
+    frame: PhaseCSyntheticEvidenceFrameV1,
+    policy: dict[str, Any],
+) -> None:
+    validate_phase_c_policy(policy)
+    validate_phase_c_frame(frame, policy)
+    if type(fold) is not PhaseCFrameFoldV1:
+        raise PhaseCContractError("fold_field_type")
+    validate_phase_c_signal_accumulator(fold.accumulator, policy)
+    tuple_fields = (
+        fold.accepted_evidence_refs,
+        fold.contributing_evidence_refs,
+        fold.accepted_independence_keys,
+        fold.confirming_keys_by_signal,
+    )
+    if any(type(value) is not tuple for value in tuple_fields):
+        raise PhaseCContractError("fold_field_type")
+    if (
+        fold.accepted_evidence_refs
+        != tuple(atom.evidence_ref for atom in frame.evidence_atoms)
+    ):
+        raise PhaseCContractError("fold_accepted_reference_order")
+    for reference in (
+        *fold.accepted_evidence_refs,
+        *fold.contributing_evidence_refs,
+    ):
+        if (
+            type(reference) is not str
+            or EVIDENCE_REF_PATTERN.fullmatch(reference) is None
+        ):
+            raise PhaseCContractError("invalid_evidence_reference")
+    if fold.contributing_evidence_refs != tuple(
+        sorted(
+            reference
+            for _, directions in (
+                fold.accumulator.modality_refs_by_signal_direction
+            )
+            for _, modalities_by_direction in directions
+            for _, references in modalities_by_direction
+            for reference in references
+        ),
+    ):
+        raise PhaseCContractError("fold_contributing_reference_order")
+    frame_keys = {atom.independence_key for atom in frame.evidence_atoms}
+    if (
+        len(set(fold.accepted_independence_keys))
+        != len(fold.accepted_independence_keys)
+        or any(
+            type(key) is not str or key not in frame_keys
+            for key in fold.accepted_independence_keys
+        )
+    ):
+        raise PhaseCContractError("fold_accepted_key_order")
+    signals = tuple(policy["canonical_signal_order"])
+    if len(fold.confirming_keys_by_signal) != len(signals):
+        raise PhaseCContractError("fold_confirming_key_order")
+    for expected_signal, item in zip(
+        signals,
+        fold.confirming_keys_by_signal,
+    ):
+        if (
+            type(item) is not tuple
+            or len(item) != 2
+            or item[0] != expected_signal
+            or type(item[1]) is not tuple
+            or len(item[1]) > 1
+            or any(
+                key not in fold.accepted_independence_keys
+                for key in item[1]
+            )
+        ):
+            raise PhaseCContractError("fold_confirming_key_order")
+    if any(
+        type(value) is not bool
+        for value in (
+            fold.acoustic_only,
+            fold.missing_input,
+            fold.low_audio_quality_only,
+        )
+    ):
+        raise PhaseCContractError("fold_field_type")
+    if fold.missing_input != (len(frame.evidence_atoms) == 0):
+        raise PhaseCContractError("fold_flag_invariant")
+    live_modalities = {
+        modality
+        for _, directions in (
+            fold.accumulator.modality_refs_by_signal_direction
+        )
+        for _, modality_items in directions
+        for modality, refs in modality_items
+        if refs
+    }
+    if fold.acoustic_only != (
+        bool(live_modalities) and live_modalities == {"acoustic"}
+    ):
+        raise PhaseCContractError("fold_flag_invariant")
+    expected_low_audio = bool(frame.evidence_atoms) and all(
+        atom.modality == "acoustic"
+        and atom.quality_bucket in {"low", "unusable"}
+        for atom in frame.evidence_atoms
+    )
+    if fold.low_audio_quality_only != expected_low_audio:
+        raise PhaseCContractError("fold_flag_invariant")
 
 
 def _frozen_phase_c_policy() -> dict[str, Any]:

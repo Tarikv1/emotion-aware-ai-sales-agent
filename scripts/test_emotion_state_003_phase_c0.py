@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import copy
 import dataclasses
+import importlib
 import inspect
 import json
 import subprocess
@@ -1822,4 +1823,528 @@ class PhaseCPolicyContractTests(unittest.TestCase):
                 "/research/experiments/generated/EMOTION-STATE-003-phase-c0-synthetic-temporal-mechanics/result.json text eol=lf",
                 "/research/experiments/generated/EMOTION-STATE-003-phase-c0-synthetic-temporal-mechanics/report.md text eol=lf",
             ],
+        )
+
+
+class PhaseCTestCase(unittest.TestCase):
+    def setUp(self) -> None:
+        self.policy = validate_phase_c_policy(load_json_strict(POLICY_PATH))
+        self.scenarios = {
+            scenario.case_id: scenario
+            for scenario in phase_c_contracts.load_and_validate_phase_c_scenarios(
+                SCENARIO_PATH,
+                self.policy,
+            )
+        }
+        self.tracker = importlib.import_module(
+            "scripts.emotion_state_phase_c_temporal_tracker",
+        )
+
+    def case(self, case_id: str) -> Any:
+        return self.scenarios[case_id]
+
+    def parsed_frame(
+        self,
+        atoms: list[dict[str, object]],
+        *,
+        counter: int = 1,
+    ) -> PhaseCSyntheticEvidenceFrameV1:
+        return parse_phase_c_frame(
+            _frame(
+                event_id=f"event-{counter}",
+                turn_id=f"turn-{counter}",
+                turn_sequence=counter,
+                atoms=atoms,
+            ),
+            self.policy,
+        )
+
+
+class PhaseCFixedPointFoldTests(PhaseCTestCase):
+    def setUp(self) -> None:
+        super().setUp()
+        self.explicit_high = parse_phase_c_atom(
+            _atom(
+                counter=9001,
+                evidence_class="unsolicited_explicit_statement",
+            ),
+            self.policy,
+        )
+        self.transcript_medium = parse_phase_c_atom(
+            _atom(
+                counter=9002,
+                evidence_class="transcript_meaning",
+                quality="medium",
+            ),
+            self.policy,
+        )
+        self.acoustic_low = parse_phase_c_atom(
+            _atom(
+                counter=9003,
+                modality="acoustic",
+                evidence_class="synthetic_acoustic_symbol",
+                quality="low",
+            ),
+            self.policy,
+        )
+        self.unusable_proxy = parse_phase_c_atom(
+            _atom(
+                counter=9004,
+                modality="dialogue",
+                evidence_class="weak_behavioral_proxy",
+                quality="unusable",
+            ),
+            self.policy,
+        )
+
+    def fold_case(self, case_id: str, attempted_step: int) -> Any:
+        scenario = self.case(case_id)
+        previous = None
+        seen_keys: frozenset[str] = frozenset()
+        fold = None
+        for index, attempt in enumerate(scenario.attempt_order):
+            session = next(
+                item
+                for item in scenario.sessions
+                if item.session_alias == attempt.frame_session_alias
+            )
+            frame = session.frames[attempt.frame_index]
+            fold = self.tracker.fold_frame_support(
+                previous,
+                frame,
+                self.policy,
+                seen_keys,
+            )
+            previous = fold.accumulator
+            seen_keys = seen_keys | frozenset(fold.accepted_independence_keys)
+            if index == attempted_step:
+                return fold
+        self.fail(f"attempted step is outside case: {attempted_step}")
+
+    def _quality_cap(self, accumulator: Any, signal: str) -> int:
+        by_direction = dict(
+            dict(accumulator.highest_quality_by_signal_direction)[signal],
+        )
+        live = [quality for quality in by_direction.values() if quality is not None]
+        if not live:
+            return 0
+        quality = min(
+            live,
+            key=self.policy["canonical_quality_order"].index,
+        )
+        return self.policy["total_quality_caps"][quality]
+
+    def _assert_code(
+        self,
+        expected_code: str,
+        previous: Any,
+        frame: PhaseCSyntheticEvidenceFrameV1,
+        seen_keys: Any = frozenset(),
+    ) -> None:
+        with self.assertRaises(PhaseCContractError) as captured:
+            self.tracker.fold_frame_support(
+                previous,
+                frame,
+                self.policy,
+                seen_keys,
+            )
+        self.assertEqual(captured.exception.code, expected_code)
+
+    def test_atom_units_round_down_exactly(self) -> None:
+        self.assertEqual(
+            self.tracker.atom_support_units(self.explicit_high, self.policy),
+            700,
+        )
+        self.assertEqual(
+            self.tracker.atom_support_units(self.transcript_medium, self.policy),
+            337,
+        )
+        self.assertEqual(
+            self.tracker.atom_support_units(self.acoustic_low, self.policy),
+            72,
+        )
+        self.assertEqual(
+            self.tracker.atom_support_units(self.unusable_proxy, self.policy),
+            0,
+        )
+
+    def test_decay_agreement_saturation_and_caps_are_exact(self) -> None:
+        self.assertEqual(self.tracker.decay_units(700, self.policy), 560)
+        fold = self.fold_case("multimodal_two_turn_entry", attempted_step=0)
+        self.assertEqual(
+            dict(fold.accumulator.capped_net_support)["frustration"],
+            730,
+        )
+        saturation = self.fold_case("support_saturation", attempted_step=0)
+        self.assertEqual(
+            dict(saturation.accumulator.gross_supporting_units)["confusion"],
+            1000,
+        )
+        self.assertEqual(
+            dict(saturation.accumulator.capped_net_support)["confusion"],
+            1000,
+        )
+
+    def test_quality_acoustic_and_contradiction_caps_are_exact(self) -> None:
+        contradiction = self.fold_case(
+            "same_signal_contradiction",
+            attempted_step=0,
+        )
+        accumulator = contradiction.accumulator
+        self.assertEqual(
+            dict(accumulator.gross_supporting_units)["confusion"],
+            1000,
+        )
+        self.assertEqual(
+            dict(accumulator.gross_opposing_units)["confusion"],
+            300,
+        )
+        self.assertEqual(
+            dict(accumulator.uncapped_net_support)["confusion"],
+            700,
+        )
+        self.assertEqual(
+            dict(accumulator.capped_net_support)["confusion"],
+            350,
+        )
+        acoustic = self.fold_case("acoustic_only_capped", attempted_step=2)
+        self.assertEqual(
+            dict(acoustic.accumulator.capped_net_support)["hesitation"],
+            400,
+        )
+
+    def test_one_side_metadata_clears_without_clearing_the_other_side(self) -> None:
+        initial = self.parsed_frame(
+            [
+                _atom(
+                    counter=9101,
+                    evidence_class="weak_behavioral_proxy",
+                    modality="dialogue",
+                    quality="high",
+                ),
+                _atom(
+                    counter=9102,
+                    direction="opposes",
+                    evidence_class="unsolicited_explicit_statement",
+                    quality="low",
+                ),
+            ],
+            counter=101,
+        )
+        empty = self.parsed_frame([], counter=102)
+        fold = self.tracker.fold_frame_support(
+            None,
+            initial,
+            self.policy,
+            frozenset(),
+        )
+        self.assertEqual(
+            dict(fold.accumulator.gross_supporting_units)["confusion"],
+            100,
+        )
+        self.assertEqual(
+            dict(fold.accumulator.gross_opposing_units)["confusion"],
+            280,
+        )
+        self.assertEqual(self._quality_cap(fold.accumulator, "confusion"), 1000)
+        for _ in range(17):
+            fold = self.tracker.fold_frame_support(
+                fold.accumulator,
+                empty,
+                self.policy,
+                frozenset(),
+            )
+        accumulator = fold.accumulator
+        self.assertEqual(
+            dict(accumulator.gross_supporting_units)["confusion"],
+            0,
+        )
+        self.assertGreater(
+            dict(accumulator.gross_opposing_units)["confusion"],
+            0,
+        )
+        quality = dict(
+            dict(accumulator.highest_quality_by_signal_direction)["confusion"],
+        )
+        self.assertIsNone(quality["supports"])
+        self.assertEqual(quality["opposes"], "low")
+        provenance = dict(
+            dict(accumulator.modality_refs_by_signal_direction)["confusion"],
+        )
+        self.assertTrue(
+            all(not refs for _, refs in dict(provenance["supports"]).items()),
+        )
+        self.assertEqual(
+            dict(provenance["opposes"])["text"],
+            (initial.evidence_atoms[1].evidence_ref,),
+        )
+        self.assertEqual(self._quality_cap(accumulator, "confusion"), 400)
+
+    def test_seen_key_with_fresh_reference_cannot_create_agreement(self) -> None:
+        repeated_key = "ind:fixture:already-seen"
+        frame = self.parsed_frame(
+            [
+                _atom(
+                    counter=9201,
+                    evidence_class="transcript_meaning",
+                ),
+                _atom(
+                    counter=9202,
+                    modality="acoustic",
+                    evidence_class="synthetic_acoustic_symbol",
+                    independence_key=repeated_key,
+                ),
+            ],
+            counter=103,
+        )
+        fold = self.tracker.fold_frame_support(
+            None,
+            frame,
+            self.policy,
+            frozenset({repeated_key}),
+        )
+        self.assertEqual(
+            dict(fold.accumulator.gross_supporting_units)["confusion"],
+            450,
+        )
+        self.assertEqual(
+            fold.accepted_evidence_refs,
+            tuple(atom.evidence_ref for atom in frame.evidence_atoms),
+        )
+        self.assertEqual(
+            fold.accepted_independence_keys,
+            (frame.evidence_atoms[0].independence_key,),
+        )
+        self.assertEqual(
+            fold.contributing_evidence_refs,
+            (frame.evidence_atoms[0].evidence_ref,),
+        )
+
+    def test_total_quality_caps_are_independent_of_acoustic_cap(self) -> None:
+        previous = None
+        seen: frozenset[str] = frozenset()
+        for offset in range(3):
+            frame = self.parsed_frame(
+                [
+                    _atom(
+                        counter=9301 + offset,
+                        evidence_class="transcript_meaning",
+                        quality="medium",
+                    ),
+                ],
+                counter=110 + offset,
+            )
+            fold = self.tracker.fold_frame_support(
+                previous,
+                frame,
+                self.policy,
+                seen,
+            )
+            previous = fold.accumulator
+            seen |= frozenset(fold.accepted_independence_keys)
+        self.assertEqual(
+            dict(fold.accumulator.gross_supporting_units)["confusion"],
+            821,
+        )
+        self.assertEqual(
+            dict(fold.accumulator.capped_net_support)["confusion"],
+            750,
+        )
+
+        previous = None
+        seen = frozenset()
+        for offset in range(2):
+            frame = self.parsed_frame(
+                [
+                    _atom(
+                        counter=9401 + offset,
+                        evidence_class="unsolicited_explicit_statement",
+                        quality="low",
+                    ),
+                ],
+                counter=120 + offset,
+            )
+            fold = self.tracker.fold_frame_support(
+                previous,
+                frame,
+                self.policy,
+                seen,
+            )
+            previous = fold.accumulator
+            seen |= frozenset(fold.accepted_independence_keys)
+        self.assertEqual(
+            dict(fold.accumulator.gross_supporting_units)["confusion"],
+            504,
+        )
+        self.assertEqual(
+            dict(fold.accumulator.capped_net_support)["confusion"],
+            400,
+        )
+        self.assertFalse(fold.acoustic_only)
+
+    def test_same_modality_atoms_do_not_create_agreement_bonus(self) -> None:
+        frame = self.parsed_frame(
+            [
+                _atom(
+                    counter=9501,
+                    evidence_class="transcript_meaning",
+                ),
+                _atom(
+                    counter=9502,
+                    evidence_class="transcript_meaning",
+                ),
+            ],
+            counter=130,
+        )
+        fold = self.tracker.fold_frame_support(
+            None,
+            frame,
+            self.policy,
+            frozenset(),
+        )
+        self.assertEqual(
+            dict(fold.accumulator.gross_supporting_units)["confusion"],
+            900,
+        )
+
+    def test_dense_metadata_and_zero_unit_audio_flags_are_exact(self) -> None:
+        frame = self.parsed_frame(
+            [
+                _atom(
+                    counter=9601,
+                    modality="acoustic",
+                    evidence_class="synthetic_acoustic_symbol",
+                    quality="unusable",
+                ),
+            ],
+            counter=140,
+        )
+        fold = self.tracker.fold_frame_support(
+            None,
+            frame,
+            self.policy,
+            frozenset(),
+        )
+        self.assertEqual(
+            tuple(key for key, _ in fold.accumulator.gross_supporting_units),
+            tuple(self.policy["canonical_signal_order"]),
+        )
+        self.assertTrue(fold.low_audio_quality_only)
+        self.assertFalse(fold.missing_input)
+        self.assertFalse(fold.acoustic_only)
+        self.assertEqual(
+            fold.accepted_evidence_refs,
+            (frame.evidence_atoms[0].evidence_ref,),
+        )
+        self.assertEqual(
+            fold.accepted_independence_keys,
+            (frame.evidence_atoms[0].independence_key,),
+        )
+        self.assertEqual(fold.contributing_evidence_refs, ())
+        self.assertTrue(
+            all(not keys for _, keys in fold.confirming_keys_by_signal),
+        )
+        for _, directions in (
+            fold.accumulator.highest_quality_by_signal_direction
+        ):
+            self.assertEqual(
+                directions,
+                (("supports", None), ("opposes", None)),
+            )
+        for _, directions in fold.accumulator.modality_refs_by_signal_direction:
+            for _, modalities in directions:
+                self.assertEqual(
+                    modalities,
+                    (("text", ()), ("dialogue", ()), ("acoustic", ())),
+                )
+
+    def test_direct_dataclass_and_seen_key_mutations_fail_closed_exactly(self) -> None:
+        frame = self.parsed_frame(
+            [
+                _atom(
+                    counter=9701,
+                    evidence_class="unsolicited_explicit_statement",
+                ),
+            ],
+            counter=150,
+        )
+        valid = self.tracker.fold_frame_support(
+            None,
+            frame,
+            self.policy,
+            frozenset(),
+        ).accumulator
+        empty = self.parsed_frame([], counter=151)
+
+        self._assert_code(
+            "accumulator_field_type",
+            dataclasses.replace(
+                valid,
+                gross_supporting_units=list(valid.gross_supporting_units),
+            ),
+            empty,
+        )
+        self._assert_code(
+            "accumulator_projection",
+            dataclasses.replace(
+                valid,
+                capped_net_support=(
+                    ("confusion", 699),
+                    *valid.capped_net_support[1:],
+                ),
+            ),
+            empty,
+        )
+        self._assert_code(
+            "accumulator_side_metadata",
+            dataclasses.replace(
+                valid,
+                highest_quality_by_signal_direction=(
+                    (
+                        "confusion",
+                        (("supports", None), ("opposes", None)),
+                    ),
+                    *valid.highest_quality_by_signal_direction[1:],
+                ),
+            ),
+            empty,
+        )
+        self._assert_code(
+            "accumulator_modality_order",
+            dataclasses.replace(
+                valid,
+                modality_refs_by_signal_direction=(
+                    (
+                        "confusion",
+                        (
+                            (
+                                "supports",
+                                (
+                                    ("dialogue", ()),
+                                    ("text", (frame.evidence_atoms[0].evidence_ref,)),
+                                    ("acoustic", ()),
+                                ),
+                            ),
+                            valid.modality_refs_by_signal_direction[0][1][1],
+                        ),
+                    ),
+                    *valid.modality_refs_by_signal_direction[1:],
+                ),
+            ),
+            empty,
+        )
+        self._assert_code(
+            "seen_independence_keys_type",
+            valid,
+            empty,
+            set(),
+        )
+        invalid_frame = dataclasses.replace(
+            empty,
+            evidence_atoms=list(empty.evidence_atoms),
+        )
+        self._assert_code(
+            "frame_field_type",
+            valid,
+            invalid_frame,
         )
