@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import math
 from pathlib import Path
 from typing import Any, Final
 
@@ -94,6 +95,13 @@ def _reject_constant(value: str) -> None:
     raise PhaseCContractError(f"non-finite JSON constant is forbidden: {value}")
 
 
+def _parse_finite_float(value: str) -> float:
+    parsed = float(value)
+    if not math.isfinite(parsed):
+        raise PhaseCContractError(f"non-finite JSON number is forbidden: {value}")
+    return parsed
+
+
 def _unique_object(pairs: list[tuple[str, Any]]) -> dict[str, Any]:
     result: dict[str, Any] = {}
     for key, value in pairs:
@@ -108,6 +116,7 @@ def load_json_strict(path: Path) -> dict[str, Any]:
         value = json.loads(
             path.read_text(encoding="utf-8"),
             parse_constant=_reject_constant,
+            parse_float=_parse_finite_float,
             object_pairs_hook=_unique_object,
         )
     except (OSError, UnicodeError, json.JSONDecodeError) as exc:

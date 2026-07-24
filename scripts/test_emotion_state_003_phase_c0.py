@@ -123,6 +123,15 @@ class PhaseCPolicyContractTests(unittest.TestCase):
                 with self.assertRaises(PhaseCContractError):
                     validate_phase_c_policy(mutated)
 
+    def test_strict_loader_rejects_numeric_overflow_literals(self) -> None:
+        for literal in ("1e9999", "-1e9999"):
+            with self.subTest(literal=literal):
+                with tempfile.TemporaryDirectory() as directory:
+                    path = Path(directory) / "overflow.json"
+                    path.write_text(f'{{"value":{literal}}}', encoding="utf-8")
+                    with self.assertRaises(PhaseCContractError):
+                        load_json_strict(path)
+
     def test_exact_output_eol_attributes_are_narrow(self) -> None:
         self.assertEqual(
             (ROOT / ".gitattributes").read_text(
