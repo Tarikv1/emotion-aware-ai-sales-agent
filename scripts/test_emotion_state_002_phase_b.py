@@ -32318,7 +32318,7 @@ runner.accept_receipt(paths, paths.receipt_path("accept.json"))
                 os.environ,
                 {
                     "GIT_DIR": "forbidden",
-                    "HTTPS_PROXY": "http://forbidden.invalid",
+                    "HTTPS_PROXY": "forbidden-proxy-value",
                 },
             ),
             patch.object(self.runner.subprocess, "run", side_effect=run),
