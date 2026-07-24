@@ -748,10 +748,13 @@ improve the result.
 The retired lineage is not reused or mutated.
 
 The production lockbox is closed and must not be rerun for this experiment
-version. Task 12 publication is complete locally but has not been pushed. Any
-Phase C design or implementation, merge, runtime activation, provider access,
-private data, calls, simulations, or source adaptation requires a separate
-scope. The reviewed venv and wheelhouse under
+version. Task 12 publication and closeout were pushed at
+`b3f475e6fe101573e2144d9ced31698d51c9ead7` on branch
+`codex/emotion-state-phase-b-public-data-feasibility`. Phase C0 design is now
+separately approved as an offline synthetic temporal-mechanics specification.
+Implementation, merge, runtime activation, provider access, private data,
+calls, conversational simulations, source adaptation, and Phase D remain
+outside that design-only scope. The reviewed venv and wheelhouse under
 `.tmp/emotion-state-002-phase-b` remain immutable dependency inputs only; no
 authority transfers to another gate.
 

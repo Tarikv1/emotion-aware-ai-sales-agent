@@ -6,13 +6,20 @@ Status: reviewed and approved design; offline partial Phase A contract foundatio
 
 ## Current Offline Checkpoint Boundary
 
-The implemented offline partial Phase A runner serializes startup recovery and publication with an OS-level, non-blocking publication lock under ignored `.tmp/`. The canonical generated-artifact directory still contains exactly two files: `result.json` and `report.md`. New-file staging, file `fsync`, the transaction journal, previous-pair backups, and recovery scratch stay under ignored `.tmp/`, outside that canonical directory.
+Phase A is accepted at output-only commit
+`f8ba503c3670fec6e9dee53f03f306798e7b807b`. Phase B completed its final
+lockbox exactly once and accepted its canonical pair under transaction
+`559ccc55b0b5412ba455ca7fe3e3a6b7`, with decision `revise`. The exact
+pair-only commit is `f887989597f23f438e8e537ba5bfbd05823a3587`; Task 12
+closeout is `b3f475e6fe101573e2144d9ced31698d51c9ead7`, pushed on branch
+`codex/emotion-state-phase-b-public-data-feasibility`.
 
-Publication is result-first/report-last: the runner stages and `fsync`s both new files, backs up the exact prior pair when present, persists the journal, replaces `result.json` first, and publishes `report.md` last. The report carries the exact result SHA-256 commit marker in the form `result.json sha256:<64-uppercase-SHA-256>`. Consumers must require `python scripts\validate_emotion_state_001_phase_a_contracts.py` to pass before treating the pair as committed.
-
-On the next locked startup after an interruption, recovery either finalizes an exact new pair whose report marker and recorded digests match or restores the exact previous pair from verified backups. Cleanup is retry-safe when an exact new or previous pair is already canonical; corrupt or incomplete recovery evidence fails closed and is retained. This is a logical commit-and-recovery protocol, not physical two-file atomicity and not a claim of power-loss durability.
-
-Controlled regression coverage injects 60-second subprocess timeouts at exactly six positions: two EXP-002 validator calls, one Phase A BRAIN validator call, and three Phase A checkpoint calls. Each covered timeout returns the validator's controlled exit-`1` failure message without stderr or a traceback. This is offline failure-reporting coverage only; it opens no acoustic, private-data, public-dataset, provider, runtime, real-customer, or production-readiness gate. Current-checkpoint hard stop: no ElevenLabs read or write occurred; neither an outbound call nor a customer call occurred; no simulation occurred; no source adaptation occurred; and no source-adaptation gate was opened.
+Phase C0 is now approved for design documentation only. Its scope is an
+offline pure reducer over frozen symbolic evidence, with no Phase B model or
+feature ingestion, raw data, private data, provider access, calls,
+conversational simulations, prompt/response work, policy adapter, runtime
+change or activation, lockbox reuse, or Phase D. The governing design is
+`docs/superpowers/specs/2026-07-24-emotion-state-phase-c0-synthetic-temporal-mechanics-design.md`.
 
 ## Purpose
 
