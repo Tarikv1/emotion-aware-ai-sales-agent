@@ -25,7 +25,6 @@ from scripts.emotion_state_phase_c_contracts import (
     validate_phase_c_seen_independence_keys,
     validate_phase_c_signal_accumulator,
     validate_phase_c_temporal_state,
-    _phase_c_output_expected,
 )
 
 
@@ -509,7 +508,47 @@ def project_perceived_customer_state(
     if type(context) is not PhaseCProjectionContextV1:
         raise PhaseCContractError("projection_context_type")
     validate_phase_c_frame_fold(context.fold, context.frame, validated_policy)
-    return _phase_c_output_expected(session_state, context, validated_policy)
+    signals = tuple(validated_policy["canonical_signal_order"])
+    modalities = tuple(validated_policy["canonical_modality_order"])
+    nets = dict(context.fold.accumulator.capped_net_support)
+    visible = [signal for signal in signals if nets[signal] >= validated_policy["visibility_threshold"]]
+    reasons = (["contradictory_evidence"] if context.fold.accumulator.contradictory_signals else [])
+    if context.fold.low_audio_quality_only: reasons.append("low_audio_quality")
+    if context.fold.missing_input: reasons.append("missing_input")
+    candidate = session_state.hysteresis.internal_incumbent
+    if candidate is None or candidate not in visible: reasons.append("insufficient_evidence")
+    reasons = sorted(set(reasons), key=tuple(validated_policy["abstention_reason_order"]).index)
+    selected = "none" if reasons else candidate
+    emitted = ([selected] + [f"possible_{signal}" for signal in visible if signal != selected]) if selected != "none" else ([f"possible_{signal}" for signal in visible] or ["none"])
+    provenance_source = {signal: {direction: dict(rows) for direction, rows in directions} for signal, directions in context.fold.accumulator.modality_refs_by_signal_direction}
+    quality_source = {signal: dict(rows) for signal, rows in context.fold.accumulator.highest_quality_by_signal_direction}
+    confidence: dict[str, float] = {}; provenance: dict[str, dict[str, list[str]]] = {}; refs: list[str] = []; qualities: list[str] = []; live_modalities: set[str] = set()
+    for emitted_signal in emitted:
+        if emitted_signal == "none": continue
+        signal = emitted_signal.removeprefix("possible_"); confidence[emitted_signal] = nets[signal] / validated_policy["scale"]
+        modality_map: dict[str, list[str]] = {}; ordered_lists: list[list[str]] = []
+        for modality in modalities:
+            items = [reference for direction in validated_policy["canonical_direction_order"] for reference in provenance_source[signal][direction][modality]]
+            if items:
+                modality_map[modality] = items; ordered_lists.append(items); live_modalities.add(modality)
+        for ordinal in range(max((len(items) for items in ordered_lists), default=0)):
+            for items in ordered_lists:
+                if ordinal < len(items) and items[ordinal] not in refs: refs.append(items[ordinal])
+        provenance[emitted_signal] = modality_map
+        for direction in validated_policy["canonical_direction_order"]:
+            if any(provenance_source[signal][direction][modality] for modality in modalities) and quality_source[signal][direction] is not None:
+                qualities.append(quality_source[signal][direction])
+    bucket = "low" if selected == "none" or nets[selected] < validated_policy["confidence_bucket_thresholds"]["medium"] else "medium" if nets[selected] < validated_policy["confidence_bucket_thresholds"]["high"] else "high"
+    quality = "low_quality" if not refs and context.fold.low_audio_quality_only else "insufficient" if not refs else "low_quality" if qualities and all(value in {"low", "unusable"} for value in qualities) else "text_only" if live_modalities == {"text"} else "acoustic_only" if live_modalities == {"acoustic"} else "low_quality" if live_modalities == {"dialogue"} else "multimodal"
+    if context.fold.accumulator.contradictory_signals: trajectory = "contradictory"
+    elif selected == "none" or context.prior_emitted_selected_signal is None or selected != context.prior_emitted_selected_signal: trajectory = "insufficient_history"
+    else:
+        delta = nets[selected] - context.prior_emitted_selected_support
+        trajectory = "stable" if abs(delta) < validated_policy["trajectory_delta_threshold"] else ("improving" if delta > 0 else "worsening") if selected == "interest" else ("worsening" if delta > 0 else "improving")
+    payload = {"call_session_id": context.frame.call_session_id, "campaign_profile_id": context.frame.campaign_profile_id, "campaign_profile_version": context.frame.campaign_profile_version, "turn_id": context.frame.turn_id, "turn_sequence": context.frame.turn_sequence, "valence_estimate": "not_inferable", "activation_estimate": "not_inferable", "engagement_estimate": "not_inferable", "operational_signals": emitted, "confidence_by_signal": confidence, "selected_policy_signal": selected, "selected_signal_confidence_bucket": bucket, "overall_evidence_quality": quality, "trajectory": trajectory, "evidence_refs": refs, "signal_provenance_by_modality": provenance, "allowed_policy_effects": ["preserve"] if selected == "none" or quality == "acoustic_only" else list(validated_policy["allowed_effects_by_signal"][selected]), "blocked_policy_effects": list(validated_policy["blocked_effect_order"]), "abstained": bool(reasons), "abstention_reasons": reasons, "evidence_policy_version": validated_policy["evidence_policy_version"], "runtime_approved": False}
+    from runtime.contracts.emotion_state_contracts import validate_perceived_customer_state
+    validate_perceived_customer_state(payload)
+    return payload
 
 
 def replay_validated_frames(
@@ -567,7 +606,10 @@ def replay_validated_frames(
             accumulator=fold.accumulator,
             hysteresis=hysteresis,
             seen_evidence_refs=seen_refs,
-            seen_independence_keys=tuple((*seen_keys, *fold.accepted_independence_keys)),
+            seen_independence_keys=(
+                fold.accepted_independence_keys if previous is None
+                else (*previous.seen_independence_keys, *fold.accepted_independence_keys)
+            ),
             retired_independence_keys=(),
             contributing_evidence_refs=fold.contributing_evidence_refs,
             accepted_turn_count=len(accepted_frames),

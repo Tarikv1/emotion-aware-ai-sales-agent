@@ -2608,6 +2608,7 @@ def _phase_c_output_expected(
         signal = emitted_signal.removeprefix("possible_")
         confidence[emitted_signal] = nets[signal] / policy["scale"]
         modality_map: dict[str, list[str]] = {}
+        ordered_lists: list[list[str]] = []
         for modality in modalities:
             modality_refs = [
                 reference
@@ -2617,9 +2618,11 @@ def _phase_c_output_expected(
             if modality_refs:
                 modality_map[modality] = modality_refs
                 live_modalities.add(modality)
-                for reference in modality_refs:
-                    if reference not in refs:
-                        refs.append(reference)
+                ordered_lists.append(modality_refs)
+        for ordinal in range(max((len(items) for items in ordered_lists), default=0)):
+            for items in ordered_lists:
+                if ordinal < len(items) and items[ordinal] not in refs:
+                    refs.append(items[ordinal])
         provenance[emitted_signal] = modality_map
         for direction in policy["canonical_direction_order"]:
             if any(provenance_source[signal][direction][modality] for modality in modalities):
@@ -2734,6 +2737,20 @@ def validate_phase_c_perceived_state(
         raise PhaseCOutputSemanticError("runtime_approved")
     if any(type(reason) is not str or reason not in policy["emitted_abstention_reasons"] for reason in payload["abstention_reasons"]):
         raise PhaseCOutputSemanticError("forbidden_abstention_reason")
+    if any(type(key) is not str or type(value) is not float for key, value in payload["confidence_by_signal"].items()):
+        raise PhaseCOutputSemanticError("confidence_projection")
+    if any(
+        type(signal) is not str
+        or type(modality_map) is not dict
+        or any(
+            type(modality) is not str
+            or type(references) is not list
+            or any(type(reference) is not str for reference in references)
+            for modality, references in modality_map.items()
+        )
+        for signal, modality_map in payload["signal_provenance_by_modality"].items()
+    ):
+        raise PhaseCOutputSemanticError("provenance_projection")
     expected = _phase_c_output_expected(session_state, context, policy)
     selected = expected["selected_policy_signal"]
     selected_support = (
@@ -2746,26 +2763,40 @@ def validate_phase_c_perceived_state(
         or session_state.last_emitted_selected_support != selected_support
     ):
         raise PhaseCOutputSemanticError("signal_projection")
-    if payload["operational_signals"] != expected["operational_signals"] or payload["selected_policy_signal"] != expected["selected_policy_signal"]:
+    if set(payload["operational_signals"]) != set(expected["operational_signals"]) or payload["selected_policy_signal"] != expected["selected_policy_signal"]:
         raise PhaseCOutputSemanticError("signal_projection")
-    if payload["confidence_by_signal"] != expected["confidence_by_signal"]:
+    if (
+        set(payload["confidence_by_signal"]) != set(expected["confidence_by_signal"])
+        or any(type(payload["confidence_by_signal"].get(key)) is not float or payload["confidence_by_signal"].get(key) != value for key, value in expected["confidence_by_signal"].items())
+    ):
         raise PhaseCOutputSemanticError("confidence_projection")
     if payload["selected_signal_confidence_bucket"] != expected["selected_signal_confidence_bucket"]:
         raise PhaseCOutputSemanticError("confidence_bucket")
     if payload["signal_provenance_by_modality"] != expected["signal_provenance_by_modality"]:
         raise PhaseCOutputSemanticError("provenance_projection")
-    if payload["evidence_refs"] != expected["evidence_refs"]:
+    if set(payload["evidence_refs"]) != set(expected["evidence_refs"]):
         raise PhaseCOutputSemanticError("evidence_ref_union")
     if payload["overall_evidence_quality"] != expected["overall_evidence_quality"]:
         raise PhaseCOutputSemanticError("evidence_quality")
     if payload["trajectory"] != expected["trajectory"]:
         raise PhaseCOutputSemanticError("trajectory")
-    if payload["allowed_policy_effects"] != expected["allowed_policy_effects"]:
+    if set(payload["allowed_policy_effects"]) != set(expected["allowed_policy_effects"]):
         raise PhaseCOutputSemanticError("allowed_effects")
-    if payload["blocked_policy_effects"] != expected["blocked_policy_effects"]:
+    if set(payload["blocked_policy_effects"]) != set(expected["blocked_policy_effects"]):
         raise PhaseCOutputSemanticError("blocked_effects")
-    if payload["abstained"] != expected["abstained"] or payload["abstention_reasons"] != expected["abstention_reasons"]:
+    if payload["abstained"] != expected["abstained"] or set(payload["abstention_reasons"]) != set(expected["abstention_reasons"]):
         raise PhaseCOutputSemanticError("abstention_semantics")
+    if (
+        payload["operational_signals"] != expected["operational_signals"]
+        or payload["evidence_refs"] != expected["evidence_refs"]
+        or payload["allowed_policy_effects"] != expected["allowed_policy_effects"]
+        or payload["blocked_policy_effects"] != expected["blocked_policy_effects"]
+        or payload["abstention_reasons"] != expected["abstention_reasons"]
+        or tuple(payload["confidence_by_signal"]) != tuple(expected["confidence_by_signal"])
+        or tuple(payload["signal_provenance_by_modality"]) != tuple(expected["signal_provenance_by_modality"])
+        or any(tuple(payload["signal_provenance_by_modality"][key]) != tuple(expected["signal_provenance_by_modality"][key]) for key in expected["signal_provenance_by_modality"])
+    ):
+        raise PhaseCOutputSemanticError("noncanonical_output_order")
     try:
         validate_perceived_customer_state(payload)
     except EmotionStateContractError as exc:
