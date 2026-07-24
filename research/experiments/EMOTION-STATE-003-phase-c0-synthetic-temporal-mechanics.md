@@ -2,9 +2,9 @@
 
 ## Status
 
-Policy and 30-case scenario authority frozen. Reducer implementation pending.
-No candidate, canonical, push, runtime, provider, data, call, or Phase D gate
-is open.
+Tasks 1-8 implementation complete and independently reviewed. Candidate not
+created. Candidate, canonical, push, runtime, provider, data, call, and Phase D
+gates remain closed pending separate explicit authorization.
 
 ## Question
 

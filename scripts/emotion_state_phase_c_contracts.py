@@ -463,6 +463,41 @@ SAFETY_INVARIANT_NAMES = (
     "semantic_output",
     "privacy_boundary",
 )
+CLAIM_OR_CONSUMPTION_FLAG_NAMES = (
+    "phase_b_inputs_consumed",
+    "public_or_private_data_consumed",
+    "runtime_modified_or_activated",
+    "provider_or_call_used",
+    "policy_enforcement_proven",
+    "emotion_accuracy_proven",
+    "production_readiness_proven",
+)
+PHASE_C_RESULT_FIELDS = frozenset({
+    "schema_version",
+    "checkpoint_id",
+    "policy_id",
+    "evidence_policy_version",
+    "policy_sha256",
+    "scenario_sha256",
+    "aggregate_output_sha256",
+    "scenario_counts",
+    "counts_by_family",
+    "counts_by_signal",
+    "counts_by_modality",
+    "counts_by_abstention_reason",
+    "invariant_counts",
+    "deterministic_replay_passed",
+    "privacy_boundary_passed",
+    "phase_b_inputs_consumed",
+    "public_or_private_data_consumed",
+    "runtime_modified_or_activated",
+    "provider_or_call_used",
+    "policy_enforcement_proven",
+    "emotion_accuracy_proven",
+    "production_readiness_proven",
+    "complexity",
+    "decision",
+})
 SCENARIO_MATRIX_FIELDS = frozenset({"schema_version", "policy_id", "scenarios"})
 SCENARIO_FIELDS = frozenset({
     "case_id",

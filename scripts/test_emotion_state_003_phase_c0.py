@@ -5,11 +5,16 @@ import dataclasses
 import importlib
 import inspect
 import json
+import os
+import stat
 import subprocess
 import sys
 import tempfile
 import unittest
+from collections.abc import Mapping as ABCMapping
+from contextlib import contextmanager
 from pathlib import Path
+from types import SimpleNamespace
 from typing import Any
 from unittest import mock
 
@@ -5318,3 +5323,1031 @@ class PhaseCScenarioEvaluationTests(PhaseCTestCase):
                     )
                 ),
             )
+
+
+class PhaseCAggregateRunnerTests(PhaseCTestCase):
+    @classmethod
+    def setUpClass(cls) -> None:
+        super().setUpClass()
+        from scripts import emotion_state_phase_c_temporal_tracker
+        from scripts import run_emotion_state_003_phase_c0
+
+        cls.tracker = emotion_state_phase_c_temporal_tracker
+        cls.runner = run_emotion_state_003_phase_c0
+        cls.raw_policy = load_json_strict(POLICY_PATH)
+        cls.policy = validate_phase_c_policy(copy.deepcopy(cls.raw_policy))
+        cls.raw_scenarios = load_json_strict(SCENARIO_PATH)
+        parsed = phase_c_contracts.validate_phase_c_scenario_payload(
+            copy.deepcopy(cls.raw_scenarios),
+            cls.policy,
+        )
+        cls.scenarios = {scenario.case_id: scenario for scenario in parsed}
+        cls.evaluation = cls.tracker.evaluate_phase_c_scenarios(
+            cls.policy,
+            cls.scenarios,
+        )
+        cls.policy_bytes = canonical_json_bytes(cls.raw_policy)
+        cls.scenario_bytes = canonical_json_bytes(cls.raw_scenarios)
+
+    def setUp(self) -> None:
+        pass
+
+    @contextmanager
+    def candidate_root(self):
+        with tempfile.TemporaryDirectory(dir=ROOT / ".tmp") as temporary:
+            root = Path(temporary) / "emotion-state-003-phase-c0" / "candidate"
+            with mock.patch.object(self.runner, "CANDIDATE_ROOT", root):
+                yield root
+
+    def pair_bytes(self) -> tuple[bytes, bytes, dict[str, Any]]:
+        result = self.runner.build_phase_c_result(
+            self.evaluation,
+            self.policy_bytes,
+            self.scenario_bytes,
+        )
+        report = self.runner.render_phase_c_report(result)
+        return canonical_json_bytes(result), report.encode("utf-8"), result
+
+    def rebound(self, result: dict[str, Any]) -> dict[str, Any]:
+        rebound = copy.deepcopy(result)
+        rebound.pop("aggregate_output_sha256", None)
+        digest = sha256_bytes(canonical_json_bytes(rebound))
+        rebound["aggregate_output_sha256"] = digest
+        return rebound
+
+    def test_result_is_aggregate_only_and_decision_is_keep(self) -> None:
+        result = self.runner.build_phase_c_result(
+            self.evaluation,
+            self.policy_bytes,
+            self.scenario_bytes,
+        )
+        self.assertEqual(result["decision"], "keep")
+        self.assertEqual(result["scenario_counts"]["total"], 30)
+        self.assertEqual(result["scenario_counts"]["failed"], 0)
+        self.assertEqual(result["scenario_counts"]["rejection_cases"], 8)
+        self.assertEqual(
+            result["complexity"]["numeric_policy_parameter_count"],
+            36,
+        )
+        self.assertEqual(
+            result["policy_sha256"],
+            sha256_bytes(canonical_json_bytes(self.raw_policy)),
+        )
+        self.assertEqual(
+            result["scenario_sha256"],
+            sha256_bytes(canonical_json_bytes(self.raw_scenarios)),
+        )
+        serialized = canonical_json_bytes(result).decode("utf-8").lower()
+        for forbidden in (
+            "evidence:uuid:",
+            "session:",
+            "turn:",
+            "event:",
+            "campaign:",
+            "version:",
+            "ind:",
+            "case_id",
+            "evidence_atoms",
+            "accepted_frames",
+            "confidence_by_signal",
+            "transcript_text",
+            "audio_bytes",
+        ):
+            self.assertNotIn(forbidden, serialized)
+        for case_id in EXPECTED_SCENARIO_IDS_FOR_TEST:
+            self.assertNotIn(case_id, serialized)
+
+    def test_result_schema_identities_shapes_and_selfless_digest_are_exact(
+        self,
+    ) -> None:
+        result = self.runner.build_phase_c_result(
+            self.evaluation,
+            self.policy_bytes,
+            self.scenario_bytes,
+        )
+        self.assertEqual(set(result), self.runner.PHASE_C_RESULT_FIELDS)
+        self.assertEqual(
+            (
+                result["schema_version"],
+                result["checkpoint_id"],
+                result["policy_id"],
+                result["evidence_policy_version"],
+            ),
+            (
+                "EmotionStatePhaseC0AggregateResultV1",
+                "EMOTION-STATE-003-phase-c0-synthetic-temporal-mechanics",
+                "emotion-state-phase-c0-synthetic-v1",
+                "emotion-state-evidence-v2",
+            ),
+        )
+        self.assertEqual(
+            set(result["scenario_counts"]),
+            {"total", "passed", "failed", "rejection_cases"},
+        )
+        self.assertEqual(
+            set(result["complexity"]),
+            {
+                "numeric_policy_parameter_count",
+                "scenario_count",
+                "operational_signal_count",
+                "synthetic_evidence_class_count",
+                "runtime_files_modified",
+            },
+        )
+        self.assertEqual(
+            tuple(result["counts_by_family"]),
+            tuple(sorted(TASK_7_FAMILY_COUNT_ORDER)),
+        )
+        self.assertEqual(
+            tuple(result["counts_by_signal"]),
+            tuple(sorted(TASK_7_SIGNAL_FAMILY_COUNT_ORDER)),
+        )
+        self.assertEqual(
+            tuple(result["counts_by_modality"]),
+            tuple(sorted(TASK_7_MODALITY_FAMILY_COUNT_ORDER)),
+        )
+        self.assertEqual(
+            tuple(result["counts_by_abstention_reason"]),
+            tuple(sorted(TASK_7_EMITTED_ABSTENTION_COUNT_ORDER)),
+        )
+        self.assertEqual(
+            tuple(result["invariant_counts"]),
+            tuple(sorted(TASK_7_INVARIANT_NAMES)),
+        )
+        without_digest = copy.deepcopy(result)
+        aggregate_digest = without_digest.pop("aggregate_output_sha256")
+        self.assertEqual(
+            aggregate_digest,
+            sha256_bytes(canonical_json_bytes(without_digest)),
+        )
+
+    def test_recursive_numeric_policy_count_excludes_booleans(self) -> None:
+        self.assertEqual(
+            self.runner._count_exact_int_leaves({
+                "a": 1,
+                "b": True,
+                "c": [2, False, {"d": 3}],
+                "e": "4",
+            }),
+            3,
+        )
+
+    def test_noncanonical_policy_or_scenario_bytes_fail_closed(self) -> None:
+        for policy_bytes, scenario_bytes in (
+            (self.policy_bytes.replace(b"\n", b"\r\n"), self.scenario_bytes),
+            (self.policy_bytes + b"\n", self.scenario_bytes),
+            (self.policy_bytes, self.scenario_bytes.replace(b"\n", b"\r\n")),
+            (self.policy_bytes, self.scenario_bytes + b"\n"),
+        ):
+            with self.subTest(
+                policy_length=len(policy_bytes),
+                scenario_length=len(scenario_bytes),
+            ):
+                with self.assertRaises(self.runner.RunnerError):
+                    self.runner.build_phase_c_result(
+                        self.evaluation,
+                        policy_bytes,
+                        scenario_bytes,
+                    )
+
+    def test_duplicate_key_and_nonfinite_input_bytes_fail_closed(self) -> None:
+        duplicate_policy = (
+            b'{"policy_id":"emotion-state-phase-c0-synthetic-v1",'
+            b'"policy_id":"emotion-state-phase-c0-synthetic-v1"}\n'
+        )
+        nonfinite_scenarios = b'{"schema_version":NaN}\n'
+        for policy_bytes, scenario_bytes in (
+            (duplicate_policy, self.scenario_bytes),
+            (self.policy_bytes, nonfinite_scenarios),
+        ):
+            with self.assertRaises(self.runner.RunnerError):
+                self.runner.build_phase_c_result(
+                    self.evaluation,
+                    policy_bytes,
+                    scenario_bytes,
+                )
+
+    def test_report_is_deterministic_exact_lf_and_hash_binds_result(
+        self,
+    ) -> None:
+        result = self.runner.build_phase_c_result(
+            self.evaluation,
+            self.policy_bytes,
+            self.scenario_bytes,
+        )
+        first = self.runner.render_phase_c_report(result)
+        second = self.runner.render_phase_c_report(copy.deepcopy(result))
+        self.assertEqual(first, second)
+        self.assertTrue(first.endswith("\n"))
+        self.assertFalse(first.endswith("\n\n"))
+        self.assertNotIn("\r", first)
+        digest = sha256_bytes(canonical_json_bytes(result))
+        self.assertIn(f"result.json sha256:{digest}", first)
+        self.assertEqual(first, self.runner._report_template(result, digest))
+        for required in (
+            "Scope: synthetic mechanics only; no customer emotion inference or runtime policy enforcement is proven.",
+            "Runtime status: not approved and not activated.",
+            "Boundary status: no Phase B input, public/private data, provider, call, conversation simulation, or source adaptation was used.",
+            "Readiness: production readiness is not proven.",
+        ):
+            self.assertIn(required, first)
+        for case_id in EXPECTED_SCENARIO_IDS_FOR_TEST:
+            self.assertNotIn(case_id, first)
+
+    def test_output_root_is_exactly_allowlisted(self) -> None:
+        with self.assertRaisesRegex(
+            self.runner.RunnerError,
+            "output_root_not_allowlisted",
+        ):
+            self.runner.resolve_output_root("candidate", ROOT / "outside")
+        with self.assertRaisesRegex(self.runner.RunnerError, "runner_mode"):
+            self.runner.resolve_output_root("Candidate")
+        with self.candidate_root() as root:
+            self.assertEqual(
+                self.runner.resolve_output_root("candidate", root),
+                root,
+            )
+            for escaped in (
+                f"{root.parent}{os.sep}.{os.sep}candidate",
+                (
+                    f"{root.parent}{os.sep}..{os.sep}"
+                    f"{root.parent.name}{os.sep}candidate"
+                ),
+            ):
+                with self.subTest(escaped=str(escaped)):
+                    with self.assertRaisesRegex(
+                        self.runner.RunnerError,
+                        "output_root_not_allowlisted",
+                    ):
+                        self.runner.resolve_output_root(
+                            "candidate",
+                            str(escaped),
+                        )
+
+    def test_cli_accepts_exactly_one_mode_without_output_root(self) -> None:
+        self.assertEqual(self.runner._parse_cli_mode(["candidate"]), "candidate")
+        self.assertEqual(self.runner._parse_cli_mode(["canonical"]), "canonical")
+        for argv in ([], ["Candidate"], ["candidate", "outside"]):
+            with self.subTest(argv=argv):
+                with self.assertRaisesRegex(
+                    self.runner.RunnerError,
+                    "runner_mode",
+                ):
+                    self.runner._parse_cli_mode(argv)
+
+    def test_safety_failure_discards_and_mechanical_failure_revises(
+        self,
+    ) -> None:
+        zero = {name: 0 for name in TASK_7_INVARIANT_NAMES}
+        safe_flags = {
+            name: False
+            for name in self.runner.CLAIM_OR_CONSUMPTION_FLAG_NAMES
+        }
+        unsafe = dict(zero)
+        unsafe["privacy_boundary"] = 1
+        self.assertEqual(
+            self.runner.decide_phase_c_checkpoint(
+                failed_scenarios=1,
+                invariant_counts=unsafe,
+                deterministic_replay_passed=True,
+                privacy_boundary_passed=False,
+                claim_or_consumption_flags=safe_flags,
+            ),
+            "discard",
+        )
+        mechanical = dict(zero)
+        mechanical["golden_projection"] = 1
+        self.assertEqual(
+            self.runner.decide_phase_c_checkpoint(
+                failed_scenarios=1,
+                invariant_counts=mechanical,
+                deterministic_replay_passed=True,
+                privacy_boundary_passed=True,
+                claim_or_consumption_flags=safe_flags,
+            ),
+            "revise",
+        )
+        self.assertEqual(
+            self.runner.decide_phase_c_checkpoint(
+                failed_scenarios=0,
+                invariant_counts=zero,
+                deterministic_replay_passed=True,
+                privacy_boundary_passed=True,
+                claim_or_consumption_flags=safe_flags,
+            ),
+            "keep",
+        )
+
+    def test_decision_inputs_use_exact_keys_types_and_precedence(self) -> None:
+        zero = {name: 0 for name in TASK_7_INVARIANT_NAMES}
+        safe_flags = {
+            name: False
+            for name in self.runner.CLAIM_OR_CONSUMPTION_FLAG_NAMES
+        }
+        mutations = (
+            {"failed_scenarios": True},
+            {"failed_scenarios": -1},
+            {"invariant_counts": {**zero, "extra": 0}},
+            {"invariant_counts": {**zero, "golden_projection": True}},
+            {"deterministic_replay_passed": 1},
+            {"privacy_boundary_passed": 1},
+            {
+                "claim_or_consumption_flags": {
+                    **safe_flags,
+                    "extra": False,
+                },
+            },
+            {
+                "claim_or_consumption_flags": {
+                    **safe_flags,
+                    "phase_b_inputs_consumed": 0,
+                },
+            },
+        )
+        baseline = {
+            "failed_scenarios": 0,
+            "invariant_counts": zero,
+            "deterministic_replay_passed": True,
+            "privacy_boundary_passed": True,
+            "claim_or_consumption_flags": safe_flags,
+        }
+        self.assertEqual(
+            self.runner.decide_phase_c_checkpoint(
+                **{
+                    **baseline,
+                    "invariant_counts": dict(reversed(tuple(zero.items()))),
+                    "claim_or_consumption_flags": dict(
+                        reversed(tuple(safe_flags.items())),
+                    ),
+                },
+            ),
+            "keep",
+        )
+        for mutation in mutations:
+            with self.subTest(mutation=mutation):
+                with self.assertRaisesRegex(
+                    self.runner.RunnerError,
+                    "decision_inputs",
+                ):
+                    self.runner.decide_phase_c_checkpoint(
+                        **{**baseline, **mutation},
+                    )
+        for flag in self.runner.CLAIM_OR_CONSUMPTION_FLAG_NAMES:
+            with self.subTest(flag=flag):
+                flags = {**safe_flags, flag: True}
+                self.assertEqual(
+                    self.runner.decide_phase_c_checkpoint(
+                        **{
+                            **baseline,
+                            "failed_scenarios": 1,
+                            "claim_or_consumption_flags": flags,
+                        },
+                    ),
+                    "discard",
+                )
+
+    def test_decision_snapshots_hostile_mappings_once_and_fails_closed(
+        self,
+    ) -> None:
+        class DisagreeingMapping(ABCMapping):
+            def __init__(
+                self,
+                keys,
+                hidden,
+                advertised,
+                *,
+                failing_key=None,
+            ):
+                self._keys = tuple(keys)
+                self._hidden = dict(hidden)
+                self._advertised = tuple(advertised)
+                self._failing_key = failing_key
+                self.accesses = []
+                self.values_calls = 0
+
+            def __iter__(self):
+                return iter(self._keys)
+
+            def __len__(self):
+                return len(self._keys)
+
+            def __getitem__(self, key):
+                self.accesses.append(key)
+                if key == self._failing_key:
+                    raise PermissionError("hidden access failure")
+                return self._hidden[key]
+
+            def values(self):
+                self.values_calls += 1
+                return iter(self._advertised)
+
+        zero = {name: 0 for name in TASK_7_INVARIANT_NAMES}
+        safe_flags = {
+            name: False
+            for name in self.runner.CLAIM_OR_CONSUMPTION_FLAG_NAMES
+        }
+
+        valid_invariants = DisagreeingMapping(
+            reversed(TASK_7_INVARIANT_NAMES),
+            zero,
+            (object(),),
+        )
+        valid_flags = DisagreeingMapping(
+            reversed(self.runner.CLAIM_OR_CONSUMPTION_FLAG_NAMES),
+            safe_flags,
+            (object(),),
+        )
+        self.assertEqual(
+            self.runner.decide_phase_c_checkpoint(
+                failed_scenarios=0,
+                invariant_counts=valid_invariants,
+                deterministic_replay_passed=True,
+                privacy_boundary_passed=True,
+                claim_or_consumption_flags=valid_flags,
+            ),
+            "keep",
+        )
+        self.assertEqual(
+            valid_invariants.accesses,
+            list(TASK_7_INVARIANT_NAMES),
+        )
+        self.assertEqual(
+            valid_flags.accesses,
+            list(self.runner.CLAIM_OR_CONSUMPTION_FLAG_NAMES),
+        )
+        self.assertEqual(valid_invariants.values_calls, 0)
+        self.assertEqual(valid_flags.values_calls, 0)
+
+        hostile_inputs = (
+            (
+                DisagreeingMapping(
+                    TASK_7_INVARIANT_NAMES,
+                    {**zero, "golden_projection": -1},
+                    zero.values(),
+                ),
+                safe_flags,
+            ),
+            (
+                DisagreeingMapping(
+                    TASK_7_INVARIANT_NAMES,
+                    {**zero, "privacy_boundary": "hidden"},
+                    zero.values(),
+                ),
+                safe_flags,
+            ),
+            (
+                zero,
+                DisagreeingMapping(
+                    self.runner.CLAIM_OR_CONSUMPTION_FLAG_NAMES,
+                    {**safe_flags, "provider_or_call_used": 1},
+                    safe_flags.values(),
+                ),
+            ),
+            (
+                DisagreeingMapping(
+                    TASK_7_INVARIANT_NAMES,
+                    zero,
+                    zero.values(),
+                    failing_key="session_isolation",
+                ),
+                safe_flags,
+            ),
+        )
+        for invariant_counts, claim_flags in hostile_inputs:
+            with self.subTest(
+                invariants=type(invariant_counts).__name__,
+                flags=type(claim_flags).__name__,
+            ):
+                with self.assertRaisesRegex(
+                    self.runner.RunnerError,
+                    "decision_inputs",
+                ):
+                    self.runner.decide_phase_c_checkpoint(
+                        failed_scenarios=0,
+                        invariant_counts=invariant_counts,
+                        deterministic_replay_passed=True,
+                        privacy_boundary_passed=True,
+                        claim_or_consumption_flags=claim_flags,
+                    )
+
+    def test_mechanical_negative_evaluation_builds_coherent_revise_pair(
+        self,
+    ) -> None:
+        evaluation = _mechanical_negative_evaluation(self)
+        result = self.runner.build_phase_c_result(
+            evaluation,
+            self.policy_bytes,
+            self.scenario_bytes,
+        )
+        self.runner.validate_phase_c_result_payload(result)
+        self.assertEqual(result["scenario_counts"]["failed"], 1)
+        self.assertEqual(result["decision"], "revise")
+        self.assertEqual(
+            result["counts_by_abstention_reason"]["missing_input"],
+            TASK_7_EXPECTED_COUNTS_BY_ABSTENTION_REASON["missing_input"] + 1,
+        )
+        report = self.runner.render_phase_c_report(result)
+        self.assertIn("Decision: revise", report)
+
+    def test_semantic_negative_evaluation_builds_coherent_discard_pair(
+        self,
+    ) -> None:
+        evaluation = _semantic_negative_evaluation(self)
+        result = self.runner.build_phase_c_result(
+            evaluation,
+            self.policy_bytes,
+            self.scenario_bytes,
+        )
+        self.runner.validate_phase_c_result_payload(result)
+        self.assertEqual(result["invariant_counts"]["semantic_output"], 1)
+        self.assertFalse(result["privacy_boundary_passed"])
+        self.assertEqual(result["decision"], "discard")
+        report = self.runner.render_phase_c_report(result)
+        self.assertIn("Decision: discard", report)
+
+    def test_non_json_output_still_builds_coherent_discard_pair(self) -> None:
+        evaluation = _structural_semantic_negative_evaluation(self)
+        result = self.runner.build_phase_c_result(
+            evaluation,
+            self.policy_bytes,
+            self.scenario_bytes,
+        )
+        self.runner.validate_phase_c_result_payload(result)
+        self.assertEqual(result["scenario_counts"]["failed"], 1)
+        self.assertEqual(result["invariant_counts"]["semantic_output"], 1)
+        self.assertEqual(result["decision"], "discard")
+
+    def test_evaluation_validation_rejects_forged_shapes_and_algebra(
+        self,
+    ) -> None:
+        first = self.evaluation.outcomes[0]
+        first_abstention = dict(first.abstention_reason_counts)
+        mutations = (
+            dataclasses.replace(self.evaluation, total_scenarios=True),
+            dataclasses.replace(self.evaluation, passed_scenarios=31),
+            dataclasses.replace(
+                self.evaluation,
+                counts_by_family=tuple(reversed(self.evaluation.counts_by_family)),
+            ),
+            dataclasses.replace(
+                self.evaluation,
+                invariant_counts=(
+                    *self.evaluation.invariant_counts,
+                    ("extra", 0),
+                ),
+            ),
+            dataclasses.replace(
+                self.evaluation,
+                deterministic_replay_passed=1,
+            ),
+            dataclasses.replace(
+                self.evaluation,
+                outcomes=(
+                    dataclasses.replace(first, case_id="forged"),
+                    *self.evaluation.outcomes[1:],
+                ),
+            ),
+            dataclasses.replace(
+                self.evaluation,
+                outcomes=(
+                    dataclasses.replace(first, passed=False),
+                    *self.evaluation.outcomes[1:],
+                ),
+            ),
+            dataclasses.replace(
+                self.evaluation,
+                outcomes=(
+                    dataclasses.replace(
+                        first,
+                        failed_invariants=("unknown",),
+                        passed=False,
+                    ),
+                    *self.evaluation.outcomes[1:],
+                ),
+                passed_scenarios=29,
+                failed_scenarios=1,
+            ),
+            dataclasses.replace(
+                self.evaluation,
+                outcomes=(
+                    dataclasses.replace(first, rejection_count=1),
+                    *self.evaluation.outcomes[1:],
+                ),
+            ),
+            dataclasses.replace(
+                self.evaluation,
+                outcomes=(
+                    dataclasses.replace(
+                        first,
+                        abstention_reason_counts=tuple(
+                            (
+                                name,
+                                value + int(name == "missing_input"),
+                            )
+                            for name, value in first_abstention.items()
+                        ),
+                    ),
+                    *self.evaluation.outcomes[1:],
+                ),
+            ),
+            dataclasses.replace(
+                self.evaluation,
+                privacy_boundary_passed=False,
+            ),
+        )
+        for mutation in mutations:
+            with self.subTest(mutation=repr(mutation)[:120]):
+                with self.assertRaises(self.runner.RunnerError):
+                    self.runner.build_phase_c_result(
+                        mutation,
+                        self.policy_bytes,
+                        self.scenario_bytes,
+                    )
+
+    def test_producer_validator_rejects_fail_open_result_mutations(
+        self,
+    ) -> None:
+        result = self.runner.build_phase_c_result(
+            self.evaluation,
+            self.policy_bytes,
+            self.scenario_bytes,
+        )
+        mutations: list[dict[str, Any]] = []
+        extra = copy.deepcopy(result)
+        extra["extra"] = False
+        mutations.append(extra)
+        missing = copy.deepcopy(result)
+        missing.pop("production_readiness_proven")
+        mutations.append(missing)
+        nested = copy.deepcopy(result)
+        nested["scenario_counts"]["extra"] = 0
+        mutations.append(self.rebound(nested))
+        bool_count = copy.deepcopy(result)
+        bool_count["scenario_counts"]["total"] = True
+        mutations.append(self.rebound(bool_count))
+        missing_category = copy.deepcopy(result)
+        missing_category["counts_by_family"].pop("entry")
+        mutations.append(self.rebound(missing_category))
+        changed_complexity = copy.deepcopy(result)
+        changed_complexity["complexity"]["runtime_files_modified"] = 1
+        mutations.append(self.rebound(changed_complexity))
+        changed_decision = copy.deepcopy(result)
+        changed_decision["decision"] = "revise"
+        mutations.append(self.rebound(changed_decision))
+        true_flag = copy.deepcopy(result)
+        true_flag["phase_b_inputs_consumed"] = True
+        true_flag["decision"] = "discard"
+        mutations.append(self.rebound(true_flag))
+        forbidden = copy.deepcopy(result)
+        forbidden["policy_sha256"] = "case_id:" + ("0" * 56)
+        mutations.append(self.rebound(forbidden))
+        bad_digest = copy.deepcopy(result)
+        bad_digest["aggregate_output_sha256"] = "0" * 64
+        mutations.append(bad_digest)
+        replay_mismatch = copy.deepcopy(result)
+        replay_mismatch["deterministic_replay_passed"] = False
+        replay_mismatch["decision"] = "discard"
+        mutations.append(self.rebound(replay_mismatch))
+        for mutation in mutations:
+            with self.subTest(keys=tuple(mutation)):
+                with self.assertRaises(self.runner.RunnerError):
+                    self.runner.validate_phase_c_result_payload(mutation)
+
+    def test_valid_pair_is_written_atomically_and_read_back_exactly(
+        self,
+    ) -> None:
+        result_bytes, report_bytes, _ = self.pair_bytes()
+        with self.candidate_root() as root:
+            stage = Path(f"{root}.stage")
+            written = self.runner.write_phase_c_pair(
+                root,
+                result_bytes,
+                report_bytes,
+            )
+            self.assertEqual(written, root)
+            self.assertEqual(
+                {path.name for path in root.iterdir()},
+                {"result.json", "report.md"},
+            )
+            self.assertEqual((root / "result.json").read_bytes(), result_bytes)
+            self.assertEqual((root / "report.md").read_bytes(), report_bytes)
+            self.assertNotIn(b"\r", result_bytes)
+            self.assertNotIn(b"\r", report_bytes)
+            self.assertFalse(stage.exists())
+
+    def test_absent_candidate_parent_is_created_and_unexpected_child_rejects(
+        self,
+    ) -> None:
+        result_bytes, report_bytes, _ = self.pair_bytes()
+        with self.candidate_root() as root:
+            self.assertFalse(root.parent.exists())
+            self.runner.write_phase_c_pair(root, result_bytes, report_bytes)
+            self.assertTrue(root.parent.is_dir())
+        with self.candidate_root() as root:
+            root.parent.mkdir()
+            (root.parent / "unexpected").mkdir()
+            with self.assertRaisesRegex(
+                self.runner.RunnerError,
+                "output_parent_children",
+            ):
+                self.runner.write_phase_c_pair(
+                    root,
+                    result_bytes,
+                    report_bytes,
+                )
+            self.assertFalse(root.exists())
+
+    def test_existing_final_or_stage_fails_before_write_and_never_overwrites(
+        self,
+    ) -> None:
+        result_bytes, report_bytes, _ = self.pair_bytes()
+        with self.candidate_root() as root:
+            self.runner.write_phase_c_pair(root, result_bytes, report_bytes)
+            first_result = (root / "result.json").read_bytes()
+            first_report = (root / "report.md").read_bytes()
+            with self.assertRaisesRegex(
+                self.runner.RunnerError,
+                "output_exists",
+            ):
+                self.runner.write_phase_c_pair(
+                    root,
+                    result_bytes,
+                    report_bytes,
+                )
+            self.assertEqual((root / "result.json").read_bytes(), first_result)
+            self.assertEqual((root / "report.md").read_bytes(), first_report)
+        with self.candidate_root() as root:
+            root.parent.mkdir()
+            stage = Path(f"{root}.stage")
+            stage.mkdir()
+            with self.assertRaisesRegex(
+                self.runner.RunnerError,
+                "stage_exists",
+            ):
+                self.runner.write_phase_c_pair(
+                    root,
+                    result_bytes,
+                    report_bytes,
+                )
+            self.assertFalse(root.exists())
+            self.assertEqual(tuple(stage.iterdir()), ())
+
+    def test_no_follow_metadata_rejects_symlink_reparse_parent_and_child(
+        self,
+    ) -> None:
+        result_bytes, report_bytes, _ = self.pair_bytes()
+        reparse_flag = getattr(stat, "FILE_ATTRIBUTE_REPARSE_POINT", 0x400)
+        for target_kind, metadata_kind in (
+            ("parent", "reparse"),
+            ("child", "reparse"),
+            ("parent", "symlink"),
+            ("child", "symlink"),
+        ):
+            with self.subTest(
+                target_kind=target_kind,
+                metadata_kind=metadata_kind,
+            ):
+                with self.candidate_root() as root:
+                    root.parent.mkdir()
+                    if target_kind == "child":
+                        root.mkdir()
+                    real_lstat = os.lstat
+
+                    def injected(path):
+                        metadata = real_lstat(path)
+                        candidate = Path(path)
+                        target = root.parent if target_kind == "parent" else root
+                        if candidate == target:
+                            values = {
+                                name: getattr(metadata, name)
+                                for name in dir(metadata)
+                                if name.startswith("st_")
+                            }
+                            if metadata_kind == "reparse":
+                                values["st_file_attributes"] = reparse_flag
+                            else:
+                                values["st_mode"] = stat.S_IFLNK
+                            return SimpleNamespace(**values)
+                        return metadata
+
+                    with mock.patch.object(
+                        self.runner.os,
+                        "lstat",
+                        side_effect=injected,
+                    ):
+                        with self.assertRaisesRegex(
+                            self.runner.RunnerError,
+                            "output_reparse_or_link",
+                        ):
+                            self.runner.write_phase_c_pair(
+                                root,
+                                result_bytes,
+                                report_bytes,
+                            )
+
+    def test_unexpected_file_child_and_non_directory_ancestor_reject(
+        self,
+    ) -> None:
+        result_bytes, report_bytes, _ = self.pair_bytes()
+        with self.candidate_root() as root:
+            root.parent.mkdir()
+            root.write_bytes(b"occupied")
+            with self.assertRaisesRegex(
+                self.runner.RunnerError,
+                "output_exists",
+            ):
+                self.runner.write_phase_c_pair(
+                    root,
+                    result_bytes,
+                    report_bytes,
+                )
+        with tempfile.TemporaryDirectory(dir=ROOT / ".tmp") as temporary:
+            blocked = Path(temporary) / "blocked"
+            blocked.write_bytes(b"not-a-directory")
+            root = blocked / "emotion-state-003-phase-c0" / "candidate"
+            with mock.patch.object(self.runner, "CANDIDATE_ROOT", root):
+                with self.assertRaisesRegex(
+                    self.runner.RunnerError,
+                    "output_ancestor_type",
+                ):
+                    self.runner.write_phase_c_pair(
+                        root,
+                        result_bytes,
+                        report_bytes,
+                    )
+
+    def test_injected_pre_rename_failure_cleans_only_verified_stage(
+        self,
+    ) -> None:
+        result_bytes, report_bytes, _ = self.pair_bytes()
+        with self.candidate_root() as root:
+            stage = Path(f"{root}.stage")
+            with mock.patch.object(
+                self.runner.os,
+                "rename",
+                side_effect=OSError("injected"),
+            ):
+                with self.assertRaisesRegex(
+                    self.runner.RunnerError,
+                    "atomic_rename_failed",
+                ):
+                    self.runner.write_phase_c_pair(
+                        root,
+                        result_bytes,
+                        report_bytes,
+                    )
+            self.assertFalse(root.exists())
+            self.assertFalse(stage.exists())
+            self.assertTrue(root.parent.is_dir())
+
+    def test_stage_readback_failure_cleans_and_final_readback_failure_retains_pair(
+        self,
+    ) -> None:
+        result_bytes, report_bytes, _ = self.pair_bytes()
+        with self.candidate_root() as root:
+            with mock.patch.object(
+                self.runner,
+                "_verify_pair_directory",
+                side_effect=self.runner.RunnerError(
+                    "stage_readback_failed",
+                ),
+            ):
+                with self.assertRaisesRegex(
+                    self.runner.RunnerError,
+                    "stage_readback_failed",
+                ):
+                    self.runner.write_phase_c_pair(
+                        root,
+                        result_bytes,
+                        report_bytes,
+                    )
+            self.assertFalse(root.exists())
+            self.assertFalse(Path(f"{root}.stage").exists())
+        with self.candidate_root() as root:
+            with mock.patch.object(
+                self.runner,
+                "_verify_pair_directory",
+                side_effect=(
+                    None,
+                    self.runner.RunnerError("final_readback_failed"),
+                ),
+            ):
+                with self.assertRaisesRegex(
+                    self.runner.RunnerError,
+                    "final_readback_failed",
+                ):
+                    self.runner.write_phase_c_pair(
+                        root,
+                        result_bytes,
+                        report_bytes,
+                    )
+            self.assertTrue(root.is_dir())
+            self.assertFalse(Path(f"{root}.stage").exists())
+            self.assertEqual(
+                {path.name for path in root.iterdir()},
+                {"result.json", "report.md"},
+            )
+
+    def test_root_metadata_errors_are_remapped_to_supplied_readback_code(
+        self,
+    ) -> None:
+        for failure_code in (
+            "stage_readback_failed",
+            "final_readback_failed",
+        ):
+            with self.subTest(failure_code=failure_code):
+                with self.candidate_root() as root:
+                    with mock.patch.object(
+                        self.runner.os,
+                        "lstat",
+                        side_effect=PermissionError("injected"),
+                    ):
+                        with self.assertRaisesRegex(
+                            self.runner.RunnerError,
+                            failure_code,
+                        ):
+                            self.runner._verify_pair_directory(
+                                root,
+                                b"result",
+                                b"report",
+                                failure_code,
+                            )
+
+    def test_injected_write_failure_cleans_stage_without_touching_sibling(
+        self,
+    ) -> None:
+        result_bytes, report_bytes, _ = self.pair_bytes()
+        with self.candidate_root() as root:
+            root.parent.mkdir()
+            sibling = root.parent.parent / "sibling"
+            sibling.write_bytes(b"preserve")
+            original = self.runner._write_exclusive_file
+            calls = 0
+
+            def injected(path, payload):
+                nonlocal calls
+                calls += 1
+                if calls == 2:
+                    raise OSError("injected")
+                return original(path, payload)
+
+            with mock.patch.object(
+                self.runner,
+                "_write_exclusive_file",
+                side_effect=injected,
+            ):
+                with self.assertRaisesRegex(
+                    self.runner.RunnerError,
+                    "stage_write_failed",
+                ):
+                    self.runner.write_phase_c_pair(
+                        root,
+                        result_bytes,
+                        report_bytes,
+                    )
+            self.assertFalse(root.exists())
+            self.assertFalse(Path(f"{root}.stage").exists())
+            self.assertEqual(sibling.read_bytes(), b"preserve")
+
+    def test_writer_rejects_noncanonical_result_or_report_marker(self) -> None:
+        result_bytes, report_bytes, _ = self.pair_bytes()
+        cases = (
+            (
+                result_bytes.replace(b"\n", b"\r\n"),
+                report_bytes,
+                "result_bytes_invalid",
+            ),
+            (
+                result_bytes,
+                report_bytes.replace(b"result.json sha256:", b"result.json sha256:0"),
+                "report_bytes_invalid",
+            ),
+            (
+                result_bytes,
+                report_bytes.replace(b"\n", b"\r\n"),
+                "report_bytes_invalid",
+            ),
+        )
+        for candidate_result, candidate_report, code in cases:
+            with self.subTest(code=code):
+                with self.candidate_root() as root:
+                    with self.assertRaisesRegex(
+                        self.runner.RunnerError,
+                        code,
+                    ):
+                        self.runner.write_phase_c_pair(
+                            root,
+                            candidate_result,
+                            candidate_report,
+                        )
+                    self.assertFalse(root.exists())
+                    self.assertFalse(Path(f"{root}.stage").exists())
+
+    def test_runner_module_exposes_no_mutable_container_globals(self) -> None:
+        mutable_globals = {
+            name: type(value).__name__
+            for name, value in vars(self.runner).items()
+            if not name.startswith("__")
+            and type(value) in (dict, list, set)
+        }
+        self.assertEqual(mutable_globals, {})
