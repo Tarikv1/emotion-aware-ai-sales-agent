@@ -346,6 +346,176 @@ class PhaseCEventIdentityTests(unittest.TestCase):
             validate_phase_c_event_watermark("not-a-watermark")  # type: ignore[arg-type]
 
 
+class PhaseCIdentityHardeningTests(unittest.TestCase):
+    def setUp(self) -> None:
+        self.policy = validate_phase_c_policy(load_json_strict(POLICY_PATH))
+        self.frame = parse_phase_c_frame(_frame(atoms=[_atom(counter=1)]), self.policy)
+
+    def _non_bijective_watermark(self) -> PhaseCEventWatermarkV1:
+        return PhaseCEventWatermarkV1(
+            expected_session_id="session-a",
+            expected_campaign_profile_id="campaign-a",
+            expected_campaign_profile_version="campaign-v1",
+            last_turn_sequence=0,
+            turn_sequence_by_id=(("turn-1", 0), ("turn-2", 0)),
+            turn_id_by_sequence=((0, "turn-2"),),
+            last_input_revision_by_turn=(("turn-1", 0), ("turn-2", 0)),
+            seen_event_ids=frozenset({"event-1", "event-2"}),
+            event_history_by_id=(("event-1", "turn-1", 0), ("event-2", "turn-2", 0)),
+        )
+
+    def test_non_bijective_forward_turn_map_rejects_exactly(self) -> None:
+        with self.assertRaises(PhaseCContractError) as caught:
+            validate_phase_c_event_watermark(self._non_bijective_watermark())
+        self.assertEqual(caught.exception.code, "event_watermark_turn_map_inverse")
+
+    def test_direct_frame_with_malformed_atom_rejects_in_initial_and_identity(self) -> None:
+        malformed_atom = PhaseCSyntheticEvidenceAtomV1(
+            **{**self.frame.evidence_atoms[0].__dict__, "quality_bucket": "invalid"},
+        )
+        malformed_frame = PhaseCSyntheticEvidenceFrameV1(
+            **{**self.frame.__dict__, "evidence_atoms": (malformed_atom,)},
+        )
+        with self.assertRaises(PhaseCContractError) as initial_error:
+            initial_phase_c_watermark(malformed_frame)
+        self.assertEqual(initial_error.exception.code, "unknown_atom_enum")
+        watermark = initial_phase_c_watermark(self.frame)
+        with self.assertRaises(PhaseCContractError) as identity_error:
+            validate_phase_c_event_identity(malformed_frame, watermark)
+        self.assertEqual(identity_error.exception.code, "unknown_atom_enum")
+
+    def test_malformed_watermark_wins_before_cross_session_or_malformed_frame(self) -> None:
+        bad_atom = PhaseCSyntheticEvidenceAtomV1(
+            **{**self.frame.evidence_atoms[0].__dict__, "quality_bucket": "invalid"},
+        )
+        bad_frame = PhaseCSyntheticEvidenceFrameV1(
+            **{
+                **self.frame.__dict__,
+                "call_session_id": "session-b",
+                "evidence_atoms": (bad_atom,),
+            },
+        )
+        with self.assertRaises(PhaseCContractError) as caught:
+            validate_phase_c_event_identity(bad_frame, self._non_bijective_watermark())
+        self.assertEqual(caught.exception.code, "event_watermark_turn_map_inverse")
+
+    def test_exact_input_mutations_cover_types_enums_forbidden_and_sort_key(self) -> None:
+        atom = _atom(counter=1)
+        for field in ("evidence_ref", "independence_key", "operational_signal", "direction", "modality", "evidence_class", "quality_bucket"):
+            mutated = dict(atom)
+            mutated[field] = 1
+            with self.subTest(atom_type=field):
+                with self.assertRaisesRegex(PhaseCContractError, "atom_field_type"):
+                    parse_phase_c_atom(mutated, self.policy)
+        for field in ("operational_signal", "direction", "modality", "evidence_class", "quality_bucket"):
+            mutated = dict(atom)
+            mutated[field] = "not-an-enum"
+            with self.subTest(atom_enum=field):
+                with self.assertRaisesRegex(PhaseCContractError, "unknown_atom_enum"):
+                    parse_phase_c_atom(mutated, self.policy)
+        for fragment in (
+            "acoustic_features", "probabilities", "model_id", "dataset_id", "audio_bytes", "raw_audio",
+            "transcript_text", "raw_transcript", "customer_name", "customer_phone", "customer_email",
+            "speaker_embedding", "voiceprint", "provider_payload", "api_key", "access_token", "auth_token",
+            "password", "secret", "private_key", "hidden_reasoning",
+        ):
+            payload = _frame(atoms=[_atom(counter=1)])
+            payload["outer"] = [{"inner_" + fragment: {"safe": True}}]
+            with self.subTest(forbidden=fragment):
+                with self.assertRaisesRegex(PhaseCContractError, "forbidden_field"):
+                    parse_phase_c_frame(payload, self.policy)
+        ordered = parse_phase_c_atom(_atom(counter=1), self.policy)
+        self.assertEqual(
+            atom_sort_key(ordered, self.policy),
+            (0, 0, 0, 1, 0, "ind:fixture:1:1", "evidence:uuid:00000000-0000-4000-8000-000000000001"),
+        )
+
+    def test_identity_rejections_keep_input_watermark_unchanged_and_report_codes(self) -> None:
+        watermark = validate_phase_c_event_identity(self.frame, initial_phase_c_watermark(self.frame))
+        cases = {
+            "cross_session": _frame(event_id="event-2", atoms=[_atom(counter=2)]),
+            "cross_campaign": _frame(event_id="event-2", atoms=[_atom(counter=2)]),
+            "wrong_campaign_version": _frame(event_id="event-2", atoms=[_atom(counter=2)]),
+            "duplicate_event": _frame(event_id="event-1", input_revision=1, atoms=[_atom(counter=2)]),
+            "turn_id_rebound": _frame(event_id="event-2", turn_sequence=1, input_revision=1, atoms=[_atom(counter=2)]),
+            "turn_sequence_rebound": _frame(event_id="event-2", turn_id="turn-2", atoms=[_atom(counter=2)]),
+            "invalid_revision": _frame(event_id="event-2", input_revision=3, atoms=[_atom(counter=2)]),
+        }
+        for expected, raw in cases.items():
+            if expected == "cross_session": raw["call_session_id"] = "session-b"
+            if expected == "cross_campaign": raw["campaign_profile_id"] = "campaign-b"
+            if expected == "wrong_campaign_version": raw["campaign_profile_version"] = "campaign-v2"
+            before = repr(watermark)
+            with self.subTest(expected=expected):
+                with self.assertRaises(PhaseCEventRejected) as caught:
+                    validate_phase_c_event_identity(parse_phase_c_frame(raw, self.policy), watermark)
+                self.assertEqual(caught.exception.code, expected)
+                self.assertEqual(repr(watermark), before)
+        newer = parse_phase_c_frame(
+            _frame(event_id="event-3", turn_id="turn-2", turn_sequence=1, atoms=[_atom(counter=3)]), self.policy,
+        )
+        after_newer = validate_phase_c_event_identity(newer, watermark)
+        stale = parse_phase_c_frame(
+            _frame(event_id="event-4", input_revision=1, atoms=[_atom(counter=4)]), self.policy,
+        )
+        before_stale = repr(after_newer)
+        with self.assertRaises(PhaseCEventRejected) as caught:
+            validate_phase_c_event_identity(stale, after_newer)
+        self.assertEqual(caught.exception.code, "stale_turn")
+        self.assertEqual(repr(after_newer), before_stale)
+
+    def test_complete_scalar_shape_and_watermark_invariant_matrix(self) -> None:
+        for payload, parser, code in (([], parse_phase_c_atom, "atom_not_object"), ([], parse_phase_c_frame, "frame_not_object")):
+            with self.subTest(non_object=code):
+                with self.assertRaisesRegex(PhaseCContractError, code):
+                    parser(payload, self.policy)
+        atom = _atom(counter=1)
+        for field in tuple(atom):
+            mutated = dict(atom)
+            mutated[field] = 1
+            expected = "atom_schema" if field == "schema_version" else "atom_field_type"
+            with self.subTest(atom_scalar=field):
+                with self.assertRaisesRegex(PhaseCContractError, expected):
+                    parse_phase_c_atom(mutated, self.policy)
+        frame = _frame(atoms=[_atom(counter=1)])
+        for field in tuple(frame):
+            mutated = dict(frame)
+            mutated[field] = True if field in ("turn_sequence", "input_revision") else 1
+            expected = "frame_schema" if field == "schema_version" else ("fixture_only_required" if field == "fixture_only" else "frame_field_type")
+            with self.subTest(frame_scalar=field):
+                with self.assertRaisesRegex(PhaseCContractError, expected):
+                    parse_phase_c_frame(mutated, self.policy)
+        malformed_key = _atom(counter=1, independence_key=" bad")
+        with self.assertRaisesRegex(PhaseCContractError, "invalid_opaque_identifier"):
+            parse_phase_c_atom(malformed_key, self.policy)
+        malformed_ref = _atom(counter=1)
+        malformed_ref["evidence_ref"] = "evidence:uuid:bad"
+        with self.assertRaisesRegex(PhaseCContractError, "invalid_evidence_reference"):
+            parse_phase_c_atom(malformed_ref, self.policy)
+        good = validate_phase_c_event_identity(self.frame, initial_phase_c_watermark(self.frame))
+        cases = (
+            ({"turn_sequence_by_id": []}, "event_watermark_collections"),
+            ({"turn_sequence_by_id": (("turn-1",),)}, "event_watermark_entries"),
+            ({"turn_id_by_sequence": ((0, "turn-1"), (0, "turn-1"))}, "event_watermark_duplicate_map_key"),
+            ({"last_input_revision_by_turn": (("turn-1", 0), ("turn-1", 0))}, "event_watermark_duplicate_map_key"),
+            ({"seen_event_ids": frozenset()}, "event_watermark_event_history"),
+            ({"event_history_by_id": (("event-1", "turn-1", 0), ("event-2", "turn-1", 0))}, "event_watermark_duplicate_history"),
+            ({"last_input_revision_by_turn": (("turn-1", 1),)}, "event_watermark_revision_history"),
+            ({"last_turn_sequence": 1}, "event_watermark_last_turn"),
+            ({"last_turn_sequence": True}, "event_watermark_counter"),
+            ({"expected_session_id": " bad"}, "invalid_opaque_identifier"),
+        )
+        for overrides, expected in cases:
+            candidate = PhaseCEventWatermarkV1(**{**good.__dict__, **overrides})
+            with self.subTest(watermark=expected):
+                with self.assertRaises(PhaseCContractError) as caught:
+                    validate_phase_c_event_watermark(candidate)
+                self.assertEqual(caught.exception.code, expected)
+        tie_low = parse_phase_c_atom(_atom(counter=2, independence_key="ind:fixture:1:a"), self.policy)
+        tie_high = parse_phase_c_atom(_atom(counter=1, independence_key="ind:fixture:1:b"), self.policy)
+        self.assertLess(atom_sort_key(tie_low, self.policy), atom_sort_key(tie_high, self.policy))
+
+
 def build_policy_leaf_mutations(payload: dict[str, Any]) -> list[tuple[str, dict[str, Any]]]:
     mutations: list[tuple[str, dict[str, Any]]] = []
     for path in _leaf_paths(payload):

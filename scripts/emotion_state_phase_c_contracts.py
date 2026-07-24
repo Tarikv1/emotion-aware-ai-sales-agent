@@ -537,7 +537,12 @@ def _validated_phase_c_event_watermark_maps(
         history_by_id[event_id] = (turn_id, revision)
         seen_turn_revisions.add((turn_id, revision))
         revisions_by_turn.setdefault(turn_id, []).append(revision)
-    if {sequence: turn_id for turn_id, sequence in sequence_by_id.items()} != id_by_sequence:
+    if (
+        len(sequence_by_id) != len(id_by_sequence)
+        or len(set(sequence_by_id.values())) != len(sequence_by_id)
+        or len(set(id_by_sequence.values())) != len(id_by_sequence)
+        or {sequence: turn_id for turn_id, sequence in sequence_by_id.items()} != id_by_sequence
+    ):
         raise PhaseCContractError("event_watermark_turn_map_inverse")
     if set(revision_by_turn) != set(sequence_by_id) or set(revisions_by_turn) != set(sequence_by_id):
         raise PhaseCContractError("event_watermark_coverage")
@@ -552,12 +557,14 @@ def _validated_phase_c_event_watermark_maps(
     return sequence_by_id, id_by_sequence, revision_by_turn, history_by_id
 
 
-def validate_phase_c_event_watermark(watermark: PhaseCEventWatermarkV1) -> None:
-    _validated_phase_c_event_watermark_maps(watermark)
+def validate_phase_c_event_watermark(
+    watermark: PhaseCEventWatermarkV1,
+) -> tuple[dict[str, int], dict[int, str], dict[str, int], dict[str, tuple[str, int]]]:
+    return _validated_phase_c_event_watermark_maps(watermark)
 
 
 def initial_phase_c_watermark(frame: PhaseCSyntheticEvidenceFrameV1) -> PhaseCEventWatermarkV1:
-    _validate_phase_c_event_identity_frame(frame)
+    validate_phase_c_frame(frame, _frozen_phase_c_policy())
     return PhaseCEventWatermarkV1(
         expected_session_id=frame.call_session_id,
         expected_campaign_profile_id=frame.campaign_profile_id,
@@ -575,11 +582,10 @@ def validate_phase_c_event_identity(
     frame: PhaseCSyntheticEvidenceFrameV1,
     watermark: PhaseCEventWatermarkV1,
 ) -> PhaseCEventWatermarkV1:
-    _validate_phase_c_event_identity_frame(frame)
-    validate_phase_c_event_watermark(watermark)
     sequence_by_id, id_by_sequence, revision_by_turn, history_by_id = (
-        _validated_phase_c_event_watermark_maps(watermark)
+        validate_phase_c_event_watermark(watermark)
     )
+    validate_phase_c_frame(frame, _frozen_phase_c_policy())
 
     def reject(code: str) -> None:
         raise PhaseCEventRejected(code)
