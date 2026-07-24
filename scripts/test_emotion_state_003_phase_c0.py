@@ -18,6 +18,7 @@ from scripts.emotion_state_phase_c_contracts import (
     PhaseCContractError,
     PhaseCEventRejected,
     PhaseCEventWatermarkV1,
+    PhaseCOutputSemanticError,
     PhaseCSyntheticEvidenceAtomV1,
     PhaseCSyntheticEvidenceFrameV1,
     atom_sort_key,
@@ -146,6 +147,17 @@ EXPECTED_INTERNAL_FIELDS_FOR_TEST = frozenset({
     "last_emitted_selected_signal",
     "last_emitted_selected_support",
 })
+
+REJECTION_CASE_IDS = (
+    "duplicate_event_rejected",
+    "duplicate_reference_rejected",
+    "closed_turn_correction_rejected",
+    "cross_session_rejected",
+    "cross_campaign_rejected",
+    "wrong_campaign_version_rejected",
+    "noncanonical_atom_order_rejected",
+    "forbidden_phase_b_field_rejected",
+)
 
 
 def _atom(
@@ -3747,3 +3759,638 @@ class PhaseCTaskFiveBoundaryCorrectionTests(PhaseCTestCase):
             self._semantic_code(nonstring_key, state, context),
             "perceived_field_set",
         )
+
+
+class PhaseCAdvanceTests(PhaseCTestCase):
+    def execute_attempt(self, state, scenario, attempt):
+        payload = phase_c_contracts.materialize_phase_c_scenario_attempt_payload(
+            scenario,
+            attempt,
+        )
+        frame = parse_phase_c_frame(payload, self.policy)
+        return self.tracker.advance(state, frame, self.policy)
+
+    def advance(self, state, frame):
+        return self.tracker.advance(state, frame, self.policy)
+
+    def fold_frames(self, frames):
+        state = None
+        output = None
+        for frame in frames:
+            state, output = self.advance(state, frame)
+        return state, output
+
+    def canonical_state(self, state):
+        return self.tracker.canonical_session_state_bytes(state)
+
+    def custom_frame(
+        self,
+        *,
+        turn_sequence,
+        input_revision=0,
+        atoms,
+        session_id="session:phase-c0-advance",
+        turn_id=None,
+        event_id=None,
+    ):
+        payload = _frame(
+            event_id=event_id or f"event:phase-c0-advance:{turn_sequence}:{input_revision}",
+            turn_id=turn_id or f"turn:phase-c0-advance:{turn_sequence}",
+            turn_sequence=turn_sequence,
+            input_revision=input_revision,
+            atoms=atoms,
+        )
+        payload["call_session_id"] = session_id
+        payload["campaign_profile_id"] = "campaign:phase-c0"
+        payload["campaign_profile_version"] = "version:1"
+        return parse_phase_c_frame(payload, self.policy)
+
+    def test_latest_revision_replaces_and_replays(self) -> None:
+        scenario = self.case("latest_turn_correction_replay")
+        frames = scenario.sessions[0].frames
+        first_state, first_output = self.advance(None, frames[0])
+        corrected_state, corrected_output = self.advance(first_state, frames[1])
+        normalized = dataclasses.replace(
+            frames[1],
+            event_id="event-normalized-fresh",
+            input_revision=0,
+        )
+        fresh_state, fresh_output = self.fold_frames([normalized])
+        self.assertEqual(
+            self.tracker.canonical_semantic_replay_bytes(
+                corrected_state,
+                corrected_output,
+            ),
+            self.tracker.canonical_semantic_replay_bytes(
+                fresh_state,
+                fresh_output,
+            ),
+        )
+        self.assertEqual(
+            len(corrected_state.watermark.event_history_by_id),
+            2,
+        )
+        self.assertNotEqual(
+            self.canonical_state(corrected_state),
+            self.canonical_state(fresh_state),
+        )
+        self.assertEqual(corrected_output["selected_policy_signal"], "interest")
+        self.assertNotEqual(first_output, corrected_output)
+
+    def test_identical_replay_rejects_without_mutation(self) -> None:
+        frame = self.case("explicit_confusion_entry").sessions[0].frames[0]
+        state, _ = self.advance(None, frame)
+        before = self.canonical_state(state)
+        snapshot = copy.deepcopy(state)
+        with self.assertRaises(PhaseCEventRejected) as captured:
+            self.advance(state, frame)
+        self.assertEqual(captured.exception.code, "duplicate_event")
+        self.assertEqual(state, snapshot)
+        self.assertEqual(self.canonical_state(state), before)
+
+    def test_every_rejection_preserves_prior_state_bytes_and_object(self) -> None:
+        for case_id in REJECTION_CASE_IDS:
+            scenario = self.case(case_id)
+            state = None
+            for attempt, expected in zip(
+                scenario.attempt_order,
+                scenario.expected_steps,
+                strict=True,
+            ):
+                if expected.disposition == "accepted":
+                    state, _output = self.execute_attempt(
+                        state,
+                        scenario,
+                        attempt,
+                    )
+                    continue
+                before = self.canonical_state(state)
+                object_snapshot = copy.deepcopy(state)
+                identity = state
+                with self.subTest(
+                    case_id=case_id,
+                    rejection_code=expected.rejection_code,
+                ):
+                    with self.assertRaises(PhaseCContractError) as caught:
+                        self.execute_attempt(state, scenario, attempt)
+                    self.assertEqual(
+                        caught.exception.code,
+                        expected.rejection_code,
+                    )
+                    self.assertIs(state, identity)
+                    self.assertEqual(state, object_snapshot)
+                    self.assertEqual(before, self.canonical_state(state))
+
+    def test_accepted_scenario_outputs_remain_frozen_authority(self) -> None:
+        for scenario in self.scenarios.values():
+            states = {
+                session.session_alias: None
+                for session in scenario.sessions
+            }
+            for attempt, expected in zip(
+                scenario.attempt_order,
+                scenario.expected_steps,
+                strict=True,
+            ):
+                if expected.disposition != "accepted":
+                    continue
+                state, output = self.execute_attempt(
+                    states[attempt.state_session_alias],
+                    scenario,
+                    attempt,
+                )
+                states[attempt.state_session_alias] = state
+                with self.subTest(
+                    case_id=scenario.case_id,
+                    frame_index=attempt.frame_index,
+                ):
+                    self.assertEqual(
+                        canonical_json_bytes(output),
+                        expected.expected_output_bytes,
+                    )
+
+    def test_interleaved_sessions_equal_separate_folds(self) -> None:
+        scenario = self.case("simultaneous_sessions_isolated")
+        sessions = {item.session_alias: item for item in scenario.sessions}
+        interleaved_states = {alias: None for alias in sessions}
+        for attempt in scenario.attempt_order:
+            state, _output = self.execute_attempt(
+                interleaved_states[attempt.state_session_alias],
+                scenario,
+                attempt,
+            )
+            interleaved_states[attempt.state_session_alias] = state
+        separate_states = {
+            alias: self.fold_frames(session.frames)[0]
+            for alias, session in sessions.items()
+        }
+        self.assertEqual(
+            {
+                alias: self.canonical_state(state)
+                for alias, state in interleaved_states.items()
+            },
+            {
+                alias: self.canonical_state(state)
+                for alias, state in separate_states.items()
+            },
+        )
+
+    def test_cross_feeding_interleaved_session_frames_rejects(self) -> None:
+        scenario = self.case("simultaneous_sessions_isolated")
+        sessions = {item.session_alias: item for item in scenario.sessions}
+        aliases = tuple(sessions)
+        left_state, _ = self.advance(None, sessions[aliases[0]].frames[0])
+        right_state, _ = self.advance(None, sessions[aliases[1]].frames[0])
+        with self.assertRaisesRegex(PhaseCEventRejected, "cross_session"):
+            self.advance(left_state, sessions[aliases[1]].frames[1])
+        with self.assertRaisesRegex(PhaseCEventRejected, "cross_session"):
+            self.advance(right_state, sessions[aliases[0]].frames[1])
+
+    def test_correction_can_retain_immediately_replaced_reference_and_key(self) -> None:
+        atom = _atom(
+            counter=910001,
+            signal="interest",
+            independence_key="ind:phase-c0:retained",
+        )
+        first = self.custom_frame(
+            turn_sequence=0,
+            atoms=[atom],
+        )
+        correction = self.custom_frame(
+            turn_sequence=0,
+            input_revision=1,
+            atoms=[copy.deepcopy(atom)],
+        )
+        state, _ = self.advance(None, first)
+        corrected, _ = self.advance(state, correction)
+        self.assertEqual(corrected.retired_independence_keys, ())
+        self.assertEqual(
+            corrected.seen_evidence_refs,
+            (atom["evidence_ref"],),
+        )
+        self.assertEqual(len(corrected.evidence_history_by_event), 2)
+
+    def test_multi_revision_replay_uses_same_retired_seed(self) -> None:
+        old_key = "ind:phase-c0:a-old"
+        middle_key = "ind:phase-c0:b-middle"
+        latest_key = "ind:phase-c0:c-latest"
+        first = self.custom_frame(
+            turn_sequence=0,
+            atoms=[
+                _atom(
+                    counter=920001,
+                    signal="interest",
+                    independence_key=old_key,
+                ),
+            ],
+        )
+        correction_one = self.custom_frame(
+            turn_sequence=0,
+            input_revision=1,
+            atoms=[
+                _atom(
+                    counter=920002,
+                    signal="interest",
+                    independence_key=middle_key,
+                ),
+            ],
+        )
+        correction_two = self.custom_frame(
+            turn_sequence=0,
+            input_revision=2,
+            atoms=[
+                _atom(
+                    counter=920003,
+                    signal="interest",
+                    independence_key=old_key,
+                ),
+                _atom(
+                    counter=920004,
+                    signal="interest",
+                    independence_key=latest_key,
+                ),
+            ],
+        )
+        state, _ = self.advance(None, first)
+        state, _ = self.advance(state, correction_one)
+        state, output = self.advance(state, correction_two)
+        self.assertEqual(
+            frozenset(state.retired_independence_keys),
+            frozenset({old_key, middle_key}),
+        )
+        old_reference = next(
+            atom.evidence_ref
+            for atom in correction_two.evidence_atoms
+            if atom.independence_key == old_key
+        )
+        self.assertNotIn(old_reference, state.contributing_evidence_refs)
+
+        normalized = dataclasses.replace(
+            correction_two,
+            event_id="event:phase-c0:normalized:multi",
+            input_revision=0,
+        )
+        watermark = validate_phase_c_event_identity(
+            normalized,
+            initial_phase_c_watermark(normalized),
+        )
+        refs = tuple(
+            sorted(atom.evidence_ref for atom in normalized.evidence_atoms)
+        )
+        keys = tuple(
+            sorted(atom.independence_key for atom in normalized.evidence_atoms)
+        )
+        normalized_state, normalized_output, _ = (
+            self.tracker.replay_frame_semantics(
+                (normalized,),
+                self.policy,
+                retired_independence_keys=frozenset(
+                    state.retired_independence_keys,
+                ),
+                evidence_history_by_event=(
+                    (normalized.event_id, refs, keys),
+                ),
+                historical_seen_evidence_refs=refs,
+                historical_seen_independence_keys=keys,
+                watermark=watermark,
+            )
+        )
+        self.assertEqual(
+            self.tracker.canonical_semantic_replay_bytes(state, output),
+            self.tracker.canonical_semantic_replay_bytes(
+                normalized_state,
+                normalized_output,
+            ),
+        )
+
+    def test_shared_key_drop_does_not_retire_while_another_turn_retains_it(self) -> None:
+        shared = "ind:phase-c0:shared"
+        first = self.custom_frame(
+            turn_sequence=0,
+            atoms=[_atom(counter=930001, independence_key=shared)],
+        )
+        second = self.custom_frame(
+            turn_sequence=1,
+            atoms=[_atom(counter=930002, independence_key=shared)],
+        )
+        corrected_second = self.custom_frame(
+            turn_sequence=1,
+            input_revision=1,
+            atoms=[
+                _atom(
+                    counter=930003,
+                    independence_key="ind:phase-c0:replacement",
+                ),
+            ],
+        )
+        state, _ = self.fold_frames((first, second))
+        state, _ = self.advance(state, corrected_second)
+        self.assertNotIn(shared, state.retired_independence_keys)
+        self.assertIn(shared, state.seen_independence_keys)
+
+    def test_retired_key_stays_zero_across_later_turn_and_replay(self) -> None:
+        retired = "ind:phase-c0:permanent-retired"
+        first = self.custom_frame(
+            turn_sequence=0,
+            atoms=[
+                _atom(
+                    counter=940001,
+                    signal="interest",
+                    independence_key=retired,
+                ),
+            ],
+        )
+        correction = self.custom_frame(
+            turn_sequence=0,
+            input_revision=1,
+            atoms=[
+                _atom(
+                    counter=940002,
+                    signal="interest",
+                    independence_key="ind:phase-c0:replacement-live",
+                ),
+            ],
+        )
+        reintroduced = self.custom_frame(
+            turn_sequence=1,
+            atoms=[
+                _atom(
+                    counter=940003,
+                    signal="interest",
+                    independence_key=retired,
+                ),
+            ],
+        )
+        later = self.custom_frame(
+            turn_sequence=2,
+            atoms=[],
+        )
+        state, _ = self.advance(None, first)
+        state, _ = self.advance(state, correction)
+        state, _ = self.advance(state, reintroduced)
+        self.assertIn(retired, state.retired_independence_keys)
+        self.assertNotIn(
+            reintroduced.evidence_atoms[0].evidence_ref,
+            state.contributing_evidence_refs,
+        )
+        state, output = self.advance(state, later)
+        self.tracker.validate_phase_c_state_replay(state, self.policy)
+        self.tracker.validate_phase_c_replayed_output(
+            output,
+            state,
+            self.policy,
+        )
+        self.assertIn(retired, state.retired_independence_keys)
+
+    def test_dropped_reference_rejects_and_dropped_key_cannot_contribute(self) -> None:
+        dropped_key = "ind:phase-c0:dropped"
+        dropped_atom = _atom(
+            counter=950001,
+            signal="interest",
+            independence_key=dropped_key,
+        )
+        first = self.custom_frame(
+            turn_sequence=0,
+            atoms=[dropped_atom],
+        )
+        correction = self.custom_frame(
+            turn_sequence=0,
+            input_revision=1,
+            atoms=[
+                _atom(
+                    counter=950002,
+                    signal="interest",
+                    independence_key="ind:phase-c0:kept",
+                ),
+            ],
+        )
+        state, _ = self.advance(None, first)
+        state, _ = self.advance(state, correction)
+        recycled_reference = self.custom_frame(
+            turn_sequence=1,
+            atoms=[copy.deepcopy(dropped_atom)],
+        )
+        before = self.canonical_state(state)
+        with self.assertRaises(PhaseCEventRejected) as captured:
+            self.advance(state, recycled_reference)
+        self.assertEqual(
+            captured.exception.code,
+            "duplicate_evidence_reference",
+        )
+        self.assertEqual(before, self.canonical_state(state))
+
+        fresh_reference = self.custom_frame(
+            turn_sequence=1,
+            atoms=[
+                _atom(
+                    counter=950004,
+                    signal="interest",
+                    independence_key=dropped_key,
+                ),
+            ],
+        )
+        next_state, _ = self.advance(state, fresh_reference)
+        self.assertNotIn(
+            fresh_reference.evidence_atoms[0].evidence_ref,
+            next_state.contributing_evidence_refs,
+        )
+
+    def test_malformed_prior_state_families_reject_before_incoming_frame(self) -> None:
+        class StringSubclass(str):
+            pass
+
+        one_frame = self.case("explicit_confusion_entry").sessions[0].frames[0]
+        base, _ = self.advance(None, one_frame)
+        two_frames = self.case(
+            "repeated_independence_zero_addition",
+        ).sessions[0].frames
+        ordered, _ = self.fold_frames(two_frames)
+        correction_frames = self.case(
+            "latest_turn_correction_replay",
+        ).sessions[0].frames
+        corrected, _ = self.fold_frames(correction_frames)
+        malformed_history = list(corrected.evidence_history_by_event)
+        extra_reference = _atom(counter=970001)["evidence_ref"]
+        first_event_id, first_references, first_keys = malformed_history[0]
+        malformed_history[0] = (
+            first_event_id,
+            tuple(sorted((*first_references, extra_reference))),
+            first_keys,
+        )
+        malformed_seen_references = []
+        for _event_id, references, _keys in malformed_history:
+            for reference in references:
+                if reference not in malformed_seen_references:
+                    malformed_seen_references.append(reference)
+        accumulator = dataclasses.replace(
+            base.accumulator,
+            gross_supporting_units=(
+                ("confusion", 699),
+                *base.accumulator.gross_supporting_units[1:],
+            ),
+        )
+        bad_watermark = dataclasses.replace(
+            base.watermark,
+            turn_sequence_by_id=((one_frame.turn_id, 1),),
+            turn_id_by_sequence=((1, one_frame.turn_id),),
+            last_turn_sequence=1,
+        )
+        mutations = (
+            ("schema", dataclasses.replace(base, schema_version="wrong")),
+            ("policy_id", dataclasses.replace(base, policy_id="wrong")),
+            ("policy_hash", dataclasses.replace(base, policy_sha256="0" * 64)),
+            (
+                "identity",
+                dataclasses.replace(base, call_session_id="session:other"),
+            ),
+            (
+                "identity_maps",
+                dataclasses.replace(base, watermark=bad_watermark),
+            ),
+            (
+                "evidence_history",
+                dataclasses.replace(
+                    base,
+                    evidence_history_by_event=(
+                        (one_frame.event_id, (), ()),
+                    ),
+                ),
+            ),
+            (
+                "accepted_frame_order",
+                dataclasses.replace(
+                    ordered,
+                    accepted_frames=tuple(reversed(ordered.accepted_frames)),
+                ),
+            ),
+            (
+                "accumulator",
+                dataclasses.replace(base, accumulator=accumulator),
+            ),
+            (
+                "hysteresis",
+                dataclasses.replace(
+                    base,
+                    hysteresis=dataclasses.replace(
+                        base.hysteresis,
+                        incumbent_tenure=0,
+                    ),
+                ),
+            ),
+            (
+                "provenance",
+                dataclasses.replace(base, contributing_evidence_refs=()),
+            ),
+            (
+                "accepted_turn_count",
+                dataclasses.replace(base, accepted_turn_count=2),
+            ),
+            (
+                "last_emitted",
+                dataclasses.replace(
+                    base,
+                    last_emitted_selected_support=699,
+                ),
+            ),
+            (
+                "collection_type",
+                dataclasses.replace(
+                    base,
+                    accepted_frames=list(base.accepted_frames),
+                ),
+            ),
+            (
+                "ledger_scalar_type",
+                dataclasses.replace(
+                    base,
+                    seen_evidence_refs=(
+                        StringSubclass(base.seen_evidence_refs[0]),
+                    ),
+                ),
+            ),
+            (
+                "historical_ref_key_pairing",
+                dataclasses.replace(
+                    corrected,
+                    evidence_history_by_event=tuple(malformed_history),
+                    seen_evidence_refs=tuple(malformed_seen_references),
+                ),
+            ),
+        )
+        for family, malformed in mutations:
+            with self.subTest(family=family):
+                with self.assertRaises(PhaseCContractError) as captured:
+                    self.advance(malformed, object())
+                self.assertFalse(
+                    captured.exception.code.startswith("frame_"),
+                    captured.exception.code,
+                )
+
+    def test_post_parse_source_mutation_cannot_change_frozen_frame(self) -> None:
+        payload = _frame(
+            event_id="event:phase-c0:frozen",
+            turn_id="turn:phase-c0:frozen",
+            atoms=[_atom(counter=960001)],
+        )
+        frame = parse_phase_c_frame(payload, self.policy)
+        frozen_bytes = canonical_json_bytes(
+            phase_c_contracts.phase_c_frame_to_payload(frame),
+        )
+        payload["evidence_atoms"][0]["independence_key"] = "ind:mutated"
+        payload["evidence_atoms"].append(_atom(counter=960002))
+        self.assertEqual(
+            canonical_json_bytes(
+                phase_c_contracts.phase_c_frame_to_payload(frame),
+            ),
+            frozen_bytes,
+        )
+        with self.assertRaises(dataclasses.FrozenInstanceError):
+            frame.event_id = "event:mutated"
+
+    def test_phase_c_modules_expose_no_user_defined_mutable_containers(self) -> None:
+        for module in (phase_c_contracts, self.tracker):
+            mutable = {
+                name: type(value).__name__
+                for name, value in vars(module).items()
+                if (
+                    not name.startswith("__")
+                    and type(value) in {dict, list, set}
+                )
+            }
+            self.assertEqual(mutable, {}, module.__name__)
+
+    def test_independent_replayed_output_validation_and_runtime_rejection(self) -> None:
+        scenario = self.case("explicit_confusion_entry")
+        state, output = self.fold_frames(scenario.sessions[0].frames)
+        self.assertIs(
+            self.tracker.validate_phase_c_replayed_output(
+                output,
+                state,
+                self.policy,
+            ),
+            output,
+        )
+        mutated = copy.deepcopy(output)
+        mutated["runtime_approved"] = True
+        with self.assertRaises(PhaseCOutputSemanticError) as captured:
+            self.tracker.validate_phase_c_replayed_output(
+                mutated,
+                state,
+                self.policy,
+            )
+        self.assertEqual(captured.exception.code, "runtime_approved")
+
+    def test_replay_validators_never_call_advance(self) -> None:
+        scenario = self.case("explicit_confusion_entry")
+        state, output = self.fold_frames(scenario.sessions[0].frames)
+        with mock.patch.object(
+            self.tracker,
+            "advance",
+            side_effect=AssertionError("advance must not be used"),
+        ):
+            self.tracker.validate_phase_c_state_replay(state, self.policy)
+            self.tracker.validate_phase_c_replayed_output(
+                output,
+                state,
+                self.policy,
+            )

@@ -2570,6 +2570,301 @@ def validate_phase_c_temporal_state(
         raise PhaseCContractError("temporal_state_emission")
 
 
+def _ordinal_union(rows: tuple[tuple[str, ...], ...]) -> tuple[str, ...]:
+    seen: set[str] = set()
+    result: list[str] = []
+    for row in rows:
+        for value in row:
+            if value not in seen:
+                seen.add(value)
+                result.append(value)
+    return tuple(result)
+
+
+def _derive_phase_c_retired_independence_keys(
+    watermark: PhaseCEventWatermarkV1,
+    evidence_history_by_event: tuple[
+        tuple[str, tuple[str, ...], tuple[str, ...]],
+        ...
+    ],
+) -> tuple[str, ...]:
+    sequence_by_turn = dict(watermark.turn_sequence_by_id)
+    event_identity = {
+        event_id: (turn_id, revision)
+        for event_id, turn_id, revision in watermark.event_history_by_id
+    }
+    keys_by_event = {
+        event_id: keys
+        for event_id, _references, keys in evidence_history_by_event
+    }
+    ordered_events = sorted(
+        event_identity,
+        key=lambda event_id: (
+            sequence_by_turn[event_identity[event_id][0]],
+            event_identity[event_id][1],
+            event_id,
+        ),
+    )
+    latest_keys_by_turn: dict[str, tuple[str, ...]] = {}
+    retired: list[str] = []
+    retired_set: set[str] = set()
+    for event_id in ordered_events:
+        turn_id, _revision = event_identity[event_id]
+        before = _ordinal_union(
+            tuple(
+                latest_keys_by_turn[known_turn]
+                for known_turn in sorted(
+                    latest_keys_by_turn,
+                    key=sequence_by_turn.__getitem__,
+                )
+            ),
+        )
+        latest_keys_by_turn[turn_id] = keys_by_event[event_id]
+        after_set = {
+            key
+            for keys in latest_keys_by_turn.values()
+            for key in keys
+        }
+        for key in before:
+            if key not in after_set and key not in retired_set:
+                retired_set.add(key)
+                retired.append(key)
+    return tuple(retired)
+
+
+def _phase_c_live_contributing_references(
+    accumulator: PhaseCSignalAccumulatorV1,
+) -> tuple[str, ...]:
+    references: list[str] = []
+    for _signal, directions in accumulator.modality_refs_by_signal_direction:
+        for _direction, modality_rows in directions:
+            largest_bucket = max(
+                len(modality_references)
+                for _modality, modality_references in modality_rows
+            )
+            for ordinal in range(largest_bucket):
+                for _modality, modality_references in modality_rows:
+                    if ordinal < len(modality_references):
+                        references.append(modality_references[ordinal])
+    return tuple(references)
+
+
+def validate_phase_c_session_state(
+    state: PhaseCTemporalSessionStateV1,
+    policy: Mapping[str, Any],
+) -> PhaseCTemporalSessionStateV1:
+    if type(state) is not PhaseCTemporalSessionStateV1:
+        raise PhaseCContractError("session_state_type")
+    if state.schema_version != "PhaseCTemporalSessionStateV1":
+        raise PhaseCContractError("session_state_schema")
+    string_fields = (
+        state.policy_id,
+        state.policy_sha256,
+        state.call_session_id,
+        state.campaign_profile_id,
+        state.campaign_profile_version,
+    )
+    if (
+        any(type(value) is not str for value in string_fields)
+        or type(state.watermark) is not PhaseCEventWatermarkV1
+        or type(state.accumulator) is not PhaseCSignalAccumulatorV1
+        or type(state.hysteresis) is not PhaseCHysteresisV1
+        or type(state.accepted_turn_count) is not int
+        or (
+            state.last_emitted_selected_signal is not None
+            and type(state.last_emitted_selected_signal) is not str
+        )
+        or (
+            state.last_emitted_selected_support is not None
+            and type(state.last_emitted_selected_support) is not int
+        )
+    ):
+        raise PhaseCContractError("session_state_field_type")
+    tuple_fields = (
+        state.accepted_frames,
+        state.evidence_history_by_event,
+        state.seen_evidence_refs,
+        state.seen_independence_keys,
+        state.retired_independence_keys,
+        state.contributing_evidence_refs,
+    )
+    if any(type(value) is not tuple for value in tuple_fields):
+        raise PhaseCContractError("session_state_collections")
+    if any(
+        type(value) is not str
+        for value in (
+            *state.seen_evidence_refs,
+            *state.seen_independence_keys,
+            *state.retired_independence_keys,
+            *state.contributing_evidence_refs,
+        )
+    ):
+        raise PhaseCContractError("session_state_field_type")
+
+    validate_phase_c_policy(policy)
+    if (
+        state.policy_id != policy["policy_id"]
+        or state.policy_sha256
+        != sha256_bytes(canonical_json_bytes(dict(policy)))
+    ):
+        raise PhaseCContractError("session_state_policy")
+
+    for value in (
+        state.call_session_id,
+        state.campaign_profile_id,
+        state.campaign_profile_version,
+    ):
+        _require_opaque_identifier(value)
+    if (
+        state.call_session_id != state.watermark.expected_session_id
+        or state.campaign_profile_id
+        != state.watermark.expected_campaign_profile_id
+        or state.campaign_profile_version
+        != state.watermark.expected_campaign_profile_version
+    ):
+        raise PhaseCContractError("session_state_identity")
+
+    (
+        sequence_by_id,
+        _id_by_sequence,
+        revision_by_turn,
+        event_identity,
+    ) = validate_phase_c_event_watermark(state.watermark)
+
+    if not state.accepted_frames:
+        raise PhaseCContractError("session_state_frames")
+    for frame in state.accepted_frames:
+        validate_phase_c_frame(frame, dict(policy))
+    if any(
+        later.turn_sequence <= earlier.turn_sequence
+        for earlier, later in zip(
+            state.accepted_frames,
+            state.accepted_frames[1:],
+        )
+    ):
+        raise PhaseCContractError("session_state_frame_order")
+    frame_by_turn: dict[str, PhaseCSyntheticEvidenceFrameV1] = {}
+    for frame in state.accepted_frames:
+        if (
+            frame.call_session_id != state.call_session_id
+            or frame.campaign_profile_id != state.campaign_profile_id
+            or frame.campaign_profile_version
+            != state.campaign_profile_version
+        ):
+            raise PhaseCContractError("session_state_frame_identity")
+        if (
+            frame.turn_id in frame_by_turn
+            or frame.turn_id not in sequence_by_id
+            or frame.turn_sequence != sequence_by_id[frame.turn_id]
+            or frame.input_revision != revision_by_turn[frame.turn_id]
+        ):
+            raise PhaseCContractError("session_state_frame_identity")
+        frame_by_turn[frame.turn_id] = frame
+    if set(frame_by_turn) != set(sequence_by_id):
+        raise PhaseCContractError("session_state_frame_identity")
+
+    history = state.evidence_history_by_event
+    if any(
+        type(row) is not tuple
+        or len(row) != 3
+        or type(row[0]) is not str
+        or type(row[1]) is not tuple
+        or type(row[2]) is not tuple
+        for row in history
+    ):
+        raise PhaseCContractError("session_state_history")
+    event_ids = tuple(row[0] for row in history)
+    if (
+        event_ids != tuple(sorted(event_ids))
+        or len(set(event_ids)) != len(event_ids)
+        or set(event_ids) != set(event_identity)
+    ):
+        raise PhaseCContractError("session_state_history")
+    history_by_event: dict[
+        str,
+        tuple[tuple[str, ...], tuple[str, ...]],
+    ] = {}
+    for event_id, references, keys in history:
+        _require_opaque_identifier(event_id)
+        if (
+            len(references) != len(keys)
+            or references != tuple(sorted(references))
+            or keys != tuple(sorted(keys))
+            or len(set(references)) != len(references)
+            or len(set(keys)) != len(keys)
+            or any(
+                type(reference) is not str
+                or EVIDENCE_REF_PATTERN.fullmatch(reference) is None
+                for reference in references
+            )
+            or any(type(key) is not str for key in keys)
+        ):
+            raise PhaseCContractError("session_state_history")
+        for key in keys:
+            _require_opaque_identifier(key)
+        history_by_event[event_id] = (references, keys)
+    latest_event_by_turn: dict[str, str] = {}
+    for event_id, (turn_id, revision) in event_identity.items():
+        if revision == revision_by_turn[turn_id]:
+            latest_event_by_turn[turn_id] = event_id
+    if set(latest_event_by_turn) != set(frame_by_turn):
+        raise PhaseCContractError("session_state_history")
+    for turn_id, frame in frame_by_turn.items():
+        event_id = latest_event_by_turn[turn_id]
+        expected_body = (
+            tuple(sorted(atom.evidence_ref for atom in frame.evidence_atoms)),
+            tuple(
+                sorted(
+                    atom.independence_key
+                    for atom in frame.evidence_atoms
+                )
+            ),
+        )
+        if frame.event_id != event_id or history_by_event[event_id] != expected_body:
+            raise PhaseCContractError("session_state_history")
+
+    expected_seen_references = _ordinal_union(
+        tuple(references for _event_id, references, _keys in history),
+    )
+    expected_seen_keys = _ordinal_union(
+        tuple(keys for _event_id, _references, keys in history),
+    )
+    if (
+        state.seen_evidence_refs != expected_seen_references
+        or state.seen_independence_keys != expected_seen_keys
+    ):
+        raise PhaseCContractError("session_state_seen_ledgers")
+
+    expected_retired = _derive_phase_c_retired_independence_keys(
+        state.watermark,
+        history,
+    )
+    if state.retired_independence_keys != expected_retired:
+        raise PhaseCContractError("session_state_retired_keys")
+
+    validate_phase_c_signal_accumulator(state.accumulator, dict(policy))
+    validate_phase_c_hysteresis(state.hysteresis, policy)
+
+    if (
+        state.contributing_evidence_refs
+        != _phase_c_live_contributing_references(state.accumulator)
+    ):
+        raise PhaseCContractError("session_state_provenance")
+    if state.accepted_turn_count != len(state.accepted_frames):
+        raise PhaseCContractError("session_state_counter")
+    signal = state.last_emitted_selected_signal
+    support = state.last_emitted_selected_support
+    if signal is None:
+        if support is not None:
+            raise PhaseCContractError("session_state_emission")
+    elif (
+        signal not in policy["canonical_signal_order"]
+        or support != dict(state.accumulator.capped_net_support)[signal]
+    ):
+        raise PhaseCContractError("session_state_emission")
+    return state
+
+
 def _validate_phase_c_projection_context(
     context: PhaseCProjectionContextV1,
     policy: Mapping[str, Any],

@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from dataclasses import fields, is_dataclass
 from typing import Any, Mapping
 
 from runtime.contracts.emotion_state_contracts import (
@@ -7,16 +8,21 @@ from runtime.contracts.emotion_state_contracts import (
 )
 from scripts.emotion_state_phase_c_contracts import (
     PhaseCContractError,
+    PhaseCEventRejected,
+    PhaseCEventWatermarkV1,
     PhaseCFrameFoldV1,
     PhaseCHysteresisV1,
+    PhaseCOutputSemanticError,
     PhaseCProjectionContextV1,
     PhaseCReplayV1,
     PhaseCSignalAccumulatorV1,
     PhaseCSyntheticEvidenceAtomV1,
     PhaseCSyntheticEvidenceFrameV1,
     PhaseCTemporalSessionStateV1,
+    _derive_phase_c_retired_independence_keys,
     canonical_json_bytes,
     initial_phase_c_watermark,
+    phase_c_frame_to_payload,
     sha256_bytes,
     validate_phase_c_event_identity,
     validate_phase_c_atom,
@@ -26,6 +32,7 @@ from scripts.emotion_state_phase_c_contracts import (
     validate_phase_c_policy,
     validate_phase_c_perceived_state,
     validate_phase_c_seen_independence_keys,
+    validate_phase_c_session_state,
     validate_phase_c_signal_accumulator,
     validate_phase_c_temporal_state,
 )
@@ -712,6 +719,590 @@ def project_perceived_customer_state(
     }
     validate_perceived_customer_state(payload)
     return payload
+
+
+def _canonical_phase_c_value(value: Any) -> Any:
+    if is_dataclass(value) and not isinstance(value, type):
+        return {
+            field.name: _canonical_phase_c_value(getattr(value, field.name))
+            for field in fields(value)
+        }
+    if type(value) is tuple:
+        return [_canonical_phase_c_value(item) for item in value]
+    if type(value) is frozenset:
+        return sorted(
+            (_canonical_phase_c_value(item) for item in value),
+            key=lambda item: canonical_json_bytes(item),
+        )
+    if type(value) is dict:
+        return {
+            key: _canonical_phase_c_value(item)
+            for key, item in value.items()
+        }
+    if type(value) is list:
+        return [_canonical_phase_c_value(item) for item in value]
+    return value
+
+
+def canonical_session_state_bytes(
+    state: PhaseCTemporalSessionStateV1 | None,
+) -> bytes:
+    if state is not None and type(state) is not PhaseCTemporalSessionStateV1:
+        raise PhaseCContractError("session_state_type")
+    return canonical_json_bytes(_canonical_phase_c_value(state))
+
+
+def canonical_semantic_replay_bytes(
+    state: PhaseCTemporalSessionStateV1,
+    output: dict[str, Any],
+) -> bytes:
+    if type(state) is not PhaseCTemporalSessionStateV1:
+        raise PhaseCContractError("session_state_type")
+    if type(output) is not dict:
+        raise PhaseCContractError("replayed_output_type")
+    frames: list[dict[str, Any]] = []
+    for frame in state.accepted_frames:
+        payload = phase_c_frame_to_payload(frame)
+        del payload["event_id"]
+        del payload["input_revision"]
+        frames.append(payload)
+    return canonical_json_bytes({
+        "accepted_frames": frames,
+        "accumulator": _canonical_phase_c_value(state.accumulator),
+        "hysteresis": _canonical_phase_c_value(state.hysteresis),
+        "contributing_evidence_refs": list(
+            state.contributing_evidence_refs,
+        ),
+        "accepted_turn_count": state.accepted_turn_count,
+        "last_emitted_selected_signal": (
+            state.last_emitted_selected_signal
+        ),
+        "last_emitted_selected_support": (
+            state.last_emitted_selected_support
+        ),
+        "output": output,
+    })
+
+
+def accepted_frames_for(
+    previous_state: PhaseCTemporalSessionStateV1 | None,
+) -> tuple[PhaseCSyntheticEvidenceFrameV1, ...]:
+    return () if previous_state is None else previous_state.accepted_frames
+
+
+def retired_independence_keys(
+    previous_state: PhaseCTemporalSessionStateV1 | None,
+) -> frozenset[str]:
+    return (
+        frozenset()
+        if previous_state is None
+        else frozenset(previous_state.retired_independence_keys)
+    )
+
+
+def watermark_for(
+    previous_state: PhaseCTemporalSessionStateV1 | None,
+    frame: PhaseCSyntheticEvidenceFrameV1,
+) -> PhaseCEventWatermarkV1:
+    if previous_state is None:
+        return initial_phase_c_watermark(frame)
+    return previous_state.watermark
+
+
+def replaced_frame_for(
+    previous_state: PhaseCTemporalSessionStateV1 | None,
+    frame: PhaseCSyntheticEvidenceFrameV1,
+) -> PhaseCSyntheticEvidenceFrameV1 | None:
+    if previous_state is None:
+        return None
+    revisions = dict(previous_state.watermark.last_input_revision_by_turn)
+    if frame.turn_id not in revisions:
+        return None
+    replaced = previous_state.accepted_frames[-1]
+    if (
+        replaced.turn_id != frame.turn_id
+        or replaced.turn_sequence != frame.turn_sequence
+    ):
+        raise PhaseCEventRejected("stale_turn")
+    return replaced
+
+
+def candidate_frame_sequence(
+    previous_state: PhaseCTemporalSessionStateV1 | None,
+    frame: PhaseCSyntheticEvidenceFrameV1,
+) -> tuple[PhaseCSyntheticEvidenceFrameV1, ...]:
+    if previous_state is None:
+        return (frame,)
+    if frame.turn_id in dict(
+        previous_state.watermark.last_input_revision_by_turn,
+    ):
+        return (*previous_state.accepted_frames[:-1], frame)
+    return (*previous_state.accepted_frames, frame)
+
+
+def frame_independence_keys(
+    frames: tuple[PhaseCSyntheticEvidenceFrameV1, ...],
+) -> frozenset[str]:
+    return frozenset(
+        atom.independence_key
+        for frame in frames
+        for atom in frame.evidence_atoms
+    )
+
+
+def frame_evidence_references(
+    frames: tuple[PhaseCSyntheticEvidenceFrameV1, ...],
+) -> frozenset[str]:
+    return frozenset(
+        atom.evidence_ref
+        for frame in frames
+        for atom in frame.evidence_atoms
+    )
+
+
+def validate_candidate_reference_uniqueness(
+    previous_state: PhaseCTemporalSessionStateV1 | None,
+    candidate_frames: tuple[PhaseCSyntheticEvidenceFrameV1, ...],
+    replaced_frame: PhaseCSyntheticEvidenceFrameV1 | None,
+) -> None:
+    current_references = tuple(
+        atom.evidence_ref
+        for frame in candidate_frames
+        for atom in frame.evidence_atoms
+    )
+    if len(set(current_references)) != len(current_references):
+        raise PhaseCEventRejected("duplicate_evidence_reference")
+    if previous_state is None:
+        return
+    incoming_references = {
+        atom.evidence_ref
+        for atom in candidate_frames[-1].evidence_atoms
+    }
+    historical_references = set(previous_state.seen_evidence_refs)
+    retained_references = (
+        set()
+        if replaced_frame is None
+        else {
+            atom.evidence_ref
+            for atom in replaced_frame.evidence_atoms
+        }
+    )
+    if any(
+        reference in historical_references
+        and reference not in retained_references
+        for reference in incoming_references
+    ):
+        raise PhaseCEventRejected("duplicate_evidence_reference")
+
+
+def append_evidence_history_event(
+    previous_state: PhaseCTemporalSessionStateV1 | None,
+    frame: PhaseCSyntheticEvidenceFrameV1,
+    watermark: PhaseCEventWatermarkV1,
+) -> tuple[tuple[str, tuple[str, ...], tuple[str, ...]], ...]:
+    history = (
+        ()
+        if previous_state is None
+        else previous_state.evidence_history_by_event
+    )
+    next_history = tuple(sorted(
+        (
+            *history,
+            (
+                frame.event_id,
+                tuple(
+                    sorted(
+                        atom.evidence_ref
+                        for atom in frame.evidence_atoms
+                    )
+                ),
+                tuple(
+                    sorted(
+                        atom.independence_key
+                        for atom in frame.evidence_atoms
+                    )
+                ),
+            ),
+        ),
+        key=lambda row: row[0],
+    ))
+    if (
+        tuple(row[0] for row in next_history)
+        != tuple(sorted(watermark.seen_event_ids))
+    ):
+        raise PhaseCContractError("session_state_history")
+    return next_history
+
+
+def _ordinal_history_union(
+    rows: tuple[tuple[str, ...], ...],
+) -> tuple[str, ...]:
+    seen: set[str] = set()
+    values: list[str] = []
+    for row in rows:
+        for value in row:
+            if value not in seen:
+                seen.add(value)
+                values.append(value)
+    return tuple(values)
+
+
+def evidence_refs_from_history(
+    history: tuple[
+        tuple[str, tuple[str, ...], tuple[str, ...]],
+        ...
+    ],
+) -> tuple[str, ...]:
+    return _ordinal_history_union(
+        tuple(references for _event_id, references, _keys in history),
+    )
+
+
+def independence_keys_from_history(
+    history: tuple[
+        tuple[str, tuple[str, ...], tuple[str, ...]],
+        ...
+    ],
+) -> tuple[str, ...]:
+    return _ordinal_history_union(
+        tuple(keys for _event_id, _references, keys in history),
+    )
+
+
+def replay_frame_semantics(
+    candidate_frames: tuple[PhaseCSyntheticEvidenceFrameV1, ...],
+    policy: Mapping[str, Any],
+    *,
+    retired_independence_keys: frozenset[str],
+    evidence_history_by_event: tuple[
+        tuple[str, tuple[str, ...], tuple[str, ...]],
+        ...
+    ],
+    historical_seen_evidence_refs: tuple[str, ...],
+    historical_seen_independence_keys: tuple[str, ...],
+    watermark: PhaseCEventWatermarkV1,
+) -> tuple[
+    PhaseCTemporalSessionStateV1,
+    dict[str, Any],
+    PhaseCProjectionContextV1,
+]:
+    validated_policy = _validated_policy(policy)
+    if type(candidate_frames) is not tuple or not candidate_frames:
+        raise PhaseCContractError("replay_frames")
+    if type(retired_independence_keys) is not frozenset:
+        raise PhaseCContractError("seen_independence_keys_type")
+    validate_phase_c_seen_independence_keys(retired_independence_keys)
+    for frame in candidate_frames:
+        validate_phase_c_frame(frame, validated_policy)
+
+    previous: PhaseCTemporalSessionStateV1 | None = None
+    current_seen_keys = set(retired_independence_keys)
+    current_seen_references: list[str] = []
+    current_history: list[
+        tuple[str, tuple[str, ...], tuple[str, ...]]
+    ] = []
+    output: dict[str, Any] | None = None
+    context: PhaseCProjectionContextV1 | None = None
+    for frame in candidate_frames:
+        fold = fold_frame_support(
+            None if previous is None else previous.accumulator,
+            frame,
+            validated_policy,
+            frozenset(current_seen_keys),
+        )
+        hysteresis = update_hysteresis(
+            previous,
+            fold,
+            frame,
+            validated_policy,
+        )
+        accepted_frames = (
+            (frame,)
+            if previous is None
+            else (*previous.accepted_frames, frame)
+        )
+        current_history.append((
+            frame.event_id,
+            tuple(
+                sorted(atom.evidence_ref for atom in frame.evidence_atoms)
+            ),
+            tuple(
+                sorted(
+                    atom.independence_key
+                    for atom in frame.evidence_atoms
+                )
+            ),
+        ))
+        for atom in frame.evidence_atoms:
+            if atom.evidence_ref not in current_seen_references:
+                current_seen_references.append(atom.evidence_ref)
+            current_seen_keys.add(atom.independence_key)
+        provisional = PhaseCTemporalSessionStateV1(
+            schema_version="PhaseCTemporalSessionStateV1",
+            policy_id=validated_policy["policy_id"],
+            policy_sha256=sha256_bytes(
+                canonical_json_bytes(dict(validated_policy)),
+            ),
+            call_session_id=frame.call_session_id,
+            campaign_profile_id=frame.campaign_profile_id,
+            campaign_profile_version=frame.campaign_profile_version,
+            watermark=watermark,
+            accepted_frames=accepted_frames,
+            evidence_history_by_event=tuple(current_history),
+            accumulator=fold.accumulator,
+            hysteresis=hysteresis,
+            seen_evidence_refs=tuple(current_seen_references),
+            seen_independence_keys=tuple(sorted(current_seen_keys)),
+            retired_independence_keys=tuple(
+                sorted(retired_independence_keys)
+            ),
+            contributing_evidence_refs=fold.contributing_evidence_refs,
+            accepted_turn_count=len(accepted_frames),
+            last_emitted_selected_signal=(
+                None
+                if previous is None
+                else previous.last_emitted_selected_signal
+            ),
+            last_emitted_selected_support=(
+                None
+                if previous is None
+                else previous.last_emitted_selected_support
+            ),
+        )
+        validate_phase_c_temporal_state(
+            provisional,
+            validated_policy,
+        )
+        context = PhaseCProjectionContextV1(
+            provisional.last_emitted_selected_signal,
+            provisional.last_emitted_selected_support,
+            fold,
+            frame,
+        )
+        output = project_perceived_customer_state(
+            provisional,
+            context,
+            validated_policy,
+        )
+        selected = output["selected_policy_signal"]
+        previous = PhaseCTemporalSessionStateV1(
+            **{
+                **provisional.__dict__,
+                "last_emitted_selected_signal": (
+                    None if selected == "none" else selected
+                ),
+                "last_emitted_selected_support": (
+                    None
+                    if selected == "none"
+                    else dict(fold.accumulator.capped_net_support)[selected]
+                ),
+            },
+        )
+        validate_phase_c_perceived_state(
+            output,
+            previous,
+            context,
+            validated_policy,
+        )
+        validate_phase_c_temporal_state(previous, validated_policy)
+
+    if previous is None or output is None or context is None:
+        raise PhaseCContractError("replay_frames")
+    derived_retired = _derive_phase_c_retired_independence_keys(
+        watermark,
+        evidence_history_by_event,
+    )
+    stored_retired = (
+        derived_retired
+        if frozenset(derived_retired) == retired_independence_keys
+        else tuple(sorted(retired_independence_keys))
+    )
+    final_state = PhaseCTemporalSessionStateV1(
+        schema_version=previous.schema_version,
+        policy_id=previous.policy_id,
+        policy_sha256=previous.policy_sha256,
+        call_session_id=previous.call_session_id,
+        campaign_profile_id=previous.campaign_profile_id,
+        campaign_profile_version=previous.campaign_profile_version,
+        watermark=watermark,
+        accepted_frames=candidate_frames,
+        evidence_history_by_event=evidence_history_by_event,
+        accumulator=previous.accumulator,
+        hysteresis=previous.hysteresis,
+        seen_evidence_refs=historical_seen_evidence_refs,
+        seen_independence_keys=historical_seen_independence_keys,
+        retired_independence_keys=stored_retired,
+        contributing_evidence_refs=previous.contributing_evidence_refs,
+        accepted_turn_count=len(candidate_frames),
+        last_emitted_selected_signal=(
+            previous.last_emitted_selected_signal
+        ),
+        last_emitted_selected_support=(
+            previous.last_emitted_selected_support
+        ),
+    )
+    return final_state, output, context
+
+
+def _recomputed_state_projection(
+    state: PhaseCTemporalSessionStateV1,
+    policy: Mapping[str, Any],
+) -> tuple[
+    PhaseCTemporalSessionStateV1,
+    dict[str, Any],
+    PhaseCProjectionContextV1,
+]:
+    return replay_frame_semantics(
+        state.accepted_frames,
+        policy,
+        retired_independence_keys=frozenset(
+            state.retired_independence_keys,
+        ),
+        evidence_history_by_event=state.evidence_history_by_event,
+        historical_seen_evidence_refs=state.seen_evidence_refs,
+        historical_seen_independence_keys=state.seen_independence_keys,
+        watermark=state.watermark,
+    )
+
+
+def _validate_recomputed_state_fields(
+    state: PhaseCTemporalSessionStateV1,
+    recomputed: PhaseCTemporalSessionStateV1,
+) -> None:
+    comparisons = (
+        ("state_replay_accumulator", state.accumulator, recomputed.accumulator),
+        ("state_replay_hysteresis", state.hysteresis, recomputed.hysteresis),
+        (
+            "state_replay_provenance",
+            state.contributing_evidence_refs,
+            recomputed.contributing_evidence_refs,
+        ),
+        (
+            "state_replay_counter",
+            state.accepted_turn_count,
+            recomputed.accepted_turn_count,
+        ),
+        (
+            "state_replay_emission",
+            (
+                state.last_emitted_selected_signal,
+                state.last_emitted_selected_support,
+            ),
+            (
+                recomputed.last_emitted_selected_signal,
+                recomputed.last_emitted_selected_support,
+            ),
+        ),
+    )
+    for code, actual, expected in comparisons:
+        if actual != expected:
+            raise PhaseCContractError(code)
+
+
+def validate_phase_c_state_replay(
+    state: PhaseCTemporalSessionStateV1,
+    policy: Mapping[str, Any],
+) -> None:
+    validated_policy = _validated_policy(policy)
+    validate_phase_c_session_state(state, validated_policy)
+    recomputed, expected_output, context = _recomputed_state_projection(
+        state,
+        validated_policy,
+    )
+    _validate_recomputed_state_fields(state, recomputed)
+    validate_phase_c_perceived_state(
+        expected_output,
+        state,
+        context,
+        validated_policy,
+    )
+
+
+def validate_phase_c_replayed_output(
+    payload: object,
+    state: PhaseCTemporalSessionStateV1,
+    policy: Mapping[str, Any],
+) -> dict[str, Any]:
+    validated_policy = _validated_policy(policy)
+    validate_phase_c_session_state(state, validated_policy)
+    recomputed, expected_output, context = _recomputed_state_projection(
+        state,
+        validated_policy,
+    )
+    _validate_recomputed_state_fields(state, recomputed)
+    validated_payload = validate_phase_c_perceived_state(
+        payload,
+        state,
+        context,
+        validated_policy,
+    )
+    if canonical_json_bytes(validated_payload) != canonical_json_bytes(
+        expected_output,
+    ):
+        raise PhaseCOutputSemanticError("replayed_output_mismatch")
+    return validated_payload
+
+
+def advance(
+    previous_state: PhaseCTemporalSessionStateV1 | None,
+    frame: PhaseCSyntheticEvidenceFrameV1,
+    policy: Mapping[str, Any],
+) -> tuple[PhaseCTemporalSessionStateV1, dict[str, Any]]:
+    validated_policy = _validated_policy(policy)
+    if previous_state is not None:
+        validate_phase_c_session_state(
+            previous_state,
+            validated_policy,
+        )
+        validate_phase_c_state_replay(
+            previous_state,
+            validated_policy,
+        )
+    validate_phase_c_frame(frame, validated_policy)
+    next_watermark = validate_phase_c_event_identity(
+        frame,
+        watermark_for(previous_state, frame),
+    )
+    replaced_frame = replaced_frame_for(previous_state, frame)
+    candidate_frames = candidate_frame_sequence(previous_state, frame)
+    validate_candidate_reference_uniqueness(
+        previous_state,
+        candidate_frames,
+        replaced_frame,
+    )
+    prior_current_keys = frame_independence_keys(
+        accepted_frames_for(previous_state),
+    )
+    candidate_current_keys = frame_independence_keys(candidate_frames)
+    retired_keys = retired_independence_keys(previous_state) | (
+        prior_current_keys - candidate_current_keys
+    )
+    next_evidence_history = append_evidence_history_event(
+        previous_state,
+        frame,
+        next_watermark,
+    )
+    candidate_state, output, projection_context = replay_frame_semantics(
+        candidate_frames,
+        validated_policy,
+        retired_independence_keys=retired_keys,
+        evidence_history_by_event=next_evidence_history,
+        historical_seen_evidence_refs=evidence_refs_from_history(
+            next_evidence_history,
+        ),
+        historical_seen_independence_keys=independence_keys_from_history(
+            next_evidence_history,
+        ),
+        watermark=next_watermark,
+    )
+    validate_phase_c_session_state(candidate_state, validated_policy)
+    validate_phase_c_perceived_state(
+        output,
+        candidate_state,
+        projection_context,
+        validated_policy,
+    )
+    return candidate_state, output
 
 
 def replay_validated_frames(
