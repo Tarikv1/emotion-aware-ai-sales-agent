@@ -4920,6 +4920,71 @@ class PhaseCScenarioEvaluationTests(PhaseCTestCase):
         self.assertEqual(observed_priors, [None, None, None, None])
         self.assertEqual(evaluation.failed_scenarios, 1)
 
+    def test_unexpected_acceptance_detects_changed_aliased_prior(self) -> None:
+        fixture = self.tracker.replay_validated_frames(
+            self.case("explicit_confusion_entry").sessions[0].frames,
+            self.policy,
+        )
+        accepted = (fixture.final_state, fixture.outputs[-1])
+        original = self.tracker._execute_scenario_attempt
+
+        def injected(prior, scenario, attempt, policy):
+            expected = scenario.expected_steps[
+                scenario.attempt_order.index(attempt)
+            ]
+            if (
+                scenario.case_id == "cross_session_rejected"
+                and expected.disposition == "rejected"
+            ):
+                object.__setattr__(
+                    prior,
+                    "accepted_turn_count",
+                    prior.accepted_turn_count + 1,
+                )
+                return accepted
+            return original(prior, scenario, attempt, policy)
+
+        with mock.patch.object(
+            self.tracker,
+            "_execute_scenario_attempt",
+            side_effect=injected,
+        ):
+            evaluation = self.evaluation()
+        self.assert_single_failure(
+            evaluation,
+            {
+                "golden_projection",
+                "rejection_no_mutation",
+                "session_isolation",
+            },
+        )
+        outcome = next(
+            item
+            for item in evaluation.outcomes
+            if item.case_id == "cross_session_rejected"
+        )
+        self.assertEqual(
+            outcome.failed_invariants,
+            (
+                "golden_projection",
+                "rejection_no_mutation",
+                "session_isolation",
+            ),
+        )
+        self.assertEqual(
+            dict(evaluation.invariant_counts),
+            {
+                "golden_projection": 1,
+                "rejection_no_mutation": 1,
+                "correction_semantic_replay": 0,
+                "session_isolation": 1,
+                "deterministic_replay": 0,
+                "semantic_output": 0,
+                "privacy_boundary": 0,
+            },
+        )
+        self.assertFalse(evaluation.privacy_boundary_passed)
+
     def test_negative_evaluation_keeps_actual_abstention_counts(self) -> None:
         evaluation = _mechanical_negative_evaluation(self)
         self.assert_single_failure(evaluation, {"golden_projection"})
@@ -5185,6 +5250,26 @@ class PhaseCScenarioEvaluationTests(PhaseCTestCase):
                 "privacy_boundary_passed": True,
             }),
         )
+
+    def test_privacy_inspection_rejects_exact_recipe_identity_prefixes(
+        self,
+    ) -> None:
+        identities = (
+            "evidence:uuid:00000000-0000-4000-8000-000000000001",
+            "ind:fixture:1:1",
+            "session:fixture:A",
+            "turn:fixture:0",
+            "event:fixture:A:0:0",
+            "campaign:phase-c0",
+            "version:1",
+        )
+        for identity in identities:
+            with self.subTest(identity=identity):
+                self.assertTrue(
+                    self.tracker._phase_c_privacy_inspection_failed({
+                        "nested": [identity],
+                    }),
+                )
 
     def test_privacy_failure_rebuilds_exact_outcome_algebra_once(self) -> None:
         with mock.patch.object(

@@ -1638,6 +1638,7 @@ def _phase_c_privacy_inspection_failed(value: object) -> bool:
                 "turn:",
                 "event:",
                 "campaign:",
+                "version:",
             ))
             or any(case_id in value for case_id in EXPECTED_SCENARIO_IDS)
         )
@@ -1810,6 +1811,8 @@ def evaluate_phase_c_scenarios(
                         scenario.case_id
                     ],
                 )
+                if canonical_session_state_bytes(prior) != prior_bytes:
+                    failed.add("rejection_no_mutation")
                 continue
 
             try:
