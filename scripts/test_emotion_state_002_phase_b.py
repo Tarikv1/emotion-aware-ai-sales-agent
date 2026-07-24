@@ -23766,6 +23766,43 @@ class ProductionNonLockboxExecutionTests(unittest.TestCase):
         self.assertFalse(self.paths.lockbox_reservation_path.exists())
         self.assertFalse(self.paths.lockbox_result_path.exists())
 
+    def test_task11_admission_allows_fixed_opaque_guarded_ledger(
+        self,
+    ) -> None:
+        self._prepare()
+        state, _initial_probe = self._run()
+        self.assertEqual(state["phase"], "non_lockbox_complete")
+        ledger_path = (
+            self.paths.state_root
+            / self.runner.TASK11_GUARDED_LEDGER_NAME
+        )
+        ledger_bytes = b"opaque-reviewed-ledger\n"
+        ledger_path.write_bytes(ledger_bytes)
+        original_read = self.runner._read_file_nofollow
+
+        def reject_ledger_read(path: Any, *args: Any, **kwargs: Any) -> Any:
+            if Path(path) == ledger_path:
+                raise AssertionError("source-silent admission read ledger")
+            return original_read(path, *args, **kwargs)
+
+        probe = self.fixture.new_probe()
+        with patch.object(
+            self.runner,
+            "_read_file_nofollow",
+            side_effect=reject_ledger_read,
+        ):
+            receipt = self._admit_task11(probe=probe)
+        self.assertEqual(
+            receipt["guarded_ledger_sha256"],
+            self.TASK11_GUARDED_LEDGER_SHA256,
+        )
+        self.assertEqual(ledger_path.read_bytes(), ledger_bytes)
+        self.assertEqual(probe.audio_reads, [])
+        self.assertEqual(probe.ami_reads, [])
+        self.assertEqual(probe.forbidden_calls, [])
+        self.assertFalse(self.paths.lockbox_reservation_path.exists())
+        self.assertFalse(self.paths.lockbox_result_path.exists())
+
     def test_task11_rejects_changed_admission_before_first_reservation(
         self,
     ) -> None:

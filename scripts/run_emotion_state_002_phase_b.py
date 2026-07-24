@@ -97,11 +97,13 @@ RECEIPT_SCHEMA_VERSION = 1
 JOURNAL_NAME = "transaction.json"
 LOCK_NAME = "publication.lock"
 LOCKBOX_LOCK_NAME = "lockbox.lock"
+TASK11_GUARDED_LEDGER_NAME = "task-11-guarded-ledger.json"
 LOCKBOX_ADMISSION_NAME = "lockbox-admission.json"
 LOCKBOX_RESERVATION_NAME = "lockbox-reservation.json"
 MATERIAL_PIPELINE_LOCK_NAME = "material-pipeline.lock"
 OPAQUE_POST_NON_LOCKBOX_STATE_ROOT_ENTRY_NAMES = frozenset({
     LOCKBOX_LOCK_NAME,
+    TASK11_GUARDED_LEDGER_NAME,
     LOCKBOX_ADMISSION_NAME,
     LOCKBOX_RESERVATION_NAME,
     "lockbox",
