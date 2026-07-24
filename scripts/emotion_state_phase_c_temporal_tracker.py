@@ -81,9 +81,9 @@ def fold_frame_support(
         signal: {direction: None for direction in directions}
         for signal in signals
     }
-    provenance: dict[str, dict[str, dict[str, set[str]]]] = {
+    provenance: dict[str, dict[str, dict[str, list[str]]]] = {
         signal: {
-            direction: {modality: set() for modality in modalities}
+            direction: {modality: [] for modality in modalities}
             for direction in directions
         }
         for signal in signals
@@ -140,12 +140,12 @@ def fold_frame_support(
             if decayed == 0:
                 quality[signal][direction] = None
                 provenance[signal][direction] = {
-                    modality: set() for modality in modalities
+                    modality: [] for modality in modalities
                 }
             else:
                 quality[signal][direction] = prior_quality[signal][direction]
                 provenance[signal][direction] = {
-                    modality: set(
+                    modality: list(
                         prior_provenance[signal][direction][modality],
                     )
                     for modality in modalities
@@ -172,7 +172,7 @@ def fold_frame_support(
         if not is_fresh or units == 0:
             continue
         gross[signal][direction] += units
-        provenance[signal][direction][modality].add(atom.evidence_ref)
+        provenance[signal][direction][modality].append(atom.evidence_ref)
         quality[signal][direction] = _better_quality(
             quality[signal][direction],
             atom.quality_bucket,
@@ -279,11 +279,7 @@ def fold_frame_support(
                             (
                                 modality,
                                 tuple(
-                                    sorted(
-                                        provenance[signal][direction][
-                                            modality
-                                        ],
-                                    ),
+                                    provenance[signal][direction][modality],
                                 ),
                             )
                             for modality in modalities
@@ -297,15 +293,19 @@ def fold_frame_support(
     )
     validate_phase_c_signal_accumulator(accumulator, validated_policy)
 
-    all_live_refs = tuple(
-        sorted(
-            reference
-            for signal in signals
-            for direction in directions
-            for modality in modalities
-            for reference in provenance[signal][direction][modality]
-        ),
-    )
+    all_live_refs_list: list[str] = []
+    for signal in signals:
+        for direction in directions:
+            largest_bucket = max(
+                len(provenance[signal][direction][modality])
+                for modality in modalities
+            )
+            for ordinal in range(largest_bucket):
+                for modality in modalities:
+                    references = provenance[signal][direction][modality]
+                    if ordinal < len(references):
+                        all_live_refs_list.append(references[ordinal])
+    all_live_refs = tuple(all_live_refs_list)
     confirming_keys_by_signal = tuple(
         (
             signal,

@@ -2348,3 +2348,356 @@ class PhaseCFixedPointFoldTests(PhaseCTestCase):
             valid,
             invalid_frame,
         )
+
+    def test_provenance_preserves_bucket_history_and_canonical_union(self) -> None:
+        first = self.parsed_frame(
+            [
+                _atom(
+                    counter=9999,
+                    evidence_class="transcript_meaning",
+                ),
+            ],
+            counter=160,
+        )
+        second = self.parsed_frame(
+            [
+                _atom(
+                    counter=9800,
+                    evidence_class="transcript_meaning",
+                ),
+            ],
+            counter=161,
+        )
+        first_fold = self.tracker.fold_frame_support(
+            None,
+            first,
+            self.policy,
+            frozenset(),
+        )
+        second_fold = self.tracker.fold_frame_support(
+            first_fold.accumulator,
+            second,
+            self.policy,
+            frozenset(first_fold.accepted_independence_keys),
+        )
+        expected = (
+            first.evidence_atoms[0].evidence_ref,
+            second.evidence_atoms[0].evidence_ref,
+        )
+        confusion = dict(
+            dict(
+                second_fold.accumulator.modality_refs_by_signal_direction,
+            )["confusion"],
+        )
+        self.assertEqual(dict(confusion["supports"])["text"], expected)
+        self.assertEqual(second_fold.contributing_evidence_refs, expected)
+
+    def test_all_ordinary_folds_match_frozen_task3_projections(self) -> None:
+        checked = 0
+        for scenario in self.scenarios.values():
+            accumulators: dict[str, Any] = {}
+            seen_by_session: dict[str, frozenset[str]] = {}
+            for index, (attempt, expected) in enumerate(
+                zip(scenario.attempt_order, scenario.expected_steps),
+            ):
+                if expected.disposition != "accepted":
+                    continue
+                if (
+                    scenario.case_id == "latest_turn_correction_replay"
+                    and index == 1
+                ):
+                    continue
+                session = next(
+                    item
+                    for item in scenario.sessions
+                    if item.session_alias == attempt.frame_session_alias
+                )
+                frame = session.frames[attempt.frame_index]
+                state_alias = attempt.state_session_alias
+                seen = seen_by_session.get(state_alias, frozenset())
+                fold = self.tracker.fold_frame_support(
+                    accumulators.get(state_alias),
+                    frame,
+                    self.policy,
+                    seen,
+                )
+                projection = expected.expected_internal
+                with self.subTest(
+                    case_id=scenario.case_id,
+                    attempted_step=index,
+                ):
+                    self.assertEqual(
+                        fold.accumulator.gross_supporting_units,
+                        projection.gross_supporting_units,
+                    )
+                    self.assertEqual(
+                        fold.accumulator.gross_opposing_units,
+                        projection.gross_opposing_units,
+                    )
+                    self.assertEqual(
+                        fold.accumulator.uncapped_net_support,
+                        projection.uncapped_net_support,
+                    )
+                    self.assertEqual(
+                        fold.accumulator.capped_net_support,
+                        projection.capped_net_support,
+                    )
+                    self.assertEqual(
+                        fold.accumulator.contradictory_signals,
+                        projection.contradictory_signals,
+                    )
+                    self.assertEqual(
+                        fold.contributing_evidence_refs,
+                        projection.contributing_evidence_refs,
+                    )
+                accumulators[state_alias] = fold.accumulator
+                seen_by_session[state_alias] = seen | frozenset(
+                    fold.accepted_independence_keys,
+                )
+                checked += 1
+        self.assertEqual(checked, 51)
+
+    def test_fold_validator_rejects_key_order_and_confirmation_bypasses(self) -> None:
+        frame = self.parsed_frame(
+            [
+                _atom(
+                    counter=9811,
+                    evidence_class="transcript_meaning",
+                ),
+                _atom(
+                    counter=9812,
+                    modality="dialogue",
+                    evidence_class="dialogue_context",
+                ),
+                _atom(
+                    counter=9813,
+                    modality="acoustic",
+                    evidence_class="synthetic_acoustic_symbol",
+                    quality="unusable",
+                ),
+            ],
+            counter=170,
+        )
+        fold = self.tracker.fold_frame_support(
+            None,
+            frame,
+            self.policy,
+            frozenset(),
+        )
+        first_key, second_key, unusable_key = (
+            atom.independence_key for atom in frame.evidence_atoms
+        )
+
+        def confirming(
+            confusion: tuple[str, ...],
+            disengagement: tuple[str, ...] = (),
+        ) -> tuple[tuple[str, tuple[str, ...]], ...]:
+            return (
+                ("confusion", confusion),
+                ("disengagement", disengagement),
+                *fold.confirming_keys_by_signal[2:],
+            )
+
+        cases = (
+            (
+                dataclasses.replace(
+                    fold,
+                    accepted_independence_keys=tuple(
+                        reversed(fold.accepted_independence_keys),
+                    ),
+                ),
+                "fold_accepted_key_order",
+            ),
+            (
+                dataclasses.replace(
+                    fold,
+                    confirming_keys_by_signal=confirming((second_key,)),
+                ),
+                "fold_confirming_key_order",
+            ),
+            (
+                dataclasses.replace(
+                    fold,
+                    confirming_keys_by_signal=confirming((), (first_key,)),
+                ),
+                "fold_confirming_key_order",
+            ),
+            (
+                dataclasses.replace(
+                    fold,
+                    confirming_keys_by_signal=confirming((unusable_key,)),
+                ),
+                "fold_confirming_key_order",
+            ),
+        )
+        for mutated, expected_code in cases:
+            with self.subTest(expected_code=expected_code):
+                with self.assertRaises(PhaseCContractError) as captured:
+                    phase_c_contracts.validate_phase_c_frame_fold(
+                        mutated,
+                        frame,
+                        self.policy,
+                    )
+                self.assertEqual(captured.exception.code, expected_code)
+
+    def test_nested_string_subclass_labels_fail_closed_exactly(self) -> None:
+        class StringSubclass(str):
+            pass
+
+        frame = self.parsed_frame(
+            [
+                _atom(
+                    counter=9821,
+                    evidence_class="unsolicited_explicit_statement",
+                ),
+            ],
+            counter=180,
+        )
+        fold = self.tracker.fold_frame_support(
+            None,
+            frame,
+            self.policy,
+            frozenset(),
+        )
+        accumulator = fold.accumulator
+        quality = accumulator.highest_quality_by_signal_direction
+        provenance = accumulator.modality_refs_by_signal_direction
+        contradiction = self.fold_case(
+            "same_signal_contradiction",
+            attempted_step=0,
+        ).accumulator
+        cases = (
+            (
+                dataclasses.replace(
+                    accumulator,
+                    highest_quality_by_signal_direction=(
+                        (StringSubclass("confusion"), quality[0][1]),
+                        *quality[1:],
+                    ),
+                ),
+                "accumulator_signal_order",
+            ),
+            (
+                dataclasses.replace(
+                    accumulator,
+                    highest_quality_by_signal_direction=(
+                        (
+                            "confusion",
+                            (
+                                (
+                                    StringSubclass("supports"),
+                                    quality[0][1][0][1],
+                                ),
+                                quality[0][1][1],
+                            ),
+                        ),
+                        *quality[1:],
+                    ),
+                ),
+                "accumulator_direction_order",
+            ),
+            (
+                dataclasses.replace(
+                    accumulator,
+                    modality_refs_by_signal_direction=(
+                        (StringSubclass("confusion"), provenance[0][1]),
+                        *provenance[1:],
+                    ),
+                ),
+                "accumulator_signal_order",
+            ),
+            (
+                dataclasses.replace(
+                    accumulator,
+                    modality_refs_by_signal_direction=(
+                        (
+                            "confusion",
+                            (
+                                (
+                                    StringSubclass("supports"),
+                                    provenance[0][1][0][1],
+                                ),
+                                provenance[0][1][1],
+                            ),
+                        ),
+                        *provenance[1:],
+                    ),
+                ),
+                "accumulator_direction_order",
+            ),
+            (
+                dataclasses.replace(
+                    accumulator,
+                    modality_refs_by_signal_direction=(
+                        (
+                            "confusion",
+                            (
+                                (
+                                    "supports",
+                                    (
+                                        (
+                                            StringSubclass("text"),
+                                            provenance[0][1][0][1][0][1],
+                                        ),
+                                        *provenance[0][1][0][1][1:],
+                                    ),
+                                ),
+                                provenance[0][1][1],
+                            ),
+                        ),
+                        *provenance[1:],
+                    ),
+                ),
+                "accumulator_modality_order",
+            ),
+            (
+                dataclasses.replace(
+                    contradiction,
+                    contradictory_signals=(
+                        StringSubclass("confusion"),
+                    ),
+                ),
+                "accumulator_contradiction",
+            ),
+        )
+        empty = self.parsed_frame([], counter=181)
+        for mutated, expected_code in cases:
+            with self.subTest(expected_code=expected_code):
+                self._assert_code(expected_code, mutated, empty)
+
+        confirming_signal = dataclasses.replace(
+            fold,
+            confirming_keys_by_signal=(
+                (
+                    StringSubclass("confusion"),
+                    fold.confirming_keys_by_signal[0][1],
+                ),
+                *fold.confirming_keys_by_signal[1:],
+            ),
+        )
+        confirming_key = dataclasses.replace(
+            fold,
+            confirming_keys_by_signal=(
+                (
+                    "confusion",
+                    (
+                        StringSubclass(
+                            fold.confirming_keys_by_signal[0][1][0],
+                        ),
+                    ),
+                ),
+                *fold.confirming_keys_by_signal[1:],
+            ),
+        )
+        for mutated in (confirming_signal, confirming_key):
+            with self.subTest(mutated=repr(mutated.confirming_keys_by_signal[0])):
+                with self.assertRaises(PhaseCContractError) as captured:
+                    phase_c_contracts.validate_phase_c_frame_fold(
+                        mutated,
+                        frame,
+                        self.policy,
+                    )
+                self.assertEqual(
+                    captured.exception.code,
+                    "fold_confirming_key_order",
+                )

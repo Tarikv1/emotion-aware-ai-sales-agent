@@ -890,7 +890,7 @@ def _validate_quality_by_signal_direction(
         if type(item) is not tuple or len(item) != 2:
             raise PhaseCContractError("accumulator_field_type")
         signal, direction_items = item
-        if signal != expected_signal:
+        if type(signal) is not str or signal != expected_signal:
             raise PhaseCContractError("accumulator_signal_order")
         if type(direction_items) is not tuple or len(direction_items) != len(
             directions,
@@ -907,7 +907,7 @@ def _validate_quality_by_signal_direction(
             ):
                 raise PhaseCContractError("accumulator_field_type")
             direction, quality = direction_item
-            if direction != expected_direction:
+            if type(direction) is not str or direction != expected_direction:
                 raise PhaseCContractError("accumulator_direction_order")
             if quality is not None and (
                 type(quality) is not str
@@ -935,7 +935,7 @@ def _validate_modality_refs_by_signal_direction(
         if type(item) is not tuple or len(item) != 2:
             raise PhaseCContractError("accumulator_field_type")
         signal, direction_items = item
-        if signal != expected_signal:
+        if type(signal) is not str or signal != expected_signal:
             raise PhaseCContractError("accumulator_signal_order")
         if type(direction_items) is not tuple or len(direction_items) != len(
             directions,
@@ -952,7 +952,7 @@ def _validate_modality_refs_by_signal_direction(
             ):
                 raise PhaseCContractError("accumulator_field_type")
             direction, modality_items = direction_item
-            if direction != expected_direction:
+            if type(direction) is not str or direction != expected_direction:
                 raise PhaseCContractError("accumulator_direction_order")
             if type(modality_items) is not tuple or len(modality_items) != len(
                 modalities,
@@ -969,7 +969,10 @@ def _validate_modality_refs_by_signal_direction(
                 ):
                     raise PhaseCContractError("accumulator_field_type")
                 modality, refs = modality_item
-                if modality != expected_modality:
+                if (
+                    type(modality) is not str
+                    or modality != expected_modality
+                ):
                     raise PhaseCContractError("accumulator_modality_order")
                 if type(refs) is not tuple:
                     raise PhaseCContractError("accumulator_field_type")
@@ -981,9 +984,9 @@ def _validate_modality_refs_by_signal_direction(
                         raise PhaseCContractError(
                             "invalid_evidence_reference",
                         )
-                if len(set(refs)) != len(refs) or refs != tuple(sorted(refs)):
+                if len(set(refs)) != len(refs):
                     raise PhaseCContractError(
-                        "accumulator_reference_order",
+                        "accumulator_duplicate_reference",
                     )
                 result[signal][direction][modality] = refs
                 all_refs.extend(refs)
@@ -1028,6 +1031,11 @@ def validate_phase_c_signal_accumulator(
     modalities = tuple(policy["canonical_modality_order"])
     if type(accumulator.contradictory_signals) is not tuple:
         raise PhaseCContractError("accumulator_field_type")
+    if any(
+        type(signal) is not str
+        for signal in accumulator.contradictory_signals
+    ):
+        raise PhaseCContractError("accumulator_contradiction")
     expected_contradictory: list[str] = []
     for signal in signals:
         for direction, units in (
@@ -1127,25 +1135,39 @@ def validate_phase_c_frame_fold(
             or EVIDENCE_REF_PATTERN.fullmatch(reference) is None
         ):
             raise PhaseCContractError("invalid_evidence_reference")
-    if fold.contributing_evidence_refs != tuple(
-        sorted(
-            reference
-            for _, directions in (
-                fold.accumulator.modality_refs_by_signal_direction
-            )
-            for _, modalities_by_direction in directions
-            for _, references in modalities_by_direction
-            for reference in references
-        ),
+    expected_contributing_refs: list[str] = []
+    for _, directions in (
+        fold.accumulator.modality_refs_by_signal_direction
     ):
+        for _, modalities_by_direction in directions:
+            largest_bucket = max(
+                len(references)
+                for _, references in modalities_by_direction
+            )
+            for ordinal in range(largest_bucket):
+                for _, references in modalities_by_direction:
+                    if ordinal < len(references):
+                        expected_contributing_refs.append(
+                            references[ordinal],
+                        )
+    if fold.contributing_evidence_refs != tuple(expected_contributing_refs):
         raise PhaseCContractError("fold_contributing_reference_order")
-    frame_keys = {atom.independence_key for atom in frame.evidence_atoms}
+    frame_keys_in_order = tuple(
+        atom.independence_key for atom in frame.evidence_atoms
+    )
+    frame_keys = set(frame_keys_in_order)
     if (
         len(set(fold.accepted_independence_keys))
         != len(fold.accepted_independence_keys)
         or any(
             type(key) is not str or key not in frame_keys
             for key in fold.accepted_independence_keys
+        )
+        or fold.accepted_independence_keys
+        != tuple(
+            key
+            for key in frame_keys_in_order
+            if key in set(fold.accepted_independence_keys)
         )
     ):
         raise PhaseCContractError("fold_accepted_key_order")
@@ -1159,15 +1181,43 @@ def validate_phase_c_frame_fold(
         if (
             type(item) is not tuple
             or len(item) != 2
+            or type(item[0]) is not str
             or item[0] != expected_signal
             or type(item[1]) is not tuple
             or len(item[1]) > 1
             or any(
-                key not in fold.accepted_independence_keys
+                type(key) is not str
+                or key not in fold.accepted_independence_keys
                 for key in item[1]
             )
         ):
             raise PhaseCContractError("fold_confirming_key_order")
+    accepted_key_set = set(fold.accepted_independence_keys)
+    expected_confirming = tuple(
+        (
+            signal,
+            tuple(
+                atom.independence_key
+                for atom in frame.evidence_atoms
+                if (
+                    atom.independence_key in accepted_key_set
+                    and atom.operational_signal == signal
+                    and atom.direction == "supports"
+                    and (
+                        policy["base_support_units"][atom.evidence_class]
+                        * policy["quality_multipliers"][
+                            atom.quality_bucket
+                        ]
+                    )
+                    // policy["scale"]
+                    > 0
+                )
+            )[:1],
+        )
+        for signal in signals
+    )
+    if fold.confirming_keys_by_signal != expected_confirming:
+        raise PhaseCContractError("fold_confirming_key_order")
     if any(
         type(value) is not bool
         for value in (
