@@ -152,6 +152,8 @@ perspective, the caller retains byte-identical prior state after rejection.
 The later implementation plan may create only these production-independent
 components:
 
+- `.gitattributes` with only the two exact canonical-output `text eol=lf`
+  rules;
 - `scripts/emotion_state_phase_c_contracts.py`
 - `scripts/emotion_state_phase_c_temporal_tracker.py`
 - `scripts/run_emotion_state_003_phase_c0.py`
@@ -340,8 +342,18 @@ selected after observing implementation results:
 
 Corrections replay but do not apply another turn-decay step. Duplicate or
 rejected input applies no decay. Multimodal agreement requires at least two
-distinct nonempty modalities, evidence references, and independence keys
-supporting the same signal in the same accepted frame.
+newly contributing positive-unit atoms with distinct nonempty modalities,
+evidence references, and independence keys supporting the same signal in the
+same accepted frame. A repeated/retired key or unusable zero-unit atom cannot
+help trigger the bonus.
+
+Entry and switch confirmation count accepted logical turns, not atoms. One
+turn contributes at most one confirmation per signal: the first canonical
+newly contributing supporting independence key for that signal. A qualifying
+turn with no key distinct from the current confirmation streak breaks the
+streak and starts a new one-key streak when a supporting key exists; a turn
+without any qualifying key clears it. This prevents two atoms in one turn or a
+repeated key across turns from satisfying a two-turn confirmation rule.
 
 Every fixed-point operation rounds down toward zero. Atom units equal
 `(base_support_units * quality_multiplier) // 1000`. Logical-turn decay applies
@@ -381,17 +393,31 @@ The explicit in-memory state contains:
 - call-session and campaign identity;
 - event watermark;
 - the canonical accepted frame sequence needed for deterministic replay;
+- an event-scoped synthetic evidence-reference/independence-key history used
+  only to validate monotonic seen ledgers across corrections;
 - gross supporting and opposing units by signal;
 - net support by signal;
+- live quality and modality/reference provenance per signal and direction, so
+  metadata is removed when its decayed gross side reaches zero;
 - independent confirmation state;
 - prior and current selected signal;
 - selected-signal tenure;
 - prior emitted support needed for trajectory; and
 - the canonical set of every accepted evidence reference; and
+- the monotonic canonical set of independence keys retired by correction;
 - the separate canonical set of references that currently contribute to
   emitted provenance.
 
 Every derived field must equal a replay from the accepted frame sequence.
+Accumulator numeric maps are dense across all five canonical signals.
+Per-direction quality/provenance maps are also dense, using `None` and empty
+reference tuples for zero sides; emitted/golden visible projections remain
+sparse.
+The event-scoped history must cover exactly the watermark's accepted event
+history, match the current canonical frame for each latest event, and derive
+the historical seen-reference/key sets plus the correction-retired key set.
+It contains only synthetic fixture identities and is never serialized by the
+aggregate runner.
 State is never persisted by the Phase C0 runner. Dropping the state object is
 the complete cleanup operation.
 
@@ -453,6 +479,15 @@ Derived fields follow these exact rules:
   `-100` yields `worsening`;
 - for hesitation, frustration, confusion, or disengagement, a delta of at
   least `100` yields `worsening` and at most `-100` yields `improving`.
+
+The reducer's internal incumbent and the emitted `selected_policy_signal` are
+separate. An accepted frame that is empty, low-quality acoustic-only, or
+contradictory still advances logical-turn decay and release confirmation. Its
+output abstains and selects `none`, while the internal incumbent may remain
+until the frozen two-turn release rule is satisfied. A non-contradictory later
+frame may emit that incumbent again only if it remains visible and has not
+released. Every non-contradiction abstention uses trajectory
+`insufficient_history`; contradiction uses `contradictory`.
 
 The initial declared allowed-effect policy is conservative:
 
@@ -523,20 +558,45 @@ A correction is valid only when it:
 - increments input revision by exactly one; and
 - passes every frame and atom contract.
 
+Identity rejection precedence matches the existing read-only runtime oracle:
+a correction targeting an earlier, already closed turn is rejected as stale
+before correction-specific checks. Phase C0 therefore uses the exact
+`stale_turn` code for that case and defines no separately reachable
+closed-turn code.
+
 The reducer replaces that turn's prior frame and replays the entire explicit
-synthetic session fold. Corrected replay must equal a fresh fold over the
-canonical replacement sequence.
+synthetic session fold. The corrected accumulator, hysteresis, current
+contributing evidence, and emitted output must equal a fresh semantic fold over
+the canonical replacement sequence after event ID and input revision are
+normalized and the actual retired-independence-key seed is preserved. For a
+first correction that seed is empty; later corrections may carry retired keys
+from older revisions. The correction state's watermark, event history, and
+historical seen-reference and independence-key ledgers remain bound to the
+actual original-plus-correction history and therefore are not required to equal
+the normalized semantic-replay bytes.
 
 Evidence-reference uniqueness is evaluated against the candidate corrected
 sequence. A correction may retain references from the frame it replaces, but
 it may not duplicate a reference within the replacement frame or collide with
 any other retained frame.
 
+References and independence keys dropped by a correction remain in the
+historical seen ledgers. They cannot be recycled by a later logical turn.
+During correction replay, references and keys retained from the replaced frame
+keep their original eligibility, and a genuinely new independence key may
+contribute normally. The semantic fold pre-seeds keys retired before the
+candidate plus keys that disappear from the global union across every current
+latest-turn frame after the correction. Dropping a repeated key from one
+corrected turn does not retire it while another retained current turn still
+contains it. A key retained from the immediately replaced frame is not
+pre-seeded; a key retired by an older correction remains pre-seeded even if a
+later correction reintroduces it.
+
 These inputs fail before mutation:
 
 - duplicate event;
 - duplicate revision;
-- correction of a closed turn;
+- correction of a closed turn, reported as stale under the frozen precedence;
 - skipped correction revision;
 - stale or non-monotonic new turn;
 - rebound turn ID or sequence;
@@ -577,8 +637,12 @@ Abstention reason priority is deterministic:
 
 These map respectively to `contradictory_evidence`, `low_audio_quality`,
 `missing_input`, and `insufficient_evidence`. Multiple applicable reasons are
-retained in canonical reason order, but the first applicable rule determines
-the primary scenario-family count.
+retained in canonical reason order. The priority fixes predicate-evaluation
+precedence only; no separate primary-reason field or count exists. Aggregate
+abstention counts increment every emitted reason occurrence. They must equal
+the frozen golden totals only for a zero-failure evaluation; a negative
+evaluation retains its actual counts so `revise`/`discard` remains
+serializable and independently bindable to a fresh rerun.
 
 All abstained outputs:
 
@@ -591,6 +655,10 @@ All abstained outputs:
 For insufficient or missing evidence, there is no selected base signal.
 Contradictory evidence may remain traceable through `possible_*` candidates
 and provenance, but it cannot select a policy signal.
+
+An abstained output may therefore coexist with an internal hysteresis
+incumbent. That internal value is never serialized as
+`selected_policy_signal` for the abstained turn.
 
 ## Frozen Scenario Matrix
 
@@ -615,13 +683,30 @@ contains hand-authored expected transitions for:
 - multimodal agreement;
 - acoustic-only capping;
 - corrected latest-turn replay;
-- duplicate, stale, closed-turn, and malformed input;
+- duplicate, closed-turn, and malformed scenario input;
 - cross-session and cross-campaign rejection;
 - simultaneous independent sessions;
 - deterministic reference, signal, and effect ordering;
-- output-contract failures;
 - Phase B/raw-feature/model/probability rejection; and
 - byte-identical replay.
+
+Each accepted expected step freezes the complete canonical
+`PerceivedCustomerStateV1` output bytes plus dense accumulator values,
+hysteresis confirmation/release/switch state, monotonic seen/retired ledgers,
+and last-emission fields. The implementation plan freezes an exact identity
+and atom recipe for every frame/attempt before reducer code exists.
+
+Focused event-identity parity and mutation tests outside the 30-case matrix
+cover stale turns, turn-ID/sequence rebound, duplicate revision, skipped
+revision, nonzero first revision, and output-contract field/cross-field
+failures. Those are verification-suite cases, not additional frozen scenario
+IDs.
+
+Stored scenario frames are valid base payloads. Parser-negative cases carry
+only an allowlisted mutation descriptor (`reverse_atom_order` or
+`add_forbidden_field` for one of the four named forbidden Phase B surfaces);
+the descriptor is materialized immediately before the ordinary strict parser
+is called. It never becomes reducer input.
 
 The matrix does not contain customer conversations, transcript text, audio,
 dataset rows, model predictions, or call simulations.
@@ -634,20 +719,36 @@ Verification has three independent layers:
    frozen before reducer implementation.
 2. **Metamorphic invariants:** duplicate event and evidence-reference
    rejection preserve prior-state bytes; repeated independence key adds no
-   support; correction replay is equivalent to a fresh canonical fold; and
+   support; correction replay is semantically equivalent to a normalized fresh
+   canonical fold while retaining the real correction watermark history; and
    session isolation, canonical serialization stability, saturation, and
    monotonic logical-turn behavior hold without copying the reducer's
    expected-output renderer.
 3. **Independent semantic validator:** validates aggregates, state/output
    cross-fields, abstention semantics, provenance union, exact blocked effects,
    policy/fixture hashes, boundary flags, and non-claims independently of
-   deterministic report equality.
+   deterministic report equality. Candidate and canonical validation also
+   bind every evaluation-derived aggregate field and decision to a fresh
+   deterministic two-run synthetic evaluation projection; a self-consistent
+   report/result mutation cannot diverge from the tracked evaluator. Scenario
+   evaluation independently validates the actual returned output against a
+   replayed state/context projection; typed output-semantic failures and
+   injected invalid returned payloads both increment the safety invariant
+   `semantic_output` and therefore force `discard`. No returned output is
+   serialized, indexed, installed, or counted until that independent
+   validation succeeds, including wrong-container and non-JSON values.
 
 Strict TDD applies to every implementation task. Focused RED must fail for the
-intended missing behavior before production code is added. GREEN must be
-followed by the focused class, the complete Phase C0 module, relevant existing
-emotion-state contract tests, thesis/reference/drift/context/setup gates,
-compilation, and `git diff --check`.
+intended missing behavior before production code is added. Before each task
+commit, GREEN must be followed by the focused class, the complete Phase C0
+module, relevant existing emotion-state contract tests, compilation, and
+`git diff --check`. Repository-wide thesis/reference/drift/context/setup gates
+run at the documentation milestones named in the implementation plan and in
+the complete pre-candidate and pre-canonical guarded ledgers; they are not
+misrepresented as per-task gates when the task has no thesis/document change.
+Direct pre-RED branch fixtures cover every inclusive threshold, tie, confidence
+bucket boundary, and same-modality agreement exclusion independently of the
+30-case golden matrix.
 
 ## Aggregate Checkpoint
 
@@ -674,6 +775,10 @@ probabilities, model output, filenames, dataset rows, or provider data.
 The report is a deterministic rendering of the validated result and must state
 that this is a synthetic mechanics checkpoint.
 
+Because the canonical result/report hashes bind physical LF bytes, their two
+exact repository paths use tracked `text eol=lf` Git attributes. No broader
+path or file type receives an attribute rule.
+
 ## Decision Rule
 
 The decision applies only to Phase C0 synthetic mechanics:
@@ -684,10 +789,13 @@ The decision applies only to Phase C0 synthetic mechanics:
   non-safety mechanical expectations fail; or
 - `discard`: any safety/boundary invariant fails, including state mutation on
   rejected input, cross-session leakage, nondeterminism, acceptance of
-  forbidden evidence, runtime activation, or claim expansion.
+  forbidden evidence, invalid emitted-output semantics, runtime activation, or
+  claim expansion.
 
 A negative result remains thesis evidence. No outcome authorizes Phase B model
 reuse, a policy adapter, runtime/shadow work, provider access, or Phase D.
+Negative result/report pairs preserve actual evaluation-derived abstention and
+invariant counts; validators do not force golden counts when scenarios fail.
 
 ## Expansion Gates
 
