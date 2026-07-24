@@ -11923,6 +11923,14 @@ def publication_lock(
                 paths.journal_path,
                 allowed_root=paths.recovery_root,
             )
+            _ensure_directory_durable(Path(paths.canonical_root))
+            _safe_path(
+                paths.canonical_root,
+                allowed_root=paths.canonical_root,
+                project_root=paths.project_root,
+                final_kind="directory",
+                require_final=True,
+            )
             for canonical_path in (paths.result_path, paths.report_path):
                 _recover_output_replacement(
                     paths,

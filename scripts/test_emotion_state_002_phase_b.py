@@ -31032,6 +31032,20 @@ runner.accept_receipt(paths, paths.receipt_path("accept.json"))
         self.assertFalse(self.paths.journal_path.exists())
         self.assertFalse(self.paths.receipt_path("accept.json").exists())
 
+    def test_stage_initializes_missing_canonical_root_before_recovery(self) -> None:
+        self._advance_to_lockbox()
+        self.paths.canonical_root.rmdir()
+        self.assertFalse(os.path.lexists(self.paths.canonical_root))
+
+        receipt = self.runner.stage_candidate(self.paths, "missing-root.json")
+
+        state = self.runner.load_state(self.paths)
+        self.assertTrue(self.paths.canonical_root.is_dir())
+        self.assertEqual(state["phase"], "awaiting_acceptance")
+        self.assertEqual(state["candidate_transaction_id"], receipt["transaction_id"])
+        self.assertTrue(self.paths.result_path.is_file())
+        self.assertTrue(self.paths.report_path.is_file())
+
     def test_reject_restores_exact_previous_pair(self) -> None:
         previous = self._install_previous_pair()
         self._advance_to_lockbox()
