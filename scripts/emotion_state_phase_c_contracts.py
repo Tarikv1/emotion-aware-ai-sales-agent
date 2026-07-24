@@ -2570,6 +2570,27 @@ def validate_phase_c_temporal_state(
         raise PhaseCContractError("temporal_state_emission")
 
 
+def _validate_phase_c_projection_context(
+    context: PhaseCProjectionContextV1,
+    policy: Mapping[str, Any],
+) -> None:
+    if type(context) is not PhaseCProjectionContextV1:
+        raise PhaseCContractError("projection_context_type")
+    signal = context.prior_emitted_selected_signal
+    support = context.prior_emitted_selected_support
+    if (signal is None) != (support is None):
+        raise PhaseCContractError("projection_context_prior")
+    if signal is not None and (
+        type(signal) is not str
+        or signal not in policy["canonical_signal_order"]
+        or type(support) is not int
+        or support < 0
+        or support > policy["scale"]
+    ):
+        raise PhaseCContractError("projection_context_prior")
+    validate_phase_c_frame_fold(context.fold, context.frame, policy)
+
+
 def _phase_c_output_expected(
     session_state: PhaseCTemporalSessionStateV1,
     context: PhaseCProjectionContextV1,
@@ -2718,10 +2739,16 @@ def validate_phase_c_perceived_state(
     if type(payload) is not dict:
         raise PhaseCOutputSemanticError("perceived_not_object")
     validate_phase_c_policy(policy)
-    if type(session_state) is not PhaseCTemporalSessionStateV1 or type(context) is not PhaseCProjectionContextV1:
-        raise PhaseCOutputSemanticError("perceived_field_type")
     if set(payload) != PERCEIVED_STATE_FIELDS:
         raise PhaseCOutputSemanticError("perceived_field_set")
+    if any(type(key) is not str for key in payload):
+        raise PhaseCOutputSemanticError("perceived_field_type")
+    if type(session_state) is not PhaseCTemporalSessionStateV1:
+        raise PhaseCOutputSemanticError("perceived_field_type")
+    try:
+        _validate_phase_c_projection_context(context, policy)
+    except PhaseCContractError as exc:
+        raise PhaseCOutputSemanticError("perceived_field_type") from exc
     string_fields = (
         "call_session_id", "campaign_profile_id", "campaign_profile_version", "turn_id",
         "valence_estimate", "activation_estimate", "engagement_estimate",
@@ -2802,7 +2829,21 @@ def validate_phase_c_perceived_state(
         raise PhaseCOutputSemanticError("confidence_projection")
     if payload["selected_signal_confidence_bucket"] != expected["selected_signal_confidence_bucket"]:
         raise PhaseCOutputSemanticError("confidence_bucket")
-    if payload["signal_provenance_by_modality"] != expected["signal_provenance_by_modality"]:
+    actual_provenance = payload["signal_provenance_by_modality"]
+    expected_provenance = expected["signal_provenance_by_modality"]
+    if (
+        set(actual_provenance) != set(expected_provenance)
+        or any(
+            set(actual_provenance[signal])
+            != set(expected_provenance[signal])
+            or any(
+                sorted(actual_provenance[signal][modality])
+                != sorted(expected_provenance[signal][modality])
+                for modality in expected_provenance[signal]
+            )
+            for signal in expected_provenance
+        )
+    ):
         raise PhaseCOutputSemanticError("provenance_projection")
     if set(payload["evidence_refs"]) != set(expected["evidence_refs"]):
         raise PhaseCOutputSemanticError("evidence_ref_union")
@@ -2825,6 +2866,14 @@ def validate_phase_c_perceived_state(
         or tuple(payload["confidence_by_signal"]) != tuple(expected["confidence_by_signal"])
         or tuple(payload["signal_provenance_by_modality"]) != tuple(expected["signal_provenance_by_modality"])
         or any(tuple(payload["signal_provenance_by_modality"][key]) != tuple(expected["signal_provenance_by_modality"][key]) for key in expected["signal_provenance_by_modality"])
+        or any(
+            payload["signal_provenance_by_modality"][signal][modality]
+            != expected["signal_provenance_by_modality"][signal][modality]
+            for signal in expected["signal_provenance_by_modality"]
+            for modality in expected[
+                "signal_provenance_by_modality"
+            ][signal]
+        )
     ):
         raise PhaseCOutputSemanticError("noncanonical_output_order")
     try:

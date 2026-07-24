@@ -381,6 +381,27 @@ def _append_or_clear(streak: tuple[str, ...], key: str | None) -> tuple[str, ...
     return (*streak, key) if key not in streak else (key,)
 
 
+def _validate_projection_context(
+    context: PhaseCProjectionContextV1,
+    policy: Mapping[str, Any],
+) -> None:
+    if type(context) is not PhaseCProjectionContextV1:
+        raise PhaseCContractError("projection_context_type")
+    signal = context.prior_emitted_selected_signal
+    support = context.prior_emitted_selected_support
+    if (signal is None) != (support is None):
+        raise PhaseCContractError("projection_context_prior")
+    if signal is not None and (
+        type(signal) is not str
+        or signal not in policy["canonical_signal_order"]
+        or type(support) is not int
+        or support < 0
+        or support > policy["scale"]
+    ):
+        raise PhaseCContractError("projection_context_prior")
+    validate_phase_c_frame_fold(context.fold, context.frame, policy)
+
+
 def update_hysteresis(
     previous_state: PhaseCTemporalSessionStateV1 | None,
     fold: PhaseCFrameFoldV1,
@@ -508,9 +529,7 @@ def project_perceived_customer_state(
 ) -> dict[str, Any]:
     validated_policy = _validated_policy(policy)
     validate_phase_c_temporal_state(session_state, validated_policy)
-    if type(context) is not PhaseCProjectionContextV1:
-        raise PhaseCContractError("projection_context_type")
-    validate_phase_c_frame_fold(context.fold, context.frame, validated_policy)
+    _validate_projection_context(context, validated_policy)
     signals = tuple(validated_policy["canonical_signal_order"])
     modalities = tuple(validated_policy["canonical_modality_order"])
     nets = dict(context.fold.accumulator.capped_net_support)

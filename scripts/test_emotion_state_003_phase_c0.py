@@ -2963,16 +2963,61 @@ class PhaseCTaskFiveBoundaryCorrectionTests(PhaseCTestCase):
         return captured.exception.code
 
     def test_every_applicable_frozen_output_is_byte_authoritative(self) -> None:
-        applicable = (
-            "explicit_confusion_entry", "explicit_disengagement_entry", "explicit_frustration_entry",
-            "explicit_hesitation_entry", "explicit_interest_entry", "transcript_three_turn_entry",
-            "repeated_independence_zero_addition", "acoustic_only_capped", "multimodal_two_turn_entry",
-            "same_signal_contradiction", "low_quality_acoustic_abstains", "empty_frame_missing_input",
-            "release_after_two_below_threshold", "switch_after_two_confirmations", "entry_tie_abstains",
-            "incumbent_survives_unqualified_challenger", "dialogue_only_low_quality", "support_saturation",
-            "opposition_below_contradiction_threshold", "canonical_replay_bytes",
+        def is_task_five_replay_applicable(scenario: Any) -> bool:
+            if len(scenario.sessions) != 1:
+                return False
+            frames = scenario.sessions[0].frames
+            if not frames or not scenario.expected_steps:
+                return False
+            if any(step.disposition != "accepted" for step in scenario.expected_steps):
+                return False
+            first = frames[0]
+            identity = (
+                first.call_session_id,
+                first.campaign_profile_id,
+                first.campaign_profile_version,
+            )
+            if any(frame.input_revision != 0 for frame in frames):
+                return False
+            if any(
+                (
+                    frame.call_session_id,
+                    frame.campaign_profile_id,
+                    frame.campaign_profile_version,
+                ) != identity
+                for frame in frames
+            ):
+                return False
+            if any(
+                later.turn_sequence <= earlier.turn_sequence
+                for earlier, later in zip(frames, frames[1:])
+            ):
+                return False
+            turn_ids = tuple(frame.turn_id for frame in frames)
+            event_ids = tuple(frame.event_id for frame in frames)
+            evidence_refs = tuple(
+                atom.evidence_ref
+                for frame in frames
+                for atom in frame.evidence_atoms
+            )
+            return (
+                len(turn_ids) == len(set(turn_ids))
+                and len(event_ids) == len(set(event_ids))
+                and len(evidence_refs) == len(set(evidence_refs))
+            )
+
+        applicable = tuple(
+            scenario
+            for scenario in self.scenarios.values()
+            if is_task_five_replay_applicable(scenario)
         )
-        for case_id in applicable:
+        self.assertEqual(len(applicable), 20)
+        self.assertIn(
+            "canonical_replay_bytes",
+            {scenario.case_id for scenario in applicable},
+        )
+        for scenario in applicable:
+            case_id = scenario.case_id
             scenario = self.case(case_id)
             replay = self.run_case(case_id)
             for actual_state, actual_output, expected in zip(replay.states, replay.outputs, scenario.expected_steps):
@@ -3520,3 +3565,185 @@ class PhaseCTaskFiveBoundaryCorrectionTests(PhaseCTestCase):
         self.assertNotIn("_phase_c_output_expected", source)
         self.assertNotIn("validate_phase_c_perceived_state", source)
         self.assertLessEqual(max(map(len, source.splitlines())), 119)
+
+    def test_nested_provenance_reference_order_is_canonical_only(self) -> None:
+        payload, state, context = self._last_replay_fixture(
+            "multimodal_two_turn_entry",
+        )
+        signal = next(iter(payload["signal_provenance_by_modality"]))
+        modality_map = payload["signal_provenance_by_modality"][signal]
+        modality = next(
+            key for key, references in modality_map.items()
+            if len(references) >= 2
+        )
+
+        reordered = copy.deepcopy(payload)
+        reordered["signal_provenance_by_modality"][signal][modality] = list(
+            reversed(modality_map[modality]),
+        )
+        self.assertEqual(
+            self._semantic_code(reordered, state, context),
+            "noncanonical_output_order",
+        )
+
+        missing = copy.deepcopy(payload)
+        missing["signal_provenance_by_modality"][signal][modality] = (
+            modality_map[modality][:-1]
+        )
+        duplicate = copy.deepcopy(payload)
+        duplicate["signal_provenance_by_modality"][signal][modality] = [
+            modality_map[modality][0],
+            modality_map[modality][0],
+        ]
+        moved = copy.deepcopy(payload)
+        other_modality = next(key for key in modality_map if key != modality)
+        moved_reference = moved["signal_provenance_by_modality"][signal][
+            modality
+        ].pop()
+        moved["signal_provenance_by_modality"][signal][other_modality].append(
+            moved_reference,
+        )
+        for label, mutated in (
+            ("missing", missing),
+            ("duplicate", duplicate),
+            ("moved", moved),
+        ):
+            with self.subTest(content=label):
+                self.assertEqual(
+                    self._semantic_code(mutated, state, context),
+                    "provenance_projection",
+                )
+
+    def test_projection_context_fails_closed_before_arithmetic(self) -> None:
+        class StringSubclass(str):
+            pass
+
+        class IntSubclass(int):
+            pass
+
+        payload, state, context = self._projection_fixture(
+            prior="confusion",
+            support=700,
+        )
+        valid_projected = self.tracker.project_perceived_customer_state(
+            state,
+            context,
+            self.policy,
+        )
+        self.assertEqual(valid_projected, payload)
+        self.assertEqual(
+            phase_c_contracts.validate_phase_c_perceived_state(
+                payload,
+                state,
+                context,
+                self.policy,
+            ),
+            payload,
+        )
+
+        invalid_contexts = (
+            None,
+            dataclasses.replace(
+                context,
+                prior_emitted_selected_signal=None,
+                prior_emitted_selected_support=700,
+            ),
+            dataclasses.replace(
+                context,
+                prior_emitted_selected_signal="confusion",
+                prior_emitted_selected_support=None,
+            ),
+            dataclasses.replace(
+                context,
+                prior_emitted_selected_signal=7,
+            ),
+            dataclasses.replace(
+                context,
+                prior_emitted_selected_signal=StringSubclass("confusion"),
+            ),
+            dataclasses.replace(
+                context,
+                prior_emitted_selected_signal="not-canonical",
+            ),
+            dataclasses.replace(
+                context,
+                prior_emitted_selected_support="700",
+            ),
+            dataclasses.replace(
+                context,
+                prior_emitted_selected_support=True,
+            ),
+            dataclasses.replace(
+                context,
+                prior_emitted_selected_support=IntSubclass(700),
+            ),
+            dataclasses.replace(
+                context,
+                prior_emitted_selected_support=-1,
+            ),
+            dataclasses.replace(
+                context,
+                prior_emitted_selected_support=self.policy["scale"] + 1,
+            ),
+            dataclasses.replace(context, fold=None),
+            dataclasses.replace(context, frame=None),
+        )
+        for invalid in invalid_contexts:
+            with self.subTest(context=repr(invalid)):
+                with self.assertRaises(PhaseCContractError):
+                    self.tracker.project_perceived_customer_state(
+                        state,
+                        invalid,
+                        self.policy,
+                    )
+                self.assertEqual(
+                    self._semantic_code(payload, state, invalid),
+                    "perceived_field_type",
+                )
+
+        paired_wrong = dataclasses.replace(
+            context,
+            prior_emitted_selected_signal="confusion",
+            prior_emitted_selected_support=None,
+        )
+        with self.assertRaises(
+            phase_c_contracts.PhaseCOutputSemanticError,
+        ) as nonobject:
+            phase_c_contracts.validate_phase_c_perceived_state(
+                None,
+                state,
+                paired_wrong,
+                self.policy,
+            )
+        self.assertEqual(nonobject.exception.code, "perceived_not_object")
+        missing_field = dict(payload)
+        missing_field.pop("trajectory")
+        self.assertEqual(
+            self._semantic_code(missing_field, state, paired_wrong),
+            "perceived_field_set",
+        )
+
+    def test_top_level_output_key_types_follow_field_set_precedence(self) -> None:
+        class StringSubclass(str):
+            pass
+
+        payload, state, context = self._projection_fixture()
+        subclass_key = {
+            (
+                StringSubclass(key)
+                if key == "call_session_id"
+                else key
+            ): value
+            for key, value in payload.items()
+        }
+        self.assertEqual(set(subclass_key), set(payload))
+        self.assertEqual(
+            self._semantic_code(subclass_key, state, context),
+            "perceived_field_type",
+        )
+        nonstring_key = dict(payload)
+        nonstring_key[7] = nonstring_key.pop("call_session_id")
+        self.assertEqual(
+            self._semantic_code(nonstring_key, state, context),
+            "perceived_field_set",
+        )
