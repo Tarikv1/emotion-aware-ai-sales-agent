@@ -2,9 +2,9 @@
 
 ## Status
 
-Task 1 policy-contract implementation complete. Reducer implementation
-pending. No candidate, canonical, push, runtime, provider, data, call, or
-Phase D gate is open.
+Policy and 30-case scenario authority frozen. Reducer implementation pending.
+No candidate, canonical, push, runtime, provider, data, call, or Phase D gate
+is open.
 
 ## Question
 

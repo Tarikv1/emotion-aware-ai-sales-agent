@@ -12,6 +12,7 @@ from pathlib import Path
 from typing import Any
 from unittest import mock
 
+import scripts.emotion_state_phase_c_contracts as phase_c_contracts
 from scripts.emotion_state_phase_c_contracts import (
     PhaseCContractError,
     PhaseCEventRejected,
@@ -35,6 +36,7 @@ from scripts.emotion_state_phase_c_contracts import (
 from runtime.contracts.emotion_state_contracts import (
     EventWatermarkV1 as RuntimeEventWatermarkV1,
     EmotionStateContractError,
+    PERCEIVED_STATE_FIELDS,
     validate_event_identity,
 )
 
@@ -46,6 +48,102 @@ POLICY_PATH = (
     / "cases"
     / "emotion-state-003-phase-c0-policy.json"
 )
+SCENARIO_PATH = (
+    ROOT
+    / "research"
+    / "experiments"
+    / "cases"
+    / "emotion-state-003-phase-c0-scenarios.json"
+)
+
+EXPECTED_SCENARIO_IDS_FOR_TEST = (
+    "explicit_confusion_entry",
+    "explicit_disengagement_entry",
+    "explicit_frustration_entry",
+    "explicit_hesitation_entry",
+    "explicit_interest_entry",
+    "transcript_three_turn_entry",
+    "repeated_independence_zero_addition",
+    "duplicate_event_rejected",
+    "duplicate_reference_rejected",
+    "acoustic_only_capped",
+    "multimodal_two_turn_entry",
+    "same_signal_contradiction",
+    "low_quality_acoustic_abstains",
+    "empty_frame_missing_input",
+    "release_after_two_below_threshold",
+    "switch_after_two_confirmations",
+    "entry_tie_abstains",
+    "incumbent_survives_unqualified_challenger",
+    "latest_turn_correction_replay",
+    "closed_turn_correction_rejected",
+    "cross_session_rejected",
+    "cross_campaign_rejected",
+    "wrong_campaign_version_rejected",
+    "noncanonical_atom_order_rejected",
+    "forbidden_phase_b_field_rejected",
+    "simultaneous_sessions_isolated",
+    "canonical_replay_bytes",
+    "dialogue_only_low_quality",
+    "support_saturation",
+    "opposition_below_contradiction_threshold",
+)
+EXPECTED_SCENARIO_CLASSIFICATIONS_FOR_TEST = {
+    "explicit_confusion_entry": ("entry", "confusion", "text"),
+    "explicit_disengagement_entry": ("entry", "disengagement", "text"),
+    "explicit_frustration_entry": ("entry", "frustration", "text"),
+    "explicit_hesitation_entry": ("entry", "hesitation", "text"),
+    "explicit_interest_entry": ("entry", "interest", "text"),
+    "transcript_three_turn_entry": ("entry", "confusion", "text"),
+    "repeated_independence_zero_addition": ("independence", "interest", "text"),
+    "duplicate_event_rejected": ("rejection", "confusion", "text"),
+    "duplicate_reference_rejected": ("rejection", "confusion", "text"),
+    "acoustic_only_capped": ("abstention", "hesitation", "acoustic"),
+    "multimodal_two_turn_entry": ("entry", "frustration", "multimodal"),
+    "same_signal_contradiction": ("contradiction", "confusion", "multimodal"),
+    "low_quality_acoustic_abstains": ("abstention", "hesitation", "acoustic"),
+    "empty_frame_missing_input": ("abstention", "none", "none"),
+    "release_after_two_below_threshold": ("hysteresis", "frustration", "text"),
+    "switch_after_two_confirmations": ("hysteresis", "mixed", "text"),
+    "entry_tie_abstains": ("hysteresis", "mixed", "text"),
+    "incumbent_survives_unqualified_challenger": ("hysteresis", "mixed", "text"),
+    "latest_turn_correction_replay": ("correction", "interest", "text"),
+    "closed_turn_correction_rejected": ("rejection", "confusion", "text"),
+    "cross_session_rejected": ("rejection", "confusion", "text"),
+    "cross_campaign_rejected": ("rejection", "confusion", "text"),
+    "wrong_campaign_version_rejected": ("rejection", "confusion", "text"),
+    "noncanonical_atom_order_rejected": ("rejection", "mixed", "text"),
+    "forbidden_phase_b_field_rejected": ("rejection", "confusion", "text"),
+    "simultaneous_sessions_isolated": ("isolation", "mixed", "text"),
+    "canonical_replay_bytes": ("determinism", "confusion", "text"),
+    "dialogue_only_low_quality": ("abstention", "hesitation", "dialogue"),
+    "support_saturation": ("saturation", "confusion", "text"),
+    "opposition_below_contradiction_threshold": (
+        "contradiction",
+        "confusion",
+        "multimodal",
+    ),
+}
+EXPECTED_INTERNAL_FIELDS_FOR_TEST = frozenset({
+    "gross_supporting_units",
+    "gross_opposing_units",
+    "uncapped_net_support",
+    "capped_net_support",
+    "contradictory_signals",
+    "seen_independence_keys",
+    "internal_incumbent",
+    "incumbent_tenure",
+    "entry_confirmation_keys_by_signal",
+    "switch_challenger",
+    "switch_confirmation_keys",
+    "release_streak",
+    "contributing_evidence_refs",
+    "seen_evidence_refs",
+    "retired_independence_keys",
+    "accepted_turn_count",
+    "last_emitted_selected_signal",
+    "last_emitted_selected_support",
+})
 
 
 def _atom(
@@ -100,6 +198,338 @@ def _deep_forbidden_value(fragment: str, depth: int) -> dict[str, object]:
     for index in range(depth):
         value = {f"nest_{index}": [value]}
     return value
+
+
+def _render_scenario_recipe_rows(payload: dict[str, Any]) -> tuple[str, ...]:
+    class_codes = {
+        "unsolicited_explicit_statement": "U",
+        "transcript_meaning": "T",
+        "dialogue_context": "D",
+        "synthetic_acoustic_symbol": "A",
+        "weak_behavioral_proxy": "W",
+    }
+    direction_codes = {"supports": "+", "opposes": "-"}
+    quality_codes = {"high": "H", "medium": "M", "low": "L", "unusable": "X"}
+    rows: list[str] = []
+    for case_ordinal, scenario in enumerate(payload["scenarios"], start=1):
+        case_id = scenario["case_id"]
+        known_atoms: dict[tuple[str, int, int, int], dict[str, Any]] = {}
+        rendered_frames: list[str] = []
+        aliases = [session["session_alias"] for session in scenario["sessions"]]
+        for session_ordinal, session in enumerate(scenario["sessions"], start=1):
+            alias = session["session_alias"]
+            for frame in session["frames"]:
+                sequence = frame["turn_sequence"]
+                revision = frame["input_revision"]
+                label = f"{alias}.{sequence}r{revision}"
+                rendered_atoms: list[str] = []
+                for atom_index, atom in enumerate(frame["evidence_atoms"]):
+                    token = (
+                        f"{class_codes[atom['evidence_class']]}"
+                        f"({atom['operational_signal']},"
+                        f"{direction_codes[atom['direction']]},"
+                        f"{quality_codes[atom['quality_bucket']]})"
+                    )
+                    default_ref = (
+                        "evidence:uuid:00000000-0000-4000-8000-"
+                        f"{case_ordinal:02d}{session_ordinal:02d}"
+                        f"{sequence:03d}{revision:02d}{atom_index:03d}"
+                    )
+                    default_key = (
+                        f"ind:{case_id}:{alias}:{sequence}:{revision}:{atom_index}"
+                    )
+                    if atom["evidence_ref"] != default_ref:
+                        source = next(
+                            source_label
+                            for source_label, source in (
+                                (
+                                    f"{a}.{t}r{r}.{i}",
+                                    known,
+                                )
+                                for (a, t, r, i), known in known_atoms.items()
+                            )
+                            if source["evidence_ref"] == atom["evidence_ref"]
+                        )
+                        token += f"{{ref=@{source}}}"
+                    if atom["independence_key"] != default_key:
+                        source = next(
+                            source_label
+                            for source_label, source in (
+                                (
+                                    f"{a}.{t}r{r}.{i}",
+                                    known,
+                                )
+                                for (a, t, r, i), known in known_atoms.items()
+                            )
+                            if source["independence_key"] == atom["independence_key"]
+                        )
+                        token += f"{{key=@{source}}}"
+                    known_atoms[(alias, sequence, revision, atom_index)] = atom
+                    rendered_atoms.append(token)
+                rendered = f"{label}[{','.join(rendered_atoms)}]"
+                default_event = f"event:{case_id}:{alias}:{sequence}:{revision}"
+                if frame["event_id"] != default_event:
+                    event_source = next(
+                        f"{other_alias}.{other['turn_sequence']}r{other['input_revision']}"
+                        for other_session in scenario["sessions"]
+                        for other_alias in [other_session["session_alias"]]
+                        for other in other_session["frames"]
+                        if other is not frame
+                        and other["event_id"] == frame["event_id"]
+                    )
+                    rendered += f"{{event=@{event_source}}}"
+                if frame["campaign_profile_id"] != "campaign:phase-c0":
+                    rendered += (
+                        "{campaign_id="
+                        f"{frame['campaign_profile_id']}"
+                        "}"
+                    )
+                if frame["campaign_profile_version"] != "version:1":
+                    rendered += (
+                        "{campaign_version="
+                        f"{frame['campaign_profile_version']}"
+                        "}"
+                    )
+                rendered_frames.append(rendered)
+        rendered_attempts: list[str] = []
+        for attempt in scenario["attempt_order"]:
+            frame = scenario["sessions"][
+                aliases.index(attempt["frame_session_alias"])
+            ]["frames"][attempt["frame_index"]]
+            suffix = f"/{attempt['mutation_kind']}"
+            if attempt["mutation_parameter"] is not None:
+                suffix += f":{attempt['mutation_parameter']}"
+            rendered_attempts.append(
+                f"{attempt['state_session_alias']}<-"
+                f"{attempt['frame_session_alias']}."
+                f"{frame['turn_sequence']}r{frame['input_revision']}{suffix}"
+            )
+        rows.append(
+            f"{'; '.join(rendered_frames)} | {'; '.join(rendered_attempts)}"
+        )
+    return tuple(rows)
+
+
+EXPECTED_SCENARIO_RECIPE_ROWS_FOR_TEST = (
+    "A.0r0[U(confusion,+,H)] | A<-A.0r0/none",
+    "A.0r0[U(disengagement,+,H)] | A<-A.0r0/none",
+    "A.0r0[U(frustration,+,H)] | A<-A.0r0/none",
+    "A.0r0[U(hesitation,+,H)] | A<-A.0r0/none",
+    "A.0r0[U(interest,+,H)] | A<-A.0r0/none",
+    "A.0r0[T(confusion,+,H)]; A.1r0[T(confusion,+,H)]; A.2r0[T(confusion,+,H)] | A<-A.0r0/none; A<-A.1r0/none; A<-A.2r0/none",
+    "A.0r0[T(interest,+,H)]; A.1r0[T(interest,+,H){key=@A.0r0.0}] | A<-A.0r0/none; A<-A.1r0/none",
+    "A.0r0[T(confusion,+,H)]; A.1r0[T(confusion,+,H)]{event=@A.0r0} | A<-A.0r0/none; A<-A.1r0/none",
+    "A.0r0[T(confusion,+,H)]; A.1r0[T(confusion,+,H){ref=@A.0r0.0}] | A<-A.0r0/none; A<-A.1r0/none",
+    "A.0r0[A(hesitation,+,H)]; A.1r0[A(hesitation,+,H)]; A.2r0[A(hesitation,+,H)] | A<-A.0r0/none; A<-A.1r0/none; A<-A.2r0/none",
+    "A.0r0[T(frustration,+,H),A(frustration,+,H)]; A.1r0[T(frustration,+,H),A(frustration,+,H)] | A<-A.0r0/none; A<-A.1r0/none",
+    "A.0r0[U(confusion,+,H),D(confusion,+,H),D(confusion,-,H)] | A<-A.0r0/none",
+    "A.0r0[A(hesitation,+,L)] | A<-A.0r0/none",
+    "A.0r0[] | A<-A.0r0/none",
+    "A.0r0[U(frustration,+,H)]; A.1r0[]; A.2r0[]; A.3r0[]; A.4r0[]; A.5r0[] | A<-A.0r0/none; A<-A.1r0/none; A<-A.2r0/none; A<-A.3r0/none; A<-A.4r0/none; A<-A.5r0/none",
+    "A.0r0[U(frustration,+,H)]; A.1r0[U(confusion,+,H)]; A.2r0[T(confusion,+,H)]; A.3r0[T(confusion,+,H)] | A<-A.0r0/none; A<-A.1r0/none; A<-A.2r0/none; A<-A.3r0/none",
+    "A.0r0[U(confusion,+,H),U(frustration,+,H)] | A<-A.0r0/none",
+    "A.0r0[U(frustration,+,H)]; A.1r0[U(confusion,+,H)]; A.2r0[T(confusion,+,H)]; A.3r0[] | A<-A.0r0/none; A<-A.1r0/none; A<-A.2r0/none; A<-A.3r0/none",
+    "A.0r0[T(interest,+,H)]; A.0r1[U(interest,+,H)] | A<-A.0r0/none; A<-A.0r1/none",
+    "A.0r0[T(confusion,+,H)]; A.1r0[]; A.0r1[U(confusion,+,H)] | A<-A.0r0/none; A<-A.1r0/none; A<-A.0r1/none",
+    "A.0r0[T(confusion,+,H)]; B.0r0[T(confusion,+,H)] | A<-A.0r0/none; A<-B.0r0/none",
+    "A.0r0[T(confusion,+,H)]; A.1r0[T(confusion,+,H)]{campaign_id=campaign:phase-c0-other} | A<-A.0r0/none; A<-A.1r0/none",
+    "A.0r0[T(confusion,+,H)]; A.1r0[T(confusion,+,H)]{campaign_version=version:2} | A<-A.0r0/none; A<-A.1r0/none",
+    "A.0r0[U(confusion,+,H),U(frustration,+,H)] | A<-A.0r0/reverse_atom_order",
+    "A.0r0[U(confusion,+,H)] | A<-A.0r0/add_forbidden_field:acoustic_features; A<-A.0r0/add_forbidden_field:probabilities; A<-A.0r0/add_forbidden_field:model_id; A<-A.0r0/add_forbidden_field:dataset_id",
+    "A.0r0[U(confusion,+,H)]; A.1r0[]; B.0r0[U(interest,+,H)]; B.1r0[] | A<-A.0r0/none; B<-B.0r0/none; A<-A.1r0/none; B<-B.1r0/none",
+    "A.0r0[T(confusion,+,H)]; A.1r0[]; A.2r0[U(confusion,+,H)] | A<-A.0r0/none; A<-A.1r0/none; A<-A.2r0/none",
+    "A.0r0[D(hesitation,+,H),W(hesitation,+,X)] | A<-A.0r0/none",
+    "A.0r0[U(confusion,+,H),T(confusion,+,H)] | A<-A.0r0/none",
+    "A.0r0[U(confusion,+,H),W(confusion,-,H)] | A<-A.0r0/none",
+)
+
+
+class PhaseCScenarioContractTests(unittest.TestCase):
+    def setUp(self) -> None:
+        self.policy = validate_phase_c_policy(load_json_strict(POLICY_PATH))
+
+    def test_scenario_ids_order_count_and_classifications_are_frozen(self) -> None:
+        scenarios = phase_c_contracts.load_and_validate_phase_c_scenarios(
+            SCENARIO_PATH,
+            self.policy,
+        )
+        self.assertEqual(
+            tuple(item.case_id for item in scenarios),
+            EXPECTED_SCENARIO_IDS_FOR_TEST,
+        )
+        self.assertEqual(len(scenarios), 30)
+        self.assertEqual(
+            {
+                item.case_id: (
+                    item.family,
+                    item.signal_family,
+                    item.modality_family,
+                )
+                for item in scenarios
+            },
+            EXPECTED_SCENARIO_CLASSIFICATIONS_FOR_TEST,
+        )
+
+    def test_frames_and_attempts_expand_to_every_exact_recipe_row(self) -> None:
+        raw = load_json_strict(SCENARIO_PATH)
+        self.assertEqual(
+            _render_scenario_recipe_rows(raw),
+            EXPECTED_SCENARIO_RECIPE_ROWS_FOR_TEST,
+        )
+
+    def test_forbidden_surfaces_exist_only_as_negative_mutation_parameters(self) -> None:
+        raw = load_json_strict(SCENARIO_PATH)
+        allowed = {
+            "acoustic_features",
+            "probabilities",
+            "model_id",
+            "dataset_id",
+        }
+        observed = []
+        for scenario in raw["scenarios"]:
+            serialized_frames = canonical_json_bytes(
+                {"sessions": scenario["sessions"]},
+            ).decode("utf-8").lower()
+            for forbidden in allowed | {
+                "audio_bytes",
+                "transcript_text",
+                "customer_name",
+            }:
+                self.assertNotIn(forbidden, serialized_frames)
+            for attempt in scenario["attempt_order"]:
+                if attempt["mutation_kind"] == "add_forbidden_field":
+                    observed.append(attempt["mutation_parameter"])
+        self.assertEqual(set(observed), allowed)
+
+    def test_every_expected_projection_has_exact_fields_and_stable_bytes(self) -> None:
+        raw = load_json_strict(SCENARIO_PATH)
+        scenarios = phase_c_contracts.load_and_validate_phase_c_scenarios(
+            SCENARIO_PATH,
+            self.policy,
+        )
+        for raw_scenario, scenario in zip(raw["scenarios"], scenarios, strict=True):
+            for raw_step, parsed_step in zip(
+                raw_scenario["expected_steps"],
+                scenario.expected_steps,
+                strict=True,
+            ):
+                if raw_step["disposition"] != "accepted":
+                    self.assertEqual(
+                        set(raw_step),
+                        {
+                            "disposition",
+                            "rejection_code",
+                            "prior_state_bytes_unchanged",
+                        },
+                    )
+                    continue
+                self.assertEqual(set(raw_step["expected_output"]), PERCEIVED_STATE_FIELDS)
+                self.assertEqual(
+                    set(raw_step["expected_internal"]),
+                    EXPECTED_INTERNAL_FIELDS_FOR_TEST,
+                )
+                self.assertEqual(
+                    parsed_step.expected_output_bytes,
+                    canonical_json_bytes(raw_step["expected_output"]),
+                )
+
+    def test_scenario_canonical_identity_is_checkout_eol_independent(self) -> None:
+        payload = load_json_strict(SCENARIO_PATH)
+        canonical = canonical_json_bytes(payload)
+        self.assertEqual(
+            json.loads(canonical.decode("utf-8")),
+            json.loads(SCENARIO_PATH.read_text(encoding="utf-8")),
+        )
+        self.assertEqual(
+            phase_c_contracts.scenario_payload_sha256(payload),
+            sha256_bytes(canonical),
+        )
+
+    def test_mutation_materialization_is_allowlisted_and_never_mutates_base(self) -> None:
+        scenarios = phase_c_contracts.load_and_validate_phase_c_scenarios(
+            SCENARIO_PATH,
+            self.policy,
+        )
+        observed: set[str] = set()
+        for scenario in scenarios:
+            for attempt in scenario.attempt_order:
+                before = repr(scenario.sessions)
+                candidate = phase_c_contracts.materialize_phase_c_scenario_attempt_payload(
+                    scenario,
+                    attempt,
+                )
+                self.assertEqual(repr(scenario.sessions), before)
+                if attempt.mutation_kind == "none":
+                    parse_phase_c_frame(candidate, self.policy)
+                elif attempt.mutation_kind == "reverse_atom_order":
+                    with self.assertRaisesRegex(
+                        PhaseCContractError,
+                        "noncanonical_atom_order",
+                    ):
+                        parse_phase_c_frame(candidate, self.policy)
+                else:
+                    observed.add(attempt.mutation_parameter)
+                    self.assertIn(attempt.mutation_parameter, candidate)
+                    with self.assertRaisesRegex(PhaseCContractError, "forbidden_field"):
+                        parse_phase_c_frame(candidate, self.policy)
+        self.assertEqual(
+            observed,
+            {"acoustic_features", "probabilities", "model_id", "dataset_id"},
+        )
+
+    def test_loader_fails_closed_on_container_alias_attempt_and_expectation_mutations(self) -> None:
+        original = load_json_strict(SCENARIO_PATH)
+        mutations: list[dict[str, Any]] = []
+        for field, value in (
+            ("schema_version", "future"),
+            ("policy_id", "future"),
+        ):
+            mutated = copy.deepcopy(original)
+            mutated[field] = value
+            mutations.append(mutated)
+        mutated = copy.deepcopy(original)
+        mutated["scenarios"][1]["case_id"] = mutated["scenarios"][0]["case_id"]
+        mutations.append(mutated)
+        mutated = copy.deepcopy(original)
+        mutated["scenarios"][0]["family"] = "future"
+        mutations.append(mutated)
+        mutated = copy.deepcopy(original)
+        mutated["scenarios"][20]["sessions"].reverse()
+        mutations.append(mutated)
+        mutated = copy.deepcopy(original)
+        mutated["scenarios"][0]["sessions"][0]["session_alias"] = "C"
+        mutations.append(mutated)
+        mutated = copy.deepcopy(original)
+        mutated["scenarios"][0]["attempt_order"][0]["frame_index"] = 99
+        mutations.append(mutated)
+        mutated = copy.deepcopy(original)
+        mutated["scenarios"][0]["expected_steps"] = []
+        mutations.append(mutated)
+        mutated = copy.deepcopy(original)
+        mutated["scenarios"][0]["expected_steps"][0]["future"] = True
+        mutations.append(mutated)
+        mutated = copy.deepcopy(original)
+        mutated["scenarios"][0]["expected_steps"][0]["expected_internal"].pop(
+            "release_streak",
+        )
+        mutations.append(mutated)
+        mutated = copy.deepcopy(original)
+        mutated["scenarios"][0]["expected_steps"][0]["expected_output"][
+            "runtime_approved"
+        ] = True
+        mutations.append(mutated)
+        mutated = copy.deepcopy(original)
+        mutated["scenarios"][0]["sessions"][0]["frames"][0]["nested"] = {
+            "raw_audio": "forbidden",
+        }
+        mutations.append(mutated)
+        for index, payload in enumerate(mutations):
+            with self.subTest(index=index):
+                with self.assertRaises(PhaseCContractError):
+                    phase_c_contracts.validate_phase_c_scenario_payload(
+                        payload,
+                        self.policy,
+                    )
 
 
 class PhaseCInputContractTests(unittest.TestCase):
