@@ -1887,29 +1887,31 @@ readiness.
 - Modify after acceptance:
   `docs/thesis/METHODOLOGY_LOG.md`,
   `docs/thesis/ROADMAP.md`,
-  `docs/product/CHECKPOINT_INDEX.md`, and
-  `research/experiments/EMOTION-STATE-002-phase-b-public-data-feasibility.md`
+  `docs/product/CHECKPOINT_INDEX.md`,
+  `research/experiments/EMOTION-STATE-002-phase-b-public-data-feasibility.md`,
+  `docs/superpowers/plans/2026-07-19-emotion-state-phase-b-public-data-feasibility.md`,
+  and `scripts/test_emotion_state_002_phase_b.py`
 
 **Interfaces:**
 - Consumes: exact lockbox result and reviewed current HEAD.
 - Produces: accepted exact pair, no residual transaction artifacts, and a
   pair-only commit followed by a separate documentation commit if authorized.
 
-- [ ] **Step 1: Stop at the publication authorization gate**
+- [x] **Step 1: Stop at the publication authorization gate**
 
 Require authority to stage the candidate. Acceptance and push remain separate
 explicit actions.
 
-- [ ] **Step 2: Stage the candidate transaction**
+- [x] **Step 2: Stage the candidate transaction**
 
 ```powershell
-.tmp/emotion-state-002-phase-b/venv/Scripts/python.exe scripts/run_emotion_state_002_phase_b.py stage-candidate --receipt .tmp/emotion-state-002-phase-b-cut4b/publication/receipt.json
+.tmp/emotion-state-002-phase-b/venv/Scripts/python.exe scripts/run_emotion_state_002_phase_b.py stage-candidate --receipt receipt.json
 ```
 
 Expected: exact canonical pair is staged, previous pair is recoverable, journal
 status is `awaiting_acceptance`, and no Git commit occurs.
 
-- [ ] **Step 3: Independently validate and inspect candidate content**
+- [x] **Step 3: Independently validate and inspect candidate content**
 
 ```powershell
 .tmp/emotion-state-002-phase-b/venv/Scripts/python.exe scripts/validate_emotion_state_002_phase_b.py candidate --receipt .tmp/emotion-state-002-phase-b-cut4b/publication/receipt.json
@@ -1920,26 +1922,25 @@ Verify claims independently from any evaluator label. Confirm the exact pair,
 digests, renderer equality, aggregate-only content, one lockbox opening,
 decision contract, and every readiness limitation.
 
-- [ ] **Step 4: Accept or reject explicitly**
+- [x] **Step 4: Accept or reject explicitly**
 
 Accept only after review:
 
 ```powershell
-.tmp/emotion-state-002-phase-b/venv/Scripts/python.exe scripts/run_emotion_state_002_phase_b.py accept-receipt --receipt .tmp/emotion-state-002-phase-b-cut4b/publication/receipt.json
+.tmp/emotion-state-002-phase-b/venv/Scripts/python.exe scripts/run_emotion_state_002_phase_b.py accept-receipt --receipt receipt.json
 ```
 
 Otherwise restore:
 
 ```powershell
-.tmp/emotion-state-002-phase-b/venv/Scripts/python.exe scripts/run_emotion_state_002_phase_b.py reject-receipt --receipt .tmp/emotion-state-002-phase-b-cut4b/publication/receipt.json
+.tmp/emotion-state-002-phase-b/venv/Scripts/python.exe scripts/run_emotion_state_002_phase_b.py reject-receipt --receipt receipt.json
 ```
 
-- [ ] **Step 5: Run final checkpoint and repository ledger**
+- [x] **Step 5: Run final checkpoint and repository ledger**
 
 ```powershell
 .tmp/emotion-state-002-phase-b/venv/Scripts/python.exe scripts/validate_emotion_state_002_phase_b.py checkpoint
 .tmp/emotion-state-002-phase-b/venv/Scripts/python.exe -m unittest scripts.test_emotion_state_002_phase_b -v
-python scripts/check_thesis_update_gate.py
 python scripts/check_thesis_reference_registry.py
 python scripts/validate_project_drift_guard.py
 python scripts/validate_context_reading_policy.py
@@ -1947,9 +1948,20 @@ python scripts/validate_check_setup.py
 git diff --check
 ```
 
-Expected: all pass; no journal/receipt remains in the canonical directory.
+Expected: all listed gates pass; no journal/receipt remains in the canonical
+directory. The thesis-update gate is intentionally deferred to Step 7, after
+the real closeout edits and before their separate commit, because running it
+here conflicts with the exact pair-only invariant.
 
-- [ ] **Step 6: Commit the exact pair only**
+Completed: the monolithic test command hit its `1804s` shell wrapper limit
+without a unittest verdict and was not counted as a pass. Its orphaned
+worktree test tree was stopped. The unchanged `393` tests then passed in seven
+attributable groups (`117/65/33/23/30/25/100`). Checkpoint, thesis-reference,
+drift, context-policy, setup, and diff gates passed. The pre-pair
+thesis-update failure was retained as expected sequencing evidence and was not
+bypassed.
+
+- [x] **Step 6: Commit the exact pair only**
 
 ```powershell
 git add -- research/experiments/generated/EMOTION-STATE-002-phase-b-public-data-feasibility/result.json research/experiments/generated/EMOTION-STATE-002-phase-b-public-data-feasibility/report.md
@@ -1960,14 +1972,43 @@ git commit -m "Record EMOTION-STATE Phase B public-data feasibility"
 
 The cached name list must contain exactly the two canonical paths.
 
-- [ ] **Step 7: Record thesis closeout separately**
+Completed: exact pair-only commit
+`f887989597f23f438e8e537ba5bfbd05823a3587`.
 
-After the pair-only commit, update the four closeout docs with the accepted
-transaction ID, result/report hashes, pair-only commit, keep/revise/discard
-decision, limitations, and unchanged runtime/provider/private boundaries.
-Validate and commit those docs separately.
+- [x] **Step 7: Record thesis closeout separately**
 
-- [ ] **Step 8: Stop before push, merge, Phase C, runtime, or provider work**
+After the pair-only commit, update the closeout docs and their focused contract
+test with the accepted transaction ID, result/report hashes, pair-only commit,
+keep/revise/discard decision, limitations, and unchanged
+runtime/provider/private boundaries. Correct the receipt command forms and
+this thesis-gate sequence in the same documentation commit.
+
+```powershell
+.tmp/emotion-state-002-phase-b/venv/Scripts/python.exe -m unittest scripts.test_emotion_state_002_phase_b.PhaseBContractTests -v
+python scripts/check_thesis_update_gate.py
+python scripts/check_thesis_reference_registry.py
+python scripts/validate_project_drift_guard.py
+python scripts/validate_context_reading_policy.py
+python scripts/validate_check_setup.py
+git diff --check
+```
+
+The accepted transaction is `559ccc55b0b5412ba455ca7fe3e3a6b7`;
+result SHA-256 is
+`5829BF4A1FBE86BDD6B19B7CF8B07033BF79744B12F7AF1D493F8D3F10D0073C`;
+report SHA-256 is
+`56140D4ABDD0B2A6924749E719C66D3972483E0F4191F63201E9DDFCA0A23482`;
+the prerequisite correction is commit
+`256fa92ed94eda3f66fef21512d9f292b1d0de61`; and the decision is `revise`.
+No fake changed-file input, checker exemption, or hook bypass is permitted.
+
+Completed: the Phase B contract class passed `16/16`. The real no-argument
+thesis-update gate passed with six changed files, three thesis-triggering
+files, two thesis-tracking files, and zero failures. Checkpoint,
+thesis-reference, drift, context-policy, setup, compilation, and diff gates
+also passed.
+
+- [x] **Step 8: Stop before push, merge, Phase C, runtime, or provider work**
 
 Report the clean local branch and evidence. Push or merge only under explicit
 authority. A completed result remains an offline public-data

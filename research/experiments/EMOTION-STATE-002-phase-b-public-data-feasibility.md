@@ -2,21 +2,23 @@
 
 ## Status
 
-Task 11 final lockbox completed exactly once and independently reviewed;
-decision `revise`; canonical publication remains unopened
+Task 12 canonical checkpoint `accepted`; decision `revise`; exact pair committed
+locally and not pushed
 
-The single final-lockbox child exited `0` after `346.9s`; no retry occurred.
-The state is `lockbox_complete` with `lockbox_open_count=1`, exact state
+Transaction `559ccc55b0b5412ba455ca7fe3e3a6b7` retained
+`lockbox_open_count=1`, removed its journal and receipt, and produced result
 SHA-256
-`69B6475BB32209DD50A6E24866F19D6B44FB51BFA458836BF3B1805140C2BC8C`,
-and result SHA-256
-`E3EC0EB82E77C1979BF8F921D6EBF6321F510687A608C933473C4DB04AE02F35`.
-Two independent aggregate-only reviews returned `C0/I0/M0`.
+`5829BF4A1FBE86BDD6B19B7CF8B07033BF79744B12F7AF1D493F8D3F10D0073C`
+plus report SHA-256
+`56140D4ABDD0B2A6924749E719C66D3972483E0F4191F63201E9DDFCA0A23482`.
+The exact pair-only commit is
+`f887989597f23f438e8e537ba5bfbd05823a3587`. Independent candidate review
+returned `C0/I0/M0`.
 
 The retired lineage is not reused or mutated.
 
-Canonical publication, merge, runtime activation, Phase C, providers, private
-data, calls, simulations, and source adaptation remain blocked. The old
+Push, merge, runtime activation, Phase C, providers, private data, calls,
+simulations, and source adaptation remain outside this checkpoint. The old
 `.tmp/emotion-state-002-phase-b/venv` and
 `.tmp/emotion-state-002-phase-b/dependencies/wheelhouse` remain immutable
 dependency inputs only.
@@ -98,9 +100,9 @@ and packet SHA-256
 The persisted lockbox result retains only the AMI aggregate and authority
 SHA-256; AMI meeting, participant, timing-turn, dialogue-turn, dialogue-label,
 transcript, probability, feature, and audio rows remain absent.
-5. **Publication gate:** Task 12 may stage, independently validate, explicitly
-   accept, commit, and optionally push the exact canonical pair only under
-   separately stated acceptance/push authority.
+5. **Publication gate:** Task 12 staged, independently validated, explicitly
+   accepted, and committed the exact canonical pair. Push remains a separate
+   action and was not performed.
 
 No gate implicitly grants the next gate.
 
@@ -204,6 +206,25 @@ customer internal emotion, any of the five operational signals, real-call
 performance, AMI contribution evidence, provider/PSTN/ASR/latency feasibility,
 runtime readiness, commercial effectiveness, or production readiness.
 
+## Task 12 Canonical Publication
+
+The production state is `accepted` for transaction
+`559ccc55b0b5412ba455ca7fe3e3a6b7` with `lockbox_open_count=1`. Result
+SHA-256 `5829BF4A1FBE86BDD6B19B7CF8B07033BF79744B12F7AF1D493F8D3F10D0073C`
+and report SHA-256
+`56140D4ABDD0B2A6924749E719C66D3972483E0F4191F63201E9DDFCA0A23482`
+match the accepted state and independently reviewed receipt. The journal and
+receipt are absent. Pair-only commit
+`f887989597f23f438e8e537ba5bfbd05823a3587` contains exactly those two
+canonical files.
+
+The accepted outcome remains `revise`: positive aggregate acoustic lift does
+not override slice reversal, slice instability, failed abstention improvement,
+or unavailable AMI contributions. This is an offline acted-perception research
+checkpoint, not production readiness or evidence of customer internal emotion,
+the five operational signals, natural-call performance, provider, PSTN, ASR,
+or latency feasibility, runtime readiness, or commercial effectiveness.
+
 ## Task 9 Validation Interface
 
 The validator requires exactly one section:
@@ -221,8 +242,8 @@ checkpoint
 transaction held under the shared publication authority while the journal,
 receipt, state, result, and report are independently rebuilt and compared.
 `checkpoint` requires accepted state, no live journal or receipt, and exactly
-the state-bound canonical result/report pair. The production defaults currently
-have neither lifecycle state and therefore fail closed.
+the state-bound canonical result/report pair. The production default now passes
+that accepted-pair checkpoint.
 
 Synthetic mutation coverage binds every result mapping shape and scalar leaf,
 the renderer-owned report lines, receipt hashes, the one-use lockbox count, the

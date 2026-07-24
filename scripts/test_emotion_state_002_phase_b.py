@@ -761,39 +761,37 @@ class PhaseBContractTests(unittest.TestCase):
                     expected_dependency_commands,
                 )
 
-    def test_task11_docs_hold_completed_lockbox_status(self) -> None:
+    def test_task11_docs_remain_closed_after_task12_publication(self) -> None:
         obsolete_pending_status = (
             "Cut 4B implementation and independent review are prerequisites to one "
             "fresh Task 10 replacement transaction under "
             "`.tmp/emotion-state-002-phase-b-cut4b`; until that transaction passes "
             "aggregate-only independent review, no non-lockbox checkpoint is accepted."
         )
-        required_anchors = (
-            "Task 11",
-            "`lockbox_complete`",
-            "`lockbox_open_count=1`",
-            "`revise`",
-            "`E3EC0EB82E77C1979BF8F921D6EBF6321F510687A608C933473C4DB04AE02F35`",
-        )
         retired_lineage_status = "The retired lineage is not reused or mutated."
-        blocked_status = (
-            "Canonical publication, merge, runtime activation, Phase C, providers, "
-            "private data, calls, simulations, and source adaptation remain blocked."
-        )
-        for relative_path in (
-            "docs/thesis/ROADMAP.md",
+        closed_boundaries = {
+            "docs/thesis/ROADMAP.md": (
+                "The production lockbox is closed and must not be rerun for this "
+                "experiment version."
+            ),
             (
                 "research/experiments/"
                 "EMOTION-STATE-002-phase-b-public-data-feasibility.md"
+            ): (
+                "The production lockbox completed exactly once and is closed. "
+                "Do not run `admit-lockbox` or `lockbox` again for this "
+                "experiment version."
             ),
-        ):
+        }
+        for relative_path, closed_boundary in closed_boundaries.items():
             text = (ROOT / relative_path).read_text(encoding="utf-8-sig")
             normalized = " ".join(text.split())
             with self.subTest(path=relative_path):
-                for anchor in required_anchors:
-                    self.assertIn(anchor, normalized)
+                self.assertIn("Task 12", normalized)
+                self.assertIn("`accepted`", normalized)
+                self.assertIn("`lockbox_open_count=1`", normalized)
                 self.assertIn(retired_lineage_status, normalized)
-                self.assertIn(blocked_status, normalized)
+                self.assertIn(closed_boundary, normalized)
                 self.assertNotIn(obsolete_pending_status, normalized)
 
     def test_task_11_docs_state_completed_once_and_closed(self) -> None:
@@ -878,6 +876,121 @@ class PhaseBContractTests(unittest.TestCase):
             with self.subTest(decision_metric=anchor):
                 self.assertIn(anchor, normalized_protocol)
                 self.assertIn(anchor, normalized_methodology)
+
+    def test_task12_docs_hold_accepted_checkpoint_and_gate_sequence(self) -> None:
+        transaction_id = "`559ccc55b0b5412ba455ca7fe3e3a6b7`"
+        result_sha256 = (
+            "`5829BF4A1FBE86BDD6B19B7CF8B07033BF79744B12F7AF1D493F8D3F10D0073C`"
+        )
+        report_sha256 = (
+            "`56140D4ABDD0B2A6924749E719C66D3972483E0F4191F63201E9DDFCA0A23482`"
+        )
+        pair_commit = "`f887989597f23f438e8e537ba5bfbd05823a3587`"
+        required_anchors = (
+            "Task 12",
+            "`accepted`",
+            "`lockbox_open_count=1`",
+            "`revise`",
+            transaction_id,
+            result_sha256,
+            report_sha256,
+            pair_commit,
+        )
+        stale_statuses = (
+            "canonical publication remains unopened",
+            "No Phase B canonical pair is staged or accepted",
+            "The production defaults currently have neither lifecycle state",
+            "The Task 9 independent gate remains pending",
+        )
+        for relative_path in (
+            "docs/thesis/METHODOLOGY_LOG.md",
+            "docs/thesis/ROADMAP.md",
+            "docs/product/CHECKPOINT_INDEX.md",
+            (
+                "research/experiments/"
+                "EMOTION-STATE-002-phase-b-public-data-feasibility.md"
+            ),
+        ):
+            text = (ROOT / relative_path).read_text(encoding="utf-8-sig")
+            normalized = " ".join(text.split())
+            with self.subTest(path=relative_path):
+                for anchor in required_anchors:
+                    self.assertIn(anchor, normalized)
+                self.assertIn("offline acted-perception", normalized)
+                self.assertIn("not production readiness", normalized)
+                for stale_status in stale_statuses:
+                    self.assertNotIn(stale_status, normalized)
+
+        plan = IMPLEMENTATION_PLAN.read_text(encoding="utf-8-sig")
+        task_12 = plan.split("### Task 12:", 1)[1].split(
+            "## Plan Self-Review Checklist",
+            1,
+        )[0]
+        self.assertNotIn("- [ ] **Step", task_12)
+        self.assertIn(
+            "stage-candidate --receipt receipt.json",
+            task_12,
+        )
+        self.assertIn(
+            "candidate --receipt "
+            ".tmp/emotion-state-002-phase-b-cut4b/publication/receipt.json",
+            task_12,
+        )
+        self.assertIn(
+            "accept-receipt --receipt receipt.json",
+            task_12,
+        )
+        self.assertIn(
+            "reject-receipt --receipt receipt.json",
+            task_12,
+        )
+        self.assertNotIn(
+            "stage-candidate --receipt "
+            ".tmp/emotion-state-002-phase-b-cut4b/publication/receipt.json",
+            task_12,
+        )
+        self.assertNotIn(
+            "accept-receipt --receipt "
+            ".tmp/emotion-state-002-phase-b-cut4b/publication/receipt.json",
+            task_12,
+        )
+        command_lines = {
+            line.strip()
+            for line in task_12.splitlines()
+            if line.strip().startswith(".tmp/emotion-state-002-phase-b/")
+        }
+        self.assertNotIn(
+            (
+                ".tmp/emotion-state-002-phase-b/venv/Scripts/python.exe "
+                "scripts/run_emotion_state_002_phase_b.py reject-receipt "
+                "--receipt .tmp/emotion-state-002-phase-b-cut4b/"
+                "publication/receipt.json"
+            ),
+            command_lines,
+        )
+        self.assertNotIn(
+            (
+                ".tmp/emotion-state-002-phase-b/venv/Scripts/python.exe "
+                "scripts/validate_emotion_state_002_phase_b.py candidate "
+                "--receipt receipt.json"
+            ),
+            command_lines,
+        )
+        step_5 = task_12.split("- [x] **Step 5:", 1)[1].split(
+            "- [x] **Step 6:",
+            1,
+        )[0]
+        step_7 = task_12.split("- [x] **Step 7:", 1)[1].split(
+            "- [x] **Step 8:",
+            1,
+        )[0]
+        self.assertNotIn("check_thesis_update_gate.py", step_5)
+        self.assertIn("check_thesis_update_gate.py", step_7)
+        self.assertIn(pair_commit, task_12)
+        self.assertIn(
+            "`256fa92ed94eda3f66fef21512d9f292b1d0de61`",
+            task_12,
+        )
 
     def test_task_9_publication_cli_sections_fail_closed_without_state(
         self,
