@@ -4236,6 +4236,13 @@ class PhaseCAdvanceTests(PhaseCTestCase):
             last_turn_sequence=1,
         )
         mutations = (
+            (
+                "schema_scalar_type",
+                dataclasses.replace(
+                    base,
+                    schema_version=StringSubclass(base.schema_version),
+                ),
+            ),
             ("schema", dataclasses.replace(base, schema_version="wrong")),
             ("policy_id", dataclasses.replace(base, policy_id="wrong")),
             ("policy_hash", dataclasses.replace(base, policy_sha256="0" * 64)),
@@ -4321,6 +4328,11 @@ class PhaseCAdvanceTests(PhaseCTestCase):
             with self.subTest(family=family):
                 with self.assertRaises(PhaseCContractError) as captured:
                     self.advance(malformed, object())
+                if family == "schema_scalar_type":
+                    self.assertEqual(
+                        captured.exception.code,
+                        "session_state_field_type",
+                    )
                 self.assertFalse(
                     captured.exception.code.startswith("frame_"),
                     captured.exception.code,

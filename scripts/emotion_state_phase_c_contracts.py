@@ -2655,6 +2655,8 @@ def validate_phase_c_session_state(
 ) -> PhaseCTemporalSessionStateV1:
     if type(state) is not PhaseCTemporalSessionStateV1:
         raise PhaseCContractError("session_state_type")
+    if type(state.schema_version) is not str:
+        raise PhaseCContractError("session_state_field_type")
     if state.schema_version != "PhaseCTemporalSessionStateV1":
         raise PhaseCContractError("session_state_schema")
     string_fields = (
