@@ -913,6 +913,334 @@ class PhaseCScenarioContractTests(unittest.TestCase):
                     "scenario_dataclass_authority_digest",
                 )
 
+    def test_materializer_rejects_lossy_internal_normalization_bypasses(self) -> None:
+        scenario = phase_c_contracts.load_and_validate_phase_c_scenarios(
+            SCENARIO_PATH,
+            self.policy,
+        )[0]
+        attempt = scenario.attempt_order[0]
+        accepted = scenario.expected_steps[0]
+        self.assertIsInstance(
+            accepted,
+            phase_c_contracts.PhaseCExpectedAcceptedStepV1,
+        )
+        internal = accepted.expected_internal
+        key = internal.seen_independence_keys[0]
+
+        mutations = (
+            (
+                "dense_outer_list",
+                dataclasses.replace(
+                    internal,
+                    gross_supporting_units=list(
+                        internal.gross_supporting_units,
+                    ),
+                ),
+                "expected_internal_gross_supporting_units_shape",
+            ),
+            (
+                "seen_keys_list",
+                dataclasses.replace(
+                    internal,
+                    seen_independence_keys=list(
+                        internal.seen_independence_keys,
+                    ),
+                ),
+                "expected_internal_seen_independence_keys_shape",
+            ),
+            (
+                "dense_duplicate",
+                dataclasses.replace(
+                    internal,
+                    gross_supporting_units=(
+                        ("confusion", 999),
+                        *internal.gross_supporting_units,
+                    ),
+                ),
+                "expected_internal_gross_supporting_units_shape",
+            ),
+            (
+                "entry_duplicate",
+                dataclasses.replace(
+                    internal,
+                    entry_confirmation_keys_by_signal=(
+                        ("confusion", (key,)),
+                        *internal.entry_confirmation_keys_by_signal,
+                    ),
+                ),
+                "expected_internal_entry_shape",
+            ),
+        )
+        for name, mutated_internal, expected_code in mutations:
+            mutated = dataclasses.replace(
+                scenario,
+                expected_steps=(
+                    dataclasses.replace(
+                        accepted,
+                        expected_internal=mutated_internal,
+                    ),
+                ),
+            )
+            with self.subTest(name=name):
+                with self.assertRaises(PhaseCContractError) as captured:
+                    phase_c_contracts.materialize_phase_c_scenario_attempt_payload(
+                        mutated,
+                        attempt,
+                    )
+                self.assertEqual(captured.exception.code, expected_code)
+
+    def test_materializer_rejects_every_internal_dataclass_shape_family(self) -> None:
+        scenario = phase_c_contracts.load_and_validate_phase_c_scenarios(
+            SCENARIO_PATH,
+            self.policy,
+        )[0]
+        attempt = scenario.attempt_order[0]
+        accepted = scenario.expected_steps[0]
+        self.assertIsInstance(
+            accepted,
+            phase_c_contracts.PhaseCExpectedAcceptedStepV1,
+        )
+        internal = accepted.expected_internal
+
+        mutations: list[tuple[str, str, Any, str]] = []
+        for field in (
+            "gross_supporting_units",
+            "gross_opposing_units",
+            "uncapped_net_support",
+            "capped_net_support",
+        ):
+            authority = getattr(internal, field)
+            code = f"expected_internal_{field}_shape"
+            mutations.extend((
+                (f"{field}_outer", field, list(authority), code),
+                (
+                    f"{field}_entry",
+                    field,
+                    (list(authority[0]), *authority[1:]),
+                    code,
+                ),
+                (
+                    f"{field}_order",
+                    field,
+                    (authority[1], authority[0], *authority[2:]),
+                    code,
+                ),
+                (
+                    f"{field}_duplicate",
+                    field,
+                    (authority[0], *authority),
+                    code,
+                ),
+                (
+                    f"{field}_bool",
+                    field,
+                    ((authority[0][0], True), *authority[1:]),
+                    code,
+                ),
+                (
+                    f"{field}_negative",
+                    field,
+                    ((authority[0][0], -1), *authority[1:]),
+                    code,
+                ),
+                (
+                    f"{field}_arity_one",
+                    field,
+                    ((authority[0][0],), *authority[1:]),
+                    code,
+                ),
+                (
+                    f"{field}_arity_three",
+                    field,
+                    ((authority[0][0], authority[0][1], 0), *authority[1:]),
+                    code,
+                ),
+                (
+                    f"{field}_key_type",
+                    field,
+                    ((1, authority[0][1]), *authority[1:]),
+                    code,
+                ),
+                (
+                    f"{field}_wrong_key",
+                    field,
+                    (("unknown", authority[0][1]), *authority[1:]),
+                    code,
+                ),
+                (
+                    f"{field}_duplicate_key",
+                    field,
+                    (
+                        authority[0],
+                        (authority[0][0], authority[1][1]),
+                        *authority[2:],
+                    ),
+                    code,
+                ),
+                (
+                    f"{field}_unit_float",
+                    field,
+                    ((authority[0][0], 1.0), *authority[1:]),
+                    code,
+                ),
+            ))
+
+        for field in (
+            "contradictory_signals",
+            "seen_independence_keys",
+            "switch_confirmation_keys",
+            "contributing_evidence_refs",
+            "seen_evidence_refs",
+            "retired_independence_keys",
+        ):
+            authority = getattr(internal, field)
+            code = f"expected_internal_{field}_shape"
+            mutations.extend((
+                (f"{field}_outer", field, list(authority), code),
+                (f"{field}_item", field, (*authority, 1), code),
+            ))
+
+        entry = internal.entry_confirmation_keys_by_signal
+        mutations.extend((
+            (
+                "entry_outer",
+                "entry_confirmation_keys_by_signal",
+                list(entry),
+                "expected_internal_entry_shape",
+            ),
+            (
+                "entry_row",
+                "entry_confirmation_keys_by_signal",
+                (list(entry[0]), *entry[1:]),
+                "expected_internal_entry_shape",
+            ),
+            (
+                "entry_order",
+                "entry_confirmation_keys_by_signal",
+                (entry[1], entry[0], *entry[2:]),
+                "expected_internal_entry_shape",
+            ),
+            (
+                "entry_nested",
+                "entry_confirmation_keys_by_signal",
+                ((entry[0][0], list(entry[0][1])), *entry[1:]),
+                "expected_internal_entry_shape",
+            ),
+            (
+                "entry_nested_item",
+                "entry_confirmation_keys_by_signal",
+                ((entry[0][0], (1,)), *entry[1:]),
+                "expected_internal_entry_shape",
+            ),
+            (
+                "entry_arity_one",
+                "entry_confirmation_keys_by_signal",
+                ((entry[0][0],), *entry[1:]),
+                "expected_internal_entry_shape",
+            ),
+            (
+                "entry_arity_three",
+                "entry_confirmation_keys_by_signal",
+                ((entry[0][0], entry[0][1], ()), *entry[1:]),
+                "expected_internal_entry_shape",
+            ),
+            (
+                "entry_signal_type",
+                "entry_confirmation_keys_by_signal",
+                ((1, entry[0][1]), *entry[1:]),
+                "expected_internal_entry_shape",
+            ),
+            (
+                "entry_duplicate_signal",
+                "entry_confirmation_keys_by_signal",
+                (
+                    entry[0],
+                    (entry[0][0], entry[1][1]),
+                    *entry[2:],
+                ),
+                "expected_internal_entry_shape",
+            ),
+            (
+                "entry_nested_duplicate",
+                "entry_confirmation_keys_by_signal",
+                (
+                    (
+                        entry[0][0],
+                        (internal.seen_independence_keys[0],) * 2,
+                    ),
+                    *entry[1:],
+                ),
+                "expected_internal_entry_shape",
+            ),
+        ))
+
+        for field in (
+            "internal_incumbent",
+            "switch_challenger",
+            "last_emitted_selected_signal",
+        ):
+            mutations.append((
+                field,
+                field,
+                1,
+                "expected_internal_scalar_type",
+            ))
+        for field in (
+            "incumbent_tenure",
+            "release_streak",
+            "accepted_turn_count",
+        ):
+            mutations.extend((
+                (
+                    f"{field}_bool",
+                    field,
+                    True,
+                    "expected_internal_counter",
+                ),
+                (
+                    f"{field}_negative",
+                    field,
+                    -1,
+                    "expected_internal_counter",
+                ),
+            ))
+        mutations.extend((
+            (
+                "last_support_bool",
+                "last_emitted_selected_support",
+                True,
+                "expected_internal_last_support",
+            ),
+            (
+                "last_support_negative",
+                "last_emitted_selected_support",
+                -1,
+                "expected_internal_last_support",
+            ),
+        ))
+
+        for name, field, value, expected_code in mutations:
+            mutated_internal = dataclasses.replace(
+                internal,
+                **{field: value},
+            )
+            mutated = dataclasses.replace(
+                scenario,
+                expected_steps=(
+                    dataclasses.replace(
+                        accepted,
+                        expected_internal=mutated_internal,
+                    ),
+                ),
+            )
+            with self.subTest(name=name):
+                with self.assertRaises(PhaseCContractError) as captured:
+                    phase_c_contracts.materialize_phase_c_scenario_attempt_payload(
+                        mutated,
+                        attempt,
+                    )
+                self.assertEqual(captured.exception.code, expected_code)
+
 
 class PhaseCInputContractTests(unittest.TestCase):
     def setUp(self) -> None:

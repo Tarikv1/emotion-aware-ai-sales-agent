@@ -1460,11 +1460,91 @@ def _validate_scenario_attempt_dataclass(
         raise PhaseCContractError("scenario_attempt_mutation_parameter")
 
 
+def _validate_expected_internal_dataclass_shape(
+    internal: PhaseCExpectedInternalProjectionV1,
+) -> None:
+    if type(internal) is not PhaseCExpectedInternalProjectionV1:
+        raise PhaseCContractError("expected_internal_not_object")
+    signals = tuple(_frozen_phase_c_policy()["canonical_signal_order"])
+
+    for field in (
+        "gross_supporting_units",
+        "gross_opposing_units",
+        "uncapped_net_support",
+        "capped_net_support",
+    ):
+        rows = getattr(internal, field)
+        code = f"expected_internal_{field}_shape"
+        if type(rows) is not tuple or len(rows) != len(signals):
+            raise PhaseCContractError(code)
+        if any(type(row) is not tuple or len(row) != 2 for row in rows):
+            raise PhaseCContractError(code)
+        if tuple(row[0] for row in rows) != signals:
+            raise PhaseCContractError(code)
+        if any(type(row[1]) is not int or row[1] < 0 for row in rows):
+            raise PhaseCContractError(code)
+
+    for field in (
+        "contradictory_signals",
+        "seen_independence_keys",
+        "switch_confirmation_keys",
+        "contributing_evidence_refs",
+        "seen_evidence_refs",
+        "retired_independence_keys",
+    ):
+        values = getattr(internal, field)
+        if (
+            type(values) is not tuple
+            or any(type(value) is not str for value in values)
+        ):
+            raise PhaseCContractError(f"expected_internal_{field}_shape")
+
+    entry_rows = internal.entry_confirmation_keys_by_signal
+    if (
+        type(entry_rows) is not tuple
+        or len(entry_rows) != len(signals)
+        or any(type(row) is not tuple or len(row) != 2 for row in entry_rows)
+        or tuple(row[0] for row in entry_rows) != signals
+    ):
+        raise PhaseCContractError("expected_internal_entry_shape")
+    for _, keys in entry_rows:
+        if (
+            type(keys) is not tuple
+            or any(type(key) is not str for key in keys)
+            or len(keys) != len(set(keys))
+        ):
+            raise PhaseCContractError("expected_internal_entry_shape")
+
+    for field in (
+        "internal_incumbent",
+        "switch_challenger",
+        "last_emitted_selected_signal",
+    ):
+        value = getattr(internal, field)
+        if value is not None and type(value) is not str:
+            raise PhaseCContractError("expected_internal_scalar_type")
+
+    for field in (
+        "incumbent_tenure",
+        "release_streak",
+        "accepted_turn_count",
+    ):
+        value = getattr(internal, field)
+        if type(value) is not int or value < 0:
+            raise PhaseCContractError("expected_internal_counter")
+
+    last_support = internal.last_emitted_selected_support
+    if (
+        last_support is not None
+        and (type(last_support) is not int or last_support < 0)
+    ):
+        raise PhaseCContractError("expected_internal_last_support")
+
+
 def _expected_internal_to_payload(
     internal: PhaseCExpectedInternalProjectionV1,
 ) -> dict[str, Any]:
-    if type(internal) is not PhaseCExpectedInternalProjectionV1:
-        raise PhaseCContractError("expected_internal_not_object")
+    _validate_expected_internal_dataclass_shape(internal)
     return {
         "gross_supporting_units": dict(internal.gross_supporting_units),
         "gross_opposing_units": dict(internal.gross_opposing_units),
