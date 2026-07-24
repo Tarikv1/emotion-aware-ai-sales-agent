@@ -4406,3 +4406,830 @@ class PhaseCAdvanceTests(PhaseCTestCase):
                 state,
                 self.policy,
             )
+
+
+TASK_7_FAMILY_COUNT_ORDER = (
+    "entry",
+    "independence",
+    "rejection",
+    "abstention",
+    "contradiction",
+    "hysteresis",
+    "correction",
+    "isolation",
+    "determinism",
+    "saturation",
+)
+TASK_7_SIGNAL_FAMILY_COUNT_ORDER = (
+    "confusion",
+    "disengagement",
+    "frustration",
+    "hesitation",
+    "interest",
+    "mixed",
+    "none",
+)
+TASK_7_MODALITY_FAMILY_COUNT_ORDER = (
+    "text",
+    "dialogue",
+    "acoustic",
+    "multimodal",
+    "none",
+)
+TASK_7_EMITTED_ABSTENTION_COUNT_ORDER = (
+    "insufficient_evidence",
+    "contradictory_evidence",
+    "low_audio_quality",
+    "missing_input",
+)
+TASK_7_INVARIANT_NAMES = (
+    "golden_projection",
+    "rejection_no_mutation",
+    "correction_semantic_replay",
+    "session_isolation",
+    "deterministic_replay",
+    "semantic_output",
+    "privacy_boundary",
+)
+TASK_7_SAFETY_INVARIANT_NAMES = (
+    "rejection_no_mutation",
+    "session_isolation",
+    "deterministic_replay",
+    "semantic_output",
+    "privacy_boundary",
+)
+TASK_7_EXPECTED_COUNTS_BY_FAMILY = {
+    "entry": 7,
+    "independence": 1,
+    "rejection": 8,
+    "abstention": 4,
+    "contradiction": 2,
+    "hysteresis": 4,
+    "correction": 1,
+    "isolation": 1,
+    "determinism": 1,
+    "saturation": 1,
+}
+TASK_7_EXPECTED_COUNTS_BY_SIGNAL_FAMILY = {
+    "confusion": 13,
+    "disengagement": 1,
+    "frustration": 3,
+    "hesitation": 4,
+    "interest": 3,
+    "mixed": 5,
+    "none": 1,
+}
+TASK_7_EXPECTED_COUNTS_BY_MODALITY_FAMILY = {
+    "text": 23,
+    "dialogue": 1,
+    "acoustic": 2,
+    "multimodal": 3,
+    "none": 1,
+}
+TASK_7_EXPECTED_COUNTS_BY_ABSTENTION_REASON = {
+    "insufficient_evidence": 24,
+    "contradictory_evidence": 1,
+    "low_audio_quality": 1,
+    "missing_input": 11,
+}
+TASK_7_UNEXPECTED_ACCEPTANCE_SAFETY_INVARIANT_BY_CASE = {
+    "duplicate_event_rejected": "rejection_no_mutation",
+    "duplicate_reference_rejected": "rejection_no_mutation",
+    "closed_turn_correction_rejected": "rejection_no_mutation",
+    "cross_session_rejected": "session_isolation",
+    "cross_campaign_rejected": "session_isolation",
+    "wrong_campaign_version_rejected": "session_isolation",
+    "noncanonical_atom_order_rejected": "privacy_boundary",
+    "forbidden_phase_b_field_rejected": "privacy_boundary",
+}
+
+
+def _mechanical_negative_evaluation(
+    test_case: PhaseCTestCase,
+):
+    replacement = test_case.tracker.replay_validated_frames(
+        test_case.case("empty_frame_missing_input").sessions[0].frames,
+        test_case.policy,
+    )
+    original = test_case.tracker._execute_scenario_attempt
+
+    def injected(prior, scenario, attempt, policy):
+        expected = scenario.expected_steps[scenario.attempt_order.index(attempt)]
+        if (
+            scenario.case_id == "explicit_confusion_entry"
+            and expected.disposition == "accepted"
+        ):
+            return replacement.final_state, replacement.outputs[-1]
+        return original(prior, scenario, attempt, policy)
+
+    with mock.patch.object(
+        test_case.tracker,
+        "_execute_scenario_attempt",
+        side_effect=injected,
+    ):
+        return test_case.tracker.evaluate_phase_c_scenarios(
+            test_case.policy,
+            test_case.scenarios,
+        )
+
+
+def _semantic_negative_evaluation(
+    test_case: PhaseCTestCase,
+):
+    replacement = test_case.tracker.replay_validated_frames(
+        test_case.case("explicit_confusion_entry").sessions[0].frames,
+        test_case.policy,
+    )
+    invalid_output = copy.deepcopy(replacement.outputs[-1])
+    invalid_output["runtime_approved"] = True
+    original = test_case.tracker._execute_scenario_attempt
+
+    def injected(prior, scenario, attempt, policy):
+        expected = scenario.expected_steps[scenario.attempt_order.index(attempt)]
+        if (
+            scenario.case_id == "explicit_confusion_entry"
+            and expected.disposition == "accepted"
+        ):
+            return replacement.final_state, invalid_output
+        return original(prior, scenario, attempt, policy)
+
+    with mock.patch.object(
+        test_case.tracker,
+        "_execute_scenario_attempt",
+        side_effect=injected,
+    ):
+        return test_case.tracker.evaluate_phase_c_scenarios(
+            test_case.policy,
+            test_case.scenarios,
+        )
+
+
+def _structural_semantic_negative_evaluation(
+    test_case: PhaseCTestCase,
+):
+    replacement = test_case.tracker.replay_validated_frames(
+        test_case.case("explicit_confusion_entry").sessions[0].frames,
+        test_case.policy,
+    )
+    original = test_case.tracker._execute_scenario_attempt
+
+    def injected(prior, scenario, attempt, policy):
+        expected = scenario.expected_steps[scenario.attempt_order.index(attempt)]
+        if (
+            scenario.case_id == "explicit_confusion_entry"
+            and expected.disposition == "accepted"
+        ):
+            return replacement.final_state, object()
+        return original(prior, scenario, attempt, policy)
+
+    with mock.patch.object(
+        test_case.tracker,
+        "_execute_scenario_attempt",
+        side_effect=injected,
+    ):
+        return test_case.tracker.evaluate_phase_c_scenarios(
+            test_case.policy,
+            test_case.scenarios,
+        )
+
+
+class PhaseCScenarioEvaluationTests(PhaseCTestCase):
+    def evaluation(self):
+        return self.tracker.evaluate_phase_c_scenarios(
+            self.policy,
+            self.scenarios,
+        )
+
+    def assert_single_failure(
+        self,
+        evaluation,
+        expected_invariants,
+    ) -> None:
+        self.assertEqual(evaluation.passed_scenarios, 29)
+        self.assertEqual(evaluation.failed_scenarios, 1)
+        failed = tuple(
+            outcome
+            for outcome in evaluation.outcomes
+            if not outcome.passed
+        )
+        self.assertEqual(len(failed), 1)
+        self.assertEqual(
+            failed[0].failed_invariants,
+            tuple(
+                name
+                for name in TASK_7_INVARIANT_NAMES
+                if name in expected_invariants
+            ),
+        )
+        self.assertEqual(
+            dict(evaluation.invariant_counts),
+            {
+                name: int(name in expected_invariants)
+                for name in TASK_7_INVARIANT_NAMES
+            },
+        )
+
+    def test_task_7_exact_frozen_types_constants_and_mapping_immutability(
+        self,
+    ) -> None:
+        self.assertEqual(
+            tuple(
+                field.name
+                for field in dataclasses.fields(
+                    phase_c_contracts.PhaseCScenarioOutcomeV1,
+                )
+            ),
+            (
+                "case_id",
+                "family",
+                "signal_family",
+                "modality_family",
+                "passed",
+                "failed_invariants",
+                "rejection_count",
+                "abstention_reason_counts",
+            ),
+        )
+        self.assertEqual(
+            tuple(
+                field.name
+                for field in dataclasses.fields(
+                    phase_c_contracts.PhaseCScenarioEvaluationV1,
+                )
+            ),
+            (
+                "total_scenarios",
+                "passed_scenarios",
+                "failed_scenarios",
+                "outcomes",
+                "counts_by_family",
+                "counts_by_signal",
+                "counts_by_modality",
+                "counts_by_abstention_reason",
+                "invariant_counts",
+                "deterministic_replay_passed",
+                "privacy_boundary_passed",
+            ),
+        )
+        self.assertEqual(
+            phase_c_contracts.REJECTION_CASE_IDS,
+            REJECTION_CASE_IDS,
+        )
+        self.assertEqual(
+            phase_c_contracts.FAMILY_COUNT_ORDER,
+            TASK_7_FAMILY_COUNT_ORDER,
+        )
+        self.assertEqual(
+            phase_c_contracts.SIGNAL_FAMILY_COUNT_ORDER,
+            TASK_7_SIGNAL_FAMILY_COUNT_ORDER,
+        )
+        self.assertEqual(
+            phase_c_contracts.MODALITY_FAMILY_COUNT_ORDER,
+            TASK_7_MODALITY_FAMILY_COUNT_ORDER,
+        )
+        self.assertEqual(
+            phase_c_contracts.EMITTED_ABSTENTION_COUNT_ORDER,
+            TASK_7_EMITTED_ABSTENTION_COUNT_ORDER,
+        )
+        self.assertEqual(
+            phase_c_contracts.INVARIANT_NAMES,
+            TASK_7_INVARIANT_NAMES,
+        )
+        self.assertEqual(
+            phase_c_contracts.SAFETY_INVARIANT_NAMES,
+            TASK_7_SAFETY_INVARIANT_NAMES,
+        )
+        mappings = (
+            (
+                phase_c_contracts.UNEXPECTED_ACCEPTANCE_SAFETY_INVARIANT_BY_CASE,
+                TASK_7_UNEXPECTED_ACCEPTANCE_SAFETY_INVARIANT_BY_CASE,
+            ),
+            (
+                phase_c_contracts.EXPECTED_COUNTS_BY_FAMILY,
+                TASK_7_EXPECTED_COUNTS_BY_FAMILY,
+            ),
+            (
+                phase_c_contracts.EXPECTED_COUNTS_BY_SIGNAL_FAMILY,
+                TASK_7_EXPECTED_COUNTS_BY_SIGNAL_FAMILY,
+            ),
+            (
+                phase_c_contracts.EXPECTED_COUNTS_BY_MODALITY_FAMILY,
+                TASK_7_EXPECTED_COUNTS_BY_MODALITY_FAMILY,
+            ),
+            (
+                phase_c_contracts.EXPECTED_COUNTS_BY_ABSTENTION_REASON,
+                TASK_7_EXPECTED_COUNTS_BY_ABSTENTION_REASON,
+            ),
+        )
+        for actual, expected in mappings:
+            with self.subTest(mapping=expected):
+                self.assertEqual(type(actual).__name__, "mappingproxy")
+                self.assertEqual(dict(actual), expected)
+                with self.assertRaises(TypeError):
+                    actual[next(iter(expected))] = 999
+
+    def test_all_30_frozen_scenarios_match_golden_expectations(self) -> None:
+        evaluation = self.evaluation()
+        self.assertEqual(evaluation.total_scenarios, 30)
+        self.assertEqual(evaluation.passed_scenarios, 30)
+        self.assertEqual(evaluation.failed_scenarios, 0)
+        self.assertEqual(
+            tuple(item.case_id for item in evaluation.outcomes),
+            EXPECTED_SCENARIO_IDS_FOR_TEST,
+        )
+        self.assertTrue(all(item.passed for item in evaluation.outcomes))
+        self.assertTrue(
+            all(item.failed_invariants == () for item in evaluation.outcomes),
+        )
+
+    def test_green_aggregate_uses_exact_dense_order_counts_and_algebra(
+        self,
+    ) -> None:
+        evaluation = self.evaluation()
+        self.assertEqual(
+            evaluation.counts_by_family,
+            tuple(
+                (name, TASK_7_EXPECTED_COUNTS_BY_FAMILY[name])
+                for name in TASK_7_FAMILY_COUNT_ORDER
+            ),
+        )
+        self.assertEqual(
+            evaluation.counts_by_signal,
+            tuple(
+                (name, TASK_7_EXPECTED_COUNTS_BY_SIGNAL_FAMILY[name])
+                for name in TASK_7_SIGNAL_FAMILY_COUNT_ORDER
+            ),
+        )
+        self.assertEqual(
+            evaluation.counts_by_modality,
+            tuple(
+                (name, TASK_7_EXPECTED_COUNTS_BY_MODALITY_FAMILY[name])
+                for name in TASK_7_MODALITY_FAMILY_COUNT_ORDER
+            ),
+        )
+        self.assertEqual(
+            evaluation.counts_by_abstention_reason,
+            tuple(
+                (name, TASK_7_EXPECTED_COUNTS_BY_ABSTENTION_REASON[name])
+                for name in TASK_7_EMITTED_ABSTENTION_COUNT_ORDER
+            ),
+        )
+        self.assertEqual(
+            evaluation.invariant_counts,
+            tuple((name, 0) for name in TASK_7_INVARIANT_NAMES),
+        )
+        self.assertTrue(evaluation.deterministic_replay_passed)
+        self.assertTrue(evaluation.privacy_boundary_passed)
+        by_case = {outcome.case_id: outcome for outcome in evaluation.outcomes}
+        for case_id in EXPECTED_SCENARIO_IDS_FOR_TEST:
+            with self.subTest(case_id=case_id):
+                outcome = by_case[case_id]
+                self.assertEqual(
+                    (
+                        outcome.family,
+                        outcome.signal_family,
+                        outcome.modality_family,
+                    ),
+                    EXPECTED_SCENARIO_CLASSIFICATIONS_FOR_TEST[case_id],
+                )
+                self.assertEqual(
+                    tuple(name for name, _count in outcome.abstention_reason_counts),
+                    TASK_7_EMITTED_ABSTENTION_COUNT_ORDER,
+                )
+                expected_rejections = (
+                    4
+                    if case_id == "forbidden_phase_b_field_rejected"
+                    else int(case_id in REJECTION_CASE_IDS)
+                )
+                self.assertEqual(outcome.rejection_count, expected_rejections)
+
+    def test_expected_outputs_are_not_built_by_the_reducer_renderer(self) -> None:
+        source = inspect.getsource(
+            self.tracker.evaluate_phase_c_scenarios,
+        )
+        self.assertNotIn("render_phase_c_report", source)
+        self.assertNotIn("build_phase_c_result", source)
+
+    def test_evaluator_has_no_io_runner_validator_or_fault_injection_api(
+        self,
+    ) -> None:
+        source = inspect.getsource(
+            self.tracker.evaluate_phase_c_scenarios,
+        )
+        self.assertNotIn("open(", source)
+        self.assertNotIn("Path(", source)
+        self.assertNotIn("load_json", source)
+        signature = inspect.signature(
+            self.tracker.evaluate_phase_c_scenarios,
+        )
+        self.assertEqual(tuple(signature.parameters), ("policy", "scenarios"))
+        module_source = inspect.getsource(self.tracker)
+        self.assertNotIn("emotion_state_phase_c_runner", module_source)
+        self.assertNotIn("emotion_state_phase_c_validator", module_source)
+
+    def test_golden_mutation_is_detected(self) -> None:
+        scenario = self.case("explicit_confusion_entry")
+        expected = scenario.expected_steps[0]
+        mutated_internal = dataclasses.replace(
+            expected.expected_internal,
+            capped_net_support=(
+                ("confusion", 699),
+                *expected.expected_internal.capped_net_support[1:],
+            ),
+        )
+        mutated = dataclasses.replace(
+            scenario,
+            expected_steps=(
+                dataclasses.replace(
+                    expected,
+                    expected_internal=mutated_internal,
+                ),
+            ),
+        )
+        scenarios = dict(self.scenarios)
+        scenarios[scenario.case_id] = mutated
+        evaluation = self.tracker.evaluate_phase_c_scenarios(
+            self.policy,
+            scenarios,
+        )
+        self.assertEqual(evaluation.failed_scenarios, 1)
+        outcome = evaluation.outcomes[0]
+        self.assertIn("golden_projection", outcome.failed_invariants)
+
+    def test_every_unexpected_rejection_acceptance_maps_to_safety_invariant(
+        self,
+    ) -> None:
+        fixture = self.tracker.replay_validated_frames(
+            self.case("explicit_confusion_entry").sessions[0].frames,
+            self.policy,
+        )
+        accepted = (fixture.final_state, fixture.outputs[-1])
+        original = self.tracker._execute_scenario_attempt
+        for case_id, safety_invariant in (
+            TASK_7_UNEXPECTED_ACCEPTANCE_SAFETY_INVARIANT_BY_CASE.items()
+        ):
+            def injected(prior, scenario, attempt, policy):
+                index = scenario.attempt_order.index(attempt)
+                expected = scenario.expected_steps[index]
+                if (
+                    scenario.case_id == case_id
+                    and expected.disposition == "rejected"
+                ):
+                    return accepted
+                return original(prior, scenario, attempt, policy)
+
+            with self.subTest(case_id=case_id):
+                with mock.patch.object(
+                    self.tracker,
+                    "_execute_scenario_attempt",
+                    side_effect=injected,
+                ):
+                    evaluation = self.evaluation()
+                outcome = next(
+                    item
+                    for item in evaluation.outcomes
+                    if item.case_id == case_id
+                )
+                self.assertIn("golden_projection", outcome.failed_invariants)
+                self.assertIn(safety_invariant, outcome.failed_invariants)
+                self.assertEqual(evaluation.failed_scenarios, 1)
+
+    def test_unexpected_acceptance_never_installs_rejected_successor(
+        self,
+    ) -> None:
+        fixture = self.tracker.replay_validated_frames(
+            self.case("explicit_confusion_entry").sessions[0].frames,
+            self.policy,
+        )
+        accepted = (fixture.final_state, fixture.outputs[-1])
+        original = self.tracker._execute_scenario_attempt
+        observed_priors = []
+
+        def injected(prior, scenario, attempt, policy):
+            if scenario.case_id == "forbidden_phase_b_field_rejected":
+                observed_priors.append(prior)
+                return accepted
+            return original(prior, scenario, attempt, policy)
+
+        with mock.patch.object(
+            self.tracker,
+            "_execute_scenario_attempt",
+            side_effect=injected,
+        ):
+            evaluation = self.evaluation()
+        self.assertEqual(observed_priors, [None, None, None, None])
+        self.assertEqual(evaluation.failed_scenarios, 1)
+
+    def test_negative_evaluation_keeps_actual_abstention_counts(self) -> None:
+        evaluation = _mechanical_negative_evaluation(self)
+        self.assert_single_failure(evaluation, {"golden_projection"})
+        actual = dict(evaluation.counts_by_abstention_reason)
+        self.assertEqual(
+            actual["missing_input"],
+            TASK_7_EXPECTED_COUNTS_BY_ABSTENTION_REASON["missing_input"] + 1,
+        )
+        self.assertEqual(
+            actual["insufficient_evidence"],
+            TASK_7_EXPECTED_COUNTS_BY_ABSTENTION_REASON[
+                "insufficient_evidence"
+            ] + 1,
+        )
+        self.assertEqual(
+            actual["contradictory_evidence"],
+            TASK_7_EXPECTED_COUNTS_BY_ABSTENTION_REASON[
+                "contradictory_evidence"
+            ],
+        )
+        self.assertEqual(
+            actual["low_audio_quality"],
+            TASK_7_EXPECTED_COUNTS_BY_ABSTENTION_REASON["low_audio_quality"],
+        )
+
+    def test_invalid_returned_dict_is_semantic_and_privacy_failure(self) -> None:
+        evaluation = _semantic_negative_evaluation(self)
+        self.assert_single_failure(
+            evaluation,
+            {"golden_projection", "semantic_output"},
+        )
+        self.assertFalse(evaluation.privacy_boundary_passed)
+
+    def test_direct_semantic_exception_is_not_mechanical_only(self) -> None:
+        original = self.tracker._execute_scenario_attempt
+
+        def injected(prior, scenario, attempt, policy):
+            expected = scenario.expected_steps[scenario.attempt_order.index(attempt)]
+            if (
+                scenario.case_id == "explicit_confusion_entry"
+                and expected.disposition == "accepted"
+            ):
+                raise PhaseCOutputSemanticError("runtime_approved")
+            return original(prior, scenario, attempt, policy)
+
+        with mock.patch.object(
+            self.tracker,
+            "_execute_scenario_attempt",
+            side_effect=injected,
+        ):
+            evaluation = self.evaluation()
+        self.assert_single_failure(
+            evaluation,
+            {"golden_projection", "semantic_output"},
+        )
+        self.assertFalse(evaluation.privacy_boundary_passed)
+
+    def test_non_mapping_nonserializable_output_fails_closed(self) -> None:
+        evaluation = _structural_semantic_negative_evaluation(self)
+        self.assert_single_failure(
+            evaluation,
+            {"golden_projection", "semantic_output"},
+        )
+        self.assertFalse(evaluation.privacy_boundary_passed)
+
+    def test_semantic_validation_precedes_comparison_install_and_count(
+        self,
+    ) -> None:
+        evaluation = _semantic_negative_evaluation(self)
+        self.assertEqual(
+            dict(evaluation.counts_by_abstention_reason),
+            TASK_7_EXPECTED_COUNTS_BY_ABSTENTION_REASON,
+        )
+        next_outcome = evaluation.outcomes[1]
+        self.assertTrue(next_outcome.passed)
+
+    def test_special_replay_correction_and_isolation_checks_execute(
+        self,
+    ) -> None:
+        with mock.patch.object(
+            self.tracker,
+            "canonical_semantic_replay_bytes",
+            wraps=self.tracker.canonical_semantic_replay_bytes,
+        ) as semantic_bytes, mock.patch.object(
+            self.tracker,
+            "replay_validated_frames",
+            wraps=self.tracker.replay_validated_frames,
+        ) as replay, mock.patch.object(
+            self.tracker,
+            "advance",
+            wraps=self.tracker.advance,
+        ) as advance:
+            evaluation = self.evaluation()
+        self.assertEqual(evaluation.failed_scenarios, 0)
+        self.assertGreaterEqual(semantic_bytes.call_count, 2)
+        self.assertGreaterEqual(replay.call_count, 5)
+        self.assertGreater(advance.call_count, 0)
+
+    def test_deterministic_replay_fail_open_mutation_is_classified(self) -> None:
+        target = self.case("canonical_replay_bytes").sessions[0].frames
+        original = self.tracker.replay_validated_frames
+        target_calls = 0
+
+        def injected(frames, policy):
+            nonlocal target_calls
+            result = original(frames, policy)
+            if frames != target:
+                return result
+            target_calls += 1
+            if target_calls != 2:
+                return result
+            mutated_output = copy.deepcopy(result.outputs[-1])
+            mutated_output["runtime_approved"] = True
+            return dataclasses.replace(
+                result,
+                outputs=(*result.outputs[:-1], mutated_output),
+            )
+
+        with mock.patch.object(
+            self.tracker,
+            "replay_validated_frames",
+            side_effect=injected,
+        ):
+            evaluation = self.evaluation()
+        self.assert_single_failure(evaluation, {"deterministic_replay"})
+        self.assertTrue(evaluation.privacy_boundary_passed)
+
+    def test_correction_semantic_fail_open_mutation_is_classified(self) -> None:
+        with mock.patch.object(
+            self.tracker,
+            "canonical_semantic_replay_bytes",
+            side_effect=(b"corrected", b"fresh"),
+        ):
+            evaluation = self.evaluation()
+        self.assert_single_failure(
+            evaluation,
+            {"correction_semantic_replay"},
+        )
+        self.assertTrue(evaluation.privacy_boundary_passed)
+
+    def test_session_cross_feed_fail_open_mutation_is_classified(self) -> None:
+        original = self.tracker.advance
+
+        def injected(prior, frame, policy):
+            if (
+                prior is not None
+                and "simultaneous_sessions_isolated"
+                in prior.call_session_id
+                and prior.call_session_id != frame.call_session_id
+            ):
+                return prior, {}
+            return original(prior, frame, policy)
+
+        with mock.patch.object(
+            self.tracker,
+            "advance",
+            side_effect=injected,
+        ):
+            evaluation = self.evaluation()
+        self.assert_single_failure(evaluation, {"session_isolation"})
+        self.assertFalse(evaluation.privacy_boundary_passed)
+
+    def test_invalid_output_is_not_installed_before_next_attempt(self) -> None:
+        original = self.tracker._execute_scenario_attempt
+        observed_priors = []
+
+        def injected(prior, scenario, attempt, policy):
+            if scenario.case_id == "transcript_three_turn_entry":
+                observed_priors.append(prior)
+                successor, output = original(
+                    prior,
+                    scenario,
+                    attempt,
+                    policy,
+                )
+                if len(observed_priors) == 1:
+                    invalid = copy.deepcopy(output)
+                    invalid["runtime_approved"] = True
+                    return successor, invalid
+                return successor, output
+            return original(prior, scenario, attempt, policy)
+
+        with mock.patch.object(
+            self.tracker,
+            "_execute_scenario_attempt",
+            side_effect=injected,
+        ):
+            evaluation = self.evaluation()
+        self.assertIsNone(observed_priors[0])
+        self.assertIsNone(observed_priors[1])
+        self.assert_single_failure(
+            evaluation,
+            {"golden_projection", "semantic_output"},
+        )
+
+    def test_exact_internal_projection_has_only_18_authority_fields(
+        self,
+    ) -> None:
+        replay = self.tracker.replay_validated_frames(
+            self.case("explicit_confusion_entry").sessions[0].frames,
+            self.policy,
+        )
+        projection = self.tracker.exact_internal_projection(
+            replay.final_state,
+        )
+        self.assertEqual(
+            tuple(projection),
+            (
+                "gross_supporting_units",
+                "gross_opposing_units",
+                "uncapped_net_support",
+                "capped_net_support",
+                "contradictory_signals",
+                "seen_independence_keys",
+                "internal_incumbent",
+                "incumbent_tenure",
+                "entry_confirmation_keys_by_signal",
+                "switch_challenger",
+                "switch_confirmation_keys",
+                "release_streak",
+                "contributing_evidence_refs",
+                "seen_evidence_refs",
+                "retired_independence_keys",
+                "accepted_turn_count",
+                "last_emitted_selected_signal",
+                "last_emitted_selected_support",
+            ),
+        )
+        for name in (
+            "gross_supporting_units",
+            "gross_opposing_units",
+            "uncapped_net_support",
+            "capped_net_support",
+            "entry_confirmation_keys_by_signal",
+        ):
+            with self.subTest(name=name):
+                self.assertIs(type(projection[name]), dict)
+                self.assertEqual(
+                    tuple(projection[name]),
+                    tuple(self.policy["canonical_signal_order"]),
+                )
+
+    def test_privacy_inspection_recursively_fails_closed(self) -> None:
+        forbidden_values = (
+            {"nested": [{"raw_audio": False}]},
+            {"nested": ["evidence:uuid:00000000-0000-4000-8000-000000000001"]},
+            {"nested": ["ind:explicit_confusion_entry:A:0:0:0"]},
+            {"nested": ["explicit_confusion_entry"]},
+            {"nested": [object()]},
+        )
+        for value in forbidden_values:
+            with self.subTest(value=repr(value)):
+                self.assertTrue(
+                    self.tracker._phase_c_privacy_inspection_failed(value),
+                )
+        self.assertFalse(
+            self.tracker._phase_c_privacy_inspection_failed({
+                "counts": {
+                    "entry": 7,
+                    "semantic_output": 0,
+                },
+                "deterministic_replay_passed": True,
+                "privacy_boundary_passed": True,
+            }),
+        )
+
+    def test_privacy_failure_rebuilds_exact_outcome_algebra_once(self) -> None:
+        with mock.patch.object(
+            self.tracker,
+            "_phase_c_privacy_inspection_failed",
+            return_value=True,
+        ):
+            evaluation = self.evaluation()
+        self.assert_single_failure(evaluation, {"privacy_boundary"})
+        self.assertEqual(
+            evaluation.outcomes[0].case_id,
+            "explicit_confusion_entry",
+        )
+        self.assertFalse(evaluation.privacy_boundary_passed)
+
+    def test_aggregate_retains_only_allowlisted_immutable_fields(self) -> None:
+        evaluation = self.evaluation()
+        self.assertTrue(evaluation.outcomes)
+        for outcome in evaluation.outcomes:
+            values = dataclasses.asdict(outcome)
+            self.assertEqual(
+                set(values),
+                {
+                    "case_id",
+                    "family",
+                    "signal_family",
+                    "modality_family",
+                    "passed",
+                    "failed_invariants",
+                    "rejection_count",
+                    "abstention_reason_counts",
+                },
+            )
+            self.assertTrue(
+                all(
+                    fragment not in repr(values)
+                    for fragment in (
+                        "accepted_frames",
+                        "evidence_atoms",
+                        "watermark",
+                        "event_id",
+                        "turn_id",
+                        "call_session_id",
+                        "evidence:uuid:",
+                        "ind:",
+                    )
+                ),
+            )

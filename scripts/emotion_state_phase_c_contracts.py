@@ -156,6 +156,33 @@ class PhaseCReplayV1:
 
 
 @dataclass(frozen=True)
+class PhaseCScenarioOutcomeV1:
+    case_id: str
+    family: str
+    signal_family: str
+    modality_family: str
+    passed: bool
+    failed_invariants: tuple[str, ...]
+    rejection_count: int
+    abstention_reason_counts: tuple[tuple[str, int], ...]
+
+
+@dataclass(frozen=True)
+class PhaseCScenarioEvaluationV1:
+    total_scenarios: int
+    passed_scenarios: int
+    failed_scenarios: int
+    outcomes: tuple[PhaseCScenarioOutcomeV1, ...]
+    counts_by_family: tuple[tuple[str, int], ...]
+    counts_by_signal: tuple[tuple[str, int], ...]
+    counts_by_modality: tuple[tuple[str, int], ...]
+    counts_by_abstention_reason: tuple[tuple[str, int], ...]
+    invariant_counts: tuple[tuple[str, int], ...]
+    deterministic_replay_passed: bool
+    privacy_boundary_passed: bool
+
+
+@dataclass(frozen=True)
 class PhaseCExpectedInternalProjectionV1:
     gross_supporting_units: tuple[tuple[str, int], ...]
     gross_opposing_units: tuple[tuple[str, int], ...]
@@ -332,6 +359,110 @@ EXPECTED_SCENARIO_CLASSIFICATIONS = MappingProxyType({
         "multimodal",
     ),
 })
+REJECTION_CASE_IDS = (
+    "duplicate_event_rejected",
+    "duplicate_reference_rejected",
+    "closed_turn_correction_rejected",
+    "cross_session_rejected",
+    "cross_campaign_rejected",
+    "wrong_campaign_version_rejected",
+    "noncanonical_atom_order_rejected",
+    "forbidden_phase_b_field_rejected",
+)
+UNEXPECTED_ACCEPTANCE_SAFETY_INVARIANT_BY_CASE = MappingProxyType({
+    "duplicate_event_rejected": "rejection_no_mutation",
+    "duplicate_reference_rejected": "rejection_no_mutation",
+    "closed_turn_correction_rejected": "rejection_no_mutation",
+    "cross_session_rejected": "session_isolation",
+    "cross_campaign_rejected": "session_isolation",
+    "wrong_campaign_version_rejected": "session_isolation",
+    "noncanonical_atom_order_rejected": "privacy_boundary",
+    "forbidden_phase_b_field_rejected": "privacy_boundary",
+})
+FAMILY_COUNT_ORDER = (
+    "entry",
+    "independence",
+    "rejection",
+    "abstention",
+    "contradiction",
+    "hysteresis",
+    "correction",
+    "isolation",
+    "determinism",
+    "saturation",
+)
+SIGNAL_FAMILY_COUNT_ORDER = (
+    "confusion",
+    "disengagement",
+    "frustration",
+    "hesitation",
+    "interest",
+    "mixed",
+    "none",
+)
+MODALITY_FAMILY_COUNT_ORDER = (
+    "text",
+    "dialogue",
+    "acoustic",
+    "multimodal",
+    "none",
+)
+EMITTED_ABSTENTION_COUNT_ORDER = (
+    "insufficient_evidence",
+    "contradictory_evidence",
+    "low_audio_quality",
+    "missing_input",
+)
+EXPECTED_COUNTS_BY_FAMILY = MappingProxyType({
+    "entry": 7,
+    "independence": 1,
+    "rejection": 8,
+    "abstention": 4,
+    "contradiction": 2,
+    "hysteresis": 4,
+    "correction": 1,
+    "isolation": 1,
+    "determinism": 1,
+    "saturation": 1,
+})
+EXPECTED_COUNTS_BY_SIGNAL_FAMILY = MappingProxyType({
+    "confusion": 13,
+    "disengagement": 1,
+    "frustration": 3,
+    "hesitation": 4,
+    "interest": 3,
+    "mixed": 5,
+    "none": 1,
+})
+EXPECTED_COUNTS_BY_MODALITY_FAMILY = MappingProxyType({
+    "text": 23,
+    "dialogue": 1,
+    "acoustic": 2,
+    "multimodal": 3,
+    "none": 1,
+})
+EXPECTED_COUNTS_BY_ABSTENTION_REASON = MappingProxyType({
+    "insufficient_evidence": 24,
+    "contradictory_evidence": 1,
+    "low_audio_quality": 1,
+    "missing_input": 11,
+})
+INVARIANT_NAMES = (
+    "golden_projection",
+    "rejection_no_mutation",
+    "correction_semantic_replay",
+    "session_isolation",
+    "deterministic_replay",
+    "semantic_output",
+    "privacy_boundary",
+)
+SAFETY_INVARIANT_NAMES = (
+    "rejection_no_mutation",
+    "session_isolation",
+    "deterministic_replay",
+    "semantic_output",
+    "privacy_boundary",
+)
 SCENARIO_MATRIX_FIELDS = frozenset({"schema_version", "policy_id", "scenarios"})
 SCENARIO_FIELDS = frozenset({
     "case_id",

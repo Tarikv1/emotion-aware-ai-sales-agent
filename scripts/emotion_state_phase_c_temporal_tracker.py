@@ -1,27 +1,48 @@
 from __future__ import annotations
 
-from dataclasses import fields, is_dataclass
+from dataclasses import fields, is_dataclass, replace
 from typing import Any, Mapping
 
 from runtime.contracts.emotion_state_contracts import (
     validate_perceived_customer_state,
 )
 from scripts.emotion_state_phase_c_contracts import (
+    EMITTED_ABSTENTION_COUNT_ORDER,
+    EVIDENCE_REF_PATTERN,
+    EXPECTED_COUNTS_BY_ABSTENTION_REASON,
+    EXPECTED_COUNTS_BY_FAMILY,
+    EXPECTED_COUNTS_BY_MODALITY_FAMILY,
+    EXPECTED_COUNTS_BY_SIGNAL_FAMILY,
+    EXPECTED_SCENARIO_CLASSIFICATIONS,
+    EXPECTED_SCENARIO_IDS,
+    FAMILY_COUNT_ORDER,
+    FORBIDDEN_PHASE_C_KEY_FRAGMENTS,
+    INVARIANT_NAMES,
+    MODALITY_FAMILY_COUNT_ORDER,
     PhaseCContractError,
     PhaseCEventRejected,
     PhaseCEventWatermarkV1,
+    PhaseCExpectedInternalProjectionV1,
     PhaseCFrameFoldV1,
     PhaseCHysteresisV1,
     PhaseCOutputSemanticError,
     PhaseCProjectionContextV1,
     PhaseCReplayV1,
+    PhaseCScenarioEvaluationV1,
+    PhaseCScenarioOutcomeV1,
+    PhaseCScenarioV1,
     PhaseCSignalAccumulatorV1,
     PhaseCSyntheticEvidenceAtomV1,
     PhaseCSyntheticEvidenceFrameV1,
     PhaseCTemporalSessionStateV1,
+    SAFETY_INVARIANT_NAMES,
+    SIGNAL_FAMILY_COUNT_ORDER,
+    UNEXPECTED_ACCEPTANCE_SAFETY_INVARIANT_BY_CASE,
     _derive_phase_c_retired_independence_keys,
     canonical_json_bytes,
     initial_phase_c_watermark,
+    materialize_phase_c_scenario_attempt_payload,
+    parse_phase_c_frame,
     phase_c_frame_to_payload,
     sha256_bytes,
     validate_phase_c_event_identity,
@@ -1393,3 +1414,515 @@ def replay_validated_frames(
         states.append(final)
         outputs.append(output)
     return PhaseCReplayV1(final_state=states[-1], states=tuple(states), outputs=tuple(outputs))
+
+
+def _execute_scenario_attempt(
+    prior: PhaseCTemporalSessionStateV1 | None,
+    scenario: PhaseCScenarioV1,
+    attempt: Any,
+    policy: Mapping[str, Any],
+) -> tuple[PhaseCTemporalSessionStateV1, dict[str, Any]]:
+    payload = materialize_phase_c_scenario_attempt_payload(scenario, attempt)
+    frame = parse_phase_c_frame(payload, dict(policy))
+    return advance(prior, frame, policy)
+
+
+def exact_internal_projection(
+    state: PhaseCTemporalSessionStateV1,
+) -> dict[str, Any]:
+    if type(state) is not PhaseCTemporalSessionStateV1:
+        raise PhaseCContractError("session_state_type")
+    return {
+        "gross_supporting_units": dict(
+            state.accumulator.gross_supporting_units,
+        ),
+        "gross_opposing_units": dict(
+            state.accumulator.gross_opposing_units,
+        ),
+        "uncapped_net_support": dict(
+            state.accumulator.uncapped_net_support,
+        ),
+        "capped_net_support": dict(
+            state.accumulator.capped_net_support,
+        ),
+        "contradictory_signals": state.accumulator.contradictory_signals,
+        "seen_independence_keys": state.seen_independence_keys,
+        "internal_incumbent": state.hysteresis.internal_incumbent,
+        "incumbent_tenure": state.hysteresis.incumbent_tenure,
+        "entry_confirmation_keys_by_signal": dict(
+            state.hysteresis.entry_confirmation_keys_by_signal,
+        ),
+        "switch_challenger": state.hysteresis.switch_challenger,
+        "switch_confirmation_keys": (
+            state.hysteresis.switch_confirmation_keys
+        ),
+        "release_streak": state.hysteresis.release_streak,
+        "contributing_evidence_refs": state.contributing_evidence_refs,
+        "seen_evidence_refs": state.seen_evidence_refs,
+        "retired_independence_keys": state.retired_independence_keys,
+        "accepted_turn_count": state.accepted_turn_count,
+        "last_emitted_selected_signal": (
+            state.last_emitted_selected_signal
+        ),
+        "last_emitted_selected_support": (
+            state.last_emitted_selected_support
+        ),
+    }
+
+
+def _expected_internal_projection(
+    expected: PhaseCExpectedInternalProjectionV1,
+) -> dict[str, Any]:
+    if type(expected) is not PhaseCExpectedInternalProjectionV1:
+        raise PhaseCContractError("expected_internal_not_object")
+    return {
+        "gross_supporting_units": dict(expected.gross_supporting_units),
+        "gross_opposing_units": dict(expected.gross_opposing_units),
+        "uncapped_net_support": dict(expected.uncapped_net_support),
+        "capped_net_support": dict(expected.capped_net_support),
+        "contradictory_signals": expected.contradictory_signals,
+        "seen_independence_keys": expected.seen_independence_keys,
+        "internal_incumbent": expected.internal_incumbent,
+        "incumbent_tenure": expected.incumbent_tenure,
+        "entry_confirmation_keys_by_signal": dict(
+            expected.entry_confirmation_keys_by_signal,
+        ),
+        "switch_challenger": expected.switch_challenger,
+        "switch_confirmation_keys": expected.switch_confirmation_keys,
+        "release_streak": expected.release_streak,
+        "contributing_evidence_refs": expected.contributing_evidence_refs,
+        "seen_evidence_refs": expected.seen_evidence_refs,
+        "retired_independence_keys": expected.retired_independence_keys,
+        "accepted_turn_count": expected.accepted_turn_count,
+        "last_emitted_selected_signal": (
+            expected.last_emitted_selected_signal
+        ),
+        "last_emitted_selected_support": (
+            expected.last_emitted_selected_support
+        ),
+    }
+
+
+def _deterministic_replay_failed(
+    scenario: PhaseCScenarioV1,
+    policy: Mapping[str, Any],
+) -> bool:
+    try:
+        frames = scenario.sessions[0].frames
+        first = replay_validated_frames(frames, policy)
+        second = replay_validated_frames(frames, policy)
+        return (
+            tuple(
+                canonical_session_state_bytes(state)
+                for state in first.states
+            )
+            != tuple(
+                canonical_session_state_bytes(state)
+                for state in second.states
+            )
+            or tuple(canonical_json_bytes(output) for output in first.outputs)
+            != tuple(canonical_json_bytes(output) for output in second.outputs)
+        )
+    except PhaseCContractError:
+        return True
+
+
+def _correction_semantic_replay_failed(
+    scenario: PhaseCScenarioV1,
+    state: PhaseCTemporalSessionStateV1 | None,
+    output: dict[str, Any] | None,
+    policy: Mapping[str, Any],
+) -> bool:
+    if state is None or output is None:
+        return True
+    try:
+        correction = scenario.sessions[0].frames[-1]
+        normalized = replace(
+            correction,
+            event_id=f"event:{scenario.case_id}:normalized",
+            input_revision=0,
+        )
+        fresh = replay_validated_frames((normalized,), policy)
+        validate_phase_c_state_replay(state, policy)
+        validate_phase_c_replayed_output(output, state, policy)
+        return (
+            len(state.accepted_frames) != 1
+            or len(state.evidence_history_by_event) != 2
+            or len(state.watermark.event_history_by_id) != 2
+            or dict(state.watermark.last_input_revision_by_turn).get(
+                correction.turn_id,
+            ) != 1
+            or canonical_semantic_replay_bytes(state, output)
+            != canonical_semantic_replay_bytes(
+                fresh.final_state,
+                fresh.outputs[-1],
+            )
+        )
+    except PhaseCContractError:
+        return True
+
+
+def _session_isolation_failed(
+    scenario: PhaseCScenarioV1,
+    states: Mapping[str, PhaseCTemporalSessionStateV1 | None],
+    policy: Mapping[str, Any],
+) -> bool:
+    try:
+        sessions = {
+            session.session_alias: session
+            for session in scenario.sessions
+        }
+        separate = {
+            alias: replay_validated_frames(session.frames, policy)
+            for alias, session in sessions.items()
+        }
+        if any(
+            states[alias] is None
+            or canonical_session_state_bytes(states[alias])
+            != canonical_session_state_bytes(replay.final_state)
+            for alias, replay in separate.items()
+        ):
+            return True
+        aliases = tuple(sessions)
+        left, _ = advance(None, sessions[aliases[0]].frames[0], policy)
+        right, _ = advance(None, sessions[aliases[1]].frames[0], policy)
+        for prior, incoming in (
+            (left, sessions[aliases[1]].frames[1]),
+            (right, sessions[aliases[0]].frames[1]),
+        ):
+            before = canonical_session_state_bytes(prior)
+            try:
+                advance(prior, incoming, policy)
+            except PhaseCContractError as exc:
+                if (
+                    exc.code != "cross_session"
+                    or canonical_session_state_bytes(prior) != before
+                ):
+                    return True
+            else:
+                return True
+        return False
+    except (KeyError, PhaseCContractError):
+        return True
+
+
+def _phase_c_privacy_inspection_failed(value: object) -> bool:
+    if type(value) is dict:
+        for key, item in value.items():
+            if type(key) is not str:
+                return True
+            lowered = key.lower()
+            if (
+                any(
+                    fragment in lowered
+                    for fragment in FORBIDDEN_PHASE_C_KEY_FRAGMENTS
+                )
+                or any(case_id in key for case_id in EXPECTED_SCENARIO_IDS)
+            ):
+                return True
+            if _phase_c_privacy_inspection_failed(item):
+                return True
+        return False
+    if type(value) in (list, tuple):
+        return any(
+            _phase_c_privacy_inspection_failed(item)
+            for item in value
+        )
+    if type(value) is str:
+        return (
+            EVIDENCE_REF_PATTERN.fullmatch(value) is not None
+            or value.startswith((
+                "evidence:uuid:",
+                "ind:",
+                "session:",
+                "turn:",
+                "event:",
+                "campaign:",
+            ))
+            or any(case_id in value for case_id in EXPECTED_SCENARIO_IDS)
+        )
+    return type(value) not in (bool, int)
+
+
+def _build_phase_c_evaluation(
+    outcomes: tuple[PhaseCScenarioOutcomeV1, ...],
+) -> PhaseCScenarioEvaluationV1:
+    family_counts = {
+        name: sum(outcome.family == name for outcome in outcomes)
+        for name in FAMILY_COUNT_ORDER
+    }
+    signal_counts = {
+        name: sum(outcome.signal_family == name for outcome in outcomes)
+        for name in SIGNAL_FAMILY_COUNT_ORDER
+    }
+    modality_counts = {
+        name: sum(outcome.modality_family == name for outcome in outcomes)
+        for name in MODALITY_FAMILY_COUNT_ORDER
+    }
+    abstention_counts = {
+        name: sum(
+            dict(outcome.abstention_reason_counts)[name]
+            for outcome in outcomes
+        )
+        for name in EMITTED_ABSTENTION_COUNT_ORDER
+    }
+    invariant_counts = {
+        name: sum(
+            name in outcome.failed_invariants
+            for outcome in outcomes
+        )
+        for name in INVARIANT_NAMES
+    }
+    if (
+        family_counts != dict(EXPECTED_COUNTS_BY_FAMILY)
+        or signal_counts != dict(EXPECTED_COUNTS_BY_SIGNAL_FAMILY)
+        or modality_counts != dict(EXPECTED_COUNTS_BY_MODALITY_FAMILY)
+    ):
+        raise PhaseCContractError("scenario_classification_counts")
+    passed = sum(outcome.passed for outcome in outcomes)
+    failed = len(outcomes) - passed
+    if (
+        failed == 0
+        and abstention_counts
+        != dict(EXPECTED_COUNTS_BY_ABSTENTION_REASON)
+    ):
+        raise PhaseCContractError("scenario_abstention_counts")
+    return PhaseCScenarioEvaluationV1(
+        total_scenarios=len(outcomes),
+        passed_scenarios=passed,
+        failed_scenarios=failed,
+        outcomes=outcomes,
+        counts_by_family=tuple(
+            (name, family_counts[name])
+            for name in FAMILY_COUNT_ORDER
+        ),
+        counts_by_signal=tuple(
+            (name, signal_counts[name])
+            for name in SIGNAL_FAMILY_COUNT_ORDER
+        ),
+        counts_by_modality=tuple(
+            (name, modality_counts[name])
+            for name in MODALITY_FAMILY_COUNT_ORDER
+        ),
+        counts_by_abstention_reason=tuple(
+            (name, abstention_counts[name])
+            for name in EMITTED_ABSTENTION_COUNT_ORDER
+        ),
+        invariant_counts=tuple(
+            (name, invariant_counts[name])
+            for name in INVARIANT_NAMES
+        ),
+        deterministic_replay_passed=(
+            invariant_counts["deterministic_replay"] == 0
+        ),
+        privacy_boundary_passed=all(
+            invariant_counts[name] == 0
+            for name in (
+                "rejection_no_mutation",
+                "session_isolation",
+                "semantic_output",
+                "privacy_boundary",
+            )
+        ),
+    )
+
+
+def evaluate_phase_c_scenarios(
+    policy: Mapping[str, Any],
+    scenarios: object,
+) -> PhaseCScenarioEvaluationV1:
+    validated_policy = _validated_policy(policy)
+    if type(scenarios) is dict:
+        ordered_scenarios = tuple(scenarios.values())
+    elif type(scenarios) is tuple:
+        ordered_scenarios = scenarios
+    else:
+        raise PhaseCContractError("scenario_evaluation_scenarios")
+    if (
+        tuple(
+            scenario.case_id
+            for scenario in ordered_scenarios
+            if type(scenario) is PhaseCScenarioV1
+        )
+        != EXPECTED_SCENARIO_IDS
+        or len(ordered_scenarios) != len(EXPECTED_SCENARIO_IDS)
+    ):
+        raise PhaseCContractError("scenario_ids")
+
+    outcomes: list[PhaseCScenarioOutcomeV1] = []
+    for scenario in ordered_scenarios:
+        if type(scenario) is not PhaseCScenarioV1:
+            raise PhaseCContractError("scenario_type")
+        if (
+            scenario.family,
+            scenario.signal_family,
+            scenario.modality_family,
+        ) != EXPECTED_SCENARIO_CLASSIFICATIONS[scenario.case_id]:
+            raise PhaseCContractError("scenario_classification")
+        states: dict[str, PhaseCTemporalSessionStateV1 | None] = {
+            session.session_alias: None
+            for session in scenario.sessions
+        }
+        outputs: dict[str, dict[str, Any]] = {}
+        failed: set[str] = set()
+        rejection_count = 0
+        abstention_counts = {
+            name: 0
+            for name in EMITTED_ABSTENTION_COUNT_ORDER
+        }
+
+        for attempt, expected in zip(
+            scenario.attempt_order,
+            scenario.expected_steps,
+            strict=True,
+        ):
+            prior = states[attempt.state_session_alias]
+            prior_bytes = canonical_session_state_bytes(prior)
+            try:
+                successor, output = _execute_scenario_attempt(
+                    prior,
+                    scenario,
+                    attempt,
+                    validated_policy,
+                )
+            except PhaseCOutputSemanticError:
+                failed.add("golden_projection")
+                failed.add("semantic_output")
+                if canonical_session_state_bytes(prior) != prior_bytes:
+                    failed.add("rejection_no_mutation")
+                continue
+            except PhaseCContractError as exc:
+                if (
+                    expected.disposition != "rejected"
+                    or exc.code != expected.rejection_code
+                ):
+                    failed.add("golden_projection")
+                else:
+                    rejection_count += 1
+                if canonical_session_state_bytes(prior) != prior_bytes:
+                    failed.add("rejection_no_mutation")
+                continue
+
+            if expected.disposition == "rejected":
+                failed.add("golden_projection")
+                failed.add(
+                    UNEXPECTED_ACCEPTANCE_SAFETY_INVARIANT_BY_CASE[
+                        scenario.case_id
+                    ],
+                )
+                continue
+
+            try:
+                validated_output = validate_phase_c_replayed_output(
+                    output,
+                    successor,
+                    validated_policy,
+                )
+            except PhaseCContractError:
+                failed.add("golden_projection")
+                failed.add("semantic_output")
+                continue
+
+            if (
+                canonical_json_bytes(validated_output)
+                != expected.expected_output_bytes
+            ):
+                failed.add("golden_projection")
+            if exact_internal_projection(successor) != (
+                _expected_internal_projection(expected.expected_internal)
+            ):
+                failed.add("golden_projection")
+            states[attempt.state_session_alias] = successor
+            outputs[attempt.state_session_alias] = validated_output
+            for reason in validated_output["abstention_reasons"]:
+                abstention_counts[reason] += 1
+
+        if (
+            scenario.case_id == "canonical_replay_bytes"
+            and _deterministic_replay_failed(
+                scenario,
+                validated_policy,
+            )
+        ):
+            failed.add("deterministic_replay")
+        if (
+            scenario.case_id == "latest_turn_correction_replay"
+            and _correction_semantic_replay_failed(
+                scenario,
+                states["A"],
+                outputs.get("A"),
+                validated_policy,
+            )
+        ):
+            failed.add("correction_semantic_replay")
+        if (
+            scenario.case_id == "simultaneous_sessions_isolated"
+            and _session_isolation_failed(
+                scenario,
+                states,
+                validated_policy,
+            )
+        ):
+            failed.add("session_isolation")
+
+        failed_invariants = tuple(
+            name
+            for name in INVARIANT_NAMES
+            if name in failed
+        )
+        outcomes.append(PhaseCScenarioOutcomeV1(
+            case_id=scenario.case_id,
+            family=scenario.family,
+            signal_family=scenario.signal_family,
+            modality_family=scenario.modality_family,
+            passed=not failed_invariants,
+            failed_invariants=failed_invariants,
+            rejection_count=rejection_count,
+            abstention_reason_counts=tuple(
+                (name, abstention_counts[name])
+                for name in EMITTED_ABSTENTION_COUNT_ORDER
+            ),
+        ))
+
+    evaluation = _build_phase_c_evaluation(tuple(outcomes))
+    privacy_projection = {
+        "total_scenarios": evaluation.total_scenarios,
+        "passed_scenarios": evaluation.passed_scenarios,
+        "failed_scenarios": evaluation.failed_scenarios,
+        "counts_by_family": dict(evaluation.counts_by_family),
+        "counts_by_signal": dict(evaluation.counts_by_signal),
+        "counts_by_modality": dict(evaluation.counts_by_modality),
+        "counts_by_abstention_reason": dict(
+            evaluation.counts_by_abstention_reason,
+        ),
+        "invariant_counts": dict(evaluation.invariant_counts),
+        "deterministic_replay_passed": (
+            evaluation.deterministic_replay_passed
+        ),
+        "privacy_boundary_passed": evaluation.privacy_boundary_passed,
+    }
+    privacy_failed = _phase_c_privacy_inspection_failed(
+        privacy_projection,
+    )
+    if not privacy_failed:
+        try:
+            canonical_json_bytes(privacy_projection)
+        except PhaseCContractError:
+            privacy_failed = True
+    if privacy_failed:
+        first = evaluation.outcomes[0]
+        first_failed = tuple(
+            name
+            for name in INVARIANT_NAMES
+            if name in (*first.failed_invariants, "privacy_boundary")
+        )
+        outcomes = [
+            replace(
+                first,
+                passed=False,
+                failed_invariants=first_failed,
+            ),
+            *evaluation.outcomes[1:],
+        ]
+        evaluation = _build_phase_c_evaluation(tuple(outcomes))
+    return evaluation
