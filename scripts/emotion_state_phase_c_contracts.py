@@ -451,28 +451,6 @@ def phase_c_frame_to_payload(
     return payload
 
 
-def _validate_phase_c_event_identity_frame(frame: PhaseCSyntheticEvidenceFrameV1) -> None:
-    if type(frame) is not PhaseCSyntheticEvidenceFrameV1:
-        raise PhaseCContractError("frame_field_type")
-    if frame.schema_version != "PhaseCSyntheticEvidenceFrameV1" or frame.fixture_only is not True:
-        raise PhaseCContractError("frame_schema")
-    if (
-        any(type(getattr(frame, field)) is not str for field in (
-            "call_session_id", "campaign_profile_id", "campaign_profile_version", "turn_id", "event_id",
-        ))
-        or type(frame.turn_sequence) is not int
-        or type(frame.input_revision) is not int
-        or frame.turn_sequence < 0
-        or frame.input_revision < 0
-        or type(frame.evidence_atoms) is not tuple
-    ):
-        raise PhaseCContractError("frame_field_type")
-    for field in (
-        "call_session_id", "campaign_profile_id", "campaign_profile_version", "turn_id", "event_id",
-    ):
-        _require_opaque_identifier(getattr(frame, field))
-
-
 def _validated_phase_c_event_watermark_maps(
     watermark: PhaseCEventWatermarkV1,
 ) -> tuple[dict[str, int], dict[int, str], dict[str, int], dict[str, tuple[str, int]]]:

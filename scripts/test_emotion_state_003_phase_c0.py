@@ -516,6 +516,60 @@ class PhaseCIdentityHardeningTests(unittest.TestCase):
         self.assertLess(atom_sort_key(tie_low, self.policy), atom_sort_key(tie_high, self.policy))
 
 
+class PhaseCWatermarkCoverageTests(unittest.TestCase):
+    def setUp(self) -> None:
+        policy = validate_phase_c_policy(load_json_strict(POLICY_PATH))
+        frame = parse_phase_c_frame(_frame(atoms=[_atom(counter=1)]), policy)
+        self.good = validate_phase_c_event_identity(frame, initial_phase_c_watermark(frame))
+
+    def _assert_code(self, overrides: dict[str, object], expected: str) -> None:
+        watermark = PhaseCEventWatermarkV1(**{**self.good.__dict__, **overrides})
+        with self.assertRaises(PhaseCContractError) as caught:
+            validate_phase_c_event_watermark(watermark)
+        self.assertEqual(caught.exception.code, expected)
+
+    def test_sequence_and_revision_positions_reject_exactly(self) -> None:
+        cases = (
+            ({"turn_sequence_by_id": (("turn-1", True),)}, "event_watermark_sequence"),
+            ({"turn_sequence_by_id": (("turn-1", -1),)}, "event_watermark_sequence"),
+            ({"turn_id_by_sequence": ((True, "turn-1"),)}, "event_watermark_sequence"),
+            ({"turn_id_by_sequence": ((-1, "turn-1"),)}, "event_watermark_sequence"),
+            ({"last_input_revision_by_turn": (("turn-1", True),)}, "event_watermark_revision"),
+            ({"last_input_revision_by_turn": (("turn-1", -1),)}, "event_watermark_revision"),
+            ({"event_history_by_id": (("event-1", "turn-1", True),)}, "event_watermark_revision"),
+            ({"event_history_by_id": (("event-1", "turn-1", -1),)}, "event_watermark_revision"),
+        )
+        for overrides, expected in cases:
+            with self.subTest(overrides=repr(overrides)):
+                self._assert_code(overrides, expected)
+
+    def test_history_shape_coverage_and_distinct_duplicate_paths_reject_exactly(self) -> None:
+        cases = (
+            ({"event_history_by_id": (("event-1", "turn-1"),)}, "event_watermark_history"),
+            ({"turn_sequence_by_id": (("turn-1", 0), ("turn-1", 0))}, "event_watermark_duplicate_map_key"),
+            ({"last_input_revision_by_turn": ()}, "event_watermark_coverage"),
+            ({"event_history_by_id": (("event-1", "turn-2", 0),)}, "event_watermark_coverage"),
+            ({"event_history_by_id": (("event-1", "turn-1", 0), ("event-1", "turn-1", 1))}, "event_watermark_duplicate_history"),
+            ({"event_history_by_id": (("event-1", "turn-1", 0), ("event-2", "turn-1", 0))}, "event_watermark_duplicate_history"),
+        )
+        for overrides, expected in cases:
+            with self.subTest(expected=expected, overrides=repr(overrides)):
+                self._assert_code(overrides, expected)
+
+    def test_every_opaque_identifier_position_rejects_exactly(self) -> None:
+        cases = (
+            {"turn_sequence_by_id": ((" bad", 0),)},
+            {"turn_id_by_sequence": ((0, " bad"),)},
+            {"last_input_revision_by_turn": ((" bad", 0),)},
+            {"seen_event_ids": frozenset({" bad"})},
+            {"event_history_by_id": ((" bad", "turn-1", 0),)},
+            {"event_history_by_id": (("event-1", " bad", 0),)},
+        )
+        for overrides in cases:
+            with self.subTest(overrides=repr(overrides)):
+                self._assert_code(overrides, "invalid_opaque_identifier")
+
+
 def build_policy_leaf_mutations(payload: dict[str, Any]) -> list[tuple[str, dict[str, Any]]]:
     mutations: list[tuple[str, dict[str, Any]]] = []
     for path in _leaf_paths(payload):
