@@ -2,21 +2,22 @@
 
 ## Status
 
-Task 10 non-lockbox checkpoint independently reviewed and accepted;
-final-lockbox and canonical gates remain unopened
+Task 11 final lockbox completed exactly once and independently reviewed;
+decision `revise`; canonical publication remains unopened
 
-The single Cut 4E replacement child exited `0` after `797.5s`. The committed
-state is `non_lockbox_complete`, `912` bytes, SHA-256
-`8BB141DFBF651889F0E1FD66C2DF35FF31F8DC211D98A7CD27512AE7D82ACC20`.
-Independent aggregate-only review returned `NON_LOCKBOX_PACKET_PASS`,
-`SEMANTIC_REPLAY_PASS`, `PRIVACY_PASS`, `ZERO_LOCKBOX_ACCESS_PASS`, and
-`C0 I0`.
+The single final-lockbox child exited `0` after `346.9s`; no retry occurred.
+The state is `lockbox_complete` with `lockbox_open_count=1`, exact state
+SHA-256
+`69B6475BB32209DD50A6E24866F19D6B44FB51BFA458836BF3B1805140C2BC8C`,
+and result SHA-256
+`E3EC0EB82E77C1979BF8F921D6EBF6321F510687A608C933473C4DB04AE02F35`.
+Two independent aggregate-only reviews returned `C0/I0/M0`.
 
 The retired lineage is not reused or mutated.
 
-Final lockbox access, canonical publication, merge, runtime activation, Phase C,
-providers, private data, calls, simulations, and source adaptation remain
-blocked. The old `.tmp/emotion-state-002-phase-b/venv` and
+Canonical publication, merge, runtime activation, Phase C, providers, private
+data, calls, simulations, and source adaptation remain blocked. The old
+`.tmp/emotion-state-002-phase-b/venv` and
 `.tmp/emotion-state-002-phase-b/dependencies/wheelhouse` remain immutable
 dependency inputs only.
 
@@ -77,34 +78,26 @@ Phase B may not establish:
    one Cut 4E child used the fixed public CREMA CSV/WAV and selected AMI
    authorities. The retired split/preflight/non-lockbox lineage under
    `.tmp/emotion-state-002-phase-b` was neither reused nor mutated.
-4. **Final-lockbox gate:** Task 11 remains blocked and requires an explicit
-   one-use lockbox authorization after independent review of the frozen
-   non-lockbox packet.
+4. **Final-lockbox gate:** Task 11 completed once under its one-use
+   authorization and is closed.
 
-The production lockbox evaluator is wired but remains unopened. Execute it only
-once after the exact implementation commit, clean guarded ledger, source-silent
-admission, and independent review are bound to the accepted Task 10 checkpoint.
-The source-silent admission receipt is bound to the reviewed clean HEAD,
-guarded-ledger SHA-256, accepted predecessor-state SHA-256, and non-lockbox
-packet SHA-256 through exactly three local, no-fetch Git reads, including a
-clean status check over tracked and untracked files. The
-runner-owned final-audio capability exists only after durable `reserved`
-write/readback; the exact reservation file remains held across final
-evaluation and result persistence, and admission is revalidated during
-completed recovery. Completed reservation bytes remain held across recovery
-validation and state transition. The ignored lockbox result will retain only the AMI
-aggregate and authority SHA-256; AMI meeting, participant, timing-turn,
-dialogue-turn, and dialogue-label rows remain source-silent in-memory
-validation inputs. Underscore-private pure pipeline helpers are procedural
-inside the trusted runner process and cannot mint a production file reader;
-hostile same-process imports remain outside this prototype threat model.
-The reviewed guarded ledger is the canonical UTF-8 LF JSON file
-`.tmp/emotion-state-002-phase-b-cut4b/task-11-guarded-ledger.json`, binding the
-committed HEAD and exact ordered guarded command vectors. Each entry retains
-only its vector, exit code, and stdout/stderr SHA-256 values. The production
-command separately receives the SHA-256 of those exact ledger bytes and the
-SHA-256 of the exact source-silent admission receipt, preventing either identity
-from being silently changed before the first reservation.
+The production lockbox completed exactly once and is closed. Do not run
+`admit-lockbox` or `lockbox` again for this experiment version. The reviewed
+guarded ledger is the canonical UTF-8 LF JSON file
+`.tmp/emotion-state-002-phase-b-cut4b/task-11-guarded-ledger.json`, SHA-256
+`8515DA4A622A8AF8CE3BE07BE6CAFC8360EDE729F2845317E13C701DBA18299A`.
+Its exact ordered command entries retain only `argv`, `exit_code`,
+`stdout_sha256`, and `stderr_sha256`. The source-silent admission receipt
+SHA-256 is
+`0F10FD618FD20819EB7D21981C29E77B6936977D80659A82A5CE1886C1191278`;
+it binds implementation HEAD
+`c7a5e4037ad8134c96dcd7e8b9577f08fe92391b`, predecessor-state SHA-256
+`8BB141DFBF651889F0E1FD66C2DF35FF31F8DC211D98A7CD27512AE7D82ACC20`,
+and packet SHA-256
+`676D55D95978FBB27DDE50758A98C530979DC730A87C30CD6485178B624B313B`.
+The persisted lockbox result retains only the AMI aggregate and authority
+SHA-256; AMI meeting, participant, timing-turn, dialogue-turn, dialogue-label,
+transcript, probability, feature, and audio rows remain absent.
 5. **Publication gate:** Task 12 may stage, independently validate, explicitly
    accept, commit, and optionally push the exact canonical pair only under
    separately stated acceptance/push authority.
@@ -169,6 +162,47 @@ respectively:
 This is acted-perception public-data evidence. The aggregate lift does not
 overcome the observed slice instability/reversal or the unavailable AMI
 contribution contracts, and it does not estimate customer internal emotion.
+
+## Task 11 Final Lockbox Result
+
+The final set contains `2,181` cases from `30` actors. The decision contract is
+final-decision eligible and returns `revise`.
+
+| Model | Macro-F1 | Balanced accuracy | Brier | ECE | Log loss |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Acoustic | 0.3635639146 | 0.3469108660 | 0.4645830705 | 0.0428792113 | 0.9730765286 |
+| Class prior | 0.1260336470 | 0.1666666667 | 0.6080410523 | 0.1150032828 | 1.2873759421 |
+| Sentence ID | 0.1260336470 | 0.1666666667 | 0.5941195659 | 0.1152010501 | 1.2432829186 |
+
+The acoustic macro-F1 lift over each baseline is `0.2375302676`, with paired
+95% interval `[0.2006732151, 0.2644157664]`. Sentence-driven apparent lift is
+`false`; eligible slice instability and reversal are both `true`; confidence
+abstention improvement is `false`. Those failures prevent `keep` despite the
+aggregate lift.
+
+The persisted AMI value has exactly `{aggregate, authority_sha256}`. Its
+aggregate SHA-256 is
+`31B068BF9AEF99340A6895BCF3997265168591EE31073001382C0BA5ACE89A6C`;
+its authority SHA-256 is
+`55815CFB3CD49A6164744425F154E35403601BF1A1FF8DEC50AE7207943BCEE7`.
+Full/scenario/full-only meeting counts remain `170/138/32`; timing usable counts
+remain `137/136/1`; dialogue-act file counts remain `556/552/4`; fully labelled
+file counts remain `530/527/3`; and `26` files containing `28` records remain
+unlabelled. AMI timing and dialogue contributions remain unavailable.
+
+The exact result, evidence, and mint SHA-256 values are:
+
+- result:
+  `E3EC0EB82E77C1979BF8F921D6EBF6321F510687A608C933473C4DB04AE02F35`;
+- evidence:
+  `93CE60508E565A66BBEDEC48CDD0F0D48CC72D7DA771C419ABD5242570E437E3`;
+- mint:
+  `0912A83A6DFCE3B90C06E409E50D1DEBFC42619A0594BD714883549839799E0F`.
+
+This is offline acted-perception feasibility evidence. It does not establish
+customer internal emotion, any of the five operational signals, real-call
+performance, AMI contribution evidence, provider/PSTN/ASR/latency feasibility,
+runtime readiness, commercial effectiveness, or production readiness.
 
 ## Task 9 Validation Interface
 

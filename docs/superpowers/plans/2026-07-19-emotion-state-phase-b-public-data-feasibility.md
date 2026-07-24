@@ -114,8 +114,9 @@ standard-library `unittest`.
 3. **Public-material gate:** Task 10 may read the two public CREMA CSVs, CREMA
    WAVs, and selected AMI annotation files from their fixed ignored roots. It
    requires explicit public-material evaluation authority.
-4. **Final-lockbox gate:** Task 11 requires an explicit one-use lockbox
-   authorization after independent review of the frozen non-lockbox packet.
+4. **Final-lockbox gate:** Task 11 completed exactly once under its explicit
+   one-use authorization and is now closed. It must not be rerun for this
+   experiment version.
 5. **Publication gate:** Task 12 may stage, independently validate, explicitly
    accept, commit, and optionally push the exact canonical pair only under
    separately stated acceptance/push authority.
@@ -1816,7 +1817,7 @@ Do not commit ignored caches or canonical result/report files.
 - Produces: one ignored lockbox result and candidate aggregate payload with
   `lockbox_open_count=1`.
 
-- [ ] **Step 1: Stop at the final-lockbox authorization gate**
+- [x] **Step 1: Stop at the final-lockbox authorization gate**
 
 Require explicit one-use authorization tied to the exact non-lockbox packet
 SHA-256 and current HEAD. First write the fixed ignored source-silent admission
@@ -1839,36 +1840,42 @@ and the exact ordered guarded command vectors. Each command entry contains only
 command output. The guarded-ledger digest is the uppercase SHA-256 of those exact
 bytes. After `admit-lockbox`, independently hash the exact
 `lockbox-admission.json` bytes and pass both reviewed digests to `lockbox`.
+The passing ledger bound implementation HEAD
+`c7a5e4037ad8134c96dcd7e8b9577f08fe92391b` and had exact SHA-256
+`8515DA4A622A8AF8CE3BE07BE6CAFC8360EDE729F2845317E13C701DBA18299A`.
+The admitted receipt SHA-256 was
+`0F10FD618FD20819EB7D21981C29E77B6936977D80659A82A5CE1886C1191278`.
 
-- [ ] **Step 2: Run the one-use lockbox command**
+- [x] **Step 2: Run the one-use lockbox command**
 
-```powershell
-.tmp/emotion-state-002-phase-b/venv/Scripts/python.exe scripts/run_emotion_state_002_phase_b.py admit-lockbox --reviewed-head <reviewed-lowercase-head> --guarded-ledger-sha256 <guarded-ledger-sha256> --expected-state-sha256 <accepted-state-sha256> --expected-non-lockbox-packet-sha256 <accepted-packet-sha256>
-.tmp/emotion-state-002-phase-b/venv/Scripts/python.exe scripts/run_emotion_state_002_phase_b.py lockbox --admission-sha256 <admission-receipt-sha256> --guarded-ledger-sha256 <guarded-ledger-sha256>
-```
+Completed: exactly one production child exited `0` after `346.9s`; no retry
+occurred. The state transitioned once from `non_lockbox_complete` to
+`lockbox_complete` with `lockbox_open_count=1`. Exact state SHA-256 is
+`69B6475BB32209DD50A6E24866F19D6B44FB51BFA458836BF3B1805140C2BC8C`;
+exact result SHA-256 is
+`E3EC0EB82E77C1979BF8F921D6EBF6321F510687A608C933473C4DB04AE02F35`.
+The production lockbox completed exactly once and is closed. Do not run
+`admit-lockbox` or `lockbox` again for this experiment version.
 
-Expected: state transitions once from `non_lockbox_complete` to
-`lockbox_complete`; a rerun fails before reading lockbox rows. The ignored
-result contains the AMI aggregate and retained-authority SHA-256 only. Full AMI
-meeting, participant, turn, and dialogue-label evidence remains in memory and
-is replayed source-silently from the committed non-lockbox cache during mint
-and completed forward recovery.
+- [x] **Step 3: Review the aggregate decision evidence**
 
-- [ ] **Step 3: Review the aggregate decision evidence**
+Completed: two independent aggregate-only reviews returned `C0/I0/M0`. The
+decision is `revise`. Acoustic macro-F1 is `0.3635639146`, versus
+`0.1260336470` for each baseline; paired lift is `0.2375302676` with 95%
+interval `[0.2006732151, 0.2644157664]`. Eligible slice instability and
+reversal are both `true`, and confidence abstention improvement is `false`.
+The AMI persisted shape remains exactly aggregate plus authority SHA-256; its
+timing and dialogue contributions remain unavailable.
 
-Check both macro-F1 lifts and paired intervals, Brier versus class prior,
-per-class recall, calibration, coverage/retained performance, eligible
-preregistered slices, AMI suppression/contribution counts, deterministic
-rerun identity where permitted without reopening the lockbox, and the exact
-keep/revise/discard rule.
+- [x] **Step 4: Reject invalid execution before publication**
 
-- [ ] **Step 4: Reject invalid execution before publication**
-
-If any material, dependency, split, leakage, determinism, contributor,
-lockbox, or output-boundary check fails, record the failure locally, do not
-stage canonical files, and classify the experiment version as `discard` only
-when the decision contract permits a valid result. Structural invalidity is
-not a publishable negative result.
+Completed: state/result/reservation/admission/ledger/split lineage validation
+passed, the final-decision contract was eligible, and no canonical files were
+staged. Task 12 remains separate and unchecked. This checkpoint is offline
+acted-perception feasibility evidence, not customer internal emotion, AMI
+contribution evidence, real-call performance, provider/PSTN/ASR/latency
+feasibility, runtime readiness, commercial effectiveness, or production
+readiness.
 
 ### Task 12: Stage, independently validate, accept, and commit the canonical pair
 

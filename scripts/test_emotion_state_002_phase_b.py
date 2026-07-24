@@ -761,7 +761,7 @@ class PhaseBContractTests(unittest.TestCase):
                     expected_dependency_commands,
                 )
 
-    def test_task10_docs_hold_accepted_non_lockbox_status(self) -> None:
+    def test_task11_docs_hold_completed_lockbox_status(self) -> None:
         obsolete_pending_status = (
             "Cut 4B implementation and independent review are prerequisites to one "
             "fresh Task 10 replacement transaction under "
@@ -769,18 +769,16 @@ class PhaseBContractTests(unittest.TestCase):
             "aggregate-only independent review, no non-lockbox checkpoint is accepted."
         )
         required_anchors = (
-            "Task 10",
-            "`non_lockbox_complete`",
-            "`NON_LOCKBOX_PACKET_PASS`",
-            "`SEMANTIC_REPLAY_PASS`",
-            "`PRIVACY_PASS`",
-            "`ZERO_LOCKBOX_ACCESS_PASS`",
+            "Task 11",
+            "`lockbox_complete`",
+            "`lockbox_open_count=1`",
+            "`revise`",
+            "`E3EC0EB82E77C1979BF8F921D6EBF6321F510687A608C933473C4DB04AE02F35`",
         )
         retired_lineage_status = "The retired lineage is not reused or mutated."
         blocked_status = (
-            "Final lockbox access, canonical publication, merge, runtime activation, "
-            "Phase C, providers, private data, calls, simulations, and source adaptation "
-            "remain blocked."
+            "Canonical publication, merge, runtime activation, Phase C, providers, "
+            "private data, calls, simulations, and source adaptation remain blocked."
         )
         for relative_path in (
             "docs/thesis/ROADMAP.md",
@@ -798,16 +796,19 @@ class PhaseBContractTests(unittest.TestCase):
                 self.assertIn(blocked_status, normalized)
                 self.assertNotIn(obsolete_pending_status, normalized)
 
-    def test_task_11_docs_state_wired_lockbox_remains_unopened(self) -> None:
+    def test_task_11_docs_state_completed_once_and_closed(self) -> None:
         boundary = (
-            "The production lockbox evaluator is wired but remains unopened. "
-            "Execute it only once after the exact implementation commit, clean "
-            "guarded ledger, source-silent admission, and independent review "
-            "are bound to the accepted Task 10 checkpoint."
+            "The production lockbox completed exactly once and is closed. "
+            "Do not run `admit-lockbox` or `lockbox` again for this "
+            "experiment version."
         )
-        obsolete = (
+        obsolete_boundaries = (
             "The production lockbox evaluator remains unavailable; "
-            "authorization alone does not wire it."
+            "authorization alone does not wire it.",
+            (
+                "The production lockbox evaluator is wired but remains unopened. "
+                "Execute it only once"
+            ),
         )
         command_map = (ROOT / "docs/product/COMMANDS.md").read_text(
             encoding="utf-8-sig"
@@ -816,7 +817,8 @@ class PhaseBContractTests(unittest.TestCase):
         lockbox_section = command_map.split(heading, 1)[1].split("\n### ", 1)[0]
         normalized_lockbox_section = " ".join(lockbox_section.split())
         self.assertIn(boundary, normalized_lockbox_section)
-        self.assertNotIn(obsolete, normalized_lockbox_section)
+        for obsolete in obsolete_boundaries:
+            self.assertNotIn(obsolete, normalized_lockbox_section)
         for anchor in (
             (
                 "`.tmp/emotion-state-002-phase-b-cut4b/"
@@ -824,13 +826,19 @@ class PhaseBContractTests(unittest.TestCase):
             ),
             "canonical UTF-8 LF JSON",
             "`exit_code`, `stdout_sha256`, and `stderr_sha256`",
-            (
-                "lockbox --admission-sha256 "
-                "<admission-receipt-sha256> --guarded-ledger-sha256 "
-                "<guarded-ledger-sha256>"
-            ),
+            "`revise`",
+            "`69B6475BB32209DD50A6E24866F19D6B44FB51BFA458836BF3B1805140C2BC8C`",
+            "`E3EC0EB82E77C1979BF8F921D6EBF6321F510687A608C933473C4DB04AE02F35`",
         ):
             self.assertIn(anchor, normalized_lockbox_section)
+        self.assertNotIn(
+            "scripts/run_emotion_state_002_phase_b.py admit-lockbox",
+            lockbox_section,
+        )
+        self.assertNotIn(
+            "scripts/run_emotion_state_002_phase_b.py lockbox",
+            lockbox_section,
+        )
         protocol = (
             ROOT
             / "research/experiments/"
@@ -838,7 +846,38 @@ class PhaseBContractTests(unittest.TestCase):
         ).read_text(encoding="utf-8-sig")
         normalized_protocol = " ".join(protocol.split())
         self.assertIn(boundary, normalized_protocol)
-        self.assertNotIn(obsolete, normalized_protocol)
+        for obsolete in obsolete_boundaries:
+            self.assertNotIn(obsolete, normalized_protocol)
+        methodology = (ROOT / "docs/thesis/METHODOLOGY_LOG.md").read_text(
+            encoding="utf-8-sig"
+        )
+        normalized_methodology = " ".join(methodology.split())
+        self.assertNotIn(
+            "The production lockbox remains unopened.",
+            normalized_methodology,
+        )
+        evidence_identity_anchors = (
+            "`c7a5e4037ad8134c96dcd7e8b9577f08fe92391b`",
+            "`8515DA4A622A8AF8CE3BE07BE6CAFC8360EDE729F2845317E13C701DBA18299A`",
+            "`0F10FD618FD20819EB7D21981C29E77B6936977D80659A82A5CE1886C1191278`",
+            "`93CE60508E565A66BBEDEC48CDD0F0D48CC72D7DA771C419ABD5242570E437E3`",
+            "`0912A83A6DFCE3B90C06E409E50D1DEBFC42619A0594BD714883549839799E0F`",
+        )
+        for anchor in evidence_identity_anchors:
+            with self.subTest(evidence_identity=anchor):
+                self.assertIn(anchor, normalized_lockbox_section)
+                self.assertIn(anchor, normalized_protocol)
+                self.assertIn(anchor, normalized_methodology)
+        decision_metric_anchors = (
+            "`2,181` cases from `30` actors",
+            "0.3635639146",
+            "`0.2375302676`",
+            "`revise`",
+        )
+        for anchor in decision_metric_anchors:
+            with self.subTest(decision_metric=anchor):
+                self.assertIn(anchor, normalized_protocol)
+                self.assertIn(anchor, normalized_methodology)
 
     def test_task_9_publication_cli_sections_fail_closed_without_state(
         self,

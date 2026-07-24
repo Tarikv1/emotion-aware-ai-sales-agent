@@ -3994,25 +3994,8 @@ inputs remain under `.tmp/emotion-state-002-phase-b`:
 
 ### Explicit gate: final lockbox
 
-This is a separate one-use authorization after independent non-lockbox review.
-The production lockbox evaluator is wired but remains unopened. Execute it only
-once after the exact implementation commit, clean guarded ledger, source-silent
-admission, and independent review are bound to the accepted Task 10 checkpoint.
-The runner must durably write and read back the exact `reserved` transaction
-before it can create the fixed 2,181-WAV reader. A reserved failure is terminal.
-The separate `admit-lockbox` phase writes a fixed ignored receipt bound to the
-reviewed clean HEAD, guarded-ledger SHA-256, accepted predecessor-state
-SHA-256, and non-lockbox packet SHA-256 without forming the final-result path.
-Each production admission check uses exactly three local, no-fetch Git reads:
-`show-toplevel`, `HEAD`, and clean status including untracked files, with child-only
-`GIT_LFS_SKIP_SMUDGE=1`. The reservation persists the receipt digest, HEAD, and
-ledger digest; the runner holds the exact reservation file across final
-evaluation and result persistence, then holds the completed reservation through
-recovery validation and the state transition. Admission is revalidated during
-completed recovery.
-The ignored lockbox result persists the AMI aggregate and its retained-authority
-SHA-256 only; meeting, participant, turn, dialogue-label, and transcript rows
-remain confined to source-silent in-memory validation.
+The production lockbox completed exactly once and is closed. Do not run
+`admit-lockbox` or `lockbox` again for this experiment version.
 
 The guarded ledger is the fixed ignored file
 `.tmp/emotion-state-002-phase-b-cut4b/task-11-guarded-ledger.json`. Its exact
@@ -4021,17 +4004,32 @@ terminal LF. The top-level object contains `schema_version`, `task_id`,
 `implementation_head`, and `commands`. `commands` records the exact ordered
 guarded command vectors; every entry contains only `argv`, `exit_code`,
 `stdout_sha256`, and `stderr_sha256`. Raw command output is not persisted.
-`guarded-ledger-sha256` is the uppercase SHA-256 of those exact file bytes after
-the clean committed run and independent review. `admission-receipt-sha256` is
-the uppercase SHA-256 of the exact ignored `lockbox-admission.json` bytes written
-by `admit-lockbox`. The `lockbox` phase independently requires both digests and
-compares them with the held receipt before the first reservation and during
-recovery.
+The independently reviewed implementation HEAD was
+`c7a5e4037ad8134c96dcd7e8b9577f08fe92391b`. The exact guarded-ledger SHA-256
+was `8515DA4A622A8AF8CE3BE07BE6CAFC8360EDE729F2845317E13C701DBA18299A`;
+the source-silent admission-receipt SHA-256 was
+`0F10FD618FD20819EB7D21981C29E77B6936977D80659A82A5CE1886C1191278`.
+The receipt bound predecessor-state SHA-256
+`8BB141DFBF651889F0E1FD66C2DF35FF31F8DC211D98A7CD27512AE7D82ACC20`
+and non-lockbox packet SHA-256
+`676D55D95978FBB27DDE50758A98C530979DC730A87C30CD6485178B624B313B`.
 
-```powershell
-.tmp/emotion-state-002-phase-b/venv/Scripts/python.exe scripts/run_emotion_state_002_phase_b.py admit-lockbox --reviewed-head <reviewed-lowercase-head> --guarded-ledger-sha256 <guarded-ledger-sha256> --expected-state-sha256 <accepted-state-sha256> --expected-non-lockbox-packet-sha256 <accepted-packet-sha256>
-.tmp/emotion-state-002-phase-b/venv/Scripts/python.exe scripts/run_emotion_state_002_phase_b.py lockbox --admission-sha256 <admission-receipt-sha256> --guarded-ledger-sha256 <guarded-ledger-sha256>
-```
+The single production child exited `0` after `346.9s`; no retry occurred. The
+state is `lockbox_complete` with `lockbox_open_count=1`, exact state SHA-256
+`69B6475BB32209DD50A6E24866F19D6B44FB51BFA458836BF3B1805140C2BC8C`,
+and result SHA-256
+`E3EC0EB82E77C1979BF8F921D6EBF6321F510687A608C933473C4DB04AE02F35`.
+The result decision is `revise`. Its evidence SHA-256 is
+`93CE60508E565A66BBEDEC48CDD0F0D48CC72D7DA771C419ABD5242570E437E3`;
+its mint SHA-256 is
+`0912A83A6DFCE3B90C06E409E50D1DEBFC42619A0594BD714883549839799E0F`.
+The persisted AMI value remains exactly the aggregate and authority SHA-256;
+meeting, participant, turn, dialogue-label, transcript, probability, feature,
+and audio rows were not persisted.
+
+Only Task 12 may stage the canonical pair, and it requires separate
+authorization. This completed lockbox is not a production-readiness, customer
+emotion, live-call, provider, PSTN, ASR, latency, or runtime result.
 
 ### Explicit gate: canonical acceptance
 

@@ -731,21 +731,26 @@ Key writing sources:
 
 ## Near-Term Next Step
 
-Task 10's single Cut 4E replacement child completed under
-`.tmp/emotion-state-002-phase-b-cut4b`, and independent aggregate-only review
-returned `NON_LOCKBOX_PACKET_PASS`, `SEMANTIC_REPLAY_PASS`, `PRIVACY_PASS`,
-`ZERO_LOCKBOX_ACCESS_PASS`, and `C0 I0`. The state is
-`non_lockbox_complete`; the packet is explicitly not final-decision eligible.
+Task 11's final lockbox completed exactly once under
+`.tmp/emotion-state-002-phase-b-cut4b`; no retry occurred. The state is
+`lockbox_complete` with `lockbox_open_count=1`, exact state SHA-256
+`69B6475BB32209DD50A6E24866F19D6B44FB51BFA458836BF3B1805140C2BC8C`,
+and result SHA-256
+`E3EC0EB82E77C1979BF8F921D6EBF6321F510687A608C933473C4DB04AE02F35`.
+Two independent aggregate-only reviews returned `C0/I0/M0`. The final decision
+is `revise`: the acoustic model has positive aggregate macro-F1 lift, but
+eligible slice instability and reversal remain true and confidence abstention
+does not improve the result.
 
 The retired lineage is not reused or mutated.
 
-The next possible experiment gate is Task 11's one-use final lockbox, but it
-requires separate explicit authorization bound to the reviewed non-lockbox
-packet. Final lockbox access, canonical publication, merge, runtime activation,
-Phase C, providers, private data, calls, simulations, and source adaptation
-remain blocked. The reviewed venv and wheelhouse under
-`.tmp/emotion-state-002-phase-b` remain immutable dependency inputs only; no
-authority transfers to another gate.
+The production lockbox is now closed and must not be rerun for this experiment
+version. The next possible experiment gate is Task 12's canonical
+stage/validate/accept transaction under separate authorization. Canonical
+publication, merge, runtime activation, Phase C, providers, private data,
+calls, simulations, and source adaptation remain blocked. The reviewed venv
+and wheelhouse under `.tmp/emotion-state-002-phase-b` remain immutable
+dependency inputs only; no authority transfers to another gate.
 
 The configuration's `emotion-state-crema-interpretable-acoustic-v1` value
 remains an immutable seed-lineage compatibility token, not the production
@@ -761,9 +766,10 @@ EMOTION-STATE Phase A is accepted at output-only commit
 `source_provenance_dataset_manifests_offline_contracts_and_cohort_release_gate_only`.
 Phase B is `EMOTION-STATE-002`: an offline public-data feasibility study using
 CREMA-D's 6,570 concordant original audio-perception labels and AMI only for
-conversational mechanics. The accepted non-lockbox result is acted-perception
-evidence, not customer emotion, the five operational signals, provider
-feasibility, runtime activation, or production readiness.
+conversational mechanics. The Task 11 result is acted-perception evidence, not
+customer emotion, the five operational signals, AMI contribution evidence,
+real-call performance, provider/PSTN/ASR/latency feasibility, runtime
+activation, commercial effectiveness, or production readiness.
 
 Purpose:
 
