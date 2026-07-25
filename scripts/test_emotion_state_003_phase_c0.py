@@ -7585,3 +7585,178 @@ class PhaseCIndependentValidatorTests(PhaseCTestCase):
             pair_parameters["fresh_evaluation_projection"].default,
             inspect.Parameter.empty,
         )
+
+
+class PhaseCCandidatePromotionTests(PhaseCTestCase):
+    @classmethod
+    def setUpClass(cls) -> None:
+        super().setUpClass()
+        from scripts import emotion_state_phase_c_temporal_tracker
+        from scripts import run_emotion_state_003_phase_c0
+        from scripts import validate_emotion_state_003_phase_c0
+
+        cls.tracker = emotion_state_phase_c_temporal_tracker
+        cls.runner = run_emotion_state_003_phase_c0
+        cls.validator = validate_emotion_state_003_phase_c0
+        cls.raw_policy = load_json_strict(POLICY_PATH)
+        cls.raw_scenarios = load_json_strict(SCENARIO_PATH)
+
+    def test_accepted_candidate_equals_two_fresh_in_memory_renders(self) -> None:
+        candidate_result, candidate_report = (
+            self.validator.read_allowlisted_pair(
+                section="candidate",
+                requested_root=(
+                    ROOT / ".tmp" / "emotion-state-003-phase-c0" / "candidate"
+                ),
+            )
+        )
+        renders = []
+        for _ in range(2):
+            evaluation = self.tracker.evaluate_phase_c_scenarios(
+                self.policy,
+                self.scenarios,
+            )
+            result = self.runner.build_phase_c_result(
+                evaluation,
+                canonical_json_bytes(self.raw_policy),
+                canonical_json_bytes(self.raw_scenarios),
+            )
+            result_bytes = canonical_json_bytes(result)
+            report_bytes = self.runner.render_phase_c_report(result).encode("utf-8")
+            renders.append((result_bytes, report_bytes))
+        self.assertEqual(renders[0], renders[1])
+        self.assertEqual(
+            sha256_bytes(candidate_result),
+            sha256_bytes(renders[0][0]),
+        )
+        self.assertEqual(
+            sha256_bytes(candidate_result),
+            sha256_bytes(renders[1][0]),
+        )
+        self.assertEqual(
+            sha256_bytes(candidate_report),
+            sha256_bytes(renders[0][1]),
+        )
+        self.assertEqual(
+            sha256_bytes(candidate_report),
+            sha256_bytes(renders[1][1]),
+        )
+
+
+class PhaseCCloseoutContractTests(unittest.TestCase):
+    PROTOCOL_PATH = (
+        ROOT
+        / "research"
+        / "experiments"
+        / "EMOTION-STATE-003-phase-c0-synthetic-temporal-mechanics.md"
+    )
+    CANONICAL_ROOT = (
+        ROOT
+        / "research"
+        / "experiments"
+        / "generated"
+        / "EMOTION-STATE-003-phase-c0-synthetic-temporal-mechanics"
+    )
+    CLOSEOUT_PATHS = (
+        ROOT / "docs" / "product" / "CHECKPOINT_INDEX.md",
+        ROOT / "docs" / "product" / "COMMANDS.md",
+        ROOT / "docs" / "thesis" / "METHODOLOGY_LOG.md",
+        ROOT / "docs" / "thesis" / "ROADMAP.md",
+        PROTOCOL_PATH,
+    )
+    EXPECTED_TRACE_VALUES = (
+        "9BB996F886E9AFFBCDA40A6FB71BE10E1CD07D3B114B4E3FBCDAA1DF71171F15",
+        "D01FBD7677537A0A91D01E0EA8354D079491C13BBD81EC8BAC97E7BBC4520FB0",
+        "3BBB7FC8F4DFB223837EA8D8B8E92EC46AA0ACF70EA1A6CA4649D41266E43030",
+        "FD1ADA58FD5C0B614DB429AD6B5434C988E95942FBEB1FEB87D779C14F9E4EA4",
+        "fd92aae6acf146d9271888bb264ecd29269cb870",
+        "5c461612f667e1a8727eedb9d2c08d9951b3aed0",
+        "4c77f72bf7dc85e2e4587b9c03646716e5aec0ff",
+        "77a2fb50ba00210cc75d410240c17115be83a415",
+        "62b6b65cf307270bfc2e98c7c08617252859948d",
+        "C0/I0/M0",
+    )
+
+    def protocol_status(self) -> str:
+        protocol = self.PROTOCOL_PATH.read_text(encoding="utf-8")
+        status = protocol.split("## Status", 1)[1].split("##", 1)[0]
+        return next(line for line in status.splitlines() if line.strip())
+
+    def test_protocol_has_exact_accepted_status_and_trace(self) -> None:
+        self.assertEqual(
+            self.protocol_status(),
+            "Canonical Phase C0 synthetic mechanics checkpoint accepted.",
+        )
+        protocol = self.PROTOCOL_PATH.read_text(encoding="utf-8")
+        self.assertIn("Candidate decision: `keep`", protocol)
+        for value in self.EXPECTED_TRACE_VALUES:
+            with self.subTest(value=value):
+                self.assertIn(value, protocol)
+
+    def test_every_closeout_reference_binds_scope_and_existing_trace(self) -> None:
+        required_scope = (
+            "synthetic mechanics only",
+            "Phase B lockbox remains closed and cannot be reused",
+            "no runtime, provider, data, or Phase D authority",
+        )
+        for path in self.CLOSEOUT_PATHS:
+            text = path.read_text(encoding="utf-8")
+            normalized = " ".join(text.split())
+            with self.subTest(path=path):
+                self.assertIn("EMOTION-STATE-003", normalized)
+                self.assertIn("Candidate decision: `keep`", normalized)
+                self.assertIn("177/177", normalized)
+                for value in self.EXPECTED_TRACE_VALUES:
+                    self.assertIn(value, normalized)
+                for boundary in required_scope:
+                    self.assertIn(boundary, normalized)
+
+    def test_closeout_retains_required_nonclaims(self) -> None:
+        protocol = self.PROTOCOL_PATH.read_text(encoding="utf-8")
+        for nonclaim in (
+            "does not prove emotion accuracy",
+            "customer internal state",
+            "policy enforcement",
+            "conversion improvement",
+            "real-call performance",
+            "production readiness",
+        ):
+            with self.subTest(nonclaim=nonclaim):
+                self.assertIn(nonclaim, protocol)
+
+    def test_canonical_directory_contains_exact_pair(self) -> None:
+        self.assertTrue(self.CANONICAL_ROOT.is_dir())
+        self.assertEqual(
+            {path.name for path in self.CANONICAL_ROOT.iterdir()},
+            {"result.json", "report.md"},
+        )
+
+    def test_phase_c0_commands_do_not_reuse_phase_b_lockbox(self) -> None:
+        commands = (ROOT / "docs" / "product" / "COMMANDS.md").read_text(
+            encoding="utf-8",
+        )
+        section_heading = (
+            "## EMOTION-STATE-003 Phase C0 Synthetic Mechanics Checkpoint"
+        )
+        self.assertIn(section_heading, commands)
+        phase_c0 = commands.split(section_heading, 1)[1]
+        phase_c0 = phase_c0.split("\n## ", 1)[0]
+        self.assertNotIn(".tmp/emotion-state-002-phase-b", phase_c0)
+        self.assertNotIn("run_emotion_state_002_phase_b.py", phase_c0)
+        self.assertNotIn("admit-lockbox", phase_c0)
+        self.assertNotIn(" lockbox`", phase_c0)
+
+    def test_roadmap_uses_durable_precommit_review_gate(self) -> None:
+        roadmap = (
+            ROOT / "docs" / "thesis" / "ROADMAP.md"
+        ).read_text(encoding="utf-8")
+        normalized = " ".join(roadmap.split())
+        self.assertNotIn(
+            "The next action is independent Task 10 closeout review",
+            normalized,
+        )
+        self.assertIn(
+            "An independent `C0/I0/M0` review is required before the "
+            "six-file closeout commit.",
+            normalized,
+        )

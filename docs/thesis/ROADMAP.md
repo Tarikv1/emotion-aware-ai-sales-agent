@@ -731,6 +731,29 @@ Key writing sources:
 
 ## Near-Term Next Step
 
+EMOTION-STATE-003 Phase C0 is an accepted offline aggregate checkpoint for
+synthetic mechanics only. Candidate decision: `keep`; all `30/30` scenarios
+passed, including `8` rejection cases, and independent candidate review
+returned `C0/I0/M0`. Policy/scenario/result/report SHA-256 values are
+`9BB996F886E9AFFBCDA40A6FB71BE10E1CD07D3B114B4E3FBCDAA1DF71171F15`,
+`D01FBD7677537A0A91D01E0EA8354D079491C13BBD81EC8BAC97E7BBC4520FB0`,
+`3BBB7FC8F4DFB223837EA8D8B8E92EC46AA0ACF70EA1A6CA4649D41266E43030`,
+and `FD1ADA58FD5C0B614DB429AD6B5434C988E95942FBEB1FEB87D779C14F9E4EA4`.
+Existing implementation trace: aggregate runner
+`fd92aae6acf146d9271888bb264ecd29269cb870`, independent validator
+`5c461612f667e1a8727eedb9d2c08d9951b3aed0`, direct-launch correction
+`4c77f72bf7dc85e2e4587b9c03646716e5aec0ff`, and candidate acceptance
+`77a2fb50ba00210cc75d410240c17115be83a415`. The exact pair-only commit is
+`62b6b65cf307270bfc2e98c7c08617252859948d`. The guarded ledger passed
+Phase C0 `177/177`, pinned Phase B `16/16`, four validator sections, five
+repository gates, and the four LF/compile/protected-runtime/diff checks.
+Phase B lockbox remains
+closed and cannot be reused; this checkpoint grants no runtime, provider, data,
+or Phase D authority. An independent `C0/I0/M0` review is required before the
+six-file closeout commit. That review does not authorize push, merge, runtime
+activation, data access, provider work, calls, simulations, source adaptation,
+prompt or knowledge-base changes, or Phase D.
+
 Task 12's canonical checkpoint is `accepted` under
 `.tmp/emotion-state-002-phase-b-cut4b`, transaction
 `559ccc55b0b5412ba455ca7fe3e3a6b7`, with `lockbox_open_count=1`. The
