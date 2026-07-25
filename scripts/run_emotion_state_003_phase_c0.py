@@ -10,6 +10,12 @@ from pathlib import Path
 from types import MappingProxyType
 from typing import Any, Mapping, Sequence
 
+_IMPORT_ROOT = Path(
+    os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir)),
+)
+if os.fspath(_IMPORT_ROOT) not in sys.path:
+    sys.path.insert(0, os.fspath(_IMPORT_ROOT))
+
 from scripts.emotion_state_phase_c_contracts import (
     CLAIM_OR_CONSUMPTION_FLAG_NAMES,
     EMITTED_ABSTENTION_COUNT_ORDER,
@@ -47,7 +53,7 @@ class RunnerError(ValueError):
         super().__init__(code)
 
 
-ROOT = Path(os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir)))
+ROOT = _IMPORT_ROOT
 POLICY_PATH = (
     ROOT
     / "research"

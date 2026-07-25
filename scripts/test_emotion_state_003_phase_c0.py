@@ -4599,6 +4599,118 @@ def _structural_semantic_negative_evaluation(
         )
 
 
+def _no_follow_metadata_snapshot(metadata: Any) -> tuple[int, ...]:
+    return (
+        metadata.st_dev,
+        metadata.st_ino,
+        metadata.st_mode,
+        metadata.st_size,
+        metadata.st_mtime_ns,
+        metadata.st_ctime_ns,
+        getattr(metadata, "st_file_attributes", 0),
+        getattr(metadata, "st_reparse_tag", 0),
+    )
+
+
+def _bounded_regular_file_snapshot(
+    path: Path,
+    before: Any,
+) -> tuple[str, Any]:
+    if before.st_size > 65536:
+        return ("oversized", before.st_size)
+    flags = (
+        os.O_RDONLY
+        | getattr(os, "O_BINARY", 0)
+        | getattr(os, "O_NOFOLLOW", 0)
+    )
+    try:
+        descriptor = os.open(path, flags)
+    except OSError as exc:
+        return ("open_error", exc.errno)
+    try:
+        opened = os.fstat(descriptor)
+        if (
+            not stat.S_ISREG(opened.st_mode)
+            or _no_follow_metadata_snapshot(opened)
+            != _no_follow_metadata_snapshot(before)
+        ):
+            return (
+                "changed_before_read",
+                _no_follow_metadata_snapshot(opened),
+            )
+        chunks: list[bytes] = []
+        remaining = opened.st_size
+        while remaining:
+            chunk = os.read(descriptor, min(8192, remaining))
+            if not chunk:
+                break
+            chunks.append(chunk)
+            remaining -= len(chunk)
+        after = os.fstat(descriptor)
+        payload = b"".join(chunks)
+        if (
+            len(payload) != opened.st_size
+            or _no_follow_metadata_snapshot(after)
+            != _no_follow_metadata_snapshot(opened)
+        ):
+            return (
+                "changed_during_read",
+                _no_follow_metadata_snapshot(after),
+            )
+        return ("sha256", sha256_bytes(payload))
+    finally:
+        os.close(descriptor)
+
+
+def _bounded_no_follow_root_snapshot(path: Path) -> tuple[Any, ...]:
+    try:
+        root_metadata = os.lstat(path)
+    except FileNotFoundError:
+        return ("absent",)
+    except OSError as exc:
+        return ("root_lstat_error", exc.errno)
+    root_snapshot = _no_follow_metadata_snapshot(root_metadata)
+    if (
+        stat.S_ISLNK(root_metadata.st_mode)
+        or getattr(root_metadata, "st_file_attributes", 0)
+        & getattr(stat, "FILE_ATTRIBUTE_REPARSE_POINT", 0x400)
+    ):
+        return ("root_reparse_or_link", root_snapshot)
+    if not stat.S_ISDIR(root_metadata.st_mode):
+        return ("root_not_directory", root_snapshot)
+    try:
+        names = tuple(sorted(os.listdir(path)))
+    except OSError as exc:
+        return ("root_list_error", root_snapshot, exc.errno)
+    children: list[tuple[Any, ...]] = []
+    for name in names:
+        child = path / name
+        try:
+            metadata = os.lstat(child)
+        except FileNotFoundError:
+            children.append((name, "absent_during_snapshot"))
+            continue
+        except OSError as exc:
+            children.append((name, "lstat_error", exc.errno))
+            continue
+        metadata_snapshot = _no_follow_metadata_snapshot(metadata)
+        is_reparse = bool(
+            getattr(metadata, "st_file_attributes", 0)
+            & getattr(stat, "FILE_ATTRIBUTE_REPARSE_POINT", 0x400)
+        )
+        if stat.S_ISLNK(metadata.st_mode) or is_reparse:
+            content = ("reparse_or_link",)
+        elif stat.S_ISREG(metadata.st_mode):
+            content = _bounded_regular_file_snapshot(
+                child,
+                metadata,
+            )
+        else:
+            content = ("not_regular",)
+        children.append((name, metadata_snapshot, content))
+    return ("directory", root_snapshot, names, tuple(children))
+
+
 class PhaseCScenarioEvaluationTests(PhaseCTestCase):
     def evaluation(self):
         return self.tracker.evaluate_phase_c_scenarios(
@@ -5595,6 +5707,40 @@ class PhaseCAggregateRunnerTests(PhaseCTestCase):
                     "runner_mode",
                 ):
                     self.runner._parse_cli_mode(argv)
+
+    def test_direct_script_invalid_launch_reaches_runner_mode_without_output(
+        self,
+    ) -> None:
+        candidate = self.runner.CANDIDATE_ROOT
+        stage = Path(f"{candidate}.stage")
+        for arguments in ((), ("invalid-mode",)):
+            before = tuple(
+                _bounded_no_follow_root_snapshot(path)
+                for path in (candidate, stage)
+            )
+            completed = subprocess.run(
+                [
+                    sys.executable,
+                    str(ROOT / "scripts" / "run_emotion_state_003_phase_c0.py"),
+                    *arguments,
+                ],
+                cwd=ROOT,
+                text=True,
+                capture_output=True,
+                check=False,
+            )
+            with self.subTest(arguments=arguments):
+                self.assertNotEqual(completed.returncode, 0)
+                self.assertIn("RunnerError: runner_mode", completed.stderr)
+                self.assertNotIn("ModuleNotFoundError", completed.stderr)
+                self.assertEqual(completed.stdout, "")
+                self.assertEqual(
+                    tuple(
+                        _bounded_no_follow_root_snapshot(path)
+                        for path in (candidate, stage)
+                    ),
+                    before,
+                )
 
     def test_safety_failure_discards_and_mechanical_failure_revises(
         self,
