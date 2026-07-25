@@ -2862,6 +2862,13 @@ class PhaseCHysteresisAndOutputTests(PhaseCTestCase):
             ("allowed_effects", dict(payload, allowed_policy_effects=["preserve"])),
             ("noncanonical_output_order", dict(payload, blocked_policy_effects=list(reversed(payload["blocked_policy_effects"])))),
             ("inferable_estimate", dict(payload, valence_estimate="inferable")),
+            (
+                "evidence_policy_version",
+                dict(
+                    payload,
+                    evidence_policy_version="emotion-state-evidence-v1",
+                ),
+            ),
             ("runtime_approved", dict(payload, runtime_approved=True)),
         )
         for code, mutated in mutations:
@@ -7758,5 +7765,33 @@ class PhaseCCloseoutContractTests(unittest.TestCase):
         self.assertIn(
             "An independent `C0/I0/M0` review is required before the "
             "six-file closeout commit.",
+            normalized,
+        )
+        self.assertNotIn(
+            "Implementation, merge, runtime activation, provider access, "
+            "private data, calls, conversational simulations, source "
+            "adaptation, and Phase D remain outside the current plan-only "
+            "scope.",
+            normalized,
+        )
+        self.assertIn(
+            "Phase C0 design and its ten-task strict-TDD implementation plan "
+            "were separately approved",
+            normalized,
+        )
+        self.assertIn(
+            "The implementation and accepted local checkpoint described "
+            "above are now complete.",
+            normalized,
+        )
+        self.assertIn(
+            "candidate, canonical, and push remained distinct gates.",
+            normalized,
+        )
+        self.assertIn(
+            "Push, merge, runtime activation, public or private data access, "
+            "provider access, calls, conversational simulations, source "
+            "adaptation, and Phase D authority remain outside this "
+            "checkpoint.",
             normalized,
         )

@@ -3263,6 +3263,8 @@ def validate_phase_c_perceived_state(
         )
     ):
         raise PhaseCOutputSemanticError("perceived_field_type")
+    if payload["evidence_policy_version"] != policy["evidence_policy_version"]:
+        raise PhaseCOutputSemanticError("evidence_policy_version")
     if any(payload[field] != getattr(context.frame, field) for field in ("call_session_id", "campaign_profile_id", "campaign_profile_version", "turn_id", "turn_sequence",)):
         raise PhaseCOutputSemanticError("perceived_identity")
     if any(value != "not_inferable" for value in (payload["valence_estimate"], payload["activation_estimate"], payload["engagement_estimate"])):

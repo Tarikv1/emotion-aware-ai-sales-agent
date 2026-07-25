@@ -773,15 +773,16 @@ The retired lineage is not reused or mutated.
 The production lockbox is closed and must not be rerun for this experiment
 version. Task 12 publication and closeout were pushed at
 `b3f475e6fe101573e2144d9ced31698d51c9ead7` on branch
-`codex/emotion-state-phase-b-public-data-feasibility`. Phase C0 design is now
-separately approved as an offline synthetic temporal-mechanics specification.
-Its ten-task strict-TDD implementation plan is tracked at
+`codex/emotion-state-phase-b-public-data-feasibility`. Phase C0 design and its
+ten-task strict-TDD implementation plan were separately approved as an offline
+synthetic temporal-mechanics specification. The plan is tracked at
 `docs/superpowers/plans/2026-07-24-emotion-state-phase-c0-synthetic-temporal-mechanics.md`;
-the policy and 30-case golden matrix must precede reducer code, and candidate,
-canonical, and push remain distinct gates. Implementation, merge, runtime
-activation, provider access, private data, calls, conversational simulations,
-source adaptation, and Phase D remain outside the current plan-only scope. The
-reviewed venv and wheelhouse under
+the policy and 30-case golden matrix preceded reducer code, and candidate,
+canonical, and push remained distinct gates. The implementation and accepted
+local checkpoint described above are now complete. Push, merge, runtime
+activation, public or private data access, provider access, calls,
+conversational simulations, source adaptation, and Phase D authority remain
+outside this checkpoint. The reviewed venv and wheelhouse under
 `.tmp/emotion-state-002-phase-b` remain immutable dependency inputs only; no
 authority transfers to another gate.
 
