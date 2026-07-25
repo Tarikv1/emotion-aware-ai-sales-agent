@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import ast
 import copy
 import dataclasses
 import importlib
@@ -6351,3 +6352,1090 @@ class PhaseCAggregateRunnerTests(PhaseCTestCase):
             and type(value) in (dict, list, set)
         }
         self.assertEqual(mutable_globals, {})
+
+
+TASK_9_RESULT_FIELDS_FOR_TEST = (
+    "schema_version",
+    "checkpoint_id",
+    "policy_id",
+    "evidence_policy_version",
+    "policy_sha256",
+    "scenario_sha256",
+    "aggregate_output_sha256",
+    "scenario_counts",
+    "counts_by_family",
+    "counts_by_signal",
+    "counts_by_modality",
+    "counts_by_abstention_reason",
+    "invariant_counts",
+    "deterministic_replay_passed",
+    "privacy_boundary_passed",
+    "phase_b_inputs_consumed",
+    "public_or_private_data_consumed",
+    "runtime_modified_or_activated",
+    "provider_or_call_used",
+    "policy_enforcement_proven",
+    "emotion_accuracy_proven",
+    "production_readiness_proven",
+    "complexity",
+    "decision",
+)
+TASK_9_SCALAR_FIELDS_FOR_TEST = (
+    "schema_version",
+    "checkpoint_id",
+    "policy_id",
+    "evidence_policy_version",
+    "policy_sha256",
+    "scenario_sha256",
+    "aggregate_output_sha256",
+    "deterministic_replay_passed",
+    "privacy_boundary_passed",
+    "phase_b_inputs_consumed",
+    "public_or_private_data_consumed",
+    "runtime_modified_or_activated",
+    "provider_or_call_used",
+    "policy_enforcement_proven",
+    "emotion_accuracy_proven",
+    "production_readiness_proven",
+    "decision",
+)
+TASK_9_CLAIM_FIELDS_FOR_TEST = (
+    "phase_b_inputs_consumed",
+    "public_or_private_data_consumed",
+    "runtime_modified_or_activated",
+    "provider_or_call_used",
+    "policy_enforcement_proven",
+    "emotion_accuracy_proven",
+    "production_readiness_proven",
+)
+TASK_9_AGGREGATE_MAPPING_FIELDS_FOR_TEST = (
+    "scenario_counts",
+    "counts_by_family",
+    "counts_by_signal",
+    "counts_by_modality",
+    "counts_by_abstention_reason",
+    "invariant_counts",
+    "complexity",
+)
+TASK_9_SCOPE_LINES_FOR_TEST = (
+    (
+        "Scope: synthetic mechanics only; no customer emotion inference "
+        "or runtime policy enforcement is proven."
+    ),
+    "Runtime status: not approved and not activated.",
+    (
+        "Boundary status: no Phase B input, public/private data, provider, "
+        "call, conversation simulation, or source adaptation was used."
+    ),
+    "Readiness: production readiness is not proven.",
+)
+TASK_9_RENDERED_VALUE_PREFIXES_FOR_TEST = (
+    "- Scenario counts: ",
+    "- Counts by family: ",
+    "- Counts by signal family: ",
+    "- Counts by modality family: ",
+    "- Counts by abstention reason: ",
+    "- Invariant counts: ",
+    "- Deterministic replay passed: ",
+    "- Privacy boundary passed: ",
+    "- Numeric policy parameters: ",
+    "- Scenarios: ",
+    "- Operational signals: ",
+    "- Synthetic evidence classes: ",
+    "- Runtime files modified: ",
+)
+
+
+def _task_9_rebind_aggregate_digest(payload: dict[str, Any]) -> None:
+    if "aggregate_output_sha256" not in payload:
+        return
+    core = {
+        key: value
+        for key, value in payload.items()
+        if key != "aggregate_output_sha256"
+    }
+    payload["aggregate_output_sha256"] = sha256_bytes(
+        canonical_json_bytes(core),
+    )
+
+
+def build_result_contract_mutations(
+    result: dict[str, Any],
+) -> list[tuple[str, dict[str, Any], str]]:
+    mutations: list[tuple[str, dict[str, Any], str]] = []
+
+    def add(
+        name: str,
+        payload: dict[str, Any],
+        code: str,
+        *,
+        rebind: bool = True,
+    ) -> None:
+        if rebind:
+            _task_9_rebind_aggregate_digest(payload)
+        mutations.append((name, payload, code))
+
+    for field in TASK_9_RESULT_FIELDS_FOR_TEST:
+        payload = copy.deepcopy(result)
+        payload.pop(field)
+        add(
+            f"missing_top_level_{field}",
+            payload,
+            "result_field_set",
+        )
+
+    payload = copy.deepcopy(result)
+    payload["unexpected"] = 0
+    add("extra_top_level_field", payload, "result_field_set")
+
+    for field in TASK_9_SCALAR_FIELDS_FOR_TEST:
+        payload = copy.deepcopy(result)
+        payload[field] = 0
+        add(
+            f"wrong_exact_type_{field}",
+            payload,
+            "result_scalar_type",
+            rebind=(field != "aggregate_output_sha256"),
+        )
+
+    for field in TASK_9_AGGREGATE_MAPPING_FIELDS_FOR_TEST:
+        mapping = result[field]
+        first_key = next(iter(mapping))
+
+        payload = copy.deepcopy(result)
+        payload[field].pop(first_key)
+        add(f"missing_nested_key_{field}", payload, "result_nested_shape")
+
+        payload = copy.deepcopy(result)
+        payload[field]["unexpected"] = 0
+        add(f"extra_nested_key_{field}", payload, "result_nested_shape")
+
+        payload = copy.deepcopy(result)
+        payload[field][first_key] += 1
+        add(
+            f"wrong_nested_value_{field}",
+            payload,
+            (
+                "result_complexity"
+                if field == "complexity"
+                else "result_count_algebra"
+            ),
+        )
+
+        payload = copy.deepcopy(result)
+        payload[field] = []
+        add(f"wrong_container_type_{field}", payload, "result_nested_shape")
+
+    for field, code in (
+        ("policy_sha256", "result_policy_hash"),
+        ("scenario_sha256", "result_scenario_hash"),
+        ("aggregate_output_sha256", "result_aggregate_digest"),
+    ):
+        payload = copy.deepcopy(result)
+        payload[field] = "0" * 64
+        add(
+            f"wrong_{field}",
+            payload,
+            code,
+            rebind=(field != "aggregate_output_sha256"),
+        )
+
+    payload = copy.deepcopy(result)
+    payload["decision"] = "revise"
+    add("decision_contradiction", payload, "result_decision_semantics")
+
+    payload = copy.deepcopy(result)
+    payload["scenario_counts"]["passed"] = 29
+    payload["scenario_counts"]["failed"] = 1
+    payload["invariant_counts"]["golden_projection"] = 1
+    add("failed_count_contradiction", payload, "result_decision_semantics")
+
+    for field in TASK_9_CLAIM_FIELDS_FOR_TEST:
+        payload = copy.deepcopy(result)
+        payload[field] = True
+        add(
+            f"claim_boundary_contradiction_{field}",
+            payload,
+            "result_boundary_flags",
+        )
+
+    for field, invariant in (
+        ("deterministic_replay_passed", "deterministic_replay"),
+        ("privacy_boundary_passed", "privacy_boundary"),
+    ):
+        payload = copy.deepcopy(result)
+        payload[field] = False
+        add(
+            f"replay_privacy_algebra_{field}",
+            payload,
+            "result_replay_privacy_algebra",
+        )
+
+        payload = copy.deepcopy(result)
+        payload["scenario_counts"]["passed"] = 29
+        payload["scenario_counts"]["failed"] = 1
+        payload["invariant_counts"][invariant] = 1
+        payload[field] = False
+        add(
+            f"safety_boolean_contradiction_{field}",
+            payload,
+            "result_decision_semantics",
+        )
+
+    payload = copy.deepcopy(result)
+    payload["counts_by_family"]["entry"] = {
+        "transcript_text": 7,
+    }
+    add("forbidden_nested_key", payload, "result_nested_shape")
+
+    payload = copy.deepcopy(result)
+    payload["counts_by_family"]["entry"] = "session:forbidden"
+    add("forbidden_nested_value", payload, "result_nested_shape")
+
+    return mutations
+
+
+def _task_9_compact(value: Any) -> str:
+    return json.dumps(
+        value,
+        sort_keys=True,
+        separators=(",", ":"),
+        ensure_ascii=False,
+        allow_nan=False,
+    )
+
+
+def render_report_fixture_without_semantic_validation(
+    result: dict[str, Any],
+) -> str:
+    final_digest = sha256_bytes(canonical_json_bytes(result))
+    return "\n".join((
+        "# EMOTION-STATE-003 Phase C0 Synthetic Temporal Mechanics",
+        "",
+        f"- Checkpoint: {result['checkpoint_id']}",
+        f"- Decision: {result['decision']}",
+        f"- Result schema: {result['schema_version']}",
+        f"- Policy SHA-256: {result['policy_sha256']}",
+        f"- Scenario SHA-256: {result['scenario_sha256']}",
+        (
+            "- Aggregate-output SHA-256: "
+            f"{result['aggregate_output_sha256']}"
+        ),
+        f"- result.json sha256:{final_digest}",
+        "",
+        "## Aggregate",
+        "",
+        f"- Scenario counts: {_task_9_compact(result['scenario_counts'])}",
+        f"- Counts by family: {_task_9_compact(result['counts_by_family'])}",
+        (
+            "- Counts by signal family: "
+            f"{_task_9_compact(result['counts_by_signal'])}"
+        ),
+        (
+            "- Counts by modality family: "
+            f"{_task_9_compact(result['counts_by_modality'])}"
+        ),
+        (
+            "- Counts by abstention reason: "
+            f"{_task_9_compact(result['counts_by_abstention_reason'])}"
+        ),
+        f"- Invariant counts: {_task_9_compact(result['invariant_counts'])}",
+        (
+            "- Deterministic replay passed: "
+            f"{_task_9_compact(result['deterministic_replay_passed'])}"
+        ),
+        (
+            "- Privacy boundary passed: "
+            f"{_task_9_compact(result['privacy_boundary_passed'])}"
+        ),
+        "",
+        "## Complexity",
+        "",
+        (
+            "- Numeric policy parameters: "
+            f"{result['complexity']['numeric_policy_parameter_count']}"
+        ),
+        f"- Scenarios: {result['complexity']['scenario_count']}",
+        (
+            "- Operational signals: "
+            f"{result['complexity']['operational_signal_count']}"
+        ),
+        (
+            "- Synthetic evidence classes: "
+            f"{result['complexity']['synthetic_evidence_class_count']}"
+        ),
+        (
+            "- Runtime files modified: "
+            f"{result['complexity']['runtime_files_modified']}"
+        ),
+        "",
+        "## Interpretation",
+        "",
+        *TASK_9_SCOPE_LINES_FOR_TEST,
+        "",
+    ))
+
+
+def _validator_independence_violations(source: str) -> tuple[str, ...]:
+    tree = ast.parse(source)
+    forbidden_module = "run_emotion_state_003_phase_c0"
+    forbidden_names = {
+        "PHASE_C_RESULT_FIELDS",
+        "decide_phase_c_checkpoint",
+        "build_phase_c_result",
+        "validate_phase_c_result_payload",
+        "compute_aggregate_output_sha256",
+        "render_phase_c_report",
+        "write_phase_c_pair",
+    }
+    forbidden_aliases: set[str] = set()
+    forbidden_module_aliases: set[str] = set()
+    violations: list[str] = []
+    for node in ast.walk(tree):
+        if isinstance(node, ast.Import):
+            for alias in node.names:
+                origin = alias.name.rsplit(".", 1)[-1]
+                if origin == forbidden_module:
+                    violations.append(f"import:{alias.name}")
+                    forbidden_module_aliases.add(alias.asname or origin)
+        elif isinstance(node, ast.ImportFrom):
+            origin_module = (node.module or "").rsplit(".", 1)[-1]
+            if origin_module == forbidden_module:
+                violations.append(f"importfrom:{node.module}")
+            for alias in node.names:
+                if alias.name == forbidden_module:
+                    violations.append(f"importmodule:{alias.name}")
+                    forbidden_module_aliases.add(
+                        alias.asname or alias.name,
+                    )
+                if alias.name in forbidden_names:
+                    violations.append(f"importname:{alias.name}")
+                    forbidden_aliases.add(alias.asname or alias.name)
+        elif isinstance(node, ast.Name) and isinstance(node.ctx, ast.Load):
+            if node.id in forbidden_names or node.id in forbidden_aliases:
+                violations.append(f"name:{node.id}")
+        elif isinstance(node, ast.Attribute) and isinstance(node.ctx, ast.Load):
+            if node.attr in forbidden_names:
+                violations.append(f"attribute:{node.attr}")
+            if (
+                isinstance(node.value, ast.Name)
+                and node.value.id in forbidden_module_aliases
+            ):
+                violations.append(f"module_alias:{node.value.id}.{node.attr}")
+    return tuple(sorted(set(violations)))
+
+
+class PhaseCIndependentValidatorTests(PhaseCTestCase):
+    @classmethod
+    def setUpClass(cls) -> None:
+        super().setUpClass()
+        from scripts import emotion_state_phase_c_temporal_tracker
+        from scripts import run_emotion_state_003_phase_c0
+        from scripts import validate_emotion_state_003_phase_c0
+
+        cls.tracker = emotion_state_phase_c_temporal_tracker
+        cls.runner = run_emotion_state_003_phase_c0
+        cls.validator = validate_emotion_state_003_phase_c0
+        cls.raw_policy = load_json_strict(POLICY_PATH)
+        cls.policy = validate_phase_c_policy(copy.deepcopy(cls.raw_policy))
+        cls.raw_scenarios = load_json_strict(SCENARIO_PATH)
+        parsed = phase_c_contracts.validate_phase_c_scenario_payload(
+            copy.deepcopy(cls.raw_scenarios),
+            cls.policy,
+        )
+        cls.scenarios = {scenario.case_id: scenario for scenario in parsed}
+        evaluation = cls.tracker.evaluate_phase_c_scenarios(
+            cls.policy,
+            cls.scenarios,
+        )
+        cls.valid_result_payload = cls.runner.build_phase_c_result(
+            evaluation,
+            canonical_json_bytes(cls.raw_policy),
+            canonical_json_bytes(cls.raw_scenarios),
+        )
+        cls.valid_report_bytes = cls.runner.render_phase_c_report(
+            cls.valid_result_payload,
+        ).encode("utf-8")
+        cls.fresh_evaluation_projection = (
+            cls.validator.build_fresh_evaluation_projection(
+                cls.policy,
+                cls.scenarios,
+            )
+        )
+
+    def setUp(self) -> None:
+        pass
+
+    def run_validator(
+        self,
+        *arguments: str,
+    ) -> subprocess.CompletedProcess[str]:
+        return subprocess.run(
+            [
+                sys.executable,
+                str(
+                    ROOT
+                    / "scripts"
+                    / "validate_emotion_state_003_phase_c0.py"
+                ),
+                *arguments,
+            ],
+            cwd=ROOT,
+            text=True,
+            capture_output=True,
+            check=False,
+        )
+
+    def valid_result(self) -> dict[str, Any]:
+        return copy.deepcopy(self.valid_result_payload)
+
+    def result_mutations(
+        self,
+        result: dict[str, Any],
+    ) -> list[tuple[str, dict[str, Any], str]]:
+        return build_result_contract_mutations(result)
+
+    @contextmanager
+    def allowlisted_reader_root(self):
+        with tempfile.TemporaryDirectory(dir=ROOT / ".tmp") as temporary:
+            root = Path(temporary) / "candidate"
+            root.mkdir()
+            (root / "result.json").write_bytes(
+                canonical_json_bytes(self.valid_result_payload),
+            )
+            (root / "report.md").write_bytes(self.valid_report_bytes)
+            with mock.patch.object(self.validator, "CANDIDATE_ROOT", root):
+                yield root
+
+    def pair_open_paths(self, open_spy: mock.Mock) -> tuple[Path, ...]:
+        return tuple(
+            Path(call.args[0])
+            for call in open_spy.call_args_list
+            if call.args
+            and Path(call.args[0]).name in ("result.json", "report.md")
+        )
+
+    def test_validator_sections_pass_on_fixtures(self) -> None:
+        for section in ("contracts", "scenarios", "synthetic"):
+            completed = self.run_validator(section)
+            self.assertEqual(
+                completed.returncode,
+                0,
+                completed.stdout + completed.stderr,
+            )
+            self.assertEqual(completed.stdout, f"{section}:pass\n")
+            self.assertEqual(completed.stderr, "")
+
+    def test_contracts_section_reads_only_the_policy_contract(self) -> None:
+        def load_only_policy(path):
+            if Path(path) != POLICY_PATH:
+                raise AssertionError("contracts must not read scenarios")
+            return copy.deepcopy(self.raw_policy)
+
+        with mock.patch.object(
+            self.validator,
+            "load_json_strict",
+            side_effect=load_only_policy,
+        ):
+            self.validator._run_section("contracts", None)
+
+    def test_scenarios_section_does_not_run_synthetic_evaluation(self) -> None:
+        with mock.patch.object(
+            self.validator.temporal_tracker,
+            "evaluate_phase_c_scenarios",
+            side_effect=AssertionError("scenarios must not evaluate"),
+        ):
+            self.validator._run_section("scenarios", None)
+
+    def test_fresh_projection_maps_evaluator_contract_failure(self) -> None:
+        with mock.patch.object(
+            self.validator.temporal_tracker,
+            "evaluate_phase_c_scenarios",
+            side_effect=PhaseCContractError("injected"),
+        ):
+            with self.assertRaisesRegex(
+                self.validator.ValidationError,
+                "synthetic_projection",
+            ):
+                self.validator.build_fresh_evaluation_projection(
+                    self.policy,
+                    self.scenarios,
+                )
+
+    def test_every_result_scalar_and_mapping_shape_mutation_rejects(self) -> None:
+        result = self.valid_result()
+        names = []
+        for name, payload, expected_code in self.result_mutations(result):
+            names.append(name)
+            with self.subTest(mutation=name):
+                with self.assertRaisesRegex(
+                    self.validator.ValidationError,
+                    expected_code,
+                ):
+                    self.validator.validate_candidate_payload(
+                        payload,
+                        self.fresh_evaluation_projection,
+                    )
+        self.assertEqual(names, sorted(names, key=names.index))
+        self.assertEqual(len(names), len(set(names)))
+
+    def test_valid_pair_passes_independent_validation(self) -> None:
+        validated = self.validator.validate_pair_bytes(
+            canonical_json_bytes(self.valid_result_payload),
+            self.valid_report_bytes,
+            self.fresh_evaluation_projection,
+        )
+        self.assertEqual(validated, self.valid_result_payload)
+
+    def test_renderer_equality_cannot_mask_semantic_contradiction(self) -> None:
+        result = self.valid_result()
+        result["decision"] = "keep"
+        result["scenario_counts"]["passed"] = 29
+        result["scenario_counts"]["failed"] = 1
+        result["invariant_counts"]["golden_projection"] = 1
+        _task_9_rebind_aggregate_digest(result)
+        report = render_report_fixture_without_semantic_validation(result)
+        with self.assertRaisesRegex(
+            self.validator.ValidationError,
+            "result_decision_semantics",
+        ):
+            self.validator.validate_pair_bytes(
+                canonical_json_bytes(result),
+                report.encode("utf-8"),
+                self.fresh_evaluation_projection,
+            )
+
+    def test_coherent_pair_mutation_cannot_diverge_from_fresh_evaluation(
+        self,
+    ) -> None:
+        result = self.valid_result()
+        result["scenario_counts"]["passed"] = 29
+        result["scenario_counts"]["failed"] = 1
+        result["invariant_counts"]["golden_projection"] = 1
+        result["decision"] = "revise"
+        _task_9_rebind_aggregate_digest(result)
+        report = render_report_fixture_without_semantic_validation(result)
+        with self.assertRaisesRegex(
+            self.validator.ValidationError,
+            "result_evaluation_binding",
+        ):
+            self.validator.validate_pair_bytes(
+                canonical_json_bytes(result),
+                report.encode("utf-8"),
+                self.fresh_evaluation_projection,
+            )
+
+    def test_actual_negative_evaluation_pair_validates_as_revise(self) -> None:
+        evaluation = _mechanical_negative_evaluation(self)
+        result = self.runner.build_phase_c_result(
+            evaluation,
+            canonical_json_bytes(self.raw_policy),
+            canonical_json_bytes(self.raw_scenarios),
+        )
+        report = self.runner.render_phase_c_report(result).encode("utf-8")
+        with mock.patch.object(
+            self.validator.temporal_tracker,
+            "evaluate_phase_c_scenarios",
+            return_value=evaluation,
+        ):
+            fresh = self.validator.build_fresh_evaluation_projection(
+                self.policy,
+                self.scenarios,
+            )
+        self.validator.validate_pair_bytes(
+            canonical_json_bytes(result),
+            report,
+            fresh,
+        )
+        self.assertEqual(result["decision"], "revise")
+        self.assertEqual(result["scenario_counts"]["failed"], 1)
+
+    def test_actual_semantic_negative_pair_validates_as_discard(self) -> None:
+        evaluation = _semantic_negative_evaluation(self)
+        result = self.runner.build_phase_c_result(
+            evaluation,
+            canonical_json_bytes(self.raw_policy),
+            canonical_json_bytes(self.raw_scenarios),
+        )
+        report = self.runner.render_phase_c_report(result).encode("utf-8")
+        with mock.patch.object(
+            self.validator.temporal_tracker,
+            "evaluate_phase_c_scenarios",
+            return_value=evaluation,
+        ):
+            fresh = self.validator.build_fresh_evaluation_projection(
+                self.policy,
+                self.scenarios,
+            )
+        self.validator.validate_pair_bytes(
+            canonical_json_bytes(result),
+            report,
+            fresh,
+        )
+        self.assertEqual(result["invariant_counts"]["semantic_output"], 1)
+        self.assertEqual(result["decision"], "discard")
+
+    def test_fresh_projection_requires_two_identical_valid_evaluations(
+        self,
+    ) -> None:
+        valid = self.tracker.evaluate_phase_c_scenarios(
+            self.policy,
+            self.scenarios,
+        )
+        changed = dataclasses.replace(
+            valid,
+            outcomes=tuple(reversed(valid.outcomes)),
+        )
+        with mock.patch.object(
+            self.validator.temporal_tracker,
+            "evaluate_phase_c_scenarios",
+            side_effect=(valid, changed),
+        ):
+            with self.assertRaisesRegex(
+                self.validator.ValidationError,
+                "synthetic_projection",
+            ):
+                self.validator.build_fresh_evaluation_projection(
+                    self.policy,
+                    self.scenarios,
+                )
+
+    def test_result_decoder_rejects_duplicate_nonfinite_and_nonobject(
+        self,
+    ) -> None:
+        cases = (
+            b'{"x":1,"x":2}\n',
+            b'{"x":NaN}\n',
+            b"[]\n",
+            b"\xff",
+        )
+        for payload in cases:
+            with self.subTest(payload=payload):
+                with self.assertRaisesRegex(
+                    self.validator.ValidationError,
+                    "result_json",
+                ):
+                    self.validator.validate_pair_bytes(
+                        payload,
+                        self.valid_report_bytes,
+                        self.fresh_evaluation_projection,
+                    )
+
+    def test_report_scope_line_mutations_reject_before_determinism(self) -> None:
+        report = self.valid_report_bytes.decode("utf-8")
+        for index, line in enumerate(TASK_9_SCOPE_LINES_FOR_TEST):
+            for action in ("delete", "alter"):
+                with self.subTest(index=index, action=action):
+                    if action == "delete":
+                        mutated_lines = report.splitlines()
+                        mutated_lines.remove(line)
+                        mutated = "\n".join(mutated_lines) + "\n"
+                    else:
+                        mutated = report.replace(
+                            line,
+                            line + " altered",
+                            1,
+                        )
+                    with self.assertRaisesRegex(
+                        self.validator.ValidationError,
+                        "report_scope_boundary",
+                    ):
+                        self.validator.validate_pair_bytes(
+                            canonical_json_bytes(self.valid_result_payload),
+                            mutated.encode("utf-8"),
+                            self.fresh_evaluation_projection,
+                        )
+
+    def test_report_hash_line_endings_and_terminal_lf_mutations_reject(
+        self,
+    ) -> None:
+        result_bytes = canonical_json_bytes(self.valid_result_payload)
+        cases = (
+            (
+                self.valid_report_bytes.replace(
+                    b"result.json sha256:",
+                    b"result.json sha256:0",
+                    1,
+                ),
+                "report_result_hash_binding",
+            ),
+            (self.valid_report_bytes.replace(b"\n", b"\r\n"), "report_encoding"),
+            (self.valid_report_bytes[:-1], "report_encoding"),
+            (self.valid_report_bytes + b"\n", "report_encoding"),
+            (b"\xff", "report_encoding"),
+        )
+        for report_bytes, code in cases:
+            with self.subTest(code=code, size=len(report_bytes)):
+                with self.assertRaisesRegex(
+                    self.validator.ValidationError,
+                    code,
+                ):
+                    self.validator.validate_pair_bytes(
+                        result_bytes,
+                        report_bytes,
+                        self.fresh_evaluation_projection,
+                    )
+
+    def test_every_rendered_aggregate_and_complexity_value_is_bound(
+        self,
+    ) -> None:
+        report = self.valid_report_bytes.decode("utf-8")
+        lines = report.splitlines()
+        for prefix in TASK_9_RENDERED_VALUE_PREFIXES_FOR_TEST:
+            index = next(
+                offset
+                for offset, line in enumerate(lines)
+                if line.startswith(prefix)
+            )
+            mutated_lines = list(lines)
+            mutated_lines[index] = lines[index] + "0"
+            mutated = ("\n".join(mutated_lines) + "\n").encode("utf-8")
+            with self.subTest(prefix=prefix):
+                with self.assertRaisesRegex(
+                    self.validator.ValidationError,
+                    "report_determinism",
+                ):
+                    self.validator.validate_pair_bytes(
+                        canonical_json_bytes(self.valid_result_payload),
+                        mutated,
+                        self.fresh_evaluation_projection,
+                    )
+
+    def test_reader_accepts_only_exact_pair_after_child_validation(self) -> None:
+        with self.allowlisted_reader_root() as root:
+            events: list[str] = []
+            real_lstat = os.lstat
+            real_listdir = os.listdir
+            real_open = open
+
+            def tracked_lstat(path):
+                candidate = Path(path)
+                if candidate.parent == root:
+                    events.append(f"lstat:{candidate.name}")
+                return real_lstat(path)
+
+            def tracked_listdir(path):
+                if Path(path) == root:
+                    events.append("listdir")
+                return real_listdir(path)
+
+            def tracked_open(path, *args, **kwargs):
+                candidate = Path(path)
+                if candidate.parent == root:
+                    events.append(f"open:{candidate.name}")
+                return real_open(path, *args, **kwargs)
+
+            with (
+                mock.patch.object(
+                    self.validator.os,
+                    "lstat",
+                    side_effect=tracked_lstat,
+                ),
+                mock.patch.object(
+                    self.validator.os,
+                    "listdir",
+                    side_effect=tracked_listdir,
+                ),
+                mock.patch("builtins.open", side_effect=tracked_open),
+            ):
+                result_bytes, report_bytes = (
+                    self.validator.read_allowlisted_pair(
+                        "candidate",
+                        str(root),
+                    )
+                )
+            self.assertEqual(
+                result_bytes,
+                canonical_json_bytes(self.valid_result_payload),
+            )
+            self.assertEqual(report_bytes, self.valid_report_bytes)
+            first_open = next(
+                index
+                for index, event in enumerate(events)
+                if event.startswith("open:")
+            )
+            self.assertLess(events.index("listdir"), first_open)
+            self.assertLess(events.index("lstat:result.json"), first_open)
+            self.assertLess(events.index("lstat:report.md"), first_open)
+
+    def test_reader_rejects_outside_alias_and_missing_root_before_open(
+        self,
+    ) -> None:
+        with self.allowlisted_reader_root() as root:
+            cases = (
+                ("outside", str(root.parent / "outside"), "root_not_allowlisted"),
+                (
+                    "dot",
+                    f"{root.parent}{os.sep}.{os.sep}{root.name}",
+                    "root_lexical_alias",
+                ),
+                (
+                    "dotdot",
+                    f"{root}{os.sep}..{os.sep}{root.name}",
+                    "root_lexical_alias",
+                ),
+            )
+            for name, requested, code in cases:
+                with self.subTest(name=name):
+                    with mock.patch(
+                        "builtins.open",
+                        wraps=open,
+                    ) as open_spy:
+                        with self.assertRaisesRegex(
+                            self.validator.ValidationError,
+                            code,
+                        ):
+                            self.validator.read_allowlisted_pair(
+                                "candidate",
+                                requested,
+                            )
+                    self.assertEqual(self.pair_open_paths(open_spy), ())
+
+        with tempfile.TemporaryDirectory(dir=ROOT / ".tmp") as temporary:
+            missing = Path(temporary) / "candidate"
+            with (
+                mock.patch.object(
+                    self.validator,
+                    "CANDIDATE_ROOT",
+                    missing,
+                ),
+                mock.patch("builtins.open", wraps=open) as open_spy,
+            ):
+                with self.assertRaisesRegex(
+                    self.validator.ValidationError,
+                    "root_missing",
+                ):
+                    self.validator.read_allowlisted_pair(
+                        "candidate",
+                        str(missing),
+                    )
+            self.assertEqual(self.pair_open_paths(open_spy), ())
+
+    def test_reader_rejects_reparse_ancestor_root_and_file_before_open(
+        self,
+    ) -> None:
+        reparse_flag = getattr(
+            stat,
+            "FILE_ATTRIBUTE_REPARSE_POINT",
+            0x400,
+        )
+        for target_name in ("ancestor", "root", "file"):
+            with self.subTest(target=target_name):
+                with self.allowlisted_reader_root() as root:
+                    target = {
+                        "ancestor": root.parent,
+                        "root": root,
+                        "file": root / "result.json",
+                    }[target_name]
+                    real_lstat = os.lstat
+
+                    def injected(path):
+                        metadata = real_lstat(path)
+                        if Path(path) == target:
+                            values = {
+                                name: getattr(metadata, name)
+                                for name in dir(metadata)
+                                if name.startswith("st_")
+                            }
+                            values["st_file_attributes"] = reparse_flag
+                            return SimpleNamespace(**values)
+                        return metadata
+
+                    with (
+                        mock.patch.object(
+                            self.validator.os,
+                            "lstat",
+                            side_effect=injected,
+                        ),
+                        mock.patch("builtins.open", wraps=open) as open_spy,
+                    ):
+                        with self.assertRaisesRegex(
+                            self.validator.ValidationError,
+                            "root_reparse_or_link",
+                        ):
+                            self.validator.read_allowlisted_pair(
+                                "candidate",
+                                str(root),
+                            )
+                    self.assertEqual(self.pair_open_paths(open_spy), ())
+
+    def test_reader_rejects_wrong_file_type_and_unexpected_child_before_open(
+        self,
+    ) -> None:
+        with self.allowlisted_reader_root() as root:
+            (root / "report.md").unlink()
+            (root / "report.md").mkdir()
+            with mock.patch("builtins.open", wraps=open) as open_spy:
+                with self.assertRaisesRegex(
+                    self.validator.ValidationError,
+                    "root_file_type",
+                ):
+                    self.validator.read_allowlisted_pair(
+                        "candidate",
+                        str(root),
+                    )
+            self.assertEqual(self.pair_open_paths(open_spy), ())
+
+        with self.allowlisted_reader_root() as root:
+            (root / "unexpected").write_bytes(b"unexpected")
+            with mock.patch("builtins.open", wraps=open) as open_spy:
+                with self.assertRaisesRegex(
+                    self.validator.ValidationError,
+                    "root_children",
+                ):
+                    self.validator.read_allowlisted_pair(
+                        "candidate",
+                        str(root),
+                    )
+            self.assertEqual(self.pair_open_paths(open_spy), ())
+
+    def test_reader_rejects_metadata_change_across_read(self) -> None:
+        with self.allowlisted_reader_root() as root:
+            real_fstat = os.fstat
+            calls = 0
+
+            def injected(descriptor):
+                nonlocal calls
+                calls += 1
+                metadata = real_fstat(descriptor)
+                if calls == 2:
+                    values = {
+                        name: getattr(metadata, name)
+                        for name in dir(metadata)
+                        if name.startswith("st_")
+                    }
+                    values["st_mtime_ns"] = metadata.st_mtime_ns + 1
+                    return SimpleNamespace(**values)
+                return metadata
+
+            with (
+                mock.patch.object(
+                    self.validator.os,
+                    "fstat",
+                    side_effect=injected,
+                ),
+                mock.patch("builtins.open", wraps=open) as open_spy,
+            ):
+                with self.assertRaisesRegex(
+                    self.validator.ValidationError,
+                    "root_changed_during_read",
+                ):
+                    self.validator.read_allowlisted_pair(
+                        "candidate",
+                        str(root),
+                    )
+            self.assertEqual(
+                self.pair_open_paths(open_spy),
+                (root / "result.json",),
+            )
+
+    def test_reader_rejects_oversized_file_before_open(self) -> None:
+        with self.allowlisted_reader_root() as root:
+            (root / "result.json").write_bytes(b"x" * 65537)
+            with mock.patch("builtins.open", wraps=open) as open_spy:
+                with self.assertRaisesRegex(
+                    self.validator.ValidationError,
+                    "root_file_size",
+                ):
+                    self.validator.read_allowlisted_pair(
+                        "candidate",
+                        str(root),
+                    )
+            self.assertEqual(self.pair_open_paths(open_spy), ())
+
+    def test_cli_arity_section_and_root_contract(self) -> None:
+        valid = (
+            (["contracts"], ("contracts", None)),
+            (["scenarios"], ("scenarios", None)),
+            (["synthetic"], ("synthetic", None)),
+            (
+                [
+                    "candidate",
+                    "--root",
+                    ".tmp/emotion-state-003-phase-c0/candidate",
+                ],
+                (
+                    "candidate",
+                    ".tmp/emotion-state-003-phase-c0/candidate",
+                ),
+            ),
+            (["checkpoint"], ("checkpoint", None)),
+        )
+        for arguments, expected in valid:
+            with self.subTest(arguments=arguments):
+                self.assertEqual(
+                    self.validator.parse_cli_args(arguments),
+                    expected,
+                )
+        invalid = (
+            [],
+            ["unknown"],
+            ["contracts", "extra"],
+            ["candidate"],
+            ["candidate", "--root"],
+            ["candidate", "wrong", "root"],
+            ["checkpoint", "--root", "x"],
+        )
+        for arguments in invalid:
+            with self.subTest(arguments=arguments):
+                with self.assertRaisesRegex(
+                    self.validator.CliUsageError,
+                    "cli_arguments",
+                ):
+                    self.validator.parse_cli_args(arguments)
+
+    def test_cli_wrong_arity_and_section_exit_two_without_disclosure(
+        self,
+    ) -> None:
+        for arguments in ((), ("unknown",), ("candidate",)):
+            completed = self.run_validator(*arguments)
+            with self.subTest(arguments=arguments):
+                self.assertEqual(completed.returncode, 2)
+                self.assertEqual(completed.stdout, "")
+                self.assertEqual(completed.stderr, "")
+
+    def test_ast_independence_rejects_origin_and_alias_bypasses(self) -> None:
+        source = (
+            ROOT / "scripts" / "validate_emotion_state_003_phase_c0.py"
+        ).read_text(encoding="utf-8")
+        self.assertEqual(_validator_independence_violations(source), ())
+        bypasses = (
+            "import scripts.run_emotion_state_003_phase_c0 as hidden\n"
+            "hidden.render_phase_c_report({})\n",
+            "from scripts import run_emotion_state_003_phase_c0 as hidden\n"
+            "print(hidden.main)\n",
+            "from scripts.run_emotion_state_003_phase_c0 "
+            "import build_phase_c_result as hidden\nhidden(None, b'', b'')\n",
+            "from scripts.emotion_state_phase_c_contracts "
+            "import PHASE_C_RESULT_FIELDS as hidden\nprint(hidden)\n",
+            "import scripts.emotion_state_phase_c_contracts as contracts\n"
+            "print(contracts.PHASE_C_RESULT_FIELDS)\n",
+        )
+        for bypass in bypasses:
+            with self.subTest(source=bypass):
+                self.assertTrue(_validator_independence_violations(bypass))
+
+    def test_validator_exposes_no_mutable_container_globals(self) -> None:
+        mutable_globals = {
+            name: type(value).__name__
+            for name, value in vars(self.validator).items()
+            if not name.startswith("__")
+            and type(value) in (dict, list, set)
+        }
+        self.assertEqual(mutable_globals, {})
+
+    def test_validator_public_validation_requires_fresh_projection(self) -> None:
+        parameters = inspect.signature(
+            self.validator.validate_candidate_payload,
+        ).parameters
+        self.assertEqual(
+            parameters["fresh_evaluation_projection"].default,
+            inspect.Parameter.empty,
+        )
+        pair_parameters = inspect.signature(
+            self.validator.validate_pair_bytes,
+        ).parameters
+        self.assertEqual(
+            pair_parameters["fresh_evaluation_projection"].default,
+            inspect.Parameter.empty,
+        )

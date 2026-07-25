@@ -2,9 +2,10 @@
 
 ## Status
 
-Tasks 1-8 implementation complete and independently reviewed. Candidate not
-created. Candidate, canonical, push, runtime, provider, data, call, and Phase D
-gates remain closed pending separate explicit authorization.
+Tasks 1-8 implementation and independent validator complete and independently
+reviewed. Candidate authorization is open; candidate not yet created.
+Canonical, push, runtime, provider, data, call, and Phase D gates remain
+closed.
 
 ## Question
 
