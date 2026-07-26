@@ -823,9 +823,12 @@ The guarded policy adapter, sales-shaped research, providers, shadow work,
 calls, and runtime activation remain separate gates. The approved design is
 tracked at
 `docs/superpowers/specs/2026-07-26-emotion-state-phase-c1-operational-signal-evidence-admission-design.md`;
-writing and committing that specification authorizes no source research,
-dataset access, annotation, implementation, evaluation, provider action,
-simulation, call, runtime change, push, or merge.
+the implementation plan is tracked at
+`docs/superpowers/plans/2026-07-26-emotion-state-phase-c1-operational-signal-evidence-admission.md`.
+Both artifacts remain plan/design only. Writing and committing them authorizes
+no source research, network access, dataset access, annotation, implementation,
+evaluation, provider action, simulation, call, runtime change, candidate or
+canonical generation, push, or merge.
 
 Purpose:
 

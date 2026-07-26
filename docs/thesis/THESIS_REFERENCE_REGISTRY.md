@@ -512,6 +512,18 @@ Project use:
 - Project use: reliability-method guidance for the planned three-reviewer annotation and agreement workflow.
 - Thesis caution: this source does not establish that the planned emotion-state labels are valid.
 
+### EMOTION-STATE Phase C1 planned discovery endpoints
+
+- Type: planned public scholarly/dataset discovery metadata
+- Sources:
+  - https://api.openalex.org/works
+  - https://api.crossref.org/works
+  - https://zenodo.org/api/records
+  - https://huggingface.co/api/datasets
+- Project use: Phase C1 discovery seed only.
+- Current status: not accessed; plan only.
+- Thesis caution: discovery-service results are not authoritative source evidence and cannot admit a signal.
+
 ## Privacy And Data Governance Sources
 
 ### European Commission GDPR Principles
