@@ -7608,13 +7608,10 @@ class PhaseCCandidatePromotionTests(PhaseCTestCase):
         cls.raw_policy = load_json_strict(POLICY_PATH)
         cls.raw_scenarios = load_json_strict(SCENARIO_PATH)
 
-    def test_accepted_candidate_equals_two_fresh_in_memory_renders(self) -> None:
-        candidate_result, candidate_report = (
+    def test_accepted_checkpoint_equals_two_fresh_in_memory_renders(self) -> None:
+        checkpoint_result, checkpoint_report = (
             self.validator.read_allowlisted_pair(
-                section="candidate",
-                requested_root=(
-                    ROOT / ".tmp" / "emotion-state-003-phase-c0" / "candidate"
-                ),
+                section="checkpoint",
             )
         )
         renders = []
@@ -7633,19 +7630,19 @@ class PhaseCCandidatePromotionTests(PhaseCTestCase):
             renders.append((result_bytes, report_bytes))
         self.assertEqual(renders[0], renders[1])
         self.assertEqual(
-            sha256_bytes(candidate_result),
+            sha256_bytes(checkpoint_result),
             sha256_bytes(renders[0][0]),
         )
         self.assertEqual(
-            sha256_bytes(candidate_result),
+            sha256_bytes(checkpoint_result),
             sha256_bytes(renders[1][0]),
         )
         self.assertEqual(
-            sha256_bytes(candidate_report),
+            sha256_bytes(checkpoint_report),
             sha256_bytes(renders[0][1]),
         )
         self.assertEqual(
-            sha256_bytes(candidate_report),
+            sha256_bytes(checkpoint_report),
             sha256_bytes(renders[1][1]),
         )
 
@@ -7701,10 +7698,14 @@ class PhaseCCloseoutContractTests(unittest.TestCase):
                 self.assertIn(value, protocol)
 
     def test_every_closeout_reference_binds_scope_and_existing_trace(self) -> None:
-        required_scope = (
+        stable_scope = (
             "synthetic mechanics only",
             "Phase B lockbox remains closed and cannot be reused",
-            "no runtime, provider, data, or Phase D authority",
+        )
+        static_closeout_scope = "no runtime, provider, data, or Phase D authority"
+        roadmap_scope = (
+            "no runtime, provider, data",
+            "successor-phase authority",
         )
         for path in self.CLOSEOUT_PATHS:
             text = path.read_text(encoding="utf-8")
@@ -7715,8 +7716,13 @@ class PhaseCCloseoutContractTests(unittest.TestCase):
                 self.assertIn("177/177", normalized)
                 for value in self.EXPECTED_TRACE_VALUES:
                     self.assertIn(value, normalized)
-                for boundary in required_scope:
+                for boundary in stable_scope:
                     self.assertIn(boundary, normalized)
+                if path == ROOT / "docs" / "thesis" / "ROADMAP.md":
+                    for boundary in roadmap_scope:
+                        self.assertIn(boundary, normalized)
+                else:
+                    self.assertIn(static_closeout_scope, normalized)
 
     def test_closeout_retains_required_nonclaims(self) -> None:
         protocol = self.PROTOCOL_PATH.read_text(encoding="utf-8")
@@ -7753,19 +7759,15 @@ class PhaseCCloseoutContractTests(unittest.TestCase):
         self.assertNotIn("admit-lockbox", phase_c0)
         self.assertNotIn(" lockbox`", phase_c0)
 
-    def test_roadmap_uses_durable_precommit_review_gate(self) -> None:
+    def test_roadmap_records_completed_closeout_boundary(self) -> None:
         roadmap = (
             ROOT / "docs" / "thesis" / "ROADMAP.md"
         ).read_text(encoding="utf-8")
         normalized = " ".join(roadmap.split())
         self.assertNotIn(
-            "The next action is independent Task 10 closeout review",
-            normalized,
-        )
-        self.assertIn(
-            "An independent `C0/I0/M0` review is required before the "
+            "An independent C0/I0/M0 review is required before the "
             "six-file closeout commit.",
-            normalized,
+            normalized.replace("`", ""),
         )
         self.assertNotIn(
             "Implementation, merge, runtime activation, provider access, "
@@ -7774,14 +7776,16 @@ class PhaseCCloseoutContractTests(unittest.TestCase):
             "scope.",
             normalized,
         )
+        self.assertIn("Phase C0 final review returned `C0/I0/M0`", normalized)
         self.assertIn(
-            "Phase C0 design and its ten-task strict-TDD implementation plan "
-            "were separately approved",
+            "48499cf1690338210c57bd720ef466a5f7abf0c7",
             normalized,
         )
+        self.assertIn("The checkpoint remains unmerged", normalized)
+        self.assertIn("successor-phase authority", normalized)
         self.assertIn(
-            "The implementation and accepted local checkpoint described "
-            "above are now complete.",
+            "The implementation and accepted local checkpoint described above "
+            "are now complete.",
             normalized,
         )
         self.assertIn(
@@ -7791,7 +7795,7 @@ class PhaseCCloseoutContractTests(unittest.TestCase):
         self.assertIn(
             "Push, merge, runtime activation, public or private data access, "
             "provider access, calls, conversational simulations, source "
-            "adaptation, and Phase D authority remain outside this "
+            "adaptation, and successor-phase authority remain outside this "
             "checkpoint.",
             normalized,
         )
