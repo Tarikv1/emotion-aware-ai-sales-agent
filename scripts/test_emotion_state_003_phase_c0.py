@@ -1834,15 +1834,19 @@ class PhaseCPolicyContractTests(unittest.TestCase):
                         load_json_strict(path)
 
     def test_exact_output_eol_attributes_are_narrow(self) -> None:
-        self.assertEqual(
-            (ROOT / ".gitattributes").read_text(
-                encoding="utf-8",
-            ).splitlines(),
-            [
-                "/research/experiments/generated/EMOTION-STATE-003-phase-c0-synthetic-temporal-mechanics/result.json text eol=lf",
-                "/research/experiments/generated/EMOTION-STATE-003-phase-c0-synthetic-temporal-mechanics/report.md text eol=lf",
-            ],
-        )
+        rules = (ROOT / ".gitattributes").read_text(encoding="utf-8").splitlines()
+        phase_c0_rules = [
+            "/research/experiments/generated/EMOTION-STATE-003-phase-c0-synthetic-temporal-mechanics/result.json text eol=lf",
+            "/research/experiments/generated/EMOTION-STATE-003-phase-c0-synthetic-temporal-mechanics/report.md text eol=lf",
+        ]
+
+        self.assertEqual(rules[:2], phase_c0_rules)
+        for rule in phase_c0_rules:
+            self.assertEqual(rules.count(rule), 1)
+        for rule in rules:
+            if rule:
+                path_pattern = rule.split(maxsplit=1)[0]
+                self.assertFalse(any(wildcard in path_pattern for wildcard in ("*", "?", "[")))
 
 
 class PhaseCTestCase(unittest.TestCase):
