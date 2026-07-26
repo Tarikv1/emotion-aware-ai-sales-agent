@@ -747,12 +747,12 @@ Existing implementation trace: aggregate runner
 `62b6b65cf307270bfc2e98c7c08617252859948d`. The guarded ledger passed
 Phase C0 `177/177`, pinned Phase B `16/16`, four validator sections, five
 repository gates, and the four LF/compile/protected-runtime/diff checks.
-Phase B lockbox remains
-closed and cannot be reused; this checkpoint grants no runtime, provider, data,
-or Phase D authority. An independent `C0/I0/M0` review is required before the
-six-file closeout commit. That review does not authorize push, merge, runtime
-activation, data access, provider work, calls, simulations, source adaptation,
-prompt or knowledge-base changes, or Phase D.
+Phase B lockbox remains closed and cannot be reused. Phase C0 final review
+returned `C0/I0/M0`; the closeout commit is
+`48499cf1690338210c57bd720ef466a5f7abf0c7` and was pushed to the branch used
+by draft PR `#4`. The checkpoint remains unmerged and grants no runtime,
+provider, data, call, simulation, source-adaptation, prompt, knowledge-base, or
+successor-phase authority.
 
 Task 12's canonical checkpoint is `accepted` under
 `.tmp/emotion-state-002-phase-b-cut4b`, transaction
@@ -781,8 +781,8 @@ the policy and 30-case golden matrix preceded reducer code, and candidate,
 canonical, and push remained distinct gates. The implementation and accepted
 local checkpoint described above are now complete. Push, merge, runtime
 activation, public or private data access, provider access, calls,
-conversational simulations, source adaptation, and Phase D authority remain
-outside this checkpoint. The reviewed venv and wheelhouse under
+conversational simulations, source adaptation, and successor-phase authority
+remain outside this checkpoint. The reviewed venv and wheelhouse under
 `.tmp/emotion-state-002-phase-b` remain immutable dependency inputs only; no
 authority transfers to another gate.
 
@@ -805,6 +805,27 @@ acted-perception evidence, not production readiness or evidence of customer
 internal emotion, the five operational signals, AMI contribution, real-call
 performance, provider/PSTN/ASR/latency feasibility, runtime activation, or
 commercial effectiveness.
+
+The next design checkpoint is `EMOTION-STATE-004 Phase C1 - Operational-Signal
+Evidence Admission`. The original provisional roadmap called its public-data
+thesis experiment "Phase D", but Phase B already completed most of that
+experiment structure and returned `revise`. Phase C1 therefore addresses the
+remaining construct-validity gap instead of repeating the closed lockbox:
+whether direct, turn- or segment-level, independent observer labels exist for
+hesitation, frustration, confusion, interest, and disengagement in spontaneous
+conversation. Each signal is judged independently. Acted labels, proxy
+mappings, conversation-level labels, LLM labels, and a merely planned
+annotation study cannot produce `pass`.
+
+Phase C1 is source-and-label admission only. A later C2 model checkpoint may
+evaluate only admitted signals and must use a new untouched evaluation design.
+The guarded policy adapter, sales-shaped research, providers, shadow work,
+calls, and runtime activation remain separate gates. The approved design is
+tracked at
+`docs/superpowers/specs/2026-07-26-emotion-state-phase-c1-operational-signal-evidence-admission-design.md`;
+writing and committing that specification authorizes no source research,
+dataset access, annotation, implementation, evaluation, provider action,
+simulation, call, runtime change, push, or merge.
 
 Purpose:
 
