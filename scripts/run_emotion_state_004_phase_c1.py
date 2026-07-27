@@ -6,6 +6,7 @@ import re
 import sys
 from collections.abc import Mapping
 from dataclasses import fields, is_dataclass
+from functools import cache
 from pathlib import Path
 from types import MappingProxyType
 from typing import Final
@@ -201,6 +202,49 @@ _UNRESOLVED_EFFECTIVE_SAMPLE_REASON_CODE: Final = (
 _UNRESOLVED_POSITIVE_SUPPORT_REASON_CODES: Final = (
     "positive_support_below_93",
     "published_positive_count_missing",
+)
+_UNRESOLVED_HIDDEN_ELIGIBILITY_REASON_CODES: Final = (
+    tuple(
+        code for code in _UNRESOLVED_ELIGIBILITY_INDEPENDENT_REASON_CODES
+        if code != "rater_count_unresolved"
+    )
+    + (_UNRESOLVED_ELIGIBILITY_OBSERVER_REASON_CODE,)
+    + (_UNRESOLVED_SHARED_REASON_CODE,)
+)
+_UNRESOLVED_HIDDEN_ELIGIBILITY_INDEPENDENT_REASON_CODES: Final = tuple(
+    code for code in _UNRESOLVED_ELIGIBILITY_INDEPENDENT_REASON_CODES
+    if code != "rater_count_unresolved"
+)
+_UNRESOLVED_HIDDEN_RELIABILITY_REASON_CODE: Final = (
+    "reliability_unverifiable"
+)
+_OBSERVABLE_CARD_REASON_CODES: Final = (
+    "reliability_upper_below_0_67",
+    "single_rater",
+    "rater_count_unresolved",
+    "reliability_metric_unapproved",
+    "reliability_effective_sample_insufficient",
+    "positive_support_below_93",
+    "reliability_interval_uncertain",
+    "published_positive_count_missing",
+)
+_OBSERVABLE_REJECTION_REASON_COUNT: Final = 2
+_OBSERVABLE_REASON_BITS: Final = MappingProxyType(
+    {code: 1 << index for index, code in enumerate(_OBSERVABLE_CARD_REASON_CODES)}
+)
+_ReasonVector = tuple[int, ...]
+_UnresolvedPathOption = tuple[int, int, int, int, int]
+_UnresolvedPathTotals = tuple[int, int, int, int]
+_ObservableAction = tuple[int, _ReasonVector, _UnresolvedPathTotals]
+_ObservableSignature = tuple[
+    tuple[int, ...], tuple[_UnresolvedPathOption, ...]
+]
+_ObservableDiagnosticGroup = tuple[
+    tuple[Mapping[str, object], ...], int, int
+]
+_OBSERVABLE_FAMILY_RANGES: Final = (
+    (0, _OBSERVABLE_REJECTION_REASON_COUNT),
+    (_OBSERVABLE_REJECTION_REASON_COUNT, len(_OBSERVABLE_CARD_REASON_CODES)),
 )
 LIMITATIONS: Final = (
     "Observer labels measure perception, not hidden internal emotion.",
@@ -811,9 +855,14 @@ def _validate_search_counts(value: object) -> dict[str, object]:
         + numeric["forward_citation_record_count"]
         - numeric["unresolved_citation_record_count"]
     )
-    required_retained_citation_record_count = (
+    minimum_retained_citation_record_count = max(
+        0,
         candidate_record_count
-        - numeric["retained_candidate_record_count"]
+        - numeric["retained_candidate_record_count"],
+    )
+    nonduplicate_discovery_record_count = (
+        numeric["returned_discovery_record_count"]
+        - numeric["duplicate_discovery_record_count"]
     )
     if (
         numeric["direct_label_query_count"] != 80
@@ -849,8 +898,11 @@ def _validate_search_counts(value: object) -> dict[str, object]:
             and numeric["detailed_candidate_count"]
             < MAX_DETAILED_FALLBACK_MATERIAL_CANDIDATES
         )
-        or required_retained_citation_record_count < 0
-        or required_retained_citation_record_count
+        or (
+            numeric["duplicate_discovery_record_count"] > 0
+            and nonduplicate_discovery_record_count == 0
+        )
+        or minimum_retained_citation_record_count
         > resolved_citation_record_count
         or numeric["nonexhaustive_citation_stop_count"] > 10
         or counts["search_complete"]
@@ -987,6 +1039,562 @@ def _maximum_unresolved_card_reason_occurrences(
                 eligibility_occurrences + reliability_occurrences,
             )
     return maximum
+
+
+def _reason_mask(*codes: str) -> int:
+    return sum(_OBSERVABLE_REASON_BITS[code] for code in codes)
+
+
+def _mask_vector(mask: int, count: int = 1) -> _ReasonVector:
+    return tuple(
+        count if mask & (1 << index) else 0
+        for index in range(len(_OBSERVABLE_CARD_REASON_CODES))
+    )
+
+
+def _add_vectors(
+    left: tuple[int, ...], right: tuple[int, ...]
+) -> tuple[int, ...]:
+    return tuple(
+        left_value + right_value
+        for left_value, right_value in zip(left, right, strict=True)
+    )
+
+
+def _add_bounded_vector(
+    left: _ReasonVector,
+    right: _ReasonVector,
+    capacities: _ReasonVector,
+) -> _ReasonVector | None:
+    combined = _add_vectors(left, right)
+    if any(
+        value > capacity
+        for value, capacity in zip(combined, capacities, strict=True)
+    ):
+        return None
+    return combined
+
+
+def _reason_family_totals(vector: _ReasonVector) -> tuple[int, int]:
+    return (
+        sum(vector[:_OBSERVABLE_REJECTION_REASON_COUNT]),
+        sum(vector[_OBSERVABLE_REJECTION_REASON_COUNT:]),
+    )
+
+
+def _diagnostic_rejects_frozen_alpha_rule(
+    diagnostic: Mapping[str, object],
+) -> bool:
+    interval = tuple(
+        diagnostic[field]
+        for field in ("point_micros", "lower_95_micros", "upper_95_micros")
+    )
+    return (
+        diagnostic["metric_id"] == "krippendorff_alpha"
+        and diagnostic["effective_sample_sufficient"] is True
+        and all(type(value) is int for value in interval)
+        and interval[2] < 670_000
+    )
+
+
+def _rejected_observable_options(
+    diagnostic: Mapping[str, object],
+) -> tuple[int, ...]:
+    raters = diagnostic["independent_rater_count"]
+    if type(raters) is int and raters < 2:
+        return (_reason_mask("single_rater"),)
+    options = [0]
+    if _diagnostic_rejects_frozen_alpha_rule(diagnostic):
+        options.append(_reason_mask("reliability_upper_below_0_67"))
+    return tuple(options)
+
+
+def _unresolved_path_options(
+    diagnostic: Mapping[str, object],
+    reason_counts: Mapping[str, int],
+) -> tuple[_UnresolvedPathOption, ...]:
+    raters = diagnostic["independent_rater_count"]
+    if raters is None:
+        return (
+            (
+                _reason_mask("rater_count_unresolved"),
+                1,
+                0,
+                0,
+                0,
+            ),
+        )
+    if type(raters) is int and raters < 2:
+        return ()
+
+    options: list[_UnresolvedPathOption] = []
+    if any(
+            reason_counts[code] > 0
+            for code in _UNRESOLVED_HIDDEN_ELIGIBILITY_REASON_CODES
+    ):
+        options.append((0, 1, 1, 0, 0))
+    positives = diagnostic["published_positive_count"]
+    point = diagnostic["point_micros"]
+    lower = diagnostic["lower_95_micros"]
+    upper = diagnostic["upper_95_micros"]
+    interval_uncertain = any(
+        value is None for value in (point, lower, upper)
+    ) or (
+        diagnostic["metric_id"] == "krippendorff_alpha"
+        and diagnostic["effective_sample_sufficient"] is True
+        and not _diagnostic_passes_frozen_alpha_rule(diagnostic)
+        and not _diagnostic_rejects_frozen_alpha_rule(diagnostic)
+    )
+    reasons = tuple(
+        code
+        for code, applies in (
+            (
+                "reliability_metric_unapproved",
+                diagnostic["metric_id"] != "krippendorff_alpha",
+            ),
+            (
+                "reliability_effective_sample_insufficient",
+                diagnostic["effective_sample_sufficient"] is False,
+            ),
+            ("positive_support_below_93", type(positives) is int and positives < 93),
+            ("reliability_interval_uncertain", interval_uncertain),
+            ("published_positive_count_missing", positives is None),
+        )
+        if applies
+    )
+    if reasons:
+        options.append((_reason_mask(*reasons), 0, 0, 1, 0))
+    elif (
+        reason_counts[_UNRESOLVED_SHARED_REASON_CODE] > 0
+        or reason_counts[_UNRESOLVED_HIDDEN_RELIABILITY_REASON_CODE] > 0
+    ):
+        options.append((0, 0, 0, 1, 1))
+    return tuple(dict.fromkeys(options))
+
+
+def _observable_signature_actions(
+    rejected_options: tuple[int, ...],
+    unresolved_options: tuple[_UnresolvedPathOption, ...],
+    *,
+    signature_count: int,
+    capacities: _ReasonVector,
+) -> tuple[_ObservableAction, ...]:
+    zero = tuple(0 for _ in capacities)
+    zero_paths = (0, 0, 0, 0)
+
+    def repeated_rejected_totals(
+        options: tuple[int, ...], count: int
+    ) -> tuple[_ReasonVector, ...]:
+        if count == 0:
+            return (zero,)
+        if not options:
+            return ()
+        nonzero = tuple(mask for mask in options if mask)
+        if 0 not in options:
+            vectors = (
+                (_mask_vector(nonzero[0], count),)
+                if len(nonzero) == 1
+                else ()
+            )
+        elif len(nonzero) <= 1:
+            mask = nonzero[0] if nonzero else 0
+            vectors = tuple(
+                _mask_vector(mask, selected)
+                for selected in range(count + 1)
+            )
+        else:
+            vectors = ()
+        return tuple(
+            vector for vector in vectors
+            if _add_bounded_vector(zero, vector, capacities) is not None
+        )
+
+    def repeated_unresolved_totals(
+        options: tuple[_UnresolvedPathOption, ...],
+        count: int,
+    ) -> tuple[tuple[_ReasonVector, _UnresolvedPathTotals], ...]:
+        if count == 0:
+            return ((zero, zero_paths),)
+        if not options:
+            return ()
+
+        allocations: list[tuple[int, ...]] = []
+
+        def allocate(
+            option_index: int,
+            remaining: int,
+            selected: tuple[int, ...],
+        ) -> None:
+            if option_index == len(options) - 1:
+                allocations.append(selected + (remaining,))
+                return
+            for option_count in range(remaining + 1):
+                allocate(
+                    option_index + 1,
+                    remaining - option_count,
+                    selected + (option_count,),
+                )
+
+        allocate(0, count, ())
+        totals: set[tuple[_ReasonVector, _UnresolvedPathTotals]] = set()
+        for allocation in allocations:
+            vector = zero
+            paths = zero_paths
+            for (
+                mask,
+                eligibility_cards,
+                eligibility_hidden_required,
+                reliability_cards,
+                reliability_hidden_required,
+            ), option_count in zip(options, allocation, strict=True):
+                vector = _add_vectors(
+                    vector,
+                    _mask_vector(mask, option_count),
+                )
+                paths = _add_vectors(
+                    paths,
+                    (
+                        eligibility_cards * option_count,
+                        eligibility_hidden_required * option_count,
+                        reliability_cards * option_count,
+                        reliability_hidden_required * option_count,
+                    ),
+                )
+            if _add_bounded_vector(zero, vector, capacities) is not None:
+                totals.add((vector, paths))
+        return tuple(sorted(totals))
+
+    actions = {
+        (rejected_count, combined, paths)
+        for rejected_count in range(signature_count + 1)
+        for rejected_total in repeated_rejected_totals(
+            rejected_options, rejected_count
+        )
+        for unresolved_total, paths in repeated_unresolved_totals(
+            unresolved_options, signature_count - rejected_count
+        )
+        if (
+            combined := _add_bounded_vector(
+                rejected_total, unresolved_total, capacities
+            )
+        )
+        is not None
+    }
+    return tuple(
+        sorted(
+            actions,
+            key=lambda action: (
+                -sum(action[1]),
+                action[0],
+                action[1],
+                action[2],
+            ),
+        )
+    )
+
+
+def _observable_signature_groups(
+    diagnostics: tuple[Mapping[str, object], ...],
+    *,
+    capacities: _ReasonVector,
+    reason_counts: Mapping[str, int],
+) -> tuple[tuple[_ObservableAction, ...], ...] | None:
+    signature_counts: dict[_ObservableSignature, int] = {}
+    for diagnostic in diagnostics:
+        signature = (
+            _rejected_observable_options(diagnostic),
+            _unresolved_path_options(diagnostic, reason_counts),
+        )
+        signature_counts[signature] = signature_counts.get(signature, 0) + 1
+
+    groups: list[tuple[_ObservableAction, ...]] = []
+    for signature, count in sorted(signature_counts.items()):
+        actions = _observable_signature_actions(
+            *signature,
+            signature_count=count,
+            capacities=capacities,
+        )
+        if not actions:
+            return None
+        groups.append(actions)
+    return tuple(sorted(groups, key=lambda actions: (len(actions), actions)))
+
+
+def _exact_unresolved_card_reason_allocation_feasible(
+    *,
+    reason_counts: Mapping[str, int],
+    unresolved_card_reason_occurrences: int,
+    observable_reason_occurrences: int,
+    path_totals: _UnresolvedPathTotals,
+) -> bool:
+    (
+        eligibility_cards,
+        eligibility_hidden_required,
+        reliability_cards,
+        reliability_hidden_required,
+    ) = path_totals
+    hidden_occurrences = (
+        unresolved_card_reason_occurrences - observable_reason_occurrences
+    )
+    if (
+        hidden_occurrences < 0
+        or eligibility_hidden_required > eligibility_cards
+        or reliability_hidden_required > reliability_cards
+    ):
+        return False
+
+    eligibility_independent_maximum = sum(
+        min(reason_counts[code], eligibility_cards)
+        for code in _UNRESOLVED_HIDDEN_ELIGIBILITY_INDEPENDENT_REASON_CODES
+    )
+    observer_count = reason_counts[
+        _UNRESOLVED_ELIGIBILITY_OBSERVER_REASON_CODE
+    ]
+    shared_count = reason_counts[_UNRESOLVED_SHARED_REASON_CODE]
+    reliability_independent_maximum = min(
+        reason_counts[_UNRESOLVED_HIDDEN_RELIABILITY_REASON_CODE],
+        reliability_cards,
+    )
+
+    for eligibility_shared_used in range(
+        min(shared_count, eligibility_cards) + 1
+    ):
+        eligibility_maximum = (
+            eligibility_independent_maximum
+            + eligibility_shared_used
+            + min(
+                observer_count,
+                eligibility_cards - eligibility_shared_used,
+            )
+        )
+        eligibility_minimum = max(
+            eligibility_hidden_required,
+            eligibility_shared_used,
+        )
+        if eligibility_minimum > eligibility_maximum:
+            continue
+
+        remaining_shared = shared_count - eligibility_shared_used
+        for reliability_shared_used in range(
+            min(remaining_shared, reliability_cards) + 1
+        ):
+            reliability_minimum = max(
+                reliability_hidden_required,
+                reliability_shared_used,
+            )
+            reliability_maximum = (
+                reliability_shared_used
+                + reliability_independent_maximum
+            )
+            if reliability_minimum > reliability_maximum:
+                continue
+            if (
+                eligibility_minimum + reliability_minimum
+                <= hidden_occurrences
+                <= eligibility_maximum + reliability_maximum
+            ):
+                return True
+    return False
+
+
+def _observable_reason_allocation_feasible(
+    groups: tuple[_ObservableDiagnosticGroup, ...],
+    *,
+    reason_counts: Mapping[str, int],
+    maximum_rejection_search_records: int,
+    unresolved_search_records: int,
+    unresolved_card_reason_occurrences: int,
+    search_statistics: dict[str, int] | None = None,
+) -> bool:
+    capacities = tuple(
+        reason_counts[code] for code in _OBSERVABLE_CARD_REASON_CODES
+    )
+    requirements = (
+        max(
+            0,
+            sum(capacities[:_OBSERVABLE_REJECTION_REASON_COUNT])
+            - maximum_rejection_search_records,
+        ),
+        max(
+            0,
+            sum(capacities[_OBSERVABLE_REJECTION_REASON_COUNT:])
+            - unresolved_search_records,
+        ),
+    )
+    zero = tuple(0 for _ in capacities)
+    zero_categories = (0, 0)
+    zero_paths = (0, 0, 0, 0)
+    explored_state_count = 0
+    signature_group_count = 0
+
+    def finish(result: bool) -> bool:
+        if search_statistics is not None:
+            search_statistics.update(
+                {
+                    "signature_group_count": signature_group_count,
+                    "explored_state_count": explored_state_count,
+                }
+            )
+        return result
+
+    signature_groups_by_signal: list[
+        tuple[tuple[_ObservableAction, ...], ...]
+    ] = []
+    rejected_targets: list[int] = []
+    for diagnostics, rejected, unresolved in groups:
+        if rejected + unresolved != len(diagnostics):
+            return finish(False)
+        signal_groups = _observable_signature_groups(
+            diagnostics,
+            capacities=capacities,
+            reason_counts=reason_counts,
+        )
+        if signal_groups is None:
+            return finish(False)
+        signature_group_count += len(signal_groups)
+        signature_groups_by_signal.append(signal_groups)
+        rejected_targets.append(rejected)
+
+    @cache
+    def signal_bounds(
+        signal_index: int,
+        group_index: int,
+        rejected_needed: int,
+    ) -> tuple[int, int] | None:
+        signal_groups = signature_groups_by_signal[signal_index]
+        if group_index == len(signal_groups):
+            return zero_categories if rejected_needed == 0 else None
+        candidates = [
+            _add_vectors(_reason_family_totals(vector), suffix)
+            for rejected_count, vector, _paths in signal_groups[group_index]
+            if rejected_count <= rejected_needed
+            for suffix in (
+                signal_bounds(
+                    signal_index,
+                    group_index + 1,
+                    rejected_needed - rejected_count,
+                ),
+            )
+            if suffix is not None
+        ]
+        if not candidates:
+            return None
+        return tuple(
+            max(families[index] for families in candidates)
+            for index in range(2)
+        )
+
+    @cache
+    def search(
+        signal_index: int,
+        group_index: int,
+        rejected_used: int,
+        used: _ReasonVector,
+        path_totals: _UnresolvedPathTotals,
+    ) -> bool:
+        nonlocal explored_state_count
+        if signal_index == len(groups):
+            return all(
+                observed >= required
+                for observed, required in zip(
+                    _reason_family_totals(used),
+                    requirements,
+                    strict=True,
+                )
+            ) and _exact_unresolved_card_reason_allocation_feasible(
+                reason_counts=reason_counts,
+                unresolved_card_reason_occurrences=(
+                    unresolved_card_reason_occurrences
+                ),
+                observable_reason_occurrences=sum(
+                    used[_OBSERVABLE_REJECTION_REASON_COUNT:]
+                ),
+                path_totals=path_totals,
+            )
+        signal_groups = signature_groups_by_signal[signal_index]
+        if group_index == len(signal_groups):
+            if rejected_used != rejected_targets[signal_index]:
+                return False
+            return search(
+                signal_index + 1,
+                0,
+                0,
+                used,
+                path_totals,
+            )
+        explored_state_count += 1
+
+        needed_rejected = (
+            rejected_targets[signal_index] - rejected_used
+        )
+        bounds = signal_bounds(
+            signal_index,
+            group_index,
+            needed_rejected,
+        )
+        if bounds is None:
+            return False
+        maximum_by_family = bounds
+        for future_signal in range(signal_index + 1, len(groups)):
+            future = signal_bounds(
+                future_signal,
+                0,
+                rejected_targets[future_signal],
+            )
+            if future is None:
+                return False
+            maximum_by_family = _add_vectors(
+                maximum_by_family,
+                future,
+            )
+
+        for family_index, (start, stop) in enumerate(
+            _OBSERVABLE_FAMILY_RANGES
+        ):
+            current_occurrences = sum(used[start:stop])
+            remaining_capacity = sum(
+                capacity - value
+                for capacity, value in zip(
+                    capacities[start:stop],
+                    used[start:stop],
+                    strict=True,
+                )
+            )
+            maximum_additions = min(
+                maximum_by_family[family_index],
+                remaining_capacity,
+            )
+            if (
+                current_occurrences + maximum_additions
+                < requirements[family_index]
+            ):
+                return False
+
+        for rejected_count, addition, path_addition in signal_groups[
+            group_index
+        ]:
+            if (
+                rejected_used + rejected_count
+                > rejected_targets[signal_index]
+            ):
+                continue
+            combined = _add_bounded_vector(
+                used,
+                addition,
+                capacities,
+            )
+            combined_paths = _add_vectors(path_totals, path_addition)
+            if combined is not None and search(
+                signal_index,
+                group_index + 1,
+                rejected_used + rejected_count,
+                combined,
+                combined_paths,
+            ):
+                return True
+        return False
+
+    return finish(search(0, 0, 0, zero, zero_paths))
 
 
 def _validate_diagnostic(value: object) -> dict[str, object]:
@@ -1130,6 +1738,13 @@ def validate_phase_c1_result_payload(
         raise RunnerError("per_signal")
     parsed_per_signal: list[dict[str, object]] = []
     all_diagnostic_hashes: list[str] = []
+    observable_diagnostic_groups: list[
+        tuple[
+            tuple[Mapping[str, object], ...],
+            int,
+            int,
+        ]
+    ] = []
     for expected_signal, raw_item in zip(
         TARGET_SIGNALS,
         raw_per_signal,
@@ -1214,6 +1829,18 @@ def validate_phase_c1_result_payload(
         ):
             raise RunnerError("per_signal")
         all_diagnostic_hashes.extend(diagnostic_hashes)
+        observable_diagnostic_groups.append(
+            (
+                tuple(
+                    diagnostic
+                    for diagnostic in parsed_diagnostics
+                    if diagnostic["evidence_card_sha256"]
+                    not in admissible_hashes
+                ),
+                rejected,
+                unresolved,
+            )
+        )
         parsed_per_signal.append(item)
     if len(set(all_diagnostic_hashes)) != len(all_diagnostic_hashes):
         raise RunnerError("reliability_diagnostics")
@@ -1234,6 +1861,16 @@ def validate_phase_c1_result_payload(
         )
     ):
         raise RunnerError("source_counts")
+    maximum_retained_discovery_record_count = (
+        len(all_diagnostic_hashes)
+        + source_counts["fallback_material_candidate_source_count"]
+        + search_counts["candidate_overflow_count"]
+    )
+    if (
+        search_counts["retained_candidate_record_count"]
+        > maximum_retained_discovery_record_count
+    ):
+        raise RunnerError("search_counts")
     if (
         search_counts["candidate_overflow_count"] > 0
         and source_counts["fallback_material_candidate_source_count"]
@@ -1293,14 +1930,15 @@ def validate_phase_c1_result_payload(
         + search_counts["forward_citation_record_count"]
         - search_counts["unresolved_citation_record_count"]
     )
-    required_retained_citation_record_count = (
+    minimum_retained_citation_record_count = max(
+        0,
         search_counts["detailed_candidate_count"]
         + search_counts["candidate_overflow_count"]
-        - search_counts["retained_candidate_record_count"]
+        - search_counts["retained_candidate_record_count"],
     )
     excluded_citation_record_capacity = (
         resolved_citation_record_count
-        - required_retained_citation_record_count
+        - minimum_retained_citation_record_count
     )
     contributor_capacities = {
         "excluded_discovery_record": search_counts[
@@ -1409,6 +2047,42 @@ def validate_phase_c1_result_payload(
         or unresolved_card_occurrences < status_counts["unresolved"]
         or unresolved_card_occurrences
         > maximum_unresolved_card_occurrences
+    ):
+        raise RunnerError("reason_code_counts")
+
+    maximum_excluded_citation_record_count = min(
+        excluded_citation_record_capacity,
+        rejection_occurrences
+        - search_counts["excluded_discovery_record_count"]
+        - status_counts["rejected"],
+    )
+    nonduplicate_discovery_record_count = (
+        search_counts["returned_discovery_record_count"]
+        - search_counts["duplicate_discovery_record_count"]
+    )
+    citation_anchor_count_without_exclusions = (
+        nonduplicate_discovery_record_count
+        + minimum_retained_citation_record_count
+        + search_counts["unresolved_citation_record_count"]
+    )
+    if (
+        resolved_citation_record_count > 0
+        and citation_anchor_count_without_exclusions == 0
+        and maximum_excluded_citation_record_count == 0
+    ):
+        raise RunnerError("reason_code_counts")
+    if not _observable_reason_allocation_feasible(
+        tuple(observable_diagnostic_groups),
+        reason_counts=reason_counts,
+        maximum_rejection_search_records=(
+            search_counts["excluded_discovery_record_count"]
+            + maximum_excluded_citation_record_count
+        ),
+        unresolved_search_records=(
+            unresolved_search_occurrences
+            - record_only_unresolved_occurrences
+        ),
+        unresolved_card_reason_occurrences=unresolved_card_occurrences,
     ):
         raise RunnerError("reason_code_counts")
 
