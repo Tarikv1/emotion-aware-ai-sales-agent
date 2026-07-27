@@ -6261,3 +6261,17 @@ Interpretation:
   `10/10`. Broader local verification and independent re-review remain pending.
 - Status: this is an offline contract hardening continuation only. It makes no
   source-admission, production, customer-emotion, or runtime claim.
+
+### 2026-07-27 - EMOTION-STATE-004 Phase C1 Task 2 regression-proof continuation
+
+- Re-review input: C0/I0/M2. Test-only corrections now assert the exact URL
+  failure code independently for each transport/document hazard and execute
+  the missing-card-source and missing-fallback-source proofs independently.
+  The complete-but-reordered and existing-noncandidate-source checks remain
+  separate exact-code assertions.
+- Strict proof: current test targets were replayed in fresh processes against
+  in-memory pre-fix contract bytes and failed for the expected prior behavior;
+  the same targets pass against the unchanged current production bytes. Final
+  local gates and independent re-review remain pending at this point.
+- Status: no production contract changed and no broader source-admission,
+  runtime, customer-emotion, or production claim is made.

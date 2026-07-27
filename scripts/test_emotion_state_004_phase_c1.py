@@ -1432,17 +1432,21 @@ class PhaseC1SourceContractTests(_PhaseC1FixtureMixin, unittest.TestCase):
         ]
         base_url = registered_url.removesuffix("/works")
         for path in rejected_paths:
-            with self.subTest(path=path):
+            with self.subTest(path=path, receipt="transport"):
                 url = f"{base_url}{path}"
                 receipt = self.valid_transport_receipt()
                 receipt["requested_url"] = url
                 receipt["final_url"] = url
-                with self.assertRaises(phase_c1.PhaseC1ContractError):
+                with self.assertRaises(phase_c1.PhaseC1ContractError) as raised:
                     phase_c1.parse_transport_receipt(receipt)
+                self.assertEqual(raised.exception.code, "transport_requested_url")
+            with self.subTest(path=path, receipt="document"):
+                url = f"{base_url}{path}"
                 source = self.valid_source_payload()
                 source["documents"][0]["authoritative_url"] = url
-                with self.assertRaises(phase_c1.PhaseC1ContractError):
+                with self.assertRaises(phase_c1.PhaseC1ContractError) as raised:
                     phase_c1.parse_source_receipt(source)
+                self.assertEqual(raised.exception.code, "document_url")
 
         safe_url = f"{registered_url}%20metadata"
         receipt = self.valid_transport_receipt()
@@ -1453,23 +1457,29 @@ class PhaseC1SourceContractTests(_PhaseC1FixtureMixin, unittest.TestCase):
         source["documents"][0]["authoritative_url"] = safe_url
         self.assertEqual(phase_c1.parse_source_receipt(source).documents[0].authoritative_url, safe_url)
 
-    def test_source_reference_precedes_pair_and_fallback_order_checks(
+    def test_missing_card_source_reference_rejects_before_pair_checks(
         self,
     ) -> None:
         protocol = phase_c1.validate_discovery_protocol(self.valid_protocol_payload())
         search_bytes = self.valid_search_ledger_bytes()
         ledger = self.valid_source_evidence_ledger(search_bytes)
         card_reference = copy.deepcopy(ledger)
-        card_reference["cards"][0]["source_id"] = "c1-source-0002"
+        card_reference["cards"][0]["source_id"] = "c1-source-9999"
         with self.assertRaises(phase_c1.PhaseC1ContractError) as raised:
             phase_c1.validate_source_evidence_ledger(
                 card_reference, protocol=protocol, search_ledger_bytes=search_bytes
             )
         self.assertEqual(raised.exception.code, "source_reference_missing")
 
+    def test_missing_fallback_source_reference_rejects_before_order_checks(
+        self,
+    ) -> None:
+        protocol = phase_c1.validate_discovery_protocol(self.valid_protocol_payload())
+        search_bytes = self.valid_search_ledger_bytes()
+        ledger = self.valid_source_evidence_ledger(search_bytes)
         fallback_reference = copy.deepcopy(ledger)
         fallback_reference["fallback_assessments"][0]["material_evidence"] = [
-            {**self.valid_fallback_material(), "source_id": "c1-source-0002"}
+            {**self.valid_fallback_material(), "source_id": "c1-source-9999"}
         ]
         with self.assertRaises(phase_c1.PhaseC1ContractError) as raised:
             phase_c1.validate_source_evidence_ledger(
@@ -1477,21 +1487,38 @@ class PhaseC1SourceContractTests(_PhaseC1FixtureMixin, unittest.TestCase):
             )
         self.assertEqual(raised.exception.code, "source_reference_missing")
 
-        wrong_order = copy.deepcopy(ledger)
+    def test_complete_but_reordered_sources_reject_with_source_order(
+        self,
+    ) -> None:
+        protocol = phase_c1.validate_discovery_protocol(self.valid_protocol_payload())
+        search = phase_c1.load_json_strict(
+            self.valid_search_ledger_bytes(), source="search"
+        )
+        self.assertIsInstance(search, dict)
+        search["candidate_order_by_signal"]["interest"] = ["c1-source-0002"]
+        search_bytes = phase_c1.canonical_json_bytes(search)
+        wrong_order = self.valid_source_evidence_ledger(search_bytes)
         source_two = self.valid_source_payload()
         source_two["source_id"] = "c1-source-0002"
         source_two["documents"][0]["document_id"] = "c1-document-0002"
         source_two["documents"][0]["cached_sha256"] = "E" * 64
         wrong_order["sources"].append(source_two)
+        wrong_order["sources"].reverse()
         with self.assertRaises(phase_c1.PhaseC1ContractError) as raised:
             phase_c1.validate_source_evidence_ledger(
                 wrong_order, protocol=protocol, search_ledger_bytes=search_bytes
             )
         self.assertEqual(raised.exception.code, "source_order")
 
-        search = phase_c1.load_json_strict(search_bytes, source="search")
+    def test_existing_noncandidate_source_rejects_with_card_outside_pair(
+        self,
+    ) -> None:
+        protocol = phase_c1.validate_discovery_protocol(self.valid_protocol_payload())
+        search = phase_c1.load_json_strict(
+            self.valid_search_ledger_bytes(), source="search"
+        )
         self.assertIsInstance(search, dict)
-        search["fallback_material_candidate_order"] = ["c1-source-0002"]
+        search["candidate_order_by_signal"]["interest"] = ["c1-source-0002"]
         outside_search_bytes = phase_c1.canonical_json_bytes(search)
         outside = self.valid_source_evidence_ledger(outside_search_bytes)
         source_two = self.valid_source_payload()
@@ -1501,10 +1528,6 @@ class PhaseC1SourceContractTests(_PhaseC1FixtureMixin, unittest.TestCase):
         outside["sources"].append(source_two)
         outside["cards"][0]["source_id"] = "c1-source-0002"
         outside["cards"][0]["native_definition_document_id"] = "c1-document-0002"
-        for assessment in outside["fallback_assessments"]:
-            assessment["material_evidence"] = [
-                {**self.valid_fallback_material(), "source_id": "c1-source-0002"}
-            ]
         with self.assertRaises(phase_c1.PhaseC1ContractError) as raised:
             phase_c1.validate_source_evidence_ledger(
                 outside, protocol=protocol, search_ledger_bytes=outside_search_bytes
