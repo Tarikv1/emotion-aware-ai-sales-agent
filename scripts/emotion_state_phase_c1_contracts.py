@@ -1469,6 +1469,10 @@ _DOCUMENT_ID_RE: Final = re.compile(r"^c1-document-[0-9]{4}$")
 _CARD_ID_RE: Final = re.compile(
     r"^c1-card-(?:hesitation|frustration|confusion|interest|disengagement)-[0-9]{4}$"
 )
+_PROTECTED_DISENGAGEMENT_INTENT_RE: Final = re.compile(
+    r"(?:\bdnc\b|\bdo[\s_-]*not[\s_-]*call\b|\bdon['\u2018\u2019\u02bc\u0060]t[\s_-]*call\b|\brefus(?:al|e|ed|ing)?\b|\bstop(?:[\s_-]+(?:calling|contact(?:ing)?|the[\s_-]+calls?))?\b)",
+    re.IGNORECASE,
+)
 _LANGUAGE_TAG_RE: Final = re.compile(r"^[A-Za-z]{2,3}(?:-[A-Za-z0-9]{2,8})*$")
 _SOURCE_FIELDS: Final = frozenset(field.name for field in fields(PhaseC1SourceReceiptV1))
 _DOCUMENT_FIELDS: Final = frozenset(field.name for field in fields(PhaseC1DocumentReceiptV1))
@@ -1540,6 +1544,16 @@ _AUTHORITATIVE_DOCUMENT_CONTENT_TYPES: Final = (
     "text/plain",
     "text/xml",
 )
+
+
+def _normalize_protected_intent_label(value: str) -> str:
+    apostrophes = str.maketrans(
+        {"\u2018": "'", "\u2019": "'", "\u02bc": "'", "\u0060": "'"}
+    )
+    return "".join(
+        "-" if unicodedata.category(character) == "Pd" else character
+        for character in value.translate(apostrophes)
+    )
 
 
 def _forbidden_content(value: object) -> None:
@@ -1740,6 +1754,16 @@ def parse_evidence_card(payload: object) -> PhaseC1EvidenceCardV1:
     signal = _enum(raw["signal"], TARGET_SIGNALS, code="card_signal_not_in_protocol")
     if not card_id.startswith(f"c1-card-{signal}-"):
         raise PhaseC1ContractError("card_signal_not_in_protocol")
+    native_label = _string(raw["native_label"], code="native_label", maximum=128)
+    if (
+        signal == "disengagement"
+        and _PROTECTED_DISENGAGEMENT_INTENT_RE.search(
+            _normalize_protected_intent_label(native_label)
+        ) is not None
+    ):
+        raise PhaseC1ContractError(
+            "native_disengagement_label_protected_intent"
+        )
     construct = _enum(raw["construct_correspondence"], CONSTRUCT_CORRESPONDENCE_VALUES, code="construct_correspondence")
     modality = _enum(raw["annotation_modality"], ANNOTATION_MODALITIES, code="annotation_modality_unknown")
     temporal = _enum(raw["temporal_unit"], TEMPORAL_UNITS, code="temporal_unit")
@@ -1776,7 +1800,7 @@ def parse_evidence_card(payload: object) -> PhaseC1EvidenceCardV1:
         raise PhaseC1ContractError("source_reference_missing")
     return PhaseC1EvidenceCardV1(
         card_id=card_id, source_id=source_id, signal=signal,
-        native_label=_string(raw["native_label"], code="native_label", maximum=128),
+        native_label=native_label,
         native_definition_document_id=_string(raw["native_definition_document_id"], code="native_definition_document_missing"),
         native_definition_locator=_string(raw["native_definition_locator"], code="native_definition_locator_unbounded", maximum=512),
         native_definition_excerpt_sha256=_hash(raw["native_definition_excerpt_sha256"], code="native_definition_hash_malformed"),

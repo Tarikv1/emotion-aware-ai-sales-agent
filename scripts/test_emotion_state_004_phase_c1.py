@@ -4,12 +4,14 @@ import copy
 import hashlib
 import json
 import unittest
-from dataclasses import FrozenInstanceError, dataclass, fields, replace
+from dataclasses import FrozenInstanceError, dataclass, fields, is_dataclass, replace
+from decimal import Decimal, localcontext
 from pathlib import Path
 from types import MappingProxyType
 from typing import Callable
 
 import scripts.emotion_state_phase_c1_contracts as phase_c1
+import scripts.emotion_state_phase_c1_decision as decision
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -3315,6 +3317,1209 @@ class PhaseC1SourceContractTests(_PhaseC1FixtureMixin, unittest.TestCase):
                 outside, protocol=protocol, search_ledger_bytes=outside_search_bytes
             )
         self.assertEqual(raised.exception.code, "card_outside_candidate_pair")
+
+class PhaseC1DecisionTests(_PhaseC1FixtureMixin, unittest.TestCase):
+    def setUp(self) -> None:
+        self.protocol = phase_c1.validate_discovery_protocol(
+            self.valid_protocol_payload()
+        )
+
+    def reliability(
+        self, **overrides: object
+    ) -> phase_c1.PhaseC1ReliabilityEvidenceV1:
+        payload = self.valid_card_payload()["reliability"]
+        self.assertIsInstance(payload, dict)
+        payload.update(
+            {
+                "rated_unit_count": 200,
+                "published_positive_count": 100,
+                "preadjudication": True,
+                "verifiable": True,
+            }
+        )
+        payload.update(overrides)
+        return phase_c1.parse_evidence_card(
+            {**self.valid_card_payload(), "reliability": payload}
+        ).reliability
+
+    def source(
+        self, **overrides: object
+    ) -> phase_c1.PhaseC1SourceReceiptV1:
+        payload = self.valid_source_payload()
+        payload.update(overrides)
+        if payload["access_status"] == "login_required":
+            payload["documents"][0]["public_without_login"] = False
+        return phase_c1.parse_source_receipt(payload)
+
+    def direct_card(
+        self, **overrides: object
+    ) -> phase_c1.PhaseC1EvidenceCardV1:
+        payload = self.valid_card_payload()
+        payload.update(overrides)
+        if isinstance(payload["claimed_reason_codes"], tuple):
+            payload["claimed_reason_codes"] = list(payload["claimed_reason_codes"])
+        return phase_c1.parse_evidence_card(payload)
+
+    def search_ledger(
+        self,
+        *,
+        fail_ready: bool = True,
+        candidate_signals: tuple[str, ...] = (),
+    ) -> phase_c1.PhaseC1SearchLedgerV1:
+        protocol_sha256 = hashlib.sha256(
+            self.protocol_path.read_bytes()
+        ).hexdigest().upper()
+        return phase_c1.PhaseC1SearchLedgerV1(
+            protocol_sha256=protocol_sha256,
+            query_records=(),
+            citation_records=(),
+            candidate_order_by_signal=MappingProxyType(
+                {
+                    signal: ("c1-source-0001",)
+                    if signal in candidate_signals else ()
+                    for signal in EXPECTED_SIGNALS
+                }
+            ),
+            overflow_count_by_signal=MappingProxyType(
+                {signal: 0 for signal in EXPECTED_SIGNALS}
+            ),
+            fallback_material_candidate_order=(),
+            fallback_material_overflow_count=0,
+            backward_citation_count_by_signal=MappingProxyType(
+                {signal: 0 for signal in EXPECTED_SIGNALS}
+            ),
+            forward_citation_count_by_signal=MappingProxyType(
+                {signal: 0 for signal in EXPECTED_SIGNALS}
+            ),
+            backward_citation_stop_by_signal=MappingProxyType(
+                {signal: "source_list_exhausted" for signal in EXPECTED_SIGNALS}
+            ),
+            forward_citation_stop_by_signal=MappingProxyType(
+                {signal: "source_list_exhausted" for signal in EXPECTED_SIGNALS}
+            ),
+            citation_transport_receipt_sha256s_by_signal=MappingProxyType(
+                {
+                    signal: MappingProxyType({"backward": (), "forward": ()})
+                    for signal in EXPECTED_SIGNALS
+                }
+            ),
+            fail_ready_by_signal=MappingProxyType(
+                {signal: fail_ready for signal in EXPECTED_SIGNALS}
+            ),
+            search_complete=fail_ready,
+        )
+
+    def source_ledger(
+        self,
+        cards: tuple[phase_c1.PhaseC1EvidenceCardV1, ...] = (),
+        assessments: tuple[
+            phase_c1.PhaseC1AnnotationFallbackAssessmentV1, ...
+        ] | None = None,
+    ) -> phase_c1.PhaseC1SourceEvidenceLedgerV1:
+        if assessments is None:
+            assessments = tuple(
+                phase_c1.PhaseC1AnnotationFallbackAssessmentV1(
+                    signal=signal,
+                    status="infeasible",
+                    material_evidence=(),
+                    preregistration_only=True,
+                    execution_authorized=False,
+                    reason_codes=(),
+                )
+                for signal in EXPECTED_SIGNALS
+            )
+        return phase_c1.PhaseC1SourceEvidenceLedgerV1(
+            protocol_sha256=hashlib.sha256(
+                self.protocol_path.read_bytes()
+            ).hexdigest().upper(),
+            search_ledger_sha256="A" * 64,
+            sources=(self.source(),),
+            cards=cards,
+            fallback_assessments=assessments,
+        )
+
+    def unresolved_assessments(
+        self,
+    ) -> tuple[phase_c1.PhaseC1AnnotationFallbackAssessmentV1, ...]:
+        return tuple(
+            phase_c1.PhaseC1AnnotationFallbackAssessmentV1(
+                signal=signal,
+                status="unresolved",
+                material_evidence=(),
+                preregistration_only=True,
+                execution_authorized=False,
+                reason_codes=("annotation_fallback_unresolved",),
+            )
+            for signal in EXPECTED_SIGNALS
+        )
+
+    def review_receipt(
+        self, **overrides: object
+    ) -> phase_c1.PhaseC1SourceReviewReceiptV1:
+        values: dict[str, object] = {
+            "protocol_sha256": hashlib.sha256(
+                self.protocol_path.read_bytes()
+            ).hexdigest().upper(),
+            "search_ledger_sha256": "A" * 64,
+            "source_evidence_ledger_sha256": "B" * 64,
+            "transport_ledger_sha256": "C" * 64,
+            "reviewed_transport_receipt_sha256s": (),
+            "reviewed_document_sha256s": (),
+            "review_scope": "all_transport_discovery_citation_source_cards_and_search_completeness",
+            "verdict": "admitted",
+            "critical_findings": 0,
+            "important_findings": 0,
+            "minor_findings": 0,
+            "raw_rows_read": False,
+            "private_data_read": False,
+            "model_evaluation_run": False,
+            "provider_accessed": False,
+            "runtime_modified": False,
+        }
+        values.update(overrides)
+        return phase_c1.PhaseC1SourceReviewReceiptV1(**values)  # type: ignore[arg-type]
+
+    @staticmethod
+    def canonical_dataclass_bytes(value: object, schema_version: str) -> bytes:
+        def thaw(item: object) -> object:
+            if is_dataclass(item):
+                return {field.name: thaw(getattr(item, field.name)) for field in fields(item)}
+            if isinstance(item, MappingProxyType) or isinstance(item, dict):
+                return {str(key): thaw(entry) for key, entry in item.items()}
+            if isinstance(item, tuple):
+                return [thaw(entry) for entry in item]
+            return item
+        payload = thaw(value)
+        self_payload = {"schema_version": schema_version, **payload}
+        return phase_c1.canonical_json_bytes(self_payload)
+
+    def coherent_inputs(
+        self,
+        *,
+        search: phase_c1.PhaseC1SearchLedgerV1 | None = None,
+        source_ledger: phase_c1.PhaseC1SourceEvidenceLedgerV1 | None = None,
+    ) -> tuple[
+        phase_c1.PhaseC1SearchLedgerV1,
+        phase_c1.PhaseC1SourceEvidenceLedgerV1,
+        phase_c1.PhaseC1SourceReviewReceiptV1,
+    ]:
+        search = self.search_ledger() if search is None else search
+        search_bytes = self.canonical_dataclass_bytes(
+            search, "EmotionStatePhaseC1SearchLedgerV1"
+        )
+        source_ledger = self.source_ledger() if source_ledger is None else source_ledger
+        source_ledger = replace(
+            source_ledger, search_ledger_sha256=phase_c1.sha256_bytes(search_bytes)
+        )
+        source_bytes = self.canonical_dataclass_bytes(
+            source_ledger, "EmotionStatePhaseC1SourceEvidenceLedgerV1"
+        )
+        protocol_bytes = self.canonical_dataclass_bytes(
+            self.protocol, "EmotionStatePhaseC1DiscoveryProtocolV1"
+        )
+        review = self.review_receipt(
+            protocol_sha256=phase_c1.sha256_bytes(protocol_bytes),
+            search_ledger_sha256=phase_c1.sha256_bytes(search_bytes),
+            source_evidence_ledger_sha256=phase_c1.sha256_bytes(source_bytes),
+        )
+        return search, source_ledger, review
+
+    def validated_projection_inputs(
+        self,
+        *,
+        admissible_signals: tuple[str, ...] = ("confusion",),
+        unresolved_signals: tuple[str, ...] = (),
+    ) -> tuple[
+        phase_c1.PhaseC1SearchLedgerV1,
+        phase_c1.PhaseC1SourceEvidenceLedgerV1,
+        phase_c1.PhaseC1SourceReviewReceiptV1,
+    ]:
+        self.assertFalse(set(admissible_signals).intersection(unresolved_signals))
+        retained_signals = tuple(
+            signal
+            for signal in EXPECTED_SIGNALS
+            if signal in admissible_signals or signal in unresolved_signals
+        )
+        search_payload = self.valid_search_ledger_payload()
+        sources: list[dict[str, object]] = []
+        cards: list[dict[str, object]] = []
+        for source_number, signal in enumerate(retained_signals, start=1):
+            source_id = f"c1-source-{source_number:04d}"
+            document_id = f"c1-document-{source_number:04d}"
+            query = next(
+                record
+                for record in search_payload["query_records"]
+                if record["query_id"] == f"c1-query-{signal}-openalex-01"
+            )
+            discovery = self.discovery_record(
+                query_id=query["query_id"],
+                rank=1,
+                record_number=source_number,
+            )
+            discovery["candidate_source_id"] = source_id
+            query["discovery_records"] = [discovery]
+            query["returned_count"] = 1
+            query["result_count"] = 1
+            search_payload["candidate_order_by_signal"][signal] = [source_id]
+
+            source_payload = self.valid_source_payload()
+            source_payload["source_id"] = source_id
+            source_payload["documents"][0].update(
+                {
+                    "document_id": document_id,
+                    "cached_sha256": self.fixture_hash(
+                        f"source-document:{source_number}"
+                    ),
+                    "transport_receipt_sha256": self.fixture_hash(
+                        f"source-transport:{source_number}"
+                    ),
+                }
+            )
+            sources.append(source_payload)
+
+            card_payload = self.valid_card_payload()
+            card_payload.update(
+                {
+                    "card_id": f"c1-card-{signal}-0001",
+                    "source_id": source_id,
+                    "signal": signal,
+                    "native_label": signal,
+                    "native_definition_document_id": document_id,
+                }
+            )
+            if signal in unresolved_signals:
+                card_payload["reliability"]["verifiable"] = False
+                card_payload["claimed_status"] = "unresolved"
+                card_payload["claimed_reason_codes"] = [
+                    "reliability_unverifiable"
+                ]
+            cards.append(card_payload)
+
+        search = phase_c1.validate_search_ledger(search_payload, protocol=self.protocol)
+        search_bytes = phase_c1.canonical_json_bytes(search_payload)
+        source_payload = self.valid_source_evidence_ledger(search_bytes)
+        source_payload["sources"] = sources
+        source_payload["cards"] = cards
+        for assessment in source_payload["fallback_assessments"]:
+            assessment["status"] = "infeasible"
+            assessment["reason_codes"] = []
+        source_ledger = phase_c1.validate_source_evidence_ledger(
+            source_payload, protocol=self.protocol, search_ledger_bytes=search_bytes
+        )
+        source_bytes = phase_c1.canonical_json_bytes(source_payload)
+        review_payload = {
+            "schema_version": "EmotionStatePhaseC1SourceReviewReceiptV1",
+            "protocol_sha256": hashlib.sha256(self.protocol_path.read_bytes()).hexdigest().upper(),
+            "search_ledger_sha256": phase_c1.sha256_bytes(search_bytes),
+            "source_evidence_ledger_sha256": phase_c1.sha256_bytes(source_bytes),
+            "transport_ledger_sha256": "D" * 64,
+            "reviewed_transport_receipt_sha256s": list(phase_c1._review_transport_hashes(search_payload, source_ledger.sources)),
+            "reviewed_document_sha256s": [document.cached_sha256 for source in source_ledger.sources for document in source.documents],
+            "review_scope": "all_transport_discovery_citation_source_cards_and_search_completeness",
+            "verdict": "admitted", "critical_findings": 0,
+            "important_findings": 0, "minor_findings": 0,
+            "raw_rows_read": False, "private_data_read": False,
+            "model_evaluation_run": False, "provider_accessed": False,
+            "runtime_modified": False,
+        }
+        review = phase_c1.validate_source_review_receipt(
+            review_payload, protocol=self.protocol, search_ledger_bytes=search_bytes,
+            source_evidence_ledger_bytes=source_bytes,
+        )
+        return search, source_ledger, review
+
+    def validated_fallback_inputs(
+        self,
+        material_kinds: tuple[str, ...],
+    ) -> tuple[
+        phase_c1.PhaseC1SearchLedgerV1,
+        phase_c1.PhaseC1SourceEvidenceLedgerV1,
+    ]:
+        search_payload = self.valid_search_ledger_payload()
+        sources: list[dict[str, object]] = []
+        materials: list[dict[str, object]] = []
+        fallback_source_ids: list[str] = []
+        fallback_queries = [
+            record
+            for record in search_payload["query_records"]
+            if record["query_kind"] == "fallback_material"
+        ]
+        for source_number, kind in enumerate(material_kinds, start=1):
+            source_id = f"c1-source-{source_number:04d}"
+            document_id = f"c1-document-{source_number:04d}"
+            fallback_source_ids.append(source_id)
+            query = fallback_queries[source_number - 1]
+            discovery = self.discovery_record(
+                query_id=query["query_id"],
+                rank=1,
+                record_number=source_number,
+            )
+            discovery["candidate_source_id"] = source_id
+            query["discovery_records"] = [discovery]
+            query["returned_count"] = 1
+            query["result_count"] = 1
+
+            source_payload = self.valid_source_payload()
+            source_payload["source_id"] = source_id
+            source_payload["phase_c1_roles"] = ["fallback_material_candidate"]
+            source_payload["documents"][0].update(
+                {
+                    "document_id": document_id,
+                    "cached_sha256": self.fixture_hash(
+                        f"fallback-document:{source_number}"
+                    ),
+                    "transport_receipt_sha256": self.fixture_hash(
+                        f"fallback-transport:{source_number}"
+                    ),
+                }
+            )
+            sources.append(source_payload)
+
+            material = self.valid_fallback_material()
+            material["source_id"] = source_id
+            if kind == "feasible":
+                material.update(
+                    {
+                        "status": "feasible",
+                        "public_spontaneous_material_status": "available",
+                        "license_status": "compatible",
+                        "ethical_use_status": "compatible",
+                        "minimum_three_raters_status": "feasible",
+                        "material_evidence_document_ids": [document_id],
+                        "license_evidence_document_ids": [document_id],
+                        "ethical_use_evidence_document_ids": [document_id],
+                        "rater_feasibility_evidence_document_ids": [
+                            document_id
+                        ],
+                    }
+                )
+            elif kind == "missing_evidence":
+                material.update(
+                    {
+                        "status": "unresolved",
+                        "public_spontaneous_material_status": "available",
+                        "license_status": "compatible",
+                        "ethical_use_status": "compatible",
+                        "minimum_three_raters_status": "feasible",
+                        "material_evidence_document_ids": [],
+                        "license_evidence_document_ids": [document_id],
+                        "ethical_use_evidence_document_ids": [document_id],
+                        "rater_feasibility_evidence_document_ids": [
+                            document_id
+                        ],
+                    }
+                )
+            elif kind == "infeasible":
+                material.update(
+                    {
+                        "status": "infeasible",
+                        "public_spontaneous_material_status": "unavailable",
+                        "license_status": "compatible",
+                        "ethical_use_status": "compatible",
+                        "minimum_three_raters_status": "feasible",
+                        "material_evidence_document_ids": [document_id],
+                        "license_evidence_document_ids": [document_id],
+                        "ethical_use_evidence_document_ids": [document_id],
+                        "rater_feasibility_evidence_document_ids": [
+                            document_id
+                        ],
+                    }
+                )
+            elif kind != "unresolved":
+                self.fail(f"unknown fallback material kind: {kind}")
+            materials.append(material)
+
+        search_payload["fallback_material_candidate_order"] = (
+            fallback_source_ids
+        )
+        search = phase_c1.validate_search_ledger(
+            search_payload, protocol=self.protocol
+        )
+        search_bytes = phase_c1.canonical_json_bytes(search_payload)
+        source_payload = self.valid_source_evidence_ledger(search_bytes)
+        source_payload["sources"] = sources
+        source_payload["cards"] = []
+        assessment_status = (
+            "feasible"
+            if "feasible" in material_kinds
+            else "infeasible"
+            if all(kind == "infeasible" for kind in material_kinds)
+            else "unresolved"
+        )
+        assessment_reasons = (
+            ["annotation_fallback_feasible"]
+            if assessment_status == "feasible"
+            else []
+            if assessment_status == "infeasible"
+            else ["annotation_fallback_unresolved"]
+        )
+        for assessment in source_payload["fallback_assessments"]:
+            assessment["status"] = assessment_status
+            assessment["material_evidence"] = copy.deepcopy(materials)
+            assessment["reason_codes"] = assessment_reasons
+        source_ledger = phase_c1.validate_source_evidence_ledger(
+            source_payload,
+            protocol=self.protocol,
+            search_ledger_bytes=search_bytes,
+        )
+        return search, source_ledger
+
+    def test_alpha_rule_is_ordered_exhaustive_and_disjoint(self) -> None:
+        cases = (
+            (self.reliability(verifiable=False), "defer"),
+            (self.reliability(published_positive_count=92, point_micros=900_000, lower_95_micros=850_000, upper_95_micros=930_000), "defer"),
+            (self.reliability(point_micros=800_000, lower_95_micros=670_000, upper_95_micros=860_000), "pass"),
+            (self.reliability(point_micros=650_000, lower_95_micros=590_000, upper_95_micros=669_999), "rejected"),
+            (self.reliability(point_micros=650_000, lower_95_micros=550_000, upper_95_micros=750_000), "defer"),
+        )
+        self.assertEqual(
+            tuple(
+                decision.derive_reliability_status(
+                    evidence, independent_rater_count=2, protocol=self.protocol
+                )[0]
+                for evidence, _ in cases
+            ),
+            tuple(expected for _, expected in cases),
+        )
+
+    def test_positive_support_boundary_matches_decimal_wilson_rule(self) -> None:
+        rule = self.protocol.positive_support_rule
+        with localcontext() as context:
+            context.prec = 50
+            scale = Decimal(int(self.protocol.reliability_scale))
+            p = Decimal(int(rule["worst_case_probability_micros"])) / scale
+            z = Decimal(int(rule["z_micros"])) / scale
+            widths = {}
+            for count in (92, 93):
+                n = Decimal(count)
+                denominator = Decimal(1) + (z * z / n)
+                half_width = z * ((p * (Decimal(1) - p) / n + z * z / (Decimal(4) * n * n)).sqrt()) / denominator
+                widths[count] = half_width * scale
+        self.assertGreater(widths[92], Decimal(int(rule["max_half_width_micros"])))
+        self.assertLessEqual(widths[93], Decimal(int(rule["max_half_width_micros"])))
+        self.assertEqual(
+            decision.derive_reliability_status(self.reliability(published_positive_count=92), independent_rater_count=2, protocol=self.protocol)[0],
+            "defer",
+        )
+        self.assertEqual(
+            decision.derive_reliability_status(self.reliability(published_positive_count=93), independent_rater_count=2, protocol=self.protocol)[0],
+            "pass",
+        )
+
+    def test_known_rejection_precedes_unresolved_metadata(self) -> None:
+        disposition = decision.derive_candidate_disposition(
+            self.source(conversation_status="acted_or_scripted", license_status="unresolved"),
+            replace(self.direct_card(), claimed_status="rejected", claimed_reason_codes=("acted_or_scripted",)),
+            protocol=self.protocol,
+        )
+        self.assertEqual(disposition.status, "rejected")
+        self.assertIn("acted_or_scripted", disposition.reason_codes)
+
+    def test_candidate_derivation_covers_closed_rejections_and_defers(self) -> None:
+        cases = (
+            (self.source(access_status="login_required"), self.direct_card(claimed_status="rejected", claimed_reason_codes=("access_requires_login",)), "rejected", "access_requires_login"),
+            (self.source(license_status="incompatible"), self.direct_card(claimed_status="rejected", claimed_reason_codes=("license_incompatible",)), "rejected", "license_incompatible"),
+            (self.source(ethical_use_status="incompatible"), self.direct_card(claimed_status="rejected", claimed_reason_codes=("ethical_use_incompatible",)), "rejected", "ethical_use_incompatible"),
+            (self.source(conversation_status="mixed_unseparated"), self.direct_card(claimed_status="rejected", claimed_reason_codes=("mixed_unseparated_conversation",)), "rejected", "mixed_unseparated_conversation"),
+            (self.source(), self.direct_card(construct_correspondence="proxy_construct", claimed_status="rejected", claimed_reason_codes=("proxy_construct",)), "rejected", "proxy_construct"),
+            (self.source(), self.direct_card(construct_correspondence="target_absent", claimed_status="rejected", claimed_reason_codes=("target_label_absent",)), "rejected", "target_label_absent"),
+            (self.source(), self.direct_card(temporal_unit="conversation", claimed_status="rejected", claimed_reason_codes=("conversation_level_only",)), "rejected", "conversation_level_only"),
+            (self.source(), self.direct_card(observer_method="self_report", claimed_status="rejected", claimed_reason_codes=("self_report_label",)), "rejected", "self_report_label"),
+            (self.source(), self.direct_card(observer_method="llm_generated", claimed_status="rejected", claimed_reason_codes=("llm_generated_label",)), "rejected", "llm_generated_label"),
+            (self.source(access_status="unresolved"), replace(self.direct_card(), claimed_status="unresolved", claimed_reason_codes=("access_unresolved",)), "unresolved", "access_unresolved"),
+            (self.source(), self.direct_card(annotation_modality="unresolved", claimed_status="unresolved", claimed_reason_codes=("source_documentation_incomplete",)), "unresolved", "source_documentation_incomplete"),
+            (self.source(), self.direct_card(observer_method="adjudicated_only_human_label", claimed_status="unresolved", claimed_reason_codes=("reliability_not_preadjudication",)), "unresolved", "reliability_not_preadjudication"),
+        )
+        for source, card, status, reason in cases:
+            with self.subTest(reason=reason):
+                actual = decision.derive_candidate_disposition(source, card, protocol=self.protocol)
+                self.assertEqual((actual.status, actual.reason_codes), (status, (reason,)))
+
+    def test_candidate_reason_table_covers_remaining_observable_frozen_codes(self) -> None:
+        unresolved_card = replace(self.direct_card(), claimed_status="unresolved")
+        cases = (
+            (self.source(access_status="restricted"), self.direct_card(), "rejected", ("access_restricted",)),
+            (self.source(), replace(self.direct_card(), temporal_unit="other"), "rejected", ("temporal_unit_incompatible",)),
+            (self.source(), replace(self.direct_card(), independent_rater_count=1), "rejected", ("single_rater",)),
+            (self.source(license_status="unresolved"), unresolved_card, "unresolved", ("license_unresolved",)),
+            (self.source(ethical_use_status="unresolved"), unresolved_card, "unresolved", ("ethical_use_unresolved",)),
+            (self.source(conversation_status="unresolved"), unresolved_card, "unresolved", ("conversation_status_unresolved",)),
+            (self.source(), replace(unresolved_card, construct_correspondence="unresolved"), "unresolved", ("directness_unresolved",)),
+            (self.source(), replace(unresolved_card, temporal_unit="unresolved"), "unresolved", ("temporal_unit_unresolved",)),
+            (self.source(), replace(unresolved_card, observer_method="unresolved"), "unresolved", ("observer_method_unresolved",)),
+            (self.source(), replace(unresolved_card, independent_rater_count=None), "unresolved", ("rater_count_unresolved",)),
+            (self.source(), replace(unresolved_card, reliability=replace(self.reliability(), verifiable=False)), "unresolved", ("reliability_unverifiable",)),
+            (self.source(), replace(unresolved_card, reliability=replace(self.reliability(), published_positive_count=92)), "unresolved", ("reliability_effective_sample_insufficient", "positive_support_below_93")),
+        )
+        for source, card, status, reasons in cases:
+            with self.subTest(reasons=reasons):
+                actual = decision.derive_candidate_disposition(source, card, protocol=self.protocol)
+                self.assertEqual((actual.status, actual.reason_codes), (status, reasons))
+
+    def test_reliability_missing_and_boundary_cases_are_unresolved_or_rejected(self) -> None:
+        cases = (
+            (self.reliability(published_positive_count=None), "defer", ("reliability_effective_sample_insufficient", "published_positive_count_missing")),
+            (self.reliability(point_micros=800_000, lower_95_micros=None, upper_95_micros=900_000), "defer", ("reliability_interval_uncertain",)),
+            (self.reliability(point_micros=800_000, lower_95_micros=669_999, upper_95_micros=900_000), "defer", ("reliability_interval_uncertain",)),
+            (self.reliability(point_micros=650_000, lower_95_micros=590_000, upper_95_micros=670_000), "defer", ("reliability_interval_uncertain",)),
+            (self.reliability(point_micros=650_000, lower_95_micros=590_000, upper_95_micros=669_999), "rejected", ("reliability_upper_below_0_67",)),
+        )
+        for evidence, expected_status, expected_reasons in cases:
+            with self.subTest(evidence=evidence):
+                self.assertEqual(
+                    decision.derive_reliability_status(evidence, independent_rater_count=2, protocol=self.protocol),
+                    (expected_status, expected_reasons),
+                )
+
+    def test_unapproved_metric_and_postadjudication_evidence_defer(self) -> None:
+        unapproved = replace(self.reliability(), metric_id="cohen_kappa")
+        self.assertEqual(
+            decision.derive_reliability_status(
+                unapproved, independent_rater_count=2, protocol=self.protocol
+            ),
+            ("defer", ("reliability_metric_unapproved",)),
+        )
+        postadjudication = replace(self.direct_card(), reliability=replace(self.reliability(), preadjudication=False))
+        disposition = decision.derive_candidate_disposition(
+            self.source(), postadjudication, protocol=self.protocol
+        )
+        self.assertEqual(
+            (disposition.status, disposition.reason_codes),
+            ("unresolved", ("reliability_not_preadjudication",)),
+        )
+
+    def test_disengagement_native_label_cannot_relabel_refusal_or_dnc(self) -> None:
+        payload = self.valid_card_payload()
+        payload.update(
+            {
+                "card_id": "c1-card-disengagement-0001",
+                "signal": "disengagement",
+                "native_label": "do not call",
+            }
+        )
+        with self.assertRaisesRegex(
+            phase_c1.PhaseC1ContractError,
+            "native_disengagement_label_protected_intent",
+        ):
+            phase_c1.parse_evidence_card(payload)
+
+    def test_one_pass_only_admits_that_signal_to_c2(self) -> None:
+        search, source_ledger, review = self.validated_projection_inputs()
+        projection = decision.project_phase_c1_admission(
+            protocol=self.protocol, search_ledger=search,
+            source_ledger=source_ledger, review_receipt=review,
+        )
+        self.assertEqual(projection.overall_decision, "proceed_partial_to_c2")
+        self.assertEqual(projection.c2_eligible_signals, ("confusion",))
+
+    def test_projection_binds_exact_canonical_input_hashes(self) -> None:
+        search, source_ledger, review = self.coherent_inputs()
+        for field, code in (
+            ("protocol_sha256", "decision_protocol_hash_mismatch"),
+            ("search_ledger_sha256", "decision_search_hash_mismatch"),
+            ("source_evidence_ledger_sha256", "decision_source_hash_mismatch"),
+        ):
+            with self.subTest(field=field):
+                with self.assertRaisesRegex(phase_c1.PhaseC1ContractError, code):
+                    decision.project_phase_c1_admission(
+                        protocol=self.protocol,
+                        search_ledger=search,
+                        source_ledger=source_ledger,
+                        review_receipt=replace(review, **{field: "F" * 64}),
+                    )
+
+    def test_validator_produced_88_query_inputs_project_partial_and_preserve_inputs(self) -> None:
+        search, source_ledger, review = self.validated_projection_inputs()
+        before = (
+            self.canonical_dataclass_bytes(self.protocol, "EmotionStatePhaseC1DiscoveryProtocolV1"),
+            self.canonical_dataclass_bytes(search, "EmotionStatePhaseC1SearchLedgerV1"),
+            self.canonical_dataclass_bytes(source_ledger, "EmotionStatePhaseC1SourceEvidenceLedgerV1"),
+            repr((self.protocol, search, source_ledger, review)),
+            (id(self.protocol), id(search), id(source_ledger), id(review)),
+        )
+        projection = decision.project_phase_c1_admission(
+            protocol=self.protocol, search_ledger=search,
+            source_ledger=source_ledger, review_receipt=review,
+        )
+        self.assertEqual(
+            (projection.overall_decision, projection.c2_eligible_signals),
+            ("proceed_partial_to_c2", ("confusion",)),
+        )
+        self.assertEqual(
+            before,
+            (
+                self.canonical_dataclass_bytes(self.protocol, "EmotionStatePhaseC1DiscoveryProtocolV1"),
+                self.canonical_dataclass_bytes(search, "EmotionStatePhaseC1SearchLedgerV1"),
+                self.canonical_dataclass_bytes(source_ledger, "EmotionStatePhaseC1SourceEvidenceLedgerV1"),
+                repr((self.protocol, search, source_ledger, review)),
+                (id(self.protocol), id(search), id(source_ledger), id(review)),
+            ),
+        )
+
+    def test_validator_produced_inputs_cover_all_four_overall_decisions(self) -> None:
+        cases = (
+            (
+                EXPECTED_SIGNALS,
+                (),
+                "proceed_full_to_c2",
+                EXPECTED_SIGNALS,
+            ),
+            (
+                ("confusion",),
+                (),
+                "proceed_partial_to_c2",
+                ("confusion",),
+            ),
+            (
+                (),
+                ("confusion",),
+                "defer_c2",
+                (),
+            ),
+            (
+                (),
+                (),
+                "stop_c2",
+                (),
+            ),
+        )
+        for admissible, unresolved, expected, eligible in cases:
+            with self.subTest(expected=expected):
+                search, source_ledger, review = self.validated_projection_inputs(
+                    admissible_signals=admissible,
+                    unresolved_signals=unresolved,
+                )
+                self.assertEqual(len(search.query_records), 88)
+                projection = decision.project_phase_c1_admission(
+                    protocol=self.protocol,
+                    search_ledger=search,
+                    source_ledger=source_ledger,
+                    review_receipt=review,
+                )
+                self.assertEqual(
+                    (projection.overall_decision, projection.c2_eligible_signals),
+                    (expected, eligible),
+                )
+
+    def test_validator_produced_unresolved_card_alone_blocks_signal_fail(self) -> None:
+        search, source_ledger, review = self.validated_projection_inputs(
+            admissible_signals=(),
+            unresolved_signals=("confusion",),
+        )
+        projection = decision.project_phase_c1_admission(
+            protocol=self.protocol,
+            search_ledger=search,
+            source_ledger=source_ledger,
+            review_receipt=review,
+        )
+        confusion = next(
+            row for row in projection.signal_decisions
+            if row.signal == "confusion"
+        )
+        self.assertEqual(
+            (
+                confusion.decision,
+                confusion.unresolved_card_count,
+                confusion.annotation_fallback,
+            ),
+            ("defer", 1, "infeasible"),
+        )
+
+    def test_valid_feasible_preregistered_fallback_defers_and_never_passes(self) -> None:
+        search, source_ledger = self.validated_fallback_inputs(("feasible",))
+        assessment = source_ledger.fallback_assessments[0]
+        result = decision.derive_signal_decision(
+            "hesitation",
+            (),
+            {},
+            search_ledger=search,
+            source_ledger=source_ledger,
+        )
+        self.assertEqual(
+            (
+                assessment.preregistration_only,
+                assessment.execution_authorized,
+                result.annotation_fallback,
+                result.decision,
+                result.c2_eligible,
+            ),
+            (True, False, "feasible", "defer", False),
+        )
+
+    def test_valid_unresolved_fallback_defers(self) -> None:
+        search, source_ledger = self.validated_fallback_inputs(
+            ("unresolved",)
+        )
+        result = decision.derive_signal_decision(
+            "hesitation",
+            (),
+            {},
+            search_ledger=search,
+            source_ledger=source_ledger,
+        )
+        self.assertEqual(
+            (result.annotation_fallback, result.decision),
+            ("unresolved", "defer"),
+        )
+
+    def test_missing_fallback_evidence_material_is_unresolved_and_defers(self) -> None:
+        search, source_ledger = self.validated_fallback_inputs(
+            ("missing_evidence",)
+        )
+        material = (
+            source_ledger.fallback_assessments[0].material_evidence[0]
+        )
+        result = decision.derive_signal_decision(
+            "hesitation",
+            (),
+            {},
+            search_ledger=search,
+            source_ledger=source_ledger,
+        )
+        self.assertEqual(material.material_evidence_document_ids, ())
+        self.assertEqual(
+            (material.status, result.annotation_fallback, result.decision),
+            ("unresolved", "unresolved", "defer"),
+        )
+
+    def test_one_unresolved_fallback_material_among_infeasible_materials_defers(self) -> None:
+        search, source_ledger = self.validated_fallback_inputs(
+            ("infeasible", "unresolved")
+        )
+        assessment = source_ledger.fallback_assessments[0]
+        result = decision.derive_signal_decision(
+            "hesitation",
+            (),
+            {},
+            search_ledger=search,
+            source_ledger=source_ledger,
+        )
+        self.assertEqual(
+            tuple(material.status for material in assessment.material_evidence),
+            ("infeasible", "unresolved"),
+        )
+        self.assertEqual(
+            (result.annotation_fallback, result.decision),
+            ("unresolved", "defer"),
+        )
+
+    def test_cross_source_fallback_document_has_exact_decision_error(self) -> None:
+        search, source_ledger = self.validated_fallback_inputs(
+            ("feasible", "feasible")
+        )
+        assessment = source_ledger.fallback_assessments[0]
+        wrong_source_document_id = (
+            source_ledger.sources[1].documents[0].document_id
+        )
+        materials = (
+            replace(
+                assessment.material_evidence[0],
+                material_evidence_document_ids=(
+                    wrong_source_document_id,
+                ),
+            ),
+            assessment.material_evidence[1],
+        )
+        assessments = (
+            replace(assessment, material_evidence=materials),
+            *source_ledger.fallback_assessments[1:],
+        )
+        with self.assertRaisesRegex(
+            phase_c1.PhaseC1ContractError,
+            "fallback_fact_document_wrong_source",
+        ):
+            decision.derive_signal_decision(
+                "hesitation",
+                (),
+                {},
+                search_ledger=search,
+                source_ledger=replace(
+                    source_ledger,
+                    fallback_assessments=assessments,
+                ),
+            )
+
+    def test_each_search_guard_individually_blocks_signal_fail(self) -> None:
+        search, source_ledger, _ = self.validated_projection_inputs(
+            admissible_signals=()
+        )
+        baseline = decision.derive_signal_decision(
+            "hesitation",
+            (),
+            {},
+            search_ledger=search,
+            source_ledger=source_ledger,
+        )
+        self.assertEqual(baseline.decision, "fail")
+        query_index = next(
+            index
+            for index, query in enumerate(search.query_records)
+            if query.signal == "hesitation"
+        )
+        query = search.query_records[query_index]
+
+        incomplete_query = replace(
+            query,
+            status="incomplete",
+            incomplete_reason="rate_limit_pressure",
+            response_sha256=None,
+            response_byte_count=None,
+        )
+        truncated_query = replace(
+            query,
+            result_count=1,
+            truncated=True,
+        )
+
+        def with_query(
+            replacement: phase_c1.PhaseC1QueryRecordV1,
+        ) -> phase_c1.PhaseC1SearchLedgerV1:
+            return replace(
+                search,
+                query_records=(
+                    search.query_records[:query_index]
+                    + (replacement,)
+                    + search.query_records[query_index + 1 :]
+                ),
+            )
+
+        cases: tuple[
+            tuple[
+                str,
+                phase_c1.PhaseC1SearchLedgerV1,
+                Callable[[phase_c1.PhaseC1SearchLedgerV1], bool],
+            ],
+            ...,
+        ] = (
+            (
+                "search_query_incomplete",
+                with_query(incomplete_query),
+                lambda item: item.query_records[query_index].status
+                == "incomplete",
+            ),
+            (
+                "query_result_truncated",
+                with_query(truncated_query),
+                lambda item: item.query_records[query_index].truncated,
+            ),
+            (
+                "candidate_overflow",
+                replace(
+                    search,
+                    overflow_count_by_signal=MappingProxyType(
+                        {
+                            signal: (
+                                1 if signal == "hesitation" else 0
+                            )
+                            for signal in EXPECTED_SIGNALS
+                        }
+                    ),
+                ),
+                lambda item: item.overflow_count_by_signal["hesitation"]
+                == 1,
+            ),
+            (
+                "fallback_material_overflow",
+                replace(search, fallback_material_overflow_count=1),
+                lambda item: item.fallback_material_overflow_count == 1,
+            ),
+            (
+                "citation_budget_incomplete_backward_budget_reached",
+                replace(
+                    search,
+                    backward_citation_stop_by_signal=MappingProxyType(
+                        {
+                            signal: (
+                                "budget_reached"
+                                if signal == "hesitation"
+                                else "source_list_exhausted"
+                            )
+                            for signal in EXPECTED_SIGNALS
+                        }
+                    ),
+                ),
+                lambda item: item.backward_citation_stop_by_signal[
+                    "hesitation"
+                ]
+                == "budget_reached",
+            ),
+            (
+                "citation_budget_incomplete_forward_budget_reached",
+                replace(
+                    search,
+                    forward_citation_stop_by_signal=MappingProxyType(
+                        {
+                            signal: (
+                                "budget_reached"
+                                if signal == "hesitation"
+                                else "source_list_exhausted"
+                            )
+                            for signal in EXPECTED_SIGNALS
+                        }
+                    ),
+                ),
+                lambda item: item.forward_citation_stop_by_signal[
+                    "hesitation"
+                ]
+                == "budget_reached",
+            ),
+            (
+                "citation_budget_incomplete_backward_incomplete",
+                replace(
+                    search,
+                    backward_citation_stop_by_signal=MappingProxyType(
+                        {
+                            signal: (
+                                "incomplete"
+                                if signal == "hesitation"
+                                else "source_list_exhausted"
+                            )
+                            for signal in EXPECTED_SIGNALS
+                        }
+                    ),
+                ),
+                lambda item: item.backward_citation_stop_by_signal[
+                    "hesitation"
+                ]
+                == "incomplete",
+            ),
+            (
+                "citation_budget_incomplete_forward_incomplete",
+                replace(
+                    search,
+                    forward_citation_stop_by_signal=MappingProxyType(
+                        {
+                            signal: (
+                                "incomplete"
+                                if signal == "hesitation"
+                                else "source_list_exhausted"
+                            )
+                            for signal in EXPECTED_SIGNALS
+                        }
+                    ),
+                ),
+                lambda item: item.forward_citation_stop_by_signal[
+                    "hesitation"
+                ]
+                == "incomplete",
+            ),
+        )
+        for reason, guarded_search, cause_is_present in cases:
+            with self.subTest(reason=reason):
+                result = decision.derive_signal_decision(
+                    "hesitation",
+                    (),
+                    {},
+                    search_ledger=guarded_search,
+                    source_ledger=source_ledger,
+                )
+                self.assertEqual(
+                    (reason, cause_is_present(guarded_search), result.decision),
+                    (reason, True, "defer"),
+                )
+
+    def test_coherent_review_verdict_findings_and_boundary_precede_projection(self) -> None:
+        search, source_ledger, review = self.validated_projection_inputs()
+        for mutation in (
+            {"verdict": "pending"}, {"verdict": "blocked"},
+            {"critical_findings": 1}, {"important_findings": 1},
+            {"minor_findings": 1}, {"private_data_read": True},
+        ):
+            with self.subTest(mutation=mutation):
+                with self.assertRaisesRegex(phase_c1.PhaseC1ContractError, "decision_review_binding"):
+                    decision.project_phase_c1_admission(
+                        protocol=self.protocol, search_ledger=search,
+                        source_ledger=source_ledger,
+                        review_receipt=replace(review, **mutation),
+                    )
+
+    def test_candidate_requires_same_source_authoritative_public_definition(self) -> None:
+        card = self.direct_card()
+        missing_definition = replace(card, native_definition_document_id="c1-document-9999")
+        with self.assertRaisesRegex(phase_c1.PhaseC1ContractError, "native_definition_document_missing"):
+            decision.derive_candidate_disposition(self.source(), missing_definition, protocol=self.protocol)
+        document = self.source().documents[0]
+        non_authoritative_source = replace(
+            self.source(), documents=(replace(document, authoritative=False),)
+        )
+        disposition = decision.derive_candidate_disposition(
+            non_authoritative_source, card, protocol=self.protocol
+        )
+        self.assertEqual(
+            (disposition.status, disposition.reason_codes),
+            ("unresolved", ("authoritative_provenance_unverified",)),
+        )
+
+    def test_authoritative_direct_definition_does_not_require_lexical_signal_label(self) -> None:
+        card = replace(
+            self.direct_card(), native_label="perceived difficulty understanding"
+        )
+        self.assertEqual(
+            decision.derive_candidate_disposition(
+                self.source(), card, protocol=self.protocol
+            ),
+            decision.PhaseC1CandidateDispositionV1(
+                card.card_id, "admissible", ()
+            ),
+        )
+
+    def test_native_label_matching_frozen_excluded_proxy_is_rejected(self) -> None:
+        card = replace(self.direct_card(), native_label="ambiguity")
+        self.assertEqual(
+            decision.derive_candidate_disposition(
+                self.source(), card, protocol=self.protocol
+            ),
+            decision.PhaseC1CandidateDispositionV1(
+                card.card_id, "rejected", ("proxy_construct",)
+            ),
+        )
+
+    def test_candidate_source_id_and_fallback_document_lineage_fail_closed(self) -> None:
+        with self.assertRaisesRegex(
+            phase_c1.PhaseC1ContractError, "source_reference_missing"
+        ):
+            decision.derive_candidate_disposition(
+                replace(self.source(), source_id="c1-source-0002"),
+                self.direct_card(),
+                protocol=self.protocol,
+            )
+        source = self.source()
+        material = phase_c1.PhaseC1FallbackMaterialEvidenceV1(
+            source_id=source.source_id,
+            status="unresolved",
+            public_spontaneous_material_status="available",
+            license_status="compatible",
+            ethical_use_status="compatible",
+            minimum_three_raters_status="feasible",
+            material_evidence_document_ids=("c1-document-9999",),
+            license_evidence_document_ids=("c1-document-0001",),
+            ethical_use_evidence_document_ids=("c1-document-0001",),
+            rater_feasibility_evidence_document_ids=("c1-document-0001",),
+        )
+        assessments = tuple(
+            phase_c1.PhaseC1AnnotationFallbackAssessmentV1(
+                signal=signal, status="unresolved", material_evidence=(material,),
+                preregistration_only=True, execution_authorized=False,
+                reason_codes=("annotation_fallback_unresolved",),
+            )
+            for signal in EXPECTED_SIGNALS
+        )
+        search = replace(
+            self.search_ledger(),
+            fallback_material_candidate_order=(source.source_id,),
+        )
+        source_ledger = replace(
+            self.source_ledger(assessments=assessments), sources=(source,)
+        )
+        with self.assertRaisesRegex(
+            phase_c1.PhaseC1ContractError, "fallback_fact_document_unknown"
+        ):
+            decision.derive_signal_decision(
+                "hesitation", (), {},
+                search_ledger=search, source_ledger=source_ledger,
+            )
+
+    def test_fallback_material_claim_and_disposition_coverage_fail_closed(self) -> None:
+        source = self.source()
+        material = phase_c1.PhaseC1FallbackMaterialEvidenceV1(
+            source_id=source.source_id,
+            status="infeasible",
+            public_spontaneous_material_status="available",
+            license_status="compatible",
+            ethical_use_status="compatible",
+            minimum_three_raters_status="feasible",
+            material_evidence_document_ids=("c1-document-0001",),
+            license_evidence_document_ids=("c1-document-0001",),
+            ethical_use_evidence_document_ids=("c1-document-0001",),
+            rater_feasibility_evidence_document_ids=("c1-document-0001",),
+        )
+        assessments = tuple(
+            phase_c1.PhaseC1AnnotationFallbackAssessmentV1(
+                signal=signal, status="feasible", material_evidence=(material,),
+                preregistration_only=True, execution_authorized=False,
+                reason_codes=("annotation_fallback_feasible",),
+            )
+            for signal in EXPECTED_SIGNALS
+        )
+        search = replace(self.search_ledger(), fallback_material_candidate_order=(source.source_id,))
+        source_ledger = replace(self.source_ledger(assessments=assessments), sources=(source,))
+        with self.assertRaisesRegex(phase_c1.PhaseC1ContractError, "fallback_material_status_mismatch"):
+            decision.derive_signal_decision("hesitation", (), {}, search_ledger=search, source_ledger=source_ledger)
+        admissible = self.direct_card()
+        with self.assertRaisesRegex(phase_c1.PhaseC1ContractError, "candidate_card_missing_or_duplicate"):
+            decision.derive_signal_decision(
+                "confusion", (), {admissible.card_id: admissible},
+                search_ledger=self.search_ledger(), source_ledger=self.source_ledger(),
+            )
+
+    def test_fail_guards_and_protected_intent_cover_reviewed_bypasses(self) -> None:
+        payload = self.valid_card_payload()
+        payload.update({"card_id": "c1-card-disengagement-0001", "signal": "disengagement"})
+        for native_label in ("do not call", "please don't call again", "do—not_call", "DNC", "refused", "stop calling"):
+            with self.subTest(native_label=native_label):
+                payload["native_label"] = native_label
+                with self.assertRaisesRegex(phase_c1.PhaseC1ContractError, "native_disengagement_label_protected_intent"):
+                    phase_c1.parse_evidence_card(payload)
+        search = replace(self.search_ledger(), overflow_count_by_signal=MappingProxyType({signal: 1 if signal == "hesitation" else 0 for signal in EXPECTED_SIGNALS}))
+        result = decision.derive_signal_decision("hesitation", (), {}, search_ledger=search, source_ledger=self.source_ledger())
+        self.assertEqual(result.decision, "defer")
+
+    def test_incomplete_query_citation_and_unapproved_fallback_block_fail(self) -> None:
+        incomplete = phase_c1.PhaseC1QueryRecordV1(
+            query_id="c1-query-hesitation-openalex-01",
+            query_kind="direct_label_source", channel_id="openalex",
+            signal="hesitation", query_text="synthetic", status="incomplete",
+            incomplete_reason="network_error", result_limit=25,
+            response_sha256=None, response_byte_count=None,
+            transport_receipt_sha256="A" * 64, result_count=0,
+            returned_count=0, truncated=False, discovery_records=(),
+        )
+        search = replace(
+            self.search_ledger(), query_records=(incomplete,),
+            backward_citation_stop_by_signal=MappingProxyType(
+                {signal: "budget_reached" if signal == "hesitation" else "source_list_exhausted" for signal in EXPECTED_SIGNALS}
+            ),
+        )
+        self.assertEqual(
+            decision.derive_signal_decision(
+                "hesitation", (), {}, search_ledger=search,
+                source_ledger=self.source_ledger(),
+            ).decision,
+            "defer",
+        )
+        unapproved = phase_c1.PhaseC1AnnotationFallbackAssessmentV1(
+            signal="hesitation", status="infeasible", material_evidence=(),
+            preregistration_only=False, execution_authorized=True,
+            reason_codes=(),
+        )
+        assessments = (unapproved,) + tuple(
+            phase_c1.PhaseC1AnnotationFallbackAssessmentV1(
+                signal=signal, status="infeasible", material_evidence=(),
+                preregistration_only=True, execution_authorized=False,
+                reason_codes=(),
+            )
+            for signal in EXPECTED_SIGNALS[1:]
+        )
+        with self.assertRaisesRegex(phase_c1.PhaseC1ContractError, "fallback_authorization"):
+            decision.derive_signal_decision(
+                "hesitation", (), {}, search_ledger=self.search_ledger(),
+                source_ledger=self.source_ledger(assessments=assessments),
+            )
+
+    def test_card_claim_mismatch_and_input_immutability_fail_closed(self) -> None:
+        card = replace(self.direct_card(), claimed_status="unresolved", claimed_reason_codes=())
+        search, source_ledger, review = self.coherent_inputs(
+            search=self.search_ledger(candidate_signals=("confusion",)),
+            source_ledger=self.source_ledger((card,)),
+        )
+        before = repr((self.protocol, search, source_ledger, review))
+        with self.assertRaisesRegex(phase_c1.PhaseC1ContractError, "card_claim_mismatch"):
+            decision.project_phase_c1_admission(
+                protocol=self.protocol, search_ledger=search,
+                source_ledger=source_ledger, review_receipt=review,
+            )
+        self.assertEqual(before, repr((self.protocol, search, source_ledger, review)))
+
 
 if __name__ == "__main__":
     unittest.main()

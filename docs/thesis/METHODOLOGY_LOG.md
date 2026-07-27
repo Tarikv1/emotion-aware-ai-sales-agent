@@ -6352,3 +6352,104 @@ Interpretation:
   `validate_search_ledger`. This offline correction makes no source-admission,
   data, provider, call, runtime, candidate, canonical, C2, production,
   customer-emotion, performance, or safety claim and authorizes no such action.
+
+### 2026-07-27 - EMOTION-STATE-004 Phase C1 Task 4 offline admission-decision implementation
+
+- Scope: added a pure, immutable reliability, candidate-disposition,
+  per-signal, and overall-admission projection layer. It applies the frozen
+  alpha thresholds and positive-support boundary, checks claimed card results
+  against independent derivation, keeps C2 eligibility in frozen signal order,
+  and rejects protected refusal/stop/do-not-call vocabulary as a native
+  disengagement label.
+- Strict TDD: the focused RED command
+  `python -m unittest scripts.test_emotion_state_004_phase_c1.PhaseC1DecisionTests -v`
+  exited `1` because `scripts.emotion_state_phase_c1_decision` did not exist.
+  After the decision module was added, the focused class passed `9/9`. A
+  separate native-label RED then failed because no protected-intent error was
+  raised; after the parser boundary was added, the focused class passed `11/11`.
+- Status and boundary: local focused GREEN only. The complete Task 4 ledger,
+  independent specification/code-quality review, staging, and commit remain
+  pending. This was offline synthetic contract work only; no source discovery,
+  network or provider access, data/private-data read, customer-emotion or
+  runtime action, call, simulation, candidate/canonical output, C2 action,
+  push, merge, history rewrite, or production claim occurred or is authorized.
+
+### 2026-07-27 - EMOTION-STATE-004 Phase C1 Task 4 review-fix round 1
+
+- Review correction scope: bound projection to canonical reconstructed
+  protocol, search-ledger, and source-ledger bytes; revalidated the frozen
+  protocol; enforced same-source authoritative/public native-definition
+  evidence; checked every fallback-material claim; required complete ordered
+  disposition/card coverage; blocked `fail` on overflow; and normalized
+  protected disengagement-label intent vocabulary.
+- Strict TDD: the first strengthened focused run failed `7` assertions on the
+  missing native-definition lineage, material-status comparison, disposition
+  coverage, overflow fail guard, protected `don't call` handling, and the
+  protocol/search/source hash bindings. A subsequent Unicode-dash label RED
+  failed before normalization. The final focused class passes `15/15` and the
+  three modified Python modules compile.
+- Status and boundary: review-fix re-review and the complete controller ledger
+  remain pending. This remains offline synthetic contract work only; no source,
+  network, data/private-data, provider, call, simulation, runtime, candidate,
+  canonical, C2, push, merge, or production action or claim occurred.
+
+### 2026-07-27 - EMOTION-STATE-004 Phase C1 Task 4 review-fix round 2
+
+- Review correction scope: removed the unsupported lexical native-label equals
+  signal rule while retaining construct-correspondence gating; added source/card
+  identifier binding; made fallback unknown/cross-source document provenance
+  explicit; enforced fallback authorization flags; and independently blocked
+  `fail` for incomplete/truncated queries and incomplete/budget citation stops.
+- Strict TDD: isolated REDs reproduced the invalid lexical rejection of an
+  authoritative direct definition, missing source/card binding, unknown
+  fallback-document provenance, and incomplete-query/citation fail bypass.
+  Current focused decision class passes `18/18`; the modified Python modules
+  compile.
+- Status and boundary: independent re-review and complete controller ledger
+  remain pending. This remains offline synthetic contract work only; no source,
+  network, data/private-data, provider, call, simulation, runtime, candidate,
+  canonical, C2, push, merge, or production action or claim occurred.
+
+### 2026-07-27 - EMOTION-STATE-004 Phase C1 Task 4 review-fix round 3
+
+- Fixture correction: added a complete 88-query validator-produced projection
+  baseline with canonical search/source bytes and a review receipt derived from
+  the exact query/discovery/citation/source transport and document hashes.
+- Coverage: added coherent review-precedence and input-immutability proofs,
+  plus branch-sensitive assertions for the remaining observable candidate and
+  reliability reason codes. `source_identity_unverified` and
+  `raw_annotation_rows_required` remain intentionally outside decision
+  derivation: their frozen input dataclasses expose no safe observable fact
+  distinguishing either cause, so this layer does not invent a proxy.
+- Strict TDD: the new validator baseline and branch table were added after the
+  preceding isolated RED fixes; current focused decision class passes `21/21`
+  and the modified Python modules compile. Independent re-review remains
+  pending.
+
+### 2026-07-27 - EMOTION-STATE-004 Phase C1 Task 4 review-fix round 4
+
+- Decision correction: exact native labels that match the frozen excluded
+  proxy set for their signal now reject as `proxy_construct`; legitimate
+  authoritative direct labels remain free to use nonliteral wording.
+- Exhaustive decision coverage: validator-produced 88-query fixtures now prove
+  all four overall outcomes and the unresolved-card fail guard. Separate
+  validator-produced fallback fixtures prove feasible, unresolved,
+  missing-evidence, and mixed infeasible/unresolved material paths; the
+  cross-source document path raises
+  `fallback_fact_document_wrong_source`. Eight isolated causal mutations prove
+  direct-query incomplete/truncated, candidate/fallback overflow, and each
+  backward/forward budget-reached/incomplete citation stop independently block
+  signal `fail`. A valid preregistration-only feasible fallback remains
+  `defer` and never becomes C2-eligible.
+- Strict TDD: the focused decision class first failed exactly one new
+  assertion because native label `ambiguity` was admitted for `confusion`
+  instead of rejected as `proxy_construct`. After the exact frozen-proxy
+  comparison was added, the focused class passed `22/22`; after the complete
+  isolated matrix replaced redundant zero-query positive cases, the final
+  focused class passed `28/28`. The contracts, decision, and test modules
+  compile.
+- Status and boundary: independent re-review and the controller's complete
+  ledger, staging, and commit remain pending. This remains offline synthetic
+  contract work only; no source, network, research, data/private-data,
+  provider, call, simulation, runtime, candidate, canonical, C2, push, merge,
+  or production action or claim occurred.
