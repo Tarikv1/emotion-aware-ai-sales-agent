@@ -1387,6 +1387,55 @@ _REASON_CODES: Final = (
     "candidate_overflow", "citation_budget_incomplete", "annotation_fallback_feasible",
     "annotation_fallback_unresolved",
 )
+_RECORD_REJECTION_REASON_CODES: Final = frozenset(
+    {
+        "access_requires_login",
+        "access_restricted",
+        "license_incompatible",
+        "ethical_use_incompatible",
+        "acted_or_scripted",
+        "mixed_unseparated_conversation",
+        "proxy_construct",
+        "target_label_absent",
+        "conversation_level_only",
+        "temporal_unit_incompatible",
+        "single_rater",
+        "self_report_label",
+        "llm_generated_label",
+        "reliability_upper_below_0_67",
+    }
+)
+_RECORD_PRE_SCREEN_UNRESOLVED_REASON_CODES: Final = frozenset(
+    {
+        "source_identity_unverified",
+        "authoritative_provenance_unverified",
+        "access_unresolved",
+    }
+)
+_RECORD_SCREENED_UNRESOLVED_REASON_CODES: Final = frozenset(
+    {
+        "license_unresolved",
+        "ethical_use_unresolved",
+        "conversation_status_unresolved",
+        "directness_unresolved",
+        "temporal_unit_unresolved",
+        "observer_method_unresolved",
+        "rater_count_unresolved",
+        "reliability_metric_unapproved",
+        "reliability_not_preadjudication",
+        "reliability_unverifiable",
+        "reliability_effective_sample_insufficient",
+        "positive_support_below_93",
+        "reliability_interval_uncertain",
+        "published_positive_count_missing",
+        "source_documentation_incomplete",
+        "raw_annotation_rows_required",
+    }
+)
+_RECORD_UNRESOLVED_REASON_CODES: Final = (
+    _RECORD_PRE_SCREEN_UNRESOLVED_REASON_CODES
+    | _RECORD_SCREENED_UNRESOLVED_REASON_CODES
+)
 QUERY_STATUSES: Final = ("complete", "incomplete")
 QUERY_KINDS: Final = ("direct_label_source", "fallback_material")
 QUERY_INCOMPLETE_REASONS: Final = (
@@ -1839,8 +1888,6 @@ def _validate_disposition_fields(
     field_code: str,
     reason_code_error: str,
 ) -> None:
-    rejection_reasons = frozenset(_REASON_CODES[:14])
-    unresolved_reasons = frozenset(_REASON_CODES[14:])
     if disposition == "retained_candidate":
         if not documentation_hashes:
             raise PhaseC1ContractError("documentation_transport_hashes")
@@ -1868,19 +1915,24 @@ def _validate_disposition_fields(
             or duplicate_reference is not None
         ):
             raise PhaseC1ContractError(field_code)
-        if reason_code not in rejection_reasons:
+        if reason_code not in _RECORD_REJECTION_REASON_CODES:
             raise PhaseC1ContractError(reason_code_error)
         return
     if (
         candidate_source_id is not None
         or duplicate_reference is not None
-        or reason_code not in unresolved_reasons
+        or reason_code not in _RECORD_UNRESOLVED_REASON_CODES
     ):
         raise PhaseC1ContractError(
             reason_code_error
             if reason_code is not None
             else field_code
         )
+    if (
+        reason_code in _RECORD_SCREENED_UNRESOLVED_REASON_CODES
+        and not documentation_hashes
+    ):
+        raise PhaseC1ContractError("documentation_transport_hashes")
 
 
 def parse_discovery_record(payload: object) -> PhaseC1DiscoveryRecordV1:
@@ -2345,8 +2397,10 @@ def validate_search_ledger(
 
     seen_record_ids: set[str] = set()
     identity_by_record_id: dict[str, str] = {}
+    identity_lane_by_record_id: dict[str, str] = {}
     seen_identity_lanes: set[tuple[str, str]] = set()
     identity_by_candidate_source_id: dict[str, str] = {}
+    candidate_source_id_by_identity: dict[str, str] = {}
     for query in query_records:
         identity_lane = (
             "fallback_material"
@@ -2377,6 +2431,16 @@ def validate_search_ledger(
                     "discovery_duplicate_identity"
                 )
             if (
+                discovery.disposition == "duplicate"
+                and identity_lane_by_record_id[
+                    discovery.duplicate_of_discovery_record_id
+                ]
+                != identity_lane
+            ):
+                raise PhaseC1ContractError(
+                    "discovery_duplicate_lane"
+                )
+            if (
                 (identity_lane, discovery.identity_sha256)
                 in seen_identity_lanes
                 and discovery.disposition != "duplicate"
@@ -2393,20 +2457,51 @@ def validate_search_ledger(
                     raise PhaseC1ContractError(
                         "candidate_source_identity"
                     )
+                previous_source_id = (
+                    candidate_source_id_by_identity.setdefault(
+                        discovery.identity_sha256,
+                        discovery.candidate_source_id,
+                    )
+                )
+                if previous_source_id != discovery.candidate_source_id:
+                    raise PhaseC1ContractError(
+                        "candidate_identity_source"
+                    )
             seen_record_ids.add(discovery.discovery_record_id)
             identity_by_record_id[
                 discovery.discovery_record_id
             ] = discovery.identity_sha256
+            identity_lane_by_record_id[
+                discovery.discovery_record_id
+            ] = identity_lane
             seen_identity_lanes.add(
                 (identity_lane, discovery.identity_sha256)
             )
 
+    citation_payloads = _sequence(
+        raw["citation_records"],
+        code="citation_records",
+    )
+    citation_record_ids: set[str] = set()
+    for item in citation_payloads:
+        citation_raw = _mapping(item, code="citation_object")
+        _exact_fields(
+            citation_raw,
+            _CITATION_FIELDS,
+            code="citation_fields",
+        )
+        citation_record_id = _string(
+            citation_raw["citation_record_id"],
+            code="citation_record_id",
+        )
+        if citation_record_id in citation_record_ids:
+            raise PhaseC1ContractError(
+                "duplicate_citation_record_id"
+            )
+        citation_record_ids.add(citation_record_id)
     citation_records = tuple(
         parse_citation_record(item)
-        for item in _sequence(
-            raw["citation_records"],
-            code="citation_records",
-        )
+        for item in citation_payloads
     )
     citation_sort_keys = tuple(
         (
@@ -2451,6 +2546,14 @@ def validate_search_ledger(
         ):
             raise PhaseC1ContractError("citation_duplicate_identity")
         if (
+            citation.disposition == "duplicate"
+            and identity_lane_by_record_id[
+                citation.duplicate_of_record_id
+            ]
+            != citation.signal
+        ):
+            raise PhaseC1ContractError("citation_duplicate_lane")
+        if (
             (citation.signal, citation.identity_sha256)
             in seen_identity_lanes
             and citation.disposition != "duplicate"
@@ -2463,10 +2566,19 @@ def validate_search_ledger(
             )
             if previous_identity != citation.identity_sha256:
                 raise PhaseC1ContractError("candidate_source_identity")
+            previous_source_id = candidate_source_id_by_identity.setdefault(
+                citation.identity_sha256,
+                citation.candidate_source_id,
+            )
+            if previous_source_id != citation.candidate_source_id:
+                raise PhaseC1ContractError("candidate_identity_source")
         seen_record_ids.add(citation.citation_record_id)
         identity_by_record_id[
             citation.citation_record_id
         ] = citation.identity_sha256
+        identity_lane_by_record_id[
+            citation.citation_record_id
+        ] = citation.signal
         seen_identity_lanes.add(
             (citation.signal, citation.identity_sha256)
         )
@@ -2564,7 +2676,6 @@ def validate_search_ledger(
             )
             if (
                 (stop == "no_eligible_candidates" and actual_count != 0)
-                or (stop == "budget_reached" and actual_count != cap)
             ):
                 raise PhaseC1ContractError("citation_stop_count")
     for citation in citation_records:
@@ -2906,7 +3017,7 @@ def _review_transport_hashes(
 ) -> tuple[str, ...]:
     query_hashes: list[str] = []
     discovery_document_hashes: list[str] = []
-    citation_hashes: list[str] = []
+    citation_attempt_hashes: list[str] = []
     citation_document_hashes: list[str] = []
     for query in _sequence(search.get("query_records"), code="reviewed_transport_hash_mismatch"):
         record = _mapping(query, code="reviewed_transport_hash_mismatch")
@@ -2914,9 +3025,31 @@ def _review_transport_hashes(
         for discovery in _sequence(record.get("discovery_records"), code="reviewed_transport_hash_mismatch"):
             detail = _mapping(discovery, code="reviewed_transport_hash_mismatch")
             discovery_document_hashes.extend(_hash(item, code="reviewed_transport_hash_mismatch") for item in _sequence(detail.get("documentation_transport_receipt_sha256s"), code="reviewed_transport_hash_mismatch"))
+    attempts_by_signal = _mapping(
+        search.get("citation_transport_receipt_sha256s_by_signal"),
+        code="reviewed_transport_hash_mismatch",
+    )
+    if frozenset(attempts_by_signal) != frozenset(TARGET_SIGNALS):
+        raise PhaseC1ContractError("reviewed_transport_hash_mismatch")
+    for signal in TARGET_SIGNALS:
+        attempts_by_direction = _mapping(
+            attempts_by_signal[signal],
+            code="reviewed_transport_hash_mismatch",
+        )
+        if frozenset(attempts_by_direction) != frozenset(
+            CITATION_DIRECTIONS
+        ):
+            raise PhaseC1ContractError("reviewed_transport_hash_mismatch")
+        for direction in CITATION_DIRECTIONS:
+            citation_attempt_hashes.extend(
+                _hash(item, code="reviewed_transport_hash_mismatch")
+                for item in _sequence(
+                    attempts_by_direction[direction],
+                    code="reviewed_transport_hash_mismatch",
+                )
+            )
     for citation in _sequence(search.get("citation_records"), code="reviewed_transport_hash_mismatch"):
         record = _mapping(citation, code="reviewed_transport_hash_mismatch")
-        citation_hashes.append(_hash(record.get("transport_receipt_sha256"), code="reviewed_transport_hash_mismatch"))
         citation_document_hashes.extend(_hash(item, code="reviewed_transport_hash_mismatch") for item in _sequence(record.get("documentation_transport_receipt_sha256s"), code="reviewed_transport_hash_mismatch"))
     source_document_hashes = [
         document.transport_receipt_sha256
@@ -2926,7 +3059,7 @@ def _review_transport_hashes(
     return _first_occurrence(tuple(
         query_hashes
         + discovery_document_hashes
-        + citation_hashes
+        + citation_attempt_hashes
         + citation_document_hashes
         + source_document_hashes
     ))

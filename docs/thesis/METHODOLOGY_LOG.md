@@ -6322,3 +6322,33 @@ Interpretation:
   source adaptation, model work, runtime change or activation, candidate or
   canonical output, lockbox access, push, merge, history rewrite, C2 work, or
   production or customer-emotion claim occurred or is authorized.
+
+### 2026-07-27 - EMOTION-STATE-004 Phase C1 Task 3 review-fix continuation
+
+- Revised review input: `C1/I3/M1`. Corrected duplicate authority so discovery
+  duplicates stay within one direct-signal or fallback-material lane, citation
+  duplicates stay within one signal across both directions, and retained
+  identities bind bidirectionally to one candidate source while still entering
+  every applicable lane order. Corrected zero-record `budget_reached`
+  handling, explicit record-level reason partitions and unresolved
+  documentation lineage, full frozen-order citation-attempt review-hash union,
+  and raw duplicate citation-record ID detection.
+- Strict TDD: before the fix, the test-only focused run reproduced `16`
+  assertion failures and one contract error across the implicated search
+  invariants; the separately targeted review-hash proof also failed because
+  top-level attempt hashes without citation records were omitted. Current
+  focused Task 3 plus review-hash proof passes `31/31`; full Phase C1 passes
+  `62/62`; Phase C0 passes `177/177`.
+- Local gates: compilation, context policy, working-diff check, thesis
+  reference registry (`0` failures, `0` warnings, `1642` files, `383`
+  registered URLs), project drift (`0` failures, `0` warnings, `4180` files),
+  and setup (`567` checks, `0` failures, `0` warnings, no network calls, no
+  secret values logged) pass. The explicit three-path thesis-update and final
+  staged/scope gates are run after this entry.
+- Status and boundary: independent Task 3 re-review remains pending.
+  Search-ledger receipt-hash membership is rowless metadata validation only;
+  reconciliation against actual transport-ledger bytes remains exclusively a
+  Task 8 cross-ledger responsibility and was not added to
+  `validate_search_ledger`. This offline correction makes no source-admission,
+  data, provider, call, runtime, candidate, canonical, C2, production,
+  customer-emotion, performance, or safety claim and authorizes no such action.

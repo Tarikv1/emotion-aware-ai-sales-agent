@@ -419,6 +419,10 @@ class _PhaseC1FixtureMixin:
                 }
             ],
             "citation_records": [],
+            "citation_transport_receipt_sha256s_by_signal": {
+                signal: {"backward": [], "forward": []}
+                for signal in EXPECTED_SIGNALS
+            },
         }
         return phase_c1.canonical_json_bytes(payload)
 
@@ -1933,6 +1937,87 @@ class PhaseC1SearchLedgerContractTests(
         self.add_citation(payload, citation)
         self.assert_contract_code(payload, "citation_duplicate_identity")
 
+    def test_duplicate_references_are_confined_to_their_identity_lane(
+        self,
+    ) -> None:
+        payload = self.valid_search_ledger_payload()
+        hesitation_query = payload["query_records"][0]
+        confusion_query = payload["query_records"][32]
+        first = self.discovery_record(
+            query_id=hesitation_query["query_id"],
+            rank=1,
+            record_number=1,
+            disposition="excluded",
+            source_id=None,
+            reason_code="target_label_absent",
+            documentation_hashes=["D" * 64],
+        )
+        duplicate = self.discovery_record(
+            query_id=confusion_query["query_id"],
+            rank=1,
+            record_number=2,
+            disposition="duplicate",
+            source_id=None,
+            duplicate_of=first["discovery_record_id"],
+        )
+        duplicate["identity_sha256"] = first["identity_sha256"]
+        self.add_discovery(payload, 0, first)
+        self.add_discovery(payload, 32, duplicate)
+        self.assert_contract_code(payload, "discovery_duplicate_lane")
+
+        payload = self.valid_search_ledger_payload()
+        hesitation_query = payload["query_records"][0]
+        fallback_query = payload["query_records"][80]
+        first = self.discovery_record(
+            query_id=hesitation_query["query_id"],
+            rank=1,
+            record_number=1,
+            disposition="excluded",
+            source_id=None,
+            reason_code="target_label_absent",
+            documentation_hashes=["D" * 64],
+        )
+        duplicate = self.discovery_record(
+            query_id=fallback_query["query_id"],
+            rank=1,
+            record_number=2,
+            disposition="duplicate",
+            source_id=None,
+            duplicate_of=first["discovery_record_id"],
+        )
+        duplicate["identity_sha256"] = first["identity_sha256"]
+        self.add_discovery(payload, 0, first)
+        self.add_discovery(payload, 80, duplicate)
+        self.assert_contract_code(payload, "discovery_duplicate_lane")
+
+        payload = self.valid_search_ledger_payload()
+        hesitation_query = payload["query_records"][0]
+        first = self.discovery_record(
+            query_id=hesitation_query["query_id"],
+            rank=1,
+            record_number=1,
+            disposition="excluded",
+            source_id=None,
+            reason_code="target_label_absent",
+            documentation_hashes=["D" * 64],
+        )
+        self.add_discovery(payload, 0, first)
+        citation = self.retained_citation_candidate(
+            signal="confusion",
+            source_id="c1-source-0002",
+        )
+        citation.update(
+            {
+                "identity_sha256": first["identity_sha256"],
+                "disposition": "duplicate",
+                "candidate_source_id": None,
+                "duplicate_of_record_id": first["discovery_record_id"],
+                "documentation_transport_receipt_sha256s": [],
+            }
+        )
+        self.add_citation(payload, citation)
+        self.assert_contract_code(payload, "citation_duplicate_lane")
+
     def test_repeated_identity_or_source_identity_alias_must_be_duplicate(
         self,
     ) -> None:
@@ -2017,6 +2102,72 @@ class PhaseC1SearchLedgerContractTests(
         )
         self.assertEqual(
             parsed.candidate_order_by_signal["confusion"],
+            ("c1-source-0001",),
+        )
+
+        payload = self.valid_search_ledger_payload()
+        hesitation_query = payload["query_records"][0]
+        confusion_query = payload["query_records"][32]
+        hesitation = self.discovery_record(
+            query_id=hesitation_query["query_id"],
+            rank=1,
+            record_number=1,
+            source_id="c1-source-0001",
+        )
+        confusion = self.discovery_record(
+            query_id=confusion_query["query_id"],
+            rank=1,
+            record_number=2,
+            source_id="c1-source-0002",
+        )
+        confusion["identity_sha256"] = hesitation["identity_sha256"]
+        self.add_discovery(payload, 0, hesitation)
+        self.add_discovery(payload, 32, confusion)
+        payload["candidate_order_by_signal"]["hesitation"] = [
+            "c1-source-0001"
+        ]
+        payload["candidate_order_by_signal"]["confusion"] = [
+            "c1-source-0002"
+        ]
+        self.assert_contract_code(payload, "candidate_identity_source")
+
+    def test_same_identity_is_retained_in_direct_and_fallback_lanes(
+        self,
+    ) -> None:
+        payload = self.valid_search_ledger_payload()
+        direct_query = payload["query_records"][0]
+        fallback_query = payload["query_records"][80]
+        direct = self.discovery_record(
+            query_id=direct_query["query_id"],
+            rank=1,
+            record_number=1,
+            source_id="c1-source-0001",
+        )
+        fallback = self.discovery_record(
+            query_id=fallback_query["query_id"],
+            rank=1,
+            record_number=2,
+            source_id="c1-source-0001",
+        )
+        fallback["identity_sha256"] = direct["identity_sha256"]
+        self.add_discovery(payload, 0, direct)
+        self.add_discovery(payload, 80, fallback)
+        payload["candidate_order_by_signal"]["hesitation"] = [
+            "c1-source-0001"
+        ]
+        payload["fallback_material_candidate_order"] = [
+            "c1-source-0001"
+        ]
+        parsed = phase_c1.validate_search_ledger(
+            payload,
+            protocol=self.protocol,
+        )
+        self.assertEqual(
+            parsed.candidate_order_by_signal["hesitation"],
+            ("c1-source-0001",),
+        )
+        self.assertEqual(
+            parsed.fallback_material_candidate_order,
             ("c1-source-0001",),
         )
 
@@ -2175,7 +2326,13 @@ class PhaseC1SearchLedgerContractTests(
             "budget_reached"
         )
         payload["fail_ready_by_signal"]["confusion"] = False
-        self.assert_contract_code(payload, "citation_stop_count")
+        payload["search_complete"] = False
+        parsed = phase_c1.validate_search_ledger(
+            payload,
+            protocol=self.protocol,
+        )
+        self.assertFalse(parsed.fail_ready_by_signal["confusion"])
+        self.assertFalse(parsed.search_complete)
 
         payload = self.valid_search_ledger_payload()
         payload["backward_citation_count_by_signal"]["confusion"] += 1
@@ -2303,7 +2460,7 @@ class PhaseC1SearchLedgerContractTests(
                 ),
             ),
             (
-                "citation_record_id",
+                "duplicate_citation_record_id",
                 lambda records: records[1].__setitem__(
                     "citation_record_id",
                     records[0]["citation_record_id"],
@@ -2351,6 +2508,44 @@ class PhaseC1SearchLedgerContractTests(
         self.assert_contract_code(
             payload,
             "citation_duplicate_reference",
+        )
+
+    def test_citation_directions_share_the_same_signal_identity_lane(
+        self,
+    ) -> None:
+        payload = self.valid_search_ledger_payload()
+        backward = self.retained_citation_candidate(
+            signal="confusion",
+            source_id="c1-source-0001",
+        )
+        forward = self.retained_citation_candidate(
+            signal="confusion",
+            source_id="c1-source-0002",
+            direction="forward",
+        )
+        forward.update(
+            {
+                "identity_sha256": backward["identity_sha256"],
+                "disposition": "duplicate",
+                "candidate_source_id": None,
+                "duplicate_of_record_id": backward[
+                    "citation_record_id"
+                ],
+                "documentation_transport_receipt_sha256s": [],
+            }
+        )
+        self.add_citation(payload, backward)
+        self.add_citation(payload, forward)
+        payload["candidate_order_by_signal"]["confusion"] = [
+            "c1-source-0001"
+        ]
+        parsed = phase_c1.validate_search_ledger(
+            payload,
+            protocol=self.protocol,
+        )
+        self.assertEqual(
+            parsed.candidate_order_by_signal["confusion"],
+            ("c1-source-0001",),
         )
 
     def test_retained_citation_enters_bounded_candidate_order(self) -> None:
@@ -2463,6 +2658,141 @@ class PhaseC1SearchLedgerContractTests(
                 )
                 self.assertFalse(parsed.fail_ready_by_signal["interest"])
                 self.assertFalse(parsed.search_complete)
+
+    def test_record_reason_partitions_and_documentation_lineage(
+        self,
+    ) -> None:
+        aggregate_only_reasons = (
+            "search_query_incomplete",
+            "query_result_truncated",
+            "candidate_overflow",
+            "citation_budget_incomplete",
+            "annotation_fallback_feasible",
+            "annotation_fallback_unresolved",
+        )
+        for reason in aggregate_only_reasons:
+            with self.subTest(record="discovery", reason=reason):
+                payload = self.valid_search_ledger_payload()
+                query = payload["query_records"][0]
+                record = self.discovery_record(
+                    query_id=query["query_id"],
+                    rank=1,
+                    record_number=1,
+                    disposition="unresolved",
+                    source_id=None,
+                    reason_code=reason,
+                )
+                self.add_discovery(payload, 0, record)
+                payload["fail_ready_by_signal"]["hesitation"] = False
+                self.assert_contract_code(
+                    payload,
+                    "discovery_reason_partition",
+                )
+
+            with self.subTest(record="citation", reason=reason):
+                payload = self.valid_search_ledger_payload()
+                record = self.retained_citation_candidate(
+                    signal="confusion",
+                    source_id="c1-source-0001",
+                )
+                record.update(
+                    {
+                        "disposition": "unresolved",
+                        "candidate_source_id": None,
+                        "reason_code": reason,
+                        "documentation_transport_receipt_sha256s": [],
+                    }
+                )
+                self.add_citation(payload, record)
+                payload["fail_ready_by_signal"]["confusion"] = False
+                self.assert_contract_code(
+                    payload,
+                    "citation_reason_partition",
+                )
+
+        for reason in (
+            "source_identity_unverified",
+            "authoritative_provenance_unverified",
+            "access_unresolved",
+        ):
+            with self.subTest(pre_screen_reason=reason):
+                payload = self.valid_search_ledger_payload()
+                query = payload["query_records"][0]
+                record = self.discovery_record(
+                    query_id=query["query_id"],
+                    rank=1,
+                    record_number=1,
+                    disposition="unresolved",
+                    source_id=None,
+                    reason_code=reason,
+                )
+                self.add_discovery(payload, 0, record)
+                payload["fail_ready_by_signal"]["hesitation"] = False
+                phase_c1.validate_search_ledger(
+                    payload,
+                    protocol=self.protocol,
+                )
+
+        for documentation_hashes in (
+            [],
+            [self.fixture_hash("screened-unresolved-document")],
+        ):
+            with self.subTest(
+                screened_documentation_count=len(documentation_hashes)
+            ):
+                payload = self.valid_search_ledger_payload()
+                query = payload["query_records"][0]
+                record = self.discovery_record(
+                    query_id=query["query_id"],
+                    rank=1,
+                    record_number=1,
+                    disposition="unresolved",
+                    source_id=None,
+                    reason_code="source_documentation_incomplete",
+                    documentation_hashes=documentation_hashes,
+                )
+                self.add_discovery(payload, 0, record)
+                payload["fail_ready_by_signal"]["hesitation"] = False
+                if documentation_hashes:
+                    phase_c1.validate_search_ledger(
+                        payload,
+                        protocol=self.protocol,
+                    )
+                else:
+                    self.assert_contract_code(
+                        payload,
+                        "documentation_transport_hashes",
+                    )
+
+                payload = self.valid_search_ledger_payload()
+                record = self.retained_citation_candidate(
+                    signal="confusion",
+                    source_id="c1-source-0001",
+                )
+                record.update(
+                    {
+                        "disposition": "unresolved",
+                        "candidate_source_id": None,
+                        "reason_code": (
+                            "source_documentation_incomplete"
+                        ),
+                        "documentation_transport_receipt_sha256s": (
+                            documentation_hashes
+                        ),
+                    }
+                )
+                self.add_citation(payload, record)
+                payload["fail_ready_by_signal"]["confusion"] = False
+                if documentation_hashes:
+                    phase_c1.validate_search_ledger(
+                        payload,
+                        protocol=self.protocol,
+                    )
+                else:
+                    self.assert_contract_code(
+                        payload,
+                        "documentation_transport_hashes",
+                    )
 
     def test_overflow_or_incomplete_citation_cannot_claim_fail_ready(
         self,
@@ -2765,10 +3095,33 @@ class PhaseC1SourceContractTests(_PhaseC1FixtureMixin, unittest.TestCase):
                     "documentation_transport_receipt_sha256s": ["D" * 64],
                 }
             ],
+            "citation_transport_receipt_sha256s_by_signal": {
+                "hesitation": {
+                    "backward": ["E" * 64, "1" * 64],
+                    "forward": ["2" * 64],
+                },
+                "frustration": {
+                    "backward": ["3" * 64],
+                    "forward": [],
+                },
+                "confusion": {"backward": [], "forward": []},
+                "interest": {"backward": [], "forward": []},
+                "disengagement": {"backward": [], "forward": []},
+            },
         }
         self.assertEqual(
             phase_c1._review_transport_hashes(search, (source,)),
-            ("A" * 64, "B" * 64, "C" * 64, "D" * 64, "E" * 64, "F" * 64),
+            (
+                "A" * 64,
+                "B" * 64,
+                "C" * 64,
+                "D" * 64,
+                "E" * 64,
+                "1" * 64,
+                "2" * 64,
+                "3" * 64,
+                "F" * 64,
+            ),
         )
 
     def test_ledger_rejects_cross_source_duplicate_document_identity(
