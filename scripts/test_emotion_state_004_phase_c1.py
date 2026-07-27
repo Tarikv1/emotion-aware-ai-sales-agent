@@ -3,6 +3,8 @@ from __future__ import annotations
 import copy
 import hashlib
 import json
+import os
+import sys
 import unittest
 from dataclasses import FrozenInstanceError, dataclass, fields, is_dataclass, replace
 from decimal import Decimal, localcontext
@@ -12,6 +14,7 @@ from typing import Callable
 
 import scripts.emotion_state_phase_c1_contracts as phase_c1
 import scripts.emotion_state_phase_c1_decision as decision
+import scripts.run_emotion_state_004_phase_c1 as runner
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -22,6 +25,69 @@ EXPECTED_SIGNALS = (
     "confusion",
     "interest",
     "disengagement",
+)
+
+EXPECTED_PHASE_C1_RESULT_FIELDS = frozenset(
+    {
+        "schema_version",
+        "checkpoint_id",
+        "protocol_id",
+        "target_signals",
+        "implementation_head",
+        "validator_blob_id",
+        "protocol_sha256",
+        "search_ledger_sha256",
+        "source_evidence_ledger_sha256",
+        "source_review_receipt_sha256",
+        "aggregate_content_sha256",
+        "search_counts",
+        "source_counts",
+        "card_counts_by_status",
+        "reason_code_counts",
+        "per_signal",
+        "overall_decision",
+        "c2_eligible_signals",
+        "boundary",
+        "limitations",
+        "runtime_approved",
+    }
+)
+
+EXPECTED_RELIABILITY_DIAGNOSTIC_FIELDS = frozenset(
+    {
+        "evidence_card_sha256",
+        "metric_id",
+        "point_micros",
+        "lower_95_micros",
+        "upper_95_micros",
+        "independent_rater_count",
+        "rated_unit_count",
+        "published_positive_count",
+        "effective_sample_sufficient",
+        "uncertain_or_unratable_rate_micros",
+        "class_prevalence_micros",
+        "positive_agreement_micros",
+        "negative_agreement_micros",
+        "preadjudication_disagreement_micros",
+    }
+)
+
+EXPECTED_PHASE_C1_LIMITATIONS = (
+    "Observer labels measure perception, not hidden internal emotion.",
+    "Language, culture, speaker, population, and domain bias remain.",
+    "Public conversational corpora may not resemble sales calls.",
+    "Recording modality and bounded context may change judgments.",
+    "Rare signals may prevent reliable annotation or later evaluation.",
+    (
+        "License, consent, or incomplete documentation may leave a promising "
+        "source unresolved."
+    ),
+    "Agreement does not prove construct truth.",
+    "Partial admission does not validate the other signals.",
+    (
+        "No public-data result alone proves real-call, provider, latency, "
+        "safety, conversion, or production behavior."
+    ),
 )
 
 EXPECTED_SIGNAL_CONSTRUCTS = (
@@ -4605,6 +4671,994 @@ class PhaseC1DecisionTests(_PhaseC1FixtureMixin, unittest.TestCase):
                 source_ledger=source_ledger, review_receipt=review,
             )
         self.assertEqual(before, repr((self.protocol, search, source_ledger, review)))
+
+
+class PhaseC1AggregateRunnerTests(_PhaseC1FixtureMixin, unittest.TestCase):
+    def setUp(self) -> None:
+        self.protocol_bytes = self.protocol_path.read_bytes()
+        self.protocol = phase_c1.validate_discovery_protocol(
+            self.valid_protocol_payload()
+        )
+        (
+            self.search_bytes,
+            self.one_pass_source_bytes,
+            self.review_bytes_for_one_pass,
+        ) = self.validated_input_bytes(admissible_signals=("confusion",))
+
+    def valid_card_payload(self) -> dict[str, object]:
+        payload = _PhaseC1FixtureMixin.valid_card_payload()
+        reliability = payload["reliability"]
+        self.assertIsInstance(reliability, dict)
+        reliability["uncertain_or_unratable_rate_micros"] = None
+        return payload
+
+    @staticmethod
+    def canonical_dataclass_bytes(
+        value: object,
+        schema_version: str,
+    ) -> bytes:
+        return PhaseC1DecisionTests.canonical_dataclass_bytes(
+            value,
+            schema_version,
+        )
+
+    def validated_input_bytes(
+        self,
+        *,
+        admissible_signals: tuple[str, ...] = (),
+        unresolved_signals: tuple[str, ...] = (),
+    ) -> tuple[bytes, bytes, bytes]:
+        search, source_ledger, review = (
+            PhaseC1DecisionTests.validated_projection_inputs(
+                self,
+                admissible_signals=admissible_signals,
+                unresolved_signals=unresolved_signals,
+            )
+        )
+        return (
+            self.canonical_dataclass_bytes(
+                search,
+                "EmotionStatePhaseC1SearchLedgerV1",
+            ),
+            self.canonical_dataclass_bytes(
+                source_ledger,
+                "EmotionStatePhaseC1SourceEvidenceLedgerV1",
+            ),
+            self.canonical_dataclass_bytes(
+                review,
+                "EmotionStatePhaseC1SourceReviewReceiptV1",
+            ),
+        )
+
+    def valid_result(self) -> dict[str, object]:
+        return runner.build_phase_c1_result(
+            head_commit="a" * 40,
+            validator_blob_id="b" * 40,
+            protocol_bytes=self.protocol_bytes,
+            search_ledger_bytes=self.search_bytes,
+            source_ledger_bytes=self.one_pass_source_bytes,
+            review_receipt_bytes=self.review_bytes_for_one_pass,
+        )
+
+    def deferred_result(self) -> dict[str, object]:
+        search_bytes, source_bytes, review_bytes = self.validated_input_bytes(
+            unresolved_signals=("confusion",)
+        )
+        return runner.build_phase_c1_result(
+            head_commit="a" * 40,
+            validator_blob_id="b" * 40,
+            protocol_bytes=self.protocol_bytes,
+            search_ledger_bytes=search_bytes,
+            source_ledger_bytes=source_bytes,
+            review_receipt_bytes=review_bytes,
+        )
+
+    def all_fail_result(self) -> dict[str, object]:
+        search_bytes, source_bytes, review_bytes = self.validated_input_bytes()
+        return runner.build_phase_c1_result(
+            head_commit="a" * 40,
+            validator_blob_id="b" * 40,
+            protocol_bytes=self.protocol_bytes,
+            search_ledger_bytes=search_bytes,
+            source_ledger_bytes=source_bytes,
+            review_receipt_bytes=review_bytes,
+        )
+
+    @staticmethod
+    def reself(payload: dict[str, object]) -> None:
+        payload["aggregate_content_sha256"] = ""
+        encoded = (
+            json.dumps(
+                payload,
+                indent=2,
+                sort_keys=True,
+                ensure_ascii=False,
+                allow_nan=False,
+            )
+            + "\n"
+        ).encode("utf-8")
+        payload["aggregate_content_sha256"] = hashlib.sha256(
+            encoded
+        ).hexdigest().upper()
+
+    def assert_result_rejected(
+        self,
+        payload: dict[str, object],
+        code: str,
+    ) -> None:
+        self.reself(payload)
+        for validate in (
+            runner.validate_phase_c1_result_payload,
+            runner.render_phase_c1_report,
+        ):
+            with self.subTest(validate=validate.__name__):
+                with self.assertRaisesRegex(runner.RunnerError, code):
+                    validate(copy.deepcopy(payload))
+
+    def rejected_alpha_result(self) -> dict[str, object]:
+        payload = self.valid_result()
+        item = payload["per_signal"][2]
+        item["decision"] = "fail"
+        item["admissible_evidence_card_sha256s"] = []
+        item["rejected_card_count"] = 1
+        item["c2_eligible"] = False
+        diagnostic = item["reliability_diagnostics"][0]
+        diagnostic.update(
+            {
+                "point_micros": -500_000,
+                "lower_95_micros": -600_000,
+                "upper_95_micros": -400_000,
+            }
+        )
+        payload["card_counts_by_status"].update(
+            {"admissible": 0, "rejected": 1}
+        )
+        payload["reason_code_counts"][
+            "reliability_upper_below_0_67"
+        ] = 1
+        payload["overall_decision"] = "stop_c2"
+        payload["c2_eligible_signals"] = []
+        return payload
+
+    def test_result_is_rowless_hash_bound_and_partial_when_one_signal_passes(
+        self,
+    ) -> None:
+        before = (
+            self.protocol_bytes,
+            self.search_bytes,
+            self.one_pass_source_bytes,
+            self.review_bytes_for_one_pass,
+        )
+        result = self.valid_result()
+        self.assertEqual(
+            result["schema_version"],
+            "EmotionStatePhaseC1AggregateResultV1",
+        )
+        self.assertEqual(set(result), EXPECTED_PHASE_C1_RESULT_FIELDS)
+        self.assertEqual(
+            phase_c1.PHASE_C1_RESULT_FIELDS,
+            EXPECTED_PHASE_C1_RESULT_FIELDS,
+        )
+        self.assertEqual(result["overall_decision"], "proceed_partial_to_c2")
+        self.assertEqual(result["target_signals"], list(EXPECTED_SIGNALS))
+        self.assertEqual(result["c2_eligible_signals"], ["confusion"])
+        self.assertFalse(result["runtime_approved"])
+        self.assertFalse(result["boundary"]["model_evaluation_run"])
+        self.assertNotIn("sources", result)
+        self.assertNotIn("cards", result)
+        self.assertEqual(
+            result["protocol_sha256"],
+            hashlib.sha256(self.protocol_bytes).hexdigest().upper(),
+        )
+        self.assertEqual(
+            result["source_review_receipt_sha256"],
+            hashlib.sha256(
+                self.review_bytes_for_one_pass
+            ).hexdigest().upper(),
+        )
+        self.assertEqual(
+            result["search_counts"],
+            {
+                "direct_label_query_count": 80,
+                "fallback_material_query_count": 8,
+                "total_query_count": 88,
+                "complete_query_count": 88,
+                "incomplete_query_count": 0,
+                "truncated_query_count": 0,
+                "returned_discovery_record_count": 1,
+                "retained_candidate_record_count": 1,
+                "duplicate_discovery_record_count": 0,
+                "excluded_discovery_record_count": 0,
+                "unresolved_discovery_record_count": 0,
+                "detailed_candidate_count": 1,
+                "candidate_overflow_count": 0,
+                "backward_citation_record_count": 0,
+                "forward_citation_record_count": 0,
+                "unresolved_citation_record_count": 0,
+                "nonexhaustive_citation_stop_count": 0,
+                "search_complete": True,
+            },
+        )
+        self.assertEqual(
+            result["source_counts"],
+            {
+                "source_count": 1,
+                "document_count": 1,
+                "existing_annotation_evidence_source_count": 1,
+                "fallback_material_candidate_source_count": 1,
+            },
+        )
+        self.assertEqual(
+            result["card_counts_by_status"],
+            {"admissible": 1, "rejected": 0, "unresolved": 0},
+        )
+        self.assertEqual(
+            tuple(result["reason_code_counts"]),
+            EXPECTED_REASON_CODE_ORDER,
+        )
+        self.assertTrue(
+            all(value == 0 for value in result["reason_code_counts"].values())
+        )
+        confusion = next(
+            item
+            for item in result["per_signal"]
+            if item["signal"] == "confusion"
+        )
+        self.assertEqual(
+            set(confusion["reliability_diagnostics"][0]),
+            EXPECTED_RELIABILITY_DIAGNOSTIC_FIELDS,
+        )
+        self.assertIsNone(
+            confusion["reliability_diagnostics"][0][
+                "uncertain_or_unratable_rate_micros"
+            ]
+        )
+        self.assertEqual(
+            before,
+            (
+                self.protocol_bytes,
+                self.search_bytes,
+                self.one_pass_source_bytes,
+                self.review_bytes_for_one_pass,
+            ),
+        )
+        serialized = json.dumps(result, sort_keys=True)
+        self.assertNotIn("c1-source-", serialized)
+        self.assertNotIn("c1-card-", serialized)
+
+    def test_report_is_deterministic_lf_and_binds_exact_result(self) -> None:
+        result = self.valid_result()
+        first = runner.render_phase_c1_report(result)
+        second = runner.render_phase_c1_report(copy.deepcopy(result))
+        self.assertEqual(first, second)
+        self.assertTrue(first.endswith(b"\n"))
+        self.assertNotIn(b"\r", first)
+        result_sha256 = phase_c1.sha256_bytes(
+            phase_c1.canonical_json_bytes(result)
+        )
+        self.assertIn(result_sha256.encode("ascii"), first)
+        text = first.decode("utf-8")
+        self.assertEqual(
+            [
+                line
+                for line in text.splitlines()
+                if line.startswith("#")
+            ],
+            [
+                (
+                    "# EMOTION-STATE-004 Phase C1 Operational-Signal "
+                    "Evidence Admission"
+                ),
+                "## Aggregate",
+                "## Per-Signal Decisions",
+                "## C2 Eligibility",
+                "## Reliability And Search Boundary",
+                "## Interpretation",
+                "## Limitations",
+                "## Closed Boundary",
+            ],
+        )
+        self.assertIn("unavailable", text)
+        self.assertIn("No model evaluation was run.", text)
+        self.assertIn("Runtime approval: false.", text)
+        self.assertNotIn("https://", text)
+        self.assertNotIn("c1-source-", text)
+        self.assertNotIn("c1-card-", text)
+
+    def test_fixed_tracked_input_paths_and_lexical_root_pin_are_exact(
+        self,
+    ) -> None:
+        self.assertEqual(runner.ROOT, ROOT)
+        self.assertEqual(
+            runner.PROTOCOL_PATH,
+            ROOT
+            / "research"
+            / "experiments"
+            / "configs"
+            / "emotion-state-004-phase-c1-discovery-protocol.json",
+        )
+        self.assertEqual(
+            runner.SEARCH_LEDGER_PATH,
+            ROOT
+            / "research"
+            / "sources"
+            / "emotion_state"
+            / "phase_c1_search_ledger.json",
+        )
+        self.assertEqual(
+            runner.SOURCE_LEDGER_PATH,
+            ROOT
+            / "research"
+            / "sources"
+            / "emotion_state"
+            / "phase_c1_source_evidence_ledger.json",
+        )
+        self.assertEqual(
+            runner.SOURCE_REVIEW_PATH,
+            ROOT
+            / "research"
+            / "sources"
+            / "emotion_state"
+            / "phase_c1_source_review_receipt.json",
+        )
+        root_key = os.path.normcase(os.path.abspath(os.fspath(ROOT)))
+        matching_entries = [
+            entry
+            for entry in sys.path
+            if os.path.normcase(os.path.abspath(entry or os.curdir))
+            == root_key
+        ]
+        self.assertEqual(
+            os.path.normcase(os.path.abspath(sys.path[0])),
+            root_key,
+        )
+        self.assertEqual(len(matching_entries), 1)
+        self.assertFalse(hasattr(runner, "SOURCE_CACHE_PATH"))
+
+    def test_recursive_forbidden_content_rejects_before_render(self) -> None:
+        for key in (
+            "audio",
+            "participant_id",
+            "prediction",
+            "probability",
+            "transcript",
+            "utterance",
+        ):
+            with self.subTest(key=key):
+                payload = self.valid_result()
+                payload["search_counts"][key] = "forbidden"
+                with self.assertRaisesRegex(
+                    runner.RunnerError,
+                    "forbidden_content",
+                ):
+                    runner.validate_phase_c1_result_payload(payload)
+                with self.assertRaisesRegex(
+                    runner.RunnerError,
+                    "forbidden_content",
+                ):
+                    runner.render_phase_c1_report(payload)
+
+    def test_result_rejects_runtime_and_decision_contradictions(self) -> None:
+        runtime = self.valid_result()
+        runtime["runtime_approved"] = True
+        self.reself(runtime)
+        with self.assertRaisesRegex(
+            runner.RunnerError,
+            "runtime_approved",
+        ):
+            runner.validate_phase_c1_result_payload(runtime)
+
+        eligible_defer = self.valid_result()
+        confusion = eligible_defer["per_signal"][2]
+        confusion["decision"] = "defer"
+        confusion["admissible_evidence_card_sha256s"] = []
+        confusion["unresolved_card_count"] = 1
+        eligible_defer["card_counts_by_status"]["admissible"] = 0
+        eligible_defer["card_counts_by_status"]["unresolved"] = 1
+        eligible_defer["reason_code_counts"][
+            "reliability_unverifiable"
+        ] = 1
+        eligible_defer["overall_decision"] = "defer_c2"
+        self.reself(eligible_defer)
+        with self.assertRaisesRegex(
+            runner.RunnerError,
+            "c2_eligibility",
+        ):
+            runner.validate_phase_c1_result_payload(eligible_defer)
+
+        full = self.valid_result()
+        full["overall_decision"] = "proceed_full_to_c2"
+        self.reself(full)
+        with self.assertRaisesRegex(
+            runner.RunnerError,
+            "overall_decision",
+        ):
+            runner.validate_phase_c1_result_payload(full)
+
+        partial = self.deferred_result()
+        partial["overall_decision"] = "proceed_partial_to_c2"
+        self.reself(partial)
+        with self.assertRaisesRegex(
+            runner.RunnerError,
+            "overall_decision",
+        ):
+            runner.validate_phase_c1_result_payload(partial)
+
+        stopped = self.deferred_result()
+        stopped["overall_decision"] = "stop_c2"
+        self.reself(stopped)
+        with self.assertRaisesRegex(
+            runner.RunnerError,
+            "overall_decision",
+        ):
+            runner.validate_phase_c1_result_payload(stopped)
+
+    def test_unresolved_or_feasible_signal_cannot_claim_fail(self) -> None:
+        unresolved = self.deferred_result()
+        unresolved["per_signal"][2]["decision"] = "fail"
+        unresolved["overall_decision"] = "stop_c2"
+        self.reself(unresolved)
+        with self.assertRaisesRegex(
+            runner.RunnerError,
+            "per_signal",
+        ):
+            runner.validate_phase_c1_result_payload(unresolved)
+
+        feasible = self.all_fail_result()
+        feasible["per_signal"][0]["annotation_fallback"] = "feasible"
+        self.reself(feasible)
+        with self.assertRaisesRegex(
+            runner.RunnerError,
+            "per_signal",
+        ):
+            runner.validate_phase_c1_result_payload(feasible)
+
+    def test_report_renderer_rejects_a_statement_contradicting_rows(
+        self,
+    ) -> None:
+        payload = self.valid_result()
+        payload["overall_decision"] = "proceed_full_to_c2"
+        self.reself(payload)
+        with self.assertRaisesRegex(
+            runner.RunnerError,
+            "overall_decision",
+        ):
+            runner.render_phase_c1_report(payload)
+
+    def test_review_and_selfless_hash_mismatches_reject(self) -> None:
+        review_payload = phase_c1.load_json_strict(
+            self.review_bytes_for_one_pass,
+            source="review",
+        )
+        self.assertIsInstance(review_payload, dict)
+        review_payload["source_evidence_ledger_sha256"] = "E" * 64
+        with self.assertRaisesRegex(
+            runner.RunnerError,
+            "review_hash_binding",
+        ):
+            runner.build_phase_c1_result(
+                head_commit="a" * 40,
+                validator_blob_id="b" * 40,
+                protocol_bytes=self.protocol_bytes,
+                search_ledger_bytes=self.search_bytes,
+                source_ledger_bytes=self.one_pass_source_bytes,
+                review_receipt_bytes=phase_c1.canonical_json_bytes(
+                    review_payload
+                ),
+            )
+
+        payload = self.valid_result()
+        payload["aggregate_content_sha256"] = "0" * 64
+        with self.assertRaisesRegex(
+            runner.RunnerError,
+            "aggregate_content_sha256",
+        ):
+            runner.validate_phase_c1_result_payload(payload)
+
+    def test_card_status_and_query_count_algebra_rejects(self) -> None:
+        payload = self.valid_result()
+        payload["card_counts_by_status"]["admissible"] += 1
+        self.reself(payload)
+        with self.assertRaisesRegex(
+            runner.RunnerError,
+            "card_status_counts",
+        ):
+            runner.validate_phase_c1_result_payload(payload)
+
+        for field, wrong in (
+            ("direct_label_query_count", 79),
+            ("fallback_material_query_count", 7),
+            ("total_query_count", 87),
+        ):
+            with self.subTest(field=field):
+                payload = self.valid_result()
+                payload["search_counts"][field] = wrong
+                self.reself(payload)
+                with self.assertRaisesRegex(
+                    runner.RunnerError,
+                    "search_counts",
+                ):
+                    runner.validate_phase_c1_result_payload(payload)
+
+    def test_protocol_caps_reject_impossible_aggregate_counts(self) -> None:
+        mutations = (
+            {
+                "returned_discovery_record_count": 2_201,
+                "retained_candidate_record_count": 2_201,
+            },
+            {"backward_citation_record_count": 26},
+            {"forward_citation_record_count": 26},
+            {"detailed_candidate_count": 111},
+            {"candidate_overflow_count": 2},
+        )
+        for mutation in mutations:
+            with self.subTest(mutation=mutation):
+                payload = self.valid_result()
+                payload["search_counts"].update(mutation)
+                if "detailed_candidate_count" in mutation:
+                    payload["source_counts"].update(
+                        {
+                            "source_count": 111,
+                            "document_count": 111,
+                            "existing_annotation_evidence_source_count": 1,
+                            "fallback_material_candidate_source_count": 1,
+                        }
+                    )
+                self.reself(payload)
+                with self.assertRaisesRegex(
+                    runner.RunnerError,
+                    "search_counts",
+                ):
+                    runner.validate_phase_c1_result_payload(payload)
+
+    def test_per_signal_card_count_cannot_exceed_frozen_cap(self) -> None:
+        payload = self.valid_result()
+        item = payload["per_signal"][0]
+        template = payload["per_signal"][2]["reliability_diagnostics"][0]
+        item["reliability_diagnostics"] = []
+        for ordinal in range(21):
+            diagnostic = copy.deepcopy(template)
+            diagnostic["evidence_card_sha256"] = hashlib.sha256(
+                f"synthetic-card-{ordinal}".encode("ascii")
+            ).hexdigest().upper()
+            item["reliability_diagnostics"].append(diagnostic)
+        item["rejected_card_count"] = 21
+        payload["card_counts_by_status"]["rejected"] = 21
+        payload["search_counts"].update(
+            {
+                "returned_discovery_record_count": 21,
+                "retained_candidate_record_count": 21,
+                "detailed_candidate_count": 21,
+            }
+        )
+        payload["source_counts"].update(
+            {
+                "source_count": 21,
+                "document_count": 21,
+                "existing_annotation_evidence_source_count": 21,
+            }
+        )
+        self.reself(payload)
+        for validate in (
+            runner.validate_phase_c1_result_payload,
+            runner.render_phase_c1_report,
+        ):
+            with self.subTest(validate=validate.__name__):
+                with self.assertRaisesRegex(
+                    runner.RunnerError,
+                    "per_signal",
+                ):
+                    validate(copy.deepcopy(payload))
+
+    def test_card_totals_require_existing_annotation_sources(self) -> None:
+        payload = self.valid_result()
+        payload["source_counts"][
+            "existing_annotation_evidence_source_count"
+        ] = 0
+        self.reself(payload)
+        for validate in (
+            runner.validate_phase_c1_result_payload,
+            runner.render_phase_c1_report,
+        ):
+            with self.subTest(validate=validate.__name__):
+                with self.assertRaisesRegex(
+                    runner.RunnerError,
+                    "source_counts",
+                ):
+                    validate(copy.deepcopy(payload))
+
+    def test_source_document_count_respects_frozen_role_cap(self) -> None:
+        payload = self.valid_result()
+        payload["source_counts"]["document_count"] = 6
+        self.reself(payload)
+        for validate in (
+            runner.validate_phase_c1_result_payload,
+            runner.render_phase_c1_report,
+        ):
+            with self.subTest(validate=validate.__name__):
+                with self.assertRaisesRegex(
+                    runner.RunnerError,
+                    "source_counts",
+                ):
+                    validate(copy.deepcopy(payload))
+
+    def test_negative_alpha_is_valid_for_rejected_diagnostic(self) -> None:
+        payload = self.rejected_alpha_result()
+        self.reself(payload)
+
+        runner.validate_phase_c1_result_payload(payload)
+        report = runner.render_phase_c1_report(payload)
+        self.assertIn(b"point_micros=-500000", report)
+        self.assertIn(b"lower_95_micros=-600000", report)
+        self.assertIn(b"upper_95_micros=-400000", report)
+
+    def test_returned_records_are_capped_by_complete_queries(self) -> None:
+        payload = self.valid_result()
+        payload["search_counts"].update(
+            {
+                "complete_query_count": 0,
+                "incomplete_query_count": 88,
+                "search_complete": False,
+            }
+        )
+        self.assert_result_rejected(payload, "search_counts")
+
+    def test_positive_overflow_requires_a_saturated_candidate_lane(
+        self,
+    ) -> None:
+        below_minimum = self.valid_result()
+        below_minimum["search_counts"].update(
+            {
+                "returned_discovery_record_count": 2,
+                "retained_candidate_record_count": 2,
+                "candidate_overflow_count": 1,
+            }
+        )
+        self.assert_result_rejected(below_minimum, "search_counts")
+
+        no_saturated_lane = self.valid_result()
+        no_saturated_lane["search_counts"].update(
+            {
+                "returned_discovery_record_count": 11,
+                "retained_candidate_record_count": 11,
+                "detailed_candidate_count": 10,
+                "candidate_overflow_count": 1,
+            }
+        )
+        no_saturated_lane["source_counts"].update(
+            {
+                "source_count": 10,
+                "document_count": 10,
+                "existing_annotation_evidence_source_count": 10,
+                "fallback_material_candidate_source_count": 9,
+            }
+        )
+        self.assert_result_rejected(no_saturated_lane, "search_counts")
+
+    def test_every_source_requires_at_least_one_phase_c1_role(self) -> None:
+        payload = self.all_fail_result()
+        payload["search_counts"].update(
+            {
+                "returned_discovery_record_count": 1,
+                "retained_candidate_record_count": 1,
+                "detailed_candidate_count": 1,
+            }
+        )
+        payload["source_counts"].update(
+            {
+                "source_count": 1,
+                "document_count": 1,
+                "existing_annotation_evidence_source_count": 0,
+                "fallback_material_candidate_source_count": 0,
+            }
+        )
+        self.assert_result_rejected(payload, "source_counts")
+
+    def test_source_union_requires_direct_card_capacity(self) -> None:
+        impossible = self.all_fail_result()
+        impossible["search_counts"].update(
+            {
+                "returned_discovery_record_count": 11,
+                "retained_candidate_record_count": 11,
+                "detailed_candidate_count": 11,
+            }
+        )
+        impossible["source_counts"].update(
+            {
+                "source_count": 11,
+                "document_count": 11,
+                "existing_annotation_evidence_source_count": 0,
+                "fallback_material_candidate_source_count": 11,
+            }
+        )
+        self.assert_result_rejected(impossible, "source_counts")
+
+        fallback_only_boundary = self.all_fail_result()
+        fallback_only_boundary["search_counts"].update(
+            {
+                "returned_discovery_record_count": 10,
+                "retained_candidate_record_count": 10,
+                "detailed_candidate_count": 10,
+            }
+        )
+        fallback_only_boundary["source_counts"].update(
+            {
+                "source_count": 10,
+                "document_count": 10,
+                "existing_annotation_evidence_source_count": 0,
+                "fallback_material_candidate_source_count": 10,
+            }
+        )
+        self.reself(fallback_only_boundary)
+        runner.validate_phase_c1_result_payload(fallback_only_boundary)
+        runner.render_phase_c1_report(fallback_only_boundary)
+
+        one_direct_boundary = self.valid_result()
+        one_direct_boundary["search_counts"].update(
+            {
+                "returned_discovery_record_count": 11,
+                "retained_candidate_record_count": 11,
+                "detailed_candidate_count": 11,
+            }
+        )
+        one_direct_boundary["source_counts"].update(
+            {
+                "source_count": 11,
+                "document_count": 11,
+                "existing_annotation_evidence_source_count": 1,
+                "fallback_material_candidate_source_count": 10,
+            }
+        )
+        self.reself(one_direct_boundary)
+        runner.validate_phase_c1_result_payload(one_direct_boundary)
+        runner.render_phase_c1_report(one_direct_boundary)
+
+    def test_defer_requires_card_fallback_or_search_blocker(self) -> None:
+        payload = self.valid_result()
+        payload["per_signal"][0]["decision"] = "defer"
+        self.assert_result_rejected(payload, "per_signal")
+
+    def test_stop_rejects_every_aggregate_search_blocker(self) -> None:
+        mutations = (
+            (
+                {
+                    "complete_query_count": 87,
+                    "incomplete_query_count": 1,
+                    "search_complete": False,
+                },
+                {},
+                {},
+            ),
+            (
+                {
+                    "returned_discovery_record_count": 1,
+                    "unresolved_discovery_record_count": 1,
+                },
+                {},
+                {"source_identity_unverified": 1},
+            ),
+            (
+                {
+                    "backward_citation_record_count": 1,
+                    "unresolved_citation_record_count": 1,
+                },
+                {},
+                {"source_identity_unverified": 1},
+            ),
+            (
+                {
+                    "returned_discovery_record_count": 11,
+                    "retained_candidate_record_count": 11,
+                    "detailed_candidate_count": 10,
+                    "candidate_overflow_count": 1,
+                },
+                {
+                    "source_count": 10,
+                    "document_count": 10,
+                    "existing_annotation_evidence_source_count": 0,
+                    "fallback_material_candidate_source_count": 10,
+                },
+                {},
+            ),
+        )
+        for index, (
+            search_updates,
+            source_updates,
+            reason_updates,
+        ) in enumerate(mutations):
+            with self.subTest(mutation=index):
+                payload = self.all_fail_result()
+                payload["search_counts"].update(search_updates)
+                payload["source_counts"].update(source_updates)
+                payload["reason_code_counts"].update(reason_updates)
+                self.assert_result_rejected(payload, "overall_decision")
+
+    def test_empty_fallback_material_cannot_be_feasible_or_unresolved(
+        self,
+    ) -> None:
+        for status, reason in (
+            ("feasible", "annotation_fallback_feasible"),
+            ("unresolved", "annotation_fallback_unresolved"),
+        ):
+            with self.subTest(status=status):
+                payload = self.valid_result()
+                payload["per_signal"][0].update(
+                    {
+                        "decision": "defer",
+                        "annotation_fallback": status,
+                    }
+                )
+                payload["source_counts"][
+                    "fallback_material_candidate_source_count"
+                ] = 0
+                payload["reason_code_counts"][reason] = 1
+                self.assert_result_rejected(payload, "source_counts")
+
+    def test_fallback_reason_counts_equal_fallback_status_counts(self) -> None:
+        for status, reason in (
+            ("feasible", "annotation_fallback_feasible"),
+            ("unresolved", "annotation_fallback_unresolved"),
+        ):
+            with self.subTest(status=status):
+                payload = self.valid_result()
+                payload["per_signal"][0].update(
+                    {
+                        "decision": "defer",
+                        "annotation_fallback": status,
+                    }
+                )
+                self.assertEqual(payload["reason_code_counts"][reason], 0)
+                self.assert_result_rejected(
+                    payload,
+                    "reason_code_counts",
+                )
+
+    def test_exact_fallback_reason_counts_remain_valid(self) -> None:
+        for status, reason in (
+            ("feasible", "annotation_fallback_feasible"),
+            ("unresolved", "annotation_fallback_unresolved"),
+        ):
+            with self.subTest(status=status):
+                payload = self.valid_result()
+                payload["per_signal"][0].update(
+                    {
+                        "decision": "defer",
+                        "annotation_fallback": status,
+                    }
+                )
+                payload["reason_code_counts"][reason] = 1
+                self.reself(payload)
+                runner.validate_phase_c1_result_payload(payload)
+                runner.render_phase_c1_report(payload)
+
+    def test_reason_count_partitions_reject_impossible_aggregates(
+        self,
+    ) -> None:
+        rejected_without_reason = self.rejected_alpha_result()
+        rejected_without_reason["reason_code_counts"][
+            "reliability_upper_below_0_67"
+        ] = 0
+
+        unresolved_without_reason = self.deferred_result()
+        unresolved_without_reason["reason_code_counts"][
+            "reliability_unverifiable"
+        ] = 0
+
+        rejection_reason_without_item = self.valid_result()
+        rejection_reason_without_item["reason_code_counts"][
+            "access_restricted"
+        ] = 1
+
+        search_meta_reason = self.valid_result()
+        search_meta_reason["reason_code_counts"]["candidate_overflow"] = 1
+
+        for name, payload in (
+            ("rejected_without_reason", rejected_without_reason),
+            ("unresolved_without_reason", unresolved_without_reason),
+            ("rejection_reason_without_item", rejection_reason_without_item),
+            ("search_meta_reason", search_meta_reason),
+        ):
+            with self.subTest(name=name):
+                self.assert_result_rejected(payload, "reason_code_counts")
+
+    def test_limitations_are_literal_ordered_and_rowless(self) -> None:
+        mutations: tuple[
+            Callable[[list[object]], None],
+            ...,
+        ] = (
+            lambda values: values.__setitem__(0, "Changed."),
+            lambda values: values.pop(),
+            lambda values: values.append(values[-1]),
+            lambda values: values.reverse(),
+        )
+        for index, mutate in enumerate(mutations):
+            with self.subTest(mutation=index):
+                payload = self.valid_result()
+                limitations = payload["limitations"]
+                self.assertIsInstance(limitations, list)
+                mutate(limitations)
+                self.reself(payload)
+                with self.assertRaisesRegex(
+                    runner.RunnerError,
+                    "limitations",
+                ):
+                    runner.validate_phase_c1_result_payload(payload)
+
+        payload = self.valid_result()
+        self.assertEqual(
+            payload["limitations"],
+            list(EXPECTED_PHASE_C1_LIMITATIONS),
+        )
+        payload["limitations"][0] = [
+            "row",
+            {"participant_id": "synthetic-person"},
+        ]
+        self.reself(payload)
+        with self.assertRaisesRegex(
+            runner.RunnerError,
+            "forbidden_content",
+        ):
+            runner.validate_phase_c1_result_payload(payload)
+
+    def test_closed_shapes_and_reliability_semantics_reject_mutations(
+        self,
+    ) -> None:
+        payload = self.valid_result()
+        payload["extra"] = False
+        self.reself(payload)
+        with self.assertRaisesRegex(
+            runner.RunnerError,
+            "result_fields",
+        ):
+            runner.validate_phase_c1_result_payload(payload)
+
+        payload = self.valid_result()
+        diagnostic = payload["per_signal"][2]["reliability_diagnostics"][0]
+        diagnostic["effective_sample_sufficient"] = False
+        self.reself(payload)
+        with self.assertRaisesRegex(
+            runner.RunnerError,
+            "reliability_diagnostics",
+        ):
+            runner.validate_phase_c1_result_payload(payload)
+
+        payload = self.valid_result()
+        del payload["reason_code_counts"]["license_unresolved"]
+        self.reself(payload)
+        with self.assertRaisesRegex(
+            runner.RunnerError,
+            "reason_code_counts",
+        ):
+            runner.validate_phase_c1_result_payload(payload)
+
+    def test_admissible_diagnostic_must_pass_frozen_alpha_rule(
+        self,
+    ) -> None:
+        mutations = (
+            {"point_micros": 799_999},
+            {"lower_95_micros": 669_999},
+            {"point_micros": None},
+            {"lower_95_micros": None},
+            {"upper_95_micros": None},
+        )
+        for mutation in mutations:
+            with self.subTest(mutation=mutation):
+                payload = self.valid_result()
+                diagnostic = payload["per_signal"][2][
+                    "reliability_diagnostics"
+                ][0]
+                diagnostic.update(mutation)
+                self.reself(payload)
+                for validate in (
+                    runner.validate_phase_c1_result_payload,
+                    runner.render_phase_c1_report,
+                ):
+                    with self.subTest(validate=validate.__name__):
+                        with self.assertRaisesRegex(
+                            runner.RunnerError,
+                            "reliability_diagnostics",
+                        ):
+                            validate(copy.deepcopy(payload))
 
 
 if __name__ == "__main__":

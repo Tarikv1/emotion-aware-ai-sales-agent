@@ -203,6 +203,31 @@ TARGET_SIGNALS: Final = (
     "interest",
     "disengagement",
 )
+PHASE_C1_RESULT_FIELDS: Final = frozenset(
+    {
+        "schema_version",
+        "checkpoint_id",
+        "protocol_id",
+        "target_signals",
+        "implementation_head",
+        "validator_blob_id",
+        "protocol_sha256",
+        "search_ledger_sha256",
+        "source_evidence_ledger_sha256",
+        "source_review_receipt_sha256",
+        "aggregate_content_sha256",
+        "search_counts",
+        "source_counts",
+        "card_counts_by_status",
+        "reason_code_counts",
+        "per_signal",
+        "overall_decision",
+        "c2_eligible_signals",
+        "boundary",
+        "limitations",
+        "runtime_approved",
+    }
+)
 TRANSPORT_PURPOSES: Final = (
     "seed_query",
     "citation_discovery",
