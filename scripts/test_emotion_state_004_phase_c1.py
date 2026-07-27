@@ -4,7 +4,7 @@ import copy
 import hashlib
 import json
 import unittest
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from pathlib import Path
 from types import MappingProxyType
 from typing import Callable
@@ -731,6 +731,177 @@ class PhaseC1TransportReceiptContractTests(
                     self.valid_protocol_payload()
                 ),
             )
+
+    def test_forged_protocol_cannot_relax_response_cap(self) -> None:
+        protocol = phase_c1.validate_discovery_protocol(
+            self.valid_protocol_payload()
+        )
+        forged_caps = dict(
+            protocol.max_response_bytes_by_transport_purpose
+        )
+        forged_caps["seed_query"] = 2_000_001
+        forged_protocol = replace(
+            protocol,
+            max_response_bytes_by_transport_purpose=MappingProxyType(
+                forged_caps
+            ),
+        )
+        payload = self.valid_transport_ledger()
+        payload["receipts"][0]["response_byte_count"] = 2_000_001
+
+        with self.assertRaisesRegex(
+            phase_c1.PhaseC1ContractError,
+            "^transport_protocol$",
+        ):
+            phase_c1.validate_transport_receipt_ledger(
+                payload,
+                protocol=forged_protocol,
+            )
+
+    def test_forged_protocol_cannot_relax_content_type_allowlist(self) -> None:
+        protocol = phase_c1.validate_discovery_protocol(
+            self.valid_protocol_payload()
+        )
+        forged_allowlist = {
+            purpose: tuple(content_types)
+            for purpose, content_types in (
+                protocol.allowed_response_content_types_by_transport_purpose.items()
+            )
+        }
+        forged_allowlist["seed_query"] = (
+            "application/json",
+            "text/plain",
+        )
+        forged_protocol = replace(
+            protocol,
+            allowed_response_content_types_by_transport_purpose=(
+                MappingProxyType(forged_allowlist)
+            ),
+        )
+        payload = self.valid_transport_ledger()
+        payload["receipts"][0]["response_content_type"] = "text/plain"
+
+        with self.assertRaisesRegex(
+            phase_c1.PhaseC1ContractError,
+            "^transport_protocol$",
+        ):
+            phase_c1.validate_transport_receipt_ledger(
+                payload,
+                protocol=forged_protocol,
+            )
+
+    def test_forged_protocol_cannot_relax_total_unique_cache_cap(self) -> None:
+        protocol = phase_c1.validate_discovery_protocol(
+            self.valid_protocol_payload()
+        )
+        forged_protocol = replace(
+            protocol,
+            max_total_source_cache_bytes=520_000_000,
+        )
+        payload = self.valid_transport_ledger()
+        payload["receipts"] = []
+        for index in range(1, 27):
+            receipt = self.valid_transport_receipt()
+            receipt.update(
+                {
+                    "receipt_id": f"c1-transport-{index:04d}",
+                    "purpose": "authoritative_document",
+                    "request_key": f"c1-document-{index:04d}",
+                    "response_sha256": f"{index:064X}",
+                    "response_byte_count": 20_000_000,
+                    "response_content_type": "application/pdf",
+                }
+            )
+            payload["receipts"].append(receipt)
+
+        with self.assertRaisesRegex(
+            phase_c1.PhaseC1ContractError,
+            "^transport_protocol$",
+        ):
+            phase_c1.validate_transport_receipt_ledger(
+                payload,
+                protocol=forged_protocol,
+            )
+
+    def test_non_fqdn_malformed_and_special_use_hosts_reject_without_dns(
+        self,
+    ) -> None:
+        rejected_hosts = (
+            "intranet",
+            "printer.local",
+            "service.internal",
+            "reserved.invalid",
+            "fixture.test",
+            "docs.example",
+            "router.home.arpa",
+            "node.localdomain",
+            "gateway.lan",
+            "service.onion",
+            "bad..example.com",
+            "-bad.example.com",
+            "bad-.example.com",
+            "bad_host.example.com",
+            "127.1",
+        )
+        for host in rejected_hosts:
+            with self.subTest(host=host):
+                payload = self.valid_transport_receipt()
+                payload["requested_url"] = _https(f"{host}/source")
+                with self.assertRaises(phase_c1.PhaseC1ContractError):
+                    phase_c1.parse_transport_receipt(payload)
+
+    def test_forbidden_row_query_names_reject_in_every_transport_url(
+        self,
+    ) -> None:
+        forbidden_query_names = (
+            "%61UDIO",
+            "CUSTOMER%5FID",
+            "%66EATURE",
+            "MODEL%5FMETRIC",
+            "PARTICIPANT%5FID",
+            "%70REDICTION",
+            "PROBABILITY",
+            "tran%C5%BFcript",
+            "%75TTERANCE",
+        )
+        for query_name in forbidden_query_names:
+            for location in ("requested_url", "final_url", "redirect_chain"):
+                with self.subTest(
+                    query_name=query_name,
+                    location=location,
+                ):
+                    payload = self.valid_transport_receipt()
+                    forbidden_url = _https(
+                        f"api.openalex.org/works?{query_name}=row"
+                    )
+                    if location == "redirect_chain":
+                        payload["redirect_hop_count"] = 1
+                        payload["redirect_chain"] = [forbidden_url]
+                    else:
+                        payload[location] = forbidden_url
+                    with self.assertRaises(phase_c1.PhaseC1ContractError):
+                        phase_c1.parse_transport_receipt(payload)
+
+    def test_discovery_query_and_pagination_names_remain_allowed(self) -> None:
+        allowed_query_names = (
+            "search",
+            "query.bibliographic",
+            "q",
+            "size",
+            "per-page",
+            "rows",
+            "limit",
+        )
+        for query_name in allowed_query_names:
+            with self.subTest(query_name=query_name):
+                payload = self.valid_transport_receipt()
+                url = _https(
+                    f"api.openalex.org/works?{query_name}=hesitation"
+                )
+                payload["requested_url"] = url
+                payload["final_url"] = url
+                parsed = phase_c1.parse_transport_receipt(payload)
+                self.assertEqual(parsed.requested_url, url)
 
     def test_transport_ledger_rejects_unknown_duplicate_and_protocol_drift(
         self,

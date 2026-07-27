@@ -6,7 +6,7 @@ import json
 import re
 import unicodedata
 from collections.abc import Mapping
-from dataclasses import dataclass
+from dataclasses import dataclass, fields
 from datetime import datetime
 from types import MappingProxyType
 from typing import Final
@@ -184,6 +184,36 @@ _DOCUMENT_REQUEST_RE: Final = re.compile(
 _BLOCKED_QUERY_PARAMETER_RE: Final = re.compile(
     r"(?:token|key|secret|password|auth|authorization|session|cookie)",
     re.IGNORECASE,
+)
+_FORBIDDEN_PAYLOAD_QUERY_NAMES: Final = frozenset(
+    {
+        "audio",
+        "customer_id",
+        "feature",
+        "model_metric",
+        "participant_id",
+        "prediction",
+        "probability",
+        "transcript",
+        "utterance",
+    }
+)
+_PUBLIC_DNS_LABEL_RE: Final = re.compile(
+    r"^[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?$"
+)
+_SPECIAL_USE_HOST_SUFFIXES: Final = frozenset(
+    {
+        "example",
+        "home.arpa",
+        "internal",
+        "invalid",
+        "lan",
+        "local",
+        "localdomain",
+        "localhost",
+        "onion",
+        "test",
+    }
 )
 _CONTENT_TYPE_RE: Final = re.compile(
     r"^[a-z0-9][a-z0-9!#$&^_.+-]*/[a-z0-9][a-z0-9!#$&^_.+-]*$"
@@ -680,6 +710,37 @@ def validate_discovery_protocol(payload: object) -> PhaseC1ProtocolV1:
     )
 
 
+def _public_dns_hostname(hostname: str, *, code: str) -> str:
+    if hostname.endswith(".."):
+        raise PhaseC1ContractError(code)
+    normalized = unicodedata.normalize("NFC", hostname)
+    if normalized.endswith("."):
+        normalized = normalized[:-1]
+    try:
+        ascii_hostname = normalized.encode("idna").decode("ascii").lower()
+    except UnicodeError as exc:
+        raise PhaseC1ContractError(code) from exc
+    if (
+        not ascii_hostname
+        or len(ascii_hostname) > 253
+        or "." not in ascii_hostname
+    ):
+        raise PhaseC1ContractError(code)
+    labels = ascii_hostname.split(".")
+    if (
+        any(_PUBLIC_DNS_LABEL_RE.fullmatch(label) is None for label in labels)
+        or all(label.isdigit() for label in labels)
+    ):
+        raise PhaseC1ContractError(code)
+    if any(
+        ascii_hostname == suffix
+        or ascii_hostname.endswith(f".{suffix}")
+        for suffix in _SPECIAL_USE_HOST_SUFFIXES
+    ):
+        raise PhaseC1ContractError(code)
+    return ascii_hostname
+
+
 def _public_https_url(value: object, *, code: str) -> str:
     url = _string(value, code=code, maximum=2048)
     try:
@@ -701,18 +762,21 @@ def _public_https_url(value: object, *, code: str) -> str:
     if port is not None and not 1 <= port <= 65535:
         raise PhaseC1ContractError(code)
     lowered = hostname.rstrip(".").lower()
-    if lowered == "localhost" or lowered.endswith(".localhost"):
-        raise PhaseC1ContractError(code)
     try:
         ipaddress.ip_address(lowered)
     except ValueError:
         pass
     else:
         raise PhaseC1ContractError(code)
+    _public_dns_hostname(hostname, code=code)
     if any(segment in {".", ".."} for segment in parsed.path.split("/")):
         raise PhaseC1ContractError(code)
     for key, _ in parse_qsl(parsed.query, keep_blank_values=True):
-        if _BLOCKED_QUERY_PARAMETER_RE.search(key):
+        normalized_key = unicodedata.normalize("NFC", key).casefold()
+        if (
+            normalized_key in _FORBIDDEN_PAYLOAD_QUERY_NAMES
+            or _BLOCKED_QUERY_PARAMETER_RE.search(normalized_key)
+        ):
             raise PhaseC1ContractError(code)
     return url
 
@@ -879,13 +943,43 @@ def parse_transport_receipt(payload: object) -> PhaseC1TransportReceiptV1:
     )
 
 
+def _thaw_protocol_value(value: object) -> object:
+    if isinstance(value, Mapping):
+        return {
+            key: _thaw_protocol_value(item)
+            for key, item in value.items()
+        }
+    if isinstance(value, tuple):
+        return [_thaw_protocol_value(item) for item in value]
+    return value
+
+
+def _validated_transport_protocol(
+    protocol: object,
+) -> PhaseC1ProtocolV1:
+    if not isinstance(protocol, PhaseC1ProtocolV1):
+        raise PhaseC1ContractError("transport_protocol")
+    payload = {
+        "schema_version": _PROTOCOL_SCHEMA,
+        **{
+            field.name: _thaw_protocol_value(
+                getattr(protocol, field.name)
+            )
+            for field in fields(PhaseC1ProtocolV1)
+        },
+    }
+    try:
+        return validate_discovery_protocol(payload)
+    except PhaseC1ContractError as exc:
+        raise PhaseC1ContractError("transport_protocol") from exc
+
+
 def validate_transport_receipt_ledger(
     payload: object,
     *,
     protocol: PhaseC1ProtocolV1,
 ) -> PhaseC1TransportReceiptLedgerV1:
-    if not isinstance(protocol, PhaseC1ProtocolV1):
-        raise PhaseC1ContractError("transport_protocol")
+    protocol = _validated_transport_protocol(protocol)
     raw = _mapping(payload, code="transport_ledger_object")
     _exact_fields(raw, _LEDGER_FIELDS, code="transport_ledger_fields")
     if raw["schema_version"] != _LEDGER_SCHEMA:
