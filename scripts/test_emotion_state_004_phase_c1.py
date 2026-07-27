@@ -325,6 +325,179 @@ class _PhaseC1FixtureMixin:
         }
 
     @staticmethod
+    def valid_source_payload() -> dict[str, object]:
+        return {
+            "source_id": "c1-source-0001",
+            "title": "Synthetic public conversation source",
+            "source_kind": "public_dataset",
+            "phase_c1_roles": [
+                "existing_annotation_evidence",
+                "fallback_material_candidate",
+            ],
+            "version": "v1",
+            "documents": [
+                {
+                    "document_id": "c1-document-0001",
+                    "role": "annotation_manual",
+                    "authoritative_url": "https://www.wikipedia.org/source",
+                    "publisher_domain": "wikipedia.org",
+                    "retrieved_at_utc": "2026-07-26T12:00:00Z",
+                    "cached_sha256": "B" * 64,
+                    "content_type": "application/pdf",
+                    "byte_count": 512,
+                    "authoritative": True,
+                    "public_without_login": True,
+                    "transport_receipt_sha256": "A" * 64,
+                }
+            ],
+            "access_status": "public_no_login",
+            "license_status": "compatible",
+            "license_identifier": "CC-BY-4.0",
+            "ethical_use_status": "compatible",
+            "conversation_status": "spontaneous_conversation",
+            "domain": "conversational-research",
+            "languages": ["en"],
+            "population_scope": "Public conversational participants",
+            "modalities": ["audio"],
+        }
+
+    @staticmethod
+    def valid_card_payload() -> dict[str, object]:
+        return {
+            "card_id": "c1-card-confusion-0001",
+            "source_id": "c1-source-0001",
+            "signal": "confusion",
+            "native_label": "confusion",
+            "native_definition_document_id": "c1-document-0001",
+            "native_definition_locator": "section-2-page-1",
+            "native_definition_excerpt_sha256": "C" * 64,
+            "annotation_modality": "audio_only",
+            "construct_correspondence": "direct_target_construct",
+            "temporal_unit": "bounded_segment",
+            "bounded_context_description": (
+                "bounded_segment_within_conversation"
+            ),
+            "observer_method": "independent_human_observer",
+            "independent_rater_count": 3,
+            "reliability": {
+                "metric_id": "krippendorff_alpha",
+                "point_micros": 840_000,
+                "lower_95_micros": 700_000,
+                "upper_95_micros": 900_000,
+                "rated_unit_count": 100,
+                "published_positive_count": 93,
+                "preadjudication": True,
+                "verifiable": True,
+                "uncertain_or_unratable_rate_micros": 10_000,
+                "class_prevalence_micros": 500_000,
+                "positive_agreement_micros": 850_000,
+                "negative_agreement_micros": 860_000,
+                "preadjudication_disagreement_micros": 150_000,
+            },
+            "claimed_status": "admissible",
+            "claimed_reason_codes": [],
+            "limitations": ["Synthetic metadata-only limitation"],
+        }
+
+    def valid_search_ledger_bytes(self) -> bytes:
+        payload = {
+            "candidate_order_by_signal": {
+                "hesitation": [],
+                "frustration": [],
+                "confusion": ["c1-source-0001"],
+                "interest": [],
+                "disengagement": [],
+            },
+            "fallback_material_candidate_order": [],
+            "fail_ready_by_signal": {
+                signal: False for signal in EXPECTED_SIGNALS
+            },
+            "query_records": [
+                {
+                    "transport_receipt_sha256": "A" * 64,
+                    "discovery_records": [],
+                }
+            ],
+            "citation_records": [],
+        }
+        return phase_c1.canonical_json_bytes(payload)
+
+    @staticmethod
+    def valid_fallback_material() -> dict[str, object]:
+        return {
+            "source_id": "c1-source-0001",
+            "status": "unresolved",
+            "public_spontaneous_material_status": "unresolved",
+            "license_status": "unresolved",
+            "ethical_use_status": "unresolved",
+            "minimum_three_raters_status": "unresolved",
+            "material_evidence_document_ids": [],
+            "license_evidence_document_ids": [],
+            "ethical_use_evidence_document_ids": [],
+            "rater_feasibility_evidence_document_ids": [],
+        }
+
+    def valid_source_evidence_ledger(
+        self,
+        search_ledger_bytes: bytes,
+    ) -> dict[str, object]:
+        return {
+            "schema_version": "EmotionStatePhaseC1SourceEvidenceLedgerV1",
+            "protocol_sha256": hashlib.sha256(
+                self.protocol_path.read_bytes()
+            ).hexdigest().upper(),
+            "search_ledger_sha256": hashlib.sha256(
+                search_ledger_bytes
+            ).hexdigest().upper(),
+            "sources": [self.valid_source_payload()],
+            "cards": [self.valid_card_payload()],
+            "fallback_assessments": [
+                {
+                    "signal": signal,
+                    "status": "unresolved",
+                    "material_evidence": [],
+                    "preregistration_only": True,
+                    "execution_authorized": False,
+                    "reason_codes": ["annotation_fallback_unresolved"],
+                }
+                for signal in EXPECTED_SIGNALS
+            ],
+        }
+
+    def valid_source_review_receipt(
+        self,
+        search_ledger_bytes: bytes,
+        source_ledger_bytes: bytes,
+    ) -> dict[str, object]:
+        return {
+            "schema_version": "EmotionStatePhaseC1SourceReviewReceiptV1",
+            "protocol_sha256": hashlib.sha256(
+                self.protocol_path.read_bytes()
+            ).hexdigest().upper(),
+            "search_ledger_sha256": hashlib.sha256(
+                search_ledger_bytes
+            ).hexdigest().upper(),
+            "source_evidence_ledger_sha256": hashlib.sha256(
+                source_ledger_bytes
+            ).hexdigest().upper(),
+            "transport_ledger_sha256": "D" * 64,
+            "reviewed_transport_receipt_sha256s": ["A" * 64],
+            "reviewed_document_sha256s": ["B" * 64],
+            "review_scope": (
+                "all_transport_discovery_citation_source_cards_and_search_completeness"
+            ),
+            "verdict": "admitted",
+            "critical_findings": 0,
+            "important_findings": 0,
+            "minor_findings": 0,
+            "raw_rows_read": False,
+            "private_data_read": False,
+            "model_evaluation_run": False,
+            "provider_accessed": False,
+            "runtime_modified": False,
+        }
+
+    @staticmethod
     def invalid_transport_mutations() -> tuple[_ReceiptMutation, ...]:
         return (
             _ReceiptMutation(
@@ -946,6 +1119,215 @@ class PhaseC1TransportReceiptContractTests(
                         payload,
                         protocol=protocol,
                     )
+
+
+class PhaseC1SourceContractTests(_PhaseC1FixtureMixin, unittest.TestCase):
+    def test_direct_spontaneous_segment_card_parses_to_immutable_types(
+        self,
+    ) -> None:
+        source = phase_c1.parse_source_receipt(self.valid_source_payload())
+        card = phase_c1.parse_evidence_card(self.valid_card_payload())
+        self.assertEqual(source.source_id, "c1-source-0001")
+        self.assertEqual(card.signal, "confusion")
+        self.assertEqual(
+            card.construct_correspondence,
+            "direct_target_construct",
+        )
+        self.assertEqual(card.temporal_unit, "bounded_segment")
+        self.assertEqual(card.reliability.point_micros, 840_000)
+
+    def test_rows_text_predictions_and_unknown_fields_reject_recursively(
+        self,
+    ) -> None:
+        for forbidden in (
+            "audio",
+            "customer_id",
+            "feature",
+            "model_metric",
+            "participant_id",
+            "prediction",
+            "probability",
+            "transcript",
+            "utterance",
+        ):
+            payload = self.valid_card_payload()
+            payload[forbidden] = "forbidden"
+            with self.assertRaisesRegex(
+                phase_c1.PhaseC1ContractError,
+                "forbidden_content",
+            ):
+                phase_c1.parse_evidence_card(payload)
+
+    def test_private_login_http_and_unbounded_document_receipts_reject(
+        self,
+    ) -> None:
+        invalid_urls = (
+            "http://example.org/source",
+            "https://localhost/source",
+            "https://127.0.0.1/source",
+            "https://" + "169.254.169.254/latest/meta-data/",
+        )
+        for value in invalid_urls:
+            payload = self.valid_source_payload()
+            payload["documents"][0]["authoritative_url"] = value
+            with self.assertRaises(phase_c1.PhaseC1ContractError):
+                phase_c1.parse_source_receipt(payload)
+
+    def test_source_card_and_reliability_mutations_have_exact_codes(
+        self,
+    ) -> None:
+        mutations = (
+            ("source_id_mismatch", self.valid_source_payload, lambda item: item.__setitem__("source_id", "source-1"), phase_c1.parse_source_receipt),
+            ("source_role_missing_or_unknown", self.valid_source_payload, lambda item: item.__setitem__("phase_c1_roles", ["unknown"]), phase_c1.parse_source_receipt),
+            ("document_hash_malformed", self.valid_source_payload, lambda item: item["documents"][0].__setitem__("cached_sha256", "bad"), phase_c1.parse_source_receipt),
+            ("document_role_unknown", self.valid_source_payload, lambda item: item["documents"][0].__setitem__("role", "other"), phase_c1.parse_source_receipt),
+            ("document_transport_receipt_missing", self.valid_source_payload, lambda item: item["documents"][0].__setitem__("transport_receipt_sha256", "bad"), phase_c1.parse_source_receipt),
+            ("login_claim_with_public_document", self.valid_source_payload, lambda item: item.__setitem__("access_status", "login_required"), phase_c1.parse_source_receipt),
+            ("proxy_card_claimed_admissible", self.valid_card_payload, lambda item: item.__setitem__("construct_correspondence", "proxy_construct"), phase_c1.parse_evidence_card),
+            ("native_definition_hash_malformed", self.valid_card_payload, lambda item: item.__setitem__("native_definition_excerpt_sha256", "bad"), phase_c1.parse_evidence_card),
+            ("native_definition_locator_unbounded", self.valid_card_payload, lambda item: item.__setitem__("native_definition_locator", "x" * 513), phase_c1.parse_evidence_card),
+            ("annotation_modality_unknown", self.valid_card_payload, lambda item: item.__setitem__("annotation_modality", "unknown"), phase_c1.parse_evidence_card),
+            ("annotation_modality_unresolved_claimed_admissible", self.valid_card_payload, lambda item: item.__setitem__("annotation_modality", "unresolved"), phase_c1.parse_evidence_card),
+            ("observer_method_unknown", self.valid_card_payload, lambda item: item.__setitem__("observer_method", "unknown"), phase_c1.parse_evidence_card),
+            ("self_report_claimed_admissible", self.valid_card_payload, lambda item: item.__setitem__("observer_method", "self_report"), phase_c1.parse_evidence_card),
+            ("conversation_card_claimed_admissible", self.valid_card_payload, lambda item: item.__setitem__("temporal_unit", "conversation"), phase_c1.parse_evidence_card),
+            ("single_rater_claimed_admissible", self.valid_card_payload, lambda item: item.__setitem__("independent_rater_count", 1), phase_c1.parse_evidence_card),
+            ("metric_not_allowlisted", self.valid_card_payload, lambda item: item["reliability"].__setitem__("metric_id", "cohen_kappa"), phase_c1.parse_evidence_card),
+            ("alpha_interval_not_ordered", self.valid_card_payload, lambda item: item["reliability"].__setitem__("lower_95_micros", 850_000), phase_c1.parse_evidence_card),
+            ("secondary_diagnostic_boolean", self.valid_card_payload, lambda item: item["reliability"].__setitem__("positive_agreement_micros", True), phase_c1.parse_evidence_card),
+            ("secondary_diagnostic_out_of_range", self.valid_card_payload, lambda item: item["reliability"].__setitem__("positive_agreement_micros", 1_000_001), phase_c1.parse_evidence_card),
+            ("admissible_reliability_postadjudication", self.valid_card_payload, lambda item: item["reliability"].__setitem__("preadjudication", False), phase_c1.parse_evidence_card),
+            ("positive_count_boolean", self.valid_card_payload, lambda item: item["reliability"].__setitem__("published_positive_count", True), phase_c1.parse_evidence_card),
+            ("positive_count_exceeds_rated_units", self.valid_card_payload, lambda item: item["reliability"].__setitem__("published_positive_count", 101), phase_c1.parse_evidence_card),
+            ("card_signal_not_in_protocol", self.valid_card_payload, lambda item: item.__setitem__("signal", "other"), phase_c1.parse_evidence_card),
+            ("source_reference_missing", self.valid_card_payload, lambda item: item.__setitem__("source_id", "missing"), phase_c1.parse_evidence_card),
+            ("reason_codes_unsorted", self.valid_card_payload, lambda item: item.__setitem__("claimed_reason_codes", ["annotation_fallback_unresolved", "access_requires_login"]), phase_c1.parse_evidence_card),
+            ("limitation_duplicate", self.valid_card_payload, lambda item: item.__setitem__("limitations", ["same", "same"]), phase_c1.parse_evidence_card),
+        )
+        for expected, build, mutate, parser in mutations:
+            with self.subTest(mutation=expected):
+                payload = build()
+                mutate(payload)
+                with self.assertRaises(phase_c1.PhaseC1ContractError) as raised:
+                    parser(payload)
+                self.assertEqual(raised.exception.code, expected)
+
+    def test_source_ledger_and_review_mutations_have_exact_codes(
+        self,
+    ) -> None:
+        protocol = phase_c1.validate_discovery_protocol(
+            self.valid_protocol_payload()
+        )
+        search_bytes = self.valid_search_ledger_bytes()
+        valid_ledger = self.valid_source_evidence_ledger(search_bytes)
+        phase_c1.validate_source_evidence_ledger(
+            valid_ledger, protocol=protocol, search_ledger_bytes=search_bytes
+        )
+
+        source_mutations = (
+            ("document_role_duplicate", lambda item: item["sources"][0]["documents"].append({**copy.deepcopy(item["sources"][0]["documents"][0]), "document_id": "c1-document-0002", "cached_sha256": "E" * 64})),
+            ("duplicate_document_id", lambda item: item["sources"][0]["documents"].append({**copy.deepcopy(item["sources"][0]["documents"][0]), "role": "license", "cached_sha256": "E" * 64})),
+            ("duplicate_document_hash", lambda item: item["sources"][0]["documents"].append({**copy.deepcopy(item["sources"][0]["documents"][0]), "document_id": "c1-document-0002", "role": "license"})),
+            ("native_definition_document_missing", lambda item: item["cards"][0].__setitem__("native_definition_document_id", "c1-document-9999")),
+            ("acted_source_claimed_admissible", lambda item: item["sources"][0].__setitem__("conversation_status", "acted_or_scripted")),
+            ("candidate_card_missing_or_duplicate", lambda item: item.__setitem__("cards", [])),
+            ("card_outside_candidate_pair", lambda item: item["cards"].append({**copy.deepcopy(item["cards"][0]), "card_id": "c1-card-hesitation-0002", "signal": "hesitation"})),
+            ("fallback_signal_missing", lambda item: item.__setitem__("fallback_assessments", item["fallback_assessments"][:-1])),
+            ("fallback_status_unknown", lambda item: item["fallback_assessments"][0].__setitem__("status", "unknown")),
+            ("fallback_reason_mismatch", lambda item: item["fallback_assessments"][0].__setitem__("reason_codes", [])),
+            ("fallback_material_order_mismatch", lambda item: item["fallback_assessments"][0].__setitem__("material_evidence", [{"source_id": "c1-source-0001", "status": "unresolved", "public_spontaneous_material_status": "unresolved", "license_status": "unresolved", "ethical_use_status": "unresolved", "minimum_three_raters_status": "unresolved", "material_evidence_document_ids": [], "license_evidence_document_ids": [], "ethical_use_evidence_document_ids": [], "rater_feasibility_evidence_document_ids": []}])),
+            ("fallback_search_hash_mismatch", lambda item: item.__setitem__("search_ledger_sha256", "F" * 64)),
+        )
+        for expected, mutate in source_mutations:
+            with self.subTest(mutation=expected):
+                payload = copy.deepcopy(valid_ledger)
+                mutate(payload)
+                with self.assertRaises(phase_c1.PhaseC1ContractError) as raised:
+                    phase_c1.validate_source_evidence_ledger(
+                        payload, protocol=protocol, search_ledger_bytes=search_bytes
+                    )
+                self.assertEqual(raised.exception.code, expected)
+
+        fallback_search = phase_c1.load_json_strict(search_bytes, source="search")
+        self.assertIsInstance(fallback_search, dict)
+        fallback_search["fallback_material_candidate_order"] = [
+            "c1-source-0001"
+        ]
+        fallback_search_bytes = phase_c1.canonical_json_bytes(fallback_search)
+        fallback_ledger = self.valid_source_evidence_ledger(
+            fallback_search_bytes
+        )
+        for assessment in fallback_ledger["fallback_assessments"]:
+            assessment["material_evidence"] = [self.valid_fallback_material()]
+        fallback_mutations = (
+            ("fallback_material_status_mismatch", lambda item: item["fallback_assessments"][0]["material_evidence"][0].__setitem__("status", "feasible")),
+            ("fallback_fact_evidence_missing", lambda item: item["fallback_assessments"][0]["material_evidence"][0].update({"status": "feasible", "public_spontaneous_material_status": "available", "license_status": "compatible", "ethical_use_status": "compatible", "minimum_three_raters_status": "feasible"})),
+            ("fallback_fact_document_unknown", lambda item: item["fallback_assessments"][0]["material_evidence"][0]["material_evidence_document_ids"].append("c1-document-9999")),
+        )
+        for expected, mutate in fallback_mutations:
+            with self.subTest(mutation=expected):
+                payload = copy.deepcopy(fallback_ledger)
+                mutate(payload)
+                with self.assertRaises(phase_c1.PhaseC1ContractError) as raised:
+                    phase_c1.validate_source_evidence_ledger(
+                        payload, protocol=protocol,
+                        search_ledger_bytes=fallback_search_bytes,
+                    )
+                self.assertEqual(raised.exception.code, expected)
+
+        wrong_source_search = phase_c1.load_json_strict(
+            search_bytes, source="search"
+        )
+        self.assertIsInstance(wrong_source_search, dict)
+        wrong_source_search["fallback_material_candidate_order"] = [
+            "c1-source-0002"
+        ]
+        wrong_source_search_bytes = phase_c1.canonical_json_bytes(
+            wrong_source_search
+        )
+        wrong_source_ledger = self.valid_source_evidence_ledger(
+            wrong_source_search_bytes
+        )
+        second_source = self.valid_source_payload()
+        second_source["source_id"] = "c1-source-0002"
+        second_source["documents"][0]["document_id"] = "c1-document-0002"
+        second_source["documents"][0]["cached_sha256"] = "E" * 64
+        wrong_source_ledger["sources"].append(second_source)
+        for assessment in wrong_source_ledger["fallback_assessments"]:
+            material = self.valid_fallback_material()
+            material["source_id"] = "c1-source-0002"
+            material["material_evidence_document_ids"] = [
+                "c1-document-0001"
+            ]
+            assessment["material_evidence"] = [material]
+        with self.assertRaises(phase_c1.PhaseC1ContractError) as raised:
+            phase_c1.validate_source_evidence_ledger(
+                wrong_source_ledger, protocol=protocol,
+                search_ledger_bytes=wrong_source_search_bytes,
+            )
+        self.assertEqual(
+            raised.exception.code,
+            "fallback_fact_document_wrong_source",
+        )
+
+        source_bytes = phase_c1.canonical_json_bytes(valid_ledger)
+        review = self.valid_source_review_receipt(search_bytes, source_bytes)
+        review_mutations = (
+            ("reviewed_document_hash_omitted", lambda item: item.__setitem__("reviewed_document_sha256s", [])),
+            ("reviewed_transport_hash_mismatch", lambda item: item.__setitem__("reviewed_transport_receipt_sha256s", [])),
+            ("review_admitted_with_findings", lambda item: item.__setitem__("critical_findings", 1)),
+            ("review_admitted_with_boundary_violation", lambda item: item.__setitem__("runtime_modified", True)),
+        )
+        for expected, mutate in review_mutations:
+            with self.subTest(mutation=expected):
+                payload = copy.deepcopy(review)
+                mutate(payload)
+                with self.assertRaises(phase_c1.PhaseC1ContractError) as raised:
+                    phase_c1.validate_source_review_receipt(
+                        payload, protocol=protocol, search_ledger_bytes=search_bytes,
+                        source_evidence_ledger_bytes=source_bytes,
+                    )
+                self.assertEqual(raised.exception.code, expected)
 
 
 if __name__ == "__main__":

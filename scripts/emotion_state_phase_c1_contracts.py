@@ -1043,3 +1043,766 @@ def validate_transport_receipt_ledger(
         protocol_sha256=protocol_sha256,
         receipts=receipts,
     )
+
+
+@dataclass(frozen=True, slots=True)
+class PhaseC1DocumentReceiptV1:
+    document_id: str
+    role: str
+    authoritative_url: str
+    publisher_domain: str
+    retrieved_at_utc: str
+    cached_sha256: str
+    content_type: str
+    byte_count: int
+    authoritative: bool
+    public_without_login: bool
+    transport_receipt_sha256: str
+
+
+@dataclass(frozen=True, slots=True)
+class PhaseC1SourceReceiptV1:
+    source_id: str
+    title: str
+    source_kind: str
+    phase_c1_roles: tuple[str, ...]
+    version: str
+    documents: tuple[PhaseC1DocumentReceiptV1, ...]
+    access_status: str
+    license_status: str
+    license_identifier: str
+    ethical_use_status: str
+    conversation_status: str
+    domain: str
+    languages: tuple[str, ...]
+    population_scope: str
+    modalities: tuple[str, ...]
+
+
+@dataclass(frozen=True, slots=True)
+class PhaseC1ReliabilityEvidenceV1:
+    metric_id: str
+    point_micros: int | None
+    lower_95_micros: int | None
+    upper_95_micros: int | None
+    rated_unit_count: int | None
+    published_positive_count: int | None
+    preadjudication: bool
+    verifiable: bool
+    uncertain_or_unratable_rate_micros: int | None
+    class_prevalence_micros: int | None
+    positive_agreement_micros: int | None
+    negative_agreement_micros: int | None
+    preadjudication_disagreement_micros: int | None
+
+
+@dataclass(frozen=True, slots=True)
+class PhaseC1EvidenceCardV1:
+    card_id: str
+    source_id: str
+    signal: str
+    native_label: str
+    native_definition_document_id: str
+    native_definition_locator: str
+    native_definition_excerpt_sha256: str
+    annotation_modality: str
+    construct_correspondence: str
+    temporal_unit: str
+    bounded_context_description: str
+    observer_method: str
+    independent_rater_count: int | None
+    reliability: PhaseC1ReliabilityEvidenceV1
+    claimed_status: str
+    claimed_reason_codes: tuple[str, ...]
+    limitations: tuple[str, ...]
+
+
+@dataclass(frozen=True, slots=True)
+class PhaseC1FallbackMaterialEvidenceV1:
+    source_id: str
+    status: str
+    public_spontaneous_material_status: str
+    license_status: str
+    ethical_use_status: str
+    minimum_three_raters_status: str
+    material_evidence_document_ids: tuple[str, ...]
+    license_evidence_document_ids: tuple[str, ...]
+    ethical_use_evidence_document_ids: tuple[str, ...]
+    rater_feasibility_evidence_document_ids: tuple[str, ...]
+
+
+@dataclass(frozen=True, slots=True)
+class PhaseC1AnnotationFallbackAssessmentV1:
+    signal: str
+    status: str
+    material_evidence: tuple[PhaseC1FallbackMaterialEvidenceV1, ...]
+    preregistration_only: bool
+    execution_authorized: bool
+    reason_codes: tuple[str, ...]
+
+
+@dataclass(frozen=True, slots=True)
+class PhaseC1SourceEvidenceLedgerV1:
+    protocol_sha256: str
+    search_ledger_sha256: str
+    sources: tuple[PhaseC1SourceReceiptV1, ...]
+    cards: tuple[PhaseC1EvidenceCardV1, ...]
+    fallback_assessments: tuple[PhaseC1AnnotationFallbackAssessmentV1, ...]
+
+
+@dataclass(frozen=True, slots=True)
+class PhaseC1SourceReviewReceiptV1:
+    protocol_sha256: str
+    search_ledger_sha256: str
+    source_evidence_ledger_sha256: str
+    transport_ledger_sha256: str
+    reviewed_transport_receipt_sha256s: tuple[str, ...]
+    reviewed_document_sha256s: tuple[str, ...]
+    review_scope: str
+    verdict: str
+    critical_findings: int
+    important_findings: int
+    minor_findings: int
+    raw_rows_read: bool
+    private_data_read: bool
+    model_evaluation_run: bool
+    provider_accessed: bool
+    runtime_modified: bool
+
+
+DOCUMENT_ROLES: Final = (
+    "academic_paper",
+    "annotation_manual",
+    "corpus_page",
+    "license",
+    "reliability_report",
+)
+SOURCE_KINDS: Final = ("academic_corpus", "public_dataset")
+SOURCE_ROLES: Final = (
+    "existing_annotation_evidence",
+    "fallback_material_candidate",
+)
+ACCESS_STATUSES: Final = (
+    "public_no_login",
+    "login_required",
+    "restricted",
+    "unresolved",
+)
+LICENSE_STATUSES: Final = ("compatible", "incompatible", "unresolved")
+ETHICAL_USE_STATUSES: Final = ("compatible", "incompatible", "unresolved")
+CONVERSATION_STATUSES: Final = (
+    "spontaneous_conversation",
+    "acted_or_scripted",
+    "mixed_unseparated",
+    "unresolved",
+)
+ANNOTATION_FALLBACK_STATUSES: Final = ("feasible", "infeasible", "unresolved")
+FALLBACK_MATERIAL_STATUSES: Final = ("available", "unavailable", "unresolved")
+FALLBACK_RATER_STATUSES: Final = ("feasible", "infeasible", "unresolved")
+SOURCE_REVIEW_VERDICTS: Final = ("pending", "blocked", "admitted")
+CONSTRUCT_CORRESPONDENCE_VALUES: Final = (
+    "direct_target_construct",
+    "proxy_construct",
+    "target_absent",
+    "unresolved",
+)
+OBSERVER_METHODS: Final = (
+    "independent_human_observer",
+    "adjudicated_only_human_label",
+    "self_report",
+    "llm_generated",
+    "automated_proxy",
+    "unresolved",
+)
+ANNOTATION_MODALITIES: Final = (
+    "audio_only",
+    "audio_visual",
+    "transcript_only",
+    "mixed",
+    "unresolved",
+)
+TEMPORAL_UNITS: Final = ("turn", "bounded_segment", "conversation", "other", "unresolved")
+SOURCE_MODALITIES: Final = ("audio", "video", "transcript")
+BOUNDED_CONTEXT_VALUES: Final = (
+    "single_turn",
+    "turn_with_adjacent_context",
+    "bounded_segment_within_conversation",
+)
+_REASON_CODES: Final = (
+    "access_requires_login", "access_restricted", "license_incompatible",
+    "ethical_use_incompatible", "acted_or_scripted", "mixed_unseparated_conversation",
+    "proxy_construct", "target_label_absent", "conversation_level_only",
+    "temporal_unit_incompatible", "single_rater", "self_report_label",
+    "llm_generated_label", "reliability_upper_below_0_67", "source_identity_unverified",
+    "authoritative_provenance_unverified", "access_unresolved", "license_unresolved",
+    "ethical_use_unresolved", "conversation_status_unresolved", "directness_unresolved",
+    "temporal_unit_unresolved", "observer_method_unresolved", "rater_count_unresolved",
+    "reliability_metric_unapproved", "reliability_not_preadjudication",
+    "reliability_unverifiable", "reliability_effective_sample_insufficient",
+    "positive_support_below_93", "reliability_interval_uncertain",
+    "published_positive_count_missing", "source_documentation_incomplete",
+    "raw_annotation_rows_required", "search_query_incomplete", "query_result_truncated",
+    "candidate_overflow", "citation_budget_incomplete", "annotation_fallback_feasible",
+    "annotation_fallback_unresolved",
+)
+
+_SOURCE_ID_RE: Final = re.compile(r"^c1-source-[0-9]{4}$")
+_DOCUMENT_ID_RE: Final = re.compile(r"^c1-document-[0-9]{4}$")
+_CARD_ID_RE: Final = re.compile(
+    r"^c1-card-(?:hesitation|frustration|confusion|interest|disengagement)-[0-9]{4}$"
+)
+_LANGUAGE_TAG_RE: Final = re.compile(r"^[A-Za-z]{2,3}(?:-[A-Za-z0-9]{2,8})*$")
+_SOURCE_FIELDS: Final = frozenset(field.name for field in fields(PhaseC1SourceReceiptV1))
+_DOCUMENT_FIELDS: Final = frozenset(field.name for field in fields(PhaseC1DocumentReceiptV1))
+_RELIABILITY_FIELDS: Final = frozenset(field.name for field in fields(PhaseC1ReliabilityEvidenceV1))
+_CARD_FIELDS: Final = frozenset(field.name for field in fields(PhaseC1EvidenceCardV1))
+_FALLBACK_MATERIAL_FIELDS: Final = frozenset(field.name for field in fields(PhaseC1FallbackMaterialEvidenceV1))
+_FALLBACK_FIELDS: Final = frozenset(field.name for field in fields(PhaseC1AnnotationFallbackAssessmentV1))
+_SOURCE_LEDGER_FIELDS: Final = frozenset(
+    {"schema_version", *(field.name for field in fields(PhaseC1SourceEvidenceLedgerV1))}
+)
+_SOURCE_REVIEW_FIELDS: Final = frozenset(
+    {"schema_version", *(field.name for field in fields(PhaseC1SourceReviewReceiptV1))}
+)
+_SOURCE_LEDGER_SCHEMA: Final = "EmotionStatePhaseC1SourceEvidenceLedgerV1"
+_SOURCE_REVIEW_SCHEMA: Final = "EmotionStatePhaseC1SourceReviewReceiptV1"
+_SOURCE_REVIEW_SCOPE: Final = (
+    "all_transport_discovery_citation_source_cards_and_search_completeness"
+)
+_AUTHORITATIVE_DOCUMENT_CONTENT_TYPES: Final = (
+    "application/json",
+    "application/pdf",
+    "application/xml",
+    "text/html",
+    "text/plain",
+    "text/xml",
+)
+
+
+def _forbidden_content(value: object) -> None:
+    if isinstance(value, Mapping):
+        for key, item in value.items():
+            if (
+                isinstance(key, str)
+                and unicodedata.normalize("NFC", key).casefold()
+                in _FORBIDDEN_PAYLOAD_QUERY_NAMES
+            ):
+                raise PhaseC1ContractError("forbidden_content")
+            _forbidden_content(item)
+    elif isinstance(value, list):
+        for item in value:
+            _forbidden_content(item)
+
+
+def _hash(value: object, *, code: str) -> str:
+    digest = _string(value, code=code, maximum=64)
+    if _SHA256_RE.fullmatch(digest) is None:
+        raise PhaseC1ContractError(code)
+    return digest
+
+
+def _timestamp(value: object, *, code: str) -> str:
+    timestamp = _string(value, code=code)
+    if _TIMESTAMP_RE.fullmatch(timestamp) is None:
+        raise PhaseC1ContractError(code)
+    try:
+        datetime.strptime(timestamp, "%Y-%m-%dT%H:%M:%SZ")
+    except ValueError as exc:
+        raise PhaseC1ContractError(code) from exc
+    return timestamp
+
+
+def _enum(value: object, values: tuple[str, ...], *, code: str) -> str:
+    result = _string(value, code=code)
+    if result not in values:
+        raise PhaseC1ContractError(code)
+    return result
+
+
+def _ordered_tuple(
+    value: object,
+    values: tuple[str, ...],
+    *,
+    code: str,
+    nonempty: bool = False,
+) -> tuple[str, ...]:
+    result = _string_tuple(value, code=code)
+    if nonempty and not result:
+        raise PhaseC1ContractError(code)
+    try:
+        positions = tuple(values.index(item) for item in result)
+    except ValueError as exc:
+        raise PhaseC1ContractError(code) from exc
+    if positions != tuple(sorted(positions)):
+        raise PhaseC1ContractError(code)
+    return result
+
+
+def _optional_millionths(value: object, *, code: str) -> int | None:
+    return _optional_integer(
+        value,
+        code=code,
+        minimum=-1_000_000,
+        maximum=1_000_000,
+    )
+
+
+def _document_receipt(payload: object) -> PhaseC1DocumentReceiptV1:
+    raw = _mapping(payload, code="document_object")
+    _exact_fields(raw, _DOCUMENT_FIELDS, code="document_fields")
+    document_id = _string(raw["document_id"], code="document_id")
+    if _DOCUMENT_ID_RE.fullmatch(document_id) is None:
+        raise PhaseC1ContractError("document_id")
+    role = _enum(raw["role"], DOCUMENT_ROLES, code="document_role_unknown")
+    authoritative_url = _public_https_url(raw["authoritative_url"], code="document_url")
+    publisher_domain = _public_dns_hostname(
+        _string(raw["publisher_domain"], code="document_publisher_domain"),
+        code="document_publisher_domain",
+    )
+    retrieved_at_utc = _timestamp(raw["retrieved_at_utc"], code="document_timestamp")
+    cached_sha256 = _hash(raw["cached_sha256"], code="document_hash_malformed")
+    content_type = _content_type(raw["content_type"])
+    if content_type not in _AUTHORITATIVE_DOCUMENT_CONTENT_TYPES:
+        raise PhaseC1ContractError("document_content_type")
+    byte_count = _integer(
+        raw["byte_count"], code="document_byte_count", minimum=1, maximum=20_000_000
+    )
+    if type(raw["authoritative"]) is not bool:
+        raise PhaseC1ContractError("document_authoritative")
+    if type(raw["public_without_login"]) is not bool:
+        raise PhaseC1ContractError("document_public_without_login")
+    transport_receipt_sha256 = _hash(
+        raw["transport_receipt_sha256"], code="document_transport_receipt_missing"
+    )
+    return PhaseC1DocumentReceiptV1(
+        document_id=document_id,
+        role=role,
+        authoritative_url=authoritative_url,
+        publisher_domain=publisher_domain,
+        retrieved_at_utc=retrieved_at_utc,
+        cached_sha256=cached_sha256,
+        content_type=content_type,
+        byte_count=byte_count,
+        authoritative=raw["authoritative"],
+        public_without_login=raw["public_without_login"],
+        transport_receipt_sha256=transport_receipt_sha256,
+    )
+
+
+def parse_source_receipt(payload: object) -> PhaseC1SourceReceiptV1:
+    _forbidden_content(payload)
+    raw = _mapping(payload, code="source_object")
+    _exact_fields(raw, _SOURCE_FIELDS, code="source_fields")
+    source_id = _string(raw["source_id"], code="source_id_mismatch")
+    if _SOURCE_ID_RE.fullmatch(source_id) is None:
+        raise PhaseC1ContractError("source_id_mismatch")
+    documents = tuple(_document_receipt(item) for item in _sequence(raw["documents"], code="source_documents"))
+    if not documents:
+        raise PhaseC1ContractError("source_documents")
+    roles = tuple(item.role for item in documents)
+    if roles != tuple(sorted(roles, key=DOCUMENT_ROLES.index)):
+        raise PhaseC1ContractError("document_role_order")
+    if len({item.document_id for item in documents}) != len(documents):
+        raise PhaseC1ContractError("duplicate_document_id")
+    if len({item.cached_sha256 for item in documents}) != len(documents):
+        raise PhaseC1ContractError("duplicate_document_hash")
+    if len(set(roles)) != len(roles):
+        raise PhaseC1ContractError("document_role_duplicate")
+    access_status = _enum(raw["access_status"], ACCESS_STATUSES, code="source_access_status")
+    if access_status == "login_required" and any(item.public_without_login for item in documents):
+        raise PhaseC1ContractError("login_claim_with_public_document")
+    languages = _string_tuple(raw["languages"], code="source_languages")
+    if not languages or any(_LANGUAGE_TAG_RE.fullmatch(item) is None or len(item) > 35 for item in languages):
+        raise PhaseC1ContractError("source_languages")
+    return PhaseC1SourceReceiptV1(
+        source_id=source_id,
+        title=_string(raw["title"], code="source_title"),
+        source_kind=_enum(raw["source_kind"], SOURCE_KINDS, code="source_kind"),
+        phase_c1_roles=_ordered_tuple(raw["phase_c1_roles"], SOURCE_ROLES, code="source_role_missing_or_unknown", nonempty=True),
+        version=_string(raw["version"], code="source_version", maximum=128),
+        documents=documents,
+        access_status=access_status,
+        license_status=_enum(raw["license_status"], LICENSE_STATUSES, code="source_license_status"),
+        license_identifier=_string(raw["license_identifier"], code="source_license_identifier", maximum=128),
+        ethical_use_status=_enum(raw["ethical_use_status"], ETHICAL_USE_STATUSES, code="source_ethical_use_status"),
+        conversation_status=_enum(raw["conversation_status"], CONVERSATION_STATUSES, code="source_conversation_status"),
+        domain=_string(raw["domain"], code="source_domain"),
+        languages=languages,
+        population_scope=_string(raw["population_scope"], code="source_population_scope"),
+        modalities=_ordered_tuple(raw["modalities"], SOURCE_MODALITIES, code="source_modalities", nonempty=True),
+    )
+
+
+def _reliability(payload: object) -> PhaseC1ReliabilityEvidenceV1:
+    raw = _mapping(payload, code="reliability_object")
+    _exact_fields(raw, _RELIABILITY_FIELDS, code="reliability_fields")
+    metric_id = _string(raw["metric_id"], code="metric_not_allowlisted")
+    if metric_id != "krippendorff_alpha":
+        raise PhaseC1ContractError("metric_not_allowlisted")
+    point = _optional_millionths(raw["point_micros"], code="reliability_point")
+    lower = _optional_millionths(raw["lower_95_micros"], code="reliability_lower")
+    upper = _optional_millionths(raw["upper_95_micros"], code="reliability_upper")
+    if None not in (point, lower, upper) and not lower <= point <= upper:
+        raise PhaseC1ContractError("alpha_interval_not_ordered")
+    rated = _optional_integer(raw["rated_unit_count"], code="rated_unit_count", minimum=1)
+    positives = _optional_integer(raw["published_positive_count"], code="positive_count_boolean", minimum=1)
+    if rated is not None and positives is not None and positives > rated:
+        raise PhaseC1ContractError("positive_count_exceeds_rated_units")
+    rate_fields = (
+        "uncertain_or_unratable_rate_micros", "class_prevalence_micros",
+        "positive_agreement_micros", "negative_agreement_micros",
+        "preadjudication_disagreement_micros",
+    )
+    if any(type(raw[field]) is bool for field in rate_fields):
+        raise PhaseC1ContractError("secondary_diagnostic_boolean")
+    rates = tuple(_optional_integer(raw[field], code="secondary_diagnostic_out_of_range", minimum=0, maximum=1_000_000) for field in rate_fields)
+    if type(raw["preadjudication"]) is not bool or type(raw["verifiable"]) is not bool:
+        raise PhaseC1ContractError("reliability_boolean")
+    return PhaseC1ReliabilityEvidenceV1(
+        metric_id, point, lower, upper, rated, positives, raw["preadjudication"], raw["verifiable"], *rates
+    )
+
+
+def parse_evidence_card(payload: object) -> PhaseC1EvidenceCardV1:
+    _forbidden_content(payload)
+    raw = _mapping(payload, code="card_object")
+    _exact_fields(raw, _CARD_FIELDS, code="card_fields")
+    card_id = _string(raw["card_id"], code="card_id")
+    if _CARD_ID_RE.fullmatch(card_id) is None:
+        raise PhaseC1ContractError("card_id")
+    signal = _enum(raw["signal"], TARGET_SIGNALS, code="card_signal_not_in_protocol")
+    if not card_id.startswith(f"c1-card-{signal}-"):
+        raise PhaseC1ContractError("card_signal_not_in_protocol")
+    construct = _enum(raw["construct_correspondence"], CONSTRUCT_CORRESPONDENCE_VALUES, code="construct_correspondence")
+    modality = _enum(raw["annotation_modality"], ANNOTATION_MODALITIES, code="annotation_modality_unknown")
+    temporal = _enum(raw["temporal_unit"], TEMPORAL_UNITS, code="temporal_unit")
+    observer = _enum(raw["observer_method"], OBSERVER_METHODS, code="observer_method_unknown")
+    rater_count = _optional_integer(raw["independent_rater_count"], code="independent_rater_count", minimum=1)
+    reliability = _reliability(raw["reliability"])
+    claimed_status = _enum(raw["claimed_status"], ("admissible", "rejected", "unresolved"), code="claimed_status")
+    reasons = _ordered_tuple(raw["claimed_reason_codes"], _REASON_CODES, code="reason_codes_unsorted")
+    limitations = tuple(
+        _string(item, code="limitations")
+        for item in _sequence(raw["limitations"], code="limitations")
+    )
+    if len(set(limitations)) != len(limitations):
+        raise PhaseC1ContractError("limitation_duplicate")
+    if claimed_status == "admissible":
+        if construct != "direct_target_construct":
+            raise PhaseC1ContractError("proxy_card_claimed_admissible")
+        if modality == "unresolved":
+            raise PhaseC1ContractError("annotation_modality_unresolved_claimed_admissible")
+        if observer == "self_report":
+            raise PhaseC1ContractError("self_report_claimed_admissible")
+        if observer != "independent_human_observer":
+            raise PhaseC1ContractError("observer_method_claimed_admissible")
+        if temporal == "conversation":
+            raise PhaseC1ContractError("conversation_card_claimed_admissible")
+        if temporal not in ("turn", "bounded_segment"):
+            raise PhaseC1ContractError("temporal_unit_claimed_admissible")
+        if rater_count is None or rater_count < 2:
+            raise PhaseC1ContractError("single_rater_claimed_admissible")
+        if not reliability.preadjudication:
+            raise PhaseC1ContractError("admissible_reliability_postadjudication")
+    source_id = _string(raw["source_id"], code="source_reference_missing")
+    if _SOURCE_ID_RE.fullmatch(source_id) is None:
+        raise PhaseC1ContractError("source_reference_missing")
+    return PhaseC1EvidenceCardV1(
+        card_id=card_id, source_id=source_id, signal=signal,
+        native_label=_string(raw["native_label"], code="native_label", maximum=128),
+        native_definition_document_id=_string(raw["native_definition_document_id"], code="native_definition_document_missing"),
+        native_definition_locator=_string(raw["native_definition_locator"], code="native_definition_locator_unbounded", maximum=512),
+        native_definition_excerpt_sha256=_hash(raw["native_definition_excerpt_sha256"], code="native_definition_hash_malformed"),
+        annotation_modality=modality, construct_correspondence=construct, temporal_unit=temporal,
+        bounded_context_description=_enum(raw["bounded_context_description"], BOUNDED_CONTEXT_VALUES, code="bounded_context_description"),
+        observer_method=observer, independent_rater_count=rater_count, reliability=reliability,
+        claimed_status=claimed_status, claimed_reason_codes=reasons, limitations=limitations,
+    )
+
+
+def _document_ids(value: object, *, code: str) -> tuple[str, ...]:
+    result = _string_tuple(value, code=code)
+    if any(_DOCUMENT_ID_RE.fullmatch(item) is None for item in result):
+        raise PhaseC1ContractError(code)
+    return result
+
+
+def _fallback_material(payload: object) -> PhaseC1FallbackMaterialEvidenceV1:
+    raw = _mapping(payload, code="fallback_material_object")
+    _exact_fields(raw, _FALLBACK_MATERIAL_FIELDS, code="fallback_material_fields")
+    source_id = _string(raw["source_id"], code="source_reference_missing")
+    if _SOURCE_ID_RE.fullmatch(source_id) is None:
+        raise PhaseC1ContractError("source_reference_missing")
+    return PhaseC1FallbackMaterialEvidenceV1(
+        source_id=source_id,
+        status=_enum(raw["status"], ANNOTATION_FALLBACK_STATUSES, code="fallback_material_status_mismatch"),
+        public_spontaneous_material_status=_enum(raw["public_spontaneous_material_status"], FALLBACK_MATERIAL_STATUSES, code="fallback_material_status_mismatch"),
+        license_status=_enum(raw["license_status"], LICENSE_STATUSES, code="fallback_material_status_mismatch"),
+        ethical_use_status=_enum(raw["ethical_use_status"], ETHICAL_USE_STATUSES, code="fallback_material_status_mismatch"),
+        minimum_three_raters_status=_enum(raw["minimum_three_raters_status"], FALLBACK_RATER_STATUSES, code="fallback_material_status_mismatch"),
+        material_evidence_document_ids=_document_ids(raw["material_evidence_document_ids"], code="fallback_fact_document_unknown"),
+        license_evidence_document_ids=_document_ids(raw["license_evidence_document_ids"], code="fallback_fact_document_unknown"),
+        ethical_use_evidence_document_ids=_document_ids(raw["ethical_use_evidence_document_ids"], code="fallback_fact_document_unknown"),
+        rater_feasibility_evidence_document_ids=_document_ids(raw["rater_feasibility_evidence_document_ids"], code="fallback_fact_document_unknown"),
+    )
+
+
+def parse_annotation_fallback_assessment(
+    payload: object,
+) -> PhaseC1AnnotationFallbackAssessmentV1:
+    _forbidden_content(payload)
+    raw = _mapping(payload, code="fallback_object")
+    _exact_fields(raw, _FALLBACK_FIELDS, code="fallback_fields")
+    signal = _enum(raw["signal"], TARGET_SIGNALS, code="fallback_signal_missing")
+    if type(raw["preregistration_only"]) is not bool or type(raw["execution_authorized"]) is not bool:
+        raise PhaseC1ContractError("fallback_boolean")
+    if not raw["preregistration_only"] or raw["execution_authorized"]:
+        raise PhaseC1ContractError("fallback_authorization")
+    return PhaseC1AnnotationFallbackAssessmentV1(
+        signal=signal,
+        status=_enum(raw["status"], ANNOTATION_FALLBACK_STATUSES, code="fallback_status_unknown"),
+        material_evidence=tuple(_fallback_material(item) for item in _sequence(raw["material_evidence"], code="fallback_material_evidence")),
+        preregistration_only=raw["preregistration_only"],
+        execution_authorized=raw["execution_authorized"],
+        reason_codes=_ordered_tuple(raw["reason_codes"], _REASON_CODES, code="reason_codes_unsorted"),
+    )
+
+
+def _search_orders(search: Mapping[str, object]) -> tuple[
+    Mapping[str, tuple[str, ...]], tuple[str, ...], Mapping[str, bool]
+]:
+    candidates = _mapping(search.get("candidate_order_by_signal"), code="search_candidate_order")
+    fail_ready = _mapping(search.get("fail_ready_by_signal"), code="search_fail_ready")
+    if frozenset(candidates) != frozenset(TARGET_SIGNALS) or frozenset(fail_ready) != frozenset(TARGET_SIGNALS):
+        raise PhaseC1ContractError("search_signal_order")
+    parsed_candidates: dict[str, tuple[str, ...]] = {}
+    parsed_fail_ready: dict[str, bool] = {}
+    for signal in TARGET_SIGNALS:
+        source_ids = _string_tuple(candidates[signal], code="search_candidate_order")
+        if any(_SOURCE_ID_RE.fullmatch(item) is None for item in source_ids):
+            raise PhaseC1ContractError("search_candidate_order")
+        parsed_candidates[signal] = source_ids
+        if type(fail_ready[signal]) is not bool:
+            raise PhaseC1ContractError("search_fail_ready")
+        parsed_fail_ready[signal] = fail_ready[signal]
+    fallback = _string_tuple(search.get("fallback_material_candidate_order"), code="fallback_material_order_mismatch")
+    if any(_SOURCE_ID_RE.fullmatch(item) is None for item in fallback):
+        raise PhaseC1ContractError("fallback_material_order_mismatch")
+    return MappingProxyType(parsed_candidates), fallback, MappingProxyType(parsed_fail_ready)
+
+
+def _first_occurrence(items: tuple[str, ...]) -> tuple[str, ...]:
+    return tuple(dict.fromkeys(items))
+
+
+def _material_status(item: PhaseC1FallbackMaterialEvidenceV1) -> str:
+    facts = (
+        (item.public_spontaneous_material_status, item.material_evidence_document_ids),
+        (item.license_status, item.license_evidence_document_ids),
+        (item.ethical_use_status, item.ethical_use_evidence_document_ids),
+        (item.minimum_three_raters_status, item.rater_feasibility_evidence_document_ids),
+    )
+    if (
+        item.public_spontaneous_material_status == "available"
+        and item.license_status == "compatible"
+        and item.ethical_use_status == "compatible"
+        and item.minimum_three_raters_status == "feasible"
+        and all(documents for _, documents in facts)
+    ):
+        return "feasible"
+    unresolved = {"unresolved"}
+    blockers = {"unavailable", "incompatible", "infeasible"}
+    if (
+        not any(value in unresolved for value, _ in facts)
+        and any(value in blockers for value, _ in facts)
+        and all(documents for _, documents in facts)
+    ):
+        return "infeasible"
+    return "unresolved"
+
+
+def validate_source_evidence_ledger(
+    payload: object,
+    *,
+    protocol: PhaseC1ProtocolV1,
+    search_ledger_bytes: bytes,
+) -> PhaseC1SourceEvidenceLedgerV1:
+    protocol = _validated_transport_protocol(protocol)
+    _forbidden_content(payload)
+    raw = _mapping(payload, code="source_ledger_object")
+    _exact_fields(raw, _SOURCE_LEDGER_FIELDS, code="source_ledger_fields")
+    if raw["schema_version"] != _SOURCE_LEDGER_SCHEMA:
+        raise PhaseC1ContractError("source_ledger_schema")
+    protocol_sha256 = _hash(raw["protocol_sha256"], code="source_protocol_sha256")
+    if protocol_sha256 != _FROZEN_PROTOCOL_SHA256:
+        raise PhaseC1ContractError("source_protocol_sha256")
+    search_ledger_sha256 = _hash(raw["search_ledger_sha256"], code="fallback_search_hash_mismatch")
+    if search_ledger_sha256 != sha256_bytes(search_ledger_bytes):
+        raise PhaseC1ContractError("fallback_search_hash_mismatch")
+    search = _mapping(load_json_strict(search_ledger_bytes, source="search_ledger"), code="search_ledger_object")
+    candidates, fallback_order, fail_ready = _search_orders(search)
+    sources = tuple(parse_source_receipt(item) for item in _sequence(raw["sources"], code="source_ledger_sources"))
+    expected_source_ids = _first_occurrence(
+        tuple(source_id for signal in TARGET_SIGNALS for source_id in candidates[signal])
+        + fallback_order
+    )
+    if tuple(item.source_id for item in sources) != expected_source_ids:
+        raise PhaseC1ContractError("source_order")
+    if len({item.source_id for item in sources}) != len(sources):
+        raise PhaseC1ContractError("source_id_mismatch")
+    by_source = {item.source_id: item for item in sources}
+    all_document_ids = {
+        document.document_id for source in sources for document in source.documents
+    }
+    cards = tuple(parse_evidence_card(item) for item in _sequence(raw["cards"], code="source_ledger_cards"))
+    expected_pairs = tuple((signal, source_id) for signal in TARGET_SIGNALS for source_id in candidates[signal])
+    actual_pairs = tuple((card.signal, card.source_id) for card in cards)
+    if any(pair not in expected_pairs for pair in actual_pairs):
+        raise PhaseC1ContractError("card_outside_candidate_pair")
+    if actual_pairs != expected_pairs:
+        raise PhaseC1ContractError("candidate_card_missing_or_duplicate")
+    if len({card.card_id for card in cards}) != len(cards):
+        raise PhaseC1ContractError("candidate_card_missing_or_duplicate")
+    for card in cards:
+        source = by_source.get(card.source_id)
+        if source is None:
+            raise PhaseC1ContractError("source_reference_missing")
+        if "existing_annotation_evidence" not in source.phase_c1_roles:
+            raise PhaseC1ContractError("source_role_missing_or_unknown")
+        if card.native_definition_document_id not in {document.document_id for document in source.documents}:
+            raise PhaseC1ContractError("native_definition_document_missing")
+        if card.claimed_status == "admissible" and source.conversation_status == "acted_or_scripted":
+            raise PhaseC1ContractError("acted_source_claimed_admissible")
+        if card.claimed_status == "admissible" and source.conversation_status != "spontaneous_conversation":
+            raise PhaseC1ContractError("conversation_card_claimed_admissible")
+    assessments = tuple(parse_annotation_fallback_assessment(item) for item in _sequence(raw["fallback_assessments"], code="fallback_assessments"))
+    if tuple(item.signal for item in assessments) != TARGET_SIGNALS:
+        raise PhaseC1ContractError("fallback_signal_missing")
+    for assessment in assessments:
+        if tuple(item.source_id for item in assessment.material_evidence) != fallback_order:
+            raise PhaseC1ContractError("fallback_material_order_mismatch")
+        material_statuses: list[str] = []
+        for material in assessment.material_evidence:
+            source = by_source.get(material.source_id)
+            if source is None:
+                raise PhaseC1ContractError("source_reference_missing")
+            if "fallback_material_candidate" not in source.phase_c1_roles:
+                raise PhaseC1ContractError("source_role_missing_or_unknown")
+            source_document_ids = {document.document_id for document in source.documents}
+            for documents in (
+                material.material_evidence_document_ids, material.license_evidence_document_ids,
+                material.ethical_use_evidence_document_ids, material.rater_feasibility_evidence_document_ids,
+            ):
+                if any(document_id not in all_document_ids for document_id in documents):
+                    raise PhaseC1ContractError("fallback_fact_document_unknown")
+                if any(document_id not in source_document_ids for document_id in documents):
+                    raise PhaseC1ContractError("fallback_fact_document_wrong_source")
+            known_facts = (
+                material.public_spontaneous_material_status,
+                material.license_status,
+                material.ethical_use_status,
+                material.minimum_three_raters_status,
+            )
+            fact_documents = (
+                material.material_evidence_document_ids,
+                material.license_evidence_document_ids,
+                material.ethical_use_evidence_document_ids,
+                material.rater_feasibility_evidence_document_ids,
+            )
+            if material.status != "unresolved" and any(
+                fact != "unresolved" and not documents
+                for fact, documents in zip(known_facts, fact_documents, strict=True)
+            ):
+                raise PhaseC1ContractError("fallback_fact_evidence_missing")
+            actual = _material_status(material)
+            if material.status != actual:
+                raise PhaseC1ContractError("fallback_material_status_mismatch")
+            material_statuses.append(actual)
+        expected_status = (
+            "feasible" if "feasible" in material_statuses
+            else "infeasible" if fail_ready[assessment.signal] and (not material_statuses or all(status == "infeasible" for status in material_statuses))
+            else "unresolved"
+        )
+        expected_reasons = (
+            ("annotation_fallback_feasible",) if expected_status == "feasible"
+            else () if expected_status == "infeasible"
+            else ("annotation_fallback_unresolved",)
+        )
+        if assessment.status != expected_status or assessment.reason_codes != expected_reasons:
+            raise PhaseC1ContractError("fallback_reason_mismatch")
+    return PhaseC1SourceEvidenceLedgerV1(protocol_sha256, search_ledger_sha256, sources, cards, assessments)
+
+
+def _review_transport_hashes(
+    search: Mapping[str, object],
+    sources: tuple[PhaseC1SourceReceiptV1, ...],
+) -> tuple[str, ...]:
+    hashes: list[str] = []
+    for query in _sequence(search.get("query_records"), code="reviewed_transport_hash_mismatch"):
+        record = _mapping(query, code="reviewed_transport_hash_mismatch")
+        hashes.append(_hash(record.get("transport_receipt_sha256"), code="reviewed_transport_hash_mismatch"))
+        for discovery in _sequence(record.get("discovery_records"), code="reviewed_transport_hash_mismatch"):
+            detail = _mapping(discovery, code="reviewed_transport_hash_mismatch")
+            hashes.extend(_hash(item, code="reviewed_transport_hash_mismatch") for item in _sequence(detail.get("documentation_transport_receipt_sha256s"), code="reviewed_transport_hash_mismatch"))
+    for citation in _sequence(search.get("citation_records"), code="reviewed_transport_hash_mismatch"):
+        record = _mapping(citation, code="reviewed_transport_hash_mismatch")
+        hashes.append(_hash(record.get("transport_receipt_sha256"), code="reviewed_transport_hash_mismatch"))
+        hashes.extend(_hash(item, code="reviewed_transport_hash_mismatch") for item in _sequence(record.get("documentation_transport_receipt_sha256s"), code="reviewed_transport_hash_mismatch"))
+    hashes.extend(document.transport_receipt_sha256 for source in sources for document in source.documents)
+    return _first_occurrence(tuple(hashes))
+
+
+def validate_source_review_receipt(
+    payload: object,
+    *,
+    protocol: PhaseC1ProtocolV1,
+    search_ledger_bytes: bytes,
+    source_evidence_ledger_bytes: bytes,
+) -> PhaseC1SourceReviewReceiptV1:
+    protocol = _validated_transport_protocol(protocol)
+    _forbidden_content(payload)
+    raw = _mapping(payload, code="source_review_object")
+    _exact_fields(raw, _SOURCE_REVIEW_FIELDS, code="source_review_fields")
+    if raw["schema_version"] != _SOURCE_REVIEW_SCHEMA:
+        raise PhaseC1ContractError("source_review_schema")
+    protocol_sha256 = _hash(raw["protocol_sha256"], code="review_protocol_sha256")
+    search_ledger_sha256 = _hash(raw["search_ledger_sha256"], code="review_search_ledger_sha256")
+    source_evidence_ledger_sha256 = _hash(raw["source_evidence_ledger_sha256"], code="review_source_ledger_sha256")
+    if (
+        protocol_sha256 != _FROZEN_PROTOCOL_SHA256
+        or search_ledger_sha256 != sha256_bytes(search_ledger_bytes)
+        or source_evidence_ledger_sha256 != sha256_bytes(source_evidence_ledger_bytes)
+    ):
+        raise PhaseC1ContractError("review_hash_binding")
+    source_payload = load_json_strict(source_evidence_ledger_bytes, source="source_ledger")
+    source_ledger = validate_source_evidence_ledger(
+        source_payload, protocol=protocol, search_ledger_bytes=search_ledger_bytes
+    )
+    search = _mapping(load_json_strict(search_ledger_bytes, source="search_ledger"), code="search_ledger_object")
+    transport_ledger_sha256 = _hash(raw["transport_ledger_sha256"], code="review_transport_ledger_sha256")
+    reviewed_transport = tuple(_hash(item, code="reviewed_transport_hash_mismatch") for item in _sequence(raw["reviewed_transport_receipt_sha256s"], code="reviewed_transport_hash_mismatch"))
+    reviewed_documents = tuple(_hash(item, code="reviewed_document_hash_omitted") for item in _sequence(raw["reviewed_document_sha256s"], code="reviewed_document_hash_omitted"))
+    expected_documents = tuple(document.cached_sha256 for source in source_ledger.sources for document in source.documents)
+    if reviewed_documents != expected_documents:
+        raise PhaseC1ContractError("reviewed_document_hash_omitted")
+    if reviewed_transport != _review_transport_hashes(search, source_ledger.sources):
+        raise PhaseC1ContractError("reviewed_transport_hash_mismatch")
+    review_scope = _string(raw["review_scope"], code="review_scope")
+    if review_scope != _SOURCE_REVIEW_SCOPE:
+        raise PhaseC1ContractError("review_scope")
+    verdict = _enum(raw["verdict"], SOURCE_REVIEW_VERDICTS, code="review_verdict")
+    counts = tuple(_integer(raw[field], code="review_findings", minimum=0) for field in ("critical_findings", "important_findings", "minor_findings"))
+    boundary_values = tuple(raw[field] for field in ("raw_rows_read", "private_data_read", "model_evaluation_run", "provider_accessed", "runtime_modified"))
+    if any(type(value) is not bool for value in boundary_values):
+        raise PhaseC1ContractError("review_boundary_boolean")
+    if verdict == "admitted" and any(counts):
+        raise PhaseC1ContractError("review_admitted_with_findings")
+    if verdict == "admitted" and any(boundary_values):
+        raise PhaseC1ContractError("review_admitted_with_boundary_violation")
+    if any(boundary_values) and verdict != "blocked":
+        raise PhaseC1ContractError("review_boundary_violation")
+    return PhaseC1SourceReviewReceiptV1(
+        protocol_sha256, search_ledger_sha256, source_evidence_ledger_sha256,
+        transport_ledger_sha256, reviewed_transport, reviewed_documents,
+        review_scope, verdict, *counts, *boundary_values,
+    )
