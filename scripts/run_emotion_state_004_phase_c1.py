@@ -161,6 +161,47 @@ REASON_CONTRIBUTOR_CLASSES: Final = MappingProxyType(
         ),
     }
 )
+_REJECTED_CARD_EXCLUSIVE_REASON_GROUPS: Final = (
+    ("access_requires_login", "access_restricted"),
+    ("acted_or_scripted", "mixed_unseparated_conversation"),
+    ("conversation_level_only", "temporal_unit_incompatible"),
+    ("self_report_label", "llm_generated_label"),
+)
+_REJECTED_CARD_INDEPENDENT_REASON_CODES: Final = (
+    "license_incompatible",
+    "ethical_use_incompatible",
+    "proxy_construct",
+    "target_label_absent",
+    "single_rater",
+)
+_REJECTED_CARD_SOLO_REASON_CODE: Final = "reliability_upper_below_0_67"
+_UNRESOLVED_ELIGIBILITY_INDEPENDENT_REASON_CODES: Final = (
+    "authoritative_provenance_unverified",
+    "access_unresolved",
+    "license_unresolved",
+    "ethical_use_unresolved",
+    "conversation_status_unresolved",
+    "directness_unresolved",
+    "temporal_unit_unresolved",
+    "rater_count_unresolved",
+    "source_documentation_incomplete",
+)
+_UNRESOLVED_ELIGIBILITY_OBSERVER_REASON_CODE: Final = (
+    "observer_method_unresolved"
+)
+_UNRESOLVED_SHARED_REASON_CODE: Final = "reliability_not_preadjudication"
+_UNRESOLVED_RELIABILITY_INDEPENDENT_REASON_CODES: Final = (
+    "reliability_metric_unapproved",
+    "reliability_unverifiable",
+    "reliability_interval_uncertain",
+)
+_UNRESOLVED_EFFECTIVE_SAMPLE_REASON_CODE: Final = (
+    "reliability_effective_sample_insufficient"
+)
+_UNRESOLVED_POSITIVE_SUPPORT_REASON_CODES: Final = (
+    "positive_support_below_93",
+    "published_positive_count_missing",
+)
 LIMITATIONS: Final = (
     "Observer labels measure perception, not hidden internal emotion.",
     "Language, culture, speaker, population, and domain bias remain.",
@@ -761,6 +802,19 @@ def _validate_search_counts(value: object) -> dict[str, object]:
         for field, count in counts.items()
         if field != "search_complete"
     }
+    candidate_record_count = (
+        numeric["detailed_candidate_count"]
+        + numeric["candidate_overflow_count"]
+    )
+    resolved_citation_record_count = (
+        numeric["backward_citation_record_count"]
+        + numeric["forward_citation_record_count"]
+        - numeric["unresolved_citation_record_count"]
+    )
+    required_retained_citation_record_count = (
+        candidate_record_count
+        - numeric["retained_candidate_record_count"]
+    )
     if (
         numeric["direct_label_query_count"] != 80
         or numeric["fallback_material_query_count"] != 8
@@ -795,16 +849,9 @@ def _validate_search_counts(value: object) -> dict[str, object]:
             and numeric["detailed_candidate_count"]
             < MAX_DETAILED_FALLBACK_MATERIAL_CANDIDATES
         )
-        or (
-            numeric["candidate_overflow_count"]
-            + numeric["detailed_candidate_count"]
-            > (
-                numeric["retained_candidate_record_count"]
-                + numeric["backward_citation_record_count"]
-                + numeric["forward_citation_record_count"]
-                - numeric["unresolved_citation_record_count"]
-            )
-        )
+        or required_retained_citation_record_count < 0
+        or required_retained_citation_record_count
+        > resolved_citation_record_count
         or numeric["nonexhaustive_citation_stop_count"] > 10
         or counts["search_complete"]
         != (
@@ -848,6 +895,98 @@ def _validate_source_counts(
     ):
         raise RunnerError("source_counts")
     return counts
+
+
+def _maximum_rejected_card_reason_occurrences(
+    reason_counts: Mapping[str, int],
+    card_count: int,
+) -> int:
+    if card_count == 0:
+        return 0
+    maximum = -1
+    solo_limit = min(
+        reason_counts[_REJECTED_CARD_SOLO_REASON_CODE],
+        card_count,
+    )
+    for solo_cards in range(solo_limit + 1):
+        ordinary_cards = card_count - solo_cards
+        ordinary_occurrences = sum(
+            min(
+                sum(reason_counts[code] for code in group),
+                ordinary_cards,
+            )
+            for group in _REJECTED_CARD_EXCLUSIVE_REASON_GROUPS
+        )
+        ordinary_occurrences += sum(
+            min(reason_counts[code], ordinary_cards)
+            for code in _REJECTED_CARD_INDEPENDENT_REASON_CODES
+        )
+        total_occurrences = solo_cards + ordinary_occurrences
+        if total_occurrences >= card_count:
+            maximum = max(maximum, total_occurrences)
+    return maximum
+
+
+def _maximum_unresolved_card_reason_occurrences(
+    reason_counts: Mapping[str, int],
+    card_count: int,
+) -> int:
+    if card_count == 0:
+        return 0
+    maximum = -1
+    shared_count = reason_counts[_UNRESOLVED_SHARED_REASON_CODE]
+    for eligibility_cards in range(card_count + 1):
+        reliability_cards = card_count - eligibility_cards
+        for eligibility_shared_capacity in range(
+            min(shared_count, eligibility_cards) + 1
+        ):
+            reliability_shared_capacity = min(
+                shared_count - eligibility_shared_capacity,
+                reliability_cards,
+            )
+            eligibility_occurrences = sum(
+                min(reason_counts[code], eligibility_cards)
+                for code in _UNRESOLVED_ELIGIBILITY_INDEPENDENT_REASON_CODES
+            )
+            eligibility_occurrences += min(
+                reason_counts[
+                    _UNRESOLVED_ELIGIBILITY_OBSERVER_REASON_CODE
+                ]
+                + eligibility_shared_capacity,
+                eligibility_cards,
+            )
+            if eligibility_occurrences < eligibility_cards:
+                continue
+
+            reliability_base_occurrences = sum(
+                min(reason_counts[code], reliability_cards)
+                for code in _UNRESOLVED_RELIABILITY_INDEPENDENT_REASON_CODES
+            )
+            reliability_base_occurrences += reliability_shared_capacity
+            effective_sample_occurrences = min(
+                reason_counts[
+                    _UNRESOLVED_EFFECTIVE_SAMPLE_REASON_CODE
+                ],
+                reliability_cards,
+            )
+            reliability_base_occurrences += effective_sample_occurrences
+            if reliability_base_occurrences < reliability_cards:
+                continue
+            reliability_occurrences = (
+                reliability_base_occurrences
+                + min(
+                    sum(
+                        reason_counts[code]
+                        for code in _UNRESOLVED_POSITIVE_SUPPORT_REASON_CODES
+                    ),
+                    effective_sample_occurrences,
+                )
+            )
+            maximum = max(
+                maximum,
+                eligibility_occurrences + reliability_occurrences,
+            )
+    return maximum
 
 
 def _validate_diagnostic(value: object) -> dict[str, object]:
@@ -1149,15 +1288,25 @@ def validate_phase_c1_result_payload(
     ):
         raise RunnerError("source_counts")
 
+    resolved_citation_record_count = (
+        search_counts["backward_citation_record_count"]
+        + search_counts["forward_citation_record_count"]
+        - search_counts["unresolved_citation_record_count"]
+    )
+    required_retained_citation_record_count = (
+        search_counts["detailed_candidate_count"]
+        + search_counts["candidate_overflow_count"]
+        - search_counts["retained_candidate_record_count"]
+    )
+    excluded_citation_record_capacity = (
+        resolved_citation_record_count
+        - required_retained_citation_record_count
+    )
     contributor_capacities = {
         "excluded_discovery_record": search_counts[
             "excluded_discovery_record_count"
         ],
-        "excluded_citation_record": (
-            search_counts["backward_citation_record_count"]
-            + search_counts["forward_citation_record_count"]
-            - search_counts["unresolved_citation_record_count"]
-        ),
+        "excluded_citation_record": excluded_citation_record_capacity,
         "rejected_card": status_counts["rejected"],
         "unresolved_discovery_record": search_counts[
             "unresolved_discovery_record_count"
@@ -1220,6 +1369,49 @@ def validate_phase_c1_result_payload(
     ):
         raise RunnerError("reason_code_counts")
 
+    maximum_rejected_card_occurrences = (
+        _maximum_rejected_card_reason_occurrences(
+            reason_counts,
+            status_counts["rejected"],
+        )
+    )
+    minimum_rejected_card_occurrences = max(
+        status_counts["rejected"],
+        rejection_occurrences
+        - (
+            search_counts["excluded_discovery_record_count"]
+            + excluded_citation_record_capacity
+        ),
+    )
+    maximum_requested_rejected_card_occurrences = min(
+        maximum_rejected_card_occurrences,
+        rejection_occurrences
+        - search_counts["excluded_discovery_record_count"],
+    )
+    record_only_unresolved_occurrences = sum(
+        reason_counts[code]
+        for code in _UNRESOLVED_RECORD_ONLY_REASON_CODES
+    )
+    unresolved_card_occurrences = (
+        unresolved_occurrences - unresolved_search_occurrences
+    )
+    maximum_unresolved_card_occurrences = (
+        _maximum_unresolved_card_reason_occurrences(
+            reason_counts,
+            status_counts["unresolved"],
+        )
+    )
+    if (
+        minimum_rejected_card_occurrences
+        > maximum_requested_rejected_card_occurrences
+        or record_only_unresolved_occurrences
+        > unresolved_search_occurrences
+        or unresolved_card_occurrences < status_counts["unresolved"]
+        or unresolved_card_occurrences
+        > maximum_unresolved_card_occurrences
+    ):
+        raise RunnerError("reason_code_counts")
+
     passed = [
         item["signal"]
         for item in parsed_per_signal
@@ -1258,6 +1450,11 @@ def validate_phase_c1_result_payload(
         )
     ):
         raise RunnerError("overall_decision")
+    if (
+        aggregate_search_blocker
+        and fallback_status_counts["infeasible"] == len(TARGET_SIGNALS)
+    ):
+        raise RunnerError("per_signal")
 
     boundary = _exact_dict(
         result["boundary"],
