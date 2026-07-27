@@ -201,6 +201,9 @@ _FORBIDDEN_PAYLOAD_QUERY_NAMES: Final = frozenset(
 _PUBLIC_DNS_LABEL_RE: Final = re.compile(
     r"^[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?$"
 )
+_NUMERIC_HOST_COMPONENT_RE: Final = re.compile(
+    r"^(?:[0-9]+|0x[0-9a-f]+)$"
+)
 _SPECIAL_USE_HOST_SUFFIXES: Final = frozenset(
     {
         "example",
@@ -729,7 +732,10 @@ def _public_dns_hostname(hostname: str, *, code: str) -> str:
     labels = ascii_hostname.split(".")
     if (
         any(_PUBLIC_DNS_LABEL_RE.fullmatch(label) is None for label in labels)
-        or all(label.isdigit() for label in labels)
+        or all(
+            _NUMERIC_HOST_COMPONENT_RE.fullmatch(label) is not None
+            for label in labels
+        )
     ):
         raise PhaseC1ContractError(code)
     if any(

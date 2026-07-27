@@ -842,6 +842,10 @@ class PhaseC1TransportReceiptContractTests(
             "bad-.example.com",
             "bad_host.example.com",
             "127.1",
+            "0177.0000.0000.0001",
+            "0x7f.0x0.0x0.0x1",
+            "0x7f.0.0.1",
+            "0177.0x0.0.01",
         )
         for host in rejected_hosts:
             with self.subTest(host=host):
@@ -849,6 +853,18 @@ class PhaseC1TransportReceiptContractTests(
                 payload["requested_url"] = _https(f"{host}/source")
                 with self.assertRaises(phase_c1.PhaseC1ContractError):
                     phase_c1.parse_transport_receipt(payload)
+
+    def test_numeric_dns_label_with_textual_domain_remains_allowed(
+        self,
+    ) -> None:
+        for host in ("123.openalex.org", "api.123.openalex.org"):
+            with self.subTest(host=host):
+                payload = self.valid_transport_receipt()
+                url = _https(f"{host}/source")
+                payload["requested_url"] = url
+                payload["final_url"] = url
+                parsed = phase_c1.parse_transport_receipt(payload)
+                self.assertEqual(parsed.requested_url, url)
 
     def test_forbidden_row_query_names_reject_in_every_transport_url(
         self,
