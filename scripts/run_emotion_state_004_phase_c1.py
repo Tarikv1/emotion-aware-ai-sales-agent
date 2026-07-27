@@ -7,6 +7,7 @@ import sys
 from collections.abc import Mapping
 from dataclasses import fields, is_dataclass
 from pathlib import Path
+from types import MappingProxyType
 from typing import Final
 
 _IMPORT_ROOT = Path(
@@ -120,6 +121,46 @@ REASON_CODE_ORDER: Final = (
 REJECTION_REASON_CODES: Final = frozenset(REASON_CODE_ORDER[:14])
 UNRESOLVED_REASON_CODES: Final = frozenset(REASON_CODE_ORDER[14:33])
 SEARCH_META_REASON_CODES: Final = frozenset(REASON_CODE_ORDER[33:37])
+_UNRESOLVED_RECORD_ONLY_REASON_CODES: Final = frozenset(
+    {
+        "source_identity_unverified",
+        "raw_annotation_rows_required",
+    }
+)
+REASON_CONTRIBUTOR_CLASSES: Final = MappingProxyType(
+    {
+        **{
+            code: (
+                "excluded_discovery_record",
+                "excluded_citation_record",
+                "rejected_card",
+            )
+            for code in REASON_CODE_ORDER[:14]
+        },
+        **{
+            code: (
+                (
+                    "unresolved_discovery_record",
+                    "unresolved_citation_record",
+                )
+                if code in _UNRESOLVED_RECORD_ONLY_REASON_CODES
+                else (
+                    "unresolved_discovery_record",
+                    "unresolved_citation_record",
+                    "unresolved_card",
+                )
+            )
+            for code in REASON_CODE_ORDER[14:33]
+        },
+        **{code: () for code in REASON_CODE_ORDER[33:37]},
+        "annotation_fallback_feasible": (
+            "feasible_fallback_assessment",
+        ),
+        "annotation_fallback_unresolved": (
+            "unresolved_fallback_assessment",
+        ),
+    }
+)
 LIMITATIONS: Final = (
     "Observer labels measure perception, not hidden internal emotion.",
     "Language, culture, speaker, population, and domain bias remain.",
@@ -761,6 +802,7 @@ def _validate_search_counts(value: object) -> dict[str, object]:
                 numeric["retained_candidate_record_count"]
                 + numeric["backward_citation_record_count"]
                 + numeric["forward_citation_record_count"]
+                - numeric["unresolved_citation_record_count"]
             )
         )
         or numeric["nonexhaustive_citation_stop_count"] > 10
@@ -1029,7 +1071,6 @@ def validate_phase_c1_result_payload(
                 item["decision"] == "defer"
                 and unresolved == 0
                 and item["annotation_fallback"] == "infeasible"
-                and not aggregate_search_blocker
             )
         ):
             raise RunnerError("per_signal")
@@ -1107,6 +1148,38 @@ def validate_phase_c1_result_payload(
         )
     ):
         raise RunnerError("source_counts")
+
+    contributor_capacities = {
+        "excluded_discovery_record": search_counts[
+            "excluded_discovery_record_count"
+        ],
+        "excluded_citation_record": (
+            search_counts["backward_citation_record_count"]
+            + search_counts["forward_citation_record_count"]
+            - search_counts["unresolved_citation_record_count"]
+        ),
+        "rejected_card": status_counts["rejected"],
+        "unresolved_discovery_record": search_counts[
+            "unresolved_discovery_record_count"
+        ],
+        "unresolved_citation_record": search_counts[
+            "unresolved_citation_record_count"
+        ],
+        "unresolved_card": status_counts["unresolved"],
+        "feasible_fallback_assessment": fallback_status_counts["feasible"],
+        "unresolved_fallback_assessment": fallback_status_counts[
+            "unresolved"
+        ],
+    }
+    if any(
+        reason_counts[code]
+        > sum(
+            contributor_capacities[contributor_class]
+            for contributor_class in contributor_classes
+        )
+        for code, contributor_classes in REASON_CONTRIBUTOR_CLASSES.items()
+    ):
+        raise RunnerError("reason_code_counts")
 
     rejection_occurrences = sum(
         reason_counts[code] for code in REJECTION_REASON_CODES
