@@ -6275,3 +6275,17 @@ Interpretation:
   local gates and independent re-review remain pending at this point.
 - Status: no production contract changed and no broader source-admission,
   runtime, customer-emotion, or production claim is made.
+
+### 2026-07-27 - EMOTION-STATE-004 Phase C1 Task 2 source-order fixture continuation
+
+- Re-review input: C0/I0/M1. The complete-but-reordered source fixture now
+  derives its expected candidate pairs from its local search order and asserts
+  complete cards before reversing sources; it includes the valid interest card
+  for source `0002`.
+- Strict TDD: the completeness assertion first failed because that interest
+  card was absent, then passed after the test-only fixture correction; the
+  independent existing-noncandidate confusion-card exact-code proof remains
+  green. Final local gates and independent final re-review remain pending at
+  this point.
+- Status: no production contract changed and no broader source-admission,
+  runtime, customer-emotion, or production claim is made.

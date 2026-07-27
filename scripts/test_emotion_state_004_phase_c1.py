@@ -1498,6 +1498,26 @@ class PhaseC1SourceContractTests(_PhaseC1FixtureMixin, unittest.TestCase):
         search["candidate_order_by_signal"]["interest"] = ["c1-source-0002"]
         search_bytes = phase_c1.canonical_json_bytes(search)
         wrong_order = self.valid_source_evidence_ledger(search_bytes)
+        interest_card = self.valid_card_payload()
+        interest_card.update(
+            {
+                "card_id": "c1-card-interest-0002",
+                "signal": "interest",
+                "source_id": "c1-source-0002",
+                "native_definition_document_id": "c1-document-0002",
+            }
+        )
+        wrong_order["cards"].append(interest_card)
+        expected_pairs = tuple(
+            (signal, source_id)
+            for signal in EXPECTED_SIGNALS
+            for source_id in search["candidate_order_by_signal"][signal]
+        )
+        actual_pairs = tuple(
+            (card["signal"], card["source_id"])
+            for card in wrong_order["cards"]
+        )
+        self.assertEqual(actual_pairs, expected_pairs)
         source_two = self.valid_source_payload()
         source_two["source_id"] = "c1-source-0002"
         source_two["documents"][0]["document_id"] = "c1-document-0002"
