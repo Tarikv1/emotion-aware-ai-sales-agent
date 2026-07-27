@@ -1,0 +1,332 @@
+{
+  "allowed_response_content_types_by_transport_purpose": {
+    "authoritative_document": [
+      "application/json",
+      "application/pdf",
+      "application/xml",
+      "text/html",
+      "text/plain",
+      "text/xml"
+    ],
+    "citation_discovery": [
+      "application/json",
+      "text/html",
+      "text/plain"
+    ],
+    "seed_query": [
+      "application/json"
+    ]
+  },
+  "allowed_url_schemes": [
+    "https"
+  ],
+  "annotation_fallback_protocol": {
+    "annotators_blinded_to_model_outputs": true,
+    "annotators_blinded_to_other_raters": true,
+    "annotators_blinded_to_sales_decisions": true,
+    "bounded_context_frozen_before_annotation": true,
+    "codebook_revision_phase": "pilot_only",
+    "customer_calls_allowed": false,
+    "execution_authorized": false,
+    "labels": [
+      "present",
+      "absent",
+      "uncertain_or_unratable"
+    ],
+    "llm_labels_allowed": false,
+    "majority_vote_as_ground_truth_allowed": false,
+    "material_scope": "appropriately_licensed_public_spontaneous_conversations_only",
+    "minimum_independent_raters_per_segment": 3,
+    "private_conversations_allowed": false,
+    "protected_characteristic_inference_allowed": false,
+    "raw_disagreement_preserved": true,
+    "requires_separate_checkpoint": true,
+    "sample_size_method": "preregistered_reliability_precision_and_pilot_prevalence",
+    "signal_cooccurrence_allowed": true,
+    "signals_independent": true,
+    "speaker_and_conversation_ids_use": "later_disjoint_grouping_only",
+    "training_and_pilot_excluded_from_later_evaluation": true
+  },
+  "annotation_modality_order": [
+    "audio_only",
+    "audio_visual",
+    "transcript_only",
+    "mixed",
+    "unresolved"
+  ],
+  "blocked_browser_modes": [
+    "anti_bot_bypass",
+    "captcha_bypass",
+    "cookies",
+    "form_submission",
+    "login",
+    "private_address",
+    "proxy",
+    "rate_limit_evasion",
+    "saved_session",
+    "stealth",
+    "upload"
+  ],
+  "candidate_status_order": [
+    "admissible",
+    "rejected",
+    "unresolved"
+  ],
+  "canonical_json": {
+    "allow_nan": false,
+    "encoding": "utf-8",
+    "ensure_ascii": false,
+    "indent": 2,
+    "sort_keys": true,
+    "terminal_lf": true
+  },
+  "checkpoint_id": "EMOTION-STATE-004-phase-c1-operational-signal-evidence-admission",
+  "citation_hop_depth": 1,
+  "construct_correspondence_order": [
+    "direct_target_construct",
+    "proxy_construct",
+    "target_absent",
+    "unresolved"
+  ],
+  "expected_fallback_material_query_count": 8,
+  "expected_seed_query_count": 80,
+  "expected_total_query_count": 88,
+  "failure_guards": {
+    "acted_or_scripted_cannot_pass": true,
+    "adjudicated_only_cannot_pass": true,
+    "all_seed_queries_required": true,
+    "candidate_overflow_blocks_fail": true,
+    "conversation_level_cannot_pass": true,
+    "feasible_annotation_fallback_blocks_fail": true,
+    "llm_label_cannot_pass": true,
+    "planned_annotation_cannot_pass": true,
+    "proxy_construct_cannot_pass": true,
+    "self_report_cannot_pass": true,
+    "single_rater_cannot_pass": true,
+    "unresolved_candidate_blocks_fail": true
+  },
+  "fallback_material_query_templates": [
+    "public spontaneous conversation corpus annotation permitted",
+    "public spontaneous dialogue dataset license annotation redistribution"
+  ],
+  "max_backward_citations_per_signal": 5,
+  "max_detailed_candidates_per_signal": 20,
+  "max_detailed_fallback_material_candidates": 10,
+  "max_forward_citations_per_signal": 5,
+  "max_response_bytes_by_transport_purpose": {
+    "authoritative_document": 20000000,
+    "citation_discovery": 2000000,
+    "seed_query": 2000000
+  },
+  "max_total_source_cache_bytes": 512000000,
+  "observer_method_order": [
+    "independent_human_observer",
+    "adjudicated_only_human_label",
+    "self_report",
+    "llm_generated",
+    "automated_proxy",
+    "unresolved"
+  ],
+  "overall_decision_order": [
+    "proceed_full_to_c2",
+    "proceed_partial_to_c2",
+    "defer_c2",
+    "stop_c2"
+  ],
+  "positive_support_rule": {
+    "estimand": "future_c2_positive_class_success_proportion",
+    "max_half_width_micros": 100000,
+    "method": "wilson_95_worst_case_half_width",
+    "minimum_published_positive_count": 93,
+    "trial_unit": "usable_direct_positive_labeled_segment",
+    "worst_case_probability_micros": 500000,
+    "z_micros": 1960000
+  },
+  "protocol_id": "emotion-state-phase-c1-discovery-v1",
+  "query_templates": [
+    "{signal} annotated spontaneous conversation corpus",
+    "{signal} turn-level dialogue annotation dataset",
+    "perceived {signal} speech inter-rater agreement corpus",
+    "{signal} multimodal interaction segment annotation"
+  ],
+  "reason_code_order": [
+    "access_requires_login",
+    "access_restricted",
+    "license_incompatible",
+    "ethical_use_incompatible",
+    "acted_or_scripted",
+    "mixed_unseparated_conversation",
+    "proxy_construct",
+    "target_label_absent",
+    "conversation_level_only",
+    "temporal_unit_incompatible",
+    "single_rater",
+    "self_report_label",
+    "llm_generated_label",
+    "reliability_upper_below_0_67",
+    "source_identity_unverified",
+    "authoritative_provenance_unverified",
+    "access_unresolved",
+    "license_unresolved",
+    "ethical_use_unresolved",
+    "conversation_status_unresolved",
+    "directness_unresolved",
+    "temporal_unit_unresolved",
+    "observer_method_unresolved",
+    "rater_count_unresolved",
+    "reliability_metric_unapproved",
+    "reliability_not_preadjudication",
+    "reliability_unverifiable",
+    "reliability_effective_sample_insufficient",
+    "positive_support_below_93",
+    "reliability_interval_uncertain",
+    "published_positive_count_missing",
+    "source_documentation_incomplete",
+    "raw_annotation_rows_required",
+    "search_query_incomplete",
+    "query_result_truncated",
+    "candidate_overflow",
+    "citation_budget_incomplete",
+    "annotation_fallback_feasible",
+    "annotation_fallback_unresolved"
+  ],
+  "reliability_rules": [
+    {
+      "insufficient_effective_sample_disposition": "defer",
+      "metric_id": "krippendorff_alpha",
+      "pass_lower_95_min_micros": 670000,
+      "pass_point_min_micros": 800000,
+      "reject_upper_95_max_exclusive_micros": 670000,
+      "unverifiable_disposition": "defer"
+    }
+  ],
+  "reliability_scale": 1000000,
+  "schema_version": "EmotionStatePhaseC1DiscoveryProtocolV1",
+  "seed_discovery_domains": [
+    "api.openalex.org",
+    "api.crossref.org",
+    "zenodo.org",
+    "huggingface.co"
+  ],
+  "signal_constructs": [
+    {
+      "direct_label_requirement": "authoritative source documentation explicitly defines the annotated construct as hesitation; no post-hoc synonym mapping",
+      "excluded_proxies": [
+        "disfluency",
+        "low_confidence",
+        "pause_or_silence",
+        "response_latency",
+        "uncertainty"
+      ],
+      "observer_construct": "observer-perceived hesitation or indecision expressed in the local conversational unit",
+      "signal": "hesitation"
+    },
+    {
+      "direct_label_requirement": "authoritative source documentation explicitly defines the annotated construct as frustration; no post-hoc synonym mapping",
+      "excluded_proxies": [
+        "anger",
+        "complaint_topic",
+        "dissatisfaction",
+        "negative_valence",
+        "stress"
+      ],
+      "observer_construct": "observer-perceived frustration expressed in the local conversational unit",
+      "signal": "frustration"
+    },
+    {
+      "direct_label_requirement": "authoritative source documentation explicitly defines the annotated construct as confusion; no post-hoc synonym mapping",
+      "excluded_proxies": [
+        "ambiguity",
+        "asr_error",
+        "hesitation",
+        "question_dialogue_act",
+        "uncertainty"
+      ],
+      "observer_construct": "observer-perceived confusion or lack of comprehension in the local conversational unit",
+      "signal": "confusion"
+    },
+    {
+      "direct_label_requirement": "authoritative source documentation explicitly defines the annotated construct as interest; no post-hoc synonym mapping",
+      "excluded_proxies": [
+        "agreement",
+        "arousal",
+        "engagement",
+        "gaze",
+        "participation",
+        "positive_valence",
+        "purchase_intent",
+        "response_length"
+      ],
+      "observer_construct": "observer-perceived interest directed toward the current topic or interaction in the local conversational unit",
+      "signal": "interest"
+    },
+    {
+      "direct_label_requirement": "authoritative source documentation explicitly defines the annotated construct as disengagement; no post-hoc synonym mapping",
+      "excluded_proxies": [
+        "boredom",
+        "call_completion",
+        "do_not_call_intent",
+        "low_arousal",
+        "refusal_intent",
+        "silence",
+        "stop_intent",
+        "turn_ending"
+      ],
+      "observer_construct": "observer-perceived withdrawal of attention or participation from the interaction in the local conversational unit",
+      "signal": "disengagement"
+    }
+  ],
+  "signal_decision_order": [
+    "pass",
+    "defer",
+    "fail"
+  ],
+  "source_channels": [
+    {
+      "authority_role": "discovery_only",
+      "channel_id": "openalex",
+      "endpoint": "https://api.openalex.org/works",
+      "limit_parameter": "per-page",
+      "query_parameter": "search",
+      "result_limit": 25
+    },
+    {
+      "authority_role": "discovery_only",
+      "channel_id": "crossref",
+      "endpoint": "https://api.crossref.org/works",
+      "limit_parameter": "rows",
+      "query_parameter": "query.bibliographic",
+      "result_limit": 25
+    },
+    {
+      "authority_role": "discovery_only",
+      "channel_id": "zenodo",
+      "endpoint": "https://zenodo.org/api/records",
+      "limit_parameter": "size",
+      "query_parameter": "q",
+      "result_limit": 25
+    },
+    {
+      "authority_role": "discovery_only",
+      "channel_id": "huggingface",
+      "endpoint": "https://huggingface.co/api/datasets",
+      "limit_parameter": "limit",
+      "query_parameter": "search",
+      "result_limit": 25
+    }
+  ],
+  "target_signals": [
+    "hesitation",
+    "frustration",
+    "confusion",
+    "interest",
+    "disengagement"
+  ],
+  "temporal_unit_order": [
+    "turn",
+    "bounded_segment",
+    "conversation",
+    "other",
+    "unresolved"
+  ]
+}

@@ -6186,3 +6186,50 @@ Interpretation:
 - Planned structure: eleven independently reviewed tasks separate protocol/contracts, closed rowless transport and source receipts, bounded search, decision algebra, aggregate rendering, an independent validator, separately authorized public-metadata discovery, source-ledger freezing, caller-locked publication mechanics, ignored-candidate validation and independent review, and canonical closeout.
 - Fail-closed detail: all 80 direct-label and 8 fallback-material queries remain represented even when incomplete; every query/citation/document transport receipt is hash-reconciled against exact pre-freeze transport-ledger bytes under single-attempt request keys with no same-version retry; screened exclusions retain their transport lineage; each citation parent document must belong to its claimed source; citation-retained candidates require the same source/card screening as direct candidates; per-signal fail readiness is derived independently; fallback feasibility uses fact-specific same-source documents and cannot create `pass`; Task 1 freezes the existing discovery-endpoint registry entry read-only and adds its implementation evidence to this methodology log so the thesis-update gate remains satisfiable without registry drift; candidate validation binds exact live `HEAD`; canonical acceptance requires exact candidate, validation, and independent-review receipts; accepted cleanup is journal-recoverable; descendant canonical validation preserves the implementation-head blobs and exact pair-only commit lineage.
 - Current boundary: this is a plan-only checkpoint. No implementation, public research, network access, source retrieval, dataset or private-data read, annotation, audio or transcript read, model evaluation, external source adaptation, provider access, call, simulation, prompt or knowledge-base change, runtime change, candidate/canonical generation, push, merge, history rewrite, C2, policy adapter, shadow work, or runtime activation occurred or is authorized.
+
+### 2026-07-26 - EMOTION-STATE-004 Phase C1 Task 1 protocol freeze
+
+- Frozen scope: exact canonical discovery protocol
+  `research/experiments/configs/emotion-state-004-phase-c1-discovery-protocol.json`;
+  synthetic rowless fixture
+  `research/experiments/cases/emotion-state-004-phase-c1-contract-fixtures.json`;
+  protocol/status note
+  `research/experiments/EMOTION-STATE-004-phase-c1-operational-signal-evidence-admission.md`;
+  strict protocol and transport contracts
+  `scripts/emotion_state_phase_c1_contracts.py`; focused contract tests
+  `scripts/test_emotion_state_004_phase_c1.py`; the two exact-path LF rules in
+  `.gitattributes`; and this methodology trace. The thesis reference registry
+  was read and tested but not edited.
+- Byte authorities: the protocol is the exact semantic `Exact Discovery
+  Protocol` object rendered with sorted keys, two-space indentation, UTF-8,
+  no non-finite values, and one terminal LF; SHA-256
+  `2540A1BA430F78B9F660BA466F6CFD7099CFFCAA6F1C1D1AC373F4BA1D4D2CCD`.
+  The fixtures use the same renderer; SHA-256
+  `83FD0864B83FC4EAF0F0EF3E2DEAAF78FE64275D5A7B22A51061CCBD119A554D`.
+- Strict TDD evidence: before any production artifact existed, the exact
+  focused RED command exited `1` with two loader errors and
+  `ModuleNotFoundError: No module named
+  'scripts.emotion_state_phase_c1_contracts'`. After implementation, the
+  focused protocol/transport suite passed `12/12`, including exact nested
+  fallback/construct/reason-order checks, every top-level omission, unknown
+  key and metric, boolean-as-integer rejection, public-HTTPS and redirect
+  rejection, exact `c1-document-[0-9]{4}` request keys, rowless receipt shape,
+  purpose caps, canonical bytes, recursive immutability, registry stability,
+  fixtures, note prefix, and LF rules.
+- Local validators: the thesis reference registry guard passed with `0`
+  failures and `0` warnings; the project-drift guard passed with `0` failures
+  and `0` warnings; the context-reading policy passed; setup passed `567`
+  checks with `0` failures and `0` warnings and reported `Network calls made:
+  false`; both Phase C1 Python files compiled; and `git diff --check` exited
+  `0`.
+- Endpoint status: the existing four discovery endpoints remain in their
+  exact order and remain `not accessed; plan only`. Discovery-service results
+  remain non-authoritative and cannot admit a signal.
+- Closed boundary: no public research, network access, source retrieval,
+  dataset or private-data read, annotation, audio or transcript read, model
+  training or evaluation, external source adaptation, provider work, call,
+  simulation, prompt or knowledge-base change, runtime change or activation,
+  candidate or canonical generation, C2, push, merge, or history rewrite
+  occurred. This task freezes rowless contracts only and makes no claim about
+  customer internal emotion, model quality, sales performance, provider
+  behavior, real calls, safety, runtime behavior, or production readiness.
