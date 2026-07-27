@@ -339,8 +339,8 @@ class _PhaseC1FixtureMixin:
                 {
                     "document_id": "c1-document-0001",
                     "role": "annotation_manual",
-                    "authoritative_url": "https://www.wikipedia.org/source",
-                    "publisher_domain": "wikipedia.org",
+                    "authoritative_url": "https://api.openalex.org/works",
+                    "publisher_domain": "openalex.org",
                     "retrieved_at_utc": "2026-07-26T12:00:00Z",
                     "cached_sha256": "B" * 64,
                     "content_type": "application/pdf",

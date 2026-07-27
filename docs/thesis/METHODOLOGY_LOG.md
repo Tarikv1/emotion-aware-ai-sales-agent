@@ -6232,4 +6232,18 @@ Interpretation:
   candidate or canonical generation, C2, push, merge, or history rewrite
   occurred. This task freezes rowless contracts only and makes no claim about
   customer internal emotion, model quality, sales performance, provider
-  behavior, real calls, safety, runtime behavior, or production readiness.
+   behavior, real calls, safety, runtime behavior, or production readiness.
+
+### 2026-07-27 - EMOTION-STATE-004 Phase C1 Task 2 implementation checkpoint
+
+- Scope: implemented rowless source, document, reliability, evidence-card,
+  fallback, source-ledger, and review-receipt contracts in the existing Task 2
+  scripts. The genuine RED was three missing-parser errors; current focused
+  Task 2 passed `5/5`, full C1 `24/24`, and C0 `177/177` for the current
+  implementation/test bytes.
+- Fixture boundary: the synthetic valid-source fixture uses the already
+  registered OpenAlex endpoint only as inert test metadata; no network was
+  called.
+- Status: independent Task 2 review and final acceptance remain pending at this
+  implementation checkpoint. Existing closed boundaries remain unchanged; this
+  makes no production or customer-emotion claim.
