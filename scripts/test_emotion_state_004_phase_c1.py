@@ -4,7 +4,7 @@ import copy
 import hashlib
 import json
 import unittest
-from dataclasses import dataclass, replace
+from dataclasses import FrozenInstanceError, dataclass, fields, replace
 from pathlib import Path
 from types import MappingProxyType
 from typing import Callable
@@ -421,6 +421,195 @@ class _PhaseC1FixtureMixin:
             "citation_records": [],
         }
         return phase_c1.canonical_json_bytes(payload)
+
+    @staticmethod
+    def phase_c1_query_grid() -> tuple[
+        tuple[str, str, str, str | None, str],
+        ...,
+    ]:
+        channels = ("openalex", "crossref", "zenodo", "huggingface")
+        direct_templates = (
+            "{signal} annotated spontaneous conversation corpus",
+            "{signal} turn-level dialogue annotation dataset",
+            "perceived {signal} speech inter-rater agreement corpus",
+            "{signal} multimodal interaction segment annotation",
+        )
+        fallback_templates = (
+            "public spontaneous conversation corpus annotation permitted",
+            (
+                "public spontaneous dialogue dataset license annotation "
+                "redistribution"
+            ),
+        )
+        rows: list[tuple[str, str, str, str | None, str]] = []
+        for signal in EXPECTED_SIGNALS:
+            for channel in channels:
+                for rank, template in enumerate(direct_templates, start=1):
+                    rows.append(
+                        (
+                            f"c1-query-{signal}-{channel}-{rank:02d}",
+                            "direct_label_source",
+                            channel,
+                            signal,
+                            template.format(signal=signal),
+                        )
+                    )
+        for channel in channels:
+            for rank, template in enumerate(fallback_templates, start=1):
+                rows.append(
+                    (
+                        f"c1-query-fallback-material-{channel}-{rank:02d}",
+                        "fallback_material",
+                        channel,
+                        None,
+                        template,
+                    )
+                )
+        return tuple(rows)
+
+    @staticmethod
+    def fixture_hash(label: str) -> str:
+        return hashlib.sha256(label.encode("utf-8")).hexdigest().upper()
+
+    def valid_search_ledger_payload(self) -> dict[str, object]:
+        query_records = [
+            {
+                "query_id": query_id,
+                "query_kind": query_kind,
+                "channel_id": channel_id,
+                "signal": signal,
+                "query_text": query_text,
+                "status": "complete",
+                "incomplete_reason": None,
+                "result_limit": 25,
+                "response_sha256": self.fixture_hash(
+                    f"response:{query_id}"
+                ),
+                "response_byte_count": 512,
+                "transport_receipt_sha256": self.fixture_hash(
+                    f"transport:{query_id}"
+                ),
+                "result_count": 0,
+                "returned_count": 0,
+                "truncated": False,
+                "discovery_records": [],
+            }
+            for (
+                query_id,
+                query_kind,
+                channel_id,
+                signal,
+                query_text,
+            ) in self.phase_c1_query_grid()
+        ]
+        return {
+            "schema_version": "EmotionStatePhaseC1SearchLedgerV1",
+            "protocol_sha256": hashlib.sha256(
+                self.protocol_path.read_bytes()
+            ).hexdigest().upper(),
+            "query_records": query_records,
+            "citation_records": [],
+            "candidate_order_by_signal": {
+                signal: [] for signal in EXPECTED_SIGNALS
+            },
+            "overflow_count_by_signal": {
+                signal: 0 for signal in EXPECTED_SIGNALS
+            },
+            "fallback_material_candidate_order": [],
+            "fallback_material_overflow_count": 0,
+            "backward_citation_count_by_signal": {
+                signal: 0 for signal in EXPECTED_SIGNALS
+            },
+            "forward_citation_count_by_signal": {
+                signal: 0 for signal in EXPECTED_SIGNALS
+            },
+            "backward_citation_stop_by_signal": {
+                signal: "source_list_exhausted"
+                for signal in EXPECTED_SIGNALS
+            },
+            "forward_citation_stop_by_signal": {
+                signal: "source_list_exhausted"
+                for signal in EXPECTED_SIGNALS
+            },
+            "citation_transport_receipt_sha256s_by_signal": {
+                signal: {"backward": [], "forward": []}
+                for signal in EXPECTED_SIGNALS
+            },
+            "fail_ready_by_signal": {
+                signal: True for signal in EXPECTED_SIGNALS
+            },
+            "search_complete": True,
+        }
+
+    def discovery_record(
+        self,
+        *,
+        query_id: str,
+        rank: int,
+        record_number: int,
+        disposition: str = "retained_candidate",
+        source_id: str | None = "c1-source-0001",
+        duplicate_of: str | None = None,
+        reason_code: str | None = None,
+        documentation_hashes: list[str] | None = None,
+    ) -> dict[str, object]:
+        if documentation_hashes is None:
+            documentation_hashes = (
+                [self.fixture_hash(f"document:{record_number}")]
+                if disposition == "retained_candidate"
+                else []
+            )
+        return {
+            "discovery_record_id": f"c1-discovery-{record_number:04d}",
+            "query_id": query_id,
+            "rank": rank,
+            "identity_sha256": self.fixture_hash(
+                f"identity:{record_number}"
+            ),
+            "disposition": disposition,
+            "candidate_source_id": source_id,
+            "duplicate_of_discovery_record_id": duplicate_of,
+            "reason_code": reason_code,
+            "documentation_transport_receipt_sha256s": (
+                documentation_hashes
+            ),
+        }
+
+    def retained_citation_candidate(
+        self,
+        *,
+        signal: str,
+        source_id: str,
+        direction: str = "backward",
+        rank: int = 1,
+    ) -> dict[str, object]:
+        return {
+            "citation_record_id": (
+                f"c1-citation-{signal}-{direction}-{rank:02d}"
+            ),
+            "signal": signal,
+            "direction": direction,
+            "rank": rank,
+            "parent_source_id": "c1-source-0001",
+            "parent_source_document_sha256": self.fixture_hash(
+                f"parent:{signal}:{direction}:{rank}"
+            ),
+            "transport_receipt_sha256": self.fixture_hash(
+                f"citation-transport:{signal}:{direction}:{rank}"
+            ),
+            "identity_sha256": self.fixture_hash(
+                f"citation-identity:{signal}:{direction}:{rank}"
+            ),
+            "disposition": "retained_candidate",
+            "candidate_source_id": source_id,
+            "duplicate_of_record_id": None,
+            "reason_code": None,
+            "documentation_transport_receipt_sha256s": [
+                self.fixture_hash(
+                    f"citation-document:{signal}:{direction}:{rank}"
+                )
+            ],
+        }
 
     @staticmethod
     def valid_fallback_material() -> dict[str, object]:
@@ -1119,6 +1308,1226 @@ class PhaseC1TransportReceiptContractTests(
                         payload,
                         protocol=protocol,
                     )
+
+
+class PhaseC1SearchLedgerContractTests(
+    _PhaseC1FixtureMixin,
+    unittest.TestCase,
+):
+    def setUp(self) -> None:
+        self.protocol = phase_c1.validate_discovery_protocol(
+            self.valid_protocol_payload()
+        )
+
+    def assert_contract_code(
+        self,
+        payload: dict[str, object],
+        expected: str,
+    ) -> None:
+        with self.assertRaises(phase_c1.PhaseC1ContractError) as raised:
+            phase_c1.validate_search_ledger(
+                payload,
+                protocol=self.protocol,
+            )
+        self.assertEqual(raised.exception.code, expected)
+
+    def add_discovery(
+        self,
+        payload: dict[str, object],
+        query_index: int,
+        record: dict[str, object],
+        *,
+        result_count: int | None = None,
+    ) -> None:
+        query = payload["query_records"][query_index]
+        self.assertIsInstance(query, dict)
+        query["discovery_records"].append(record)
+        query["returned_count"] = len(query["discovery_records"])
+        query["result_count"] = (
+            query["returned_count"]
+            if result_count is None
+            else result_count
+        )
+        query["truncated"] = query["result_count"] > query["returned_count"]
+
+    def add_citation(
+        self,
+        payload: dict[str, object],
+        citation: dict[str, object],
+    ) -> None:
+        signal = citation["signal"]
+        direction = citation["direction"]
+        payload["citation_records"].append(citation)
+        payload[
+            f"{direction}_citation_count_by_signal"
+        ][signal] += 1
+        payload["citation_transport_receipt_sha256s_by_signal"][
+            signal
+        ][direction].append(citation["transport_receipt_sha256"])
+
+    def test_expected_query_grid_has_exact_order_and_88_total(self) -> None:
+        expected = phase_c1.expected_phase_c1_queries(self.protocol)
+        self.assertEqual(len(expected), 88)
+        self.assertEqual(
+            expected[0],
+            (
+                "c1-query-hesitation-openalex-01",
+                "direct_label_source",
+                "openalex",
+                "hesitation",
+                "hesitation annotated spontaneous conversation corpus",
+            ),
+        )
+        self.assertEqual(
+            expected[-1],
+            (
+                "c1-query-fallback-material-huggingface-02",
+                "fallback_material",
+                "huggingface",
+                None,
+                (
+                    "public spontaneous dialogue dataset license annotation "
+                    "redistribution"
+                ),
+            ),
+        )
+        self.assertEqual(
+            sum(item[1] == "direct_label_source" for item in expected),
+            80,
+        )
+        self.assertEqual(
+            sum(item[1] == "fallback_material" for item in expected),
+            8,
+        )
+        self.assertEqual(expected, self.phase_c1_query_grid())
+
+    def test_valid_ledger_returns_exact_immutable_contract_types(self) -> None:
+        parsed = phase_c1.validate_search_ledger(
+            self.valid_search_ledger_payload(),
+            protocol=self.protocol,
+        )
+        self.assertEqual(
+            tuple(field.name for field in fields(parsed)),
+            (
+                "protocol_sha256",
+                "query_records",
+                "citation_records",
+                "candidate_order_by_signal",
+                "overflow_count_by_signal",
+                "fallback_material_candidate_order",
+                "fallback_material_overflow_count",
+                "backward_citation_count_by_signal",
+                "forward_citation_count_by_signal",
+                "backward_citation_stop_by_signal",
+                "forward_citation_stop_by_signal",
+                "citation_transport_receipt_sha256s_by_signal",
+                "fail_ready_by_signal",
+                "search_complete",
+            ),
+        )
+        self.assertIsInstance(
+            parsed.query_records[0],
+            phase_c1.PhaseC1QueryRecordV1,
+        )
+        self.assertEqual(parsed.query_records[0].discovery_records, ())
+        self.assertIsInstance(parsed.candidate_order_by_signal, MappingProxyType)
+        self.assertIsInstance(
+            parsed.citation_transport_receipt_sha256s_by_signal[
+                "hesitation"
+            ],
+            MappingProxyType,
+        )
+        with self.assertRaises(FrozenInstanceError):
+            parsed.search_complete = False
+        with self.assertRaises(TypeError):
+            parsed.candidate_order_by_signal["hesitation"] = ()
+
+    def test_missing_reordered_or_duplicate_query_rejects(self) -> None:
+        mutations = (
+            lambda item: item["query_records"].pop(),
+            lambda item: item["query_records"].reverse(),
+            lambda item: item["query_records"].append(
+                copy.deepcopy(item["query_records"][0])
+            ),
+        )
+        for mutate in mutations:
+            with self.subTest(mutation=mutate):
+                candidate = self.valid_search_ledger_payload()
+                mutate(candidate)
+                self.assert_contract_code(candidate, "search_query_grid")
+
+    def test_closed_shapes_reject_unknown_auxiliary_and_row_text(self) -> None:
+        structural_mutations = (
+            ("search_ledger_fields", lambda item: item.__setitem__("extra", {})),
+            (
+                "query_fields",
+                lambda item: item["query_records"][0].__setitem__(
+                    "auxiliary", {}
+                ),
+            ),
+        )
+        for expected, mutate in structural_mutations:
+            with self.subTest(expected=expected):
+                payload = self.valid_search_ledger_payload()
+                mutate(payload)
+                self.assert_contract_code(payload, expected)
+
+        forbidden_keys = (
+            "title",
+            "abstract",
+            "author",
+            "author_names",
+            "participant",
+            "participant_id",
+            "snippet",
+            "raw_snippet",
+            "html",
+            "cookies",
+            "headers",
+            "credential",
+            "credentials",
+            "local_path",
+        )
+        for forbidden in forbidden_keys:
+            with self.subTest(forbidden=forbidden):
+                payload = self.valid_search_ledger_payload()
+                payload[forbidden] = "forbidden row or transport body"
+                self.assert_contract_code(payload, "forbidden_search_content")
+
+    def test_discovery_and_citation_exact_fields_reject_body_envelopes(
+        self,
+    ) -> None:
+        payload = self.valid_search_ledger_payload()
+        record = self.discovery_record(
+            query_id=payload["query_records"][0]["query_id"],
+            rank=1,
+            record_number=1,
+        )
+        self.add_discovery(payload, 0, record)
+        payload["candidate_order_by_signal"]["hesitation"] = [
+            "c1-source-0001"
+        ]
+        valid = phase_c1.validate_search_ledger(
+            payload,
+            protocol=self.protocol,
+        )
+        self.assertIsInstance(
+            valid.query_records[0].discovery_records[0],
+            phase_c1.PhaseC1DiscoveryRecordV1,
+        )
+
+        record["body"] = "forbidden"
+        self.assert_contract_code(payload, "forbidden_search_content")
+
+        payload = self.valid_search_ledger_payload()
+        citation = self.retained_citation_candidate(
+            signal="confusion",
+            source_id="c1-source-0002",
+        )
+        self.add_citation(payload, citation)
+        payload["candidate_order_by_signal"]["confusion"] = [
+            "c1-source-0002"
+        ]
+        citation["depth"] = 2
+        self.assert_contract_code(payload, "citation_fields")
+
+    def test_complete_query_reconciles_counts_hashes_cap_and_truncation(
+        self,
+    ) -> None:
+        mutations = (
+            (
+                "query_result_limit",
+                lambda item: item["query_records"][0].__setitem__(
+                    "result_limit", 24
+                ),
+            ),
+            (
+                "query_response_pair",
+                lambda item: item["query_records"][0].__setitem__(
+                    "response_sha256", None
+                ),
+            ),
+            (
+                "query_response_hash",
+                lambda item: item["query_records"][0].__setitem__(
+                    "response_sha256", "a" * 64
+                ),
+            ),
+            (
+                "query_response_bytes",
+                lambda item: item["query_records"][0].__setitem__(
+                    "response_byte_count", 2_000_001
+                ),
+            ),
+            (
+                "query_result_reconciliation",
+                lambda item: item["query_records"][0].__setitem__(
+                    "returned_count", 1
+                ),
+            ),
+            (
+                "query_result_reconciliation",
+                lambda item: item["query_records"][0].update(
+                    {"result_count": 0, "returned_count": 1}
+                ),
+            ),
+            (
+                "query_truncated",
+                lambda item: item["query_records"][0].update(
+                    {"result_count": 1, "truncated": False}
+                ),
+            ),
+            (
+                "query_complete",
+                lambda item: item["query_records"][0].__setitem__(
+                    "incomplete_reason", "network_error"
+                ),
+            ),
+        )
+        for expected, mutate in mutations:
+            with self.subTest(expected=expected):
+                payload = self.valid_search_ledger_payload()
+                mutate(payload)
+                self.assert_contract_code(payload, expected)
+
+    def test_incomplete_query_is_preserved_and_forces_not_fail_ready(
+        self,
+    ) -> None:
+        payload = self.valid_search_ledger_payload()
+        record = payload["query_records"][0]
+        record["status"] = "incomplete"
+        record["incomplete_reason"] = "rate_limit_pressure"
+        record["response_sha256"] = None
+        record["response_byte_count"] = None
+        record["result_count"] = 0
+        record["returned_count"] = 0
+        record["truncated"] = False
+        record["discovery_records"] = []
+        payload["search_complete"] = False
+        payload["fail_ready_by_signal"]["hesitation"] = False
+        parsed = phase_c1.validate_search_ledger(
+            payload,
+            protocol=self.protocol,
+        )
+        self.assertFalse(parsed.search_complete)
+        self.assertFalse(parsed.fail_ready_by_signal["hesitation"])
+
+        payload = self.valid_search_ledger_payload()
+        record = payload["query_records"][0]
+        record.update(
+            {
+                "status": "incomplete",
+                "incomplete_reason": "invalid_response",
+                "result_count": 0,
+                "returned_count": 0,
+                "truncated": False,
+                "discovery_records": [],
+            }
+        )
+        payload["search_complete"] = False
+        payload["fail_ready_by_signal"]["hesitation"] = False
+        parsed = phase_c1.validate_search_ledger(
+            payload,
+            protocol=self.protocol,
+        )
+        self.assertIsNotNone(parsed.query_records[0].response_sha256)
+
+    def test_incomplete_query_mismatch_mutations_have_exact_codes(self) -> None:
+        def make_incomplete() -> dict[str, object]:
+            payload = self.valid_search_ledger_payload()
+            query = payload["query_records"][0]
+            query.update(
+                {
+                    "status": "incomplete",
+                    "incomplete_reason": "network_error",
+                    "response_sha256": None,
+                    "response_byte_count": None,
+                    "result_count": 0,
+                    "returned_count": 0,
+                    "truncated": False,
+                    "discovery_records": [],
+                }
+            )
+            payload["search_complete"] = False
+            payload["fail_ready_by_signal"]["hesitation"] = False
+            return payload
+
+        mutations = (
+            (
+                "query_incomplete_reason",
+                lambda item: item["query_records"][0].__setitem__(
+                    "incomplete_reason", None
+                ),
+            ),
+            (
+                "query_incomplete",
+                lambda item: item["query_records"][0].__setitem__(
+                    "result_count", 1
+                ),
+            ),
+            (
+                "query_incomplete",
+                lambda item: item["query_records"][0].__setitem__(
+                    "truncated", True
+                ),
+            ),
+            (
+                "query_incomplete",
+                lambda item: item["query_records"][0][
+                    "discovery_records"
+                ].append({}),
+            ),
+            (
+                "query_response_pair",
+                lambda item: item["query_records"][0].__setitem__(
+                    "response_sha256", "A" * 64
+                ),
+            ),
+            (
+                "query_status",
+                lambda item: item["query_records"][0].__setitem__(
+                    "status", "partial"
+                ),
+            ),
+        )
+        for expected, mutate in mutations:
+            with self.subTest(expected=expected):
+                payload = make_incomplete()
+                mutate(payload)
+                self.assert_contract_code(payload, expected)
+
+    def test_returned_records_must_reconcile_and_truncation_blocks_fail(
+        self,
+    ) -> None:
+        payload = self.valid_search_ledger_payload()
+        record = payload["query_records"][0]
+        record["returned_count"] = 2
+        record["discovery_records"] = record["discovery_records"][:1]
+        self.assert_contract_code(payload, "query_result_reconciliation")
+
+        payload = self.valid_search_ledger_payload()
+        payload["query_records"][0].update(
+            {"result_count": 1, "returned_count": 0, "truncated": True}
+        )
+        payload["search_complete"] = False
+        payload["fail_ready_by_signal"]["hesitation"] = False
+        parsed = phase_c1.validate_search_ledger(
+            payload,
+            protocol=self.protocol,
+        )
+        self.assertFalse(parsed.fail_ready_by_signal["hesitation"])
+
+    def test_discovery_dispositions_are_disjoint_and_reason_partitioned(
+        self,
+    ) -> None:
+        payload = self.valid_search_ledger_payload()
+        query_id = payload["query_records"][0]["query_id"]
+        valid_records = (
+            self.discovery_record(
+                query_id=query_id,
+                rank=1,
+                record_number=1,
+            ),
+            self.discovery_record(
+                query_id=query_id,
+                rank=1,
+                record_number=1,
+                disposition="excluded",
+                source_id=None,
+                reason_code="target_label_absent",
+                documentation_hashes=["D" * 64],
+            ),
+            self.discovery_record(
+                query_id=query_id,
+                rank=1,
+                record_number=1,
+                disposition="unresolved",
+                source_id=None,
+                reason_code="source_identity_unverified",
+            ),
+        )
+        for record in valid_records:
+            with self.subTest(disposition=record["disposition"]):
+                candidate = self.valid_search_ledger_payload()
+                self.add_discovery(candidate, 0, record)
+                if record["disposition"] == "retained_candidate":
+                    candidate["candidate_order_by_signal"]["hesitation"] = [
+                        "c1-source-0001"
+                    ]
+                else:
+                    candidate["fail_ready_by_signal"]["hesitation"] = (
+                        record["disposition"] == "excluded"
+                    )
+                phase_c1.validate_search_ledger(
+                    candidate,
+                    protocol=self.protocol,
+                )
+
+        mutations = (
+            (
+                "discovery_disposition_fields",
+                lambda item: item["query_records"][0][
+                    "discovery_records"
+                ][0].__setitem__("candidate_source_id", None),
+            ),
+            (
+                "documentation_transport_hashes",
+                lambda item: item["query_records"][0][
+                    "discovery_records"
+                ][0].__setitem__(
+                    "documentation_transport_receipt_sha256s", []
+                ),
+            ),
+            (
+                "documentation_transport_hashes",
+                lambda item: item["query_records"][0][
+                    "discovery_records"
+                ][0].__setitem__(
+                    "documentation_transport_receipt_sha256s",
+                    ["D" * 64, "D" * 64],
+                ),
+            ),
+            (
+                "documentation_transport_hashes",
+                lambda item: item["query_records"][0][
+                    "discovery_records"
+                ][0].__setitem__(
+                    "documentation_transport_receipt_sha256s",
+                    [f"{index:064X}" for index in range(6)],
+                ),
+            ),
+            (
+                "discovery_reason_partition",
+                lambda item: item["query_records"][0][
+                    "discovery_records"
+                ][0].update(
+                    {
+                        "disposition": "excluded",
+                        "candidate_source_id": None,
+                        "reason_code": "source_identity_unverified",
+                    }
+                ),
+            ),
+        )
+        for expected, mutate in mutations:
+            with self.subTest(expected=expected):
+                candidate = self.valid_search_ledger_payload()
+                record = self.discovery_record(
+                    query_id=candidate["query_records"][0]["query_id"],
+                    rank=1,
+                    record_number=1,
+                )
+                self.add_discovery(candidate, 0, record)
+                candidate["candidate_order_by_signal"]["hesitation"] = [
+                    "c1-source-0001"
+                ]
+                mutate(candidate)
+                self.assert_contract_code(candidate, expected)
+
+    def test_discovery_ids_ranks_and_backward_duplicate_references(
+        self,
+    ) -> None:
+        payload = self.valid_search_ledger_payload()
+        query_id = payload["query_records"][0]["query_id"]
+        first = self.discovery_record(
+            query_id=query_id,
+            rank=1,
+            record_number=1,
+            disposition="excluded",
+            source_id=None,
+            reason_code="target_label_absent",
+            documentation_hashes=["D" * 64],
+        )
+        second = self.discovery_record(
+            query_id=query_id,
+            rank=2,
+            record_number=2,
+            disposition="duplicate",
+            source_id=None,
+            duplicate_of="c1-discovery-0001",
+        )
+        second["identity_sha256"] = first["identity_sha256"]
+        self.add_discovery(payload, 0, first)
+        self.add_discovery(payload, 0, second)
+        phase_c1.validate_search_ledger(payload, protocol=self.protocol)
+
+        mutation_cases = (
+            (
+                "discovery_record_id",
+                lambda records: records[0].__setitem__(
+                    "discovery_record_id", "discovery-1"
+                ),
+            ),
+            (
+                "discovery_rank",
+                lambda records: records[1].__setitem__("rank", 3),
+            ),
+            (
+                "discovery_query_id",
+                lambda records: records[0].__setitem__(
+                    "query_id", "c1-query-hesitation-openalex-02"
+                ),
+            ),
+            (
+                "discovery_duplicate_reference",
+                lambda records: records[1].__setitem__(
+                    "duplicate_of_discovery_record_id",
+                    "c1-discovery-0002",
+                ),
+            ),
+            (
+                "duplicate_discovery_record_id",
+                lambda records: records[1].__setitem__(
+                    "discovery_record_id", "c1-discovery-0001"
+                ),
+            ),
+        )
+        for expected, mutate in mutation_cases:
+            with self.subTest(expected=expected):
+                candidate = copy.deepcopy(payload)
+                mutate(candidate["query_records"][0]["discovery_records"])
+                self.assert_contract_code(candidate, expected)
+
+    def test_duplicate_back_references_bind_the_same_identity(self) -> None:
+        payload = self.valid_search_ledger_payload()
+        query_id = payload["query_records"][0]["query_id"]
+        first = self.discovery_record(
+            query_id=query_id,
+            rank=1,
+            record_number=1,
+            disposition="excluded",
+            source_id=None,
+            reason_code="target_label_absent",
+            documentation_hashes=["D" * 64],
+        )
+        second = self.discovery_record(
+            query_id=query_id,
+            rank=2,
+            record_number=2,
+            disposition="duplicate",
+            source_id=None,
+            duplicate_of="c1-discovery-0001",
+        )
+        self.add_discovery(payload, 0, first)
+        self.add_discovery(payload, 0, second)
+        self.assert_contract_code(
+            payload,
+            "discovery_duplicate_identity",
+        )
+
+        second["identity_sha256"] = first["identity_sha256"]
+        phase_c1.validate_search_ledger(payload, protocol=self.protocol)
+
+        citation = self.retained_citation_candidate(
+            signal="hesitation",
+            source_id="c1-source-0002",
+        )
+        citation.update(
+            {
+                "disposition": "duplicate",
+                "candidate_source_id": None,
+                "duplicate_of_record_id": "c1-discovery-0001",
+                "documentation_transport_receipt_sha256s": [],
+            }
+        )
+        self.add_citation(payload, citation)
+        self.assert_contract_code(payload, "citation_duplicate_identity")
+
+    def test_repeated_identity_or_source_identity_alias_must_be_duplicate(
+        self,
+    ) -> None:
+        payload = self.valid_search_ledger_payload()
+        query = payload["query_records"][0]
+        first = self.discovery_record(
+            query_id=query["query_id"],
+            rank=1,
+            record_number=1,
+            source_id="c1-source-0001",
+        )
+        second = self.discovery_record(
+            query_id=query["query_id"],
+            rank=2,
+            record_number=2,
+            source_id="c1-source-0002",
+        )
+        second["identity_sha256"] = first["identity_sha256"]
+        self.add_discovery(payload, 0, first)
+        self.add_discovery(payload, 0, second)
+        payload["candidate_order_by_signal"]["hesitation"] = [
+            "c1-source-0001",
+            "c1-source-0002",
+        ]
+        self.assert_contract_code(
+            payload,
+            "duplicate_identity_unaccounted",
+        )
+
+        payload = self.valid_search_ledger_payload()
+        query = payload["query_records"][0]
+        first = self.discovery_record(
+            query_id=query["query_id"],
+            rank=1,
+            record_number=1,
+            source_id="c1-source-0001",
+        )
+        second = self.discovery_record(
+            query_id=query["query_id"],
+            rank=2,
+            record_number=2,
+            source_id="c1-source-0001",
+        )
+        self.add_discovery(payload, 0, first)
+        self.add_discovery(payload, 0, second)
+        payload["candidate_order_by_signal"]["hesitation"] = [
+            "c1-source-0001"
+        ]
+        self.assert_contract_code(payload, "candidate_source_identity")
+
+        payload = self.valid_search_ledger_payload()
+        hesitation_query = payload["query_records"][0]
+        confusion_query = payload["query_records"][32]
+        hesitation = self.discovery_record(
+            query_id=hesitation_query["query_id"],
+            rank=1,
+            record_number=1,
+            source_id="c1-source-0001",
+        )
+        confusion = self.discovery_record(
+            query_id=confusion_query["query_id"],
+            rank=1,
+            record_number=2,
+            source_id="c1-source-0001",
+        )
+        confusion["identity_sha256"] = hesitation["identity_sha256"]
+        self.add_discovery(payload, 0, hesitation)
+        self.add_discovery(payload, 32, confusion)
+        payload["candidate_order_by_signal"]["hesitation"] = [
+            "c1-source-0001"
+        ]
+        payload["candidate_order_by_signal"]["confusion"] = [
+            "c1-source-0001"
+        ]
+        parsed = phase_c1.validate_search_ledger(
+            payload,
+            protocol=self.protocol,
+        )
+        self.assertEqual(
+            parsed.candidate_order_by_signal["hesitation"],
+            ("c1-source-0001",),
+        )
+        self.assertEqual(
+            parsed.candidate_order_by_signal["confusion"],
+            ("c1-source-0001",),
+        )
+
+    def test_transport_receipt_hashes_cannot_cross_attempt_authorities(
+        self,
+    ) -> None:
+        payload = self.valid_search_ledger_payload()
+        payload["query_records"][1]["transport_receipt_sha256"] = payload[
+            "query_records"
+        ][0]["transport_receipt_sha256"]
+        self.assert_contract_code(
+            payload,
+            "duplicate_query_transport_receipt",
+        )
+
+        payload = self.valid_search_ledger_payload()
+        shared = self.fixture_hash("shared-citation-attempt")
+        payload["citation_transport_receipt_sha256s_by_signal"][
+            "confusion"
+        ]["backward"].append(shared)
+        payload["citation_transport_receipt_sha256s_by_signal"][
+            "interest"
+        ]["forward"].append(shared)
+        self.assert_contract_code(
+            payload,
+            "citation_transport_attempts",
+        )
+
+        payload = self.valid_search_ledger_payload()
+        query_hash = payload["query_records"][0][
+            "transport_receipt_sha256"
+        ]
+        payload["citation_transport_receipt_sha256s_by_signal"][
+            "confusion"
+        ]["backward"].append(query_hash)
+        self.assert_contract_code(payload, "transport_receipt_authority")
+
+        payload = self.valid_search_ledger_payload()
+        query = payload["query_records"][0]
+        record = self.discovery_record(
+            query_id=query["query_id"],
+            rank=1,
+            record_number=1,
+            documentation_hashes=[query["transport_receipt_sha256"]],
+        )
+        self.add_discovery(payload, 0, record)
+        payload["candidate_order_by_signal"]["hesitation"] = [
+            "c1-source-0001"
+        ]
+        self.assert_contract_code(payload, "transport_receipt_authority")
+
+    def test_candidate_orders_and_overflow_are_independently_derived(
+        self,
+    ) -> None:
+        payload = self.valid_search_ledger_payload()
+        for index in range(21):
+            query_index = 0
+            query = payload["query_records"][query_index]
+            record = self.discovery_record(
+                query_id=query["query_id"],
+                rank=index + 1,
+                record_number=index + 1,
+                source_id=f"c1-source-{index + 1:04d}",
+            )
+            self.add_discovery(payload, query_index, record)
+        payload["candidate_order_by_signal"]["hesitation"] = [
+            f"c1-source-{index:04d}" for index in range(1, 21)
+        ]
+        payload["overflow_count_by_signal"]["hesitation"] = 1
+        payload["fail_ready_by_signal"]["hesitation"] = False
+        parsed = phase_c1.validate_search_ledger(
+            payload,
+            protocol=self.protocol,
+        )
+        self.assertEqual(
+            len(parsed.candidate_order_by_signal["hesitation"]),
+            20,
+        )
+        self.assertEqual(parsed.overflow_count_by_signal["hesitation"], 1)
+
+        for field, expected in (
+            ("candidate_order_by_signal", "search_candidate_order"),
+            ("overflow_count_by_signal", "search_candidate_overflow"),
+        ):
+            with self.subTest(field=field):
+                candidate = copy.deepcopy(payload)
+                if field == "candidate_order_by_signal":
+                    candidate[field]["hesitation"].reverse()
+                else:
+                    candidate[field]["hesitation"] = 0
+                self.assert_contract_code(candidate, expected)
+
+    def test_fallback_order_cap_and_overflow_are_independently_derived(
+        self,
+    ) -> None:
+        payload = self.valid_search_ledger_payload()
+        first_fallback = 80
+        record_number = 1
+        for query_index in range(first_fallback, 88):
+            for rank in range(1, 3):
+                query = payload["query_records"][query_index]
+                record = self.discovery_record(
+                    query_id=query["query_id"],
+                    rank=rank,
+                    record_number=record_number,
+                    source_id=f"c1-source-{record_number:04d}",
+                )
+                self.add_discovery(payload, query_index, record)
+                record_number += 1
+        payload["fallback_material_candidate_order"] = [
+            f"c1-source-{index:04d}" for index in range(1, 11)
+        ]
+        payload["fallback_material_overflow_count"] = 6
+        payload["fail_ready_by_signal"] = {
+            signal: False for signal in EXPECTED_SIGNALS
+        }
+        parsed = phase_c1.validate_search_ledger(
+            payload,
+            protocol=self.protocol,
+        )
+        self.assertEqual(
+            parsed.fallback_material_candidate_order,
+            tuple(f"c1-source-{index:04d}" for index in range(1, 11)),
+        )
+        self.assertEqual(parsed.fallback_material_overflow_count, 6)
+
+        candidate = copy.deepcopy(payload)
+        candidate["fallback_material_overflow_count"] = 5
+        self.assert_contract_code(
+            candidate,
+            "fallback_material_overflow_mismatch",
+        )
+
+    def test_query_and_record_caps_reject_before_derived_orders(self) -> None:
+        payload = self.valid_search_ledger_payload()
+        query = payload["query_records"][0]
+        for rank in range(1, 27):
+            query["discovery_records"].append(
+                self.discovery_record(
+                    query_id=query["query_id"],
+                    rank=rank,
+                    record_number=rank,
+                    disposition="excluded",
+                    source_id=None,
+                    reason_code="target_label_absent",
+                    documentation_hashes=[f"{rank:064X}"],
+                )
+            )
+        query["result_count"] = 26
+        query["returned_count"] = 26
+        self.assert_contract_code(payload, "query_returned_cap")
+
+    def test_citation_records_and_stop_statuses_are_hash_bound(self) -> None:
+        payload = self.valid_search_ledger_payload()
+        payload["backward_citation_stop_by_signal"]["confusion"] = (
+            "budget_reached"
+        )
+        payload["fail_ready_by_signal"]["confusion"] = False
+        self.assert_contract_code(payload, "citation_stop_count")
+
+        payload = self.valid_search_ledger_payload()
+        payload["backward_citation_count_by_signal"]["confusion"] += 1
+        self.assert_contract_code(payload, "citation_count_mismatch")
+
+    def test_citation_attempt_hashes_are_closed_bounded_and_directional(
+        self,
+    ) -> None:
+        payload = self.valid_search_ledger_payload()
+        citation = self.retained_citation_candidate(
+            signal="confusion",
+            source_id="c1-source-0002",
+        )
+        self.add_citation(payload, citation)
+        payload["candidate_order_by_signal"]["confusion"] = [
+            "c1-source-0002"
+        ]
+        phase_c1.validate_search_ledger(payload, protocol=self.protocol)
+
+        mutations = (
+            (
+                "citation_transport_attempt_missing",
+                lambda item: item[
+                    "citation_transport_receipt_sha256s_by_signal"
+                ]["confusion"]["backward"].clear(),
+            ),
+            (
+                "citation_transport_attempts",
+                lambda item: item[
+                    "citation_transport_receipt_sha256s_by_signal"
+                ]["confusion"]["backward"].append(
+                    citation["transport_receipt_sha256"]
+                ),
+            ),
+            (
+                "citation_transport_attempts",
+                lambda item: item[
+                    "citation_transport_receipt_sha256s_by_signal"
+                ]["confusion"]["backward"].extend(
+                    [f"{index:064X}" for index in range(2, 7)]
+                ),
+            ),
+            (
+                "citation_transport_attempt_missing",
+                lambda item: (
+                    item[
+                        "citation_transport_receipt_sha256s_by_signal"
+                    ]["confusion"]["backward"].clear(),
+                    item[
+                        "citation_transport_receipt_sha256s_by_signal"
+                    ]["confusion"]["forward"].append(
+                        citation["transport_receipt_sha256"]
+                    ),
+                ),
+            ),
+            (
+                "citation_attempt_fields",
+                lambda item: item[
+                    "citation_transport_receipt_sha256s_by_signal"
+                ]["confusion"].__setitem__("sideways", []),
+            ),
+        )
+        for expected, mutate in mutations:
+            with self.subTest(expected=expected):
+                candidate = copy.deepcopy(payload)
+                mutate(candidate)
+                self.assert_contract_code(candidate, expected)
+
+    def test_citation_ids_order_ranks_dispositions_and_documentation(
+        self,
+    ) -> None:
+        payload = self.valid_search_ledger_payload()
+        first = self.retained_citation_candidate(
+            signal="confusion",
+            source_id="c1-source-0002",
+        )
+        second = self.retained_citation_candidate(
+            signal="confusion",
+            source_id="c1-source-0003",
+            rank=2,
+        )
+        self.add_citation(payload, first)
+        self.add_citation(payload, second)
+        payload["candidate_order_by_signal"]["confusion"] = [
+            "c1-source-0002",
+            "c1-source-0003",
+        ]
+        phase_c1.validate_search_ledger(payload, protocol=self.protocol)
+
+        mutations = (
+            (
+                "citation_record_id",
+                lambda records: records[0].__setitem__(
+                    "citation_record_id", "citation-1"
+                ),
+            ),
+            (
+                "citation_record_id",
+                lambda records: records[1].__setitem__("rank", 3),
+            ),
+            (
+                "citation_order",
+                lambda records: records.reverse(),
+            ),
+            (
+                "citation_disposition_fields",
+                lambda records: records[0].__setitem__(
+                    "candidate_source_id", None
+                ),
+            ),
+            (
+                "documentation_transport_hashes",
+                lambda records: records[0].__setitem__(
+                    "documentation_transport_receipt_sha256s", []
+                ),
+            ),
+            (
+                "citation_reason_partition",
+                lambda records: records[0].update(
+                    {
+                        "disposition": "excluded",
+                        "candidate_source_id": None,
+                        "reason_code": "source_identity_unverified",
+                    }
+                ),
+            ),
+            (
+                "citation_record_id",
+                lambda records: records[1].__setitem__(
+                    "citation_record_id",
+                    records[0]["citation_record_id"],
+                ),
+            ),
+        )
+        for expected, mutate in mutations:
+            with self.subTest(expected=expected):
+                candidate = copy.deepcopy(payload)
+                mutate(candidate["citation_records"])
+                self.assert_contract_code(candidate, expected)
+
+    def test_citation_duplicate_must_reference_earlier_canonical_record(
+        self,
+    ) -> None:
+        payload = self.valid_search_ledger_payload()
+        query_id = payload["query_records"][0]["query_id"]
+        discovery = self.discovery_record(
+            query_id=query_id,
+            rank=1,
+            record_number=1,
+            disposition="excluded",
+            source_id=None,
+            reason_code="target_label_absent",
+            documentation_hashes=["D" * 64],
+        )
+        self.add_discovery(payload, 0, discovery)
+        citation = self.retained_citation_candidate(
+            signal="hesitation",
+            source_id="c1-source-0002",
+        )
+        citation.update(
+            {
+                "disposition": "duplicate",
+                "candidate_source_id": None,
+                "duplicate_of_record_id": "c1-discovery-0001",
+                "documentation_transport_receipt_sha256s": [],
+            }
+        )
+        citation["identity_sha256"] = discovery["identity_sha256"]
+        self.add_citation(payload, citation)
+        phase_c1.validate_search_ledger(payload, protocol=self.protocol)
+
+        citation["duplicate_of_record_id"] = citation["citation_record_id"]
+        self.assert_contract_code(
+            payload,
+            "citation_duplicate_reference",
+        )
+
+    def test_retained_citation_enters_bounded_candidate_order(self) -> None:
+        payload = self.valid_search_ledger_payload()
+        citation = self.retained_citation_candidate(
+            signal="confusion",
+            source_id="c1-source-0002",
+        )
+        self.add_citation(payload, citation)
+        payload["candidate_order_by_signal"]["confusion"].append(
+            "c1-source-0002"
+        )
+        parsed = phase_c1.validate_search_ledger(
+            payload,
+            protocol=self.protocol,
+        )
+        self.assertIn(
+            "c1-source-0002",
+            parsed.candidate_order_by_signal["confusion"],
+        )
+
+        payload["candidate_order_by_signal"]["confusion"] = []
+        self.assert_contract_code(payload, "search_candidate_order")
+
+    def test_citation_candidates_share_detail_cap_and_record_overflow(
+        self,
+    ) -> None:
+        payload = self.valid_search_ledger_payload()
+        for query_index in range(19):
+            actual_query_index = 0
+            query = payload["query_records"][actual_query_index]
+            record = self.discovery_record(
+                query_id=query["query_id"],
+                rank=query_index + 1,
+                record_number=query_index + 1,
+                source_id=f"c1-source-{query_index + 1:04d}",
+            )
+            self.add_discovery(payload, actual_query_index, record)
+        for rank, source_number in ((1, 20), (2, 21)):
+            citation = self.retained_citation_candidate(
+                signal="hesitation",
+                source_id=f"c1-source-{source_number:04d}",
+                rank=rank,
+            )
+            self.add_citation(payload, citation)
+        payload["candidate_order_by_signal"]["hesitation"] = [
+            f"c1-source-{index:04d}" for index in range(1, 21)
+        ]
+        payload["overflow_count_by_signal"]["hesitation"] = 1
+        payload["fail_ready_by_signal"]["hesitation"] = False
+        parsed = phase_c1.validate_search_ledger(
+            payload,
+            protocol=self.protocol,
+        )
+        self.assertEqual(parsed.overflow_count_by_signal["hesitation"], 1)
+        self.assertNotIn(
+            "c1-source-0021",
+            parsed.candidate_order_by_signal["hesitation"],
+        )
+
+    def test_search_complete_and_fail_ready_are_exhaustively_derived(
+        self,
+    ) -> None:
+        payload = self.valid_search_ledger_payload()
+        payload["search_complete"] = False
+        self.assert_contract_code(payload, "search_complete")
+
+        payload = self.valid_search_ledger_payload()
+        payload["fail_ready_by_signal"]["interest"] = False
+        self.assert_contract_code(payload, "search_fail_ready")
+
+        exhaustive_stops = (
+            "no_eligible_candidates",
+            "source_list_exhausted",
+        )
+        for stop in exhaustive_stops:
+            with self.subTest(stop=stop):
+                candidate = self.valid_search_ledger_payload()
+                candidate["backward_citation_stop_by_signal"][
+                    "interest"
+                ] = stop
+                parsed = phase_c1.validate_search_ledger(
+                    candidate,
+                    protocol=self.protocol,
+                )
+                self.assertTrue(parsed.fail_ready_by_signal["interest"])
+
+        for stop in ("budget_reached", "incomplete"):
+            with self.subTest(stop=stop):
+                candidate = self.valid_search_ledger_payload()
+                candidate["backward_citation_stop_by_signal"][
+                    "interest"
+                ] = stop
+                if stop == "budget_reached":
+                    for rank in range(1, 6):
+                        citation = self.retained_citation_candidate(
+                            signal="interest",
+                            source_id=f"c1-source-{rank:04d}",
+                            rank=rank,
+                        )
+                        self.add_citation(candidate, citation)
+                    candidate["candidate_order_by_signal"]["interest"] = [
+                        f"c1-source-{rank:04d}" for rank in range(1, 6)
+                    ]
+                candidate["fail_ready_by_signal"]["interest"] = False
+                candidate["search_complete"] = False
+                parsed = phase_c1.validate_search_ledger(
+                    candidate,
+                    protocol=self.protocol,
+                )
+                self.assertFalse(parsed.fail_ready_by_signal["interest"])
+                self.assertFalse(parsed.search_complete)
+
+    def test_overflow_or_incomplete_citation_cannot_claim_fail_ready(
+        self,
+    ) -> None:
+        payload = self.valid_search_ledger_payload()
+        payload["overflow_count_by_signal"]["confusion"] = 1
+        payload["fail_ready_by_signal"]["confusion"] = True
+        self.assert_contract_code(payload, "search_fail_ready")
+
+        payload = self.valid_search_ledger_payload()
+        payload["backward_citation_stop_by_signal"]["confusion"] = (
+            "incomplete"
+        )
+        self.assert_contract_code(payload, "search_fail_ready")
+
+    def test_signal_and_direction_maps_are_exact_closed_boolean_shapes(
+        self,
+    ) -> None:
+        mutations = (
+            (
+                "search_signal_order",
+                lambda item: item["candidate_order_by_signal"].__setitem__(
+                    "other", []
+                ),
+            ),
+            (
+                "search_candidate_overflow",
+                lambda item: item["overflow_count_by_signal"].__setitem__(
+                    "hesitation", True
+                ),
+            ),
+            (
+                "citation_count_map",
+                lambda item: item[
+                    "backward_citation_count_by_signal"
+                ].pop("hesitation"),
+            ),
+            (
+                "citation_stop_map",
+                lambda item: item[
+                    "forward_citation_stop_by_signal"
+                ].__setitem__("hesitation", "done"),
+            ),
+            (
+                "citation_attempt_signal_map",
+                lambda item: item[
+                    "citation_transport_receipt_sha256s_by_signal"
+                ].pop("hesitation"),
+            ),
+            (
+                "search_fail_ready",
+                lambda item: item["fail_ready_by_signal"].__setitem__(
+                    "hesitation", 1
+                ),
+            ),
+            (
+                "search_complete",
+                lambda item: item.__setitem__("search_complete", 1),
+            ),
+        )
+        for expected, mutate in mutations:
+            with self.subTest(expected=expected):
+                payload = self.valid_search_ledger_payload()
+                mutate(payload)
+                self.assert_contract_code(payload, expected)
 
 
 class PhaseC1SourceContractTests(_PhaseC1FixtureMixin, unittest.TestCase):

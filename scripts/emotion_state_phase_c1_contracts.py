@@ -126,6 +126,76 @@ class PhaseC1TransportReceiptLedgerV1:
     receipts: tuple[PhaseC1TransportReceiptV1, ...]
 
 
+@dataclass(frozen=True, slots=True)
+class PhaseC1DiscoveryRecordV1:
+    discovery_record_id: str
+    query_id: str
+    rank: int
+    identity_sha256: str
+    disposition: str
+    candidate_source_id: str | None
+    duplicate_of_discovery_record_id: str | None
+    reason_code: str | None
+    documentation_transport_receipt_sha256s: tuple[str, ...]
+
+
+@dataclass(frozen=True, slots=True)
+class PhaseC1QueryRecordV1:
+    query_id: str
+    query_kind: str
+    channel_id: str
+    signal: str | None
+    query_text: str
+    status: str
+    incomplete_reason: str | None
+    result_limit: int
+    response_sha256: str | None
+    response_byte_count: int | None
+    transport_receipt_sha256: str
+    result_count: int
+    returned_count: int
+    truncated: bool
+    discovery_records: tuple[PhaseC1DiscoveryRecordV1, ...]
+
+
+@dataclass(frozen=True, slots=True)
+class PhaseC1CitationRecordV1:
+    citation_record_id: str
+    signal: str
+    direction: str
+    rank: int
+    parent_source_id: str
+    parent_source_document_sha256: str
+    transport_receipt_sha256: str
+    identity_sha256: str
+    disposition: str
+    candidate_source_id: str | None
+    duplicate_of_record_id: str | None
+    reason_code: str | None
+    documentation_transport_receipt_sha256s: tuple[str, ...]
+
+
+@dataclass(frozen=True, slots=True)
+class PhaseC1SearchLedgerV1:
+    protocol_sha256: str
+    query_records: tuple[PhaseC1QueryRecordV1, ...]
+    citation_records: tuple[PhaseC1CitationRecordV1, ...]
+    candidate_order_by_signal: Mapping[str, tuple[str, ...]]
+    overflow_count_by_signal: Mapping[str, int]
+    fallback_material_candidate_order: tuple[str, ...]
+    fallback_material_overflow_count: int
+    backward_citation_count_by_signal: Mapping[str, int]
+    forward_citation_count_by_signal: Mapping[str, int]
+    backward_citation_stop_by_signal: Mapping[str, str]
+    forward_citation_stop_by_signal: Mapping[str, str]
+    citation_transport_receipt_sha256s_by_signal: Mapping[
+        str,
+        Mapping[str, tuple[str, ...]],
+    ]
+    fail_ready_by_signal: Mapping[str, bool]
+    search_complete: bool
+
+
 TARGET_SIGNALS: Final = (
     "hesitation",
     "frustration",
@@ -713,6 +783,45 @@ def validate_discovery_protocol(payload: object) -> PhaseC1ProtocolV1:
     )
 
 
+def expected_phase_c1_queries(
+    protocol: PhaseC1ProtocolV1,
+) -> tuple[tuple[str, str, str, str | None, str], ...]:
+    rows: list[tuple[str, str, str, str | None, str]] = []
+    for signal in protocol.target_signals:
+        for channel in protocol.source_channels:
+            channel_id = str(channel["channel_id"])
+            for index, template in enumerate(
+                protocol.query_templates,
+                start=1,
+            ):
+                query_id = f"c1-query-{signal}-{channel_id}-{index:02d}"
+                rows.append(
+                    (
+                        query_id,
+                        "direct_label_source",
+                        channel_id,
+                        signal,
+                        template.format(signal=signal),
+                    )
+                )
+    for channel in protocol.source_channels:
+        channel_id = str(channel["channel_id"])
+        for index, template in enumerate(
+            protocol.fallback_material_query_templates,
+            start=1,
+        ):
+            rows.append(
+                (
+                    f"c1-query-fallback-material-{channel_id}-{index:02d}",
+                    "fallback_material",
+                    channel_id,
+                    None,
+                    template,
+                )
+            )
+    return tuple(rows)
+
+
 def _public_dns_hostname(hostname: str, *, code: str) -> str:
     if hostname.endswith(".."):
         raise PhaseC1ContractError(code)
@@ -1278,6 +1387,33 @@ _REASON_CODES: Final = (
     "candidate_overflow", "citation_budget_incomplete", "annotation_fallback_feasible",
     "annotation_fallback_unresolved",
 )
+QUERY_STATUSES: Final = ("complete", "incomplete")
+QUERY_KINDS: Final = ("direct_label_source", "fallback_material")
+QUERY_INCOMPLETE_REASONS: Final = (
+    "authentication_required",
+    "captcha_or_antibot",
+    "terms_or_cost",
+    "private_address_or_redirect",
+    "unapproved_redirect",
+    "rate_limit_pressure",
+    "network_error",
+    "response_too_large",
+    "cache_budget_exhausted",
+    "invalid_response",
+)
+DISCOVERY_DISPOSITIONS: Final = (
+    "retained_candidate",
+    "duplicate",
+    "excluded",
+    "unresolved",
+)
+CITATION_DIRECTIONS: Final = ("backward", "forward")
+CITATION_STOP_STATUSES: Final = (
+    "no_eligible_candidates",
+    "source_list_exhausted",
+    "budget_reached",
+    "incomplete",
+)
 
 _SOURCE_ID_RE: Final = re.compile(r"^c1-source-[0-9]{4}$")
 _DOCUMENT_ID_RE: Final = re.compile(r"^c1-document-[0-9]{4}$")
@@ -1301,6 +1437,51 @@ _SOURCE_LEDGER_SCHEMA: Final = "EmotionStatePhaseC1SourceEvidenceLedgerV1"
 _SOURCE_REVIEW_SCHEMA: Final = "EmotionStatePhaseC1SourceReviewReceiptV1"
 _SOURCE_REVIEW_SCOPE: Final = (
     "all_transport_discovery_citation_source_cards_and_search_completeness"
+)
+_SEARCH_LEDGER_SCHEMA: Final = "EmotionStatePhaseC1SearchLedgerV1"
+_DISCOVERY_ID_RE: Final = re.compile(r"^c1-discovery-[0-9]{4}$")
+_CITATION_ID_RE: Final = re.compile(
+    r"^c1-citation-"
+    r"(hesitation|frustration|confusion|interest|disengagement)-"
+    r"(backward|forward)-([0-9]{2})$"
+)
+_SEARCH_LEDGER_FIELDS: Final = frozenset(
+    {
+        "schema_version",
+        *(field.name for field in fields(PhaseC1SearchLedgerV1)),
+    }
+)
+_QUERY_FIELDS: Final = frozenset(
+    field.name for field in fields(PhaseC1QueryRecordV1)
+)
+_DISCOVERY_FIELDS: Final = frozenset(
+    field.name for field in fields(PhaseC1DiscoveryRecordV1)
+)
+_CITATION_FIELDS: Final = frozenset(
+    field.name for field in fields(PhaseC1CitationRecordV1)
+)
+_SEARCH_FORBIDDEN_KEYS: Final = frozenset(
+    {
+        "abstract",
+        "author",
+        "author_name",
+        "author_names",
+        "body",
+        "cookie",
+        "cookies",
+        "credential",
+        "credentials",
+        "header",
+        "headers",
+        "html",
+        "local_path",
+        "participant",
+        "participant_id",
+        "path",
+        "raw_snippet",
+        "snippet",
+        "title",
+    }
 )
 _AUTHORITATIVE_DOCUMENT_CONTENT_TYPES: Final = (
     "application/json",
@@ -1602,6 +1783,938 @@ def parse_annotation_fallback_assessment(
         preregistration_only=raw["preregistration_only"],
         execution_authorized=raw["execution_authorized"],
         reason_codes=_ordered_tuple(raw["reason_codes"], _REASON_CODES, code="reason_codes_unsorted"),
+    )
+
+
+def _search_forbidden_content(value: object) -> None:
+    if isinstance(value, Mapping):
+        for key, item in value.items():
+            if (
+                isinstance(key, str)
+                and unicodedata.normalize("NFC", key).casefold()
+                in _SEARCH_FORBIDDEN_KEYS
+            ):
+                raise PhaseC1ContractError("forbidden_search_content")
+            _search_forbidden_content(item)
+    elif isinstance(value, list):
+        for item in value:
+            _search_forbidden_content(item)
+
+
+def _documentation_transport_hashes(
+    value: object,
+) -> tuple[str, ...]:
+    raw = _sequence(value, code="documentation_transport_hashes")
+    if len(raw) > 5:
+        raise PhaseC1ContractError("documentation_transport_hashes")
+    result = tuple(
+        _hash(item, code="documentation_transport_hashes")
+        for item in raw
+    )
+    if len(set(result)) != len(result):
+        raise PhaseC1ContractError("documentation_transport_hashes")
+    return result
+
+
+def _optional_search_string(value: object, *, code: str) -> str | None:
+    if value is None:
+        return None
+    return _string(value, code=code)
+
+
+def _candidate_source_id(value: object, *, code: str) -> str:
+    source_id = _string(value, code=code)
+    if _SOURCE_ID_RE.fullmatch(source_id) is None:
+        raise PhaseC1ContractError(code)
+    return source_id
+
+
+def _validate_disposition_fields(
+    *,
+    disposition: str,
+    candidate_source_id: str | None,
+    duplicate_reference: str | None,
+    reason_code: str | None,
+    documentation_hashes: tuple[str, ...],
+    field_code: str,
+    reason_code_error: str,
+) -> None:
+    rejection_reasons = frozenset(_REASON_CODES[:14])
+    unresolved_reasons = frozenset(_REASON_CODES[14:])
+    if disposition == "retained_candidate":
+        if not documentation_hashes:
+            raise PhaseC1ContractError("documentation_transport_hashes")
+        if (
+            candidate_source_id is None
+            or duplicate_reference is not None
+            or reason_code is not None
+        ):
+            raise PhaseC1ContractError(field_code)
+        return
+    if disposition == "duplicate":
+        if (
+            candidate_source_id is not None
+            or duplicate_reference is None
+            or reason_code is not None
+            or documentation_hashes
+        ):
+            raise PhaseC1ContractError(field_code)
+        return
+    if disposition == "excluded":
+        if not documentation_hashes:
+            raise PhaseC1ContractError("documentation_transport_hashes")
+        if (
+            candidate_source_id is not None
+            or duplicate_reference is not None
+        ):
+            raise PhaseC1ContractError(field_code)
+        if reason_code not in rejection_reasons:
+            raise PhaseC1ContractError(reason_code_error)
+        return
+    if (
+        candidate_source_id is not None
+        or duplicate_reference is not None
+        or reason_code not in unresolved_reasons
+    ):
+        raise PhaseC1ContractError(
+            reason_code_error
+            if reason_code is not None
+            else field_code
+        )
+
+
+def parse_discovery_record(payload: object) -> PhaseC1DiscoveryRecordV1:
+    _search_forbidden_content(payload)
+    raw = _mapping(payload, code="discovery_object")
+    _exact_fields(raw, _DISCOVERY_FIELDS, code="discovery_fields")
+    discovery_record_id = _string(
+        raw["discovery_record_id"],
+        code="discovery_record_id",
+    )
+    if _DISCOVERY_ID_RE.fullmatch(discovery_record_id) is None:
+        raise PhaseC1ContractError("discovery_record_id")
+    query_id = _string(raw["query_id"], code="discovery_query_id")
+    rank = _integer(raw["rank"], code="discovery_rank", minimum=1, maximum=25)
+    identity_sha256 = _hash(
+        raw["identity_sha256"],
+        code="discovery_identity_sha256",
+    )
+    disposition = _enum(
+        raw["disposition"],
+        DISCOVERY_DISPOSITIONS,
+        code="discovery_disposition",
+    )
+    candidate_source_id = (
+        None
+        if raw["candidate_source_id"] is None
+        else _candidate_source_id(
+            raw["candidate_source_id"],
+            code="discovery_candidate_source_id",
+        )
+    )
+    duplicate_reference = _optional_search_string(
+        raw["duplicate_of_discovery_record_id"],
+        code="discovery_duplicate_reference",
+    )
+    if (
+        duplicate_reference is not None
+        and _DISCOVERY_ID_RE.fullmatch(duplicate_reference) is None
+    ):
+        raise PhaseC1ContractError("discovery_duplicate_reference")
+    reason_code = _optional_search_string(
+        raw["reason_code"],
+        code="discovery_reason_partition",
+    )
+    documentation_hashes = _documentation_transport_hashes(
+        raw["documentation_transport_receipt_sha256s"]
+    )
+    _validate_disposition_fields(
+        disposition=disposition,
+        candidate_source_id=candidate_source_id,
+        duplicate_reference=duplicate_reference,
+        reason_code=reason_code,
+        documentation_hashes=documentation_hashes,
+        field_code="discovery_disposition_fields",
+        reason_code_error="discovery_reason_partition",
+    )
+    return PhaseC1DiscoveryRecordV1(
+        discovery_record_id=discovery_record_id,
+        query_id=query_id,
+        rank=rank,
+        identity_sha256=identity_sha256,
+        disposition=disposition,
+        candidate_source_id=candidate_source_id,
+        duplicate_of_discovery_record_id=duplicate_reference,
+        reason_code=reason_code,
+        documentation_transport_receipt_sha256s=documentation_hashes,
+    )
+
+
+def parse_citation_record(payload: object) -> PhaseC1CitationRecordV1:
+    _search_forbidden_content(payload)
+    raw = _mapping(payload, code="citation_object")
+    _exact_fields(raw, _CITATION_FIELDS, code="citation_fields")
+    citation_record_id = _string(
+        raw["citation_record_id"],
+        code="citation_record_id",
+    )
+    match = _CITATION_ID_RE.fullmatch(citation_record_id)
+    if match is None:
+        raise PhaseC1ContractError("citation_record_id")
+    signal = _enum(raw["signal"], TARGET_SIGNALS, code="citation_signal")
+    direction = _enum(
+        raw["direction"],
+        CITATION_DIRECTIONS,
+        code="citation_direction",
+    )
+    rank = _integer(raw["rank"], code="citation_rank", minimum=1, maximum=5)
+    if (
+        match.group(1) != signal
+        or match.group(2) != direction
+        or int(match.group(3)) != rank
+    ):
+        raise PhaseC1ContractError("citation_record_id")
+    parent_source_id = _candidate_source_id(
+        raw["parent_source_id"],
+        code="citation_parent_source_id",
+    )
+    parent_document_hash = _hash(
+        raw["parent_source_document_sha256"],
+        code="citation_parent_document_sha256",
+    )
+    transport_hash = _hash(
+        raw["transport_receipt_sha256"],
+        code="citation_transport_receipt_sha256",
+    )
+    identity_hash = _hash(
+        raw["identity_sha256"],
+        code="citation_identity_sha256",
+    )
+    disposition = _enum(
+        raw["disposition"],
+        DISCOVERY_DISPOSITIONS,
+        code="citation_disposition",
+    )
+    candidate_source_id = (
+        None
+        if raw["candidate_source_id"] is None
+        else _candidate_source_id(
+            raw["candidate_source_id"],
+            code="citation_candidate_source_id",
+        )
+    )
+    duplicate_reference = _optional_search_string(
+        raw["duplicate_of_record_id"],
+        code="citation_duplicate_reference",
+    )
+    if (
+        duplicate_reference is not None
+        and _DISCOVERY_ID_RE.fullmatch(duplicate_reference) is None
+        and _CITATION_ID_RE.fullmatch(duplicate_reference) is None
+    ):
+        raise PhaseC1ContractError("citation_duplicate_reference")
+    reason_code = _optional_search_string(
+        raw["reason_code"],
+        code="citation_reason_partition",
+    )
+    documentation_hashes = _documentation_transport_hashes(
+        raw["documentation_transport_receipt_sha256s"]
+    )
+    _validate_disposition_fields(
+        disposition=disposition,
+        candidate_source_id=candidate_source_id,
+        duplicate_reference=duplicate_reference,
+        reason_code=reason_code,
+        documentation_hashes=documentation_hashes,
+        field_code="citation_disposition_fields",
+        reason_code_error="citation_reason_partition",
+    )
+    return PhaseC1CitationRecordV1(
+        citation_record_id=citation_record_id,
+        signal=signal,
+        direction=direction,
+        rank=rank,
+        parent_source_id=parent_source_id,
+        parent_source_document_sha256=parent_document_hash,
+        transport_receipt_sha256=transport_hash,
+        identity_sha256=identity_hash,
+        disposition=disposition,
+        candidate_source_id=candidate_source_id,
+        duplicate_of_record_id=duplicate_reference,
+        reason_code=reason_code,
+        documentation_transport_receipt_sha256s=documentation_hashes,
+    )
+
+
+def _query_record(
+    payload: object,
+    *,
+    expected: tuple[str, str, str, str | None, str],
+    seed_response_cap: int,
+) -> PhaseC1QueryRecordV1:
+    raw = _mapping(payload, code="query_object")
+    _exact_fields(raw, _QUERY_FIELDS, code="query_fields")
+    query_id = _string(raw["query_id"], code="search_query_grid")
+    query_kind = _enum(raw["query_kind"], QUERY_KINDS, code="query_kind")
+    channel_id = _string(raw["channel_id"], code="query_channel")
+    signal = (
+        None
+        if raw["signal"] is None
+        else _enum(raw["signal"], TARGET_SIGNALS, code="query_signal")
+    )
+    query_text = _string(raw["query_text"], code="query_text")
+    if (
+        query_id,
+        query_kind,
+        channel_id,
+        signal,
+        query_text,
+    ) != expected:
+        raise PhaseC1ContractError("search_query_grid")
+    status = _enum(raw["status"], QUERY_STATUSES, code="query_status")
+    incomplete_reason = _optional_search_string(
+        raw["incomplete_reason"],
+        code="query_incomplete_reason",
+    )
+    if (
+        incomplete_reason is not None
+        and incomplete_reason not in QUERY_INCOMPLETE_REASONS
+    ):
+        raise PhaseC1ContractError("query_incomplete_reason")
+    result_limit = _integer(
+        raw["result_limit"],
+        code="query_result_limit",
+        minimum=25,
+        maximum=25,
+    )
+    response_sha256 = (
+        None
+        if raw["response_sha256"] is None
+        else _hash(raw["response_sha256"], code="query_response_hash")
+    )
+    response_byte_count = _optional_integer(
+        raw["response_byte_count"],
+        code="query_response_bytes",
+        minimum=1,
+        maximum=seed_response_cap,
+    )
+    if (response_sha256 is None) != (response_byte_count is None):
+        raise PhaseC1ContractError("query_response_pair")
+    transport_receipt_sha256 = _hash(
+        raw["transport_receipt_sha256"],
+        code="query_transport_receipt_sha256",
+    )
+    result_count = _integer(
+        raw["result_count"],
+        code="query_result_reconciliation",
+        minimum=0,
+    )
+    returned_count = _integer(
+        raw["returned_count"],
+        code="query_result_reconciliation",
+        minimum=0,
+    )
+    if returned_count > 25:
+        raise PhaseC1ContractError("query_returned_cap")
+    if returned_count > result_count:
+        raise PhaseC1ContractError("query_result_reconciliation")
+    if type(raw["truncated"]) is not bool:
+        raise PhaseC1ContractError("query_truncated")
+    truncated = raw["truncated"]
+    discovery_payloads = _sequence(
+        raw["discovery_records"],
+        code="query_result_reconciliation",
+    )
+    if len(discovery_payloads) > 25:
+        raise PhaseC1ContractError("query_returned_cap")
+    if status == "incomplete" and (
+        result_count != 0
+        or returned_count != 0
+        or truncated
+        or discovery_payloads
+    ):
+        raise PhaseC1ContractError("query_incomplete")
+    if len(discovery_payloads) != returned_count:
+        raise PhaseC1ContractError("query_result_reconciliation")
+    discovery_records = tuple(
+        parse_discovery_record(item) for item in discovery_payloads
+    )
+    if tuple(item.rank for item in discovery_records) != tuple(
+        range(1, returned_count + 1)
+    ):
+        raise PhaseC1ContractError("discovery_rank")
+    if any(item.query_id != query_id for item in discovery_records):
+        raise PhaseC1ContractError("discovery_query_id")
+    if status == "complete":
+        if (
+            incomplete_reason is not None
+            or response_sha256 is None
+            or response_byte_count is None
+        ):
+            raise PhaseC1ContractError("query_complete")
+        if truncated != (result_count > returned_count):
+            raise PhaseC1ContractError("query_truncated")
+    else:
+        if incomplete_reason is None:
+            raise PhaseC1ContractError("query_incomplete_reason")
+    return PhaseC1QueryRecordV1(
+        query_id=query_id,
+        query_kind=query_kind,
+        channel_id=channel_id,
+        signal=signal,
+        query_text=query_text,
+        status=status,
+        incomplete_reason=incomplete_reason,
+        result_limit=result_limit,
+        response_sha256=response_sha256,
+        response_byte_count=response_byte_count,
+        transport_receipt_sha256=transport_receipt_sha256,
+        result_count=result_count,
+        returned_count=returned_count,
+        truncated=truncated,
+        discovery_records=discovery_records,
+    )
+
+
+def _exact_signal_mapping(
+    value: object,
+    *,
+    code: str,
+) -> Mapping[str, object]:
+    result = _mapping(value, code=code)
+    if frozenset(result) != frozenset(TARGET_SIGNALS):
+        raise PhaseC1ContractError(code)
+    return result
+
+
+def _candidate_order_mapping(
+    value: object,
+) -> Mapping[str, tuple[str, ...]]:
+    raw = _exact_signal_mapping(value, code="search_signal_order")
+    result: dict[str, tuple[str, ...]] = {}
+    for signal in TARGET_SIGNALS:
+        source_ids = _string_tuple(
+            raw[signal],
+            code="search_candidate_order",
+        )
+        if any(_SOURCE_ID_RE.fullmatch(item) is None for item in source_ids):
+            raise PhaseC1ContractError("search_candidate_order")
+        result[signal] = source_ids
+    return MappingProxyType(result)
+
+
+def _nonnegative_signal_counts(
+    value: object,
+    *,
+    code: str,
+    maximum: int | None = None,
+) -> Mapping[str, int]:
+    raw = _exact_signal_mapping(value, code=code)
+    result = {
+        signal: _integer(
+            raw[signal],
+            code=code,
+            minimum=0,
+            maximum=maximum,
+        )
+        for signal in TARGET_SIGNALS
+    }
+    return MappingProxyType(result)
+
+
+def _citation_stops(
+    value: object,
+) -> Mapping[str, str]:
+    raw = _exact_signal_mapping(value, code="citation_stop_map")
+    result = {
+        signal: _enum(
+            raw[signal],
+            CITATION_STOP_STATUSES,
+            code="citation_stop_map",
+        )
+        for signal in TARGET_SIGNALS
+    }
+    return MappingProxyType(result)
+
+
+def _citation_attempt_hashes(
+    value: object,
+    *,
+    protocol: PhaseC1ProtocolV1,
+) -> Mapping[str, Mapping[str, tuple[str, ...]]]:
+    raw = _exact_signal_mapping(
+        value,
+        code="citation_attempt_signal_map",
+    )
+    result: dict[str, Mapping[str, tuple[str, ...]]] = {}
+    caps = {
+        "backward": protocol.max_backward_citations_per_signal,
+        "forward": protocol.max_forward_citations_per_signal,
+    }
+    for signal in TARGET_SIGNALS:
+        directions = _mapping(
+            raw[signal],
+            code="citation_attempt_fields",
+        )
+        _exact_fields(
+            directions,
+            frozenset(CITATION_DIRECTIONS),
+            code="citation_attempt_fields",
+        )
+        parsed_directions: dict[str, tuple[str, ...]] = {}
+        for direction in CITATION_DIRECTIONS:
+            attempts = tuple(
+                _hash(item, code="citation_transport_attempts")
+                for item in _sequence(
+                    directions[direction],
+                    code="citation_transport_attempts",
+                )
+            )
+            if (
+                len(attempts) > caps[direction]
+                or len(set(attempts)) != len(attempts)
+            ):
+                raise PhaseC1ContractError("citation_transport_attempts")
+            parsed_directions[direction] = attempts
+        result[signal] = MappingProxyType(parsed_directions)
+    return MappingProxyType(result)
+
+
+def _claimed_fail_ready(
+    value: object,
+) -> Mapping[str, bool]:
+    raw = _exact_signal_mapping(value, code="search_fail_ready")
+    result: dict[str, bool] = {}
+    for signal in TARGET_SIGNALS:
+        if type(raw[signal]) is not bool:
+            raise PhaseC1ContractError("search_fail_ready")
+        result[signal] = raw[signal]
+    return MappingProxyType(result)
+
+
+def _first_unique_candidates(
+    values: list[str],
+) -> tuple[str, ...]:
+    return tuple(dict.fromkeys(values))
+
+
+def validate_search_ledger(
+    payload: object,
+    *,
+    protocol: PhaseC1ProtocolV1,
+) -> PhaseC1SearchLedgerV1:
+    protocol = _validated_transport_protocol(protocol)
+    _search_forbidden_content(payload)
+    raw = _mapping(payload, code="search_ledger_object")
+    _exact_fields(raw, _SEARCH_LEDGER_FIELDS, code="search_ledger_fields")
+    if raw["schema_version"] != _SEARCH_LEDGER_SCHEMA:
+        raise PhaseC1ContractError("search_ledger_schema")
+    protocol_sha256 = _hash(
+        raw["protocol_sha256"],
+        code="search_protocol_sha256",
+    )
+    if protocol_sha256 != _FROZEN_PROTOCOL_SHA256:
+        raise PhaseC1ContractError("search_protocol_sha256")
+
+    expected_queries = expected_phase_c1_queries(protocol)
+    query_payloads = _sequence(
+        raw["query_records"],
+        code="search_query_grid",
+    )
+    if len(query_payloads) != len(expected_queries):
+        raise PhaseC1ContractError("search_query_grid")
+    query_records = tuple(
+        _query_record(
+            item,
+            expected=expected,
+            seed_response_cap=protocol.max_response_bytes_by_transport_purpose[
+                "seed_query"
+            ],
+        )
+        for item, expected in zip(
+            query_payloads,
+            expected_queries,
+            strict=True,
+        )
+    )
+    query_transport_hashes = tuple(
+        item.transport_receipt_sha256 for item in query_records
+    )
+    if len(set(query_transport_hashes)) != len(query_transport_hashes):
+        raise PhaseC1ContractError("duplicate_query_transport_receipt")
+
+    seen_record_ids: set[str] = set()
+    identity_by_record_id: dict[str, str] = {}
+    seen_identity_lanes: set[tuple[str, str]] = set()
+    identity_by_candidate_source_id: dict[str, str] = {}
+    for query in query_records:
+        identity_lane = (
+            "fallback_material"
+            if query.query_kind == "fallback_material"
+            else query.signal
+        )
+        for discovery in query.discovery_records:
+            if discovery.discovery_record_id in seen_record_ids:
+                raise PhaseC1ContractError(
+                    "duplicate_discovery_record_id"
+                )
+            if (
+                discovery.disposition == "duplicate"
+                and discovery.duplicate_of_discovery_record_id
+                not in seen_record_ids
+            ):
+                raise PhaseC1ContractError(
+                    "discovery_duplicate_reference"
+                )
+            if (
+                discovery.disposition == "duplicate"
+                and identity_by_record_id[
+                    discovery.duplicate_of_discovery_record_id
+                ]
+                != discovery.identity_sha256
+            ):
+                raise PhaseC1ContractError(
+                    "discovery_duplicate_identity"
+                )
+            if (
+                (identity_lane, discovery.identity_sha256)
+                in seen_identity_lanes
+                and discovery.disposition != "duplicate"
+            ):
+                raise PhaseC1ContractError(
+                    "duplicate_identity_unaccounted"
+                )
+            if discovery.candidate_source_id is not None:
+                previous_identity = identity_by_candidate_source_id.setdefault(
+                    discovery.candidate_source_id,
+                    discovery.identity_sha256,
+                )
+                if previous_identity != discovery.identity_sha256:
+                    raise PhaseC1ContractError(
+                        "candidate_source_identity"
+                    )
+            seen_record_ids.add(discovery.discovery_record_id)
+            identity_by_record_id[
+                discovery.discovery_record_id
+            ] = discovery.identity_sha256
+            seen_identity_lanes.add(
+                (identity_lane, discovery.identity_sha256)
+            )
+
+    citation_records = tuple(
+        parse_citation_record(item)
+        for item in _sequence(
+            raw["citation_records"],
+            code="citation_records",
+        )
+    )
+    citation_sort_keys = tuple(
+        (
+            TARGET_SIGNALS.index(item.signal),
+            CITATION_DIRECTIONS.index(item.direction),
+            item.rank,
+        )
+        for item in citation_records
+    )
+    if citation_sort_keys != tuple(sorted(citation_sort_keys)):
+        raise PhaseC1ContractError("citation_order")
+    for signal in TARGET_SIGNALS:
+        for direction in CITATION_DIRECTIONS:
+            group = tuple(
+                item
+                for item in citation_records
+                if item.signal == signal and item.direction == direction
+            )
+            cap = (
+                protocol.max_backward_citations_per_signal
+                if direction == "backward"
+                else protocol.max_forward_citations_per_signal
+            )
+            if len(group) > cap:
+                raise PhaseC1ContractError("citation_cap")
+            if tuple(item.rank for item in group) != tuple(
+                range(1, len(group) + 1)
+            ):
+                raise PhaseC1ContractError("citation_rank")
+    for citation in citation_records:
+        if citation.citation_record_id in seen_record_ids:
+            raise PhaseC1ContractError("duplicate_citation_record_id")
+        if (
+            citation.disposition == "duplicate"
+            and citation.duplicate_of_record_id not in seen_record_ids
+        ):
+            raise PhaseC1ContractError("citation_duplicate_reference")
+        if (
+            citation.disposition == "duplicate"
+            and identity_by_record_id[citation.duplicate_of_record_id]
+            != citation.identity_sha256
+        ):
+            raise PhaseC1ContractError("citation_duplicate_identity")
+        if (
+            (citation.signal, citation.identity_sha256)
+            in seen_identity_lanes
+            and citation.disposition != "duplicate"
+        ):
+            raise PhaseC1ContractError("duplicate_identity_unaccounted")
+        if citation.candidate_source_id is not None:
+            previous_identity = identity_by_candidate_source_id.setdefault(
+                citation.candidate_source_id,
+                citation.identity_sha256,
+            )
+            if previous_identity != citation.identity_sha256:
+                raise PhaseC1ContractError("candidate_source_identity")
+        seen_record_ids.add(citation.citation_record_id)
+        identity_by_record_id[
+            citation.citation_record_id
+        ] = citation.identity_sha256
+        seen_identity_lanes.add(
+            (citation.signal, citation.identity_sha256)
+        )
+
+    candidate_order = _candidate_order_mapping(
+        raw["candidate_order_by_signal"]
+    )
+    overflow_counts = _nonnegative_signal_counts(
+        raw["overflow_count_by_signal"],
+        code="search_candidate_overflow",
+    )
+    fallback_order = _string_tuple(
+        raw["fallback_material_candidate_order"],
+        code="fallback_material_order_mismatch",
+    )
+    if any(_SOURCE_ID_RE.fullmatch(item) is None for item in fallback_order):
+        raise PhaseC1ContractError("fallback_material_order_mismatch")
+    fallback_overflow = _integer(
+        raw["fallback_material_overflow_count"],
+        code="fallback_material_overflow_mismatch",
+        minimum=0,
+    )
+    backward_counts = _nonnegative_signal_counts(
+        raw["backward_citation_count_by_signal"],
+        code="citation_count_map",
+        maximum=protocol.max_backward_citations_per_signal,
+    )
+    forward_counts = _nonnegative_signal_counts(
+        raw["forward_citation_count_by_signal"],
+        code="citation_count_map",
+        maximum=protocol.max_forward_citations_per_signal,
+    )
+    backward_stops = _citation_stops(
+        raw["backward_citation_stop_by_signal"]
+    )
+    forward_stops = _citation_stops(
+        raw["forward_citation_stop_by_signal"]
+    )
+    citation_attempts = _citation_attempt_hashes(
+        raw["citation_transport_receipt_sha256s_by_signal"],
+        protocol=protocol,
+    )
+    flattened_citation_attempts = tuple(
+        attempt
+        for signal in TARGET_SIGNALS
+        for direction in CITATION_DIRECTIONS
+        for attempt in citation_attempts[signal][direction]
+    )
+    if len(set(flattened_citation_attempts)) != len(
+        flattened_citation_attempts
+    ):
+        raise PhaseC1ContractError("citation_transport_attempts")
+    if set(query_transport_hashes).intersection(
+        flattened_citation_attempts
+    ):
+        raise PhaseC1ContractError("transport_receipt_authority")
+    documentation_transport_hashes = {
+        digest
+        for query in query_records
+        for discovery in query.discovery_records
+        for digest in discovery.documentation_transport_receipt_sha256s
+    }
+    documentation_transport_hashes.update(
+        digest
+        for citation in citation_records
+        for digest in citation.documentation_transport_receipt_sha256s
+    )
+    if documentation_transport_hashes.intersection(
+        set(query_transport_hashes).union(flattened_citation_attempts)
+    ):
+        raise PhaseC1ContractError("transport_receipt_authority")
+    claimed_fail_ready = _claimed_fail_ready(
+        raw["fail_ready_by_signal"]
+    )
+    if type(raw["search_complete"]) is not bool:
+        raise PhaseC1ContractError("search_complete")
+    claimed_search_complete = raw["search_complete"]
+
+    for signal in TARGET_SIGNALS:
+        for direction, counts, stops in (
+            ("backward", backward_counts, backward_stops),
+            ("forward", forward_counts, forward_stops),
+        ):
+            actual_count = sum(
+                item.signal == signal and item.direction == direction
+                for item in citation_records
+            )
+            if counts[signal] != actual_count:
+                raise PhaseC1ContractError("citation_count_mismatch")
+            stop = stops[signal]
+            cap = (
+                protocol.max_backward_citations_per_signal
+                if direction == "backward"
+                else protocol.max_forward_citations_per_signal
+            )
+            if (
+                (stop == "no_eligible_candidates" and actual_count != 0)
+                or (stop == "budget_reached" and actual_count != cap)
+            ):
+                raise PhaseC1ContractError("citation_stop_count")
+    for citation in citation_records:
+        if (
+            citation.transport_receipt_sha256
+            not in citation_attempts[citation.signal][citation.direction]
+        ):
+            raise PhaseC1ContractError(
+                "citation_transport_attempt_missing"
+            )
+
+    direct_candidates: dict[str, list[str]] = {
+        signal: [] for signal in TARGET_SIGNALS
+    }
+    fallback_candidates: list[str] = []
+    unresolved_by_signal = {
+        signal: False for signal in TARGET_SIGNALS
+    }
+    fallback_unresolved = False
+    for query in query_records:
+        for discovery in query.discovery_records:
+            if discovery.disposition == "retained_candidate":
+                if query.query_kind == "fallback_material":
+                    fallback_candidates.append(
+                        discovery.candidate_source_id
+                    )
+                else:
+                    direct_candidates[query.signal].append(
+                        discovery.candidate_source_id
+                    )
+            elif discovery.disposition == "unresolved":
+                if query.query_kind == "fallback_material":
+                    fallback_unresolved = True
+                else:
+                    unresolved_by_signal[query.signal] = True
+    for direction in CITATION_DIRECTIONS:
+        for signal in TARGET_SIGNALS:
+            for citation in citation_records:
+                if (
+                    citation.signal == signal
+                    and citation.direction == direction
+                ):
+                    if citation.disposition == "retained_candidate":
+                        direct_candidates[signal].append(
+                            citation.candidate_source_id
+                        )
+                    elif citation.disposition == "unresolved":
+                        unresolved_by_signal[signal] = True
+
+    derived_candidate_order: dict[str, tuple[str, ...]] = {}
+    derived_overflow: dict[str, int] = {}
+    for signal in TARGET_SIGNALS:
+        unique = _first_unique_candidates(direct_candidates[signal])
+        derived_candidate_order[signal] = unique[
+            : protocol.max_detailed_candidates_per_signal
+        ]
+        derived_overflow[signal] = max(
+            0,
+            len(unique) - protocol.max_detailed_candidates_per_signal,
+        )
+    unique_fallback = _first_unique_candidates(fallback_candidates)
+    derived_fallback_order = unique_fallback[
+        : protocol.max_detailed_fallback_material_candidates
+    ]
+    derived_fallback_overflow = max(
+        0,
+        len(unique_fallback)
+        - protocol.max_detailed_fallback_material_candidates,
+    )
+
+    exhaustive_stops = frozenset(
+        {"no_eligible_candidates", "source_list_exhausted"}
+    )
+    derived_fail_ready: dict[str, bool] = {}
+    fallback_queries_ready = all(
+        query.status == "complete" and not query.truncated
+        for query in query_records
+        if query.query_kind == "fallback_material"
+    )
+    for signal in TARGET_SIGNALS:
+        direct_queries_ready = all(
+            query.status == "complete" and not query.truncated
+            for query in query_records
+            if query.signal == signal
+        )
+        derived_fail_ready[signal] = (
+            direct_queries_ready
+            and fallback_queries_ready
+            and backward_stops[signal] in exhaustive_stops
+            and forward_stops[signal] in exhaustive_stops
+            and not unresolved_by_signal[signal]
+            and not fallback_unresolved
+            and derived_overflow[signal] == 0
+            and derived_fallback_overflow == 0
+        )
+        if (
+            claimed_fail_ready[signal]
+            and (
+                overflow_counts[signal] > 0
+                or fallback_overflow > 0
+                or backward_stops[signal] not in exhaustive_stops
+                or forward_stops[signal] not in exhaustive_stops
+            )
+        ):
+            raise PhaseC1ContractError("search_fail_ready")
+
+    if candidate_order != derived_candidate_order:
+        raise PhaseC1ContractError("search_candidate_order")
+    if dict(overflow_counts) != derived_overflow:
+        raise PhaseC1ContractError("search_candidate_overflow")
+    if fallback_order != derived_fallback_order:
+        raise PhaseC1ContractError("fallback_material_order_mismatch")
+    if fallback_overflow != derived_fallback_overflow:
+        raise PhaseC1ContractError(
+            "fallback_material_overflow_mismatch"
+        )
+    if dict(claimed_fail_ready) != derived_fail_ready:
+        raise PhaseC1ContractError("search_fail_ready")
+
+    derived_search_complete = (
+        all(
+            query.status == "complete" and not query.truncated
+            for query in query_records
+        )
+        and all(
+            backward_stops[signal] in exhaustive_stops
+            and forward_stops[signal] in exhaustive_stops
+            for signal in TARGET_SIGNALS
+        )
+    )
+    if claimed_search_complete != derived_search_complete:
+        raise PhaseC1ContractError("search_complete")
+
+    return PhaseC1SearchLedgerV1(
+        protocol_sha256=protocol_sha256,
+        query_records=query_records,
+        citation_records=citation_records,
+        candidate_order_by_signal=MappingProxyType(
+            derived_candidate_order
+        ),
+        overflow_count_by_signal=MappingProxyType(derived_overflow),
+        fallback_material_candidate_order=derived_fallback_order,
+        fallback_material_overflow_count=derived_fallback_overflow,
+        backward_citation_count_by_signal=backward_counts,
+        forward_citation_count_by_signal=forward_counts,
+        backward_citation_stop_by_signal=backward_stops,
+        forward_citation_stop_by_signal=forward_stops,
+        citation_transport_receipt_sha256s_by_signal=citation_attempts,
+        fail_ready_by_signal=MappingProxyType(derived_fail_ready),
+        search_complete=derived_search_complete,
     )
 
 
