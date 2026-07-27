@@ -6453,3 +6453,21 @@ Interpretation:
   contract work only; no source, network, research, data/private-data,
   provider, call, simulation, runtime, candidate, canonical, C2, push, merge,
   or production action or claim occurred.
+
+### 2026-07-27 - EMOTION-STATE-004 Phase C1 Task 4 eligibility-precedence correction
+
+- Parent-review finding: candidate derivation evaluated alpha reliability before
+  resolving mandatory source and labelling eligibility. With an otherwise
+  alpha-rejecting interval, an unresolved licence, annotation modality, observer
+  method, or adjudicated-only label could be promoted to `rejected`, allowing a
+  false signal `fail` and overall `stop_c2`.
+- Strict TDD: a complete validator-produced 88-query regression first ran `29`
+  focused tests and failed all four eligibility subcases with
+  `card_claim_mismatch`. Candidate derivation now returns known clear rejection
+  reasons first, mandatory unresolved eligibility reasons second, and evaluates
+  reliability only for fully documented direct-target, independent-human
+  candidates. The focused class then passed `29/29`.
+- Boundary: this is an offline precedence correction only. Parent re-review and
+  the corrective commit remain pending; no source, network, research,
+  data/private-data, provider, call, simulation, runtime, candidate, canonical,
+  C2, push, merge, or production action or claim occurred.

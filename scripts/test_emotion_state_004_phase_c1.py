@@ -3529,12 +3529,23 @@ class PhaseC1DecisionTests(_PhaseC1FixtureMixin, unittest.TestCase):
         *,
         admissible_signals: tuple[str, ...] = ("confusion",),
         unresolved_signals: tuple[str, ...] = (),
+        alpha_rejecting_unresolved_case: str | None = None,
     ) -> tuple[
         phase_c1.PhaseC1SearchLedgerV1,
         phase_c1.PhaseC1SourceEvidenceLedgerV1,
         phase_c1.PhaseC1SourceReviewReceiptV1,
     ]:
         self.assertFalse(set(admissible_signals).intersection(unresolved_signals))
+        self.assertIn(
+            alpha_rejecting_unresolved_case,
+            (
+                None,
+                "license_status",
+                "annotation_modality",
+                "observer_method",
+                "adjudicated_only_human_label",
+            ),
+        )
         retained_signals = tuple(
             signal
             for signal in EXPECTED_SIGNALS
@@ -3575,6 +3586,11 @@ class PhaseC1DecisionTests(_PhaseC1FixtureMixin, unittest.TestCase):
                     ),
                 }
             )
+            if (
+                signal == "confusion"
+                and alpha_rejecting_unresolved_case == "license_status"
+            ):
+                source_payload["license_status"] = "unresolved"
             sources.append(source_payload)
 
             card_payload = self.valid_card_payload()
@@ -3593,6 +3609,35 @@ class PhaseC1DecisionTests(_PhaseC1FixtureMixin, unittest.TestCase):
                 card_payload["claimed_reason_codes"] = [
                     "reliability_unverifiable"
                 ]
+            if signal == "confusion" and alpha_rejecting_unresolved_case is not None:
+                card_payload["reliability"].update(
+                    {
+                        "point_micros": 650_000,
+                        "lower_95_micros": 590_000,
+                        "upper_95_micros": 669_999,
+                    }
+                )
+                unresolved_reason = {
+                    "license_status": "license_unresolved",
+                    "annotation_modality": "source_documentation_incomplete",
+                    "observer_method": "observer_method_unresolved",
+                    "adjudicated_only_human_label": (
+                        "reliability_not_preadjudication"
+                    ),
+                }[alpha_rejecting_unresolved_case]
+                if alpha_rejecting_unresolved_case == "annotation_modality":
+                    card_payload["annotation_modality"] = "unresolved"
+                elif alpha_rejecting_unresolved_case == "observer_method":
+                    card_payload["observer_method"] = "unresolved"
+                elif (
+                    alpha_rejecting_unresolved_case
+                    == "adjudicated_only_human_label"
+                ):
+                    card_payload["observer_method"] = (
+                        "adjudicated_only_human_label"
+                    )
+                card_payload["claimed_status"] = "unresolved"
+                card_payload["claimed_reason_codes"] = [unresolved_reason]
             cards.append(card_payload)
 
         search = phase_c1.validate_search_ledger(search_payload, protocol=self.protocol)
@@ -4024,6 +4069,47 @@ class PhaseC1DecisionTests(_PhaseC1FixtureMixin, unittest.TestCase):
             ),
             ("defer", 1, "infeasible"),
         )
+
+    def test_mandatory_unresolved_eligibility_precedes_alpha_rejection(self) -> None:
+        expected_reason_by_case = {
+            "license_status": "license_unresolved",
+            "annotation_modality": "source_documentation_incomplete",
+            "observer_method": "observer_method_unresolved",
+            "adjudicated_only_human_label": "reliability_not_preadjudication",
+        }
+        for case, expected_reason in expected_reason_by_case.items():
+            with self.subTest(case=case):
+                search, source_ledger, review = self.validated_projection_inputs(
+                    admissible_signals=("confusion",),
+                    alpha_rejecting_unresolved_case=case,
+                )
+                self.assertEqual(len(search.query_records), 88)
+                card = source_ledger.cards[0]
+                self.assertEqual(card.reliability.upper_95_micros, 669_999)
+                projection = decision.project_phase_c1_admission(
+                    protocol=self.protocol,
+                    search_ledger=search,
+                    source_ledger=source_ledger,
+                    review_receipt=review,
+                )
+                disposition = projection.candidate_dispositions[0]
+                confusion = next(
+                    row
+                    for row in projection.signal_decisions
+                    if row.signal == "confusion"
+                )
+                self.assertEqual(
+                    (disposition.status, disposition.reason_codes),
+                    ("unresolved", (expected_reason,)),
+                )
+                self.assertEqual(
+                    (
+                        confusion.decision,
+                        confusion.unresolved_card_count,
+                        projection.overall_decision,
+                    ),
+                    ("defer", 1, "defer_c2"),
+                )
 
     def test_valid_feasible_preregistered_fallback_defers_and_never_passes(self) -> None:
         search, source_ledger = self.validated_fallback_inputs(("feasible",))

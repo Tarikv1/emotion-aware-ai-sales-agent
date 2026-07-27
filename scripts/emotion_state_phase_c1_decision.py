@@ -256,6 +256,15 @@ def derive_candidate_disposition(
     elif card.independent_rater_count < 2:
         rejected.add("single_rater")
 
+    if rejected:
+        return PhaseC1CandidateDispositionV1(
+            card.card_id, "rejected", _ordered_reasons(protocol, rejected)
+        )
+    if unresolved:
+        return PhaseC1CandidateDispositionV1(
+            card.card_id, "unresolved", _ordered_reasons(protocol, unresolved)
+        )
+
     reliability_status, reliability_reasons = derive_reliability_status(
         card.reliability,
         independent_rater_count=card.independent_rater_count,
@@ -266,14 +275,6 @@ def derive_candidate_disposition(
             rejected.add(reason)
         else:
             unresolved.add(reason)
-    if rejected:
-        return PhaseC1CandidateDispositionV1(
-            card.card_id, "rejected", _ordered_reasons(protocol, rejected)
-        )
-    if unresolved:
-        return PhaseC1CandidateDispositionV1(
-            card.card_id, "unresolved", _ordered_reasons(protocol, unresolved)
-        )
     if reliability_status == "pass":
         return PhaseC1CandidateDispositionV1(card.card_id, "admissible", ())
     if reliability_status == "rejected":
