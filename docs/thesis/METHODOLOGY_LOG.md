@@ -6247,3 +6247,17 @@ Interpretation:
 - Status: independent Task 2 review and final acceptance remain pending at this
   implementation checkpoint. Existing closed boundaries remain unchanged; this
   makes no production or customer-emotion claim.
+
+### 2026-07-27 - EMOTION-STATE-004 Phase C1 Task 2 technical-fix continuation
+
+- Review input: C0/I5/M0. Corrected review-hash category ordering before
+  first-occurrence deduplication; ledger-wide cross-source document ID/hash
+  uniqueness; all populated reliability-bound pair orderings; strict repeated
+  percent decoding for malformed escapes, encoded traversal/separators, and
+  controls; and source-reference validation before pair or fallback-order
+  checks.
+- Strict TDD/gates: a focused RED run produced `15` intended failures across
+  `10` tests before production changes; the focused post-fix suite passed
+  `10/10`. Broader local verification and independent re-review remain pending.
+- Status: this is an offline contract hardening continuation only. It makes no
+  source-admission, production, customer-emotion, or runtime claim.

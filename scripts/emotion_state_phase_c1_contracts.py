@@ -10,7 +10,7 @@ from dataclasses import dataclass, fields
 from datetime import datetime
 from types import MappingProxyType
 from typing import Final
-from urllib.parse import parse_qsl, urlsplit
+from urllib.parse import parse_qsl, unquote_to_bytes, urlsplit
 
 
 class PhaseC1ContractError(ValueError):
@@ -762,10 +762,42 @@ def _public_https_url(value: object, *, code: str) -> str:
         or parsed.username is not None
         or parsed.password is not None
         or parsed.fragment
-        or "\\" in url
+    ):
+        raise PhaseC1ContractError(code)
+    decoded_url = url
+    for _ in range(len(url) + 1):
+        if re.search(r"%(?![0-9A-Fa-f]{2})|%(?:2[fF]|5[cC])", decoded_url):
+            raise PhaseC1ContractError(code)
+        try:
+            next_decoded_url = unquote_to_bytes(decoded_url).decode("utf-8", "strict")
+        except UnicodeDecodeError as exc:
+            raise PhaseC1ContractError(code) from exc
+        if any(unicodedata.category(character) == "Cc" for character in next_decoded_url):
+            raise PhaseC1ContractError(code)
+        if next_decoded_url == decoded_url:
+            break
+        decoded_url = next_decoded_url
+    else:
+        raise PhaseC1ContractError(code)
+    try:
+        decoded = urlsplit(decoded_url)
+        decoded_hostname = decoded.hostname
+        decoded_port = decoded.port
+    except ValueError as exc:
+        raise PhaseC1ContractError(code) from exc
+    if (
+        decoded.scheme != "https"
+        or not decoded.netloc
+        or decoded_hostname is None
+        or decoded.username is not None
+        or decoded.password is not None
+        or decoded.fragment
+        or "\\" in decoded_url
     ):
         raise PhaseC1ContractError(code)
     if port is not None and not 1 <= port <= 65535:
+        raise PhaseC1ContractError(code)
+    if decoded_port is not None and not 1 <= decoded_port <= 65535:
         raise PhaseC1ContractError(code)
     lowered = hostname.rstrip(".").lower()
     try:
@@ -775,9 +807,10 @@ def _public_https_url(value: object, *, code: str) -> str:
     else:
         raise PhaseC1ContractError(code)
     _public_dns_hostname(hostname, code=code)
-    if any(segment in {".", ".."} for segment in parsed.path.split("/")):
+    _public_dns_hostname(decoded_hostname, code=code)
+    if any(segment in {".", ".."} for segment in decoded.path.split("/")):
         raise PhaseC1ContractError(code)
-    for key, _ in parse_qsl(parsed.query, keep_blank_values=True):
+    for key, _ in parse_qsl(decoded.query, keep_blank_values=True):
         normalized_key = unicodedata.normalize("NFC", key).casefold()
         if (
             normalized_key in _FORBIDDEN_PAYLOAD_QUERY_NAMES
@@ -1442,7 +1475,11 @@ def _reliability(payload: object) -> PhaseC1ReliabilityEvidenceV1:
     point = _optional_millionths(raw["point_micros"], code="reliability_point")
     lower = _optional_millionths(raw["lower_95_micros"], code="reliability_lower")
     upper = _optional_millionths(raw["upper_95_micros"], code="reliability_upper")
-    if None not in (point, lower, upper) and not lower <= point <= upper:
+    if (
+        (lower is not None and point is not None and lower > point)
+        or (point is not None and upper is not None and point > upper)
+        or (lower is not None and upper is not None and lower > upper)
+    ):
         raise PhaseC1ContractError("alpha_interval_not_ordered")
     rated = _optional_integer(raw["rated_unit_count"], code="rated_unit_count", minimum=1)
     positives = _optional_integer(raw["published_positive_count"], code="positive_count_boolean", minimum=1)
@@ -1642,12 +1679,20 @@ def validate_source_evidence_ledger(
     search = _mapping(load_json_strict(search_ledger_bytes, source="search_ledger"), code="search_ledger_object")
     candidates, fallback_order, fail_ready = _search_orders(search)
     sources = tuple(parse_source_receipt(item) for item in _sequence(raw["sources"], code="source_ledger_sources"))
+    document_ids = tuple(
+        document.document_id for source in sources for document in source.documents
+    )
+    if len(set(document_ids)) != len(document_ids):
+        raise PhaseC1ContractError("duplicate_document_id")
+    document_hashes = tuple(
+        document.cached_sha256 for source in sources for document in source.documents
+    )
+    if len(set(document_hashes)) != len(document_hashes):
+        raise PhaseC1ContractError("duplicate_document_hash")
     expected_source_ids = _first_occurrence(
         tuple(source_id for signal in TARGET_SIGNALS for source_id in candidates[signal])
         + fallback_order
     )
-    if tuple(item.source_id for item in sources) != expected_source_ids:
-        raise PhaseC1ContractError("source_order")
     if len({item.source_id for item in sources}) != len(sources):
         raise PhaseC1ContractError("source_id_mismatch")
     by_source = {item.source_id: item for item in sources}
@@ -1655,6 +1700,16 @@ def validate_source_evidence_ledger(
         document.document_id for source in sources for document in source.documents
     }
     cards = tuple(parse_evidence_card(item) for item in _sequence(raw["cards"], code="source_ledger_cards"))
+    assessments = tuple(parse_annotation_fallback_assessment(item) for item in _sequence(raw["fallback_assessments"], code="fallback_assessments"))
+    referenced_source_ids = tuple(card.source_id for card in cards) + tuple(
+        material.source_id
+        for assessment in assessments
+        for material in assessment.material_evidence
+    )
+    if any(source_id not in by_source for source_id in referenced_source_ids):
+        raise PhaseC1ContractError("source_reference_missing")
+    if tuple(item.source_id for item in sources) != expected_source_ids:
+        raise PhaseC1ContractError("source_order")
     expected_pairs = tuple((signal, source_id) for signal in TARGET_SIGNALS for source_id in candidates[signal])
     actual_pairs = tuple((card.signal, card.source_id) for card in cards)
     if any(pair not in expected_pairs for pair in actual_pairs):
@@ -1675,7 +1730,6 @@ def validate_source_evidence_ledger(
             raise PhaseC1ContractError("acted_source_claimed_admissible")
         if card.claimed_status == "admissible" and source.conversation_status != "spontaneous_conversation":
             raise PhaseC1ContractError("conversation_card_claimed_admissible")
-    assessments = tuple(parse_annotation_fallback_assessment(item) for item in _sequence(raw["fallback_assessments"], code="fallback_assessments"))
     if tuple(item.signal for item in assessments) != TARGET_SIGNALS:
         raise PhaseC1ContractError("fallback_signal_missing")
     for assessment in assessments:
@@ -1737,19 +1791,32 @@ def _review_transport_hashes(
     search: Mapping[str, object],
     sources: tuple[PhaseC1SourceReceiptV1, ...],
 ) -> tuple[str, ...]:
-    hashes: list[str] = []
+    query_hashes: list[str] = []
+    discovery_document_hashes: list[str] = []
+    citation_hashes: list[str] = []
+    citation_document_hashes: list[str] = []
     for query in _sequence(search.get("query_records"), code="reviewed_transport_hash_mismatch"):
         record = _mapping(query, code="reviewed_transport_hash_mismatch")
-        hashes.append(_hash(record.get("transport_receipt_sha256"), code="reviewed_transport_hash_mismatch"))
+        query_hashes.append(_hash(record.get("transport_receipt_sha256"), code="reviewed_transport_hash_mismatch"))
         for discovery in _sequence(record.get("discovery_records"), code="reviewed_transport_hash_mismatch"):
             detail = _mapping(discovery, code="reviewed_transport_hash_mismatch")
-            hashes.extend(_hash(item, code="reviewed_transport_hash_mismatch") for item in _sequence(detail.get("documentation_transport_receipt_sha256s"), code="reviewed_transport_hash_mismatch"))
+            discovery_document_hashes.extend(_hash(item, code="reviewed_transport_hash_mismatch") for item in _sequence(detail.get("documentation_transport_receipt_sha256s"), code="reviewed_transport_hash_mismatch"))
     for citation in _sequence(search.get("citation_records"), code="reviewed_transport_hash_mismatch"):
         record = _mapping(citation, code="reviewed_transport_hash_mismatch")
-        hashes.append(_hash(record.get("transport_receipt_sha256"), code="reviewed_transport_hash_mismatch"))
-        hashes.extend(_hash(item, code="reviewed_transport_hash_mismatch") for item in _sequence(record.get("documentation_transport_receipt_sha256s"), code="reviewed_transport_hash_mismatch"))
-    hashes.extend(document.transport_receipt_sha256 for source in sources for document in source.documents)
-    return _first_occurrence(tuple(hashes))
+        citation_hashes.append(_hash(record.get("transport_receipt_sha256"), code="reviewed_transport_hash_mismatch"))
+        citation_document_hashes.extend(_hash(item, code="reviewed_transport_hash_mismatch") for item in _sequence(record.get("documentation_transport_receipt_sha256s"), code="reviewed_transport_hash_mismatch"))
+    source_document_hashes = [
+        document.transport_receipt_sha256
+        for source in sources
+        for document in source.documents
+    ]
+    return _first_occurrence(tuple(
+        query_hashes
+        + discovery_document_hashes
+        + citation_hashes
+        + citation_document_hashes
+        + source_document_hashes
+    ))
 
 
 def validate_source_review_receipt(

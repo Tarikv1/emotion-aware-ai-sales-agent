@@ -1329,6 +1329,187 @@ class PhaseC1SourceContractTests(_PhaseC1FixtureMixin, unittest.TestCase):
                     )
                 self.assertEqual(raised.exception.code, expected)
 
+    def test_review_transport_hashes_group_categories_before_deduplication(
+        self,
+    ) -> None:
+        source_payload = self.valid_source_payload()
+        source_payload["documents"][0]["transport_receipt_sha256"] = "F" * 64
+        source = phase_c1.parse_source_receipt(source_payload)
+        search = {
+            "query_records": [
+                {
+                    "transport_receipt_sha256": "A" * 64,
+                    "discovery_records": [
+                        {"documentation_transport_receipt_sha256s": ["C" * 64, "A" * 64]}
+                    ],
+                },
+                {
+                    "transport_receipt_sha256": "B" * 64,
+                    "discovery_records": [
+                        {"documentation_transport_receipt_sha256s": ["D" * 64, "C" * 64]}
+                    ],
+                },
+            ],
+            "citation_records": [
+                {
+                    "transport_receipt_sha256": "E" * 64,
+                    "documentation_transport_receipt_sha256s": ["D" * 64],
+                }
+            ],
+        }
+        self.assertEqual(
+            phase_c1._review_transport_hashes(search, (source,)),
+            ("A" * 64, "B" * 64, "C" * 64, "D" * 64, "E" * 64, "F" * 64),
+        )
+
+    def test_ledger_rejects_cross_source_duplicate_document_identity(
+        self,
+    ) -> None:
+        protocol = phase_c1.validate_discovery_protocol(self.valid_protocol_payload())
+        search = phase_c1.load_json_strict(
+            self.valid_search_ledger_bytes(), source="search"
+        )
+        self.assertIsInstance(search, dict)
+        search["candidate_order_by_signal"]["hesitation"] = ["c1-source-0001"]
+        search["candidate_order_by_signal"]["confusion"] = ["c1-source-0002"]
+        search_bytes = phase_c1.canonical_json_bytes(search)
+        source_one = self.valid_source_payload()
+        source_two = self.valid_source_payload()
+        source_two["source_id"] = "c1-source-0002"
+        source_two["documents"][0]["document_id"] = "c1-document-0002"
+        source_two["documents"][0]["cached_sha256"] = "E" * 64
+        hesitation_card = self.valid_card_payload()
+        hesitation_card.update({"card_id": "c1-card-hesitation-0001", "signal": "hesitation"})
+        confusion_card = self.valid_card_payload()
+        confusion_card.update({"source_id": "c1-source-0002", "native_definition_document_id": "c1-document-0002"})
+        ledger = self.valid_source_evidence_ledger(search_bytes)
+        ledger["sources"] = [source_one, source_two]
+        ledger["cards"] = [hesitation_card, confusion_card]
+        for field, value, expected in (
+            ("document_id", "c1-document-0001", "duplicate_document_id"),
+            ("cached_sha256", "B" * 64, "duplicate_document_hash"),
+        ):
+            with self.subTest(field=field):
+                payload = copy.deepcopy(ledger)
+                payload["sources"][1]["documents"][0][field] = value
+                with self.assertRaises(phase_c1.PhaseC1ContractError) as raised:
+                    phase_c1.validate_source_evidence_ledger(
+                        payload, protocol=protocol, search_ledger_bytes=search_bytes
+                    )
+                self.assertEqual(raised.exception.code, expected)
+
+    def test_partial_reliability_intervals_reject_when_any_pair_is_inverted(
+        self,
+    ) -> None:
+        mutations = (
+            {"lower_95_micros": 900_000, "upper_95_micros": None},
+            {"point_micros": 900_000, "lower_95_micros": None, "upper_95_micros": 840_000},
+            {"point_micros": None, "lower_95_micros": 900_000, "upper_95_micros": 840_000},
+        )
+        for mutation in mutations:
+            with self.subTest(mutation=mutation):
+                payload = self.valid_card_payload()
+                payload["reliability"].update(mutation)
+                with self.assertRaises(phase_c1.PhaseC1ContractError) as raised:
+                    phase_c1.parse_evidence_card(payload)
+                self.assertEqual(raised.exception.code, "alpha_interval_not_ordered")
+
+    def test_percent_encoded_url_hazards_reject_for_transport_and_documents(
+        self,
+    ) -> None:
+        rejected_paths = (
+            "/%2e%2e/source",
+            "/%252e%252e/source",
+            "/a%5cb",
+            "/a%255cb",
+            "/%00source",
+            "/%2500source",
+            "/a%2fb",
+            "/bad%",
+        )
+        registered_url = self.valid_source_payload()["documents"][0][
+            "authoritative_url"
+        ]
+        base_url = registered_url.removesuffix("/works")
+        for path in rejected_paths:
+            with self.subTest(path=path):
+                url = f"{base_url}{path}"
+                receipt = self.valid_transport_receipt()
+                receipt["requested_url"] = url
+                receipt["final_url"] = url
+                with self.assertRaises(phase_c1.PhaseC1ContractError):
+                    phase_c1.parse_transport_receipt(receipt)
+                source = self.valid_source_payload()
+                source["documents"][0]["authoritative_url"] = url
+                with self.assertRaises(phase_c1.PhaseC1ContractError):
+                    phase_c1.parse_source_receipt(source)
+
+        safe_url = f"{registered_url}%20metadata"
+        receipt = self.valid_transport_receipt()
+        receipt["requested_url"] = safe_url
+        receipt["final_url"] = safe_url
+        self.assertEqual(phase_c1.parse_transport_receipt(receipt).requested_url, safe_url)
+        source = self.valid_source_payload()
+        source["documents"][0]["authoritative_url"] = safe_url
+        self.assertEqual(phase_c1.parse_source_receipt(source).documents[0].authoritative_url, safe_url)
+
+    def test_source_reference_precedes_pair_and_fallback_order_checks(
+        self,
+    ) -> None:
+        protocol = phase_c1.validate_discovery_protocol(self.valid_protocol_payload())
+        search_bytes = self.valid_search_ledger_bytes()
+        ledger = self.valid_source_evidence_ledger(search_bytes)
+        card_reference = copy.deepcopy(ledger)
+        card_reference["cards"][0]["source_id"] = "c1-source-0002"
+        with self.assertRaises(phase_c1.PhaseC1ContractError) as raised:
+            phase_c1.validate_source_evidence_ledger(
+                card_reference, protocol=protocol, search_ledger_bytes=search_bytes
+            )
+        self.assertEqual(raised.exception.code, "source_reference_missing")
+
+        fallback_reference = copy.deepcopy(ledger)
+        fallback_reference["fallback_assessments"][0]["material_evidence"] = [
+            {**self.valid_fallback_material(), "source_id": "c1-source-0002"}
+        ]
+        with self.assertRaises(phase_c1.PhaseC1ContractError) as raised:
+            phase_c1.validate_source_evidence_ledger(
+                fallback_reference, protocol=protocol, search_ledger_bytes=search_bytes
+            )
+        self.assertEqual(raised.exception.code, "source_reference_missing")
+
+        wrong_order = copy.deepcopy(ledger)
+        source_two = self.valid_source_payload()
+        source_two["source_id"] = "c1-source-0002"
+        source_two["documents"][0]["document_id"] = "c1-document-0002"
+        source_two["documents"][0]["cached_sha256"] = "E" * 64
+        wrong_order["sources"].append(source_two)
+        with self.assertRaises(phase_c1.PhaseC1ContractError) as raised:
+            phase_c1.validate_source_evidence_ledger(
+                wrong_order, protocol=protocol, search_ledger_bytes=search_bytes
+            )
+        self.assertEqual(raised.exception.code, "source_order")
+
+        search = phase_c1.load_json_strict(search_bytes, source="search")
+        self.assertIsInstance(search, dict)
+        search["fallback_material_candidate_order"] = ["c1-source-0002"]
+        outside_search_bytes = phase_c1.canonical_json_bytes(search)
+        outside = self.valid_source_evidence_ledger(outside_search_bytes)
+        source_two = self.valid_source_payload()
+        source_two["source_id"] = "c1-source-0002"
+        source_two["documents"][0]["document_id"] = "c1-document-0002"
+        source_two["documents"][0]["cached_sha256"] = "E" * 64
+        outside["sources"].append(source_two)
+        outside["cards"][0]["source_id"] = "c1-source-0002"
+        outside["cards"][0]["native_definition_document_id"] = "c1-document-0002"
+        for assessment in outside["fallback_assessments"]:
+            assessment["material_evidence"] = [
+                {**self.valid_fallback_material(), "source_id": "c1-source-0002"}
+            ]
+        with self.assertRaises(phase_c1.PhaseC1ContractError) as raised:
+            phase_c1.validate_source_evidence_ledger(
+                outside, protocol=protocol, search_ledger_bytes=outside_search_bytes
+            )
+        self.assertEqual(raised.exception.code, "card_outside_candidate_pair")
 
 if __name__ == "__main__":
     unittest.main()
