@@ -292,6 +292,7 @@ try:
 except AttributeError:
     _O_NOFOLLOW = None
 _LOWER_GIT_ID_RE: Final = re.compile(r"^[0-9a-f]{40}$")
+_LOWER_HEX_RE: Final = re.compile(r"^[0-9a-f]+$")
 _SHA256_RE: Final = re.compile(r"^[0-9A-F]{64}$")
 _EXHAUSTIVE_CITATION_STOPS: Final = frozenset(
     {"no_eligible_candidates", "source_list_exhausted"}
@@ -2138,6 +2139,7 @@ def _validate_validator_dependency_ast(payload: bytes) -> None:
                     "Call",
                     "ClassDef",
                     "Constant",
+                    "Expr",
                     "FunctionDef",
                     "Import",
                     "ImportFrom",
@@ -2145,6 +2147,7 @@ def _validate_validator_dependency_ast(payload: bytes) -> None:
                     "Subscript",
                     "arg",
                     "dump",
+                    "iter_child_nodes",
                     "iter_fields",
                     "parse",
                     "walk",
@@ -2259,6 +2262,71 @@ def _validate_validator_dependency_ast(payload: bytes) -> None:
             module_attribute_inventories
         )
     )
+    stdout_write_shape = ast.dump(
+        ast.parse(
+            (
+                "sys.stdout.buffer.write("
+                "phase_c1.canonical_json_bytes(payload))"
+            ),
+            mode="eval",
+        ).body,
+        include_attributes=False,
+    )
+    stdout_write_calls = tuple(
+        node
+        for node in ast.walk(tree)
+        if isinstance(node, ast.Call)
+        and isinstance(node.func, ast.Attribute)
+        and node.func.attr == "write"
+        and isinstance(node.func.value, ast.Attribute)
+        and node.func.value.attr == "buffer"
+        and isinstance(node.func.value.value, ast.Attribute)
+        and node.func.value.value.attr == "stdout"
+        and isinstance(node.func.value.value.value, ast.Name)
+        and node.func.value.value.value.id == "sys"
+    )
+    parent_by_child_id = {
+        id(child): parent
+        for parent in ast.walk(tree)
+        for child in ast.iter_child_nodes(parent)
+    }
+    if (
+        len(stdout_write_calls) != 1
+        or ast.dump(
+            stdout_write_calls[0],
+            include_attributes=False,
+        ) != stdout_write_shape
+        or not isinstance(
+            parent_by_child_id.get(id(stdout_write_calls[0])),
+            ast.Expr,
+        )
+    ):
+        raise ValidationError("validator_dependency_ast")
+    stdout_ancestor: ast.AST | None = parent_by_child_id.get(
+        id(stdout_write_calls[0]),
+    )
+    while (
+        stdout_ancestor is not None
+        and not isinstance(
+            stdout_ancestor,
+            (ast.FunctionDef, ast.AsyncFunctionDef),
+        )
+    ):
+        stdout_ancestor = parent_by_child_id.get(id(stdout_ancestor))
+    if (
+        not isinstance(stdout_ancestor, ast.FunctionDef)
+        or stdout_ancestor.name != "main"
+    ):
+        raise ValidationError("validator_dependency_ast")
+    stdout_call = stdout_write_calls[0]
+    stdout_root_attribute = stdout_call.func.value.value
+    stdout_module_name = stdout_root_attribute.value
+    allowed_stdout_root_attribute_nodes = {
+        id(stdout_root_attribute),
+    }
+    allowed_stdout_module_name_nodes = {
+        id(stdout_module_name),
+    }
     allowed_module_name_load_nodes = {
         id(node.value)
         for node in ast.walk(tree)
@@ -2272,7 +2340,7 @@ def _validate_validator_dependency_ast(payload: bytes) -> None:
                 module_attribute_inventories
             )
         )
-    }
+    } | allowed_stdout_module_name_nodes
     os_path_attribute_inventory = frozenset(
         {
             "abspath",
@@ -2955,6 +3023,7 @@ def _validate_validator_dependency_ast(payload: bytes) -> None:
                     if (
                         node.value.id == module_name
                         and node.attr not in allowed_attributes
+                        and id(node) not in allowed_stdout_root_attribute_nodes
                     ):
                         raise ValidationError(
                             "validator_dependency_ast"
@@ -4287,21 +4356,126 @@ def validate_phase_c1_pair(root: Path) -> dict[str, object]:
     return result
 
 
+def _candidate_receipt_paths() -> tuple[Path, Path, Path, Path, Path, Path]:
+    root = CANDIDATE_ROOT.parent
+    return (
+        root / "candidate-receipt.json",
+        root / "candidate-validation.json",
+        root / "candidate-review.json",
+        root / "candidate-receipt.stage",
+        root / "candidate-validation.stage",
+        root / "candidate-review.stage",
+    )
+
+
+def _canonical_candidate_receipt(payload: bytes) -> dict[str, object]:
+    value = phase_c1.load_json_strict(payload, source="candidate_receipt")
+    required = frozenset((
+        "schema_version", "checkpoint_id", "transaction_id", "status",
+        "implementation_head", "validator_blob_id", "protocol_sha256",
+        "search_ledger_sha256", "source_evidence_ledger_sha256",
+        "source_review_receipt_sha256", "result_sha256", "report_sha256",
+    ))
+    if not isinstance(value, dict) or set(value) != required or phase_c1.canonical_json_bytes(value) != payload:
+        raise ValidationError("candidate_receipt")
+    if value.get("schema_version") != "EmotionStatePhaseC1CandidateReceiptV1" or value.get("checkpoint_id") != CHECKPOINT_ID or value.get("status") != "candidate_ready":
+        raise ValidationError("candidate_receipt")
+    for key, width in (("transaction_id", 32), ("implementation_head", 40), ("validator_blob_id", 40), ("protocol_sha256", 64), ("search_ledger_sha256", 64), ("source_evidence_ledger_sha256", 64), ("source_review_receipt_sha256", 64), ("result_sha256", 64), ("report_sha256", 64)):
+        item = value.get(key)
+        if type(item) is not str or len(item) != width or _LOWER_HEX_RE.fullmatch(item) is None:
+            raise ValidationError("candidate_receipt")
+    selfless = dict(value)
+    selfless["transaction_id"] = ""
+    if value["transaction_id"] != phase_c1.sha256_bytes(phase_c1.canonical_json_bytes(selfless)).lower()[:32]:
+        raise ValidationError("candidate_receipt")
+    return value
+
+
+def _candidate_validation_payload(receipt: Mapping[str, object], *, result_bytes: bytes, report_bytes: bytes) -> dict[str, object]:
+    authorities = (
+        ("protocol_sha256", PROTOCOL_PATH),
+        ("search_ledger_sha256", SEARCH_LEDGER_PATH),
+        ("source_evidence_ledger_sha256", SOURCE_LEDGER_PATH),
+        ("source_review_receipt_sha256", SOURCE_REVIEW_PATH),
+    )
+    for field, path in authorities:
+        if receipt[field] != phase_c1.sha256_bytes(_read_exact_tracked_file(path)).lower():
+            raise ValidationError("candidate_binding")
+    result = validate_pair_bytes(result_bytes, report_bytes)
+    _validate_precommit_lineage(result)
+    if result.get("implementation_head") != receipt["implementation_head"] or result.get("validator_blob_id") != receipt["validator_blob_id"]:
+        raise ValidationError("candidate_binding")
+    if phase_c1.sha256_bytes(result_bytes).lower() != receipt["result_sha256"] or phase_c1.sha256_bytes(report_bytes).lower() != receipt["report_sha256"]:
+        raise ValidationError("candidate_binding")
+    return {
+        "schema_version": "EmotionStatePhaseC1CandidateValidationV1",
+        "checkpoint_id": CHECKPOINT_ID,
+        "implementation_head": receipt["implementation_head"],
+        "candidate_transaction_id": receipt["transaction_id"],
+        "candidate_result_sha256": receipt["result_sha256"],
+        "candidate_report_sha256": receipt["report_sha256"],
+        "protocol_sha256": receipt["protocol_sha256"],
+        "search_ledger_sha256": receipt["search_ledger_sha256"],
+        "source_evidence_ledger_sha256": receipt["source_evidence_ledger_sha256"],
+        "source_review_receipt_sha256": receipt["source_review_receipt_sha256"],
+        "validator_blob_id": receipt["validator_blob_id"],
+        "verdict": "pass",
+        "runtime_approved": False,
+    }
+
+
+def _validate_candidate_review(receipt: Mapping[str, object], validation_bytes: bytes, review_bytes: bytes) -> None:
+    review = phase_c1.load_json_strict(review_bytes, source="candidate_review")
+    expected = {
+        "schema_version": "EmotionStatePhaseC1CandidateReviewV1",
+        "checkpoint_id": CHECKPOINT_ID,
+        "candidate_transaction_id": receipt["transaction_id"],
+        "implementation_head": receipt["implementation_head"],
+        "candidate_result_sha256": receipt["result_sha256"],
+        "candidate_report_sha256": receipt["report_sha256"],
+        "candidate_validation_sha256": phase_c1.sha256_bytes(validation_bytes).lower(),
+        "review_scope": "all_candidate_inputs_decisions_pair_report_and_boundaries",
+        "verdict": "admitted",
+        "critical_findings": 0,
+        "important_findings": 0,
+        "minor_findings": 0,
+        "raw_rows_read": False,
+        "private_data_read": False,
+        "model_evaluation_run": False,
+        "provider_accessed": False,
+        "runtime_modified": False,
+    }
+    if not isinstance(review, dict) or phase_c1.canonical_json_bytes(review) != review_bytes or review != expected:
+        raise ValidationError("candidate_review")
+
+
+def validate_phase_c1_candidate_receipts() -> dict[str, object]:
+    receipt_path, validation_path, review_path, receipt_stage, validation_stage, review_stage = _candidate_receipt_paths()
+    if any(path.exists() or path.is_symlink() for path in (receipt_stage, validation_stage, review_stage)):
+        raise ValidationError("candidate_receipt_stage")
+    result_bytes, report_bytes = read_allowlisted_phase_c1_pair(CANDIDATE_ROOT)
+    receipt = _canonical_candidate_receipt(_read_exact_tracked_file(receipt_path))
+    validation = _candidate_validation_payload(receipt, result_bytes=result_bytes, report_bytes=report_bytes)
+    validation_bytes = phase_c1.canonical_json_bytes(validation)
+    if validation_path.exists() or validation_path.is_symlink():
+        if _read_exact_tracked_file(validation_path) != validation_bytes:
+            raise ValidationError("candidate_validation")
+        if not (review_path.exists() or review_path.is_symlink()):
+            raise ValidationError("candidate_review")
+    if review_path.exists() or review_path.is_symlink():
+        if not (validation_path.exists() or validation_path.is_symlink()):
+            raise ValidationError("candidate_review")
+        _validate_candidate_review(receipt, validation_bytes, _read_exact_tracked_file(review_path))
+    return validation
+
+
 def parse_cli_args(argv: Sequence[str]) -> str:
     if (
         type(argv) not in (list, tuple)
-        or len(argv) != 1
-        or argv[0]
-        not in {
-            "inputs",
-            "projection",
-            "candidate",
-            "canonical",
-            "checkpoint",
-        }
+        or not ((len(argv) == 1 and argv[0] in {"inputs", "projection", "candidate", "canonical", "checkpoint"}) or (len(argv) == 2 and argv[0] == "candidate" and argv[1] == "--json"))
     ):
         raise CliUsageError("cli_arguments")
-    return argv[0]
+    return "candidate_json" if len(argv) == 2 else argv[0]
 
 
 def _run_section(section: str) -> None:
@@ -4318,7 +4492,10 @@ def _run_section(section: str) -> None:
         )
         return
     if section == "candidate":
-        validate_phase_c1_pair(CANDIDATE_ROOT)
+        validate_phase_c1_candidate_receipts()
+        return
+    if section == "candidate_json":
+        return
         return
     if section == "canonical":
         validate_phase_c1_pair(CANONICAL_ROOT)
@@ -4341,6 +4518,10 @@ def main(argv: Sequence[str] | None = None) -> int:
         )
         return 2
     try:
+        if section == "candidate_json":
+            payload = validate_phase_c1_candidate_receipts()
+            sys.stdout.buffer.write(phase_c1.canonical_json_bytes(payload))
+            return 0
         _run_section(section)
     except ValidationError as exc:
         print(

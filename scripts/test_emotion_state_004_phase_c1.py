@@ -2,10 +2,16 @@ from __future__ import annotations
 
 import ast
 import copy
+import contextlib
+import gc
 import hashlib
+import io
 import inspect
 import json
+import multiprocessing
 import os
+import shutil
+import stat
 import subprocess
 import sys
 import tempfile
@@ -16,7 +22,8 @@ from dataclasses import FrozenInstanceError, dataclass, fields, is_dataclass, re
 from decimal import Decimal, localcontext
 from pathlib import Path
 from types import MappingProxyType
-from typing import Callable
+from typing import Callable, ContextManager, Iterator
+import weakref
 
 import scripts.emotion_state_phase_c1_contracts as phase_c1
 import scripts.emotion_state_phase_c1_decision as decision
@@ -340,6 +347,21 @@ EXPECTED_GITATTRIBUTES_RULES = (
         "/research/sources/emotion_state/"
         "phase_c1_source_review_receipt.json text eol=lf"
     ),
+    (
+        "/research/experiments/generated/"
+        "EMOTION-STATE-004-phase-c1-operational-signal-evidence-admission/"
+        "result.json text eol=lf"
+    ),
+    (
+        "/research/experiments/generated/"
+        "EMOTION-STATE-004-phase-c1-operational-signal-evidence-admission/"
+        "report.md text eol=lf"
+    ),
+)
+
+EXPECTED_PHASE_C0_GITATTRIBUTES_RULES = (
+    "/research/experiments/generated/EMOTION-STATE-003-phase-c0-synthetic-temporal-mechanics/result.json text eol=lf",
+    "/research/experiments/generated/EMOTION-STATE-003-phase-c0-synthetic-temporal-mechanics/report.md text eol=lf",
 )
 
 SEARCH_LEDGER_PATH = (
@@ -1347,11 +1369,20 @@ class PhaseC1ProtocolContractTests(
 
         attributes = (ROOT / ".gitattributes").read_text(encoding="utf-8")
         attribute_lines = attributes.splitlines()
+        for rule in EXPECTED_PHASE_C0_GITATTRIBUTES_RULES:
+            self.assertEqual(attribute_lines.count(rule), 1)
         for rule in EXPECTED_GITATTRIBUTES_RULES:
             self.assertEqual(attribute_lines.count(rule), 1)
+        phase_c1_rules = tuple(
+            line
+            for line in attribute_lines
+            if "emotion-state-004-phase-c1" in line.lower()
+            or "/emotion_state/phase_c1_" in line
+        )
+        self.assertEqual(phase_c1_rules, EXPECTED_GITATTRIBUTES_RULES)
         self.assertFalse(
             any(
-                "emotion-state-004-phase-c1" in line and "*" in line
+                "emotion-state-004-phase-c1" in line.lower() and "*" in line
                 for line in attribute_lines
             )
         )
@@ -8765,6 +8796,5197 @@ class PhaseC1AggregateRunnerTests(_PhaseC1FixtureMixin, unittest.TestCase):
         self.assertTrue(retired_names.isdisjoint(current_names))
 
 
+def _phase_c1_publication_lock_contender(
+    lock_path: str,
+    result_queue: multiprocessing.queues.Queue[bool],
+) -> None:
+    """Attempt the production OS lock from a separate Windows/POSIX process."""
+    handle = open(lock_path, "r+b")
+    try:
+        if os.name == "nt":
+            import msvcrt
+
+            try:
+                msvcrt.locking(handle.fileno(), msvcrt.LK_NBLCK, 1)
+            except OSError:
+                result_queue.put(False)
+                return
+            msvcrt.locking(handle.fileno(), msvcrt.LK_UNLCK, 1)
+        else:
+            import fcntl
+
+            try:
+                fcntl.flock(handle.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
+            except OSError:
+                result_queue.put(False)
+                return
+            fcntl.flock(handle.fileno(), fcntl.LOCK_UN)
+        result_queue.put(True)
+    finally:
+        handle.close()
+
+class PhaseC1PublicationTransactionTests(
+    _PhaseC1FixtureMixin,
+    unittest.TestCase,
+):
+    """Temporary-root contract tests for the Task 9 publication protocol.
+
+    These tests deliberately name the public transaction API before it exists.
+    They must never use the repository candidate/canonical roots.
+    """
+
+    def setUp(self) -> None:
+        self.temporary_directory = tempfile.TemporaryDirectory(
+            prefix="emotion-state-c1-publication-",
+        )
+        self.addCleanup(self.temporary_directory.cleanup)
+        self.temp_root = Path(self.temporary_directory.name)
+        self.protocol_bytes = self.protocol_path.read_bytes()
+        self.protocol = phase_c1.validate_discovery_protocol(
+            self.valid_protocol_payload()
+        )
+        self.input_paths = {
+            "protocol_path": (
+                self.temp_root / "research" / "experiments" / "configs"
+                / "emotion-state-004-phase-c1-discovery-protocol.json"
+            ),
+            "search_ledger_path": (
+                self.temp_root / "research" / "sources" / "emotion_state"
+                / "phase_c1_search_ledger.json"
+            ),
+            "source_ledger_path": (
+                self.temp_root / "research" / "sources" / "emotion_state"
+                / "phase_c1_source_evidence_ledger.json"
+            ),
+            "source_review_path": (
+                self.temp_root / "research" / "sources" / "emotion_state"
+                / "phase_c1_source_review_receipt.json"
+            ),
+        }
+        self.seed_valid_tracked_inputs()
+        (
+            self.expected_candidate_result_bytes,
+            self.expected_candidate_report_bytes,
+        ) = self.derive_expected_pair_without_publication_helpers()
+
+    def build_explicit_temp_runner_paths(
+        self, root: Path,
+    ) -> "runner.PhaseC1RunnerPaths":
+        """Build every Task 9 path explicitly and pin it below ``root``."""
+        candidate_root = root / ".tmp" / "emotion-state-004-phase-c1" / "candidate"
+        canonical_root = (
+            root / "research" / "experiments" / "generated"
+            / "EMOTION-STATE-004-phase-c1-operational-signal-evidence-admission"
+        )
+        ignored_root = root / ".tmp" / "emotion-state-004-phase-c1"
+        values = {
+            "project_root": root,
+            **self.input_paths,
+            "ignored_root": ignored_root,
+            "candidate_root": candidate_root,
+            "candidate_receipt_path": ignored_root / "candidate-receipt.json",
+            "candidate_receipt_stage_path": ignored_root / "candidate-receipt.stage",
+            "candidate_validation_path": ignored_root / "candidate-validation.json",
+            "candidate_validation_stage_path": (
+                ignored_root / "candidate-validation.stage"
+            ),
+            "candidate_review_path": ignored_root / "candidate-review.json",
+            "candidate_review_stage_path": (
+                ignored_root / "candidate-review.stage"
+            ),
+            "publication_lock_path": ignored_root / "publication.lock",
+            "publication_journal_path": ignored_root / "publication-journal.json",
+            "publication_journal_stage_path": ignored_root / "publication-journal.stage",
+            "candidate_stage_path": ignored_root / "candidate.stage",
+            "canonical_stage_path": ignored_root / "canonical.stage",
+            "canonical_root": canonical_root,
+        }
+        self.assertEqual(
+            tuple(values),
+            (
+                "project_root", "protocol_path", "search_ledger_path",
+                "source_ledger_path", "source_review_path", "ignored_root",
+                "candidate_root", "candidate_receipt_path",
+                "candidate_receipt_stage_path", "candidate_validation_path",
+                "candidate_validation_stage_path", "candidate_review_path",
+                "candidate_review_stage_path", "publication_lock_path",
+                "publication_journal_path",
+                "publication_journal_stage_path", "candidate_stage_path",
+                "canonical_stage_path", "canonical_root",
+            ),
+        )
+        resolved_root = root.resolve()
+        for value in values.values():
+            resolved = Path(value).resolve()
+            self.assertTrue(resolved.is_relative_to(resolved_root), value)
+        return runner.PhaseC1RunnerPaths(**values)
+
+    def runner_context(
+        self,
+    ) -> tuple["runner.PhaseC1RunnerPaths", mock._patch, mock._patch]:
+        """Patch fixed paths plus the private clean Git/validator-state seam."""
+        paths = self.build_explicit_temp_runner_paths(self.temp_root)
+        paths_patch = mock.patch.object(
+            runner, "PRODUCTION_PATHS", paths, create=True,
+        )
+        head_patch = mock.patch.object(
+            runner, "_current_repository_head", return_value="a" * 40,
+            create=True,
+        )
+        self.validator_state_patch = mock.patch.object(
+            runner,
+            "_resolve_phase_c1_validator_state",
+            return_value={
+                "repository_head": "a" * 40,
+                "validator_blob_id": "b" * 40,
+                "is_clean": True,
+            },
+            create=True,
+        )
+        paths_patch.start()
+        head_patch.start()
+        self.validator_state_patch.start()
+        return paths, paths_patch, head_patch
+
+    def stop_runner_context(
+        self,
+        paths_patch: mock._patch,
+        head_patch: mock._patch,
+    ) -> None:
+        self.validator_state_patch.stop()
+        head_patch.stop()
+        paths_patch.stop()
+
+    def validator_context(self) -> mock._patch:
+        return mock.patch.multiple(
+            validator,
+            ROOT=self.temp_root,
+            PROTOCOL_PATH=self.input_paths["protocol_path"],
+            SEARCH_LEDGER_PATH=self.input_paths["search_ledger_path"],
+            SOURCE_LEDGER_PATH=self.input_paths["source_ledger_path"],
+            SOURCE_REVIEW_PATH=self.input_paths["source_review_path"],
+            CANDIDATE_ROOT=self.candidate_root,
+            CANONICAL_ROOT=self.canonical_root,
+        )
+
+    @property
+    def candidate_root(self) -> Path:
+        return self.temp_root / ".tmp" / "emotion-state-004-phase-c1" / "candidate"
+
+    @property
+    def canonical_root(self) -> Path:
+        return (
+            self.temp_root / "research" / "experiments" / "generated"
+            / "EMOTION-STATE-004-phase-c1-operational-signal-evidence-admission"
+        )
+
+    @property
+    def ignored_root(self) -> Path:
+        return self.temp_root / ".tmp" / "emotion-state-004-phase-c1"
+
+    def seed_valid_tracked_inputs(self) -> None:
+        authority = self.authority_bytes(admissible_signals=("confusion",))
+        mapping = {
+            "protocol_bytes": self.input_paths["protocol_path"],
+            "search_ledger_bytes": self.input_paths["search_ledger_path"],
+            "source_ledger_bytes": self.input_paths["source_ledger_path"],
+            "review_receipt_bytes": self.input_paths["source_review_path"],
+        }
+        for name, path in mapping.items():
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_bytes(authority[name])
+        self.authority = authority
+
+    def authority_bytes(self, *, admissible_signals: tuple[str, ...]) -> dict[str, bytes]:
+        search, source_ledger, review = PhaseC1DecisionTests.validated_projection_inputs(
+            self, admissible_signals=admissible_signals,
+        )
+        return {
+            "protocol_bytes": self.protocol_bytes,
+            "search_ledger_bytes": PhaseC1IndependentValidatorTests.canonical_dataclass_bytes(
+                search, "EmotionStatePhaseC1SearchLedgerV1",
+            ),
+            "source_ledger_bytes": PhaseC1IndependentValidatorTests.canonical_dataclass_bytes(
+                source_ledger, "EmotionStatePhaseC1SourceEvidenceLedgerV1",
+            ),
+            "review_receipt_bytes": PhaseC1IndependentValidatorTests.canonical_dataclass_bytes(
+                review, "EmotionStatePhaseC1SourceReviewReceiptV1",
+            ),
+        }
+
+    def derive_expected_pair_without_publication_helpers(self) -> tuple[bytes, bytes]:
+        result = runner.build_phase_c1_result(
+            head_commit="a" * 40,
+            validator_blob_id="b" * 40,
+            **self.authority,
+        )
+        return (
+            phase_c1.canonical_json_bytes(result),
+            runner.render_phase_c1_report(result, **self.authority),
+        )
+
+    def prepared_candidate(self) -> "runner.PreparedPhaseC1Publication":
+        return runner.prepare_phase_c1_candidate(expected_head="a" * 40)
+
+    def lock(
+        self, prepared: "runner.PreparedPhaseC1Publication",
+    ) -> ContextManager["runner.PhaseC1PublicationLockCapability"]:
+        return runner.persistent_phase_c1_publication_lock(prepared)
+
+    def assert_no_candidate_overwrite(self) -> None:
+        self.assertFalse(self.candidate_root.exists())
+        self.assertFalse(self.canonical_root.exists())
+
+    def create_test_reparse(self, link: Path, target: Path) -> None:
+        """Create a real reparse point without requiring Windows symlink privilege."""
+        self.assertFalse(os.path.lexists(link))
+        try:
+            os.symlink(str(target.resolve()), link)
+        except OSError as exc:
+            if os.name != "nt" or getattr(exc, "winerror", None) != 1314:
+                raise
+            junction_target = target
+            if not target.is_dir():
+                junction_target = target.with_name(target.name + "-junction-target")
+                junction_target.mkdir()
+                (junction_target / "sentinel").write_bytes(target.read_bytes())
+            result = subprocess.run(
+                [
+                    os.environ.get("COMSPEC", "cmd.exe"),
+                    "/d",
+                    "/c",
+                    "mklink",
+                    "/J",
+                    str(link),
+                    str(junction_target),
+                ],
+                capture_output=True,
+                text=True,
+                timeout=15.0,
+                check=False,
+            )
+            self.assertEqual(
+                result.returncode,
+                0,
+                msg=(
+                    f"junction stdout={result.stdout!r} "
+                    f"stderr={result.stderr!r}"
+                ),
+            )
+        metadata = os.stat(link, follow_symlinks=False)
+        self.assertTrue(
+            stat.S_ISLNK(metadata.st_mode)
+            or bool(getattr(metadata, "st_reparse_tag", 0)),
+        )
+
+    @staticmethod
+    def snapshot_test_child(path: Path) -> tuple[object, ...]:
+        metadata = path.lstat()
+        if (
+            stat.S_ISLNK(metadata.st_mode)
+            or bool(getattr(metadata, "st_reparse_tag", 0))
+        ):
+            return (
+                metadata.st_mode,
+                metadata.st_ino,
+                "reparse",
+                getattr(metadata, "st_reparse_tag", 0),
+            )
+        return (metadata.st_mode, metadata.st_ino, path.read_bytes())
+
+    @contextlib.contextmanager
+    def isolated_mutation_root(self) -> Iterator[None]:
+        """Give every race mutation a new OS-owned root and no residual state."""
+        saved_root = self.temp_root
+        saved_paths = self.input_paths
+        saved_authority = self.authority
+        saved_result = self.expected_candidate_result_bytes
+        saved_report = self.expected_candidate_report_bytes
+        with tempfile.TemporaryDirectory(prefix="emotion-state-c1-race-") as name:
+            self.temp_root = Path(name)
+            self.input_paths = {
+                "protocol_path": self.temp_root / "research" / "experiments"
+                / "configs" / "emotion-state-004-phase-c1-discovery-protocol.json",
+                "search_ledger_path": self.temp_root / "research" / "sources"
+                / "emotion_state" / "phase_c1_search_ledger.json",
+                "source_ledger_path": self.temp_root / "research" / "sources"
+                / "emotion_state" / "phase_c1_source_evidence_ledger.json",
+                "source_review_path": self.temp_root / "research" / "sources"
+                / "emotion_state" / "phase_c1_source_review_receipt.json",
+            }
+            self.seed_valid_tracked_inputs()
+            (
+                self.expected_candidate_result_bytes,
+                self.expected_candidate_report_bytes,
+            ) = self.derive_expected_pair_without_publication_helpers()
+            yield
+        self.temp_root = saved_root
+        self.input_paths = saved_paths
+        self.authority = saved_authority
+        self.expected_candidate_result_bytes = saved_result
+        self.expected_candidate_report_bytes = saved_report
+
+    def assert_recoverable_publication_state(
+        self, paths: "runner.PhaseC1RunnerPaths",
+    ) -> None:
+        journal = self.ignored_root / "publication-journal.json"
+        stage = self.ignored_root / "publication-journal.stage"
+        self.assertFalse(
+            stage.exists() and not journal.exists(),
+            "a failed publication may not leave an unanchored journal stage",
+        )
+        if journal.exists():
+            payload = phase_c1.load_json_strict(journal.read_bytes(), source="journal")
+            self.assertIsInstance(payload, dict)
+            self.assertIn(payload["status"], {
+                "staging_candidate", "candidate_ready", "staging_canonical",
+                "accepted",
+            })
+            if self.canonical_root.exists():
+                self.assertIn(payload["status"], {
+                    "staging_canonical", "accepted",
+                })
+                self.assertEqual(
+                    (self.canonical_root / "result.json").read_bytes(),
+                    self.expected_candidate_result_bytes,
+                )
+        else:
+            self.assertFalse(self.canonical_root.exists())
+        self.assertTrue(Path(getattr(paths, "ignored_root")).is_relative_to(self.temp_root))
+
+    def assert_finalize_rejects_after(self, mutation: str) -> None:
+        with self.isolated_mutation_root():
+            paths, paths_patch, head_patch = self.runner_context()
+            replaced_root: Path | None = None
+            try:
+                prepared = self.prepared_candidate()
+                if mutation == "root_identity":
+                    replacement = self.temp_root.with_name(self.temp_root.name + "-old")
+                    self.temp_root.rename(replacement)
+                    self.temp_root.mkdir()
+                    replaced_root = replacement
+                    with self.assertRaises(runner.RunnerError):
+                        with self.lock(prepared):
+                            pass
+                    return
+                with self.lock(prepared) as capability:
+                    if mutation == "head":
+                        with mock.patch.object(
+                            runner, "_current_repository_head", return_value="c" * 40,
+                        ):
+                            with self.assertRaises(runner.RunnerError):
+                                runner.finalize_phase_c1_publication(
+                                    prepared, capability=capability,
+                                )
+                            return
+                    if mutation in {
+                        "protocol", "search", "source_ledger", "source_review",
+                    }:
+                        path = self.input_paths[
+                            {
+                                "protocol": "protocol_path",
+                                "search": "search_ledger_path",
+                                "source_ledger": "source_ledger_path",
+                                "source_review": "source_review_path",
+                            }[mutation]
+                        ]
+                        path.write_bytes(path.read_bytes() + b" ")
+                    elif mutation == "input_link":
+                        source = self.input_paths["search_ledger_path"]
+                        target = source.with_name("search-target.json")
+                        source.rename(target)
+                        self.create_test_reparse(source, target)
+                    elif mutation == "parent_identity":
+                        parent = self.input_paths["protocol_path"].parent
+                        old_parent = parent.with_name("configs-old")
+                        parent.rename(old_parent)
+                        parent.mkdir()
+                        (parent / self.input_paths["protocol_path"].name).write_bytes(
+                            self.authority["protocol_bytes"]
+                        )
+                    elif mutation == "unexpected_child":
+                        self.ignored_root.mkdir(parents=True, exist_ok=True)
+                        (self.ignored_root / "unexpected").write_bytes(b"x")
+                    elif mutation == "candidate_exists":
+                        self.candidate_root.mkdir(parents=True)
+                        (self.candidate_root / "result.json").write_bytes(b"old")
+                    elif mutation == "canonical_exists":
+                        self.canonical_root.mkdir(parents=True)
+                        (self.canonical_root / "result.json").write_bytes(b"old")
+                    elif mutation == "candidate_stage_exists":
+                        self.ignored_root.mkdir(parents=True, exist_ok=True)
+                        (self.ignored_root / "candidate.stage").mkdir()
+                    elif mutation == "canonical_stage_exists":
+                        self.ignored_root.mkdir(parents=True, exist_ok=True)
+                        (self.ignored_root / "canonical.stage").mkdir()
+                    elif mutation == "receipt_stage_exists":
+                        self.ignored_root.mkdir(parents=True, exist_ok=True)
+                        (self.ignored_root / "candidate-receipt.stage").write_bytes(b"old")
+                    elif mutation == "fake_capability":
+                        capability = object()
+                    with self.assertRaises(runner.RunnerError):
+                        runner.finalize_phase_c1_publication(
+                            prepared, capability=capability,
+                        )
+                    if mutation == "canonical_exists":
+                        self.assertEqual(
+                            (self.canonical_root / "result.json").read_bytes(), b"old",
+                        )
+                    else:
+                        self.assertFalse(self.canonical_root.exists())
+            finally:
+                self.stop_runner_context(paths_patch, head_patch)
+                if replaced_root is not None and replaced_root.exists():
+                    shutil.rmtree(replaced_root)
+
+    def test_prepare_and_caller_locked_finalize_are_byte_exact(self) -> None:
+        _paths, paths_patch, head_patch = self.runner_context()
+        try:
+            prepared = self.prepared_candidate()
+            with self.lock(prepared) as capability:
+                receipt = runner.finalize_phase_c1_publication(
+                    prepared, capability=capability,
+                )
+        finally:
+            self.stop_runner_context(paths_patch, head_patch)
+        self.assertEqual(
+            (self.candidate_root / "result.json").read_bytes(),
+            self.expected_candidate_result_bytes,
+        )
+        self.assertEqual(
+            (self.candidate_root / "report.md").read_bytes(),
+            self.expected_candidate_report_bytes,
+        )
+        self.assertEqual(receipt.status, "candidate_ready")
+
+    def test_publication_types_are_opaque_and_not_constructible(self) -> None:
+        for type_name in (
+            "PreparedPhaseC1Publication",
+            "PhaseC1PublicationLockCapability",
+        ):
+            with self.subTest(type_name=type_name):
+                publication_type = getattr(runner, type_name)
+                self.assertEqual(publication_type.__slots__, ("__weakref__",))
+                with self.assertRaises(TypeError):
+                    publication_type()
+
+    def test_wrong_fake_reused_and_collected_capabilities_reject(self) -> None:
+        _paths, paths_patch, head_patch = self.runner_context()
+        try:
+            prepared = self.prepared_candidate()
+            with self.lock(prepared) as capability:
+                with self.assertRaises(runner.RunnerError):
+                    runner.finalize_phase_c1_publication(
+                        prepared, capability=object(),
+                    )
+                runner.finalize_phase_c1_publication(
+                    prepared, capability=capability,
+                )
+            with self.assertRaises(runner.RunnerError):
+                runner.finalize_phase_c1_publication(
+                    prepared, capability=capability,
+                )
+            abandoned = self.prepared_candidate()
+            reference = weakref.ref(abandoned)
+            del abandoned
+            gc.collect()
+            self.assertIsNone(reference())
+        finally:
+            self.stop_runner_context(paths_patch, head_patch)
+
+    def test_prepare_requires_clean_expected_head_validator_blob_state(self) -> None:
+        for state in (
+            {"repository_head": "a" * 40, "validator_blob_id": "b" * 40,
+             "is_clean": False},
+            {"repository_head": "a" * 40, "validator_blob_id": None,
+             "is_clean": True},
+            {"repository_head": "c" * 40, "validator_blob_id": "b" * 40,
+             "is_clean": True},
+        ):
+            with self.subTest(state=state):
+                with self.isolated_mutation_root():
+                    _paths, paths_patch, head_patch = self.runner_context()
+                    try:
+                        with mock.patch.object(
+                            runner, "_resolve_phase_c1_validator_state",
+                            return_value=state,
+                        ) as resolver:
+                            with self.assertRaises(runner.RunnerError):
+                                self.prepared_candidate()
+                            resolver.assert_called_once_with("a" * 40)
+                    finally:
+                        self.stop_runner_context(paths_patch, head_patch)
+
+    def test_capability_binding_weak_state_and_real_os_contender_reject(self) -> None:
+        paths, paths_patch, head_patch = self.runner_context()
+        try:
+            first = self.prepared_candidate()
+            second = self.prepared_candidate()
+            with self.lock(first) as first_capability:
+                with self.assertRaises(runner.RunnerError):
+                    runner.finalize_phase_c1_publication(
+                        second, capability=first_capability,
+                    )
+                with self.assertRaises(runner.RunnerError):
+                    runner.finalize_phase_c1_publication(
+                        first, capability=object(),
+                    )
+                context = multiprocessing.get_context("spawn")
+                result_queue = context.Queue()
+                contender = context.Process(
+                    target=_phase_c1_publication_lock_contender,
+                    args=(str(getattr(paths, "publication_lock_path")), result_queue),
+                )
+                contender.start()
+                contender.join(timeout=10)
+                self.assertFalse(contender.is_alive())
+                self.assertEqual(contender.exitcode, 0)
+                self.assertFalse(result_queue.get(timeout=2))
+                result_queue.close()
+                result_queue.join_thread()
+            abandoned = second
+            abandoned_reference = weakref.ref(abandoned)
+            del abandoned
+            del second
+            gc.collect()
+            self.assertIsNone(abandoned_reference())
+            replacement = self.prepared_candidate()
+            with self.lock(replacement) as replacement_capability:
+                receipt = runner.finalize_phase_c1_publication(
+                    replacement, capability=replacement_capability,
+                )
+            self.assertEqual(receipt.status, "candidate_ready")
+        finally:
+            self.stop_runner_context(paths_patch, head_patch)
+
+    def test_finalize_rejects_input_head_root_policy_and_capability_races(self) -> None:
+        mutations = (
+            "head", "protocol", "search", "source_ledger", "source_review",
+            "root_identity", "fake_capability", "candidate_exists",
+            "canonical_exists", "candidate_stage_exists", "canonical_stage_exists",
+            "receipt_stage_exists",
+        )
+        for name in mutations:
+            with self.subTest(mutation=name):
+                self.assert_finalize_rejects_after(name)
+
+    def test_finalize_rejects_parent_identity_link_and_unexpected_child_races(self) -> None:
+        for mutation in ("parent_identity", "input_link", "unexpected_child"):
+            with self.subTest(mutation=mutation):
+                self.assert_finalize_rejects_after(mutation)
+
+    def test_canonical_accepts_only_reviewed_candidate_bytes(self) -> None:
+        _paths, paths_patch, head_patch = self.runner_context()
+        try:
+            self.create_candidate()
+            self.seed_valid_candidate_validation_and_review_receipts()
+            prepared = runner._prepare_phase_c1_acceptance(
+                expected_head="a" * 40,
+                candidate_receipt_name="candidate-receipt.json",
+                candidate_validation_name="candidate-validation.json",
+                candidate_review_name="candidate-review.json",
+            )
+            with self.lock(prepared) as capability:
+                receipt = runner.finalize_phase_c1_publication(
+                    prepared, capability=capability,
+                )
+        finally:
+            self.stop_runner_context(paths_patch, head_patch)
+        self.assertEqual(receipt.status, "accepted")
+        self.assertEqual(
+            (self.canonical_root / "result.json").read_bytes(),
+            self.expected_candidate_result_bytes,
+        )
+        self.assertFalse(self.candidate_root.exists())
+
+    def test_cli_accepts_only_the_two_exact_command_shapes(self) -> None:
+        accepted = (
+            ("prepare", "--mode", "candidate", "--expected-head", "a" * 40,
+             "--receipt", "candidate-receipt.json"),
+            ("accept", "--expected-head", "a" * 40,
+             "--receipt", "candidate-receipt.json",
+             "--validation", "candidate-validation.json",
+             "--review", "candidate-review.json"),
+        )
+        for argv in accepted:
+            with self.subTest(argv=argv):
+                self.assertIsNotNone(runner.parse_cli_args(argv))
+        rejected = (
+            (), ("prepare",), ("accept",),
+            ("prepare", "--mode", "canonical"),
+            ("prepare", "--mode", "candidate", "--output", "elsewhere"),
+            ("prepare", "--mode", "candidate", "--root", "elsewhere"),
+            ("prepare", "--mode", "candidate", "--expected-head", "A" * 40,
+             "--receipt", "candidate-receipt.json"),
+            ("prepare", "--mode", "candidate", "--expected-head", "a" * 39,
+             "--receipt", "candidate-receipt.json"),
+            ("prepare", "--mode", "candidate", "--expected-head", "a" * 40,
+             "--receipt", "nested/candidate-receipt.json"),
+            ("accept", "--receipt", "../candidate-receipt.json"),
+            ("accept", "--expected-head", "a" * 40,
+             "--receipt", "candidate-receipt.json",
+             "--validation", "candidate-validation.json"),
+            ("accept", "--expected-head", "A" * 40,
+             "--receipt", "candidate-receipt.json",
+             "--validation", "candidate-validation.json",
+             "--review", "candidate-review.json"),
+            ("accept", "--expected-head", "a" * 40,
+             "--receipt", "candidate-receipt.json",
+             "--validation", "candidate-validation.json",
+             "--review", "alternate-review.json"),
+            ("accept", "--expected-head", "a" * 40,
+             "--receipt", "candidate-receipt.json",
+             "--validation", "nested/candidate-validation.json",
+             "--review", "candidate-review.json"),
+            ("accept", "--expected-head", "a" * 40,
+             "--receipt", "candidate-receipt.json",
+             "--validation", "candidate-validation.json",
+             "--review", "candidate-review.json", "--unknown"),
+            ("fetch",),
+        )
+        for argv in rejected:
+            with self.subTest(argv=argv):
+                with self.assertRaises(runner.RunnerError):
+                    runner.parse_cli_args(argv)
+
+    def test_real_runner_entrypoint_invalid_shape_exits_two_before_publication(
+        self,
+    ) -> None:
+        completed = subprocess.run(
+            [
+                sys.executable,
+                os.fspath(ROOT / "scripts" / "run_emotion_state_004_phase_c1.py"),
+                "prepare",
+                "--mode",
+                "canonical",
+            ],
+            cwd=ROOT,
+            env={
+                **os.environ,
+                "PYTHONDONTWRITEBYTECODE": "1",
+                "GIT_TERMINAL_PROMPT": "0",
+                "GIT_OPTIONAL_LOCKS": "0",
+            },
+            stdin=subprocess.DEVNULL,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True,
+            encoding="utf-8",
+            errors="strict",
+            timeout=30,
+            check=False,
+        )
+
+        self.assertEqual(completed.returncode, 2)
+        self.assertEqual(completed.stdout, "")
+        self.assertEqual(
+            completed.stderr,
+            "EMOTION-STATE-004 Phase C1 publication failed: cli_arguments\n",
+        )
+
+    def test_invalid_cli_rejects_before_tracked_read_git_or_lock(self) -> None:
+        invalid = (
+            (), ("prepare", "--mode", "canonical"),
+            ("prepare", "--mode", "candidate", "--expected-head", "A" * 40,
+             "--receipt", "candidate-receipt.json"),
+            ("accept", "--expected-head", "a" * 40, "--receipt", "../candidate-receipt.json",
+             "--validation", "candidate-validation.json", "--review", "candidate-review.json"),
+            ("accept", "--expected-head", "a" * 40, "--receipt", "candidate-receipt.json",
+             "--validation", "candidate-validation.json", "--review", "candidate-review.json",
+             "--root", "elsewhere"),
+        )
+        for argv in invalid:
+            with self.subTest(argv=argv):
+                read_spy = mock.Mock(side_effect=AssertionError("tracked read"))
+                git_spy = mock.Mock(side_effect=AssertionError("git resolver"))
+                lock_spy = mock.Mock(side_effect=AssertionError("lock"))
+                with mock.patch.object(
+                    runner, "_read_phase_c1_tracked_input_bytes", read_spy,
+                ), mock.patch.object(
+                    runner, "_resolve_phase_c1_validator_state", git_spy,
+                ), mock.patch.object(
+                    runner, "persistent_phase_c1_publication_lock", lock_spy,
+                ):
+                    with self.assertRaises(runner.RunnerError):
+                        runner._run_phase_c1_publication_cli(argv)
+                read_spy.assert_not_called()
+                git_spy.assert_not_called()
+                lock_spy.assert_not_called()
+
+    def test_prepare_rejects_invalid_or_nonlive_expected_heads_before_reading(self) -> None:
+        invalid_heads = ("A" * 40, "a" * 39, "g" * 40, "a" * 40)
+        for expected_head in invalid_heads:
+            with self.subTest(expected_head=expected_head), self.isolated_mutation_root():
+                _paths, paths_patch, head_patch = self.runner_context()
+                try:
+                    live_head = "c" * 40 if expected_head == "a" * 40 else "a" * 40
+                    with mock.patch.object(
+                        runner, "_current_repository_head", return_value=live_head,
+                    ), mock.patch.object(
+                        runner, "_read_phase_c1_tracked_input_bytes",
+                        side_effect=AssertionError("tracked read"),
+                    ):
+                        with self.assertRaises(runner.RunnerError):
+                            runner.prepare_phase_c1_candidate(expected_head=expected_head)
+                finally:
+                    self.stop_runner_context(paths_patch, head_patch)
+
+    def create_candidate(self) -> object:
+        prepared = self.prepared_candidate()
+        with self.lock(prepared) as capability:
+            return runner.finalize_phase_c1_publication(
+                prepared, capability=capability,
+            )
+
+    def prepare_acceptance(self) -> "runner.PreparedPhaseC1Publication":
+        return runner._prepare_phase_c1_acceptance(
+            expected_head="a" * 40,
+            candidate_receipt_name="candidate-receipt.json",
+            candidate_validation_name="candidate-validation.json",
+            candidate_review_name="candidate-review.json",
+        )
+
+    def seed_protected_source_research_children(
+        self,
+    ) -> dict[Path, tuple[bytes, tuple[int, int]]]:
+        protected = {
+            self.ignored_root / "source-cache" / "source.json": b"source-cache\n",
+            self.ignored_root / "research" / "review.json": b"research\n",
+        }
+        snapshot: dict[Path, tuple[bytes, tuple[int, int]]] = {}
+        for path, payload in protected.items():
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_bytes(payload)
+            metadata = path.stat()
+            snapshot[path] = (payload, (metadata.st_dev, metadata.st_ino))
+        return snapshot
+
+    def assert_protected_children_unchanged(
+        self, snapshot: dict[Path, tuple[bytes, tuple[int, int]]],
+    ) -> None:
+        for path, (payload, identity) in snapshot.items():
+            self.assertEqual(path.read_bytes(), payload)
+            metadata = path.stat()
+            self.assertEqual((metadata.st_dev, metadata.st_ino), identity)
+
+    def assert_valid_acceptance_control(self) -> None:
+        with self.isolated_mutation_root():
+            _paths, paths_patch, head_patch = self.runner_context()
+            try:
+                self.create_candidate()
+                self.seed_valid_candidate_validation_and_review_receipts()
+                prepared = self.prepare_acceptance()
+                with self.lock(prepared) as capability:
+                    receipt = runner.finalize_phase_c1_publication(
+                        prepared, capability=capability,
+                    )
+                self.assertEqual(receipt.status, "accepted")
+                self.assertEqual(
+                    (self.canonical_root / "result.json").read_bytes(),
+                    self.expected_candidate_result_bytes,
+                )
+            finally:
+                self.stop_runner_context(paths_patch, head_patch)
+
+    @staticmethod
+    def _sha256(payload: bytes) -> str:
+        return hashlib.sha256(payload).hexdigest()
+
+    def seed_valid_candidate_validation_and_review_receipts(self) -> None:
+        """Write independently derived, canonical validation/review receipts."""
+        candidate_receipt = phase_c1.load_json_strict(
+            (self.ignored_root / "candidate-receipt.json").read_bytes(),
+            source="candidate_receipt",
+        )
+        self.assertIsInstance(candidate_receipt, dict)
+        result_bytes = (self.candidate_root / "result.json").read_bytes()
+        report_bytes = (self.candidate_root / "report.md").read_bytes()
+        validation = {
+            "schema_version": "EmotionStatePhaseC1CandidateValidationV1",
+            "checkpoint_id": runner.CHECKPOINT_ID,
+            "implementation_head": candidate_receipt["implementation_head"],
+            "candidate_transaction_id": candidate_receipt["transaction_id"],
+            "candidate_result_sha256": self._sha256(result_bytes),
+            "candidate_report_sha256": self._sha256(report_bytes),
+            "protocol_sha256": candidate_receipt["protocol_sha256"],
+            "search_ledger_sha256": candidate_receipt["search_ledger_sha256"],
+            "source_evidence_ledger_sha256": candidate_receipt[
+                "source_evidence_ledger_sha256"
+            ],
+            "source_review_receipt_sha256": candidate_receipt[
+                "source_review_receipt_sha256"
+            ],
+            "validator_blob_id": candidate_receipt["validator_blob_id"],
+            "verdict": "pass",
+            "runtime_approved": False,
+        }
+        validation_bytes = phase_c1.canonical_json_bytes(validation)
+        review = {
+            "schema_version": "EmotionStatePhaseC1CandidateReviewV1",
+            "checkpoint_id": runner.CHECKPOINT_ID,
+            "candidate_transaction_id": candidate_receipt["transaction_id"],
+            "implementation_head": candidate_receipt["implementation_head"],
+            "candidate_result_sha256": self._sha256(result_bytes),
+            "candidate_report_sha256": self._sha256(report_bytes),
+            "candidate_validation_sha256": self._sha256(validation_bytes),
+            "review_scope": (
+                "all_candidate_inputs_decisions_pair_report_and_boundaries"
+            ),
+            "verdict": "admitted",
+            "critical_findings": 0,
+            "important_findings": 0,
+            "minor_findings": 0,
+            "raw_rows_read": False,
+            "private_data_read": False,
+            "model_evaluation_run": False,
+            "provider_accessed": False,
+            "runtime_modified": False,
+        }
+        self.validation_bytes = validation_bytes
+        self.review_bytes = phase_c1.canonical_json_bytes(review)
+        for path, payload in (
+            (self.ignored_root / "candidate-validation.json", validation_bytes),
+            (self.ignored_root / "candidate-review.json", self.review_bytes),
+        ):
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_bytes(payload)
+
+    def write_exact_journal(
+        self,
+        *,
+        status: str,
+        sequence: int = 0,
+        previous: bytes | None = None,
+        include_acceptance_hashes: bool = False,
+    ) -> bytes:
+        receipt_bytes = (self.ignored_root / "candidate-receipt.json").read_bytes()
+        receipt = phase_c1.load_json_strict(receipt_bytes, source="candidate_receipt")
+        self.assertIsInstance(receipt, dict)
+        payload: dict[str, object] = {
+            "schema_version": "EmotionStatePhaseC1PublicationJournalV1",
+            "checkpoint_id": runner.CHECKPOINT_ID,
+            "transaction_id": receipt["transaction_id"],
+            "sequence": sequence,
+            "previous_journal_sha256": (
+                "0" * 64 if previous is None else self._sha256(previous)
+            ),
+            "status": status,
+            "expected_head": "a" * 40,
+            "implementation_head": receipt["implementation_head"],
+            "validator_blob_id": receipt["validator_blob_id"],
+            "protocol_sha256": receipt["protocol_sha256"],
+            "search_ledger_sha256": receipt["search_ledger_sha256"],
+            "source_evidence_ledger_sha256": receipt[
+                "source_evidence_ledger_sha256"
+            ],
+            "source_review_receipt_sha256": receipt[
+                "source_review_receipt_sha256"
+            ],
+            "result_sha256": receipt["result_sha256"],
+            "report_sha256": receipt["report_sha256"],
+            "candidate_receipt_sha256": self._sha256(receipt_bytes),
+            "candidate_validation_sha256": (
+                self._sha256(self.validation_bytes)
+                if include_acceptance_hashes else None
+            ),
+            "candidate_review_sha256": (
+                self._sha256(self.review_bytes)
+                if include_acceptance_hashes else None
+            ),
+            "journal_content_sha256": "",
+        }
+        payload["journal_content_sha256"] = self._sha256(
+            phase_c1.canonical_json_bytes(payload)
+        )
+        journal_bytes = phase_c1.canonical_json_bytes(payload)
+        journal_path = self.ignored_root / "publication-journal.json"
+        journal_path.write_bytes(journal_bytes)
+        return journal_bytes
+
+    def write_valid_journal_chain(self, *, final_status: str) -> tuple[bytes, bytes]:
+        predecessor = self.write_exact_journal(status="staging_candidate")
+        return predecessor, self.write_exact_journal(
+            status=final_status,
+            sequence=1,
+            previous=predecessor,
+            include_acceptance_hashes=final_status in {"staging_canonical", "accepted"},
+        )
+
+    def write_pair_directory(self, path: Path) -> None:
+        path.mkdir(parents=True, exist_ok=True)
+        (path / "result.json").write_bytes(self.expected_candidate_result_bytes)
+        (path / "report.md").write_bytes(self.expected_candidate_report_bytes)
+
+    def assert_pair_directory(self, path: Path) -> None:
+        self.assertEqual((path / "result.json").read_bytes(), self.expected_candidate_result_bytes)
+        self.assertEqual((path / "report.md").read_bytes(), self.expected_candidate_report_bytes)
+
+    def test_candidate_validator_projects_and_rechecks_validation_receipt(self) -> None:
+        git = PhaseC1IndependentValidatorTests.git
+        git(self.temp_root, "init", "--quiet")
+        git(self.temp_root, "config", "user.name", "Phase C1 Test")
+        git(
+            self.temp_root,
+            "config",
+            "user.email",
+            "phase-c1-test@example.invalid",
+        )
+        validator_path = (
+            self.temp_root
+            / "scripts"
+            / "validate_emotion_state_004_phase_c1.py"
+        )
+        validator_path.parent.mkdir(parents=True)
+        validator_path.write_bytes(
+            PhaseC1IndependentValidatorTests.closed_validator_import_source()
+        )
+        contracts_path = (
+            self.temp_root
+            / "scripts"
+            / "emotion_state_phase_c1_contracts.py"
+        )
+        contracts_path.write_bytes(b"# synthetic contracts\n")
+        git(self.temp_root, "add", ".")
+        git(self.temp_root, "commit", "--quiet", "-m", "implementation")
+        implementation_head = git(
+            self.temp_root,
+            "rev-parse",
+            "HEAD",
+        )
+        validator_blob_id = git(
+            self.temp_root,
+            "rev-parse",
+            (
+                f"{implementation_head}:"
+                "scripts/validate_emotion_state_004_phase_c1.py"
+            ),
+        )
+        result = runner.build_phase_c1_result(
+            head_commit=implementation_head,
+            validator_blob_id=validator_blob_id,
+            **self.authority,
+        )
+        self.expected_candidate_result_bytes = (
+            phase_c1.canonical_json_bytes(result)
+        )
+        self.expected_candidate_report_bytes = (
+            runner.render_phase_c1_report(
+                result,
+                **self.authority,
+            )
+        )
+        paths = self.build_explicit_temp_runner_paths(self.temp_root)
+        validator_state = {
+            "repository_head": implementation_head,
+            "validator_blob_id": validator_blob_id,
+            "is_clean": True,
+        }
+
+        with mock.patch.object(
+            runner,
+            "PRODUCTION_PATHS",
+            paths,
+        ), mock.patch.object(
+            runner,
+            "_current_repository_head",
+            return_value=implementation_head,
+        ), mock.patch.object(
+            runner,
+            "_resolve_phase_c1_validator_state",
+            return_value=validator_state,
+        ), mock.patch.multiple(
+            validator,
+            ROOT=self.temp_root,
+            PROTOCOL_PATH=self.input_paths["protocol_path"],
+            SEARCH_LEDGER_PATH=self.input_paths["search_ledger_path"],
+            SOURCE_LEDGER_PATH=self.input_paths["source_ledger_path"],
+            SOURCE_REVIEW_PATH=self.input_paths["source_review_path"],
+            VALIDATOR_PATH=validator_path,
+            CONTRACTS_PATH=contracts_path,
+            CANDIDATE_ROOT=self.candidate_root,
+            CANONICAL_ROOT=self.canonical_root,
+        ):
+            prepared = runner.prepare_phase_c1_candidate(
+                expected_head=implementation_head,
+            )
+            with runner.persistent_phase_c1_publication_lock(
+                prepared,
+            ) as capability:
+                runner.finalize_phase_c1_publication(
+                    prepared,
+                    capability=capability,
+                )
+            self.seed_valid_candidate_validation_and_review_receipts()
+            expected_validation_bytes = self.validation_bytes
+            (self.ignored_root / "candidate-validation.json").unlink()
+            (self.ignored_root / "candidate-review.json").unlink()
+
+            class BinaryOnlyStdout:
+                def __init__(self) -> None:
+                    self.buffer = io.BytesIO()
+
+                def write(self, value: object) -> int:
+                    raise AssertionError("candidate --json must not use text stdout")
+
+                def flush(self) -> None:
+                    return None
+
+            stdout = BinaryOnlyStdout()
+            with mock.patch.object(sys, "stdout", stdout):
+                self.assertEqual(validator.main(("candidate", "--json")), 0)
+            self.assertEqual(stdout.buffer.getvalue(), expected_validation_bytes)
+            self.assertFalse((self.ignored_root / "candidate-validation.json").exists())
+            self.assertFalse((self.ignored_root / "candidate-review.json").exists())
+            self.seed_valid_candidate_validation_and_review_receipts()
+            self.assertEqual(validator.main(("candidate",)), 0)
+
+    def test_candidate_validator_requires_exact_independent_review_binding(self) -> None:
+        _paths, paths_patch, head_patch = self.runner_context()
+        validator_patch = self.validator_context()
+        validator_patch.start()
+        try:
+            self.create_candidate()
+            self.seed_valid_candidate_validation_and_review_receipts()
+            receipt_path = self.ignored_root / "candidate-review.json"
+            for mutation in (
+                "missing", "reordered", "alternate_name", "wrong_hash",
+                "critical", "important", "minor", "raw_rows", "private",
+                "evaluation", "provider", "runtime", "noncanonical",
+                "review_without_validation", "review_stage",
+                "validation_missing", "validation_tamper", "validation_noncanonical",
+            ):
+                with self.subTest(mutation=mutation):
+                    for extra_name in (
+                        "alternate-review.json",
+                        "candidate-review.stage",
+                    ):
+                        extra_path = self.ignored_root / extra_name
+                        if extra_path.exists():
+                            extra_path.unlink()
+                    if not (self.ignored_root / "candidate-validation.json").exists():
+                        (self.ignored_root / "candidate-validation.json").write_bytes(
+                            self.validation_bytes
+                        )
+                    receipt_path.write_bytes(self.review_bytes)
+                    if mutation == "missing":
+                        receipt_path.unlink()
+                    elif mutation == "alternate_name":
+                        receipt_path.rename(
+                            self.ignored_root / "alternate-review.json"
+                        )
+                    elif mutation == "review_without_validation":
+                        (self.ignored_root / "candidate-validation.json").unlink()
+                    elif mutation == "review_stage":
+                        receipt_path.rename(
+                            self.ignored_root / "candidate-review.stage"
+                        )
+                    elif mutation == "validation_missing":
+                        (self.ignored_root / "candidate-validation.json").unlink()
+                    elif mutation == "validation_tamper":
+                        validation_path = self.ignored_root / "candidate-validation.json"
+                        validation_path.write_bytes(validation_path.read_bytes() + b" ")
+                    elif mutation == "validation_noncanonical":
+                        validation_path = self.ignored_root / "candidate-validation.json"
+                        validation_path.write_bytes(
+                            validation_path.read_bytes().replace(b"\n", b"\r\n")
+                        )
+                    elif mutation == "noncanonical":
+                        receipt_path.write_bytes(self.review_bytes.replace(b"\n", b"\r\n"))
+                    elif mutation == "reordered":
+                        payload = phase_c1.load_json_strict(
+                            self.review_bytes, source="review",
+                        )
+                        self.assertIsInstance(payload, dict)
+                        receipt_path.write_bytes(
+                            json.dumps(payload, separators=(",", ":")).encode("utf-8")
+                        )
+                    else:
+                        payload = phase_c1.load_json_strict(
+                            self.review_bytes, source="review",
+                        )
+                        self.assertIsInstance(payload, dict)
+                        if mutation == "wrong_hash":
+                            payload["candidate_validation_sha256"] = "0" * 64
+                        elif mutation in {"critical", "important", "minor"}:
+                            payload[f"{mutation}_findings"] = 1
+                        else:
+                            boolean_field = {
+                                "raw_rows": "raw_rows_read",
+                                "private": "private_data_read",
+                                "evaluation": "model_evaluation_run",
+                                "provider": "provider_accessed",
+                                "runtime": "runtime_modified",
+                            }[mutation]
+                            payload[boolean_field] = True
+                        receipt_path.write_bytes(phase_c1.canonical_json_bytes(payload))
+                    self.assertEqual(validator.main(("candidate",)), 1)
+                    self.seed_valid_candidate_validation_and_review_receipts()
+        finally:
+            validator_patch.stop()
+            self.stop_runner_context(paths_patch, head_patch)
+
+    def test_candidate_receipt_schema_and_status_mutations_reject(self) -> None:
+        for mutation in (
+            "schema_missing", "schema_replaced", "staging_candidate",
+            "staging_canonical", "accepted", "unknown", "transaction",
+            "head", "result_hash", "report_hash", "validator_blob",
+        ):
+            with self.subTest(mutation=mutation):
+                self.assert_valid_acceptance_control()
+                with self.isolated_mutation_root():
+                    _paths, paths_patch, head_patch = self.runner_context()
+                    validator_patch = self.validator_context()
+                    validator_patch.start()
+                    try:
+                        self.create_candidate()
+                        self.seed_valid_candidate_validation_and_review_receipts()
+                        receipt_path = self.ignored_root / "candidate-receipt.json"
+                        payload = phase_c1.load_json_strict(
+                            receipt_path.read_bytes(), source="candidate_receipt",
+                        )
+                        self.assertIsInstance(payload, dict)
+                        if mutation == "schema_missing":
+                            del payload["schema_version"]
+                        elif mutation == "schema_replaced":
+                            payload["schema_version"] = "OtherV1"
+                        elif mutation in {
+                            "staging_candidate", "staging_canonical", "accepted", "unknown",
+                        }:
+                            payload["status"] = mutation
+                        else:
+                            field = {
+                                "transaction": "transaction_id",
+                                "head": "implementation_head",
+                                "result_hash": "result_sha256",
+                                "report_hash": "report_sha256",
+                                "validator_blob": "validator_blob_id",
+                            }[mutation]
+                            payload[field] = "0" * len(str(payload[field]))
+                        receipt_path.write_bytes(phase_c1.canonical_json_bytes(payload))
+                        self.assertEqual(validator.main(("candidate",)), 1)
+                        with self.assertRaises(runner.RunnerError):
+                            self.prepare_acceptance()
+                    finally:
+                        validator_patch.stop()
+                        self.stop_runner_context(paths_patch, head_patch)
+
+    def test_unresolved_candidate_receipt_and_validation_stages_reject_without_deletion(self) -> None:
+        for name in (
+            "candidate-receipt.json", "candidate-validation.json", "candidate-review.json",
+        ):
+            with self.subTest(name=name), self.isolated_mutation_root():
+                _paths, paths_patch, head_patch = self.runner_context()
+                validator_patch = self.validator_context()
+                validator_patch.start()
+                try:
+                    self.create_candidate()
+                    self.seed_valid_candidate_validation_and_review_receipts()
+                    final_path = self.ignored_root / name
+                    stage_path = final_path.with_suffix(".stage")
+                    final_bytes = final_path.read_bytes()
+                    stage_path.write_bytes(final_bytes)
+                    staged = stage_path.read_bytes()
+                    self.assertEqual(validator.main(("candidate",)), 1)
+                    with self.assertRaises(runner.RunnerError):
+                        self.prepare_acceptance()
+                    self.assertEqual(stage_path.read_bytes(), staged)
+                    self.assertEqual(final_path.read_bytes(), final_bytes)
+                finally:
+                    validator_patch.stop()
+                    self.stop_runner_context(paths_patch, head_patch)
+
+    def test_candidate_receipt_has_exact_closed_shape_and_content_transaction_id(self) -> None:
+        _paths, paths_patch, head_patch = self.runner_context()
+        try:
+            self.create_candidate()
+            self.seed_valid_candidate_validation_and_review_receipts()
+            receipt_bytes = (self.ignored_root / "candidate-receipt.json").read_bytes()
+            receipt = phase_c1.load_json_strict(receipt_bytes, source="candidate_receipt")
+            self.assertIsInstance(receipt, dict)
+            self.assertEqual(set(receipt), {
+                "schema_version", "checkpoint_id", "transaction_id", "status",
+                "implementation_head", "validator_blob_id", "protocol_sha256",
+                "search_ledger_sha256", "source_evidence_ledger_sha256",
+                "source_review_receipt_sha256", "result_sha256", "report_sha256",
+            })
+            self.assertEqual(receipt["schema_version"], "EmotionStatePhaseC1CandidateReceiptV1")
+            self.assertEqual(receipt["status"], "candidate_ready")
+            for value in receipt.values():
+                self.assertIsInstance(value, str)
+                self.assertTrue(value.isascii())
+            content = copy.deepcopy(receipt)
+            content["transaction_id"] = ""
+            self.assertEqual(
+                receipt["transaction_id"],
+                self._sha256(phase_c1.canonical_json_bytes(content))[:32],
+            )
+            self.assertRegex(receipt["transaction_id"], r"^[0-9a-f]{32}$")
+        finally:
+            self.stop_runner_context(paths_patch, head_patch)
+
+    def test_candidate_pair_tamper_after_validation_blocks_acceptance_without_rewrite(self) -> None:
+        _paths, paths_patch, head_patch = self.runner_context()
+        try:
+            self.create_candidate()
+            self.seed_valid_candidate_validation_and_review_receipts()
+            report_path = self.candidate_root / "report.md"
+            report_path.write_bytes(report_path.read_bytes() + b"tampered\n")
+            tampered = report_path.read_bytes()
+            with self.assertRaises(runner.RunnerError):
+                self.prepare_acceptance()
+            self.assertEqual(report_path.read_bytes(), tampered)
+            self.assertFalse(self.canonical_root.exists())
+        finally:
+            self.stop_runner_context(paths_patch, head_patch)
+
+    def test_validation_and_review_schema_verdict_runtime_and_binding_mutations_reject(self) -> None:
+        mutations = (
+            ("validation", "schema_version", "OtherV1"),
+            ("validation", "verdict", "fail"),
+            ("validation", "runtime_approved", True),
+            ("validation", "candidate_transaction_id", "0" * 32),
+            ("validation", "implementation_head", "0" * 40),
+            ("validation", "candidate_result_sha256", "0" * 64),
+            ("validation", "candidate_report_sha256", "0" * 64),
+            ("validation", "protocol_sha256", "0" * 64),
+            ("validation", "search_ledger_sha256", "0" * 64),
+            ("validation", "source_evidence_ledger_sha256", "0" * 64),
+            ("validation", "source_review_receipt_sha256", "0" * 64),
+            ("validation", "validator_blob_id", "0" * 40),
+            ("review", "schema_version", "OtherV1"),
+            ("review", "candidate_transaction_id", "0" * 32),
+            ("review", "implementation_head", "0" * 40),
+            ("review", "candidate_result_sha256", "0" * 64),
+            ("review", "candidate_report_sha256", "0" * 64),
+            ("review", "candidate_validation_sha256", "0" * 64),
+            ("review", "review_scope", "other_scope"),
+            ("review", "verdict", "rejected"),
+        )
+        for receipt_kind, field, value in mutations:
+            with self.subTest(receipt=receipt_kind, field=field):
+                self.assert_valid_acceptance_control()
+                with self.isolated_mutation_root():
+                    _paths, paths_patch, head_patch = self.runner_context()
+                    validator_patch = self.validator_context()
+                    validator_patch.start()
+                    try:
+                        self.create_candidate()
+                        self.seed_valid_candidate_validation_and_review_receipts()
+                        path = self.ignored_root / f"candidate-{receipt_kind}.json"
+                        payload = phase_c1.load_json_strict(path.read_bytes(), source=receipt_kind)
+                        self.assertIsInstance(payload, dict)
+                        payload[field] = value
+                        path.write_bytes(phase_c1.canonical_json_bytes(payload))
+                        if receipt_kind == "validation":
+                            review_path = self.ignored_root / "candidate-review.json"
+                            review = phase_c1.load_json_strict(
+                                review_path.read_bytes(), source="review",
+                            )
+                            self.assertIsInstance(review, dict)
+                            review["candidate_validation_sha256"] = self._sha256(
+                                path.read_bytes(),
+                            )
+                            review_path.write_bytes(phase_c1.canonical_json_bytes(review))
+                        self.assertEqual(validator.main(("candidate",)), 1)
+                        with self.assertRaises(runner.RunnerError):
+                            self.prepare_acceptance()
+                    finally:
+                        validator_patch.stop()
+                        self.stop_runner_context(paths_patch, head_patch)
+
+    def test_candidate_lane_recovers_after_candidate_and_receipt_rename_crashes(self) -> None:
+        _paths, paths_patch, head_patch = self.runner_context()
+        try:
+            self.create_candidate()
+            receipt_path = self.ignored_root / "candidate-receipt.json"
+            original = receipt_path.read_bytes()
+            for crash in ("candidate_rename", "receipt_rename"):
+                with self.subTest(crash=crash):
+                    self.write_exact_journal(status="staging_candidate")
+                    if crash == "candidate_rename":
+                        receipt_path.unlink()
+                    prepared = self.prepared_candidate()
+                    with self.lock(prepared) as capability:
+                        recovered = runner.finalize_phase_c1_publication(
+                            prepared, capability=capability,
+                        )
+                    self.assertEqual(recovered.status, "candidate_ready")
+                    self.assertEqual(receipt_path.read_bytes(), original)
+                    self.assertEqual(
+                        phase_c1.load_json_strict(
+                            (self.ignored_root / "publication-journal.json").read_bytes(),
+                            source="journal",
+                        )["status"],
+                        "candidate_ready",
+                    )
+        finally:
+            self.stop_runner_context(paths_patch, head_patch)
+
+    def test_acceptance_lane_recovery_requires_validation_and_review(self) -> None:
+        _paths, paths_patch, head_patch = self.runner_context()
+        try:
+            self.create_candidate()
+            self.seed_valid_candidate_validation_and_review_receipts()
+            self.write_valid_journal_chain(final_status="staging_canonical")
+            for missing in ("candidate-validation.json", "candidate-review.json"):
+                with self.subTest(missing=missing):
+                    path = self.ignored_root / missing
+                    saved = path.read_bytes()
+                    path.unlink()
+                    with self.assertRaises(runner.RunnerError):
+                        runner._prepare_phase_c1_acceptance(
+                            expected_head="a" * 40,
+                            candidate_receipt_name="candidate-receipt.json",
+                            candidate_validation_name="candidate-validation.json",
+                            candidate_review_name="candidate-review.json",
+                        )
+                    path.write_bytes(saved)
+            prepared = runner._prepare_phase_c1_acceptance(
+                expected_head="a" * 40,
+                candidate_receipt_name="candidate-receipt.json",
+                candidate_validation_name="candidate-validation.json",
+                candidate_review_name="candidate-review.json",
+            )
+            with self.lock(prepared) as capability:
+                receipt = runner.finalize_phase_c1_publication(
+                    prepared, capability=capability,
+                )
+            self.assertEqual(receipt.status, "accepted")
+        finally:
+            self.stop_runner_context(paths_patch, head_patch)
+
+    def test_journal_fields_self_hash_status_and_predecessor_fail_closed(self) -> None:
+        required = {
+            "schema_version", "checkpoint_id", "transaction_id", "sequence",
+            "previous_journal_sha256", "status", "expected_head",
+            "implementation_head", "validator_blob_id", "protocol_sha256",
+            "search_ledger_sha256", "source_evidence_ledger_sha256",
+            "source_review_receipt_sha256", "result_sha256", "report_sha256",
+            "candidate_receipt_sha256", "candidate_validation_sha256",
+            "candidate_review_sha256", "journal_content_sha256",
+        }
+        for mutation in ("field", "self_hash", "status", "predecessor", "stage"):
+            with self.subTest(mutation=mutation):
+                self.assert_valid_acceptance_control()
+                with self.isolated_mutation_root():
+                    _paths, paths_patch, head_patch = self.runner_context()
+                    try:
+                        self.create_candidate()
+                        self.seed_valid_candidate_validation_and_review_receipts()
+                        prepared = self.prepare_acceptance()
+                        with self.lock(prepared) as capability:
+                            runner.finalize_phase_c1_publication(prepared, capability=capability)
+                        journal_path = self.ignored_root / "publication-journal.json"
+                        valid = journal_path.read_bytes()
+                        self.assertEqual(
+                            set(phase_c1.load_json_strict(valid, source="journal")), required,
+                        )
+                        if mutation == "stage":
+                            (self.ignored_root / "publication-journal.stage").write_bytes(
+                                b"invalid\n"
+                            )
+                        else:
+                            payload = phase_c1.load_json_strict(valid, source="journal")
+                            self.assertIsInstance(payload, dict)
+                            if mutation == "field":
+                                del payload["result_sha256"]
+                            elif mutation == "self_hash":
+                                payload["journal_content_sha256"] = "0" * 64
+                            elif mutation == "status":
+                                payload["status"] = "unknown"
+                            else:
+                                payload["previous_journal_sha256"] = "F" * 64
+                            journal_path.write_bytes(phase_c1.canonical_json_bytes(payload))
+                        with self.assertRaisesRegex(runner.RunnerError, "journal"):
+                            self.prepare_acceptance()
+                        self.assertEqual(
+                            (self.canonical_root / "result.json").read_bytes(),
+                            self.expected_candidate_result_bytes,
+                        )
+                    finally:
+                        self.stop_runner_context(paths_patch, head_patch)
+
+    def test_each_accepted_journal_invariant_rejects_from_a_fresh_valid_canonical_baseline(self) -> None:
+        mutations = (
+            "negative_sequence", "nonmonotonic", "null_candidate_receipt",
+            "null_validation", "null_review", "wrong_predecessor", "wrong_status",
+        )
+        for mutation in mutations:
+            with self.subTest(mutation=mutation):
+                self.assert_valid_acceptance_control()
+                with self.isolated_mutation_root():
+                    _paths, paths_patch, head_patch = self.runner_context()
+                    try:
+                        self.create_candidate()
+                        self.seed_valid_candidate_validation_and_review_receipts()
+                        prepared = self.prepare_acceptance()
+                        with self.lock(prepared) as capability:
+                            runner.finalize_phase_c1_publication(prepared, capability=capability)
+                        journal_path = self.ignored_root / "publication-journal.json"
+                        accepted = journal_path.read_bytes()
+                        control = self.prepare_acceptance()
+                        with self.lock(control) as capability:
+                            control_receipt = runner.finalize_phase_c1_publication(
+                                control, capability=capability,
+                            )
+                        self.assertEqual(control_receipt.status, "accepted")
+                        self.assertEqual(journal_path.read_bytes(), accepted)
+                        payload = phase_c1.load_json_strict(accepted, source="accepted")
+                        self.assertIsInstance(payload, dict)
+                        if mutation == "negative_sequence":
+                            payload["sequence"] = -1
+                        elif mutation == "nonmonotonic":
+                            payload["sequence"] = 0
+                        elif mutation == "null_candidate_receipt":
+                            payload["candidate_receipt_sha256"] = None
+                        elif mutation == "null_validation":
+                            payload["candidate_validation_sha256"] = None
+                        elif mutation == "null_review":
+                            payload["candidate_review_sha256"] = None
+                        elif mutation == "wrong_predecessor":
+                            payload["previous_journal_sha256"] = "0" * 64
+                        else:
+                            payload["status"] = "candidate_ready"
+                        payload["journal_content_sha256"] = ""
+                        payload["journal_content_sha256"] = self._sha256(
+                            phase_c1.canonical_json_bytes(payload),
+                        )
+                        journal_path.write_bytes(phase_c1.canonical_json_bytes(payload))
+                        with self.assertRaises(runner.RunnerError):
+                            self.prepare_acceptance()
+                        self.assert_pair_directory(self.canonical_root)
+                    finally:
+                        self.stop_runner_context(paths_patch, head_patch)
+
+    def test_accepted_cleanup_recovery_survives_each_allowlisted_deletion(self) -> None:
+        cleanup_targets = (
+            "candidate", "candidate-receipt.json", "candidate-validation.json",
+            "candidate-review.json",
+        )
+        self.assert_valid_acceptance_control()
+        _paths, paths_patch, head_patch = self.runner_context()
+        try:
+            self.create_candidate()
+            self.seed_valid_candidate_validation_and_review_receipts()
+            candidate_snapshot = {
+                "result.json": (self.candidate_root / "result.json").read_bytes(),
+                "report.md": (self.candidate_root / "report.md").read_bytes(),
+            }
+            receipt_snapshot = {
+                "candidate-receipt.json": (
+                    self.ignored_root / "candidate-receipt.json"
+                ).read_bytes(),
+                "candidate-validation.json": self.validation_bytes,
+                "candidate-review.json": self.review_bytes,
+            }
+            prepared = runner._prepare_phase_c1_acceptance(
+                expected_head="a" * 40,
+                candidate_receipt_name="candidate-receipt.json",
+                candidate_validation_name="candidate-validation.json",
+                candidate_review_name="candidate-review.json",
+            )
+            with self.lock(prepared) as capability:
+                runner.finalize_phase_c1_publication(prepared, capability=capability)
+            journal_path = self.ignored_root / "publication-journal.json"
+            journal_bytes = journal_path.read_bytes()
+            canonical_bytes = (self.canonical_root / "result.json").read_bytes()
+            for retained in range(1 << len(cleanup_targets)):
+                with self.subTest(retained=retained):
+                    if self.candidate_root.exists():
+                        for child in self.candidate_root.iterdir():
+                            child.unlink()
+                        self.candidate_root.rmdir()
+                    self.candidate_root.mkdir(parents=True)
+                    for name, payload in candidate_snapshot.items():
+                        (self.candidate_root / name).write_bytes(payload)
+                    for name, payload in receipt_snapshot.items():
+                        (self.ignored_root / name).write_bytes(payload)
+                    for index, target in enumerate(cleanup_targets):
+                        if not retained & (1 << index):
+                            path = (
+                                self.candidate_root
+                                if target == "candidate"
+                                else self.ignored_root / target
+                            )
+                            if path.is_dir():
+                                for child in path.iterdir():
+                                    child.unlink()
+                                path.rmdir()
+                            else:
+                                path.unlink()
+                    recovery = runner._prepare_phase_c1_acceptance(
+                        expected_head="a" * 40,
+                        candidate_receipt_name="candidate-receipt.json",
+                        candidate_validation_name="candidate-validation.json",
+                        candidate_review_name="candidate-review.json",
+                    )
+                    with self.lock(recovery) as capability:
+                        runner.finalize_phase_c1_publication(
+                            recovery, capability=capability,
+                        )
+                    self.assertEqual(journal_path.read_bytes(), journal_bytes)
+                    self.assertEqual(
+                        (self.canonical_root / "result.json").read_bytes(),
+                        canonical_bytes,
+                    )
+                    self.assertFalse(self.candidate_root.exists())
+                    for target in cleanup_targets[1:]:
+                        self.assertFalse((self.ignored_root / target).exists())
+        finally:
+            self.stop_runner_context(paths_patch, head_patch)
+
+    def test_recovery_rows_remove_only_verified_stages_and_preserve_candidate_ready(self) -> None:
+        rows = ("candidate_stage", "canonical_stage", "journal_stage", "candidate_ready")
+        for row in rows:
+            with self.subTest(row=row):
+                self.assert_valid_acceptance_control()
+                with self.isolated_mutation_root():
+                    _paths, paths_patch, head_patch = self.runner_context()
+                    try:
+                        protected = self.seed_protected_source_research_children()
+                        if row == "candidate_stage":
+                            self.write_pair_directory(self.ignored_root / "candidate.stage")
+                            prepared = self.prepared_candidate()
+                            with self.lock(prepared) as capability:
+                                receipt = runner.finalize_phase_c1_publication(
+                                    prepared, capability=capability,
+                                )
+                            self.assertEqual(receipt.status, "candidate_ready")
+                            self.assertFalse((self.ignored_root / "candidate.stage").exists())
+                            self.assert_pair_directory(self.candidate_root)
+                            self.assert_protected_children_unchanged(protected)
+                            continue
+                        self.create_candidate()
+                        self.seed_valid_candidate_validation_and_review_receipts()
+                        if row == "canonical_stage":
+                            self.write_pair_directory(self.ignored_root / "canonical.stage")
+                            self.write_valid_journal_chain(final_status="staging_canonical")
+                        elif row == "journal_stage":
+                            predecessor = self.write_exact_journal(status="candidate_ready")
+                            transition = self.write_exact_journal(
+                                status="staging_canonical", sequence=1,
+                                previous=predecessor, include_acceptance_hashes=True,
+                            )
+                            (self.ignored_root / "publication-journal.json").write_bytes(predecessor)
+                            (self.ignored_root / "publication-journal.stage").write_bytes(transition)
+                        else:
+                            self.write_exact_journal(status="candidate_ready")
+                            candidate_before = {
+                                name: (self.candidate_root / name).read_bytes()
+                                for name in ("result.json", "report.md")
+                            }
+                        prepared = self.prepare_acceptance()
+                        if row == "candidate_ready":
+                            self.assertEqual(
+                                (self.candidate_root / "result.json").read_bytes(),
+                                candidate_before["result.json"],
+                            )
+                            self.assertEqual(
+                                (self.candidate_root / "report.md").read_bytes(),
+                                candidate_before["report.md"],
+                            )
+                        with self.lock(prepared) as capability:
+                            receipt = runner.finalize_phase_c1_publication(
+                                prepared, capability=capability,
+                            )
+                        self.assertEqual(receipt.status, "accepted")
+                        self.assertFalse((self.ignored_root / "canonical.stage").exists())
+                        self.assertFalse((self.ignored_root / "publication-journal.stage").exists())
+                        self.assert_pair_directory(self.canonical_root)
+                        self.assert_protected_children_unchanged(protected)
+                    finally:
+                        self.stop_runner_context(paths_patch, head_patch)
+
+    def test_accepted_recovery_handles_each_optional_receipt_absence_with_durable_hashes(self) -> None:
+        receipt_names = (
+            "candidate-receipt.json", "candidate-validation.json", "candidate-review.json",
+        )
+        for retained_mask in range(1 << len(receipt_names)):
+            with self.subTest(retained_mask=retained_mask):
+                self.assert_valid_acceptance_control()
+                with self.isolated_mutation_root():
+                    _paths, paths_patch, head_patch = self.runner_context()
+                    try:
+                        self.create_candidate()
+                        self.seed_valid_candidate_validation_and_review_receipts()
+                        snapshot = {
+                            name: (self.ignored_root / name).read_bytes()
+                            for name in receipt_names
+                        }
+                        prepared = self.prepare_acceptance()
+                        with self.lock(prepared) as capability:
+                            runner.finalize_phase_c1_publication(prepared, capability=capability)
+                        journal_path = self.ignored_root / "publication-journal.json"
+                        journal_before = journal_path.read_bytes()
+                        journal = phase_c1.load_json_strict(journal_before, source="accepted")
+                        self.assertIsInstance(journal, dict)
+                        for field in (
+                            "candidate_receipt_sha256", "candidate_validation_sha256",
+                            "candidate_review_sha256",
+                        ):
+                            self.assertRegex(str(journal[field]), r"^[0-9a-f]{64}$")
+                        for index, name in enumerate(receipt_names):
+                            path = self.ignored_root / name
+                            if retained_mask & (1 << index):
+                                path.write_bytes(snapshot[name])
+                            else:
+                                self.assertFalse(path.exists())
+                        recovery = self.prepare_acceptance()
+                        with self.lock(recovery) as capability:
+                            receipt = runner.finalize_phase_c1_publication(
+                                recovery, capability=capability,
+                            )
+                        self.assertEqual(receipt.status, "accepted")
+                        self.assertEqual(journal_path.read_bytes(), journal_before)
+                        for name in receipt_names:
+                            self.assertFalse((self.ignored_root / name).exists())
+                    finally:
+                        self.stop_runner_context(paths_patch, head_patch)
+
+    def test_journal_stage_pairings_block_except_verified_staging_canonical_recovery(self) -> None:
+        rows = ("mismatched_stage", "changed_predecessor", "staging_canonical_without_root")
+        for row in rows:
+            with self.subTest(row=row):
+                self.assert_valid_acceptance_control()
+                with self.isolated_mutation_root():
+                    _paths, paths_patch, head_patch = self.runner_context()
+                    try:
+                        protected = self.seed_protected_source_research_children()
+                        self.create_candidate()
+                        self.seed_valid_candidate_validation_and_review_receipts()
+                        predecessor = self.write_exact_journal(status="candidate_ready")
+                        if row == "staging_canonical_without_root":
+                            self.write_exact_journal(
+                                status="staging_canonical", sequence=1,
+                                previous=predecessor, include_acceptance_hashes=True,
+                            )
+                            prepared = self.prepare_acceptance()
+                            with self.lock(prepared) as capability:
+                                receipt = runner.finalize_phase_c1_publication(
+                                    prepared, capability=capability,
+                                )
+                            self.assertEqual(receipt.status, "accepted")
+                            self.assert_pair_directory(self.canonical_root)
+                            self.assert_protected_children_unchanged(protected)
+                            continue
+                        if row == "changed_predecessor":
+                            alternate_predecessor = self.write_exact_journal(
+                                status="candidate_ready",
+                            )
+                            alternate_payload = phase_c1.load_json_strict(
+                                alternate_predecessor, source="alternate_predecessor",
+                            )
+                            self.assertIsInstance(alternate_payload, dict)
+                            alternate_payload["expected_head"] = "c" * 40
+                            alternate_payload["journal_content_sha256"] = ""
+                            alternate_payload["journal_content_sha256"] = self._sha256(
+                                phase_c1.canonical_json_bytes(alternate_payload),
+                            )
+                            alternate_predecessor = phase_c1.canonical_json_bytes(
+                                alternate_payload,
+                            )
+                            staged_transition = self.write_exact_journal(
+                                status="staging_canonical", sequence=1,
+                                previous=alternate_predecessor,
+                                include_acceptance_hashes=True,
+                            )
+                            (self.ignored_root / "publication-journal.json").write_bytes(predecessor)
+                            (self.ignored_root / "publication-journal.stage").write_bytes(
+                                staged_transition,
+                            )
+                            before = (predecessor, staged_transition)
+                        else:
+                            (self.ignored_root / "publication-journal.stage").write_bytes(b"invalid\n")
+                            before = (
+                                (self.ignored_root / "publication-journal.json").read_bytes(),
+                                b"invalid\n",
+                            )
+                        with self.assertRaises(runner.RunnerError):
+                            self.prepare_acceptance()
+                        self.assertEqual(
+                            (self.ignored_root / "publication-journal.json").read_bytes(), before[0],
+                        )
+                        self.assertEqual(
+                            (self.ignored_root / "publication-journal.stage").read_bytes(), before[1],
+                        )
+                        self.assert_protected_children_unchanged(protected)
+                    finally:
+                        self.stop_runner_context(paths_patch, head_patch)
+
+    def test_transaction_preserves_allowed_source_research_children(self) -> None:
+        protected = {
+            self.ignored_root / "source-cache" / "source.json": b"source-cache\n",
+            self.ignored_root / "research" / "review.json": b"research\n",
+        }
+        identities: dict[Path, tuple[int, int]] = {}
+        for path, payload in protected.items():
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_bytes(payload)
+            metadata = path.stat()
+            identities[path] = (metadata.st_dev, metadata.st_ino)
+        _paths, paths_patch, head_patch = self.runner_context()
+        try:
+            self.create_candidate()
+            self.seed_valid_candidate_validation_and_review_receipts()
+            prepared = runner._prepare_phase_c1_acceptance(
+                expected_head="a" * 40,
+                candidate_receipt_name="candidate-receipt.json",
+                candidate_validation_name="candidate-validation.json",
+                candidate_review_name="candidate-review.json",
+            )
+            with self.lock(prepared) as capability:
+                runner.finalize_phase_c1_publication(
+                    prepared, capability=capability,
+                )
+            recovery = runner._prepare_phase_c1_acceptance(
+                expected_head="a" * 40,
+                candidate_receipt_name="candidate-receipt.json",
+                candidate_validation_name="candidate-validation.json",
+                candidate_review_name="candidate-review.json",
+            )
+            with self.lock(recovery) as capability:
+                runner.finalize_phase_c1_publication(
+                    recovery, capability=capability,
+                )
+            for path, payload in protected.items():
+                self.assertEqual(path.read_bytes(), payload)
+                metadata = path.stat()
+                self.assertEqual((metadata.st_dev, metadata.st_ino), identities[path])
+        finally:
+            self.stop_runner_context(paths_patch, head_patch)
+
+    def test_narrow_writer_fsync_rename_receipt_and_journal_errors_retry(self) -> None:
+        operations = (
+            ("candidate_result_create", "_create_new_phase_c1_file", False, "candidate_result", 1, None, None),
+            ("candidate_report_create", "_create_new_phase_c1_file", False, "candidate_report", 1, None, None),
+            ("candidate_result_fsync", "_fsync_phase_c1_open_file", False, "candidate_result", 1, None, None),
+            ("candidate_report_fsync", "_fsync_phase_c1_open_file", False, "candidate_report", 1, None, None),
+            ("candidate_stage_fsync", "_fsync_phase_c1_directory", False, "candidate_stage", 1, None, None),
+            ("candidate_rename", "_validate_and_rename_phase_c1_directory", False, "candidate_root", 1, None, None),
+            ("staging_candidate_journal_root_fsync", "_fsync_phase_c1_directory", False, "ignored_root", 1, None, None),
+            ("candidate_parent_fsync", "_fsync_phase_c1_directory", False, "ignored_root", 2, None, None),
+            ("receipt_stage_create", "_create_new_phase_c1_file", False, "receipt_stage", 1, None, None),
+            ("receipt_stage_fsync", "_fsync_phase_c1_open_file", False, "receipt_stage", 1, None, None),
+            ("receipt_rename", "_rename_phase_c1_file_no_overwrite", False, "receipt", 1, None, None),
+            ("receipt_parent_fsync", "_fsync_phase_c1_directory", False, "ignored_root", 3, None, None),
+            ("journal_stage_create", "_create_new_phase_c1_file", False, "journal_stage", 1, None, None),
+            ("journal_stage_fsync", "_fsync_phase_c1_open_file", False, "journal_stage", 1, None, None),
+            ("journal_replace", "_replace_phase_c1_file", False, "journal", 1, None, None),
+            ("candidate_ready_journal_root_fsync", "_fsync_phase_c1_directory", False, "ignored_root", 4, None, None),
+            ("canonical_result_create", "_create_new_phase_c1_file", True, "canonical_result", 1, None, None),
+            ("canonical_report_create", "_create_new_phase_c1_file", True, "canonical_report", 1, None, None),
+            ("canonical_result_fsync", "_fsync_phase_c1_open_file", True, "canonical_result", 1, None, None),
+            ("canonical_report_fsync", "_fsync_phase_c1_open_file", True, "canonical_report", 1, None, None),
+            ("canonical_stage_fsync", "_fsync_phase_c1_directory", True, "canonical_stage", 1, None, None),
+            ("staging_canonical_journal_root_fsync", "_fsync_phase_c1_directory", True, "ignored_root", 1, "staging_canonical", "journal_durability"),
+            ("canonical_rename", "_validate_and_rename_phase_c1_directory", True, "canonical_root", 1, None, None),
+            ("canonical_parent_fsync", "_fsync_phase_c1_directory", True, "canonical_parent", 1, None, None),
+            ("accepted_journal_root_fsync", "_fsync_phase_c1_directory", True, "ignored_root", 2, "accepted", "journal_durability"),
+        )
+        for (
+            label,
+            helper_name,
+            acceptance,
+            target_key,
+            occurrence,
+            expected_journal_status,
+            expected_journal_phase,
+        ) in operations:
+            with self.subTest(label=label), self.isolated_mutation_root():
+                paths, paths_patch, head_patch = self.runner_context()
+                try:
+                    protected = self.seed_protected_source_research_children()
+                    if acceptance:
+                        self.create_candidate()
+                        self.seed_valid_candidate_validation_and_review_receipts()
+                        prepared = self.prepare_acceptance()
+                        expected_status = "accepted"
+                    else:
+                        prepared = self.prepared_candidate()
+                        expected_status = "candidate_ready"
+                    target_paths = {
+                        "candidate_result": paths.candidate_stage_path / "result.json",
+                        "candidate_report": paths.candidate_stage_path / "report.md",
+                        "candidate_stage": paths.candidate_stage_path,
+                        "candidate_root": paths.candidate_root,
+                        "ignored_root": paths.ignored_root,
+                        "receipt_stage": paths.candidate_receipt_stage_path,
+                        "receipt": paths.candidate_receipt_path,
+                        "journal_stage": paths.publication_journal_stage_path,
+                        "journal": paths.publication_journal_path,
+                        "canonical_result": paths.canonical_stage_path / "result.json",
+                        "canonical_report": paths.canonical_stage_path / "report.md",
+                        "canonical_stage": paths.canonical_stage_path,
+                        "canonical_root": paths.canonical_root,
+                        "canonical_parent": paths.canonical_root.parent,
+                    }
+                    target_path = target_paths[target_key].resolve()
+                    original = getattr(runner, helper_name)
+                    calls: list[tuple[tuple[object, ...], dict[str, object]]] = []
+                    journal_durability_phase: tuple[str, str] | None = None
+
+                    def operation_paths(args: tuple[object, ...]) -> tuple[Path, ...]:
+                        paths_seen: list[Path] = []
+                        for value in args:
+                            if isinstance(value, Path):
+                                paths_seen.append(value)
+                            elif isinstance(getattr(value, "name", None), str):
+                                paths_seen.append(Path(value.name))
+                        return tuple(paths_seen)
+
+                    def delegate_until_exact_target(*args: object, **kwargs: object) -> object:
+                        nonlocal journal_durability_phase
+                        calls.append((args, kwargs))
+                        matching = [
+                            path for path in operation_paths(args)
+                            if path.resolve() == target_path
+                        ]
+                        target_calls = len([entry for entry in calls if any(
+                            path.resolve() == target_path for path in operation_paths(entry[0])
+                        )])
+                        if matching and expected_journal_status is not None:
+                            journal = paths.publication_journal_path
+                            self.assertTrue(journal.is_file())
+                            payload = phase_c1.load_json_strict(
+                                journal.read_bytes(), source="journal_durability_fsync",
+                            )
+                            self.assertIsInstance(payload, dict)
+                            if target_calls == occurrence:
+                                self.assertEqual(
+                                    journal_durability_phase,
+                                    (
+                                        expected_journal_status,
+                                        expected_journal_phase,
+                                    ),
+                                )
+                                self.assertEqual(
+                                    payload["status"], expected_journal_status,
+                                )
+                            journal_durability_phase = None
+                        if target_calls == occurrence and matching:
+                            raise OSError(label)
+                        return original(*args, **kwargs)
+
+                    def record_journal_durability_transition(
+                        *args: object, **kwargs: object,
+                    ) -> object:
+                        nonlocal journal_durability_phase
+                        result = journal_replace_original(*args, **kwargs)
+                        if any(
+                            path.resolve() == paths.publication_journal_path.resolve()
+                            for path in operation_paths(args)
+                        ):
+                            payload = phase_c1.load_json_strict(
+                                paths.publication_journal_path.read_bytes(),
+                                source="journal_durability_transition",
+                            )
+                            self.assertIsInstance(payload, dict)
+                            journal_durability_phase = (
+                                str(payload["status"]), "journal_durability",
+                            )
+                        return result
+
+                    def record_cleanup_phase(*args: object, **kwargs: object) -> object:
+                        nonlocal journal_durability_phase
+                        journal = paths.publication_journal_path
+                        self.assertTrue(journal.is_file())
+                        payload = phase_c1.load_json_strict(
+                            journal.read_bytes(), source="journal_cleanup_phase",
+                        )
+                        self.assertIsInstance(payload, dict)
+                        journal_durability_phase = (str(payload["status"]), "cleanup")
+                        return cleanup_original(*args, **kwargs)
+
+                    with contextlib.ExitStack() as stack:
+                        if expected_journal_status is not None:
+                            journal_replace_original = getattr(
+                                runner, "_replace_phase_c1_file",
+                            )
+                            stack.enter_context(mock.patch.object(
+                                runner,
+                                "_replace_phase_c1_file",
+                                side_effect=record_journal_durability_transition,
+                            ))
+                            cleanup_original = getattr(
+                                runner, "_delete_verified_phase_c1_cleanup_target",
+                            )
+                            stack.enter_context(mock.patch.object(
+                                runner,
+                                "_delete_verified_phase_c1_cleanup_target",
+                                side_effect=record_cleanup_phase,
+                            ))
+                        stack.enter_context(mock.patch.object(
+                            runner, helper_name, side_effect=delegate_until_exact_target,
+                        ))
+                        with self.lock(prepared) as capability:
+                            with self.assertRaises(runner.RunnerError):
+                                runner.finalize_phase_c1_publication(
+                                    prepared, capability=capability,
+                                )
+                    self.assertTrue(calls)
+                    matching_calls = [
+                        entry for entry in calls if any(
+                            path.resolve() == target_path for path in operation_paths(entry[0])
+                        )
+                    ]
+                    self.assertGreaterEqual(len(matching_calls), occurrence)
+                    self.assert_recoverable_publication_state(paths)
+                    self.assert_protected_children_unchanged(protected)
+                    if acceptance:
+                        recovered = self.prepare_acceptance()
+                    else:
+                        recovered = self.prepared_candidate()
+                    with self.lock(recovered) as capability:
+                        receipt = runner.finalize_phase_c1_publication(
+                            recovered, capability=capability,
+                        )
+                    self.assertEqual(receipt.status, expected_status)
+                    self.assert_protected_children_unchanged(protected)
+                    self.assertIsNotNone(original)
+                finally:
+                    self.stop_runner_context(paths_patch, head_patch)
+
+    def test_verified_cleanup_deletes_in_order_and_retries_each_real_delete(self) -> None:
+        ordered = (
+            "candidate_root", "candidate_receipt", "candidate_validation", "candidate_review",
+        )
+        target_basenames = {
+            "candidate_root": "candidate",
+            "candidate_receipt": "candidate-receipt.json",
+            "candidate_validation": "candidate-validation.json",
+            "candidate_review": "candidate-review.json",
+        }
+        for target_name in ordered:
+            with self.subTest(target=target_name), self.isolated_mutation_root():
+                _paths, paths_patch, head_patch = self.runner_context()
+                try:
+                    self.create_candidate()
+                    self.seed_valid_candidate_validation_and_review_receipts()
+                    prepared = self.prepare_acceptance()
+                    original = getattr(runner, "_delete_verified_phase_c1_cleanup_target")
+                    deleted: list[Path] = []
+
+                    def delete_then_interrupt(*args: object, **kwargs: object) -> object:
+                        target = Path(args[-1])
+                        result = original(*args, **kwargs)
+                        deleted.append(target)
+                        if target.name == target_basenames[target_name]:
+                            raise OSError(target_name)
+                        return result
+
+                    with mock.patch.object(
+                        runner,
+                        "_delete_verified_phase_c1_cleanup_target",
+                        side_effect=delete_then_interrupt,
+                    ), self.lock(prepared) as capability:
+                        with self.assertRaises(runner.RunnerError):
+                            runner.finalize_phase_c1_publication(
+                                prepared, capability=capability,
+                            )
+                    expected_prefix = [
+                        target_basenames[name]
+                        for name in ordered[:ordered.index(target_name) + 1]
+                    ]
+                    self.assertEqual([path.name for path in deleted], expected_prefix)
+                    journal_before_retry = (
+                        self.ignored_root / "publication-journal.json"
+                    ).read_bytes()
+                    recovery = self.prepare_acceptance()
+                    with self.lock(recovery) as capability:
+                        receipt = runner.finalize_phase_c1_publication(
+                            recovery, capability=capability,
+                        )
+                    self.assertEqual(receipt.status, "accepted")
+                    self.assertEqual(
+                        (self.ignored_root / "publication-journal.json").read_bytes(),
+                        journal_before_retry,
+                    )
+                finally:
+                    self.stop_runner_context(paths_patch, head_patch)
+
+    def test_candidate_durable_operations_use_the_narrow_helpers_in_order(self) -> None:
+        _paths, paths_patch, head_patch = self.runner_context()
+        try:
+            ordered_helpers = (
+                "_create_new_phase_c1_file",
+                "_fsync_phase_c1_open_file",
+                "_fsync_phase_c1_directory",
+                "_validate_and_rename_phase_c1_directory",
+                "_rename_phase_c1_file_no_overwrite",
+                "_replace_phase_c1_file",
+                "_validate_phase_c1_pair_at_path",
+                "_validate_phase_c1_candidate_receipt_at_path",
+                "_delete_verified_phase_c1_cleanup_target",
+            )
+            events: list[tuple[str, str, str | None]] = []
+            with contextlib.ExitStack() as stack:
+                for helper_name in ordered_helpers:
+                    original = getattr(runner, helper_name)
+
+                    def record_then_operate(
+                        *args: object,
+                        _original: Callable[..., object] = original,
+                        _name: str = helper_name,
+                        **kwargs: object,
+                    ) -> object:
+                        path = next((
+                            str(value.resolve()) for value in args
+                            if isinstance(value, Path)
+                        ), next((
+                            str(Path(value.name).resolve()) for value in args
+                            if isinstance(getattr(value, "name", None), str)
+                        ), ""))
+                        status = None
+                        for value in args:
+                            if isinstance(value, dict) and "status" in value:
+                                status = str(value["status"])
+                            elif isinstance(value, bytes) and b'"status"' in value:
+                                parsed = phase_c1.load_json_strict(value, source="journal_event")
+                                if isinstance(parsed, dict):
+                                    status = str(parsed.get("status"))
+                        if (
+                            status is None
+                            and _name == "_fsync_phase_c1_directory"
+                            and path.replace("\\", "/").endswith(
+                                "/emotion-state-004-phase-c1",
+                            )
+                        ):
+                            journal_path = (
+                                self.ignored_root / "publication-journal.json"
+                            )
+                            self.assertTrue(journal_path.is_file())
+                            journal = phase_c1.load_json_strict(
+                                journal_path.read_bytes(), source="journal_fsync_event",
+                            )
+                            self.assertIsInstance(journal, dict)
+                            status = str(journal["status"])
+                        events.append((_name, path, status))
+                        return _original(*args, **kwargs)
+
+                    stack.enter_context(mock.patch.object(
+                        runner, helper_name, side_effect=record_then_operate,
+                    ))
+                prepared = self.prepared_candidate()
+                with self.lock(prepared) as capability:
+                    candidate_receipt = runner.finalize_phase_c1_publication(
+                        prepared, capability=capability,
+                    )
+                self.seed_valid_candidate_validation_and_review_receipts()
+                acceptance = self.prepare_acceptance()
+                with self.lock(acceptance) as capability:
+                    accepted_receipt = runner.finalize_phase_c1_publication(
+                        acceptance, capability=capability,
+                    )
+            self.assertEqual(candidate_receipt.status, "candidate_ready")
+            self.assertEqual(accepted_receipt.status, "accepted")
+            def event_index(operation: str, suffix: str, occurrence: int = 1) -> int:
+                matches = [
+                    index for index, (name, path, _status) in enumerate(events)
+                    if name == operation and path.replace("\\", "/").endswith(suffix)
+                ]
+                self.assertGreaterEqual(len(matches), occurrence, (operation, suffix))
+                return matches[occurrence - 1]
+
+            result_create = event_index("_create_new_phase_c1_file", "/candidate.stage/result.json")
+            result_sync = event_index("_fsync_phase_c1_open_file", "/candidate.stage/result.json")
+            report_create = event_index("_create_new_phase_c1_file", "/candidate.stage/report.md")
+            report_sync = event_index("_fsync_phase_c1_open_file", "/candidate.stage/report.md")
+            stage_sync = event_index("_fsync_phase_c1_directory", "/candidate.stage")
+            rename = event_index("_validate_and_rename_phase_c1_directory", "/candidate")
+            parent_sync = event_index("_fsync_phase_c1_directory", "/emotion-state-004-phase-c1", 2)
+            candidate_validate = event_index("_validate_phase_c1_pair_at_path", "/candidate")
+            receipt_create = event_index("_create_new_phase_c1_file", "/candidate-receipt.stage")
+            receipt_sync = event_index("_fsync_phase_c1_open_file", "/candidate-receipt.stage")
+            receipt_rename = event_index("_rename_phase_c1_file_no_overwrite", "/candidate-receipt.json")
+            receipt_parent_sync = event_index("_fsync_phase_c1_directory", "/emotion-state-004-phase-c1", 3)
+            receipt_validate = event_index(
+                "_validate_phase_c1_candidate_receipt_at_path",
+                "/candidate-receipt.json",
+            )
+            canonical_result_create = event_index("_create_new_phase_c1_file", "/canonical.stage/result.json")
+            canonical_report_create = event_index("_create_new_phase_c1_file", "/canonical.stage/report.md")
+            canonical_result_sync = event_index("_fsync_phase_c1_open_file", "/canonical.stage/result.json")
+            canonical_report_sync = event_index("_fsync_phase_c1_open_file", "/canonical.stage/report.md")
+            canonical_stage_sync = event_index("_fsync_phase_c1_directory", "/canonical.stage")
+            canonical_rename = event_index("_validate_and_rename_phase_c1_directory", "/EMOTION-STATE-004-phase-c1-operational-signal-evidence-admission")
+            canonical_parent_sync = event_index("_fsync_phase_c1_directory", "/generated")
+            canonical_validate = event_index("_validate_phase_c1_pair_at_path", "/EMOTION-STATE-004-phase-c1-operational-signal-evidence-admission")
+            self.assertLess(result_create, result_sync)
+            self.assertLess(result_sync, report_create)
+            self.assertLess(report_create, report_sync)
+            self.assertLess(report_sync, stage_sync)
+            self.assertLess(stage_sync, rename)
+            self.assertLess(rename, parent_sync)
+            self.assertLess(parent_sync, candidate_validate)
+            self.assertLess(candidate_validate, receipt_create)
+            self.assertLess(receipt_create, receipt_sync)
+            self.assertLess(receipt_sync, receipt_rename)
+            self.assertLess(receipt_rename, receipt_parent_sync)
+            self.assertLess(receipt_parent_sync, receipt_validate)
+            self.assertLess(canonical_result_create, canonical_report_create)
+            self.assertLess(canonical_result_create, canonical_result_sync)
+            self.assertLess(canonical_result_sync, canonical_report_create)
+            self.assertLess(canonical_report_create, canonical_report_sync)
+            self.assertLess(canonical_report_sync, canonical_stage_sync)
+            self.assertLess(canonical_stage_sync, canonical_rename)
+            self.assertLess(canonical_rename, canonical_parent_sync)
+            self.assertLess(canonical_parent_sync, canonical_validate)
+            journal_stage_events = [
+                (index, status) for index, (name, path, status) in enumerate(events)
+                if name == "_create_new_phase_c1_file"
+                and path.replace("\\", "/").endswith("/publication-journal.stage")
+            ]
+            self.assertEqual(
+                [status for _index, status in journal_stage_events],
+                ["staging_candidate", "candidate_ready", "staging_canonical", "accepted"],
+            )
+            journal_stage_syncs = [
+                index for index, (name, path, _status) in enumerate(events)
+                if name == "_fsync_phase_c1_open_file"
+                and path.replace("\\", "/").endswith("/publication-journal.stage")
+            ]
+            journal_replaces = [
+                index for index, (name, path, _status) in enumerate(events)
+                if name == "_replace_phase_c1_file"
+                and path.replace("\\", "/").endswith("/publication-journal.json")
+            ]
+            ignored_root_syncs = [
+                (index, status) for index, (name, path, status) in enumerate(events)
+                if name == "_fsync_phase_c1_directory"
+                and path.replace("\\", "/").endswith("/emotion-state-004-phase-c1")
+            ]
+            self.assertGreaterEqual(len(journal_stage_syncs), 4)
+            self.assertGreaterEqual(len(journal_replaces), 4)
+            self.assertGreaterEqual(len(ignored_root_syncs), 6)
+            self.assertEqual(
+                [status for _index, status in ignored_root_syncs[:6]],
+                [
+                    "staging_candidate",
+                    "staging_candidate",
+                    "staging_candidate",
+                    "candidate_ready",
+                    "staging_canonical",
+                    "accepted",
+                ],
+            )
+            journal_root_sync_positions = (0, 3, 4, 5)
+            for ordinal, (stage_index, _status) in enumerate(journal_stage_events):
+                self.assertLess(stage_index, journal_stage_syncs[ordinal])
+                self.assertLess(journal_stage_syncs[ordinal], journal_replaces[ordinal])
+                self.assertLess(
+                    journal_replaces[ordinal],
+                    ignored_root_syncs[journal_root_sync_positions[ordinal]][0],
+                )
+            self.assertLess(ignored_root_syncs[0][0], result_create)
+            self.assertLess(receipt_validate, journal_stage_events[1][0])
+            self.assertLess(ignored_root_syncs[3][0], journal_stage_events[2][0])
+            self.assertLess(ignored_root_syncs[4][0], canonical_result_create)
+            accepted_stage_index = journal_stage_events[3][0]
+            self.assertLess(canonical_validate, accepted_stage_index)
+            cleanup_events = [
+                (index, path) for index, (name, path, _status) in enumerate(events)
+                if name == "_delete_verified_phase_c1_cleanup_target"
+            ]
+            self.assertEqual(
+                [Path(path).name for _index, path in cleanup_events],
+                ["candidate", "candidate-receipt.json", "candidate-validation.json", "candidate-review.json"],
+            )
+            self.assertGreater(cleanup_events[0][0], ignored_root_syncs[5][0])
+            self.assertFalse(self.candidate_root.exists())
+            self.assertFalse((self.ignored_root / "candidate.stage").exists())
+            self.assertFalse((self.ignored_root / "canonical.stage").exists())
+        finally:
+            self.stop_runner_context(paths_patch, head_patch)
+
+    def test_accepted_cleanup_rejects_a_link_without_deleting_its_target(self) -> None:
+        _paths, paths_patch, head_patch = self.runner_context()
+        try:
+            self.create_candidate()
+            self.seed_valid_candidate_validation_and_review_receipts()
+            prepared = runner._prepare_phase_c1_acceptance(
+                expected_head="a" * 40,
+                candidate_receipt_name="candidate-receipt.json",
+                candidate_validation_name="candidate-validation.json",
+                candidate_review_name="candidate-review.json",
+            )
+            with self.lock(prepared) as capability:
+                runner.finalize_phase_c1_publication(prepared, capability=capability)
+            outside = self.temp_root / "outside-candidate-receipt.json"
+            outside.write_bytes(b"do-not-delete")
+            self.create_test_reparse(
+                self.ignored_root / "candidate-receipt.json",
+                outside,
+            )
+            with self.assertRaises(runner.RunnerError):
+                runner._prepare_phase_c1_acceptance(
+                    expected_head="a" * 40,
+                    candidate_receipt_name="candidate-receipt.json",
+                    candidate_validation_name="candidate-validation.json",
+                    candidate_review_name="candidate-review.json",
+                )
+            self.assertEqual(outside.read_bytes(), b"do-not-delete")
+        finally:
+            self.stop_runner_context(paths_patch, head_patch)
+
+    def test_candidate_ready_missing_candidate_root_rejects_without_rewrite(self) -> None:
+        """A ready journal may revalidate a candidate, never reconstruct one."""
+        _paths, paths_patch, head_patch = self.runner_context()
+        try:
+            self.create_candidate()
+            journal_path = self.ignored_root / "publication-journal.json"
+            receipt_path = self.ignored_root / "candidate-receipt.json"
+            journal_before = journal_path.read_bytes()
+            receipt_before = receipt_path.read_bytes()
+            shutil.rmtree(self.candidate_root)
+
+            prepared = self.prepared_candidate()
+            with self.lock(prepared) as capability:
+                with self.assertRaises(runner.RunnerError):
+                    runner.finalize_phase_c1_publication(
+                        prepared, capability=capability,
+                    )
+
+            self.assertFalse(self.candidate_root.exists())
+            self.assertEqual(journal_path.read_bytes(), journal_before)
+            self.assertEqual(receipt_path.read_bytes(), receipt_before)
+        finally:
+            self.stop_runner_context(paths_patch, head_patch)
+
+    def test_accepted_missing_canonical_rejects_without_republication(self) -> None:
+        """An accepted journal is not authority to recreate a missing canonical pair."""
+        _paths, paths_patch, head_patch = self.runner_context()
+        try:
+            self.create_candidate()
+            self.seed_valid_candidate_validation_and_review_receipts()
+            candidate_snapshot = {
+                child.name: child.read_bytes() for child in self.candidate_root.iterdir()
+            }
+            receipt_snapshot = {
+                name: (self.ignored_root / name).read_bytes()
+                for name in (
+                    "candidate-receipt.json",
+                    "candidate-validation.json",
+                    "candidate-review.json",
+                )
+            }
+            prepared = self.prepare_acceptance()
+            with self.lock(prepared) as capability:
+                runner.finalize_phase_c1_publication(prepared, capability=capability)
+            journal_path = self.ignored_root / "publication-journal.json"
+            journal_before = journal_path.read_bytes()
+            shutil.rmtree(self.canonical_root)
+            self.candidate_root.mkdir()
+            for name, payload in candidate_snapshot.items():
+                (self.candidate_root / name).write_bytes(payload)
+            for name, payload in receipt_snapshot.items():
+                (self.ignored_root / name).write_bytes(payload)
+
+            with self.assertRaises(runner.RunnerError):
+                recovery = self.prepare_acceptance()
+                with self.lock(recovery) as capability:
+                    runner.finalize_phase_c1_publication(
+                        recovery, capability=capability,
+                    )
+
+            self.assertFalse(self.canonical_root.exists())
+            self.assertEqual(journal_path.read_bytes(), journal_before)
+            self.assertEqual(
+                {child.name: child.read_bytes() for child in self.candidate_root.iterdir()},
+                candidate_snapshot,
+            )
+            for name, payload in receipt_snapshot.items():
+                self.assertEqual((self.ignored_root / name).read_bytes(), payload)
+        finally:
+            self.stop_runner_context(paths_patch, head_patch)
+
+    def test_acceptance_rejects_staging_candidate_without_rewrite(self) -> None:
+        """Acceptance may begin only from a ready candidate journal transition."""
+        _paths, paths_patch, head_patch = self.runner_context()
+        try:
+            self.create_candidate()
+            self.seed_valid_candidate_validation_and_review_receipts()
+            journal_before = self.write_exact_journal(status="staging_candidate")
+            candidate_before = {
+                child.name: child.read_bytes() for child in self.candidate_root.iterdir()
+            }
+
+            with self.assertRaises(runner.RunnerError):
+                prepared = self.prepare_acceptance()
+                with self.lock(prepared) as capability:
+                    runner.finalize_phase_c1_publication(
+                        prepared, capability=capability,
+                    )
+
+            self.assertEqual(
+                (self.ignored_root / "publication-journal.json").read_bytes(),
+                journal_before,
+            )
+            self.assertFalse(self.canonical_root.exists())
+            self.assertEqual(
+                {child.name: child.read_bytes() for child in self.candidate_root.iterdir()},
+                candidate_before,
+            )
+        finally:
+            self.stop_runner_context(paths_patch, head_patch)
+
+    def test_journal_transition_matrix_rejects_illegal_edges(self) -> None:
+        """Journal status is a constrained state machine, not a free enum."""
+        cases = (
+            ("candidate_ready", "staging_candidate", False),
+            ("candidate_ready", "staging_canonical", False),
+            ("staging_candidate", "accepted", True),
+            ("accepted", "staging_canonical", True),
+        )
+        for source, target, acceptance_state in cases:
+            with self.subTest(source=source, target=target), self.isolated_mutation_root():
+                _paths, paths_patch, head_patch = self.runner_context()
+                try:
+                    self.create_candidate()
+                    self.seed_valid_candidate_validation_and_review_receipts()
+                    # Prepare only from the valid candidate-ready baseline.
+                    # The synthetic source journal below is the sole transition
+                    # fixture, so its invalidity cannot short-circuit preparation.
+                    prepared = (
+                        self.prepare_acceptance()
+                        if acceptance_state
+                        else self.prepared_candidate()
+                    )
+                    if source == "accepted":
+                        _predecessor, current = self.write_valid_journal_chain(
+                            final_status="accepted",
+                        )
+                    else:
+                        current = self.write_exact_journal(status=source)
+                    state = runner._state_for(prepared)
+                    journal_path = self.ignored_root / "publication-journal.json"
+                    with self.assertRaises(runner.RunnerError):
+                        runner._advance_journal(state, status=target, current=current)
+                    self.assertEqual(journal_path.read_bytes(), current)
+                finally:
+                    self.stop_runner_context(paths_patch, head_patch)
+
+    def test_accepted_cleanup_rechecks_every_retained_target_before_deletion(self) -> None:
+        """Accepted cleanup is allowed only for byte-verified transaction artifacts."""
+        mutations = (
+            "candidate_pair_tamper",
+            "candidate_unknown_child",
+            "candidate_receipt_tamper",
+            "candidate_validation_tamper",
+            "candidate_review_tamper",
+        )
+        for mutation in mutations:
+            with self.subTest(mutation=mutation), self.isolated_mutation_root():
+                _paths, paths_patch, head_patch = self.runner_context()
+                try:
+                    self.create_candidate()
+                    self.seed_valid_candidate_validation_and_review_receipts()
+                    candidate_snapshot = {
+                        child.name: child.read_bytes()
+                        for child in self.candidate_root.iterdir()
+                    }
+                    receipt_snapshot = {
+                        name: (self.ignored_root / name).read_bytes()
+                        for name in (
+                            "candidate-receipt.json",
+                            "candidate-validation.json",
+                            "candidate-review.json",
+                        )
+                    }
+                    prepared = self.prepare_acceptance()
+                    with self.lock(prepared) as capability:
+                        runner.finalize_phase_c1_publication(
+                            prepared, capability=capability,
+                        )
+                    journal_path = self.ignored_root / "publication-journal.json"
+                    journal_before = journal_path.read_bytes()
+                    self.candidate_root.mkdir()
+                    for name, payload in candidate_snapshot.items():
+                        (self.candidate_root / name).write_bytes(payload)
+                    for name, payload in receipt_snapshot.items():
+                        (self.ignored_root / name).write_bytes(payload)
+                    if mutation == "candidate_pair_tamper":
+                        (self.candidate_root / "report.md").write_bytes(b"tampered\n")
+                    elif mutation == "candidate_unknown_child":
+                        (self.candidate_root / "unexpected").write_bytes(b"unexpected\n")
+                    elif mutation == "candidate_receipt_tamper":
+                        (self.ignored_root / "candidate-receipt.json").write_bytes(
+                            b"tampered\n",
+                        )
+                    elif mutation == "candidate_validation_tamper":
+                        (self.ignored_root / "candidate-validation.json").write_bytes(
+                            b"tampered\n",
+                        )
+                    else:
+                        (self.ignored_root / "candidate-review.json").write_bytes(
+                            b"tampered\n",
+                        )
+                    candidate_before = {
+                        child.name: child.read_bytes()
+                        for child in self.candidate_root.iterdir()
+                    }
+                    receipts_before = {
+                        name: (self.ignored_root / name).read_bytes()
+                        for name in receipt_snapshot
+                    }
+
+                    with self.assertRaises(runner.RunnerError):
+                        recovery = self.prepare_acceptance()
+                        with self.lock(recovery) as capability:
+                            runner.finalize_phase_c1_publication(
+                                recovery, capability=capability,
+                            )
+
+                    self.assertEqual(journal_path.read_bytes(), journal_before)
+                    self.assertEqual(
+                        {child.name: child.read_bytes() for child in self.candidate_root.iterdir()},
+                        candidate_before,
+                    )
+                    for name, payload in receipts_before.items():
+                        self.assertEqual((self.ignored_root / name).read_bytes(), payload)
+                finally:
+                    self.stop_runner_context(paths_patch, head_patch)
+
+    @unittest.skipUnless(os.name == "nt", "Windows directory durability contract")
+    def test_windows_directory_fsync_uses_fail_closed_backend(self) -> None:
+        """Windows directory fsync must not silently become a successful no-op."""
+        # This is the owned test root, never a repository publication path. A
+        # mock-only dispatch assertion would not prove that the Win32 backend
+        # can acquire and flush a real directory handle.
+        runner._flush_phase_c1_windows_directory(self.temp_root)
+
+        backend = mock.Mock()
+        with mock.patch.object(
+            runner, "_flush_phase_c1_windows_directory", backend, create=True,
+        ):
+            runner._fsync_phase_c1_directory(self.temp_root)
+        backend.assert_called_once_with(self.temp_root)
+
+        with mock.patch.object(
+            runner,
+            "_flush_phase_c1_windows_directory",
+            side_effect=OSError("directory flush failed"),
+            create=True,
+        ):
+            with self.assertRaisesRegex(runner.RunnerError, "directory_fsync"):
+                runner._fsync_phase_c1_directory(self.temp_root)
+
+    def test_canonical_unknown_child_reparse_and_pair_mismatch_block_without_deletion(self) -> None:
+        for mutation in ("unknown_child", "reparse", "pair_mismatch", "disallowed_status"):
+            with self.subTest(mutation=mutation), self.isolated_mutation_root():
+                _paths, paths_patch, head_patch = self.runner_context()
+                try:
+                    self.create_candidate()
+                    self.seed_valid_candidate_validation_and_review_receipts()
+                    self.canonical_root.mkdir(parents=True)
+                    (self.canonical_root / "result.json").write_bytes(
+                        self.expected_candidate_result_bytes,
+                    )
+                    (self.canonical_root / "report.md").write_bytes(
+                        self.expected_candidate_report_bytes,
+                    )
+                    self.write_valid_journal_chain(final_status="staging_canonical")
+                    outside: Path | None = None
+                    if mutation == "unknown_child":
+                        (self.canonical_root / "unexpected").write_bytes(b"x")
+                    elif mutation == "reparse":
+                        outside = self.temp_root / "outside-canonical-child"
+                        outside.write_bytes(b"outside")
+                        self.create_test_reparse(
+                            self.canonical_root / "linked",
+                            outside,
+                        )
+                    elif mutation == "pair_mismatch":
+                        (self.canonical_root / "report.md").write_bytes(b"tampered\n")
+                    else:
+                        journal_path = self.ignored_root / "publication-journal.json"
+                        journal = phase_c1.load_json_strict(
+                            journal_path.read_bytes(), source="staging_canonical",
+                        )
+                        self.assertIsInstance(journal, dict)
+                        before_status = copy.deepcopy(journal)
+                        journal["status"] = "candidate_ready"
+                        journal["journal_content_sha256"] = ""
+                        journal["journal_content_sha256"] = self._sha256(
+                            phase_c1.canonical_json_bytes(journal),
+                        )
+                        self.assertEqual(
+                            {key: value for key, value in journal.items()
+                             if key not in {"status", "journal_content_sha256"}},
+                            {key: value for key, value in before_status.items()
+                             if key not in {"status", "journal_content_sha256"}},
+                        )
+                        journal_path.write_bytes(phase_c1.canonical_json_bytes(journal))
+                    canonical_snapshot = {
+                        path.name: self.snapshot_test_child(path)
+                        for path in self.canonical_root.iterdir()
+                    }
+                    outside_snapshot = None if outside is None else (
+                        outside.lstat().st_ino, outside.read_bytes(),
+                    )
+                    with self.assertRaises(runner.RunnerError):
+                        self.prepare_acceptance()
+                    after_snapshot = {
+                        path.name: self.snapshot_test_child(path)
+                        for path in self.canonical_root.iterdir()
+                    }
+                    self.assertEqual(after_snapshot, canonical_snapshot)
+                    if outside is not None:
+                        self.assertEqual(
+                            (outside.lstat().st_ino, outside.read_bytes()), outside_snapshot,
+                        )
+                finally:
+                    self.stop_runner_context(paths_patch, head_patch)
+
+    def test_canonical_parent_reparse_between_prepare_and_finalize_rejects_before_outside_write(
+        self,
+    ) -> None:
+        """A canonical target parent may never redirect a fixed-path publish."""
+        with self.isolated_mutation_root():
+            _paths, paths_patch, head_patch = self.runner_context()
+            saved_parent: Path | None = None
+            try:
+                self.create_candidate()
+                self.seed_valid_candidate_validation_and_review_receipts()
+                prepared = self.prepare_acceptance()
+                candidate_journal = (
+                    self.ignored_root / "publication-journal.json"
+                ).read_bytes()
+                candidate_result = (
+                    self.candidate_root / "result.json"
+                ).read_bytes()
+                candidate_report = (
+                    self.candidate_root / "report.md"
+                ).read_bytes()
+                candidate_receipt = (
+                    self.ignored_root / "candidate-receipt.json"
+                ).read_bytes()
+                parent = self.canonical_root.parent
+                saved_parent = parent.with_name("generated-saved")
+                outside = self.temp_root / "outside-generated"
+                os.replace(parent, saved_parent)
+                outside.mkdir()
+                self.create_test_reparse(parent, outside)
+
+                with self.lock(prepared) as capability:
+                    with self.assertRaises(runner.RunnerError):
+                        runner.finalize_phase_c1_publication(
+                            prepared,
+                            capability=capability,
+                        )
+
+                self.assertFalse(
+                    (outside / self.canonical_root.name).exists(),
+                )
+                self.assertFalse(self.canonical_root.exists())
+                self.assertFalse(
+                    (self.ignored_root / "canonical.stage").exists(),
+                )
+                self.assertEqual(
+                    (self.ignored_root / "publication-journal.json").read_bytes(),
+                    candidate_journal,
+                )
+                self.assertEqual(
+                    (self.candidate_root / "result.json").read_bytes(),
+                    candidate_result,
+                )
+                self.assertEqual(
+                    (self.candidate_root / "report.md").read_bytes(),
+                    candidate_report,
+                )
+                self.assertEqual(
+                    (self.ignored_root / "candidate-receipt.json").read_bytes(),
+                    candidate_receipt,
+                )
+            finally:
+                parent = self.canonical_root.parent
+                if saved_parent is not None and os.path.lexists(parent):
+                    os.rmdir(parent)
+                if saved_parent is not None and saved_parent.exists():
+                    os.replace(saved_parent, parent)
+                self.stop_runner_context(paths_patch, head_patch)
+
+    def test_held_destination_parent_authority_prevents_path_redirection(
+        self,
+    ) -> None:
+        """The rename destination is the held directory, never a replaced path."""
+        with self.isolated_mutation_root():
+            destination_parent = self.temp_root / "destination"
+            destination_parent.mkdir()
+            saved_parent = self.temp_root / "destination-saved"
+            outside_parent = self.temp_root / "outside-destination"
+            outside_parent.mkdir()
+            stage = self.temp_root / "canonical.stage"
+            stage.mkdir()
+            (stage / "result.json").write_bytes(b"result\n")
+            (stage / "report.md").write_bytes(b"report\n")
+            target = destination_parent / "canonical"
+            attempted = False
+            blocked = False
+            swapped = False
+
+            try:
+                with runner._held_phase_c1_directory_authority(
+                    destination_parent,
+                ) as authority:
+                    real_verify = (
+                        runner._verify_held_phase_c1_directory_authority
+                    )
+
+                    def attempt_path_redirection(
+                        active_authority: object,
+                    ) -> None:
+                        nonlocal attempted, blocked, swapped
+                        real_verify(active_authority)
+                        if attempted:
+                            return
+                        attempted = True
+                        try:
+                            os.replace(destination_parent, saved_parent)
+                        except OSError:
+                            blocked = True
+                            return
+                        swapped = True
+                        if os.name == "nt":
+                            self.create_test_reparse(
+                                destination_parent,
+                                outside_parent,
+                            )
+                        else:
+                            os.symlink(
+                                outside_parent,
+                                destination_parent,
+                                target_is_directory=True,
+                            )
+
+                    with mock.patch.object(
+                        runner,
+                        "_verify_held_phase_c1_directory_authority",
+                        side_effect=attempt_path_redirection,
+                    ):
+                        if os.name == "nt":
+                            runner._rename_phase_c1_directory_no_overwrite(
+                                target,
+                                stage,
+                                authority=authority,
+                            )
+                        else:
+                            with self.assertRaises(runner.RunnerError):
+                                runner._rename_phase_c1_directory_no_overwrite(
+                                    target,
+                                    stage,
+                                    authority=authority,
+                                )
+
+                self.assertTrue(attempted)
+                self.assertFalse((outside_parent / target.name).exists())
+                if os.name == "nt":
+                    self.assertTrue(blocked)
+                    self.assertFalse(swapped)
+                    self.assertTrue(target.is_dir())
+                    self.assertFalse(stage.exists())
+                else:
+                    self.assertFalse(blocked)
+                    self.assertTrue(swapped)
+                    self.assertTrue((saved_parent / target.name).is_dir())
+                    self.assertFalse(stage.exists())
+            finally:
+                if swapped and os.path.lexists(destination_parent):
+                    if destination_parent.is_symlink():
+                        destination_parent.unlink()
+                    else:
+                        os.rmdir(destination_parent)
+                if swapped and saved_parent.exists():
+                    os.replace(saved_parent, destination_parent)
+
+    def test_authority_rename_is_atomic_no_overwrite_at_actual_seam(
+        self,
+    ) -> None:
+        """A target raced into existence survives the actual rename attempt."""
+        with self.isolated_mutation_root():
+            destination_parent = self.temp_root / "destination"
+            destination_parent.mkdir()
+            stage = self.temp_root / "candidate.stage"
+            stage.mkdir()
+            result_bytes = b"result\n"
+            report_bytes = b"report\n"
+            (stage / "result.json").write_bytes(result_bytes)
+            (stage / "report.md").write_bytes(report_bytes)
+            target = destination_parent / "candidate"
+            raced_bytes = b"raced target\n"
+            raced_identity: tuple[int, int] | None = None
+
+            with runner._held_phase_c1_directory_authority(
+                destination_parent,
+            ) as authority:
+                real_rename = runner._rename_phase_c1_directory_at_authority
+
+                def create_target_at_rename_seam(
+                    source: Path,
+                    destination_name: str,
+                    *,
+                    authority: object,
+                ) -> None:
+                    nonlocal raced_identity
+                    target.write_bytes(raced_bytes)
+                    metadata = target.lstat()
+                    raced_identity = (metadata.st_dev, metadata.st_ino)
+                    real_rename(
+                        source,
+                        destination_name,
+                        authority=authority,
+                    )
+
+                with mock.patch.object(
+                    runner,
+                    "_rename_phase_c1_directory_at_authority",
+                    side_effect=create_target_at_rename_seam,
+                ):
+                    with self.assertRaises(runner.RunnerError) as raised:
+                        runner._rename_phase_c1_directory_no_overwrite(
+                            target,
+                            stage,
+                            authority=authority,
+                        )
+
+            self.assertEqual(raised.exception.code, "target_exists")
+            self.assertIsNotNone(raced_identity)
+            metadata = target.lstat()
+            self.assertEqual(
+                (metadata.st_dev, metadata.st_ino),
+                raced_identity,
+            )
+            self.assertEqual(target.read_bytes(), raced_bytes)
+            self.assertEqual(
+                (stage / "result.json").read_bytes(),
+                result_bytes,
+            )
+            self.assertEqual(
+                (stage / "report.md").read_bytes(),
+                report_bytes,
+            )
+
+    def test_journal_commit_binds_held_stage_and_predecessor_at_actual_seam(
+        self,
+    ) -> None:
+        """Journal replacement is bound to both verified file identities."""
+        for mutation in ("stage", "predecessor"):
+            with self.subTest(mutation=mutation), self.isolated_mutation_root():
+                parent = self.temp_root / "publication"
+                parent.mkdir()
+                journal = parent / "publication-journal.json"
+                stage = parent / "publication-journal.stage"
+                prior_bytes = b"prior journal\n"
+                next_bytes = b"next journal\n"
+                journal.write_bytes(prior_bytes)
+                stage.write_bytes(next_bytes)
+                prior_identity = (
+                    journal.lstat().st_dev,
+                    journal.lstat().st_ino,
+                )
+                moved = parent / f"{mutation}-moved"
+                replacement_bytes = f"raced {mutation}\n".encode("ascii")
+                attempted = False
+                blocked = False
+                swapped = False
+
+                with runner._held_phase_c1_directory_authority(
+                    parent,
+                ) as parent_authority, runner._held_phase_c1_regular_file_authority(
+                    stage,
+                    expected_bytes=next_bytes,
+                ) as stage_authority, runner._held_phase_c1_regular_file_authority(
+                    journal,
+                    expected_bytes=prior_bytes,
+                ) as predecessor_authority:
+                    real_commit = (
+                        runner._commit_phase_c1_regular_file_at_authority
+                    )
+
+                    def replace_entry_at_commit_seam(
+                        active_stage: object,
+                        destination_name: str,
+                        *,
+                        parent_authority: object,
+                        replace: bool,
+                        predecessor_authority: object | None,
+                    ) -> None:
+                        nonlocal attempted, blocked, swapped
+                        attempted = True
+                        raced_path = stage if mutation == "stage" else journal
+                        try:
+                            os.replace(raced_path, moved)
+                        except OSError:
+                            blocked = True
+                        else:
+                            swapped = True
+                            raced_path.write_bytes(replacement_bytes)
+                        try:
+                            real_commit(
+                                active_stage,
+                                destination_name,
+                                parent_authority=parent_authority,
+                                replace=replace,
+                                predecessor_authority=predecessor_authority,
+                            )
+                        finally:
+                            if swapped:
+                                raced_path.unlink(missing_ok=True)
+                                os.replace(moved, raced_path)
+
+                    with mock.patch.object(
+                        runner,
+                        "_commit_phase_c1_regular_file_at_authority",
+                        side_effect=replace_entry_at_commit_seam,
+                    ):
+                        if os.name == "nt":
+                            runner._publish_phase_c1_journal_stage_at_authority(
+                                journal,
+                                stage,
+                                expected_payload=next_bytes,
+                                parent_authority=parent_authority,
+                                stage_authority=stage_authority,
+                                predecessor_authority=predecessor_authority,
+                            )
+                        else:
+                            with self.assertRaises(runner.RunnerError):
+                                runner._publish_phase_c1_journal_stage_at_authority(
+                                    journal,
+                                    stage,
+                                    expected_payload=next_bytes,
+                                    parent_authority=parent_authority,
+                                    stage_authority=stage_authority,
+                                    predecessor_authority=predecessor_authority,
+                                )
+
+                self.assertTrue(attempted)
+                if os.name == "nt":
+                    self.assertTrue(blocked)
+                    self.assertFalse(swapped)
+                    self.assertEqual(journal.read_bytes(), next_bytes)
+                    self.assertFalse(stage.exists())
+                else:
+                    self.assertFalse(blocked)
+                    self.assertTrue(swapped)
+                    self.assertEqual(journal.read_bytes(), prior_bytes)
+                    self.assertEqual(
+                        (journal.lstat().st_dev, journal.lstat().st_ino),
+                        prior_identity,
+                    )
+                    self.assertEqual(stage.read_bytes(), next_bytes)
+
+    def test_receipt_commit_binds_held_stage_at_actual_seam(
+        self,
+    ) -> None:
+        """A swapped verified receipt stage cannot become the final receipt."""
+        with self.isolated_mutation_root():
+            parent = self.temp_root / "publication"
+            parent.mkdir()
+            receipt = parent / "candidate-receipt.json"
+            stage = parent / "candidate-receipt.stage"
+            receipt_bytes = b"candidate receipt\n"
+            replacement_bytes = b"raced receipt stage\n"
+            stage.write_bytes(receipt_bytes)
+            stage_identity = (stage.lstat().st_dev, stage.lstat().st_ino)
+            moved = parent / "candidate-receipt.original-stage"
+            attempted = False
+            blocked = False
+            swapped = False
+
+            with runner._held_phase_c1_directory_authority(
+                parent,
+            ) as parent_authority, runner._held_phase_c1_regular_file_authority(
+                stage,
+                expected_bytes=receipt_bytes,
+            ) as stage_authority:
+                real_commit = runner._commit_phase_c1_regular_file_at_authority
+
+                def replace_stage_at_commit_seam(
+                    active_stage: object,
+                    destination_name: str,
+                    *,
+                    parent_authority: object,
+                    replace: bool,
+                    predecessor_authority: object | None,
+                ) -> None:
+                    nonlocal attempted, blocked, swapped
+                    attempted = True
+                    try:
+                        os.replace(stage, moved)
+                    except OSError:
+                        blocked = True
+                    else:
+                        swapped = True
+                        stage.write_bytes(replacement_bytes)
+                    try:
+                        real_commit(
+                            active_stage,
+                            destination_name,
+                            parent_authority=parent_authority,
+                            replace=replace,
+                            predecessor_authority=predecessor_authority,
+                        )
+                    finally:
+                        if swapped:
+                            stage.unlink(missing_ok=True)
+                            os.replace(moved, stage)
+
+                with mock.patch.object(
+                    runner,
+                    "_commit_phase_c1_regular_file_at_authority",
+                    side_effect=replace_stage_at_commit_seam,
+                ):
+                    if os.name == "nt":
+                        runner._publish_phase_c1_receipt_stage_at_authority(
+                            receipt,
+                            stage,
+                            expected_payload=receipt_bytes,
+                            parent_authority=parent_authority,
+                            stage_authority=stage_authority,
+                        )
+                    else:
+                        with self.assertRaises(runner.RunnerError):
+                            runner._publish_phase_c1_receipt_stage_at_authority(
+                                receipt,
+                                stage,
+                                expected_payload=receipt_bytes,
+                                parent_authority=parent_authority,
+                                stage_authority=stage_authority,
+                            )
+
+            self.assertTrue(attempted)
+            if os.name == "nt":
+                self.assertTrue(blocked)
+                self.assertFalse(swapped)
+                self.assertEqual(receipt.read_bytes(), receipt_bytes)
+                self.assertFalse(stage.exists())
+            else:
+                self.assertFalse(blocked)
+                self.assertTrue(swapped)
+                self.assertFalse(receipt.exists())
+                self.assertEqual(stage.read_bytes(), receipt_bytes)
+                self.assertEqual(
+                    (stage.lstat().st_dev, stage.lstat().st_ino),
+                    stage_identity,
+                )
+
+    def test_receipt_commit_is_atomic_no_overwrite_at_actual_seam(
+        self,
+    ) -> None:
+        """A raced final receipt survives and the verified stage remains valid."""
+        with self.isolated_mutation_root():
+            parent = self.temp_root / "publication"
+            parent.mkdir()
+            receipt = parent / "candidate-receipt.json"
+            stage = parent / "candidate-receipt.stage"
+            receipt_bytes = b"candidate receipt\n"
+            raced_bytes = b"raced final receipt\n"
+            stage.write_bytes(receipt_bytes)
+            raced_identity: tuple[int, int] | None = None
+
+            with runner._held_phase_c1_directory_authority(
+                parent,
+            ) as parent_authority, runner._held_phase_c1_regular_file_authority(
+                stage,
+                expected_bytes=receipt_bytes,
+            ) as stage_authority:
+                real_commit = runner._commit_phase_c1_regular_file_at_authority
+
+                def create_final_at_commit_seam(
+                    active_stage: object,
+                    destination_name: str,
+                    *,
+                    parent_authority: object,
+                    replace: bool,
+                    predecessor_authority: object | None,
+                ) -> None:
+                    nonlocal raced_identity
+                    receipt.write_bytes(raced_bytes)
+                    metadata = receipt.lstat()
+                    raced_identity = (metadata.st_dev, metadata.st_ino)
+                    real_commit(
+                        active_stage,
+                        destination_name,
+                        parent_authority=parent_authority,
+                        replace=replace,
+                        predecessor_authority=predecessor_authority,
+                    )
+
+                with mock.patch.object(
+                    runner,
+                    "_commit_phase_c1_regular_file_at_authority",
+                    side_effect=create_final_at_commit_seam,
+                ):
+                    with self.assertRaises(runner.RunnerError) as raised:
+                        runner._publish_phase_c1_receipt_stage_at_authority(
+                            receipt,
+                            stage,
+                            expected_payload=receipt_bytes,
+                            parent_authority=parent_authority,
+                            stage_authority=stage_authority,
+                        )
+
+            self.assertEqual(raised.exception.code, "target_exists")
+            self.assertIsNotNone(raced_identity)
+            metadata = receipt.lstat()
+            self.assertEqual(
+                (metadata.st_dev, metadata.st_ino),
+                raced_identity,
+            )
+            self.assertEqual(receipt.read_bytes(), raced_bytes)
+            self.assertEqual(stage.read_bytes(), receipt_bytes)
+
+    def test_finalize_holds_ignored_root_authority_before_any_transaction_write(
+        self,
+    ) -> None:
+        """Journal, receipt, and pair mutations share one held root authority."""
+        with self.isolated_mutation_root():
+            _paths, paths_patch, head_patch = self.runner_context()
+            saved_root: Path | None = None
+            swapped = False
+            try:
+                prepared = self.prepared_candidate()
+                outside = self.temp_root / "outside-publication"
+                outside.mkdir()
+                saved_root = self.ignored_root.with_name(
+                    "emotion-state-004-phase-c1-saved",
+                )
+                attempted = False
+                blocked = False
+                real_verify = (
+                    runner._verify_held_phase_c1_directory_authority
+                )
+
+                def attempt_ignored_root_redirection(
+                    authority: object,
+                ) -> None:
+                    nonlocal attempted, blocked, swapped
+                    real_verify(authority)
+                    if attempted or authority.path != self.ignored_root:
+                        return
+                    attempted = True
+                    self.assertFalse(
+                        (self.ignored_root / "publication-journal.json").exists(),
+                    )
+                    self.assertFalse(
+                        (self.ignored_root / "candidate-receipt.json").exists(),
+                    )
+                    self.assertFalse(self.candidate_root.exists())
+                    try:
+                        os.replace(self.ignored_root, saved_root)
+                    except OSError:
+                        blocked = True
+                        return
+                    swapped = True
+                    if os.name == "nt":
+                        self.create_test_reparse(self.ignored_root, outside)
+                    else:
+                        os.symlink(
+                            outside,
+                            self.ignored_root,
+                            target_is_directory=True,
+                        )
+
+                with self.lock(prepared) as capability, mock.patch.object(
+                    runner,
+                    "_verify_held_phase_c1_directory_authority",
+                    side_effect=attempt_ignored_root_redirection,
+                ):
+                    if os.name == "nt":
+                        receipt = runner.finalize_phase_c1_publication(
+                            prepared,
+                            capability=capability,
+                        )
+                        self.assertEqual(receipt.status, "candidate_ready")
+                    else:
+                        with self.assertRaises(runner.RunnerError):
+                            runner.finalize_phase_c1_publication(
+                                prepared,
+                                capability=capability,
+                            )
+
+                self.assertTrue(attempted)
+                self.assertFalse(
+                    (
+                        outside / "publication-journal.json"
+                    ).exists(),
+                )
+                self.assertFalse(
+                    (outside / "candidate-receipt.json").exists(),
+                )
+                self.assertFalse((outside / "candidate").exists())
+                if os.name == "nt":
+                    self.assertTrue(blocked)
+                    self.assertFalse(swapped)
+                else:
+                    self.assertFalse(blocked)
+                    self.assertTrue(swapped)
+            finally:
+                if saved_root is not None and os.path.lexists(self.ignored_root):
+                    if self.ignored_root.is_symlink():
+                        self.ignored_root.unlink()
+                    elif swapped:
+                        os.rmdir(self.ignored_root)
+                if (
+                    saved_root is not None
+                    and saved_root.exists()
+                    and not self.ignored_root.exists()
+                ):
+                    os.replace(saved_root, self.ignored_root)
+                self.stop_runner_context(paths_patch, head_patch)
+
+    def test_post_prepare_receipt_changes_reject_before_canonical_acceptance(
+        self,
+    ) -> None:
+        """Acceptance must re-read both independent receipts under its lock."""
+        mutations = (
+            ("candidate-validation.json", "tamper"),
+            ("candidate-validation.json", "delete"),
+            ("candidate-review.json", "tamper"),
+            ("candidate-review.json", "delete"),
+        )
+        for name, mutation in mutations:
+            with self.subTest(name=name, mutation=mutation), self.isolated_mutation_root():
+                _paths, paths_patch, head_patch = self.runner_context()
+                try:
+                    self.create_candidate()
+                    self.seed_valid_candidate_validation_and_review_receipts()
+                    candidate_journal = (
+                        self.ignored_root / "publication-journal.json"
+                    ).read_bytes()
+                    candidate_result = (
+                        self.candidate_root / "result.json"
+                    ).read_bytes()
+                    candidate_report = (
+                        self.candidate_root / "report.md"
+                    ).read_bytes()
+                    candidate_receipt = (
+                        self.ignored_root / "candidate-receipt.json"
+                    ).read_bytes()
+                    prepared = self.prepare_acceptance()
+                    receipt_path = self.ignored_root / name
+                    if mutation == "tamper":
+                        receipt_path.write_bytes(b"tampered\n")
+                    else:
+                        receipt_path.unlink()
+
+                    with self.lock(prepared) as capability:
+                        with self.assertRaises(runner.RunnerError):
+                            runner.finalize_phase_c1_publication(
+                                prepared,
+                                capability=capability,
+                            )
+
+                    self.assertFalse(self.canonical_root.exists())
+                    self.assertFalse(
+                        (self.ignored_root / "canonical.stage").exists(),
+                    )
+                    self.assertEqual(
+                        (self.ignored_root / "publication-journal.json").read_bytes(),
+                        candidate_journal,
+                    )
+                    self.assertEqual(
+                        (self.candidate_root / "result.json").read_bytes(),
+                        candidate_result,
+                    )
+                    self.assertEqual(
+                        (self.candidate_root / "report.md").read_bytes(),
+                        candidate_report,
+                    )
+                    self.assertEqual(
+                        (self.ignored_root / "candidate-receipt.json").read_bytes(),
+                        candidate_receipt,
+                    )
+                finally:
+                    self.stop_runner_context(paths_patch, head_patch)
+
+    def test_unjournaled_byte_exact_candidate_root_is_not_adopted(self) -> None:
+        """Only a verified staging journal can authorize candidate recovery."""
+        with self.isolated_mutation_root():
+            _paths, paths_patch, head_patch = self.runner_context()
+            try:
+                self.candidate_root.mkdir(parents=True)
+                (self.candidate_root / "result.json").write_bytes(
+                    self.expected_candidate_result_bytes,
+                )
+                (self.candidate_root / "report.md").write_bytes(
+                    self.expected_candidate_report_bytes,
+                )
+                original_result = (self.candidate_root / "result.json").read_bytes()
+                original_report = (self.candidate_root / "report.md").read_bytes()
+                prepared = self.prepared_candidate()
+
+                with self.lock(prepared) as capability:
+                    with self.assertRaises(runner.RunnerError):
+                        runner.finalize_phase_c1_publication(
+                            prepared,
+                            capability=capability,
+                        )
+
+                self.assertEqual(
+                    (self.candidate_root / "result.json").read_bytes(),
+                    original_result,
+                )
+                self.assertEqual(
+                    (self.candidate_root / "report.md").read_bytes(),
+                    original_report,
+                )
+                self.assertFalse(
+                    (self.ignored_root / "publication-journal.json").exists(),
+                )
+                self.assertFalse(
+                    (self.ignored_root / "candidate-receipt.json").exists(),
+                )
+            finally:
+                self.stop_runner_context(paths_patch, head_patch)
+
+    def test_pair_stage_link_at_first_child_create_never_writes_link_target(
+        self,
+    ) -> None:
+        """A replaced pair stage must not redirect either pair child."""
+        with self.isolated_mutation_root():
+            paths, paths_patch, head_patch = self.runner_context()
+            redirected = self.temp_root / "redirected-pair-stage"
+            redirected.mkdir()
+            replaced = False
+            try:
+                prepared = self.prepared_candidate()
+                original_create = runner._create_new_phase_c1_file
+
+                def replace_pair_stage_before_first_child(
+                    path: Path,
+                    payload: bytes,
+                ) -> object:
+                    nonlocal replaced
+                    candidate_path = Path(path)
+                    if (
+                        not replaced
+                        and candidate_path.parent == paths.candidate_stage_path
+                    ):
+                        replaced = True
+                        shutil.rmtree(paths.candidate_stage_path)
+                        self.create_test_reparse(
+                            paths.candidate_stage_path,
+                            redirected,
+                        )
+                    return original_create(path, payload)
+
+                with mock.patch.object(
+                    runner,
+                    "_create_new_phase_c1_file",
+                    side_effect=replace_pair_stage_before_first_child,
+                ), self.lock(prepared) as capability:
+                    with self.assertRaises(runner.RunnerError):
+                        runner.finalize_phase_c1_publication(
+                            prepared,
+                            capability=capability,
+                        )
+
+                self.assertTrue(replaced)
+                self.assertFalse((redirected / "result.json").exists())
+                self.assertFalse((redirected / "report.md").exists())
+            finally:
+                if os.path.lexists(paths.candidate_stage_path):
+                    metadata = paths.candidate_stage_path.lstat()
+                    if stat.S_ISLNK(metadata.st_mode):
+                        paths.candidate_stage_path.unlink()
+                    else:
+                        os.rmdir(paths.candidate_stage_path)
+                self.stop_runner_context(paths_patch, head_patch)
+
+    def test_cleanup_receipt_changed_at_delete_start_is_retained(
+        self,
+    ) -> None:
+        """Cleanup must re-bind each receipt at the delete boundary."""
+        receipt_names = (
+            "candidate-receipt.json",
+            "candidate-validation.json",
+            "candidate-review.json",
+        )
+        for receipt_name in receipt_names:
+            with self.subTest(receipt_name=receipt_name), self.isolated_mutation_root():
+                _paths, paths_patch, head_patch = self.runner_context()
+                changed = b"changed-at-cleanup-boundary\n"
+                try:
+                    self.create_candidate()
+                    self.seed_valid_candidate_validation_and_review_receipts()
+                    prepared = self.prepare_acceptance()
+                    target = self.ignored_root / receipt_name
+                    original_delete = (
+                        runner._delete_verified_phase_c1_cleanup_target
+                    )
+                    mutated = False
+
+                    def change_receipt_at_delete_start(
+                        paths: object,
+                        deleting: Path,
+                        **kwargs: object,
+                    ) -> object:
+                        nonlocal mutated
+                        if Path(deleting) == target:
+                            mutated = True
+                            target.write_bytes(changed)
+                        return original_delete(paths, deleting, **kwargs)
+
+                    with mock.patch.object(
+                        runner,
+                        "_delete_verified_phase_c1_cleanup_target",
+                        side_effect=change_receipt_at_delete_start,
+                    ), self.lock(prepared) as capability:
+                        with self.assertRaises(runner.RunnerError):
+                            runner.finalize_phase_c1_publication(
+                                prepared,
+                                capability=capability,
+                            )
+
+                    self.assertTrue(mutated)
+                    self.assertTrue(target.is_file())
+                    self.assertEqual(target.read_bytes(), changed)
+                finally:
+                    self.stop_runner_context(paths_patch, head_patch)
+
+    def test_committed_file_swap_during_parent_flush_preserves_a_valid_state(
+        self,
+    ) -> None:
+        """Parent flush cannot validate a substituted committed journal or receipt."""
+        for artifact in ("journal", "receipt"):
+            with self.subTest(artifact=artifact), self.isolated_mutation_root():
+                paths, paths_patch, head_patch = self.runner_context()
+                moved = self.ignored_root / f"{artifact}-moved"
+                replacement = f"substituted {artifact}\n".encode("ascii")
+                attempted = False
+                blocked = False
+                swapped = False
+                prior_journal: bytes | None = None
+                try:
+                    prepared = self.prepared_candidate()
+                    state = runner._state_for(prepared)
+                    expected_receipt = state.candidate_receipt_bytes
+                    original_fsync = runner._fsync_phase_c1_directory
+
+                    def swap_committed_file_at_parent_flush(
+                        path: Path,
+                        *args: object,
+                        **kwargs: object,
+                    ) -> object:
+                        nonlocal attempted, blocked, swapped, prior_journal
+                        candidate_path = Path(path)
+                        journal = paths.publication_journal_path
+                        receipt = paths.candidate_receipt_path
+                        if candidate_path == paths.ignored_root and journal.is_file():
+                            journal_payload = phase_c1.load_json_strict(
+                                journal.read_bytes(), source="flush_journal",
+                            )
+                            self.assertIsInstance(journal_payload, dict)
+                            status = journal_payload["status"]
+                            if status == "staging_candidate":
+                                prior_journal = journal.read_bytes()
+                            target = (
+                                journal
+                                if artifact == "journal" and status == "candidate_ready"
+                                else receipt
+                                if artifact == "receipt" and receipt.is_file()
+                                else None
+                            )
+                            if target is not None and not attempted:
+                                attempted = True
+                                try:
+                                    os.replace(target, moved)
+                                except OSError:
+                                    blocked = True
+                                else:
+                                    swapped = True
+                                    target.write_bytes(replacement)
+                        return original_fsync(path, *args, **kwargs)
+
+                    with mock.patch.object(
+                        runner,
+                        "_fsync_phase_c1_directory",
+                        side_effect=swap_committed_file_at_parent_flush,
+                    ), self.lock(prepared) as capability:
+                        with self.assertRaises(runner.RunnerError):
+                            runner.finalize_phase_c1_publication(
+                                prepared,
+                                capability=capability,
+                            )
+
+                    self.assertTrue(attempted)
+                    if blocked:
+                        self.assertFalse(swapped)
+                        self.assertTrue(paths.candidate_root.is_dir())
+                        self.assertEqual(
+                            paths.candidate_receipt_path.read_bytes(),
+                            expected_receipt,
+                        )
+                        journal_payload = phase_c1.load_json_strict(
+                            paths.publication_journal_path.read_bytes(),
+                            source="blocked_journal",
+                        )
+                        self.assertEqual(journal_payload["status"], "candidate_ready")
+                    else:
+                        self.assertTrue(swapped)
+                        self.assertFalse(blocked)
+                        self.assertTrue(paths.candidate_root.is_dir())
+                        if artifact == "journal":
+                            self.assertIsNotNone(prior_journal)
+                            self.assertNotEqual(
+                                paths.publication_journal_path.read_bytes(),
+                                replacement,
+                            )
+                        else:
+                            receipt_path = paths.candidate_receipt_path
+                            self.assertNotEqual(
+                                receipt_path.read_bytes(),
+                                replacement,
+                            )
+                            self.assertEqual(
+                                paths.publication_journal_path.read_bytes(),
+                                prior_journal,
+                            )
+                finally:
+                    self.stop_runner_context(paths_patch, head_patch)
+
+    def test_all_19_runner_paths_reject_topology_mutation_before_external_access(
+        self,
+    ) -> None:
+        expected_fields = (
+            "project_root",
+            "protocol_path",
+            "search_ledger_path",
+            "source_ledger_path",
+            "source_review_path",
+            "ignored_root",
+            "candidate_root",
+            "candidate_receipt_path",
+            "candidate_receipt_stage_path",
+            "candidate_validation_path",
+            "candidate_validation_stage_path",
+            "candidate_review_path",
+            "candidate_review_stage_path",
+            "publication_lock_path",
+            "publication_journal_path",
+            "publication_journal_stage_path",
+            "candidate_stage_path",
+            "canonical_stage_path",
+            "canonical_root",
+        )
+        self.assertEqual(
+            tuple(field.name for field in fields(runner.PhaseC1RunnerPaths)),
+            expected_fields,
+        )
+        for field_name in expected_fields:
+            with (
+                self.subTest(field=field_name),
+                self.isolated_mutation_root(),
+            ):
+                valid_paths = self.build_explicit_temp_runner_paths(
+                    self.temp_root,
+                )
+                if field_name == "project_root":
+                    wrong_path = self.temp_root / "alternate-project"
+                    wrong_path.mkdir()
+                else:
+                    wrong_path = (
+                        self.temp_root
+                        / "wrong-topology"
+                        / field_name
+                    )
+                mutated_paths = replace(
+                    valid_paths,
+                    **{field_name: wrong_path},
+                )
+                external_accesses: list[str] = []
+
+                def observe_repository_head() -> str:
+                    external_accesses.append("repository_head")
+                    return "a" * 40
+
+                def observe_validator_state(
+                    expected_head: str,
+                ) -> dict[str, object]:
+                    external_accesses.append("validator_state")
+                    return {
+                        "repository_head": expected_head,
+                        "validator_blob_id": None,
+                        "is_clean": False,
+                    }
+
+                with mock.patch.object(
+                    runner,
+                    "PRODUCTION_PATHS",
+                    mutated_paths,
+                ), mock.patch.object(
+                    runner,
+                    "_current_repository_head",
+                    side_effect=observe_repository_head,
+                ), mock.patch.object(
+                    runner,
+                    "_resolve_phase_c1_validator_state",
+                    side_effect=observe_validator_state,
+                ):
+                    with self.assertRaises(runner.RunnerError):
+                        runner.prepare_phase_c1_candidate(
+                            expected_head="a" * 40,
+                        )
+
+                self.assertEqual(
+                    external_accesses,
+                    [],
+                    msg=(
+                        f"{field_name} topology mutation reached external "
+                        f"access: {external_accesses}"
+                    ),
+                )
+
+    @unittest.skipUnless(os.name == "posix", "POSIX authority regression")
+    def test_posix_verified_stage_delete_retains_replacement_at_mutation_seam(
+        self,
+    ) -> None:
+        for artifact in ("pair", "journal"):
+            with (
+                self.subTest(artifact=artifact),
+                self.isolated_mutation_root(),
+            ):
+                paths, paths_patch, head_patch = self.runner_context()
+                moved = self.temp_root / f"validated-{artifact}-stage"
+                changed_result = b"replacement-result\n"
+                changed_report = b"replacement-report\n"
+                changed_journal = b"replacement-journal\n"
+                mutated = False
+                publication_error: runner.RunnerError | None = None
+                try:
+                    if artifact == "pair":
+                        prepared = self.prepared_candidate()
+                        target = paths.candidate_stage_path
+                        self.write_pair_directory(target)
+                    else:
+                        self.create_candidate()
+                        prepared = self.prepared_candidate()
+                        predecessor = self.write_exact_journal(
+                            status="staging_candidate",
+                        )
+                        transition = self.write_exact_journal(
+                            status="candidate_ready",
+                            sequence=1,
+                            previous=predecessor,
+                        )
+                        paths.publication_journal_path.write_bytes(
+                            predecessor,
+                        )
+                        target = paths.publication_journal_stage_path
+                        target.write_bytes(transition)
+
+                    original_delete = runner._delete_verified_stage
+
+                    def substitute_validated_stage(
+                        path: Path,
+                        **kwargs: object,
+                    ) -> None:
+                        nonlocal mutated
+                        deleting = Path(path)
+                        if deleting == target and not mutated:
+                            mutated = True
+                            os.replace(deleting, moved)
+                            if artifact == "pair":
+                                deleting.mkdir()
+                                (deleting / "result.json").write_bytes(
+                                    changed_result,
+                                )
+                                (deleting / "report.md").write_bytes(
+                                    changed_report,
+                                )
+                            else:
+                                deleting.write_bytes(changed_journal)
+                        original_delete(deleting, **kwargs)
+
+                    with mock.patch.object(
+                        runner,
+                        "_delete_verified_stage",
+                        side_effect=substitute_validated_stage,
+                    ), self.lock(prepared) as capability:
+                        try:
+                            runner.finalize_phase_c1_publication(
+                                prepared,
+                                capability=capability,
+                            )
+                        except runner.RunnerError as exc:
+                            publication_error = exc
+
+                    self.assertTrue(
+                        mutated,
+                        msg=f"{artifact} deletion seam was not exercised",
+                    )
+                    if artifact == "pair":
+                        self.assertTrue(
+                            target.is_dir(),
+                            msg=(
+                                "validated pair-stage replacement was "
+                                "deleted"
+                            ),
+                        )
+                        self.assertEqual(
+                            (target / "result.json").read_bytes(),
+                            changed_result,
+                        )
+                        self.assertEqual(
+                            (target / "report.md").read_bytes(),
+                            changed_report,
+                        )
+                    else:
+                        self.assertTrue(
+                            target.is_file(),
+                            msg=(
+                                "validated journal-stage replacement was "
+                                "deleted"
+                            ),
+                        )
+                        self.assertEqual(
+                            target.read_bytes(),
+                            changed_journal,
+                        )
+                    self.assertIsNotNone(
+                        publication_error,
+                        msg=(
+                            f"{artifact} replacement was accepted after "
+                            "validated-stage substitution"
+                        ),
+                    )
+                finally:
+                    self.stop_runner_context(paths_patch, head_patch)
+
+    @unittest.skipUnless(os.name == "posix", "POSIX authority regression")
+    def test_posix_pair_stage_rebind_before_authority_cannot_redirect_first_child(
+        self,
+    ) -> None:
+        with self.isolated_mutation_root():
+            paths, paths_patch, head_patch = self.runner_context()
+            moved = self.temp_root / "created-stage-before-rebind"
+            attempted = False
+            swapped = False
+            publication_error: runner.RunnerError | None = None
+            try:
+                prepared = self.prepared_candidate()
+                original_verify = (
+                    runner._verify_held_phase_c1_directory_authority
+                )
+
+                def substitute_stage_after_creation(
+                    authority: object,
+                ) -> None:
+                    nonlocal attempted, swapped
+                    original_verify(authority)
+                    stage = paths.candidate_stage_path
+                    if (
+                        not attempted
+                        and getattr(authority, "path", None)
+                        == paths.ignored_root
+                        and stage.is_dir()
+                        and not any(stage.iterdir())
+                        and not paths.candidate_root.exists()
+                    ):
+                        attempted = True
+                        os.replace(stage, moved)
+                        stage.mkdir()
+                        swapped = True
+
+                with mock.patch.object(
+                    runner,
+                    "_verify_held_phase_c1_directory_authority",
+                    side_effect=substitute_stage_after_creation,
+                ), self.lock(prepared) as capability:
+                    try:
+                        runner.finalize_phase_c1_publication(
+                            prepared,
+                            capability=capability,
+                        )
+                    except runner.RunnerError as exc:
+                        publication_error = exc
+
+                self.assertTrue(
+                    attempted,
+                    msg="stage substitution seam was not exercised",
+                )
+                self.assertTrue(swapped)
+                self.assertIsNotNone(
+                    publication_error,
+                    msg=(
+                        "replacement stage received first-child writes "
+                        "before authority acquisition"
+                    ),
+                )
+                self.assertFalse(paths.candidate_root.exists())
+                self.assertTrue(paths.candidate_stage_path.is_dir())
+                self.assertFalse(
+                    (paths.candidate_stage_path / "result.json").exists(),
+                    msg="result.json was redirected into the replacement",
+                )
+                self.assertFalse(
+                    (paths.candidate_stage_path / "report.md").exists(),
+                    msg="report.md was redirected into the replacement",
+                )
+            finally:
+                self.stop_runner_context(paths_patch, head_patch)
+
+    def test_valid_initial_sequence_zero_journal_stage_recovers_to_candidate_ready(
+        self,
+    ) -> None:
+        with self.isolated_mutation_root():
+            paths, paths_patch, head_patch = self.runner_context()
+            publication_error: runner.RunnerError | None = None
+            receipt: runner.PhaseC1PublicationReceipt | None = None
+            try:
+                prepared = self.prepared_candidate()
+                state = runner._state_for(prepared)
+                initial_stage = runner._journal_payload(
+                    state,
+                    status="staging_candidate",
+                    sequence=0,
+                    previous=None,
+                )
+                paths.ignored_root.mkdir(parents=True, exist_ok=True)
+                paths.publication_journal_stage_path.write_bytes(
+                    initial_stage,
+                )
+                self.assertFalse(paths.publication_journal_path.exists())
+
+                with self.lock(prepared) as capability:
+                    try:
+                        receipt = runner.finalize_phase_c1_publication(
+                            prepared,
+                            capability=capability,
+                        )
+                    except runner.RunnerError as exc:
+                        publication_error = exc
+
+                self.assertIsNone(
+                    publication_error,
+                    msg=(
+                        "valid initial sequence-0 journal stage wedged "
+                        "recovery: "
+                        f"{getattr(publication_error, 'code', None)}"
+                    ),
+                )
+                self.assertIsNotNone(receipt)
+                assert receipt is not None
+                self.assertEqual(receipt.status, "candidate_ready")
+                self.assertFalse(
+                    paths.publication_journal_stage_path.exists(),
+                )
+                final_journal = phase_c1.load_json_strict(
+                    paths.publication_journal_path.read_bytes(),
+                    source="recovered_initial_journal",
+                )
+                self.assertIsInstance(final_journal, dict)
+                self.assertEqual(
+                    final_journal["status"],
+                    "candidate_ready",
+                )
+                self.assert_pair_directory(paths.candidate_root)
+                self.assertEqual(
+                    paths.candidate_receipt_path.read_bytes(),
+                    state.candidate_receipt_bytes,
+                )
+            finally:
+                self.stop_runner_context(paths_patch, head_patch)
+
+    def test_invalid_initial_sequence_zero_journal_stage_is_retained_fail_closed(
+        self,
+    ) -> None:
+        with self.isolated_mutation_root():
+            paths, paths_patch, head_patch = self.runner_context()
+            try:
+                prepared = self.prepared_candidate()
+                state = runner._state_for(prepared)
+                valid_stage = runner._journal_payload(
+                    state,
+                    status="staging_candidate",
+                    sequence=0,
+                    previous=None,
+                )
+                invalid_payload = phase_c1.load_json_strict(
+                    valid_stage,
+                    source="valid_initial_journal_stage",
+                )
+                self.assertIsInstance(invalid_payload, dict)
+                invalid_payload["journal_content_sha256"] = "0" * 64
+                invalid_stage = phase_c1.canonical_json_bytes(
+                    invalid_payload,
+                )
+                paths.ignored_root.mkdir(parents=True, exist_ok=True)
+                paths.publication_journal_stage_path.write_bytes(
+                    invalid_stage,
+                )
+
+                with self.lock(prepared) as capability:
+                    with self.assertRaises(runner.RunnerError):
+                        runner.finalize_phase_c1_publication(
+                            prepared,
+                            capability=capability,
+                        )
+
+                self.assertEqual(
+                    paths.publication_journal_stage_path.read_bytes(),
+                    invalid_stage,
+                )
+                self.assertFalse(paths.publication_journal_path.exists())
+                self.assertFalse(paths.candidate_root.exists())
+                self.assertFalse(paths.candidate_receipt_path.exists())
+            finally:
+                self.stop_runner_context(paths_patch, head_patch)
+
+    def test_every_publication_file_create_uses_its_held_parent_authority(
+        self,
+    ) -> None:
+        records: list[tuple[str, str, str | None]] = []
+        original_create = runner._create_new_phase_c1_file
+        scenario = ""
+
+        def record_create(path: Path, payload: bytes) -> object:
+            authority = getattr(
+                runner._PHASE_C1_FILE_CREATE_CONTEXT,
+                "parent_authority",
+                None,
+            )
+            target = Path(path)
+            records.append(
+                (
+                    scenario,
+                    target.relative_to(self.temp_root).as_posix(),
+                    (
+                        None
+                        if authority is None
+                        else Path(authority.path)
+                        .relative_to(self.temp_root)
+                        .as_posix()
+                    ),
+                )
+            )
+            return original_create(target, payload)
+
+        for lane in ("first_and_acceptance", "candidate_stage_recovery"):
+            with self.subTest(lane=lane), self.isolated_mutation_root():
+                paths, paths_patch, head_patch = self.runner_context()
+                scenario = lane
+                try:
+                    with mock.patch.object(
+                        runner,
+                        "_create_new_phase_c1_file",
+                        side_effect=record_create,
+                    ):
+                        if lane == "candidate_stage_recovery":
+                            self.write_pair_directory(
+                                paths.candidate_stage_path,
+                            )
+                            prepared = self.prepared_candidate()
+                            with self.lock(prepared) as capability:
+                                receipt = runner.finalize_phase_c1_publication(
+                                    prepared,
+                                    capability=capability,
+                                )
+                            self.assertEqual(
+                                receipt.status,
+                                "candidate_ready",
+                            )
+                        else:
+                            self.create_candidate()
+                            self.seed_valid_candidate_validation_and_review_receipts()
+                            prepared = self.prepare_acceptance()
+                            with self.lock(prepared) as capability:
+                                receipt = runner.finalize_phase_c1_publication(
+                                    prepared,
+                                    capability=capability,
+                                )
+                            self.assertEqual(receipt.status, "accepted")
+                finally:
+                    self.stop_runner_context(paths_patch, head_patch)
+
+        observed_roles = {
+            path.rsplit("/", 1)[-1]
+            if not path.endswith((
+                "candidate.stage/result.json",
+                "candidate.stage/report.md",
+                "canonical.stage/result.json",
+                "canonical.stage/report.md",
+            ))
+            else "/".join(path.split("/")[-2:])
+            for _lane, path, _authority in records
+        }
+        self.assertTrue(
+            {
+                "publication.lock",
+                "publication-journal.stage",
+                "candidate-receipt.stage",
+                "candidate.stage/result.json",
+                "candidate.stage/report.md",
+                "canonical.stage/result.json",
+                "canonical.stage/report.md",
+            }.issubset(observed_roles),
+            msg=f"incomplete publication-create coverage: {records}",
+        )
+        unbound = tuple(
+            (lane, path, authority)
+            for lane, path, authority in records
+            if authority != Path(path).parent.as_posix()
+        )
+        self.assertEqual(
+            unbound,
+            (),
+            msg=(
+                "fixed publication creates reached a raw pathname "
+                f"fallback: {unbound}"
+            ),
+        )
+
+    def test_publication_create_and_lock_open_call_sites_are_authority_bound(
+        self,
+    ) -> None:
+        source = Path(runner.__file__).read_text(encoding="utf-8")
+        tree = ast.parse(source)
+        parents: dict[ast.AST, ast.AST] = {}
+        for parent in ast.walk(tree):
+            for child in ast.iter_child_nodes(parent):
+                parents[child] = parent
+
+        def call_name(call: ast.Call) -> str | None:
+            if isinstance(call.func, ast.Name):
+                return call.func.id
+            if isinstance(call.func, ast.Attribute):
+                return call.func.attr
+            return None
+
+        def has_bound_creation_context(call: ast.Call) -> bool:
+            if any(
+                keyword.arg == "parent_authority"
+                for keyword in call.keywords
+            ):
+                return True
+            current: ast.AST | None = call
+            while current in parents:
+                current = parents[current]
+                if not isinstance(current, ast.With):
+                    continue
+                for item in current.items:
+                    expression = item.context_expr
+                    if (
+                        isinstance(expression, ast.Call)
+                        and call_name(expression)
+                        == "_phase_c1_bound_child_creation"
+                    ):
+                        return True
+            return False
+
+        violations: list[str] = []
+        for node in ast.walk(tree):
+            if not isinstance(node, ast.Call):
+                continue
+            if (
+                call_name(node) == "_create_new_phase_c1_file"
+                and not has_bound_creation_context(node)
+            ):
+                violations.append(
+                    f"unbound_create@{node.lineno}"
+                )
+            if (
+                isinstance(node.func, ast.Name)
+                and node.func.id == "open"
+                and len(node.args) >= 2
+                and isinstance(node.args[0], ast.Name)
+                and node.args[0].id == "lock_path"
+                and isinstance(node.args[1], ast.Constant)
+                and node.args[1].value == "r+b"
+            ):
+                violations.append(
+                    f"raw_existing_lock_open@{node.lineno}"
+                )
+        self.assertEqual(
+            violations,
+            [],
+            msg=(
+                "publication create/open call sites retain raw pathname "
+                f"fallbacks: {violations}"
+            ),
+        )
+
+    @unittest.skipUnless(os.name == "posix", "POSIX lock authority regression")
+    def test_posix_existing_lock_swap_cannot_lock_decoy_inode(
+        self,
+    ) -> None:
+        with self.isolated_mutation_root():
+            paths, paths_patch, head_patch = self.runner_context()
+            attempted = False
+            opened_by: str | None = None
+            opened_flags: int | None = None
+            opened_dir_fd: int | None = None
+            lock_error: runner.RunnerError | None = None
+            capability_yielded = False
+            try:
+                prepared = self.prepared_candidate()
+                paths.ignored_root.mkdir(parents=True, exist_ok=True)
+                lock_bytes = b"phase-c1-publication-lock\n"
+                paths.publication_lock_path.write_bytes(lock_bytes)
+                moved = self.temp_root / "original-publication-lock"
+                decoy = self.temp_root / "decoy-publication-lock"
+                decoy.write_bytes(lock_bytes)
+                decoy_identity = (
+                    decoy.lstat().st_dev,
+                    decoy.lstat().st_ino,
+                )
+                original_builtin_open = open
+                original_os_open = os.open
+
+                def substitute_lock() -> None:
+                    nonlocal attempted
+                    if attempted:
+                        return
+                    attempted = True
+                    os.replace(paths.publication_lock_path, moved)
+                    os.replace(decoy, paths.publication_lock_path)
+                    current = paths.publication_lock_path.lstat()
+                    self.assertEqual(
+                        (current.st_dev, current.st_ino),
+                        decoy_identity,
+                    )
+
+                def observed_builtin_open(
+                    file: object,
+                    mode: str = "r",
+                    *args: object,
+                    **kwargs: object,
+                ) -> object:
+                    nonlocal opened_by
+                    if (
+                        mode == "r+b"
+                        and isinstance(file, (str, bytes, os.PathLike))
+                        and Path(file) == paths.publication_lock_path
+                    ):
+                        opened_by = "builtins.open"
+                        substitute_lock()
+                    return original_builtin_open(
+                        file,
+                        mode,
+                        *args,
+                        **kwargs,
+                    )
+
+                def observed_os_open(
+                    file: object,
+                    flags: int,
+                    mode: int = 0o777,
+                    *,
+                    dir_fd: int | None = None,
+                ) -> int:
+                    nonlocal opened_by, opened_flags, opened_dir_fd
+                    text = (
+                        os.fsdecode(file)
+                        if isinstance(file, (str, bytes, os.PathLike))
+                        else ""
+                    )
+                    if (
+                        Path(text) == paths.publication_lock_path
+                        or (
+                            text == paths.publication_lock_path.name
+                            and dir_fd is not None
+                        )
+                    ):
+                        opened_by = "os.open"
+                        opened_flags = flags
+                        opened_dir_fd = dir_fd
+                        substitute_lock()
+                    return original_os_open(
+                        file,
+                        flags,
+                        mode,
+                        dir_fd=dir_fd,
+                    )
+
+                with mock.patch(
+                    "builtins.open",
+                    side_effect=observed_builtin_open,
+                ), mock.patch.object(
+                    os,
+                    "open",
+                    side_effect=observed_os_open,
+                ):
+                    try:
+                        with self.lock(prepared):
+                            capability_yielded = True
+                    except runner.RunnerError as exc:
+                        lock_error = exc
+
+                violations: list[str] = []
+                if not attempted:
+                    violations.append("swap seam was not exercised")
+                if lock_error is None:
+                    violations.append("swapped decoy lock was accepted")
+                if capability_yielded:
+                    violations.append("capability was issued for decoy lock")
+                if opened_by != "os.open":
+                    violations.append(
+                        f"existing lock used {opened_by!r}"
+                    )
+                if opened_dir_fd is None:
+                    violations.append("existing lock open lacked dir_fd")
+                nofollow = getattr(os, "O_NOFOLLOW", 0)
+                if (
+                    not nofollow
+                    or opened_flags is None
+                    or not opened_flags & nofollow
+                ):
+                    violations.append(
+                        "existing lock open lacked O_NOFOLLOW"
+                    )
+                self.assertEqual(
+                    violations,
+                    [],
+                    msg=(
+                        "existing publication.lock was not held-parent "
+                        f"bound: {violations}"
+                    ),
+                )
+            finally:
+                self.stop_runner_context(paths_patch, head_patch)
+
+    def test_accepted_candidate_cleanup_restarts_after_each_child_unlink(
+        self,
+    ) -> None:
+        for crash_child in ("result.json", "report.md"):
+            with (
+                self.subTest(crash_child=crash_child),
+                self.isolated_mutation_root(),
+            ):
+                paths, paths_patch, head_patch = self.runner_context()
+                crashed = False
+                try:
+                    self.create_candidate()
+                    self.seed_valid_candidate_validation_and_review_receipts()
+                    prepared = self.prepare_acceptance()
+                    original_delete = (
+                        runner._delete_held_phase_c1_regular_file
+                    )
+
+                    def crash_after_child_unlink(
+                        authority: object,
+                        *,
+                        parent_authority: object,
+                    ) -> None:
+                        nonlocal crashed
+                        target = Path(authority.path)
+                        original_delete(
+                            authority,
+                            parent_authority=parent_authority,
+                        )
+                        if (
+                            not crashed
+                            and target.parent == paths.candidate_root
+                            and target.name == crash_child
+                        ):
+                            crashed = True
+                            raise runner.RunnerError(
+                                "synthetic_child_unlink_crash"
+                            )
+
+                    with mock.patch.object(
+                        runner,
+                        "_delete_held_phase_c1_regular_file",
+                        side_effect=crash_after_child_unlink,
+                    ), self.lock(prepared) as capability:
+                        with self.assertRaisesRegex(
+                            runner.RunnerError,
+                            "synthetic_child_unlink_crash",
+                        ):
+                            runner.finalize_phase_c1_publication(
+                                prepared,
+                                capability=capability,
+                            )
+
+                    self.assertTrue(crashed)
+                    expected_children = (
+                        {"report.md"}
+                        if crash_child == "result.json"
+                        else set()
+                    )
+                    self.assertEqual(
+                        {
+                            child.name
+                            for child in paths.candidate_root.iterdir()
+                        },
+                        expected_children,
+                    )
+                    journal = phase_c1.load_json_strict(
+                        paths.publication_journal_path.read_bytes(),
+                        source="accepted_cleanup_crash_journal",
+                    )
+                    self.assertEqual(journal["status"], "accepted")
+
+                    restart_error: runner.RunnerError | None = None
+                    receipt: runner.PhaseC1PublicationReceipt | None = None
+                    try:
+                        recovery = self.prepare_acceptance()
+                        with self.lock(recovery) as capability:
+                            receipt = runner.finalize_phase_c1_publication(
+                                recovery,
+                                capability=capability,
+                            )
+                    except runner.RunnerError as exc:
+                        restart_error = exc
+                    self.assertIsNone(
+                        restart_error,
+                        msg=(
+                            "accepted candidate cleanup wedged after "
+                            f"{crash_child} unlink: "
+                            f"{getattr(restart_error, 'code', None)}"
+                        ),
+                    )
+                    self.assertIsNotNone(receipt)
+                    assert receipt is not None
+                    self.assertEqual(receipt.status, "accepted")
+                    self.assertFalse(paths.candidate_root.exists())
+                finally:
+                    self.stop_runner_context(paths_patch, head_patch)
+
+    def test_candidate_stage_cleanup_restarts_after_each_child_unlink(
+        self,
+    ) -> None:
+        for crash_child in ("result.json", "report.md"):
+            with (
+                self.subTest(crash_child=crash_child),
+                self.isolated_mutation_root(),
+            ):
+                paths, paths_patch, head_patch = self.runner_context()
+                crashed = False
+                try:
+                    prepared = self.prepared_candidate()
+                    state = runner._state_for(prepared)
+                    paths.ignored_root.mkdir(parents=True, exist_ok=True)
+                    paths.publication_journal_path.write_bytes(
+                        runner._journal_payload(
+                            state,
+                            status="staging_candidate",
+                            sequence=0,
+                            previous=None,
+                        )
+                    )
+                    self.write_pair_directory(
+                        paths.candidate_stage_path,
+                    )
+                    original_delete = (
+                        runner._delete_held_phase_c1_regular_file
+                    )
+
+                    def crash_after_child_unlink(
+                        authority: object,
+                        *,
+                        parent_authority: object,
+                    ) -> None:
+                        nonlocal crashed
+                        target = Path(authority.path)
+                        original_delete(
+                            authority,
+                            parent_authority=parent_authority,
+                        )
+                        if (
+                            not crashed
+                            and target.parent
+                            == paths.candidate_stage_path
+                            and target.name == crash_child
+                        ):
+                            crashed = True
+                            raise runner.RunnerError(
+                                "synthetic_stage_child_unlink_crash"
+                            )
+
+                    with mock.patch.object(
+                        runner,
+                        "_delete_held_phase_c1_regular_file",
+                        side_effect=crash_after_child_unlink,
+                    ), self.lock(prepared) as capability:
+                        with self.assertRaisesRegex(
+                            runner.RunnerError,
+                            "synthetic_stage_child_unlink_crash",
+                        ):
+                            runner.finalize_phase_c1_publication(
+                                prepared,
+                                capability=capability,
+                            )
+
+                    self.assertTrue(crashed)
+                    expected_children = (
+                        {"report.md"}
+                        if crash_child == "result.json"
+                        else set()
+                    )
+                    self.assertEqual(
+                        {
+                            child.name
+                            for child in paths.candidate_stage_path.iterdir()
+                        },
+                        expected_children,
+                    )
+                    restart_error: runner.RunnerError | None = None
+                    receipt: runner.PhaseC1PublicationReceipt | None = None
+                    try:
+                        recovery = self.prepared_candidate()
+                        with self.lock(recovery) as capability:
+                            receipt = runner.finalize_phase_c1_publication(
+                                recovery,
+                                capability=capability,
+                            )
+                    except runner.RunnerError as exc:
+                        restart_error = exc
+                    self.assertIsNone(
+                        restart_error,
+                        msg=(
+                            "candidate-stage cleanup wedged after "
+                            f"{crash_child} unlink: "
+                            f"{getattr(restart_error, 'code', None)}"
+                        ),
+                    )
+                    self.assertIsNotNone(receipt)
+                    assert receipt is not None
+                    self.assertEqual(receipt.status, "candidate_ready")
+                    self.assertFalse(
+                        paths.candidate_stage_path.exists(),
+                    )
+                finally:
+                    self.stop_runner_context(paths_patch, head_patch)
+
+    def test_accepted_candidate_cleanup_prefix_matrix_is_exact(
+        self,
+    ) -> None:
+        rows = (
+            ("complete", True),
+            ("report_only", True),
+            ("empty", True),
+            ("absent", True),
+            ("wrong_bytes", False),
+            ("result_only", False),
+            ("extra_child", False),
+            ("invalid_journal", False),
+        )
+        for row, should_recover in rows:
+            with (
+                self.subTest(row=row),
+                self.isolated_mutation_root(),
+            ):
+                paths, paths_patch, head_patch = self.runner_context()
+                try:
+                    self.create_candidate()
+                    self.seed_valid_candidate_validation_and_review_receipts()
+                    prepared = self.prepare_acceptance()
+                    with mock.patch.object(
+                        runner,
+                        "_cleanup_accepted",
+                        side_effect=runner.RunnerError(
+                            "synthetic_pre_cleanup_crash"
+                        ),
+                    ), self.lock(prepared) as capability:
+                        with self.assertRaisesRegex(
+                            runner.RunnerError,
+                            "synthetic_pre_cleanup_crash",
+                        ):
+                            runner.finalize_phase_c1_publication(
+                                prepared,
+                                capability=capability,
+                            )
+
+                    result_path = paths.candidate_root / "result.json"
+                    report_path = paths.candidate_root / "report.md"
+                    if row == "report_only":
+                        result_path.unlink()
+                    elif row == "empty":
+                        result_path.unlink()
+                        report_path.unlink()
+                    elif row == "absent":
+                        result_path.unlink()
+                        report_path.unlink()
+                        paths.candidate_root.rmdir()
+                    elif row == "wrong_bytes":
+                        report_path.write_bytes(b"wrong-report\n")
+                    elif row == "result_only":
+                        report_path.unlink()
+                    elif row == "extra_child":
+                        (paths.candidate_root / "extra").write_bytes(
+                            b"extra\n"
+                        )
+                    elif row == "invalid_journal":
+                        journal = phase_c1.load_json_strict(
+                            paths.publication_journal_path.read_bytes(),
+                            source="accepted_journal",
+                        )
+                        journal["journal_content_sha256"] = "0" * 64
+                        paths.publication_journal_path.write_bytes(
+                            phase_c1.canonical_json_bytes(journal)
+                        )
+
+                    def snapshot_candidate() -> (
+                        tuple[tuple[str, bytes], ...] | None
+                    ):
+                        if not paths.candidate_root.exists():
+                            return None
+                        return tuple(
+                            sorted(
+                                (
+                                    child.name,
+                                    child.read_bytes(),
+                                )
+                                for child in paths.candidate_root.iterdir()
+                            )
+                        )
+
+                    candidate_before = snapshot_candidate()
+                    journal_before = (
+                        paths.publication_journal_path.read_bytes()
+                    )
+                    recovery_error: runner.RunnerError | None = None
+                    receipt: runner.PhaseC1PublicationReceipt | None = None
+                    try:
+                        recovery = self.prepare_acceptance()
+                        with self.lock(recovery) as capability:
+                            receipt = runner.finalize_phase_c1_publication(
+                                recovery,
+                                capability=capability,
+                            )
+                    except runner.RunnerError as exc:
+                        recovery_error = exc
+
+                    if should_recover:
+                        self.assertIsNone(
+                            recovery_error,
+                            msg=(
+                                "valid accepted-cleanup prefix wedged: "
+                                f"{row}: "
+                                f"{getattr(recovery_error, 'code', None)}"
+                            ),
+                        )
+                        self.assertIsNotNone(receipt)
+                        self.assertFalse(
+                            paths.candidate_root.exists(),
+                        )
+                    else:
+                        self.assertIsNotNone(
+                            recovery_error,
+                            msg=(
+                                "invalid accepted-cleanup prefix was "
+                                f"accepted: {row}"
+                            ),
+                        )
+                        self.assertEqual(
+                            snapshot_candidate(),
+                            candidate_before,
+                        )
+                        self.assertEqual(
+                            paths.publication_journal_path.read_bytes(),
+                            journal_before,
+                        )
+                finally:
+                    self.stop_runner_context(paths_patch, head_patch)
+
+    def test_candidate_stage_cleanup_prefix_matrix_is_exact(
+        self,
+    ) -> None:
+        rows = (
+            ("complete", True),
+            ("report_only", True),
+            ("empty", True),
+            ("absent", True),
+            ("wrong_bytes", False),
+            ("result_only", True),
+            ("extra_child", False),
+            ("invalid_journal", False),
+        )
+        for row, should_recover in rows:
+            with (
+                self.subTest(row=row),
+                self.isolated_mutation_root(),
+            ):
+                paths, paths_patch, head_patch = self.runner_context()
+                try:
+                    prepared = self.prepared_candidate()
+                    state = runner._state_for(prepared)
+                    paths.ignored_root.mkdir(parents=True, exist_ok=True)
+                    journal_bytes = runner._journal_payload(
+                        state,
+                        status="staging_candidate",
+                        sequence=0,
+                        previous=None,
+                    )
+                    paths.publication_journal_path.write_bytes(
+                        journal_bytes,
+                    )
+                    if row != "absent":
+                        paths.candidate_stage_path.mkdir()
+                        if row in {
+                            "complete",
+                            "wrong_bytes",
+                            "extra_child",
+                            "invalid_journal",
+                        }:
+                            (
+                                paths.candidate_stage_path / "result.json"
+                            ).write_bytes(state.result_bytes)
+                            (
+                                paths.candidate_stage_path / "report.md"
+                            ).write_bytes(state.report_bytes)
+                        elif row == "report_only":
+                            (
+                                paths.candidate_stage_path / "report.md"
+                            ).write_bytes(state.report_bytes)
+                        elif row == "result_only":
+                            (
+                                paths.candidate_stage_path / "result.json"
+                            ).write_bytes(state.result_bytes)
+                    if row == "wrong_bytes":
+                        (
+                            paths.candidate_stage_path / "report.md"
+                        ).write_bytes(b"wrong-report\n")
+                    elif row == "extra_child":
+                        (
+                            paths.candidate_stage_path / "extra"
+                        ).write_bytes(b"extra\n")
+                    elif row == "invalid_journal":
+                        journal = phase_c1.load_json_strict(
+                            journal_bytes,
+                            source="staging_candidate_journal",
+                        )
+                        journal["journal_content_sha256"] = "0" * 64
+                        paths.publication_journal_path.write_bytes(
+                            phase_c1.canonical_json_bytes(journal)
+                        )
+
+                    def snapshot_stage() -> (
+                        tuple[tuple[str, bytes], ...] | None
+                    ):
+                        if not paths.candidate_stage_path.exists():
+                            return None
+                        return tuple(
+                            sorted(
+                                (
+                                    child.name,
+                                    child.read_bytes(),
+                                )
+                                for child
+                                in paths.candidate_stage_path.iterdir()
+                            )
+                        )
+
+                    stage_before = snapshot_stage()
+                    journal_before = (
+                        paths.publication_journal_path.read_bytes()
+                    )
+                    publication_error: runner.RunnerError | None = None
+                    receipt: runner.PhaseC1PublicationReceipt | None = None
+                    try:
+                        with self.lock(prepared) as capability:
+                            receipt = runner.finalize_phase_c1_publication(
+                                prepared,
+                                capability=capability,
+                            )
+                    except runner.RunnerError as exc:
+                        publication_error = exc
+
+                    if should_recover:
+                        self.assertIsNone(
+                            publication_error,
+                            msg=(
+                                "valid candidate-stage cleanup prefix "
+                                f"wedged: {row}: "
+                                f"{getattr(publication_error, 'code', None)}"
+                            ),
+                        )
+                        self.assertIsNotNone(receipt)
+                        self.assertFalse(
+                            paths.candidate_stage_path.exists(),
+                        )
+                    else:
+                        self.assertIsNotNone(
+                            publication_error,
+                            msg=(
+                                "invalid candidate-stage cleanup prefix "
+                                f"was accepted: {row}"
+                            ),
+                        )
+                        self.assertEqual(
+                            snapshot_stage(),
+                            stage_before,
+                        )
+                        self.assertEqual(
+                            paths.publication_journal_path.read_bytes(),
+                            journal_before,
+                        )
+                        self.assertFalse(paths.candidate_root.exists())
+                        self.assertFalse(
+                            paths.candidate_receipt_path.exists(),
+                        )
+                finally:
+                    self.stop_runner_context(paths_patch, head_patch)
+
+    def test_receipt_cleanup_has_only_single_file_held_delete_boundaries(
+        self,
+    ) -> None:
+        with self.isolated_mutation_root():
+            paths, paths_patch, head_patch = self.runner_context()
+            events: list[tuple[str, Path]] = []
+            try:
+                self.create_candidate()
+                self.seed_valid_candidate_validation_and_review_receipts()
+                prepared = self.prepare_acceptance()
+                original_delete = (
+                    runner._delete_held_phase_c1_regular_file
+                )
+
+                def record_delete(
+                    authority: object,
+                    *,
+                    parent_authority: object,
+                ) -> None:
+                    target = Path(authority.path)
+                    if target.parent == paths.ignored_root:
+                        events.append(
+                            (target.name, Path(parent_authority.path))
+                        )
+                    original_delete(
+                        authority,
+                        parent_authority=parent_authority,
+                    )
+
+                with mock.patch.object(
+                    runner,
+                    "_delete_held_phase_c1_regular_file",
+                    side_effect=record_delete,
+                ), self.lock(prepared) as capability:
+                    receipt = runner.finalize_phase_c1_publication(
+                        prepared,
+                        capability=capability,
+                    )
+                self.assertEqual(receipt.status, "accepted")
+                self.assertEqual(
+                    events,
+                    [
+                        (
+                            "candidate-receipt.json",
+                            paths.ignored_root,
+                        ),
+                        (
+                            "candidate-validation.json",
+                            paths.ignored_root,
+                        ),
+                        (
+                            "candidate-review.json",
+                            paths.ignored_root,
+                        ),
+                    ],
+                )
+            finally:
+                self.stop_runner_context(paths_patch, head_patch)
+
+    def test_unjournaled_complete_candidate_stage_commits_before_cleanup(
+        self,
+    ) -> None:
+        with self.isolated_mutation_root():
+            paths, paths_patch, head_patch = self.runner_context()
+            interrupted = False
+            committed_journal: bytes | None = None
+            try:
+                prepared = self.prepared_candidate()
+                paths.ignored_root.mkdir(parents=True, exist_ok=True)
+                self.write_pair_directory(paths.candidate_stage_path)
+                original_advance = runner._advance_journal
+
+                def interrupt_after_initial_commit(
+                    state: object,
+                    *,
+                    status: str,
+                    current: bytes | None,
+                    root_authority: object,
+                ) -> bytes:
+                    nonlocal interrupted, committed_journal
+                    payload = original_advance(
+                        state,
+                        status=status,
+                        current=current,
+                        root_authority=root_authority,
+                    )
+                    if (
+                        not interrupted
+                        and status == "staging_candidate"
+                        and current is None
+                    ):
+                        interrupted = True
+                        committed_journal = payload
+                        raise runner.RunnerError(
+                            "synthetic_post_journal_commit_crash"
+                        )
+                    return payload
+
+                with mock.patch.object(
+                    runner,
+                    "_advance_journal",
+                    side_effect=interrupt_after_initial_commit,
+                ), self.lock(prepared) as capability:
+                    with self.assertRaisesRegex(
+                        runner.RunnerError,
+                        "synthetic_post_journal_commit_crash",
+                    ):
+                        runner.finalize_phase_c1_publication(
+                            prepared,
+                            capability=capability,
+                        )
+
+                self.assertTrue(interrupted)
+                self.assertIsNotNone(committed_journal)
+                self.assertTrue(paths.publication_journal_path.is_file())
+                self.assertEqual(
+                    paths.publication_journal_path.read_bytes(),
+                    committed_journal,
+                )
+                committed = phase_c1.load_json_strict(
+                    paths.publication_journal_path.read_bytes(),
+                    source="unjournaled_stage_initial_commit",
+                )
+                self.assertIsInstance(committed, dict)
+                self.assertEqual(committed["status"], "staging_candidate")
+                self.assertEqual(committed["sequence"], 0)
+                self.assertEqual(
+                    committed["previous_journal_sha256"],
+                    "0" * 64,
+                )
+                stage_snapshot = (
+                    None
+                    if not paths.candidate_stage_path.is_dir()
+                    else tuple(
+                        sorted(
+                            (
+                                child.name,
+                                child.read_bytes(),
+                            )
+                            for child in paths.candidate_stage_path.iterdir()
+                        )
+                    )
+                )
+                self.assertEqual(
+                    stage_snapshot,
+                    (
+                        ("report.md", self.expected_candidate_report_bytes),
+                        (
+                            "result.json",
+                            self.expected_candidate_result_bytes,
+                        ),
+                    ),
+                    msg=(
+                        "the durable staging_candidate commit occurred "
+                        "after cleanup had already started"
+                    ),
+                )
+
+                recovery = self.prepared_candidate()
+                with self.lock(recovery) as capability:
+                    receipt = runner.finalize_phase_c1_publication(
+                        recovery,
+                        capability=capability,
+                    )
+                self.assertEqual(receipt.status, "candidate_ready")
+                self.assertFalse(paths.candidate_stage_path.exists())
+                self.assert_pair_directory(paths.candidate_root)
+            finally:
+                self.stop_runner_context(paths_patch, head_patch)
+
+    def test_unjournaled_candidate_stage_unlink_crashes_retry_from_journal(
+        self,
+    ) -> None:
+        for crash_child in ("result.json", "report.md"):
+            with (
+                self.subTest(crash_child=crash_child),
+                self.isolated_mutation_root(),
+            ):
+                paths, paths_patch, head_patch = self.runner_context()
+                crashed = False
+                try:
+                    prepared = self.prepared_candidate()
+                    paths.ignored_root.mkdir(parents=True, exist_ok=True)
+                    self.write_pair_directory(paths.candidate_stage_path)
+                    original_delete = (
+                        runner._delete_held_phase_c1_regular_file
+                    )
+
+                    def crash_after_stage_child_unlink(
+                        authority: object,
+                        *,
+                        parent_authority: object,
+                    ) -> None:
+                        nonlocal crashed
+                        target = Path(authority.path)
+                        original_delete(
+                            authority,
+                            parent_authority=parent_authority,
+                        )
+                        if (
+                            not crashed
+                            and target.parent
+                            == paths.candidate_stage_path
+                            and target.name == crash_child
+                        ):
+                            crashed = True
+                            raise runner.RunnerError(
+                                "synthetic_unjournaled_stage_unlink_crash"
+                            )
+
+                    with mock.patch.object(
+                        runner,
+                        "_delete_held_phase_c1_regular_file",
+                        side_effect=crash_after_stage_child_unlink,
+                    ), self.lock(prepared) as capability:
+                        with self.assertRaisesRegex(
+                            runner.RunnerError,
+                            "synthetic_unjournaled_stage_unlink_crash",
+                        ):
+                            runner.finalize_phase_c1_publication(
+                                prepared,
+                                capability=capability,
+                            )
+
+                    self.assertTrue(crashed)
+                    self.assertTrue(paths.candidate_stage_path.is_dir())
+                    expected_children = (
+                        {"report.md"}
+                        if crash_child == "result.json"
+                        else set()
+                    )
+                    self.assertEqual(
+                        {
+                            child.name
+                            for child
+                            in paths.candidate_stage_path.iterdir()
+                        },
+                        expected_children,
+                    )
+                    self.assertTrue(
+                        paths.publication_journal_path.is_file(),
+                        msg=(
+                            "candidate-stage child unlink occurred before "
+                            "a durable staging_candidate journal"
+                        ),
+                    )
+                    journal_bytes = (
+                        paths.publication_journal_path.read_bytes()
+                    )
+                    journal = phase_c1.load_json_strict(
+                        journal_bytes,
+                        source="unjournaled_stage_unlink_crash",
+                    )
+                    self.assertIsInstance(journal, dict)
+                    self.assertEqual(journal["status"], "staging_candidate")
+                    self.assertEqual(journal["sequence"], 0)
+                    self.assertEqual(
+                        journal["previous_journal_sha256"],
+                        "0" * 64,
+                    )
+
+                    recovery = self.prepared_candidate()
+                    with self.lock(recovery) as capability:
+                        receipt = runner.finalize_phase_c1_publication(
+                            recovery,
+                            capability=capability,
+                        )
+                    self.assertEqual(receipt.status, "candidate_ready")
+                    self.assertFalse(paths.candidate_stage_path.exists())
+                    self.assert_pair_directory(paths.candidate_root)
+                    final_journal = phase_c1.load_json_strict(
+                        paths.publication_journal_path.read_bytes(),
+                        source="unjournaled_stage_unlink_recovery",
+                    )
+                    self.assertIsInstance(final_journal, dict)
+                    self.assertEqual(
+                        final_journal["status"],
+                        "candidate_ready",
+                    )
+                    self.assertEqual(final_journal["sequence"], 1)
+                    self.assertEqual(
+                        final_journal["previous_journal_sha256"],
+                        self._sha256(journal_bytes),
+                    )
+                finally:
+                    self.stop_runner_context(paths_patch, head_patch)
+
+    def test_unjournaled_candidate_stage_journal_failures_precede_cleanup(
+        self,
+    ) -> None:
+        rows = (
+            ("journal_stage_create", "_create_new_phase_c1_file"),
+            ("journal_commit", "_replace_phase_c1_file"),
+        )
+        for label, helper_name in rows:
+            with (
+                self.subTest(label=label),
+                self.isolated_mutation_root(),
+            ):
+                paths, paths_patch, head_patch = self.runner_context()
+                deleted_stage_children: list[str] = []
+                try:
+                    prepared = self.prepared_candidate()
+                    paths.ignored_root.mkdir(parents=True, exist_ok=True)
+                    self.write_pair_directory(paths.candidate_stage_path)
+                    original_delete = (
+                        runner._delete_held_phase_c1_regular_file
+                    )
+                    original_faulted_helper = getattr(
+                        runner,
+                        helper_name,
+                    )
+
+                    def record_stage_child_delete(
+                        authority: object,
+                        *,
+                        parent_authority: object,
+                    ) -> None:
+                        target = Path(authority.path)
+                        if target.parent == paths.candidate_stage_path:
+                            deleted_stage_children.append(target.name)
+                        original_delete(
+                            authority,
+                            parent_authority=parent_authority,
+                        )
+
+                    def fail_initial_journal_operation(
+                        *args: object,
+                        **kwargs: object,
+                    ) -> object:
+                        target = Path(args[0])
+                        expected_target = (
+                            paths.publication_journal_stage_path
+                            if helper_name == "_create_new_phase_c1_file"
+                            else paths.publication_journal_path
+                        )
+                        if target == expected_target:
+                            raise OSError(label)
+                        return original_faulted_helper(*args, **kwargs)
+
+                    with self.lock(prepared) as capability, mock.patch.object(
+                        runner,
+                        "_delete_held_phase_c1_regular_file",
+                        side_effect=record_stage_child_delete,
+                    ), mock.patch.object(
+                        runner,
+                        helper_name,
+                        side_effect=fail_initial_journal_operation,
+                    ):
+                        with self.assertRaises(runner.RunnerError):
+                            runner.finalize_phase_c1_publication(
+                                prepared,
+                                capability=capability,
+                            )
+
+                    stage_snapshot = (
+                        None
+                        if not paths.candidate_stage_path.is_dir()
+                        else tuple(
+                            sorted(
+                                (
+                                    child.name,
+                                    child.read_bytes(),
+                                )
+                                for child
+                                in paths.candidate_stage_path.iterdir()
+                            )
+                        )
+                    )
+                    violations: list[str] = []
+                    if deleted_stage_children:
+                        violations.append(
+                            "cleanup preceded journal failure: "
+                            + ",".join(deleted_stage_children)
+                        )
+                    if stage_snapshot != (
+                        (
+                            "report.md",
+                            self.expected_candidate_report_bytes,
+                        ),
+                        (
+                            "result.json",
+                            self.expected_candidate_result_bytes,
+                        ),
+                    ):
+                        violations.append(
+                            f"complete stage not retained: {stage_snapshot!r}"
+                        )
+                    if paths.publication_journal_path.exists():
+                        violations.append("journal unexpectedly committed")
+                    if paths.publication_journal_stage_path.exists():
+                        violations.append("journal stage was not rolled back")
+                    if paths.candidate_root.exists():
+                        violations.append("candidate root unexpectedly exists")
+                    if paths.candidate_receipt_path.exists():
+                        violations.append(
+                            "candidate receipt unexpectedly exists"
+                        )
+                    self.assertEqual(
+                        violations,
+                        [],
+                        msg=(
+                            "journal failure did not precede all candidate "
+                            f"stage cleanup: {label}: {violations}"
+                        ),
+                    )
+                finally:
+                    self.stop_runner_context(paths_patch, head_patch)
+
+    def test_journaled_result_only_candidate_stage_retries_to_candidate_ready(
+        self,
+    ) -> None:
+        with self.isolated_mutation_root():
+            paths, paths_patch, head_patch = self.runner_context()
+            try:
+                prepared = self.prepared_candidate()
+                state = runner._state_for(prepared)
+                paths.ignored_root.mkdir(parents=True, exist_ok=True)
+                journal_bytes = runner._journal_payload(
+                    state,
+                    status="staging_candidate",
+                    sequence=0,
+                    previous=None,
+                )
+                paths.publication_journal_path.write_bytes(journal_bytes)
+                paths.candidate_stage_path.mkdir()
+                (
+                    paths.candidate_stage_path / "result.json"
+                ).write_bytes(state.result_bytes)
+
+                publication_error: runner.RunnerError | None = None
+                receipt: runner.PhaseC1PublicationReceipt | None = None
+                try:
+                    with self.lock(prepared) as capability:
+                        receipt = runner.finalize_phase_c1_publication(
+                            prepared,
+                            capability=capability,
+                        )
+                except runner.RunnerError as exc:
+                    publication_error = exc
+
+                self.assertIsNone(
+                    publication_error,
+                    msg=(
+                        "verified staging_candidate journal did not "
+                        "authorize the exact result-only creation prefix: "
+                        f"{getattr(publication_error, 'code', None)}"
+                    ),
+                )
+                self.assertIsNotNone(receipt)
+                assert receipt is not None
+                self.assertEqual(receipt.status, "candidate_ready")
+                self.assertFalse(paths.candidate_stage_path.exists())
+                self.assert_pair_directory(paths.candidate_root)
+                self.assertEqual(
+                    paths.candidate_receipt_path.read_bytes(),
+                    state.candidate_receipt_bytes,
+                )
+                final_journal = phase_c1.load_json_strict(
+                    paths.publication_journal_path.read_bytes(),
+                    source="journaled_result_only_recovery",
+                )
+                self.assertIsInstance(final_journal, dict)
+                self.assertEqual(
+                    final_journal["schema_version"],
+                    "EmotionStatePhaseC1PublicationJournalV1",
+                )
+                self.assertEqual(
+                    final_journal["status"],
+                    "candidate_ready",
+                )
+                self.assertEqual(final_journal["sequence"], 1)
+                self.assertEqual(
+                    final_journal["previous_journal_sha256"],
+                    self._sha256(journal_bytes),
+                )
+            finally:
+                self.stop_runner_context(paths_patch, head_patch)
+
+    def test_unjournaled_result_only_candidate_stage_remains_fail_closed(
+        self,
+    ) -> None:
+        with self.isolated_mutation_root():
+            paths, paths_patch, head_patch = self.runner_context()
+            try:
+                prepared = self.prepared_candidate()
+                paths.ignored_root.mkdir(parents=True, exist_ok=True)
+                paths.candidate_stage_path.mkdir()
+                (
+                    paths.candidate_stage_path / "result.json"
+                ).write_bytes(self.expected_candidate_result_bytes)
+                before = tuple(
+                    (
+                        child.name,
+                        child.read_bytes(),
+                    )
+                    for child in paths.candidate_stage_path.iterdir()
+                )
+
+                with self.lock(prepared) as capability:
+                    with self.assertRaises(runner.RunnerError):
+                        runner.finalize_phase_c1_publication(
+                            prepared,
+                            capability=capability,
+                        )
+
+                after = tuple(
+                    (
+                        child.name,
+                        child.read_bytes(),
+                    )
+                    for child in paths.candidate_stage_path.iterdir()
+                )
+                self.assertEqual(after, before)
+                self.assertFalse(paths.publication_journal_path.exists())
+                self.assertFalse(
+                    paths.publication_journal_stage_path.exists(),
+                )
+                self.assertFalse(paths.candidate_root.exists())
+                self.assertFalse(paths.candidate_receipt_path.exists())
+            finally:
+                self.stop_runner_context(paths_patch, head_patch)
+
+    def test_unjournaled_report_only_candidate_stage_remains_fail_closed(
+        self,
+    ) -> None:
+        with self.isolated_mutation_root():
+            paths, paths_patch, head_patch = self.runner_context()
+            try:
+                prepared = self.prepared_candidate()
+                paths.ignored_root.mkdir(parents=True, exist_ok=True)
+                paths.candidate_stage_path.mkdir()
+                (
+                    paths.candidate_stage_path / "report.md"
+                ).write_bytes(self.expected_candidate_report_bytes)
+                before = tuple(
+                    (
+                        child.name,
+                        child.read_bytes(),
+                    )
+                    for child in paths.candidate_stage_path.iterdir()
+                )
+
+                with self.lock(prepared) as capability:
+                    with self.assertRaises(runner.RunnerError):
+                        runner.finalize_phase_c1_publication(
+                            prepared,
+                            capability=capability,
+                        )
+
+                after = tuple(
+                    (
+                        child.name,
+                        child.read_bytes(),
+                    )
+                    for child in paths.candidate_stage_path.iterdir()
+                )
+                self.assertEqual(after, before)
+                self.assertFalse(paths.publication_journal_path.exists())
+                self.assertFalse(
+                    paths.publication_journal_stage_path.exists(),
+                )
+                self.assertFalse(paths.candidate_root.exists())
+                self.assertFalse(paths.candidate_receipt_path.exists())
+            finally:
+                self.stop_runner_context(paths_patch, head_patch)
+
+
 class PhaseC1IndependentValidatorTests(
     _PhaseC1FixtureMixin,
     unittest.TestCase,
@@ -8954,6 +14176,9 @@ class PhaseC1IndependentValidatorTests(
             b"        pass\n"
             b"def main(argv: Sequence[str] | None = None):\n"
             b"    arguments = sys.argv[1:] if argv is None else argv\n"
+            b"    payload = None\n"
+            b"    sys.stdout.buffer.write("
+            b"phase_c1.canonical_json_bytes(payload))\n"
             b"_git(repository_root, 'rev-parse', '--verify', "
             b"'HEAD^{commit}')\n"
             b"_git(repository_root, 'rev-parse', '--verify', "
@@ -9294,6 +14519,28 @@ class PhaseC1IndependentValidatorTests(
                 actual_validator_bytes
                 + b"\ns = sys\n"
                 + b"s._getframe()\n"
+            ),
+            (
+                actual_validator_bytes
+                + b"\nsys.stdout.write('outside')\n"
+            ),
+            (
+                actual_validator_bytes
+                + b"\nsys.stdout.buffer.write(b'outside')\n"
+            ),
+            (
+                actual_validator_bytes
+                + b"\nsys.stdout.buffer.write("
+                + b"phase_c1.canonical_json_bytes({}))\n"
+            ),
+            (
+                actual_validator_bytes
+                + b"\nsys.stdout.buffer.write("
+                + b"phase_c1.canonical_json_bytes(payload))\n"
+            ),
+            (
+                actual_validator_bytes
+                + b"\nstdout_alias = sys.stdout\n"
             ),
             (
                 actual_validator_bytes
@@ -10997,6 +16244,158 @@ class PhaseC1IndependentValidatorTests(
                 with self.patch_repository_paths(repository):
                     with self.assertRaises(validator.ValidationError):
                         validator.validate_checkpoint_lineage(repository)
+
+    def test_candidate_json_rejects_self_consistent_uncommitted_head_and_validator_blob(
+        self,
+    ) -> None:
+        for mutation in (
+            "implementation_head",
+            "validator_blob_id",
+        ):
+            with self.subTest(mutation=mutation):
+                repository = self.synthetic_lineage_repository(
+                    f"candidate_{mutation}",
+                )
+                canonical = (
+                    repository
+                    / "research"
+                    / "experiments"
+                    / "generated"
+                    / (
+                        "EMOTION-STATE-004-phase-c1-operational-signal-"
+                        "evidence-admission"
+                    )
+                )
+                committed_result = phase_c1.load_json_strict(
+                    (canonical / "result.json").read_bytes(),
+                    source="committed_result",
+                )
+                self.assertIsInstance(committed_result, dict)
+                implementation_head = committed_result[
+                    "implementation_head"
+                ]
+                validator_blob_id = committed_result["validator_blob_id"]
+                self.assertIsInstance(implementation_head, str)
+                self.assertIsInstance(validator_blob_id, str)
+                self.git(
+                    repository,
+                    "reset",
+                    "--hard",
+                    implementation_head,
+                )
+
+                authority = self.authority_bytes(
+                    admissible_signals=("confusion",),
+                )
+                candidate_head = (
+                    "0" * 40
+                    if mutation == "implementation_head"
+                    else implementation_head
+                )
+                candidate_validator_blob = (
+                    "0" * 40
+                    if mutation == "validator_blob_id"
+                    else validator_blob_id
+                )
+                (
+                    _result,
+                    result_bytes,
+                    report_bytes,
+                ) = self.build_pair(
+                    authority,
+                    head_commit=candidate_head,
+                    validator_blob_id=candidate_validator_blob,
+                )
+                candidate_root = (
+                    repository
+                    / ".tmp"
+                    / "emotion-state-004-phase-c1"
+                    / "candidate"
+                )
+                candidate_root.mkdir(parents=True)
+                (candidate_root / "result.json").write_bytes(
+                    result_bytes,
+                )
+                (candidate_root / "report.md").write_bytes(
+                    report_bytes,
+                )
+
+                candidate_receipt: dict[str, object] = {
+                    "schema_version": (
+                        "EmotionStatePhaseC1CandidateReceiptV1"
+                    ),
+                    "checkpoint_id": validator.CHECKPOINT_ID,
+                    "transaction_id": "",
+                    "status": "candidate_ready",
+                    "implementation_head": candidate_head,
+                    "validator_blob_id": candidate_validator_blob,
+                    "protocol_sha256": hashlib.sha256(
+                        authority["protocol_bytes"],
+                    ).hexdigest(),
+                    "search_ledger_sha256": hashlib.sha256(
+                        authority["search_ledger_bytes"],
+                    ).hexdigest(),
+                    "source_evidence_ledger_sha256": hashlib.sha256(
+                        authority["source_ledger_bytes"],
+                    ).hexdigest(),
+                    "source_review_receipt_sha256": hashlib.sha256(
+                        authority["review_receipt_bytes"],
+                    ).hexdigest(),
+                    "result_sha256": hashlib.sha256(
+                        result_bytes,
+                    ).hexdigest(),
+                    "report_sha256": hashlib.sha256(
+                        report_bytes,
+                    ).hexdigest(),
+                }
+                candidate_receipt["transaction_id"] = hashlib.sha256(
+                    phase_c1.canonical_json_bytes(candidate_receipt),
+                ).hexdigest()[:32]
+                receipt_path = (
+                    candidate_root.parent / "candidate-receipt.json"
+                )
+                receipt_path.write_bytes(
+                    phase_c1.canonical_json_bytes(candidate_receipt),
+                )
+
+                class BinaryOnlyStdout:
+                    def __init__(self) -> None:
+                        self.buffer = io.BytesIO()
+
+                    def write(self, value: object) -> int:
+                        raise AssertionError(
+                            "candidate --json must not use text stdout"
+                        )
+
+                    def flush(self) -> None:
+                        return None
+
+                stdout = BinaryOnlyStdout()
+                with self.patch_repository_paths(repository), mock.patch.object(
+                    sys,
+                    "stdout",
+                    stdout,
+                ), mock.patch.object(sys, "stderr"):
+                    exit_code = validator.main(
+                        ("candidate", "--json"),
+                    )
+
+                self.assertEqual(
+                    exit_code,
+                    1,
+                    msg=(
+                        "candidate --json accepted self-consistent "
+                        f"uncommitted {mutation}"
+                    ),
+                )
+                self.assertEqual(
+                    stdout.buffer.getvalue(),
+                    b"",
+                    msg=(
+                        "candidate --json emitted a pass receipt for "
+                        f"uncommitted {mutation}"
+                    ),
+                )
 
 
 if __name__ == "__main__":

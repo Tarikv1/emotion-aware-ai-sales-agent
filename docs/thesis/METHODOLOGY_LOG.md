@@ -6610,3 +6610,10 @@ Interpretation:
   candidate/canonical pair or signal decision, and opens no
   C2/model/runtime/provider/call gate. There are zero authoritative retained
   URLs to add to the registry.
+# Task 9 — caller-locked publication boundary
+
+Task 9 implemented and tested fixed-path publication capabilities only in
+OS-managed temporary roots. It produced no real candidate or canonical output,
+did not invoke a provider, runtime, or C2 activity, and leaves both candidate
+and canonical publication gates closed pending the separate review and commit
+gate.
