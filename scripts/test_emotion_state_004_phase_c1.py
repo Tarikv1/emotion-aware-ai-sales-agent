@@ -1,12 +1,15 @@
 from __future__ import annotations
 
+import ast
 import copy
 import hashlib
+import inspect
 import json
 import os
 import sys
 import time
 import unittest
+from unittest import mock
 from dataclasses import FrozenInstanceError, dataclass, fields, is_dataclass, replace
 from decimal import Decimal, localcontext
 from pathlib import Path
@@ -28,6 +31,22 @@ EXPECTED_SIGNALS = (
     "disengagement",
 )
 
+RETIRED_V1_TEST_METHOD_NAMES = (
+    "test_reason_contributor_map_is_complete_and_exact",
+    "test_per_reason_cap_rejects_repeated_single_item_reason",
+    "test_per_reason_caps_preserve_exact_contributor_boundaries",
+    "test_shared_unresolved_search_reason_pool_is_not_double_used",
+    "test_rejected_card_reason_groups_require_compatible_allocation",
+    "test_unresolved_card_reason_families_require_compatible_allocation",
+    "test_observable_reliability_reasons_bind_to_card_diagnostics",
+    "test_search_reason_reservation_preserves_valid_card_allocation",
+    "test_record_only_reasons_reserve_unresolved_search_slots",
+    "test_unresolved_card_and_search_reason_composition_is_exact",
+    "test_hidden_unresolved_reason_paths_are_exact_and_multiplicative",
+    "test_observable_reason_allocation_is_bounded_per_diagnostic",
+    "test_observable_reason_allocation_search_is_bounded",
+)
+
 EXPECTED_PHASE_C1_RESULT_FIELDS = frozenset(
     {
         "schema_version",
@@ -42,7 +61,9 @@ EXPECTED_PHASE_C1_RESULT_FIELDS = frozenset(
         "source_review_receipt_sha256",
         "aggregate_content_sha256",
         "search_counts",
+        "search_lane_counts",
         "source_counts",
+        "source_signature_counts",
         "card_counts_by_status",
         "reason_code_counts",
         "per_signal",
@@ -57,6 +78,16 @@ EXPECTED_PHASE_C1_RESULT_FIELDS = frozenset(
 EXPECTED_RELIABILITY_DIAGNOSTIC_FIELDS = frozenset(
     {
         "evidence_card_sha256",
+        "source_signature_sha256",
+        "claimed_status",
+        "claimed_reason_codes",
+        "definition_document_authoritative",
+        "definition_document_public_without_login",
+        "native_label_is_excluded_proxy",
+        "annotation_modality",
+        "construct_correspondence",
+        "temporal_unit",
+        "observer_method",
         "metric_id",
         "point_micros",
         "lower_95_micros",
@@ -70,6 +101,8 @@ EXPECTED_RELIABILITY_DIAGNOSTIC_FIELDS = frozenset(
         "positive_agreement_micros",
         "negative_agreement_micros",
         "preadjudication_disagreement_micros",
+        "preadjudication",
+        "verifiable",
     }
 )
 
@@ -88,6 +121,10 @@ EXPECTED_PHASE_C1_LIMITATIONS = (
     (
         "No public-data result alone proves real-call, provider, latency, "
         "safety, conversion, or production behavior."
+    ),
+    (
+        "Sparse source signatures and per-card categorical diagnostics may "
+        "fingerprint public source configurations."
     ),
 )
 
@@ -4676,6 +4713,14 @@ class PhaseC1DecisionTests(_PhaseC1FixtureMixin, unittest.TestCase):
 
 class PhaseC1AggregateRunnerTests(_PhaseC1FixtureMixin, unittest.TestCase):
     def setUp(self) -> None:
+        self.source_ledger_bytes_by_sha256: dict[str, bytes] = {}
+        self.projected_aggregate_sha256s: set[str] = set()
+        self.authority_bytes_by_sha256: dict[str, dict[str, bytes]] = {
+            "protocol_bytes": {},
+            "search_ledger_bytes": {},
+            "source_ledger_bytes": {},
+            "review_receipt_bytes": {},
+        }
         self.protocol_bytes = self.protocol_path.read_bytes()
         self.protocol = phase_c1.validate_discovery_protocol(
             self.valid_protocol_payload()
@@ -4685,6 +4730,104 @@ class PhaseC1AggregateRunnerTests(_PhaseC1FixtureMixin, unittest.TestCase):
             self.one_pass_source_bytes,
             self.review_bytes_for_one_pass,
         ) = self.validated_input_bytes(admissible_signals=("confusion",))
+
+    def build_result(self, **kwargs: object) -> dict[str, object]:
+        source_ledger_bytes = kwargs["source_ledger_bytes"]
+        self.assertIsInstance(source_ledger_bytes, bytes)
+        result = runner.build_phase_c1_result(**kwargs)
+        self.projected_aggregate_sha256s.add(
+            result["aggregate_content_sha256"]
+        )
+        for argument_name in self.authority_bytes_by_sha256:
+            authority_bytes = kwargs[argument_name]
+            self.assertIsInstance(authority_bytes, bytes)
+            self.authority_bytes_by_sha256[argument_name][
+                phase_c1.sha256_bytes(authority_bytes)
+            ] = authority_bytes
+        self.source_ledger_bytes_by_sha256[
+            phase_c1.sha256_bytes(source_ledger_bytes)
+        ] = source_ledger_bytes
+        return result
+
+    def authoritative_input_bytes_for(
+        self,
+        payload: dict[str, object],
+    ) -> dict[str, bytes]:
+        result_fields = {
+            "protocol_bytes": "protocol_sha256",
+            "search_ledger_bytes": "search_ledger_sha256",
+            "source_ledger_bytes": "source_evidence_ledger_sha256",
+            "review_receipt_bytes": "source_review_receipt_sha256",
+        }
+        return {
+            argument_name: self.authority_bytes_by_sha256[argument_name][
+                payload[result_field]
+            ]
+            for argument_name, result_field in result_fields.items()
+        }
+
+    def source_ledger_bytes_for(
+        self,
+        payload: dict[str, object],
+    ) -> bytes:
+        digest = payload["source_evidence_ledger_sha256"]
+        self.assertIsInstance(digest, str)
+        return self.source_ledger_bytes_by_sha256[digest]
+
+    def validate_result(self, payload: dict[str, object]) -> None:
+        if (
+            payload["aggregate_content_sha256"]
+            not in self.projected_aggregate_sha256s
+        ):
+            self.validate_local_result(payload)
+            return
+        authority_bytes = self.authoritative_input_bytes_for(payload)
+        runner.validate_phase_c1_result_payload(
+            payload,
+            **authority_bytes,
+        )
+
+    def render_result(self, payload: dict[str, object]) -> bytes:
+        if (
+            payload["aggregate_content_sha256"]
+            not in self.projected_aggregate_sha256s
+        ):
+            return self.render_local_result(payload)
+        authority_bytes = self.authoritative_input_bytes_for(payload)
+        return runner.render_phase_c1_report(
+            payload,
+            **authority_bytes,
+        )
+
+    def validate_local_result(self, payload: dict[str, object]) -> None:
+        runner._validate_phase_c1_result_local(
+            payload,
+            source_ledger_bytes=self.source_ledger_bytes_for(payload),
+        )
+
+    def render_local_result(self, payload: dict[str, object]) -> bytes:
+        return runner._render_phase_c1_report_local(
+            payload,
+            source_ledger_bytes=self.source_ledger_bytes_for(payload),
+        )
+
+    def assert_projection_rejected(
+        self,
+        payload: dict[str, object],
+        *,
+        authority_bytes: dict[str, bytes],
+    ) -> None:
+        self.reself(payload)
+        for validate in (
+            runner.validate_phase_c1_result_payload,
+            runner.render_phase_c1_report,
+        ):
+            with self.subTest(validate=validate.__name__):
+                with self.assertRaises(runner.RunnerError):
+                    validate(
+                        copy.deepcopy(payload),
+                        **authority_bytes,
+                    )
 
     def valid_card_payload(self) -> dict[str, object]:
         payload = _PhaseC1FixtureMixin.valid_card_payload()
@@ -4732,7 +4875,7 @@ class PhaseC1AggregateRunnerTests(_PhaseC1FixtureMixin, unittest.TestCase):
         )
 
     def valid_result(self) -> dict[str, object]:
-        return runner.build_phase_c1_result(
+        return self.build_result(
             head_commit="a" * 40,
             validator_blob_id="b" * 40,
             protocol_bytes=self.protocol_bytes,
@@ -4745,7 +4888,7 @@ class PhaseC1AggregateRunnerTests(_PhaseC1FixtureMixin, unittest.TestCase):
         search_bytes, source_bytes, review_bytes = self.validated_input_bytes(
             unresolved_signals=("confusion",)
         )
-        return runner.build_phase_c1_result(
+        return self.build_result(
             head_commit="a" * 40,
             validator_blob_id="b" * 40,
             protocol_bytes=self.protocol_bytes,
@@ -4756,7 +4899,7 @@ class PhaseC1AggregateRunnerTests(_PhaseC1FixtureMixin, unittest.TestCase):
 
     def all_fail_result(self) -> dict[str, object]:
         search_bytes, source_bytes, review_bytes = self.validated_input_bytes()
-        return runner.build_phase_c1_result(
+        return self.build_result(
             head_commit="a" * 40,
             validator_blob_id="b" * 40,
             protocol_bytes=self.protocol_bytes,
@@ -4769,13 +4912,83 @@ class PhaseC1AggregateRunnerTests(_PhaseC1FixtureMixin, unittest.TestCase):
         search_bytes, source_bytes, review_bytes = self.validated_input_bytes(
             admissible_signals=EXPECTED_SIGNALS,
         )
-        return runner.build_phase_c1_result(
+        return self.build_result(
             head_commit="a" * 40,
             validator_blob_id="b" * 40,
             protocol_bytes=self.protocol_bytes,
             search_ledger_bytes=search_bytes,
             source_ledger_bytes=source_bytes,
             review_receipt_bytes=review_bytes,
+        )
+
+    def fallback_result(
+        self,
+        material_kinds: tuple[str, ...],
+    ) -> dict[str, object]:
+        search, source_ledger = (
+            PhaseC1DecisionTests.validated_fallback_inputs(
+                self,
+                material_kinds,
+            )
+        )
+        search_bytes = self.canonical_dataclass_bytes(
+            search,
+            "EmotionStatePhaseC1SearchLedgerV1",
+        )
+        source_ledger = replace(
+            source_ledger,
+            search_ledger_sha256=phase_c1.sha256_bytes(search_bytes),
+        )
+        source_bytes = self.canonical_dataclass_bytes(
+            source_ledger,
+            "EmotionStatePhaseC1SourceEvidenceLedgerV1",
+        )
+        search_payload = phase_c1.load_json_strict(
+            search_bytes,
+            source="search",
+        )
+        review_payload = {
+            "schema_version": "EmotionStatePhaseC1SourceReviewReceiptV1",
+            "protocol_sha256": phase_c1.sha256_bytes(self.protocol_bytes),
+            "search_ledger_sha256": phase_c1.sha256_bytes(search_bytes),
+            "source_evidence_ledger_sha256": phase_c1.sha256_bytes(
+                source_bytes
+            ),
+            "transport_ledger_sha256": "D" * 64,
+            "reviewed_transport_receipt_sha256s": list(
+                phase_c1._review_transport_hashes(
+                    search_payload,
+                    source_ledger.sources,
+                )
+            ),
+            "reviewed_document_sha256s": [
+                document.cached_sha256
+                for source in source_ledger.sources
+                for document in source.documents
+            ],
+            "review_scope": (
+                "all_transport_discovery_citation_source_cards_and_"
+                "search_completeness"
+            ),
+            "verdict": "admitted",
+            "critical_findings": 0,
+            "important_findings": 0,
+            "minor_findings": 0,
+            "raw_rows_read": False,
+            "private_data_read": False,
+            "model_evaluation_run": False,
+            "provider_accessed": False,
+            "runtime_modified": False,
+        }
+        return self.build_result(
+            head_commit="a" * 40,
+            validator_blob_id="b" * 40,
+            protocol_bytes=self.protocol_bytes,
+            search_ledger_bytes=search_bytes,
+            source_ledger_bytes=source_bytes,
+            review_receipt_bytes=phase_c1.canonical_json_bytes(
+                review_payload
+            ),
         )
 
     @staticmethod
@@ -4795,6 +5008,308 @@ class PhaseC1AggregateRunnerTests(_PhaseC1FixtureMixin, unittest.TestCase):
             encoded
         ).hexdigest().upper()
 
+    @staticmethod
+    def rehash_source_signature(
+        payload: dict[str, object],
+        entry: dict[str, object],
+    ) -> None:
+        old_digest = entry["source_signature_sha256"]
+        signature = {
+            key: value
+            for key, value in entry.items()
+            if key not in {"source_signature_sha256", "count"}
+        }
+        new_digest = phase_c1.sha256_bytes(
+            phase_c1.canonical_json_bytes(signature)
+        )
+        entry["source_signature_sha256"] = new_digest
+        for item in payload["per_signal"]:
+            for diagnostic in item["reliability_diagnostics"]:
+                if diagnostic["source_signature_sha256"] == old_digest:
+                    diagnostic["source_signature_sha256"] = new_digest
+        payload["source_signature_counts"].sort(
+            key=lambda item: item["source_signature_sha256"]
+        )
+
+    @staticmethod
+    def reference_diagnostic_disposition(
+        diagnostic: dict[str, object],
+        signature: dict[str, object],
+    ) -> tuple[str, tuple[str, ...]]:
+        rejected: set[str] = set()
+        unresolved: set[str] = set()
+        if not diagnostic["definition_document_authoritative"]:
+            unresolved.add("authoritative_provenance_unverified")
+        if not diagnostic["definition_document_public_without_login"]:
+            unresolved.add("access_unresolved")
+        if diagnostic["native_label_is_excluded_proxy"]:
+            rejected.add("proxy_construct")
+        source_reason = {
+            ("access_status", "login_required"): "access_requires_login",
+            ("access_status", "restricted"): "access_restricted",
+            ("license_status", "incompatible"): "license_incompatible",
+            (
+                "ethical_use_status",
+                "incompatible",
+            ): "ethical_use_incompatible",
+            (
+                "conversation_status",
+                "acted_or_scripted",
+            ): "acted_or_scripted",
+            (
+                "conversation_status",
+                "mixed_unseparated",
+            ): "mixed_unseparated_conversation",
+        }
+        for (field, value), reason in source_reason.items():
+            if signature[field] == value:
+                rejected.add(reason)
+        source_unresolved = {
+            "access_status": "access_unresolved",
+            "license_status": "license_unresolved",
+            "ethical_use_status": "ethical_use_unresolved",
+            "conversation_status": "conversation_status_unresolved",
+        }
+        for field, reason in source_unresolved.items():
+            if signature[field] == "unresolved":
+                unresolved.add(reason)
+        construct = diagnostic["construct_correspondence"]
+        if construct == "proxy_construct":
+            rejected.add("proxy_construct")
+        elif construct == "target_absent":
+            rejected.add("target_label_absent")
+        elif construct != "direct_target_construct":
+            unresolved.add("directness_unresolved")
+        if diagnostic["annotation_modality"] == "unresolved":
+            unresolved.add("source_documentation_incomplete")
+        temporal = diagnostic["temporal_unit"]
+        if temporal == "conversation":
+            rejected.add("conversation_level_only")
+        elif temporal == "other":
+            rejected.add("temporal_unit_incompatible")
+        elif temporal == "unresolved":
+            unresolved.add("temporal_unit_unresolved")
+        observer = diagnostic["observer_method"]
+        if observer == "self_report":
+            rejected.add("self_report_label")
+        elif observer == "llm_generated":
+            rejected.add("llm_generated_label")
+        elif observer == "automated_proxy":
+            rejected.add("proxy_construct")
+        elif observer == "adjudicated_only_human_label":
+            unresolved.add("reliability_not_preadjudication")
+        elif observer == "unresolved":
+            unresolved.add("observer_method_unresolved")
+        raters = diagnostic["independent_rater_count"]
+        if raters is None:
+            unresolved.add("rater_count_unresolved")
+        elif raters < 2:
+            rejected.add("single_rater")
+        ordered = lambda reasons: tuple(
+            code for code in EXPECTED_REASON_CODE_ORDER if code in reasons
+        )
+        if rejected:
+            return "rejected", ordered(rejected)
+        if unresolved:
+            return "unresolved", ordered(unresolved)
+
+        reliability: set[str] = set()
+        if not diagnostic["preadjudication"]:
+            reliability.add("reliability_not_preadjudication")
+        if not diagnostic["verifiable"]:
+            reliability.add("reliability_unverifiable")
+        rated = diagnostic["rated_unit_count"]
+        positives = diagnostic["published_positive_count"]
+        if rated is None:
+            reliability.add("reliability_effective_sample_insufficient")
+        if positives is None:
+            reliability.update(
+                {
+                    "published_positive_count_missing",
+                    "reliability_effective_sample_insufficient",
+                }
+            )
+        elif positives < 93:
+            reliability.update(
+                {
+                    "positive_support_below_93",
+                    "reliability_effective_sample_insufficient",
+                }
+            )
+        intervals = (
+            diagnostic["point_micros"],
+            diagnostic["lower_95_micros"],
+            diagnostic["upper_95_micros"],
+        )
+        if any(value is None for value in intervals):
+            reliability.add("reliability_interval_uncertain")
+        if reliability or not diagnostic["effective_sample_sufficient"]:
+            return "unresolved", ordered(reliability)
+        point, lower, upper = intervals
+        if point >= 800_000 and lower >= 670_000:
+            return "admissible", ()
+        if upper < 670_000:
+            return "rejected", ("reliability_upper_below_0_67",)
+        return "unresolved", ("reliability_interval_uncertain",)
+
+    @staticmethod
+    def reference_fail_ready(
+        payload: dict[str, object],
+        signal: str,
+    ) -> bool:
+        lanes = payload["search_lane_counts"]
+        direct = lanes["direct_by_signal"][signal]
+        fallback = lanes["fallback_material"]
+        return (
+            direct["query_counts"]["incomplete"] == 0
+            and direct["query_counts"]["truncated"] == 0
+            and fallback["query_counts"]["incomplete"] == 0
+            and fallback["query_counts"]["truncated"] == 0
+            and all(
+                direct["citations"][direction]["stop_status"]
+                in {"no_eligible_candidates", "source_list_exhausted"}
+                for direction in ("backward", "forward")
+            )
+            and direct["discovery_disposition_counts"]["unresolved"] == 0
+            and all(
+                direct["citations"][direction]["disposition_counts"][
+                    "unresolved"
+                ]
+                == 0
+                for direction in ("backward", "forward")
+            )
+            and fallback["discovery_disposition_counts"]["unresolved"] == 0
+            and direct["candidate_overflow_count"] == 0
+            and fallback["candidate_overflow_count"] == 0
+        )
+
+    def align_local_card_witnesses(
+        self,
+        payload: dict[str, object],
+    ) -> None:
+        reason_counts = payload["reason_code_counts"]
+        for item in payload["per_signal"]:
+            for diagnostic in item["reliability_diagnostics"]:
+                for reason in diagnostic["claimed_reason_codes"]:
+                    reason_counts[reason] -= 1
+        signatures = {
+            entry["source_signature_sha256"]: entry
+            for entry in payload["source_signature_counts"]
+        }
+        totals = {"admissible": 0, "rejected": 0, "unresolved": 0}
+        passed: list[str] = []
+        for item in payload["per_signal"]:
+            admissible: list[str] = []
+            rejected = 0
+            unresolved = 0
+            for diagnostic in item["reliability_diagnostics"]:
+                status, reasons = self.reference_diagnostic_disposition(
+                    diagnostic,
+                    signatures[diagnostic["source_signature_sha256"]],
+                )
+                diagnostic["claimed_status"] = status
+                diagnostic["claimed_reason_codes"] = list(reasons)
+                for reason in reasons:
+                    reason_counts[reason] += 1
+                totals[status] += 1
+                if status == "admissible":
+                    admissible.append(diagnostic["evidence_card_sha256"])
+                elif status == "rejected":
+                    rejected += 1
+                else:
+                    unresolved += 1
+            item["admissible_evidence_card_sha256s"] = admissible
+            item["rejected_card_count"] = rejected
+            item["unresolved_card_count"] = unresolved
+            fail_ready = self.reference_fail_ready(
+                payload,
+                item["signal"],
+            )
+            decision_value = (
+                "pass"
+                if admissible
+                else "defer"
+                if (
+                    unresolved > 0
+                    or not fail_ready
+                    or item["annotation_fallback"]
+                    in {"feasible", "unresolved"}
+                )
+                else "fail"
+            )
+            item["decision"] = decision_value
+            item["c2_eligible"] = decision_value == "pass"
+            if decision_value == "pass":
+                passed.append(item["signal"])
+        payload["card_counts_by_status"] = totals
+        payload["c2_eligible_signals"] = passed
+        payload["overall_decision"] = (
+            "proceed_full_to_c2"
+            if len(passed) == 5
+            else "proceed_partial_to_c2"
+            if passed
+            else "defer_c2"
+            if any(
+                item["decision"] == "defer"
+                for item in payload["per_signal"]
+            )
+            else "stop_c2"
+        )
+
+    def realign_without_search_reasons(
+        self,
+        payload: dict[str, object],
+    ) -> None:
+        payload["reason_code_counts"] = {
+            code: 0 for code in EXPECTED_REASON_CODE_ORDER
+        }
+        for item in payload["per_signal"]:
+            for diagnostic in item["reliability_diagnostics"]:
+                for reason in diagnostic["claimed_reason_codes"]:
+                    payload["reason_code_counts"][reason] += 1
+            if item["annotation_fallback"] == "feasible":
+                payload["reason_code_counts"][
+                    "annotation_fallback_feasible"
+                ] += 1
+            elif item["annotation_fallback"] == "unresolved":
+                payload["reason_code_counts"][
+                    "annotation_fallback_unresolved"
+                ] += 1
+        self.align_local_card_witnesses(payload)
+
+    def add_unresolved_discovery_witness(
+        self,
+        payload: dict[str, object],
+        *,
+        signal: str,
+        reason: str = "source_identity_unverified",
+    ) -> None:
+        payload["search_counts"]["returned_discovery_record_count"] += 1
+        payload["search_counts"][
+            "unresolved_discovery_record_count"
+        ] += 1
+        payload["search_lane_counts"]["direct_by_signal"][signal][
+            "discovery_disposition_counts"
+        ]["unresolved"] += 1
+        payload["reason_code_counts"][reason] += 1
+        item = next(
+            item
+            for item in payload["per_signal"]
+            if item["signal"] == signal
+        )
+        if (
+            payload["search_lane_counts"]["fallback_material"][
+                "candidate_order_count"
+            ]
+            == 0
+        ):
+            if item["annotation_fallback"] != "unresolved":
+                item["annotation_fallback"] = "unresolved"
+                payload["reason_code_counts"][
+                    "annotation_fallback_unresolved"
+                ] += 1
+        self.align_local_card_witnesses(payload)
+
     def assert_result_rejected(
         self,
         payload: dict[str, object],
@@ -4802,8 +5317,8 @@ class PhaseC1AggregateRunnerTests(_PhaseC1FixtureMixin, unittest.TestCase):
     ) -> None:
         self.reself(payload)
         for validate in (
-            runner.validate_phase_c1_result_payload,
-            runner.render_phase_c1_report,
+            self.validate_result,
+            self.render_result,
         ):
             with self.subTest(validate=validate.__name__):
                 with self.assertRaisesRegex(runner.RunnerError, code):
@@ -4829,9 +5344,10 @@ class PhaseC1AggregateRunnerTests(_PhaseC1FixtureMixin, unittest.TestCase):
         )
         payload["reason_code_counts"][
             "reliability_upper_below_0_67"
-        ] = 1
+        ] = 0
         payload["overall_decision"] = "stop_c2"
         payload["c2_eligible_signals"] = []
+        self.align_local_card_witnesses(payload)
         return payload
 
     def test_result_is_rowless_hash_bound_and_partial_when_one_signal_passes(
@@ -4846,7 +5362,7 @@ class PhaseC1AggregateRunnerTests(_PhaseC1FixtureMixin, unittest.TestCase):
         result = self.valid_result()
         self.assertEqual(
             result["schema_version"],
-            "EmotionStatePhaseC1AggregateResultV1",
+            "EmotionStatePhaseC1AggregateResultV2",
         )
         self.assertEqual(set(result), EXPECTED_PHASE_C1_RESULT_FIELDS)
         self.assertEqual(
@@ -4942,8 +5458,8 @@ class PhaseC1AggregateRunnerTests(_PhaseC1FixtureMixin, unittest.TestCase):
 
     def test_report_is_deterministic_lf_and_binds_exact_result(self) -> None:
         result = self.valid_result()
-        first = runner.render_phase_c1_report(result)
-        second = runner.render_phase_c1_report(copy.deepcopy(result))
+        first = self.render_result(result)
+        second = self.render_result(copy.deepcopy(result))
         self.assertEqual(first, second)
         self.assertTrue(first.endswith(b"\n"))
         self.assertNotIn(b"\r", first)
@@ -5045,12 +5561,12 @@ class PhaseC1AggregateRunnerTests(_PhaseC1FixtureMixin, unittest.TestCase):
                     runner.RunnerError,
                     "forbidden_content",
                 ):
-                    runner.validate_phase_c1_result_payload(payload)
+                    self.validate_result(payload)
                 with self.assertRaisesRegex(
                     runner.RunnerError,
                     "forbidden_content",
                 ):
-                    runner.render_phase_c1_report(payload)
+                    self.render_result(payload)
 
     def test_result_rejects_runtime_and_decision_contradictions(self) -> None:
         runtime = self.valid_result()
@@ -5060,7 +5576,7 @@ class PhaseC1AggregateRunnerTests(_PhaseC1FixtureMixin, unittest.TestCase):
             runner.RunnerError,
             "runtime_approved",
         ):
-            runner.validate_phase_c1_result_payload(runtime)
+            self.validate_result(runtime)
 
         eligible_defer = self.valid_result()
         confusion = eligible_defer["per_signal"][2]
@@ -5076,9 +5592,9 @@ class PhaseC1AggregateRunnerTests(_PhaseC1FixtureMixin, unittest.TestCase):
         self.reself(eligible_defer)
         with self.assertRaisesRegex(
             runner.RunnerError,
-            "c2_eligibility",
+            "per_signal",
         ):
-            runner.validate_phase_c1_result_payload(eligible_defer)
+            self.validate_result(eligible_defer)
 
         full = self.valid_result()
         full["overall_decision"] = "proceed_full_to_c2"
@@ -5087,7 +5603,7 @@ class PhaseC1AggregateRunnerTests(_PhaseC1FixtureMixin, unittest.TestCase):
             runner.RunnerError,
             "overall_decision",
         ):
-            runner.validate_phase_c1_result_payload(full)
+            self.validate_result(full)
 
         partial = self.deferred_result()
         partial["overall_decision"] = "proceed_partial_to_c2"
@@ -5096,7 +5612,7 @@ class PhaseC1AggregateRunnerTests(_PhaseC1FixtureMixin, unittest.TestCase):
             runner.RunnerError,
             "overall_decision",
         ):
-            runner.validate_phase_c1_result_payload(partial)
+            self.validate_result(partial)
 
         stopped = self.deferred_result()
         stopped["overall_decision"] = "stop_c2"
@@ -5105,7 +5621,7 @@ class PhaseC1AggregateRunnerTests(_PhaseC1FixtureMixin, unittest.TestCase):
             runner.RunnerError,
             "overall_decision",
         ):
-            runner.validate_phase_c1_result_payload(stopped)
+            self.validate_result(stopped)
 
     def test_unresolved_or_feasible_signal_cannot_claim_fail(self) -> None:
         unresolved = self.deferred_result()
@@ -5116,7 +5632,7 @@ class PhaseC1AggregateRunnerTests(_PhaseC1FixtureMixin, unittest.TestCase):
             runner.RunnerError,
             "per_signal",
         ):
-            runner.validate_phase_c1_result_payload(unresolved)
+            self.validate_result(unresolved)
 
         feasible = self.all_fail_result()
         feasible["per_signal"][0]["annotation_fallback"] = "feasible"
@@ -5125,7 +5641,7 @@ class PhaseC1AggregateRunnerTests(_PhaseC1FixtureMixin, unittest.TestCase):
             runner.RunnerError,
             "per_signal",
         ):
-            runner.validate_phase_c1_result_payload(feasible)
+            self.validate_result(feasible)
 
     def test_report_renderer_rejects_a_statement_contradicting_rows(
         self,
@@ -5137,7 +5653,7 @@ class PhaseC1AggregateRunnerTests(_PhaseC1FixtureMixin, unittest.TestCase):
             runner.RunnerError,
             "overall_decision",
         ):
-            runner.render_phase_c1_report(payload)
+            self.render_result(payload)
 
     def test_review_and_selfless_hash_mismatches_reject(self) -> None:
         review_payload = phase_c1.load_json_strict(
@@ -5167,7 +5683,7 @@ class PhaseC1AggregateRunnerTests(_PhaseC1FixtureMixin, unittest.TestCase):
             runner.RunnerError,
             "aggregate_content_sha256",
         ):
-            runner.validate_phase_c1_result_payload(payload)
+            self.validate_result(payload)
 
     def test_card_status_and_query_count_algebra_rejects(self) -> None:
         payload = self.valid_result()
@@ -5177,7 +5693,7 @@ class PhaseC1AggregateRunnerTests(_PhaseC1FixtureMixin, unittest.TestCase):
             runner.RunnerError,
             "card_status_counts",
         ):
-            runner.validate_phase_c1_result_payload(payload)
+            self.validate_result(payload)
 
         for field, wrong in (
             ("direct_label_query_count", 79),
@@ -5192,7 +5708,7 @@ class PhaseC1AggregateRunnerTests(_PhaseC1FixtureMixin, unittest.TestCase):
                     runner.RunnerError,
                     "search_counts",
                 ):
-                    runner.validate_phase_c1_result_payload(payload)
+                    self.validate_result(payload)
 
     def test_protocol_caps_reject_impossible_aggregate_counts(self) -> None:
         mutations = (
@@ -5223,7 +5739,7 @@ class PhaseC1AggregateRunnerTests(_PhaseC1FixtureMixin, unittest.TestCase):
                     runner.RunnerError,
                     "search_counts",
                 ):
-                    runner.validate_phase_c1_result_payload(payload)
+                    self.validate_result(payload)
 
     def test_per_signal_card_count_cannot_exceed_frozen_cap(self) -> None:
         payload = self.valid_result()
@@ -5254,13 +5770,13 @@ class PhaseC1AggregateRunnerTests(_PhaseC1FixtureMixin, unittest.TestCase):
         )
         self.reself(payload)
         for validate in (
-            runner.validate_phase_c1_result_payload,
-            runner.render_phase_c1_report,
+            self.validate_result,
+            self.render_result,
         ):
             with self.subTest(validate=validate.__name__):
                 with self.assertRaisesRegex(
                     runner.RunnerError,
-                    "per_signal",
+                    "search_lane_counts",
                 ):
                     validate(copy.deepcopy(payload))
 
@@ -5271,13 +5787,13 @@ class PhaseC1AggregateRunnerTests(_PhaseC1FixtureMixin, unittest.TestCase):
         ] = 0
         self.reself(payload)
         for validate in (
-            runner.validate_phase_c1_result_payload,
-            runner.render_phase_c1_report,
+            self.validate_result,
+            self.render_result,
         ):
             with self.subTest(validate=validate.__name__):
                 with self.assertRaisesRegex(
                     runner.RunnerError,
-                    "source_counts",
+                    "source_signature_counts",
                 ):
                     validate(copy.deepcopy(payload))
 
@@ -5286,8 +5802,8 @@ class PhaseC1AggregateRunnerTests(_PhaseC1FixtureMixin, unittest.TestCase):
         payload["source_counts"]["document_count"] = 6
         self.reself(payload)
         for validate in (
-            runner.validate_phase_c1_result_payload,
-            runner.render_phase_c1_report,
+            self.validate_result,
+            self.render_result,
         ):
             with self.subTest(validate=validate.__name__):
                 with self.assertRaisesRegex(
@@ -5300,8 +5816,8 @@ class PhaseC1AggregateRunnerTests(_PhaseC1FixtureMixin, unittest.TestCase):
         payload = self.rejected_alpha_result()
         self.reself(payload)
 
-        runner.validate_phase_c1_result_payload(payload)
-        report = runner.render_phase_c1_report(payload)
+        self.validate_result(payload)
+        report = self.render_result(payload)
         self.assertIn(b"point_micros=-500000", report)
         self.assertIn(b"lower_95_micros=-600000", report)
         self.assertIn(b"upper_95_micros=-400000", report)
@@ -5329,18 +5845,16 @@ class PhaseC1AggregateRunnerTests(_PhaseC1FixtureMixin, unittest.TestCase):
                 "unresolved_citation_record_count": 1,
             }
         )
-        unresolved["source_counts"][
-            "fallback_material_candidate_source_count"
-        ] = 0
-        unresolved["per_signal"][2][
-            "annotation_fallback"
-        ] = "unresolved"
-        unresolved["reason_code_counts"].update(
-            {
-                "source_identity_unverified": 1,
-                "annotation_fallback_unresolved": 1,
-            }
-        )
+        lane = unresolved["search_lane_counts"]["direct_by_signal"][
+            "confusion"
+        ]
+        lane["discovery_disposition_counts"]["retained_candidate"] = 0
+        lane["citations"]["backward"]["disposition_counts"][
+            "unresolved"
+        ] = 1
+        unresolved["reason_code_counts"][
+            "source_identity_unverified"
+        ] = 1
         self.assert_result_rejected(unresolved, "search_counts")
 
         retained = self.valid_result()
@@ -5351,12 +5865,16 @@ class PhaseC1AggregateRunnerTests(_PhaseC1FixtureMixin, unittest.TestCase):
                 "backward_citation_record_count": 1,
             }
         )
-        retained["source_counts"][
-            "fallback_material_candidate_source_count"
-        ] = 0
+        lane = retained["search_lane_counts"]["direct_by_signal"][
+            "confusion"
+        ]
+        lane["discovery_disposition_counts"]["retained_candidate"] = 0
+        lane["citations"]["backward"]["disposition_counts"][
+            "retained_candidate"
+        ] = 1
         self.reself(retained)
-        runner.validate_phase_c1_result_payload(retained)
-        runner.render_phase_c1_report(retained)
+        self.validate_result(retained)
+        self.render_result(retained)
 
     def test_positive_overflow_requires_a_saturated_candidate_lane(
         self,
@@ -5369,45 +5887,44 @@ class PhaseC1AggregateRunnerTests(_PhaseC1FixtureMixin, unittest.TestCase):
                 "candidate_overflow_count": 1,
             }
         )
+        lane = below_minimum["search_lane_counts"]["direct_by_signal"][
+            "confusion"
+        ]
+        lane["candidate_overflow_count"] = 1
+        lane["discovery_disposition_counts"]["retained_candidate"] = 2
         self.assert_result_rejected(below_minimum, "search_counts")
 
-        no_saturated_lane = self.valid_result()
+        no_saturated_lane = self.fallback_result(("infeasible",))
         no_saturated_lane["search_counts"].update(
             {
-                "returned_discovery_record_count": 11,
-                "retained_candidate_record_count": 11,
-                "detailed_candidate_count": 10,
+                "returned_discovery_record_count": 2,
+                "retained_candidate_record_count": 2,
                 "candidate_overflow_count": 1,
             }
         )
-        no_saturated_lane["source_counts"].update(
-            {
-                "source_count": 10,
-                "document_count": 10,
-                "existing_annotation_evidence_source_count": 10,
-                "fallback_material_candidate_source_count": 9,
-            }
-        )
+        lane = no_saturated_lane["search_lane_counts"][
+            "fallback_material"
+        ]
+        lane["candidate_overflow_count"] = 1
+        lane["discovery_disposition_counts"]["retained_candidate"] = 2
         self.assert_result_rejected(no_saturated_lane, "search_counts")
 
     def test_every_source_requires_at_least_one_phase_c1_role(self) -> None:
-        payload = self.all_fail_result()
-        payload["search_counts"].update(
-            {
-                "returned_discovery_record_count": 1,
-                "retained_candidate_record_count": 1,
-                "detailed_candidate_count": 1,
-            }
-        )
+        payload = self.valid_result()
+        entry = payload["source_signature_counts"][0]
+        entry["existing_annotation_evidence_role"] = False
+        entry["fallback_material_candidate_role"] = False
+        self.rehash_source_signature(payload, entry)
         payload["source_counts"].update(
             {
-                "source_count": 1,
-                "document_count": 1,
                 "existing_annotation_evidence_source_count": 0,
                 "fallback_material_candidate_source_count": 0,
             }
         )
-        self.assert_result_rejected(payload, "source_counts")
+        self.assert_result_rejected(
+            payload,
+            "source_counts",
+        )
 
     def test_source_union_requires_direct_card_capacity(self) -> None:
         impossible = self.all_fail_result()
@@ -5426,47 +5943,22 @@ class PhaseC1AggregateRunnerTests(_PhaseC1FixtureMixin, unittest.TestCase):
                 "fallback_material_candidate_source_count": 11,
             }
         )
-        self.assert_result_rejected(impossible, "source_counts")
+        self.assert_result_rejected(impossible, "search_lane_counts")
 
-        fallback_only_boundary = self.all_fail_result()
-        fallback_only_boundary["search_counts"].update(
-            {
-                "returned_discovery_record_count": 10,
-                "retained_candidate_record_count": 10,
-                "detailed_candidate_count": 10,
-            }
+        fallback_only_boundary = self.fallback_result(
+            ("infeasible",) * 8
         )
-        fallback_only_boundary["source_counts"].update(
+        self.assertEqual(
+            fallback_only_boundary["source_counts"],
             {
-                "source_count": 10,
-                "document_count": 10,
+                "source_count": 8,
+                "document_count": 8,
                 "existing_annotation_evidence_source_count": 0,
-                "fallback_material_candidate_source_count": 10,
-            }
+                "fallback_material_candidate_source_count": 8,
+            },
         )
-        self.reself(fallback_only_boundary)
-        runner.validate_phase_c1_result_payload(fallback_only_boundary)
-        runner.render_phase_c1_report(fallback_only_boundary)
-
-        one_direct_boundary = self.valid_result()
-        one_direct_boundary["search_counts"].update(
-            {
-                "returned_discovery_record_count": 11,
-                "retained_candidate_record_count": 11,
-                "detailed_candidate_count": 11,
-            }
-        )
-        one_direct_boundary["source_counts"].update(
-            {
-                "source_count": 11,
-                "document_count": 11,
-                "existing_annotation_evidence_source_count": 1,
-                "fallback_material_candidate_source_count": 10,
-            }
-        )
-        self.reself(one_direct_boundary)
-        runner.validate_phase_c1_result_payload(one_direct_boundary)
-        runner.render_phase_c1_report(one_direct_boundary)
+        self.validate_result(fallback_only_boundary)
+        self.render_result(fallback_only_boundary)
 
     def test_defer_requires_card_fallback_or_search_blocker(self) -> None:
         payload = self.valid_result()
@@ -5475,149 +5967,117 @@ class PhaseC1AggregateRunnerTests(_PhaseC1FixtureMixin, unittest.TestCase):
 
     def test_search_only_defer_requires_noninfeasible_fallback(self) -> None:
         impossible = self.all_fail_result()
-        impossible["search_counts"].update(
-            {
-                "returned_discovery_record_count": 1,
-                "unresolved_discovery_record_count": 1,
-            }
+        self.add_unresolved_discovery_witness(
+            impossible,
+            signal="hesitation",
         )
+        impossible["per_signal"][0]["annotation_fallback"] = "infeasible"
         impossible["reason_code_counts"][
-            "source_identity_unverified"
-        ] = 1
-        impossible["per_signal"][0]["decision"] = "defer"
-        impossible["overall_decision"] = "defer_c2"
+            "annotation_fallback_unresolved"
+        ] = 0
+        impossible["per_signal"][0]["decision"] = "fail"
+        impossible["overall_decision"] = "stop_c2"
         self.assert_result_rejected(impossible, "per_signal")
 
         blocker_on_pass = self.valid_result()
-        blocker_on_pass["search_counts"].update(
-            {
-                "returned_discovery_record_count": 2,
-                "unresolved_discovery_record_count": 1,
-            }
+        self.add_unresolved_discovery_witness(
+            blocker_on_pass,
+            signal="confusion",
         )
-        blocker_on_pass["reason_code_counts"].update(
-            {
-                "source_identity_unverified": 1,
-                "annotation_fallback_feasible": 1,
-                "annotation_fallback_unresolved": 1,
-            }
-        )
-        blocker_on_pass["per_signal"][0].update(
-            {
-                "decision": "defer",
-                "annotation_fallback": "feasible",
-            }
-        )
-        blocker_on_pass["per_signal"][2][
-            "annotation_fallback"
-        ] = "unresolved"
         self.reself(blocker_on_pass)
-        runner.validate_phase_c1_result_payload(blocker_on_pass)
-        runner.render_phase_c1_report(blocker_on_pass)
+        self.validate_result(blocker_on_pass)
+        self.render_result(blocker_on_pass)
 
     def test_aggregate_search_blocker_requires_noninfeasible_fallback(
         self,
     ) -> None:
         partial = self.valid_result()
-        partial["search_counts"].update(
-            {
-                "returned_discovery_record_count": 2,
-                "unresolved_discovery_record_count": 1,
-            }
+        self.add_unresolved_discovery_witness(
+            partial,
+            signal="hesitation",
         )
-        partial["reason_code_counts"]["source_identity_unverified"] = 1
+        partial["per_signal"][0]["annotation_fallback"] = "infeasible"
+        partial["reason_code_counts"][
+            "annotation_fallback_unresolved"
+        ] = 0
         self.assert_result_rejected(partial, "per_signal")
 
         full = self.full_pass_result()
-        full["search_counts"].update(
-            {
-                "returned_discovery_record_count": 6,
-                "unresolved_discovery_record_count": 1,
-            }
+        self.add_unresolved_discovery_witness(
+            full,
+            signal="hesitation",
         )
-        full["reason_code_counts"]["source_identity_unverified"] = 1
+        full["per_signal"][0]["annotation_fallback"] = "infeasible"
+        full["reason_code_counts"][
+            "annotation_fallback_unresolved"
+        ] = 0
         self.assert_result_rejected(full, "per_signal")
 
         no_blocker = self.all_fail_result()
-        runner.validate_phase_c1_result_payload(no_blocker)
-        runner.render_phase_c1_report(no_blocker)
+        self.validate_result(no_blocker)
+        self.render_result(no_blocker)
 
         blocker_with_unresolved_fallback = self.valid_result()
-        blocker_with_unresolved_fallback["search_counts"].update(
+        self.add_unresolved_discovery_witness(
+            blocker_with_unresolved_fallback,
+            signal="confusion",
+        )
+        self.reself(blocker_with_unresolved_fallback)
+        self.validate_result(
+            blocker_with_unresolved_fallback
+        )
+        self.render_result(blocker_with_unresolved_fallback)
+
+    def test_stop_rejects_every_aggregate_search_blocker(self) -> None:
+        incomplete = self.all_fail_result()
+        incomplete["search_counts"].update(
             {
-                "returned_discovery_record_count": 2,
+                "complete_query_count": 87,
+                "incomplete_query_count": 1,
+                "search_complete": False,
+            }
+        )
+        incomplete["search_lane_counts"]["direct_by_signal"][
+            "hesitation"
+        ]["query_counts"].update({"complete": 15, "incomplete": 1})
+
+        unresolved_discovery = self.all_fail_result()
+        unresolved_discovery["search_counts"].update(
+            {
+                "returned_discovery_record_count": 1,
                 "unresolved_discovery_record_count": 1,
             }
         )
-        blocker_with_unresolved_fallback["per_signal"][2][
-            "annotation_fallback"
-        ] = "unresolved"
-        blocker_with_unresolved_fallback["reason_code_counts"].update(
+        unresolved_discovery["search_lane_counts"]["direct_by_signal"][
+            "hesitation"
+        ]["discovery_disposition_counts"]["unresolved"] = 1
+        unresolved_discovery["reason_code_counts"][
+            "source_identity_unverified"
+        ] = 1
+
+        unresolved_citation = self.all_fail_result()
+        unresolved_citation["search_counts"].update(
             {
-                "source_identity_unverified": 1,
-                "annotation_fallback_unresolved": 1,
+                "backward_citation_record_count": 1,
+                "unresolved_citation_record_count": 1,
             }
         )
-        self.reself(blocker_with_unresolved_fallback)
-        runner.validate_phase_c1_result_payload(
-            blocker_with_unresolved_fallback
-        )
-        runner.render_phase_c1_report(blocker_with_unresolved_fallback)
+        unresolved_citation["search_lane_counts"]["direct_by_signal"][
+            "hesitation"
+        ]["citations"]["backward"]["disposition_counts"][
+            "unresolved"
+        ] = 1
+        unresolved_citation["reason_code_counts"][
+            "source_identity_unverified"
+        ] = 1
 
-    def test_stop_rejects_every_aggregate_search_blocker(self) -> None:
-        mutations = (
-            (
-                {
-                    "complete_query_count": 87,
-                    "incomplete_query_count": 1,
-                    "search_complete": False,
-                },
-                {},
-                {},
-            ),
-            (
-                {
-                    "returned_discovery_record_count": 1,
-                    "unresolved_discovery_record_count": 1,
-                },
-                {},
-                {"source_identity_unverified": 1},
-            ),
-            (
-                {
-                    "backward_citation_record_count": 1,
-                    "unresolved_citation_record_count": 1,
-                },
-                {},
-                {"source_identity_unverified": 1},
-            ),
-            (
-                {
-                    "returned_discovery_record_count": 11,
-                    "retained_candidate_record_count": 11,
-                    "detailed_candidate_count": 10,
-                    "candidate_overflow_count": 1,
-                },
-                {
-                    "source_count": 10,
-                    "document_count": 10,
-                    "existing_annotation_evidence_source_count": 0,
-                    "fallback_material_candidate_source_count": 10,
-                },
-                {},
-            ),
-        )
-        for index, (
-            search_updates,
-            source_updates,
-            reason_updates,
-        ) in enumerate(mutations):
-            with self.subTest(mutation=index):
-                payload = self.all_fail_result()
-                payload["search_counts"].update(search_updates)
-                payload["source_counts"].update(source_updates)
-                payload["reason_code_counts"].update(reason_updates)
-                self.assert_result_rejected(payload, "overall_decision")
+        for name, payload in (
+            ("incomplete_query", incomplete),
+            ("unresolved_discovery", unresolved_discovery),
+            ("unresolved_citation", unresolved_citation),
+        ):
+            with self.subTest(blocker=name):
+                self.assert_result_rejected(payload, "per_signal")
 
     def test_empty_fallback_material_cannot_be_feasible_or_unresolved(
         self,
@@ -5627,18 +6087,15 @@ class PhaseC1AggregateRunnerTests(_PhaseC1FixtureMixin, unittest.TestCase):
             ("unresolved", "annotation_fallback_unresolved"),
         ):
             with self.subTest(status=status):
-                payload = self.valid_result()
+                payload = self.all_fail_result()
                 payload["per_signal"][0].update(
                     {
                         "decision": "defer",
                         "annotation_fallback": status,
                     }
                 )
-                payload["source_counts"][
-                    "fallback_material_candidate_source_count"
-                ] = 0
                 payload["reason_code_counts"][reason] = 1
-                self.assert_result_rejected(payload, "source_counts")
+                self.assert_result_rejected(payload, "per_signal")
 
     def test_fallback_reason_counts_equal_fallback_status_counts(self) -> None:
         for status, reason in (
@@ -5646,14 +6103,14 @@ class PhaseC1AggregateRunnerTests(_PhaseC1FixtureMixin, unittest.TestCase):
             ("unresolved", "annotation_fallback_unresolved"),
         ):
             with self.subTest(status=status):
-                payload = self.valid_result()
-                payload["per_signal"][0].update(
-                    {
-                        "decision": "defer",
-                        "annotation_fallback": status,
-                    }
+                payload = self.fallback_result(
+                    (
+                        "feasible"
+                        if status == "feasible"
+                        else "missing_evidence",
+                    )
                 )
-                self.assertEqual(payload["reason_code_counts"][reason], 0)
+                payload["reason_code_counts"][reason] = 0
                 self.assert_result_rejected(
                     payload,
                     "reason_code_counts",
@@ -5665,17 +6122,16 @@ class PhaseC1AggregateRunnerTests(_PhaseC1FixtureMixin, unittest.TestCase):
             ("unresolved", "annotation_fallback_unresolved"),
         ):
             with self.subTest(status=status):
-                payload = self.valid_result()
-                payload["per_signal"][0].update(
-                    {
-                        "decision": "defer",
-                        "annotation_fallback": status,
-                    }
+                payload = self.fallback_result(
+                    (
+                        "feasible"
+                        if status == "feasible"
+                        else "missing_evidence",
+                    )
                 )
-                payload["reason_code_counts"][reason] = 1
                 self.reself(payload)
-                runner.validate_phase_c1_result_payload(payload)
-                runner.render_phase_c1_report(payload)
+                self.validate_result(payload)
+                self.render_result(payload)
 
     def test_reason_count_partitions_reject_impossible_aggregates(
         self,
@@ -5707,175 +6163,9 @@ class PhaseC1AggregateRunnerTests(_PhaseC1FixtureMixin, unittest.TestCase):
             with self.subTest(name=name):
                 self.assert_result_rejected(payload, "reason_code_counts")
 
-    def test_reason_contributor_map_is_complete_and_exact(self) -> None:
-        rejection_classes = (
-            "excluded_discovery_record",
-            "excluded_citation_record",
-            "rejected_card",
-        )
-        unresolved_record_classes = (
-            "unresolved_discovery_record",
-            "unresolved_citation_record",
-        )
-        unresolved_card_classes = (
-            *unresolved_record_classes,
-            "unresolved_card",
-        )
-        expected = {
-            code: rejection_classes
-            for code in EXPECTED_REASON_CODE_ORDER[:14]
-        }
-        expected.update(
-            {
-                code: (
-                    unresolved_record_classes
-                    if code
-                    in {
-                        "source_identity_unverified",
-                        "raw_annotation_rows_required",
-                    }
-                    else unresolved_card_classes
-                )
-                for code in EXPECTED_REASON_CODE_ORDER[14:33]
-            }
-        )
-        expected.update(
-            {code: () for code in EXPECTED_REASON_CODE_ORDER[33:37]}
-        )
-        expected.update(
-            {
-                "annotation_fallback_feasible": (
-                    "feasible_fallback_assessment",
-                ),
-                "annotation_fallback_unresolved": (
-                    "unresolved_fallback_assessment",
-                ),
-            }
-        )
-        self.assertEqual(
-            dict(runner.REASON_CONTRIBUTOR_CLASSES),
-            expected,
-        )
 
-    def test_per_reason_cap_rejects_repeated_single_item_reason(
-        self,
-    ) -> None:
-        repeated = self.rejected_alpha_result()
-        repeated["reason_code_counts"][
-            "reliability_upper_below_0_67"
-        ] = 0
-        repeated["reason_code_counts"]["access_restricted"] = 14
-        self.assert_result_rejected(repeated, "reason_code_counts")
 
-        single = self.rejected_alpha_result()
-        single["reason_code_counts"][
-            "reliability_upper_below_0_67"
-        ] = 0
-        single["reason_code_counts"]["access_restricted"] = 1
-        self.reself(single)
-        runner.validate_phase_c1_result_payload(single)
-        runner.render_phase_c1_report(single)
 
-    def test_per_reason_caps_preserve_exact_contributor_boundaries(
-        self,
-    ) -> None:
-        record_reason_on_card = self.deferred_result()
-        record_reason_on_card["reason_code_counts"][
-            "reliability_unverifiable"
-        ] = 0
-        record_reason_on_card["reason_code_counts"][
-            "source_identity_unverified"
-        ] = 1
-        self.assert_result_rejected(
-            record_reason_on_card,
-            "reason_code_counts",
-        )
-
-        card_reason = self.deferred_result()
-        runner.validate_phase_c1_result_payload(card_reason)
-        runner.render_phase_c1_report(card_reason)
-
-        record_boundary = self.valid_result()
-        record_boundary["search_counts"].update(
-            {
-                "returned_discovery_record_count": 2,
-                "unresolved_discovery_record_count": 1,
-                "backward_citation_record_count": 1,
-                "unresolved_citation_record_count": 1,
-            }
-        )
-        record_boundary["per_signal"][2][
-            "annotation_fallback"
-        ] = "unresolved"
-        record_boundary["reason_code_counts"].update(
-            {
-                "source_identity_unverified": 2,
-                "annotation_fallback_unresolved": 1,
-            }
-        )
-        self.reself(record_boundary)
-        runner.validate_phase_c1_result_payload(record_boundary)
-        runner.render_phase_c1_report(record_boundary)
-
-        rejection_boundary = self.rejected_alpha_result()
-        rejection_boundary["search_counts"].update(
-            {
-                "returned_discovery_record_count": 2,
-                "retained_candidate_record_count": 1,
-                "excluded_discovery_record_count": 1,
-                "backward_citation_record_count": 1,
-            }
-        )
-        rejection_boundary["reason_code_counts"][
-            "reliability_upper_below_0_67"
-        ] = 0
-        rejection_boundary["reason_code_counts"][
-            "access_restricted"
-        ] = 3
-        self.reself(rejection_boundary)
-        runner.validate_phase_c1_result_payload(rejection_boundary)
-        runner.render_phase_c1_report(rejection_boundary)
-
-    def test_shared_unresolved_search_reason_pool_is_not_double_used(
-        self,
-    ) -> None:
-        impossible = self.deferred_result()
-        impossible["search_counts"].update(
-            {
-                "returned_discovery_record_count": 2,
-                "unresolved_discovery_record_count": 1,
-            }
-        )
-        impossible["per_signal"][2][
-            "annotation_fallback"
-        ] = "unresolved"
-        impossible["reason_code_counts"].update(
-            {
-                "reliability_unverifiable": 0,
-                "source_identity_unverified": 1,
-                "raw_annotation_rows_required": 1,
-                "annotation_fallback_unresolved": 1,
-            }
-        )
-        self.assert_result_rejected(impossible, "reason_code_counts")
-
-        valid = self.deferred_result()
-        valid["search_counts"].update(
-            {
-                "returned_discovery_record_count": 2,
-                "unresolved_discovery_record_count": 1,
-            }
-        )
-        valid["per_signal"][2]["annotation_fallback"] = "unresolved"
-        valid["reason_code_counts"].update(
-            {
-                "source_identity_unverified": 1,
-                "annotation_fallback_unresolved": 1,
-            }
-        )
-        self.reself(valid)
-        runner.validate_phase_c1_result_payload(valid)
-        runner.render_phase_c1_report(valid)
 
     def test_candidate_supply_reserves_retained_citations_before_reasons(
         self,
@@ -5888,6 +6178,13 @@ class PhaseC1AggregateRunnerTests(_PhaseC1FixtureMixin, unittest.TestCase):
                 "backward_citation_record_count": 1,
             }
         )
+        lane = reused["search_lane_counts"]["direct_by_signal"][
+            "confusion"
+        ]
+        lane["discovery_disposition_counts"]["retained_candidate"] = 0
+        lane["citations"]["backward"]["disposition_counts"][
+            "retained_candidate"
+        ] = 1
         reused["reason_code_counts"]["access_restricted"] = 1
         self.assert_result_rejected(reused, "reason_code_counts")
 
@@ -5899,12 +6196,19 @@ class PhaseC1AggregateRunnerTests(_PhaseC1FixtureMixin, unittest.TestCase):
                 "backward_citation_record_count": 2,
             }
         )
+        lane = retained_and_excluded["search_lane_counts"][
+            "direct_by_signal"
+        ]["confusion"]
+        lane["discovery_disposition_counts"]["retained_candidate"] = 0
+        lane["citations"]["backward"]["disposition_counts"].update(
+            {"retained_candidate": 1, "excluded": 1}
+        )
         retained_and_excluded["reason_code_counts"][
             "access_restricted"
         ] = 1
         self.reself(retained_and_excluded)
-        runner.validate_phase_c1_result_payload(retained_and_excluded)
-        runner.render_phase_c1_report(retained_and_excluded)
+        self.validate_result(retained_and_excluded)
+        self.render_result(retained_and_excluded)
 
         retained_and_duplicate = self.valid_result()
         retained_and_duplicate["search_counts"].update(
@@ -5914,9 +6218,16 @@ class PhaseC1AggregateRunnerTests(_PhaseC1FixtureMixin, unittest.TestCase):
                 "backward_citation_record_count": 2,
             }
         )
+        lane = retained_and_duplicate["search_lane_counts"][
+            "direct_by_signal"
+        ]["confusion"]
+        lane["discovery_disposition_counts"]["retained_candidate"] = 0
+        lane["citations"]["backward"]["disposition_counts"].update(
+            {"retained_candidate": 1, "duplicate": 1}
+        )
         self.reself(retained_and_duplicate)
-        runner.validate_phase_c1_result_payload(retained_and_duplicate)
-        runner.render_phase_c1_report(retained_and_duplicate)
+        self.validate_result(retained_and_duplicate)
+        self.render_result(retained_and_duplicate)
 
         excess_retained_discovery = self.valid_result()
         excess_retained_discovery["search_counts"].update(
@@ -5927,7 +6238,7 @@ class PhaseC1AggregateRunnerTests(_PhaseC1FixtureMixin, unittest.TestCase):
         )
         self.assert_result_rejected(
             excess_retained_discovery,
-            "search_counts",
+            "search_lane_counts",
         )
 
     def test_cross_lane_retained_discovery_uses_global_candidate_union(
@@ -6043,7 +6354,7 @@ class PhaseC1AggregateRunnerTests(_PhaseC1FixtureMixin, unittest.TestCase):
             ("hesitation", "confusion"),
         )
 
-        result = runner.build_phase_c1_result(
+        result = self.build_result(
             head_commit="a" * 40,
             validator_blob_id="b" * 40,
             protocol_bytes=self.protocol_bytes,
@@ -6060,8 +6371,8 @@ class PhaseC1AggregateRunnerTests(_PhaseC1FixtureMixin, unittest.TestCase):
             ),
             (2, 1),
         )
-        runner.validate_phase_c1_result_payload(result)
-        runner.render_phase_c1_report(result)
+        self.validate_result(result)
+        self.render_result(result)
 
         aggregate_only = self.valid_result()
         aggregate_only["search_counts"].update(
@@ -6070,9 +6381,10 @@ class PhaseC1AggregateRunnerTests(_PhaseC1FixtureMixin, unittest.TestCase):
                 "retained_candidate_record_count": 2,
             }
         )
-        self.reself(aggregate_only)
-        runner.validate_phase_c1_result_payload(aggregate_only)
-        runner.render_phase_c1_report(aggregate_only)
+        self.assert_result_rejected(
+            aggregate_only,
+            "search_lane_counts",
+        )
 
     def test_discovery_and_citation_duplicate_slack_requires_an_anchor(
         self,
@@ -6084,331 +6396,57 @@ class PhaseC1AggregateRunnerTests(_PhaseC1FixtureMixin, unittest.TestCase):
                 "duplicate_discovery_record_count": 1,
             }
         )
-        self.assert_result_rejected(duplicate_only, "search_counts")
+        duplicate_only["search_lane_counts"]["direct_by_signal"][
+            "hesitation"
+        ]["discovery_disposition_counts"]["duplicate"] = 1
+        self.assert_result_rejected(
+            duplicate_only,
+            "search_counts",
+        )
 
         lone_resolved_citation = self.all_fail_result()
         lone_resolved_citation["search_counts"][
             "backward_citation_record_count"
         ] = 1
+        lone_resolved_citation["search_lane_counts"][
+            "direct_by_signal"
+        ]["hesitation"]["citations"]["backward"][
+            "disposition_counts"
+        ]["duplicate"] = 1
         self.assert_result_rejected(
             lone_resolved_citation,
-            "reason_code_counts",
+            "search_lane_counts",
         )
 
         anchored_duplicate = self.valid_result()
         anchored_duplicate["search_counts"][
             "backward_citation_record_count"
         ] = 1
+        anchored_duplicate["search_lane_counts"]["direct_by_signal"][
+            "confusion"
+        ]["citations"]["backward"]["disposition_counts"]["duplicate"] = 1
         self.reself(anchored_duplicate)
-        runner.validate_phase_c1_result_payload(anchored_duplicate)
-        runner.render_phase_c1_report(anchored_duplicate)
+        self.validate_result(anchored_duplicate)
+        self.render_result(anchored_duplicate)
 
         retained_plus_excluded = self.valid_result()
         retained_plus_excluded["search_counts"][
             "backward_citation_record_count"
         ] = 1
+        retained_plus_excluded["search_lane_counts"][
+            "direct_by_signal"
+        ]["confusion"]["citations"]["backward"]["disposition_counts"][
+            "excluded"
+        ] = 1
         retained_plus_excluded["reason_code_counts"][
             "access_restricted"
         ] = 1
         self.reself(retained_plus_excluded)
-        runner.validate_phase_c1_result_payload(retained_plus_excluded)
-        runner.render_phase_c1_report(retained_plus_excluded)
+        self.validate_result(retained_plus_excluded)
+        self.render_result(retained_plus_excluded)
 
-    def test_rejected_card_reason_groups_require_compatible_allocation(
-        self,
-    ) -> None:
-        exclusive_pairs = (
-            ("access_requires_login", "access_restricted"),
-            ("acted_or_scripted", "mixed_unseparated_conversation"),
-            ("conversation_level_only", "temporal_unit_incompatible"),
-            ("self_report_label", "llm_generated_label"),
-        )
-        for pair in exclusive_pairs:
-            with self.subTest(pair=pair):
-                impossible = self.rejected_alpha_result()
-                impossible["reason_code_counts"][
-                    "reliability_upper_below_0_67"
-                ] = 0
-                for code in pair:
-                    impossible["reason_code_counts"][code] = 1
-                self.assert_result_rejected(
-                    impossible,
-                    "reason_code_counts",
-                )
 
-        alpha_mixed_with_eligibility = self.rejected_alpha_result()
-        alpha_mixed_with_eligibility["reason_code_counts"][
-            "access_restricted"
-        ] = 1
-        self.assert_result_rejected(
-            alpha_mixed_with_eligibility,
-            "reason_code_counts",
-        )
 
-        compatible = self.rejected_alpha_result()
-        compatible["reason_code_counts"][
-            "reliability_upper_below_0_67"
-        ] = 0
-        for code in (
-            "access_requires_login",
-            "license_incompatible",
-            "ethical_use_incompatible",
-            "acted_or_scripted",
-            "proxy_construct",
-            "target_label_absent",
-            "conversation_level_only",
-            "single_rater",
-            "self_report_label",
-        ):
-            compatible["reason_code_counts"][code] = 1
-        compatible["per_signal"][2]["reliability_diagnostics"][0].update(
-            {
-                "independent_rater_count": 1,
-                "effective_sample_sufficient": False,
-            }
-        )
-        self.reself(compatible)
-        runner.validate_phase_c1_result_payload(compatible)
-        runner.render_phase_c1_report(compatible)
-
-    def test_unresolved_card_reason_families_require_compatible_allocation(
-        self,
-    ) -> None:
-        cross_family = self.deferred_result()
-        cross_family["reason_code_counts"]["license_unresolved"] = 1
-        self.assert_result_rejected(
-            cross_family,
-            "reason_code_counts",
-        )
-
-        incompatible_sample_states = self.deferred_result()
-        incompatible_sample_states["reason_code_counts"].update(
-            {
-                "reliability_unverifiable": 0,
-                "reliability_effective_sample_insufficient": 1,
-                "positive_support_below_93": 1,
-                "published_positive_count_missing": 1,
-            }
-        )
-        self.assert_result_rejected(
-            incompatible_sample_states,
-            "reason_code_counts",
-        )
-
-        incompatible_observer_states = self.deferred_result()
-        incompatible_observer_states["reason_code_counts"].update(
-            {
-                "reliability_unverifiable": 0,
-                "observer_method_unresolved": 1,
-                "reliability_not_preadjudication": 1,
-            }
-        )
-        self.assert_result_rejected(
-            incompatible_observer_states,
-            "reason_code_counts",
-        )
-
-        valid_reason_sets = (
-            {
-                "reliability_unverifiable": 0,
-                "license_unresolved": 1,
-                "ethical_use_unresolved": 1,
-                "observer_method_unresolved": 1,
-            },
-            {
-                "reliability_unverifiable": 1,
-                "reliability_interval_uncertain": 1,
-            },
-            {
-                "reliability_unverifiable": 0,
-                "reliability_effective_sample_insufficient": 1,
-                "positive_support_below_93": 1,
-            },
-            {
-                "reliability_unverifiable": 0,
-                "reliability_effective_sample_insufficient": 1,
-                "published_positive_count_missing": 1,
-            },
-        )
-        for updates in valid_reason_sets:
-            with self.subTest(updates=updates):
-                valid = self.deferred_result()
-                valid["reason_code_counts"].update(updates)
-                diagnostic = valid["per_signal"][2][
-                    "reliability_diagnostics"
-                ][0]
-                if updates.get("reliability_interval_uncertain"):
-                    diagnostic["lower_95_micros"] = None
-                if updates.get("positive_support_below_93"):
-                    diagnostic.update(
-                        {
-                            "published_positive_count": 92,
-                            "effective_sample_sufficient": False,
-                        }
-                    )
-                if updates.get("published_positive_count_missing"):
-                    diagnostic.update(
-                        {
-                            "published_positive_count": None,
-                            "effective_sample_sufficient": False,
-                        }
-                    )
-                self.reself(valid)
-                runner.validate_phase_c1_result_payload(valid)
-                runner.render_phase_c1_report(valid)
-
-        split_families = self.deferred_result()
-        second_diagnostic = copy.deepcopy(
-            split_families["per_signal"][2][
-                "reliability_diagnostics"
-            ][0]
-        )
-        second_diagnostic["evidence_card_sha256"] = "C" * 64
-        split_families["search_counts"].update(
-            {
-                "returned_discovery_record_count": 2,
-                "retained_candidate_record_count": 2,
-                "detailed_candidate_count": 2,
-            }
-        )
-        split_families["source_counts"].update(
-            {
-                "source_count": 2,
-                "document_count": 2,
-                "existing_annotation_evidence_source_count": 2,
-            }
-        )
-        split_families["card_counts_by_status"]["unresolved"] = 2
-        split_families["per_signal"][0].update(
-            {
-                "decision": "defer",
-                "unresolved_card_count": 1,
-                "reliability_diagnostics": [second_diagnostic],
-            }
-        )
-        split_families["reason_code_counts"]["license_unresolved"] = 1
-        self.reself(split_families)
-        runner.validate_phase_c1_result_payload(split_families)
-        runner.render_phase_c1_report(split_families)
-
-    def test_observable_reliability_reasons_bind_to_card_diagnostics(
-        self,
-    ) -> None:
-        alpha_on_passing_diagnostic = self.rejected_alpha_result()
-        alpha_on_passing_diagnostic["per_signal"][2][
-            "reliability_diagnostics"
-        ][0].update(
-            {
-                "point_micros": 840_000,
-                "lower_95_micros": 700_000,
-                "upper_95_micros": 900_000,
-            }
-        )
-
-        single_rater_with_three = self.rejected_alpha_result()
-        single_rater_with_three["reason_code_counts"].update(
-            {
-                "reliability_upper_below_0_67": 0,
-                "single_rater": 1,
-            }
-        )
-        single_rater_with_three["per_signal"][2][
-            "reliability_diagnostics"
-        ][0].update(
-            {
-                "point_micros": 840_000,
-                "lower_95_micros": 700_000,
-                "upper_95_micros": 900_000,
-            }
-        )
-
-        rater_missing_with_three = self.deferred_result()
-        rater_missing_with_three["reason_code_counts"].update(
-            {
-                "reliability_unverifiable": 0,
-                "rater_count_unresolved": 1,
-            }
-        )
-
-        approved_metric_claimed_unapproved = self.deferred_result()
-        approved_metric_claimed_unapproved["reason_code_counts"].update(
-            {
-                "reliability_unverifiable": 0,
-                "reliability_metric_unapproved": 1,
-            }
-        )
-
-        complete_pass_interval_claimed_uncertain = self.deferred_result()
-        complete_pass_interval_claimed_uncertain[
-            "reason_code_counts"
-        ].update(
-            {
-                "reliability_unverifiable": 0,
-                "reliability_interval_uncertain": 1,
-            }
-        )
-
-        effective_claimed_on_sufficient = self.deferred_result()
-        effective_claimed_on_sufficient["reason_code_counts"].update(
-            {
-                "reliability_unverifiable": 0,
-                "reliability_effective_sample_insufficient": 1,
-            }
-        )
-
-        below_claimed_at_threshold = self.deferred_result()
-        below_claimed_at_threshold["reason_code_counts"].update(
-            {
-                "reliability_unverifiable": 0,
-                "reliability_effective_sample_insufficient": 1,
-                "positive_support_below_93": 1,
-            }
-        )
-
-        missing_claimed_when_present = self.deferred_result()
-        missing_claimed_when_present["reason_code_counts"].update(
-            {
-                "reliability_unverifiable": 0,
-                "reliability_effective_sample_insufficient": 1,
-                "published_positive_count_missing": 1,
-            }
-        )
-
-        observable_reasons_omitted = self.deferred_result()
-        observable_reasons_omitted["per_signal"][2][
-            "reliability_diagnostics"
-        ][0].update(
-            {
-                "published_positive_count": 92,
-                "effective_sample_sufficient": False,
-            }
-        )
-
-        for name, payload in (
-            ("alpha_on_passing_diagnostic", alpha_on_passing_diagnostic),
-            ("single_rater_with_three", single_rater_with_three),
-            ("rater_missing_with_three", rater_missing_with_three),
-            (
-                "approved_metric_claimed_unapproved",
-                approved_metric_claimed_unapproved,
-            ),
-            (
-                "complete_pass_interval_claimed_uncertain",
-                complete_pass_interval_claimed_uncertain,
-            ),
-            (
-                "effective_claimed_on_sufficient",
-                effective_claimed_on_sufficient,
-            ),
-            ("below_claimed_at_threshold", below_claimed_at_threshold),
-            ("missing_claimed_when_present", missing_claimed_when_present),
-            ("observable_reasons_omitted", observable_reasons_omitted),
-        ):
-            with self.subTest(name=name):
-                self.assert_result_rejected(
-                    payload,
-                    "reason_code_counts",
-                )
 
     def test_observable_reliability_reason_thresholds_remain_reachable(
         self,
@@ -6520,9 +6558,10 @@ class PhaseC1AggregateRunnerTests(_PhaseC1FixtureMixin, unittest.TestCase):
             ("effective_only", effective_only),
         ):
             with self.subTest(name=name):
+                self.realign_without_search_reasons(payload)
                 self.reself(payload)
-                runner.validate_phase_c1_result_payload(payload)
-                runner.render_phase_c1_report(payload)
+                self.validate_result(payload)
+                self.render_result(payload)
 
         alpha_at_boundary = self.rejected_alpha_result()
         alpha_at_boundary["per_signal"][2][
@@ -6536,425 +6575,14 @@ class PhaseC1AggregateRunnerTests(_PhaseC1FixtureMixin, unittest.TestCase):
         )
         self.assert_result_rejected(
             alpha_at_boundary,
-            "reason_code_counts",
+            "reliability_diagnostics",
         )
 
-    def test_search_reason_reservation_preserves_valid_card_allocation(
-        self,
-    ) -> None:
-        split = self.deferred_result()
-        split["search_counts"].update(
-            {
-                "returned_discovery_record_count": 2,
-                "unresolved_discovery_record_count": 1,
-            }
-        )
-        split["reason_code_counts"].update(
-            {
-                "reliability_unverifiable": 0,
-                "reliability_effective_sample_insufficient": 1,
-                "positive_support_below_93": 1,
-                "annotation_fallback_unresolved": 1,
-            }
-        )
-        split["per_signal"][2][
-            "annotation_fallback"
-        ] = "unresolved"
-        split["per_signal"][2]["reliability_diagnostics"][0].update(
-            {
-                "rated_unit_count": None,
-                "published_positive_count": 100,
-                "effective_sample_sufficient": False,
-            }
-        )
-        self.reself(split)
-        runner.validate_phase_c1_result_payload(split)
-        runner.render_phase_c1_report(split)
 
-    def test_record_only_reasons_reserve_unresolved_search_slots(
-        self,
-    ) -> None:
-        impossible = self.deferred_result()
-        impossible["search_counts"].update(
-            {
-                "returned_discovery_record_count": 2,
-                "unresolved_discovery_record_count": 1,
-            }
-        )
-        impossible["reason_code_counts"].update(
-            {
-                "reliability_unverifiable": 0,
-                "source_identity_unverified": 1,
-                "reliability_effective_sample_insufficient": 1,
-                "positive_support_below_93": 1,
-                "annotation_fallback_unresolved": 1,
-            }
-        )
-        impossible["per_signal"][2][
-            "annotation_fallback"
-        ] = "unresolved"
-        impossible["per_signal"][2]["reliability_diagnostics"][0].update(
-            {
-                "rated_unit_count": None,
-                "published_positive_count": 100,
-                "effective_sample_sufficient": False,
-            }
-        )
-        self.assert_result_rejected(
-            impossible,
-            "reason_code_counts",
-        )
 
-        valid = copy.deepcopy(impossible)
-        valid["per_signal"][2]["reliability_diagnostics"][0][
-            "published_positive_count"
-        ] = 92
-        self.reself(valid)
-        runner.validate_phase_c1_result_payload(valid)
-        runner.render_phase_c1_report(valid)
 
-    def test_unresolved_card_and_search_reason_composition_is_exact(
-        self,
-    ) -> None:
-        impossible = self.deferred_result()
-        second_diagnostic = copy.deepcopy(
-            impossible["per_signal"][2]["reliability_diagnostics"][0]
-        )
-        second_diagnostic["evidence_card_sha256"] = "C" * 64
-        impossible["search_counts"].update(
-            {
-                "returned_discovery_record_count": 3,
-                "retained_candidate_record_count": 2,
-                "unresolved_discovery_record_count": 1,
-                "detailed_candidate_count": 2,
-            }
-        )
-        impossible["source_counts"].update(
-            {
-                "source_count": 2,
-                "document_count": 2,
-                "existing_annotation_evidence_source_count": 2,
-            }
-        )
-        impossible["card_counts_by_status"]["unresolved"] = 2
-        impossible["per_signal"][0].update(
-            {
-                "decision": "defer",
-                "unresolved_card_count": 1,
-                "reliability_diagnostics": [second_diagnostic],
-            }
-        )
-        impossible["reason_code_counts"].update(
-            {
-                "reliability_unverifiable": 0,
-                "license_unresolved": 1,
-                "reliability_effective_sample_insufficient": 1,
-                "positive_support_below_93": 1,
-                "annotation_fallback_unresolved": 1,
-            }
-        )
-        impossible["per_signal"][2][
-            "annotation_fallback"
-        ] = "unresolved"
-        impossible["per_signal"][2]["reliability_diagnostics"][0].update(
-            {
-                "published_positive_count": 92,
-                "effective_sample_sufficient": False,
-            }
-        )
-        self.assert_result_rejected(
-            impossible,
-            "reason_code_counts",
-        )
 
-        valid = copy.deepcopy(impossible)
-        valid["per_signal"][2]["reliability_diagnostics"][0].update(
-            {
-                "rated_unit_count": None,
-                "published_positive_count": 100,
-            }
-        )
-        self.reself(valid)
-        runner.validate_phase_c1_result_payload(valid)
-        runner.render_phase_c1_report(valid)
 
-    def test_hidden_unresolved_reason_paths_are_exact_and_multiplicative(
-        self,
-    ) -> None:
-        rater_and_license = self.deferred_result()
-        rater_and_license["reason_code_counts"].update(
-            {
-                "license_unresolved": 1,
-                "rater_count_unresolved": 1,
-                "reliability_unverifiable": 0,
-            }
-        )
-        rater_and_license["per_signal"][2][
-            "reliability_diagnostics"
-        ][0].update(
-            {
-                "independent_rater_count": None,
-                "effective_sample_sufficient": False,
-            }
-        )
-
-        reliability_bundle_with_hidden_reason = self.deferred_result()
-        reliability_bundle_with_hidden_reason["reason_code_counts"].update(
-            {
-                "reliability_effective_sample_insufficient": 1,
-                "positive_support_below_93": 1,
-            }
-        )
-        reliability_bundle_with_hidden_reason["per_signal"][2][
-            "reliability_diagnostics"
-        ][0].update(
-            {
-                "published_positive_count": 92,
-                "effective_sample_sufficient": False,
-            }
-        )
-
-        observer_and_shared_on_one_eligibility_card = (
-            self.deferred_result()
-        )
-        observer_and_shared_on_one_eligibility_card[
-            "reason_code_counts"
-        ].update(
-            {
-                "observer_method_unresolved": 1,
-                "reliability_not_preadjudication": 1,
-                "reliability_unverifiable": 0,
-            }
-        )
-
-        observer_or_shared_with_one_search_record = copy.deepcopy(
-            observer_and_shared_on_one_eligibility_card
-        )
-        observer_or_shared_with_one_search_record["search_counts"].update(
-            {
-                "returned_discovery_record_count": 2,
-                "unresolved_discovery_record_count": 1,
-            }
-        )
-        observer_or_shared_with_one_search_record[
-            "reason_code_counts"
-        ]["annotation_fallback_unresolved"] = 1
-        observer_or_shared_with_one_search_record["per_signal"][2][
-            "annotation_fallback"
-        ] = "unresolved"
-
-        mixed_eligibility_and_reliability_paths = self.deferred_result()
-        mixed_eligibility_and_reliability_paths[
-            "reason_code_counts"
-        ].update(
-            {
-                "license_unresolved": 1,
-                "reliability_unverifiable": 0,
-                "reliability_effective_sample_insufficient": 1,
-                "positive_support_below_93": 1,
-            }
-        )
-        mixed_eligibility_and_reliability_paths["per_signal"][2][
-            "reliability_diagnostics"
-        ][0].update(
-            {
-                "published_positive_count": 92,
-                "effective_sample_sufficient": False,
-            }
-        )
-
-        reliability_path_control = copy.deepcopy(
-            mixed_eligibility_and_reliability_paths
-        )
-        reliability_path_control["reason_code_counts"].update(
-            {
-                "license_unresolved": 0,
-                "reliability_unverifiable": 1,
-            }
-        )
-
-        for name, payload in (
-            ("rater_and_license", rater_and_license),
-            (
-                "reliability_bundle_with_hidden_reason",
-                reliability_bundle_with_hidden_reason,
-            ),
-            (
-                "observer_or_shared_with_one_search_record",
-                observer_or_shared_with_one_search_record,
-            ),
-            ("reliability_path_control", reliability_path_control),
-        ):
-            with self.subTest(name=name):
-                self.reself(payload)
-                runner.validate_phase_c1_result_payload(payload)
-                runner.render_phase_c1_report(payload)
-
-        for name, payload in (
-            (
-                "observer_and_shared_on_one_eligibility_card",
-                observer_and_shared_on_one_eligibility_card,
-            ),
-            (
-                "mixed_eligibility_and_reliability_paths",
-                mixed_eligibility_and_reliability_paths,
-            ),
-        ):
-            with self.subTest(name=name):
-                self.assert_result_rejected(
-                    payload,
-                    "reason_code_counts",
-                )
-
-    def test_observable_reason_allocation_is_bounded_per_diagnostic(
-        self,
-    ) -> None:
-        bounded = self.deferred_result()
-        second_diagnostic = copy.deepcopy(
-            bounded["per_signal"][2]["reliability_diagnostics"][0]
-        )
-        second_diagnostic["evidence_card_sha256"] = "C" * 64
-        bounded["search_counts"].update(
-            {
-                "returned_discovery_record_count": 2,
-                "retained_candidate_record_count": 2,
-                "detailed_candidate_count": 2,
-            }
-        )
-        bounded["source_counts"].update(
-            {
-                "source_count": 2,
-                "document_count": 2,
-                "existing_annotation_evidence_source_count": 2,
-            }
-        )
-        bounded["card_counts_by_status"]["unresolved"] = 2
-        bounded["per_signal"][0].update(
-            {
-                "decision": "defer",
-                "unresolved_card_count": 1,
-                "reliability_diagnostics": [second_diagnostic],
-            }
-        )
-        bounded["reason_code_counts"].update(
-            {
-                "reliability_unverifiable": 0,
-                "reliability_effective_sample_insufficient": 2,
-                "positive_support_below_93": 2,
-            }
-        )
-        bounded["per_signal"][2]["reliability_diagnostics"][0].update(
-            {
-                "published_positive_count": 92,
-                "effective_sample_sufficient": False,
-            }
-        )
-        self.assert_result_rejected(
-            bounded,
-            "reason_code_counts",
-        )
-
-        reachable = copy.deepcopy(bounded)
-        reachable["per_signal"][0]["reliability_diagnostics"][0].update(
-            {
-                "published_positive_count": 92,
-                "effective_sample_sufficient": False,
-            }
-        )
-        self.reself(reachable)
-        runner.validate_phase_c1_result_payload(reachable)
-        runner.render_phase_c1_report(reachable)
-
-    def test_observable_reason_allocation_search_is_bounded(self) -> None:
-        base = copy.deepcopy(
-            self.deferred_result()["per_signal"][2][
-                "reliability_diagnostics"
-            ][0]
-        )
-        diagnostics: list[dict[str, object]] = []
-        for index in range(20):
-            diagnostic = copy.deepcopy(base)
-            diagnostic["evidence_card_sha256"] = f"{index:064X}"
-            mode = index % 7
-            if mode == 0:
-                diagnostic.update(
-                    {
-                        "point_micros": 650_000,
-                        "lower_95_micros": 590_000,
-                        "upper_95_micros": 669_999,
-                    }
-                )
-            elif mode == 1:
-                diagnostic.update(
-                    {
-                        "published_positive_count": 92,
-                        "effective_sample_sufficient": False,
-                    }
-                )
-            elif mode == 2:
-                diagnostic.update(
-                    {
-                        "published_positive_count": None,
-                        "effective_sample_sufficient": False,
-                    }
-                )
-            elif mode == 3:
-                diagnostic.update(
-                    {
-                        "rated_unit_count": None,
-                        "effective_sample_sufficient": False,
-                    }
-                )
-            elif mode == 4:
-                diagnostic["lower_95_micros"] = None
-            elif mode == 5:
-                diagnostic.update(
-                    {
-                        "independent_rater_count": None,
-                        "effective_sample_sufficient": False,
-                    }
-                )
-            else:
-                diagnostic.update(
-                    {
-                        "independent_rater_count": 1,
-                        "effective_sample_sufficient": False,
-                    }
-                )
-
-            diagnostics.append(diagnostic)
-
-        statistics: dict[str, int] = {}
-        started = time.perf_counter()
-        stress_reason_counts = {
-            code: 20 for code in runner.REASON_CODE_ORDER
-        }
-        feasible = runner._observable_reason_allocation_feasible(
-            tuple((tuple(diagnostics), 10, 10) for _ in range(5)),
-            reason_counts=stress_reason_counts,
-            maximum_rejection_search_records=25,
-            unresolved_search_records=25,
-            unresolved_card_reason_occurrences=(
-                sum(
-                    stress_reason_counts[code]
-                    for code in runner.UNRESOLVED_REASON_CODES
-                )
-                - 25
-            ),
-            search_statistics=statistics,
-        )
-        elapsed = time.perf_counter() - started
-
-        self.assertFalse(feasible)
-        self.assertLessEqual(
-            statistics["signature_group_count"],
-            35,
-        )
-        self.assertLessEqual(
-            statistics["explored_state_count"],
-            10_000,
-        )
-        self.assertLess(elapsed, 10.0)
 
     def test_limitations_are_literal_ordered_and_rowless(self) -> None:
         mutations: tuple[
@@ -6977,7 +6605,7 @@ class PhaseC1AggregateRunnerTests(_PhaseC1FixtureMixin, unittest.TestCase):
                     runner.RunnerError,
                     "limitations",
                 ):
-                    runner.validate_phase_c1_result_payload(payload)
+                    self.validate_result(payload)
 
         payload = self.valid_result()
         self.assertEqual(
@@ -6993,7 +6621,7 @@ class PhaseC1AggregateRunnerTests(_PhaseC1FixtureMixin, unittest.TestCase):
             runner.RunnerError,
             "forbidden_content",
         ):
-            runner.validate_phase_c1_result_payload(payload)
+            self.validate_result(payload)
 
     def test_closed_shapes_and_reliability_semantics_reject_mutations(
         self,
@@ -7005,7 +6633,7 @@ class PhaseC1AggregateRunnerTests(_PhaseC1FixtureMixin, unittest.TestCase):
             runner.RunnerError,
             "result_fields",
         ):
-            runner.validate_phase_c1_result_payload(payload)
+            self.validate_result(payload)
 
         payload = self.valid_result()
         diagnostic = payload["per_signal"][2]["reliability_diagnostics"][0]
@@ -7015,7 +6643,7 @@ class PhaseC1AggregateRunnerTests(_PhaseC1FixtureMixin, unittest.TestCase):
             runner.RunnerError,
             "reliability_diagnostics",
         ):
-            runner.validate_phase_c1_result_payload(payload)
+            self.validate_result(payload)
 
         payload = self.valid_result()
         del payload["reason_code_counts"]["license_unresolved"]
@@ -7024,7 +6652,7 @@ class PhaseC1AggregateRunnerTests(_PhaseC1FixtureMixin, unittest.TestCase):
             runner.RunnerError,
             "reason_code_counts",
         ):
-            runner.validate_phase_c1_result_payload(payload)
+            self.validate_result(payload)
 
     def test_admissible_diagnostic_must_pass_frozen_alpha_rule(
         self,
@@ -7045,8 +6673,8 @@ class PhaseC1AggregateRunnerTests(_PhaseC1FixtureMixin, unittest.TestCase):
                 diagnostic.update(mutation)
                 self.reself(payload)
                 for validate in (
-                    runner.validate_phase_c1_result_payload,
-                    runner.render_phase_c1_report,
+                    self.validate_result,
+                    self.render_result,
                 ):
                     with self.subTest(validate=validate.__name__):
                         with self.assertRaisesRegex(
@@ -7054,6 +6682,1272 @@ class PhaseC1AggregateRunnerTests(_PhaseC1FixtureMixin, unittest.TestCase):
                             "reliability_diagnostics",
                         ):
                             validate(copy.deepcopy(payload))
+
+    def test_v2_builder_exposes_bounded_rowless_witness_contract(self) -> None:
+        result = self.valid_result()
+
+        self.assertEqual(
+            result["schema_version"],
+            "EmotionStatePhaseC1AggregateResultV2",
+        )
+        self.assertEqual(set(result), EXPECTED_PHASE_C1_RESULT_FIELDS)
+        self.assertIsInstance(result["search_lane_counts"], dict)
+        self.assertIsInstance(result["source_signature_counts"], list)
+        self.assertLessEqual(
+            len(phase_c1.canonical_json_bytes(result)),
+            512 * 1024,
+        )
+        self.assertIn(
+            (
+                "Sparse source signatures and per-card categorical "
+                "diagnostics may fingerprint public source configurations."
+            ),
+            result["limitations"],
+        )
+
+    def test_v1_payload_is_rejected_even_after_self_hashing(self) -> None:
+        payload = self.valid_result()
+        payload["schema_version"] = "EmotionStatePhaseC1AggregateResultV1"
+        self.assert_result_rejected(payload, "result_identity")
+
+    def test_published_positive_count_cannot_exceed_rated_units(self) -> None:
+        payload = self.deferred_result()
+        payload["reason_code_counts"].update(
+            {
+                "reliability_unverifiable": 0,
+                "reliability_effective_sample_insufficient": 1,
+            }
+        )
+        payload["per_signal"][2]["reliability_diagnostics"][0].update(
+            {
+                "rated_unit_count": 50,
+                "published_positive_count": 100,
+                "effective_sample_sufficient": False,
+            }
+        )
+        self.assert_result_rejected(
+            payload,
+            "reliability_diagnostics",
+        )
+
+    def test_rejected_card_status_is_rederived_from_local_facts(self) -> None:
+        payload = self.rejected_alpha_result()
+        payload["search_counts"].update(
+            {
+                "returned_discovery_record_count": 2,
+                "excluded_discovery_record_count": 1,
+            }
+        )
+        payload["search_lane_counts"]["direct_by_signal"]["confusion"][
+            "discovery_disposition_counts"
+        ]["excluded"] = 1
+        payload["reason_code_counts"].update(
+            {
+                "reliability_upper_below_0_67": 0,
+                "single_rater": 1,
+                "self_report_label": 1,
+                "llm_generated_label": 1,
+            }
+        )
+        payload["per_signal"][2]["reliability_diagnostics"][0].update(
+            {
+                "point_micros": 840_000,
+                "lower_95_micros": 700_000,
+                "upper_95_micros": 900_000,
+                "independent_rater_count": 3,
+            }
+        )
+        self.assert_result_rejected(
+            payload,
+            "reliability_diagnostics",
+        )
+
+    def test_lane_witness_rejects_record_stretch_and_fallback_anchor(
+        self,
+    ) -> None:
+        stretched = self.valid_result()
+        signature = stretched["source_signature_counts"][0]
+        signature["direct_membership_by_signal"]["interest"] = True
+        self.rehash_source_signature(stretched, signature)
+        interest_lane = stretched["search_lane_counts"][
+            "direct_by_signal"
+        ]["interest"]
+        interest_lane["candidate_order_count"] = 1
+        interest_lane["discovery_disposition_counts"][
+            "retained_candidate"
+        ] = 1
+        diagnostic = copy.deepcopy(
+            stretched["per_signal"][2]["reliability_diagnostics"][0]
+        )
+        diagnostic["evidence_card_sha256"] = self.fixture_hash(
+            "shared-interest-card"
+        )
+        diagnostic["source_signature_sha256"] = signature[
+            "source_signature_sha256"
+        ]
+        stretched["per_signal"][3]["reliability_diagnostics"] = [
+            diagnostic
+        ]
+        self.align_local_card_witnesses(stretched)
+        self.assert_result_rejected(stretched, "search_lane_counts")
+
+        shared = copy.deepcopy(stretched)
+        shared["search_counts"].update(
+            {
+                "returned_discovery_record_count": 2,
+                "retained_candidate_record_count": 2,
+            }
+        )
+        self.assert_result_rejected(
+            shared,
+            "evidence_card_binding",
+        )
+
+        fallback_only = self.all_fail_result()
+        signature_payload = {
+            "direct_membership_by_signal": {
+                signal: False for signal in EXPECTED_SIGNALS
+            },
+            "fallback_material_membership": True,
+            "existing_annotation_evidence_role": False,
+            "fallback_material_candidate_role": True,
+            "access_status": "public_no_login",
+            "license_status": "compatible",
+            "ethical_use_status": "compatible",
+            "conversation_status": "spontaneous_conversation",
+            "document_category_mask": 0b1000,
+        }
+        digest = phase_c1.sha256_bytes(
+            phase_c1.canonical_json_bytes(signature_payload)
+        )
+        fallback_only["source_signature_counts"] = [
+            {
+                "source_signature_sha256": digest,
+                "count": 1,
+                **signature_payload,
+            }
+        ]
+        fallback_only["source_counts"].update(
+            {
+                "source_count": 1,
+                "document_count": 1,
+                "fallback_material_candidate_source_count": 1,
+            }
+        )
+        fallback_only["search_counts"].update(
+            {
+                "returned_discovery_record_count": 1,
+                "retained_candidate_record_count": 1,
+                "detailed_candidate_count": 1,
+                "backward_citation_record_count": 1,
+            }
+        )
+        fallback_lane = fallback_only["search_lane_counts"][
+            "fallback_material"
+        ]
+        fallback_lane["candidate_order_count"] = 1
+        fallback_lane["discovery_disposition_counts"][
+            "retained_candidate"
+        ] = 1
+        fallback_only["search_lane_counts"]["direct_by_signal"][
+            "confusion"
+        ]["citations"]["backward"]["disposition_counts"]["duplicate"] = 1
+        self.assert_result_rejected(
+            fallback_only,
+            "search_lane_counts",
+        )
+
+    def test_source_signature_hash_role_mask_and_document_binding(
+        self,
+    ) -> None:
+        payload = self.valid_result()
+        entry = payload["source_signature_counts"][0]
+        signature = {
+            key: value
+            for key, value in entry.items()
+            if key not in {"source_signature_sha256", "count"}
+        }
+        expected_digest = phase_c1.sha256_bytes(
+            phase_c1.canonical_json_bytes(signature)
+        )
+        self.assertEqual(entry["source_signature_sha256"], expected_digest)
+        changed_count = {**entry, "count": 999}
+        self.assertEqual(
+            phase_c1.sha256_bytes(
+                phase_c1.canonical_json_bytes(
+                    {
+                        key: value
+                        for key, value in changed_count.items()
+                        if key
+                        not in {"source_signature_sha256", "count"}
+                    }
+                )
+            ),
+            expected_digest,
+        )
+
+        login_public = self.valid_result()
+        entry = login_public["source_signature_counts"][0]
+        entry["access_status"] = "login_required"
+        self.rehash_source_signature(login_public, entry)
+        self.assert_result_rejected(
+            login_public,
+            "source_signature_counts",
+        )
+
+        missing_role = self.valid_result()
+        entry = missing_role["source_signature_counts"][0]
+        entry["existing_annotation_evidence_role"] = False
+        self.rehash_source_signature(missing_role, entry)
+        self.assert_result_rejected(
+            missing_role,
+            "source_signature_counts",
+        )
+
+        empty_mask = self.valid_result()
+        entry = empty_mask["source_signature_counts"][0]
+        entry["document_category_mask"] = 0
+        self.rehash_source_signature(empty_mask, entry)
+        self.assert_result_rejected(
+            empty_mask,
+            "source_signature_counts",
+        )
+
+        wrong_document_category = self.valid_result()
+        diagnostic = wrong_document_category["per_signal"][2][
+            "reliability_diagnostics"
+        ][0]
+        diagnostic["definition_document_authoritative"] = False
+        self.assert_result_rejected(
+            wrong_document_category,
+            "reliability_diagnostics",
+        )
+
+        unsorted = self.full_pass_result()
+        unsorted["source_signature_counts"].reverse()
+        self.assert_result_rejected(
+            unsorted,
+            "source_signature_counts",
+        )
+
+    def test_local_oracle_outcomes_and_decision_helper_independence(
+        self,
+    ) -> None:
+        cases = (
+            (
+                "proxy",
+                {},
+                {"native_label_is_excluded_proxy": True},
+                "rejected",
+                ("proxy_construct",),
+            ),
+            (
+                "license_unresolved",
+                {"license_status": "unresolved"},
+                {},
+                "unresolved",
+                ("license_unresolved",),
+            ),
+            (
+                "self_report",
+                {},
+                {"observer_method": "self_report"},
+                "rejected",
+                ("self_report_label",),
+            ),
+            (
+                "single_rater",
+                {},
+                {
+                    "independent_rater_count": 1,
+                    "effective_sample_sufficient": False,
+                },
+                "rejected",
+                ("single_rater",),
+            ),
+            (
+                "alpha_reject",
+                {},
+                {
+                    "point_micros": 650_000,
+                    "lower_95_micros": 590_000,
+                    "upper_95_micros": 669_999,
+                },
+                "rejected",
+                ("reliability_upper_below_0_67",),
+            ),
+            (
+                "alpha_defer",
+                {},
+                {
+                    "point_micros": 750_000,
+                    "lower_95_micros": 650_000,
+                    "upper_95_micros": 850_000,
+                },
+                "unresolved",
+                ("reliability_interval_uncertain",),
+            ),
+            (
+                "positive_support",
+                {},
+                {
+                    "published_positive_count": 92,
+                    "effective_sample_sufficient": False,
+                },
+                "unresolved",
+                (
+                    "reliability_effective_sample_insufficient",
+                    "positive_support_below_93",
+                ),
+            ),
+        )
+        for (
+            name,
+            signature_updates,
+            diagnostic_updates,
+            expected_status,
+            expected_reasons,
+        ) in cases:
+            with self.subTest(name=name):
+                payload = self.valid_result()
+                entry = payload["source_signature_counts"][0]
+                entry.update(signature_updates)
+                if signature_updates:
+                    self.rehash_source_signature(payload, entry)
+                diagnostic = payload["per_signal"][2][
+                    "reliability_diagnostics"
+                ][0]
+                diagnostic.update(diagnostic_updates)
+                actual = self.reference_diagnostic_disposition(
+                    diagnostic,
+                    entry,
+                )
+                self.assertEqual(
+                    actual,
+                    (expected_status, expected_reasons),
+                )
+                self.align_local_card_witnesses(payload)
+                self.reself(payload)
+                self.validate_result(payload)
+                self.render_result(payload)
+
+        payload = self.valid_result()
+        with (
+            mock.patch.object(
+                decision,
+                "derive_candidate_disposition",
+                side_effect=AssertionError("decision helper called"),
+            ),
+            mock.patch.object(
+                decision,
+                "derive_reliability_status",
+                side_effect=AssertionError("decision helper called"),
+            ),
+            mock.patch.object(
+                decision,
+                "derive_signal_decision",
+                side_effect=AssertionError("decision helper called"),
+            ),
+        ):
+            self.validate_local_result(payload)
+            self.render_local_result(payload)
+
+    def test_exact_residual_reconciliation_and_zero_search_meta(
+        self,
+    ) -> None:
+        rejected_search = self.valid_result()
+        rejected_search["search_counts"].update(
+            {
+                "returned_discovery_record_count": 2,
+                "excluded_discovery_record_count": 1,
+            }
+        )
+        rejected_search["search_lane_counts"]["direct_by_signal"][
+            "confusion"
+        ]["discovery_disposition_counts"]["excluded"] = 1
+        rejected_search["reason_code_counts"]["access_restricted"] = 1
+        self.reself(rejected_search)
+        self.validate_result(rejected_search)
+        self.render_result(rejected_search)
+
+        split = self.deferred_result()
+        split["per_signal"][2]["annotation_fallback"] = "unresolved"
+        split["reason_code_counts"]["annotation_fallback_unresolved"] = 1
+        diagnostic = split["per_signal"][2][
+            "reliability_diagnostics"
+        ][0]
+        diagnostic.update(
+            {
+                "verifiable": True,
+                "rated_unit_count": None,
+                "published_positive_count": 92,
+                "effective_sample_sufficient": False,
+            }
+        )
+        self.align_local_card_witnesses(split)
+        split["search_counts"].update(
+            {
+                "returned_discovery_record_count": 2,
+                "unresolved_discovery_record_count": 1,
+            }
+        )
+        split["search_lane_counts"]["direct_by_signal"]["confusion"][
+            "discovery_disposition_counts"
+        ]["unresolved"] = 1
+        split["reason_code_counts"]["source_identity_unverified"] = 1
+        self.align_local_card_witnesses(split)
+        self.reself(split)
+        self.validate_result(split)
+        self.render_result(split)
+
+        missing_residual = copy.deepcopy(split)
+        missing_residual["reason_code_counts"][
+            "source_identity_unverified"
+        ] = 0
+        self.assert_result_rejected(
+            missing_residual,
+            "reason_code_counts",
+        )
+
+        for code in (
+            "search_query_incomplete",
+            "query_result_truncated",
+            "candidate_overflow",
+            "citation_budget_incomplete",
+        ):
+            with self.subTest(search_meta=code):
+                invalid = self.valid_result()
+                invalid["reason_code_counts"][code] = 1
+                self.assert_result_rejected(
+                    invalid,
+                    "reason_code_counts",
+                )
+
+    def test_fail_ready_is_rederived_from_lane_facts(self) -> None:
+        payload = self.all_fail_result()
+        payload["search_counts"].update(
+            {
+                "complete_query_count": 87,
+                "incomplete_query_count": 1,
+                "search_complete": False,
+            }
+        )
+        query_counts = payload["search_lane_counts"][
+            "direct_by_signal"
+        ]["hesitation"]["query_counts"]
+        query_counts.update({"complete": 15, "incomplete": 1})
+        payload["per_signal"][0]["annotation_fallback"] = "unresolved"
+        payload["reason_code_counts"]["annotation_fallback_unresolved"] = 1
+        self.align_local_card_witnesses(payload)
+        self.reself(payload)
+        self.validate_result(payload)
+        self.render_result(payload)
+        self.assertEqual(payload["per_signal"][0]["decision"], "defer")
+
+        false_fail = copy.deepcopy(payload)
+        false_fail["per_signal"][0].update(
+            {
+                "decision": "fail",
+                "annotation_fallback": "infeasible",
+                "c2_eligible": False,
+            }
+        )
+        false_fail["reason_code_counts"][
+            "annotation_fallback_unresolved"
+        ] = 0
+        false_fail["overall_decision"] = "stop_c2"
+        self.assert_result_rejected(false_fail, "per_signal")
+
+    def test_maximum_card_shape_size_is_measured_below_frozen_cap(
+        self,
+    ) -> None:
+        payload = self.full_pass_result()
+        source_payload = phase_c1.load_json_strict(
+            self.source_ledger_bytes_for(payload),
+            source="source_ledger",
+        )
+        self.assertIsInstance(source_payload, dict)
+        source_cards = source_payload["cards"]
+        self.assertIsInstance(source_cards, list)
+        card_template_by_signal = {
+            card["signal"]: card for card in source_cards
+        }
+        expanded_cards: list[dict[str, object]] = []
+        card_hashes_by_signal: dict[str, list[str]] = {
+            signal: [] for signal in EXPECTED_SIGNALS
+        }
+        for signal in EXPECTED_SIGNALS:
+            for index in range(20):
+                card = copy.deepcopy(card_template_by_signal[signal])
+                card["card_id"] = f"c1-card-{signal}-{index + 1:04d}"
+                phase_c1.parse_evidence_card(card)
+                expanded_cards.append(card)
+                card_hashes_by_signal[signal].append(
+                    phase_c1.sha256_bytes(
+                        phase_c1.canonical_json_bytes(card)
+                    )
+                )
+        source_payload["cards"] = expanded_cards
+        maximum_source_bytes = phase_c1.canonical_json_bytes(source_payload)
+        maximum_source_sha256 = phase_c1.sha256_bytes(
+            maximum_source_bytes
+        )
+        payload["source_evidence_ledger_sha256"] = maximum_source_sha256
+        self.source_ledger_bytes_by_sha256[
+            maximum_source_sha256
+        ] = maximum_source_bytes
+        for entry in payload["source_signature_counts"]:
+            entry["count"] = 20
+        payload["source_counts"].update(
+            {
+                "source_count": 100,
+                "document_count": 100,
+                "existing_annotation_evidence_source_count": 100,
+                "fallback_material_candidate_source_count": 100,
+            }
+        )
+        payload["search_counts"].update(
+            {
+                "returned_discovery_record_count": 100,
+                "retained_candidate_record_count": 100,
+                "detailed_candidate_count": 100,
+            }
+        )
+        signatures_by_signal = {
+            signal: next(
+                entry["source_signature_sha256"]
+                for entry in payload["source_signature_counts"]
+                if entry["direct_membership_by_signal"][signal]
+            )
+            for signal in EXPECTED_SIGNALS
+        }
+        for item in payload["per_signal"]:
+            signal = item["signal"]
+            lane = payload["search_lane_counts"]["direct_by_signal"][
+                signal
+            ]
+            lane["candidate_order_count"] = 20
+            lane["discovery_disposition_counts"][
+                "retained_candidate"
+            ] = 20
+            template = item["reliability_diagnostics"][0]
+            diagnostics = []
+            for index in range(20):
+                diagnostic = copy.deepcopy(template)
+                diagnostic["evidence_card_sha256"] = (
+                    card_hashes_by_signal[signal][index]
+                )
+                diagnostic["source_signature_sha256"] = (
+                    signatures_by_signal[signal]
+                )
+                diagnostics.append(diagnostic)
+            item["reliability_diagnostics"] = diagnostics
+        self.align_local_card_witnesses(payload)
+        self.reself(payload)
+        self.validate_result(payload)
+        measured_size = len(phase_c1.canonical_json_bytes(payload))
+        self.assertEqual(runner.MAX_AGGREGATE_RESULT_BYTES, 512 * 1024)
+        self.assertLessEqual(
+            measured_size,
+            runner.MAX_AGGREGATE_RESULT_BYTES,
+        )
+        self.assertEqual(measured_size, 155_411)
+
+        reordered = copy.deepcopy(payload)
+        reordered_signal = reordered["per_signal"][0]
+        reordered_signal["reliability_diagnostics"][0:2] = reversed(
+            reordered_signal["reliability_diagnostics"][0:2]
+        )
+        reordered_signal["admissible_evidence_card_sha256s"][0:2] = reversed(
+            reordered_signal["admissible_evidence_card_sha256s"][0:2]
+        )
+        self.reself(reordered)
+        self.assert_result_rejected(
+            reordered,
+            "evidence_card_binding",
+        )
+
+    def test_fallback_material_status_counts_are_locally_witnessed(self) -> None:
+        payload = self.fallback_result(("infeasible",))
+        for item in payload["per_signal"]:
+            self.assertEqual(
+                item["fallback_material_status_counts"],
+                {"feasible": 0, "infeasible": 1, "unresolved": 0},
+            )
+
+    def test_forged_all_infeasible_fallback_cannot_become_feasible(
+        self,
+    ) -> None:
+        payload = self.fallback_result(("infeasible",))
+        self.assertTrue(
+            all(
+                item["annotation_fallback"] == "infeasible"
+                for item in payload["per_signal"]
+            )
+        )
+        for item in payload["per_signal"]:
+            item.update(
+                {
+                    "annotation_fallback": "feasible",
+                    "decision": "defer",
+                    "c2_eligible": False,
+                }
+            )
+        payload["reason_code_counts"]["annotation_fallback_feasible"] = 5
+        payload["overall_decision"] = "defer_c2"
+        self.reself(payload)
+        self.assert_result_rejected(payload, "per_signal")
+
+    def test_lane_discovery_capacity_and_overflow_saturation_are_local(
+        self,
+    ) -> None:
+        zero_complete = self.valid_result()
+        zero_complete["search_counts"].update(
+            {
+                "complete_query_count": 72,
+                "incomplete_query_count": 16,
+                "search_complete": False,
+            }
+        )
+        zero_complete["search_lane_counts"]["direct_by_signal"]["confusion"][
+            "query_counts"
+        ].update({"complete": 0, "incomplete": 16})
+        self.reself(zero_complete)
+        self.assert_result_rejected(zero_complete, "search_lane_counts")
+
+        direct_unsaturated = self.all_fail_result()
+        direct_counts = direct_unsaturated["search_counts"]
+        direct_counts.update(
+            {
+                "returned_discovery_record_count": 20,
+                "retained_candidate_record_count": 20,
+                "detailed_candidate_count": 19,
+                "candidate_overflow_count": 1,
+            }
+        )
+        direct_lane = direct_unsaturated["search_lane_counts"][
+            "direct_by_signal"
+        ]["hesitation"]
+        direct_lane.update(
+            {
+                "candidate_order_count": 19,
+                "candidate_overflow_count": 1,
+            }
+        )
+        direct_lane["discovery_disposition_counts"][
+            "retained_candidate"
+        ] = 20
+        runner._validate_search_counts(direct_counts)
+        with self.assertRaisesRegex(
+            runner.RunnerError,
+            "search_lane_counts",
+        ):
+            runner._validate_search_lane_counts(
+                direct_unsaturated["search_lane_counts"],
+                search_counts=direct_counts,
+            )
+
+        fallback_unsaturated = self.all_fail_result()
+        fallback_counts = fallback_unsaturated["search_counts"]
+        fallback_counts.update(
+            {
+                "returned_discovery_record_count": 11,
+                "retained_candidate_record_count": 11,
+                "detailed_candidate_count": 10,
+                "candidate_overflow_count": 1,
+            }
+        )
+        direct_lane = fallback_unsaturated["search_lane_counts"][
+            "direct_by_signal"
+        ]["hesitation"]
+        direct_lane["candidate_order_count"] = 1
+        direct_lane["discovery_disposition_counts"][
+            "retained_candidate"
+        ] = 1
+        fallback_lane = fallback_unsaturated["search_lane_counts"][
+            "fallback_material"
+        ]
+        fallback_lane.update(
+            {
+                "candidate_order_count": 9,
+                "candidate_overflow_count": 1,
+            }
+        )
+        fallback_lane["discovery_disposition_counts"][
+            "retained_candidate"
+        ] = 10
+        runner._validate_search_counts(fallback_counts)
+        with self.assertRaisesRegex(
+            runner.RunnerError,
+            "search_lane_counts",
+        ):
+            runner._validate_search_lane_counts(
+                fallback_unsaturated["search_lane_counts"],
+                search_counts=fallback_counts,
+            )
+
+    def test_source_signature_reconciles_exact_document_count(self) -> None:
+        payload = self.valid_result()
+        self.assertEqual(payload["source_counts"]["document_count"], 1)
+        payload["source_counts"]["document_count"] = 2
+        self.reself(payload)
+        self.assert_result_rejected(payload, "source_signature_counts")
+
+    def test_actual_oversized_payload_rejects_before_render(self) -> None:
+        payload = self.valid_result()
+        payload["implementation_head"] = "a" * (
+            runner.MAX_AGGREGATE_RESULT_BYTES + 1
+        )
+        self.assertGreater(
+            len(phase_c1.canonical_json_bytes(payload)),
+            runner.MAX_AGGREGATE_RESULT_BYTES,
+        )
+        for validate in (
+            self.validate_result,
+            self.render_result,
+        ):
+            with self.subTest(validate=validate.__name__):
+                with self.assertRaisesRegex(
+                    runner.RunnerError,
+                    "result_size",
+                ):
+                    validate(copy.deepcopy(payload))
+
+    def test_source_ledger_bytes_are_required_hash_bound_and_canonical(
+        self,
+    ) -> None:
+        payload = self.valid_result()
+        authority_bytes = self.authoritative_input_bytes_for(payload)
+        for validate in (
+            runner.validate_phase_c1_result_payload,
+            runner.render_phase_c1_report,
+        ):
+            for missing in authority_bytes:
+                with self.subTest(
+                    validate=validate.__name__,
+                    mutation=f"missing_{missing}",
+                ):
+                    incomplete = dict(authority_bytes)
+                    del incomplete[missing]
+                    with self.assertRaisesRegex(TypeError, missing):
+                        validate(copy.deepcopy(payload), **incomplete)
+
+            with self.subTest(validate=validate.__name__, mutation="wrong"):
+                wrong = dict(authority_bytes)
+                wrong["source_ledger_bytes"] = b"{}\n"
+                with self.assertRaisesRegex(
+                    runner.RunnerError,
+                    "source_ledger_hash",
+                ):
+                    validate(
+                        copy.deepcopy(payload),
+                        **wrong,
+                    )
+
+            source_payload = phase_c1.load_json_strict(
+                self.one_pass_source_bytes,
+                source="source_ledger",
+            )
+            noncanonical = json.dumps(
+                source_payload,
+                sort_keys=True,
+                ensure_ascii=False,
+                allow_nan=False,
+            ).encode("utf-8")
+            noncanonical_result = copy.deepcopy(payload)
+            noncanonical_result["source_evidence_ledger_sha256"] = (
+                phase_c1.sha256_bytes(noncanonical)
+            )
+            self.reself(noncanonical_result)
+            with self.subTest(
+                validate=validate.__name__,
+                mutation="noncanonical",
+            ):
+                with self.assertRaisesRegex(
+                    runner.RunnerError,
+                    "source_ledger_canonical",
+                ):
+                    validate(
+                        noncanonical_result,
+                        **{
+                            **authority_bytes,
+                            "source_ledger_bytes": noncanonical,
+                        },
+                    )
+
+            mutated_source_payload = copy.deepcopy(source_payload)
+            mutated_card = mutated_source_payload["cards"][0]
+            mutated_card["limitations"] = [
+                *mutated_card["limitations"],
+                "source-ledger-binding-mutation",
+            ]
+            phase_c1.parse_evidence_card(mutated_card)
+            mutated_source_bytes = phase_c1.canonical_json_bytes(
+                mutated_source_payload
+            )
+            mutated_source_result = copy.deepcopy(payload)
+            mutated_source_result["source_evidence_ledger_sha256"] = (
+                phase_c1.sha256_bytes(mutated_source_bytes)
+            )
+            self.reself(mutated_source_result)
+            with self.subTest(
+                validate=validate.__name__,
+                mutation="full_card_hash",
+            ):
+                with self.assertRaisesRegex(
+                    runner.RunnerError,
+                    "evidence_card_binding",
+                ):
+                    validate(
+                        mutated_source_result,
+                        **{
+                            **authority_bytes,
+                            "source_ledger_bytes": mutated_source_bytes,
+                        },
+                    )
+
+    def test_cross_signal_card_hash_swap_rejects_against_source_bytes(
+        self,
+    ) -> None:
+        search_bytes, source_bytes, review_bytes = self.validated_input_bytes(
+            admissible_signals=EXPECTED_SIGNALS,
+        )
+        payload = runner.build_phase_c1_result(
+            head_commit="a" * 40,
+            validator_blob_id="b" * 40,
+            protocol_bytes=self.protocol_bytes,
+            search_ledger_bytes=search_bytes,
+            source_ledger_bytes=source_bytes,
+            review_receipt_bytes=review_bytes,
+        )
+        hesitation = payload["per_signal"][0]
+        frustration = payload["per_signal"][1]
+        hesitation_hash = hesitation["reliability_diagnostics"][0][
+            "evidence_card_sha256"
+        ]
+        frustration_hash = frustration["reliability_diagnostics"][0][
+            "evidence_card_sha256"
+        ]
+        hesitation["reliability_diagnostics"][0][
+            "evidence_card_sha256"
+        ] = frustration_hash
+        frustration["reliability_diagnostics"][0][
+            "evidence_card_sha256"
+        ] = hesitation_hash
+        hesitation["admissible_evidence_card_sha256s"] = [
+            frustration_hash
+        ]
+        frustration["admissible_evidence_card_sha256s"] = [
+            hesitation_hash
+        ]
+        self.reself(payload)
+        for validate in (
+            runner.validate_phase_c1_result_payload,
+            runner.render_phase_c1_report,
+        ):
+            with self.subTest(validate=validate.__name__):
+                with self.assertRaisesRegex(
+                    runner.RunnerError,
+                    "evidence_card_binding",
+                ):
+                    validate(
+                        copy.deepcopy(payload),
+                        protocol_bytes=self.protocol_bytes,
+                        search_ledger_bytes=search_bytes,
+                        source_ledger_bytes=source_bytes,
+                        review_receipt_bytes=review_bytes,
+                    )
+
+    def test_all_four_canonical_input_interfaces_are_required(self) -> None:
+        expected = (
+            "protocol_bytes",
+            "search_ledger_bytes",
+            "source_ledger_bytes",
+            "review_receipt_bytes",
+        )
+        for validate in (
+            runner.validate_phase_c1_result_payload,
+            runner.render_phase_c1_report,
+        ):
+            with self.subTest(validate=validate.__name__):
+                signature = inspect.signature(validate)
+                keyword_only = tuple(
+                    name
+                    for name, parameter in signature.parameters.items()
+                    if parameter.kind is inspect.Parameter.KEYWORD_ONLY
+                )
+                self.assertEqual(keyword_only, expected)
+        validator_source = inspect.getsource(
+            runner.validate_phase_c1_result_payload
+        )
+        renderer_source = inspect.getsource(runner.render_phase_c1_report)
+        builder_source = inspect.getsource(runner.build_phase_c1_result)
+        projection_source = inspect.getsource(
+            runner._project_phase_c1_result
+        )
+        self.assertIn("_validate_phase_c1_result_local", validator_source)
+        self.assertIn("_project_phase_c1_result", validator_source)
+        self.assertIn("input_projection_binding", validator_source)
+        self.assertIn("validate_phase_c1_result_payload", renderer_source)
+        self.assertIn("_project_phase_c1_result", builder_source)
+        self.assertIn("validate_phase_c1_result_payload", builder_source)
+        self.assertNotIn(
+            "validate_phase_c1_result_payload",
+            projection_source,
+        )
+
+    def test_all_four_authority_inputs_are_hash_and_canonical_bound(
+        self,
+    ) -> None:
+        payload = self.valid_result()
+        authority_bytes = self.authoritative_input_bytes_for(payload)
+        metadata = {
+            "protocol_bytes": ("protocol_sha256", "protocol"),
+            "search_ledger_bytes": (
+                "search_ledger_sha256",
+                "search_ledger",
+            ),
+            "source_ledger_bytes": (
+                "source_evidence_ledger_sha256",
+                "source_ledger",
+            ),
+            "review_receipt_bytes": (
+                "source_review_receipt_sha256",
+                "source_review",
+            ),
+        }
+        for argument_name, (result_field, source) in metadata.items():
+            for validate in (
+                runner.validate_phase_c1_result_payload,
+                runner.render_phase_c1_report,
+            ):
+                with self.subTest(
+                    validate=validate.__name__,
+                    argument=argument_name,
+                    mutation="wrong_hash",
+                ):
+                    wrong = dict(authority_bytes)
+                    wrong[argument_name] = b"{}\n"
+                    with self.assertRaisesRegex(
+                        runner.RunnerError,
+                        f"{source}_hash",
+                    ):
+                        validate(copy.deepcopy(payload), **wrong)
+
+                source_payload = phase_c1.load_json_strict(
+                    authority_bytes[argument_name],
+                    source=source,
+                )
+                noncanonical = json.dumps(
+                    source_payload,
+                    sort_keys=True,
+                    ensure_ascii=False,
+                    allow_nan=False,
+                ).encode("utf-8")
+                noncanonical_result = copy.deepcopy(payload)
+                noncanonical_result[result_field] = phase_c1.sha256_bytes(
+                    noncanonical
+                )
+                self.reself(noncanonical_result)
+                with self.subTest(
+                    validate=validate.__name__,
+                    argument=argument_name,
+                    mutation="noncanonical",
+                ):
+                    noncanonical_authority = dict(authority_bytes)
+                    noncanonical_authority[argument_name] = noncanonical
+                    with self.assertRaisesRegex(
+                        runner.RunnerError,
+                        f"{source}_canonical",
+                    ):
+                        validate(
+                            noncanonical_result,
+                            **noncanonical_authority,
+                        )
+
+                wrong_schema_payload = copy.deepcopy(source_payload)
+                wrong_schema_payload["schema_version"] = "WrongSchemaV1"
+                wrong_schema = phase_c1.canonical_json_bytes(
+                    wrong_schema_payload
+                )
+                wrong_schema_result = copy.deepcopy(payload)
+                wrong_schema_result[result_field] = phase_c1.sha256_bytes(
+                    wrong_schema
+                )
+                self.reself(wrong_schema_result)
+                with self.subTest(
+                    validate=validate.__name__,
+                    argument=argument_name,
+                    mutation="wrong_schema",
+                ):
+                    wrong_schema_authority = dict(authority_bytes)
+                    wrong_schema_authority[argument_name] = wrong_schema
+                    with self.assertRaises(runner.RunnerError):
+                        validate(
+                            wrong_schema_result,
+                            **wrong_schema_authority,
+                        )
+
+    def test_four_canonical_inputs_block_coherent_semantic_rewrites(
+        self,
+    ) -> None:
+        unresolved = self.deferred_result()
+        unresolved_authority = self.authoritative_input_bytes_for(
+            unresolved
+        )
+        confusion = unresolved["per_signal"][2]
+        diagnostic = confusion["reliability_diagnostics"][0]
+        diagnostic.update(
+            {
+                "claimed_status": "admissible",
+                "claimed_reason_codes": [],
+                "verifiable": True,
+            }
+        )
+        confusion.update(
+            {
+                "decision": "pass",
+                "admissible_evidence_card_sha256s": [
+                    diagnostic["evidence_card_sha256"]
+                ],
+                "unresolved_card_count": 0,
+                "c2_eligible": True,
+            }
+        )
+        unresolved["card_counts_by_status"].update(
+            {"admissible": 1, "unresolved": 0}
+        )
+        unresolved["reason_code_counts"]["reliability_unverifiable"] = 0
+        unresolved["c2_eligible_signals"] = ["confusion"]
+        unresolved["overall_decision"] = "proceed_partial_to_c2"
+        with self.subTest(mutation="unresolved_card_to_c2_pass"):
+            self.assert_projection_rejected(
+                unresolved,
+                authority_bytes=unresolved_authority,
+            )
+
+        blocked_review = self.valid_result()
+        blocked_authority = self.authoritative_input_bytes_for(
+            blocked_review
+        )
+        review_payload = phase_c1.load_json_strict(
+            blocked_authority["review_receipt_bytes"],
+            source="review",
+        )
+        review_payload.update(
+            {
+                "verdict": "blocked",
+                "important_findings": 1,
+            }
+        )
+        blocked_review_bytes = phase_c1.canonical_json_bytes(review_payload)
+        blocked_review["source_review_receipt_sha256"] = (
+            phase_c1.sha256_bytes(blocked_review_bytes)
+        )
+        blocked_authority["review_receipt_bytes"] = blocked_review_bytes
+        with self.subTest(mutation="blocked_review_to_pass"):
+            self.assert_projection_rejected(
+                blocked_review,
+                authority_bytes=blocked_authority,
+            )
+
+        rewritten_search = self.all_fail_result()
+        rewritten_search_authority = self.authoritative_input_bytes_for(
+            rewritten_search
+        )
+        rewritten_search["search_counts"].update(
+            {
+                "complete_query_count": 87,
+                "incomplete_query_count": 1,
+                "search_complete": False,
+            }
+        )
+        rewritten_search["search_lane_counts"]["direct_by_signal"][
+            "hesitation"
+        ]["query_counts"].update(
+            {"complete": 15, "incomplete": 1}
+        )
+        rewritten_search["per_signal"][0][
+            "annotation_fallback"
+        ] = "unresolved"
+        rewritten_search["reason_code_counts"][
+            "annotation_fallback_unresolved"
+        ] = 1
+        self.align_local_card_witnesses(rewritten_search)
+        with self.subTest(mutation="search_facts_rewritten"):
+            self.assert_projection_rejected(
+                rewritten_search,
+                authority_bytes=rewritten_search_authority,
+            )
+
+        incompatible_license = self.valid_result()
+        incompatible_authority = self.authoritative_input_bytes_for(
+            incompatible_license
+        )
+        incompatible_source = phase_c1.load_json_strict(
+            incompatible_authority["source_ledger_bytes"],
+            source="source",
+        )
+        incompatible_source["sources"][0]["license_status"] = "incompatible"
+        incompatible_source_bytes = phase_c1.canonical_json_bytes(
+            incompatible_source
+        )
+        incompatible_license["source_evidence_ledger_sha256"] = (
+            phase_c1.sha256_bytes(incompatible_source_bytes)
+        )
+        incompatible_authority[
+            "source_ledger_bytes"
+        ] = incompatible_source_bytes
+        with self.subTest(mutation="incompatible_license_to_pass"):
+            self.assert_projection_rejected(
+                incompatible_license,
+                authority_bytes=incompatible_authority,
+            )
+
+        feasible_fallback = self.fallback_result(("infeasible",))
+        feasible_authority = self.authoritative_input_bytes_for(
+            feasible_fallback
+        )
+        for item in feasible_fallback["per_signal"]:
+            item.update(
+                {
+                    "decision": "defer",
+                    "annotation_fallback": "feasible",
+                    "fallback_material_status_counts": {
+                        "feasible": 1,
+                        "infeasible": 0,
+                        "unresolved": 0,
+                    },
+                    "c2_eligible": False,
+                }
+            )
+        feasible_fallback["reason_code_counts"][
+            "annotation_fallback_feasible"
+        ] = len(EXPECTED_SIGNALS)
+        feasible_fallback["overall_decision"] = "defer_c2"
+        with self.subTest(mutation="infeasible_fallback_to_feasible"):
+            self.assert_projection_rejected(
+                feasible_fallback,
+                authority_bytes=feasible_authority,
+            )
+
+        forged_source_links = self.valid_result()
+        forged_source_authority = self.authoritative_input_bytes_for(
+            forged_source_links
+        )
+        forged_source = phase_c1.load_json_strict(
+            forged_source_authority["source_ledger_bytes"],
+            source="source",
+        )
+        forged_source.update(
+            {
+                "protocol_sha256": "A" * 64,
+                "search_ledger_sha256": "B" * 64,
+            }
+        )
+        forged_source_bytes = phase_c1.canonical_json_bytes(forged_source)
+        forged_source_links["source_evidence_ledger_sha256"] = (
+            phase_c1.sha256_bytes(forged_source_bytes)
+        )
+        forged_source_authority["source_ledger_bytes"] = forged_source_bytes
+        with self.subTest(mutation="source_link_hashes_rebound"):
+            self.assert_projection_rejected(
+                forged_source_links,
+                authority_bytes=forged_source_authority,
+            )
+
+        rebound_result = self.valid_result()
+        rebound_authority = self.authoritative_input_bytes_for(rebound_result)
+        rebound_result.update(
+            {
+                "protocol_sha256": "A" * 64,
+                "search_ledger_sha256": "B" * 64,
+            }
+        )
+        with self.subTest(mutation="result_input_hashes_rebound"):
+            self.assert_projection_rejected(
+                rebound_result,
+                authority_bytes=rebound_authority,
+            )
+
+    def test_normative_limitation_lists_are_exact_ten_item_contracts(
+        self,
+    ) -> None:
+        plan_text = (
+            ROOT
+            / "docs"
+            / "superpowers"
+            / "plans"
+            / (
+                "2026-07-26-emotion-state-phase-c1-operational-signal-"
+                "evidence-admission.md"
+            )
+        ).read_text(encoding="utf-8")
+        plan_block = plan_text.split(
+            "Canonical limitations use this exact order and wording:",
+            1,
+        )[1].split("- Every JSON byte authority uses:", 1)[0]
+        self.assertEqual(
+            plan_block.count('    "'),
+            len(EXPECTED_PHASE_C1_LIMITATIONS),
+        )
+        for limitation in EXPECTED_PHASE_C1_LIMITATIONS:
+            with self.subTest(document="plan", limitation=limitation):
+                self.assertIn(f'"{limitation}"', plan_block)
+
+        spec_text = (
+            ROOT
+            / "docs"
+            / "superpowers"
+            / "specs"
+            / (
+                "2026-07-26-emotion-state-phase-c1-operational-signal-"
+                "evidence-admission-design.md"
+            )
+        ).read_text(encoding="utf-8")
+        spec_block = spec_text.split(
+            "## Risks And Limitations",
+            1,
+        )[1].split("## Explicit Exclusions", 1)[0]
+        self.assertEqual(
+            sum(
+                line.startswith("- ")
+                for line in spec_block.splitlines()
+            ),
+            len(EXPECTED_PHASE_C1_LIMITATIONS),
+        )
+        normalized_spec = " ".join(spec_block.split())
+        for limitation in EXPECTED_PHASE_C1_LIMITATIONS:
+            with self.subTest(document="spec", limitation=limitation):
+                self.assertIn(limitation, normalized_spec)
+
+    def test_retired_v1_solver_bodies_are_absent_and_scanner_is_nonvacuous(
+        self,
+    ) -> None:
+        retired_names = frozenset(RETIRED_V1_TEST_METHOD_NAMES)
+        self.assertEqual(len(retired_names), 13)
+        synthetic_tree = ast.parse(
+            "class SyntheticRetiredTests:\n"
+            f"    def {RETIRED_V1_TEST_METHOD_NAMES[0]}(self):\n"
+            "        pass\n"
+        )
+        synthetic_names = {
+            node.name
+            for node in ast.walk(synthetic_tree)
+            if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef))
+        }
+        self.assertEqual(
+            synthetic_names & retired_names,
+            {RETIRED_V1_TEST_METHOD_NAMES[0]},
+        )
+
+        tree = ast.parse(Path(__file__).read_text(encoding="utf-8"))
+        current_names = {
+            node.name
+            for node in ast.walk(tree)
+            if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef))
+        }
+        self.assertTrue(retired_names.isdisjoint(current_names))
 
 
 if __name__ == "__main__":

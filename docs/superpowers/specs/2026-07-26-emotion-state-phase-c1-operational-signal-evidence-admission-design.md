@@ -509,7 +509,7 @@ gates. Passing one does not authorize the next.
 
 The canonical rowless result must bind:
 
-- schema and checkpoint identity;
+- exact `EmotionStatePhaseC1AggregateResultV2` schema and checkpoint identity;
 - exact implementation Git HEAD;
 - frozen configuration hash;
 - source-receipt hashes;
@@ -517,13 +517,51 @@ The canonical rowless result must bind:
 - validator identity;
 - ordered target-signal list;
 - aggregate candidate counts by status and reason code;
+- exact per-signal and fallback search-lane counts sufficient to rederive
+  completeness, per-complete-query discovery capacity, exact-cap overflow,
+  retained supply, citation order, and signal fail readiness;
+- sorted sparse source-signature multiplicities sufficient to reconcile source,
+  exact document, role, membership, candidate-union, and card-source counts
+  without publishing source identities;
 - per-signal decisions and evidence-card hashes;
-- fallback-feasibility classification;
+- per-card categorical eligibility and reliability witnesses sufficient for a
+  validator-local status and ordered-reason derivation;
+- exact per-signal fallback-material status counts and locally derived
+  fallback-feasibility classification;
 - exact C2-eligible signal list;
 - overall C1 decision;
 - privacy and boundary booleans;
 - limitations and nonclaims;
 - canonical result and report identities.
+
+The V2 aggregate rejects V1 payloads. Aggregate search-meta reason codes remain
+zero because query completeness, truncation, overflow, and citation stops are
+represented and validated in `search_lane_counts`; rejection and unresolved
+reason totals must instead reconcile exactly to card, discovery, citation, and
+fallback witnesses. The final canonical JSON result is capped at `524288`
+bytes in both builder and validator. The frozen maximum 100-card test shape is
+`155411` canonical bytes.
+
+Aggregate validation and report rendering are pure in-memory operations but
+require the caller to supply the exact canonical protocol, search-ledger,
+source-ledger, and review-receipt bytes. They verify all four result-bound
+SHA-256 values; fully validate every envelope and cross-link; require an
+admitted review; and use a nonrecursive deterministic projection helper to
+recompute the exact aggregate from those bytes plus the payload's implementation
+identities. Public acceptance requires field-for-field canonical equality with
+that projection in addition to the independent local V2 algebra checks.
+Source-card validation still parses every evidence card, recomputes its
+canonical full-card SHA-256, and requires each signal's diagnostic hash
+sequence to equal the source-ledger card sequence for that signal. The
+functions perform no path read. Private local-algebra/render helpers are test
+surfaces only, never acceptance authority. A recomputable digest carried only
+by the aggregate is insufficient authority.
+
+The result is rowless, but rowlessness is not anonymity. Sparse source
+signatures and per-card categorical diagnostics may fingerprint public source
+configurations. This is an explicit limitation and a reason not to extend the
+same structure to private or participant-level material without a new design
+review.
 
 It must not contain:
 
@@ -546,10 +584,31 @@ The independent validator must fail closed on:
 - missing provenance, version, license, retrieval, or source hash;
 - single-rater or unverifiable reliability claims;
 - one signal borrowing another signal's evidence;
+- missing, wrong, noncanonical, or wrong-schema caller-supplied protocol,
+  search-ledger, source-ledger, or review-receipt bytes;
+- a blocked review receipt, forged cross-ledger hash, incompatible source
+  rewritten as admissible, search/fallback rewrite, or any aggregate field that
+  differs from the deterministic four-input projection;
+- a per-signal evidence-card hash sequence that is missing, extra, reordered,
+  or cross-signal-swapped relative to the bound source ledger;
 - an annotation plan incorrectly producing `pass`;
 - incomplete query, citation, receipt, or stop-rule evidence;
 - a deferred or failed signal appearing in the C2-eligible list;
 - inconsistent candidate, signal, or overall decision algebra;
+- a V1 payload, malformed lane witness, invalid citation anchor, or
+  lane/global reconciliation mismatch;
+- discovery beyond a lane's complete-query capacity or overflow on an
+  unsaturated direct/fallback order;
+- a malformed, unsorted, duplicated, or unreconciled sparse source signature;
+- a source-signature document count inconsistent with its mask, cap, or the
+  exact global document count;
+- a per-card claimed status/reason, source-signature, document-mask, proxy, or
+  positive-count contradiction;
+- a fallback claim inconsistent with its exact per-signal material status
+  counts;
+- nonzero search-meta reason counts or residual reason counts without an exact
+  local witness;
+- a result larger than `524288` bytes;
 - unknown schema keys, reason codes, or signal names;
 - model metrics or participant-level content in the canonical pair;
 - a true runtime or provider authority flag; or
@@ -626,19 +685,21 @@ activation each require later governance and evidence gates.
 
 ## Risks And Limitations
 
-The canonical report must retain:
+The canonical report must retain this exact ten-item order and wording:
 
-- observer labels measure perception, not hidden internal emotion;
-- language, culture, speaker, population, and domain bias;
-- public conversational corpora may not resemble sales calls;
-- recording modality and bounded context may change judgments;
-- rare signals may prevent reliable annotation or later evaluation;
-- license, consent, or incomplete documentation may leave a promising source
-  unresolved;
-- agreement does not prove construct truth;
-- partial admission does not validate the other signals; and
-- no public-data result alone proves real-call, provider, latency, safety,
+- Observer labels measure perception, not hidden internal emotion.
+- Language, culture, speaker, population, and domain bias remain.
+- Public conversational corpora may not resemble sales calls.
+- Recording modality and bounded context may change judgments.
+- Rare signals may prevent reliable annotation or later evaluation.
+- License, consent, or incomplete documentation may leave a promising source
+  unresolved.
+- Agreement does not prove construct truth.
+- Partial admission does not validate the other signals.
+- No public-data result alone proves real-call, provider, latency, safety,
   conversion, or production behavior.
+- Sparse source signatures and per-card categorical diagnostics may fingerprint
+  public source configurations.
 
 ## Explicit Exclusions
 

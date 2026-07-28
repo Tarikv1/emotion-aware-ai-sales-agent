@@ -6471,3 +6471,108 @@ Interpretation:
   the corrective commit remain pending; no source, network, research,
   data/private-data, provider, call, simulation, runtime, candidate, canonical,
   C2, push, merge, or production action or claim occurred.
+
+### 2026-07-28 - EMOTION-STATE-004 Phase C1 Task 5 aggregate V2 working draft
+
+- Scope correction: the first rowless aggregate design did not carry enough
+  local evidence to validate its global reason-count allocation without a
+  solver. The working draft now emits only
+  `EmotionStatePhaseC1AggregateResultV2`; V1 rejects. V2 adds exact
+  per-signal/fallback search-lane counts, sorted sparse categorical
+  source-signature multiplicities with exact document counts, exact per-signal
+  fallback-material status counts, and per-card categorical
+  eligibility/reliability witnesses.
+- Independent local derivation: the result validator does not call the
+  production decision helpers. It rederives lane completeness, citation-anchor
+  order, signal fail readiness, source/document/role/card multiplicities,
+  candidate status and ordered reason codes, fallback status, signal decisions,
+  C2 eligibility, and the overall decision. The four search-meta reason-code
+  counts remain exactly zero; residual rejection and unresolved reason counts
+  reconcile only to exact card, discovery, citation, and fallback witnesses.
+  Published positive count greater than rated units rejects. Search discovery
+  cannot exceed 25 records per complete query; overflow requires the exact
+  direct/fallback order cap of 20/10; sparse source signatures reconcile the
+  exact global document count.
+- Strict TDD evidence: four focused V2 methods first produced seven expected
+  assertion failures while the builder still emitted V1 and accepted missing
+  local witnesses and impossible positive counts. The same focused methods
+  passed after implementation. Six comprehensive replacement methods covering
+  lane, signature, local-oracle, residual, fail-readiness, and size semantics
+  then passed `6/6`. After adapting still-valid legacy semantics, the aggregate
+  class passed `44/44`.
+- Frozen independent review returned `C0/I3/M3`: fallback feasibility was not
+  locally witnessed; lane discovery capacity and overflow saturation were not
+  enforced; global document count was not exact; the size test did not exercise
+  an actually oversized payload; this trace was stale; and thirteen retired V1
+  method bodies remained. Six strict RED methods exposed ten assertion failures
+  and one error. The correction adds exact fallback-material status counts,
+  lane capacity/saturation rules, signature-level document counts, early
+  encoded-size rejection, and removes all thirteen retired bodies. The six
+  focused methods pass `6/6`; the corrected aggregate class passes `50/50`.
+- A second frozen review returned `C0/I1/M1`. It demonstrated that swapping the
+  hesitation and frustration evidence-card hashes, updating their local
+  admissible lists, and recomputing the aggregate hash was accepted while the
+  global card-hash set and source-ledger hash stayed unchanged. It also showed
+  that the retired-body test checked a prefix none of the thirteen historical
+  methods used. The strict RED baseline reproduced the accepted 8,550-byte
+  report and the vacuous scanner; three focused methods then produced two
+  failures and six errors against the frozen production interface.
+- The second correction required caller-supplied canonical
+  `source_ledger_bytes` for result validation and report rendering. Both
+  remained pure in memory: they
+  verify the result-bound source-ledger hash and canonical envelope, parse each
+  evidence card, recompute its full canonical hash, and require exact
+  per-signal hash order. Missing, wrong, noncanonical, or cross-signal-swapped
+  bytes reject. The builder passes its existing bytes. The retired-body check
+  now freezes the thirteen exact historical `test_*` names and proves the
+  scanner catches a synthetic reintroduction. The focused methods pass `3/3`;
+  the aggregate class passes `52/52`.
+- A third frozen review returned `C0/I1/M1`. Exact source-card hash order was
+  now bound, but the other authoritative semantics were not. Independent
+  in-memory probes accepted seven coherent rewrite families: an unresolved
+  card made C2-eligible, a canonical blocked review treated as pass, search
+  facts rewritten while retaining the original search bytes/hash, an
+  incompatible license treated as admissible, infeasible source fallback
+  projected as feasible, forged source-ledger protocol/search links, and
+  independently rebound result protocol/search hashes. The review also found
+  that the early normative limitations lists still contained nine items while
+  Task 5 code/tests required ten.
+- Strict RED added three focused methods and produced `17` expected failures:
+  fourteen validator/renderer acceptance failures across the seven semantic
+  rewrite families, two one-input-interface failures, and one `9 != 10`
+  limitations failure. The correction factors the builder body into a pure,
+  nonrecursive deterministic projection helper. Public validation and rendering
+  now require exact canonical protocol, search-ledger, source-ledger, and
+  review-receipt bytes; verify all four hashes; fully validate their contracts
+  and cross-links; recompute the exact aggregate from those bytes and the
+  payload implementation identities; and require field-for-field canonical
+  equality in addition to the independent local V2 algebra. Private
+  local-algebra/render helpers are test-only and are not acceptance authority.
+  Wrong hashes, noncanonical bytes, wrong schemas, blocked review, incompatible
+  licensing, semantic rewrites, and cross-ledger rebindings reject. The exact
+  ten-item limitations contract is now consistent in plan, specification,
+  implementation, and tests.
+- Simplification and size boundary: the now-unreachable global reason-allocation
+  solver, its solver-only constants/types, and its cache import were removed.
+  The thirteen retired solver-internal test bodies were deleted after their V2
+  semantic coverage mapping was preserved.
+  The final result cap is `524288` canonical JSON bytes in both builder and
+  validator. The frozen maximum 100-card shape measures `155411` bytes.
+- Privacy and claim boundary: the result and report remain rowless, but sparse
+  source signatures and per-card categorical diagnostics may fingerprint public
+  source configurations; this limitation is now explicit. No source ID,
+  title, URL, path, row, participant, transcript, audio, prediction,
+  probability, feature, or model metric is emitted.
+- Verification status: this is an uncommitted working draft. The four-input
+  correction passes focused consistency tests `4/4`, the aggregate class
+  `56/56`, full Phase C1 `147/147`, and full Phase C0 `177/177`. The
+  thesis-update gate reports seven changed paths, four triggering paths, one
+  methodology trace, and zero failures; the thesis-reference guard reports
+  1,644 files, 383 registered URLs, and zero issues; the drift guard reports
+  4,187 files and zero issues; context policy passes; and setup reports 567
+  checks and zero issues. Exact final-byte audits and a new independent
+  `C0/I0/M0` review remain pending. No network,
+  source discovery, public or private data read, provider access, call,
+  simulation, model evaluation, source adaptation, runtime action, candidate or
+  canonical output, Task 6, C2, push, merge, or history rewrite occurred or is
+  authorized.

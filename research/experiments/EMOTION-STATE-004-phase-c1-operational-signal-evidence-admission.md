@@ -104,6 +104,42 @@ decisions are derived only from those signal decisions:
 Only a later accepted signal-level `pass` may enter a C2 eligibility list.
 This protocol freeze does not produce any signal decision.
 
+## Rowless Aggregate V2
+
+The offline Task 5 working draft emits only
+`EmotionStatePhaseC1AggregateResultV2`. V1 payloads reject. In addition to the
+global counts, V2 carries exact per-signal/fallback search-lane witnesses,
+sorted sparse categorical source-signature multiplicities with exact document
+counts, exact per-signal fallback-material status counts, and per-card
+categorical eligibility/reliability witnesses. Search-lane discovery cannot
+exceed 25 records per complete query; an overflow flag requires the exact
+direct/fallback order cap of 20/10. The validator rederives search completeness,
+signal fail readiness, candidate outcomes, ordered reason codes, fallback
+status, signal decisions, exact global document count, and overall decision
+from those local facts. The four aggregate search-meta reason-code counts remain
+exactly zero; residual rejection and unresolved reason counts must reconcile to
+exact card, discovery, citation, and fallback witnesses.
+
+Validation and report rendering require the exact canonical protocol,
+search-ledger, source-ledger, and review-receipt bytes as caller-supplied
+in-memory arguments. They bind all four hashes, fully validate their contracts
+and cross-links, require an admitted review, and recompute a nonrecursive exact
+aggregate projection from those inputs and the payload's implementation
+identities. Public acceptance requires that projection to equal the submitted
+aggregate field for field in addition to the independent local V2 algebra
+checks. Full evidence-card rehashing and exact per-signal card order remain
+separate checks. No path is read. This prevents coherent rewrites of card
+semantics, source/license facts, search completeness, fallback feasibility,
+review verdicts, or linked input identities.
+
+The canonical JSON result is capped at `524288` bytes. The frozen maximum
+100-card test shape measures `155411` canonical bytes. The payload remains
+rowless, but sparse source signatures and per-card categorical diagnostics may
+fingerprint public source configurations. It therefore contains no source ID,
+title, URL, path, participant, segment, transcript, audio, prediction,
+probability, feature, or model metric, and it grants no private-data or runtime
+authority.
+
 ## Work Not Performed
 
 No network access, public research, source retrieval, dataset or private-data

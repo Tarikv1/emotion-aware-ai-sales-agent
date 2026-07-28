@@ -192,6 +192,7 @@ or fewer than `93` positives defer before the alpha pass/reject branches.
     "Agreement does not prove construct truth.",
     "Partial admission does not validate the other signals.",
     "No public-data result alone proves real-call, provider, latency, safety, conversion, or production behavior.",
+    "Sparse source signatures and per-card categorical diagnostics may fingerprint public source configurations.",
 )
 ```
 
@@ -1245,8 +1246,20 @@ def build_phase_c1_result(
 ) -> dict[str, object]: ...
 def validate_phase_c1_result_payload(
     payload: Mapping[str, object],
+    *,
+    protocol_bytes: bytes,
+    search_ledger_bytes: bytes,
+    source_ledger_bytes: bytes,
+    review_receipt_bytes: bytes,
 ) -> None: ...
-def render_phase_c1_report(result: Mapping[str, object]) -> bytes: ...
+def render_phase_c1_report(
+    result: Mapping[str, object],
+    *,
+    protocol_bytes: bytes,
+    search_ledger_bytes: bytes,
+    source_ledger_bytes: bytes,
+    review_receipt_bytes: bytes,
+) -> bytes: ...
 def parse_cli_args(argv: Sequence[str]) -> argparse.Namespace: ...
 def prepare_phase_c1_candidate(
     *,
@@ -2795,15 +2808,20 @@ git commit -m "Add Phase C1 admission decisions"
   source-review receipt, and pure admission projection.
 - Produces: `build_phase_c1_result()`,
   `validate_phase_c1_result_payload()`, and
-  `render_phase_c1_report()` without writing files.
+  `render_phase_c1_report()` without writing files. Validation and rendering
+  require the caller-supplied canonical protocol, search-ledger,
+  source-ledger, and source-review-receipt bytes already held in memory; they
+  never read a path.
 
 - [ ] **Step 1: Write RED aggregate tests**
 
 Add:
 
 `EXPECTED_RELIABILITY_DIAGNOSTIC_FIELDS` is a literal test `frozenset` of the
-fourteen nested diagnostic field names in Step 4 and is not imported from the
-runner.
+twenty-six nested diagnostic field names in Step 4 and is not imported from the
+runner. The tests also require
+`EmotionStatePhaseC1AggregateResultV2`, reject the V1 schema, and use a
+test-owned local outcome oracle rather than the production decision helpers.
 
 ```python
 class PhaseC1AggregateRunnerTests(unittest.TestCase):
@@ -2841,8 +2859,20 @@ class PhaseC1AggregateRunnerTests(unittest.TestCase):
 
     def test_report_is_deterministic_and_binds_exact_result(self) -> None:
         result = self.valid_result()
-        first = runner.render_phase_c1_report(result)
-        second = runner.render_phase_c1_report(copy.deepcopy(result))
+        first = runner.render_phase_c1_report(
+            result,
+            protocol_bytes=self.protocol_bytes,
+            search_ledger_bytes=self.search_bytes,
+            source_ledger_bytes=self.one_pass_source_bytes,
+            review_receipt_bytes=self.review_bytes_for_one_pass,
+        )
+        second = runner.render_phase_c1_report(
+            copy.deepcopy(result),
+            protocol_bytes=self.protocol_bytes,
+            search_ledger_bytes=self.search_bytes,
+            source_ledger_bytes=self.one_pass_source_bytes,
+            review_receipt_bytes=self.review_bytes_for_one_pass,
+        )
         self.assertEqual(first, second)
         self.assertTrue(first.endswith(b"\n"))
         self.assertNotIn(b"\r", first)
@@ -2865,7 +2895,13 @@ class PhaseC1AggregateRunnerTests(unittest.TestCase):
             payload = self.valid_result()
             payload["search_counts"][key] = "forbidden"
             with self.assertRaisesRegex(runner.RunnerError, "forbidden_content"):
-                runner.validate_phase_c1_result_payload(payload)
+                runner.validate_phase_c1_result_payload(
+                    payload,
+                    protocol_bytes=self.protocol_bytes,
+                    search_ledger_bytes=self.search_bytes,
+                    source_ledger_bytes=self.one_pass_source_bytes,
+                    review_receipt_bytes=self.review_bytes_for_one_pass,
+                )
 ```
 
 - [ ] **Step 2: Run RED**
@@ -2939,6 +2975,12 @@ No import or function in the runner may open `.tmp/.../source-cache`.
 
 - [ ] **Step 4: Implement the exact result schema**
 
+The exact schema version is
+`EmotionStatePhaseC1AggregateResultV2`. V1 aggregate payloads are rejected.
+The V2 result remains rowless, but its sparse categorical witnesses can make a
+public-source configuration more fingerprintable; that limitation is explicit
+in both the result and report.
+
 The exact top-level fields are:
 
 ```python
@@ -2955,7 +2997,9 @@ PHASE_C1_RESULT_FIELDS = frozenset({
     "source_review_receipt_sha256",
     "aggregate_content_sha256",
     "search_counts",
+    "search_lane_counts",
     "source_counts",
+    "source_signature_counts",
     "card_counts_by_status",
     "reason_code_counts",
     "per_signal",
@@ -3005,6 +3049,36 @@ fallback source IDs; `candidate_overflow_count` is the sum of all per-signal and
 fallback overflow counts. Every total is independently reconciled to the
 tracked ledgers.
 
+`search_lane_counts` is an exact witness projection, not another unconstrained
+aggregate. It contains exactly `direct_by_signal` and `fallback_material`.
+Each of the five direct lanes contains exact query counts
+`total|complete|incomplete|truncated`, candidate-order and overflow counts,
+discovery disposition counts, and ordered backward/forward citation
+disposition plus stop-status witnesses. Each direct lane has exactly `16`
+queries, permits at most `complete * 25` discovery records, and may claim
+overflow only when its candidate order is saturated at exactly `20`. The
+fallback lane contains the corresponding query, candidate, and discovery
+counts, has exactly `8` queries, applies the same discovery-capacity rule, and
+may claim overflow only at its exact `10`-candidate cap. Duplicate records
+require a nonduplicate anchor in the same lane; backward citation facts are
+validated before forward citation facts, so a later forward record cannot
+anchor an earlier backward record. The lane facts independently rederive global
+search counts, `search_complete`, and each signal's fail readiness.
+
+`source_signature_counts` is a sorted, unique, sparse multiset of exact
+categorical source witnesses. Each signature binds its own SHA-256, positive
+count, exact five-signal direct-membership map, fallback membership, the two
+source roles, access/license/ethical/conversation classifications, and a
+positive exact document count plus four-bit document-category mask. The mask's
+set-bit count cannot exceed the signature's document count, and that count
+cannot exceed five. The signature hash excludes only its multiplicity and hash
+fields. Signature multiplicities reconcile the global document count exactly
+as `sum(count * document_count)`, plus source, role, membership,
+selected-candidate-union, and per-card source references without
+publishing source IDs, titles, URLs, or paths. Unknown keys, invalid masks,
+public-document bits on login-required sources, or role/membership
+contradictions reject.
+
 `target_signals` equals the protocol's exact five-item frozen order as a JSON
 array; it cannot be inferred from, reordered to match, or reduced to the
 signals that pass.
@@ -3019,9 +3093,24 @@ signals that pass.
     "rejected_card_count": int,
     "unresolved_card_count": int,
     "annotation_fallback": "feasible|infeasible|unresolved",
+    "fallback_material_status_counts": {
+        "feasible": int,
+        "infeasible": int,
+        "unresolved": int,
+    },
     "reliability_diagnostics": [
         {
             "evidence_card_sha256": str,
+            "source_signature_sha256": str,
+            "claimed_status": "admissible|rejected|unresolved",
+            "claimed_reason_codes": [...],
+            "definition_document_authoritative": bool,
+            "definition_document_public_without_login": bool,
+            "native_label_is_excluded_proxy": bool,
+            "annotation_modality": str,
+            "construct_correspondence": str,
+            "temporal_unit": str,
+            "observer_method": str,
             "metric_id": str,
             "point_micros": int | None,
             "lower_95_micros": int | None,
@@ -3035,6 +3124,8 @@ signals that pass.
             "positive_agreement_micros": int | None,
             "negative_agreement_micros": int | None,
             "preadjudication_disagreement_micros": int | None,
+            "preadjudication": bool,
+            "verifiable": bool,
         }
     ],
     "c2_eligible": bool,
@@ -3043,8 +3134,17 @@ signals that pass.
 
 The diagnostic list covers every card for that signal in frozen card order and
 contains no source ID, title, URL, native label, participant, segment, or text.
+Its categorical witnesses allow the validator to derive status and ordered
+reason codes locally, enforce published-positive count no greater than rated
+units, and reconcile exact per-card source-signature multiplicities.
 Unavailable published diagnostics remain explicit `null`; the report renders
 them as `unavailable`, never as zero.
+
+Each signal's `fallback_material_status_counts` covers the exact fallback
+candidate order once. A positive feasible count derives `feasible`; otherwise
+`infeasible` requires a fail-ready signal and all represented materials to be
+infeasible (or an empty candidate order); every other combination derives
+`unresolved`. The claimed `annotation_fallback` must equal that derivation.
 
 `boundary` is exact:
 
@@ -3068,9 +3168,33 @@ them as `unavailable`, never as zero.
 `aggregate_content_sha256` is the SHA-256 of canonical result content with that
 field set to `""`; the validator recomputes it. All counts are exact
 nonnegative integers, and every algebraic total is revalidated.
-`limitations` must equal the exact nine-item Global Constraints tuple as a JSON
+`validate_phase_c1_result_payload()` and `render_phase_c1_report()` require
+caller-supplied `protocol_bytes`, `search_ledger_bytes`,
+`source_ledger_bytes`, and `review_receipt_bytes` as keyword-only arguments.
+Each function verifies all four result-bound SHA-256 values and strict canonical
+UTF-8 LF JSON envelopes. The nonrecursive deterministic projection helper fully
+validates the protocol, search ledger, source ledger, review receipt, and their
+cross-links, then recomputes the exact aggregate using only those bytes plus the
+payload's implementation HEAD and validator blob ID. Public validation requires
+canonical field-for-field equality with that projection in addition to the
+independent local V2 algebra checks. The exact source-card order check remains:
+every evidence card is parsed and rehashed, and each signal's diagnostic
+card-hash tuple must equal the source-ledger tuple in source order. Missing,
+wrong, noncanonical, wrong-schema, blocked-review, semantically rewritten,
+cross-signal-swapped, extra, or reordered input evidence rejects. These are
+pure in-memory authority handoffs, not permission to read tracked paths.
+Private local-algebra and local-render helpers exist only for isolated unit
+tests and are not public acceptance authorities.
+`limitations` must equal the exact ten-item Global Constraints tuple as a JSON
 array. Producer and independent validator each declare the literal tuple;
-neither imports it from the other or accepts caller-supplied prose.
+neither imports it from the other or accepts caller-supplied prose. The tenth
+limitation is exactly:
+`Sparse source signatures and per-card categorical diagnostics may fingerprint public source configurations.`
+
+The final canonical JSON result is capped at exactly `524288` bytes. Builder
+and validator both reject a larger payload. The maximum frozen 100-card test
+shape is measured from canonical bytes at `155411`, leaving explicit headroom
+without weakening the cap.
 
 `validator_blob_id` is the lowercase 40-hex Git blob at
 `implementation_head:scripts/validate_emotion_state_004_phase_c1.py`.
@@ -3122,6 +3246,31 @@ Mutate each scalar and mapping independently, including:
 - aggregate selfless digest mismatch;
 - card-status count mismatch;
 - direct/fallback/total query counts other than `80/8/88`;
+- a V1 aggregate schema;
+- lane/global count divergence, duplicate-without-anchor, or citation
+  source-order inversion;
+- a malformed or unreconciled sparse source signature;
+- a source-signature document count below its category-mask population, above
+  five, or inconsistent with the exact global document count;
+- a per-card source-signature, document-mask, proxy, or claimed-outcome
+  contradiction;
+- missing, wrong, noncanonical, or wrong-schema caller-supplied protocol,
+  search-ledger, source-ledger, or review-receipt bytes;
+- a blocked review, incompatible source license, rewritten search fact,
+  rewritten fallback fact, forged cross-ledger link, or aggregate semantic
+  rewrite that differs from the deterministic four-input projection;
+- an evidence-card hash missing from, extra to, reordered within, or borrowed
+  across signals relative to the bound canonical source ledger;
+- a fallback claim inconsistent with its per-signal material status counts;
+- discovery beyond a lane's complete-query capacity or overflow on an
+  unsaturated direct/fallback candidate order;
+- published positive count greater than rated units;
+- any nonzero aggregate search-meta reason count;
+- a residual rejection or unresolved reason count that cannot be attributed to
+  exact card, discovery, citation, or fallback witnesses;
+- a forged signal `fail` or overall `stop_c2` when its exact lane facts are not
+  fail-ready;
+- a canonical result larger than `524288` bytes;
 - a report statement contradicting the result;
 - one limitation changed, omitted, duplicated, or reordered;
 - a row-like list nested under a limitation.
@@ -3137,8 +3286,16 @@ candidate/canonical root.
 
 - [ ] **Step 8: Independently review and commit Task 5**
 
-Require `C0/I0/M0` on result algebra, recursive privacy checks, deterministic
-LF bytes, selfless digest, and no-I/O behavior.
+Require `C0/I0/M0` on V2 lane and sparse-signature reconciliation, local
+outcome and fallback-status derivation, exact document-count and residual reason
+attribution, lane-local capacity/saturation, result-size enforcement,
+source-ledger hash/canonical/full-card order binding, recursive privacy checks,
+four-input contract/cross-link/projection binding, deterministic LF bytes,
+selfless digest, and no-I/O behavior. The ignored Task 5
+review report must map the still-valid legacy semantic cases to their V2 tests,
+identify every retired solver-internal test by its exact historical `test_*`
+name and replacement local-witness test, and confirm with a nonvacuous literal
+name-set scan that those retired bodies are absent from the tracked test module.
 
 ```powershell
 git add `

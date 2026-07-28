@@ -6,7 +6,6 @@ import re
 import sys
 from collections.abc import Mapping
 from dataclasses import fields, is_dataclass
-from functools import cache
 from pathlib import Path
 from types import MappingProxyType
 from typing import Final
@@ -63,7 +62,20 @@ SOURCE_REVIEW_PATH: Final = (
     / "phase_c1_source_review_receipt.json"
 )
 
-RESULT_SCHEMA_VERSION: Final = "EmotionStatePhaseC1AggregateResultV1"
+RESULT_SCHEMA_VERSION: Final = "EmotionStatePhaseC1AggregateResultV2"
+SOURCE_LEDGER_SCHEMA_VERSION: Final = (
+    "EmotionStatePhaseC1SourceEvidenceLedgerV1"
+)
+SOURCE_LEDGER_ENVELOPE_FIELDS: Final = frozenset(
+    {
+        "schema_version",
+        "protocol_sha256",
+        "search_ledger_sha256",
+        "sources",
+        "cards",
+        "fallback_assessments",
+    }
+)
 CHECKPOINT_ID: Final = (
     "EMOTION-STATE-004-phase-c1-operational-signal-evidence-admission"
 )
@@ -78,6 +90,7 @@ TARGET_SIGNALS: Final = (
 MAX_DETAILED_CANDIDATES_PER_SIGNAL: Final = 20
 MAX_DETAILED_FALLBACK_MATERIAL_CANDIDATES: Final = 10
 MAX_DOCUMENTS_PER_SOURCE: Final = 5
+MAX_AGGREGATE_RESULT_BYTES: Final = 512 * 1024
 REASON_CODE_ORDER: Final = (
     "access_requires_login",
     "access_restricted",
@@ -122,130 +135,6 @@ REASON_CODE_ORDER: Final = (
 REJECTION_REASON_CODES: Final = frozenset(REASON_CODE_ORDER[:14])
 UNRESOLVED_REASON_CODES: Final = frozenset(REASON_CODE_ORDER[14:33])
 SEARCH_META_REASON_CODES: Final = frozenset(REASON_CODE_ORDER[33:37])
-_UNRESOLVED_RECORD_ONLY_REASON_CODES: Final = frozenset(
-    {
-        "source_identity_unverified",
-        "raw_annotation_rows_required",
-    }
-)
-REASON_CONTRIBUTOR_CLASSES: Final = MappingProxyType(
-    {
-        **{
-            code: (
-                "excluded_discovery_record",
-                "excluded_citation_record",
-                "rejected_card",
-            )
-            for code in REASON_CODE_ORDER[:14]
-        },
-        **{
-            code: (
-                (
-                    "unresolved_discovery_record",
-                    "unresolved_citation_record",
-                )
-                if code in _UNRESOLVED_RECORD_ONLY_REASON_CODES
-                else (
-                    "unresolved_discovery_record",
-                    "unresolved_citation_record",
-                    "unresolved_card",
-                )
-            )
-            for code in REASON_CODE_ORDER[14:33]
-        },
-        **{code: () for code in REASON_CODE_ORDER[33:37]},
-        "annotation_fallback_feasible": (
-            "feasible_fallback_assessment",
-        ),
-        "annotation_fallback_unresolved": (
-            "unresolved_fallback_assessment",
-        ),
-    }
-)
-_REJECTED_CARD_EXCLUSIVE_REASON_GROUPS: Final = (
-    ("access_requires_login", "access_restricted"),
-    ("acted_or_scripted", "mixed_unseparated_conversation"),
-    ("conversation_level_only", "temporal_unit_incompatible"),
-    ("self_report_label", "llm_generated_label"),
-)
-_REJECTED_CARD_INDEPENDENT_REASON_CODES: Final = (
-    "license_incompatible",
-    "ethical_use_incompatible",
-    "proxy_construct",
-    "target_label_absent",
-    "single_rater",
-)
-_REJECTED_CARD_SOLO_REASON_CODE: Final = "reliability_upper_below_0_67"
-_UNRESOLVED_ELIGIBILITY_INDEPENDENT_REASON_CODES: Final = (
-    "authoritative_provenance_unverified",
-    "access_unresolved",
-    "license_unresolved",
-    "ethical_use_unresolved",
-    "conversation_status_unresolved",
-    "directness_unresolved",
-    "temporal_unit_unresolved",
-    "rater_count_unresolved",
-    "source_documentation_incomplete",
-)
-_UNRESOLVED_ELIGIBILITY_OBSERVER_REASON_CODE: Final = (
-    "observer_method_unresolved"
-)
-_UNRESOLVED_SHARED_REASON_CODE: Final = "reliability_not_preadjudication"
-_UNRESOLVED_RELIABILITY_INDEPENDENT_REASON_CODES: Final = (
-    "reliability_metric_unapproved",
-    "reliability_unverifiable",
-    "reliability_interval_uncertain",
-)
-_UNRESOLVED_EFFECTIVE_SAMPLE_REASON_CODE: Final = (
-    "reliability_effective_sample_insufficient"
-)
-_UNRESOLVED_POSITIVE_SUPPORT_REASON_CODES: Final = (
-    "positive_support_below_93",
-    "published_positive_count_missing",
-)
-_UNRESOLVED_HIDDEN_ELIGIBILITY_REASON_CODES: Final = (
-    tuple(
-        code for code in _UNRESOLVED_ELIGIBILITY_INDEPENDENT_REASON_CODES
-        if code != "rater_count_unresolved"
-    )
-    + (_UNRESOLVED_ELIGIBILITY_OBSERVER_REASON_CODE,)
-    + (_UNRESOLVED_SHARED_REASON_CODE,)
-)
-_UNRESOLVED_HIDDEN_ELIGIBILITY_INDEPENDENT_REASON_CODES: Final = tuple(
-    code for code in _UNRESOLVED_ELIGIBILITY_INDEPENDENT_REASON_CODES
-    if code != "rater_count_unresolved"
-)
-_UNRESOLVED_HIDDEN_RELIABILITY_REASON_CODE: Final = (
-    "reliability_unverifiable"
-)
-_OBSERVABLE_CARD_REASON_CODES: Final = (
-    "reliability_upper_below_0_67",
-    "single_rater",
-    "rater_count_unresolved",
-    "reliability_metric_unapproved",
-    "reliability_effective_sample_insufficient",
-    "positive_support_below_93",
-    "reliability_interval_uncertain",
-    "published_positive_count_missing",
-)
-_OBSERVABLE_REJECTION_REASON_COUNT: Final = 2
-_OBSERVABLE_REASON_BITS: Final = MappingProxyType(
-    {code: 1 << index for index, code in enumerate(_OBSERVABLE_CARD_REASON_CODES)}
-)
-_ReasonVector = tuple[int, ...]
-_UnresolvedPathOption = tuple[int, int, int, int, int]
-_UnresolvedPathTotals = tuple[int, int, int, int]
-_ObservableAction = tuple[int, _ReasonVector, _UnresolvedPathTotals]
-_ObservableSignature = tuple[
-    tuple[int, ...], tuple[_UnresolvedPathOption, ...]
-]
-_ObservableDiagnosticGroup = tuple[
-    tuple[Mapping[str, object], ...], int, int
-]
-_OBSERVABLE_FAMILY_RANGES: Final = (
-    (0, _OBSERVABLE_REJECTION_REASON_COUNT),
-    (_OBSERVABLE_REJECTION_REASON_COUNT, len(_OBSERVABLE_CARD_REASON_CODES)),
-)
 LIMITATIONS: Final = (
     "Observer labels measure perception, not hidden internal emotion.",
     "Language, culture, speaker, population, and domain bias remain.",
@@ -261,6 +150,10 @@ LIMITATIONS: Final = (
     (
         "No public-data result alone proves real-call, provider, latency, "
         "safety, conversion, or production behavior."
+    ),
+    (
+        "Sparse source signatures and per-card categorical diagnostics may "
+        "fingerprint public source configurations."
     ),
 )
 BOUNDARY_FIELDS: Final = (
@@ -318,13 +211,27 @@ PER_SIGNAL_FIELDS: Final = frozenset(
         "rejected_card_count",
         "unresolved_card_count",
         "annotation_fallback",
+        "fallback_material_status_counts",
         "reliability_diagnostics",
         "c2_eligible",
     }
 )
+FALLBACK_MATERIAL_STATUS_COUNT_FIELDS: Final = frozenset(
+    {"feasible", "infeasible", "unresolved"}
+)
 RELIABILITY_DIAGNOSTIC_FIELDS: Final = frozenset(
     {
         "evidence_card_sha256",
+        "source_signature_sha256",
+        "claimed_status",
+        "claimed_reason_codes",
+        "definition_document_authoritative",
+        "definition_document_public_without_login",
+        "native_label_is_excluded_proxy",
+        "annotation_modality",
+        "construct_correspondence",
+        "temporal_unit",
+        "observer_method",
         "metric_id",
         "point_micros",
         "lower_95_micros",
@@ -338,6 +245,53 @@ RELIABILITY_DIAGNOSTIC_FIELDS: Final = frozenset(
         "positive_agreement_micros",
         "negative_agreement_micros",
         "preadjudication_disagreement_micros",
+        "preadjudication",
+        "verifiable",
+    }
+)
+QUERY_LANE_COUNT_FIELDS: Final = frozenset(
+    {"total", "complete", "incomplete", "truncated"}
+)
+DISPOSITION_COUNT_FIELDS: Final = frozenset(
+    {"retained_candidate", "duplicate", "excluded", "unresolved"}
+)
+CITATION_LANE_FIELDS: Final = frozenset(
+    {"disposition_counts", "stop_status"}
+)
+DIRECT_SEARCH_LANE_FIELDS: Final = frozenset(
+    {
+        "query_counts",
+        "candidate_order_count",
+        "candidate_overflow_count",
+        "discovery_disposition_counts",
+        "citations",
+    }
+)
+FALLBACK_SEARCH_LANE_FIELDS: Final = frozenset(
+    {
+        "query_counts",
+        "candidate_order_count",
+        "candidate_overflow_count",
+        "discovery_disposition_counts",
+    }
+)
+SEARCH_LANE_FIELDS: Final = frozenset(
+    {"direct_by_signal", "fallback_material"}
+)
+SOURCE_SIGNATURE_FIELDS: Final = frozenset(
+    {
+        "source_signature_sha256",
+        "count",
+        "direct_membership_by_signal",
+        "fallback_material_membership",
+        "existing_annotation_evidence_role",
+        "fallback_material_candidate_role",
+        "access_status",
+        "license_status",
+        "ethical_use_status",
+        "conversation_status",
+        "document_count",
+        "document_category_mask",
     }
 )
 RESULT_FORBIDDEN_KEYS: Final = frozenset(
@@ -383,6 +337,7 @@ _FALLBACK_STATUSES: Final = ("feasible", "infeasible", "unresolved")
 _EXHAUSTIVE_CITATION_STOPS: Final = frozenset(
     {"no_eligible_candidates", "source_list_exhausted"}
 )
+_SIGNALS_WITH_EXCLUDED_PROXIES: Final = frozenset(TARGET_SIGNALS)
 
 
 def _raise_contract(exc: phase_c1.PhaseC1ContractError) -> RunnerError:
@@ -425,6 +380,46 @@ def _card_sha256(card: phase_c1.PhaseC1EvidenceCardV1) -> str:
     )
 
 
+def _source_card_hashes_by_signal(
+    source_ledger_bytes: bytes,
+    *,
+    expected_sha256: str,
+) -> Mapping[str, tuple[str, ...]]:
+    if type(source_ledger_bytes) is not bytes:
+        raise RunnerError("source_ledger_bytes")
+    if phase_c1.sha256_bytes(source_ledger_bytes) != expected_sha256:
+        raise RunnerError("source_ledger_hash")
+    payload = _canonical_input_object(
+        source_ledger_bytes,
+        source="source_ledger",
+    )
+    ledger = _exact_dict(
+        payload,
+        SOURCE_LEDGER_ENVELOPE_FIELDS,
+        code="source_ledger_fields",
+    )
+    if ledger["schema_version"] != SOURCE_LEDGER_SCHEMA_VERSION:
+        raise RunnerError("source_ledger_schema")
+    raw_cards = ledger["cards"]
+    if type(raw_cards) is not list:
+        raise RunnerError("source_ledger_cards")
+    hashes_by_signal: dict[str, list[str]] = {
+        signal: [] for signal in TARGET_SIGNALS
+    }
+    try:
+        for raw_card in raw_cards:
+            card = phase_c1.parse_evidence_card(raw_card)
+            hashes_by_signal[card.signal].append(_card_sha256(card))
+    except phase_c1.PhaseC1ContractError as exc:
+        raise _raise_contract(exc) from exc
+    return MappingProxyType(
+        {
+            signal: tuple(hashes_by_signal[signal])
+            for signal in TARGET_SIGNALS
+        }
+    )
+
+
 def _effective_sample_sufficient(
     diagnostic: Mapping[str, object],
 ) -> bool:
@@ -446,10 +441,37 @@ def _reliability_diagnostic(
     card: phase_c1.PhaseC1EvidenceCardV1,
     *,
     evidence_card_sha256: str,
+    source: phase_c1.PhaseC1SourceReceiptV1,
+    source_signature_sha256: str,
+    protocol: phase_c1.PhaseC1ProtocolV1,
 ) -> dict[str, object]:
     reliability = card.reliability
+    definition = next(
+        document
+        for document in source.documents
+        if document.document_id == card.native_definition_document_id
+    )
+    construct = next(
+        item
+        for item in protocol.signal_constructs
+        if item["signal"] == card.signal
+    )
     diagnostic: dict[str, object] = {
         "evidence_card_sha256": evidence_card_sha256,
+        "source_signature_sha256": source_signature_sha256,
+        "claimed_status": card.claimed_status,
+        "claimed_reason_codes": list(card.claimed_reason_codes),
+        "definition_document_authoritative": definition.authoritative,
+        "definition_document_public_without_login": (
+            definition.public_without_login
+        ),
+        "native_label_is_excluded_proxy": (
+            card.native_label in construct["excluded_proxies"]
+        ),
+        "annotation_modality": card.annotation_modality,
+        "construct_correspondence": card.construct_correspondence,
+        "temporal_unit": card.temporal_unit,
+        "observer_method": card.observer_method,
         "metric_id": reliability.metric_id,
         "point_micros": reliability.point_micros,
         "lower_95_micros": reliability.lower_95_micros,
@@ -467,6 +489,8 @@ def _reliability_diagnostic(
         "preadjudication_disagreement_micros": (
             reliability.preadjudication_disagreement_micros
         ),
+        "preadjudication": reliability.preadjudication,
+        "verifiable": reliability.verifiable,
     }
     diagnostic["effective_sample_sufficient"] = (
         _effective_sample_sufficient(diagnostic)
@@ -593,6 +617,184 @@ def _search_counts(
     }
 
 
+def _disposition_counts(
+    records: tuple[object, ...],
+) -> dict[str, int]:
+    return {
+        disposition: sum(
+            getattr(record, "disposition") == disposition
+            for record in records
+        )
+        for disposition in phase_c1.DISCOVERY_DISPOSITIONS
+    }
+
+
+def _query_lane_counts(
+    queries: tuple[phase_c1.PhaseC1QueryRecordV1, ...],
+) -> dict[str, int]:
+    return {
+        "total": len(queries),
+        "complete": sum(query.status == "complete" for query in queries),
+        "incomplete": sum(
+            query.status == "incomplete" for query in queries
+        ),
+        "truncated": sum(query.truncated for query in queries),
+    }
+
+
+def _search_lane_counts(
+    protocol: phase_c1.PhaseC1ProtocolV1,
+    search_ledger: phase_c1.PhaseC1SearchLedgerV1,
+) -> dict[str, object]:
+    direct: dict[str, object] = {}
+    for signal in protocol.target_signals:
+        queries = tuple(
+            query
+            for query in search_ledger.query_records
+            if query.signal == signal
+        )
+        discovery = tuple(
+            record for query in queries for record in query.discovery_records
+        )
+        citations: dict[str, object] = {}
+        for direction in phase_c1.CITATION_DIRECTIONS:
+            records = tuple(
+                record
+                for record in search_ledger.citation_records
+                if record.signal == signal and record.direction == direction
+            )
+            stop = (
+                search_ledger.backward_citation_stop_by_signal[signal]
+                if direction == "backward"
+                else search_ledger.forward_citation_stop_by_signal[signal]
+            )
+            citations[direction] = {
+                "disposition_counts": _disposition_counts(records),
+                "stop_status": stop,
+            }
+        direct[signal] = {
+            "query_counts": _query_lane_counts(queries),
+            "candidate_order_count": len(
+                search_ledger.candidate_order_by_signal[signal]
+            ),
+            "candidate_overflow_count": (
+                search_ledger.overflow_count_by_signal[signal]
+            ),
+            "discovery_disposition_counts": _disposition_counts(discovery),
+            "citations": citations,
+        }
+    fallback_queries = tuple(
+        query
+        for query in search_ledger.query_records
+        if query.query_kind == "fallback_material"
+    )
+    fallback_discovery = tuple(
+        record
+        for query in fallback_queries
+        for record in query.discovery_records
+    )
+    return {
+        "direct_by_signal": direct,
+        "fallback_material": {
+            "query_counts": _query_lane_counts(fallback_queries),
+            "candidate_order_count": len(
+                search_ledger.fallback_material_candidate_order
+            ),
+            "candidate_overflow_count": (
+                search_ledger.fallback_material_overflow_count
+            ),
+            "discovery_disposition_counts": _disposition_counts(
+                fallback_discovery
+            ),
+        },
+    }
+
+
+def _document_category_mask(
+    source: phase_c1.PhaseC1SourceReceiptV1,
+) -> int:
+    mask = 0
+    for document in source.documents:
+        bit_index = (
+            (2 if document.authoritative else 0)
+            + (1 if document.public_without_login else 0)
+        )
+        mask |= 1 << bit_index
+    return mask
+
+
+def _source_signature_payload(
+    source: phase_c1.PhaseC1SourceReceiptV1,
+    *,
+    protocol: phase_c1.PhaseC1ProtocolV1,
+    search_ledger: phase_c1.PhaseC1SearchLedgerV1,
+) -> dict[str, object]:
+    return {
+        "direct_membership_by_signal": {
+            signal: (
+                source.source_id
+                in search_ledger.candidate_order_by_signal[signal]
+            )
+            for signal in protocol.target_signals
+        },
+        "fallback_material_membership": (
+            source.source_id
+            in search_ledger.fallback_material_candidate_order
+        ),
+        "existing_annotation_evidence_role": (
+            "existing_annotation_evidence" in source.phase_c1_roles
+        ),
+        "fallback_material_candidate_role": (
+            "fallback_material_candidate" in source.phase_c1_roles
+        ),
+        "access_status": source.access_status,
+        "license_status": source.license_status,
+        "ethical_use_status": source.ethical_use_status,
+        "conversation_status": source.conversation_status,
+        "document_count": len(source.documents),
+        "document_category_mask": _document_category_mask(source),
+    }
+
+
+def _source_signature_counts(
+    source_ledger: phase_c1.PhaseC1SourceEvidenceLedgerV1,
+    *,
+    protocol: phase_c1.PhaseC1ProtocolV1,
+    search_ledger: phase_c1.PhaseC1SearchLedgerV1,
+) -> tuple[list[dict[str, object]], dict[str, str]]:
+    entries: dict[str, dict[str, object]] = {}
+    source_hashes: dict[str, str] = {}
+    for source in source_ledger.sources:
+        signature = _source_signature_payload(
+            source,
+            protocol=protocol,
+            search_ledger=search_ledger,
+        )
+        digest = phase_c1.sha256_bytes(
+            phase_c1.canonical_json_bytes(signature)
+        )
+        source_hashes[source.source_id] = digest
+        existing = entries.get(digest)
+        if existing is None:
+            entries[digest] = {
+                "source_signature_sha256": digest,
+                "count": 1,
+                **signature,
+            }
+        else:
+            if {
+                key: value
+                for key, value in existing.items()
+                if key not in {"source_signature_sha256", "count"}
+            } != signature:
+                raise RunnerError("source_signature_collision")
+            existing["count"] = int(existing["count"]) + 1
+    return (
+        [entries[digest] for digest in sorted(entries)],
+        source_hashes,
+    )
+
+
 def _source_counts(
     source_ledger: phase_c1.PhaseC1SourceEvidenceLedgerV1,
 ) -> dict[str, int]:
@@ -612,7 +814,7 @@ def _source_counts(
     }
 
 
-def build_phase_c1_result(
+def _project_phase_c1_result(
     *,
     head_commit: str,
     validator_blob_id: str,
@@ -683,6 +885,16 @@ def build_phase_c1_result(
         card.card_id: _card_sha256(card)
         for card in source_ledger.cards
     }
+    signature_counts, source_signature_sha256_by_id = (
+        _source_signature_counts(
+            source_ledger,
+            protocol=protocol,
+            search_ledger=search_ledger,
+        )
+    )
+    sources_by_id = {
+        source.source_id: source for source in source_ledger.sources
+    }
     cards_by_signal = {
         signal: tuple(
             card
@@ -693,6 +905,16 @@ def build_phase_c1_result(
     }
     signal_projection = {
         item.signal: item for item in projection.signal_decisions
+    }
+    fallback_material_status_counts_by_signal = {
+        assessment.signal: {
+            status: sum(
+                material.status == status
+                for material in assessment.material_evidence
+            )
+            for status in _FALLBACK_STATUSES
+        }
+        for assessment in source_ledger.fallback_assessments
     }
     per_signal: list[dict[str, object]] = []
     for signal in protocol.target_signals:
@@ -708,12 +930,20 @@ def build_phase_c1_result(
                 "rejected_card_count": item.rejected_card_count,
                 "unresolved_card_count": item.unresolved_card_count,
                 "annotation_fallback": item.annotation_fallback,
+                "fallback_material_status_counts": (
+                    fallback_material_status_counts_by_signal[signal]
+                ),
                 "reliability_diagnostics": [
                     _reliability_diagnostic(
                         card,
                         evidence_card_sha256=card_sha256_by_id[
                             card.card_id
                         ],
+                        source=sources_by_id[card.source_id],
+                        source_signature_sha256=(
+                            source_signature_sha256_by_id[card.source_id]
+                        ),
+                        protocol=protocol,
                     )
                     for card in cards_by_signal[signal]
                 ],
@@ -747,7 +977,12 @@ def build_phase_c1_result(
         ),
         "aggregate_content_sha256": "",
         "search_counts": _search_counts(protocol, search_ledger),
+        "search_lane_counts": _search_lane_counts(
+            protocol,
+            search_ledger,
+        ),
         "source_counts": _source_counts(source_ledger),
+        "source_signature_counts": signature_counts,
         "card_counts_by_status": status_counts,
         "reason_code_counts": _count_reasons(
             protocol,
@@ -764,7 +999,35 @@ def build_phase_c1_result(
     result["aggregate_content_sha256"] = phase_c1.sha256_bytes(
         phase_c1.canonical_json_bytes(result)
     )
-    validate_phase_c1_result_payload(result)
+    if len(phase_c1.canonical_json_bytes(result)) > MAX_AGGREGATE_RESULT_BYTES:
+        raise RunnerError("result_size")
+    return result
+
+
+def build_phase_c1_result(
+    *,
+    head_commit: str,
+    validator_blob_id: str,
+    protocol_bytes: bytes,
+    search_ledger_bytes: bytes,
+    source_ledger_bytes: bytes,
+    review_receipt_bytes: bytes,
+) -> dict[str, object]:
+    result = _project_phase_c1_result(
+        head_commit=head_commit,
+        validator_blob_id=validator_blob_id,
+        protocol_bytes=protocol_bytes,
+        search_ledger_bytes=search_ledger_bytes,
+        source_ledger_bytes=source_ledger_bytes,
+        review_receipt_bytes=review_receipt_bytes,
+    )
+    validate_phase_c1_result_payload(
+        result,
+        protocol_bytes=protocol_bytes,
+        search_ledger_bytes=search_ledger_bytes,
+        source_ledger_bytes=source_ledger_bytes,
+        review_receipt_bytes=review_receipt_bytes,
+    )
     return result
 
 
@@ -949,655 +1212,490 @@ def _validate_source_counts(
     return counts
 
 
-def _maximum_rejected_card_reason_occurrences(
-    reason_counts: Mapping[str, int],
-    card_count: int,
-) -> int:
-    if card_count == 0:
-        return 0
-    maximum = -1
-    solo_limit = min(
-        reason_counts[_REJECTED_CARD_SOLO_REASON_CODE],
-        card_count,
-    )
-    for solo_cards in range(solo_limit + 1):
-        ordinary_cards = card_count - solo_cards
-        ordinary_occurrences = sum(
-            min(
-                sum(reason_counts[code] for code in group),
-                ordinary_cards,
-            )
-            for group in _REJECTED_CARD_EXCLUSIVE_REASON_GROUPS
-        )
-        ordinary_occurrences += sum(
-            min(reason_counts[code], ordinary_cards)
-            for code in _REJECTED_CARD_INDEPENDENT_REASON_CODES
-        )
-        total_occurrences = solo_cards + ordinary_occurrences
-        if total_occurrences >= card_count:
-            maximum = max(maximum, total_occurrences)
-    return maximum
-
-
-def _maximum_unresolved_card_reason_occurrences(
-    reason_counts: Mapping[str, int],
-    card_count: int,
-) -> int:
-    if card_count == 0:
-        return 0
-    maximum = -1
-    shared_count = reason_counts[_UNRESOLVED_SHARED_REASON_CODE]
-    for eligibility_cards in range(card_count + 1):
-        reliability_cards = card_count - eligibility_cards
-        for eligibility_shared_capacity in range(
-            min(shared_count, eligibility_cards) + 1
-        ):
-            reliability_shared_capacity = min(
-                shared_count - eligibility_shared_capacity,
-                reliability_cards,
-            )
-            eligibility_occurrences = sum(
-                min(reason_counts[code], eligibility_cards)
-                for code in _UNRESOLVED_ELIGIBILITY_INDEPENDENT_REASON_CODES
-            )
-            eligibility_occurrences += min(
-                reason_counts[
-                    _UNRESOLVED_ELIGIBILITY_OBSERVER_REASON_CODE
-                ]
-                + eligibility_shared_capacity,
-                eligibility_cards,
-            )
-            if eligibility_occurrences < eligibility_cards:
-                continue
-
-            reliability_base_occurrences = sum(
-                min(reason_counts[code], reliability_cards)
-                for code in _UNRESOLVED_RELIABILITY_INDEPENDENT_REASON_CODES
-            )
-            reliability_base_occurrences += reliability_shared_capacity
-            effective_sample_occurrences = min(
-                reason_counts[
-                    _UNRESOLVED_EFFECTIVE_SAMPLE_REASON_CODE
-                ],
-                reliability_cards,
-            )
-            reliability_base_occurrences += effective_sample_occurrences
-            if reliability_base_occurrences < reliability_cards:
-                continue
-            reliability_occurrences = (
-                reliability_base_occurrences
-                + min(
-                    sum(
-                        reason_counts[code]
-                        for code in _UNRESOLVED_POSITIVE_SUPPORT_REASON_CODES
-                    ),
-                    effective_sample_occurrences,
-                )
-            )
-            maximum = max(
-                maximum,
-                eligibility_occurrences + reliability_occurrences,
-            )
-    return maximum
-
-
-def _reason_mask(*codes: str) -> int:
-    return sum(_OBSERVABLE_REASON_BITS[code] for code in codes)
-
-
-def _mask_vector(mask: int, count: int = 1) -> _ReasonVector:
-    return tuple(
-        count if mask & (1 << index) else 0
-        for index in range(len(_OBSERVABLE_CARD_REASON_CODES))
-    )
-
-
-def _add_vectors(
-    left: tuple[int, ...], right: tuple[int, ...]
-) -> tuple[int, ...]:
-    return tuple(
-        left_value + right_value
-        for left_value, right_value in zip(left, right, strict=True)
-    )
-
-
-def _add_bounded_vector(
-    left: _ReasonVector,
-    right: _ReasonVector,
-    capacities: _ReasonVector,
-) -> _ReasonVector | None:
-    combined = _add_vectors(left, right)
-    if any(
-        value > capacity
-        for value, capacity in zip(combined, capacities, strict=True)
-    ):
-        return None
-    return combined
-
-
-def _reason_family_totals(vector: _ReasonVector) -> tuple[int, int]:
-    return (
-        sum(vector[:_OBSERVABLE_REJECTION_REASON_COUNT]),
-        sum(vector[_OBSERVABLE_REJECTION_REASON_COUNT:]),
-    )
-
-
-def _diagnostic_rejects_frozen_alpha_rule(
-    diagnostic: Mapping[str, object],
-) -> bool:
-    interval = tuple(
-        diagnostic[field]
-        for field in ("point_micros", "lower_95_micros", "upper_95_micros")
-    )
-    return (
-        diagnostic["metric_id"] == "krippendorff_alpha"
-        and diagnostic["effective_sample_sufficient"] is True
-        and all(type(value) is int for value in interval)
-        and interval[2] < 670_000
-    )
-
-
-def _rejected_observable_options(
-    diagnostic: Mapping[str, object],
-) -> tuple[int, ...]:
-    raters = diagnostic["independent_rater_count"]
-    if type(raters) is int and raters < 2:
-        return (_reason_mask("single_rater"),)
-    options = [0]
-    if _diagnostic_rejects_frozen_alpha_rule(diagnostic):
-        options.append(_reason_mask("reliability_upper_below_0_67"))
-    return tuple(options)
-
-
-def _unresolved_path_options(
-    diagnostic: Mapping[str, object],
-    reason_counts: Mapping[str, int],
-) -> tuple[_UnresolvedPathOption, ...]:
-    raters = diagnostic["independent_rater_count"]
-    if raters is None:
-        return (
-            (
-                _reason_mask("rater_count_unresolved"),
-                1,
-                0,
-                0,
-                0,
-            ),
-        )
-    if type(raters) is int and raters < 2:
-        return ()
-
-    options: list[_UnresolvedPathOption] = []
-    if any(
-            reason_counts[code] > 0
-            for code in _UNRESOLVED_HIDDEN_ELIGIBILITY_REASON_CODES
-    ):
-        options.append((0, 1, 1, 0, 0))
-    positives = diagnostic["published_positive_count"]
-    point = diagnostic["point_micros"]
-    lower = diagnostic["lower_95_micros"]
-    upper = diagnostic["upper_95_micros"]
-    interval_uncertain = any(
-        value is None for value in (point, lower, upper)
-    ) or (
-        diagnostic["metric_id"] == "krippendorff_alpha"
-        and diagnostic["effective_sample_sufficient"] is True
-        and not _diagnostic_passes_frozen_alpha_rule(diagnostic)
-        and not _diagnostic_rejects_frozen_alpha_rule(diagnostic)
-    )
-    reasons = tuple(
-        code
-        for code, applies in (
-            (
-                "reliability_metric_unapproved",
-                diagnostic["metric_id"] != "krippendorff_alpha",
-            ),
-            (
-                "reliability_effective_sample_insufficient",
-                diagnostic["effective_sample_sufficient"] is False,
-            ),
-            ("positive_support_below_93", type(positives) is int and positives < 93),
-            ("reliability_interval_uncertain", interval_uncertain),
-            ("published_positive_count_missing", positives is None),
-        )
-        if applies
-    )
-    if reasons:
-        options.append((_reason_mask(*reasons), 0, 0, 1, 0))
-    elif (
-        reason_counts[_UNRESOLVED_SHARED_REASON_CODE] > 0
-        or reason_counts[_UNRESOLVED_HIDDEN_RELIABILITY_REASON_CODE] > 0
-    ):
-        options.append((0, 0, 0, 1, 1))
-    return tuple(dict.fromkeys(options))
-
-
-def _observable_signature_actions(
-    rejected_options: tuple[int, ...],
-    unresolved_options: tuple[_UnresolvedPathOption, ...],
+def _validate_query_lane_counts(
+    value: object,
     *,
-    signature_count: int,
-    capacities: _ReasonVector,
-) -> tuple[_ObservableAction, ...]:
-    zero = tuple(0 for _ in capacities)
-    zero_paths = (0, 0, 0, 0)
+    expected_total: int,
+) -> dict[str, int]:
+    counts = _exact_dict(
+        value,
+        QUERY_LANE_COUNT_FIELDS,
+        code="search_lane_counts",
+    )
+    parsed = {
+        field: _nonnegative_int(count, code="search_lane_counts")
+        for field, count in counts.items()
+    }
+    if (
+        parsed["total"] != expected_total
+        or parsed["complete"] + parsed["incomplete"] != expected_total
+        or parsed["truncated"] > parsed["complete"]
+    ):
+        raise RunnerError("search_lane_counts")
+    return parsed
 
-    def repeated_rejected_totals(
-        options: tuple[int, ...], count: int
-    ) -> tuple[_ReasonVector, ...]:
-        if count == 0:
-            return (zero,)
-        if not options:
-            return ()
-        nonzero = tuple(mask for mask in options if mask)
-        if 0 not in options:
-            vectors = (
-                (_mask_vector(nonzero[0], count),)
-                if len(nonzero) == 1
-                else ()
-            )
-        elif len(nonzero) <= 1:
-            mask = nonzero[0] if nonzero else 0
-            vectors = tuple(
-                _mask_vector(mask, selected)
-                for selected in range(count + 1)
-            )
-        else:
-            vectors = ()
-        return tuple(
-            vector for vector in vectors
-            if _add_bounded_vector(zero, vector, capacities) is not None
+
+def _validate_disposition_counts(value: object) -> dict[str, int]:
+    counts = _exact_dict(
+        value,
+        DISPOSITION_COUNT_FIELDS,
+        code="search_lane_counts",
+    )
+    return {
+        field: _nonnegative_int(count, code="search_lane_counts")
+        for field, count in counts.items()
+    }
+
+
+def _validate_search_lane_counts(
+    value: object,
+    *,
+    search_counts: Mapping[str, object],
+) -> tuple[
+    dict[str, dict[str, object]],
+    dict[str, object],
+    dict[str, bool],
+]:
+    lanes = _exact_dict(
+        value,
+        SEARCH_LANE_FIELDS,
+        code="search_lane_counts",
+    )
+    raw_direct = _exact_dict(
+        lanes["direct_by_signal"],
+        frozenset(TARGET_SIGNALS),
+        code="search_lane_counts",
+    )
+    direct: dict[str, dict[str, object]] = {}
+    aggregate_discovery = {
+        disposition: 0 for disposition in phase_c1.DISCOVERY_DISPOSITIONS
+    }
+    aggregate_citations = {
+        direction: {
+            disposition: 0
+            for disposition in phase_c1.DISCOVERY_DISPOSITIONS
+        }
+        for direction in phase_c1.CITATION_DIRECTIONS
+    }
+    nonexhaustive_stops = 0
+    for signal in TARGET_SIGNALS:
+        lane = _exact_dict(
+            raw_direct[signal],
+            DIRECT_SEARCH_LANE_FIELDS,
+            code="search_lane_counts",
         )
-
-    def repeated_unresolved_totals(
-        options: tuple[_UnresolvedPathOption, ...],
-        count: int,
-    ) -> tuple[tuple[_ReasonVector, _UnresolvedPathTotals], ...]:
-        if count == 0:
-            return ((zero, zero_paths),)
-        if not options:
-            return ()
-
-        allocations: list[tuple[int, ...]] = []
-
-        def allocate(
-            option_index: int,
-            remaining: int,
-            selected: tuple[int, ...],
-        ) -> None:
-            if option_index == len(options) - 1:
-                allocations.append(selected + (remaining,))
-                return
-            for option_count in range(remaining + 1):
-                allocate(
-                    option_index + 1,
-                    remaining - option_count,
-                    selected + (option_count,),
-                )
-
-        allocate(0, count, ())
-        totals: set[tuple[_ReasonVector, _UnresolvedPathTotals]] = set()
-        for allocation in allocations:
-            vector = zero
-            paths = zero_paths
-            for (
-                mask,
-                eligibility_cards,
-                eligibility_hidden_required,
-                reliability_cards,
-                reliability_hidden_required,
-            ), option_count in zip(options, allocation, strict=True):
-                vector = _add_vectors(
-                    vector,
-                    _mask_vector(mask, option_count),
-                )
-                paths = _add_vectors(
-                    paths,
-                    (
-                        eligibility_cards * option_count,
-                        eligibility_hidden_required * option_count,
-                        reliability_cards * option_count,
-                        reliability_hidden_required * option_count,
-                    ),
-                )
-            if _add_bounded_vector(zero, vector, capacities) is not None:
-                totals.add((vector, paths))
-        return tuple(sorted(totals))
-
-    actions = {
-        (rejected_count, combined, paths)
-        for rejected_count in range(signature_count + 1)
-        for rejected_total in repeated_rejected_totals(
-            rejected_options, rejected_count
+        queries = _validate_query_lane_counts(
+            lane["query_counts"],
+            expected_total=16,
         )
-        for unresolved_total, paths in repeated_unresolved_totals(
-            unresolved_options, signature_count - rejected_count
+        candidate_count = _nonnegative_int(
+            lane["candidate_order_count"],
+            code="search_lane_counts",
+        )
+        overflow = _nonnegative_int(
+            lane["candidate_overflow_count"],
+            code="search_lane_counts",
+        )
+        if candidate_count > MAX_DETAILED_CANDIDATES_PER_SIGNAL:
+            raise RunnerError("search_lane_counts")
+        discovery = _validate_disposition_counts(
+            lane["discovery_disposition_counts"]
         )
         if (
-            combined := _add_bounded_vector(
-                rejected_total, unresolved_total, capacities
+            sum(discovery.values()) > queries["complete"] * 25
+            or (
+                overflow > 0
+                and candidate_count != MAX_DETAILED_CANDIDATES_PER_SIGNAL
+            )
+            or (
+                discovery["duplicate"] > 0
+                and sum(
+                    discovery[disposition]
+                    for disposition in (
+                        "retained_candidate",
+                        "excluded",
+                        "unresolved",
+                    )
+                )
+                == 0
+            )
+        ):
+            raise RunnerError("search_lane_counts")
+        raw_citations = _exact_dict(
+            lane["citations"],
+            frozenset(phase_c1.CITATION_DIRECTIONS),
+            code="search_lane_counts",
+        )
+        parsed_citations: dict[str, dict[str, object]] = {}
+        anchor_available = sum(
+            discovery[disposition]
+            for disposition in ("retained_candidate", "excluded", "unresolved")
+        ) > 0
+        for direction in phase_c1.CITATION_DIRECTIONS:
+            citation = _exact_dict(
+                raw_citations[direction],
+                CITATION_LANE_FIELDS,
+                code="search_lane_counts",
+            )
+            dispositions = _validate_disposition_counts(
+                citation["disposition_counts"]
+            )
+            if sum(dispositions.values()) > 5:
+                raise RunnerError("search_lane_counts")
+            nonduplicate = sum(
+                dispositions[item]
+                for item in ("retained_candidate", "excluded", "unresolved")
+            )
+            if (
+                dispositions["duplicate"] > 0
+                and not anchor_available
+                and nonduplicate == 0
+            ):
+                raise RunnerError("search_lane_counts")
+            stop = citation["stop_status"]
+            if stop not in phase_c1.CITATION_STOP_STATUSES:
+                raise RunnerError("search_lane_counts")
+            if stop == "no_eligible_candidates" and sum(
+                dispositions.values()
+            ) != 0:
+                raise RunnerError("search_lane_counts")
+            if stop not in _EXHAUSTIVE_CITATION_STOPS:
+                nonexhaustive_stops += 1
+            if nonduplicate > 0:
+                anchor_available = True
+            parsed_citations[direction] = {
+                "disposition_counts": dispositions,
+                "stop_status": stop,
+            }
+            for disposition, count in dispositions.items():
+                aggregate_citations[direction][disposition] += count
+        retained_supply = (
+            discovery["retained_candidate"]
+            + sum(
+                parsed_citations[direction]["disposition_counts"][
+                    "retained_candidate"
+                ]
+                for direction in phase_c1.CITATION_DIRECTIONS
             )
         )
-        is not None
-    }
-    return tuple(
-        sorted(
-            actions,
-            key=lambda action: (
-                -sum(action[1]),
-                action[0],
-                action[1],
-                action[2],
-            ),
-        )
+        if retained_supply != candidate_count + overflow:
+            raise RunnerError("search_lane_counts")
+        for disposition, count in discovery.items():
+            aggregate_discovery[disposition] += count
+        direct[signal] = {
+            "query_counts": queries,
+            "candidate_order_count": candidate_count,
+            "candidate_overflow_count": overflow,
+            "discovery_disposition_counts": discovery,
+            "citations": parsed_citations,
+        }
+
+    fallback_lane = _exact_dict(
+        lanes["fallback_material"],
+        FALLBACK_SEARCH_LANE_FIELDS,
+        code="search_lane_counts",
     )
-
-
-def _observable_signature_groups(
-    diagnostics: tuple[Mapping[str, object], ...],
-    *,
-    capacities: _ReasonVector,
-    reason_counts: Mapping[str, int],
-) -> tuple[tuple[_ObservableAction, ...], ...] | None:
-    signature_counts: dict[_ObservableSignature, int] = {}
-    for diagnostic in diagnostics:
-        signature = (
-            _rejected_observable_options(diagnostic),
-            _unresolved_path_options(diagnostic, reason_counts),
-        )
-        signature_counts[signature] = signature_counts.get(signature, 0) + 1
-
-    groups: list[tuple[_ObservableAction, ...]] = []
-    for signature, count in sorted(signature_counts.items()):
-        actions = _observable_signature_actions(
-            *signature,
-            signature_count=count,
-            capacities=capacities,
-        )
-        if not actions:
-            return None
-        groups.append(actions)
-    return tuple(sorted(groups, key=lambda actions: (len(actions), actions)))
-
-
-def _exact_unresolved_card_reason_allocation_feasible(
-    *,
-    reason_counts: Mapping[str, int],
-    unresolved_card_reason_occurrences: int,
-    observable_reason_occurrences: int,
-    path_totals: _UnresolvedPathTotals,
-) -> bool:
-    (
-        eligibility_cards,
-        eligibility_hidden_required,
-        reliability_cards,
-        reliability_hidden_required,
-    ) = path_totals
-    hidden_occurrences = (
-        unresolved_card_reason_occurrences - observable_reason_occurrences
+    fallback_queries = _validate_query_lane_counts(
+        fallback_lane["query_counts"],
+        expected_total=8,
+    )
+    fallback_candidate_count = _nonnegative_int(
+        fallback_lane["candidate_order_count"],
+        code="search_lane_counts",
+    )
+    fallback_overflow = _nonnegative_int(
+        fallback_lane["candidate_overflow_count"],
+        code="search_lane_counts",
+    )
+    if fallback_candidate_count > MAX_DETAILED_FALLBACK_MATERIAL_CANDIDATES:
+        raise RunnerError("search_lane_counts")
+    fallback_discovery = _validate_disposition_counts(
+        fallback_lane["discovery_disposition_counts"]
     )
     if (
-        hidden_occurrences < 0
-        or eligibility_hidden_required > eligibility_cards
-        or reliability_hidden_required > reliability_cards
-    ):
-        return False
-
-    eligibility_independent_maximum = sum(
-        min(reason_counts[code], eligibility_cards)
-        for code in _UNRESOLVED_HIDDEN_ELIGIBILITY_INDEPENDENT_REASON_CODES
-    )
-    observer_count = reason_counts[
-        _UNRESOLVED_ELIGIBILITY_OBSERVER_REASON_CODE
-    ]
-    shared_count = reason_counts[_UNRESOLVED_SHARED_REASON_CODE]
-    reliability_independent_maximum = min(
-        reason_counts[_UNRESOLVED_HIDDEN_RELIABILITY_REASON_CODE],
-        reliability_cards,
-    )
-
-    for eligibility_shared_used in range(
-        min(shared_count, eligibility_cards) + 1
-    ):
-        eligibility_maximum = (
-            eligibility_independent_maximum
-            + eligibility_shared_used
-            + min(
-                observer_count,
-                eligibility_cards - eligibility_shared_used,
-            )
+        sum(fallback_discovery.values()) > fallback_queries["complete"] * 25
+        or (
+            fallback_overflow > 0
+            and fallback_candidate_count
+            != MAX_DETAILED_FALLBACK_MATERIAL_CANDIDATES
         )
-        eligibility_minimum = max(
-            eligibility_hidden_required,
-            eligibility_shared_used,
+        or (
+            fallback_discovery["duplicate"] > 0
+            and sum(
+                fallback_discovery[disposition]
+                for disposition in (
+                    "retained_candidate",
+                    "excluded",
+                    "unresolved",
+                )
+            )
+            == 0
         )
-        if eligibility_minimum > eligibility_maximum:
-            continue
+    ):
+        raise RunnerError("search_lane_counts")
+    if (
+        fallback_discovery["retained_candidate"]
+        != fallback_candidate_count + fallback_overflow
+    ):
+        raise RunnerError("search_lane_counts")
+    for disposition, count in fallback_discovery.items():
+        aggregate_discovery[disposition] += count
+    fallback: dict[str, object] = {
+        "query_counts": fallback_queries,
+        "candidate_order_count": fallback_candidate_count,
+        "candidate_overflow_count": fallback_overflow,
+        "discovery_disposition_counts": fallback_discovery,
+    }
 
-        remaining_shared = shared_count - eligibility_shared_used
-        for reliability_shared_used in range(
-            min(remaining_shared, reliability_cards) + 1
-        ):
-            reliability_minimum = max(
-                reliability_hidden_required,
-                reliability_shared_used,
+    if (
+        search_counts["direct_label_query_count"]
+        != sum(
+            lane["query_counts"]["total"] for lane in direct.values()
+        )
+        or search_counts["fallback_material_query_count"]
+        != fallback_queries["total"]
+        or search_counts["complete_query_count"]
+        != (
+            sum(
+                lane["query_counts"]["complete"]
+                for lane in direct.values()
             )
-            reliability_maximum = (
-                reliability_shared_used
-                + reliability_independent_maximum
+            + fallback_queries["complete"]
+        )
+        or search_counts["incomplete_query_count"]
+        != (
+            sum(
+                lane["query_counts"]["incomplete"]
+                for lane in direct.values()
             )
-            if reliability_minimum > reliability_maximum:
-                continue
-            if (
-                eligibility_minimum + reliability_minimum
-                <= hidden_occurrences
-                <= eligibility_maximum + reliability_maximum
-            ):
-                return True
-    return False
+            + fallback_queries["incomplete"]
+        )
+        or search_counts["truncated_query_count"]
+        != (
+            sum(
+                lane["query_counts"]["truncated"]
+                for lane in direct.values()
+            )
+            + fallback_queries["truncated"]
+        )
+        or search_counts["returned_discovery_record_count"]
+        != sum(aggregate_discovery.values())
+        or search_counts["retained_candidate_record_count"]
+        != aggregate_discovery["retained_candidate"]
+        or search_counts["duplicate_discovery_record_count"]
+        != aggregate_discovery["duplicate"]
+        or search_counts["excluded_discovery_record_count"]
+        != aggregate_discovery["excluded"]
+        or search_counts["unresolved_discovery_record_count"]
+        != aggregate_discovery["unresolved"]
+        or search_counts["candidate_overflow_count"]
+        != (
+            sum(
+                lane["candidate_overflow_count"]
+                for lane in direct.values()
+            )
+            + fallback_overflow
+        )
+        or search_counts["backward_citation_record_count"]
+        != sum(aggregate_citations["backward"].values())
+        or search_counts["forward_citation_record_count"]
+        != sum(aggregate_citations["forward"].values())
+        or search_counts["unresolved_citation_record_count"]
+        != (
+            aggregate_citations["backward"]["unresolved"]
+            + aggregate_citations["forward"]["unresolved"]
+        )
+        or search_counts["nonexhaustive_citation_stop_count"]
+        != nonexhaustive_stops
+    ):
+        raise RunnerError("search_lane_counts")
+
+    query_search_complete = (
+        all(
+            lane["query_counts"]["incomplete"] == 0
+            and lane["query_counts"]["truncated"] == 0
+            for lane in direct.values()
+        )
+        and fallback_queries["incomplete"] == 0
+        and fallback_queries["truncated"] == 0
+        and nonexhaustive_stops == 0
+    )
+    if search_counts["search_complete"] != query_search_complete:
+        raise RunnerError("search_lane_counts")
+    fallback_ready = (
+        fallback_queries["incomplete"] == 0
+        and fallback_queries["truncated"] == 0
+    )
+    fallback_unresolved = fallback_discovery["unresolved"] > 0
+    fail_ready: dict[str, bool] = {}
+    for signal, lane in direct.items():
+        fail_ready[signal] = (
+            lane["query_counts"]["incomplete"] == 0
+            and lane["query_counts"]["truncated"] == 0
+            and fallback_ready
+            and all(
+                lane["citations"][direction]["stop_status"]
+                in _EXHAUSTIVE_CITATION_STOPS
+                for direction in phase_c1.CITATION_DIRECTIONS
+            )
+            and lane["discovery_disposition_counts"]["unresolved"] == 0
+            and all(
+                lane["citations"][direction]["disposition_counts"][
+                    "unresolved"
+                ]
+                == 0
+                for direction in phase_c1.CITATION_DIRECTIONS
+            )
+            and not fallback_unresolved
+            and lane["candidate_overflow_count"] == 0
+            and fallback_overflow == 0
+        )
+    return direct, fallback, fail_ready
 
 
-def _observable_reason_allocation_feasible(
-    groups: tuple[_ObservableDiagnosticGroup, ...],
+def _validate_source_signature_counts(
+    value: object,
     *,
-    reason_counts: Mapping[str, int],
-    maximum_rejection_search_records: int,
-    unresolved_search_records: int,
-    unresolved_card_reason_occurrences: int,
-    search_statistics: dict[str, int] | None = None,
-) -> bool:
-    capacities = tuple(
-        reason_counts[code] for code in _OBSERVABLE_CARD_REASON_CODES
-    )
-    requirements = (
-        max(
-            0,
-            sum(capacities[:_OBSERVABLE_REJECTION_REASON_COUNT])
-            - maximum_rejection_search_records,
-        ),
-        max(
-            0,
-            sum(capacities[_OBSERVABLE_REJECTION_REASON_COUNT:])
-            - unresolved_search_records,
-        ),
-    )
-    zero = tuple(0 for _ in capacities)
-    zero_categories = (0, 0)
-    zero_paths = (0, 0, 0, 0)
-    explored_state_count = 0
-    signature_group_count = 0
-
-    def finish(result: bool) -> bool:
-        if search_statistics is not None:
-            search_statistics.update(
-                {
-                    "signature_group_count": signature_group_count,
-                    "explored_state_count": explored_state_count,
-                }
-            )
-        return result
-
-    signature_groups_by_signal: list[
-        tuple[tuple[_ObservableAction, ...], ...]
-    ] = []
-    rejected_targets: list[int] = []
-    for diagnostics, rejected, unresolved in groups:
-        if rejected + unresolved != len(diagnostics):
-            return finish(False)
-        signal_groups = _observable_signature_groups(
-            diagnostics,
-            capacities=capacities,
-            reason_counts=reason_counts,
+    source_counts: Mapping[str, object],
+    search_counts: Mapping[str, object],
+    direct_lanes: Mapping[str, Mapping[str, object]],
+    fallback_lane: Mapping[str, object],
+) -> dict[str, dict[str, object]]:
+    if type(value) is not list:
+        raise RunnerError("source_signature_counts")
+    parsed: dict[str, dict[str, object]] = {}
+    source_total = 0
+    document_total = 0
+    role_totals = {
+        "existing_annotation_evidence_role": 0,
+        "fallback_material_candidate_role": 0,
+    }
+    membership_totals = {signal: 0 for signal in TARGET_SIGNALS}
+    fallback_membership_total = 0
+    for raw_entry in value:
+        entry = _exact_dict(
+            raw_entry,
+            SOURCE_SIGNATURE_FIELDS,
+            code="source_signature_counts",
         )
-        if signal_groups is None:
-            return finish(False)
-        signature_group_count += len(signal_groups)
-        signature_groups_by_signal.append(signal_groups)
-        rejected_targets.append(rejected)
-
-    @cache
-    def signal_bounds(
-        signal_index: int,
-        group_index: int,
-        rejected_needed: int,
-    ) -> tuple[int, int] | None:
-        signal_groups = signature_groups_by_signal[signal_index]
-        if group_index == len(signal_groups):
-            return zero_categories if rejected_needed == 0 else None
-        candidates = [
-            _add_vectors(_reason_family_totals(vector), suffix)
-            for rejected_count, vector, _paths in signal_groups[group_index]
-            if rejected_count <= rejected_needed
-            for suffix in (
-                signal_bounds(
-                    signal_index,
-                    group_index + 1,
-                    rejected_needed - rejected_count,
-                ),
-            )
-            if suffix is not None
-        ]
-        if not candidates:
-            return None
-        return tuple(
-            max(families[index] for families in candidates)
-            for index in range(2)
+        digest = _sha256(
+            entry["source_signature_sha256"],
+            code="source_signature_counts",
         )
-
-    @cache
-    def search(
-        signal_index: int,
-        group_index: int,
-        rejected_used: int,
-        used: _ReasonVector,
-        path_totals: _UnresolvedPathTotals,
-    ) -> bool:
-        nonlocal explored_state_count
-        if signal_index == len(groups):
-            return all(
-                observed >= required
-                for observed, required in zip(
-                    _reason_family_totals(used),
-                    requirements,
-                    strict=True,
-                )
-            ) and _exact_unresolved_card_reason_allocation_feasible(
-                reason_counts=reason_counts,
-                unresolved_card_reason_occurrences=(
-                    unresolved_card_reason_occurrences
-                ),
-                observable_reason_occurrences=sum(
-                    used[_OBSERVABLE_REJECTION_REASON_COUNT:]
-                ),
-                path_totals=path_totals,
-            )
-        signal_groups = signature_groups_by_signal[signal_index]
-        if group_index == len(signal_groups):
-            if rejected_used != rejected_targets[signal_index]:
-                return False
-            return search(
-                signal_index + 1,
-                0,
-                0,
-                used,
-                path_totals,
-            )
-        explored_state_count += 1
-
-        needed_rejected = (
-            rejected_targets[signal_index] - rejected_used
+        if digest in parsed:
+            raise RunnerError("source_signature_counts")
+        count = _nonnegative_int(
+            entry["count"],
+            code="source_signature_counts",
         )
-        bounds = signal_bounds(
-            signal_index,
-            group_index,
-            needed_rejected,
+        if count == 0:
+            raise RunnerError("source_signature_counts")
+        membership = _exact_dict(
+            entry["direct_membership_by_signal"],
+            frozenset(TARGET_SIGNALS),
+            code="source_signature_counts",
         )
-        if bounds is None:
-            return False
-        maximum_by_family = bounds
-        for future_signal in range(signal_index + 1, len(groups)):
-            future = signal_bounds(
-                future_signal,
-                0,
-                rejected_targets[future_signal],
-            )
-            if future is None:
-                return False
-            maximum_by_family = _add_vectors(
-                maximum_by_family,
-                future,
-            )
-
-        for family_index, (start, stop) in enumerate(
-            _OBSERVABLE_FAMILY_RANGES
+        if any(type(membership[signal]) is not bool for signal in TARGET_SIGNALS):
+            raise RunnerError("source_signature_counts")
+        boolean_fields = (
+            "fallback_material_membership",
+            "existing_annotation_evidence_role",
+            "fallback_material_candidate_role",
+        )
+        if any(type(entry[field]) is not bool for field in boolean_fields):
+            raise RunnerError("source_signature_counts")
+        if (
+            entry["access_status"] not in phase_c1.ACCESS_STATUSES
+            or entry["license_status"] not in phase_c1.LICENSE_STATUSES
+            or entry["ethical_use_status"]
+            not in phase_c1.ETHICAL_USE_STATUSES
+            or entry["conversation_status"]
+            not in phase_c1.CONVERSATION_STATUSES
         ):
-            current_occurrences = sum(used[start:stop])
-            remaining_capacity = sum(
-                capacity - value
-                for capacity, value in zip(
-                    capacities[start:stop],
-                    used[start:stop],
-                    strict=True,
-                )
-            )
-            maximum_additions = min(
-                maximum_by_family[family_index],
-                remaining_capacity,
-            )
-            if (
-                current_occurrences + maximum_additions
-                < requirements[family_index]
-            ):
-                return False
+            raise RunnerError("source_signature_counts")
+        document_count = _nonnegative_int(
+            entry["document_count"],
+            code="source_signature_counts",
+        )
+        mask = entry["document_category_mask"]
+        if (
+            type(mask) is not int
+            or not 1 <= mask <= 0b1111
+            or not 1 <= document_count <= MAX_DOCUMENTS_PER_SOURCE
+            or mask.bit_count() > document_count
+        ):
+            raise RunnerError("source_signature_counts")
+        if (
+            entry["access_status"] == "login_required"
+            and mask & 0b1010
+        ):
+            raise RunnerError("source_signature_counts")
+        if (
+            any(membership.values())
+            and not entry["existing_annotation_evidence_role"]
+        ):
+            raise RunnerError("source_signature_counts")
+        if (
+            entry["fallback_material_membership"]
+            and not entry["fallback_material_candidate_role"]
+        ):
+            raise RunnerError("source_signature_counts")
+        signature = {
+            key: item
+            for key, item in entry.items()
+            if key not in {"source_signature_sha256", "count"}
+        }
+        if digest != phase_c1.sha256_bytes(
+            phase_c1.canonical_json_bytes(signature)
+        ):
+            raise RunnerError("source_signature_counts")
+        source_total += count
+        document_total += count * document_count
+        for field in role_totals:
+            role_totals[field] += count * int(entry[field])
+        for signal in TARGET_SIGNALS:
+            membership_totals[signal] += count * int(membership[signal])
+        fallback_membership_total += count * int(
+            entry["fallback_material_membership"]
+        )
+        parsed[digest] = entry
+    if list(parsed) != sorted(parsed):
+        raise RunnerError("source_signature_counts")
+    detailed_membership_total = sum(
+        entry["count"]
+        for entry in parsed.values()
+        if (
+            any(entry["direct_membership_by_signal"].values())
+            or entry["fallback_material_membership"]
+        )
+    )
+    if (
+        source_total != source_counts["source_count"]
+        or document_total != source_counts["document_count"]
+        or role_totals["existing_annotation_evidence_role"]
+        != source_counts["existing_annotation_evidence_source_count"]
+        or role_totals["fallback_material_candidate_role"]
+        != source_counts["fallback_material_candidate_source_count"]
+        or any(
+            membership_totals[signal]
+            != direct_lanes[signal]["candidate_order_count"]
+            for signal in TARGET_SIGNALS
+        )
+        or fallback_membership_total
+        != fallback_lane["candidate_order_count"]
+        or detailed_membership_total
+        != search_counts["detailed_candidate_count"]
+    ):
+        raise RunnerError("source_signature_counts")
+    return parsed
 
-        for rejected_count, addition, path_addition in signal_groups[
-            group_index
-        ]:
-            if (
-                rejected_used + rejected_count
-                > rejected_targets[signal_index]
-            ):
-                continue
-            combined = _add_bounded_vector(
-                used,
-                addition,
-                capacities,
-            )
-            combined_paths = _add_vectors(path_totals, path_addition)
-            if combined is not None and search(
-                signal_index,
-                group_index + 1,
-                rejected_used + rejected_count,
-                combined,
-                combined_paths,
-            ):
-                return True
-        return False
 
-    return finish(search(0, 0, 0, zero, zero_paths))
-
-
-def _validate_diagnostic(value: object) -> dict[str, object]:
+def _validate_diagnostic(
+    value: object,
+    *,
+    signal: str,
+    signatures: Mapping[str, Mapping[str, object]],
+) -> dict[str, object]:
     diagnostic = _exact_dict(
         value,
         RELIABILITY_DIAGNOSTIC_FIELDS,
@@ -1607,6 +1705,66 @@ def _validate_diagnostic(value: object) -> dict[str, object]:
         diagnostic["evidence_card_sha256"],
         code="reliability_diagnostics",
     )
+    source_signature_sha256 = _sha256(
+        diagnostic["source_signature_sha256"],
+        code="reliability_diagnostics",
+    )
+    signature = signatures.get(source_signature_sha256)
+    if signature is None:
+        raise RunnerError("reliability_diagnostics")
+    if diagnostic["claimed_status"] not in (
+        "admissible",
+        "rejected",
+        "unresolved",
+    ):
+        raise RunnerError("reliability_diagnostics")
+    reasons = diagnostic["claimed_reason_codes"]
+    if (
+        type(reasons) is not list
+        or any(reason not in REASON_CODE_ORDER for reason in reasons)
+        or reasons
+        != [reason for reason in REASON_CODE_ORDER if reason in reasons]
+    ):
+        raise RunnerError("reliability_diagnostics")
+    for field in (
+        "definition_document_authoritative",
+        "definition_document_public_without_login",
+        "native_label_is_excluded_proxy",
+        "preadjudication",
+        "verifiable",
+    ):
+        if type(diagnostic[field]) is not bool:
+            raise RunnerError("reliability_diagnostics")
+    if (
+        diagnostic["annotation_modality"]
+        not in phase_c1.ANNOTATION_MODALITIES
+        or diagnostic["construct_correspondence"]
+        not in phase_c1.CONSTRUCT_CORRESPONDENCE_VALUES
+        or diagnostic["temporal_unit"] not in phase_c1.TEMPORAL_UNITS
+        or diagnostic["observer_method"] not in phase_c1.OBSERVER_METHODS
+    ):
+        raise RunnerError("reliability_diagnostics")
+    document_bit_index = (
+        (
+            2
+            if diagnostic["definition_document_authoritative"]
+            else 0
+        )
+        + (
+            1
+            if diagnostic["definition_document_public_without_login"]
+            else 0
+        )
+    )
+    if not (
+        signature["document_category_mask"] & (1 << document_bit_index)
+    ):
+        raise RunnerError("reliability_diagnostics")
+    if (
+        diagnostic["native_label_is_excluded_proxy"]
+        and signal not in _SIGNALS_WITH_EXCLUDED_PROXIES
+    ):
+        raise RunnerError("reliability_diagnostics")
     if diagnostic["metric_id"] != "krippendorff_alpha":
         raise RunnerError("reliability_diagnostics")
     for field in (
@@ -1652,6 +1810,13 @@ def _validate_diagnostic(value: object) -> dict[str, object]:
     ):
         raise RunnerError("reliability_diagnostics")
     if (
+        diagnostic["rated_unit_count"] is not None
+        and diagnostic["published_positive_count"] is not None
+        and diagnostic["published_positive_count"]
+        > diagnostic["rated_unit_count"]
+    ):
+        raise RunnerError("reliability_diagnostics")
+    if (
         type(diagnostic["effective_sample_sufficient"]) is not bool
         or diagnostic["effective_sample_sufficient"]
         != _effective_sample_sufficient(diagnostic)
@@ -1660,27 +1825,143 @@ def _validate_diagnostic(value: object) -> dict[str, object]:
     return diagnostic
 
 
-def _diagnostic_passes_frozen_alpha_rule(
+def _derived_diagnostic_disposition(
     diagnostic: Mapping[str, object],
-) -> bool:
-    point = diagnostic["point_micros"]
-    lower = diagnostic["lower_95_micros"]
-    upper = diagnostic["upper_95_micros"]
-    return (
-        diagnostic["metric_id"] == "krippendorff_alpha"
-        and diagnostic["effective_sample_sufficient"] is True
-        and type(point) is int
-        and type(lower) is int
-        and type(upper) is int
-        and point >= 800_000
-        and lower >= 670_000
+    signature: Mapping[str, object],
+) -> tuple[str, tuple[str, ...]]:
+    rejected: set[str] = set()
+    unresolved: set[str] = set()
+    if not diagnostic["definition_document_authoritative"]:
+        unresolved.add("authoritative_provenance_unverified")
+    if not diagnostic["definition_document_public_without_login"]:
+        unresolved.add("access_unresolved")
+    if diagnostic["native_label_is_excluded_proxy"]:
+        rejected.add("proxy_construct")
+    if signature["access_status"] == "login_required":
+        rejected.add("access_requires_login")
+    elif signature["access_status"] == "restricted":
+        rejected.add("access_restricted")
+    elif signature["access_status"] == "unresolved":
+        unresolved.add("access_unresolved")
+    if signature["license_status"] == "incompatible":
+        rejected.add("license_incompatible")
+    elif signature["license_status"] == "unresolved":
+        unresolved.add("license_unresolved")
+    if signature["ethical_use_status"] == "incompatible":
+        rejected.add("ethical_use_incompatible")
+    elif signature["ethical_use_status"] == "unresolved":
+        unresolved.add("ethical_use_unresolved")
+    if signature["conversation_status"] == "acted_or_scripted":
+        rejected.add("acted_or_scripted")
+    elif signature["conversation_status"] == "mixed_unseparated":
+        rejected.add("mixed_unseparated_conversation")
+    elif signature["conversation_status"] == "unresolved":
+        unresolved.add("conversation_status_unresolved")
+    if diagnostic["construct_correspondence"] == "proxy_construct":
+        rejected.add("proxy_construct")
+    elif diagnostic["construct_correspondence"] == "target_absent":
+        rejected.add("target_label_absent")
+    elif diagnostic["construct_correspondence"] != "direct_target_construct":
+        unresolved.add("directness_unresolved")
+    if diagnostic["annotation_modality"] == "unresolved":
+        unresolved.add("source_documentation_incomplete")
+    if diagnostic["temporal_unit"] == "conversation":
+        rejected.add("conversation_level_only")
+    elif diagnostic["temporal_unit"] == "other":
+        rejected.add("temporal_unit_incompatible")
+    elif diagnostic["temporal_unit"] == "unresolved":
+        unresolved.add("temporal_unit_unresolved")
+    if diagnostic["observer_method"] == "self_report":
+        rejected.add("self_report_label")
+    elif diagnostic["observer_method"] == "llm_generated":
+        rejected.add("llm_generated_label")
+    elif diagnostic["observer_method"] == "automated_proxy":
+        rejected.add("proxy_construct")
+    elif diagnostic["observer_method"] == "adjudicated_only_human_label":
+        unresolved.add("reliability_not_preadjudication")
+    elif diagnostic["observer_method"] == "unresolved":
+        unresolved.add("observer_method_unresolved")
+    raters = diagnostic["independent_rater_count"]
+    if raters is None:
+        unresolved.add("rater_count_unresolved")
+    elif raters < 2:
+        rejected.add("single_rater")
+    if rejected:
+        return (
+            "rejected",
+            tuple(code for code in REASON_CODE_ORDER if code in rejected),
+        )
+    if unresolved:
+        return (
+            "unresolved",
+            tuple(code for code in REASON_CODE_ORDER if code in unresolved),
+        )
+
+    reliability_reasons: set[str] = set()
+    if not diagnostic["preadjudication"]:
+        reliability_reasons.add("reliability_not_preadjudication")
+    if not diagnostic["verifiable"]:
+        reliability_reasons.add("reliability_unverifiable")
+    rated = diagnostic["rated_unit_count"]
+    positives = diagnostic["published_positive_count"]
+    if rated is None:
+        reliability_reasons.add(
+            "reliability_effective_sample_insufficient"
+        )
+    if positives is None:
+        reliability_reasons.update(
+            {
+                "published_positive_count_missing",
+                "reliability_effective_sample_insufficient",
+            }
+        )
+    elif positives < 93:
+        reliability_reasons.update(
+            {
+                "positive_support_below_93",
+                "reliability_effective_sample_insufficient",
+            }
+        )
+    intervals = (
+        diagnostic["point_micros"],
+        diagnostic["lower_95_micros"],
+        diagnostic["upper_95_micros"],
     )
+    if any(value is None for value in intervals):
+        reliability_reasons.add("reliability_interval_uncertain")
+    if (
+        reliability_reasons
+        or not diagnostic["effective_sample_sufficient"]
+    ):
+        return (
+            "unresolved",
+            tuple(
+                code
+                for code in REASON_CODE_ORDER
+                if code in reliability_reasons
+            ),
+        )
+    point, lower, upper = intervals
+    assert point is not None and lower is not None and upper is not None
+    if point >= 800_000 and lower >= 670_000:
+        return "admissible", ()
+    if upper < 670_000:
+        return "rejected", ("reliability_upper_below_0_67",)
+    return "unresolved", ("reliability_interval_uncertain",)
 
 
-def validate_phase_c1_result_payload(
+def _validate_phase_c1_result_local(
     payload: Mapping[str, object],
+    *,
+    source_ledger_bytes: bytes,
 ) -> None:
     _forbidden_content(payload)
+    try:
+        encoded_result = phase_c1.canonical_json_bytes(payload)
+    except (TypeError, ValueError) as exc:
+        raise RunnerError("result_json") from exc
+    if len(encoded_result) > MAX_AGGREGATE_RESULT_BYTES:
+        raise RunnerError("result_size")
     result = _exact_dict(
         payload,
         phase_c1.PHASE_C1_RESULT_FIELDS,
@@ -1706,11 +1987,28 @@ def validate_phase_c1_result_payload(
         "aggregate_content_sha256",
     ):
         _sha256(result[field], code="result_hash")
+    source_card_hashes_by_signal = _source_card_hashes_by_signal(
+        source_ledger_bytes,
+        expected_sha256=result["source_evidence_ledger_sha256"],
+    )
 
     search_counts = _validate_search_counts(result["search_counts"])
     source_counts = _validate_source_counts(
         result["source_counts"],
         detailed_candidate_count=search_counts["detailed_candidate_count"],
+    )
+    direct_lanes, fallback_lane, fail_ready_by_signal = (
+        _validate_search_lane_counts(
+            result["search_lane_counts"],
+            search_counts=search_counts,
+        )
+    )
+    signatures = _validate_source_signature_counts(
+        result["source_signature_counts"],
+        source_counts=source_counts,
+        search_counts=search_counts,
+        direct_lanes=direct_lanes,
+        fallback_lane=fallback_lane,
     )
     status_counts = _exact_dict(
         result["card_counts_by_status"],
@@ -1726,25 +2024,18 @@ def validate_phase_c1_result_payload(
     )
     for value in reason_counts.values():
         _nonnegative_int(value, code="reason_code_counts")
-    aggregate_search_blocker = (
-        not search_counts["search_complete"]
-        or search_counts["candidate_overflow_count"] > 0
-        or search_counts["unresolved_discovery_record_count"] > 0
-        or search_counts["unresolved_citation_record_count"] > 0
-    )
-
     raw_per_signal = result["per_signal"]
     if type(raw_per_signal) is not list or len(raw_per_signal) != 5:
         raise RunnerError("per_signal")
     parsed_per_signal: list[dict[str, object]] = []
     all_diagnostic_hashes: list[str] = []
-    observable_diagnostic_groups: list[
-        tuple[
-            tuple[Mapping[str, object], ...],
-            int,
-            int,
-        ]
-    ] = []
+    derived_card_reason_counts = {
+        code: 0 for code in REASON_CODE_ORDER
+    }
+    diagnostic_signature_counts = {
+        signal: {digest: 0 for digest in signatures}
+        for signal in TARGET_SIGNALS
+    }
     for expected_signal, raw_item in zip(
         TARGET_SIGNALS,
         raw_per_signal,
@@ -1762,6 +2053,20 @@ def validate_phase_c1_result_payload(
             or type(item["c2_eligible"]) is not bool
         ):
             raise RunnerError("per_signal")
+        fallback_material_status_counts = _exact_dict(
+            item["fallback_material_status_counts"],
+            FALLBACK_MATERIAL_STATUS_COUNT_FIELDS,
+            code="per_signal",
+        )
+        if (
+            any(
+                type(count) is not int or count < 0
+                for count in fallback_material_status_counts.values()
+            )
+            or sum(fallback_material_status_counts.values())
+            != fallback_lane["candidate_order_count"]
+        ):
+            raise RunnerError("per_signal")
         admissible = item["admissible_evidence_card_sha256s"]
         diagnostics = item["reliability_diagnostics"]
         if type(admissible) is not list or type(diagnostics) is not list:
@@ -1772,7 +2077,12 @@ def validate_phase_c1_result_payload(
         if len(set(admissible_hashes)) != len(admissible_hashes):
             raise RunnerError("per_signal")
         parsed_diagnostics = tuple(
-            _validate_diagnostic(value) for value in diagnostics
+            _validate_diagnostic(
+                value,
+                signal=expected_signal,
+                signatures=signatures,
+            )
+            for value in diagnostics
         )
         if (
             len(parsed_diagnostics) > MAX_DETAILED_CANDIDATES_PER_SIGNAL
@@ -1787,17 +2097,47 @@ def validate_phase_c1_result_payload(
             item["evidence_card_sha256"]
             for item in parsed_diagnostics
         )
+        if (
+            diagnostic_hashes
+            != source_card_hashes_by_signal[expected_signal]
+        ):
+            raise RunnerError("evidence_card_binding")
         diagnostics_by_hash = {
             diagnostic["evidence_card_sha256"]: diagnostic
             for diagnostic in parsed_diagnostics
         }
+        local_dispositions: dict[str, tuple[str, tuple[str, ...]]] = {}
+        for diagnostic in parsed_diagnostics:
+            signature = signatures[
+                diagnostic["source_signature_sha256"]
+            ]
+            if not signature["direct_membership_by_signal"][
+                expected_signal
+            ]:
+                raise RunnerError("reliability_diagnostics")
+            disposition = _derived_diagnostic_disposition(
+                diagnostic,
+                signature,
+            )
+            if (
+                diagnostic["claimed_status"] != disposition[0]
+                or diagnostic["claimed_reason_codes"]
+                != list(disposition[1])
+            ):
+                raise RunnerError("reliability_diagnostics")
+            local_dispositions[
+                diagnostic["evidence_card_sha256"]
+            ] = disposition
+            diagnostic_signature_counts[expected_signal][
+                diagnostic["source_signature_sha256"]
+            ] += 1
+            for reason in disposition[1]:
+                derived_card_reason_counts[reason] += 1
         if (
             len(set(diagnostic_hashes)) != len(diagnostic_hashes)
             or any(value not in diagnostic_hashes for value in admissible_hashes)
             or any(
-                not _diagnostic_passes_frozen_alpha_rule(
-                    diagnostics_by_hash[value]
-                )
+                local_dispositions[value][0] != "admissible"
                 for value in admissible_hashes
             )
         ):
@@ -1810,9 +2150,25 @@ def validate_phase_c1_result_payload(
             item["unresolved_card_count"],
             code="per_signal",
         )
+        locally_rejected = sum(
+            status == "rejected"
+            for status, _ in local_dispositions.values()
+        )
+        locally_unresolved = sum(
+            status == "unresolved"
+            for status, _ in local_dispositions.values()
+        )
         if (
             len(parsed_diagnostics)
             != len(admissible_hashes) + rejected + unresolved
+            or rejected != locally_rejected
+            or unresolved != locally_unresolved
+            or set(admissible_hashes)
+            != {
+                digest
+                for digest, (status, _) in local_dispositions.items()
+                if status == "admissible"
+            }
             or (item["decision"] == "pass") != bool(admissible_hashes)
             or (
                 item["decision"] == "fail"
@@ -1829,19 +2185,16 @@ def validate_phase_c1_result_payload(
         ):
             raise RunnerError("per_signal")
         all_diagnostic_hashes.extend(diagnostic_hashes)
-        observable_diagnostic_groups.append(
-            (
-                tuple(
-                    diagnostic
-                    for diagnostic in parsed_diagnostics
-                    if diagnostic["evidence_card_sha256"]
-                    not in admissible_hashes
-                ),
-                rejected,
-                unresolved,
-            )
-        )
         parsed_per_signal.append(item)
+    for signal in TARGET_SIGNALS:
+        for digest, signature in signatures.items():
+            expected = (
+                signature["count"]
+                if signature["direct_membership_by_signal"][signal]
+                else 0
+            )
+            if diagnostic_signature_counts[signal][digest] != expected:
+                raise RunnerError("source_signature_counts")
     if len(set(all_diagnostic_hashes)) != len(all_diagnostic_hashes):
         raise RunnerError("reliability_diagnostics")
     if (
@@ -1905,184 +2258,97 @@ def validate_phase_c1_result_payload(
         )
         for status in _FALLBACK_STATUSES
     }
-    if (
-        reason_counts["annotation_fallback_feasible"]
-        != fallback_status_counts["feasible"]
-        or reason_counts["annotation_fallback_unresolved"]
-        != fallback_status_counts["unresolved"]
-    ):
-        raise RunnerError("reason_code_counts")
-    if (
-        source_counts["fallback_material_candidate_source_count"] == 0
-        and (
-            fallback_status_counts["feasible"] > 0
-            or (
-                not aggregate_search_blocker
-                and fallback_status_counts["infeasible"]
-                != len(TARGET_SIGNALS)
+    fallback_candidate_count = fallback_lane["candidate_order_count"]
+    for item in parsed_per_signal:
+        signal = item["signal"]
+        fallback_status = item["annotation_fallback"]
+        fail_ready = fail_ready_by_signal[signal]
+        material_status_counts = item["fallback_material_status_counts"]
+        derived_fallback_status = (
+            "feasible"
+            if material_status_counts["feasible"] > 0
+            else "infeasible"
+            if (
+                fail_ready
+                and (
+                    fallback_candidate_count == 0
+                    or material_status_counts["infeasible"]
+                    == fallback_candidate_count
+                )
             )
+            else "unresolved"
         )
-    ):
-        raise RunnerError("source_counts")
+        if fallback_status != derived_fallback_status:
+            raise RunnerError("per_signal")
+        expected_decision = (
+            "pass"
+            if item["admissible_evidence_card_sha256s"]
+            else "defer"
+            if (
+                item["unresolved_card_count"] > 0
+                or not fail_ready
+                or fallback_status in {"feasible", "unresolved"}
+            )
+            else "fail"
+        )
+        if (
+            item["decision"] != expected_decision
+            or item["c2_eligible"] != (expected_decision == "pass")
+        ):
+            raise RunnerError("per_signal")
 
-    resolved_citation_record_count = (
-        search_counts["backward_citation_record_count"]
-        + search_counts["forward_citation_record_count"]
-        - search_counts["unresolved_citation_record_count"]
-    )
-    minimum_retained_citation_record_count = max(
-        0,
-        search_counts["detailed_candidate_count"]
-        + search_counts["candidate_overflow_count"]
-        - search_counts["retained_candidate_record_count"],
-    )
-    excluded_citation_record_capacity = (
-        resolved_citation_record_count
-        - minimum_retained_citation_record_count
-    )
-    contributor_capacities = {
-        "excluded_discovery_record": search_counts[
-            "excluded_discovery_record_count"
-        ],
-        "excluded_citation_record": excluded_citation_record_capacity,
-        "rejected_card": status_counts["rejected"],
-        "unresolved_discovery_record": search_counts[
-            "unresolved_discovery_record_count"
-        ],
-        "unresolved_citation_record": search_counts[
-            "unresolved_citation_record_count"
-        ],
-        "unresolved_card": status_counts["unresolved"],
-        "feasible_fallback_assessment": fallback_status_counts["feasible"],
-        "unresolved_fallback_assessment": fallback_status_counts[
-            "unresolved"
-        ],
+    fallback_reason_counts = {
+        code: 0 for code in REASON_CODE_ORDER
     }
-    if any(
-        reason_counts[code]
-        > sum(
-            contributor_capacities[contributor_class]
-            for contributor_class in contributor_classes
+    fallback_reason_counts["annotation_fallback_feasible"] = (
+        fallback_status_counts["feasible"]
+    )
+    fallback_reason_counts["annotation_fallback_unresolved"] = (
+        fallback_status_counts["unresolved"]
+    )
+    residual_reason_counts: dict[str, int] = {}
+    for code in REASON_CODE_ORDER:
+        residual = (
+            reason_counts[code]
+            - derived_card_reason_counts[code]
+            - fallback_reason_counts[code]
         )
-        for code, contributor_classes in REASON_CONTRIBUTOR_CLASSES.items()
-    ):
-        raise RunnerError("reason_code_counts")
-
-    rejection_occurrences = sum(
-        reason_counts[code] for code in REJECTION_REASON_CODES
+        if residual < 0:
+            raise RunnerError("reason_code_counts")
+        residual_reason_counts[code] = residual
+    excluded_citation_record_count = sum(
+        direct_lanes[signal]["citations"][direction][
+            "disposition_counts"
+        ]["excluded"]
+        for signal in TARGET_SIGNALS
+        for direction in phase_c1.CITATION_DIRECTIONS
     )
-    rejection_minimum = (
+    expected_rejection_records = (
         search_counts["excluded_discovery_record_count"]
-        + status_counts["rejected"]
+        + excluded_citation_record_count
     )
-    rejection_maximum = (
-        search_counts["excluded_discovery_record_count"]
-        + search_counts["backward_citation_record_count"]
-        + search_counts["forward_citation_record_count"]
-        - search_counts["unresolved_citation_record_count"]
-        + status_counts["rejected"] * len(REJECTION_REASON_CODES)
-    )
-    unresolved_occurrences = sum(
-        reason_counts[code] for code in UNRESOLVED_REASON_CODES
-    )
-    unresolved_search_occurrences = (
+    expected_unresolved_records = (
         search_counts["unresolved_discovery_record_count"]
         + search_counts["unresolved_citation_record_count"]
     )
-    unresolved_minimum = (
-        unresolved_search_occurrences + status_counts["unresolved"]
-    )
-    unresolved_maximum = (
-        unresolved_search_occurrences
-        + status_counts["unresolved"] * len(UNRESOLVED_REASON_CODES)
-    )
     if (
-        not rejection_minimum
-        <= rejection_occurrences
-        <= rejection_maximum
-        or not unresolved_minimum
-        <= unresolved_occurrences
-        <= unresolved_maximum
-        or any(reason_counts[code] != 0 for code in SEARCH_META_REASON_CODES)
-    ):
-        raise RunnerError("reason_code_counts")
-
-    maximum_rejected_card_occurrences = (
-        _maximum_rejected_card_reason_occurrences(
-            reason_counts,
-            status_counts["rejected"],
+        any(reason_counts[code] != 0 for code in SEARCH_META_REASON_CODES)
+        or sum(
+            residual_reason_counts[code]
+            for code in REJECTION_REASON_CODES
         )
-    )
-    minimum_rejected_card_occurrences = max(
-        status_counts["rejected"],
-        rejection_occurrences
-        - (
-            search_counts["excluded_discovery_record_count"]
-            + excluded_citation_record_capacity
-        ),
-    )
-    maximum_requested_rejected_card_occurrences = min(
-        maximum_rejected_card_occurrences,
-        rejection_occurrences
-        - search_counts["excluded_discovery_record_count"],
-    )
-    record_only_unresolved_occurrences = sum(
-        reason_counts[code]
-        for code in _UNRESOLVED_RECORD_ONLY_REASON_CODES
-    )
-    unresolved_card_occurrences = (
-        unresolved_occurrences - unresolved_search_occurrences
-    )
-    maximum_unresolved_card_occurrences = (
-        _maximum_unresolved_card_reason_occurrences(
-            reason_counts,
-            status_counts["unresolved"],
+        != expected_rejection_records
+        or sum(
+            residual_reason_counts[code]
+            for code in UNRESOLVED_REASON_CODES
         )
-    )
-    if (
-        minimum_rejected_card_occurrences
-        > maximum_requested_rejected_card_occurrences
-        or record_only_unresolved_occurrences
-        > unresolved_search_occurrences
-        or unresolved_card_occurrences < status_counts["unresolved"]
-        or unresolved_card_occurrences
-        > maximum_unresolved_card_occurrences
-    ):
-        raise RunnerError("reason_code_counts")
-
-    maximum_excluded_citation_record_count = min(
-        excluded_citation_record_capacity,
-        rejection_occurrences
-        - search_counts["excluded_discovery_record_count"]
-        - status_counts["rejected"],
-    )
-    nonduplicate_discovery_record_count = (
-        search_counts["returned_discovery_record_count"]
-        - search_counts["duplicate_discovery_record_count"]
-    )
-    citation_anchor_count_without_exclusions = (
-        nonduplicate_discovery_record_count
-        + minimum_retained_citation_record_count
-        + search_counts["unresolved_citation_record_count"]
-    )
-    if (
-        resolved_citation_record_count > 0
-        and citation_anchor_count_without_exclusions == 0
-        and maximum_excluded_citation_record_count == 0
-    ):
-        raise RunnerError("reason_code_counts")
-    if not _observable_reason_allocation_feasible(
-        tuple(observable_diagnostic_groups),
-        reason_counts=reason_counts,
-        maximum_rejection_search_records=(
-            search_counts["excluded_discovery_record_count"]
-            + maximum_excluded_citation_record_count
-        ),
-        unresolved_search_records=(
-            unresolved_search_occurrences
-            - record_only_unresolved_occurrences
-        ),
-        unresolved_card_reason_occurrences=unresolved_card_occurrences,
+        != expected_unresolved_records
+        or any(
+            residual_reason_counts[code] != 0
+            for code in REASON_CODE_ORDER
+            if code
+            not in REJECTION_REASON_CODES | UNRESOLVED_REASON_CODES
+        )
     ):
         raise RunnerError("reason_code_counts")
 
@@ -2118,17 +2384,8 @@ def validate_phase_c1_result_payload(
     if (
         result["overall_decision"] not in _OVERALL_DECISIONS
         or result["overall_decision"] != derived_overall
-        or (
-            result["overall_decision"] == "stop_c2"
-            and aggregate_search_blocker
-        )
     ):
         raise RunnerError("overall_decision")
-    if (
-        aggregate_search_blocker
-        and fallback_status_counts["infeasible"] == len(TARGET_SIGNALS)
-    ):
-        raise RunnerError("per_signal")
 
     boundary = _exact_dict(
         result["boundary"],
@@ -2149,11 +2406,55 @@ def validate_phase_c1_result_payload(
     )
     if result["aggregate_content_sha256"] != expected_digest:
         raise RunnerError("aggregate_content_sha256")
-    try:
-        phase_c1.canonical_json_bytes(result)
-    except (TypeError, ValueError) as exc:
-        raise RunnerError("result_json") from exc
 
+
+def validate_phase_c1_result_payload(
+    payload: Mapping[str, object],
+    *,
+    protocol_bytes: bytes,
+    search_ledger_bytes: bytes,
+    source_ledger_bytes: bytes,
+    review_receipt_bytes: bytes,
+) -> None:
+    _validate_phase_c1_result_local(
+        payload,
+        source_ledger_bytes=source_ledger_bytes,
+    )
+    result = _exact_dict(
+        payload,
+        phase_c1.PHASE_C1_RESULT_FIELDS,
+        code="result_fields",
+    )
+    for field, source, authority_bytes in (
+        ("protocol_sha256", "protocol", protocol_bytes),
+        ("search_ledger_sha256", "search_ledger", search_ledger_bytes),
+        (
+            "source_evidence_ledger_sha256",
+            "source_ledger",
+            source_ledger_bytes,
+        ),
+        (
+            "source_review_receipt_sha256",
+            "source_review",
+            review_receipt_bytes,
+        ),
+    ):
+        if type(authority_bytes) is not bytes:
+            raise RunnerError(f"{source}_bytes")
+        if phase_c1.sha256_bytes(authority_bytes) != result[field]:
+            raise RunnerError(f"{source}_hash")
+    expected_result = _project_phase_c1_result(
+        head_commit=result["implementation_head"],
+        validator_blob_id=result["validator_blob_id"],
+        protocol_bytes=protocol_bytes,
+        search_ledger_bytes=search_ledger_bytes,
+        source_ledger_bytes=source_ledger_bytes,
+        review_receipt_bytes=review_receipt_bytes,
+    )
+    if phase_c1.canonical_json_bytes(
+        result
+    ) != phase_c1.canonical_json_bytes(expected_result):
+        raise RunnerError("input_projection_binding")
 
 def _compact(value: object) -> str:
     return json.dumps(
@@ -2169,8 +2470,15 @@ def _available(value: object) -> str:
     return "unavailable" if value is None else _compact(value)
 
 
-def render_phase_c1_report(result: Mapping[str, object]) -> bytes:
-    validate_phase_c1_result_payload(result)
+def _render_phase_c1_report_local(
+    result: Mapping[str, object],
+    *,
+    source_ledger_bytes: bytes,
+) -> bytes:
+    _validate_phase_c1_result_local(
+        result,
+        source_ledger_bytes=source_ledger_bytes,
+    )
     final_result_sha256 = phase_c1.sha256_bytes(
         phase_c1.canonical_json_bytes(result)
     )
@@ -2324,3 +2632,24 @@ def render_phase_c1_report(result: Mapping[str, object]) -> bytes:
         )
     )
     return "\n".join(lines).encode("utf-8")
+
+
+def render_phase_c1_report(
+    result: Mapping[str, object],
+    *,
+    protocol_bytes: bytes,
+    search_ledger_bytes: bytes,
+    source_ledger_bytes: bytes,
+    review_receipt_bytes: bytes,
+) -> bytes:
+    validate_phase_c1_result_payload(
+        result,
+        protocol_bytes=protocol_bytes,
+        search_ledger_bytes=search_ledger_bytes,
+        source_ledger_bytes=source_ledger_bytes,
+        review_receipt_bytes=review_receipt_bytes,
+    )
+    return _render_phase_c1_report_local(
+        result,
+        source_ledger_bytes=source_ledger_bytes,
+    )
