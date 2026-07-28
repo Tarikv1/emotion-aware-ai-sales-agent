@@ -514,15 +514,22 @@ Project use:
 
 ### EMOTION-STATE Phase C1 planned discovery endpoints
 
-- Type: planned public scholarly/dataset discovery metadata
+- Type: bounded public scholarly/dataset discovery metadata
 - Sources:
   - https://api.openalex.org/works
   - https://api.crossref.org/works
   - https://zenodo.org/api/records
   - https://huggingface.co/api/datasets
-- Project use: Phase C1 discovery seed only.
-- Current status: not accessed; plan only.
-- Thesis caution: discovery-service results are not authoritative source evidence and cannot admit a signal.
+- Project use: Task 7 discovery seed only; Task 8 froze the resulting rowless
+  ledger package without reopening the network.
+- Current status: Task 7 accessed bounded public metadata under the frozen
+  protocol. Task 8 reviewed exact frozen bytes only. No authoritative URL was
+  retained, so this existing endpoint entry is the only Phase C1 registry
+  update.
+- Thesis caution: discovery-service results are not authoritative source
+  evidence and cannot admit a signal. The admitted Task 8 package creates no
+  candidate/canonical pair, signal decision, or C2/model/runtime/provider/call
+  authority.
 
 ## Privacy And Data Governance Sources
 

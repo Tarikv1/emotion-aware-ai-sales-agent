@@ -3170,3 +3170,172 @@ def validate_source_review_receipt(
         transport_ledger_sha256, reviewed_transport, reviewed_documents,
         review_scope, verdict, *counts, *boundary_values,
     )
+
+
+def validate_source_review_package_before_freeze(
+    payload: object,
+    *,
+    protocol: PhaseC1ProtocolV1,
+    search_ledger_bytes: bytes,
+    source_evidence_ledger_bytes: bytes,
+    transport_ledger_bytes: bytes,
+) -> PhaseC1SourceReviewReceiptV1:
+    """Bind rowless source-review records to one exact transport ledger."""
+    protocol = _validated_transport_protocol(protocol)
+    search_payload = load_json_strict(search_ledger_bytes, source="search_ledger")
+    search = validate_search_ledger(search_payload, protocol=protocol)
+    source_payload = load_json_strict(
+        source_evidence_ledger_bytes, source="source_ledger"
+    )
+    source = validate_source_evidence_ledger(
+        source_payload,
+        protocol=protocol,
+        search_ledger_bytes=search_ledger_bytes,
+    )
+    review = validate_source_review_receipt(
+        payload,
+        protocol=protocol,
+        search_ledger_bytes=search_ledger_bytes,
+        source_evidence_ledger_bytes=source_evidence_ledger_bytes,
+    )
+    transport_payload = load_json_strict(
+        transport_ledger_bytes, source="transport_ledger"
+    )
+    transport_raw = _mapping(transport_payload, code="transport_ledger_object")
+    transport = validate_transport_receipt_ledger(
+        transport_raw, protocol=protocol
+    )
+    if review.transport_ledger_sha256 != sha256_bytes(transport_ledger_bytes):
+        raise PhaseC1ContractError("review_transport_ledger_sha256")
+
+    raw_receipts = _sequence(
+        transport_raw["receipts"], code="transport_receipts"
+    )
+    receipt_by_hash: dict[str, PhaseC1TransportReceiptV1] = {}
+    for raw_receipt, receipt in zip(raw_receipts, transport.receipts, strict=True):
+        digest = sha256_bytes(canonical_json_bytes(raw_receipt))
+        if digest in receipt_by_hash:
+            raise PhaseC1ContractError("transport_receipt_hash_duplicate")
+        receipt_by_hash[digest] = receipt
+
+    def receipt_for(digest: str, *, code: str) -> PhaseC1TransportReceiptV1:
+        receipt = receipt_by_hash.get(digest)
+        if receipt is None:
+            raise PhaseC1ContractError(code)
+        return receipt
+
+    for query in search.query_records:
+        receipt = receipt_for(
+            query.transport_receipt_sha256,
+            code="query_transport_receipt_missing",
+        )
+        if (
+            receipt.purpose != "seed_query"
+            or receipt.request_key != query.query_id
+            or receipt.outcome != query.status
+            or receipt.incomplete_reason != query.incomplete_reason
+            or receipt.response_sha256 != query.response_sha256
+            or receipt.response_byte_count != query.response_byte_count
+        ):
+            raise PhaseC1ContractError("query_transport_binding")
+        for discovery in query.discovery_records:
+            for digest in discovery.documentation_transport_receipt_sha256s:
+                if receipt_for(
+                    digest, code="discovery_documentation_transport_missing"
+                ).purpose != "authoritative_document":
+                    raise PhaseC1ContractError(
+                        "discovery_documentation_transport_purpose"
+                    )
+
+    for signal in TARGET_SIGNALS:
+        for direction in CITATION_DIRECTIONS:
+            attempts = search.citation_transport_receipt_sha256s_by_signal[
+                signal
+            ][direction]
+            stop = (
+                search.backward_citation_stop_by_signal[signal]
+                if direction == "backward"
+                else search.forward_citation_stop_by_signal[signal]
+            )
+            for ordinal, digest in enumerate(attempts, start=1):
+                receipt = receipt_for(
+                    digest, code="citation_transport_receipt_missing"
+                )
+                expected_key = (
+                    f"c1-citation-transport-{signal}-{direction}-{ordinal:02d}"
+                )
+                if (
+                    receipt.purpose != "citation_discovery"
+                    or receipt.request_key != expected_key
+                ):
+                    raise PhaseC1ContractError("citation_transport_binding")
+                if receipt.outcome == "incomplete" and stop != "incomplete":
+                    raise PhaseC1ContractError("citation_transport_stop")
+                if stop != "incomplete" and receipt.outcome != "complete":
+                    raise PhaseC1ContractError("citation_transport_stop")
+
+    document_owner_by_hash = {
+        document.cached_sha256: item.source_id
+        for item in source.sources
+        for document in item.documents
+    }
+    retained_document_hashes_by_source: dict[str, set[str]] = {
+        item.source_id: set() for item in source.sources
+    }
+    for query in search.query_records:
+        for discovery in query.discovery_records:
+            if (
+                discovery.disposition == "retained_candidate"
+                and discovery.candidate_source_id is not None
+            ):
+                retained_document_hashes_by_source[
+                    discovery.candidate_source_id
+                ].update(discovery.documentation_transport_receipt_sha256s)
+    for citation in search.citation_records:
+        for digest in citation.documentation_transport_receipt_sha256s:
+            if receipt_for(
+                digest, code="citation_documentation_transport_missing"
+            ).purpose != "authoritative_document":
+                raise PhaseC1ContractError(
+                    "citation_documentation_transport_purpose"
+                )
+        if document_owner_by_hash.get(citation.parent_source_document_sha256) != (
+            citation.parent_source_id
+        ):
+            raise PhaseC1ContractError("citation_parent_document_owner")
+        if (
+            citation.disposition == "retained_candidate"
+            and citation.candidate_source_id is not None
+        ):
+            retained_document_hashes_by_source[
+                citation.candidate_source_id
+            ].update(citation.documentation_transport_receipt_sha256s)
+
+    for item in source.sources:
+        for document in item.documents:
+            receipt = receipt_for(
+                document.transport_receipt_sha256,
+                code="source_document_transport_missing",
+            )
+            if (
+                receipt.purpose != "authoritative_document"
+                or receipt.request_key != document.document_id
+                or receipt.response_sha256 != document.cached_sha256
+                or receipt.response_byte_count != document.byte_count
+                or receipt.response_content_type != document.content_type
+            ):
+                raise PhaseC1ContractError("source_document_transport_binding")
+            if (
+                document.transport_receipt_sha256
+                not in retained_document_hashes_by_source[item.source_id]
+            ):
+                raise PhaseC1ContractError("source_document_transport_owner")
+
+    expected_hashes = _review_transport_hashes(
+        _mapping(search_payload, code="search_ledger_object"), source.sources
+    )
+    if review.reviewed_transport_receipt_sha256s != expected_hashes:
+        raise PhaseC1ContractError("reviewed_transport_hash_mismatch")
+    if tuple(receipt_by_hash) != expected_hashes:
+        raise PhaseC1ContractError("transport_receipt_union")
+    return review

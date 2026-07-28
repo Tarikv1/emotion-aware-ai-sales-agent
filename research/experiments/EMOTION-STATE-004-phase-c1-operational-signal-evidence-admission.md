@@ -2,7 +2,9 @@
 
 ## Status
 
-Protocol frozen; source discovery not run.
+Protocol frozen. Task 7 completed the bounded public-metadata discovery run;
+Task 8 froze its rowless source-ledger package under an `admitted` review.
+That review admits no signal evidence.
 
 ## Question
 
@@ -35,6 +37,33 @@ provider behavior, real calls, runtime behavior, or production readiness.
 The four planned discovery services remain discovery aids only. Their results
 cannot establish source identity, license, access, annotation semantics,
 construct validity, or signal admission.
+
+## Task 7 Discovery And Task 8 Freeze
+
+- Frozen protocol SHA-256:
+  `2540A1BA430F78B9F660BA466F6CFD7099CFFCAA6F1C1D1AC373F4BA1D4D2CCD`.
+- Task 7 alone used the bounded public-metadata network scope. Task 8 reopened
+  no network; it reviewed and froze the exact rowless package only.
+- The tracked search ledger is `572,660` bytes, SHA-256
+  `A6FCAA50123E4D67FF92D36E9755B4ED7C82306FCAA50B72ED26A478361365DB`.
+  The tracked source ledger is `1,566` bytes, SHA-256
+  `81FB1301287F0E3E8FA0E21840B1B596028509C11FAAC75D6D6F8914051D0B58`.
+  The admitted review receipt is `7,207` bytes, SHA-256
+  `4B489D77BFC948B84F8A6BC73A30DC1068138D6ABD2A563EB7FD43BFE9224E11`.
+- All `88` requests are represented: `41` complete and `47` incomplete;
+  direct-label-source requests are `37` complete / `43` incomplete and
+  fallback-material requests are `4` complete / `4` incomplete. The reviewed
+  cache contains `41` files totaling `14,567,576` bytes.
+- The `1,025` discovery records are `971`
+  `authoritative_provenance_unverified` unresolved records plus `54`
+  duplicates. There are `0` retained candidates, `0` excluded candidates, `0`
+  citations, `0` source documents, `0` sources, and `0` cards.
+- All five required fallback assessments are unresolved. `search_complete` is
+  `false`, and all five per-signal `fail_ready` values are `false`.
+- Independent Task 8 review returned `C0/I0/M0`. `admitted` attests exact
+  rowless package integrity only: it admits no signal evidence, produces no
+  candidate/canonical pair or signal decision, and opens no
+  C2/model/runtime/provider/call gate.
 
 ## Evidence Admission Rule
 
@@ -69,7 +98,8 @@ Purpose-specific response caps are `2,000,000` bytes for seed queries,
 `2,000,000` bytes for citation discovery, and `20,000,000` bytes for an
 authoritative document. The total unique ignored source cache is capped at
 `512,000,000` bytes. These limits are frozen contract values; no retrieval
-occurred in this task.
+of authoritative documents occurred. Task 7 performed only the bounded
+public-metadata discovery run; Task 8 reopened no network.
 
 ## Annotation Fallback
 
@@ -140,10 +170,10 @@ title, URL, path, participant, segment, transcript, audio, prediction,
 probability, feature, or model metric, and it grants no private-data or runtime
 authority.
 
-## Work Not Performed
+## Task 8 Work Not Performed
 
-No network access, public research, source retrieval, dataset or private-data
-read, annotation, audio or transcript read, model training or evaluation,
-external source adaptation, provider access, call, simulation, prompt or
-knowledge-base change, runtime activation, candidate generation, canonical
-generation, C2 work, push, merge, or history rewrite occurred in this task.
+Task 8 performed no network access, public research, source retrieval, dataset
+or private-data read, annotation, audio or transcript read, model training or
+evaluation, external source adaptation, provider access, call, simulation,
+prompt or knowledge-base change, runtime activation, candidate generation,
+canonical generation, C2 work, push, merge, or history rewrite.

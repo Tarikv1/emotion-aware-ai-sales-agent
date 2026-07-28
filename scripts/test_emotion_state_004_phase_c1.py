@@ -328,6 +328,42 @@ EXPECTED_GITATTRIBUTES_RULES = (
         "/research/experiments/cases/"
         "emotion-state-004-phase-c1-contract-fixtures.json text eol=lf"
     ),
+    (
+        "/research/sources/emotion_state/"
+        "phase_c1_search_ledger.json text eol=lf"
+    ),
+    (
+        "/research/sources/emotion_state/"
+        "phase_c1_source_evidence_ledger.json text eol=lf"
+    ),
+    (
+        "/research/sources/emotion_state/"
+        "phase_c1_source_review_receipt.json text eol=lf"
+    ),
+)
+
+SEARCH_LEDGER_PATH = (
+    ROOT
+    / "research"
+    / "sources"
+    / "emotion_state"
+    / "phase_c1_search_ledger.json"
+)
+
+SOURCE_LEDGER_PATH = (
+    ROOT
+    / "research"
+    / "sources"
+    / "emotion_state"
+    / "phase_c1_source_evidence_ledger.json"
+)
+
+REVIEW_PATH = (
+    ROOT
+    / "research"
+    / "sources"
+    / "emotion_state"
+    / "phase_c1_source_review_receipt.json"
 )
 
 EXPECTED_FIXTURE_PAYLOAD = {
@@ -356,7 +392,9 @@ EXPECTED_EXPERIMENT_NOTE_START = """\
 
 ## Status
 
-Protocol frozen; source discovery not run.
+Protocol frozen. Task 7 completed the bounded public-metadata discovery run;
+Task 8 froze its rowless source-ledger package under an `admitted` review.
+That review admits no signal evidence.
 
 ## Question
 
@@ -906,6 +944,225 @@ class _PhaseC1FixtureMixin:
         )
 
 
+class PhaseC1TrackedSourceLedgerTests(
+    _PhaseC1FixtureMixin,
+    unittest.TestCase,
+):
+    def load_protocol(self) -> phase_c1.PhaseC1ProtocolV1:
+        protocol_bytes = self.protocol_path.read_bytes()
+        return phase_c1.validate_discovery_protocol(
+            phase_c1.load_json_strict(protocol_bytes, source="protocol")
+        )
+
+    def load_json(self, path: Path) -> dict[str, object]:
+        payload = phase_c1.load_json_strict(
+            path.read_bytes(),
+            source=path.as_posix(),
+        )
+        self.assertIsInstance(payload, dict)
+        return payload
+
+    def test_tracked_ledgers_and_review_receipt_are_exactly_bound(self) -> None:
+        protocol = self.load_protocol()
+        search_bytes = SEARCH_LEDGER_PATH.read_bytes()
+        source_bytes = SOURCE_LEDGER_PATH.read_bytes()
+        search = phase_c1.validate_search_ledger(
+            phase_c1.load_json_strict(search_bytes, source="search ledger"),
+            protocol=protocol,
+        )
+        source = phase_c1.validate_source_evidence_ledger(
+            phase_c1.load_json_strict(source_bytes, source="source ledger"),
+            protocol=protocol,
+            search_ledger_bytes=search_bytes,
+        )
+        review = phase_c1.validate_source_review_receipt(
+            self.load_json(REVIEW_PATH),
+            protocol=protocol,
+            search_ledger_bytes=search_bytes,
+            source_evidence_ledger_bytes=source_bytes,
+        )
+        expected_queries = phase_c1.expected_phase_c1_queries(protocol)
+        self.assertEqual(len(search.query_records), 88)
+        self.assertEqual(
+            tuple(record.query_id for record in search.query_records),
+            tuple(query[0] for query in expected_queries),
+        )
+        self.assertEqual(
+            len({record.query_id for record in search.query_records}),
+            88,
+        )
+        source_ids = {item.source_id for item in source.sources}
+        card_ids = {item.card_id for item in source.cards}
+        document_hash_order = tuple(
+            document.cached_sha256
+            for item in source.sources
+            for document in item.documents
+        )
+        document_owner_by_id = {
+            document.document_id: item.source_id
+            for item in source.sources
+            for document in item.documents
+        }
+        document_owner_by_sha256 = {
+            document.cached_sha256: item.source_id
+            for item in source.sources
+            for document in item.documents
+        }
+        sources_by_id = {item.source_id: item for item in source.sources}
+        expected_source_order = tuple(
+            dict.fromkeys(
+                source_id
+                for signal in protocol.target_signals
+                for source_id in search.candidate_order_by_signal[signal]
+            )
+            | dict.fromkeys(search.fallback_material_candidate_order)
+        )
+        self.assertEqual(len(source_ids), len(source.sources))
+        self.assertEqual(
+            tuple(item.source_id for item in source.sources),
+            expected_source_order,
+        )
+        self.assertEqual(len(card_ids), len(source.cards))
+        expected_card_pairs = tuple(
+            (signal, source_id)
+            for signal in protocol.target_signals
+            for source_id in search.candidate_order_by_signal[signal]
+        )
+        actual_card_pairs = tuple(
+            (item.signal, item.source_id)
+            for item in source.cards
+        )
+        self.assertEqual(actual_card_pairs, expected_card_pairs)
+        self.assertEqual(len(set(actual_card_pairs)), len(source.cards))
+        self.assertEqual(
+            review.reviewed_document_sha256s,
+            document_hash_order,
+        )
+        for citation in search.citation_records:
+            self.assertIn(citation.parent_source_id, sources_by_id)
+            self.assertEqual(
+                document_owner_by_sha256[
+                    citation.parent_source_document_sha256
+                ],
+                citation.parent_source_id,
+            )
+        for assessment in source.fallback_assessments:
+            self.assertEqual(
+                tuple(item.source_id for item in assessment.material_evidence),
+                search.fallback_material_candidate_order,
+            )
+            for material in assessment.material_evidence:
+                self.assertIn(
+                    "fallback_material_candidate",
+                    sources_by_id[material.source_id].phase_c1_roles,
+                )
+                for evidence_ids in (
+                    material.material_evidence_document_ids,
+                    material.license_evidence_document_ids,
+                    material.ethical_use_evidence_document_ids,
+                    material.rater_feasibility_evidence_document_ids,
+                ):
+                    self.assertTrue(
+                        all(
+                            document_owner_by_id[document_id]
+                            == material.source_id
+                            for document_id in evidence_ids
+                        )
+                    )
+        transport_hashes = [
+            record.transport_receipt_sha256
+            for record in search.query_records
+        ]
+        for record in search.query_records:
+            for discovered in record.discovery_records:
+                transport_hashes.extend(
+                    discovered.documentation_transport_receipt_sha256s
+                )
+        for signal in protocol.target_signals:
+            for direction in ("backward", "forward"):
+                transport_hashes.extend(
+                    search.citation_transport_receipt_sha256s_by_signal[
+                        signal
+                    ][direction]
+                )
+        for citation in search.citation_records:
+            transport_hashes.extend(
+                citation.documentation_transport_receipt_sha256s
+            )
+        transport_hashes.extend(
+            document.transport_receipt_sha256
+            for item in source.sources
+            for document in item.documents
+        )
+        self.assertEqual(
+            review.reviewed_transport_receipt_sha256s,
+            tuple(dict.fromkeys(transport_hashes)),
+        )
+        self.assertEqual(
+            search.search_complete,
+            all(record.status == "complete" for record in search.query_records)
+            and not any(record.truncated for record in search.query_records)
+            and all(
+                status in {"no_eligible_candidates", "source_list_exhausted"}
+                for status in search.backward_citation_stop_by_signal.values()
+            )
+            and all(
+                status in {"no_eligible_candidates", "source_list_exhausted"}
+                for status in search.forward_citation_stop_by_signal.values()
+            ),
+        )
+        fallback_queries_complete = all(
+            record.status == "complete" and not record.truncated
+            for record in search.query_records
+            if record.query_kind == "fallback_material"
+        )
+        fallback_identity_resolved = not any(
+            discovered.disposition == "unresolved"
+            for record in search.query_records
+            if record.query_kind == "fallback_material"
+            for discovered in record.discovery_records
+        )
+        for signal in protocol.target_signals:
+            signal_queries_complete = all(
+                record.status == "complete"
+                for record in search.query_records
+                if record.signal == signal
+            )
+            self.assertEqual(
+                search.fail_ready_by_signal[signal],
+                signal_queries_complete
+                and fallback_queries_complete
+                and fallback_identity_resolved
+                and search.fallback_material_overflow_count == 0
+                and not any(
+                    record.truncated
+                    for record in search.query_records
+                    if record.signal == signal
+                )
+                and not any(
+                    discovered.disposition == "unresolved"
+                    for record in search.query_records
+                    if record.signal == signal
+                    for discovered in record.discovery_records
+                )
+                and not any(
+                    citation.disposition == "unresolved"
+                    for citation in search.citation_records
+                    if citation.signal == signal
+                )
+                and search.backward_citation_stop_by_signal[signal]
+                in {"no_eligible_candidates", "source_list_exhausted"}
+                and search.forward_citation_stop_by_signal[signal]
+                in {"no_eligible_candidates", "source_list_exhausted"}
+                and search.overflow_count_by_signal[signal] == 0,
+            )
+        self.assertEqual(review.verdict, "admitted")
+        self.assertEqual(review.critical_findings, 0)
+        self.assertEqual(review.important_findings, 0)
+        self.assertEqual(review.minor_findings, 0)
+        self.assertFalse(review.raw_rows_read)
+
+
 class PhaseC1ProtocolContractTests(
     _PhaseC1FixtureMixin,
     unittest.TestCase,
@@ -1109,7 +1366,7 @@ class PhaseC1ProtocolContractTests(
         self.assertTrue(note.startswith(EXPECTED_EXPERIMENT_NOTE_START))
         self.assertNotIn("\r", note)
 
-    def test_discovery_endpoint_registry_entry_remains_exactly_plan_only(
+    def test_discovery_endpoint_registry_entry_records_bounded_task7_use(
         self,
     ) -> None:
         registry_path = ROOT / "docs" / "thesis" / "THESIS_REFERENCE_REGISTRY.md"
@@ -1121,15 +1378,22 @@ class PhaseC1ProtocolContractTests(
         expected = """\
 ### EMOTION-STATE Phase C1 planned discovery endpoints
 
-- Type: planned public scholarly/dataset discovery metadata
+- Type: bounded public scholarly/dataset discovery metadata
 - Sources:
   - https://api.openalex.org/works
   - https://api.crossref.org/works
   - https://zenodo.org/api/records
   - https://huggingface.co/api/datasets
-- Project use: Phase C1 discovery seed only.
-- Current status: not accessed; plan only.
-- Thesis caution: discovery-service results are not authoritative source evidence and cannot admit a signal."""
+- Project use: Task 7 discovery seed only; Task 8 froze the resulting rowless
+  ledger package without reopening the network.
+- Current status: Task 7 accessed bounded public metadata under the frozen
+  protocol. Task 8 reviewed exact frozen bytes only. No authoritative URL was
+  retained, so this existing endpoint entry is the only Phase C1 registry
+  update.
+- Thesis caution: discovery-service results are not authoritative source
+  evidence and cannot admit a signal. The admitted Task 8 package creates no
+  candidate/canonical pair, signal decision, or C2/model/runtime/provider/call
+  authority."""
         self.assertEqual(section, expected)
         positions = [section.index(url) for url in EXPECTED_DISCOVERY_ENDPOINTS]
         self.assertEqual(positions, sorted(positions))
@@ -3424,6 +3688,554 @@ class PhaseC1SourceContractTests(_PhaseC1FixtureMixin, unittest.TestCase):
                 outside, protocol=protocol, search_ledger_bytes=outside_search_bytes
             )
         self.assertEqual(raised.exception.code, "card_outside_candidate_pair")
+
+class PhaseC1SourceReviewPackageContractTests(
+    _PhaseC1FixtureMixin, unittest.TestCase
+):
+    """Synthetic cross-ledger fixtures, deliberately independent of Task 7."""
+
+    @staticmethod
+    def _receipt_hash(receipt: dict[str, object]) -> str:
+        return hashlib.sha256(phase_c1.canonical_json_bytes(receipt)).hexdigest().upper()
+
+    def _receipt(
+        self,
+        receipt_id: int,
+        *,
+        purpose: str,
+        request_key: str,
+        response_label: str,
+        byte_count: int = 512,
+        content_type: str = "application/json",
+    ) -> dict[str, object]:
+        return {
+            "schema_version": "EmotionStatePhaseC1TransportReceiptV1",
+            "receipt_id": f"c1-transport-{receipt_id:04d}",
+            "purpose": purpose,
+            "request_key": request_key,
+            "retrieved_at_utc": "2026-07-26T12:00:00Z",
+            "requested_url": "https://api.openalex.org/works",
+            "final_url": "https://api.openalex.org/works",
+            "outcome": "complete",
+            "incomplete_reason": None,
+            "http_status_code": 200,
+            "redirect_hop_count": 0,
+            "redirect_chain": [],
+            "response_sha256": self.fixture_hash(response_label),
+            "response_byte_count": byte_count,
+            "response_content_type": content_type,
+        }
+
+    def source_review_package(self) -> dict[str, object]:
+        """Return a complete hand-derived rowless package and receipt bytes."""
+        search = self.valid_search_ledger_payload()
+        receipts: list[dict[str, object]] = []
+        for number, query in enumerate(search["query_records"], start=1):
+            assert isinstance(query, dict)
+            query_id = query["query_id"]
+            assert isinstance(query_id, str)
+            receipt = self._receipt(
+                number,
+                purpose="seed_query",
+                request_key=query_id,
+                response_label=f"seed:{query_id}",
+            )
+            query["transport_receipt_sha256"] = self._receipt_hash(receipt)
+            query["response_sha256"] = receipt["response_sha256"]
+            query["response_byte_count"] = receipt["response_byte_count"]
+            receipts.append(receipt)
+
+        source_one_receipt = self._receipt(
+            89,
+            purpose="authoritative_document",
+            request_key="c1-document-0001",
+            response_label="source-one",
+            byte_count=513,
+            content_type="application/pdf",
+        )
+        source_two_receipt = self._receipt(
+            90,
+            purpose="authoritative_document",
+            request_key="c1-document-0002",
+            response_label="source-two",
+            byte_count=514,
+            content_type="application/pdf",
+        )
+        citation_attempt_receipt = self._receipt(
+            91,
+            purpose="citation_discovery",
+            request_key="c1-citation-transport-hesitation-backward-01",
+            response_label="citation-attempt",
+        )
+        citation_document_receipt = self._receipt(
+            92,
+            purpose="authoritative_document",
+            request_key="c1-document-0003",
+            response_label="citation-document",
+            content_type="text/html",
+        )
+        receipts.extend(
+            (
+                source_one_receipt,
+                source_two_receipt,
+                citation_attempt_receipt,
+                citation_document_receipt,
+            )
+        )
+        source_one_hash = self._receipt_hash(source_one_receipt)
+        source_two_hash = self._receipt_hash(source_two_receipt)
+        citation_attempt_hash = self._receipt_hash(citation_attempt_receipt)
+        citation_document_hash = self._receipt_hash(citation_document_receipt)
+
+        confusion_query = search["query_records"][32]
+        assert isinstance(confusion_query, dict)
+        confusion_query["result_count"] = 1
+        confusion_query["returned_count"] = 1
+        confusion_query["discovery_records"] = [
+            self.discovery_record(
+                query_id="c1-query-confusion-openalex-01",
+                rank=1,
+                record_number=1,
+                documentation_hashes=[source_one_hash],
+            )
+        ]
+        fallback_query = search["query_records"][80]
+        assert isinstance(fallback_query, dict)
+        fallback_query["result_count"] = 1
+        fallback_query["returned_count"] = 1
+        fallback_query["discovery_records"] = [
+            self.discovery_record(
+                query_id="c1-query-fallback-material-openalex-01",
+                rank=1,
+                record_number=2,
+                source_id="c1-source-0002",
+                documentation_hashes=[source_two_hash],
+            )
+        ]
+        search["candidate_order_by_signal"]["confusion"] = [
+            "c1-source-0001"
+        ]
+        search["fallback_material_candidate_order"] = ["c1-source-0002"]
+        search["citation_records"] = [
+            {
+                "citation_record_id": "c1-citation-hesitation-backward-01",
+                "signal": "hesitation",
+                "direction": "backward",
+                "rank": 1,
+                "parent_source_id": "c1-source-0001",
+                "parent_source_document_sha256": source_one_receipt[
+                    "response_sha256"
+                ],
+                "transport_receipt_sha256": citation_attempt_hash,
+                "identity_sha256": self.fixture_hash("citation-identity"),
+                "disposition": "excluded",
+                "candidate_source_id": None,
+                "duplicate_of_record_id": None,
+                "reason_code": "target_label_absent",
+                "documentation_transport_receipt_sha256s": [
+                    citation_document_hash
+                ],
+            }
+        ]
+        search["backward_citation_count_by_signal"]["hesitation"] = 1
+        search["citation_transport_receipt_sha256s_by_signal"]["hesitation"][
+            "backward"
+        ] = [citation_attempt_hash]
+        search_bytes = phase_c1.canonical_json_bytes(search)
+
+        source_one = self.valid_source_payload()
+        source_one["documents"][0].update(
+            {
+                "cached_sha256": source_one_receipt["response_sha256"],
+                "byte_count": source_one_receipt["response_byte_count"],
+                "transport_receipt_sha256": source_one_hash,
+            }
+        )
+        source_two = copy.deepcopy(source_one)
+        source_two.update(
+            {
+                "source_id": "c1-source-0002",
+                "title": "Synthetic fallback source",
+                "phase_c1_roles": ["fallback_material_candidate"],
+            }
+        )
+        source_two["documents"][0].update(
+            {
+                "document_id": "c1-document-0002",
+                "cached_sha256": source_two_receipt["response_sha256"],
+                "byte_count": source_two_receipt["response_byte_count"],
+                "transport_receipt_sha256": source_two_hash,
+            }
+        )
+        source = self.valid_source_evidence_ledger(search_bytes)
+        source["sources"] = [source_one, source_two]
+        for assessment in source["fallback_assessments"]:
+            assessment["material_evidence"] = [
+                {
+                    **self.valid_fallback_material(),
+                    "source_id": "c1-source-0002",
+                }
+            ]
+        source_bytes = phase_c1.canonical_json_bytes(source)
+        transport = {
+            "schema_version": "EmotionStatePhaseC1TransportReceiptLedgerV1",
+            "protocol_sha256": hashlib.sha256(
+                self.protocol_path.read_bytes()
+            ).hexdigest().upper(),
+            "receipts": receipts,
+        }
+        transport_bytes = phase_c1.canonical_json_bytes(transport)
+        review = self.valid_source_review_receipt(search_bytes, source_bytes)
+        review["transport_ledger_sha256"] = hashlib.sha256(
+            transport_bytes
+        ).hexdigest().upper()
+        review["reviewed_transport_receipt_sha256s"] = [
+            query["transport_receipt_sha256"]
+            for query in search["query_records"]
+        ] + [
+            source_one_hash,
+            source_two_hash,
+            citation_attempt_hash,
+            citation_document_hash,
+        ]
+        review["reviewed_document_sha256s"] = [
+            source_one_receipt["response_sha256"],
+            source_two_receipt["response_sha256"],
+        ]
+        return {
+            "protocol": phase_c1.validate_discovery_protocol(
+                self.valid_protocol_payload()
+            ),
+            "search": search,
+            "source": source,
+            "transport": transport,
+            "review": review,
+        }
+
+    def _validate(self, package: dict[str, object]) -> object:
+        search_bytes = phase_c1.canonical_json_bytes(package["search"])
+        source_bytes = phase_c1.canonical_json_bytes(package["source"])
+        transport_bytes = phase_c1.canonical_json_bytes(package["transport"])
+        return phase_c1.validate_source_review_package_before_freeze(
+            package["review"],
+            protocol=package["protocol"],
+            search_ledger_bytes=search_bytes,
+            source_evidence_ledger_bytes=source_bytes,
+            transport_ledger_bytes=transport_bytes,
+        )
+
+    def _rebind_review(self, package: dict[str, object]) -> None:
+        """Keep outer byte bindings valid so each mutation reaches its lane."""
+        search_bytes = phase_c1.canonical_json_bytes(package["search"])
+        package["source"]["search_ledger_sha256"] = hashlib.sha256(
+            search_bytes
+        ).hexdigest().upper()
+        source_bytes = phase_c1.canonical_json_bytes(package["source"])
+        transport_bytes = phase_c1.canonical_json_bytes(package["transport"])
+        package["review"].update(
+            {
+                "search_ledger_sha256": hashlib.sha256(
+                    search_bytes
+                ).hexdigest().upper(),
+                "source_evidence_ledger_sha256": hashlib.sha256(
+                    source_bytes
+                ).hexdigest().upper(),
+                "transport_ledger_sha256": hashlib.sha256(
+                    transport_bytes
+                ).hexdigest().upper(),
+            }
+        )
+        source = phase_c1.validate_source_evidence_ledger(
+            package["source"],
+            protocol=package["protocol"],
+            search_ledger_bytes=search_bytes,
+        )
+        package["review"]["reviewed_document_sha256s"] = [
+            document.cached_sha256
+            for item in source.sources
+            for document in item.documents
+        ]
+        package["review"]["reviewed_transport_receipt_sha256s"] = list(
+            phase_c1._review_transport_hashes(package["search"], source.sources)
+        )
+
+    def test_valid_package_binds_each_canonical_receipt_once(self) -> None:
+        package = self.source_review_package()
+        review = self._validate(package)
+        self.assertEqual(review.verdict, "admitted")
+
+    def test_rejects_transport_ledger_hash_and_exact_receipt_union_faults(
+        self,
+    ) -> None:
+        mutations = (
+            lambda package: package["review"].__setitem__(
+                "transport_ledger_sha256", "F" * 64
+            ),
+            lambda package: package["transport"]["receipts"].pop(),
+            lambda package: package["transport"]["receipts"].append(
+                self._receipt(
+                    93,
+                    purpose="citation_discovery",
+                    request_key=(
+                        "c1-citation-transport-hesitation-forward-01"
+                    ),
+                    response_label="unreferenced",
+                )
+            ),
+            lambda package: package["transport"]["receipts"][88].__setitem__(
+                "response_byte_count", 515
+            ),
+        )
+        for index, mutate in enumerate(mutations):
+            with self.subTest(mutation=mutate):
+                package = self.source_review_package()
+                mutate(package)
+                if index:
+                    self._rebind_review(package)
+                with self.assertRaises(phase_c1.PhaseC1ContractError):
+                    self._validate(package)
+
+    def test_rejects_query_and_citation_transport_binding_faults(self) -> None:
+        def swap_query_receipts(package: dict[str, object]) -> None:
+            first = package["search"]["query_records"][0]
+            second = package["search"]["query_records"][1]
+            first_hash = first["transport_receipt_sha256"]
+            first["transport_receipt_sha256"] = second[
+                "transport_receipt_sha256"
+            ]
+            second["transport_receipt_sha256"] = first_hash
+
+        def citation_mutation(
+            package: dict[str, object], request_key: str | None = None
+        ) -> None:
+            receipt = package["transport"]["receipts"][90]
+            receipt["purpose"] = "citation_discovery"
+            if request_key is not None:
+                receipt["request_key"] = request_key
+
+        mutations = (
+            swap_query_receipts,
+            lambda package: (
+                package["transport"]["receipts"][0].__setitem__(
+                    "purpose", "authoritative_document"
+                ),
+                package["transport"]["receipts"][0].__setitem__(
+                    "request_key", "c1-document-9999"
+                ),
+                package["search"]["query_records"][0].__setitem__(
+                    "transport_receipt_sha256",
+                    self._receipt_hash(package["transport"]["receipts"][0]),
+                ),
+            ),
+            lambda package: citation_mutation(
+                package, "c1-citation-transport-hesitation-backward-01"
+            ) or package["transport"]["receipts"][90].update(
+                {
+                    "purpose": "authoritative_document",
+                    "request_key": "c1-document-0004",
+                }
+            ),
+            lambda package: citation_mutation(
+                package,
+                "c1-citation-transport-frustration-backward-01",
+            ),
+            lambda package: citation_mutation(
+                package,
+                "c1-citation-transport-hesitation-forward-01",
+            ),
+            lambda package: citation_mutation(
+                package,
+                "c1-citation-transport-hesitation-backward-02",
+            ),
+            lambda package: package["transport"]["receipts"][90].update(
+                {"outcome": "incomplete", "incomplete_reason": "network_error"}
+            ),
+        )
+        for mutate in mutations:
+            with self.subTest(mutation=mutate):
+                package = self.source_review_package()
+                mutate(package)
+                citation = package["transport"]["receipts"][90]
+                citation_hash = self._receipt_hash(citation)
+                package["search"]["citation_records"][0][
+                    "transport_receipt_sha256"
+                ] = citation_hash
+                package["search"]["citation_transport_receipt_sha256s_by_signal"][
+                    "hesitation"
+                ]["backward"] = [citation_hash]
+                self._rebind_review(package)
+                with self.assertRaises(phase_c1.PhaseC1ContractError):
+                    self._validate(package)
+
+    def test_rejects_document_and_owner_transport_binding_faults(self) -> None:
+        mutations = (
+            lambda package: package["transport"]["receipts"][91].update(
+                {
+                    "purpose": "citation_discovery",
+                    "request_key": (
+                        "c1-citation-transport-hesitation-forward-01"
+                    ),
+                }
+            ),
+            lambda package: package["source"]["sources"][0]["documents"][0].__setitem__(
+                "cached_sha256", "E" * 64
+            ),
+            lambda package: package["source"]["sources"][0]["documents"][0].__setitem__(
+                "byte_count", 515
+            ),
+            lambda package: package["source"]["sources"][0]["documents"][0].__setitem__(
+                "content_type", "application/json"
+            ),
+            lambda package: package["search"]["query_records"][32][
+                "discovery_records"
+            ][0].__setitem__(
+                "documentation_transport_receipt_sha256s",
+                [self._receipt_hash(package["transport"]["receipts"][91])],
+            ),
+            lambda package: package["search"]["citation_records"][0].__setitem__(
+                "parent_source_id", "c1-source-0002"
+            ),
+        )
+        for mutate in mutations:
+            with self.subTest(mutation=mutate):
+                package = self.source_review_package()
+                mutate(package)
+                self._rebind_review(package)
+                with self.assertRaises(phase_c1.PhaseC1ContractError):
+                    self._validate(package)
+
+    def test_rejects_query_outcome_reason_hash_and_byte_mismatches(self) -> None:
+        mutations = (
+            lambda package: package["transport"]["receipts"][0].update(
+                {"outcome": "incomplete", "incomplete_reason": "network_error"}
+            ),
+            lambda package: package["search"]["query_records"][0].__setitem__(
+                "response_sha256", "E" * 64
+            ),
+            lambda package: package["search"]["query_records"][0].__setitem__(
+                "response_byte_count", 511
+            ),
+        )
+        for mutate in mutations:
+            with self.subTest(mutation=mutate):
+                package = self.source_review_package()
+                mutate(package)
+                if package["transport"]["receipts"][0]["outcome"] == "incomplete":
+                    query = package["search"]["query_records"][0]
+                    query["transport_receipt_sha256"] = self._receipt_hash(
+                        package["transport"]["receipts"][0]
+                    )
+                    query.update(
+                        {
+                            "status": "incomplete",
+                            "incomplete_reason": "rate_limit_pressure",
+                            "response_sha256": None,
+                            "response_byte_count": None,
+                        }
+                    )
+                    package["search"]["fail_ready_by_signal"]["hesitation"] = False
+                    package["search"]["search_complete"] = False
+                self._rebind_review(package)
+                with self.assertRaises(phase_c1.PhaseC1ContractError):
+                    self._validate(package)
+
+    def test_rejects_query_request_key_mismatch_alone(self) -> None:
+        package = self.source_review_package()
+        first_receipt = package["transport"]["receipts"][0]
+        second_receipt = package["transport"]["receipts"][1]
+        first_request_key = first_receipt["request_key"]
+        first_receipt["request_key"] = second_receipt["request_key"]
+        second_receipt["request_key"] = first_request_key
+        package["search"]["query_records"][0][
+            "transport_receipt_sha256"
+        ] = self._receipt_hash(first_receipt)
+        package["search"]["query_records"][1][
+            "transport_receipt_sha256"
+        ] = self._receipt_hash(second_receipt)
+        self._rebind_review(package)
+        with self.assertRaises(phase_c1.PhaseC1ContractError) as raised:
+            self._validate(package)
+        self.assertEqual(raised.exception.code, "query_transport_binding")
+
+    def test_rejects_query_outcome_mismatch_alone(self) -> None:
+        package = self.source_review_package()
+        receipt = package["transport"]["receipts"][0]
+        receipt.update(
+            {
+                "outcome": "incomplete",
+                "incomplete_reason": "network_error",
+            }
+        )
+        package["search"]["query_records"][0][
+            "transport_receipt_sha256"
+        ] = self._receipt_hash(receipt)
+        self._rebind_review(package)
+        with self.assertRaises(phase_c1.PhaseC1ContractError) as raised:
+            self._validate(package)
+        self.assertEqual(raised.exception.code, "query_transport_binding")
+
+    def test_rejects_citation_documentation_with_non_document_purpose(
+        self,
+    ) -> None:
+        package = self.source_review_package()
+        receipt = package["transport"]["receipts"][91]
+        receipt.update(
+            {
+                "purpose": "citation_discovery",
+                "request_key": (
+                    "c1-citation-transport-hesitation-forward-01"
+                ),
+            }
+        )
+        package["search"]["citation_records"][0][
+            "documentation_transport_receipt_sha256s"
+        ] = [self._receipt_hash(receipt)]
+        self._rebind_review(package)
+        with self.assertRaises(phase_c1.PhaseC1ContractError) as raised:
+            self._validate(package)
+        self.assertEqual(
+            raised.exception.code,
+            "citation_documentation_transport_purpose",
+        )
+
+    def test_rejects_source_document_request_key_mismatch(self) -> None:
+        package = self.source_review_package()
+        package["transport"]["receipts"][88]["request_key"] = (
+            "c1-document-0004"
+        )
+        source_one_hash = self._receipt_hash(package["transport"]["receipts"][88])
+        package["source"]["sources"][0]["documents"][0][
+            "transport_receipt_sha256"
+        ] = source_one_hash
+        package["search"]["query_records"][32]["discovery_records"][0][
+            "documentation_transport_receipt_sha256s"
+        ] = [source_one_hash]
+        self._rebind_review(package)
+        with self.assertRaises(phase_c1.PhaseC1ContractError):
+            self._validate(package)
+
+    def test_rejects_discovery_documentation_with_non_document_purpose(
+        self,
+    ) -> None:
+        package = self.source_review_package()
+        receipt = package["transport"]["receipts"][88]
+        receipt.update(
+            {
+                "purpose": "citation_discovery",
+                "request_key": "c1-citation-transport-hesitation-forward-01",
+            }
+        )
+        source_one_hash = self._receipt_hash(receipt)
+        package["source"]["sources"][0]["documents"][0][
+            "transport_receipt_sha256"
+        ] = source_one_hash
+        package["search"]["query_records"][32]["discovery_records"][0][
+            "documentation_transport_receipt_sha256s"
+        ] = [source_one_hash]
+        self._rebind_review(package)
+        with self.assertRaises(phase_c1.PhaseC1ContractError):
+            self._validate(package)
+
 
 class PhaseC1DecisionTests(_PhaseC1FixtureMixin, unittest.TestCase):
     def setUp(self) -> None:

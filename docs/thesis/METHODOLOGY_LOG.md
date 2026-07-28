@@ -6576,3 +6576,37 @@ Interpretation:
   simulation, model evaluation, source adaptation, runtime action, candidate or
   canonical output, Task 6, C2, push, merge, or history rewrite occurred or is
   authorized.
+
+### 2026-07-28 - EMOTION-STATE-004 Phase C1 Task 8 rowless source-ledger freeze
+
+- Scope and network boundary: Task 7 alone used the frozen bounded
+  public-metadata network scope. Task 8 reopened no network and reviewed the
+  exact Task 7 ignored package/cache before freezing only tracked rowless
+  ledgers and an attestation. No authoritative document, dataset material,
+  annotation row, private data, model, provider, call, or runtime was read or
+  used.
+- Byte authorities: frozen protocol SHA-256
+  `2540A1BA430F78B9F660BA466F6CFD7099CFFCAA6F1C1D1AC373F4BA1D4D2CCD`;
+  ignored transport ledger SHA-256
+  `D95F508F336B19C1C4F86C733ECD0910AE7C28396CE4FE4B3BB125A3E785D693`;
+  tracked search ledger `572,660` bytes / SHA-256
+  `A6FCAA50123E4D67FF92D36E9755B4ED7C82306FCAA50B72ED26A478361365DB`;
+  tracked source ledger `1,566` bytes / SHA-256
+  `81FB1301287F0E3E8FA0E21840B1B596028509C11FAAC75D6D6F8914051D0B58`;
+  and admitted review receipt `7,207` bytes / SHA-256
+  `4B489D77BFC948B84F8A6BC73A30DC1068138D6ABD2A563EB7FD43BFE9224E11`.
+- Reviewed transport/cache totals: exactly `88` requests, `41` complete and
+  `47` incomplete; direct-label-source requests `37` complete / `43`
+  incomplete; fallback-material requests `4` complete / `4` incomplete. The
+  cache holds `41` files totaling `14,567,576` bytes.
+- Search/source outcome: `1,025` discoveries consist of `971`
+  `authoritative_provenance_unverified` unresolved records plus `54`
+  duplicates. There are `0` retained candidates, `0` excluded candidates, `0`
+  citations, `0` source documents, `0` sources, and `0` cards. The five
+  protocol-required fallback assessments are unresolved;
+  `search_complete=false`; and all five `fail_ready` values are `false`.
+- Independent Task 8 review: `C0/I0/M0`. The `admitted` verdict attests exact
+  rowless package integrity only. It admits no signal evidence, produces no
+  candidate/canonical pair or signal decision, and opens no
+  C2/model/runtime/provider/call gate. There are zero authoritative retained
+  URLs to add to the registry.
