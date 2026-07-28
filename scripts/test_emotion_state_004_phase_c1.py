@@ -6,7 +6,9 @@ import hashlib
 import inspect
 import json
 import os
+import subprocess
 import sys
+import tempfile
 import time
 import unittest
 from unittest import mock
@@ -19,6 +21,7 @@ from typing import Callable
 import scripts.emotion_state_phase_c1_contracts as phase_c1
 import scripts.emotion_state_phase_c1_decision as decision
 import scripts.run_emotion_state_004_phase_c1 as runner
+import scripts.validate_emotion_state_004_phase_c1 as validator
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -7948,6 +7951,2240 @@ class PhaseC1AggregateRunnerTests(_PhaseC1FixtureMixin, unittest.TestCase):
             if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef))
         }
         self.assertTrue(retired_names.isdisjoint(current_names))
+
+
+class PhaseC1IndependentValidatorTests(
+    _PhaseC1FixtureMixin,
+    unittest.TestCase,
+):
+    def setUp(self) -> None:
+        self.temporary_directory = tempfile.TemporaryDirectory(
+            prefix="emotion-state-c1-validator-",
+        )
+        self.addCleanup(self.temporary_directory.cleanup)
+        self.temp_root = Path(self.temporary_directory.name)
+        self.protocol_bytes = self.protocol_path.read_bytes()
+        self.protocol = phase_c1.validate_discovery_protocol(
+            self.valid_protocol_payload()
+        )
+        self.input_paths = {
+            "PROTOCOL_PATH": (
+                self.temp_root
+                / "research"
+                / "experiments"
+                / "configs"
+                / "emotion-state-004-phase-c1-discovery-protocol.json"
+            ),
+            "SEARCH_LEDGER_PATH": (
+                self.temp_root
+                / "research"
+                / "sources"
+                / "emotion_state"
+                / "phase_c1_search_ledger.json"
+            ),
+            "SOURCE_LEDGER_PATH": (
+                self.temp_root
+                / "research"
+                / "sources"
+                / "emotion_state"
+                / "phase_c1_source_evidence_ledger.json"
+            ),
+            "SOURCE_REVIEW_PATH": (
+                self.temp_root
+                / "research"
+                / "sources"
+                / "emotion_state"
+                / "phase_c1_source_review_receipt.json"
+            ),
+        }
+        self.candidate_root = (
+            self.temp_root
+            / ".tmp"
+            / "emotion-state-004-phase-c1"
+            / "candidate"
+        )
+        self.canonical_root = (
+            self.temp_root
+            / "research"
+            / "experiments"
+            / "generated"
+            / (
+                "EMOTION-STATE-004-phase-c1-operational-signal-"
+                "evidence-admission"
+            )
+        )
+        self.paths_patch = mock.patch.multiple(
+            validator,
+            ROOT=self.temp_root,
+            CANDIDATE_ROOT=self.candidate_root,
+            CANONICAL_ROOT=self.canonical_root,
+            **self.input_paths,
+        )
+        self.paths_patch.start()
+        self.addCleanup(self.paths_patch.stop)
+        self.seed_authority(
+            self.authority_bytes(admissible_signals=("confusion",))
+        )
+
+    @staticmethod
+    def canonical_dataclass_bytes(
+        value: object,
+        schema_version: str,
+    ) -> bytes:
+        return PhaseC1DecisionTests.canonical_dataclass_bytes(
+            value,
+            schema_version,
+        )
+
+    @staticmethod
+    def closed_validator_import_source() -> bytes:
+        return (
+            b"from __future__ import annotations\n"
+            b"import ast\n"
+            b"import ctypes\n"
+            b"import json\n"
+            b"import os\n"
+            b"import re\n"
+            b"import stat\n"
+            b"import subprocess\n"
+            b"import sys\n"
+            b"import threading\n"
+            b"from collections.abc import Mapping, Sequence\n"
+            b"from ctypes import wintypes\n"
+            b"from dataclasses import fields, is_dataclass\n"
+            b"from pathlib import Path\n"
+            b"from typing import Any, Final\n"
+            b"from scripts import "
+            b"emotion_state_phase_c1_contracts as phase_c1\n"
+            b"kernel32 = ctypes.WinDLL("
+            b"'kernel32', use_last_error=True)\n"
+            b"get_information = "
+            b"kernel32.GetFileInformationByHandle\n"
+            b"kernel32 = ctypes.WinDLL("
+            b"'kernel32', use_last_error=True)\n"
+            b"create_file = kernel32.CreateFileW\n"
+            b"kernel32 = ctypes.WinDLL("
+            b"'kernel32', use_last_error=True)\n"
+            b"close_handle = kernel32.CloseHandle\n"
+            b"def _drain_git_pipe(\n"
+            b"    stream: Any,\n"
+            b"    *,\n"
+            b"    maximum_bytes: int,\n"
+            b"    chunks: list[bytes],\n"
+            b"    overflow: threading.Event,\n"
+            b"    errors: list[BaseException],\n"
+            b"    process: subprocess.Popen[bytes],\n"
+            b"):\n"
+            b"    process.kill()\n"
+            b"    process.kill()\n"
+            b"def _git(repository_root, *arguments):\n"
+            b"    command = [\n"
+            b"        'git',\n"
+            b"        '--no-replace-objects',\n"
+            b"        '--no-lazy-fetch',\n"
+            b"        *arguments,\n"
+            b"    ]\n"
+            b"    process = subprocess.Popen(\n"
+            b"        command,\n"
+            b"        cwd=repository_root,\n"
+            b"        stdin=subprocess.DEVNULL,\n"
+            b"        stdout=subprocess.PIPE,\n"
+            b"        stderr=subprocess.PIPE,\n"
+            b"        shell=False,\n"
+            b"        close_fds=True,\n"
+            b"        env=_git_environment(),\n"
+            b"    )\n"
+            b"    if process.stdout is None or process.stderr is None:\n"
+            b"        process.kill()\n"
+            b"    stdout_thread = threading.Thread(\n"
+            b"        target=_drain_git_pipe,\n"
+            b"        kwargs={\n"
+            b"            'stream': process.stdout,\n"
+            b"            'maximum_bytes': maximum_output_bytes,\n"
+            b"            'chunks': stdout_chunks,\n"
+            b"            'overflow': overflow,\n"
+            b"            'errors': drain_errors,\n"
+            b"            'process': process,\n"
+            b"        },\n"
+            b"        daemon=True,\n"
+            b"    )\n"
+            b"    stderr_thread = threading.Thread(\n"
+            b"        target=_drain_git_pipe,\n"
+            b"        kwargs={\n"
+            b"            'stream': process.stderr,\n"
+            b"            'maximum_bytes': maximum_output_bytes,\n"
+            b"            'chunks': stderr_chunks,\n"
+            b"            'overflow': overflow,\n"
+            b"            'errors': drain_errors,\n"
+            b"            'process': process,\n"
+            b"        },\n"
+            b"        daemon=True,\n"
+            b"    )\n"
+            b"    stdout_thread.start()\n"
+            b"    stderr_thread.start()\n"
+            b"    returncode = process.wait(timeout=15)\n"
+            b"    process.kill()\n"
+            b"    returncode = process.wait(timeout=2)\n"
+            b"    process.kill()\n"
+            b"    stdout_thread.join(timeout=2)\n"
+            b"    stderr_thread.join(timeout=2)\n"
+            b"    if stdout_thread.is_alive() or stderr_thread.is_alive():\n"
+            b"        process.kill()\n"
+            b"        stdout_thread.join(timeout=2)\n"
+            b"        stderr_thread.join(timeout=2)\n"
+            b"    process.stdout.close()\n"
+            b"    process.stderr.close()\n"
+            b"    if (\n"
+            b"        timed_out\n"
+            b"        or stdout_thread.is_alive()\n"
+            b"        or stderr_thread.is_alive()\n"
+            b"    ):\n"
+            b"        pass\n"
+            b"def main(argv: Sequence[str] | None = None):\n"
+            b"    arguments = sys.argv[1:] if argv is None else argv\n"
+            b"_git(repository_root, 'rev-parse', '--verify', "
+            b"'HEAD^{commit}')\n"
+            b"_git(repository_root, 'rev-parse', '--verify', "
+            b"f'{commit}^{{commit}}')\n"
+            b"_git(repository_root, 'ls-tree', '-z', commit, '--', "
+            b"_literal_pathspec(relative_path))\n"
+            b"_git(repository_root, 'ls-files', '--stage', '-z', "
+            b"'--', _literal_pathspec(relative_path))\n"
+            b"_git(repository_root, 'cat-file', '-s', object_id, "
+            b"maximum_output_bytes=128)\n"
+            b"_git(repository_root, 'cat-file', 'blob', object_id, "
+            b"maximum_output_bytes=maximum_bytes)\n"
+            b"_git(repository_root, 'log', '--format=%H', "
+            b"'--diff-filter=A', '--no-renames', head, '--', "
+            b"_literal_pathspec(relative_path))\n"
+            b"_git(repository_root, 'diff-tree', '--no-commit-id', "
+            b"'--name-status', '-r', '-z', '--no-renames', "
+            b"pair_commit, '--')\n"
+            b"_git(repository_root, 'merge-base', '--is-ancestor', "
+            b"ancestor, descendant, expected_codes=(0, 1))\n"
+            b"_git(requested, 'rev-parse', '--show-toplevel')\n"
+            b"_git(repository, 'rev-list', '--parents', '-n', '1', "
+            b"pair_commit)\n"
+        )
+
+    def authority_bytes(
+        self,
+        *,
+        admissible_signals: tuple[str, ...] = (),
+        unresolved_signals: tuple[str, ...] = (),
+    ) -> dict[str, bytes]:
+        search, source_ledger, review = (
+            PhaseC1DecisionTests.validated_projection_inputs(
+                self,
+                admissible_signals=admissible_signals,
+                unresolved_signals=unresolved_signals,
+            )
+        )
+        return {
+            "protocol_bytes": self.protocol_bytes,
+            "search_ledger_bytes": self.canonical_dataclass_bytes(
+                search,
+                "EmotionStatePhaseC1SearchLedgerV1",
+            ),
+            "source_ledger_bytes": self.canonical_dataclass_bytes(
+                source_ledger,
+                "EmotionStatePhaseC1SourceEvidenceLedgerV1",
+            ),
+            "review_receipt_bytes": self.canonical_dataclass_bytes(
+                review,
+                "EmotionStatePhaseC1SourceReviewReceiptV1",
+            ),
+        }
+
+    def seed_authority(self, authority: dict[str, bytes]) -> None:
+        mapping = {
+            "protocol_bytes": self.input_paths["PROTOCOL_PATH"],
+            "search_ledger_bytes": self.input_paths["SEARCH_LEDGER_PATH"],
+            "source_ledger_bytes": self.input_paths["SOURCE_LEDGER_PATH"],
+            "review_receipt_bytes": self.input_paths["SOURCE_REVIEW_PATH"],
+        }
+        for name, path in mapping.items():
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_bytes(authority[name])
+
+    @staticmethod
+    def reself(payload: dict[str, object]) -> None:
+        PhaseC1AggregateRunnerTests.reself(payload)
+
+    def build_pair(
+        self,
+        authority: dict[str, bytes] | None = None,
+        *,
+        head_commit: str = "a" * 40,
+        validator_blob_id: str = "b" * 40,
+    ) -> tuple[dict[str, object], bytes, bytes]:
+        if authority is None:
+            authority = self.authority_bytes(
+                admissible_signals=("confusion",)
+            )
+        result = runner.build_phase_c1_result(
+            head_commit=head_commit,
+            validator_blob_id=validator_blob_id,
+            **authority,
+        )
+        result_bytes = phase_c1.canonical_json_bytes(result)
+        report_bytes = runner.render_phase_c1_report(result, **authority)
+        return result, result_bytes, report_bytes
+
+    def parsed_authority(
+        self,
+        authority: dict[str, bytes],
+    ) -> tuple[
+        phase_c1.PhaseC1ProtocolV1,
+        phase_c1.PhaseC1SearchLedgerV1,
+        phase_c1.PhaseC1SourceEvidenceLedgerV1,
+        phase_c1.PhaseC1SourceReviewReceiptV1,
+    ]:
+        protocol_payload = phase_c1.load_json_strict(
+            authority["protocol_bytes"],
+            source="protocol",
+        )
+        protocol = phase_c1.validate_discovery_protocol(protocol_payload)
+        search_payload = phase_c1.load_json_strict(
+            authority["search_ledger_bytes"],
+            source="search",
+        )
+        search = phase_c1.validate_search_ledger(
+            search_payload,
+            protocol=protocol,
+        )
+        source_payload = phase_c1.load_json_strict(
+            authority["source_ledger_bytes"],
+            source="source",
+        )
+        source_ledger = phase_c1.validate_source_evidence_ledger(
+            source_payload,
+            protocol=protocol,
+            search_ledger_bytes=authority["search_ledger_bytes"],
+        )
+        review_payload = phase_c1.load_json_strict(
+            authority["review_receipt_bytes"],
+            source="review",
+        )
+        review = phase_c1.validate_source_review_receipt(
+            review_payload,
+            protocol=protocol,
+            search_ledger_bytes=authority["search_ledger_bytes"],
+            source_evidence_ledger_bytes=authority["source_ledger_bytes"],
+        )
+        return protocol, search, source_ledger, review
+
+    def test_validator_ast_allows_only_the_exact_contract_dependency(
+        self,
+    ) -> None:
+        allowed = self.closed_validator_import_source()
+        actual_validator_bytes = Path(validator.__file__).read_bytes()
+        validator._validate_validator_dependency_ast(allowed)
+        rejected = (
+            (
+                b"from . import "
+                b"emotion_state_phase_c1_decision as hidden\n"
+            ),
+            (
+                b"from .emotion_state_phase_c1_decision "
+                b"import decide as hidden\n"
+            ),
+            (
+                b"import scripts.emotion_state_phase_c1_decision "
+                b"as hidden\n"
+            ),
+            (
+                b"from scripts import "
+                b"run_emotion_state_004_phase_c1 as hidden\n"
+            ),
+            (
+                b"import importlib\n"
+                b"importlib.import_module("
+                b"'scripts.emotion_state_phase_c1_decision')\n"
+            ),
+            (
+                b"__import__('scripts.run_emotion_state_004_phase_c1')\n"
+            ),
+            (
+                b"producer = "
+                b"'scripts.emotion_state_phase_c1_decision'\n"
+            ),
+            (
+                b"from scripts import "
+                b"emotion_state_phase_c1_contracts as contracts\n"
+            ),
+            (
+                b"import scripts.emotion_state_phase_c1_contracts "
+                b"as phase_c1\n"
+            ),
+            (
+                b"from scripts import "
+                b"emotion_state_phase_c1_contracts as phase_c1\n"
+                b"from scripts import unrelated as hidden\n"
+            ),
+            (
+                b"from scripts import "
+                b"emotion_state_phase_c1_contracts as phase_c1\n"
+                b"exec('from ' + 'scripts import ' + "
+                b"'run_emotion_state_004_phase_c1')\n"
+            ),
+            (
+                b"from scripts import "
+                b"emotion_state_phase_c1_contracts as phase_c1\n"
+                b"eval('_' + '_import__' + "
+                b"'(' + repr('scripts' + "
+                b"'.run_emotion_state_004_phase_c1') + ')')\n"
+            ),
+            (
+                b"from scripts import "
+                b"emotion_state_phase_c1_contracts as phase_c1\n"
+                b"compile('import ' + 'scripts' + "
+                b"'.run_emotion_state_004_phase_c1', "
+                b"'<dynamic>', 'exec')\n"
+            ),
+            (
+                b"from scripts import "
+                b"emotion_state_phase_c1_contracts as phase_c1\n"
+                b"hidden = __import__\n"
+                b"hidden('scripts' + "
+                b"'.run_emotion_state_004_phase_c1')\n"
+            ),
+            (
+                b"from scripts import "
+                b"emotion_state_phase_c1_contracts as phase_c1\n"
+                b"import builtins as safe\n"
+                b"hidden = getattr(safe, '__im' + 'port__')\n"
+                b"hidden('scripts' + "
+                b"'.run_emotion_state_004_phase_c1')\n"
+            ),
+            (
+                b"from scripts import "
+                b"emotion_state_phase_c1_contracts as phase_c1\n"
+                b"from builtins import exec as hidden\n"
+                b"hidden('import ' + 'scripts' + "
+                b"'.run_emotion_state_004_phase_c1')\n"
+            ),
+            (
+                allowed
+                + b"hidden = globals()['__builtins__']["
+                b"''.join(['__im', 'port__'])]\n"
+                b"hidden('scripts' + "
+                b"'.run_emotion_state_004_phase_c1')\n"
+            ),
+            (
+                allowed
+                + b"hidden = getattr("
+                b"globals()['__builtins__'], "
+                b"''.join(['__im', 'port__']))\n"
+                b"hidden('scripts' + "
+                b"'.run_emotion_state_004_phase_c1')\n"
+            ),
+            (
+                allowed
+                + b"hidden = locals()['__builtins__']["
+                b"''.join(['ex', 'ec'])]\n"
+            ),
+            (
+                allowed
+                + b"hidden = vars(__builtins__)["
+                b"''.join(['ev', 'al'])]\n"
+            ),
+            (
+                allowed
+                + b"setattr(object(), 'loader', "
+                b"globals()['__builtins__'])\n"
+            ),
+            (
+                allowed
+                + b"delattr(object(), 'loader')\n"
+            ),
+            (
+                allowed
+                + b"hidden = sys.modules["
+                b"'scripts' + "
+                b"'.run_emotion_state_004_phase_c1']\n"
+            ),
+            (
+                allowed
+                + b"hidden = getattr(sys, 'mod' + 'ules')["
+                b"'scripts' + "
+                b"'.run_emotion_state_004_phase_c1']\n"
+            ),
+            (
+                allowed
+                + b"ctypes.PyDLL(None)\n"
+            ),
+            (
+                allowed
+                + b"import runpy\n"
+                b"runpy.run_module('scripts' + "
+                b"'.run_emotion_state_004_phase_c1')\n"
+            ),
+            (
+                allowed
+                + b"ctypes.cdll.LoadLibrary('outside')\n"
+            ),
+            (
+                allowed
+                + b"ctypes.windll.LoadLibrary('outside')\n"
+            ),
+            (
+                allowed
+                + b"ctypes.pydll.LoadLibrary('outside')\n"
+            ),
+            (
+                allowed
+                + b"ctypes.oledll.LoadLibrary('outside')\n"
+            ),
+            (
+                allowed
+                + b"ctypes._dlopen('outside', 0)\n"
+            ),
+            (
+                allowed
+                + b"ctypes.LibraryLoader(object)\n"
+            ),
+            (
+                allowed
+                + b"ctypes.LoadLibrary('outside')\n"
+            ),
+            (
+                allowed
+                + b"hidden = sys._getframe().f_builtins["
+                b"''.join(['__im', 'port__'])]\n"
+                b"hidden('scripts' + "
+                b"'.run_emotion_state_004_phase_c1')\n"
+            ),
+            (
+                allowed
+                + b"os.system('outside')\n"
+            ),
+            (
+                allowed
+                + b"subprocess.Popen(['outside'])\n"
+            ),
+            (
+                actual_validator_bytes
+                + b"\nx = os\n"
+                + b"x.system('outside')\n"
+            ),
+            (
+                actual_validator_bytes
+                + b"\nsp = subprocess\n"
+                + b"sp.Popen(['outside'])\n"
+            ),
+            (
+                actual_validator_bytes
+                + b"\nc = ctypes\n"
+                + b"c.cdll.LoadLibrary('outside')\n"
+            ),
+            (
+                actual_validator_bytes
+                + b"\ns = sys\n"
+                + b"s._getframe()\n"
+            ),
+            (
+                actual_validator_bytes
+                + b"\njson.__builtins__\n"
+            ),
+            (
+                actual_validator_bytes
+                + b"\njson.decoder.__builtins__\n"
+            ),
+            (
+                actual_validator_bytes
+                + b"\nthreading._sys.modules\n"
+            ),
+            (
+                actual_validator_bytes
+                + b"\nprint.__self__.__import__('outside')\n"
+            ),
+            (
+                actual_validator_bytes
+                + b"\ntry:\n"
+                + b"    raise RuntimeError('outside')\n"
+                + b"except RuntimeError as exception:\n"
+                + b"    exception.__traceback__.tb_frame.f_builtins\n"
+            ),
+            (
+                actual_validator_bytes
+                + b"\nos.stat.__self__.system('outside')\n"
+            ),
+            (
+                actual_validator_bytes
+                + b"\nsubprocess.Popen[bytes].__origin__\n"
+            ),
+            (
+                actual_validator_bytes
+                + b"\nsubprocess.Popen[bytes](['outside'])\n"
+            ),
+            (
+                actual_validator_bytes
+                + b"\nctypes.WinDLL("
+                + b"'kernel32', use_last_error=True"
+                + b").WinExec('outside', 0)\n"
+            ),
+            (
+                actual_validator_bytes
+                + b"\nos.path.__builtins__\n"
+            ),
+            (
+                actual_validator_bytes
+                + b"\nos.path.sys.modules\n"
+            ),
+            (
+                actual_validator_bytes
+                + b"\nphase_c1.__builtins__\n"
+            ),
+            (
+                actual_validator_bytes
+                + b"\nphase_c1.load_json_strict.__builtins__\n"
+            ),
+            (
+                actual_validator_bytes
+                + b"\nast.literal_eval('0')\n"
+            ),
+            (
+                actual_validator_bytes
+                + b"\nast.Load()\n"
+            ),
+            (
+                actual_validator_bytes
+                + b"\njson.loads('{}')\n"
+            ),
+            (
+                actual_validator_bytes
+                + b"\nre.search('x', 'x')\n"
+            ),
+            (
+                actual_validator_bytes
+                + b"\nstat.filemode(0)\n"
+            ),
+            (
+                actual_validator_bytes
+                + b"\nthreading.Timer(0, print)\n"
+            ),
+            (
+                actual_validator_bytes
+                + b"\nwintypes.WORD\n"
+            ),
+            (
+                actual_validator_bytes
+                + b"\nphase_c1.unapproved\n"
+            ),
+            (
+                actual_validator_bytes
+                + b"\njson = object()\n"
+                + b"json.dumps({})\n"
+            ),
+            (
+                actual_validator_bytes
+                + b"\nloader = kernel32\n"
+            ),
+            (
+                actual_validator_bytes
+                + b"\nkernel32.WinExec('outside', 0)\n"
+            ),
+            (
+                actual_validator_bytes.replace(
+                    (
+                        b"kernel32 = ctypes.WinDLL("
+                        b"\"kernel32\", use_last_error=True)"
+                    ),
+                    (
+                        b"loader = ctypes.WinDLL("
+                        b"\"kernel32\", use_last_error=True)"
+                    ),
+                    1,
+                )
+            ),
+            (
+                actual_validator_bytes
+                + b"\n__loader__.load_module('scripts' + '.x')\n"
+            ),
+            (
+                actual_validator_bytes
+                + b"\n__spec__.loader.load_module('scripts' + '.x')\n"
+            ),
+            (
+                actual_validator_bytes
+                + b"\nhelp('scripts' + '.x')\n"
+            ),
+            (
+                actual_validator_bytes
+                + b"\nquit()\n"
+            ),
+            (
+                actual_validator_bytes
+                + b"\nsecond = type(process)(['outside'])\n"
+            ),
+            (
+                actual_validator_bytes
+                + b"\nprocess.pid\n"
+            ),
+            (
+                actual_validator_bytes
+                + b"\nprocess = object()\n"
+            ),
+            (
+                actual_validator_bytes.replace(
+                    b"    try:\n"
+                    b"        process = subprocess.Popen(\n",
+                    b"    command[:] = ['git', 'status']\n"
+                    b"    try:\n"
+                    b"        process = subprocess.Popen(\n",
+                    1,
+                )
+            ),
+            (
+                actual_validator_bytes
+                + b"\ncommand_alias = command\n"
+            ),
+            (
+                actual_validator_bytes
+                + b"\n_git("
+                + b"ROOT, '-c', "
+                + b"'alias.x=!python -c \"print(1)\"', 'x')\n"
+            ),
+            (
+                actual_validator_bytes
+                + b"\ngit_alias = _git\n"
+            ),
+            (
+                actual_validator_bytes.replace(
+                    b'        "HEAD^{commit}",\n',
+                    b'        "HEAD",\n',
+                    1,
+                )
+            ),
+            (
+                actual_validator_bytes
+                + b"\nPath = object\n"
+            ),
+            (
+                actual_validator_bytes
+                + b"\nMapping = object\n"
+            ),
+            (
+                actual_validator_bytes
+                + b"\nfields = object\n"
+            ),
+            (
+                actual_validator_bytes
+                + b"\ndel Final\n"
+            ),
+            (
+                actual_validator_bytes.replace(
+                    b"    command = [\n",
+                    b"    arguments = ('status',)\n"
+                    b"    command = [\n",
+                    1,
+                )
+            ),
+            (
+                actual_validator_bytes.replace(
+                    b"    command = [\n",
+                    b"    del arguments\n"
+                    b"    command = [\n",
+                    1,
+                )
+            ),
+        )
+        for source in rejected:
+            with self.subTest(source=source):
+                with self.assertRaises(validator.ValidationError):
+                    validator._validate_validator_dependency_ast(source)
+
+        validator._validate_validator_dependency_ast(actual_validator_bytes)
+        tree = ast.parse(actual_validator_bytes.decode("utf-8"))
+        forbidden_names = {
+            "PhaseC1RunnerPaths",
+            "PRODUCTION_PATHS",
+            "_project_phase_c1_result",
+            "build_phase_c1_result",
+            "render_phase_c1_report",
+        }
+        used_names = {
+            node.id
+            for node in ast.walk(tree)
+            if isinstance(node, ast.Name)
+        } | {
+            node.attr
+            for node in ast.walk(tree)
+            if isinstance(node, ast.Attribute)
+        }
+        self.assertTrue(forbidden_names.isdisjoint(used_names))
+
+    def test_validator_has_no_user_defined_mutable_container_globals(
+        self,
+    ) -> None:
+        interpreter_metadata = {
+            "__annotations__",
+            "__builtins__",
+        }
+
+        def mutable_names() -> set[str]:
+            return {
+                name
+                for name, value in vars(validator).items()
+                if name not in interpreter_metadata
+                and isinstance(value, (dict, list, set))
+            }
+
+        self.assertEqual(mutable_names(), set())
+        with mock.patch.object(validator, "_CACHE", {}, create=True):
+            self.assertEqual(mutable_names(), {"_CACHE"})
+
+    def test_validator_ast_rejects_all_protected_binding_forms(
+        self,
+    ) -> None:
+        source = Path(validator.__file__).read_bytes()
+
+        def replace_last(old: bytes, new: bytes) -> bytes:
+            prefix, separator, suffix = source.rpartition(old)
+            self.assertEqual(separator, old)
+            return prefix + new + suffix
+
+        rejected = (
+            (
+                source
+                + b"\nrecovered = stdout_thread._kwargs['process']\n"
+                + b"type(recovered)(['outside'])\n"
+            ),
+            source + b"\nstream_alias = process.stdout\n",
+            source + b"\nprocess = object()\n",
+            source + b"\ndel process\n",
+            source + b"\ndef command():\n    pass\n",
+            source + b"\nclass Path:\n    pass\n",
+            source + b"\nasync def fields():\n    pass\n",
+            source + b"\n(lambda process: process)(None)\n",
+            source + b"\ndef helper(Mapping):\n    pass\n",
+            (
+                source
+                + b"\ntry:\n"
+                + b"    raise RuntimeError('outside')\n"
+                + b"except RuntimeError as arguments:\n"
+                + b"    pass\n"
+            ),
+            source.replace(
+                b"        *arguments,\n"
+                b"    ]\n",
+                b"        *arguments,\n"
+                b"    ]\n"
+                b"    match object():\n"
+                b"        case command:\n"
+                b"            pass\n",
+                1,
+            ),
+            source + b"\nmatch []:\n    case [*stdout_thread]:\n        pass\n",
+            (
+                source
+                + b"\nmatch {}:\n"
+                + b"    case {**stderr_thread}:\n"
+                + b"        pass\n"
+            ),
+            source + b"\ndef helper():\n    global _git\n",
+            (
+                source
+                + b"\ndef outer():\n"
+                + b"    def inner():\n"
+                + b"        nonlocal Path\n"
+            ),
+            source.replace(
+                b"def _git(\n",
+                b"@staticmethod\n"
+                b"def _git(\n",
+                1,
+            ),
+            replace_last(
+                b"process.kill()",
+                b"process.wait()",
+            ),
+            replace_last(
+                b"stdout_thread.start()",
+                b"stdout_thread.run()",
+            ),
+            replace_last(
+                b"stderr_thread.start()",
+                b"stderr_thread.run()",
+            ),
+            replace_last(
+                b"stdout_thread.is_alive()",
+                b"stdout_thread.join()",
+            ),
+            replace_last(
+                b"process.wait(timeout=15)",
+                b"process.communicate(timeout=15)",
+            ),
+        )
+        for payload in rejected:
+            with self.subTest(payload=payload):
+                with self.assertRaises(validator.ValidationError):
+                    validator._validate_validator_dependency_ast(payload)
+
+    def test_validator_ast_rejects_drain_process_method_mutations(
+        self,
+    ) -> None:
+        source = Path(validator.__file__).read_bytes()
+        start = source.index(b"def _drain_git_pipe(")
+        end = source.index(b"\ndef _git(", start)
+        drain_source = source[start:end]
+        marker = b"process.kill()"
+        offsets: list[int] = []
+        cursor = 0
+        while True:
+            offset = drain_source.find(marker, cursor)
+            if offset == -1:
+                break
+            offsets.append(offset)
+            cursor = offset + len(marker)
+        self.assertEqual(len(offsets), 2)
+
+        def mutate(offset: int, replacement: bytes) -> bytes:
+            absolute = start + offset
+            return (
+                source[:absolute]
+                + replacement
+                + source[absolute + len(marker) :]
+            )
+
+        rejected = (
+            mutate(offsets[0], b"process.wait()"),
+            mutate(offsets[1], b"process.wait()"),
+            mutate(offsets[0], b"process.wait(timeout=15)"),
+        )
+        for payload in rejected:
+            with self.subTest(payload=payload):
+                with self.assertRaises(validator.ValidationError):
+                    validator._validate_validator_dependency_ast(payload)
+
+    def test_validator_ast_rejects_drain_binding_forms(self) -> None:
+        source = Path(validator.__file__).read_bytes()
+        rejected = (
+            source.replace(
+                b"\ndef _git(",
+                b"\n_drain_git_pipe = print\n\ndef _git(",
+                1,
+            ),
+            source.replace(
+                b"\ndef _git(",
+                b"\nclass _drain_git_pipe:\n"
+                b"    pass\n\n"
+                b"def _git(",
+                1,
+            ),
+            source.replace(
+                b"def _drain_git_pipe(",
+                b"@staticmethod\n"
+                b"def _drain_git_pipe(",
+                1,
+            ),
+        )
+        for payload in rejected:
+            with self.subTest(payload=payload):
+                with self.assertRaises(validator.ValidationError):
+                    validator._validate_validator_dependency_ast(payload)
+
+    def test_validator_ast_rejects_hybrid_git_body_pairs(self) -> None:
+        production = Path(validator.__file__).read_bytes()
+        synthetic = self.closed_validator_import_source()
+
+        def function_source(payload: bytes, name: str) -> bytes:
+            text = payload.decode("utf-8")
+            functions = [
+                node
+                for node in ast.parse(text).body
+                if isinstance(node, ast.FunctionDef)
+                and node.name == name
+            ]
+            self.assertEqual(len(functions), 1)
+            function = functions[0]
+            return "\n".join(
+                text.splitlines()[
+                    function.lineno - 1 : function.end_lineno
+                ]
+            ).encode("utf-8")
+
+        production_git = function_source(production, "_git")
+        production_drain = function_source(
+            production,
+            "_drain_git_pipe",
+        )
+        synthetic_git = function_source(synthetic, "_git")
+        synthetic_drain = function_source(
+            synthetic,
+            "_drain_git_pipe",
+        )
+        rejected = (
+            production.replace(
+                production_drain,
+                synthetic_drain,
+                1,
+            ),
+            production.replace(
+                production_git,
+                synthetic_git,
+                1,
+            ),
+            production.replace(
+                production_drain,
+                synthetic_drain,
+                1,
+            ).replace(
+                production_git,
+                synthetic_git,
+                1,
+            ),
+        )
+        for payload in rejected:
+            with self.subTest(payload=payload):
+                with self.assertRaises(validator.ValidationError):
+                    validator._validate_validator_dependency_ast(payload)
+
+    def test_runner_and_validator_pin_lexical_root_before_project_imports(
+        self,
+    ) -> None:
+        for path in (
+            Path(runner.__file__),
+            Path(validator.__file__),
+        ):
+            with self.subTest(path=path.name):
+                text = path.read_text(encoding="utf-8")
+                project_import_offsets = tuple(
+                    offset
+                    for marker in (
+                        "from scripts import ",
+                        "from scripts.",
+                        "import scripts.",
+                    )
+                    if (offset := text.find(marker)) >= 0
+                )
+                self.assertTrue(project_import_offsets)
+                self.assertGreater(
+                    min(project_import_offsets),
+                    text.index("_IMPORT_ROOT ="),
+                )
+                self.assertGreater(
+                    min(project_import_offsets),
+                    text.index("sys.path.insert(0,"),
+                )
+
+    def test_validator_rederives_all_four_overall_decisions(self) -> None:
+        cases = (
+            (
+                EXPECTED_SIGNALS,
+                (),
+                "proceed_full_to_c2",
+                list(EXPECTED_SIGNALS),
+            ),
+            (
+                ("confusion",),
+                (),
+                "proceed_partial_to_c2",
+                ["confusion"],
+            ),
+            ((), ("confusion",), "defer_c2", []),
+            ((), (), "stop_c2", []),
+        )
+        for admitted, unresolved, expected, eligible in cases:
+            with self.subTest(expected=expected):
+                parsed = self.parsed_authority(
+                    self.authority_bytes(
+                        admissible_signals=admitted,
+                        unresolved_signals=unresolved,
+                    )
+                )
+                projection = (
+                    validator.derive_phase_c1_projection_independently(
+                        protocol=parsed[0],
+                        search_ledger=parsed[1],
+                        source_ledger=parsed[2],
+                        review_receipt=parsed[3],
+                    )
+                )
+                self.assertEqual(
+                    projection["overall_decision"],
+                    expected,
+                )
+                self.assertEqual(
+                    projection["c2_eligible_signals"],
+                    eligible,
+                )
+
+    def test_independent_projection_is_pure_and_does_not_read_paths(
+        self,
+    ) -> None:
+        parsed = self.parsed_authority(
+            self.authority_bytes(admissible_signals=("confusion",))
+        )
+        with mock.patch(
+            "builtins.open",
+            side_effect=AssertionError("projection opened a path"),
+        ), mock.patch.object(
+            validator.subprocess,
+            "run",
+            side_effect=AssertionError("projection invoked Git"),
+        ):
+            projection = (
+                validator.derive_phase_c1_projection_independently(
+                    protocol=parsed[0],
+                    search_ledger=parsed[1],
+                    source_ledger=parsed[2],
+                    review_receipt=parsed[3],
+                )
+            )
+        self.assertEqual(
+            projection["overall_decision"],
+            "proceed_partial_to_c2",
+        )
+
+    def test_validator_pair_projection_matches_all_four_fixture_outcomes(
+        self,
+    ) -> None:
+        cases = (
+            (EXPECTED_SIGNALS, (), "proceed_full_to_c2"),
+            (("confusion",), (), "proceed_partial_to_c2"),
+            ((), ("confusion",), "defer_c2"),
+            ((), (), "stop_c2"),
+        )
+        for admitted, unresolved, expected in cases:
+            with self.subTest(expected=expected):
+                authority = self.authority_bytes(
+                    admissible_signals=admitted,
+                    unresolved_signals=unresolved,
+                )
+                self.seed_authority(authority)
+                _payload, result_bytes, report_bytes = self.build_pair(
+                    authority
+                )
+                validated = validator.validate_pair_bytes(
+                    result_bytes,
+                    report_bytes,
+                )
+                self.assertEqual(validated["overall_decision"], expected)
+
+    def test_projection_independently_rejects_derived_search_rewrites(
+        self,
+    ) -> None:
+        parsed = self.parsed_authority(
+            self.authority_bytes(admissible_signals=("confusion",))
+        )
+        search = parsed[1]
+        mutations = (
+            (
+                "search_complete",
+                replace(
+                    search,
+                    search_complete=not search.search_complete,
+                ),
+            ),
+            (
+                "fail_ready",
+                replace(
+                    search,
+                    fail_ready_by_signal=MappingProxyType(
+                        {
+                            **dict(search.fail_ready_by_signal),
+                            "hesitation": not search.fail_ready_by_signal[
+                                "hesitation"
+                            ],
+                        }
+                    ),
+                ),
+            ),
+            (
+                "overflow",
+                replace(
+                    search,
+                    overflow_count_by_signal=MappingProxyType(
+                        {
+                            **dict(search.overflow_count_by_signal),
+                            "hesitation": 1,
+                        }
+                    ),
+                ),
+            ),
+        )
+        for name, mutation in mutations:
+            with self.subTest(mutation=name):
+                search_bytes = self.canonical_dataclass_bytes(
+                    mutation,
+                    "EmotionStatePhaseC1SearchLedgerV1",
+                )
+                source_ledger = replace(
+                    parsed[2],
+                    search_ledger_sha256=phase_c1.sha256_bytes(
+                        search_bytes
+                    ),
+                )
+                source_bytes = self.canonical_dataclass_bytes(
+                    source_ledger,
+                    "EmotionStatePhaseC1SourceEvidenceLedgerV1",
+                )
+                review = replace(
+                    parsed[3],
+                    search_ledger_sha256=phase_c1.sha256_bytes(
+                        search_bytes
+                    ),
+                    source_evidence_ledger_sha256=phase_c1.sha256_bytes(
+                        source_bytes
+                    ),
+                )
+                with self.assertRaises(validator.ValidationError):
+                    validator.derive_phase_c1_projection_independently(
+                        protocol=parsed[0],
+                        search_ledger=mutation,
+                        source_ledger=source_ledger,
+                        review_receipt=review,
+                    )
+
+    def test_inputs_and_pair_bind_all_four_canonical_authorities(
+        self,
+    ) -> None:
+        loaded = validator.validate_phase_c1_inputs()
+        self.assertEqual(
+            loaded["input_sha256s"],
+            {
+                "protocol_sha256": phase_c1.sha256_bytes(
+                    self.protocol_bytes
+                ),
+                "search_ledger_sha256": phase_c1.sha256_bytes(
+                    self.input_paths["SEARCH_LEDGER_PATH"].read_bytes()
+                ),
+                "source_evidence_ledger_sha256": phase_c1.sha256_bytes(
+                    self.input_paths["SOURCE_LEDGER_PATH"].read_bytes()
+                ),
+                "source_review_receipt_sha256": phase_c1.sha256_bytes(
+                    self.input_paths["SOURCE_REVIEW_PATH"].read_bytes()
+                ),
+            },
+        )
+        _payload, result_bytes, report_bytes = self.build_pair()
+        self.assertEqual(
+            validator.validate_pair_bytes(
+                result_bytes,
+                report_bytes,
+            )["overall_decision"],
+            "proceed_partial_to_c2",
+        )
+        for path_key in (
+            "PROTOCOL_PATH",
+            "SEARCH_LEDGER_PATH",
+            "SOURCE_LEDGER_PATH",
+            "SOURCE_REVIEW_PATH",
+        ):
+            with self.subTest(path=path_key):
+                path = self.input_paths[path_key]
+                original = path.read_bytes()
+                path.write_bytes(original + b" ")
+                try:
+                    with self.assertRaises(validator.ValidationError):
+                        validator.validate_pair_bytes(
+                            result_bytes,
+                            report_bytes,
+                        )
+                finally:
+                    path.write_bytes(original)
+
+    def test_coherent_result_and_report_mutation_still_rejects(self) -> None:
+        payload, result_bytes, report_bytes = self.build_pair()
+        validator.validate_pair_bytes(result_bytes, report_bytes)
+        per_signal = payload["per_signal"]
+        self.assertIsInstance(per_signal, list)
+        hesitation = per_signal[0]
+        self.assertIsInstance(hesitation, dict)
+        hesitation.update(
+            {
+                "decision": "pass",
+                "c2_eligible": True,
+            }
+        )
+        payload["c2_eligible_signals"] = ["hesitation", "confusion"]
+        payload["overall_decision"] = "proceed_partial_to_c2"
+        self.reself(payload)
+        mutated_result = phase_c1.canonical_json_bytes(payload)
+        mutated_report = validator.render_expected_report_independently(
+            payload
+        )
+        with self.assertRaises(validator.ValidationError):
+            validator.validate_pair_bytes(
+                mutated_result,
+                mutated_report,
+            )
+
+    def test_pair_reader_is_allowlisted_bounded_and_no_follow(self) -> None:
+        _payload, result_bytes, report_bytes = self.build_pair()
+        self.candidate_root.mkdir(parents=True)
+        (self.candidate_root / "result.json").write_bytes(result_bytes)
+        (self.candidate_root / "report.md").write_bytes(report_bytes)
+        self.assertEqual(
+            validator.read_allowlisted_phase_c1_pair(
+                self.candidate_root
+            ),
+            (result_bytes, report_bytes),
+        )
+        rejected_roots = (
+            self.temp_root / "elsewhere",
+            (
+                os.fspath(self.candidate_root.parent)
+                + os.sep
+                + "."
+                + os.sep
+                + self.candidate_root.name
+            ),
+            (
+                os.fspath(self.candidate_root)
+                + os.sep
+                + ".."
+                + os.sep
+                + self.candidate_root.name
+            ),
+        )
+        for rejected in rejected_roots:
+            with self.subTest(root=rejected):
+                with self.assertRaises(validator.ValidationError):
+                    validator.read_allowlisted_phase_c1_pair(rejected)
+        extra = self.candidate_root / "extra.json"
+        extra.write_bytes(b"{}")
+        with self.assertRaises(validator.ValidationError):
+            validator.read_allowlisted_phase_c1_pair(
+                self.candidate_root
+            )
+        extra.unlink()
+        (self.candidate_root / "result.json").write_bytes(
+            b"x" * (validator.MAX_PAIR_FILE_BYTES + 1)
+        )
+        with self.assertRaises(validator.ValidationError):
+            validator.read_allowlisted_phase_c1_pair(
+                self.candidate_root
+            )
+
+    def test_pair_reader_rejects_reparse_and_descriptor_races(
+        self,
+    ) -> None:
+        _payload, result_bytes, report_bytes = self.build_pair()
+        self.candidate_root.mkdir(parents=True)
+        result_path = self.candidate_root / "result.json"
+        report_path = self.candidate_root / "report.md"
+        result_path.write_bytes(result_bytes)
+        report_path.write_bytes(report_bytes)
+        real_lstat = os.lstat
+
+        def linked_result(path: object) -> os.stat_result:
+            metadata = real_lstat(path)
+            if Path(path) == result_path:
+                return mock.Mock(
+                    **{
+                        **{
+                            name: getattr(metadata, name)
+                            for name in (
+                                "st_mode",
+                                "st_dev",
+                                "st_ino",
+                                "st_size",
+                                "st_mtime_ns",
+                            )
+                        },
+                        "st_file_attributes": (
+                            getattr(metadata, "st_file_attributes", 0)
+                            | validator.REPARSE_POINT
+                        ),
+                    }
+                )
+            return metadata
+
+        with mock.patch.object(validator.os, "lstat", side_effect=linked_result):
+            with self.assertRaises(validator.ValidationError):
+                validator.read_allowlisted_phase_c1_pair(
+                    self.candidate_root
+                )
+        with mock.patch.object(
+            validator,
+            "_metadata_identity",
+            side_effect=[
+                (1, 1, 1, 1, 1),
+                (2, 2, 2, 2, 2),
+            ],
+        ):
+            with self.assertRaises(validator.ValidationError):
+                validator.read_allowlisted_phase_c1_pair(
+                    self.candidate_root
+                )
+
+    def test_tracked_reader_anchors_every_input_and_binding_parent(
+        self,
+    ) -> None:
+        validator_path = (
+            self.temp_root
+            / "scripts"
+            / "validate_emotion_state_004_phase_c1.py"
+        )
+        contracts_path = (
+            self.temp_root
+            / "scripts"
+            / "emotion_state_phase_c1_contracts.py"
+        )
+        validator_path.parent.mkdir(parents=True, exist_ok=True)
+        tracked_paths = (
+            ("protocol", self.input_paths["PROTOCOL_PATH"]),
+            ("search", self.input_paths["SEARCH_LEDGER_PATH"]),
+            ("source", self.input_paths["SOURCE_LEDGER_PATH"]),
+            ("review", self.input_paths["SOURCE_REVIEW_PATH"]),
+            ("validator", validator_path),
+            ("contracts", contracts_path),
+        )
+        for label, target in tracked_paths:
+            with self.subTest(label=label):
+                original_bytes = f"ORIGINAL {label}\n".encode("ascii")
+                outside_bytes = f"OUTSIDE {label}\n".encode("ascii")
+                target.write_bytes(original_bytes)
+                parent = target.parent
+                saved = parent.with_name(f"{parent.name}-{label}-saved")
+                outside = parent.with_name(
+                    f"{parent.name}-{label}-outside"
+                )
+                outside.mkdir()
+                (outside / target.name).write_bytes(outside_bytes)
+                state = {
+                    "attempted": False,
+                    "blocked": False,
+                    "swapped": False,
+                }
+
+                def swap_parent() -> None:
+                    state["attempted"] = True
+                    try:
+                        os.replace(parent, saved)
+                    except OSError:
+                        state["blocked"] = True
+                        return
+                    try:
+                        os.replace(outside, parent)
+                    except OSError:
+                        os.replace(saved, parent)
+                        state["blocked"] = True
+                        return
+                    state["swapped"] = True
+
+                def restore_parent() -> None:
+                    if state["swapped"]:
+                        os.replace(parent, outside)
+                        os.replace(saved, parent)
+                        state["swapped"] = False
+
+                real_safe_lstat = validator._safe_lstat
+                real_child_metadata = (
+                    validator._AnchoredDirectory.child_metadata
+                )
+                real_anchor_validate = validator._AnchoredDirectory.validate
+
+                def raced_safe_lstat(
+                    path: Path,
+                    *,
+                    missing_code: str,
+                ) -> os.stat_result:
+                    current = Path(path)
+                    if current == target and not state["attempted"]:
+                        swap_parent()
+                    elif current == parent and state["swapped"]:
+                        restore_parent()
+                    return real_safe_lstat(
+                        path,
+                        missing_code=missing_code,
+                    )
+
+                def raced_child_metadata(
+                    anchor: object,
+                    name: str,
+                ) -> os.stat_result:
+                    if (
+                        anchor.target == parent
+                        and name == target.name
+                        and not state["attempted"]
+                    ):
+                        swap_parent()
+                    return real_child_metadata(anchor, name)
+
+                def restore_then_validate(anchor: object) -> None:
+                    if anchor.target == parent:
+                        restore_parent()
+                    real_anchor_validate(anchor)
+
+                payload: bytes | None = None
+                try:
+                    with mock.patch.object(
+                        validator,
+                        "_safe_lstat",
+                        side_effect=raced_safe_lstat,
+                    ), mock.patch.object(
+                        validator._AnchoredDirectory,
+                        "child_metadata",
+                        autospec=True,
+                        side_effect=raced_child_metadata,
+                    ), mock.patch.object(
+                        validator._AnchoredDirectory,
+                        "validate",
+                        autospec=True,
+                        side_effect=restore_then_validate,
+                    ):
+                        try:
+                            payload = validator._read_exact_tracked_file(
+                                target
+                            )
+                        except validator.ValidationError:
+                            payload = None
+                finally:
+                    restore_parent()
+                self.assertTrue(state["attempted"])
+                if payload is not None:
+                    self.assertEqual(payload, original_bytes)
+                    self.assertNotEqual(payload, outside_bytes)
+
+    def test_pair_reader_anchors_original_root_across_swap_and_restore(
+        self,
+    ) -> None:
+        original_result = b"ORIGINAL result\n"
+        original_report = b"ORIGINAL report\n"
+        outside_result = b"OUTSIDE result\n"
+        outside_report = b"OUTSIDE report\n"
+        self.candidate_root.mkdir(parents=True)
+        (self.candidate_root / "result.json").write_bytes(original_result)
+        (self.candidate_root / "report.md").write_bytes(original_report)
+        outside = self.candidate_root.with_name("candidate-outside")
+        outside.mkdir()
+        (outside / "result.json").write_bytes(outside_result)
+        (outside / "report.md").write_bytes(outside_report)
+        saved = self.candidate_root.with_name("candidate-original")
+        state = {
+            "attempted": False,
+            "blocked": False,
+            "swapped": False,
+        }
+        real_children = validator._AnchoredDirectory.bounded_children
+        real_validate = validator._AnchoredDirectory.validate
+
+        def swap_before_enumeration(
+            anchor: object,
+            maximum_children: int,
+        ) -> tuple[str, ...]:
+            state["attempted"] = True
+            try:
+                os.replace(self.candidate_root, saved)
+            except OSError:
+                state["blocked"] = True
+                return real_children(anchor, maximum_children)
+            try:
+                os.replace(outside, self.candidate_root)
+            except OSError:
+                os.replace(saved, self.candidate_root)
+                state["blocked"] = True
+                return real_children(anchor, maximum_children)
+            state["swapped"] = True
+            return real_children(anchor, maximum_children)
+
+        def restore_before_final_validation(anchor: object) -> None:
+            if state["swapped"]:
+                os.replace(self.candidate_root, outside)
+                os.replace(saved, self.candidate_root)
+                state["swapped"] = False
+            real_validate(anchor)
+
+        pair: tuple[bytes, bytes] | None = None
+        try:
+            with mock.patch.object(
+                validator._AnchoredDirectory,
+                "bounded_children",
+                autospec=True,
+                side_effect=swap_before_enumeration,
+            ), mock.patch.object(
+                validator._AnchoredDirectory,
+                "validate",
+                autospec=True,
+                side_effect=restore_before_final_validation,
+            ):
+                try:
+                    pair = validator.read_allowlisted_phase_c1_pair(
+                        self.candidate_root
+                    )
+                except validator.ValidationError:
+                    pair = None
+        finally:
+            if state["swapped"]:
+                os.replace(self.candidate_root, outside)
+                os.replace(saved, self.candidate_root)
+                state["swapped"] = False
+            elif saved.exists() and not self.candidate_root.exists():
+                os.replace(saved, self.candidate_root)
+        self.assertTrue(state["attempted"])
+        if pair is not None:
+            self.assertEqual(pair, (original_result, original_report))
+            self.assertNotEqual(pair, (outside_result, outside_report))
+
+    def test_pair_reader_stops_child_enumeration_after_third_entry(
+        self,
+    ) -> None:
+        self.candidate_root.mkdir(parents=True)
+        (self.candidate_root / "result.json").write_bytes(b"result\n")
+        (self.candidate_root / "report.md").write_bytes(b"report\n")
+        for index in range(10):
+            (self.candidate_root / f"extra-{index:02d}").write_bytes(b"x")
+        real_scandir = os.scandir
+        next_calls = 0
+
+        class CountingScandir:
+            def __init__(self, path: object) -> None:
+                self.inner = real_scandir(path)
+
+            def __enter__(self) -> CountingScandir:
+                self.inner.__enter__()
+                return self
+
+            def __exit__(self, *args: object) -> object:
+                return self.inner.__exit__(*args)
+
+            def __iter__(self) -> CountingScandir:
+                return self
+
+            def __next__(self) -> os.DirEntry[str]:
+                nonlocal next_calls
+                entry = next(self.inner)
+                next_calls += 1
+                return entry
+
+        with mock.patch.object(
+            validator.os,
+            "scandir",
+            side_effect=CountingScandir,
+        ):
+            with self.assertRaises(validator.ValidationError):
+                validator.read_allowlisted_phase_c1_pair(
+                    self.candidate_root
+                )
+        self.assertEqual(next_calls, 3)
+
+    def test_cli_accepts_only_exact_sections_and_has_stable_output(
+        self,
+    ) -> None:
+        sections = (
+            "inputs",
+            "projection",
+            "candidate",
+            "canonical",
+            "checkpoint",
+        )
+        for section in sections:
+            with self.subTest(section=section):
+                self.assertEqual(
+                    validator.parse_cli_args((section,)),
+                    section,
+                )
+        for argv in (
+            (),
+            ("fetch",),
+            ("INPUTS",),
+            ("candidate", "--root", "elsewhere"),
+            ("checkpoint", "--json"),
+        ):
+            with self.subTest(argv=argv):
+                with self.assertRaises(validator.CliUsageError):
+                    validator.parse_cli_args(argv)
+        with mock.patch.object(
+            validator,
+            "_run_section",
+            return_value=None,
+        ):
+            with mock.patch("sys.stdout") as stdout:
+                self.assertEqual(validator.main(["inputs"]), 0)
+                stdout.write.assert_any_call("inputs:pass")
+        with mock.patch.object(
+            validator,
+            "_run_section",
+            side_effect=validator.ValidationError("synthetic"),
+        ):
+            with mock.patch("sys.stderr") as stderr:
+                self.assertEqual(validator.main(["inputs"]), 1)
+                message = "".join(
+                    str(call.args[0])
+                    for call in stderr.write.call_args_list
+                    if call.args
+                )
+                self.assertTrue(
+                    message.startswith(
+                        "EMOTION-STATE-004 Phase C1 validation failed:"
+                    )
+                )
+                self.assertNotIn("Traceback", message)
+
+    def test_cli_rejects_two_thousand_level_json_without_traceback(
+        self,
+    ) -> None:
+        deeply_nested = (
+            (b"[" * 2000)
+            + b"0"
+            + (b"]" * 2000)
+            + b"\n"
+        )
+        self.input_paths["PROTOCOL_PATH"].write_bytes(deeply_nested)
+        with mock.patch("sys.stderr") as stderr:
+            self.assertEqual(validator.main(["inputs"]), 1)
+            message = "".join(
+                str(call.args[0])
+                for call in stderr.write.call_args_list
+                if call.args
+            )
+        self.assertTrue(
+            message.startswith(
+                "EMOTION-STATE-004 Phase C1 validation failed:"
+            )
+        )
+        self.assertNotIn("Traceback", message)
+
+    @staticmethod
+    def git(
+        root: Path,
+        *arguments: str,
+        check: bool = True,
+    ) -> str:
+        completed = subprocess.run(
+            ["git", "-C", os.fspath(root), *arguments],
+            check=False,
+            capture_output=True,
+            text=True,
+            encoding="utf-8",
+            errors="strict",
+            env={
+                **os.environ,
+                "GIT_TERMINAL_PROMPT": "0",
+                "GIT_OPTIONAL_LOCKS": "0",
+            },
+        )
+        if check and completed.returncode != 0:
+            raise AssertionError(
+                f"git {' '.join(arguments)} failed: {completed.stderr}"
+            )
+        return completed.stdout.strip()
+
+    def synthetic_lineage_repository(
+        self,
+        mutation: str | None = None,
+    ) -> Path:
+        repository = self.temp_root / f"lineage-{mutation or 'valid'}"
+        repository.mkdir()
+        self.git(repository, "init", "--quiet")
+        self.git(repository, "config", "user.name", "Phase C1 Test")
+        self.git(
+            repository,
+            "config",
+            "user.email",
+            "phase-c1-test@example.invalid",
+        )
+        authority = self.authority_bytes(
+            admissible_signals=("confusion",)
+        )
+        paths = {
+            "protocol_bytes": (
+                repository
+                / "research"
+                / "experiments"
+                / "configs"
+                / "emotion-state-004-phase-c1-discovery-protocol.json"
+            ),
+            "search_ledger_bytes": (
+                repository
+                / "research"
+                / "sources"
+                / "emotion_state"
+                / "phase_c1_search_ledger.json"
+            ),
+            "source_ledger_bytes": (
+                repository
+                / "research"
+                / "sources"
+                / "emotion_state"
+                / "phase_c1_source_evidence_ledger.json"
+            ),
+            "review_receipt_bytes": (
+                repository
+                / "research"
+                / "sources"
+                / "emotion_state"
+                / "phase_c1_source_review_receipt.json"
+            ),
+        }
+        for name, path in paths.items():
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_bytes(authority[name])
+        validator_path = (
+            repository
+            / "scripts"
+            / "validate_emotion_state_004_phase_c1.py"
+        )
+        validator_path.parent.mkdir(parents=True)
+        validator_path.write_bytes(self.closed_validator_import_source())
+        contracts_path = (
+            repository
+            / "scripts"
+            / "emotion_state_phase_c1_contracts.py"
+        )
+        contracts_path.write_bytes(b"# synthetic contracts\n")
+        self.git(repository, "add", ".")
+        self.git(repository, "commit", "--quiet", "-m", "implementation")
+        implementation_head = self.git(repository, "rev-parse", "HEAD")
+        validator_blob = self.git(
+            repository,
+            "rev-parse",
+            (
+                f"{implementation_head}:"
+                "scripts/validate_emotion_state_004_phase_c1.py"
+            ),
+        )
+        if mutation == "intervening_parent":
+            note = repository / "docs" / "note.md"
+            note.parent.mkdir()
+            note.write_text("intervening\n", encoding="utf-8", newline="\n")
+            self.git(repository, "add", "docs/note.md")
+            self.git(repository, "commit", "--quiet", "-m", "intervening")
+        if mutation == "merge_pair":
+            base_branch = self.git(
+                repository,
+                "symbolic-ref",
+                "--short",
+                "HEAD",
+            )
+            self.git(repository, "checkout", "--quiet", "-b", "side")
+            self.git(
+                repository,
+                "commit",
+                "--quiet",
+                "--allow-empty",
+                "-m",
+                "side parent",
+            )
+            self.git(repository, "checkout", "--quiet", base_branch)
+            self.git(
+                repository,
+                "merge",
+                "--quiet",
+                "--no-commit",
+                "--no-ff",
+                "side",
+            )
+        result, result_bytes, report_bytes = self.build_pair(
+            authority,
+            head_commit=(
+                "0" * 40
+                if mutation == "wrong_implementation_head"
+                else implementation_head
+            ),
+            validator_blob_id=validator_blob,
+        )
+        canonical = (
+            repository
+            / "research"
+            / "experiments"
+            / "generated"
+            / (
+                "EMOTION-STATE-004-phase-c1-operational-signal-"
+                "evidence-admission"
+            )
+        )
+        canonical.mkdir(parents=True)
+        (canonical / "result.json").write_bytes(result_bytes)
+        if mutation == "split_pair":
+            self.git(repository, "add", os.fspath(canonical / "result.json"))
+            self.git(repository, "commit", "--quiet", "-m", "result only")
+        (canonical / "report.md").write_bytes(report_bytes)
+        if mutation in {
+            "precommit_one_staged",
+            "precommit_both_staged",
+        }:
+            candidate = (
+                repository
+                / ".tmp"
+                / "emotion-state-004-phase-c1"
+                / "candidate"
+            )
+            candidate.mkdir(parents=True)
+            (candidate / "result.json").write_bytes(result_bytes)
+            (candidate / "report.md").write_bytes(report_bytes)
+            self.git(
+                repository,
+                "add",
+                os.fspath(canonical / "result.json"),
+            )
+            if mutation == "precommit_both_staged":
+                self.git(
+                    repository,
+                    "add",
+                    os.fspath(canonical / "report.md"),
+                )
+            return repository
+        if mutation == "extra_pair_path":
+            extra = repository / "extra.txt"
+            extra.write_text("extra\n", encoding="utf-8", newline="\n")
+        self.git(repository, "add", ".")
+        self.git(repository, "commit", "--quiet", "-m", "pair")
+        if mutation == "result_blob_drift":
+            result["overall_decision"] = "stop_c2"
+            self.reself(result)
+            (canonical / "result.json").write_bytes(
+                phase_c1.canonical_json_bytes(result)
+            )
+            self.git(repository, "add", os.fspath(canonical / "result.json"))
+            self.git(repository, "commit", "--quiet", "-m", "drift result")
+        if mutation == "input_rebound":
+            paths["protocol_bytes"].write_bytes(
+                paths["protocol_bytes"].read_bytes() + b" "
+            )
+            self.git(repository, "add", os.fspath(paths["protocol_bytes"]))
+            self.git(repository, "commit", "--quiet", "-m", "rebind input")
+        if mutation == "validator_rebound":
+            validator_path.write_bytes(b"# rebound validator\n")
+            self.git(repository, "add", os.fspath(validator_path))
+            self.git(repository, "commit", "--quiet", "-m", "rebind validator")
+        if mutation == "validator_worktree_dirty":
+            validator_path.write_bytes(b"# dirty validator\n")
+        if mutation == "contracts_rebound":
+            contracts_path.write_bytes(b"# rebound contracts\n")
+            self.git(repository, "add", os.fspath(contracts_path))
+            self.git(
+                repository,
+                "commit",
+                "--quiet",
+                "-m",
+                "rebind contracts",
+            )
+        if mutation == "contracts_worktree_dirty":
+            contracts_path.write_bytes(b"# dirty contracts\n")
+        if mutation == "pair_mode_drift":
+            self.git(
+                repository,
+                "update-index",
+                "--chmod=+x",
+                os.fspath(canonical / "report.md"),
+            )
+            self.git(repository, "commit", "--quiet", "-m", "drift mode")
+        if mutation == "pair_index_mode_staged":
+            self.git(
+                repository,
+                "update-index",
+                "--chmod=+x",
+                os.fspath(canonical / "report.md"),
+            )
+        if mutation == "pair_index_deleted":
+            self.git(
+                repository,
+                "rm",
+                "--cached",
+                "--quiet",
+                os.fspath(canonical / "report.md"),
+            )
+        if mutation == "doc_descendant":
+            note = repository / "docs" / "closeout.md"
+            note.parent.mkdir(exist_ok=True)
+            note.write_text("closeout\n", encoding="utf-8", newline="\n")
+            self.git(repository, "add", "docs/closeout.md")
+            self.git(repository, "commit", "--quiet", "-m", "closeout")
+        return repository
+
+    def patch_repository_paths(
+        self,
+        repository: Path,
+    ) -> mock._patch:
+        return mock.patch.multiple(
+            validator,
+            create=True,
+            ROOT=repository,
+            PROTOCOL_PATH=(
+                repository
+                / "research"
+                / "experiments"
+                / "configs"
+                / "emotion-state-004-phase-c1-discovery-protocol.json"
+            ),
+            SEARCH_LEDGER_PATH=(
+                repository
+                / "research"
+                / "sources"
+                / "emotion_state"
+                / "phase_c1_search_ledger.json"
+            ),
+            SOURCE_LEDGER_PATH=(
+                repository
+                / "research"
+                / "sources"
+                / "emotion_state"
+                / "phase_c1_source_evidence_ledger.json"
+            ),
+            SOURCE_REVIEW_PATH=(
+                repository
+                / "research"
+                / "sources"
+                / "emotion_state"
+                / "phase_c1_source_review_receipt.json"
+            ),
+            VALIDATOR_PATH=(
+                repository
+                / "scripts"
+                / "validate_emotion_state_004_phase_c1.py"
+            ),
+            CONTRACTS_PATH=(
+                repository
+                / "scripts"
+                / "emotion_state_phase_c1_contracts.py"
+            ),
+            CANDIDATE_ROOT=(
+                repository
+                / ".tmp"
+                / "emotion-state-004-phase-c1"
+                / "candidate"
+            ),
+            CANONICAL_ROOT=(
+                repository
+                / "research"
+                / "experiments"
+                / "generated"
+                / (
+                    "EMOTION-STATE-004-phase-c1-operational-signal-"
+                    "evidence-admission"
+                )
+            ),
+        )
+
+    def test_precommit_rejects_one_or_both_staged_canonical_files(
+        self,
+    ) -> None:
+        for mutation in (
+            "precommit_one_staged",
+            "precommit_both_staged",
+        ):
+            with self.subTest(mutation=mutation):
+                repository = self.synthetic_lineage_repository(mutation)
+                candidate = (
+                    repository
+                    / ".tmp"
+                    / "emotion-state-004-phase-c1"
+                    / "candidate"
+                )
+                with self.patch_repository_paths(repository):
+                    with self.assertRaises(validator.ValidationError):
+                        validator.validate_phase_c1_pair(candidate)
+
+    def test_git_cleans_up_after_thread_setup_failures(self) -> None:
+        scenarios = (
+            ("first_constructor", 0, None, ()),
+            ("second_constructor", 1, None, ()),
+            ("first_start", None, 0, ()),
+            ("second_start", None, 1, (0,)),
+        )
+        for (
+            label,
+            failing_constructor,
+            failing_start,
+            expected_joined,
+        ) in scenarios:
+            with self.subTest(label=label):
+                process = mock.Mock()
+                process.stdout = mock.Mock()
+                process.stderr = mock.Mock()
+                process.wait.return_value = -1
+                threads = (mock.Mock(), mock.Mock())
+                for thread in threads:
+                    thread.is_alive.return_value = False
+                if failing_start is not None:
+                    threads[failing_start].start.side_effect = RuntimeError(
+                        label
+                    )
+
+                thread_results: list[object] = list(threads)
+                if failing_constructor is not None:
+                    thread_results[failing_constructor] = RuntimeError(label)
+
+                with mock.patch.object(
+                    validator.subprocess,
+                    "Popen",
+                    return_value=process,
+                ), mock.patch.object(
+                    validator.threading,
+                    "Thread",
+                    side_effect=thread_results,
+                ):
+                    with self.assertRaisesRegex(
+                        validator.ValidationError,
+                        "git_execution",
+                    ):
+                        validator._git(self.temp_root, "status")
+
+                process.kill.assert_called_once_with()
+                process.wait.assert_called_once_with(timeout=2)
+                process.stdout.close.assert_called_once_with()
+                process.stderr.close.assert_called_once_with()
+                for index, thread in enumerate(threads):
+                    if index in expected_joined:
+                        thread.join.assert_called_once_with(timeout=2)
+                    else:
+                        thread.join.assert_not_called()
+
+    def test_git_reaps_after_initial_wait_error(self) -> None:
+        process = mock.Mock()
+        process.stdout = mock.Mock()
+        process.stderr = mock.Mock()
+        process.wait.side_effect = (OSError("initial wait"), -1)
+        threads = (mock.Mock(), mock.Mock())
+        for thread in threads:
+            thread.is_alive.return_value = False
+
+        with mock.patch.object(
+            validator.subprocess,
+            "Popen",
+            return_value=process,
+        ), mock.patch.object(
+            validator.threading,
+            "Thread",
+            side_effect=threads,
+        ):
+            with self.assertRaisesRegex(
+                validator.ValidationError,
+                "git_execution",
+            ):
+                validator._git(self.temp_root, "status")
+
+        self.assertEqual(
+            process.wait.call_args_list,
+            [
+                mock.call(timeout=15),
+                mock.call(timeout=2),
+            ],
+        )
+        process.kill.assert_called_once_with()
+        process.stdout.close.assert_called_once_with()
+        process.stderr.close.assert_called_once_with()
+        for thread in threads:
+            thread.join.assert_called_once_with(timeout=2)
+
+    def test_git_capture_is_bounded_for_large_blobs_and_stderr(
+        self,
+    ) -> None:
+        repository = self.temp_root / "bounded-git"
+        repository.mkdir()
+        self.git(repository, "init", "--quiet")
+        large_blob = repository / "large.bin"
+        large_blob.write_bytes(b"x" * (4 * 1024 * 1024))
+        object_id = self.git(
+            repository,
+            "hash-object",
+            "-w",
+            os.fspath(large_blob),
+        )
+        with mock.patch.object(
+            validator.subprocess,
+            "run",
+            side_effect=AssertionError("unbounded subprocess.run used"),
+        ):
+            with self.assertRaises(validator.ValidationError):
+                validator._blob_bytes(
+                    repository,
+                    object_id,
+                    maximum_bytes=1024,
+                )
+        with self.assertRaises(validator.ValidationError):
+            validator._git(
+                repository,
+                "cat-file",
+                "blob",
+                "z" * 4096,
+                expected_codes=(128,),
+                maximum_output_bytes=1024,
+            )
+
+    def test_repository_alternates_reject_before_git_and_worktrees_pass(
+        self,
+    ) -> None:
+        donor = self.temp_root / "alternates-donor"
+        donor.mkdir()
+        self.git(donor, "init", "--quiet")
+        donor_object_directory = donor / ".git" / "objects"
+
+        consumer = self.temp_root / "alternates-consumer"
+        consumer.mkdir()
+        self.git(consumer, "init", "--quiet")
+        alternates = consumer / ".git" / "objects" / "info" / "alternates"
+        alternates.parent.mkdir(parents=True, exist_ok=True)
+        alternates.write_text(
+            os.fspath(donor_object_directory) + "\n",
+            encoding="utf-8",
+            newline="\n",
+        )
+        with mock.patch.object(validator, "ROOT", consumer):
+            with mock.patch.object(
+                validator,
+                "_git",
+                side_effect=AssertionError("Git ran before alternates check"),
+            ):
+                with self.assertRaises(validator.ValidationError):
+                    validator._verify_repository_root(consumer)
+
+        primary = self.temp_root / "worktree-primary"
+        primary.mkdir()
+        self.git(primary, "init", "--quiet")
+        self.git(primary, "config", "user.name", "Phase C1 Test")
+        self.git(
+            primary,
+            "config",
+            "user.email",
+            "phase-c1-test@example.invalid",
+        )
+        marker = primary / "marker.txt"
+        marker.write_text("marker\n", encoding="utf-8", newline="\n")
+        self.git(primary, "add", "marker.txt")
+        self.git(primary, "commit", "--quiet", "-m", "worktree base")
+        worktree = self.temp_root / "linked-worktree"
+        self.git(
+            primary,
+            "worktree",
+            "add",
+            "--quiet",
+            "--detach",
+            os.fspath(worktree),
+        )
+        expected_head = self.git(worktree, "rev-parse", "HEAD")
+        with mock.patch.object(validator, "ROOT", worktree):
+            verified_root, live_head = validator._verify_repository_root(
+                worktree
+            )
+        self.assertEqual(verified_root, worktree)
+        self.assertEqual(live_head, expected_head)
+
+    def test_checkpoint_lineage_rejects_non_pair_parent_or_descendant_rebinding(
+        self,
+    ) -> None:
+        valid = self.synthetic_lineage_repository()
+        with self.patch_repository_paths(valid):
+            validator.validate_checkpoint_lineage(valid)
+        descendant = self.synthetic_lineage_repository("doc_descendant")
+        with self.patch_repository_paths(descendant):
+            validator.validate_checkpoint_lineage(descendant)
+        for mutation in (
+            "wrong_implementation_head",
+            "intervening_parent",
+            "merge_pair",
+            "split_pair",
+            "extra_pair_path",
+            "result_blob_drift",
+            "input_rebound",
+            "validator_rebound",
+            "validator_worktree_dirty",
+            "contracts_rebound",
+            "contracts_worktree_dirty",
+            "pair_mode_drift",
+            "pair_index_mode_staged",
+            "pair_index_deleted",
+        ):
+            with self.subTest(mutation=mutation):
+                repository = self.synthetic_lineage_repository(mutation)
+                with self.patch_repository_paths(repository):
+                    with self.assertRaises(validator.ValidationError):
+                        validator.validate_checkpoint_lineage(repository)
 
 
 if __name__ == "__main__":
