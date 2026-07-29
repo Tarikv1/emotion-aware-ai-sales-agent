@@ -3928,10 +3928,10 @@ python scripts/validate_check_setup.py
 git diff --check
 ```
 
-`candidate` and `checkpoint` are deliberately absent from the offline ledger.
-With the current absent publication state, both fail closed. They become
-read-only validation commands only after the separately gated lifecycle states
-described below exist.
+`candidate` and `checkpoint` were deliberately absent from the Task 9 offline
+ledger. The absent-publication wording is historical. The later accepted
+canonical-acceptance lifecycle supersedes it. `candidate` and `checkpoint` are
+now read-only validation commands.
 
 ### Explicit gate: dependency acquisition
 

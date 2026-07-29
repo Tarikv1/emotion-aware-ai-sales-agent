@@ -7803,3 +7803,86 @@ class PhaseCCloseoutContractTests(unittest.TestCase):
             "checkpoint.",
             normalized,
         )
+
+    def test_checkpoint_status_sections_record_accepted_lifecycle(self) -> None:
+        roadmap = (ROOT / "docs" / "thesis" / "ROADMAP.md").read_text(
+            encoding="utf-8",
+        )
+        checkpoint_board = roadmap.split("## Checkpoint Board", 1)[1]
+        checkpoint_board = checkpoint_board.split("\n## ", 1)[0]
+        board = " ".join(checkpoint_board.split())
+        self.assertIn(
+            "[x] Complete: `EMOTION-STATE-001` Phase A public-data gate,",
+            board,
+        )
+        self.assertIn(
+            "[x] Complete: `EMOTION-STATE-002` Phase B public-data "
+            "feasibility checkpoint accepted.",
+            board,
+        )
+        self.assertIn(
+            "[x] Current completed offline checkpoint: `EMOTION-STATE-003` "
+            "Phase C0 synthetic-mechanics checkpoint accepted.",
+            board,
+        )
+        self.assertIn(
+            "[ ] Next gate: `EMOTION-STATE-004` Phase C1 remains separate "
+            "and has no runtime, provider, call, private-data, or production "
+            "authority.",
+            board,
+        )
+        self.assertNotIn("Download and evaluation have not started", board)
+        self.assertNotIn("phase_a_complete=false", board)
+        self.assertNotIn(
+            "Current: review the `EMOTION-STATE-001` Task 7",
+            board,
+        )
+
+        phase_b = (
+            ROOT
+            / "research"
+            / "experiments"
+            / "EMOTION-STATE-002-phase-b-public-data-feasibility.md"
+        ).read_text(encoding="utf-8")
+        phase_b_status = phase_b.split("## Status", 1)[1].split("\n## ", 1)[0]
+        status = " ".join(phase_b_status.split())
+        self.assertIn(
+            "exact pair committed and pushed to the tracked Phase B branch "
+            "`codex/emotion-state-phase-b-public-data-feasibility`.",
+            status,
+        )
+        self.assertIn(
+            "Merge status is external and is not claimed by this checkpoint.",
+            status,
+        )
+        self.assertNotIn("locally and not pushed", status)
+
+        commands = (ROOT / "docs" / "product" / "COMMANDS.md").read_text(
+            encoding="utf-8",
+        )
+        phase_b_heading = "## EMOTION-STATE-002 Phase B Offline Validation And Gates"
+        phase_b_commands = commands.split(phase_b_heading, 1)[1]
+        phase_b_commands = phase_b_commands.split("\n## ", 1)[0]
+        command_text = " ".join(phase_b_commands.split())
+        self.assertIn(
+            "`candidate` and `checkpoint` were deliberately absent from the "
+            "Task 9 offline ledger.",
+            command_text,
+        )
+        self.assertIn(
+            "The absent-publication wording is historical.",
+            command_text,
+        )
+        self.assertIn(
+            "The later accepted canonical-acceptance lifecycle supersedes it.",
+            command_text,
+        )
+        self.assertIn(
+            "`candidate` and `checkpoint` are now read-only validation "
+            "commands.",
+            command_text,
+        )
+        self.assertNotIn(
+            "With the current absent publication state",
+            command_text,
+        )

@@ -297,7 +297,28 @@ The active KB attachment set and order must remain unchanged. Existing documents
 
 ## Evaluation And Verification
 
-Existing evaluation success and failure logic must not be weakened to obtain passing labels. Intentional product-price defaults may be updated wherever test fixtures mirror those defaults, but that change must be explicit and mechanically consistent.
+Existing evaluation success and failure logic must not be weakened to obtain passing labels. Intentional product-price defaults may be updated only through the exact pre-040 fixture-default allowlist and immutable protected baseline below.
+
+### Pre-040 Fixture Default-Mirror Exception And Protected Baseline
+
+The immutable prerequisite baseline is commit `f90e0bbc36097daaf41e3d4d67e3ae80feabef7e` with tree `6d5a176152a07bb29fa209642d7ee249b4337691`. During implementation and final closeout, verify protected paths against that commit/tree; a clean working diff alone is insufficient.
+
+The only permitted pre-040 test changes are mechanical replacements of embedded values for the six runtime default keys (`website_starting_price`, `website_basic_site_range`, `website_light_feature_range`, `website_workflow_content_range`, `website_integration_heavy_range`, and `website_premium_price_anchor`) in this exact allowlist:
+
+- `runtime/providers/elevenlabs_agents/tests/web_design_confident_capability_control_tests.json`
+- `runtime/providers/elevenlabs_agents/tests/web_design_cross_vertical_local_business_simulation_tests.json`
+- `runtime/providers/elevenlabs_agents/tests/web_design_demand_capture_conversion_leakage_v4_simulation_tests.json`
+- `runtime/providers/elevenlabs_agents/tests/web_design_emotional_resistance_dynamic_simulation_tests.json`
+- `runtime/providers/elevenlabs_agents/tests/web_design_end_call_edge_case_tests.json`
+- `runtime/providers/elevenlabs_agents/tests/web_design_end_call_terminal_control_tests.json`
+- `runtime/providers/elevenlabs_agents/tests/web_design_human_phone_naturalness_tests.json`
+- `runtime/providers/elevenlabs_agents/tests/web_design_mikes_kitchen_naturalness_tests.json`
+- `runtime/providers/elevenlabs_agents/tests/web_design_mikes_kitchen_simulation_tests.json`
+- `runtime/providers/elevenlabs_agents/tests/web_design_mikes_kitchen_value_pricing_tests.json`
+- `runtime/providers/elevenlabs_agents/tests/web_design_natural_sales_scenarios_tests.json`
+- `runtime/providers/elevenlabs_agents/tests/web_design_procedure_natural_sales_tests.json`
+
+No scenario, success condition, evaluator expectation, model, turn limit, test ID, test order, Analysis criterion, or other test content may change. The protected-file gate must compare the final tree to the immutable baseline and prove that any changed pre-040 fixture is in this allowlist and differs only in those embedded default values.
 
 Focused regression coverage should verify:
 

@@ -3,7 +3,9 @@
 ## Status
 
 Task 12 canonical checkpoint `accepted`; decision `revise`; exact pair committed
-locally and not pushed
+and pushed to the tracked Phase B branch
+`codex/emotion-state-phase-b-public-data-feasibility`. Merge status is external
+and is not claimed by this checkpoint.
 
 Transaction `559ccc55b0b5412ba455ca7fe3e3a6b7` retained
 `lockbox_open_count=1`, removed its journal and receipt, and produced result
@@ -17,7 +19,7 @@ returned `C0/I0/M0`.
 
 The retired lineage is not reused or mutated.
 
-Push, merge, runtime activation, Phase C, providers, private data, calls,
+Merge, runtime activation, Phase C, providers, private data, calls,
 simulations, and source adaptation remain outside this checkpoint. The old
 `.tmp/emotion-state-002-phase-b/venv` and
 `.tmp/emotion-state-002-phase-b/dependencies/wheelhouse` remain immutable
