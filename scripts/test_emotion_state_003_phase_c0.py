@@ -7825,6 +7825,10 @@ class PhaseCCloseoutContractTests(unittest.TestCase):
         )
         self.assertNotIn("Download and evaluation have not started", board)
         self.assertNotIn("phase_a_complete=false", board)
+        self.assertNotIn(
+            "Current: review the `EMOTION-STATE-001` Task 7",
+            board,
+        )
 
         phase_b = (
             ROOT
@@ -7832,7 +7836,7 @@ class PhaseCCloseoutContractTests(unittest.TestCase):
             / "experiments"
             / "EMOTION-STATE-002-phase-b-public-data-feasibility.md"
         ).read_text(encoding="utf-8")
-        phase_b_status = phase_b.split("## Status", 1)[1].split("##", 1)[0]
+        phase_b_status = phase_b.split("## Status", 1)[1].split("\n## ", 1)[0]
         status = " ".join(phase_b_status.split())
         self.assertIn(
             "exact pair committed and pushed to the tracked Phase B branch "
@@ -7868,5 +7872,9 @@ class PhaseCCloseoutContractTests(unittest.TestCase):
         self.assertIn(
             "`candidate` and `checkpoint` are now read-only validation "
             "commands.",
+            command_text,
+        )
+        self.assertNotIn(
+            "With the current absent publication state",
             command_text,
         )
