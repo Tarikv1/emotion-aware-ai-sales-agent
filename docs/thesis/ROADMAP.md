@@ -33,7 +33,10 @@ Active phase: thesis evidence consolidation after source-grounded OpenAI sales-r
 
 Current checkpoint:
 
-- [ ] Current: review the `EMOTION-STATE-001` Task 7 material-pending input integration for exactly `crema-d-v1.0-audio-wav` and `ami-manual-annotations-v1.6.2`. Download and evaluation have not started; source adaptation remains false; split-manifest v2 and cohort-release design are implemented only against synthetic fixtures; `phase_a_complete=false`. The real defer transaction and material-root absence probe require separate controller authority, and Task 8 remains a hard stop. No private-data, provider, call, simulation, runtime, production, customer, PSTN, ASR, latency, provider-feasibility, or internal-emotion claim is authorized.
+- [x] Complete: `EMOTION-STATE-001` Phase A public-data gate, including Task 7 material-pending input integration for exactly `crema-d-v1.0-audio-wav` and `ami-manual-annotations-v1.6.2`; source adaptation remains false.
+- [x] Complete: `EMOTION-STATE-002` Phase B public-data feasibility checkpoint accepted.
+- [x] Current completed offline checkpoint: `EMOTION-STATE-003` Phase C0 synthetic-mechanics checkpoint accepted.
+- [ ] Next gate: `EMOTION-STATE-004` Phase C1 remains separate and has no runtime, provider, call, private-data, or production authority.
 
 Next checkpoints:
 
