@@ -1,0 +1,75 @@
+{
+  "aggregate_output_sha256": "CDA97AF12911FF693DB566172C3A72EFED98D6A94DD0DD4531D82F97BC756E13",
+  "checkpoint_id": "EMOTION-STATE-003-phase-c0-synthetic-temporal-mechanics",
+  "complexity": {
+    "numeric_policy_parameter_count": 36,
+    "operational_signal_count": 5,
+    "runtime_files_modified": 0,
+    "scenario_count": 30,
+    "synthetic_evidence_class_count": 5
+  },
+  "counts_by_abstention_reason": {
+    "contradictory_evidence": 1,
+    "insufficient_evidence": 24,
+    "low_audio_quality": 1,
+    "missing_input": 11
+  },
+  "counts_by_family": {
+    "abstention": 4,
+    "contradiction": 2,
+    "correction": 1,
+    "determinism": 1,
+    "entry": 7,
+    "hysteresis": 4,
+    "independence": 1,
+    "isolation": 1,
+    "rejection": 8,
+    "saturation": 1
+  },
+  "counts_by_modality": {
+    "acoustic": 2,
+    "dialogue": 1,
+    "multimodal": 3,
+    "none": 1,
+    "text": 23
+  },
+  "counts_by_signal": {
+    "confusion": 13,
+    "disengagement": 1,
+    "frustration": 3,
+    "hesitation": 4,
+    "interest": 3,
+    "mixed": 5,
+    "none": 1
+  },
+  "decision": "keep",
+  "deterministic_replay_passed": true,
+  "emotion_accuracy_proven": false,
+  "evidence_policy_version": "emotion-state-evidence-v2",
+  "invariant_counts": {
+    "correction_semantic_replay": 0,
+    "deterministic_replay": 0,
+    "golden_projection": 0,
+    "privacy_boundary": 0,
+    "rejection_no_mutation": 0,
+    "semantic_output": 0,
+    "session_isolation": 0
+  },
+  "phase_b_inputs_consumed": false,
+  "policy_enforcement_proven": false,
+  "policy_id": "emotion-state-phase-c0-synthetic-v1",
+  "policy_sha256": "9BB996F886E9AFFBCDA40A6FB71BE10E1CD07D3B114B4E3FBCDAA1DF71171F15",
+  "privacy_boundary_passed": true,
+  "production_readiness_proven": false,
+  "provider_or_call_used": false,
+  "public_or_private_data_consumed": false,
+  "runtime_modified_or_activated": false,
+  "scenario_counts": {
+    "failed": 0,
+    "passed": 30,
+    "rejection_cases": 8,
+    "total": 30
+  },
+  "scenario_sha256": "D01FBD7677537A0A91D01E0EA8354D079491C13BBD81EC8BAC97E7BBC4520FB0",
+  "schema_version": "EmotionStatePhaseC0AggregateResultV1"
+}

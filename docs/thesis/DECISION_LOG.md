@@ -2782,3 +2782,43 @@ Record important thesis and implementation decisions here with enough context to
   - `VOICE-024` becomes the current listening checkpoint
   - default runs remain dry-run and provider-safe
   - live MP3s are local ignored artifacts and are not thesis evidence until Tarik records listening observations
+
+### DEC-021 - Start customer-state work with an offline provenance and contract foundation
+
+- Date: 2026-07-14
+- Status: accepted
+- Decision: implement EMOTION-STATE-001 as separate gated phases, beginning with source provenance, annotation rules, strict contracts, and a detached BRAIN extension.
+- Why: acoustic cues are ambiguous, current affect fields can influence sales selection, BRAIN-002 v1 cannot enforce modality provenance or monotonic de-escalation, and public/private data provenance is incomplete.
+- Consequences: no acoustic code adaptation, private-data ingestion, provider work, live wiring, runtime activation, or customer-state claim is authorized by Phase A.
+
+### DEC-022 - Integrate a material-pending public-dataset checkpoint before any download
+
+- Date: 2026-07-17
+- Status: accepted
+- Decision: select exactly `crema-d-v1.0-audio-wav` and `ami-manual-annotations-v1.6.2` at the contract layer while keeping dataset download, material verification, and evaluation not started; implement split-manifest v2 and cohort-release contracts only against synthetic fixtures.
+- Why: selection and contract design can be reviewed offline, but no completion claim is defensible until exact material manifests and cohort-release evidence exist and pass the guarded verification lease.
+- Consequences: source adaptation remains `false`; `phase_a_complete=false`; no private-data, provider, call, simulation, runtime, or canonical-publication action is part of the Task 7 input commit; no production, customer, PSTN, ASR, latency, provider-feasibility, or internal-emotion claim is authorized. A controller must separately authorize the real material-root absence probe before running the deferred candidate transaction.
+
+### DEC-023 - Close Phase A with two public-only lanes and a bounded completion claim
+
+- Date: 2026-07-19
+- Status: accepted
+- Decision: bind the exact verified CREMA-D controlled acoustic-sensitivity evidence and AMI manual-annotation conversational-mechanics evidence as two separate public-only lanes. Derive `phase_a_complete=true` only for `source_provenance_dataset_manifests_offline_contracts_and_cohort_release_gate_only`.
+- Why: the tracked manifests, hash inventories, quality inventories, offline contracts, guarded repository ledger, and crash-safe publication preconditions can close the provenance/contract gate without claiming that either source validates customer internal emotion or operational sales signals.
+- Consequences at decision time: dataset evaluation, live aggregate release, Phase B, private research, provider feasibility, runtime activation, model performance, production readiness, and source adaptation remained blocked. Task 10 froze inputs only; the later reviewed Task 11 transaction closed the canonical Phase A checkpoint without changing those evidence boundaries.
+
+### DEC-024 - Start Phase B with an interpretable public-data feasibility study
+
+- Date: 2026-07-19
+- Status: accepted
+- Decision: implement `EMOTION-STATE-002` as two separate offline lanes: a frozen 17-feature, speaker-disjoint classical baseline for CREMA-D's original six audio-perception labels, and deterministic contribution-limited conversational-mechanics aggregates from AMI manual annotations.
+- Why: Phase A proves provenance, integrity, contracts, and bounded acceptance but no model performance. A classical baseline can test whether acoustic complexity is justified without inventing mappings from acted labels or meeting mechanics to customer operational signals.
+- Consequences: Phase B requires a new claim-scoped split contract because Phase A split v2 cannot partition a single required `source_corpus`. CREMA-D and AMI rows never join; neither lane creates `PatternCandidateV1`, populates `PerceivedCustomerStateV1`, or affects runtime. Design approval does not authorize dependency installation, public-material evaluation, private data, providers, calls, simulations, source adaptation, final-lockbox opening, runtime activation, push, or merge.
+
+### DEC-025 - Bind Phase B CREMA-D labels to concordant real-schema audio evidence
+
+- Date: 2026-07-19
+- Status: accepted
+- Decision: do not use the all-abstained Phase A `source_label_evidence` projection and never substitute filename intent. Join the two pinned release CSVs by normalized clip stem; require `finishedResponses.csv` `queryType="1"` raw `respEmo` votes to have one unique maximum, require `summaryTable.csv` `VoiceVote` to contain one code, and require the two winners to agree.
+- Why: the authorized read-only inspection proved that the real release schema is `clipName/queryType/respEmo`, not the synthetic `FileName/Modality/Response` shape expected by the Phase A projection. The conservative concordance rule retains 6,570 clips across all 91 actors and 12 sentences while explicitly abstaining on 644 released ties, 204 additional raw ties, and 23 unique-winner disagreements.
+- Consequences: Phase A remains accepted only for its bounded provenance, material-integrity, contract, and cohort-release scope. Phase B must enforce the pinned CSV hashes and frozen `6570/644/204/23` ledger before feature extraction. Raw identifiers, votes, and rows remain ignored local state and cannot enter model features or tracked artifacts. No model evaluation, audio read, dependency install, provider/private/runtime action, push, or merge was authorized or performed by this correction.

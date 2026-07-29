@@ -1,0 +1,184 @@
+{
+  "checkpoint_id": "EXP-002-frozen-response-baseline",
+  "schema_version": 1,
+  "status": "frozen_response_score_arithmetic_runnable_and_recorded",
+  "input_fingerprints": {
+    "packages/prompts/baseline-non-adaptive.txt": "BB1FD1EAC0D4DE858BFDCE4A880BBF2C59C14A216489A1A85EF149F3E88D7FCA",
+    "packages/prompts/baseline-adaptive.txt": "EBD4106841987CA4A322C2B8B95A33ECFFC4238BB476DEC611A640D5B000EB42",
+    "research/experiments/cases/exp-002-dataset-derived.json": "882B94C0A31C41A94540941A254AC7E8119CADE9AAD9B071089E854917BDC7D6",
+    "research/experiments/EXP-002-dataset-derived-baseline.md": "D930C845AC912D44610B3CE263B55EA03BFFD7CAB8706C2BC95CB17045FF1316",
+    "research/experiments/generated/EXP-002/EXP-002-prompt-packet.md": "14017F985D54D2B46A338EA2EFA796B24202E3E5A3D3EB8223346CEA96E5CD09",
+    "docs/thesis/EVALUATION_RUBRIC.md": "39D3CF33E38A0C13ADEE178F3DB4174D4D8E3A42B1DE4C274BF96FFA36FFB416"
+  },
+  "response_generation_performed": false,
+  "semantic_judgment_recomputed": false,
+  "evaluator_provenance_status": "not_recorded",
+  "score_arithmetic_recomputed": true,
+  "cases": [
+    {
+      "case_id": "EXP-002-C01",
+      "response_sha256": {
+        "non_adaptive": "2EE99EBF17920DB82B8F15CA6147BCEEA3D89667DDC896D40582B7B7FA2ACBD0",
+        "adaptive": "B0911D2FE4DFA26755CA1F19C53C9A4AC82A0C80B1FA2CCD99CDD566B3662B89"
+      },
+      "scores": {
+        "non_adaptive": {
+          "Context fit": 4,
+          "Strategy coherence": 3,
+          "Emotional appropriateness": 3,
+          "Persuasive quality": 4,
+          "Human-likeness": 4,
+          "Total": 18
+        },
+        "adaptive": {
+          "Context fit": 5,
+          "Strategy coherence": 5,
+          "Emotional appropriateness": 5,
+          "Persuasive quality": 5,
+          "Human-likeness": 4,
+          "Total": 24
+        }
+      },
+      "preferred": "Adaptive"
+    },
+    {
+      "case_id": "EXP-002-C02",
+      "response_sha256": {
+        "non_adaptive": "41CC01DCD87C1180BF0EE7608B608C6070CF0CBC61DEF3F6F638451A518894A2",
+        "adaptive": "1D8894E6F6D6E5E5AD15A98F1A7A36A43AE7072AC476CC2A4A2F7293DE8B889B"
+      },
+      "scores": {
+        "non_adaptive": {
+          "Context fit": 4,
+          "Strategy coherence": 3,
+          "Emotional appropriateness": 3,
+          "Persuasive quality": 4,
+          "Human-likeness": 4,
+          "Total": 18
+        },
+        "adaptive": {
+          "Context fit": 5,
+          "Strategy coherence": 5,
+          "Emotional appropriateness": 5,
+          "Persuasive quality": 5,
+          "Human-likeness": 4,
+          "Total": 24
+        }
+      },
+      "preferred": "Adaptive"
+    },
+    {
+      "case_id": "EXP-002-C03",
+      "response_sha256": {
+        "non_adaptive": "123DB412C186C41BF95F6E7D47F557866792EBEB9AFA57CD94946CFC1C3003F9",
+        "adaptive": "98ABB1BDBA5F7C52358E7EC64B45183DCB3920BEB75CA08F0BA013C1F8DC6939"
+      },
+      "scores": {
+        "non_adaptive": {
+          "Context fit": 4,
+          "Strategy coherence": 4,
+          "Emotional appropriateness": 4,
+          "Persuasive quality": 4,
+          "Human-likeness": 4,
+          "Total": 20
+        },
+        "adaptive": {
+          "Context fit": 5,
+          "Strategy coherence": 5,
+          "Emotional appropriateness": 4,
+          "Persuasive quality": 4,
+          "Human-likeness": 4,
+          "Total": 22
+        }
+      },
+      "preferred": "Adaptive"
+    },
+    {
+      "case_id": "EXP-002-C04",
+      "response_sha256": {
+        "non_adaptive": "CF3D10FFCDAD0B97EE071D3122B0DCED57C36D4A8C816C5A7FD768F651D1C6FB",
+        "adaptive": "40C1672D3C34B526B52FCDCF3C3DE57EB38F7B0BA7E53D19D3FDAC58B54BDB6A"
+      },
+      "scores": {
+        "non_adaptive": {
+          "Context fit": 4,
+          "Strategy coherence": 4,
+          "Emotional appropriateness": 4,
+          "Persuasive quality": 4,
+          "Human-likeness": 4,
+          "Total": 20
+        },
+        "adaptive": {
+          "Context fit": 5,
+          "Strategy coherence": 5,
+          "Emotional appropriateness": 4,
+          "Persuasive quality": 4,
+          "Human-likeness": 4,
+          "Total": 22
+        }
+      },
+      "preferred": "Adaptive"
+    },
+    {
+      "case_id": "EXP-002-C05",
+      "response_sha256": {
+        "non_adaptive": "1C026905F8C89BD947FFD0E3CD9941E6DE5B7E40074362CD01560591DE15DF56",
+        "adaptive": "1FB2F01FE5F6A107007C3C90A3659BB1717AA2DC46A95C21D1BA8CB673D95E15"
+      },
+      "scores": {
+        "non_adaptive": {
+          "Context fit": 4,
+          "Strategy coherence": 3,
+          "Emotional appropriateness": 2,
+          "Persuasive quality": 3,
+          "Human-likeness": 4,
+          "Total": 16
+        },
+        "adaptive": {
+          "Context fit": 5,
+          "Strategy coherence": 5,
+          "Emotional appropriateness": 5,
+          "Persuasive quality": 5,
+          "Human-likeness": 5,
+          "Total": 25
+        }
+      },
+      "preferred": "Adaptive"
+    },
+    {
+      "case_id": "EXP-002-C06",
+      "response_sha256": {
+        "non_adaptive": "95DD3496FEF7F8D8275CB3EEDDC53E3D66E07A72431C407C005612589F1D6DA7",
+        "adaptive": "B8C279B6605E276CB8E36EAE09EDC03829E4C71CB056A7CA24BAB1BE8622C6E1"
+      },
+      "scores": {
+        "non_adaptive": {
+          "Context fit": 5,
+          "Strategy coherence": 4,
+          "Emotional appropriateness": 3,
+          "Persuasive quality": 4,
+          "Human-likeness": 4,
+          "Total": 20
+        },
+        "adaptive": {
+          "Context fit": 5,
+          "Strategy coherence": 5,
+          "Emotional appropriateness": 5,
+          "Persuasive quality": 5,
+          "Human-likeness": 5,
+          "Total": 25
+        }
+      },
+      "preferred": "Adaptive"
+    }
+  ],
+  "summary": {
+    "case_count": 6,
+    "response_count": 12,
+    "adaptive_preferred_count": 6,
+    "non_adaptive_preferred_count": 0,
+    "tie_count": 0,
+    "non_adaptive_average_total": 18.67,
+    "adaptive_average_total": 23.67
+  }
+}

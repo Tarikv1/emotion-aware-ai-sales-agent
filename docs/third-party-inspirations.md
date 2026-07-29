@@ -413,6 +413,36 @@ one reusable sales-agent core
 - Follow-up:
   - RESP-003 live TTS should use these local docs as its provider-run and generated-audio logging boundary.
 
+## Creative Analysis Engine / Shehzeb Iftakhar
+
+- Source:
+  - Immutable project-local source manifest: `research/sources/creative_analysis_engine/source_manifest.json`.
+  - Reviewed archive: `creative-analysis-engine-dev.zip`, SHA-256 `E579B966E226F2AF6E4F8F8203C7189FEC94FB448EFC09B4B6640C10A398ECCC`.
+  - Verified read-only repository pin: `https://github.com/WisdomBreathes/creative-analysis-engine`, branch `dev`, revision `7cb99ea2da3016cd82d0b5f805c015a808ce4e0d`.
+  - The seven reviewed files were verified byte-identical to their `dev` Git blobs at the pinned revision.
+  - The full ZIP was not proven equivalent to the pinned revision.
+- License observed: absent in the reviewed repository root. License metadata is not relied on for the confirmed permission basis.
+- Checked: 2026-07-14.
+- Reuse label: reference only; source adaptation remains prohibited.
+- What we learned/adapted:
+  - `speech_prosody.py` and `speech_turn_dynamics.py` remain reference-only material.
+  - `speech_call_readiness.py` and `emotion_readiness_comparison_score` are excluded from customer-emotion labels.
+  - No Phase A implementation was adapted from the archive or repository.
+- Directly copied material: none. No code was copied, translated, adapted, or independently reimplemented.
+- Where it affected the Emotion Aware project:
+  - `research/sources/creative_analysis_engine/source_manifest.json`
+  - `research/sources/creative_analysis_engine/source_notes.md`
+  - `docs/data/EMOTION_STATE_001_ANNOTATION_CODEBOOK.md`
+- Product/runtime boundary:
+  - No runtime dependency was added, and Phase A does not authorize runtime wiring or model/provider use.
+  - `adaptation_allowed` remains false until every recorded Phase B blocker is cleared in a separate reviewed commit.
+- Security/privacy notes:
+  - This entry records source metadata and reuse boundaries only; it does not contain archive code, private customer data, audio, transcripts, provider payloads, or secrets.
+- Follow-up:
+  - Do not copy, translate, adapt, or independently reimplement source material while the current instruction prohibits source adaptation.
+  - Define the Phase B reuse scope and attribution wording, resolve the absent-license blocker, and obtain separate Phase B approval before any later reuse review.
+  - Author permission is confirmed by project-owner attestation and is not a blocker; the current instruction and unresolved Phase B gates remain blockers.
+
 ## Sources Needing Clarification Before Adding
 
 - `source unclear`: local MELD, Persuasion for Good, and IEMOCAP dataset archives under `data/public/`.

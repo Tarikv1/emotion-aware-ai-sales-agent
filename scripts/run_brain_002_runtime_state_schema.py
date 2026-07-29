@@ -59,8 +59,8 @@ def main() -> None:
     payload = build_brain_002_payload(case_path, root=ROOT)
     out_path.parent.mkdir(parents=True, exist_ok=True)
     report_path.parent.mkdir(parents=True, exist_ok=True)
-    out_path.write_text(json.dumps(payload, indent=2, ensure_ascii=False), encoding="utf-8")
-    report_path.write_text(render_brain_002_report(payload), encoding="utf-8")
+    out_path.write_text(json.dumps(payload, indent=2, ensure_ascii=False), encoding="utf-8", newline="\n")
+    report_path.write_text(render_brain_002_report(payload), encoding="utf-8", newline="\n")
     print(json.dumps(payload["summary"], indent=2, ensure_ascii=False))
 
 

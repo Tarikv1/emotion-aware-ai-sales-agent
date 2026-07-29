@@ -155,3 +155,9 @@ The gauntlet scores `safe_close_rate`, `hard_failure_rate`, `non_sale_correctnes
 `PROD-011` hardens the dialogue-policy layer over the PROD-010 packet evidence. It scores policy action correctness, blocked action avoidance, objection stack preservation, and state-reference completeness while keeping retrieval disabled by default and live runtime behavior unchanged.
 
 The next use should test live-shaped transcripts or simulations against the hardened policy before any runtime promotion.
+
+## EMOTION-STATE Detached Extension
+
+`emotion-state-brain-extension-v1` is an offline contract only. It carries `state_evidence_by_modality`, `allowed_policy_effects`, `blocked_policy_effects`, and `text_only_policy_decision_ref` alongside a proposed mapping to the existing three buyer-state fields.
+
+It does not mutate `brain-runtime-state-v1`, enter a live trace, feed the action selector, alter a response, or authorize acoustic influence. A later versioned BRAIN migration and runtime-activation checkpoint are required before connection.

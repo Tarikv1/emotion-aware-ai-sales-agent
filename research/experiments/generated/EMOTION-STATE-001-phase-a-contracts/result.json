@@ -1,0 +1,1102 @@
+{
+  "checkpoint_id": "EMOTION-STATE-001-phase-a-contracts",
+  "schema_version": 2,
+  "mode": "complete",
+  "status": "complete",
+  "selected_public_datasets": [
+    "crema-d-v1.0-audio-wav",
+    "ami-manual-annotations-v1.6.2"
+  ],
+  "dataset_download_authorized": true,
+  "dataset_evaluation_started": false,
+  "dataset_manifest_evidence": [
+    {
+      "dataset_id": "crema-d-v1.0-audio-wav",
+      "completion_status": "verified",
+      "manifest_sha256": "6E86F06358E4AD172C72BE1692CFF37291D9D5763DD7F6F5C7CE7405E7E01248",
+      "hash_inventory_sha256": "AD58D8165C683847DF246F923FF466722C7F628FE8D81679F618FA5EB3031C87",
+      "quality_inventory_sha256": "455D6A010855F209B4DC4C67F67E4222FAB81601861745B5B5E79E7942B92682",
+      "source_provenance_status": "pass",
+      "material_validation_status": "pass"
+    },
+    {
+      "dataset_id": "ami-manual-annotations-v1.6.2",
+      "completion_status": "verified",
+      "manifest_sha256": "3904D4A3A9EDF53B06A65354E02FBE1BDD44361B5E196FC6DD4A3882C74911DE",
+      "hash_inventory_sha256": "CE7F837A2A44DFEE44691C4BA8B5B0D7766E46D6616986CF565A6300056DEAEE",
+      "quality_inventory_sha256": "A376A6C0D5F89770525936299717F1595B743489B593DC4E5CE88AB08ACB22C9",
+      "source_provenance_status": "pass",
+      "material_validation_status": "pass"
+    }
+  ],
+  "source_pin": {
+    "source_repository_url": "https://github.com/WisdomBreathes/creative-analysis-engine",
+    "source_branch": "dev",
+    "source_revision": "7cb99ea2da3016cd82d0b5f805c015a808ce4e0d",
+    "archive_sha256": "E579B966E226F2AF6E4F8F8203C7189FEC94FB448EFC09B4B6640C10A398ECCC",
+    "source_adaptation_allowed": false,
+    "code_adaptation_started": false
+  },
+  "contract_checks": {
+    "exp_002_frozen_response_baseline": "pass",
+    "emotion_state_annotation_contracts": "pass",
+    "public_dataset_contract": "pass",
+    "split_manifest_v2_contract": "pass",
+    "cohort_release_contract": "pass",
+    "emotion_state_contracts": "pass",
+    "emotion_pattern_contracts": "pass",
+    "emotion_state_brain_extension": "pass"
+  },
+  "blocking_reason_codes": [],
+  "summary": {
+    "contract_check_count": 8,
+    "contract_checks": {
+      "exp_002_frozen_response_baseline": "pass",
+      "emotion_state_annotation_contracts": "pass",
+      "public_dataset_contract": "pass",
+      "split_manifest_v2_contract": "pass",
+      "cohort_release_contract": "pass",
+      "emotion_state_contracts": "pass",
+      "emotion_pattern_contracts": "pass",
+      "emotion_state_brain_extension": "pass"
+    },
+    "baseline_fingerprint_count": 6,
+    "selected_public_dataset_count": 2,
+    "dataset_download_authorized": true,
+    "dataset_evaluation_started": false,
+    "material_verification_status": "verified",
+    "source_repository_url_status": "verified_read_only",
+    "source_adaptation_allowed": false,
+    "code_adaptation_started": false,
+    "frozen_exp_002_evaluator_provenance_status": "not_recorded",
+    "provider_operations_performed_by_runner": false,
+    "private_data_read_by_runner": false,
+    "runtime_behavior_changed_by_runner": false,
+    "runtime_activation_allowed": false
+  },
+  "archive_sha256": "E579B966E226F2AF6E4F8F8203C7189FEC94FB448EFC09B4B6640C10A398ECCC",
+  "baseline_fingerprints": {
+    "packages/prompts/baseline-non-adaptive.txt": "BB1FD1EAC0D4DE858BFDCE4A880BBF2C59C14A216489A1A85EF149F3E88D7FCA",
+    "packages/prompts/baseline-adaptive.txt": "EBD4106841987CA4A322C2B8B95A33ECFFC4238BB476DEC611A640D5B000EB42",
+    "research/experiments/cases/exp-002-dataset-derived.json": "882B94C0A31C41A94540941A254AC7E8119CADE9AAD9B071089E854917BDC7D6",
+    "research/experiments/EXP-002-dataset-derived-baseline.md": "D930C845AC912D44610B3CE263B55EA03BFFD7CAB8706C2BC95CB17045FF1316",
+    "research/experiments/generated/EXP-002/EXP-002-prompt-packet.md": "14017F985D54D2B46A338EA2EFA796B24202E3E5A3D3EB8223346CEA96E5CD09",
+    "docs/thesis/EVALUATION_RUBRIC.md": "39D3CF33E38A0C13ADEE178F3DB4174D4D8E3A42B1DE4C274BF96FFA36FFB416"
+  },
+  "readiness_boundary": {
+    "phase_a_contract_artifacts_built": true,
+    "phase_a_complete": true,
+    "phase_a_completion_scope": "source_provenance_dataset_manifests_offline_contracts_and_cohort_release_gate_only",
+    "full_repository_gate_claimed_by_this_artifact": true,
+    "live_aggregate_release_unblocked": false,
+    "phase_b_unblocked": false,
+    "public_dataset_evaluation_unblocked": false,
+    "private_research_unblocked": false,
+    "provider_feasibility_unblocked": false,
+    "runtime_activation_unblocked": false
+  },
+  "dataset_hash_inventory_digests": {
+    "crema-d-v1.0-audio-wav": "AD58D8165C683847DF246F923FF466722C7F628FE8D81679F618FA5EB3031C87",
+    "ami-manual-annotations-v1.6.2": "CE7F837A2A44DFEE44691C4BA8B5B0D7766E46D6616986CF565A6300056DEAEE"
+  },
+  "dataset_quality_inventory_digests": {
+    "crema-d-v1.0-audio-wav": "455D6A010855F209B4DC4C67F67E4222FAB81601861745B5B5E79E7942B92682",
+    "ami-manual-annotations-v1.6.2": "A376A6C0D5F89770525936299717F1595B743489B593DC4E5CE88AB08ACB22C9"
+  },
+  "dataset_material_validation_status": {
+    "crema-d-v1.0-audio-wav": "pass",
+    "ami-manual-annotations-v1.6.2": "pass"
+  },
+  "source_provenance_status": {
+    "crema-d-v1.0-audio-wav": "pass",
+    "ami-manual-annotations-v1.6.2": "pass"
+  },
+  "public_dataset_contract_status": "pass",
+  "cohort_release_contract_status": "pass",
+  "split_manifest_v2_contract_status": "pass",
+  "publication_integrity_preconditions": {
+    "crash_safe_pair_protocol_status": "pass",
+    "explicit_acceptance_transaction_status": "pass",
+    "last_valid_pair_preservation_status": "pass",
+    "output_self_reference_absent": true
+  },
+  "committed_change_inventory": [
+    {
+      "git_mode": "100644",
+      "path": ".superpowers/sdd/task-4-report.md",
+      "sha256": "14F2DA9A2B60390578CB8513790DFFD99A3C4B5E3751B4710CC56E53A14A157C"
+    },
+    {
+      "git_mode": "100644",
+      "path": ".superpowers/sdd/task-4-review-findings.md",
+      "sha256": "5B89D5D46EA62BB3C4D33D462433F0C29C2D1538BFBDB3B93CA02E11AF506ED3"
+    },
+    {
+      "git_mode": "100644",
+      "path": "docs/product/COMMANDS.md",
+      "sha256": "6CFD7A6018028CE6A6B46D46CB2ECD6943457AC6CDC1F79E9405B30C7758B9DD"
+    },
+    {
+      "git_mode": "100644",
+      "path": "docs/product/EMOTION_STATE_001_PHASE_A_CONTRACTS.md",
+      "sha256": "0B01BB5CBD87CDE0E909238F0673012E695D83DE84C3F53CBC39CD5FC24BA7CE"
+    },
+    {
+      "git_mode": "100644",
+      "path": "docs/superpowers/plans/2026-07-15-emotion-state-phase-a-open-dataset-gate-completion.md",
+      "sha256": "BB51E452418F1C41D74842C43BE02ACBD1F7E1825D6FF51A6C6E73782339D36E"
+    },
+    {
+      "git_mode": "100644",
+      "path": "docs/thesis/DECISION_LOG.md",
+      "sha256": "C988F1670EFDBB9EB47E99B8D69F932822FCCCB19A3366C3376DAD7935EFA5D6"
+    },
+    {
+      "git_mode": "100644",
+      "path": "docs/thesis/METHODOLOGY_LOG.md",
+      "sha256": "7DB0777BA8750881EC9CB72C2EC759AD629807793C1216FD33EE8CFFA5B52787"
+    },
+    {
+      "git_mode": "100644",
+      "path": "docs/thesis/ROADMAP.md",
+      "sha256": "8A1A6C5719D0B418BE72BACF7E8E7542317B94CC4D0E45DA983F2D5EE01D8C15"
+    },
+    {
+      "git_mode": "100644",
+      "path": "docs/thesis/THESIS_REFERENCE_REGISTRY.md",
+      "sha256": "6C6DE056C2F86FB79F727A7DAA9F9F19C198ABC91799DC6923D10A0D364F913D"
+    },
+    {
+      "git_mode": "100644",
+      "path": "docs/third-party-inspirations.md",
+      "sha256": "BD3289D6B57CAF791F6435745ACD98FF9B987696787E7933AEAB290F30FB344F"
+    },
+    {
+      "git_mode": "100644",
+      "path": "research/experiments/EMOTION-STATE-001-phase-a.md",
+      "sha256": "A6C7737D6144339665B5ED5EB33CDCBC1C7F988AA221F99CFDDAC5FFA4EEC982"
+    },
+    {
+      "git_mode": "100644",
+      "path": "research/experiments/cases/emotion-state-001-cohort-release-fixtures.json",
+      "sha256": "8BA0D25CA12D0149F4FB7D3B69C2AB1876EB44F20DD5D7ECD6FD277EC53531D8"
+    },
+    {
+      "git_mode": "100644",
+      "path": "research/experiments/cases/emotion-state-001-phase-a-contracts.json",
+      "sha256": "07BC96622CAB849BE276F54B18B3F3E705C8BD902D8F2AC442B488821BA4A99D"
+    },
+    {
+      "git_mode": "100644",
+      "path": "research/sources/creative_analysis_engine/source_manifest.json",
+      "sha256": "46854237C0E8295C8DAF3379C679FFBE23A02FA1FC0D759B509AB5171F1002DE"
+    },
+    {
+      "git_mode": "100644",
+      "path": "research/sources/creative_analysis_engine/source_notes.md",
+      "sha256": "1FFE2FDE4DCC8B2023FEB68321672139100D78433CDE09553FF5FC85153C5FDE"
+    },
+    {
+      "git_mode": "100644",
+      "path": "research/sources/emotion_state/cohort_release_evidence_v1.schema.json",
+      "sha256": "D28EDEB8E34107E6475606B12FDA13F393FA561DDCA9863584ED7AC2CC477112"
+    },
+    {
+      "git_mode": "100644",
+      "path": "research/sources/emotion_state/dataset_manifest_contract.json",
+      "sha256": "B9712B51F8133122AD3701B1C1047D69CDFEFE9DC2468D250C9DC25D4C8304F2"
+    },
+    {
+      "git_mode": "100644",
+      "path": "research/sources/emotion_state/datasets/ami-manual-annotations-v1.6.2.hashes.json",
+      "sha256": "CE7F837A2A44DFEE44691C4BA8B5B0D7766E46D6616986CF565A6300056DEAEE"
+    },
+    {
+      "git_mode": "100644",
+      "path": "research/sources/emotion_state/datasets/ami-manual-annotations-v1.6.2.manifest.json",
+      "sha256": "3904D4A3A9EDF53B06A65354E02FBE1BDD44361B5E196FC6DD4A3882C74911DE"
+    },
+    {
+      "git_mode": "100644",
+      "path": "research/sources/emotion_state/datasets/ami-manual-annotations-v1.6.2.quality.json",
+      "sha256": "A376A6C0D5F89770525936299717F1595B743489B593DC4E5CE88AB08ACB22C9"
+    },
+    {
+      "git_mode": "100644",
+      "path": "research/sources/emotion_state/datasets/crema-d-v1.0-audio-wav.hashes.json",
+      "sha256": "AD58D8165C683847DF246F923FF466722C7F628FE8D81679F618FA5EB3031C87"
+    },
+    {
+      "git_mode": "100644",
+      "path": "research/sources/emotion_state/datasets/crema-d-v1.0-audio-wav.manifest.json",
+      "sha256": "6E86F06358E4AD172C72BE1692CFF37291D9D5763DD7F6F5C7CE7405E7E01248"
+    },
+    {
+      "git_mode": "100644",
+      "path": "research/sources/emotion_state/datasets/crema-d-v1.0-audio-wav.quality.json",
+      "sha256": "455D6A010855F209B4DC4C67F67E4222FAB81601861745B5B5E79E7942B92682"
+    },
+    {
+      "git_mode": "100644",
+      "path": "research/sources/emotion_state/phase_a_verification_guard_policy.json",
+      "sha256": "A750C3EB69EB35D100AB32C9DCAFA9E02D2C91BD2BF8BACD6AB7F39899FC0DDE"
+    },
+    {
+      "git_mode": "100644",
+      "path": "research/sources/emotion_state/split_manifest_v2.schema.json",
+      "sha256": "D4FC7309618469A6FB78B45E7C89271B1F30AE1B3785F81668083671568690BA"
+    },
+    {
+      "git_mode": "100644",
+      "path": "scripts/build_emotion_state_public_dataset_manifests.py",
+      "sha256": "48CA141DF3B03E045C342C77418663557593EA9765D6E1F68A6D7443F2338EF5"
+    },
+    {
+      "git_mode": "100644",
+      "path": "scripts/check_project_drift.py",
+      "sha256": "D574D22DD43CCBEA139C0DEC969FD4F49F8A9551258518A3834C1B1DB21B6D15"
+    },
+    {
+      "git_mode": "100644",
+      "path": "scripts/check_setup.py",
+      "sha256": "33CAE3948A0C430154A0754E684D1AD82C8F1C486804B000E2C63C48D6166384"
+    },
+    {
+      "git_mode": "100644",
+      "path": "scripts/check_thesis_reference_registry.py",
+      "sha256": "A542F503770EC6543CBA502C3562F1CA0D8CC4B0C2D2DE2B0885E979A801CB49"
+    },
+    {
+      "git_mode": "100644",
+      "path": "scripts/emotion_state_cohort_release_contracts.py",
+      "sha256": "7D0900EBEFBA99584F12A6195D24213C69F573B3AC08D7092FAA8F35BD448B60"
+    },
+    {
+      "git_mode": "100644",
+      "path": "scripts/emotion_state_phase_a_contracts.py",
+      "sha256": "F96E743344025B06ECEAB98AA052B739287E034EE02FCA9FDD807E9FDE263BBE"
+    },
+    {
+      "git_mode": "100644",
+      "path": "scripts/emotion_state_phase_a_guard_site/sitecustomize.py",
+      "sha256": "2B976264AB5E46035CE1DBFDD2EB3B0FD0AAE431B686ADDA91E3331A750BCA55"
+    },
+    {
+      "git_mode": "100644",
+      "path": "scripts/emotion_state_phase_a_verification_evidence.py",
+      "sha256": "E1A75B5AAD89411F0D4CF1BEDA31D4FCE8F5D60D450D2DC993DFAA2AE0A43175"
+    },
+    {
+      "git_mode": "100644",
+      "path": "scripts/emotion_state_public_dataset_contracts.py",
+      "sha256": "79A461D12EECDAACDB4E74FB92770233CD3506B2BA014B584234F64965A1B2FB"
+    },
+    {
+      "git_mode": "100644",
+      "path": "scripts/emotion_state_split_manifest_v2_contracts.py",
+      "sha256": "26EEF4A19BAF0789A7528E30A59D64A21EC0F8BDD064876399EAE2270B5499E6"
+    },
+    {
+      "git_mode": "100644",
+      "path": "scripts/run_brain_002_runtime_state_schema.py",
+      "sha256": "7C945ACF9FB821D43852A4BF7AD2B12AD42EEEE5732FDD1629B7BDC523E7B624"
+    },
+    {
+      "git_mode": "100644",
+      "path": "scripts/run_emotion_state_001_phase_a_contracts.py",
+      "sha256": "018B4C4E8BA60BD17B4ADDFD82A3F468082FFB3BE766640EF075417D033729B1"
+    },
+    {
+      "git_mode": "100644",
+      "path": "scripts/run_exp_002_frozen_response_baseline.py",
+      "sha256": "07BC110AC116BE0303BC538DCEA7FDAC71CEFA1632AD5FB3BAEA6497BA7106A3"
+    },
+    {
+      "git_mode": "100644",
+      "path": "scripts/test_emotion_state_001_closeout_hardening.py",
+      "sha256": "3CBE351FEB6F2F32D3435FAFD89C78BE7F9B424FB91137F47ACACC727721B9CC"
+    },
+    {
+      "git_mode": "100644",
+      "path": "scripts/test_emotion_state_001_open_dataset_gate.py",
+      "sha256": "EC6643148D887909F95AAFA141E5C501FD59308AB934A220883E24E08117D36D"
+    },
+    {
+      "git_mode": "100644",
+      "path": "scripts/validate_check_setup.py",
+      "sha256": "0206FE4771B7165185C38447698EF94CBDE6BDD8137BBADC90BADAA64F25FC7F"
+    },
+    {
+      "git_mode": "100644",
+      "path": "scripts/validate_emotion_state_001_phase_a_contracts.py",
+      "sha256": "E221FF9387907DFFFF94CDC4D8517DB59846BF4D16483768F5142016B81790B6"
+    },
+    {
+      "git_mode": "100644",
+      "path": "scripts/validate_private_data_boundary.py",
+      "sha256": "53388929EAB821183BA80988D0D5C88D9E6466EB702765048B4C685262F6DE96"
+    },
+    {
+      "git_mode": "100644",
+      "path": "scripts/validate_project_drift_guard.py",
+      "sha256": "74A4CE7296F953C889998EF77DA22FD2CD00DA930D3F08979B1A32AA3874E2B9"
+    }
+  ],
+  "dataset_manifest_digests": {
+    "crema-d-v1.0-audio-wav": "6E86F06358E4AD172C72BE1692CFF37291D9D5763DD7F6F5C7CE7405E7E01248",
+    "ami-manual-annotations-v1.6.2": "3904D4A3A9EDF53B06A65354E02FBE1BDD44361B5E196FC6DD4A3882C74911DE"
+  },
+  "executable_dependency_closure_digest": "E19429010AEABFCD4A33787F682E267111BDE565E85707C675370E08F5D36CAA",
+  "executable_dependency_closure_edges": [
+    {
+      "consumer": "runtime/contracts/emotion_pattern_contracts.py",
+      "dependency": "runtime/__init__.py",
+      "edge_type": "python_import"
+    },
+    {
+      "consumer": "runtime/contracts/emotion_pattern_contracts.py",
+      "dependency": "runtime/contracts/__init__.py",
+      "edge_type": "python_import"
+    },
+    {
+      "consumer": "runtime/contracts/emotion_pattern_contracts.py",
+      "dependency": "runtime/contracts/emotion_state_contracts.py",
+      "edge_type": "python_import"
+    },
+    {
+      "consumer": "runtime/contracts/emotion_state_brain_extension.py",
+      "dependency": "runtime/__init__.py",
+      "edge_type": "python_import"
+    },
+    {
+      "consumer": "runtime/contracts/emotion_state_brain_extension.py",
+      "dependency": "runtime/contracts/__init__.py",
+      "edge_type": "python_import"
+    },
+    {
+      "consumer": "runtime/contracts/emotion_state_brain_extension.py",
+      "dependency": "runtime/contracts/emotion_state_contracts.py",
+      "edge_type": "python_import"
+    },
+    {
+      "consumer": "scripts/build_emotion_state_public_dataset_manifests.py",
+      "dependency": "scripts/emotion_state_public_dataset_contracts.py",
+      "edge_type": "python_import"
+    },
+    {
+      "consumer": "scripts/check_project_drift.py",
+      "dependency": "scripts/emotion_state_phase_a_verification_evidence.py",
+      "edge_type": "python_import"
+    },
+    {
+      "consumer": "scripts/check_setup.py",
+      "dependency": "scripts/emotion_state_phase_a_verification_evidence.py",
+      "edge_type": "python_import"
+    },
+    {
+      "consumer": "scripts/emotion_state_cohort_release_contracts.py",
+      "dependency": "runtime/__init__.py",
+      "edge_type": "python_import"
+    },
+    {
+      "consumer": "scripts/emotion_state_cohort_release_contracts.py",
+      "dependency": "runtime/contracts/__init__.py",
+      "edge_type": "python_import"
+    },
+    {
+      "consumer": "scripts/emotion_state_cohort_release_contracts.py",
+      "dependency": "runtime/contracts/emotion_pattern_contracts.py",
+      "edge_type": "python_import"
+    },
+    {
+      "consumer": "scripts/emotion_state_cohort_release_contracts.py",
+      "dependency": "runtime/contracts/emotion_state_contracts.py",
+      "edge_type": "python_import"
+    },
+    {
+      "consumer": "scripts/emotion_state_cohort_release_contracts.py",
+      "dependency": "scripts/emotion_state_public_dataset_contracts.py",
+      "edge_type": "python_import"
+    },
+    {
+      "consumer": "scripts/emotion_state_phase_a_contracts.py",
+      "dependency": "runtime/__init__.py",
+      "edge_type": "python_import"
+    },
+    {
+      "consumer": "scripts/emotion_state_phase_a_contracts.py",
+      "dependency": "runtime/contracts/__init__.py",
+      "edge_type": "python_import"
+    },
+    {
+      "consumer": "scripts/emotion_state_phase_a_contracts.py",
+      "dependency": "runtime/contracts/emotion_pattern_contracts.py",
+      "edge_type": "python_import"
+    },
+    {
+      "consumer": "scripts/emotion_state_phase_a_contracts.py",
+      "dependency": "runtime/contracts/emotion_state_brain_extension.py",
+      "edge_type": "python_import"
+    },
+    {
+      "consumer": "scripts/emotion_state_phase_a_contracts.py",
+      "dependency": "runtime/contracts/emotion_state_contracts.py",
+      "edge_type": "python_import"
+    },
+    {
+      "consumer": "scripts/emotion_state_phase_a_contracts.py",
+      "dependency": "scripts/emotion_state_annotation_contracts.py",
+      "edge_type": "python_import"
+    },
+    {
+      "consumer": "scripts/emotion_state_phase_a_contracts.py",
+      "dependency": "scripts/emotion_state_cohort_release_contracts.py",
+      "edge_type": "python_import"
+    },
+    {
+      "consumer": "scripts/emotion_state_phase_a_contracts.py",
+      "dependency": "scripts/emotion_state_phase_a_verification_evidence.py",
+      "edge_type": "python_import"
+    },
+    {
+      "consumer": "scripts/emotion_state_phase_a_contracts.py",
+      "dependency": "scripts/emotion_state_public_dataset_contracts.py",
+      "edge_type": "python_import"
+    },
+    {
+      "consumer": "scripts/emotion_state_phase_a_contracts.py",
+      "dependency": "scripts/emotion_state_split_manifest_v2_contracts.py",
+      "edge_type": "python_import"
+    },
+    {
+      "consumer": "scripts/emotion_state_phase_a_contracts.py",
+      "dependency": "scripts/exp_002_frozen_response_baseline.py",
+      "edge_type": "python_import"
+    },
+    {
+      "consumer": "scripts/emotion_state_split_manifest_v2_contracts.py",
+      "dependency": "scripts/emotion_state_public_dataset_contracts.py",
+      "edge_type": "python_import"
+    },
+    {
+      "consumer": "scripts/run_brain_002_runtime_state_schema.py",
+      "dependency": "runtime/__init__.py",
+      "edge_type": "python_import"
+    },
+    {
+      "consumer": "scripts/run_brain_002_runtime_state_schema.py",
+      "dependency": "runtime/contracts/__init__.py",
+      "edge_type": "python_import"
+    },
+    {
+      "consumer": "scripts/run_brain_002_runtime_state_schema.py",
+      "dependency": "runtime/contracts/brain_runtime_state_schema.py",
+      "edge_type": "python_import"
+    },
+    {
+      "consumer": "scripts/run_emotion_state_001_phase_a_contracts.py",
+      "dependency": "scripts/emotion_state_phase_a_contracts.py",
+      "edge_type": "python_import"
+    },
+    {
+      "consumer": "scripts/run_emotion_state_001_phase_a_contracts.py",
+      "dependency": "scripts/emotion_state_phase_a_verification_evidence.py",
+      "edge_type": "python_import"
+    },
+    {
+      "consumer": "scripts/run_exp_002_frozen_response_baseline.py",
+      "dependency": "scripts/exp_002_frozen_response_baseline.py",
+      "edge_type": "python_import"
+    },
+    {
+      "consumer": "scripts/test_emotion_state_001_closeout_hardening.py",
+      "dependency": "scripts/check_project_drift.py",
+      "edge_type": "python_import"
+    },
+    {
+      "consumer": "scripts/test_emotion_state_001_closeout_hardening.py",
+      "dependency": "scripts/emotion_state_phase_a_contracts.py",
+      "edge_type": "python_import"
+    },
+    {
+      "consumer": "scripts/test_emotion_state_001_closeout_hardening.py",
+      "dependency": "scripts/emotion_state_phase_a_verification_evidence.py",
+      "edge_type": "python_import"
+    },
+    {
+      "consumer": "scripts/test_emotion_state_001_closeout_hardening.py",
+      "dependency": "scripts/run_brain_002_runtime_state_schema.py",
+      "edge_type": "python_import"
+    },
+    {
+      "consumer": "scripts/test_emotion_state_001_closeout_hardening.py",
+      "dependency": "scripts/run_emotion_state_001_phase_a_contracts.py",
+      "edge_type": "python_import"
+    },
+    {
+      "consumer": "scripts/test_emotion_state_001_closeout_hardening.py",
+      "dependency": "scripts/run_exp_002_frozen_response_baseline.py",
+      "edge_type": "python_import"
+    },
+    {
+      "consumer": "scripts/test_emotion_state_001_closeout_hardening.py",
+      "dependency": "scripts/validate_emotion_state_001_phase_a_contracts.py",
+      "edge_type": "python_import"
+    },
+    {
+      "consumer": "scripts/test_emotion_state_001_closeout_hardening.py",
+      "dependency": "scripts/validate_exp_002_frozen_response_baseline.py",
+      "edge_type": "python_import"
+    },
+    {
+      "consumer": "scripts/test_emotion_state_001_open_dataset_gate.py",
+      "dependency": "runtime/__init__.py",
+      "edge_type": "python_import"
+    },
+    {
+      "consumer": "scripts/test_emotion_state_001_open_dataset_gate.py",
+      "dependency": "runtime/contracts/__init__.py",
+      "edge_type": "python_import"
+    },
+    {
+      "consumer": "scripts/test_emotion_state_001_open_dataset_gate.py",
+      "dependency": "runtime/contracts/emotion_pattern_contracts.py",
+      "edge_type": "python_import"
+    },
+    {
+      "consumer": "scripts/test_emotion_state_001_open_dataset_gate.py",
+      "dependency": "runtime/contracts/emotion_state_contracts.py",
+      "edge_type": "python_import"
+    },
+    {
+      "consumer": "scripts/test_emotion_state_001_open_dataset_gate.py",
+      "dependency": "scripts/build_emotion_state_public_dataset_manifests.py",
+      "edge_type": "python_import"
+    },
+    {
+      "consumer": "scripts/test_emotion_state_001_open_dataset_gate.py",
+      "dependency": "scripts/check_project_drift.py",
+      "edge_type": "python_import"
+    },
+    {
+      "consumer": "scripts/test_emotion_state_001_open_dataset_gate.py",
+      "dependency": "scripts/check_setup.py",
+      "edge_type": "python_import"
+    },
+    {
+      "consumer": "scripts/test_emotion_state_001_open_dataset_gate.py",
+      "dependency": "scripts/check_thesis_reference_registry.py",
+      "edge_type": "python_import"
+    },
+    {
+      "consumer": "scripts/test_emotion_state_001_open_dataset_gate.py",
+      "dependency": "scripts/emotion_state_cohort_release_contracts.py",
+      "edge_type": "python_import"
+    },
+    {
+      "consumer": "scripts/test_emotion_state_001_open_dataset_gate.py",
+      "dependency": "scripts/emotion_state_phase_a_contracts.py",
+      "edge_type": "python_import"
+    },
+    {
+      "consumer": "scripts/test_emotion_state_001_open_dataset_gate.py",
+      "dependency": "scripts/emotion_state_phase_a_verification_evidence.py",
+      "edge_type": "python_import"
+    },
+    {
+      "consumer": "scripts/test_emotion_state_001_open_dataset_gate.py",
+      "dependency": "scripts/emotion_state_public_dataset_contracts.py",
+      "edge_type": "python_import"
+    },
+    {
+      "consumer": "scripts/test_emotion_state_001_open_dataset_gate.py",
+      "dependency": "scripts/emotion_state_split_manifest_v2_contracts.py",
+      "edge_type": "python_import"
+    },
+    {
+      "consumer": "scripts/test_emotion_state_001_open_dataset_gate.py",
+      "dependency": "scripts/run_emotion_state_001_phase_a_contracts.py",
+      "edge_type": "python_import"
+    },
+    {
+      "consumer": "scripts/test_emotion_state_001_open_dataset_gate.py",
+      "dependency": "scripts/test_emotion_state_001_closeout_hardening.py",
+      "edge_type": "python_import"
+    },
+    {
+      "consumer": "scripts/test_emotion_state_001_open_dataset_gate.py",
+      "dependency": "scripts/validate_emotion_state_001_phase_a_contracts.py",
+      "edge_type": "python_import"
+    },
+    {
+      "consumer": "scripts/test_emotion_state_001_open_dataset_gate.py",
+      "dependency": "scripts/validate_private_data_boundary.py",
+      "edge_type": "python_import"
+    },
+    {
+      "consumer": "scripts/validate_check_setup.py",
+      "dependency": "scripts/check_setup.py",
+      "edge_type": "python_import"
+    },
+    {
+      "consumer": "scripts/validate_emotion_state_001_phase_a_contracts.py",
+      "dependency": "runtime/__init__.py",
+      "edge_type": "python_import"
+    },
+    {
+      "consumer": "scripts/validate_emotion_state_001_phase_a_contracts.py",
+      "dependency": "runtime/contracts/__init__.py",
+      "edge_type": "python_import"
+    },
+    {
+      "consumer": "scripts/validate_emotion_state_001_phase_a_contracts.py",
+      "dependency": "runtime/contracts/emotion_pattern_contracts.py",
+      "edge_type": "python_import"
+    },
+    {
+      "consumer": "scripts/validate_emotion_state_001_phase_a_contracts.py",
+      "dependency": "runtime/contracts/emotion_state_brain_extension.py",
+      "edge_type": "python_import"
+    },
+    {
+      "consumer": "scripts/validate_emotion_state_001_phase_a_contracts.py",
+      "dependency": "runtime/contracts/emotion_state_contracts.py",
+      "edge_type": "python_import"
+    },
+    {
+      "consumer": "scripts/validate_emotion_state_001_phase_a_contracts.py",
+      "dependency": "scripts/build_emotion_state_public_dataset_manifests.py",
+      "edge_type": "python_import"
+    },
+    {
+      "consumer": "scripts/validate_emotion_state_001_phase_a_contracts.py",
+      "dependency": "scripts/emotion_state_annotation_contracts.py",
+      "edge_type": "python_import"
+    },
+    {
+      "consumer": "scripts/validate_emotion_state_001_phase_a_contracts.py",
+      "dependency": "scripts/emotion_state_cohort_release_contracts.py",
+      "edge_type": "python_import"
+    },
+    {
+      "consumer": "scripts/validate_emotion_state_001_phase_a_contracts.py",
+      "dependency": "scripts/emotion_state_phase_a_contracts.py",
+      "edge_type": "python_import"
+    },
+    {
+      "consumer": "scripts/validate_emotion_state_001_phase_a_contracts.py",
+      "dependency": "scripts/emotion_state_public_dataset_contracts.py",
+      "edge_type": "python_import"
+    },
+    {
+      "consumer": "scripts/validate_emotion_state_001_phase_a_contracts.py",
+      "dependency": "scripts/emotion_state_split_manifest_v2_contracts.py",
+      "edge_type": "python_import"
+    },
+    {
+      "consumer": "scripts/validate_emotion_state_001_phase_a_contracts.py",
+      "dependency": "scripts/run_emotion_state_001_phase_a_contracts.py",
+      "edge_type": "python_import"
+    },
+    {
+      "consumer": "scripts/validate_emotion_state_001_phase_a_contracts.py",
+      "dependency": "scripts/validate_brain_002_runtime_state_schema.py",
+      "edge_type": "python_subprocess_target"
+    },
+    {
+      "consumer": "scripts/validate_emotion_state_001_phase_a_contracts.py",
+      "dependency": "scripts/validate_exp_002_frozen_response_baseline.py",
+      "edge_type": "python_subprocess_target"
+    },
+    {
+      "consumer": "scripts/validate_exp_002_frozen_response_baseline.py",
+      "dependency": "scripts/exp_002_frozen_response_baseline.py",
+      "edge_type": "python_import"
+    },
+    {
+      "consumer": "scripts/validate_exp_002_frozen_response_baseline.py",
+      "dependency": "scripts/run_exp_002_frozen_response_baseline.py",
+      "edge_type": "python_subprocess_target"
+    },
+    {
+      "consumer": "scripts/validate_exp_002_frozen_response_baseline.py",
+      "dependency": "scripts/run_prompt_baseline.py",
+      "edge_type": "python_subprocess_target"
+    },
+    {
+      "consumer": "scripts/validate_private_data_boundary.py",
+      "dependency": "scripts/emotion_state_phase_a_verification_evidence.py",
+      "edge_type": "python_import"
+    },
+    {
+      "consumer": "scripts/validate_project_drift_guard.py",
+      "dependency": "scripts/check_project_drift.py",
+      "edge_type": "python_import"
+    }
+  ],
+  "executable_dependency_closure_inventory": [
+    {
+      "git_mode": "100644",
+      "path": "runtime/__init__.py",
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "git_mode": "100644",
+      "path": "runtime/contracts/__init__.py",
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "git_mode": "100644",
+      "path": "runtime/contracts/brain_runtime_state_schema.py",
+      "sha256": "B9BC4067028EE391B4339946E0055F3381F6F79C2B15000B6DC620B051770731"
+    },
+    {
+      "git_mode": "100644",
+      "path": "runtime/contracts/emotion_pattern_contracts.py",
+      "sha256": "F850C9710C882F04A5D67796DC3C9E77503465EA66DFA7541BB6C10505162619"
+    },
+    {
+      "git_mode": "100644",
+      "path": "runtime/contracts/emotion_state_brain_extension.py",
+      "sha256": "1371F433B710E12B282E514925841BA0B86B08F4D1E1AF6545233A5F6A527EC5"
+    },
+    {
+      "git_mode": "100644",
+      "path": "runtime/contracts/emotion_state_contracts.py",
+      "sha256": "C8C713726546E13C4AF62FB5FA6ADEA387E9D536F60317A50EB6E36B7508F3CC"
+    },
+    {
+      "git_mode": "100644",
+      "path": "scripts/build_emotion_state_public_dataset_manifests.py",
+      "sha256": "48CA141DF3B03E045C342C77418663557593EA9765D6E1F68A6D7443F2338EF5"
+    },
+    {
+      "git_mode": "100644",
+      "path": "scripts/check_project_drift.py",
+      "sha256": "FA37EAB6E2AEB6237EF9E2EB9678ED1C8D811FF98AF879947DF905B6D157E15C"
+    },
+    {
+      "git_mode": "100644",
+      "path": "scripts/check_setup.py",
+      "sha256": "F3D3077BA6980B3E81E7409D80C76423C7FE253E7D69D0200FC85A48B63FB508"
+    },
+    {
+      "git_mode": "100644",
+      "path": "scripts/check_thesis_reference_registry.py",
+      "sha256": "BA7544808671C4B6F9C080D106BFFFEF8EBBD4EFC07F94D8AAE2A48B00A8992A"
+    },
+    {
+      "git_mode": "100644",
+      "path": "scripts/emotion_state_annotation_contracts.py",
+      "sha256": "EB695129F5DB86C3F9478290A3A69AC872A86333B996D37FF9FCD90334F662DD"
+    },
+    {
+      "git_mode": "100644",
+      "path": "scripts/emotion_state_cohort_release_contracts.py",
+      "sha256": "7D0900EBEFBA99584F12A6195D24213C69F573B3AC08D7092FAA8F35BD448B60"
+    },
+    {
+      "git_mode": "100644",
+      "path": "scripts/emotion_state_phase_a_contracts.py",
+      "sha256": "F96E743344025B06ECEAB98AA052B739287E034EE02FCA9FDD807E9FDE263BBE"
+    },
+    {
+      "git_mode": "100644",
+      "path": "scripts/emotion_state_phase_a_guard_site/sitecustomize.py",
+      "sha256": "2B976264AB5E46035CE1DBFDD2EB3B0FD0AAE431B686ADDA91E3331A750BCA55"
+    },
+    {
+      "git_mode": "100644",
+      "path": "scripts/emotion_state_phase_a_verification_evidence.py",
+      "sha256": "E1A75B5AAD89411F0D4CF1BEDA31D4FCE8F5D60D450D2DC993DFAA2AE0A43175"
+    },
+    {
+      "git_mode": "100644",
+      "path": "scripts/emotion_state_public_dataset_contracts.py",
+      "sha256": "79A461D12EECDAACDB4E74FB92770233CD3506B2BA014B584234F64965A1B2FB"
+    },
+    {
+      "git_mode": "100644",
+      "path": "scripts/emotion_state_split_manifest_v2_contracts.py",
+      "sha256": "26EEF4A19BAF0789A7528E30A59D64A21EC0F8BDD064876399EAE2270B5499E6"
+    },
+    {
+      "git_mode": "100644",
+      "path": "scripts/exp_002_frozen_response_baseline.py",
+      "sha256": "FBEB04104CD7FC74D394DA0645D634A8357B63F0F95C144BC1A6BD79F7806364"
+    },
+    {
+      "git_mode": "100644",
+      "path": "scripts/run_brain_002_runtime_state_schema.py",
+      "sha256": "763CB812D61F338B55A4D029B28747A442C3AC7C534CD577286570C56C09FD57"
+    },
+    {
+      "git_mode": "100644",
+      "path": "scripts/run_emotion_state_001_phase_a_contracts.py",
+      "sha256": "018B4C4E8BA60BD17B4ADDFD82A3F468082FFB3BE766640EF075417D033729B1"
+    },
+    {
+      "git_mode": "100644",
+      "path": "scripts/run_exp_002_frozen_response_baseline.py",
+      "sha256": "07BC110AC116BE0303BC538DCEA7FDAC71CEFA1632AD5FB3BAEA6497BA7106A3"
+    },
+    {
+      "git_mode": "100644",
+      "path": "scripts/run_prompt_baseline.py",
+      "sha256": "2D57E1B6FDA7442FA8BB97C4AF55EB7672303D55A8CB2D936E7997C55DDF652E"
+    },
+    {
+      "git_mode": "100644",
+      "path": "scripts/test_emotion_state_001_closeout_hardening.py",
+      "sha256": "3CBE351FEB6F2F32D3435FAFD89C78BE7F9B424FB91137F47ACACC727721B9CC"
+    },
+    {
+      "git_mode": "100644",
+      "path": "scripts/test_emotion_state_001_open_dataset_gate.py",
+      "sha256": "EC6643148D887909F95AAFA141E5C501FD59308AB934A220883E24E08117D36D"
+    },
+    {
+      "git_mode": "100644",
+      "path": "scripts/validate_brain_002_runtime_state_schema.py",
+      "sha256": "913BD8357457820A8E7F29A265E6C1788357949408CCA396268D2A5507E60ED4"
+    },
+    {
+      "git_mode": "100644",
+      "path": "scripts/validate_check_setup.py",
+      "sha256": "C2405858E4EF7F2C70208F2C21B594ABA0C8032A0EF9BF540F59F63C5C7EDBAB"
+    },
+    {
+      "git_mode": "100644",
+      "path": "scripts/validate_emotion_state_001_phase_a_contracts.py",
+      "sha256": "E221FF9387907DFFFF94CDC4D8517DB59846BF4D16483768F5142016B81790B6"
+    },
+    {
+      "git_mode": "100644",
+      "path": "scripts/validate_exp_002_frozen_response_baseline.py",
+      "sha256": "82A64E006E224BFA7AAAD4088597E57E7FECB33E1691518D62B52267E3C5F167"
+    },
+    {
+      "git_mode": "100644",
+      "path": "scripts/validate_private_data_boundary.py",
+      "sha256": "687E4EC88EC67D2EA32C5562869ACF655C9683A5F4620C937E7CF91B268ED688"
+    },
+    {
+      "git_mode": "100644",
+      "path": "scripts/validate_project_drift_guard.py",
+      "sha256": "FF89C62AC944848CAA997E0264D35B00EF266746997D9FAD5AA40A4C4371B42E"
+    }
+  ],
+  "executed_command_ledger": [
+    {
+      "argv": [
+        "python",
+        "-m",
+        "unittest",
+        "scripts.test_emotion_state_001_open_dataset_gate",
+        "-v"
+      ],
+      "command_id": "focused-open-dataset-tests",
+      "exit_status": 0,
+      "sequence_number": 1,
+      "working_directory": "."
+    },
+    {
+      "argv": [
+        "python",
+        "-m",
+        "unittest",
+        "scripts.test_emotion_state_001_closeout_hardening",
+        "-v"
+      ],
+      "command_id": "closeout-hardening-tests",
+      "exit_status": 0,
+      "sequence_number": 2,
+      "working_directory": "."
+    },
+    {
+      "argv": [
+        "python",
+        "scripts/validate_emotion_state_001_phase_a_contracts.py",
+        "--section",
+        "prepublication",
+        "--mode",
+        "complete"
+      ],
+      "command_id": "phase-a-prepublication-validator",
+      "exit_status": 0,
+      "sequence_number": 3,
+      "working_directory": "."
+    },
+    {
+      "argv": [
+        "python",
+        "scripts/validate_emotion_state_001_phase_a_contracts.py",
+        "--section",
+        "materials"
+      ],
+      "command_id": "phase-a-materials-validator",
+      "exit_status": 0,
+      "sequence_number": 4,
+      "working_directory": "."
+    },
+    {
+      "argv": [
+        "python",
+        "scripts/validate_exp_002_frozen_response_baseline.py"
+      ],
+      "command_id": "frozen-exp-002-validator",
+      "exit_status": 0,
+      "sequence_number": 5,
+      "working_directory": "."
+    },
+    {
+      "argv": [
+        "python",
+        "scripts/validate_brain_002_runtime_state_schema.py"
+      ],
+      "command_id": "brain-schema-validator",
+      "exit_status": 0,
+      "sequence_number": 6,
+      "working_directory": "."
+    },
+    {
+      "argv": [
+        "python",
+        "scripts/validate_private_data_boundary.py"
+      ],
+      "command_id": "private-boundary-validator",
+      "exit_status": 0,
+      "sequence_number": 7,
+      "working_directory": "."
+    },
+    {
+      "argv": [
+        "python",
+        "scripts/validate_runtime_manifest.py"
+      ],
+      "command_id": "runtime-manifest-validator",
+      "exit_status": 0,
+      "sequence_number": 8,
+      "working_directory": "."
+    },
+    {
+      "argv": [
+        "python",
+        "scripts/validate_check_setup.py"
+      ],
+      "command_id": "setup-validator",
+      "exit_status": 0,
+      "sequence_number": 9,
+      "working_directory": "."
+    },
+    {
+      "argv": [
+        "python",
+        "scripts/validate_project_drift_guard.py"
+      ],
+      "command_id": "drift-validator",
+      "exit_status": 0,
+      "sequence_number": 10,
+      "working_directory": "."
+    },
+    {
+      "argv": [
+        "python",
+        "scripts/check_thesis_reference_registry.py"
+      ],
+      "command_id": "thesis-reference-validator",
+      "exit_status": 0,
+      "sequence_number": 11,
+      "working_directory": "."
+    },
+    {
+      "argv": [
+        "python",
+        "scripts/check_thesis_update_gate.py"
+      ],
+      "command_id": "thesis-update-validator",
+      "exit_status": 0,
+      "sequence_number": 12,
+      "working_directory": "."
+    },
+    {
+      "argv": [
+        "python",
+        "scripts/validate_context_reading_policy.py"
+      ],
+      "command_id": "context-policy-validator",
+      "exit_status": 0,
+      "sequence_number": 13,
+      "working_directory": "."
+    },
+    {
+      "argv": [
+        "python",
+        "scripts/emotion_state_phase_a_verification_evidence.py",
+        "--validate-json-inputs"
+      ],
+      "command_id": "json-validator",
+      "exit_status": 0,
+      "sequence_number": 14,
+      "working_directory": "."
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--check",
+        "fb0513545fc0167bcf89dbc81283b7b2a2820b67..c27a0e2d3fd2d9770694f28a9e74e048331958d1"
+      ],
+      "command_id": "git-diff-check",
+      "exit_status": 0,
+      "sequence_number": 15,
+      "working_directory": "."
+    }
+  ],
+  "executed_command_ledger_digest": "02E57946E0411D98A544A768325D27ACC818151A05D8D46CE2782E182A652994",
+  "guard_policy_digest": "A750C3EB69EB35D100AB32C9DCAFA9E02D2C91BD2BF8BACD6AB7F39899FC0DDE",
+  "guarded_command_results": {
+    "focused-open-dataset-tests": 0,
+    "closeout-hardening-tests": 0,
+    "phase-a-prepublication-validator": 0,
+    "phase-a-materials-validator": 0,
+    "frozen-exp-002-validator": 0,
+    "brain-schema-validator": 0,
+    "private-boundary-validator": 0,
+    "runtime-manifest-validator": 0,
+    "setup-validator": 0,
+    "drift-validator": 0,
+    "thesis-reference-validator": 0,
+    "thesis-update-validator": 0,
+    "context-policy-validator": 0,
+    "json-validator": 0,
+    "git-diff-check": 0
+  },
+  "implementation_baseline_commit": "fb0513545fc0167bcf89dbc81283b7b2a2820b67",
+  "network_guard_enabled": true,
+  "prepublication_byte_lock_reread_status": "pass",
+  "private_path_guard_enabled": true,
+  "provider_environment_scrubbed": true,
+  "repository_gate_statuses": {
+    "focused_tests": "pass",
+    "closeout_hardening": "pass",
+    "phase_a_prepublication": "pass",
+    "materials": "pass",
+    "frozen_exp_002": "pass",
+    "brain_schema": "pass",
+    "private_boundary": "pass",
+    "runtime_manifest": "pass",
+    "setup": "pass",
+    "drift": "pass",
+    "thesis_reference_registry": "pass",
+    "thesis_update": "pass",
+    "context_policy": "pass",
+    "json": "pass",
+    "diff_check": "pass"
+  },
+  "repository_head_commit": "c27a0e2d3fd2d9770694f28a9e74e048331958d1",
+  "uncommitted_change_inventory": [],
+  "verification_input_path_inventory_digest": "3C2EDCEACB4F38639A6CFD531C8A2C7B0ADB071EE1E5CD209103CA141395CD1F",
+  "verification_input_tree_digest": "D49632E9A83760A291B1DB3F792CC0F20B6778FF508C52E950F23DAB3CE3AB36",
+  "verification_run_id": "44CB1FF6735D15F3EA9D2FE8889F2CDF548A82448D2BCAD65AF33858730C5C3F"
+}

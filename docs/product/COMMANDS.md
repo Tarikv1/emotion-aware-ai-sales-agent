@@ -3861,6 +3861,243 @@ python scripts\run_elevenlabs_agent_automation.py `
   --api-requests-out research\experiments\generated\ELEVENLABS-019-demand-capture-conversion-leakage-repair\agent_patch_and_v4_tests_requests.json
 ```
 
+## EMOTION-STATE-001 Material-Pending Phase A Contracts
+
+Validate only the material-pending prepublication inputs without reading or writing the canonical checkpoint pair:
+
+```powershell
+python scripts\validate_emotion_state_001_phase_a_contracts.py --section prepublication --mode material-pending
+```
+
+For a complete prepublication check, local ignored material must be present:
+
+```powershell
+python scripts\validate_emotion_state_001_phase_a_contracts.py --section materials
+python scripts\validate_emotion_state_001_phase_a_contracts.py --section prepublication --mode complete
+```
+
+After the verified input HEAD is committed, a controller may stage—but not implicitly accept—the complete pair:
+
+```powershell
+$receipt = '.tmp\emotion-state-001-phase-a-publication\complete-receipt.json'
+python scripts\run_emotion_state_001_phase_a_contracts.py --mode complete --defer-acceptance --receipt $receipt
+python scripts\validate_emotion_state_001_phase_a_contracts.py --section candidate --receipt $receipt
+```
+
+Run the explicit `--accept-receipt` or `--reject-receipt` command only after independent candidate inspection. `materials` requires ignored raw bytes. `checkpoint` validates the recorded tracked evidence and canonical pair in a clean clone; it does not re-prove that the raw bytes are available there.
+
+The following defer/readback/test/accept transaction is controller-only. The real defer step requires explicit controller authority to probe the real material root for absence; Task 7 implementers must not run it, create a real receipt, or modify the canonical pair.
+
+```powershell
+$receipt = '.tmp\emotion-state-001-phase-a-publication\material-pending-receipt.json'
+python scripts\run_emotion_state_001_phase_a_contracts.py --mode material-pending --defer-acceptance --receipt $receipt
+try {
+    python scripts\validate_emotion_state_001_phase_a_contracts.py --section candidate --receipt $receipt
+    if ($LASTEXITCODE -ne 0) { throw 'Pending candidate readback failed' }
+    python -m unittest scripts.test_emotion_state_001_open_dataset_gate scripts.test_emotion_state_001_closeout_hardening -v
+    if ($LASTEXITCODE -ne 0) { throw 'Pending candidate tests failed' }
+    python scripts\run_emotion_state_001_phase_a_contracts.py --accept-receipt $receipt
+    if ($LASTEXITCODE -ne 0) { throw 'Pending candidate acceptance failed' }
+}
+catch {
+    if (Test-Path $receipt) {
+        python scripts\run_emotion_state_001_phase_a_contracts.py --reject-receipt $receipt
+        if ($LASTEXITCODE -ne 0) { throw 'Pending candidate rejection/restoration failed' }
+    }
+    throw
+}
+```
+
+## EMOTION-STATE-002 Phase B Offline Validation And Gates
+
+Run the complete Task 9 offline ledger with the ignored, reviewed Phase B
+Python. These commands read tracked metadata, frozen contracts, the reviewed
+wheelhouse/environment identity, and synthetic fixtures only:
+
+```powershell
+.tmp/emotion-state-002-phase-b/venv/Scripts/python.exe -m unittest scripts.test_emotion_state_002_phase_b -v
+.tmp/emotion-state-002-phase-b/venv/Scripts/python.exe scripts/validate_emotion_state_002_phase_b.py source
+.tmp/emotion-state-002-phase-b/venv/Scripts/python.exe scripts/validate_emotion_state_002_phase_b.py contracts
+.tmp/emotion-state-002-phase-b/venv/Scripts/python.exe scripts/validate_emotion_state_002_phase_b.py environment
+.tmp/emotion-state-002-phase-b/venv/Scripts/python.exe scripts/validate_emotion_state_002_phase_b.py synthetic
+python scripts/check_thesis_update_gate.py
+python scripts/check_thesis_reference_registry.py
+python scripts/validate_project_drift_guard.py
+python scripts/validate_context_reading_policy.py
+python scripts/validate_check_setup.py
+git diff --check
+```
+
+`candidate` and `checkpoint` were deliberately absent from the Task 9 offline
+ledger. The absent-publication wording is historical. The later accepted
+canonical-acceptance lifecycle supersedes it. `candidate` and `checkpoint` are
+now read-only validation commands.
+
+### Explicit gate: dependency acquisition
+
+Dependency acquisition was separately authorized and completed for the current
+reviewed lock. The commands below preserve the exact reviewed Task 3 workflow;
+documentation is not authorization. Rerunning or changing any of them requires
+a new explicit network/download/install authorization. Do not run them under
+the Task 9 offline-validation authorization.
+
+Create the ignored resolver environment and pip-free evaluation environment,
+then verify the resolver tooling and evaluation interpreter:
+
+```powershell
+py -3.11 -m venv .tmp/emotion-state-002-phase-b/resolver-venv
+.tmp/emotion-state-002-phase-b/resolver-venv/Scripts/python.exe -m pip --version
+py -3.11 -m venv --without-pip .tmp/emotion-state-002-phase-b/venv
+.tmp/emotion-state-002-phase-b/venv/Scripts/python.exe -c "import sys; print(sys.version); print(sys.executable)"
+```
+
+Resolve only binary wheels for the three reviewed direct requirement ranges
+into the ignored wheelhouse:
+
+```powershell
+.tmp/emotion-state-002-phase-b/resolver-venv/Scripts/python.exe -m pip download --only-binary=:all: --dest .tmp/emotion-state-002-phase-b/dependencies/wheelhouse "numpy>=2.4,<2.5" "scipy>=1.16,<1.18" "scikit-learn>=1.8,<1.9"
+```
+
+Hash the complete wheelhouse in deterministic filename order:
+
+```powershell
+Get-ChildItem -LiteralPath .tmp/emotion-state-002-phase-b/dependencies/wheelhouse -File | Sort-Object Name | Get-FileHash -Algorithm SHA256
+```
+
+Inspect every wheel's `METADATA` and license files without executing package
+code. Reject source archives, prereleases, unexpected packages, incompatible
+licenses, filename/metadata identity mismatches, or an incomplete dependency
+graph.
+
+Install exactly the five locked wheels into the pip-free evaluation
+environment, entirely offline and without dependency resolution, then run
+`pip check` through the resolver tooling:
+
+```powershell
+.tmp/emotion-state-002-phase-b/resolver-venv/Scripts/python.exe -m pip --python .tmp/emotion-state-002-phase-b/venv/Scripts/python.exe install --no-index --no-deps .tmp/emotion-state-002-phase-b/dependencies/wheelhouse/joblib-1.5.3-py3-none-any.whl .tmp/emotion-state-002-phase-b/dependencies/wheelhouse/numpy-2.4.6-cp311-cp311-win_amd64.whl .tmp/emotion-state-002-phase-b/dependencies/wheelhouse/scikit_learn-1.8.0-cp311-cp311-win_amd64.whl .tmp/emotion-state-002-phase-b/dependencies/wheelhouse/scipy-1.17.1-cp311-cp311-win_amd64.whl .tmp/emotion-state-002-phase-b/dependencies/wheelhouse/threadpoolctl-3.6.0-py3-none-any.whl
+.tmp/emotion-state-002-phase-b/resolver-venv/Scripts/python.exe -m pip --python .tmp/emotion-state-002-phase-b/venv/Scripts/python.exe check
+```
+
+### Explicit gate: public-material evaluation
+
+This gate produced the accepted Task 10 non-lockbox checkpoint and is now
+closed. Do not rerun these commands. Any replacement requires a separately
+reviewed transaction and explicit authority to read the fixed public CREMA-D
+and AMI roots. The accepted state remains under
+`.tmp/emotion-state-002-phase-b-cut4b`; its executable and immutable dependency
+inputs remain under `.tmp/emotion-state-002-phase-b`:
+
+```powershell
+.tmp/emotion-state-002-phase-b/venv/Scripts/python.exe scripts/run_emotion_state_002_phase_b.py preflight
+.tmp/emotion-state-002-phase-b/venv/Scripts/python.exe scripts/run_emotion_state_002_phase_b.py non-lockbox
+```
+
+### Explicit gate: final lockbox
+
+The production lockbox completed exactly once and is closed. Do not run
+`admit-lockbox` or `lockbox` again for this experiment version.
+
+The guarded ledger is the fixed ignored file
+`.tmp/emotion-state-002-phase-b-cut4b/task-11-guarded-ledger.json`. Its exact
+bytes are canonical UTF-8 LF JSON: two-space indentation, sorted keys, and one
+terminal LF. The top-level object contains `schema_version`, `task_id`,
+`implementation_head`, and `commands`. `commands` records the exact ordered
+guarded command vectors; every entry contains only `argv`, `exit_code`,
+`stdout_sha256`, and `stderr_sha256`. Raw command output is not persisted.
+The independently reviewed implementation HEAD was
+`c7a5e4037ad8134c96dcd7e8b9577f08fe92391b`. The exact guarded-ledger SHA-256
+was `8515DA4A622A8AF8CE3BE07BE6CAFC8360EDE729F2845317E13C701DBA18299A`;
+the source-silent admission-receipt SHA-256 was
+`0F10FD618FD20819EB7D21981C29E77B6936977D80659A82A5CE1886C1191278`.
+The receipt bound predecessor-state SHA-256
+`8BB141DFBF651889F0E1FD66C2DF35FF31F8DC211D98A7CD27512AE7D82ACC20`
+and non-lockbox packet SHA-256
+`676D55D95978FBB27DDE50758A98C530979DC730A87C30CD6485178B624B313B`.
+
+The single production child exited `0` after `346.9s`; no retry occurred. The
+state is `lockbox_complete` with `lockbox_open_count=1`, exact state SHA-256
+`69B6475BB32209DD50A6E24866F19D6B44FB51BFA458836BF3B1805140C2BC8C`,
+and result SHA-256
+`E3EC0EB82E77C1979BF8F921D6EBF6321F510687A608C933473C4DB04AE02F35`.
+The result decision is `revise`. Its evidence SHA-256 is
+`93CE60508E565A66BBEDEC48CDD0F0D48CC72D7DA771C419ABD5242570E437E3`;
+its mint SHA-256 is
+`0912A83A6DFCE3B90C06E409E50D1DEBFC42619A0594BD714883549839799E0F`.
+The persisted AMI value remains exactly the aggregate and authority SHA-256;
+meeting, participant, turn, dialogue-label, transcript, probability, feature,
+and audio rows were not persisted.
+
+Only Task 12 may stage the canonical pair, and it requires separate
+authorization. This completed lockbox is not a production-readiness, customer
+emotion, live-call, provider, PSTN, ASR, latency, or runtime result.
+
+### Explicit gate: canonical acceptance
+
+Staging and acceptance require separate authority after lockbox review. Staging
+does not imply acceptance. The validator is read-only and requires the exact
+live `awaiting_acceptance` receipt; checkpoint validation requires the accepted
+pair and no live journal or receipt:
+
+```powershell
+.tmp/emotion-state-002-phase-b/venv/Scripts/python.exe scripts/run_emotion_state_002_phase_b.py stage-candidate --receipt receipt.json
+.tmp/emotion-state-002-phase-b/venv/Scripts/python.exe scripts/validate_emotion_state_002_phase_b.py candidate --receipt .tmp/emotion-state-002-phase-b-cut4b/publication/receipt.json
+.tmp/emotion-state-002-phase-b/venv/Scripts/python.exe scripts/run_emotion_state_002_phase_b.py accept-receipt --receipt receipt.json
+.tmp/emotion-state-002-phase-b/venv/Scripts/python.exe scripts/validate_emotion_state_002_phase_b.py checkpoint
+```
+
+### Explicit gate: push
+
+A reviewed accepted checkpoint still requires separate push authority:
+
+```powershell
+git push origin codex/emotion-state-phase-b-public-data-feasibility
+```
+
+### Explicit gate: merge
+
+Merge authority is separate from acceptance and push authority:
+
+```powershell
+git switch main
+git merge --ff-only codex/emotion-state-phase-b-public-data-feasibility
+```
+
+No gate implicitly authorizes the next gate. This command section exposes no
+private-data, external-provider, customer-call, simulation, or product-runtime
+operation.
+
+## EMOTION-STATE-003 Phase C0 Synthetic Mechanics Checkpoint
+
+The accepted aggregate checkpoint covers synthetic mechanics only. Candidate
+decision: `keep`; all `30/30` scenarios passed, including `8` rejection cases,
+and independent candidate review returned `C0/I0/M0`. Policy, scenario, result,
+and report SHA-256 values are
+`9BB996F886E9AFFBCDA40A6FB71BE10E1CD07D3B114B4E3FBCDAA1DF71171F15`,
+`D01FBD7677537A0A91D01E0EA8354D079491C13BBD81EC8BAC97E7BBC4520FB0`,
+`3BBB7FC8F4DFB223837EA8D8B8E92EC46AA0ACF70EA1A6CA4649D41266E43030`,
+and `FD1ADA58FD5C0B614DB429AD6B5434C988E95942FBEB1FEB87D779C14F9E4EA4`.
+Implementation trace: aggregate runner
+`fd92aae6acf146d9271888bb264ecd29269cb870`, independent validator
+`5c461612f667e1a8727eedb9d2c08d9951b3aed0`, direct-launch correction
+`4c77f72bf7dc85e2e4587b9c03646716e5aec0ff`, and candidate acceptance
+`77a2fb50ba00210cc75d410240c17115be83a415`. The exact pair-only commit is
+`62b6b65cf307270bfc2e98c7c08617252859948d`.
+The guarded ledger passed Phase C0 `177/177`, pinned Phase B `16/16`, four
+validator sections, five repository gates, and the four
+LF/compile/protected-runtime/diff checks.
+
+The canonical pair is immutable and publication must not be rerun. The only
+documented Phase C0 command is read-only checkpoint validation:
+
+```powershell
+python scripts/validate_emotion_state_003_phase_c0.py checkpoint
+```
+
+Phase B lockbox remains closed and cannot be reused. This checkpoint grants no
+runtime, provider, data, or Phase D authority and does not authorize a push,
+merge, provider action, call, simulation, source adaptation, prompt or
+knowledge-base change, runtime activation, or production claim.
+
 ## Safety Rules
 
 - Do not commit API keys, private transcripts, raw private audio, customer exports, or client-specific sensitive details.

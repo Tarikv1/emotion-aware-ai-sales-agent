@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 from __future__ import annotations
 
+import copy
 import json
 from pathlib import Path
 from typing import Any
@@ -31,6 +32,47 @@ REQUIRED_RUNTIME_PATHS = {
     "runtime/providers/VOICE_PROVIDER_RUN_BOUNDARY.md",
     "runtime/providers/VOICE_GENERATED_AUDIO_ASSET_LOG.md",
     "runtime/persistence/SQLITE_PROTOTYPE.md",
+    "runtime/contracts/emotion_state_contracts.py",
+    "runtime/contracts/emotion_pattern_contracts.py",
+    "runtime/contracts/emotion_state_brain_extension.py",
+}
+
+EXPECTED_MANIFEST_UPDATED_ON = "2026-07-14"
+
+EXPECTED_EMOTION_STATE_RUNTIME_ENTRIES = {
+    "runtime/contracts/emotion_state_contracts.py": {
+        "path": "runtime/contracts/emotion_state_contracts.py",
+        "path_type": "file",
+        "tier": "core-runtime-contract",
+        "runtime_role": "Offline-only EMOTION-STATE V1 evidence, audit, aggregate, perceived-state, persistence, and event-identity contracts; not imported by live runtime.",
+        "behavior_surface": [
+            "contract validation only",
+            "no live runtime import",
+            "no provider behavior",
+        ],
+    },
+    "runtime/contracts/emotion_pattern_contracts.py": {
+        "path": "runtime/contracts/emotion_pattern_contracts.py",
+        "path_type": "file",
+        "tier": "core-runtime-contract",
+        "runtime_role": "Offline-only EMOTION-STATE pattern serialization and digest contracts with runtime activation hard-blocked.",
+        "behavior_surface": [
+            "artifact integrity only",
+            "no signature authenticity claim",
+            "no runtime activation",
+        ],
+    },
+    "runtime/contracts/emotion_state_brain_extension.py": {
+        "path": "runtime/contracts/emotion_state_brain_extension.py",
+        "path_type": "file",
+        "tier": "core-runtime-contract",
+        "runtime_role": "Detached offline BRAIN extension carrying modality provenance and monotonic policy bounds without mutating BRAIN-002 v1.",
+        "behavior_surface": [
+            "offline mapping only",
+            "BRAIN-002 v1 unchanged",
+            "runtime connection blocked",
+        ],
+    },
 }
 
 REQUIRED_BOUNDARY_FLAGS = {
@@ -104,6 +146,8 @@ def load_manifest(path: Path) -> dict[str, Any]:
 def assert_manifest_shape(payload: dict[str, Any]) -> None:
     if payload.get("schema_version") != 1:
         fail("Runtime manifest schema_version must be 1.")
+    if payload.get("updated_on") != EXPECTED_MANIFEST_UPDATED_ON:
+        fail(f"Runtime manifest updated_on must be {EXPECTED_MANIFEST_UPDATED_ON} for this checkpoint.")
     if payload.get("status") != "runtime-sources-and-docs-moved-with-legacy-wrappers":
         fail("Runtime manifest status must record the moved-source/docs plus legacy-wrapper boundary.")
     for key in ("runtime_entries", "non_runtime_defaults", "boundary_flags", "move_readiness"):
@@ -191,9 +235,61 @@ def assert_runtime_entries(payload: dict[str, Any]) -> None:
                 if 'if __name__ == "__main__":' not in legacy_text or f"from {expected_import} import main" not in legacy_text:
                     fail(f"{legacy_normalized} must call {expected_import}.main() when executed directly.")
 
+        expected_entry = EXPECTED_EMOTION_STATE_RUNTIME_ENTRIES.get(normalized)
+        if expected_entry is not None and entry != expected_entry:
+            fail(f"{normalized} must match the exact offline EMOTION-STATE manifest entry.")
+
     missing = sorted(REQUIRED_RUNTIME_PATHS - manifest_paths)
     if missing:
         fail(f"Runtime manifest missing required runtime path(s): {', '.join(missing)}")
+
+
+def assert_emotion_state_entry_contract_self_check(payload: dict[str, Any]) -> None:
+    target_path = "runtime/contracts/emotion_state_contracts.py"
+
+    def target(mutant: dict[str, Any]) -> dict[str, Any]:
+        return next(entry for entry in mutant["runtime_entries"] if entry.get("path") == target_path)
+
+    def expect_rejected(label: str, mutant: dict[str, Any]) -> None:
+        try:
+            assert_manifest_shape(mutant)
+            assert_runtime_entries(mutant)
+        except AssertionError:
+            return
+        fail(f"Runtime manifest self-check accepted prohibited mutation: {label}")
+
+    mutations: list[tuple[str, dict[str, Any]]] = []
+
+    wrong_role = copy.deepcopy(payload)
+    target(wrong_role)["runtime_role"] = "Live customer emotion inference drives provider sales behavior now."
+    mutations.append(("wrong long runtime_role", wrong_role))
+
+    live_surface = copy.deepcopy(payload)
+    target(live_surface)["behavior_surface"] = ["live customer inference", "provider behavior"]
+    mutations.append(("live/provider behavior_surface", live_surface))
+
+    wrong_tier = copy.deepcopy(payload)
+    target(wrong_tier)["tier"] = "production-live-runtime"
+    mutations.append(("wrong tier", wrong_tier))
+
+    wrong_path_type = copy.deepcopy(payload)
+    target(wrong_path_type)["path_type"] = "directory"
+    mutations.append(("wrong path_type", wrong_path_type))
+
+    extra_field = copy.deepcopy(payload)
+    target(extra_field)["unexpected_metadata"] = "not allowed"
+    mutations.append(("extra entry field", extra_field))
+
+    missing_field = copy.deepcopy(payload)
+    target(missing_field).pop("runtime_role")
+    mutations.append(("missing entry field", missing_field))
+
+    wrong_date = copy.deepcopy(payload)
+    wrong_date["updated_on"] = "2099-01-01"
+    mutations.append(("wrong updated_on", wrong_date))
+
+    for label, mutant in mutations:
+        expect_rejected(label, mutant)
 
 
 def assert_non_runtime_defaults(payload: dict[str, Any]) -> None:
@@ -240,6 +336,7 @@ def main() -> None:
     assert_manifest_shape(payload)
     assert_boundary_flags(payload)
     assert_runtime_entries(payload)
+    assert_emotion_state_entry_contract_self_check(payload)
     assert_non_runtime_defaults(payload)
     assert_runtime_doc_stubs()
     print(

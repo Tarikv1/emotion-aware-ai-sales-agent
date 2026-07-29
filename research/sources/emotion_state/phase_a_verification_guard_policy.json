@@ -1,0 +1,126 @@
+{
+  "policy_id": "emotion-state-phase-a-verification-guard-v1",
+  "schema_version": 1,
+  "network_allowed": false,
+  "private_path_prefixes": ["data/private", "data/private-restricted"],
+  "parent_environment_allowlist": [
+    "COMSPEC", "PATH", "PATHEXT", "SYSTEMDRIVE", "SYSTEMROOT", "WINDIR"
+  ],
+  "guard_generated_environment_names": [
+    "EMOTION_STATE_PHASE_A_ALLOWED_SUBPROCESSES_JSON",
+    "EMOTION_STATE_PHASE_A_GUARD_POLICY",
+    "EMOTION_STATE_PHASE_A_PROJECT_ROOT",
+    "GIT_CONFIG_GLOBAL",
+    "GIT_CONFIG_NOSYSTEM",
+    "GIT_TERMINAL_PROMPT",
+    "HOME",
+    "PYTHONDONTWRITEBYTECODE",
+    "PYTHONIOENCODING",
+    "PYTHONPATH",
+    "PYTHONUTF8",
+    "TEMP",
+    "TMP",
+    "USERPROFILE"
+  ],
+  "provider_environment_exact_names": [
+    "AWS_ACCESS_KEY_ID",
+    "AWS_SECRET_ACCESS_KEY",
+    "AWS_SESSION_TOKEN",
+    "CARTESIA_API_KEY",
+    "DIALOGUE_REASONER_API_KEY",
+    "ELEVENLABS_API_KEY",
+    "GH_TOKEN",
+    "GITHUB_TOKEN",
+    "GROQ_API_KEY",
+    "HF_TOKEN",
+    "HUGGING_FACE_HUB_TOKEN",
+    "LOCAL_DIALOGUE_REASONER_API_KEY",
+    "OPENAI_API_KEY",
+    "OPENAI_SECRET",
+    "OPENROUTER_API_KEY",
+    "TOGETHER_API_KEY",
+    "TOOL_AUTH_TOKEN",
+    "ULTRAVOX_API_KEY"
+  ],
+  "provider_environment_prefixes": [
+    "ASSEMBLYAI_", "AWS_", "CARTESIA_", "DEEPGRAM_", "DIALOGUE_REASONER_",
+    "ELEVENLABS_", "GH_", "GITHUB_", "GROQ_", "HF_", "HUGGING_FACE_",
+    "LOCAL_DIALOGUE_REASONER_", "OPENAI_", "OPENROUTER_", "TOGETHER_",
+    "TWILIO_", "ULTRAVOX_"
+  ],
+  "credential_environment_name_pattern": "(^|_)(API_KEY|ACCESS_KEY|ACCESS_TOKEN|AUTH_TOKEN|BEARER_TOKEN|PRIVATE_KEY|SECRET|TOKEN|PASSWORD)$",
+  "forbidden_import_prefixes": [
+    "_socket", "aiohttp", "assemblyai", "cartesia", "ctypes", "deepgram",
+    "elevenlabs", "ftplib", "github", "groq", "http", "httpx",
+    "openai", "openrouter", "requests", "socket", "together", "twilio",
+    "ultravox", "urllib"
+  ],
+  "output_exclusions": [
+    "research/experiments/generated/EMOTION-STATE-001-phase-a-contracts/result.json",
+    "research/experiments/generated/EMOTION-STATE-001-phase-a-contracts/report.md",
+    ".tmp/emotion-state-001-phase-a-publication/**"
+  ],
+  "canonical_output_files": ["result.json", "report.md"],
+  "allowed_commands": [
+    {
+      "command_id": "focused-open-dataset-tests",
+      "argv_template": ["python", "-m", "unittest", "scripts.test_emotion_state_001_open_dataset_gate", "-v"]
+    },
+    {
+      "command_id": "closeout-hardening-tests",
+      "argv_template": ["python", "-m", "unittest", "scripts.test_emotion_state_001_closeout_hardening", "-v"]
+    },
+    {
+      "command_id": "phase-a-prepublication-validator",
+      "argv_template": ["python", "scripts/validate_emotion_state_001_phase_a_contracts.py", "--section", "prepublication", "--mode", "{mode}"]
+    },
+    {
+      "command_id": "phase-a-materials-validator",
+      "argv_template": ["python", "scripts/validate_emotion_state_001_phase_a_contracts.py", "--section", "materials"]
+    },
+    {
+      "command_id": "frozen-exp-002-validator",
+      "argv_template": ["python", "scripts/validate_exp_002_frozen_response_baseline.py"]
+    },
+    {
+      "command_id": "brain-schema-validator",
+      "argv_template": ["python", "scripts/validate_brain_002_runtime_state_schema.py"]
+    },
+    {
+      "command_id": "private-boundary-validator",
+      "argv_template": ["python", "scripts/validate_private_data_boundary.py"]
+    },
+    {
+      "command_id": "runtime-manifest-validator",
+      "argv_template": ["python", "scripts/validate_runtime_manifest.py"]
+    },
+    {
+      "command_id": "setup-validator",
+      "argv_template": ["python", "scripts/validate_check_setup.py"]
+    },
+    {
+      "command_id": "drift-validator",
+      "argv_template": ["python", "scripts/validate_project_drift_guard.py"]
+    },
+    {
+      "command_id": "thesis-reference-validator",
+      "argv_template": ["python", "scripts/check_thesis_reference_registry.py"]
+    },
+    {
+      "command_id": "thesis-update-validator",
+      "argv_template": ["python", "scripts/check_thesis_update_gate.py"]
+    },
+    {
+      "command_id": "context-policy-validator",
+      "argv_template": ["python", "scripts/validate_context_reading_policy.py"]
+    },
+    {
+      "command_id": "json-validator",
+      "argv_template": ["python", "scripts/emotion_state_phase_a_verification_evidence.py", "--validate-json-inputs"]
+    },
+    {
+      "command_id": "git-diff-check",
+      "argv_template": ["git", "diff", "--check", "{baseline_commit}..{head_commit}"]
+    }
+  ]
+}

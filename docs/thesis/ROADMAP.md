@@ -33,10 +33,14 @@ Active phase: thesis evidence consolidation after source-grounded OpenAI sales-r
 
 Current checkpoint:
 
-- [ ] Current: design the first full Universal Sales RAG source skeleton from the accepted layer contract. Keep campaign facts in Campaign Profile And Facts, campaign adaptation in Campaign Sales Overlay, and universal method in Universal Sales RAG.
+- [x] Complete: `EMOTION-STATE-001` Phase A public-data gate, including Task 7 material-pending input integration for exactly `crema-d-v1.0-audio-wav` and `ami-manual-annotations-v1.6.2`; source adaptation remains false.
+- [x] Complete: `EMOTION-STATE-002` Phase B public-data feasibility checkpoint accepted.
+- [x] Current completed offline checkpoint: `EMOTION-STATE-003` Phase C0 synthetic-mechanics checkpoint accepted.
+- [ ] Next gate: `EMOTION-STATE-004` Phase C1 remains separate and has no runtime, provider, call, private-data, or production authority.
 
 Next checkpoints:
 
+- [ ] Parked by Tarik's `2026-07-14` reprioritization: design the first full Universal Sales RAG source skeleton from the accepted layer contract. This work is not completed or rejected.
 - [ ] Next: generate a reusable campaign-intake template that produces Campaign Sales Overlay and Campaign Profile And Facts files before any ElevenLabs upload.
 - [ ] Next: continue sales-dialogue quality work or test a non-LLM classifier/action-selector baseline against the OpenAI semantic/live-action cases. This remains serious because Qwen 7B and tested small local models did not meet both quality and live-turn latency expectations.
 - [ ] Next: decide whether the strongest action-id-only selector path deserves distillation, fine-tuning, or a simpler non-LLM baseline. Do not return to full local LLM response generation unless the model can meet quality and roughly 2-3 second live-turn latency gates.
@@ -730,7 +734,80 @@ Key writing sources:
 
 ## Near-Term Next Step
 
-Consolidate thesis evidence and then choose between sales-dialogue quality work and a non-LLM/action-selector baseline. Do not call providers, generate audio, wire live runtime, inject Fish tags, open `PROD-102`, add email/calendar/CRM side effects, run production calls, or claim official OpenAI representation.
+EMOTION-STATE-003 Phase C0 is an accepted offline aggregate checkpoint for
+synthetic mechanics only. Candidate decision: `keep`; all `30/30` scenarios
+passed, including `8` rejection cases, and independent candidate review
+returned `C0/I0/M0`. Policy/scenario/result/report SHA-256 values are
+`9BB996F886E9AFFBCDA40A6FB71BE10E1CD07D3B114B4E3FBCDAA1DF71171F15`,
+`D01FBD7677537A0A91D01E0EA8354D079491C13BBD81EC8BAC97E7BBC4520FB0`,
+`3BBB7FC8F4DFB223837EA8D8B8E92EC46AA0ACF70EA1A6CA4649D41266E43030`,
+and `FD1ADA58FD5C0B614DB429AD6B5434C988E95942FBEB1FEB87D779C14F9E4EA4`.
+Existing implementation trace: aggregate runner
+`fd92aae6acf146d9271888bb264ecd29269cb870`, independent validator
+`5c461612f667e1a8727eedb9d2c08d9951b3aed0`, direct-launch correction
+`4c77f72bf7dc85e2e4587b9c03646716e5aec0ff`, and candidate acceptance
+`77a2fb50ba00210cc75d410240c17115be83a415`. The exact pair-only commit is
+`62b6b65cf307270bfc2e98c7c08617252859948d`. The guarded ledger passed
+Phase C0 `177/177`, pinned Phase B `16/16`, four validator sections, five
+repository gates, and the four LF/compile/protected-runtime/diff checks.
+Phase B lockbox remains
+closed and cannot be reused; this checkpoint grants no runtime, provider, data,
+or Phase D authority. An independent `C0/I0/M0` review is required before the
+six-file closeout commit. That review does not authorize push, merge, runtime
+activation, data access, provider work, calls, simulations, source adaptation,
+prompt or knowledge-base changes, or Phase D.
+
+Task 12's canonical checkpoint is `accepted` under
+`.tmp/emotion-state-002-phase-b-cut4b`, transaction
+`559ccc55b0b5412ba455ca7fe3e3a6b7`, with `lockbox_open_count=1`. The
+canonical result SHA-256 is
+`5829BF4A1FBE86BDD6B19B7CF8B07033BF79744B12F7AF1D493F8D3F10D0073C`;
+the report SHA-256 is
+`56140D4ABDD0B2A6924749E719C66D3972483E0F4191F63201E9DDFCA0A23482`.
+The exact pair-only commit is
+`f887989597f23f438e8e537ba5bfbd05823a3587`. The candidate validator and
+independent aggregate-only review passed at `C0/I0/M0`. The final decision is
+`revise`: the acoustic model has positive aggregate macro-F1 lift, but eligible
+slice instability and reversal remain true and confidence abstention does not
+improve the result.
+
+The retired lineage is not reused or mutated.
+
+The production lockbox is closed and must not be rerun for this experiment
+version. Task 12 publication and closeout were pushed at
+`b3f475e6fe101573e2144d9ced31698d51c9ead7` on branch
+`codex/emotion-state-phase-b-public-data-feasibility`. Phase C0 design and its
+ten-task strict-TDD implementation plan were separately approved as an offline
+synthetic temporal-mechanics specification. The plan is tracked at
+`docs/superpowers/plans/2026-07-24-emotion-state-phase-c0-synthetic-temporal-mechanics.md`;
+the policy and 30-case golden matrix preceded reducer code, and candidate,
+canonical, and push remained distinct gates. The implementation and accepted
+local checkpoint described above are now complete. Push, merge, runtime
+activation, public or private data access, provider access, calls,
+conversational simulations, source adaptation, and Phase D authority remain
+outside this checkpoint. The reviewed venv and wheelhouse under
+`.tmp/emotion-state-002-phase-b` remain immutable dependency inputs only; no
+authority transfers to another gate.
+
+The configuration's `emotion-state-crema-interpretable-acoustic-v1` value
+remains an immutable seed-lineage compatibility token, not the production
+schema selector. It preserves the deterministic actor assignment and model
+seed `618797162`; the fixed v2 path and v2 static/semantic identities were the
+exclusive active feature-schema authority for the accepted non-lockbox
+transaction. Independent review re-proved this cross-binding through
+preflight authority restoration, non-lockbox packet validation, byte-identical
+semantic replay, and aggregate reconstruction.
+
+EMOTION-STATE Phase A is accepted at output-only commit
+`f8ba503c3670fec6e9dee53f03f306798e7b807b` with the bounded scope
+`source_provenance_dataset_manifests_offline_contracts_and_cohort_release_gate_only`.
+Phase B is `EMOTION-STATE-002`: an offline public-data feasibility study using
+CREMA-D's 6,570 concordant original audio-perception labels and AMI only for
+conversational mechanics. The accepted Task 12 output is offline
+acted-perception evidence, not production readiness or evidence of customer
+internal emotion, the five operational signals, AMI contribution, real-call
+performance, provider/PSTN/ASR/latency feasibility, runtime activation, or
+commercial effectiveness.
 
 Purpose:
 

@@ -6,9 +6,23 @@ import fnmatch
 import json
 import os
 import re
+import stat
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
+
+try:
+    from scripts.emotion_state_phase_a_verification_evidence import (
+        PRIVATE_GITIGNORE_SENTINEL_BYTES,
+        PRIVATE_GITIGNORE_SENTINEL_RELATIVE_PATH,
+        read_tracked_private_gitignore_sentinel,
+    )
+except ModuleNotFoundError:
+    from emotion_state_phase_a_verification_evidence import (
+        PRIVATE_GITIGNORE_SENTINEL_BYTES,
+        PRIVATE_GITIGNORE_SENTINEL_RELATIVE_PATH,
+        read_tracked_private_gitignore_sentinel,
+    )
 
 
 PROJECT_NAME = "emotion-aware-ai-sales-agent"
@@ -308,6 +322,43 @@ REQUIRED_FILES = [
     "scripts/validate_private_call_learning_pipeline.py",
     "scripts/validate_context_reading_policy.py",
     "scripts/validate_project_drift_guard.py",
+    "scripts/exp_002_frozen_response_baseline.py",
+    "scripts/run_exp_002_frozen_response_baseline.py",
+    "scripts/validate_exp_002_frozen_response_baseline.py",
+    "runtime/contracts/emotion_state_contracts.py",
+    "runtime/contracts/emotion_pattern_contracts.py",
+    "runtime/contracts/emotion_state_brain_extension.py",
+    "scripts/emotion_state_annotation_contracts.py",
+    "scripts/emotion_state_phase_a_contracts.py",
+    "scripts/run_emotion_state_001_phase_a_contracts.py",
+    "scripts/validate_emotion_state_001_phase_a_contracts.py",
+    "scripts/emotion_state_public_dataset_contracts.py",
+    "scripts/emotion_state_split_manifest_v2_contracts.py",
+    "scripts/emotion_state_cohort_release_contracts.py",
+    "scripts/emotion_state_phase_a_verification_evidence.py",
+    "scripts/emotion_state_phase_a_guard_site/sitecustomize.py",
+    "scripts/build_emotion_state_public_dataset_manifests.py",
+    "scripts/test_emotion_state_001_open_dataset_gate.py",
+    "scripts/test_emotion_state_001_closeout_hardening.py",
+    "research/experiments/cases/emotion-state-001-phase-a-contracts.json",
+    "research/experiments/cases/emotion-state-001-cohort-release-fixtures.json",
+    "research/experiments/EMOTION-STATE-001-phase-a.md",
+    "docs/product/EMOTION_STATE_001_PHASE_A_CONTRACTS.md",
+    "docs/data/EMOTION_STATE_001_ANNOTATION_CODEBOOK.md",
+    "research/sources/creative_analysis_engine/source_manifest.json",
+    "research/sources/creative_analysis_engine/source_notes.md",
+    "research/sources/emotion_state/dataset_manifest_contract.json",
+    "research/sources/emotion_state/annotation_record_v1.schema.json",
+    "research/sources/emotion_state/split_manifest_v1.schema.json",
+    "research/sources/emotion_state/split_manifest_v2.schema.json",
+    "research/sources/emotion_state/cohort_release_evidence_v1.schema.json",
+    "research/sources/emotion_state/phase_a_verification_guard_policy.json",
+    "research/sources/emotion_state/datasets/crema-d-v1.0-audio-wav.manifest.json",
+    "research/sources/emotion_state/datasets/crema-d-v1.0-audio-wav.hashes.json",
+    "research/sources/emotion_state/datasets/crema-d-v1.0-audio-wav.quality.json",
+    "research/sources/emotion_state/datasets/ami-manual-annotations-v1.6.2.manifest.json",
+    "research/sources/emotion_state/datasets/ami-manual-annotations-v1.6.2.hashes.json",
+    "research/sources/emotion_state/datasets/ami-manual-annotations-v1.6.2.quality.json",
 ]
 
 ALLOWED_EXTERNAL_REFERENCE_FILES = {
@@ -364,12 +415,26 @@ SKIP_DIRS = {
     "models",
 }
 
+LOCAL_SDD_SCRATCH_FILES = {
+    ".superpowers/sdd/open-dataset-task" + "-6-production-brief.md",
+    ".superpowers/sdd/open-dataset-task" + "-6-report.md",
+    ".superpowers/sdd/review-task" + "-6-fixed.diff",
+    ".superpowers/sdd/review-task" + "-6.diff",
+    ".superpowers/sdd/task" + "-4-targeted-correction-brief.md",
+    ".superpowers/sdd/task" + "-6-brief.md",
+    ".superpowers/sdd/task" + "-6-c4-guard-launcher-brief.md",
+    ".superpowers/sdd/task" + "-6-c4-validator-refactor-brief.md",
+    ".superpowers/sdd/task" + "-6-report.md",
+    ".superpowers/sdd/task" + "-6-review-fixed.md",
+    ".superpowers/sdd/task" + "-6-review.md",
+    ".superpowers/sdd/task6-red-subtask-a-checkpoint.patch",
+}
+
 SKIP_DIR_PREFIXES = {
     ("data", "public"),
     ("data", "private"),
     ("data", "private-restricted"),
     ("data", "processed"),
-    ("data", "external"),
     ("config", "local"),
 }
 
@@ -399,7 +464,7 @@ REFERENCE_GUARD_SOURCE_FILES = {
 
 SECRET_PATTERNS = [
     r"sk_car_[A-Za-z0-9_-]{20,}",
-    r"sk-[A-Za-z0-9_-]{20,}",
+    r"(?<![A-Za-z0-9_])sk-[A-Za-z0-9_-]{20,}",
     r"AIza[0-9A-Za-z_-]{20,}",
     r"xox[baprs]-[A-Za-z0-9-]{20,}",
     r"CARTESIA_API_KEY\s*=\s*[^\s]+",
@@ -475,31 +540,161 @@ def should_skip_path(relative_path: Path) -> bool:
     parts = relative_path.parts
     if any(part in SKIP_DIRS for part in parts):
         return True
+    if relative_path.as_posix() in LOCAL_SDD_SCRATCH_FILES:
+        return True
     for prefix in SKIP_DIR_PREFIXES:
         if len(parts) >= len(prefix) and tuple(parts[: len(prefix)]) == prefix:
             return True
     return relative_path.suffix.lower() in BINARY_EXTENSIONS
 
 
+def _status_is_link_or_reparse(status: os.stat_result) -> bool:
+    if stat.S_ISLNK(status.st_mode):
+        return True
+    file_attributes = getattr(status, "st_file_attributes", 0)
+    reparse_attribute = getattr(stat, "FILE_ATTRIBUTE_REPARSE_POINT", 0x400)
+    return bool(file_attributes & reparse_attribute)
+
+
+def _path_is_link_or_reparse(path: Path) -> bool:
+    return _status_is_link_or_reparse(Path(path).lstat())
+
+
+def _validate_external_scan_entry(
+    path: Path,
+    *,
+    require_directory: bool | None = None,
+    status: os.stat_result | None = None,
+) -> os.stat_result:
+    try:
+        if status is None:
+            status = Path(path).lstat()
+        if _status_is_link_or_reparse(status):
+            raise ValueError(
+                "data/external scan encountered a link or reparse point"
+            )
+    except FileNotFoundError:
+        raise
+    except ValueError:
+        raise
+    except OSError as exc:
+        raise ValueError("data/external scan entry could not be inspected") from exc
+    if require_directory is True and not stat.S_ISDIR(status.st_mode):
+        raise ValueError("data/external scan root must be a directory")
+    if require_directory is False and not (
+        stat.S_ISDIR(status.st_mode) or stat.S_ISREG(status.st_mode)
+    ):
+        raise ValueError("data/external scan entry has an unsupported file type")
+    return status
+
+
 def iter_scan_files(root: Path) -> list[Path]:
     files: list[Path] = []
-    for dirpath, dirnames, filenames in os.walk(root):
-        current_dir = Path(dirpath)
-        relative_dir = current_dir.relative_to(root)
-        dirnames[:] = [
-            dirname
-            for dirname in dirnames
-            if not should_skip_path(relative_dir / dirname)
-        ]
-        for filename in filenames:
-            path = current_dir / filename
-            relative_path = path.relative_to(root)
-            if should_skip_path(relative_path):
-                continue
-            suffix = path.suffix.lower()
-            if suffix and suffix not in TEXT_EXTENSIONS:
-                continue
-            files.append(path)
+
+    def scan_tree(
+        scan_root: Path,
+        *,
+        prune_top_level_data: bool,
+    ) -> None:
+        for dirpath, dirnames, filenames in os.walk(scan_root):
+            current_dir = Path(dirpath)
+            relative_dir = current_dir.relative_to(root)
+            dirnames[:] = [
+                dirname
+                for dirname in dirnames
+                if not (
+                    prune_top_level_data
+                    and current_dir == root
+                    and dirname == "data"
+                )
+                and not should_skip_path(relative_dir / dirname)
+            ]
+            for filename in filenames:
+                path = current_dir / filename
+                relative_path = path.relative_to(root)
+                if should_skip_path(relative_path):
+                    continue
+                suffix = path.suffix.lower()
+                if suffix and suffix not in TEXT_EXTENSIONS:
+                    continue
+                files.append(path)
+
+    def optional_external_directory(path: Path) -> bool:
+        try:
+            _validate_external_scan_entry(path, require_directory=True)
+        except FileNotFoundError:
+            return False
+        return True
+
+    def scan_external_tree() -> None:
+        data_root = root / "data"
+        if not optional_external_directory(data_root):
+            return
+        external_root = data_root / "external"
+        if not optional_external_directory(external_root):
+            return
+
+        pending = [external_root]
+        while pending:
+            current_dir = pending.pop()
+            try:
+                _validate_external_scan_entry(
+                    current_dir,
+                    require_directory=True,
+                )
+                with os.scandir(current_dir) as entries:
+                    ordered_entries = sorted(
+                        entries,
+                        key=lambda entry: (entry.name.casefold(), entry.name),
+                    )
+            except FileNotFoundError as exc:
+                raise ValueError(
+                    "data/external scan entry could not be inspected"
+                ) from exc
+            except ValueError:
+                raise
+            except OSError as exc:
+                raise ValueError(
+                    "data/external scan entry could not be inspected"
+                ) from exc
+
+            child_directories: list[Path] = []
+            for entry in ordered_entries:
+                entry_path = Path(entry.path)
+                try:
+                    status = entry.stat(follow_symlinks=False)
+                    _validate_external_scan_entry(
+                        entry_path,
+                        require_directory=False,
+                        status=status,
+                    )
+                except FileNotFoundError as exc:
+                    raise ValueError(
+                        "data/external scan entry could not be inspected"
+                    ) from exc
+                except ValueError:
+                    raise
+                except OSError as exc:
+                    raise ValueError(
+                        "data/external scan entry could not be inspected"
+                    ) from exc
+
+                relative_path = entry_path.relative_to(root)
+                if should_skip_path(relative_path):
+                    continue
+                if stat.S_ISDIR(status.st_mode):
+                    child_directories.append(entry_path)
+                    continue
+                suffix = entry_path.suffix.lower()
+                if suffix and suffix not in TEXT_EXTENSIONS:
+                    continue
+                files.append(entry_path)
+
+            pending.extend(reversed(child_directories))
+
+    optional_external_directory(root / "data")
+    scan_tree(root, prune_top_level_data=True)
+    scan_external_tree()
     return sorted(files)
 
 
@@ -538,10 +733,33 @@ def build_generated_artifact_lookup(root: Path) -> dict[str, list[str]]:
     return lookup
 
 
+def tracked_private_sentinel_is_valid(root: Path) -> bool:
+    try:
+        return (
+            read_tracked_private_gitignore_sentinel(root)
+            == PRIVATE_GITIGNORE_SENTINEL_BYTES
+        )
+    except ValueError:
+        return False
+
+
 def detect_missing_required_files(root: Path) -> list[Issue]:
     issues: list[Issue] = []
+    git_repository_root = (root / ".git").exists()
+    private_sentinel_valid = (
+        tracked_private_sentinel_is_valid(root)
+        if git_repository_root
+        else None
+    )
     for relative_path in REQUIRED_FILES:
-        if not (root / relative_path).is_file():
+        if (
+            relative_path == PRIVATE_GITIGNORE_SENTINEL_RELATIVE_PATH
+            and git_repository_root
+        ):
+            required_file_exists = bool(private_sentinel_valid)
+        else:
+            required_file_exists = (root / relative_path).is_file()
+        if not required_file_exists:
             issues.append(
                 Issue(
                     code="missing_required_file",

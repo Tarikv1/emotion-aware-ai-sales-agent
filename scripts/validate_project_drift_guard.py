@@ -1,13 +1,17 @@
 #!/usr/bin/env python3
 from __future__ import annotations
 
-import json
+import ast
+import os
 import shutil
-import subprocess
-import sys
 import uuid
 from pathlib import Path
-from typing import Any
+from unittest import mock
+
+if __package__:
+    from scripts import check_project_drift
+else:
+    import check_project_drift
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -308,12 +312,160 @@ REQUIRED_FIXTURE_FILES = [
     "scripts/validate_private_call_learning_pipeline.py",
     "scripts/validate_context_reading_policy.py",
     "scripts/validate_project_drift_guard.py",
+    "scripts/exp_002_frozen_response_baseline.py",
+    "scripts/run_exp_002_frozen_response_baseline.py",
+    "scripts/validate_exp_002_frozen_response_baseline.py",
+    "runtime/contracts/emotion_state_contracts.py",
+    "runtime/contracts/emotion_pattern_contracts.py",
+    "runtime/contracts/emotion_state_brain_extension.py",
+    "scripts/emotion_state_annotation_contracts.py",
+    "scripts/emotion_state_phase_a_contracts.py",
+    "scripts/run_emotion_state_001_phase_a_contracts.py",
+    "scripts/validate_emotion_state_001_phase_a_contracts.py",
+    "scripts/emotion_state_public_dataset_contracts.py",
+    "scripts/emotion_state_split_manifest_v2_contracts.py",
+    "scripts/emotion_state_cohort_release_contracts.py",
+    "scripts/emotion_state_phase_a_verification_evidence.py",
+    "scripts/emotion_state_phase_a_guard_site/sitecustomize.py",
+    "scripts/build_emotion_state_public_dataset_manifests.py",
+    "scripts/test_emotion_state_001_open_dataset_gate.py",
+    "scripts/test_emotion_state_001_closeout_hardening.py",
+    "research/experiments/cases/emotion-state-001-phase-a-contracts.json",
+    "research/experiments/cases/emotion-state-001-cohort-release-fixtures.json",
+    "research/experiments/EMOTION-STATE-001-phase-a.md",
+    "docs/product/EMOTION_STATE_001_PHASE_A_CONTRACTS.md",
+    "docs/data/EMOTION_STATE_001_ANNOTATION_CODEBOOK.md",
+    "research/sources/creative_analysis_engine/source_manifest.json",
+    "research/sources/creative_analysis_engine/source_notes.md",
+    "research/sources/emotion_state/dataset_manifest_contract.json",
+    "research/sources/emotion_state/annotation_record_v1.schema.json",
+    "research/sources/emotion_state/split_manifest_v1.schema.json",
+    "research/sources/emotion_state/split_manifest_v2.schema.json",
+    "research/sources/emotion_state/cohort_release_evidence_v1.schema.json",
+    "research/sources/emotion_state/phase_a_verification_guard_policy.json",
+    "research/sources/emotion_state/datasets/crema-d-v1.0-audio-wav.manifest.json",
+    "research/sources/emotion_state/datasets/crema-d-v1.0-audio-wav.hashes.json",
+    "research/sources/emotion_state/datasets/crema-d-v1.0-audio-wav.quality.json",
+    "research/sources/emotion_state/datasets/ami-manual-annotations-v1.6.2.manifest.json",
+    "research/sources/emotion_state/datasets/ami-manual-annotations-v1.6.2.hashes.json",
+    "research/sources/emotion_state/datasets/ami-manual-annotations-v1.6.2.quality.json",
 ]
+
+PHASE_A_REQUIRED_PATHS = frozenset(
+    {
+        "scripts/exp_002_frozen_response_baseline.py",
+        "scripts/run_exp_002_frozen_response_baseline.py",
+        "scripts/validate_exp_002_frozen_response_baseline.py",
+        "runtime/contracts/emotion_state_contracts.py",
+        "runtime/contracts/emotion_pattern_contracts.py",
+        "runtime/contracts/emotion_state_brain_extension.py",
+        "scripts/emotion_state_annotation_contracts.py",
+        "scripts/emotion_state_phase_a_contracts.py",
+        "scripts/run_emotion_state_001_phase_a_contracts.py",
+        "scripts/validate_emotion_state_001_phase_a_contracts.py",
+        "scripts/emotion_state_public_dataset_contracts.py",
+        "scripts/emotion_state_split_manifest_v2_contracts.py",
+        "scripts/emotion_state_cohort_release_contracts.py",
+        "scripts/emotion_state_phase_a_verification_evidence.py",
+        "scripts/emotion_state_phase_a_guard_site/sitecustomize.py",
+        "scripts/build_emotion_state_public_dataset_manifests.py",
+        "scripts/test_emotion_state_001_open_dataset_gate.py",
+        "scripts/test_emotion_state_001_closeout_hardening.py",
+        "research/experiments/cases/emotion-state-001-phase-a-contracts.json",
+        "research/experiments/cases/emotion-state-001-cohort-release-fixtures.json",
+        "research/experiments/EMOTION-STATE-001-phase-a.md",
+        "docs/product/EMOTION_STATE_001_PHASE_A_CONTRACTS.md",
+        "docs/data/EMOTION_STATE_001_ANNOTATION_CODEBOOK.md",
+        "research/sources/creative_analysis_engine/source_manifest.json",
+        "research/sources/creative_analysis_engine/source_notes.md",
+        "research/sources/emotion_state/dataset_manifest_contract.json",
+        "research/sources/emotion_state/annotation_record_v1.schema.json",
+        "research/sources/emotion_state/split_manifest_v1.schema.json",
+        "research/sources/emotion_state/split_manifest_v2.schema.json",
+        "research/sources/emotion_state/cohort_release_evidence_v1.schema.json",
+        "research/sources/emotion_state/phase_a_verification_guard_policy.json",
+        "research/sources/emotion_state/datasets/crema-d-v1.0-audio-wav.manifest.json",
+        "research/sources/emotion_state/datasets/crema-d-v1.0-audio-wav.hashes.json",
+        "research/sources/emotion_state/datasets/crema-d-v1.0-audio-wav.quality.json",
+        "research/sources/emotion_state/datasets/ami-manual-annotations-v1.6.2.manifest.json",
+        "research/sources/emotion_state/datasets/ami-manual-annotations-v1.6.2.hashes.json",
+        "research/sources/emotion_state/datasets/ami-manual-annotations-v1.6.2.quality.json",
+    }
+)
 
 
 def assert_condition(condition: bool, message: str) -> None:
     if not condition:
         raise AssertionError(message)
+
+
+def load_checker_required_files() -> list[str]:
+    tree = ast.parse(SCRIPT_PATH.read_text(encoding="utf-8"), filename=str(SCRIPT_PATH))
+    for node in tree.body:
+        if not isinstance(node, ast.Assign):
+            continue
+        if not any(isinstance(target, ast.Name) and target.id == "REQUIRED_FILES" for target in node.targets):
+            continue
+        value = ast.literal_eval(node.value)
+        assert_condition(
+            isinstance(value, list) and all(isinstance(item, str) for item in value),
+            "Project drift REQUIRED_FILES must be a literal list of paths.",
+        )
+        return value
+    raise AssertionError("Project drift checker REQUIRED_FILES inventory is missing.")
+
+
+def validate_required_file_inventory(
+    checker_files: list[str] | None = None,
+    fixture_files: list[str] | None = None,
+) -> None:
+    if checker_files is None:
+        checker_files = load_checker_required_files()
+    if fixture_files is None:
+        fixture_files = REQUIRED_FIXTURE_FILES
+    assert_condition(
+        len(checker_files) == len(set(checker_files)),
+        "Project drift checker REQUIRED_FILES contains duplicate paths.",
+    )
+    assert_condition(
+        len(fixture_files) == len(set(fixture_files)),
+        "Project drift validator REQUIRED_FIXTURE_FILES contains duplicate paths.",
+    )
+    checker_paths = set(checker_files)
+    validator_paths = set(fixture_files)
+    missing_checker = sorted(PHASE_A_REQUIRED_PATHS - checker_paths)
+    missing_validator = sorted(PHASE_A_REQUIRED_PATHS - validator_paths)
+    assert_condition(
+        not missing_checker and not missing_validator,
+        "Project drift inventories are missing required Phase A paths: "
+        f"checker={missing_checker}, validator={missing_validator}",
+    )
+    assert_condition(
+        checker_paths == validator_paths,
+        "Project drift required-file inventories differ: "
+        f"only_checker={sorted(checker_paths - validator_paths)}, "
+        f"only_validator={sorted(validator_paths - checker_paths)}",
+    )
+
+
+def assert_required_file_inventory_self_check(checker_files: list[str], fixture_files: list[str]) -> None:
+    target = sorted(PHASE_A_REQUIRED_PATHS)[0]
+
+    def without(items: list[str]) -> list[str]:
+        return [item for item in items if item != target]
+
+    def expect_rejected(label: str, checker_mutant: list[str], fixture_mutant: list[str]) -> None:
+        try:
+            validate_required_file_inventory(checker_mutant, fixture_mutant)
+        except AssertionError:
+            return
+        raise AssertionError(f"Project drift inventory self-check accepted prohibited mutation: {label}")
+
+    expect_rejected("symmetric Phase A removal", without(checker_files), without(fixture_files))
+    expect_rejected("checker-only removal", without(checker_files), list(fixture_files))
+    expect_rejected("validator-only removal", list(checker_files), without(fixture_files))
+    expect_rejected("checker duplicate", list(checker_files) + [target], list(fixture_files))
+    expect_rejected("validator duplicate", list(checker_files), list(fixture_files) + [target])
 
 
 def write_text(path: Path, text: str) -> None:
@@ -373,31 +525,15 @@ def create_dirty_fixture(root: Path) -> None:
     audio_path.write_bytes(b"fixture audio bytes")
 
 
-def run_guard(root: Path) -> subprocess.CompletedProcess[str]:
-    return subprocess.run(
-        [sys.executable, str(SCRIPT_PATH), "--root", str(root), "--json"],
-        cwd=ROOT,
-        text=True,
-        capture_output=True,
-        check=False,
-        timeout=180,
-    )
-
-
-def parse_json_output(completed: subprocess.CompletedProcess[str]) -> dict[str, Any]:
-    try:
-        return json.loads(completed.stdout)
-    except json.JSONDecodeError as exc:
-        raise AssertionError(f"Guard did not return valid JSON. stdout={completed.stdout!r} stderr={completed.stderr!r}") from exc
+def run_guard(root: Path) -> dict[str, object]:
+    return check_project_drift.build_report(root)
 
 
 def validate_dirty_fixture() -> None:
     dirty_root = FIXTURE_ROOT / "dirty"
     create_dirty_fixture(dirty_root)
 
-    completed = run_guard(dirty_root)
-    assert_condition(completed.returncode != 0, "Dirty fixture should fail project drift guard.")
-    payload = parse_json_output(completed)
+    payload = run_guard(dirty_root)
     assert_condition(payload["status"] == "fail", "Dirty fixture payload should be fail.")
 
     issue_codes = {issue["code"] for issue in payload["issues"]}
@@ -415,6 +551,173 @@ def validate_dirty_fixture() -> None:
     assert_condition(payload["summary"]["auto_fixes_applied"] is False, "Guard must not auto-fix dirty fixture.")
 
 
+def validate_secret_pattern_token_boundaries() -> None:
+    non_secret_task_paths = (
+        ".superpowers/sdd/task-7-material-pending-brief.md",
+        ".superpowers/sdd/open-dataset-task-7-material-pending-report.md",
+        ".superpowers/sdd/task-7-thesis-reference-traversal-prerequisite-report.md",
+    )
+    for value in non_secret_task_paths:
+        assert_condition(
+            check_project_drift.SECRET_RE.search(value) is None,
+            f"Secret detector misclassified an ordinary task path: {value}",
+        )
+
+    actual_secret = "sk-" + "TESTVALUE" + ("X" * 24)
+    assert_condition(
+        check_project_drift.SECRET_RE.search(actual_secret) is not None,
+        "Secret detector stopped recognizing a token-start sk credential",
+    )
+
+
+def validate_scan_traversal_boundary() -> None:
+    root = FIXTURE_ROOT / "traversal-boundary"
+    allowed_files = (
+        "data/external/allowed.txt",
+        "docs/allowed.md",
+        "README.md",
+    )
+    forbidden_files = (
+        "data/public/sentinel.md",
+        "data/private/sentinel.md",
+        "data/private-restricted/sentinel.md",
+    )
+    for relative_path in allowed_files:
+        write_text(root / relative_path, "Allowed synthetic fixture.\n")
+    for relative_path in forbidden_files:
+        write_text(root / relative_path, "Forbidden synthetic sentinel.\n")
+
+    root_absolute = Path(os.path.abspath(root))
+    forbidden_prefixes = (
+        "data/public",
+        "data/private",
+        "data/private-restricted",
+    )
+    real_scandir = os.scandir
+    real_stat = Path.stat
+    real_open = Path.open
+    real_read_text = Path.read_text
+    data_ancestor_metadata_probes: list[str] = []
+
+    def relative_key(value: object) -> str | None:
+        if isinstance(value, int):
+            return None
+        candidate = Path(os.path.abspath(os.fspath(value)))
+        try:
+            return candidate.relative_to(root_absolute).as_posix()
+        except ValueError:
+            return None
+
+    def assert_allowed_boundary(value: object, operation: str) -> None:
+        relative = relative_key(value)
+        if relative == "data" or any(
+            relative == prefix or relative.startswith(prefix + "/")
+            for prefix in forbidden_prefixes
+            if relative is not None
+        ):
+            raise AssertionError(
+                f"{operation} crossed forbidden synthetic data boundary: {relative}"
+            )
+
+    def guarded_scandir(path: object):
+        assert_allowed_boundary(path, "scandir")
+        return real_scandir(path)
+
+    def guarded_stat(path: Path, *args: object, **kwargs: object):
+        if relative_key(path) == "data":
+            if kwargs.get("follow_symlinks") is not False:
+                raise AssertionError(
+                    "stat followed the synthetic data ancestor"
+                )
+            data_ancestor_metadata_probes.append("lstat")
+            return real_stat(path, *args, **kwargs)
+        assert_allowed_boundary(path, "stat")
+        return real_stat(path, *args, **kwargs)
+
+    def guarded_open(path: Path, *args: object, **kwargs: object):
+        assert_allowed_boundary(path, "open")
+        return real_open(path, *args, **kwargs)
+
+    def guarded_read_text(path: Path, *args: object, **kwargs: object):
+        assert_allowed_boundary(path, "read_text")
+        return real_read_text(path, *args, **kwargs)
+
+    with (
+        mock.patch.object(os, "scandir", side_effect=guarded_scandir),
+        mock.patch.object(Path, "stat", guarded_stat),
+        mock.patch.object(Path, "open", guarded_open),
+        mock.patch.object(Path, "read_text", guarded_read_text),
+    ):
+        files = check_project_drift.iter_scan_files(root)
+        issues = check_project_drift.detect_line_issues(root, files)
+
+    actual_files = tuple(path.relative_to(root).as_posix() for path in files)
+    assert_condition(
+        actual_files == allowed_files,
+        f"Drift traversal returned the wrong synthetic paths: {actual_files}",
+    )
+    assert_condition(
+        data_ancestor_metadata_probes
+        and set(data_ancestor_metadata_probes) == {"lstat"},
+        "Drift traversal did not limit data-ancestor access to no-follow metadata",
+    )
+    assert_condition(not issues, f"Allowed synthetic paths produced drift issues: {issues}")
+
+
+def validate_scan_link_boundary() -> None:
+    mocked_root = FIXTURE_ROOT / "link-boundary-mocked"
+    mocked_entry = mocked_root / "data" / "external" / "linked.txt"
+    write_text(mocked_entry, "Synthetic linked-entry fixture.\n")
+    mocked_status = mocked_entry.lstat()
+    real_status_check = check_project_drift._status_is_link_or_reparse
+
+    def mocked_status_check(status: os.stat_result) -> bool:
+        return (
+            (status.st_mode, status.st_size)
+            == (mocked_status.st_mode, mocked_status.st_size)
+            or real_status_check(status)
+        )
+
+    with mock.patch.object(
+        check_project_drift,
+        "_status_is_link_or_reparse",
+        side_effect=mocked_status_check,
+    ):
+        try:
+            check_project_drift.iter_scan_files(mocked_root)
+        except ValueError as exc:
+            assert_condition(
+                "link or reparse" in str(exc),
+                f"Mocked external link failed for the wrong reason: {exc}",
+            )
+        else:
+            raise AssertionError(
+                "Drift traversal accepted a mocked data/external reparse entry"
+            )
+
+    symlink_root = FIXTURE_ROOT / "link-boundary-symlink"
+    external_root = symlink_root / "data" / "external"
+    external_root.mkdir(parents=True)
+    outside_file = symlink_root / "outside.txt"
+    write_text(outside_file, "Synthetic outside target.\n")
+    linked_entry = external_root / "linked.txt"
+    try:
+        linked_entry.symlink_to(outside_file)
+    except OSError:
+        return
+    try:
+        check_project_drift.iter_scan_files(symlink_root)
+    except ValueError as exc:
+        assert_condition(
+            "link or reparse" in str(exc),
+            f"Ordinary external symlink failed for the wrong reason: {exc}",
+        )
+    else:
+        raise AssertionError(
+            "Drift traversal accepted an ordinary data/external symlink"
+        )
+
+
 def validate_clean_fixture() -> None:
     clean_root = FIXTURE_ROOT / "clean"
     create_base_fixture(clean_root)
@@ -422,18 +725,14 @@ def validate_clean_fixture() -> None:
     audio_path.parent.mkdir(parents=True, exist_ok=True)
     audio_path.write_bytes(b"fixture audio bytes")
 
-    completed = run_guard(clean_root)
-    assert_condition(completed.returncode == 0, f"Clean fixture should pass. stderr={completed.stderr!r}")
-    payload = parse_json_output(completed)
+    payload = run_guard(clean_root)
     assert_condition(payload["status"] == "pass", "Clean fixture payload should be pass.")
     assert_condition(payload["summary"]["failure_count"] == 0, "Clean fixture should not have failures.")
     assert_condition(payload["summary"]["auto_fixes_applied"] is False, "Guard must not auto-fix clean fixture.")
 
 
 def validate_current_repo() -> None:
-    completed = run_guard(ROOT)
-    assert_condition(completed.returncode == 0, f"Current repo should pass project drift guard. stdout={completed.stdout!r}")
-    payload = parse_json_output(completed)
+    payload = run_guard(ROOT)
     assert_condition(payload["project"] == "emotion-aware-ai-sales-agent", "Unexpected project name.")
     assert_condition(payload["status"] == "pass", "Current repo drift guard status should be pass.")
     assert_condition(payload["summary"]["auto_fixes_applied"] is False, "Guard must not auto-fix current repo.")
@@ -441,9 +740,16 @@ def validate_current_repo() -> None:
 
 def main() -> None:
     assert_condition(SCRIPT_PATH.exists(), "Project drift guard runner is missing.")
+    checker_files = load_checker_required_files()
+    fixture_files = list(REQUIRED_FIXTURE_FILES)
+    validate_required_file_inventory(checker_files, fixture_files)
+    assert_required_file_inventory_self_check(checker_files, fixture_files)
     FIXTURE_ROOT.mkdir(parents=True, exist_ok=True)
 
     try:
+        validate_secret_pattern_token_boundaries()
+        validate_scan_traversal_boundary()
+        validate_scan_link_boundary()
         validate_dirty_fixture()
         validate_clean_fixture()
         validate_current_repo()

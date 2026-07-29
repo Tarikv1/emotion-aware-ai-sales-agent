@@ -1,0 +1,41 @@
+{
+  "schema_id": "emotion-state-split-manifest-v1",
+  "schema_version": 1,
+  "required_fields": [
+    "manifest_id",
+    "dataset_manifest_ids",
+    "highest_dependency_unit",
+    "dependency_keys",
+    "training_discovery",
+    "calibration",
+    "balanced_diagnostic",
+    "final_lockbox",
+    "frozen_candidate_family_digest",
+    "runtime_influence_allowed"
+  ],
+  "dependency_keys": ["speaker", "call_session", "dialogue_dyad", "source_corpus", "scripted_scenario"],
+  "training_discovery": {
+    "case_ids": [],
+    "dependency_groups": {"speaker": [], "call_session": [], "dialogue_dyad": [], "source_corpus": [], "scripted_scenario": []}
+  },
+  "calibration": {
+    "case_ids": [],
+    "dependency_groups": {"speaker": [], "call_session": [], "dialogue_dyad": [], "source_corpus": [], "scripted_scenario": []},
+    "prevalence_representative": true
+  },
+  "balanced_diagnostic": {
+    "case_ids": [],
+    "dependency_groups": {"speaker": [], "call_session": [], "dialogue_dyad": [], "source_corpus": [], "scripted_scenario": []},
+    "calibration_claims_allowed": false
+  },
+  "final_lockbox": {
+    "case_ids": [],
+    "dependency_groups": {"speaker": [], "call_session": [], "dialogue_dyad": [], "source_corpus": [], "scripted_scenario": []},
+    "prevalence_representative": true,
+    "one_use_only": true,
+    "open_count": 0
+  },
+  "frozen_candidate_family_digest": null,
+  "runtime_influence_allowed": false,
+  "notes": "This is an unpopulated Phase A contract. Selecting data or assigning cases requires a later reviewed phase."
+}

@@ -1,0 +1,700 @@
+{
+  "checkpoint_id": "EMOTION-STATE-002-phase-b-public-data-feasibility",
+  "closed_boundaries": {
+    "customer_state_output_allowed": false,
+    "network_during_evaluation_allowed": false,
+    "private_data_allowed": false,
+    "provider_operations_allowed": false,
+    "runtime_influence_allowed": false,
+    "source_adaptation_allowed": false
+  },
+  "configuration_sha256": "BBB16BDB1205255B0D1C3F0F33891ECC75C4F074D0E6D7200D09A6B385CFE914",
+  "crema_label_ledger": {
+    "eligible_actor_count": 91,
+    "eligible_concordant_unique_winner": 6570,
+    "eligible_sentence_count": 12,
+    "included_wav_count": 7441,
+    "label_counts": {
+      "A": 951,
+      "D": 500,
+      "F": 613,
+      "H": 330,
+      "N": 3834,
+      "S": 342
+    },
+    "raw_audio_vote_tie": 204,
+    "source_binding": {
+      "finished_responses_sha256": "939D02D2DDDDDF575BBCCFFB80F14F1D110FDA88F092F2A68201994EB3BCB45B",
+      "raw_audio_modality": "1",
+      "raw_join_field": "clipName",
+      "raw_label_field": "respEmo",
+      "raw_modality_field": "queryType",
+      "summary_join_field": "FileName",
+      "summary_label_field": "VoiceVote",
+      "summary_table_sha256": "1EA0E13D98853D920C7C51E69A72BA5BA42018F85A9B89B8B2CC1B53C1AA56A9"
+    },
+    "summary_voice_tie": 644,
+    "unique_winner_disagreement": 23
+  },
+  "dataset_evidence": {
+    "ami": {
+      "archive_sha256": "B56E5BABB2496B8795DEEEDA7E71178D7FBC9963F94276CF2A3F4B56EBBC9F9D",
+      "dataset_id": "ami-manual-annotations-v1.6.2",
+      "hash_inventory_sha256": "CE7F837A2A44DFEE44691C4BA8B5B0D7766E46D6616986CF565A6300056DEAEE",
+      "manifest_sha256": "3904D4A3A9EDF53B06A65354E02FBE1BDD44361B5E196FC6DD4A3882C74911DE",
+      "quality_inventory_sha256": "A376A6C0D5F89770525936299717F1595B743489B593DC4E5CE88AB08ACB22C9"
+    },
+    "crema_d": {
+      "dataset_id": "crema-d-v1.0-audio-wav",
+      "hash_inventory_sha256": "AD58D8165C683847DF246F923FF466722C7F628FE8D81679F618FA5EB3031C87",
+      "manifest_sha256": "6E86F06358E4AD172C72BE1692CFF37291D9D5763DD7F6F5C7CE7405E7E01248",
+      "quality_inventory_sha256": "455D6A010855F209B4DC4C67F67E4222FAB81601861745B5B5E79E7942B92682",
+      "source_revision": "f3b8611a309886568dfa957141775b2e05add04a"
+    }
+  },
+  "decision": "revise",
+  "environment_lock_sha256": "F78229E8C84B90DB0EB4487CA37949940D13D9AB30A95B5148081CC1B8F60DE3",
+  "feature_schema_sha256": "C2A7DE308BAD32C3798016061777669881E7FDD3403979DCCC166DCE38F307C4",
+  "lockbox": {
+    "ami": {
+      "aggregate": {
+        "partitions": {
+          "full_corpus": {
+            "metric_families": {
+              "dialogue_act": {
+                "contribution": null,
+                "coverage": {
+                  "dialogue_act_file_count": 556,
+                  "dialogue_act_meeting_count": 139,
+                  "fully_labeled_dialogue_act_file_count": 530
+                },
+                "dialogue_acts": null,
+                "reason_codes": [
+                  "incomplete_dialogue_act_meeting_coverage",
+                  "unlabeled_dialogue_act_records"
+                ],
+                "scalars": null,
+                "status": "unavailable"
+              },
+              "timing": {
+                "buckets": null,
+                "contribution": null,
+                "coverage": {
+                  "timing_file_meeting_count": 170,
+                  "usable_timing_meeting_count": 137
+                },
+                "reason_codes": [
+                  "incomplete_usable_timing_coverage"
+                ],
+                "scalars": null,
+                "status": "unavailable"
+              }
+            },
+            "population_meeting_count": 170
+          },
+          "full_only": {
+            "metric_families": {
+              "dialogue_act": {
+                "contribution": null,
+                "coverage": {
+                  "dialogue_act_file_count": 4,
+                  "dialogue_act_meeting_count": 1,
+                  "fully_labeled_dialogue_act_file_count": 3
+                },
+                "dialogue_acts": null,
+                "reason_codes": [
+                  "incomplete_dialogue_act_meeting_coverage",
+                  "unlabeled_dialogue_act_records"
+                ],
+                "scalars": null,
+                "status": "unavailable"
+              },
+              "timing": {
+                "buckets": null,
+                "contribution": null,
+                "coverage": {
+                  "timing_file_meeting_count": 32,
+                  "usable_timing_meeting_count": 1
+                },
+                "reason_codes": [
+                  "incomplete_usable_timing_coverage"
+                ],
+                "scalars": null,
+                "status": "unavailable"
+              }
+            },
+            "population_meeting_count": 32
+          },
+          "scenario_only": {
+            "metric_families": {
+              "dialogue_act": {
+                "contribution": null,
+                "coverage": {
+                  "dialogue_act_file_count": 552,
+                  "dialogue_act_meeting_count": 138,
+                  "fully_labeled_dialogue_act_file_count": 527
+                },
+                "dialogue_acts": null,
+                "reason_codes": [
+                  "unlabeled_dialogue_act_records"
+                ],
+                "scalars": null,
+                "status": "unavailable"
+              },
+              "timing": {
+                "buckets": null,
+                "contribution": null,
+                "coverage": {
+                  "timing_file_meeting_count": 138,
+                  "usable_timing_meeting_count": 136
+                },
+                "reason_codes": [
+                  "incomplete_usable_timing_coverage"
+                ],
+                "scalars": null,
+                "status": "unavailable"
+              }
+            },
+            "population_meeting_count": 138
+          }
+        },
+        "schema_id": "emotion-state-ami-mechanics-aggregate-v2",
+        "schema_version": 2,
+        "source_quality": {
+          "unlabeled_dialogue_act_file_count": 26,
+          "unlabeled_dialogue_act_record_count": 28
+        }
+      },
+      "aggregate_sha256": "31B068BF9AEF99340A6895BCF3997265168591EE31073001382C0BA5ACE89A6C",
+      "minimum_unique_contributors_per_cell": 10,
+      "source_commitment_sha256": "55815CFB3CD49A6164744425F154E35403601BF1A1FF8DEC50AE7207943BCEE7"
+    },
+    "crema": {
+      "decision_evidence": {
+        "bootstrap_evidence_mint_sha256": "36F542D1AAA0B5D564CFA709B97746DD15B90A5A4D16874E47886CFDDA96681E",
+        "calibration_evidence": {
+          "class_order": [
+            "A",
+            "D",
+            "F",
+            "H",
+            "N",
+            "S"
+          ],
+          "models": {
+            "acoustic": {
+              "0.6": {
+                "achieved_coverage": 0.6006256517205423,
+                "threshold": 0.6397143830765889
+              },
+              "0.8": {
+                "achieved_coverage": 0.8008342022940563,
+                "threshold": 0.4879543948098693
+              },
+              "1.0": {
+                "achieved_coverage": 1.0,
+                "threshold": 0.2404708284655528
+              }
+            },
+            "class_prior": {
+              "0.6": {
+                "achieved_coverage": 1.0,
+                "threshold": 0.492974708952228
+              },
+              "0.8": {
+                "achieved_coverage": 1.0,
+                "threshold": 0.492974708952228
+              },
+              "1.0": {
+                "achieved_coverage": 1.0,
+                "threshold": 0.492974708952228
+              }
+            },
+            "sentence_id": {
+              "0.6": {
+                "achieved_coverage": 0.6444212721584984,
+                "threshold": 0.48138944890028174
+              },
+              "0.8": {
+                "achieved_coverage": 0.8561001042752867,
+                "threshold": 0.45076317292340984
+              },
+              "1.0": {
+                "achieved_coverage": 1.0,
+                "threshold": 0.3841275428980977
+              }
+            }
+          },
+          "partition_role": "calibration",
+          "probability_evidence": {
+            "case_count": 959,
+            "class_order": [
+              "A",
+              "D",
+              "F",
+              "H",
+              "N",
+              "S"
+            ],
+            "fitted_model_evidence_mint_sha256": "B2929DDB70D2CE9001A2F98A3D3B1A5BE95D6180BB3C92AC029F6A6E6FC65B35",
+            "model_order": [
+              "class_prior",
+              "sentence_id",
+              "acoustic"
+            ],
+            "model_state_sha256": "C633299C49FED01ED412F2BB6A8BAD254BDDADF0F661929F3DB14685F22BB5ED",
+            "partition_evidence_mint_sha256": "DC72498A611E98AF6D869E1687E5F78B27D9158B88406189D8E98E40B217C24E",
+            "partition_role": "calibration",
+            "probability_commitment_sha256": "B72735C906713FAD074F056033751F245707E6B88866F1C0537B197FFF14AF06",
+            "provenance": {
+              "actor_commitment_sha256": "692BBE9A1135BCCC0F0344DF3C5B91C99C10E6F353F2EDE297F962D434625C1E",
+              "assignment_sha256": "90A0E4AA0323641D124E0D5DDD2DB3E49B83157469C74756E5A28DDE901BE629",
+              "case_count": 959,
+              "configuration_sha256": "24E2186A3ACB19817BF87689F09A2F069AC07B5C1D669364D5FC08BC9AD5FA8F",
+              "environment_lock_sha256": "ECAE7C41E8310C52AA62846EDB7F966F5CD05DFF2FD3635C0070B71B8AB7673C",
+              "feature_input_commitment_sha256": "1AC86EEEF6A345DB6791B7272CA9B74676CF8140FF1B62347B440CD980D83376",
+              "feature_schema_sha256": "AEC550285DF6A92B3E86E16F66A2E5B554836BBE47C625106F517EB0CF1375DB",
+              "label_input_commitment_sha256": "C5690F99FD58677BDDE020A5911FF9747DBBEECCCCB4C4F2B452CC3B083DC435",
+              "model_class_commitment_sha256": "CB3223A1D001D5A2859C7A25A8FF47C0479D03466386B17150C25BC876D3917C",
+              "partition_role": "calibration",
+              "row_commitment_sha256": "D250C06114D39F06A62870C4E1F0E50BC36EC5409E836F7E03328789054173A3",
+              "schema_id": "emotion-state-phase-b-partition-evidence-v1",
+              "self_sha256": "F196CF9B4690F5A2A1863EBD1392FF87BF93853841822049F3EDE24BEECD87EB",
+              "sentence_commitment_sha256": "9DE14D6791793CB3F21628FDEE195449CD85BA01305B5C651A34BD1400BB573D",
+              "split_manifest_sha256": "BDEA06492CBD0100D6A34AAD800B1DB1B3255CE681515B6F1AF93790BA4E64FA",
+              "split_schema_sha256": "CA1551AC5664391406920D117E21CA1E413F71C96EF29FEC76FA22DCB8D37E9A",
+              "unique_actor_count": 13,
+              "upstream_acoustic_source_commitment_sha256": "9F10384655AB89005DE1B7CC60CB2CA83A92989D646852691604606DBB20A0F8"
+            },
+            "schema_id": "emotion-state-phase-b-probability-evidence-v1",
+            "self_sha256": "152222C7D4EB3A13589C40DF998831B9328D078FC7DBFF97B0169EBDACF24980",
+            "training_evidence_mint_sha256": "572DB1249CED38AB32C376B33C6D5582E9E91715D906E9121F0FBC1C91DBBB9C",
+            "training_provenance": {
+              "actor_commitment_sha256": "1466FFC978CDFD758B472094A1CF7D9A712FFAB6E637CCC5EAFF46F3DFC1BCFC",
+              "assignment_sha256": "90A0E4AA0323641D124E0D5DDD2DB3E49B83157469C74756E5A28DDE901BE629",
+              "case_count": 2491,
+              "configuration_sha256": "24E2186A3ACB19817BF87689F09A2F069AC07B5C1D669364D5FC08BC9AD5FA8F",
+              "environment_lock_sha256": "ECAE7C41E8310C52AA62846EDB7F966F5CD05DFF2FD3635C0070B71B8AB7673C",
+              "feature_input_commitment_sha256": "895B538DDB10CAC92A5BB6DB95A0F1997C4FCB117C9F3AAAC569CBDC705C31BC",
+              "feature_schema_sha256": "AEC550285DF6A92B3E86E16F66A2E5B554836BBE47C625106F517EB0CF1375DB",
+              "label_input_commitment_sha256": "0D353FE921AF11C7F6E7280F3FF363F6AB0219ECF5C4923292FA6966D2176482",
+              "model_class_commitment_sha256": "CB3223A1D001D5A2859C7A25A8FF47C0479D03466386B17150C25BC876D3917C",
+              "partition_role": "training_discovery",
+              "row_commitment_sha256": "877D8FDA4E70AEFF341798FDF60A8650451834CF82C06785DF9DE34B5DBEDD31",
+              "schema_id": "emotion-state-phase-b-partition-evidence-v1",
+              "self_sha256": "8ED78BFC2831911E9B071E81B63A89ECD8796B14C106AAB6FA48165D99F62876",
+              "sentence_commitment_sha256": "9A7108A5DB3B238E20FF0A5EED5B04B629B137B83222E1A31B765104E3B2F45E",
+              "split_manifest_sha256": "BDEA06492CBD0100D6A34AAD800B1DB1B3255CE681515B6F1AF93790BA4E64FA",
+              "split_schema_sha256": "CA1551AC5664391406920D117E21CA1E413F71C96EF29FEC76FA22DCB8D37E9A",
+              "unique_actor_count": 35,
+              "upstream_acoustic_source_commitment_sha256": "008EAD300FE6D49DB84D8A1388CF006B5BE8CE3329FEE592EECCB5894E007A48"
+            }
+          },
+          "probability_evidence_mint_sha256": "0BAB2FAFF0CC2D90E18FDDEE55A258BC806AF88CE1E7F35C6CE2D738ABCBC5E5",
+          "provenance": {
+            "actor_commitment_sha256": "692BBE9A1135BCCC0F0344DF3C5B91C99C10E6F353F2EDE297F962D434625C1E",
+            "assignment_sha256": "90A0E4AA0323641D124E0D5DDD2DB3E49B83157469C74756E5A28DDE901BE629",
+            "case_count": 959,
+            "configuration_sha256": "24E2186A3ACB19817BF87689F09A2F069AC07B5C1D669364D5FC08BC9AD5FA8F",
+            "environment_lock_sha256": "ECAE7C41E8310C52AA62846EDB7F966F5CD05DFF2FD3635C0070B71B8AB7673C",
+            "feature_input_commitment_sha256": "1AC86EEEF6A345DB6791B7272CA9B74676CF8140FF1B62347B440CD980D83376",
+            "feature_schema_sha256": "AEC550285DF6A92B3E86E16F66A2E5B554836BBE47C625106F517EB0CF1375DB",
+            "label_input_commitment_sha256": "C5690F99FD58677BDDE020A5911FF9747DBBEECCCCB4C4F2B452CC3B083DC435",
+            "model_class_commitment_sha256": "CB3223A1D001D5A2859C7A25A8FF47C0479D03466386B17150C25BC876D3917C",
+            "partition_role": "calibration",
+            "row_commitment_sha256": "D250C06114D39F06A62870C4E1F0E50BC36EC5409E836F7E03328789054173A3",
+            "schema_id": "emotion-state-phase-b-partition-evidence-v1",
+            "self_sha256": "F196CF9B4690F5A2A1863EBD1392FF87BF93853841822049F3EDE24BEECD87EB",
+            "sentence_commitment_sha256": "9DE14D6791793CB3F21628FDEE195449CD85BA01305B5C651A34BD1400BB573D",
+            "split_manifest_sha256": "BDEA06492CBD0100D6A34AAD800B1DB1B3255CE681515B6F1AF93790BA4E64FA",
+            "split_schema_sha256": "CA1551AC5664391406920D117E21CA1E413F71C96EF29FEC76FA22DCB8D37E9A",
+            "unique_actor_count": 13,
+            "upstream_acoustic_source_commitment_sha256": "9F10384655AB89005DE1B7CC60CB2CA83A92989D646852691604606DBB20A0F8"
+          },
+          "schema_id": "emotion-state-phase-b-calibration-v1",
+          "self_sha256": "1A061F878119AE6BFE355FC2B8BF4A0FD1104C3D28003E650A46EA3B174E8FBB",
+          "targets": [
+            1.0,
+            0.8,
+            0.6
+          ]
+        },
+        "calibration_evidence_mint_sha256": "9D887B43701EC3F6D6FA6FDB6887EF042EC51BA96A905235D369F1D7CFAE7065",
+        "class_order": [
+          "A",
+          "D",
+          "F",
+          "H",
+          "N",
+          "S"
+        ],
+        "confidence_abstention_improves": false,
+        "eligible_slice_instability": true,
+        "eligible_slice_reversal": true,
+        "evaluation_evidence_mint_sha256": "6BB3235D04B8A917DD24A75CB4F379C2EEA59C0AFE16E747013BE0685D93D54A",
+        "final_decision_eligible": true,
+        "models": {
+          "acoustic": {
+            "balanced_accuracy": 0.3469108659539839,
+            "case_count": 2181,
+            "ece_10_bin": 0.04287921129187716,
+            "log_loss": 0.9730765285817428,
+            "macro_f1": 0.3635639145979386,
+            "multiclass_brier": 0.4645830705368963,
+            "per_class_recall": {
+              "A": {
+                "case_count": 327,
+                "recall": 0.6422018348623854,
+                "suppressed": false,
+                "unique_actor_count": 30
+              },
+              "D": {
+                "case_count": 166,
+                "recall": 0.09036144578313253,
+                "suppressed": false,
+                "unique_actor_count": 29
+              },
+              "F": {
+                "case_count": 198,
+                "recall": 0.17676767676767677,
+                "suppressed": false,
+                "unique_actor_count": 29
+              },
+              "H": {
+                "case_count": 96,
+                "recall": 0.125,
+                "suppressed": false,
+                "unique_actor_count": 26
+              },
+              "N": {
+                "case_count": 1326,
+                "recall": 0.9147812971342383,
+                "suppressed": false,
+                "unique_actor_count": 30
+              },
+              "S": {
+                "case_count": 68,
+                "recall": 0.1323529411764706,
+                "suppressed": false,
+                "unique_actor_count": 25
+              }
+            },
+            "retained": {
+              "0.6": {
+                "calibration_achieved_coverage": 0.6006256517205423,
+                "case_count": 1152,
+                "coverage": 0.5281980742778541,
+                "retained_macro_f1": 0.3293341643234508,
+                "suppressed": false,
+                "threshold": 0.6397143830765889,
+                "unique_actor_count": 30
+              },
+              "0.8": {
+                "calibration_achieved_coverage": 0.8008342022940563,
+                "case_count": 1646,
+                "coverage": 0.7546996790463091,
+                "retained_macro_f1": 0.3502922849791943,
+                "suppressed": false,
+                "threshold": 0.4879543948098693,
+                "unique_actor_count": 30
+              },
+              "1.0": {
+                "calibration_achieved_coverage": 1.0,
+                "case_count": 2179,
+                "coverage": 0.9990829894543787,
+                "retained_macro_f1": 0.3642178055730072,
+                "suppressed": false,
+                "threshold": 0.2404708284655528,
+                "unique_actor_count": 30
+              }
+            },
+            "suppressed": false,
+            "unique_actor_count": 30
+          },
+          "class_prior": {
+            "balanced_accuracy": 0.16666666666666666,
+            "case_count": 2181,
+            "ece_10_bin": 0.11500328279467731,
+            "log_loss": 1.287375942114826,
+            "macro_f1": 0.12603364699173084,
+            "multiclass_brier": 0.6080410522832462,
+            "per_class_recall": {
+              "A": {
+                "case_count": 327,
+                "recall": 0.0,
+                "suppressed": false,
+                "unique_actor_count": 30
+              },
+              "D": {
+                "case_count": 166,
+                "recall": 0.0,
+                "suppressed": false,
+                "unique_actor_count": 29
+              },
+              "F": {
+                "case_count": 198,
+                "recall": 0.0,
+                "suppressed": false,
+                "unique_actor_count": 29
+              },
+              "H": {
+                "case_count": 96,
+                "recall": 0.0,
+                "suppressed": false,
+                "unique_actor_count": 26
+              },
+              "N": {
+                "case_count": 1326,
+                "recall": 1.0,
+                "suppressed": false,
+                "unique_actor_count": 30
+              },
+              "S": {
+                "case_count": 68,
+                "recall": 0.0,
+                "suppressed": false,
+                "unique_actor_count": 25
+              }
+            },
+            "retained": {
+              "0.6": {
+                "calibration_achieved_coverage": 1.0,
+                "case_count": 2181,
+                "coverage": 1.0,
+                "retained_macro_f1": 0.12603364699173084,
+                "suppressed": false,
+                "threshold": 0.492974708952228,
+                "unique_actor_count": 30
+              },
+              "0.8": {
+                "calibration_achieved_coverage": 1.0,
+                "case_count": 2181,
+                "coverage": 1.0,
+                "retained_macro_f1": 0.12603364699173084,
+                "suppressed": false,
+                "threshold": 0.492974708952228,
+                "unique_actor_count": 30
+              },
+              "1.0": {
+                "calibration_achieved_coverage": 1.0,
+                "case_count": 2181,
+                "coverage": 1.0,
+                "retained_macro_f1": 0.12603364699173084,
+                "suppressed": false,
+                "threshold": 0.492974708952228,
+                "unique_actor_count": 30
+              }
+            },
+            "suppressed": false,
+            "unique_actor_count": 30
+          },
+          "sentence_id": {
+            "balanced_accuracy": 0.16666666666666666,
+            "case_count": 2181,
+            "ece_10_bin": 0.11520105012660155,
+            "log_loss": 1.2432829186419856,
+            "macro_f1": 0.12603364699173084,
+            "multiclass_brier": 0.5941195659049937,
+            "per_class_recall": {
+              "A": {
+                "case_count": 327,
+                "recall": 0.0,
+                "suppressed": false,
+                "unique_actor_count": 30
+              },
+              "D": {
+                "case_count": 166,
+                "recall": 0.0,
+                "suppressed": false,
+                "unique_actor_count": 29
+              },
+              "F": {
+                "case_count": 198,
+                "recall": 0.0,
+                "suppressed": false,
+                "unique_actor_count": 29
+              },
+              "H": {
+                "case_count": 96,
+                "recall": 0.0,
+                "suppressed": false,
+                "unique_actor_count": 26
+              },
+              "N": {
+                "case_count": 1326,
+                "recall": 1.0,
+                "suppressed": false,
+                "unique_actor_count": 30
+              },
+              "S": {
+                "case_count": 68,
+                "recall": 0.0,
+                "suppressed": false,
+                "unique_actor_count": 25
+              }
+            },
+            "retained": {
+              "0.6": {
+                "calibration_achieved_coverage": 0.6444212721584984,
+                "case_count": 1398,
+                "coverage": 0.640990371389271,
+                "retained_macro_f1": 0.13046002031635467,
+                "suppressed": false,
+                "threshold": 0.48138944890028174,
+                "unique_actor_count": 30
+              },
+              "0.8": {
+                "calibration_achieved_coverage": 0.8561001042752867,
+                "case_count": 1867,
+                "coverage": 0.8560293443374599,
+                "retained_macro_f1": 0.12908872114648287,
+                "suppressed": false,
+                "threshold": 0.45076317292340984,
+                "unique_actor_count": 30
+              },
+              "1.0": {
+                "calibration_achieved_coverage": 1.0,
+                "case_count": 2181,
+                "coverage": 1.0,
+                "retained_macro_f1": 0.12603364699173084,
+                "suppressed": false,
+                "threshold": 0.3841275428980977,
+                "unique_actor_count": 30
+              }
+            },
+            "suppressed": false,
+            "unique_actor_count": 30
+          }
+        },
+        "paired_macro_f1_lift": {
+          "class_prior": {
+            "lower_95": 0.20067321506417624,
+            "point_estimate": 0.23753026760620774,
+            "upper_95": 0.26441576642706743
+          },
+          "sentence_id": {
+            "lower_95": 0.20067321506417624,
+            "point_estimate": 0.23753026760620774,
+            "upper_95": 0.26441576642706743
+          }
+        },
+        "partition_role": "final_lockbox",
+        "provenance": {
+          "actor_commitment_sha256": "677F533B31385567C25FD50FB6ECA5FA59F26151CB19FC630A7FC0B00F81C0F6",
+          "assignment_sha256": "90A0E4AA0323641D124E0D5DDD2DB3E49B83157469C74756E5A28DDE901BE629",
+          "case_count": 2181,
+          "configuration_sha256": "24E2186A3ACB19817BF87689F09A2F069AC07B5C1D669364D5FC08BC9AD5FA8F",
+          "environment_lock_sha256": "ECAE7C41E8310C52AA62846EDB7F966F5CD05DFF2FD3635C0070B71B8AB7673C",
+          "feature_input_commitment_sha256": "5638D08DF72700ECE251574155CE2FE5BA31AF84D335B00915299F0334CC05FD",
+          "feature_schema_sha256": "AEC550285DF6A92B3E86E16F66A2E5B554836BBE47C625106F517EB0CF1375DB",
+          "label_input_commitment_sha256": "AD1FD429928F535DFEDAE6707A5B32015A23EABE57EB615B68DCCBBB90AAFD6E",
+          "model_class_commitment_sha256": "CB3223A1D001D5A2859C7A25A8FF47C0479D03466386B17150C25BC876D3917C",
+          "partition_role": "final_lockbox",
+          "row_commitment_sha256": "17E1EDB8E8E733302D7EC6BDC2E1D87C2B20269CAD3801C37A3B7F8DAA7B940A",
+          "schema_id": "emotion-state-phase-b-partition-evidence-v1",
+          "self_sha256": "DC9C880B188482DDDE474D21738E19D178A40E3C25A91F7045F8935E10B1C810",
+          "sentence_commitment_sha256": "53801D2B11C9EB36F8567238E334143AF8FDFD2559BCE1A0285356151598ECB8",
+          "split_manifest_sha256": "BDEA06492CBD0100D6A34AAD800B1DB1B3255CE681515B6F1AF93790BA4E64FA",
+          "split_schema_sha256": "CA1551AC5664391406920D117E21CA1E413F71C96EF29FEC76FA22DCB8D37E9A",
+          "unique_actor_count": 30,
+          "upstream_acoustic_source_commitment_sha256": "18CB570A55534E89E47A82884861B202A90457388C95B074D90BA6EFEB6034A0"
+        },
+        "schema_id": "emotion-state-phase-b-decision-evidence-v1",
+        "self_sha256": "96167F7C1EF46CD6FCB708A1F2E93DB2A836FCE0D18F6F75F547446D19FA6F14",
+        "sentence_driven_apparent_lift": false,
+        "slice_analysis_mint_sha256": "73A6356EA94025DEF7F90342DAB51F7D3895149BF35FCA6D22406ECB2A33D655"
+      },
+      "evidence_mint_sha256": "0912A83A6DFCE3B90C06E409E50D1DEBFC42619A0594BD714883549839799E0F",
+      "evidence_sha256": "93CE60508E565A66BBEDEC48CDD0F0D48CC72D7DA771C419ABD5242570E437E3"
+    },
+    "decision_evidence_mint_sha256": "0912A83A6DFCE3B90C06E409E50D1DEBFC42619A0594BD714883549839799E0F",
+    "decision_evidence_sha256": "93CE60508E565A66BBEDEC48CDD0F0D48CC72D7DA771C419ABD5242570E437E3",
+    "open_count": 1,
+    "reservation_sha256": "1448F48ED74B5B6C56E834C2BAB10302B04ECD663D6E02C174D77086E7A77DEE",
+    "result_sha256": "E3EC0EB82E77C1979BF8F921D6EBF6321F510687A608C933473C4DB04AE02F35"
+  },
+  "metric_definitions": {
+    "bootstrap_resamples": 2000,
+    "bootstrap_unit": "actor_cluster",
+    "minimum_unique_actors_per_published_cell": 10,
+    "primary": "paired_actor_cluster_macro_f1_lift",
+    "secondary": [
+      "balanced_accuracy",
+      "per_class_recall",
+      "multiclass_brier",
+      "log_loss",
+      "ece_10_equal_width_bins",
+      "retained_macro_f1_at_1.0_0.8_0.6_coverage"
+    ]
+  },
+  "model_settings": {
+    "C": 1.0,
+    "class_weight": null,
+    "hyperparameter_search_allowed": false,
+    "maximum_iterations": 10000,
+    "regularization": "l2",
+    "solver": "lbfgs"
+  },
+  "non_lockbox_review_sha256": "06F02FBF48337D4CB03B7AB5E82E87C9C79C95C232B8A073965CEA0C0C103B84",
+  "phase_a": {
+    "commit": "f8ba503c3670fec6e9dee53f03f306798e7b807b",
+    "report_sha256": "724C81C41C489B9BBAB0896009DE7CAB578F77082F230F78B90B65643586FE8A",
+    "result_sha256": "EED96BADBE916A38107A4289AD951F8953A5A96215E063890E07F054C7A90931"
+  },
+  "raw_csv_sha256": {
+    "finished_response_votes": "939D02D2DDDDDF575BBCCFFB80F14F1D110FDA88F092F2A68201994EB3BCB45B",
+    "summary_voice_votes": "1EA0E13D98853D920C7C51E69A72BA5BA42018F85A9B89B8B2CC1B53C1AA56A9"
+  },
+  "schema_id": "emotion-state-002-phase-b-result-v1",
+  "schema_version": 1,
+  "slice_definitions": {
+    "balanced_diagnostic": {
+      "scripted_scenario_count": 12,
+      "silence_ratio_quartiles": 4,
+      "source_label": [
+        "A",
+        "D",
+        "F",
+        "H",
+        "N",
+        "S"
+      ],
+      "vote_agreement_bins": [
+        "[0.00,0.50)",
+        "[0.50,0.75)",
+        "[0.75,1.00]"
+      ]
+    },
+    "demographic_slices_allowed": false
+  },
+  "split_evidence": {
+    "assignment_sha256": "90A0E4AA0323641D124E0D5DDD2DB3E49B83157469C74756E5A28DDE901BE629",
+    "configuration_sha256": "24E2186A3ACB19817BF87689F09A2F069AC07B5C1D669364D5FC08BC9AD5FA8F",
+    "eligible_actor_count": 91,
+    "eligible_authority_commitment_sha256": "3D3B3F10ADEB22086A9519AECE524D572E7EBAF64A4B4B8206506CC6F5C1A23E",
+    "eligible_record_count": 6570,
+    "final_lockbox_commitment": {
+      "eligible_actor_count": 30,
+      "eligible_record_count": 2181,
+      "sealed_authority_commitment_sha256": "EF3F165E73CFC5F36ED23BEC11315CEA6683FACF8350472BB565BC3BFB46C3B1"
+    },
+    "partition_authority_sha256": {
+      "balanced_diagnostic": "B8C7AA27DCBF3C9D0BC0629B0CACD7620E4D56DB6FA22E37A02E17ACF3FC708F",
+      "calibration": "BEB5DBFBA8AAB05ADFD44D82C1B1C87AF8ADFD7477110ABDDAA947CC2BD94E6E",
+      "training_discovery": "8172F53D4F817CAF08E5847CDA0C38A345950049129F04778B278A63F41342E3"
+    },
+    "schema_id": "emotion-state-phase-b-validated-split-v2",
+    "self_sha256": "D545B0F920D409E0574B6B46CD28417A1D832141D2FDB9C76A3969B2D8CF8111",
+    "split_manifest_sha256": "BDEA06492CBD0100D6A34AAD800B1DB1B3255CE681515B6F1AF93790BA4E64FA"
+  },
+  "split_manifest_sha256": "9DEA44B8ECDF66E513EFD4BA92BC1F52CF7BFF07179A871C4ED9573643E95FB3",
+  "split_schema_sha256": "6086D63E0796AA5F3FED7F7130F307264DE0BD9B299D2203249FB6268BAD399A",
+  "validity": {
+    "deterministic": true,
+    "environment_valid": true,
+    "leakage_free": true,
+    "lockbox_valid": true,
+    "material_valid": true,
+    "split_valid": true
+  }
+}
