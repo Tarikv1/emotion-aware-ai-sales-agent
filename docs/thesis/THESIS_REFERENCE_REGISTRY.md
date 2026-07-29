@@ -118,6 +118,30 @@ Use the source categories carefully:
 
 ## Sales Communication And Compliance Sources
 
+### Atlas value and objection-handling practitioner sources
+
+- Type: public practitioner and product-grounding sources
+- Sources:
+  - Salesforce consultative sales approach: https://www.salesforce.com/blog/sales/consultative-sales-approach/
+  - HubSpot common sales objections: https://blog.hubspot.com/sales/handling-common-sales-objections
+  - Bain Elements of Value: https://www.bain.com/consulting-services/customer-strategy-and-marketing/elements-of-value/
+- Project use: directional support for consultative discovery, non-pressuring objection handling, and buyer-specific value framing in the existing Atlas product document.
+- Current status/reuse: source-informed paraphrase only; no copied scripts or article passages; no new runtime/provider change in this cleanup.
+- Thesis caution: practitioner/vendor material is not peer-reviewed proof of sales effectiveness.
+
+### Atlas web-design market and pricing sources
+
+- Type: public marketplace/editorial market references
+- Sources:
+  - Upwork website build cost guide: https://www.upwork.com/resources/how-much-does-it-cost-to-build-website
+  - Upwork web designer cost guide: https://www.upwork.com/hire/web-designers/cost/
+  - Forbes Advisor website design guide: https://www.forbes.com/advisor/business/software/how-design-website/
+  - Bark web design marketplace: https://www.bark.com/en/us/web-design/
+  - Clutch web design pricing guide: https://clutch.co/web-designers/pricing
+- Project use: directional context for the existing Atlas USD pricing design.
+- Current status/reuse: the product price ranges remain project policy, not copied provider prices or a market-wide claim; no new runtime/provider change in this cleanup.
+- Thesis caution: commercially interested and time-sensitive pages are not authoritative market estimates; re-check dates, geography, currency, and current content before final thesis claims.
+
 ### PROD-028 synthetic CRM product grounding sources
 
 - Type: product inspiration and public SaaS/CRM packaging source pack
