@@ -62,7 +62,7 @@ Use the source categories carefully:
 
 ### Yu et al. student-teacher mathematics corpus
 
-- Type: academic source; public-dataset model-route candidate recommended for retirement
+- Type: academic source; retired public-dataset model-route candidate retained as historical evidence
 - Official article page: https://library.apsce.net/index.php/ICCE/article/view/2655
 - Official paper: https://library.apsce.net/index.php/ICCE/article/download/2655/2531/3619
 - Official 2012 follow-up page: https://library.apsce.net/index.php/ICCE/article/view/546
@@ -71,8 +71,8 @@ Use the source categories carefully:
 - Official author/institutional page: https://www.mis.yzu.edu.tw/nlplab/~lcyu/
 - DOI metadata: https://api.crossref.org/works/10.58459%2Ficce.2012.546
 - Project use: primary documentation for sentence-level confusion and frustration labels and for the distinction between classroom text-dialogue origin and later office speech recording.
-- Current project status: C1.2 official/public provenance review complete; `maintain_defer_c2`. No official release, dataset-use license, preserved per-rater annotations, or qualifying pre-adjudication Krippendorff-alpha point and interval was found in the bounded review. The 2011 paper supports classroom discussion as the text source but does not explicitly establish spontaneous interaction. The 2012 paper says 379 selected sentences were recorded later in an office.
-- Thesis caution: published counts and raw agreement do not establish C1 reliability admission or lawful material availability. Do not describe the speech subset as original live-classroom audio, and do not infer that no private or unpublished material exists.
+- Current project status: C1.2 official/public provenance review complete; `maintain_defer_c2`. `DEC-142` retires the current public-dataset model route for confusion and frustration. No official release, dataset-use license, preserved per-rater annotations, or qualifying pre-adjudication Krippendorff-alpha point and interval was found in the bounded review. The 2011 paper supports classroom discussion as the text source but does not explicitly establish spontaneous interaction. The 2012 paper says 379 selected sentences were recorded later in an office.
+- Thesis caution: published counts and raw agreement do not establish C1 reliability admission or lawful material availability. Do not describe the speech subset as original live-classroom audio, infer that no private or unpublished material exists, or use this source to reopen the retired route without new evidence meeting the `DEC-142` re-entry gate.
 
 ### DAiSEE
 

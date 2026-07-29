@@ -6807,3 +6807,32 @@ remain separate gates.
   messaging, private-data access, provider access, call, simulation, model
   evaluation, source adaptation, runtime action, candidate/canonical staging,
   C2 work, merge, history rewrite, or push occurred.
+
+### 2026-07-29 - DEC-142 public-dataset confusion/frustration route retirement
+
+- Decision owner: Tarik directly accepted the C1.2 recommendation to retire the
+  current public-dataset model route for direct confusion and frustration
+  classification.
+- Evidence basis: `EMOTION-STATE-005` C1.1 and `EMOTION-STATE-006` C1.2 found no
+  reviewed candidate with an official material release, explicit dataset-use
+  terms, preserved independent pre-adjudication labels, and qualifying
+  Krippendorff-alpha point and interval evidence. The Yu et al. source remains
+  useful aggregate evidence but does not clear those gates.
+- Decision state: the C1.2 research decision remains `maintain_defer_c2`; the
+  route-level product state becomes `retired`. Confusion and frustration do not
+  become C2 eligible.
+- Preservation: the research packets, source metadata, synthetic mechanics,
+  contracts, and historical results remain intact and non-runtime. No artifact
+  is deleted, reclassified as accepted model evidence, or promoted.
+- Re-entry gate: reconsider the public route only on a concrete official
+  release with explicit use terms, preserved independent pre-adjudication
+  annotations, confirmed spontaneous conversational provenance, Krippendorff
+  alpha at least 0.80, and a 95% confidence-interval lower bound at least 0.67.
+- Alternative route boundary: a consented first-party corpus would require a
+  new research/governance authorization. Observable clarification or repair
+  rules require a separate design checkpoint and must not make hidden-emotion
+  claims.
+- Boundary: documentation decision only. No new public search, dataset or
+  annotation access, login, form, contact, private-data access, provider access,
+  call, simulation, model evaluation, source adaptation, runtime change,
+  candidate/canonical staging, C2 work, or deployment occurred.
