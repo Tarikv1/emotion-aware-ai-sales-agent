@@ -7821,14 +7821,13 @@ class PhaseCCloseoutContractTests(unittest.TestCase):
             board,
         )
         self.assertIn(
-            "[x] Current completed offline checkpoint: `EMOTION-STATE-003` "
+            "[x] Complete: `EMOTION-STATE-003` "
             "Phase C0 synthetic-mechanics checkpoint accepted.",
             board,
         )
         self.assertIn(
-            "[ ] Next gate: `EMOTION-STATE-004` Phase C1 remains separate "
-            "and has no runtime, provider, call, private-data, or production "
-            "authority.",
+            "[x] Current completed offline checkpoint: `EMOTION-STATE-004` "
+            "Phase C1 evidence-admission checkpoint accepted.",
             board,
         )
         self.assertNotIn("Download and evaluation have not started", board)

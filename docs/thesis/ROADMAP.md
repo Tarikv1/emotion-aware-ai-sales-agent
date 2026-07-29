@@ -35,8 +35,8 @@ Current checkpoint:
 
 - [x] Complete: `EMOTION-STATE-001` Phase A public-data gate, including Task 7 material-pending input integration for exactly `crema-d-v1.0-audio-wav` and `ami-manual-annotations-v1.6.2`; source adaptation remains false.
 - [x] Complete: `EMOTION-STATE-002` Phase B public-data feasibility checkpoint accepted.
-- [x] Current completed offline checkpoint: `EMOTION-STATE-003` Phase C0 synthetic-mechanics checkpoint accepted.
-- [ ] Next gate: `EMOTION-STATE-004` Phase C1 remains separate and has no runtime, provider, call, private-data, or production authority.
+- [x] Complete: `EMOTION-STATE-003` Phase C0 synthetic-mechanics checkpoint accepted.
+- [x] Current completed offline checkpoint: `EMOTION-STATE-004` Phase C1 evidence-admission checkpoint accepted. Canonical status: accepted. Overall decision: defer_c2. C2-eligible signals: none. Phase C2 remains closed. C1 has no runtime, provider, call, private-data, or production authority.
 
 Next checkpoints:
 

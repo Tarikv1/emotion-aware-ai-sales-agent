@@ -16670,6 +16670,34 @@ class PhaseC1CloseoutDocumentationTests(unittest.TestCase):
                 with self.subTest(path=path, anchor=anchor):
                     self.assertIn(anchor, text)
 
+    def test_checkpoint_board_records_accepted_c1_defer_and_closes_c2(self) -> None:
+        """The top-level board cannot leave C0 current after C1 is accepted."""
+        roadmap = (ROOT / "docs" / "thesis" / "ROADMAP.md").read_text(
+            encoding="utf-8",
+        )
+        board = roadmap.split("## Checkpoint Board\n", 1)[1].split(
+            "\n## ",
+            1,
+        )[0]
+        normalized = " ".join(board.split())
+        for anchor in (
+            "Current completed offline checkpoint: `EMOTION-STATE-004` Phase C1",
+            "Canonical status: accepted.",
+            "Overall decision: defer_c2.",
+            "C2-eligible signals: none.",
+            "Phase C2 remains closed.",
+        ):
+            with self.subTest(anchor=anchor):
+                self.assertIn(anchor, normalized)
+        self.assertNotIn(
+            "Current completed offline checkpoint: `EMOTION-STATE-003` Phase C0",
+            normalized,
+        )
+        self.assertNotIn(
+            "Next gate: `EMOTION-STATE-004` Phase C1",
+            normalized,
+        )
+
     def test_command_map_exposes_only_read_only_c1_validation(self) -> None:
         """The C1 command section cannot preserve a reusable accept operation."""
         commands = (ROOT / "docs" / "product" / "COMMANDS.md").read_text(
