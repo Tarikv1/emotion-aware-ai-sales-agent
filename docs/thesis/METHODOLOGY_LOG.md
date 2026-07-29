@@ -16,6 +16,21 @@ Use this file as a chronological research journal for the thesis implementation.
 
 ## Entries
 
+### 2026-07-29 - ELEVENLABS-036 intermediate evidence provenance review
+
+- Objective: review and integrate `142` previously untracked ELEVENLABS-036 JSON artifacts without treating stale, partial, failed, or superseded iterations as a new readiness result.
+- Action taken: copied the recovered artifacts unchanged from the stale local `main` checkout at `f90e0bbc36097daaf41e3d4d67e3ae80feabef7e` into a fresh branch from `origin/main`; parsed every JSON file; verified all capture payload hashes; reconciled plan, request, result, capture, and stored-independent invocation lineage; scanned for credentials and private contact data; compared capture test semantics with the current tracked definitions; and reran the current deterministic validator read-only against one preferred capture per lineage.
+- Data used: `142` repo-generated provider-simulation artifacts containing only the existing synthetic ELEVENLABS-036 scenarios and contact values. No private customer data, raw private transcript, customer audio, credential value, outbound call, provider write, or new simulation was used.
+- Output created: `intermediate_evidence_review.md`, `intermediate_evidence_review.json`, the recovered raw JSON evidence, and a bounded provenance note in the ELEVENLABS-036 report.
+- What was learned:
+  - all `142` JSON files parse, all `31` capture hashes validate, and the `29` available standard lineages are internally consistent;
+  - current-contract revalidation of `30` preferred capture lineages produced `6` pass, `2` inconclusive, and `22` fail results;
+  - only `4/18` stored independent-result files reproduce exactly under the current validator, while four change top-level status and twelve capture-bearing lineages have no stored independent result;
+  - `29/31` captures match the current test-definition text; the earlier GPT-5.4 full capture is superseded by its matching `capture_v2`, while the GPT-5.4 Mini full capture has no corrected replacement;
+  - later tracked GPT-5.5 10/10 provider and independent evidence remains the superseding closeout for the covered contract.
+- Why it matters for the thesis: preserving negative and incomplete iterations reduces selection bias, while explicitly separating historical validator output from current-contract revalidation prevents stale generated files from being misrepresented as authoritative proof.
+- Open questions: none for this recovery packet. Any future hosted evaluation needs a new bounded objective and must record the exact validator/test-definition version with its output.
+
 ### 2026-07-14 - Atlas final-fingerprint and drift-guard closeout
 
 - Objective: close the two remaining wrap-up gaps without rerunning a full suite, modifying tests/evaluators, placing an outbound call, or deleting historical evidence.

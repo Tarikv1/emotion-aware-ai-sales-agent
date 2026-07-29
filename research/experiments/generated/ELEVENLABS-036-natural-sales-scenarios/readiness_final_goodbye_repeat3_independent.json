@@ -1,0 +1,387 @@
+{
+  "checkpoint_id": "ELEVENLABS-036-natural-sales-scenarios",
+  "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+  "invocation_id": "suite_9501kx725t1se34s82p3f6tdp1sb",
+  "independent_status": "fail",
+  "coverage_complete": false,
+  "input_test_ids": [
+    "sim_036_goodbye_take_care_no_loop",
+    "sim_036_goodbye_take_care_no_loop",
+    "sim_036_goodbye_take_care_no_loop"
+  ],
+  "missing_test_ids": [
+    "sim_036_crm_payment_capability_before_price",
+    "sim_036_custom_dashboard_scoped_separately",
+    "sim_036_email_confirmation_spoken_email_two_step",
+    "sim_036_email_plus_free_question_confirmation",
+    "sim_036_free_mockup_visual_not_working_site",
+    "sim_036_future_price_ballpark_no_overpricing",
+    "sim_036_guarantee_required_clean_disqualify",
+    "sim_036_next_step_questions_no_cta_fatigue",
+    "sim_036_scheduling_simple_request_vs_live_integration"
+  ],
+  "global_failures": [
+    "duplicate test_id(s): ['sim_036_goodbye_take_care_no_loop']"
+  ],
+  "provider_labels": {
+    "statuses": {
+      "sim_036_goodbye_take_care_no_loop": "failed"
+    },
+    "condition_results": {
+      "sim_036_goodbye_take_care_no_loop": {
+        "result": "failure",
+        "rationale": {
+          "messages": [
+            "The agent failed to close concisely after the buyer's goodbye. The criteria states that \"After a completed outcome and 'Okay, thanks, bye,' the only acceptable extra line is 'Take care.'\" The agent responded with \"Great, I'll send it there by the end of the day. Take care.\", which includes an explanation before \"Take care,\" violating the rule and falling under the failure condition \"adds explanation after the goodbye\".",
+            "The agent ended the conversation."
+          ],
+          "summary": "Evaluation failed"
+        }
+      }
+    }
+  },
+  "tests": [
+    {
+      "test_id": "sim_036_goodbye_take_care_no_loop",
+      "test_name": "ELEVENLABS-036-natural-sales-scenarios::sim_036_goodbye_take_care_no_loop",
+      "test_run_id": "trun_4801kx725t1wfkas6yzkhk95vn33",
+      "independent_status": "fail",
+      "effective_contract": "ELEVENLABS-039 precedence over ELEVENLABS-036 goodbye overlap",
+      "provider_status": "passed",
+      "provider_condition_result": {
+        "result": "success",
+        "rationale": {
+          "messages": [
+            "The user said \"Okay, thanks, bye.\" and the agent responded with \"Take care.\" and then ended the call, which aligns perfectly with the success criteria for handling a buyer's goodbye after a completed outcome.",
+            "The agent ended the conversation."
+          ],
+          "summary": "Evaluation succeeded"
+        }
+      },
+      "provider_evaluator_rationale": "{'messages': ['The user said \"Okay, thanks, bye.\" and the agent responded with \"Take care.\" and then ended the call, which aligns perfectly with the success criteria for handling a buyer\\'s goodbye after a completed outcome.', 'The agent ended the conversation.'], 'summary': 'Evaluation succeeded'}",
+      "assertions": [
+        {
+          "name": "expected_test_name",
+          "passed": true,
+          "detail": "expected test_name 'ELEVENLABS-036-natural-sales-scenarios::sim_036_goodbye_take_care_no_loop'"
+        },
+        {
+          "name": "ordered_agent_responses_present",
+          "passed": true,
+          "detail": "agent_responses is not a list"
+        },
+        {
+          "name": "at_most_one_end_call",
+          "passed": true,
+          "detail": "found 1 end_call calls"
+        },
+        {
+          "name": "parse_end_call_params",
+          "passed": true,
+          "detail": "invalid end_call params"
+        },
+        {
+          "name": "built_in_system_end_call",
+          "passed": true,
+          "detail": "end_call is not type system"
+        },
+        {
+          "name": "matching_end_call_result",
+          "passed": true,
+          "detail": "expected one successful tool result for request_id 'call_6TpESZ1PJ7nXh6cbb4PeiQVl', found 1"
+        },
+        {
+          "name": "successful_end_call_result_payload",
+          "passed": true,
+          "detail": "tool result payload must be end_call_success with status success"
+        },
+        {
+          "name": "rendered_message_matches_tool_message",
+          "passed": true,
+          "detail": "rendered agent message must match tool speech 'Take care.'"
+        },
+        {
+          "name": "no_text_or_tool_after_end_call_result",
+          "passed": true,
+          "detail": "trace contains text or tool activity after the successful end_call result"
+        },
+        {
+          "name": "timing_spoken_at_most_once",
+          "passed": true,
+          "detail": "delivery timing appears 0 times in agent speech"
+        },
+        {
+          "name": "email_turn_found",
+          "passed": false,
+          "detail": "email turn not found",
+          "severity": "fail"
+        },
+        {
+          "name": "goodbye_end_call_present",
+          "passed": true,
+          "detail": "terminal goodbye trace must end with one end_call"
+        }
+      ],
+      "failures": [
+        "email_turn_found: email turn not found"
+      ],
+      "inconclusives": []
+    },
+    {
+      "test_id": "sim_036_goodbye_take_care_no_loop",
+      "test_name": "ELEVENLABS-036-natural-sales-scenarios::sim_036_goodbye_take_care_no_loop",
+      "test_run_id": "trun_4201kx725t1ye078t1f17j2netf8",
+      "independent_status": "pass",
+      "effective_contract": "ELEVENLABS-039 precedence over ELEVENLABS-036 goodbye overlap",
+      "provider_status": "failed",
+      "provider_condition_result": {
+        "result": "failure",
+        "rationale": {
+          "messages": [
+            "The agent failed to treat the buyer's goodbye as final according to the strict criteria. After the buyer said \"Okay, thanks, bye,\" the agent responded with \"Great, I'll send it there by the end of the day. Take care.\" The criteria states that \"the only acceptable extra line is 'Take care.'\" and that it \"fails if Emma ... adds explanation after the goodbye.\"",
+            "The agent ended the conversation."
+          ],
+          "summary": "Evaluation failed"
+        }
+      },
+      "provider_evaluator_rationale": "{'messages': ['The agent failed to treat the buyer\\'s goodbye as final according to the strict criteria. After the buyer said \"Okay, thanks, bye,\" the agent responded with \"Great, I\\'ll send it there by the end of the day. Take care.\" The criteria states that \"the only acceptable extra line is \\'Take care.\\'\" and that it \"fails if Emma ... adds explanation after the goodbye.\"', 'The agent ended the conversation.'], 'summary': 'Evaluation failed'}",
+      "assertions": [
+        {
+          "name": "expected_test_name",
+          "passed": true,
+          "detail": "expected test_name 'ELEVENLABS-036-natural-sales-scenarios::sim_036_goodbye_take_care_no_loop'"
+        },
+        {
+          "name": "ordered_agent_responses_present",
+          "passed": true,
+          "detail": "agent_responses is not a list"
+        },
+        {
+          "name": "at_most_one_end_call",
+          "passed": true,
+          "detail": "found 1 end_call calls"
+        },
+        {
+          "name": "parse_end_call_params",
+          "passed": true,
+          "detail": "invalid end_call params"
+        },
+        {
+          "name": "built_in_system_end_call",
+          "passed": true,
+          "detail": "end_call is not type system"
+        },
+        {
+          "name": "matching_end_call_result",
+          "passed": true,
+          "detail": "expected one successful tool result for request_id 'call_8IqSIFu2HFBDMXCwSC8MLYmU', found 1"
+        },
+        {
+          "name": "successful_end_call_result_payload",
+          "passed": true,
+          "detail": "tool result payload must be end_call_success with status success"
+        },
+        {
+          "name": "rendered_message_matches_tool_message",
+          "passed": true,
+          "detail": "rendered agent message must match tool speech \"Great, I'll send it there by the end of the day. Take care.\""
+        },
+        {
+          "name": "no_text_or_tool_after_end_call_result",
+          "passed": true,
+          "detail": "trace contains text or tool activity after the successful end_call result"
+        },
+        {
+          "name": "timing_spoken_at_most_once",
+          "passed": true,
+          "detail": "delivery timing appears 1 times in agent speech"
+        },
+        {
+          "name": "email_turn_found",
+          "passed": true,
+          "detail": "email turn not found"
+        },
+        {
+          "name": "confirmation_prompt_before_send",
+          "passed": true,
+          "detail": "first agent response after email must confirm the email"
+        },
+        {
+          "name": "no_send_language_before_confirmation",
+          "passed": true,
+          "detail": "agent used send or timing language before explicit confirmation"
+        },
+        {
+          "name": "no_ask_for_best_email_again",
+          "passed": true,
+          "detail": "agent asked for the best email again instead of confirming it"
+        },
+        {
+          "name": "confirmation_prompt_contains_email",
+          "passed": true,
+          "detail": "confirmation prompt must repeat the provided email"
+        },
+        {
+          "name": "explicit_email_confirmation_turn",
+          "passed": true,
+          "detail": "buyer did not explicitly confirm the repeated email"
+        },
+        {
+          "name": "same_turn_confirmation_goodbye_atomic_message",
+          "passed": true,
+          "detail": "same-turn confirmation plus goodbye must use \"Great, I'll send it there by the end of the day. Take care.\""
+        },
+        {
+          "name": "goodbye_end_call_present",
+          "passed": true,
+          "detail": "terminal goodbye trace must end with one end_call"
+        },
+        {
+          "name": "same_turn_confirmation_goodbye_exact_tool_reason",
+          "passed": true,
+          "detail": "same-turn confirmation plus goodbye must use the exact email-confirmed terminal reason"
+        },
+        {
+          "name": "same_turn_confirmation_goodbye_atomic_message",
+          "passed": true,
+          "detail": "same-turn confirmation plus goodbye must render and speak \"Great, I'll send it there by the end of the day. Take care.\""
+        },
+        {
+          "name": "provider_label_conflict_expected",
+          "passed": true,
+          "detail": "039 precedence explicitly overrides the legacy 036 only-Take-care label when confirmation and goodbye occur in the same user turn"
+        }
+      ],
+      "failures": [],
+      "inconclusives": []
+    },
+    {
+      "test_id": "sim_036_goodbye_take_care_no_loop",
+      "test_name": "ELEVENLABS-036-natural-sales-scenarios::sim_036_goodbye_take_care_no_loop",
+      "test_run_id": "trun_2401kx725t1xe3cat25vt8cqnnsf",
+      "independent_status": "pass",
+      "effective_contract": "ELEVENLABS-039 precedence over ELEVENLABS-036 goodbye overlap",
+      "provider_status": "failed",
+      "provider_condition_result": {
+        "result": "failure",
+        "rationale": {
+          "messages": [
+            "The agent failed to close concisely after the buyer's goodbye. The criteria states that \"After a completed outcome and 'Okay, thanks, bye,' the only acceptable extra line is 'Take care.'\" The agent responded with \"Great, I'll send it there by the end of the day. Take care.\", which includes an explanation before \"Take care,\" violating the rule and falling under the failure condition \"adds explanation after the goodbye\".",
+            "The agent ended the conversation."
+          ],
+          "summary": "Evaluation failed"
+        }
+      },
+      "provider_evaluator_rationale": "{'messages': ['The agent failed to close concisely after the buyer\\'s goodbye. The criteria states that \"After a completed outcome and \\'Okay, thanks, bye,\\' the only acceptable extra line is \\'Take care.\\'\" The agent responded with \"Great, I\\'ll send it there by the end of the day. Take care.\", which includes an explanation before \"Take care,\" violating the rule and falling under the failure condition \"adds explanation after the goodbye\".', 'The agent ended the conversation.'], 'summary': 'Evaluation failed'}",
+      "assertions": [
+        {
+          "name": "expected_test_name",
+          "passed": true,
+          "detail": "expected test_name 'ELEVENLABS-036-natural-sales-scenarios::sim_036_goodbye_take_care_no_loop'"
+        },
+        {
+          "name": "ordered_agent_responses_present",
+          "passed": true,
+          "detail": "agent_responses is not a list"
+        },
+        {
+          "name": "at_most_one_end_call",
+          "passed": true,
+          "detail": "found 1 end_call calls"
+        },
+        {
+          "name": "parse_end_call_params",
+          "passed": true,
+          "detail": "invalid end_call params"
+        },
+        {
+          "name": "built_in_system_end_call",
+          "passed": true,
+          "detail": "end_call is not type system"
+        },
+        {
+          "name": "matching_end_call_result",
+          "passed": true,
+          "detail": "expected one successful tool result for request_id 'call_jeKzzK8T6Ph52C19WLIaNV7S', found 1"
+        },
+        {
+          "name": "successful_end_call_result_payload",
+          "passed": true,
+          "detail": "tool result payload must be end_call_success with status success"
+        },
+        {
+          "name": "rendered_message_matches_tool_message",
+          "passed": true,
+          "detail": "rendered agent message must match tool speech \"Great, I'll send it there by the end of the day. Take care.\""
+        },
+        {
+          "name": "no_text_or_tool_after_end_call_result",
+          "passed": true,
+          "detail": "trace contains text or tool activity after the successful end_call result"
+        },
+        {
+          "name": "timing_spoken_at_most_once",
+          "passed": true,
+          "detail": "delivery timing appears 1 times in agent speech"
+        },
+        {
+          "name": "email_turn_found",
+          "passed": true,
+          "detail": "email turn not found"
+        },
+        {
+          "name": "confirmation_prompt_before_send",
+          "passed": true,
+          "detail": "first agent response after email must confirm the email"
+        },
+        {
+          "name": "no_send_language_before_confirmation",
+          "passed": true,
+          "detail": "agent used send or timing language before explicit confirmation"
+        },
+        {
+          "name": "no_ask_for_best_email_again",
+          "passed": true,
+          "detail": "agent asked for the best email again instead of confirming it"
+        },
+        {
+          "name": "confirmation_prompt_contains_email",
+          "passed": true,
+          "detail": "confirmation prompt must repeat the provided email"
+        },
+        {
+          "name": "explicit_email_confirmation_turn",
+          "passed": true,
+          "detail": "buyer did not explicitly confirm the repeated email"
+        },
+        {
+          "name": "same_turn_confirmation_goodbye_atomic_message",
+          "passed": true,
+          "detail": "same-turn confirmation plus goodbye must use \"Great, I'll send it there by the end of the day. Take care.\""
+        },
+        {
+          "name": "goodbye_end_call_present",
+          "passed": true,
+          "detail": "terminal goodbye trace must end with one end_call"
+        },
+        {
+          "name": "same_turn_confirmation_goodbye_exact_tool_reason",
+          "passed": true,
+          "detail": "same-turn confirmation plus goodbye must use the exact email-confirmed terminal reason"
+        },
+        {
+          "name": "same_turn_confirmation_goodbye_atomic_message",
+          "passed": true,
+          "detail": "same-turn confirmation plus goodbye must render and speak \"Great, I'll send it there by the end of the day. Take care.\""
+        },
+        {
+          "name": "provider_label_conflict_expected",
+          "passed": true,
+          "detail": "039 precedence explicitly overrides the legacy 036 only-Take-care label when confirmation and goodbye occur in the same user turn"
+        }
+      ],
+      "failures": [],
+      "inconclusives": []
+    }
+  ]
+}

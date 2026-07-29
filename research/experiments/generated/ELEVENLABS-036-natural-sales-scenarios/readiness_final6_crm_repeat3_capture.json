@@ -1,0 +1,924 @@
+{
+  "captured_at_utc": "2026-07-10T22:43:26Z",
+  "payload_sha256": "bb1dda149dd51ebf284ee7abba627eae3b1c6eeb577814c5ac4156386ea1b400",
+  "payload": {
+    "checkpoint_id": "ELEVENLABS-036-natural-sales-scenarios",
+    "invocation_id": "suite_9401kx733g1aewts3w06vpwxq9t0",
+    "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+    "test_runs": [
+      {
+        "test_run_id": "trun_7201kx733g1df2c8gg6eej167ma3",
+        "test_invocation_id": "suite_9401kx733g1aewts3w06vpwxq9t0",
+        "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+        "test_id": "sim_036_crm_payment_capability_before_price",
+        "provider_test_id": "test_4601ktwzq8xnfpbtry5qsepeprh3",
+        "test_name": "ELEVENLABS-036-natural-sales-scenarios::sim_036_crm_payment_capability_before_price",
+        "scenario": "The simulated user owns Iron Gate Garage Doors in Kansas City. They care about lead handling more than design. Their first technical question is: 'Can it connect to Jobber or take deposit payments?' They do not ask cost until later. If Emma jumps into price first, the buyer says: 'That is not what I asked. Can it actually connect or not?' Then they ask: 'Okay, what kind of price does that add?'",
+        "success_conditions": [
+          "The full conversation passes only if Emma answers capability before price. She should first say it can connect depending on whether it is a simple form handoff or a real integration. Only after the buyer asks cost should she map a real CRM or payment integration toward {{website_integration_heavy_range}}, while noting that a simple handoff is lighter and the real number depends on the system. It fails if Emma gives a price before answering capability, says CRM or payments are automatically included in a basic site, invents an exact final quote, gives a long technical dump, or misses a natural mockup next step after the capability and cost questions are answered."
+        ],
+        "models": {
+          "simulated_user_model": "gemini-2.5-flash",
+          "evaluation_model": "gemini-2.5-flash"
+        },
+        "status": "passed",
+        "condition_result": {
+          "result": "success",
+          "rationale": {
+            "messages": [
+              "The agent first addressed the capability question, explaining the difference between a simple form handoff and a real integration. Only after the user asked for pricing did the agent provide cost ranges, clearly differentiating between a lighter option ($2k-$3k) and a heavier integration ($3k-$5k). The agent did not give an exact quote, avoid technical jargon, and offered a mockup after discussing capability and cost.",
+              "The conversation reached the maximum number of turns."
+            ],
+            "summary": "Evaluation succeeded"
+          }
+        },
+        "evaluator_rationale": "{'messages': ['The agent first addressed the capability question, explaining the difference between a simple form handoff and a real integration. Only after the user asked for pricing did the agent provide cost ranges, clearly differentiating between a lighter option ($2k-$3k) and a heavier integration ($3k-$5k). The agent did not give an exact quote, avoid technical jargon, and offered a mockup after discussing capability and cost.', 'The conversation reached the maximum number of turns.'], 'summary': 'Evaluation succeeded'}",
+        "agent_responses": [
+          {
+            "tool_calls": [],
+            "tool_results": [],
+            "time": 60,
+            "message": "Hi, this is Emma from Atlas Web Studio. I had Iron Gate Garage Doors down as a garage door repair company in Kansas City. Am I speaking with the owner or someone who handles the website there?",
+            "original_message": null,
+            "role": "agent",
+            "interrupted": false,
+            "source_medium": null
+          },
+          {
+            "tool_calls": [],
+            "tool_results": [],
+            "time": 60,
+            "message": "Yeah, this is the owner. I'm calling about the website. Can it connect to Jobber or take deposit payments?",
+            "original_message": null,
+            "role": "user",
+            "interrupted": false,
+            "source_medium": "text"
+          },
+          {
+            "tool_calls": [],
+            "tool_results": [],
+            "time": 60,
+            "message": "Yes, we can build that. It depends whether you need a simple form handoff or a real integration.",
+            "original_message": null,
+            "role": "agent",
+            "interrupted": false,
+            "source_medium": null
+          },
+          {
+            "tool_calls": [],
+            "tool_results": [],
+            "time": 60,
+            "message": "What's the difference? What does that mean for Jobber or taking payments?",
+            "original_message": null,
+            "role": "user",
+            "interrupted": false,
+            "source_medium": "text"
+          },
+          {
+            "tool_calls": [],
+            "tool_results": [],
+            "time": 60,
+            "message": "A simple form handoff means that the website can collect information and send it to Jobber manually, while a real integration would allow the website to directly interact with Jobber's system for automated updates and actions. For taking payments, a simple setup might involve a basic payment form, whereas a more integrated solution could handle transactions, confirmations, and updates within your Jobber system.",
+            "original_message": null,
+            "role": "agent",
+            "interrupted": false,
+            "source_medium": null
+          },
+          {
+            "tool_calls": [],
+            "tool_results": [],
+            "time": 60,
+            "message": "So the \"real integration\" means I don't have to do as much manual stuff?",
+            "original_message": null,
+            "role": "user",
+            "interrupted": false,
+            "source_medium": "text"
+          },
+          {
+            "tool_calls": [],
+            "tool_results": [],
+            "time": 60,
+            "message": "Exactly, a real integration automates the process, reducing the need for manual input and streamlining operations by directly syncing with Jobber.",
+            "original_message": null,
+            "role": "agent",
+            "interrupted": false,
+            "source_medium": null
+          },
+          {
+            "tool_calls": [],
+            "tool_results": [],
+            "time": 60,
+            "message": "Okay, what kind of price does that add?",
+            "original_message": null,
+            "role": "user",
+            "interrupted": false,
+            "source_medium": "text"
+          },
+          {
+            "tool_calls": [],
+            "tool_results": [],
+            "time": 60,
+            "message": "A light website with a simple appointment request form is usually between two thousand and three thousand dollars total. If you want a live calendar, reminders, payments, or CRM sync, it moves toward three thousand to four thousand or four thousand to five thousand dollars. Would you like to see a free homepage mockup to get a better idea of the layout?",
+            "original_message": null,
+            "role": "agent",
+            "interrupted": false,
+            "source_medium": null
+          },
+          {
+            "tool_calls": [],
+            "tool_results": [],
+            "time": 60,
+            "message": "So, for the real integration, it's $3k to $5k? What makes it the higher price?",
+            "original_message": null,
+            "role": "user",
+            "interrupted": false,
+            "source_medium": "text"
+          },
+          {
+            "tool_calls": [],
+            "tool_results": [],
+            "time": 60,
+            "message": "The higher price range accounts for more complex features like live calendar syncing, automated reminders, payment processing, and CRM integration. These features require additional development and testing to ensure seamless functionality. Would you like to proceed with a free homepage mockup to visualize how these features could be integrated?",
+            "original_message": null,
+            "role": "agent",
+            "interrupted": false,
+            "source_medium": null
+          },
+          {
+            "tool_calls": [],
+            "tool_results": [],
+            "time": 60,
+            "message": "Okay, so what exactly makes it five thousand instead of three?",
+            "original_message": null,
+            "role": "user",
+            "interrupted": false,
+            "source_medium": "text"
+          },
+          {
+            "tool_calls": [],
+            "tool_results": [],
+            "time": 60,
+            "message": "The cost moves toward five thousand dollars when you include advanced features like a fully integrated live calendar, automated reminders, secure payment processing, and comprehensive CRM sync. Each of these elements requires additional development time and resources to ensure they work seamlessly together.",
+            "original_message": null,
+            "role": "agent",
+            "interrupted": false,
+            "source_medium": null
+          },
+          {
+            "tool_calls": [],
+            "tool_results": [],
+            "time": 60,
+            "message": "So what's the actual difference between the three thousand and five thousand dollar options then?",
+            "original_message": null,
+            "role": "user",
+            "interrupted": false,
+            "source_medium": "text"
+          },
+          {
+            "tool_calls": [],
+            "tool_results": [],
+            "time": 60,
+            "message": "The three thousand dollar option typically includes basic features like a simple appointment request form and basic payment processing. The five thousand dollar option includes more advanced features such as a fully integrated live calendar, automated reminders, and comprehensive CRM sync, which require more development and customization.",
+            "original_message": null,
+            "role": "agent",
+            "interrupted": false,
+            "source_medium": null
+          },
+          {
+            "tool_calls": [],
+            "tool_results": [],
+            "time": 60,
+            "message": "So what specifically is the difference in features between the three and five thousand dollar options?",
+            "original_message": null,
+            "role": "user",
+            "interrupted": false,
+            "source_medium": "text"
+          },
+          {
+            "tool_calls": [],
+            "tool_results": [],
+            "time": 60,
+            "message": "The three thousand dollar option generally covers a basic appointment request form and simple payment processing. The five thousand dollar option includes advanced features like a live calendar that syncs with your systems, automated reminders for appointments, and a full CRM integration for managing customer interactions and data. These additional features require more development time and resources, which accounts for the higher cost.",
+            "original_message": null,
+            "role": "agent",
+            "interrupted": false,
+            "source_medium": null
+          },
+          {
+            "tool_calls": [],
+            "tool_results": [],
+            "time": 60,
+            "message": "Okay, but what exactly does the three thousand dollar option not have that the five thousand dollar one does?",
+            "original_message": null,
+            "role": "user",
+            "interrupted": false,
+            "source_medium": "text"
+          },
+          {
+            "tool_calls": [],
+            "tool_results": [],
+            "time": 60,
+            "message": "The three thousand dollar option lacks advanced features like a live calendar that syncs automatically, automated appointment reminders, and comprehensive CRM integration. These features, included in the five thousand dollar option, provide more automation and efficiency, reducing manual work and enhancing customer interaction.",
+            "original_message": null,
+            "role": "agent",
+            "interrupted": false,
+            "source_medium": null
+          },
+          {
+            "tool_calls": [],
+            "tool_results": [],
+            "time": 60,
+            "message": "So, if I pick the $3k one, what can't I do that I could with the $5k one?",
+            "original_message": null,
+            "role": "user",
+            "interrupted": false,
+            "source_medium": "text"
+          },
+          {
+            "tool_calls": [],
+            "tool_results": [],
+            "time": 60,
+            "message": "With the three thousand dollar option, you wouldn't have automated syncing with a live calendar, automated appointment reminders, or a fully integrated CRM system. These features, available in the five thousand dollar option, automate scheduling and customer management, reducing manual tasks and improving efficiency.",
+            "original_message": null,
+            "role": "agent",
+            "interrupted": false,
+            "source_medium": null
+          },
+          {
+            "tool_calls": [],
+            "tool_results": [],
+            "time": 60,
+            "message": "So, I'd still have to manually update my calendar and send reminders with the $3k option?So, I'd still have to manually update my calendar and send reminders with the $3k option?",
+            "original_message": null,
+            "role": "user",
+            "interrupted": false,
+            "source_medium": "text"
+          },
+          {
+            "tool_calls": [],
+            "tool_results": [],
+            "time": 60,
+            "message": "Yes, with the three thousand dollar option, you would need to manually update your calendar and send reminders, as it lacks the automated syncing and reminder features included in the five thousand dollar option.",
+            "original_message": null,
+            "role": "agent",
+            "interrupted": false,
+            "source_medium": null
+          },
+          {
+            "tool_calls": [],
+            "tool_results": [],
+            "time": 60,
+            "message": "So the $5k one does do all that automatically then?",
+            "original_message": null,
+            "role": "user",
+            "interrupted": false,
+            "source_medium": "text"
+          },
+          {
+            "tool_calls": [],
+            "tool_results": [],
+            "time": 60,
+            "message": "Yes, the five thousand dollar option automates calendar syncing and sends reminders, streamlining your scheduling and customer management processes.",
+            "original_message": null,
+            "role": "agent",
+            "interrupted": false,
+            "source_medium": null
+          },
+          {
+            "tool_calls": [],
+            "tool_results": [],
+            "time": 60,
+            "message": "Okay, so the $5k one handles all the automatic stuff, got it.",
+            "original_message": null,
+            "role": "user",
+            "interrupted": false,
+            "source_medium": "text"
+          },
+          {
+            "tool_calls": [],
+            "tool_results": [],
+            "time": 60,
+            "message": "That's correct. The five thousand dollar option includes automation for calendar syncing and reminders, making your processes more efficient. Would you like to see a free homepage mockup to visualize how these features could be integrated?",
+            "original_message": null,
+            "role": "agent",
+            "interrupted": false,
+            "source_medium": null
+          },
+          {
+            "tool_calls": [],
+            "tool_results": [],
+            "time": 60,
+            "message": "Alright, so the $5k option is for all the automation. What's involved with this mockup thing?",
+            "original_message": null,
+            "role": "user",
+            "interrupted": false,
+            "source_medium": "text"
+          },
+          {
+            "tool_calls": [],
+            "tool_results": [],
+            "time": 60,
+            "message": "The free homepage mockup shows the layout of your website and where features like the calendar and payment options would be placed. It helps you visualize the design and structure without any commitment or cost. Would you like me to send you a mockup?",
+            "original_message": null,
+            "role": "agent",
+            "interrupted": false,
+            "source_medium": null
+          },
+          {
+            "tool_calls": [],
+            "tool_results": [],
+            "time": 60,
+            "message": "So, if I like the mockup, then what?",
+            "original_message": null,
+            "role": "user",
+            "interrupted": false,
+            "source_medium": "text"
+          },
+          {
+            "tool_calls": [],
+            "tool_results": [],
+            "time": 60,
+            "message": "If you like the mockup, you can decide to move forward with the development of the website. You'll review the mockup and reply to the email only if it's useful for you. There's no payment or contract required just to receive the mockup.",
+            "original_message": null,
+            "role": "agent",
+            "interrupted": false,
+            "source_medium": null
+          }
+        ]
+      },
+      {
+        "test_run_id": "trun_9401kx733g1eexham28b9b6gvkqt",
+        "test_invocation_id": "suite_9401kx733g1aewts3w06vpwxq9t0",
+        "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+        "test_id": "sim_036_crm_payment_capability_before_price",
+        "provider_test_id": "test_4601ktwzq8xnfpbtry5qsepeprh3",
+        "test_name": "ELEVENLABS-036-natural-sales-scenarios::sim_036_crm_payment_capability_before_price",
+        "scenario": "The simulated user owns Iron Gate Garage Doors in Kansas City. They care about lead handling more than design. Their first technical question is: 'Can it connect to Jobber or take deposit payments?' They do not ask cost until later. If Emma jumps into price first, the buyer says: 'That is not what I asked. Can it actually connect or not?' Then they ask: 'Okay, what kind of price does that add?'",
+        "success_conditions": [
+          "The full conversation passes only if Emma answers capability before price. She should first say it can connect depending on whether it is a simple form handoff or a real integration. Only after the buyer asks cost should she map a real CRM or payment integration toward {{website_integration_heavy_range}}, while noting that a simple handoff is lighter and the real number depends on the system. It fails if Emma gives a price before answering capability, says CRM or payments are automatically included in a basic site, invents an exact final quote, gives a long technical dump, or misses a natural mockup next step after the capability and cost questions are answered."
+        ],
+        "models": {
+          "simulated_user_model": "gemini-2.5-flash",
+          "evaluation_model": "gemini-2.5-flash"
+        },
+        "status": "passed",
+        "condition_result": {
+          "result": "success",
+          "rationale": {
+            "messages": [
+              "The agent first answered the capability question by explaining it depends on the type of integration (simple handoff vs. real integration). Only after the user asked for price did the agent provide a range, correctly mapping the heavier integrations (Jobber/payments) to the higher price range and the lighter option to a lower range. The agent did not invent an exact quote, give a technical dump, or miss the mockup next step.",
+              "The agent ended the conversation."
+            ],
+            "summary": "Evaluation succeeded"
+          }
+        },
+        "evaluator_rationale": "{'messages': ['The agent first answered the capability question by explaining it depends on the type of integration (simple handoff vs. real integration). Only after the user asked for price did the agent provide a range, correctly mapping the heavier integrations (Jobber/payments) to the higher price range and the lighter option to a lower range. The agent did not invent an exact quote, give a technical dump, or miss the mockup next step.', 'The agent ended the conversation.'], 'summary': 'Evaluation succeeded'}",
+        "agent_responses": [
+          {
+            "tool_calls": [],
+            "tool_results": [],
+            "time": 25,
+            "message": "Hi, this is Emma from Atlas Web Studio. I had Iron Gate Garage Doors down as a garage door repair company in Kansas City. Am I speaking with the owner or someone who handles the website there?",
+            "original_message": null,
+            "role": "agent",
+            "interrupted": false,
+            "source_medium": null
+          },
+          {
+            "tool_calls": [],
+            "tool_results": [],
+            "time": 25,
+            "message": "Yeah, this is the owner. I was wondering if your websites can connect to Jobber or take deposit payments?",
+            "original_message": null,
+            "role": "user",
+            "interrupted": false,
+            "source_medium": "text"
+          },
+          {
+            "tool_calls": [],
+            "tool_results": [],
+            "time": 25,
+            "message": "Yes, we can build that. It depends whether you need a simple form handoff or a real integration.",
+            "original_message": null,
+            "role": "agent",
+            "interrupted": false,
+            "source_medium": null
+          },
+          {
+            "tool_calls": [],
+            "tool_results": [],
+            "time": 25,
+            "message": "Uh, can it actually connect or not?",
+            "original_message": null,
+            "role": "user",
+            "interrupted": false,
+            "source_medium": "text"
+          },
+          {
+            "tool_calls": [],
+            "tool_results": [],
+            "time": 25,
+            "message": "Yes, we can connect to Jobber and support deposit payments.",
+            "original_message": null,
+            "role": "agent",
+            "interrupted": false,
+            "source_medium": null
+          },
+          {
+            "tool_calls": [],
+            "tool_results": [],
+            "time": 25,
+            "message": "Okay, what kind of price does that add?",
+            "original_message": null,
+            "role": "user",
+            "interrupted": false,
+            "source_medium": "text"
+          },
+          {
+            "tool_calls": [],
+            "tool_results": [],
+            "time": 25,
+            "message": "A light website with a simple appointment request form is usually between two thousand and three thousand dollars total, not just for the form alone. If you want live calendar, reminders, payments, or CRM sync, it moves toward three thousand to four thousand or four thousand to five thousand dollars. Would you like to see a free homepage mockup to get a better idea of the layout?",
+            "original_message": null,
+            "role": "agent",
+            "interrupted": false,
+            "source_medium": null
+          },
+          {
+            "tool_calls": [],
+            "tool_results": [],
+            "time": 25,
+            "message": "So, the higher price includes the Jobber and payments, right? And the lower one doesn't?",
+            "original_message": null,
+            "role": "user",
+            "interrupted": false,
+            "source_medium": "text"
+          },
+          {
+            "tool_calls": [],
+            "tool_results": [],
+            "time": 25,
+            "message": "That's the likely whole-site range; the request form is the light option. The higher range would include integrations like Jobber and payments. Would you be interested in seeing a free homepage mockup to visualize the layout?",
+            "original_message": null,
+            "role": "agent",
+            "interrupted": false,
+            "source_medium": null
+          },
+          {
+            "tool_calls": [],
+            "tool_results": [],
+            "time": 25,
+            "message": "Okay, so the higher price is for the Jobber and payments. I'm not really worried about a mockup right now, I just need it to work.",
+            "original_message": null,
+            "role": "user",
+            "interrupted": false,
+            "source_medium": "text"
+          },
+          {
+            "tool_calls": [],
+            "tool_results": [],
+            "time": 25,
+            "message": "Understood, ensuring functionality is important. If you have any more questions about the integration or need further details, feel free to ask. Can I assist you with anything else?",
+            "original_message": null,
+            "role": "agent",
+            "interrupted": false,
+            "source_medium": null
+          },
+          {
+            "tool_calls": [],
+            "tool_results": [],
+            "time": 25,
+            "message": "No, I think that covers it for now.",
+            "original_message": null,
+            "role": "user",
+            "interrupted": false,
+            "source_medium": "text"
+          },
+          {
+            "tool_calls": [],
+            "tool_results": [],
+            "time": 25,
+            "message": "Take care.",
+            "original_message": null,
+            "role": "agent",
+            "interrupted": false,
+            "source_medium": null
+          },
+          {
+            "tool_calls": [
+              {
+                "params_as_json": "{\"reason\":\"Buyer explicitly ended the completed conversation\",\"system__message_to_speak\":\"Take care.\"}",
+                "tool_has_been_called": true,
+                "type": "system",
+                "tool_name": "end_call",
+                "request_id": "call_iPmHb56ZyN9LFsWBiUZOsJb5"
+              }
+            ],
+            "tool_results": [],
+            "time": 25,
+            "message": null,
+            "original_message": null,
+            "role": "agent",
+            "interrupted": false,
+            "source_medium": null
+          },
+          {
+            "tool_calls": [],
+            "tool_results": [
+              {
+                "tool_has_been_called": true,
+                "type": "system",
+                "tool_name": "end_call",
+                "error_type": "",
+                "raw_error_message": "",
+                "result_value": "{\"result_type\":\"end_call_success\",\"status\":\"success\",\"reason\":\"Buyer explicitly ended the completed conversation\",\"message\":null}",
+                "tool_latency_secs": 0.5010389250237495,
+                "is_blocked": false,
+                "result": {
+                  "result_type": "end_call_success",
+                  "status": "success",
+                  "reason": "Buyer explicitly ended the completed conversation",
+                  "message": null
+                },
+                "is_error": false,
+                "request_id": "call_iPmHb56ZyN9LFsWBiUZOsJb5"
+              }
+            ],
+            "time": 25,
+            "message": null,
+            "original_message": null,
+            "role": "agent",
+            "interrupted": false,
+            "source_medium": null
+          }
+        ]
+      },
+      {
+        "test_run_id": "trun_8101kx733g1ffggbqqdzafn4m9d8",
+        "test_invocation_id": "suite_9401kx733g1aewts3w06vpwxq9t0",
+        "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+        "test_id": "sim_036_crm_payment_capability_before_price",
+        "provider_test_id": "test_4601ktwzq8xnfpbtry5qsepeprh3",
+        "test_name": "ELEVENLABS-036-natural-sales-scenarios::sim_036_crm_payment_capability_before_price",
+        "scenario": "The simulated user owns Iron Gate Garage Doors in Kansas City. They care about lead handling more than design. Their first technical question is: 'Can it connect to Jobber or take deposit payments?' They do not ask cost until later. If Emma jumps into price first, the buyer says: 'That is not what I asked. Can it actually connect or not?' Then they ask: 'Okay, what kind of price does that add?'",
+        "success_conditions": [
+          "The full conversation passes only if Emma answers capability before price. She should first say it can connect depending on whether it is a simple form handoff or a real integration. Only after the buyer asks cost should she map a real CRM or payment integration toward {{website_integration_heavy_range}}, while noting that a simple handoff is lighter and the real number depends on the system. It fails if Emma gives a price before answering capability, says CRM or payments are automatically included in a basic site, invents an exact final quote, gives a long technical dump, or misses a natural mockup next step after the capability and cost questions are answered."
+        ],
+        "models": {
+          "simulated_user_model": "gemini-2.5-flash",
+          "evaluation_model": "gemini-2.5-flash"
+        },
+        "status": "failed",
+        "condition_result": {
+          "result": "failure",
+          "rationale": {
+            "messages": [
+              "The agent initially mapped the website with heavy integration to the correct range. However, when the user repeatedly asked for the price of *just* the integration, the agent gave contradictory ranges (3k-4k in turn 12, then retracted it in turn 14, then 1k-2k in turn 30), failing to consistently map the integration itself to a clear, appropriate range.",
+              "The conversation reached the maximum number of turns."
+            ],
+            "summary": "Evaluation failed"
+          }
+        },
+        "evaluator_rationale": "{'messages': ['The agent initially mapped the website with heavy integration to the correct range. However, when the user repeatedly asked for the price of *just* the integration, the agent gave contradictory ranges (3k-4k in turn 12, then retracted it in turn 14, then 1k-2k in turn 30), failing to consistently map the integration itself to a clear, appropriate range.', 'The conversation reached the maximum number of turns.'], 'summary': 'Evaluation failed'}",
+        "agent_responses": [
+          {
+            "tool_calls": [],
+            "tool_results": [],
+            "time": 60,
+            "message": "Hi, this is Emma from Atlas Web Studio. I had Iron Gate Garage Doors down as a garage door repair company in Kansas City. Am I speaking with the owner or someone who handles the website there?",
+            "original_message": null,
+            "role": "agent",
+            "interrupted": false,
+            "source_medium": null
+          },
+          {
+            "tool_calls": [],
+            "tool_results": [],
+            "time": 60,
+            "message": "Yeah, this is the owner. I was wondering if your websites can connect to Jobber or take deposit payments?",
+            "original_message": null,
+            "role": "user",
+            "interrupted": false,
+            "source_medium": "text"
+          },
+          {
+            "tool_calls": [],
+            "tool_results": [],
+            "time": 60,
+            "message": "Yes, we can build that. It depends whether you need a simple form handoff or a real integration.",
+            "original_message": null,
+            "role": "agent",
+            "interrupted": false,
+            "source_medium": null
+          },
+          {
+            "tool_calls": [],
+            "tool_results": [],
+            "time": 60,
+            "message": "Uh, what's the difference for me? Can it actually connect to Jobber or take deposits?",
+            "original_message": null,
+            "role": "user",
+            "interrupted": false,
+            "source_medium": "text"
+          },
+          {
+            "tool_calls": [],
+            "tool_results": [],
+            "time": 60,
+            "message": "Yes, we can connect to Jobber and support deposit payments.",
+            "original_message": null,
+            "role": "agent",
+            "interrupted": false,
+            "source_medium": null
+          },
+          {
+            "tool_calls": [],
+            "tool_results": [],
+            "time": 60,
+            "message": "Okay, what kind of price does that add?",
+            "original_message": null,
+            "role": "user",
+            "interrupted": false,
+            "source_medium": "text"
+          },
+          {
+            "tool_calls": [],
+            "tool_results": [],
+            "time": 60,
+            "message": "A light website with a simple appointment request form is usually between two thousand and three thousand dollars total, not two thousand to three thousand for the form alone. If you want live calendar, reminders, payments, or CRM sync, it moves toward three thousand to four thousand or four thousand to five thousand dollars. Would you like to see a free homepage mockup to get a better idea of the layout?",
+            "original_message": null,
+            "role": "agent",
+            "interrupted": false,
+            "source_medium": null
+          },
+          {
+            "tool_calls": [],
+            "tool_results": [],
+            "time": 60,
+            "message": "That's a pretty big range. What would it be for just the Jobber and payments stuff?",
+            "original_message": null,
+            "role": "user",
+            "interrupted": false,
+            "source_medium": "text"
+          },
+          {
+            "tool_calls": [],
+            "tool_results": [],
+            "time": 60,
+            "message": "The range I mentioned reflects the whole-site cost, with the request form being the lighter option. The specific cost for Jobber integration and payment features would depend on the system's complexity and your specific needs. Would you like to see a free homepage mockup to visualize how these features would be placed?",
+            "original_message": null,
+            "role": "agent",
+            "interrupted": false,
+            "source_medium": null
+          },
+          {
+            "tool_calls": [],
+            "tool_results": [],
+            "time": 60,
+            "message": "Okay, but what's the actual price for just the Jobber connection and taking deposits? Not the whole website.",
+            "original_message": null,
+            "role": "user",
+            "interrupted": false,
+            "source_medium": "text"
+          },
+          {
+            "tool_calls": [],
+            "tool_results": [],
+            "time": 60,
+            "message": "The specific cost for just the Jobber connection and deposit features would depend on the scope of integration and any additional requirements. It's challenging to provide an exact number without understanding the full scope, but these features typically move the project toward the higher end of the range. Would you like to discuss your needs further or see a mockup to help visualize the layout?",
+            "original_message": null,
+            "role": "agent",
+            "interrupted": false,
+            "source_medium": null
+          },
+          {
+            "tool_calls": [],
+            "tool_results": [],
+            "time": 60,
+            "message": "So, what's a rough estimate for just those features then? Like, a ballpark number?",
+            "original_message": null,
+            "role": "user",
+            "interrupted": false,
+            "source_medium": "text"
+          },
+          {
+            "tool_calls": [],
+            "tool_results": [],
+            "time": 60,
+            "message": "For just the Jobber connection and deposit features, you might be looking at a range closer to the higher end, around three thousand to four thousand dollars, depending on the complexity. Would you like to proceed with a free homepage mockup to see how these features could be integrated?",
+            "original_message": null,
+            "role": "agent",
+            "interrupted": false,
+            "source_medium": null
+          },
+          {
+            "tool_calls": [],
+            "tool_results": [],
+            "time": 60,
+            "message": "So that three to four thousand is just for the Jobber and payment stuff, right?",
+            "original_message": null,
+            "role": "user",
+            "interrupted": false,
+            "source_medium": "text"
+          },
+          {
+            "tool_calls": [],
+            "tool_results": [],
+            "time": 60,
+            "message": "That's the likely range for the whole site with those features included, not just for the Jobber connection and payment integration alone. The specific cost for those features would depend on the complexity and your specific requirements. Would you like to explore this further with a mockup?",
+            "original_message": null,
+            "role": "agent",
+            "interrupted": false,
+            "source_medium": null
+          },
+          {
+            "tool_calls": [],
+            "tool_results": [],
+            "time": 60,
+            "message": "Okay, so you're still not telling me what just those features cost. Can you give me a number for just the Jobber and payment integration?",
+            "original_message": null,
+            "role": "user",
+            "interrupted": false,
+            "source_medium": "text"
+          },
+          {
+            "tool_calls": [],
+            "tool_results": [],
+            "time": 60,
+            "message": "The cost for just the Jobber and payment integration would typically be part of the overall project cost, which can vary based on the specific requirements and complexity. It's challenging to separate these features from the whole website cost without a detailed scope. Would you like to discuss your needs further or see a mockup to visualize the layout?",
+            "original_message": null,
+            "role": "agent",
+            "interrupted": false,
+            "source_medium": null
+          },
+          {
+            "tool_calls": [],
+            "tool_results": [],
+            "time": 60,
+            "message": "So you can't tell me what just those two things cost? Just a number for the Jobber connection and payments?",
+            "original_message": null,
+            "role": "user",
+            "interrupted": false,
+            "source_medium": "text"
+          },
+          {
+            "tool_calls": [],
+            "tool_results": [],
+            "time": 60,
+            "message": "The cost for just the Jobber connection and payment integration would depend on the specific details and complexity of your requirements. Typically, these features are integrated as part of the overall website project, which is why they are included in the whole-site range. If you have specific requirements, we could discuss them further to provide a more precise estimate. Would you like to explore this with a mockup or discuss your needs in more detail?",
+            "original_message": null,
+            "role": "agent",
+            "interrupted": false,
+            "source_medium": null
+          },
+          {
+            "tool_calls": [],
+            "tool_results": [],
+            "time": 60,
+            "message": "So you can't give me a price for just those two things, separate from a whole website?",
+            "original_message": null,
+            "role": "user",
+            "interrupted": false,
+            "source_medium": "text"
+          },
+          {
+            "tool_calls": [],
+            "tool_results": [],
+            "time": 60,
+            "message": "The integration of Jobber and payment features is typically part of a comprehensive website project, which is why they are included in the overall price range. If you have specific requirements or need a detailed scope, we could discuss further to provide a more precise estimate. Would you like to see a mockup or discuss your needs in more detail?",
+            "original_message": null,
+            "role": "agent",
+            "interrupted": false,
+            "source_medium": null
+          },
+          {
+            "tool_calls": [],
+            "tool_results": [],
+            "time": 60,
+            "message": "So you're saying there's no way to get a price for just the Jobber connection and payments, separate from a whole new website?",
+            "original_message": null,
+            "role": "user",
+            "interrupted": false,
+            "source_medium": "text"
+          },
+          {
+            "tool_calls": [],
+            "tool_results": [],
+            "time": 60,
+            "message": "The Jobber connection and payment integration are usually part of a complete website package, so they are typically priced within the context of the whole project. If you have specific requirements, we could discuss them to provide a more detailed estimate. Would you like to explore this further with a mockup or discuss your needs in more detail?",
+            "original_message": null,
+            "role": "agent",
+            "interrupted": false,
+            "source_medium": null
+          },
+          {
+            "tool_calls": [],
+            "tool_results": [],
+            "time": 60,
+            "message": "So you're saying I have to get a whole new website just to get those two things?",
+            "original_message": null,
+            "role": "user",
+            "interrupted": false,
+            "source_medium": "text"
+          },
+          {
+            "tool_calls": [],
+            "tool_results": [],
+            "time": 60,
+            "message": "Not necessarily. We can discuss integrating those features into your existing website, but the cost would still depend on the specific requirements and complexity of the integration. Would you like to explore this further or see a mockup to visualize how it could look?",
+            "original_message": null,
+            "role": "agent",
+            "interrupted": false,
+            "source_medium": null
+          },
+          {
+            "tool_calls": [],
+            "tool_results": [],
+            "time": 60,
+            "message": "Okay, so what's the price for just that integration then?",
+            "original_message": null,
+            "role": "user",
+            "interrupted": false,
+            "source_medium": "text"
+          },
+          {
+            "tool_calls": [],
+            "tool_results": [],
+            "time": 60,
+            "message": "The cost for just the integration of Jobber and payment features would depend on the specific details and complexity involved. It's challenging to provide an exact number without understanding the full scope. Would you like to discuss your specific needs further to get a more precise estimate?",
+            "original_message": null,
+            "role": "agent",
+            "interrupted": false,
+            "source_medium": null
+          },
+          {
+            "tool_calls": [],
+            "tool_results": [],
+            "time": 60,
+            "message": "So you still can't give me a ballpark for just those two things?",
+            "original_message": null,
+            "role": "user",
+            "interrupted": false,
+            "source_medium": "text"
+          },
+          {
+            "tool_calls": [],
+            "tool_results": [],
+            "time": 60,
+            "message": "The integration of Jobber and payment features would typically be part of a larger project, and the cost would depend on the specific requirements and complexity. Without a detailed scope, it's difficult to provide a separate ballpark figure for just those features. Would you like to discuss your needs further to explore the options?",
+            "original_message": null,
+            "role": "agent",
+            "interrupted": false,
+            "source_medium": null
+          },
+          {
+            "tool_calls": [],
+            "tool_results": [],
+            "time": 60,
+            "message": "This is getting frustrating. Can you just give me any kind of number for just the Jobber and payment integration?",
+            "original_message": null,
+            "role": "user",
+            "interrupted": false,
+            "source_medium": "text"
+          },
+          {
+            "tool_calls": [],
+            "tool_results": [],
+            "time": 60,
+            "message": "I understand your frustration. For just the Jobber and payment integration, a rough estimate might be in the range of one thousand to two thousand dollars, depending on the complexity and specific requirements. Would you like to discuss this further or see a mockup to visualize how it could be integrated?",
+            "original_message": null,
+            "role": "agent",
+            "interrupted": false,
+            "source_medium": null
+          }
+        ]
+      }
+    ],
+    "result_groups": [
+      {
+        "test_id": "test_4601ktwzq8xnfpbtry5qsepeprh3",
+        "test_name": "ELEVENLABS-036-natural-sales-scenarios::sim_036_crm_payment_capability_before_price",
+        "workflow_node_id": "None",
+        "buckets": [
+          {
+            "test_run_ids": [
+              "trun_7201kx733g1df2c8gg6eej167ma3",
+              "trun_9401kx733g1eexham28b9b6gvkqt"
+            ],
+            "title": "Passed",
+            "reason": "Passed",
+            "status": "passed"
+          },
+          {
+            "test_run_ids": [
+              "trun_8101kx733g1ffggbqqdzafn4m9d8"
+            ],
+            "title": "Inconsistent pricing range communication",
+            "reason": "The agent failed to provide a consistent price range for the integration, repeatedly contradicting its own estimates throughout the conversation.",
+            "status": "failed"
+          }
+        ]
+      }
+    ]
+  }
+}

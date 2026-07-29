@@ -1,0 +1,810 @@
+{
+  "captured_at_utc": "2026-07-10T22:36:06Z",
+  "payload_sha256": "f099d26b7b67976fc3d5bf191169ee2d13a55552381122f98625ff08eaf4dc4a",
+  "payload": {
+    "checkpoint_id": "ELEVENLABS-036-natural-sales-scenarios",
+    "invocation_id": "suite_1501kx72ps78e1eb0x5je9fxf3p7",
+    "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+    "test_runs": [
+      {
+        "test_run_id": "trun_6201kx72ps7aer9bq6xcr60n1j9e",
+        "test_invocation_id": "suite_1501kx72ps78e1eb0x5je9fxf3p7",
+        "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+        "test_id": "sim_036_free_mockup_visual_not_working_site",
+        "provider_test_id": "test_3301ktwzq9cnfzsa5dfjd9q61gq5",
+        "test_name": "ELEVENLABS-036-natural-sales-scenarios::sim_036_free_mockup_visual_not_working_site",
+        "scenario": "The simulated user owns Mesa Fit Studio in Albuquerque. They ask what the free mockup includes and press on live functionality: 'Does the free mockup include the class booking system, payment button, member login, and calendar, or is it just a visual thing?' They dislike vague answers but may agree if Emma gives a useful boundary and explains what the mockup can still show.",
+        "success_conditions": [
+          "The full conversation passes only if Emma clearly says in a short, natural answer that the mockup is visual, not a working website. It can show where class booking, payment, calendar, member login, or dashboard entry would sit on the homepage, but it does not include working login, database, calendar connection, CRM/payment integration, booking engine, ecommerce, or other live functionality. The answer should not be a blunt 'no' with no replacement value; it should preserve the sales path by positioning the mockup as a way to judge layout and direction. After scope is clear, one low-friction next step toward seeing the mockup is appropriate if the buyer remains open. It fails if Emma implies the free mockup includes working advanced functionality, dodges the scope question, gives an unrelated feature dump, or asks for email before answering what the mockup includes."
+        ],
+        "models": {
+          "simulated_user_model": "gemini-2.5-flash",
+          "evaluation_model": "gemini-2.5-flash"
+        },
+        "status": "passed",
+        "condition_result": {
+          "result": "success",
+          "rationale": {
+            "messages": [
+              "The agent clearly stated that the mockup is a visual representation and does not include live functionality, while still positioning it as valuable for design and layout. It offered a low-friction next step without asking for an email prematurely.",
+              "The conversation reached the maximum number of turns."
+            ],
+            "summary": "Evaluation succeeded"
+          }
+        },
+        "evaluator_rationale": "{'messages': ['The agent clearly stated that the mockup is a visual representation and does not include live functionality, while still positioning it as valuable for design and layout. It offered a low-friction next step without asking for an email prematurely.', 'The conversation reached the maximum number of turns.'], 'summary': 'Evaluation succeeded'}",
+        "agent_responses": [
+          {
+            "tool_results": [],
+            "source_medium": null,
+            "message": "Hi, this is Emma from Atlas Web Studio. I had Mesa Fit Studio down as a fitness studio in Albuquerque. Am I speaking with the owner or someone who handles the website there?",
+            "time": 54,
+            "original_message": null,
+            "role": "agent",
+            "interrupted": false,
+            "tool_calls": []
+          },
+          {
+            "tool_results": [],
+            "source_medium": "text",
+            "message": "Yeah, that's me. I'm the owner. So, about this free mockup, does it include the class booking system, payment button, member login, and calendar, or is it just a visual thing?",
+            "time": 54,
+            "original_message": null,
+            "role": "user",
+            "interrupted": false,
+            "tool_calls": []
+          },
+          {
+            "tool_results": [],
+            "source_medium": null,
+            "message": "The free mockup is primarily a visual representation of your homepage. It will show the placement and design of elements like the class booking system, payment button, member login, and calendar, but it won't include live functionality. If you're interested in seeing how these features would look on your site, I can send you the mockup. Would you like me to do that?",
+            "time": 54,
+            "original_message": null,
+            "role": "agent",
+            "interrupted": false,
+            "tool_calls": []
+          },
+          {
+            "tool_results": [],
+            "source_medium": "text",
+            "message": "So it's just a picture then? Like, no actual buttons or anything?",
+            "time": 54,
+            "original_message": null,
+            "role": "user",
+            "interrupted": false,
+            "tool_calls": []
+          },
+          {
+            "tool_results": [],
+            "source_medium": null,
+            "message": "That's correct, the mockup is a visual design that shows how your homepage could look, including where elements like buttons and features would be placed. It doesn't include live functionality or working buttons. Would you like to see how it could look?",
+            "time": 54,
+            "original_message": null,
+            "role": "agent",
+            "interrupted": false,
+            "tool_calls": []
+          },
+          {
+            "tool_results": [],
+            "source_medium": "text",
+            "message": "Okay, so it's just a picture. What's the point of seeing it if it doesn't actually do anything?",
+            "time": 54,
+            "original_message": null,
+            "role": "user",
+            "interrupted": false,
+            "tool_calls": []
+          },
+          {
+            "tool_results": [],
+            "source_medium": null,
+            "message": "The mockup helps you visualize the design and layout of your homepage, giving you an idea of how your website could look and feel. It allows you to provide feedback on the design before any development work begins, ensuring it aligns with your vision and needs. If you find the design appealing, we can then discuss how to implement the actual functionality. Would you be interested in seeing the design?",
+            "time": 54,
+            "original_message": null,
+            "role": "agent",
+            "interrupted": false,
+            "tool_calls": []
+          },
+          {
+            "tool_results": [],
+            "source_medium": "text",
+            "message": "So it's just for the look and feel, not if it actually works for my studio?",
+            "time": 54,
+            "original_message": null,
+            "role": "user",
+            "interrupted": false,
+            "tool_calls": []
+          },
+          {
+            "tool_results": [],
+            "source_medium": null,
+            "message": "Exactly, the mockup focuses on the look and feel of your homepage. It's a chance to see the design and layout before moving forward with any development. If you like the design, we can then discuss how to make it functional for your studio. Would you like to proceed with seeing the mockup?",
+            "time": 54,
+            "original_message": null,
+            "role": "agent",
+            "interrupted": false,
+            "tool_calls": []
+          },
+          {
+            "tool_results": [],
+            "source_medium": "text",
+            "message": "But if it doesn't show if it works, how can I even tell if it's right for my studio?",
+            "time": 54,
+            "original_message": null,
+            "role": "user",
+            "interrupted": false,
+            "tool_calls": []
+          },
+          {
+            "tool_results": [],
+            "source_medium": null,
+            "message": "The mockup is a starting point to ensure the design aligns with your brand and preferences. It helps you visualize how your website could represent your studio. Once you're happy with the design, we can discuss the specific functionalities you need, like booking systems or member logins, and how they can be integrated. Would you like to explore the design first to see if it matches your vision?",
+            "time": 54,
+            "original_message": null,
+            "role": "agent",
+            "interrupted": false,
+            "tool_calls": []
+          },
+          {
+            "tool_results": [],
+            "source_medium": "text",
+            "message": "So it's just about the \"vision\" then? Not if it actually helps my studio run?",
+            "time": 54,
+            "original_message": null,
+            "role": "user",
+            "interrupted": false,
+            "tool_calls": []
+          },
+          {
+            "tool_results": [],
+            "source_medium": null,
+            "message": "Yes, the mockup is about capturing the visual aspect and ensuring it aligns with your brand's vision. It's the first step before implementing the actual functionalities that will help your studio run. Once the design is approved, we can focus on integrating the necessary features to support your operations. Would you like to see the design to start this process?",
+            "time": 54,
+            "original_message": null,
+            "role": "agent",
+            "interrupted": false,
+            "tool_calls": []
+          },
+          {
+            "tool_results": [],
+            "source_medium": "text",
+            "message": "So I have to approve a picture before I even know if it can do what I need?",
+            "time": 54,
+            "original_message": null,
+            "role": "user",
+            "interrupted": false,
+            "tool_calls": []
+          },
+          {
+            "tool_results": [],
+            "source_medium": null,
+            "message": "Yes, the mockup is a way to ensure the design meets your aesthetic preferences before we move on to the technical aspects. Once you're satisfied with the look, we can discuss and implement the functionalities you need. This approach helps streamline the process and ensures the final product aligns with your expectations. Would you like to see the design to begin this process?",
+            "time": 54,
+            "original_message": null,
+            "role": "agent",
+            "interrupted": false,
+            "tool_calls": []
+          },
+          {
+            "tool_results": [],
+            "source_medium": "text",
+            "message": "That just seems backwards, doesn't it?",
+            "time": 54,
+            "original_message": null,
+            "role": "user",
+            "interrupted": false,
+            "tool_calls": []
+          },
+          {
+            "tool_results": [],
+            "source_medium": null,
+            "message": "I understand it might seem that way. The design-first approach helps ensure that the visual elements align with your brand before investing in development. It allows for adjustments early on, which can save time and resources. Once the design is approved, we can focus on building the functionality that meets your needs. Would you like to explore the design to see if it aligns with your vision?",
+            "time": 54,
+            "original_message": null,
+            "role": "agent",
+            "interrupted": false,
+            "tool_calls": []
+          },
+          {
+            "tool_results": [],
+            "source_medium": "text",
+            "message": "But how does a picture save time if it doesn't show me if it'll actually work for my studio?",
+            "time": 54,
+            "original_message": null,
+            "role": "user",
+            "interrupted": false,
+            "tool_calls": []
+          },
+          {
+            "tool_results": [],
+            "source_medium": null,
+            "message": "The mockup allows you to make design changes early on, which can prevent costly adjustments later in the development process. It ensures that the visual elements meet your expectations before we integrate the technical features. This way, we can focus on building a functional site that aligns with your approved design. Would you like to see the mockup to start this process?",
+            "time": 54,
+            "original_message": null,
+            "role": "agent",
+            "interrupted": false,
+            "tool_calls": []
+          },
+          {
+            "tool_results": [],
+            "source_medium": "text",
+            "message": "So I just have to hope it'll work for my studio after I approve how it looks?",
+            "time": 54,
+            "original_message": null,
+            "role": "user",
+            "interrupted": false,
+            "tool_calls": []
+          },
+          {
+            "tool_results": [],
+            "source_medium": null,
+            "message": "I understand your concern. While the mockup focuses on design, it's just the first step. Once you approve the look, we work closely with you to ensure the functionality meets your studio's needs. This collaborative approach helps ensure the final product is both visually appealing and operationally effective. Would you like to see the design to begin this collaboration?",
+            "time": 54,
+            "original_message": null,
+            "role": "agent",
+            "interrupted": false,
+            "tool_calls": []
+          },
+          {
+            "tool_results": [],
+            "source_medium": "text",
+            "message": "So I just have to trust you that it'll work after I approve the look?",
+            "time": 54,
+            "original_message": null,
+            "role": "user",
+            "interrupted": false,
+            "tool_calls": []
+          },
+          {
+            "tool_results": [],
+            "source_medium": null,
+            "message": "I understand the importance of trust in this process. We ensure that after the design approval, we work closely with you to implement the necessary functionalities that meet your studio's requirements. Our goal is to create a website that not only looks great but also works effectively for your business. Would you like to start by seeing the design?",
+            "time": 54,
+            "original_message": null,
+            "role": "agent",
+            "interrupted": false,
+            "tool_calls": []
+          }
+        ]
+      },
+      {
+        "test_run_id": "trun_6001kx72ps7bf4q8fm7jk61vnw9s",
+        "test_invocation_id": "suite_1501kx72ps78e1eb0x5je9fxf3p7",
+        "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+        "test_id": "sim_036_free_mockup_visual_not_working_site",
+        "provider_test_id": "test_3301ktwzq9cnfzsa5dfjd9q61gq5",
+        "test_name": "ELEVENLABS-036-natural-sales-scenarios::sim_036_free_mockup_visual_not_working_site",
+        "scenario": "The simulated user owns Mesa Fit Studio in Albuquerque. They ask what the free mockup includes and press on live functionality: 'Does the free mockup include the class booking system, payment button, member login, and calendar, or is it just a visual thing?' They dislike vague answers but may agree if Emma gives a useful boundary and explains what the mockup can still show.",
+        "success_conditions": [
+          "The full conversation passes only if Emma clearly says in a short, natural answer that the mockup is visual, not a working website. It can show where class booking, payment, calendar, member login, or dashboard entry would sit on the homepage, but it does not include working login, database, calendar connection, CRM/payment integration, booking engine, ecommerce, or other live functionality. The answer should not be a blunt 'no' with no replacement value; it should preserve the sales path by positioning the mockup as a way to judge layout and direction. After scope is clear, one low-friction next step toward seeing the mockup is appropriate if the buyer remains open. It fails if Emma implies the free mockup includes working advanced functionality, dodges the scope question, gives an unrelated feature dump, or asks for email before answering what the mockup includes."
+        ],
+        "models": {
+          "simulated_user_model": "gemini-2.5-flash",
+          "evaluation_model": "gemini-2.5-flash"
+        },
+        "status": "passed",
+        "condition_result": {
+          "result": "success",
+          "rationale": {
+            "messages": [
+              "The agent clearly stated that the mockup is visual, not a working website, and explained its purpose for judging layout and direction. It consistently preserved the sales path by explaining the process and offering next steps, without implying advanced functionality or asking for email prematurely.",
+              "The conversation reached the maximum number of turns."
+            ],
+            "summary": "Evaluation succeeded"
+          }
+        },
+        "evaluator_rationale": "{'messages': ['The agent clearly stated that the mockup is visual, not a working website, and explained its purpose for judging layout and direction. It consistently preserved the sales path by explaining the process and offering next steps, without implying advanced functionality or asking for email prematurely.', 'The conversation reached the maximum number of turns.'], 'summary': 'Evaluation succeeded'}",
+        "agent_responses": [
+          {
+            "tool_results": [],
+            "source_medium": null,
+            "message": "Hi, this is Emma from Atlas Web Studio. I had Mesa Fit Studio down as a fitness studio in Albuquerque. Am I speaking with the owner or someone who handles the website there?",
+            "time": 51,
+            "original_message": null,
+            "role": "agent",
+            "interrupted": false,
+            "tool_calls": []
+          },
+          {
+            "tool_results": [],
+            "source_medium": "text",
+            "message": "Yeah, this is me, the owner. I'm calling about the free mockup.",
+            "time": 51,
+            "original_message": null,
+            "role": "user",
+            "interrupted": false,
+            "tool_calls": []
+          },
+          {
+            "tool_results": [],
+            "source_medium": null,
+            "message": "Great to hear from you! The free homepage mockup is a great way to see what we can do for your website. Do you have any specific questions about the process or what the mockup includes?",
+            "time": 51,
+            "original_message": null,
+            "role": "agent",
+            "interrupted": false,
+            "tool_calls": []
+          },
+          {
+            "tool_results": [],
+            "source_medium": "text",
+            "message": "Does the free mockup include the class booking system, payment button, member login, and calendar, or is it just a visual thing?",
+            "time": 51,
+            "original_message": null,
+            "role": "user",
+            "interrupted": false,
+            "tool_calls": []
+          },
+          {
+            "tool_results": [],
+            "source_medium": null,
+            "message": "The free mockup is primarily a visual representation, showcasing the design and layout of your homepage. It won't include live functionality like a class booking system, payment button, member login, or calendar. However, it will give you a clear idea of how these elements could be integrated visually. If you decide to move forward, we can discuss implementing these features in detail. Would you like to proceed with the mockup?",
+            "time": 51,
+            "original_message": null,
+            "role": "agent",
+            "interrupted": false,
+            "tool_calls": []
+          },
+          {
+            "tool_results": [],
+            "source_medium": "text",
+            "message": "So, it's just pictures of buttons and things, not actual working parts?",
+            "time": 51,
+            "original_message": null,
+            "role": "user",
+            "interrupted": false,
+            "tool_calls": []
+          },
+          {
+            "tool_results": [],
+            "source_medium": null,
+            "message": "That's correct. The mockup will show how the buttons and features like the booking system or calendar would look on your homepage, but they won't be functional. It's a way to visualize the design before any development work begins. If you have any other questions or want to proceed, feel free to let me know!",
+            "time": 51,
+            "original_message": null,
+            "role": "agent",
+            "interrupted": false,
+            "tool_calls": []
+          },
+          {
+            "tool_results": [],
+            "source_medium": "text",
+            "message": "So it's just a picture then? What's the point of that?",
+            "time": 51,
+            "original_message": null,
+            "role": "user",
+            "interrupted": false,
+            "tool_calls": []
+          },
+          {
+            "tool_results": [],
+            "source_medium": null,
+            "message": "The mockup serves as a visual blueprint, allowing you to see the design and layout of your website before any coding or development begins. This way, you can provide feedback and make changes to the design without incurring additional costs. It helps ensure that the final website aligns with your vision and needs. If you have any other questions or concerns, feel free to ask!",
+            "time": 51,
+            "original_message": null,
+            "role": "agent",
+            "interrupted": false,
+            "tool_calls": []
+          },
+          {
+            "tool_results": [],
+            "source_medium": "text",
+            "message": "But how can I give feedback on a booking system if it doesn't actually work?",
+            "time": 51,
+            "original_message": null,
+            "role": "user",
+            "interrupted": false,
+            "tool_calls": []
+          },
+          {
+            "tool_results": [],
+            "source_medium": null,
+            "message": "I understand your concern. While the mockup itself is visual, it allows you to see how the booking system and other features will be integrated into the design. You can provide feedback on the placement, style, and overall look. Once you're satisfied with the design, we can move forward with developing the actual functionality, ensuring it meets your specific requirements. If you have any other questions or would like to discuss further, just let me know!",
+            "time": 51,
+            "original_message": null,
+            "role": "agent",
+            "interrupted": false,
+            "tool_calls": []
+          },
+          {
+            "tool_results": [],
+            "source_medium": "text",
+            "message": "So I can say if I like the color of the button, but not if the booking process makes sense?",
+            "time": 51,
+            "original_message": null,
+            "role": "user",
+            "interrupted": false,
+            "tool_calls": []
+          },
+          {
+            "tool_results": [],
+            "source_medium": null,
+            "message": "Exactly. The mockup lets you focus on the visual aspects like colors, layout, and design elements. Once you approve the design, we can work on the functionality, ensuring the booking process and other features work seamlessly and meet your needs. If you're ready to proceed or have more questions, feel free to let me know!",
+            "time": 51,
+            "original_message": null,
+            "role": "agent",
+            "interrupted": false,
+            "tool_calls": []
+          },
+          {
+            "tool_results": [],
+            "source_medium": "text",
+            "message": "Okay, so when do I actually get to see if the booking system works?",
+            "time": 51,
+            "original_message": null,
+            "role": "user",
+            "interrupted": false,
+            "tool_calls": []
+          },
+          {
+            "tool_results": [],
+            "source_medium": null,
+            "message": "Once the design is approved, we move into the development phase where the actual functionality of the booking system is built and tested. This is when you'll be able to see and interact with the working features. If you have any other questions or need more details, feel free to ask!",
+            "time": 51,
+            "original_message": null,
+            "role": "agent",
+            "interrupted": false,
+            "tool_calls": []
+          },
+          {
+            "tool_results": [],
+            "source_medium": "text",
+            "message": "So I have to approve the design first, then you build it, and then I can test it?",
+            "time": 51,
+            "original_message": null,
+            "role": "user",
+            "interrupted": false,
+            "tool_calls": []
+          },
+          {
+            "tool_results": [],
+            "source_medium": null,
+            "message": "Yes, that's correct. Approving the design first ensures that the look and feel of the website meet your expectations. After that, we proceed with building the functional aspects, like the booking system, which you can then test and provide feedback on. If you have any more questions or are ready to start, just let me know!",
+            "time": 51,
+            "original_message": null,
+            "role": "agent",
+            "interrupted": false,
+            "tool_calls": []
+          },
+          {
+            "tool_results": [],
+            "source_medium": "text",
+            "message": "Hmm, okay. So that's how it works.",
+            "time": 51,
+            "original_message": null,
+            "role": "user",
+            "interrupted": false,
+            "tool_calls": []
+          },
+          {
+            "tool_results": [],
+            "source_medium": null,
+            "message": "Exactly. If you have any other questions or if there's anything else I can assist you with, feel free to let me know!",
+            "time": 51,
+            "original_message": null,
+            "role": "agent",
+            "interrupted": false,
+            "tool_calls": []
+          },
+          {
+            "tool_results": [],
+            "source_medium": "text",
+            "message": "So the free mockup is just for the homepage design, right?",
+            "time": 51,
+            "original_message": null,
+            "role": "user",
+            "interrupted": false,
+            "tool_calls": []
+          },
+          {
+            "tool_results": [],
+            "source_medium": null,
+            "message": "Yes, the free mockup is specifically for the homepage design. It provides a visual representation of how your homepage could look. If you have any other questions or would like to proceed, just let me know!",
+            "time": 51,
+            "original_message": null,
+            "role": "agent",
+            "interrupted": false,
+            "tool_calls": []
+          },
+          {
+            "tool_results": [],
+            "source_medium": "text",
+            "message": "So it's just the homepage, not any of the other pages?",
+            "time": 51,
+            "original_message": null,
+            "role": "user",
+            "interrupted": false,
+            "tool_calls": []
+          },
+          {
+            "tool_results": [],
+            "source_medium": null,
+            "message": "That's correct. The free mockup focuses on the homepage design. If you're interested in designs for additional pages, we can discuss that further as part of the development process. Let me know if you have any other questions or if you'd like to move forward!",
+            "time": 51,
+            "original_message": null,
+            "role": "agent",
+            "interrupted": false,
+            "tool_calls": []
+          }
+        ]
+      },
+      {
+        "test_run_id": "trun_8001kx72ps7ce31s64nsvqbydhfm",
+        "test_invocation_id": "suite_1501kx72ps78e1eb0x5je9fxf3p7",
+        "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+        "test_id": "sim_036_free_mockup_visual_not_working_site",
+        "provider_test_id": "test_3301ktwzq9cnfzsa5dfjd9q61gq5",
+        "test_name": "ELEVENLABS-036-natural-sales-scenarios::sim_036_free_mockup_visual_not_working_site",
+        "scenario": "The simulated user owns Mesa Fit Studio in Albuquerque. They ask what the free mockup includes and press on live functionality: 'Does the free mockup include the class booking system, payment button, member login, and calendar, or is it just a visual thing?' They dislike vague answers but may agree if Emma gives a useful boundary and explains what the mockup can still show.",
+        "success_conditions": [
+          "The full conversation passes only if Emma clearly says in a short, natural answer that the mockup is visual, not a working website. It can show where class booking, payment, calendar, member login, or dashboard entry would sit on the homepage, but it does not include working login, database, calendar connection, CRM/payment integration, booking engine, ecommerce, or other live functionality. The answer should not be a blunt 'no' with no replacement value; it should preserve the sales path by positioning the mockup as a way to judge layout and direction. After scope is clear, one low-friction next step toward seeing the mockup is appropriate if the buyer remains open. It fails if Emma implies the free mockup includes working advanced functionality, dodges the scope question, gives an unrelated feature dump, or asks for email before answering what the mockup includes."
+        ],
+        "models": {
+          "simulated_user_model": "gemini-2.5-flash",
+          "evaluation_model": "gemini-2.5-flash"
+        },
+        "status": "passed",
+        "condition_result": {
+          "result": "success",
+          "rationale": {
+            "messages": [
+              "The agent clearly stated the mockup is visual, not functional, in its first response to the user's question. It explained what the mockup would show (design, layout, where features would sit) and consistently offered a low-friction next step to see the mockup, preserving the sales path. The agent did not imply functionality or dodge the question.",
+              "The conversation reached the maximum number of turns."
+            ],
+            "summary": "Evaluation succeeded"
+          }
+        },
+        "evaluator_rationale": "{'messages': [\"The agent clearly stated the mockup is visual, not functional, in its first response to the user's question. It explained what the mockup would show (design, layout, where features would sit) and consistently offered a low-friction next step to see the mockup, preserving the sales path. The agent did not imply functionality or dodge the question.\", 'The conversation reached the maximum number of turns.'], 'summary': 'Evaluation succeeded'}",
+        "agent_responses": [
+          {
+            "tool_results": [],
+            "source_medium": null,
+            "message": "Hi, this is Emma from Atlas Web Studio. I had Mesa Fit Studio down as a fitness studio in Albuquerque. Am I speaking with the owner or someone who handles the website there?",
+            "time": 55,
+            "original_message": null,
+            "role": "agent",
+            "interrupted": false,
+            "tool_calls": []
+          },
+          {
+            "tool_results": [],
+            "source_medium": "text",
+            "message": "Yeah, that's me. I'm the owner.",
+            "time": 55,
+            "original_message": null,
+            "role": "user",
+            "interrupted": false,
+            "tool_calls": []
+          },
+          {
+            "tool_results": [],
+            "source_medium": null,
+            "message": "Great to speak with you! We offer a free homepage mockup to give you a sense of what we can do for your website. Do you have any questions about our process or pricing before we proceed?",
+            "time": 55,
+            "original_message": null,
+            "role": "agent",
+            "interrupted": false,
+            "tool_calls": []
+          },
+          {
+            "tool_results": [],
+            "source_medium": "text",
+            "message": "Does the free mockup include the class booking system, payment button, member login, and calendar, or is it just a visual thing?",
+            "time": 55,
+            "original_message": null,
+            "role": "user",
+            "interrupted": false,
+            "tool_calls": []
+          },
+          {
+            "tool_results": [],
+            "source_medium": null,
+            "message": "The free mockup is a visual representation only. It shows the design and layout but does not include live functionality like a class booking system, payment button, member login, or calendar. These features can be integrated into the final website, but they require additional development. Would you like to see the mockup to get a better idea of the design?",
+            "time": 55,
+            "original_message": null,
+            "role": "agent",
+            "interrupted": false,
+            "tool_calls": []
+          },
+          {
+            "tool_results": [],
+            "source_medium": "text",
+            "message": "So, it's just pictures then? What would it even show me without all that?",
+            "time": 55,
+            "original_message": null,
+            "role": "user",
+            "interrupted": false,
+            "tool_calls": []
+          },
+          {
+            "tool_results": [],
+            "source_medium": null,
+            "message": "The mockup will show you the overall design, layout, color scheme, and branding elements of your homepage. It helps you visualize how your website could look and feel, even without the live functionality. This can be a great starting point to discuss any specific features you want to add later. Would you be interested in seeing a mockup to explore the design possibilities?",
+            "time": 55,
+            "original_message": null,
+            "role": "agent",
+            "interrupted": false,
+            "tool_calls": []
+          },
+          {
+            "tool_results": [],
+            "source_medium": "text",
+            "message": "Hmm, okay. So it's just a picture of a website, not really how it would work for my studio?",
+            "time": 55,
+            "original_message": null,
+            "role": "user",
+            "interrupted": false,
+            "tool_calls": []
+          },
+          {
+            "tool_results": [],
+            "source_medium": null,
+            "message": "Yes, that's correct. The mockup is a visual representation of the website's design, not its functionality. It helps you see the potential look and feel of your site. Once you're happy with the design, we can discuss adding the specific features you need for your studio. Would you like to proceed with the mockup?",
+            "time": 55,
+            "original_message": null,
+            "role": "agent",
+            "interrupted": false,
+            "tool_calls": []
+          },
+          {
+            "tool_results": [],
+            "source_medium": "text",
+            "message": "So it's just a pretty picture then? I need a booking system, not just a nice-looking page.",
+            "time": 55,
+            "original_message": null,
+            "role": "user",
+            "interrupted": false,
+            "tool_calls": []
+          },
+          {
+            "tool_results": [],
+            "source_medium": null,
+            "message": "I understand the importance of having a functional booking system for your studio. While the mockup focuses on design, we can certainly integrate a booking system and other functionalities into the final website. If you're interested, we can discuss how these features can be implemented after you review the mockup. Would you like to explore this further?",
+            "time": 55,
+            "original_message": null,
+            "role": "agent",
+            "interrupted": false,
+            "tool_calls": []
+          },
+          {
+            "tool_results": [],
+            "source_medium": "text",
+            "message": "So, I'd just be looking at a picture, and then we'd talk about the actual booking system later?",
+            "time": 55,
+            "original_message": null,
+            "role": "user",
+            "interrupted": false,
+            "tool_calls": []
+          },
+          {
+            "tool_results": [],
+            "source_medium": null,
+            "message": "Yes, that's right. The mockup provides a visual starting point, and then we can discuss how to incorporate the booking system and other functionalities into the final website. This approach allows you to first ensure the design aligns with your vision before moving on to the technical aspects. Would you like to proceed with seeing the mockup?",
+            "time": 55,
+            "original_message": null,
+            "role": "agent",
+            "interrupted": false,
+            "tool_calls": []
+          },
+          {
+            "tool_results": [],
+            "source_medium": "text",
+            "message": "So, what would the picture even show me about the booking system?",
+            "time": 55,
+            "original_message": null,
+            "role": "user",
+            "interrupted": false,
+            "tool_calls": []
+          },
+          {
+            "tool_results": [],
+            "source_medium": null,
+            "message": "The mockup would show you where the booking system could be placed on your homepage, giving you a sense of its visual integration with the overall design. It helps you see how the booking feature might look within the context of your site's layout and branding. Once you're satisfied with the design, we can focus on implementing the actual booking functionality. Would you like to see how it could be visually integrated?",
+            "time": 55,
+            "original_message": null,
+            "role": "agent",
+            "interrupted": false,
+            "tool_calls": []
+          },
+          {
+            "tool_results": [],
+            "source_medium": "text",
+            "message": "So, it's just a picture of where the booking system would go, not how it actually works?",
+            "time": 55,
+            "original_message": null,
+            "role": "user",
+            "interrupted": false,
+            "tool_calls": []
+          },
+          {
+            "tool_results": [],
+            "source_medium": null,
+            "message": "Yes, exactly. The mockup illustrates where the booking system would fit within the design, but it doesn't demonstrate its functionality. It's a visual guide to help you envision the layout. Once you're happy with the design, we can work on integrating the booking system to ensure it functions as needed. Would you like to proceed with the mockup to see the design possibilities?",
+            "time": 55,
+            "original_message": null,
+            "role": "agent",
+            "interrupted": false,
+            "tool_calls": []
+          },
+          {
+            "tool_results": [],
+            "source_medium": "text",
+            "message": "So, it's like a placeholder picture then? That doesn't really help me see how people would book classes.",
+            "time": 55,
+            "original_message": null,
+            "role": "user",
+            "interrupted": false,
+            "tool_calls": []
+          },
+          {
+            "tool_results": [],
+            "source_medium": null,
+            "message": "I understand that seeing how the booking system functions is important. The mockup serves as a visual placeholder to show design and layout, but it doesn't demonstrate functionality. Once we finalize the design, we can focus on building the actual booking system to ensure it meets your needs. Would you like to discuss how we can move forward with both design and functionality?",
+            "time": 55,
+            "original_message": null,
+            "role": "agent",
+            "interrupted": false,
+            "tool_calls": []
+          },
+          {
+            "tool_results": [],
+            "source_medium": "text",
+            "message": "So, how would a picture help us talk about the booking system actually working?",
+            "time": 55,
+            "original_message": null,
+            "role": "user",
+            "interrupted": false,
+            "tool_calls": []
+          },
+          {
+            "tool_results": [],
+            "source_medium": null,
+            "message": "The picture helps by providing a visual context for where the booking system would be located on your website. It allows us to discuss how the design complements the functionality you need. Once you approve the design, we can focus on the technical aspects to ensure the booking system works seamlessly. Would you like to explore the design first and then discuss the functionality in detail?",
+            "time": 55,
+            "original_message": null,
+            "role": "agent",
+            "interrupted": false,
+            "tool_calls": []
+          },
+          {
+            "tool_results": [],
+            "source_medium": "text",
+            "message": "I need to know how it works, not just what it looks like.",
+            "time": 55,
+            "original_message": null,
+            "role": "user",
+            "interrupted": false,
+            "tool_calls": []
+          },
+          {
+            "tool_results": [],
+            "source_medium": null,
+            "message": "I understand the importance of functionality for your booking system. While the mockup focuses on design, we can certainly discuss how the booking system will work and ensure it meets your needs. Would you like to talk about the specific features and requirements for the booking system?",
+            "time": 55,
+            "original_message": null,
+            "role": "agent",
+            "interrupted": false,
+            "tool_calls": []
+          }
+        ]
+      }
+    ],
+    "result_groups": [
+      {
+        "test_id": "test_3301ktwzq9cnfzsa5dfjd9q61gq5",
+        "test_name": "ELEVENLABS-036-natural-sales-scenarios::sim_036_free_mockup_visual_not_working_site",
+        "workflow_node_id": "None",
+        "buckets": [
+          {
+            "test_run_ids": [
+              "trun_6201kx72ps7aer9bq6xcr60n1j9e",
+              "trun_6001kx72ps7bf4q8fm7jk61vnw9s",
+              "trun_8001kx72ps7ce31s64nsvqbydhfm"
+            ],
+            "title": "Passed",
+            "reason": "Passed",
+            "status": "passed"
+          }
+        ]
+      }
+    ]
+  }
+}

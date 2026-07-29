@@ -1,0 +1,356 @@
+{
+  "checkpoint_id": "ELEVENLABS-036-natural-sales-scenarios",
+  "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+  "invocation_id": "suite_1901kx721r5wen8a225scfrghnx9",
+  "independent_status": "fail",
+  "coverage_complete": false,
+  "input_test_ids": [
+    "sim_036_email_plus_free_question_confirmation",
+    "sim_036_email_plus_free_question_confirmation",
+    "sim_036_email_plus_free_question_confirmation"
+  ],
+  "missing_test_ids": [
+    "sim_036_crm_payment_capability_before_price",
+    "sim_036_custom_dashboard_scoped_separately",
+    "sim_036_email_confirmation_spoken_email_two_step",
+    "sim_036_free_mockup_visual_not_working_site",
+    "sim_036_future_price_ballpark_no_overpricing",
+    "sim_036_goodbye_take_care_no_loop",
+    "sim_036_guarantee_required_clean_disqualify",
+    "sim_036_next_step_questions_no_cta_fatigue",
+    "sim_036_scheduling_simple_request_vs_live_integration"
+  ],
+  "global_failures": [
+    "duplicate test_id(s): ['sim_036_email_plus_free_question_confirmation']"
+  ],
+  "provider_labels": {
+    "statuses": {
+      "sim_036_email_plus_free_question_confirmation": "passed"
+    },
+    "condition_results": {
+      "sim_036_email_plus_free_question_confirmation": {
+        "result": "success",
+        "rationale": {
+          "messages": [
+            "The agent successfully addressed the user's concerns about the mockup being free and having no automatic follow-up calls multiple times. It explicitly confirmed the email address provided by the user before stating it would send the mockup, and closed briefly with timing without a renewed pitch.",
+            "The simulated user ended the conversation."
+          ],
+          "summary": "Evaluation succeeded"
+        }
+      }
+    }
+  },
+  "tests": [
+    {
+      "test_id": "sim_036_email_plus_free_question_confirmation",
+      "test_name": "ELEVENLABS-036-natural-sales-scenarios::sim_036_email_plus_free_question_confirmation",
+      "test_run_id": "trun_7201kx721r60ebtvx71g8aq5htb7",
+      "independent_status": "fail",
+      "effective_contract": "ELEVENLABS-036",
+      "provider_status": "passed",
+      "provider_condition_result": {
+        "result": "success",
+        "rationale": {
+          "messages": [
+            "The agent confirmed the email after the user provided it, explicitly addressed the free/no-pressure concerns by stating there's no payment, no contract, and no automatic follow-up calls, and then closed briefly with timing without a renewed pitch.",
+            "The simulated user ended the conversation."
+          ],
+          "summary": "Evaluation succeeded"
+        }
+      },
+      "provider_evaluator_rationale": "{'messages': [\"The agent confirmed the email after the user provided it, explicitly addressed the free/no-pressure concerns by stating there's no payment, no contract, and no automatic follow-up calls, and then closed briefly with timing without a renewed pitch.\", 'The simulated user ended the conversation.'], 'summary': 'Evaluation succeeded'}",
+      "assertions": [
+        {
+          "name": "expected_test_name",
+          "passed": true,
+          "detail": "expected test_name 'ELEVENLABS-036-natural-sales-scenarios::sim_036_email_plus_free_question_confirmation'"
+        },
+        {
+          "name": "ordered_agent_responses_present",
+          "passed": true,
+          "detail": "agent_responses is not a list"
+        },
+        {
+          "name": "at_most_one_end_call",
+          "passed": true,
+          "detail": "found 0 end_call calls"
+        },
+        {
+          "name": "timing_spoken_at_most_once",
+          "passed": true,
+          "detail": "delivery timing appears 1 times in agent speech"
+        },
+        {
+          "name": "email_turn_found",
+          "passed": true,
+          "detail": "email turn not found"
+        },
+        {
+          "name": "confirmation_prompt_before_send",
+          "passed": true,
+          "detail": "first agent response after email must confirm the email"
+        },
+        {
+          "name": "no_send_language_before_confirmation",
+          "passed": true,
+          "detail": "agent used send or timing language before explicit confirmation"
+        },
+        {
+          "name": "no_ask_for_best_email_again",
+          "passed": true,
+          "detail": "agent asked for the best email again instead of confirming it"
+        },
+        {
+          "name": "confirmation_prompt_contains_email",
+          "passed": true,
+          "detail": "confirmation prompt must repeat the provided email"
+        },
+        {
+          "name": "confirmation_prompt_uses_normalized_email",
+          "passed": true,
+          "detail": "confirmation prompt must contain normalized email 'oakwoodkidsdental@gmail.com'"
+        },
+        {
+          "name": "explicit_email_confirmation_turn",
+          "passed": true,
+          "detail": "buyer did not explicitly confirm the repeated email"
+        },
+        {
+          "name": "post_confirmation_timing_present",
+          "passed": true,
+          "detail": "post-confirmation agent turn must include by-end-of-day timing"
+        },
+        {
+          "name": "post_confirmation_timing_is_not_farewell",
+          "passed": false,
+          "detail": "confirmation without goodbye must not include a farewell",
+          "severity": "fail"
+        },
+        {
+          "name": "free_no_pressure_language_present",
+          "passed": false,
+          "detail": "agent must answer free/no-pressure concerns with no payment, no contract, and no automatic follow-up call language",
+          "severity": "fail"
+        },
+        {
+          "name": "no_growth_or_rankings_claim",
+          "passed": true,
+          "detail": "agent must not promise patient growth or rankings in the no-pressure flow"
+        }
+      ],
+      "failures": [
+        "post_confirmation_timing_is_not_farewell: confirmation without goodbye must not include a farewell",
+        "free_no_pressure_language_present: agent must answer free/no-pressure concerns with no payment, no contract, and no automatic follow-up call language"
+      ],
+      "inconclusives": []
+    },
+    {
+      "test_id": "sim_036_email_plus_free_question_confirmation",
+      "test_name": "ELEVENLABS-036-natural-sales-scenarios::sim_036_email_plus_free_question_confirmation",
+      "test_run_id": "trun_9801kx721r61esx96dc61pr26j8b",
+      "independent_status": "fail",
+      "effective_contract": "ELEVENLABS-036",
+      "provider_status": "passed",
+      "provider_condition_result": {
+        "result": "success",
+        "rationale": {
+          "messages": [
+            "The agent confirmed the email, explicitly stated there would be no payment, no contract, and no automatic follow-up calls, and then, after explicit user confirmation, closed briefly with timing without a renewed pitch. All success criteria were met, and no failure conditions were observed.",
+            "The simulated user ended the conversation."
+          ],
+          "summary": "Evaluation succeeded"
+        }
+      },
+      "provider_evaluator_rationale": "{'messages': ['The agent confirmed the email, explicitly stated there would be no payment, no contract, and no automatic follow-up calls, and then, after explicit user confirmation, closed briefly with timing without a renewed pitch. All success criteria were met, and no failure conditions were observed.', 'The simulated user ended the conversation.'], 'summary': 'Evaluation succeeded'}",
+      "assertions": [
+        {
+          "name": "expected_test_name",
+          "passed": true,
+          "detail": "expected test_name 'ELEVENLABS-036-natural-sales-scenarios::sim_036_email_plus_free_question_confirmation'"
+        },
+        {
+          "name": "ordered_agent_responses_present",
+          "passed": true,
+          "detail": "agent_responses is not a list"
+        },
+        {
+          "name": "at_most_one_end_call",
+          "passed": true,
+          "detail": "found 0 end_call calls"
+        },
+        {
+          "name": "timing_spoken_at_most_once",
+          "passed": true,
+          "detail": "delivery timing appears 1 times in agent speech"
+        },
+        {
+          "name": "email_turn_found",
+          "passed": true,
+          "detail": "email turn not found"
+        },
+        {
+          "name": "confirmation_prompt_before_send",
+          "passed": true,
+          "detail": "first agent response after email must confirm the email"
+        },
+        {
+          "name": "no_send_language_before_confirmation",
+          "passed": true,
+          "detail": "agent used send or timing language before explicit confirmation"
+        },
+        {
+          "name": "no_ask_for_best_email_again",
+          "passed": true,
+          "detail": "agent asked for the best email again instead of confirming it"
+        },
+        {
+          "name": "confirmation_prompt_contains_email",
+          "passed": true,
+          "detail": "confirmation prompt must repeat the provided email"
+        },
+        {
+          "name": "confirmation_prompt_uses_normalized_email",
+          "passed": true,
+          "detail": "confirmation prompt must contain normalized email 'oakwoodkidsdental@gmail.com'"
+        },
+        {
+          "name": "explicit_email_confirmation_turn",
+          "passed": true,
+          "detail": "buyer did not explicitly confirm the repeated email"
+        },
+        {
+          "name": "post_confirmation_timing_present",
+          "passed": true,
+          "detail": "post-confirmation agent turn must include by-end-of-day timing"
+        },
+        {
+          "name": "post_confirmation_timing_is_not_farewell",
+          "passed": false,
+          "detail": "confirmation without goodbye must not include a farewell",
+          "severity": "fail"
+        },
+        {
+          "name": "free_no_pressure_language_present",
+          "passed": true,
+          "detail": "agent must answer free/no-pressure concerns with no payment, no contract, and no automatic follow-up call language"
+        },
+        {
+          "name": "no_growth_or_rankings_claim",
+          "passed": true,
+          "detail": "agent must not promise patient growth or rankings in the no-pressure flow"
+        }
+      ],
+      "failures": [
+        "post_confirmation_timing_is_not_farewell: confirmation without goodbye must not include a farewell"
+      ],
+      "inconclusives": []
+    },
+    {
+      "test_id": "sim_036_email_plus_free_question_confirmation",
+      "test_name": "ELEVENLABS-036-natural-sales-scenarios::sim_036_email_plus_free_question_confirmation",
+      "test_run_id": "trun_3801kx721r62fwn886wga9k5471g",
+      "independent_status": "fail",
+      "effective_contract": "ELEVENLABS-036",
+      "provider_status": "passed",
+      "provider_condition_result": {
+        "result": "success",
+        "rationale": {
+          "messages": [
+            "The agent successfully addressed the user's concerns about the mockup being free and having no automatic follow-up calls multiple times. It explicitly confirmed the email address provided by the user before stating it would send the mockup, and closed briefly with timing without a renewed pitch.",
+            "The simulated user ended the conversation."
+          ],
+          "summary": "Evaluation succeeded"
+        }
+      },
+      "provider_evaluator_rationale": "{'messages': [\"The agent successfully addressed the user's concerns about the mockup being free and having no automatic follow-up calls multiple times. It explicitly confirmed the email address provided by the user before stating it would send the mockup, and closed briefly with timing without a renewed pitch.\", 'The simulated user ended the conversation.'], 'summary': 'Evaluation succeeded'}",
+      "assertions": [
+        {
+          "name": "expected_test_name",
+          "passed": true,
+          "detail": "expected test_name 'ELEVENLABS-036-natural-sales-scenarios::sim_036_email_plus_free_question_confirmation'"
+        },
+        {
+          "name": "ordered_agent_responses_present",
+          "passed": true,
+          "detail": "agent_responses is not a list"
+        },
+        {
+          "name": "at_most_one_end_call",
+          "passed": true,
+          "detail": "found 0 end_call calls"
+        },
+        {
+          "name": "timing_spoken_at_most_once",
+          "passed": true,
+          "detail": "delivery timing appears 1 times in agent speech"
+        },
+        {
+          "name": "email_turn_found",
+          "passed": true,
+          "detail": "email turn not found"
+        },
+        {
+          "name": "confirmation_prompt_before_send",
+          "passed": false,
+          "detail": "first agent response after email must confirm the email",
+          "severity": "fail"
+        },
+        {
+          "name": "no_send_language_before_confirmation",
+          "passed": false,
+          "detail": "agent used send or timing language before explicit confirmation",
+          "severity": "fail"
+        },
+        {
+          "name": "no_ask_for_best_email_again",
+          "passed": true,
+          "detail": "agent asked for the best email again instead of confirming it"
+        },
+        {
+          "name": "confirmation_prompt_contains_email",
+          "passed": false,
+          "detail": "confirmation prompt must repeat the provided email",
+          "severity": "fail"
+        },
+        {
+          "name": "confirmation_prompt_uses_normalized_email",
+          "passed": false,
+          "detail": "confirmation prompt must contain normalized email 'oakwoodkidsdental@gmail.com'",
+          "severity": "fail"
+        },
+        {
+          "name": "explicit_email_confirmation_turn",
+          "passed": false,
+          "detail": "buyer did not explicitly confirm the repeated email",
+          "severity": "fail"
+        },
+        {
+          "name": "post_confirmation_agent_turn",
+          "passed": false,
+          "detail": "simulation ended before the agent got the required post-confirmation response opportunity",
+          "severity": "inconclusive"
+        },
+        {
+          "name": "free_no_pressure_language_present",
+          "passed": true,
+          "detail": "agent must answer free/no-pressure concerns with no payment, no contract, and no automatic follow-up call language"
+        },
+        {
+          "name": "no_growth_or_rankings_claim",
+          "passed": true,
+          "detail": "agent must not promise patient growth or rankings in the no-pressure flow"
+        }
+      ],
+      "failures": [
+        "confirmation_prompt_before_send: first agent response after email must confirm the email",
+        "no_send_language_before_confirmation: agent used send or timing language before explicit confirmation",
+        "confirmation_prompt_contains_email: confirmation prompt must repeat the provided email",
+        "confirmation_prompt_uses_normalized_email: confirmation prompt must contain normalized email 'oakwoodkidsdental@gmail.com'",
+        "explicit_email_confirmation_turn: buyer did not explicitly confirm the repeated email"
+      ],
+      "inconclusives": [
+        "post_confirmation_agent_turn: simulation ended before the agent got the required post-confirmation response opportunity"
+      ]
+    }
+  ]
+}

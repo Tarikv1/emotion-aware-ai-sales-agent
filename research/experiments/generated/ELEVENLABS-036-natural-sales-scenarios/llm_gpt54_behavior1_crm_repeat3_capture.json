@@ -1,0 +1,887 @@
+{
+  "captured_at_utc": "2026-07-11T00:25:23Z",
+  "payload_sha256": "ed5c6ebbd3c8035f0e17ae7f04428d718cf68ce59212f9e35332a089f53cf844",
+  "payload": {
+    "checkpoint_id": "ELEVENLABS-036-natural-sales-scenarios",
+    "invocation_id": "suite_6301kx78yqe6fdqv567nyp2wy40d",
+    "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+    "test_runs": [
+      {
+        "test_run_id": "trun_8901kx78yqe8fdy9s205a3katjmp",
+        "test_invocation_id": "suite_6301kx78yqe6fdqv567nyp2wy40d",
+        "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+        "test_id": "sim_036_crm_payment_capability_before_price",
+        "provider_test_id": "test_4601ktwzq8xnfpbtry5qsepeprh3",
+        "test_name": "ELEVENLABS-036-natural-sales-scenarios::sim_036_crm_payment_capability_before_price",
+        "scenario": "The simulated user owns Iron Gate Garage Doors in Kansas City. They care about lead handling more than design. Their first technical question is: 'Can it connect to Jobber or take deposit payments?' They do not ask cost until later. If Emma jumps into price first, the buyer says: 'That is not what I asked. Can it actually connect or not?' Then they ask: 'Okay, what kind of price does that add?'",
+        "success_conditions": [
+          "The full conversation passes only if Emma answers capability before price. She should first say it can connect depending on whether it is a simple form handoff or a real integration. Only after the buyer asks cost should she map a real CRM or payment integration toward {{website_integration_heavy_range}}, while noting that a simple handoff is lighter and the real number depends on the system. It fails if Emma gives a price before answering capability, says CRM or payments are automatically included in a basic site, invents an exact final quote, gives a long technical dump, or misses a natural mockup next step after the capability and cost questions are answered."
+        ],
+        "models": {
+          "simulated_user_model": "gemini-2.5-flash",
+          "evaluation_model": "gemini-2.5-flash"
+        },
+        "status": "passed",
+        "condition_result": {
+          "result": "success",
+          "rationale": {
+            "messages": [
+              "Emma answered capability before price, distinguishing between simple handoff and real integration. After the user asked for cost, she provided price ranges for both scenarios and noted the final number depends on the system. She did not give an exact quote or a technical dump. Finally, she offered a free homepage mockup as a natural next step.",
+              "The simulated user ended the conversation."
+            ],
+            "summary": "Evaluation succeeded"
+          }
+        },
+        "evaluator_rationale": "{'messages': ['Emma answered capability before price, distinguishing between simple handoff and real integration. After the user asked for cost, she provided price ranges for both scenarios and noted the final number depends on the system. She did not give an exact quote or a technical dump. Finally, she offered a free homepage mockup as a natural next step.', 'The simulated user ended the conversation.'], 'summary': 'Evaluation succeeded'}",
+        "agent_responses": [
+          {
+            "role": "agent",
+            "tool_results": [],
+            "source_medium": null,
+            "tool_calls": [],
+            "message": "Hi, this is Emma from Atlas Web Studio. I had Iron Gate Garage Doors down as a garage door repair company in Kansas City. Am I speaking with the owner or someone who handles the website there?",
+            "interrupted": false,
+            "time": 32,
+            "original_message": null
+          },
+          {
+            "role": "user",
+            "tool_results": [],
+            "source_medium": "text",
+            "tool_calls": [],
+            "message": "Yeah, this is the owner. Can your websites connect to Jobber or take deposit payments?",
+            "interrupted": false,
+            "time": 32,
+            "original_message": null
+          },
+          {
+            "role": "agent",
+            "tool_results": [],
+            "source_medium": null,
+            "tool_calls": [],
+            "message": "Yes, we can build that. It depends whether you need a simple form handoff or a real integration.",
+            "interrupted": false,
+            "time": 32,
+            "original_message": null
+          },
+          {
+            "role": "user",
+            "tool_results": [],
+            "source_medium": "text",
+            "tool_calls": [],
+            "message": "Okay, but can it actually connect to Jobber or take payments?",
+            "interrupted": false,
+            "time": 32,
+            "original_message": null
+          },
+          {
+            "role": "agent",
+            "tool_results": [],
+            "source_medium": null,
+            "tool_calls": [],
+            "message": "Yes, we can connect to Jobber and support deposit payments.",
+            "interrupted": false,
+            "time": 32,
+            "original_message": null
+          },
+          {
+            "role": "user",
+            "tool_results": [],
+            "source_medium": "text",
+            "tool_calls": [],
+            "message": "Okay, what kind of price does that add?",
+            "interrupted": false,
+            "time": 32,
+            "original_message": null
+          },
+          {
+            "role": "agent",
+            "tool_results": [],
+            "source_medium": null,
+            "tool_calls": [],
+            "message": "A real integration usually moves the whole project toward four thousand to five thousand dollars; a simple handoff is usually two thousand to three thousand dollars; the final number depends on the system.",
+            "interrupted": false,
+            "time": 32,
+            "original_message": null
+          },
+          {
+            "role": "user",
+            "tool_results": [],
+            "source_medium": "text",
+            "tool_calls": [],
+            "message": "What system are you talking about? Is that the whole website or just the integration?",
+            "interrupted": false,
+            "time": 32,
+            "original_message": null
+          },
+          {
+            "role": "agent",
+            "tool_results": [],
+            "source_medium": null,
+            "tool_calls": [],
+            "message": "That is the likely total for the whole website with the integration, not a price for the connection by itself.",
+            "interrupted": false,
+            "time": 32,
+            "original_message": null
+          },
+          {
+            "role": "user",
+            "tool_results": [],
+            "source_medium": "text",
+            "tool_calls": [],
+            "message": "Okay, so how much of that is just the integration part?",
+            "interrupted": false,
+            "time": 32,
+            "original_message": null
+          },
+          {
+            "role": "agent",
+            "tool_results": [],
+            "source_medium": null,
+            "tool_calls": [],
+            "message": "If this is for an existing site, the integration by itself depends on how Jobber is being used now and whether you need a simple lead handoff or a deeper sync. Is this for your current website, or are you thinking about a full rebuild?",
+            "interrupted": false,
+            "time": 32,
+            "original_message": null
+          },
+          {
+            "role": "user",
+            "tool_results": [],
+            "source_medium": "text",
+            "tool_calls": [],
+            "message": "I'm thinking about a full rebuild, yeah.I'm thinking about a full rebuild, yeah.",
+            "interrupted": false,
+            "time": 32,
+            "original_message": null
+          },
+          {
+            "role": "agent",
+            "tool_results": [],
+            "source_medium": null,
+            "tool_calls": [],
+            "message": "Got it. Then the range I gave is the likely whole-site total with the Jobber connection included, and the exact split is not very useful until the workflow is scoped. If you want, I can put together a free homepage mockup that shows the new layout and where the quote request, deposit payment, and Jobber handoff would sit.",
+            "interrupted": false,
+            "time": 32,
+            "original_message": null
+          },
+          {
+            "role": "user",
+            "tool_results": [],
+            "source_medium": "text",
+            "tool_calls": [],
+            "message": "Okay, so what would I need to do for that mockup?",
+            "interrupted": false,
+            "time": 32,
+            "original_message": null
+          },
+          {
+            "role": "agent",
+            "tool_results": [],
+            "source_medium": null,
+            "tool_calls": [],
+            "message": "Nothing on your end beyond an email address. I put together the homepage concept and send it over for you to review, and there is no payment or contract attached. Where should I send it?",
+            "interrupted": false,
+            "time": 32,
+            "original_message": null
+          },
+          {
+            "role": "user",
+            "tool_results": [],
+            "source_medium": "text",
+            "tool_calls": [],
+            "message": "Okay, you can send it to [REDACTED_EMAIL].",
+            "interrupted": false,
+            "time": 32,
+            "original_message": null
+          },
+          {
+            "role": "agent",
+            "tool_results": [],
+            "source_medium": null,
+            "tool_calls": [],
+            "message": "Just to confirm, [REDACTED_EMAIL] - is that right?",
+            "interrupted": false,
+            "time": 32,
+            "original_message": null
+          },
+          {
+            "role": "user",
+            "tool_results": [],
+            "source_medium": "text",
+            "tool_calls": [],
+            "message": "Yeah, that's right.",
+            "interrupted": false,
+            "time": 32,
+            "original_message": null
+          },
+          {
+            "role": "agent",
+            "tool_results": [],
+            "source_medium": null,
+            "tool_calls": [],
+            "message": "Great, I'll send it there by the end of the day.",
+            "interrupted": false,
+            "time": 32,
+            "original_message": null
+          },
+          {
+            "role": "user",
+            "tool_results": [],
+            "source_medium": null,
+            "tool_calls": [],
+            "message": "Alright, thanks.",
+            "interrupted": false,
+            "time": 32,
+            "original_message": null
+          }
+        ]
+      },
+      {
+        "test_run_id": "trun_7501kx78yqeafw8tsrg60yedrdq6",
+        "test_invocation_id": "suite_6301kx78yqe6fdqv567nyp2wy40d",
+        "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+        "test_id": "sim_036_crm_payment_capability_before_price",
+        "provider_test_id": "test_4601ktwzq8xnfpbtry5qsepeprh3",
+        "test_name": "ELEVENLABS-036-natural-sales-scenarios::sim_036_crm_payment_capability_before_price",
+        "scenario": "The simulated user owns Iron Gate Garage Doors in Kansas City. They care about lead handling more than design. Their first technical question is: 'Can it connect to Jobber or take deposit payments?' They do not ask cost until later. If Emma jumps into price first, the buyer says: 'That is not what I asked. Can it actually connect or not?' Then they ask: 'Okay, what kind of price does that add?'",
+        "success_conditions": [
+          "The full conversation passes only if Emma answers capability before price. She should first say it can connect depending on whether it is a simple form handoff or a real integration. Only after the buyer asks cost should she map a real CRM or payment integration toward {{website_integration_heavy_range}}, while noting that a simple handoff is lighter and the real number depends on the system. It fails if Emma gives a price before answering capability, says CRM or payments are automatically included in a basic site, invents an exact final quote, gives a long technical dump, or misses a natural mockup next step after the capability and cost questions are answered."
+        ],
+        "models": {
+          "simulated_user_model": "gemini-2.5-flash",
+          "evaluation_model": "gemini-2.5-flash"
+        },
+        "status": "passed",
+        "condition_result": {
+          "result": "success",
+          "rationale": {
+            "messages": [
+              "The agent answered capability before price, explaining the difference between simple handoff and real integration. After the user asked for cost, the agent provided price ranges for both, noting the final number depends on the system. The agent did not give an exact quote, avoid technical dumps, and consistently offered a free mockup as a next step.",
+              "The conversation reached the maximum number of turns."
+            ],
+            "summary": "Evaluation succeeded"
+          }
+        },
+        "evaluator_rationale": "{'messages': ['The agent answered capability before price, explaining the difference between simple handoff and real integration. After the user asked for cost, the agent provided price ranges for both, noting the final number depends on the system. The agent did not give an exact quote, avoid technical dumps, and consistently offered a free mockup as a next step.', 'The conversation reached the maximum number of turns.'], 'summary': 'Evaluation succeeded'}",
+        "agent_responses": [
+          {
+            "role": "agent",
+            "tool_results": [],
+            "source_medium": null,
+            "tool_calls": [],
+            "message": "Hi, this is Emma from Atlas Web Studio. I had Iron Gate Garage Doors down as a garage door repair company in Kansas City. Am I speaking with the owner or someone who handles the website there?",
+            "interrupted": false,
+            "time": 62,
+            "original_message": null
+          },
+          {
+            "role": "user",
+            "tool_results": [],
+            "source_medium": "text",
+            "tool_calls": [],
+            "message": "Yeah, this is the owner. Can your websites connect to Jobber or take deposit payments?",
+            "interrupted": false,
+            "time": 62,
+            "original_message": null
+          },
+          {
+            "role": "agent",
+            "tool_results": [],
+            "source_medium": null,
+            "tool_calls": [],
+            "message": "Yes, we can build that. It depends whether you need a simple form handoff or a real integration.",
+            "interrupted": false,
+            "time": 62,
+            "original_message": null
+          },
+          {
+            "role": "user",
+            "tool_results": [],
+            "source_medium": "text",
+            "tool_calls": [],
+            "message": "Okay, what's the difference between those two?",
+            "interrupted": false,
+            "time": 62,
+            "original_message": null
+          },
+          {
+            "role": "agent",
+            "tool_results": [],
+            "source_medium": null,
+            "tool_calls": [],
+            "message": "A simple handoff just sends the lead details into your process without a deep system connection. A real integration connects the site directly with Jobber and can support things like deposit payments and synced workflow behavior. Are you mainly trying to capture leads faster, or do you want the website tied into your operations too?",
+            "interrupted": false,
+            "time": 62,
+            "original_message": null
+          },
+          {
+            "role": "user",
+            "tool_results": [],
+            "source_medium": "text",
+            "tool_calls": [],
+            "message": "Yeah, tied into operations. That's what I was asking about with Jobber and payments.",
+            "interrupted": false,
+            "time": 62,
+            "original_message": null
+          },
+          {
+            "role": "agent",
+            "tool_results": [],
+            "source_medium": null,
+            "tool_calls": [],
+            "message": "Yes, we can connect to Jobber and support deposit payments.",
+            "interrupted": false,
+            "time": 62,
+            "original_message": null
+          },
+          {
+            "role": "user",
+            "tool_results": [],
+            "source_medium": "text",
+            "tool_calls": [],
+            "message": "Okay, what kind of price does that add?",
+            "interrupted": false,
+            "time": 62,
+            "original_message": null
+          },
+          {
+            "role": "agent",
+            "tool_results": [],
+            "source_medium": null,
+            "tool_calls": [],
+            "message": "A real integration usually moves the whole project toward four thousand to five thousand dollars; a simple handoff is usually two thousand to three thousand dollars; the final number depends on the system.",
+            "interrupted": false,
+            "time": 62,
+            "original_message": null
+          },
+          {
+            "role": "user",
+            "tool_results": [],
+            "source_medium": "text",
+            "tool_calls": [],
+            "message": "Hmm, so the full integration with Jobber and payments is closer to five grand?",
+            "interrupted": false,
+            "time": 62,
+            "original_message": null
+          },
+          {
+            "role": "agent",
+            "tool_results": [],
+            "source_medium": null,
+            "tool_calls": [],
+            "message": "That is the likely total for the whole website with the integration, not a price for the connection by itself. If you want, I can put together a free homepage mockup so you can see how that flow would be presented before you decide anything.",
+            "interrupted": false,
+            "time": 62,
+            "original_message": null
+          },
+          {
+            "role": "user",
+            "tool_results": [],
+            "source_medium": "text",
+            "tool_calls": [],
+            "message": "Okay, so the five grand includes the whole website and the Jobber integration?",
+            "interrupted": false,
+            "time": 62,
+            "original_message": null
+          },
+          {
+            "role": "agent",
+            "tool_results": [],
+            "source_medium": null,
+            "tool_calls": [],
+            "message": "That is the likely total for the whole website with the integration, not a price for the connection by itself.",
+            "interrupted": false,
+            "time": 62,
+            "original_message": null
+          },
+          {
+            "role": "user",
+            "tool_results": [],
+            "source_medium": "text",
+            "tool_calls": [],
+            "message": "So that five thousand dollars is for the whole website, with the Jobber integration and payments?",
+            "interrupted": false,
+            "time": 62,
+            "original_message": null
+          },
+          {
+            "role": "agent",
+            "tool_results": [],
+            "source_medium": null,
+            "tool_calls": [],
+            "message": "Yes, that is the likely whole-site range with the integration and deposit payments included, assuming normal scope. If you want, I can mock up the homepage for free so you can see how it would be positioned before deciding.",
+            "interrupted": false,
+            "time": 62,
+            "original_message": null
+          },
+          {
+            "role": "user",
+            "tool_results": [],
+            "source_medium": "text",
+            "tool_calls": [],
+            "message": "Okay, so that's the full price for everything then. What's the deal with that free mockup?",
+            "interrupted": false,
+            "time": 62,
+            "original_message": null
+          },
+          {
+            "role": "agent",
+            "tool_results": [],
+            "source_medium": null,
+            "tool_calls": [],
+            "message": "It is a free homepage concept so you can see the layout, messaging, and where the Jobber and payment entry points would sit before making any decision. It is not a working integration or live payment flow, just the visual direction for the homepage. If it looks useful, paid work can follow later, but there is no payment or contract for the mockup itself.",
+            "interrupted": false,
+            "time": 62,
+            "original_message": null
+          },
+          {
+            "role": "user",
+            "tool_results": [],
+            "source_medium": "text",
+            "tool_calls": [],
+            "message": "Okay, so it's a free picture of the homepage, and then what?",
+            "interrupted": false,
+            "time": 62,
+            "original_message": null
+          },
+          {
+            "role": "agent",
+            "tool_results": [],
+            "source_medium": null,
+            "tool_calls": [],
+            "message": "You review it and reply to the email only if it's useful.",
+            "interrupted": false,
+            "time": 62,
+            "original_message": null
+          },
+          {
+            "role": "user",
+            "tool_results": [],
+            "source_medium": "text",
+            "tool_calls": [],
+            "message": "Okay, and if I do like it, what's the next step after that?",
+            "interrupted": false,
+            "time": 62,
+            "original_message": null
+          },
+          {
+            "role": "agent",
+            "tool_results": [],
+            "source_medium": null,
+            "tool_calls": [],
+            "message": "If it looks useful, the next step is scoping the build so we can confirm what the Jobber connection and payment flow actually need. Then we can give you a real project range based on the exact setup. If you want to see the mockup first, I can send that over.",
+            "interrupted": false,
+            "time": 62,
+            "original_message": null
+          },
+          {
+            "role": "user",
+            "tool_results": [],
+            "source_medium": "text",
+            "tool_calls": [],
+            "message": "Wait, so the five grand wasn't the real price?",
+            "interrupted": false,
+            "time": 62,
+            "original_message": null
+          },
+          {
+            "role": "agent",
+            "tool_results": [],
+            "source_medium": null,
+            "tool_calls": [],
+            "message": "It is the likely whole-site range for a normal integration setup, not a fixed quote. The exact number depends on how deep the Jobber connection and payment flow need to go. If you want, I can show you the homepage direction first with the free mockup.",
+            "interrupted": false,
+            "time": 62,
+            "original_message": null
+          },
+          {
+            "role": "user",
+            "tool_results": [],
+            "source_medium": "text",
+            "tool_calls": [],
+            "message": "So the five thousand isn't a firm price? It could be more?",
+            "interrupted": false,
+            "time": 62,
+            "original_message": null
+          },
+          {
+            "role": "agent",
+            "tool_results": [],
+            "source_medium": null,
+            "tool_calls": [],
+            "message": "Right, it is a ballpark, not a firm quote. If the integration is deeper or the workflow is more custom, it could be higher. If you want, I can send the free homepage mockup so you can decide whether it is worth exploring further.",
+            "interrupted": false,
+            "time": 62,
+            "original_message": null
+          },
+          {
+            "role": "user",
+            "tool_results": [],
+            "source_medium": "text",
+            "tool_calls": [],
+            "message": "So it could be more than five grand? How much more?",
+            "interrupted": false,
+            "time": 62,
+            "original_message": null
+          },
+          {
+            "role": "agent",
+            "tool_results": [],
+            "source_medium": null,
+            "tool_calls": [],
+            "message": "If the workflow gets into deeper custom integration, permissions, or more complex payment handling, it can go beyond that normal range. I would need one detail to narrow it down: do you want the site just to pass jobs into Jobber and collect deposits, or do you need two-way syncing and more custom workflow logic too?",
+            "interrupted": false,
+            "time": 62,
+            "original_message": null
+          },
+          {
+            "role": "user",
+            "tool_results": [],
+            "source_medium": "text",
+            "tool_calls": [],
+            "message": "Just passing jobs and collecting deposits. I don't want it to get too complicated or expensive.",
+            "interrupted": false,
+            "time": 62,
+            "original_message": null
+          },
+          {
+            "role": "agent",
+            "tool_results": [],
+            "source_medium": null,
+            "tool_calls": [],
+            "message": "Then you are likely still in that normal whole-site range rather than above it. For a simpler setup like that, the goal is usually to keep it on the lighter end of the integration work. If you want, I can put together the free homepage mockup so you can see the direction before deciding anything.",
+            "interrupted": false,
+            "time": 62,
+            "original_message": null
+          },
+          {
+            "role": "user",
+            "tool_results": [],
+            "source_medium": "text",
+            "tool_calls": [],
+            "message": "Okay, so for just passing jobs and deposits, it should stay around the five thousand range?",
+            "interrupted": false,
+            "time": 62,
+            "original_message": null
+          },
+          {
+            "role": "agent",
+            "tool_results": [],
+            "source_medium": null,
+            "tool_calls": [],
+            "message": "Yes, for that simpler setup, it would usually stay around that normal whole-site range rather than going above it. If you want to see the homepage direction first, I can send the free mockup over.",
+            "interrupted": false,
+            "time": 62,
+            "original_message": null
+          }
+        ]
+      },
+      {
+        "test_run_id": "trun_8401kx78yqe9f7vt0bwm2p2z1a1q",
+        "test_invocation_id": "suite_6301kx78yqe6fdqv567nyp2wy40d",
+        "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+        "test_id": "sim_036_crm_payment_capability_before_price",
+        "provider_test_id": "test_4601ktwzq8xnfpbtry5qsepeprh3",
+        "test_name": "ELEVENLABS-036-natural-sales-scenarios::sim_036_crm_payment_capability_before_price",
+        "scenario": "The simulated user owns Iron Gate Garage Doors in Kansas City. They care about lead handling more than design. Their first technical question is: 'Can it connect to Jobber or take deposit payments?' They do not ask cost until later. If Emma jumps into price first, the buyer says: 'That is not what I asked. Can it actually connect or not?' Then they ask: 'Okay, what kind of price does that add?'",
+        "success_conditions": [
+          "The full conversation passes only if Emma answers capability before price. She should first say it can connect depending on whether it is a simple form handoff or a real integration. Only after the buyer asks cost should she map a real CRM or payment integration toward {{website_integration_heavy_range}}, while noting that a simple handoff is lighter and the real number depends on the system. It fails if Emma gives a price before answering capability, says CRM or payments are automatically included in a basic site, invents an exact final quote, gives a long technical dump, or misses a natural mockup next step after the capability and cost questions are answered."
+        ],
+        "models": {
+          "simulated_user_model": "gemini-2.5-flash",
+          "evaluation_model": "gemini-2.5-flash"
+        },
+        "status": "passed",
+        "condition_result": {
+          "result": "success",
+          "rationale": {
+            "messages": [
+              "The agent first addressed the capability of connecting to Jobber and taking payments, explaining the difference between a simple handoff and a real integration. Only after the user asked about price did the agent provide a range for the integration, distinguishing between the heavy range for real integration and a lighter range for a simple handoff, and noted that the final number depends on the system. The agent did not give an exact quote or a technical dump, and successfully offered the mockup as a next step after discussing capability and cost.",
+              "The agent ended the conversation."
+            ],
+            "summary": "Evaluation succeeded"
+          }
+        },
+        "evaluator_rationale": "{'messages': ['The agent first addressed the capability of connecting to Jobber and taking payments, explaining the difference between a simple handoff and a real integration. Only after the user asked about price did the agent provide a range for the integration, distinguishing between the heavy range for real integration and a lighter range for a simple handoff, and noted that the final number depends on the system. The agent did not give an exact quote or a technical dump, and successfully offered the mockup as a next step after discussing capability and cost.', 'The agent ended the conversation.'], 'summary': 'Evaluation succeeded'}",
+        "agent_responses": [
+          {
+            "role": "agent",
+            "tool_results": [],
+            "source_medium": null,
+            "tool_calls": [],
+            "message": "Hi, this is Emma from Atlas Web Studio. I had Iron Gate Garage Doors down as a garage door repair company in Kansas City. Am I speaking with the owner or someone who handles the website there?",
+            "interrupted": false,
+            "time": 30,
+            "original_message": null
+          },
+          {
+            "role": "user",
+            "tool_results": [],
+            "source_medium": "text",
+            "tool_calls": [],
+            "message": "Yeah, this is me. What's up?",
+            "interrupted": false,
+            "time": 30,
+            "original_message": null
+          },
+          {
+            "role": "agent",
+            "tool_results": [],
+            "source_medium": null,
+            "tool_calls": [],
+            "message": "I put together free homepage mockups for local service businesses to show what a cleaner, more conversion-focused site could look like for them. No cost and no obligation. If you\u2019re open to it, I can send one over for Iron Gate Garage Doors.",
+            "interrupted": false,
+            "time": 30,
+            "original_message": null
+          },
+          {
+            "role": "user",
+            "tool_results": [],
+            "source_medium": "text",
+            "tool_calls": [],
+            "message": "Uh, okay. Can it connect to Jobber or take deposit payments?",
+            "interrupted": false,
+            "time": 30,
+            "original_message": null
+          },
+          {
+            "role": "agent",
+            "tool_results": [],
+            "source_medium": null,
+            "tool_calls": [],
+            "message": "Yes, we can build that. It depends whether you need a simple form handoff or a real integration.",
+            "interrupted": false,
+            "time": 30,
+            "original_message": null
+          },
+          {
+            "role": "user",
+            "tool_results": [],
+            "source_medium": "text",
+            "tool_calls": [],
+            "message": "What's the difference? Which one would I need?",
+            "interrupted": false,
+            "time": 30,
+            "original_message": null
+          },
+          {
+            "role": "agent",
+            "tool_results": [],
+            "source_medium": null,
+            "tool_calls": [],
+            "message": "A simple handoff just sends lead details into your normal process, while a real integration pushes data directly into Jobber and can tie in deposit payments and status updates. If you want customers booking and paying through the site with that information flowing into Jobber automatically, that is usually the real integration route. Are you picturing basic lead capture, or do you want the site to handle the workflow end to end?",
+            "interrupted": false,
+            "time": 30,
+            "original_message": null
+          },
+          {
+            "role": "user",
+            "tool_results": [],
+            "source_medium": "text",
+            "tool_calls": [],
+            "message": "Yeah, I'd want it to handle the whole thing, end to end.",
+            "interrupted": false,
+            "time": 30,
+            "original_message": null
+          },
+          {
+            "role": "agent",
+            "tool_results": [],
+            "source_medium": null,
+            "tool_calls": [],
+            "message": "Yes, we can connect to Jobber and support deposit payments.",
+            "interrupted": false,
+            "time": 30,
+            "original_message": null
+          },
+          {
+            "role": "user",
+            "tool_results": [],
+            "source_medium": "text",
+            "tool_calls": [],
+            "message": "Okay, what kind of price does that add?",
+            "interrupted": false,
+            "time": 30,
+            "original_message": null
+          },
+          {
+            "role": "agent",
+            "tool_results": [],
+            "source_medium": null,
+            "tool_calls": [],
+            "message": "A real integration usually moves the whole project toward $4,000-$5,000; a simple handoff is usually $2,000-$3,000; the final number depends on the system.",
+            "interrupted": false,
+            "time": 30,
+            "original_message": null
+          },
+          {
+            "role": "user",
+            "tool_results": [],
+            "source_medium": "text",
+            "tool_calls": [],
+            "message": "Okay, so four to five grand for the full Jobber integration?",
+            "interrupted": false,
+            "time": 30,
+            "original_message": null
+          },
+          {
+            "role": "agent",
+            "tool_results": [],
+            "source_medium": null,
+            "tool_calls": [],
+            "message": "That is the likely total for the whole website with the integration, not a price for the connection by itself. If you want, I can still send the free homepage mockup so you can see the direction before deciding whether it is worth scoping further.",
+            "interrupted": false,
+            "time": 30,
+            "original_message": null
+          },
+          {
+            "role": "user",
+            "tool_results": [],
+            "source_medium": "text",
+            "tool_calls": [],
+            "message": "Okay, so that's for the whole site. And the mockup, you said it's free?",
+            "interrupted": false,
+            "time": 30,
+            "original_message": null
+          },
+          {
+            "role": "agent",
+            "tool_results": [],
+            "source_medium": null,
+            "tool_calls": [],
+            "message": "Yes, the homepage mockup is free. It is just a visual concept so you can see the layout and direction before deciding whether you want to explore a full build. If you want me to send it over, what\u2019s the best email?",
+            "interrupted": false,
+            "time": 30,
+            "original_message": null
+          },
+          {
+            "role": "user",
+            "tool_results": [],
+            "source_medium": "text",
+            "tool_calls": [],
+            "message": "Alright, yeah, send it over. My email is [email protected]",
+            "interrupted": false,
+            "time": 30,
+            "original_message": null
+          },
+          {
+            "role": "agent",
+            "tool_results": [],
+            "source_medium": null,
+            "tool_calls": [],
+            "message": "Just to confirm, [REDACTED_EMAIL] - is that right?",
+            "interrupted": false,
+            "time": 30,
+            "original_message": null
+          },
+          {
+            "role": "user",
+            "tool_results": [],
+            "source_medium": "text",
+            "tool_calls": [],
+            "message": "Yeah, that's it.",
+            "interrupted": false,
+            "time": 30,
+            "original_message": null
+          },
+          {
+            "role": "agent",
+            "tool_results": [],
+            "source_medium": null,
+            "tool_calls": [],
+            "message": "Great, I'll send it there by the end of the day.",
+            "interrupted": false,
+            "time": 30,
+            "original_message": null
+          },
+          {
+            "role": "user",
+            "tool_results": [],
+            "source_medium": "text",
+            "tool_calls": [],
+            "message": "Okay, great. Thanks.",
+            "interrupted": false,
+            "time": 30,
+            "original_message": null
+          },
+          {
+            "role": "agent",
+            "tool_results": [],
+            "source_medium": null,
+            "tool_calls": [],
+            "message": "Take care.",
+            "interrupted": false,
+            "time": 30,
+            "original_message": null
+          },
+          {
+            "role": "agent",
+            "tool_results": [],
+            "source_medium": null,
+            "tool_calls": [
+              {
+                "request_id": "fc_06bf51e2382a9da1016a518d43f0d8819087e6a318f7a5e9eb",
+                "tool_name": "end_call",
+                "type": "system",
+                "tool_has_been_called": true,
+                "params_as_json": "{\"reason\":\"Buyer explicitly ended the completed conversation\",\"system__message_to_speak\":\"Take care.\"}"
+              }
+            ],
+            "message": null,
+            "interrupted": false,
+            "time": 30,
+            "original_message": null
+          },
+          {
+            "role": "agent",
+            "tool_results": [
+              {
+                "is_blocked": false,
+                "tool_name": "end_call",
+                "is_error": false,
+                "tool_latency_secs": 0.5017350881826133,
+                "raw_error_message": "",
+                "result": {
+                  "result_type": "end_call_success",
+                  "status": "success",
+                  "reason": "Buyer explicitly ended the completed conversation",
+                  "message": null
+                },
+                "request_id": "fc_06bf51e2382a9da1016a518d43f0d8819087e6a318f7a5e9eb",
+                "tool_has_been_called": true,
+                "result_value": "{\"result_type\":\"end_call_success\",\"status\":\"success\",\"reason\":\"Buyer explicitly ended the completed conversation\",\"message\":null}",
+                "type": "system",
+                "error_type": ""
+              }
+            ],
+            "source_medium": null,
+            "tool_calls": [],
+            "message": null,
+            "interrupted": false,
+            "time": 30,
+            "original_message": null
+          }
+        ]
+      }
+    ],
+    "result_groups": [
+      {
+        "test_id": "test_4601ktwzq8xnfpbtry5qsepeprh3",
+        "test_name": "ELEVENLABS-036-natural-sales-scenarios::sim_036_crm_payment_capability_before_price",
+        "workflow_node_id": "None",
+        "buckets": [
+          {
+            "test_run_ids": [
+              "trun_8901kx78yqe8fdy9s205a3katjmp",
+              "trun_8401kx78yqe9f7vt0bwm2p2z1a1q",
+              "trun_7501kx78yqeafw8tsrg60yedrdq6"
+            ],
+            "title": "Passed",
+            "reason": "Passed",
+            "status": "passed"
+          }
+        ]
+      }
+    ]
+  }
+}

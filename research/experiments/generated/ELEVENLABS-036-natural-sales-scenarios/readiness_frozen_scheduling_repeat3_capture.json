@@ -1,0 +1,577 @@
+{
+  "captured_at_utc": "2026-07-10T22:52:32Z",
+  "payload_sha256": "a397d9418d08007d610f504a2d61bb1a7627f7e20e6249fb645ab1d5f31f591f",
+  "payload": {
+    "checkpoint_id": "ELEVENLABS-036-natural-sales-scenarios",
+    "invocation_id": "suite_7901kx73mpz2f83s46zpsn4aarnx",
+    "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+    "test_runs": [
+      {
+        "test_run_id": "trun_8101kx73mpz4ecab0p8c0enx7deb",
+        "test_invocation_id": "suite_7901kx73mpz2f83s46zpsn4aarnx",
+        "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+        "test_id": "sim_036_scheduling_simple_request_vs_live_integration",
+        "provider_test_id": "test_4601ktwzq8nyfcatm8a6mn58y7x6",
+        "test_name": "ELEVENLABS-036-natural-sales-scenarios::sim_036_scheduling_simple_request_vs_live_integration",
+        "scenario": "The simulated user owns Velvet Paw Grooming in Scottsdale. Instagram and texts bring in bookings, but the owner wants fewer back-and-forth messages about breed, size, availability, and pickup rules. They ask: 'Could the site help with scheduling?' Then: 'Is that basic, or does it become expensive?' If Emma treats all scheduling as a heavy integration, the buyer clarifies that they only need people to request times, not a live calendar.",
+        "success_conditions": [
+          "The full conversation passes only if Emma separates a simple appointment request path from a live scheduling system. She should say a simple request form or intake path can usually stay around {{website_light_feature_range}}, while live calendar booking, reminders, payments, or CRM sync can move toward {{website_workflow_content_range}} or {{website_integration_heavy_range}} depending on the system. If the buyer only wants request times, Emma should not overprice it or force live-calendar wording. It fails if she says all scheduling is automatically $4k-$5k, gives only 'it depends,' ignores the simple request option, dumps every pricing band, or answers well but never makes a natural next-step move when the buyer remains open."
+        ],
+        "models": {
+          "simulated_user_model": "gemini-2.5-flash",
+          "evaluation_model": "gemini-2.5-flash"
+        },
+        "status": "passed",
+        "condition_result": {
+          "result": "success",
+          "rationale": {
+            "messages": [
+              "The agent clearly separated the simple appointment request form ($2k-$3k for the whole website) from more advanced features like a live calendar or payment processing ($3k-$4k). She did not overprice the simple option or force live-calendar wording, and consistently offered a next step (free homepage mockup).",
+              "The simulated user ended the conversation."
+            ],
+            "summary": "Evaluation succeeded"
+          }
+        },
+        "evaluator_rationale": "{'messages': ['The agent clearly separated the simple appointment request form ($2k-$3k for the whole website) from more advanced features like a live calendar or payment processing ($3k-$4k). She did not overprice the simple option or force live-calendar wording, and consistently offered a next step (free homepage mockup).', 'The simulated user ended the conversation.'], 'summary': 'Evaluation succeeded'}",
+        "agent_responses": [
+          {
+            "interrupted": false,
+            "role": "agent",
+            "message": "Hi, this is Emma from Atlas Web Studio. I had Velvet Paw Grooming down as a pet grooming studio in Scottsdale. Am I speaking with the owner or someone who handles the website there?",
+            "tool_results": [],
+            "time": 20,
+            "source_medium": null,
+            "original_message": null,
+            "tool_calls": []
+          },
+          {
+            "interrupted": false,
+            "role": "user",
+            "message": "Yeah, this is the owner. I'm calling about the website.",
+            "tool_results": [],
+            "time": 20,
+            "source_medium": "text",
+            "original_message": null,
+            "tool_calls": []
+          },
+          {
+            "interrupted": false,
+            "role": "agent",
+            "message": "Great to hear from you! How can I assist you with your website today? Are you interested in discussing a free homepage mockup or do you have specific questions about our services?",
+            "tool_results": [],
+            "time": 20,
+            "source_medium": null,
+            "original_message": null,
+            "tool_calls": []
+          },
+          {
+            "interrupted": false,
+            "role": "user",
+            "message": "Yeah, I've got a problem with all the back-and-forth messages. Can the site help with scheduling?",
+            "tool_results": [],
+            "time": 20,
+            "source_medium": "text",
+            "original_message": null,
+            "tool_calls": []
+          },
+          {
+            "interrupted": false,
+            "role": "agent",
+            "message": "Yes, we can build a website that includes scheduling features. It depends on whether you need a simple form handoff or a real integration with your existing systems. Would you like more details on how this could work for your business?",
+            "tool_results": [],
+            "time": 20,
+            "source_medium": null,
+            "original_message": null,
+            "tool_calls": []
+          },
+          {
+            "interrupted": false,
+            "role": "user",
+            "message": "Hmm, I just need people to request times, not a live calendar. Is that the basic option?",
+            "tool_results": [],
+            "time": 20,
+            "source_medium": "text",
+            "original_message": null,
+            "tool_calls": []
+          },
+          {
+            "interrupted": false,
+            "role": "agent",
+            "message": "Yes, a simple appointment request form would be the basic option. This usually falls within the range of two thousand to three thousand dollars for the entire website. Would you like to see a free homepage mockup to get a better idea of the layout?",
+            "tool_results": [],
+            "time": 20,
+            "source_medium": null,
+            "original_message": null,
+            "tool_calls": []
+          },
+          {
+            "interrupted": false,
+            "role": "user",
+            "message": "Wait, so that's for the whole website, or just the scheduling part?",
+            "tool_results": [],
+            "time": 20,
+            "source_medium": "text",
+            "original_message": null,
+            "tool_calls": []
+          },
+          {
+            "interrupted": false,
+            "role": "agent",
+            "message": "That's for the whole website, including a simple appointment request form. If you decide to add more advanced features like a live calendar or payment processing, the cost would move toward three thousand to four thousand dollars. Would you like to proceed with a free homepage mockup to see how it all fits together?",
+            "tool_results": [],
+            "time": 20,
+            "source_medium": null,
+            "original_message": null,
+            "tool_calls": []
+          },
+          {
+            "interrupted": false,
+            "role": "user",
+            "message": "So, the basic scheduling is part of that $2-3k for the whole site?",
+            "tool_results": [],
+            "time": 20,
+            "source_medium": "text",
+            "original_message": null,
+            "tool_calls": []
+          },
+          {
+            "interrupted": false,
+            "role": "agent",
+            "message": "Yes, the basic scheduling feature is included in the two thousand to three thousand dollar range for the entire website. Would you like to explore this further with a free homepage mockup?",
+            "tool_results": [],
+            "time": 20,
+            "source_medium": null,
+            "original_message": null,
+            "tool_calls": []
+          },
+          {
+            "interrupted": false,
+            "role": "user",
+            "message": "Thanks, bye.",
+            "tool_results": [],
+            "time": 20,
+            "source_medium": null,
+            "original_message": null,
+            "tool_calls": []
+          }
+        ]
+      },
+      {
+        "test_run_id": "trun_5901kx73mpz6eq492kq2bc8f1wg7",
+        "test_invocation_id": "suite_7901kx73mpz2f83s46zpsn4aarnx",
+        "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+        "test_id": "sim_036_scheduling_simple_request_vs_live_integration",
+        "provider_test_id": "test_4601ktwzq8nyfcatm8a6mn58y7x6",
+        "test_name": "ELEVENLABS-036-natural-sales-scenarios::sim_036_scheduling_simple_request_vs_live_integration",
+        "scenario": "The simulated user owns Velvet Paw Grooming in Scottsdale. Instagram and texts bring in bookings, but the owner wants fewer back-and-forth messages about breed, size, availability, and pickup rules. They ask: 'Could the site help with scheduling?' Then: 'Is that basic, or does it become expensive?' If Emma treats all scheduling as a heavy integration, the buyer clarifies that they only need people to request times, not a live calendar.",
+        "success_conditions": [
+          "The full conversation passes only if Emma separates a simple appointment request path from a live scheduling system. She should say a simple request form or intake path can usually stay around {{website_light_feature_range}}, while live calendar booking, reminders, payments, or CRM sync can move toward {{website_workflow_content_range}} or {{website_integration_heavy_range}} depending on the system. If the buyer only wants request times, Emma should not overprice it or force live-calendar wording. It fails if she says all scheduling is automatically $4k-$5k, gives only 'it depends,' ignores the simple request option, dumps every pricing band, or answers well but never makes a natural next-step move when the buyer remains open."
+        ],
+        "models": {
+          "simulated_user_model": "gemini-2.5-flash",
+          "evaluation_model": "gemini-2.5-flash"
+        },
+        "status": "passed",
+        "condition_result": {
+          "result": "success",
+          "rationale": {
+            "messages": [
+              "The agent successfully separated the simple appointment request form from a more integrated live scheduling system. She quoted a price range of $2k-$3k for the simple request form, which is appropriate for a light feature, and explicitly stated it was more affordable than live calendar integration. She did not overprice the simple option or force live-calendar wording, and made a natural next-step move by offering a mockup.",
+              "The agent ended the conversation."
+            ],
+            "summary": "Evaluation succeeded"
+          }
+        },
+        "evaluator_rationale": "{'messages': ['The agent successfully separated the simple appointment request form from a more integrated live scheduling system. She quoted a price range of $2k-$3k for the simple request form, which is appropriate for a light feature, and explicitly stated it was more affordable than live calendar integration. She did not overprice the simple option or force live-calendar wording, and made a natural next-step move by offering a mockup.', 'The agent ended the conversation.'], 'summary': 'Evaluation succeeded'}",
+        "agent_responses": [
+          {
+            "interrupted": false,
+            "role": "agent",
+            "message": "Hi, this is Emma from Atlas Web Studio. I had Velvet Paw Grooming down as a pet grooming studio in Scottsdale. Am I speaking with the owner or someone who handles the website there?",
+            "tool_results": [],
+            "time": 23,
+            "source_medium": null,
+            "original_message": null,
+            "tool_calls": []
+          },
+          {
+            "interrupted": false,
+            "role": "user",
+            "message": "Yeah, that's me. I'm the owner.",
+            "tool_results": [],
+            "time": 23,
+            "source_medium": "text",
+            "original_message": null,
+            "tool_calls": []
+          },
+          {
+            "interrupted": false,
+            "role": "agent",
+            "message": "Great to speak with you! At Atlas Web Studio, we offer a free homepage mockup to give you a visual idea of how your website could look. Do you have any questions about our process, pricing, or how we can help enhance your online presence?",
+            "tool_results": [],
+            "time": 23,
+            "source_medium": null,
+            "original_message": null,
+            "tool_calls": []
+          },
+          {
+            "interrupted": false,
+            "role": "user",
+            "message": "Yeah, I had a question about scheduling. Could the site help with that?",
+            "tool_results": [],
+            "time": 23,
+            "source_medium": "text",
+            "original_message": null,
+            "tool_calls": []
+          },
+          {
+            "interrupted": false,
+            "role": "agent",
+            "message": "Yes, we can build a website that includes scheduling features. It depends on whether you need a simple appointment request form or a more integrated system with live calendar sync and reminders. Would you like more details on how these options could work for your business?",
+            "tool_results": [],
+            "time": 23,
+            "source_medium": null,
+            "original_message": null,
+            "tool_calls": []
+          },
+          {
+            "interrupted": false,
+            "role": "user",
+            "message": "Hmm, I just need people to request times, not a live calendar. Is that basic, or does it get expensive?",
+            "tool_results": [],
+            "time": 23,
+            "source_medium": "text",
+            "original_message": null,
+            "tool_calls": []
+          },
+          {
+            "interrupted": false,
+            "role": "agent",
+            "message": "A light website with a simple appointment request form is usually between two thousand and three thousand dollars total. This option is more affordable compared to a live calendar integration. Would you be interested in seeing a free homepage mockup to visualize how this feature would fit into your site?",
+            "tool_results": [],
+            "time": 23,
+            "source_medium": null,
+            "original_message": null,
+            "tool_calls": []
+          },
+          {
+            "interrupted": false,
+            "role": "user",
+            "message": "Okay, so that's for just the request form, not a full calendar. And it's around two to three thousand? That sounds doable.",
+            "tool_results": [],
+            "time": 23,
+            "source_medium": "text",
+            "original_message": null,
+            "tool_calls": []
+          },
+          {
+            "interrupted": false,
+            "role": "agent",
+            "message": "Yes, that's correct. The two to three thousand dollar range is for a website with a simple appointment request form, not a full calendar integration. If you're interested, I can send you a free homepage mockup to give you a better idea of the design. Would you like me to do that?",
+            "tool_results": [],
+            "time": 23,
+            "source_medium": null,
+            "original_message": null,
+            "tool_calls": []
+          },
+          {
+            "interrupted": false,
+            "role": "user",
+            "message": "Yeah, that sounds good. Go ahead and send that over.",
+            "tool_results": [],
+            "time": 23,
+            "source_medium": "text",
+            "original_message": null,
+            "tool_calls": []
+          },
+          {
+            "interrupted": false,
+            "role": "agent",
+            "message": "Great! What's the best email address to send the mockup to?",
+            "tool_results": [],
+            "time": 23,
+            "source_medium": null,
+            "original_message": null,
+            "tool_calls": []
+          },
+          {
+            "interrupted": false,
+            "role": "user",
+            "message": "It's [REDACTED_EMAIL].",
+            "tool_results": [],
+            "time": 23,
+            "source_medium": "text",
+            "original_message": null,
+            "tool_calls": []
+          },
+          {
+            "interrupted": false,
+            "role": "agent",
+            "message": "Just to confirm, that's [REDACTED_EMAIL], correct?",
+            "tool_results": [],
+            "time": 23,
+            "source_medium": null,
+            "original_message": null,
+            "tool_calls": []
+          },
+          {
+            "interrupted": false,
+            "role": "user",
+            "message": "Yeah, that's right.",
+            "tool_results": [],
+            "time": 23,
+            "source_medium": "text",
+            "original_message": null,
+            "tool_calls": []
+          },
+          {
+            "interrupted": false,
+            "role": "agent",
+            "message": "Great, I'll send it there by the end of the day.",
+            "tool_results": [],
+            "time": 23,
+            "source_medium": null,
+            "original_message": null,
+            "tool_calls": []
+          },
+          {
+            "interrupted": false,
+            "role": "user",
+            "message": "Okay, thanks.",
+            "tool_results": [],
+            "time": 23,
+            "source_medium": "text",
+            "original_message": null,
+            "tool_calls": []
+          },
+          {
+            "interrupted": false,
+            "role": "agent",
+            "message": "Take care.",
+            "tool_results": [],
+            "time": 23,
+            "source_medium": null,
+            "original_message": null,
+            "tool_calls": []
+          },
+          {
+            "interrupted": false,
+            "role": "agent",
+            "message": null,
+            "tool_results": [],
+            "time": 23,
+            "source_medium": null,
+            "original_message": null,
+            "tool_calls": [
+              {
+                "type": "system",
+                "tool_has_been_called": true,
+                "tool_name": "end_call",
+                "request_id": "call_jT9fI3m1ebCadDT6H6rZGLve",
+                "params_as_json": "{\"reason\":\"Buyer explicitly ended the completed conversation\",\"system__message_to_speak\":\"Take care.\"}"
+              }
+            ]
+          },
+          {
+            "interrupted": false,
+            "role": "agent",
+            "message": null,
+            "tool_results": [
+              {
+                "raw_error_message": "",
+                "tool_name": "end_call",
+                "result_value": "{\"result_type\":\"end_call_success\",\"status\":\"success\",\"reason\":\"Buyer explicitly ended the completed conversation\",\"message\":null}",
+                "result": {
+                  "result_type": "end_call_success",
+                  "status": "success",
+                  "reason": "Buyer explicitly ended the completed conversation",
+                  "message": null
+                },
+                "tool_has_been_called": true,
+                "error_type": "",
+                "request_id": "call_jT9fI3m1ebCadDT6H6rZGLve",
+                "type": "system",
+                "is_error": false,
+                "is_blocked": false,
+                "tool_latency_secs": 0.501363012008369
+              }
+            ],
+            "time": 23,
+            "source_medium": null,
+            "original_message": null,
+            "tool_calls": []
+          }
+        ]
+      },
+      {
+        "test_run_id": "trun_4001kx73mpz5fh68gg905sta87j9",
+        "test_invocation_id": "suite_7901kx73mpz2f83s46zpsn4aarnx",
+        "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+        "test_id": "sim_036_scheduling_simple_request_vs_live_integration",
+        "provider_test_id": "test_4601ktwzq8nyfcatm8a6mn58y7x6",
+        "test_name": "ELEVENLABS-036-natural-sales-scenarios::sim_036_scheduling_simple_request_vs_live_integration",
+        "scenario": "The simulated user owns Velvet Paw Grooming in Scottsdale. Instagram and texts bring in bookings, but the owner wants fewer back-and-forth messages about breed, size, availability, and pickup rules. They ask: 'Could the site help with scheduling?' Then: 'Is that basic, or does it become expensive?' If Emma treats all scheduling as a heavy integration, the buyer clarifies that they only need people to request times, not a live calendar.",
+        "success_conditions": [
+          "The full conversation passes only if Emma separates a simple appointment request path from a live scheduling system. She should say a simple request form or intake path can usually stay around {{website_light_feature_range}}, while live calendar booking, reminders, payments, or CRM sync can move toward {{website_workflow_content_range}} or {{website_integration_heavy_range}} depending on the system. If the buyer only wants request times, Emma should not overprice it or force live-calendar wording. It fails if she says all scheduling is automatically $4k-$5k, gives only 'it depends,' ignores the simple request option, dumps every pricing band, or answers well but never makes a natural next-step move when the buyer remains open."
+        ],
+        "models": {
+          "simulated_user_model": "gemini-2.5-flash",
+          "evaluation_model": "gemini-2.5-flash"
+        },
+        "status": "passed",
+        "condition_result": {
+          "result": "success",
+          "rationale": {
+            "messages": [
+              "Emma clearly separated the simple appointment request form ($2k-$3k) from more advanced features like live calendar syncing ($3k-$4k), aligning with the specified price ranges. She did not overprice the simple option and offered a next step (mockup).",
+              "The simulated user ended the conversation."
+            ],
+            "summary": "Evaluation succeeded"
+          }
+        },
+        "evaluator_rationale": "{'messages': ['Emma clearly separated the simple appointment request form ($2k-$3k) from more advanced features like live calendar syncing ($3k-$4k), aligning with the specified price ranges. She did not overprice the simple option and offered a next step (mockup).', 'The simulated user ended the conversation.'], 'summary': 'Evaluation succeeded'}",
+        "agent_responses": [
+          {
+            "interrupted": false,
+            "role": "agent",
+            "message": "Hi, this is Emma from Atlas Web Studio. I had Velvet Paw Grooming down as a pet grooming studio in Scottsdale. Am I speaking with the owner or someone who handles the website there?",
+            "tool_results": [],
+            "time": 20,
+            "source_medium": null,
+            "original_message": null,
+            "tool_calls": []
+          },
+          {
+            "interrupted": false,
+            "role": "user",
+            "message": "Yeah, that's me. I'm the owner. I was hoping you could help me with my website.",
+            "tool_results": [],
+            "time": 20,
+            "source_medium": "text",
+            "original_message": null,
+            "tool_calls": []
+          },
+          {
+            "interrupted": false,
+            "role": "agent",
+            "message": "Great to hear from you! I'd be happy to help with your website. Could you tell me a bit more about what you're looking to achieve or any specific concerns you have with your current site?",
+            "tool_results": [],
+            "time": 20,
+            "source_medium": null,
+            "original_message": null,
+            "tool_calls": []
+          },
+          {
+            "interrupted": false,
+            "role": "user",
+            "message": "I need to cut down on all the back-and-forth messages about bookings. Could the site help with scheduling?",
+            "tool_results": [],
+            "time": 20,
+            "source_medium": "text",
+            "original_message": null,
+            "tool_calls": []
+          },
+          {
+            "interrupted": false,
+            "role": "agent",
+            "message": "Yes, we can definitely help with that. A simple appointment request form is usually integrated into the website, which can streamline the booking process. This typically falls within the two to three thousand dollar range for the whole site. If you're looking for more advanced features like live calendar syncing or payment processing, the cost might move toward three to four thousand dollars. Would you like to see a free homepage mockup to get a better idea of the layout?",
+            "tool_results": [],
+            "time": 20,
+            "source_medium": null,
+            "original_message": null,
+            "tool_calls": []
+          },
+          {
+            "interrupted": false,
+            "role": "user",
+            "message": "So, the simpler one is just for requests, not a live calendar, right? I don't need the fancy syncing. A mockup sounds okay, I guess.",
+            "tool_results": [],
+            "time": 20,
+            "source_medium": "text",
+            "original_message": null,
+            "tool_calls": []
+          },
+          {
+            "interrupted": false,
+            "role": "agent",
+            "message": "That's correct, the simpler option is for appointment requests without live calendar syncing. I'll be happy to send you a free homepage mockup to give you a visual idea of how it could look. Could you please provide the best email address to send it to?",
+            "tool_results": [],
+            "time": 20,
+            "source_medium": null,
+            "original_message": null,
+            "tool_calls": []
+          },
+          {
+            "interrupted": false,
+            "role": "user",
+            "message": "Okay, so just the requests. My email is [REDACTED_EMAIL].",
+            "tool_results": [],
+            "time": 20,
+            "source_medium": "text",
+            "original_message": null,
+            "tool_calls": []
+          },
+          {
+            "interrupted": false,
+            "role": "agent",
+            "message": "Just to confirm, that's [REDACTED_EMAIL]. Is that correct?",
+            "tool_results": [],
+            "time": 20,
+            "source_medium": null,
+            "original_message": null,
+            "tool_calls": []
+          },
+          {
+            "interrupted": false,
+            "role": "user",
+            "message": "Yeah, that's right.",
+            "tool_results": [],
+            "time": 20,
+            "source_medium": "text",
+            "original_message": null,
+            "tool_calls": []
+          },
+          {
+            "interrupted": false,
+            "role": "agent",
+            "message": "Great, I'll send it there by the end of the day.",
+            "tool_results": [],
+            "time": 20,
+            "source_medium": null,
+            "original_message": null,
+            "tool_calls": []
+          },
+          {
+            "interrupted": false,
+            "role": "user",
+            "message": "Alright, got it. Thanks, bye.",
+            "tool_results": [],
+            "time": 20,
+            "source_medium": null,
+            "original_message": null,
+            "tool_calls": []
+          }
+        ]
+      }
+    ],
+    "result_groups": [
+      {
+        "test_id": "test_4601ktwzq8nyfcatm8a6mn58y7x6",
+        "test_name": "ELEVENLABS-036-natural-sales-scenarios::sim_036_scheduling_simple_request_vs_live_integration",
+        "workflow_node_id": "None",
+        "buckets": [
+          {
+            "test_run_ids": [
+              "trun_8101kx73mpz4ecab0p8c0enx7deb",
+              "trun_4001kx73mpz5fh68gg905sta87j9",
+              "trun_5901kx73mpz6eq492kq2bc8f1wg7"
+            ],
+            "title": "Passed",
+            "reason": "Passed",
+            "status": "passed"
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "checkpoint_id": "ELEVENLABS-036-natural-sales-scenarios",
+  "captured_at_utc": "2026-07-10T22:33:52Z",
+  "status": "completed",
+  "scope": "visual",
+  "repeat_count": 3,
+  "invocation_id": "suite_4401kx72kjq3epqr6wzmb4b93sdb",
+  "run_statuses": [
+    {
+      "test_id": "test_3301ktwzq9cnfzsa5dfjd9q61gq5",
+      "test_name": "ELEVENLABS-036-natural-sales-scenarios::sim_036_free_mockup_visual_not_working_site",
+      "test_run_id": "trun_9401kx72kjq5f64rkpg82nsqzgdf",
+      "status": "passed"
+    },
+    {
+      "test_id": "test_3301ktwzq9cnfzsa5dfjd9q61gq5",
+      "test_name": "ELEVENLABS-036-natural-sales-scenarios::sim_036_free_mockup_visual_not_working_site",
+      "test_run_id": "trun_5901kx72kjq6evhbger2sq3yzj9k",
+      "status": "passed"
+    },
+    {
+      "test_id": "test_3301ktwzq9cnfzsa5dfjd9q61gq5",
+      "test_name": "ELEVENLABS-036-natural-sales-scenarios::sim_036_free_mockup_visual_not_working_site",
+      "test_run_id": "trun_8101kx72kjq7efkbfz7bffy0zgpy",
+      "status": "passed"
+    }
+  ],
+  "final_run_statuses": [
+    "passed",
+    "passed",
+    "passed"
+  ],
+  "selected_test_count": 1,
+  "expected_terminal_run_count": 3,
+  "observed_terminal_run_count": 3,
+  "failed_terminal_run_count": 0,
+  "provider_status_code": 200,
+  "outbound_calls_made": false
+}

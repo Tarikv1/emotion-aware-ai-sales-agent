@@ -1,0 +1,501 @@
+{
+  "captured_at_utc": "2026-07-10T22:52:32Z",
+  "payload_sha256": "613e0f211cad43d3bdfcabd0d4fe4c31614767502cd10e2ebaa8e4ad199868a5",
+  "payload": {
+    "checkpoint_id": "ELEVENLABS-036-natural-sales-scenarios",
+    "invocation_id": "suite_5301kx73nwwce67bj6ce1qqgpx9e",
+    "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+    "test_runs": [
+      {
+        "test_run_id": "trun_7301kx73nwwhfs08ryx1p1r7czf4",
+        "test_invocation_id": "suite_5301kx73nwwce67bj6ce1qqgpx9e",
+        "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+        "test_id": "sim_036_goodbye_take_care_no_loop",
+        "provider_test_id": "test_1901ktwzqa28f0mbk4rrt106d74d",
+        "test_name": "ELEVENLABS-036-natural-sales-scenarios::sim_036_goodbye_take_care_no_loop",
+        "scenario": "The simulated user owns Sunrise Bagel Shop in Providence. They are polite and open. They accept the mockup, give sunrisebagelprovidence@gmail.com, confirm when Emma repeats it correctly, and then say: 'Okay, thanks, bye.' If Emma continues, they say: 'Bye.' If Emma still continues, they ask why Emma is still talking. The goal is to see whether Emma ends naturally after the call outcome is complete.",
+        "success_conditions": [
+          "The full conversation passes only if Emma completes the email confirmation flow, closes with concise timing, and treats the buyer's goodbye as final. After a completed outcome and 'Okay, thanks, bye,' the only acceptable extra line is 'Take care.' If the platform forces another response after 'Bye,' it should still be only 'Take care.' If the buyer asks why Emma is still talking, Emma should say 'You're right. Have a good one.' and stop. It fails if Emma says 'You're welcome. Have a great day,' repeats goodbye several times, asks whether she can help with anything else, restarts the mockup pitch, asks for email again, adds explanation after the goodbye, or keeps talking after a hard stop."
+        ],
+        "models": {
+          "simulated_user_model": "gemini-2.5-flash",
+          "evaluation_model": "gemini-2.5-flash"
+        },
+        "status": "failed",
+        "condition_result": {
+          "result": "failure",
+          "rationale": {
+            "messages": [
+              "The agent completed the email confirmation flow and closed the conversation. However, the criteria states, \"After a completed outcome and 'Okay, thanks, bye,' the only acceptable extra line is 'Take care.'\" The agent responded with \"Great, I'll send it there by the end of the day. Take care.\", which includes an explanation beyond just 'Take care.', leading to a failure.",
+              "The agent ended the conversation."
+            ],
+            "summary": "Evaluation failed"
+          }
+        },
+        "evaluator_rationale": "{'messages': ['The agent completed the email confirmation flow and closed the conversation. However, the criteria states, \"After a completed outcome and \\'Okay, thanks, bye,\\' the only acceptable extra line is \\'Take care.\\'\" The agent responded with \"Great, I\\'ll send it there by the end of the day. Take care.\", which includes an explanation beyond just \\'Take care.\\', leading to a failure.', 'The agent ended the conversation.'], 'summary': 'Evaluation failed'}",
+        "agent_responses": [
+          {
+            "tool_results": [],
+            "source_medium": null,
+            "interrupted": false,
+            "role": "agent",
+            "time": 13,
+            "tool_calls": [],
+            "message": "Hi, this is Emma from Atlas Web Studio. I had Sunrise Bagel Shop down as a bagel shop in Providence. Am I speaking with the owner or someone who handles the website there?",
+            "original_message": null
+          },
+          {
+            "tool_results": [],
+            "source_medium": "text",
+            "interrupted": false,
+            "role": "user",
+            "time": 13,
+            "tool_calls": [],
+            "message": "Yeah, that's me. I'm the owner.",
+            "original_message": null
+          },
+          {
+            "tool_results": [],
+            "source_medium": null,
+            "interrupted": false,
+            "role": "agent",
+            "time": 13,
+            "tool_calls": [],
+            "message": "Great to speak with you. At Atlas Web Studio, we offer a free homepage mockup to give you a visual idea of how your website could look. Would you be interested in seeing a mockup for Sunrise Bagel Shop?",
+            "original_message": null
+          },
+          {
+            "tool_results": [],
+            "source_medium": "text",
+            "interrupted": false,
+            "role": "user",
+            "time": 13,
+            "tool_calls": [],
+            "message": "Oh, a mockup? Yeah, I'd like to see that.",
+            "original_message": null
+          },
+          {
+            "tool_results": [],
+            "source_medium": null,
+            "interrupted": false,
+            "role": "agent",
+            "time": 13,
+            "tool_calls": [],
+            "message": "Wonderful! To get started, could you please provide the best email address where I can send the mockup?",
+            "original_message": null
+          },
+          {
+            "tool_results": [],
+            "source_medium": "text",
+            "interrupted": false,
+            "role": "user",
+            "time": 13,
+            "tool_calls": [],
+            "message": "It's sunrisebagelprovidence@gmail.com.",
+            "original_message": null
+          },
+          {
+            "tool_results": [],
+            "source_medium": null,
+            "interrupted": false,
+            "role": "agent",
+            "time": 13,
+            "tool_calls": [],
+            "message": "Just to confirm, that's sunrisebagelprovidence@gmail.com, correct?",
+            "original_message": null
+          },
+          {
+            "tool_results": [],
+            "source_medium": "text",
+            "interrupted": false,
+            "role": "user",
+            "time": 13,
+            "tool_calls": [],
+            "message": "Yeah, that's right. Okay, thanks, bye.",
+            "original_message": null
+          },
+          {
+            "tool_results": [],
+            "source_medium": null,
+            "interrupted": false,
+            "role": "agent",
+            "time": 13,
+            "tool_calls": [],
+            "message": "Great, I'll send it there by the end of the day. Take care.",
+            "original_message": null
+          },
+          {
+            "tool_results": [],
+            "source_medium": null,
+            "interrupted": false,
+            "role": "agent",
+            "time": 13,
+            "tool_calls": [
+              {
+                "tool_name": "end_call",
+                "tool_has_been_called": true,
+                "request_id": "call_3F6ttqRTjGjpsBQaO6TpNxW6",
+                "params_as_json": "{\"reason\":\"Email confirmed and buyer ended the conversation\",\"system__message_to_speak\":\"Great, I'll send it there by the end of the day. Take care.\"}",
+                "type": "system"
+              }
+            ],
+            "message": null,
+            "original_message": null
+          },
+          {
+            "tool_results": [
+              {
+                "result": {
+                  "result_type": "end_call_success",
+                  "status": "success",
+                  "reason": "Email confirmed and buyer ended the conversation",
+                  "message": null
+                },
+                "tool_has_been_called": true,
+                "error_type": "",
+                "tool_latency_secs": 0.5006891130469739,
+                "is_error": false,
+                "type": "system",
+                "tool_name": "end_call",
+                "is_blocked": false,
+                "result_value": "{\"result_type\":\"end_call_success\",\"status\":\"success\",\"reason\":\"Email confirmed and buyer ended the conversation\",\"message\":null}",
+                "request_id": "call_3F6ttqRTjGjpsBQaO6TpNxW6",
+                "raw_error_message": ""
+              }
+            ],
+            "source_medium": null,
+            "interrupted": false,
+            "role": "agent",
+            "time": 13,
+            "tool_calls": [],
+            "message": null,
+            "original_message": null
+          }
+        ]
+      },
+      {
+        "test_run_id": "trun_0501kx73nwwjfvyrq828cmw3jmpr",
+        "test_invocation_id": "suite_5301kx73nwwce67bj6ce1qqgpx9e",
+        "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+        "test_id": "sim_036_goodbye_take_care_no_loop",
+        "provider_test_id": "test_1901ktwzqa28f0mbk4rrt106d74d",
+        "test_name": "ELEVENLABS-036-natural-sales-scenarios::sim_036_goodbye_take_care_no_loop",
+        "scenario": "The simulated user owns Sunrise Bagel Shop in Providence. They are polite and open. They accept the mockup, give sunrisebagelprovidence@gmail.com, confirm when Emma repeats it correctly, and then say: 'Okay, thanks, bye.' If Emma continues, they say: 'Bye.' If Emma still continues, they ask why Emma is still talking. The goal is to see whether Emma ends naturally after the call outcome is complete.",
+        "success_conditions": [
+          "The full conversation passes only if Emma completes the email confirmation flow, closes with concise timing, and treats the buyer's goodbye as final. After a completed outcome and 'Okay, thanks, bye,' the only acceptable extra line is 'Take care.' If the platform forces another response after 'Bye,' it should still be only 'Take care.' If the buyer asks why Emma is still talking, Emma should say 'You're right. Have a good one.' and stop. It fails if Emma says 'You're welcome. Have a great day,' repeats goodbye several times, asks whether she can help with anything else, restarts the mockup pitch, asks for email again, adds explanation after the goodbye, or keeps talking after a hard stop."
+        ],
+        "models": {
+          "simulated_user_model": "gemini-2.5-flash",
+          "evaluation_model": "gemini-2.5-flash"
+        },
+        "status": "passed",
+        "condition_result": {
+          "result": "success",
+          "rationale": {
+            "messages": [
+              "The agent successfully completed the email confirmation flow by confirming the email and stating the mockup would be sent. It closed with concise timing and treated the buyer's goodbye as final by not responding further, thus avoiding all specified failure conditions.",
+              "The simulated user ended the conversation."
+            ],
+            "summary": "Evaluation succeeded"
+          }
+        },
+        "evaluator_rationale": "{'messages': [\"The agent successfully completed the email confirmation flow by confirming the email and stating the mockup would be sent. It closed with concise timing and treated the buyer's goodbye as final by not responding further, thus avoiding all specified failure conditions.\", 'The simulated user ended the conversation.'], 'summary': 'Evaluation succeeded'}",
+        "agent_responses": [
+          {
+            "tool_results": [],
+            "source_medium": null,
+            "interrupted": false,
+            "role": "agent",
+            "time": 14,
+            "tool_calls": [],
+            "message": "Hi, this is Emma from Atlas Web Studio. I had Sunrise Bagel Shop down as a bagel shop in Providence. Am I speaking with the owner or someone who handles the website there?",
+            "original_message": null
+          },
+          {
+            "tool_results": [],
+            "source_medium": "text",
+            "interrupted": false,
+            "role": "user",
+            "time": 14,
+            "tool_calls": [],
+            "message": "Yeah, that's me. I'm the owner.",
+            "original_message": null
+          },
+          {
+            "tool_results": [],
+            "source_medium": null,
+            "interrupted": false,
+            "role": "agent",
+            "time": 14,
+            "tool_calls": [],
+            "message": "Great to speak with you! We offer a free homepage mockup to help you visualize potential improvements for your website. Would you be interested in seeing what we can create for Sunrise Bagel Shop?",
+            "original_message": null
+          },
+          {
+            "tool_results": [],
+            "source_medium": "text",
+            "interrupted": false,
+            "role": "user",
+            "time": 14,
+            "tool_calls": [],
+            "message": "Uh, yeah, I'd be interested in seeing that.",
+            "original_message": null
+          },
+          {
+            "tool_results": [],
+            "source_medium": null,
+            "interrupted": false,
+            "role": "agent",
+            "time": 14,
+            "tool_calls": [],
+            "message": "Fantastic! To get started, could you please provide the best email address where I can send the mockup?",
+            "original_message": null
+          },
+          {
+            "tool_results": [],
+            "source_medium": "text",
+            "interrupted": false,
+            "role": "user",
+            "time": 14,
+            "tool_calls": [],
+            "message": "sunrisebagelprovidence@gmail.com",
+            "original_message": null
+          },
+          {
+            "tool_results": [],
+            "source_medium": null,
+            "interrupted": false,
+            "role": "agent",
+            "time": 14,
+            "tool_calls": [],
+            "message": "Just to confirm, that's sunrisebagelprovidence@gmail.com, correct?",
+            "original_message": null
+          },
+          {
+            "tool_results": [],
+            "source_medium": "text",
+            "interrupted": false,
+            "role": "user",
+            "time": 14,
+            "tool_calls": [],
+            "message": "Yeah, that's right.",
+            "original_message": null
+          },
+          {
+            "tool_results": [],
+            "source_medium": null,
+            "interrupted": false,
+            "role": "agent",
+            "time": 14,
+            "tool_calls": [],
+            "message": "Great, I'll send it there by the end of the day.",
+            "original_message": null
+          },
+          {
+            "tool_results": [],
+            "source_medium": null,
+            "interrupted": false,
+            "role": "user",
+            "time": 14,
+            "tool_calls": [],
+            "message": "Okay, thanks, bye.",
+            "original_message": null
+          }
+        ]
+      },
+      {
+        "test_run_id": "trun_4401kx73nwwkeqn87zhpwewg1f6s",
+        "test_invocation_id": "suite_5301kx73nwwce67bj6ce1qqgpx9e",
+        "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+        "test_id": "sim_036_goodbye_take_care_no_loop",
+        "provider_test_id": "test_1901ktwzqa28f0mbk4rrt106d74d",
+        "test_name": "ELEVENLABS-036-natural-sales-scenarios::sim_036_goodbye_take_care_no_loop",
+        "scenario": "The simulated user owns Sunrise Bagel Shop in Providence. They are polite and open. They accept the mockup, give sunrisebagelprovidence@gmail.com, confirm when Emma repeats it correctly, and then say: 'Okay, thanks, bye.' If Emma continues, they say: 'Bye.' If Emma still continues, they ask why Emma is still talking. The goal is to see whether Emma ends naturally after the call outcome is complete.",
+        "success_conditions": [
+          "The full conversation passes only if Emma completes the email confirmation flow, closes with concise timing, and treats the buyer's goodbye as final. After a completed outcome and 'Okay, thanks, bye,' the only acceptable extra line is 'Take care.' If the platform forces another response after 'Bye,' it should still be only 'Take care.' If the buyer asks why Emma is still talking, Emma should say 'You're right. Have a good one.' and stop. It fails if Emma says 'You're welcome. Have a great day,' repeats goodbye several times, asks whether she can help with anything else, restarts the mockup pitch, asks for email again, adds explanation after the goodbye, or keeps talking after a hard stop."
+        ],
+        "models": {
+          "simulated_user_model": "gemini-2.5-flash",
+          "evaluation_model": "gemini-2.5-flash"
+        },
+        "status": "failed",
+        "condition_result": {
+          "result": "failure",
+          "rationale": {
+            "messages": [
+              "The agent did not adhere to the strict closing criteria. After the buyer said \"Okay, thanks, bye,\" the agent responded with \"Great, I'll send it there by the end of the day. Take care.\" The criteria states that \"the only acceptable extra line is 'Take care.'\" and that it fails if Emma \"adds explanation after the goodbye.\"",
+              "The agent ended the conversation."
+            ],
+            "summary": "Evaluation failed"
+          }
+        },
+        "evaluator_rationale": "{'messages': ['The agent did not adhere to the strict closing criteria. After the buyer said \"Okay, thanks, bye,\" the agent responded with \"Great, I\\'ll send it there by the end of the day. Take care.\" The criteria states that \"the only acceptable extra line is \\'Take care.\\'\" and that it fails if Emma \"adds explanation after the goodbye.\"', 'The agent ended the conversation.'], 'summary': 'Evaluation failed'}",
+        "agent_responses": [
+          {
+            "tool_results": [],
+            "source_medium": null,
+            "interrupted": false,
+            "role": "agent",
+            "time": 15,
+            "tool_calls": [],
+            "message": "Hi, this is Emma from Atlas Web Studio. I had Sunrise Bagel Shop down as a bagel shop in Providence. Am I speaking with the owner or someone who handles the website there?",
+            "original_message": null
+          },
+          {
+            "tool_results": [],
+            "source_medium": "text",
+            "interrupted": false,
+            "role": "user",
+            "time": 15,
+            "tool_calls": [],
+            "message": "Yeah, this is me, the owner.",
+            "original_message": null
+          },
+          {
+            "tool_results": [],
+            "source_medium": null,
+            "interrupted": false,
+            "role": "agent",
+            "time": 15,
+            "tool_calls": [],
+            "message": "Great to speak with you. I wanted to let you know that we're offering a free homepage mockup to showcase what we can do for your website. Do you have any questions about the process or how it works?",
+            "original_message": null
+          },
+          {
+            "tool_results": [],
+            "source_medium": "text",
+            "interrupted": false,
+            "role": "user",
+            "time": 15,
+            "tool_calls": [],
+            "message": "Oh, a free mockup? Yeah, I'm interested in that.",
+            "original_message": null
+          },
+          {
+            "tool_results": [],
+            "source_medium": null,
+            "interrupted": false,
+            "role": "agent",
+            "time": 15,
+            "tool_calls": [],
+            "message": "Fantastic! The free mockup will show the homepage layout and where features would sit. Could you let me know the best email to send it to?",
+            "original_message": null
+          },
+          {
+            "tool_results": [],
+            "source_medium": "text",
+            "interrupted": false,
+            "role": "user",
+            "time": 15,
+            "tool_calls": [],
+            "message": "sunrisebagelprovidence@gmail.com",
+            "original_message": null
+          },
+          {
+            "tool_results": [],
+            "source_medium": null,
+            "interrupted": false,
+            "role": "agent",
+            "time": 15,
+            "tool_calls": [],
+            "message": "Just to confirm, sunrisebagelprovidence@gmail.com - is that right?",
+            "original_message": null
+          },
+          {
+            "tool_results": [],
+            "source_medium": "text",
+            "interrupted": false,
+            "role": "user",
+            "time": 15,
+            "tool_calls": [],
+            "message": "Yes, that's right. Okay, thanks, bye.",
+            "original_message": null
+          },
+          {
+            "tool_results": [],
+            "source_medium": null,
+            "interrupted": false,
+            "role": "agent",
+            "time": 15,
+            "tool_calls": [],
+            "message": "Great, I'll send it there by the end of the day. Take care.",
+            "original_message": null
+          },
+          {
+            "tool_results": [],
+            "source_medium": null,
+            "interrupted": false,
+            "role": "agent",
+            "time": 15,
+            "tool_calls": [
+              {
+                "tool_name": "end_call",
+                "tool_has_been_called": true,
+                "request_id": "call_K3aOMCpGiWzTE79Q76VP8uay",
+                "params_as_json": "{\"reason\":\"Email confirmed and buyer ended the conversation\",\"system__message_to_speak\":\"Great, I'll send it there by the end of the day. Take care.\"}",
+                "type": "system"
+              }
+            ],
+            "message": null,
+            "original_message": null
+          },
+          {
+            "tool_results": [
+              {
+                "result": {
+                  "result_type": "end_call_success",
+                  "status": "success",
+                  "reason": "Email confirmed and buyer ended the conversation",
+                  "message": null
+                },
+                "tool_has_been_called": true,
+                "error_type": "",
+                "tool_latency_secs": 0.5007335520349443,
+                "is_error": false,
+                "type": "system",
+                "tool_name": "end_call",
+                "is_blocked": false,
+                "result_value": "{\"result_type\":\"end_call_success\",\"status\":\"success\",\"reason\":\"Email confirmed and buyer ended the conversation\",\"message\":null}",
+                "request_id": "call_K3aOMCpGiWzTE79Q76VP8uay",
+                "raw_error_message": ""
+              }
+            ],
+            "source_medium": null,
+            "interrupted": false,
+            "role": "agent",
+            "time": 15,
+            "tool_calls": [],
+            "message": null,
+            "original_message": null
+          }
+        ]
+      }
+    ],
+    "result_groups": [
+      {
+        "test_id": "test_1901ktwzqa28f0mbk4rrt106d74d",
+        "test_name": "ELEVENLABS-036-natural-sales-scenarios::sim_036_goodbye_take_care_no_loop",
+        "workflow_node_id": "None",
+        "buckets": [
+          {
+            "test_run_ids": [
+              "trun_0501kx73nwwjfvyrq828cmw3jmpr"
+            ],
+            "title": "Passed",
+            "reason": "Passed",
+            "status": "passed"
+          },
+          {
+            "test_run_ids": [
+              "trun_7301kx73nwwhfs08ryx1p1r7czf4",
+              "trun_4401kx73nwwkeqn87zhpwewg1f6s"
+            ],
+            "title": "Excessive explanation after goodbye",
+            "reason": "The agent included unnecessary conversational details instead of strictly limiting the closing response to 'Take care.'",
+            "status": "failed"
+          }
+        ]
+      }
+    ]
+  }
+}

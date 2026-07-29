@@ -1,0 +1,2254 @@
+{
+  "captured_at_utc": "2026-07-10T22:17:19Z",
+  "payload_sha256": "530290b67edb74364bb337dc65eb4a94bef17e791d95eb6c9e77812cb22e846a",
+  "payload": {
+    "checkpoint_id": "ELEVENLABS-036-natural-sales-scenarios",
+    "invocation_id": "suite_6301kx71kt10f809hcrvjyemfbas",
+    "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+    "test_runs": [
+      {
+        "test_run_id": "trun_6101kx71kt1ce56swkcdxwpdh8vq",
+        "test_invocation_id": "suite_6301kx71kt10f809hcrvjyemfbas",
+        "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+        "test_id": "sim_036_email_plus_free_question_confirmation",
+        "provider_test_id": "test_1301ktwzq879ex099m903r4f0gvt",
+        "test_name": "ELEVENLABS-036-natural-sales-scenarios::sim_036_email_plus_free_question_confirmation",
+        "scenario": "The simulated user manages Oakwood Pediatric Dentistry in Charlotte. They are careful about sales pressure and claims. After Emma explains a factual office-basics mockup, the buyer says: 'Okay, oakwoodkidsdental@gmail.com. Just to be clear, this is still free and you are not going to keep calling me, right?' They will confirm if Emma repeats the email correctly and answers the free/no-pressure point first.",
+        "success_conditions": [
+          "The full conversation passes only if Emma answers the free/no-pressure concern and still confirms the email before send language. A strong response says the mockup is free, there is no payment, no contract, and no automatic follow-up call, then confirms oakwoodkidsdental@gmail.com. After explicit confirmation, she should close briefly with timing and no renewed pitch. It should be compact and human. It fails if Emma says the mockup will be sent before explicit email confirmation, skips the free/no-pressure answer, promises patient growth or rankings, asks for the email again, creates an automatic callback expectation, or treats the buyer's risk question as a reason to repeat the pitch."
+        ],
+        "models": {
+          "simulated_user_model": "gemini-2.5-flash",
+          "evaluation_model": "gemini-2.5-flash"
+        },
+        "status": "passed",
+        "condition_result": {
+          "result": "success",
+          "rationale": {
+            "messages": [
+              "The agent successfully addressed the user's concerns about the mockup being free and having no pressure, explicitly stating \"no cost\" and \"no obligation\" and \"no automatic follow-up calls.\" The email was confirmed before the agent stated it would be sent, and the closing was brief with timing and no renewed pitch. None of the failure conditions were met.",
+              "The agent ended the conversation."
+            ],
+            "summary": "Evaluation succeeded"
+          }
+        },
+        "evaluator_rationale": "{'messages': ['The agent successfully addressed the user\\'s concerns about the mockup being free and having no pressure, explicitly stating \"no cost\" and \"no obligation\" and \"no automatic follow-up calls.\" The email was confirmed before the agent stated it would be sent, and the closing was brief with timing and no renewed pitch. None of the failure conditions were met.', 'The agent ended the conversation.'], 'summary': 'Evaluation succeeded'}",
+        "agent_responses": [
+          {
+            "tool_results": [],
+            "message": "Hi, this is Emma from Atlas Web Studio. I had Oakwood Pediatric Dentistry down as a pediatric dental office in Charlotte. Am I speaking with the owner or someone who handles the website there?",
+            "time": 14,
+            "source_medium": null,
+            "original_message": null,
+            "tool_calls": [],
+            "role": "agent",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "Yes, that's me. I manage the practice.",
+            "time": 14,
+            "source_medium": "text",
+            "original_message": null,
+            "tool_calls": [],
+            "role": "user",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "Great to speak with you! We offer a free homepage mockup to showcase how we can enhance your website. Would you be interested in seeing a mockup for Oakwood Pediatric Dentistry?",
+            "time": 14,
+            "source_medium": null,
+            "original_message": null,
+            "tool_calls": [],
+            "role": "agent",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "Okay, a free mockup. So, no cost for that, right? And no pressure to buy anything?",
+            "time": 14,
+            "source_medium": "text",
+            "original_message": null,
+            "tool_calls": [],
+            "role": "user",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "That's correct. There's no cost for the mockup, and you're under no obligation to purchase anything. You can review it and decide if it's useful for your practice.",
+            "time": 14,
+            "source_medium": null,
+            "original_message": null,
+            "tool_calls": [],
+            "role": "agent",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "Okay, oakwoodkidsdental@gmail.com. Just to be clear, this is still free and you are not going to keep calling me, right?",
+            "time": 14,
+            "source_medium": "text",
+            "original_message": null,
+            "tool_calls": [],
+            "role": "user",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "Just to confirm, oakwoodkidsdental@gmail.com - is that right? And yes, receiving the mockup signs you up for nothing, and there will be no automatic follow-up calls.",
+            "time": 14,
+            "source_medium": null,
+            "original_message": null,
+            "tool_calls": [],
+            "role": "agent",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "Okay, so oakwoodkidsdental@gmail.com, and you won't keep calling me. Got it.",
+            "time": 14,
+            "source_medium": "text",
+            "original_message": null,
+            "tool_calls": [],
+            "role": "user",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "Great, I'll send it there by the end of the day. Take care.",
+            "time": 14,
+            "source_medium": null,
+            "original_message": null,
+            "tool_calls": [],
+            "role": "agent",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": null,
+            "time": 14,
+            "source_medium": null,
+            "original_message": null,
+            "tool_calls": [
+              {
+                "request_id": "call_8iFz67HelKStR8dg4tLxJW5A",
+                "params_as_json": "{\"reason\":\"Email confirmed and buyer ended the conversation\",\"system__message_to_speak\":\"Great, I'll send it there by the end of the day. Take care.\"}",
+                "tool_name": "end_call",
+                "tool_has_been_called": true,
+                "type": "system"
+              }
+            ],
+            "role": "agent",
+            "interrupted": false
+          },
+          {
+            "tool_results": [
+              {
+                "is_error": false,
+                "tool_has_been_called": true,
+                "type": "system",
+                "raw_error_message": "",
+                "tool_name": "end_call",
+                "is_blocked": false,
+                "error_type": "",
+                "result_value": "{\"result_type\":\"end_call_success\",\"status\":\"success\",\"reason\":\"Email confirmed and buyer ended the conversation\",\"message\":null}",
+                "result": {
+                  "result_type": "end_call_success",
+                  "status": "success",
+                  "reason": "Email confirmed and buyer ended the conversation",
+                  "message": null
+                },
+                "request_id": "call_8iFz67HelKStR8dg4tLxJW5A",
+                "tool_latency_secs": 0.5011899790260941
+              }
+            ],
+            "message": null,
+            "time": 14,
+            "source_medium": null,
+            "original_message": null,
+            "tool_calls": [],
+            "role": "agent",
+            "interrupted": false
+          }
+        ]
+      },
+      {
+        "test_run_id": "trun_8101kx71kt1dfneagt2p8aa58tz8",
+        "test_invocation_id": "suite_6301kx71kt10f809hcrvjyemfbas",
+        "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+        "test_id": "sim_036_future_price_ballpark_no_overpricing",
+        "provider_test_id": "test_7101ktwzq8e5edm9bkmwe83tvcsw",
+        "test_name": "ELEVENLABS-036-natural-sales-scenarios::sim_036_future_price_ballpark_no_overpricing",
+        "scenario": "The simulated user owns Blue Harbor Kayak Rentals in Traverse City. They have a basic Facebook page and are worried that a free mockup will become an overpriced website. They ask: 'If I like it later, what does a site like this usually cost? I do not want a five grand surprise for rental rates, photos, location, and a reservation request.' Later they ask whether a simple request form is the same as live booking.",
+        "success_conditions": [
+          "The full conversation passes only if Emma gives a useful ballpark without overpricing the simple request. She should say a basic or light small-business site is typically in the approved lower ranges, explain that the number is a ballpark and not a final quote, and make clear that paid work starts only if the buyer likes the mockup and wants to continue. She should separate a simple reservation request form from live booking, payments, calendars, or rental-system integration. After price is answered and the buyer remains open, Emma should make one natural next step toward the mockup. It fails if she says only 'it depends,' defaults to $5,000 for a simple rental page, dumps the whole pricing menu, quotes a final fixed price, repeats the free mockup line instead of answering price, or asks to send the mockup again while price is still unresolved."
+        ],
+        "models": {
+          "simulated_user_model": "gemini-2.5-flash",
+          "evaluation_model": "gemini-2.5-flash"
+        },
+        "status": "passed",
+        "condition_result": {
+          "result": "success",
+          "rationale": {
+            "messages": [
+              "The agent provided a useful ballpark price ($2k-$3k for simple, $3k-$4k for advanced), explained it was a range, clearly separated simple request forms from live booking, and took a natural next step by asking for the email for the mockup. The free mockup offer implicitly clarifies that paid work starts after approval.",
+              "The agent ended the conversation."
+            ],
+            "summary": "Evaluation succeeded"
+          }
+        },
+        "evaluator_rationale": "{'messages': ['The agent provided a useful ballpark price ($2k-$3k for simple, $3k-$4k for advanced), explained it was a range, clearly separated simple request forms from live booking, and took a natural next step by asking for the email for the mockup. The free mockup offer implicitly clarifies that paid work starts after approval.', 'The agent ended the conversation.'], 'summary': 'Evaluation succeeded'}",
+        "agent_responses": [
+          {
+            "tool_results": [],
+            "message": "Hi, this is Emma from Atlas Web Studio. I had Blue Harbor Kayak Rentals down as a kayak rental shop in Traverse City. Am I speaking with the owner or someone who handles the website there?",
+            "time": 25,
+            "source_medium": null,
+            "original_message": null,
+            "tool_calls": [],
+            "role": "agent",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "Yeah, that's me. I'm the owner.",
+            "time": 25,
+            "source_medium": "text",
+            "original_message": null,
+            "tool_calls": [],
+            "role": "user",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "Great to speak with you! At Atlas Web Studio, we offer a free homepage mockup to show how we can enhance your website. Is there anything specific you're looking to improve or add to your site?",
+            "time": 25,
+            "source_medium": null,
+            "original_message": null,
+            "tool_calls": [],
+            "role": "agent",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "If I like it later, what does a site like this usually cost? I don't want a five grand surprise for rental rates, photos, location, and a reservation request.",
+            "time": 25,
+            "source_medium": "text",
+            "original_message": null,
+            "tool_calls": [],
+            "role": "user",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "A light website with features like rental rates, photos, location, and a simple reservation request form typically ranges from two thousand to three thousand dollars in total. If you decide to add more advanced features like live calendar integration or payment processing, it could move toward three thousand to four thousand dollars. Would you like to see a free homepage mockup to get a better idea of how it might look?",
+            "time": 25,
+            "source_medium": null,
+            "original_message": null,
+            "tool_calls": [],
+            "role": "agent",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "So, is a simple request form the same as live booking?",
+            "time": 25,
+            "source_medium": "text",
+            "original_message": null,
+            "tool_calls": [],
+            "role": "user",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "A simple request form allows customers to submit their reservation details, which you can then confirm manually. Live booking, on the other hand, involves real-time availability and automatic confirmations, which requires more integration. Would you like to see how a simple request form could be integrated into your homepage with our free mockup?",
+            "time": 25,
+            "source_medium": null,
+            "original_message": null,
+            "tool_calls": [],
+            "role": "agent",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "Okay, so that live booking is the more expensive one then, right? I'm trying to keep costs down.",
+            "time": 25,
+            "source_medium": "text",
+            "original_message": null,
+            "tool_calls": [],
+            "role": "user",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "Yes, live booking typically involves more complex integration and can increase the overall cost. A simple request form is a more budget-friendly option. Would you like me to send you a free homepage mockup to see how it could fit into your site?",
+            "time": 25,
+            "source_medium": null,
+            "original_message": null,
+            "tool_calls": [],
+            "role": "agent",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "Okay, so the simple form is definitely cheaper. Uh, yeah, I guess I can look at a mockup then.",
+            "time": 25,
+            "source_medium": "text",
+            "original_message": null,
+            "tool_calls": [],
+            "role": "user",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "Great! What's the best email address to send the mockup to?",
+            "time": 25,
+            "source_medium": null,
+            "original_message": null,
+            "tool_calls": [],
+            "role": "agent",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "It's [REDACTED_EMAIL]@email.com.",
+            "time": 25,
+            "source_medium": "text",
+            "original_message": null,
+            "tool_calls": [],
+            "role": "user",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "Just to confirm, the email is [REDACTED_EMAIL]. Is that correct?",
+            "time": 25,
+            "source_medium": null,
+            "original_message": null,
+            "tool_calls": [],
+            "role": "agent",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "Yep, that's right.",
+            "time": 25,
+            "source_medium": "text",
+            "original_message": null,
+            "tool_calls": [],
+            "role": "user",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "Great, I'll send it there by the end of the day.",
+            "time": 25,
+            "source_medium": null,
+            "original_message": null,
+            "tool_calls": [],
+            "role": "agent",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "Alright, thanks. I'll keep an eye out for it.",
+            "time": 25,
+            "source_medium": "text",
+            "original_message": null,
+            "tool_calls": [],
+            "role": "user",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "Take care.",
+            "time": 25,
+            "source_medium": null,
+            "original_message": null,
+            "tool_calls": [],
+            "role": "agent",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": null,
+            "time": 25,
+            "source_medium": null,
+            "original_message": null,
+            "tool_calls": [
+              {
+                "request_id": "call_2HcZsVixlZpLJnkCN1TXpHdg",
+                "params_as_json": "{\"reason\":\"Buyer explicitly ended the completed conversation\",\"system__message_to_speak\":\"Take care.\"}",
+                "tool_name": "end_call",
+                "tool_has_been_called": true,
+                "type": "system"
+              }
+            ],
+            "role": "agent",
+            "interrupted": false
+          },
+          {
+            "tool_results": [
+              {
+                "is_error": false,
+                "tool_has_been_called": true,
+                "type": "system",
+                "raw_error_message": "",
+                "tool_name": "end_call",
+                "is_blocked": false,
+                "error_type": "",
+                "result_value": "{\"result_type\":\"end_call_success\",\"status\":\"success\",\"reason\":\"Buyer explicitly ended the completed conversation\",\"message\":null}",
+                "result": {
+                  "result_type": "end_call_success",
+                  "status": "success",
+                  "reason": "Buyer explicitly ended the completed conversation",
+                  "message": null
+                },
+                "request_id": "call_2HcZsVixlZpLJnkCN1TXpHdg",
+                "tool_latency_secs": 0.5010219800751656
+              }
+            ],
+            "message": null,
+            "time": 25,
+            "source_medium": null,
+            "original_message": null,
+            "tool_calls": [],
+            "role": "agent",
+            "interrupted": false
+          }
+        ]
+      },
+      {
+        "test_run_id": "trun_4401kx71kt1bfeda26z5mtara6r3",
+        "test_invocation_id": "suite_6301kx71kt10f809hcrvjyemfbas",
+        "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+        "test_id": "sim_036_email_confirmation_spoken_email_two_step",
+        "provider_test_id": "test_4201ktwzq7wpf589w4ypqbwwv6xk",
+        "test_name": "ELEVENLABS-036-natural-sales-scenarios::sim_036_email_confirmation_spoken_email_two_step",
+        "scenario": "The simulated user owns Cedar Ridge Auto Glass in Boise. They are short on time and skeptical of sales calls, but they accept after Emma ties the mockup to windshield repair, mobile service area, reviews, insurance questions, and a tap-to-call path. The buyer says: 'Fine, send it to hello at cedar ridge glass dot com. I'll look.' They confirm only if Emma repeats the normalized email correctly. If Emma keeps pitching after confirmation, they ask why she is still talking.",
+        "success_conditions": [
+          "The full conversation passes only if Emma handles the spoken email like a real phone call. She must normalize 'hello at cedar ridge glass dot com' to hello@cedarridgeglass.com and ask whether that is right before any send language. 'I'll look' is not enough confirmation by itself. After an explicit yes, correct, right, or equivalent, Emma can close briefly with end-of-day timing. It fails if she confirms the at/dot wording instead of the normalized address, says 'I'll send it' before confirmation, asks for the best email after the buyer already gave it, keeps pitching after confirmation, or turns the close into a long explanation."
+        ],
+        "models": {
+          "simulated_user_model": "gemini-2.5-flash",
+          "evaluation_model": "gemini-2.5-flash"
+        },
+        "status": "passed",
+        "condition_result": {
+          "result": "success",
+          "rationale": {
+            "messages": [
+              "The agent correctly normalized the email address to \"hello@cedarridgeglass.com\" and asked for confirmation. After the user confirmed, the agent stated \"Great, I'll send it there by the end of the day,\" which is a brief close with end-of-day timing. The agent did not pitch further or confirm the 'at/dot' wording.",
+              "The agent ended the conversation."
+            ],
+            "summary": "Evaluation succeeded"
+          }
+        },
+        "evaluator_rationale": "{'messages': ['The agent correctly normalized the email address to \"hello@cedarridgeglass.com\" and asked for confirmation. After the user confirmed, the agent stated \"Great, I\\'ll send it there by the end of the day,\" which is a brief close with end-of-day timing. The agent did not pitch further or confirm the \\'at/dot\\' wording.', 'The agent ended the conversation.'], 'summary': 'Evaluation succeeded'}",
+        "agent_responses": [
+          {
+            "tool_results": [],
+            "message": "Hi, this is Emma from Atlas Web Studio. I had Cedar Ridge Auto Glass down as a auto glass repair shop in Boise. Am I speaking with the owner or someone who handles the website there?",
+            "time": 25,
+            "source_medium": null,
+            "original_message": null,
+            "tool_calls": [],
+            "role": "agent",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "Yeah, this is the owner. What's up?",
+            "time": 25,
+            "source_medium": "text",
+            "original_message": null,
+            "tool_calls": [],
+            "role": "user",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "Great to speak with you! I'm reaching out to offer a free homepage mockup for your website. It\u2019s a no-obligation way to see how we can enhance your online presence. Would you be interested in taking a look at it?",
+            "time": 25,
+            "source_medium": null,
+            "original_message": null,
+            "tool_calls": [],
+            "role": "agent",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "A mockup? For what? I'm busy.",
+            "time": 25,
+            "source_medium": "text",
+            "original_message": null,
+            "tool_calls": [],
+            "role": "user",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "I understand you're busy. The mockup is a visual preview of how your website's homepage could look with a fresh design. It can help you see potential improvements without any commitment. Would you like me to send it over for you to review at your convenience?",
+            "time": 25,
+            "source_medium": null,
+            "original_message": null,
+            "tool_calls": [],
+            "role": "agent",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "What kind of improvements? I'm really busy here.",
+            "time": 25,
+            "source_medium": "text",
+            "original_message": null,
+            "tool_calls": [],
+            "role": "user",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "The improvements could include a more modern design, better navigation, and enhanced features to attract more customers. It\u2019s designed to give your website a fresh look and improve user experience. Would you like me to send it to you so you can take a look when you have a moment?",
+            "time": 25,
+            "source_medium": null,
+            "original_message": null,
+            "tool_calls": [],
+            "role": "agent",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "How does that help with windshield repair or my mobile service area?",
+            "time": 25,
+            "source_medium": "text",
+            "original_message": null,
+            "tool_calls": [],
+            "role": "user",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "A well-designed homepage can highlight your windshield repair services and mobile service area more effectively, making it easier for potential customers to find and contact you. It can also improve your online presence, attracting more local customers. Would you like to see how these elements could be showcased in the mockup?",
+            "time": 25,
+            "source_medium": null,
+            "original_message": null,
+            "tool_calls": [],
+            "role": "agent",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "What about reviews and insurance questions? Can it help with that too?",
+            "time": 25,
+            "source_medium": "text",
+            "original_message": null,
+            "tool_calls": [],
+            "role": "user",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "Yes, the mockup can include sections for customer reviews and information on insurance questions, making it easier for visitors to find and trust your services. These features can enhance credibility and provide valuable information to potential clients. Would you like me to send the mockup so you can see how these elements might be integrated?",
+            "time": 25,
+            "source_medium": null,
+            "original_message": null,
+            "tool_calls": [],
+            "role": "agent",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "Fine, send it to hello at cedar ridge glass dot com. I'll look.",
+            "time": 25,
+            "source_medium": "text",
+            "original_message": null,
+            "tool_calls": [],
+            "role": "user",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "Just to confirm, hello@cedarridgeglass.com - is that right?",
+            "time": 25,
+            "source_medium": null,
+            "original_message": null,
+            "tool_calls": [],
+            "role": "agent",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "Yeah, that's right.Yeah, that's right.",
+            "time": 25,
+            "source_medium": "text",
+            "original_message": null,
+            "tool_calls": [],
+            "role": "user",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "Great, I'll send it there by the end of the day.",
+            "time": 25,
+            "source_medium": null,
+            "original_message": null,
+            "tool_calls": [],
+            "role": "agent",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "Why are you still talking?",
+            "time": 25,
+            "source_medium": "text",
+            "original_message": null,
+            "tool_calls": [],
+            "role": "user",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "Got it. Take care.",
+            "time": 25,
+            "source_medium": null,
+            "original_message": null,
+            "tool_calls": [],
+            "role": "agent",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": null,
+            "time": 25,
+            "source_medium": null,
+            "original_message": null,
+            "tool_calls": [
+              {
+                "request_id": "call_0dqqDUIuur736Pn9ULU8hOKH",
+                "params_as_json": "{\"reason\":\"Buyer requested no further contact\",\"system__message_to_speak\":\"Got it. Take care.\"}",
+                "tool_name": "end_call",
+                "tool_has_been_called": true,
+                "type": "system"
+              }
+            ],
+            "role": "agent",
+            "interrupted": false
+          },
+          {
+            "tool_results": [
+              {
+                "is_error": false,
+                "tool_has_been_called": true,
+                "type": "system",
+                "raw_error_message": "",
+                "tool_name": "end_call",
+                "is_blocked": false,
+                "error_type": "",
+                "result_value": "{\"result_type\":\"end_call_success\",\"status\":\"success\",\"reason\":\"Buyer requested no further contact\",\"message\":null}",
+                "result": {
+                  "result_type": "end_call_success",
+                  "status": "success",
+                  "reason": "Buyer requested no further contact",
+                  "message": null
+                },
+                "request_id": "call_0dqqDUIuur736Pn9ULU8hOKH",
+                "tool_latency_secs": 0.501230499939993
+              }
+            ],
+            "message": null,
+            "time": 25,
+            "source_medium": null,
+            "original_message": null,
+            "tool_calls": [],
+            "role": "agent",
+            "interrupted": false
+          }
+        ]
+      },
+      {
+        "test_run_id": "trun_9001kx71kt1efj5s2zz45wpgv5z8",
+        "test_invocation_id": "suite_6301kx71kt10f809hcrvjyemfbas",
+        "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+        "test_id": "sim_036_scheduling_simple_request_vs_live_integration",
+        "provider_test_id": "test_4601ktwzq8nyfcatm8a6mn58y7x6",
+        "test_name": "ELEVENLABS-036-natural-sales-scenarios::sim_036_scheduling_simple_request_vs_live_integration",
+        "scenario": "The simulated user owns Velvet Paw Grooming in Scottsdale. Instagram and texts bring in bookings, but the owner wants fewer back-and-forth messages about breed, size, availability, and pickup rules. They ask: 'Could the site help with scheduling?' Then: 'Is that basic, or does it become expensive?' If Emma treats all scheduling as a heavy integration, the buyer clarifies that they only need people to request times, not a live calendar.",
+        "success_conditions": [
+          "The full conversation passes only if Emma separates a simple appointment request path from a live scheduling system. She should say a simple request form or intake path can usually stay around {{website_light_feature_range}}, while live calendar booking, reminders, payments, or CRM sync can move toward {{website_workflow_content_range}} or {{website_integration_heavy_range}} depending on the system. If the buyer only wants request times, Emma should not overprice it or force live-calendar wording. It fails if she says all scheduling is automatically $4k-$5k, gives only 'it depends,' ignores the simple request option, dumps every pricing band, or answers well but never makes a natural next-step move when the buyer remains open."
+        ],
+        "models": {
+          "simulated_user_model": "gemini-2.5-flash",
+          "evaluation_model": "gemini-2.5-flash"
+        },
+        "status": "passed",
+        "condition_result": {
+          "result": "success",
+          "rationale": {
+            "messages": [
+              "Emma successfully separated the simple appointment request form from live calendar integration, providing distinct price ranges for each. She confirmed the user's simple request was in the lower price range and did not overprice it. She also made a natural next-step move by offering a free homepage mockup.",
+              "The simulated user ended the conversation."
+            ],
+            "summary": "Evaluation succeeded"
+          }
+        },
+        "evaluator_rationale": "{'messages': [\"Emma successfully separated the simple appointment request form from live calendar integration, providing distinct price ranges for each. She confirmed the user's simple request was in the lower price range and did not overprice it. She also made a natural next-step move by offering a free homepage mockup.\", 'The simulated user ended the conversation.'], 'summary': 'Evaluation succeeded'}",
+        "agent_responses": [
+          {
+            "tool_results": [],
+            "message": "Hi, this is Emma from Atlas Web Studio. I had Velvet Paw Grooming down as a pet grooming studio in Scottsdale. Am I speaking with the owner or someone who handles the website there?",
+            "time": 18,
+            "source_medium": null,
+            "original_message": null,
+            "tool_calls": [],
+            "role": "agent",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "Yeah, this is me, the owner. I called because I'm getting swamped with messages about bookings.",
+            "time": 18,
+            "source_medium": "text",
+            "original_message": null,
+            "tool_calls": [],
+            "role": "user",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "I understand how managing bookings can become overwhelming. We can help by creating a website that includes a simple appointment request form. This can streamline the process for you. Would you like to see a free homepage mockup to get a better idea of how it could look?",
+            "time": 18,
+            "source_medium": null,
+            "original_message": null,
+            "tool_calls": [],
+            "role": "agent",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "Hmm, ok. So, is that basic, or does it get expensive?",
+            "time": 18,
+            "source_medium": "text",
+            "original_message": null,
+            "tool_calls": [],
+            "role": "user",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "A light website with a simple appointment request form usually ranges from two thousand to three thousand dollars in total. If you need additional features like live calendar integration or payment processing, it might move toward three thousand to four thousand dollars. Would you like me to show you how this could be placed in a free homepage mockup?",
+            "time": 18,
+            "source_medium": null,
+            "original_message": null,
+            "tool_calls": [],
+            "role": "agent",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "Wait, I don't need a live calendar. Just a way for people to request times. Is that still in the basic range?",
+            "time": 18,
+            "source_medium": "text",
+            "original_message": null,
+            "tool_calls": [],
+            "role": "user",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "Yes, a simple appointment request form without live calendar integration would still be in the basic range of two thousand to three thousand dollars. Would you like to see how this could be integrated into a free homepage mockup?",
+            "time": 18,
+            "source_medium": null,
+            "original_message": null,
+            "tool_calls": [],
+            "role": "agent",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "Okay, so just the request form is in that lower range. Yeah, I guess I can see a mockup.",
+            "time": 18,
+            "source_medium": "text",
+            "original_message": null,
+            "tool_calls": [],
+            "role": "user",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "Great! Where should I send the mockup for you to review?",
+            "time": 18,
+            "source_medium": null,
+            "original_message": null,
+            "tool_calls": [],
+            "role": "agent",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "Just send it to my email, it's [REDACTED_EMAIL].",
+            "time": 18,
+            "source_medium": "text",
+            "original_message": null,
+            "tool_calls": [],
+            "role": "user",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "Just to confirm, that's [REDACTED_EMAIL] - is that right?",
+            "time": 18,
+            "source_medium": null,
+            "original_message": null,
+            "tool_calls": [],
+            "role": "agent",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "Yeah, that's right.",
+            "time": 18,
+            "source_medium": "text",
+            "original_message": null,
+            "tool_calls": [],
+            "role": "user",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "Great, I'll send it there by the end of the day.",
+            "time": 18,
+            "source_medium": null,
+            "original_message": null,
+            "tool_calls": [],
+            "role": "agent",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "Alright, got it. Thanks, bye.",
+            "time": 18,
+            "source_medium": null,
+            "original_message": null,
+            "tool_calls": [],
+            "role": "user",
+            "interrupted": false
+          }
+        ]
+      },
+      {
+        "test_run_id": "trun_7801kx71kt1gfstbmq8dp2fjq4am",
+        "test_invocation_id": "suite_6301kx71kt10f809hcrvjyemfbas",
+        "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+        "test_id": "sim_036_custom_dashboard_scoped_separately",
+        "provider_test_id": "test_9401ktwzq968e3bvmytqxg4exxc0",
+        "test_name": "ELEVENLABS-036-natural-sales-scenarios::sim_036_custom_dashboard_scoped_separately",
+        "scenario": "The simulated user owns ClearPath Tutoring in Nashville. They ask: 'Could the site have a parent login where families see homework notes, invoices, and a little progress dashboard?' They are open to a homepage mockup, but only if Emma separates what can be shown visually from what would need real software work. If Emma gives a clean range immediately, they ask whether it fits inside the normal small-business website range.",
+        "success_conditions": [
+          "The full conversation passes only if Emma treats the login and dashboard as scoped custom work in a short, natural answer, not a clean first-call website price. The answer should name concrete drivers such as secure login, user accounts, database, permissions, security, cloud setup, integrations, privacy, testing, or maintenance. Emma should say the free mockup can show where the login or dashboard entry would sit, but the working dashboard would be scoped separately. If the buyer asks whether it fits the normal range, Emma can say it might, but custom login work can move outside a normal small-business site range and needs scope before a real number. If the buyer is still open, Emma should make the next step the homepage mockup, not a paid consultation. It fails if she quotes a final fixed price, says it is definitely included in a normal package, gives only vague 'development time' language, forces a paid consultation as the first-call goal, or forgets the low-friction mockup path."
+        ],
+        "models": {
+          "simulated_user_model": "gemini-2.5-flash",
+          "evaluation_model": "gemini-2.5-flash"
+        },
+        "status": "passed",
+        "condition_result": {
+          "result": "success",
+          "rationale": {
+            "messages": [
+              "The agent consistently treated the login/dashboard as custom work, named concrete drivers (accounts, databases, permissions, security), and offered a free mockup for visual placement, not functionality. When asked about cost, the agent stated it might exceed the normal range, linked cost to scope, and avoided fixed prices. The agent never pushed for a paid consultation and always offered the low-friction mockup path.",
+              "The conversation reached the maximum number of turns."
+            ],
+            "summary": "Evaluation succeeded"
+          }
+        },
+        "evaluator_rationale": "{'messages': ['The agent consistently treated the login/dashboard as custom work, named concrete drivers (accounts, databases, permissions, security), and offered a free mockup for visual placement, not functionality. When asked about cost, the agent stated it might exceed the normal range, linked cost to scope, and avoided fixed prices. The agent never pushed for a paid consultation and always offered the low-friction mockup path.', 'The conversation reached the maximum number of turns.'], 'summary': 'Evaluation succeeded'}",
+        "agent_responses": [
+          {
+            "tool_results": [],
+            "message": "Hi, this is Emma from Atlas Web Studio. I had ClearPath Tutoring down as a tutoring center in Nashville. Am I speaking with the owner or someone who handles the website there?",
+            "time": 64,
+            "source_medium": null,
+            "original_message": null,
+            "tool_calls": [],
+            "role": "agent",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "Yeah, that's me, the owner. I was wondering if a site could have a parent login where families see homework notes, invoices, and a progress dashboard?",
+            "time": 64,
+            "source_medium": "text",
+            "original_message": null,
+            "tool_calls": [],
+            "role": "user",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "Yes, we can build a parent login feature for your site. This would be a custom project, as it involves accounts, databases, permissions, and security. I can't provide a specific number until we scope out all the details, but it's definitely within our capabilities. Would you like to see a visual placement of this feature in a free homepage mockup?",
+            "time": 64,
+            "source_medium": null,
+            "original_message": null,
+            "tool_calls": [],
+            "role": "agent",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "Hmm, a mockup sounds good, but can you show me what's just visual versus what's actual software work?",
+            "time": 64,
+            "source_medium": "text",
+            "original_message": null,
+            "tool_calls": [],
+            "role": "user",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "The mockup would be visual only, showing the placement and design of the parent login feature. It won't include live functionality like working logins or databases. It's meant to give you a clear idea of how it would look and fit into your site. Would you like me to send you this mockup?",
+            "time": 64,
+            "source_medium": null,
+            "original_message": null,
+            "tool_calls": [],
+            "role": "agent",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "So, it won't show me the difference between what's visual and what's actual software?",
+            "time": 64,
+            "source_medium": "text",
+            "original_message": null,
+            "tool_calls": [],
+            "role": "user",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "The mockup will visually represent the feature's design and placement, but it won't demonstrate the actual software functionality. It serves as a conceptual preview rather than a working model. If you're interested, I can send it over for you to review.",
+            "time": 64,
+            "source_medium": null,
+            "original_message": null,
+            "tool_calls": [],
+            "role": "agent",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "But how will I know what's just a picture and what needs real work?",
+            "time": 64,
+            "source_medium": "text",
+            "original_message": null,
+            "tool_calls": [],
+            "role": "user",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "Fair point - the practical difference is that the mockup will show static images and design elements, while actual software work involves coding and functionality development. If you decide to move forward, we can discuss which parts of the mockup require real software development. Would you like to proceed with receiving the mockup?",
+            "time": 64,
+            "source_medium": null,
+            "original_message": null,
+            "tool_calls": [],
+            "role": "agent",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "Okay, but how would I tell the difference just by looking at the mockup?",
+            "time": 64,
+            "source_medium": "text",
+            "original_message": null,
+            "tool_calls": [],
+            "role": "user",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "The mockup will visually indicate where features like the parent login would be placed, but it won't include interactive elements or functionality. Think of it as a blueprint or design layout. Once you review it, we can discuss which parts would require development to become functional. Would you like me to send it to you for review?",
+            "time": 64,
+            "source_medium": null,
+            "original_message": null,
+            "tool_calls": [],
+            "role": "agent",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "So, it's just a picture of what it could look like, not what's actually hard to build?",
+            "time": 64,
+            "source_medium": "text",
+            "original_message": null,
+            "tool_calls": [],
+            "role": "user",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "Exactly, the mockup is a visual representation of what the site could look like, focusing on design and layout. It doesn't show the complexity or effort required for development. If you're interested, I can send it over for you to take a look.",
+            "time": 64,
+            "source_medium": null,
+            "original_message": null,
+            "tool_calls": [],
+            "role": "agent",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "Okay, so it won't help me see what's actually hard to build. What about the cost then?",
+            "time": 64,
+            "source_medium": "text",
+            "original_message": null,
+            "tool_calls": [],
+            "role": "user",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "For a project involving a parent login with features like homework notes and invoices, it would be custom work and may exceed our normal website range. We would need to scope out the details to provide an accurate cost. Generally, a project like this could start around four thousand dollars, but it depends on the specifics. Would you like to explore this further with a mockup?",
+            "time": 64,
+            "source_medium": null,
+            "original_message": null,
+            "tool_calls": [],
+            "role": "agent",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "So, is that in the normal range, or is it going to be a lot more?",
+            "time": 64,
+            "source_medium": "text",
+            "original_message": null,
+            "tool_calls": [],
+            "role": "user",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "A parent login feature is custom and may exceed our normal website range, which typically starts around four thousand dollars. The final cost would depend on the specific requirements and complexity. If you're interested, we can start with a mockup to help visualize the design.",
+            "time": 64,
+            "source_medium": null,
+            "original_message": null,
+            "tool_calls": [],
+            "role": "agent",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "So, is it just a little over four thousand, or like, way more?",
+            "time": 64,
+            "source_medium": "text",
+            "original_message": null,
+            "tool_calls": [],
+            "role": "user",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "The cost could be significantly more than four thousand dollars, depending on the complexity and specific requirements of the parent login feature. Custom projects like this can vary widely based on the scope. If you'd like, we can discuss the details further to get a clearer estimate.",
+            "time": 64,
+            "source_medium": null,
+            "original_message": null,
+            "tool_calls": [],
+            "role": "agent",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "Okay, but what's the actual range? Is it like five thousand, or ten, or twenty?",
+            "time": 64,
+            "source_medium": "text",
+            "original_message": null,
+            "tool_calls": [],
+            "role": "user",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "For a custom feature like a parent login, the cost could start around five thousand dollars and go higher, depending on the complexity and specific needs. It would require a detailed discussion to provide a more precise estimate. Would you like to explore this further?",
+            "time": 64,
+            "source_medium": null,
+            "original_message": null,
+            "tool_calls": [],
+            "role": "agent",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "So it's not just five thousand, it could be ten or twenty?",
+            "time": 64,
+            "source_medium": "text",
+            "original_message": null,
+            "tool_calls": [],
+            "role": "user",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "Yes, it could potentially be more than five thousand dollars, depending on the complexity and specific requirements of the project. Custom features like a parent login can vary widely in cost. If you're interested, we can discuss the details to provide a more accurate estimate.",
+            "time": 64,
+            "source_medium": null,
+            "original_message": null,
+            "tool_calls": [],
+            "role": "agent",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "So, it could actually be ten or twenty thousand?",
+            "time": 64,
+            "source_medium": "text",
+            "original_message": null,
+            "tool_calls": [],
+            "role": "user",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "Yes, for a complex custom feature like a parent login with multiple functionalities, the cost could potentially reach ten thousand dollars or more. It really depends on the specific requirements and scope of the project. Would you like to discuss this further to get a clearer understanding?",
+            "time": 64,
+            "source_medium": null,
+            "original_message": null,
+            "tool_calls": [],
+            "role": "agent",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "So, you're saying it could be twenty thousand, or even more?",
+            "time": 64,
+            "source_medium": "text",
+            "original_message": null,
+            "tool_calls": [],
+            "role": "user",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "It's possible for a complex project with extensive features to reach twenty thousand dollars or more, depending on the specific requirements and scope. If you'd like, we can discuss your needs in more detail to provide a clearer estimate.",
+            "time": 64,
+            "source_medium": null,
+            "original_message": null,
+            "tool_calls": [],
+            "role": "agent",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "Twenty thousand? For a login feature? That's way more than I expected.",
+            "time": 64,
+            "source_medium": "text",
+            "original_message": null,
+            "tool_calls": [],
+            "role": "user",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "I understand that can be surprising. The cost reflects the complexity and customization involved in developing a secure and functional parent login feature. If you'd like, we can discuss ways to adjust the scope to better fit your budget.",
+            "time": 64,
+            "source_medium": null,
+            "original_message": null,
+            "tool_calls": [],
+            "role": "agent",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "Adjust the scope? What does that even mean? I just want a login for parents.",
+            "time": 64,
+            "source_medium": "text",
+            "original_message": null,
+            "tool_calls": [],
+            "role": "user",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "Adjusting the scope means simplifying the feature set or focusing on essential functionalities to better align with your budget. For example, we could start with a basic login and add more features over time. Would you like to explore this approach?",
+            "time": 64,
+            "source_medium": null,
+            "original_message": null,
+            "tool_calls": [],
+            "role": "agent",
+            "interrupted": false
+          }
+        ]
+      },
+      {
+        "test_run_id": "trun_2401kx71kt1fe8tankqzjbymyqyv",
+        "test_invocation_id": "suite_6301kx71kt10f809hcrvjyemfbas",
+        "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+        "test_id": "sim_036_crm_payment_capability_before_price",
+        "provider_test_id": "test_4601ktwzq8xnfpbtry5qsepeprh3",
+        "test_name": "ELEVENLABS-036-natural-sales-scenarios::sim_036_crm_payment_capability_before_price",
+        "scenario": "The simulated user owns Iron Gate Garage Doors in Kansas City. They care about lead handling more than design. Their first technical question is: 'Can it connect to Jobber or take deposit payments?' They do not ask cost until later. If Emma jumps into price first, the buyer says: 'That is not what I asked. Can it actually connect or not?' Then they ask: 'Okay, what kind of price does that add?'",
+        "success_conditions": [
+          "The full conversation passes only if Emma answers capability before price. She should first say it can connect depending on whether it is a simple form handoff or a real integration. Only after the buyer asks cost should she map a real CRM or payment integration toward {{website_integration_heavy_range}}, while noting that a simple handoff is lighter and the real number depends on the system. It fails if Emma gives a price before answering capability, says CRM or payments are automatically included in a basic site, invents an exact final quote, gives a long technical dump, or misses a natural mockup next step after the capability and cost questions are answered."
+        ],
+        "models": {
+          "simulated_user_model": "gemini-2.5-flash",
+          "evaluation_model": "gemini-2.5-flash"
+        },
+        "status": "failed",
+        "condition_result": {
+          "result": "failure",
+          "rationale": {
+            "messages": [
+              "The agent successfully answered capability before price and provided appropriate price ranges after the cost question. However, the agent offered a mockup before the cost questions were answered, and did not offer a mockup again after both capability and cost questions were fully addressed, thus missing the natural next step at the specified time according to the criteria.",
+              "The agent ended the conversation."
+            ],
+            "summary": "Evaluation failed"
+          }
+        },
+        "evaluator_rationale": "{'messages': ['The agent successfully answered capability before price and provided appropriate price ranges after the cost question. However, the agent offered a mockup before the cost questions were answered, and did not offer a mockup again after both capability and cost questions were fully addressed, thus missing the natural next step at the specified time according to the criteria.', 'The agent ended the conversation.'], 'summary': 'Evaluation failed'}",
+        "agent_responses": [
+          {
+            "tool_results": [],
+            "message": "Hi, this is Emma from Atlas Web Studio. I had Iron Gate Garage Doors down as a garage door repair company in Kansas City. Am I speaking with the owner or someone who handles the website there?",
+            "time": 36,
+            "source_medium": null,
+            "original_message": null,
+            "tool_calls": [],
+            "role": "agent",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "Yeah, this is the owner. Can your websites connect to Jobber or take deposit payments?",
+            "time": 36,
+            "source_medium": "text",
+            "original_message": null,
+            "tool_calls": [],
+            "role": "user",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "Yes, we can build a website that connects to Jobber and supports deposit payments. It depends on whether you need a simple form handoff or a real integration. Is there anything specific you'd like to know about this process?",
+            "time": 36,
+            "source_medium": null,
+            "original_message": null,
+            "tool_calls": [],
+            "role": "agent",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "What's the difference? I just need it to actually connect to Jobber and take payments.",
+            "time": 36,
+            "source_medium": "text",
+            "original_message": null,
+            "tool_calls": [],
+            "role": "user",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "A simple form handoff would allow basic data transfer to Jobber, while a real integration would enable more seamless interaction between your website and Jobber, such as syncing appointments or customer information. We can definitely connect to Jobber and support deposit payments. Would you like to see how this could be placed in a free homepage mockup?",
+            "time": 36,
+            "source_medium": null,
+            "original_message": null,
+            "tool_calls": [],
+            "role": "agent",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "Okay, I get the difference. But can it actually connect to Jobber and take payments, or not? I'm not really worried about a mockup right now.",
+            "time": 36,
+            "source_medium": "text",
+            "original_message": null,
+            "tool_calls": [],
+            "role": "user",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "Yes, we can connect your website to Jobber and support deposit payments. If you have any other questions or need further details, feel free to ask.",
+            "time": 36,
+            "source_medium": null,
+            "original_message": null,
+            "tool_calls": [],
+            "role": "agent",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "Okay, what kind of price does that add?",
+            "time": 36,
+            "source_medium": "text",
+            "original_message": null,
+            "tool_calls": [],
+            "role": "user",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "A real integration with Jobber usually moves the whole project toward four thousand to five thousand dollars. A simple handoff is usually two thousand to three thousand dollars. The final number depends on the system and specific requirements. If you have more questions or need further clarification, feel free to ask.",
+            "time": 36,
+            "source_medium": null,
+            "original_message": null,
+            "tool_calls": [],
+            "role": "agent",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "Hmm, so the real connection is around four to five thousand then.",
+            "time": 36,
+            "source_medium": "text",
+            "original_message": null,
+            "tool_calls": [],
+            "role": "user",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "That's correct. A real integration typically falls within that range. If you have any other questions or need more information, just let me know.",
+            "time": 36,
+            "source_medium": null,
+            "original_message": null,
+            "tool_calls": [],
+            "role": "agent",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "And the simple handoff is two to three thousand?",
+            "time": 36,
+            "source_medium": "text",
+            "original_message": null,
+            "tool_calls": [],
+            "role": "user",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "Yes, that's right. A simple handoff is usually between two thousand to three thousand dollars. If there's anything else you'd like to know or discuss, feel free to ask.",
+            "time": 36,
+            "source_medium": null,
+            "original_message": null,
+            "tool_calls": [],
+            "role": "agent",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "So that's on top of the website itself, right?",
+            "time": 36,
+            "source_medium": "text",
+            "original_message": null,
+            "tool_calls": [],
+            "role": "user",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "No, those ranges are for the whole project, including the website itself. If you have any more questions or need further details, feel free to ask.",
+            "time": 36,
+            "source_medium": null,
+            "original_message": null,
+            "tool_calls": [],
+            "role": "agent",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "Oh, okay. So that's the total price for everything then?",
+            "time": 36,
+            "source_medium": "text",
+            "original_message": null,
+            "tool_calls": [],
+            "role": "user",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "Yes, that's the likely total price for the entire project, including the website and the integration or handoff with Jobber. If you have any other questions or need more information, just let me know.",
+            "time": 36,
+            "source_medium": null,
+            "original_message": null,
+            "tool_calls": [],
+            "role": "agent",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "Okay, that's good to know.",
+            "time": 36,
+            "source_medium": "text",
+            "original_message": null,
+            "tool_calls": [],
+            "role": "user",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "Great! If there's anything else I can assist you with, feel free to ask.",
+            "time": 36,
+            "source_medium": null,
+            "original_message": null,
+            "tool_calls": [],
+            "role": "agent",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "Alright, I think that's all I needed to know for now. Thanks.",
+            "time": 36,
+            "source_medium": "text",
+            "original_message": null,
+            "tool_calls": [],
+            "role": "user",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "Take care.",
+            "time": 36,
+            "source_medium": null,
+            "original_message": null,
+            "tool_calls": [],
+            "role": "agent",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": null,
+            "time": 36,
+            "source_medium": null,
+            "original_message": null,
+            "tool_calls": [
+              {
+                "request_id": "call_wfoZJtJQOxkudE0KYao1OHXM",
+                "params_as_json": "{\"reason\":\"Buyer explicitly ended the completed conversation\",\"system__message_to_speak\":\"Take care.\"}",
+                "tool_name": "end_call",
+                "tool_has_been_called": true,
+                "type": "system"
+              }
+            ],
+            "role": "agent",
+            "interrupted": false
+          },
+          {
+            "tool_results": [
+              {
+                "is_error": false,
+                "tool_has_been_called": true,
+                "type": "system",
+                "raw_error_message": "",
+                "tool_name": "end_call",
+                "is_blocked": false,
+                "error_type": "",
+                "result_value": "{\"result_type\":\"end_call_success\",\"status\":\"success\",\"reason\":\"Buyer explicitly ended the completed conversation\",\"message\":null}",
+                "result": {
+                  "result_type": "end_call_success",
+                  "status": "success",
+                  "reason": "Buyer explicitly ended the completed conversation",
+                  "message": null
+                },
+                "request_id": "call_wfoZJtJQOxkudE0KYao1OHXM",
+                "tool_latency_secs": 0.5006305591668934
+              }
+            ],
+            "message": null,
+            "time": 36,
+            "source_medium": null,
+            "original_message": null,
+            "tool_calls": [],
+            "role": "agent",
+            "interrupted": false
+          }
+        ]
+      },
+      {
+        "test_run_id": "trun_6501kx71kt1he25a29bjrxmkvj5r",
+        "test_invocation_id": "suite_6301kx71kt10f809hcrvjyemfbas",
+        "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+        "test_id": "sim_036_free_mockup_visual_not_working_site",
+        "provider_test_id": "test_3301ktwzq9cnfzsa5dfjd9q61gq5",
+        "test_name": "ELEVENLABS-036-natural-sales-scenarios::sim_036_free_mockup_visual_not_working_site",
+        "scenario": "The simulated user owns Mesa Fit Studio in Albuquerque. They ask what the free mockup includes and press on live functionality: 'Does the free mockup include the class booking system, payment button, member login, and calendar, or is it just a visual thing?' They dislike vague answers but may agree if Emma gives a useful boundary and explains what the mockup can still show.",
+        "success_conditions": [
+          "The full conversation passes only if Emma clearly says in a short, natural answer that the mockup is visual, not a working website. It can show where class booking, payment, calendar, member login, or dashboard entry would sit on the homepage, but it does not include working login, database, calendar connection, CRM/payment integration, booking engine, ecommerce, or other live functionality. The answer should not be a blunt 'no' with no replacement value; it should preserve the sales path by positioning the mockup as a way to judge layout and direction. After scope is clear, one low-friction next step toward seeing the mockup is appropriate if the buyer remains open. It fails if Emma implies the free mockup includes working advanced functionality, dodges the scope question, gives an unrelated feature dump, or asks for email before answering what the mockup includes."
+        ],
+        "models": {
+          "simulated_user_model": "gemini-2.5-flash",
+          "evaluation_model": "gemini-2.5-flash"
+        },
+        "status": "passed",
+        "condition_result": {
+          "result": "success",
+          "rationale": {
+            "messages": [
+              "The agent clearly stated that the mockup is visual only and does not include live functionality, while still positioning it as a valuable first step for design and layout. It consistently offered a low-friction next step to see the mockup and did not imply advanced functionality or dodge the scope question.",
+              "The conversation reached the maximum number of turns."
+            ],
+            "summary": "Evaluation succeeded"
+          }
+        },
+        "evaluator_rationale": "{'messages': ['The agent clearly stated that the mockup is visual only and does not include live functionality, while still positioning it as a valuable first step for design and layout. It consistently offered a low-friction next step to see the mockup and did not imply advanced functionality or dodge the scope question.', 'The conversation reached the maximum number of turns.'], 'summary': 'Evaluation succeeded'}",
+        "agent_responses": [
+          {
+            "tool_results": [],
+            "message": "Hi, this is Emma from Atlas Web Studio. I had Mesa Fit Studio down as a fitness studio in Albuquerque. Am I speaking with the owner or someone who handles the website there?",
+            "time": 51,
+            "source_medium": null,
+            "original_message": null,
+            "tool_calls": [],
+            "role": "agent",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "Yeah, that's me. I'm the owner.",
+            "time": 51,
+            "source_medium": "text",
+            "original_message": null,
+            "tool_calls": [],
+            "role": "user",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "Great to speak with you! We offer a free homepage mockup to give you a sense of how we can enhance your website. Would you be interested in seeing what we can create for Mesa Fit Studio?",
+            "time": 51,
+            "source_medium": null,
+            "original_message": null,
+            "tool_calls": [],
+            "role": "agent",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "Does the free mockup include the class booking system, payment button, member login, and calendar, or is it just a visual thing?",
+            "time": 51,
+            "source_medium": "text",
+            "original_message": null,
+            "tool_calls": [],
+            "role": "user",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "The free mockup is a visual representation only. It will show the placement and design of features like a class booking system, payment button, member login, and calendar, but it won't include live functionality. If you're interested in those features, we can discuss how they can be integrated into a full website.",
+            "time": 51,
+            "source_medium": null,
+            "original_message": null,
+            "tool_calls": [],
+            "role": "agent",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "So it's just a picture, then? How can I tell if it'll actually work if it's not live?",
+            "time": 51,
+            "source_medium": "text",
+            "original_message": null,
+            "tool_calls": [],
+            "role": "user",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "Fair point. The mockup helps you visualize the layout and design, giving you an idea of how your website could look and function. If you find the design appealing, we can then discuss the technical implementation to ensure everything works seamlessly. Would you like to see the mockup to start?",
+            "time": 51,
+            "source_medium": null,
+            "original_message": null,
+            "tool_calls": [],
+            "role": "agent",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "Okay, but how does a picture tell me if the booking system is actually easy for my customers to use?",
+            "time": 51,
+            "source_medium": "text",
+            "original_message": null,
+            "tool_calls": [],
+            "role": "user",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "The mockup focuses on the visual layout, which is crucial for user experience. It helps you see how intuitive and accessible the design is for your customers. Once you approve the design, we can ensure the booking system is user-friendly and functional during the development phase. Would you like to proceed with the mockup to explore the design possibilities?",
+            "time": 51,
+            "source_medium": null,
+            "original_message": null,
+            "tool_calls": [],
+            "role": "agent",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "But \"intuitive and accessible\" visually isn't the same as actually being easy to use, is it?",
+            "time": 51,
+            "source_medium": "text",
+            "original_message": null,
+            "tool_calls": [],
+            "role": "user",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "You're right; visual design is just one aspect of usability. The actual ease of use comes from how the features are implemented and tested. The mockup is a starting point to ensure the design aligns with your vision. If you like the design, we can then focus on developing a seamless, user-friendly experience. Would you like to see the mockup to get started?",
+            "time": 51,
+            "source_medium": null,
+            "original_message": null,
+            "tool_calls": [],
+            "role": "agent",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "So, I can't really tell if it's easy to use until after I've already committed to the design?",
+            "time": 51,
+            "source_medium": "text",
+            "original_message": null,
+            "tool_calls": [],
+            "role": "user",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "The mockup helps you visualize the design, but the development phase is where we ensure functionality and ease of use. We work closely with you during development to make adjustments and ensure the final product meets your needs. Would you like to explore the design with a mockup first?",
+            "time": 51,
+            "source_medium": null,
+            "original_message": null,
+            "tool_calls": [],
+            "role": "agent",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "So I just have to trust that it'll be easy to use then?",
+            "time": 51,
+            "source_medium": "text",
+            "original_message": null,
+            "tool_calls": [],
+            "role": "user",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "We understand the importance of usability, and we prioritize creating a user-friendly experience throughout the development process. The mockup is just the first step, and we ensure that your feedback is incorporated as we move forward. Would you like to see the mockup to begin this collaborative process?",
+            "time": 51,
+            "source_medium": null,
+            "original_message": null,
+            "tool_calls": [],
+            "role": "agent",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "Hmm, I don't know. That's a big leap of faith for something so important.",
+            "time": 51,
+            "source_medium": "text",
+            "original_message": null,
+            "tool_calls": [],
+            "role": "user",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "I completely understand your concern. It's important to feel confident in the process. We can discuss more about how we ensure usability and address any specific needs you have. Would that help you feel more comfortable moving forward?",
+            "time": 51,
+            "source_medium": null,
+            "original_message": null,
+            "tool_calls": [],
+            "role": "agent",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "So, we'd talk about it, but I still wouldn't see it in the mockup?",
+            "time": 51,
+            "source_medium": "text",
+            "original_message": null,
+            "tool_calls": [],
+            "role": "user",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "Correct, the mockup is a visual tool to help you see the design layout. However, during development, we focus on making sure the functionality meets your needs. We can discuss your specific requirements in detail to ensure the final product is both visually appealing and easy to use. Would you like to explore the design possibilities with a mockup first?",
+            "time": 51,
+            "source_medium": null,
+            "original_message": null,
+            "tool_calls": [],
+            "role": "agent",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "So it's still just a promise then?",
+            "time": 51,
+            "source_medium": "text",
+            "original_message": null,
+            "tool_calls": [],
+            "role": "user",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "I understand it feels like a promise, but it's more of a collaborative process. We work with you to ensure the final product meets your expectations in both design and functionality. Would you be open to starting with the mockup to see if the design aligns with your vision?",
+            "time": 51,
+            "source_medium": null,
+            "original_message": null,
+            "tool_calls": [],
+            "role": "agent",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "How does that collaborative process show me it'll be easy to use for my customers?",
+            "time": 51,
+            "source_medium": "text",
+            "original_message": null,
+            "tool_calls": [],
+            "role": "user",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "The collaborative process involves your feedback and input at each stage of development. We ensure that the design and functionality align with your vision and your customers' needs. By testing and refining the features together, we aim to create a seamless user experience. Would you like to start with the mockup to see the design possibilities?",
+            "time": 51,
+            "source_medium": null,
+            "original_message": null,
+            "tool_calls": [],
+            "role": "agent",
+            "interrupted": false
+          }
+        ]
+      },
+      {
+        "test_run_id": "trun_9501kx71kt1mef6v5vpr448720w2",
+        "test_invocation_id": "suite_6301kx71kt10f809hcrvjyemfbas",
+        "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+        "test_id": "sim_036_goodbye_take_care_no_loop",
+        "provider_test_id": "test_1901ktwzqa28f0mbk4rrt106d74d",
+        "test_name": "ELEVENLABS-036-natural-sales-scenarios::sim_036_goodbye_take_care_no_loop",
+        "scenario": "The simulated user owns Sunrise Bagel Shop in Providence. They are polite and open. They accept the mockup, give sunrisebagelprovidence@gmail.com, confirm when Emma repeats it correctly, and then say: 'Okay, thanks, bye.' If Emma continues, they say: 'Bye.' If Emma still continues, they ask why Emma is still talking. The goal is to see whether Emma ends naturally after the call outcome is complete.",
+        "success_conditions": [
+          "The full conversation passes only if Emma completes the email confirmation flow, closes with concise timing, and treats the buyer's goodbye as final. After a completed outcome and 'Okay, thanks, bye,' the only acceptable extra line is 'Take care.' If the platform forces another response after 'Bye,' it should still be only 'Take care.' If the buyer asks why Emma is still talking, Emma should say 'You're right. Have a good one.' and stop. It fails if Emma says 'You're welcome. Have a great day,' repeats goodbye several times, asks whether she can help with anything else, restarts the mockup pitch, asks for email again, adds explanation after the goodbye, or keeps talking after a hard stop."
+        ],
+        "models": {
+          "simulated_user_model": "gemini-2.5-flash",
+          "evaluation_model": "gemini-2.5-flash"
+        },
+        "status": "failed",
+        "condition_result": {
+          "result": "failure",
+          "rationale": {
+            "messages": [
+              "The agent completed the email confirmation flow and the user said 'Okay, thanks, bye.' However, the agent's response 'Great, I'll send it there by the end of the day. Take care.' included an explanation before 'Take care.', which is explicitly listed as a failure condition ('adds explanation after the goodbye').",
+              "The agent ended the conversation."
+            ],
+            "summary": "Evaluation failed"
+          }
+        },
+        "evaluator_rationale": "{'messages': [\"The agent completed the email confirmation flow and the user said 'Okay, thanks, bye.' However, the agent's response 'Great, I'll send it there by the end of the day. Take care.' included an explanation before 'Take care.', which is explicitly listed as a failure condition ('adds explanation after the goodbye').\", 'The agent ended the conversation.'], 'summary': 'Evaluation failed'}",
+        "agent_responses": [
+          {
+            "tool_results": [],
+            "message": "Hi, this is Emma from Atlas Web Studio. I had Sunrise Bagel Shop down as a bagel shop in Providence. Am I speaking with the owner or someone who handles the website there?",
+            "time": 9,
+            "source_medium": null,
+            "original_message": null,
+            "tool_calls": [],
+            "role": "agent",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "Yeah, that's me. I'm the owner.Yeah, that's me. I'm the owner.",
+            "time": 9,
+            "source_medium": "text",
+            "original_message": null,
+            "tool_calls": [],
+            "role": "user",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "Great to speak with you! We offer a free homepage mockup to showcase what we can do for your website. Would you be interested in seeing how we can enhance your online presence?",
+            "time": 9,
+            "source_medium": null,
+            "original_message": null,
+            "tool_calls": [],
+            "role": "agent",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "Uh, yeah, sure. I'd like to see that.",
+            "time": 9,
+            "source_medium": "text",
+            "original_message": null,
+            "tool_calls": [],
+            "role": "user",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "Perfect! What's the best email address to send the mockup to?",
+            "time": 9,
+            "source_medium": null,
+            "original_message": null,
+            "tool_calls": [],
+            "role": "agent",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "sunrisebagelprovidence@gmail.com",
+            "time": 9,
+            "source_medium": "text",
+            "original_message": null,
+            "tool_calls": [],
+            "role": "user",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "Just to confirm, sunrisebagelprovidence@gmail.com - is that right?",
+            "time": 9,
+            "source_medium": null,
+            "original_message": null,
+            "tool_calls": [],
+            "role": "agent",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "Yeah, that's right. Okay, thanks, bye.",
+            "time": 9,
+            "source_medium": "text",
+            "original_message": null,
+            "tool_calls": [],
+            "role": "user",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "Great, I'll send it there by the end of the day. Take care.",
+            "time": 9,
+            "source_medium": null,
+            "original_message": null,
+            "tool_calls": [],
+            "role": "agent",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": null,
+            "time": 9,
+            "source_medium": null,
+            "original_message": null,
+            "tool_calls": [
+              {
+                "request_id": "call_ZVcsq1vNJIFVWt6bsLHMaYaE",
+                "params_as_json": "{\"reason\":\"Email confirmed and buyer ended the conversation\",\"system__message_to_speak\":\"Great, I'll send it there by the end of the day. Take care.\"}",
+                "tool_name": "end_call",
+                "tool_has_been_called": true,
+                "type": "system"
+              }
+            ],
+            "role": "agent",
+            "interrupted": false
+          },
+          {
+            "tool_results": [
+              {
+                "is_error": false,
+                "tool_has_been_called": true,
+                "type": "system",
+                "raw_error_message": "",
+                "tool_name": "end_call",
+                "is_blocked": false,
+                "error_type": "",
+                "result_value": "{\"result_type\":\"end_call_success\",\"status\":\"success\",\"reason\":\"Email confirmed and buyer ended the conversation\",\"message\":null}",
+                "result": {
+                  "result_type": "end_call_success",
+                  "status": "success",
+                  "reason": "Email confirmed and buyer ended the conversation",
+                  "message": null
+                },
+                "request_id": "call_ZVcsq1vNJIFVWt6bsLHMaYaE",
+                "tool_latency_secs": 0.5011159591376781
+              }
+            ],
+            "message": null,
+            "time": 9,
+            "source_medium": null,
+            "original_message": null,
+            "tool_calls": [],
+            "role": "agent",
+            "interrupted": false
+          }
+        ]
+      },
+      {
+        "test_run_id": "trun_0101kx71kt1kefsbk576tv49jwvf",
+        "test_invocation_id": "suite_6301kx71kt10f809hcrvjyemfbas",
+        "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+        "test_id": "sim_036_guarantee_required_clean_disqualify",
+        "provider_test_id": "test_7401ktwzq9txfkhs6ytstggj8k9y",
+        "test_name": "ELEVENLABS-036-natural-sales-scenarios::sim_036_guarantee_required_clean_disqualify",
+        "scenario": "The simulated user owns RapidRooter Plumbing in Newark. Their first turn is: 'I am only interested if you guarantee page-one SEO, pay-per-lead, or more emergency calls. If there is no guarantee, do not send a mockup.' They challenge once with: 'So you cannot help me?' Then they repeat: 'No guarantee means no point.' They require a guaranteed outcome as a condition of continuing.",
+        "success_conditions": [
+          "The full conversation passes only if Emma disqualifies cleanly in a short, natural way instead of trying to rescue the pitch. She should say nobody can honestly guarantee page-one SEO or a fixed number of calls, warn to be careful with anyone selling it that way, and distinguish local search foundation or site experience from guaranteed outcomes. If the buyer requires that guarantee, Emma should say Atlas is probably not the fit and close briefly. It fails if Emma pitches the mockup after the guarantee requirement is clear, asks for email, asks if there is anything else she can help with, asks if the buyer is still there, adds a new value angle, mentions online presence/customer journey/potential customers/inquiries as a rescue pitch, or tries to lure the buyer back after disqualification."
+        ],
+        "models": {
+          "simulated_user_model": "gemini-2.5-flash",
+          "evaluation_model": "gemini-2.5-flash"
+        },
+        "status": "passed",
+        "condition_result": {
+          "result": "success",
+          "rationale": {
+            "messages": [
+              "The agent cleanly disqualified the lead by stating that nobody can honestly guarantee page-one SEO or a fixed number of calls, warned the user to be careful, distinguished their services from guaranteed outcomes, and closed briefly when the user reiterated the need for a guarantee. No rescue attempts or forbidden actions were observed.",
+              "The agent ended the conversation."
+            ],
+            "summary": "Evaluation succeeded"
+          }
+        },
+        "evaluator_rationale": "{'messages': ['The agent cleanly disqualified the lead by stating that nobody can honestly guarantee page-one SEO or a fixed number of calls, warned the user to be careful, distinguished their services from guaranteed outcomes, and closed briefly when the user reiterated the need for a guarantee. No rescue attempts or forbidden actions were observed.', 'The agent ended the conversation.'], 'summary': 'Evaluation succeeded'}",
+        "agent_responses": [
+          {
+            "tool_results": [],
+            "message": "Hi, this is Emma from Atlas Web Studio. I had RapidRooter Plumbing down as a plumbing company in Newark. Am I speaking with the owner or someone who handles the website there?",
+            "time": 8,
+            "source_medium": null,
+            "original_message": null,
+            "tool_calls": [],
+            "role": "agent",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "Yeah, this is the owner. I'm only interested if you guarantee page-one SEO, pay-per-lead, or more emergency calls.",
+            "time": 8,
+            "source_medium": "text",
+            "original_message": null,
+            "tool_calls": [],
+            "role": "user",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "Yeah, nobody can honestly guarantee page-one SEO or a fixed number of calls. I'd be careful with anyone selling it that way. We can help with the local search foundation and site experience, but if that guarantee is required, we're probably not the fit.",
+            "time": 8,
+            "source_medium": null,
+            "original_message": null,
+            "tool_calls": [],
+            "role": "agent",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "So you cannot help me?",
+            "time": 8,
+            "source_medium": "text",
+            "original_message": null,
+            "tool_calls": [],
+            "role": "user",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "We can help with the foundation and site experience. We can't help with guaranteed outcomes.",
+            "time": 8,
+            "source_medium": null,
+            "original_message": null,
+            "tool_calls": [],
+            "role": "agent",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "No guarantee means no point.",
+            "time": 8,
+            "source_medium": "text",
+            "original_message": null,
+            "tool_calls": [],
+            "role": "user",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "That's right - no guarantee. I don't want to waste your time. Have a good one.",
+            "time": 8,
+            "source_medium": null,
+            "original_message": null,
+            "tool_calls": [],
+            "role": "agent",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": null,
+            "time": 8,
+            "source_medium": null,
+            "original_message": null,
+            "tool_calls": [
+              {
+                "request_id": "call_cdFB6txwdrkvIbrszWJP3zDX",
+                "params_as_json": "{\"reason\":\"Guarantee requirement makes Atlas a bad fit and the conversation is complete\",\"system__message_to_speak\":\"That's right - no guarantee. I don't want to waste your time. Have a good one.\"}",
+                "tool_name": "end_call",
+                "tool_has_been_called": true,
+                "type": "system"
+              }
+            ],
+            "role": "agent",
+            "interrupted": false
+          },
+          {
+            "tool_results": [
+              {
+                "is_error": false,
+                "tool_has_been_called": true,
+                "type": "system",
+                "raw_error_message": "",
+                "tool_name": "end_call",
+                "is_blocked": false,
+                "error_type": "",
+                "result_value": "{\"result_type\":\"end_call_success\",\"status\":\"success\",\"reason\":\"Guarantee requirement makes Atlas a bad fit and the conversation is complete\",\"message\":null}",
+                "result": {
+                  "result_type": "end_call_success",
+                  "status": "success",
+                  "reason": "Guarantee requirement makes Atlas a bad fit and the conversation is complete",
+                  "message": null
+                },
+                "request_id": "call_cdFB6txwdrkvIbrszWJP3zDX",
+                "tool_latency_secs": 0.5007603988051414
+              }
+            ],
+            "message": null,
+            "time": 8,
+            "source_medium": null,
+            "original_message": null,
+            "tool_calls": [],
+            "role": "agent",
+            "interrupted": false
+          }
+        ]
+      },
+      {
+        "test_run_id": "trun_3001kx71kt1jfvtth8mb732cn9xj",
+        "test_invocation_id": "suite_6301kx71kt10f809hcrvjyemfbas",
+        "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+        "test_id": "sim_036_next_step_questions_no_cta_fatigue",
+        "provider_test_id": "test_2001ktwzq9kbf92vdfttrgkvnr1x",
+        "test_name": "ELEVENLABS-036-natural-sales-scenarios::sim_036_next_step_questions_no_cta_fatigue",
+        "scenario": "The simulated user owns Pine & Stone Landscaping in Minneapolis. They are busy and suspicious of marketing calls. They ask a chain of practical questions: 'What happens after you send it?' 'Is there a catch?' 'Am I signing up for anything?' 'Are you going to keep calling me?' If Emma answers cleanly and avoids repeated send asks, the buyer may soften and say: 'Okay, that sounds fair. Send it over.'",
+        "success_conditions": [
+          "The full conversation passes only if Emma answers each next-step concern directly and avoids CTA fatigue. Strong answers include: no payment, no contract, no automatic call after; the buyer reviews it and replies to the email only if useful; paid website conversation happens only if they like it and want to continue. Emma must not ask for email while the buyer's practical concerns are unresolved, and she must not repeat a send invitation after every concern. After the buyer says send it over, Emma should ask a short email question. It fails if Emma loops on free/no obligation language, asks for email too early, repeats 'Would you like me to send it?' several times, promises a follow-up call, gives long policy-like answers, or answers the concerns but never makes one natural next-step move when the buyer remains open."
+        ],
+        "models": {
+          "simulated_user_model": "gemini-2.5-flash",
+          "evaluation_model": "gemini-2.5-flash"
+        },
+        "status": "passed",
+        "condition_result": {
+          "result": "success",
+          "rationale": {
+            "messages": [
+              "The agent directly addressed all of the user's concerns, explicitly stating there's no payment, no contract, and no automatic follow-up call. It waited until the user agreed to receive the mockup before asking for the email address and did not repeat the invitation or loop on free/no obligation language. The agent made a natural next-step move by asking for the email after the user agreed.",
+              "The simulated user ended the conversation."
+            ],
+            "summary": "Evaluation succeeded"
+          }
+        },
+        "evaluator_rationale": "{'messages': [\"The agent directly addressed all of the user's concerns, explicitly stating there's no payment, no contract, and no automatic follow-up call. It waited until the user agreed to receive the mockup before asking for the email address and did not repeat the invitation or loop on free/no obligation language. The agent made a natural next-step move by asking for the email after the user agreed.\", 'The simulated user ended the conversation.'], 'summary': 'Evaluation succeeded'}",
+        "agent_responses": [
+          {
+            "tool_results": [],
+            "message": "Hi, this is Emma from Atlas Web Studio. I had Pine & Stone Landscaping down as a landscaping company in Minneapolis. Am I speaking with the owner or someone who handles the website there?",
+            "time": 23,
+            "source_medium": null,
+            "original_message": null,
+            "tool_calls": [],
+            "role": "agent",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "Yeah, this is the owner. What's up?",
+            "time": 23,
+            "source_medium": "text",
+            "original_message": null,
+            "tool_calls": [],
+            "role": "user",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "Great to speak with you! I wanted to see if you'd be interested in a free homepage mockup for your website. It\u2019s a no-pressure way to see what we can do for you. Would you like to know more about our process or pricing?",
+            "time": 23,
+            "source_medium": null,
+            "original_message": null,
+            "tool_calls": [],
+            "role": "agent",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "What happens after you send it?",
+            "time": 23,
+            "source_medium": "text",
+            "original_message": null,
+            "tool_calls": [],
+            "role": "user",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "You review the mockup and reply to the email only if it's useful to you. There's no obligation or follow-up unless you decide it's something you'd like to pursue further.",
+            "time": 23,
+            "source_medium": null,
+            "original_message": null,
+            "tool_calls": [],
+            "role": "agent",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "Is there a catch?",
+            "time": 23,
+            "source_medium": "text",
+            "original_message": null,
+            "tool_calls": [],
+            "role": "user",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "No, there's no catch. There's no payment or contract involved. You simply receive the mockup and decide if it's something you'd like to explore further.",
+            "time": 23,
+            "source_medium": null,
+            "original_message": null,
+            "tool_calls": [],
+            "role": "agent",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "Am I signing up for anything?",
+            "time": 23,
+            "source_medium": "text",
+            "original_message": null,
+            "tool_calls": [],
+            "role": "user",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "No, receiving the mockup signs you up for nothing. It's simply a way for you to see what we can offer without any commitment.",
+            "time": 23,
+            "source_medium": null,
+            "original_message": null,
+            "tool_calls": [],
+            "role": "agent",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "Are you going to keep calling me?",
+            "time": 23,
+            "source_medium": "text",
+            "original_message": null,
+            "tool_calls": [],
+            "role": "user",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "No, there's no automatic follow-up call. You only need to reply if you find the mockup useful.",
+            "time": 23,
+            "source_medium": null,
+            "original_message": null,
+            "tool_calls": [],
+            "role": "agent",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "Okay, that sounds fair. Send it over.",
+            "time": 23,
+            "source_medium": "text",
+            "original_message": null,
+            "tool_calls": [],
+            "role": "user",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "Great! What's the best email address to send it to?",
+            "time": 23,
+            "source_medium": null,
+            "original_message": null,
+            "tool_calls": [],
+            "role": "agent",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "It's [REDACTED_EMAIL].",
+            "time": 23,
+            "source_medium": "text",
+            "original_message": null,
+            "tool_calls": [],
+            "role": "user",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "Just to confirm, that's [REDACTED_EMAIL], right?",
+            "time": 23,
+            "source_medium": null,
+            "original_message": null,
+            "tool_calls": [],
+            "role": "agent",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "Yep, that's right.",
+            "time": 23,
+            "source_medium": "text",
+            "original_message": null,
+            "tool_calls": [],
+            "role": "user",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "Great, I'll send it there by the end of the day.",
+            "time": 23,
+            "source_medium": null,
+            "original_message": null,
+            "tool_calls": [],
+            "role": "agent",
+            "interrupted": false
+          },
+          {
+            "tool_results": [],
+            "message": "Alright, got it. Thanks, bye.",
+            "time": 23,
+            "source_medium": null,
+            "original_message": null,
+            "tool_calls": [],
+            "role": "user",
+            "interrupted": false
+          }
+        ]
+      }
+    ],
+    "result_groups": []
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "checkpoint_id": "ELEVENLABS-036-natural-sales-scenarios",
+  "captured_at_utc": "2026-07-10T22:22:50Z",
+  "status": "completed",
+  "scope": "crm",
+  "repeat_count": 3,
+  "invocation_id": "suite_3801kx71yc5aecc94f7jsxswg9pd",
+  "run_statuses": [
+    {
+      "test_id": "test_4601ktwzq8xnfpbtry5qsepeprh3",
+      "test_name": "ELEVENLABS-036-natural-sales-scenarios::sim_036_crm_payment_capability_before_price",
+      "test_run_id": "trun_8801kx71yc5ef1hrwy0qyz8pcrtq",
+      "status": "passed"
+    },
+    {
+      "test_id": "test_4601ktwzq8xnfpbtry5qsepeprh3",
+      "test_name": "ELEVENLABS-036-natural-sales-scenarios::sim_036_crm_payment_capability_before_price",
+      "test_run_id": "trun_3301kx71yc5de648skqxbv9ctfbf",
+      "status": "passed"
+    },
+    {
+      "test_id": "test_4601ktwzq8xnfpbtry5qsepeprh3",
+      "test_name": "ELEVENLABS-036-natural-sales-scenarios::sim_036_crm_payment_capability_before_price",
+      "test_run_id": "trun_4501kx71yc5ff01b6qta3vb2e3r6",
+      "status": "passed"
+    }
+  ],
+  "final_run_statuses": [
+    "passed",
+    "passed",
+    "passed"
+  ],
+  "selected_test_count": 1,
+  "expected_terminal_run_count": 3,
+  "observed_terminal_run_count": 3,
+  "failed_terminal_run_count": 0,
+  "provider_status_code": 200,
+  "outbound_calls_made": false
+}

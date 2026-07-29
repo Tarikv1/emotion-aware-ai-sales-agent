@@ -1,0 +1,457 @@
+{
+  "checkpoint_id": "ELEVENLABS-036-natural-sales-scenarios",
+  "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+  "invocation_id": "suite_1201kx79ews1f8crnh080ggac9d5",
+  "independent_status": "inconclusive",
+  "allow_partial_repeats": true,
+  "coverage_complete": false,
+  "input_test_ids": [
+    "sim_036_crm_payment_capability_before_price",
+    "sim_036_crm_payment_capability_before_price",
+    "sim_036_crm_payment_capability_before_price"
+  ],
+  "missing_test_ids": [
+    "sim_036_custom_dashboard_scoped_separately",
+    "sim_036_email_confirmation_spoken_email_two_step",
+    "sim_036_email_plus_free_question_confirmation",
+    "sim_036_free_mockup_visual_not_working_site",
+    "sim_036_future_price_ballpark_no_overpricing",
+    "sim_036_goodbye_take_care_no_loop",
+    "sim_036_guarantee_required_clean_disqualify",
+    "sim_036_next_step_questions_no_cta_fatigue",
+    "sim_036_scheduling_simple_request_vs_live_integration"
+  ],
+  "global_failures": [],
+  "provider_labels": {
+    "status_entries": [
+      {
+        "test_id": "sim_036_crm_payment_capability_before_price",
+        "test_run_id": "trun_5601kx79ews5fvr9vv5z2ecx7w4z",
+        "status": "passed"
+      },
+      {
+        "test_id": "sim_036_crm_payment_capability_before_price",
+        "test_run_id": "trun_7601kx79ews7fbjsc14g69bqc4kt",
+        "status": "passed"
+      },
+      {
+        "test_id": "sim_036_crm_payment_capability_before_price",
+        "test_run_id": "trun_6001kx79ews6e4xsd7z1shf8v3pf",
+        "status": "passed"
+      }
+    ],
+    "condition_result_entries": [
+      {
+        "test_id": "sim_036_crm_payment_capability_before_price",
+        "test_run_id": "trun_5601kx79ews5fvr9vv5z2ecx7w4z",
+        "condition_result": {
+          "result": "success",
+          "rationale": {
+            "messages": [
+              "The agent successfully answered capability before price, explained the difference between simple handoff and real integration, and provided price ranges only after the user asked for cost. The agent did not invent an exact quote, give a technical dump, or miss the mockup next step. All criteria were met.",
+              "The agent ended the conversation."
+            ],
+            "summary": "Evaluation succeeded"
+          }
+        }
+      },
+      {
+        "test_id": "sim_036_crm_payment_capability_before_price",
+        "test_run_id": "trun_7601kx79ews7fbjsc14g69bqc4kt",
+        "condition_result": {
+          "result": "success",
+          "rationale": {
+            "messages": [
+              "The agent answered capability questions before providing pricing. It correctly distinguished between simple handoff and real integration, provided price ranges after the user asked, and offered a mockup as a next step. All failure conditions were avoided.",
+              "The conversation reached the maximum number of turns."
+            ],
+            "summary": "Evaluation succeeded"
+          }
+        }
+      },
+      {
+        "test_id": "sim_036_crm_payment_capability_before_price",
+        "test_run_id": "trun_6001kx79ews6e4xsd7z1shf8v3pf",
+        "condition_result": {
+          "result": "success",
+          "rationale": {
+            "messages": [
+              "The agent first addressed the capability question, explaining the difference between a simple handoff and a real integration. Only after the user explicitly asked for price did the agent provide the cost ranges, noting that the final number depends on the system. The agent also offered a mockup as a natural next step.",
+              "The conversation reached the maximum number of turns."
+            ],
+            "summary": "Evaluation succeeded"
+          }
+        }
+      }
+    ]
+  },
+  "tests": [
+    {
+      "test_id": "sim_036_crm_payment_capability_before_price",
+      "test_name": "ELEVENLABS-036-natural-sales-scenarios::sim_036_crm_payment_capability_before_price",
+      "test_run_id": "trun_5601kx79ews5fvr9vv5z2ecx7w4z",
+      "independent_status": "pass",
+      "effective_contract": "ELEVENLABS-036",
+      "provider_status": "passed",
+      "provider_condition_result": {
+        "result": "success",
+        "rationale": {
+          "messages": [
+            "The agent successfully answered capability before price, explained the difference between simple handoff and real integration, and provided price ranges only after the user asked for cost. The agent did not invent an exact quote, give a technical dump, or miss the mockup next step. All criteria were met.",
+            "The agent ended the conversation."
+          ],
+          "summary": "Evaluation succeeded"
+        }
+      },
+      "provider_evaluator_rationale": "{'messages': ['The agent successfully answered capability before price, explained the difference between simple handoff and real integration, and provided price ranges only after the user asked for cost. The agent did not invent an exact quote, give a technical dump, or miss the mockup next step. All criteria were met.', 'The agent ended the conversation.'], 'summary': 'Evaluation succeeded'}",
+      "assertions": [
+        {
+          "name": "expected_test_name",
+          "passed": true,
+          "detail": "expected test_name 'ELEVENLABS-036-natural-sales-scenarios::sim_036_crm_payment_capability_before_price'"
+        },
+        {
+          "name": "ordered_agent_responses_present",
+          "passed": true,
+          "detail": "agent_responses is not a list"
+        },
+        {
+          "name": "at_most_one_end_call",
+          "passed": true,
+          "detail": "found 1 end_call calls"
+        },
+        {
+          "name": "parse_end_call_params",
+          "passed": true,
+          "detail": "invalid end_call params"
+        },
+        {
+          "name": "built_in_system_end_call",
+          "passed": true,
+          "detail": "end_call is not type system"
+        },
+        {
+          "name": "matching_end_call_result",
+          "passed": true,
+          "detail": "expected one successful tool result for request_id 'fc_03087dd29e66abb2016a518f5c43b88195b75cf925d25ad57b', found 1"
+        },
+        {
+          "name": "successful_end_call_result_payload",
+          "passed": true,
+          "detail": "tool result payload must be end_call_success with status success"
+        },
+        {
+          "name": "rendered_message_matches_tool_message",
+          "passed": true,
+          "detail": "rendered agent message must match tool speech 'Take care.'"
+        },
+        {
+          "name": "no_text_or_tool_after_end_call_result",
+          "passed": true,
+          "detail": "trace contains text or tool activity after the successful end_call result"
+        },
+        {
+          "name": "timing_spoken_at_most_once",
+          "passed": true,
+          "detail": "delivery timing appears 1 times in agent speech"
+        },
+        {
+          "name": "crm_capability_question_found",
+          "passed": true,
+          "detail": "initial CRM/payment capability question not found"
+        },
+        {
+          "name": "crm_answers_capability_before_price",
+          "passed": true,
+          "detail": "first CRM response must address capability before price"
+        },
+        {
+          "name": "crm_first_answer_no_price_numbers",
+          "passed": true,
+          "detail": "first CRM response must not quote price before the buyer asks cost"
+        },
+        {
+          "name": "crm_first_answer_says_handoff_vs_integration",
+          "passed": true,
+          "detail": "first CRM response must distinguish simple handoff from real integration"
+        },
+        {
+          "name": "crm_cost_question_found",
+          "passed": true,
+          "detail": "CRM cost question not found"
+        },
+        {
+          "name": "crm_cost_answer_integration_range",
+          "passed": true,
+          "detail": "CRM cost answer must map the real integration toward the heavier range"
+        },
+        {
+          "name": "crm_cost_answer_handoff_range",
+          "passed": true,
+          "detail": "CRM cost answer must keep the simple handoff as the lighter option"
+        },
+        {
+          "name": "crm_cost_answer_depends_on_system",
+          "passed": true,
+          "detail": "CRM cost answer must say the real number depends on the system"
+        },
+        {
+          "name": "crm_natural_mockup_next_step",
+          "passed": true,
+          "detail": "CRM trace must contain a natural mockup next step after capability and price are answered"
+        },
+        {
+          "name": "email_turn_found",
+          "passed": true,
+          "detail": "email turn not found"
+        },
+        {
+          "name": "confirmation_prompt_before_send",
+          "passed": true,
+          "detail": "first agent response after email must confirm the email"
+        },
+        {
+          "name": "no_send_language_before_confirmation",
+          "passed": true,
+          "detail": "agent used send or timing language before explicit confirmation"
+        },
+        {
+          "name": "no_ask_for_best_email_again",
+          "passed": true,
+          "detail": "agent asked for the best email again instead of confirming it"
+        },
+        {
+          "name": "confirmation_prompt_contains_email",
+          "passed": true,
+          "detail": "confirmation prompt must repeat the provided email"
+        },
+        {
+          "name": "explicit_email_confirmation_turn",
+          "passed": true,
+          "detail": "buyer did not explicitly confirm the repeated email"
+        },
+        {
+          "name": "post_confirmation_timing_present",
+          "passed": true,
+          "detail": "post-confirmation agent turn must include by-end-of-day timing"
+        },
+        {
+          "name": "post_confirmation_timing_is_not_farewell",
+          "passed": true,
+          "detail": "confirmation without goodbye must not include a farewell"
+        }
+      ],
+      "failures": [],
+      "inconclusives": []
+    },
+    {
+      "test_id": "sim_036_crm_payment_capability_before_price",
+      "test_name": "ELEVENLABS-036-natural-sales-scenarios::sim_036_crm_payment_capability_before_price",
+      "test_run_id": "trun_7601kx79ews7fbjsc14g69bqc4kt",
+      "independent_status": "pass",
+      "effective_contract": "ELEVENLABS-036",
+      "provider_status": "passed",
+      "provider_condition_result": {
+        "result": "success",
+        "rationale": {
+          "messages": [
+            "The agent answered capability questions before providing pricing. It correctly distinguished between simple handoff and real integration, provided price ranges after the user asked, and offered a mockup as a next step. All failure conditions were avoided.",
+            "The conversation reached the maximum number of turns."
+          ],
+          "summary": "Evaluation succeeded"
+        }
+      },
+      "provider_evaluator_rationale": "{'messages': ['The agent answered capability questions before providing pricing. It correctly distinguished between simple handoff and real integration, provided price ranges after the user asked, and offered a mockup as a next step. All failure conditions were avoided.', 'The conversation reached the maximum number of turns.'], 'summary': 'Evaluation succeeded'}",
+      "assertions": [
+        {
+          "name": "expected_test_name",
+          "passed": true,
+          "detail": "expected test_name 'ELEVENLABS-036-natural-sales-scenarios::sim_036_crm_payment_capability_before_price'"
+        },
+        {
+          "name": "ordered_agent_responses_present",
+          "passed": true,
+          "detail": "agent_responses is not a list"
+        },
+        {
+          "name": "at_most_one_end_call",
+          "passed": true,
+          "detail": "found 0 end_call calls"
+        },
+        {
+          "name": "timing_spoken_at_most_once",
+          "passed": true,
+          "detail": "delivery timing appears 0 times in agent speech"
+        },
+        {
+          "name": "crm_capability_question_found",
+          "passed": true,
+          "detail": "initial CRM/payment capability question not found"
+        },
+        {
+          "name": "crm_answers_capability_before_price",
+          "passed": true,
+          "detail": "first CRM response must address capability before price"
+        },
+        {
+          "name": "crm_first_answer_no_price_numbers",
+          "passed": true,
+          "detail": "first CRM response must not quote price before the buyer asks cost"
+        },
+        {
+          "name": "crm_first_answer_says_handoff_vs_integration",
+          "passed": true,
+          "detail": "first CRM response must distinguish simple handoff from real integration"
+        },
+        {
+          "name": "crm_cost_question_found",
+          "passed": true,
+          "detail": "CRM cost question not found"
+        },
+        {
+          "name": "crm_cost_answer_integration_range",
+          "passed": true,
+          "detail": "CRM cost answer must map the real integration toward the heavier range"
+        },
+        {
+          "name": "crm_cost_answer_handoff_range",
+          "passed": true,
+          "detail": "CRM cost answer must keep the simple handoff as the lighter option"
+        },
+        {
+          "name": "crm_cost_answer_depends_on_system",
+          "passed": true,
+          "detail": "CRM cost answer must say the real number depends on the system"
+        },
+        {
+          "name": "crm_natural_mockup_next_step",
+          "passed": true,
+          "detail": "CRM trace must contain a natural mockup next step after capability and price are answered"
+        }
+      ],
+      "failures": [],
+      "inconclusives": []
+    },
+    {
+      "test_id": "sim_036_crm_payment_capability_before_price",
+      "test_name": "ELEVENLABS-036-natural-sales-scenarios::sim_036_crm_payment_capability_before_price",
+      "test_run_id": "trun_6001kx79ews6e4xsd7z1shf8v3pf",
+      "independent_status": "inconclusive",
+      "effective_contract": "ELEVENLABS-036",
+      "provider_status": "passed",
+      "provider_condition_result": {
+        "result": "success",
+        "rationale": {
+          "messages": [
+            "The agent first addressed the capability question, explaining the difference between a simple handoff and a real integration. Only after the user explicitly asked for price did the agent provide the cost ranges, noting that the final number depends on the system. The agent also offered a mockup as a natural next step.",
+            "The conversation reached the maximum number of turns."
+          ],
+          "summary": "Evaluation succeeded"
+        }
+      },
+      "provider_evaluator_rationale": "{'messages': ['The agent first addressed the capability question, explaining the difference between a simple handoff and a real integration. Only after the user explicitly asked for price did the agent provide the cost ranges, noting that the final number depends on the system. The agent also offered a mockup as a natural next step.', 'The conversation reached the maximum number of turns.'], 'summary': 'Evaluation succeeded'}",
+      "assertions": [
+        {
+          "name": "expected_test_name",
+          "passed": true,
+          "detail": "expected test_name 'ELEVENLABS-036-natural-sales-scenarios::sim_036_crm_payment_capability_before_price'"
+        },
+        {
+          "name": "ordered_agent_responses_present",
+          "passed": true,
+          "detail": "agent_responses is not a list"
+        },
+        {
+          "name": "at_most_one_end_call",
+          "passed": true,
+          "detail": "found 0 end_call calls"
+        },
+        {
+          "name": "timing_spoken_at_most_once",
+          "passed": true,
+          "detail": "delivery timing appears 0 times in agent speech"
+        },
+        {
+          "name": "crm_capability_question_found",
+          "passed": true,
+          "detail": "initial CRM/payment capability question not found"
+        },
+        {
+          "name": "crm_answers_capability_before_price",
+          "passed": true,
+          "detail": "first CRM response must address capability before price"
+        },
+        {
+          "name": "crm_first_answer_no_price_numbers",
+          "passed": true,
+          "detail": "first CRM response must not quote price before the buyer asks cost"
+        },
+        {
+          "name": "crm_first_answer_says_handoff_vs_integration",
+          "passed": true,
+          "detail": "first CRM response must distinguish simple handoff from real integration"
+        },
+        {
+          "name": "crm_cost_question_found",
+          "passed": true,
+          "detail": "CRM cost question not found"
+        },
+        {
+          "name": "crm_cost_answer_integration_range",
+          "passed": true,
+          "detail": "CRM cost answer must map the real integration toward the heavier range"
+        },
+        {
+          "name": "crm_cost_answer_handoff_range",
+          "passed": true,
+          "detail": "CRM cost answer must keep the simple handoff as the lighter option"
+        },
+        {
+          "name": "crm_cost_answer_depends_on_system",
+          "passed": true,
+          "detail": "CRM cost answer must say the real number depends on the system"
+        },
+        {
+          "name": "crm_natural_mockup_next_step",
+          "passed": true,
+          "detail": "CRM trace must contain a natural mockup next step after capability and price are answered"
+        },
+        {
+          "name": "email_turn_found",
+          "passed": true,
+          "detail": "email turn not found"
+        },
+        {
+          "name": "confirmation_prompt_before_send",
+          "passed": true,
+          "detail": "first agent response after email must confirm the email"
+        },
+        {
+          "name": "no_send_language_before_confirmation",
+          "passed": true,
+          "detail": "agent used send or timing language before explicit confirmation"
+        },
+        {
+          "name": "no_ask_for_best_email_again",
+          "passed": true,
+          "detail": "agent asked for the best email again instead of confirming it"
+        },
+        {
+          "name": "confirmation_prompt_contains_email",
+          "passed": true,
+          "detail": "confirmation prompt must repeat the provided email"
+        },
+        {
+          "name": "explicit_email_confirmation_turn",
+          "passed": false,
+          "detail": "simulation ended before the buyer confirmed the repeated email",
+          "severity": "inconclusive"
+        }
+      ],
+      "failures": [],
+      "inconclusives": [
+        "explicit_email_confirmation_turn: simulation ended before the buyer confirmed the repeated email"
+      ]
+    }
+  ]
+}

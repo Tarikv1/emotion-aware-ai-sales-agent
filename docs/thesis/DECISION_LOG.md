@@ -15,6 +15,28 @@ Record important thesis and implementation decisions here with enough context to
 
 ## Decisions
 
+### DEC-146 - Preserve orphaned ELEVENLABS-036 iterations as non-authoritative historical evidence
+
+- Date: 2026-07-29
+- Status: accepted
+- Decision: admit the `142` recovered ELEVENLABS-036 JSON artifacts to the repository as a historical audit trail, while marking their stored independent outputs non-authoritative for the current contract. Keep the later tracked GPT-5.5 closeout as the superseding readiness evidence for the covered simulation contract.
+- Why:
+  - the artifacts are valid JSON, their capture hashes validate, their available run lineages are internally consistent, and no credential or private contact data was found;
+  - the packet contains failures, inconclusives, incomplete lineages, and provider/independent disagreement, so preserving it reduces success-only evidence selection;
+  - only `4/18` stored independent outputs reproduce exactly under the current validator, four change top-level status, and the recovered files do not record the exact historical validator commit;
+  - two captures do not exactly match the current test-definition text, and one has no corrected replacement;
+  - a blind acceptance or silent overwrite would misstate the evidence, while deletion would remove useful iteration history.
+- Alternatives considered:
+  - delete or ignore every recovered artifact;
+  - commit the packet without a provenance review and treat stored labels as current truth;
+  - overwrite historical independent files with current-validator output;
+  - keep only successful runs and discard failed or incomplete evidence.
+- Consequences:
+  - the raw packet remains available for audit, but all current claims must use the review note and the later authoritative closeout;
+  - historical and current-contract validator conclusions remain distinguishable;
+  - no product/runtime behavior, provider state, simulation result, outbound-call evidence, or production-readiness boundary changes;
+  - future generated independent results should embed the validator and test-definition commit or blob identity.
+
 ### DEC-145 - Close the Atlas hosted phase with one post-final-write canary and explicit exclusions
 
 - Date: 2026-07-14

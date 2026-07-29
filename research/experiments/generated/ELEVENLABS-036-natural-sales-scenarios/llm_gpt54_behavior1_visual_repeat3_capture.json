@@ -1,0 +1,817 @@
+{
+  "captured_at_utc": "2026-07-11T00:26:39Z",
+  "payload_sha256": "c0f536cec1965c3b2f4b3813f96f59d5cb8bb6cd144ffec8b7e5c469266b7b7e",
+  "payload": {
+    "checkpoint_id": "ELEVENLABS-036-natural-sales-scenarios",
+    "invocation_id": "suite_7201kx791b9nedxs4y2aapefn3yb",
+    "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+    "test_runs": [
+      {
+        "test_run_id": "trun_0801kx791b9rfdyb6ntgkjhnj47r",
+        "test_invocation_id": "suite_7201kx791b9nedxs4y2aapefn3yb",
+        "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+        "test_id": "sim_036_free_mockup_visual_not_working_site",
+        "provider_test_id": "test_3301ktwzq9cnfzsa5dfjd9q61gq5",
+        "test_name": "ELEVENLABS-036-natural-sales-scenarios::sim_036_free_mockup_visual_not_working_site",
+        "scenario": "The simulated user owns Mesa Fit Studio in Albuquerque. They ask what the free mockup includes and press on live functionality: 'Does the free mockup include the class booking system, payment button, member login, and calendar, or is it just a visual thing?' They dislike vague answers but may agree if Emma gives a useful boundary and explains what the mockup can still show.",
+        "success_conditions": [
+          "The full conversation passes only if Emma clearly says in a short, natural answer that the mockup is visual, not a working website. It can show where class booking, payment, calendar, member login, or dashboard entry would sit on the homepage, but it does not include working login, database, calendar connection, CRM/payment integration, booking engine, ecommerce, or other live functionality. The answer should not be a blunt 'no' with no replacement value; it should preserve the sales path by positioning the mockup as a way to judge layout and direction. After scope is clear, one low-friction next step toward seeing the mockup is appropriate if the buyer remains open. It fails if Emma implies the free mockup includes working advanced functionality, dodges the scope question, gives an unrelated feature dump, or asks for email before answering what the mockup includes."
+        ],
+        "models": {
+          "simulated_user_model": "gemini-2.5-flash",
+          "evaluation_model": "gemini-2.5-flash"
+        },
+        "status": "passed",
+        "condition_result": {
+          "result": "success",
+          "rationale": {
+            "messages": [
+              "The agent clearly and repeatedly explained that the mockup is visual, not functional, addressing the user's persistent questions. It consistently positioned the mockup as a tool to judge layout and direction, preserving the sales path. The agent only asked for the email after the user agreed to receive the mockup, avoiding any premature requests.",
+              "The conversation reached the maximum number of turns."
+            ],
+            "summary": "Evaluation succeeded"
+          }
+        },
+        "evaluator_rationale": "{'messages': [\"The agent clearly and repeatedly explained that the mockup is visual, not functional, addressing the user's persistent questions. It consistently positioned the mockup as a tool to judge layout and direction, preserving the sales path. The agent only asked for the email after the user agreed to receive the mockup, avoiding any premature requests.\", 'The conversation reached the maximum number of turns.'], 'summary': 'Evaluation succeeded'}",
+        "agent_responses": [
+          {
+            "original_message": null,
+            "tool_results": [],
+            "time": 44,
+            "role": "agent",
+            "message": "Hi, this is Emma from Atlas Web Studio. I had Mesa Fit Studio down as a fitness studio in Albuquerque. Am I speaking with the owner or someone who handles the website there?",
+            "source_medium": null,
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "tool_results": [],
+            "time": 44,
+            "role": "user",
+            "message": "Yeah, that's me. I'm the owner.Yeah, that's me. I'm the owner.",
+            "source_medium": "text",
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "tool_results": [],
+            "time": 44,
+            "role": "agent",
+            "message": "Great. I\u2019m calling because we put together free homepage mockups for local businesses to show what a cleaner, more conversion-focused site could look like. If I made one for Mesa Fit Studio, you could review it and only reply if it feels useful.",
+            "source_medium": null,
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "tool_results": [],
+            "time": 44,
+            "role": "user",
+            "message": "Does that free mockup include the class booking system, payment button, member login, and calendar, or is it just a visual thing?",
+            "source_medium": "text",
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "tool_results": [],
+            "time": 44,
+            "role": "agent",
+            "message": "The free mockup shows the homepage layout and where those features would sit; it does not include working booking, payments, login, or calendar.",
+            "source_medium": null,
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "tool_results": [],
+            "time": 44,
+            "role": "user",
+            "message": "Oh, so it's just a picture then? What would it actually show me?",
+            "source_medium": "text",
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "tool_results": [],
+            "time": 44,
+            "role": "agent",
+            "message": "It would show how the homepage could be structured to guide visitors toward joining, booking a class, or contacting you, along with where the member login, payment, and calendar entry points would sit visually. It is a static concept, but it can still help you judge whether the direction feels clearer and more professional before any real build work. If you want, I can send that over for you to review.",
+            "source_medium": null,
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "tool_results": [],
+            "time": 44,
+            "role": "user",
+            "message": "So it's just a design, not something I can click on to see how the booking works?",
+            "source_medium": "text",
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "tool_results": [],
+            "time": 44,
+            "role": "agent",
+            "message": "No. It's one static homepage concept showing where those entry points would sit, not the screens or steps behind them.",
+            "source_medium": null,
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "tool_results": [],
+            "time": 44,
+            "role": "user",
+            "message": "So it's just a visual, then. How would that even help me?",
+            "source_medium": "text",
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "tool_results": [],
+            "time": 44,
+            "role": "agent",
+            "message": "It helps you see whether the homepage would present your classes, offers, and calls to action more clearly before you spend anything on development. For a studio like yours, that usually means seeing whether the path to join, book, or contact feels obvious at a glance. If that would be useful, I can send the mockup over for you to review.",
+            "source_medium": null,
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "tool_results": [],
+            "time": 44,
+            "role": "user",
+            "message": "Okay, I get it's about clarity. But how can I tell if the booking system itself would be easy to use if I can't even try it?",
+            "source_medium": "text",
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "tool_results": [],
+            "time": 44,
+            "role": "agent",
+            "message": "The free mockup cannot prove functionality; it only shows layout and placement. A working system requires scoped development.",
+            "source_medium": null,
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "tool_results": [],
+            "time": 44,
+            "role": "user",
+            "message": "So, I'd have to pay to see if the booking system even works?",
+            "source_medium": "text",
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "tool_results": [],
+            "time": 44,
+            "role": "agent",
+            "message": "You would not be paying for the mockup itself, but yes, proving that the booking flow works would require actual development work rather than a free visual concept. The mockup is mainly a low-risk way to judge the direction before deciding whether a build is worth exploring. If you want, I can still send the homepage concept so you can at least see the layout first.",
+            "source_medium": null,
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "tool_results": [],
+            "time": 44,
+            "role": "user",
+            "message": "So, it's just a picture of where the buttons would be, not how they work?",
+            "source_medium": "text",
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "tool_results": [],
+            "time": 44,
+            "role": "agent",
+            "message": "Right, it shows where those actions would live on the homepage and how the page would guide someone toward them, but not the working flow behind them. If seeing that layout would still help, I can send it over.",
+            "source_medium": null,
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "tool_results": [],
+            "time": 44,
+            "role": "user",
+            "message": "Okay, so it's just the look of the homepage. Fine, send it over then.",
+            "source_medium": "text",
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "tool_results": [],
+            "time": 44,
+            "role": "agent",
+            "message": "What's the best email?",
+            "source_medium": null,
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "tool_results": [],
+            "time": 44,
+            "role": "user",
+            "message": "It's [REDACTED_EMAIL].",
+            "source_medium": "text",
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "tool_results": [],
+            "time": 44,
+            "role": "agent",
+            "message": "Just to confirm, [REDACTED_EMAIL] - is that right?",
+            "source_medium": null,
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "tool_results": [],
+            "time": 44,
+            "role": "user",
+            "message": "Yep, that's right.",
+            "source_medium": "text",
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "tool_results": [],
+            "time": 44,
+            "role": "agent",
+            "message": "Great, I'll send it there by the end of the day.",
+            "source_medium": null,
+            "tool_calls": [],
+            "interrupted": false
+          }
+        ]
+      },
+      {
+        "test_run_id": "trun_3201kx791b9tfr2rranm0p0wdx8t",
+        "test_invocation_id": "suite_7201kx791b9nedxs4y2aapefn3yb",
+        "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+        "test_id": "sim_036_free_mockup_visual_not_working_site",
+        "provider_test_id": "test_3301ktwzq9cnfzsa5dfjd9q61gq5",
+        "test_name": "ELEVENLABS-036-natural-sales-scenarios::sim_036_free_mockup_visual_not_working_site",
+        "scenario": "The simulated user owns Mesa Fit Studio in Albuquerque. They ask what the free mockup includes and press on live functionality: 'Does the free mockup include the class booking system, payment button, member login, and calendar, or is it just a visual thing?' They dislike vague answers but may agree if Emma gives a useful boundary and explains what the mockup can still show.",
+        "success_conditions": [
+          "The full conversation passes only if Emma clearly says in a short, natural answer that the mockup is visual, not a working website. It can show where class booking, payment, calendar, member login, or dashboard entry would sit on the homepage, but it does not include working login, database, calendar connection, CRM/payment integration, booking engine, ecommerce, or other live functionality. The answer should not be a blunt 'no' with no replacement value; it should preserve the sales path by positioning the mockup as a way to judge layout and direction. After scope is clear, one low-friction next step toward seeing the mockup is appropriate if the buyer remains open. It fails if Emma implies the free mockup includes working advanced functionality, dodges the scope question, gives an unrelated feature dump, or asks for email before answering what the mockup includes."
+        ],
+        "models": {
+          "simulated_user_model": "gemini-2.5-flash",
+          "evaluation_model": "gemini-2.5-flash"
+        },
+        "status": "passed",
+        "condition_result": {
+          "result": "success",
+          "rationale": {
+            "messages": [
+              "The agent clearly stated the mockup is visual, not a working website, and explained it shows layout/placement for features without live functionality. It preserved the sales path by positioning it for judging layout and direction, and offered a low-friction next step (sending the mockup) after clarifying the scope.",
+              "The agent ended the conversation."
+            ],
+            "summary": "Evaluation succeeded"
+          }
+        },
+        "evaluator_rationale": "{'messages': ['The agent clearly stated the mockup is visual, not a working website, and explained it shows layout/placement for features without live functionality. It preserved the sales path by positioning it for judging layout and direction, and offered a low-friction next step (sending the mockup) after clarifying the scope.', 'The agent ended the conversation.'], 'summary': 'Evaluation succeeded'}",
+        "agent_responses": [
+          {
+            "original_message": null,
+            "tool_results": [],
+            "time": 29,
+            "role": "agent",
+            "message": "Hi, this is Emma from Atlas Web Studio. I had Mesa Fit Studio down as a fitness studio in Albuquerque. Am I speaking with the owner or someone who handles the website there?",
+            "source_medium": null,
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "tool_results": [],
+            "time": 29,
+            "role": "user",
+            "message": "Yeah, that's me. I'm the owner.",
+            "source_medium": "text",
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "tool_results": [],
+            "time": 29,
+            "role": "agent",
+            "message": "Good to meet you. I\u2019m reaching out because we put together a free homepage mockup for local businesses to show a cleaner layout and a clearer path for new leads. If you\u2019re open to it, I can send that over for Mesa Fit Studio so you can see whether it\u2019s useful.",
+            "source_medium": null,
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "tool_results": [],
+            "time": 29,
+            "role": "user",
+            "message": "Does the free mockup include the class booking system, payment button, member login, and calendar, or is it just a visual thing?",
+            "source_medium": "text",
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "tool_results": [],
+            "time": 29,
+            "role": "agent",
+            "message": "The free mockup shows the homepage layout and where those features would sit; it does not include working booking, payments, login, or calendar.",
+            "source_medium": null,
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "tool_results": [],
+            "time": 29,
+            "role": "user",
+            "message": "Hmm, so it's just a visual of where they'd be? How does that actually help me see if it's useful?",
+            "source_medium": "text",
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "tool_results": [],
+            "time": 29,
+            "role": "agent",
+            "message": "The free mockup cannot prove functionality; it only shows layout and placement. A working system requires scoped development.",
+            "source_medium": null,
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "tool_results": [],
+            "time": 29,
+            "role": "user",
+            "message": "But how can I tell if it's useful if I can't see it work?",
+            "source_medium": "text",
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "tool_results": [],
+            "time": 29,
+            "role": "agent",
+            "message": "The free mockup cannot prove functionality; it only shows layout and placement. A working system requires scoped development.",
+            "source_medium": null,
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "tool_results": [],
+            "time": 29,
+            "role": "user",
+            "message": "I heard you. But I still don't get how a picture helps me see if it's useful for my booking system.",
+            "source_medium": "text",
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "tool_results": [],
+            "time": 29,
+            "role": "agent",
+            "message": "Fair point - the practical difference is it helps you judge whether the homepage would present your classes, membership path, and booking entry points more clearly before any build work. It is useful for layout and messaging decisions, not for testing the booking system itself. If you want, I can send the mockup so you can decide whether the direction is worth exploring.",
+            "source_medium": null,
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "tool_results": [],
+            "time": 29,
+            "role": "user",
+            "message": "Okay, so it's just for the look and feel. Send it over, I guess.",
+            "source_medium": "text",
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "tool_results": [],
+            "time": 29,
+            "role": "agent",
+            "message": "What's the best email?",
+            "source_medium": null,
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "tool_results": [],
+            "time": 29,
+            "role": "user",
+            "message": "It's [REDACTED_EMAIL].",
+            "source_medium": "text",
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "tool_results": [],
+            "time": 29,
+            "role": "agent",
+            "message": "Just to confirm, [REDACTED_EMAIL] - is that right?",
+            "source_medium": null,
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "tool_results": [],
+            "time": 29,
+            "role": "user",
+            "message": "Yeah, that's right.",
+            "source_medium": "text",
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "tool_results": [],
+            "time": 29,
+            "role": "agent",
+            "message": "Great, I'll send it there by the end of the day.",
+            "source_medium": null,
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "tool_results": [],
+            "time": 29,
+            "role": "user",
+            "message": "Alright, got it. Thanks, bye.",
+            "source_medium": "text",
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "tool_results": [],
+            "time": 29,
+            "role": "agent",
+            "message": "Take care.",
+            "source_medium": null,
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "tool_results": [],
+            "time": 29,
+            "role": "agent",
+            "message": null,
+            "source_medium": null,
+            "tool_calls": [
+              {
+                "request_id": "fc_0f64046174e6036d016a518d9964fc8197a71ac9953b31a2f3",
+                "params_as_json": "{\"reason\":\"Buyer explicitly ended the completed conversation\",\"system__message_to_speak\":\"Take care.\"}",
+                "type": "system",
+                "tool_name": "end_call",
+                "tool_has_been_called": true
+              }
+            ],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "tool_results": [
+              {
+                "result": {
+                  "result_type": "end_call_success",
+                  "status": "success",
+                  "reason": "Buyer explicitly ended the completed conversation",
+                  "message": null
+                },
+                "request_id": "fc_0f64046174e6036d016a518d9964fc8197a71ac9953b31a2f3",
+                "error_type": "",
+                "raw_error_message": "",
+                "type": "system",
+                "is_blocked": false,
+                "tool_latency_secs": 0.5022904418874532,
+                "tool_has_been_called": true,
+                "result_value": "{\"result_type\":\"end_call_success\",\"status\":\"success\",\"reason\":\"Buyer explicitly ended the completed conversation\",\"message\":null}",
+                "tool_name": "end_call",
+                "is_error": false
+              }
+            ],
+            "time": 29,
+            "role": "agent",
+            "message": null,
+            "source_medium": null,
+            "tool_calls": [],
+            "interrupted": false
+          }
+        ]
+      },
+      {
+        "test_run_id": "trun_7001kx791b9sfr880are7fwa7z6c",
+        "test_invocation_id": "suite_7201kx791b9nedxs4y2aapefn3yb",
+        "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+        "test_id": "sim_036_free_mockup_visual_not_working_site",
+        "provider_test_id": "test_3301ktwzq9cnfzsa5dfjd9q61gq5",
+        "test_name": "ELEVENLABS-036-natural-sales-scenarios::sim_036_free_mockup_visual_not_working_site",
+        "scenario": "The simulated user owns Mesa Fit Studio in Albuquerque. They ask what the free mockup includes and press on live functionality: 'Does the free mockup include the class booking system, payment button, member login, and calendar, or is it just a visual thing?' They dislike vague answers but may agree if Emma gives a useful boundary and explains what the mockup can still show.",
+        "success_conditions": [
+          "The full conversation passes only if Emma clearly says in a short, natural answer that the mockup is visual, not a working website. It can show where class booking, payment, calendar, member login, or dashboard entry would sit on the homepage, but it does not include working login, database, calendar connection, CRM/payment integration, booking engine, ecommerce, or other live functionality. The answer should not be a blunt 'no' with no replacement value; it should preserve the sales path by positioning the mockup as a way to judge layout and direction. After scope is clear, one low-friction next step toward seeing the mockup is appropriate if the buyer remains open. It fails if Emma implies the free mockup includes working advanced functionality, dodges the scope question, gives an unrelated feature dump, or asks for email before answering what the mockup includes."
+        ],
+        "models": {
+          "simulated_user_model": "gemini-2.5-flash",
+          "evaluation_model": "gemini-2.5-flash"
+        },
+        "status": "passed",
+        "condition_result": {
+          "result": "success",
+          "rationale": {
+            "messages": [
+              "Emma clearly and repeatedly stated that the mockup is visual, not functional, explaining its purpose for judging layout and direction. She did not imply advanced functionality, dodge questions, or ask for an email before clarifying the scope. She preserved the sales path and offered a low-friction next step (sending the mockup) once the user was open.",
+              "The conversation reached the maximum number of turns."
+            ],
+            "summary": "Evaluation succeeded"
+          }
+        },
+        "evaluator_rationale": "{'messages': ['Emma clearly and repeatedly stated that the mockup is visual, not functional, explaining its purpose for judging layout and direction. She did not imply advanced functionality, dodge questions, or ask for an email before clarifying the scope. She preserved the sales path and offered a low-friction next step (sending the mockup) once the user was open.', 'The conversation reached the maximum number of turns.'], 'summary': 'Evaluation succeeded'}",
+        "agent_responses": [
+          {
+            "original_message": null,
+            "tool_results": [],
+            "time": 46,
+            "role": "agent",
+            "message": "Hi, this is Emma from Atlas Web Studio. I had Mesa Fit Studio down as a fitness studio in Albuquerque. Am I speaking with the owner or someone who handles the website there?",
+            "source_medium": null,
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "tool_results": [],
+            "time": 46,
+            "role": "user",
+            "message": "Yeah, that's me. I'm the owner.",
+            "source_medium": "text",
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "tool_results": [],
+            "time": 46,
+            "role": "agent",
+            "message": "Perfect. I\u2019m reaching out because we put together a free custom homepage mockup for local businesses so you can see a cleaner, more modern direction before deciding on anything. If it looks useful, we can talk next steps, and if not, no worries at all.",
+            "source_medium": null,
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "tool_results": [],
+            "time": 46,
+            "role": "user",
+            "message": "Does the free mockup include the class booking system, payment button, member login, and calendar, or is it just a visual thing?",
+            "source_medium": "text",
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "tool_results": [],
+            "time": 46,
+            "role": "agent",
+            "message": "The free mockup shows the homepage layout and where those features would sit; it does not include working booking, payments, login, or calendar.",
+            "source_medium": null,
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "tool_results": [],
+            "time": 46,
+            "role": "user",
+            "message": "So it's just pictures then? How does that help me see if it works?",
+            "source_medium": "text",
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "tool_results": [],
+            "time": 46,
+            "role": "agent",
+            "message": "The free mockup cannot prove functionality; it only shows layout and placement. A working system requires scoped development.",
+            "source_medium": null,
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "tool_results": [],
+            "time": 46,
+            "role": "user",
+            "message": "So I can't even click anything?",
+            "source_medium": "text",
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "tool_results": [],
+            "time": 46,
+            "role": "agent",
+            "message": "No. It's one static homepage concept showing where those entry points would sit, not the screens or steps behind them.",
+            "source_medium": null,
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "tool_results": [],
+            "time": 46,
+            "role": "user",
+            "message": "So it's just a visual, not how the booking or payment actually works?",
+            "source_medium": "text",
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "tool_results": [],
+            "time": 46,
+            "role": "agent",
+            "message": "Right, it\u2019s visual only. It helps you judge the layout, messaging, and where booking, payments, and member access would live on the homepage before you decide whether a full build is worth scoping.",
+            "source_medium": null,
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "tool_results": [],
+            "time": 46,
+            "role": "user",
+            "message": "How does that help me decide if I want to pay for a full build if I can't even see how the important parts work?",
+            "source_medium": "text",
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "tool_results": [],
+            "time": 46,
+            "role": "agent",
+            "message": "It helps with the first decision, which is whether the direction feels right for your business before you spend money on development. If you want, I can also give you a realistic ballpark for what a working booking and payment setup usually costs so you can judge whether a full build is even worth considering.",
+            "source_medium": null,
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "tool_results": [],
+            "time": 46,
+            "role": "user",
+            "message": "Okay, what's that ballpark then?",
+            "source_medium": "text",
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "tool_results": [],
+            "time": 46,
+            "role": "agent",
+            "message": "A light website with a simple appointment request form is usually two thousand to three thousand total, not two thousand to three thousand for the form alone. Live calendar, reminders, payments, or CRM sync move toward three thousand to four thousand or four thousand to five thousand. If you want, I can still send the free homepage mockup so you can see the visual direction before deciding whether that range makes sense.",
+            "source_medium": null,
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "tool_results": [],
+            "time": 46,
+            "role": "user",
+            "message": "Okay, so those are the prices for the actual working stuff. But the mockup still won't show me how any of that works, right?",
+            "source_medium": "text",
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "tool_results": [],
+            "time": 46,
+            "role": "agent",
+            "message": "Right, the mockup will not show how the booking or payment flow actually works. It is mainly useful for deciding whether you like the homepage direction enough to consider scoping the working features afterward.",
+            "source_medium": null,
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "tool_results": [],
+            "time": 46,
+            "role": "user",
+            "message": "So it's just the pretty pictures, got it.",
+            "source_medium": "text",
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "tool_results": [],
+            "time": 46,
+            "role": "agent",
+            "message": "It is visual, yes, but the practical value is seeing the structure, offer, and calls to action before you spend on development. If you want to see that direction, I can send the free homepage mockup over.",
+            "source_medium": null,
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "tool_results": [],
+            "time": 46,
+            "role": "user",
+            "message": "Okay, send it over.",
+            "source_medium": "text",
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "tool_results": [],
+            "time": 46,
+            "role": "agent",
+            "message": "What's the best email?",
+            "source_medium": null,
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "tool_results": [],
+            "time": 46,
+            "role": "user",
+            "message": "It's [REDACTED_EMAIL].",
+            "source_medium": "text",
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "tool_results": [],
+            "time": 46,
+            "role": "agent",
+            "message": "Just to confirm, [REDACTED_EMAIL] - is that right?",
+            "source_medium": null,
+            "tool_calls": [],
+            "interrupted": false
+          }
+        ]
+      }
+    ],
+    "result_groups": [
+      {
+        "test_id": "test_3301ktwzq9cnfzsa5dfjd9q61gq5",
+        "test_name": "ELEVENLABS-036-natural-sales-scenarios::sim_036_free_mockup_visual_not_working_site",
+        "workflow_node_id": "None",
+        "buckets": [
+          {
+            "test_run_ids": [
+              "trun_0801kx791b9rfdyb6ntgkjhnj47r",
+              "trun_7001kx791b9sfr880are7fwa7z6c",
+              "trun_3201kx791b9tfr2rranm0p0wdx8t"
+            ],
+            "title": "Passed",
+            "reason": "Passed",
+            "status": "passed"
+          }
+        ]
+      }
+    ]
+  }
+}

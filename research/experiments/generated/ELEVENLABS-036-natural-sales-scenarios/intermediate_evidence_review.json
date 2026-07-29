@@ -1,0 +1,119 @@
+{
+  "checkpoint_id": "ELEVENLABS-036-natural-sales-scenarios",
+  "reviewed_at_utc": "2026-07-29T22:35:09Z",
+  "decision": "preserve_as_historical_intermediate_evidence",
+  "authoritative_readiness_evidence": false,
+  "source_checkout": {
+    "path": "D:\\Codex\\active\\emotion-aware-ai-sales-agent",
+    "head": "f90e0bbc36097daaf41e3d4d67e3ae80feabef7e",
+    "tracked_file_modifications": 0,
+    "untracked_artifact_count": 142
+  },
+  "review_base": {
+    "origin_main": "5d564d5ce2a6d6293afb3d58662dc0c16ce195f6",
+    "validator_blob": "2f327214f482fa8c3384e3288dbe3e3d6e3e93f0",
+    "test_definition_blob": "6e1e075350dcc7dd17e238f95aea33c4a8f8da54"
+  },
+  "inventory": {
+    "artifacts": 142,
+    "source_bytes_before_git_text_normalization": 2589325,
+    "families": 32,
+    "patch_packet": 5,
+    "capture": 30,
+    "capture_v2": 1,
+    "stored_independent": 18,
+    "run_plan": 30,
+    "run_request": 29,
+    "run_result": 29
+  },
+  "integrity": {
+    "json_parsed": 142,
+    "capture_payload_hashes_valid": 31,
+    "capture_payload_hashes_invalid": 0,
+    "plan_request_pairs_consistent": 29,
+    "plan_result_pairs_consistent": 29,
+    "result_capture_pairs_consistent": 29,
+    "capture_stored_independent_invocation_pairs_consistent": 18,
+    "lineage_consistency_violations": 0,
+    "credential_pattern_hits": 0,
+    "sensitive_key_paths": 0,
+    "unique_synthetic_contact_emails": 3,
+    "synthetic_contacts_already_defined_in_tracked_sources": true,
+    "phone_like_values": 0,
+    "ip_addresses": 0,
+    "artifacts_reporting_outbound_calls_made": 91,
+    "artifacts_reporting_outbound_calls_true": 0
+  },
+  "provider_results": {
+    "completed": 21,
+    "failed": 8
+  },
+  "current_contract_revalidation": {
+    "preferred_capture_lineages": 30,
+    "pass": 6,
+    "inconclusive": 2,
+    "fail": 22,
+    "pass_families": [
+      "llm_gpt54_behavior1_crm_repeat3",
+      "llm_gpt55_behavior3_full1",
+      "readiness_final3_email_plus_repeat3",
+      "readiness_final6_crm_repeat3",
+      "readiness_final6_scheduling_repeat3",
+      "readiness_final6_visual_repeat3"
+    ],
+    "inconclusive_families": [
+      "llm_gpt54_behavior2_crm_repeat3",
+      "readiness_final_crm_repeat3"
+    ],
+    "stored_independent_files": 18,
+    "stored_exact_current_result": 4,
+    "stored_same_status_detail_mismatch": 10,
+    "stored_status_changes": [
+      {
+        "family": "llm_gpt54_behavior1_crm_repeat3",
+        "stored": "fail",
+        "current": "pass"
+      },
+      {
+        "family": "llm_gpt55_behavior3_full1",
+        "stored": "fail",
+        "current": "pass"
+      },
+      {
+        "family": "readiness_final3_email_plus_repeat3",
+        "stored": "fail",
+        "current": "pass"
+      },
+      {
+        "family": "readiness_final_crm_repeat3",
+        "stored": "fail",
+        "current": "inconclusive"
+      }
+    ],
+    "missing_stored_independent": 12
+  },
+  "test_semantics": {
+    "capture_files": 31,
+    "exact_current_definition_match": 29,
+    "mismatched_capture_files": [
+      "llm_gpt54_behavior1_full1_capture.json",
+      "llm_gpt54mini_full1_capture.json"
+    ],
+    "preferred_replacement_capture": "llm_gpt54_behavior1_full1_capture_v2.json"
+  },
+  "superseded_by": {
+    "report": "report.md",
+    "final_invocation_id": "suite_2901kx7a8pkjfyw95retr4j4g5eg",
+    "provider_passed": 10,
+    "independent_passed": 10
+  },
+  "review_actions": {
+    "provider_calls": false,
+    "provider_writes": false,
+    "simulations": false,
+    "outbound_calls": false,
+    "runtime_changes": false,
+    "test_definition_changes": false,
+    "analysis_criterion_changes": false
+  }
+}
