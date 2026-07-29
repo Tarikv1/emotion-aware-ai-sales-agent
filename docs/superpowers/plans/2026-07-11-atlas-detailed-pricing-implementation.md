@@ -20,7 +20,7 @@
 - Quote one relevant package or add-on range and at most one material scope question.
 - Never mechanically add three or more features or calculate a final quote during the initial call.
 - Portals, dashboards, custom APIs, user accounts, databases, complex payments, inventory synchronization, marketplaces, and custom business logic require scoping.
-- Existing Analysis criteria and existing simulation definitions must not be edited or weakened.
+- Existing Analysis criteria and existing simulation definitions must not be edited, weakened, or structurally changed, except for the exact pre-040 fixture default mirrors defined below.
 - New tests use `gemini-2.5-flash` for both simulated user and evaluation model.
 - Active KB attachment count and order remain exactly 17 and unchanged.
 - Update active KB documents in place; do not create provider duplicates or broaden the attachment set.
@@ -53,9 +53,32 @@
 
 - `runtime/providers/elevenlabs_agents/analysis/atlas_web_studio_analysis_config.json`
 - `runtime/providers/elevenlabs_agents/analysis/atlas_web_studio_analysis_setup.md`
-- Every pre-040 file under `runtime/providers/elevenlabs_agents/tests/`
+- Every pre-040 file under `runtime/providers/elevenlabs_agents/tests/`, except for the exact fixture-default allowlist below
 - `runtime/providers/elevenlabs_agents/manifests/web_design_sales_spine_compression.package.json`
 - `runtime/providers/elevenlabs_agents/procedures/`
+
+---
+
+### Pre-040 Fixture Default-Mirror Exception And Protected Baseline
+
+The immutable prerequisite baseline is commit `f90e0bbc36097daaf41e3d4d67e3ae80feabef7e` with tree `6d5a176152a07bb29fa209642d7ee249b4337691`. During implementation and final closeout, verify protected paths against that commit/tree; a clean working diff alone is insufficient.
+
+The only permitted pre-040 test changes are mechanical replacements of embedded values for the six runtime default keys (`website_starting_price`, `website_basic_site_range`, `website_light_feature_range`, `website_workflow_content_range`, `website_integration_heavy_range`, and `website_premium_price_anchor`) in this exact allowlist:
+
+- `runtime/providers/elevenlabs_agents/tests/web_design_confident_capability_control_tests.json`
+- `runtime/providers/elevenlabs_agents/tests/web_design_cross_vertical_local_business_simulation_tests.json`
+- `runtime/providers/elevenlabs_agents/tests/web_design_demand_capture_conversion_leakage_v4_simulation_tests.json`
+- `runtime/providers/elevenlabs_agents/tests/web_design_emotional_resistance_dynamic_simulation_tests.json`
+- `runtime/providers/elevenlabs_agents/tests/web_design_end_call_edge_case_tests.json`
+- `runtime/providers/elevenlabs_agents/tests/web_design_end_call_terminal_control_tests.json`
+- `runtime/providers/elevenlabs_agents/tests/web_design_human_phone_naturalness_tests.json`
+- `runtime/providers/elevenlabs_agents/tests/web_design_mikes_kitchen_naturalness_tests.json`
+- `runtime/providers/elevenlabs_agents/tests/web_design_mikes_kitchen_simulation_tests.json`
+- `runtime/providers/elevenlabs_agents/tests/web_design_mikes_kitchen_value_pricing_tests.json`
+- `runtime/providers/elevenlabs_agents/tests/web_design_natural_sales_scenarios_tests.json`
+- `runtime/providers/elevenlabs_agents/tests/web_design_procedure_natural_sales_tests.json`
+
+No scenario, success condition, evaluator expectation, model, turn limit, test ID, test order, Analysis criterion, or other test content may change. The protected-file gate must compare the final tree to the immutable baseline and prove that any changed pre-040 fixture is in this allowlist and differs only in those embedded default values.
 
 ---
 
@@ -312,7 +335,7 @@ git commit -m "Gate Atlas paid pricing on buyer intent"
 **Interfaces:**
 
 - Consumes: package ranges and disclosure gate from Tasks 2 and 3.
-- Produces: ten ordered test definitions with no edits to any pre-040 test or Analysis criterion.
+- Produces: ten ordered test definitions with no edits to any pre-040 test or Analysis criterion, except the exact fixture-default allowlist defined in the protected-baseline contract.
 
 - [ ] **Step 1: Define shared dynamic variables**
 
@@ -645,7 +668,7 @@ git commit -m "Independently validate Atlas pricing traces"
 python scripts\validate_elevenlabs_040_detailed_pricing_control.py
 ```
 
-Expected: `status: pass`, ten tests, prompt at or below 1,900 words, existing tests unchanged, Analysis unchanged, active manifest unchanged, and Procedures unchanged.
+Expected: `status: pass`, ten tests, prompt at or below 1,900 words, protected paths verified against `f90e0bbc36097daaf41e3d4d67e3ae80feabef7e` / tree `6d5a176152a07bb29fa209642d7ee249b4337691`, only the exact pre-040 fixture-default allowlist changed mechanically, Analysis unchanged, active manifest unchanged, and Procedures unchanged.
 
 - [ ] **Step 2: Run regression validators**
 
@@ -664,13 +687,13 @@ git diff --check
 
 Expected: every command exits `0`.
 
-- [ ] **Step 3: Verify forbidden files are unchanged**
+- [ ] **Step 3: Verify protected files against the immutable baseline**
 
 ```powershell
-git diff --name-only -- runtime/providers/elevenlabs_agents/analysis runtime/providers/elevenlabs_agents/tests | Select-String -NotMatch 'web_design_detailed_pricing_control_tests.json'
+git diff --name-only f90e0bbc36097daaf41e3d4d67e3ae80feabef7e -- runtime/providers/elevenlabs_agents/analysis runtime/providers/elevenlabs_agents/tests runtime/providers/elevenlabs_agents/manifests/web_design_sales_spine_compression.package.json runtime/providers/elevenlabs_agents/procedures
 ```
 
-Expected: no output.
+Expected: output, if any, is limited to `web_design_detailed_pricing_control_tests.json` and the exact pre-040 fixture-default allowlist above. Inspect every allowlisted diff to confirm only the six embedded runtime-default values changed; all other protected paths must have no diff. Repeat this baseline comparison during final closeout.
 
 - [ ] **Step 4: Commit any validator-only correction**
 
