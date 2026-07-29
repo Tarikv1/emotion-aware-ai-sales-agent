@@ -1,0 +1,79 @@
+{
+  "candidate_cap_per_signal": 4,
+  "candidate_order_by_signal": {
+    "confusion": [
+      "yu_etal_2011_student_teacher_math",
+      "daisee_2016",
+      "hri_confusion_2025",
+      "li_etal_2022_confusion_pilot"
+    ],
+    "frustration": [
+      "yu_etal_2011_student_teacher_math",
+      "fuse_2024",
+      "multicollab_2024",
+      "iemocap_2008"
+    ]
+  },
+  "checkpoint_id": "EMOTION-STATE-005-phase-c1-1-source-resolution",
+  "decision_contract": {
+    "candidate_pass_requires_all_admission_fields_true": true,
+    "missing_or_unpublished_required_field": "unresolved",
+    "no_candidate_pass": "maintain_defer_c2",
+    "one_or_more_candidate_passes": "document_later_signal_specific_c2_gate_candidate",
+    "this_checkpoint_can_open_c2": false
+  },
+  "documentation_fields": [
+    "authoritative_source_identity",
+    "access_and_license",
+    "spontaneous_conversation",
+    "direct_target_construct",
+    "independent_human_observer",
+    "turn_or_bounded_segment",
+    "published_direct_positive_count",
+    "preadjudication_krippendorff_alpha_point",
+    "preadjudication_krippendorff_alpha_lower_95",
+    "preadjudication_krippendorff_alpha_upper_95"
+  ],
+  "evidence_boundary": {
+    "allowed": [
+      "official_public_dataset_landing_pages",
+      "original_public_papers",
+      "official_institutional_repositories",
+      "publisher_or_doi_metadata"
+    ],
+    "blocked": [
+      "dataset_download",
+      "dataset_row_or_annotation_read",
+      "private_data",
+      "login_or_form_submission",
+      "provider_access",
+      "call_or_simulation",
+      "model_evaluation",
+      "source_adaptation",
+      "runtime_change_or_activation",
+      "canonical_staging_or_acceptance",
+      "phase_c2"
+    ],
+    "persisted_content": "public_source_metadata_and_aggregate_documented_facts_only"
+  },
+  "independence_contract": {
+    "authoritative_claims_require_primary_or_official_source": true,
+    "independent_review_required": true,
+    "unknowns_must_remain_unknown": true
+  },
+  "parent_protocol": {
+    "path": "research/experiments/configs/emotion-state-004-phase-c1-discovery-protocol.json",
+    "protocol_id": "emotion-state-phase-c1-discovery-v1",
+    "sha256": "2540A1BA430F78B9F660BA466F6CFD7099CFFCAA6F1C1D1AC373F4BA1D4D2CCD"
+  },
+  "protocol_id": "emotion-state-phase-c1-1-source-resolution-v1",
+  "research_question": "Can authoritative public documentation resolve at least one direct confusion or frustration corpus as admissible under the frozen Phase C1 rules?",
+  "schema_version": "EmotionStatePhaseC11SourceResolutionProtocolV1",
+  "signal_order": [
+    "confusion",
+    "frustration"
+  ],
+  "status": "frozen_before_final_adjudication",
+  "study_classification": "bounded_source_resolution_review_not_confirmatory_model_evaluation",
+  "timing_caveat": "Candidate discovery and preliminary triage preceded this written freeze; only final field extraction and adjudication follow it."
+}

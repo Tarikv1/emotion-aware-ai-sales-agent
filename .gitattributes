@@ -7,3 +7,6 @@
 /research/sources/emotion_state/phase_c1_source_review_receipt.json text eol=lf
 /research/experiments/generated/EMOTION-STATE-004-phase-c1-operational-signal-evidence-admission/result.json text eol=lf
 /research/experiments/generated/EMOTION-STATE-004-phase-c1-operational-signal-evidence-admission/report.md text eol=lf
+/research/sources/emotion_state/phase_a_verification_guard_policy.json text eol=lf
+/scripts/validate_emotion_state_004_phase_c1.py text eol=lf
+/scripts/emotion_state_phase_c1_contracts.py text eol=lf

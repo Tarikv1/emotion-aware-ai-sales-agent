@@ -50,11 +50,77 @@ Use the source categories carefully:
 - Type: dataset source
 - Landing page: https://sail.usc.edu/iemocap/
 - Main source: https://sail.usc.edu/iemocap/iemocap_info.htm
+- Original paper: https://sail.usc.edu/iemocap/Busso_2008_iemocap.pdf
+- Release and access page: https://sail.usc.edu/iemocap/iemocap_release.htm
 - Academic release form: https://sail.usc.edu/iemocap/release_form.php
 - USC SAIL database page: https://sail.usc.edu/software/databases/
 - Project use: speech emotion reference and possible audio-emotion baseline.
 - Current project status: local file appears to be a repackaged CSV-style export, not the full official corpus structure.
 - Thesis caution: do not make official-IEMOCAP claims from the local export until provenance and access conditions are verified.
+
+## Phase C1.1 Confusion And Frustration Source Resolution
+
+### Yu et al. student-teacher mathematics corpus
+
+- Type: academic source and unresolved public-dataset candidate
+- Official article page: https://library.apsce.net/index.php/ICCE/article/view/2655
+- Official paper: https://library.apsce.net/index.php/ICCE/article/download/2655/2531/3619
+- Project use: primary documentation for sentence-level confusion and frustration labels in classroom mathematics dialogue.
+- Current project status: closest C1.1 candidate but not admitted. The paper publishes 134 confusion and 99 frustration sentences from two teacher annotators plus a third adjudicator, but reports raw percent agreement rather than qualifying Krippendorff alpha and documents no official corpus release or dataset-use license.
+- Thesis caution: published counts and percent agreement do not establish C1 reliability admission or lawful material availability.
+
+### DAiSEE
+
+- Type: academic and dataset source; rejected C1.1 conversational candidate
+- Primary paper: https://arxiv.org/abs/1609.01885
+- Official dataset page: https://people.iith.ac.in/vineethnb/resources/daisee/index.html
+- Project use: authoritative negative-control evidence for direct confusion labels outside conversation.
+- Current project status: rejected for C1.1 because the ten-second snippets observe individual video-watching behavior rather than conversation; its reported weighted-Cohen-kappa filtering is not the frozen reliability statistic.
+- Thesis caution: naturalistic e-learning behavior is not spontaneous conversational evidence.
+
+### HRI-confusion
+
+- Type: academic and restricted dataset source; rejected C1.1 candidate
+- DOI: https://doi.org/10.1016/j.dib.2025.112047
+- Primary open article: https://pmc.ncbi.nlm.nih.gov/articles/PMC12478088/
+- Project use: primary documentation for controlled human-robot confusion-condition data.
+- Current project status: rejected for C1.1 because the label path uses designed conditions and participant ratings, released clips are conversation-level views, approved reliability is absent, and raw identifiable media require an application.
+- Thesis caution: experimental conditions and post-dialogue ratings are not direct independent observer labels.
+
+### Li, Kelleher, and Ross human-avatar confusion pilot
+
+- Type: academic source; rejected C1.1 candidate
+- SemDial record: https://www.semdial.org/anthology/papers/Z/Z21/Z21-3013/
+- Primary paper: https://arxiv.org/abs/2206.02436
+- Project use: primary documentation for semi-spontaneous Wizard-of-Oz confusion research in task-oriented dialogue.
+- Current project status: rejected for C1.1 because it uses designed conditions, post-interaction self-report, and automated proxy indicators without stable local dialogue labels or qualifying reliability evidence.
+- Thesis caution: relevance to conversational agents does not repair an ineligible label path.
+
+### FUSE
+
+- Type: academic and public noncommercial dataset source; rejected C1.1 candidate
+- Primary paper: https://aclanthology.org/2024.lrec-main.666/
+- Official dataset page: https://fusecorpus.github.io/FUSE/
+- Project use: primary documentation for spontaneous dyadic task dialogue with direct frustration self- and partner reports.
+- Current project status: rejected for C1.1 because self-report and one partner perception cannot satisfy the independent-observer gate; the direct-positive segment count and qualifying reliability evidence are unpublished.
+- Thesis caution: 975 game utterances are not 975 directly labeled frustration units.
+
+### MULTICOLLAB
+
+- Type: academic and public noncommercial dataset source; rejected C1.1 candidate
+- Primary paper: https://aclanthology.org/2024.lrec-main.1023/
+- Official public repository: https://github.com/mp6510/MULTICOLLAB
+- Project use: primary documentation for induced frustration in natural Zoom task dialogue.
+- Current project status: rejected for C1.1 because timestamped replay labels are self-report-only and no qualifying inter-rater reliability or exact eligible positive count is published.
+- Thesis caution: a 4.5-second modeling window does not turn a self-report into an independent observer label.
+
+### Confrustion construct review
+
+- Type: academic source and construct-validity caution
+- DOI: https://doi.org/10.1111/cogs.70035
+- Project use: documents the multiple forms and overlap of confusion and frustration considered in the C1.1 limitations analysis.
+- Current project status: theory source only; not a dataset candidate and not evidence for combining the project labels.
+- Thesis caution: construct overlap strengthens the need for direct labels and uncertainty preservation; it does not authorize hidden-state inference.
 
 ### MSP-Podcast (unselected offline dataset candidate)
 
