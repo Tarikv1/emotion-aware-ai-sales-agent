@@ -1,0 +1,54 @@
+{
+  "schema_id": "emotion-state-002-research-environment-lock-v1",
+  "python_version": "3.11",
+  "platform": "win_amd64",
+  "direct_requirements": [
+    "numpy",
+    "scipy",
+    "scikit-learn"
+  ],
+  "distributions": [
+    {
+      "name": "joblib",
+      "version": "1.5.3",
+      "direct": false,
+      "wheel_filename": "joblib-1.5.3-py3-none-any.whl",
+      "sha256": "5FC3C5039FC5CA8C0276333A188BBD59D6B7AB37FE6632DAA76BC7F9EC18E713",
+      "license": "BSD-3-Clause"
+    },
+    {
+      "name": "numpy",
+      "version": "2.4.6",
+      "direct": true,
+      "wheel_filename": "numpy-2.4.6-cp311-cp311-win_amd64.whl",
+      "sha256": "1E254A00CDF42B1E4D5B3D68D33AF63268D41340D8885DF2AB6470F2E1500147",
+      "license": "BSD-3-Clause AND 0BSD AND MIT AND Zlib AND CC0-1.0"
+    },
+    {
+      "name": "scikit-learn",
+      "version": "1.8.0",
+      "direct": true,
+      "wheel_filename": "scikit_learn-1.8.0-cp311-cp311-win_amd64.whl",
+      "sha256": "C57B1B610BD1F40BA43970E11CE62821C2E6569E4D74023DB19C6B26F246CB3B",
+      "license": "BSD-3-Clause"
+    },
+    {
+      "name": "scipy",
+      "version": "1.17.1",
+      "direct": true,
+      "wheel_filename": "scipy-1.17.1-cp311-cp311-win_amd64.whl",
+      "sha256": "D30E57C72013C2A4FE441C2FCB8E77B14E152AD48B5464858E07E2AD9FBFCEFF",
+      "license": "BSD-3-Clause"
+    },
+    {
+      "name": "threadpoolctl",
+      "version": "3.6.0",
+      "direct": false,
+      "wheel_filename": "threadpoolctl-3.6.0-py3-none-any.whl",
+      "sha256": "43A0B8FD5A2928500110039E43A5EED8480B918967083EA48DC3AB9F13C4A7FB",
+      "license": "BSD-3-Clause"
+    }
+  ],
+  "network_during_evaluation_allowed": false,
+  "product_dependency_manifest_influence_allowed": false
+}

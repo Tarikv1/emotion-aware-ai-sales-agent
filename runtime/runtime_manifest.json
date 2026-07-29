@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "manifest_id": "runtime-boundary-001",
-  "updated_on": "2026-06-04",
+  "updated_on": "2026-07-14",
   "purpose": "Make runtime-affecting project files visible separately from research, generated evidence, checkpoint runners, and temporary files.",
   "status": "runtime-sources-and-docs-moved-with-legacy-wrappers",
   "runtime_home_policy": {
@@ -396,6 +396,39 @@
         "brain state contract"
       ],
       "legacy_path": "scripts/brain_runtime_state_schema.py"
+    },
+    {
+      "path": "runtime/contracts/emotion_state_contracts.py",
+      "path_type": "file",
+      "tier": "core-runtime-contract",
+      "runtime_role": "Offline-only EMOTION-STATE V1 evidence, audit, aggregate, perceived-state, persistence, and event-identity contracts; not imported by live runtime.",
+      "behavior_surface": [
+        "contract validation only",
+        "no live runtime import",
+        "no provider behavior"
+      ]
+    },
+    {
+      "path": "runtime/contracts/emotion_pattern_contracts.py",
+      "path_type": "file",
+      "tier": "core-runtime-contract",
+      "runtime_role": "Offline-only EMOTION-STATE pattern serialization and digest contracts with runtime activation hard-blocked.",
+      "behavior_surface": [
+        "artifact integrity only",
+        "no signature authenticity claim",
+        "no runtime activation"
+      ]
+    },
+    {
+      "path": "runtime/contracts/emotion_state_brain_extension.py",
+      "path_type": "file",
+      "tier": "core-runtime-contract",
+      "runtime_role": "Detached offline BRAIN extension carrying modality provenance and monotonic policy bounds without mutating BRAIN-002 v1.",
+      "behavior_surface": [
+        "offline mapping only",
+        "BRAIN-002 v1 unchanged",
+        "runtime connection blocked"
+      ]
     },
     {
       "path": "runtime/contracts/campaign_profile_contract.py",

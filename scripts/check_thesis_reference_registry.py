@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import re
 from dataclasses import dataclass
 from pathlib import Path
@@ -55,6 +56,7 @@ SKIP_DIRS = {
 
 SKIP_DIR_PREFIXES = {
     ("config", "local"),
+    ("data", "public"),
     ("data", "private"),
     ("data", "private-restricted"),
     ("data", "processed"),
@@ -156,17 +158,42 @@ def should_skip_path(relative_path: Path) -> bool:
 
 def iter_scan_files(root: Path) -> list[Path]:
     files: list[Path] = []
-    for path in root.rglob("*"):
-        if not path.is_file():
+    for prefix in SCAN_PREFIXES:
+        scan_root = root / prefix
+        relative_scan_root = Path(prefix)
+        if should_skip_path(relative_scan_root):
             continue
-        relative_path = path.relative_to(root)
-        if should_skip_path(relative_path):
+
+        if scan_root.is_file():
+            if scan_root.suffix.lower() in TEXT_EXTENSIONS:
+                files.append(scan_root)
             continue
-        if not should_scan_relative(relative_path):
+        if scan_root.is_symlink() or not scan_root.is_dir():
             continue
-        if path.suffix.lower() not in TEXT_EXTENSIONS:
-            continue
-        files.append(path)
+
+        for directory, directory_names, file_names in os.walk(
+            scan_root,
+            topdown=True,
+            followlinks=False,
+        ):
+            directory_path = Path(directory)
+            relative_directory = directory_path.relative_to(root)
+            directory_names[:] = [
+                name
+                for name in directory_names
+                if not should_skip_path(relative_directory / name)
+            ]
+            for name in file_names:
+                path = directory_path / name
+                relative_path = path.relative_to(root)
+                if should_skip_path(relative_path):
+                    continue
+                if not should_scan_relative(relative_path):
+                    continue
+                if path.suffix.lower() not in TEXT_EXTENSIONS:
+                    continue
+                if path.is_file():
+                    files.append(path)
     return sorted(files)
 
 

@@ -6,8 +6,20 @@ import json
 import os
 import platform
 import sys
+from collections.abc import Mapping
 from pathlib import Path
 from typing import Any
+
+try:
+    from scripts.emotion_state_phase_a_verification_evidence import (
+        PRIVATE_GITIGNORE_SENTINEL_BYTES,
+        read_tracked_private_gitignore_sentinel,
+    )
+except ModuleNotFoundError:
+    from emotion_state_phase_a_verification_evidence import (
+        PRIVATE_GITIGNORE_SENTINEL_BYTES,
+        read_tracked_private_gitignore_sentinel,
+    )
 
 
 PROJECT_NAME = "emotion-aware-ai-sales-agent"
@@ -548,6 +560,43 @@ REQUIRED_FILES = [
     ("file.research_case_voice_042_private_pattern_live_ab", "research/experiments/cases/voice-042-private-pattern-live-ab.json", "VOICE-042 private pattern live A/B case file"),
     ("file.research_case_voice_043_baseline_shaped_runtime", "research/experiments/cases/voice-043-baseline-shaped-runtime-acceptance.json", "VOICE-043 baseline shaped runtime acceptance case file"),
     ("file.research_case_voice_044_baseline_delivery_polish", "research/experiments/cases/voice-044-baseline-delivery-polish.json", "VOICE-044 baseline delivery polish case file"),
+    ("file.scripts_exp_002_frozen_response_baseline", "scripts/exp_002_frozen_response_baseline.py", "Frozen EXP-002 response scorer"),
+    ("file.scripts_run_exp_002_frozen_response_baseline", "scripts/run_exp_002_frozen_response_baseline.py", "Frozen EXP-002 response scorer runner"),
+    ("file.scripts_validate_exp_002_frozen_response_baseline", "scripts/validate_exp_002_frozen_response_baseline.py", "Frozen EXP-002 response scorer validator"),
+    ("file.runtime_contracts_emotion_state_contracts", "runtime/contracts/emotion_state_contracts.py", "EMOTION-STATE evidence and persistence contracts"),
+    ("file.runtime_contracts_emotion_pattern_contracts", "runtime/contracts/emotion_pattern_contracts.py", "EMOTION-STATE pattern integrity contracts"),
+    ("file.runtime_contracts_emotion_state_brain_extension", "runtime/contracts/emotion_state_brain_extension.py", "Detached EMOTION-STATE BRAIN extension"),
+    ("file.scripts_emotion_state_annotation_contracts", "scripts/emotion_state_annotation_contracts.py", "EMOTION-STATE reviewer aggregation contracts"),
+    ("file.scripts_emotion_state_phase_a_contracts", "scripts/emotion_state_phase_a_contracts.py", "EMOTION-STATE Phase A checkpoint builder"),
+    ("file.scripts_run_emotion_state_001_phase_a_contracts", "scripts/run_emotion_state_001_phase_a_contracts.py", "EMOTION-STATE Phase A checkpoint runner"),
+    ("file.scripts_validate_emotion_state_001_phase_a_contracts", "scripts/validate_emotion_state_001_phase_a_contracts.py", "EMOTION-STATE Phase A validator"),
+    ("file.scripts_emotion_state_public_dataset_contracts", "scripts/emotion_state_public_dataset_contracts.py", "EMOTION-STATE public-dataset contracts"),
+    ("file.scripts_emotion_state_split_manifest_v2_contracts", "scripts/emotion_state_split_manifest_v2_contracts.py", "EMOTION-STATE split-manifest v2 contracts"),
+    ("file.scripts_emotion_state_cohort_release_contracts", "scripts/emotion_state_cohort_release_contracts.py", "EMOTION-STATE cohort-release contracts"),
+    ("file.scripts_emotion_state_phase_a_verification_evidence", "scripts/emotion_state_phase_a_verification_evidence.py", "EMOTION-STATE Phase A verification evidence"),
+    ("file.scripts_emotion_state_phase_a_guard_site_sitecustomize", "scripts/emotion_state_phase_a_guard_site/sitecustomize.py", "EMOTION-STATE Phase A verification guard site"),
+    ("file.scripts_build_emotion_state_public_dataset_manifests", "scripts/build_emotion_state_public_dataset_manifests.py", "EMOTION-STATE public-dataset manifest builder"),
+    ("file.scripts_test_emotion_state_001_open_dataset_gate", "scripts/test_emotion_state_001_open_dataset_gate.py", "EMOTION-STATE open-dataset gate tests"),
+    ("file.scripts_test_emotion_state_001_closeout_hardening", "scripts/test_emotion_state_001_closeout_hardening.py", "EMOTION-STATE closeout hardening tests"),
+    ("file.research_case_emotion_state_001_phase_a_contracts", "research/experiments/cases/emotion-state-001-phase-a-contracts.json", "EMOTION-STATE Phase A fixed case"),
+    ("file.research_case_emotion_state_001_cohort_release_fixtures", "research/experiments/cases/emotion-state-001-cohort-release-fixtures.json", "EMOTION-STATE synthetic cohort-release fixtures"),
+    ("file.research_experiment_emotion_state_001_phase_a", "research/experiments/EMOTION-STATE-001-phase-a.md", "EMOTION-STATE Phase A experiment note"),
+    ("file.docs_product_emotion_state_001_phase_a_contracts", "docs/product/EMOTION_STATE_001_PHASE_A_CONTRACTS.md", "EMOTION-STATE Phase A product contract"),
+    ("file.docs_data_emotion_state_001_annotation_codebook", "docs/data/EMOTION_STATE_001_ANNOTATION_CODEBOOK.md", "EMOTION-STATE annotation codebook"),
+    ("file.research_source_creative_analysis_engine_manifest", "research/sources/creative_analysis_engine/source_manifest.json", "Creative Analysis Engine source manifest"),
+    ("file.research_source_creative_analysis_engine_notes", "research/sources/creative_analysis_engine/source_notes.md", "Creative Analysis Engine source notes"),
+    ("file.research_source_emotion_state_dataset_manifest_contract", "research/sources/emotion_state/dataset_manifest_contract.json", "EMOTION-STATE dataset-manifest contract"),
+    ("file.research_source_emotion_state_annotation_record_schema", "research/sources/emotion_state/annotation_record_v1.schema.json", "EMOTION-STATE annotation-record schema"),
+    ("file.research_source_emotion_state_split_manifest_schema", "research/sources/emotion_state/split_manifest_v1.schema.json", "EMOTION-STATE split-manifest schema"),
+    ("file.research_source_emotion_state_split_manifest_v2_schema", "research/sources/emotion_state/split_manifest_v2.schema.json", "EMOTION-STATE split-manifest v2 schema"),
+    ("file.research_source_emotion_state_cohort_release_evidence_v1_schema", "research/sources/emotion_state/cohort_release_evidence_v1.schema.json", "EMOTION-STATE cohort-release evidence schema"),
+    ("file.research_source_emotion_state_phase_a_verification_guard_policy", "research/sources/emotion_state/phase_a_verification_guard_policy.json", "EMOTION-STATE Phase A verification guard policy"),
+    ("file.research_source_emotion_state_crema_manifest", "research/sources/emotion_state/datasets/crema-d-v1.0-audio-wav.manifest.json", "CREMA-D verified dataset manifest"),
+    ("file.research_source_emotion_state_crema_hashes", "research/sources/emotion_state/datasets/crema-d-v1.0-audio-wav.hashes.json", "CREMA-D verified hash inventory"),
+    ("file.research_source_emotion_state_crema_quality", "research/sources/emotion_state/datasets/crema-d-v1.0-audio-wav.quality.json", "CREMA-D verified quality inventory"),
+    ("file.research_source_emotion_state_ami_manifest", "research/sources/emotion_state/datasets/ami-manual-annotations-v1.6.2.manifest.json", "AMI verified dataset manifest"),
+    ("file.research_source_emotion_state_ami_hashes", "research/sources/emotion_state/datasets/ami-manual-annotations-v1.6.2.hashes.json", "AMI verified hash inventory"),
+    ("file.research_source_emotion_state_ami_quality", "research/sources/emotion_state/datasets/ami-manual-annotations-v1.6.2.quality.json", "AMI verified quality inventory"),
 ]
 
 OPTIONAL_ENV_VARS = [
@@ -594,36 +643,61 @@ def check_python_version() -> dict[str, Any]:
     )
 
 
+def private_sentinel_contract_present(root: Path) -> bool:
+    try:
+        return (
+            read_tracked_private_gitignore_sentinel(root)
+            == PRIVATE_GITIGNORE_SENTINEL_BYTES
+        )
+    except ValueError:
+        return False
+
+
 def check_directories(root: Path) -> list[dict[str, Any]]:
     checks = []
+    private_sentinel_present: bool | None = None
     for check_id, relative_path, label in REQUIRED_DIRS:
-        path = root / relative_path
-        if path.is_dir():
+        if check_id == "dir.data_private":
+            if private_sentinel_present is None:
+                private_sentinel_present = private_sentinel_contract_present(
+                    root
+                )
+            directory_exists = private_sentinel_present
+        else:
+            directory_exists = (root / relative_path).is_dir()
+        if directory_exists:
             checks.append(build_check(check_id, "pass", "required", f"{label} exists.", relative_path))
         else:
             checks.append(build_check(check_id, "fail", "required", f"{label} is missing.", relative_path))
     for check_id, relative_path, label in OPTIONAL_DIRS:
-        path = root / relative_path
-        if path.is_dir():
-            checks.append(build_check(check_id, "pass", "optional", f"{label} exists.", relative_path))
-        else:
-            checks.append(
-                build_check(
-                    check_id,
-                    "pass",
-                    "optional",
-                    f"{label} is absent. Default setup does not require restricted private data.",
-                    relative_path,
-                )
+        checks.append(
+            build_check(
+                check_id,
+                "pass",
+                "optional",
+                (
+                    f"{label} physical presence was not checked and is not "
+                    "required for default setup."
+                ),
+                relative_path,
             )
+        )
     return checks
 
 
 def check_files(root: Path) -> list[dict[str, Any]]:
     checks = []
+    private_sentinel_present: bool | None = None
     for check_id, relative_path, label in REQUIRED_FILES:
-        path = root / relative_path
-        if path.is_file():
+        if check_id == "file.data_private_gitignore":
+            if private_sentinel_present is None:
+                private_sentinel_present = private_sentinel_contract_present(
+                    root
+                )
+            file_exists = private_sentinel_present
+        else:
+            file_exists = (root / relative_path).is_file()
+        if file_exists:
             checks.append(build_check(check_id, "pass", "required", f"{label} exists.", relative_path))
         else:
             checks.append(build_check(check_id, "fail", "required", f"{label} is missing.", relative_path))
@@ -659,11 +733,14 @@ def check_write_path(root: Path) -> dict[str, Any]:
     )
 
 
-def build_environment_report() -> list[dict[str, Any]]:
+def build_environment_report(
+    environment: Mapping[str, str] | None = None,
+) -> list[dict[str, Any]]:
+    environment_values = os.environ if environment is None else environment
     return [
         {
             "name": name,
-            "present": bool(os.environ.get(name)),
+            "present": bool(environment_values.get(name)),
             "required_for_default_setup": False,
             "value_logged": False,
             "used_for": description,
@@ -686,7 +763,11 @@ def summarize_checks(checks: list[dict[str, Any]], strict: bool) -> tuple[str, d
     }
 
 
-def build_report(root: Path, strict: bool) -> dict[str, Any]:
+def build_report(
+    root: Path,
+    strict: bool,
+    environment: Mapping[str, str] | None = None,
+) -> dict[str, Any]:
     checks = [
         build_check(
             "root.exists",
@@ -712,7 +793,7 @@ def build_report(root: Path, strict: bool) -> dict[str, Any]:
             "python": platform.python_version(),
         },
         "summary": summary,
-        "environment": build_environment_report(),
+        "environment": build_environment_report(environment),
         "checks": checks,
     }
 

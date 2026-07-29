@@ -5894,3 +5894,992 @@ Interpretation:
     pass
   - old cross-vertical live test folder criteria remain historical evidence;
     revised V2 tests are the next review target
+
+### 2026-07-14 - EMOTION-STATE-001 offline Phase A contract foundation
+
+- Objective: establish a provenance-first, deterministic, fail-closed foundation for later customer-state research without adapting source code, selecting a public dataset, reading private data, contacting a provider, or connecting the new contracts to live runtime behavior.
+- Files:
+  - provenance and data contracts: `research/sources/creative_analysis_engine/source_manifest.json`, `research/sources/creative_analysis_engine/source_notes.md`, `research/sources/emotion_state/dataset_manifest_contract.json`, `research/sources/emotion_state/annotation_record_v1.schema.json`, `research/sources/emotion_state/split_manifest_v1.schema.json`, `docs/data/EMOTION_STATE_001_ANNOTATION_CODEBOOK.md`, and `scripts/emotion_state_annotation_contracts.py`
+  - offline runtime contracts: `runtime/contracts/emotion_state_contracts.py`, `runtime/contracts/emotion_pattern_contracts.py`, `runtime/contracts/emotion_state_brain_extension.py`, and the detached-extension note in `docs/brain/BRAIN_002_RUNTIME_STATE_SCHEMA.md`
+  - deterministic frozen baseline and Phase A checkpoint: `scripts/exp_002_frozen_response_baseline.py`, `scripts/run_exp_002_frozen_response_baseline.py`, `scripts/validate_exp_002_frozen_response_baseline.py`, `research/experiments/generated/EXP-002-frozen-response-baseline/result.json`, `research/experiments/generated/EXP-002-frozen-response-baseline/report.md`, `scripts/emotion_state_phase_a_contracts.py`, `scripts/run_emotion_state_001_phase_a_contracts.py`, `scripts/validate_emotion_state_001_phase_a_contracts.py`, `research/experiments/cases/emotion-state-001-phase-a-contracts.json`, `research/experiments/generated/EMOTION-STATE-001-phase-a-contracts/result.json`, and `research/experiments/generated/EMOTION-STATE-001-phase-a-contracts/report.md`
+  - product, research, attribution, and roadmap trace: `docs/product/EMOTION_STATE_001_PHASE_A_CONTRACTS.md`, `research/experiments/EMOTION-STATE-001-phase-a.md`, `docs/third-party-inspirations.md`, `docs/thesis/THESIS_REFERENCE_REGISTRY.md`, `docs/thesis/ROADMAP.md`, and `docs/product/COMMANDS.md`
+  - Task 7 registration and governance surfaces: `runtime/runtime_manifest.json`, `scripts/validate_runtime_manifest.py`, `scripts/check_setup.py`, `scripts/validate_check_setup.py`, `scripts/check_project_drift.py`, `scripts/validate_project_drift_guard.py`, `docs/thesis/DECISION_LOG.md`, and this methodology entry
+- Source and permission evidence:
+  - the locally supplied archive SHA-256 was independently verified as `E579B966E226F2AF6E4F8F8203C7189FEC94FB448EFC09B4B6640C10A398ECCC`
+  - source repository URL, source revision, and authoritative archive date remain unverified blockers
+  - author permission is confirmed by project-owner attestation with supervisor approval; unverified license metadata is recorded but is not used as permission authority
+  - no code, text, or configuration from the archive was copied, translated, adapted, or independently reimplemented in Phase A; the reuse label remains `inspiration only`
+  - Phase B reuse scope, Phase B attribution wording, and separate Phase B approval remain open
+- Frozen baseline evidence:
+  - Task 0 matched all six fixed input fingerprints and reran only the frozen score arithmetic for 6 cases and 12 already-recorded responses
+  - response generation was not performed and semantic judgment was not recomputed
+  - `evaluator_provenance_status = not_recorded` because evaluator type, identity or role, count, and procedure are absent from the frozen evidence
+- Contract and checkpoint evidence:
+  - the Phase A result/report directly record 5 passing offline contract checks, 6 matching baseline fingerprints, 0 selected public datasets, `runtime_activation_allowed=false`, and `readiness_boundary.phase_a_complete=false`
+  - the generated result/report are artifact-only evidence and explicitly do not claim the full repository gate, production readiness, true customer emotion, provider feasibility, private-data approval, PSTN/ASR/latency validation, real-customer performance, or runtime activation
+  - Task 7 staged RED proofs failed only on the intended 3 runtime-manifest paths, 19 setup IDs, and 19 drift paths; the corresponding focused runtime-manifest, setup, and drift gates then passed after the minimum symmetric inventory changes
+- Closeout publication, recovery, and timeout evidence:
+  - the runner serializes startup recovery and publication with an OS-level, non-blocking lock; the canonical generated-artifact directory still contains exactly `result.json` and `report.md`, while the lock, new-file stages, file-`fsync` work, transaction journal, previous-pair backups, restore files, and cleanup state stay under ignored `.tmp/`
+  - publication replaces result first and publishes report last; the report is the logical commit record and carries exactly one `result.json sha256:<64-uppercase-SHA-256>` marker for the exact canonical result bytes
+  - locked startup recovery either finalizes an exact new pair whose recorded digests and report marker match or restores the exact previous pair from verified backups; cleanup is retry-safe once either exact pair is canonical, while corrupt or incomplete recovery evidence fails closed and is retained
+  - consumers must require `python scripts\validate_emotion_state_001_phase_a_contracts.py` to pass; this is logical commit and crash recovery, not physical two-file atomicity or a power-loss durability claim
+  - controlled timeout tests cover exactly six subprocess positions: two EXP-002 validator calls, one Phase A BRAIN validator call, and three Phase A checkpoint calls; each injected 60-second timeout returns controlled exit `1` with the stable failure prefix, empty stderr, and no traceback
+  - this hardening performs no provider or private-data operation, implements no acoustic feature, opens no public-dataset or source-adaptation gate, changes no runtime or BRAIN-002 behavior, and establishes no PSTN, ASR, latency, real-customer, or production readiness. Current-checkpoint hard stop: no ElevenLabs read or write occurred; neither an outbound call nor a customer call occurred; no simulation occurred; no source adaptation occurred; and no source-adaptation gate was opened. `phase_a_complete=false`.
+- Completion boundary:
+  - `phase_a_complete=false` until exact manifests for every selected public dataset and a separately approved privacy-preserving unique-speaker cohort-release/dedup gate are both designed, approved, satisfied, and validated
+  - live aggregate release, private-data work, provider work, acoustic implementation, runtime wiring or activation, push, and merge remain blocked
+  - Task 7's seven focused validators, five Python governance validators, and `git diff --check` all exited `0`; the thesis-reference guard reported 0 failures and 0 warnings across 1,587 files and 361 registered URLs with no waiver or baseline subtraction
+  - direct artifact readback, three expected-no-match forbidden scans, exact 19-entry setup/drift symmetry checks, frozen prompt/fingerprint byte stability, BRAIN-002 v1 invariants, and immutable-base branch-scope checks also passed
+  - independent review found and the focused fix closed three durable-gate gaps: exact runtime metadata/date enforcement, exact unique setup tuple and emitted mapping enforcement, and an immutable 19-path drift subset; targeted in-memory mutation suites passed with no product or runtime behavior change
+  - whole-branch review hardening added table-driven JSON list/object mutations across annotation, split, evidence, audit, state, watermark, and pattern contracts; malformed enum/container values now fail with their contract-domain exceptions while accepted canonical values and `phase_a_complete=false` remain unchanged
+
+### 2026-07-17 - EMOTION-STATE-001 material-pending open-dataset gate integration
+
+- Objective: integrate an offline, reviewable material-pending checkpoint without downloading or evaluating either selected dataset and without publishing a canonical checkpoint.
+- Inputs and design:
+  - selected exactly `crema-d-v1.0-audio-wav` and `ami-manual-annotations-v1.6.2`; download, material verification, and evaluation remain not started
+  - preserved `source_adaptation_performed=false` and exercised split-manifest v2 plus privacy-preserving cohort-release contracts only with synthetic fixtures
+  - consumed the accepted verification APIs `prepare_verification_evidence`, `persistent_verification_lock`, `finalize_verification_evidence`, and `validate_active_verification_lock` without modifying their implementation or frozen guard policy/site
+  - added a receipt-bound `awaiting_acceptance` transaction with candidate readback, explicit accept/reject, exact previous-pair restoration, and startup recovery under the existing publication lock
+  - independent split review then hardened Task 7 before any real defer transaction: durable `accepted` state is irrevocable and retry-safe; candidate/checkpoint readback enforces the exact 35-field material-pending payload and internally consistent verification digests, ledger, gates, and fixed input HEAD; malformed transaction discriminators fail closed; canonical and `data/external` link/reparse paths are rejected before traversal or content access; and synthetic tests prove recovery after a failed first absence cycle plus the authorized final order `HEAD equality -> active lease validation -> second absence cycle -> stage`
+  - the no-follow checks assume a stable workspace whose path components are not concurrently replaced between metadata snapshots and later pathname operations; residual pathname TOCTOU remains because traversal is not descriptor-bound, so this is fail-closed hardening under that assumption rather than a race-free hostile-filesystem isolation claim
+- Boundary:
+  - no real dataset path was listed, probed, hashed, read, created, or written; no network, download, private data, provider, call, simulation, source adaptation, runtime, or canonical result/report action occurred
+  - `phase_a_complete=false`; the checkpoint makes no production, customer, PSTN, ASR, latency, provider-feasibility, or internal-emotion claim
+  - the normal deferred `material-pending` CLI uses the fixed `data/public/emotion-state` root; invocation authority is external, and only an explicitly authorized controller may run it. An authorized defer transaction performs exactly two metadata-only, non-recursive checks limited to root `exists()`, conditional root `is_dir()`, and exact-child `exists()` for `crema-d-v1.0` and `ami-manual-annotations-v1.6.2`; the implementer and tests used injected synthetic roots, accept/reject do not access the material root, and the real defer transaction was not run
+
+### 2026-07-19 - EMOTION-STATE-001 exact public-material evidence integration
+
+- Objective: propagate the verified Task 9 evidence into one byte-bound, public-only Phase A input set without evaluating a model, changing runtime behavior, or publishing the complete canonical pair.
+- Exact evidence:
+  - CREMA-D accessed `2026-07-17`: 7,446 selected files / 628,813,439 bytes, 7,446 included / 22,367 excluded; manifest `6E86F06358E4AD172C72BE1692CFF37291D9D5763DD7F6F5C7CE7405E7E01248`, hash inventory `AD58D8165C683847DF246F923FF466722C7F628FE8D81679F618FA5EB3031C87`, quality inventory `455D6A010855F209B4DC4C67F67E4222FAB81601861745B5B5E79E7942B92682`
+  - AMI accessed `2026-07-17`: 2,074 selected files / 180,905,698 bytes, 2,074 included / 3,086 excluded; archive `B56E5BABB2496B8795DEEEDA7E71178D7FBC9963F94276CF2A3F4B56EBBC9F9D`, manifest `3904D4A3A9EDF53B06A65354E02FBE1BDD44361B5E196FC6DD4A3882C74911DE`, hash inventory `CE7F837A2A44DFEE44691C4BA8B5B0D7766E46D6616986CF565A6300056DEAEE`, quality inventory `A376A6C0D5F89770525936299717F1595B743489B593DC4E5CE88AB08ACB22C9`
+- Method: derive completion only from the exact ordered dataset evidence, three offline contract statuses, byte-bound verification digests and guarded command ledger, derived repository gates, publication-integrity preconditions, and closed authorization boundaries. Repository-gate projections are never caller-owned.
+- Review-correction verification:
+  - replaced tracked-evidence self-validation with read-only recomputation from the fixed public CREMA-D and AMI material paths, using the same canonical evidence builder as Task 9 and reporting deterministic dataset/suffix SHA-256 differences without raw-content disclosure
+  - restored the Task 9 Git/LFS pointer-discovery condition with a child-process-only `GIT_LFS_SKIP_SMUDGE=1` environment for the exact `git archive` command; the narrow real diagnostic discovered 7,441 selected LFS pointers and confirmed the parent environment remained unchanged
+  - bound the guarded ledger commit range to the exact recorded implementation-baseline and repository-HEAD commits, made checkpoint readback dispatch strictly by matching mode/status, and validated complete clean-clone readback from tracked evidence without material or subprocess access
+  - made the complete payload and builder own exactly 43 top-level fields, rejecting both unknown fields and reserved-field collisions before publication
+  - strict RED/GREEN regressions covered all four findings; the full offline suite passed `Ran 276 tests in 57.915s`, `OK (skipped=3)`, and the corrected real-material gate passed with `EMOTION-STATE-001 Phase A validation passed: materials`
+  - final review hardening now lstat-checks the trusted project root and every lexical component of the fixed public-material paths before resolution or content access, rejecting both cross-platform symlink mode and the Windows reparse-point attribute; this remains a stable-workspace fail-closed check rather than descriptor-bound hostile-filesystem isolation
+  - non-mapping complete verification evidence now produces controlled incomplete blockers, and complete readiness evidence must be a mapping with exactly its ten owned fields before any nested authorization field is indexed; malformed readiness shapes are rejected before publication writes, replacement, locking, receipts, or journals
+  - the final strict regressions moved the complete offline suite to `Ran 281 tests in 60.808s`, `OK (skipped=3)`; fresh real-material and complete-prepublication gates both passed with exact outputs `EMOTION-STATE-001 Phase A validation passed: materials` and `EMOTION-STATE-001 Phase A validation passed: prepublication`
+- Boundary: `materials` requires ignored raw bytes; clean-clone `checkpoint` validation confirms the recorded tracked evidence and pair but cannot re-prove raw-byte availability. No private data/path, provider, call, simulation, source adaptation, model evaluation, runtime configuration, or complete candidate publication occurred in Task 10.
+
+### 2026-07-19 - EMOTION-STATE-001 guarded CREMA-D material Git prerequisite
+
+- Goal: permit offline verification of the fixed ignored CREMA-D repository without lazy fetch or network access.
+- Method: exactly three one-use, builder-only, project-root-cwd Git capabilities are bound to the fixed repository: exact `show-toplevel`, verified `HEAD`, and `AudioWAV` archive commands; only the archive child receives process-local `GIT_LFS_SKIP_SMUDGE=1`.
+- Ledger ownership: authenticated guarded prepublication defers its recursive material check to the dedicated materials command, while unguarded complete prepublication retains the check.
+- Evidence: the resumed complete ledger passed all 15 commands, and the direct `materials` and complete `prepublication` validators passed. Independent review then identified this documentation correction and the synthetic symlink capability skip-reporting cleanup before re-review and commit.
+- Remaining status: this prerequisite does not publish the canonical pair; the later Task 11 defer/validate/accept transaction remains separate. Re-review and commit of this historical checkpoint remain external to the prerequisite.
+- Boundaries: no private data, network/download, provider, calls, simulations, source adaptation, model evaluation, runtime activation, Phase B, canonical publication, production-readiness claim, push, or merge.
+
+### 2026-07-19 - EMOTION-STATE-001 Task 11 generated-pair thesis-gate plan correction
+
+- Historical correction state: the first Task 11 candidate reached durable `awaiting_acceptance`. Its candidate, materials, focused, closeout, EXP, BRAIN, private, runtime, setup, drift, and thesis-reference checks passed before the default standalone thesis-update check failed with `missing_thesis_update`.
+- Recovery evidence: the prescribed reject ran once and restored the exact material-pending pair, clean index/worktree, absent receipt, and lock-only recovery state containing only `publication.lock`.
+- Root cause and correction: the standalone checker consumes current Git status and therefore conflicts with the exact generated-pair-only candidate scope. `thesis-update-validator` remains required in the guarded input ledger, and candidate readback must require its zero exit plus `thesis_update=pass`; only the redundant post-staging rerun is removed.
+- Preserved limits: no fake `--changed-file` input, checker edit, global exception, validator weakening, or Task 11 completion claim. This entry records correction-time state; Task 11 publication remains unaccepted until a later defer/validate/review/accept transaction succeeds.
+- Unchanged boundaries: all dataset, private-data, provider, call, simulation, model-evaluation, source-adaptation, runtime, Phase-B, push, merge, and history-rewrite boundaries remain unchanged.
+
+### 2026-07-19 - EMOTION-STATE-001 Task 11 mode-aware report correction
+
+- Historical failed transaction: the second Task 11 defer returned native exit `0`, and all 14 corrected post-staging checks passed. Direct readback then found a complete result paired with material-pending, incomplete, and open-manifest report prose.
+- Recovery evidence: the candidate was rejected exactly once, restoring result SHA-256 `F6044B1C28BAD7082868FE35039AE8FB4352C319BD2F7EB8242253F3549F841D`, report SHA-256 `A3A3689C6B5DDDD708638AEF36F01D4F2F9FCAB2C7B4BAA6490CCBD452931C90`, a clean worktree and index, an absent receipt, and lock-only recovery state containing the one-byte `publication.lock`.
+- Root cause: the static report renderer emitted pending prose for both modes, while candidate and checkpoint validation deterministically reproduced that same renderer output without independent semantic assertions.
+- Correction boundary: the accepted material-pending bytes remain frozen, complete mode receives accurate offline-completion prose, and independent candidate/checkpoint semantic validation rejects mode/report contradictions even if deterministic renderer equality agrees.
+- Acceptance state: Task 11 remained unaccepted at correction time. Dataset, private-data, provider, call, simulation, model-evaluation, source-adaptation, runtime, Phase-B, push, merge, and history-rewrite boundaries remained unchanged.
+
+### 2026-07-19 - EMOTION-STATE-001 Task 11 pending-report state-independence correction
+
+- Historical failed transaction: transaction `da9032a523674358901cc59554446242` staged the complete candidate result SHA-256 `14771872BFB8554AB3FF6566BE9EA0364A1F5B4D5D5EA7C09543696E852684BB` and report SHA-256 `5239A2899F20EC0637A22CB9DE7FEA56726B376467583F85795A157C276F892B`; defer, materials, and candidate readback passed.
+- Root cause: the focused preservation suite failed only because it read the staged complete canonical paths while asserting the fixed material-pending hashes. Rejection ran exactly once and restored the fixed pending result and report hashes, a clean worktree and index, absent receipt and journal, and lock-only recovery containing `publication.lock`.
+- Correction boundary: the preservation test freezes only renderer-owned material-pending inputs and removes all live canonical reads from that test. Task 11 remains unaccepted until a later replacement transaction passes review and explicit acceptance.
+- Unchanged boundaries: all dataset, private-data, provider, call, simulation, model-evaluation, source-adaptation, runtime, Phase-B, push, merge, and history-rewrite boundaries remain unchanged.
+
+### 2026-07-19 - EMOTION-STATE-001 acceptance and EMOTION-STATE-002 Phase B design
+
+- Phase A closeout: replacement transaction `59324165c56446f7850e9a2abd37e4ff` passed the fresh 15-command guarded ledger, all 14 post-staging checks, direct digest/content inspection, and independent candidate review before one explicit acceptance. Output-only commit `f8ba503c3670fec6e9dee53f03f306798e7b807b` records result SHA-256 `EED96BADBE916A38107A4289AD951F8953A5A96215E063890E07F054C7A90931` and report SHA-256 `724C81C41C489B9BBAB0896009DE7CAB578F77082F230F78B90B65643586FE8A`.
+- Phase B question: test only whether a frozen interpretable acoustic feature vector carries speaker-independent information for CREMA-D's original acted-perception labels, while separately deriving deterministic AMI conversational mechanics.
+- Design choice: use class-prior and sentence-ID baselines plus one standardized L2 multinomial logistic-regression acoustic model; preserve an untouched 30-actor final lockbox, calibration-only abstention thresholds, paired actor-cluster bootstrap intervals, and keep/revise/discard outcomes.
+- Split correction: Phase A split v2 remains unchanged, but it cannot directly support within-CREMA evaluation because the single required `source_corpus` would cross every partition. Phase B therefore defines a separate claim-scoped split where speaker is an exclusion group, sentence is a stratification factor, source corpus is a scope constant, and unavailable site identity blocks site-generalization claims.
+- AMI boundary: AMI produces only contribution-limited turn, pause, overlap, floor-change, speaker-balance, backchannel, and dialogue-act aggregates; it supplies no emotion or operational-signal labels and never joins CREMA-D rows.
+- Authorization boundary: this checkpoint approves the design document only. No dependency installation, public-material evaluation, private-data read, provider/ElevenLabs access, outbound/customer call, simulation, source adaptation, model download, final-lockbox opening, runtime/prompt/KB/voice/LLM/phone/Procedure/dashboard change, push, merge, or production-readiness claim occurred.
+
+### 2026-07-19 - EMOTION-STATE-002 CREMA-D reference-label correction
+
+- Trigger: implementation-plan intake found that all 7,441 included CREMA-D quality-inventory entries had `source_label_evidence.abstained=true`, leaving the approved supervised baseline without a target if that projection were consumed.
+- Authorized inspection: read only the already-verified local `finishedResponses.csv` and `processedResults/summaryTable.csv`, plus their tracked hash bindings; parsed rows remained in memory and no row-level output was written.
+- Byte identity: `finishedResponses.csv` matched SHA-256 `939D02D2DDDDDF575BBCCFFB80F14F1D110FDA88F092F2A68201994EB3BCB45B`; `processedResults/summaryTable.csv` matched SHA-256 `1EA0E13D98853D920C7C51E69A72BA5BA42018F85A9B89B8B2CC1B53C1AA56A9`.
+- Real schema: `finishedResponses.csv` has 219,688 rows and binds raw audio-only ratings through `clipName`, `queryType="1"`, and `respEmo`; `summaryTable.csv` has 7,442 unique rows and binds the released audio aggregate through `FileName` and `VoiceVote`. Both cover all 7,441 hash-inventory WAVs, with one additional known excluded release clip.
+- Conservative eligibility: require a unique raw audio-vote maximum, a single released `VoiceVote`, and exact winner agreement. This yields 6,570 eligible clips and 871 abstentions: 644 released ties, 204 additional raw ties, and 23 unique-winner disagreements. Eligible counts are `A=951`, `D=500`, `F=613`, `H=330`, `N=3834`, and `S=342`, spanning all 91 actors and 12 controlled sentences.
+- Interpretation: Phase A material integrity remains valid, but its synthetic-column label projection is not Phase B label evidence. Phase B must parse the pinned real schemas directly, enforce the frozen aggregate ledger before features, and keep all identifiers and rows local-only.
+- Boundary: no audio was read, no dependency was installed, no model or public-dataset evaluation ran, and no private data, network, provider, call, source-adaptation, runtime, push, or merge action occurred.
+
+### 2026-07-19 - EMOTION-STATE-002 implementation plan
+
+- Plan: `docs/superpowers/plans/2026-07-19-emotion-state-phase-b-public-data-feasibility.md`, based on corrected design commit `e5049cf5a169cbd6887e451a1e00348fe7d1b868`.
+- Decomposition: frozen contracts; real-schema CREMA-D label ledger; separately gated research dependency lock; deterministic acoustic features; claim-scoped actor split; classical evaluation; AMI mechanics; guarded runner; synthetic ledger; separately gated public-material preflight/non-lockbox run; one-use lockbox; staged review and explicit canonical acceptance.
+- Review gates: offline implementation, dependency acquisition, public-material evaluation, final-lockbox opening, canonical staging/acceptance, and push remain distinct. No gate implicitly authorizes the next.
+- Boundary: plan writing changed documentation only. It installed no dependency, read no audio or AMI material, ran no model, opened no lockbox, accessed no private data/provider/network/call/simulation/runtime path, adapted no source, and performed no push or merge.
+
+### 2026-07-20 - EMOTION-STATE-002 Task 1 thesis-gate correction
+
+- RED: the initial six-file Task 1 implementation passed its focused contract tests but `python scripts\\check_thesis_update_gate.py` failed with `missing_thesis_update`, because all six frozen-contract files are thesis-triggering and no thesis tracking document was in scope.
+- Authorized correction: Task 1 now includes this methodology trace and its implementation-plan file in the exact staged scope; the protocol truthfully states that offline implementation started while dependency, public-material, and model execution have not started.
+- Boundary: no dependency install, network, public/private material read, model evaluation, provider, call, simulation, source adaptation, runtime activation, canonical publication, push, merge, or history rewrite occurred.
+- GREEN/commit evidence: the complete Task 1 verification ledger must pass before the eight-path commit `Add EMOTION-STATE Phase B frozen contracts`; the implementation report records the exact command outputs and resulting commit SHA.
+
+### 2026-07-20 - EMOTION-STATE-002 Task 1 frozen-contract review correction
+
+- RED: Task 1 review found that partial validators accepted frozen-field mutations, unknown/missing fields, numeric-overflow JSON, and a no-op direct validator invocation. The added focused suite failed `149` fail-closed cases, plus overflow and CLI assertions.
+- GREEN: validators now compare type-aware exact frozen mappings, recursively reject every non-finite parsed number, and the direct entry point validates all three canonical artifacts with deterministic pass/fail output. The focused suite passed all five tests.
+- Boundary: this review correction changes only Task 1 validator/tests and this methodology trace; it does not access dependencies, network, public/private material, models, providers, calls, simulations, source adaptation, runtime, canonical output, push, merge, or history.
+
+### 2026-07-20 - EMOTION-STATE-002 Task 9 offline validator closeout
+
+- Scope: completed the Tasks 1-9 offline implementation surface with exact `source`, `contracts`, `environment`, `synthetic`, receipt-bound `candidate`, and accepted-pair `checkpoint` validator sections; added the Windows command map, checkpoint index entry, roadmap state, and protocol readback contract.
+- RED: the first focused venv run produced five intentional missing-capability failures for the section contract, publication-pair validation, candidate receipt validation, output-leakage validation, and candidate/checkpoint lifecycle validation. A separate focused documentation test failed because the Phase B command/gate section did not yet exist.
+- GREEN: the unchanged focused validator/mutation set passed `6/6`. It mutates every aggregate-result scalar leaf and mapping shape, every renderer-owned pre-JSON line, and every receipt SHA-256; it separately injects and rejects each prohibited candidate-output class.
+- Lifecycle boundary: candidate and checkpoint tests use only injected temporary roots and synthetic Task 6/7 evidence. No real receipt, journal, canonical pair, or fixed-root publication state was created, opened, staged, accepted, or validated. Production `candidate` and `checkpoint` defaults remain fail-closed while those states are absent.
+- Authorization boundary: Task 9 read tracked metadata/contracts and the reviewed ignored dependency environment only. It read no real CREMA-D CSV, WAV, or AMI annotation material; opened no final lockbox; used no private data, network/download, provider, call, simulation, source adaptation, model evaluation, or product runtime; and performed no canonical acceptance, push, merge, or history rewrite.
+
+### 2026-07-20 - EMOTION-STATE-002 Task 9 independent-review correction
+
+- Gate: the first independent Task 9 review returned `NOT_APPROVED` with four Important and two Minor findings. Task 9 is implemented, but its independent correction gate must pass before Task 10; public-material evaluation, final lockbox, canonical staging/acceptance, push, and merge remain blocked.
+- RED: six focused regressions produced `14` expected failures. They reproduced mutually consistent non-state-bound candidates, renderer self-oracle acceptance, accept/reject/cleanup lifecycle crossings, literal source filenames and nested scanner bypasses, premature approval wording, missing production-lockbox availability status, and a fenced network/download command omitted by the earlier command parser.
+- GREEN: the six correction regressions passed `6/6`. Candidate validation now holds the shared publication lock without creating, recovering, or changing publication state; independently rebuilds the exact state-bound result and report; and rechecks the same live transaction before returning.
+- Output boundary: internal CSV source keys remain exact for source validation, while canonical output uses stable semantic aliases with the same hashes. Structured normalized keys/values and raw bytes reject paths, filenames, identity containers, rows, transcripts, audio payloads, model state, probabilities, credentials, and the five operational labels while retaining safe aggregate near-misses.
+- Documentation boundary: implementation-owned approval and Task-10-ready claims were retracted. The production lockbox evaluator remains unavailable; authorization alone does not wire it.
+
+### 2026-07-20 - EMOTION-STATE-002 Task 9 dependency-gate documentation correction
+
+- Review finding: the Task 9 command map removed the Task 3 dependency workflow and globally rejected `pip download`, even though the implementation plan requires those commands to remain documented under their explicit authorization gate.
+- RED/GREEN: the focused command regression first failed because the exact resolver-venv command was absent, then passed after requiring the eight exact reviewed environment, binary-wheel download, wheel-hash, five-wheel offline installation, and resolver-side `pip check` commands exactly once inside the dependency-acquisition gate.
+- Authorization boundary: documentation is not authorization. Rerunning or changing any documented dependency command requires a new explicit network/download/install authorization. Independent Task 9 re-review remains pending. This correction did not execute dependency acquisition or installation and did not begin Task 10, read public/private material, use a provider, place a call, run a simulation, activate product runtime, open the final lockbox, stage or accept canonical output, push, merge, or rewrite history.
+
+### 2026-07-20 - EMOTION-STATE-002 Task 9 dependency-allowlist regression correction
+
+- Final re-review finding: the dependency-gate regression required each reviewed command but did not prove the complete fence was exactly the reviewed eight-command allowlist, so an unclassified ninth command such as short PowerShell `iwr` could pass.
+- RED/GREEN: the old regression passed against an in-memory dependency fence containing a ninth `iwr` acquisition line. After the correction, the same injected fence fails exact multiset equality, while the unchanged real command map passes exact ordered-sequence and multiset equality. Short PowerShell and web package-manager aliases are mutation evidence only; regex enumeration is not the gate invariant.
+- Boundary: independent Task 9 re-review remains pending. This test-only correction did not change the correct command documentation, execute any dependency/network/install command, begin Task 10, read public/private material, use a provider, place a call, run a simulation, activate product runtime, open the final lockbox, stage or accept canonical output, push, merge, or rewrite history.
+
+### 2026-07-21 - EMOTION-STATE-002 Task 10 Cut 4 thesis-gate prerequisite correction
+
+- Scope at this checkpoint: the reviewed Cut 4 implementation changes exactly `scripts/emotion_state_phase_b_evaluation.py`, `scripts/emotion_state_phase_b_public_pipeline.py`, `scripts/run_emotion_state_002_phase_b.py`, `scripts/test_emotion_state_002_phase_b.py`, and `scripts/validate_emotion_state_002_phase_b.py`. It wires the deterministic non-lockbox composition path but does not itself execute the fixed public-material command.
+- Verification evidence before commit: the corrected execution group passed `21/21`, the shared RunnerState lifecycle group passed `70/70`, and the builder/packet/production-pipeline group passed `38/38`. The final exact-tree full module passed `345/345` in `1557.427s`; compile, the four read-only Phase B validator sections `source`, `contracts`, `environment`, and `synthetic`, and every repository governance gate also passed.
+- Full-ledger correction: the first full-module run passed `343/345` and exposed two stale tests. One assumed the live ignored Phase B state was absent even though the previously authorized preflight checkpoint legitimately exists at `preflight_complete`; it now routes the real validator entry point to an injected temporary missing-state layout and proves exact failure plus non-mutation without touching live paths. The other still asserted the pre-v4 three-argument review-packet builder; it now requires the exact six keyword-only v4 arguments. Focused reruns and independent reviews passed both corrections with `C0/I0/M0`.
+- Post-ledger review corrections: final review first found that `RunnerPaths.production()` eagerly formed the final-lockbox result path during generic layout validation. Strict RED/GREEN coverage made the production field inert, confined resolution to final-only call sites, and preserved injected final lifecycle behavior. A deeper call-graph review then found that the shared state-root scanner could form and stat existing lockbox or publication entries before classifying a committed non-lockbox retry. A same-count RED test now seeds opaque later-phase sentinels and blocks path, `DirEntry`, API, property, and helper access; the corrected two-phase scanner reads names only, rejects aliases/unknowns before metadata access, and stats only admitted non-final entries. Both corrections received independent `C0/I0/M0` review.
+- Governance conflict: the unchanged no-argument thesis-update gate reads only current Git status. It correctly failed with five changed thesis-triggering scripts and zero changed thesis-tracking files, while the locked Cut 4 plan also requires an exact five-file code commit and no intermediate commit. Those requirements cannot all be satisfied literally; a temporary thesis edit, fake `--changed-file` input, gate weakening, or post-commit clean-tree pass would misrepresent the evidence.
+- Corrective transaction: this entry is a separately reviewed documentation prerequisite. The exact ledger must run while this file and the five scripts are dirty so the unmodified thesis gate genuinely observes one thesis-tracking update. This file is then committed alone; the five script hashes and locked brief/plan hashes are rechecked; the exact five-file code delta is independently rebound and committed last with subject `Execute Phase B non-lockbox evaluation`. This is an explicit two-commit governance exception, not literal compliance with the frozen one-commit/base-to-final wording.
+- Boundary: no final lockbox was opened; no canonical candidate was staged or accepted; no private data, provider, call, simulation, source adaptation, product runtime, push, merge, or history rewrite occurred. The production fixed-public-material non-lockbox command remains pending until the reviewed code and documentation transactions are complete and the ignored state is reconfirmed at `preflight_complete`.
+
+### 2026-07-22 - EMOTION-STATE-002 Cut 4A AMI source-contract correction
+
+- Failed-closed trigger: the first authorized production non-lockbox attempt stopped before transaction linearization with exact error `AMI source identity is not an exact frozen source path`. The live 910-byte checkpoint remained byte-identical at SHA-256 `01FC82DD77B82AD5775A70F0B213A72C43A47E56337A96EC8C30686AF6E23450`, phase `preflight_complete`; packet and lockbox digests stayed all-zero, `lockbox_open_count` stayed zero, and the non-lockbox packet plus stage/intent/prior controls remained absent. No production child or final-lockbox access remained.
+- Corrected tracked layout: the six exact evidence files prove the complete 2,074-identity nine-cell shape `1/1/1/1/1/687/687/556/139`, including 556 selected `*.dialog-act.xml` identities and 139 non-consumed `*.adjacency-pairs.xml` identities. The exact 142 exclusions are archive, partition HTML, `extracted/AMI-metadata.xml`, and those 139 adjacency files; selected authority remains in tracked order at 1,932 identities. An eight-cell shorthand omitting one singleton describes only 2,073 files and is invalid. `da-types.xml` remains an unconsumed vocabulary pointer target outside `TrackedPublicAuthority.ami_files`.
+- Design decision: read-and-ignore was rejected because it would grant material authority to parser-unconsumed sources. Parser adaptation was rejected because the accepted AMI v2 parser already consumes only meetings, participants, words, segments, and `*.dialog-act.xml`; changing it would expand the correction beyond the real source-selection defect. Cache/packet schemas, parser mechanics, transaction ordering/linearization, and final-only handling remain unchanged.
+- Strict TDD: the exact two-test RED ran `2` tests in `8.433s` and produced two expected errors, both `PublicMaterialPrerequisiteError: AMI source identity is not an exact frozen source path`. The first GREEN attempt passed the execution selector test and exposed one stale mapper invariant (`AMI loader source families do not match frozen counts`); after the minimal `695 -> 556` mapper correction, the exact two-test command passed `2/2` in `12.635s`. The full builder/execution group then passed `36/36` in `410.891s`.
+- Independent aggregate-only probe: without printing dataset rows, IDs, source paths, transcript text, probabilities, or audio, the six tracked evidence files produced full authority `2074`, selected authority `1932`, exact nine-cell shape `1/1/1/1/1/687/687/556/139`, and byte-identical ordered results from the pipeline and runner selectors.
+- Amended ignored design pins: `.superpowers/sdd/task-10-production-cut-4-locked-non-lockbox-brief.md` is SHA-256 `8F5A1EE4B8DCE61BA8C1CF54BFD6D00660E984481CE8829D1C93D2EC8BCE246A`, 1,595 lines; `.superpowers/sdd/task-10-production-cut-4-implementation-plan.md` is SHA-256 `6E2D5066A4169F5C897CC6F406915C1BCE3AAE724E8EDD58F67CE73493C95443`, 688 lines. They remain ignored and must not be force-added.
+- Ledger-command correction: the supplied `python scripts/verify_setup.py` command failed exactly with `[Errno 2] No such file or directory`. Repository command maps, verification policy, and the existing Cut 4 plan bind the authoritative setup gate to `python scripts/validate_check_setup.py`; the ignored Cut 4A brief/plan were corrected to that command, and the authoritative gate passed `Product setup verifier validation passed.` This command defect did not widen tracked scope or weaken a gate.
+- Tracked correction scope: exactly `docs/thesis/METHODOLOGY_LOG.md`, `scripts/emotion_state_phase_b_public_pipeline.py`, `scripts/run_emotion_state_002_phase_b.py`, and `scripts/test_emotion_state_002_phase_b.py`, committed locally with subject `Correct Phase B AMI source contract` only after the full offline correction ledger and checkpoint readback pass.
+- First independent verdict: review of commit `c66cf7d2a58c8138ee9bf018873d331b16d73c8e` plus the ignored Cut 4A artifacts returned `SPEC_FAIL` and `QUALITY_FAIL` with three Important documentation findings: both Cut 4A instruction documents used an impossible eight-cell 2,073 shape, the Cut 4A plan named nonexistent `scripts/verify_setup.py`, and the main plan retained a stale 1,563-line admission requirement despite the pinned 1,595-line brief.
+- Docs-only review correction: the two Cut 4A shapes now use exact `1/1/1/1/1/687/687/556/139`, the Cut 4A plan uses authoritative `python scripts/validate_check_setup.py`, and the main plan admission requirement equals its top pin and the actual 1,595-line main brief. No Python, test, schema, evidence, dataset, or material file changed; the original `c66cf7d2a58c8138ee9bf018873d331b16d73c8e` four-file code commit and all recorded RED/GREEN/345-test evidence remain unchanged.
+- Reopened independent verdict: after an initial fresh pass, the controller caught that main-plan Task 9 still required `HEAD` to be the code commit even though the required docs-only correction was already its child. The reviewer reopened and amended the verdict to `SPEC_FAIL` and `QUALITY_FAIL` with one Important admission-topology finding: a compliant controller would have to stop, so the replacement attempt was not approved.
+- Admission-topology correction: Task 9 now requires a clean three-commit topology whose separately reviewed current `HEAD` has exact subject `Align Cut 4A admission topology` and the exact SHA approved by the final fresh reviewer, whose `HEAD^` is exact `e62a30722f8c93d473da55a1c8b7c23e5a4a14da` / `Correct Cut 4A review pins`, and whose `HEAD^^` is exact `c66cf7d2a58c8138ee9bf018873d331b16d73c8e` / `Correct Phase B AMI source contract`. It also binds the exact four-file code diff and each methodology-only diff. No Python, test, schema, evidence, dataset, or material file changed; the original code commit and all recorded RED/GREEN/345-test evidence remain unchanged.
+- Final ignored review pins: main locked brief `8F5A1EE4B8DCE61BA8C1CF54BFD6D00660E984481CE8829D1C93D2EC8BCE246A` / 1,595 lines; main implementation plan `6E2D5066A4169F5C897CC6F406915C1BCE3AAE724E8EDD58F67CE73493C95443` / 688 lines; Cut 4A correction brief `7C76855BA0954BE3AD8F4E18E5B2AE7310891B07D9D917D60E2792A078E963A8` / 102 lines; Cut 4A correction plan `1570A20759AFC0A7FA0F75233124255A27BCB298EE6474B13BB6179428DB9278` / 126 lines.
+- Gate boundary: this second methodology-only correction is a separate commit with subject `Align Cut 4A admission topology`; final fresh independent re-review remains pending and must return `SPEC_PASS` and `QUALITY_PASS` with no open Critical or Important finding and approve the exact corrective `HEAD` SHA. The one replacement production attempt remains controller-owned after that gate. Neither Task 9 nor Task 10 completion is claimed; no production non-lockbox, final lockbox, canonical, private, provider, call, simulation, source-adaptation, runtime, network, push, merge, or history-rewrite action was authorized or performed.
+
+### 2026-07-22 - EMOTION-STATE-002 Cut 4B PCM endpoint admissibility correction
+
+- Gate and trigger: final Cut 4A review passed. The first replacement attempt then failed before transaction linearization on exact error `WAV contains clipped samples`; no Task 10 checkpoint was accepted.
+- Aggregate diagnostic: the exact 7,441 tracked-included verified CREMA-D WAV identities contained 550 files with at least one PCM16 endpoint value (`7.3915%`) and 43,117 endpoint samples among 302,745,136 samples (`0.014242%`). Maximum consecutive same-endpoint runs were 73 files with one, 179 with two to three, 269 with four to seven, and 29 with eight or more. These aggregates contain no perceptual labels and cannot establish clipping, audio quality, or a defensible rate/run threshold.
+- Contract decision: endpoint presence is a numeric saturation observation, not clipping proof. Feature schema v2 is endpoint-neutral and threshold-free. Historical v1 remains byte-identical at static SHA-256 `81B55B25F405A99ED7B29449631CFD39B2FE6E1D4F500ADA3BBCD8668790AB75` and semantic SHA-256 `70A5B1531D5127D37FD89B30F03EC14682B0B6C97850A5452DEEB59033618EF4`; v2 is fixed at static SHA-256 `C2A7DE308BAD32C3798016061777669881E7FDD3403979DCCC166DCE38F307C4` and semantic SHA-256 `AEC550285DF6A92B3E86E16F66A2E5B554836BBE47C625106F517EB0CF1375DB`.
+- Independent review correction: the unchanged configuration value `emotion-state-crema-interpretable-acoustic-v1` is an immutable seed-lineage compatibility token, not the active schema selector. Configuration static/semantic identities remain `BBB16BDB1205255B0D1C3F0F33891ECC75C4F074D0E6D7200D09A6B385CFE914` / `24E2186A3ACB19817BF87689F09A2F069AC07B5C1D669364D5FC08BC9AD5FA8F`, preserving deterministic actor assignment and model seed `618797162`; the fixed v2 path and v2 identities are the exclusive active authority. The correction enforces that exact compatibility tuple at offline contracts, pipeline build/restore, runner preflight, held-static readback, committed source-silent replay, and aggregate reconstruction. It also replaces the experiment brief's stale Task 9/public-material gate account and old receipt path with the reviewed Cut 4A/Cut 4B state.
+- Lineage boundary: `.tmp/emotion-state-002-phase-b` split/preflight/non-lockbox state is retired and opaque. Fresh state is routed only to `.tmp/emotion-state-002-phase-b-cut4b`; the old venv and wheelhouse remain immutable dependency inputs.
+- TDD evidence: the five exact RED commands exposed the absent v2 path, all four endpoint-bearing cases failing on `WAV contains clipped samples`, fixture setup blocked by the absent v2 path before the legacy-cache assertion, the old production root, and both stale live-status documents. Focused GREEN passed exactly `14/14`, `19/19`, `1/1`, and `14/14`. The first full suite ran `348` tests in `563.016s` and failed with 7 failures plus 94 errors because a broad order check changed unrelated mapping semantics. Narrow correction RED then proved both root and nested policy reorder were accepted; feature-schema-only order enforcement passed the schema and representative preflight tests `2/2`, the focused groups repeated at the same exact counts, and the second full suite passed `348/348` in `1487.037s`.
+- Review-correction TDD: the named config/schema cross-binding test first failed with exact `ImportError: cannot import name 'validate_config_feature_schema_binding'`; after the minimal implementation it passed, and existing preflight, non-lockbox builder/restore, held-static readback, committed source-silent replay, and aggregate-reconstruction methods proved controlled fail-closed propagation before output. The exact focused groups then passed `15/15`, `19/19`, `1/1`, and `14/14`. A first exact full-module attempt produced no unittest verdict because the shell killed it at `1804.026s`; that is retained only as incomplete evidence. The unchanged rerun with a one-hour command timeout passed `349/349` in `1969.755s`.
+- Boundary: implementation remains pending independent review and one fresh replacement transaction. Final lockbox, canonical publication, push, merge, runtime activation, Phase C, providers, private data, calls, simulations, source adaptation, network, dependency changes, and retired-lineage parsing/reuse/mutation remain blocked.
+
+### 2026-07-22 - EMOTION-STATE-002 Cut 4C IB4005 source-scope correction
+
+- Historical correction: the prior Cut 4A record truthfully documented the then-accepted 1,932 parser-compatible AMI selection. That contract is now superseded for production reads, not erased: the complete tracked authority remains 2,074 identities and the parser-compatible universe remains 1,932 identities (`2/687/687/556`).
+- Corrected production scope: the official 170-meeting partition admits 1,924 inputs in tracked order (`2/683/683/556`). The exact eight excluded canonical identities are `IB4005.[A-D].words.xml` and `IB4005.[A-D].segments.xml`; no dialogue-act identity is excluded. The non-consumed total is therefore 150: the historical 142 plus these eight outside-partition annotations.
+- Initial verification boundary: the first direct-selector RED proved both pipeline and runner selectors still selected 1,932 and failed open on missing/unknown/malformed outside-partition identities and changed official order. Its production-shaped fixture initialization invoked `build_production_preflight_artifacts()` and is invalid as selector-only evidence; that historical limitation is preserved rather than relabeled as pure. No execution/full-suite, fixed public-material read, state/output/canonical/lockbox access, production command, model fit/evaluation, provider/network/runtime action, dependency change, commit, push, merge, or history rewrite occurred in this correction.
+- Review-fix selector boundary: a dedicated pure identity fixture now creates only 7,441 dummy CREMA identities and the exact 2,074 AMI contract, with fail-fast sentinels around preflight, non-lockbox, production-builder, and model entry points. It neither initializes the production-shaped fixture nor reads material or state. Exact family membership is now sealed: words/segments are all official-plus-IB4005 A-D identities plus `EN2001a.E`, `EN2001d.E`, and `EN2001e.E`; dialogue and no-speaker adjacency paths are the 138 scenario meetings plus `IB4003`. A same-count `ES2002a.A.dialog-act.xml` to `ES2002a.Z.dialog-act.xml` RED exposed fail-open membership validation before the immutable path contract was added; the corrected direct-selector GREEN passed `2/2` in `2.107s`.
+
+### 2026-07-23 - EMOTION-STATE-002 Cut 4C AMI range-index correction
+
+- Confirmed root cause: the official selected AMI word layer uses the exact terminal families `w`, `word`, `vocalsound`, `gap`, `disfmarker`, and `transformerror`, while the previous loader indexed only positive-duration `w`/`word` records. Of 683 selected word files, 678 first failed on an unusable span and five contained no accepted boundary, so later valid range endpoints were absent and the loader emitted the misleading structural error `AMI NXT reference targets an unknown local word file`.
+- Minimal parser correction: every ID from the six exact terminal families now retains its authoritative file order. Missing, malformed, nonfinite, non-integral, negative, reversed, zero-duration, and decimal-overflow spans become internal unusable markers; range structure and endpoint IDs are validated against the full index before unusable markers are filtered. No timestamp is inferred, repaired, or imputed.
+- Fail-closed separation: a dedicated internal timing-unavailable exception is the only word/segment condition localized to the affected meeting. Malformed XML/root identity, unsupported ID-bearing terminal families, duplicate IDs, malformed/external/unknown/reversed references, and cross-agent or cross-meeting references remain loader-fatal. Segment and dialogue target identity is checked before an all-unusable range can be localized.
+- Strict TDD and review correction: the first implementation made the new official-family/range tests pass but independent review blocked commit because broad `ValueError` catches still swallowed structural failures, parsed all-unusable ranges bypassed identity checks, decimal overflow escaped, and edge coverage was incomplete. The second RED ran five test methods and produced the expected 15 subtest failures plus one `decimal.Overflow`; the corrected rerun passed `5/5`. Re-review then found that an early unusable segment could hide a later structural error in the same file. The third RED produced five expected subtest failures for a later duplicate, cross-agent, external, unknown-ID, or reversed-range record; deferring localization until complete segment-file validation made that method pass, and the complete loader class passed `26/26`.
+- Bounded verification: AMI mechanics/source-selection groups passed `76/76`; the final tracked-authority/source-selection/production-shaped builder rerun passed `30/30` in `285.855s`; Phase B contract/Task 10 packet tests passed `25/25`; the `source`, `contracts`, `environment`, and `synthetic` validators, focused compilation, and `git diff --check` passed. An earlier opaque whole-module attempt was killed by the shell after `904s` without a unittest verdict while an unrelated Windows production-preflight race child was active; it is retained only as incomplete evidence and was not relabeled as a pass. A later broad command under the system Python failed only because that interpreter lacked `scikit-learn`; the same tests passed under the pinned ignored research interpreter.
+- Fresh verified-material readback: an aggregate-only direct loader check read the exact 1,924 locally verified AMI inputs and returned 170 meetings, timing present for 170, usable timed turns for 137, usable dialogue turns for 100, 556 dialogue files, 530 fully labeled files, 26 unlabeled files, and 28 unlabeled records. It persisted no rows, IDs, paths, transcripts, or derived model evidence.
+- Review and execution boundary: the third independent code/test review returned no Critical or Important finding and one Minor documentation finding because this entry still showed the pre-third-cycle counts; the present correction records the current evidence. No production retry, feature extraction, model fitting/evaluation, state/output/canonical/lockbox access, private data, network, provider, call, simulation, source adaptation, runtime action, push, merge, or history rewrite occurred.
+
+### 2026-07-23 - EMOTION-STATE-002 Cut 4D published timing-matrix correction
+
+- Replacement-attempt result: the single admitted `non-lockbox` child exited nonzero after `598.2s` with `AMI v2 aggregate is invalid: scenario_only AMI v2 timing state is invalid`. The transaction restored the exact `preflight_complete` state at SHA-256 `01FC82DD77B82AD5775A70F0B213A72C43A47E56337A96EC8C30686AF6E23450` and `910` bytes; all ten frozen control/output probes remained absent, the candidate transaction ID remained empty, later digests remained unset, and lockbox open count remained `0`. No retry followed under that consumed authority.
+- Confirmed contract root cause: the mechanics validator accepted the internally derived aggregate, but the published validator still encoded the synthetic pre-range-index timing matrix `138/138`, `165/170`, and `27/32`. A focused in-memory proof changed only one scenario meeting to unusable timing, passed the mechanics validator, and reproduced the exact production error at the published validator. The production-shaped fixtures likewise forced every scenario meeting and 27 full-only meetings to have usable timing, so they could not represent the verified material result.
+- Aggregate-only material correction evidence: the sealed reader rechecked the exact 1,924 locally verified AMI XML identities and emitted no rows, IDs, paths, transcripts, dialogue content, or persisted material. The exact partition matrix is scenario-only `136/138`, full corpus `137/170`, and full-only `1/32`; all 170 meetings have timing files, all three timing families are unavailable with `incomplete_usable_timing_coverage`, and the canonical aggregate SHA-256 is `00B8F20CEAAD6B235A5FB415303ADD2FE6FC2A1A7C42FEF562585646FDC728CF`. Dialogue/source-quality totals remain 100 usable dialogue meetings, 556 dialogue-act files, 530 fully labeled files, 26 unlabeled files, and 28 unlabeled records. After correction, both the mechanics and published validators passed this exact in-memory aggregate.
+- Minimal implementation: `validate_published_ami_aggregate_v2()` now freezes the observed three-partition timing matrix and applies the existing unavailable-result null contract to scenario timing. The generic available-timing mechanics tests remain separate from this release snapshot. Both the mechanics fixture and the production-shaped fixture now reproduce `136/138`, `137/170`, and `1/32`; stale packet mutations were redirected to fields that exist under the unavailable timing contract. Schemas, AMI source selection, partition membership, dialogue classifications, privacy guards, cache/packet commitments, and range-index parsing remain unchanged.
+- Strict TDD and verification: the initial RED failed the single fixed-release validator test with the exact production error; the identical GREEN passed after the minimal validator change. The complete AMI mechanics/source-selection group passed `76/76`; the production-shaped builder passed `15/15`; Phase B contract, Task 10 packet, and Task 10 production-pipeline guards passed `39/39`; the `source`, `contracts`, `environment`, and `synthetic` validators passed; focused compilation and diff checks passed; and the full pinned-interpreter module passed `360/360` in `1554.929s`.
+- Boundary: this correction performed no CREMA audio read, feature extraction, model fitting/evaluation, production retry, state transition, output/canonical publication, final-lockbox access, private-data access, provider access, call, simulation, source adaptation, runtime activation, dependency change, merge, or history rewrite.
+
+### 2026-07-23 - EMOTION-STATE-002 Task 10 non-lockbox checkpoint
+
+- Cut 4E admission: the ignored execution overlay mechanically repinned the reviewed Cut 4D transaction to committed HEAD `80291cf0c9843866e5eac70a9a0adfffab4c8c46`, parent-only `8b148ee8bce74fb36c748e31c62f89ec2013c4bb`, subject `Correct Phase B AMI timing matrix`, and its exact three-file scope. Initial independent review found one Important contradiction between the permitted post-success Git push and an all-network stop clause. The corrected overlay permits only that exact post-success Git fetch/push; re-review returned `SPEC_PASS / QUALITY_PASS / C0 I0 M0`.
+- Fixed-path admission: the retryable checkpoint remained `preflight_complete`, `910` bytes, SHA-256 `01FC82DD77B82AD5775A70F0B213A72C43A47E56337A96EC8C30686AF6E23450`, with four valid anchors, four unset later digests, empty candidate transaction ID, lockbox open count `0`, and all ten fixed control/output/canonical probes absent. A PowerShell 5.1-incompatible controller-side `SHA256.HashData` call stopped the first admission command without mutation or child start; replacing only that call with the available `SHA256.Create().ComputeHash()` produced the identical passing checks. Independent admission returned `ADMISSION_PASS / PRIVACY_SCOPE_PASS / C0 I0`.
+- Single child outcome: the exact sanitized PowerShell 5.1 launcher started one and only one `non-lockbox` child. It exited `0` after `797.5s`; no retry or fallback occurred. The committed state is `non_lockbox_complete`, `912` bytes, SHA-256 `8BB141DFBF651889F0E1FD66C2DF35FF31F8DC211D98A7CD27512AE7D82ACC20`. The state-bound packet SHA-256 is `676D55D95978FBB27DDE50758A98C530979DC730A87C30CD6485178B624B313B`; later lockbox digests remain unset, the candidate transaction ID remains empty, lockbox open count remains `0`, transient controls are absent, and canonical result/report remain absent.
+- Independent aggregate review: strict bytes, both packet validators, source-silent restoration, and byte-identical replay of the exact five retained preflight plus five non-lockbox artifacts returned `NON_LOCKBOX_PACKET_PASS`, `SEMANTIC_REPLAY_PASS`, `PRIVACY_PASS`, `ZERO_LOCKBOX_ACCESS_PASS`, and `C0 I0`. Partition record/actor counts are `2,491/35`, `959/13`, and `939/13`; every record has `17` features. Balanced-diagnostic macro-F1 is acoustic `0.3397005982`, class-prior `0.1349809886`, and sentence-ID `0.1349809886`, a `+0.2047196096` acoustic lift over either baseline. All `25` slices are unsuppressed, but both eligible slice instability and reversal are `true`; the packet is not final-decision eligible.
+- AMI aggregate boundary: full/scenario/full-only timing present/usable counts are `170/137`, `138/136`, and `32/1`. Dialogue-act files/meetings/fully-labelled files are `556/139/530`, `552/138/527`, and `4/1/3`, with `26` unlabeled files and `28` unlabeled records. Timing and dialogue contributions remain unavailable under their recorded incomplete-coverage and unlabeled-record reasons. The AMI aggregate SHA-256 remains `00B8F20CEAAD6B235A5FB415303ADD2FE6FC2A1A7C42FEF562585646FDC728CF`.
+- Documentation-contract correction: the first complete post-documentation module ran all `360` tests in `2146.910s` and failed only the two document subtests of `test_cut4b_docs_hold_transaction_pending_status`, which still required the now-false sentence that Task 10 was pending and no checkpoint was accepted. An independently reviewed narrow correction renamed and updated only that method to require the accepted state/verdict anchors, preserved retired-lineage and blocked-gate boundaries, normalized Markdown whitespace, and rejected the obsolete sentence. The focused GREEN passed `1/1`; product/runtime code was unchanged.
+- Evidence boundary: this is acted-perception public-data evidence, not customer internal emotion or proof of the five operational signals. Aggregate baseline lift does not override slice instability/reversal, unavailable AMI contributions, or the non-decision-eligible packet. Final-lockbox access, canonical staging/acceptance/publication, private-data evaluation, providers, calls, simulations, source adaptation, runtime activation, Phase C, merge, and history rewrite remain blocked.
+
+### 2026-07-23 - EMOTION-STATE-002 Task 11 production-lockbox prerequisite
+
+- Goal: wire the one-use final evaluator without opening the accepted Task 10 lockbox during implementation, testing, or review.
+- Reservation boundary: production now requires a fixed ignored source-silent admission receipt bound to the reviewed clean HEAD, guarded-ledger SHA-256, exact accepted predecessor-state SHA-256, and non-lockbox packet SHA-256. Repository identity uses exactly three fixed local read-only Git commands with child-only `GIT_LFS_SKIP_SMUDGE=1`; admission identity is persisted in the reservation and revalidated before final-reader construction and during completed recovery. The lockbox command separately receives the independently retained exact admission-receipt SHA-256 and guarded-ledger SHA-256, rejecting a changed receipt before the first reservation.
+- Capability correction: the public pipeline no longer stores or accepts a caller-supplied object as a claimed reservation authority. The runner alone mints `_ReservedLockboxAuthority` after exact durable reservation write/readback, holds the exact reservation file across final evaluation and result persistence, and verifies it before and after persistence. Completed reservation bytes are also held through recovery validation and the state transition. Underscore-private pure pipeline helpers remain procedural within the trusted runner process and cannot mint the production file reader; hostile same-process imports are outside this prototype threat model.
+- Ledger derivation: the fixed ignored `.tmp/emotion-state-002-phase-b-cut4b/task-11-guarded-ledger.json` uses canonical UTF-8 LF JSON with sorted keys, two-space indentation, and one terminal LF. It binds the implementation HEAD and exact ordered guarded command vectors; each entry retains only `argv`, `exit_code`, `stdout_sha256`, and `stderr_sha256`. Its uppercase exact-byte SHA-256 and the exact-byte admission-receipt SHA-256 are reviewed outside the runner and supplied independently to the one-shot command.
+- Recovery and privacy correction: completed production recovery reuses the already-held split authority instead of reopening it under nested Windows handles, reconstructs the exact admitted predecessor from `lockbox_complete`, and replays the full retained AMI cache only in memory. The persisted AMI shape remains exactly aggregate plus retained-authority SHA-256 with no meeting, participant, turn, dialogue-label, transcript, probability, feature-row, or audio authority.
+- TDD evidence: focused production tests cover absent admission, source-silent admission, durable held reservation, AMI mismatch recovery, changed-admission recovery, successful forward recovery, and already-complete re-entry without final-source/evaluator calls. Review-driven RED tests also proved the pre-reservation guarded-ledger mutation gap and completed-reservation replacement gap before their corrections. The Task 11 builder suite passed `7/7`, the runner-state suite passed `84/84`, the production non-lockbox/Task 11 suite passed `29/29`, the Phase B contract suite passed `15/15`, and all four offline validators passed. The complete pinned-interpreter module passed `391/391` in `2618.514s`; three independent re-reviews each returned `C0/I0/M0`. The clean post-commit guarded ledger remains required before execution.
+- Boundary: the real ignored Task 10 checkpoint, public material, final path, canonical pair, private data, providers, calls, simulations, source adaptation, product runtime, Task 12, Phase C, merge, and history were not accessed or changed during this prerequisite work. The production lockbox remained unopened at this prerequisite checkpoint.
+
+### 2026-07-23 - EMOTION-STATE-002 Task 11 final lockbox checkpoint
+
+- Guarded-ledger safe failures: the first ledger attempt passed commands 1 through 6 and stopped at the thesis-reference registry because its synthetic proxy sentinel was URL-shaped. No ledger, admission, or reservation was written. The one-line sentinel correction passed independent review at `C0/I0/M0`, was committed as `d737225663377892822323ff3e4ebf090a83eb12`, and was pushed. The next admission stopped before writing because the exact fixed ledger filename was absent from the state-root allowlist. No admission or reservation was written; the stale ledger was retired exactly. Strict TDD added the single opaque allowlist entry, independent review returned `C0/I0/M0`, and commit `c7a5e4037ad8134c96dcd7e8b9577f08fe92391b` was pushed.
+- Final guarded ledger: the clean post-commit 11-command ledger passed with every command at exit `0`. Its canonical UTF-8 LF JSON is `3948` bytes and has exact SHA-256 `8515DA4A622A8AF8CE3BE07BE6CAFC8360EDE729F2845317E13C701DBA18299A`. It binds implementation HEAD `c7a5e4037ad8134c96dcd7e8b9577f08fe92391b`, records only each exact `argv`, `exit_code`, `stdout_sha256`, and `stderr_sha256`, and passed independent review at `C0/I0/M0`. The guarded full pinned-interpreter module passed `392/392`.
+- Source-silent admission: the first corrected-head admission stopped before write because inherited `ELEVENLABS_API_KEY` and `GITHUB_PERSONAL_ACCESS_TOKEN` variables violated the closed-environment gate. No admission or reservation was written. A process-local scrub of the runner's credential, network, proxy, package-index, and TLS deny list required no code change. The passing `436`-byte receipt has SHA-256 `0F10FD618FD20819EB7D21981C29E77B6936977D80659A82A5CE1886C1191278`; it binds predecessor-state SHA-256 `8BB141DFBF651889F0E1FD66C2DF35FF31F8DC211D98A7CD27512AE7D82ACC20`, packet SHA-256 `676D55D95978FBB27DDE50758A98C530979DC730A87C30CD6485178B624B313B`, the implementation HEAD, and the guarded-ledger SHA-256. Independent admission review returned `C0/I0/M0`.
+- Exactly-once execution: one production child ran under the closed process environment and exited `0` after `346.9s`; no retry or fallback occurred. The state is `lockbox_complete` with `lockbox_open_count=1`, exact state SHA-256 `69B6475BB32209DD50A6E24866F19D6B44FB51BFA458836BF3B1805140C2BC8C`, result SHA-256 `E3EC0EB82E77C1979BF8F921D6EBF6321F510687A608C933473C4DB04AE02F35`, evidence SHA-256 `93CE60508E565A66BBEDEC48CDD0F0D48CC72D7DA771C419ABD5242570E437E3`, and mint SHA-256 `0912A83A6DFCE3B90C06E409E50D1DEBFC42619A0594BD714883549839799E0F`. State/result/reservation/admission/ledger/split lineage validation passed.
+- Decision evidence: the final set contains `2,181` cases from `30` actors. Acoustic/class-prior/sentence-ID macro-F1 values are `0.3635639146/0.1260336470/0.1260336470`; acoustic Brier/ECE/log loss are `0.4645830705/0.0428792113/0.9730765286`. Paired acoustic lift over either baseline is `0.2375302676`, 95% interval `[0.2006732151, 0.2644157664]`. Sentence-driven apparent lift is false, eligible slice instability and reversal are true, and confidence abstention improvement is false. The eligible decision is therefore `revise`, not `keep`.
+- AMI and privacy boundary: the persisted AMI value is exactly `{aggregate, authority_sha256}` with aggregate SHA-256 `31B068BF9AEF99340A6895BCF3997265168591EE31073001382C0BA5ACE89A6C` and authority SHA-256 `55815CFB3CD49A6164744425F154E35403601BF1A1FF8DEC50AE7207943BCEE7`. Full/scenario/full-only meetings are `170/138/32`; timing usable counts are `137/136/1`; dialogue-act files are `556/552/4`; fully labelled files are `530/527/3`; and `26` files containing `28` records remain unlabelled. Timing and dialogue contributions remain unavailable. No AMI row, participant, transcript, label row, probability, feature row, path, or audio payload was persisted.
+- Independent interpretation review: two separate aggregate-only reviews each returned `C0/I0/M0`, independently rechecking exact lineage/hashes and the decision rule. This checkpoint is offline acted-perception feasibility evidence. It is not evidence of customer internal emotion, the five operational signals, AMI contribution, real-call performance, provider/PSTN/ASR/latency feasibility, runtime readiness, commercial effectiveness, or production readiness.
+- Closed boundary: the production lockbox completed exactly once and must not be reopened for this experiment version. Canonical staging/acceptance/publication, Task 12, Phase C, private data, providers, calls, simulations, source adaptation, runtime activation, merge, and history rewrite remain blocked.
+
+### 2026-07-24 - EMOTION-STATE-002 Task 12 canonical checkpoint
+
+- Publication prerequisite: the first authorized stage attempt failed before state mutation with exact error `trusted sibling parent identity is not cached`. State remained byte-identical at SHA-256 `69B6475BB32209DD50A6E24866F19D6B44FB51BFA458836BF3B1805140C2BC8C`, phase `lockbox_complete`; `lockbox_open_count=1`; candidate transaction ID remained empty; canonical result/report, journal, and receipt remained absent. The ignored publication lock was the only initialized artifact.
+- Minimal TDD correction: a focused RED reproduced the missing-canonical-root failure. The mutation-side publication lock now durably creates and no-follow binds the fixed canonical root after exclusive lock acquisition and before canonical recovery; the strict sibling-parent proof and read-only behavior remain unchanged. The focused GREEN, the 100-test contract/state group, four offline validator sections, compilation, and diff checks passed. Independent review returned `C0/I0/M0`; the exact two-file correction is commit `256fa92ed94eda3f66fef21512d9f292b1d0de61`.
+- Accepted transaction: the single replacement stage produced transaction `559ccc55b0b5412ba455ca7fe3e3a6b7`. The tracked candidate validator, direct hash readback, and an independent aggregate-only review returned `C0/I0/M0`. Explicit acceptance moved the state to `accepted` with `lockbox_open_count=1`, removed the journal and receipt, and retained result SHA-256 `5829BF4A1FBE86BDD6B19B7CF8B07033BF79744B12F7AF1D493F8D3F10D0073C` plus report SHA-256 `56140D4ABDD0B2A6924749E719C66D3972483E0F4191F63201E9DDFCA0A23482`.
+- Decision and limitations: the accepted decision is `revise`. Acoustic macro-F1 is `0.3635639146` versus `0.1260336470` for both baselines, with paired lift `0.2375302676` and lower 95% bound `0.2006732151`; however, eligible slice instability and reversal are true and confidence abstention improvement is false. AMI timing and dialogue-act contributions remain unavailable.
+- Verification ledger: one monolithic post-accept module command was terminated by its shell wrapper after `1804s` without a unittest verdict and left its child process running; that exact orphaned worktree test tree was stopped and the attempt is retained only as incomplete evidence. The unchanged module was then partitioned into attributable groups of `117`, `65`, `33`, `23`, `30`, `25`, and `100` tests, all passing for `393/393`. Checkpoint, thesis-reference, drift, context-policy, setup, and diff gates passed.
+- Governance sequence: the unchanged no-argument thesis-update gate correctly failed before the pair-only commit with `missing_thesis_update`, because the two generated research artifacts were the only dirty paths. Independent review classified the plan's pre-pair ordering as one Important sequencing defect: making that gate pass before an exact pair-only commit was impossible without a fake changed-file input, checker exemption, or scope violation. No bypass was used. The real dirty-closeout run then passed with six changed files, three thesis-triggering files, two thesis-tracking files, and zero failures, preserving the gate's pre-push purpose.
+- Pair-only commit: the accepted canonical `result.json` and `report.md` were committed as the exact two-path commit `f887989597f23f438e8e537ba5bfbd05823a3587`.
+- Boundary: this is an offline acted-perception research checkpoint, not production readiness or evidence of customer internal emotion, the five operational signals, natural-call performance, AMI contribution, provider/PSTN/ASR/latency feasibility, runtime readiness, or commercial effectiveness. No private data, provider access, calls, simulations, source adaptation, runtime activation, Phase C, push, merge, or history rewrite occurred.
+
+### 2026-07-24 - EMOTION-STATE-003 Phase C0 synthetic temporal-mechanics design
+
+- Objective: define the smallest executable deterministic temporal-state checkpoint that can advance the thesis without treating the Phase B `revise` result as admissible acoustic evidence or implying runtime readiness.
+- Evidence used: the accepted aggregate-only Phase B result and report, the existing `PerceivedCustomerStateV1` contract, the event-identity contract as a reviewed parity oracle only, the approved temporal-tracker architecture, recent Git history, and tracked roadmap/review-gate documents. The existing ignored reviewed Phase B virtual environment was used only to execute tracked contract tests. No public-dataset or ignored material/state/result artifact, private data, audio, transcript, provider state, call, model execution, or runtime execution was read.
+- Product decision: select a pure explicit-state reducer under `scripts/` rather than a contract-only oracle or mutable runtime-shaped service. The reducer will use frozen symbolic evidence, integer/fixed-point arithmetic, logical-turn decay, deterministic correction replay, and no hidden session store.
+- Independent review: architecture review recommended the offline pure reducer. Red-team review found two blocking gaps in the earlier high-level scope: `CustomerTurnEvidenceV1` has no validated mapping from acoustic features to the five operational signals, and `PerceivedCustomerStateV1` cannot prove runtime policy monotonicity without a typed text-only decision and action/intensity lattice. The design closes those gaps with a research-only synthetic evidence-atom contract and a mechanics-only claim boundary.
+- Verification design: freeze hand-authored golden scenarios before reducer implementation; add independent metamorphic and semantic checks; publish only aggregate counts and configuration/fixture/output hashes; decide `keep`, `revise`, or `discard` for synthetic mechanics only.
+- Design verification: two independent re-reviews returned `C0/I0/M0` after duplicate/reference semantics, stale-input rejection, watermark ownership/parity, integer quality and contradiction caps, release/tie behavior, atom ordering, fixed-point rounding, and canonical JSON rendering were made exact. The existing Phase B contract class passed `16/16`; thesis-update, thesis-reference, drift, context-policy, setup, placeholder/stale-claim, and diff gates passed.
+- Status correction: Phase B Task 12 and its closeout were pushed at `b3f475e6fe101573e2144d9ced31698d51c9ead7` on branch `codex/emotion-state-phase-b-public-data-feasibility`. The Phase B lockbox remains closed and cannot be reused.
+- Boundary: this entry authorizes design documentation only. Phase C0 implementation, raw public or private data, Phase B feature/model/result ingestion, dependency changes, network, providers, calls, conversational simulations, source adaptation, prompts/responses, policy-adapter or BRAIN work, runtime changes or activation, lockbox reuse, merge, history rewrite, Phase D, and production/customer-emotion/commercial claims remain outside scope.
+- Approved planning handoff: after Tarik reviewed and approved the written design, `docs/superpowers/plans/2026-07-24-emotion-state-phase-c0-synthetic-temporal-mechanics.md` decomposed Phase C0 into ten strict-TDD review units. The complete policy and 30-case golden matrix precede reducer code; candidate, canonical, and push remain separate gates. Writing and committing the plan authorizes no implementation.
+- Plan quality gate: the plan-only commit is allowed only after two independent complete rereads return `C0/I0/M0` on the same frozen plan/design/methodology bytes and the existing offline repository gates pass. This review gate does not authorize any Phase C0 task, candidate, canonical publication, provider/data/runtime action, or push.
+
+### 2026-07-24 - EMOTION-STATE-003 Phase C0 Task 8 aggregate runner working draft
+
+- Working-draft status: Tasks 1-8 implementation is complete and independent review returned C0/I0/M0. The candidate was not created. Candidate, canonical, push, runtime, provider, data, call, and Phase D gates remain closed pending separate explicit authorization.
+- Objective: turn the accepted in-memory 30-scenario Phase C0 evaluation into an aggregate-only result, deterministic LF report, and fixed-path fail-closed writer without executing either production CLI mode.
+- Strict TDD evidence: the exact focused RED failed at class setup with `ImportError: cannot import name 'run_emotion_state_003_phase_c0' from 'scripts' (unknown location)`. The implemented focused class then passed `25/25`, and the complete Phase C0 module passed `141/141`.
+- Aggregate contract: the producer validates exact evaluation types, tuple-map orders, outcome identities/classifications, count algebra, replay/privacy booleans, canonical policy/scenario bytes, recursive exact-integer policy complexity, exact result/nested schemas, the selfless aggregate digest, decision precedence, and forbidden aggregate content before return, rendering, or writing. Mechanical negative evidence remains serializable as `revise`; semantic or privacy-boundary evidence remains serializable as `discard`.
+- Output contract: the report uses one exact LF template and binds the final canonical result bytes. The writer accepts only the fixed candidate or canonical root, rejects link/reparse/non-directory metadata and unexpected candidate-parent children, requires absent final/stage roots, uses exclusive same-volume stage creation and file writes with flush/fsync/readback, atomically renames the verified pair, repeats final readback, cleans only a verified pre-rename stage, and never overwrites an existing pair.
+- Test isolation: writer tests patched only the runner's candidate-root constant to fresh automatically cleaned `TemporaryDirectory(dir=ROOT / ".tmp")` children. Neither `.tmp/emotion-state-003-phase-c0/candidate` nor `research/experiments/generated/EMOTION-STATE-003-phase-c0-synthetic-temporal-mechanics` was created, and the real CLI was not invoked.
+- Claim boundary: the current `keep` decision applies only to frozen synthetic temporal mechanics. It does not prove customer internal emotion, emotion accuracy, runtime policy enforcement or monotonicity, sales effectiveness, natural or real-call behavior, provider/PSTN/ASR/latency feasibility, commercial effectiveness, runtime readiness, production readiness, or customer safety.
+- Closed boundary: no Phase B feature/model/result input, public or private data, dependency or install, network, provider or ElevenLabs access, call, conversational simulation, source adaptation, prompt, knowledge-base or provider-setting change, product-runtime modification or activation, candidate or canonical generation, push, merge, history rewrite, Task 9+, or Phase D action was used or authorized. All seven claim/consumption flags remain false.
+
+### 2026-07-25 - EMOTION-STATE-003 Phase C0 Task 9 independent validator working draft
+
+- Working-draft status: the independent validator implementation is complete; independent validator review returned `C0/I0/M0`. The candidate was not created. Candidate, canonical, push, runtime, provider, data, call, and Phase D gates remain closed pending separate explicit authorization.
+- Objective: independently revalidate the frozen policy/scenario contracts, two-run synthetic aggregate projection, exact result schema and decision algebra, canonical hashes, deterministic LF report, scope/non-claim lines, and one fixed no-follow pair root without importing producer result, decision, digest, renderer, path, or writer helpers.
+- Strict TDD evidence: the exact focused RED failed at class setup with `ImportError: cannot import name 'validate_emotion_state_003_phase_c0' from 'scripts' (unknown location)`. The current focused validator class passes `26/26`; complete Step 4 and repository ledgers are recorded separately before review.
+- Independence and reader boundary: an AST rule rejects producer-module imports, forbidden producer-helper origins, aliases, loads, and calls. The validator requires a byte-identical two-run fresh evaluation projection, validates negative `revise` and `discard` projections without a hidden `keep` requirement, and reads only an exact two-file candidate/canonical root after lexical allowlisting, parent/root/file `lstat`, reparse/type/child checks, bounded binary reads, and pre/post descriptor metadata equality.
+- Claim boundary: `fixture_only=true`; `runtime_approved=false`; valence, activation, and engagement remain `not_inferable`. This working draft proves only deterministic validation mechanics for the frozen synthetic fixture and does not prove customer internal emotion, emotion or acoustic accuracy, policy enforcement or monotonicity, sales effectiveness, natural or real-call behavior, provider/PSTN/ASR/latency feasibility, commercial effectiveness, customer safety, runtime readiness, or production readiness.
+- Closed boundary: no Phase B material/result/ignored-state input; CREMA-D, AMI, public, private, restricted, audio, or transcript material read; dependency or install; network; provider or ElevenLabs access; call; conversational simulation; source adaptation; prompt, knowledge-base, or provider-setting change; product-runtime modification or activation; candidate or canonical generation; push; merge; history rewrite; or Phase D action occurred. All seven claim/consumption flags remain false, and `runtime/contracts/emotion_state_contracts.py` remains byte unchanged.
+
+### 2026-07-25 - EMOTION-STATE-003 Phase C0 Task 9 runner-launch correction
+
+- Failed pre-write attempt: the documented direct candidate command stopped at the runner's first project-local import with `ModuleNotFoundError: No module named 'scripts.emotion_state_phase_c_contracts'`. Neither the candidate root nor its stage sibling was created, so no candidate bytes or transaction existed.
+- Root cause and correction: direct-script execution placed `scripts/`, not the repository root, on `sys.path`. A strict subprocess RED reproduced both no-argument and invalid-mode import failures; the runner now inserts its fixed lexical repository root before project-local imports and the same test reaches the existing `RunnerError: runner_mode` boundary without output creation.
+- Status and boundary: the independent validator review remains `C0/I0/M0`; candidate authorization remains open and the candidate is still not created. Canonical, push, runtime, provider, data, call, and Phase D gates remain closed. No candidate/canonical mode, provider, network, public/private data, runtime, call, stage, commit, or push action was executed by this correction.
+
+### 2026-07-25 - EMOTION-STATE-003 Phase C0 Task 10 canonical checkpoint
+
+- Acceptance: the exact candidate was promoted once and read-only checkpoint validation passed. Candidate decision: `keep`; all `30/30` scenarios passed, including `8` rejection cases, and independent candidate review returned `C0/I0/M0`.
+- Exact hashes: policy `9BB996F886E9AFFBCDA40A6FB71BE10E1CD07D3B114B4E3FBCDAA1DF71171F15`; scenarios `D01FBD7677537A0A91D01E0EA8354D079491C13BBD81EC8BAC97E7BBC4520FB0`; result `3BBB7FC8F4DFB223837EA8D8B8E92EC46AA0ACF70EA1A6CA4649D41266E43030`; report `FD1ADA58FD5C0B614DB429AD6B5434C988E95942FBEB1FEB87D779C14F9E4EA4`.
+- Commit trace: aggregate runner `fd92aae6acf146d9271888bb264ecd29269cb870`; independent validator `5c461612f667e1a8727eedb9d2c08d9951b3aed0`; direct-launch correction `4c77f72bf7dc85e2e4587b9c03646716e5aec0ff`; candidate acceptance `77a2fb50ba00210cc75d410240c17115be83a415`; exact pair-only commit `62b6b65cf307270bfc2e98c7c08617252859948d`.
+- Guarded ledger: Phase C0 passed `177/177`; the pinned Phase B contract class passed `16/16`; all four validator sections, five repository gates, and four LF/compile/protected-runtime/diff checks exited `0`.
+- Scope: this is synthetic mechanics only. Phase B lockbox remains closed and cannot be reused. The checkpoint grants no runtime, provider, data, or Phase D authority; it makes no claim about customer internal emotion, emotion accuracy, policy enforcement, conversion improvement, real-call performance, or production readiness.
+
+### 2026-07-26 - EMOTION-STATE-004 Phase C1 operational-signal evidence-admission design
+
+- Objective: determine whether construct-valid observer-label evidence exists for hesitation, frustration, confusion, interest, and disengagement before any later offline model evaluation or policy work.
+- Lineage correction: the provisional original "Phase D" public-data experiment was materially absorbed by Phase B, whose accepted acted-perception result is `revise`. Phase C0 separately established only synthetic temporal mechanics. The selected successor is therefore Phase C1 evidence admission, not a duplicate use of the closed Phase B lockbox.
+- Approved evidence contract: decisions are independent per signal; `pass` requires direct observer annotations on spontaneous conversation at turn or bounded-segment granularity. Acted or scripted labels, emotion or dialogue proxies, whole-conversation labels, LLM labels, and a merely planned annotation study cannot produce `pass`.
+- Approved workflow: freeze a bounded source-discovery protocol before public research; screen authoritative documentation and metadata only; preserve rowless evidence cards; and permit a separately gated, preregistered three-or-more-rater public-data annotation fallback when existing annotations do not qualify. C1 contains no model evaluation.
+- Reliability and decisions: the future fallback uses pre-adjudication Krippendorff alpha with point estimate at least `0.80` and lower 95% bound at least `0.67` for `pass`. Overall outcomes are `proceed_full_to_c2`, `proceed_partial_to_c2`, `defer_c2`, or `stop_c2`; only per-signal `pass` values may enter a later C2 eligibility list.
+- Current boundary: this entry and the approved specification authorize documentation only. No network or public-source research, source retrieval, public or private material, audio, transcript, annotation, participant row, dependency, annotation execution, model work, external source adaptation, provider access, call, simulation, prompt or knowledge-base change, temporal-tracker or runtime change, candidate/canonical generation, lockbox access, push, merge, history rewrite, C2, policy adapter, shadow work, or runtime activation occurred or is authorized.
+
+### 2026-07-26 - EMOTION-STATE-004 Phase C1 implementation plan
+
+- Plan artifact: `docs/superpowers/plans/2026-07-26-emotion-state-phase-c1-operational-signal-evidence-admission.md`.
+- Planned structure: eleven independently reviewed tasks separate protocol/contracts, closed rowless transport and source receipts, bounded search, decision algebra, aggregate rendering, an independent validator, separately authorized public-metadata discovery, source-ledger freezing, caller-locked publication mechanics, ignored-candidate validation and independent review, and canonical closeout.
+- Fail-closed detail: all 80 direct-label and 8 fallback-material queries remain represented even when incomplete; every query/citation/document transport receipt is hash-reconciled against exact pre-freeze transport-ledger bytes under single-attempt request keys with no same-version retry; screened exclusions retain their transport lineage; each citation parent document must belong to its claimed source; citation-retained candidates require the same source/card screening as direct candidates; per-signal fail readiness is derived independently; fallback feasibility uses fact-specific same-source documents and cannot create `pass`; Task 1 freezes the existing discovery-endpoint registry entry read-only and adds its implementation evidence to this methodology log so the thesis-update gate remains satisfiable without registry drift; candidate validation binds exact live `HEAD`; canonical acceptance requires exact candidate, validation, and independent-review receipts; accepted cleanup is journal-recoverable; descendant canonical validation preserves the implementation-head blobs and exact pair-only commit lineage.
+- Current boundary: this is a plan-only checkpoint. No implementation, public research, network access, source retrieval, dataset or private-data read, annotation, audio or transcript read, model evaluation, external source adaptation, provider access, call, simulation, prompt or knowledge-base change, runtime change, candidate/canonical generation, push, merge, history rewrite, C2, policy adapter, shadow work, or runtime activation occurred or is authorized.
+
+### 2026-07-26 - EMOTION-STATE-004 Phase C1 Task 1 protocol freeze
+
+- Frozen scope: exact canonical discovery protocol
+  `research/experiments/configs/emotion-state-004-phase-c1-discovery-protocol.json`;
+  synthetic rowless fixture
+  `research/experiments/cases/emotion-state-004-phase-c1-contract-fixtures.json`;
+  protocol/status note
+  `research/experiments/EMOTION-STATE-004-phase-c1-operational-signal-evidence-admission.md`;
+  strict protocol and transport contracts
+  `scripts/emotion_state_phase_c1_contracts.py`; focused contract tests
+  `scripts/test_emotion_state_004_phase_c1.py`; the two exact-path LF rules in
+  `.gitattributes`; and this methodology trace. The thesis reference registry
+  was read and tested but not edited.
+- Byte authorities: the protocol is the exact semantic `Exact Discovery
+  Protocol` object rendered with sorted keys, two-space indentation, UTF-8,
+  no non-finite values, and one terminal LF; SHA-256
+  `2540A1BA430F78B9F660BA466F6CFD7099CFFCAA6F1C1D1AC373F4BA1D4D2CCD`.
+  The fixtures use the same renderer; SHA-256
+  `83FD0864B83FC4EAF0F0EF3E2DEAAF78FE64275D5A7B22A51061CCBD119A554D`.
+- Strict TDD evidence: before any production artifact existed, the exact
+  focused RED command exited `1` with two loader errors and
+  `ModuleNotFoundError: No module named
+  'scripts.emotion_state_phase_c1_contracts'`. After implementation, the
+  focused protocol/transport suite passed `12/12`, including exact nested
+  fallback/construct/reason-order checks, every top-level omission, unknown
+  key and metric, boolean-as-integer rejection, public-HTTPS and redirect
+  rejection, exact `c1-document-[0-9]{4}` request keys, rowless receipt shape,
+  purpose caps, canonical bytes, recursive immutability, registry stability,
+  fixtures, note prefix, and LF rules.
+- Local validators: the thesis reference registry guard passed with `0`
+  failures and `0` warnings; the project-drift guard passed with `0` failures
+  and `0` warnings; the context-reading policy passed; setup passed `567`
+  checks with `0` failures and `0` warnings and reported `Network calls made:
+  false`; both Phase C1 Python files compiled; and `git diff --check` exited
+  `0`.
+- Endpoint status: the existing four discovery endpoints remain in their
+  exact order and remain `not accessed; plan only`. Discovery-service results
+  remain non-authoritative and cannot admit a signal.
+- Closed boundary: no public research, network access, source retrieval,
+  dataset or private-data read, annotation, audio or transcript read, model
+  training or evaluation, external source adaptation, provider work, call,
+  simulation, prompt or knowledge-base change, runtime change or activation,
+  candidate or canonical generation, C2, push, merge, or history rewrite
+  occurred. This task freezes rowless contracts only and makes no claim about
+  customer internal emotion, model quality, sales performance, provider
+   behavior, real calls, safety, runtime behavior, or production readiness.
+
+### 2026-07-27 - EMOTION-STATE-004 Phase C1 Task 2 implementation checkpoint
+
+- Scope: implemented rowless source, document, reliability, evidence-card,
+  fallback, source-ledger, and review-receipt contracts in the existing Task 2
+  scripts. The genuine RED was three missing-parser errors; current focused
+  Task 2 passed `5/5`, full C1 `24/24`, and C0 `177/177` for the current
+  implementation/test bytes.
+- Fixture boundary: the synthetic valid-source fixture uses the already
+  registered OpenAlex endpoint only as inert test metadata; no network was
+  called.
+- Status: independent Task 2 review and final acceptance remain pending at this
+  implementation checkpoint. Existing closed boundaries remain unchanged; this
+  makes no production or customer-emotion claim.
+
+### 2026-07-27 - EMOTION-STATE-004 Phase C1 Task 2 technical-fix continuation
+
+- Review input: C0/I5/M0. Corrected review-hash category ordering before
+  first-occurrence deduplication; ledger-wide cross-source document ID/hash
+  uniqueness; all populated reliability-bound pair orderings; strict repeated
+  percent decoding for malformed escapes, encoded traversal/separators, and
+  controls; and source-reference validation before pair or fallback-order
+  checks.
+- Strict TDD/gates: a focused RED run produced `15` intended failures across
+  `10` tests before production changes; the focused post-fix suite passed
+  `10/10`. Broader local verification and independent re-review remain pending.
+- Status: this is an offline contract hardening continuation only. It makes no
+  source-admission, production, customer-emotion, or runtime claim.
+
+### 2026-07-27 - EMOTION-STATE-004 Phase C1 Task 2 regression-proof continuation
+
+- Re-review input: C0/I0/M2. Test-only corrections now assert the exact URL
+  failure code independently for each transport/document hazard and execute
+  the missing-card-source and missing-fallback-source proofs independently.
+  The complete-but-reordered and existing-noncandidate-source checks remain
+  separate exact-code assertions.
+- Strict proof: current test targets were replayed in fresh processes against
+  in-memory pre-fix contract bytes and failed for the expected prior behavior;
+  the same targets pass against the unchanged current production bytes. Final
+  local gates and independent re-review remain pending at this point.
+- Status: no production contract changed and no broader source-admission,
+  runtime, customer-emotion, or production claim is made.
+
+### 2026-07-27 - EMOTION-STATE-004 Phase C1 Task 2 source-order fixture continuation
+
+- Re-review input: C0/I0/M1. The complete-but-reordered source fixture now
+  derives its expected candidate pairs from its local search order and asserts
+  complete cards before reversing sources; it includes the valid interest card
+  for source `0002`.
+- Strict TDD: the completeness assertion first failed because that interest
+  card was absent, then passed after the test-only fixture correction; the
+  independent existing-noncandidate confusion-card exact-code proof remains
+  green. Final local gates and independent final re-review remain pending at
+  this point.
+- Status: no production contract changed and no broader source-admission,
+  runtime, customer-emotion, or production claim is made.
+
+### 2026-07-27 - EMOTION-STATE-004 Phase C1 Task 3 bounded search-ledger implementation checkpoint
+
+- Scope: implemented immutable rowless discovery, query, citation, and search-
+  ledger contracts; the exact ordered 80 direct-label plus 8 fallback-material
+  query grid; bounded deterministic candidate and overflow derivation; citation
+  attempt/hash binding; and independently derived `search_complete` and per-
+  signal `fail_ready` algebra in the existing Phase C1 contract and test
+  scripts.
+- Strict TDD: the exact focused RED command ran `23` tests and exited `1` with
+  `65` missing-interface errors rooted in absent
+  `expected_phase_c1_queries()` and `validate_search_ledger()`. A subsequent
+  mutation audit produced two separate RED runs whose two targets both failed
+  before each fix, covering duplicate-identity back-reference binding,
+  receipt-hash authority uniqueness, unaccounted same-lane identities/source
+  aliases, and cross-purpose receipt hashes. A final same-source cross-signal
+  regression failed on the over-broad identity rule before the lane-scoped
+  correction. Current focused Task 3 passes `26/26`; all Task 1-3 focused
+  classes and full Phase C1 pass `58/58`; Phase C0 passes `177/177`.
+- Local gates: both existing Phase C1 Python files compile; the context policy
+  and `git diff --check` pass; the thesis reference registry reports `0`
+  failures, `0` warnings, `1642` files, and `383` registered URLs; project
+  drift reports `0` failures, `0` warnings, and `4179` files; setup reports
+  `567` checks, `0` failures, `0` warnings, and no network calls. The explicit
+  three-path thesis-update gate passes with `3` changed files, `2` thesis-
+  triggering files, `1` thesis tracking file, `0` failures, and no network
+  calls.
+- Status and boundary: independent Task 3 review remains pending. This was
+  offline contract work only: no research or network access, source retrieval,
+  dataset or private-data read, row payload, provider access, call, simulation,
+  source adaptation, model work, runtime change or activation, candidate or
+  canonical output, lockbox access, push, merge, history rewrite, C2 work, or
+  production or customer-emotion claim occurred or is authorized.
+
+### 2026-07-27 - EMOTION-STATE-004 Phase C1 Task 3 review-fix continuation
+
+- Revised review input: `C1/I3/M1`. Corrected duplicate authority so discovery
+  duplicates stay within one direct-signal or fallback-material lane, citation
+  duplicates stay within one signal across both directions, and retained
+  identities bind bidirectionally to one candidate source while still entering
+  every applicable lane order. Corrected zero-record `budget_reached`
+  handling, explicit record-level reason partitions and unresolved
+  documentation lineage, full frozen-order citation-attempt review-hash union,
+  and raw duplicate citation-record ID detection.
+- Strict TDD: before the fix, the test-only focused run reproduced `16`
+  assertion failures and one contract error across the implicated search
+  invariants; the separately targeted review-hash proof also failed because
+  top-level attempt hashes without citation records were omitted. Current
+  focused Task 3 plus review-hash proof passes `31/31`; full Phase C1 passes
+  `62/62`; Phase C0 passes `177/177`.
+- Local gates: compilation, context policy, working-diff check, thesis
+  reference registry (`0` failures, `0` warnings, `1642` files, `383`
+  registered URLs), project drift (`0` failures, `0` warnings, `4180` files),
+  and setup (`567` checks, `0` failures, `0` warnings, no network calls, no
+  secret values logged) pass. The explicit three-path thesis-update and final
+  staged/scope gates are run after this entry.
+- Status and boundary: independent Task 3 re-review remains pending.
+  Search-ledger receipt-hash membership is rowless metadata validation only;
+  reconciliation against actual transport-ledger bytes remains exclusively a
+  Task 8 cross-ledger responsibility and was not added to
+  `validate_search_ledger`. This offline correction makes no source-admission,
+  data, provider, call, runtime, candidate, canonical, C2, production,
+  customer-emotion, performance, or safety claim and authorizes no such action.
+
+### 2026-07-27 - EMOTION-STATE-004 Phase C1 Task 4 offline admission-decision implementation
+
+- Scope: added a pure, immutable reliability, candidate-disposition,
+  per-signal, and overall-admission projection layer. It applies the frozen
+  alpha thresholds and positive-support boundary, checks claimed card results
+  against independent derivation, keeps C2 eligibility in frozen signal order,
+  and rejects protected refusal/stop/do-not-call vocabulary as a native
+  disengagement label.
+- Strict TDD: the focused RED command
+  `python -m unittest scripts.test_emotion_state_004_phase_c1.PhaseC1DecisionTests -v`
+  exited `1` because `scripts.emotion_state_phase_c1_decision` did not exist.
+  After the decision module was added, the focused class passed `9/9`. A
+  separate native-label RED then failed because no protected-intent error was
+  raised; after the parser boundary was added, the focused class passed `11/11`.
+- Status and boundary: local focused GREEN only. The complete Task 4 ledger,
+  independent specification/code-quality review, staging, and commit remain
+  pending. This was offline synthetic contract work only; no source discovery,
+  network or provider access, data/private-data read, customer-emotion or
+  runtime action, call, simulation, candidate/canonical output, C2 action,
+  push, merge, history rewrite, or production claim occurred or is authorized.
+
+### 2026-07-27 - EMOTION-STATE-004 Phase C1 Task 4 review-fix round 1
+
+- Review correction scope: bound projection to canonical reconstructed
+  protocol, search-ledger, and source-ledger bytes; revalidated the frozen
+  protocol; enforced same-source authoritative/public native-definition
+  evidence; checked every fallback-material claim; required complete ordered
+  disposition/card coverage; blocked `fail` on overflow; and normalized
+  protected disengagement-label intent vocabulary.
+- Strict TDD: the first strengthened focused run failed `7` assertions on the
+  missing native-definition lineage, material-status comparison, disposition
+  coverage, overflow fail guard, protected `don't call` handling, and the
+  protocol/search/source hash bindings. A subsequent Unicode-dash label RED
+  failed before normalization. The final focused class passes `15/15` and the
+  three modified Python modules compile.
+- Status and boundary: review-fix re-review and the complete controller ledger
+  remain pending. This remains offline synthetic contract work only; no source,
+  network, data/private-data, provider, call, simulation, runtime, candidate,
+  canonical, C2, push, merge, or production action or claim occurred.
+
+### 2026-07-27 - EMOTION-STATE-004 Phase C1 Task 4 review-fix round 2
+
+- Review correction scope: removed the unsupported lexical native-label equals
+  signal rule while retaining construct-correspondence gating; added source/card
+  identifier binding; made fallback unknown/cross-source document provenance
+  explicit; enforced fallback authorization flags; and independently blocked
+  `fail` for incomplete/truncated queries and incomplete/budget citation stops.
+- Strict TDD: isolated REDs reproduced the invalid lexical rejection of an
+  authoritative direct definition, missing source/card binding, unknown
+  fallback-document provenance, and incomplete-query/citation fail bypass.
+  Current focused decision class passes `18/18`; the modified Python modules
+  compile.
+- Status and boundary: independent re-review and complete controller ledger
+  remain pending. This remains offline synthetic contract work only; no source,
+  network, data/private-data, provider, call, simulation, runtime, candidate,
+  canonical, C2, push, merge, or production action or claim occurred.
+
+### 2026-07-27 - EMOTION-STATE-004 Phase C1 Task 4 review-fix round 3
+
+- Fixture correction: added a complete 88-query validator-produced projection
+  baseline with canonical search/source bytes and a review receipt derived from
+  the exact query/discovery/citation/source transport and document hashes.
+- Coverage: added coherent review-precedence and input-immutability proofs,
+  plus branch-sensitive assertions for the remaining observable candidate and
+  reliability reason codes. `source_identity_unverified` and
+  `raw_annotation_rows_required` remain intentionally outside decision
+  derivation: their frozen input dataclasses expose no safe observable fact
+  distinguishing either cause, so this layer does not invent a proxy.
+- Strict TDD: the new validator baseline and branch table were added after the
+  preceding isolated RED fixes; current focused decision class passes `21/21`
+  and the modified Python modules compile. Independent re-review remains
+  pending.
+
+### 2026-07-27 - EMOTION-STATE-004 Phase C1 Task 4 review-fix round 4
+
+- Decision correction: exact native labels that match the frozen excluded
+  proxy set for their signal now reject as `proxy_construct`; legitimate
+  authoritative direct labels remain free to use nonliteral wording.
+- Exhaustive decision coverage: validator-produced 88-query fixtures now prove
+  all four overall outcomes and the unresolved-card fail guard. Separate
+  validator-produced fallback fixtures prove feasible, unresolved,
+  missing-evidence, and mixed infeasible/unresolved material paths; the
+  cross-source document path raises
+  `fallback_fact_document_wrong_source`. Eight isolated causal mutations prove
+  direct-query incomplete/truncated, candidate/fallback overflow, and each
+  backward/forward budget-reached/incomplete citation stop independently block
+  signal `fail`. A valid preregistration-only feasible fallback remains
+  `defer` and never becomes C2-eligible.
+- Strict TDD: the focused decision class first failed exactly one new
+  assertion because native label `ambiguity` was admitted for `confusion`
+  instead of rejected as `proxy_construct`. After the exact frozen-proxy
+  comparison was added, the focused class passed `22/22`; after the complete
+  isolated matrix replaced redundant zero-query positive cases, the final
+  focused class passed `28/28`. The contracts, decision, and test modules
+  compile.
+- Status and boundary: independent re-review and the controller's complete
+  ledger, staging, and commit remain pending. This remains offline synthetic
+  contract work only; no source, network, research, data/private-data,
+  provider, call, simulation, runtime, candidate, canonical, C2, push, merge,
+  or production action or claim occurred.
+
+### 2026-07-27 - EMOTION-STATE-004 Phase C1 Task 4 eligibility-precedence correction
+
+- Parent-review finding: candidate derivation evaluated alpha reliability before
+  resolving mandatory source and labelling eligibility. With an otherwise
+  alpha-rejecting interval, an unresolved licence, annotation modality, observer
+  method, or adjudicated-only label could be promoted to `rejected`, allowing a
+  false signal `fail` and overall `stop_c2`.
+- Strict TDD: a complete validator-produced 88-query regression first ran `29`
+  focused tests and failed all four eligibility subcases with
+  `card_claim_mismatch`. Candidate derivation now returns known clear rejection
+  reasons first, mandatory unresolved eligibility reasons second, and evaluates
+  reliability only for fully documented direct-target, independent-human
+  candidates. The focused class then passed `29/29`.
+- Boundary: this is an offline precedence correction only. Parent re-review and
+  the corrective commit remain pending; no source, network, research,
+  data/private-data, provider, call, simulation, runtime, candidate, canonical,
+  C2, push, merge, or production action or claim occurred.
+
+### 2026-07-28 - EMOTION-STATE-004 Phase C1 Task 5 aggregate V2 working draft
+
+- Scope correction: the first rowless aggregate design did not carry enough
+  local evidence to validate its global reason-count allocation without a
+  solver. The working draft now emits only
+  `EmotionStatePhaseC1AggregateResultV2`; V1 rejects. V2 adds exact
+  per-signal/fallback search-lane counts, sorted sparse categorical
+  source-signature multiplicities with exact document counts, exact per-signal
+  fallback-material status counts, and per-card categorical
+  eligibility/reliability witnesses.
+- Independent local derivation: the result validator does not call the
+  production decision helpers. It rederives lane completeness, citation-anchor
+  order, signal fail readiness, source/document/role/card multiplicities,
+  candidate status and ordered reason codes, fallback status, signal decisions,
+  C2 eligibility, and the overall decision. The four search-meta reason-code
+  counts remain exactly zero; residual rejection and unresolved reason counts
+  reconcile only to exact card, discovery, citation, and fallback witnesses.
+  Published positive count greater than rated units rejects. Search discovery
+  cannot exceed 25 records per complete query; overflow requires the exact
+  direct/fallback order cap of 20/10; sparse source signatures reconcile the
+  exact global document count.
+- Strict TDD evidence: four focused V2 methods first produced seven expected
+  assertion failures while the builder still emitted V1 and accepted missing
+  local witnesses and impossible positive counts. The same focused methods
+  passed after implementation. Six comprehensive replacement methods covering
+  lane, signature, local-oracle, residual, fail-readiness, and size semantics
+  then passed `6/6`. After adapting still-valid legacy semantics, the aggregate
+  class passed `44/44`.
+- Frozen independent review returned `C0/I3/M3`: fallback feasibility was not
+  locally witnessed; lane discovery capacity and overflow saturation were not
+  enforced; global document count was not exact; the size test did not exercise
+  an actually oversized payload; this trace was stale; and thirteen retired V1
+  method bodies remained. Six strict RED methods exposed ten assertion failures
+  and one error. The correction adds exact fallback-material status counts,
+  lane capacity/saturation rules, signature-level document counts, early
+  encoded-size rejection, and removes all thirteen retired bodies. The six
+  focused methods pass `6/6`; the corrected aggregate class passes `50/50`.
+- A second frozen review returned `C0/I1/M1`. It demonstrated that swapping the
+  hesitation and frustration evidence-card hashes, updating their local
+  admissible lists, and recomputing the aggregate hash was accepted while the
+  global card-hash set and source-ledger hash stayed unchanged. It also showed
+  that the retired-body test checked a prefix none of the thirteen historical
+  methods used. The strict RED baseline reproduced the accepted 8,550-byte
+  report and the vacuous scanner; three focused methods then produced two
+  failures and six errors against the frozen production interface.
+- The second correction required caller-supplied canonical
+  `source_ledger_bytes` for result validation and report rendering. Both
+  remained pure in memory: they
+  verify the result-bound source-ledger hash and canonical envelope, parse each
+  evidence card, recompute its full canonical hash, and require exact
+  per-signal hash order. Missing, wrong, noncanonical, or cross-signal-swapped
+  bytes reject. The builder passes its existing bytes. The retired-body check
+  now freezes the thirteen exact historical `test_*` names and proves the
+  scanner catches a synthetic reintroduction. The focused methods pass `3/3`;
+  the aggregate class passes `52/52`.
+- A third frozen review returned `C0/I1/M1`. Exact source-card hash order was
+  now bound, but the other authoritative semantics were not. Independent
+  in-memory probes accepted seven coherent rewrite families: an unresolved
+  card made C2-eligible, a canonical blocked review treated as pass, search
+  facts rewritten while retaining the original search bytes/hash, an
+  incompatible license treated as admissible, infeasible source fallback
+  projected as feasible, forged source-ledger protocol/search links, and
+  independently rebound result protocol/search hashes. The review also found
+  that the early normative limitations lists still contained nine items while
+  Task 5 code/tests required ten.
+- Strict RED added three focused methods and produced `17` expected failures:
+  fourteen validator/renderer acceptance failures across the seven semantic
+  rewrite families, two one-input-interface failures, and one `9 != 10`
+  limitations failure. The correction factors the builder body into a pure,
+  nonrecursive deterministic projection helper. Public validation and rendering
+  now require exact canonical protocol, search-ledger, source-ledger, and
+  review-receipt bytes; verify all four hashes; fully validate their contracts
+  and cross-links; recompute the exact aggregate from those bytes and the
+  payload implementation identities; and require field-for-field canonical
+  equality in addition to the independent local V2 algebra. Private
+  local-algebra/render helpers are test-only and are not acceptance authority.
+  Wrong hashes, noncanonical bytes, wrong schemas, blocked review, incompatible
+  licensing, semantic rewrites, and cross-ledger rebindings reject. The exact
+  ten-item limitations contract is now consistent in plan, specification,
+  implementation, and tests.
+- Simplification and size boundary: the now-unreachable global reason-allocation
+  solver, its solver-only constants/types, and its cache import were removed.
+  The thirteen retired solver-internal test bodies were deleted after their V2
+  semantic coverage mapping was preserved.
+  The final result cap is `524288` canonical JSON bytes in both builder and
+  validator. The frozen maximum 100-card shape measures `155411` bytes.
+- Privacy and claim boundary: the result and report remain rowless, but sparse
+  source signatures and per-card categorical diagnostics may fingerprint public
+  source configurations; this limitation is now explicit. No source ID,
+  title, URL, path, row, participant, transcript, audio, prediction,
+  probability, feature, or model metric is emitted.
+- Verification status: this is an uncommitted working draft. The four-input
+  correction passes focused consistency tests `4/4`, the aggregate class
+  `56/56`, full Phase C1 `147/147`, and full Phase C0 `177/177`. The
+  thesis-update gate reports seven changed paths, four triggering paths, one
+  methodology trace, and zero failures; the thesis-reference guard reports
+  1,644 files, 383 registered URLs, and zero issues; the drift guard reports
+  4,187 files and zero issues; context policy passes; and setup reports 567
+  checks and zero issues. Exact final-byte audits and a new independent
+  `C0/I0/M0` review remain pending. No network,
+  source discovery, public or private data read, provider access, call,
+  simulation, model evaluation, source adaptation, runtime action, candidate or
+  canonical output, Task 6, C2, push, merge, or history rewrite occurred or is
+  authorized.
+
+### 2026-07-28 - EMOTION-STATE-004 Phase C1 Task 8 rowless source-ledger freeze
+
+- Scope and network boundary: Task 7 alone used the frozen bounded
+  public-metadata network scope. Task 8 reopened no network and reviewed the
+  exact Task 7 ignored package/cache before freezing only tracked rowless
+  ledgers and an attestation. No authoritative document, dataset material,
+  annotation row, private data, model, provider, call, or runtime was read or
+  used.
+- Byte authorities: frozen protocol SHA-256
+  `2540A1BA430F78B9F660BA466F6CFD7099CFFCAA6F1C1D1AC373F4BA1D4D2CCD`;
+  ignored transport ledger SHA-256
+  `D95F508F336B19C1C4F86C733ECD0910AE7C28396CE4FE4B3BB125A3E785D693`;
+  tracked search ledger `572,660` bytes / SHA-256
+  `A6FCAA50123E4D67FF92D36E9755B4ED7C82306FCAA50B72ED26A478361365DB`;
+  tracked source ledger `1,566` bytes / SHA-256
+  `81FB1301287F0E3E8FA0E21840B1B596028509C11FAAC75D6D6F8914051D0B58`;
+  and admitted review receipt `7,207` bytes / SHA-256
+  `4B489D77BFC948B84F8A6BC73A30DC1068138D6ABD2A563EB7FD43BFE9224E11`.
+- Reviewed transport/cache totals: exactly `88` requests, `41` complete and
+  `47` incomplete; direct-label-source requests `37` complete / `43`
+  incomplete; fallback-material requests `4` complete / `4` incomplete. The
+  cache holds `41` files totaling `14,567,576` bytes.
+- Search/source outcome: `1,025` discoveries consist of `971`
+  `authoritative_provenance_unverified` unresolved records plus `54`
+  duplicates. There are `0` retained candidates, `0` excluded candidates, `0`
+  citations, `0` source documents, `0` sources, and `0` cards. The five
+  protocol-required fallback assessments are unresolved;
+  `search_complete=false`; and all five `fail_ready` values are `false`.
+- Independent Task 8 review: `C0/I0/M0`. The `admitted` verdict attests exact
+  rowless package integrity only. It admits no signal evidence, produces no
+  candidate/canonical pair or signal decision, and opens no
+  C2/model/runtime/provider/call gate. There are zero authoritative retained
+  URLs to add to the registry.
+# Task 9 — caller-locked publication boundary
+
+Task 9 implemented and tested fixed-path publication capabilities only in
+OS-managed temporary roots. It produced no real candidate or canonical output,
+did not invoke a provider, runtime, or C2 activity, and leaves both candidate
+and canonical publication gates closed pending the separate review and commit
+gate.
+
+### 2026-07-29 - EMOTION-STATE-004 Phase C1 Task 10 review-hash procedure correction
+
+- Root cause and evidence: Windows PowerShell `Get-FileHash(...).Hash` emits
+  uppercase hex while the independent validator requires lowercase canonical
+  SHA-256. A focused temporary-workspace execution test of the extracted frozen
+  Task 10 Step 6 procedure first failed with the expected uppercase/lowercase
+  receipt mismatch, then passed after the procedure applied
+  `.ToLowerInvariant()`.
+- Preserved lineage and recovery boundary: the existing candidate and invalid
+  candidate-review receipt remain untouched production evidence. A separate
+  ignored helper received synthetic RED/GREEN coverage for its fixed one-file
+  no-overwrite quarantine rename and complete-state readback; it was not run
+  against this worktree.
+- Closed boundaries: this correction created no replacement review receipt and
+  did not read private data or datasets, use network/providers/calls/models,
+  run simulations or runtime actions, prepare/accept canonical output, enter
+  C2/Task 11, commit, push, merge, or rewrite history.
+
+### 2026-07-29 - EMOTION-STATE-004 Phase C1 canonical evidence-admission closeout
+
+Canonical status: accepted. Overall decision: defer_c2. Per-signal decisions:
+hesitation=defer; frustration=defer; confusion=defer; interest=defer;
+disengagement=defer. C2-eligible signals: none. Counts:
+queries=88; sources=0; cards=0.
+
+- Protocol/search/source/source-review SHA-256:
+  `2540A1BA430F78B9F660BA466F6CFD7099CFFCAA6F1C1D1AC373F4BA1D4D2CCD` /
+  `A6FCAA50123E4D67FF92D36E9755B4ED7C82306FCAA50B72ED26A478361365DB` /
+  `81FB1301287F0E3E8FA0E21840B1B596028509C11FAAC75D6D6F8914051D0B58` /
+  `4B489D77BFC948B84F8A6BC73A30DC1068138D6ABD2A563EB7FD43BFE9224E11`.
+- Candidate receipt / validation / review SHA-256:
+  `B0CB4466B5AEA3C76A890F9BE5523448FC609888705B2F6815587E21453D6424` /
+  `5478BE04D396356A4CFE80F048F39D6B4AB855395EB3404FC2B58F4699DDFB0D` /
+  `3B8D9F874990C9C2FBE1664FE1155392984D278FFB4F5E9BB74913469F8D0336`.
+- Canonical result / report SHA-256:
+  `8F9B8D1EB088CC7025F77F34FF83928C53DA2112A0A0D300E59DD5C7A7C3D637` /
+  `15B5285A8B18E9E8C5A36A71CBB8202EF0F72370C91F9CB8AD80271F8BF38CDD`.
+- Source review: admitted (C0/I0/M0). Candidate review: admitted (C0/I0/M0).
+  The exact pair-only checkpoint commit is
+  `d1f78f321f4d01512944dfa7499d819cb10d7a5c`.
+
+This is a rowless public-label admission decision only. It does not infer
+customer emotion or claim real-call, provider, latency, safety, conversion,
+production, or commercial behavior. It authorizes neither C2 nor runtime. No
+private data, dataset/annotation rows, audio, or transcripts were read. No
+provider access, call, simulation, model evaluation, runtime
+modification/activation, or Phase B lockbox access occurred. Push and merge
+remain separate gates.
+
+### 2026-07-29 - EMOTION-STATE-005 Phase C1.1 public-source resolution review
+
+- Purpose: the accepted C1 search package contained 1,025 discovery records
+  but zero retained candidates because authoritative provenance remained
+  unresolved. C1.1 therefore performed a source-first review of exactly four
+  named confusion candidates and four named frustration candidates, with one
+  shared source and seven unique candidates. The work used original public
+  papers and official landing pages only.
+- Frozen review contract:
+  `research/experiments/configs/emotion-state-005-phase-c1-1-source-resolution-protocol.json`,
+  2,929 bytes, SHA-256
+  `DA789714B4835FD160BDB89FBB4F1E60125B5EFF28CC910F690CD4378B5B321B`.
+  Candidate discovery and preliminary triage preceded the written freeze;
+  final field extraction and adjudication followed it. The result is a bounded
+  source-resolution review, not a confirmatory experiment.
+- Aggregate source register:
+  `research/sources/emotion_state/phase_c1_1_source_resolution.json`,
+  16,391 bytes, SHA-256
+  `9E6260FF367986D3F64930190BE18B373A8BB5426763FE31E6625EDEDC8B8B8F`.
+  It contains public source identities, published aggregate facts, gate
+  fields, and adjudications only; no corpus row, transcript, audio,
+  participant identifier, prediction, feature, or probability is present.
+- Confusion outcome: the Yu et al. classroom corpus is unresolved because it
+  has 134 direct sentence labels but no qualifying Krippendorff-alpha point or
+  interval and no documented corpus release or dataset-use license. DAiSEE,
+  HRI-confusion, and the Li-Kelleher-Ross pilot fail hard conversational,
+  observer, temporal, or label-path gates. Decision: `defer`.
+- Frustration outcome: the Yu et al. corpus is unresolved despite 99 direct
+  sentence labels because raw agreement is 59.60%, qualifying reliability is
+  absent, and material access is unresolved. FUSE and MULTICOLLAB use
+  prohibited self-report label paths; IEMOCAP is acted and uses an unapproved
+  reliability statistic. Decision: `defer`.
+- Overall decision: `maintain_defer_c2`; no signal becomes C2 eligible. Two
+  independently delegated source screens agreed that no reviewed candidate
+  passes. Final repository-level independent review returned `C0/I0/M0` and
+  accepted the source trace, adjudications, boundary claims, and exact six-file
+  scope.
+- Technical debt recorded, not corrected: the Phase C1 reason catalog has no
+  exact non-conversational-source reason. A fresh Windows checkout under global
+  `core.autocrlf=true` converts raw-byte-bound LF files to CRLF. The Phase C1
+  checkpoint fails `validator_worktree_binding`; `check_project_drift.py` and
+  `check_setup.py` abort before their checks because the Phase A guard-policy
+  bytes differ from the frozen policy. None is claimed as passing. No protocol,
+  validator, guard, test, runtime, or `.gitattributes` correction was made.
+- Boundary: no dataset download, row or annotation read, login, form
+  submission, private-data access, provider access, call, simulation, model
+  evaluation, source adaptation, runtime change, candidate/canonical staging,
+  C2 work, push, merge, or history rewrite occurred.
+
+### 2026-07-29 - Phase C1 Windows raw-byte checkout prerequisite
+
+- Problem: the system Git configuration at
+  `C:/Program Files/Git/etc/gitconfig` sets `core.autocrlf=true`. A default
+  Windows checkout therefore converted three committed LF inputs that are
+  compared byte-for-byte. The Phase C1 checkpoint failed
+  `validator_worktree_binding`; `check_project_drift.py` and `check_setup.py`
+  aborted while importing the exact Phase A guard policy.
+- Root cause: `.gitattributes` protected the Phase C0/C1 generated artifacts,
+  protocol, fixtures, and ledgers, but did not protect the Phase A guard-policy
+  JSON, the Phase C1 validator, or the Phase C1 contracts module.
+- Minimal correction: add exact `text eol=lf` rules for only those three
+  byte-compared paths. No wildcard, validator relaxation, policy change,
+  normalization rewrite, or runtime behavior change is included.
+- Strict TDD: the new Git-behavior test first failed three subtests because
+  `git check-attr` returned `text: unspecified` and `eol: unspecified`; after
+  the exact rules, all three returned `text: set` and `eol: lf`. The existing
+  Phase C0 exact-order/uniqueness/no-wildcard test and the Phase C1
+  artifact-rule test remained green.
+- Fresh-checkout verification: an isolated candidate checkout using the real
+  system `core.autocrlf=true` setting preserved all three protected files
+  byte-for-byte. The Phase C1 checkpoint passed; the project drift guard passed
+  with zero failures and warnings across 4,175 files; setup passed all 567
+  checks with no network call or secret value logging.
+- Full regression: the first C0 module attempt exposed only the absent ignored
+  `.tmp` test-root prerequisite. After creating that empty ignored directory,
+  the replacement C0 module passed `178/178`; the C1 module passed `262/262`
+  with three platform skips. Independent review returned `C0/I0/M0` and
+  accepted the exact three-file scope, checkout semantics, test behavior,
+  helper exclusion, methodology trace, and preserved boundaries.
+- Boundary: offline repository infrastructure only. No research, dataset or
+  private-data read, network, provider, call, simulation, model evaluation,
+  source adaptation, runtime activation, candidate/canonical action, C2 work,
+  push, merge, or history rewrite occurred.
+
+### 2026-07-29 - EMOTION-STATE-006 Phase C1.2 Yu provenance decision
+
+- Purpose: resolve only the five remaining official/public provenance fields
+  for the Yu et al. student-teacher junior-high mathematics corpus retained by
+  C1.1. This was a bounded source review, not a dataset, annotation, or model
+  evaluation.
+- Frozen review contract:
+  `research/experiments/configs/emotion-state-006-phase-c1-2-yu-provenance-protocol.json`,
+  3,492 bytes, SHA-256
+  `D12C1D4E71AD3BB7BFDF1E70F2623608F7EB7B76B9489BF52398236C52901051`.
+  It was written before the new public web search and requires all five fields
+  to be resolved by official evidence; missing evidence remains unresolved.
+- Aggregate source register:
+  `research/sources/emotion_state/phase_c1_2_yu_provenance.json`,
+  12,784 bytes, SHA-256
+  `6A4465C7EDA050BA28AE8CA982371E0DCD07DF7FCD753E9C52465D54CAB81198`.
+  It contains official source identities, published aggregate facts, bounded
+  search outcomes, gate adjudications, and boundary attestations only.
+- Official material outcome: both APSCE article pages expose papers and state
+  that data are not yet available. The reviewed official Yuan Ze University
+  author and laboratory pages expose no linked Yu corpus, annotation, license,
+  or reliability supplement. The source register records the exact
+  domain-restricted repository-discovery queries, check date, outcomes, and
+  empty relevant material-record ID sets. Those searches are corroborative
+  discovery trace only. These negative findings are bounded and do not prove
+  that private or unpublished material does not exist.
+- Access and annotation outcome: no official public release, explicit
+  dataset-use terms, or preserved independent per-rater annotation material
+  was found. The DOI metadata contains no license object or related
+  dataset/supplement relation.
+- Reliability outcome: the original paper reports only pre-adjudication A1-A2
+  raw agreement, 84.33% for confusion and 59.60% for frustration. It publishes
+  no Krippendorff-alpha point estimate or confidence interval. The frozen
+  reliability gate therefore remains unresolved.
+- Provenance outcome: the original paper supports junior-high classroom
+  student-teacher mathematics discussions as the source of 759 text sentences,
+  but it does not explicitly characterize the interaction as spontaneous. The
+  2012 speech follow-up reports that 379 selected sentences were recorded later
+  in an office; it therefore cannot confirm original live-classroom audio.
+- Decision: confusion `defer`, frustration `defer`, and overall
+  `maintain_defer_c2`. No signal becomes C2 eligible. Because the narrow review
+  identified no official public material path that clears the gate, the
+  recommendation is to retire the public-dataset model route for confusion and
+  frustration. A later, separately-authorized decision may consider observable
+  clarification or repair rules without hidden-emotion claims; none is designed
+  or implemented here.
+- Independent review: initial read-only packet review returned `C0/I1/M0`
+  because the public-repository search trace was not reproducible. After the
+  exact corroborative query ledger was added, delta review returned `C0/I0/M1`
+  because discovery inspection and authoritative evidence were not
+  distinguished precisely. After that wording was corrected, final six-file
+  review returned `C0/I0/M0` and `READY`.
+- Boundary: no dataset or annotation download/read, login, form, owner contact,
+  messaging, private-data access, provider access, call, simulation, model
+  evaluation, source adaptation, runtime action, candidate/canonical staging,
+  C2 work, merge, history rewrite, or push occurred.
+
+### 2026-07-29 - DEC-142 public-dataset confusion/frustration route retirement
+
+- Decision owner: Tarik directly accepted the C1.2 recommendation to retire the
+  current public-dataset model route for direct confusion and frustration
+  classification.
+- Evidence basis: `EMOTION-STATE-005` C1.1 and `EMOTION-STATE-006` C1.2 found no
+  reviewed candidate with an official material release, explicit dataset-use
+  terms, preserved independent pre-adjudication labels, and qualifying
+  Krippendorff-alpha point and interval evidence. The Yu et al. source remains
+  useful aggregate evidence but does not clear those gates.
+- Decision state: the C1.2 research decision remains `maintain_defer_c2`; the
+  route-level product state becomes `retired`. Confusion and frustration do not
+  become C2 eligible.
+- Preservation: the research packets, source metadata, synthetic mechanics,
+  contracts, and historical results remain intact and non-runtime. No artifact
+  is deleted, reclassified as accepted model evidence, or promoted.
+- Re-entry gate: reconsider the public route only on a concrete official
+  release with explicit use terms, preserved independent pre-adjudication
+  annotations, confirmed spontaneous conversational provenance, Krippendorff
+  alpha at least 0.80, and a 95% confidence-interval lower bound at least 0.67.
+- Alternative route boundary: a consented first-party corpus would require a
+  new research/governance authorization. Observable clarification or repair
+  rules require a separate design checkpoint and must not make hidden-emotion
+  claims.
+- Boundary: documentation decision only. No new public search, dataset or
+  annotation access, login, form, contact, private-data access, provider access,
+  call, simulation, model evaluation, source adaptation, runtime change,
+  candidate/canonical staging, C2 work, or deployment occurred.

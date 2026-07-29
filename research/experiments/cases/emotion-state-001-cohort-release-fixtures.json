@@ -1,0 +1,126 @@
+{
+  "fixture_id": "emotion-state-001-cohort-release-fixtures-v1",
+  "schema_version": 1,
+  "contract_name": "CohortReleaseEvidenceV1",
+  "source_label": "synthetic-only",
+  "description": "suppression-based, privacy-minimized contribution gate",
+  "release_statuses": [
+    "released",
+    "suppressed"
+  ],
+  "minimum_discovery_unique_speakers": 5,
+  "minimum_discovery_retained_turns": 10,
+  "max_discovery_turns_per_speaker": 2,
+  "max_authoritative_history_entries": 256,
+  "max_authoritative_history_canonical_bytes": 4194304,
+  "minimum_release_unique_speakers": 10,
+  "minimum_unique_speakers_per_output_cell": 10,
+  "max_contribution_per_speaker": 1,
+  "scenarios": {
+    "twelve_calls_four_speakers": {
+      "record_count": 12,
+      "unique_speaker_count": 4,
+      "expected_release_status": "suppressed",
+      "expected_reason_code": "minimum_unique_speakers_not_met"
+    },
+    "ten_calls_ten_speakers": {
+      "record_count": 10,
+      "unique_speaker_count": 10,
+      "expected_release_status": "released"
+    },
+    "twenty_turns_five_speakers": {
+      "record_count": 20,
+      "unique_speaker_count": 5,
+      "max_discovery_turns_per_speaker": 2,
+      "discovery_floor_met": true,
+      "release_floor_met": false,
+      "expected_release_status": "suppressed",
+      "expected_reason_code": "minimum_unique_speakers_not_met"
+    },
+    "duplicate_public_actor_ids": {
+      "source_label": "public-only",
+      "dataset_manifest_id": "crema-d-v1.0-audio-wav",
+      "record_count": 12,
+      "unique_speaker_count": 10,
+      "unique_speaker_basis": "public_dataset_actor_id",
+      "expected_contribution_count": 10,
+      "expected_release_status": "released"
+    },
+    "cross_corpus_same_bare_id": {
+      "dataset_manifest_ids": [
+        "synthetic-fixture-dataset-a-v1",
+        "synthetic-fixture-dataset-b-v1"
+      ],
+      "dataset_count": 2,
+      "bare_id_count_per_dataset": 5,
+      "namespaced_key_count": 10,
+      "cross_corpus_identity_evidence_digest": null,
+      "expected_release_status": "suppressed",
+      "expected_reason_code": "cross_corpus_identity_not_proven"
+    },
+    "missing_speaker_basis": {
+      "unique_speaker_basis": null,
+      "expected_release_status": "suppressed",
+      "expected_reason_code": "speaker_basis_missing"
+    },
+    "call_id_as_speaker": {
+      "rejected_basis_values": [
+        "call_id",
+        "session_id",
+        "turn_id"
+      ],
+      "expected_result": "rejected"
+    },
+    "forbidden_identity_basis": {
+      "rejected_basis_values": [
+        "name",
+        "phone_number",
+        "email_address",
+        "account_id",
+        "crm_id",
+        "undocumented_identifier_hash",
+        "voiceprint",
+        "speaker_embedding",
+        "biometric_match",
+        "provider_identity_prediction",
+        "model_identity_prediction",
+        "probabilistic_dedup_as_certain"
+      ],
+      "expected_result": "rejected"
+    },
+    "over_contribution": {
+      "record_count": 12,
+      "unique_speaker_count": 10,
+      "max_contribution_per_speaker": 1,
+      "expected_contribution_count": 10,
+      "expected_release_status": "released",
+      "selection_order": [
+        "dataset_manifest_id",
+        "source_speaker_id",
+        "source_timestamp",
+        "canonical_record_digest"
+      ]
+    },
+    "sparse_output_cell": {
+      "cell_unique_speaker_count": 9,
+      "minimum_unique_speakers_per_output_cell": 10,
+      "expected_release_status": "released",
+      "expected_serialization": "omitted"
+    },
+    "overlapping_release": {
+      "window_relationship": "overlapping",
+      "expected_result": "rejected"
+    },
+    "valid_replacement": {
+      "window_relationship": "replacement",
+      "replacement_scope": "entire_prior_release",
+      "binds_prior_canonical_digest": true,
+      "preserves_exact_window": true,
+      "preserves_metric_allowlist": true,
+      "expected_release_status": "released"
+    }
+  },
+  "private_data_access_allowed": false,
+  "provider_operations_allowed": false,
+  "runtime_influence_allowed": false
+}

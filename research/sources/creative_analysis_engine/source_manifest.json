@@ -1,0 +1,97 @@
+{
+  "manifest_id": "creative-analysis-engine-emotion-state-source-v1",
+  "manifest_version": 1,
+  "checked_on": "2026-07-14",
+  "project_name": "Creative Analysis Engine",
+  "author": "Shehzeb Iftakhar",
+  "archive_filename": "creative-analysis-engine-dev.zip",
+  "archive_sha256": "E579B966E226F2AF6E4F8F8203C7189FEC94FB448EFC09B4B6640C10A398ECCC",
+  "source_repository_url": "https://github.com/WisdomBreathes/creative-analysis-engine",
+  "source_repository_url_status": "verified_read_only",
+  "source_branch": "dev",
+  "source_revision": "7cb99ea2da3016cd82d0b5f805c015a808ce4e0d",
+  "source_revision_status": "verified_read_only",
+  "source_archive_date": null,
+  "source_archive_date_status": "unverified",
+  "observed_license": null,
+  "observed_license_status": "absent_in_reviewed_root",
+  "permission_attestation": {
+    "status": "confirmed_by_project_owner",
+    "date": "2026-07-14",
+    "basis": "project-owner attestation of author and supervisor approval",
+    "credit_required": true
+  },
+  "attribution": {
+    "credit_name": "Shehzeb Iftakhar",
+    "project_name": "Creative Analysis Engine",
+    "phase_a_status": "recorded",
+    "phase_a_wording": "Creative Analysis Engine by Shehzeb Iftakhar, reviewed with author permission for the EMOTION-STATE thesis collaboration.",
+    "phase_b_reuse_scope_status": "not_defined",
+    "phase_b_reuse_scope": [],
+    "phase_b_attribution_wording_status": "pending",
+    "phase_b_wording": null
+  },
+  "phase_b_approval": {
+    "status": "not_requested",
+    "approved": false,
+    "approval_reference": null
+  },
+  "reviewed_files": [
+    {
+      "path": "README.md",
+      "git_blob_sha1": "f8a1afe3842b361432d8dcc061c5c5b6969cf363",
+      "equivalence_status": "byte_identical_to_dev_blob",
+      "reuse_status": "reference_only"
+    },
+    {
+      "path": "docs/features/FEATURE_speech_call_readiness_analytics.md",
+      "git_blob_sha1": "b5e63a3dd9ba72f5eefc46688129aa98bf20a509",
+      "equivalence_status": "byte_identical_to_dev_blob",
+      "reuse_status": "reference_only"
+    },
+    {
+      "path": "docs/features/FEATURE_speech_prosody.md",
+      "git_blob_sha1": "5d5cbd7e25dc7bce5fcf2c7fcb97448524c79f22",
+      "equivalence_status": "byte_identical_to_dev_blob",
+      "reuse_status": "reference_only"
+    },
+    {
+      "path": "docs/features/FEATURE_speech_turn_dynamics.md",
+      "git_blob_sha1": "03f737ce52262fcac733016ec57f344d783a69b4",
+      "equivalence_status": "byte_identical_to_dev_blob",
+      "reuse_status": "reference_only"
+    },
+    {
+      "path": "src/aggregation/speech_call_readiness.py",
+      "git_blob_sha1": "8387ae5d365d22c816e407e315701a066e745599",
+      "equivalence_status": "byte_identical_to_dev_blob",
+      "reuse_status": "excluded_from_emotion_labels"
+    },
+    {
+      "path": "src/features/temporal/speech_prosody.py",
+      "git_blob_sha1": "dbadd19160affcd3aec864a9f4b77d3ed5e5a4d6",
+      "equivalence_status": "byte_identical_to_dev_blob",
+      "reuse_status": "reference_only"
+    },
+    {
+      "path": "src/features/temporal/speech_turn_dynamics.py",
+      "git_blob_sha1": "4a46634ca9531e5181f72a554545083defcff59d",
+      "equivalence_status": "byte_identical_to_dev_blob",
+      "reuse_status": "reference_only"
+    }
+  ],
+  "copied_material": [],
+  "translated_material": [],
+  "adapted_material": [],
+  "independently_reimplemented_material": [],
+  "project_local_only": true,
+  "runtime_dependency_added": false,
+  "adaptation_allowed": false,
+  "adaptation_blockers": [
+    "current_instruction_prohibits_source_adaptation",
+    "observed_repository_license_absent",
+    "phase_b_reuse_scope_not_defined",
+    "phase_b_attribution_wording_pending",
+    "phase_b_approval_not_granted"
+  ]
+}

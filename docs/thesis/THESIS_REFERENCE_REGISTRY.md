@@ -48,11 +48,145 @@ Use the source categories carefully:
 ### IEMOCAP
 
 - Type: dataset source
+- Landing page: https://sail.usc.edu/iemocap/
 - Main source: https://sail.usc.edu/iemocap/iemocap_info.htm
+- Original paper: https://sail.usc.edu/iemocap/Busso_2008_iemocap.pdf
+- Release and access page: https://sail.usc.edu/iemocap/iemocap_release.htm
+- Academic release form: https://sail.usc.edu/iemocap/release_form.php
 - USC SAIL database page: https://sail.usc.edu/software/databases/
 - Project use: speech emotion reference and possible audio-emotion baseline.
 - Current project status: local file appears to be a repackaged CSV-style export, not the full official corpus structure.
 - Thesis caution: do not make official-IEMOCAP claims from the local export until provenance and access conditions are verified.
+
+## Phase C1.1 Confusion And Frustration Source Resolution
+
+### Yu et al. student-teacher mathematics corpus
+
+- Type: academic source; retired public-dataset model-route candidate retained as historical evidence
+- Official article page: https://library.apsce.net/index.php/ICCE/article/view/2655
+- Official paper: https://library.apsce.net/index.php/ICCE/article/download/2655/2531/3619
+- Official 2012 follow-up page: https://library.apsce.net/index.php/ICCE/article/view/546
+- Official 2012 follow-up paper: https://library.apsce.net/index.php/ICCE/article/download/546/496/973
+- Official institutional laboratory page: https://www.mis.yzu.edu.tw/nlplab/
+- Official author/institutional page: https://www.mis.yzu.edu.tw/nlplab/~lcyu/
+- DOI metadata: https://api.crossref.org/works/10.58459%2Ficce.2012.546
+- Project use: primary documentation for sentence-level confusion and frustration labels and for the distinction between classroom text-dialogue origin and later office speech recording.
+- Current project status: C1.2 official/public provenance review complete; `maintain_defer_c2`. `DEC-142` retires the current public-dataset model route for confusion and frustration. No official release, dataset-use license, preserved per-rater annotations, or qualifying pre-adjudication Krippendorff-alpha point and interval was found in the bounded review. The 2011 paper supports classroom discussion as the text source but does not explicitly establish spontaneous interaction. The 2012 paper says 379 selected sentences were recorded later in an office.
+- Thesis caution: published counts and raw agreement do not establish C1 reliability admission or lawful material availability. Do not describe the speech subset as original live-classroom audio, infer that no private or unpublished material exists, or use this source to reopen the retired route without new evidence meeting the `DEC-142` re-entry gate.
+
+### DAiSEE
+
+- Type: academic and dataset source; rejected C1.1 conversational candidate
+- Primary paper: https://arxiv.org/abs/1609.01885
+- Official dataset page: https://people.iith.ac.in/vineethnb/resources/daisee/index.html
+- Project use: authoritative negative-control evidence for direct confusion labels outside conversation.
+- Current project status: rejected for C1.1 because the ten-second snippets observe individual video-watching behavior rather than conversation; its reported weighted-Cohen-kappa filtering is not the frozen reliability statistic.
+- Thesis caution: naturalistic e-learning behavior is not spontaneous conversational evidence.
+
+### HRI-confusion
+
+- Type: academic and restricted dataset source; rejected C1.1 candidate
+- DOI: https://doi.org/10.1016/j.dib.2025.112047
+- Primary open article: https://pmc.ncbi.nlm.nih.gov/articles/PMC12478088/
+- Project use: primary documentation for controlled human-robot confusion-condition data.
+- Current project status: rejected for C1.1 because the label path uses designed conditions and participant ratings, released clips are conversation-level views, approved reliability is absent, and raw identifiable media require an application.
+- Thesis caution: experimental conditions and post-dialogue ratings are not direct independent observer labels.
+
+### Li, Kelleher, and Ross human-avatar confusion pilot
+
+- Type: academic source; rejected C1.1 candidate
+- SemDial record: https://www.semdial.org/anthology/papers/Z/Z21/Z21-3013/
+- Primary paper: https://arxiv.org/abs/2206.02436
+- Project use: primary documentation for semi-spontaneous Wizard-of-Oz confusion research in task-oriented dialogue.
+- Current project status: rejected for C1.1 because it uses designed conditions, post-interaction self-report, and automated proxy indicators without stable local dialogue labels or qualifying reliability evidence.
+- Thesis caution: relevance to conversational agents does not repair an ineligible label path.
+
+### FUSE
+
+- Type: academic and public noncommercial dataset source; rejected C1.1 candidate
+- Primary paper: https://aclanthology.org/2024.lrec-main.666/
+- Official dataset page: https://fusecorpus.github.io/FUSE/
+- Project use: primary documentation for spontaneous dyadic task dialogue with direct frustration self- and partner reports.
+- Current project status: rejected for C1.1 because self-report and one partner perception cannot satisfy the independent-observer gate; the direct-positive segment count and qualifying reliability evidence are unpublished.
+- Thesis caution: 975 game utterances are not 975 directly labeled frustration units.
+
+### MULTICOLLAB
+
+- Type: academic and public noncommercial dataset source; rejected C1.1 candidate
+- Primary paper: https://aclanthology.org/2024.lrec-main.1023/
+- Official public repository: https://github.com/mp6510/MULTICOLLAB
+- Project use: primary documentation for induced frustration in natural Zoom task dialogue.
+- Current project status: rejected for C1.1 because timestamped replay labels are self-report-only and no qualifying inter-rater reliability or exact eligible positive count is published.
+- Thesis caution: a 4.5-second modeling window does not turn a self-report into an independent observer label.
+
+### Confrustion construct review
+
+- Type: academic source and construct-validity caution
+- DOI: https://doi.org/10.1111/cogs.70035
+- Project use: documents the multiple forms and overlap of confusion and frustration considered in the C1.1 limitations analysis.
+- Current project status: theory source only; not a dataset candidate and not evidence for combining the project labels.
+- Thesis caution: construct overlap strengthens the need for direct labels and uncertainty preservation; it does not authorize hidden-state inference.
+
+### MSP-Podcast (unselected offline dataset candidate)
+
+- Type: offline dataset candidate
+- Source: https://ecs.utdallas.edu/research/researchlabs/msp-lab/MSP-Podcast.html
+- Current access page: https://lab-msp.com/MSP/MSP-Podcast.html
+- Data-transfer agreement: https://lab-msp.com/MSP/publications/Busso-FDPDTUA-MSP-Podcast-v4.pdf
+- Project use: candidate for a later offline emotion-state comparison only.
+- Current project status: not selected. Exact version, terms, restrictions, access conditions, and local hashes remain unverified.
+- Thesis caution: registering this source does not select the dataset or satisfy the exact per-dataset manifest gate.
+
+### MSP-Conversation (unselected restricted-access reference)
+
+- Type: offline dataset reference
+- Source: https://lab-msp.com/MSP/MSP-Conversation.html
+- Project use: reference-only naturalistic conversational-emotion candidate considered during EMOTION-STATE Phase A dataset selection.
+- Current project status: not selected because the required institutional data-transfer authorization is unavailable. No bypass, download, or local use is approved.
+- Thesis caution: access restrictions are a hard provenance boundary, not an invitation to use a mirror or substitute agreement.
+
+### CREMA-D v1.0 (selected controlled acoustic-sensitivity source)
+
+- Type: public dataset and academic source
+- Official repository: https://github.com/CheyneyComputerScience/CREMA-D
+- Pinned release: https://github.com/CheyneyComputerScience/CREMA-D/releases/tag/v1.0
+- Dataset paper: https://pmc.ncbi.nlm.nih.gov/articles/PMC4313618/
+- Database license: https://opendatacommons.org/licenses/odbl/1-0/
+- Contents license: https://opendatacommons.org/licenses/dbcl/1-0/
+- Project use: primary source for the offline controlled acoustic-sensitivity lane using original audio-perception labels and speaker-disjoint metadata checks.
+- Current project status: exact v1.0 material and tracked manifest/hash/quality evidence were verified locally on `2026-07-17`; evaluation has not started.
+- Thesis caution: acted isolated-utterance labels are not customer internal emotion, natural sales-conversation truth, or mappings to hesitation, frustration, confusion, interest, or disengagement.
+
+### AMI manual annotations v1.6.2 (selected conversational-mechanics source)
+
+- Type: public conversational annotation dataset
+- Corpus overview: https://groups.inf.ed.ac.uk/ami/corpus/
+- Official download and release page: https://groups.inf.ed.ac.uk/ami/download/
+- Manual annotation documentation: https://groups.inf.ed.ac.uk/ami/corpus/annotation.shtml
+- Transcript documentation: https://groups.inf.ed.ac.uk/ami/corpus/transcription.shtml
+- Official partitions: https://groups.inf.ed.ac.uk/ami/corpus/datasets.shtml
+- Documented data problems: https://groups.inf.ed.ac.uk/ami/corpus/dataproblems.shtml
+- NITE XML namespace identifier: http://nite.sourceforge.net/
+- Project use: primary source for the annotation-only conversational-mechanics lane covering speaker, timing, transcript structure, dialogue acts, and dependency-safe turn analysis.
+- Current project status: exact manual-annotation v1.6.2 material and tracked manifest/hash/quality evidence were verified locally on `2026-07-17`; evaluation has not started. No AMI audio, video, automatic annotation, or speculative emotion material was selected.
+- Namespace boundary: the NITE URL is used only as the official annotation-XML namespace identifier in a synthetic fixture; it caused no network retrieval or additional source acquisition.
+- Thesis caution: AMI supplies no project emotion ground truth. Dialogue acts, pauses, overlap, floor maintenance, and backchannels cannot be relabeled as operational customer-state signals.
+
+### Git LFS pointer specification v1
+
+- Type: primary file-format specification
+- Specification: https://git-lfs.github.com/spec/v1
+- Project use: reference for offline synthetic fixtures that detect unresolved Git LFS pointer bytes before any CREMA-D material can be treated as verified WAV content.
+- Current project status: reference-only parser contract; no dataset download, Git LFS fetch, or network action was performed for the material-pending checkpoint.
+- Thesis caution: recognizing the pointer format proves only that a file is a pointer; it does not verify or authorize the referenced dataset object.
+
+### Creative Analysis Engine private collaboration source
+
+- Type: private academic collaboration and interpretable evidence-design reference
+- Repository: https://github.com/WisdomBreathes/creative-analysis-engine
+- Project use: pinned read-only reference for modular, observable speech-feature and turn-dynamics concepts in the EMOTION-STATE design.
+- Current project status: the private `dev` revision and seven-file byte-equivalence scope were verified during approved read-only inspection. No source adaptation, copying, translation, or runtime dependency is authorized.
+- Thesis caution: author/supervisor collaboration permission and attribution do not override the current no-source-adaptation instruction or prove a repository license.
 
 ### MELD
 
@@ -117,6 +251,30 @@ Use the source categories carefully:
 - Thesis caution: use this bundle as product-grounding and claim-governance evidence, not as proof of sales effectiveness or OpenAI authorization. Re-check official source pages before final thesis submission because plans, prices, features, and privacy terms can change.
 
 ## Sales Communication And Compliance Sources
+
+### Atlas value and objection-handling practitioner sources
+
+- Type: public practitioner and product-grounding sources
+- Sources:
+  - Salesforce consultative sales approach: https://www.salesforce.com/blog/sales/consultative-sales-approach/
+  - HubSpot common sales objections: https://blog.hubspot.com/sales/handling-common-sales-objections
+  - Bain Elements of Value: https://www.bain.com/consulting-services/customer-strategy-and-marketing/elements-of-value/
+- Project use: directional support for consultative discovery, non-pressuring objection handling, and buyer-specific value framing in the existing Atlas product document.
+- Current status/reuse: source-informed paraphrase only; no copied scripts or article passages; no new runtime/provider change in this cleanup.
+- Thesis caution: practitioner/vendor material is not peer-reviewed proof of sales effectiveness.
+
+### Atlas web-design market and pricing sources
+
+- Type: public marketplace/editorial market references
+- Sources:
+  - Upwork website build cost guide: https://www.upwork.com/resources/how-much-does-it-cost-to-build-website
+  - Upwork web designer cost guide: https://www.upwork.com/hire/web-designers/cost/
+  - Forbes Advisor website design guide: https://www.forbes.com/advisor/business/software/how-design-website/
+  - Bark web design marketplace: https://www.bark.com/en/us/web-design/
+  - Clutch web design pricing guide: https://clutch.co/web-designers/pricing
+- Project use: directional context for the existing Atlas USD pricing design.
+- Current status/reuse: the product price ranges remain project policy, not copied provider prices or a market-wide claim; no new runtime/provider change in this cleanup.
+- Thesis caution: commercially interested and time-sensitive pages are not authoritative market estimates; re-check dates, geography, currency, and current content before final thesis claims.
 
 ### PROD-028 synthetic CRM product grounding sources
 
@@ -418,6 +576,32 @@ Project use:
 - `VOICE-026` planned interaction-prosody/backchannel design
 - limitations around listener evaluation and language-specific behavior
 
+### EMOTION-STATE reliability-method guidance
+
+- Type: academic methodology guidance
+- Source: https://onlinelibrary.wiley.com/doi/10.1111/j.1468-2958.2004.tb00738.x
+- Project use: reliability-method guidance for the planned three-reviewer annotation and agreement workflow.
+- Thesis caution: this source does not establish that the planned emotion-state labels are valid.
+
+### EMOTION-STATE Phase C1 planned discovery endpoints
+
+- Type: bounded public scholarly/dataset discovery metadata
+- Sources:
+  - https://api.openalex.org/works
+  - https://api.crossref.org/works
+  - https://zenodo.org/api/records
+  - https://huggingface.co/api/datasets
+- Project use: Task 7 discovery seed only; Task 8 froze the resulting rowless
+  ledger package without reopening the network.
+- Current status: Task 7 accessed bounded public metadata under the frozen
+  protocol. Task 8 reviewed exact frozen bytes only. No authoritative URL was
+  retained, so this existing endpoint entry is the only Phase C1 registry
+  update.
+- Thesis caution: discovery-service results are not authoritative source
+  evidence and cannot admit a signal. The admitted Task 8 package creates no
+  candidate/canonical pair, signal decision, or C2/model/runtime/provider/call
+  authority.
+
 ## Privacy And Data Governance Sources
 
 ### European Commission GDPR Principles
@@ -434,6 +618,13 @@ Project use:
 - Legal bases: https://www.edpb.europa.eu/sme-data-protection-guide/faq-frequently-asked-questions/answer/what-are-legal-basics-processing_en
 - Project use: private-data learning checkpoints, redaction, retention/deletion, and no-provider-upload default.
 - Thesis caution: use these for high-level GDPR framing, not as legal advice.
+
+### NIST AI RMF governance guidance
+
+- Type: AI-risk governance guidance
+- Source: https://airc.nist.gov/airmf-resources/airmf/5-sec-core/
+- Project use: governance framing for the EMOTION-STATE research boundary, risk review, and later decision gates.
+- Thesis caution: this guidance is not proof of legal, ethical, or production readiness.
 
 ## TTS And Voice Provider Sources
 

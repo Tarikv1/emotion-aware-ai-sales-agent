@@ -15,7 +15,7 @@ Record important thesis and implementation decisions here with enough context to
 
 ## Decisions
 
-### DEC-144 - Close the Atlas hosted phase with one post-final-write canary and explicit exclusions
+### DEC-145 - Close the Atlas hosted phase with one post-final-write canary and explicit exclusions
 
 - Date: 2026-07-14
 - Status: accepted
@@ -36,7 +36,7 @@ Record important thesis and implementation decisions here with enough context to
   - no production, PSTN, ASR, latency, interruption, buyer-perception, conversion, or real-customer claim follows;
   - future provider tests should run only for a new bounded evidence objective, not to make historical dashboards universally green.
 
-### DEC-143 - Reconcile hosted provider labels with independent transcript adjudication
+### DEC-144 - Reconcile hosted provider labels with independent transcript adjudication
 
 - Date: 2026-07-14
 - Status: accepted
@@ -58,7 +58,7 @@ Record important thesis and implementation decisions here with enough context to
   - test-contract revision is a separate governance change, not a way to retroactively manufacture readiness;
   - no outbound-call, PSTN audio, ASR, latency, interruption, buyer-perception, conversion, or real-customer proof is implied by hosted text/simulation evidence.
 
-### DEC-142 - Use buyer-triggered pricing and one active price lane for Atlas detailed-pricing control
+### DEC-143 - Use buyer-triggered pricing and one active price lane for Atlas detailed-pricing control
 
 - Date: 2026-07-14
 - Status: accepted
@@ -78,6 +78,59 @@ Record important thesis and implementation decisions here with enough context to
   - stale tests that expect earlier handoff-price behavior should be treated as test-contract issues until deliberately revised;
   - product fixes should target real transcript defects, while current-contract disagreements should be documented rather than patched away;
   - pricing evidence remains product-policy evidence for Atlas, not a market-wide claim that all web providers charge the same amounts.
+
+### DEC-142 - Retire the public-dataset confusion and frustration model route
+
+- Date: 2026-07-29
+- Status: accepted
+- Decision: retire the current public-dataset model route for direct confusion
+  and frustration classification. Keep C2 closed for both signals. Preserve the
+  C1.1/C1.2 research packets as historical evidence, but do not train,
+  evaluate, promote, or make hidden-emotion claims from any reviewed candidate.
+  Observable clarification or repair behavior requires a separate,
+  explicitly-authorized design checkpoint.
+- Why:
+  - C1.2 found no official public corpus/material release, explicit dataset-use
+    terms, preserved independent per-rater annotations, or qualifying
+    pre-adjudication Krippendorff-alpha point estimate and confidence interval
+  - the Yu et al. source publishes useful aggregate counts and raw agreement,
+    but those facts do not establish lawful material availability or the frozen
+    reliability gate
+  - classroom text-dialogue origin is supported, while the exact spontaneous
+    provenance requirement is unresolved and the 2012 speech subset was
+    recorded later in an office
+  - the product goal of recovering a failing conversation can be addressed more
+    directly through observable clarification and repair events without
+    asserting an unverified hidden emotional state
+- Alternatives considered:
+  - continue broad official/public discovery, rejected because the bounded
+    C1.1/C1.2 review exhausted the identified credible path and another search
+    has no concrete new lead
+  - lower the admission bar by substituting raw agreement, acted speech,
+    self-report, proxy labels, or post-adjudication outcomes, rejected because
+    that would weaken the evidence contract and increase false hidden-state
+    claims
+  - start a consented first-party data and annotation program, deferred as a
+    materially different research/governance program requiring separate
+    authorization
+  - leave the route indefinitely paused, rejected because it would keep an
+    evidence-blocked path appearing active without an actionable unlock
+- Consequences:
+  - the C1.2 decision remains `maintain_defer_c2`; the route-level product
+    status is now `retired`
+  - no further broad public-dataset search is planned for these two signals
+  - existing synthetic mechanics, contracts, source records, and experiment
+    notes remain preserved and non-runtime; retirement does not delete or
+    reinterpret them
+  - the public-dataset route may be reconsidered only if a concrete official
+    release provides explicit use terms, preserved independent
+    pre-adjudication annotations, confirmed spontaneous conversational
+    provenance, Krippendorff alpha at least 0.80, and a 95% confidence-interval
+    lower bound at least 0.67
+  - a first-party corpus would be a new route, not a continuation of this
+    retired route
+  - any observable clarification/repair design must avoid hidden-emotion claims
+    and pass its own design, safety, evaluation, and runtime gates
 
 ### DEC-141 - Use a three-layer sales knowledge architecture for universal RAG and campaigns
 
@@ -2846,3 +2899,43 @@ Record important thesis and implementation decisions here with enough context to
   - `VOICE-024` becomes the current listening checkpoint
   - default runs remain dry-run and provider-safe
   - live MP3s are local ignored artifacts and are not thesis evidence until Tarik records listening observations
+
+### DEC-021 - Start customer-state work with an offline provenance and contract foundation
+
+- Date: 2026-07-14
+- Status: accepted
+- Decision: implement EMOTION-STATE-001 as separate gated phases, beginning with source provenance, annotation rules, strict contracts, and a detached BRAIN extension.
+- Why: acoustic cues are ambiguous, current affect fields can influence sales selection, BRAIN-002 v1 cannot enforce modality provenance or monotonic de-escalation, and public/private data provenance is incomplete.
+- Consequences: no acoustic code adaptation, private-data ingestion, provider work, live wiring, runtime activation, or customer-state claim is authorized by Phase A.
+
+### DEC-022 - Integrate a material-pending public-dataset checkpoint before any download
+
+- Date: 2026-07-17
+- Status: accepted
+- Decision: select exactly `crema-d-v1.0-audio-wav` and `ami-manual-annotations-v1.6.2` at the contract layer while keeping dataset download, material verification, and evaluation not started; implement split-manifest v2 and cohort-release contracts only against synthetic fixtures.
+- Why: selection and contract design can be reviewed offline, but no completion claim is defensible until exact material manifests and cohort-release evidence exist and pass the guarded verification lease.
+- Consequences: source adaptation remains `false`; `phase_a_complete=false`; no private-data, provider, call, simulation, runtime, or canonical-publication action is part of the Task 7 input commit; no production, customer, PSTN, ASR, latency, provider-feasibility, or internal-emotion claim is authorized. A controller must separately authorize the real material-root absence probe before running the deferred candidate transaction.
+
+### DEC-023 - Close Phase A with two public-only lanes and a bounded completion claim
+
+- Date: 2026-07-19
+- Status: accepted
+- Decision: bind the exact verified CREMA-D controlled acoustic-sensitivity evidence and AMI manual-annotation conversational-mechanics evidence as two separate public-only lanes. Derive `phase_a_complete=true` only for `source_provenance_dataset_manifests_offline_contracts_and_cohort_release_gate_only`.
+- Why: the tracked manifests, hash inventories, quality inventories, offline contracts, guarded repository ledger, and crash-safe publication preconditions can close the provenance/contract gate without claiming that either source validates customer internal emotion or operational sales signals.
+- Consequences at decision time: dataset evaluation, live aggregate release, Phase B, private research, provider feasibility, runtime activation, model performance, production readiness, and source adaptation remained blocked. Task 10 froze inputs only; the later reviewed Task 11 transaction closed the canonical Phase A checkpoint without changing those evidence boundaries.
+
+### DEC-024 - Start Phase B with an interpretable public-data feasibility study
+
+- Date: 2026-07-19
+- Status: accepted
+- Decision: implement `EMOTION-STATE-002` as two separate offline lanes: a frozen 17-feature, speaker-disjoint classical baseline for CREMA-D's original six audio-perception labels, and deterministic contribution-limited conversational-mechanics aggregates from AMI manual annotations.
+- Why: Phase A proves provenance, integrity, contracts, and bounded acceptance but no model performance. A classical baseline can test whether acoustic complexity is justified without inventing mappings from acted labels or meeting mechanics to customer operational signals.
+- Consequences: Phase B requires a new claim-scoped split contract because Phase A split v2 cannot partition a single required `source_corpus`. CREMA-D and AMI rows never join; neither lane creates `PatternCandidateV1`, populates `PerceivedCustomerStateV1`, or affects runtime. Design approval does not authorize dependency installation, public-material evaluation, private data, providers, calls, simulations, source adaptation, final-lockbox opening, runtime activation, push, or merge.
+
+### DEC-025 - Bind Phase B CREMA-D labels to concordant real-schema audio evidence
+
+- Date: 2026-07-19
+- Status: accepted
+- Decision: do not use the all-abstained Phase A `source_label_evidence` projection and never substitute filename intent. Join the two pinned release CSVs by normalized clip stem; require `finishedResponses.csv` `queryType="1"` raw `respEmo` votes to have one unique maximum, require `summaryTable.csv` `VoiceVote` to contain one code, and require the two winners to agree.
+- Why: the authorized read-only inspection proved that the real release schema is `clipName/queryType/respEmo`, not the synthetic `FileName/Modality/Response` shape expected by the Phase A projection. The conservative concordance rule retains 6,570 clips across all 91 actors and 12 sentences while explicitly abstaining on 644 released ties, 204 additional raw ties, and 23 unique-winner disagreements.
+- Consequences: Phase A remains accepted only for its bounded provenance, material-integrity, contract, and cohort-release scope. Phase B must enforce the pinned CSV hashes and frozen `6570/644/204/23` ledger before feature extraction. Raw identifiers, votes, and rows remain ignored local state and cannot enter model features or tracked artifacts. No model evaluation, audio read, dependency install, provider/private/runtime action, push, or merge was authorized or performed by this correction.

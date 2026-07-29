@@ -1,0 +1,259 @@
+{
+  "checkpoint_id": "EMOTION-STATE-006-phase-c1-2-yu-provenance",
+  "decision": {
+    "confusion": "defer",
+    "frustration": "defer",
+    "new_c2_eligible_signals": [],
+    "official_public_path_outcome": "no_official_public_material_path_found_in_bounded_review",
+    "overall": "maintain_defer_c2",
+    "recommendation": "retire_the_public_dataset_model_route_for_confusion_and_frustration_and_later_consider_only_observable_clarification_or_repair_rules_without_hidden_emotion_claims",
+    "recommendation_implemented": false
+  },
+  "official_source_documents": [
+    {
+      "evidence_use": "Original article landing page. It exposes the paper and states that download data are not yet available.",
+      "organization": "Asia-Pacific Society for Computers in Education",
+      "source_id": "yu_2011_apsce_landing",
+      "title": "Analysis of Students' Emotion from a Text Corpus",
+      "type": "official_publisher_landing_page",
+      "url": "https://library.apsce.net/index.php/ICCE/article/view/2655"
+    },
+    {
+      "evidence_use": "Original paper. It documents the classroom-dialogue origin, 759 sentence units, annotation procedure, final label counts, and raw agreement percentages.",
+      "organization": "Asia-Pacific Society for Computers in Education",
+      "source_id": "yu_2011_apsce_paper",
+      "title": "Analysis of Students' Emotion from a Text Corpus (official PDF)",
+      "type": "original_public_paper",
+      "url": "https://library.apsce.net/index.php/ICCE/article/download/2655/2531/3619"
+    },
+    {
+      "evidence_use": "Official follow-up article landing page. It exposes only the paper and states that download data are not yet available.",
+      "organization": "Asia-Pacific Society for Computers in Education",
+      "source_id": "yu_2012_apsce_landing",
+      "title": "Combining Language and Speech Features to Predict Students' Emotions in E-Learning Environments",
+      "type": "official_publisher_landing_page",
+      "url": "https://library.apsce.net/index.php/ICCE/article/view/546"
+    },
+    {
+      "evidence_use": "Original follow-up paper. It repeats the text-corpus aggregates and documents that 379 selected sentences were recorded later in an office environment.",
+      "organization": "Asia-Pacific Society for Computers in Education",
+      "source_id": "yu_2012_apsce_paper",
+      "title": "Combining Language and Speech Features to Predict Students' Emotions in E-Learning Environments (official PDF)",
+      "type": "original_public_paper",
+      "url": "https://library.apsce.net/index.php/ICCE/article/download/546/496/973"
+    },
+    {
+      "evidence_use": "Public DOI metadata. The record has no license object or related dataset/supplement relation; its links resolve to the article document.",
+      "organization": "Crossref",
+      "source_id": "yu_2012_crossref_metadata",
+      "title": "Crossref metadata for DOI 10.58459/icce.2012.546",
+      "type": "doi_metadata",
+      "url": "https://api.crossref.org/works/10.58459%2Ficce.2012.546"
+    },
+    {
+      "evidence_use": "Official institutional laboratory resource page. The visible named corpus resources do not include this classroom corpus.",
+      "organization": "Yuan Ze University Natural Language Processing Laboratory",
+      "source_id": "yzu_nlp_lab",
+      "title": "Natural Language Processing Laboratory",
+      "type": "official_institutional_resource_page",
+      "url": "https://www.mis.yzu.edu.tw/nlplab/"
+    },
+    {
+      "evidence_use": "Official author-laboratory publication page. It lists the 2011 and 2012 papers but exposes no linked corpus, annotations, license, or reliability supplement for them.",
+      "organization": "Yuan Ze University Natural Language Processing Laboratory",
+      "source_id": "yzu_author_publications",
+      "title": "Liang-Chih Yu publication and resource page",
+      "type": "official_author_institutional_page",
+      "url": "https://www.mis.yzu.edu.tw/nlplab/~lcyu/"
+    }
+  ],
+  "parent_checkpoint": {
+    "checkpoint_id": "EMOTION-STATE-005-phase-c1-1-source-resolution",
+    "decision": "maintain_defer_c2",
+    "source_register_path": "research/sources/emotion_state/phase_c1_1_source_resolution.json"
+  },
+  "protocol": {
+    "bytes": 3492,
+    "path": "research/experiments/configs/emotion-state-006-phase-c1-2-yu-provenance-protocol.json",
+    "sha256": "D12C1D4E71AD3BB7BFDF1E70F2623608F7EB7B76B9489BF52398236C52901051"
+  },
+  "published_aggregate_facts": {
+    "adjudication": "Two teachers annotated each sentence; a third teacher judged disagreements.",
+    "final_label_counts": {
+      "confusion": 134,
+      "frustration": 99
+    },
+    "raw_a1_a2_agreement": {
+      "confusion": 0.8433,
+      "frustration": 0.596
+    },
+    "sentence_units": 759,
+    "setting": "Junior-high student-teacher mathematics discussions in Taiwan",
+    "speech_follow_up": {
+      "recording_environment": "office",
+      "selected_sentence_count": 379
+    }
+  },
+  "required_findings": {
+    "explicit_dataset_use_or_license_terms": {
+      "admission_resolved": false,
+      "evidence": "The APSCE pages expose papers but no data; the DOI metadata has no license or related dataset entry; the reviewed institutional pages expose no dataset-use terms.",
+      "status": "not_found_in_reviewed_official_public_sources"
+    },
+    "official_corpus_or_material_release": {
+      "admission_resolved": false,
+      "evidence": "Both APSCE article pages state that download data are not yet available. No linked release was found on the reviewed official author or institutional pages or in the bounded public-repository search.",
+      "status": "not_found_in_reviewed_official_public_sources"
+    },
+    "original_spontaneous_conversational_provenance": {
+      "admission_resolved": false,
+      "classroom_text_dialogue_origin": true,
+      "evidence": "The original paper documents sentences collected from student-teacher classroom mathematics discussions. It does not characterize the interaction as spontaneous. The 2012 speech follow-up says 379 selected sentences were recorded later in an office, so that speech subset cannot confirm original live-classroom audio.",
+      "original_live_audio_confirmed_by_reviewed_sources": false,
+      "spontaneous_designation_found_in_reviewed_sources": false,
+      "status": "partially_supported_but_exact_required_provenance_unresolved"
+    },
+    "preserved_independent_per_rater_annotations": {
+      "admission_resolved": false,
+      "evidence": "The papers describe two annotators and a third adjudicator and publish aggregate agreement, but the reviewed official sources expose no per-rater annotation material.",
+      "status": "not_found_in_reviewed_official_public_sources"
+    },
+    "qualifying_pre_adjudication_krippendorff_alpha_point_and_confidence_interval": {
+      "admission_resolved": false,
+      "confidence_interval_95": null,
+      "evidence": "The papers publish A1-A2 raw percent agreement only. No Krippendorff-alpha point estimate or confidence interval is reported in the reviewed official sources.",
+      "krippendorff_alpha_point": null,
+      "reported_metric": "raw_percent_agreement",
+      "status": "not_published_in_reviewed_official_public_sources"
+    }
+  },
+  "repository_search_ledger": [
+    {
+      "authoritative_evidence": false,
+      "checked_at": "2026-07-29",
+      "decision_role": "corroborative_discovery_trace_only",
+      "matching_material_record_ids": [],
+      "outcome": "no_results_returned",
+      "query": "site:zenodo.org \"Analysis of Students' Emotion from a Text Corpus\"",
+      "search_mode": "domain_restricted_public_web_search",
+      "target_repository": "Zenodo"
+    },
+    {
+      "authoritative_evidence": false,
+      "checked_at": "2026-07-29",
+      "decision_role": "corroborative_discovery_trace_only",
+      "matching_material_record_ids": [],
+      "outcome": "no_results_returned",
+      "query": "site:osf.io \"Analysis of Students' Emotion from a Text Corpus\"",
+      "search_mode": "domain_restricted_public_web_search",
+      "target_repository": "OSF"
+    },
+    {
+      "authoritative_evidence": false,
+      "checked_at": "2026-07-29",
+      "decision_role": "corroborative_discovery_trace_only",
+      "matching_material_record_ids": [],
+      "outcome": "no_results_returned",
+      "query": "site:figshare.com \"Analysis of Students' Emotion from a Text Corpus\" \"Liang-Chih Yu\"",
+      "search_mode": "domain_restricted_public_web_search",
+      "target_repository": "Figshare"
+    },
+    {
+      "authoritative_evidence": false,
+      "checked_at": "2026-07-29",
+      "decision_role": "corroborative_discovery_trace_only",
+      "matching_material_record_ids": [],
+      "outcome": "no_results_returned",
+      "query": "site:dataverse.harvard.edu \"Analysis of Students' Emotion from a Text Corpus\" \"Liang-Chih Yu\"",
+      "search_mode": "domain_restricted_public_web_search",
+      "target_repository": "Harvard Dataverse"
+    },
+    {
+      "authoritative_evidence": false,
+      "checked_at": "2026-07-29",
+      "decision_role": "corroborative_discovery_trace_only",
+      "matching_material_record_ids": [],
+      "outcome": "no_results_returned",
+      "query": "site:data.mendeley.com \"Analysis of Students' Emotion from a Text Corpus\"",
+      "search_mode": "domain_restricted_public_web_search",
+      "target_repository": "Mendeley Data"
+    },
+    {
+      "authoritative_evidence": false,
+      "checked_at": "2026-07-29",
+      "decision_role": "corroborative_discovery_trace_only",
+      "matching_material_record_ids": [],
+      "outcome": "irrelevant_false_positives_only",
+      "query": "site:github.com \"Analysis of Students' Emotion from a Text Corpus\"",
+      "search_mode": "domain_restricted_public_web_search",
+      "target_repository": "GitHub"
+    },
+    {
+      "authoritative_evidence": false,
+      "checked_at": "2026-07-29",
+      "decision_role": "corroborative_discovery_trace_only",
+      "matching_material_record_ids": [],
+      "outcome": "no_relevant_results_returned",
+      "query": "site:zenodo.org \"Liang-Chih Yu\" emotion corpus students",
+      "search_mode": "domain_restricted_public_web_search",
+      "target_repository": "Zenodo"
+    },
+    {
+      "authoritative_evidence": false,
+      "checked_at": "2026-07-29",
+      "decision_role": "corroborative_discovery_trace_only",
+      "matching_material_record_ids": [],
+      "outcome": "no_relevant_results_returned",
+      "query": "site:osf.io \"Liang-Chih Yu\" emotion corpus students",
+      "search_mode": "domain_restricted_public_web_search",
+      "target_repository": "OSF"
+    }
+  ],
+  "research_boundary": {
+    "candidate_or_canonical_staging_performed": false,
+    "c2_work_performed": false,
+    "contact_or_messaging_performed": false,
+    "dataset_or_annotation_download_performed": false,
+    "dataset_or_annotation_rows_read": false,
+    "forms_or_logins_used": false,
+    "history_rewrite_performed": false,
+    "merge_performed": false,
+    "model_evaluation_performed": false,
+    "private_data_read": false,
+    "provider_call_or_simulation_performed": false,
+    "authoritative_evidence_limited_to_public_official_documents_and_metadata": true,
+    "push_performed": false,
+    "runtime_action_performed": false,
+    "source_adaptation_performed": false,
+    "source_documents_persisted": false
+  },
+  "reviewed_at": "2026-07-29",
+  "schema_version": "EmotionStatePhaseC12YuProvenanceV1",
+  "search_trace": [
+    {
+      "outcome": "The 2011 and 2012 article pages expose papers only and state that data are not yet available.",
+      "route": "official_apsce_article_paper_and_issue_records"
+    },
+    {
+      "outcome": "The official laboratory and author-publication pages list the papers but expose no Yu classroom corpus material, annotation, license, or reliability supplement. This absence is not treated as proof that no private or unpublished material exists.",
+      "route": "official_yuan_ze_university_author_and_laboratory_pages"
+    },
+    {
+      "outcome": "No matching official record was found by exact-title and author searches on Zenodo, OSF, Figshare, Harvard Dataverse, or Mendeley Data; no relevant public repository was found by the bounded GitHub title search.",
+      "route": "official_public_data_repository_metadata_search"
+    },
+    {
+      "outcome": "The DOI record contains article links only, with no license object or related dataset/supplement relation.",
+      "route": "crossref_doi_metadata"
+    }
+  ],
+  "status": "official_public_provenance_review_complete",
+  "target": {
+    "candidate_id": "yu_etal_2011_student_teacher_math",
+    "paper_title": "Analysis of Students' Emotion from a Text Corpus",
+    "signals": [
+      "confusion",
+      "frustration"
+    ]
+  }
+}
