@@ -62,12 +62,17 @@ Use the source categories carefully:
 
 ### Yu et al. student-teacher mathematics corpus
 
-- Type: academic source and unresolved public-dataset candidate
+- Type: academic source; public-dataset model-route candidate recommended for retirement
 - Official article page: https://library.apsce.net/index.php/ICCE/article/view/2655
 - Official paper: https://library.apsce.net/index.php/ICCE/article/download/2655/2531/3619
-- Project use: primary documentation for sentence-level confusion and frustration labels in classroom mathematics dialogue.
-- Current project status: closest C1.1 candidate but not admitted. The paper publishes 134 confusion and 99 frustration sentences from two teacher annotators plus a third adjudicator, but reports raw percent agreement rather than qualifying Krippendorff alpha and documents no official corpus release or dataset-use license.
-- Thesis caution: published counts and percent agreement do not establish C1 reliability admission or lawful material availability.
+- Official 2012 follow-up page: https://library.apsce.net/index.php/ICCE/article/view/546
+- Official 2012 follow-up paper: https://library.apsce.net/index.php/ICCE/article/download/546/496/973
+- Official institutional laboratory page: https://www.mis.yzu.edu.tw/nlplab/
+- Official author/institutional page: https://www.mis.yzu.edu.tw/nlplab/~lcyu/
+- DOI metadata: https://api.crossref.org/works/10.58459%2Ficce.2012.546
+- Project use: primary documentation for sentence-level confusion and frustration labels and for the distinction between classroom text-dialogue origin and later office speech recording.
+- Current project status: C1.2 official/public provenance review complete; `maintain_defer_c2`. No official release, dataset-use license, preserved per-rater annotations, or qualifying pre-adjudication Krippendorff-alpha point and interval was found in the bounded review. The 2011 paper supports classroom discussion as the text source but does not explicitly establish spontaneous interaction. The 2012 paper says 379 selected sentences were recorded later in an office.
+- Thesis caution: published counts and raw agreement do not establish C1 reliability admission or lawful material availability. Do not describe the speech subset as original live-classroom audio, and do not infer that no private or unpublished material exists.
 
 ### DAiSEE
 

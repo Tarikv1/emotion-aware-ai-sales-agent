@@ -6750,3 +6750,60 @@ remain separate gates.
   private-data read, network, provider, call, simulation, model evaluation,
   source adaptation, runtime activation, candidate/canonical action, C2 work,
   push, merge, or history rewrite occurred.
+
+### 2026-07-29 - EMOTION-STATE-006 Phase C1.2 Yu provenance decision
+
+- Purpose: resolve only the five remaining official/public provenance fields
+  for the Yu et al. student-teacher junior-high mathematics corpus retained by
+  C1.1. This was a bounded source review, not a dataset, annotation, or model
+  evaluation.
+- Frozen review contract:
+  `research/experiments/configs/emotion-state-006-phase-c1-2-yu-provenance-protocol.json`,
+  3,492 bytes, SHA-256
+  `D12C1D4E71AD3BB7BFDF1E70F2623608F7EB7B76B9489BF52398236C52901051`.
+  It was written before the new public web search and requires all five fields
+  to be resolved by official evidence; missing evidence remains unresolved.
+- Aggregate source register:
+  `research/sources/emotion_state/phase_c1_2_yu_provenance.json`,
+  12,784 bytes, SHA-256
+  `6A4465C7EDA050BA28AE8CA982371E0DCD07DF7FCD753E9C52465D54CAB81198`.
+  It contains official source identities, published aggregate facts, bounded
+  search outcomes, gate adjudications, and boundary attestations only.
+- Official material outcome: both APSCE article pages expose papers and state
+  that data are not yet available. The reviewed official Yuan Ze University
+  author and laboratory pages expose no linked Yu corpus, annotation, license,
+  or reliability supplement. The source register records the exact
+  domain-restricted repository-discovery queries, check date, outcomes, and
+  empty relevant material-record ID sets. Those searches are corroborative
+  discovery trace only. These negative findings are bounded and do not prove
+  that private or unpublished material does not exist.
+- Access and annotation outcome: no official public release, explicit
+  dataset-use terms, or preserved independent per-rater annotation material
+  was found. The DOI metadata contains no license object or related
+  dataset/supplement relation.
+- Reliability outcome: the original paper reports only pre-adjudication A1-A2
+  raw agreement, 84.33% for confusion and 59.60% for frustration. It publishes
+  no Krippendorff-alpha point estimate or confidence interval. The frozen
+  reliability gate therefore remains unresolved.
+- Provenance outcome: the original paper supports junior-high classroom
+  student-teacher mathematics discussions as the source of 759 text sentences,
+  but it does not explicitly characterize the interaction as spontaneous. The
+  2012 speech follow-up reports that 379 selected sentences were recorded later
+  in an office; it therefore cannot confirm original live-classroom audio.
+- Decision: confusion `defer`, frustration `defer`, and overall
+  `maintain_defer_c2`. No signal becomes C2 eligible. Because the narrow review
+  identified no official public material path that clears the gate, the
+  recommendation is to retire the public-dataset model route for confusion and
+  frustration. A later, separately-authorized decision may consider observable
+  clarification or repair rules without hidden-emotion claims; none is designed
+  or implemented here.
+- Independent review: initial read-only packet review returned `C0/I1/M0`
+  because the public-repository search trace was not reproducible. After the
+  exact corroborative query ledger was added, delta review returned `C0/I0/M1`
+  because discovery inspection and authoritative evidence were not
+  distinguished precisely. After that wording was corrected, final six-file
+  review returned `C0/I0/M0` and `READY`.
+- Boundary: no dataset or annotation download/read, login, form, owner contact,
+  messaging, private-data access, provider access, call, simulation, model
+  evaluation, source adaptation, runtime action, candidate/canonical staging,
+  C2 work, merge, history rewrite, or push occurred.

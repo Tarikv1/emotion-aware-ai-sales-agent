@@ -905,3 +905,28 @@ Next decision:
 
 No material request, owner contact, annotation fallback, model evaluation,
 runtime rule, C2 action, push, or merge is authorized by this roadmap entry.
+
+## EMOTION-STATE-006 Phase C1.2 Yu provenance decision
+
+Status: official/public provenance review complete; noncanonical; decision
+`maintain_defer_c2`.
+
+The narrow Yu et al. review found no official public corpus/material release,
+explicit dataset-use terms, preserved independent per-rater annotations, or
+qualifying pre-adjudication Krippendorff-alpha point and confidence interval.
+The original paper supports classroom mathematics dialogue as the source of
+759 text sentences, but it does not explicitly establish spontaneous
+interaction. The 2012 speech follow-up says 379 selected sentences were
+recorded later in an office, so it does not confirm original live-classroom
+audio.
+
+No reviewed official public path clears the frozen admission gate. The
+recommendation is to retire the public-dataset model route for confusion and
+frustration. A later, separately-authorized product decision may consider
+observable clarification or repair rules without hidden-emotion claims; no
+such rule is designed or implemented here.
+
+No dataset/annotation read, login, form, contact, message, private-data access,
+provider action, call, simulation, model evaluation, source adaptation,
+runtime action, candidate/canonical staging, C2 work, merge, history rewrite,
+or push is authorized or performed by this roadmap entry.
