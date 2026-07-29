@@ -10,6 +10,7 @@ import inspect
 import json
 import multiprocessing
 import os
+import re
 import shutil
 import stat
 import subprocess
@@ -16396,6 +16397,312 @@ class PhaseC1IndependentValidatorTests(
                         f"uncommitted {mutation}"
                     ),
                 )
+
+
+class PhaseC1Task10ReviewProcedureTests(unittest.TestCase):
+    """Execute the frozen Task 10 review procedure only in a synthetic root."""
+
+    _PLAN_PATH = (
+        ROOT
+        / "docs"
+        / "superpowers"
+        / "plans"
+        / (
+            "2026-07-26-emotion-state-phase-c1-operational-signal-"
+            "evidence-admission.md"
+        )
+    )
+    _SYNTHETIC_VALIDATION_SHA256 = (
+        "0f666497c55c617de0c1dc988883de9906a28cb8d7c024a7e8b83926a1ca263e"
+    )
+    _CANDIDATE_RECEIPT_FIELDS = frozenset(
+        {
+            "schema_version",
+            "checkpoint_id",
+            "transaction_id",
+            "status",
+            "implementation_head",
+            "validator_blob_id",
+            "protocol_sha256",
+            "search_ledger_sha256",
+            "source_evidence_ledger_sha256",
+            "source_review_receipt_sha256",
+            "result_sha256",
+            "report_sha256",
+        }
+    )
+    _VALIDATION_RECEIPT_FIELDS = frozenset(
+        {
+            "schema_version",
+            "checkpoint_id",
+            "implementation_head",
+            "candidate_transaction_id",
+            "candidate_result_sha256",
+            "candidate_report_sha256",
+            "protocol_sha256",
+            "search_ledger_sha256",
+            "source_evidence_ledger_sha256",
+            "source_review_receipt_sha256",
+            "validator_blob_id",
+            "verdict",
+            "runtime_approved",
+        }
+    )
+
+    @classmethod
+    def _step_6_review_block(cls) -> str:
+        task_10 = cls._PLAN_PATH.read_text(encoding="utf-8").split(
+            "- [ ] **Step 6: Independently review the candidate**",
+            1,
+        )[1]
+        start = task_10.index('$ErrorActionPreference = "Stop"')
+        end = task_10.index("\n```", start)
+        return task_10[start:end]
+
+    def test_step_6_review_block_writes_lowercase_canonical_receipt(self) -> None:
+        """A raw Get-FileHash value must not enter the canonical review receipt."""
+        powershell = (
+            Path(os.environ.get("WINDIR", r"C:\Windows"))
+            / "System32"
+            / "WindowsPowerShell"
+            / "v1.0"
+            / "powershell.exe"
+        )
+        if not powershell.is_file():
+            self.skipTest("Windows PowerShell 5.1 executable is unavailable")
+        version = subprocess.run(
+            [
+                os.fspath(powershell),
+                "-NoProfile",
+                "-NonInteractive",
+                "-Command",
+                "$PSVersionTable.PSVersion.ToString()",
+            ],
+            capture_output=True,
+            check=False,
+            text=True,
+        )
+        if version.returncode != 0 or not version.stdout.strip().startswith("5.1."):
+            self.skipTest("Windows PowerShell 5.1 is unavailable")
+
+        with tempfile.TemporaryDirectory(
+            prefix="emotion-state-c1-task-10-review-procedure-",
+        ) as temp_directory:
+            synthetic_root = Path(temp_directory)
+            ignored_root = synthetic_root / ".tmp" / "emotion-state-004-phase-c1"
+            ignored_root.mkdir(parents=True)
+            candidate_receipt = {
+                "schema_version": "EmotionStatePhaseC1CandidateReceiptV1",
+                "checkpoint_id": (
+                    "EMOTION-STATE-004-phase-c1-operational-signal-evidence-"
+                    "admission"
+                ),
+                "transaction_id": "",
+                "status": "candidate_ready",
+                "implementation_head": "d" * 40,
+                "validator_blob_id": "e" * 40,
+                "protocol_sha256": "f" * 64,
+                "search_ledger_sha256": "1" * 64,
+                "source_evidence_ledger_sha256": "2" * 64,
+                "source_review_receipt_sha256": "3" * 64,
+                "report_sha256": "b" * 64,
+                "result_sha256": "a" * 64,
+            }
+            candidate_receipt["transaction_id"] = hashlib.sha256(
+                phase_c1.canonical_json_bytes(candidate_receipt),
+            ).hexdigest()[:32]
+            candidate_receipt_bytes = phase_c1.canonical_json_bytes(candidate_receipt)
+            self.assertEqual(set(candidate_receipt), self._CANDIDATE_RECEIPT_FIELDS)
+            self.assertEqual(
+                validator._canonical_candidate_receipt(candidate_receipt_bytes),
+                candidate_receipt,
+            )
+            (ignored_root / "candidate-receipt.json").write_bytes(candidate_receipt_bytes)
+            validation_payload = {
+                "schema_version": "EmotionStatePhaseC1CandidateValidationV1",
+                "checkpoint_id": candidate_receipt["checkpoint_id"],
+                "implementation_head": candidate_receipt["implementation_head"],
+                "candidate_transaction_id": candidate_receipt["transaction_id"],
+                "candidate_result_sha256": candidate_receipt["result_sha256"],
+                "candidate_report_sha256": candidate_receipt["report_sha256"],
+                "protocol_sha256": candidate_receipt["protocol_sha256"],
+                "search_ledger_sha256": candidate_receipt["search_ledger_sha256"],
+                "source_evidence_ledger_sha256": candidate_receipt[
+                    "source_evidence_ledger_sha256"
+                ],
+                "source_review_receipt_sha256": candidate_receipt[
+                    "source_review_receipt_sha256"
+                ],
+                "validator_blob_id": candidate_receipt["validator_blob_id"],
+                "verdict": "pass",
+                "runtime_approved": False,
+            }
+            validation_bytes = phase_c1.canonical_json_bytes(validation_payload)
+            (ignored_root / "candidate-validation.json").write_bytes(validation_bytes)
+            validation_payload = phase_c1.load_json_strict(
+                validation_bytes,
+                source="synthetic_candidate_validation",
+            )
+            self.assertIsInstance(validation_payload, dict)
+            self.assertEqual(set(validation_payload), self._VALIDATION_RECEIPT_FIELDS)
+            self.assertEqual(
+                phase_c1.canonical_json_bytes(validation_payload),
+                validation_bytes,
+            )
+            self.assertEqual(
+                hashlib.sha256(validation_bytes).hexdigest(),
+                self._SYNTHETIC_VALIDATION_SHA256,
+            )
+            procedure_path = synthetic_root / "task-10-step-6.ps1"
+            procedure_path.write_text(
+                self._step_6_review_block(), encoding="utf-8", newline="\n",
+            )
+            completed = subprocess.run(
+                [
+                    os.fspath(powershell),
+                    "-NoProfile",
+                    "-NonInteractive",
+                    "-ExecutionPolicy",
+                    "Bypass",
+                    "-File",
+                    os.fspath(procedure_path),
+                ],
+                cwd=synthetic_root,
+                capture_output=True,
+                check=False,
+                text=True,
+            )
+            self.assertEqual(
+                completed.returncode,
+                0,
+                msg=(
+                    "the extracted Task 10 Step 6 procedure failed: "
+                    f"stdout={completed.stdout!r}; stderr={completed.stderr!r}"
+                ),
+            )
+            review_stage = ignored_root / "candidate-review.stage"
+            review_path = ignored_root / "candidate-review.json"
+            self.assertFalse(review_stage.exists())
+            self.assertTrue(review_path.is_file())
+            expected_payload = {
+                "candidate_report_sha256": "b" * 64,
+                "candidate_result_sha256": "a" * 64,
+                "candidate_transaction_id": candidate_receipt["transaction_id"],
+                "candidate_validation_sha256": self._SYNTHETIC_VALIDATION_SHA256,
+                "checkpoint_id": (
+                    "EMOTION-STATE-004-phase-c1-operational-signal-evidence-"
+                    "admission"
+                ),
+                "critical_findings": 0,
+                "implementation_head": "d" * 40,
+                "important_findings": 0,
+                "minor_findings": 0,
+                "model_evaluation_run": False,
+                "private_data_read": False,
+                "provider_accessed": False,
+                "raw_rows_read": False,
+                "review_scope": (
+                    "all_candidate_inputs_decisions_pair_report_and_boundaries"
+                ),
+                "runtime_modified": False,
+                "schema_version": "EmotionStatePhaseC1CandidateReviewV1",
+                "verdict": "admitted",
+            }
+            expected_bytes = (
+                json.dumps(expected_payload, ensure_ascii=True, indent=2, sort_keys=True)
+                + "\n"
+            ).encode("utf-8")
+            actual_bytes = review_path.read_bytes()
+            self.assertEqual(actual_bytes, expected_bytes)
+            self.assertEqual(
+                json.loads(actual_bytes)["candidate_validation_sha256"],
+                self._SYNTHETIC_VALIDATION_SHA256,
+            )
+
+
+class PhaseC1CloseoutDocumentationTests(unittest.TestCase):
+    """Keep the C1 closeout anchored to the accepted canonical checkpoint."""
+
+    _CLOSEOUT_PATHS = (
+        ROOT
+        / "research"
+        / "experiments"
+        / "EMOTION-STATE-004-phase-c1-operational-signal-evidence-admission.md",
+        ROOT / "docs" / "thesis" / "METHODOLOGY_LOG.md",
+        ROOT / "docs" / "thesis" / "ROADMAP.md",
+        ROOT / "docs" / "product" / "CHECKPOINT_INDEX.md",
+        ROOT / "docs" / "product" / "COMMANDS.md",
+    )
+    _COMMON_ANCHORS = (
+        "Canonical status: accepted",
+        "Overall decision: defer_c2",
+        "hesitation=defer",
+        "frustration=defer",
+        "confusion=defer",
+        "interest=defer",
+        "disengagement=defer",
+        "C2-eligible signals: none",
+        "queries=88; sources=0; cards=0",
+        "2540A1BA430F78B9F660BA466F6CFD7099CFFCAA6F1C1D1AC373F4BA1D4D2CCD",
+        "A6FCAA50123E4D67FF92D36E9755B4ED7C82306FCAA50B72ED26A478361365DB",
+        "81FB1301287F0E3E8FA0E21840B1B596028509C11FAAC75D6D6F8914051D0B58",
+        "4B489D77BFC948B84F8A6BC73A30DC1068138D6ABD2A563EB7FD43BFE9224E11",
+        "3B8D9F874990C9C2FBE1664FE1155392984D278FFB4F5E9BB74913469F8D0336",
+        "8F9B8D1EB088CC7025F77F34FF83928C53DA2112A0A0D300E59DD5C7A7C3D637",
+        "15B5285A8B18E9E8C5A36A71CBB8202EF0F72370C91F9CB8AD80271F8BF38CDD",
+        "d1f78f321f4d01512944dfa7499d819cb10d7a5c",
+        "Source review: admitted (C0/I0/M0)",
+        "Candidate review: admitted (C0/I0/M0)",
+        "No private data, dataset/annotation rows, audio, or transcripts were read.",
+        (
+            "No provider access, call, simulation, model evaluation, "
+            "runtime modification/activation, or Phase B lockbox access occurred."
+        ),
+    )
+
+    def test_closeout_documents_bind_the_accepted_canonical_outcome(self) -> None:
+        """Every closeout surface must carry the same accepted checkpoint anchors."""
+        for path in self._CLOSEOUT_PATHS:
+            text = " ".join(path.read_text(encoding="utf-8").split())
+            for anchor in self._COMMON_ANCHORS:
+                with self.subTest(path=path, anchor=anchor):
+                    self.assertIn(anchor, text)
+
+    def test_command_map_exposes_only_read_only_c1_validation(self) -> None:
+        """The C1 command section cannot preserve a reusable accept operation."""
+        commands = (ROOT / "docs" / "product" / "COMMANDS.md").read_text(
+            encoding="utf-8",
+        )
+        heading = "## EMOTION-STATE-004 Phase C1 Evidence Admission"
+        self.assertIn(heading, commands)
+        section = commands.split(heading, 1)[1].split("\n## ", 1)[0]
+        self.assertIn(
+            "python scripts/validate_emotion_state_004_phase_c1.py checkpoint",
+            section,
+        )
+        command_blocks = "\n".join(
+            re.findall(r"```(?:powershell)?\\n(.*?)```", section, flags=re.DOTALL),
+        ).lower()
+        self.assertNotIn("run_emotion_state_004_phase_c1.py accept", command_blocks)
+        self.assertNotIn("fetch", command_blocks)
+        self.assertNotIn("provider", command_blocks)
+        self.assertNotIn("simulation", command_blocks)
+        self.assertNotIn("runtime", command_blocks)
+
+    def test_closeout_docs_reject_stale_and_unauthorized_claims(self) -> None:
+        """Closeout records a defer only; it cannot claim C2 or runtime authority."""
+        forbidden = (
+            "source discovery not run",
+            "customer emotion was inferred",
+            "authorizes C2",
+            "runtime is authorized",
+            "production ready",
+        )
+        for path in self._CLOSEOUT_PATHS:
+            text = path.read_text(encoding="utf-8").lower()
+            for phrase in forbidden:
+                with self.subTest(path=path, phrase=phrase):
+                    self.assertNotIn(phrase.lower(), text)
 
 
 if __name__ == "__main__":

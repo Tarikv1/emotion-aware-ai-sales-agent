@@ -238,3 +238,33 @@ Default rule: dry-run/offline unless a command explicitly uses `--live` and prov
 - `SALES_DIFFICULTY_TAXONOMY.md`
 - `CORE_SALES_DELIVERY_PLAYBOOK.md`
 - `COMMANDS.md`
+
+## EMOTION-STATE-004 Phase C1 evidence admission
+
+Canonical status: accepted. Overall decision: defer_c2. Per-signal decisions:
+hesitation=defer; frustration=defer; confusion=defer; interest=defer;
+disengagement=defer. C2-eligible signals: none. Counts:
+queries=88; sources=0; cards=0.
+
+Protocol/search/source/source-review SHA-256:
+`2540A1BA430F78B9F660BA466F6CFD7099CFFCAA6F1C1D1AC373F4BA1D4D2CCD` /
+`A6FCAA50123E4D67FF92D36E9755B4ED7C82306FCAA50B72ED26A478361365DB` /
+`81FB1301287F0E3E8FA0E21840B1B596028509C11FAAC75D6D6F8914051D0B58` /
+`4B489D77BFC948B84F8A6BC73A30DC1068138D6ABD2A563EB7FD43BFE9224E11`.
+Candidate receipt / validation / review SHA-256:
+`B0CB4466B5AEA3C76A890F9BE5523448FC609888705B2F6815587E21453D6424` /
+`5478BE04D396356A4CFE80F048F39D6B4AB855395EB3404FC2B58F4699DDFB0D` /
+`3B8D9F874990C9C2FBE1664FE1155392984D278FFB4F5E9BB74913469F8D0336`.
+Canonical result / report SHA-256:
+`8F9B8D1EB088CC7025F77F34FF83928C53DA2112A0A0D300E59DD5C7A7C3D637` /
+`15B5285A8B18E9E8C5A36A71CBB8202EF0F72370C91F9CB8AD80271F8BF38CDD`.
+Source review: admitted (C0/I0/M0). Candidate review: admitted (C0/I0/M0).
+The pair-only checkpoint commit is `d1f78f321f4d01512944dfa7499d819cb10d7a5c`.
+
+The pair is an immutable rowless admission-defer checkpoint. It does not infer
+customer emotion or prove model, real-call, provider, latency, safety,
+conversion, production, or commercial behavior; it authorizes neither C2 nor
+runtime. No private data, dataset/annotation rows, audio, or transcripts were
+read. No provider access, call, simulation, model evaluation, runtime
+modification/activation, or Phase B lockbox access occurred. Push and merge
+remain separate gates.

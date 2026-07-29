@@ -5017,7 +5017,7 @@ if (
 $candidateReceipt = `
   Get-Content -Raw -LiteralPath $candidateReceiptPath | ConvertFrom-Json
 $validationSha256 = `
-  (Get-FileHash -Algorithm SHA256 -LiteralPath $validationPath).Hash
+  (Get-FileHash -Algorithm SHA256 -LiteralPath $validationPath).Hash.ToLowerInvariant()
 $reviewPayload = [ordered]@{
   candidate_report_sha256 = [string]$candidateReceipt.report_sha256
   candidate_result_sha256 = [string]$candidateReceipt.result_sha256
