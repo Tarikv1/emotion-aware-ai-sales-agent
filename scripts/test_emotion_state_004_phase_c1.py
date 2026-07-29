@@ -16698,6 +16698,23 @@ class PhaseC1CloseoutDocumentationTests(unittest.TestCase):
             normalized,
         )
 
+    def test_checkpoint_index_marks_c0_complete_and_c1_current(self) -> None:
+        """The index cannot leave C0 current after the accepted C1 checkpoint."""
+        index = (ROOT / "docs" / "product" / "CHECKPOINT_INDEX.md").read_text(
+            encoding="utf-8-sig",
+        )
+        normalized = " ".join(index.split())
+        for anchor in (
+            "Complete Phase C0 synthetic mechanics checkpoint:",
+            "Current Phase C1 evidence-admission checkpoint: `EMOTION-STATE-004`",
+            "Canonical status: accepted.",
+            "Overall decision: defer_c2.",
+            "C2-eligible signals: none.",
+        ):
+            with self.subTest(anchor=anchor):
+                self.assertIn(anchor, normalized)
+        self.assertNotIn("Current Phase C0 synthetic mechanics checkpoint:", normalized)
+
     def test_command_map_exposes_only_read_only_c1_validation(self) -> None:
         """The C1 command section cannot preserve a reusable accept operation."""
         commands = (ROOT / "docs" / "product" / "COMMANDS.md").read_text(

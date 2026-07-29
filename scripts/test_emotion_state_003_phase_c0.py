@@ -7785,7 +7785,11 @@ class PhaseCCloseoutContractTests(unittest.TestCase):
             "48499cf1690338210c57bd720ef466a5f7abf0c7",
             normalized,
         )
-        self.assertIn("The checkpoint remains unmerged", normalized)
+        self.assertIn(
+            "was merged into `main` by PR `#4`",
+            normalized,
+        )
+        self.assertNotIn("The checkpoint remains unmerged", normalized)
         self.assertIn("successor-phase authority", normalized)
         self.assertIn(
             "The implementation and accepted local checkpoint described above "

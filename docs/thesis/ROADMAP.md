@@ -752,10 +752,9 @@ Phase C0 `177/177`, pinned Phase B `16/16`, four validator sections, five
 repository gates, and the four LF/compile/protected-runtime/diff checks.
 Phase B lockbox remains closed and cannot be reused. Phase C0 final review
 returned `C0/I0/M0`; the closeout commit is
-`48499cf1690338210c57bd720ef466a5f7abf0c7` and was pushed to the branch used
-by draft PR `#4`. The checkpoint remains unmerged and grants no runtime,
-provider, data, call, simulation, source-adaptation, prompt, knowledge-base, or
-successor-phase authority.
+`48499cf1690338210c57bd720ef466a5f7abf0c7` and was merged into `main` by PR
+`#4`. The checkpoint grants no runtime, provider, data, call, simulation,
+source-adaptation, prompt, knowledge-base, or successor-phase authority.
 
 Task 12's canonical checkpoint is `accepted` under
 `.tmp/emotion-state-002-phase-b-cut4b`, transaction
