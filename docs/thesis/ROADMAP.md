@@ -926,7 +926,39 @@ frustration. A later, separately-authorized product decision may consider
 observable clarification or repair rules without hidden-emotion claims; no
 such rule is designed or implemented here.
 
+Tarik accepted the retirement recommendation in `DEC-142`. The C1.2 research
+decision remains `maintain_defer_c2`; the route-level product status is now
+`retired`.
+
 No dataset/annotation read, login, form, contact, message, private-data access,
 provider action, call, simulation, model evaluation, source adaptation,
 runtime action, candidate/canonical staging, C2 work, merge, history rewrite,
 or push is authorized or performed by this roadmap entry.
+
+## DEC-142 public-dataset confusion/frustration route retirement
+
+Status: accepted; route retired; C2 remains closed.
+
+The current public-dataset model route for direct confusion and frustration
+classification is no longer an active research or implementation path. The
+C1.1/C1.2 packets remain preserved as historical evidence. Existing synthetic
+mechanics and contracts remain research-only and are neither deleted nor
+promoted to runtime.
+
+No further broad public-dataset search is planned for these two signals. The
+route may be reconsidered only when a concrete official release supplies:
+
+1. explicit dataset-use terms;
+2. preserved independent pre-adjudication annotations;
+3. confirmed spontaneous conversational provenance;
+4. Krippendorff alpha of at least 0.80; and
+5. a 95% confidence-interval lower bound of at least 0.67.
+
+A consented first-party corpus would be a separate research and governance
+program, not a continuation of this route. A later observable
+clarification/repair design is allowed only under separate authorization and
+must use directly observed dialogue events without hidden-emotion claims.
+
+This decision changes roadmap status only. It performs no dataset or annotation
+access, model work, source adaptation, runtime change, candidate/canonical
+staging, C2 action, provider action, call, simulation, or deployment.

@@ -15,6 +15,59 @@ Record important thesis and implementation decisions here with enough context to
 
 ## Decisions
 
+### DEC-142 - Retire the public-dataset confusion and frustration model route
+
+- Date: 2026-07-29
+- Status: accepted
+- Decision: retire the current public-dataset model route for direct confusion
+  and frustration classification. Keep C2 closed for both signals. Preserve the
+  C1.1/C1.2 research packets as historical evidence, but do not train,
+  evaluate, promote, or make hidden-emotion claims from any reviewed candidate.
+  Observable clarification or repair behavior requires a separate,
+  explicitly-authorized design checkpoint.
+- Why:
+  - C1.2 found no official public corpus/material release, explicit dataset-use
+    terms, preserved independent per-rater annotations, or qualifying
+    pre-adjudication Krippendorff-alpha point estimate and confidence interval
+  - the Yu et al. source publishes useful aggregate counts and raw agreement,
+    but those facts do not establish lawful material availability or the frozen
+    reliability gate
+  - classroom text-dialogue origin is supported, while the exact spontaneous
+    provenance requirement is unresolved and the 2012 speech subset was
+    recorded later in an office
+  - the product goal of recovering a failing conversation can be addressed more
+    directly through observable clarification and repair events without
+    asserting an unverified hidden emotional state
+- Alternatives considered:
+  - continue broad official/public discovery, rejected because the bounded
+    C1.1/C1.2 review exhausted the identified credible path and another search
+    has no concrete new lead
+  - lower the admission bar by substituting raw agreement, acted speech,
+    self-report, proxy labels, or post-adjudication outcomes, rejected because
+    that would weaken the evidence contract and increase false hidden-state
+    claims
+  - start a consented first-party data and annotation program, deferred as a
+    materially different research/governance program requiring separate
+    authorization
+  - leave the route indefinitely paused, rejected because it would keep an
+    evidence-blocked path appearing active without an actionable unlock
+- Consequences:
+  - the C1.2 decision remains `maintain_defer_c2`; the route-level product
+    status is now `retired`
+  - no further broad public-dataset search is planned for these two signals
+  - existing synthetic mechanics, contracts, source records, and experiment
+    notes remain preserved and non-runtime; retirement does not delete or
+    reinterpret them
+  - the public-dataset route may be reconsidered only if a concrete official
+    release provides explicit use terms, preserved independent
+    pre-adjudication annotations, confirmed spontaneous conversational
+    provenance, Krippendorff alpha at least 0.80, and a 95% confidence-interval
+    lower bound at least 0.67
+  - a first-party corpus would be a new route, not a continuation of this
+    retired route
+  - any observable clarification/repair design must avoid hidden-emotion claims
+    and pass its own design, safety, evaluation, and runtime gates
+
 ### DEC-141 - Use a three-layer sales knowledge architecture for universal RAG and campaigns
 
 - Date: 2026-06-06
