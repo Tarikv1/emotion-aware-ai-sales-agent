@@ -4,7 +4,7 @@ This index groups checkpoint docs by work track. Runners, validators, cases, and
 
 Runtime-affecting files now live under `runtime/` and are mapped in `runtime/runtime_manifest.json`; use it before editing spoken-text, call-control, campaign-contract, retrieval, or provider-delivery behavior. Legacy `scripts/*` runtime files are compatibility wrappers.
 
-Current Phase C0 synthetic mechanics checkpoint: `EMOTION-STATE-003-phase-c0-synthetic-temporal-mechanics`, documented in `research/experiments/EMOTION-STATE-003-phase-c0-synthetic-temporal-mechanics.md`, is an accepted offline aggregate checkpoint for synthetic mechanics only. Candidate decision: `keep`; all `30/30` scenarios passed, including `8` rejection cases, and independent candidate review returned `C0/I0/M0`. Policy/scenario/result/report SHA-256 values are `9BB996F886E9AFFBCDA40A6FB71BE10E1CD07D3B114B4E3FBCDAA1DF71171F15`, `D01FBD7677537A0A91D01E0EA8354D079491C13BBD81EC8BAC97E7BBC4520FB0`, `3BBB7FC8F4DFB223837EA8D8B8E92EC46AA0ACF70EA1A6CA4649D41266E43030`, and `FD1ADA58FD5C0B614DB429AD6B5434C988E95942FBEB1FEB87D779C14F9E4EA4`. Implementation trace: aggregate runner `fd92aae6acf146d9271888bb264ecd29269cb870`, independent validator `5c461612f667e1a8727eedb9d2c08d9951b3aed0`, direct-launch correction `4c77f72bf7dc85e2e4587b9c03646716e5aec0ff`, candidate acceptance `77a2fb50ba00210cc75d410240c17115be83a415`, and pair-only commit `62b6b65cf307270bfc2e98c7c08617252859948d`. The guarded ledger passed Phase C0 `177/177`, pinned Phase B `16/16`, four validator sections, five repository gates, and the four LF/compile/protected-runtime/diff checks. Phase B lockbox remains closed and cannot be reused; this checkpoint grants no runtime, provider, data, or Phase D authority.
+Complete Phase C0 synthetic mechanics checkpoint: `EMOTION-STATE-003-phase-c0-synthetic-temporal-mechanics`, documented in `research/experiments/EMOTION-STATE-003-phase-c0-synthetic-temporal-mechanics.md`, is an accepted offline aggregate checkpoint for synthetic mechanics only. Candidate decision: `keep`; all `30/30` scenarios passed, including `8` rejection cases, and independent candidate review returned `C0/I0/M0`. Policy/scenario/result/report SHA-256 values are `9BB996F886E9AFFBCDA40A6FB71BE10E1CD07D3B114B4E3FBCDAA1DF71171F15`, `D01FBD7677537A0A91D01E0EA8354D079491C13BBD81EC8BAC97E7BBC4520FB0`, `3BBB7FC8F4DFB223837EA8D8B8E92EC46AA0ACF70EA1A6CA4649D41266E43030`, and `FD1ADA58FD5C0B614DB429AD6B5434C988E95942FBEB1FEB87D779C14F9E4EA4`. Implementation trace: aggregate runner `fd92aae6acf146d9271888bb264ecd29269cb870`, independent validator `5c461612f667e1a8727eedb9d2c08d9951b3aed0`, direct-launch correction `4c77f72bf7dc85e2e4587b9c03646716e5aec0ff`, candidate acceptance `77a2fb50ba00210cc75d410240c17115be83a415`, and pair-only commit `62b6b65cf307270bfc2e98c7c08617252859948d`. The guarded ledger passed Phase C0 `177/177`, pinned Phase B `16/16`, four validator sections, five repository gates, and the four LF/compile/protected-runtime/diff checks. Phase B lockbox remains closed and cannot be reused; this checkpoint grants no runtime, provider, data, or Phase D authority.
 
 Current public-data feasibility checkpoint: `EMOTION-STATE-002-phase-b-public-data-feasibility`, documented in `research/experiments/EMOTION-STATE-002-phase-b-public-data-feasibility.md`, completed Task 12 as an `accepted` offline checkpoint with `lockbox_open_count=1` and decision `revise`. Transaction `559ccc55b0b5412ba455ca7fe3e3a6b7` produced result SHA-256 `5829BF4A1FBE86BDD6B19B7CF8B07033BF79744B12F7AF1D493F8D3F10D0073C` and report SHA-256 `56140D4ABDD0B2A6924749E719C66D3972483E0F4191F63201E9DDFCA0A23482`; the exact pair-only commit is `f887989597f23f438e8e537ba5bfbd05823a3587`. Its fail-closed validator exposes `source`, `contracts`, `environment`, `synthetic`, receipt-bound `candidate`, and accepted-pair `checkpoint` sections. The output contract excludes filenames, row records, media identifiers, transcripts, model serialization, probabilities, credentials, and the five project operational signals. This is offline acted-perception research evidence, not production readiness or evidence of customer internal emotion, real-call performance, provider/PSTN/ASR/latency feasibility, runtime readiness, or commercial effectiveness. Push, merge, Phase C, provider, private-data, call, simulation, source-adaptation, and runtime work remain outside this checkpoint.
 
@@ -238,3 +238,33 @@ Default rule: dry-run/offline unless a command explicitly uses `--live` and prov
 - `SALES_DIFFICULTY_TAXONOMY.md`
 - `CORE_SALES_DELIVERY_PLAYBOOK.md`
 - `COMMANDS.md`
+
+## Current Phase C1 evidence-admission checkpoint: `EMOTION-STATE-004`
+
+Canonical status: accepted. Overall decision: defer_c2. Per-signal decisions:
+hesitation=defer; frustration=defer; confusion=defer; interest=defer;
+disengagement=defer. C2-eligible signals: none. Counts:
+queries=88; sources=0; cards=0.
+
+Protocol/search/source/source-review SHA-256:
+`2540A1BA430F78B9F660BA466F6CFD7099CFFCAA6F1C1D1AC373F4BA1D4D2CCD` /
+`A6FCAA50123E4D67FF92D36E9755B4ED7C82306FCAA50B72ED26A478361365DB` /
+`81FB1301287F0E3E8FA0E21840B1B596028509C11FAAC75D6D6F8914051D0B58` /
+`4B489D77BFC948B84F8A6BC73A30DC1068138D6ABD2A563EB7FD43BFE9224E11`.
+Candidate receipt / validation / review SHA-256:
+`B0CB4466B5AEA3C76A890F9BE5523448FC609888705B2F6815587E21453D6424` /
+`5478BE04D396356A4CFE80F048F39D6B4AB855395EB3404FC2B58F4699DDFB0D` /
+`3B8D9F874990C9C2FBE1664FE1155392984D278FFB4F5E9BB74913469F8D0336`.
+Canonical result / report SHA-256:
+`8F9B8D1EB088CC7025F77F34FF83928C53DA2112A0A0D300E59DD5C7A7C3D637` /
+`15B5285A8B18E9E8C5A36A71CBB8202EF0F72370C91F9CB8AD80271F8BF38CDD`.
+Source review: admitted (C0/I0/M0). Candidate review: admitted (C0/I0/M0).
+The pair-only checkpoint commit is `d1f78f321f4d01512944dfa7499d819cb10d7a5c`.
+
+The pair is an immutable rowless admission-defer checkpoint. It does not infer
+customer emotion or prove model, real-call, provider, latency, safety,
+conversion, production, or commercial behavior; it authorizes neither C2 nor
+runtime. No private data, dataset/annotation rows, audio, or transcripts were
+read. No provider access, call, simulation, model evaluation, runtime
+modification/activation, or Phase B lockbox access occurred. Push and merge
+remain separate gates.

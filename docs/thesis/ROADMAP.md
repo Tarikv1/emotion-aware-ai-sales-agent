@@ -35,8 +35,8 @@ Current checkpoint:
 
 - [x] Complete: `EMOTION-STATE-001` Phase A public-data gate, including Task 7 material-pending input integration for exactly `crema-d-v1.0-audio-wav` and `ami-manual-annotations-v1.6.2`; source adaptation remains false.
 - [x] Complete: `EMOTION-STATE-002` Phase B public-data feasibility checkpoint accepted.
-- [x] Current completed offline checkpoint: `EMOTION-STATE-003` Phase C0 synthetic-mechanics checkpoint accepted.
-- [ ] Next gate: `EMOTION-STATE-004` Phase C1 remains separate and has no runtime, provider, call, private-data, or production authority.
+- [x] Complete: `EMOTION-STATE-003` Phase C0 synthetic-mechanics checkpoint accepted.
+- [x] Current completed offline checkpoint: `EMOTION-STATE-004` Phase C1 evidence-admission checkpoint accepted. Canonical status: accepted. Overall decision: defer_c2. C2-eligible signals: none. Phase C2 remains closed. C1 has no runtime, provider, call, private-data, or production authority.
 
 Next checkpoints:
 
@@ -750,12 +750,11 @@ Existing implementation trace: aggregate runner
 `62b6b65cf307270bfc2e98c7c08617252859948d`. The guarded ledger passed
 Phase C0 `177/177`, pinned Phase B `16/16`, four validator sections, five
 repository gates, and the four LF/compile/protected-runtime/diff checks.
-Phase B lockbox remains
-closed and cannot be reused; this checkpoint grants no runtime, provider, data,
-or Phase D authority. An independent `C0/I0/M0` review is required before the
-six-file closeout commit. That review does not authorize push, merge, runtime
-activation, data access, provider work, calls, simulations, source adaptation,
-prompt or knowledge-base changes, or Phase D.
+Phase B lockbox remains closed and cannot be reused. Phase C0 final review
+returned `C0/I0/M0`; the closeout commit is
+`48499cf1690338210c57bd720ef466a5f7abf0c7` and was merged into `main` by PR
+`#4`. The checkpoint grants no runtime, provider, data, call, simulation,
+source-adaptation, prompt, knowledge-base, or successor-phase authority.
 
 Task 12's canonical checkpoint is `accepted` under
 `.tmp/emotion-state-002-phase-b-cut4b`, transaction
@@ -784,8 +783,8 @@ the policy and 30-case golden matrix preceded reducer code, and candidate,
 canonical, and push remained distinct gates. The implementation and accepted
 local checkpoint described above are now complete. Push, merge, runtime
 activation, public or private data access, provider access, calls,
-conversational simulations, source adaptation, and Phase D authority remain
-outside this checkpoint. The reviewed venv and wheelhouse under
+conversational simulations, source adaptation, and successor-phase authority
+remain outside this checkpoint. The reviewed venv and wheelhouse under
 `.tmp/emotion-state-002-phase-b` remain immutable dependency inputs only; no
 authority transfers to another gate.
 
@@ -809,6 +808,30 @@ internal emotion, the five operational signals, AMI contribution, real-call
 performance, provider/PSTN/ASR/latency feasibility, runtime activation, or
 commercial effectiveness.
 
+The next design checkpoint is `EMOTION-STATE-004 Phase C1 - Operational-Signal
+Evidence Admission`. The original provisional roadmap called its public-data
+thesis experiment "Phase D", but Phase B already completed most of that
+experiment structure and returned `revise`. Phase C1 therefore addresses the
+remaining construct-validity gap instead of repeating the closed lockbox:
+whether direct, turn- or segment-level, independent observer labels exist for
+hesitation, frustration, confusion, interest, and disengagement in spontaneous
+conversation. Each signal is judged independently. Acted labels, proxy
+mappings, conversation-level labels, LLM labels, and a merely planned
+annotation study cannot produce `pass`.
+
+Phase C1 is source-and-label admission only. A later C2 model checkpoint may
+evaluate only admitted signals and must use a new untouched evaluation design.
+The guarded policy adapter, sales-shaped research, providers, shadow work,
+calls, and runtime activation remain separate gates. The approved design is
+tracked at
+`docs/superpowers/specs/2026-07-26-emotion-state-phase-c1-operational-signal-evidence-admission-design.md`;
+the implementation plan is tracked at
+`docs/superpowers/plans/2026-07-26-emotion-state-phase-c1-operational-signal-evidence-admission.md`.
+Both artifacts remain plan/design only. Writing and committing them authorizes
+no source research, network access, dataset access, annotation, implementation,
+evaluation, provider action, simulation, call, runtime change, candidate or
+canonical generation, push, or merge.
+
 Purpose:
 
 - keep `10117b6d..HEAD` evidence reflected in thesis docs without changing runtime behavior
@@ -825,3 +848,33 @@ Immediate evidence artifacts:
 - Liquid retirement: `LIQUID-AUDIO-LISTENING-REVIEW-DECISION-001`
 - Prosody cleanup and mapping: `PROSODY-TAXONOMY-CLEANUP-001`, `ELEVENLABS-PROSODY-MAPPING-PROTOTYPE-001`, `ELEVENLABS-PROSODY-MAPPING-QUALITY-AUDIT-001`, `ELEVENLABS-PROSODY-MAPPING-DECISION-001`
 - Ultravox hosted speech-interface evidence: `ULTRAVOX-WEBSOCKET-TEXT-SANDBOX-001`, `ULTRAVOX-WEBSOCKET-AUDIO-SANDBOX-001`, `ULTRAVOX-AUDIO-LISTENING-REVIEW-MANUAL-001`, `ULTRAVOX-WARM-SESSION-LATENCY-001`, `ULTRAVOX-LATENCY-OPTIMIZATION-AUDIT-001`, `ULTRAVOX-AUDIO-SANDBOX-REVIEW-DECISION-001`
+
+## EMOTION-STATE-004 Phase C1 accepted evidence-admission checkpoint
+
+Canonical status: accepted. Overall decision: defer_c2. Per-signal decisions:
+hesitation=defer; frustration=defer; confusion=defer; interest=defer;
+disengagement=defer. C2-eligible signals: none. Counts:
+queries=88; sources=0; cards=0.
+
+Protocol/search/source/source-review SHA-256:
+`2540A1BA430F78B9F660BA466F6CFD7099CFFCAA6F1C1D1AC373F4BA1D4D2CCD` /
+`A6FCAA50123E4D67FF92D36E9755B4ED7C82306FCAA50B72ED26A478361365DB` /
+`81FB1301287F0E3E8FA0E21840B1B596028509C11FAAC75D6D6F8914051D0B58` /
+`4B489D77BFC948B84F8A6BC73A30DC1068138D6ABD2A563EB7FD43BFE9224E11`.
+Candidate receipt / validation / review SHA-256:
+`B0CB4466B5AEA3C76A890F9BE5523448FC609888705B2F6815587E21453D6424` /
+`5478BE04D396356A4CFE80F048F39D6B4AB855395EB3404FC2B58F4699DDFB0D` /
+`3B8D9F874990C9C2FBE1664FE1155392984D278FFB4F5E9BB74913469F8D0336`.
+Canonical result / report SHA-256:
+`8F9B8D1EB088CC7025F77F34FF83928C53DA2112A0A0D300E59DD5C7A7C3D637` /
+`15B5285A8B18E9E8C5A36A71CBB8202EF0F72370C91F9CB8AD80271F8BF38CDD`.
+Source review: admitted (C0/I0/M0). Candidate review: admitted (C0/I0/M0).
+The pair-only checkpoint commit is `d1f78f321f4d01512944dfa7499d819cb10d7a5c`.
+
+This checkpoint is a rowless label-admission defer only: it does not infer
+customer emotion or establish model, real-call, provider, latency, safety,
+conversion, production, or commercial behavior. It authorizes neither C2 nor
+runtime. No private data, dataset/annotation rows, audio, or transcripts were
+read. No provider access, call, simulation, model evaluation, runtime
+modification/activation, or Phase B lockbox access occurred. Push and merge
+remain separately gated.

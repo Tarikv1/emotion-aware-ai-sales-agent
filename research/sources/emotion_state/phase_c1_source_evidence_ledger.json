@@ -1,0 +1,59 @@
+{
+  "cards": [],
+  "fallback_assessments": [
+    {
+      "execution_authorized": false,
+      "material_evidence": [],
+      "preregistration_only": true,
+      "reason_codes": [
+        "annotation_fallback_unresolved"
+      ],
+      "signal": "hesitation",
+      "status": "unresolved"
+    },
+    {
+      "execution_authorized": false,
+      "material_evidence": [],
+      "preregistration_only": true,
+      "reason_codes": [
+        "annotation_fallback_unresolved"
+      ],
+      "signal": "frustration",
+      "status": "unresolved"
+    },
+    {
+      "execution_authorized": false,
+      "material_evidence": [],
+      "preregistration_only": true,
+      "reason_codes": [
+        "annotation_fallback_unresolved"
+      ],
+      "signal": "confusion",
+      "status": "unresolved"
+    },
+    {
+      "execution_authorized": false,
+      "material_evidence": [],
+      "preregistration_only": true,
+      "reason_codes": [
+        "annotation_fallback_unresolved"
+      ],
+      "signal": "interest",
+      "status": "unresolved"
+    },
+    {
+      "execution_authorized": false,
+      "material_evidence": [],
+      "preregistration_only": true,
+      "reason_codes": [
+        "annotation_fallback_unresolved"
+      ],
+      "signal": "disengagement",
+      "status": "unresolved"
+    }
+  ],
+  "protocol_sha256": "2540A1BA430F78B9F660BA466F6CFD7099CFFCAA6F1C1D1AC373F4BA1D4D2CCD",
+  "schema_version": "EmotionStatePhaseC1SourceEvidenceLedgerV1",
+  "search_ledger_sha256": "A6FCAA50123E4D67FF92D36E9755B4ED7C82306FCAA50B72ED26A478361365DB",
+  "sources": []
+}

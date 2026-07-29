@@ -1,0 +1,29 @@
+{
+  "forbidden_payload_keys": [
+    "audio",
+    "customer_id",
+    "feature",
+    "model_metric",
+    "participant_id",
+    "prediction",
+    "probability",
+    "transcript",
+    "utterance"
+  ],
+  "schema_version": "EmotionStatePhaseC1ContractFixturesV1",
+  "signals": [
+    "hesitation",
+    "frustration",
+    "confusion",
+    "interest",
+    "disengagement"
+  ],
+  "valid_card_ids": [
+    "c1-card-confusion-0001",
+    "c1-card-hesitation-0001"
+  ],
+  "valid_source_ids": [
+    "c1-source-0001",
+    "c1-source-0002"
+  ]
+}

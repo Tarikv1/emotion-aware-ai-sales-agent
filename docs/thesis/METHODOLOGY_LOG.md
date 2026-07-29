@@ -6170,3 +6170,499 @@ Interpretation:
 - Commit trace: aggregate runner `fd92aae6acf146d9271888bb264ecd29269cb870`; independent validator `5c461612f667e1a8727eedb9d2c08d9951b3aed0`; direct-launch correction `4c77f72bf7dc85e2e4587b9c03646716e5aec0ff`; candidate acceptance `77a2fb50ba00210cc75d410240c17115be83a415`; exact pair-only commit `62b6b65cf307270bfc2e98c7c08617252859948d`.
 - Guarded ledger: Phase C0 passed `177/177`; the pinned Phase B contract class passed `16/16`; all four validator sections, five repository gates, and four LF/compile/protected-runtime/diff checks exited `0`.
 - Scope: this is synthetic mechanics only. Phase B lockbox remains closed and cannot be reused. The checkpoint grants no runtime, provider, data, or Phase D authority; it makes no claim about customer internal emotion, emotion accuracy, policy enforcement, conversion improvement, real-call performance, or production readiness.
+
+### 2026-07-26 - EMOTION-STATE-004 Phase C1 operational-signal evidence-admission design
+
+- Objective: determine whether construct-valid observer-label evidence exists for hesitation, frustration, confusion, interest, and disengagement before any later offline model evaluation or policy work.
+- Lineage correction: the provisional original "Phase D" public-data experiment was materially absorbed by Phase B, whose accepted acted-perception result is `revise`. Phase C0 separately established only synthetic temporal mechanics. The selected successor is therefore Phase C1 evidence admission, not a duplicate use of the closed Phase B lockbox.
+- Approved evidence contract: decisions are independent per signal; `pass` requires direct observer annotations on spontaneous conversation at turn or bounded-segment granularity. Acted or scripted labels, emotion or dialogue proxies, whole-conversation labels, LLM labels, and a merely planned annotation study cannot produce `pass`.
+- Approved workflow: freeze a bounded source-discovery protocol before public research; screen authoritative documentation and metadata only; preserve rowless evidence cards; and permit a separately gated, preregistered three-or-more-rater public-data annotation fallback when existing annotations do not qualify. C1 contains no model evaluation.
+- Reliability and decisions: the future fallback uses pre-adjudication Krippendorff alpha with point estimate at least `0.80` and lower 95% bound at least `0.67` for `pass`. Overall outcomes are `proceed_full_to_c2`, `proceed_partial_to_c2`, `defer_c2`, or `stop_c2`; only per-signal `pass` values may enter a later C2 eligibility list.
+- Current boundary: this entry and the approved specification authorize documentation only. No network or public-source research, source retrieval, public or private material, audio, transcript, annotation, participant row, dependency, annotation execution, model work, external source adaptation, provider access, call, simulation, prompt or knowledge-base change, temporal-tracker or runtime change, candidate/canonical generation, lockbox access, push, merge, history rewrite, C2, policy adapter, shadow work, or runtime activation occurred or is authorized.
+
+### 2026-07-26 - EMOTION-STATE-004 Phase C1 implementation plan
+
+- Plan artifact: `docs/superpowers/plans/2026-07-26-emotion-state-phase-c1-operational-signal-evidence-admission.md`.
+- Planned structure: eleven independently reviewed tasks separate protocol/contracts, closed rowless transport and source receipts, bounded search, decision algebra, aggregate rendering, an independent validator, separately authorized public-metadata discovery, source-ledger freezing, caller-locked publication mechanics, ignored-candidate validation and independent review, and canonical closeout.
+- Fail-closed detail: all 80 direct-label and 8 fallback-material queries remain represented even when incomplete; every query/citation/document transport receipt is hash-reconciled against exact pre-freeze transport-ledger bytes under single-attempt request keys with no same-version retry; screened exclusions retain their transport lineage; each citation parent document must belong to its claimed source; citation-retained candidates require the same source/card screening as direct candidates; per-signal fail readiness is derived independently; fallback feasibility uses fact-specific same-source documents and cannot create `pass`; Task 1 freezes the existing discovery-endpoint registry entry read-only and adds its implementation evidence to this methodology log so the thesis-update gate remains satisfiable without registry drift; candidate validation binds exact live `HEAD`; canonical acceptance requires exact candidate, validation, and independent-review receipts; accepted cleanup is journal-recoverable; descendant canonical validation preserves the implementation-head blobs and exact pair-only commit lineage.
+- Current boundary: this is a plan-only checkpoint. No implementation, public research, network access, source retrieval, dataset or private-data read, annotation, audio or transcript read, model evaluation, external source adaptation, provider access, call, simulation, prompt or knowledge-base change, runtime change, candidate/canonical generation, push, merge, history rewrite, C2, policy adapter, shadow work, or runtime activation occurred or is authorized.
+
+### 2026-07-26 - EMOTION-STATE-004 Phase C1 Task 1 protocol freeze
+
+- Frozen scope: exact canonical discovery protocol
+  `research/experiments/configs/emotion-state-004-phase-c1-discovery-protocol.json`;
+  synthetic rowless fixture
+  `research/experiments/cases/emotion-state-004-phase-c1-contract-fixtures.json`;
+  protocol/status note
+  `research/experiments/EMOTION-STATE-004-phase-c1-operational-signal-evidence-admission.md`;
+  strict protocol and transport contracts
+  `scripts/emotion_state_phase_c1_contracts.py`; focused contract tests
+  `scripts/test_emotion_state_004_phase_c1.py`; the two exact-path LF rules in
+  `.gitattributes`; and this methodology trace. The thesis reference registry
+  was read and tested but not edited.
+- Byte authorities: the protocol is the exact semantic `Exact Discovery
+  Protocol` object rendered with sorted keys, two-space indentation, UTF-8,
+  no non-finite values, and one terminal LF; SHA-256
+  `2540A1BA430F78B9F660BA466F6CFD7099CFFCAA6F1C1D1AC373F4BA1D4D2CCD`.
+  The fixtures use the same renderer; SHA-256
+  `83FD0864B83FC4EAF0F0EF3E2DEAAF78FE64275D5A7B22A51061CCBD119A554D`.
+- Strict TDD evidence: before any production artifact existed, the exact
+  focused RED command exited `1` with two loader errors and
+  `ModuleNotFoundError: No module named
+  'scripts.emotion_state_phase_c1_contracts'`. After implementation, the
+  focused protocol/transport suite passed `12/12`, including exact nested
+  fallback/construct/reason-order checks, every top-level omission, unknown
+  key and metric, boolean-as-integer rejection, public-HTTPS and redirect
+  rejection, exact `c1-document-[0-9]{4}` request keys, rowless receipt shape,
+  purpose caps, canonical bytes, recursive immutability, registry stability,
+  fixtures, note prefix, and LF rules.
+- Local validators: the thesis reference registry guard passed with `0`
+  failures and `0` warnings; the project-drift guard passed with `0` failures
+  and `0` warnings; the context-reading policy passed; setup passed `567`
+  checks with `0` failures and `0` warnings and reported `Network calls made:
+  false`; both Phase C1 Python files compiled; and `git diff --check` exited
+  `0`.
+- Endpoint status: the existing four discovery endpoints remain in their
+  exact order and remain `not accessed; plan only`. Discovery-service results
+  remain non-authoritative and cannot admit a signal.
+- Closed boundary: no public research, network access, source retrieval,
+  dataset or private-data read, annotation, audio or transcript read, model
+  training or evaluation, external source adaptation, provider work, call,
+  simulation, prompt or knowledge-base change, runtime change or activation,
+  candidate or canonical generation, C2, push, merge, or history rewrite
+  occurred. This task freezes rowless contracts only and makes no claim about
+  customer internal emotion, model quality, sales performance, provider
+   behavior, real calls, safety, runtime behavior, or production readiness.
+
+### 2026-07-27 - EMOTION-STATE-004 Phase C1 Task 2 implementation checkpoint
+
+- Scope: implemented rowless source, document, reliability, evidence-card,
+  fallback, source-ledger, and review-receipt contracts in the existing Task 2
+  scripts. The genuine RED was three missing-parser errors; current focused
+  Task 2 passed `5/5`, full C1 `24/24`, and C0 `177/177` for the current
+  implementation/test bytes.
+- Fixture boundary: the synthetic valid-source fixture uses the already
+  registered OpenAlex endpoint only as inert test metadata; no network was
+  called.
+- Status: independent Task 2 review and final acceptance remain pending at this
+  implementation checkpoint. Existing closed boundaries remain unchanged; this
+  makes no production or customer-emotion claim.
+
+### 2026-07-27 - EMOTION-STATE-004 Phase C1 Task 2 technical-fix continuation
+
+- Review input: C0/I5/M0. Corrected review-hash category ordering before
+  first-occurrence deduplication; ledger-wide cross-source document ID/hash
+  uniqueness; all populated reliability-bound pair orderings; strict repeated
+  percent decoding for malformed escapes, encoded traversal/separators, and
+  controls; and source-reference validation before pair or fallback-order
+  checks.
+- Strict TDD/gates: a focused RED run produced `15` intended failures across
+  `10` tests before production changes; the focused post-fix suite passed
+  `10/10`. Broader local verification and independent re-review remain pending.
+- Status: this is an offline contract hardening continuation only. It makes no
+  source-admission, production, customer-emotion, or runtime claim.
+
+### 2026-07-27 - EMOTION-STATE-004 Phase C1 Task 2 regression-proof continuation
+
+- Re-review input: C0/I0/M2. Test-only corrections now assert the exact URL
+  failure code independently for each transport/document hazard and execute
+  the missing-card-source and missing-fallback-source proofs independently.
+  The complete-but-reordered and existing-noncandidate-source checks remain
+  separate exact-code assertions.
+- Strict proof: current test targets were replayed in fresh processes against
+  in-memory pre-fix contract bytes and failed for the expected prior behavior;
+  the same targets pass against the unchanged current production bytes. Final
+  local gates and independent re-review remain pending at this point.
+- Status: no production contract changed and no broader source-admission,
+  runtime, customer-emotion, or production claim is made.
+
+### 2026-07-27 - EMOTION-STATE-004 Phase C1 Task 2 source-order fixture continuation
+
+- Re-review input: C0/I0/M1. The complete-but-reordered source fixture now
+  derives its expected candidate pairs from its local search order and asserts
+  complete cards before reversing sources; it includes the valid interest card
+  for source `0002`.
+- Strict TDD: the completeness assertion first failed because that interest
+  card was absent, then passed after the test-only fixture correction; the
+  independent existing-noncandidate confusion-card exact-code proof remains
+  green. Final local gates and independent final re-review remain pending at
+  this point.
+- Status: no production contract changed and no broader source-admission,
+  runtime, customer-emotion, or production claim is made.
+
+### 2026-07-27 - EMOTION-STATE-004 Phase C1 Task 3 bounded search-ledger implementation checkpoint
+
+- Scope: implemented immutable rowless discovery, query, citation, and search-
+  ledger contracts; the exact ordered 80 direct-label plus 8 fallback-material
+  query grid; bounded deterministic candidate and overflow derivation; citation
+  attempt/hash binding; and independently derived `search_complete` and per-
+  signal `fail_ready` algebra in the existing Phase C1 contract and test
+  scripts.
+- Strict TDD: the exact focused RED command ran `23` tests and exited `1` with
+  `65` missing-interface errors rooted in absent
+  `expected_phase_c1_queries()` and `validate_search_ledger()`. A subsequent
+  mutation audit produced two separate RED runs whose two targets both failed
+  before each fix, covering duplicate-identity back-reference binding,
+  receipt-hash authority uniqueness, unaccounted same-lane identities/source
+  aliases, and cross-purpose receipt hashes. A final same-source cross-signal
+  regression failed on the over-broad identity rule before the lane-scoped
+  correction. Current focused Task 3 passes `26/26`; all Task 1-3 focused
+  classes and full Phase C1 pass `58/58`; Phase C0 passes `177/177`.
+- Local gates: both existing Phase C1 Python files compile; the context policy
+  and `git diff --check` pass; the thesis reference registry reports `0`
+  failures, `0` warnings, `1642` files, and `383` registered URLs; project
+  drift reports `0` failures, `0` warnings, and `4179` files; setup reports
+  `567` checks, `0` failures, `0` warnings, and no network calls. The explicit
+  three-path thesis-update gate passes with `3` changed files, `2` thesis-
+  triggering files, `1` thesis tracking file, `0` failures, and no network
+  calls.
+- Status and boundary: independent Task 3 review remains pending. This was
+  offline contract work only: no research or network access, source retrieval,
+  dataset or private-data read, row payload, provider access, call, simulation,
+  source adaptation, model work, runtime change or activation, candidate or
+  canonical output, lockbox access, push, merge, history rewrite, C2 work, or
+  production or customer-emotion claim occurred or is authorized.
+
+### 2026-07-27 - EMOTION-STATE-004 Phase C1 Task 3 review-fix continuation
+
+- Revised review input: `C1/I3/M1`. Corrected duplicate authority so discovery
+  duplicates stay within one direct-signal or fallback-material lane, citation
+  duplicates stay within one signal across both directions, and retained
+  identities bind bidirectionally to one candidate source while still entering
+  every applicable lane order. Corrected zero-record `budget_reached`
+  handling, explicit record-level reason partitions and unresolved
+  documentation lineage, full frozen-order citation-attempt review-hash union,
+  and raw duplicate citation-record ID detection.
+- Strict TDD: before the fix, the test-only focused run reproduced `16`
+  assertion failures and one contract error across the implicated search
+  invariants; the separately targeted review-hash proof also failed because
+  top-level attempt hashes without citation records were omitted. Current
+  focused Task 3 plus review-hash proof passes `31/31`; full Phase C1 passes
+  `62/62`; Phase C0 passes `177/177`.
+- Local gates: compilation, context policy, working-diff check, thesis
+  reference registry (`0` failures, `0` warnings, `1642` files, `383`
+  registered URLs), project drift (`0` failures, `0` warnings, `4180` files),
+  and setup (`567` checks, `0` failures, `0` warnings, no network calls, no
+  secret values logged) pass. The explicit three-path thesis-update and final
+  staged/scope gates are run after this entry.
+- Status and boundary: independent Task 3 re-review remains pending.
+  Search-ledger receipt-hash membership is rowless metadata validation only;
+  reconciliation against actual transport-ledger bytes remains exclusively a
+  Task 8 cross-ledger responsibility and was not added to
+  `validate_search_ledger`. This offline correction makes no source-admission,
+  data, provider, call, runtime, candidate, canonical, C2, production,
+  customer-emotion, performance, or safety claim and authorizes no such action.
+
+### 2026-07-27 - EMOTION-STATE-004 Phase C1 Task 4 offline admission-decision implementation
+
+- Scope: added a pure, immutable reliability, candidate-disposition,
+  per-signal, and overall-admission projection layer. It applies the frozen
+  alpha thresholds and positive-support boundary, checks claimed card results
+  against independent derivation, keeps C2 eligibility in frozen signal order,
+  and rejects protected refusal/stop/do-not-call vocabulary as a native
+  disengagement label.
+- Strict TDD: the focused RED command
+  `python -m unittest scripts.test_emotion_state_004_phase_c1.PhaseC1DecisionTests -v`
+  exited `1` because `scripts.emotion_state_phase_c1_decision` did not exist.
+  After the decision module was added, the focused class passed `9/9`. A
+  separate native-label RED then failed because no protected-intent error was
+  raised; after the parser boundary was added, the focused class passed `11/11`.
+- Status and boundary: local focused GREEN only. The complete Task 4 ledger,
+  independent specification/code-quality review, staging, and commit remain
+  pending. This was offline synthetic contract work only; no source discovery,
+  network or provider access, data/private-data read, customer-emotion or
+  runtime action, call, simulation, candidate/canonical output, C2 action,
+  push, merge, history rewrite, or production claim occurred or is authorized.
+
+### 2026-07-27 - EMOTION-STATE-004 Phase C1 Task 4 review-fix round 1
+
+- Review correction scope: bound projection to canonical reconstructed
+  protocol, search-ledger, and source-ledger bytes; revalidated the frozen
+  protocol; enforced same-source authoritative/public native-definition
+  evidence; checked every fallback-material claim; required complete ordered
+  disposition/card coverage; blocked `fail` on overflow; and normalized
+  protected disengagement-label intent vocabulary.
+- Strict TDD: the first strengthened focused run failed `7` assertions on the
+  missing native-definition lineage, material-status comparison, disposition
+  coverage, overflow fail guard, protected `don't call` handling, and the
+  protocol/search/source hash bindings. A subsequent Unicode-dash label RED
+  failed before normalization. The final focused class passes `15/15` and the
+  three modified Python modules compile.
+- Status and boundary: review-fix re-review and the complete controller ledger
+  remain pending. This remains offline synthetic contract work only; no source,
+  network, data/private-data, provider, call, simulation, runtime, candidate,
+  canonical, C2, push, merge, or production action or claim occurred.
+
+### 2026-07-27 - EMOTION-STATE-004 Phase C1 Task 4 review-fix round 2
+
+- Review correction scope: removed the unsupported lexical native-label equals
+  signal rule while retaining construct-correspondence gating; added source/card
+  identifier binding; made fallback unknown/cross-source document provenance
+  explicit; enforced fallback authorization flags; and independently blocked
+  `fail` for incomplete/truncated queries and incomplete/budget citation stops.
+- Strict TDD: isolated REDs reproduced the invalid lexical rejection of an
+  authoritative direct definition, missing source/card binding, unknown
+  fallback-document provenance, and incomplete-query/citation fail bypass.
+  Current focused decision class passes `18/18`; the modified Python modules
+  compile.
+- Status and boundary: independent re-review and complete controller ledger
+  remain pending. This remains offline synthetic contract work only; no source,
+  network, data/private-data, provider, call, simulation, runtime, candidate,
+  canonical, C2, push, merge, or production action or claim occurred.
+
+### 2026-07-27 - EMOTION-STATE-004 Phase C1 Task 4 review-fix round 3
+
+- Fixture correction: added a complete 88-query validator-produced projection
+  baseline with canonical search/source bytes and a review receipt derived from
+  the exact query/discovery/citation/source transport and document hashes.
+- Coverage: added coherent review-precedence and input-immutability proofs,
+  plus branch-sensitive assertions for the remaining observable candidate and
+  reliability reason codes. `source_identity_unverified` and
+  `raw_annotation_rows_required` remain intentionally outside decision
+  derivation: their frozen input dataclasses expose no safe observable fact
+  distinguishing either cause, so this layer does not invent a proxy.
+- Strict TDD: the new validator baseline and branch table were added after the
+  preceding isolated RED fixes; current focused decision class passes `21/21`
+  and the modified Python modules compile. Independent re-review remains
+  pending.
+
+### 2026-07-27 - EMOTION-STATE-004 Phase C1 Task 4 review-fix round 4
+
+- Decision correction: exact native labels that match the frozen excluded
+  proxy set for their signal now reject as `proxy_construct`; legitimate
+  authoritative direct labels remain free to use nonliteral wording.
+- Exhaustive decision coverage: validator-produced 88-query fixtures now prove
+  all four overall outcomes and the unresolved-card fail guard. Separate
+  validator-produced fallback fixtures prove feasible, unresolved,
+  missing-evidence, and mixed infeasible/unresolved material paths; the
+  cross-source document path raises
+  `fallback_fact_document_wrong_source`. Eight isolated causal mutations prove
+  direct-query incomplete/truncated, candidate/fallback overflow, and each
+  backward/forward budget-reached/incomplete citation stop independently block
+  signal `fail`. A valid preregistration-only feasible fallback remains
+  `defer` and never becomes C2-eligible.
+- Strict TDD: the focused decision class first failed exactly one new
+  assertion because native label `ambiguity` was admitted for `confusion`
+  instead of rejected as `proxy_construct`. After the exact frozen-proxy
+  comparison was added, the focused class passed `22/22`; after the complete
+  isolated matrix replaced redundant zero-query positive cases, the final
+  focused class passed `28/28`. The contracts, decision, and test modules
+  compile.
+- Status and boundary: independent re-review and the controller's complete
+  ledger, staging, and commit remain pending. This remains offline synthetic
+  contract work only; no source, network, research, data/private-data,
+  provider, call, simulation, runtime, candidate, canonical, C2, push, merge,
+  or production action or claim occurred.
+
+### 2026-07-27 - EMOTION-STATE-004 Phase C1 Task 4 eligibility-precedence correction
+
+- Parent-review finding: candidate derivation evaluated alpha reliability before
+  resolving mandatory source and labelling eligibility. With an otherwise
+  alpha-rejecting interval, an unresolved licence, annotation modality, observer
+  method, or adjudicated-only label could be promoted to `rejected`, allowing a
+  false signal `fail` and overall `stop_c2`.
+- Strict TDD: a complete validator-produced 88-query regression first ran `29`
+  focused tests and failed all four eligibility subcases with
+  `card_claim_mismatch`. Candidate derivation now returns known clear rejection
+  reasons first, mandatory unresolved eligibility reasons second, and evaluates
+  reliability only for fully documented direct-target, independent-human
+  candidates. The focused class then passed `29/29`.
+- Boundary: this is an offline precedence correction only. Parent re-review and
+  the corrective commit remain pending; no source, network, research,
+  data/private-data, provider, call, simulation, runtime, candidate, canonical,
+  C2, push, merge, or production action or claim occurred.
+
+### 2026-07-28 - EMOTION-STATE-004 Phase C1 Task 5 aggregate V2 working draft
+
+- Scope correction: the first rowless aggregate design did not carry enough
+  local evidence to validate its global reason-count allocation without a
+  solver. The working draft now emits only
+  `EmotionStatePhaseC1AggregateResultV2`; V1 rejects. V2 adds exact
+  per-signal/fallback search-lane counts, sorted sparse categorical
+  source-signature multiplicities with exact document counts, exact per-signal
+  fallback-material status counts, and per-card categorical
+  eligibility/reliability witnesses.
+- Independent local derivation: the result validator does not call the
+  production decision helpers. It rederives lane completeness, citation-anchor
+  order, signal fail readiness, source/document/role/card multiplicities,
+  candidate status and ordered reason codes, fallback status, signal decisions,
+  C2 eligibility, and the overall decision. The four search-meta reason-code
+  counts remain exactly zero; residual rejection and unresolved reason counts
+  reconcile only to exact card, discovery, citation, and fallback witnesses.
+  Published positive count greater than rated units rejects. Search discovery
+  cannot exceed 25 records per complete query; overflow requires the exact
+  direct/fallback order cap of 20/10; sparse source signatures reconcile the
+  exact global document count.
+- Strict TDD evidence: four focused V2 methods first produced seven expected
+  assertion failures while the builder still emitted V1 and accepted missing
+  local witnesses and impossible positive counts. The same focused methods
+  passed after implementation. Six comprehensive replacement methods covering
+  lane, signature, local-oracle, residual, fail-readiness, and size semantics
+  then passed `6/6`. After adapting still-valid legacy semantics, the aggregate
+  class passed `44/44`.
+- Frozen independent review returned `C0/I3/M3`: fallback feasibility was not
+  locally witnessed; lane discovery capacity and overflow saturation were not
+  enforced; global document count was not exact; the size test did not exercise
+  an actually oversized payload; this trace was stale; and thirteen retired V1
+  method bodies remained. Six strict RED methods exposed ten assertion failures
+  and one error. The correction adds exact fallback-material status counts,
+  lane capacity/saturation rules, signature-level document counts, early
+  encoded-size rejection, and removes all thirteen retired bodies. The six
+  focused methods pass `6/6`; the corrected aggregate class passes `50/50`.
+- A second frozen review returned `C0/I1/M1`. It demonstrated that swapping the
+  hesitation and frustration evidence-card hashes, updating their local
+  admissible lists, and recomputing the aggregate hash was accepted while the
+  global card-hash set and source-ledger hash stayed unchanged. It also showed
+  that the retired-body test checked a prefix none of the thirteen historical
+  methods used. The strict RED baseline reproduced the accepted 8,550-byte
+  report and the vacuous scanner; three focused methods then produced two
+  failures and six errors against the frozen production interface.
+- The second correction required caller-supplied canonical
+  `source_ledger_bytes` for result validation and report rendering. Both
+  remained pure in memory: they
+  verify the result-bound source-ledger hash and canonical envelope, parse each
+  evidence card, recompute its full canonical hash, and require exact
+  per-signal hash order. Missing, wrong, noncanonical, or cross-signal-swapped
+  bytes reject. The builder passes its existing bytes. The retired-body check
+  now freezes the thirteen exact historical `test_*` names and proves the
+  scanner catches a synthetic reintroduction. The focused methods pass `3/3`;
+  the aggregate class passes `52/52`.
+- A third frozen review returned `C0/I1/M1`. Exact source-card hash order was
+  now bound, but the other authoritative semantics were not. Independent
+  in-memory probes accepted seven coherent rewrite families: an unresolved
+  card made C2-eligible, a canonical blocked review treated as pass, search
+  facts rewritten while retaining the original search bytes/hash, an
+  incompatible license treated as admissible, infeasible source fallback
+  projected as feasible, forged source-ledger protocol/search links, and
+  independently rebound result protocol/search hashes. The review also found
+  that the early normative limitations lists still contained nine items while
+  Task 5 code/tests required ten.
+- Strict RED added three focused methods and produced `17` expected failures:
+  fourteen validator/renderer acceptance failures across the seven semantic
+  rewrite families, two one-input-interface failures, and one `9 != 10`
+  limitations failure. The correction factors the builder body into a pure,
+  nonrecursive deterministic projection helper. Public validation and rendering
+  now require exact canonical protocol, search-ledger, source-ledger, and
+  review-receipt bytes; verify all four hashes; fully validate their contracts
+  and cross-links; recompute the exact aggregate from those bytes and the
+  payload implementation identities; and require field-for-field canonical
+  equality in addition to the independent local V2 algebra. Private
+  local-algebra/render helpers are test-only and are not acceptance authority.
+  Wrong hashes, noncanonical bytes, wrong schemas, blocked review, incompatible
+  licensing, semantic rewrites, and cross-ledger rebindings reject. The exact
+  ten-item limitations contract is now consistent in plan, specification,
+  implementation, and tests.
+- Simplification and size boundary: the now-unreachable global reason-allocation
+  solver, its solver-only constants/types, and its cache import were removed.
+  The thirteen retired solver-internal test bodies were deleted after their V2
+  semantic coverage mapping was preserved.
+  The final result cap is `524288` canonical JSON bytes in both builder and
+  validator. The frozen maximum 100-card shape measures `155411` bytes.
+- Privacy and claim boundary: the result and report remain rowless, but sparse
+  source signatures and per-card categorical diagnostics may fingerprint public
+  source configurations; this limitation is now explicit. No source ID,
+  title, URL, path, row, participant, transcript, audio, prediction,
+  probability, feature, or model metric is emitted.
+- Verification status: this is an uncommitted working draft. The four-input
+  correction passes focused consistency tests `4/4`, the aggregate class
+  `56/56`, full Phase C1 `147/147`, and full Phase C0 `177/177`. The
+  thesis-update gate reports seven changed paths, four triggering paths, one
+  methodology trace, and zero failures; the thesis-reference guard reports
+  1,644 files, 383 registered URLs, and zero issues; the drift guard reports
+  4,187 files and zero issues; context policy passes; and setup reports 567
+  checks and zero issues. Exact final-byte audits and a new independent
+  `C0/I0/M0` review remain pending. No network,
+  source discovery, public or private data read, provider access, call,
+  simulation, model evaluation, source adaptation, runtime action, candidate or
+  canonical output, Task 6, C2, push, merge, or history rewrite occurred or is
+  authorized.
+
+### 2026-07-28 - EMOTION-STATE-004 Phase C1 Task 8 rowless source-ledger freeze
+
+- Scope and network boundary: Task 7 alone used the frozen bounded
+  public-metadata network scope. Task 8 reopened no network and reviewed the
+  exact Task 7 ignored package/cache before freezing only tracked rowless
+  ledgers and an attestation. No authoritative document, dataset material,
+  annotation row, private data, model, provider, call, or runtime was read or
+  used.
+- Byte authorities: frozen protocol SHA-256
+  `2540A1BA430F78B9F660BA466F6CFD7099CFFCAA6F1C1D1AC373F4BA1D4D2CCD`;
+  ignored transport ledger SHA-256
+  `D95F508F336B19C1C4F86C733ECD0910AE7C28396CE4FE4B3BB125A3E785D693`;
+  tracked search ledger `572,660` bytes / SHA-256
+  `A6FCAA50123E4D67FF92D36E9755B4ED7C82306FCAA50B72ED26A478361365DB`;
+  tracked source ledger `1,566` bytes / SHA-256
+  `81FB1301287F0E3E8FA0E21840B1B596028509C11FAAC75D6D6F8914051D0B58`;
+  and admitted review receipt `7,207` bytes / SHA-256
+  `4B489D77BFC948B84F8A6BC73A30DC1068138D6ABD2A563EB7FD43BFE9224E11`.
+- Reviewed transport/cache totals: exactly `88` requests, `41` complete and
+  `47` incomplete; direct-label-source requests `37` complete / `43`
+  incomplete; fallback-material requests `4` complete / `4` incomplete. The
+  cache holds `41` files totaling `14,567,576` bytes.
+- Search/source outcome: `1,025` discoveries consist of `971`
+  `authoritative_provenance_unverified` unresolved records plus `54`
+  duplicates. There are `0` retained candidates, `0` excluded candidates, `0`
+  citations, `0` source documents, `0` sources, and `0` cards. The five
+  protocol-required fallback assessments are unresolved;
+  `search_complete=false`; and all five `fail_ready` values are `false`.
+- Independent Task 8 review: `C0/I0/M0`. The `admitted` verdict attests exact
+  rowless package integrity only. It admits no signal evidence, produces no
+  candidate/canonical pair or signal decision, and opens no
+  C2/model/runtime/provider/call gate. There are zero authoritative retained
+  URLs to add to the registry.
+# Task 9 — caller-locked publication boundary
+
+Task 9 implemented and tested fixed-path publication capabilities only in
+OS-managed temporary roots. It produced no real candidate or canonical output,
+did not invoke a provider, runtime, or C2 activity, and leaves both candidate
+and canonical publication gates closed pending the separate review and commit
+gate.
+
+### 2026-07-29 - EMOTION-STATE-004 Phase C1 Task 10 review-hash procedure correction
+
+- Root cause and evidence: Windows PowerShell `Get-FileHash(...).Hash` emits
+  uppercase hex while the independent validator requires lowercase canonical
+  SHA-256. A focused temporary-workspace execution test of the extracted frozen
+  Task 10 Step 6 procedure first failed with the expected uppercase/lowercase
+  receipt mismatch, then passed after the procedure applied
+  `.ToLowerInvariant()`.
+- Preserved lineage and recovery boundary: the existing candidate and invalid
+  candidate-review receipt remain untouched production evidence. A separate
+  ignored helper received synthetic RED/GREEN coverage for its fixed one-file
+  no-overwrite quarantine rename and complete-state readback; it was not run
+  against this worktree.
+- Closed boundaries: this correction created no replacement review receipt and
+  did not read private data or datasets, use network/providers/calls/models,
+  run simulations or runtime actions, prepare/accept canonical output, enter
+  C2/Task 11, commit, push, merge, or rewrite history.
+
+### 2026-07-29 - EMOTION-STATE-004 Phase C1 canonical evidence-admission closeout
+
+Canonical status: accepted. Overall decision: defer_c2. Per-signal decisions:
+hesitation=defer; frustration=defer; confusion=defer; interest=defer;
+disengagement=defer. C2-eligible signals: none. Counts:
+queries=88; sources=0; cards=0.
+
+- Protocol/search/source/source-review SHA-256:
+  `2540A1BA430F78B9F660BA466F6CFD7099CFFCAA6F1C1D1AC373F4BA1D4D2CCD` /
+  `A6FCAA50123E4D67FF92D36E9755B4ED7C82306FCAA50B72ED26A478361365DB` /
+  `81FB1301287F0E3E8FA0E21840B1B596028509C11FAAC75D6D6F8914051D0B58` /
+  `4B489D77BFC948B84F8A6BC73A30DC1068138D6ABD2A563EB7FD43BFE9224E11`.
+- Candidate receipt / validation / review SHA-256:
+  `B0CB4466B5AEA3C76A890F9BE5523448FC609888705B2F6815587E21453D6424` /
+  `5478BE04D396356A4CFE80F048F39D6B4AB855395EB3404FC2B58F4699DDFB0D` /
+  `3B8D9F874990C9C2FBE1664FE1155392984D278FFB4F5E9BB74913469F8D0336`.
+- Canonical result / report SHA-256:
+  `8F9B8D1EB088CC7025F77F34FF83928C53DA2112A0A0D300E59DD5C7A7C3D637` /
+  `15B5285A8B18E9E8C5A36A71CBB8202EF0F72370C91F9CB8AD80271F8BF38CDD`.
+- Source review: admitted (C0/I0/M0). Candidate review: admitted (C0/I0/M0).
+  The exact pair-only checkpoint commit is
+  `d1f78f321f4d01512944dfa7499d819cb10d7a5c`.
+
+This is a rowless public-label admission decision only. It does not infer
+customer emotion or claim real-call, provider, latency, safety, conversion,
+production, or commercial behavior. It authorizes neither C2 nor runtime. No
+private data, dataset/annotation rows, audio, or transcripts were read. No
+provider access, call, simulation, model evaluation, runtime
+modification/activation, or Phase B lockbox access occurred. Push and merge
+remain separate gates.
