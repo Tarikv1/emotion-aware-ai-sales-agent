@@ -1,0 +1,14 @@
+{
+  "provider": "ElevenLabs",
+  "tier": "creator",
+  "status": "active",
+  "character_count_before": 235961,
+  "character_count_after": 236524,
+  "character_delta": 563,
+  "character_limit": 264135,
+  "remaining_after": 27611,
+  "overage_amount_usd": "0",
+  "simulation_count": 1,
+  "full_suite_runs": 0,
+  "outbound_calls": 0
+}

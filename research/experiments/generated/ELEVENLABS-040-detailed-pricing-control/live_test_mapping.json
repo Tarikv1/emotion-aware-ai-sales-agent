@@ -1,0 +1,272 @@
+{
+  "checkpoint_id": "ELEVENLABS-040-detailed-pricing-control",
+  "captured_at_utc": "2026-07-12T20:30:28Z",
+  "folder": {
+    "name": "ELEVENLABS-040-detailed-pricing-control",
+    "folder_id": "tfld_0801kx9ddk7rfzy92z9q5adst7h1",
+    "reused_existing": true,
+    "created_in_this_run": false,
+    "parent_folder_id": "root"
+  },
+  "tests": [
+    {
+      "source_test_id": "sim_040_capability_question_no_unprompted_price",
+      "provider_test_name": "ELEVENLABS-040-detailed-pricing-control::sim_040_capability_question_no_unprompted_price",
+      "provider_test_id": "test_9101kx9ddm04f0e8tjnwzja893a6",
+      "reused_existing": true,
+      "created_in_this_run": false,
+      "body_canonical_sha256": "37dc96cfb5057c19e3634e9d0d1e1352d13c641b6172ad6ec33a9af21592edd6",
+      "provider_status_code": 200
+    },
+    {
+      "source_test_id": "sim_040_free_mockup_question_no_paid_price",
+      "provider_test_name": "ELEVENLABS-040-detailed-pricing-control::sim_040_free_mockup_question_no_paid_price",
+      "provider_test_id": "test_3801kx9ddm7wefzvapxjdf51xbq3",
+      "reused_existing": true,
+      "created_in_this_run": false,
+      "body_canonical_sha256": "a2a1b165aa113b78a33f8bdea0329a8fe58b82e8ec1434395d679fa7bd1f393b",
+      "provider_status_code": 200
+    },
+    {
+      "source_test_id": "sim_040_basic_site_direct_price",
+      "provider_test_name": "ELEVENLABS-040-detailed-pricing-control::sim_040_basic_site_direct_price",
+      "provider_test_id": "test_0201kx9ddmfpeyh9mes2znh3j98b",
+      "reused_existing": true,
+      "created_in_this_run": false,
+      "body_canonical_sha256": "fbfd4a0e312aa0756fdee3c132576fb898224f9780fdd0e5327c0ef975e8bfb3",
+      "provider_status_code": 200
+    },
+    {
+      "source_test_id": "sim_040_existing_site_request_form_add_on",
+      "provider_test_name": "ELEVENLABS-040-detailed-pricing-control::sim_040_existing_site_request_form_add_on",
+      "provider_test_id": "test_3801kx9ddmqnfsq97d7xym9qy01x",
+      "reused_existing": true,
+      "created_in_this_run": false,
+      "body_canonical_sha256": "a627d1f1d69d484924ff76ccab22f4c230a48f3b7981a87f19ca2a48d391c337",
+      "provider_status_code": 200
+    },
+    {
+      "source_test_id": "sim_040_new_site_booking_whole_project",
+      "provider_test_name": "ELEVENLABS-040-detailed-pricing-control::sim_040_new_site_booking_whole_project",
+      "provider_test_id": "test_1301kx9ddmz7fh3vge8255tw9h2d",
+      "reused_existing": true,
+      "created_in_this_run": false,
+      "body_canonical_sha256": "0566d2d276a562d38a8b5ee710fab75b38a80dffa05e0970b6447c3116983ea2",
+      "provider_status_code": 200
+    },
+    {
+      "source_test_id": "sim_040_multi_feature_no_price_stacking",
+      "provider_test_name": "ELEVENLABS-040-detailed-pricing-control::sim_040_multi_feature_no_price_stacking",
+      "provider_test_id": "test_9001kx9ddn6gfb0rbpcxdq5jjbc5",
+      "reused_existing": true,
+      "created_in_this_run": false,
+      "body_canonical_sha256": "a49c2110e1742e255f8bc042c3362bba98d808cadad2b6509ca6d607d37d6fdb",
+      "provider_status_code": 200
+    },
+    {
+      "source_test_id": "sim_040_direct_crm_integration_existing_site",
+      "provider_test_name": "ELEVENLABS-040-detailed-pricing-control::sim_040_direct_crm_integration_existing_site",
+      "provider_test_id": "test_0101kx9ddndtfawsgcrcjg72ycce",
+      "reused_existing": true,
+      "created_in_this_run": false,
+      "body_canonical_sha256": "749efa1c7a4c42e06e23ec7cca15ac69735bce06b26650ee1b2b18c1b28a63ff",
+      "provider_status_code": 200
+    },
+    {
+      "source_test_id": "sim_040_portal_requires_scope",
+      "provider_test_name": "ELEVENLABS-040-detailed-pricing-control::sim_040_portal_requires_scope",
+      "provider_test_id": "test_5201kx9ddnp4fpdrerx807xpfzv9",
+      "reused_existing": true,
+      "created_in_this_run": false,
+      "body_canonical_sha256": "226b4d5fcdda766da402c7e53e00358d5f7ee596bfb18ff979aa2716c8f6b990",
+      "provider_status_code": 200
+    },
+    {
+      "source_test_id": "sim_040_budget_fit_direct_answer",
+      "provider_test_name": "ELEVENLABS-040-detailed-pricing-control::sim_040_budget_fit_direct_answer",
+      "provider_test_id": "test_0901kx9ddnw8eyfrj2r1n9vwvze1",
+      "reused_existing": true,
+      "created_in_this_run": false,
+      "body_canonical_sha256": "b8382a7676800d96ca8a85eae1795fc43f0c482160ab8f2da3cb2ee2d5969d88",
+      "provider_status_code": 200
+    },
+    {
+      "source_test_id": "sim_040_care_plan_only_when_asked",
+      "provider_test_name": "ELEVENLABS-040-detailed-pricing-control::sim_040_care_plan_only_when_asked",
+      "provider_test_id": "test_6101kx9ddp3cf0w9fqtvqwm21esx",
+      "reused_existing": true,
+      "created_in_this_run": false,
+      "body_canonical_sha256": "305167f89beddac8d13a8bc291f97a5e4fbe8a2cd0fb3d39c757b1f3bd3a993f",
+      "provider_status_code": 200
+    }
+  ],
+  "duplicate_prevention": {
+    "exact_folder_match_count": 1,
+    "exact_test_name_conflicts": [],
+    "outside_folder_conflicts": [],
+    "semantic_mismatches": []
+  },
+  "ownership": {
+    "proof_type": "repair_owned_context_lineage_v1",
+    "lineage_sha256": "893a5b7d7b5565c3b1282b76fcb3a5edf10f360e3e67da1aeb0f9045de30d869",
+    "validated_lineage": {
+      "checkpoint_id": "ELEVENLABS-040-detailed-pricing-control",
+      "status": "completed",
+      "mode": "repair_owned_context",
+      "folder_id": "tfld_0801kx9ddk7rfzy92z9q5adst7h1",
+      "folder_membership_verified_count": 10,
+      "repaired_test_count": 10,
+      "repaired_tests": [
+        {
+          "source_test_id": "sim_040_capability_question_no_unprompted_price",
+          "provider_test_id": "test_9101kx9ddm04f0e8tjnwzja893a6",
+          "provider_test_name": "ELEVENLABS-040-detailed-pricing-control::sim_040_capability_question_no_unprompted_price",
+          "provider_status_code": 200
+        },
+        {
+          "source_test_id": "sim_040_free_mockup_question_no_paid_price",
+          "provider_test_id": "test_3801kx9ddm7wefzvapxjdf51xbq3",
+          "provider_test_name": "ELEVENLABS-040-detailed-pricing-control::sim_040_free_mockup_question_no_paid_price",
+          "provider_status_code": 200
+        },
+        {
+          "source_test_id": "sim_040_basic_site_direct_price",
+          "provider_test_id": "test_0201kx9ddmfpeyh9mes2znh3j98b",
+          "provider_test_name": "ELEVENLABS-040-detailed-pricing-control::sim_040_basic_site_direct_price",
+          "provider_status_code": 200
+        },
+        {
+          "source_test_id": "sim_040_existing_site_request_form_add_on",
+          "provider_test_id": "test_3801kx9ddmqnfsq97d7xym9qy01x",
+          "provider_test_name": "ELEVENLABS-040-detailed-pricing-control::sim_040_existing_site_request_form_add_on",
+          "provider_status_code": 200
+        },
+        {
+          "source_test_id": "sim_040_new_site_booking_whole_project",
+          "provider_test_id": "test_1301kx9ddmz7fh3vge8255tw9h2d",
+          "provider_test_name": "ELEVENLABS-040-detailed-pricing-control::sim_040_new_site_booking_whole_project",
+          "provider_status_code": 200
+        },
+        {
+          "source_test_id": "sim_040_multi_feature_no_price_stacking",
+          "provider_test_id": "test_9001kx9ddn6gfb0rbpcxdq5jjbc5",
+          "provider_test_name": "ELEVENLABS-040-detailed-pricing-control::sim_040_multi_feature_no_price_stacking",
+          "provider_status_code": 200
+        },
+        {
+          "source_test_id": "sim_040_direct_crm_integration_existing_site",
+          "provider_test_id": "test_0101kx9ddndtfawsgcrcjg72ycce",
+          "provider_test_name": "ELEVENLABS-040-detailed-pricing-control::sim_040_direct_crm_integration_existing_site",
+          "provider_status_code": 200
+        },
+        {
+          "source_test_id": "sim_040_portal_requires_scope",
+          "provider_test_id": "test_5201kx9ddnp4fpdrerx807xpfzv9",
+          "provider_test_name": "ELEVENLABS-040-detailed-pricing-control::sim_040_portal_requires_scope",
+          "provider_status_code": 200
+        },
+        {
+          "source_test_id": "sim_040_budget_fit_direct_answer",
+          "provider_test_id": "test_0901kx9ddnw8eyfrj2r1n9vwvze1",
+          "provider_test_name": "ELEVENLABS-040-detailed-pricing-control::sim_040_budget_fit_direct_answer",
+          "provider_status_code": 200
+        },
+        {
+          "source_test_id": "sim_040_care_plan_only_when_asked",
+          "provider_test_id": "test_6101kx9ddp3cf0w9fqtvqwm21esx",
+          "provider_test_name": "ELEVENLABS-040-detailed-pricing-control::sim_040_care_plan_only_when_asked",
+          "provider_status_code": 200
+        }
+      ],
+      "operation_ledger": {
+        "attempt_count": 10,
+        "success_count": 10,
+        "failure_count": 0,
+        "failed_request_id": null,
+        "failed_error": null,
+        "attempts": [
+          {
+            "request_id": "repair_test::sim_040_capability_question_no_unprompted_price",
+            "operation": "repair-owned-context",
+            "method": "PUT",
+            "endpoint": "/v1/convai/agent-testing/test_9101kx9ddm04f0e8tjnwzja893a6",
+            "status": "succeeded",
+            "status_code": 200
+          },
+          {
+            "request_id": "repair_test::sim_040_free_mockup_question_no_paid_price",
+            "operation": "repair-owned-context",
+            "method": "PUT",
+            "endpoint": "/v1/convai/agent-testing/test_3801kx9ddm7wefzvapxjdf51xbq3",
+            "status": "succeeded",
+            "status_code": 200
+          },
+          {
+            "request_id": "repair_test::sim_040_basic_site_direct_price",
+            "operation": "repair-owned-context",
+            "method": "PUT",
+            "endpoint": "/v1/convai/agent-testing/test_0201kx9ddmfpeyh9mes2znh3j98b",
+            "status": "succeeded",
+            "status_code": 200
+          },
+          {
+            "request_id": "repair_test::sim_040_existing_site_request_form_add_on",
+            "operation": "repair-owned-context",
+            "method": "PUT",
+            "endpoint": "/v1/convai/agent-testing/test_3801kx9ddmqnfsq97d7xym9qy01x",
+            "status": "succeeded",
+            "status_code": 200
+          },
+          {
+            "request_id": "repair_test::sim_040_new_site_booking_whole_project",
+            "operation": "repair-owned-context",
+            "method": "PUT",
+            "endpoint": "/v1/convai/agent-testing/test_1301kx9ddmz7fh3vge8255tw9h2d",
+            "status": "succeeded",
+            "status_code": 200
+          },
+          {
+            "request_id": "repair_test::sim_040_multi_feature_no_price_stacking",
+            "operation": "repair-owned-context",
+            "method": "PUT",
+            "endpoint": "/v1/convai/agent-testing/test_9001kx9ddn6gfb0rbpcxdq5jjbc5",
+            "status": "succeeded",
+            "status_code": 200
+          },
+          {
+            "request_id": "repair_test::sim_040_direct_crm_integration_existing_site",
+            "operation": "repair-owned-context",
+            "method": "PUT",
+            "endpoint": "/v1/convai/agent-testing/test_0101kx9ddndtfawsgcrcjg72ycce",
+            "status": "succeeded",
+            "status_code": 200
+          },
+          {
+            "request_id": "repair_test::sim_040_portal_requires_scope",
+            "operation": "repair-owned-context",
+            "method": "PUT",
+            "endpoint": "/v1/convai/agent-testing/test_5201kx9ddnp4fpdrerx807xpfzv9",
+            "status": "succeeded",
+            "status_code": 200
+          },
+          {
+            "request_id": "repair_test::sim_040_budget_fit_direct_answer",
+            "operation": "repair-owned-context",
+            "method": "PUT",
+            "endpoint": "/v1/convai/agent-testing/test_0901kx9ddnw8eyfrj2r1n9vwvze1",
+            "status": "succeeded",
+            "status_code": 200
+          },
+          {
+            "request_id": "repair_test::sim_040_care_plan_only_when_asked",
+            "operation": "repair-owned-context",
+            "method": "PUT",
+            "endpoint": "/v1/convai/agent-testing/test_6101kx9ddp3cf0w9fqtvqwm21esx",
+            "status": "succeeded",
+            "status_code": 200
+          }
+        ]
+      }
+    }
+  }
+}

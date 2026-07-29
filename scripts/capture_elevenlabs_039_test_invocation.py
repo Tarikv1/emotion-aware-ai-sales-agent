@@ -195,6 +195,18 @@ def test_info_value(run: dict[str, Any], *keys: str) -> Any:
     return first_value(*candidates)
 
 
+def agent_responses_value(run: dict[str, Any], info: dict[str, Any], *, test_id: str) -> list[Any]:
+    if "agent_responses" in run:
+        responses = run["agent_responses"]
+    elif "agent_responses" in info:
+        responses = info["agent_responses"]
+    else:
+        raise ValueError(f"{test_id or 'run'} agent_responses must be present")
+    if not isinstance(responses, list):
+        raise ValueError(f"{test_id or 'run'} agent_responses must be a list")
+    return responses
+
+
 def sanitized_result_groups(raw: Any) -> list[dict[str, Any]]:
     if not isinstance(raw, list):
         return []
@@ -230,9 +242,7 @@ def sanitize_run(run: Any, *, result_rationale_by_test_id: dict[str, str]) -> di
     test_name = str(first_value(run.get("test_name"), provider_test_id) or "")
     test_id = test_name.rsplit("::", 1)[-1] if test_name.startswith(f"{CHECKPOINT_ID}::") else provider_test_id
     info = run.get("test_info") if isinstance(run.get("test_info"), dict) else {}
-    responses = first_value(run.get("agent_responses"), info.get("agent_responses"), [])
-    if not isinstance(responses, list):
-        raise ValueError(f"{test_id or 'run'} agent_responses must be a list")
+    responses = agent_responses_value(run, info, test_id=test_id)
 
     models: dict[str, Any] = {}
     for key in (

@@ -1,0 +1,192 @@
+{
+  "captured_at_utc": "2026-07-12T17:23:56Z",
+  "payload_sha256": "ec79dd4cbdd34084e8f9338790270e05ab1efae643125127a1e0637446bf43dc",
+  "payload": {
+    "checkpoint_id": "ELEVENLABS-040-detailed-pricing-control",
+    "invocation_id": "suite_1201kxbnngyzeff9kseg1rayz9t6",
+    "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+    "test_runs": [
+      {
+        "test_run_id": "trun_7901kxbnngz2ephak8d2666sy0x6",
+        "test_invocation_id": "suite_1201kxbnngyzeff9kseg1rayz9t6",
+        "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+        "test_id": "sim_040_portal_requires_scope",
+        "provider_test_id": "test_5201kx9ddnp4fpdrerx807xpfzv9",
+        "test_name": "ELEVENLABS-040-detailed-pricing-control::sim_040_portal_requires_scope",
+        "scenario": "Buyer asks how much a parent portal with accounts and progress dashboards costs.",
+        "success_conditions": [
+          "Pass: no numeric quote or ceiling; scope accounts, data, permissions, security, and integrations."
+        ],
+        "models": {
+          "simulated_user_model": "gemini-2.5-flash",
+          "evaluation_model": "gemini-2.5-flash"
+        },
+        "status": "passed",
+        "condition_result": {
+          "result": "success",
+          "rationale": {
+            "messages": [
+              "The agent consistently refused to provide a numeric quote or ceiling, stating it needed proper scoping. It also repeatedly mentioned scoping accounts, database/data, permissions, security, and integrations as necessary steps before providing a quote.",
+              "The conversation reached the maximum number of turns."
+            ],
+            "summary": "Evaluation succeeded"
+          }
+        },
+        "evaluator_rationale": "{'messages': ['The agent consistently refused to provide a numeric quote or ceiling, stating it needed proper scoping. It also repeatedly mentioned scoping accounts, database/data, permissions, security, and integrations as necessary steps before providing a quote.', 'The conversation reached the maximum number of turns.'], 'summary': 'Evaluation succeeded'}",
+        "agent_responses": [
+          {
+            "role": "agent",
+            "source_medium": null,
+            "time": 27,
+            "tool_results": [],
+            "message": "Hi, this is Emma from Atlas Web Studio. I had Acme Dental down as a dental clinic in Phoenix. Am I speaking with the owner or someone who handles the website there?",
+            "tool_calls": [],
+            "interrupted": false,
+            "original_message": null
+          },
+          {
+            "role": "user",
+            "source_medium": "text",
+            "time": 27,
+            "tool_results": [],
+            "message": "Yeah, that's me. I'm calling about a parent portal for our website.Yeah, that's me. I'm calling about a parent portal for our website.",
+            "tool_calls": [],
+            "interrupted": false,
+            "original_message": null
+          },
+          {
+            "role": "agent",
+            "source_medium": null,
+            "time": 27,
+            "tool_results": [],
+            "message": "A working parent login is custom. I can't give a real number until we scope accounts, database, permissions, security, and integrations. Are you looking for parents to just submit information, or actually log in and view private records?",
+            "tool_calls": [],
+            "interrupted": false,
+            "original_message": null
+          },
+          {
+            "role": "user",
+            "source_medium": "text",
+            "time": 27,
+            "tool_results": [],
+            "message": "They'd need to log in and see their kids' progress.",
+            "tool_calls": [],
+            "interrupted": false,
+            "original_message": null
+          },
+          {
+            "role": "agent",
+            "source_medium": null,
+            "time": 27,
+            "tool_results": [],
+            "message": "That would be a true portal, because it involves accounts, private data, permissions, and secure access. The free homepage mockup can show where a parent portal entry point would sit, but it would not include the working login or dashboard behind it. If it helps, I can have a homepage concept put together so you can see how that would fit on the site.",
+            "tool_calls": [],
+            "interrupted": false,
+            "original_message": null
+          },
+          {
+            "role": "user",
+            "source_medium": "text",
+            "time": 27,
+            "tool_results": [],
+            "message": "Okay, but what about the cost for the actual portal, with the login and everything?",
+            "tool_calls": [],
+            "interrupted": false,
+            "original_message": null
+          },
+          {
+            "role": "agent",
+            "source_medium": null,
+            "time": 27,
+            "tool_results": [],
+            "message": "A working parent login is custom. I can't give a real number until we scope accounts, database, permissions, security, and integrations. The biggest driver is whether the progress data is entered manually by staff or pulled from another system. Which one would it be?",
+            "tool_calls": [],
+            "interrupted": false,
+            "original_message": null
+          },
+          {
+            "role": "user",
+            "source_medium": "text",
+            "time": 27,
+            "tool_results": [],
+            "message": "It would be entered manually by staff. But seriously, can you give me a ballpark figure for this?",
+            "tool_calls": [],
+            "interrupted": false,
+            "original_message": null
+          },
+          {
+            "role": "agent",
+            "source_medium": null,
+            "time": 27,
+            "tool_results": [],
+            "message": "I still can't give a real ballpark for a portal without scoping the account structure, staff roles, data fields, privacy requirements, and admin workflow. Manual entry is simpler than an integration, but it is still custom development because private child records and permissions are involved. The right next step would be scoping the portal requirements before quoting it.",
+            "tool_calls": [],
+            "interrupted": false,
+            "original_message": null
+          },
+          {
+            "role": "user",
+            "source_medium": "text",
+            "time": 27,
+            "tool_results": [],
+            "message": "So you can't even give me a rough idea? Like, is it thousands or tens of thousands?",
+            "tool_calls": [],
+            "interrupted": false,
+            "original_message": null
+          },
+          {
+            "role": "agent",
+            "source_medium": null,
+            "time": 27,
+            "tool_results": [],
+            "message": "It would be custom, so I do not want to give a fake ceiling or a misleading range. With private logins and child progress records, it is definitely not a small add-on like a basic form. It needs proper scoping before anyone can price it responsibly.",
+            "tool_calls": [],
+            "interrupted": false,
+            "original_message": null
+          },
+          {
+            "role": "user",
+            "source_medium": "text",
+            "time": 27,
+            "tool_results": [],
+            "message": "So you're saying it could be, like, hundreds of thousands? I just need some idea.",
+            "tool_calls": [],
+            "interrupted": false,
+            "original_message": null
+          },
+          {
+            "role": "agent",
+            "source_medium": null,
+            "time": 27,
+            "tool_results": [],
+            "message": "I\u2019m not saying that. I\u2019m saying I can\u2019t responsibly price a private portal from a quick call, because the scope depends on accounts, permissions, data fields, security, and staff workflow. If you want, the free homepage mockup can at least show how the portal entry point would fit visually, while the actual portal would need a separate scope.",
+            "tool_calls": [],
+            "interrupted": false,
+            "original_message": null
+          },
+          {
+            "role": "user",
+            "source_medium": "text",
+            "time": 27,
+            "tool_results": [],
+            "message": "Okay, but I just need to know if this is a huge project or a smaller one. I can't even get a general idea?",
+            "tool_calls": [],
+            "interrupted": false,
+            "original_message": null
+          },
+          {
+            "role": "agent",
+            "source_medium": null,
+            "time": 27,
+            "tool_results": [],
+            "message": "It is a custom project, not a small website add-on. Manual staff entry makes it less complex than pulling data from another system, but private parent accounts and child progress records still make it something that needs proper scoping. I would treat it as a serious custom build rather than a quick feature.",
+            "tool_calls": [],
+            "interrupted": false,
+            "original_message": null
+          }
+        ]
+      }
+    ],
+    "result_groups": []
+  }
+}

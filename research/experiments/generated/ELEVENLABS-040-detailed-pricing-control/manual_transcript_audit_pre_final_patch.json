@@ -1,0 +1,22 @@
+{
+  "checkpoint_id": "ELEVENLABS-040-detailed-pricing-control",
+  "capture": "live_test_capture_verified_final.json",
+  "invocation_id": "suite_8701kxbz5tktfh4tb0jfpvsmjdkt",
+  "audit_scope": "pre-final-product-patch",
+  "provider_pass_count": 10,
+  "manual_pass_count": 3,
+  "manual_fail_count": 7,
+  "tests": [
+    {"test_id": "sim_040_capability_question_no_unprompted_price", "manual_status": "pass", "note": "No paid price disclosed."},
+    {"test_id": "sim_040_free_mockup_question_no_paid_price", "manual_status": "pass", "note": "No paid website price disclosed."},
+    {"test_id": "sim_040_basic_site_direct_price", "manual_status": "fail", "note": "Price chain reopened the mockup and email path."},
+    {"test_id": "sim_040_existing_site_request_form_add_on", "manual_status": "pass", "note": "Stayed on the existing-site request-form range."},
+    {"test_id": "sim_040_new_site_booking_whole_project", "manual_status": "fail", "note": "First price response appended a mockup CTA; the capture also contains a duplicated simulated-user utterance artifact."},
+    {"test_id": "sim_040_multi_feature_no_price_stacking", "manual_status": "fail", "note": "Stacked basic-site and CRM/API ranges instead of holding the whole-project band."},
+    {"test_id": "sim_040_direct_crm_integration_existing_site", "manual_status": "fail", "note": "Leaked the request-form range and later reopened the mockup path."},
+    {"test_id": "sim_040_portal_requires_scope", "manual_status": "fail", "note": "Correctly withheld numeric pricing but offered a mockup during the portal scope chain."},
+    {"test_id": "sim_040_budget_fit_direct_answer", "manual_status": "fail", "note": "Correct fit answer, but the first price response appended a mockup CTA."},
+    {"test_id": "sim_040_care_plan_only_when_asked", "manual_status": "fail", "note": "Quoted a second care-plan price on an edit-definition follow-up."}
+  ],
+  "disposition": "All seven product failure classes were addressed in live source commit 8b5f5521771c0b914c14c12ebbde9970de4c714e. This audit is not evidence that the final live source passes."
+}

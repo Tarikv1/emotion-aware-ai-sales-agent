@@ -1,0 +1,166 @@
+{
+  "checkpoint_id": "ELEVENLABS-040-detailed-pricing-control",
+  "captured_at_utc": "2026-07-12T20:30:45Z",
+  "status": "failed",
+  "invocation_id": "suite_3101kxc0ccj6e25aajz927g0b5h1",
+  "repeat_count": 1,
+  "selected_test_count": 10,
+  "selected_test_ids": [
+    "sim_040_capability_question_no_unprompted_price",
+    "sim_040_free_mockup_question_no_paid_price",
+    "sim_040_basic_site_direct_price",
+    "sim_040_existing_site_request_form_add_on",
+    "sim_040_new_site_booking_whole_project",
+    "sim_040_multi_feature_no_price_stacking",
+    "sim_040_direct_crm_integration_existing_site",
+    "sim_040_portal_requires_scope",
+    "sim_040_budget_fit_direct_answer",
+    "sim_040_care_plan_only_when_asked"
+  ],
+  "expected_terminal_run_count": 10,
+  "observed_terminal_run_count": 10,
+  "failed_terminal_run_count": 10,
+  "provider_status_code": 200,
+  "provider_test_ids": {
+    "sim_040_capability_question_no_unprompted_price": "test_9101kx9ddm04f0e8tjnwzja893a6",
+    "sim_040_free_mockup_question_no_paid_price": "test_3801kx9ddm7wefzvapxjdf51xbq3",
+    "sim_040_basic_site_direct_price": "test_0201kx9ddmfpeyh9mes2znh3j98b",
+    "sim_040_existing_site_request_form_add_on": "test_3801kx9ddmqnfsq97d7xym9qy01x",
+    "sim_040_new_site_booking_whole_project": "test_1301kx9ddmz7fh3vge8255tw9h2d",
+    "sim_040_multi_feature_no_price_stacking": "test_9001kx9ddn6gfb0rbpcxdq5jjbc5",
+    "sim_040_direct_crm_integration_existing_site": "test_0101kx9ddndtfawsgcrcjg72ycce",
+    "sim_040_portal_requires_scope": "test_5201kx9ddnp4fpdrerx807xpfzv9",
+    "sim_040_budget_fit_direct_answer": "test_0901kx9ddnw8eyfrj2r1n9vwvze1",
+    "sim_040_care_plan_only_when_asked": "test_6101kx9ddp3cf0w9fqtvqwm21esx"
+  },
+  "run_statuses": [
+    {
+      "test_id": "test_9101kx9ddm04f0e8tjnwzja893a6",
+      "test_name": "ELEVENLABS-040-detailed-pricing-control::sim_040_capability_question_no_unprompted_price",
+      "test_run_id": "trun_4001kxc0ccjfe889z987vaqwc68b",
+      "status": "failed"
+    },
+    {
+      "test_id": "test_3801kx9ddm7wefzvapxjdf51xbq3",
+      "test_name": "ELEVENLABS-040-detailed-pricing-control::sim_040_free_mockup_question_no_paid_price",
+      "test_run_id": "trun_6301kxc0ccjgfp592259cfj575ss",
+      "status": "failed"
+    },
+    {
+      "test_id": "test_0201kx9ddmfpeyh9mes2znh3j98b",
+      "test_name": "ELEVENLABS-040-detailed-pricing-control::sim_040_basic_site_direct_price",
+      "test_run_id": "trun_3601kxc0ccjhfs4bwg6cfcw9650y",
+      "status": "failed"
+    },
+    {
+      "test_id": "test_1301kx9ddmz7fh3vge8255tw9h2d",
+      "test_name": "ELEVENLABS-040-detailed-pricing-control::sim_040_new_site_booking_whole_project",
+      "test_run_id": "trun_8901kxc0ccjkf6tt05wj63kjfgfp",
+      "status": "failed"
+    },
+    {
+      "test_id": "test_9001kx9ddn6gfb0rbpcxdq5jjbc5",
+      "test_name": "ELEVENLABS-040-detailed-pricing-control::sim_040_multi_feature_no_price_stacking",
+      "test_run_id": "trun_5101kxc0ccjmeezaj7c3tmsxab1y",
+      "status": "failed"
+    },
+    {
+      "test_id": "test_3801kx9ddmqnfsq97d7xym9qy01x",
+      "test_name": "ELEVENLABS-040-detailed-pricing-control::sim_040_existing_site_request_form_add_on",
+      "test_run_id": "trun_8901kxc0ccjjezy8d8tj8cvgnm31",
+      "status": "failed"
+    },
+    {
+      "test_id": "test_5201kx9ddnp4fpdrerx807xpfzv9",
+      "test_name": "ELEVENLABS-040-detailed-pricing-control::sim_040_portal_requires_scope",
+      "test_run_id": "trun_5901kxc0ccjpff78ykz7dfrfhqjr",
+      "status": "failed"
+    },
+    {
+      "test_id": "test_0901kx9ddnw8eyfrj2r1n9vwvze1",
+      "test_name": "ELEVENLABS-040-detailed-pricing-control::sim_040_budget_fit_direct_answer",
+      "test_run_id": "trun_6301kxc0ccjqfw5sysyb64q85wh4",
+      "status": "failed"
+    },
+    {
+      "test_id": "test_6101kx9ddp3cf0w9fqtvqwm21esx",
+      "test_name": "ELEVENLABS-040-detailed-pricing-control::sim_040_care_plan_only_when_asked",
+      "test_run_id": "trun_6401kxc0ccjrfx0tgc1t4tge2aty",
+      "status": "failed"
+    },
+    {
+      "test_id": "test_0101kx9ddndtfawsgcrcjg72ycce",
+      "test_name": "ELEVENLABS-040-detailed-pricing-control::sim_040_direct_crm_integration_existing_site",
+      "test_run_id": "trun_0401kxc0ccjne1n8rkvb1jwtzrn6",
+      "status": "failed"
+    }
+  ],
+  "final_run_statuses": [
+    "failed",
+    "failed",
+    "failed",
+    "failed",
+    "failed",
+    "failed",
+    "failed",
+    "failed",
+    "failed",
+    "failed"
+  ],
+  "outbound_calls_made": false,
+  "folder_id": "tfld_0801kx9ddk7rfzy92z9q5adst7h1",
+  "operation_ledger": {
+    "attempt_count": 1,
+    "success_count": 1,
+    "failure_count": 0,
+    "failed_request_id": null,
+    "failed_error": null,
+    "attempts": [
+      {
+        "request_id": "run_tests::agent_7801kt0g32zxf4f8x5zkykj7syty",
+        "operation": "run-tests",
+        "method": "POST",
+        "endpoint": "/v1/convai/agents/agent_7801kt0g32zxf4f8x5zkykj7syty/run-tests",
+        "body": {
+          "tests": [
+            {
+              "test_id": "test_9101kx9ddm04f0e8tjnwzja893a6"
+            },
+            {
+              "test_id": "test_3801kx9ddm7wefzvapxjdf51xbq3"
+            },
+            {
+              "test_id": "test_0201kx9ddmfpeyh9mes2znh3j98b"
+            },
+            {
+              "test_id": "test_3801kx9ddmqnfsq97d7xym9qy01x"
+            },
+            {
+              "test_id": "test_1301kx9ddmz7fh3vge8255tw9h2d"
+            },
+            {
+              "test_id": "test_9001kx9ddn6gfb0rbpcxdq5jjbc5"
+            },
+            {
+              "test_id": "test_0101kx9ddndtfawsgcrcjg72ycce"
+            },
+            {
+              "test_id": "test_5201kx9ddnp4fpdrerx807xpfzv9"
+            },
+            {
+              "test_id": "test_0901kx9ddnw8eyfrj2r1n9vwvze1"
+            },
+            {
+              "test_id": "test_6101kx9ddp3cf0w9fqtvqwm21esx"
+            }
+          ],
+          "repeat_count": 1
+        },
+        "attempted_at_utc": "2026-07-12T20:30:28Z",
+        "status": "succeeded",
+        "status_code": 200,
+        "completed_at_utc": "2026-07-12T20:30:29Z"
+      }
+    ]
+  }
+}

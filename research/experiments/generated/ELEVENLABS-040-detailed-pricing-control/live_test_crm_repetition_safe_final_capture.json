@@ -1,0 +1,192 @@
+{
+  "captured_at_utc": "2026-07-13T23:33:53Z",
+  "payload_sha256": "22bca418dcd0f98c6753dec9fb1a557bbf232b7d863d24e8c45236d8bdb03f35",
+  "payload": {
+    "checkpoint_id": "ELEVENLABS-040-detailed-pricing-control",
+    "invocation_id": "suite_9601kxex7wk6f5cr5em179efjm4m",
+    "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+    "test_runs": [
+      {
+        "test_run_id": "trun_6301kxex7wk8e6mby3x0z2kxnpe7",
+        "test_invocation_id": "suite_9601kxex7wk6f5cr5em179efjm4m",
+        "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+        "test_id": "sim_040_direct_crm_integration_existing_site",
+        "provider_test_id": "test_0101kx9ddndtfawsgcrcjg72ycce",
+        "test_name": "ELEVENLABS-040-detailed-pricing-control::sim_040_direct_crm_integration_existing_site",
+        "scenario": "Buyer has an existing compatible site and asks what a direct CRM integration costs.",
+        "success_conditions": [
+          "Pass: `$1,000-$2,500+`, an API/data-flow caveat, and no claim that every behavior is included."
+        ],
+        "models": {
+          "simulated_user_model": "gemini-2.5-flash",
+          "evaluation_model": "gemini-2.5-flash"
+        },
+        "status": "passed",
+        "condition_result": {
+          "result": "success",
+          "rationale": {
+            "messages": [
+              "The agent stated the cost as \"one thousand to two thousand five hundred dollars plus\", mentioned \"API/data flow\" as the driver, and explained what makes it \"plus\", indicating not all behaviors are included in the base price.",
+              "The conversation reached the maximum number of turns."
+            ],
+            "summary": "Evaluation succeeded"
+          }
+        },
+        "evaluator_rationale": "{'messages': ['The agent stated the cost as \"one thousand to two thousand five hundred dollars plus\", mentioned \"API/data flow\" as the driver, and explained what makes it \"plus\", indicating not all behaviors are included in the base price.', 'The conversation reached the maximum number of turns.'], 'summary': 'Evaluation succeeded'}",
+        "agent_responses": [
+          {
+            "time": 23,
+            "role": "agent",
+            "source_medium": null,
+            "tool_results": [],
+            "original_message": null,
+            "tool_calls": [],
+            "message": "Hi, this is Emma from Atlas Web Studio. I had Acme Dental down as a dental clinic in Phoenix. Am I speaking with the owner or someone who handles the website there?",
+            "interrupted": false
+          },
+          {
+            "time": 23,
+            "role": "user",
+            "source_medium": "text",
+            "tool_results": [],
+            "original_message": null,
+            "tool_calls": [],
+            "message": "Yeah, that's me. I'm calling about a CRM integration.",
+            "interrupted": false
+          },
+          {
+            "time": 23,
+            "role": "agent",
+            "source_medium": null,
+            "tool_results": [],
+            "original_message": null,
+            "tool_calls": [],
+            "message": "Yes, we can build that. It depends whether you need a simple form handoff or a real integration. Is this for a new site or an addition to your existing site?",
+            "interrupted": false
+          },
+          {
+            "time": 23,
+            "role": "user",
+            "source_medium": "text",
+            "tool_results": [],
+            "original_message": null,
+            "tool_calls": [],
+            "message": "It's for my existing site. It's compatible.",
+            "interrupted": false
+          },
+          {
+            "time": 23,
+            "role": "agent",
+            "source_medium": null,
+            "tool_results": [],
+            "original_message": null,
+            "tool_calls": [],
+            "message": "Got it. If it is a simple form handoff into the CRM, that is usually lighter; if data needs to sync directly through the CRM API, that is a real integration. What CRM are you using?",
+            "interrupted": false
+          },
+          {
+            "time": 23,
+            "role": "user",
+            "source_medium": "text",
+            "tool_results": [],
+            "original_message": null,
+            "tool_calls": [],
+            "message": "It's HubSpot.HubSpot.It's HubSpot.",
+            "interrupted": false
+          },
+          {
+            "time": 23,
+            "role": "agent",
+            "source_medium": null,
+            "tool_results": [],
+            "original_message": null,
+            "tool_calls": [],
+            "message": "HubSpot can work either way. If you just need leads sent into HubSpot, that is simpler; if you need records, statuses, or two way syncing, that is a direct integration.",
+            "interrupted": false
+          },
+          {
+            "time": 23,
+            "role": "user",
+            "source_medium": "text",
+            "tool_results": [],
+            "original_message": null,
+            "tool_calls": [],
+            "message": "Okay, so what does that direct integration cost then?",
+            "interrupted": false
+          },
+          {
+            "time": 23,
+            "role": "agent",
+            "source_medium": null,
+            "tool_results": [],
+            "original_message": null,
+            "tool_calls": [],
+            "message": "Direct CRM/API integration is usually one thousand to two thousand five hundred dollars plus. The driver is API/data flow.",
+            "interrupted": false
+          },
+          {
+            "time": 23,
+            "role": "user",
+            "source_medium": "text",
+            "tool_results": [],
+            "original_message": null,
+            "tool_calls": [],
+            "message": "Okay, so what makes it \"plus\"? Is there a way to know the exact cost?",
+            "interrupted": false
+          },
+          {
+            "time": 23,
+            "role": "agent",
+            "source_medium": null,
+            "tool_results": [],
+            "original_message": null,
+            "tool_calls": [],
+            "message": "The plus usually comes from extra data flows, authentication, custom field mapping, error handling, or two way sync requirements. The exact cost comes after scoping the CRM actions, fields, and sync direction.",
+            "interrupted": false
+          },
+          {
+            "time": 23,
+            "role": "user",
+            "source_medium": "text",
+            "tool_results": [],
+            "original_message": null,
+            "tool_calls": [],
+            "message": "So, how do we do that scoping? Is that a separate thing?",
+            "interrupted": false
+          },
+          {
+            "time": 23,
+            "role": "agent",
+            "source_medium": null,
+            "tool_results": [],
+            "original_message": null,
+            "tool_calls": [],
+            "message": "We collect the CRM name, actions, field mapping, and sync direction during scoping before any paid commitment.",
+            "interrupted": false
+          },
+          {
+            "time": 23,
+            "role": "user",
+            "source_medium": "text",
+            "tool_results": [],
+            "original_message": null,
+            "tool_calls": [],
+            "message": "So, how do I actually start that scoping process?",
+            "interrupted": false
+          },
+          {
+            "time": 23,
+            "role": "agent",
+            "source_medium": null,
+            "tool_results": [],
+            "original_message": null,
+            "tool_calls": [],
+            "message": "We collect the CRM name, actions, field mapping, and sync direction during scoping before any paid commitment.",
+            "interrupted": false
+          }
+        ]
+      }
+    ],
+    "result_groups": []
+  }
+}

@@ -1,0 +1,192 @@
+{
+  "captured_at_utc": "2026-07-12T17:34:32Z",
+  "payload_sha256": "7b8a9e49f00440b7d730c8eea1a053a0937e02dab16d074508fdc0d3f0eea451",
+  "payload": {
+    "checkpoint_id": "ELEVENLABS-040-detailed-pricing-control",
+    "invocation_id": "suite_1301kxbp8cmxe9dsdsejk45pp2kn",
+    "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+    "test_runs": [
+      {
+        "test_run_id": "trun_1201kxbp8cmzef7t9b5p84v7v0px",
+        "test_invocation_id": "suite_1301kxbp8cmxe9dsdsejk45pp2kn",
+        "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+        "test_id": "sim_040_multi_feature_no_price_stacking",
+        "provider_test_id": "test_9001kx9ddn6gfb0rbpcxdq5jjbc5",
+        "test_name": "ELEVENLABS-040-detailed-pricing-control::sim_040_multi_feature_no_price_stacking",
+        "scenario": "Buyer asks for a new site with booking, CRM, payments, service-area pages, and a blog, then asks total cost.",
+        "success_conditions": [
+          "Pass: one likely whole-project band and scope driver; no arithmetic sum or feature-menu recital."
+        ],
+        "models": {
+          "simulated_user_model": "gemini-2.5-flash",
+          "evaluation_model": "gemini-2.5-flash"
+        },
+        "status": "passed",
+        "condition_result": {
+          "result": "success",
+          "rationale": {
+            "messages": [
+              "The agent provided a clear whole-project band of \"four thousand to six thousand five hundred dollars\" and identified the main scope driver as \"whether booking and payments are simple embedded tools or deeper integrations with your systems.\" This was done without an arithmetic sum or a feature-menu recital.",
+              "The conversation reached the maximum number of turns."
+            ],
+            "summary": "Evaluation succeeded"
+          }
+        },
+        "evaluator_rationale": "{'messages': ['The agent provided a clear whole-project band of \"four thousand to six thousand five hundred dollars\" and identified the main scope driver as \"whether booking and payments are simple embedded tools or deeper integrations with your systems.\" This was done without an arithmetic sum or a feature-menu recital.', 'The conversation reached the maximum number of turns.'], 'summary': 'Evaluation succeeded'}",
+        "agent_responses": [
+          {
+            "source_medium": null,
+            "interrupted": false,
+            "message": "Hi, this is Emma from Atlas Web Studio. I had Acme Dental down as a dental clinic in Phoenix. Am I speaking with the owner or someone who handles the website there?",
+            "tool_calls": [],
+            "tool_results": [],
+            "time": 36,
+            "original_message": null,
+            "role": "agent"
+          },
+          {
+            "source_medium": "text",
+            "interrupted": false,
+            "message": "Yeah, that's me. I'm looking to get a new website for Acme Dental.",
+            "tool_calls": [],
+            "tool_results": [],
+            "time": 36,
+            "original_message": null,
+            "role": "user"
+          },
+          {
+            "source_medium": null,
+            "interrupted": false,
+            "message": "Great. We help local clinics get a cleaner homepage that makes the main actions easier for patients, like calling, requesting an appointment, or finding services. I can have our designer put together a free homepage mockup for Acme Dental so you can see what we\u2019d change before you decide anything. Would you be open to taking a look?",
+            "tool_calls": [],
+            "tool_results": [],
+            "time": 36,
+            "original_message": null,
+            "role": "agent"
+          },
+          {
+            "source_medium": "text",
+            "interrupted": false,
+            "message": "Uh, a mockup sounds okay, but I need a whole new site. With booking, payments, and a blog.",
+            "tool_calls": [],
+            "tool_results": [],
+            "time": 36,
+            "original_message": null,
+            "role": "user"
+          },
+          {
+            "source_medium": null,
+            "interrupted": false,
+            "message": "The free mockup shows the homepage layout and where those features would sit; it does not include working booking, payments, login, or calendar. For the full site, we can build those pieces after the scope is clear. If the homepage direction looks useful, the mockup is usually the easiest first step.",
+            "tool_calls": [],
+            "tool_results": [],
+            "time": 36,
+            "original_message": null,
+            "role": "agent"
+          },
+          {
+            "source_medium": "text",
+            "interrupted": false,
+            "message": "Okay, but what's the total cost for a whole site with all that stuff?",
+            "tool_calls": [],
+            "tool_results": [],
+            "time": 36,
+            "original_message": null,
+            "role": "user"
+          },
+          {
+            "source_medium": null,
+            "interrupted": false,
+            "message": "For a new site with standard integration, the likely whole-project range is four thousand to six thousand five hundred dollars. The main driver is whether booking and payments are simple embedded tools or deeper integrations with your systems. For the blog, that can be included as part of the site structure.",
+            "tool_calls": [],
+            "tool_results": [],
+            "time": 36,
+            "original_message": null,
+            "role": "agent"
+          },
+          {
+            "source_medium": "text",
+            "interrupted": false,
+            "message": "Hmm, that's a pretty big range. What about the CRM and those service-area pages I mentioned?",
+            "tool_calls": [],
+            "tool_results": [],
+            "time": 36,
+            "original_message": null,
+            "role": "user"
+          },
+          {
+            "source_medium": null,
+            "interrupted": false,
+            "message": "A direct CRM or API add-on is usually one thousand to two thousand five hundred dollars plus, depending on how data needs to move. Service-area pages are more of a content and site-structure item, so the scope depends on how many pages and whether they need unique copy. Which CRM are you using now?",
+            "tool_calls": [],
+            "tool_results": [],
+            "time": 36,
+            "original_message": null,
+            "role": "agent"
+          },
+          {
+            "source_medium": "text",
+            "interrupted": false,
+            "message": "Uh, I think we use Dentrix. So, how much are those service area pages then?",
+            "tool_calls": [],
+            "tool_results": [],
+            "time": 36,
+            "original_message": null,
+            "role": "user"
+          },
+          {
+            "source_medium": null,
+            "interrupted": false,
+            "message": "For service-area pages, I\u2019d need to scope the number of pages and whether each one needs unique copy before giving a real number. The CRM piece would also depend on what Dentrix allows for connection or handoff. If you want, the free homepage mockup can still show where those service areas and patient actions would sit visually.",
+            "tool_calls": [],
+            "tool_results": [],
+            "time": 36,
+            "original_message": null,
+            "role": "agent"
+          },
+          {
+            "source_medium": "text",
+            "interrupted": false,
+            "message": "So, you can't tell me how much the service pages cost? And what about Dentrix, is that going to be more expensive?",
+            "tool_calls": [],
+            "tool_results": [],
+            "time": 36,
+            "original_message": null,
+            "role": "user"
+          },
+          {
+            "source_medium": null,
+            "interrupted": false,
+            "message": "I can\u2019t give a real service-page number without knowing how many pages and how much unique writing is needed. Dentrix could be more expensive if it requires a direct integration rather than a simple form handoff, because that moves it into API or custom work. If it\u2019s just sending appointment requests to your team, it stays much lighter.",
+            "tool_calls": [],
+            "tool_results": [],
+            "time": 36,
+            "original_message": null,
+            "role": "agent"
+          },
+          {
+            "source_medium": "text",
+            "interrupted": false,
+            "message": "So, I still can't get a real price on the service pages? And what exactly is a \"simple form handoff\" for Dentrix?",
+            "tool_calls": [],
+            "tool_results": [],
+            "time": 36,
+            "original_message": null,
+            "role": "user"
+          },
+          {
+            "source_medium": null,
+            "interrupted": false,
+            "message": "A simple form handoff means the website collects the patient request and sends it to your team, usually by email or another basic notification, instead of writing directly into Dentrix. For service-area pages, a real price depends on the count and copy depth, so I\u2019d need that scope first rather than guessing. If you want a firm number later, we\u2019d define the page list and whether Atlas is writing each page from scratch.",
+            "tool_calls": [],
+            "tool_results": [],
+            "time": 36,
+            "original_message": null,
+            "role": "agent"
+          }
+        ]
+      }
+    ],
+    "result_groups": []
+  }
+}

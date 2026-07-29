@@ -1,0 +1,192 @@
+{
+  "captured_at_utc": "2026-07-14T02:42:02Z",
+  "payload_sha256": "de579019b42dc2ad0b76fd3cb1bba01f20ecd03e04d24652c53a7e19fffb9ee4",
+  "payload": {
+    "checkpoint_id": "ELEVENLABS-040-detailed-pricing-control",
+    "invocation_id": "suite_7301kxf805wbecg8mc72j28zm39r",
+    "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+    "test_runs": [
+      {
+        "test_run_id": "trun_7001kxf805wvfz7b2xn7xnr7espd",
+        "test_invocation_id": "suite_7301kxf805wbecg8mc72j28zm39r",
+        "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+        "test_id": "sim_040_direct_crm_integration_existing_site",
+        "provider_test_id": "test_0101kx9ddndtfawsgcrcjg72ycce",
+        "test_name": "ELEVENLABS-040-detailed-pricing-control::sim_040_direct_crm_integration_existing_site",
+        "scenario": "Buyer has an existing compatible site and asks what a direct CRM integration costs.",
+        "success_conditions": [
+          "Pass: `$1,000-$2,500+`, an API/data-flow caveat, and no claim that every behavior is included."
+        ],
+        "models": {
+          "simulated_user_model": "gemini-2.5-flash",
+          "evaluation_model": "gemini-2.5-flash"
+        },
+        "status": "passed",
+        "condition_result": {
+          "result": "success",
+          "rationale": {
+            "messages": [
+              "The agent provided the price range of \"one thousand to two thousand five hundred dollars plus\", mentioned \"API and data flow\" as the driver, and clarified that the final cost can go above the range if complexity increases, thus not claiming every behavior is included.",
+              "The conversation reached the maximum number of turns."
+            ],
+            "summary": "Evaluation succeeded"
+          }
+        },
+        "evaluator_rationale": "{'messages': ['The agent provided the price range of \"one thousand to two thousand five hundred dollars plus\", mentioned \"API and data flow\" as the driver, and clarified that the final cost can go above the range if complexity increases, thus not claiming every behavior is included.', 'The conversation reached the maximum number of turns.'], 'summary': 'Evaluation succeeded'}",
+        "agent_responses": [
+          {
+            "original_message": null,
+            "source_medium": null,
+            "tool_results": [],
+            "message": "Hi, this is Emma from Atlas Web Studio. I had Acme Dental down as a dental clinic in Phoenix. Am I speaking with the owner or someone who handles the website there?",
+            "interrupted": false,
+            "time": 27,
+            "tool_calls": [],
+            "role": "agent"
+          },
+          {
+            "original_message": null,
+            "source_medium": "text",
+            "tool_results": [],
+            "message": "Yeah, that's me. I'm calling about a CRM integration for our site.",
+            "interrupted": false,
+            "time": 27,
+            "tool_calls": [],
+            "role": "user"
+          },
+          {
+            "original_message": null,
+            "source_medium": null,
+            "tool_results": [],
+            "message": "Yes, we can build that. It depends whether you need a simple form handoff or a real integration. Is this for a new site or an addition to your existing site?",
+            "interrupted": false,
+            "time": 27,
+            "tool_calls": [],
+            "role": "agent"
+          },
+          {
+            "original_message": null,
+            "source_medium": "text",
+            "tool_results": [],
+            "message": "It's for our existing site. And yeah, a real integration, not just a form. What does that usually cost?",
+            "interrupted": false,
+            "time": 27,
+            "tool_calls": [],
+            "role": "user"
+          },
+          {
+            "original_message": null,
+            "source_medium": null,
+            "tool_results": [],
+            "message": "Direct CRM/API integration is usually one thousand to two thousand five hundred dollars plus. The driver is API and data flow.",
+            "interrupted": false,
+            "time": 27,
+            "tool_calls": [],
+            "role": "agent"
+          },
+          {
+            "original_message": null,
+            "source_medium": "text",
+            "tool_results": [],
+            "message": "What does \"plus\" mean?",
+            "interrupted": false,
+            "time": 27,
+            "tool_calls": [],
+            "role": "user"
+          },
+          {
+            "original_message": null,
+            "source_medium": null,
+            "tool_results": [],
+            "message": "It means the final cost can go above that range if the CRM actions or data flow are more complex than a standard direct integration.",
+            "interrupted": false,
+            "time": 27,
+            "tool_calls": [],
+            "role": "agent"
+          },
+          {
+            "original_message": null,
+            "source_medium": "text",
+            "tool_results": [],
+            "message": "Okay, so how do you decide if it's more complex?",
+            "interrupted": false,
+            "time": 27,
+            "tool_calls": [],
+            "role": "user"
+          },
+          {
+            "original_message": null,
+            "source_medium": null,
+            "tool_results": [],
+            "message": "We look at what data needs to move, which actions should happen in the CRM, whether it syncs one way or both ways, and any rules or exceptions the site has to follow.",
+            "interrupted": false,
+            "time": 27,
+            "tool_calls": [],
+            "role": "agent"
+          },
+          {
+            "original_message": null,
+            "source_medium": "text",
+            "tool_results": [],
+            "message": "So, how do I figure out if mine is complex, then?",
+            "interrupted": false,
+            "time": 27,
+            "tool_calls": [],
+            "role": "user"
+          },
+          {
+            "original_message": null,
+            "source_medium": null,
+            "tool_results": [],
+            "message": "Start with the CRM name, the exact action you want the website to trigger, and whether data only goes into the CRM or also comes back to the site. If you can describe those three pieces, we can tell whether it is a straightforward integration or needs deeper scoping.",
+            "interrupted": false,
+            "time": 27,
+            "tool_calls": [],
+            "role": "agent"
+          },
+          {
+            "original_message": null,
+            "source_medium": "text",
+            "tool_results": [],
+            "message": "Okay, we use Salesforce. When someone fills out a new patient form, we want it to create a new lead. And it's just one way, from the site to Salesforce.",
+            "interrupted": false,
+            "time": 27,
+            "tool_calls": [],
+            "role": "user"
+          },
+          {
+            "original_message": null,
+            "source_medium": null,
+            "tool_results": [],
+            "message": "That sounds like a straightforward direct integration: new patient form submission creates a Salesforce lead, one way from the site to Salesforce. We would still confirm the exact fields and any validation rules before paid work.",
+            "interrupted": false,
+            "time": 27,
+            "tool_calls": [],
+            "role": "agent"
+          },
+          {
+            "original_message": null,
+            "source_medium": "text",
+            "tool_results": [],
+            "message": "So, that means it'll be in that one to two-and-a-half thousand dollar range?",
+            "interrupted": false,
+            "time": 27,
+            "tool_calls": [],
+            "role": "user"
+          },
+          {
+            "original_message": null,
+            "source_medium": null,
+            "tool_results": [],
+            "message": "Yes, based on what you described, it sounds like it would likely fit the direct CRM/API integration range. The exact quote depends on the field mapping and Salesforce setup.",
+            "interrupted": false,
+            "time": 27,
+            "tool_calls": [],
+            "role": "agent"
+          }
+        ]
+      }
+    ],
+    "result_groups": []
+  }
+}

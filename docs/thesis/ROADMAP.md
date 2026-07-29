@@ -29,7 +29,7 @@ Status convention:
 
 ## Checkpoint Board
 
-Active phase: thesis evidence consolidation after source-grounded OpenAI sales-readiness work, local LLM feasibility rejection for live use, Liquid TTS retirement, cleaned prosody/mapping evidence, and Ultravox hosted speech-interface sandbox results.
+Active phase: thesis evidence consolidation after the Atlas 019-040 hosted-agent hardening arc, plus the earlier source-grounded OpenAI sales-readiness work, local LLM feasibility rejection for live use, Liquid TTS retirement, cleaned prosody/mapping evidence, and Ultravox hosted speech-interface sandbox results.
 
 Current checkpoint:
 
@@ -44,7 +44,7 @@ Next checkpoints:
 - [ ] Next: generate a reusable campaign-intake template that produces Campaign Sales Overlay and Campaign Profile And Facts files before any ElevenLabs upload.
 - [ ] Next: continue sales-dialogue quality work or test a non-LLM classifier/action-selector baseline against the OpenAI semantic/live-action cases. This remains serious because Qwen 7B and tested small local models did not meet both quality and live-turn latency expectations.
 - [ ] Next: decide whether the strongest action-id-only selector path deserves distillation, fine-tuning, or a simpler non-LLM baseline. Do not return to full local LLM response generation unless the model can meet quality and roughly 2-3 second live-turn latency gates.
-- [ ] Next: consolidate thesis writing evidence around the OpenAI fixture, semantic sales-dialogue evolution, local LLM feasibility rejection, audio-model research branch, prosody control layer, Ultravox hosted-interface evidence, validator optimism, and manual review methodology.
+- [ ] Next: consolidate thesis writing evidence around the Atlas 019-040 hosted-agent arc, the OpenAI fixture, semantic sales-dialogue evolution, local LLM feasibility rejection, audio-model research branch, prosody control layer, Ultravox hosted-interface evidence, validator optimism, and manual review methodology.
 - [ ] Future research: revisit Ultravox only if provider settings, model/voice options, or platform changes can plausibly reduce warm-turn latency. Do not treat Ultravox as live-ready or as the final ElevenLabs replacement.
 - [ ] Future research: design a reusable source-grounded campaign intake workflow for real client campaigns. The workflow should collect official/product-owner sources, create claim objects, separate campaign facts from universal dialogue, define close modes, and run isolation/contamination checks before live routing.
 - [ ] Future research: define compliance, consent, retention, handoff, and sales-review requirements before any real customer deployment or production claim.
@@ -78,6 +78,8 @@ Next checkpoints:
 - [ ] Next: expand dataset-grounded fixed banks only after `PROD-021` confirms whether the naturalized hook gain survives live-shaped stateful dialogue.
 
 Recently completed checkpoints:
+
+- [x] Atlas 019-040 hosted-agent hardening arc, which reconciles natural-sales, atomic terminal-control, and detailed-pricing behavior on the live Atlas configuration without weakening dashboard criteria or broadening the active package. Final guarded patches preserved `17` KB attachments in manifest order, `30` Analysis criteria in original order, one built-in `end_call`, zero custom/server duplicates, inactive Procedures, and unrelated tool/configuration state. Independent transcript review, not provider labels alone, separated real product defects from stale evaluator/test-contract expectations. Covered readiness is limited to the hosted Atlas text/simulation contract; no claim is made for PSTN audio, ASR, latency, interruption handling, buyer perception, conversion impact, outbound calling, or real-customer use.
 
 - [x] `RAG-022-universal-sales-layer-contract`, which formalizes the three-layer sales knowledge architecture: Universal Sales RAG for reusable sales method, Campaign Sales Overlay for campaign-specific selling adaptation, and Campaign Profile And Facts for approved truth. It adds the repo-owned layer contract, split Atlas Web Studio overlay/profile KB files, a layered ElevenLabs package manifest, prompt-level precedence rules, and an offline validator. No live provider call, production promotion, or green simulation claim is made.
 

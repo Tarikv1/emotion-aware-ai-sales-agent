@@ -15,6 +15,70 @@ Record important thesis and implementation decisions here with enough context to
 
 ## Decisions
 
+### DEC-145 - Close the Atlas hosted phase with one post-final-write canary and explicit exclusions
+
+- Date: 2026-07-14
+- Status: accepted
+- Decision: close the documented final-fingerprint gap with one existing, fixed CRM canary after the last behavior-changing provider write. Accept wrap-up of the covered hosted text/simulation phase only when the provider result, deterministic trace validator, independent transcript review, and fresh structural readback agree. Preserve the untested explicit repetition-complaint branch and all speech/real-customer domains as exclusions.
+- Why:
+  - the last prompt/KB patch was structurally read back but had no post-write behavior trace;
+  - rerunning the full 036/040 suites would spend more credit while mixing stale test-contract conflicts into a narrow CRM repetition question;
+  - the existing 040 direct-CRM canary exercises buyer-triggered pricing, scope progression, CTA suppression, and near-repeat behavior without changing a dashboard test;
+  - one provider label is insufficient, so the captured transcript also requires deterministic and independent manual adjudication.
+- Alternatives considered:
+  - claim wrap-up from structural readback alone;
+  - rerun every historical suite;
+  - edit the 036 or 040 tests/evaluators to force agreement;
+  - leave the phase open despite a bounded fixed case already covering the final changed lane.
+- Consequences:
+  - the final live fingerprint has targeted transcript evidence for the tested existing-site direct CRM progression;
+  - the explicit "you already said that" complaint branch remains optional future regression work because this canary did not contain that buyer move;
+  - no production, PSTN, ASR, latency, interruption, buyer-perception, conversion, or real-customer claim follows;
+  - future provider tests should run only for a new bounded evidence objective, not to make historical dashboards universally green.
+
+### DEC-144 - Reconcile hosted provider labels with independent transcript adjudication
+
+- Date: 2026-07-14
+- Status: accepted
+- Decision: for hosted ElevenLabs evidence, treat provider evaluator labels as advisory. A thesis-ready result must reconcile provider labels with deterministic independent trace validators and manual transcript review, then classify failures as product defect, provider evaluator defect, stale test-contract defect, or incomplete simulation before deciding whether to patch the product, revise the test governance, or preserve the limitation.
+- Why:
+  - 039 showed that an earlier provider-labeled pass was not accepted until the test state and raw trace proved the exact terminal condition.
+  - 040 full-suite evidence mixed provider labels, deterministic failures, and manual review; real product defects were repaired with focused multi-feature, CRM, and portal traces, while stale 036 dashboard expectations were not used to regress current product behavior.
+  - provider labels alone can hide event-order problems, stale dynamic variables, collapsed buyer turns, or evaluator expectations that no longer match the active contract.
+  - weakening dashboard criteria or Analysis definitions to obtain a green result would damage thesis validity.
+- Alternatives considered:
+  - accept provider pass/fail labels as final;
+  - require every historical full suite to be green before recording evidence;
+  - edit stale dashboard criteria immediately to match the latest behavior;
+  - keep rerunning broad suites after credit restraint instead of reconciling existing evidence and running targeted checks.
+- Consequences:
+  - thesis claims must name which evidence is provider-labeled, independently validated, manually adjudicated, or structurally read back;
+  - full 036/040 captures with historical failures remain useful evidence but cannot be called universally green;
+  - real product defects should be fixed and rerun with targeted traces first;
+  - test-contract revision is a separate governance change, not a way to retroactively manufacture readiness;
+  - no outbound-call, PSTN audio, ASR, latency, interruption, buyer-perception, conversion, or real-customer proof is implied by hosted text/simulation evidence.
+
+### DEC-143 - Use buyer-triggered pricing and one active price lane for Atlas detailed-pricing control
+
+- Date: 2026-07-14
+- Status: accepted
+- Decision: Atlas paid pricing should be disclosed only after buyer price intent and should stay inside one applicable lane for the current scope. Capability, proof, process, and next-step turns should remain price-free unless the buyer asks about cost; once price is requested, the agent should choose the applicable lane rather than stacking multiple feature ranges or inventing unsupported quotes.
+- Why:
+  - the 040 evidence found real product defects around multi-feature price stacking, CRM CTA reopening/repetition, and portal number echoing before scope was known.
+  - the repaired targeted traces show the intended behavior: multi-feature scope uses one whole-project band, CRM follow-up avoids repeated CTAs and narrows missing inputs, and portal/custom scope avoids speculative numbers before proof and scope are established.
+  - buyer-triggered pricing keeps consultative discovery separate from premature quote behavior and reduces unsupported certainty.
+  - one-lane pricing is easier to validate, safer for campaign truth, and less confusing in a voice-style sales conversation.
+- Alternatives considered:
+  - volunteer pricing during capability or mockup explanation;
+  - list all possible feature add-ons in one response;
+  - preserve the older 036 handoff-price/mockup-next-step expectation even when it conflicts with the active 040 contract;
+  - quote portal or CRM work from buyer-provided numbers before scope is known.
+- Consequences:
+  - evaluation must check price intent, lane selection, no unsupported fixed quote or ceiling, no price stacking, and no CTA reopening while scope or price follow-up remains active;
+  - stale tests that expect earlier handoff-price behavior should be treated as test-contract issues until deliberately revised;
+  - product fixes should target real transcript defects, while current-contract disagreements should be documented rather than patched away;
+  - pricing evidence remains product-policy evidence for Atlas, not a market-wide claim that all web providers charge the same amounts.
+
 ### DEC-142 - Retire the public-dataset confusion and frustration model route
 
 - Date: 2026-07-29

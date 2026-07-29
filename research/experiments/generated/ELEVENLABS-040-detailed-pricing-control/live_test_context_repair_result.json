@@ -1,0 +1,441 @@
+{
+  "checkpoint_id": "ELEVENLABS-040-detailed-pricing-control",
+  "captured_at_utc": "2026-07-12T01:26:17Z",
+  "status": "completed",
+  "mode": "repair_owned_context",
+  "folder_id": "tfld_0801kx9ddk7rfzy92z9q5adst7h1",
+  "folder_membership_verified_count": 10,
+  "repaired_test_count": 10,
+  "repaired_tests": [
+    {
+      "source_test_id": "sim_040_capability_question_no_unprompted_price",
+      "provider_test_id": "test_9101kx9ddm04f0e8tjnwzja893a6",
+      "provider_test_name": "ELEVENLABS-040-detailed-pricing-control::sim_040_capability_question_no_unprompted_price",
+      "provider_status_code": 200
+    },
+    {
+      "source_test_id": "sim_040_free_mockup_question_no_paid_price",
+      "provider_test_id": "test_3801kx9ddm7wefzvapxjdf51xbq3",
+      "provider_test_name": "ELEVENLABS-040-detailed-pricing-control::sim_040_free_mockup_question_no_paid_price",
+      "provider_status_code": 200
+    },
+    {
+      "source_test_id": "sim_040_basic_site_direct_price",
+      "provider_test_id": "test_0201kx9ddmfpeyh9mes2znh3j98b",
+      "provider_test_name": "ELEVENLABS-040-detailed-pricing-control::sim_040_basic_site_direct_price",
+      "provider_status_code": 200
+    },
+    {
+      "source_test_id": "sim_040_existing_site_request_form_add_on",
+      "provider_test_id": "test_3801kx9ddmqnfsq97d7xym9qy01x",
+      "provider_test_name": "ELEVENLABS-040-detailed-pricing-control::sim_040_existing_site_request_form_add_on",
+      "provider_status_code": 200
+    },
+    {
+      "source_test_id": "sim_040_new_site_booking_whole_project",
+      "provider_test_id": "test_1301kx9ddmz7fh3vge8255tw9h2d",
+      "provider_test_name": "ELEVENLABS-040-detailed-pricing-control::sim_040_new_site_booking_whole_project",
+      "provider_status_code": 200
+    },
+    {
+      "source_test_id": "sim_040_multi_feature_no_price_stacking",
+      "provider_test_id": "test_9001kx9ddn6gfb0rbpcxdq5jjbc5",
+      "provider_test_name": "ELEVENLABS-040-detailed-pricing-control::sim_040_multi_feature_no_price_stacking",
+      "provider_status_code": 200
+    },
+    {
+      "source_test_id": "sim_040_direct_crm_integration_existing_site",
+      "provider_test_id": "test_0101kx9ddndtfawsgcrcjg72ycce",
+      "provider_test_name": "ELEVENLABS-040-detailed-pricing-control::sim_040_direct_crm_integration_existing_site",
+      "provider_status_code": 200
+    },
+    {
+      "source_test_id": "sim_040_portal_requires_scope",
+      "provider_test_id": "test_5201kx9ddnp4fpdrerx807xpfzv9",
+      "provider_test_name": "ELEVENLABS-040-detailed-pricing-control::sim_040_portal_requires_scope",
+      "provider_status_code": 200
+    },
+    {
+      "source_test_id": "sim_040_budget_fit_direct_answer",
+      "provider_test_id": "test_0901kx9ddnw8eyfrj2r1n9vwvze1",
+      "provider_test_name": "ELEVENLABS-040-detailed-pricing-control::sim_040_budget_fit_direct_answer",
+      "provider_status_code": 200
+    },
+    {
+      "source_test_id": "sim_040_care_plan_only_when_asked",
+      "provider_test_id": "test_6101kx9ddp3cf0w9fqtvqwm21esx",
+      "provider_test_name": "ELEVENLABS-040-detailed-pricing-control::sim_040_care_plan_only_when_asked",
+      "provider_status_code": 200
+    }
+  ],
+  "repair_context_values": {
+    "business_name": "Acme Dental",
+    "business_type": "dental clinic",
+    "city": "Phoenix"
+  },
+  "put_semantics": {
+    "method": "PUT",
+    "endpoint_template": "/v1/convai/agent-testing/:test_id",
+    "body": "full exact simulation test definition"
+  },
+  "operation_ledger": {
+    "attempt_count": 10,
+    "success_count": 10,
+    "failure_count": 0,
+    "failed_request_id": null,
+    "failed_error": null,
+    "attempts": [
+      {
+        "request_id": "repair_test::sim_040_capability_question_no_unprompted_price",
+        "operation": "repair-owned-context",
+        "method": "PUT",
+        "endpoint": "/v1/convai/agent-testing/test_9101kx9ddm04f0e8tjnwzja893a6",
+        "body": {
+          "type": "simulation",
+          "name": "ELEVENLABS-040-detailed-pricing-control::sim_040_capability_question_no_unprompted_price",
+          "simulation_scenario": "Buyer asks whether Atlas can add booking, CRM, and payments but never asks cost.",
+          "simulation_max_turns": 8,
+          "success_condition": "Pass: confident capability answer, no dollar amount, range, package, starting price, or care-plan price.",
+          "dynamic_variables": {
+            "campaign_name": "universal-sales-core-validation",
+            "source_package_id": "ELEVENLABS-040-detailed-pricing-control",
+            "agent_name": "Emma",
+            "company_name": "Atlas Web Studio",
+            "offer": "free homepage mockup",
+            "business_name": "Acme Dental",
+            "business_type": "dental clinic",
+            "city": "Phoenix",
+            "website_starting_price": "$500",
+            "website_basic_site_range": "$900-$1,500",
+            "website_light_feature_range": "$1,800-$3,000",
+            "website_workflow_content_range": "$2,800-$4,500",
+            "website_integration_heavy_range": "$4,000-$6,500",
+            "website_premium_price_anchor": "$6,500"
+          },
+          "simulated_user_model": "gemini-2.5-flash",
+          "evaluation_model": "gemini-2.5-flash"
+        },
+        "attempted_at_utc": "2026-07-12T01:26:12Z",
+        "status": "succeeded",
+        "status_code": 200,
+        "completed_at_utc": "2026-07-12T01:26:12Z"
+      },
+      {
+        "request_id": "repair_test::sim_040_free_mockup_question_no_paid_price",
+        "operation": "repair-owned-context",
+        "method": "PUT",
+        "endpoint": "/v1/convai/agent-testing/test_3801kx9ddm7wefzvapxjdf51xbq3",
+        "body": {
+          "type": "simulation",
+          "name": "ELEVENLABS-040-detailed-pricing-control::sim_040_free_mockup_question_no_paid_price",
+          "simulation_scenario": "Buyer asks whether the mockup is really free and whether there is a catch.",
+          "simulation_max_turns": 8,
+          "success_condition": "Pass: process-risk answer only; no paid website price.",
+          "dynamic_variables": {
+            "campaign_name": "universal-sales-core-validation",
+            "source_package_id": "ELEVENLABS-040-detailed-pricing-control",
+            "agent_name": "Emma",
+            "company_name": "Atlas Web Studio",
+            "offer": "free homepage mockup",
+            "business_name": "Acme Dental",
+            "business_type": "dental clinic",
+            "city": "Phoenix",
+            "website_starting_price": "$500",
+            "website_basic_site_range": "$900-$1,500",
+            "website_light_feature_range": "$1,800-$3,000",
+            "website_workflow_content_range": "$2,800-$4,500",
+            "website_integration_heavy_range": "$4,000-$6,500",
+            "website_premium_price_anchor": "$6,500"
+          },
+          "simulated_user_model": "gemini-2.5-flash",
+          "evaluation_model": "gemini-2.5-flash"
+        },
+        "attempted_at_utc": "2026-07-12T01:26:13Z",
+        "status": "succeeded",
+        "status_code": 200,
+        "completed_at_utc": "2026-07-12T01:26:13Z"
+      },
+      {
+        "request_id": "repair_test::sim_040_basic_site_direct_price",
+        "operation": "repair-owned-context",
+        "method": "PUT",
+        "endpoint": "/v1/convai/agent-testing/test_0201kx9ddmfpeyh9mes2znh3j98b",
+        "body": {
+          "type": "simulation",
+          "name": "ELEVENLABS-040-detailed-pricing-control::sim_040_basic_site_direct_price",
+          "simulation_scenario": "Buyer explicitly asks what a basic three-to-five-page local-business site costs.",
+          "simulation_max_turns": 6,
+          "success_condition": "Pass: one `$900-$1,500` whole-project range and one relevant driver at most.",
+          "dynamic_variables": {
+            "campaign_name": "universal-sales-core-validation",
+            "source_package_id": "ELEVENLABS-040-detailed-pricing-control",
+            "agent_name": "Emma",
+            "company_name": "Atlas Web Studio",
+            "offer": "free homepage mockup",
+            "business_name": "Acme Dental",
+            "business_type": "dental clinic",
+            "city": "Phoenix",
+            "website_starting_price": "$500",
+            "website_basic_site_range": "$900-$1,500",
+            "website_light_feature_range": "$1,800-$3,000",
+            "website_workflow_content_range": "$2,800-$4,500",
+            "website_integration_heavy_range": "$4,000-$6,500",
+            "website_premium_price_anchor": "$6,500"
+          },
+          "simulated_user_model": "gemini-2.5-flash",
+          "evaluation_model": "gemini-2.5-flash"
+        },
+        "attempted_at_utc": "2026-07-12T01:26:13Z",
+        "status": "succeeded",
+        "status_code": 200,
+        "completed_at_utc": "2026-07-12T01:26:14Z"
+      },
+      {
+        "request_id": "repair_test::sim_040_existing_site_request_form_add_on",
+        "operation": "repair-owned-context",
+        "method": "PUT",
+        "endpoint": "/v1/convai/agent-testing/test_3801kx9ddmqnfsq97d7xym9qy01x",
+        "body": {
+          "type": "simulation",
+          "name": "ELEVENLABS-040-detailed-pricing-control::sim_040_existing_site_request_form_add_on",
+          "simulation_scenario": "Buyer states they have an existing compatible site and asks the cost of adding a simple appointment-request form.",
+          "simulation_max_turns": 6,
+          "success_condition": "Pass: one `$100-$250` add-on range; no whole-site package dump.",
+          "dynamic_variables": {
+            "campaign_name": "universal-sales-core-validation",
+            "source_package_id": "ELEVENLABS-040-detailed-pricing-control",
+            "agent_name": "Emma",
+            "company_name": "Atlas Web Studio",
+            "offer": "free homepage mockup",
+            "business_name": "Acme Dental",
+            "business_type": "dental clinic",
+            "city": "Phoenix",
+            "website_starting_price": "$500",
+            "website_basic_site_range": "$900-$1,500",
+            "website_light_feature_range": "$1,800-$3,000",
+            "website_workflow_content_range": "$2,800-$4,500",
+            "website_integration_heavy_range": "$4,000-$6,500",
+            "website_premium_price_anchor": "$6,500"
+          },
+          "simulated_user_model": "gemini-2.5-flash",
+          "evaluation_model": "gemini-2.5-flash"
+        },
+        "attempted_at_utc": "2026-07-12T01:26:14Z",
+        "status": "succeeded",
+        "status_code": 200,
+        "completed_at_utc": "2026-07-12T01:26:14Z"
+      },
+      {
+        "request_id": "repair_test::sim_040_new_site_booking_whole_project",
+        "operation": "repair-owned-context",
+        "method": "PUT",
+        "endpoint": "/v1/convai/agent-testing/test_1301kx9ddmz7fh3vge8255tw9h2d",
+        "body": {
+          "type": "simulation",
+          "name": "ELEVENLABS-040-detailed-pricing-control::sim_040_new_site_booking_whole_project",
+          "simulation_scenario": "Buyer asks what a new straightforward site with a simple request form costs, then asks about live calendar integration.",
+          "simulation_max_turns": 10,
+          "success_condition": "Pass: `$900-$1,500` for simple request; later one higher relevant band for live integration; no add-on/whole-site confusion.",
+          "dynamic_variables": {
+            "campaign_name": "universal-sales-core-validation",
+            "source_package_id": "ELEVENLABS-040-detailed-pricing-control",
+            "agent_name": "Emma",
+            "company_name": "Atlas Web Studio",
+            "offer": "free homepage mockup",
+            "business_name": "Acme Dental",
+            "business_type": "dental clinic",
+            "city": "Phoenix",
+            "website_starting_price": "$500",
+            "website_basic_site_range": "$900-$1,500",
+            "website_light_feature_range": "$1,800-$3,000",
+            "website_workflow_content_range": "$2,800-$4,500",
+            "website_integration_heavy_range": "$4,000-$6,500",
+            "website_premium_price_anchor": "$6,500"
+          },
+          "simulated_user_model": "gemini-2.5-flash",
+          "evaluation_model": "gemini-2.5-flash"
+        },
+        "attempted_at_utc": "2026-07-12T01:26:14Z",
+        "status": "succeeded",
+        "status_code": 200,
+        "completed_at_utc": "2026-07-12T01:26:14Z"
+      },
+      {
+        "request_id": "repair_test::sim_040_multi_feature_no_price_stacking",
+        "operation": "repair-owned-context",
+        "method": "PUT",
+        "endpoint": "/v1/convai/agent-testing/test_9001kx9ddn6gfb0rbpcxdq5jjbc5",
+        "body": {
+          "type": "simulation",
+          "name": "ELEVENLABS-040-detailed-pricing-control::sim_040_multi_feature_no_price_stacking",
+          "simulation_scenario": "Buyer asks for a new site with booking, CRM, payments, service-area pages, and a blog, then asks total cost.",
+          "simulation_max_turns": 8,
+          "success_condition": "Pass: one likely whole-project band and scope driver; no arithmetic sum or feature-menu recital.",
+          "dynamic_variables": {
+            "campaign_name": "universal-sales-core-validation",
+            "source_package_id": "ELEVENLABS-040-detailed-pricing-control",
+            "agent_name": "Emma",
+            "company_name": "Atlas Web Studio",
+            "offer": "free homepage mockup",
+            "business_name": "Acme Dental",
+            "business_type": "dental clinic",
+            "city": "Phoenix",
+            "website_starting_price": "$500",
+            "website_basic_site_range": "$900-$1,500",
+            "website_light_feature_range": "$1,800-$3,000",
+            "website_workflow_content_range": "$2,800-$4,500",
+            "website_integration_heavy_range": "$4,000-$6,500",
+            "website_premium_price_anchor": "$6,500"
+          },
+          "simulated_user_model": "gemini-2.5-flash",
+          "evaluation_model": "gemini-2.5-flash"
+        },
+        "attempted_at_utc": "2026-07-12T01:26:15Z",
+        "status": "succeeded",
+        "status_code": 200,
+        "completed_at_utc": "2026-07-12T01:26:15Z"
+      },
+      {
+        "request_id": "repair_test::sim_040_direct_crm_integration_existing_site",
+        "operation": "repair-owned-context",
+        "method": "PUT",
+        "endpoint": "/v1/convai/agent-testing/test_0101kx9ddndtfawsgcrcjg72ycce",
+        "body": {
+          "type": "simulation",
+          "name": "ELEVENLABS-040-detailed-pricing-control::sim_040_direct_crm_integration_existing_site",
+          "simulation_scenario": "Buyer has an existing compatible site and asks what a direct CRM integration costs.",
+          "simulation_max_turns": 8,
+          "success_condition": "Pass: `$1,000-$2,500+`, an API/data-flow caveat, and no claim that every behavior is included.",
+          "dynamic_variables": {
+            "campaign_name": "universal-sales-core-validation",
+            "source_package_id": "ELEVENLABS-040-detailed-pricing-control",
+            "agent_name": "Emma",
+            "company_name": "Atlas Web Studio",
+            "offer": "free homepage mockup",
+            "business_name": "Acme Dental",
+            "business_type": "dental clinic",
+            "city": "Phoenix",
+            "website_starting_price": "$500",
+            "website_basic_site_range": "$900-$1,500",
+            "website_light_feature_range": "$1,800-$3,000",
+            "website_workflow_content_range": "$2,800-$4,500",
+            "website_integration_heavy_range": "$4,000-$6,500",
+            "website_premium_price_anchor": "$6,500"
+          },
+          "simulated_user_model": "gemini-2.5-flash",
+          "evaluation_model": "gemini-2.5-flash"
+        },
+        "attempted_at_utc": "2026-07-12T01:26:15Z",
+        "status": "succeeded",
+        "status_code": 200,
+        "completed_at_utc": "2026-07-12T01:26:15Z"
+      },
+      {
+        "request_id": "repair_test::sim_040_portal_requires_scope",
+        "operation": "repair-owned-context",
+        "method": "PUT",
+        "endpoint": "/v1/convai/agent-testing/test_5201kx9ddnp4fpdrerx807xpfzv9",
+        "body": {
+          "type": "simulation",
+          "name": "ELEVENLABS-040-detailed-pricing-control::sim_040_portal_requires_scope",
+          "simulation_scenario": "Buyer asks how much a parent portal with accounts and progress dashboards costs.",
+          "simulation_max_turns": 8,
+          "success_condition": "Pass: no numeric quote or ceiling; scope accounts, data, permissions, security, and integrations.",
+          "dynamic_variables": {
+            "campaign_name": "universal-sales-core-validation",
+            "source_package_id": "ELEVENLABS-040-detailed-pricing-control",
+            "agent_name": "Emma",
+            "company_name": "Atlas Web Studio",
+            "offer": "free homepage mockup",
+            "business_name": "Acme Dental",
+            "business_type": "dental clinic",
+            "city": "Phoenix",
+            "website_starting_price": "$500",
+            "website_basic_site_range": "$900-$1,500",
+            "website_light_feature_range": "$1,800-$3,000",
+            "website_workflow_content_range": "$2,800-$4,500",
+            "website_integration_heavy_range": "$4,000-$6,500",
+            "website_premium_price_anchor": "$6,500"
+          },
+          "simulated_user_model": "gemini-2.5-flash",
+          "evaluation_model": "gemini-2.5-flash"
+        },
+        "attempted_at_utc": "2026-07-12T01:26:16Z",
+        "status": "succeeded",
+        "status_code": 200,
+        "completed_at_utc": "2026-07-12T01:26:16Z"
+      },
+      {
+        "request_id": "repair_test::sim_040_budget_fit_direct_answer",
+        "operation": "repair-owned-context",
+        "method": "PUT",
+        "endpoint": "/v1/convai/agent-testing/test_0901kx9ddnw8eyfrj2r1n9vwvze1",
+        "body": {
+          "type": "simulation",
+          "name": "ELEVENLABS-040-detailed-pricing-control::sim_040_budget_fit_direct_answer",
+          "simulation_scenario": "Buyer says the budget is `$1,200` and asks whether a basic site fits.",
+          "simulation_max_turns": 6,
+          "success_condition": "Pass: direct fit answer against `$900-$1,500`; no unrelated package menu.",
+          "dynamic_variables": {
+            "campaign_name": "universal-sales-core-validation",
+            "source_package_id": "ELEVENLABS-040-detailed-pricing-control",
+            "agent_name": "Emma",
+            "company_name": "Atlas Web Studio",
+            "offer": "free homepage mockup",
+            "business_name": "Acme Dental",
+            "business_type": "dental clinic",
+            "city": "Phoenix",
+            "website_starting_price": "$500",
+            "website_basic_site_range": "$900-$1,500",
+            "website_light_feature_range": "$1,800-$3,000",
+            "website_workflow_content_range": "$2,800-$4,500",
+            "website_integration_heavy_range": "$4,000-$6,500",
+            "website_premium_price_anchor": "$6,500"
+          },
+          "simulated_user_model": "gemini-2.5-flash",
+          "evaluation_model": "gemini-2.5-flash"
+        },
+        "attempted_at_utc": "2026-07-12T01:26:16Z",
+        "status": "succeeded",
+        "status_code": 200,
+        "completed_at_utc": "2026-07-12T01:26:16Z"
+      },
+      {
+        "request_id": "repair_test::sim_040_care_plan_only_when_asked",
+        "operation": "repair-owned-context",
+        "method": "PUT",
+        "endpoint": "/v1/convai/agent-testing/test_6101kx9ddp3cf0w9fqtvqwm21esx",
+        "body": {
+          "type": "simulation",
+          "name": "ELEVENLABS-040-detailed-pricing-control::sim_040_care_plan_only_when_asked",
+          "simulation_scenario": "Buyer first asks about ordinary site capability, then explicitly asks monthly hosting and maintenance cost.",
+          "simulation_max_turns": 10,
+          "success_condition": "Pass: no care price before the ongoing-cost question; after it, one relevant `$79`, `$149`, or `$249` plan with scope.",
+          "dynamic_variables": {
+            "campaign_name": "universal-sales-core-validation",
+            "source_package_id": "ELEVENLABS-040-detailed-pricing-control",
+            "agent_name": "Emma",
+            "company_name": "Atlas Web Studio",
+            "offer": "free homepage mockup",
+            "business_name": "Acme Dental",
+            "business_type": "dental clinic",
+            "city": "Phoenix",
+            "website_starting_price": "$500",
+            "website_basic_site_range": "$900-$1,500",
+            "website_light_feature_range": "$1,800-$3,000",
+            "website_workflow_content_range": "$2,800-$4,500",
+            "website_integration_heavy_range": "$4,000-$6,500",
+            "website_premium_price_anchor": "$6,500"
+          },
+          "simulated_user_model": "gemini-2.5-flash",
+          "evaluation_model": "gemini-2.5-flash"
+        },
+        "attempted_at_utc": "2026-07-12T01:26:17Z",
+        "status": "succeeded",
+        "status_code": 200,
+        "completed_at_utc": "2026-07-12T01:26:17Z"
+      }
+    ]
+  },
+  "outbound_calls_made": false
+}

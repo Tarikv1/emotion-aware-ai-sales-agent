@@ -588,6 +588,43 @@ Evidence sources:
 - `research/experiments/generated/PUBLIC-OPENAI-DECISION-STAGE-SELLING-001/`
 - `research/experiments/generated/PUBLIC-OPENAI-COMMERCIAL-CLOSING-001/`
 
+### 5.6 Hosted Atlas Natural-Sales And Pricing Evaluation
+
+Evaluation focus:
+
+- hosted ElevenLabs text/simulation behavior for Atlas Web Studio
+- natural sales behavior from 036: email confirmation, scheduling, CRM/payment capability, custom dashboard scope, visual mockup limits, CTA fatigue, guarantee-only disqualification, and stale goodbye/future-pricing conflicts
+- terminal-control behavior from 039: hard stop, delivery-timing deduplication, gatekeeper callback, gatekeeper note, one built-in `end_call`, and no post-terminal activity
+- detailed pricing behavior from 040: buyer-triggered pricing, one active price lane, CRM repetition-safe scope follow-up, portal proof/scope control, no unsupported fixed quote or ceiling, and no CTA reopening during active price or scope follow-up
+- provider label versus deterministic independent trace result versus manual transcript review
+- discrepancy classification: product defect, provider evaluator defect, stale test-contract defect, or incomplete simulation
+- structural readback after provider writes: prompt/KB write success, 17 ordered KB attachments, 30 Analysis criteria, one built-in `end_call`, inactive Procedures, and unrelated-tool/configuration preservation
+- credit-aware evidence collection: targeted repair reruns first, broad reruns only when they answer a real evidence question
+
+Evidence sources:
+
+- `research/experiments/generated/ELEVENLABS-036-natural-sales-scenarios/report.md`
+- `research/experiments/generated/ELEVENLABS-036-natural-sales-scenarios/llm_gpt55_behavior4_full1_independent.json`
+- `research/experiments/generated/ELEVENLABS-036-natural-sales-scenarios/credit_capped_broad_ready_final_20260713_independent.json`
+- `research/experiments/generated/ELEVENLABS-036-natural-sales-scenarios/credit_capped_crm_capability_lock_final_20260713_independent.json`
+- `research/experiments/generated/ELEVENLABS-039-end-call-edge-case-hardening/report.md`
+- `research/experiments/generated/ELEVENLABS-039-end-call-edge-case-hardening/gpt55_regression_independent.json`
+- `research/experiments/generated/ELEVENLABS-040-detailed-pricing-control/report.md`
+- `research/experiments/generated/ELEVENLABS-040-detailed-pricing-control/live_agent_patch_result.json`
+- `research/experiments/generated/ELEVENLABS-040-detailed-pricing-control/live_test_independent_full_credit_capped_final.json`
+- `research/experiments/generated/ELEVENLABS-040-detailed-pricing-control/live_test_multi_feature_atomic_scope_final_independent.json`
+- `research/experiments/generated/ELEVENLABS-040-detailed-pricing-control/live_test_crm_repetition_safe_final_independent.json`
+- `research/experiments/generated/ELEVENLABS-040-detailed-pricing-control/live_test_portal_proof_scope_final_independent.json`
+
+Claim boundaries:
+
+- targeted 040 repair traces passed independent validation; full 036/040 credit-capped captures remain mixed and must not be described as universally green
+- one bounded post-final-write CRM canary passed provider, deterministic independent, and independent transcript review, supplying targeted behavioral proof for the final live fingerprint
+- the earlier broad-readiness checkpoint remained blocked at the time; later detailed-pricing evidence plus the post-final-write canary supersedes that specific fingerprint gap without turning historical full-suite evidence universally green
+- no dashboard criterion or Analysis definition was weakened to manufacture a pass, but new 040 regression tests were added
+- no outbound call was placed
+- accumulated evidence supports the covered hosted Atlas text/simulation work and the tested final-fingerprint CRM progression; it does not establish the explicit repetition-complaint branch, PSTN audio, ASR, latency, interruption handling, buyer perception, conversion impact, or real-customer performance
+
 ## 6. Results And Discussion
 
 ### 6.1 What Worked
@@ -603,6 +640,8 @@ Likely themes:
 - source-grounded public-product fixture improved claim governance
 - semantic frame mapping reduced reliance on exact dialogue patches
 - prosody planning became an internal/backend-neutral design layer
+- Atlas 039 terminal-control traces reached independently validated atomic `end_call` behavior for hard stops, delivery timing, and gatekeeper outcomes
+- Atlas 040 targeted repair traces showed that buyer-triggered pricing, one-lane scope control, CRM repetition handling, and portal proof/scope control can be validated after real product defects are fixed
 
 ### 6.2 What Did Not Work Or Remains Weak
 
@@ -618,6 +657,10 @@ Likely themes:
 - QLoRA training pipeline is mechanically valid but current local model strategy is insufficient
 - Liquid Audio generated unintelligible TTS and is retired as a voice backend
 - Fish-inspired prosody taxonomy needs cleanup before any ElevenLabs mapping prototype
+- provider dashboard labels can disagree with deterministic trace review or active product contracts
+- full Atlas 036/040 credit-capped captures contain mixed or stale-contract evidence and should be used as limitations, not universal green results
+- the post-last-write CRM canary supplies targeted transcript verification, but it did not contain an explicit repetition complaint and does not make historical full suites universally green
+- covered hosted text/simulation evidence does not establish PSTN audio, ASR, latency, interruption handling, buyer perception, conversion impact, or real-customer performance
 
 ### 6.3 Threats To Validity
 
@@ -630,6 +673,9 @@ Threats:
 - public dataset domain mismatch
 - private data not yet integrated
 - language proficiency and native-speaker evaluation gaps
+- provider evaluator defects, stale test contracts, and incomplete simulations can be mistaken for product quality if trace adjudication is skipped
+- targeted repair passes may not generalize to full-suite or real-buyer behavior without broader reruns and supervised call evidence
+- credit-aware verification can preserve budget but must be reported plainly when broad reruns were not performed
 
 ### 6.4 Ethical And Product Discussion
 

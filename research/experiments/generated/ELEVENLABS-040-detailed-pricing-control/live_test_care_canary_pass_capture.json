@@ -1,0 +1,222 @@
+{
+  "captured_at_utc": "2026-07-12T16:30:50Z",
+  "payload_sha256": "86eb10535af777881fe64d1c080ed80f8fc08d5d3d2132184bf11f2d8d88964b",
+  "payload": {
+    "checkpoint_id": "ELEVENLABS-040-detailed-pricing-control",
+    "invocation_id": "suite_8701kxbjm5xjem2ag43jjvcmes8w",
+    "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+    "test_runs": [
+      {
+        "test_run_id": "trun_7301kxbjm5xmfbh8eyddk1y49bq5",
+        "test_invocation_id": "suite_8701kxbjm5xjem2ag43jjvcmes8w",
+        "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+        "test_id": "sim_040_care_plan_only_when_asked",
+        "provider_test_id": "test_6101kx9ddp3cf0w9fqtvqwm21esx",
+        "test_name": "ELEVENLABS-040-detailed-pricing-control::sim_040_care_plan_only_when_asked",
+        "scenario": "Buyer first asks about ordinary site capability, then explicitly asks monthly hosting and maintenance cost.",
+        "success_conditions": [
+          "Pass: no care price before the ongoing-cost question; after it, one relevant `$79`, `$149`, or `$249` plan with scope."
+        ],
+        "models": {
+          "simulated_user_model": "gemini-2.5-flash",
+          "evaluation_model": "gemini-2.5-flash"
+        },
+        "status": "passed",
+        "condition_result": {
+          "result": "success",
+          "rationale": {
+            "messages": [
+              "The agent did not mention any care prices before the user explicitly asked about monthly costs. After the user's question, the agent provided a relevant \"seventy nine dollars per month\" plan with a clear scope (hosting coordination, updates, backups, and monitoring).",
+              "The simulated user ended the conversation."
+            ],
+            "summary": "Evaluation succeeded"
+          }
+        },
+        "evaluator_rationale": "{'messages': ['The agent did not mention any care prices before the user explicitly asked about monthly costs. After the user\\'s question, the agent provided a relevant \"seventy nine dollars per month\" plan with a clear scope (hosting coordination, updates, backups, and monitoring).', 'The simulated user ended the conversation.'], 'summary': 'Evaluation succeeded'}",
+        "agent_responses": [
+          {
+            "role": "agent",
+            "time": 30,
+            "source_medium": null,
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "message": "Hi, this is Emma from Atlas Web Studio. I had Acme Dental down as a dental clinic in Phoenix. Am I speaking with the owner or someone who handles the website there?",
+            "original_message": null
+          },
+          {
+            "role": "user",
+            "time": 30,
+            "source_medium": "text",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "message": "Yeah, that's me. I handle the website here.",
+            "original_message": null
+          },
+          {
+            "role": "agent",
+            "time": 30,
+            "source_medium": null,
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "message": "Great. I\u2019m calling because we\u2019re putting together a free homepage mockup for a few local businesses, showing how the site could look cleaner and make it easier for patients to take the next step. There\u2019s no payment or contract for the mockup; if it\u2019s useful, you can reply to the email. Would you be open to seeing one for Acme Dental?",
+            "original_message": null
+          },
+          {
+            "role": "user",
+            "time": 30,
+            "source_medium": "text",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "message": "Yeah, I guess so. What kind of stuff can you even do with a website these days?",
+            "original_message": null
+          },
+          {
+            "role": "agent",
+            "time": 30,
+            "source_medium": null,
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "message": "For a dental clinic, the site can make the main patient actions clearer, like requesting an appointment, calling from mobile, finding services, reading trust signals, and understanding insurance or new patient steps. More advanced pieces can be added too, like forms, reminders, or integrations, depending on what you actually need. For the free mockup, we\u2019d show the homepage layout and where those patient actions would sit.",
+            "original_message": null
+          },
+          {
+            "role": "user",
+            "time": 30,
+            "source_medium": "text",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "message": "Okay, I get that. So what about the monthly cost for something like that?",
+            "original_message": null
+          },
+          {
+            "role": "agent",
+            "time": 30,
+            "source_medium": null,
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "message": "For ongoing care, the usual plan is seventy nine dollars per month for hosting coordination, updates, backups, and monitoring. If you need regular content edits or heavier reporting, that can change, but the basic care plan is the common fit. Are you asking about ongoing care after a new site, or adding something to your current site?",
+            "original_message": null
+          },
+          {
+            "role": "user",
+            "time": 30,
+            "source_medium": "text",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "message": "Wait, so is that $79 for a new site, or for my existing one?",
+            "original_message": null
+          },
+          {
+            "role": "agent",
+            "time": 30,
+            "source_medium": null,
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "message": "That seventy nine dollars per month is the ongoing care plan, not the build cost. A new three to five page site is usually nine hundred to fifteen hundred dollars as a project, while a compatible existing-site appointment request add-on is usually one hundred to two hundred fifty dollars. The main driver is whether we are rebuilding the site or just adding a simple request path to what you already have.",
+            "original_message": null
+          },
+          {
+            "role": "user",
+            "time": 30,
+            "source_medium": "text",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "message": "So, if I get the free mockup, then what? Is that when the $900-$1500 comes in?",
+            "original_message": null
+          },
+          {
+            "role": "agent",
+            "time": 30,
+            "source_medium": null,
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "message": "You review it and reply to the email only if it's useful.",
+            "original_message": null
+          },
+          {
+            "role": "user",
+            "time": 30,
+            "source_medium": "text",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "message": "So, if I like the mockup, then I'd pay the $900-$1500 for a new site, and then $79 a month?",
+            "original_message": null
+          },
+          {
+            "role": "agent",
+            "time": 30,
+            "source_medium": null,
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "message": "If you decide to move forward with a new three to five page site, the build is usually nine hundred to fifteen hundred dollars, and ongoing care is typically seventy nine dollars per month after that. The mockup itself does not commit you to either one.",
+            "original_message": null
+          },
+          {
+            "role": "user",
+            "time": 30,
+            "source_medium": "text",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "message": "Okay, I get it. So the mockup is totally free, no catch?",
+            "original_message": null
+          },
+          {
+            "role": "agent",
+            "time": 30,
+            "source_medium": null,
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "message": "No payment or contract.",
+            "original_message": null
+          },
+          {
+            "role": "user",
+            "time": 30,
+            "source_medium": "text",
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "message": "Alright, got it. So you'll send over the mockup then?",
+            "original_message": null
+          },
+          {
+            "role": "agent",
+            "time": 30,
+            "source_medium": null,
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "message": "Yes. What\u2019s the best email?",
+            "original_message": null
+          },
+          {
+            "role": "user",
+            "time": 30,
+            "source_medium": null,
+            "tool_results": [],
+            "tool_calls": [],
+            "interrupted": false,
+            "message": "Alright, thanks. Bye.",
+            "original_message": null
+          }
+        ]
+      }
+    ],
+    "result_groups": []
+  }
+}

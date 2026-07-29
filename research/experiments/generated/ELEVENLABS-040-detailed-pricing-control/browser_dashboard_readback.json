@@ -1,0 +1,15 @@
+{
+  "checkpoint_id": "ELEVENLABS-040-detailed-pricing-control",
+  "readback_date": "2026-07-12",
+  "page": "https://elevenlabs.io/app/agents/agent-testing/tfld_0801kx9ddk7rfzy92z9q5adst7h1",
+  "signed_in": true,
+  "folder_name": "ELEVENLABS-040-detailed-pricing-control",
+  "folder_item_count": 10,
+  "test_definition_edits_made": false,
+  "sample_test": "sim_040_care_plan_only_when_asked",
+  "simulated_user_model": "Gemini 2.5 Flash",
+  "evaluation_model": "Gemini 2.5 Flash",
+  "dashboard_warning": "You have an unpaid invoice, this could lead to your subscription being canceled.",
+  "dashboard_modal": "A payment failed, please go to Subscription -> Manage Subscription and check your invoices.",
+  "diagnosis": "The warning coincides with a full-suite and controlled-canary simulation failure at the same three-message boundary. The API rationale was Simulation did not complete successfully / Unexpected error occurred."
+}

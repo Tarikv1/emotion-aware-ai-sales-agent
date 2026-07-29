@@ -1,0 +1,68 @@
+{
+  "checkpoint_id": "ELEVENLABS-040-detailed-pricing-control",
+  "captured_at_utc": "2026-07-14T02:41:52Z",
+  "status": "completed",
+  "invocation_id": "suite_7301kxf805wbecg8mc72j28zm39r",
+  "repeat_count": 1,
+  "selected_test_count": 1,
+  "selected_test_ids": [
+    "sim_040_direct_crm_integration_existing_site"
+  ],
+  "expected_terminal_run_count": 1,
+  "observed_terminal_run_count": 1,
+  "failed_terminal_run_count": 0,
+  "provider_status_code": 200,
+  "provider_test_ids": {
+    "sim_040_capability_question_no_unprompted_price": "test_9101kx9ddm04f0e8tjnwzja893a6",
+    "sim_040_free_mockup_question_no_paid_price": "test_3801kx9ddm7wefzvapxjdf51xbq3",
+    "sim_040_basic_site_direct_price": "test_0201kx9ddmfpeyh9mes2znh3j98b",
+    "sim_040_existing_site_request_form_add_on": "test_3801kx9ddmqnfsq97d7xym9qy01x",
+    "sim_040_new_site_booking_whole_project": "test_1301kx9ddmz7fh3vge8255tw9h2d",
+    "sim_040_multi_feature_no_price_stacking": "test_9001kx9ddn6gfb0rbpcxdq5jjbc5",
+    "sim_040_direct_crm_integration_existing_site": "test_0101kx9ddndtfawsgcrcjg72ycce",
+    "sim_040_portal_requires_scope": "test_5201kx9ddnp4fpdrerx807xpfzv9",
+    "sim_040_budget_fit_direct_answer": "test_0901kx9ddnw8eyfrj2r1n9vwvze1",
+    "sim_040_care_plan_only_when_asked": "test_6101kx9ddp3cf0w9fqtvqwm21esx"
+  },
+  "run_statuses": [
+    {
+      "test_id": "test_0101kx9ddndtfawsgcrcjg72ycce",
+      "test_name": "ELEVENLABS-040-detailed-pricing-control::sim_040_direct_crm_integration_existing_site",
+      "test_run_id": "trun_7001kxf805wvfz7b2xn7xnr7espd",
+      "status": "passed"
+    }
+  ],
+  "final_run_statuses": [
+    "passed"
+  ],
+  "outbound_calls_made": false,
+  "mode": "canary_run",
+  "folder_id": "tfld_0801kx9ddk7rfzy92z9q5adst7h1",
+  "operation_ledger": {
+    "attempt_count": 1,
+    "success_count": 1,
+    "failure_count": 0,
+    "failed_request_id": null,
+    "failed_error": null,
+    "attempts": [
+      {
+        "request_id": "run_tests::agent_7801kt0g32zxf4f8x5zkykj7syty",
+        "operation": "run-tests",
+        "method": "POST",
+        "endpoint": "/v1/convai/agents/agent_7801kt0g32zxf4f8x5zkykj7syty/run-tests",
+        "body": {
+          "tests": [
+            {
+              "test_id": "test_0101kx9ddndtfawsgcrcjg72ycce"
+            }
+          ],
+          "repeat_count": 1
+        },
+        "attempted_at_utc": "2026-07-14T02:41:20Z",
+        "status": "succeeded",
+        "status_code": 200,
+        "completed_at_utc": "2026-07-14T02:41:20Z"
+      }
+    ]
+  }
+}

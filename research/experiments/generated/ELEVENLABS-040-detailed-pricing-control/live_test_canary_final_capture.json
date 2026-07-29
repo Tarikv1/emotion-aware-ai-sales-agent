@@ -1,0 +1,152 @@
+{
+  "captured_at_utc": "2026-07-12T02:45:14Z",
+  "payload_sha256": "2c83f808f5b259496afa3bc3c1c8349c1b74ae60ddc337dcb82a6933c4c24610",
+  "payload": {
+    "checkpoint_id": "ELEVENLABS-040-detailed-pricing-control",
+    "invocation_id": "suite_2101kxa3cytnfx59g14zfm2sjfv3",
+    "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+    "test_runs": [
+      {
+        "test_run_id": "trun_9701kxa3cytqf3a8n3rd4sfpgqq7",
+        "test_invocation_id": "suite_2101kxa3cytnfx59g14zfm2sjfv3",
+        "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+        "test_id": "sim_040_basic_site_direct_price",
+        "provider_test_id": "test_0201kx9ddmfpeyh9mes2znh3j98b",
+        "test_name": "ELEVENLABS-040-detailed-pricing-control::sim_040_basic_site_direct_price",
+        "scenario": "Buyer explicitly asks what a basic three-to-five-page local-business site costs.",
+        "success_conditions": [
+          "Pass: one `$900-$1,500` whole-project range and one relevant driver at most."
+        ],
+        "models": {
+          "simulated_user_model": "gemini-2.5-flash",
+          "evaluation_model": "gemini-2.5-flash"
+        },
+        "status": "passed",
+        "condition_result": {
+          "result": "success",
+          "rationale": {
+            "messages": [
+              "The agent provided a single whole-project range of \"nine hundred to fifteen hundred dollars\" and identified \"how much content and layout work is needed versus using a simpler structure\" as the main driver, which is one relevant driver at most.",
+              "The conversation reached the maximum number of turns."
+            ],
+            "summary": "Evaluation succeeded"
+          }
+        },
+        "evaluator_rationale": "{'messages': ['The agent provided a single whole-project range of \"nine hundred to fifteen hundred dollars\" and identified \"how much content and layout work is needed versus using a simpler structure\" as the main driver, which is one relevant driver at most.', 'The conversation reached the maximum number of turns.'], 'summary': 'Evaluation succeeded'}",
+        "agent_responses": [
+          {
+            "original_message": null,
+            "tool_results": [],
+            "message": "Hi, this is Emma from Atlas Web Studio. I had Acme Dental down as a dental clinic in Phoenix. Am I speaking with the owner or someone who handles the website there?",
+            "time": 19,
+            "role": "agent",
+            "tool_calls": [],
+            "source_medium": null,
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "tool_results": [],
+            "message": "Yeah, that's me. I'm the owner.Okay, so what does a basic three-to-five-page local business site usually cost?...",
+            "time": 19,
+            "role": "user",
+            "tool_calls": [],
+            "source_medium": "text",
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "tool_results": [],
+            "message": "For a basic three to five page local business site, it usually runs nine hundred to fifteen hundred dollars. The main driver is how much content and layout work is needed versus using a simpler structure. For now, I was calling because we can put together a free homepage mockup so you can see whether a cleaner version would even be useful.",
+            "time": 19,
+            "role": "agent",
+            "tool_calls": [],
+            "source_medium": null,
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "tool_results": [],
+            "message": "Hmm, ok. So what makes it $900 instead of $1500? That's a pretty big difference.",
+            "time": 19,
+            "role": "user",
+            "tool_calls": [],
+            "source_medium": "text",
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "tool_results": [],
+            "message": "The lower end is usually when the pages are straightforward, the content is mostly ready, and the design can stay simple. The higher end is when we need more copy cleanup, more custom layout work, or extra back and forth to get the structure right.",
+            "time": 19,
+            "role": "agent",
+            "tool_calls": [],
+            "source_medium": null,
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "tool_results": [],
+            "message": "So how do I know if my content is \"ready\" enough for the cheaper price?",
+            "time": 19,
+            "role": "user",
+            "tool_calls": [],
+            "source_medium": "text",
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "tool_results": [],
+            "message": "Ready usually means you already have the main page text, services, contact details, photos or logo, and a clear idea of what each page should say. If we have to rewrite a lot, organize scattered information, or source missing pieces, it moves toward the higher end.",
+            "time": 19,
+            "role": "agent",
+            "tool_calls": [],
+            "source_medium": null,
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "tool_results": [],
+            "message": "So, if my content isn't \"ready,\" does that mean it automatically jumps to the $1500 price?",
+            "time": 19,
+            "role": "user",
+            "tool_calls": [],
+            "source_medium": "text",
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "tool_results": [],
+            "message": "No, not automatically. It depends how much is missing or needs cleanup; a little polishing would not usually push it all the way up, but a full rewrite or unclear page structure could.",
+            "time": 19,
+            "role": "agent",
+            "tool_calls": [],
+            "source_medium": null,
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "tool_results": [],
+            "message": "Okay, so how do I figure out which end of the scale my site would be?",
+            "time": 19,
+            "role": "user",
+            "tool_calls": [],
+            "source_medium": "text",
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "tool_results": [],
+            "message": "The practical way is to look at the number of pages, how complete the text and images are, and whether the layout needs to be simple or more custom. If you already have the basics gathered, it is usually closer to the lower end; if we need to shape the message and structure from scratch, it moves higher.",
+            "time": 19,
+            "role": "agent",
+            "tool_calls": [],
+            "source_medium": null,
+            "interrupted": false
+          }
+        ]
+      }
+    ],
+    "result_groups": []
+  }
+}

@@ -1,0 +1,192 @@
+{
+  "captured_at_utc": "2026-07-12T16:40:37Z",
+  "payload_sha256": "27b04cd3c0b136c072bc5237624abb4c89d9b786ad962071f6ab2452bbeea495",
+  "payload": {
+    "checkpoint_id": "ELEVENLABS-040-detailed-pricing-control",
+    "invocation_id": "suite_1701kxbk63bhfz09gngw23kkrc74",
+    "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+    "test_runs": [
+      {
+        "test_run_id": "trun_5701kxbk63bkehws10r30csppv71",
+        "test_invocation_id": "suite_1701kxbk63bhfz09gngw23kkrc74",
+        "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+        "test_id": "sim_040_multi_feature_no_price_stacking",
+        "provider_test_id": "test_9001kx9ddn6gfb0rbpcxdq5jjbc5",
+        "test_name": "ELEVENLABS-040-detailed-pricing-control::sim_040_multi_feature_no_price_stacking",
+        "scenario": "Buyer asks for a new site with booking, CRM, payments, service-area pages, and a blog, then asks total cost.",
+        "success_conditions": [
+          "Pass: one likely whole-project band and scope driver; no arithmetic sum or feature-menu recital."
+        ],
+        "models": {
+          "simulated_user_model": "gemini-2.5-flash",
+          "evaluation_model": "gemini-2.5-flash"
+        },
+        "status": "passed",
+        "condition_result": {
+          "result": "success",
+          "rationale": {
+            "messages": [
+              "The agent provided a clear whole-project range of \"four thousand to six thousand five hundred dollars\" and identified a main scope driver: \"whether booking, payments, and CRM are simple embedded tools or direct integrations that move data automatically.\" This was not an arithmetic sum or a feature-menu recital.",
+              "The conversation reached the maximum number of turns."
+            ],
+            "summary": "Evaluation succeeded"
+          }
+        },
+        "evaluator_rationale": "{'messages': ['The agent provided a clear whole-project range of \"four thousand to six thousand five hundred dollars\" and identified a main scope driver: \"whether booking, payments, and CRM are simple embedded tools or direct integrations that move data automatically.\" This was not an arithmetic sum or a feature-menu recital.', 'The conversation reached the maximum number of turns.'], 'summary': 'Evaluation succeeded'}",
+        "agent_responses": [
+          {
+            "time": 30,
+            "interrupted": false,
+            "message": "Hi, this is Emma from Atlas Web Studio. I had Acme Dental down as a dental clinic in Phoenix. Am I speaking with the owner or someone who handles the website there?",
+            "original_message": null,
+            "tool_calls": [],
+            "role": "agent",
+            "tool_results": [],
+            "source_medium": null
+          },
+          {
+            "time": 30,
+            "interrupted": false,
+            "message": "Yeah, that's me. I'm calling about a new website.",
+            "original_message": null,
+            "tool_calls": [],
+            "role": "user",
+            "tool_results": [],
+            "source_medium": "text"
+          },
+          {
+            "time": 30,
+            "interrupted": false,
+            "message": "Great. The reason I reached out is we put together a free homepage mockup for local businesses so you can see what a cleaner site could look like before deciding anything. For a dental clinic, that usually means clearer service sections, trust signals, and an easier path for patients to request an appointment. Would you be open to me sending over a free mockup for Acme Dental?",
+            "original_message": null,
+            "tool_calls": [],
+            "role": "agent",
+            "tool_results": [],
+            "source_medium": null
+          },
+          {
+            "time": 30,
+            "interrupted": false,
+            "message": "Uh, yeah, a mockup is fine, but I need a whole new site. Like, with booking, CRM, payments, and service pages.",
+            "original_message": null,
+            "tool_calls": [],
+            "role": "user",
+            "tool_results": [],
+            "source_medium": "text"
+          },
+          {
+            "time": 30,
+            "interrupted": false,
+            "message": "Yes, we can build that. It depends whether you need a simple form handoff or a real integration. The free mockup would show the homepage layout and where booking, payments, CRM, and service pages would sit, but it would not be working functionality yet. What's the best email to send it to?",
+            "original_message": null,
+            "tool_calls": [],
+            "role": "agent",
+            "tool_results": [],
+            "source_medium": null
+          },
+          {
+            "time": 30,
+            "interrupted": false,
+            "message": "Okay, it's [REDACTED_EMAIL]. But I need the whole site, not just a mockup. What's the total cost for all that?",
+            "original_message": null,
+            "tool_calls": [],
+            "role": "user",
+            "tool_results": [],
+            "source_medium": "text"
+          },
+          {
+            "time": 30,
+            "interrupted": false,
+            "message": "For a new site with standard integration, the likely whole-project range is four thousand to six thousand five hundred dollars. The main scope driver is whether booking, payments, and CRM are simple embedded tools or direct integrations that move data automatically. Just to confirm, [REDACTED_EMAIL] is that right?",
+            "original_message": null,
+            "tool_calls": [],
+            "role": "agent",
+            "tool_results": [],
+            "source_medium": null
+          },
+          {
+            "time": 30,
+            "interrupted": false,
+            "message": "Yeah, that email's right. But that's a pretty big range for the cost, isn't it?",
+            "original_message": null,
+            "tool_calls": [],
+            "role": "user",
+            "tool_results": [],
+            "source_medium": "text"
+          },
+          {
+            "time": 30,
+            "interrupted": false,
+            "message": "The range is mainly because simple embedded tools are much lighter than direct CRM and payment integrations. If the booking and payments can use existing third-party tools, it stays closer to the lower end; if data needs to sync directly with the CRM, it moves higher.",
+            "original_message": null,
+            "tool_calls": [],
+            "role": "agent",
+            "tool_results": [],
+            "source_medium": null
+          },
+          {
+            "time": 30,
+            "interrupted": false,
+            "message": "Okay, but how do I know which one I'd even need then?",
+            "original_message": null,
+            "tool_calls": [],
+            "role": "user",
+            "tool_results": [],
+            "source_medium": "text"
+          },
+          {
+            "time": 30,
+            "interrupted": false,
+            "message": "You would choose based on what has to happen after a patient submits something. If staff can review a request and handle it manually, simple is usually enough; if the system needs to create records, take deposits, update calendars, or sync automatically, that is integrated.",
+            "original_message": null,
+            "tool_calls": [],
+            "role": "agent",
+            "tool_results": [],
+            "source_medium": null
+          },
+          {
+            "time": 30,
+            "interrupted": false,
+            "message": "Okay, so if I want it to do all that automatic stuff, that's the higher price, right?",
+            "original_message": null,
+            "tool_calls": [],
+            "role": "user",
+            "tool_results": [],
+            "source_medium": "text"
+          },
+          {
+            "time": 30,
+            "interrupted": false,
+            "message": "Yes, automatic booking, CRM syncing, and payment handling would push it toward the higher end of that range, and possibly beyond it if the CRM requires custom API work or complex rules. The exact number depends on the CRM, payment flow, and how much automation you want behind the scenes.",
+            "original_message": null,
+            "tool_calls": [],
+            "role": "agent",
+            "tool_results": [],
+            "source_medium": null
+          },
+          {
+            "time": 30,
+            "interrupted": false,
+            "message": "Beyond? So it could be even more than $6500?",
+            "original_message": null,
+            "tool_calls": [],
+            "role": "user",
+            "tool_results": [],
+            "source_medium": "text"
+          },
+          {
+            "time": 30,
+            "interrupted": false,
+            "message": "Yes, it could be more than six thousand five hundred dollars if it becomes custom API work with complex booking rules, payment logic, or CRM automation. That is why we would need to scope the integrations before giving a firm number.",
+            "original_message": null,
+            "tool_calls": [],
+            "role": "agent",
+            "tool_results": [],
+            "source_medium": null
+          }
+        ]
+      }
+    ],
+    "result_groups": []
+  }
+}

@@ -1,0 +1,232 @@
+{
+  "captured_at_utc": "2026-07-12T17:25:02Z",
+  "payload_sha256": "0164c64ec8612717468051de2f190624ddfa300371c2a197a959354d69e31063",
+  "payload": {
+    "checkpoint_id": "ELEVENLABS-040-detailed-pricing-control",
+    "invocation_id": "suite_1301kxbnq4akfwtrntm99vdhbzw7",
+    "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+    "test_runs": [
+      {
+        "test_run_id": "trun_1001kxbnq4apebhrypj36rjvvbzv",
+        "test_invocation_id": "suite_1301kxbnq4akfwtrntm99vdhbzw7",
+        "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+        "test_id": "sim_040_care_plan_only_when_asked",
+        "provider_test_id": "test_6101kx9ddp3cf0w9fqtvqwm21esx",
+        "test_name": "ELEVENLABS-040-detailed-pricing-control::sim_040_care_plan_only_when_asked",
+        "scenario": "Buyer first asks about ordinary site capability, then explicitly asks monthly hosting and maintenance cost.",
+        "success_conditions": [
+          "Pass: no care price before the ongoing-cost question; after it, one relevant `$79`, `$149`, or `$249` plan with scope."
+        ],
+        "models": {
+          "simulated_user_model": "gemini-2.5-flash",
+          "evaluation_model": "gemini-2.5-flash"
+        },
+        "status": "passed",
+        "condition_result": {
+          "result": "success",
+          "rationale": {
+            "messages": [
+              "The agent did not mention any care price before the user asked about monthly costs. After the user's question, the agent provided the $79 per month plan with its scope (hosting coordination, updates, backups, and monitoring), which meets the criteria for providing one relevant plan.",
+              "The conversation reached the maximum number of turns."
+            ],
+            "summary": "Evaluation succeeded"
+          }
+        },
+        "evaluator_rationale": "{'messages': [\"The agent did not mention any care price before the user asked about monthly costs. After the user's question, the agent provided the $79 per month plan with its scope (hosting coordination, updates, backups, and monitoring), which meets the criteria for providing one relevant plan.\", 'The conversation reached the maximum number of turns.'], 'summary': 'Evaluation succeeded'}",
+        "agent_responses": [
+          {
+            "original_message": null,
+            "time": 33,
+            "role": "agent",
+            "message": "Hi, this is Emma from Atlas Web Studio. I had Acme Dental down as a dental clinic in Phoenix. Am I speaking with the owner or someone who handles the website there?",
+            "interrupted": false,
+            "tool_calls": [],
+            "tool_results": [],
+            "source_medium": null
+          },
+          {
+            "original_message": null,
+            "time": 33,
+            "role": "user",
+            "message": "Yeah, that's me. I handle the website stuff.",
+            "interrupted": false,
+            "tool_calls": [],
+            "tool_results": [],
+            "source_medium": "text"
+          },
+          {
+            "original_message": null,
+            "time": 33,
+            "role": "agent",
+            "message": "Great. I\u2019m calling because we\u2019re putting together a free homepage mockup for a few local businesses, just to show what a cleaner, more conversion-focused version of the site could look like. There\u2019s no payment or contract for the mockup; if it\u2019s useful, you can reply to the email, and if not, you can ignore it. Would you be open to taking a look?",
+            "interrupted": false,
+            "tool_calls": [],
+            "tool_results": [],
+            "source_medium": null
+          },
+          {
+            "original_message": null,
+            "time": 33,
+            "role": "user",
+            "message": "Yeah, I guess so. But what about, like, the actual monthly cost if I went with you guys?",
+            "interrupted": false,
+            "tool_calls": [],
+            "tool_results": [],
+            "source_medium": "text"
+          },
+          {
+            "original_message": null,
+            "time": 33,
+            "role": "agent",
+            "message": "For ongoing care, the usual plan is seventy nine dollars per month for hosting coordination, updates, backups, and monitoring. If you needed regular content edits or heavier monthly reporting, that can change, but the basic care plan is the common fit.",
+            "interrupted": false,
+            "tool_calls": [],
+            "tool_results": [],
+            "source_medium": null
+          },
+          {
+            "original_message": null,
+            "time": 33,
+            "role": "user",
+            "message": "So that's it? Just $79 a month for everything?",
+            "interrupted": false,
+            "tool_calls": [],
+            "tool_results": [],
+            "source_medium": "text"
+          },
+          {
+            "original_message": null,
+            "time": 33,
+            "role": "agent",
+            "message": "That seventy nine dollars per month is for ongoing care after the site is built, not the full website build itself. A typical three to five page new site is usually nine hundred to fifteen hundred dollars as a project, depending mostly on page count and content complexity.",
+            "interrupted": false,
+            "tool_calls": [],
+            "tool_results": [],
+            "source_medium": null
+          },
+          {
+            "original_message": null,
+            "time": 33,
+            "role": "user",
+            "message": "Whoa, wait. So it's not just the monthly fee? There's a big upfront cost too?",
+            "interrupted": false,
+            "tool_calls": [],
+            "tool_results": [],
+            "source_medium": "text"
+          },
+          {
+            "original_message": null,
+            "time": 33,
+            "role": "agent",
+            "message": "Yes, if you wanted us to build the actual site, there would usually be a one-time project cost plus the monthly care plan afterward. For a typical three to five page site, that project range is nine hundred to fifteen hundred dollars, and the main driver is how much content and structure needs to be created.",
+            "interrupted": false,
+            "tool_calls": [],
+            "tool_results": [],
+            "source_medium": null
+          },
+          {
+            "original_message": null,
+            "time": 33,
+            "role": "user",
+            "message": "So I'd pay that big amount and the monthly fee?",
+            "interrupted": false,
+            "tool_calls": [],
+            "tool_results": [],
+            "source_medium": "text"
+          },
+          {
+            "original_message": null,
+            "time": 33,
+            "role": "agent",
+            "message": "Yes, if you chose to move forward after seeing the mockup, the build would be a one-time project cost, and the care plan would be monthly afterward. The mockup itself is free, and it does not commit you to either one.",
+            "interrupted": false,
+            "tool_calls": [],
+            "tool_results": [],
+            "source_medium": null
+          },
+          {
+            "original_message": null,
+            "time": 33,
+            "role": "user",
+            "message": "So, it's like nine hundred to fifteen hundred dollars plus seventy-nine a month?",
+            "interrupted": false,
+            "tool_calls": [],
+            "tool_results": [],
+            "source_medium": "text"
+          },
+          {
+            "original_message": null,
+            "time": 33,
+            "role": "agent",
+            "message": "Yes, that is the typical structure for a simple new site: a one-time build in the nine hundred to fifteen hundred dollar range, then seventy nine dollars per month for the basic care plan afterward. The exact build cost depends mostly on page count and how much content needs to be created or reorganized.",
+            "interrupted": false,
+            "tool_calls": [],
+            "tool_results": [],
+            "source_medium": null
+          },
+          {
+            "original_message": null,
+            "time": 33,
+            "role": "user",
+            "message": "Right, so it's the big upfront and then the monthly.",
+            "interrupted": false,
+            "tool_calls": [],
+            "tool_results": [],
+            "source_medium": "text"
+          },
+          {
+            "original_message": null,
+            "time": 33,
+            "role": "agent",
+            "message": "Correct. The upfront project covers building the site, and the monthly care covers the ongoing hosting coordination, updates, backups, and monitoring after launch.",
+            "interrupted": false,
+            "tool_calls": [],
+            "tool_results": [],
+            "source_medium": null
+          },
+          {
+            "original_message": null,
+            "time": 33,
+            "role": "user",
+            "message": "Okay, I think I get it now.",
+            "interrupted": false,
+            "tool_calls": [],
+            "tool_results": [],
+            "source_medium": "text"
+          },
+          {
+            "original_message": null,
+            "time": 33,
+            "role": "agent",
+            "message": "Makes sense. If you\u2019re still open to it, the free mockup is just a visual starting point, so you can see whether the direction is even worth discussing before any paid decision. Where should I send it?",
+            "interrupted": false,
+            "tool_calls": [],
+            "tool_results": [],
+            "source_medium": null
+          },
+          {
+            "original_message": null,
+            "time": 33,
+            "role": "user",
+            "message": "Okay, send it to [REDACTED_EMAIL].",
+            "interrupted": false,
+            "tool_calls": [],
+            "tool_results": [],
+            "source_medium": "text"
+          },
+          {
+            "original_message": null,
+            "time": 33,
+            "role": "agent",
+            "message": "Just to confirm, [REDACTED_EMAIL] - is that right?",
+            "interrupted": false,
+            "tool_calls": [],
+            "tool_results": [],
+            "source_medium": null
+          }
+        ]
+      }
+    ],
+    "result_groups": []
+  }
+}

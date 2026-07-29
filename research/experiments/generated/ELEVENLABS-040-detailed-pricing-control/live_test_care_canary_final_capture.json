@@ -1,0 +1,232 @@
+{
+  "captured_at_utc": "2026-07-12T16:10:08Z",
+  "payload_sha256": "39504d372f8574cc57232efeda6440337c61b705698d892e3f642d5152e019a3",
+  "payload": {
+    "checkpoint_id": "ELEVENLABS-040-detailed-pricing-control",
+    "invocation_id": "suite_5701kxbhbgcmfyxakgs2vnr1ppd7",
+    "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+    "test_runs": [
+      {
+        "test_run_id": "trun_0201kxbhbgcnfm8sp6b7kyt6hy2c",
+        "test_invocation_id": "suite_5701kxbhbgcmfyxakgs2vnr1ppd7",
+        "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+        "test_id": "sim_040_care_plan_only_when_asked",
+        "provider_test_id": "test_6101kx9ddp3cf0w9fqtvqwm21esx",
+        "test_name": "ELEVENLABS-040-detailed-pricing-control::sim_040_care_plan_only_when_asked",
+        "scenario": "Buyer first asks about ordinary site capability, then explicitly asks monthly hosting and maintenance cost.",
+        "success_conditions": [
+          "Pass: no care price before the ongoing-cost question; after it, one relevant `$79`, `$149`, or `$249` plan with scope."
+        ],
+        "models": {
+          "simulated_user_model": "gemini-2.5-flash",
+          "evaluation_model": "gemini-2.5-flash"
+        },
+        "status": "passed",
+        "condition_result": {
+          "result": "success",
+          "rationale": {
+            "messages": [
+              "The agent did not mention any care prices before the user asked about monthly hosting and maintenance. After the user's question, the agent immediately provided the $79 plan with its scope (hosting coordination, updates, backups, and monitoring).",
+              "The conversation reached the maximum number of turns."
+            ],
+            "summary": "Evaluation succeeded"
+          }
+        },
+        "evaluator_rationale": "{'messages': [\"The agent did not mention any care prices before the user asked about monthly hosting and maintenance. After the user's question, the agent immediately provided the $79 plan with its scope (hosting coordination, updates, backups, and monitoring).\", 'The conversation reached the maximum number of turns.'], 'summary': 'Evaluation succeeded'}",
+        "agent_responses": [
+          {
+            "original_message": null,
+            "message": "Hi, this is Emma from Atlas Web Studio. I had Acme Dental down as a dental clinic in Phoenix. Am I speaking with the owner or someone who handles the website there?",
+            "tool_results": [],
+            "source_medium": null,
+            "time": 38,
+            "role": "agent",
+            "interrupted": false,
+            "tool_calls": []
+          },
+          {
+            "original_message": null,
+            "message": "Yeah, that's me. I handle the website.Yeah, that's me. I handle the website.",
+            "tool_results": [],
+            "source_medium": "text",
+            "time": 38,
+            "role": "user",
+            "interrupted": false,
+            "tool_calls": []
+          },
+          {
+            "original_message": null,
+            "message": "Great. I\u2019m calling because we\u2019re putting together a free homepage mockup for a few local businesses, showing how the site could look cleaner and make it easier for patients to request an appointment. If we made one for Acme Dental, would you be open to taking a look?",
+            "tool_results": [],
+            "source_medium": null,
+            "time": 38,
+            "role": "agent",
+            "interrupted": false,
+            "tool_calls": []
+          },
+          {
+            "original_message": null,
+            "message": "Uh, sure, I guess. What kind of stuff can you even do with a website these days?",
+            "tool_results": [],
+            "source_medium": "text",
+            "time": 38,
+            "role": "user",
+            "interrupted": false,
+            "tool_calls": []
+          },
+          {
+            "original_message": null,
+            "message": "For a dental clinic, the practical pieces are usually clearer service pages, stronger trust signals, mobile-friendly layout, and easier appointment requests. If needed, we can also show where reviews, insurance information, emergency dental calls, and patient forms would sit on the homepage. The free mockup is just a visual homepage concept, but it can make the direction easier to judge.",
+            "tool_results": [],
+            "source_medium": null,
+            "time": 38,
+            "role": "agent",
+            "interrupted": false,
+            "tool_calls": []
+          },
+          {
+            "original_message": null,
+            "message": "Okay, so what about the monthly hosting and maintenance? What does that usually run?",
+            "tool_results": [],
+            "source_medium": "text",
+            "time": 38,
+            "role": "user",
+            "interrupted": false,
+            "tool_calls": []
+          },
+          {
+            "original_message": null,
+            "message": "For ongoing care, the usual Essential Care plan is seventy nine dollars per month. That covers hosting coordination, updates, backups, and monitoring. If you need regular content edits, that can move into a higher care plan depending on how much editing is involved.",
+            "tool_results": [],
+            "source_medium": null,
+            "time": 38,
+            "role": "agent",
+            "interrupted": false,
+            "tool_calls": []
+          },
+          {
+            "original_message": null,
+            "message": "So, what kind of editing would push it into a higher plan?",
+            "tool_results": [],
+            "source_medium": "text",
+            "time": 38,
+            "role": "user",
+            "interrupted": false,
+            "tool_calls": []
+          },
+          {
+            "original_message": null,
+            "message": "Ordinary edits like swapping photos, updating service text, changing hours, or adding small announcements would usually move it to the one hundred forty nine dollars per month care plan. Heavier monthly edits or reporting can move it to the two hundred forty nine dollars per month plan. It really depends on how often you want us making changes versus just keeping the site maintained.",
+            "tool_results": [],
+            "source_medium": null,
+            "time": 38,
+            "role": "agent",
+            "interrupted": false,
+            "tool_calls": []
+          },
+          {
+            "original_message": null,
+            "message": "Hmm, okay. So, how many edits count as \"regular\" versus \"heavy\"?",
+            "tool_results": [],
+            "source_medium": "text",
+            "time": 38,
+            "role": "user",
+            "interrupted": false,
+            "tool_calls": []
+          },
+          {
+            "original_message": null,
+            "message": "Regular usually means occasional ordinary content changes during the month, like a few text or image updates, hours, staff notes, or small page tweaks. Heavy is more like ongoing monthly content work, repeated page changes, campaign updates, or reporting that takes more hands-on time. We would scope that before putting you on a higher plan, so you are not guessing.",
+            "tool_results": [],
+            "source_medium": null,
+            "time": 38,
+            "role": "agent",
+            "interrupted": false,
+            "tool_calls": []
+          },
+          {
+            "original_message": null,
+            "message": "So, like, how many \"few\" text or image updates? Is there a limit?",
+            "tool_results": [],
+            "source_medium": "text",
+            "time": 38,
+            "role": "user",
+            "interrupted": false,
+            "tool_calls": []
+          },
+          {
+            "original_message": null,
+            "message": "We do not treat it as a strict edit counter on the first conversation. The difference is mainly whether it is light routine upkeep or ongoing content production that needs dedicated time each month. If you had a specific monthly workload in mind, we would scope it before recommending the care level.",
+            "tool_results": [],
+            "source_medium": null,
+            "time": 38,
+            "role": "agent",
+            "interrupted": false,
+            "tool_calls": []
+          },
+          {
+            "original_message": null,
+            "message": "Okay, but what does \"light routine upkeep\" actually mean for me? Like, how many times can I ask for a text change?",
+            "tool_results": [],
+            "source_medium": "text",
+            "time": 38,
+            "role": "user",
+            "interrupted": false,
+            "tool_calls": []
+          },
+          {
+            "original_message": null,
+            "message": "Light routine upkeep means small, occasional requests that do not turn into ongoing content management, like changing a sentence, updating hours, replacing a photo, or adjusting a short section. I do not want to invent a hard number, because the plan is based more on time and complexity than a simple request count. If you expect frequent text changes every month, we would scope that as ordinary edits rather than basic maintenance.",
+            "tool_results": [],
+            "source_medium": null,
+            "time": 38,
+            "role": "agent",
+            "interrupted": false,
+            "tool_calls": []
+          },
+          {
+            "original_message": null,
+            "message": "Okay, so there's no actual limit then? It's just... whenever you decide it's too much?",
+            "tool_results": [],
+            "source_medium": "text",
+            "time": 38,
+            "role": "user",
+            "interrupted": false,
+            "tool_calls": []
+          },
+          {
+            "original_message": null,
+            "message": "No, it would not be arbitrary. The care level would be agreed up front based on the kind of work you expect, and if the workload changed, we would talk before changing anything. Basic maintenance is for keeping the site healthy, while regular editing is a separate service level.",
+            "tool_results": [],
+            "source_medium": null,
+            "time": 38,
+            "role": "agent",
+            "interrupted": false,
+            "tool_calls": []
+          },
+          {
+            "original_message": null,
+            "message": "So, if I just want to change a few words on a page, is that still \"light routine upkeep\" or is that an \"edit\"?",
+            "tool_results": [],
+            "source_medium": "text",
+            "time": 38,
+            "role": "user",
+            "interrupted": false,
+            "tool_calls": []
+          },
+          {
+            "original_message": null,
+            "message": "Changing a few words is an edit, but a small one. If it is occasional, it can fit as light routine upkeep; if you want us doing those kinds of changes regularly, that is when the ordinary edits plan makes more sense. The main line is occasional small fixes versus recurring content help.",
+            "tool_results": [],
+            "source_medium": null,
+            "time": 38,
+            "role": "agent",
+            "interrupted": false,
+            "tool_calls": []
+          }
+        ]
+      }
+    ],
+    "result_groups": []
+  }
+}

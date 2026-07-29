@@ -1,0 +1,38 @@
+{
+  "checkpoint_id": "THESIS-DOCS-UPDATE-003-final-fingerprint-closeout",
+  "status": "wrap_up_ready_with_exclusions",
+  "date": "2026-07-14",
+  "source_commit_before_closeout": "337c65fe8db7fa3540c1bd37c2029caab98dfec3",
+  "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+  "agent_name": "web design",
+  "provider_simulation_count": 1,
+  "full_suite_run_count": 0,
+  "outbound_call_count": 0,
+  "provider_write_count": 0,
+  "dashboard_test_mutation_count": 0,
+  "analysis_mutation_count": 0,
+  "procedures_enabled": false,
+  "canary": {
+    "test_id": "sim_040_direct_crm_integration_existing_site",
+    "provider_test_id": "test_0101kx9ddndtfawsgcrcjg72ycce",
+    "invocation_id": "suite_7301kxf805wbecg8mc72j28zm39r",
+    "test_run_id": "trun_7001kxf805wvfz7b2xn7xnr7espd",
+    "repeat_count": 1,
+    "provider_status": "passed",
+    "deterministic_independent_status": "pass",
+    "independent_transcript_status": "pass"
+  },
+  "drift_guard_status": "pass",
+  "final_live_fingerprint_targeted_transcript_verified": true,
+  "explicit_repetition_complaint_branch_verified": false,
+  "production_readiness_claimed": false,
+  "excluded_domains": [
+    "PSTN audio",
+    "ASR behavior",
+    "latency",
+    "interruption handling",
+    "buyer perception",
+    "conversion impact",
+    "real-customer performance"
+  ]
+}

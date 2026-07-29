@@ -15,13 +15,14 @@ CONFIRMATION = "confirm-provider-write"
 DOCUMENTS = {
     "price-scope": "atlas_price_scope_cost_drivers.md",
     "output-quality": "atlas_output_quality_rules.md",
+    "close-followup": "atlas_close_and_followup_playbook.md",
 }
 OUT_DIR = patcher.ROOT / "research/experiments/generated" / CHECKPOINT_ID
 
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
-        description="Update only the canonical Atlas price/scope KB document."
+        description="Update one canonical active Atlas product KB document."
     )
     parser.add_argument(
         "--confirm-provider-write",

@@ -1,0 +1,1712 @@
+{
+  "captured_at_utc": "2026-07-13T23:23:33Z",
+  "payload_sha256": "7758fc17db235f603d9a003ade926495b13aeea1218b853d8e68792fc52db683",
+  "payload": {
+    "checkpoint_id": "ELEVENLABS-040-detailed-pricing-control",
+    "invocation_id": "suite_0601kxewmfzbe05sr3e9q37kn49d",
+    "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+    "test_runs": [
+      {
+        "test_run_id": "trun_7301kxewmfzrfgtrg2m5e1wgej40",
+        "test_invocation_id": "suite_0601kxewmfzbe05sr3e9q37kn49d",
+        "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+        "test_id": "sim_040_capability_question_no_unprompted_price",
+        "provider_test_id": "test_9101kx9ddm04f0e8tjnwzja893a6",
+        "test_name": "ELEVENLABS-040-detailed-pricing-control::sim_040_capability_question_no_unprompted_price",
+        "scenario": "Buyer asks whether Atlas can add booking, CRM, and payments but never asks cost.",
+        "success_conditions": [
+          "Pass: confident capability answer, no dollar amount, range, package, starting price, or care-plan price."
+        ],
+        "models": {
+          "simulated_user_model": "gemini-2.5-flash",
+          "evaluation_model": "gemini-2.5-flash"
+        },
+        "status": "passed",
+        "condition_result": {
+          "result": "success",
+          "rationale": {
+            "messages": [
+              "The agent confidently stated \"Yes, we can build that\" and continued to explain their capabilities without ever mentioning any dollar amounts, ranges, packages, starting prices, or care-plan prices. The agent explicitly stated they would scope \"before quoting or building anything,\" which directly addresses the pricing constraint.",
+              "The conversation reached the maximum number of turns."
+            ],
+            "summary": "Evaluation succeeded"
+          }
+        },
+        "evaluator_rationale": "{'messages': ['The agent confidently stated \"Yes, we can build that\" and continued to explain their capabilities without ever mentioning any dollar amounts, ranges, packages, starting prices, or care-plan prices. The agent explicitly stated they would scope \"before quoting or building anything,\" which directly addresses the pricing constraint.', 'The conversation reached the maximum number of turns.'], 'summary': 'Evaluation succeeded'}",
+        "agent_responses": [
+          {
+            "original_message": null,
+            "time": 26,
+            "role": "agent",
+            "tool_results": [],
+            "message": "Hi, this is Emma from Atlas Web Studio. I had Acme Dental down as a dental clinic in Phoenix. Am I speaking with the owner or someone who handles the website there?",
+            "source_medium": null,
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "time": 26,
+            "role": "user",
+            "tool_results": [],
+            "message": "Yes, that's me. I'm the owner. I was calling about adding some features to the website.",
+            "source_medium": "text",
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "time": 26,
+            "role": "agent",
+            "tool_results": [],
+            "message": "Got it. What kind of features are you thinking about adding?",
+            "source_medium": null,
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "time": 26,
+            "role": "user",
+            "tool_results": [],
+            "message": "Yeah, I was thinking about adding online booking, maybe some kind of CRM, and payments.",
+            "source_medium": "text",
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "time": 26,
+            "role": "agent",
+            "tool_results": [],
+            "message": "Yes, we can build that. It depends whether you need a simple form handoff or a real integration. Is this for a new site or an addition to your existing site?",
+            "source_medium": null,
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "time": 26,
+            "role": "user",
+            "tool_results": [],
+            "message": "It's for my existing site.",
+            "source_medium": "text",
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "time": 26,
+            "role": "agent",
+            "tool_results": [],
+            "message": "For an existing site, online booking can be simple if it is just appointment requests, or integrated if it needs a live calendar. Payments and CRM depend on whether data needs to move automatically between systems.",
+            "source_medium": null,
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "time": 26,
+            "role": "user",
+            "tool_results": [],
+            "message": "So, which one is better, or what's the difference for my site?",
+            "source_medium": "text",
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "time": 26,
+            "role": "agent",
+            "tool_results": [],
+            "message": "For your site, the simple option is usually best if you just need patients to request appointments and your team confirms them manually. The integrated option is better if you want live availability, automatic confirmations, payments, or CRM records created without staff retyping details.",
+            "source_medium": null,
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "time": 26,
+            "role": "user",
+            "tool_results": [],
+            "message": "Okay, so the integrated option sounds like it does more. What does that involve for my site, exactly?",
+            "source_medium": "text",
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "time": 26,
+            "role": "agent",
+            "tool_results": [],
+            "message": "It usually means connecting the website to the booking, payment, and CRM tools so information moves automatically instead of being handled manually. We would need to scope the exact systems, what data moves, and what should happen after someone books or pays.",
+            "source_medium": null,
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "time": 26,
+            "role": "user",
+            "tool_results": [],
+            "message": "So, what's the next step for my site then?",
+            "source_medium": "text",
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "time": 26,
+            "role": "agent",
+            "tool_results": [],
+            "message": "We collect that during scoping if you move forward.",
+            "source_medium": null,
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "time": 26,
+            "role": "user",
+            "tool_results": [],
+            "message": "What does \"scoping\" mean? And what do I need to do to \"move forward\"?",
+            "source_medium": "text",
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "time": 26,
+            "role": "agent",
+            "tool_results": [],
+            "message": "Scoping means we map out the exact tools, data flow, pages, and user steps before quoting or building anything. To move forward, we would first understand what you want connected and then decide whether it is a simple handoff or a real integration.",
+            "source_medium": null,
+            "tool_calls": [],
+            "interrupted": false
+          }
+        ]
+      },
+      {
+        "test_run_id": "trun_3701kxewmfzseb0bfs08g19r39pt",
+        "test_invocation_id": "suite_0601kxewmfzbe05sr3e9q37kn49d",
+        "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+        "test_id": "sim_040_free_mockup_question_no_paid_price",
+        "provider_test_id": "test_3801kx9ddm7wefzvapxjdf51xbq3",
+        "test_name": "ELEVENLABS-040-detailed-pricing-control::sim_040_free_mockup_question_no_paid_price",
+        "scenario": "Buyer asks whether the mockup is really free and whether there is a catch.",
+        "success_conditions": [
+          "Pass: process-risk answer only; no paid website price."
+        ],
+        "models": {
+          "simulated_user_model": "gemini-2.5-flash",
+          "evaluation_model": "gemini-2.5-flash"
+        },
+        "status": "passed",
+        "condition_result": {
+          "result": "success",
+          "rationale": {
+            "messages": [
+              "The agent consistently confirmed the mockup was free with no hidden fees, payment, or contract. It clarified that paid work would only occur if the user decided to build a website, without mentioning any specific prices for such work.",
+              "The simulated user ended the conversation."
+            ],
+            "summary": "Evaluation succeeded"
+          }
+        },
+        "evaluator_rationale": "{'messages': ['The agent consistently confirmed the mockup was free with no hidden fees, payment, or contract. It clarified that paid work would only occur if the user decided to build a website, without mentioning any specific prices for such work.', 'The simulated user ended the conversation.'], 'summary': 'Evaluation succeeded'}",
+        "agent_responses": [
+          {
+            "original_message": null,
+            "time": 20,
+            "role": "agent",
+            "tool_results": [],
+            "message": "Hi, this is Emma from Atlas Web Studio. I had Acme Dental down as a dental clinic in Phoenix. Am I speaking with the owner or someone who handles the website there?",
+            "source_medium": null,
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "time": 20,
+            "role": "user",
+            "tool_results": [],
+            "message": "Yeah, that's me. So, about this free mockup... is it really free?",
+            "source_medium": "text",
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "time": 20,
+            "role": "agent",
+            "tool_results": [],
+            "message": "Yes, it\u2019s really free. It\u2019s just a homepage concept so you can see what we\u2019d change visually, and there\u2019s no payment or contract tied to receiving it. If it looks useful, you can reply to the email; if not, you can ignore it.",
+            "source_medium": null,
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "time": 20,
+            "role": "user",
+            "tool_results": [],
+            "message": "Hmm, okay. So there's no catch then?",
+            "source_medium": "text",
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "time": 20,
+            "role": "agent",
+            "tool_results": [],
+            "message": "No payment or contract.",
+            "source_medium": null,
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "time": 20,
+            "role": "user",
+            "tool_results": [],
+            "message": "Okay, so no payment or contract. What about, like, hidden fees or anything?",
+            "source_medium": "text",
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "time": 20,
+            "role": "agent",
+            "tool_results": [],
+            "message": "No hidden fees for the mockup. Paid work would only come up if you decide later that you want us to build something.",
+            "source_medium": null,
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "time": 20,
+            "role": "user",
+            "tool_results": [],
+            "message": "Okay, so the mockup is free, but if I want you to actually build the website, that's when I'd pay?",
+            "source_medium": "text",
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "time": 20,
+            "role": "agent",
+            "tool_results": [],
+            "message": "That\u2019s right.",
+            "source_medium": null,
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "time": 20,
+            "role": "user",
+            "tool_results": [],
+            "message": "Alright, got it. So the mockup is totally free, no strings attached.",
+            "source_medium": "text",
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "time": 20,
+            "role": "agent",
+            "tool_results": [],
+            "message": "That\u2019s right.",
+            "source_medium": null,
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "time": 20,
+            "role": "user",
+            "tool_results": [],
+            "message": "Okay, thanks. Bye.",
+            "source_medium": null,
+            "tool_calls": [],
+            "interrupted": false
+          }
+        ]
+      },
+      {
+        "test_run_id": "trun_1501kxewmfztf55t77v13qy1ggea",
+        "test_invocation_id": "suite_0601kxewmfzbe05sr3e9q37kn49d",
+        "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+        "test_id": "sim_040_basic_site_direct_price",
+        "provider_test_id": "test_0201kx9ddmfpeyh9mes2znh3j98b",
+        "test_name": "ELEVENLABS-040-detailed-pricing-control::sim_040_basic_site_direct_price",
+        "scenario": "Buyer explicitly asks what a basic three-to-five-page local-business site costs.",
+        "success_conditions": [
+          "Pass: one `$900-$1,500` whole-project range and one relevant driver at most."
+        ],
+        "models": {
+          "simulated_user_model": "gemini-2.5-flash",
+          "evaluation_model": "gemini-2.5-flash"
+        },
+        "status": "passed",
+        "condition_result": {
+          "result": "success",
+          "rationale": {
+            "messages": [
+              "The agent provided the exact range of \"nine hundred to fifteen hundred dollars\" and one relevant driver, \"how much content and layout customization you need,\" in its initial response to the cost inquiry.",
+              "The conversation reached the maximum number of turns."
+            ],
+            "summary": "Evaluation succeeded"
+          }
+        },
+        "evaluator_rationale": "{'messages': ['The agent provided the exact range of \"nine hundred to fifteen hundred dollars\" and one relevant driver, \"how much content and layout customization you need,\" in its initial response to the cost inquiry.', 'The conversation reached the maximum number of turns.'], 'summary': 'Evaluation succeeded'}",
+        "agent_responses": [
+          {
+            "original_message": null,
+            "time": 20,
+            "role": "agent",
+            "tool_results": [],
+            "message": "Hi, this is Emma from Atlas Web Studio. I had Acme Dental down as a dental clinic in Phoenix. Am I speaking with the owner or someone who handles the website there?",
+            "source_medium": null,
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "time": 20,
+            "role": "user",
+            "tool_results": [],
+            "message": "Yeah, that's me. I was calling to ask about how much a basic three-to-five-page site costs.",
+            "source_medium": "text",
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "time": 20,
+            "role": "agent",
+            "tool_results": [],
+            "message": "A basic three-to-five-page new site is usually nine hundred to fifteen hundred dollars. The driver is how much content and layout customization you need.",
+            "source_medium": null,
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "time": 20,
+            "role": "user",
+            "tool_results": [],
+            "message": "So what's the difference between the nine hundred and fifteen hundred, then?",
+            "source_medium": "text",
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "time": 20,
+            "role": "agent",
+            "tool_results": [],
+            "message": "The lower end is usually a straightforward brochure-style site with standard sections and content you already have. The higher end is for more custom layout work, extra content shaping, or more back-and-forth to get the pages right.",
+            "source_medium": null,
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "time": 20,
+            "role": "user",
+            "tool_results": [],
+            "message": "So, if I need help writing the words for the site, that's the higher price then?",
+            "source_medium": "text",
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "time": 20,
+            "role": "agent",
+            "tool_results": [],
+            "message": "Usually, yes. If we\u2019re helping shape or write the page content instead of just placing content you already have, that tends to push it toward the higher end.",
+            "source_medium": null,
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "time": 20,
+            "role": "user",
+            "tool_results": [],
+            "message": "Okay, so if I need you to write the content, it's definitely going to be fifteen hundred?",
+            "source_medium": "text",
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "time": 20,
+            "role": "agent",
+            "tool_results": [],
+            "message": "Not definitely. It depends how much content needs to be written and how much structure is already clear, but content help is one of the things that can move it toward the higher end.",
+            "source_medium": null,
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "time": 20,
+            "role": "user",
+            "tool_results": [],
+            "message": "So, what's the most it would be if I need help with the words?",
+            "source_medium": "text",
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "time": 20,
+            "role": "agent",
+            "tool_results": [],
+            "message": "For a basic three-to-five-page site, the range is still nine hundred to fifteen hundred dollars. If the content needs a lot of writing and shaping, it would likely be near the top of that range.",
+            "source_medium": null,
+            "tool_calls": [],
+            "interrupted": false
+          }
+        ]
+      },
+      {
+        "test_run_id": "trun_1101kxewmfzwe6k8wwr6y2yvvtsa",
+        "test_invocation_id": "suite_0601kxewmfzbe05sr3e9q37kn49d",
+        "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+        "test_id": "sim_040_new_site_booking_whole_project",
+        "provider_test_id": "test_1301kx9ddmz7fh3vge8255tw9h2d",
+        "test_name": "ELEVENLABS-040-detailed-pricing-control::sim_040_new_site_booking_whole_project",
+        "scenario": "Buyer asks what a new straightforward site with a simple request form costs, then asks about live calendar integration.",
+        "success_conditions": [
+          "Pass: `$900-$1,500` for simple request; later one higher relevant band for live integration; no add-on/whole-site confusion."
+        ],
+        "models": {
+          "simulated_user_model": "gemini-2.5-flash",
+          "evaluation_model": "gemini-2.5-flash"
+        },
+        "status": "passed",
+        "condition_result": {
+          "result": "success",
+          "rationale": {
+            "messages": [
+              "The agent provided the `$900-$1,500` range for a simple site and a higher `$4,000-$6,500` range for live integration. It also clarified the difference between a full integration and using an embed from an existing tool, which brought the price back to the lower range, avoiding confusion.",
+              "The simulated user ended the conversation."
+            ],
+            "summary": "Evaluation succeeded"
+          }
+        },
+        "evaluator_rationale": "{'messages': ['The agent provided the `$900-$1,500` range for a simple site and a higher `$4,000-$6,500` range for live integration. It also clarified the difference between a full integration and using an embed from an existing tool, which brought the price back to the lower range, avoiding confusion.', 'The simulated user ended the conversation.'], 'summary': 'Evaluation succeeded'}",
+        "agent_responses": [
+          {
+            "original_message": null,
+            "time": 29,
+            "role": "agent",
+            "tool_results": [],
+            "message": "Hi, this is Emma from Atlas Web Studio. I had Acme Dental down as a dental clinic in Phoenix. Am I speaking with the owner or someone who handles the website there?",
+            "source_medium": null,
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "time": 29,
+            "role": "user",
+            "tool_results": [],
+            "message": "Yeah, that's me. I'm calling about getting a new website.",
+            "source_medium": "text",
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "time": 29,
+            "role": "agent",
+            "tool_results": [],
+            "message": "Perfect. We\u2019re offering a free homepage mockup so you can see what a refreshed site could look like before deciding anything. For a dental clinic, we\u2019d usually focus the homepage around trust, services, location, and a clear way for patients to request an appointment. Would it be okay if I sent one over for Acme Dental?",
+            "source_medium": null,
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "time": 29,
+            "role": "user",
+            "tool_results": [],
+            "message": "Uh, yeah, a mockup sounds fine. But I really just need to know how much a simple site with a form would cost.",
+            "source_medium": "text",
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "time": 29,
+            "role": "agent",
+            "tool_results": [],
+            "message": "For a simple new three to five page website with a contact or appointment request form, it\u2019s usually nine hundred to fifteen hundred dollars. The main driver is how much content and page structure you need.",
+            "source_medium": null,
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "time": 29,
+            "role": "user",
+            "tool_results": [],
+            "message": "Okay, what about if I wanted to integrate a live calendar for scheduling?",
+            "source_medium": "text",
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "time": 29,
+            "role": "agent",
+            "tool_results": [],
+            "message": "A live calendar is the integrated option, because availability has to connect to a scheduling system instead of just sending a request. For a new site with that kind of standard integration, the whole project is usually four thousand to six thousand five hundred dollars.",
+            "source_medium": null,
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "time": 29,
+            "role": "user",
+            "tool_results": [],
+            "message": "Whoa, that's a huge difference just for a calendar.",
+            "source_medium": "text",
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "time": 29,
+            "role": "agent",
+            "tool_results": [],
+            "message": "The difference is that a request form just sends the patient\u2019s information, while a live calendar has to connect to availability, rules, confirmations, and sometimes reminders or patient systems. That extra data flow is what changes the scope.",
+            "source_medium": null,
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "time": 29,
+            "role": "user",
+            "tool_results": [],
+            "message": "Is there really no cheaper way to get a calendar on there?",
+            "source_medium": "text",
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "time": 29,
+            "role": "agent",
+            "tool_results": [],
+            "message": "If you already use a scheduling tool that provides an embed or booking link, that can be much simpler than a direct integration. The custom cost comes in when the site has to control availability or sync data directly with another system.",
+            "source_medium": null,
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "time": 29,
+            "role": "user",
+            "tool_results": [],
+            "message": "So, if I have a scheduling tool already, it would be closer to the nine hundred to fifteen hundred dollar range?",
+            "source_medium": "text",
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "time": 29,
+            "role": "agent",
+            "tool_results": [],
+            "message": "That\u2019s right, if it\u2019s just a standard embed or booking link on a new simple site, it usually stays closer to the simple-site scope. If it needs custom syncing or patient-system integration, that\u2019s when it becomes a larger project.",
+            "source_medium": null,
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "time": 29,
+            "role": "user",
+            "tool_results": [],
+            "message": "Okay, so if I just use my existing scheduling tool, it'll be around that $900 to $1500 price?",
+            "source_medium": "text",
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "time": 29,
+            "role": "agent",
+            "tool_results": [],
+            "message": "That\u2019s right.",
+            "source_medium": null,
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "time": 29,
+            "role": "user",
+            "tool_results": [],
+            "message": "Alright, got it. So with my own scheduling tool, it's the lower price. Thanks, bye.",
+            "source_medium": null,
+            "tool_calls": [],
+            "interrupted": false
+          }
+        ]
+      },
+      {
+        "test_run_id": "trun_1301kxewmfzvenb81jv1zppcf0xp",
+        "test_invocation_id": "suite_0601kxewmfzbe05sr3e9q37kn49d",
+        "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+        "test_id": "sim_040_existing_site_request_form_add_on",
+        "provider_test_id": "test_3801kx9ddmqnfsq97d7xym9qy01x",
+        "test_name": "ELEVENLABS-040-detailed-pricing-control::sim_040_existing_site_request_form_add_on",
+        "scenario": "Buyer states they have an existing compatible site and asks the cost of adding a simple appointment-request form.",
+        "success_conditions": [
+          "Pass: one `$100-$250` add-on range; no whole-site package dump."
+        ],
+        "models": {
+          "simulated_user_model": "gemini-2.5-flash",
+          "evaluation_model": "gemini-2.5-flash"
+        },
+        "status": "passed",
+        "condition_result": {
+          "result": "success",
+          "rationale": {
+            "messages": [
+              "The agent provided a price range of \"one hundred to two hundred fifty dollars\" for the appointment form add-on multiple times. The conversation remained focused on the add-on, and the agent did not attempt to push a whole-site package after the user clarified their needs.",
+              "The conversation reached the maximum number of turns."
+            ],
+            "summary": "Evaluation succeeded"
+          }
+        },
+        "evaluator_rationale": "{'messages': ['The agent provided a price range of \"one hundred to two hundred fifty dollars\" for the appointment form add-on multiple times. The conversation remained focused on the add-on, and the agent did not attempt to push a whole-site package after the user clarified their needs.', 'The conversation reached the maximum number of turns.'], 'summary': 'Evaluation succeeded'}",
+        "agent_responses": [
+          {
+            "original_message": null,
+            "time": 20,
+            "role": "agent",
+            "tool_results": [],
+            "message": "Hi, this is Emma from Atlas Web Studio. I had Acme Dental down as a dental clinic in Phoenix. Am I speaking with the owner or someone who handles the website there?",
+            "source_medium": null,
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "time": 20,
+            "role": "user",
+            "tool_results": [],
+            "message": "Yeah, that's me. I handle the website.",
+            "source_medium": "text",
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "time": 20,
+            "role": "agent",
+            "tool_results": [],
+            "message": "Great. I\u2019m calling because we\u2019re putting together a free homepage mockup for a few local businesses, just to show what a cleaner site could look like for Acme Dental. If it looks useful, you can reply to the email, and if not, there\u2019s no obligation. Would you be open to me sending that over?",
+            "source_medium": null,
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "time": 20,
+            "role": "user",
+            "tool_results": [],
+            "message": "Uh, a mockup? I already have a site. I just want to know how much it would cost to add an appointment form to it.",
+            "source_medium": "text",
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "time": 20,
+            "role": "agent",
+            "tool_results": [],
+            "message": "If it\u2019s a compatible existing site and just an appointment request form, it\u2019s usually one hundred to two hundred fifty dollars. The driver is whether it can be added cleanly to your current platform.",
+            "source_medium": null,
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "time": 20,
+            "role": "user",
+            "tool_results": [],
+            "message": "Compatible? What do you mean by compatible?",
+            "source_medium": "text",
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "time": 20,
+            "role": "agent",
+            "tool_results": [],
+            "message": "Compatible means your current site platform lets us safely add or edit forms without rebuilding the site or fighting locked-down templates. If it is on something like WordPress, Wix, Squarespace, or a similar editable platform, it is often straightforward.",
+            "source_medium": null,
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "time": 20,
+            "role": "user",
+            "tool_results": [],
+            "message": "Oh, okay. Yeah, my site's on WordPress. So that's compatible then?",
+            "source_medium": "text",
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "time": 20,
+            "role": "agent",
+            "tool_results": [],
+            "message": "Yes, WordPress is usually compatible for a simple appointment request form, assuming the theme and plugins are in normal shape. That would still need a quick look before confirming the exact setup.",
+            "source_medium": null,
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "time": 20,
+            "role": "user",
+            "tool_results": [],
+            "message": "So, if it's WordPress, what's the actual price then? What does that \"quick look\" cost?",
+            "source_medium": "text",
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "time": 20,
+            "role": "agent",
+            "tool_results": [],
+            "message": "For a compatible WordPress site, a simple appointment request form is usually one hundred to two hundred fifty dollars. The quick look is just to confirm the setup before quoting the exact amount.",
+            "source_medium": null,
+            "tool_calls": [],
+            "interrupted": false
+          }
+        ]
+      },
+      {
+        "test_run_id": "trun_5401kxewmfzxeppa93h4vtrhrgjp",
+        "test_invocation_id": "suite_0601kxewmfzbe05sr3e9q37kn49d",
+        "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+        "test_id": "sim_040_multi_feature_no_price_stacking",
+        "provider_test_id": "test_9001kx9ddn6gfb0rbpcxdq5jjbc5",
+        "test_name": "ELEVENLABS-040-detailed-pricing-control::sim_040_multi_feature_no_price_stacking",
+        "scenario": "Buyer asks for a new site with booking, CRM, payments, service-area pages, and a blog, then asks total cost.",
+        "success_conditions": [
+          "Pass: one likely whole-project band and scope driver; no arithmetic sum or feature-menu recital."
+        ],
+        "models": {
+          "simulated_user_model": "gemini-2.5-flash",
+          "evaluation_model": "gemini-2.5-flash"
+        },
+        "status": "failed",
+        "condition_result": {
+          "result": "failure",
+          "rationale": {
+            "messages": [
+              "Initially, the agent provides a band and a single driver. However, as the user adds more features, the agent starts listing multiple factors (e.g., \"number of pages, content, integrations, and payment flow\") that affect the cost, moving away from 'one likely whole-project scope driver' and towards a 'feature-menu recital' of dependencies.",
+              "The conversation reached the maximum number of turns."
+            ],
+            "summary": "Evaluation failed"
+          }
+        },
+        "evaluator_rationale": "{'messages': ['Initially, the agent provides a band and a single driver. However, as the user adds more features, the agent starts listing multiple factors (e.g., \"number of pages, content, integrations, and payment flow\") that affect the cost, moving away from \\'one likely whole-project scope driver\\' and towards a \\'feature-menu recital\\' of dependencies.', 'The conversation reached the maximum number of turns.'], 'summary': 'Evaluation failed'}",
+        "agent_responses": [
+          {
+            "original_message": null,
+            "time": 31,
+            "role": "agent",
+            "tool_results": [],
+            "message": "Hi, this is Emma from Atlas Web Studio. I had Acme Dental down as a dental clinic in Phoenix. Am I speaking with the owner or someone who handles the website there?",
+            "source_medium": null,
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "time": 31,
+            "role": "user",
+            "tool_results": [],
+            "message": "Yeah, that's me. I'm calling about getting a new website.Yeah, that's me. I'm calling about getting a new website.",
+            "source_medium": "text",
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "time": 31,
+            "role": "agent",
+            "tool_results": [],
+            "message": "Perfect. We\u2019re putting together a free homepage mockup for local businesses so you can see what a refreshed site could look like before deciding anything. For a new dental site, we\u2019d usually focus the homepage around trust, services, patient calls, and appointment requests. Would it be okay if I send you the free mockup when it\u2019s ready?",
+            "source_medium": null,
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "time": 31,
+            "role": "user",
+            "tool_results": [],
+            "message": "Yeah, but I need a whole new site, with booking and everything. What's that gonna cost?",
+            "source_medium": "text",
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "time": 31,
+            "role": "agent",
+            "tool_results": [],
+            "message": "For a new site with booking included, the whole project is usually four thousand to six thousand five hundred dollars. The driver is whether booking is a simple request form or a live calendar integration.",
+            "source_medium": null,
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "time": 31,
+            "role": "user",
+            "tool_results": [],
+            "message": "Okay, so what's the difference in cost for those two booking options?",
+            "source_medium": "text",
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "time": 31,
+            "role": "agent",
+            "tool_results": [],
+            "message": "For a new site, that same whole-project range usually covers the direction, but the lower end is more like an appointment request form and the higher end is more like live calendar integration. The main driver is whether the site is just collecting requests or actually syncing availability.",
+            "source_medium": null,
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "time": 31,
+            "role": "user",
+            "tool_results": [],
+            "message": "Okay, so how much extra is the live calendar then? And does that price include the CRM and payments I asked about?",
+            "source_medium": "text",
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "time": 31,
+            "role": "agent",
+            "tool_results": [],
+            "message": "For a new site with live calendar, CRM, and payments, it\u2019s still usually a whole-project range of four thousand to six thousand five hundred dollars. The driver is how much data needs to move between the site, calendar, payment flow, and CRM.",
+            "source_medium": null,
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "time": 31,
+            "role": "user",
+            "tool_results": [],
+            "message": "So the price is the same even with all that extra stuff? What about the service area pages and blog I mentioned?",
+            "source_medium": "text",
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "time": 31,
+            "role": "agent",
+            "tool_results": [],
+            "message": "Not necessarily the same; that range is the planning band before scoping. Service area pages and a blog can affect the final quote depending on how many pages, how much content is needed, and whether the blog needs setup only or ongoing writing.",
+            "source_medium": null,
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "time": 31,
+            "role": "user",
+            "tool_results": [],
+            "message": "So, that range isn't even a real price then? What's the actual cost with all that stuff?",
+            "source_medium": "text",
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "time": 31,
+            "role": "agent",
+            "tool_results": [],
+            "message": "It\u2019s a real planning range, but not a final quote. For a new site with booking, CRM, payments, service area pages, and a blog, the actual cost depends on the number of pages, content, integrations, and payment flow, so it would need scoping before a firm number.",
+            "source_medium": null,
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "time": 31,
+            "role": "user",
+            "tool_results": [],
+            "message": "What's \"scoping\"? I just want to know what it'll actually cost.",
+            "source_medium": "text",
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "time": 31,
+            "role": "agent",
+            "tool_results": [],
+            "message": "Scoping means we define the exact pages, content, booking setup, CRM connection, payment flow, and any admin needs before quoting the final build. With the features you listed, the planning range is four thousand to six thousand five hundred dollars, but the actual cost depends on those details.",
+            "source_medium": null,
+            "tool_calls": [],
+            "interrupted": false
+          }
+        ]
+      },
+      {
+        "test_run_id": "trun_3501kxewmfzzf8ss2yjdms0ce6jz",
+        "test_invocation_id": "suite_0601kxewmfzbe05sr3e9q37kn49d",
+        "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+        "test_id": "sim_040_portal_requires_scope",
+        "provider_test_id": "test_5201kx9ddnp4fpdrerx807xpfzv9",
+        "test_name": "ELEVENLABS-040-detailed-pricing-control::sim_040_portal_requires_scope",
+        "scenario": "Buyer asks how much a parent portal with accounts and progress dashboards costs.",
+        "success_conditions": [
+          "Pass: no numeric quote or ceiling; scope accounts, data, permissions, security, and integrations."
+        ],
+        "models": {
+          "simulated_user_model": "gemini-2.5-flash",
+          "evaluation_model": "gemini-2.5-flash"
+        },
+        "status": "passed",
+        "condition_result": {
+          "result": "success",
+          "rationale": {
+            "messages": [
+              "The agent consistently refused to provide a numeric quote or ceiling, stating it couldn't give a real number or range without scoping. It also repeatedly mentioned the need to scope accounts, database/data storage, permissions, security, and integrations.",
+              "The conversation reached the maximum number of turns."
+            ],
+            "summary": "Evaluation succeeded"
+          }
+        },
+        "evaluator_rationale": "{'messages': [\"The agent consistently refused to provide a numeric quote or ceiling, stating it couldn't give a real number or range without scoping. It also repeatedly mentioned the need to scope accounts, database/data storage, permissions, security, and integrations.\", 'The conversation reached the maximum number of turns.'], 'summary': 'Evaluation succeeded'}",
+        "agent_responses": [
+          {
+            "original_message": null,
+            "time": 26,
+            "role": "agent",
+            "tool_results": [],
+            "message": "Hi, this is Emma from Atlas Web Studio. I had Acme Dental down as a dental clinic in Phoenix. Am I speaking with the owner or someone who handles the website there?",
+            "source_medium": null,
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "time": 26,
+            "role": "user",
+            "tool_results": [],
+            "message": "Oh, no, I'm not with Acme Dental. I'm calling about a parent portal.",
+            "source_medium": "text",
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "time": 26,
+            "role": "agent",
+            "tool_results": [],
+            "message": "A working parent login is custom. I can't give a real number until we scope accounts, database, permissions, security, and integrations.",
+            "source_medium": null,
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "time": 26,
+            "role": "user",
+            "tool_results": [],
+            "message": "Custom? So you can't even give me a ballpark?",
+            "source_medium": "text",
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "time": 26,
+            "role": "agent",
+            "tool_results": [],
+            "message": "A working parent login is custom. I can't give a real number until we scope accounts, database, permissions, security, and integrations.",
+            "source_medium": null,
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "time": 26,
+            "role": "user",
+            "tool_results": [],
+            "message": "Okay, but can't you give me any kind of range?",
+            "source_medium": "text",
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "time": 26,
+            "role": "agent",
+            "tool_results": [],
+            "message": "I can\u2019t give a real range for a parent portal until we scope the accounts, database, permissions, security, and integrations.",
+            "source_medium": null,
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "time": 26,
+            "role": "user",
+            "tool_results": [],
+            "message": "So, you can't even tell me if it's like, a hundred bucks or a million bucks?",
+            "source_medium": "text",
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "time": 26,
+            "role": "agent",
+            "tool_results": [],
+            "message": "It would not be a simple hundred dollar add-on, but I still can\u2019t give a real number without scoping the portal requirements.",
+            "source_medium": null,
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "time": 26,
+            "role": "user",
+            "tool_results": [],
+            "message": "So, you're saying it could be like, tens of thousands, or hundreds of thousands?",
+            "source_medium": "text",
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "time": 26,
+            "role": "agent",
+            "tool_results": [],
+            "message": "I can\u2019t responsibly size it that way without scope. The real drivers are user accounts, permissions, data storage, security, and any integrations.",
+            "source_medium": null,
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "time": 26,
+            "role": "user",
+            "tool_results": [],
+            "message": "So, you're saying it's definitely not a few thousand then?",
+            "source_medium": "text",
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "time": 26,
+            "role": "agent",
+            "tool_results": [],
+            "message": "I\u2019m not saying that. I\u2019m saying a parent portal needs scoping before I can give a real number, because the accounts, permissions, database, security, and integrations determine the build.",
+            "source_medium": null,
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "time": 26,
+            "role": "user",
+            "tool_results": [],
+            "message": "So, what exactly is this \"scoping\" thing? Is that something I pay for?",
+            "source_medium": "text",
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "time": 26,
+            "role": "agent",
+            "tool_results": [],
+            "message": "Scoping means we define what the portal needs to do, who logs in, what data is stored, what permissions exist, and what systems it connects to. Whether there is a paid discovery step depends on the project, but the first conversation is about understanding the requirements.",
+            "source_medium": null,
+            "tool_calls": [],
+            "interrupted": false
+          }
+        ]
+      },
+      {
+        "test_run_id": "trun_5501kxewmfzyfsqs2cdyf2psckn9",
+        "test_invocation_id": "suite_0601kxewmfzbe05sr3e9q37kn49d",
+        "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+        "test_id": "sim_040_direct_crm_integration_existing_site",
+        "provider_test_id": "test_0101kx9ddndtfawsgcrcjg72ycce",
+        "test_name": "ELEVENLABS-040-detailed-pricing-control::sim_040_direct_crm_integration_existing_site",
+        "scenario": "Buyer has an existing compatible site and asks what a direct CRM integration costs.",
+        "success_conditions": [
+          "Pass: `$1,000-$2,500+`, an API/data-flow caveat, and no claim that every behavior is included."
+        ],
+        "models": {
+          "simulated_user_model": "gemini-2.5-flash",
+          "evaluation_model": "gemini-2.5-flash"
+        },
+        "status": "passed",
+        "condition_result": {
+          "result": "success",
+          "rationale": {
+            "messages": [
+              "The agent stated, \"Direct CRM/API integration is usually one thousand to two thousand five hundred dollars plus. The driver is API and data flow.\" This includes the price range, the API/data-flow caveat, and does not claim every behavior is included, as indicated by \"plus\" and further explained later.",
+              "The conversation reached the maximum number of turns."
+            ],
+            "summary": "Evaluation succeeded"
+          }
+        },
+        "evaluator_rationale": "{'messages': ['The agent stated, \"Direct CRM/API integration is usually one thousand to two thousand five hundred dollars plus. The driver is API and data flow.\" This includes the price range, the API/data-flow caveat, and does not claim every behavior is included, as indicated by \"plus\" and further explained later.', 'The conversation reached the maximum number of turns.'], 'summary': 'Evaluation succeeded'}",
+        "agent_responses": [
+          {
+            "original_message": null,
+            "time": 27,
+            "role": "agent",
+            "tool_results": [],
+            "message": "Hi, this is Emma from Atlas Web Studio. I had Acme Dental down as a dental clinic in Phoenix. Am I speaking with the owner or someone who handles the website there?",
+            "source_medium": null,
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "time": 27,
+            "role": "user",
+            "tool_results": [],
+            "message": "Yeah, that's me. I was calling about a CRM integration.",
+            "source_medium": "text",
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "time": 27,
+            "role": "agent",
+            "tool_results": [],
+            "message": "Yes, we can build that. It depends whether you need a simple form handoff or a real integration. Is this for a new site or an addition to your existing site?",
+            "source_medium": null,
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "time": 27,
+            "role": "user",
+            "tool_results": [],
+            "message": "It's for my existing site. I'm just trying to figure out what a direct CRM integration would cost.",
+            "source_medium": "text",
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "time": 27,
+            "role": "agent",
+            "tool_results": [],
+            "message": "Direct CRM/API integration is usually one thousand to two thousand five hundred dollars plus. The driver is API and data flow.",
+            "source_medium": null,
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "time": 27,
+            "role": "user",
+            "tool_results": [],
+            "message": "Okay, so what does \"plus\" mean? Like, what makes it more than $2500?",
+            "source_medium": "text",
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "time": 27,
+            "role": "agent",
+            "tool_results": [],
+            "message": "Plus means it can go higher if the CRM needs custom API work, multiple data flows, field mapping, authentication, error handling, or testing across several forms and workflows. The main driver is how much data has to move and how reliably it needs to sync.",
+            "source_medium": null,
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "time": 27,
+            "role": "user",
+            "tool_results": [],
+            "message": "So how do I figure out what it would be for my site then?",
+            "source_medium": "text",
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "time": 27,
+            "role": "agent",
+            "tool_results": [],
+            "message": "We would scope which CRM you use, what forms or actions should send data into it, which fields need to map, and whether anything needs to sync back to the website. From there, we can tell whether it is a simple handoff or a direct integration.",
+            "source_medium": null,
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "time": 27,
+            "role": "user",
+            "tool_results": [],
+            "message": "Okay, so how do we do that?",
+            "source_medium": "text",
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "time": 27,
+            "role": "agent",
+            "tool_results": [],
+            "message": "We collect that during scoping if you move forward.",
+            "source_medium": null,
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "time": 27,
+            "role": "user",
+            "tool_results": [],
+            "message": "So I have to commit before I even know the actual price for my site?",
+            "source_medium": "text",
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "time": 27,
+            "role": "agent",
+            "tool_results": [],
+            "message": "No, moving forward just means we scope the CRM details first so the price is based on the actual data flow, not a guess. You would not be committing to paid development before seeing what the scope requires.",
+            "source_medium": null,
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "time": 27,
+            "role": "user",
+            "tool_results": [],
+            "message": "Okay, so what do I need to do to start that scoping?",
+            "source_medium": "text",
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "time": 27,
+            "role": "agent",
+            "tool_results": [],
+            "message": "We collect the CRM name, the forms or actions involved, the fields that need to pass through, and whether the site needs any data back from the CRM. If you want, the first step here is I can send over the free homepage mockup, and you can reply with those CRM details if it looks useful.",
+            "source_medium": null,
+            "tool_calls": [],
+            "interrupted": false
+          }
+        ]
+      },
+      {
+        "test_run_id": "trun_9201kxewmg00f0dagx6jvar7nydj",
+        "test_invocation_id": "suite_0601kxewmfzbe05sr3e9q37kn49d",
+        "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+        "test_id": "sim_040_budget_fit_direct_answer",
+        "provider_test_id": "test_0901kx9ddnw8eyfrj2r1n9vwvze1",
+        "test_name": "ELEVENLABS-040-detailed-pricing-control::sim_040_budget_fit_direct_answer",
+        "scenario": "Buyer says the budget is `$1,200` and asks whether a basic site fits.",
+        "success_conditions": [
+          "Pass: direct fit answer against `$900-$1,500`; no unrelated package menu."
+        ],
+        "models": {
+          "simulated_user_model": "gemini-2.5-flash",
+          "evaluation_model": "gemini-2.5-flash"
+        },
+        "status": "passed",
+        "condition_result": {
+          "result": "success",
+          "rationale": {
+            "messages": [
+              "The agent directly confirmed that the user's budget of $1,200 fits within the $900-$1,500 range for a basic site and did not present any unrelated package menus. The agent's response was a direct fit answer.",
+              "The conversation reached the maximum number of turns."
+            ],
+            "summary": "Evaluation succeeded"
+          }
+        },
+        "evaluator_rationale": "{'messages': [\"The agent directly confirmed that the user's budget of $1,200 fits within the $900-$1,500 range for a basic site and did not present any unrelated package menus. The agent's response was a direct fit answer.\", 'The conversation reached the maximum number of turns.'], 'summary': 'Evaluation succeeded'}",
+        "agent_responses": [
+          {
+            "original_message": null,
+            "time": 25,
+            "role": "agent",
+            "tool_results": [],
+            "message": "Hi, this is Emma from Atlas Web Studio. I had Acme Dental down as a dental clinic in Phoenix. Am I speaking with the owner or someone who handles the website there?",
+            "source_medium": null,
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "time": 25,
+            "role": "user",
+            "tool_results": [],
+            "message": "Yeah, this is the owner. I'm calling about getting a basic site set up. My budget's $1,200. Does that work?",
+            "source_medium": "text",
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "time": 25,
+            "role": "agent",
+            "tool_results": [],
+            "message": "Yes, for a basic three to five page new site, that usually fits in the nine hundred to fifteen hundred dollar range. The main driver is how much content and revision work is needed.",
+            "source_medium": null,
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "time": 25,
+            "role": "user",
+            "tool_results": [],
+            "message": "Okay, so $1200 is fine for a basic site then?",
+            "source_medium": "text",
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "time": 25,
+            "role": "agent",
+            "tool_results": [],
+            "message": "That's right.",
+            "source_medium": null,
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "time": 25,
+            "role": "user",
+            "tool_results": [],
+            "message": "Okay, good. So what does a basic site usually include?",
+            "source_medium": "text",
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "time": 25,
+            "role": "agent",
+            "tool_results": [],
+            "message": "A basic site usually includes the core pages like home, about, services, and contact, with a clean mobile-friendly layout and a contact form. It is meant for a straightforward online presence, not custom booking, payments, portals, or complex integrations.",
+            "source_medium": null,
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "time": 25,
+            "role": "user",
+            "tool_results": [],
+            "message": "Okay, so it's just those main pages then? Nothing fancy?",
+            "source_medium": "text",
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "time": 25,
+            "role": "agent",
+            "tool_results": [],
+            "message": "That's right.",
+            "source_medium": null,
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "time": 25,
+            "role": "user",
+            "tool_results": [],
+            "message": "Hmm, okay. So it'll just look really plain then?",
+            "source_medium": "text",
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "time": 25,
+            "role": "agent",
+            "tool_results": [],
+            "message": "No, it should still look professional and tailored to your clinic. Basic means the structure and functionality are straightforward, not that the design has to look generic.",
+            "source_medium": null,
+            "tool_calls": [],
+            "interrupted": false
+          }
+        ]
+      },
+      {
+        "test_run_id": "trun_9201kxewmg01ekx8awas6ec2pr10",
+        "test_invocation_id": "suite_0601kxewmfzbe05sr3e9q37kn49d",
+        "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+        "test_id": "sim_040_care_plan_only_when_asked",
+        "provider_test_id": "test_6101kx9ddp3cf0w9fqtvqwm21esx",
+        "test_name": "ELEVENLABS-040-detailed-pricing-control::sim_040_care_plan_only_when_asked",
+        "scenario": "Buyer first asks about ordinary site capability, then explicitly asks monthly hosting and maintenance cost.",
+        "success_conditions": [
+          "Pass: no care price before the ongoing-cost question; after it, one relevant `$79`, `$149`, or `$249` plan with scope."
+        ],
+        "models": {
+          "simulated_user_model": "gemini-2.5-flash",
+          "evaluation_model": "gemini-2.5-flash"
+        },
+        "status": "passed",
+        "condition_result": {
+          "result": "success",
+          "rationale": {
+            "messages": [
+              "The agent did not mention any care price before the user asked about ongoing costs. After the user's question, the agent provided the $79 plan and subsequently detailed its scope, fulfilling the criteria.",
+              "The conversation reached the maximum number of turns."
+            ],
+            "summary": "Evaluation succeeded"
+          }
+        },
+        "evaluator_rationale": "{'messages': [\"The agent did not mention any care price before the user asked about ongoing costs. After the user's question, the agent provided the $79 plan and subsequently detailed its scope, fulfilling the criteria.\", 'The conversation reached the maximum number of turns.'], 'summary': 'Evaluation succeeded'}",
+        "agent_responses": [
+          {
+            "original_message": null,
+            "time": 35,
+            "role": "agent",
+            "tool_results": [],
+            "message": "Hi, this is Emma from Atlas Web Studio. I had Acme Dental down as a dental clinic in Phoenix. Am I speaking with the owner or someone who handles the website there?",
+            "source_medium": null,
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "time": 35,
+            "role": "user",
+            "tool_results": [],
+            "message": "Yeah, I handle the website. What's up?",
+            "source_medium": "text",
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "time": 35,
+            "role": "agent",
+            "tool_results": [],
+            "message": "Great. I\u2019m reaching out because we\u2019re putting together a free homepage mockup for a few local businesses, just a visual concept of how the site could look cleaner and make it easier for patients to take the next step. If it looks useful, you can reply to the email, and if not, there\u2019s no obligation. Would you be open to me sending one over?",
+            "source_medium": null,
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "time": 35,
+            "role": "user",
+            "tool_results": [],
+            "message": "Uh, sure, I guess. What's the catch?",
+            "source_medium": "text",
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "time": 35,
+            "role": "agent",
+            "tool_results": [],
+            "message": "No payment or contract.",
+            "source_medium": null,
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "time": 35,
+            "role": "user",
+            "tool_results": [],
+            "message": "Okay, but what about monthly hosting and maintenance?",
+            "source_medium": "text",
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "time": 35,
+            "role": "agent",
+            "tool_results": [],
+            "message": "Hosting and maintenance is seventy nine dollars per month.",
+            "source_medium": null,
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "time": 35,
+            "role": "user",
+            "tool_results": [],
+            "message": "Seventy-nine dollars? What all does that include?",
+            "source_medium": "text",
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "time": 35,
+            "role": "agent",
+            "tool_results": [],
+            "message": "It covers hosting, basic maintenance, security updates, and keeping the site running properly.",
+            "source_medium": null,
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "time": 35,
+            "role": "user",
+            "tool_results": [],
+            "message": "What does \"basic maintenance\" actually cover?",
+            "source_medium": "text",
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "time": 35,
+            "role": "agent",
+            "tool_results": [],
+            "message": "Basic maintenance means routine platform and plugin updates, uptime monitoring, backups, and small technical fixes needed to keep the site stable. It does not mean ongoing redesigns or new feature development.",
+            "source_medium": null,
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "time": 35,
+            "role": "user",
+            "tool_results": [],
+            "message": "So if a page breaks or something stops working, is that covered?",
+            "source_medium": "text",
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "time": 35,
+            "role": "agent",
+            "tool_results": [],
+            "message": "Yes, if something breaks from normal site maintenance or a technical issue, that is generally covered. If it is a new feature, redesign, or a larger content change, that would be scoped separately.",
+            "source_medium": null,
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "time": 35,
+            "role": "user",
+            "tool_results": [],
+            "message": "What does \"generally covered\" mean? Is it always covered or not?",
+            "source_medium": "text",
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "time": 35,
+            "role": "agent",
+            "tool_results": [],
+            "message": "It means routine technical fixes tied to keeping the site stable are covered, but issues caused by new custom work, third party service changes, or larger feature changes may need separate scoping.",
+            "source_medium": null,
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "time": 35,
+            "role": "user",
+            "tool_results": [],
+            "message": "So, if something breaks because of your updates, it's covered, but if I change something, it's not?",
+            "source_medium": "text",
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "time": 35,
+            "role": "agent",
+            "tool_results": [],
+            "message": "That's right.",
+            "source_medium": null,
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "time": 35,
+            "role": "user",
+            "tool_results": [],
+            "message": "Okay, so if I mess something up, I pay more, but if you mess something up, it's included?",
+            "source_medium": "text",
+            "tool_calls": [],
+            "interrupted": false
+          },
+          {
+            "original_message": null,
+            "time": 35,
+            "role": "agent",
+            "tool_results": [],
+            "message": "That's right.",
+            "source_medium": null,
+            "tool_calls": [],
+            "interrupted": false
+          }
+        ]
+      }
+    ],
+    "result_groups": []
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "status": "pass",
+  "root_cause": "The broad sk- credential regex matched the internal sk-9 substring inside Task 9 report filenames.",
+  "pre_fix_failure_count": 50,
+  "pre_fix_distinct_path_count": 22,
+  "real_credentials_found_in_flagged_matches": false,
+  "fix": "Require token boundaries around standalone sk- credential candidates.",
+  "artifacts_deleted_or_excluded": false,
+  "standalone_fake_key_detection_preserved": true,
+  "regression_filename": "task-9-source-byte-provenance-fix-report.md",
+  "validation_command": "python scripts/validate_project_drift_guard.py",
+  "validation_result": "Project drift guard validation passed."
+}

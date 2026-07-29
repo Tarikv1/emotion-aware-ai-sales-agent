@@ -879,6 +879,30 @@ Thesis caution:
 - use them as product grounding, not as academic proof.
 - synthetic experiment cases should not copy example scripts from these pages.
 
+### ELEVENLABS-008 Atlas Web Studio value-pricing repair sources
+
+- Type: sales-practice product-context source pack
+- Sources:
+  - Salesforce consultative sales approach: https://www.salesforce.com/blog/sales/consultative-sales-approach/
+  - HubSpot handling common sales objections: https://blog.hubspot.com/sales/handling-common-sales-objections
+  - Bain Elements of Value: https://www.bain.com/consulting-services/customer-strategy-and-marketing/elements-of-value/
+- Project use: recorded in `docs/product/ELEVENLABS_008_WEB_DESIGN_VALUE_PRICING_REPAIR.md` under "External source checks" to support Atlas Web Studio's consultative value framing, price-objection handling through value explanation, and buyer-motivation-focused website positioning.
+- Current project status: used as compact product-context grounding for the `ELEVENLABS-008` value and pricing repair package; the package applies these sources to Atlas behavior such as stating the approved price anchor when asked, keeping the free mockup as the low-risk first step, and translating website details into buyer value without promising revenue or traffic outcomes.
+- Thesis caution: these are practitioner sales/product-context references, not peer-reviewed evidence, not measured proof that Atlas improves outcomes, and not authority for exact Atlas prices.
+
+### Atlas Web Studio detailed website pricing market references
+
+- Type: market-context pricing source pack
+- Sources:
+  - Upwork 2026 website cost guide: https://www.upwork.com/resources/how-much-does-it-cost-to-build-website
+  - Upwork web designer rates: https://www.upwork.com/hire/web-designers/cost/
+  - Forbes Advisor website design guide: https://www.forbes.com/advisor/business/software/how-design-website/
+  - Bark US web design guide: https://www.bark.com/en/us/web-design/
+  - Clutch web design pricing: https://clutch.co/web-designers/pricing
+- Project use: recorded in `docs/superpowers/specs/2026-07-11-atlas-detailed-pricing-design.md` dated `2026-07-11` under "Market Basis" as directional US local-business website pricing context for Atlas Web Studio's buyer-triggered price ladder and scope-gated quoting rules.
+- Current project status: used only as directional market-context input for the Atlas pricing policy. The citing spec explicitly states these sources are commercially interested, that they show a wide market, and that Atlas ranges are a deliberate product policy rather than a claim that every provider charges the same amount.
+- Thesis caution: these pricing pages are market-context references only. They are not peer-reviewed evidence, not exact Atlas price authority, and not measured proof of effectiveness or customer outcomes.
+
 ## Open-Source And Workflow Inspirations
 
 Detailed attribution lives in:
