@@ -6666,3 +6666,52 @@ private data, dataset/annotation rows, audio, or transcripts were read. No
 provider access, call, simulation, model evaluation, runtime
 modification/activation, or Phase B lockbox access occurred. Push and merge
 remain separate gates.
+
+### 2026-07-29 - EMOTION-STATE-005 Phase C1.1 public-source resolution review
+
+- Purpose: the accepted C1 search package contained 1,025 discovery records
+  but zero retained candidates because authoritative provenance remained
+  unresolved. C1.1 therefore performed a source-first review of exactly four
+  named confusion candidates and four named frustration candidates, with one
+  shared source and seven unique candidates. The work used original public
+  papers and official landing pages only.
+- Frozen review contract:
+  `research/experiments/configs/emotion-state-005-phase-c1-1-source-resolution-protocol.json`,
+  2,929 bytes, SHA-256
+  `DA789714B4835FD160BDB89FBB4F1E60125B5EFF28CC910F690CD4378B5B321B`.
+  Candidate discovery and preliminary triage preceded the written freeze;
+  final field extraction and adjudication followed it. The result is a bounded
+  source-resolution review, not a confirmatory experiment.
+- Aggregate source register:
+  `research/sources/emotion_state/phase_c1_1_source_resolution.json`,
+  16,391 bytes, SHA-256
+  `9E6260FF367986D3F64930190BE18B373A8BB5426763FE31E6625EDEDC8B8B8F`.
+  It contains public source identities, published aggregate facts, gate
+  fields, and adjudications only; no corpus row, transcript, audio,
+  participant identifier, prediction, feature, or probability is present.
+- Confusion outcome: the Yu et al. classroom corpus is unresolved because it
+  has 134 direct sentence labels but no qualifying Krippendorff-alpha point or
+  interval and no documented corpus release or dataset-use license. DAiSEE,
+  HRI-confusion, and the Li-Kelleher-Ross pilot fail hard conversational,
+  observer, temporal, or label-path gates. Decision: `defer`.
+- Frustration outcome: the Yu et al. corpus is unresolved despite 99 direct
+  sentence labels because raw agreement is 59.60%, qualifying reliability is
+  absent, and material access is unresolved. FUSE and MULTICOLLAB use
+  prohibited self-report label paths; IEMOCAP is acted and uses an unapproved
+  reliability statistic. Decision: `defer`.
+- Overall decision: `maintain_defer_c2`; no signal becomes C2 eligible. Two
+  independently delegated source screens agreed that no reviewed candidate
+  passes. Final repository-level independent review returned `C0/I0/M0` and
+  accepted the source trace, adjudications, boundary claims, and exact six-file
+  scope.
+- Technical debt recorded, not corrected: the Phase C1 reason catalog has no
+  exact non-conversational-source reason. A fresh Windows checkout under global
+  `core.autocrlf=true` converts raw-byte-bound LF files to CRLF. The Phase C1
+  checkpoint fails `validator_worktree_binding`; `check_project_drift.py` and
+  `check_setup.py` abort before their checks because the Phase A guard-policy
+  bytes differ from the frozen policy. None is claimed as passing. No protocol,
+  validator, guard, test, runtime, or `.gitattributes` correction was made.
+- Boundary: no dataset download, row or annotation read, login, form
+  submission, private-data access, provider access, call, simulation, model
+  evaluation, source adaptation, runtime change, candidate/canonical staging,
+  C2 work, push, merge, or history rewrite occurred.

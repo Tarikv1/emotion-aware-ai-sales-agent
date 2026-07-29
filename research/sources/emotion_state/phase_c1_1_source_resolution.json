@@ -1,0 +1,435 @@
+{
+  "candidate_count": 7,
+  "candidates": [
+    {
+      "access_and_license": {
+        "detail": "The official proceedings expose the paper, but the reviewed sources identify no corpus accession, material download, or dataset-use license.",
+        "status": "unresolved"
+      },
+      "candidate_id": "yu_etal_2011_student_teacher_math",
+      "direct_target_construct": {
+        "confusion": true,
+        "frustration": true
+      },
+      "independent_human_observer": {
+        "adjudicated_final_labels": true,
+        "detail": "Two teachers annotated each sentence independently and a third teacher adjudicated disagreements; the released per-rater labels are not documented as available.",
+        "released_per_rater_labels": "unresolved",
+        "status": true
+      },
+      "outcome": "unresolved",
+      "outcome_detail": "Direct sentence labels, conversational provenance, and published positive counts clear only the numerical published-count threshold. The approved pre-adjudication reliability statistic and interval are absent, and material access and license remain unresolved.",
+      "published_direct_positive_count": {
+        "confusion": 134,
+        "frustration": 99
+      },
+      "reliability": {
+        "approved_metric": false,
+        "lower_95": null,
+        "metric": "raw_percent_agreement",
+        "point": {
+          "confusion": 0.8433,
+          "frustration": 0.596
+        },
+        "preadjudication": true,
+        "upper_95": null
+      },
+      "signals": [
+        "confusion",
+        "frustration"
+      ],
+      "source_ids": [
+        "yu_2011_landing",
+        "yu_2011_paper"
+      ],
+      "spontaneous_conversation": {
+        "detail": "The paper reports sentences collected from student-teacher mathematics discussions in a junior-high classroom.",
+        "status": true
+      },
+      "turn_or_bounded_segment": {
+        "detail": "Sentence-level text units.",
+        "status": true
+      }
+    },
+    {
+      "access_and_license": {
+        "detail": "The official page is form-gated and states research-only access and no redistribution to another party.",
+        "status": "restricted"
+      },
+      "candidate_id": "daisee_2016",
+      "direct_target_construct": {
+        "confusion": true
+      },
+      "independent_human_observer": {
+        "detail": "Crowd observers rated snippets, with Dawid-Skene aggregation and psychologist-consensus filtering; the approved reliability statistic is not reported.",
+        "status": true
+      },
+      "outcome": "rejected",
+      "outcome_detail": "DAiSEE observes individual video-watching behavior, not conversation. Its weighted-Cohen-kappa filtering is not the frozen Krippendorff-alpha evidence.",
+      "published_direct_positive_count": {
+        "confusion": null
+      },
+      "published_label_distribution": {
+        "confusion_high": 752,
+        "confusion_low": 2191,
+        "confusion_very_high": 101,
+        "confusion_very_low": 6024
+      },
+      "reliability": {
+        "approved_metric": false,
+        "lower_95": null,
+        "metric": "weighted_cohen_kappa_filter_threshold",
+        "point": 0.5,
+        "preadjudication": true,
+        "upper_95": null
+      },
+      "signals": [
+        "confusion"
+      ],
+      "source_ids": [
+        "daisee_paper",
+        "daisee_official_page"
+      ],
+      "spontaneous_conversation": {
+        "detail": "Participants watched educational and recreational videos without a dialogue partner.",
+        "status": false
+      },
+      "turn_or_bounded_segment": {
+        "detail": "Ten-second video snippets, but not conversational units.",
+        "status": false
+      }
+    },
+    {
+      "access_and_license": {
+        "detail": "Raw identifiable media require an application and are limited to noncommercial, nonprofit educational and research use.",
+        "status": "restricted"
+      },
+      "candidate_id": "hri_confusion_2025",
+      "direct_target_construct": {
+        "confusion": true
+      },
+      "independent_human_observer": {
+        "detail": "Labels follow designed experimental conditions and participant ratings after each dialogue; no independent human-observer confusion annotation is reported.",
+        "status": false
+      },
+      "outcome": "rejected",
+      "outcome_detail": "Designed Wizard-of-Oz conditions, self-report or condition labels, whole-conversation clips, absent approved reliability, and gated media fail the frozen admission gates.",
+      "published_direct_positive_count": {
+        "confusion": null
+      },
+      "published_total_view_clips": 789,
+      "reliability": {
+        "approved_metric": false,
+        "lower_95": null,
+        "metric": null,
+        "point": null,
+        "preadjudication": null,
+        "upper_95": null
+      },
+      "signals": [
+        "confusion"
+      ],
+      "source_ids": [
+        "hri_confusion_doi",
+        "hri_confusion_article"
+      ],
+      "spontaneous_conversation": {
+        "detail": "Controlled tasks and dialogue stimuli were designed to induce confusion or non-confusion.",
+        "status": false
+      },
+      "turn_or_bounded_segment": {
+        "detail": "Each released face or body clip represents an experimental conversation under one condition.",
+        "status": false
+      }
+    },
+    {
+      "access_and_license": {
+        "detail": "The paper is public, but the reviewed authoritative sources identify no public dataset release or dataset license.",
+        "status": "unresolved"
+      },
+      "candidate_id": "li_etal_2022_confusion_pilot",
+      "direct_target_construct": {
+        "confusion": true
+      },
+      "independent_human_observer": {
+        "detail": "The evidence path uses experimental condition, post-interaction self-report, and pretrained automated indicators rather than independent direct observer labels.",
+        "status": false
+      },
+      "outcome": "rejected",
+      "outcome_detail": "The source lacks direct independent observer labels, stable local dialogue boundaries, an eligible positive count, and approved reliability evidence.",
+      "published_direct_positive_count": {
+        "confusion": null
+      },
+      "published_usable_participant_count": 19,
+      "reliability": {
+        "approved_metric": false,
+        "lower_95": null,
+        "metric": null,
+        "point": null,
+        "preadjudication": null,
+        "upper_95": null
+      },
+      "signals": [
+        "confusion"
+      ],
+      "source_ids": [
+        "li_confusion_semdial",
+        "li_confusion_paper"
+      ],
+      "spontaneous_conversation": {
+        "detail": "Semi-spontaneous one-to-one Wizard-of-Oz interaction with designed confusion stimuli.",
+        "status": false
+      },
+      "turn_or_bounded_segment": {
+        "detail": "The paper reports no clear dialogue boundaries and uses task or condition-level evidence.",
+        "status": false
+      }
+    },
+    {
+      "access_and_license": {
+        "detail": "The official dataset page is public and states CC BY-NC 4.0.",
+        "status": "documented_noncommercial"
+      },
+      "candidate_id": "fuse_2024",
+      "direct_target_construct": {
+        "frustration": true
+      },
+      "independent_human_observer": {
+        "detail": "Each participant supplies a self-report and one partner perception; this is not an independent multi-observer label path.",
+        "status": false
+      },
+      "outcome": "rejected",
+      "outcome_detail": "Self-report and a single partner perception are prohibited label paths. No approved reliability evidence or published direct-positive segment count is available.",
+      "published_direct_positive_count": {
+        "frustration": null
+      },
+      "published_game_utterance_count": 975,
+      "reliability": {
+        "approved_metric": false,
+        "lower_95": null,
+        "metric": null,
+        "point": null,
+        "preadjudication": null,
+        "upper_95": null
+      },
+      "signals": [
+        "frustration"
+      ],
+      "source_ids": [
+        "fuse_paper",
+        "fuse_official_page"
+      ],
+      "spontaneous_conversation": {
+        "detail": "Unscripted dyads performed elicitation tasks without acting a prescribed emotion.",
+        "status": true
+      },
+      "turn_or_bounded_segment": {
+        "detail": "The frustration response interval is the final 90 seconds of the game task, not an utterance label.",
+        "status": true
+      }
+    },
+    {
+      "access_and_license": {
+        "detail": "The official public repository states CC BY-NC 4.0 for processed instructor data.",
+        "status": "documented_noncommercial"
+      },
+      "candidate_id": "multicollab_2024",
+      "direct_target_construct": {
+        "frustration": true
+      },
+      "independent_human_observer": {
+        "detail": "Participants replayed the recording and labeled their own frustration; no independent observer label path is reported.",
+        "status": false
+      },
+      "outcome": "rejected",
+      "outcome_detail": "Self-report-only labels fail the observer gate. The published instance totals do not establish the exact eligible positive count, and no approved reliability evidence exists.",
+      "published_direct_positive_count": {
+        "frustration": null
+      },
+      "published_instance_counts": {
+        "binary_total": 176,
+        "four_level_total": 297
+      },
+      "reliability": {
+        "approved_metric": false,
+        "lower_95": null,
+        "metric": null,
+        "point": null,
+        "preadjudication": null,
+        "upper_95": null
+      },
+      "signals": [
+        "frustration"
+      ],
+      "source_ids": [
+        "multicollab_paper",
+        "multicollab_official_repo"
+      ],
+      "spontaneous_conversation": {
+        "detail": "Natural Zoom dialogue occurred in an induced collaboration task; participants were not acting a prescribed emotion.",
+        "status": true
+      },
+      "turn_or_bounded_segment": {
+        "detail": "Modeling uses a 4.5-second window around a replay-based self-annotation.",
+        "status": true
+      }
+    },
+    {
+      "access_and_license": {
+        "detail": "Official access requires a release form; use is internal research only, noncommercial, and nontransferable.",
+        "status": "restricted"
+      },
+      "candidate_id": "iemocap_2008",
+      "direct_target_construct": {
+        "frustration": true
+      },
+      "independent_human_observer": {
+        "detail": "Three external evaluators rated each utterance and majority assignment produced the categorical label.",
+        "status": true
+      },
+      "outcome": "rejected",
+      "outcome_detail": "Professional actors performed scripts and improvised hypothetical target-emotion scenarios. The acted or scripted guard is decisive; Fleiss kappa is also not the approved statistic.",
+      "published_direct_positive_count": {
+        "frustration": null
+      },
+      "published_label_share": {
+        "scripted_unique_vote_turns": 0.24,
+        "spontaneous_unique_vote_turns": 0.25
+      },
+      "reliability": {
+        "approved_metric": false,
+        "lower_95": null,
+        "metric": "fleiss_kappa",
+        "point": {
+          "spontaneous_agreed_turns_original_labels": 0.43,
+          "spontaneous_all_turns_original_labels": 0.34
+        },
+        "preadjudication": true,
+        "upper_95": null
+      },
+      "signals": [
+        "frustration"
+      ],
+      "source_ids": [
+        "iemocap_official_info",
+        "iemocap_paper",
+        "iemocap_release"
+      ],
+      "spontaneous_conversation": {
+        "detail": "USC describes the corpus as acted; the unscripted portion is improvised by actors from target-emotion scenarios.",
+        "status": false
+      },
+      "turn_or_bounded_segment": {
+        "detail": "Speaker-turn units average 4.5 seconds.",
+        "status": true
+      }
+    }
+  ],
+  "checkpoint_id": "EMOTION-STATE-005-phase-c1-1-source-resolution",
+  "overall_decision": "maintain_defer_c2",
+  "per_signal_decisions": {
+    "confusion": "defer",
+    "frustration": "defer"
+  },
+  "protocol": {
+    "path": "research/experiments/configs/emotion-state-005-phase-c1-1-source-resolution-protocol.json",
+    "sha256": "DA789714B4835FD160BDB89FBB4F1E60125B5EFF28CC910F690CD4378B5B321B"
+  },
+  "research_boundary": {
+    "dataset_downloads_performed": false,
+    "dataset_or_annotation_rows_read": false,
+    "model_evaluation_performed": false,
+    "private_data_read": false,
+    "provider_call_or_runtime_action": false,
+    "public_authoritative_documents_only": true,
+    "source_documents_persisted": false
+  },
+  "reviewed_at": "2026-07-29",
+  "schema_version": "EmotionStatePhaseC11SourceResolutionV1",
+  "source_documents": [
+    {
+      "source_id": "yu_2011_landing",
+      "title": "Analysis of Students' Emotion from a Text Corpus",
+      "url": "https://library.apsce.net/index.php/ICCE/article/view/2655"
+    },
+    {
+      "source_id": "yu_2011_paper",
+      "title": "Analysis of Students' Emotion from a Text Corpus (official PDF)",
+      "url": "https://library.apsce.net/index.php/ICCE/article/download/2655/2531/3619"
+    },
+    {
+      "source_id": "daisee_paper",
+      "title": "DAiSEE: Towards User Engagement Recognition in the Wild",
+      "url": "https://arxiv.org/abs/1609.01885"
+    },
+    {
+      "source_id": "daisee_official_page",
+      "title": "DAiSEE official dataset page",
+      "url": "https://people.iith.ac.in/vineethnb/resources/daisee/index.html"
+    },
+    {
+      "source_id": "hri_confusion_doi",
+      "title": "HRI-confusion DOI record",
+      "url": "https://doi.org/10.1016/j.dib.2025.112047"
+    },
+    {
+      "source_id": "hri_confusion_article",
+      "title": "HRI-confusion primary open article",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12478088/"
+    },
+    {
+      "source_id": "li_confusion_semdial",
+      "title": "Detecting interlocutor confusion in situated human-avatar dialogue: A pilot study",
+      "url": "https://www.semdial.org/anthology/papers/Z/Z21/Z21-3013/"
+    },
+    {
+      "source_id": "li_confusion_paper",
+      "title": "Detecting Interlocutor Confusion in Situated Human-Avatar Dialogue: A Pilot Study (paper)",
+      "url": "https://arxiv.org/abs/2206.02436"
+    },
+    {
+      "source_id": "fuse_paper",
+      "title": "FUSE - FrUstration and Surprise Expressions",
+      "url": "https://aclanthology.org/2024.lrec-main.666/"
+    },
+    {
+      "source_id": "fuse_official_page",
+      "title": "FUSE official dataset page",
+      "url": "https://fusecorpus.github.io/FUSE/"
+    },
+    {
+      "source_id": "multicollab_paper",
+      "title": "MULTICOLLAB: A Multimodal Corpus of Dialogues for Analyzing Collaboration and Frustration in Language",
+      "url": "https://aclanthology.org/2024.lrec-main.1023/"
+    },
+    {
+      "source_id": "multicollab_official_repo",
+      "title": "MULTICOLLAB official public repository",
+      "url": "https://github.com/mp6510/MULTICOLLAB"
+    },
+    {
+      "source_id": "iemocap_official_info",
+      "title": "IEMOCAP official information",
+      "url": "https://sail.usc.edu/iemocap/iemocap_info.htm"
+    },
+    {
+      "source_id": "iemocap_paper",
+      "title": "IEMOCAP: Interactive emotional dyadic motion capture database",
+      "url": "https://sail.usc.edu/iemocap/Busso_2008_iemocap.pdf"
+    },
+    {
+      "source_id": "iemocap_release",
+      "title": "IEMOCAP release and access page",
+      "url": "https://sail.usc.edu/iemocap/iemocap_release.htm"
+    },
+    {
+      "source_id": "confrustion_theory",
+      "title": "The Confrustion Constellation: A New Way of Looking at Confusion and Frustration",
+      "url": "https://doi.org/10.1111/cogs.70035"
+    }
+  ],
+  "technical_findings": [
+    "The parent Phase C1 reason-code catalog has no exact code for a documented non-conversational source; this review records gate fields directly and does not fabricate a machine-card reason.",
+    "A fresh checkout under core.autocrlf=true converts raw-byte-bound committed LF files to CRLF because exact attributes rules are absent. The Phase C1 checkpoint fails validator_worktree_binding, while check_project_drift.py and check_setup.py abort before their checks because the Phase A guard-policy bytes differ from the frozen policy. No validator, guard, or attributes correction was made in this research-only scope."
+  ]
+}

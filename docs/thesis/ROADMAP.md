@@ -878,3 +878,30 @@ runtime. No private data, dataset/annotation rows, audio, or transcripts were
 read. No provider access, call, simulation, model evaluation, runtime
 modification/activation, or Phase B lockbox access occurred. Push and merge
 remain separately gated.
+
+## EMOTION-STATE-005 Phase C1.1 source-resolution follow-up
+
+Status: public-source review complete; noncanonical; decision
+`maintain_defer_c2`.
+
+Exactly four named confusion candidates and four named frustration candidates
+were reviewed from authoritative public documentation, with seven unique
+candidates. Neither signal produced a pass. The Yu et al. classroom mathematics
+corpus is the only unresolved candidate worth a later narrow provenance
+decision: it publishes 134 confusion and 99 frustration sentence labels, but
+does not publish qualifying Krippendorff-alpha evidence or document an official
+corpus release and dataset-use license. All other reviewed candidates fail hard
+conversation, observer, self-report, acted, temporal, or reliability gates.
+
+Next decision:
+
+1. keep C2 closed;
+2. separately authorize a narrow official-provenance check for the Yu et al.
+   corpus only if an official release, preserved independent annotations, and
+   qualifying reliability evidence may exist; or
+3. if that evidence is unavailable, retire the public-dataset model path for
+   confusion and frustration and later design observable clarification/repair
+   rules without hidden-emotion claims.
+
+No material request, owner contact, annotation fallback, model evaluation,
+runtime rule, C2 action, push, or merge is authorized by this roadmap entry.
