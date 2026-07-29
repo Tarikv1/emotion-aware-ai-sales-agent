@@ -6715,3 +6715,38 @@ remain separate gates.
   submission, private-data access, provider access, call, simulation, model
   evaluation, source adaptation, runtime change, candidate/canonical staging,
   C2 work, push, merge, or history rewrite occurred.
+
+### 2026-07-29 - Phase C1 Windows raw-byte checkout prerequisite
+
+- Problem: the system Git configuration at
+  `C:/Program Files/Git/etc/gitconfig` sets `core.autocrlf=true`. A default
+  Windows checkout therefore converted three committed LF inputs that are
+  compared byte-for-byte. The Phase C1 checkpoint failed
+  `validator_worktree_binding`; `check_project_drift.py` and `check_setup.py`
+  aborted while importing the exact Phase A guard policy.
+- Root cause: `.gitattributes` protected the Phase C0/C1 generated artifacts,
+  protocol, fixtures, and ledgers, but did not protect the Phase A guard-policy
+  JSON, the Phase C1 validator, or the Phase C1 contracts module.
+- Minimal correction: add exact `text eol=lf` rules for only those three
+  byte-compared paths. No wildcard, validator relaxation, policy change,
+  normalization rewrite, or runtime behavior change is included.
+- Strict TDD: the new Git-behavior test first failed three subtests because
+  `git check-attr` returned `text: unspecified` and `eol: unspecified`; after
+  the exact rules, all three returned `text: set` and `eol: lf`. The existing
+  Phase C0 exact-order/uniqueness/no-wildcard test and the Phase C1
+  artifact-rule test remained green.
+- Fresh-checkout verification: an isolated candidate checkout using the real
+  system `core.autocrlf=true` setting preserved all three protected files
+  byte-for-byte. The Phase C1 checkpoint passed; the project drift guard passed
+  with zero failures and warnings across 4,175 files; setup passed all 567
+  checks with no network call or secret value logging.
+- Full regression: the first C0 module attempt exposed only the absent ignored
+  `.tmp` test-root prerequisite. After creating that empty ignored directory,
+  the replacement C0 module passed `178/178`; the C1 module passed `262/262`
+  with three platform skips. Independent review returned `C0/I0/M0` and
+  accepted the exact three-file scope, checkout semantics, test behavior,
+  helper exclusion, methodology trace, and preserved boundaries.
+- Boundary: offline repository infrastructure only. No research, dataset or
+  private-data read, network, provider, call, simulation, model evaluation,
+  source adaptation, runtime activation, candidate/canonical action, C2 work,
+  push, merge, or history rewrite occurred.

@@ -365,6 +365,12 @@ EXPECTED_PHASE_C0_GITATTRIBUTES_RULES = (
     "/research/experiments/generated/EMOTION-STATE-003-phase-c0-synthetic-temporal-mechanics/report.md text eol=lf",
 )
 
+RAW_BYTE_BOUND_LF_PATHS = (
+    "research/sources/emotion_state/phase_a_verification_guard_policy.json",
+    "scripts/validate_emotion_state_004_phase_c1.py",
+    "scripts/emotion_state_phase_c1_contracts.py",
+)
+
 SEARCH_LEDGER_PATH = (
     ROOT
     / "research"
@@ -1397,6 +1403,38 @@ class PhaseC1ProtocolContractTests(
         note = note_path.read_text(encoding="utf-8")
         self.assertTrue(note.startswith(EXPECTED_EXPERIMENT_NOTE_START))
         self.assertNotIn("\r", note)
+
+    def test_git_checkout_policy_keeps_raw_byte_bound_inputs_lf(self) -> None:
+        for relative_path in RAW_BYTE_BOUND_LF_PATHS:
+            with self.subTest(relative_path=relative_path):
+                completed = subprocess.run(
+                    [
+                        "git",
+                        "check-attr",
+                        "text",
+                        "eol",
+                        "--",
+                        relative_path,
+                    ],
+                    cwd=ROOT,
+                    stdin=subprocess.DEVNULL,
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.PIPE,
+                    check=False,
+                    shell=False,
+                    timeout=10,
+                    text=True,
+                    encoding="utf-8",
+                    errors="strict",
+                )
+                self.assertEqual(completed.returncode, 0, completed.stderr)
+                self.assertEqual(
+                    completed.stdout.splitlines(),
+                    [
+                        f"{relative_path}: text: set",
+                        f"{relative_path}: eol: lf",
+                    ],
+                )
 
     def test_discovery_endpoint_registry_entry_records_bounded_task7_use(
         self,
