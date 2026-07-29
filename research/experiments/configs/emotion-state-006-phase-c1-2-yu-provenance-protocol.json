@@ -1,0 +1,82 @@
+{
+  "checkpoint_id": "EMOTION-STATE-006-phase-c1-2-yu-provenance",
+  "decision_contract": {
+    "all_required_fields_resolved_true": "document_later_signal_specific_c2_gate_candidate",
+    "missing_or_unpublished_required_field": "maintain_defer_c2",
+    "no_official_public_path": "maintain_defer_c2_and_recommend_retiring_public_dataset_model_route",
+    "this_checkpoint_can_open_c2": false
+  },
+  "evidence_boundary": {
+    "allowed": [
+      "official_public_corpus_or_material_landing_pages",
+      "original_public_papers",
+      "official_author_or_institutional_repositories",
+      "publisher_or_doi_metadata"
+    ],
+    "blocked": [
+      "dataset_or_annotation_download",
+      "dataset_row_or_annotation_read",
+      "login_or_form_submission",
+      "owner_contact_or_messaging",
+      "private_data",
+      "provider_access",
+      "call_or_simulation",
+      "model_evaluation",
+      "source_adaptation",
+      "runtime_change_or_activation",
+      "candidate_or_canonical_staging",
+      "phase_c2",
+      "merge",
+      "history_rewrite",
+      "push"
+    ],
+    "persisted_content": "official_public_source_metadata_and_aggregate_documented_facts_only"
+  },
+  "independence_contract": {
+    "authoritative_claims_require_primary_or_official_source": true,
+    "independent_review_required": true,
+    "missing_evidence_must_not_be_inferred": true
+  },
+  "parent_checkpoint": {
+    "checkpoint_id": "EMOTION-STATE-005-phase-c1-1-source-resolution",
+    "protocol_path": "research/experiments/configs/emotion-state-005-phase-c1-1-source-resolution-protocol.json",
+    "protocol_sha256": "DA789714B4835FD160BDB89FBB4F1E60125B5EFF28CC910F690CD4378B5B321B",
+    "source_register_path": "research/sources/emotion_state/phase_c1_1_source_resolution.json"
+  },
+  "protocol_id": "emotion-state-phase-c1-2-yu-provenance-v1",
+  "reliability_rule": {
+    "metric": "krippendorff_alpha",
+    "point_min": 0.8,
+    "lower_95_min": 0.67,
+    "must_be_pre_adjudication": true,
+    "point_and_confidence_interval_both_required": true,
+    "unverifiable_disposition": "defer"
+  },
+  "research_question": "Can official public primary sources resolve the remaining provenance and admission evidence for the Yu et al. student-teacher junior-high mathematics corpus?",
+  "required_findings": [
+    "official_corpus_or_material_release",
+    "explicit_dataset_use_or_license_terms",
+    "preserved_independent_per_rater_annotations",
+    "qualifying_pre_adjudication_krippendorff_alpha_point_and_confidence_interval",
+    "original_spontaneous_conversational_provenance"
+  ],
+  "schema_version": "EmotionStatePhaseC12YuProvenanceProtocolV1",
+  "search_order": [
+    "official_apsce_article_landing_paper_and_proceedings",
+    "official_author_and_institutional_repositories_or_project_pages",
+    "official_public_data_repository_records_linked_to_the_authors_or_paper",
+    "publisher_or_doi_metadata_and_linked_supplementary_material"
+  ],
+  "signal_order": [
+    "confusion",
+    "frustration"
+  ],
+  "status": "frozen_before_new_public_web_search",
+  "study_classification": "bounded_official_public_provenance_review_not_dataset_or_model_evaluation",
+  "target": {
+    "candidate_id": "yu_etal_2011_student_teacher_math",
+    "official_article_url": "https://library.apsce.net/index.php/ICCE/article/view/2655",
+    "official_paper_url": "https://library.apsce.net/index.php/ICCE/article/download/2655/2531/3619",
+    "paper_title": "Analysis of Students' Emotion from a Text Corpus"
+  }
+}
