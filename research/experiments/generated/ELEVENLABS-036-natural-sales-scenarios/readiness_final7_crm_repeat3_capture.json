@@ -1,0 +1,1057 @@
+{
+  "captured_at_utc": "2026-07-10T22:46:41Z",
+  "payload_sha256": "4ba0b2d6739321b90c0e27e437859e2191a6386da916a9c7852f1eeb873b18aa",
+  "payload": {
+    "checkpoint_id": "ELEVENLABS-036-natural-sales-scenarios",
+    "invocation_id": "suite_0001kx738sv4eg5sn9crah5n23qa",
+    "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+    "test_runs": [
+      {
+        "test_run_id": "trun_3401kx738sv8efptxcptne915qt0",
+        "test_invocation_id": "suite_0001kx738sv4eg5sn9crah5n23qa",
+        "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+        "test_id": "sim_036_crm_payment_capability_before_price",
+        "provider_test_id": "test_4601ktwzq8xnfpbtry5qsepeprh3",
+        "test_name": "ELEVENLABS-036-natural-sales-scenarios::sim_036_crm_payment_capability_before_price",
+        "scenario": "The simulated user owns Iron Gate Garage Doors in Kansas City. They care about lead handling more than design. Their first technical question is: 'Can it connect to Jobber or take deposit payments?' They do not ask cost until later. If Emma jumps into price first, the buyer says: 'That is not what I asked. Can it actually connect or not?' Then they ask: 'Okay, what kind of price does that add?'",
+        "success_conditions": [
+          "The full conversation passes only if Emma answers capability before price. She should first say it can connect depending on whether it is a simple form handoff or a real integration. Only after the buyer asks cost should she map a real CRM or payment integration toward {{website_integration_heavy_range}}, while noting that a simple handoff is lighter and the real number depends on the system. It fails if Emma gives a price before answering capability, says CRM or payments are automatically included in a basic site, invents an exact final quote, gives a long technical dump, or misses a natural mockup next step after the capability and cost questions are answered."
+        ],
+        "models": {
+          "simulated_user_model": "gemini-2.5-flash",
+          "evaluation_model": "gemini-2.5-flash"
+        },
+        "status": "passed",
+        "condition_result": {
+          "result": "success",
+          "rationale": {
+            "messages": [
+              "Emma first answered the capability question, then provided price ranges for different integration types after the user asked for clarification on the difference. She did not give an exact quote, nor did she miss offering a mockup.",
+              "The conversation reached the maximum number of turns."
+            ],
+            "summary": "Evaluation succeeded"
+          }
+        },
+        "evaluator_rationale": "{'messages': ['Emma first answered the capability question, then provided price ranges for different integration types after the user asked for clarification on the difference. She did not give an exact quote, nor did she miss offering a mockup.', 'The conversation reached the maximum number of turns.'], 'summary': 'Evaluation succeeded'}",
+        "agent_responses": [
+          {
+            "message": "Hi, this is Emma from Atlas Web Studio. I had Iron Gate Garage Doors down as a garage door repair company in Kansas City. Am I speaking with the owner or someone who handles the website there?",
+            "interrupted": false,
+            "role": "agent",
+            "tool_results": [],
+            "original_message": null,
+            "time": 99,
+            "tool_calls": [],
+            "source_medium": null
+          },
+          {
+            "message": "Yeah, this is the owner. I was wondering if your websites can connect to Jobber or take deposit payments?",
+            "interrupted": false,
+            "role": "user",
+            "tool_results": [],
+            "original_message": null,
+            "time": 99,
+            "tool_calls": [],
+            "source_medium": "text"
+          },
+          {
+            "message": "Yes, we can build that. It depends on whether you need a simple form handoff or a real integration.",
+            "interrupted": false,
+            "role": "agent",
+            "tool_results": [],
+            "original_message": null,
+            "time": 99,
+            "tool_calls": [],
+            "source_medium": null
+          },
+          {
+            "message": "Okay, but can it actually connect? What's the difference between those two things?",
+            "interrupted": false,
+            "role": "user",
+            "tool_results": [],
+            "original_message": null,
+            "time": 99,
+            "tool_calls": [],
+            "source_medium": "text"
+          },
+          {
+            "message": "Yes, we can connect to Jobber and support deposit payments. A real integration usually moves the whole project toward four thousand to five thousand dollars; a simple handoff is usually two thousand to three thousand dollars; the final number depends on the system. Would you like to see a free homepage mockup to get started?",
+            "interrupted": false,
+            "role": "agent",
+            "tool_results": [],
+            "original_message": null,
+            "time": 99,
+            "tool_calls": [],
+            "source_medium": null
+          },
+          {
+            "message": "Okay, so it can connect. But what makes the 'real integration' worth double the price?",
+            "interrupted": false,
+            "role": "user",
+            "tool_results": [],
+            "original_message": null,
+            "time": 99,
+            "tool_calls": [],
+            "source_medium": "text"
+          },
+          {
+            "message": "A real integration involves more complex development, ensuring seamless data flow between your website and Jobber, including automation and real-time updates. It provides a more robust and efficient system compared to a simple handoff, which might only involve basic data transfer without ongoing synchronization. Would you like to explore this further with a free homepage mockup?",
+            "interrupted": false,
+            "role": "agent",
+            "tool_results": [],
+            "original_message": null,
+            "time": 99,
+            "tool_calls": [],
+            "source_medium": null
+          },
+          {
+            "message": "Okay, but what does that actually do for my business? Like, what's a real-world example of that 'seamless data flow'?",
+            "interrupted": false,
+            "role": "user",
+            "tool_results": [],
+            "original_message": null,
+            "time": 99,
+            "tool_calls": [],
+            "source_medium": "text"
+          },
+          {
+            "message": "In a real-world scenario, a seamless data flow means that when a customer books a service on your website, the information is automatically updated in Jobber without manual entry. This reduces errors, saves time, and ensures that your team has the most up-to-date information for scheduling and managing jobs. It streamlines operations and enhances customer experience by providing accurate and timely service updates. Would you like to see how this could look with a free homepage mockup?",
+            "interrupted": false,
+            "role": "agent",
+            "tool_results": [],
+            "original_message": null,
+            "time": 99,
+            "tool_calls": [],
+            "source_medium": null
+          },
+          {
+            "message": "Okay, so it saves time and reduces errors. But how much time, really? And does it help with getting more leads?",
+            "interrupted": false,
+            "role": "user",
+            "tool_results": [],
+            "original_message": null,
+            "time": 99,
+            "tool_calls": [],
+            "source_medium": "text"
+          },
+          {
+            "message": "The time saved depends on the volume of bookings and updates you handle. Automating these processes can significantly reduce manual data entry, freeing up time for your team to focus on other tasks. While the integration itself doesn't directly generate more leads, it enhances customer experience and operational efficiency, which can contribute to better customer retention and referrals. Would you like to see a mockup of how this could enhance your website?",
+            "interrupted": false,
+            "role": "agent",
+            "tool_results": [],
+            "original_message": null,
+            "time": 99,
+            "tool_calls": [],
+            "source_medium": null
+          },
+          {
+            "message": "So it doesn't help with getting more leads directly? That's what I'm really trying to solve here.",
+            "interrupted": false,
+            "role": "user",
+            "tool_results": [],
+            "original_message": null,
+            "time": 99,
+            "tool_calls": [],
+            "source_medium": "text"
+          },
+          {
+            "message": "While the integration itself focuses on operational efficiency, improving your website's user experience and functionality can indirectly help attract and retain customers. For direct lead generation, we can enhance your site's design and SEO to improve visibility and engagement. Would you be interested in exploring these options with a free homepage mockup?",
+            "interrupted": false,
+            "role": "agent",
+            "tool_results": [],
+            "original_message": null,
+            "time": 99,
+            "tool_calls": [],
+            "source_medium": null
+          },
+          {
+            "message": "Okay, so how does that actually help with getting more leads?",
+            "interrupted": false,
+            "role": "user",
+            "tool_results": [],
+            "original_message": null,
+            "time": 99,
+            "tool_calls": [],
+            "source_medium": "text"
+          },
+          {
+            "message": "Improving your website's design and SEO can make it more attractive and easier to find for potential customers. A well-designed site can engage visitors, encourage them to explore your services, and make it easy for them to contact you. SEO enhancements improve your site's ranking on search engines, increasing the likelihood that potential customers will find you when searching for garage door services. Would you like to see a mockup to visualize these improvements?",
+            "interrupted": false,
+            "role": "agent",
+            "tool_results": [],
+            "original_message": null,
+            "time": 99,
+            "tool_calls": [],
+            "source_medium": null
+          },
+          {
+            "message": "Okay, I get that. But how does that specifically help me get more leads for garage door repair?",
+            "interrupted": false,
+            "role": "user",
+            "tool_results": [],
+            "original_message": null,
+            "time": 99,
+            "tool_calls": [],
+            "source_medium": "text"
+          },
+          {
+            "message": "For garage door repair, a targeted approach includes optimizing your website with relevant keywords, creating engaging content that addresses common repair issues, and showcasing customer testimonials. This strategy helps attract visitors searching for specific services you offer. A user-friendly design with clear calls to action encourages visitors to contact you directly for repairs, converting visits into leads. Would you like to see how this could look with a free homepage mockup?",
+            "interrupted": false,
+            "role": "agent",
+            "tool_results": [],
+            "original_message": null,
+            "time": 99,
+            "tool_calls": [],
+            "source_medium": null
+          },
+          {
+            "message": "Okay, I get the general idea. But can you give me a real example of how that worked for another garage door company?Okay, I get the general idea. But can you give me a real example of how that worked for another garage door company?",
+            "interrupted": false,
+            "role": "user",
+            "tool_results": [],
+            "original_message": null,
+            "time": 99,
+            "tool_calls": [],
+            "source_medium": "text"
+          },
+          {
+            "message": "I can't provide specific examples or case studies from other companies, but I can tell you that many businesses have successfully increased their leads by enhancing their website's SEO and user experience. By focusing on targeted keywords and improving site navigation, they were able to attract more visitors and convert them into customers. Would you like to see a mockup to understand how these strategies could be applied to your business?",
+            "interrupted": false,
+            "role": "agent",
+            "tool_results": [],
+            "original_message": null,
+            "time": 99,
+            "tool_calls": [],
+            "source_medium": null
+          },
+          {
+            "message": "So you can't give me any actual examples? Just general stuff? And you keep asking about a mockup.Okay, so it can connect. But what makes the 'real integration' worth double the price?\nOkay, but what does that actually do for my business? Like, what's a real-world example of that 'seamless data flow'?\nOkay, so it saves time and reduces errors. But how much time, really? And does it help with getting more leads?\nSo it doesn't help with getting more leads directly? That's what I'm really trying to solve here.\nOkay, so how does that actually help with getting more leads?\nOkay, I get that. But how does that specifically help me get more leads for garage door repair?\nOkay, I get the general idea. But can you give me a real example of how that worked for another garage door company?\nSo you can't give me any actual examples? Just general stuff? And you keep asking about a mockup.Okay, so it can connect. But what makes the 'real integration' worth double the price?\nOkay, but what does that actually do for my business? Like, what's a real-world example of that 'seamless data flow'?\nOkay, so it saves time and reduces errors. But how much time, really? And does it help with getting more leads?\nSo it doesn't help with getting more leads directly? That's what I'm really trying to solve here.\nOkay, so how does that actually help with getting more leads?\nOkay, I get that. But how does that specifically help me get more leads for garage door repair?\nOkay, I get the general idea. But can you give me a real example of how that worked for another garage door company?\nSo you can't give me any actual examples? Just general stuff? And you keep asking about a mockup.Okay, so it can connect. But what makes the 'real integration' worth double the price?\nOkay, but what does that actually do for my business? Like, what's a real-world example of that 'seamless data flow'?\nOkay, so it saves time and reduces errors. But how much time, really? And does it help with getting more leads?\nSo it doesn't help with getting more leads directly? That's what I'm really trying to solve here.\nOkay, so how does that actually help with getting more leads?\nOkay, I get that. But how does that specifically help me get more leads for garage door repair?\nOkay, I get the general idea. But can you give me a real example of how that worked for another garage door company?\nSo you can't give me any actual examples? Just general stuff? And you keep asking about a mockup.Okay, so it can connect. But what makes the 'real integration' worth double the price?\nOkay, but what does that actually do for my business? Like, what's a real-world example of that 'seamless data flow'?\nOkay, so it saves time and reduces errors. But how much time, really? And does it help with getting more leads?\nSo it doesn't help with getting more leads directly? That's what I'm really trying to solve here.\nOkay, so how does that actually help with getting more leads?\nOkay, I get that. But how does that specifically help me get more leads for garage door repair?\nOkay, I get the general idea. But can you give me a real example of how that worked for another garage door company?\nSo you can't give me any actual examples? Just general stuff? And you keep asking about a mockup.Okay, so it can connect. But what makes the 'real integration' worth double the price?\nOkay, but what does that actually do for my business? Like, what's a real-world example of that 'seamless data flow'?\nOkay, so it saves time and reduces errors. But how much time, really? And does it help with getting more leads?\nSo it doesn't help with getting more leads directly? That's what I'm really trying to solve here.\nOkay, so how does that actually help with getting more leads?\nOkay, I get that. But how does that specifically help me get more leads for garage door repair?\nOkay, I get the general idea. But can you give me a real example of how that worked for another garage door company?\nSo you can't give me any actual examples? Just general stuff? And you keep asking about a mockup.Okay, so it can connect. But what makes the 'real integration' worth double the price?\nOkay, but what does that actually do for my business? Like, what's a real-world example of that 'seamless data flow'?\nOkay, so it saves time and reduces errors. But how much time, really? And does it help with getting more leads?\nSo it doesn't help with getting more leads directly? That's what I'm really trying to solve here.\nOkay, so how does that actually help with getting more leads?\nOkay, I get that. But how does that specifically help me get more leads for garage door repair?\nOkay, I get the general idea. But can you give me a real example of how that worked for another garage door company?\nSo you can't give me any actual examples? Just general stuff? And you keep asking about a mockup.Okay, so it can connect. But what makes the 'real integration' worth double the price?\nOkay, but what does that actually do for my business? Like, what's a real-world example of that 'seamless data flow'?\nOkay, so it saves time and reduces errors. But how much time, really? And does it help with getting more leads?\nSo it doesn't help with getting more leads directly? That's what I'm really trying to solve here.\nOkay, so how does that actually help with getting more leads?\nOkay, I get that. But how does that specifically help me get more leads for garage door repair?\nOkay, I get the general idea. But can you give me a real example of how that worked for another garage door company?\nSo you can't give me any actual examples? Just general stuff? And you keep asking about a mockup.Okay, so it can connect. But what makes the 'real integration' worth double the price?\nOkay, but what does that actually do for my business? Like, what's a real-world example of that 'seamless data flow'?\nOkay, so it saves time and reduces errors. But how much time, really? And does it help with getting more leads?\nSo it doesn't help with getting more leads directly? That's what I'm really trying to solve here.\nOkay, so how does that actually help with getting more leads?\nOkay, I get that. But how does that specifically help me get more leads for garage door repair?\nOkay, I get the general idea. But can you give me a real example of how that worked for another garage door company?\nSo you can't give me any actual examples? Just general stuff? And you keep asking about a mockup.Okay, so it can connect. But what makes the 'real integration' worth double the price?\nOkay, but what does that actually do for my business? Like, what's a real-world example of that 'seamless data flow'?\nOkay, so it saves time and reduces errors. But how much time, really? And does it help with getting more leads?\nSo it doesn't help with getting more leads directly? That's what I'm really trying to solve here.\nOkay, so how does that actually help with getting more leads?\nOkay, I get that. But how does that specifically help me get more leads for garage door repair?\nOkay, I get the general idea. But can you give me a real example of how that worked for another garage door company?\nSo you can't give me any actual examples? Just general stuff? And you keep asking about a mockup.Okay, so it can connect. But what makes the 'real integration' worth double the price?\nOkay, but what does that actually do for my business? Like, what's a real-world example of that 'seamless data flow'?\nOkay, so it saves time and reduces errors. But how much time, really? And does it help with getting more leads?\nSo it doesn't help with getting more leads directly? That's what I'm really trying to solve here.\nOkay, so how does that actually help with getting more leads?\nOkay, I get that. But how does that specifically help me get more leads for garage door repair?\nOkay, I get the general idea. But can you give me a real example of how that worked for another garage door company?\nSo you can't give me any actual examples? Just general stuff? And you keep asking about a mockup.Okay, so it can connect. But what makes the 'real integration' worth double the price?\nOkay, but what does that actually do for my business? Like, what's a real-world example of that 'seamless data flow'?\nOkay, so it saves time and reduces errors. But how much time, really? And does it help with getting more leads?\nSo it doesn't help with getting more leads directly? That's what I'm really trying to solve here.\nOkay, so how does that actually help with getting more leads?\nOkay, I get that. But how does that specifically help me get more leads for garage door repair?\nOkay, I get the general idea. But can you give me a real example of how that worked for another garage door company?\nSo you can't give me any actual examples? Just general stuff? And you keep asking about a mockup.Okay, so it can connect. But what makes the 'real integration' worth double the price?\nOkay, but what does that actually do for my business? Like, what's a real-world example of that 'seamless data flow'?\nOkay, so it saves time and reduces errors. But how much time, really? And does it help with getting more leads?\nSo it doesn't help with getting more leads directly? That's what I'm really trying to solve here.\nOkay, so how does that actually help with getting more leads?\nOkay, I get that. But how does that specifically help me get more leads for garage door repair?\nOkay, I get the general idea. But can you give me a real example of how that worked for another garage door company?\nSo you can't give me any actual examples? Just general stuff? And you keep asking about a mockup.Okay, so it can connect. But what makes the 'real integration' worth double the price?\nOkay, but what does that actually do for my business? Like, what's a real-world example of that 'seamless data flow'?\nOkay, so it saves time and reduces errors. But how much time, really? And does it help with getting more leads?\nSo it doesn't help with getting more leads directly? That's what I'm really trying to solve here.\nOkay, so how does that actually help with getting more leads?\nOkay, I get that. But how does that specifically help me get more leads for garage door repair?\nOkay, I get the general idea. But can you give me a real example of how that worked for another garage door company?\nSo you can't give me any actual examples? Just general stuff? And you keep asking about a mockup.Okay, so it can connect. But what makes the 'real integration' worth double the price?\nOkay, but what does that actually do for my business? Like, what's a real-world example of that 'seamless data flow'?\nOkay, so it saves time and reduces errors. But how much time, really? And does it help with getting more leads?\nSo it doesn't help with getting more leads directly? That's what I'm really trying to solve here.\nOkay, so how does that actually help with getting more leads?\nOkay, I get that. But how does that specifically help me get more leads for garage door repair?\nOkay, I get the general idea. But can you give me a real example of how that worked for another garage door company?\nSo you can't give me any actual examples? Just general stuff? And you keep asking about a mockup.Okay, so it can connect. But what makes the 'real integration' worth double the price?\nOkay, but what does that actually do for my business? Like, what's a real-world example of that 'seamless data flow'?\nOkay, so it saves time and reduces errors. But how much time, really? And does it help with getting more leads?\nSo it doesn't help with getting more leads directly? That's what I'm really trying to solve here.\nOkay, so how does that actually help with getting more leads?\nOkay, I get that. But how does that specifically help me get more leads for garage door repair?\nOkay, I get the general idea. But can you give me a real example of how that worked for another garage door company?\nSo you can't give me any actual examples? Just general stuff? And you keep asking about a mockup.Okay, so it can connect. But what makes the 'real integration' worth double the price?\nOkay, but what does that actually do for my business? Like, what's a real-world example of that 'seamless data flow'?\nOkay, so it saves time and reduces errors. But how much time, really? And does it help with getting more leads?\nSo it doesn't help with getting more leads directly? That's what I'm really trying to solve here.\nOkay, so how does that actually help with getting more leads?\nOkay, I get that. But how does that specifically help me get more leads for garage door repair?\nOkay, I get the general idea. But can you give me a real example of how that worked for another garage door company?\nSo you can't give me any actual examples? Just general stuff? And you keep asking about a mockup.Okay, so it can connect. But what makes the 'real integration' worth double the price?\nOkay, but what does that actually do for my business? Like, what's a real-world example of that 'seamless data flow'?\nOkay, so it saves time and reduces errors. But how much time, really? And does it help with getting more leads?\nSo it doesn't help with getting more leads directly? That's what I'm really trying to solve here.\nOkay, so how does that actually help with getting more leads?\nOkay, I get that. But how does that specifically help me get more leads for garage door repair?\nOkay, I get the general idea. But can you give me a real example of how that worked for another garage door company?\nSo you can't give me any actual examples? Just general stuff? And you keep asking about a mockup.Okay, so it can connect. But what makes the 'real integration' worth double the price?\nOkay, but what does that actually do for my business? Like, what's a real-world example of that 'seamless data flow'?\nOkay, so it saves time and reduces errors. But how much time, really? And does it help with getting more leads?\nSo it doesn't help with getting more leads directly? That's what I'm really trying to solve here.\nOkay, so how does that actually help with getting more leads?\nOkay, I get that. But how does that specifically help me get more leads for garage door repair?\nOkay, I get the general idea. But can you give me a real example of how that worked for another garage door company?\nSo you can't give me any actual examples? Just general stuff? And you keep asking about a mockup.Okay, so it can connect. But what makes the 'real integration' worth double the price?\nOkay, but what does that actually do for my business? Like, what's a real-world example of that 'seamless data flow'?\nOkay, so it saves time and reduces errors. But how much time, really? And does it help with getting more leads?\nSo it doesn't help with getting more leads directly? That's what I'm really trying to solve here.\nOkay, so how does that actually help with getting more leads?\nOkay, I get that. But how does that specifically help me get more leads for garage door repair?\nOkay, I get the general idea. But can you give me a real example of how that worked for another garage door company?\nSo you can't give me any actual examples? Just general stuff? And you keep asking about a mockup.Okay, so it can connect. But what makes the 'real integration' worth double the price?\nOkay, but what does that actually do for my business? Like, what's a real-world example of that 'seamless data flow'?\nOkay, so it saves time and reduces errors. But how much time, really? And does it help with getting more leads?\nSo it doesn't help with getting more leads directly? That's what I'm really trying to solve here.\nOkay, so how does that actually help with getting more leads?\nOkay, I get that. But how does that specifically help me get more leads for garage door repair?\nOkay, I get the general idea. But can you give me a real example of how that worked for another garage door company?\nSo you can't give me any actual examples? Just general stuff? And you keep asking about a mockup.Okay, so it can connect. But what makes the 'real integration' worth double the price?\nOkay, but what does that actually do for my business? Like, what's a real-world example of that 'seamless data flow'?\nOkay, so it saves time and reduces errors. But how much time, really? And does it help with getting more leads?\nSo it doesn't help with getting more leads directly? That's what I'm really trying to solve here.\nOkay, so how does that actually help with getting more leads?\nOkay, I get that. But how does that specifically help me get more leads for garage door repair?\nOkay, I get the general idea. But can you give me a real example of how that worked for another garage door company?\nSo you can't give me any actual examples? Just general stuff? And you keep asking about a mockup.Okay, so it can connect. But what makes the 'real integration' worth double the price?\nOkay, but what does that actually do for my business? Like, what's a real-world example of that 'seamless data flow'?\nOkay, so it saves time and reduces errors. But how much time, really? And does it help with getting more leads?\nSo it doesn't help with getting more leads directly? That's what I'm really trying to solve here.\nOkay, so how does that actually help with getting more leads?\nOkay, I get that. But how does that specifically help me get more leads for garage door repair?\nOkay, I get the general idea. But can you give me a real example of how that worked for another garage door company?\nSo you can't give me any actual examples? Just general stuff? And you keep asking about a mockup.Okay, so it can connect. But what makes the 'real integration' worth double the price?\nOkay, but what does that actually do for my business? Like, what's a real-world example of that 'seamless data flow'?\nOkay, so it saves time and reduces errors. But how much time, really? And does it help with getting more leads?\nSo it doesn't help with getting more leads directly? That's what I'm really trying to solve here.\nOkay, so how does that actually help with getting more leads?\nOkay, I get that. But how does that specifically help me get more leads for garage door repair?\nOkay, I get the general idea. But can you give me a real example of how that worked for another garage door company?\nSo you can't give me any actual examples? Just general stuff? And you keep asking about a mockup.Okay, so it can connect. But what makes the 'real integration' worth double the price?\nOkay, but what does that actually do for my business? Like, what's a real-world example of that 'seamless data flow'?\nOkay, so it saves time and reduces errors. But how much time, really? And does it help with getting more leads?\nSo it doesn't help with getting more leads directly? That's what I'm really trying to solve here.\nOkay, so how does that actually help with getting more leads?\nOkay, I get that. But how does that specifically help me get more leads for garage door repair?\nOkay, I get the general idea. But can you give me a real example of how that worked for another garage door company?\nSo you can't give me any actual examples? Just general stuff? And you keep asking about a mockup.Okay, so it can connect. But what makes the 'real integration' worth double the price?\nOkay, but what does that actually do for my business? Like, what's a real-world example of that 'seamless data flow'?\nOkay, so it saves time and reduces errors. But how much time, really? And does it help with getting more leads?\nSo it doesn't help with getting more leads directly? That's what I'm really trying to solve here.\nOkay, so how does that actually help with getting more leads?\nOkay, I get that. But how does that specifically help me get more leads for garage door repair?\nOkay, I get the general idea. But can you give me a real example of how that worked for another garage door company?\nSo you can't give me any actual examples? Just general stuff? And you keep asking about a mockup.Okay, so it can connect. But what makes the 'real integration' worth double the price?\nOkay, but what does that actually do for my business? Like, what's a real-world example of that 'seamless data flow'?\nOkay, so it saves time and reduces errors. But how much time, really? And does it help with getting more leads?\nSo it doesn't help with getting more leads directly? That's what I'm really trying to solve here.\nOkay, so how does that actually help with getting more leads?\nOkay, I get that. But how does that specifically help me get more leads for garage door repair?\nOkay, I get the general idea. But can you give me a real example of how that worked for another garage door company?\nSo you can't give me any actual examples? Just general stuff? And you keep asking about a mockup.Okay, so it can connect. But what makes the 'real integration' worth double the price?\nOkay, but what does that actually do for my business? Like, what's a real-world example of that 'seamless data flow'?\nOkay, so it saves time and reduces errors. But how much time, really? And does it help with getting more leads?\nSo it doesn't help with getting more leads directly? That's what I'm really trying to solve here.\nOkay, so how does that actually help with getting more leads?\nOkay, I get that. But how does that specifically help me get more leads for garage door repair?\nOkay, I get the general idea. But can you give me a real example of how that worked for another garage door company?\nSo you can't give me any actual examples? Just general stuff? And you keep asking about a mockup.Okay, so it can connect. But what makes the 'real integration' worth double the price?\nOkay, but what does that actually do for my business? Like, what's a real-world example of that 'seamless data flow'?\nOkay, so it saves time and reduces errors. But how much time, really? And does it help with getting more leads?\nSo it doesn't help with getting more leads directly? That's what I'm really trying to solve here.\nOkay, so how does that actually help with getting more leads?\nOkay, I get that. But how does that specifically help me get more leads for garage door repair?\nOkay, I get the general idea. But can you give me a real example of how that worked for another garage door company?\nSo you can't give me any actual examples? Just general stuff? And you keep asking about a mockup.Okay, so it can connect. But what makes the 'real integration' worth double the price?\nOkay, but what does that actually do for my business? Like, what's a real-world example of that 'seamless data flow'?\nOkay, so it saves time and reduces errors. But how much time, really? And does it help with getting more leads?\nSo it doesn't help with getting more leads directly? That's what I'm really trying to solve here.\nOkay, so how does that actually help with getting more leads?\nOkay, I get that. But how does that specifically help me get more leads for garage door repair?\nOkay, I get the general idea. But can you give me a real example of how that worked for another garage door company?\nSo you can't give me any actual examples? Just general stuff? And you keep asking about a mockup.Okay, so it can connect. But what makes the 'real integration' worth double the price?\nOkay, but what does that actually do for my business? Like, what's a real-world example of that 'seamless data flow'?\nOkay, so it saves time and reduces errors. But how much time, really? And does it help with getting more leads?\nSo it doesn't help with getting more leads directly? That's what I'm really trying to solve here.\nOkay, so how does that actually help with getting more leads?\nOkay, I get that. But how does that specifically help me get more leads for garage door repair?\nOkay, I get the general idea. But can you give me a real example of how that worked for another garage door company?\nSo you can't give me any actual examples? Just general stuff? And you keep asking about a mockup.Okay, so it can connect. But what makes the 'real integration' worth double the price?\nOkay, but what does that actually do for my business? Like, what's a real-world example of that 'seamless data flow'?\nOkay, so it saves time and reduces errors. But how much time, really? And does it help with getting more leads?\nSo it doesn't help with getting more leads directly? That's what I'm really trying to solve here.\nOkay, so how does that actually help with getting more leads?\nOkay, I get that. But how does that specifically help me get more leads for garage door repair?\nOkay, I get the general idea. But can you give me a real example of how that worked for another garage door company?\nSo you can't give me any actual examples? Just general stuff? And you keep asking about a mockup.Okay, so it can connect. But what makes the 'real integration' worth double the price?\nOkay, but what does that actually do for my business? Like, what's a real-world example of that 'seamless data flow'?\nOkay, so it saves time and reduces errors. But how much time, really? And does it help with getting more leads?\nSo it doesn't help with getting more leads directly? That's what I'm really trying to solve here.\nOkay, so how does that actually help with getting more leads?\nOkay, I get that. But how does that specifically help me get more leads for garage door repair?\nOkay, I get the general idea. But can you give me a real example of how that worked for another garage door company?\nSo you can't give me any actual examples? Just general stuff? And you keep asking about a mockup.Okay, so it can connect. But what makes the 'real integration' worth double the price?\nOkay, but what does that actually do for my business? Like, what's a real-world example of that 'seamless data flow'?\nOkay, so it saves time and reduces errors. But how much time, really? And does it help with getting more leads?\nSo it doesn't help with getting more leads directly? That's what I'm really trying to solve here.\nOkay, so how does that actually help with getting more leads?\nOkay, I get that. But how does that specifically help me get more leads for garage door repair?\nOkay, I get the general idea. But can you give me a real example of how that worked for another garage door company?\nSo you can't give me any actual examples? Just general stuff? And you keep asking about a mockup.Okay, so it can connect. But what makes the 'real integration' worth double the price?\nOkay, but what does that actually do for my business? Like, what's a real-world example of that 'seamless data flow'?\nOkay, so it saves time and reduces errors. But how much time, really? And does it help with getting more leads?\nSo it doesn't help with getting more leads directly? That's what I'm really trying to solve here.\nOkay, so how does that actually help with getting more leads?\nOkay, I get that. But how does that specifically help me get more leads for garage door repair?\nOkay, I get the general idea. But can you give me a real example of how that worked for another garage door company?\nSo you can't give me any actual examples? Just general stuff? And you keep asking about a mockup.Okay, so it can connect. But what makes the 'real integration' worth double the price?\nOkay, but what does that actually do for my business? Like, what's a real-world example of that 'seamless data flow'?\nOkay, so it saves time and reduces errors. But how much time, really? And does it help with getting more leads?\nSo it doesn't help with getting more leads directly? That's what I'm really trying to solve here.\nOkay, so how does that actually help with getting more leads?\nOkay, I get that. But how does that specifically help me get more leads for garage door repair?\nOkay, I get the general idea. But can you give me a real example of how that worked for another garage door company?\nSo you can't give me any actual examples? Just general stuff? And you keep asking about a mockup.Okay, so it can connect. But what makes the 'real integration' worth double the price?\nOkay, but what does that actually do for my business? Like, what's a real-world example of that 'seamless data flow'?\nOkay, so it saves time and reduces errors. But how much time, really? And does it help with getting more leads?\nSo it doesn't help with getting more leads directly? That's what I'm really trying to solve here.\nOkay, so how does that actually help with getting more leads?\nOkay, I get that. But how does that specifically help me get more leads for garage door repair?\nOkay, I get the general idea. But can you give me a real example of how that worked for another garage door company?\nSo you can't give me any actual examples? Just general stuff? And you keep asking about a mockup.Okay, so it can connect. But what makes the 'real integration' worth double the price?\nOkay, but what does that actually do for my business? Like, what's a real-world example of that 'seamless data flow'?\nOkay, so it saves time and reduces errors. But how much time, really? And does it help with getting more leads?\nSo it doesn't help with getting more leads directly? That's what I'm really trying to solve here.\nOkay, so how does that actually help with getting more leads?\nOkay, I get that. But how does that specifically help me get more leads for garage door repair?\nOkay, I get the general idea. But can you give me a real example of how that worked for another garage door company?\nSo you can't give me any actual examples? Just general stuff? And you keep asking about a mockup.Okay, so it can connect. But what makes the 'real integration' worth double the price?\nOkay, but what does that actually do for my business? Like, what's a real-world example of that 'seamless data flow'?\nOkay, so it saves time and reduces errors. But how much time, really? And does it help with getting more leads?\nSo it doesn't help with getting more leads directly? That's what I'm really trying to solve here.\nOkay, so how does that actually help with getting more leads?\nOkay, I get that. But how does that specifically help me get more leads for garage door repair?\nOkay, I get the general idea. But can you give me a real example of how that worked for another garage door company?\nSo you can't give me any actual examples? Just general stuff? And you keep asking about a mockup.Okay, so it can connect. But what makes the 'real integration' worth double the price?\nOkay, but what does that actually do for my business? Like, what's a real-world example of that 'seamless data flow'?\nOkay, so it saves time and reduces errors. But how much time, really? And does it help with getting more leads?\nSo it doesn't help with getting more leads directly? That's what I'm really trying to solve here.\nOkay, so how does that actually help with getting more leads?\nOkay, I get that. But how does that specifically help me get more leads for garage door repair?\nOkay, I get the general idea. But can you give me a real example of how that worked for another garage door company?\nSo you can't give me any actual examples? Just general stuff? And you keep asking about a mockup.Okay, so it can connect. But what makes the 'real integration' worth double the price?\nOkay, but what does that actually do for my business? Like, what's a real-world example of that 'seamless data flow'?\nOkay, so it saves time and reduces errors. But how much time, really? And does it help with getting more leads?\nSo it doesn't help with getting more leads directly? That's what I'm really trying to solve here.\nOkay, so how does that actually help with getting more leads?\nOkay, I get that. But how does that specifically help me get more leads for garage door repair?\nOkay, I get the general idea. But can you give me a real example of how that worked for another garage door company?\nSo you can't give me any actual examples? Just general stuff? And you keep asking about a mockup.Okay, so it can connect. But what makes the 'real integration' worth double the price?\nOkay, but what does that actually do for my business? Like, what's a real-world example of that 'seamless data flow'?\nOkay, so it saves time and reduces errors. But how much time, really? And does it help with getting more leads?\nSo it doesn't help with getting more leads directly? That's what I'm really trying to solve here.\nOkay, so how does that actually help with getting more leads?\nOkay, I get that. But how does that specifically help me get more leads for garage door repair?\nOkay, I get the general idea. But can you give me a real example of how that worked for another garage door company?\nSo you can't give me any actual examples? Just general stuff? And you keep asking about a mockup.Okay, so it can connect. But what makes the 'real integration' worth double the price?\nOkay, but what does that actually do for my business? Like, what's a real-world example of that 'seamless data flow'?\nOkay, so it saves time and reduces errors. But how much time, really? And does it help with getting more leads?\nSo it doesn't help with getting more leads directly? That's what I'm really trying to solve here.\nOkay, so how does that actually help with getting more leads?\nOkay, I get that. But how does that specifically help me get more leads for garage door repair?\nOkay, I get the general idea. But can you give me a real example of how that worked for",
+            "interrupted": false,
+            "role": "user",
+            "tool_results": [],
+            "original_message": null,
+            "time": 99,
+            "tool_calls": [],
+            "source_medium": "text"
+          },
+          {
+            "message": "another garage door company? I understand your interest in specific examples, but I can't provide details from other companies. However, many have seen success by enhancing their websites with targeted SEO and improved user experience, leading to increased visibility and customer engagement. This approach can help attract more leads by making it easier for potential customers to find and interact with your services. Would you like to see a mockup to visualize how these strategies could be applied to your business?",
+            "interrupted": false,
+            "role": "agent",
+            "tool_results": [],
+            "original_message": null,
+            "time": 99,
+            "tool_calls": [],
+            "source_medium": null
+          },
+          {
+            "message": "Look, you keep saying \"many businesses\" and offering a mockup. I need to know how this actually works for my kind of business, not just general stuff.",
+            "interrupted": false,
+            "role": "user",
+            "tool_results": [],
+            "original_message": null,
+            "time": 99,
+            "tool_calls": [],
+            "source_medium": "text"
+          },
+          {
+            "message": "I understand your need for specifics. For a garage door repair business, improving your website's SEO with keywords related to common repair issues and local services can help attract more targeted traffic. A user-friendly design with clear contact options can convert visitors into leads. While I can't share specific examples, these strategies have been effective for similar service-based businesses. Would you like to explore how this could look with a mockup tailored to your needs?",
+            "interrupted": false,
+            "role": "agent",
+            "tool_results": [],
+            "original_message": null,
+            "time": 99,
+            "tool_calls": [],
+            "source_medium": null
+          },
+          {
+            "message": "I don't need a mockup if you can't tell me how it's actually going to get me more leads for my garage door business. What's the point?",
+            "interrupted": false,
+            "role": "user",
+            "tool_results": [],
+            "original_message": null,
+            "time": 99,
+            "tool_calls": [],
+            "source_medium": "text"
+          },
+          {
+            "message": "The mockup is a visual tool to help you see potential improvements in your website's design and layout, which can enhance user experience and engagement. While it doesn't directly generate leads, it sets the foundation for a more effective online presence. This can lead to increased visibility and customer interaction, indirectly supporting lead generation. If you're interested in discussing specific strategies tailored to your business, I'd be happy to explore those further.",
+            "interrupted": false,
+            "role": "agent",
+            "tool_results": [],
+            "original_message": null,
+            "time": 99,
+            "tool_calls": [],
+            "source_medium": null
+          },
+          {
+            "message": "So what are these \"specific strategies\" then? How do they actually get me leads?",
+            "interrupted": false,
+            "role": "user",
+            "tool_results": [],
+            "original_message": null,
+            "time": 99,
+            "tool_calls": [],
+            "source_medium": "text"
+          },
+          {
+            "message": "Specific strategies for your garage door business could include optimizing your website for local search terms, creating content that addresses common repair questions, and ensuring your site is mobile-friendly. These tactics can improve your search engine ranking, making it easier for potential customers to find you. Additionally, clear calls to action and easy navigation can encourage visitors to contact you directly, converting them into leads. Would you like to discuss how these strategies could be implemented on your site?",
+            "interrupted": false,
+            "role": "agent",
+            "tool_results": [],
+            "original_message": null,
+            "time": 99,
+            "tool_calls": [],
+            "source_medium": null
+          },
+          {
+            "message": "Okay, but how does that actually guarantee more leads for my garage door repair business?",
+            "interrupted": false,
+            "role": "user",
+            "tool_results": [],
+            "original_message": null,
+            "time": 99,
+            "tool_calls": [],
+            "source_medium": "text"
+          },
+          {
+            "message": "While no strategy can guarantee more leads, these approaches increase the likelihood of attracting and engaging potential customers. By improving your website's visibility and user experience, you enhance your chances of being found by those actively searching for garage door repair services. This can lead to more inquiries and potential leads over time. If you're interested in exploring these strategies further, I can help guide you through the process.",
+            "interrupted": false,
+            "role": "agent",
+            "tool_results": [],
+            "original_message": null,
+            "time": 99,
+            "tool_calls": [],
+            "source_medium": null
+          },
+          {
+            "message": "So you're saying there's no guarantee? What's the point then if it's just \"likelihood\"?",
+            "interrupted": false,
+            "role": "user",
+            "tool_results": [],
+            "original_message": null,
+            "time": 99,
+            "tool_calls": [],
+            "source_medium": "text"
+          },
+          {
+            "message": "That's right - no guarantee. I don't want to waste your time. Have a good one.",
+            "interrupted": false,
+            "role": "agent",
+            "tool_results": [],
+            "original_message": null,
+            "time": 99,
+            "tool_calls": [],
+            "source_medium": null
+          }
+        ]
+      },
+      {
+        "test_run_id": "trun_9701kx738svaezpthx05wme8v87x",
+        "test_invocation_id": "suite_0001kx738sv4eg5sn9crah5n23qa",
+        "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+        "test_id": "sim_036_crm_payment_capability_before_price",
+        "provider_test_id": "test_4601ktwzq8xnfpbtry5qsepeprh3",
+        "test_name": "ELEVENLABS-036-natural-sales-scenarios::sim_036_crm_payment_capability_before_price",
+        "scenario": "The simulated user owns Iron Gate Garage Doors in Kansas City. They care about lead handling more than design. Their first technical question is: 'Can it connect to Jobber or take deposit payments?' They do not ask cost until later. If Emma jumps into price first, the buyer says: 'That is not what I asked. Can it actually connect or not?' Then they ask: 'Okay, what kind of price does that add?'",
+        "success_conditions": [
+          "The full conversation passes only if Emma answers capability before price. She should first say it can connect depending on whether it is a simple form handoff or a real integration. Only after the buyer asks cost should she map a real CRM or payment integration toward {{website_integration_heavy_range}}, while noting that a simple handoff is lighter and the real number depends on the system. It fails if Emma gives a price before answering capability, says CRM or payments are automatically included in a basic site, invents an exact final quote, gives a long technical dump, or misses a natural mockup next step after the capability and cost questions are answered."
+        ],
+        "models": {
+          "simulated_user_model": "gemini-2.5-flash",
+          "evaluation_model": "gemini-2.5-flash"
+        },
+        "status": "failed",
+        "condition_result": {
+          "result": "failure",
+          "rationale": {
+            "messages": [
+              "The agent provided price ranges in the second response, after the user asked a capability question (\"So, it can connect to Jobber then?\"), but before the user explicitly asked for cost. The criteria states, \"Only after the buyer asks cost should she map a real CRM or payment integration...\"",
+              "The conversation reached the maximum number of turns."
+            ],
+            "summary": "Evaluation failed"
+          }
+        },
+        "evaluator_rationale": "{'messages': ['The agent provided price ranges in the second response, after the user asked a capability question (\"So, it can connect to Jobber then?\"), but before the user explicitly asked for cost. The criteria states, \"Only after the buyer asks cost should she map a real CRM or payment integration...\"', 'The conversation reached the maximum number of turns.'], 'summary': 'Evaluation failed'}",
+        "agent_responses": [
+          {
+            "message": "Hi, this is Emma from Atlas Web Studio. I had Iron Gate Garage Doors down as a garage door repair company in Kansas City. Am I speaking with the owner or someone who handles the website there?",
+            "interrupted": false,
+            "role": "agent",
+            "tool_results": [],
+            "original_message": null,
+            "time": 73,
+            "tool_calls": [],
+            "source_medium": null
+          },
+          {
+            "message": "Yeah, this is the owner. Can your websites connect to Jobber or take deposit payments?",
+            "interrupted": false,
+            "role": "user",
+            "tool_results": [],
+            "original_message": null,
+            "time": 73,
+            "tool_calls": [],
+            "source_medium": "text"
+          },
+          {
+            "message": "Yes, we can build that. It depends whether you need a simple form handoff or a real integration. If you have any more questions about this, feel free to ask.",
+            "interrupted": false,
+            "role": "agent",
+            "tool_results": [],
+            "original_message": null,
+            "time": 73,
+            "tool_calls": [],
+            "source_medium": null
+          },
+          {
+            "message": "So, it can connect to Jobber then?",
+            "interrupted": false,
+            "role": "user",
+            "tool_results": [],
+            "original_message": null,
+            "time": 73,
+            "tool_calls": [],
+            "source_medium": "text"
+          },
+          {
+            "message": "Yes, we can connect to Jobber and support deposit payments. A real integration usually moves the whole project toward four thousand to five thousand dollars; a simple handoff is usually two thousand to three thousand dollars; the final number depends on the system. Would you be interested in seeing a free homepage mockup?",
+            "interrupted": false,
+            "role": "agent",
+            "tool_results": [],
+            "original_message": null,
+            "time": 73,
+            "tool_calls": [],
+            "source_medium": null
+          },
+          {
+            "message": "Okay, what kind of price does that add?",
+            "interrupted": false,
+            "role": "user",
+            "tool_results": [],
+            "original_message": null,
+            "time": 73,
+            "tool_calls": [],
+            "source_medium": "text"
+          },
+          {
+            "message": "A real integration usually moves the whole project toward four thousand to five thousand dollars; a simple handoff is usually two thousand to three thousand dollars. The final number depends on the system. Would you like to proceed with a free homepage mockup to see how it could look?",
+            "interrupted": false,
+            "role": "agent",
+            "tool_results": [],
+            "original_message": null,
+            "time": 73,
+            "tool_calls": [],
+            "source_medium": null
+          },
+          {
+            "message": "You're just telling me the total project cost again. What's the extra for Jobber?",
+            "interrupted": false,
+            "role": "user",
+            "tool_results": [],
+            "original_message": null,
+            "time": 73,
+            "tool_calls": [],
+            "source_medium": "text"
+          },
+          {
+            "message": "The integration with Jobber is part of the whole project cost, so it's not priced separately. The overall range I mentioned includes the integration. If you have more questions about the project, feel free to ask.",
+            "interrupted": false,
+            "role": "agent",
+            "tool_results": [],
+            "original_message": null,
+            "time": 73,
+            "tool_calls": [],
+            "source_medium": null
+          },
+          {
+            "message": "So you can't tell me how much just the Jobber integration adds to the price?",
+            "interrupted": false,
+            "role": "user",
+            "tool_results": [],
+            "original_message": null,
+            "time": 73,
+            "tool_calls": [],
+            "source_medium": "text"
+          },
+          {
+            "message": "That's correct. The integration is part of the overall project cost, and we don't price it separately. If you have any other questions or need further clarification, please let me know.",
+            "interrupted": false,
+            "role": "agent",
+            "tool_results": [],
+            "original_message": null,
+            "time": 73,
+            "tool_calls": [],
+            "source_medium": null
+          },
+          {
+            "message": "So it doesn't cost anything extra for the Jobber part then?",
+            "interrupted": false,
+            "role": "user",
+            "tool_results": [],
+            "original_message": null,
+            "time": 73,
+            "tool_calls": [],
+            "source_medium": "text"
+          },
+          {
+            "message": "The cost for integrating with Jobber is included within the overall project range I mentioned. It doesn't have a separate price tag, but it contributes to the total project cost. If you have any other questions or need more details, feel free to ask.",
+            "interrupted": false,
+            "role": "agent",
+            "tool_results": [],
+            "original_message": null,
+            "time": 73,
+            "tool_calls": [],
+            "source_medium": null
+          },
+          {
+            "message": "So it's not really \"included\" then, it just means the project costs more if I want it?",
+            "interrupted": false,
+            "role": "user",
+            "tool_results": [],
+            "original_message": null,
+            "time": 73,
+            "tool_calls": [],
+            "source_medium": "text"
+          },
+          {
+            "message": "Yes, that's a fair way to put it. The integration with Jobber is part of what influences the overall project cost. If you have any more questions or need further assistance, feel free to let me know.",
+            "interrupted": false,
+            "role": "agent",
+            "tool_results": [],
+            "original_message": null,
+            "time": 73,
+            "tool_calls": [],
+            "source_medium": null
+          },
+          {
+            "message": "Okay, so it does cost extra, you just won't tell me how much.",
+            "interrupted": false,
+            "role": "user",
+            "tool_results": [],
+            "original_message": null,
+            "time": 73,
+            "tool_calls": [],
+            "source_medium": "text"
+          },
+          {
+            "message": "The integration contributes to the overall project cost, but we don't break it down separately. If you have any other questions or need more information, feel free to ask.",
+            "interrupted": false,
+            "role": "agent",
+            "tool_results": [],
+            "original_message": null,
+            "time": 73,
+            "tool_calls": [],
+            "source_medium": null
+          },
+          {
+            "message": "So I just have to guess how much it adds to the price then?",
+            "interrupted": false,
+            "role": "user",
+            "tool_results": [],
+            "original_message": null,
+            "time": 73,
+            "tool_calls": [],
+            "source_medium": "text"
+          },
+          {
+            "message": "I understand your concern. The integration is part of the overall project scope, which is why it's included in the total range. If you have specific requirements or need further clarification, I'm here to help.",
+            "interrupted": false,
+            "role": "agent",
+            "tool_results": [],
+            "original_message": null,
+            "time": 73,
+            "tool_calls": [],
+            "source_medium": null
+          },
+          {
+            "message": "That's not really helpful. So you can't give me any idea at all?",
+            "interrupted": false,
+            "role": "user",
+            "tool_results": [],
+            "original_message": null,
+            "time": 73,
+            "tool_calls": [],
+            "source_medium": "text"
+          },
+          {
+            "message": "I apologize for any confusion. The integration is part of the overall project cost, which typically ranges from four thousand to five thousand dollars for a real integration. If you have more specific needs or questions, feel free to let me know.",
+            "interrupted": false,
+            "role": "agent",
+            "tool_results": [],
+            "original_message": null,
+            "time": 73,
+            "tool_calls": [],
+            "source_medium": null
+          },
+          {
+            "message": "So you're saying I have to pay the higher price just to get the Jobber part?",
+            "interrupted": false,
+            "role": "user",
+            "tool_results": [],
+            "original_message": null,
+            "time": 73,
+            "tool_calls": [],
+            "source_medium": "text"
+          },
+          {
+            "message": "A real integration with Jobber typically moves the project toward the higher end of the range, around four thousand to five thousand dollars. If you have any more questions or need further details, feel free to ask.",
+            "interrupted": false,
+            "role": "agent",
+            "tool_results": [],
+            "original_message": null,
+            "time": 73,
+            "tool_calls": [],
+            "source_medium": null
+          },
+          {
+            "message": "So, I'm stuck paying more just because I want Jobber, and you won't tell me how much more?",
+            "interrupted": false,
+            "role": "user",
+            "tool_results": [],
+            "original_message": null,
+            "time": 73,
+            "tool_calls": [],
+            "source_medium": "text"
+          },
+          {
+            "message": "The integration with Jobber is part of the overall project cost, which is why it's included in the total range. Unfortunately, I can't provide a separate cost for just the integration. If you have any other questions or need more information, please let me know.",
+            "interrupted": false,
+            "role": "agent",
+            "tool_results": [],
+            "original_message": null,
+            "time": 73,
+            "tool_calls": [],
+            "source_medium": null
+          },
+          {
+            "message": "So you just can't tell me that number at all?",
+            "interrupted": false,
+            "role": "user",
+            "tool_results": [],
+            "original_message": null,
+            "time": 73,
+            "tool_calls": [],
+            "source_medium": "text"
+          },
+          {
+            "message": "That's correct. The integration is part of the overall project cost, and we don't break it down separately. If you have any other questions or need further assistance, feel free to let me know.",
+            "interrupted": false,
+            "role": "agent",
+            "tool_results": [],
+            "original_message": null,
+            "time": 73,
+            "tool_calls": [],
+            "source_medium": null
+          },
+          {
+            "message": "So I just have to pay whatever you say for it, without knowing the cost?",
+            "interrupted": false,
+            "role": "user",
+            "tool_results": [],
+            "original_message": null,
+            "time": 73,
+            "tool_calls": [],
+            "source_medium": "text"
+          },
+          {
+            "message": "I understand your concern. The integration is part of the overall project scope, which is why it's included in the total range. If you have specific requirements or need further clarification, I'm here to help.",
+            "interrupted": false,
+            "role": "agent",
+            "tool_results": [],
+            "original_message": null,
+            "time": 73,
+            "tool_calls": [],
+            "source_medium": null
+          },
+          {
+            "message": "So I just have to trust you on the price for that part then?",
+            "interrupted": false,
+            "role": "user",
+            "tool_results": [],
+            "original_message": null,
+            "time": 73,
+            "tool_calls": [],
+            "source_medium": "text"
+          },
+          {
+            "message": "Yes, the integration is part of the overall project scope, and the total cost reflects the work involved. If you have any more questions or need further details, feel free to ask.",
+            "interrupted": false,
+            "role": "agent",
+            "tool_results": [],
+            "original_message": null,
+            "time": 73,
+            "tool_calls": [],
+            "source_medium": null
+          }
+        ]
+      },
+      {
+        "test_run_id": "trun_2401kx738sv9f4m8r63jg73qs23n",
+        "test_invocation_id": "suite_0001kx738sv4eg5sn9crah5n23qa",
+        "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+        "test_id": "sim_036_crm_payment_capability_before_price",
+        "provider_test_id": "test_4601ktwzq8xnfpbtry5qsepeprh3",
+        "test_name": "ELEVENLABS-036-natural-sales-scenarios::sim_036_crm_payment_capability_before_price",
+        "scenario": "The simulated user owns Iron Gate Garage Doors in Kansas City. They care about lead handling more than design. Their first technical question is: 'Can it connect to Jobber or take deposit payments?' They do not ask cost until later. If Emma jumps into price first, the buyer says: 'That is not what I asked. Can it actually connect or not?' Then they ask: 'Okay, what kind of price does that add?'",
+        "success_conditions": [
+          "The full conversation passes only if Emma answers capability before price. She should first say it can connect depending on whether it is a simple form handoff or a real integration. Only after the buyer asks cost should she map a real CRM or payment integration toward {{website_integration_heavy_range}}, while noting that a simple handoff is lighter and the real number depends on the system. It fails if Emma gives a price before answering capability, says CRM or payments are automatically included in a basic site, invents an exact final quote, gives a long technical dump, or misses a natural mockup next step after the capability and cost questions are answered."
+        ],
+        "models": {
+          "simulated_user_model": "gemini-2.5-flash",
+          "evaluation_model": "gemini-2.5-flash"
+        },
+        "status": "failed",
+        "condition_result": {
+          "result": "failure",
+          "rationale": {
+            "messages": [
+              "The agent provided pricing information in response to the user asking \"what's the difference between those for Jobber?\" The criteria explicitly states that the agent should provide pricing \"Only after the buyer asks cost,\" which the user did not do directly at that point.",
+              "The conversation reached the maximum number of turns."
+            ],
+            "summary": "Evaluation failed"
+          }
+        },
+        "evaluator_rationale": "{'messages': ['The agent provided pricing information in response to the user asking \"what\\'s the difference between those for Jobber?\" The criteria explicitly states that the agent should provide pricing \"Only after the buyer asks cost,\" which the user did not do directly at that point.', 'The conversation reached the maximum number of turns.'], 'summary': 'Evaluation failed'}",
+        "agent_responses": [
+          {
+            "message": "Hi, this is Emma from Atlas Web Studio. I had Iron Gate Garage Doors down as a garage door repair company in Kansas City. Am I speaking with the owner or someone who handles the website there?",
+            "interrupted": false,
+            "role": "agent",
+            "tool_results": [],
+            "original_message": null,
+            "time": 76,
+            "tool_calls": [],
+            "source_medium": null
+          },
+          {
+            "message": "Yeah, this is the owner. Can your websites connect to Jobber or take deposit payments?",
+            "interrupted": false,
+            "role": "user",
+            "tool_results": [],
+            "original_message": null,
+            "time": 76,
+            "tool_calls": [],
+            "source_medium": "text"
+          },
+          {
+            "message": "Yes, we can build that. It depends whether you need a simple form handoff or a real integration. If you have any more questions about this, feel free to ask!",
+            "interrupted": false,
+            "role": "agent",
+            "tool_results": [],
+            "original_message": null,
+            "time": 76,
+            "tool_calls": [],
+            "source_medium": null
+          },
+          {
+            "message": "Uh, what's the difference between those for Jobber?",
+            "interrupted": false,
+            "role": "user",
+            "tool_results": [],
+            "original_message": null,
+            "time": 76,
+            "tool_calls": [],
+            "source_medium": "text"
+          },
+          {
+            "message": "A simple form handoff involves collecting information through a form and manually entering it into Jobber, while a real integration automates the process, directly syncing data between your website and Jobber. A real integration usually moves the whole project toward four thousand to five thousand dollars; a simple handoff is usually two thousand to three thousand dollars; the final number depends on the system. Would you like to see a free homepage mockup to get started?",
+            "interrupted": false,
+            "role": "agent",
+            "tool_results": [],
+            "original_message": null,
+            "time": 76,
+            "tool_calls": [],
+            "source_medium": null
+          },
+          {
+            "message": "Okay, so the real integration is a lot more. What does that actually get me for the extra money?",
+            "interrupted": false,
+            "role": "user",
+            "tool_results": [],
+            "original_message": null,
+            "time": 76,
+            "tool_calls": [],
+            "source_medium": "text"
+          },
+          {
+            "message": "The real integration provides seamless data transfer between your website and Jobber, reducing manual entry and errors. It can automate tasks like scheduling, invoicing, and customer management, saving time and improving efficiency. This level of automation can enhance your business operations significantly. If you're interested, I can show you a free homepage mockup to visualize how it might fit into your site.",
+            "interrupted": false,
+            "role": "agent",
+            "tool_results": [],
+            "original_message": null,
+            "time": 76,
+            "tool_calls": [],
+            "source_medium": null
+          },
+          {
+            "message": "Okay, so it automates things. Does that really make a big difference for handling leads?",
+            "interrupted": false,
+            "role": "user",
+            "tool_results": [],
+            "original_message": null,
+            "time": 76,
+            "tool_calls": [],
+            "source_medium": "text"
+          },
+          {
+            "message": "Yes, automating processes can make a significant difference in handling leads. It ensures that leads are captured and processed quickly, reducing response times and improving customer satisfaction. Automation can also help in tracking and managing leads more efficiently, allowing you to focus on converting them into customers. Would you like to explore this further with a free homepage mockup?",
+            "interrupted": false,
+            "role": "agent",
+            "tool_results": [],
+            "original_message": null,
+            "time": 76,
+            "tool_calls": [],
+            "source_medium": null
+          },
+          {
+            "message": "Okay, so it helps with leads. But how does it actually work with Jobber to do that?",
+            "interrupted": false,
+            "role": "user",
+            "tool_results": [],
+            "original_message": null,
+            "time": 76,
+            "tool_calls": [],
+            "source_medium": "text"
+          },
+          {
+            "message": "The integration with Jobber allows your website to automatically capture lead information and sync it with Jobber's system. This means that when a potential customer fills out a form on your website, their details are directly entered into Jobber, where you can manage appointments, follow-ups, and other tasks. This seamless connection helps streamline your workflow and ensures no lead is missed. If you're interested, I can provide a free homepage mockup to help you visualize how this integration might look on your site.",
+            "interrupted": false,
+            "role": "agent",
+            "tool_results": [],
+            "original_message": null,
+            "time": 76,
+            "tool_calls": [],
+            "source_medium": null
+          },
+          {
+            "message": "Okay, so it just puts the info into Jobber. Does it do anything else to help me manage the lead?",
+            "interrupted": false,
+            "role": "user",
+            "tool_results": [],
+            "original_message": null,
+            "time": 76,
+            "tool_calls": [],
+            "source_medium": "text"
+          },
+          {
+            "message": "Beyond entering the information into Jobber, the integration can also help automate follow-up tasks, schedule appointments, and send reminders. This ensures that leads are nurtured efficiently without manual intervention, allowing you to focus on other aspects of your business. Would you like to see how this could be laid out on your website with a free homepage mockup?",
+            "interrupted": false,
+            "role": "agent",
+            "tool_results": [],
+            "original_message": null,
+            "time": 76,
+            "tool_calls": [],
+            "source_medium": null
+          },
+          {
+            "message": "So it helps with follow-ups. Does it help me qualify leads better, or just manage the ones I already have?",
+            "interrupted": false,
+            "role": "user",
+            "tool_results": [],
+            "original_message": null,
+            "time": 76,
+            "tool_calls": [],
+            "source_medium": "text"
+          },
+          {
+            "message": "The integration primarily helps in managing and nurturing the leads you already have by automating follow-ups and scheduling. However, by efficiently organizing and tracking interactions, it can provide insights into lead behavior and engagement, which can indirectly help you qualify leads better over time. If you're interested in seeing how this could be integrated into your website, I can offer a free homepage mockup.",
+            "interrupted": false,
+            "role": "agent",
+            "tool_results": [],
+            "original_message": null,
+            "time": 76,
+            "tool_calls": [],
+            "source_medium": null
+          },
+          {
+            "message": "So it doesn't directly help me qualify them? It just helps me see how they behave?",
+            "interrupted": false,
+            "role": "user",
+            "tool_results": [],
+            "original_message": null,
+            "time": 76,
+            "tool_calls": [],
+            "source_medium": "text"
+          },
+          {
+            "message": "That's correct. The integration doesn't directly qualify leads but provides valuable insights into their behavior and engagement. This information can help you make more informed decisions about which leads are more likely to convert. Would you like to explore this further with a free homepage mockup?",
+            "interrupted": false,
+            "role": "agent",
+            "tool_results": [],
+            "original_message": null,
+            "time": 76,
+            "tool_calls": [],
+            "source_medium": null
+          },
+          {
+            "message": "Okay, so it doesn't help me qualify them, just track them. What's with this mockup you keep bringing up?",
+            "interrupted": false,
+            "role": "user",
+            "tool_results": [],
+            "original_message": null,
+            "time": 76,
+            "tool_calls": [],
+            "source_medium": "text"
+          },
+          {
+            "message": "The free homepage mockup is a visual representation of how your website could look with the integration features in place. It shows the layout and where elements like lead capture forms would sit, helping you visualize the potential design and functionality. It doesn't include working features but gives you a clear idea of the website's appearance. Would you like me to send you one to review?",
+            "interrupted": false,
+            "role": "agent",
+            "tool_results": [],
+            "original_message": null,
+            "time": 76,
+            "tool_calls": [],
+            "source_medium": null
+          },
+          {
+            "message": "Okay, so it's just a picture. How does a picture help me qualify leads?",
+            "interrupted": false,
+            "role": "user",
+            "tool_results": [],
+            "original_message": null,
+            "time": 76,
+            "tool_calls": [],
+            "source_medium": "text"
+          },
+          {
+            "message": "The mockup itself doesn't qualify leads, but it helps you visualize how your website can be structured to effectively capture and manage leads. By seeing the layout, you can better understand how the integration might fit into your existing processes, potentially improving how you handle leads. If you'd like to see this mockup, I can send it to you for review.",
+            "interrupted": false,
+            "role": "agent",
+            "tool_results": [],
+            "original_message": null,
+            "time": 76,
+            "tool_calls": [],
+            "source_medium": null
+          },
+          {
+            "message": "Okay, but I'm asking about qualifying leads, not what my website looks like.",
+            "interrupted": false,
+            "role": "user",
+            "tool_results": [],
+            "original_message": null,
+            "time": 76,
+            "tool_calls": [],
+            "source_medium": "text"
+          },
+          {
+            "message": "I understand. While the mockup focuses on design, the integration with Jobber can help indirectly qualify leads by tracking their interactions and engagement. This data can provide insights into lead quality over time. If you have specific criteria for qualifying leads, we can discuss how to incorporate those into your website's functionality. Would you like to explore this further?",
+            "interrupted": false,
+            "role": "agent",
+            "tool_results": [],
+            "original_message": null,
+            "time": 76,
+            "tool_calls": [],
+            "source_medium": null
+          },
+          {
+            "message": "So it still doesn't directly qualify them? Just gives me data to figure it out myself?",
+            "interrupted": false,
+            "role": "user",
+            "tool_results": [],
+            "original_message": null,
+            "time": 76,
+            "tool_calls": [],
+            "source_medium": "text"
+          },
+          {
+            "message": "Yes, the integration provides data and insights that can help you assess lead quality, but it doesn't directly qualify them. It supports your decision-making by offering a clearer picture of lead behavior and engagement. If you have any more questions or need further assistance, feel free to ask!",
+            "interrupted": false,
+            "role": "agent",
+            "tool_results": [],
+            "original_message": null,
+            "time": 76,
+            "tool_calls": [],
+            "source_medium": null
+          },
+          {
+            "message": "So it's still just giving me numbers, not actually telling me if they're good leads?",
+            "interrupted": false,
+            "role": "user",
+            "tool_results": [],
+            "original_message": null,
+            "time": 76,
+            "tool_calls": [],
+            "source_medium": "text"
+          },
+          {
+            "message": "That's correct. The integration provides data on lead interactions, but you'll need to interpret that data to determine lead quality. If you have any other questions or need more information, please let me know!",
+            "interrupted": false,
+            "role": "agent",
+            "tool_results": [],
+            "original_message": null,
+            "time": 76,
+            "tool_calls": [],
+            "source_medium": null
+          },
+          {
+            "message": "So it just gives me more data to look at, not actually qualify them.",
+            "interrupted": false,
+            "role": "user",
+            "tool_results": [],
+            "original_message": null,
+            "time": 76,
+            "tool_calls": [],
+            "source_medium": "text"
+          },
+          {
+            "message": "Yes, it provides data that can help you make informed decisions about lead quality, but it doesn't automatically qualify them for you. If you have any other questions or need further assistance, feel free to ask!",
+            "interrupted": false,
+            "role": "agent",
+            "tool_results": [],
+            "original_message": null,
+            "time": 76,
+            "tool_calls": [],
+            "source_medium": null
+          },
+          {
+            "message": "Okay, so it just gives me more work to do, then?",
+            "interrupted": false,
+            "role": "user",
+            "tool_results": [],
+            "original_message": null,
+            "time": 76,
+            "tool_calls": [],
+            "source_medium": "text"
+          },
+          {
+            "message": "I understand your concern. While it does provide more data, the goal is to streamline processes and make it easier to manage leads efficiently. If you have any other questions or need further assistance, feel free to ask!",
+            "interrupted": false,
+            "role": "agent",
+            "tool_results": [],
+            "original_message": null,
+            "time": 76,
+            "tool_calls": [],
+            "source_medium": null
+          }
+        ]
+      }
+    ],
+    "result_groups": [
+      {
+        "test_id": "test_4601ktwzq8xnfpbtry5qsepeprh3",
+        "test_name": "ELEVENLABS-036-natural-sales-scenarios::sim_036_crm_payment_capability_before_price",
+        "workflow_node_id": "None",
+        "buckets": [
+          {
+            "test_run_ids": [
+              "trun_3401kx738sv8efptxcptne915qt0"
+            ],
+            "title": "Passed",
+            "reason": "Passed",
+            "status": "passed"
+          },
+          {
+            "test_run_ids": [
+              "trun_2401kx738sv9f4m8r63jg73qs23n",
+              "trun_9701kx738svaezpthx05wme8v87x"
+            ],
+            "title": "Pricing provided before cost inquiry",
+            "reason": "The agent disclosed pricing information before the buyer explicitly asked about cost, violating the requirement to address capability first.",
+            "status": "failed"
+          }
+        ]
+      }
+    ]
+  }
+}

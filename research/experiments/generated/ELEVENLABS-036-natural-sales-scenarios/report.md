@@ -136,3 +136,24 @@ Final evidence:
 Failed non-provider action:
 
 - The delegated GPT-5.4 Mini reviewer could not initialize because the local WASM agent package `@ruvector/rvagent-wasm` was missing. The orchestration path was abandoned and all conclusions were independently verified in the main task.
+
+## 2026-07-29 Intermediate Evidence Recovery
+
+A later repository audit found `142` untracked JSON artifacts from the
+pre-closeout LLM and broad-readiness iteration path in a stale local `main`
+checkout. They are now preserved as historical intermediate evidence to avoid
+success-only evidence selection.
+
+The packet is mixed and non-authoritative: it includes failed and incomplete
+lineages, historical independent outputs that do not fully reproduce under the
+current validator, and two captures that do not exactly match the current test
+definition text. It does not change or weaken the final GPT-5.5 closeout above.
+
+Review evidence:
+
+- `intermediate_evidence_review.md`
+- `intermediate_evidence_review.json`
+
+No provider call, provider write, simulation, outbound call, runtime change,
+test-definition change, Analysis-criterion change, or new readiness claim was
+made during recovery.

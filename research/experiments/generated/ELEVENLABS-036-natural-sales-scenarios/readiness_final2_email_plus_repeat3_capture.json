@@ -1,0 +1,333 @@
+{
+  "captured_at_utc": "2026-07-10T22:31:27Z",
+  "payload_sha256": "e51ad40f5dd9ec71827958a8bb0f0cc1d06f97a19523609b8c0147ac1fd770d5",
+  "payload": {
+    "checkpoint_id": "ELEVENLABS-036-natural-sales-scenarios",
+    "invocation_id": "suite_8501kx72e5vzfyr9v9aw76ccfrbt",
+    "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+    "test_runs": [
+      {
+        "test_run_id": "trun_2201kx72e5w4exyb5v7ezwe15mcz",
+        "test_invocation_id": "suite_8501kx72e5vzfyr9v9aw76ccfrbt",
+        "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+        "test_id": "sim_036_email_plus_free_question_confirmation",
+        "provider_test_id": "test_1301ktwzq879ex099m903r4f0gvt",
+        "test_name": "ELEVENLABS-036-natural-sales-scenarios::sim_036_email_plus_free_question_confirmation",
+        "scenario": "The simulated user manages Oakwood Pediatric Dentistry in Charlotte. They are careful about sales pressure and claims. After Emma explains a factual office-basics mockup, the buyer says: 'Okay, oakwoodkidsdental@gmail.com. Just to be clear, this is still free and you are not going to keep calling me, right?' They will confirm if Emma repeats the email correctly and answers the free/no-pressure point first.",
+        "success_conditions": [
+          "The full conversation passes only if Emma answers the free/no-pressure concern and still confirms the email before send language. A strong response says the mockup is free, there is no payment, no contract, and no automatic follow-up call, then confirms oakwoodkidsdental@gmail.com. After explicit confirmation, she should close briefly with timing and no renewed pitch. It should be compact and human. It fails if Emma says the mockup will be sent before explicit email confirmation, skips the free/no-pressure answer, promises patient growth or rankings, asks for the email again, creates an automatic callback expectation, or treats the buyer's risk question as a reason to repeat the pitch."
+        ],
+        "models": {
+          "simulated_user_model": "gemini-2.5-flash",
+          "evaluation_model": "gemini-2.5-flash"
+        },
+        "status": "failed",
+        "condition_result": {
+          "result": "failure",
+          "rationale": {
+            "messages": [
+              "Timed out after 60s waiting for the simulated user (QA brain) to generate a response."
+            ],
+            "summary": "Simulation timed out"
+          }
+        },
+        "evaluator_rationale": "{'messages': ['Timed out after 60s waiting for the simulated user (QA brain) to generate a response.'], 'summary': 'Simulation timed out'}",
+        "agent_responses": [
+          {
+            "role": "agent",
+            "original_message": null,
+            "source_medium": null,
+            "interrupted": false,
+            "tool_calls": [],
+            "tool_results": [],
+            "message": "Hi, this is Emma from Atlas Web Studio. I had Oakwood Pediatric Dentistry down as a pediatric dental office in Charlotte. Am I speaking with the owner or someone who handles the website there?",
+            "time": 64
+          },
+          {
+            "role": "user",
+            "original_message": null,
+            "source_medium": "text",
+            "interrupted": false,
+            "tool_calls": [],
+            "tool_results": [],
+            "message": "Yeah, this is me. I handle the website. What's up?",
+            "time": 64
+          },
+          {
+            "role": "agent",
+            "original_message": null,
+            "source_medium": null,
+            "interrupted": false,
+            "tool_calls": [],
+            "tool_results": [],
+            "message": "Great to speak with you! I wanted to offer you a free homepage mockup for your website. It's a no-obligation way to see what we can do for you. Would you be interested in receiving that?",
+            "time": 64
+          }
+        ]
+      },
+      {
+        "test_run_id": "trun_2501kx72e5w5fjyafa8he6y0tcs1",
+        "test_invocation_id": "suite_8501kx72e5vzfyr9v9aw76ccfrbt",
+        "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+        "test_id": "sim_036_email_plus_free_question_confirmation",
+        "provider_test_id": "test_1301ktwzq879ex099m903r4f0gvt",
+        "test_name": "ELEVENLABS-036-natural-sales-scenarios::sim_036_email_plus_free_question_confirmation",
+        "scenario": "The simulated user manages Oakwood Pediatric Dentistry in Charlotte. They are careful about sales pressure and claims. After Emma explains a factual office-basics mockup, the buyer says: 'Okay, oakwoodkidsdental@gmail.com. Just to be clear, this is still free and you are not going to keep calling me, right?' They will confirm if Emma repeats the email correctly and answers the free/no-pressure point first.",
+        "success_conditions": [
+          "The full conversation passes only if Emma answers the free/no-pressure concern and still confirms the email before send language. A strong response says the mockup is free, there is no payment, no contract, and no automatic follow-up call, then confirms oakwoodkidsdental@gmail.com. After explicit confirmation, she should close briefly with timing and no renewed pitch. It should be compact and human. It fails if Emma says the mockup will be sent before explicit email confirmation, skips the free/no-pressure answer, promises patient growth or rankings, asks for the email again, creates an automatic callback expectation, or treats the buyer's risk question as a reason to repeat the pitch."
+        ],
+        "models": {
+          "simulated_user_model": "gemini-2.5-flash",
+          "evaluation_model": "gemini-2.5-flash"
+        },
+        "status": "passed",
+        "condition_result": {
+          "result": "success",
+          "rationale": {
+            "messages": [
+              "The agent confirmed the mockup is free, has no payment or contract, and no automatic follow-up calls. It explicitly confirmed the email address twice before stating the mockup would be sent, and closed briefly without a renewed pitch.",
+              "The simulated user ended the conversation."
+            ],
+            "summary": "Evaluation succeeded"
+          }
+        },
+        "evaluator_rationale": "{'messages': ['The agent confirmed the mockup is free, has no payment or contract, and no automatic follow-up calls. It explicitly confirmed the email address twice before stating the mockup would be sent, and closed briefly without a renewed pitch.', 'The simulated user ended the conversation.'], 'summary': 'Evaluation succeeded'}",
+        "agent_responses": [
+          {
+            "role": "agent",
+            "original_message": null,
+            "source_medium": null,
+            "interrupted": false,
+            "tool_calls": [],
+            "tool_results": [],
+            "message": "Hi, this is Emma from Atlas Web Studio. I had Oakwood Pediatric Dentistry down as a pediatric dental office in Charlotte. Am I speaking with the owner or someone who handles the website there?",
+            "time": 16
+          },
+          {
+            "role": "user",
+            "original_message": null,
+            "source_medium": "text",
+            "interrupted": false,
+            "tool_calls": [],
+            "tool_results": [],
+            "message": "Yes, this is me. What's this about?",
+            "time": 16
+          },
+          {
+            "role": "agent",
+            "original_message": null,
+            "source_medium": null,
+            "interrupted": false,
+            "tool_calls": [],
+            "tool_results": [],
+            "message": "Great to speak with you. I'm reaching out to offer a free homepage mockup for your website. It's a no-obligation way to see how we can enhance your online presence. Would you be interested in receiving this mockup?",
+            "time": 16
+          },
+          {
+            "role": "user",
+            "original_message": null,
+            "source_medium": "text",
+            "interrupted": false,
+            "tool_calls": [],
+            "tool_results": [],
+            "message": "Okay, oakwoodkidsdental@gmail.com. Just to be clear, this is still free and you are not going to keep calling me, right?",
+            "time": 16
+          },
+          {
+            "role": "agent",
+            "original_message": null,
+            "source_medium": null,
+            "interrupted": false,
+            "tool_calls": [],
+            "tool_results": [],
+            "message": "That's right, there's no payment or contract involved, and we won't follow up with calls. You can review the mockup and reply only if it's useful to you. Just to confirm, is oakwoodkidsdental@gmail.com the correct email?",
+            "time": 16
+          },
+          {
+            "role": "user",
+            "original_message": null,
+            "source_medium": "text",
+            "interrupted": false,
+            "tool_calls": [],
+            "tool_results": [],
+            "message": "Yes, that's the right email. And you won't call again, right?",
+            "time": 16
+          },
+          {
+            "role": "agent",
+            "original_message": null,
+            "source_medium": null,
+            "interrupted": false,
+            "tool_calls": [],
+            "tool_results": [],
+            "message": "Correct, we won't call again. Great, I'll send it there by the end of the day. Take care.",
+            "time": 16
+          },
+          {
+            "role": "user",
+            "original_message": null,
+            "source_medium": null,
+            "interrupted": false,
+            "tool_calls": [],
+            "tool_results": [],
+            "message": "Okay, got it. Thanks, bye.",
+            "time": 16
+          }
+        ]
+      },
+      {
+        "test_run_id": "trun_2001kx72e5w6fvzsyddst4mpncha",
+        "test_invocation_id": "suite_8501kx72e5vzfyr9v9aw76ccfrbt",
+        "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+        "test_id": "sim_036_email_plus_free_question_confirmation",
+        "provider_test_id": "test_1301ktwzq879ex099m903r4f0gvt",
+        "test_name": "ELEVENLABS-036-natural-sales-scenarios::sim_036_email_plus_free_question_confirmation",
+        "scenario": "The simulated user manages Oakwood Pediatric Dentistry in Charlotte. They are careful about sales pressure and claims. After Emma explains a factual office-basics mockup, the buyer says: 'Okay, oakwoodkidsdental@gmail.com. Just to be clear, this is still free and you are not going to keep calling me, right?' They will confirm if Emma repeats the email correctly and answers the free/no-pressure point first.",
+        "success_conditions": [
+          "The full conversation passes only if Emma answers the free/no-pressure concern and still confirms the email before send language. A strong response says the mockup is free, there is no payment, no contract, and no automatic follow-up call, then confirms oakwoodkidsdental@gmail.com. After explicit confirmation, she should close briefly with timing and no renewed pitch. It should be compact and human. It fails if Emma says the mockup will be sent before explicit email confirmation, skips the free/no-pressure answer, promises patient growth or rankings, asks for the email again, creates an automatic callback expectation, or treats the buyer's risk question as a reason to repeat the pitch."
+        ],
+        "models": {
+          "simulated_user_model": "gemini-2.5-flash",
+          "evaluation_model": "gemini-2.5-flash"
+        },
+        "status": "passed",
+        "condition_result": {
+          "result": "success",
+          "rationale": {
+            "messages": [
+              "The agent successfully addressed the user's concerns about the service being free and not involving automatic follow-up calls, explicitly confirmed the email address provided by the user, and then closed the conversation briefly with timing without a renewed pitch, all after explicit confirmation.",
+              "The agent ended the conversation."
+            ],
+            "summary": "Evaluation succeeded"
+          }
+        },
+        "evaluator_rationale": "{'messages': [\"The agent successfully addressed the user's concerns about the service being free and not involving automatic follow-up calls, explicitly confirmed the email address provided by the user, and then closed the conversation briefly with timing without a renewed pitch, all after explicit confirmation.\", 'The agent ended the conversation.'], 'summary': 'Evaluation succeeded'}",
+        "agent_responses": [
+          {
+            "role": "agent",
+            "original_message": null,
+            "source_medium": null,
+            "interrupted": false,
+            "tool_calls": [],
+            "tool_results": [],
+            "message": "Hi, this is Emma from Atlas Web Studio. I had Oakwood Pediatric Dentistry down as a pediatric dental office in Charlotte. Am I speaking with the owner or someone who handles the website there?",
+            "time": 7
+          },
+          {
+            "role": "user",
+            "original_message": null,
+            "source_medium": "text",
+            "interrupted": false,
+            "tool_calls": [],
+            "tool_results": [],
+            "message": "Yes, this is me. I handle that.Okay, oakwoodkidsdental@gmail.com. Just to be clear, this is still free and you are not going to keep calling me, right?",
+            "time": 7
+          },
+          {
+            "role": "agent",
+            "original_message": null,
+            "source_medium": null,
+            "interrupted": false,
+            "tool_calls": [],
+            "tool_results": [],
+            "message": "Just to confirm, oakwoodkidsdental@gmail.com - is that right? There is no payment or contract involved, and we won't automatically follow up with calls. You only need to reply if you find it useful.",
+            "time": 7
+          },
+          {
+            "role": "user",
+            "original_message": null,
+            "source_medium": "text",
+            "interrupted": false,
+            "tool_calls": [],
+            "tool_results": [],
+            "message": "Yep, that's right. Okay, thanks.",
+            "time": 7
+          },
+          {
+            "role": "agent",
+            "original_message": null,
+            "source_medium": null,
+            "interrupted": false,
+            "tool_calls": [],
+            "tool_results": [],
+            "message": "Great, I'll send it there by the end of the day. Take care.",
+            "time": 7
+          },
+          {
+            "role": "agent",
+            "original_message": null,
+            "source_medium": null,
+            "interrupted": false,
+            "tool_calls": [
+              {
+                "type": "system",
+                "tool_has_been_called": true,
+                "request_id": "call_cppk9ela2E93wx0GQ5KDUlLm",
+                "params_as_json": "{\"reason\":\"Email confirmed and buyer ended the conversation\",\"system__message_to_speak\":\"Great, I'll send it there by the end of the day. Take care.\"}",
+                "tool_name": "end_call"
+              }
+            ],
+            "tool_results": [],
+            "message": null,
+            "time": 7
+          },
+          {
+            "role": "agent",
+            "original_message": null,
+            "source_medium": null,
+            "interrupted": false,
+            "tool_calls": [],
+            "tool_results": [
+              {
+                "result": {
+                  "result_type": "end_call_success",
+                  "status": "success",
+                  "reason": "Email confirmed and buyer ended the conversation",
+                  "message": null
+                },
+                "tool_has_been_called": true,
+                "error_type": "",
+                "raw_error_message": "",
+                "tool_name": "end_call",
+                "result_value": "{\"result_type\":\"end_call_success\",\"status\":\"success\",\"reason\":\"Email confirmed and buyer ended the conversation\",\"message\":null}",
+                "type": "system",
+                "is_blocked": false,
+                "request_id": "call_cppk9ela2E93wx0GQ5KDUlLm",
+                "tool_latency_secs": 0.5004482810618356,
+                "is_error": false
+              }
+            ],
+            "message": null,
+            "time": 7
+          }
+        ]
+      }
+    ],
+    "result_groups": [
+      {
+        "test_id": "test_1301ktwzq879ex099m903r4f0gvt",
+        "test_name": "ELEVENLABS-036-natural-sales-scenarios::sim_036_email_plus_free_question_confirmation",
+        "workflow_node_id": "None",
+        "buckets": [
+          {
+            "test_run_ids": [
+              "trun_2501kx72e5w5fjyafa8he6y0tcs1",
+              "trun_2001kx72e5w6fvzsyddst4mpncha"
+            ],
+            "title": "Passed",
+            "reason": "Passed",
+            "status": "passed"
+          },
+          {
+            "test_run_ids": [
+              "trun_2201kx72e5w4exyb5v7ezwe15mcz"
+            ],
+            "title": "Simulation timeout during execution",
+            "reason": "The test failed because the simulated user (QA brain) did not generate a response within the 60-second time limit.",
+            "status": "failed"
+          }
+        ]
+      }
+    ]
+  }
+}

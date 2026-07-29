@@ -1,0 +1,395 @@
+{
+  "checkpoint_id": "ELEVENLABS-036-natural-sales-scenarios",
+  "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+  "invocation_id": "suite_7901kx73mpz2f83s46zpsn4aarnx",
+  "independent_status": "fail",
+  "allow_partial_repeats": true,
+  "coverage_complete": false,
+  "input_test_ids": [
+    "sim_036_scheduling_simple_request_vs_live_integration",
+    "sim_036_scheduling_simple_request_vs_live_integration",
+    "sim_036_scheduling_simple_request_vs_live_integration"
+  ],
+  "missing_test_ids": [
+    "sim_036_crm_payment_capability_before_price",
+    "sim_036_custom_dashboard_scoped_separately",
+    "sim_036_email_confirmation_spoken_email_two_step",
+    "sim_036_email_plus_free_question_confirmation",
+    "sim_036_free_mockup_visual_not_working_site",
+    "sim_036_future_price_ballpark_no_overpricing",
+    "sim_036_goodbye_take_care_no_loop",
+    "sim_036_guarantee_required_clean_disqualify",
+    "sim_036_next_step_questions_no_cta_fatigue"
+  ],
+  "global_failures": [],
+  "provider_labels": {
+    "statuses": {
+      "sim_036_scheduling_simple_request_vs_live_integration": "passed"
+    },
+    "condition_results": {
+      "sim_036_scheduling_simple_request_vs_live_integration": {
+        "result": "success",
+        "rationale": {
+          "messages": [
+            "Emma clearly separated the simple appointment request form ($2k-$3k) from more advanced features like live calendar syncing ($3k-$4k), aligning with the specified price ranges. She did not overprice the simple option and offered a next step (mockup).",
+            "The simulated user ended the conversation."
+          ],
+          "summary": "Evaluation succeeded"
+        }
+      }
+    }
+  },
+  "tests": [
+    {
+      "test_id": "sim_036_scheduling_simple_request_vs_live_integration",
+      "test_name": "ELEVENLABS-036-natural-sales-scenarios::sim_036_scheduling_simple_request_vs_live_integration",
+      "test_run_id": "trun_8101kx73mpz4ecab0p8c0enx7deb",
+      "independent_status": "fail",
+      "effective_contract": "ELEVENLABS-036",
+      "provider_status": "passed",
+      "provider_condition_result": {
+        "result": "success",
+        "rationale": {
+          "messages": [
+            "The agent clearly separated the simple appointment request form ($2k-$3k for the whole website) from more advanced features like a live calendar or payment processing ($3k-$4k). She did not overprice the simple option or force live-calendar wording, and consistently offered a next step (free homepage mockup).",
+            "The simulated user ended the conversation."
+          ],
+          "summary": "Evaluation succeeded"
+        }
+      },
+      "provider_evaluator_rationale": "{'messages': ['The agent clearly separated the simple appointment request form ($2k-$3k for the whole website) from more advanced features like a live calendar or payment processing ($3k-$4k). She did not overprice the simple option or force live-calendar wording, and consistently offered a next step (free homepage mockup).', 'The simulated user ended the conversation.'], 'summary': 'Evaluation succeeded'}",
+      "assertions": [
+        {
+          "name": "expected_test_name",
+          "passed": true,
+          "detail": "expected test_name 'ELEVENLABS-036-natural-sales-scenarios::sim_036_scheduling_simple_request_vs_live_integration'"
+        },
+        {
+          "name": "ordered_agent_responses_present",
+          "passed": true,
+          "detail": "agent_responses is not a list"
+        },
+        {
+          "name": "at_most_one_end_call",
+          "passed": true,
+          "detail": "found 0 end_call calls"
+        },
+        {
+          "name": "timing_spoken_at_most_once",
+          "passed": true,
+          "detail": "delivery timing appears 0 times in agent speech"
+        },
+        {
+          "name": "initial_scheduling_question_found",
+          "passed": true,
+          "detail": "initial scheduling question not found"
+        },
+        {
+          "name": "scheduling_initial_answer_separates_simple_from_live",
+          "passed": true,
+          "detail": "initial scheduling answer must distinguish a simple request flow from a live calendar/integration path"
+        },
+        {
+          "name": "scheduling_initial_answer_no_price_before_cost_question",
+          "passed": true,
+          "detail": "initial scheduling answer must not quote ranges before the buyer asks about cost"
+        },
+        {
+          "name": "simple_request_clarification_keeps_scope_split",
+          "passed": false,
+          "detail": "clarification answer must keep the request-times path distinct from a live calendar/integration",
+          "severity": "fail"
+        },
+        {
+          "name": "simple_request_clarification_no_price_before_cost_question",
+          "passed": false,
+          "detail": "request-times clarification must not quote price before the buyer asks cost",
+          "severity": "fail"
+        },
+        {
+          "name": "scheduling_cost_question_found",
+          "passed": false,
+          "detail": "scheduling cost question not found",
+          "severity": "fail"
+        }
+      ],
+      "failures": [
+        "simple_request_clarification_keeps_scope_split: clarification answer must keep the request-times path distinct from a live calendar/integration",
+        "simple_request_clarification_no_price_before_cost_question: request-times clarification must not quote price before the buyer asks cost",
+        "scheduling_cost_question_found: scheduling cost question not found"
+      ],
+      "inconclusives": []
+    },
+    {
+      "test_id": "sim_036_scheduling_simple_request_vs_live_integration",
+      "test_name": "ELEVENLABS-036-natural-sales-scenarios::sim_036_scheduling_simple_request_vs_live_integration",
+      "test_run_id": "trun_5901kx73mpz6eq492kq2bc8f1wg7",
+      "independent_status": "pass",
+      "effective_contract": "ELEVENLABS-036",
+      "provider_status": "passed",
+      "provider_condition_result": {
+        "result": "success",
+        "rationale": {
+          "messages": [
+            "The agent successfully separated the simple appointment request form from a more integrated live scheduling system. She quoted a price range of $2k-$3k for the simple request form, which is appropriate for a light feature, and explicitly stated it was more affordable than live calendar integration. She did not overprice the simple option or force live-calendar wording, and made a natural next-step move by offering a mockup.",
+            "The agent ended the conversation."
+          ],
+          "summary": "Evaluation succeeded"
+        }
+      },
+      "provider_evaluator_rationale": "{'messages': ['The agent successfully separated the simple appointment request form from a more integrated live scheduling system. She quoted a price range of $2k-$3k for the simple request form, which is appropriate for a light feature, and explicitly stated it was more affordable than live calendar integration. She did not overprice the simple option or force live-calendar wording, and made a natural next-step move by offering a mockup.', 'The agent ended the conversation.'], 'summary': 'Evaluation succeeded'}",
+      "assertions": [
+        {
+          "name": "expected_test_name",
+          "passed": true,
+          "detail": "expected test_name 'ELEVENLABS-036-natural-sales-scenarios::sim_036_scheduling_simple_request_vs_live_integration'"
+        },
+        {
+          "name": "ordered_agent_responses_present",
+          "passed": true,
+          "detail": "agent_responses is not a list"
+        },
+        {
+          "name": "at_most_one_end_call",
+          "passed": true,
+          "detail": "found 1 end_call calls"
+        },
+        {
+          "name": "parse_end_call_params",
+          "passed": true,
+          "detail": "invalid end_call params"
+        },
+        {
+          "name": "built_in_system_end_call",
+          "passed": true,
+          "detail": "end_call is not type system"
+        },
+        {
+          "name": "matching_end_call_result",
+          "passed": true,
+          "detail": "expected one successful tool result for request_id 'call_jT9fI3m1ebCadDT6H6rZGLve', found 1"
+        },
+        {
+          "name": "successful_end_call_result_payload",
+          "passed": true,
+          "detail": "tool result payload must be end_call_success with status success"
+        },
+        {
+          "name": "rendered_message_matches_tool_message",
+          "passed": true,
+          "detail": "rendered agent message must match tool speech 'Take care.'"
+        },
+        {
+          "name": "no_text_or_tool_after_end_call_result",
+          "passed": true,
+          "detail": "trace contains text or tool activity after the successful end_call result"
+        },
+        {
+          "name": "timing_spoken_at_most_once",
+          "passed": true,
+          "detail": "delivery timing appears 1 times in agent speech"
+        },
+        {
+          "name": "initial_scheduling_question_found",
+          "passed": true,
+          "detail": "initial scheduling question not found"
+        },
+        {
+          "name": "scheduling_initial_answer_separates_simple_from_live",
+          "passed": true,
+          "detail": "initial scheduling answer must distinguish a simple request flow from a live calendar/integration path"
+        },
+        {
+          "name": "scheduling_initial_answer_no_price_before_cost_question",
+          "passed": true,
+          "detail": "initial scheduling answer must not quote ranges before the buyer asks about cost"
+        },
+        {
+          "name": "scheduling_cost_question_found",
+          "passed": true,
+          "detail": "scheduling cost question not found"
+        },
+        {
+          "name": "scheduling_cost_answer_has_simple_request_range",
+          "passed": true,
+          "detail": "scheduling cost answer must price the lighter request-times path in the approved lower range"
+        },
+        {
+          "name": "scheduling_cost_answer_frames_whole_site_not_form_only",
+          "passed": true,
+          "detail": "scheduling cost answer must frame the range as a whole-site ballpark, not a standalone form-only custom quote"
+        },
+        {
+          "name": "scheduling_cost_answer_has_live_range_when_live_path_mentioned",
+          "passed": true,
+          "detail": "when the cost answer mentions live-calendar or advanced functionality, it must also give the heavier range"
+        },
+        {
+          "name": "email_turn_found",
+          "passed": true,
+          "detail": "email turn not found"
+        },
+        {
+          "name": "confirmation_prompt_before_send",
+          "passed": true,
+          "detail": "first agent response after email must confirm the email"
+        },
+        {
+          "name": "no_send_language_before_confirmation",
+          "passed": true,
+          "detail": "agent used send or timing language before explicit confirmation"
+        },
+        {
+          "name": "no_ask_for_best_email_again",
+          "passed": true,
+          "detail": "agent asked for the best email again instead of confirming it"
+        },
+        {
+          "name": "confirmation_prompt_contains_email",
+          "passed": true,
+          "detail": "confirmation prompt must repeat the provided email"
+        },
+        {
+          "name": "explicit_email_confirmation_turn",
+          "passed": true,
+          "detail": "buyer did not explicitly confirm the repeated email"
+        },
+        {
+          "name": "post_confirmation_timing_present",
+          "passed": true,
+          "detail": "post-confirmation agent turn must include by-end-of-day timing"
+        },
+        {
+          "name": "post_confirmation_timing_is_not_farewell",
+          "passed": true,
+          "detail": "confirmation without goodbye must not include a farewell"
+        },
+        {
+          "name": "later_goodbye_requires_take_care_only",
+          "passed": true,
+          "detail": "after prior delivery timing, later goodbye/terminal thanks permits only 'Take care.'"
+        }
+      ],
+      "failures": [],
+      "inconclusives": []
+    },
+    {
+      "test_id": "sim_036_scheduling_simple_request_vs_live_integration",
+      "test_name": "ELEVENLABS-036-natural-sales-scenarios::sim_036_scheduling_simple_request_vs_live_integration",
+      "test_run_id": "trun_4001kx73mpz5fh68gg905sta87j9",
+      "independent_status": "fail",
+      "effective_contract": "ELEVENLABS-036",
+      "provider_status": "passed",
+      "provider_condition_result": {
+        "result": "success",
+        "rationale": {
+          "messages": [
+            "Emma clearly separated the simple appointment request form ($2k-$3k) from more advanced features like live calendar syncing ($3k-$4k), aligning with the specified price ranges. She did not overprice the simple option and offered a next step (mockup).",
+            "The simulated user ended the conversation."
+          ],
+          "summary": "Evaluation succeeded"
+        }
+      },
+      "provider_evaluator_rationale": "{'messages': ['Emma clearly separated the simple appointment request form ($2k-$3k) from more advanced features like live calendar syncing ($3k-$4k), aligning with the specified price ranges. She did not overprice the simple option and offered a next step (mockup).', 'The simulated user ended the conversation.'], 'summary': 'Evaluation succeeded'}",
+      "assertions": [
+        {
+          "name": "expected_test_name",
+          "passed": true,
+          "detail": "expected test_name 'ELEVENLABS-036-natural-sales-scenarios::sim_036_scheduling_simple_request_vs_live_integration'"
+        },
+        {
+          "name": "ordered_agent_responses_present",
+          "passed": true,
+          "detail": "agent_responses is not a list"
+        },
+        {
+          "name": "at_most_one_end_call",
+          "passed": true,
+          "detail": "found 0 end_call calls"
+        },
+        {
+          "name": "timing_spoken_at_most_once",
+          "passed": true,
+          "detail": "delivery timing appears 1 times in agent speech"
+        },
+        {
+          "name": "initial_scheduling_question_found",
+          "passed": true,
+          "detail": "initial scheduling question not found"
+        },
+        {
+          "name": "scheduling_initial_answer_separates_simple_from_live",
+          "passed": true,
+          "detail": "initial scheduling answer must distinguish a simple request flow from a live calendar/integration path"
+        },
+        {
+          "name": "scheduling_initial_answer_no_price_before_cost_question",
+          "passed": false,
+          "detail": "initial scheduling answer must not quote ranges before the buyer asks about cost",
+          "severity": "fail"
+        },
+        {
+          "name": "simple_request_clarification_keeps_scope_split",
+          "passed": true,
+          "detail": "clarification answer must keep the request-times path distinct from a live calendar/integration"
+        },
+        {
+          "name": "simple_request_clarification_no_price_before_cost_question",
+          "passed": true,
+          "detail": "request-times clarification must not quote price before the buyer asks cost"
+        },
+        {
+          "name": "scheduling_cost_question_found",
+          "passed": false,
+          "detail": "scheduling cost question not found",
+          "severity": "fail"
+        },
+        {
+          "name": "email_turn_found",
+          "passed": true,
+          "detail": "email turn not found"
+        },
+        {
+          "name": "confirmation_prompt_before_send",
+          "passed": true,
+          "detail": "first agent response after email must confirm the email"
+        },
+        {
+          "name": "no_send_language_before_confirmation",
+          "passed": true,
+          "detail": "agent used send or timing language before explicit confirmation"
+        },
+        {
+          "name": "no_ask_for_best_email_again",
+          "passed": true,
+          "detail": "agent asked for the best email again instead of confirming it"
+        },
+        {
+          "name": "confirmation_prompt_contains_email",
+          "passed": true,
+          "detail": "confirmation prompt must repeat the provided email"
+        },
+        {
+          "name": "explicit_email_confirmation_turn",
+          "passed": true,
+          "detail": "buyer did not explicitly confirm the repeated email"
+        },
+        {
+          "name": "post_confirmation_timing_present",
+          "passed": true,
+          "detail": "post-confirmation agent turn must include by-end-of-day timing"
+        },
+        {
+          "name": "post_confirmation_timing_is_not_farewell",
+          "passed": true,
+          "detail": "confirmation without goodbye must not include a farewell"
+        }
+      ],
+      "failures": [
+        "scheduling_initial_answer_no_price_before_cost_question: initial scheduling answer must not quote ranges before the buyer asks about cost",
+        "scheduling_cost_question_found: scheduling cost question not found"
+      ],
+      "inconclusives": []
+    }
+  ]
+}

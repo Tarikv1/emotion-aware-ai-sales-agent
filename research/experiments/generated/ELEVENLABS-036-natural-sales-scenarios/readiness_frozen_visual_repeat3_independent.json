@@ -1,0 +1,231 @@
+{
+  "checkpoint_id": "ELEVENLABS-036-natural-sales-scenarios",
+  "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+  "invocation_id": "suite_2201kx73jeadekgr3r1k14amf9jh",
+  "independent_status": "fail",
+  "allow_partial_repeats": true,
+  "coverage_complete": false,
+  "input_test_ids": [
+    "sim_036_free_mockup_visual_not_working_site",
+    "sim_036_free_mockup_visual_not_working_site",
+    "sim_036_free_mockup_visual_not_working_site"
+  ],
+  "missing_test_ids": [
+    "sim_036_crm_payment_capability_before_price",
+    "sim_036_custom_dashboard_scoped_separately",
+    "sim_036_email_confirmation_spoken_email_two_step",
+    "sim_036_email_plus_free_question_confirmation",
+    "sim_036_future_price_ballpark_no_overpricing",
+    "sim_036_goodbye_take_care_no_loop",
+    "sim_036_guarantee_required_clean_disqualify",
+    "sim_036_next_step_questions_no_cta_fatigue",
+    "sim_036_scheduling_simple_request_vs_live_integration"
+  ],
+  "global_failures": [],
+  "provider_labels": {
+    "statuses": {
+      "sim_036_free_mockup_visual_not_working_site": "passed"
+    },
+    "condition_results": {
+      "sim_036_free_mockup_visual_not_working_site": {
+        "result": "success",
+        "rationale": {
+          "messages": [
+            "The agent clearly stated that the mockup is a visual representation showing where features would be placed, but does not include working functionality. This was a direct and natural answer that preserved the sales path by explaining that full functionality requires additional development.",
+            "The conversation reached the maximum number of turns."
+          ],
+          "summary": "Evaluation succeeded"
+        }
+      }
+    }
+  },
+  "tests": [
+    {
+      "test_id": "sim_036_free_mockup_visual_not_working_site",
+      "test_name": "ELEVENLABS-036-natural-sales-scenarios::sim_036_free_mockup_visual_not_working_site",
+      "test_run_id": "trun_5101kx73jeagfd49vmzgvep8r3b8",
+      "independent_status": "pass",
+      "effective_contract": "ELEVENLABS-036",
+      "provider_status": "passed",
+      "provider_condition_result": {
+        "result": "success",
+        "rationale": {
+          "messages": [
+            "The agent clearly and consistently explained that the mockup is visual, not functional, and differentiated it from paid development. It addressed the user's skepticism, used analogies, and provided pricing for functional features, preserving the sales path without implying false functionality or dodging questions.",
+            "The conversation reached the maximum number of turns."
+          ],
+          "summary": "Evaluation succeeded"
+        }
+      },
+      "provider_evaluator_rationale": "{'messages': [\"The agent clearly and consistently explained that the mockup is visual, not functional, and differentiated it from paid development. It addressed the user's skepticism, used analogies, and provided pricing for functional features, preserving the sales path without implying false functionality or dodging questions.\", 'The conversation reached the maximum number of turns.'], 'summary': 'Evaluation succeeded'}",
+      "assertions": [
+        {
+          "name": "expected_test_name",
+          "passed": true,
+          "detail": "expected test_name 'ELEVENLABS-036-natural-sales-scenarios::sim_036_free_mockup_visual_not_working_site'"
+        },
+        {
+          "name": "ordered_agent_responses_present",
+          "passed": true,
+          "detail": "agent_responses is not a list"
+        },
+        {
+          "name": "at_most_one_end_call",
+          "passed": true,
+          "detail": "found 0 end_call calls"
+        },
+        {
+          "name": "timing_spoken_at_most_once",
+          "passed": true,
+          "detail": "delivery timing appears 0 times in agent speech"
+        },
+        {
+          "name": "visual_scope_question_found",
+          "passed": true,
+          "detail": "visual-scope question not found"
+        },
+        {
+          "name": "visual_scope_says_visual_not_live",
+          "passed": true,
+          "detail": "scope answer must say the mockup is visual and not live functionality"
+        },
+        {
+          "name": "no_email_before_scope_boundary",
+          "passed": true,
+          "detail": "agent asked for email before clarifying the mockup scope"
+        },
+        {
+          "name": "visual_no_repeated_mockup_cta_before_acceptance",
+          "passed": true,
+          "detail": "agent repeated mockup CTA/email ask 0 time(s) after functionality objections and before explicit acceptance"
+        },
+        {
+          "name": "visual_no_invented_live_demo_or_case_study_offer",
+          "passed": true,
+          "detail": "agent invented live demo/prototype/case-study/working-preview offers: []"
+        }
+      ],
+      "failures": [],
+      "inconclusives": []
+    },
+    {
+      "test_id": "sim_036_free_mockup_visual_not_working_site",
+      "test_name": "ELEVENLABS-036-natural-sales-scenarios::sim_036_free_mockup_visual_not_working_site",
+      "test_run_id": "trun_2101kx73jeajfhbv4d010g7vqt7m",
+      "independent_status": "fail",
+      "effective_contract": "ELEVENLABS-036",
+      "provider_status": "passed",
+      "provider_condition_result": {
+        "result": "success",
+        "rationale": {
+          "messages": [
+            "Emma clearly stated in the first response that the mockup is visual and does not include working functionalities like booking or payments. She consistently reiterated this point, preserved the sales path by positioning the mockup for layout/direction, and offered a low-friction next step to discuss functional requirements without cost.",
+            "The conversation reached the maximum number of turns."
+          ],
+          "summary": "Evaluation succeeded"
+        }
+      },
+      "provider_evaluator_rationale": "{'messages': ['Emma clearly stated in the first response that the mockup is visual and does not include working functionalities like booking or payments. She consistently reiterated this point, preserved the sales path by positioning the mockup for layout/direction, and offered a low-friction next step to discuss functional requirements without cost.', 'The conversation reached the maximum number of turns.'], 'summary': 'Evaluation succeeded'}",
+      "assertions": [
+        {
+          "name": "expected_test_name",
+          "passed": true,
+          "detail": "expected test_name 'ELEVENLABS-036-natural-sales-scenarios::sim_036_free_mockup_visual_not_working_site'"
+        },
+        {
+          "name": "ordered_agent_responses_present",
+          "passed": true,
+          "detail": "agent_responses is not a list"
+        },
+        {
+          "name": "at_most_one_end_call",
+          "passed": true,
+          "detail": "found 0 end_call calls"
+        },
+        {
+          "name": "timing_spoken_at_most_once",
+          "passed": true,
+          "detail": "delivery timing appears 0 times in agent speech"
+        },
+        {
+          "name": "visual_scope_question_found",
+          "passed": false,
+          "detail": "visual-scope question not found",
+          "severity": "fail"
+        }
+      ],
+      "failures": [
+        "visual_scope_question_found: visual-scope question not found"
+      ],
+      "inconclusives": []
+    },
+    {
+      "test_id": "sim_036_free_mockup_visual_not_working_site",
+      "test_name": "ELEVENLABS-036-natural-sales-scenarios::sim_036_free_mockup_visual_not_working_site",
+      "test_run_id": "trun_8401kx73jeahfxcanxneq2wd97e0",
+      "independent_status": "pass",
+      "effective_contract": "ELEVENLABS-036",
+      "provider_status": "passed",
+      "provider_condition_result": {
+        "result": "success",
+        "rationale": {
+          "messages": [
+            "The agent clearly stated that the mockup is a visual representation showing where features would be placed, but does not include working functionality. This was a direct and natural answer that preserved the sales path by explaining that full functionality requires additional development.",
+            "The conversation reached the maximum number of turns."
+          ],
+          "summary": "Evaluation succeeded"
+        }
+      },
+      "provider_evaluator_rationale": "{'messages': ['The agent clearly stated that the mockup is a visual representation showing where features would be placed, but does not include working functionality. This was a direct and natural answer that preserved the sales path by explaining that full functionality requires additional development.', 'The conversation reached the maximum number of turns.'], 'summary': 'Evaluation succeeded'}",
+      "assertions": [
+        {
+          "name": "expected_test_name",
+          "passed": true,
+          "detail": "expected test_name 'ELEVENLABS-036-natural-sales-scenarios::sim_036_free_mockup_visual_not_working_site'"
+        },
+        {
+          "name": "ordered_agent_responses_present",
+          "passed": true,
+          "detail": "agent_responses is not a list"
+        },
+        {
+          "name": "at_most_one_end_call",
+          "passed": true,
+          "detail": "found 0 end_call calls"
+        },
+        {
+          "name": "timing_spoken_at_most_once",
+          "passed": true,
+          "detail": "delivery timing appears 0 times in agent speech"
+        },
+        {
+          "name": "visual_scope_question_found",
+          "passed": true,
+          "detail": "visual-scope question not found"
+        },
+        {
+          "name": "visual_scope_says_visual_not_live",
+          "passed": true,
+          "detail": "scope answer must say the mockup is visual and not live functionality"
+        },
+        {
+          "name": "no_email_before_scope_boundary",
+          "passed": true,
+          "detail": "agent asked for email before clarifying the mockup scope"
+        },
+        {
+          "name": "visual_no_repeated_mockup_cta_before_acceptance",
+          "passed": true,
+          "detail": "agent repeated mockup CTA/email ask 0 time(s) after functionality objections and before explicit acceptance"
+        },
+        {
+          "name": "visual_no_invented_live_demo_or_case_study_offer",
+          "passed": true,
+          "detail": "agent invented live demo/prototype/case-study/working-preview offers: []"
+        }
+      ],
+      "failures": [],
+      "inconclusives": []
+    }
+  ]
+}

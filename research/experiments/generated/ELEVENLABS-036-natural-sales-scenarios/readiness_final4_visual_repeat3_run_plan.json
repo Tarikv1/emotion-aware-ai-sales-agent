@@ -1,0 +1,156 @@
+{
+  "checkpoint_id": "ELEVENLABS-036-natural-sales-scenarios",
+  "captured_at_utc": "2026-07-10T22:34:54Z",
+  "scope": "visual",
+  "repeat_count": 3,
+  "agent": {
+    "agent_id": "agent_7801kt0g32zxf4f8x5zkykj7syty",
+    "agent_name": "web design",
+    "prompt_sha256": "f3eb351a4fd0bbcba396eb6e20d42acf41afc2712bedcc8555d0c26c03b852e5",
+    "knowledge_base_count": 17,
+    "knowledge_base_ids_in_order": [
+      "S1MM5iaQDE7xHXTIw1V4",
+      "xdRGCUKCrMu6BV3BeBmR",
+      "WqWCqrY8Dqw0Cjt2ueX4",
+      "WDRDzZAMOGwsM7RA8OvN",
+      "DXPTUuYp2o8A4kOglSSt",
+      "yctClZpoz1i6goYAjwZt",
+      "OcvFykT5Tqp7NGueekiI",
+      "LQEos3HJ5ZzBSpF3dXR1",
+      "KsC9mjcefO9A3FM0YzQB",
+      "TQiRIK8kDTzlZLnvt2Xe",
+      "HYTfB5s1Z8LzOw8oBADt",
+      "YABkv2da2gNmPq0jcEST",
+      "bbK56uvCaErJuMTFUy22",
+      "o1RI99TXNInjNGIwTGtz",
+      "vGKk14CCzKqGW3GxgUqA",
+      "X5TwiHiuJzdRPpSzhBGn",
+      "GS5wqgcUomoJmqWCEpP7"
+    ],
+    "knowledge_base_names_in_order": [
+      "universal_sales_core_summary.md",
+      "buyer_moves.md",
+      "value_and_roi_framing.md",
+      "objection_status_quo_and_competition.md",
+      "trust_and_risk_repair.md",
+      "conversation_repair.md",
+      "next_step_policy.md",
+      "disqualification_policy.md",
+      "ethical_persuasion_boundaries.md",
+      "call_quality_rubrics.md",
+      "atlas_offer_facts.md",
+      "atlas_value_mechanisms.md",
+      "atlas_vertical_playbooks.md",
+      "atlas_objection_playbook.md",
+      "atlas_price_scope_cost_drivers.md",
+      "atlas_close_and_followup_playbook.md",
+      "atlas_output_quality_rules.md"
+    ],
+    "tool_summary": {
+      "built_in_end_call_exists": true,
+      "built_in_end_call": {
+        "type": "system",
+        "name": "end_call",
+        "description": "End the call only when the conversation is genuinely complete. Call this tool once when the buyer explicitly ends a completed conversation, gives a hard stop or do-not-call request, a completed gatekeeper callback or note outcome is reached, or a guarantee-only disqualification reaches its terminal conclusion. A guarantee-only conclusion is terminal only after Emma gives the guarantee-lock response and the buyer repeats the guarantee requirement or clearly ends; 'no guarantee, do not send a mockup' is not by itself a hard stop or do-not-call request. Email confirmation without goodbye is not a completed conversation; do not invoke this tool or add a farewell after confirmation alone. Same-turn timing is determined only by the latest buyer utterance, never earlier confirmation. The email-confirmation terminal branch requires explicit confirmation and explicit bye or goodbye in that latest utterance; thanks, got it, or a repeated email without bye or goodbye never qualifies. If confirmation includes a live question without bye or goodbye, answer it and state delivery timing without end_call or Take care. If delivery timing was already spoken, the message must be exactly 'Take care.' Before ending, answer any live direct question or unresolved concern, confirm any pending email destination, and confirm any agreed callback window. Exception: a hard stop or do-not-call request overrides pending email confirmation, callback, and every unfinished sales action; end immediately without confirming email or continuing the pitch. Include by-the-end-of-day delivery timing only when it has not already been stated, or when email confirmation and goodbye occur in the same buyer turn. Use the tool's message field as the single final spoken line. Do not speak a separate farewell before invoking the tool. Do not end while email confirmation is pending, the buyer accepted the mockup but no email is known, or the buyer is still asking about price, process, capability, scope, or another unresolved concern, except for the hard-stop/do-not-call override. Do not call this tool more than once.",
+        "response_timeout_secs": 20,
+        "disable_interruptions": false,
+        "interruption_mode": "allow",
+        "force_pre_tool_speech": false,
+        "pre_tool_speech": "auto",
+        "assignments": [],
+        "tool_call_sound": null,
+        "tool_call_sound_behavior": "auto",
+        "tool_error_handling_mode": "auto",
+        "params": {
+          "system_tool_type": "end_call"
+        }
+      },
+      "built_in_end_call_count": 1,
+      "legacy_system_end_call_mirror_count": 1,
+      "duplicate_custom_or_server_end_call_count": 0,
+      "tool_ids": [],
+      "legacy_tools_count": 1,
+      "mcp_server_ids": [],
+      "native_mcp_server_ids": []
+    },
+    "analysis_criteria_count": 30,
+    "analysis_criterion_ids_in_order": [
+      "elite_sales_value_answer",
+      "no_caveat_first_unless_guarantee",
+      "soft_agreement_not_overclosed",
+      "accepted_mockup_email_capture",
+      "email_two_step_close",
+      "gatekeeper_clean_close",
+      "seo_confident_but_safe",
+      "cost_driver_expertise",
+      "no_bracketed_internal_labels",
+      "no_repeated_value_angle",
+      "no_scripted_example_echo",
+      "no_cta_fatigue",
+      "process_risk_before_email_capture",
+      "no_follow_up_leakage",
+      "concrete_mechanism_headline_value",
+      "guarantee_escalation_correct",
+      "disqualification_lock_respected",
+      "vertical_action_fidelity",
+      "known_context_not_rediscovered",
+      "normalized_email_extracted",
+      "guarantee_lock_first_turn",
+      "no_runtime_tone_tags",
+      "delivery_timing_end_of_day",
+      "email_reply_path_mentioned_when_closing",
+      "email_confirmation_requires_explicit_yes",
+      "terminal_close_no_loop",
+      "realistic_test_contact_values",
+      "natural_spoken_quality",
+      "stop_request_respected",
+      "no_fake_claims"
+    ],
+    "procedures_inactive": true,
+    "unrelated_tool_fingerprint": {
+      "non_end_call_legacy_tools": [],
+      "built_in_tools_excluding_end_call": {
+        "language_detection": null,
+        "transfer_to_agent": null,
+        "transfer_to_number": null,
+        "skip_turn": null,
+        "play_keypad_touch_tone": null,
+        "voicemail_detection": null,
+        "update_state": null,
+        "memory_entry_search": null,
+        "memory_entry_create": null,
+        "memory_entry_update": null,
+        "memory_entry_delete": null,
+        "agent_prompt_change": null,
+        "procedure_update": null,
+        "procedure_create": null,
+        "procedure_delete": null,
+        "transfer_to_genesys_chat": null,
+        "run_subagent": null
+      },
+      "tool_ids": [],
+      "mcp_server_ids": [],
+      "native_mcp_server_ids": []
+    },
+    "protected_state_sha256": "66ef87f5731235a6eab429e84c2d2e94925b9b503c435f1a21ee4e433060f3c9"
+  },
+  "test_ids": {
+    "sim_036_free_mockup_visual_not_working_site": "test_3301ktwzq9cnfzsa5dfjd9q61gq5"
+  },
+  "selected_test_count": 1,
+  "expected_terminal_run_count": 3,
+  "live_test_semantics_match_repo": true,
+  "request": {
+    "method": "POST",
+    "endpoint": "/v1/convai/agents/agent_7801kt0g32zxf4f8x5zkykj7syty/run-tests",
+    "body": {
+      "tests": [
+        {
+          "test_id": "test_3301ktwzq9cnfzsa5dfjd9q61gq5"
+        }
+      ],
+      "repeat_count": 3
+    }
+  },
+  "outbound_calls_made": false
+}
